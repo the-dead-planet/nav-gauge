@@ -121,10 +121,11 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v6
 
-      - name: Run tests e2e prod
-        continue-on-error: true
-        run: yarn test:e2e:prod
-        working-directory: apps
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          config: baseUrl=https://gauge.spookydoodle.com
 
