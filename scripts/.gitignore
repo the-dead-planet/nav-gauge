@@ -1,0 +1,9 @@
+.exe
+.out
+.test
+/bin/
+/pkg/
+
+*.tmp
+*.log
+*.bak

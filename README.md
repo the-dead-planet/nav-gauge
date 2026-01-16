@@ -6,9 +6,9 @@ Record with an external tool or save a series of pictures.
 ## Structure
 
 - [apps](/apps) - client application workspaces (web, mobile and shared packages)
-- [app-web](/apps/app-web) - How to run and develop web application
-- [app-mobile](/apps/app-mobile) - How to run and develop mobile application
-- [api](/api) - application backend with user data, preferences, app persistence etc. (to be implemented in the future)
+- [apps/web](/apps/web) - How to run and develop web application
+- [apps/mobile](/apps/mobile) - How to run and develop mobile application
+- [api](/api) - application backend with user data, preferences, app persistence, proxy end points etc. (to be implemented in the future)
 - [scripts](/scripts) - ad-hoc scripts, for example for map tile sourcing and generation
 
 ## License

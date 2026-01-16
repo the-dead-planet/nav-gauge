@@ -1,5 +1,13 @@
 {
     "extends": "../../tsconfig.base.json",
+    "references": [
+        {
+            "path": "../tinker-chest/src"
+        },
+        {
+            "path": "../../ui/src"
+        }
+    ],
     "include": [
         "src/**/*",
         "test/**/*",

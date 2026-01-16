@@ -4,7 +4,7 @@ WORKDIR /app/
 
 COPY apps/package.json apps/yarn.lock apps/tsconfig.base.json ./
 
-COPY apps/app-web ./app-web
+COPY apps/web ./web
 COPY apps/packages ./packages
 COPY apps/ui ./ui
 COPY apps/types ./types
@@ -14,9 +14,9 @@ RUN yarn build
 
 FROM nginx:1.28.0-alpine
 
-COPY --from=builder /app/app-web/web-app/dist /usr/share/nginx/html
+COPY --from=builder /app/web/app/dist /usr/share/nginx/html
 
-COPY apps/app-web/web-app/conf/conf.d/nginx.conf /etc/nginx/conf.d/default.conf
+COPY apps/web/app/conf/conf.d/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

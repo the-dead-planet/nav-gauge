@@ -1,5 +1,5 @@
 {
-    "name": "apps",
+    "name": "@the-dead-planet/nav-gauge",
     "version": "1.0.0",
     "description": "Navigation gauge and story generator with map component with customization options with data from a .gpx file and uploaded images.",
     "homepage": "https://nav-gauge.spookydoodle.com",
@@ -12,19 +12,19 @@
         "url": "https://github.com/spookydoodle/nav-gauge/issues"
     },
     "scripts": {
-        "dev": "yarn workspace web-app dev",
-        "build": "yarn workspace web-app build",
-        "start": "yarn workspace web-app start",
-        "test:web-app": "yarn workspace web-app test",
-        "test:web-ui": "yarn workspace web-ui test",
-        "test:mobile-app": "yarn workspace mobile-app test",
-        "test:mobile-ui": "yarn workspace mobile-ui test",
-        "test:apparatus": "yarn workspace apparatus test",
-        "test:gears": "yarn workspace gears test",
-        "test:tinker-chest": "yarn workspace tinker-chest test",
-        "test:ui": "yarn workspace ui test",
-        "test": "concurrently \"yarn test:web-app\" \"yarn test:web-ui\" \"yarn test:mobile-app\" \"yarn test:mobile-ui\" \"yarn test:apparatus\" \"yarn test:gears\" \"yarn test:tinker-chest\" \"yarn test:ui\"",
-        "test:e2e:prod": "yarn workspace web-app test:e2e:prod"
+        "dev": "yarn workspace @the-dead-planet/nav-gauge-web-app dev",
+        "build": "yarn workspace @the-dead-planet/nav-gauge-web-app build",
+        "start": "yarn workspace @the-dead-planet/nav-gauge-web-app start",
+        "test:web-app": "yarn workspace @the-dead-planet/nav-gauge-web-app test",
+        "test:web-ui": "yarn workspace @the-dead-planet/nav-gauge-web-ui test",
+        "test:MobileApp": "yarn workspace @the-dead-planet/nav-gauge-mobile-app test",
+        "test:mobile-ui": "yarn workspace @the-dead-planet/nav-gauge-mobile-ui test",
+        "test:apparatus": "yarn workspace @the-dead-planet/nav-gauge-apparatus test",
+        "test:gears": "yarn workspace @the-dead-planet/nav-gauge-gears test",
+        "test:tinker-chest": "yarn workspace @the-dead-planet/nav-gauge-tinker-chest test",
+        "test:ui": "yarn workspace @the-dead-planet/nav-gauge-ui test",
+        "test": "concurrently \"yarn test:web-app\" \"yarn test:web-ui\" \"yarn test:MobileApp\" \"yarn test:mobile-ui\" \"yarn test:apparatus\" \"yarn test:gears\" \"yarn test:tinker-chest\" \"yarn test:ui\"",
+        "test:e2e:prod": "yarn workspace @the-dead-planet/nav-gauge-web-app test:e2e:prod"
     },
     "dependencies": {
         "@turf/along": "^7.3.2",
@@ -35,7 +35,7 @@
         "@turf/length": "^7.3.2",
         "classnames": "^2.5.1",
         "luxon": "^3.7.2",
-        "maplibre-gl": "^5.16.0",
+        "react": "^19.2.3",
         "rxjs": "^7.8.2"
     },
     "devDependencies": {
@@ -44,6 +44,7 @@
         "@types/luxon": "^3.7.1",
         "@types/mocha": "^10.0.10",
         "@types/node": "^25.0.8",
+        "@types/react": "^19.2.8",
         "@typescript-eslint/eslint-plugin": "^8.53.0",
         "@typescript-eslint/parser": "^8.53.0",
         "add": "^2.0.6",
@@ -56,10 +57,10 @@
         "typescript": "^5.9.3"
     },
     "workspaces": [
-        "app-web/web-app",
-        "app-web/web-ui",
-        "app-mobile/mobile-app",
-        "app-mobile/mobile-ui",
+        "web/app",
+        "web/ui",
+        "mobile/MobileApp",
+        "mobile/ui",
         "packages/*",
         "ui"
     ]

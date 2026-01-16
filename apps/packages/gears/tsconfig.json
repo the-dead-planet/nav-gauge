@@ -1,5 +1,16 @@
 {
     "extends": "../../tsconfig.base.json",
+    "references": [
+        {
+            "path": "../apparatus/src"
+        },
+        {
+            "path": "../tinker-chest/src"
+        },
+        {
+            "path": "../../ui/src"
+        }
+    ],
     "include": [
         "src/**/*",
         "test/**/*",

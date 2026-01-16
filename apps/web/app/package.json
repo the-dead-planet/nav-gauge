@@ -1,5 +1,5 @@
 {
-    "name": "web-app",
+    "name": "@the-dead-planet/nav-gauge-web-app",
     "version": "1.0.0",
     "description": "Navigation gauge and story generator with map component with customization options with data from a .gpx file and uploaded images.",
     "homepage": "https://nav-gauge.spookydoodle.com",
@@ -38,8 +38,13 @@
         ]
     },
     "dependencies": {
+        "@the-dead-planet/nav-gauge-ui": "*",
+        "@the-dead-planet/nav-gauge-web-ui": "*",
+        "@the-dead-planet/nav-gauge-apparatus": "*",
+        "@the-dead-planet/nav-gauge-tinker-chest": "*",
+        "@the-dead-planet/nav-gauge-gears": "*",
+        "maplibre-gl": "^5.16.0",
         "pmtiles": "^4.3.2",
-        "react": "^19.2.3",
         "react-dom": "^19.2.3"
     },
     "devDependencies": {
@@ -52,7 +57,6 @@
         "@svgr/webpack": "^8.1.0",
         "@testing-library/dom": "^10.4.1",
         "@testing-library/react": "^16.3.1",
-        "@types/react": "^19.2.8",
         "@types/react-dom": "^19.2.3",
         "babel-loader": "^10.0.0",
         "babel-plugin-react-compiler": "^1.0.0",

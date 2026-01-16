@@ -30,7 +30,7 @@ module.exports = () => {
                 dependOn: ['react-vendors']
             },
             ['web-ui']: {
-                import: path.resolve('../web-ui/src/index.ts'),
+                import: path.resolve('../ui/src/index.ts'),
                 dependOn: ['react-vendors']
             },
             'react-vendors': ['react', 'react-dom']

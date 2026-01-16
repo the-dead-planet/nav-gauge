@@ -16,10 +16,27 @@
                 "../../ui/src/index.ts"
             ],
             "@web-ui": [
-                "../web-ui/src/index.ts"
+                "../ui/src/index.ts"
             ]
         },
     },
+    "references": [
+        {
+            "path": "../../packages/apparatus/src"
+        },
+        {
+            "path": "../../packages/gears/src"
+        },
+        {
+            "path": "../../packages/tinker-chest/src"
+        },
+        {
+            "path": "../../ui/src"
+        },
+        {
+            "path": "../ui/src"
+        }
+    ],
     "include": [
         "src/**/*",
         "test/**/*",

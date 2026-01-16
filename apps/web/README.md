@@ -13,9 +13,19 @@ It cannot be imported back to other components.
 
 ## Development
 
-### Web app
 
-#### Start development build
+### Main dependencies
+
+TypeScript
+Node v22
+React v19 built with Rspack
+React Native
+RxJS
+MaplibreGL v5
+
+#### Web app
+
+##### Start development build
 
 From root of the repository run:
 
@@ -30,7 +40,7 @@ cd apps
 yarn dev
 ```
 
-#### Preview production build
+##### Preview production build
 
 From root of the repository run:
 
@@ -47,21 +57,21 @@ yarn build
 yarn start
 ```
 
-#### Production build and deployment
+##### Production build and deployment
 
-- [Dockerfile](/apps/app-web/web-app/Dockerfile)
-- [nginx.conf](/apps/app-web/web-app/conf/conf.d/nginx.conf)
+- [Dockerfile](/apps/web/app/Dockerfile)
+- [nginx.conf](/apps/web/app/conf/conf.d/nginx.conf)
 - [build-and-push workflow](/.github/workflows/build-and-push.yaml)
 
 To run docker image locally from root of the repository:
 
 ```
-docker build . --file apps/app-web/web-app/Dockerfile -t nav-gauge
+docker build . --file apps/web/app/Dockerfile -t nav-gauge
 docker run -p 8080:8080 nav-gauge
 ```
 
 Visit [http://localhost:8080](http://localhost:8080).
 
-### Web UI
+#### Web UI
 
 At the moment a separate deployment of UI library documentation does not exist. It might be added later.

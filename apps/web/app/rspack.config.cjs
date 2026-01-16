@@ -12,7 +12,7 @@ module.exports = () => ({
             '@tinker-chest': path.resolve(__dirname, '../../packages/tinker-chest/src/index.ts'),
             '@gears': path.resolve(__dirname, '../../packages/gears/src/index.ts'),
             '@ui': path.resolve(__dirname, '../../ui/src/index.ts'),
-            '@web-ui': path.resolve(__dirname, '../web-ui/src/index.ts'),
+            '@web-ui': path.resolve(__dirname, '../ui/src/index.ts'),
         },
     },
     module: {

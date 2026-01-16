@@ -10,3 +10,10 @@ Mobile application consists of the main app and the mobile UI library.
 
 Mobile app can import the (common) UI, mobile UI and all packages.
 It cannot be imported back to other components.
+
+## Tests
+
+### Unit tests
+
+Write unit tests for logic using mocha and chai in folders `test/**/*.ts`.
+Write component rendering tests using jest in folders `__tests__/**/*.tsx`.
