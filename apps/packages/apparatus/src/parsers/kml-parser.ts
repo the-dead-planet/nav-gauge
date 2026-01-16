@@ -12,7 +12,9 @@ export class KmlParser extends FileToGeoJSONParser {
     };
 
     public parseTextToGeoJson = (text: string): ParsingResult => {
+        console.log(text.length)
         const prefix = /(\w+):kml xmlns/g.exec(text)?.[1];
+        console.log(text.length, prefix)
         if (prefix) {
             text = text.replace(
                 new RegExp(`xmlns:${prefix}="http://www.opengis.net/kml/2.2"`, "g"),
