@@ -20,23 +20,6 @@
             ]
         },
     },
-    "references": [
-        {
-            "path": "../../packages/apparatus/src"
-        },
-        {
-            "path": "../../packages/gears/src"
-        },
-        {
-            "path": "../../packages/tinker-chest/src"
-        },
-        {
-            "path": "../../ui/src"
-        },
-        {
-            "path": "../ui/src"
-        }
-    ],
     "include": [
         "src/**/*",
         "test/**/*",

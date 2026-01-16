@@ -1,16 +1,18 @@
 {
     "extends": "../../tsconfig.base.json",
-    "references": [
-        {
-            "path": "../apparatus/src"
-        },
-        {
-            "path": "../tinker-chest/src"
-        },
-        {
-            "path": "../../ui/src"
+    "compilerOptions": {
+        "paths": {
+            "@apparatus": [
+                "../apparatus/src/index.ts"
+            ],
+            "@tinker-chest": [
+                "../tinker-chest/src/index.ts"
+            ],
+            "@ui": [
+                "../../ui/src/index.ts"
+            ]
         }
-    ],
+    },
     "include": [
         "src/**/*",
         "test/**/*",

@@ -56,12 +56,18 @@
         "tsx": "^4.21.0",
         "typescript": "^5.9.3"
     },
-    "workspaces": [
-        "web/app",
-        "web/ui",
-        "mobile/MobileApp",
-        "mobile/ui",
-        "packages/*",
-        "ui"
-    ]
+    "workspaces": {
+        "packages": [
+            "web/app",
+            "web/ui",
+            "mobile/MobileApp",
+            "mobile/ui",
+            "packages/*",
+            "ui"
+        ],
+        "nohoist": [
+            "**/react-native",
+            "**/react-native/**"
+        ]
+    }
 }

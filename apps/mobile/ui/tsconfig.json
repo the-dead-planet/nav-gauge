@@ -6,28 +6,11 @@
       "jest"
     ],
     "paths": {
-      "@apparatus": [
-        "../../packages/apparatus/src/index.ts"
-      ],
-      "@tinker-chest": [
-        "../../packages/tinker-chest/src/index.ts"
-      ],
-      "@gears": [
-        "../../packages/gears/src/index.ts"
-      ],
       "@ui": [
         "../../ui/src/index.ts"
-      ],
-      "@mobile-ui": [
-        "../ui/src/index.ts"
       ]
     }
   },
-  "references": [
-    {
-      "path": "../../ui/src"
-    }
-  ],
   "include": [
     "**/*.ts",
     "**/*.tsx",
