@@ -1,9 +1,12 @@
+import { FC, PureComponent, useEffect } from 'react';
 import { StyleSheet, useColorScheme, View, Text } from 'react-native';
+import { ErrorBoundary } from '@ui';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
+    <ErrorBoundary fallback={<Text>Fallback</Text>}>
       <View style={styles.container}>
         <View>
           <Text>
@@ -11,6 +14,7 @@ function App() {
           </Text>
         </View>
       </View>
+    </ErrorBoundary>
   );
 }
 

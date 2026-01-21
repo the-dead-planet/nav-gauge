@@ -25,7 +25,12 @@ const config = {
         }),
     },
     resolver: {
-        enableGlobalPackages: true,
+        extraNodeModules: {
+            '@mobile-ui': path.resolve(root, 'mobile/ui/src'),
+            '@ui': path.resolve(root, 'ui/src'),
+            '@apparatus': path.resolve(root, 'packages/apparatus/src'),
+            '@tinker-chest': path.resolve(root, 'packages/tinker-chest/src'),
+        },
         nodeModulesPaths: [
             path.resolve(__dirname, 'node_modules'),
             path.resolve(root, 'node_modules'),

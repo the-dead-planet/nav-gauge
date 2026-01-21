@@ -7,6 +7,7 @@ import { Machine } from "./machine/Machine";
 import { Notices } from "./notices/Notices";
 import './app.css';
 import "./themes.css";
+import { ErrorBoundary } from "@ui";
 
 export const App: FC = () => {
     const [applicationSettings, setApplicationSettings] = useLocalStorageState<ApplicationSettingsType>('application-settings', defaultApplicationSettings);
@@ -25,12 +26,14 @@ export const App: FC = () => {
 
     return (
         <StrictMode>
-            <StateWardenContext.Provider value={theOneAndOnlyStateWarden}>
-                <TopBar />
-                <Machine applicationSettings={applicationSettings} onApplicationSettingsChange={setApplicationSettings} />
-                <Footer />
-                <Notices />
-            </StateWardenContext.Provider>
+            <ErrorBoundary fallback={<div>Fallback</div>}>
+                <StateWardenContext.Provider value={theOneAndOnlyStateWarden}>
+                    <TopBar />
+                    <Machine applicationSettings={applicationSettings} onApplicationSettingsChange={setApplicationSettings} />
+                    <Footer />
+                    <Notices />
+                </StateWardenContext.Provider>
+            </ErrorBoundary>
         </StrictMode>
     );
 };
