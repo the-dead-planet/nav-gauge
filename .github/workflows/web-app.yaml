@@ -7,10 +7,9 @@ on:
     tags:
       - v*
   pull_request:
-    paths-ignore:
-      - 'apps/mobile/**'
-      - 'api/**
-      - 'scripts/**
+    paths:
+      - 'apps/**'
+      - '!apps/mobile/**'
 env:
   IMAGE_NAME: nav-gauge
 jobs:
