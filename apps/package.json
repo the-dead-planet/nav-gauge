@@ -59,10 +59,8 @@
     },
     "workspaces": {
         "packages": [
-            "web/app",
-            "web/ui",
-            "mobile/App",
-            "mobile/ui",
+            "web/*",
+            "mobile/*",
             "packages/*",
             "ui"
         ],

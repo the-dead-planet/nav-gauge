@@ -9,14 +9,14 @@
             "@tinker-chest": [
                 "../../packages/tinker-chest/src/index.ts"
             ],
-            "@gears": [
-                "../../packages/gears/src/index.ts"
-            ],
             "@ui": [
                 "../../ui/src/index.ts"
             ],
             "@web-ui": [
                 "../ui/src/index.ts"
+            ],
+            "@gears": [
+                "../gears/src/index.ts"
             ]
         },
     },

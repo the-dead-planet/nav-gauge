@@ -8,7 +8,7 @@ Mobile application consists of the main app and the mobile UI library.
 
 ## Import sequence
 
-Mobile app can import the (common) UI, mobile UI and all packages.
+Mobile app can import the (common) UI, mobile UI, apparatus and tinker chest.
 It cannot be imported back to other components.
 
 ## Tests

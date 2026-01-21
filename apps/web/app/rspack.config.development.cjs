@@ -21,16 +21,16 @@ module.exports = () => {
                 import: path.resolve('../../packages/tinker-chest/src/index.ts'),
                 dependOn: ['react-vendors']
             },
-            gears: {
-                import: path.resolve('../../packages/gears/src/index.ts'),
-                dependOn: ['react-vendors']
-            },
             ui: {
                 import: path.resolve('../../ui/src/index.ts'),
                 dependOn: ['react-vendors']
             },
             ['web-ui']: {
                 import: path.resolve('../ui/src/index.ts'),
+                dependOn: ['react-vendors']
+            },
+            gears: {
+                import: path.resolve('../gears/src/index.ts'),
                 dependOn: ['react-vendors']
             },
             'react-vendors': ['react', 'react-dom']
