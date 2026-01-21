@@ -1,4 +1,3 @@
-export { type ExifData, type MarkerImage, type LoadedImageData, parseImage } from './image-parser';
 import { FileToGeoJSONParser } from './file-parser';
 import { GpxParser } from './gpx-parser';
 import { KmlParser } from './kml-parser';
@@ -12,6 +11,3 @@ export { FileToGeoJSONParser } from './file-parser';
 export { GpxParser } from './gpx-parser';
 export { KmlParser } from './kml-parser';
 export * from './model';
-
-export * from './useImageReader';
-export { IMAGE_SIZE } from './image-parser';

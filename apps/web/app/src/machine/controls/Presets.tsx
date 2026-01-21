@@ -55,19 +55,19 @@ export const Presets: FC<Props> = ({
     };
 
     const handleExport = () => {
-        const jsonString = JSON.stringify({ mapLayout, gaugeControls, animationControls }, null, 2);
-        const blob = new Blob([jsonString], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
+        // const jsonString = JSON.stringify({ mapLayout, gaugeControls, animationControls }, null, 2);
+        // const blob = new Blob([jsonString], { type: 'application/json' });
+        // const url = URL.createObjectURL(blob);
 
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'Nav gauge preset';
+        // const link = document.createElement('a');
+        // link.href = url;
+        // link.download = 'Nav gauge preset';
 
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        // document.body.appendChild(link);
+        // link.click();
+        // document.body.removeChild(link);
 
-        URL.revokeObjectURL(url);
+        // URL.revokeObjectURL(url);
     };
 
     const handleImport = (event: React.ChangeEvent<HTMLInputElement>) => {

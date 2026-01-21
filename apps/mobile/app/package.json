@@ -15,6 +15,7 @@
     "@the-dead-planet/nav-gauge-mobile-ui": "*",
     "@the-dead-planet/nav-gauge-tinker-chest": "*",
     "@the-dead-planet/nav-gauge-ui": "*",
+    "fast-text-encoding": "^1.0.6",
     "react-native": "0.83.1"
   },
   "devDependencies": {

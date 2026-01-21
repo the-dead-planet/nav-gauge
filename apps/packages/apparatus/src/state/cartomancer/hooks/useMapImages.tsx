@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useStateWarden } from "@apparatus";
+import { useStateWarden } from "../../useStateWarden";
 
 export interface MapImageData {
     icon: string | ImageBitmap;

@@ -2,7 +2,6 @@ import { FC, useEffect, useMemo } from "react";
 import maplibregl from "maplibre-gl";
 import {
     OverlayComponentProps,
-    LoadedImageData,
     useStateWarden,
     useGaugeContext,
     useSubjectState,
@@ -12,6 +11,7 @@ import {
 import { getRouteSourceData, updateRouteLayer } from "./tinkers";
 import { currentPointLayers, routeLineLayer, getRoutePointsLayer, sourceIds } from "./layers";
 import { useLoadedImages } from "./hooks/useLoadedImages";
+import { LoadedImageData } from "./images/image-parser";
 
 export const RouteLayer: FC<OverlayComponentProps> = ({
     geojson,

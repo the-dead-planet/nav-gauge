@@ -13,7 +13,7 @@
     "include": [
         "src/**/*",
         "test/**/*",
-        "../../types/**/*",
+        "../../types/**/*", "../../web/gears/src/route/images/image-parser.ts",
     ],
     "exclude": [
         "node_modules"

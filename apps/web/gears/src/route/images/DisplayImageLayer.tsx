@@ -1,8 +1,6 @@
 import { FC, useEffect, useMemo } from "react";
 import {
-    LoadedImageData,
     useStateWarden,
-    IMAGE_SIZE,
     useMapLayerData,
     useSubjectState,
     MapLayerData,
@@ -15,7 +13,9 @@ import {
     getDisplayImageLayers,
     ImageFeatureProperties
 } from '../layers';
-import { getImageIconSize, getIconImageId, emptyCollection } from "../tinkers";
+import { getImageIconSize, getIconImageId } from "../tinkers";
+import { emptyCollection } from "@tinker-chest";
+import { IMAGE_SIZE, LoadedImageData } from "./image-parser";
 
 const ANIMATION_DURATION = 250;
 

@@ -1,0 +1,26 @@
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+
+/**
+ * On mount initializes the state with the data in storage, if available (otherwise with the `defaultState`).
+ * On each change of `state` value, updates storage.
+ */
+export function useStorageState<T extends Object>(
+    id: string,
+    defaultState: T,
+    cleanUp: (state: unknown) => Partial<T> = ((state) => state as Partial<T>)
+): [T, Dispatch<SetStateAction<T>>] {
+    const [state, setState] = useState<T>(
+        // localStorage.getItem(id)
+        // ? {
+        //     ...defaultState,
+        //     ...cleanUp(JSON.parse(localStorage.getItem(id)!) as T)
+        // }
+        // :
+         defaultState);
+
+    useEffect(() => {
+        // localStorage.setItem(id, JSON.stringify(state));
+    }, [state]);
+
+    return [state, setState];
+}

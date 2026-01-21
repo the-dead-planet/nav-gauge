@@ -1,10 +1,10 @@
-import React from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { BehaviorSubject} from 'rxjs';
 
 export function useSubjectState<T>(subject$: BehaviorSubject<T>): [T, React.Dispatch<React.SetStateAction<T>>] {
-    const [subject, setSubject] = React.useState<T>(subject$.value);
+    const [subject, setSubject] = useState<T>(subject$.value);
 
-    React.useEffect(() => {
+    useEffect(() => {
         const subscription = subject$.subscribe(setSubject);
 
         return () => {
@@ -12,7 +12,7 @@ export function useSubjectState<T>(subject$: BehaviorSubject<T>): [T, React.Disp
         };
     }, [subject$]);
 
-    const handleChange = React.useCallback(
+    const handleChange = useCallback(
         (value: T | ((prev: T) => T)) => {
             if (typeof value === 'function') {
                 const nextValue = (value as (prev: T) => T)(subject$.value);
@@ -28,9 +28,9 @@ export function useSubjectState<T>(subject$: BehaviorSubject<T>): [T, React.Disp
 }
 
 export function useNullableSubjectState<T>(subject$: BehaviorSubject<T> | undefined, initialValue: T): [T, React.Dispatch<React.SetStateAction<T>>] {
-    const [subject, setSubject] = React.useState<T>(subject$?.value ?? initialValue);
+    const [subject, setSubject] = useState<T>(subject$?.value ?? initialValue);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (!subject$) {
             return;
         }
@@ -41,7 +41,7 @@ export function useNullableSubjectState<T>(subject$: BehaviorSubject<T> | undefi
         };
     }, [subject$]);
 
-    const handleChange = React.useCallback(
+    const handleChange = useCallback(
         (value: T | ((prev: T) => T)) => {
             if (!subject$) {
                 setSubject(value);

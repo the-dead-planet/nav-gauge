@@ -1,13 +1,14 @@
 import { FC, StrictMode, useEffect } from "react";
-import { useLocalStorageState, theOneAndOnlyStateWarden, StateWardenContext } from "@apparatus";
+import { theOneAndOnlyStateWarden, StateWardenContext } from "@apparatus";
 import { ApplicationSettingsType, defaultApplicationSettings } from "@tinker-chest";
 import { routeGear } from "@gears";
+import { ErrorBoundary } from "@ui";
 import { TopBar, Footer } from "./layout";
 import { Machine } from "./machine/Machine";
 import { Notices } from "./notices/Notices";
+import { useLocalStorageState } from "./hooks";
 import './app.css';
 import "./themes.css";
-import { ErrorBoundary } from "@ui";
 
 export const App: FC = () => {
     const [applicationSettings, setApplicationSettings] = useLocalStorageState<ApplicationSettingsType>('application-settings', defaultApplicationSettings);

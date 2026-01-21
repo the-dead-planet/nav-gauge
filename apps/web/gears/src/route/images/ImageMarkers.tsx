@@ -7,7 +7,7 @@ export const ImageMarkers: FC<OverlayComponentProps> = ({
     images,
     onUpdateImageFeatureId
 }) => {
-    const markerImages = images.filter((image) => !!image.marker && !!image.markerElement) as MarkerImageData[];
+    const markerImages = images.filter((image) => !!image.marker && 'markerElement' in image && !!image.markerElement) as MarkerImageData[];
 
     return markerImages.map((image) => (
         <ImageMarker

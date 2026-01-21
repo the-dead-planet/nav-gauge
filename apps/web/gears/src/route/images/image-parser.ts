@@ -1,43 +1,10 @@
 import maplibregl from "maplibre-gl";
 import EXIF from 'exif-js';
+import { ExifData, MarkerImage as MarkerImageType } from '@apparatus';
 
-export interface ExifData {
-    /**
-     * @example YYYY:MM:DD HH:mm:ss local
-     */
-    DateTime?: string;
-    /**
-     * @example YYYY:MM:DD HH:mm:ss local
-     */
-    DateTimeOriginal?: string;
-    /**
-     * @example YYYY:MM:DD HH:mm:ss local
-     */
-    DateTimeDigitized?: string;
-    /**
-     * @example YYYY:MM:DD local
-     */
-    GPSDateStamp?: string;
-    GPSDestBearing?: { denominator: number; numerator: number };
-    GPSDestBearingRef?: string;
-    GPSLongitude?: [number, number, number];
-    GPSLongitudeRef?: 'E' | 'W';
-    GPSLatitude?: [number, number, number];
-    GPSLatitudeRef?: 'N' | 'S';
-}
-
-export interface MarkerImage {
-    id: number;
-    name: string;
-    progress: number;
-    lngLat?: maplibregl.LngLat;
-    data?: string;
+export interface MarkerImage extends MarkerImageType {
     bitmap?: ImageBitmap;
-    exif?: ExifData;
-    error?: string;
-    featureId?: number;
     markerElement?: HTMLDivElement;
-    marker?: maplibregl.Marker;
 }
 
 export interface LoadedImageData extends Omit<MarkerImage, 'progress' | 'error' | 'featureId' | 'data' | 'lngLat'> {

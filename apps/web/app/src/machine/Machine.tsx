@@ -2,7 +2,6 @@ import { CSSProperties, Dispatch, FC, SetStateAction, useEffect, useMemo, useSta
 import bbox from "@turf/bbox";
 import {
     GaugeContext,
-    useLocalStorageState,
     useSubjectState,
     parsers,
     ParsingResultWithError,
@@ -10,7 +9,6 @@ import {
     PresetStation,
     PresetValues,
     useStateWarden,
-    useImageReader
 } from "@apparatus";
 import {
     ApplicationSettingsType,
@@ -20,6 +18,7 @@ import {
     MapLayout,
     RouteTimes
 } from "@tinker-chest";
+import { useImageReader, useLocalStorageState } from '../hooks';
 import { Presets } from "./controls/Presets";
 import { AnimationControls } from "./controls/AnimationControls";
 import { MapLayoutControls } from "./controls/MapLayoutControls";

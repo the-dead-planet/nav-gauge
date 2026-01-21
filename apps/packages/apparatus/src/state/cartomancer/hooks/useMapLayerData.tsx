@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import maplibregl from "maplibre-gl";
-import { useStateWarden, FeatureStateProps } from "@apparatus";
 import { useUpdateSourceData } from "./useUpdateData";
-import { emptyCollection } from "@gears";
+import { useStateWarden } from "../../useStateWarden";
+import { emptyCollection } from "@tinker-chest";
+import { FeatureStateProps } from "../map-layers";
 
 const DEFAULT_BUFFER = 4;
 

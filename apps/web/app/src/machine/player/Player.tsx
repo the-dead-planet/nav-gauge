@@ -1,9 +1,12 @@
 import { CSSProperties, FC, useEffect } from "react";
 import { pairwise } from "rxjs";
-import { GeoJson, MarkerImage, SurveillanceState, useStateWarden, useSubjectState } from "@apparatus";
+import { GeoJson, SurveillanceState, useStateWarden, useSubjectState } from "@apparatus";
 import { RouteTimes, formatProgressMs, formatTimestamp, getProgressPercentage } from "@tinker-chest";
-import { updateRouteLayer } from "@gears";
+import { MarkerImage, updateRouteLayer } from "@gears";
+import { WebChronoLens } from "../../chrono-lens/chrono-lens";
 import * as styles from './player.module.css';
+
+const WebLens = new WebChronoLens();
 
 interface Props {
     geojson?: GeoJson;
@@ -23,6 +26,8 @@ export const Player: FC<Props> = ({
     const { cartomancer: { map }, animatrix, chronoLens, signaliumBureau } = useStateWarden();
     const [isPlaying, setIsPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [surveillanceState, setSurveillanceState] = useSubjectState(chronoLens.surveillanceState$);
+    const [downloadName] = useSubjectState(chronoLens.downloadName$);
+    const [fps] = useSubjectState(chronoLens.fps$);
     const [animationControls] = useSubjectState(animatrix.controls$)
     const { bearingLineLengthInMeters } = animationControls;
 
@@ -34,16 +39,16 @@ export const Player: FC<Props> = ({
             .subscribe(([prev, next]) => {
                 switch (next) {
                     case SurveillanceState.Stopped:
-                        chronoLens.stopRecording();
+                        WebLens.stopRecording();
                         break;
                     case SurveillanceState.Paused:
-                        chronoLens.pauseRecording();
+                        WebLens.pauseRecording(setIsPlaying);
                         break;
                     case SurveillanceState.InProgress: {
                         if (prev === SurveillanceState.Paused) {
-                            chronoLens.resumeRecording();
+                            WebLens.resumeRecording(setIsPlaying);
                         } else {
-                            chronoLens.startRecording(map.getCanvas(), (stage, error) => {
+                            WebLens.startRecording(map.getCanvas(), downloadName, fps, setIsPlaying, setSurveillanceState, (stage, error) => {
                                 signaliumBureau.addNotice({
                                     id: noticeId,
                                     type: 'error',
@@ -133,7 +138,7 @@ export const Player: FC<Props> = ({
                         {surveillanceState === SurveillanceState.Paused ? 'Resume' : 'Pause'} recording
                     </button>
                 ) : null}
-                <button onClick={() => chronoLens.destroyRecording()}>Clear</button>
+                <button onClick={() => WebLens.destroyRecording()}>Clear</button>
                 <p className={styles.text}>
                     {formatTimestamp(progressMs, routeTimes?.startTimeEpoch)}
                 </p>

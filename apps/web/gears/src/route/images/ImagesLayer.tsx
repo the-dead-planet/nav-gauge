@@ -4,7 +4,6 @@ import {
     OverlayComponentProps,
     useMapImages,
     useStateWarden,
-    IMAGE_SIZE,
     Cartomancer,
     useGaugeContext,
     FeatureStateProps,
@@ -21,6 +20,7 @@ import {
 } from '../layers';
 import { DisplayImageLayer } from "./DisplayImageLayer";
 import { getIconImageId } from "../tinkers";
+import { IMAGE_SIZE } from "./image-parser";
 
 export const ImagesLayer: FC<OverlayComponentProps> = ({
     geojson,

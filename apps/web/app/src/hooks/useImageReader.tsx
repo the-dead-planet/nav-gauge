@@ -1,6 +1,7 @@
 import { useState } from "react";
 import maplibregl from "maplibre-gl";
-import { Cartomancer, GeoJson, MarkerImage, parseImage } from "..";
+import { Cartomancer, GeoJson } from "@apparatus";
+import { MarkerImage, parseImage } from "@gears";
 
 type ImageReaderResult = [
     MarkerImage[],
