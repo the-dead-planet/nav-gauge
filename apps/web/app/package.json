@@ -38,12 +38,11 @@
         ]
     },
     "dependencies": {
+        "@the-dead-planet/nav-gauge-apparatus": "*",
+        "@the-dead-planet/nav-gauge-gears": "*",
+        "@the-dead-planet/nav-gauge-tinker-chest": "*",
         "@the-dead-planet/nav-gauge-ui": "*",
         "@the-dead-planet/nav-gauge-web-ui": "*",
-        "@the-dead-planet/nav-gauge-apparatus": "*",
-        "@the-dead-planet/nav-gauge-tinker-chest": "*",
-        "@the-dead-planet/nav-gauge-gears": "*",
-        "maplibre-gl": "^5.16.0",
         "pmtiles": "^4.3.2",
         "react-dom": "^19.2.3"
     },

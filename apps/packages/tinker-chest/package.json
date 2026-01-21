@@ -10,8 +10,7 @@
         "test": "mocha"
     },
     "dependencies": {
-        "@the-dead-planet/nav-gauge-ui": "*",
-        "maplibre-gl": "^5.16.0"
+        "@the-dead-planet/nav-gauge-ui": "*"
     },
     "devDependencies": {}
 }

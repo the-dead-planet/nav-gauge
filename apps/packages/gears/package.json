@@ -10,10 +10,12 @@
         "test": "mocha"
     },
     "dependencies": {
-        "@the-dead-planet/nav-gauge-ui": "*",
         "@the-dead-planet/nav-gauge-apparatus": "*",
         "@the-dead-planet/nav-gauge-tinker-chest": "*",
-        "maplibre-gl": "^5.16.0"
+        "@the-dead-planet/nav-gauge-ui": "*",
+        "react-dom": "^19.2.3"
     },
-    "devDependencies": {}
+    "devDependencies": {
+        "@types/react-dom": "^19.2.3"
+    }
 }

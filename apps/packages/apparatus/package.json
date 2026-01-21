@@ -10,12 +10,11 @@
         "test": "mocha"
     },
     "dependencies": {
-        "@the-dead-planet/nav-gauge-ui": "*",
         "@the-dead-planet/nav-gauge-tinker-chest": "*",
+        "@the-dead-planet/nav-gauge-ui": "*",
         "@tmcw/togeojson": "^7.1.2",
         "@xmldom/xmldom": "^0.8.11",
-        "exif-js": "^2.3.0",
-        "maplibre-gl": "^5.16.0"
+        "exif-js": "^2.3.0"
     },
     "devDependencies": {
         "@types/exif-js": "^2.3.1"
