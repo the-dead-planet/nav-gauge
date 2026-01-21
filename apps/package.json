@@ -62,7 +62,8 @@
             "ui",
             "packages/*",
             "web/*",
-            "mobile/*"
+            "mobile/App",
+            "mobile/ui"
         ],
         "nohoist": [
             "@react-native/**",
