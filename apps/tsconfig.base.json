@@ -8,6 +8,7 @@
         "moduleResolution": "node",
         "sourceMap": true,
         "skipLibCheck": true,
+        "isolatedModules": true,
         "lib": [
             "ESNext",
             "DOM",
@@ -16,26 +17,10 @@
         "typeRoots": [
             "types",
             "node_modules/@types"
-        ],
-        "paths": {
-            "@apparatus": [
-                "./packages/apparatus/src/index.ts"
-            ],
-            "@tinker-chest": [
-                "./packages/tinker-chest/src/index.ts"
-            ],
-            "@gears": [
-                "./packages/gears/src/index.ts"
-            ],
-            "@ui": [
-                "./ui/src/index.ts"
-            ]
-        }
+        ]
     },
     "exclude": [
         "node_modules",
-        "dist",
-        "**/*.spec.ts",
-        "**/*.test.ts"
+        "dist"
     ]
 }

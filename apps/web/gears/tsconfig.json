@@ -1,0 +1,24 @@
+{
+    "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+        "paths": {
+            "@apparatus": [
+                "../../packages/apparatus/src/index.ts"
+            ],
+            "@tinker-chest": [
+                "../../packages/tinker-chest/src/index.ts"
+            ],
+            "@ui": [
+                "../../ui/src/index.ts"
+            ]
+        }
+    },
+    "include": [
+        "src/**/*",
+        "test/**/*",
+        "../../types/**/*",
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

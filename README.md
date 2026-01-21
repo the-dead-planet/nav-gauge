@@ -3,21 +3,13 @@
 Upload a `.gpx` file, choose styles and analyze a trip in a nav gauge component. 
 Record with an external tool or save a series of pictures.
 
-## Development
+## Structure
 
-### Web app
-
-#### Start development build
-
-```
-yarn --cwd apps dev
-```
-
-#### Production build
-```
-yarn --cwd apps build
-yarn --cwd apps start
-```
+- [apps](/apps) - client application workspaces (web, mobile and shared packages)
+- [apps/web](/apps/web) - How to run and develop web application
+- [apps/mobile](/apps/mobile) - How to run and develop mobile application
+- [api](/api) - application backend with user data, preferences, app persistence, proxy end points etc. (to be implemented in the future)
+- [scripts](/scripts) - ad-hoc scripts, for example for map tile sourcing and generation
 
 ## License
 

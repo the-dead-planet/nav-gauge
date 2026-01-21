@@ -1,13 +1,21 @@
 {
     "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+        "paths": {
+            "@tinker-chest": [
+                "../tinker-chest/src/index.ts"
+            ],
+            "@ui": [
+                "../../ui/src/index.ts"
+            ]
+        }
+    },
     "include": [
         "src/**/*",
         "test/**/*",
         "../../types/**/*",
     ],
     "exclude": [
-        "node_modules",
-        "**/*.spec.ts",
-        "**/*.test.ts"
+        "node_modules"
     ]
 }

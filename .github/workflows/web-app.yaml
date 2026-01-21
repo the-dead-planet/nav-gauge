@@ -1,0 +1,131 @@
+name: Web app test build deploy
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - v*
+  pull_request:
+env:
+  IMAGE_NAME: nav-gauge
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+        working-directory: apps
+
+      - name: Run tests
+        run: yarn test
+        working-directory: apps
+
+  test-e2e:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          build: yarn build
+          start: yarn start
+          working-directory: apps/web/app
+
+  build-and-push:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' 
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build . --file apps/web/app/Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
+
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        
+      - name: Push image
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          [ "$VERSION" == "main" ] && VERSION=latest
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+  
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' 
+    needs: build-and-push
+    permissions:
+      contents: read
+    steps:
+      - name: Deploy
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            set -e
+
+            IMAGE="ghcr.io/spookydoodle/nav-gauge"
+            PORT="8084"
+            PORTS="-p $PORT:8080"
+
+            echo "Pulling new image..."
+            docker pull $IMAGE:latest
+
+            CONTAINER_ID=$(docker ps --filter "publish=$PORT" --format "{{.ID}}")
+            echo "Current container $CONTAINER_ID"
+
+            if [ -n "$CONTAINER_ID" ]; then
+              echo "Stopping container..."
+              docker stop $CONTAINER_ID
+            fi
+
+            echo "Starting new container..."
+            docker run -d --restart=always $PORTS $IMAGE
+
+            if [ -n "$CONTAINER_ID" ]; then
+              echo "Removing previous container..."
+              docker rm $CONTAINER_ID
+            fi
+            
+            echo "Pruning images..."
+            docker image prune -f
+ 
+  test-e2e-prod:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    needs: deploy
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          config: baseUrl=https://gauge.spookydoodle.com
+

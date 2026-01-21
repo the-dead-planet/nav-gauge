@@ -1,0 +1,19 @@
+{
+    "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+        "paths": {
+            "@ui": [
+                "../../ui/src/index.ts"
+            ]
+        }
+    },
+    "include": [
+        "src/**/*",
+        "test/**/*",
+        "types/**/*",
+        "../../types/**/*"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

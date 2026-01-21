@@ -1,0 +1,34 @@
+{
+    "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+        "outDir": "dist",
+        "paths": {
+            "@apparatus": [
+                "../../packages/apparatus/src/index.ts"
+            ],
+            "@tinker-chest": [
+                "../../packages/tinker-chest/src/index.ts"
+            ],
+            "@ui": [
+                "../../ui/src/index.ts"
+            ],
+            "@web-ui": [
+                "../ui/src/index.ts"
+            ],
+            "@gears": [
+                "../gears/src/index.ts"
+            ]
+        },
+    },
+    "include": [
+        "src/**/*",
+        "test/**/*",
+        "types/**/*",
+        "../../types/**/*",
+    ],
+    "exclude": [
+        "node_modules",
+        "dist",
+        "cypress"
+    ]
+}

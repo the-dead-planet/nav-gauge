@@ -5,6 +5,5 @@ UI (common) can be imported to these packages.
 
 ### Import sequence
 
-Tinker chest can be imported to Gears, Apparatus and web/mobile apps.
-Apparatus can be imported to Gears and web/mobile apps.
-Gears can be imported to web & mobile apps.
+Tinker chest can be imported to Apparatus and web/mobile apps and gears.
+Apparatus can be imported to web/mobile apps and gears.
