@@ -39,7 +39,7 @@
     },
     "dependencies": {
         "@the-dead-planet/nav-gauge-apparatus": "*",
-        "@the-dead-planet/nav-gauge-gears": "*",
+        "@the-dead-planet/nav-gauge-web-gears": "*",
         "@the-dead-planet/nav-gauge-tinker-chest": "*",
         "@the-dead-planet/nav-gauge-ui": "*",
         "@the-dead-planet/nav-gauge-web-ui": "*",

@@ -20,7 +20,7 @@
         "test:mobile-app": "yarn workspace @the-dead-planet/nav-gauge-mobile-app test",
         "test:mobile-ui": "yarn workspace @the-dead-planet/nav-gauge-mobile-ui test",
         "test:apparatus": "yarn workspace @the-dead-planet/nav-gauge-apparatus test",
-        "test:gears": "yarn workspace @the-dead-planet/nav-gauge-gears test",
+        "test:gears": "yarn workspace @the-dead-planet/nav-gauge-web-gears test",
         "test:tinker-chest": "yarn workspace @the-dead-planet/nav-gauge-tinker-chest test",
         "test:ui": "yarn workspace @the-dead-planet/nav-gauge-ui test",
         "test": "concurrently \"yarn test:web-app\" \"yarn test:web-ui\" \"yarn test:mobile-app\" \"yarn test:mobile-ui\" \"yarn test:apparatus\" \"yarn test:gears\" \"yarn test:tinker-chest\" \"yarn test:ui\"",
@@ -59,10 +59,10 @@
     },
     "workspaces": {
         "packages": [
-            "web/*",
-            "mobile/*",
+            "ui",
             "packages/*",
-            "ui"
+            "web/*",
+            "mobile/*"
         ],
         "nohoist": [
             "@react-native/**",
