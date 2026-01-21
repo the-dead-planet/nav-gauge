@@ -4,7 +4,7 @@ Web version of the application.
 
 ## Components
 
-Web application consists of the main app and the web UI library.
+Web application consists of the main app, web app gears and the web UI library.
 
 ## Import sequence
 
