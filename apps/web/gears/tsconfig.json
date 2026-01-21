@@ -3,10 +3,10 @@
     "compilerOptions": {
         "paths": {
             "@apparatus": [
-                "../apparatus/src/index.ts"
+                "../../packages/apparatus/src/index.ts"
             ],
             "@tinker-chest": [
-                "../tinker-chest/src/index.ts"
+                "../../packages/tinker-chest/src/index.ts"
             ],
             "@ui": [
                 "../../ui/src/index.ts"
