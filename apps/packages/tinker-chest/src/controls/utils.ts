@@ -46,8 +46,6 @@ export const defaultMapLayout: MapLayout = {
 // TODO
 export const defaultZoomInToImages = 15;
 
-
-
 export const clamp = (value: number, range: [number, number]) => {
     const [min, max] = range;
 

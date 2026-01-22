@@ -3,5 +3,5 @@ import backgroundStyle from "./background.json";
 
 export const backgroundMapStyle: MapStyle = {
     label: 'Background',
-    style: backgroundStyle
+    style: backgroundStyle as maplibregl.StyleSpecification
 };

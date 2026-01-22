@@ -1,34 +1,19 @@
 {
-  "extends": "@react-native/typescript-config",
-  "compilerOptions": {
-    "types": [
-      "jest"
-    ],
-    "paths": {
-      "@apparatus": [
-        "../../packages/apparatus/src/index.ts"
-      ],
-      "@tinker-chest": [
-        "../../packages/tinker-chest/src/index.ts"
-      ],
-      "@ui": [
-        "../../ui/src/index.ts"
-      ],
-      "@mobile-ui": [
-        "../ui/src/index.ts"
-      ]
+    "extends": "../tsconfig.mobile.json",
+    "compilerOptions": {
+        "paths": {
+            "@apparatus": [
+                "../../packages/apparatus/src"
+            ],
+            "@tinker-chest": [
+                "../../packages/tinker-chest/src"
+            ],
+            "@ui": [
+                "../../ui/src"
+            ],
+            "@mobile-ui": [
+                "../ui/src"
+            ]
+        }
     }
-  },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "test/**/*",
-    "__tests__/**/*",
-    "types/**/*",
-    "../../types/**/*",
-  ],
-  "exclude": [
-    "**/node_modules",
-    "**/Pods"
-  ]
 }

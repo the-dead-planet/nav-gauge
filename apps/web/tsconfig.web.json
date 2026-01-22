@@ -1,0 +1,27 @@
+{
+    "extends": "../tsconfig.base.json",
+    "compilerOptions": {
+        "lib": [
+            "ESNext",
+            "DOM",
+            "DOM.Iterable"
+        ],
+        "paths": {
+            "@ui": [
+                "../ui/src"
+            ]
+        }
+    },
+    "include": [
+        "*/src/**/*",
+        "*/test/**/*",
+        "*/types/**/*",
+        "../types/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "*/node_modules",
+        "dist",
+        "cypress"
+    ]
+}

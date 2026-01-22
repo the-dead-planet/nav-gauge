@@ -8,11 +8,11 @@ module.exports = () => ({
             url: require.resolve("url"),
         },
         alias: {
-            '@apparatus': path.resolve(__dirname, '../../packages/apparatus/src/index.ts'),
-            '@tinker-chest': path.resolve(__dirname, '../../packages/tinker-chest/src/index.ts'),
-            '@ui': path.resolve(__dirname, '../../ui/src/index.ts'),
-            '@web-ui': path.resolve(__dirname, '../ui/src/index.ts'),
-            '@gears': path.resolve(__dirname, '../gears/src/index.ts'),
+            '@apparatus': path.resolve(__dirname, '../../packages/apparatus/src'),
+            '@tinker-chest': path.resolve(__dirname, '../../packages/tinker-chest/src'),
+            '@ui': path.resolve(__dirname, '../../ui/src'),
+            '@web-ui': path.resolve(__dirname, '../ui/src'),
+            '@gears': path.resolve(__dirname, '../gears/src'),
         },
     },
     module: {

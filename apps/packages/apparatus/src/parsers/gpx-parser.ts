@@ -10,7 +10,7 @@ export class GpxParser extends FileToGeoJSONParser {
     public rawText = async (file: File): Promise<string> => {
         return file.text();
     };
-
+    
     public parseTextToGeoJson = (text: string): ParsingResult => {
         const xmlDoc = new DOMParser().parseFromString(text, 'text/xml');
         const geojson = gpx(xmlDoc);

@@ -1,34 +1,24 @@
 {
-    "extends": "../../tsconfig.base.json",
+    "extends": "../tsconfig.web.json",
     "compilerOptions": {
-        "outDir": "dist",
+        "moduleResolution": "bundler",
         "paths": {
             "@apparatus": [
-                "../../packages/apparatus/src/index.ts"
+                "../../packages/apparatus/src"
             ],
             "@tinker-chest": [
-                "../../packages/tinker-chest/src/index.ts"
+                "../../packages/tinker-chest/src"
             ],
             "@ui": [
-                "../../ui/src/index.ts"
+                "../../ui/src"
             ],
             "@web-ui": [
-                "../ui/src/index.ts"
+                "../ui/src"
             ],
             "@gears": [
-                "../gears/src/index.ts"
+                "../gears/src"
             ]
         },
-    },
-    "include": [
-        "src/**/*",
-        "test/**/*",
-        "types/**/*",
-        "../../types/**/*", "../gears/src/route/images/image-parser.ts",
-    ],
-    "exclude": [
-        "node_modules",
-        "dist",
-        "cypress"
-    ]
+        "outDir": "dist",
+    }
 }
