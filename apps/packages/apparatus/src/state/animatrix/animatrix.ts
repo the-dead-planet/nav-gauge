@@ -36,14 +36,15 @@ export class Animatrix {
     private localStorageId = 'animatrix:controls';
 
     public constructor() {
+        // TODO: pass storage as arg from web/mobile
         let initialState = Animatrix.defaultControls;
-        let savedData = localStorage.getItem(this.localStorageId);
-        if (savedData) {
-            initialState = Object.assign(initialState, this.cleanUpAnimationControls(JSON.parse(savedData) as AnimationControlsType));
-        }
+        // let savedData = localStorage.getItem(this.localStorageId);
+        // if (savedData) {
+        //     initialState = Object.assign(initialState, this.cleanUpAnimationControls(JSON.parse(savedData) as AnimationControlsType));
+        // }
         this.controls$ = new BehaviorSubject(initialState);
 
-        this.controls$.subscribe((controls) => localStorage.setItem(this.localStorageId, JSON.stringify(controls)))
+        // this.controls$.subscribe((controls) => localStorage.setItem(this.localStorageId, JSON.stringify(controls)))
     }
 
     /**

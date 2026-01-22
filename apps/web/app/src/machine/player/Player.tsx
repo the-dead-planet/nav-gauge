@@ -9,6 +9,7 @@ import * as styles from './player.module.css';
 const WebLens = new WebChronoLens();
 
 interface Props {
+    map: maplibregl.Map;
     geojson?: GeoJson;
     images: MarkerImage[];
     progressMs: number;
@@ -17,13 +18,14 @@ interface Props {
 }
 
 export const Player: FC<Props> = ({
+    map,
     geojson,
     images,
     progressMs,
     onProgressMsChange,
     routeTimes,
 }) => {
-    const { cartomancer: { map }, animatrix, chronoLens, signaliumBureau } = useStateWarden();
+    const { animatrix, chronoLens, signaliumBureau } = useStateWarden();
     const [isPlaying, setIsPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [surveillanceState, setSurveillanceState] = useSubjectState(chronoLens.surveillanceState$);
     const [downloadName] = useSubjectState(chronoLens.downloadName$);

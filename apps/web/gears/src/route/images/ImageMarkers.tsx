@@ -3,6 +3,7 @@ import { OverlayComponentProps } from "@apparatus";
 import { ImageMarker, MarkerImageData } from "./ImageMarker";
 
 export const ImageMarkers: FC<OverlayComponentProps> = ({
+    map,
     geojson,
     images,
     onUpdateImageFeatureId
@@ -12,6 +13,7 @@ export const ImageMarkers: FC<OverlayComponentProps> = ({
     return markerImages.map((image) => (
         <ImageMarker
             key={image.id}
+            map={map}
             image={image}
             geojson={geojson}
             onUpdateImageFeatureId={onUpdateImageFeatureId}

@@ -10,18 +10,18 @@ import {
 } from "@apparatus";
 import { getRouteSourceData, updateRouteLayer } from "./tinkers";
 import { currentPointLayers, routeLineLayer, getRoutePointsLayer, sourceIds } from "./layers";
-import { useLoadedImages } from "./hooks/useLoadedImages";
+import { useLoadedImages } from "./hooks";
 import { LoadedImageData } from "./images/image-parser";
 
 export const RouteLayer: FC<OverlayComponentProps> = ({
+    map,
     geojson,
     routeTimes,
     progressMs,
     onProgressMsChange,
     images,
 }) => {
-    const { cartomancer, animatrix, chronoLens } = useStateWarden();
-    const { map } = cartomancer;
+    const { animatrix, chronoLens } = useStateWarden();
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [animationControls] = useSubjectState(animatrix.controls$);
     const { showRouteLine, showRoutePoints } = useGaugeContext();
@@ -77,7 +77,7 @@ export const RouteLayer: FC<OverlayComponentProps> = ({
         };
     }, [geojson, routeTimes.startTimeEpoch, bearingLineLengthInMeters, showRouteLine, showRoutePoints]);
 
-    useMapLayerData(mapLayerData)
+    useMapLayerData(map, mapLayerData)
 
     useEffect(() => {
         if (!isPlaying) {

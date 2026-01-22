@@ -45,6 +45,7 @@ export interface MarkerImage {
 }
 
 export interface OverlayComponentProps {
+    map: maplibregl.Map;
     geojson: GeoJson;
     images: MarkerImage[];
     routeTimes: RouteTimes;

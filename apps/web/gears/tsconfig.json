@@ -3,13 +3,13 @@
     "compilerOptions": {
         "paths": {
             "@apparatus": [
-                "../packages/apparatus/src"
+                "../../packages/apparatus/src"
             ],
             "@tinker-chest": [
-                "../packages/tinker-chest/src"
+                "../../packages/tinker-chest/src"
             ],
             "@ui": [
-                "../ui/src"
+                "../../ui/src"
             ]
         }
     }

@@ -42,17 +42,17 @@ export interface MapDataHandlers {
  * @param updatedData Tuple `[sourceId, data, delay in ms (optional)]` Changes to this dependency will trigger `source.setData` event (without removing the layers and sources).
  */
 export const useMapLayerData = (
+    map: maplibregl.Map,
     data: MapLayerData,
     highlightIds: [string, Set<(string | number)>][] = [],
     updatedData?: [string, GeoJSON.GeoJSON, number | undefined]
 ) => {
     const { cartomancer } = useStateWarden();
-    const { map } = cartomancer;
 
     useEffect(() => {
         const { sources, layers, beforeLayerId, handlers } = data;
         const { buffer = DEFAULT_BUFFER } = data.handlers?.options ?? {};
-        cartomancer.addSourcesAndLayers(sources, layers, beforeLayerId)
+        cartomancer.addSourcesAndLayers(map, sources, layers, beforeLayerId)
 
         const queryFeatures = (event: maplibregl.MapMouseEvent | maplibregl.MapTouchEvent): {
             features: maplibregl.MapGeoJSONFeature[];
@@ -113,11 +113,11 @@ export const useMapLayerData = (
             map.off('touchstart', mouseDownHandler);
             map.off('touchend', mouseUpHandler);
 
-            cartomancer.clearLayersAndSources(layers, sources);
+            cartomancer.clearLayersAndSources(map, layers, sources);
         };
     }, [map, data]);
 
-    useUpdateSourceData(updatedData?.[0] ?? '', updatedData?.[1] ?? emptyCollection, updatedData?.[2]);
+    useUpdateSourceData(map, updatedData?.[0] ?? '', updatedData?.[1] ?? emptyCollection, updatedData?.[2]);
 
     useEffect(() => {
         if (highlightIds.length === 0) {
@@ -125,7 +125,7 @@ export const useMapLayerData = (
         }
         const update = (value: boolean) => {
             for (const [source, featureIds] of highlightIds) {
-                cartomancer.updateFeatureState(source, featureIds, FeatureStateProps.Highlight, value)
+                cartomancer.updateFeatureState(map, source, featureIds, FeatureStateProps.Highlight, value)
             }
         };
 

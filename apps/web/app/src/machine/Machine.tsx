@@ -3,7 +3,6 @@ import bbox from "@turf/bbox";
 import {
     GaugeContext,
     useSubjectState,
-    parsers,
     ParsingResultWithError,
     Preset,
     PresetStation,
@@ -18,6 +17,7 @@ import {
     MapLayout,
     RouteTimes
 } from "@tinker-chest";
+import { parsers } from "../parsers";
 import { useImageReader, useLocalStorageState } from '../hooks';
 import { Presets } from "./controls/Presets";
 import { AnimationControls } from "./controls/AnimationControls";

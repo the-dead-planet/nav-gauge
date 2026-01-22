@@ -1,8 +1,9 @@
 import { kml } from '@tmcw/togeojson';
 import { FileToGeoJSONParser } from './file-parser';
-import { ParsingResult } from './model';
-import { createFeature, getMissingTimeInformationError, getUnsupportedGeometryError } from './utils';
+import { ParsingResult } from '@the-dead-planet/nav-gauge-apparatus/src/parsers/model';
+import { createFeature, getMissingTimeInformationError, getUnsupportedGeometryError } from '@the-dead-planet/nav-gauge-apparatus/src/parsers/utils';
 
+// TODO: Use common package for both web and mobile
 export class KmlParser extends FileToGeoJSONParser {
     public acceptedFileExtensions = [".kml"];
     private nameMetadataSelector = "metadata > name";

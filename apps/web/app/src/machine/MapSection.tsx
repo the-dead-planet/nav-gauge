@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { GeoJson, MarkerImage, useStateWarden, useSubjectState } from "@apparatus";
 import { RouteTimes } from "@tinker-chest";
 import { MapTools } from "./map-tools/MapTools";
 import { RouteLayerFitBounds } from "./layers/RouteLayerFitBounds";
 import { Player } from "./player/Player";
+import { createMap } from "../map";
 
 interface Props {
     geojson?: GeoJson;
@@ -20,6 +21,7 @@ export const MapSection: React.FC<Props> = ({
     onUpdateImageFeatureId,
     routeTimes,
 }) => {
+    const map = useMemo(() => createMap(), []);
     const { cartomancer } = useStateWarden();
     const [overlays] = useSubjectState(cartomancer.overlays$);
     const [progressMs, setProgressMs] = useState(0);
@@ -28,8 +30,10 @@ export const MapSection: React.FC<Props> = ({
 
     return (
         <MapTools
-            toolsLeft={<RouteLayerFitBounds boundingBox={boundingBox} />}
+            map={map}
+            toolsLeft={<RouteLayerFitBounds map={map} boundingBox={boundingBox} />}
             toolsBottom={<Player
+                map={map}
                 geojson={geojson}
                 images={images}
                 routeTimes={routeTimes}
@@ -42,6 +46,7 @@ export const MapSection: React.FC<Props> = ({
                     {overlays.map((overlay) => (
                         <overlay.component
                             key={overlay.id}
+                            map={map}
                             geojson={geojson}
                             images={images}
                             routeTimes={routeTimes}

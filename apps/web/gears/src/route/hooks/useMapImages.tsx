@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useStateWarden } from "../../useStateWarden";
+import { useStateWarden } from "@the-dead-planet/nav-gauge-apparatus/src/state/useStateWarden";
 
 export interface MapImageData {
     icon: string | ImageBitmap;
@@ -11,10 +11,10 @@ export interface MapImageData {
 }
 
 export const useMapImages = (
+    map: maplibregl.Map,
     data: MapImageData | MapImageData[]
 ) => {
     const { cartomancer } = useStateWarden();
-    const { map } = cartomancer;
 
     useEffect(() => {
         const imagesData = Array.isArray(data) ? data : [data];

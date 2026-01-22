@@ -1,8 +1,9 @@
 import { gpx } from '@tmcw/togeojson';
 import { FileToGeoJSONParser } from './file-parser';
-import { ParsingResult } from './model';
-import { createFeature, getMissingTimeInformationError, getUnsupportedGeometryError } from './utils';
+import { ParsingResult } from '@the-dead-planet/nav-gauge-apparatus/src/parsers/model';
+import { createFeature, getMissingTimeInformationError, getUnsupportedGeometryError } from '@the-dead-planet/nav-gauge-apparatus/src/parsers/utils';
 
+// TODO: Use common package for both web and mobile
 export class GpxParser extends FileToGeoJSONParser {
     public acceptedFileExtensions = [".gpx"];
     private nameMetadataSelector = "metadata > name";
@@ -10,7 +11,7 @@ export class GpxParser extends FileToGeoJSONParser {
     public rawText = async (file: File): Promise<string> => {
         return file.text();
     };
-    
+
     public parseTextToGeoJson = (text: string): ParsingResult => {
         const xmlDoc = new DOMParser().parseFromString(text, 'text/xml');
         const geojson = gpx(xmlDoc);

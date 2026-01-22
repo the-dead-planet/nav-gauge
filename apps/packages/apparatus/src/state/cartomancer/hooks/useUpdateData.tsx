@@ -1,7 +1,6 @@
 import { useEffect } from "react";
-import { useStateWarden } from "../../useStateWarden";
 
-let timeout: NodeJS.Timeout | undefined;
+let timeout: Timer | undefined;
 
 /**
  * For geojson sources.
@@ -9,13 +8,11 @@ let timeout: NodeJS.Timeout | undefined;
  * @param updatedData Memoized data. Changes will trigger `source.setData` action.
  */
 export const useUpdateSourceData = (
+    map: maplibregl.Map,
     sourceId: string,
     updatedData: GeoJSON.GeoJSON,
     delay?: number
 ) => {
-    const { cartomancer } = useStateWarden();
-    const { map } = cartomancer;
-
     useEffect(() => {
         if (!sourceId) {
             return;
@@ -37,5 +34,5 @@ export const useUpdateSourceData = (
         return () => {
             clearTimeout(timeout);
         };
-    }, [sourceId, updatedData, delay]);
+    }, [map, sourceId, updatedData, delay]);
 };

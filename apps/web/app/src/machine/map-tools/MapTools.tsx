@@ -8,6 +8,7 @@ import * as styles from './map-tools.module.css';
 import './map.css';
 
 interface Props {
+    map: maplibregl.Map;
     /**
      * Tools to display on the top side of the main map section.
      * Have access to map context and will not be unmounted for the duration of the style updates. 
@@ -39,6 +40,7 @@ interface Props {
 }
 
 export const MapTools: FC<Props> = ({
+    map,
     toolsTop,
     toolsRight,
     toolsBottom,
@@ -46,7 +48,6 @@ export const MapTools: FC<Props> = ({
     children,
 }) => {
     const { cartomancer } = useStateWarden();
-    const { map } = cartomancer;
     const { showZoomButtons, showCompass, showGreenScreen, controlPosition, globeProjection } = useGaugeContext();
     const [containerRef, setContainerRef] = useState<HTMLElement | null>(null);
     const [cssLoaded, setCssLoaded] = useState(false);
@@ -147,7 +148,7 @@ export const MapTools: FC<Props> = ({
         }
 
         const abortController = new AbortController();
-        cartomancer.updateStyle(nextStyle.style, abortController.signal, (err) => {
+        cartomancer.updateStyle(map, nextStyle.style, abortController.signal, (err) => {
             if (!abortController.signal.aborted) {
                 console.error(err)
             }

@@ -16,7 +16,7 @@ export class Cartomancer {
         ['custom-roads', customRoadsMapStyle]
     ]);
 
-    public map: maplibregl.Map;
+    // public map: maplibregl.Map;
 
     public isInitialised$ = new BehaviorSubject(false);
     public isStyleLoaded$ = new BehaviorSubject(false);
@@ -24,24 +24,26 @@ export class Cartomancer {
     public selectedStyleId$: BehaviorSubject<string>;
     public zoom$ = new BehaviorSubject(0);
 
+    // TODO: pass storage as arg from web/mobile
     public constructor() {
-        let styleId = localStorage.getItem(this.selectedStyleLocalStorageId);
+        // let styleId = localStorage.getItem(this.selectedStyleLocalStorageId);
+        let styleId: string | undefined = undefined;
         if (!styleId || !Cartomancer.styles.get(styleId)) {
             styleId = 'osm';
         }
         this.selectedStyleId$ = new BehaviorSubject(styleId);
 
         const style = Cartomancer.styles.get(styleId) || osmMapStyle;
-        this.map = new maplibregl.Map({
-            container: document.createElement('div'),
-            style: style.style,
-            attributionControl: false,
-            maxPitch: 80,
-        });
+        // this.map = new maplibregl.Map({
+        //     container: document.createElement('div'),
+        //     style: style.style,
+        //     attributionControl: false,
+        //     maxPitch: 80,
+        // });
 
-        this.selectedStyleId$.subscribe((id) => {
-            localStorage.setItem(this.selectedStyleLocalStorageId, id);
-        });
+        // this.selectedStyleId$.subscribe((id) => {
+        //     localStorage.setItem(this.selectedStyleLocalStorageId, id);
+        // });
     }
 
     public overlays$ = new BehaviorSubject<Overlay[]>([]);
@@ -50,14 +52,15 @@ export class Cartomancer {
      * Safely updates style and resolves when the `map.isStyleLoaded()` check resolves.
      */
     public updateStyle = async (
+        map: maplibregl.Map,
         style: string | maplibregl.StyleSpecification,
         abortSignal: AbortSignal,
         onError?: (err: unknown) => void
     ) => {
         try {
             this.isStyleLoaded$.next(false);
-            this.map.setStyle(style);
-            await this.validateStyleLoaded(abortSignal);
+            map.setStyle(style);
+            await this.validateStyleLoaded(map, abortSignal);
             this.isStyleLoaded$.next(true);
         } catch (err) {
             onError?.(err);
@@ -68,21 +71,22 @@ export class Cartomancer {
      * Subscribes to map `idle` events and resolves when `map.isStyleLoaded()` resolves.
      */
     private validateStyleLoaded = (
+        map: maplibregl.Map,
         abortSignal: AbortSignal
     ): Promise<void> => {
         return new Promise((resolve, reject) => {
             const isLoadedHandler = (_event: maplibregl.MapDataEvent) => {
                 if (abortSignal.aborted) {
-                    this.map.off('idle', isLoadedHandler);
+                    map.off('idle', isLoadedHandler);
                     reject("User aborted map style validation.")
                 } else
-                    if (this.map.isStyleLoaded()) {
-                        this.map.off('idle', isLoadedHandler);
+                    if (map.isStyleLoaded()) {
+                        map.off('idle', isLoadedHandler);
                         resolve();
                     }
             }
 
-            this.map.on('idle', isLoadedHandler);
+            map.on('idle', isLoadedHandler);
         });
     };
 
@@ -101,39 +105,41 @@ export class Cartomancer {
      * Adds sources and afterwards layers.
      */
     public addSourcesAndLayers = (
+        map: maplibregl.Map,
         sources: { [key in string]: maplibregl.SourceSpecification },
         layers: maplibregl.LayerSpecification[],
         beforeId?: string,
     ) => {
         for (const [sourceId, source] of Object.entries(sources)) {
-            this.map.addSource(sourceId, source);
+            map.addSource(sourceId, source);
         }
 
         for (const layer of layers) {
-            this.map.addLayer(layer, beforeId && this.map.getLayer(beforeId) ? beforeId : undefined);
+            map.addLayer(layer, beforeId && map.getLayer(beforeId) ? beforeId : undefined);
         }
     };
 
     /**
      * Removes layers with given `layerIds` and afterwards sources with given `sourceIds`.
      */
-    public clearLayersAndSources(layers: maplibregl.LayerSpecification[], sources: { [key: string]: maplibregl.SourceSpecification }): void;
-    public clearLayersAndSources(layers: string[], sources: string[]): void;
+    public clearLayersAndSources(map: maplibregl.Map, layers: maplibregl.LayerSpecification[], sources: { [key: string]: maplibregl.SourceSpecification }): void;
+    public clearLayersAndSources(map: maplibregl.Map, layers: string[], sources: string[]): void;
     public clearLayersAndSources(
+        map: maplibregl.Map, 
         layers: maplibregl.LayerSpecification[] | string[],
         sources: { [key: string]: maplibregl.SourceSpecification } | string[]
     ): void {
         for (const el of layers) {
             const id: string = typeof el === 'string' ? el : el.id;
-            if (this.map.getLayer(id)) {
-                this.map.removeLayer(id);
+            if (map.getLayer(id)) {
+                map.removeLayer(id);
             }
         }
 
         const sourceIds: string[] = Array.isArray(sources) ? sources : Object.keys(sources);
         for (const id of sourceIds) {
-            if (this.map.getSource(id)) {
-                this.map.removeSource(id);
+            if (map.getSource(id)) {
+                map.removeSource(id);
             }
         }
     };
@@ -173,14 +179,15 @@ export class Cartomancer {
     };
 
     public updateFeatureState = (
+        map: maplibregl.Map,
         source: string,
         featureIds: Set<string | number>,
         property: string,
         value: boolean,
     ) => {
         for (const id of featureIds) {
-            if (this.map.getSource(source)) {
-                this.map.setFeatureState({ source, id: id }, { [property]: value });
+            if (map.getSource(source)) {
+                map.setFeatureState({ source, id: id }, { [property]: value });
             }
         }
     };

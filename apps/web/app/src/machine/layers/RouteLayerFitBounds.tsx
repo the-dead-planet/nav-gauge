@@ -4,6 +4,7 @@ import findIcon from '../icons/find.svg';
 import * as styles from './route-layer.module.css';
 
 interface Props {
+    map: maplibregl.Map;
     boundingBox?: GeoJSON.BBox;
     /**
      * Defaults to `50`.
@@ -16,12 +17,11 @@ interface Props {
 }
 
 export const RouteLayerFitBounds: FC<Props> = ({
+    map,
     boundingBox,
     padding = 50,
     animate = true,
 }) => {
-    const { cartomancer: { map } } = useStateWarden();
-
     useEffect(() => {
         handlePanTo();
     }, [boundingBox]);

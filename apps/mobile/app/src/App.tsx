@@ -15,6 +15,15 @@ const styles = StyleSheet.create({
   },
 });
 
+// const theOneAndOnlyStateWarden = getTheOneAndOnlyStateWarden(new maplibregl.Map({
+//     container: document.createElement('div'),
+//     style: Cartomancer.styles.get('osm')!.style,
+//     attributionControl: false,
+//     maxPitch: 80,
+// }));
+
+// export const StateWardenContext = createContext<StateWarden>(theOneAndOnlyStateWarden);
+
 const value$ = new BehaviorSubject(4);
 
 export const App: FC = () => {
@@ -35,6 +44,7 @@ export const App: FC = () => {
   }, []);
 
   useEffect(() => {
+    const abortController= new AbortController().signal
     console.log("START");
     // console.log(theOneAndOnlyStateWarden)
   }, []);

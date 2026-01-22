@@ -14,14 +14,15 @@ export type MarkerImageData = Omit<MarkerImage, 'marker' | 'markerElement'> & {
 }
 
 interface Props {
+    map: maplibregl.Map;
     image: MarkerImageData;
     onUpdateImageFeatureId: (imageId: number, featureId: number) => void;
     geojson: GeoJson;
 }
 
 // TODO: If multiple in the same location, render all
-export const ImageMarker: FC<Props> = ({ image, geojson, onUpdateImageFeatureId }) => {
-    const { cartomancer: { map }, animatrix } = useStateWarden();
+export const ImageMarker: FC<Props> = ({ map, image, geojson, onUpdateImageFeatureId }) => {
+    const { animatrix } = useStateWarden();
     const [closestFeatureId, setClosestFeatureId] = useState<number | null>(null);
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
     const { size } = useGaugeContext();
