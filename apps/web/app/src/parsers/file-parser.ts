@@ -1,5 +1,5 @@
+import { KnownErrorCauses, ParsingResult, ParsingResultWithError } from "@apparatus";
 import bbox from "@turf/bbox";
-import { KnownErrorCauses, ParsingResult, ParsingResultWithError } from "@the-dead-planet/nav-gauge-apparatus/src/parsers/model";
 
 // TODO: Refactor to accomodate file type from web and mobile
 export abstract class FileToGeoJSONParser {

@@ -7,7 +7,7 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "start:r": "npx react-native start --reset-cache",
+    "start:r": "react-native start --reset-cache",
     "test": "mocha && jest"
   },
   "dependencies": {
@@ -38,6 +38,9 @@
     "jest": "^30.2.0",
     "prettier": "^3.8.0",
     "react-test-renderer": "19.2.3"
+  },
+  "peerDependencies": {
+    "react": "^19.2.3"
   },
   "engines": {
     "node": ">=20"

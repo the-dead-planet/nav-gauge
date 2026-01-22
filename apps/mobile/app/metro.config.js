@@ -12,9 +12,10 @@ const root = path.resolve(__dirname, '../..');
 const config = {
     projectRoot: __dirname,
     watchFolders: [
+        path.resolve(root, 'node_modules'),
         path.resolve(root, 'packages'),
         path.resolve(root, 'ui'),
-        path.resolve(root, 'node_modules'),
+        path.resolve(__dirname, '../ui'),
     ],
     transformer: {
         getTransformOptions: async () => ({
@@ -27,10 +28,10 @@ const config = {
     resolver: {
         extraNodeModules: {
             react: path.resolve(root, "node_modules/react"),
-            '@mobile-ui': path.resolve(root, 'mobile/ui/src'),
-            '@ui': path.resolve(root, 'ui/src'),
             '@apparatus': path.resolve(root, 'packages/apparatus/src'),
             '@tinker-chest': path.resolve(root, 'packages/tinker-chest/src'),
+            '@ui': path.resolve(root, 'ui/src'),
+            '@mobile-ui': path.resolve(root, 'mobile/ui/src'),
         },
         nodeModulesPaths: [
             path.resolve(__dirname, 'node_modules'),

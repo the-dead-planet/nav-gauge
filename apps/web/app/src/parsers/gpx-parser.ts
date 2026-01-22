@@ -1,7 +1,6 @@
 import { gpx } from '@tmcw/togeojson';
 import { FileToGeoJSONParser } from './file-parser';
-import { ParsingResult } from '@the-dead-planet/nav-gauge-apparatus/src/parsers/model';
-import { createFeature, getMissingTimeInformationError, getUnsupportedGeometryError } from '@the-dead-planet/nav-gauge-apparatus/src/parsers/utils';
+import { createFeature, getMissingTimeInformationError, getUnsupportedGeometryError, ParsingResult } from '@apparatus';
 
 // TODO: Use common package for both web and mobile
 export class GpxParser extends FileToGeoJSONParser {
