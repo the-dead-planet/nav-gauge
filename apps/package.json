@@ -57,17 +57,16 @@
         "tsx": "^4.21.0",
         "typescript": "^5.9.3"
     },
+    "resolutions": {
+        "react": "^19.2.3",
+        "react-dom": "^19.2.3"
+    },
     "workspaces": {
         "packages": [
             "ui",
             "packages/*",
             "web/*",
             "mobile/*"
-        ],
-        "nohoist": [
-            "@react-native/**",
-            "**/react-native",
-            "**/react-native/**"
         ]
     }
 }

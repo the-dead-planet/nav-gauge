@@ -1,6 +1,6 @@
 import { FC, StrictMode, useEffect } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import { useSubjectState } from '@apparatus';
+import { StyleSheet, View, Text, Button } from 'react-native';
+import { useSubjectState, StateWardenContext, theOneAndOnlyStateWarden } from '@apparatus';
 import { ApplicationSettingsType, defaultApplicationSettings } from '@tinker-chest';
 import { ErrorBoundary } from '@ui';
 import { useStorageState } from './hooks/useStorageState';
@@ -15,21 +15,12 @@ const styles = StyleSheet.create({
   },
 });
 
-// const theOneAndOnlyStateWarden = getTheOneAndOnlyStateWarden(new maplibregl.Map({
-//     container: document.createElement('div'),
-//     style: Cartomancer.styles.get('osm')!.style,
-//     attributionControl: false,
-//     maxPitch: 80,
-// }));
-
-// export const StateWardenContext = createContext<StateWarden>(theOneAndOnlyStateWarden);
-
 const value$ = new BehaviorSubject(4);
 
 export const App: FC = () => {
   // const isSystemDarkMode = useColorScheme() === 'dark';
   const [applicationSettings, setApplicationSettings] = useStorageState<ApplicationSettingsType>('application-settings', defaultApplicationSettings);
-  // const [value, setValue] = useSubjectState(value$);
+  const [value, setValue] = useSubjectState(value$);
 
   useEffect(() => {
     // document.body.setAttribute("data-theme", applicationSettings.theme);
@@ -43,16 +34,10 @@ export const App: FC = () => {
     // };
   }, []);
 
-  useEffect(() => {
-    const abortController= new AbortController().signal
-    console.log("START");
-    // console.log(theOneAndOnlyStateWarden)
-  }, []);
-
   return (
     <StrictMode>
       <ErrorBoundary fallback={<Text>Fallback</Text>}>
-        {/* <StateWardenContext.Provider value={theOneAndOnlyStateWarden}> */}
+        <StateWardenContext.Provider value={theOneAndOnlyStateWarden}>
           {/* <TopBar />
               <Machine applicationSettings={applicationSettings} onApplicationSettingsChange={setApplicationSettings} />
               <Footer />
@@ -60,12 +45,13 @@ export const App: FC = () => {
           <View style={styles.container}>
             <View>
               <Text>
-                This is a test app
+                This is a test app {value}
               </Text>
+              <Button onPress={() => setValue(prev => prev + 1)} title='+' />
               {/* <Text>{value}</Text> */}
             </View>
           </View>
-        {/* </StateWardenContext.Provider> */}
+        </StateWardenContext.Provider>
       </ErrorBoundary>
     </StrictMode>
   );

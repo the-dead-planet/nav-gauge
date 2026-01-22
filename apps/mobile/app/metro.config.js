@@ -26,6 +26,7 @@ const config = {
     },
     resolver: {
         extraNodeModules: {
+            react: path.resolve(root, "node_modules/react"),
             '@mobile-ui': path.resolve(root, 'mobile/ui/src'),
             '@ui': path.resolve(root, 'ui/src'),
             '@apparatus': path.resolve(root, 'packages/apparatus/src'),

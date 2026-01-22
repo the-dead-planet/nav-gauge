@@ -51,3 +51,21 @@ declare global {
         onabort: ((this: AbortSignal, ev: Event) => any) | null;
     }
 }
+
+declare global {
+    const console: {
+        log: (...args: any[]) => void;
+        warn: (...args: any[]) => void;
+        error: (...args: any[]) => void;
+        info: (...args: any[]) => void;
+        debug: (...args: any[]) => void;
+        trace: (...args: any[]) => void;
+        group: (...args: any[]) => void;
+        groupCollapsed: (...args: any[]) => void;
+        groupEnd: () => void;
+        table: (data: any, columns?: string[]) => void;
+        time: (label?: string) => void;
+        timeEnd: (label?: string) => void;
+        clear: () => void;
+    };
+}
