@@ -31,7 +31,7 @@ const config = {
             '@apparatus': path.resolve(root, 'packages/apparatus/src'),
             '@tinker-chest': path.resolve(root, 'packages/tinker-chest/src'),
             '@ui': path.resolve(root, 'ui/src'),
-            '@mobile-ui': path.resolve(root, 'mobile/ui/src'),
+            '@mobile-ui': path.resolve(__dirname, '../ui/src'),
         },
         nodeModulesPaths: [
             path.resolve(__dirname, 'node_modules'),

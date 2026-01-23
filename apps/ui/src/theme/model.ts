@@ -9,6 +9,7 @@ export interface ThemeOption {
 }
 
 export interface ThemeSpecification {
+    theme: Theme;
     colors: {
         background: string;
         text: string;

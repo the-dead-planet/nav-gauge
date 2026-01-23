@@ -16,6 +16,7 @@
         "dev:mobile": "yarn workspace @the-dead-planet/nav-gauge-mobile-app android",
         "start:web": "yarn workspace @the-dead-planet/nav-gauge-web-app start",
         "start:mobile": "yarn workspace @the-dead-planet/nav-gauge-mobile-app start",
+        "start:mobile:r": "yarn workspace @the-dead-planet/nav-gauge-mobile-app start:r",
         "build:web": "yarn workspace @the-dead-planet/nav-gauge-web-app build",
         "test:ui": "yarn workspace @the-dead-planet/nav-gauge-ui test",
         "test:packages": "yarn test:apparatus && yarn test:tinker-chest",

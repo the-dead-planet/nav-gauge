@@ -12,7 +12,7 @@ module.exports = {
           '@apparatus': '../../packages/apparatus/src',
           '@tinker-chest': '../../packages/tinker-chest/src',
           '@ui': '../../ui/src',
-          '@mobile-ui': '../mobile-ui/src',
+          '@mobile-ui': '../ui/src',
         },
       },
     ]

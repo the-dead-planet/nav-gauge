@@ -1,5 +1,6 @@
 import { Dispatch, FC, SetStateAction } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import { Text } from '@mobile-ui';
 import { ApplicationSettingsType } from "@tinker-chest";
 
 interface Props {

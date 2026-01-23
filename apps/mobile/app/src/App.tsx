@@ -1,16 +1,19 @@
 import { FC, StrictMode, useEffect } from 'react';
-import { Text } from 'react-native';
+import { Text, useColorScheme } from 'react-native';
 import { StateWardenContext, theOneAndOnlyStateWarden } from '@apparatus';
-import { ApplicationSettingsType, defaultApplicationSettings } from '@tinker-chest';
-import { ErrorBoundary, ThemeContext, themes } from '@ui';
+import { ApplicationSettingsType, getDefaultApplicationSettings } from '@tinker-chest';
+import { ErrorBoundary, Theme, ThemeContext, themes } from '@ui';
 import { useStorageState } from './hooks/useStorageState';
 import { Footer, Layout, TopBar } from './layout';
 import { Machine } from './machine/Machine';
 import { Notices } from './notices/Notices';
 
 export const App: FC = () => {
-  // const isSystemDarkMode = useColorScheme() === 'dark'; // TODO: Find func to getDefaultApplicationSettings
-  const [applicationSettings, setApplicationSettings] = useStorageState<ApplicationSettingsType>('application-settings', defaultApplicationSettings);
+  const colorScheme = useColorScheme();
+  const [applicationSettings, setApplicationSettings] = useStorageState<ApplicationSettingsType>(
+    'application-settings',
+    getDefaultApplicationSettings(colorScheme === 'light' ? Theme.Light : Theme.Dark)
+  );
 
   useEffect(() => {
     // theOneAndOnlyStateWarden.engine.addGear(routeGear);

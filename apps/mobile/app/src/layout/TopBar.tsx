@@ -1,5 +1,6 @@
 import { FC } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import { Text } from '@mobile-ui';
 
 interface Props { }
 
