@@ -12,19 +12,35 @@
         "url": "https://github.com/spookydoodle/nav-gauge/issues"
     },
     "scripts": {
-        "dev": "yarn workspace @the-dead-planet/nav-gauge-web-app dev",
-        "build": "yarn workspace @the-dead-planet/nav-gauge-web-app build",
-        "start": "yarn workspace @the-dead-planet/nav-gauge-web-app start",
+        "dev:web": "yarn workspace @the-dead-planet/nav-gauge-web-app dev",
+        "dev:mobile": "yarn workspace @the-dead-planet/nav-gauge-mobile-app android",
+
+        "start:web": "yarn workspace @the-dead-planet/nav-gauge-web-app start",
+        "start:mobile": "yarn workspace @the-dead-planet/nav-gauge-mobile-app start",
+
+        "build:web": "yarn workspace @the-dead-planet/nav-gauge-web-app build",
+
+        "test:ui": "yarn workspace @the-dead-planet/nav-gauge-ui test",
+
+        "test:packages": "yarn test:apparatus && yarn test:tinker-chest",
+        "test:apparatus": "yarn workspace @the-dead-planet/nav-gauge-apparatus test",
+        "test:tinker-chest": "yarn workspace @the-dead-planet/nav-gauge-tinker-chest test",
+
+        "test:web": "yarn test:web-app && yarn test:web-gears && yarn test:web-ui",
         "test:web-app": "yarn workspace @the-dead-planet/nav-gauge-web-app test",
+        "test:web-gears": "yarn workspace @the-dead-planet/nav-gauge-web-gears test",
         "test:web-ui": "yarn workspace @the-dead-planet/nav-gauge-web-ui test",
+
+        "test:mobile": "yarn test:mobile-app && yarn test:mobile-ui",
         "test:mobile-app": "yarn workspace @the-dead-planet/nav-gauge-mobile-app test",
         "test:mobile-ui": "yarn workspace @the-dead-planet/nav-gauge-mobile-ui test",
-        "test:apparatus": "yarn workspace @the-dead-planet/nav-gauge-apparatus test",
-        "test:gears": "yarn workspace @the-dead-planet/nav-gauge-web-gears test",
-        "test:tinker-chest": "yarn workspace @the-dead-planet/nav-gauge-tinker-chest test",
-        "test:ui": "yarn workspace @the-dead-planet/nav-gauge-ui test",
-        "test": "concurrently \"yarn test:web-app\" \"yarn test:web-ui\" \"yarn test:mobile-app\" \"yarn test:mobile-ui\" \"yarn test:apparatus\" \"yarn test:gears\" \"yarn test:tinker-chest\" \"yarn test:ui\"",
-        "test:e2e:prod": "yarn workspace @the-dead-planet/nav-gauge-web-app test:e2e:prod"
+
+        "test:all": "concurrently \"yarn test:ui\" \"yarn test:packages\" \"yarn test:web\" \"yarn test:mobile\"",
+        "test:all:web": "concurrently \"yarn test:ui\" \"yarn test:packages\" \"yarn test:web\"",
+        "test:all:mobile": "concurrently \"yarn test:ui\" \"yarn test:packages\" \"yarn test:mobile\"",
+        
+        "test:e2e:web": "yarn workspace @the-dead-planet/nav-gauge-web-app test:e2e:prod",
+        "test:e2e:mobile": "yarn workspace @the-dead-planet/nav-gauge-mobile-app test:e2e:prod"
     },
     "dependencies": {
         "@turf/along": "^7.3.2",

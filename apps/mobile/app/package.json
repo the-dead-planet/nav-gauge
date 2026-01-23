@@ -1,48 +1,51 @@
 {
-  "name": "@the-dead-planet/nav-gauge-mobile-app",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "lint": "eslint .",
-    "start": "react-native start",
-    "start:r": "react-native start --reset-cache",
-    "test": "mocha && jest"
-  },
-  "dependencies": {
-    "@react-native/new-app-screen": "0.83.1",
-    "@the-dead-planet/nav-gauge-apparatus": "*",
-    "@the-dead-planet/nav-gauge-mobile-ui": "*",
-    "@the-dead-planet/nav-gauge-tinker-chest": "*",
-    "@the-dead-planet/nav-gauge-ui": "*",
-    "fast-text-encoding": "^1.0.6",
-    "react-native": "0.83.1"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.28.6",
-    "@babel/preset-env": "^7.28.6",
-    "@babel/runtime": "^7.28.6",
-    "@react-native-community/cli": "20.1.0",
-    "@react-native-community/cli-platform-android": "20.1.0",
-    "@react-native-community/cli-platform-ios": "20.1.0",
-    "@react-native/babel-preset": "0.83.1",
-    "@react-native/eslint-config": "0.83.1",
-    "@react-native/metro-config": "0.83.1",
-    "@react-native/typescript-config": "0.83.1",
-    "@testing-library/react-native": "^13.3.3",
-    "@types/jest": "^30.0.0",
-    "babel-plugin-module-resolver": "^5.0.2",
-    "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-testing-library": "^7.15.4",
-    "jest": "^30.2.0",
-    "prettier": "^3.8.0",
-    "react-test-renderer": "19.2.3"
-  },
-  "peerDependencies": {
-    "react": "^19.2.3"
-  },
-  "engines": {
-    "node": ">=20"
-  }
+    "name": "@the-dead-planet/nav-gauge-mobile-app",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "android": "react-native run-android",
+        "ios": "react-native run-ios",
+        "lint": "eslint .",
+        "start": "react-native start",
+        "start:r": "react-native start --reset-cache",
+        "test": "mocha",
+        "test:e2e": "jest",
+        "test:e2e:dev": "jest",
+        "test:e2e:prod": "jest"
+    },
+    "dependencies": {
+        "@react-native/new-app-screen": "0.83.1",
+        "@the-dead-planet/nav-gauge-apparatus": "*",
+        "@the-dead-planet/nav-gauge-mobile-ui": "*",
+        "@the-dead-planet/nav-gauge-tinker-chest": "*",
+        "@the-dead-planet/nav-gauge-ui": "*",
+        "fast-text-encoding": "^1.0.6",
+        "react-native": "0.83.1"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.28.6",
+        "@babel/preset-env": "^7.28.6",
+        "@babel/runtime": "^7.28.6",
+        "@react-native-community/cli": "20.1.0",
+        "@react-native-community/cli-platform-android": "20.1.0",
+        "@react-native-community/cli-platform-ios": "20.1.0",
+        "@react-native/babel-preset": "0.83.1",
+        "@react-native/eslint-config": "0.83.1",
+        "@react-native/metro-config": "0.83.1",
+        "@react-native/typescript-config": "0.83.1",
+        "@testing-library/react-native": "^13.3.3",
+        "@types/jest": "^30.0.0",
+        "babel-plugin-module-resolver": "^5.0.2",
+        "eslint-plugin-react-hooks": "^7.0.1",
+        "eslint-plugin-testing-library": "^7.15.4",
+        "jest": "^30.2.0",
+        "prettier": "^3.8.0",
+        "react-test-renderer": "19.2.3"
+    },
+    "peerDependencies": {
+        "react": "^19.2.3"
+    },
+    "engines": {
+        "node": ">=20"
+    }
 }
