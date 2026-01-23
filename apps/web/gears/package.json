@@ -12,11 +12,14 @@
     "dependencies": {
         "@the-dead-planet/nav-gauge-apparatus": "*",
         "@the-dead-planet/nav-gauge-tinker-chest": "*",
-        "@the-dead-planet/nav-gauge-ui": "*"
-    },
-    "devDependencies": {},
-    "peerDependencies": {
-        "react": "^19.2.3",
+        "@the-dead-planet/nav-gauge-ui": "*",
+        "classnames": "^2.5.1",
         "react-dom": "^19.2.3"
+    },
+    "devDependencies": {
+        "@types/react-dom": "^19.2.3"
+    },
+    "peerDependencies": {
+        "react": "^19.2.3"
     }
 }

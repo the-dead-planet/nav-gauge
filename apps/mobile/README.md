@@ -4,16 +4,32 @@ Mobile version of the application.
 
 ## Components
 
-Mobile application consists of the main app and the mobile UI library.
+- [Mobile app](/apps/mobile/app/README.md)
+- [Mobile UI](/apps/mobile/ui/README.md)
 
 ## Import sequence
 
-Mobile app can import the (common) UI, mobile UI, apparatus and tinker chest.
-It cannot be imported back to other components.
+See [architecture](/docs/architecture.md).
 
 ## Tests
 
 ### Unit tests
 
 Write unit tests for logic using mocha and chai in folders `test/**/*.ts`.
-Write component rendering tests using jest in folders `__tests__/**/*.tsx`.
+Write E2E (component rendering) tests using jest in folders `__tests__/**/*.tsx`.
+
+### Commands
+
+Run below commands from the `app` / `ui` folder:
+
+Unit tests:
+
+```
+yarn test
+```
+
+E2E tests:
+
+```
+yarn test:e2e
+```

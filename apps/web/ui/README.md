@@ -1,8 +1,8 @@
 # Web UI library
 
-Web UI HTML components to use in the web app.
+Web UI React DOM components to use in the web app.
+See [README](/apps/web/README.md).
 
 ## Import sequence
 
-Web UI can import the (common) UI.
-Web UI can only be imported to the web app.
+See [architecture](/docs/architecture.md).

@@ -1,8 +1,8 @@
-# Gears
+# Web gears
 
-Plugged in features.
+Features plugged in to the web app.
+See [README](/apps/web/README.md).
 
-### Import sequence
+## Import sequence
 
-Gears can import common and web UI, Apparatus and Tinker chest.
-Gears can be imported to the web app.
+See [architecture](/docs/architecture.md).

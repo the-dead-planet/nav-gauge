@@ -4,60 +4,44 @@ Web version of the application.
 
 ## Components
 
-Web application consists of the main app, web app gears and the web UI library.
+- [Web app](/apps/web/app/README.md)
+- [Web gears](/apps/web/gears/README.md)
+- [Web UI](/apps/web/ui/README.md)
 
 ## Import sequence
 
-Web app can import the (common) UI, web UI and all packages.
-It cannot be imported back to other components.
+See [architecture](/docs/architecture.md).
+
+## Dependencies
+
+- [TypeScript v5](https://www.typescriptlang.org/)
+- [Node v22](https://nodejs.org/en/download)
+- [React v19](https://react.dev)
+- [RxJS v7](https://rxjs.dev)
+- [MaplibreGL v5](https://maplibre.org/maplibre-gl-js/docs)
 
 ## Development
 
+### Web app
 
-### Main dependencies
-
-TypeScript
-Node v22
-React v19 built with Rspack
-React Native
-RxJS
-MaplibreGL v5
-
-#### Web app
-
-##### Start development build
+#### Start development build
 
 From root of the repository run:
 
 ```
-yarn --cwd apps dev
+yarn dev:web
 ```
 
-or 
-
-```
-cd apps
-yarn dev
-```
-
-##### Preview production build
+#### Preview production build
 
 From root of the repository run:
 
 ```
-yarn --cwd apps build
-yarn --cwd apps start
+yarn build:web
+yarn start:web
 ```
 
-or
-
-```
-cd apps
-yarn build
-yarn start
-```
-
-##### Production build and deployment
+#### Production build and deployment
 
 - [Dockerfile](/apps/web/app/Dockerfile)
 - [nginx.conf](/apps/web/app/conf/conf.d/nginx.conf)
@@ -72,6 +56,6 @@ docker run -p 8080:8080 nav-gauge
 
 Visit [http://localhost:8080](http://localhost:8080).
 
-#### Web UI
+### Web UI
 
-At the moment a separate deployment of UI library documentation does not exist. It might be added later.
+At the moment a separate deployment of UI library does not exist. It might be added later.
