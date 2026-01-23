@@ -1,30 +1,16 @@
 import { FC, StrictMode, useEffect } from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
-import { useSubjectState, StateWardenContext, theOneAndOnlyStateWarden } from '@apparatus';
+import { Text } from 'react-native';
+import { StateWardenContext, theOneAndOnlyStateWarden } from '@apparatus';
 import { ApplicationSettingsType, defaultApplicationSettings } from '@tinker-chest';
-import { ErrorBoundary } from '@ui';
+import { ErrorBoundary, ThemeContext, themes } from '@ui';
 import { useStorageState } from './hooks/useStorageState';
-import { BehaviorSubject } from 'rxjs';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: "#d3c5aa"
-  },
-});
-
-const value$ = new BehaviorSubject(4);
+import { Footer, Layout, TopBar } from './layout';
+import { Machine } from './machine/Machine';
+import { Notices } from './notices/Notices';
 
 export const App: FC = () => {
-  // const isSystemDarkMode = useColorScheme() === 'dark';
+  // const isSystemDarkMode = useColorScheme() === 'dark'; // TODO: Find func to getDefaultApplicationSettings
   const [applicationSettings, setApplicationSettings] = useStorageState<ApplicationSettingsType>('application-settings', defaultApplicationSettings);
-  const [value, setValue] = useSubjectState(value$);
-
-  useEffect(() => {
-    // document.body.setAttribute("data-theme", applicationSettings.theme);
-  }, [applicationSettings.theme]);
 
   useEffect(() => {
     // theOneAndOnlyStateWarden.engine.addGear(routeGear);
@@ -37,21 +23,16 @@ export const App: FC = () => {
   return (
     <StrictMode>
       <ErrorBoundary fallback={<Text>Fallback</Text>}>
-        <StateWardenContext.Provider value={theOneAndOnlyStateWarden}>
-          {/* <TopBar />
+        <ThemeContext.Provider value={themes[applicationSettings.theme]}>
+          <StateWardenContext.Provider value={theOneAndOnlyStateWarden}>
+            <Layout>
+              <TopBar />
               <Machine applicationSettings={applicationSettings} onApplicationSettingsChange={setApplicationSettings} />
               <Footer />
-              <Notices /> */}
-          <View style={styles.container}>
-            <View>
-              <Text>
-                This is a test app {value}
-              </Text>
-              <Button onPress={() => setValue(prev => prev + 1)} title='+' />
-              {/* <Text>{value}</Text> */}
-            </View>
-          </View>
-        </StateWardenContext.Provider>
+              <Notices />
+            </Layout>
+          </StateWardenContext.Provider>
+        </ThemeContext.Provider>
       </ErrorBoundary>
     </StrictMode>
   );

@@ -7,3 +7,10 @@ export interface ThemeOption {
     value: Theme;
     label: string;
 }
+
+export interface ThemeSpecification {
+    colors: {
+        background: string;
+        text: string;
+    }
+}

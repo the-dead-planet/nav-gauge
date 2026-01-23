@@ -20,6 +20,7 @@ export const defaultGaugeControls: GaugeControlsType = {
     showRoutePoints: true,
 }
 
+// TODO: Integrate this with statewarden
 export const defaultApplicationSettings: ApplicationSettingsType = {
     theme: Theme.Dark,
     /**

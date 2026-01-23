@@ -3,7 +3,7 @@ import { theOneAndOnlyStateWarden, StateWardenContext } from "@apparatus";
 import { ApplicationSettingsType, defaultApplicationSettings } from "@tinker-chest";
 import { routeGear } from "@gears";
 import { ErrorBoundary } from "@ui";
-import { TopBar, Footer } from "./layout";
+import { TopBar, Footer, Layout } from "./layout";
 import { Machine } from "./machine/Machine";
 import { Notices } from "./notices/Notices";
 import { useLocalStorageState } from "./hooks";
@@ -29,10 +29,12 @@ export const App: FC = () => {
         <StrictMode>
             <ErrorBoundary fallback={<div>Fallback</div>}>
                 <StateWardenContext.Provider value={theOneAndOnlyStateWarden}>
-                    <TopBar />
-                    <Machine applicationSettings={applicationSettings} onApplicationSettingsChange={setApplicationSettings} />
-                    <Footer />
-                    <Notices />
+                    <Layout>
+                        <TopBar />
+                        <Machine applicationSettings={applicationSettings} onApplicationSettingsChange={setApplicationSettings} />
+                        <Footer />
+                        <Notices />
+                    </Layout>
                 </StateWardenContext.Provider>
             </ErrorBoundary>
         </StrictMode>
