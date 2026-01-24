@@ -9,8 +9,8 @@ export const themes: { [key in Theme]: ThemeSpecification } = {
     [Theme.Light]: {
         theme: Theme.Light,
         colors: {
-            background: "#fafafa",
-            text: "#000000",
+            background: "#dad9cd",
+            text: "#383124",
         }
     },
     [Theme.Dark]: {

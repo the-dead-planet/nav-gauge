@@ -1,3 +1,3 @@
 export * from './model';
-export * from './utils';
+export * from './specifications';
 export * from './useTheme';

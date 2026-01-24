@@ -10,13 +10,16 @@
     },
     "dependencies": {
         "@the-dead-planet/nav-gauge-ui": "*",
-        "classnames": "^2.5.1",
-        "react-dom": "^19.2.3"
+        "classnames": "^2.5.1"
     },
     "devDependencies": {
-        "@types/react-dom": "^19.2.3"
+        "maplibre-gl": "^5.16.0",
+        "react": "^19.2.3",
+        "react-dom": "^19.2.3"
     },
     "peerDependencies": {
-        "react": "^19.2.3"
+        "maplibre-gl": "^5.16.0",
+        "react": "^19.2.3",
+        "react-dom": "^19.2.3"
     }
 }

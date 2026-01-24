@@ -17,14 +17,14 @@ const config = {
         path.resolve(root, 'ui'),
         path.resolve(__dirname, '../ui'),
     ],
-    transformer: {
-        getTransformOptions: async () => ({
-            transform: {
-                experimentalImportSupport: false,
-                inlineRequires: false,
-            },
-        }),
-    },
+    // transformer: {
+    //     getTransformOptions: async () => ({
+    //         transform: {
+    //             experimentalImportSupport: false,
+    //             inlineRequires: false,
+    //         },
+    //     }),
+    // },
     resolver: {
         extraNodeModules: {
             react: path.resolve(root, "node_modules/react"),

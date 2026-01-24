@@ -17,10 +17,6 @@ export const App: FC = () => {
     );
 
     useEffect(() => {
-        document.body.setAttribute("data-theme", applicationSettings.theme);
-    }, [applicationSettings.theme]);
-
-    useEffect(() => {
         theOneAndOnlyStateWarden.engine.addGear(routeGear);
 
         return () => {
@@ -33,7 +29,7 @@ export const App: FC = () => {
             <ErrorBoundary fallback={<div>Fallback</div>}>
                 <ThemeContext.Provider value={themes[applicationSettings.theme]}>
                     <StateWardenContext.Provider value={theOneAndOnlyStateWarden}>
-                        <Layout>
+                        <Layout applicationSettings={applicationSettings}>
                             <TopBar />
                             <Machine applicationSettings={applicationSettings} onApplicationSettingsChange={setApplicationSettings} />
                             <Footer />

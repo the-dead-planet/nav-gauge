@@ -1,5 +1,6 @@
 import { FC, StrictMode, useEffect } from 'react';
-import { Text, useColorScheme } from 'react-native';
+import { Alert, useColorScheme } from 'react-native';
+import { Text } from '@mobile-ui';
 import { StateWardenContext, theOneAndOnlyStateWarden } from '@apparatus';
 import { ApplicationSettingsType, getDefaultApplicationSettings } from '@tinker-chest';
 import { ErrorBoundary, Theme, ThemeContext, themes } from '@ui';
@@ -28,7 +29,7 @@ export const App: FC = () => {
       <ErrorBoundary fallback={<Text>Fallback</Text>}>
         <ThemeContext.Provider value={themes[applicationSettings.theme]}>
           <StateWardenContext.Provider value={theOneAndOnlyStateWarden}>
-            <Layout>
+            <Layout applicationSettings={applicationSettings}>
               <TopBar />
               <Machine applicationSettings={applicationSettings} onApplicationSettingsChange={setApplicationSettings} />
               <Footer />

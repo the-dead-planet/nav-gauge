@@ -12,7 +12,9 @@
     "dependencies": {
         "@the-dead-planet/nav-gauge-ui": "*"
     },
-    "devDependencies": {},
+    "devDependencies": {
+        "react": "^19.2.3"
+    },
     "peerDependencies": {
         "react": "^19.2.3"
     }

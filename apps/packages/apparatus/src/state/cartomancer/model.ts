@@ -7,6 +7,16 @@ export interface Overlay {
     component: ComponentType<OverlayComponentProps>;
 }
 
+export interface OverlayComponentProps {
+    map: maplibregl.Map;
+    geojson: GeoJson;
+    images: MarkerImage[];
+    routeTimes: RouteTimes;
+    progressMs: number;
+    onProgressMsChange: Dispatch<SetStateAction<number>>;
+    onUpdateImageFeatureId: (imageId: number, featureId: number) => void;
+}
+
 export interface ExifData {
     /**
      * @example YYYY:MM:DD HH:mm:ss local
@@ -42,14 +52,4 @@ export interface MarkerImage {
     error?: string;
     featureId?: number;
     marker?: maplibregl.Marker;
-}
-
-export interface OverlayComponentProps {
-    map: maplibregl.Map;
-    geojson: GeoJson;
-    images: MarkerImage[];
-    routeTimes: RouteTimes;
-    progressMs: number;
-    onProgressMsChange: Dispatch<SetStateAction<number>>;
-    onUpdateImageFeatureId: (imageId: number, featureId: number) => void;
 }
