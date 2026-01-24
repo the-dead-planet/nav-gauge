@@ -1,43 +1,47 @@
 import { FC, StrictMode, useEffect } from 'react';
-import { Alert, useColorScheme } from 'react-native';
+import { useColorScheme } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Text } from '@mobile-ui';
-import { StateWardenContext, theOneAndOnlyStateWarden } from '@apparatus';
+import { StateWarden, StateWardenContext, useStorageState } from '@apparatus';
 import { ApplicationSettingsType, getDefaultApplicationSettings } from '@tinker-chest';
 import { ErrorBoundary, Theme, ThemeContext, themes } from '@ui';
-import { useStorageState } from './hooks/useStorageState';
 import { Footer, Layout, TopBar } from './layout';
 import { Machine } from './machine/Machine';
 import { Notices } from './notices/Notices';
 
+const stateWarden = new StateWarden(AsyncStorage);
+
 export const App: FC = () => {
-  const colorScheme = useColorScheme();
-  const [applicationSettings, setApplicationSettings] = useStorageState<ApplicationSettingsType>(
-    'application-settings',
-    getDefaultApplicationSettings(colorScheme === 'light' ? Theme.Light : Theme.Dark)
-  );
+    const colorScheme = useColorScheme();
+    const [applicationSettings, setApplicationSettings] = useStorageState<ApplicationSettingsType>(
+        AsyncStorage,
+        'application-settings',
+        getDefaultApplicationSettings(colorScheme === 'light' ? Theme.Light : Theme.Dark)
+    );
 
-  useEffect(() => {
-    // theOneAndOnlyStateWarden.engine.addGear(routeGear);
+    useEffect(() => {
+        // TODO: 
+        // theOneAndOnlyStateWarden.engine.addGear(routeGear);
 
-    // return () => {
-    //     theOneAndOnlyStateWarden.engine.removeGear(routeGear.id);
-    // };
-  }, []);
+        // return () => {
+        //     theOneAndOnlyStateWarden.engine.removeGear(routeGear.id);
+        // };
+    }, []);
 
-  return (
-    <StrictMode>
-      <ErrorBoundary fallback={<Text>Fallback</Text>}>
-        <ThemeContext.Provider value={themes[applicationSettings.theme]}>
-          <StateWardenContext.Provider value={theOneAndOnlyStateWarden}>
-            <Layout applicationSettings={applicationSettings}>
-              <TopBar />
-              <Machine applicationSettings={applicationSettings} onApplicationSettingsChange={setApplicationSettings} />
-              <Footer />
-              <Notices />
-            </Layout>
-          </StateWardenContext.Provider>
-        </ThemeContext.Provider>
-      </ErrorBoundary>
-    </StrictMode>
-  );
+    return (
+        <StrictMode>
+            <ErrorBoundary fallback={<Text>Fallback</Text>}>
+                <ThemeContext.Provider value={themes[applicationSettings.theme]}>
+                    <StateWardenContext.Provider value={stateWarden}>
+                        <Layout applicationSettings={applicationSettings}>
+                            <TopBar />
+                            <Machine applicationSettings={applicationSettings} onApplicationSettingsChange={setApplicationSettings} />
+                            <Footer />
+                            <Notices />
+                        </Layout>
+                    </StateWardenContext.Provider>
+                </ThemeContext.Provider>
+            </ErrorBoundary>
+        </StrictMode>
+    );
 };

@@ -8,6 +8,7 @@ import {
     PresetStation,
     PresetValues,
     useStateWarden,
+    useStorageState,
 } from "@apparatus";
 import {
     ApplicationSettingsType,
@@ -18,7 +19,7 @@ import {
     RouteTimes
 } from "@tinker-chest";
 import { parsers } from "../parsers";
-import { useImageReader, useLocalStorageState } from '../hooks';
+import { useImageReader } from '../hooks';
 import { Presets } from "./controls/Presets";
 import { AnimationControls } from "./controls/AnimationControls";
 import { MapLayoutControls } from "./controls/MapLayoutControls";
@@ -73,8 +74,8 @@ export const Machine: FC<Props> = ({
     );
 
     const [images, readImage, updateImageFeatureId] = useImageReader();
-    const [gaugeControls, setGaugeControls] = useLocalStorageState<GaugeControlsType>('gauge-controls', defaultGaugeControls);
-    const [mapLayout, setMapLayout] = useLocalStorageState<MapLayout>('map-layout', defaultMapLayout);
+    const [gaugeControls, setGaugeControls] = useStorageState<GaugeControlsType>(localStorage, 'gauge-controls', defaultGaugeControls);
+    const [mapLayout, setMapLayout] = useStorageState<MapLayout>(localStorage, 'map-layout', defaultMapLayout);
     const [preset, setPreset] = useState<Preset>(PresetStation.detectPreset(mapLayout, gaugeControls));
 
     useEffect(() => {

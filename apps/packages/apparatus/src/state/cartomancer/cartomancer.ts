@@ -16,34 +16,32 @@ export class Cartomancer {
         ['custom-roads', customRoadsMapStyle]
     ]);
 
-    // public map: maplibregl.Map;
-
     public isInitialised$ = new BehaviorSubject(false);
     public isStyleLoaded$ = new BehaviorSubject(false);
-    private selectedStyleLocalStorageId = 'cartomancer:map-style';
-    public selectedStyleId$: BehaviorSubject<string>;
+    public selectedStyleId$ = new BehaviorSubject('osm');
     public zoom$ = new BehaviorSubject(0);
 
-    // TODO: pass storage as arg from web/mobile
-    public constructor() {
-        // let styleId = localStorage.getItem(this.selectedStyleLocalStorageId);
-        let styleId: string | undefined = undefined;
-        if (!styleId || !Cartomancer.styles.get(styleId)) {
-            styleId = 'osm';
-        }
-        this.selectedStyleId$ = new BehaviorSubject(styleId);
+    private selectedStyleLocalStorageId = 'cartomancer:map-style';
 
-        const style = Cartomancer.styles.get(styleId) || osmMapStyle;
-        // this.map = new maplibregl.Map({
-        //     container: document.createElement('div'),
-        //     style: style.style,
-        //     attributionControl: false,
-        //     maxPitch: 80,
-        // });
+    public constructor(storage: StorageLike) {
+        (async () => {
+            try {
+                let styleId = await storage.getItem(this.selectedStyleLocalStorageId);
+                if (styleId && Cartomancer.styles.has(styleId)) {
+                    this.selectedStyleId$.next(styleId);
+                }
+            } catch (err) {
+                console.error(`Error getting local ${this.selectedStyleLocalStorageId} state`, err);
+            }
+        })();
 
-        // this.selectedStyleId$.subscribe((id) => {
-        //     localStorage.setItem(this.selectedStyleLocalStorageId, id);
-        // });
+        this.selectedStyleId$.subscribe((id) => {
+            try {
+                storage.setItem(this.selectedStyleLocalStorageId, id);
+            } catch (err) {
+                console.error(`Error setting local ${this.selectedStyleLocalStorageId} state`, err);
+            }
+        });
     }
 
     public overlays$ = new BehaviorSubject<Overlay[]>([]);
@@ -125,7 +123,7 @@ export class Cartomancer {
     public clearLayersAndSources(map: maplibregl.Map, layers: maplibregl.LayerSpecification[], sources: { [key: string]: maplibregl.SourceSpecification }): void;
     public clearLayersAndSources(map: maplibregl.Map, layers: string[], sources: string[]): void;
     public clearLayersAndSources(
-        map: maplibregl.Map, 
+        map: maplibregl.Map,
         layers: maplibregl.LayerSpecification[] | string[],
         sources: { [key: string]: maplibregl.SourceSpecification } | string[]
     ): void {

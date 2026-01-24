@@ -1,26 +1,30 @@
 import { FC, StrictMode, useEffect } from "react";
-import { theOneAndOnlyStateWarden, StateWardenContext } from "@apparatus";
+import { StateWarden, StateWardenContext, useStorageState } from "@apparatus";
 import { ApplicationSettingsType, getDefaultApplicationSettings } from "@tinker-chest";
 import { routeGear } from "@gears";
 import { ErrorBoundary, Theme, ThemeContext, themes } from "@ui";
 import { TopBar, Footer, Layout } from "./layout";
 import { Machine } from "./machine/Machine";
 import { Notices } from "./notices/Notices";
-import { useLocalStorageState } from "./hooks";
 import './app.css';
 import "./themes.css";
 
-export const App: FC = () => {
-    const [applicationSettings, setApplicationSettings] = useLocalStorageState<ApplicationSettingsType>(
+interface Props {
+    stateWarden: StateWarden;
+}
+
+export const App: FC<Props> = ({ stateWarden }) => {
+    const [applicationSettings, setApplicationSettings] = useStorageState<ApplicationSettingsType>(
+        localStorage,
         'application-settings',
         getDefaultApplicationSettings(window.matchMedia("(prefers-color-scheme: light)").matches ? Theme.Light : Theme.Dark)
     );
 
     useEffect(() => {
-        theOneAndOnlyStateWarden.engine.addGear(routeGear);
+        stateWarden.engine.addGear(routeGear);
 
         return () => {
-            theOneAndOnlyStateWarden.engine.removeGear(routeGear.id);
+            stateWarden.engine.removeGear(routeGear.id);
         };
     }, []);
 
@@ -28,7 +32,7 @@ export const App: FC = () => {
         <StrictMode>
             <ErrorBoundary fallback={<div>Fallback</div>}>
                 <ThemeContext.Provider value={themes[applicationSettings.theme]}>
-                    <StateWardenContext.Provider value={theOneAndOnlyStateWarden}>
+                    <StateWardenContext.Provider value={stateWarden}>
                         <Layout applicationSettings={applicationSettings}>
                             <TopBar />
                             <Machine applicationSettings={applicationSettings} onApplicationSettingsChange={setApplicationSettings} />

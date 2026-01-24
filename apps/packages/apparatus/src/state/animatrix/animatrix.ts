@@ -6,8 +6,6 @@ import { AnimationControlsType } from "./model";
  * Animation central processing unit.
  */
 export class Animatrix {
-    public controls$: BehaviorSubject<AnimationControlsType>;
-
     public static defaultControls: AnimationControlsType = {
         followCurrentPoint: true,
         autoRotate: true,
@@ -34,17 +32,28 @@ export class Animatrix {
     public static easeDurationRange: [number, number] = [0, 1000];
 
     private localStorageId = 'animatrix:controls';
+    public controls$ = new BehaviorSubject(Animatrix.defaultControls);
 
-    public constructor() {
-        // TODO: pass storage as arg from web/mobile
-        let initialState = Animatrix.defaultControls;
-        // let savedData = localStorage.getItem(this.localStorageId);
-        // if (savedData) {
-        //     initialState = Object.assign(initialState, this.cleanUpAnimationControls(JSON.parse(savedData) as AnimationControlsType));
-        // }
-        this.controls$ = new BehaviorSubject(initialState);
+    public constructor(storage: StorageLike) {
+        (async () => {
+            try {
+                const savedData = await storage.getItem(this.localStorageId);
+                if (savedData) {
+                    const state = Object.assign(Animatrix.defaultControls, this.cleanUpAnimationControls(JSON.parse(savedData) as AnimationControlsType));
+                    this.controls$.next(state);
+                }
+            } catch (err) {
+                console.error(`Error getting local ${this.localStorageId} state`, err);
+            }
+        })();
 
-        // this.controls$.subscribe((controls) => localStorage.setItem(this.localStorageId, JSON.stringify(controls)))
+        this.controls$.subscribe((controls) => {
+            try {
+                storage.setItem(this.localStorageId, JSON.stringify(controls));
+            } catch (err) {
+                console.error(`Error setting local ${this.localStorageId} state`, err);
+            }
+        });
     }
 
     /**

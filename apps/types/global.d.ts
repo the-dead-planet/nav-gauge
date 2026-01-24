@@ -18,8 +18,6 @@ declare module '*.jpeg' {
     export default content;
 }
 
-export type Timer = ReturnType<typeof setTimeout>;
-
 declare global {
     type Timer = ReturnType<typeof setTimeout>;
 
@@ -33,7 +31,7 @@ declare global {
 declare global {
     class AbortController {
         signal: AbortSignal;
-        abort(): void;
+        abort: () => void;
     }
 
     class AbortSignal {
@@ -59,13 +57,17 @@ declare global {
         error: (...args: any[]) => void;
         info: (...args: any[]) => void;
         debug: (...args: any[]) => void;
-        trace: (...args: any[]) => void;
-        group: (...args: any[]) => void;
-        groupCollapsed: (...args: any[]) => void;
-        groupEnd: () => void;
-        table: (data: any, columns?: string[]) => void;
-        time: (label?: string) => void;
-        timeEnd: (label?: string) => void;
-        clear: () => void;
     };
 }
+
+type StoredValue = string | null;
+
+declare global {
+    interface StorageLike {
+        getItem(key: string): StoredValue | Promise<StoredValue>;
+        setItem(key: string, value: string): void | Promise<void>;
+        removeItem(key: string): void | Promise<void>;
+    }
+}
+
+export {};
