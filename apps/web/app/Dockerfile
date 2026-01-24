@@ -10,7 +10,7 @@ COPY apps/ui ./ui
 COPY apps/types ./types
 
 RUN yarn install --network-timeout 300000
-RUN yarn build
+RUN yarn build:web
 
 FROM nginx:1.28.0-alpine
 
