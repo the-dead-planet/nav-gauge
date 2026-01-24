@@ -133,17 +133,17 @@ export class WebChronoLens {
         const blob = new Blob(this.chunks, {
             type: "video/webm",
         });
-        // const url = URL.createObjectURL(blob);
-        // const a = document.createElement("a");
-        // a.id = "download-action"
-        // a.style = "display: none";
-        // a.href = url;
-        // document.body.appendChild(a);
-        // a.download = `${this.sanitiseName(downloadName + timestamp)}.webm`;
-        // a.click();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.id = "download-action"
+        a.style = "display: none";
+        a.href = url;
+        document.body.appendChild(a);
+        a.download = `${this.sanitiseName(downloadName + timestamp)}.webm`;
+        a.click();
 
-        // URL.revokeObjectURL(url);
-        // document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        document.body.removeChild(a);
     };
 
     private sanitiseName(value: string): string {
