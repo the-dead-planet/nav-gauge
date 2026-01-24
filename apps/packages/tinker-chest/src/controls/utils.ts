@@ -20,13 +20,19 @@ export const defaultGaugeControls: GaugeControlsType = {
     showRoutePoints: true,
 }
 
-export const defaultApplicationSettings: ApplicationSettingsType = {
-    theme: Theme.Dark,
+// TODO: Integrate this with statewarden
+/**
+ * Provides default settings which can be later changed by user.
+ * @param defaultTheme Defaults to dark theme.
+ * @returns 
+ */
+export const getDefaultApplicationSettings = (defaultTheme?: Theme): ApplicationSettingsType => ({
+    theme: defaultTheme || Theme.Dark,
     /**
      * When set to true, user will be shown a confirmation popup on page close or reload.
      */
     confirmBeforeLeave: false,
-}
+})
 
 export const defaultMapLayout: MapLayout = {
     size: {
@@ -45,8 +51,6 @@ export const defaultMapLayout: MapLayout = {
 
 // TODO
 export const defaultZoomInToImages = 15;
-
-
 
 export const clamp = (value: number, range: [number, number]) => {
     const [min, max] = range;

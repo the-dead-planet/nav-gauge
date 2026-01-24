@@ -12,20 +12,19 @@ const root = path.resolve(__dirname, '../..');
 const config = {
     projectRoot: __dirname,
     watchFolders: [
+        path.resolve(root, 'node_modules'),
         path.resolve(root, 'packages'),
         path.resolve(root, 'ui'),
-        path.resolve(root, 'node_modules'),
+        path.resolve(__dirname, '../ui'),
     ],
-    transformer: {
-        getTransformOptions: async () => ({
-            transform: {
-                experimentalImportSupport: false,
-                inlineRequires: false,
-            },
-        }),
-    },
     resolver: {
-        enableGlobalPackages: true,
+        extraNodeModules: {
+            react: path.resolve(root, "node_modules/react"),
+            '@apparatus': path.resolve(root, 'packages/apparatus/src'),
+            '@tinker-chest': path.resolve(root, 'packages/tinker-chest/src'),
+            '@ui': path.resolve(root, 'ui/src'),
+            '@mobile-ui': path.resolve(__dirname, '../ui/src'),
+        },
         nodeModulesPaths: [
             path.resolve(__dirname, 'node_modules'),
             path.resolve(root, 'node_modules'),

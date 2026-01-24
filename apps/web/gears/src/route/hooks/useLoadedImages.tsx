@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { LoadedImageData, MarkerImage } from "@apparatus";
+import { LoadedImageData, MarkerImage } from "../images/image-parser";
 
 /**
  * @returns Filtered images with valid data and assignment to a feature id.

@@ -2,9 +2,6 @@ import { FC, useEffect, useMemo, useState } from "react";
 import maplibregl from "maplibre-gl";
 import {
     OverlayComponentProps,
-    useMapImages,
-    useStateWarden,
-    IMAGE_SIZE,
     Cartomancer,
     useGaugeContext,
     FeatureStateProps,
@@ -21,20 +18,21 @@ import {
 } from '../layers';
 import { DisplayImageLayer } from "./DisplayImageLayer";
 import { getIconImageId } from "../tinkers";
+import { IMAGE_SIZE } from "./image-parser";
+import { useMapImages } from "../hooks";
 
 export const ImagesLayer: FC<OverlayComponentProps> = ({
+    map,
     geojson,
     images,
     onUpdateImageFeatureId,
 }) => {
     const { theme } = useGaugeContext();
-    const { cartomancer } = useStateWarden();
-    const { map } = cartomancer;
     const loadedImages = useLoadedImages(images);
     const [highlightIds, setHighlightIds] = useState<Set<string>>(new Set());
     const [draggingId, setDraggingId] = useState<number | null>(null);
 
-    useMapImages(loadedImages.filter((image) => !!image.bitmap).map((image) => ({
+    useMapImages(map, loadedImages.filter((image) => !!image.bitmap).map((image) => ({
         icon: image.bitmap,
         iconImageId: getIconImageId(image),
         options: {
@@ -90,7 +88,7 @@ export const ImagesLayer: FC<OverlayComponentProps> = ({
         };
     }, [theme, sourceDataGeojson]);
 
-    useMapLayerData(mapLayerData, [[sourceIds.image, highlightIds]]);
+    useMapLayerData(map, mapLayerData, [[sourceIds.image, highlightIds]]);
 
     useEffect(() => {
         if (draggingId === null) {
@@ -161,5 +159,5 @@ export const ImagesLayer: FC<OverlayComponentProps> = ({
         };
     }, [draggingId]);
 
-    return <DisplayImageLayer geojson={geojson} loadedImages={loadedImages} />;
+    return <DisplayImageLayer map={map} geojson={geojson} loadedImages={loadedImages} />;
 };

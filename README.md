@@ -1,15 +1,17 @@
 # nav-gauge
 
 Upload a `.gpx` file, choose styles and analyze a trip in a nav gauge component. 
-Record with an external tool or save a series of pictures.
+Record with an internal or external tool.
 
-## Structure
+More use cases will be described later.
 
-- [apps](/apps) - client application workspaces (web, mobile and shared packages)
-- [apps/web](/apps/web) - How to run and develop web application
-- [apps/mobile](/apps/mobile) - How to run and develop mobile application
-- [api](/api) - application backend with user data, preferences, app persistence, proxy end points etc. (to be implemented in the future)
-- [scripts](/scripts) - ad-hoc scripts, for example for map tile sourcing and generation
+## Architecture
+
+See [Architecture docs](/docs/architecture.md).
+
+- [apps](/apps/README.md) - Client application workspaces (web, mobile and shared packages and UI)
+- [api](/api/README.md) - application backend with user data, preferences, app persistence, proxy end points etc. (to be implemented in the future)
+- [scripts](/scripts/README.md) - ad-hoc scripts, for example for map tile sourcing and generation
 
 ## License
 

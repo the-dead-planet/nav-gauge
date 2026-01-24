@@ -3,7 +3,6 @@
     "version": "1.0.0",
     "private": true,
     "main": "src/index.ts",
-    "react-native": "src/index.ts",
     "scripts": {
         "build": "tsc -b",
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
@@ -13,9 +12,16 @@
         "@the-dead-planet/nav-gauge-apparatus": "*",
         "@the-dead-planet/nav-gauge-tinker-chest": "*",
         "@the-dead-planet/nav-gauge-ui": "*",
-        "react-dom": "^19.2.3"
+        "classnames": "^2.5.1"
     },
     "devDependencies": {
-        "@types/react-dom": "^19.2.3"
+        "maplibre-gl": "^5.16.0",
+        "react": "^19.2.3",
+        "react-dom": "^19.2.3"
+    },
+    "peerDependencies": {
+        "maplibre-gl": "^5.16.0",
+        "react": "^19.2.3",
+        "react-dom": "^19.2.3"
     }
 }

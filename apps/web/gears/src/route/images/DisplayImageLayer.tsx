@@ -1,8 +1,6 @@
 import { FC, useEffect, useMemo } from "react";
 import {
-    LoadedImageData,
     useStateWarden,
-    IMAGE_SIZE,
     useMapLayerData,
     useSubjectState,
     MapLayerData,
@@ -15,7 +13,9 @@ import {
     getDisplayImageLayers,
     ImageFeatureProperties
 } from '../layers';
-import { getImageIconSize, getIconImageId, emptyCollection } from "../tinkers";
+import { getImageIconSize, getIconImageId } from "../tinkers";
+import { emptyCollection } from "@tinker-chest";
+import { IMAGE_SIZE, LoadedImageData } from "./image-parser";
 
 const ANIMATION_DURATION = 250;
 
@@ -47,16 +47,17 @@ const getData = (
 };
 
 interface Props {
+    map: maplibregl.Map,
     geojson: GeoJson;
     loadedImages: LoadedImageData[];
 }
 
 export const DisplayImageLayer: FC<Props> = ({
+    map,
     geojson,
     loadedImages,
 }) => {
-    const { cartomancer, animatrix } = useStateWarden();
-    const { map } = cartomancer;
+    const { animatrix } = useStateWarden();
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
     const isInDisplay = displayImageId !== null;
 
@@ -81,7 +82,7 @@ export const DisplayImageLayer: FC<Props> = ({
         [geojson, loadedImages, displayImageId]
     );
 
-    useMapLayerData(mapLayerData, [], updateData);
+    useMapLayerData(map, mapLayerData, [], updateData);
 
     useEffect(() => {
         function easeInOut(t: number) {

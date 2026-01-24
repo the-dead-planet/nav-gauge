@@ -1,8 +1,8 @@
 import { Gear } from "@apparatus";
-import { ImageMarkers } from "./images/ImageMarkers";
 import { RouteLayer } from "./RouteLayer";
 import { ImagesLayer } from "./images/ImagesLayer";
 
+// Move gears to packages and refactor type of component to be dependent on platform? 
 export const routeGear: Gear = {
     id: 'route',
     engage: (stateWarden) => {

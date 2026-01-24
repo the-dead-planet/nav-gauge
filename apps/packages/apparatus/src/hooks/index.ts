@@ -1,2 +1,2 @@
-export * from './useLocalStorageState';
+export * from './useStorageState';
 export * from './useSubjectState';

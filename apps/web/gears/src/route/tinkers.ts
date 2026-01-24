@@ -7,12 +7,10 @@ import turfLength from "@turf/length";
 import {
     GeoJson,
     // TODO: Move
-    CurrentPointData,
-    LoadedImageData
+    CurrentPointData
 } from "@apparatus";
 import { sourceIds } from "./layers";
-
-export const emptyCollection: GeoJSON.GeoJSON = { type: 'FeatureCollection', features: [] };
+import { LoadedImageData } from "./images/image-parser";
 
 /**
  * Gets current point data, updates map sources, and returns it.

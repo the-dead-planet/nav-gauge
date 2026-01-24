@@ -39,10 +39,12 @@
     },
     "dependencies": {
         "@the-dead-planet/nav-gauge-apparatus": "*",
-        "@the-dead-planet/nav-gauge-web-gears": "*",
         "@the-dead-planet/nav-gauge-tinker-chest": "*",
         "@the-dead-planet/nav-gauge-ui": "*",
+        "@the-dead-planet/nav-gauge-web-gears": "*",
         "@the-dead-planet/nav-gauge-web-ui": "*",
+        "classnames": "^2.5.1",
+        "maplibre-gl": "^5.16.0",
         "pmtiles": "^4.3.2",
         "react-dom": "^19.2.3"
     },
@@ -61,11 +63,15 @@
         "babel-plugin-react-compiler": "^1.0.0",
         "css-loader": "^7.1.2",
         "cypress": "^15.9.0",
+        "react": "^19.2.3",
         "react-refresh": "^0.18.0",
         "style-loader": "^4.0.0",
         "ts-checker-rspack-plugin": "^1.2.3",
         "webpack-bundle-analyzer": "^5.1.1",
         "webpack-merge": "^6.0.1"
+    },
+    "peerDependencies": {
+        "react": "^19.2.3"
     },
     "resolutions": {
         "qs": "^6.14.1"

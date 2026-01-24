@@ -1,6 +1,7 @@
-import { FeatureStateProps, IMAGE_SIZE } from "@apparatus";
+import { FeatureStateProps } from "@apparatus";
 import { Theme } from "@ui";
 import { getImageIconSize } from "./tinkers";
+import { IMAGE_SIZE } from "./images/image-parser";
 
 export const colorActive = '#003161';
 export const colorInactive = 'grey';

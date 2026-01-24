@@ -1,26 +1,11 @@
 {
-  "extends": "@react-native/typescript-config",
-  "compilerOptions": {
-    "strict": true,
-    "types": [
-      "jest"
-    ],
-    "paths": {
-      "@ui": [
-        "../../ui/src/index.ts"
-      ]
+    "extends": "../tsconfig.mobile.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@ui": [
+                "../../ui/src"
+            ]
+        }
     }
-  },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "test/**/*",
-    "__tests__/**/*",
-    "types/**/*",
-    "../../types/**/*",
-  ],
-  "exclude": [
-    "**/node_modules",
-    "**/Pods"
-  ]
 }

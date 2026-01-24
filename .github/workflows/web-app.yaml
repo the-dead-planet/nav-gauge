@@ -7,6 +7,9 @@ on:
     tags:
       - v*
   pull_request:
+    paths:
+      - 'apps/**'
+      - '!apps/mobile/**'
 env:
   IMAGE_NAME: nav-gauge
 jobs:
@@ -28,7 +31,7 @@ jobs:
         working-directory: apps
 
       - name: Run tests
-        run: yarn test
+        run: yarn test:all:web
         working-directory: apps
 
   test-e2e:
@@ -127,5 +130,6 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
+          working-directory: apps/web/app
           config: baseUrl=https://gauge.spookydoodle.com
 

@@ -10,12 +10,16 @@ import { SignaliumBureau } from "./signalium-bureau";
  * Guards the state and provides access to control mechanisms.
  */
 export class StateWarden {
-    public animatrix = new Animatrix();
+    public animatrix: Animatrix;
+    public cartomancer: Cartomancer;
+
+    public constructor(storage: StorageLike) {
+        this.animatrix = new Animatrix(storage);
+        this.cartomancer = new Cartomancer(storage);
+    }
+
     public chronoLens = new ChronoLens();
     public attributionVault = new AttributionVault();
-    public cartomancer = new Cartomancer();
     public engine = new Engine();
     public signaliumBureau = new SignaliumBureau();
-
-    public constructor() { }
 }

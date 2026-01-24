@@ -14,9 +14,14 @@
         "@the-dead-planet/nav-gauge-ui": "*",
         "@tmcw/togeojson": "^7.1.2",
         "@xmldom/xmldom": "^0.8.11",
-        "exif-js": "^2.3.0"
+        "exif-js": "^2.3.0",
+        "fast-xml-parser": "^5.3.3"
     },
     "devDependencies": {
-        "@types/exif-js": "^2.3.1"
+        "@types/exif-js": "^2.3.1",
+        "react": "^19.2.3"
+    },
+    "peerDependencies": {
+        "react": "^19.2.3"
     }
 }
