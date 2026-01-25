@@ -1,11 +1,15 @@
 import { createRoot } from 'react-dom/client';
-import { StateWarden } from '@apparatus';
-import { App } from "./App";
+import { routeGear } from '@gears';
+import { WebMachineWard } from './machine-ward';
 import "./index.css";
 
-const stateWarden = new StateWarden(localStorage);
+const machineWard = new WebMachineWard(
+    { route: routeGear },
+    localStorage,
+    window.matchMedia("(prefers-color-scheme: light)").matches
+);
 
 const container = document.getElementById('app');
 const root = createRoot(container!);
 
-root.render(<App stateWarden={stateWarden} />);
+root.render(machineWard.render());

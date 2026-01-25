@@ -1,18 +1,15 @@
-import { Dispatch, FC, ReactNode, SetStateAction, useEffect } from "react";
-import { ApplicationSettingsType } from "@tinker-chest";
+import { FC, useEffect } from "react";
+import { MachineWardLayoutProps } from "@apparatus";
+import { useTheme } from "@ui";
+import './app.css';
+import "./themes.css";
 
-interface Props {
-    applicationSettings: ApplicationSettingsType;
-    children?: ReactNode;
-}
+export const Layout: FC<MachineWardLayoutProps> = ({ children }) => {
+    const theme = useTheme();
 
-export const Layout: FC<Props> = ({
-    applicationSettings,
-    children
-}) => {
     useEffect(() => {
-        document.body.setAttribute("data-theme", applicationSettings.theme);
-    }, [applicationSettings.theme]);
+        document.body.setAttribute("data-theme", theme.theme);
+    }, [theme.theme]);
 
     return children;
 }

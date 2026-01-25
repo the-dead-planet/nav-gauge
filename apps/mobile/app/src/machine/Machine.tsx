@@ -1,17 +1,9 @@
-import { Dispatch, FC, SetStateAction } from "react";
+import { FC } from "react";
 import { View } from "react-native";
 import { Text } from '@mobile-ui';
-import { ApplicationSettingsType } from "@tinker-chest";
+import { MachineWardMachineProps } from "@apparatus";
 
-interface Props {
-    applicationSettings: ApplicationSettingsType;
-    onApplicationSettingsChange: Dispatch<SetStateAction<ApplicationSettingsType>>;
-}
-
-export const Machine: FC<Props> = ({
-    applicationSettings,
-    onApplicationSettingsChange,
-}) => {
+export const Machine: FC<MachineWardMachineProps> = () => {
     return (
         <View>
             <Text>

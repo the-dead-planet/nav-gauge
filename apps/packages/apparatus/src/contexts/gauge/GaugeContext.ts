@@ -1,10 +1,6 @@
 import { createContext, } from "react";
-import {
-    ApplicationSettingsType,
-    GaugeControlsType,
-    MapLayout,
-} from "@tinker-chest";
+import { GaugeControlsType, MapLayout } from "@tinker-chest";
 
-export type GaugeContext = GaugeControlsType & MapLayout & ApplicationSettingsType;
+export type GaugeContext = GaugeControlsType & MapLayout;
 
 export const GaugeContext = createContext<GaugeContext | undefined>(undefined);

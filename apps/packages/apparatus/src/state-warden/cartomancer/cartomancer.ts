@@ -5,46 +5,46 @@ import { point as turfPoint } from "@turf/helpers";
 import { backgroundMapStyle, customRoadsMapStyle, MapStyle, osmMapStyle } from "./map-styles";
 import { Overlay } from "./model";
 import { FeatureProperties, GeoJson } from "../../parsers";
+import { synchronizeSubjectWithStorage } from "../../state/tinkers";
+
+interface SelectedStyle {
+    id: keyof typeof Cartomancer.styles;
+}
 
 /**
  * Stores and manages the map.
  */
 export class Cartomancer {
-    public static styles = new Map<string, MapStyle>([
-        ['background', backgroundMapStyle],
-        ['osm', osmMapStyle],
-        ['custom-roads', customRoadsMapStyle]
-    ]);
+    public static styles = {
+        'background': backgroundMapStyle,
+        'osm': osmMapStyle,
+        'custom-roads': customRoadsMapStyle
+    }
+    private defaultStyleId: keyof typeof Cartomancer.styles = 'osm';
 
     public isInitialised$ = new BehaviorSubject(false);
     public isStyleLoaded$ = new BehaviorSubject(false);
-    public selectedStyleId$ = new BehaviorSubject('osm');
-    public zoom$ = new BehaviorSubject(0);
 
-    private selectedStyleLocalStorageId = 'cartomancer:map-style';
+    private selectedStyleStorageId = 'cartomancer:map-style';
+    public selectedStyle$: BehaviorSubject<SelectedStyle>;
 
     public constructor(storage: StorageLike) {
-        (async () => {
-            try {
-                let styleId = await storage.getItem(this.selectedStyleLocalStorageId);
-                if (styleId && Cartomancer.styles.has(styleId)) {
-                    this.selectedStyleId$.next(styleId);
-                }
-            } catch (err) {
-                console.error(`Error getting local ${this.selectedStyleLocalStorageId} state`, err);
-            }
-        })();
-
-        this.selectedStyleId$.subscribe((id) => {
-            try {
-                storage.setItem(this.selectedStyleLocalStorageId, id);
-            } catch (err) {
-                console.error(`Error setting local ${this.selectedStyleLocalStorageId} state`, err);
-            }
-        });
+        this.selectedStyle$ = new BehaviorSubject<{ id: keyof typeof Cartomancer.styles }>({ id: this.defaultStyleId });
+        synchronizeSubjectWithStorage(this.selectedStyle$, this.selectedStyleStorageId, storage, this.cleanUpSelectedStyle);
     }
 
+    public zoom$ = new BehaviorSubject(0);
     public overlays$ = new BehaviorSubject<Overlay[]>([]);
+
+    private cleanUpSelectedStyle = (state: unknown): Partial<SelectedStyle> => {
+        const { id } = state as SelectedStyle;
+
+        if (Cartomancer.styles[id]) {
+            return { id };
+        }
+
+        return { id: this.defaultStyleId };
+    };
 
     /**
      * Safely updates style and resolves when the `map.isStyleLoaded()` check resolves.

@@ -1,9 +1,9 @@
 import { CSSProperties, FC } from "react";
 import classNames from 'classnames';
-import { useStateWarden, useSubjectState } from "@apparatus";
+import { MachineWardNoticesProps, useStateWarden, useSubjectState } from "@apparatus";
 import * as styles from './notices.module.css';
 
-export const Notices: FC = () => {
+export const Notices: FC<MachineWardNoticesProps> = () => {
     const { signaliumBureau } = useStateWarden();
     const [notices] = useSubjectState(signaliumBureau.notices$);
 

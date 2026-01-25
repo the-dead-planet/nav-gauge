@@ -3,20 +3,15 @@ import { ApplicationSettingsType } from "@tinker-chest";
 import { themeOptions, Theme } from "@ui";
 import { Fieldset, Input } from "@web-ui";
 import * as styles from './controls.module.css';
+import { useStateWarden, useSubjectState } from "@apparatus";
 
-interface Props {
-    applicationSettings: ApplicationSettingsType;
-    onApplicationSettingsChange: Dispatch<SetStateAction<ApplicationSettingsType>>;
-}
-
-export const ApplicationSettings: FC<Props> = ({
-    applicationSettings,
-    onApplicationSettingsChange,
-}) => {
+export const ApplicationSettings: FC = () => {
+    const stateWarden = useStateWarden();
+    const [applicationSettings, setApplicationSettings] = useSubjectState(stateWarden.applicationSettings$);
     const { confirmBeforeLeave } = applicationSettings;
 
     const handleThemeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        onApplicationSettingsChange((prev) => ({ ...prev, theme: event.target.value as Theme }));
+        setApplicationSettings((prev) => ({ ...prev, theme: event.target.value as Theme }));
     };
 
     return (
@@ -29,7 +24,7 @@ export const ApplicationSettings: FC<Props> = ({
                 type='checkbox'
                 checked={confirmBeforeLeave}
                 onChange={() => { }}
-                onContainerClick={() => onApplicationSettingsChange((prev) => ({ ...prev, confirmBeforeLeave: !prev.confirmBeforeLeave }))}
+                onContainerClick={() => setApplicationSettings((prev) => ({ ...prev, confirmBeforeLeave: !prev.confirmBeforeLeave }))}
                 containerClassName={styles["checkbox"]}
             />
 
