@@ -62,7 +62,7 @@ export const Machine: FC<MachineWardMachineProps> = () => {
     const [mapLayout, setMapLayout] = useStorageState<MapLayout>(localStorage, 'map-layout', defaultMapLayout);
     const [preset, setPreset] = useState<Preset>(PresetStation.detectPreset(mapLayout, gaugeControls));
 
-    // TODO: Handle from state warden?
+    // TODO: Handle from route gear??
     useEffect(() => {
         if (!applicationSettings.confirmBeforeLeave || (!geojson && images.length === 0)) {
             return;
