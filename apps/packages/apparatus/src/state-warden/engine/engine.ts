@@ -7,7 +7,7 @@ export class Engine {
 
     public gears$ = new BehaviorSubject<Gear[]>([]);
 
-    public addGear = (gear: Gear | Gear[]) => {
+    public addGears = (gear: Gear | Gear[]) => {
         const gears = Array.isArray(gear) ? gear : [gear];
         const existingIds = this.gears$.value.filter((g) => gears.some((gear) => gear.id === g.id)).map((g) => g.id);
         if (existingIds.length > 0) {
@@ -16,8 +16,9 @@ export class Engine {
         this.gears$.next(this.gears$.value.concat(gears));
     };
 
-    public removeGear = (id: string) => {
-        this.gears$.next(this.gears$.value.filter((g) => g.id !== id));
+    public removeGears = (id: string | string[]) => {
+        const ids = new Set(Array.isArray(id) ? id : [id]);
+        this.gears$.next(this.gears$.value.filter((g) => !ids.has(g.id)));
     };
 
     public openValves = (gears: Gear[], stateWarden: StateWarden) => {

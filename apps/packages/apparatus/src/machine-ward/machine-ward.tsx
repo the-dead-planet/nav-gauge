@@ -27,15 +27,9 @@ export abstract class MachineWard {
         this.gears = gears;
         this.initializeValves();
     }
-    
-    private initializeValves = () => {
-        for (const gear of Object.values(this.gears)) {
-            if (!gear) {
-                continue;
-            }
-            this.stateWarden.engine.addGear(gear)
-        }
 
+    private initializeValves = () => {
+        this.stateWarden.engine.addGears(Object.values(this.gears).filter((gear) => !!gear))
         this.stateWarden.engine.openValves(this.stateWarden.engine.gears$.value, this.stateWarden);
         this.stateWarden.engine.gears$
             .pipe(pairwise())
