@@ -1,6 +1,7 @@
 import { BehaviorSubject } from "rxjs";
 import { validateBoolean, validateNumber } from "@tinker-chest";
 import { AnimationControlsType } from "./model";
+import { synchronizeSubjectWithStorage } from "../../state/tinkers";
 
 /**
  * Animation central processing unit.
@@ -31,29 +32,12 @@ export class Animatrix {
     public static speedMultiplierRange: [number, number] = [0, 1000000];
     public static easeDurationRange: [number, number] = [0, 1000];
 
-    private localStorageId = 'animatrix:controls';
-    public controls$ = new BehaviorSubject(Animatrix.defaultControls);
+    private controlsStorageId = 'animatrix:controls';
+    public controls$: BehaviorSubject<AnimationControlsType>;
 
     public constructor(storage: StorageLike) {
-        (async () => {
-            try {
-                const savedData = await storage.getItem(this.localStorageId);
-                if (savedData) {
-                    const state = Object.assign(Animatrix.defaultControls, this.cleanUpAnimationControls(JSON.parse(savedData) as AnimationControlsType));
-                    this.controls$.next(state);
-                }
-            } catch (err) {
-                console.error(`Error getting local ${this.localStorageId} state`, err);
-            }
-        })();
-
-        this.controls$.subscribe((controls) => {
-            try {
-                storage.setItem(this.localStorageId, JSON.stringify(controls));
-            } catch (err) {
-                console.error(`Error setting local ${this.localStorageId} state`, err);
-            }
-        });
+        this.controls$ = new BehaviorSubject(Animatrix.defaultControls);
+        synchronizeSubjectWithStorage(this.controls$, this.controlsStorageId, storage, this.cleanUpAnimationControls);
     }
 
     /**

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react-native';
-import { App } from '../src/App';
+import { App } from '../src/ErrorFallback';
 
 test('basic test', () => {
     // render(<App />);

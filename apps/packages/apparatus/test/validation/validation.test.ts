@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { AnimationControlsType } from "../../src/state/animatrix/model.js";
-import { Animatrix } from "../../src/state/animatrix/animatrix.js";
+import { AnimationControlsType } from "../../src/state-warden/animatrix/model.js";
+import { Animatrix } from "../../src/state-warden/animatrix/animatrix.js";
 
 describe("Apparatus", () => {
     describe("Validation", () => {

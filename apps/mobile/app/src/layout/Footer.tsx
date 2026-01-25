@@ -1,10 +1,9 @@
 import { FC } from "react";
 import { View } from "react-native";
 import { Text } from '@mobile-ui';
+import { MachineWardFooterProps } from "@apparatus";
 
-interface Props { }
-
-export const Footer: FC<Props> = ({ }) => {
+export const Footer: FC<MachineWardFooterProps> = ({ }) => {
     return (
         <View>
             <Text>

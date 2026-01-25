@@ -52,8 +52,8 @@ export const MapTools: FC<Props> = ({
     const [containerRef, setContainerRef] = useState<HTMLElement | null>(null);
     const [cssLoaded, setCssLoaded] = useState(false);
     const [isInitialised, setIsInitialised] = useSubjectState(cartomancer.isInitialised$);
-    const [isStyleLoaded, setIsStyleLoaded] = useSubjectState(cartomancer.isStyleLoaded$);
-    const [selectedStyleId] = useSubjectState(cartomancer.selectedStyleId$);
+    const [isStyleLoaded] = useSubjectState(cartomancer.isStyleLoaded$);
+    const [selectedStyle] = useSubjectState(cartomancer.selectedStyle$);
     const [_mapZoom, setMapZoom] = useSubjectState(cartomancer.zoom$);
 
     useEffect(() => {
@@ -142,7 +142,7 @@ export const MapTools: FC<Props> = ({
     }, [isStyleLoaded, globeProjection]);
 
     useEffect(() => {
-        const nextStyle = Cartomancer.styles.get(selectedStyleId);
+        const nextStyle = Cartomancer.styles[selectedStyle.id];
         if (!nextStyle) {
             return;
         }
@@ -157,7 +157,7 @@ export const MapTools: FC<Props> = ({
         return () => {
             abortController.abort();
         };
-    }, [selectedStyleId]);
+    }, [selectedStyle.id]);
 
     useEffect(() => {
         if (!isInitialised) {

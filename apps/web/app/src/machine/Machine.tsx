@@ -1,4 +1,4 @@
-import { CSSProperties, Dispatch, FC, SetStateAction, useEffect, useMemo, useState } from "react";
+import { CSSProperties, FC, useEffect, useMemo, useState } from "react";
 import bbox from "@turf/bbox";
 import {
     GaugeContext,
@@ -9,9 +9,9 @@ import {
     PresetValues,
     useStateWarden,
     useStorageState,
+    MachineWardMachineProps,
 } from "@apparatus";
 import {
-    ApplicationSettingsType,
     defaultGaugeControls,
     defaultMapLayout,
     GaugeControlsType,
@@ -30,27 +30,11 @@ import { FileInput } from "./controls/FileInput";
 import { MapStyleSelection } from "./controls/MapStyleSelection";
 import * as styles from './machine.module.css';
 
-interface Props {
-    applicationSettings: ApplicationSettingsType;
-    onApplicationSettingsChange: Dispatch<SetStateAction<ApplicationSettingsType>>;
-}
-
-export const Machine: FC<Props> = ({
-    applicationSettings,
-    onApplicationSettingsChange
-}) => {
+export const Machine: FC<MachineWardMachineProps> = () => {
     const stateWarden = useStateWarden();
-    const { animatrix, engine } = stateWarden;
-    const [gears] = useSubjectState(engine.gears$);
+    const [applicationSettings] = useSubjectState(stateWarden.applicationSettings$);
+    const { animatrix } = stateWarden;
     const [{ geojson, boundingBox, routeName, error }, setGeoJson] = useState<ParsingResultWithError>({});
-
-    useEffect(() => {
-        stateWarden.engine.openValves(gears, stateWarden);
-
-        return () => {
-            stateWarden.engine.closeValves(gears, stateWarden);
-        };
-    }, [stateWarden, gears]);
 
     const routeTimes = useMemo(
         (): RouteTimes | undefined => {
@@ -78,6 +62,7 @@ export const Machine: FC<Props> = ({
     const [mapLayout, setMapLayout] = useStorageState<MapLayout>(localStorage, 'map-layout', defaultMapLayout);
     const [preset, setPreset] = useState<Preset>(PresetStation.detectPreset(mapLayout, gaugeControls));
 
+    // TODO: Handle from state warden?
     useEffect(() => {
         if (!applicationSettings.confirmBeforeLeave || (!geojson && images.length === 0)) {
             return;
@@ -135,7 +120,7 @@ export const Machine: FC<Props> = ({
     }, []);
 
     return (
-        <GaugeContext.Provider value={{ ...gaugeControls, ...mapLayout, ...applicationSettings }}>
+        <GaugeContext.Provider value={{ ...gaugeControls, ...mapLayout }}>
             <div className={styles.layout} style={{
                 ...controlsCssStyle,
                 '--map-width': mapLayout.size.type === 'full-screen' ? '100%' : `${mapLayout.size.width}px`,
@@ -164,7 +149,7 @@ export const Machine: FC<Props> = ({
                     <MapLayoutControls mapLayout={mapLayout} onMapLayoutChange={setMapLayout} />
                     <GaugeControls gaugeControls={gaugeControls} onGaugeConrolsChange={setGaugeControls} />
                     <AnimationControls />
-                    <ApplicationSettings applicationSettings={applicationSettings} onApplicationSettingsChange={onApplicationSettingsChange} />
+                    <ApplicationSettings />
                 </div>
                 <div className={styles["main-area"]}>
                     <MapSection

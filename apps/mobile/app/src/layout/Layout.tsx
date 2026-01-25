@@ -1,7 +1,7 @@
-import { FC, ReactNode } from "react";
+import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import { ApplicationSettingsType } from "@tinker-chest";
 import { useTheme } from "@ui";
+import { MachineWardLayoutProps } from "@apparatus";
 
 const styles = StyleSheet.create({
     container: {
@@ -9,12 +9,7 @@ const styles = StyleSheet.create({
     }
 });
 
-interface Props {
-    applicationSettings: ApplicationSettingsType;
-    children?: ReactNode;
-}
-
-export const Layout: FC<Props> = ({ children }) => {
+export const Layout: FC<MachineWardLayoutProps> = ({ children }) => {
     const theme = useTheme();
 
     return (

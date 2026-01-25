@@ -1,10 +1,9 @@
 import { FC } from "react";
 import { View } from "react-native";
 import { Text } from '@mobile-ui';
+import { MachineWardTopBarProps } from "@apparatus";
 
-interface Props { }
-
-export const TopBar: FC<Props> = ({ }) => {
+export const TopBar: FC<MachineWardTopBarProps> = ({ }) => {
     return (
         <View>
             <Text>

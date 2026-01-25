@@ -1,9 +1,9 @@
 import { FC, useEffect, useMemo, useState } from "react";
 import maplibregl from "maplibre-gl";
+import { useTheme } from "@ui";
 import {
     OverlayComponentProps,
     Cartomancer,
-    useGaugeContext,
     FeatureStateProps,
     useMapLayerData,
     MapLayerData
@@ -27,7 +27,7 @@ export const ImagesLayer: FC<OverlayComponentProps> = ({
     images,
     onUpdateImageFeatureId,
 }) => {
-    const { theme } = useGaugeContext();
+    const { theme } = useTheme();
     const loadedImages = useLoadedImages(images);
     const [highlightIds, setHighlightIds] = useState<Set<string>>(new Set());
     const [draggingId, setDraggingId] = useState<number | null>(null);

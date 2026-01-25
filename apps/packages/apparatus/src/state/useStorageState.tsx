@@ -6,7 +6,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
  */
 export function useStorageState<T extends Object>(
     storage: StorageLike,
-    id: string,
+    storageId: string,
     defaultState: T,
     cleanUp: (state: unknown) => Partial<T> = ((state) => state as Partial<T>)
 ): [T, Dispatch<SetStateAction<T>>] {
@@ -15,7 +15,7 @@ export function useStorageState<T extends Object>(
     useEffect(() => {
         (async () => {
             try {
-                const storedValue = await storage.getItem(id);
+                const storedValue = await storage.getItem(storageId);
 
                 if (storedValue !== null) {
                     setState({
@@ -24,16 +24,16 @@ export function useStorageState<T extends Object>(
                     })
                 }
             } catch (err) {
-                console.error(`Error getting local ${id} state`, err);
+                console.error(`Error getting ${storageId} storage state`, err);
             }
         })();
     }, []);
 
     useEffect(() => {
         try {
-            storage.setItem(id, JSON.stringify(state));
+            storage.setItem(storageId, JSON.stringify(state));
         } catch (err) {
-            console.error(`Error setting local ${id} state`, err);
+            console.error(`Error setting ${storageId} storage state`, err);
         }
     }, [state]);
 
