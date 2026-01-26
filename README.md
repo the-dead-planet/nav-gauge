@@ -5,9 +5,9 @@ Record with an internal or external tool.
 
 More use cases will be described later.
 
-## Architecture
+## Architectures
 
-See [Architecture docs](/docs/architecture.md).
+See [ARCHITECTURES](/docs/ARCHITECTURES.md).
 
 - [apps](/apps/README.md) - Client application workspaces (web, mobile and shared packages and UI)
 - [api](/api/README.md) - application backend with user data, preferences, app persistence, proxy end points etc. (to be implemented in the future)
@@ -17,6 +17,10 @@ See [Architecture docs](/docs/architecture.md).
 
 This project is licensed under the **GNU Affero General Public License v3.0**  
 See the [LICENSE](LICENSE) file for details.
+
+## Contribution guidelines
+
+See [CONTRIBUTING](/docs/CONTRIBUTING.md).
 
 ## Support My Work
 

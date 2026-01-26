@@ -1,8 +1,8 @@
 .notice {
     box-shadow: 2px 4px 8px rgba(0, 0, 0, .4);
-    border: 2px outset #F5F5F5;
-    background-color: black;
-    color: #F5F5F5;
+    border: 2px outset var(--border-color);
+    background-color: var(--background-color);
+    color: var(--text-color);
     padding: 0;
     width: 340px;
     transition: transform 250ms ease-in;
@@ -14,15 +14,15 @@
 }
 
 .notice.error {
-    border-color: crimson;
+    border-color: var(--error-color);
 }
 
 .notice.warning {
-    border-color: goldenrod;
+    border-color: var(--warning-color);
 }
 
 .notice.info {
-    border-color: lightskyblue;
+    border-color: var(--info-color);
 }
 
 .notice p {

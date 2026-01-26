@@ -10,7 +10,7 @@ Web version of the application.
 
 ## Import sequence
 
-See [architecture](/docs/architecture.md).
+See [ARCHITECTURES](/docs/ARCHITECTURES.md).
 
 ## Dependencies
 
@@ -21,6 +21,10 @@ See [architecture](/docs/architecture.md).
 - [Mocha v11](https://mochajs.org) for unit tests
 - [Cypress](https://www.cypress.io) for E2E tests
 - [MapLibreGL v5](https://maplibre.org/maplibre-gl-js/docs)
+
+### React compiler
+
+[React compiler](https://react.dev/learn/react-compiler) is enabled for the whole project and set up according to [Rspack's documentation](https://rspack.dev/guide/tech/react#react-compiler).
 
 ## Development
 

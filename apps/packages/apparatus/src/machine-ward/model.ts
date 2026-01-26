@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { SignaliumNotice } from "../state-warden";
 
 export interface MachineWardLayoutProps {
     children?: ReactNode;
@@ -17,7 +18,8 @@ export interface MachineWardFooterProps {
 }
 
 export interface MachineWardNoticesProps {
-    children?: ReactNode;
+    notices: SignaliumNotice[];
+    onRemove: (id: string) => void;
 }
 
 export type GearId = 'route';

@@ -48,7 +48,7 @@ export enum CameraAngle {
 export interface ApplicationSettingsType {
     theme: Theme;
     /**
-     * When set to `true`, a native browser confirmation popup will be shown before closing or reloading the page.
+     * When set to `true`, a native confirmation popup will be shown before closing or reloading the page.
      */
     confirmBeforeLeave: boolean;
 }

@@ -25,9 +25,9 @@ export const synchronizeSubjectWithStorage = async <T extends {}>(
         console.error(`Error getting ${storageId} storage state`, err);
     }
 
-    state$.subscribe((controls) => {
+    state$.subscribe((next) => {
         try {
-            storage.setItem(storageId, JSON.stringify(controls));
+            storage.setItem(storageId, JSON.stringify(next));
         } catch (err) {
             console.error(`Error setting ${storageId} storage state`, err);
         }

@@ -1,8 +1,8 @@
 import { Gear, GearId, MachineWard } from "@apparatus";
 import { Footer, Layout, TopBar } from "./layout";
 import { Machine } from "./machine/Machine";
-import { Notices } from "./notices/Notices";
 import { ErrorFallback } from "./ErrorFallback";
+import { NoticesList } from "./notices/NoticesList";
 
 export class MobileMachineWard extends MachineWard {
     public readonly errorFallbackComponent = ErrorFallback;
@@ -10,7 +10,7 @@ export class MobileMachineWard extends MachineWard {
     public readonly topBarComponent = TopBar;
     public readonly machineComponent = Machine;
     public readonly footerComponent = Footer;
-    public readonly noticesComponent = Notices;
+    public readonly noticesComponent = NoticesList;
 
     public gears: { [key in GearId]: Gear<GearId> | null } = {
         route: null,

@@ -9,7 +9,7 @@ Mobile version of the application.
 
 ## Import sequence
 
-See [architecture](/docs/architecture.md).
+See [ARCHITECTURES](/docs/ARCHITECTURES.md).
 
 ## Dependencies
 
@@ -20,6 +20,10 @@ See [architecture](/docs/architecture.md).
 - [RxJS v7](https://rxjs.dev)
 - [Mocha v11](https://mochajs.org) for unit tests
 - [MapLibre React Native v10](https://maplibre.org/maplibre-react-native)
+
+### React compiler
+
+[React compiler](https://react.dev/learn/react-compiler) is enabled for the whole project and set up according to [official docs](https://react.dev/learn/react-compiler/installation#usage-with-react-native-metro).
 
 ## Development
 

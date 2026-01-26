@@ -1,4 +1,4 @@
-import { ComponentType, FC, ReactElement, ReactNode } from "react";
+import { ComponentType, ReactElement } from "react";
 import { GearId, MachineWardFooterProps, MachineWardLayoutProps, MachineWardMachineProps, MachineWardNoticesProps, MachineWardTopBarProps } from "./model";
 import { MachineWardApp } from "./MachineWardApp";
 import { Gear, StateWarden } from "../state-warden";
