@@ -27,7 +27,7 @@ export const NoticesList: FC<MachineWardNoticesProps> = ({
                 data={notices.slice(0, 5)}
                 keyExtractor={item => item.id}
                 renderItem={({ item: notice }) => (
-                    <Notice key={notice.id} notice={notice} onRemove={onRemove} />
+                    <Notice notice={notice} onRemove={onRemove} />
                 )}
                 contentContainerStyle={styles.content}
             />
