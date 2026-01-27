@@ -3,7 +3,6 @@ import maplibregl from "maplibre-gl";
 import {
     OverlayComponentProps,
     useStateWarden,
-    useGaugeContext,
     useSubjectState,
     useMapLayerData,
     MapLayerData
@@ -21,10 +20,10 @@ export const RouteLayer: FC<OverlayComponentProps> = ({
     onProgressMsChange,
     images,
 }) => {
-    const { animatrix, chronoLens } = useStateWarden();
+    const { animatrix, cartomancer, chronoLens } = useStateWarden();
+    const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [animationControls] = useSubjectState(animatrix.controls$);
-    const { showRouteLine, showRoutePoints } = useGaugeContext();
     const {
         followCurrentPoint,
         cameraAngle,
@@ -51,10 +50,10 @@ export const RouteLayer: FC<OverlayComponentProps> = ({
         );
 
         const layers: MapLayerData['layers'] = [];
-        if (showRouteLine) {
+        if (gaugeControls.showRouteLine) {
             layers.push(routeLineLayer);
         }
-        if (showRoutePoints) {
+        if (gaugeControls.showRoutePoints) {
             layers.push(getRoutePointsLayer());
         }
         layers.push(...currentPointLayers);
@@ -63,7 +62,7 @@ export const RouteLayer: FC<OverlayComponentProps> = ({
             sources: {
                 [sourceIds.line]: {
                     type: 'geojson',
-                    data: showRouteLine || showRoutePoints
+                    data: gaugeControls.showRouteLine || gaugeControls.showRoutePoints
                         ? lines
                         : { type: 'FeatureCollection', features: [] },
                     promoteId: 'id'
@@ -75,7 +74,7 @@ export const RouteLayer: FC<OverlayComponentProps> = ({
             },
             layers,
         };
-    }, [geojson, routeTimes.startTimeEpoch, bearingLineLengthInMeters, showRouteLine, showRoutePoints]);
+    }, [geojson, routeTimes.startTimeEpoch, bearingLineLengthInMeters, gaugeControls.showRouteLine, gaugeControls.showRoutePoints]);
 
     useMapLayerData(map, mapLayerData)
 

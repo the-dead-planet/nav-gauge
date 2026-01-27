@@ -1,4 +1,4 @@
-import { GaugeControlsType, MapLayout } from "../controls";
+import { GaugeControlsType, MapLayout } from "../../../apparatus/src";
 
 export const validateString = (value: unknown, name: string) => {
     if (value !== undefined && typeof value !== 'string') {

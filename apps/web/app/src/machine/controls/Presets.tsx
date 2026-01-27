@@ -2,38 +2,32 @@ import { FC, useEffect } from "react";
 import {
     AnimationControlsType,
     Animatrix,
+    defaultGaugeControls,
+    defaultMapLayout,
+    GaugeControlsType,
+    MapLayout,
     Preset,
     PresetStation,
     PresetValues,
     useStateWarden,
     useSubjectState
 } from "@apparatus";
-import {
-    applyGaugeControls,
-    defaultGaugeControls,
-    defaultMapLayout,
-    GaugeControlsType,
-    MapLayout,
-    validateGaugeControls,
-    validateMapLayout,
-} from "@tinker-chest";
+import { applyGaugeControls, validateGaugeControls, validateMapLayout } from "@tinker-chest";
 import * as styles from './controls.module.css';
 
 interface Props {
     preset: Preset;
     onPresetChange: (preset: Preset, presetValues?: PresetValues) => void;
-    mapLayout: MapLayout;
-    gaugeControls: GaugeControlsType;
 }
 
 export const Presets: FC<Props> = ({
     preset,
     onPresetChange,
-    mapLayout,
-    gaugeControls,
 }) => {
-    const { animatrix } = useStateWarden();
+    const { animatrix, cartomancer } = useStateWarden();
     const [animationControls] = useSubjectState(animatrix.controls$);
+    const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
+    const [mapLayout] = useSubjectState(cartomancer.mapLayout$);
 
     useEffect(() => {
         if (preset && !PresetStation.detectPreset(mapLayout, gaugeControls)) {

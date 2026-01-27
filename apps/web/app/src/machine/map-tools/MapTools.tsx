@@ -2,7 +2,7 @@ import { FC, ReactNode, useState, useEffect } from "react";
 import maplibregl from "maplibre-gl";
 import { Protocol } from "pmtiles";
 import classNames from "classnames";
-import { Cartomancer, useGaugeContext, useStateWarden, useSubjectState } from "@apparatus";
+import { Cartomancer, useStateWarden, useSubjectState } from "@apparatus";
 import findIcon from '../icons/find.svg';
 import * as styles from './map-tools.module.css';
 import './map.css';
@@ -48,7 +48,8 @@ export const MapTools: FC<Props> = ({
     children,
 }) => {
     const { cartomancer } = useStateWarden();
-    const { showZoomButtons, showCompass, showGreenScreen, controlPosition, globeProjection } = useGaugeContext();
+    const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
+    const [mapLayout] = useSubjectState(cartomancer.mapLayout$);
     const [containerRef, setContainerRef] = useState<HTMLElement | null>(null);
     const [cssLoaded, setCssLoaded] = useState(false);
     const [isInitialised, setIsInitialised] = useSubjectState(cartomancer.isInitialised$);
@@ -91,7 +92,7 @@ export const MapTools: FC<Props> = ({
     }, [containerRef, cssLoaded]);
 
     useEffect(() => {
-        const showControls = showZoomButtons || showCompass;
+        const showControls = gaugeControls.showZoomButtons || gaugeControls.showCompass;
         if (!isInitialised || !showControls) {
             return;
         }
@@ -100,15 +101,19 @@ export const MapTools: FC<Props> = ({
         };
         // TODO: Observer parent
         window.addEventListener('resize', resizeHandler);
-        const control = new maplibregl.NavigationControl({ showZoom: showZoomButtons, showCompass, visualizePitch: true });
-        map.addControl(control, controlPosition);
+        const control = new maplibregl.NavigationControl({
+            showZoom: gaugeControls.showZoomButtons,
+            showCompass: gaugeControls.showCompass,
+            visualizePitch: true
+        });
+        map.addControl(control, gaugeControls.controlPosition);
         map.resize();
 
         return () => {
             map.removeControl(control);
             window.removeEventListener('resize', resizeHandler);
         };
-    }, [isInitialised, showZoomButtons, showCompass, controlPosition]);
+    }, [isInitialised, gaugeControls.showZoomButtons, gaugeControls.showCompass, gaugeControls.controlPosition]);
 
     useEffect(() => {
         const zoomHandler = () => {
@@ -125,12 +130,12 @@ export const MapTools: FC<Props> = ({
         if (!isStyleLoaded) {
             return;
         }
-        map.setProjection({ type: globeProjection ? 'globe' : 'mercator' });
+        map.setProjection({ type: gaugeControls.globeProjection ? 'globe' : 'mercator' });
         map.resize();
 
         const projectionHandler = () => {
             if (map.isStyleLoaded()) {
-                map.setProjection({ type: globeProjection ? 'globe' : 'mercator' });
+                map.setProjection({ type: gaugeControls.globeProjection ? 'globe' : 'mercator' });
                 map.resize()
             }
         };
@@ -139,7 +144,7 @@ export const MapTools: FC<Props> = ({
         return () => {
             map.off('style.load', projectionHandler);
         };
-    }, [isStyleLoaded, globeProjection]);
+    }, [isStyleLoaded, gaugeControls.globeProjection]);
 
     useEffect(() => {
         const nextStyle = Cartomancer.styles[selectedStyle.id];
@@ -200,7 +205,7 @@ export const MapTools: FC<Props> = ({
             </div>
             <div className={styles["map-area"]}>
                 <div ref={setContainerRef} className={classNames(styles["nav-gauge-map"], {
-                    [styles["with-green-screen"]]: showGreenScreen
+                    [styles["with-green-screen"]]: gaugeControls.showGreenScreen
                 })}>
                     {isStyleLoaded ? children : null}
                 </div>

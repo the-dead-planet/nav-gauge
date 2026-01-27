@@ -2,6 +2,43 @@ import { ComponentType, Dispatch, SetStateAction } from "react";
 import { RouteTimes } from "@tinker-chest";
 import { GeoJson } from "../../parsers";
 
+export interface ControlPlacement {
+    top: number;
+    bottom: number;
+    left: number;
+    right: number;
+}
+
+export interface GaugeControlsType {
+    globeProjection: boolean;
+    showZoomButtons: boolean;
+    showCurrentZoom: boolean;
+    showCompass: boolean;
+    showGreenScreen: boolean;
+    controlPosition: maplibregl.ControlPosition;
+    controlPlacement: ControlPlacement;
+    // TODO: Belongs to route gear
+    showRouteLine: boolean;
+    showRoutePoints: boolean;
+}
+
+export interface MapLayout {
+    size: MapLayoutSize;
+    borderWidth: number;
+    borderColor: string;
+    innerBorderWidth: number;
+    innerBorderColor: string;
+    borderRadius: string;
+    boxShadow: string;
+    innerBoxShadow: string;
+};
+
+export interface MapLayoutSize {
+    type: 'manual' | 'full-screen',
+    width: number;
+    height: number;
+}
+
 export interface Overlay {
     id: string;
     component: ComponentType<OverlayComponentProps>;

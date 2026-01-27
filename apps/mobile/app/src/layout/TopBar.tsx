@@ -1,8 +1,8 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
+import { useTheme } from "@ui";
 import { Text } from '@mobile-ui';
 import { MachineWardTopBarProps } from "@apparatus";
-import { useTheme } from "@ui";
 
 const styles = StyleSheet.create({
     container: {

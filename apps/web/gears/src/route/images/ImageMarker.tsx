@@ -2,7 +2,7 @@ import { CSSProperties, FC, useEffect, useState } from "react";
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import maplibregl from "maplibre-gl";
-import { Cartomancer, GeoJson, MarkerImage, useStateWarden, useSubjectState, FeatureStateProps, useGaugeContext } from "@apparatus";
+import { Cartomancer, GeoJson, MarkerImage, useStateWarden, useSubjectState, FeatureStateProps } from "@apparatus";
 import { sourceIds } from '../layers';
 import * as styles from './images.module.css';
 
@@ -22,10 +22,10 @@ interface Props {
 
 // TODO: If multiple in the same location, render all
 export const ImageMarker: FC<Props> = ({ map, image, geojson, onUpdateImageFeatureId }) => {
-    const { animatrix } = useStateWarden();
+    const { animatrix, cartomancer } = useStateWarden();
     const [closestFeatureId, setClosestFeatureId] = useState<number | null>(null);
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
-    const { size } = useGaugeContext();
+    const [mapLayout] = useSubjectState(cartomancer.mapLayout$);
 
     useEffect(() => {
         const handleDrag = () => {
@@ -90,7 +90,7 @@ export const ImageMarker: FC<Props> = ({ map, image, geojson, onUpdateImageFeatu
             style={{
                 // TODO: Add ref client size observer to handle the "full screen" size
                 '--image-size': `${imageSize}px`,
-                '--image-display-scale': Math.ceil(Math.min(size.width, size.height) / imageSize)
+                '--image-display-scale': Math.ceil(Math.min(mapLayout.size.width, mapLayout.size.height) / imageSize)
             } as CSSProperties}
         />,
         image.markerElement
