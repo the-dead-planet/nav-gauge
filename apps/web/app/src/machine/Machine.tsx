@@ -58,8 +58,8 @@ export const Machine: FC<MachineWardMachineProps> = () => {
     );
 
     const [images, readImage, updateImageFeatureId] = useImageReader();
-    const [gaugeControls, setGaugeControls] = useStorageState<GaugeControlsType>(localStorage, 'gauge-controls', defaultGaugeControls);
-    const [mapLayout, setMapLayout] = useStorageState<MapLayout>(localStorage, 'map-layout', defaultMapLayout);
+    const [gaugeControls, setGaugeControls] = useStorageState<GaugeControlsType>('gauge-controls', defaultGaugeControls);
+    const [mapLayout, setMapLayout] = useStorageState<MapLayout>('map-layout', defaultMapLayout);
     const [preset, setPreset] = useState<Preset>(PresetStation.detectPreset(mapLayout, gaugeControls));
 
     // TODO: Handle from route gear??

@@ -1,9 +1,9 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { Cartomancer, useStateWarden, useSubjectState } from "@apparatus";
 import * as styles from './controls.module.css';
 
 export const MapStyleSelection: FC = () => {
-    const { cartomancer, attributionVault } = useStateWarden();
+    const { cartomancer } = useStateWarden();
     const [selectedStyle, setSelectedStyle] = useSubjectState(cartomancer.selectedStyle$)
 
     const handleMapStyleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -12,18 +12,6 @@ export const MapStyleSelection: FC = () => {
             setSelectedStyle({ id });
         }
     }
-
-    useEffect(() => {
-        const style = Cartomancer.styles[selectedStyle.id];
-        if (!style?.attribution) {
-            return;
-        }
-        attributionVault.addEntry(selectedStyle.id, style.attribution);
-
-        return () => {
-            attributionVault.removeEntry(selectedStyle.id);
-        };
-    }, [selectedStyle.id]);
 
     return (
         <div className={styles['map-style-selection']}>

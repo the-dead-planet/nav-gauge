@@ -1,7 +1,7 @@
 import { BehaviorSubject } from "rxjs";
 import { validateBoolean, validateNumber } from "@tinker-chest";
 import { AnimationControlsType } from "./model";
-import { synchronizeSubjectWithStorage } from "../../state/tinkers";
+import { StorageKeeper } from "../../storage-keeper/storage-keeper";
 
 /**
  * Animation central processing unit.
@@ -35,9 +35,9 @@ export class Animatrix {
     private controlsStorageId = 'animatrix:controls';
     public controls$: BehaviorSubject<AnimationControlsType>;
 
-    public constructor(storage: StorageLike) {
+    public constructor(storageKeeper: StorageKeeper) {
         this.controls$ = new BehaviorSubject(Animatrix.defaultControls);
-        synchronizeSubjectWithStorage(this.controls$, this.controlsStorageId, storage, this.cleanUpAnimationControls);
+        storageKeeper.synchronizeSubjectWithStorage(this.controls$, this.controlsStorageId, this.cleanUpAnimationControls);
     }
 
     /**

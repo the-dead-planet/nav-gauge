@@ -2,10 +2,10 @@ import { BehaviorSubject } from "rxjs";
 import maplibregl from "maplibre-gl";
 import turfDistance from "@turf/distance";
 import { point as turfPoint } from "@turf/helpers";
-import { backgroundMapStyle, customRoadsMapStyle, MapStyle, osmMapStyle } from "./map-styles";
+import { backgroundMapStyle, customRoadsMapStyle, osmMapStyle } from "./map-styles";
 import { Overlay } from "./model";
 import { FeatureProperties, GeoJson } from "../../parsers";
-import { synchronizeSubjectWithStorage } from "../../state/tinkers";
+import { StorageKeeper } from "../../storage-keeper/storage-keeper";
 
 interface SelectedStyle {
     id: keyof typeof Cartomancer.styles;
@@ -28,9 +28,9 @@ export class Cartomancer {
     private selectedStyleStorageId = 'cartomancer:map-style';
     public selectedStyle$: BehaviorSubject<SelectedStyle>;
 
-    public constructor(storage: StorageLike) {
+    public constructor(storageKeeper: StorageKeeper) {
         this.selectedStyle$ = new BehaviorSubject<{ id: keyof typeof Cartomancer.styles }>({ id: this.defaultStyleId });
-        synchronizeSubjectWithStorage(this.selectedStyle$, this.selectedStyleStorageId, storage, this.cleanUpSelectedStyle);
+        storageKeeper.synchronizeSubjectWithStorage(this.selectedStyle$, this.selectedStyleStorageId, this.cleanUpSelectedStyle);
     }
 
     public zoom$ = new BehaviorSubject(0);

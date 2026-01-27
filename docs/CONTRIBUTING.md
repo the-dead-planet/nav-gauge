@@ -38,9 +38,37 @@ All deployed on a self managed machine and automated using [GitHub Actions](http
 
 Keep it fun.
 
+#### Design principles
+
+Mix of object oriented and functional programming. Try to separate modules and abstract the logic wherever it makes sense.
+
+#### Web & mobile alignment
+
+Web and mobile applications should follow the same structure which is defined by [Machine Ward](/apps/packages/apparatus/src/machine-ward/machine-ward.tsx). Both apps should implement specifics using the DOM (for web) and native components (for mobile).
+
+#### State management
+
+The main application state is provided via the [State Warden](/apps/packages/apparatus/src/state-warden/state-warden.ts) object accessible using the [useStateWarden](/apps/packages/apparatus/src/state-warden/useStateWarden.tsx) hook.
+
+#### Separation of features
+
+All features should be opt-in, easily plugged in and out of the app. You can find them stored in the [Engine](/apps/packages/apparatus/src/state-warden/engine/engine.ts) and they should implement a [Gear interface](/apps/packages/apparatus/src/state-warden/engine/model.ts).
+
+More info: TBD
+
+#### Import paths
+
 Follow the [architectures](/docs/ARCHITECTURES.md) flow when importing from other workspaces. Do not import in the wrong direction.
 
-The workspace paths are setup as `@package-name` in the `tsconfig.json` files. If suddenly see that you imported something from `../../apparatus/src` instead of `@apparatus` when importing to a file in workspace `tinker-chest`, and importing from `@apparatus` is not possible... it's a sign of a forbidden import. Consider moving stuff around or creating another package to assure correct import flow. Remember about updating the [architectures chart](/docs/assets/architecture.drawio) and [svg](/docs/assets/architecture.svg) using [Draw.io](https://app.diagrams.net), if needed.
+Import paths are setup as `@package-name` in the `tsconfig.json` files in each workspace, in [Rspack config](/apps/web/app/rspack.config.cjs) and in [mobile babel config](/apps/mobile/app/babel.config.js). 
+
+If suddenly something is imported, for example, from `../../apparatus/src` instead of `@apparatus` when importing to a file in `tinker-chest` workspace, and importing from `@apparatus` is not possible... it's a sign of a forbidden import. Consider moving stuff around or creating another package to assure correct import flow. 
+
+Remember about updating the [architectures chart](/docs/assets/architecture.drawio) and [svg](/docs/assets/architecture.svg) using [Draw.io](https://app.diagrams.net), if needed.
+
+#### Code splitting
+
+Code splitting is set up for web in [Rspack config](/apps/web/app/rspack.config.production.cjs) per larger dependencies and per application workspace to enable better caching for faster startup.
 
 #### Preferred environment
 
@@ -49,6 +77,10 @@ The workspace paths are setup as `@package-name` in the `tsconfig.json` files. I
 #### Linting
 
 Default TypeScript formatter.
+
+#### Time formatting
+
+Use [luxon](https://github.com/moment/luxon#readme).
 
 #### Documentation
 
@@ -99,6 +131,8 @@ Own UI library is created with focus on semantics, accessibility and minimalism.
 Styling should be steampunk inspired.
 
 Variables used repeatedly and those which which depend on the theme should be added to [theme specifications](/apps/ui/src/theme/specifications.ts) in the common [UI package](/apps/).
+
+The library is currently not deployed as a separate app with component docs. Maybe it will be in the future.
 
 #### Theme
 
