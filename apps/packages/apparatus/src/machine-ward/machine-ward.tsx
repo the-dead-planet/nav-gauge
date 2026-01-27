@@ -46,6 +46,8 @@ export abstract class MachineWard {
     public abstract readonly footerComponent: ComponentType<MachineWardFooterProps>;
     public abstract readonly noticesComponent: ComponentType<MachineWardNoticesProps>;
 
+    public title = 'nav gauge';
+    
     public render = (): ReactElement => {
         return <MachineWardApp machineWard={this} />;
     }

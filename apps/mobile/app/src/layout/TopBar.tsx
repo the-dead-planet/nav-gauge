@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     }
 });
 
-export const TopBar: FC<MachineWardTopBarProps> = ({ }) => {
+export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
     const theme = useTheme();
 
     return (
@@ -27,7 +27,7 @@ export const TopBar: FC<MachineWardTopBarProps> = ({ }) => {
             borderBottomColor: theme.colors.border
         }]}>
             <Text style={styles.header}>
-                nav gauge
+                {title}
             </Text>
         </View>
     );

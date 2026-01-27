@@ -1,9 +1,9 @@
 import { FC, StrictMode } from "react";
-import { StateWardenContext } from "../state-warden";
 import { ErrorBoundary, ThemeContext, themes } from "@ui";
+import { MachineWardNotices } from "./MachineWardNotices";
 import { MachineWard } from "./machine-ward";
+import { StateWardenContext } from "../state-warden";
 import { useSubjectState } from "../state";
-import { Notices } from "./Notices";
 
 interface MachineWardProps {
     machineWard: MachineWard;
@@ -18,10 +18,10 @@ export const MachineWardApp: FC<MachineWardProps> = ({ machineWard }) => {
                 <ThemeContext.Provider value={themes[applicationSettings.theme]}>
                     <StateWardenContext.Provider value={machineWard.stateWarden}>
                         <machineWard.layoutComponent>
-                            <machineWard.topBarComponent />
+                            <machineWard.topBarComponent title={machineWard.title} />
                             <machineWard.machineComponent />
                             <machineWard.footerComponent />
-                            <Notices noticesComponent={machineWard.noticesComponent} />
+                            <MachineWardNotices noticesComponent={machineWard.noticesComponent} />
                         </machineWard.layoutComponent>
                     </StateWardenContext.Provider>
                 </ThemeContext.Provider>

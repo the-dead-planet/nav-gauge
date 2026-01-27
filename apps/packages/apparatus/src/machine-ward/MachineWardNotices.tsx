@@ -7,9 +7,14 @@ interface Props {
     noticesComponent: ComponentType<MachineWardNoticesProps>;
 }
 
-export const Notices: FC<Props> = (props) => {
+export const MachineWardNotices: FC<Props> = (props) => {
     const { signaliumBureau } = useStateWarden();
     const [notices] = useSubjectState(signaliumBureau.notices$);
 
-    return <props.noticesComponent notices={[...notices].reverse()} onRemove={signaliumBureau.removeNotice} />
+    return (
+        <props.noticesComponent
+            notices={[...notices].reverse()}
+            onRemove={signaliumBureau.removeNotice}
+        />
+    );
 };

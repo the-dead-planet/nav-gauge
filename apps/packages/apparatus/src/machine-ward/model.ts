@@ -6,15 +6,13 @@ export interface MachineWardLayoutProps {
 }
 
 export interface MachineWardTopBarProps {
-    children?: ReactNode;
+    title: string;
 }
 
 export interface MachineWardMachineProps {
-    children?: ReactNode;
 }
 
 export interface MachineWardFooterProps {
-    children?: ReactNode;
 }
 
 export interface MachineWardNoticesProps {

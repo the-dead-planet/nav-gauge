@@ -81,6 +81,11 @@ Go to the subfolder and run commands described in:
 This project is licensed under the **GNU Affero General Public License v3.0**.
 See the [LICENSE](LICENSE) file for details.
 
+## Attributions
+
+- [OpenStreetMap](https://www.openstreetmap.org/copyright)
+- [Overture Maps Foundation](https://docs.overturemaps.org/attribution)
+
 ## Contribution guidelines
 
 See [CONTRIBUTING](/docs/CONTRIBUTING.md).

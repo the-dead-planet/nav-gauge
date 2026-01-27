@@ -2,7 +2,7 @@ import { FC } from "react";
 import { MachineWardNoticesProps } from "@apparatus";
 import { Notice } from "./Notice";
 
-export const NoticesList: FC<MachineWardNoticesProps> = ({
+export const Notices: FC<MachineWardNoticesProps> = ({
     notices,
     onRemove
 }) => {
