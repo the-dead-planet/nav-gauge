@@ -1,10 +1,11 @@
 /* Listed to enable autocomplete. Vars are set in js */
 :root {
   --background-color: #000;
-  --border-color: #ffffff;
+  --border-color: #66666e;
   --box-shadow-color: #ffffff;
   --divider-color: #fff;
   --text-color: #fff;
+  --text-active-color: #fff;
   --error-color: #aa957b;
   --warning-color: #fff;
   --success-color: #fff;

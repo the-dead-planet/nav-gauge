@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
 import { useTheme } from "@ui";
-import { Text } from '@mobile-ui';
+import { LinkText } from '@mobile-ui';
 import { MachineWardFooterProps, useStateWarden, useSubjectState } from "@apparatus";
 
 const styles = StyleSheet.create({
@@ -27,9 +27,9 @@ export const Footer: FC<MachineWardFooterProps> = ({ }) => {
             borderColor: theme.colors.border
         }]}>
             {[...attrributions.entries()].map(([id, { text, href }]) => (
-                <Text key={id}>
+                <LinkText key={id} href={href}>
                     © {text}
-                </Text>
+                </LinkText>
             ))}
         </View>
     );

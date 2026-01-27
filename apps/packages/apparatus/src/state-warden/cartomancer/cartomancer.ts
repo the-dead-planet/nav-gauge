@@ -3,9 +3,9 @@ import maplibregl from "maplibre-gl";
 import turfDistance from "@turf/distance";
 import { point as turfPoint } from "@turf/helpers";
 import { backgroundMapStyle, customRoadsMapStyle, osmMapStyle } from "./map-styles";
-import { Overlay } from "./model";
 import { FeatureProperties, GeoJson } from "../../parsers";
 import { StorageKeeper } from "../../storage-keeper/storage-keeper";
+import { Overlay } from "./model";
 
 interface SelectedStyle {
     id: keyof typeof Cartomancer.styles;

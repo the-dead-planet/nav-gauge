@@ -15,6 +15,7 @@ export type ThemeColor = 'background' |
     'box-shadow' |
     'divider' |
     'text' |
+    'text-active' |
     'error' |
     'warning' |
     'success' |
