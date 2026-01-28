@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import {
     AnimationControlsType,
     Animatrix,
@@ -8,44 +8,24 @@ import {
     MapLayout,
     Preset,
     PresetStation,
-    PresetValues,
     useStateWarden,
     useSubjectState
 } from "@apparatus";
-import { applyGaugeControls, validateGaugeControls, validateMapLayout } from "@tinker-chest";
+import { validateGaugeControls, validateMapLayout } from "@tinker-chest";
 import * as styles from './controls.module.css';
 
-interface Props {
-    preset: Preset;
-    onPresetChange: (preset: Preset, presetValues?: PresetValues) => void;
-}
+interface Props { }
 
-export const Presets: FC<Props> = ({
-    preset,
-    onPresetChange,
-}) => {
-    const { animatrix, cartomancer } = useStateWarden();
+export const Presets: FC<Props> = () => {
+    const { animatrix, cartomancer, presetStation } = useStateWarden();
     const [animationControls] = useSubjectState(animatrix.controls$);
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const [mapLayout] = useSubjectState(cartomancer.mapLayout$);
-
-    useEffect(() => {
-        if (preset && !PresetStation.detectPreset(mapLayout, gaugeControls)) {
-            onPresetChange("");
-        }
-    }, [mapLayout, gaugeControls]);
+    const [preset, setPreset] = useSubjectState(presetStation.preset$);
+    const [isPresetActive] = useSubjectState(presetStation.active$);
 
     const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const nextPreset = event.target.value as Preset;
-        const option = PresetStation.presetOptions.find((option) => option.value === nextPreset);
-        if (!option) {
-            return;
-        }
-        onPresetChange(nextPreset, {
-            presetMapLayout: option.mapLayout,
-            presetGaugeControls: option.gaugeControls,
-            presetAnimationControls: option.animationControls,
-        });
+        setPreset(event.target.value as Preset);
     };
 
     const handleExport = () => {
@@ -74,20 +54,25 @@ export const Presets: FC<Props> = ({
             .then((text) => {
                 try {
                     const result = JSON.parse(text);
-                    const possibleMapLayout: MapLayout = { ...defaultMapLayout, ...(result.mapLayout as MapLayout) };
+                    const possibleMapLayout: MapLayout = {
+                        ...defaultMapLayout,
+                        ...(result.mapLayout as MapLayout),
+                    };
                     validateMapLayout(possibleMapLayout);
 
-                    const possibleGaugeControls: GaugeControlsType = { ...defaultGaugeControls, ...(result.gaugeControls as GaugeControlsType) };
-                    validateGaugeControls(possibleGaugeControls);
+                    const possibleGaugeControls: GaugeControlsType = { 
+                        ...defaultGaugeControls, 
+                        ...(result.gaugeControls as GaugeControlsType),
+                    };
+                    validateGaugeControls({ ...possibleGaugeControls });
 
                     const possibleAnimationControls = { ...Animatrix.defaultControls, ...(result.animationControls as AnimationControlsType) };
                     Animatrix.validateAnimationControls(possibleAnimationControls);
 
-                    onPresetChange(PresetStation.detectPreset(possibleMapLayout, possibleGaugeControls), {
-                        presetMapLayout: possibleMapLayout,
-                        presetGaugeControls: applyGaugeControls(possibleGaugeControls),
-                        presetAnimationControls: possibleAnimationControls
-                    });
+                    const nextPreset = PresetStation.detectPreset(possibleMapLayout, possibleGaugeControls, possibleAnimationControls);
+                    if (nextPreset) {
+                        setPreset(nextPreset);
+                    }
                 } catch (e) {
                     console.error(e);
                 }
@@ -100,7 +85,7 @@ export const Presets: FC<Props> = ({
             {/* TODO: Move to reusable component */}
             <div>
                 <label htmlFor="presets" style={{ fontSize: "12px" }}>Preset</label>
-                <select name="presets" id="presets" value={preset} onChange={handleChange}>
+                <select name="presets" id="presets" value={isPresetActive ? preset : ""} onChange={handleChange}>
                     <option value="" disabled defaultValue="">Custom</option>
                     {PresetStation.presetOptions.map((option) => (
                         <option key={option.value} value={option.value}>

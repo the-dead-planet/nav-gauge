@@ -1,4 +1,4 @@
-import { BehaviorSubject, pairwise } from "rxjs";
+import { BehaviorSubject, combineLatest, pairwise } from "rxjs";
 import { Theme } from "@ui";
 import { Animatrix } from "./animatrix";
 import { AttributionVault } from "./attribution-vault"
@@ -8,6 +8,7 @@ import { Engine } from "./engine";
 import { SignaliumBureau } from "./signalium-bureau";
 import { ApplicationSettingsType, getDefaultApplicationSettings } from "@tinker-chest";
 import { StorageKeeper } from "../storage-keeper/storage-keeper";
+import { PresetStation } from "./preset-station";
 
 /**
  * Warden does what warden needs to do.
@@ -18,6 +19,7 @@ export class StateWarden {
     public applicationSettings$: BehaviorSubject<ApplicationSettingsType>;
     public animatrix: Animatrix;
     public cartomancer: Cartomancer;
+    public presetStation: PresetStation;
     public storageKeeper: StorageKeeper;
 
     public constructor(storage: StorageLike, prefersLightColorScheme: boolean) {
@@ -30,6 +32,14 @@ export class StateWarden {
         this.animatrix = new Animatrix(this.storageKeeper);
         this.cartomancer = new Cartomancer(this.storageKeeper);
         this.setUpAttributionUpdates();
+
+        const initialPreset = PresetStation.detectPreset(
+            this.cartomancer.mapLayout$.value,
+            this.cartomancer.gaugeControls$.value,
+            this.animatrix.controls$.value
+        );
+        this.presetStation = new PresetStation(initialPreset ?? 'default');
+        this.setUpPresetUpdate();
     }
 
     private setUpAttributionUpdates = () => {
@@ -48,6 +58,27 @@ export class StateWarden {
                 this.attributionVault.removeEntry(prev.id);
                 addEntry(next.id);
             });
+    };
+
+    private setUpPresetUpdate = () => {
+        this.presetStation.preset$.subscribe((next) => {
+            const option = PresetStation.presetOptions.find((option) => option.value === next);
+            if (!option) {
+                return;
+            }
+            const { mapLayout: { size, ...mapLayout }, gaugeControls: { controlPlacement, ...gaugeControls }, animationControls } = option;
+            this.cartomancer.mapLayout$.next({ size: { ...size }, ...mapLayout });
+            this.cartomancer.gaugeControls$.next({ controlPlacement: { ...controlPlacement }, ...gaugeControls });
+            this.animatrix.controls$.next({ ...animationControls });
+        });
+
+        combineLatest([
+            this.cartomancer.mapLayout$,
+            this.cartomancer.gaugeControls$,
+            this.animatrix.controls$
+        ]).subscribe((args) => {
+            this.presetStation.active$.next(PresetStation.detectPreset(...args) === this.presetStation.preset$.value);
+        })
     };
 
     public chronoLens = new ChronoLens();

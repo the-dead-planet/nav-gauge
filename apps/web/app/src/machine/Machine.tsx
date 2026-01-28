@@ -1,14 +1,6 @@
 import { CSSProperties, FC, useEffect, useMemo, useState } from "react";
 import bbox from "@turf/bbox";
-import {
-    useSubjectState,
-    ParsingResultWithError,
-    Preset,
-    PresetStation,
-    PresetValues,
-    useStateWarden,
-    MachineWardMachineProps,
-} from "@apparatus";
+import { useSubjectState, ParsingResultWithError, useStateWarden, MachineWardMachineProps } from "@apparatus";
 import { RouteTimes } from "@tinker-chest";
 import { parsers } from "../parsers";
 import { useImageReader } from '../hooks';
@@ -23,11 +15,10 @@ import { MapStyleSelection } from "./controls/MapStyleSelection";
 import * as styles from './machine.module.css';
 
 export const Machine: FC<MachineWardMachineProps> = () => {
-    const stateWarden = useStateWarden();
-    const [applicationSettings] = useSubjectState(stateWarden.applicationSettings$);
-    const [gaugeControls, setGaugeControls] = useSubjectState(stateWarden.cartomancer.gaugeControls$);
-    const [mapLayout, setMapLayout] = useSubjectState(stateWarden.cartomancer.mapLayout$);
-    const { animatrix } = stateWarden;
+    const { applicationSettings$, cartomancer } = useStateWarden();
+    const [applicationSettings] = useSubjectState(applicationSettings$);
+    const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
+    const [mapLayout] = useSubjectState(cartomancer.mapLayout$);
     const [{ geojson, boundingBox, routeName, error }, setGeoJson] = useState<ParsingResultWithError>({});
 
     const routeTimes = useMemo(
@@ -52,7 +43,6 @@ export const Machine: FC<MachineWardMachineProps> = () => {
     );
 
     const [images, readImage, updateImageFeatureId] = useImageReader();
-    const [preset, setPreset] = useState<Preset>(PresetStation.detectPreset(mapLayout, gaugeControls));
 
     // TODO: Handle from route gear??
     useEffect(() => {
@@ -69,23 +59,6 @@ export const Machine: FC<MachineWardMachineProps> = () => {
             window.removeEventListener('beforeunload', confirmationHandler);
         }
     }, [applicationSettings.confirmBeforeLeave, images, geojson]);
-
-    const handlePresetChange = (preset: Preset, {
-        presetMapLayout,
-        presetGaugeControls,
-        presetAnimationControls,
-    }: PresetValues = {}) => {
-        setPreset(preset);
-        if (presetMapLayout) {
-            setMapLayout(presetMapLayout);
-        }
-        if (presetGaugeControls) {
-            setGaugeControls(presetGaugeControls);
-        }
-        if (presetAnimationControls) {
-            animatrix.controls$.next(presetAnimationControls);
-        }
-    };
 
     const controlsCssStyle = useMemo(
         () => {
@@ -135,7 +108,7 @@ export const Machine: FC<MachineWardMachineProps> = () => {
                     readImage={readImage}
                 />
                 <hr className={styles.divider} />
-                <Presets preset={preset} onPresetChange={handlePresetChange} />
+                <Presets />
                 <MapStyleSelection />
                 <MapLayoutControls />
                 <GaugeControls />

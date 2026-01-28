@@ -65,15 +65,3 @@ export const validateGaugeControls = (gaugeControls: Partial<GaugeControlsType>)
     validateBoolean(gaugeControls.showRouteLine, 'Show route line');
     validateBoolean(gaugeControls.showRoutePoints, 'Show route points');
 };
-
-export const applyGaugeControls = (possibleGaugeControls: GaugeControlsType): GaugeControlsType => {
-    return {
-        ...possibleGaugeControls,
-        controlPlacement: {
-            left: possibleGaugeControls.controlPlacement.left,
-            top: possibleGaugeControls.controlPlacement.top,
-            right: possibleGaugeControls.controlPlacement.right,
-            bottom: possibleGaugeControls.controlPlacement.bottom,
-        }
-    };
-};
