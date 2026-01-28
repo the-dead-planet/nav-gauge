@@ -32,7 +32,7 @@ Other languages can be considered case by case, if it is decided that GoLang is 
 
 ### Infrastructure
 
-All deployed on a self managed machine and automated using [GitHub Actions](https://github.com/features/actions).
+Images stored in [GitHub container registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry). All deployed on a self managed machine and automated using [GitHub Actions](https://github.com/features/actions).
 
 ### Development rules
 
