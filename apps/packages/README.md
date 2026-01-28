@@ -18,4 +18,4 @@ React hooks are allowed as long as they don't use any elements from DOM or web/m
 
 ## Import sequence
 
-See [architecture](/docs/architecture.md).
+See [ARCHITECTURES](/docs/ARCHITECTURES.md).

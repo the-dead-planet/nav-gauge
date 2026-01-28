@@ -4,4 +4,4 @@ Tools to build with.
 
 ## Import sequence
 
-See [architecture](/docs/architecture.md).
+See [ARCHITECTURES](/docs/ARCHITECTURES.md).

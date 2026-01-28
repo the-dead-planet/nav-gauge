@@ -1,4 +1,4 @@
-import { ComponentType, FC, ReactElement, ReactNode } from "react";
+import { ComponentType, ReactElement } from "react";
 import { GearId, MachineWardFooterProps, MachineWardLayoutProps, MachineWardMachineProps, MachineWardNoticesProps, MachineWardTopBarProps } from "./model";
 import { MachineWardApp } from "./MachineWardApp";
 import { Gear, StateWarden } from "../state-warden";
@@ -46,6 +46,8 @@ export abstract class MachineWard {
     public abstract readonly footerComponent: ComponentType<MachineWardFooterProps>;
     public abstract readonly noticesComponent: ComponentType<MachineWardNoticesProps>;
 
+    public title = 'nav gauge';
+    
     public render = (): ReactElement => {
         return <MachineWardApp machineWard={this} />;
     }

@@ -1,21 +1,22 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useStateWarden } from "../state-warden";
 
 /**
  * On mount initializes the state with the data in storage, if available (otherwise with the `defaultState`).
  * On each change of `state` value, updates storage.
  */
 export function useStorageState<T extends Object>(
-    storage: StorageLike,
     storageId: string,
     defaultState: T,
     cleanUp: (state: unknown) => Partial<T> = ((state) => state as Partial<T>)
 ): [T, Dispatch<SetStateAction<T>>] {
+    const stateWarden = useStateWarden();
     const [state, setState] = useState<T>(defaultState);
 
     useEffect(() => {
         (async () => {
             try {
-                const storedValue = await storage.getItem(storageId);
+                const storedValue = await stateWarden.storageKeeper.storage.getItem(storageId);
 
                 if (storedValue !== null) {
                     setState({
@@ -31,7 +32,7 @@ export function useStorageState<T extends Object>(
 
     useEffect(() => {
         try {
-            storage.setItem(storageId, JSON.stringify(state));
+            stateWarden.storageKeeper.storage.setItem(storageId, JSON.stringify(state));
         } catch (err) {
             console.error(`Error setting ${storageId} storage state`, err);
         }

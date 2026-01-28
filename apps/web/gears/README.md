@@ -5,4 +5,4 @@ See [README](/apps/web/README.md).
 
 ## Import sequence
 
-See [architecture](/docs/architecture.md).
+See [ARCHITECTURES](/docs/ARCHITECTURES.md).

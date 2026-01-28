@@ -1,4 +1,8 @@
-# Architecture
+# Architectures
+
+## API
+
+To be implemented later.
 
 ## Apps
 

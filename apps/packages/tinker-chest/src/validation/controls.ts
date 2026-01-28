@@ -1,4 +1,4 @@
-import { GaugeControlsType, MapLayout } from "../controls";
+import { GaugeControlsType, MapLayout } from "../../../apparatus/src";
 
 export const validateString = (value: unknown, name: string) => {
     if (value !== undefined && typeof value !== 'string') {
@@ -64,16 +64,4 @@ export const validateGaugeControls = (gaugeControls: Partial<GaugeControlsType>)
     validateBoolean(gaugeControls.showGreenScreen, 'Show green screen');
     validateBoolean(gaugeControls.showRouteLine, 'Show route line');
     validateBoolean(gaugeControls.showRoutePoints, 'Show route points');
-};
-
-export const applyGaugeControls = (possibleGaugeControls: GaugeControlsType): GaugeControlsType => {
-    return {
-        ...possibleGaugeControls,
-        controlPlacement: {
-            left: possibleGaugeControls.controlPlacement.left,
-            top: possibleGaugeControls.controlPlacement.top,
-            right: possibleGaugeControls.controlPlacement.right,
-            bottom: possibleGaugeControls.controlPlacement.bottom,
-        }
-    };
 };

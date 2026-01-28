@@ -23,8 +23,8 @@
     overflow-x: hidden;
     overflow-y: auto;
     position: relative;
-    box-shadow: 0px 0px 8px #66666E;
-    border-bottom: 1px solid #66666E;
+    box-shadow: 0px 0px 8px var(--box-shadow-color);
+    border-bottom: 1px solid var(--border-color);
     max-height: auto;
 
     @starting-style {
@@ -48,7 +48,7 @@
 
     .side-panel {
         height: initial;
-        border-right: 1px solid #66666E;
+        border-right: 1px solid var(--border-color);
 
         @starting-style {
             transform: translateX(-100%);

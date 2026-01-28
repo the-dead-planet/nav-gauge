@@ -1,12 +1,13 @@
+/* Listed to enable autocomplete. Vars are set in js */
 :root {
-  --divider-color: rgb(128, 128, 128);
-}
-
-body[data-theme="theme-light"] {
-    /* TODO: Update */
-  --divider-color: red;
-}
-
-body[data-theme="theme-dark"] {
-  --divider-color: rgb(128, 128, 128);
+  --background-color: #000;
+  --border-color: #66666e;
+  --box-shadow-color: #ffffff;
+  --divider-color: #fff;
+  --text-color: #fff;
+  --text-active-color: #fff;
+  --error-color: #aa957b;
+  --warning-color: #fff;
+  --success-color: #fff;
+  --info-color: #fff;
 }

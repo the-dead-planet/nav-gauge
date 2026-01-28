@@ -1,5 +1,4 @@
-import { Dispatch, FC, SetStateAction } from "react";
-import { ApplicationSettingsType } from "@tinker-chest";
+import { FC } from "react";
 import { themeOptions, Theme } from "@ui";
 import { Fieldset, Input } from "@web-ui";
 import * as styles from './controls.module.css';

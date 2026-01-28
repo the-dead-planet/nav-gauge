@@ -11,7 +11,7 @@ export class SignaliumBureau {
      * Time after which the notice should be automatically removed.
      */
     private defaultExpirationTime = 10000;
-    public notices$ = new BehaviorSubject<(SignaliumNotice & { expirationTimeout?: number })[]>([]);
+    public notices$ = new BehaviorSubject<SignaliumNotice[]>([]);
 
     public constructor() { }
 

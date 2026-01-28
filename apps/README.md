@@ -9,35 +9,7 @@ First `yarn install` from this folder.
 - [packages](/apps/packages/README.md) - Packages
 - [ui](/apps/ui/README.md) - Common UI
 
-See [architecture](/docs/architecture.md).
-
-## Run
-
-### Run web app
-
-```
-yarn dev:web
-```
-
-More info in web app's [README](/apps/web/README.md).
-
-### Run mobile app
-
-Set up android environment following https://reactnative.dev/docs/set-up-your-environment
-
-To start metro service:
-
-```
-yarn start:mobile
-```
-
-To run on the development device (emulator or connected real device):
-
-```
-yarn dev:mobile
-```
-
-More info in mobile app's [README](/apps/mobile/app/README.md).
+See [ARCHITECTURES](/docs/ARCHITECTURES.md).
 
 ### Common dependencies
 
@@ -82,6 +54,34 @@ yarn workspace <workspace_name> add <package_name>
 For example `yarn workspace @the-dead-planet/nav-gauge-mobile-app add react-native`
 
 Same applies to removal of packages.
+
+## Run
+
+### Run web app
+
+```
+yarn dev:web
+```
+
+More info in web app's [README](/apps/web/README.md).
+
+### Run mobile app
+
+Set up android environment following https://reactnative.dev/docs/set-up-your-environment
+
+To start metro service:
+
+```
+yarn start:mobile
+```
+
+To run on the development device (emulator or connected real device):
+
+```
+yarn dev:mobile
+```
+
+More info in mobile app's [README](/apps/mobile/app/README.md).
 
 ## Tests
 

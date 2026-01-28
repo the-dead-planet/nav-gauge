@@ -4,7 +4,7 @@ import { RouteTimes } from "@tinker-chest";
 import { MapTools } from "./map-tools/MapTools";
 import { RouteLayerFitBounds } from "./layers/RouteLayerFitBounds";
 import { Player } from "./player/Player";
-import { createMap } from "../map";
+import { createMap } from "./map";
 
 interface Props {
     geojson?: GeoJson;

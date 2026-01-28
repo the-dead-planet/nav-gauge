@@ -1,17 +1,14 @@
-import { Dispatch, FC, SetStateAction } from "react";
-import { MapLayout } from "@tinker-chest";
+import { FC } from "react";
 import { Fieldset, Input, TextArea } from "@web-ui";
+import { MapLayout, useStateWarden, useSubjectState } from "@apparatus";
 import * as styles from './controls.module.css';
 
-interface Props {
-    mapLayout: MapLayout;
-    onMapLayoutChange: Dispatch<SetStateAction<MapLayout>>;
-}
+interface Props { }
 
-export const MapLayoutControls: FC<Props> = ({
-    mapLayout,
-    onMapLayoutChange,
-}) => {
+export const MapLayoutControls: FC<Props> = () => {
+    const { cartomancer } = useStateWarden();
+    const [mapLayout, setMapLayout] = useSubjectState(cartomancer.mapLayout$);
+
     return (
         <Fieldset label="Map layout">
             <div className={styles["section"]}>
@@ -23,7 +20,7 @@ export const MapLayoutControls: FC<Props> = ({
                     type='checkbox'
                     checked={mapLayout.size.type === 'full-screen'}
                     onChange={() => { }}
-                    onContainerClick={() => onMapLayoutChange((prev) => ({
+                    onContainerClick={() => setMapLayout((prev) => ({
                         ...prev, size: {
                             ...prev.size,
                             type: prev.size.type === 'full-screen'
@@ -45,7 +42,7 @@ export const MapLayoutControls: FC<Props> = ({
                     value={mapLayout.size.width}
                     onChange={(event) => {
                         if (!isNaN(Number(event.target.value))) {
-                            onMapLayoutChange((prev): MapLayout => ({
+                            setMapLayout((prev): MapLayout => ({
                                 ...prev,
                                 size: {
                                     ...prev.size,
@@ -66,7 +63,7 @@ export const MapLayoutControls: FC<Props> = ({
                     value={mapLayout.size.height}
                     onChange={(event) => {
                         if (!isNaN(Number(event.target.value))) {
-                            onMapLayoutChange((prev): MapLayout => ({
+                            setMapLayout((prev): MapLayout => ({
                                 ...prev,
                                 size: {
                                     ...prev.size,
@@ -86,7 +83,7 @@ export const MapLayoutControls: FC<Props> = ({
                     value={mapLayout.borderWidth}
                     onChange={(event) => {
                         if (!isNaN(Number(event.target.value))) {
-                            onMapLayoutChange((prev) => ({ ...prev, borderWidth: Number(event.target.value) }));
+                            setMapLayout((prev) => ({ ...prev, borderWidth: Number(event.target.value) }));
                         }
                     }}
                 />
@@ -100,7 +97,7 @@ export const MapLayoutControls: FC<Props> = ({
                     value={mapLayout.innerBorderWidth}
                     onChange={(event) => {
                         if (!isNaN(Number(event.target.value))) {
-                            onMapLayoutChange((prev) => ({ ...prev, innerBorderWidth: Number(event.target.value) }));
+                            setMapLayout((prev) => ({ ...prev, innerBorderWidth: Number(event.target.value) }));
                         }
                     }}
                 />
@@ -111,7 +108,7 @@ export const MapLayoutControls: FC<Props> = ({
                     type='color'
                     value={mapLayout.borderColor}
                     onChange={(event) => {
-                        onMapLayoutChange((prev) => ({ ...prev, borderColor: event.target.value }));
+                        setMapLayout((prev) => ({ ...prev, borderColor: event.target.value }));
                     }}
                     className={styles["input-color"]}
                 />
@@ -122,7 +119,7 @@ export const MapLayoutControls: FC<Props> = ({
                     type='color'
                     value={mapLayout.innerBorderColor}
                     onChange={(event) => {
-                        onMapLayoutChange((prev) => ({ ...prev, innerBorderColor: event.target.value }));
+                        setMapLayout((prev) => ({ ...prev, innerBorderColor: event.target.value }));
                     }}
                     className={styles["input-color"]}
                 />
@@ -132,7 +129,7 @@ export const MapLayoutControls: FC<Props> = ({
                     label="Box shadow"
                     value={mapLayout.boxShadow}
                     onChange={(event) => {
-                        onMapLayoutChange((prev) => ({ ...prev, boxShadow: event.target.value }));
+                        setMapLayout((prev) => ({ ...prev, boxShadow: event.target.value }));
                     }}
                     autoSelect
                     className={styles["textarea"]}
@@ -143,7 +140,7 @@ export const MapLayoutControls: FC<Props> = ({
                     label="Inner box shadow"
                     value={mapLayout.innerBoxShadow}
                     onChange={(event) => {
-                        onMapLayoutChange((prev) => ({ ...prev, innerBoxShadow: event.target.value }));
+                        setMapLayout((prev) => ({ ...prev, innerBoxShadow: event.target.value }));
                     }}
                     autoSelect
                     className={styles["textarea"]}
@@ -156,7 +153,7 @@ export const MapLayoutControls: FC<Props> = ({
                     autoSelect
                     value={mapLayout.borderRadius}
                     onChange={(event) => {
-                        onMapLayoutChange((prev) => ({ ...prev, borderRadius: event.target.value }));
+                        setMapLayout((prev) => ({ ...prev, borderRadius: event.target.value }));
                     }}
                     className={styles["input-color"]}
                 />

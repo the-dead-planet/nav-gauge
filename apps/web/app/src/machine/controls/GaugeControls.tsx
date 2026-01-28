@@ -1,18 +1,15 @@
-import { Dispatch, FC, SetStateAction, useMemo } from "react";
+import { FC, useMemo } from "react";
 import maplibregl from "maplibre-gl";
-import { ControlPlacement, controlsPositions, GaugeControlsType } from "@tinker-chest";
+import { controlsPositions } from "@tinker-chest";
 import { Input, Fieldset } from "@web-ui";
+import { ControlPlacement, useStateWarden, useSubjectState } from "@apparatus";
 import * as styles from './controls.module.css';
 
-interface Props {
-    gaugeControls: GaugeControlsType;
-    onGaugeConrolsChange: Dispatch<SetStateAction<GaugeControlsType>>;
-}
+interface Props { }
 
-export const GaugeControls: FC<Props> = ({
-    gaugeControls,
-    onGaugeConrolsChange
-}) => {
+export const GaugeControls: FC<Props> = () => {
+    const { cartomancer } = useStateWarden();
+    const [gaugeControls, setGaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const {
         globeProjection,
         showZoomButtons,
@@ -47,7 +44,7 @@ export const GaugeControls: FC<Props> = ({
                     id="controls-position"
                     name="controls-position"
                     value={controlPosition}
-                    onChange={(event) => onGaugeConrolsChange((prev) => ({
+                    onChange={(event) => setGaugeControls((prev) => ({
                         ...prev,
                         controlPosition: event.target.value as maplibregl.ControlPosition
                     }))}
@@ -67,7 +64,7 @@ export const GaugeControls: FC<Props> = ({
                             label={`Offset ${el} (px)`}
                             type='number'
                             value={reverseFactor * controlPlacement[el]}
-                            onChange={(event) => onGaugeConrolsChange((prev) => !isNaN(Number(event.target.value))
+                            onChange={(event) => setGaugeControls((prev) => !isNaN(Number(event.target.value))
                                 ? {
                                     ...prev,
                                     controlPlacement: { ...prev.controlPlacement, [el]: reverseFactor * Number(event.target.value) }
@@ -86,7 +83,7 @@ export const GaugeControls: FC<Props> = ({
                 type='checkbox'
                 checked={globeProjection}
                 onChange={() => { }}
-                onContainerClick={() => onGaugeConrolsChange((prev) => ({ ...prev, globeProjection: !prev.globeProjection }))}
+                onContainerClick={() => setGaugeControls((prev) => ({ ...prev, globeProjection: !prev.globeProjection }))}
                 containerClassName={styles["checkbox"]}
             />
             <Input
@@ -97,7 +94,7 @@ export const GaugeControls: FC<Props> = ({
                 type='checkbox'
                 checked={showZoomButtons}
                 onChange={() => { }}
-                onContainerClick={() => onGaugeConrolsChange((prev) => ({ ...prev, showZoomButtons: !prev.showZoomButtons }))}
+                onContainerClick={() => setGaugeControls((prev) => ({ ...prev, showZoomButtons: !prev.showZoomButtons }))}
                 containerClassName={styles["checkbox"]}
             />
             <Input
@@ -108,7 +105,7 @@ export const GaugeControls: FC<Props> = ({
                 type='checkbox'
                 checked={showCurrentZoom}
                 onChange={() => { }}
-                onContainerClick={() => onGaugeConrolsChange((prev) => ({ ...prev, showCurrentZoom: !prev.showCurrentZoom }))}
+                onContainerClick={() => setGaugeControls((prev) => ({ ...prev, showCurrentZoom: !prev.showCurrentZoom }))}
                 containerClassName={styles["checkbox"]}
             />
             <Input
@@ -119,7 +116,7 @@ export const GaugeControls: FC<Props> = ({
                 type='checkbox'
                 checked={showCompass}
                 onChange={() => { }}
-                onContainerClick={() => onGaugeConrolsChange((prev) => ({ ...prev, showCompass: !prev.showCompass }))}
+                onContainerClick={() => setGaugeControls((prev) => ({ ...prev, showCompass: !prev.showCompass }))}
                 containerClassName={styles["checkbox"]}
             />
             <Input
@@ -130,7 +127,7 @@ export const GaugeControls: FC<Props> = ({
                 type='checkbox'
                 checked={showGreenScreen}
                 onChange={() => { }}
-                onContainerClick={() => onGaugeConrolsChange((prev) => ({ ...prev, showGreenScreen: !prev.showGreenScreen }))}
+                onContainerClick={() => setGaugeControls((prev) => ({ ...prev, showGreenScreen: !prev.showGreenScreen }))}
                 containerClassName={styles["checkbox"]}
             />
             <Input
@@ -141,7 +138,7 @@ export const GaugeControls: FC<Props> = ({
                 type='checkbox'
                 checked={showRouteLine}
                 onChange={() => { }}
-                onContainerClick={() => onGaugeConrolsChange((prev) => ({ ...prev, showRouteLine: !prev.showRouteLine }))}
+                onContainerClick={() => setGaugeControls((prev) => ({ ...prev, showRouteLine: !prev.showRouteLine }))}
                 containerClassName={styles["checkbox"]}
             />
             <Input
@@ -152,7 +149,7 @@ export const GaugeControls: FC<Props> = ({
                 type='checkbox'
                 checked={showRoutePoints}
                 onChange={() => { }}
-                onContainerClick={() => onGaugeConrolsChange((prev) => ({ ...prev, showRoutePoints: !prev.showRoutePoints }))}
+                onContainerClick={() => setGaugeControls((prev) => ({ ...prev, showRoutePoints: !prev.showRoutePoints }))}
                 containerClassName={styles["checkbox"]}
             />
         </Fieldset>

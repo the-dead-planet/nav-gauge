@@ -2,10 +2,11 @@ import { BehaviorSubject } from "rxjs";
 import maplibregl from "maplibre-gl";
 import turfDistance from "@turf/distance";
 import { point as turfPoint } from "@turf/helpers";
-import { backgroundMapStyle, customRoadsMapStyle, MapStyle, osmMapStyle } from "./map-styles";
-import { Overlay } from "./model";
+import { backgroundMapStyle, customRoadsMapStyle, osmMapStyle } from "./map-styles";
 import { FeatureProperties, GeoJson } from "../../parsers";
-import { synchronizeSubjectWithStorage } from "../../state/tinkers";
+import { StorageKeeper } from "../../storage-keeper/storage-keeper";
+import { GaugeControlsType, MapLayout, Overlay } from "./model";
+import { defaultGaugeControls, defaultMapLayout } from "./tinkers";
 
 interface SelectedStyle {
     id: keyof typeof Cartomancer.styles;
@@ -28,9 +29,21 @@ export class Cartomancer {
     private selectedStyleStorageId = 'cartomancer:map-style';
     public selectedStyle$: BehaviorSubject<SelectedStyle>;
 
-    public constructor(storage: StorageLike) {
-        this.selectedStyle$ = new BehaviorSubject<{ id: keyof typeof Cartomancer.styles }>({ id: this.defaultStyleId });
-        synchronizeSubjectWithStorage(this.selectedStyle$, this.selectedStyleStorageId, storage, this.cleanUpSelectedStyle);
+    private gaugeControlsStorageId = 'cartomancer:gauge-controls';
+    public gaugeControls$: BehaviorSubject<GaugeControlsType>;
+    
+    private mapLayoutStorageId = 'cartomancer:map-layout';
+    public mapLayout$: BehaviorSubject<MapLayout>;
+
+    public constructor(storageKeeper: StorageKeeper) {
+        this.selectedStyle$ = new BehaviorSubject({ id: this.defaultStyleId });
+        storageKeeper.synchronizeSubjectWithStorage(this.selectedStyle$, this.selectedStyleStorageId, this.cleanUpSelectedStyle);
+        
+        this.gaugeControls$ = new BehaviorSubject(defaultGaugeControls);
+        storageKeeper.synchronizeSubjectWithStorage(this.gaugeControls$, this.gaugeControlsStorageId);
+        
+        this.mapLayout$ = new BehaviorSubject(defaultMapLayout);
+        storageKeeper.synchronizeSubjectWithStorage(this.mapLayout$, this.mapLayoutStorageId);
     }
 
     public zoom$ = new BehaviorSubject(0);
