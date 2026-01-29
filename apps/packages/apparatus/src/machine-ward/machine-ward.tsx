@@ -1,9 +1,10 @@
 import { ComponentType, ReactElement } from "react";
-import { GearId, MachineWardFooterProps, MachineWardLayoutProps, MachineWardMachineProps, MachineWardNoticesProps, MachineWardTopBarProps } from "./model";
-import { MachineWardApp } from "./MachineWardApp";
-import { Gear, StateWarden } from "../state-warden";
-import { ErrorBoundaryProps } from "@ui";
 import { pairwise } from "rxjs";
+import { ErrorBoundaryProps } from "@ui";
+import { MachineWardApp } from "./MachineWardApp";
+import { StateWarden } from "../state-warden";
+import { Gear, GearId } from "../gears";
+import { MachineWardFooterProps, MachineWardLayoutProps, MachineWardMachineProps, MachineWardNoticesProps, MachineWardTopBarProps } from "./model";
 
 /**
  * Ward with machines. 

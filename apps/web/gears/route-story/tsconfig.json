@@ -1,0 +1,19 @@
+{
+    "extends": "../../tsconfig.web.json",
+    "compilerOptions": {
+        "paths": {
+            "@apparatus": [
+                "../../../packages/apparatus/src"
+            ],
+            "@tinker-chest": [
+                "../../../packages/tinker-chest/src"
+            ],
+            "@ui": [
+                "../../../ui/src"
+            ],
+            "@web-ui": [
+                "../../ui/src"
+            ]
+        }
+    }
+}

@@ -12,7 +12,6 @@ module.exports = () => ({
             '@tinker-chest': path.resolve(__dirname, '../../packages/tinker-chest/src'),
             '@ui': path.resolve(__dirname, '../../ui/src'),
             '@web-ui': path.resolve(__dirname, '../ui/src'),
-            '@gears': path.resolve(__dirname, '../gears/src'),
         },
     },
     module: {

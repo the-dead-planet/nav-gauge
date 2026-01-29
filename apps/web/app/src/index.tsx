@@ -1,10 +1,15 @@
 import { createRoot } from 'react-dom/client';
-import { routeGear } from '@gears';
 import { WebMachineWard } from './machine-ward';
+import { WebRouteStoryGear } from '../../gears/route-story/src';
 import "./index.css";
 
 const machineWard = new WebMachineWard(
-    { route: routeGear },
+    {
+        navigate: null,
+        'route-story': new WebRouteStoryGear(),
+        "record-route": null,
+        "submit-data": null,
+    },
     localStorage,
     window.matchMedia("(prefers-color-scheme: light)").matches
 );

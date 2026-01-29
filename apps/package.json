@@ -24,7 +24,7 @@
         "test:tinker-chest": "yarn workspace @the-dead-planet/nav-gauge-tinker-chest test",
         "test:web": "yarn test:web-app && yarn test:web-gears && yarn test:web-ui",
         "test:web-app": "yarn workspace @the-dead-planet/nav-gauge-web-app test",
-        "test:web-gears": "yarn workspace @the-dead-planet/nav-gauge-web-gears test",
+        "test:web-gears": "yarn workspace @the-dead-planet/nav-gauge-web-gears-route-story test",
         "test:web-ui": "yarn workspace @the-dead-planet/nav-gauge-web-ui test",
         "test:mobile": "yarn test:mobile-app && yarn test:mobile-ui",
         "test:mobile-app": "yarn workspace @the-dead-planet/nav-gauge-mobile-app test",
@@ -71,7 +71,9 @@
         "packages": [
             "ui",
             "packages/*",
-            "web/*",
+            "web/app",
+            "web/ui",
+            "web/gears/*",
             "mobile/*"
         ]
     }

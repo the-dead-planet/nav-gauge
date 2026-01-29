@@ -1,5 +1,5 @@
 {
-    "name": "@the-dead-planet/nav-gauge-web-gears",
+    "name": "@the-dead-planet/nav-gauge-web-gears-route-story",
     "version": "1.0.0",
     "private": true,
     "main": "src/index.ts",

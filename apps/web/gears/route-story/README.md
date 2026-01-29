@@ -1,6 +1,6 @@
-# Web gears
+# Route story
 
-Features plugged in to the web app.
+Route story feature plugged in to the web app.
 See [README](/apps/web/README.md).
 
 ## Import sequence

@@ -13,14 +13,14 @@
         }
     },
     "include": [
-        "*/src/**/*",
-        "*/test/**/*",
-        "*/types/**/*",
+        "**/src/**/*",
+        "**/test/**/*",
+        "**/types/**/*",
         "../types/**/*"
     ],
     "exclude": [
         "node_modules",
-        "*/node_modules",
+        "**/node_modules",
         "dist",
         "cypress"
     ]

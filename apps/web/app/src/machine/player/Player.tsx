@@ -2,8 +2,9 @@ import { CSSProperties, FC, useEffect } from "react";
 import { pairwise } from "rxjs";
 import { GeoJson, SurveillanceState, useStateWarden, useSubjectState } from "@apparatus";
 import { RouteTimes, formatProgressMs, formatTimestamp, getProgressPercentage } from "@tinker-chest";
-import { MarkerImage, updateRouteLayer } from "@gears";
 import { WebChronoLens } from "../../chrono-lens/chrono-lens";
+import { updateRouteLayer } from "../../../../gears/route-story/src/tinkers";
+import { MarkerImage } from "../../../../gears/route-story/src";
 import * as styles from './player.module.css';
 
 const WebLens = new WebChronoLens();
