@@ -1,17 +1,17 @@
 {
     "name": "@the-dead-planet/nav-gauge-web-app",
     "version": "1.0.0",
-    "description": "Navigation gauge and story generator with map component with customization options with data from a .gpx file and uploaded images.",
-    "homepage": "https://nav-gauge.spookydoodle.com",
+    "description": "Navigation gauge and route story generator for the web.",
+    "homepage": "https://gauge.spookydoodle.com",
     "main": "src/index.tsx",
     "type": "module",
     "private": true,
     "license": "AGPL-3.0",
     "author": "spookydoodle",
     "funding": "https://ko-fi.com/spookydoodle",
-    "repository": "https://github.com/spookydoodle/nav-gauge",
+    "repository": "https://github.com/the-dead-planet/nav-gauge",
     "bugs": {
-        "url": "https://github.com/spookydoodle/nav-gauge/issues"
+        "url": "https://github.com/the-dead-planet/nav-gauge/issues"
     },
     "scripts": {
         "dev": "rspack serve --mode development --config rspack.config.development.cjs",
