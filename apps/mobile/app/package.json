@@ -1,7 +1,15 @@
 {
     "name": "@the-dead-planet/nav-gauge-mobile-app",
     "version": "1.0.0",
+    "description": "Navigation gauge and route story generator for mobile devices.",
     "private": true,
+    "license": "AGPL-3.0",
+    "author": "spookydoodle",
+    "funding": "https://ko-fi.com/spookydoodle",
+    "repository": "https://github.com/the-dead-planet/nav-gauge",
+    "bugs": {
+        "url": "https://github.com/the-dead-planet/nav-gauge/issues"
+    },
     "scripts": {
         "android": "react-native run-android",
         "ios": "react-native run-ios",

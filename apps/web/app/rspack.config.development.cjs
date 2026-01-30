@@ -29,10 +29,6 @@ module.exports = () => {
                 import: path.resolve('../ui/src/index.ts'),
                 dependOn: ['react-vendors']
             },
-            gears: {
-                import: path.resolve('../gears/src/index.ts'),
-                dependOn: ['react-vendors']
-            },
             'react-vendors': ['react', 'react-dom']
         },
         module: Object.assign({}, config.module, {

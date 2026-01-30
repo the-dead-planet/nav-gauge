@@ -20,4 +20,3 @@ export interface MachineWardNoticesProps {
     onRemove: (id: string) => void;
 }
 
-export type GearId = 'route';

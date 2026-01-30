@@ -12,7 +12,6 @@ module.exports = () => ({
             '@tinker-chest': path.resolve(__dirname, '../../packages/tinker-chest/src'),
             '@ui': path.resolve(__dirname, '../../ui/src'),
             '@web-ui': path.resolve(__dirname, '../ui/src'),
-            '@gears': path.resolve(__dirname, '../gears/src'),
         },
     },
     module: {
@@ -110,7 +109,17 @@ module.exports = () => ({
         }),
         new rspack.CopyRspackPlugin({
             patterns: [
-                { from: "./public", to: './' },
+                {
+                    context: '../gears/',
+                    from: '*/public/**/*',
+                    to: '[name][ext]',
+                    toType: 'template',
+                    noErrorOnMissing: true,
+                },
+                {
+                    from: "./public",
+                    to: './'
+                },
             ],
         }),
     ],

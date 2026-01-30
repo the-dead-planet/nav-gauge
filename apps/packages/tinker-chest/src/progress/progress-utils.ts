@@ -1,5 +1,4 @@
 import { DateTime } from "luxon";
-import { RouteTimes } from "./model";
 import { TimeFormat } from "../preferences/model";
 import { defaultDateFormat, defaultTimeFormat } from "../preferences/preferences";
 
@@ -33,15 +32,4 @@ export const formatTimestamp = (progressMs: number, startTimeEpoch?: number, opt
         timeFormat = defaultTimeFormat
     } = options ?? {};
     return DateTime.fromMillis(startTimeEpoch + progressMs, { zone }).toFormat(`${dateFormat} ${timeFormat}`);
-};
-
-/**
- * Current progress as percentage of total duration.
- * @returns Value between 0 and 100.
- */
-export const getProgressPercentage = (progressMs: number, routeTimes?: RouteTimes): number => {
-    if (!routeTimes) {
-        return 0;
-    }
-    return (progressMs / routeTimes.duration * 100);
 };

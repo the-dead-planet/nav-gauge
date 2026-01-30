@@ -1,6 +1,6 @@
 import { BehaviorSubject } from "rxjs";
-import { Gear } from "./model";
 import { StateWarden } from "../state-warden";
+import { Gear } from "../../gears";
 
 export class Engine {
     public constructor() { }

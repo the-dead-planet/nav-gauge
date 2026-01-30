@@ -91,7 +91,7 @@ jobs:
           script: |
             set -e
 
-            IMAGE="ghcr.io/spookydoodle/nav-gauge"
+            IMAGE="ghcr.io/the-dead-planet/nav-gauge"
             PORT="8084"
             PORTS="-p $PORT:8080"
 

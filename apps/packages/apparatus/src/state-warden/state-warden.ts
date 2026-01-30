@@ -8,7 +8,7 @@ import { Engine } from "./engine";
 import { SignaliumBureau } from "./signalium-bureau";
 import { ApplicationSettingsType, getDefaultApplicationSettings } from "@tinker-chest";
 import { StorageKeeper } from "../storage-keeper/storage-keeper";
-import { PresetStation } from "./preset-station";
+import { ToolsStation } from "./tools-station";
 
 /**
  * Warden does what warden needs to do.
@@ -19,7 +19,7 @@ export class StateWarden {
     public applicationSettings$: BehaviorSubject<ApplicationSettingsType>;
     public animatrix: Animatrix;
     public cartomancer: Cartomancer;
-    public presetStation: PresetStation;
+    public toolsStation: ToolsStation;
     public storageKeeper: StorageKeeper;
 
     public constructor(storage: StorageLike, prefersLightColorScheme: boolean) {
@@ -33,12 +33,12 @@ export class StateWarden {
         this.cartomancer = new Cartomancer(this.storageKeeper);
         this.setUpAttributionUpdates();
 
-        const initialPreset = PresetStation.detectPreset(
+        const initialPreset = ToolsStation.detectPreset(
             this.cartomancer.mapLayout$.value,
             this.cartomancer.gaugeControls$.value,
             this.animatrix.controls$.value
         );
-        this.presetStation = new PresetStation(initialPreset ?? 'default');
+        this.toolsStation = new ToolsStation(initialPreset ?? 'default');
         this.setUpPresetUpdate();
     }
 
@@ -61,8 +61,8 @@ export class StateWarden {
     };
 
     private setUpPresetUpdate = () => {
-        this.presetStation.preset$.subscribe((next) => {
-            const option = PresetStation.presetOptions.find((option) => option.value === next);
+        this.toolsStation.preset$.subscribe((next) => {
+            const option = ToolsStation.presetOptions.find((option) => option.value === next);
             if (!option) {
                 return;
             }
@@ -77,7 +77,7 @@ export class StateWarden {
             this.cartomancer.gaugeControls$,
             this.animatrix.controls$
         ]).subscribe((args) => {
-            this.presetStation.active$.next(PresetStation.detectPreset(...args) === this.presetStation.preset$.value);
+            this.toolsStation.isPresetActive$.next(ToolsStation.detectPreset(...args) === this.toolsStation.preset$.value);
         })
     };
 

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { BehaviorSubject} from 'rxjs';
+import { BehaviorSubject, Observable} from 'rxjs';
 
 export function useSubjectState<T>(subject$: BehaviorSubject<T>): [T, React.Dispatch<React.SetStateAction<T>>] {
     const [subject, setSubject] = useState<T>(subject$.value);
@@ -25,6 +25,20 @@ export function useSubjectState<T>(subject$: BehaviorSubject<T>): [T, React.Disp
     );
 
     return [subject, handleChange];
+}
+
+export function useObservableState<T>(subject$: Observable<T>, defaultValue: T): T {
+    const [subject, setSubject] = useState<T>(defaultValue);
+
+    useEffect(() => {
+        const subscription = subject$.subscribe(setSubject);
+
+        return () => {
+            subscription.unsubscribe();
+        };
+    }, [subject$]);
+
+    return subject;
 }
 
 export function useNullableSubjectState<T>(subject$: BehaviorSubject<T> | undefined, initialValue: T): [T, React.Dispatch<React.SetStateAction<T>>] {
