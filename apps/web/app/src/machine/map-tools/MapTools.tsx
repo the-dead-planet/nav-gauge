@@ -22,10 +22,7 @@ interface Props {
     children?: ReactNode;
 }
 
-export const MapTools: FC<Props> = ({
-    map,
-    children,
-}) => {
+export const MapTools: FC<Props> = ({ map, children }) => {
     const { cartomancer, toolsStation } = useStateWarden();
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const [containerRef, setContainerRef] = useState<HTMLElement | null>(null);
