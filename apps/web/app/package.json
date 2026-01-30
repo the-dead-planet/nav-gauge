@@ -42,7 +42,6 @@
         "@the-dead-planet/nav-gauge-tinker-chest": "*",
         "@the-dead-planet/nav-gauge-ui": "*",
         "@the-dead-planet/nav-gauge-web-ui": "*",
-        "@the-dead-planet/nav-gauge-web-gears-route-story": "*",
         "classnames": "^2.5.1",
         "maplibre-gl": "^5.16.0",
         "pmtiles": "^4.3.2",
