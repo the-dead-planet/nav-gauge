@@ -5,6 +5,7 @@ import {
     useSubjectState,
     MapLayerData,
 } from "@apparatus";
+import { emptyCollection, GeoJson } from "@tinker-chest";
 import {
     sourceIds,
     layerIds,
@@ -13,7 +14,6 @@ import {
     ImageFeatureProperties
 } from '../layers';
 import { getImageIconSize, getIconImageId } from "../tinkers";
-import { emptyCollection, GeoJson } from "@tinker-chest";
 import { IMAGE_SIZE, LoadedImageData } from "./image-parser";
 
 const ANIMATION_DURATION = 250;

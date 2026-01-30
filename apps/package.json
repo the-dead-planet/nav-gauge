@@ -71,6 +71,7 @@
         "packages": [
             "ui",
             "packages/*",
+            "gears/*",
             "web/app",
             "web/ui",
             "web/gears/*",

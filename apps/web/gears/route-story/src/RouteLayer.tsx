@@ -7,8 +7,6 @@ import {
     useSubjectState,
     useMapLayerData,
     MapLayerData,
-    MarkerImage,
-    RouteTimes
 } from "@apparatus";
 import { getRouteSourceData, updateRouteLayer } from "./tinkers";
 import { currentPointLayers, routeLineLayer, getRoutePointsLayer, sourceIds } from "./layers";

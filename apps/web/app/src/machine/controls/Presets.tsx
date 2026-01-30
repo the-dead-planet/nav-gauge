@@ -8,9 +8,10 @@ import {
     Preset,
     ToolsStation,
     useStateWarden,
-    useSubjectState
+    useSubjectState,
+    validateGaugeControls,
+    validateMapLayout
 } from "@apparatus";
-import { validateGaugeControls, validateMapLayout } from "@tinker-chest";
 import * as styles from './controls.module.css';
 
 interface Props { }

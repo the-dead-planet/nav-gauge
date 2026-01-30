@@ -4,11 +4,12 @@ import turfDistance from "@turf/distance";
 import turfAlong from "@turf/along";
 import { point as turfPoint, lineString as turfLine } from "@turf/helpers";
 import turfLength from "@turf/length";
-import { CurrentPointData, MarkerImage, RouteTimes } from "@apparatus";
+import { CurrentPointData, MarkerImage } from "@apparatus";
 import { GeoJson } from "@tinker-chest";
 import { sourceIds } from "./layers";
 import { LoadedImageData } from "./images/image-parser";
 import { BehaviorSubject } from "rxjs";
+import { RouteTimes } from "@the-dead-planet/nav-gauge-gears-route-story";
 
 /**
  * Gets current point data, updates map sources, and returns it.

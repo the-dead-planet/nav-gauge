@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import { WebMachineWard } from './machine-ward';
-import { WebRouteStoryGear } from '../../gears/route-story/src';
+import { WebRouteStoryGear } from '@the-dead-planet/nav-gauge-web-gears-route-story';
 import "./index.css";
 
 const machineWard = new WebMachineWard(

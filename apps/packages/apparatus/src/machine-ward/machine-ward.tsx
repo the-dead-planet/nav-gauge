@@ -17,7 +17,7 @@ export abstract class MachineWard {
     public readonly stateWarden: StateWarden;
 
     public constructor(
-        gears: { [key in GearId]: (new (stateWarden: StateWarden) => Gear<GearId>) | null },
+        gears: { [K in GearId]: (new (stateWarden: StateWarden) => Gear<K>) | null },
         storage: StorageLike,
         prefersLightColorScheme: boolean
     ) {

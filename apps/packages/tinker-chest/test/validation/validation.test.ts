@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { describe } from "mocha";
-import { validateGaugeControls, validateMapLayout } from "../../src/validation/controls.js";
-import { GaugeControlsType, MapLayout } from "../../src/controls/model.js";
+import { validateGaugeControls, validateMapLayout } from "../../../apparatus/src/state-warden/cartomancer/validation/controls.js";
+import { GaugeControlsType, MapLayout } from "../../../apparatus/src/index.js";
 
 describe("Tinker chest", () => {
     describe("Validation", () => {

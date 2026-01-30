@@ -1,5 +1,5 @@
 {
-    "name": "@the-dead-planet/nav-gauge-apparatus",
+    "name": "@the-dead-planet/nav-gauge-gears-record-route",
     "version": "1.0.0",
     "private": true,
     "main": "src/index.ts",
@@ -10,11 +10,9 @@
         "test": "mocha"
     },
     "dependencies": {
+        "@the-dead-planet/nav-gauge-apparatus": "*",
         "@the-dead-planet/nav-gauge-tinker-chest": "*",
-        "@the-dead-planet/nav-gauge-ui": "*",
-        "@tmcw/togeojson": "^7.1.2",
-        "@xmldom/xmldom": "^0.8.11",
-        "fast-xml-parser": "^5.3.3"
+        "@the-dead-planet/nav-gauge-ui": "*"
     },
     "devDependencies": {
         "react": "^19.2.3"

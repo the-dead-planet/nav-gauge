@@ -1,6 +1,7 @@
 import { ComponentType } from 'react';
 import { combineLatest } from 'rxjs';
-import { ToolProps, OverlayComponentProps, RouteStoryGear, StateWarden } from '@apparatus';
+import { ToolProps, OverlayComponentProps, StateWarden } from '@apparatus';
+import { RouteStoryGear } from '@the-dead-planet/nav-gauge-gears-route-story';
 import { RouteLayer } from './RouteLayer';
 import { ImagesLayer } from './images/ImagesLayer';
 import { FileInput } from './FileInput';

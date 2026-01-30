@@ -1,13 +1,11 @@
 import { ComponentType } from "react";
 import { BehaviorSubject } from "rxjs";
-import { ToolProps, MarkerImage, OverlayComponentProps, StateWarden } from "../../state-warden";
-import { Gear } from "../gear";
-import { GearId } from "../model";
-import { RouteTimes } from "./model";
+import { ToolProps, MarkerImage, OverlayComponentProps, StateWarden, Gear } from "@apparatus";
 import { ParsingResultWithError } from "@tinker-chest";
+import { RouteTimes } from "./model";
 
-export abstract class RouteStoryGear extends Gear<GearId> {
-    public readonly id: GearId = 'route-story';
+export abstract class RouteStoryGear extends Gear<'route-story'> {
+    public readonly id = 'route-story';
     public readonly data$ = new BehaviorSubject<ParsingResultWithError>({});
     public readonly routeTimes$ = new BehaviorSubject<RouteTimes | null>(null);
     public readonly images$ = new BehaviorSubject<MarkerImage[]>([]);
