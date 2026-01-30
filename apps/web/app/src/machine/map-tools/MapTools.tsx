@@ -1,38 +1,21 @@
-import { FC, ReactNode, useState, useEffect } from "react";
+import { FC, ReactNode, useState, useEffect, ComponentType } from "react";
+import * as rxjs from "rxjs";
 import maplibregl from "maplibre-gl";
 import { Protocol } from "pmtiles";
 import classNames from "classnames";
-import { Cartomancer, useStateWarden, useSubjectState } from "@apparatus";
-import findIcon from '../icons/find.svg';
+import { Icons } from "@web-ui";
+import { Cartomancer, ToolProps, ToolPlacement, useObservableState, useStateWarden, useSubjectState } from "@apparatus";
 import * as styles from './map-tools.module.css';
 import './map.css';
 
+interface ObservedTool {
+    id: string;
+    placement: ToolPlacement;
+    component: ComponentType<ToolProps>;
+}
+
 interface Props {
     map: maplibregl.Map;
-    /**
-     * Tools to display on the top side of the main map section.
-     * Have access to map context and will not be unmounted for the duration of the style updates. 
-     * Do not update sources and layers in components passed in this prop as it might lead to MapLibre's `Style is not done loading` errors.
-     */
-    toolsTop?: ReactNode;
-    /**
-     * Tools to display on the right side of the main map section.
-     * Have access to map context and will not be unmounted for the duration of the style updates. 
-     * Do not update sources and layers in components passed in this prop as it might lead to MapLibre's `Style is not done loading` errors.
-     */
-    toolsRight?: ReactNode;
-    /**
-     * Tools to display on the bottom side of the main map section.
-     * Have access to map context and will not be unmounted for the duration of the style updates. 
-     * Do not update sources and layers in components passed in this prop as it might lead to MapLibre's `Style is not done loading` errors.
-     */
-    toolsBottom?: ReactNode;
-    /**
-     * Tools to display on the left side of the main map section.
-     * Have access to map context and will not be unmounted for the duration of the style updates. 
-     * Do not update sources and layers in components passed in this prop as it might lead to MapLibre's `Style is not done loading` errors.
-     */
-    toolsLeft?: ReactNode;
     /**
      * Will be unmounted for the duration of style updates.
      */
@@ -41,15 +24,10 @@ interface Props {
 
 export const MapTools: FC<Props> = ({
     map,
-    toolsTop,
-    toolsRight,
-    toolsBottom,
-    toolsLeft,
     children,
 }) => {
-    const { cartomancer } = useStateWarden();
+    const { cartomancer, toolsStation } = useStateWarden();
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
-    const [mapLayout] = useSubjectState(cartomancer.mapLayout$);
     const [containerRef, setContainerRef] = useState<HTMLElement | null>(null);
     const [cssLoaded, setCssLoaded] = useState(false);
     const [isInitialised, setIsInitialised] = useSubjectState(cartomancer.isInitialised$);
@@ -174,7 +152,7 @@ export const MapTools: FC<Props> = ({
                 const promise = new Promise((resolve) => {
                     image.onload = resolve;
                 });
-                image.src = findIcon;
+                image.src = Icons.Find;
                 await promise;
                 image.width = 20;
                 image.height = 20;
@@ -189,20 +167,36 @@ export const MapTools: FC<Props> = ({
         };
     }, [isInitialised]);
 
+    const toolComponents$: rxjs.Observable<ObservedTool[]> = toolsStation.toolComponents$.pipe(rxjs.switchMap((toolsMap) => {
+        const tools = [...toolsMap.entries()];
+
+        if (tools.length === 0) {
+            return rxjs.of([]);
+        }
+
+        return rxjs.combineLatest(tools.map(([id, tool]) => tool.placement$.pipe(
+            rxjs.map((placement) => ({ placement, id, component: tool.component }))
+        )));
+    }));
+
+    const toolComponents = useObservableState(toolComponents$, []);
+
+    const toolsByPlacement = toolComponents.reduce<{ [key in ToolPlacement]: ObservedTool[] }>((acc, val) => {
+        acc[val.placement].push(val);
+        return acc;
+    }, { top: [], right: [], bottom: [], left: [] });
+
+    const placements: ToolPlacement[] = ["top", "right", "bottom", "left"];
+
     return (
         <div className={styles["container"]}>
-            <div className={classNames(styles["toolbox"], styles["top"])}>
-                {toolsTop}
-            </div>
-            <div className={classNames(styles["toolbox"], styles["right"])}>
-                {toolsRight}
-            </div>
-            <div className={classNames(styles["toolbox"], styles["bottom"])}>
-                {toolsBottom}
-            </div>
-            <div className={classNames(styles["toolbox"], styles["left"])}>
-                {toolsLeft}
-            </div>
+            {placements.map((p) => (
+                <div className={classNames(styles["toolbox"], styles[p])}>
+                    {toolsByPlacement[p].map(({ id, component: ToolComponent }) => (
+                        <ToolComponent key={id} map={map} />
+                    ))}
+                </div>
+            ))}
             <div className={styles["map-area"]}>
                 <div ref={setContainerRef} className={classNames(styles["nav-gauge-map"], {
                     [styles["with-green-screen"]]: gaugeControls.showGreenScreen

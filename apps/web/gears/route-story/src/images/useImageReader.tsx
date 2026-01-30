@@ -1,17 +1,14 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import maplibregl from "maplibre-gl";
-import { Cartomancer, GeoJson } from "@apparatus";
-import { MarkerImage, parseImage } from "../../../gears/route-story/src";
+import { Cartomancer } from "@apparatus";
+import { GeoJson } from "@tinker-chest";
+import { MarkerImage, parseImage } from "./image-parser";
 
-type ImageReaderResult = [
-    MarkerImage[],
-    (file: File) => void,
-    (imageId: number, featureId: number) => void
-]
+type ImageReaderResult = (file: File, geojson?: GeoJson) => void;
 
-export const useImageReader = (): ImageReaderResult => {
-    const [images, setImages] = useState<MarkerImage[]>([]);
-
+export const useImageReader = (
+    onImagesChange: Dispatch<SetStateAction<MarkerImage[]>>
+): ImageReaderResult => {
     const readImage = (file: File, geojson?: GeoJson) => {
         const reader = new FileReader();
 
@@ -24,7 +21,7 @@ export const useImageReader = (): ImageReaderResult => {
         };
 
         reader.onloadstart = () => {
-            setImages((prev) => prev.filter((el) => el.name !== file.name).concat({
+            onImagesChange((prev) => prev.filter((el) => el.name !== file.name).concat({
                 id: getNext(prev.map((el) => el.id)),
                 name: file.name,
                 progress: 0
@@ -32,7 +29,7 @@ export const useImageReader = (): ImageReaderResult => {
         };
 
         reader.onprogress = (e) => {
-            setImages((prev) => {
+            onImagesChange((prev) => {
                 const nextImages = prev.slice();
                 const index = prev.findIndex((el) => el.name === file.name);
                 nextImages[index] = { ...nextImages[index], progress: Number((e.loaded / e.total * 100).toFixed(0)) };
@@ -43,7 +40,7 @@ export const useImageReader = (): ImageReaderResult => {
 
         reader.onload = async (e) => {
             const { data, bitmap, exif, lngLat, error } = await parseImage(file, e);
-            setImages((prev) => {
+            onImagesChange((prev) => {
                 const nextImages = prev.slice();
                 const index = prev.findIndex((el) => el.name === file.name);
                 const [featureId, feature] = geojson ? Cartomancer.getClosestFeature(geojson, lngLat) : [0, undefined];
@@ -75,7 +72,7 @@ export const useImageReader = (): ImageReaderResult => {
         };
 
         reader.onerror = (e) => {
-            setImages((prev) => {
+            onImagesChange((prev) => {
                 const nextImages = prev.slice();
                 const index = prev.findIndex((el) => el.name === file.name);
                 nextImages[index] = { ...nextImages[index], error: e.target?.error?.message ?? 'Cannot read file' };
@@ -87,9 +84,5 @@ export const useImageReader = (): ImageReaderResult => {
         reader.readAsDataURL(file);
     };
 
-    const updateImageFeatureId = (imageId: number, featureId: number) => {
-        setImages((prev) => prev.map((im) => im.id === imageId ? { ...im, featureId } : im))
-    };
-
-    return [images, readImage, updateImageFeatureId];
+    return readImage;
 };

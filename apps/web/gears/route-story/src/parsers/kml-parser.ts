@@ -1,6 +1,6 @@
 import { kml } from '@tmcw/togeojson';
 import { FileToGeoJSONParser } from './file-parser';
-import { createFeature, getMissingTimeInformationError, getUnsupportedGeometryError, ParsingResult } from '@apparatus';
+import { createFeature, getMissingTimeInformationError, getUnsupportedGeometryError, ParsingResult } from '@tinker-chest';
 
 // TODO: Use common package for both web and mobile
 export class KmlParser extends FileToGeoJSONParser {

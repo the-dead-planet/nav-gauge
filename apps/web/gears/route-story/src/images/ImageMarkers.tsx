@@ -1,8 +1,16 @@
 import { FC } from "react";
 import { OverlayComponentProps } from "@apparatus";
 import { ImageMarker, MarkerImageData } from "./ImageMarker";
+import { GeoJson } from "@tinker-chest";
+import { MarkerImage } from "./image-parser";
 
-export const ImageMarkers: FC<OverlayComponentProps> = ({
+interface Props {
+    geojson: GeoJson;
+    images: MarkerImage[];
+    onUpdateImageFeatureId: (imageId: number, featureId: number) => void;
+}
+
+export const ImageMarkers: FC<OverlayComponentProps & Props> = ({
     map,
     geojson,
     images,

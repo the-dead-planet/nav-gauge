@@ -6,7 +6,7 @@ import "./index.css";
 const machineWard = new WebMachineWard(
     {
         navigate: null,
-        'route-story': new WebRouteStoryGear(),
+        'route-story': WebRouteStoryGear,
         "record-route": null,
         "submit-data": null,
     },

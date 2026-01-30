@@ -6,7 +6,8 @@ import {
     Cartomancer,
     FeatureStateProps,
     useMapLayerData,
-    MapLayerData
+    MapLayerData,
+    useSubjectState
 } from "@apparatus";
 import { useLoadedImages } from "../hooks/useLoadedImages";
 import {
@@ -17,17 +18,21 @@ import {
     layerIds,
 } from '../layers';
 import { DisplayImageLayer } from "./DisplayImageLayer";
-import { getIconImageId } from "../tinkers";
-import { IMAGE_SIZE } from "./image-parser";
+import { getIconImageId, updateImageFeatureId } from "../tinkers";
+import { IMAGE_SIZE, MarkerImage } from "./image-parser";
 import { useMapImages } from "../hooks";
+import { ParsingResultWithError } from "@tinker-chest";
+import { BehaviorSubject } from "rxjs";
 
-export const ImagesLayer: FC<OverlayComponentProps> = ({
-    map,
-    geojson,
-    images,
-    onUpdateImageFeatureId,
-}) => {
+interface Props {
+    data$: BehaviorSubject<ParsingResultWithError>;
+    images$: BehaviorSubject<MarkerImage[]>;
+}
+
+export const ImagesLayer: FC<OverlayComponentProps & Props> = ({ map, data$, images$ }) => {
     const { theme } = useTheme();
+    const [{ geojson }] = useSubjectState(data$);
+    const [images] = useSubjectState(images$);
     const loadedImages = useLoadedImages(images);
     const [highlightIds, setHighlightIds] = useState<Set<string>>(new Set());
     const [draggingId, setDraggingId] = useState<number | null>(null);
@@ -44,7 +49,7 @@ export const ImagesLayer: FC<OverlayComponentProps> = ({
     const sourceDataGeojson = useMemo((): GeoJSON.FeatureCollection<GeoJSON.Point, ImageFeatureProperties> => ({
         type: 'FeatureCollection',
         features: loadedImages.reduce<ImageFeature[]>((acc, image) => {
-            const feature = geojson.features.find((f) => f.properties.id === image.featureId);
+            const feature = geojson?.features.find((f) => f.properties.id === image.featureId);
             if (feature) {
                 acc.push({
                     type: 'Feature',
@@ -112,6 +117,9 @@ export const ImagesLayer: FC<OverlayComponentProps> = ({
         }
         map.dragPan.disable();
         const handleDrag = (event: maplibregl.MapMouseEvent | maplibregl.MapTouchEvent) => {
+            if (!geojson) {
+                return;
+            }
             event.preventDefault();
             const [_id, feature] = Cartomancer.getClosestFeature(geojson, event.lngLat);
             const image = loadedImages.find((image) => image.id === draggingId);
@@ -135,13 +143,16 @@ export const ImagesLayer: FC<OverlayComponentProps> = ({
         };
 
         const handleDragEnd = (event: maplibregl.MapMouseEvent | maplibregl.MapTouchEvent) => {
+            if (!geojson) {
+                return;
+            }
             event.preventDefault();
             const [id, _feature] = Cartomancer.getClosestFeature(geojson, event.lngLat);
             const image = loadedImages.find((image) => image.id === draggingId)
             if (!image) {
                 return;
             }
-            onUpdateImageFeatureId(image.id, id);
+            updateImageFeatureId(images$, image.id, id);
 
         };
 
@@ -158,6 +169,10 @@ export const ImagesLayer: FC<OverlayComponentProps> = ({
             map.dragPan.enable();
         };
     }, [draggingId]);
+
+    if (!geojson) {
+        return null;
+    }
 
     return <DisplayImageLayer map={map} geojson={geojson} loadedImages={loadedImages} />;
 };

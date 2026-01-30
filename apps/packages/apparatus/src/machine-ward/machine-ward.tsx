@@ -15,22 +15,29 @@ export abstract class MachineWard {
     public readonly storage: StorageLike;
     public readonly prefersLightColorScheme: boolean;
     public readonly stateWarden: StateWarden;
-    public gears: { [key in GearId]: Gear<GearId> | null };
 
     public constructor(
-        gears: { [key in GearId]: Gear<GearId> | null },
+        gears: { [key in GearId]: (new (stateWarden: StateWarden) => Gear<GearId>) | null },
         storage: StorageLike,
         prefersLightColorScheme: boolean
     ) {
         this.storage = storage;
         this.prefersLightColorScheme = prefersLightColorScheme;
         this.stateWarden = new StateWarden(storage, prefersLightColorScheme);
-        this.gears = gears;
+
+        this.stateWarden.engine.addGears(
+            Object.values(gears).reduce<Gear<GearId>[]>((acc, Gear) => {
+                if (Gear) {
+                    acc.push(new Gear(this.stateWarden));
+                }
+                return acc;
+            }, [])
+        );
+
         this.initializeValves();
     }
 
     private initializeValves = () => {
-        this.stateWarden.engine.addGears(Object.values(this.gears).filter((gear) => !!gear))
         this.stateWarden.engine.openValves(this.stateWarden.engine.gears$.value, this.stateWarden);
         this.stateWarden.engine.gears$
             .pipe(pairwise())
@@ -48,7 +55,7 @@ export abstract class MachineWard {
     public abstract readonly noticesComponent: ComponentType<MachineWardNoticesProps>;
 
     public title = 'nav gauge';
-    
+
     public render = (): ReactElement => {
         return <MachineWardApp machineWard={this} />;
     }

@@ -4,13 +4,11 @@ import turfDistance from "@turf/distance";
 import turfAlong from "@turf/along";
 import { point as turfPoint, lineString as turfLine } from "@turf/helpers";
 import turfLength from "@turf/length";
-import {
-    GeoJson,
-    // TODO: Move
-    CurrentPointData
-} from "@apparatus";
+import { CurrentPointData, MarkerImage, RouteTimes } from "@apparatus";
+import { GeoJson } from "@tinker-chest";
 import { sourceIds } from "./layers";
 import { LoadedImageData } from "./images/image-parser";
+import { BehaviorSubject } from "rxjs";
 
 /**
  * Gets current point data, updates map sources, and returns it.
@@ -162,3 +160,23 @@ export const getImageIconSize = (
 };
 
 export const getIconImageId = (image: LoadedImageData): string => `image-${image.id}`;
+
+
+/**
+ * Current progress as percentage of total duration.
+ * @returns Value between 0 and 100.
+ */
+export const getProgressPercentage = (progressMs: number, routeTimes?: RouteTimes | null): number => {
+    if (!routeTimes) {
+        return 0;
+    }
+    return (progressMs / routeTimes.duration * 100);
+};
+
+export const updateImageFeatureId = (
+    images$: BehaviorSubject<MarkerImage[]>,
+    imageId: number,
+    featureId: number
+) => {
+    images$.next(images$.value.map((im) => im.id === imageId ? { ...im, featureId } : im))
+};

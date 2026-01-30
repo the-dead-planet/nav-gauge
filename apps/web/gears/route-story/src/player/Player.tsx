@@ -1,31 +1,25 @@
 import { CSSProperties, FC, useEffect } from "react";
 import { pairwise } from "rxjs";
-import { GeoJson, SurveillanceState, useStateWarden, useSubjectState } from "@apparatus";
-import { RouteTimes, formatProgressMs, formatTimestamp, getProgressPercentage } from "@tinker-chest";
-import { WebChronoLens } from "../../chrono-lens/chrono-lens";
-import { updateRouteLayer } from "../../../../gears/route-story/src/tinkers";
-import { MarkerImage } from "../../../../gears/route-story/src";
+import { OverlayComponentProps, SurveillanceState, useStateWarden, useSubjectState } from "@apparatus";
+import { formatProgressMs, formatTimestamp } from "@tinker-chest";
+import { WebChronoLens } from "../chrono-lens/chrono-lens";
+import { getProgressPercentage, updateRouteLayer } from "../tinkers";
+import { RouteMapToolProps } from "../model";
 import * as styles from './player.module.css';
 
 const WebLens = new WebChronoLens();
 
-interface Props {
-    map: maplibregl.Map;
-    geojson?: GeoJson;
-    images: MarkerImage[];
-    progressMs: number;
-    onProgressMsChange: React.Dispatch<React.SetStateAction<number>>;
-    routeTimes?: RouteTimes;
-}
-
-export const Player: FC<Props> = ({
+export const Player: FC<OverlayComponentProps & RouteMapToolProps> = ({
     map,
-    geojson,
-    images,
-    progressMs,
-    onProgressMsChange,
-    routeTimes,
+    data$,
+    routeTimes$,
+    images$,
+    progressMs$
 }) => {
+    const [{ geojson }] = useSubjectState(data$);
+    const [routeTimes] = useSubjectState(routeTimes$);
+    const [images] = useSubjectState(images$);
+    const [progressMs, setProgressMs] = useSubjectState(progressMs$);
     const { animatrix, chronoLens, signaliumBureau } = useStateWarden();
     const [isPlaying, setIsPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [surveillanceState, setSurveillanceState] = useSubjectState(chronoLens.surveillanceState$);
@@ -86,7 +80,7 @@ export const Player: FC<Props> = ({
         if (isPlaying) {
             setIsPlaying(false);
         }
-        onProgressMsChange(Number(event.target.value));
+        setProgressMs(Number(event.target.value));
         if (geojson) {
             updateRouteLayer(map, geojson, routeTimes.startTimeEpoch, Number(event.target.value), bearingLineLengthInMeters);
         }

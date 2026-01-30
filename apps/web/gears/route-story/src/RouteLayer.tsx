@@ -1,25 +1,33 @@
 import { FC, useEffect, useMemo } from "react";
 import maplibregl from "maplibre-gl";
+import bbox from "@turf/bbox";
 import {
     OverlayComponentProps,
     useStateWarden,
     useSubjectState,
     useMapLayerData,
-    MapLayerData
+    MapLayerData,
+    MarkerImage,
+    RouteTimes
 } from "@apparatus";
 import { getRouteSourceData, updateRouteLayer } from "./tinkers";
 import { currentPointLayers, routeLineLayer, getRoutePointsLayer, sourceIds } from "./layers";
 import { useLoadedImages } from "./hooks";
 import { LoadedImageData } from "./images/image-parser";
+import { parsers } from "./parsers";
+import { RouteMapToolProps } from "./model";
 
-export const RouteLayer: FC<OverlayComponentProps> = ({
+export const RouteLayer: FC<OverlayComponentProps & RouteMapToolProps> = ({
     map,
-    geojson,
-    routeTimes,
-    progressMs,
-    onProgressMsChange,
-    images,
+    data$,
+    routeTimes$,
+    images$,
+    progressMs$,
 }) => {
+    const [{ geojson }, setData] = useSubjectState(data$);
+    const [routeTimes] = useSubjectState(routeTimes$);
+    const [images] = useSubjectState(images$);
+    const [progressMs, setProgressMs] = useSubjectState(progressMs$);
     const { animatrix, cartomancer, chronoLens } = useStateWarden();
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
@@ -39,9 +47,26 @@ export const RouteLayer: FC<OverlayComponentProps> = ({
         maxBearingDiffPerFrame,
     } = animationControls;
 
+    useEffect(() => {
+        fetch('/example.gpx')
+            .then((file) => file.text())
+            .then((text) => parsers.get('.gpx')?.parseTextToGeoJson(text))
+            .then((result) => setData(result ? {
+                ...result,
+                boundingBox: bbox(result.geojson)
+            } : {}));
+    }, []);
+
     const loadedImages = useLoadedImages(images);
 
     const mapLayerData = useMemo((): MapLayerData => {
+        if (!geojson || !routeTimes) {
+            return {
+                sources: {},
+                layers: [],
+            }
+        }
+
         const { currentPoint, lines } = getRouteSourceData(
             geojson,
             routeTimes.startTimeEpoch,
@@ -74,12 +99,12 @@ export const RouteLayer: FC<OverlayComponentProps> = ({
             },
             layers,
         };
-    }, [geojson, routeTimes.startTimeEpoch, bearingLineLengthInMeters, gaugeControls.showRouteLine, gaugeControls.showRoutePoints]);
+    }, [geojson, routeTimes?.startTimeEpoch, bearingLineLengthInMeters, gaugeControls.showRouteLine, gaugeControls.showRoutePoints]);
 
     useMapLayerData(map, mapLayerData)
 
     useEffect(() => {
-        if (!isPlaying) {
+        if (!isPlaying || !geojson || !routeTimes) {
             return;
         }
         let animation: number | undefined;
@@ -138,7 +163,7 @@ export const RouteLayer: FC<OverlayComponentProps> = ({
             }
 
             // TODO: Calculate % of geometry done based on current progressMs and update paint property line gradient instead of all data.
-            onProgressMsChange(current);
+            setProgressMs(current);
             animation = requestAnimationFrame(animate);
         };
 

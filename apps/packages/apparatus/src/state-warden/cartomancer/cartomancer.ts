@@ -3,10 +3,10 @@ import maplibregl from "maplibre-gl";
 import turfDistance from "@turf/distance";
 import { point as turfPoint } from "@turf/helpers";
 import { backgroundMapStyle, customRoadsMapStyle, osmMapStyle } from "./map-styles";
-import { FeatureProperties, GeoJson } from "../../parsers";
+import { FeatureProperties, GeoJson } from "@tinker-chest";
 import { StorageKeeper } from "../../storage-keeper/storage-keeper";
-import { GaugeControlsType, MapLayout, Overlay } from "./model";
-import { defaultGaugeControls, defaultMapLayout } from "./tinkers";
+import { GaugeControlsType, MapLayout, OverlayComponentProps } from "./model";
+import { ComponentType } from "react";
 
 interface SelectedStyle {
     id: keyof typeof Cartomancer.styles;
@@ -23,6 +23,33 @@ export class Cartomancer {
     }
     private defaultStyleId: keyof typeof Cartomancer.styles = 'osm';
 
+    public static defaultGaugeControls: GaugeControlsType = {
+        globeProjection: true,
+        showZoomButtons: false,
+        showCurrentZoom: true,
+        showCompass: true,
+        showGreenScreen: false,
+        controlPosition: 'top-right',
+        controlPlacement: { top: 0, bottom: 0, left: 0, right: 0 },
+        showRouteLine: true,
+        showRoutePoints: true,
+    }
+
+    public static defaultMapLayout: MapLayout = {
+        size: {
+            type: 'full-screen',
+            width: 400,
+            height: 400
+        },
+        borderWidth: 0,
+        borderColor: '#000',
+        borderRadius: '0',
+        innerBorderWidth: 0,
+        innerBorderColor: '#000000',
+        boxShadow: '',
+        innerBoxShadow: '',
+    };
+
     public isInitialised$ = new BehaviorSubject(false);
     public isStyleLoaded$ = new BehaviorSubject(false);
 
@@ -31,23 +58,23 @@ export class Cartomancer {
 
     private gaugeControlsStorageId = 'cartomancer:gauge-controls';
     public gaugeControls$: BehaviorSubject<GaugeControlsType>;
-    
+
     private mapLayoutStorageId = 'cartomancer:map-layout';
     public mapLayout$: BehaviorSubject<MapLayout>;
 
     public constructor(storageKeeper: StorageKeeper) {
         this.selectedStyle$ = new BehaviorSubject({ id: this.defaultStyleId });
         storageKeeper.synchronizeSubjectWithStorage(this.selectedStyle$, this.selectedStyleStorageId, this.cleanUpSelectedStyle);
-        
-        this.gaugeControls$ = new BehaviorSubject(defaultGaugeControls);
+
+        this.gaugeControls$ = new BehaviorSubject(Cartomancer.defaultGaugeControls);
         storageKeeper.synchronizeSubjectWithStorage(this.gaugeControls$, this.gaugeControlsStorageId);
-        
-        this.mapLayout$ = new BehaviorSubject(defaultMapLayout);
+
+        this.mapLayout$ = new BehaviorSubject(Cartomancer.defaultMapLayout);
         storageKeeper.synchronizeSubjectWithStorage(this.mapLayout$, this.mapLayoutStorageId);
     }
 
     public zoom$ = new BehaviorSubject(0);
-    public overlays$ = new BehaviorSubject<Overlay[]>([]);
+    public overlays$ = new BehaviorSubject<Map<string, ComponentType<OverlayComponentProps>>>(new Map());
 
     private cleanUpSelectedStyle = (state: unknown): Partial<SelectedStyle> => {
         const { id } = state as SelectedStyle;
@@ -101,15 +128,23 @@ export class Cartomancer {
         });
     };
 
-    public addOverlay = (overlay: Overlay) => {
-        if (this.overlays$.value.some((o) => o.id === overlay.id)) {
-            throw new Error(`Overlay with id: ${overlay.id} already exists.`);
-        }
-        this.overlays$.next(this.overlays$.value.concat(overlay));
+    /**
+     * Adds map overlay components rendered in the map area unconditionally.
+     * If an overlay with a given id exists, it will be overwritten.
+     */
+    public addOverlay = (id: string, component: ComponentType<OverlayComponentProps>) => {
+        const nextOverlays = new Map(this.overlays$.value);
+        nextOverlays.set(id, component);
+        this.overlays$.next(nextOverlays);
     };
 
+    /**
+     * Removes the map overlay component with a given `id`.
+     */
     public removeOverlay = (id: string) => {
-        this.overlays$.next(this.overlays$.value.filter((overlay) => overlay.id !== id));
+        const nextOverlays = new Map(this.overlays$.value);
+        nextOverlays.delete(id);
+        this.overlays$.next(nextOverlays);
     };
 
     /**

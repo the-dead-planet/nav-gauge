@@ -1,64 +1,19 @@
-import { CSSProperties, FC, useEffect, useMemo, useState } from "react";
-import bbox from "@turf/bbox";
-import { useSubjectState, ParsingResultWithError, useStateWarden, MachineWardMachineProps } from "@apparatus";
-import { RouteTimes } from "@tinker-chest";
-import { parsers } from "../parsers";
-import { useImageReader } from '../hooks';
+import { CSSProperties, FC, useMemo } from "react";
+import { useSubjectState, useStateWarden, MachineWardMachineProps } from "@apparatus";
+import { MapSection } from "./MapSection";
 import { Presets } from "./controls/Presets";
 import { AnimationControls } from "./controls/AnimationControls";
 import { MapLayoutControls } from "./controls/MapLayoutControls";
 import { ApplicationSettings } from "./controls/ApplicationSettings";
 import { GaugeControls } from "./controls/GaugeControls";
-import { MapSection } from "./MapSection";
-import { FileInput } from "./controls/FileInput";
 import { MapStyleSelection } from "./controls/MapStyleSelection";
 import * as styles from './machine.module.css';
 
 export const Machine: FC<MachineWardMachineProps> = () => {
-    const { applicationSettings$, cartomancer } = useStateWarden();
-    const [applicationSettings] = useSubjectState(applicationSettings$);
+    const { cartomancer, toolsStation } = useStateWarden();
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const [mapLayout] = useSubjectState(cartomancer.mapLayout$);
-    const [{ geojson, boundingBox, routeName, error }, setGeoJson] = useState<ParsingResultWithError>({});
-
-    const routeTimes = useMemo(
-        (): RouteTimes | undefined => {
-            if (!geojson?.features[0]) {
-                return;
-            }
-            const startTime = geojson.features[0].properties.time;
-            const endTime = geojson.features.slice(-1)[0]?.properties.time;
-            const startTimeEpoch = new Date(startTime).valueOf();
-            const endTimeEpoch = new Date(endTime).valueOf();
-
-            return {
-                startTime,
-                endTime,
-                startTimeEpoch,
-                endTimeEpoch,
-                duration: endTimeEpoch - startTimeEpoch
-            }
-        },
-        [geojson]
-    );
-
-    const [images, readImage, updateImageFeatureId] = useImageReader();
-
-    // TODO: Handle from route gear??
-    useEffect(() => {
-        if (!applicationSettings.confirmBeforeLeave || (!geojson && images.length === 0)) {
-            return;
-        }
-        const confirmationHandler = (event: BeforeUnloadEvent) => {
-            event.preventDefault();
-            return "Route and image data will be lost.";
-        };
-        window.addEventListener("beforeunload", confirmationHandler);
-
-        return () => {
-            window.removeEventListener('beforeunload', confirmationHandler);
-        }
-    }, [applicationSettings.confirmBeforeLeave, images, geojson]);
+    const [controlComponents] = useSubjectState(toolsStation.controlComponents$);
 
     const controlsCssStyle = useMemo(
         () => {
@@ -73,16 +28,6 @@ export const Machine: FC<MachineWardMachineProps> = () => {
         },
         [gaugeControls]
     );
-
-    useEffect(() => {
-        fetch('/example.gpx')
-            .then((file) => file.text())
-            .then((text) => parsers.get('.gpx')?.parseTextToGeoJson(text))
-            .then((result) => setGeoJson(result ? {
-                ...result,
-                boundingBox: bbox(result.geojson)
-            } : {}));
-    }, []);
 
     return (
         <div className={styles.layout} style={{
@@ -100,13 +45,7 @@ export const Machine: FC<MachineWardMachineProps> = () => {
             '--side-panel-height-sm': "240px",
         } as unknown as CSSProperties}>
             <div className={styles["side-panel"]}>
-                <FileInput
-                    routeName={routeName}
-                    error={error}
-                    geojson={geojson}
-                    onGeojsonChange={setGeoJson}
-                    readImage={readImage}
-                />
+                {[...controlComponents.entries()].map(([id, ControlComponent]) => <ControlComponent key={id} />)}
                 <hr className={styles.divider} />
                 <Presets />
                 <MapStyleSelection />
@@ -116,13 +55,7 @@ export const Machine: FC<MachineWardMachineProps> = () => {
                 <ApplicationSettings />
             </div>
             <div className={styles["main-area"]}>
-                <MapSection
-                    geojson={geojson}
-                    boundingBox={boundingBox}
-                    images={images}
-                    onUpdateImageFeatureId={updateImageFeatureId}
-                    routeTimes={routeTimes}
-                />
+                <MapSection />
             </div>
         </div>
     );

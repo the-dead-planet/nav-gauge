@@ -1,23 +1,21 @@
-import { Dispatch, FC, SetStateAction } from "react";
-import { GeoJson, ParsingResultWithError } from "@apparatus";
+import { FC } from "react";
+import { BehaviorSubject } from "rxjs";
+import { ParsingResultWithError } from "@tinker-chest";
 import { FileInputStatus } from "@web-ui";
-import { FileToGeoJSONParser, parsers } from "../../parsers";
+import { useImageReader } from "./images/useImageReader";
+import { MarkerImage, useSubjectState } from "@apparatus";
+import { FileToGeoJSONParser, parsers } from "./parsers";
 
 interface Props {
-    routeName?: string;
-    error?: Error;
-    geojson?: GeoJson;
-    onGeojsonChange: Dispatch<SetStateAction<ParsingResultWithError>>;
-    readImage: (file: File, geojson?: GeoJson) => void;
+    data$: BehaviorSubject<ParsingResultWithError>;
+    images$: BehaviorSubject<MarkerImage[]>;
 }
 
-export const FileInput: FC<Props> = ({
-    routeName,
-    error,
-    geojson,
-    onGeojsonChange,
-    readImage,
-}) => {
+export const FileInput: FC<Props> = ({ data$, images$ }) => {
+    const [{ geojson, routeName, error }, setData] = useSubjectState(data$);
+    const [_images, setImages] = useSubjectState(images$);
+    const readImage = useImageReader(setImages);
+
     const handleInput = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const { files } = event.target;
         if (!files || files.length === 0) {
@@ -37,11 +35,11 @@ export const FileInput: FC<Props> = ({
         }
 
         if (geojsonFile) {
-            onGeojsonChange({});
+            setData({});
             const result = await parsers
                 .get(FileToGeoJSONParser.getFileExtension(geojsonFile))
                 ?.parse(geojsonFile);
-            onGeojsonChange(result ?? { error: new Error('No parser found for file.') });
+            setData(result ?? { error: new Error('No parser found for file.') });
             currentGeojson = result?.geojson
         }
 
@@ -50,7 +48,13 @@ export const FileInput: FC<Props> = ({
 
     return (
         <div>
-            <input id="files" type="file" multiple accept={[...parsers.keys(), "image/png", "image/jpeg", "image/jpg"].join(', ')} onChange={handleInput} />
+            <input
+                id="files"
+                type="file"
+                multiple
+                accept={[...parsers.keys(), "image/png", "image/jpeg", "image/jpg"].join(', ')}
+                onChange={handleInput}
+            />
             <FileInputStatus ok={!!geojson && !error} error={error} routeName={routeName} />
         </div>
     );

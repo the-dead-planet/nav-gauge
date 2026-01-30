@@ -1,6 +1,4 @@
-import { ComponentType, Dispatch, SetStateAction } from "react";
-import { RouteTimes } from "@tinker-chest";
-import { GeoJson } from "../../parsers";
+import { ComponentType } from "react";
 
 export interface ControlPlacement {
     top: number;
@@ -39,19 +37,8 @@ export interface MapLayoutSize {
     height: number;
 }
 
-export interface Overlay {
-    id: string;
-    component: ComponentType<OverlayComponentProps>;
-}
-
 export interface OverlayComponentProps {
     map: maplibregl.Map;
-    geojson: GeoJson;
-    images: MarkerImage[];
-    routeTimes: RouteTimes;
-    progressMs: number;
-    onProgressMsChange: Dispatch<SetStateAction<number>>;
-    onUpdateImageFeatureId: (imageId: number, featureId: number) => void;
 }
 
 export interface ExifData {

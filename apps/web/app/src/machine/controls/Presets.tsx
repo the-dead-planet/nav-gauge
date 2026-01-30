@@ -2,12 +2,11 @@ import { FC } from "react";
 import {
     AnimationControlsType,
     Animatrix,
-    defaultGaugeControls,
-    defaultMapLayout,
+    Cartomancer,
     GaugeControlsType,
     MapLayout,
     Preset,
-    PresetStation,
+    ToolsStation,
     useStateWarden,
     useSubjectState
 } from "@apparatus";
@@ -17,12 +16,12 @@ import * as styles from './controls.module.css';
 interface Props { }
 
 export const Presets: FC<Props> = () => {
-    const { animatrix, cartomancer, presetStation } = useStateWarden();
+    const { animatrix, cartomancer, toolsStation } = useStateWarden();
     const [animationControls] = useSubjectState(animatrix.controls$);
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const [mapLayout] = useSubjectState(cartomancer.mapLayout$);
-    const [preset, setPreset] = useSubjectState(presetStation.preset$);
-    const [isPresetActive] = useSubjectState(presetStation.active$);
+    const [preset, setPreset] = useSubjectState(toolsStation.preset$);
+    const [isPresetActive] = useSubjectState(toolsStation.isPresetActive$);
 
     const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setPreset(event.target.value as Preset);
@@ -55,13 +54,13 @@ export const Presets: FC<Props> = () => {
                 try {
                     const result = JSON.parse(text);
                     const possibleMapLayout: MapLayout = {
-                        ...defaultMapLayout,
+                        ...Cartomancer.defaultMapLayout,
                         ...(result.mapLayout as MapLayout),
                     };
                     validateMapLayout(possibleMapLayout);
 
-                    const possibleGaugeControls: GaugeControlsType = { 
-                        ...defaultGaugeControls, 
+                    const possibleGaugeControls: GaugeControlsType = {
+                        ...Cartomancer.defaultGaugeControls,
                         ...(result.gaugeControls as GaugeControlsType),
                     };
                     validateGaugeControls({ ...possibleGaugeControls });
@@ -69,7 +68,7 @@ export const Presets: FC<Props> = () => {
                     const possibleAnimationControls = { ...Animatrix.defaultControls, ...(result.animationControls as AnimationControlsType) };
                     Animatrix.validateAnimationControls(possibleAnimationControls);
 
-                    const nextPreset = PresetStation.detectPreset(possibleMapLayout, possibleGaugeControls, possibleAnimationControls);
+                    const nextPreset = ToolsStation.detectPreset(possibleMapLayout, possibleGaugeControls, possibleAnimationControls);
                     if (nextPreset) {
                         setPreset(nextPreset);
                     }
@@ -87,7 +86,7 @@ export const Presets: FC<Props> = () => {
                 <label htmlFor="presets" style={{ fontSize: "12px" }}>Preset</label>
                 <select name="presets" id="presets" value={isPresetActive ? preset : ""} onChange={handleChange}>
                     <option value="" disabled defaultValue="">Custom</option>
-                    {PresetStation.presetOptions.map((option) => (
+                    {ToolsStation.presetOptions.map((option) => (
                         <option key={option.value} value={option.value}>
                             {option.label}
                         </option>

@@ -2,7 +2,8 @@ import { CSSProperties, FC, useEffect, useState } from "react";
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import maplibregl from "maplibre-gl";
-import { Cartomancer, GeoJson, MarkerImage, useStateWarden, useSubjectState, FeatureStateProps } from "@apparatus";
+import { Cartomancer, MarkerImage, useStateWarden, useSubjectState, FeatureStateProps } from "@apparatus";
+import { GeoJson } from "@tinker-chest";
 import { sourceIds } from '../layers';
 import * as styles from './images.module.css';
 

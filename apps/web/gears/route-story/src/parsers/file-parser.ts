@@ -1,4 +1,4 @@
-import { KnownErrorCauses, ParsingResult, ParsingResultWithError } from "@apparatus";
+import { KnownErrorCauses, ParsingResult, ParsingResultWithError } from "@tinker-chest";
 import bbox from "@turf/bbox";
 
 // TODO: Refactor to accomodate file type from web and mobile
