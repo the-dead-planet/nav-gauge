@@ -6,6 +6,7 @@ COPY apps/package.json apps/yarn.lock apps/tsconfig.base.json ./
 
 COPY apps/web ./web
 COPY apps/packages ./packages
+COPY apps/gears ./gears
 COPY apps/ui ./ui
 COPY apps/types ./types
 

@@ -10,9 +10,9 @@
     },
     "dependencies": {
         "@the-dead-planet/nav-gauge-apparatus": "*",
-        "@the-dead-planet/nav-gauge-gears-route-story": "*",
         "@the-dead-planet/nav-gauge-tinker-chest": "*",
         "@the-dead-planet/nav-gauge-ui": "*",
+        "@the-dead-planet/nav-gauge-gears-route-story": "*",
         "@tmcw/togeojson": "^7.1.2",
         "classnames": "^2.5.1",
         "exif-js": "^2.3.0"
