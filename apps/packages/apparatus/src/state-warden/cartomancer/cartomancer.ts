@@ -83,14 +83,9 @@ export class Cartomancer {
     }
 
     public initialize = (storageKeeper: StorageKeeper) => {
-        storageKeeper.synchronizeSubjectWithStorage(this.selectedStyle$, this.selectedStyleStorageId, this.cleanUpSelectedStyle)
-            .then((subscription) => { this.selectedStyleStorageSubscription = subscription });
-
-        storageKeeper.synchronizeSubjectWithStorage(this.gaugeControls$, this.gaugeControlsStorageId)
-            .then((subscription) => { this.gaugeControlsStorageSubscription = subscription });
-
-        storageKeeper.synchronizeSubjectWithStorage(this.mapLayout$, this.mapLayoutStorageId)
-            .then((subscription) => { this.mapLayoutStorageSubscription = subscription });
+        this.selectedStyleStorageSubscription = storageKeeper.synchronizeSubjectWithStorage(this.selectedStyle$, this.selectedStyleStorageId, this.cleanUpSelectedStyle)
+        this.gaugeControlsStorageSubscription = storageKeeper.synchronizeSubjectWithStorage(this.gaugeControls$, this.gaugeControlsStorageId);
+        this.mapLayoutStorageSubscription = storageKeeper.synchronizeSubjectWithStorage(this.mapLayout$, this.mapLayoutStorageId);
     };
 
     public cleanUp = () => {

@@ -50,8 +50,7 @@ export class Individuator {
     }
 
     public initialize = (storageKeeper: StorageKeeper) => {
-        storageKeeper.synchronizeSubjectWithStorage(this.settings$, this.settingsStorageId)
-            .then((subscription) => { this.settingsStorageSubscription = subscription });
+        this.settingsStorageSubscription = storageKeeper.synchronizeSubjectWithStorage(this.settings$, this.settingsStorageId);
         this.orientationSubscription = this.orientation.subscribe((o) => this.orientation$.next(o));
     };
 

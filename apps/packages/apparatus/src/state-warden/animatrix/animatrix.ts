@@ -43,8 +43,7 @@ export class Animatrix {
     }
 
     public initialize = (storageKeeper: StorageKeeper) => {
-        storageKeeper.synchronizeSubjectWithStorage(this.controls$, this.controlsStorageId, this.cleanUpAnimationControls)
-            .then((subscription) => { this.controlsStorageSubscription = subscription });
+        this.controlsStorageSubscription = storageKeeper.synchronizeSubjectWithStorage(this.controls$, this.controlsStorageId, this.cleanUpAnimationControls);
     };
 
     public cleanUp = () => {
