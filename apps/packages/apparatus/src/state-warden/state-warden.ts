@@ -1,37 +1,26 @@
-import { BehaviorSubject, combineLatest, pairwise } from "rxjs";
-import { Theme } from "@ui";
+import { combineLatest, pairwise, Subscription } from "rxjs";
 import { Animatrix } from "./animatrix";
 import { AttributionVault } from "./attribution-vault"
 import { Cartomancer } from "./cartomancer";
 import { ChronoLens } from "./chrono-lens";
-import { Engine } from "./engine";
 import { SignaliumBureau } from "./signalium-bureau";
-import { ApplicationSettingsType, getDefaultApplicationSettings } from "@tinker-chest";
-import { StorageKeeper } from "../storage-keeper/storage-keeper";
 import { ToolsStation } from "./tools-station";
+import { StorageKeeper } from "../machine-ward";
 
 /**
  * Warden does what warden needs to do.
  * Guards the state and provides access to control mechanisms.
  */
 export class StateWarden {
-    private applicationSettingsStorageId = 'application-settings';
-    public applicationSettings$: BehaviorSubject<ApplicationSettingsType>;
     public animatrix: Animatrix;
     public cartomancer: Cartomancer;
     public toolsStation: ToolsStation;
-    public storageKeeper: StorageKeeper;
+    private toolsStationPresetSubscription: Subscription | null = null;
+    private toolsStationPresetActiveSubscription: Subscription | null = null;
 
-    public constructor(storage: StorageLike, prefersLightColorScheme: boolean) {
-        this.storageKeeper = new StorageKeeper(storage);
-
-        const initialSettings = getDefaultApplicationSettings(prefersLightColorScheme ? Theme.Light : Theme.Dark);
-        this.applicationSettings$ = new BehaviorSubject<ApplicationSettingsType>(initialSettings);
-        this.storageKeeper.synchronizeSubjectWithStorage(this.applicationSettings$, this.applicationSettingsStorageId);
-
-        this.animatrix = new Animatrix(this.storageKeeper);
-        this.cartomancer = new Cartomancer(this.storageKeeper);
-        this.setUpAttributionUpdates();
+    public constructor() {
+        this.animatrix = new Animatrix();
+        this.cartomancer = new Cartomancer();
 
         const initialPreset = ToolsStation.detectPreset(
             this.cartomancer.mapLayout$.value,
@@ -39,10 +28,27 @@ export class StateWarden {
             this.animatrix.controls$.value
         );
         this.toolsStation = new ToolsStation(initialPreset ?? 'default');
-        this.setUpPresetUpdate();
     }
 
-    private setUpAttributionUpdates = () => {
+    public initialize = (storageKeeper: StorageKeeper) => {
+        this.attributionVaultSubscription = this.subscribeAttributionVault();
+        this.toolsStationPresetSubscription = this.subscribeToolsStationPreset();
+        this.toolsStationPresetActiveSubscription = this.subscribeToolsStationPresetActive();
+        this.animatrix.initialize(storageKeeper);
+        this.cartomancer.initialize(storageKeeper);
+    }
+
+    public cleanUp = () => {
+        this.cartomancer.cleanUp();
+        this.animatrix.cleanUp();
+        this.toolsStationPresetActiveSubscription?.unsubscribe();
+        this.toolsStationPresetSubscription?.unsubscribe();
+        this.attributionVaultSubscription?.unsubscribe();
+    };
+
+    private attributionVaultSubscription: Subscription | null = null;
+
+    private subscribeAttributionVault = (): Subscription => {
         const addEntry = (styleId: keyof typeof Cartomancer.styles) => {
             const style = Cartomancer.styles[styleId];
             if (!style?.attribution) {
@@ -52,7 +58,8 @@ export class StateWarden {
         };
 
         addEntry(this.cartomancer.selectedStyle$.value.id);
-        this.cartomancer.selectedStyle$
+
+        return this.cartomancer.selectedStyle$
             .pipe(pairwise())
             .subscribe(([prev, next]) => {
                 this.attributionVault.removeEntry(prev.id);
@@ -60,8 +67,8 @@ export class StateWarden {
             });
     };
 
-    private setUpPresetUpdate = () => {
-        this.toolsStation.preset$.subscribe((next) => {
+    private subscribeToolsStationPreset = (): Subscription => {
+        return this.toolsStation.preset$.subscribe((next) => {
             const option = ToolsStation.presetOptions.find((option) => option.value === next);
             if (!option) {
                 return;
@@ -71,8 +78,10 @@ export class StateWarden {
             this.cartomancer.gaugeControls$.next({ controlPlacement: { ...controlPlacement }, ...gaugeControls });
             this.animatrix.controls$.next({ ...animationControls });
         });
+    };
 
-        combineLatest([
+    private subscribeToolsStationPresetActive = (): Subscription => {
+        return combineLatest([
             this.cartomancer.mapLayout$,
             this.cartomancer.gaugeControls$,
             this.animatrix.controls$
@@ -83,6 +92,5 @@ export class StateWarden {
 
     public chronoLens = new ChronoLens();
     public attributionVault = new AttributionVault();
-    public engine = new Engine();
     public signaliumBureau = new SignaliumBureau();
 }

@@ -1,8 +1,7 @@
 import { FC, useMemo } from "react";
 import maplibregl from "maplibre-gl";
-import { controlsPositions } from "@tinker-chest";
 import { Input, Fieldset } from "@web-ui";
-import { ControlPlacement, useStateWarden, useSubjectState } from "@apparatus";
+import { Cartomancer, ControlPlacement, useStateWarden, useSubjectState } from "@apparatus";
 import * as styles from './controls.module.css';
 
 interface Props { }
@@ -49,7 +48,9 @@ export const GaugeControls: FC<Props> = () => {
                         controlPosition: event.target.value as maplibregl.ControlPosition
                     }))}
                 >
-                    {controlsPositions.map((el) => <option key={el} value={el} label={el}>{el}</option>)}
+                    {Cartomancer.controlsPositionOptions.map(({ value, label }) => (
+                        <option key={value} value={value} label={label}>{label}</option>
+                    ))}
                 </select>
             </div>
             <div className={styles["section"]}>

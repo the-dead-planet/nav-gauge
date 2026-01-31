@@ -20,7 +20,7 @@ export const MapLayoutControls: FC<Props> = () => {
                     type='checkbox'
                     checked={mapLayout.size.type === 'full-screen'}
                     onChange={() => { }}
-                    onContainerClick={() => setMapLayout((prev) => ({
+                    onContainerClick={() => setMapLayout((prev): MapLayout => ({
                         ...prev, size: {
                             ...prev.size,
                             type: prev.size.type === 'full-screen'
@@ -83,7 +83,7 @@ export const MapLayoutControls: FC<Props> = () => {
                     value={mapLayout.borderWidth}
                     onChange={(event) => {
                         if (!isNaN(Number(event.target.value))) {
-                            setMapLayout((prev) => ({ ...prev, borderWidth: Number(event.target.value) }));
+                            setMapLayout((prev): MapLayout => ({ ...prev, borderWidth: Number(event.target.value) }));
                         }
                     }}
                 />
@@ -97,7 +97,7 @@ export const MapLayoutControls: FC<Props> = () => {
                     value={mapLayout.innerBorderWidth}
                     onChange={(event) => {
                         if (!isNaN(Number(event.target.value))) {
-                            setMapLayout((prev) => ({ ...prev, innerBorderWidth: Number(event.target.value) }));
+                            setMapLayout((prev): MapLayout => ({ ...prev, innerBorderWidth: Number(event.target.value) }));
                         }
                     }}
                 />
@@ -108,7 +108,7 @@ export const MapLayoutControls: FC<Props> = () => {
                     type='color'
                     value={mapLayout.borderColor}
                     onChange={(event) => {
-                        setMapLayout((prev) => ({ ...prev, borderColor: event.target.value }));
+                        setMapLayout((prev): MapLayout => ({ ...prev, borderColor: event.target.value }));
                     }}
                     className={styles["input-color"]}
                 />
@@ -119,7 +119,7 @@ export const MapLayoutControls: FC<Props> = () => {
                     type='color'
                     value={mapLayout.innerBorderColor}
                     onChange={(event) => {
-                        setMapLayout((prev) => ({ ...prev, innerBorderColor: event.target.value }));
+                        setMapLayout((prev): MapLayout => ({ ...prev, innerBorderColor: event.target.value }));
                     }}
                     className={styles["input-color"]}
                 />
@@ -129,7 +129,7 @@ export const MapLayoutControls: FC<Props> = () => {
                     label="Box shadow"
                     value={mapLayout.boxShadow}
                     onChange={(event) => {
-                        setMapLayout((prev) => ({ ...prev, boxShadow: event.target.value }));
+                        setMapLayout((prev): MapLayout => ({ ...prev, boxShadow: event.target.value }));
                     }}
                     autoSelect
                     className={styles["textarea"]}
@@ -140,7 +140,7 @@ export const MapLayoutControls: FC<Props> = () => {
                     label="Inner box shadow"
                     value={mapLayout.innerBoxShadow}
                     onChange={(event) => {
-                        setMapLayout((prev) => ({ ...prev, innerBoxShadow: event.target.value }));
+                        setMapLayout((prev): MapLayout => ({ ...prev, innerBoxShadow: event.target.value }));
                     }}
                     autoSelect
                     className={styles["textarea"]}
@@ -153,7 +153,7 @@ export const MapLayoutControls: FC<Props> = () => {
                     autoSelect
                     value={mapLayout.borderRadius}
                     onChange={(event) => {
-                        setMapLayout((prev) => ({ ...prev, borderRadius: event.target.value }));
+                        setMapLayout((prev): MapLayout => ({ ...prev, borderRadius: event.target.value }));
                     }}
                     className={styles["input-color"]}
                 />

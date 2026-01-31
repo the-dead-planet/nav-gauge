@@ -1,8 +1,8 @@
+import { ComponentType } from "react";
 import { BehaviorSubject } from "rxjs";
 import { AnimationControlsType, Animatrix } from "../animatrix";
 import { Cartomancer, ControlPlacement, GaugeControlsType, MapLayout } from "../cartomancer";
-import { Tool, Preset, PresetOption, ToolPlacement, ToolProps } from "./model";
-import { ComponentType } from "react";
+import { Tool, Preset, PresetOption, ToolPlacement, ToolProps, ControlComponentProps } from "./model";
 
 export class ToolsStation {
     /**
@@ -62,7 +62,7 @@ export class ToolsStation {
      * Do not update sources and layers in components passed in this prop as it might lead to MapLibre's `Style is not done loading` errors.
      * If a tool with a given `id` already exists, it will be overwritten.
      */
-    public addControlComponent = (id: string, component: ComponentType) => {
+    public addControlComponent = (id: string, component: ComponentType<ControlComponentProps>) => {
         const nextControls = new Map(this.controlComponents$.value);
         nextControls.set(id, component);
         this.controlComponents$.next(nextControls);

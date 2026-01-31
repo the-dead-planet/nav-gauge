@@ -1,17 +1,11 @@
 import { FC } from "react";
-import { BehaviorSubject } from "rxjs";
-import { ParsingResultWithError } from "@tinker-chest";
 import { FileInputStatus } from "@web-ui";
 import { useImageReader } from "./images/useImageReader";
-import { MarkerImage, useSubjectState } from "@apparatus";
+import { useSubjectState } from "@apparatus";
 import { FileToGeoJSONParser, parsers } from "./parsers";
+import { RouteFileInputProps } from "@the-dead-planet/nav-gauge-gears-route-story";
 
-interface Props {
-    data$: BehaviorSubject<ParsingResultWithError>;
-    images$: BehaviorSubject<MarkerImage[]>;
-}
-
-export const FileInput: FC<Props> = ({ data$, images$ }) => {
+export const FileInput: FC<RouteFileInputProps> = ({ data$, images$ }) => {
     const [{ geojson, routeName, error }, setData] = useSubjectState(data$);
     const [_images, setImages] = useSubjectState(images$);
     const readImage = useImageReader(setImages);

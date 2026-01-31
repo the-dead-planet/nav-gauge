@@ -29,3 +29,7 @@ export interface PresetValues {
     presetGaugeControls?: GaugeControlsType;
     presetAnimationControls?: AnimationControlsType;
 }
+
+export interface ControlComponentProps {
+    
+}

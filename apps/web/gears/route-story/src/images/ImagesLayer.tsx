@@ -19,18 +19,12 @@ import {
 } from '../layers';
 import { DisplayImageLayer } from "./DisplayImageLayer";
 import { getIconImageId, updateImageFeatureId } from "../tinkers";
-import { IMAGE_SIZE, MarkerImage } from "./image-parser";
+import { IMAGE_SIZE } from "./image-parser";
 import { useMapImages } from "../hooks";
-import { ParsingResultWithError } from "@tinker-chest";
-import { BehaviorSubject } from "rxjs";
+import { RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story";
 
-interface Props {
-    data$: BehaviorSubject<ParsingResultWithError>;
-    images$: BehaviorSubject<MarkerImage[]>;
-}
-
-export const ImagesLayer: FC<OverlayComponentProps & Props> = ({ map, data$, images$ }) => {
-    const { theme } = useTheme();
+export const ImagesLayer: FC<OverlayComponentProps & RouteToolProps> = ({ map, data$, images$ }) => {
+    const { themeName } = useTheme();
     const [{ geojson }] = useSubjectState(data$);
     const [images] = useSubjectState(images$);
     const loadedImages = useLoadedImages(images);
@@ -73,7 +67,7 @@ export const ImagesLayer: FC<OverlayComponentProps & Props> = ({ map, data$, ima
                     promoteId: 'imageId'
                 }
             },
-            layers: getImagesLayers(theme),
+            layers: getImagesLayers(themeName),
             beforeLayerId: layerIds.imageInDisplay,
             handlers: {
                 onMouseMove: ({ features, isTopRelated }) => {
@@ -91,7 +85,7 @@ export const ImagesLayer: FC<OverlayComponentProps & Props> = ({ map, data$, ima
                 onMouseUp: () => setDraggingId(null)
             },
         };
-    }, [theme, sourceDataGeojson]);
+    }, [themeName, sourceDataGeojson]);
 
     useMapLayerData(map, mapLayerData, [[sourceIds.image, highlightIds]]);
 

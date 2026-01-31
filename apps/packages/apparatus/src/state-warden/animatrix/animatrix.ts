@@ -1,7 +1,7 @@
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Subscription } from "rxjs";
 import { validateBoolean, validateNumber } from "@tinker-chest";
 import { AnimationControlsType } from "./model";
-import { StorageKeeper } from "../../storage-keeper/storage-keeper";
+import { StorageKeeper } from "../../machine-ward/storage-keeper";
 
 /**
  * Animation central processing unit.
@@ -22,6 +22,8 @@ export class Animatrix {
         easeDuration: 100,
     };
 
+    public static defaultZoomInToImages = 15;
+
     public static displayImageDurationRange: [number, number] = [0, 10000];
     public static pitchRange: [number, number] = [0, 85];
     public static zoomRange: [number, number] = [0, 20];
@@ -33,12 +35,20 @@ export class Animatrix {
     public static easeDurationRange: [number, number] = [0, 1000];
 
     private controlsStorageId = 'animatrix:controls';
+    private controlsStorageSubscription: Subscription | null = null;
     public controls$: BehaviorSubject<AnimationControlsType>;
 
-    public constructor(storageKeeper: StorageKeeper) {
+    public constructor() {
         this.controls$ = new BehaviorSubject(Animatrix.defaultControls);
-        storageKeeper.synchronizeSubjectWithStorage(this.controls$, this.controlsStorageId, this.cleanUpAnimationControls);
     }
+
+    public initialize = (storageKeeper: StorageKeeper) => {
+        this.controlsStorageSubscription = storageKeeper.synchronizeSubjectWithStorage(this.controls$, this.controlsStorageId, this.cleanUpAnimationControls);
+    };
+
+    public cleanUp = () => {
+        this.controlsStorageSubscription?.unsubscribe();
+    };
 
     /**
      * Which image should be in display now.

@@ -1,20 +1,24 @@
-import { formatTimestamp } from "@tinker-chest";
-import { FrameRate, SurveillanceState } from "@apparatus";
+import { FrameRate, Individuator, IndividuatorSettings, SurveillanceState } from "@apparatus";
 
 // TODO: Refactor after split from packages - consider abstract class which can be implemented in both web/ui
 /**
  * Records the videos.
  */
 export class WebChronoLens {
+    private individuator: Individuator;
+
     private recorder: MediaRecorder | undefined;
     private stream: MediaStream | undefined;
     private chunks: Blob[] = [];
 
-    public constructor() { }
+    public constructor(individuator: Individuator) {
+        this.individuator = individuator;
+    }
 
     public startRecording = async (
         canvas: HTMLCanvasElement,
         downloadName: string,
+        settings: IndividuatorSettings,
         fps: FrameRate,
         onIsPlayingChange: (isPlaying: boolean) => void,
         onSurveillanceStateChange: (state: SurveillanceState) => void,
@@ -22,7 +26,7 @@ export class WebChronoLens {
     ) => {
         onIsPlayingChange(true);
         if (!this.recorder) {
-            await this.setup(canvas, downloadName, fps, onIsPlayingChange, onSurveillanceStateChange, onError);
+            await this.setup(canvas, downloadName, settings, fps, onIsPlayingChange, onSurveillanceStateChange, onError);
         }
         this.recorder?.start();
     };
@@ -48,6 +52,7 @@ export class WebChronoLens {
     private setup = async (
         canvas: HTMLCanvasElement | undefined,
         downloadName: string,
+        settings: IndividuatorSettings,
         fps: FrameRate,
         onIsPlayingChange: (isPlaying: boolean) => void,
         onSurveillanceStateChange: (state: SurveillanceState) => void,
@@ -55,7 +60,7 @@ export class WebChronoLens {
     ) => {
         try {
             this.stream = await this.createStream(canvas, fps);
-            this.recorder = this.createRecorder(this.stream, downloadName, onIsPlayingChange, onSurveillanceStateChange, onError);
+            this.recorder = this.createRecorder(this.stream, downloadName, settings, onIsPlayingChange, onSurveillanceStateChange, onError);
         } catch (error) {
             onIsPlayingChange(false);
             onSurveillanceStateChange(SurveillanceState.Stopped);
@@ -91,6 +96,7 @@ export class WebChronoLens {
     private createRecorder = (
         stream: MediaStream,
         downloadName: string,
+        settings: IndividuatorSettings,
         onIsPlayingChange: (isPlaying: boolean) => void,
         onSurveillanceStateChange: (state: SurveillanceState) => void,
         onError?: (stage: string, error: Error) => void
@@ -108,7 +114,7 @@ export class WebChronoLens {
 
         recorder.onstop = () => {
             this.stop(onIsPlayingChange, onSurveillanceStateChange);
-            this.download(downloadName);
+            this.download(downloadName, settings);
             this.destroyRecording();
         };
 
@@ -128,8 +134,8 @@ export class WebChronoLens {
         onSurveillanceStateChange(SurveillanceState.Stopped);
     };
 
-    private download = (downloadName: string) => {
-        const timestamp = formatTimestamp(new Date().valueOf(), 0);
+    private download = (downloadName: string, settings: IndividuatorSettings) => {
+        const timestamp = this.individuator.formatTimestamp(new Date().valueOf(), settings);
         const blob = new Blob(this.chunks, {
             type: "video/webm",
         });

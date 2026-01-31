@@ -1,13 +1,14 @@
-import { Theme, ThemeOption, ThemeSpecification } from "./model";
+import { Option } from "../tinkers";
+import { ThemeName, ThemeSpecification } from "./model";
 
-export const themeOptions: ThemeOption[] = [
-    { value: Theme.Dark, label: 'Dark' },
-    { value: Theme.Light, label: 'Light' },
+export const themeOptions: Option<ThemeName>[] = [
+    { value: ThemeName.Dark, label: 'Dark' },
+    { value: ThemeName.Light, label: 'Light' },
 ];
 
-export const themes: { [key in Theme]: ThemeSpecification } = {
-    [Theme.Light]: {
-        theme: Theme.Light,
+export const themes: { [key in ThemeName]: ThemeSpecification } = {
+    [ThemeName.Light]: {
+        themeName: ThemeName.Light,
         colors: {
             background: "#dad9cd",
             border: "#66666e",
@@ -21,8 +22,8 @@ export const themes: { [key in Theme]: ThemeSpecification } = {
             info: "lightskyblue",
         }
     },
-    [Theme.Dark]: {
-        theme: Theme.Dark,
+    [ThemeName.Dark]: {
+        themeName: ThemeName.Dark,
         colors: {
             background: "#000000",
             border: "#66666e",

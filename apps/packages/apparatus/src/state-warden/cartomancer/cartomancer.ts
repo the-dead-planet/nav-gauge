@@ -1,12 +1,13 @@
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Subscription } from "rxjs";
 import maplibregl from "maplibre-gl";
 import turfDistance from "@turf/distance";
 import { point as turfPoint } from "@turf/helpers";
 import { backgroundMapStyle, customRoadsMapStyle, osmMapStyle } from "./map-styles";
 import { FeatureProperties, GeoJson } from "@tinker-chest";
-import { StorageKeeper } from "../../storage-keeper/storage-keeper";
+import { StorageKeeper } from "../../machine-ward/storage-keeper";
 import { GaugeControlsType, MapLayout, OverlayComponentProps } from "./model";
 import { ComponentType } from "react";
+import { Option } from "@ui";
 
 interface SelectedStyle {
     id: keyof typeof Cartomancer.styles;
@@ -22,6 +23,16 @@ export class Cartomancer {
         'custom-roads': customRoadsMapStyle
     }
     private defaultStyleId: keyof typeof Cartomancer.styles = 'osm';
+
+    /**
+     * All available controls position options.
+     */
+    public static controlsPositionOptions: Option<maplibregl.ControlPosition>[] = [
+        { value: "top-left", label: 'Top left' },
+        { value: "top-right", label: "Top right" },
+        { value: "bottom-left", label: "Bottom left" },
+        { value: "bottom-right", label: "Bottom right" }
+    ];
 
     public static defaultGaugeControls: GaugeControlsType = {
         globeProjection: true,
@@ -54,24 +65,34 @@ export class Cartomancer {
     public isStyleLoaded$ = new BehaviorSubject(false);
 
     private selectedStyleStorageId = 'cartomancer:map-style';
+    private selectedStyleStorageSubscription: Subscription | null = null;
     public selectedStyle$: BehaviorSubject<SelectedStyle>;
 
     private gaugeControlsStorageId = 'cartomancer:gauge-controls';
+    private gaugeControlsStorageSubscription: Subscription | null = null;
     public gaugeControls$: BehaviorSubject<GaugeControlsType>;
 
     private mapLayoutStorageId = 'cartomancer:map-layout';
+    private mapLayoutStorageSubscription: Subscription | null = null;
     public mapLayout$: BehaviorSubject<MapLayout>;
 
-    public constructor(storageKeeper: StorageKeeper) {
+    public constructor() {
         this.selectedStyle$ = new BehaviorSubject({ id: this.defaultStyleId });
-        storageKeeper.synchronizeSubjectWithStorage(this.selectedStyle$, this.selectedStyleStorageId, this.cleanUpSelectedStyle);
-
         this.gaugeControls$ = new BehaviorSubject(Cartomancer.defaultGaugeControls);
-        storageKeeper.synchronizeSubjectWithStorage(this.gaugeControls$, this.gaugeControlsStorageId);
-
         this.mapLayout$ = new BehaviorSubject(Cartomancer.defaultMapLayout);
-        storageKeeper.synchronizeSubjectWithStorage(this.mapLayout$, this.mapLayoutStorageId);
     }
+
+    public initialize = (storageKeeper: StorageKeeper) => {
+        this.selectedStyleStorageSubscription = storageKeeper.synchronizeSubjectWithStorage(this.selectedStyle$, this.selectedStyleStorageId, this.cleanUpSelectedStyle)
+        this.gaugeControlsStorageSubscription = storageKeeper.synchronizeSubjectWithStorage(this.gaugeControls$, this.gaugeControlsStorageId);
+        this.mapLayoutStorageSubscription = storageKeeper.synchronizeSubjectWithStorage(this.mapLayout$, this.mapLayoutStorageId);
+    };
+
+    public cleanUp = () => {
+        this.selectedStyleStorageSubscription?.unsubscribe();
+        this.gaugeControlsStorageSubscription?.unsubscribe();
+        this.mapLayoutStorageSubscription?.unsubscribe();
+    };
 
     public zoom$ = new BehaviorSubject(0);
     public overlays$ = new BehaviorSubject<Map<string, ComponentType<OverlayComponentProps>>>(new Map());

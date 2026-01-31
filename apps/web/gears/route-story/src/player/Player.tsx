@@ -1,15 +1,13 @@
-import { CSSProperties, FC, useEffect } from "react";
+import { CSSProperties, FC, useEffect, useMemo } from "react";
 import { pairwise } from "rxjs";
-import { OverlayComponentProps, SurveillanceState, useStateWarden, useSubjectState } from "@apparatus";
-import { formatProgressMs, formatTimestamp } from "@tinker-chest";
+import { OverlayComponentProps, SurveillanceState, useMachineWard, useStateWarden, useSubjectState } from "@apparatus";
+import { formatTimeMsAsStandard } from "@tinker-chest";
+import { RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story";
 import { WebChronoLens } from "../chrono-lens/chrono-lens";
 import { getProgressPercentage, updateRouteLayer } from "../tinkers";
-import { RouteMapToolProps } from "../model";
 import * as styles from './player.module.css';
 
-const WebLens = new WebChronoLens();
-
-export const Player: FC<OverlayComponentProps & RouteMapToolProps> = ({
+export const Player: FC<OverlayComponentProps & RouteToolProps> = ({
     map,
     data$,
     routeTimes$,
@@ -20,7 +18,9 @@ export const Player: FC<OverlayComponentProps & RouteMapToolProps> = ({
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [progressMs, setProgressMs] = useSubjectState(progressMs$);
+    const { individuator } = useMachineWard();
     const { animatrix, chronoLens, signaliumBureau } = useStateWarden();
+    const [settings] = useSubjectState(individuator.settings$);
     const [isPlaying, setIsPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [surveillanceState, setSurveillanceState] = useSubjectState(chronoLens.surveillanceState$);
     const [downloadName] = useSubjectState(chronoLens.downloadName$);
@@ -28,10 +28,12 @@ export const Player: FC<OverlayComponentProps & RouteMapToolProps> = ({
     const [animationControls] = useSubjectState(animatrix.controls$)
     const { bearingLineLengthInMeters } = animationControls;
 
+    const WebLens = useMemo(() => new WebChronoLens(individuator), [individuator]);
+
     useEffect(() => {
         const noticeId = 'player-recording';
 
-        chronoLens.surveillanceState$
+        const subscription = chronoLens.surveillanceState$
             .pipe(pairwise())
             .subscribe(([prev, next]) => {
                 switch (next) {
@@ -45,7 +47,7 @@ export const Player: FC<OverlayComponentProps & RouteMapToolProps> = ({
                         if (prev === SurveillanceState.Paused) {
                             WebLens.resumeRecording(setIsPlaying);
                         } else {
-                            WebLens.startRecording(map.getCanvas(), downloadName, fps, setIsPlaying, setSurveillanceState, (stage, error) => {
+                            WebLens.startRecording(map.getCanvas(), downloadName, settings, fps, setIsPlaying, setSurveillanceState, (stage, error) => {
                                 signaliumBureau.addNotice({
                                     id: noticeId,
                                     type: 'error',
@@ -59,7 +61,9 @@ export const Player: FC<OverlayComponentProps & RouteMapToolProps> = ({
                 }
             });
 
-        return () => { };
+        return () => {
+            subscription.unsubscribe();
+        };
     }, []);
 
     const handlePlayClick = () => setIsPlaying((prev) => !prev);
@@ -122,7 +126,7 @@ export const Player: FC<OverlayComponentProps & RouteMapToolProps> = ({
             />
             <div className={styles.buttons}>
                 <p className={styles.text}>
-                    {formatProgressMs(progressMs)} ({progressPercentage.toFixed(0)}%)
+                    {formatTimeMsAsStandard(progressMs)} ({progressPercentage.toFixed(0)}%)
                 </p>
                 <button onClick={handlePlayClick}>
                     {isPlaying ? 'Pause' : 'Play'}
@@ -137,7 +141,7 @@ export const Player: FC<OverlayComponentProps & RouteMapToolProps> = ({
                 ) : null}
                 <button onClick={() => WebLens.destroyRecording()}>Clear</button>
                 <p className={styles.text}>
-                    {formatTimestamp(progressMs, routeTimes?.startTimeEpoch)}
+                    {!routeTimes ? "" : individuator.formatTimestamp(progressMs + routeTimes.startTimeEpoch, settings)}
                 </p>
             </div>
         </div>

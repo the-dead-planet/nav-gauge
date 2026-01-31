@@ -1,10 +1,12 @@
-import { ComponentType, ReactElement } from "react";
-import { pairwise } from "rxjs";
-import { ErrorBoundaryProps } from "@ui";
+import { ReactElement } from "react";
+import { pairwise, Subscription } from "rxjs";
 import { MachineWardApp } from "./MachineWardApp";
+import { Individuator, OrientationSubscriptionDefinition } from "./individuator";
 import { StateWarden } from "../state-warden";
+import { Engine } from "./engine";
 import { Gear, GearId } from "../gears";
-import { MachineWardFooterProps, MachineWardLayoutProps, MachineWardMachineProps, MachineWardNoticesProps, MachineWardTopBarProps } from "./model";
+import { StorageKeeper } from "./storage-keeper";
+import { MachineWardComponents } from "./model";
 
 /**
  * Ward with machines. 
@@ -12,51 +14,62 @@ import { MachineWardFooterProps, MachineWardLayoutProps, MachineWardMachineProps
  * Describes the expected content of the applications and renders complete app.
  */
 export abstract class MachineWard {
-    public readonly storage: StorageLike;
-    public readonly prefersLightColorScheme: boolean;
+    public title = 'nav gauge';
+
+    public readonly individuator: Individuator;
+    public readonly storageKeeper: StorageKeeper;
     public readonly stateWarden: StateWarden;
+    public readonly engine = new Engine();
 
     public constructor(
-        gears: { [K in GearId]: (new (stateWarden: StateWarden) => Gear<K>) | null },
+        gears: { [K in GearId]: (new (individuator: Individuator) => Gear<K>) | null },
         storage: StorageLike,
-        prefersLightColorScheme: boolean
+        prefersLightColorScheme: boolean,
+        orientationSubscription: OrientationSubscriptionDefinition
     ) {
-        this.storage = storage;
-        this.prefersLightColorScheme = prefersLightColorScheme;
-        this.stateWarden = new StateWarden(storage, prefersLightColorScheme);
+        this.storageKeeper = new StorageKeeper(storage);
+        this.individuator = new Individuator(prefersLightColorScheme, orientationSubscription);
+        this.stateWarden = new StateWarden();
 
-        this.stateWarden.engine.addGears(
+        this.engine.addGears(
             Object.values(gears).reduce<Gear<GearId>[]>((acc, Gear) => {
                 if (Gear) {
-                    acc.push(new Gear(this.stateWarden));
+                    acc.push(new Gear(this.individuator));
                 }
                 return acc;
             }, [])
         );
-
-        this.initializeValves();
     }
 
+    private gearsSubscription: Subscription | null = null
+
     private initializeValves = () => {
-        this.stateWarden.engine.openValves(this.stateWarden.engine.gears$.value, this.stateWarden);
-        this.stateWarden.engine.gears$
+        this.engine.openValves(this.engine.gears$.value, this.stateWarden, this.individuator);
+        this.gearsSubscription = this.engine.gears$
             .pipe(pairwise())
             .subscribe(([prev, next]) => {
-                this.stateWarden.engine.closeValves(prev, this.stateWarden);
-                this.stateWarden.engine.openValves(next, this.stateWarden);
+                this.engine.closeValves(prev, this.stateWarden, this.individuator);
+                this.engine.openValves(next, this.stateWarden, this.individuator);
             });
     };
 
-    public abstract readonly errorFallbackComponent: ErrorBoundaryProps['fallbackComponent'];
-    public abstract readonly layoutComponent: ComponentType<MachineWardLayoutProps>;
-    public abstract readonly topBarComponent: ComponentType<MachineWardTopBarProps>;
-    public abstract readonly machineComponent: ComponentType<MachineWardMachineProps>;
-    public abstract readonly footerComponent: ComponentType<MachineWardFooterProps>;
-    public abstract readonly noticesComponent: ComponentType<MachineWardNoticesProps>;
+    private cleanUp = () => {
+        this.gearsSubscription?.unsubscribe();
+    }
 
-    public title = 'nav gauge';
+    public abstract components: MachineWardComponents;
 
     public render = (): ReactElement => {
-        return <MachineWardApp machineWard={this} />;
+        return (
+            <MachineWardApp
+                title={this.title}
+                individuator={this.individuator}
+                storageKeeper={this.storageKeeper}
+                stateWarden={this.stateWarden}
+                components={this.components}
+                onMount={this.initializeValves}
+                onUnmount={this.cleanUp}
+            />
+        );
     }
 }

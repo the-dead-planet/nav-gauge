@@ -1,5 +1,5 @@
 import { FeatureStateProps } from "@apparatus";
-import { Theme } from "@ui";
+import { ThemeName } from "@ui";
 import { getImageIconSize } from "./tinkers";
 import { IMAGE_SIZE } from "./images/image-parser";
 
@@ -112,7 +112,7 @@ const getImageLayer = (): maplibregl.SymbolLayerSpecification => ({
 });
 
 // TODO: Depoendent on base map style
-export const getImagesLayers = (theme: Theme): maplibregl.LayerSpecification[] => {
+export const getImagesLayers = (themeName: ThemeName): maplibregl.LayerSpecification[] => {
     const imageLayer = getImageLayer();
 
     return [

@@ -1,14 +1,55 @@
-import { MachineWard } from "@apparatus";
+import { Appearance, Dimensions, ScaledSize } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { MachineWard, MachineWardComponents, Orientation, OrientationSubscriptionDefinition } from "@apparatus";
 import { Footer, Layout, TopBar } from "./layout";
 import { Machine } from "./machine/Machine";
 import { ErrorFallback } from "./ErrorFallback";
 import { NoticesList } from "./notices/NoticesList";
 
 export class MobileMachineWard extends MachineWard {
-    public readonly errorFallbackComponent = ErrorFallback;
-    public readonly layoutComponent = Layout;
-    public readonly topBarComponent = TopBar;
-    public readonly machineComponent = Machine;
-    public readonly footerComponent = Footer;
-    public readonly noticesComponent = NoticesList;
+    public constructor() {
+        const getOrientation = (window: ScaledSize): Orientation => {
+            return window.width > Dimensions.get('window').height
+                ? Orientation.Landscape
+                : Orientation.Portait;
+        };
+
+        const orientationSubscription: OrientationSubscriptionDefinition = {
+            initial: () => getOrientation(Dimensions.get('window')),
+            subscribe: (onChange) => {
+                const handler = ({ window }: { window: ScaledSize }) => {
+                    onChange(getOrientation(window));
+                };
+
+                const subscription = Dimensions.addEventListener('change', handler);
+
+                return {
+                    unsubscribe: () => {
+                        subscription.remove();
+                    }
+                }
+            }
+        };
+
+        super(
+            {
+                "navigate": null,
+                "route-story": null,
+                "record-route": null,
+                "submit-data": null
+            },
+            AsyncStorage,
+            Appearance.getColorScheme() === 'light',
+            orientationSubscription
+        );
+    }
+
+    public components: MachineWardComponents = {
+        errorFallbackComponent: ErrorFallback,
+        layoutComponent: Layout,
+        topBarComponent: TopBar,
+        machineComponent: Machine,
+        footerComponent: Footer,
+        noticesComponent: NoticesList,
+    };
 }

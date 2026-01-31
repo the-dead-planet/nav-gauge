@@ -1,4 +1,4 @@
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Subscription } from "rxjs";
 
 export class StorageKeeper {
     public storage: StorageLike;
@@ -6,6 +6,14 @@ export class StorageKeeper {
     public constructor(storage: StorageLike) {
         this.storage = storage;
     }
+
+    public initialize = () => {
+
+    };
+
+    public cleanUp = () => {
+
+    };
 
     /**
      * Finds data with a given `storageId` in provided `storage` and updates the `state$` object using found value (if one exists).
@@ -17,21 +25,29 @@ export class StorageKeeper {
      * @param storage Storage to get the state from.
      * @param cleanUp Optionally, clean up function to adjust the state from storage to fit into current model `T`.
      */
-    public synchronizeSubjectWithStorage = async <T extends {}>(
+    public synchronizeSubjectWithStorage = <T extends {}>(
         state$: BehaviorSubject<T>,
         storageId: string,
         cleanUp: (state: unknown) => Partial<T> = ((state) => state as Partial<T>)
-    ): Promise<void> => {
-        try {
-            const savedData = await this.storage.getItem(storageId);
+    ): Subscription => {
+        const setState = (savedData: string | null) => {
             if (savedData) {
-                state$.next(Object.assign(state$.value, cleanUp(JSON.parse(savedData) as T)));
+                state$.next({ ...state$.value, ...cleanUp(JSON.parse(savedData) as T) });
+            }
+        };
+
+        try {
+            const maybePromise = this.storage.getItem(storageId);
+            if (typeof maybePromise === 'string') {
+                setState(maybePromise);
+            } else {
+                maybePromise?.then(setState)
             }
         } catch (err) {
             console.error(`Error getting ${storageId} storage state`, err);
         }
 
-        state$.subscribe((next) => {
+        return state$.subscribe((next) => {
             try {
                 this.storage.setItem(storageId, JSON.stringify(next));
             } catch (err) {
