@@ -85,9 +85,6 @@ jobs:
     steps:
       - name: Deploy
         uses: appleboy/ssh-action@v1
-        env:
-          IMAGE_NAME: ${{ env.IMAGE_NAME }}
-          IMAGE_REGISTRY: ${{ env.IMAGE_REGISTRY }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
@@ -95,11 +92,11 @@ jobs:
           script: |
             set -e
 
-            IMAGE="$IMAGE_REGISTRY/$IMAGE_NAME"
+            IMAGE="ghcr.io/the-dead-planet/nav-gauge"
             PORT="8084"
             PORTS="-p $PORT:8080"
 
-            echo "Pulling new image..."
+            echo "Pulling new image $IMAGE..."
             docker pull $IMAGE:latest
 
             CONTAINER_ID=$(docker ps --filter "publish=$PORT" --format "{{.ID}}")
