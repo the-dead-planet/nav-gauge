@@ -1,18 +1,11 @@
-import { ComponentType, ReactElement } from "react";
+import { ReactElement } from "react";
 import { pairwise } from "rxjs";
-import { ErrorBoundaryProps } from "@ui";
 import { MachineWardApp } from "./MachineWardApp";
 import { Individuator } from "./individuator";
 import { Engine, StateWarden } from "../state-warden";
 import { Gear, GearId } from "../gears";
 import { StorageKeeper } from "./storage-keeper";
-import {
-    MachineWardFooterProps,
-    MachineWardLayoutProps,
-    MachineWardMachineProps,
-    MachineWardNoticesProps,
-    MachineWardTopBarProps
-} from "./model";
+import { MachineWardComponents } from "./model";
 
 /**
  * Ward with machines. 
@@ -20,6 +13,8 @@ import {
  * Describes the expected content of the applications and renders complete app.
  */
 export abstract class MachineWard {
+    public title = 'nav gauge';
+
     public readonly individuator: Individuator;
     public readonly storageKeeper: StorageKeeper;
     public readonly stateWarden: StateWarden;
@@ -56,16 +51,17 @@ export abstract class MachineWard {
             });
     };
 
-    public abstract readonly errorFallbackComponent: ErrorBoundaryProps['fallbackComponent'];
-    public abstract readonly layoutComponent: ComponentType<MachineWardLayoutProps>;
-    public abstract readonly topBarComponent: ComponentType<MachineWardTopBarProps>;
-    public abstract readonly machineComponent: ComponentType<MachineWardMachineProps>;
-    public abstract readonly footerComponent: ComponentType<MachineWardFooterProps>;
-    public abstract readonly noticesComponent: ComponentType<MachineWardNoticesProps>;
-
-    public title = 'nav gauge';
+    public abstract components: MachineWardComponents;
 
     public render = (): ReactElement => {
-        return <MachineWardApp machineWard={this} />;
+        return (
+            <MachineWardApp
+                title={this.title}
+                individuator={this.individuator}
+                storageKeeper={this.storageKeeper}
+                stateWarden={this.stateWarden}
+                components={this.components}
+            />
+        );
     }
 }

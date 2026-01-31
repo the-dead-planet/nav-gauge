@@ -1,5 +1,6 @@
-import { ReactNode } from "react";
+import { ComponentType, ReactNode } from "react";
 import { SignaliumNotice } from "../state-warden";
+import { ErrorBoundaryProps } from "@ui";
 
 export interface MachineWardLayoutProps {
     children?: ReactNode;
@@ -20,3 +21,11 @@ export interface MachineWardNoticesProps {
     onRemove: (id: string) => void;
 }
 
+export interface MachineWardComponents {
+    errorFallbackComponent: ErrorBoundaryProps['fallbackComponent'];
+    layoutComponent: ComponentType<MachineWardLayoutProps>;
+    topBarComponent: ComponentType<MachineWardTopBarProps>;
+    machineComponent: ComponentType<MachineWardMachineProps>;
+    footerComponent: ComponentType<MachineWardFooterProps>;
+    noticesComponent: ComponentType<MachineWardNoticesProps>;
+}
