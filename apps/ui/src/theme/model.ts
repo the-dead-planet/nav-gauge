@@ -1,13 +1,8 @@
 import { Property } from "csstype";
 
-export enum Theme {
+export enum ThemeName {
     Light = 'theme-light',
     Dark = 'theme-dark',
-}
-
-export interface ThemeOption {
-    value: Theme;
-    label: string;
 }
 
 export type ThemeColor = 'background' |
@@ -22,6 +17,6 @@ export type ThemeColor = 'background' |
     'info';
 
 export interface ThemeSpecification {
-    theme: Theme;
+    themeName: ThemeName;
     colors: { [key in ThemeColor]: Property.Color; }
 }

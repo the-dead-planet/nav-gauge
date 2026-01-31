@@ -1,6 +1,6 @@
 import { ComponentType } from 'react';
-import { BehaviorSubject, combineLatest } from 'rxjs';
-import { ToolProps, OverlayComponentProps, ApplicationSettingsType } from '@apparatus';
+import { combineLatest } from 'rxjs';
+import { ToolProps, OverlayComponentProps, Individuator } from '@apparatus';
 import { RouteToolProps, RouteStoryGear, RouteFileInputProps, RouteFitBoundsProps } from '@the-dead-planet/nav-gauge-gears-route-story';
 import { RouteLayer } from './RouteLayer';
 import { ImagesLayer } from './images/ImagesLayer';
@@ -15,10 +15,10 @@ export class WebRouteStoryGear extends RouteStoryGear {
    public routeLayerComponent: ComponentType<OverlayComponentProps & RouteToolProps> = RouteLayer;
    public imagesLayerComponent: ComponentType<OverlayComponentProps & RouteToolProps> = ImagesLayer;
 
-   public constructor(applicationSettings$: BehaviorSubject<ApplicationSettingsType>) {
-      super(applicationSettings$);
+   public constructor(Individuator: Individuator) {
+      super(Individuator);
 
-      this.setUpConfirmBeforeLeave(applicationSettings$);
+      this.setUpConfirmBeforeLeave(Individuator);
    }
 
    private confirmationHandler = (event: BeforeUnloadEvent) => {
@@ -27,10 +27,10 @@ export class WebRouteStoryGear extends RouteStoryGear {
       return "Route and image data will be lost.";
    };
 
-   private setUpConfirmBeforeLeave = (applicationSettings$: BehaviorSubject<ApplicationSettingsType>) => {
-      combineLatest([applicationSettings$, this.data$, this.images$])
-         .subscribe(([applicationSettings, { geojson }, images]) => {
-            if (applicationSettings.confirmBeforeLeave && (geojson || images.length > 0)) {
+   private setUpConfirmBeforeLeave = (individuator: Individuator) => {
+      combineLatest([individuator.settings$, this.data$, this.images$])
+         .subscribe(([settings, { geojson }, images]) => {
+            if (settings.confirmBeforeLeave && (geojson || images.length > 0)) {
                window.addEventListener("beforeunload", this.confirmationHandler);
             } else {
                window.removeEventListener('beforeunload', this.confirmationHandler);

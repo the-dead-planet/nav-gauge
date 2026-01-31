@@ -4,7 +4,7 @@ import turfDistance from "@turf/distance";
 import { point as turfPoint } from "@turf/helpers";
 import { backgroundMapStyle, customRoadsMapStyle, osmMapStyle } from "./map-styles";
 import { FeatureProperties, GeoJson } from "@tinker-chest";
-import { StorageKeeper } from "../../storage-keeper/storage-keeper";
+import { StorageKeeper } from "../../machine-ward/storage-keeper";
 import { GaugeControlsType, MapLayout, OverlayComponentProps } from "./model";
 import { ComponentType } from "react";
 import { Option } from "@ui";

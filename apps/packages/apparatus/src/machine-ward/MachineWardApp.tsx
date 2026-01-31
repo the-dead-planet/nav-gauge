@@ -11,17 +11,17 @@ interface MachineWardProps {
 }
 
 export const MachineWardApp: FC<MachineWardProps> = ({ machineWard }) => {
-    const [applicationSettings] = useSubjectState(machineWard.applicationSettings$);
+    const [settings] = useSubjectState(machineWard.individuator.settings$);
 
     const machineWardContextValue = useMemo((): MachineWardContextValue => ({
-        applicationSettings$: machineWard.applicationSettings$,
+        individuator: machineWard.individuator,
         storageKeeper: machineWard.storageKeeper
     }), [machineWard])
 
     return (
         <StrictMode>
             <ErrorBoundary fallbackComponent={machineWard.errorFallbackComponent}>
-                <ThemeContext.Provider value={themes[applicationSettings.theme]}>
+                <ThemeContext.Provider value={themes[settings.themeName]}>
                     <MachineWardContext.Provider value={machineWardContextValue}>
                         <StateWardenContext.Provider value={machineWard.stateWarden}>
                             <machineWard.layoutComponent>

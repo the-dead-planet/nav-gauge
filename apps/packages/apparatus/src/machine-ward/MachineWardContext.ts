@@ -1,10 +1,9 @@
 import { createContext, } from "react";
-import { BehaviorSubject } from "rxjs";
-import { StorageKeeper } from "../storage-keeper";
-import { ApplicationSettingsType } from "./model";
+import { StorageKeeper } from "./storage-keeper";
+import { Individuator } from "./individuator";
 
 export interface MachineWardContextValue {
-    applicationSettings$: BehaviorSubject<ApplicationSettingsType>;
+    individuator: Individuator;
     storageKeeper: StorageKeeper;
 }
 

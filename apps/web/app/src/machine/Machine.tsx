@@ -4,7 +4,7 @@ import { MapSection } from "./MapSection";
 import { Presets } from "./controls/Presets";
 import { AnimationControls } from "./controls/AnimationControls";
 import { MapLayoutControls } from "./controls/MapLayoutControls";
-import { ApplicationSettings } from "./controls/ApplicationSettings";
+import { ApplicationSettingsSection } from "./controls/ApplicationSettings";
 import { GaugeControls } from "./controls/GaugeControls";
 import { MapStyleSelection } from "./controls/MapStyleSelection";
 import * as styles from './machine.module.css';
@@ -52,7 +52,7 @@ export const Machine: FC<MachineWardMachineProps> = () => {
                 <MapLayoutControls />
                 <GaugeControls />
                 <AnimationControls />
-                <ApplicationSettings />
+                <ApplicationSettingsSection />
             </div>
             <div className={styles["main-area"]}>
                 <MapSection />

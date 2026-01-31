@@ -24,7 +24,7 @@ import { useMapImages } from "../hooks";
 import { RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story";
 
 export const ImagesLayer: FC<OverlayComponentProps & RouteToolProps> = ({ map, data$, images$ }) => {
-    const { theme } = useTheme();
+    const { themeName } = useTheme();
     const [{ geojson }] = useSubjectState(data$);
     const [images] = useSubjectState(images$);
     const loadedImages = useLoadedImages(images);
@@ -67,7 +67,7 @@ export const ImagesLayer: FC<OverlayComponentProps & RouteToolProps> = ({ map, d
                     promoteId: 'imageId'
                 }
             },
-            layers: getImagesLayers(theme),
+            layers: getImagesLayers(themeName),
             beforeLayerId: layerIds.imageInDisplay,
             handlers: {
                 onMouseMove: ({ features, isTopRelated }) => {
@@ -85,7 +85,7 @@ export const ImagesLayer: FC<OverlayComponentProps & RouteToolProps> = ({ map, d
                 onMouseUp: () => setDraggingId(null)
             },
         };
-    }, [theme, sourceDataGeojson]);
+    }, [themeName, sourceDataGeojson]);
 
     useMapLayerData(map, mapLayerData, [[sourceIds.image, highlightIds]]);
 

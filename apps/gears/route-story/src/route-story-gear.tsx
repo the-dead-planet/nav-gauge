@@ -1,6 +1,6 @@
 import { ComponentType } from "react";
 import { BehaviorSubject } from "rxjs";
-import { ApplicationSettingsType, ToolProps, MarkerImage, OverlayComponentProps, StateWarden, Gear, ControlComponentProps } from "@apparatus";
+import { ToolProps, MarkerImage, OverlayComponentProps, StateWarden, Gear, ControlComponentProps, Individuator } from "@apparatus";
 import { ParsingResultWithError } from "@tinker-chest";
 import { RouteToolProps, RouteTimes, RouteFileInputProps, RouteFitBoundsProps } from "./model";
 
@@ -11,8 +11,8 @@ export abstract class RouteStoryGear extends Gear<'route-story'> {
     public readonly images$ = new BehaviorSubject<MarkerImage[]>([]);
     public readonly progressMs$ = new BehaviorSubject(0);
 
-    public constructor(applicationSettings$: BehaviorSubject<ApplicationSettingsType>) {
-        super(applicationSettings$);
+    public constructor(individuator: Individuator) {
+        super(individuator);
         this.setUpDataUpdates();
     }
 

@@ -10,8 +10,8 @@ export const Layout: FC<MachineWardLayoutProps> = ({ children }) => {
         for (const [key, value] of Object.entries(theme.colors)) {
             document.documentElement.style.setProperty(`--${key}-color`, value);
         }
-        document.body.setAttribute("data-theme", theme.theme);
-    }, [theme.theme]);
+        document.body.setAttribute("data-theme", theme.themeName);
+    }, [theme.themeName]);
 
     return children;
 }

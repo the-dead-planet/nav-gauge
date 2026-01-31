@@ -4,8 +4,8 @@ import { AttributionVault } from "./attribution-vault"
 import { Cartomancer } from "./cartomancer";
 import { ChronoLens } from "./chrono-lens";
 import { SignaliumBureau } from "./signalium-bureau";
-import { StorageKeeper } from "../storage-keeper/storage-keeper";
 import { ToolsStation } from "./tools-station";
+import { StorageKeeper } from "../machine-ward";
 
 /**
  * Warden does what warden needs to do.

@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { useMachineWard } from "../machine-ward";
+import { useMachineWard } from "../useMachineWard";
 
 /**
  * On mount initializes the state with the data in storage, if available (otherwise with the `defaultState`).

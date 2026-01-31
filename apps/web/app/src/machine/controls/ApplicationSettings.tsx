@@ -1,16 +1,19 @@
 import { FC } from "react";
-import { themeOptions, Theme } from "@ui";
+import { themeOptions, ThemeName } from "@ui";
 import { Fieldset, Input } from "@web-ui";
-import { useMachineWard, useSubjectState } from "@apparatus";
+import { IndividuatorSettings, useMachineWard, useSubjectState } from "@apparatus";
 import * as styles from './controls.module.css';
 
-export const ApplicationSettings: FC = () => {
-    const { applicationSettings$ } = useMachineWard();
-    const [applicationSettings, setApplicationSettings] = useSubjectState(applicationSettings$);
-    const { confirmBeforeLeave } = applicationSettings;
+export const ApplicationSettingsSection: FC = () => {
+    const { individuator } = useMachineWard();
+    const [settings, setSettings] = useSubjectState(individuator.settings$);
+    const { confirmBeforeLeave } = settings;
 
     const handleThemeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setApplicationSettings((prev) => ({ ...prev, theme: event.target.value as Theme }));
+        setSettings((prev): IndividuatorSettings => ({
+            ...prev,
+            themeName: event.target.value as ThemeName
+        }));
     };
 
     return (
@@ -23,14 +26,14 @@ export const ApplicationSettings: FC = () => {
                 type='checkbox'
                 checked={confirmBeforeLeave}
                 onChange={() => { }}
-                onContainerClick={() => setApplicationSettings((prev) => ({ ...prev, confirmBeforeLeave: !prev.confirmBeforeLeave }))}
+                onContainerClick={() => setSettings((prev) => ({ ...prev, confirmBeforeLeave: !prev.confirmBeforeLeave }))}
                 containerClassName={styles["checkbox"]}
             />
 
             {/* TODO: Move to reusable component and remove style */}
             <div>
                 <label htmlFor="presets" style={{ fontSize: "12px" }}>Theme</label>
-                <select name="presets" id="presets" value={applicationSettings.theme} onChange={handleThemeChange}>
+                <select name="presets" id="presets" value={settings.themeName} onChange={handleThemeChange}>
                     {themeOptions.map((option) => (
                         <option key={option.value} value={option.value}>
                             {option.label}
