@@ -1,12 +1,12 @@
 import { FC } from "react";
 import { themeOptions, Theme } from "@ui";
 import { Fieldset, Input } from "@web-ui";
+import { useMachineWard, useSubjectState } from "@apparatus";
 import * as styles from './controls.module.css';
-import { useStateWarden, useSubjectState } from "@apparatus";
 
 export const ApplicationSettings: FC = () => {
-    const stateWarden = useStateWarden();
-    const [applicationSettings, setApplicationSettings] = useSubjectState(stateWarden.applicationSettings$);
+    const { applicationSettings$ } = useMachineWard();
+    const [applicationSettings, setApplicationSettings] = useSubjectState(applicationSettings$);
     const { confirmBeforeLeave } = applicationSettings;
 
     const handleThemeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {

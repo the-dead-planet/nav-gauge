@@ -7,6 +7,7 @@ import { FeatureProperties, GeoJson } from "@tinker-chest";
 import { StorageKeeper } from "../../storage-keeper/storage-keeper";
 import { GaugeControlsType, MapLayout, OverlayComponentProps } from "./model";
 import { ComponentType } from "react";
+import { Option } from "@ui";
 
 interface SelectedStyle {
     id: keyof typeof Cartomancer.styles;
@@ -22,6 +23,16 @@ export class Cartomancer {
         'custom-roads': customRoadsMapStyle
     }
     private defaultStyleId: keyof typeof Cartomancer.styles = 'osm';
+
+    /**
+     * All available controls position options.
+     */
+    public static controlsPositionOptions: Option<maplibregl.ControlPosition>[] = [
+        { value: "top-left", label: 'Top left' },
+        { value: "top-right", label: "Top right" },
+        { value: "bottom-left", label: "Bottom left" },
+        { value: "bottom-right", label: "Bottom right" }
+    ];
 
     public static defaultGaugeControls: GaugeControlsType = {
         globeProjection: true,

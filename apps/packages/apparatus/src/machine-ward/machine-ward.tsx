@@ -1,9 +1,11 @@
 import { ComponentType, ReactElement } from "react";
-import { pairwise } from "rxjs";
-import { ErrorBoundaryProps } from "@ui";
+import { BehaviorSubject, pairwise } from "rxjs";
+import { ErrorBoundaryProps, Theme } from "@ui";
+import { ApplicationSettingsType } from "@tinker-chest";
 import { MachineWardApp } from "./MachineWardApp";
-import { StateWarden } from "../state-warden";
+import { Engine, StateWarden } from "../state-warden";
 import { Gear, GearId } from "../gears";
+import { StorageKeeper } from "../storage-keeper";
 import { MachineWardFooterProps, MachineWardLayoutProps, MachineWardMachineProps, MachineWardNoticesProps, MachineWardTopBarProps } from "./model";
 
 /**
@@ -12,23 +14,41 @@ import { MachineWardFooterProps, MachineWardLayoutProps, MachineWardMachineProps
  * Describes the expected content of the applications and renders complete app.
  */
 export abstract class MachineWard {
-    public readonly storage: StorageLike;
-    public readonly prefersLightColorScheme: boolean;
+    /**
+     * Provides default settings which can be later changed by user.
+     * @param defaultTheme Defaults to dark theme.
+     * @returns 
+     */
+    private static getDefaultApplicationSettings = (defaultTheme?: Theme): ApplicationSettingsType => ({
+        theme: defaultTheme || Theme.Dark,
+        /**
+         * When set to true, user will be shown a confirmation popup on page close or reload.
+         */
+        confirmBeforeLeave: false,
+    });
+
+    private readonly applicationSettingsStorageId = 'application-settings';
+    public readonly applicationSettings$: BehaviorSubject<ApplicationSettingsType>;
+    public readonly storageKeeper: StorageKeeper;
     public readonly stateWarden: StateWarden;
+    public engine = new Engine();
 
     public constructor(
-        gears: { [K in GearId]: (new (stateWarden: StateWarden) => Gear<K>) | null },
+        gears: { [K in GearId]: (new (applicationSettings$: BehaviorSubject<ApplicationSettingsType>) => Gear<K>) | null },
         storage: StorageLike,
         prefersLightColorScheme: boolean
     ) {
-        this.storage = storage;
-        this.prefersLightColorScheme = prefersLightColorScheme;
-        this.stateWarden = new StateWarden(storage, prefersLightColorScheme);
+        this.storageKeeper = new StorageKeeper(storage);
+        this.stateWarden = new StateWarden(this.storageKeeper);
 
-        this.stateWarden.engine.addGears(
+        const initialSettings = MachineWard.getDefaultApplicationSettings(prefersLightColorScheme ? Theme.Light : Theme.Dark);
+        this.applicationSettings$ = new BehaviorSubject<ApplicationSettingsType>(initialSettings);
+        this.storageKeeper.synchronizeSubjectWithStorage(this.applicationSettings$, this.applicationSettingsStorageId);
+
+        this.engine.addGears(
             Object.values(gears).reduce<Gear<GearId>[]>((acc, Gear) => {
                 if (Gear) {
-                    acc.push(new Gear(this.stateWarden));
+                    acc.push(new Gear(this.applicationSettings$));
                 }
                 return acc;
             }, [])
@@ -38,12 +58,12 @@ export abstract class MachineWard {
     }
 
     private initializeValves = () => {
-        this.stateWarden.engine.openValves(this.stateWarden.engine.gears$.value, this.stateWarden);
-        this.stateWarden.engine.gears$
+        this.engine.openValves(this.engine.gears$.value, this.stateWarden);
+        this.engine.gears$
             .pipe(pairwise())
             .subscribe(([prev, next]) => {
-                this.stateWarden.engine.closeValves(prev, this.stateWarden);
-                this.stateWarden.engine.openValves(next, this.stateWarden);
+                this.engine.closeValves(prev, this.stateWarden);
+                this.engine.openValves(next, this.stateWarden);
             });
     };
 

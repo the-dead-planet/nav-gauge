@@ -1,12 +1,13 @@
 import { ComponentType } from 'react';
-import { combineLatest } from 'rxjs';
-import { ToolProps, OverlayComponentProps, StateWarden } from '@apparatus';
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import { ToolProps, OverlayComponentProps } from '@apparatus';
 import { RouteStoryGear } from '@the-dead-planet/nav-gauge-gears-route-story';
 import { RouteLayer } from './RouteLayer';
 import { ImagesLayer } from './images/ImagesLayer';
 import { FileInput } from './FileInput';
 import { RouteLayerFitBounds } from './layers/RouteLayerFitBounds';
 import { Player } from './player/Player';
+import { ApplicationSettingsType } from '@tinker-chest';
 
 export class WebRouteStoryGear extends RouteStoryGear {
    public routeLayerFitBountsComponent: ComponentType<ToolProps> = ({ map }) => (
@@ -41,10 +42,10 @@ export class WebRouteStoryGear extends RouteStoryGear {
       <ImagesLayer data$={this.data$} images$={this.images$} {...props} />
    );
 
-   public constructor(stateWarden: StateWarden) {
-      super(stateWarden);
+   public constructor(applicationSettings$: BehaviorSubject<ApplicationSettingsType>) {
+      super(applicationSettings$);
 
-      this.setUpConfirmBeforeLeave(stateWarden);
+      this.setUpConfirmBeforeLeave(applicationSettings$);
    }
 
    private confirmationHandler = (event: BeforeUnloadEvent) => {
@@ -53,8 +54,8 @@ export class WebRouteStoryGear extends RouteStoryGear {
       return "Route and image data will be lost.";
    };
 
-   private setUpConfirmBeforeLeave = (stateWarden: StateWarden) => {
-      combineLatest([stateWarden.applicationSettings$, this.data$, this.images$])
+   private setUpConfirmBeforeLeave = (applicationSettings$: BehaviorSubject<ApplicationSettingsType>) => {
+      combineLatest([applicationSettings$, this.data$, this.images$])
          .subscribe(([applicationSettings, { geojson }, images]) => {
             if (applicationSettings.confirmBeforeLeave && (geojson || images.length > 0)) {
                window.addEventListener("beforeunload", this.confirmationHandler);
