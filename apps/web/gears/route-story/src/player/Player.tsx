@@ -33,7 +33,7 @@ export const Player: FC<OverlayComponentProps & RouteToolProps> = ({
     useEffect(() => {
         const noticeId = 'player-recording';
 
-        chronoLens.surveillanceState$
+        const subscription = chronoLens.surveillanceState$
             .pipe(pairwise())
             .subscribe(([prev, next]) => {
                 switch (next) {
@@ -61,7 +61,9 @@ export const Player: FC<OverlayComponentProps & RouteToolProps> = ({
                 }
             });
 
-        return () => { };
+        return () => {
+            subscription.unsubscribe();
+        };
     }, []);
 
     const handlePlayClick = () => setIsPlaying((prev) => !prev);
