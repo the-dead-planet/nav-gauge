@@ -1,4 +1,4 @@
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Subscription } from "rxjs";
 import { validateBoolean, validateNumber } from "@tinker-chest";
 import { AnimationControlsType } from "./model";
 import { StorageKeeper } from "../../machine-ward/storage-keeper";
@@ -35,12 +35,21 @@ export class Animatrix {
     public static easeDurationRange: [number, number] = [0, 1000];
 
     private controlsStorageId = 'animatrix:controls';
+    private controlsStorageSubscription: Subscription | null = null;
     public controls$: BehaviorSubject<AnimationControlsType>;
 
-    public constructor(storageKeeper: StorageKeeper) {
+    public constructor() {
         this.controls$ = new BehaviorSubject(Animatrix.defaultControls);
-        storageKeeper.synchronizeSubjectWithStorage(this.controls$, this.controlsStorageId, this.cleanUpAnimationControls);
     }
+
+    public initialize = (storageKeeper: StorageKeeper) => {
+        storageKeeper.synchronizeSubjectWithStorage(this.controls$, this.controlsStorageId, this.cleanUpAnimationControls)
+            .then((subscription) => { this.controlsStorageSubscription = subscription });
+    };
+
+    public cleanUp = () => {
+        this.controlsStorageSubscription?.unsubscribe();
+    };
 
     /**
      * Which image should be in display now.

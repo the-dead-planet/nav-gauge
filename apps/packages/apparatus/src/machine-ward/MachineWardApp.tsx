@@ -1,4 +1,4 @@
-import { FC, StrictMode, useMemo } from "react";
+import { FC, StrictMode, useEffect, useMemo } from "react";
 import { ErrorBoundary, ThemeContext, themes } from "@ui";
 import { MachineWardNotices } from "./MachineWardNotices";
 import { StateWarden, StateWardenContext } from "../state-warden";
@@ -13,7 +13,9 @@ interface MachineWardProps {
     individuator: Individuator;
     storageKeeper: StorageKeeper;
     stateWarden: StateWarden;
-    components: MachineWardComponents
+    components: MachineWardComponents;
+    onMount: () => void;
+    onUnmount: () => void;
 }
 
 export const MachineWardApp: FC<MachineWardProps> = ({
@@ -22,13 +24,29 @@ export const MachineWardApp: FC<MachineWardProps> = ({
     storageKeeper,
     stateWarden,
     components,
+    onMount,
+    onUnmount,
 }) => {
     const [settings] = useSubjectState(individuator.settings$);
 
     const machineWardContextValue = useMemo((): MachineWardContextValue => ({
         individuator,
         storageKeeper
-    }), [individuator, storageKeeper])
+    }), [individuator, storageKeeper]);
+
+    useEffect(() => {
+        storageKeeper.initialize();
+        individuator.initialize(storageKeeper);
+        stateWarden.initialize(storageKeeper);
+        onMount();
+
+        return () => {
+            onUnmount();
+            stateWarden.cleanUp();
+            individuator.cleanUp();
+            storageKeeper.cleanUp();
+        };
+    }, []);
 
     return (
         <StrictMode>

@@ -1,10 +1,18 @@
 import { FC, ReactNode, useState, useEffect, ComponentType } from "react";
-import * as rxjs from "rxjs";
+import {combineLatest, Observable, of, map as rxjsMap, switchMap } from "rxjs";
 import maplibregl from "maplibre-gl";
 import { Protocol } from "pmtiles";
 import classNames from "classnames";
 import { Icons } from "@web-ui";
-import { Cartomancer, ToolProps, ToolPlacement, useObservableState, useStateWarden, useSubjectState } from "@apparatus";
+import {
+    Cartomancer,
+    ToolProps,
+    ToolPlacement,
+    useObservableState,
+    useStateWarden,
+    useSubjectState,
+    useMachineWard
+} from "@apparatus";
 import * as styles from './map-tools.module.css';
 import './map.css';
 
@@ -23,6 +31,7 @@ interface Props {
 }
 
 export const MapTools: FC<Props> = ({ map, children }) => {
+    const { individuator } = useMachineWard();
     const { cartomancer, toolsStation } = useStateWarden();
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const [containerRef, setContainerRef] = useState<HTMLElement | null>(null);
@@ -164,15 +173,15 @@ export const MapTools: FC<Props> = ({ map, children }) => {
         };
     }, [isInitialised]);
 
-    const toolComponents$: rxjs.Observable<ObservedTool[]> = toolsStation.toolComponents$.pipe(rxjs.switchMap((toolsMap) => {
+    const toolComponents$: Observable<ObservedTool[]> = toolsStation.toolComponents$.pipe(switchMap((toolsMap) => {
         const tools = [...toolsMap.entries()];
 
         if (tools.length === 0) {
-            return rxjs.of([]);
+            return of([]);
         }
 
-        return rxjs.combineLatest(tools.map(([id, tool]) => tool.placement$.pipe(
-            rxjs.map((placement) => ({ placement, id, component: tool.component }))
+        return combineLatest(tools.map(([id, tool]) => tool.placement$.pipe(
+            rxjsMap((placement) => ({ placement, id, component: tool.component }))
         )));
     }));
 
@@ -188,7 +197,7 @@ export const MapTools: FC<Props> = ({ map, children }) => {
     return (
         <div className={styles["container"]}>
             {placements.map((p) => (
-                <div className={classNames(styles["toolbox"], styles[p])}>
+                <div key={p} className={classNames(styles["toolbox"], styles[p])}>
                     {toolsByPlacement[p].map(({ id, component: ToolComponent }) => (
                         <ToolComponent key={id} map={map} />
                     ))}

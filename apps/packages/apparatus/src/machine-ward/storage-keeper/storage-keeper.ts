@@ -1,4 +1,4 @@
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Subscription } from "rxjs";
 
 export class StorageKeeper {
     public storage: StorageLike;
@@ -6,6 +6,14 @@ export class StorageKeeper {
     public constructor(storage: StorageLike) {
         this.storage = storage;
     }
+
+    public initialize = () => {
+
+    };
+
+    public cleanUp = () => {
+
+    };
 
     /**
      * Finds data with a given `storageId` in provided `storage` and updates the `state$` object using found value (if one exists).
@@ -21,17 +29,17 @@ export class StorageKeeper {
         state$: BehaviorSubject<T>,
         storageId: string,
         cleanUp: (state: unknown) => Partial<T> = ((state) => state as Partial<T>)
-    ): Promise<void> => {
+    ): Promise<Subscription> => {
         try {
             const savedData = await this.storage.getItem(storageId);
             if (savedData) {
-                state$.next(Object.assign(state$.value, cleanUp(JSON.parse(savedData) as T)));
+                state$.next({ ...state$.value, ...cleanUp(JSON.parse(savedData) as T)});
             }
         } catch (err) {
             console.error(`Error getting ${storageId} storage state`, err);
         }
 
-        state$.subscribe((next) => {
+        return state$.subscribe((next) => {
             try {
                 this.storage.setItem(storageId, JSON.stringify(next));
             } catch (err) {

@@ -1,5 +1,5 @@
 import { ComponentType } from 'react';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { ToolProps, OverlayComponentProps, Individuator } from '@apparatus';
 import { RouteToolProps, RouteStoryGear, RouteFileInputProps, RouteFitBoundsProps } from '@the-dead-planet/nav-gauge-gears-route-story';
 import { RouteLayer } from './RouteLayer';
@@ -15,11 +15,15 @@ export class WebRouteStoryGear extends RouteStoryGear {
    public routeLayerComponent: ComponentType<OverlayComponentProps & RouteToolProps> = RouteLayer;
    public imagesLayerComponent: ComponentType<OverlayComponentProps & RouteToolProps> = ImagesLayer;
 
-   public constructor(Individuator: Individuator) {
-      super(Individuator);
+   private confirmBeforeLeaveSubscription: Subscription | null = null;
 
-      this.setUpConfirmBeforeLeave(Individuator);
-   }
+   public engageRouteStory = (individuator: Individuator) => {
+      this.confirmBeforeLeaveSubscription = this.subscribeConfirmBeforeLeave(individuator);
+   };
+
+   public disengageRouteStory = () => {
+      this.confirmBeforeLeaveSubscription?.unsubscribe();
+   };
 
    private confirmationHandler = (event: BeforeUnloadEvent) => {
       event.preventDefault();
@@ -27,8 +31,8 @@ export class WebRouteStoryGear extends RouteStoryGear {
       return "Route and image data will be lost.";
    };
 
-   private setUpConfirmBeforeLeave = (individuator: Individuator) => {
-      combineLatest([individuator.settings$, this.data$, this.images$])
+   private subscribeConfirmBeforeLeave = (individuator: Individuator): Subscription => {
+      return combineLatest([individuator.settings$, this.data$, this.images$])
          .subscribe(([settings, { geojson }, images]) => {
             if (settings.confirmBeforeLeave && (geojson || images.length > 0)) {
                window.addEventListener("beforeunload", this.confirmationHandler);

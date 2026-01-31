@@ -1,23 +1,22 @@
 import { ComponentType } from "react";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Subscription } from "rxjs";
 import { ToolProps, MarkerImage, OverlayComponentProps, StateWarden, Gear, ControlComponentProps, Individuator } from "@apparatus";
 import { ParsingResultWithError } from "@tinker-chest";
 import { RouteToolProps, RouteTimes, RouteFileInputProps, RouteFitBoundsProps } from "./model";
 
 export abstract class RouteStoryGear extends Gear<'route-story'> {
     public readonly id = 'route-story';
+    private dataSubscription: Subscription | null = null;
     public readonly data$ = new BehaviorSubject<ParsingResultWithError>({});
     public readonly routeTimes$ = new BehaviorSubject<RouteTimes | null>(null);
     public readonly images$ = new BehaviorSubject<MarkerImage[]>([]);
     public readonly progressMs$ = new BehaviorSubject(0);
 
-    public constructor(individuator: Individuator) {
-        super(individuator);
-        this.setUpDataUpdates();
-    }
+    public abstract engageRouteStory: (individuator: Individuator) => void;
+    public abstract disengageRouteStory: () => void;
 
-    private setUpDataUpdates = () => {
-        this.data$.subscribe(({ geojson }) => {
+    private subscribeToDataUpdates = (): Subscription => {
+        return this.data$.subscribe(({ geojson }) => {
             this.progressMs$.next(0);
 
             if (!geojson?.features[0]) {
@@ -56,7 +55,10 @@ export abstract class RouteStoryGear extends Gear<'route-story'> {
     private imagesOverlayId = 'images';
     public abstract imagesLayerComponent: ComponentType<OverlayComponentProps & RouteToolProps>;
 
-    public engage = (stateWarden: StateWarden) => {
+    public engage = (stateWarden: StateWarden, individuator: Individuator) => {
+        this.engageRouteStory(individuator);
+        this.dataSubscription = this.subscribeToDataUpdates();
+
         stateWarden.toolsStation.addControlComponent(this.fileInputControlId, (props) => (
             <this.fileInputComponent data$={this.data$} images$={this.images$} {...props} />
         ));
@@ -97,6 +99,8 @@ export abstract class RouteStoryGear extends Gear<'route-story'> {
         stateWarden.cartomancer.removeOverlay(this.routeOverlayId);
         stateWarden.toolsStation.removeToolComponent(this.playerToolId);
         stateWarden.toolsStation.removeToolComponent(this.routeLayerFitBoundsToolId);
+        this.dataSubscription?.unsubscribe();
+        this.disengageRouteStory();
     };
 
     private fitBoundsNotificationId = 'route-fit-bounds';

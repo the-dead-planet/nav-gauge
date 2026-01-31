@@ -1,8 +1,9 @@
 import { ReactElement } from "react";
-import { pairwise } from "rxjs";
+import { pairwise, Subscription } from "rxjs";
 import { MachineWardApp } from "./MachineWardApp";
-import { Individuator } from "./individuator";
-import { Engine, StateWarden } from "../state-warden";
+import { Individuator, OrientationSubscriptionDefinition } from "./individuator";
+import { StateWarden } from "../state-warden";
+import { Engine } from "./engine";
 import { Gear, GearId } from "../gears";
 import { StorageKeeper } from "./storage-keeper";
 import { MachineWardComponents } from "./model";
@@ -23,11 +24,12 @@ export abstract class MachineWard {
     public constructor(
         gears: { [K in GearId]: (new (individuator: Individuator) => Gear<K>) | null },
         storage: StorageLike,
-        prefersLightColorScheme: boolean
+        prefersLightColorScheme: boolean,
+        orientationSubscription: OrientationSubscriptionDefinition
     ) {
         this.storageKeeper = new StorageKeeper(storage);
-        this.individuator = new Individuator(this.storageKeeper, prefersLightColorScheme);
-        this.stateWarden = new StateWarden(this.storageKeeper);
+        this.individuator = new Individuator(prefersLightColorScheme, orientationSubscription);
+        this.stateWarden = new StateWarden();
 
         this.engine.addGears(
             Object.values(gears).reduce<Gear<GearId>[]>((acc, Gear) => {
@@ -37,19 +39,23 @@ export abstract class MachineWard {
                 return acc;
             }, [])
         );
-
-        this.initializeValves();
     }
 
+    private gearsSubscription: Subscription | null = null
+
     private initializeValves = () => {
-        this.engine.openValves(this.engine.gears$.value, this.stateWarden);
-        this.engine.gears$
+        this.engine.openValves(this.engine.gears$.value, this.stateWarden, this.individuator);
+        this.gearsSubscription = this.engine.gears$
             .pipe(pairwise())
             .subscribe(([prev, next]) => {
-                this.engine.closeValves(prev, this.stateWarden);
-                this.engine.openValves(next, this.stateWarden);
+                this.engine.closeValves(prev, this.stateWarden, this.individuator);
+                this.engine.openValves(next, this.stateWarden, this.individuator);
             });
     };
+
+    private cleanUp = () => {
+        this.gearsSubscription?.unsubscribe();
+    }
 
     public abstract components: MachineWardComponents;
 
@@ -61,6 +67,8 @@ export abstract class MachineWard {
                 storageKeeper={this.storageKeeper}
                 stateWarden={this.stateWarden}
                 components={this.components}
+                onMount={this.initializeValves}
+                onUnmount={this.cleanUp}
             />
         );
     }

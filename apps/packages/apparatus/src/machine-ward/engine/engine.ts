@@ -1,6 +1,7 @@
 import { BehaviorSubject } from "rxjs";
-import { StateWarden } from "../state-warden";
 import { Gear } from "../../gears";
+import { StateWarden } from "../../state-warden";
+import { Individuator } from "../individuator";
 
 export class Engine {
     public constructor() { }
@@ -21,15 +22,15 @@ export class Engine {
         this.gears$.next(this.gears$.value.filter((g) => !ids.has(g.id)));
     };
 
-    public openValves = (gears: Gear[], stateWarden: StateWarden) => {
+    public openValves = (gears: Gear[], stateWarden: StateWarden, individuator: Individuator) => {
         for (const gear of gears) {
-            gear.engage(stateWarden);
+            gear.engage(stateWarden, individuator);
         }
     };
 
-    public closeValves = (gears: Gear[], stateWarden: StateWarden) => {
+    public closeValves = (gears: Gear[], stateWarden: StateWarden, individuator: Individuator) => {
         for (const gear of gears) {
-            gear.disengage(stateWarden);
+            gear.disengage(stateWarden, individuator);
         }
     };
 }

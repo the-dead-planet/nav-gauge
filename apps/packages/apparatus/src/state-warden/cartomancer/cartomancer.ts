@@ -1,4 +1,4 @@
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Subscription } from "rxjs";
 import maplibregl from "maplibre-gl";
 import turfDistance from "@turf/distance";
 import { point as turfPoint } from "@turf/helpers";
@@ -65,24 +65,39 @@ export class Cartomancer {
     public isStyleLoaded$ = new BehaviorSubject(false);
 
     private selectedStyleStorageId = 'cartomancer:map-style';
+    private selectedStyleStorageSubscription: Subscription | null = null;
     public selectedStyle$: BehaviorSubject<SelectedStyle>;
 
     private gaugeControlsStorageId = 'cartomancer:gauge-controls';
+    private gaugeControlsStorageSubscription: Subscription | null = null;
     public gaugeControls$: BehaviorSubject<GaugeControlsType>;
 
     private mapLayoutStorageId = 'cartomancer:map-layout';
+    private mapLayoutStorageSubscription: Subscription | null = null;
     public mapLayout$: BehaviorSubject<MapLayout>;
 
-    public constructor(storageKeeper: StorageKeeper) {
+    public constructor() {
         this.selectedStyle$ = new BehaviorSubject({ id: this.defaultStyleId });
-        storageKeeper.synchronizeSubjectWithStorage(this.selectedStyle$, this.selectedStyleStorageId, this.cleanUpSelectedStyle);
-
         this.gaugeControls$ = new BehaviorSubject(Cartomancer.defaultGaugeControls);
-        storageKeeper.synchronizeSubjectWithStorage(this.gaugeControls$, this.gaugeControlsStorageId);
-
         this.mapLayout$ = new BehaviorSubject(Cartomancer.defaultMapLayout);
-        storageKeeper.synchronizeSubjectWithStorage(this.mapLayout$, this.mapLayoutStorageId);
     }
+
+    public initialize = (storageKeeper: StorageKeeper) => {
+        storageKeeper.synchronizeSubjectWithStorage(this.selectedStyle$, this.selectedStyleStorageId, this.cleanUpSelectedStyle)
+            .then((subscription) => { this.selectedStyleStorageSubscription = subscription });
+
+        storageKeeper.synchronizeSubjectWithStorage(this.gaugeControls$, this.gaugeControlsStorageId)
+            .then((subscription) => { this.gaugeControlsStorageSubscription = subscription });
+
+        storageKeeper.synchronizeSubjectWithStorage(this.mapLayout$, this.mapLayoutStorageId)
+            .then((subscription) => { this.mapLayoutStorageSubscription = subscription });
+    };
+
+    public cleanUp = () => {
+        this.selectedStyleStorageSubscription?.unsubscribe();
+        this.gaugeControlsStorageSubscription?.unsubscribe();
+        this.mapLayoutStorageSubscription?.unsubscribe();
+    };
 
     public zoom$ = new BehaviorSubject(0);
     public overlays$ = new BehaviorSubject<Map<string, ComponentType<OverlayComponentProps>>>(new Map());

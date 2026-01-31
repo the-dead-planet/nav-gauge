@@ -1,10 +1,27 @@
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Subscription } from "rxjs";
 import { DateFormat, Option, ThemeName, TimeFormat } from "@ui";
 import { formatTimestamp } from "@tinker-chest";
 import { StorageKeeper } from "../storage-keeper";
-import { IndividuatorSettings } from "./model";
+import { IndividuatorSettings, Orientation, OrientationSubscriptionDefinition } from "./model";
 
 export class Individuator {
+    public readonly orientation$: BehaviorSubject<Orientation>;
+
+    private readonly settingsStorageId = 'application-settings';
+    private settingsStorageSubscription: Subscription | null = null;
+    public readonly settings$: BehaviorSubject<IndividuatorSettings>;
+
+    public static defaultDateFormat: DateFormat = DateFormat.EEEddMMyyyy;
+    public static defaultTimeFormat: TimeFormat = TimeFormat.HHmmss;
+
+    public static dateFormatOptions: Option<DateFormat>[] = [
+        { value: DateFormat.EEEddMMyyyy, label: DateFormat.EEEddMMyyyy }
+    ];
+
+    public static timeFormatOptions: Option<TimeFormat>[] = [
+        { value: TimeFormat.HHmmss, label: TimeFormat.HHmmss }
+    ];
+
     /**
      * Provides default settings which can be later changed by user.
      * @param defaultTheme Defaults to dark theme.
@@ -20,25 +37,28 @@ export class Individuator {
         timeFormat: this.defaultTimeFormat,
     });
 
-    private readonly settingsStorageId = 'application-settings';
-    public readonly settings$: BehaviorSubject<IndividuatorSettings>;
+    private orientationSubscription: { unsubscribe: () => void } | null = null;
 
-    public static defaultDateFormat: DateFormat = DateFormat.EEEddMMyyyy;
-    public static defaultTimeFormat: TimeFormat = TimeFormat.HHmmss;
-
-    public static dateFormatOptions: Option<DateFormat>[] = [
-        { value: DateFormat.EEEddMMyyyy, label: DateFormat.EEEddMMyyyy }
-    ];
-
-    public static timeFormatOptions: Option<TimeFormat>[] = [
-        { value: TimeFormat.HHmmss, label: TimeFormat.HHmmss }
-    ];
-
-    public constructor(storageKeeper: StorageKeeper, prefersLightColorScheme: boolean) {
+    public constructor(
+        prefersLightColorScheme: boolean,
+        protected orientation: OrientationSubscriptionDefinition
+    ) {
         const initialSettings = Individuator.getDefaultApplicationSettings(prefersLightColorScheme ? ThemeName.Light : ThemeName.Dark);
         this.settings$ = new BehaviorSubject<IndividuatorSettings>(initialSettings);
-        storageKeeper.synchronizeSubjectWithStorage(this.settings$, this.settingsStorageId);
+
+        this.orientation$ = new BehaviorSubject<Orientation>(orientation.initial());
     }
+
+    public initialize = (storageKeeper: StorageKeeper) => {
+        storageKeeper.synchronizeSubjectWithStorage(this.settings$, this.settingsStorageId)
+            .then((subscription) => { this.settingsStorageSubscription = subscription });
+        this.orientationSubscription = this.orientation.subscribe((o) => this.orientation$.next(o));
+    };
+
+    public cleanUp = () => {
+        this.settingsStorageSubscription?.unsubscribe();
+        this.orientationSubscription?.unsubscribe();
+    };
 
     /**
      * Formats time in milliseconds since epoch according to individuator settings.
