@@ -1,15 +1,15 @@
 import { CSSProperties, FC, useEffect } from "react";
 import { pairwise } from "rxjs";
 import { OverlayComponentProps, SurveillanceState, useStateWarden, useSubjectState } from "@apparatus";
-import { formatProgressMs, formatTimestamp } from "@tinker-chest";
+import { formatTimeMs, formatTimestamp } from "@tinker-chest";
 import { WebChronoLens } from "../chrono-lens/chrono-lens";
 import { getProgressPercentage, updateRouteLayer } from "../tinkers";
-import { RouteMapToolProps } from "../model";
 import * as styles from './player.module.css';
+import { RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story";
 
 const WebLens = new WebChronoLens();
 
-export const Player: FC<OverlayComponentProps & RouteMapToolProps> = ({
+export const Player: FC<OverlayComponentProps & RouteToolProps> = ({
     map,
     data$,
     routeTimes$,
@@ -122,7 +122,7 @@ export const Player: FC<OverlayComponentProps & RouteMapToolProps> = ({
             />
             <div className={styles.buttons}>
                 <p className={styles.text}>
-                    {formatProgressMs(progressMs)} ({progressPercentage.toFixed(0)}%)
+                    {formatTimeMs(progressMs)} ({progressPercentage.toFixed(0)}%)
                 </p>
                 <button onClick={handlePlayClick}>
                     {isPlaying ? 'Pause' : 'Play'}

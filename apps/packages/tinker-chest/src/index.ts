@@ -1,5 +1,5 @@
-export * from './controls';
 export * from './data';
+export * from './number';
 export * from './preferences';
 export * from './progress';
 export * from './parsers';

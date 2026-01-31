@@ -1,12 +1,18 @@
 import { ComponentType, ReactElement } from "react";
 import { BehaviorSubject, pairwise } from "rxjs";
 import { ErrorBoundaryProps, Theme } from "@ui";
-import { ApplicationSettingsType } from "@tinker-chest";
 import { MachineWardApp } from "./MachineWardApp";
 import { Engine, StateWarden } from "../state-warden";
 import { Gear, GearId } from "../gears";
 import { StorageKeeper } from "../storage-keeper";
-import { MachineWardFooterProps, MachineWardLayoutProps, MachineWardMachineProps, MachineWardNoticesProps, MachineWardTopBarProps } from "./model";
+import {
+    ApplicationSettingsType,
+    MachineWardFooterProps,
+    MachineWardLayoutProps,
+    MachineWardMachineProps,
+    MachineWardNoticesProps,
+    MachineWardTopBarProps
+} from "./model";
 
 /**
  * Ward with machines. 

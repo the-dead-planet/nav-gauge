@@ -1,1 +1,1 @@
-export * from './route-story';
+export * from './route-story-gear';

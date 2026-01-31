@@ -1,7 +1,7 @@
 import { FC } from "react";
 import classNames from "classnames";
 import { useSubjectState, Animatrix, useStateWarden } from "@apparatus";
-import { clamp, defaultZoomInToImages, } from "@tinker-chest";
+import { clamp } from "@tinker-chest";
 import { Fieldset, Input } from "@web-ui";
 import * as styles from './controls.module.css';
 
@@ -134,7 +134,7 @@ export const AnimationControls: FC<Props> = () => {
                         onChange={() => { }}
                         onContainerClick={() => setAnimationControls((prev) => ({
                             ...prev,
-                            zoomInToImages: prev.zoomInToImages === false ? defaultZoomInToImages : false
+                            zoomInToImages: prev.zoomInToImages === false ? Animatrix.defaultZoomInToImages : false
                         }))}
                         containerClassName={classNames(styles["checkbox"], styles["top-margin"])}
                     />

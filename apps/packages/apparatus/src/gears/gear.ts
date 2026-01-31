@@ -1,5 +1,5 @@
 import { BehaviorSubject } from "rxjs";
-import { ApplicationSettingsType } from "@tinker-chest";
+import { ApplicationSettingsType } from "../machine-ward";
 import { StateWarden } from "../state-warden";
 
 export abstract class Gear<T extends string = string> {

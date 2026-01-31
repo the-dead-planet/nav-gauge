@@ -7,7 +7,7 @@ import { defaultDateFormat, defaultTimeFormat } from "../preferences/preferences
  * @param progressMs Time in ms since epoch.
  * @example 13583000 will be formatted as `03:46:23`
  */
-export const formatProgressMs = (progressMs: number): string => {
+export const formatTimeMs = (progressMs: number): string => {
     return DateTime.fromMillis(progressMs, { zone: 'UTC' }).toFormat("HH:mm:ss");
 };
 

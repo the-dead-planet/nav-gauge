@@ -8,14 +8,14 @@ import {
     useMapLayerData,
     MapLayerData,
 } from "@apparatus";
+import { RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story";
 import { getRouteSourceData, updateRouteLayer } from "./tinkers";
 import { currentPointLayers, routeLineLayer, getRoutePointsLayer, sourceIds } from "./layers";
 import { useLoadedImages } from "./hooks";
 import { LoadedImageData } from "./images/image-parser";
 import { parsers } from "./parsers";
-import { RouteMapToolProps } from "./model";
 
-export const RouteLayer: FC<OverlayComponentProps & RouteMapToolProps> = ({
+export const RouteLayer: FC<OverlayComponentProps & RouteToolProps> = ({
     map,
     data$,
     routeTimes$,

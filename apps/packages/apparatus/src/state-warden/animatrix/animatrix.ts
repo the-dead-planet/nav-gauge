@@ -22,6 +22,8 @@ export class Animatrix {
         easeDuration: 100,
     };
 
+    public static defaultZoomInToImages = 15;
+
     public static displayImageDurationRange: [number, number] = [0, 10000];
     public static pitchRange: [number, number] = [0, 85];
     public static zoomRange: [number, number] = [0, 20];

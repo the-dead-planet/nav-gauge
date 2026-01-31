@@ -1,7 +1,7 @@
 import { createContext, } from "react";
 import { BehaviorSubject } from "rxjs";
-import { ApplicationSettingsType } from "@tinker-chest";
 import { StorageKeeper } from "../storage-keeper";
+import { ApplicationSettingsType } from "./model";
 
 export interface MachineWardContextValue {
     applicationSettings$: BehaviorSubject<ApplicationSettingsType>;
