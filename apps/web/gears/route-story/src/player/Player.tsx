@@ -7,7 +7,7 @@ import { WebChronoLens } from "../chrono-lens/chrono-lens";
 import { getProgressPercentage, updateRouteLayer } from "../tinkers";
 import * as styles from './player.module.css';
 
-export const Player: FC<OverlayComponentProps & RouteToolProps> = ({
+export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps> = ({
     map,
     data$,
     routeTimes$,

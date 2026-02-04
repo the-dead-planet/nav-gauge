@@ -1,17 +1,34 @@
 import { ComponentType } from "react";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, combineLatest, map, Observable, of, switchMap } from "rxjs";
 import { AnimationControlsType, Animatrix } from "../animatrix";
 import { Cartomancer, ControlPlacement, GaugeControlsType, MapLayout } from "../cartomancer";
-import { Tool, Preset, PresetOption, ToolPlacement, ToolProps, ControlComponentProps } from "./model";
+import { Tool, Preset, PresetOption, ToolPlacement, ToolProps, ControlComponentProps, ObservedTool } from "./model";
 
-export class ToolsStation {
+export class ToolsStation<TMap> {
+    public static placements: ToolPlacement[] = ["top", "right", "bottom", "left"];
+
     /**
      * Tools to display around the map.
      * Tools have access to map context and will not be unmounted for the duration of the style updates. 
      * Do not update sources and layers in components passed in this prop as it might lead to MapLibre's `Style is not done loading` errors.
      * If a tool with a given `id` already exists, it will be overwritten.
      */
-    public toolComponents$ = new BehaviorSubject<Map<string, Tool>>(new Map());
+    public toolComponents$ = new BehaviorSubject<Map<string, Tool<TMap>>>(new Map());
+
+    /**
+     * Subscribe to changes of tools and their placement.
+     */
+    public toolComponentsByPlacement$: Observable<ObservedTool<TMap>[]> = this.toolComponents$.pipe(switchMap((toolsMap) => {
+        const tools = [...toolsMap.entries()];
+
+        if (tools.length === 0) {
+            return of([]);
+        }
+
+        return combineLatest(tools.map(([id, tool]) => tool.placement$.pipe(
+            map((placement) => ({ placement, id, component: tool.component }))
+        )));
+    }));
 
     /**
      * Do not have access to map context.
@@ -32,13 +49,20 @@ export class ToolsStation {
         this.preset$ = new BehaviorSubject<Preset>(preset);
     }
 
+    public getToolsByPlacement = (toolComponents: ObservedTool<TMap>[]) => {
+        return toolComponents.reduce<{ [key in ToolPlacement]: ObservedTool<TMap>[] }>((acc, val) => {
+            acc[val.placement].push(val);
+            return acc;
+        }, { top: [], right: [], bottom: [], left: [] });
+    };
+
     /**
      * Adds a new map tool to display around the map.
      * Have access to map context and will not be unmounted for the duration of the style updates. 
      * Do not update sources and layers in components passed in this prop as it might lead to MapLibre's `Style is not done loading` errors.
      * If a tool with a given `id` already exists, it will be overwritten.
      */
-    public addToolComponent = (id: string, placement: ToolPlacement, component: ComponentType<ToolProps>) => {
+    public addToolComponent = (id: string, placement: ToolPlacement, component: ComponentType<ToolProps<TMap>>) => {
         const nextTools = new Map(this.toolComponents$.value);
         nextTools.set(id, {
             placement$: new BehaviorSubject(placement),

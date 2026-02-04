@@ -1,19 +1,18 @@
-import { ComponentType } from 'react';
 import { combineLatest, Subscription } from 'rxjs';
-import { ToolProps, OverlayComponentProps, Individuator } from '@apparatus';
-import { RouteToolProps, RouteStoryGear, RouteFileInputProps, RouteFitBoundsProps } from '@the-dead-planet/nav-gauge-gears-route-story';
+import { Individuator } from '@apparatus';
+import { RouteStoryGear } from '@the-dead-planet/nav-gauge-gears-route-story';
 import { RouteLayer } from './RouteLayer';
 import { ImagesLayer } from './images/ImagesLayer';
 import { FileInput } from './FileInput';
 import { RouteLayerFitBounds } from './layers/RouteLayerFitBounds';
 import { Player } from './player/Player';
 
-export class WebRouteStoryGear extends RouteStoryGear {
-   public routeLayerFitBountsComponent: ComponentType<ToolProps & RouteFitBoundsProps> = RouteLayerFitBounds;
-   public fileInputComponent: ComponentType<RouteFileInputProps> = FileInput;
-   public playerComponent: ComponentType<OverlayComponentProps & RouteToolProps> = Player
-   public routeLayerComponent: ComponentType<OverlayComponentProps & RouteToolProps> = RouteLayer;
-   public imagesLayerComponent: ComponentType<OverlayComponentProps & RouteToolProps> = ImagesLayer;
+export class WebRouteStoryGear extends RouteStoryGear<maplibregl.Map> {
+   public routeLayerFitBountsComponent = RouteLayerFitBounds;
+   public fileInputComponent = FileInput;
+   public playerComponent = Player
+   public routeLayerComponent = RouteLayer;
+   public imagesLayerComponent = ImagesLayer;
 
    private confirmBeforeLeaveSubscription: Subscription | null = null;
 

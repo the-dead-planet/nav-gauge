@@ -10,7 +10,7 @@ interface Props {
     onUpdateImageFeatureId: (imageId: number, featureId: number) => void;
 }
 
-export const ImageMarkers: FC<OverlayComponentProps & Props> = ({
+export const ImageMarkers: FC<OverlayComponentProps<maplibregl.Map> & Props> = ({
     map,
     geojson,
     images,

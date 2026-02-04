@@ -23,7 +23,11 @@ import { IMAGE_SIZE } from "./image-parser";
 import { useMapImages } from "../hooks";
 import { RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story";
 
-export const ImagesLayer: FC<OverlayComponentProps & RouteToolProps> = ({ map, data$, images$ }) => {
+export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps> = ({
+    map,
+    data$,
+    images$
+}) => {
     const { themeName } = useTheme();
     const [{ geojson }] = useSubjectState(data$);
     const [images] = useSubjectState(images$);

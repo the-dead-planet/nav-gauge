@@ -75,7 +75,9 @@
             "web/app",
             "web/ui",
             "web/gears/*",
-            "mobile/*"
+            "mobile/app",
+            "mobile/ui",
+            "mobile/gears/*"
         ]
     }
 }

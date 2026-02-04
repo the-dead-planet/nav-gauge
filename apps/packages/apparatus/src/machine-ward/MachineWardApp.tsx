@@ -1,4 +1,4 @@
-import { FC, StrictMode, useEffect, useMemo } from "react";
+import { StrictMode, useEffect, useMemo } from "react";
 import { ErrorBoundary, ThemeContext, themes } from "@ui";
 import { MachineWardNotices } from "./MachineWardNotices";
 import { StateWarden, StateWardenContext } from "../state-warden";
@@ -8,17 +8,17 @@ import { MachineWardContext, MachineWardContextValue } from "./MachineWardContex
 import { useSubjectState } from "../state";
 import { MachineWardComponents } from "./model";
 
-interface MachineWardProps {
+interface MachineWardProps<TMap> {
     title: string;
     individuator: Individuator;
     storageKeeper: StorageKeeper;
-    stateWarden: StateWarden;
+    stateWarden: StateWarden<TMap>;
     components: MachineWardComponents;
     onMount: () => void;
     onUnmount: () => void;
 }
 
-export const MachineWardApp: FC<MachineWardProps> = ({
+export function MachineWardApp<TMap>({
     title,
     individuator,
     storageKeeper,
@@ -26,7 +26,7 @@ export const MachineWardApp: FC<MachineWardProps> = ({
     components,
     onMount,
     onUnmount,
-}) => {
+}: MachineWardProps<TMap>) {
     const [settings] = useSubjectState(individuator.settings$);
 
     const machineWardContextValue = useMemo((): MachineWardContextValue => ({
@@ -53,7 +53,7 @@ export const MachineWardApp: FC<MachineWardProps> = ({
             <ErrorBoundary fallbackComponent={components.errorFallbackComponent}>
                 <ThemeContext.Provider value={themes[settings.themeName]}>
                     <MachineWardContext.Provider value={machineWardContextValue}>
-                        <StateWardenContext.Provider value={stateWarden}>
+                        <StateWardenContext.Provider value={stateWarden as StateWarden}>
                             <components.layoutComponent>
                                 <components.topBarComponent title={title} />
                                 <components.machineComponent />
@@ -66,4 +66,4 @@ export const MachineWardApp: FC<MachineWardProps> = ({
             </ErrorBoundary>
         </StrictMode>
     );
-};
+}

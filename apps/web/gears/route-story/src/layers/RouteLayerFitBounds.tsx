@@ -4,7 +4,7 @@ import * as styles from './route-layer.module.css';
 import { Icons } from "@web-ui";
 import { RouteFitBoundsProps } from "@the-dead-planet/nav-gauge-gears-route-story";
 
-export const RouteLayerFitBounds: FC<ToolProps & RouteFitBoundsProps> = ({
+export const RouteLayerFitBounds: FC<ToolProps<maplibregl.Map> & RouteFitBoundsProps> = ({
     map,
     data$,
     onFitBounds,

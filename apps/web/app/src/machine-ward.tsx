@@ -5,7 +5,7 @@ import { Footer, Layout, TopBar } from "./layout";
 import { Machine } from "./machine/Machine";
 import { Notices } from "./notices/Notices";
 
-export class WebMachineWard extends MachineWard {
+export class WebMachineWard extends MachineWard<maplibregl.Map> {
     public constructor() {
         const getOrientation = (): Orientation => {
             return window.innerWidth > window.innerHeight

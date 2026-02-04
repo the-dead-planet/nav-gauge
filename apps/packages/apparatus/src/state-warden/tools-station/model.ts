@@ -5,13 +5,13 @@ import { GaugeControlsType, MapLayout } from "../cartomancer";
 
 export type ToolPlacement = 'top' | 'right' | 'bottom' | 'left';
 
-export interface ToolProps {
-    map: maplibregl.Map;
+export interface ToolProps<TMap> {
+    map: TMap;
 }
 
-export interface Tool {
+export interface Tool<TMap> {
     placement$: BehaviorSubject<ToolPlacement>;
-    component: ComponentType<ToolProps>;
+    component: ComponentType<ToolProps<TMap>>;
 }
 
 export type Preset = 'default' | 'racing-game';
@@ -32,4 +32,10 @@ export interface PresetValues {
 
 export interface ControlComponentProps {
     
+}
+
+export interface ObservedTool<TMap> {
+    id: string;
+    placement: ToolPlacement;
+    component: ComponentType<ToolProps<TMap>>;
 }

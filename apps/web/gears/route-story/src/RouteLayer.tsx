@@ -15,7 +15,7 @@ import { useLoadedImages } from "./hooks";
 import { LoadedImageData } from "./images/image-parser";
 import { parsers } from "./parsers";
 
-export const RouteLayer: FC<OverlayComponentProps & RouteToolProps> = ({
+export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps> = ({
     map,
     data$,
     routeTimes$,

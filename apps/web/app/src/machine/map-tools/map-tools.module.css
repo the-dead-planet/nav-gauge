@@ -1,16 +1,13 @@
 .container {
-    --toolbox-size: 30px;
-    --toolbox-bottom-size: 70px;
-
     position: relative;
     height: 100%;
     display: grid;
-    grid-template-columns: var(--toolbox-size) auto var(--toolbox-size);
-    grid-template-rows: var(--toolbox-size) auto var(--toolbox-bottom-size);
+    grid-template-columns: max-content 1fr max-content;
+    grid-template-rows: max-content 1fr max-content;
     grid-template-areas:
-        "toolbox-left toolbox-top toolbox-right"
+        "toolbox-top toolbox-top toolbox-top"
         "toolbox-left map toolbox-right"
-        "toolbox-left toolbox-bottom toolbox-right";
+        "toolbox-bottom toolbox-bottom toolbox-bottom";
     overflow: hidden;
 }
 

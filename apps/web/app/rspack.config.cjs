@@ -110,7 +110,7 @@ module.exports = () => ({
         new rspack.CopyRspackPlugin({
             patterns: [
                 {
-                    context: '../gears/',
+                    context: '../../gears/',
                     from: '*/public/**/*',
                     to: '[name][ext]',
                     toType: 'template',

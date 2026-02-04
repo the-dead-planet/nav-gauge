@@ -1,14 +1,15 @@
 import maplibregl from "maplibre-gl";
 import EXIF from 'exif-js';
-import { ExifData, MarkerImage as MarkerImageType } from '@apparatus';
+import { ExifData, LngLat, MarkerImage as MarkerImageType } from '@apparatus';
 
 export interface MarkerImage extends MarkerImageType {
+    marker?: maplibregl.Marker;
     bitmap?: ImageBitmap;
     markerElement?: HTMLDivElement;
 }
 
 export interface LoadedImageData extends Omit<MarkerImage, 'progress' | 'error' | 'featureId' | 'data' | 'lngLat'> {
-    lngLat: maplibregl.LngLat;
+    lngLat: LngLat;
     featureId: number;
     data: string;
     bitmap: ImageBitmap;

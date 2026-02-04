@@ -4,7 +4,7 @@ import { ToolProps, MarkerImage, OverlayComponentProps, StateWarden, Gear, Contr
 import { ParsingResultWithError } from "@tinker-chest";
 import { RouteToolProps, RouteTimes, RouteFileInputProps, RouteFitBoundsProps } from "./model";
 
-export abstract class RouteStoryGear extends Gear<'route-story'> {
+export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
     public readonly id = 'route-story';
     private dataSubscription: Subscription | null = null;
     public readonly data$ = new BehaviorSubject<ParsingResultWithError>({});
@@ -12,8 +12,8 @@ export abstract class RouteStoryGear extends Gear<'route-story'> {
     public readonly images$ = new BehaviorSubject<MarkerImage[]>([]);
     public readonly progressMs$ = new BehaviorSubject(0);
 
-    public abstract engageRouteStory: (individuator: Individuator) => void;
-    public abstract disengageRouteStory: () => void;
+    public engageRouteStory?: (individuator: Individuator) => void;
+    public disengageRouteStory?: () => void;
 
     private subscribeToDataUpdates = (): Subscription => {
         return this.data$.subscribe(({ geojson }) => {
@@ -44,19 +44,19 @@ export abstract class RouteStoryGear extends Gear<'route-story'> {
     public abstract fileInputComponent: ComponentType<ControlComponentProps & RouteFileInputProps>;
 
     private routeLayerFitBoundsToolId = 'fit-bounds';
-    public abstract routeLayerFitBountsComponent: ComponentType<ToolProps & RouteFitBoundsProps>;
+    public abstract routeLayerFitBountsComponent: ComponentType<ToolProps<TMap> & RouteFitBoundsProps>;
 
     private playerToolId = 'player';
-    public abstract playerComponent: ComponentType<ToolProps & RouteToolProps>;
+    public abstract playerComponent: ComponentType<ToolProps<TMap> & RouteToolProps>;
 
     private routeOverlayId = 'route';
-    public abstract routeLayerComponent: ComponentType<OverlayComponentProps & RouteToolProps>;
+    public abstract routeLayerComponent: ComponentType<OverlayComponentProps<TMap> & RouteToolProps>;
 
     private imagesOverlayId = 'images';
-    public abstract imagesLayerComponent: ComponentType<OverlayComponentProps & RouteToolProps>;
+    public abstract imagesLayerComponent: ComponentType<OverlayComponentProps<TMap> & RouteToolProps>;
 
-    public engage = (stateWarden: StateWarden, individuator: Individuator) => {
-        this.engageRouteStory(individuator);
+    public engage = (stateWarden: StateWarden<TMap>, individuator: Individuator) => {
+        this.engageRouteStory?.(individuator);
         this.dataSubscription = this.subscribeToDataUpdates();
 
         stateWarden.toolsStation.addControlComponent(this.fileInputControlId, (props) => (
@@ -94,17 +94,18 @@ export abstract class RouteStoryGear extends Gear<'route-story'> {
         ));
     };
 
-    public disengage = (stateWarden: StateWarden) => {
+    public disengage = (stateWarden: StateWarden<TMap>) => {
         stateWarden.cartomancer.removeOverlay(this.imagesOverlayId);
         stateWarden.cartomancer.removeOverlay(this.routeOverlayId);
         stateWarden.toolsStation.removeToolComponent(this.playerToolId);
         stateWarden.toolsStation.removeToolComponent(this.routeLayerFitBoundsToolId);
         this.dataSubscription?.unsubscribe();
-        this.disengageRouteStory();
+        this.disengageRouteStory?.();
     };
 
     private fitBoundsNotificationId = 'route-fit-bounds';
 
+    // TODO: Move to web
     public handleFitBounds = (
         stateWarden: StateWarden,
         map: maplibregl.Map,

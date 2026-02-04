@@ -1,12 +1,14 @@
 import { Appearance, Dimensions, ScaledSize } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { MapViewRef } from "@maplibre/maplibre-react-native";
 import { MachineWard, MachineWardComponents, Orientation, OrientationSubscriptionDefinition } from "@apparatus";
 import { Footer, Layout, TopBar } from "./layout";
 import { Machine } from "./machine/Machine";
 import { ErrorFallback } from "./ErrorFallback";
 import { NoticesList } from "./notices/NoticesList";
+import { MobileRouteStoryGear } from "@the-dead-planet/nav-gauge-mobile-gears-route-story";
 
-export class MobileMachineWard extends MachineWard {
+export class MobileMachineWard extends MachineWard<MapViewRef | null> {
     public constructor() {
         const getOrientation = (window: ScaledSize): Orientation => {
             return window.width > Dimensions.get('window').height
@@ -34,7 +36,7 @@ export class MobileMachineWard extends MachineWard {
         super(
             {
                 "navigate": null,
-                "route-story": null,
+                'route-story': MobileRouteStoryGear,
                 "record-route": null,
                 "submit-data": null
             },
