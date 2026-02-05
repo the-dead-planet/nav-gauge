@@ -47,7 +47,7 @@ jobs:
         with:
           build: yarn build
           start: yarn start
-          working-directory: apps/web/app
+          working-directory: apps/web-app
 
   build-and-push:
     runs-on: ubuntu-latest
@@ -59,7 +59,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build image
-        run: docker build . --file apps/web/app/Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
+        run: docker build . --file apps/web-app/Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
 
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
@@ -131,6 +131,6 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          working-directory: apps/web/app
+          working-directory: apps/web-app
           config: baseUrl=https://gauge.spookydoodle.com
 

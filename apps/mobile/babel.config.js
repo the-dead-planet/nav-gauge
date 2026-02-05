@@ -9,10 +9,10 @@ module.exports = {
             {
                 extensions: ['.ts', '.tsx', '.js', '.jsx'],
                 alias: {
-                    '@apparatus': '../../packages/apparatus/src',
-                    '@tinker-chest': '../../packages/tinker-chest/src',
-                    '@ui': '../../ui/src',
-                    '@mobile-ui': '../ui/src',
+                    '@apparatus': '../packages/apparatus/src',
+                    '@tinker-chest': '../packages/tinker-chest/src',
+                    '@ui': '../ui/common/src',
+                    '@mobile-ui': '../ui/mobile/src',
                     '@the-dead-planet/nav-gauge-gears-(.+)$': '../gears/\\1/common/src',
                     '@the-dead-planet/nav-gauge-mobile-gears-(.+)$': '../gears/\\1/mobile/src'
                 },

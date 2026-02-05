@@ -6,11 +6,12 @@ COPY apps/package.json apps/yarn.lock apps/tsconfig.base.json apps/tsconfig.web.
 
 COPY apps/web-app ./web-app
 COPY apps/packages ./packages
-COPY apps/gears/common ./gears/common
-COPY apps/gears/web ./gears/web
 COPY apps/ui/common ./ui/common
 COPY apps/ui/web ./ui/web
 COPY apps/types ./types
+
+COPY apps/gears ./gears
+RUN rm -rf apps/gears/*/mobile apps/gears/*/mobile
 
 RUN yarn install --network-timeout 300000
 RUN yarn build:web
