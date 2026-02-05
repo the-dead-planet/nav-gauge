@@ -1,5 +1,5 @@
 {
-    "name": "@the-dead-planet/nav-gauge-web-gears-route-story",
+    "name": "@the-dead-planet/nav-gauge-web-gears-submit-data",
     "version": "1.0.0",
     "private": true,
     "main": "src/index.ts",
@@ -12,7 +12,7 @@
         "@the-dead-planet/nav-gauge-apparatus": "*",
         "@the-dead-planet/nav-gauge-tinker-chest": "*",
         "@the-dead-planet/nav-gauge-ui": "*",
-        "@the-dead-planet/nav-gauge-gears-route-story": "*",
+        "@the-dead-planet/nav-gauge-gears-submit-data": "*",
         "@tmcw/togeojson": "^7.1.2",
         "exif-js": "^2.3.0"
     },

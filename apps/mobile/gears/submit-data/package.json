@@ -1,5 +1,5 @@
 {
-    "name": "@the-dead-planet/nav-gauge-mobile-gears-route-story",
+    "name": "@the-dead-planet/nav-gauge-mobile-gears-submit-data",
     "version": "1.0.0",
     "private": true,
     "main": "src/index.ts",
@@ -10,7 +10,7 @@
     },
     "dependencies": {
         "@the-dead-planet/nav-gauge-ui": "*",
-        "@the-dead-planet/nav-gauge-gears-route-story": "*"
+        "@the-dead-planet/nav-gauge-gears-submit-data": "*"
     },
     "devDependencies": {
         "@maplibre/maplibre-react-native": "^10.4.2",

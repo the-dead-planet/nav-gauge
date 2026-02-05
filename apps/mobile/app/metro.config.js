@@ -1,8 +1,26 @@
 const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 const path = require('path');
+const fs = require('fs');
 
 const root = path.resolve(__dirname, '../..');
 
+const extraNodeModules = fs
+    .readdirSync(path.resolve(root, 'gears'), { withFileTypes: true })
+    .filter((dir) => dir.isDirectory())
+    .reduce((acc, dir) => {
+        acc[`@the-dead-planet/nav-gauge-gears-${dir.name}`] = path.resolve(root, `gears/${dir.name}/src`);
+        acc[`@the-dead-planet/nav-gauge-mobile-gears-${dir.name}`] = path.resolve(__dirname, `../gears/${dir.name}/src`);
+
+        return acc;
+    }, {});
+console.log({
+            react: path.resolve(root, "node_modules/react"),
+            '@apparatus': path.resolve(root, 'packages/apparatus/src'),
+            '@tinker-chest': path.resolve(root, 'packages/tinker-chest/src'),
+            '@ui': path.resolve(root, 'ui/src'),
+            '@mobile-ui': path.resolve(__dirname, '../ui/src'),
+            ...extraNodeModules
+        })
 /**
  * Metro configuration
  * https://reactnative.dev/docs/metro
@@ -14,6 +32,7 @@ const config = {
     watchFolders: [
         path.resolve(root, 'node_modules'),
         path.resolve(root, 'packages'),
+        path.resolve(root, 'gears'),
         path.resolve(root, 'ui'),
         path.resolve(__dirname, '../ui'),
     ],
@@ -24,6 +43,7 @@ const config = {
             '@tinker-chest': path.resolve(root, 'packages/tinker-chest/src'),
             '@ui': path.resolve(root, 'ui/src'),
             '@mobile-ui': path.resolve(__dirname, '../ui/src'),
+            ...extraNodeModules
         },
         nodeModulesPaths: [
             path.resolve(__dirname, 'node_modules'),
