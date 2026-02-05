@@ -95,7 +95,7 @@ export class ToolsStation<TMap> {
     /**
      * Removes the tool with a given `id`.
      */
-    public removeTool = (id: string) => {
+    public removeControlComponent = (id: string) => {
         const nextControls = new Map(this.controlComponents$.value);
         nextControls.delete(id);
         this.controlComponents$.next(nextControls);

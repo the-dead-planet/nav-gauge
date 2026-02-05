@@ -1,8 +1,9 @@
 import { FC } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { MapViewRef } from "@maplibre/maplibre-react-native";
 import { OverlayComponentProps } from "@apparatus";
 import { RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story";
+import { Text } from "@mobile-ui";
 
 export const Player: FC<OverlayComponentProps<MapViewRef | null> & RouteToolProps> = ({
     map,
@@ -11,9 +12,5 @@ export const Player: FC<OverlayComponentProps<MapViewRef | null> & RouteToolProp
     images$,
     progressMs$
 }) => {
-    return (
-        <View>
-            <Text>Player</Text>
-        </View>
-    );
+    return null;
 };

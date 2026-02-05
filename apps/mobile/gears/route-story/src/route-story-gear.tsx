@@ -7,7 +7,7 @@ import { RouteLayerFitBounds } from './layers/RouteLayerFitBounds';
 import { Player } from './player/Player';
 
 export class MobileRouteStoryGear extends RouteStoryGear<MapViewRef | null> {
-   public routeLayerFitBountsComponent = RouteLayerFitBounds;
+   public routeLayerFitBoundsComponent = RouteLayerFitBounds;
    public fileInputComponent = FileInput;
    public playerComponent = Player
    public routeLayerComponent = RouteLayer;

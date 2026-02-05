@@ -13,14 +13,7 @@ const extraNodeModules = fs
 
         return acc;
     }, {});
-console.log({
-            react: path.resolve(root, "node_modules/react"),
-            '@apparatus': path.resolve(root, 'packages/apparatus/src'),
-            '@tinker-chest': path.resolve(root, 'packages/tinker-chest/src'),
-            '@ui': path.resolve(root, 'ui/src'),
-            '@mobile-ui': path.resolve(__dirname, '../ui/src'),
-            ...extraNodeModules
-        })
+
 /**
  * Metro configuration
  * https://reactnative.dev/docs/metro
@@ -35,6 +28,7 @@ const config = {
         path.resolve(root, 'gears'),
         path.resolve(root, 'ui'),
         path.resolve(__dirname, '../ui'),
+        path.resolve(__dirname, '../gears'),
     ],
     resolver: {
         extraNodeModules: {

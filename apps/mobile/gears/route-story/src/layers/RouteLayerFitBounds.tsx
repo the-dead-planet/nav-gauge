@@ -22,7 +22,7 @@ export const RouteLayerFitBounds: FC<ToolProps<MapViewRef | null> & RouteFitBoun
     // }, [boundingBox]);
 
     return (
-        <Button title="Fit" onPress={() => {
+        <Button title="Fit bounds" onPress={() => {
             // TODO:
         }}></Button>
     );

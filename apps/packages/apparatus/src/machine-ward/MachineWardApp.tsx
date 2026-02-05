@@ -50,8 +50,8 @@ export function MachineWardApp<TMap>({
 
     return (
         <StrictMode>
-            <ErrorBoundary fallbackComponent={components.errorFallbackComponent}>
-                <ThemeContext.Provider value={themes[settings.themeName]}>
+            <ThemeContext.Provider value={themes[settings.themeName]}>
+                <ErrorBoundary fallbackComponent={components.errorFallbackComponent}>
                     <MachineWardContext.Provider value={machineWardContextValue}>
                         <StateWardenContext.Provider value={stateWarden as StateWarden}>
                             <components.layoutComponent>
@@ -62,8 +62,8 @@ export function MachineWardApp<TMap>({
                             </components.layoutComponent>
                         </StateWardenContext.Provider>
                     </MachineWardContext.Provider>
-                </ThemeContext.Provider>
-            </ErrorBoundary>
+                </ErrorBoundary>
+            </ThemeContext.Provider>
         </StrictMode>
     );
 }

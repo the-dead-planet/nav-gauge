@@ -1,4 +1,4 @@
-import { ComponentType } from "react";
+import { ComponentType, FC } from "react";
 import { BehaviorSubject, Subscription } from "rxjs";
 import { ToolProps, MarkerImage, OverlayComponentProps, StateWarden, Gear, ControlComponentProps, Individuator } from "@apparatus";
 import { ParsingResultWithError } from "@tinker-chest";
@@ -44,7 +44,7 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
     public abstract fileInputComponent: ComponentType<ControlComponentProps & RouteFileInputProps>;
 
     private routeLayerFitBoundsToolId = 'fit-bounds';
-    public abstract routeLayerFitBountsComponent: ComponentType<ToolProps<TMap> & RouteFitBoundsProps>;
+    public abstract routeLayerFitBoundsComponent: ComponentType<ToolProps<TMap> & RouteFitBoundsProps>;
 
     private playerToolId = 'player';
     public abstract playerComponent: ComponentType<ToolProps<TMap> & RouteToolProps>;
@@ -55,43 +55,67 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
     private imagesOverlayId = 'images';
     public abstract imagesLayerComponent: ComponentType<OverlayComponentProps<TMap> & RouteToolProps>;
 
+    /**
+     * Wrapper to avoid binding issues in react native if components are wrapped in arg list.
+     */
+    private wrapProps<TProps extends {}, TToolProps extends {}>(
+        Component: ComponentType<TToolProps & TProps>,
+        props: TProps
+    ): FC<TToolProps> {
+        return (toolProps: TToolProps) => (
+            <Component {...props} {...toolProps} />
+        );
+    }
+
     public engage = (stateWarden: StateWarden<TMap>, individuator: Individuator) => {
         this.engageRouteStory?.(individuator);
         this.dataSubscription = this.subscribeToDataUpdates();
 
-        stateWarden.toolsStation.addControlComponent(this.fileInputControlId, (props) => (
-            <this.fileInputComponent data$={this.data$} images$={this.images$} {...props} />
-        ));
-        stateWarden.toolsStation.addToolComponent(this.routeLayerFitBoundsToolId, 'left', (props) => (
-            <this.routeLayerFitBountsComponent data$={this.data$} onFitBounds={this.handleFitBounds} {...props} />
-        ));
-        stateWarden.toolsStation.addToolComponent(this.playerToolId, 'bottom', (props) => (
-            <this.playerComponent
-                data$={this.data$}
-                routeTimes$={this.routeTimes$}
-                images$={this.images$}
-                progressMs$={this.progressMs$}
-                {...props}
-            />
-        ));
-        stateWarden.cartomancer.addOverlay(this.routeOverlayId, (props) => (
-            <this.routeLayerComponent
-                data$={this.data$}
-                routeTimes$={this.routeTimes$}
-                images$={this.images$}
-                progressMs$={this.progressMs$}
-                {...props}
-            />
-        ));
-        stateWarden.cartomancer.addOverlay(this.imagesOverlayId, (props) => (
-            <this.imagesLayerComponent
-                data$={this.data$}
-                routeTimes$={this.routeTimes$}
-                images$={this.images$}
-                progressMs$={this.progressMs$}
-                {...props}
-            />
-        ));
+        stateWarden.toolsStation.addControlComponent(
+            this.fileInputControlId,
+            this.wrapProps<RouteFileInputProps, ControlComponentProps>(this.fileInputComponent, {
+                data$: this.data$,
+                images$: this.images$
+            })
+        );
+
+        stateWarden.toolsStation.addToolComponent(
+            this.routeLayerFitBoundsToolId,
+            'left',
+            this.wrapProps<RouteFitBoundsProps, ToolProps<TMap>>(this.routeLayerFitBoundsComponent, {
+                data$: this.data$,
+                onFitBounds: this.handleFitBounds
+            })
+        );
+        stateWarden.toolsStation.addToolComponent(
+            this.playerToolId,
+            'bottom',
+            this.wrapProps<RouteToolProps, ToolProps<TMap>>(this.playerComponent, {
+                data$: this.data$,
+                routeTimes$: this.routeTimes$,
+                images$: this.images$,
+                progressMs$: this.progressMs$
+            })
+        );
+        
+        stateWarden.cartomancer.addOverlay(
+            this.routeOverlayId,
+            this.wrapProps<RouteToolProps, OverlayComponentProps<TMap>>(this.routeLayerComponent, {
+                data$: this.data$,
+                routeTimes$: this.routeTimes$,
+                images$: this.images$,
+                progressMs$: this.progressMs$
+            })
+        );
+        stateWarden.cartomancer.addOverlay(
+            this.imagesOverlayId,
+            this.wrapProps<RouteToolProps, OverlayComponentProps<TMap>>(this.imagesLayerComponent, {
+                data$: this.data$,
+                routeTimes$: this.routeTimes$,
+                images$: this.images$,
+                progressMs$: this.progressMs$
+            })
+        );
     };
 
     public disengage = (stateWarden: StateWarden<TMap>) => {
@@ -99,6 +123,7 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
         stateWarden.cartomancer.removeOverlay(this.routeOverlayId);
         stateWarden.toolsStation.removeToolComponent(this.playerToolId);
         stateWarden.toolsStation.removeToolComponent(this.routeLayerFitBoundsToolId);
+        stateWarden.toolsStation.removeControlComponent(this.fileInputControlId);
         this.dataSubscription?.unsubscribe();
         this.disengageRouteStory?.();
     };

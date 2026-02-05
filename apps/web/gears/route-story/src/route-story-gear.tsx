@@ -8,7 +8,7 @@ import { RouteLayerFitBounds } from './layers/RouteLayerFitBounds';
 import { Player } from './player/Player';
 
 export class WebRouteStoryGear extends RouteStoryGear<maplibregl.Map> {
-   public routeLayerFitBountsComponent = RouteLayerFitBounds;
+   public routeLayerFitBoundsComponent = RouteLayerFitBounds;
    public fileInputComponent = FileInput;
    public playerComponent = Player
    public routeLayerComponent = RouteLayer;
