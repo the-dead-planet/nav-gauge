@@ -1,0 +1,29 @@
+{
+    "extends": "@react-native/typescript-config",
+    "compilerOptions": {
+        "paths": {
+            "@ui": [
+                "./ui/common/src"
+            ]
+        },
+        "types": [
+            "react",
+            "react-native",
+            "jest"
+        ]
+    },
+    "include": [
+        "**/*.ts",
+        "**/*.tsx",
+        "**/test/**/*",
+        "**/__tests__/**/*",
+        "**/types/**/*",
+        "./types/**/*",
+    ],
+    "exclude": [
+        "**/web/**/*",
+        "node_modules",
+        "**/node_modules",
+        "**/Pods"
+    ]
+}

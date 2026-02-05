@@ -1,0 +1,19 @@
+{
+    "extends": "../tsconfig.mobile.json",
+    "compilerOptions": {
+        "paths": {
+            "@apparatus": [
+                "../packages/apparatus/src"
+            ],
+            "@tinker-chest": [
+                "../packages/tinker-chest/src"
+            ],
+            "@ui": [
+                "../ui/common/src"
+            ],
+            "@mobile-ui": [
+                "../ui/mobile/src"
+            ]
+        }
+    }
+}
