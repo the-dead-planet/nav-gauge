@@ -22,7 +22,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPro
     images$,
     progressMs$,
 }) => {
-    const [{ geojson }, setData] = useSubjectState(data$);
+    const [{ geojson, ...data }, setData] = useSubjectState(data$);
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [progressMs, setProgressMs] = useSubjectState(progressMs$);
@@ -54,7 +54,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPro
                 boundingBox: bbox(result.geojson)
             } : {}));
     }, []);
-
+console.log({geojson,...data})
     const loadedImages = useLoadedImages(images);
 
     const mapLayerData = useMemo((): MapLayerData => {

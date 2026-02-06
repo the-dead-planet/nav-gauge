@@ -1,9 +1,8 @@
 import { FC, useEffect } from "react";
-import { Button, Pressable } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
+import { Text } from "@mobile-ui";
 import { ToolProps, useStateWarden, useSubjectState } from "@apparatus";
 import { RouteFitBoundsProps } from "@the-dead-planet/nav-gauge-gears-route-story";
-import { StyleSheet } from "react-native";
-import { Text } from "@mobile-ui";
 import { MobileMap } from "@the-dead-planet/nav-gauge-mobile-ui/src/model";
 
 const styles = StyleSheet.create({
