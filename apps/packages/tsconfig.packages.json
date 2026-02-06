@@ -3,7 +3,7 @@
     "compilerOptions": {
         "paths": {
             "@ui": [
-                "../ui/src"
+                "../ui/common/src"
             ]
         },
         "types": [],

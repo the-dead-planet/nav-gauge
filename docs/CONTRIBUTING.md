@@ -130,7 +130,7 @@ Own UI library is created with focus on semantics, accessibility and minimalism.
 
 Styling should be steampunk inspired.
 
-Variables used repeatedly and those which which depend on the theme should be added to [theme specifications](/apps/ui/src/theme/specifications.ts) in the common [UI package](/apps/).
+Variables used repeatedly and those which which depend on the theme should be added to [theme specifications](/apps/ui/common/src/theme/specifications.ts) in the common [UI package](/apps/).
 
 The library is currently not deployed as a separate app with component docs. Maybe it will be in the future.
 
