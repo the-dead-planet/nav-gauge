@@ -44,7 +44,7 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
     public abstract fileInputComponent: ComponentType<ControlComponentProps & RouteFileInputProps>;
 
     private routeLayerFitBoundsToolId = 'fit-bounds';
-    public abstract routeLayerFitBoundsComponent: ComponentType<ToolProps<TMap> & RouteFitBoundsProps>;
+    public abstract routeLayerFitBoundsComponent: ComponentType<ToolProps<TMap> & RouteFitBoundsProps<TMap>>;
 
     private playerToolId = 'player';
     public abstract playerComponent: ComponentType<ToolProps<TMap> & RouteToolProps>;
@@ -82,25 +82,9 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
         stateWarden.toolsStation.addToolComponent(
             this.routeLayerFitBoundsToolId,
             'left',
-            this.wrapProps<RouteFitBoundsProps, ToolProps<TMap>>(this.routeLayerFitBoundsComponent, {
+            this.wrapProps<RouteFitBoundsProps<TMap>, ToolProps<TMap>>(this.routeLayerFitBoundsComponent, {
                 data$: this.data$,
-                onFitBounds: this.handleFitBounds
-            })
-        );
-        stateWarden.toolsStation.addToolComponent(
-            this.routeLayerFitBoundsToolId+'r',
-            'right',
-            this.wrapProps<RouteFitBoundsProps, ToolProps<TMap>>(this.routeLayerFitBoundsComponent, {
-                data$: this.data$,
-                onFitBounds: this.handleFitBounds
-            })
-        );
-        stateWarden.toolsStation.addToolComponent(
-            this.routeLayerFitBoundsToolId+'t',
-            'top',
-            this.wrapProps<RouteFitBoundsProps, ToolProps<TMap>>(this.routeLayerFitBoundsComponent, {
-                data$: this.data$,
-                onFitBounds: this.handleFitBounds
+                onFitBounds: this.fitBoundsHandler
             })
         );
         stateWarden.toolsStation.addToolComponent(
@@ -113,7 +97,7 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
                 progressMs$: this.progressMs$
             })
         );
-        
+
         stateWarden.cartomancer.addOverlay(
             this.routeOverlayId,
             this.wrapProps<RouteToolProps, OverlayComponentProps<TMap>>(this.routeLayerComponent, {
@@ -139,42 +123,24 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
         stateWarden.cartomancer.removeOverlay(this.routeOverlayId);
         stateWarden.toolsStation.removeToolComponent(this.playerToolId);
         stateWarden.toolsStation.removeToolComponent(this.routeLayerFitBoundsToolId);
-        stateWarden.toolsStation.removeToolComponent(this.routeLayerFitBoundsToolId+'r');
-        stateWarden.toolsStation.removeToolComponent(this.routeLayerFitBoundsToolId+'t');
         stateWarden.toolsStation.removeControlComponent(this.fileInputControlId);
         this.dataSubscription?.unsubscribe();
         this.disengageRouteStory?.();
     };
 
-    private fitBoundsNotificationId = 'route-fit-bounds';
-
-    // TODO: Move to web
-    public handleFitBounds = (
+    private fitBoundsHandler = (
         stateWarden: StateWarden,
-        map: maplibregl.Map,
-        boundingBox: ParsingResultWithError['boundingBox'],
-        options: {
-            padding?: number;
-            animate?: boolean;
-        } = {}
+        handler: () => void
     ) => {
-        stateWarden.signaliumBureau.removeNotice(this.fitBoundsNotificationId);
-
-        if (!boundingBox) {
-            return;
-        }
-
-        const { padding = 50, animate = true } = options;
+        const notificationId = 'route-fit-bounds';
+        stateWarden.signaliumBureau.removeNotice(notificationId);
 
         try {
-            map.fitBounds(
-                [boundingBox[0], boundingBox[1], boundingBox[2], boundingBox[3]],
-                { animate, padding }
-            );
+            handler();
         } catch (err) {
             stateWarden.signaliumBureau.addNotice({
                 type: 'error',
-                id: this.fitBoundsNotificationId,
+                id: notificationId,
                 text: (err as Error).message ?? 'Could not fit bounds to route',
                 error: err as Error,
             })

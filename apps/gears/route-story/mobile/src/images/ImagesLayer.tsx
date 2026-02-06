@@ -1,14 +1,14 @@
 import { FC } from "react";
-import { MapViewRef } from "@maplibre/maplibre-react-native";
 import { OverlayComponentProps } from "@apparatus";
 import { RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story";
 import { View } from "react-native";
 import { Text } from "@mobile-ui";
+import { MobileMap } from "@the-dead-planet/nav-gauge-mobile-ui/src/model";
 
-export const ImagesLayer: FC<OverlayComponentProps<MapViewRef | null> & RouteToolProps> = ({
+export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps> = ({
     map,
     data$,
     images$
 }) => {
-    return null;
-};
+        return null;
+    };

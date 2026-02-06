@@ -1,10 +1,10 @@
 import { FC, useEffect } from "react";
 import { Button, Pressable } from "react-native";
-import { MapViewRef } from "@maplibre/maplibre-react-native";
 import { ToolProps, useStateWarden, useSubjectState } from "@apparatus";
 import { RouteFitBoundsProps } from "@the-dead-planet/nav-gauge-gears-route-story";
 import { StyleSheet } from "react-native";
 import { Text } from "@mobile-ui";
+import { MobileMap } from "@the-dead-planet/nav-gauge-mobile-ui/src/model";
 
 const styles = StyleSheet.create({
     button: {
@@ -20,25 +20,33 @@ const styles = StyleSheet.create({
     }
 });
 
-export const RouteLayerFitBounds: FC<ToolProps<MapViewRef | null> & RouteFitBoundsProps> = ({
+export const RouteLayerFitBounds: FC<ToolProps<MobileMap> & RouteFitBoundsProps<MobileMap>> = ({
     map,
     data$,
     onFitBounds,
-    padding,
-    animate,
 }) => {
-    // const stateWarden = useStateWarden();
-    // const [data] = useSubjectState(data$);
-    // const { boundingBox } = data;
+    const stateWarden = useStateWarden();
+    const [data] = useSubjectState(data$);
+    const { boundingBox } = data;
 
-    // const handleFitBounds = () => onFitBounds(stateWarden, map, boundingBox, { padding, animate });
+    const handleFitBounds = () => {
+        const { camera } = map;
+        if (!camera || !boundingBox) {
+            return;
+        }
+        onFitBounds(stateWarden, () => camera.fitBounds(
+            [boundingBox[0], boundingBox[1]],
+            [boundingBox[2], boundingBox[3]],
+            20
+        ));
+    };
 
-    // useEffect(() => {
-    //     handleFitBounds();
-    // }, [boundingBox]);
+    useEffect(() => {
+        handleFitBounds();
+    }, [boundingBox]);
 
     return (
-        <Pressable style={styles.button} onPress={() => { }}>
+        <Pressable style={styles.button} onPress={handleFitBounds}>
             <Text style={styles.text}>Fit</Text>
         </Pressable>
     );

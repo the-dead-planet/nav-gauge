@@ -22,18 +22,10 @@ export interface RouteFileInputProps {
     images$: BehaviorSubject<MarkerImage[]>;
 }
 
-export interface RouteFitBoundsProps {
+export interface RouteFitBoundsProps<TMap> {
     data$: BehaviorSubject<ParsingResultWithError>;
-    onFitBounds: (stateWarden: StateWarden, map: maplibregl.Map, bbox: ParsingResultWithError['boundingBox'], options?: {
-        padding?: number;
-        animate?: boolean;
-    }) => void;
-    /**
-     * Defaults to `50`.
-     */
-    padding?: number;
-    /**
-     * Defaults to `true`.
-     */
-    animate?: boolean;
+    onFitBounds: (
+        stateWarden: StateWarden,
+        handler: () => void
+    ) => void;
 }

@@ -1,7 +1,7 @@
 import { FC, ReactNode } from "react";
 import { StyleSheet, View } from "react-native";
-import { MapViewRef } from "@maplibre/maplibre-react-native";
-import { useMachineWard, useObservableState, useSubjectState, useStateWarden } from "@apparatus";
+import { CameraRef, MapViewRef } from "@maplibre/maplibre-react-native";
+import { useObservableState, useSubjectState, useStateWarden } from "@apparatus";
 
 const styles = StyleSheet.create({
     container: {
@@ -29,14 +29,15 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
-    map: MapViewRef | null;
+    map:{ 
+        map: MapViewRef | null;
+        camera: CameraRef | null;
+    };
     children?: ReactNode;
 }
 
 export const MapTools: FC<Props> = ({ map, children }) => {
-    const { individuator } = useMachineWard();
     const { toolsStation } = useStateWarden();
-    const [orientation] = useSubjectState(individuator.orientation$);
     const [controlComponents] = useSubjectState(toolsStation.controlComponents$);
     const toolComponents = useObservableState(toolsStation.toolComponentsByPlacement$, []);
     const toolsByPlacement = toolsStation.getToolsByPlacement(toolComponents)
