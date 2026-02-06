@@ -12,5 +12,9 @@ export const Player: FC<OverlayComponentProps<MapViewRef | null> & RouteToolProp
     images$,
     progressMs$
 }) => {
-    return null;
+    return (
+        <View>
+            <Text>Player</Text>
+        </View>
+    );
 };

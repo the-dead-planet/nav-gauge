@@ -88,6 +88,22 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
             })
         );
         stateWarden.toolsStation.addToolComponent(
+            this.routeLayerFitBoundsToolId+'r',
+            'right',
+            this.wrapProps<RouteFitBoundsProps, ToolProps<TMap>>(this.routeLayerFitBoundsComponent, {
+                data$: this.data$,
+                onFitBounds: this.handleFitBounds
+            })
+        );
+        stateWarden.toolsStation.addToolComponent(
+            this.routeLayerFitBoundsToolId+'t',
+            'top',
+            this.wrapProps<RouteFitBoundsProps, ToolProps<TMap>>(this.routeLayerFitBoundsComponent, {
+                data$: this.data$,
+                onFitBounds: this.handleFitBounds
+            })
+        );
+        stateWarden.toolsStation.addToolComponent(
             this.playerToolId,
             'bottom',
             this.wrapProps<RouteToolProps, ToolProps<TMap>>(this.playerComponent, {
@@ -123,6 +139,8 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
         stateWarden.cartomancer.removeOverlay(this.routeOverlayId);
         stateWarden.toolsStation.removeToolComponent(this.playerToolId);
         stateWarden.toolsStation.removeToolComponent(this.routeLayerFitBoundsToolId);
+        stateWarden.toolsStation.removeToolComponent(this.routeLayerFitBoundsToolId+'r');
+        stateWarden.toolsStation.removeToolComponent(this.routeLayerFitBoundsToolId+'t');
         stateWarden.toolsStation.removeControlComponent(this.fileInputControlId);
         this.dataSubscription?.unsubscribe();
         this.disengageRouteStory?.();
