@@ -1,7 +1,7 @@
 import { FC, useEffect } from "react";
 import { ToolProps, useStateWarden, useSubjectState } from "@apparatus";
 import { Icons } from "@web-ui";
-import { RouteFitBoundsProps } from "@the-dead-planet/nav-gauge-gears-route-story";
+import { RouteFitBoundsProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import * as styles from './route-layer.module.css';
 
 export const RouteLayerFitBounds: FC<ToolProps<maplibregl.Map> & RouteFitBoundsProps<maplibregl.Map>> = ({

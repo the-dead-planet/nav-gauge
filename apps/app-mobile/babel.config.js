@@ -13,8 +13,8 @@ module.exports = {
                     '@tinker-chest': '../packages/tinker-chest/src',
                     '@ui': '../ui/common/src',
                     '@mobile-ui': '../ui/mobile/src',
-                    '@the-dead-planet/nav-gauge-gears-(.+)$': '../gears/\\1/common/src',
-                    '@the-dead-planet/nav-gauge-mobile-gears-(.+)$': '../gears/\\1/mobile/src'
+                    '@the-dead-planet/nav-gauge-gears-(.+)$-common': '../gears/\\1/common/src',
+                    '@the-dead-planet/nav-gauge-gears-(.+)$-mobile': '../gears/\\1/mobile/src'
                 },
             },
         ]

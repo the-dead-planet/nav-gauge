@@ -93,11 +93,11 @@ module.exports = (env, argv) => merge(config(env, argv), {
                     name: 'tinker-chest',
                 },
                 gears: {
-                    test: /[\\/]gears[\\/]src[\\/]/,
+                    test: /[\\/]gears[\\/].*[\\/](common|web)[\\/]src[\\/]/,
                     name: 'gears',
                 },
                 ui: {
-                    test: /[\\/](ui|web-ui)[\\/]src[\\/]/,
+                    test: /[\\/]ui[\\/](common|web)[\\/]src[\\/]/,
                     name: 'ui',
                 },
             },

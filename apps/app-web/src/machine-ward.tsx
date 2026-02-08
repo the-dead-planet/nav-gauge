@@ -1,5 +1,5 @@
 import { MachineWard, MachineWardComponents, Orientation, OrientationSubscriptionDefinition } from "@apparatus";
-import { WebRouteStoryGear } from "@the-dead-planet/nav-gauge-web-gears-route-story";
+import { WebRouteStoryGear } from "@the-dead-planet/nav-gauge-gears-route-story-web";
 import { ErrorFallback } from "./ErrorFallback";
 import { Footer, Layout, TopBar } from "./layout";
 import { Machine } from "./machine/Machine";

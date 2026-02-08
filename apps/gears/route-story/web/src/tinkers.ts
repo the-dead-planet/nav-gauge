@@ -2,9 +2,9 @@ import { BehaviorSubject } from "rxjs";
 import maplibregl from "maplibre-gl";
 import { CurrentPointData, MarkerImage } from "@apparatus";
 import { GeoJson } from "@tinker-chest";
-import { getRouteSourceData, RouteTimes } from "@the-dead-planet/nav-gauge-gears-route-story";
+import { getRouteSourceData, RouteTimes } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { LoadedImageData } from "./images/image-parser";
-import { sourceIds } from "@the-dead-planet/nav-gauge-gears-route-story";
+import { sourceIds } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 
 /**
  * Gets current point data, updates map sources, and returns it.

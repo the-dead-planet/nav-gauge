@@ -9,8 +9,8 @@ import {
     routeLineLayer,
     currentPointLayers,
     routePointsLayer
-} from "@the-dead-planet/nav-gauge-gears-route-story";
-import { MobileMap } from "@the-dead-planet/nav-gauge-mobile-ui";
+} from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { MobileMap } from "@mobile-ui";
 
 export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps> = ({
     map,

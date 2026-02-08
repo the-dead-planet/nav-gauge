@@ -19,6 +19,7 @@
         "./types/**/*"
     ],
     "exclude": [
+        "**/app-mobile/**/*",
         "**/mobile/**/*",
         "node_modules",
         "**/node_modules",

@@ -1,7 +1,7 @@
 # Route story
 
 Route story feature plugged in to the mobile app.
-See [README](/apps/web/README.md).
+See [README](/apps/app-web/README.md).
 
 ## Import sequence
 

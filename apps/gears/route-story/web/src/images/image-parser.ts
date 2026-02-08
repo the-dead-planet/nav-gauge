@@ -1,7 +1,7 @@
 import maplibregl from "maplibre-gl";
 import EXIF from 'exif-js';
 import { ExifData, LngLat, MarkerImage as MarkerImageType } from '@apparatus';
-import { IMAGE_SIZE } from "@the-dead-planet/nav-gauge-gears-route-story";
+import { IMAGE_SIZE } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 
 export interface MarkerImage extends MarkerImageType {
     marker?: maplibregl.Marker;

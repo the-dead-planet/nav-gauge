@@ -1,5 +1,5 @@
 {
-    "name": "@the-dead-planet/nav-gauge-web-app",
+    "name": "@the-dead-planet/nav-gauge-app-web",
     "version": "1.0.0",
     "description": "Navigation gauge and route story generator for the web.",
     "homepage": "https://gauge.spookydoodle.com",
@@ -40,8 +40,8 @@
     "dependencies": {
         "@the-dead-planet/nav-gauge-apparatus": "*",
         "@the-dead-planet/nav-gauge-tinker-chest": "*",
-        "@the-dead-planet/nav-gauge-ui": "*",
-        "@the-dead-planet/nav-gauge-web-ui": "*",
+        "@the-dead-planet/nav-gauge-ui-common": "*",
+        "@the-dead-planet/nav-gauge-ui-web": "*",
         "classnames": "^2.5.1",
         "maplibre-gl": "^5.16.0",
         "pmtiles": "^4.3.2",

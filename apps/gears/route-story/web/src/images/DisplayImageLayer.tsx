@@ -16,7 +16,7 @@ import {
     ImageFeatureProperties,
     getImageIconSize,
     IMAGE_SIZE
-} from "@the-dead-planet/nav-gauge-gears-route-story";
+} from "@the-dead-planet/nav-gauge-gears-route-story-common";
 
 const ANIMATION_DURATION = 250;
 

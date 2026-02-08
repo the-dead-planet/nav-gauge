@@ -1,5 +1,5 @@
 {
-    "name": "@the-dead-planet/nav-gauge-mobile-app",
+    "name": "@the-dead-planet/nav-gauge-app-mobile",
     "version": "1.0.0",
     "description": "Navigation gauge and route story generator for mobile devices.",
     "private": true,
@@ -22,12 +22,12 @@
         "test:e2e:prod": "jest"
     },
     "dependencies": {
+        "@the-dead-planet/nav-gauge-apparatus": "*",
+        "@the-dead-planet/nav-gauge-tinker-chest": "*",
+        "@the-dead-planet/nav-gauge-ui-common": "*",
+        "@the-dead-planet/nav-gauge-ui-mobile": "*",
         "@maplibre/maplibre-react-native": "^10.4.2",
         "@react-native-async-storage/async-storage": "^2.2.0",
-        "@the-dead-planet/nav-gauge-apparatus": "*",
-        "@the-dead-planet/nav-gauge-mobile-ui": "*",
-        "@the-dead-planet/nav-gauge-tinker-chest": "*",
-        "@the-dead-planet/nav-gauge-ui": "*",
         "fast-text-encoding": "^1.0.6",
         "react-native": "0.83.1"
     },

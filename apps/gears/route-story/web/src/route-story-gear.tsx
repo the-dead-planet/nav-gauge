@@ -1,6 +1,6 @@
 import { combineLatest, Subscription } from 'rxjs';
 import { Individuator } from '@apparatus';
-import { RouteStoryGear } from '@the-dead-planet/nav-gauge-gears-route-story';
+import { RouteStoryGear } from '@the-dead-planet/nav-gauge-gears-route-story-common';
 import { RouteLayer } from './RouteLayer';
 import { ImagesLayer } from './images/ImagesLayer';
 import { FileInput } from './FileInput';

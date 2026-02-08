@@ -16,7 +16,7 @@ import {
     currentPointLayers,
     routeLineLayer,
     routePointsLayer
-} from "@the-dead-planet/nav-gauge-gears-route-story";
+} from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { updateRouteLayer } from "./tinkers";
 import { useLoadedImages } from "./hooks";
 import { LoadedImageData } from "./images/image-parser";

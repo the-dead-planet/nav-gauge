@@ -21,7 +21,7 @@ import {
     layerIds,
     sourceIds,
     IMAGE_SIZE
-} from "@the-dead-planet/nav-gauge-gears-route-story";
+} from "@the-dead-planet/nav-gauge-gears-route-story-common";
 
 export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps> = ({
     map,

@@ -2,7 +2,7 @@ import { CSSProperties, FC, useEffect, useMemo } from "react";
 import { pairwise } from "rxjs";
 import { OverlayComponentProps, SurveillanceState, useMachineWard, useStateWarden, useSubjectState } from "@apparatus";
 import { formatTimeMsAsStandard } from "@tinker-chest";
-import { RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story";
+import { RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { WebChronoLens } from "../chrono-lens/chrono-lens";
 import { getProgressPercentage, updateRouteLayer } from "../tinkers";
 import * as styles from './player.module.css';

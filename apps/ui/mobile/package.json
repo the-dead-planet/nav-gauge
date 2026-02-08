@@ -1,5 +1,5 @@
 {
-    "name": "@the-dead-planet/nav-gauge-mobile-ui",
+    "name": "@the-dead-planet/nav-gauge-ui-mobile",
     "version": "1.0.0",
     "private": true,
     "main": "src/index.ts",
@@ -10,7 +10,7 @@
         "test": "mocha"
     },
     "dependencies": {
-        "@the-dead-planet/nav-gauge-ui": "*"
+        "@the-dead-planet/nav-gauge-ui-common": "*"
     },
     "devDependencies": {
         "@maplibre/maplibre-react-native": "^10.4.2",

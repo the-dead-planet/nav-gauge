@@ -2,12 +2,6 @@
 
 Web version of the application.
 
-## Components
-
-- [Web app](/apps/web/app/README.md)
-- [Web gears](/apps/web/gears/README.md)
-- [Web UI](/apps/web/ui/README.md)
-
 ## Import sequence
 
 See [ARCHITECTURES](/docs/ARCHITECTURES.md).
@@ -47,8 +41,8 @@ yarn start:web
 
 ### Production build and deployment
 
-- [Dockerfile](/apps/web/app/Dockerfile)
-- [nginx.conf](/apps/web/app/conf/conf.d/nginx.conf)
+- [Dockerfile](/apps/app-web/app/Dockerfile)
+- [nginx.conf](/apps/app-web/app/conf/conf.d/nginx.conf)
 - [build-and-push workflow](/.github/workflows/build-and-push.yaml)
 
 To run docker image locally from root of the repository:

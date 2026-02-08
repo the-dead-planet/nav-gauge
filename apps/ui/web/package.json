@@ -1,5 +1,5 @@
 {
-    "name": "@the-dead-planet/nav-gauge-web-ui",
+    "name": "@the-dead-planet/nav-gauge-ui-web",
     "version": "1.0.0",
     "private": true,
     "main": "src/index.ts",
@@ -9,7 +9,7 @@
         "test": "mocha"
     },
     "dependencies": {
-        "@the-dead-planet/nav-gauge-ui": "*",
+        "@the-dead-planet/nav-gauge-ui-common": "*",
         "classnames": "^2.5.1"
     },
     "devDependencies": {

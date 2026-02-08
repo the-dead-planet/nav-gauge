@@ -1,5 +1,5 @@
 {
-    "name": "@the-dead-planet/nav-gauge-mobile-gears-record-route",
+    "name": "@the-dead-planet/nav-gauge-gears-record-route-mobile",
     "version": "1.0.0",
     "private": true,
     "main": "src/index.ts",
@@ -9,8 +9,10 @@
         "test": "mocha"
     },
     "dependencies": {
-        "@the-dead-planet/nav-gauge-ui": "*",
-        "@the-dead-planet/nav-gauge-gears-record-route": "*"
+        "@the-dead-planet/nav-gauge-apparatus": "*",
+        "@the-dead-planet/nav-gauge-tinker-chest": "*",
+        "@the-dead-planet/nav-gauge-ui-common": "*",
+        "@the-dead-planet/nav-gauge-gears-record-route-common": "*"
     },
     "devDependencies": {
         "@maplibre/maplibre-react-native": "^10.4.2",

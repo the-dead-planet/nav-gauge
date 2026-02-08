@@ -2,11 +2,6 @@
 
 Mobile version of the application.
 
-## Components
-
-- [Mobile app](/apps/mobile/app/README.md)
-- [Mobile UI](/apps/mobile/ui/README.md)
-
 ## Import sequence
 
 See [ARCHITECTURES](/docs/ARCHITECTURES.md).
