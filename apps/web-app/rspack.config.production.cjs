@@ -76,7 +76,7 @@ module.exports = (env, argv) => merge(config(env, argv), {
                     priority: 2
                 },
                 maplibre: {
-                    test: /[\\/]node_modules[\\/](maplibre-gl)[\\/]/,
+                    test: /[\\/]node_modules[\\/](maplibre-gl|@maplibre[\\/]maplibre-gl-style-spec)[\\/]/,
                     name: 'vendors-maplibre',
                     priority: 2
                 },

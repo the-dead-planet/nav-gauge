@@ -1,4 +1,5 @@
 import { FC, useEffect, useMemo } from "react";
+import { LayerSpecification, SourceSpecification } from "@maplibre/maplibre-gl-style-spec";
 import maplibregl from "maplibre-gl";
 import bbox from "@turf/bbox";
 import {
@@ -8,9 +9,15 @@ import {
     useMapLayerData,
     MapLayerData,
 } from "@apparatus";
-import { RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story";
-import { getRouteSourceData, updateRouteLayer } from "./tinkers";
-import { currentPointLayers, routeLineLayer, getRoutePointsLayer, sourceIds } from "./layers";
+import {
+    getRouteSourceData,
+    RouteToolProps,
+    sourceIds,
+    currentPointLayers,
+    routeLineLayer,
+    routePointsLayer
+} from "@the-dead-planet/nav-gauge-gears-route-story";
+import { updateRouteLayer } from "./tinkers";
 import { useLoadedImages } from "./hooks";
 import { LoadedImageData } from "./images/image-parser";
 import { parsers } from "./parsers";
@@ -22,12 +29,13 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPro
     images$,
     progressMs$,
 }) => {
-    const [{ geojson, ...data }, setData] = useSubjectState(data$);
+    const [{ geojson }, setData] = useSubjectState(data$);
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [progressMs, setProgressMs] = useSubjectState(progressMs$);
     const { animatrix, cartomancer, chronoLens } = useStateWarden();
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
+    const { showRouteLine, showRoutePoints } = gaugeControls;
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [animationControls] = useSubjectState(animatrix.controls$);
     const {
@@ -54,52 +62,53 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPro
                 boundingBox: bbox(result.geojson)
             } : {}));
     }, []);
-console.log({geojson,...data})
+
     const loadedImages = useLoadedImages(images);
 
-    const mapLayerData = useMemo((): MapLayerData => {
+    const sources = useMemo((): { [key in string]: SourceSpecification } => {
         if (!geojson || !routeTimes) {
-            return {
-                sources: {},
-                layers: [],
-            }
+            return {};
         }
 
         const { currentPoint, lines } = getRouteSourceData(
+            { showRouteLine, showRoutePoints },
             geojson,
             routeTimes.startTimeEpoch,
             progressMs,
             bearingLineLengthInMeters
         );
 
+        return {
+            [sourceIds.line]: {
+                type: 'geojson',
+                data: lines,
+                promoteId: 'id'
+            },
+            [sourceIds.currentPoint]: {
+                type: 'geojson',
+                data: currentPoint,
+            }
+        };
+    }, [geojson, routeTimes?.startTimeEpoch, bearingLineLengthInMeters, showRouteLine, showRoutePoints]);
+
+    const layers = useMemo((): LayerSpecification[] => {
+        if (!geojson || !routeTimes) {
+            return [];
+        }
         const layers: MapLayerData['layers'] = [];
-        if (gaugeControls.showRouteLine) {
+
+        if (showRouteLine) {
             layers.push(routeLineLayer);
         }
-        if (gaugeControls.showRoutePoints) {
-            layers.push(getRoutePointsLayer());
+        if (showRoutePoints) {
+            layers.push(routePointsLayer);
         }
         layers.push(...currentPointLayers);
 
-        return {
-            sources: {
-                [sourceIds.line]: {
-                    type: 'geojson',
-                    data: gaugeControls.showRouteLine || gaugeControls.showRoutePoints
-                        ? lines
-                        : { type: 'FeatureCollection', features: [] },
-                    promoteId: 'id'
-                },
-                [sourceIds.currentPoint]: {
-                    type: 'geojson',
-                    data: currentPoint,
-                }
-            },
-            layers,
-        };
-    }, [geojson, routeTimes?.startTimeEpoch, bearingLineLengthInMeters, gaugeControls.showRouteLine, gaugeControls.showRoutePoints]);
+        return layers;
+    }, [geojson, routeTimes, showRouteLine, showRoutePoints]);
 
-    useMapLayerData(map, mapLayerData)
+    useMapLayerData(map, { sources, layers })
 
     useEffect(() => {
         if (!isPlaying || !geojson || !routeTimes) {
@@ -127,7 +136,7 @@ console.log({geojson,...data})
                 nextImageIndex = 0;
             }
             const nextImage: LoadedImageData | undefined = sortedImageFeatures[nextImageIndex];
-            const { currentPoint, currentPointBearing } = updateRouteLayer(map, geojson, startTimeEpoch, current, bearingLineLengthInMeters, nextImage?.featureId);
+            const { currentPoint, currentPointBearing } = updateRouteLayer({ showRouteLine, showRoutePoints }, map, geojson, startTimeEpoch, current, bearingLineLengthInMeters, nextImage?.featureId);
 
             if (animation !== undefined && nextImage && nextImage.featureId <= Number(currentPoint.id)) {
                 animatrix.displayImageId$.next(nextImage.id);

@@ -6,15 +6,17 @@ import {
     MapLayerData,
 } from "@apparatus";
 import { emptyCollection, GeoJson } from "@tinker-chest";
+import { getIconImageId } from "../tinkers";
+import { LoadedImageData } from "./image-parser";
 import {
-    sourceIds,
     layerIds,
+    sourceIds,
     DEFAULT_IMAGE_SIZE,
     getDisplayImageLayers,
-    ImageFeatureProperties
-} from '../layers';
-import { getImageIconSize, getIconImageId } from "../tinkers";
-import { IMAGE_SIZE, LoadedImageData } from "./image-parser";
+    ImageFeatureProperties,
+    getImageIconSize,
+    IMAGE_SIZE
+} from "@the-dead-planet/nav-gauge-gears-route-story";
 
 const ANIMATION_DURATION = 250;
 
@@ -74,7 +76,7 @@ export const DisplayImageLayer: FC<Props> = ({
 
     const updateData = useMemo(
         (): [string, GeoJSON.GeoJSON, number | undefined] => [
-            sourceIds.imageInDisplay, 
+            sourceIds.imageInDisplay,
             getData(geojson, loadedImages, displayImageId),
             displayImageId === null ? ANIMATION_DURATION : undefined
         ],

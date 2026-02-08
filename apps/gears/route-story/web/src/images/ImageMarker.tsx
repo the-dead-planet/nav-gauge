@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import maplibregl from "maplibre-gl";
 import { Cartomancer, MarkerImage, useStateWarden, useSubjectState, FeatureStateProps } from "@apparatus";
 import { GeoJson } from "@tinker-chest";
-import { sourceIds } from '../layers';
+import { sourceIds } from "@the-dead-planet/nav-gauge-gears-route-story";
 import * as styles from './images.module.css';
 
 const imageSize = 30;

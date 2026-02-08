@@ -17,7 +17,7 @@ export const MapSection: FC = () => {
         map: mapRef.current,
         camera: cameraRef.current
     };
-    const { cartomancer } = useStateWarden();
+    const { cartomancer, signaliumBureau } = useStateWarden();
     const [_isInitialised, setIsInitialised] = useSubjectState(cartomancer.isInitialised$);
     const [_isStyleLoaded, setIsStyleLoaded] = useSubjectState(cartomancer.isStyleLoaded$);
     const [selectedStyle] = useSubjectState(cartomancer.selectedStyle$);
@@ -34,6 +34,16 @@ export const MapSection: FC = () => {
                 ref={mapRef}
                 style={styles.mapView}
                 mapStyle={Cartomancer.styles[selectedStyle.id]?.style}
+                onDidFinishLoadingMap={() => setIsInitialised(true)}
+                onDidFinishLoadingStyle={() => setIsStyleLoaded(true)}
+                onDidFailLoadingMap={() => {
+                    signaliumBureau.addNotice({
+                        id: 'map-failed',
+                        type: 'error',
+                        error: new Error( 'Map loading failed'),
+                        text: 'Something went wrong'
+                    })
+                }}
             >
                 <Camera ref={cameraRef} />
                 {[...overlays.entries()].map(([id, OverlayComponent]) => (

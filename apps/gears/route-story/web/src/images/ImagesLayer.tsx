@@ -10,18 +10,18 @@ import {
     useSubjectState
 } from "@apparatus";
 import { useLoadedImages } from "../hooks/useLoadedImages";
+import { DisplayImageLayer } from "./DisplayImageLayer";
+import { getIconImageId, updateImageFeatureId } from "../tinkers";
+import { useMapImages } from "../hooks";
 import {
-    sourceIds,
+    RouteToolProps,
     getImagesLayers,
     ImageFeature,
     ImageFeatureProperties,
     layerIds,
-} from '../layers';
-import { DisplayImageLayer } from "./DisplayImageLayer";
-import { getIconImageId, updateImageFeatureId } from "../tinkers";
-import { IMAGE_SIZE } from "./image-parser";
-import { useMapImages } from "../hooks";
-import { RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story";
+    sourceIds,
+    IMAGE_SIZE
+} from "@the-dead-planet/nav-gauge-gears-route-story";
 
 export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps> = ({
     map,

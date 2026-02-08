@@ -36,6 +36,7 @@
         "test:e2e:mobile": "yarn workspace @the-dead-planet/nav-gauge-mobile-app test:e2e:prod"
     },
     "dependencies": {
+        "@maplibre/maplibre-gl-style-spec": "^24.4.1",
         "@turf/along": "^7.3.2",
         "@turf/bbox": "^7.3.2",
         "@turf/bearing": "^7.3.2",
@@ -43,7 +44,6 @@
         "@turf/helpers": "^7.3.2",
         "@turf/length": "^7.3.2",
         "luxon": "^3.7.2",
-        "maplibre-gl": "^5.16.0",
         "react": "^19.2.3",
         "rxjs": "^7.8.2"
     },

@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
-    map:{ 
+    map: {
         map: MapViewRef | null;
         camera: CameraRef | null;
     };
@@ -71,12 +71,12 @@ export const MapTools: FC<Props> = ({ map, children }) => {
                         ))}
                     </View>
                 </View>
+            </View>
 
-                <View style={styles.bottom}>
-                    {toolsByPlacement.bottom.map(({ id, component: ToolComponent }) => (
-                        <ToolComponent key={id} map={map} />
-                    ))}
-                </View>
+            <View style={styles.bottom}>
+                {toolsByPlacement.bottom.map(({ id, component: ToolComponent }) => (
+                    <ToolComponent key={id} map={map} />
+                ))}
             </View>
         </View>
     );

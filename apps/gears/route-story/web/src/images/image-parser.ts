@@ -1,6 +1,7 @@
 import maplibregl from "maplibre-gl";
 import EXIF from 'exif-js';
 import { ExifData, LngLat, MarkerImage as MarkerImageType } from '@apparatus';
+import { IMAGE_SIZE } from "@the-dead-planet/nav-gauge-gears-route-story";
 
 export interface MarkerImage extends MarkerImageType {
     marker?: maplibregl.Marker;
@@ -14,8 +15,6 @@ export interface LoadedImageData extends Omit<MarkerImage, 'progress' | 'error' 
     data: string;
     bitmap: ImageBitmap;
 }
-
-export const IMAGE_SIZE = 800;
 
 export const parseImage = async (
     file: File,

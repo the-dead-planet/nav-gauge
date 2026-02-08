@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import maplibregl from "maplibre-gl";
+import { LayerSpecification, SourceSpecification } from "@maplibre/maplibre-gl-style-spec";
 import { emptyCollection } from "@tinker-chest";
 import { useUpdateSourceData } from "./useUpdateData";
 import { useStateWarden } from "../../useStateWarden";
@@ -8,11 +9,11 @@ import { FeatureStateProps } from "../map-layers";
 const DEFAULT_BUFFER = 4;
 
 export interface MapLayerData {
-    sources: { [key in string]: maplibregl.SourceSpecification };
+    sources: { [key in string]: SourceSpecification };
     /**
      * Tuples [layer specification, before id]
      */
-    layers: maplibregl.LayerSpecification[];
+    layers: LayerSpecification[];
     beforeLayerId?: string;
     handlers?: MapDataHandlers;
 }

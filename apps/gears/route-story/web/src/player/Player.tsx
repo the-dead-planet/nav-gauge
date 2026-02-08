@@ -19,7 +19,9 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps> 
     const [images] = useSubjectState(images$);
     const [progressMs, setProgressMs] = useSubjectState(progressMs$);
     const { individuator } = useMachineWard();
-    const { animatrix, chronoLens, signaliumBureau } = useStateWarden();
+    const { animatrix, cartomancer, chronoLens, signaliumBureau } = useStateWarden();
+    const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
+    const { showRouteLine, showRoutePoints } = gaugeControls;
     const [settings] = useSubjectState(individuator.settings$);
     const [isPlaying, setIsPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [surveillanceState, setSurveillanceState] = useSubjectState(chronoLens.surveillanceState$);
@@ -86,7 +88,7 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps> 
         }
         setProgressMs(Number(event.target.value));
         if (geojson) {
-            updateRouteLayer(map, geojson, routeTimes.startTimeEpoch, Number(event.target.value), bearingLineLengthInMeters);
+            updateRouteLayer({ showRouteLine, showRoutePoints }, map, geojson, routeTimes.startTimeEpoch, Number(event.target.value), bearingLineLengthInMeters);
         }
         // Resume playing animations
         if (isPlaying) {

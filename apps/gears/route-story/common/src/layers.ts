@@ -1,7 +1,7 @@
+import { CircleLayerSpecification, LayerSpecification, LineLayerSpecification, SymbolLayerSpecification } from "@maplibre/maplibre-gl-style-spec";
 import { FeatureStateProps } from "@apparatus";
 import { ThemeName } from "@ui";
-import { getImageIconSize } from "./tinkers";
-import { IMAGE_SIZE } from "./images/image-parser";
+import { getImageIconSize, IMAGE_SIZE } from "./images";
 
 export const colorActive = '#003161';
 export const colorInactive = 'grey';
@@ -24,7 +24,7 @@ export const layerIds = {
     imageInDisplay: 'route-image-in-display',
 }
 
-export const routeLineLayer: maplibregl.LineLayerSpecification = {
+export const routeLineLayer: LineLayerSpecification = {
     id: layerIds.line,
     source: sourceIds.line,
     type: 'line',
@@ -44,7 +44,7 @@ export const routeLineLayer: maplibregl.LineLayerSpecification = {
     }
 };
 
-export const getRoutePointsLayer = (): maplibregl.CircleLayerSpecification => ({
+export const routePointsLayer: CircleLayerSpecification = {
     id: layerIds.points,
     source: sourceIds.line,
     type: 'circle',
@@ -57,11 +57,11 @@ export const getRoutePointsLayer = (): maplibregl.CircleLayerSpecification => ({
             colorActive,
             colorInactive
         ],
-        'circle-radius': 2,
+        'circle-radius': 3,
     }
-});
+};
 
-export const currentPointLayers: maplibregl.CircleLayerSpecification[] = [
+export const currentPointLayers: CircleLayerSpecification[] = [
     {
         id: layerIds.currentPointOutline,
         source: sourceIds.currentPoint,
@@ -92,7 +92,7 @@ export interface ImageFeatureProperties {
     [IMAGE_PROPERTY]: string;
 }
 
-const getImageLayer = (): maplibregl.SymbolLayerSpecification => ({
+const getImageLayer = (): SymbolLayerSpecification => ({
     id: layerIds.images,
     source: sourceIds.image,
     type: 'symbol',
@@ -112,7 +112,7 @@ const getImageLayer = (): maplibregl.SymbolLayerSpecification => ({
 });
 
 // TODO: Depoendent on base map style
-export const getImagesLayers = (themeName: ThemeName): maplibregl.LayerSpecification[] => {
+export const getImagesLayers = (themeName: ThemeName): LayerSpecification[] => {
     const imageLayer = getImageLayer();
 
     return [
@@ -154,7 +154,7 @@ export const getImagesLayers = (themeName: ThemeName): maplibregl.LayerSpecifica
     ];
 }
 
-export const getDisplayImageLayers = (): maplibregl.SymbolLayerSpecification[] => {
+export const getDisplayImageLayers = (): SymbolLayerSpecification[] => {
     const imageLayer = getImageLayer();
 
     return [{
