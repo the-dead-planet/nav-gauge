@@ -1,13 +1,12 @@
+import { ComponentType } from "react";
 import { BehaviorSubject, Subscription } from "rxjs";
-import maplibregl from "maplibre-gl";
 import turfDistance from "@turf/distance";
 import { point as turfPoint } from "@turf/helpers";
-import { backgroundMapStyle, customRoadsMapStyle, osmMapStyle } from "./map-styles";
+import { Option } from "@ui";
 import { FeatureProperties, GeoJson } from "@tinker-chest";
+import { backgroundMapStyle, customRoadsMapStyle, osmMapStyle } from "./map-styles";
 import { StorageKeeper } from "../../machine-ward/storage-keeper";
 import { GaugeControlsType, MapLayout, OverlayComponentProps } from "./model";
-import { ComponentType } from "react";
-import { Option } from "@ui";
 
 interface SelectedStyle {
     id: keyof typeof Cartomancer.styles;
@@ -16,7 +15,7 @@ interface SelectedStyle {
 /**
  * Stores and manages the map.
  */
-export class Cartomancer {
+export class Cartomancer<TMap> {
     public static styles = {
         'background': backgroundMapStyle,
         'osm': osmMapStyle,
@@ -27,7 +26,7 @@ export class Cartomancer {
     /**
      * All available controls position options.
      */
-    public static controlsPositionOptions: Option<maplibregl.ControlPosition>[] = [
+    public static controlsPositionOptions: Option<GaugeControlsType['controlPosition']>[] = [
         { value: "top-left", label: 'Top left' },
         { value: "top-right", label: "Top right" },
         { value: "bottom-left", label: "Bottom left" },
@@ -95,7 +94,7 @@ export class Cartomancer {
     };
 
     public zoom$ = new BehaviorSubject(0);
-    public overlays$ = new BehaviorSubject<Map<string, ComponentType<OverlayComponentProps>>>(new Map());
+    public overlays$ = new BehaviorSubject<Map<string, ComponentType<OverlayComponentProps<TMap>>>>(new Map());
 
     private cleanUpSelectedStyle = (state: unknown): Partial<SelectedStyle> => {
         const { id } = state as SelectedStyle;
@@ -153,7 +152,7 @@ export class Cartomancer {
      * Adds map overlay components rendered in the map area unconditionally.
      * If an overlay with a given id exists, it will be overwritten.
      */
-    public addOverlay = (id: string, component: ComponentType<OverlayComponentProps>) => {
+    public addOverlay = (id: string, component: ComponentType<OverlayComponentProps<TMap>>) => {
         const nextOverlays = new Map(this.overlays$.value);
         nextOverlays.set(id, component);
         this.overlays$.next(nextOverlays);

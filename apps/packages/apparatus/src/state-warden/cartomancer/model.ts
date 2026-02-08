@@ -1,5 +1,3 @@
-import { ComponentType } from "react";
-
 export interface ControlPlacement {
     top: number;
     bottom: number;
@@ -13,7 +11,7 @@ export interface GaugeControlsType {
     showCurrentZoom: boolean;
     showCompass: boolean;
     showGreenScreen: boolean;
-    controlPosition: maplibregl.ControlPosition;
+    controlPosition: "top-left" | "top-right" | "bottom-left" | "bottom-right";
     controlPlacement: ControlPlacement;
     // TODO: Belongs to route gear
     showRouteLine: boolean;
@@ -37,8 +35,8 @@ export interface MapLayoutSize {
     height: number;
 }
 
-export interface OverlayComponentProps {
-    map: maplibregl.Map;
+export interface OverlayComponentProps<TMap> {
+    map: TMap;
 }
 
 export interface ExifData {
@@ -66,14 +64,18 @@ export interface ExifData {
     GPSLatitudeRef?: 'N' | 'S';
 }
 
+export interface LngLat {
+    lng: number;
+    lat: number;
+}
+
 export interface MarkerImage {
     id: number;
     name: string;
     progress: number;
-    lngLat?: maplibregl.LngLat;
+    lngLat?: LngLat;
     data?: string;
     exif?: ExifData;
     error?: string;
     featureId?: number;
-    marker?: maplibregl.Marker;
 }

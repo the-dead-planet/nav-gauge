@@ -13,26 +13,26 @@ import { MachineWardComponents } from "./model";
  * 
  * Describes the expected content of the applications and renders complete app.
  */
-export abstract class MachineWard {
+export abstract class MachineWard<TMap = unknown> {
     public title = 'nav gauge';
 
     public readonly individuator: Individuator;
     public readonly storageKeeper: StorageKeeper;
-    public readonly stateWarden: StateWarden;
-    public readonly engine = new Engine();
+    public readonly stateWarden: StateWarden<TMap>;
+    public readonly engine = new Engine<TMap>();
 
     public constructor(
-        gears: { [K in GearId]: (new (individuator: Individuator) => Gear<K>) | null },
+        gears: { [K in GearId]: (new (individuator: Individuator) => Gear<TMap, K>) | null },
         storage: StorageLike,
         prefersLightColorScheme: boolean,
         orientationSubscription: OrientationSubscriptionDefinition
     ) {
         this.storageKeeper = new StorageKeeper(storage);
         this.individuator = new Individuator(prefersLightColorScheme, orientationSubscription);
-        this.stateWarden = new StateWarden();
+        this.stateWarden = new StateWarden<TMap>();
 
         this.engine.addGears(
-            Object.values(gears).reduce<Gear<GearId>[]>((acc, Gear) => {
+            Object.values(gears).reduce<Gear<TMap, GearId>[]>((acc, Gear) => {
                 if (Gear) {
                     acc.push(new Gear(this.individuator));
                 }

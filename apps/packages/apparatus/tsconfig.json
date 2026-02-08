@@ -6,7 +6,7 @@
                 "../tinker-chest/src"
             ],
             "@ui": [
-                "../../ui/src"
+                "../../ui/common/src"
             ]
         }
     }

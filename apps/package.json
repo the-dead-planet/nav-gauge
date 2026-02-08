@@ -12,30 +12,31 @@
         "url": "https://github.com/the-dead-planet/nav-gauge/issues"
     },
     "scripts": {
-        "dev:web": "yarn workspace @the-dead-planet/nav-gauge-web-app dev",
-        "dev:mobile": "yarn workspace @the-dead-planet/nav-gauge-mobile-app android",
-        "start:web": "yarn workspace @the-dead-planet/nav-gauge-web-app start",
-        "start:mobile": "yarn workspace @the-dead-planet/nav-gauge-mobile-app start",
-        "start:mobile:r": "yarn workspace @the-dead-planet/nav-gauge-mobile-app start:r",
-        "build:web": "yarn workspace @the-dead-planet/nav-gauge-web-app build",
-        "test:ui": "yarn workspace @the-dead-planet/nav-gauge-ui test",
+        "dev:web": "yarn workspace @the-dead-planet/nav-gauge-app-web dev",
+        "dev:mobile": "yarn workspace @the-dead-planet/nav-gauge-app-mobile android",
+        "start:web": "yarn workspace @the-dead-planet/nav-gauge-app-web start",
+        "start:mobile": "yarn workspace @the-dead-planet/nav-gauge-app-mobile start",
+        "start:mobile:r": "yarn workspace @the-dead-planet/nav-gauge-app-mobile start:r",
+        "build:web": "yarn workspace @the-dead-planet/nav-gauge-app-web build",
+        "test:ui": "yarn workspace @the-dead-planet/nav-gauge-ui-common test",
         "test:packages": "yarn test:apparatus && yarn test:tinker-chest",
         "test:apparatus": "yarn workspace @the-dead-planet/nav-gauge-apparatus test",
         "test:tinker-chest": "yarn workspace @the-dead-planet/nav-gauge-tinker-chest test",
-        "test:web": "yarn test:web-app && yarn test:web-gears && yarn test:web-ui",
-        "test:web-app": "yarn workspace @the-dead-planet/nav-gauge-web-app test",
-        "test:web-gears": "yarn workspace @the-dead-planet/nav-gauge-web-gears-route-story test",
-        "test:web-ui": "yarn workspace @the-dead-planet/nav-gauge-web-ui test",
-        "test:mobile": "yarn test:mobile-app && yarn test:mobile-ui",
-        "test:mobile-app": "yarn workspace @the-dead-planet/nav-gauge-mobile-app test",
-        "test:mobile-ui": "yarn workspace @the-dead-planet/nav-gauge-mobile-ui test",
+        "test:web": "yarn test:app-web && yarn test:web-gears && yarn test:web-ui",
+        "test:app-web": "yarn workspace @the-dead-planet/nav-gauge-app-web test",
+        "test:web-gears": "yarn workspace @the-dead-planet/nav-gauge-gears-route-story-web test",
+        "test:web-ui": "yarn workspace @the-dead-planet/nav-gauge-ui-web test",
+        "test:mobile": "yarn test:app-mobile && yarn test:mobile-ui",
+        "test:app-mobile": "yarn workspace @the-dead-planet/nav-gauge-app-mobile test",
+        "test:mobile-ui": "yarn workspace @the-dead-planet/nav-gauge-ui-mobile test",
         "test:all": "concurrently \"yarn test:ui\" \"yarn test:packages\" \"yarn test:web\" \"yarn test:mobile\"",
         "test:all:web": "concurrently \"yarn test:ui\" \"yarn test:packages\" \"yarn test:web\"",
         "test:all:mobile": "concurrently \"yarn test:ui\" \"yarn test:packages\" \"yarn test:mobile\"",
-        "test:e2e:web": "yarn workspace @the-dead-planet/nav-gauge-web-app test:e2e:prod",
-        "test:e2e:mobile": "yarn workspace @the-dead-planet/nav-gauge-mobile-app test:e2e:prod"
+        "test:e2e:web": "yarn workspace @the-dead-planet/nav-gauge-app-web test:e2e:prod",
+        "test:e2e:mobile": "yarn workspace @the-dead-planet/nav-gauge-app-mobile test:e2e:prod"
     },
     "dependencies": {
+        "@maplibre/maplibre-gl-style-spec": "^24.4.1",
         "@turf/along": "^7.3.2",
         "@turf/bbox": "^7.3.2",
         "@turf/bearing": "^7.3.2",
@@ -43,7 +44,6 @@
         "@turf/helpers": "^7.3.2",
         "@turf/length": "^7.3.2",
         "luxon": "^3.7.2",
-        "maplibre-gl": "^5.16.0",
         "react": "^19.2.3",
         "rxjs": "^7.8.2"
     },
@@ -69,13 +69,13 @@
     },
     "workspaces": {
         "packages": [
-            "ui",
+            "app-web",
+            "app-mobile",
+            "ui/*",
             "packages/*",
-            "gears/*",
-            "web/app",
-            "web/ui",
-            "web/gears/*",
-            "mobile/*"
+            "gears/*/common",
+            "gears/*/mobile",
+            "gears/*/web"
         ]
     }
 }

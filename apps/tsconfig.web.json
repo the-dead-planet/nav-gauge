@@ -1,0 +1,29 @@
+{
+    "extends": "./tsconfig.base.json",
+    "compilerOptions": {
+        "lib": [
+            "ESNext",
+            "DOM",
+            "DOM.Iterable"
+        ],
+        "paths": {
+            "@ui": [
+                "./ui/common/src"
+            ]
+        }
+    },
+    "include": [
+        "**/src/**/*",
+        "**/test/**/*",
+        "**/types/**/*",
+        "./types/**/*"
+    ],
+    "exclude": [
+        "**/app-mobile/**/*",
+        "**/mobile/**/*",
+        "node_modules",
+        "**/node_modules",
+        "**/dist",
+        "**/cypress"
+    ]
+}

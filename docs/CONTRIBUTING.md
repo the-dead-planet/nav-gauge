@@ -60,7 +60,7 @@ More info: TBD
 
 Follow the [architectures](/docs/ARCHITECTURES.md) flow when importing from other workspaces. Do not import in the wrong direction.
 
-Import paths are setup as `@package-name` in the `tsconfig.json` files in each workspace, in [Rspack config](/apps/web/app/rspack.config.cjs) and in [mobile babel config](/apps/mobile/app/babel.config.js). 
+Import paths are setup as `@package-name` in the `tsconfig.json` files in each workspace, in [Rspack config](/apps/app-web/app/rspack.config.cjs) and in [mobile babel config](/apps/app-mobile/app/babel.config.js). 
 
 If suddenly something is imported, for example, from `../../apparatus/src` instead of `@apparatus` when importing to a file in `tinker-chest` workspace, and importing from `@apparatus` is not possible... it's a sign of a forbidden import. Consider moving stuff around or creating another package to assure correct import flow. 
 
@@ -68,7 +68,7 @@ Remember about updating the [architectures chart](/docs/assets/architecture.draw
 
 #### Code splitting
 
-Code splitting is set up for web in [Rspack config](/apps/web/app/rspack.config.production.cjs) per larger dependencies and per application workspace to enable better caching for faster startup.
+Code splitting is set up for web in [Rspack config](/apps/app-web/app/rspack.config.production.cjs) per larger dependencies and per application workspace to enable better caching for faster startup.
 
 #### Preferred environment
 
@@ -120,8 +120,8 @@ Add unit, component and end-to-end tests for more complex logic but do not overc
 ##### Testing environments:
 
 - Unit tests in `/apps/**/test/*.test.ts` using [Mocha](https://mochajs.org) and [Chai](https://www.chaijs.com).
-- Web component and end-to-end tests in [`/apps/web/app/cypress/e2e/*.cy.ts`](/apps/web/app/cypress/e2e) using [Cypress](https://docs.cypress.io/app/component-testing/react/overview).
-- Mobile component and end-to-end tests in [`/apps/mobile/app/__tests__/*.test.tsx`](/apps/mobile/app/__tests__) using [Jest](https://jestjs.io/docs/tutorial-react-native).
+- Web component and end-to-end tests in [`/apps/app-web/app/cypress/e2e/*.cy.ts`](/apps/app-web/app/cypress/e2e) using [Cypress](https://docs.cypress.io/app/component-testing/react/overview).
+- Mobile component and end-to-end tests in [`/apps/app-mobile/app/__tests__/*.test.tsx`](/apps/app-mobile/app/__tests__) using [Jest](https://jestjs.io/docs/tutorial-react-native).
 - Backend tests in [TBD](/api/)
 
 #### UI library
@@ -130,7 +130,7 @@ Own UI library is created with focus on semantics, accessibility and minimalism.
 
 Styling should be steampunk inspired.
 
-Variables used repeatedly and those which which depend on the theme should be added to [theme specifications](/apps/ui/src/theme/specifications.ts) in the common [UI package](/apps/).
+Variables used repeatedly and those which which depend on the theme should be added to [theme specifications](/apps/ui/common/src/theme/specifications.ts) in the common [UI package](/apps/).
 
 The library is currently not deployed as a separate app with component docs. Maybe it will be in the future.
 

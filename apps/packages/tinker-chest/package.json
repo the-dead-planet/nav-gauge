@@ -10,7 +10,7 @@
         "test": "mocha"
     },
     "dependencies": {
-        "@the-dead-planet/nav-gauge-ui": "*"
+        "@the-dead-planet/nav-gauge-ui-common": "*"
     },
     "devDependencies": {
         "react": "^19.2.3"

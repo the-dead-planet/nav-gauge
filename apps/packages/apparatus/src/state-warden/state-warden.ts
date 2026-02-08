@@ -11,10 +11,10 @@ import { StorageKeeper } from "../machine-ward";
  * Warden does what warden needs to do.
  * Guards the state and provides access to control mechanisms.
  */
-export class StateWarden {
+export class StateWarden<TMap = unknown> {
     public animatrix: Animatrix;
-    public cartomancer: Cartomancer;
-    public toolsStation: ToolsStation;
+    public cartomancer: Cartomancer<TMap>;
+    public toolsStation: ToolsStation<TMap>;
     private toolsStationPresetSubscription: Subscription | null = null;
     private toolsStationPresetActiveSubscription: Subscription | null = null;
 

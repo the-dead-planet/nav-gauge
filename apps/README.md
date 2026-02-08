@@ -4,10 +4,11 @@ First `yarn install` from this folder.
 
 ## Components
 
-- [web](/apps/web/README.md) - How to run and develop the web application
-- [mobile](/apps/mobile/README.md) - How to run and develop the mobile application
+- [web app](/apps/app-web/README.md) - How to run and develop the web application
+- [mobile app](/apps/app-mobile/README.md) - How to run and develop the mobile application
 - [packages](/apps/packages/README.md) - Packages
-- [ui](/apps/ui/README.md) - Common UI
+- [gears](/apps/gears/README.md) - Gears
+- [ui](/apps/ui/README.md) - UI
 
 See [ARCHITECTURES](/docs/ARCHITECTURES.md).
 
@@ -51,7 +52,7 @@ Depencencies:
 yarn workspace <workspace_name> add <package_name>
 ```
 
-For example `yarn workspace @the-dead-planet/nav-gauge-mobile-app add react-native`
+For example `yarn workspace @the-dead-planet/nav-gauge-app-mobile add react-native`
 
 Same applies to removal of packages.
 
@@ -63,7 +64,7 @@ Same applies to removal of packages.
 yarn dev:web
 ```
 
-More info in web app's [README](/apps/web/README.md).
+More info in web app's [README](/apps/app-web/README.md).
 
 ### Run mobile app
 
@@ -81,7 +82,7 @@ To run on the development device (emulator or connected real device):
 yarn dev:mobile
 ```
 
-More info in mobile app's [README](/apps/mobile/app/README.md).
+More info in mobile app's [README](/apps/app-mobile/app/README.md).
 
 ## Tests
 
