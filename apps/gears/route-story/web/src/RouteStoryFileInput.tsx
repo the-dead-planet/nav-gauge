@@ -5,7 +5,7 @@ import { useSubjectState } from "@apparatus";
 import { FileToGeoJSONParser, parsers } from "./parsers";
 import { RouteFileInputProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 
-export const FileInput: FC<RouteFileInputProps> = ({ data$, images$ }) => {
+export const RouteStoryFileInput: FC<RouteFileInputProps> = ({ data$, images$ }) => {
     const [{ geojson, routeName, error }, setData] = useSubjectState(data$);
     const [_images, setImages] = useSubjectState(images$);
     const readImage = useImageReader(setImages);

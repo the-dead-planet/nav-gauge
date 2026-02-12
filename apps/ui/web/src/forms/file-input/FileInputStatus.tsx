@@ -1,15 +1,6 @@
 import { FC } from "react";
+import { getCauseProp } from "@ui";
 import * as styles from './file-input-status.module.css';
-
-const getCauseProp = (prop: string, error?: Error): string | undefined => {
-    if (!error?.cause || typeof error.cause !== 'object' || !(prop in error.cause)) {
-        return;
-    }
-    const cause = error.cause as { [key in string]: unknown };
-    if (typeof cause[prop] === 'string') {
-        return cause[prop];
-    }
-}
 
 interface Props {
     error?: Error;
