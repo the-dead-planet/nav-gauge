@@ -32,15 +32,21 @@ export const RouteStoryFileInput: FC<RouteFileInputProps> = ({ data$, images$ })
         for (let i = 0; i < event.target.files.length; i++) {
             files.push(event.target.files.item(i)!);
         }
-        await RouteStoryGear.uploadFile<File>(
-            files,
-            geojson,
-            (file) => file.text(),
-            handleError,
-            setData,
-            readImage
-        );
-        setIsLoading(false);
+        
+        try {
+            await RouteStoryGear.uploadFile<File>(
+                files,
+                geojson,
+                (file) => file.text(),
+                handleError,
+                setData,
+                readImage
+            );
+        } catch (err) {
+            handleError(err as Error);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
