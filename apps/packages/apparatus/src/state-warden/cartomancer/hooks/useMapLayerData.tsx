@@ -53,7 +53,7 @@ export const useMapLayerData = (
     useEffect(() => {
         const { sources, layers, beforeLayerId, handlers } = data;
         const { buffer = DEFAULT_BUFFER } = data.handlers?.options ?? {};
-        cartomancer.addSourcesAndLayers(map, sources, layers, beforeLayerId)
+        cartomancer.addSourcesAndLayers(map, sources, layers, beforeLayerId);
 
         const queryFeatures = (event: maplibregl.MapMouseEvent | maplibregl.MapTouchEvent): {
             features: maplibregl.MapGeoJSONFeature[];
@@ -118,7 +118,12 @@ export const useMapLayerData = (
         };
     }, [map, data]);
 
-    useUpdateSourceData(map, updatedData?.[0] ?? '', updatedData?.[1] ?? emptyCollection, updatedData?.[2]);
+    useUpdateSourceData(
+        map, 
+        updatedData?.[0] ?? '', 
+        updatedData?.[1] ?? emptyCollection, 
+        updatedData?.[2]
+    );
 
     useEffect(() => {
         if (highlightIds.length === 0) {

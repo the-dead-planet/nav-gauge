@@ -11,7 +11,8 @@
     },
     "dependencies": {
         "@the-dead-planet/nav-gauge-tinker-chest": "*",
-        "@the-dead-planet/nav-gauge-ui-common": "*"
+        "@the-dead-planet/nav-gauge-ui-common": "*",
+        "fast-xml-parser": "^5.3.6"
     },
     "devDependencies": {
         "react": "^19.2.3"

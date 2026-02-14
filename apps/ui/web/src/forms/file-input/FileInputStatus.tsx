@@ -1,23 +1,16 @@
 import { FC } from "react";
+import { getCauseProp } from "@ui";
 import * as styles from './file-input-status.module.css';
 
-const getCauseProp = (prop: string, error?: Error): string | undefined => {
-    if (!error?.cause || typeof error.cause !== 'object' || !(prop in error.cause)) {
-        return;
-    }
-    const cause = error.cause as { [key in string]: unknown };
-    if (typeof cause[prop] === 'string') {
-        return cause[prop];
-    }
-}
-
 interface Props {
+    isLoading?: boolean;
     error?: Error;
     ok: boolean;
     routeName?: string;
 }
 
 export const FileInputStatus: FC<Props> = ({
+    isLoading,
     error,
     ok,
     routeName,
@@ -27,7 +20,9 @@ export const FileInputStatus: FC<Props> = ({
 
     return (
         <div className={styles["status-container"]}>
-            {error ? (
+            {isLoading ? (
+                <p>Loading...</p>
+            ) : error ? (
                 <div title={stack} className={styles["error"]}>
                     {cause ? <h6>{cause}</h6> : null}
                     <p>{error.message}</p>

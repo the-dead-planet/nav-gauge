@@ -1,7 +1,6 @@
 import { KnownErrorCauses, ParsingResult, ParsingResultWithError } from "@tinker-chest";
 import bbox from "@turf/bbox";
 
-// TODO: Refactor to accomodate file type from web and mobile
 export abstract class FileToGeoJSONParser {
     /**
      * @example `[".gpx"]`
@@ -9,11 +8,9 @@ export abstract class FileToGeoJSONParser {
     public abstract acceptedFileExtensions: string[];
 
     /**
-     * Extracts raw text from a given file.
-     * @param file File to extract text from.
-     * @returns Data as raw text.
+     * @example `["application/kml+xml"]`
      */
-    public abstract rawText: (file: File) => Promise<string>;
+    public abstract fileTypes: string[];
 
     /**
      * Parses text received from reading a given file to GeoJSON format.
@@ -26,18 +23,17 @@ export abstract class FileToGeoJSONParser {
     /**
      * @returns File extension extracted from file name.
      */
-    public static getFileExtension = (file: File): string => {
-        return '.' + file.name.split('.').slice(-1)[0];
+    public static getFileExtension = (fileName: string): string => {
+        return '.' + fileName.split('.').slice(-1)[0];
     }
 
     /**
      * Parses given file to GeoJSON format and captures the error and passes it in the `error` property.
-     * @param file File to parse.
+     * @param text File text to parse.
      * @returns Route name from metadata, GeoJSON, Bounding box and/or error (if processing failed).
      */
-    public parse = async (file: File): Promise<ParsingResultWithError> => {
+    public parse = async (text: string): Promise<ParsingResultWithError> => {
         try {
-            const text = await this.rawText(file);
             const { geojson, routeName } = await this.parseTextToGeoJson(text);
 
             if (geojson.features.length === 0) {

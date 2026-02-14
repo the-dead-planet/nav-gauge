@@ -1,5 +1,10 @@
 import { FeatureProperties, KnownErrorCauses } from "./model";
 
+export const getMissingGeometryError = () => ({
+    cause: KnownErrorCauses.InvalidGeometry,
+    message: `Invalid geometry. Upload a file with route track points.`
+});
+
 export const getUnsupportedGeometryError = (unsupportedGeometry: string) => ({
     cause: KnownErrorCauses.UnsupportedGeometry,
     message: `${unsupportedGeometry} geometry is not supported. Upload a file with a LineString geometry or Point features.`

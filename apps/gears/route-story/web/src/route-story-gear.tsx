@@ -3,13 +3,13 @@ import { Individuator } from '@apparatus';
 import { RouteStoryGear } from '@the-dead-planet/nav-gauge-gears-route-story-common';
 import { RouteLayer } from './RouteLayer';
 import { ImagesLayer } from './images/ImagesLayer';
-import { FileInput } from './FileInput';
+import { RouteStoryFileInput } from './RouteStoryFileInput';
 import { RouteLayerFitBounds } from './layers/RouteLayerFitBounds';
 import { Player } from './player/Player';
 
 export class WebRouteStoryGear extends RouteStoryGear<maplibregl.Map> {
    public routeLayerFitBoundsComponent = RouteLayerFitBounds;
-   public fileInputComponent = FileInput;
+   public fileInputComponent = RouteStoryFileInput;
    public playerComponent = Player
    public routeLayerComponent = RouteLayer;
    public imagesLayerComponent = ImagesLayer;
