@@ -86,6 +86,11 @@ interface ParsedGpxData {
 
 export class GpxParser extends FileToGeoJSONParser {
     public acceptedFileExtensions = [".gpx"];
+    public fileTypes = [
+        ".gpx",
+        "application/gpx+xml",
+        "application/octet-stream",
+    ];
 
     public parseTextToGeoJson = (text: string): ParsingResult => {
         const parser = new XMLParser({

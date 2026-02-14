@@ -2,9 +2,10 @@ import { FC, useState } from "react";
 import { View, } from "react-native";
 import { DocumentPickerResponse, types } from "@react-native-documents/picker";
 import RNFS from 'react-native-fs';
-import { RouteFileInputProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { RouteFileInputProps, RouteStoryGear } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { FileInputStatus, FileInput } from "@mobile-ui";
-import { FileToGeoJSONParser, parsers, useStateWarden, useSubjectState } from "@apparatus";
+import { parsers, useStateWarden, useSubjectState } from "@apparatus";
+import { GeoJson } from "@tinker-chest";
 
 export const RouteStoryFileInput: FC<RouteFileInputProps> = ({ data$, images$ }) => {
     const { signaliumBureau } = useStateWarden();
@@ -24,47 +25,24 @@ export const RouteStoryFileInput: FC<RouteFileInputProps> = ({ data$, images$ })
     };
 
     const handleUpload = async (files: DocumentPickerResponse[]) => {
-        if (!files || files.length === 0) {
-            return;
-        }
-        let currentGeojson = geojson;
-        let geojsonFile: DocumentPickerResponse | undefined = undefined;
-        let imageFiles: DocumentPickerResponse[] = [];
-        const geoExtensions = ['.gpx', '.kml']; // TODO: Read from parsers
-
-        for (const file of files) {
-            if (!file.name || !file.type) {
-                continue;
+        return RouteStoryGear.uploadFile<DocumentPickerResponse>(
+            files,
+            geojson,
+            (file) => RNFS.readFile(file.uri, 'utf8'),
+            handleError,
+            setData,
+            (a: DocumentPickerResponse, geojson: GeoJson | undefined) => {
+                // TODO:
             }
-            if (file.type.includes('image')) {
-                imageFiles.push(file);
-            } else if (geoExtensions.some((ext) => file.name!.endsWith(ext))) {
-                geojsonFile = file;
-            }
-        }
-
-        if (geojsonFile) {
-            const content = await RNFS.readFile(geojsonFile.uri, 'utf8').catch(handleError);
-            setData({});
-            const result = await parsers
-                .get(FileToGeoJSONParser.getFileExtension(geojsonFile.name!))
-                ?.parse(content ?? '');
-            setData(result ?? { error: new Error('No parser found for file.') });
-            currentGeojson = result?.geojson
-        }
-
-        // imageFiles.forEach((file) => readImage(file, currentGeojson));
+        );
     };
 
     return (
         <View>
             <FileInput
                 type={[
-                    types.images,
-                    'application/gpx+xml',
-                    'application/xml',
-                    'text/xml',
-                    'application/octet-stream'
+                    ...[...parsers.values()].flatMap((parser) => parser.fileTypes),
+                    types.images
                 ]}
                 allowMultiSelection
                 onIsLoadingChange={setIsLoading}

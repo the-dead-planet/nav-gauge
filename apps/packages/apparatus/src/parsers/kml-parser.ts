@@ -74,6 +74,11 @@ interface KlmPoint {
 
 export class KmlParser extends FileToGeoJSONParser {
     public acceptedFileExtensions = [".kml"];
+    public fileTypes = [
+        ".kml",
+        "application/vnd.google-earth.kml+xml",
+        "application/kml+xml"
+    ];
 
     public parseTextToGeoJson = (text: string): ParsingResult => {
         const parser = new XMLParser({

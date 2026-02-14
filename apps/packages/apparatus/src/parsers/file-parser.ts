@@ -8,6 +8,11 @@ export abstract class FileToGeoJSONParser {
     public abstract acceptedFileExtensions: string[];
 
     /**
+     * @example `["application/kml+xml"]`
+     */
+    public abstract fileTypes: string[];
+
+    /**
      * Parses text received from reading a given file to GeoJSON format.
      * @param text Text to parse.
      * @returns GeoJSON, route name from metadata.
