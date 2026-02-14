@@ -190,11 +190,7 @@ export class Cartomancer<TMap> {
      */
     public clearLayersAndSources(map: maplibregl.Map, layers: maplibregl.LayerSpecification[], sources: { [key: string]: maplibregl.SourceSpecification }): void;
     public clearLayersAndSources(map: maplibregl.Map, layers: string[], sources: string[]): void;
-    public clearLayersAndSources(
-        map: maplibregl.Map,
-        layers: maplibregl.LayerSpecification[] | string[],
-        sources: { [key: string]: maplibregl.SourceSpecification } | string[]
-    ): void {
+    public clearLayersAndSources(map: maplibregl.Map, layers: maplibregl.LayerSpecification[] | string[], sources: { [key: string]: maplibregl.SourceSpecification } | string[]): void {
         for (const el of layers) {
             const id: string = typeof el === 'string' ? el : el.id;
             if (map.getLayer(id)) {

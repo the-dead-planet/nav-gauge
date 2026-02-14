@@ -1,7 +1,7 @@
 import { ComponentType, FC } from "react";
 import { BehaviorSubject, Subscription } from "rxjs";
-import { ToolProps, MarkerImage, OverlayComponentProps, StateWarden, Gear, ControlComponentProps, Individuator } from "@apparatus";
-import { ParsingResultWithError } from "@tinker-chest";
+import { ToolProps, MarkerImage, OverlayComponentProps, StateWarden, Gear, ControlComponentProps, Individuator, parsers, FileToGeoJSONParser } from "@apparatus";
+import { GeoJson, ParsingResultWithError } from "@tinker-chest";
 import { RouteToolProps, RouteTimes, RouteFileInputProps, RouteFitBoundsProps } from "./model";
 
 export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
@@ -146,4 +146,44 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
             })
         }
     };
+
+    public static async uploadFile<TFile extends { name?: string | null; type: string | null; }>(
+        files: TFile[],
+        geojson: GeoJson | undefined,
+        getText: (file: TFile) => Promise<string>,
+        onError: (error: Error) => void,
+        onDataChange: (data: ParsingResultWithError) => void,
+        readImage: (file: TFile, geojson?: GeoJson) => void,
+    ) {
+        if (files.length === 0) {
+            return;
+        }
+        let currentGeojson: GeoJson | undefined = geojson;
+        let geojsonFile: TFile | undefined = undefined;
+        let imageFiles: TFile[] = [];
+        const geoExtensions = [...parsers.values()].flatMap((p) => p.acceptedFileExtensions);
+
+        for (const file of files) {
+            if (!file.name) {
+                continue;
+            }
+            if (file.type?.includes('image')) {
+                imageFiles.push(file);
+            } else if (geoExtensions.some((ext) => file.name!.endsWith(ext))) {
+                geojsonFile = file;
+            }
+        }
+
+        if (geojsonFile) {
+            onDataChange({});
+            const text = await getText(geojsonFile).catch(onError) ?? '';
+            const result = await parsers
+                .get(FileToGeoJSONParser.getFileExtension(geojsonFile.name!))
+                ?.parse(text);
+            onDataChange(result ?? { error: new Error('No parser found for file.') });
+            currentGeojson = result?.geojson
+        }
+
+        imageFiles.forEach((file) => readImage(file, currentGeojson));
+    }
 };

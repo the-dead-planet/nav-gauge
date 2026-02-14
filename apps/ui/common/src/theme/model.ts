@@ -9,6 +9,7 @@ export type ThemeColor = 'background' |
     'border' |
     'box-shadow' |
     'divider' |
+    'button' |
     'text' |
     'text-active' |
     'error' |

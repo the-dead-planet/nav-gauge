@@ -4,16 +4,6 @@ const fs = require('fs');
 
 const root = path.resolve(__dirname, '..');
 
-const extraNodeModules = fs
-    .readdirSync(path.resolve(root, 'gears'), { withFileTypes: true })
-    .filter((dir) => dir.isDirectory())
-    .reduce((acc, dir) => {
-        acc[`@the-dead-planet/nav-gauge-gears-${dir.name}-common`] = path.resolve(root, `gears/${dir.name}/common/src`);
-        acc[`@the-dead-planet/nav-gauge-gears-${dir.name}-mobile`] = path.resolve(root, `gears/${dir.name}/mobile/src`);
-
-        return acc;
-    }, {});
-
 const gearsWatchFolders = fs
     .readdirSync(path.resolve(root, 'gears'), { withFileTypes: true })
     .filter((dir) => dir.isDirectory())
@@ -23,6 +13,16 @@ const gearsWatchFolders = fs
 
         return acc;
     }, []);
+
+const extraNodeModules = fs
+    .readdirSync(path.resolve(root, 'gears'), { withFileTypes: true })
+    .filter((dir) => dir.isDirectory())
+    .reduce((acc, dir) => {
+        acc[`@the-dead-planet/nav-gauge-gears-${dir.name}-common`] = path.resolve(root, `gears/${dir.name}/common/src`);
+        acc[`@the-dead-planet/nav-gauge-gears-${dir.name}-mobile`] = path.resolve(root, `gears/${dir.name}/mobile/src`);
+
+        return acc;
+    }, {});
 
 /**
  * Metro configuration

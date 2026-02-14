@@ -14,12 +14,16 @@
     },
     "devDependencies": {
         "@maplibre/maplibre-react-native": "^10.4.2",
+        "@react-native-documents/picker": "^12.0.1",
         "react": "^19.2.3",
-        "react-native": "0.83.1"
+        "react-native": "0.83.1",
+        "react-native-fs": "^2.20.0"
     },
     "peerDependencies": {
         "@maplibre/maplibre-react-native": "^10.4.2",
+        "@react-native-documents/picker": "^12.0.1",
         "react": "^19.2.3",
-        "react-native": "0.83.1"
+        "react-native": "0.83.1",
+        "react-native-fs": "^2.20.0"
     }
 }
