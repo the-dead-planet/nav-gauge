@@ -13,12 +13,14 @@ const styles = StyleSheet.create({
 });
 
 export interface FileInputStatusProps {
+    isLoading?: boolean;
     error?: Error;
     ok: boolean;
     routeName?: string;
 }
 
 export const FileInputStatus: FC<FileInputStatusProps> = ({
+    isLoading,
     error,
     ok,
     routeName,
@@ -29,7 +31,9 @@ export const FileInputStatus: FC<FileInputStatusProps> = ({
 
     return (
         <View style={styles.container}>
-            {error ? (
+            {isLoading ? (
+                <Text>Loading...</Text>
+            ) : error ? (
                 <View>
                     {cause ? (
                         <Heading style={{ color: theme.colors.error }}>

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { View, } from "react-native";
 import { DocumentPickerResponse, types } from "@react-native-documents/picker";
 import RNFS from 'react-native-fs';
@@ -9,6 +9,7 @@ import { FileToGeoJSONParser, parsers, useStateWarden, useSubjectState } from "@
 export const RouteStoryFileInput: FC<RouteFileInputProps> = ({ data$, images$ }) => {
     const { signaliumBureau } = useStateWarden();
     const [{ geojson, routeName, error }, setData] = useSubjectState(data$);
+    const [isLoading, setIsLoading] = useState(false);
     const [_images, setImages] = useSubjectState(images$);
     // const readImage = useImageReader(setImages);
 
@@ -66,10 +67,16 @@ export const RouteStoryFileInput: FC<RouteFileInputProps> = ({ data$, images$ })
                     'application/octet-stream'
                 ]}
                 allowMultiSelection
+                onIsLoadingChange={setIsLoading}
                 onUpload={handleUpload}
                 onError={handleError}
             />
-            <FileInputStatus ok={!!geojson && !error} error={error} routeName={routeName} />
+            <FileInputStatus
+                isLoading={isLoading}
+                ok={!!geojson && !error}
+                error={error}
+                routeName={routeName}
+            />
         </View>
     );
 };

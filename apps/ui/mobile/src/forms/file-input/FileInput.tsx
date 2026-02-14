@@ -1,8 +1,7 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { ButtonProps, StyleSheet, View, ViewProps } from "react-native";
 import { DocumentPickerOptions, DocumentPickerResponse, pick } from '@react-native-documents/picker';
 import { Button } from "../../button/Button";
-import { Text } from "../../text";
 
 const styles = StyleSheet.create({
     container: {
@@ -19,7 +18,7 @@ export interface FileInputProps {
     type: DocumentPickerOptions['type'],
     allowMultiSelection?: boolean,
     buttonProps?: Omit<ButtonProps, 'title' | 'onPress'>;
-    onUploadStart?: () => void;
+    onIsLoadingChange?: (isLoading: boolean) => void;
     onUpload: (files: DocumentPickerResponse[]) => Promise<void>;
     onError?: (error: Error) => void;
 }
@@ -29,18 +28,15 @@ export const FileInput: FC<FileInputProps & ViewProps> = ({
     type,
     allowMultiSelection,
     buttonProps = {},
-    onUploadStart,
+    onIsLoadingChange,
     onUpload,
     onError,
     ...props
 }) => {
-    const [isLoading, setIsLoading] = useState(false);
-
     const handleUpload = async () => {
-        setIsLoading(true);
+        onIsLoadingChange?.(true);
 
         try {
-            onUploadStart?.();
             const files = await pick({
                 mode: 'open',
                 type,
@@ -50,7 +46,7 @@ export const FileInput: FC<FileInputProps & ViewProps> = ({
         } catch (err) {
             onError?.(err as Error);
         } finally {
-            setIsLoading(false);
+            onIsLoadingChange?.(false);
         }
     };
 
@@ -61,7 +57,6 @@ export const FileInput: FC<FileInputProps & ViewProps> = ({
                 onPress={handleUpload}
                 {...buttonProps}
             />
-            {isLoading ? <Text>Loading...</Text> : null}
         </View>
     );
 };
