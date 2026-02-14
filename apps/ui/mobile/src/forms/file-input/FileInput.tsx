@@ -1,8 +1,8 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { ButtonProps, StyleSheet, View, ViewProps } from "react-native";
-import { pick, types } from '@react-native-documents/picker';
-import RNFS from 'react-native-fs';
+import { DocumentPickerOptions, DocumentPickerResponse, pick } from '@react-native-documents/picker';
 import { Button } from "../../button/Button";
+import { Text } from "../../text";
 
 const styles = StyleSheet.create({
     container: {
@@ -16,33 +16,41 @@ export interface FileInputProps {
      * Defaults to `Upload`
      */
     title?: string;
+    type: DocumentPickerOptions['type'],
+    allowMultiSelection?: boolean,
     buttonProps?: Omit<ButtonProps, 'title' | 'onPress'>;
+    onUploadStart?: () => void;
+    onUpload: (files: DocumentPickerResponse[]) => Promise<void>;
+    onError?: (error: Error) => void;
 }
 
 export const FileInput: FC<FileInputProps & ViewProps> = ({
     title = 'Upload',
+    type,
+    allowMultiSelection,
     buttonProps = {},
+    onUploadStart,
+    onUpload,
+    onError,
     ...props
 }) => {
-    const handleUpload = async () => {
-        try {
-            const [file] = await pick({
-                mode: 'open',
-                type: [
-                    types.images,
-                    'application/gpx+xml',
-                    'application/xml',
-                    'text/xml',
-                    'application/octet-stream'
-                ],
-                allowMultiSelection: true,
-                allowVirtualFiles: true
-            });
+    const [isLoading, setIsLoading] = useState(false);
 
-            const content = await RNFS.readFile(file.uri, 'utf8');
+    const handleUpload = async () => {
+        setIsLoading(true);
+
+        try {
+            onUploadStart?.();
+            const files = await pick({
+                mode: 'open',
+                type,
+                allowMultiSelection,
+            });
+            await onUpload(files);
         } catch (err) {
-            console.error(err)
-            // see error handling
+            onError?.(err as Error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -53,6 +61,7 @@ export const FileInput: FC<FileInputProps & ViewProps> = ({
                 onPress={handleUpload}
                 {...buttonProps}
             />
+            {isLoading ? <Text>Loading...</Text> : null}
         </View>
     );
 };

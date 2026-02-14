@@ -1,8 +1,7 @@
 import { FC } from "react";
 import { FileInputStatus } from "@web-ui";
 import { useImageReader } from "./images/useImageReader";
-import { useSubjectState } from "@apparatus";
-import { FileToGeoJSONParser, parsers } from "./parsers";
+import { FileToGeoJSONParser, useSubjectState, parsers } from "@apparatus";
 import { RouteFileInputProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 
 export const RouteStoryFileInput: FC<RouteFileInputProps> = ({ data$, images$ }) => {
@@ -23,16 +22,16 @@ export const RouteStoryFileInput: FC<RouteFileInputProps> = ({ data$, images$ })
             const file = files.item(i)!;
             if (file.type.includes('image')) {
                 imageFiles.push(file);
-                continue;
+            } else {
+                geojsonFile = file;
             }
-            geojsonFile = file;
         }
 
         if (geojsonFile) {
             setData({});
             const result = await parsers
-                .get(FileToGeoJSONParser.getFileExtension(geojsonFile))
-                ?.parse(geojsonFile);
+                .get(FileToGeoJSONParser.getFileExtension(geojsonFile.name))
+                ?.parse(await geojsonFile.text());
             setData(result ?? { error: new Error('No parser found for file.') });
             currentGeojson = result?.geojson
         }

@@ -37,7 +37,7 @@ export const Notice: FC<Props> = ({
                 useNativeDriver: true,
             }),
             Animated.timing(opacity, {
-                toValue: 1,
+                toValue: 1.5,
                 duration: 250,
                 useNativeDriver: true,
             }),
@@ -52,7 +52,7 @@ export const Notice: FC<Props> = ({
             opacity,
             transform: [{ translateY }]
         }]}>
-            <Text>{notice.text} {notice.id} {notice.type === 'error' ? notice.error.message || '' : ''}</Text>
+            <Text>{notice.text} {notice.type === 'error' ? notice.error.message || '' : ''}</Text>
             <Button title='Close' onPress={() => onRemove(notice.id)} />
         </Animated.View>
     );

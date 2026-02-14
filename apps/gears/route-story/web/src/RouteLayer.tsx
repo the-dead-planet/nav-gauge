@@ -8,6 +8,7 @@ import {
     useSubjectState,
     useMapLayerData,
     MapLayerData,
+    parsers,
 } from "@apparatus";
 import {
     getRouteSourceData,
@@ -20,7 +21,6 @@ import {
 import { updateRouteLayer } from "./tinkers";
 import { useLoadedImages } from "./hooks";
 import { LoadedImageData } from "./images/image-parser";
-import { parsers } from "./parsers";
 
 export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps> = ({
     map,
@@ -108,7 +108,12 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPro
         return layers;
     }, [geojson, routeTimes, showRouteLine, showRoutePoints]);
 
-    useMapLayerData(map, { sources, layers })
+    const mapLayerData = useMemo(
+        (): MapLayerData => ({ sources, layers }),
+        [sources,layers]
+    );
+
+    useMapLayerData(map, mapLayerData)
 
     useEffect(() => {
         if (!isPlaying || !geojson || !routeTimes) {
