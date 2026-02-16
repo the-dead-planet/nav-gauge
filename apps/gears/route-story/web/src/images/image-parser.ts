@@ -1,15 +1,16 @@
 import maplibregl from "maplibre-gl";
 import EXIF from 'exif-js';
-import { ExifData, LngLat, MarkerImage as MarkerImageType } from '@apparatus';
+import { ExifData, MarkerImage } from '@apparatus';
 import { IMAGE_SIZE } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { getExifError, getExifLngLat, LngLat } from "@tinker-chest";
 
-export interface MarkerImage extends MarkerImageType {
+export interface WebMarkerImage extends MarkerImage {
     marker?: maplibregl.Marker;
     bitmap?: ImageBitmap;
     markerElement?: HTMLDivElement;
 }
 
-export interface LoadedImageData extends Omit<MarkerImage, 'progress' | 'error' | 'featureId' | 'data' | 'lngLat'> {
+export interface LoadedImageData extends Omit<WebMarkerImage, 'progress' | 'error' | 'featureId' | 'data' | 'lngLat'> {
     lngLat: LngLat;
     featureId: number;
     data: string;
@@ -24,7 +25,7 @@ export const parseImage = async (
     bitmap?: ImageBitmap;
     exif?: ExifData;
     error?: string;
-    lngLat?: maplibregl.LngLat;
+    lngLat?: LngLat;
 }> => {
     const buffer = await file.arrayBuffer();
     const exif = EXIF.readFromBinaryFile(buffer) as false | ExifData;
@@ -45,8 +46,8 @@ export const parseImage = async (
         data: e.target?.result?.toString(),
         bitmap,
         exif: exif || undefined,
-        lngLat: getLngLat(exif || undefined),
-        error: getError(exif),
+        lngLat: getExifLngLat(exif || undefined),
+        error: getExifError(exif),
     };
 };
 
@@ -135,40 +136,4 @@ const resizeImage = (
 
         img.src = result.toString();
     });
-};
-
-const getLngLat = (exif?: ExifData): maplibregl.LngLat | undefined => {
-    if (!exif) {
-        return;
-    }
-
-    const { GPSLongitude, GPSLongitudeRef, GPSLatitude, GPSLatitudeRef } = exif;
-    if (!GPSLongitude || !GPSLongitudeRef || !GPSLatitude || !GPSLatitudeRef || GPSLongitude.concat(GPSLatitude).some(isNaN)) {
-        return;
-    }
-
-    return new maplibregl.LngLat(
-        getLngLatValue(GPSLongitude, GPSLongitudeRef),
-        getLngLatValue(GPSLatitude, GPSLatitudeRef)
-    );
-};
-
-const getLngLatValue = ([deg, min, s]: [number, number, number], ref: 'N' | 'S' | 'W' | 'E') => {
-    return (deg + min / 60 + s / 3600) * (ref === 'S' || ref === 'W' ? -1 : 1);
-};
-
-const getError = (exif: ExifData | false): string => {
-    if (exif === false) {
-        return 'Not valid EXIF data';
-    }
-    if ([exif.GPSLongitude, exif.GPSLongitudeRef, exif.GPSLatitude, exif.GPSLatitudeRef].some((el) => el === undefined)) {
-        return 'No GPS coordinates in EXIF';
-    }
-    if ([exif.GPSLongitudeRef, exif.GPSLatitudeRef].some((el) => !['N', 'S', 'W', 'E'].includes(el as string))) {
-        return 'Unprocessable GPS data in EXIF';
-    }
-    if (exif.GPSLongitude?.some((el) => isNaN(el)) || exif.GPSLatitude?.some((el) => isNaN(el))) {
-        return 'Unprocessable GPS data in EXIF';
-    }
-    return "";
 };

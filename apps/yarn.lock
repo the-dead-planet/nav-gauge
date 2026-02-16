@@ -1885,6 +1885,11 @@
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.5.tgz#4fc56c15c580b9adb7dc3c333a134e540b44bfb1"
   integrity sha512-Vo+PSpZG2/fmgmiNzYK9qWRh8h/CHrwD0mo1h1DzL4yzHNSfWYujGTYsWGreD000gcgmZ7K4Ys6Tx9TxtsKdDw==
 
+"@lodev09/react-native-exify@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@lodev09/react-native-exify/-/react-native-exify-1.0.0.tgz#a402f63eee2c1365beab6f0d660df8c4ddad1fa2"
+  integrity sha512-nqrpmlAenKi5YGQ5G1KXpMfd4EnHjcrl/8nbMi36f+HZZ8y9qE46ebrCQkEBSpM+qFvnqqfk1Uoz/1gEt0+pHA==
+
 "@mapbox/geojson-rewind@^0.5.2":
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/@mapbox/geojson-rewind/-/geojson-rewind-0.5.2.tgz#591a5d71a9cd1da1a0bf3420b3bea31b0fc7946a"
