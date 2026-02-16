@@ -1,3 +1,5 @@
+import { LngLat } from "@tinker-chest";
+
 export interface ControlPlacement {
     top: number;
     bottom: number;
@@ -58,15 +60,10 @@ export interface ExifData {
     GPSDateStamp?: string;
     GPSDestBearing?: { denominator: number; numerator: number };
     GPSDestBearingRef?: string;
-    GPSLongitude?: [number, number, number];
-    GPSLongitudeRef?: 'E' | 'W';
-    GPSLatitude?: [number, number, number];
-    GPSLatitudeRef?: 'N' | 'S';
-}
-
-export interface LngLat {
-    lng: number;
-    lat: number;
+    GPSLongitude?: number | [number, number, number];
+    GPSLongitudeRef?: string | 'E' | 'W';
+    GPSLatitude?: number | [number, number, number];
+    GPSLatitudeRef?: string | 'N' | 'S';
 }
 
 export interface MarkerImage {

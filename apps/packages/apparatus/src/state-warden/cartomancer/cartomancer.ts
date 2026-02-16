@@ -3,7 +3,7 @@ import { BehaviorSubject, Subscription } from "rxjs";
 import turfDistance from "@turf/distance";
 import { point as turfPoint } from "@turf/helpers";
 import { Option } from "@ui";
-import { FeatureProperties, GeoJson } from "@tinker-chest";
+import { FeatureProperties, GeoJson, LngLat } from "@tinker-chest";
 import { backgroundMapStyle, customRoadsMapStyle, osmMapStyle } from "./map-styles";
 import { StorageKeeper } from "../../machine-ward/storage-keeper";
 import { GaugeControlsType, MapLayout, OverlayComponentProps } from "./model";
@@ -214,7 +214,7 @@ export class Cartomancer<TMap> {
      */
     public static getClosestFeature = (
         geojson: GeoJson,
-        lngLat?: maplibregl.LngLat,
+        lngLat?: LngLat,
     ): [number, GeoJSON.Feature<GeoJSON.Point, FeatureProperties>] => {
         if (!lngLat) {
             return [0, geojson.features[0]];

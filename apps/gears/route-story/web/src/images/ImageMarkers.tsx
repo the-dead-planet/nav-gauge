@@ -2,11 +2,11 @@ import { FC } from "react";
 import { OverlayComponentProps } from "@apparatus";
 import { ImageMarker, MarkerImageData } from "./ImageMarker";
 import { GeoJson } from "@tinker-chest";
-import { MarkerImage } from "./image-parser";
+import { WebMarkerImage } from "./image-parser";
 
 interface Props {
     geojson: GeoJson;
-    images: MarkerImage[];
+    images: WebMarkerImage[];
     onUpdateImageFeatureId: (imageId: number, featureId: number) => void;
 }
 

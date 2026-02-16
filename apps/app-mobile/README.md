@@ -20,6 +20,16 @@ See [ARCHITECTURES](/docs/ARCHITECTURES.md).
 
 [React compiler](https://react.dev/learn/react-compiler) is enabled for the whole project and set up according to [official docs](https://react.dev/learn/react-compiler/installation#usage-with-react-native-metro).
 
+### Adding React Native specific dependencies
+
+Add required RN dependencies in this mobile app workspace and also list them as peer dependencies in the other packages or gears workspaces. This is required for linking to work correctly.
+
+### Adding standard dependencies
+
+The standard JS libraries, compatible with both web and mobile, should be installed in the workspace which needs them. 
+
+If it's a package used across the whole project, then it can be installed in apps root.
+
 ## Development
 
 ### Start development build

@@ -1,31 +1,23 @@
 import { Dispatch, SetStateAction } from "react";
 import maplibregl from "maplibre-gl";
 import { Cartomancer } from "@apparatus";
-import { GeoJson } from "@tinker-chest";
-import { MarkerImage, parseImage } from "./image-parser";
+import { GeoJson, getNext } from "@tinker-chest";
+import { WebMarkerImage, parseImage } from "./image-parser";
 
 type ImageReaderResult = (file: File, geojson?: GeoJson) => void;
 
 export const useImageReader = (
-    onImagesChange: Dispatch<SetStateAction<MarkerImage[]>>
+    onImagesChange: Dispatch<SetStateAction<WebMarkerImage[]>>
 ): ImageReaderResult => {
     const readImage = (file: File, geojson?: GeoJson) => {
         const reader = new FileReader();
 
-        const getNext = (ids: number[]) => {
-            let i = 0;
-            while (ids.includes(i)) {
-                i++;
-            }
-            return i;
-        };
-
         reader.onloadstart = () => {
-            onImagesChange((prev) => prev.filter((el) => el.name !== file.name).concat({
+            onImagesChange((prev) => prev.filter((el) => el.name !== file.name).concat([{
                 id: getNext(prev.map((el) => el.id)),
                 name: file.name,
                 progress: 0
-            }));
+            }]));
         };
 
         reader.onprogress = (e) => {
@@ -51,7 +43,6 @@ export const useImageReader = (
                     lngLat,
                     data,
                     bitmap,
-                    exif,
                     error,
                     featureId,
                 };
