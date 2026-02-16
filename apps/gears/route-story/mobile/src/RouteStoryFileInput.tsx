@@ -47,7 +47,7 @@ export const RouteStoryFileInput: FC<RouteFileInputProps> = ({ data$, images$ })
                 Exify.read(file.uri)
                     .then(async (exif) => {
                         const lngLat = !exif ? undefined : getExifLngLat(exif);
-                        // TODO: Decrease size?
+                        // TODO: Decrease size? Delete temp file before app close?
                         const destPath = `${RNFS.TemporaryDirectoryPath}/${file.name}`;
                         await RNFS.copyFile(file.uri, destPath);
 
