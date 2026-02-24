@@ -27,18 +27,6 @@ export const updateRouteLayer = (
 
 export const getIconImageId = (image: LoadedImageData): string => `image-${image.id}`;
 
-
-/**
- * Current progress as percentage of total duration.
- * @returns Value between 0 and 100.
- */
-export const getProgressPercentage = (progressMs: number, routeTimes?: RouteTimes | null): number => {
-    if (!routeTimes) {
-        return 0;
-    }
-    return (progressMs / routeTimes.duration * 100);
-};
-
 export const updateImageFeatureId = (
     images$: BehaviorSubject<MarkerImage[]>,
     imageId: number,
