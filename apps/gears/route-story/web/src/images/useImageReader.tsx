@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import maplibregl from "maplibre-gl";
 import { Cartomancer } from "@apparatus";
-import { GeoJson, getNext } from "@tinker-chest";
+import { GeoJson } from "@tinker-chest";
 import { WebMarkerImage, parseImage } from "./image-parser";
 import { RouteStoryGear } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 

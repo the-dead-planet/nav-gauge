@@ -22,6 +22,7 @@ export const RouteStoryFileInput: FC<RouteFileInputProps> = ({ data$, images$ })
             text: 'File upload failed',
             error,
         });
+        setIsLoading(false);
     };
 
     const handleUpload = async (files: DocumentPickerResponse[]) => {

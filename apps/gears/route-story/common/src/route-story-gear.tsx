@@ -1,7 +1,7 @@
 import { ComponentType, FC } from "react";
 import { BehaviorSubject, Subscription } from "rxjs";
 import { ToolProps, MarkerImage, OverlayComponentProps, StateWarden, Gear, ControlComponentProps, Individuator, parsers, FileToGeoJSONParser } from "@apparatus";
-import { GeoJson, ParsingResultWithError } from "@tinker-chest";
+import { GeoJson, getNext, ParsingResultWithError } from "@tinker-chest";
 import { RouteToolProps, RouteTimes, RouteFileInputProps, RouteFitBoundsProps } from "./model";
 
 export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
@@ -186,4 +186,30 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
 
         imageFiles.forEach((file) => readImage(file, currentGeojson));
     }
+
+    public static pushInitialImage = (current: MarkerImage[], fileName: string): MarkerImage[] => {
+        return current
+            .filter((el) => el.name !== fileName)
+            .concat([{
+                id: getNext(current.map((el) => el.id)),
+                name: fileName,
+                progress: 0
+            }]);
+    };
+
+    public static updateImageProgress = (current: MarkerImage[], fileName: string, progress: number) => {
+        const nextImages = current.slice();
+        const index = current.findIndex((el) => el.name === fileName);
+        nextImages[index] = { ...nextImages[index], progress: Number(progress.toFixed(0)) };
+
+        return nextImages;
+    };
+
+    public static updateImageError = (current: MarkerImage[], fileName: string, message?: string) => {
+        const nextImages = current.slice();
+        const index = current.findIndex((el) => el.name === fileName);
+        nextImages[index] = { ...nextImages[index], error: message ?? 'Cannot read file' };
+
+        return nextImages;
+    };
 };
