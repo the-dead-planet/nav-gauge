@@ -1,10 +1,9 @@
 import { CSSProperties, FC, useEffect, useMemo } from "react";
 import { pairwise } from "rxjs";
 import { OverlayComponentProps, SurveillanceState, useMachineWard, useStateWarden, useSubjectState } from "@apparatus";
-import { formatTimeMsAsStandard } from "@tinker-chest";
-import { RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { formatCurrentTimestamp, getProgressPercentage, RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { WebChronoLens } from "../chrono-lens/chrono-lens";
-import { getProgressPercentage, updateRouteLayer } from "../tinkers";
+import { updateRouteLayer } from "../tinkers";
 import * as styles from './player.module.css';
 
 export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps> = ({
@@ -12,7 +11,8 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps> 
     data$,
     routeTimes$,
     images$,
-    progressMs$
+    progressMs$,
+    playerOperator,
 }) => {
     const [{ geojson }] = useSubjectState(data$);
     const [routeTimes] = useSubjectState(routeTimes$);
@@ -79,21 +79,18 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps> 
     const progressPercentage = getProgressPercentage(progressMs, routeTimes);
 
     const handleProgressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (!routeTimes || isNaN(Number(event.target.value))) {
-            return;
-        }
-        // Halt playing animations to allow manual update.
-        if (isPlaying) {
-            setIsPlaying(false);
-        }
-        setProgressMs(Number(event.target.value));
-        if (geojson) {
-            updateRouteLayer({ showRouteLine, showRoutePoints }, map, geojson, routeTimes.startTimeEpoch, Number(event.target.value), bearingLineLengthInMeters);
-        }
-        // Resume playing animations
-        if (isPlaying) {
-            setTimeout(() => setIsPlaying(true), 0);
-        }
+        playerOperator.updateProgress(
+            Number(event.target.value),
+            chronoLens,
+            (geojson, routeTimes, value) => updateRouteLayer(
+                { showRouteLine, showRoutePoints },
+                map,
+                geojson,
+                routeTimes.startTimeEpoch,
+                value,
+                bearingLineLengthInMeters
+            )
+        )
     }
 
     const getPosition = (featureId: number) => {
@@ -128,7 +125,7 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps> 
             />
             <div className={styles.buttons}>
                 <p className={styles.text}>
-                    {formatTimeMsAsStandard(progressMs)} ({progressPercentage.toFixed(0)}%)
+                    {formatCurrentTimestamp(progressMs, progressPercentage)}
                 </p>
                 <button onClick={handlePlayClick}>
                     {isPlaying ? 'Pause' : 'Play'}

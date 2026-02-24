@@ -45,7 +45,6 @@ export const parseImage = async (
     return {
         data: e.target?.result?.toString(),
         bitmap,
-        exif: exif || undefined,
         lngLat: getExifLngLat(exif || undefined),
         error: getExifError(exif),
     };

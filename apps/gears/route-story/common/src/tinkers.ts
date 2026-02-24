@@ -5,7 +5,8 @@ import turfDistance from "@turf/distance";
 import { point as turfPoint, lineString as turfLine } from "@turf/helpers";
 import turfLength from "@turf/length";
 import { CurrentPointData } from "@apparatus";
-import { emptyCollection, GeoJson } from "@tinker-chest";
+import { emptyCollection, formatTimeMsAsStandard, GeoJson } from "@tinker-chest";
+import { RouteTimes } from "./model";
 
 export const getRouteSourceData = (
     { showRouteLine, showRoutePoints }: { showRouteLine: boolean; showRoutePoints: boolean },
@@ -132,4 +133,19 @@ const getFirstPointInDistance = (
         }
     }
     return p;
+};
+
+/**
+ * Current progress as percentage of total duration.
+ * @returns Value between 0 and 100.
+ */
+export const getProgressPercentage = (progressMs: number, routeTimes?: RouteTimes | null): number => {
+    if (!routeTimes) {
+        return 0;
+    }
+    return (progressMs / routeTimes.duration * 100);
+};
+
+export const formatCurrentTimestamp = (progressMs: number, progressPercentage: number): string => {
+    return `${formatTimeMsAsStandard(progressMs)} (${progressPercentage.toFixed(0)}%`;
 };

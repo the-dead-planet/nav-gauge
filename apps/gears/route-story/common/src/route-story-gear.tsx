@@ -1,8 +1,8 @@
 import { ComponentType, FC } from "react";
 import { BehaviorSubject, Subscription } from "rxjs";
-import { ToolProps, MarkerImage, OverlayComponentProps, StateWarden, Gear, ControlComponentProps, Individuator, parsers, FileToGeoJSONParser } from "@apparatus";
-import { GeoJson, ParsingResultWithError } from "@tinker-chest";
-import { RouteToolProps, RouteTimes, RouteFileInputProps, RouteFitBoundsProps } from "./model";
+import { ToolProps, MarkerImage, OverlayComponentProps, StateWarden, Gear, ControlComponentProps, Individuator, parsers, FileToGeoJSONParser, ChronoLens, SignaliumBureau } from "@apparatus";
+import { GeoJson, getNext, ParsingResultWithError } from "@tinker-chest";
+import { RouteToolProps, RouteTimes, RouteFileInputProps, RouteFitBoundsProps, PlayerOperator, FileOperator } from "./model";
 
 export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
     public readonly id = 'route-story';
@@ -75,7 +75,8 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
             this.fileInputControlId,
             this.wrapProps<RouteFileInputProps, ControlComponentProps>(this.fileInputComponent, {
                 data$: this.data$,
-                images$: this.images$
+                images$: this.images$,
+                fileOperator: this.fileOperator,
             })
         );
 
@@ -94,7 +95,8 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
                 data$: this.data$,
                 routeTimes$: this.routeTimes$,
                 images$: this.images$,
-                progressMs$: this.progressMs$
+                progressMs$: this.progressMs$,
+                playerOperator: this.playerOperator,
             })
         );
 
@@ -104,7 +106,8 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
                 data$: this.data$,
                 routeTimes$: this.routeTimes$,
                 images$: this.images$,
-                progressMs$: this.progressMs$
+                progressMs$: this.progressMs$,
+                playerOperator: this.playerOperator,
             })
         );
         stateWarden.cartomancer.addOverlay(
@@ -113,7 +116,8 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
                 data$: this.data$,
                 routeTimes$: this.routeTimes$,
                 images$: this.images$,
-                progressMs$: this.progressMs$
+                progressMs$: this.progressMs$,
+                playerOperator: this.playerOperator,
             })
         );
     };
@@ -147,43 +151,121 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
         }
     };
 
-    public static async uploadFile<TFile extends { name?: string | null; type: string | null; }>(
-        files: TFile[],
-        geojson: GeoJson | undefined,
-        getText: (file: TFile) => Promise<string>,
-        onError: (error: Error) => void,
-        onDataChange: (data: ParsingResultWithError) => void,
-        readImage: (file: TFile, geojson?: GeoJson) => void,
-    ) {
-        if (files.length === 0) {
-            return;
-        }
-        let currentGeojson: GeoJson | undefined = geojson;
-        let geojsonFile: TFile | undefined = undefined;
-        let imageFiles: TFile[] = [];
-        const geoExtensions = [...parsers.values()].flatMap((p) => p.acceptedFileExtensions);
-
-        for (const file of files) {
-            if (!file.name) {
-                continue;
+    private fileOperator: FileOperator = {
+        isLoading$: new BehaviorSubject(false),
+        onError: (error: Error, signaliumBureau: SignaliumBureau) => {
+            {
+                const id = 'file-upload';
+                signaliumBureau.addNotice({
+                    id,
+                    type: 'error',
+                    text: 'File upload failed',
+                    error,
+                });
             }
-            if (file.type?.includes('image')) {
-                imageFiles.push(file);
-            } else if (geoExtensions.some((ext) => file.name!.endsWith(ext))) {
-                geojsonFile = file;
+        },
+        uploadFile: async <TFile extends { name?: string | null; type: string | null; }>(
+            files: TFile[],
+            signaliumBureau: SignaliumBureau,
+            getText: (file: TFile) => Promise<string>,
+            readImage: (file: TFile, geojson?: GeoJson) => void,
+        ) => {
+            try {
+                if (files.length === 0) {
+                    return;
+                }
+                this.fileOperator.isLoading$.next(true);
+                let currentGeojson: GeoJson | undefined = this.data$.value.geojson;
+                let geojsonFile: TFile | undefined = undefined;
+                let imageFiles: TFile[] = [];
+                const geoExtensions = [...parsers.values()].flatMap((p) => p.acceptedFileExtensions);
+
+                for (const file of files) {
+                    if (!file.name) {
+                        continue;
+                    }
+                    if (file.type?.includes('image')) {
+                        imageFiles.push(file);
+                    } else if (geoExtensions.some((ext) => file.name!.endsWith(ext))) {
+                        geojsonFile = file;
+                    }
+                }
+
+                if (geojsonFile) {
+                    this.data$.next({});
+                    const text = await getText(geojsonFile).catch((error: Error) => {
+                        this.fileOperator.onError(error, signaliumBureau);
+                        this.fileOperator.isLoading$.next(false);
+                    }) ?? '';
+                    const result = await parsers
+                        .get(FileToGeoJSONParser.getFileExtension(geojsonFile.name!))
+                        ?.parse(text);
+
+                    this.data$.next(result ?? { error: new Error('No parser found for file.') });
+                    currentGeojson = result?.geojson
+                }
+
+                imageFiles.forEach((file) => readImage(file, currentGeojson));
+            } catch (err) {
+                this.fileOperator.onError(err as Error, signaliumBureau);
+            } finally {
+                this.fileOperator.isLoading$.next(false);
+            }
+        },
+
+        pushInitialImage: (fileName: string) => {
+            const current = this.images$.value;
+            const nextImages = current
+                .filter((el) => el.name !== fileName)
+                .concat([{
+                    id: getNext(current.map((el) => el.id)),
+                    name: fileName,
+                    progress: 0
+                }]);
+
+            this.images$.next(nextImages);
+        },
+
+        updateImageProgress: (fileName: string, progress: number) => {
+            const current = this.images$.value;
+            const nextImages = current.slice();
+            const index = current.findIndex((el) => el.name === fileName);
+            nextImages[index] = { ...nextImages[index], progress: Number(progress.toFixed(0)) };
+
+            this.images$.next(nextImages);
+        },
+
+        updateImageError: (fileName: string, message?: string) => {
+            const current = this.images$.value;
+            const nextImages = current.slice();
+            const index = current.findIndex((el) => el.name === fileName);
+            nextImages[index] = { ...nextImages[index], error: message ?? 'Cannot read file' };
+
+            this.images$.next(nextImages);
+        }
+    }
+
+    private playerOperator: PlayerOperator = {
+        updateProgress: (
+            value: number,
+            chronoLens: ChronoLens,
+            updateLayer: (geojson: GeoJson, routeTimes: RouteTimes, value: number) => void,
+        ) => {
+            if (!this.routeTimes$.value || isNaN(value)) {
+                return;
+            }
+            // Halt playing animations to allow manual update.
+            if (chronoLens.isPlaying$.value) {
+                chronoLens.isPlaying$.next(false);
+            }
+            this.progressMs$.next(value);
+            if (this.data$.value.geojson) {
+                updateLayer(this.data$.value.geojson, this.routeTimes$.value, value);
+            }
+            // Resume playing animations
+            if (chronoLens.isPlaying$.value) {
+                setTimeout(() => chronoLens.isPlaying$.next(true), 0);
             }
         }
-
-        if (geojsonFile) {
-            onDataChange({});
-            const text = await getText(geojsonFile).catch(onError) ?? '';
-            const result = await parsers
-                .get(FileToGeoJSONParser.getFileExtension(geojsonFile.name!))
-                ?.parse(text);
-            onDataChange(result ?? { error: new Error('No parser found for file.') });
-            currentGeojson = result?.geojson
-        }
-
-        imageFiles.forEach((file) => readImage(file, currentGeojson));
     }
 };
