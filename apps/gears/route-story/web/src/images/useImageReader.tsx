@@ -1,29 +1,32 @@
-import { Dispatch, SetStateAction } from "react";
+import { BehaviorSubject } from "rxjs";
 import maplibregl from "maplibre-gl";
-import { Cartomancer } from "@apparatus";
+import { Cartomancer, useSubjectState } from "@apparatus";
 import { GeoJson } from "@tinker-chest";
-import { WebMarkerImage, parseImage } from "./image-parser";
-import { RouteStoryGear } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { parseImage, WebMarkerImage } from "./image-parser";
+import { FileOperator } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 
 type ImageReaderResult = (file: File, geojson?: GeoJson) => void;
 
 export const useImageReader = (
-    onImagesChange: Dispatch<SetStateAction<WebMarkerImage[]>>
+    fileOperator: FileOperator,
+    images$: BehaviorSubject<WebMarkerImage[]>
 ): ImageReaderResult => {
+    const [_images, setImages] = useSubjectState(images$);
+
     const readImage = (file: File, geojson?: GeoJson) => {
         const reader = new FileReader();
 
         reader.onloadstart = () => {
-            onImagesChange((prev) => RouteStoryGear.pushInitialImage(prev, file.name));
+            setImages((prev) => fileOperator.pushInitialImage(prev, file.name));
         };
 
         reader.onprogress = (e) => {
-            onImagesChange((prev) => RouteStoryGear.updateImageProgress(prev, file.name, e.loaded / e.total * 100))
+            setImages((prev) => fileOperator.updateImageProgress(prev, file.name, e.loaded / e.total * 100))
         };
 
         reader.onload = async (e) => {
             const { data, bitmap, lngLat, error } = await parseImage(file, e);
-            onImagesChange((prev) => {
+            setImages((prev) => {
                 const nextImages = prev.slice();
                 const index = prev.findIndex((el) => el.name === file.name);
                 const [featureId, feature] = geojson ? Cartomancer.getClosestFeature(geojson, lngLat) : [0, undefined];
@@ -54,7 +57,7 @@ export const useImageReader = (
         };
 
         reader.onerror = (e) => {
-            onImagesChange((prev) => RouteStoryGear.updateImageError(prev, file.name, e.target?.error?.message));
+            setImages((prev) => fileOperator.updateImageError(prev, file.name, e.target?.error?.message));
         };
 
         reader.readAsDataURL(file);
