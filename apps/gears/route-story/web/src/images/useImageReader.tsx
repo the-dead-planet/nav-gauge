@@ -3,6 +3,7 @@ import maplibregl from "maplibre-gl";
 import { Cartomancer } from "@apparatus";
 import { GeoJson, getNext } from "@tinker-chest";
 import { WebMarkerImage, parseImage } from "./image-parser";
+import { RouteStoryGear } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 
 type ImageReaderResult = (file: File, geojson?: GeoJson) => void;
 
@@ -13,25 +14,15 @@ export const useImageReader = (
         const reader = new FileReader();
 
         reader.onloadstart = () => {
-            onImagesChange((prev) => prev.filter((el) => el.name !== file.name).concat([{
-                id: getNext(prev.map((el) => el.id)),
-                name: file.name,
-                progress: 0
-            }]));
+            onImagesChange((prev) => RouteStoryGear.pushInitialImage(prev, file.name));
         };
 
         reader.onprogress = (e) => {
-            onImagesChange((prev) => {
-                const nextImages = prev.slice();
-                const index = prev.findIndex((el) => el.name === file.name);
-                nextImages[index] = { ...nextImages[index], progress: Number((e.loaded / e.total * 100).toFixed(0)) };
-
-                return nextImages;
-            });
+            onImagesChange((prev) => RouteStoryGear.updateImageProgress(prev, file.name, e.loaded / e.total * 100))
         };
 
         reader.onload = async (e) => {
-            const { data, bitmap, exif, lngLat, error } = await parseImage(file, e);
+            const { data, bitmap, lngLat, error } = await parseImage(file, e);
             onImagesChange((prev) => {
                 const nextImages = prev.slice();
                 const index = prev.findIndex((el) => el.name === file.name);
@@ -63,13 +54,7 @@ export const useImageReader = (
         };
 
         reader.onerror = (e) => {
-            onImagesChange((prev) => {
-                const nextImages = prev.slice();
-                const index = prev.findIndex((el) => el.name === file.name);
-                nextImages[index] = { ...nextImages[index], error: e.target?.error?.message ?? 'Cannot read file' };
-
-                return nextImages;
-            });
+            onImagesChange((prev) => RouteStoryGear.updateImageError(prev, file.name, e.target?.error?.message));
         };
 
         reader.readAsDataURL(file);

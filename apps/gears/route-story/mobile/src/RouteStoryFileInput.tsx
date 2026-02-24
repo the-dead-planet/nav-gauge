@@ -6,7 +6,7 @@ import * as Exify from '@lodev09/react-native-exify';
 import { RouteFileInputProps, RouteStoryGear } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { FileInputStatus, FileInput } from "@mobile-ui";
 import { Cartomancer, parsers, useStateWarden, useSubjectState } from "@apparatus";
-import { getExifError, getExifLngLat, getNext } from "@tinker-chest";
+import { getExifError, getExifLngLat } from "@tinker-chest";
 
 export const RouteStoryFileInput: FC<RouteFileInputProps> = ({ data$, images$ }) => {
     const { signaliumBureau } = useStateWarden();
@@ -32,17 +32,12 @@ export const RouteStoryFileInput: FC<RouteFileInputProps> = ({ data$, images$ })
             handleError,
             setData,
             async (file, geojson) => {
-                if (!file.name) {
+                const fileName = file.name;
+                if (!fileName) {
                     return;
                 }
 
-                setImages((prev) => {
-                    return prev.filter((el) => el.name !== file.name).concat([{
-                        id: getNext(prev.map((el) => el.id)),
-                        name: file.name!,
-                        progress: 0
-                    }]);
-                });
+                setImages((prev) => RouteStoryGear.pushInitialImage(prev, fileName));
 
                 Exify.read(file.uri)
                     .then(async (exif) => {
