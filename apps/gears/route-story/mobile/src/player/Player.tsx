@@ -103,6 +103,7 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps> = ({
                 style={{ left: 10, right: 10, height: 40 }}
                 minimumValue={0}
                 maximumValue={1}
+                value={progressMs}
                 minimumTrackTintColor="#FFFFFF"
                 maximumTrackTintColor="#000000"
                 onValueChange={handleProgressChange}

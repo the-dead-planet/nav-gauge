@@ -17,11 +17,11 @@ export const useImageReader = (
         const reader = new FileReader();
 
         reader.onloadstart = () => {
-            setImages((prev) => fileOperator.pushInitialImage(prev, file.name));
+            fileOperator.pushInitialImage(file.name);
         };
 
         reader.onprogress = (e) => {
-            setImages((prev) => fileOperator.updateImageProgress(prev, file.name, e.loaded / e.total * 100))
+            fileOperator.updateImageProgress(file.name, e.loaded / e.total * 100)
         };
 
         reader.onload = async (e) => {
@@ -57,7 +57,7 @@ export const useImageReader = (
         };
 
         reader.onerror = (e) => {
-            setImages((prev) => fileOperator.updateImageError(prev, file.name, e.target?.error?.message));
+            fileOperator.updateImageError(file.name, e.target?.error?.message);
         };
 
         reader.readAsDataURL(file);

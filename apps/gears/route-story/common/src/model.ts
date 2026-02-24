@@ -41,9 +41,9 @@ export interface FileOperator {
         getText: (file: TFile) => Promise<string>,
         readImage: (file: TFile, geojson?: GeoJson) => void,
     ) => void;
-    pushInitialImage: (current: MarkerImage[], fileName: string) => MarkerImage[];
-    updateImageProgress: (current: MarkerImage[], fileName: string, progress: number) => MarkerImage[];
-    updateImageError: (current: MarkerImage[], fileName: string, message?: string) => MarkerImage[];
+    pushInitialImage: (fileName: string) => void;
+    updateImageProgress: (fileName: string, progress: number) => void;
+    updateImageError: (fileName: string, message?: string) => void;
 }
 
 export interface PlayerOperator {

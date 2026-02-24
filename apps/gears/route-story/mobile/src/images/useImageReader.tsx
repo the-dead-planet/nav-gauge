@@ -17,7 +17,7 @@ export const useImageReader = (
         if (!fileName) {
             return;
         }
-        setImages((prev) => fileOperator.pushInitialImage(prev, fileName));
+        fileOperator.pushInitialImage(fileName);
 
         Exify.read(file.uri)
             .then(async (exif) => {
@@ -44,7 +44,7 @@ export const useImageReader = (
                 });
             })
             .catch((err: Error) => {
-                setImages((prev) => fileOperator.updateImageError(prev, file.name!, err?.message));
+                fileOperator.updateImageError(file.name!, err?.message);
             });
     };
 

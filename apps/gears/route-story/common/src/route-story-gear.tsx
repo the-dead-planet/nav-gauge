@@ -213,30 +213,35 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
             }
         },
 
-        pushInitialImage(current: MarkerImage[], fileName: string): MarkerImage[] {
-            return current
+        pushInitialImage: (fileName: string) => {
+            const current = this.images$.value;
+            const nextImages = current
                 .filter((el) => el.name !== fileName)
                 .concat([{
                     id: getNext(current.map((el) => el.id)),
                     name: fileName,
                     progress: 0
                 }]);
+
+            this.images$.next(nextImages);
         },
 
-        updateImageProgress(current: MarkerImage[], fileName: string, progress: number) {
+        updateImageProgress: (fileName: string, progress: number) => {
+            const current = this.images$.value;
             const nextImages = current.slice();
             const index = current.findIndex((el) => el.name === fileName);
             nextImages[index] = { ...nextImages[index], progress: Number(progress.toFixed(0)) };
 
-            return nextImages;
+            this.images$.next(nextImages);
         },
 
-        updateImageError(current: MarkerImage[], fileName: string, message?: string) {
+        updateImageError: (fileName: string, message?: string) => {
+            const current = this.images$.value;
             const nextImages = current.slice();
             const index = current.findIndex((el) => el.name === fileName);
             nextImages[index] = { ...nextImages[index], error: message ?? 'Cannot read file' };
 
-            return nextImages;
+            this.images$.next(nextImages);
         }
     }
 
