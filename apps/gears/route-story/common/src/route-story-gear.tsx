@@ -1,6 +1,6 @@
 import { ComponentType, FC } from "react";
 import { BehaviorSubject, Subscription } from "rxjs";
-import { ToolProps, MarkerImage, OverlayComponentProps, StateWarden, Gear, ControlComponentProps, Individuator, parsers, FileToGeoJSONParser, ChronoLens, SignaliumBureau } from "@apparatus";
+import { ToolProps, MarkerImage, OverlayComponentProps, StateWarden, Gear, ControlComponentProps, parsers, FileToGeoJSONParser, SignaliumBureau, SurveillanceState } from "@apparatus";
 import { GeoJson, getNext, ParsingResultWithError } from "@tinker-chest";
 import { RouteToolProps, RouteTimes, RouteFileInputProps, RouteFitBoundsProps, PlayerOperator, FileOperator } from "./model";
 
@@ -12,7 +12,7 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
     public readonly images$ = new BehaviorSubject<MarkerImage[]>([]);
     public readonly progressMs$ = new BehaviorSubject(0);
 
-    public engageRouteStory?: (individuator: Individuator) => void;
+    public engageRouteStory?: () => void;
     public disengageRouteStory?: () => void;
 
     private subscribeToDataUpdates = (): Subscription => {
@@ -67,8 +67,8 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
         );
     }
 
-    public engage = (stateWarden: StateWarden<TMap>, individuator: Individuator) => {
-        this.engageRouteStory?.(individuator);
+    public engage = (stateWarden: StateWarden<TMap>) => {
+        this.engageRouteStory?.();
         this.dataSubscription = this.subscribeToDataUpdates();
 
         stateWarden.toolsStation.addControlComponent(
@@ -246,25 +246,38 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
     }
 
     private playerOperator: PlayerOperator = {
+        onPlay: () => {
+            this.chronoLens.isPlaying$.next(!this.chronoLens.isPlaying$.value);
+        },
+        onRecord: () => {
+            this.chronoLens.surveillanceState$.next(this.chronoLens.surveillanceState$.value === SurveillanceState.Stopped
+                ? SurveillanceState.InProgress
+                : SurveillanceState.Stopped)
+        },
+        onRecordPause: () => {
+            this.chronoLens.surveillanceState$.next(this.chronoLens.surveillanceState$.value === SurveillanceState.Paused
+                ? SurveillanceState.InProgress
+                : SurveillanceState.Paused)
+        },
         updateProgress: (
             value: number,
-            chronoLens: ChronoLens,
-            updateLayer: (geojson: GeoJson, routeTimes: RouteTimes, value: number) => void,
+            updateLayer?: (geojson: GeoJson, routeTimes: RouteTimes, value: number) => void,
         ) => {
+            console.log({value})
             if (!this.routeTimes$.value || isNaN(value)) {
                 return;
             }
             // Halt playing animations to allow manual update.
-            if (chronoLens.isPlaying$.value) {
-                chronoLens.isPlaying$.next(false);
+            if (this.chronoLens.isPlaying$.value) {
+                this.chronoLens.isPlaying$.next(false);
             }
             this.progressMs$.next(value);
             if (this.data$.value.geojson) {
-                updateLayer(this.data$.value.geojson, this.routeTimes$.value, value);
+                updateLayer?.(this.data$.value.geojson, this.routeTimes$.value, value);
             }
             // Resume playing animations
-            if (chronoLens.isPlaying$.value) {
-                setTimeout(() => chronoLens.isPlaying$.next(true), 0);
+            if (this.chronoLens.isPlaying$.value) {
+                setTimeout(() => this.chronoLens.isPlaying$.next(true), 0);
             }
         }
     }

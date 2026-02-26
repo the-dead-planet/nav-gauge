@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo } from "react";
+import { FC } from "react";
 import { View, Button } from "react-native";
 import Slider from "@react-native-community/slider";
 import { OverlayComponentProps, SurveillanceState, useMachineWard, useStateWarden, useSubjectState } from "@apparatus";
@@ -71,23 +71,7 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps> = ({
     //     };
     // }, []);
 
-    const handlePlayClick = () => setIsPlaying((prev) => !prev);
-    // const handleRecordClick = () => setSurveillanceState((prev) => prev === SurveillanceState.Stopped
-    //     ? SurveillanceState.InProgress
-    //     : SurveillanceState.Stopped);
-    // const handleRecordPauseClick = () => setSurveillanceState((prev) => prev === SurveillanceState.Paused
-    //     ? SurveillanceState.InProgress
-    //     : SurveillanceState.Paused);
-
     const progressPercentage = getProgressPercentage(progressMs, routeTimes);
-
-    const handleProgressChange = (value: number) => {
-        playerOperator.updateProgress(value, chronoLens, 
-            (geojson, routeTimes, value) => {
-                // TODO: Update layer
-            }
-        )
-    }
 
     const getPosition = (featureId: number) => {
         const feature = geojson?.features.find((feature) => feature.properties.id === featureId);
@@ -98,25 +82,52 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps> = ({
     };
 
     return (
-        <View>
+        <View style={{ flex: 1 }}>
             <Slider
-                style={{ left: 10, right: 10, height: 40 }}
                 minimumValue={0}
-                maximumValue={1}
+                maximumValue={routeTimes?.duration ?? 1}
+                step={1}
                 value={progressMs}
-                minimumTrackTintColor="#FFFFFF"
+                onValueChange={playerOperator.updateProgress}
+                style={{ height: 40 }}
+                minimumTrackTintColor="#0000FF"
                 maximumTrackTintColor="#000000"
-                onValueChange={handleProgressChange}
+                thumbTintColor="gray"
             />
-            <View style={{ flexDirection: "row", justifyContent: "center" }}>
+            <View style={{
+                flexDirection: "row", 
+                justifyContent: "center",
+            }}>
                 <Text>
                     {formatCurrentTimestamp(progressMs, progressPercentage)}
                 </Text>
                 <Button
                     title={isPlaying ? 'Pause' : 'Play'}
                     color={theme.colors.button}
-                    onPress={handlePlayClick}
+                    onPress={playerOperator.onPlay}
                 />
+                <Button
+                    title={`${surveillanceState === SurveillanceState.Stopped ? 'Start' : 'Stop'} recording`}
+                    color={theme.colors.button}
+                    onPress={playerOperator.onRecord}
+                />
+                {surveillanceState !== SurveillanceState.Stopped ? (
+                    <Button
+                        title={`${surveillanceState === SurveillanceState.Paused ? 'Resume' : 'Pause'} recording`}
+                        color={theme.colors.button}
+                        onPress={playerOperator.onRecordPause}
+                    />
+                ) : null}
+                <Button
+                    title={'Clear'}
+                    color={theme.colors.button}
+                    onPress={() => {
+                        // WebLens.destroyRecording();
+                    }}
+                />
+                <Text>
+                    {!routeTimes ? "" : individuator.formatTimestamp(progressMs + routeTimes.startTimeEpoch, settings)}
+                </Text>
             </View>
         </View>
     );

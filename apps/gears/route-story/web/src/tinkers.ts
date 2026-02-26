@@ -2,7 +2,7 @@ import { BehaviorSubject } from "rxjs";
 import maplibregl from "maplibre-gl";
 import { CurrentPointData, MarkerImage } from "@apparatus";
 import { GeoJson } from "@tinker-chest";
-import { getRouteSourceData, RouteTimes } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { getRouteSourceData } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { LoadedImageData } from "./images/image-parser";
 import { sourceIds } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 

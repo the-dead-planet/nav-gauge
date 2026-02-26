@@ -1,4 +1,4 @@
-import { ChronoLens, MarkerImage, SignaliumBureau, StateWarden } from "@apparatus";
+import { MarkerImage, SignaliumBureau, StateWarden } from "@apparatus";
 import { GeoJson, ParsingResultWithError } from "@tinker-chest";
 import { BehaviorSubject } from "rxjs";
 
@@ -47,9 +47,11 @@ export interface FileOperator {
 }
 
 export interface PlayerOperator {
+    onPlay: () => void;
+    onRecord: () => void;
+    onRecordPause: () => void;
     updateProgress: (
         value: number,
-        chronoLens: ChronoLens,
-        updateLayer: (geojson: GeoJson, routeTimes: RouteTimes, value: number) => void,
+        updateLayer?: (geojson: GeoJson, routeTimes: RouteTimes, value: number) => void,
     ) => void,
 }

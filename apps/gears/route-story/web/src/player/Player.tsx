@@ -68,20 +68,11 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps> 
         };
     }, []);
 
-    const handlePlayClick = () => setIsPlaying((prev) => !prev);
-    const handleRecordClick = () => setSurveillanceState((prev) => prev === SurveillanceState.Stopped
-        ? SurveillanceState.InProgress
-        : SurveillanceState.Stopped);
-    const handleRecordPauseClick = () => setSurveillanceState((prev) => prev === SurveillanceState.Paused
-        ? SurveillanceState.InProgress
-        : SurveillanceState.Paused);
-
     const progressPercentage = getProgressPercentage(progressMs, routeTimes);
 
     const handleProgressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         playerOperator.updateProgress(
             Number(event.target.value),
-            chronoLens,
             (geojson, routeTimes, value) => updateRouteLayer(
                 { showRouteLine, showRoutePoints },
                 map,
@@ -127,14 +118,14 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps> 
                 <p className={styles.text}>
                     {formatCurrentTimestamp(progressMs, progressPercentage)}
                 </p>
-                <button onClick={handlePlayClick}>
+                <button onClick={playerOperator.onPlay}>
                     {isPlaying ? 'Pause' : 'Play'}
                 </button>
-                <button onClick={handleRecordClick}>
+                <button onClick={playerOperator.onRecord}>
                     {surveillanceState === SurveillanceState.Stopped ? 'Start' : 'Stop'} recording
                 </button>
                 {surveillanceState !== SurveillanceState.Stopped ? (
-                    <button onClick={handleRecordPauseClick}>
+                    <button onClick={playerOperator.onRecordPause}>
                         {surveillanceState === SurveillanceState.Paused ? 'Resume' : 'Pause'} recording
                     </button>
                 ) : null}

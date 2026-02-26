@@ -76,3 +76,9 @@ export interface MarkerImage {
     error?: string;
     featureId?: number;
 }
+
+export interface LoadedImageData extends Omit<MarkerImage, 'progress' | 'error' | 'featureId' | 'data' | 'lngLat'> {
+    lngLat: LngLat;
+    featureId: number;
+    data: string;
+}

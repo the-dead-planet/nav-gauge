@@ -147,5 +147,5 @@ export const getProgressPercentage = (progressMs: number, routeTimes?: RouteTime
 };
 
 export const formatCurrentTimestamp = (progressMs: number, progressPercentage: number): string => {
-    return `${formatTimeMsAsStandard(progressMs)} (${progressPercentage.toFixed(0)}%`;
+    return `${formatTimeMsAsStandard(progressMs)} (${progressPercentage.toFixed(0)}%)`;
 };

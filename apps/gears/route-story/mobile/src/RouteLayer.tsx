@@ -1,6 +1,6 @@
 import { FC, useEffect, useMemo } from "react";
 import { CircleLayer, CircleLayerStyle, LineLayer, LineLayerStyle, ShapeSource } from "@maplibre/maplibre-react-native";
-import { OverlayComponentProps, useStateWarden, useSubjectState } from "@apparatus";
+import { LoadedImageData, OverlayComponentProps, useLoadedImages, useStateWarden, useSubjectState } from "@apparatus";
 import {
     getRouteSourceData,
     RouteToolProps,
@@ -72,7 +72,96 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps> =
             [sourceIds.line]: lines,
             [sourceIds.currentPoint]: currentPoint
         };
-    }, [geojson, routeTimes?.startTimeEpoch, bearingLineLengthInMeters, showRouteLine, showRoutePoints]);
+    }, [geojson, progressMs, routeTimes?.startTimeEpoch, bearingLineLengthInMeters, showRouteLine, showRoutePoints]);
+
+    const loadedImages = useLoadedImages(images);
+
+    useEffect(() => {
+        if (!isPlaying || !geojson || !routeTimes) {
+            return;
+        }
+
+        let animation: number | undefined;
+        let displayImageTimeout: number | undefined;
+        const { startTimeEpoch, endTimeEpoch } = routeTimes;
+        const sortedImageFeatures = [...loadedImages].sort((a, b) => a.featureId - b.featureId);
+        let last = Date.now();
+        let current = progressMs;
+        let nextImageIndex = sortedImageFeatures.findIndex((imageFeature): boolean => {
+            const f = geojson.features.find((feature) => feature.properties.id === imageFeature.featureId);
+            return !!f && new Date(f.properties.time).valueOf() >= new Date(startTimeEpoch + progressMs).valueOf();
+        });
+
+        // TODO: Move to animatrix
+        const animate = () => {
+            const now = Date.now();
+            const dt = now - last;
+            last = now;
+            current += dt + speedMultiplier;
+            current += speedMultiplier;
+            if (startTimeEpoch + current >= endTimeEpoch) {
+                current = 0;
+                nextImageIndex = 0;
+            }
+            const nextImage: LoadedImageData | undefined = sortedImageFeatures[nextImageIndex];
+            const { currentPoint, currentPointBearing } = getRouteSourceData({ showRouteLine, showRoutePoints }, geojson, startTimeEpoch, current, bearingLineLengthInMeters, nextImage?.featureId);
+
+            if (animation !== undefined && nextImage && nextImage.featureId <= Number(currentPoint.id)) {
+                animatrix.displayImageId$.next(nextImage.id);
+                nextImageIndex = nextImageIndex + 1;
+                cancelAnimationFrame(animation);
+                displayImageTimeout = setTimeout(() => {
+                    animatrix.displayImageId$.next(null);
+                    animation = requestAnimationFrame(animate);
+                }, displayImageDuration);
+
+                return;
+            }
+
+            if (followCurrentPoint) {
+                const lngLat: GeoJSON.Position = [currentPoint.geometry.coordinates[0], currentPoint.geometry.coordinates[1]];
+                const nextBearing = (cameraAngle + (autoRotate ? currentPointBearing : 0));
+
+                map.camera?.setCamera({
+                    animationMode: 'easeTo',
+                    centerCoordinate: lngLat,
+                    animationDuration: easeDuration,
+                    zoomLevel: zoom,
+                    pitch,
+                    heading: nextBearing,
+                });
+            }
+
+            // TODO: Calculate % of geometry done based on current progressMs and update paint property line gradient instead of all data.
+            setProgressMs(current);
+            animation = requestAnimationFrame(animate);
+        };
+
+        animate();
+
+        return () => {
+            clearTimeout(displayImageTimeout);
+            animatrix.displayImageId$.next(null);
+            if (animation !== undefined) {
+                cancelAnimationFrame(animation);
+            }
+        };
+    }, [
+        isPlaying,
+        followCurrentPoint,
+        cameraAngle,
+        cameraRoll,
+        autoRotate,
+        pitch,
+        zoom,
+        zoomInToImages,
+        speedMultiplier,
+        easeDuration,
+        bearingLineLengthInMeters,
+        maxBearingDiffPerFrame,
+        displayImageDuration,
+        loadedImages
+    ]);
 
     if (!sources) {
         return null;
