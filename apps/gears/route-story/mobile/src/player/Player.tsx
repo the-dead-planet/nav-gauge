@@ -1,6 +1,6 @@
-import { FC } from "react";
+import { FC, useRef, createRef, useState, useEffect } from "react";
 import { View, Button } from "react-native";
-import Slider from "@react-native-community/slider";
+import Slider, { SliderRef, SliderReferenceType } from "@react-native-community/slider";
 import { OverlayComponentProps, SurveillanceState, useMachineWard, useStateWarden, useSubjectState } from "@apparatus";
 import { formatCurrentTimestamp, getProgressPercentage, RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Text } from "@mobile-ui";
@@ -81,13 +81,20 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps> = ({
         return (new Date(feature.properties.time).valueOf() - new Date(routeTimes.startTime).valueOf()) / routeTimes.duration * 100;
     };
 
+    const sliderRef = useRef<Slider | null>(null);
+
+    useEffect(() => {
+        // When passed to props animation slows down.
+        sliderRef.current?.setNativeProps({ value: progressMs })
+    }, [progressMs]);
+
     return (
         <View style={{ flex: 1 }}>
             <Slider
+                ref={sliderRef as SliderReferenceType}
                 minimumValue={0}
                 maximumValue={routeTimes?.duration ?? 1}
                 step={1}
-                value={progressMs}
                 onValueChange={playerOperator.updateProgress}
                 style={{ height: 40 }}
                 minimumTrackTintColor="#0000FF"
@@ -95,7 +102,7 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps> = ({
                 thumbTintColor="gray"
             />
             <View style={{
-                flexDirection: "row", 
+                flexDirection: "row",
                 justifyContent: "center",
             }}>
                 <Text>

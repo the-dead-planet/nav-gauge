@@ -8,3 +8,4 @@ export const parsers = new Map<string, FileToGeoJSONParser>([
 ].flatMap((parser) => parser.acceptedFileExtensions.map((extension) => [extension, parser])));
 
 export { FileToGeoJSONParser } from './file-parser';
+export * from './model';

@@ -1,7 +1,9 @@
 import { CircleLayerSpecification, LayerSpecification, LineLayerSpecification, SymbolLayerSpecification } from "@maplibre/maplibre-gl-style-spec";
-import { FeatureStateProps } from "@apparatus";
+import { FeatureStateProps, LoadedImageData } from "@apparatus";
 import { ThemeName } from "@ui";
 import { getImageIconSize, IMAGE_SIZE } from "./images";
+import { GeoJson } from "@tinker-chest";
+import { getIconImageId } from "./tinkers";
 
 export const colorActive = '#003161';
 export const colorInactive = 'grey';
@@ -82,7 +84,7 @@ export const currentPointLayers: CircleLayerSpecification[] = [
     }
 ];
 
-const IMAGE_PROPERTY = 'iconImageId';
+export const IMAGE_PROPERTY = 'iconImageId';
 const CIRCLE_RADIUS = 25;
 export const DEFAULT_IMAGE_SIZE = 2 * CIRCLE_RADIUS;
 
@@ -91,6 +93,27 @@ export interface ImageFeatureProperties {
     imageId: number;
     [IMAGE_PROPERTY]: string;
 }
+
+export const getImageSource = (
+    loadedImages: LoadedImageData[],
+    geojson?: GeoJson
+): GeoJSON.FeatureCollection<GeoJSON.Point, ImageFeatureProperties> => ({
+    type: 'FeatureCollection',
+    features: loadedImages.reduce<ImageFeature[]>((acc, image) => {
+        const feature = geojson?.features.find((f) => f.properties.id === image.featureId);
+        if (feature) {
+            acc.push({
+                type: 'Feature',
+                geometry: feature.geometry,
+                properties: {
+                    imageId: image.id,
+                    [IMAGE_PROPERTY]: getIconImageId(image)
+                }
+            });
+        }
+        return acc;
+    }, [])
+});
 
 const getImageLayer = (): SymbolLayerSpecification => ({
     id: layerIds.images,

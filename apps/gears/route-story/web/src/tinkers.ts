@@ -25,8 +25,6 @@ export const updateRouteLayer = (
     return { currentPoint, lines, ...rest };
 };
 
-export const getIconImageId = (image: LoadedImageData): string => `image-${image.id}`;
-
 export const updateImageFeatureId = (
     images$: BehaviorSubject<MarkerImage[]>,
     imageId: number,

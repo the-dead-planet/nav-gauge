@@ -19,7 +19,7 @@ import {
     routePointsLayer
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { updateRouteLayer } from "./tinkers";
-import { useLoadedImages } from "./hooks";
+import { useLoadedWebImages } from "./hooks";
 import { LoadedImageData } from "./images/image-parser";
 
 export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps> = ({
@@ -63,7 +63,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPro
             } : {}));
     }, []);
 
-    const loadedImages = useLoadedImages(images);
+    const loadedImages = useLoadedWebImages(images);
 
     const sources = useMemo((): { [key in string]: SourceSpecification } => {
         if (!geojson || !routeTimes) {
@@ -110,7 +110,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPro
 
     const mapLayerData = useMemo(
         (): MapLayerData => ({ sources, layers }),
-        [sources,layers]
+        [sources, layers]
     );
 
     useMapLayerData(map, mapLayerData)

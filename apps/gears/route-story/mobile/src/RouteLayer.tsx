@@ -19,7 +19,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps> =
     images$,
     progressMs$,
 }) => {
-    const [{ geojson }, setData] = useSubjectState(data$);
+    const [{ geojson }] = useSubjectState(data$);
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [progressMs, setProgressMs] = useSubjectState(progressMs$);
@@ -53,9 +53,12 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps> =
         //     } : {}));
     }, []);
 
+    const loadedImages = useLoadedImages(images);
+
     const sources = useMemo((): {
         [key in string]?: GeoJSON.GeoJSON;
     } | null => {
+        console.log("recompute sources")
         if (!geojson || !routeTimes) {
             return null;
         }
@@ -72,9 +75,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps> =
             [sourceIds.line]: lines,
             [sourceIds.currentPoint]: currentPoint
         };
-    }, [geojson, progressMs, routeTimes?.startTimeEpoch, bearingLineLengthInMeters, showRouteLine, showRoutePoints]);
-
-    const loadedImages = useLoadedImages(images);
+    }, [geojson, routeTimes?.startTimeEpoch, bearingLineLengthInMeters, showRouteLine, showRoutePoints]);
 
     useEffect(() => {
         if (!isPlaying || !geojson || !routeTimes) {
@@ -85,7 +86,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps> =
         let displayImageTimeout: number | undefined;
         const { startTimeEpoch, endTimeEpoch } = routeTimes;
         const sortedImageFeatures = [...loadedImages].sort((a, b) => a.featureId - b.featureId);
-        let last = Date.now();
+        let last = 0;
         let current = progressMs;
         let nextImageIndex = sortedImageFeatures.findIndex((imageFeature): boolean => {
             const f = geojson.features.find((feature) => feature.properties.id === imageFeature.featureId);
@@ -93,10 +94,9 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps> =
         });
 
         // TODO: Move to animatrix
-        const animate = () => {
-            const now = Date.now();
-            const dt = now - last;
-            last = now;
+        const animate = (time: number) => {
+            const dt = time - last;
+            last = time;
             current += dt + speedMultiplier;
             current += speedMultiplier;
             if (startTimeEpoch + current >= endTimeEpoch) {
@@ -137,7 +137,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps> =
             animation = requestAnimationFrame(animate);
         };
 
-        animate();
+        animation = requestAnimationFrame(animate);
 
         return () => {
             clearTimeout(displayImageTimeout);

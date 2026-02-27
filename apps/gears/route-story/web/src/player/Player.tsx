@@ -17,7 +17,7 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps> 
     const [{ geojson }] = useSubjectState(data$);
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
-    const [progressMs, setProgressMs] = useSubjectState(progressMs$);
+    const [progressMs] = useSubjectState(progressMs$);
     const { individuator } = useMachineWard();
     const { animatrix, cartomancer, chronoLens, signaliumBureau } = useStateWarden();
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
