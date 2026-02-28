@@ -1,5 +1,5 @@
-import { MarkerImage, SignaliumBureau, StateWarden } from "@apparatus";
-import { GeoJson, ParsingResultWithError } from "@tinker-chest";
+import { LoadedImageData, MarkerImage, SignaliumBureau, StateWarden } from "@apparatus";
+import { GeoJson, LngLat, ParsingResultWithError } from "@tinker-chest";
 import { BehaviorSubject } from "rxjs";
 
 export interface RouteTimes {
@@ -57,4 +57,12 @@ export interface PlayerOperator {
             lines: GeoJSON.GeoJSON,
         ) => void,
     ) => void,
+    animation: number | undefined,
+    displayImageTimeout: Timer | undefined,
+    animateRoute: (
+        loadedImages: LoadedImageData[],
+        onUpdateLayer: (currentPoint: GeoJSON.Feature<GeoJSON.Point>, lines: GeoJSON.GeoJSON) => void,
+        onUpdateMapCamera: (position: GeoJSON.Position, bearing: number) => void,
+    ) => void;
+    cleanupAnimateRoute: () => void;
 }
