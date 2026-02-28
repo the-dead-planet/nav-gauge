@@ -124,7 +124,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPro
         const { startTimeEpoch, endTimeEpoch } = routeTimes;
         const sortedImageFeatures = loadedImages.toSorted((a, b) => a.featureId - b.featureId);
         let last = performance.now();
-        let current = progressMs;
+        let currentProgressMs = progressMs;
         let nextImageIndex = sortedImageFeatures.findIndex((imageFeature): boolean => {
             const f = geojson.features.find((feature) => feature.properties.id === imageFeature.featureId);
             return !!f && new Date(f.properties.time).valueOf() >= new Date(startTimeEpoch + progressMs).valueOf();
@@ -135,13 +135,22 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPro
             const now = performance.now();
             const dt = now - last;
             last = now;
-            current += dt + speedMultiplier;
-            if (startTimeEpoch + current >= endTimeEpoch) {
-                current = 0;
+            currentProgressMs += dt + speedMultiplier;
+            if (startTimeEpoch + currentProgressMs >= endTimeEpoch) {
+                currentProgressMs = 0;
                 nextImageIndex = 0;
             }
             const nextImage: LoadedImageData | undefined = sortedImageFeatures[nextImageIndex];
-            const { currentPoint, currentPointBearing } = updateRouteLayer({ showRouteLine, showRoutePoints }, map, geojson, startTimeEpoch, current, bearingLineLengthInMeters, nextImage?.featureId);
+
+            const { currentPoint, lines, currentPointBearing } = getRouteSourceData(
+                { showRouteLine, showRoutePoints },
+                geojson,
+                startTimeEpoch,
+                currentProgressMs,
+                bearingLineLengthInMeters,
+                nextImage?.featureId
+            );
+            updateRouteLayer(map, currentPoint, lines);
 
             if (animation !== undefined && nextImage && nextImage.featureId <= Number(currentPoint.id)) {
                 animatrix.displayImageId$.next(nextImage.id);
@@ -157,7 +166,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPro
 
             if (followCurrentPoint) {
                 const lngLat = new maplibregl.LngLat(currentPoint.geometry.coordinates[0], currentPoint.geometry.coordinates[1]);
-                const currentBearing = map.getBearing();
+                const currentBearing = cartomancer.bearing$.value;
                 const nextBearing = (cameraAngle + (autoRotate ? currentPointBearing : 0));
                 const bearingDiff = ((nextBearing - currentBearing + 540) % 360) - 180;
 
@@ -175,7 +184,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPro
             }
 
             // TODO: Calculate % of geometry done based on current progressMs and update paint property line gradient instead of all data.
-            setProgressMs(current);
+            setProgressMs(currentProgressMs);
             animation = requestAnimationFrame(animate);
         };
 

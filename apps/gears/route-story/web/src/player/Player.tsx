@@ -73,14 +73,9 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps> 
     const handleProgressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         playerOperator.updateProgress(
             Number(event.target.value),
-            (geojson, routeTimes, value) => updateRouteLayer(
-                { showRouteLine, showRoutePoints },
-                map,
-                geojson,
-                routeTimes.startTimeEpoch,
-                value,
-                bearingLineLengthInMeters
-            )
+            (currentPoint, lines) => {
+                updateRouteLayer(map, currentPoint, lines);
+            }
         )
     }
 

@@ -52,6 +52,9 @@ export interface PlayerOperator {
     onRecordPause: () => void;
     updateProgress: (
         value: number,
-        updateLayer?: (geojson: GeoJson, routeTimes: RouteTimes, value: number) => void,
+        updateLayer?: (
+            currentPoint: GeoJSON.Feature<GeoJSON.Point>,
+            lines: GeoJSON.GeoJSON,
+        ) => void,
     ) => void,
 }

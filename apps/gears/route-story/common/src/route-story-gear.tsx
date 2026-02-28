@@ -3,6 +3,7 @@ import { BehaviorSubject, Subscription } from "rxjs";
 import { ToolProps, MarkerImage, OverlayComponentProps, StateWarden, Gear, ControlComponentProps, parsers, FileToGeoJSONParser, SignaliumBureau, SurveillanceState } from "@apparatus";
 import { GeoJson, getNext, ParsingResultWithError } from "@tinker-chest";
 import { RouteToolProps, RouteTimes, RouteFileInputProps, RouteFitBoundsProps, PlayerOperator, FileOperator } from "./model";
+import { getRouteSourceData } from "./tinkers";
 
 export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
     public readonly id = 'route-story';
@@ -247,37 +248,46 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
 
     private playerOperator: PlayerOperator = {
         onPlay: () => {
-            this.chronoLens.isPlaying$.next(!this.chronoLens.isPlaying$.value);
+            this.stateWarden.chronoLens.isPlaying$.next(!this.stateWarden.chronoLens.isPlaying$.value);
         },
         onRecord: () => {
-            this.chronoLens.surveillanceState$.next(this.chronoLens.surveillanceState$.value === SurveillanceState.Stopped
+            this.stateWarden.chronoLens.surveillanceState$.next(this.stateWarden.chronoLens.surveillanceState$.value === SurveillanceState.Stopped
                 ? SurveillanceState.InProgress
                 : SurveillanceState.Stopped)
         },
         onRecordPause: () => {
-            this.chronoLens.surveillanceState$.next(this.chronoLens.surveillanceState$.value === SurveillanceState.Paused
+            this.stateWarden.chronoLens.surveillanceState$.next(this.stateWarden.chronoLens.surveillanceState$.value === SurveillanceState.Paused
                 ? SurveillanceState.InProgress
                 : SurveillanceState.Paused)
         },
         updateProgress: (
             value: number,
-            updateLayer?: (geojson: GeoJson, routeTimes: RouteTimes, value: number) => void,
+            updateLayer?: (
+                currentPoint: GeoJSON.Feature<GeoJSON.Point>,
+                lines: GeoJSON.GeoJSON,
+            ) => void,
         ) => {
-            console.log({value})
             if (!this.routeTimes$.value || isNaN(value)) {
                 return;
             }
             // Halt playing animations to allow manual update.
-            if (this.chronoLens.isPlaying$.value) {
-                this.chronoLens.isPlaying$.next(false);
+            if (this.stateWarden.chronoLens.isPlaying$.value) {
+                this.stateWarden.chronoLens.isPlaying$.next(false);
             }
             this.progressMs$.next(value);
             if (this.data$.value.geojson) {
-                updateLayer?.(this.data$.value.geojson, this.routeTimes$.value, value);
+                const { currentPoint, lines } = getRouteSourceData(
+                    this.stateWarden.cartomancer.gaugeControls$.value,
+                    this.data$.value.geojson,
+                    this.routeTimes$.value.startTimeEpoch,
+                    value,
+                    this.stateWarden.animatrix.controls$.value.bearingLineLengthInMeters
+                );
+                updateLayer?.(currentPoint, lines);
             }
             // Resume playing animations
-            if (this.chronoLens.isPlaying$.value) {
-                setTimeout(() => this.chronoLens.isPlaying$.next(true), 0);
+            if (this.stateWarden.chronoLens.isPlaying$.value) {
+                setTimeout(() => this.stateWarden.chronoLens.isPlaying$.next(true), 0);
             }
         }
     }

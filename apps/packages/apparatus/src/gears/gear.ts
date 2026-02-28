@@ -1,20 +1,20 @@
 import { Individuator } from "../machine-ward";
-import { ChronoLens, StateWarden } from "../state-warden";
+import { StateWarden } from "../state-warden";
 
 export abstract class Gear<TMap, TID extends string = string> {
     public abstract id: TID;
-    
+
+    protected stateWarden: StateWarden<TMap>;
     protected individuator: Individuator;
-    protected chronoLens: ChronoLens;
 
     public abstract engage: (stateWarden: StateWarden<TMap>, individuator: Individuator) => void;
     public abstract disengage: (stateWarden: StateWarden<TMap>, individuator: Individuator) => void;
 
     public constructor(
+        stateWarden: StateWarden<TMap>,
         individuator: Individuator,
-        chronoLens: ChronoLens
     ) {
+        this.stateWarden = stateWarden;
         this.individuator = individuator;
-        this.chronoLens = chronoLens;
     }
 }

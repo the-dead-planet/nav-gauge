@@ -1,5 +1,5 @@
-import { FC, useEffect, useMemo } from "react";
-import { CircleLayer, CircleLayerStyle, LineLayer, LineLayerStyle, ShapeSource } from "@maplibre/maplibre-react-native";
+import { FC, useEffect, useMemo, useRef } from "react";
+import { CircleLayer, CircleLayerStyle, LineLayer, LineLayerStyle, ShapeSource, ShapeSourceRef } from "@maplibre/maplibre-react-native";
 import { LoadedImageData, OverlayComponentProps, useLoadedImages, useStateWarden, useSubjectState } from "@apparatus";
 import {
     getRouteSourceData,
@@ -11,6 +11,7 @@ import {
     routePointsLayer
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMap } from "@mobile-ui";
+import { updateRouteLayer } from "./tinkers";
 
 export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps> = ({
     map,
@@ -58,7 +59,6 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps> =
     const sources = useMemo((): {
         [key in string]?: GeoJSON.GeoJSON;
     } | null => {
-        console.log("recompute sources")
         if (!geojson || !routeTimes) {
             return null;
         }
@@ -75,7 +75,9 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps> =
             [sourceIds.line]: lines,
             [sourceIds.currentPoint]: currentPoint
         };
-    }, [geojson, routeTimes?.startTimeEpoch, bearingLineLengthInMeters, showRouteLine, showRoutePoints]);
+    }, [geojson, progressMs, routeTimes?.startTimeEpoch, bearingLineLengthInMeters, showRouteLine, showRoutePoints]);
+
+    const pointSourceRef = useRef<ShapeSourceRef>(null);
 
     useEffect(() => {
         if (!isPlaying || !geojson || !routeTimes) {
@@ -86,25 +88,26 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps> =
         let displayImageTimeout: number | undefined;
         const { startTimeEpoch, endTimeEpoch } = routeTimes;
         const sortedImageFeatures = [...loadedImages].sort((a, b) => a.featureId - b.featureId);
-        let last = 0;
-        let current = progressMs;
+        let last = Date.now();
+        let currentProgressMs = progressMs;
         let nextImageIndex = sortedImageFeatures.findIndex((imageFeature): boolean => {
             const f = geojson.features.find((feature) => feature.properties.id === imageFeature.featureId);
             return !!f && new Date(f.properties.time).valueOf() >= new Date(startTimeEpoch + progressMs).valueOf();
         });
 
         // TODO: Move to animatrix
-        const animate = (time: number) => {
-            const dt = time - last;
-            last = time;
-            current += dt + speedMultiplier;
-            current += speedMultiplier;
-            if (startTimeEpoch + current >= endTimeEpoch) {
-                current = 0;
+        const animate = () => {
+            const now = Date.now();
+            const dt = now - last;
+            last = now;
+            currentProgressMs += dt + speedMultiplier;
+            if (startTimeEpoch + currentProgressMs >= endTimeEpoch) {
+                currentProgressMs = 0;
                 nextImageIndex = 0;
             }
             const nextImage: LoadedImageData | undefined = sortedImageFeatures[nextImageIndex];
-            const { currentPoint, currentPointBearing } = getRouteSourceData({ showRouteLine, showRoutePoints }, geojson, startTimeEpoch, current, bearingLineLengthInMeters, nextImage?.featureId);
+            const { currentPoint, lines, currentPointBearing } = getRouteSourceData({ showRouteLine, showRoutePoints }, geojson, startTimeEpoch, currentProgressMs, bearingLineLengthInMeters, nextImage?.featureId);
+            updateRouteLayer(currentPoint, lines);
 
             if (animation !== undefined && nextImage && nextImage.featureId <= Number(currentPoint.id)) {
                 animatrix.displayImageId$.next(nextImage.id);
@@ -120,7 +123,8 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps> =
 
             if (followCurrentPoint) {
                 const lngLat: GeoJSON.Position = [currentPoint.geometry.coordinates[0], currentPoint.geometry.coordinates[1]];
-                const nextBearing = (cameraAngle + (autoRotate ? currentPointBearing : 0));
+                const currentBearing = cartomancer.bearing$.value; const nextBearing = (cameraAngle + (autoRotate ? currentPointBearing : 0));
+                const bearingDiff = ((nextBearing - currentBearing + 540) % 360) - 180;
 
                 map.camera?.setCamera({
                     animationMode: 'easeTo',
@@ -128,12 +132,12 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps> =
                     animationDuration: easeDuration,
                     zoomLevel: zoom,
                     pitch,
-                    heading: nextBearing,
+                    heading: currentBearing + Math.max(-maxBearingDiffPerFrame, Math.min(maxBearingDiffPerFrame, bearingDiff)),
                 });
             }
 
             // TODO: Calculate % of geometry done based on current progressMs and update paint property line gradient instead of all data.
-            setProgressMs(current);
+            setProgressMs(currentProgressMs);
             animation = requestAnimationFrame(animate);
         };
 

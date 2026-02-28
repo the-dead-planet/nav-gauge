@@ -93,6 +93,7 @@ export class Cartomancer<TMap> {
         this.mapLayoutStorageSubscription?.unsubscribe();
     };
 
+    public bearing$ = new BehaviorSubject(0);
     public zoom$ = new BehaviorSubject(0);
     public overlays$ = new BehaviorSubject<Map<string, ComponentType<OverlayComponentProps<TMap>>>>(new Map());
 

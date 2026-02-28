@@ -24,6 +24,7 @@ export const MapTools: FC<Props> = ({ map, children }) => {
     const [isStyleLoaded] = useSubjectState(cartomancer.isStyleLoaded$);
     const [selectedStyle] = useSubjectState(cartomancer.selectedStyle$);
     const [_mapZoom, setMapZoom] = useSubjectState(cartomancer.zoom$);
+    const [_mapBearing, setMapBearing] = useSubjectState(cartomancer.bearing$);
 
     useEffect(() => {
         const abortController = new AbortController();
@@ -89,8 +90,14 @@ export const MapTools: FC<Props> = ({ map, children }) => {
         };
         map.on("zoomend", zoomHandler);
 
+        const rotateHandler = () => {
+            setMapBearing(map.getBearing());
+        };
+        map.on("rotate", rotateHandler);
+
         return () => {
             map.off("zoomend", zoomHandler);
+            map.off("rotate", rotateHandler);
         };
     }, []);
 
