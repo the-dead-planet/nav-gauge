@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import maplibregl from "maplibre-gl";
 import { LayerSpecification, SourceSpecification } from "@maplibre/maplibre-gl-style-spec";
 import { emptyCollection } from "@tinker-chest";
-import { useUpdateSourceData } from "./useUpdateData";
+import { useUpdateSourceData } from "./useUpdateSourceData";
 import { useStateWarden } from "../../useStateWarden";
 import { FeatureStateProps } from "../map-layers";
 

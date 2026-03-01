@@ -4,7 +4,7 @@ import turfBearing from "@turf/bearing";
 import turfDistance from "@turf/distance";
 import { point as turfPoint, lineString as turfLine } from "@turf/helpers";
 import turfLength from "@turf/length";
-import { CurrentPointData } from "@apparatus";
+import { CurrentPointData, LoadedImageData } from "@apparatus";
 import { emptyCollection, formatTimeMsAsStandard, GeoJson } from "@tinker-chest";
 import { RouteTimes } from "./model";
 
@@ -147,5 +147,7 @@ export const getProgressPercentage = (progressMs: number, routeTimes?: RouteTime
 };
 
 export const formatCurrentTimestamp = (progressMs: number, progressPercentage: number): string => {
-    return `${formatTimeMsAsStandard(progressMs)} (${progressPercentage.toFixed(0)}%`;
+    return `${formatTimeMsAsStandard(progressMs)} (${progressPercentage.toFixed(0)}%)`;
 };
+
+export const getIconImageId = (image: LoadedImageData): string => `image-${image.id}`;

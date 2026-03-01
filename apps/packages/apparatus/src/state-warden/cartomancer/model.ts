@@ -1,4 +1,5 @@
 import { LngLat } from "@tinker-chest";
+import { ExifData } from "../../parsers";
 
 export interface ControlPlacement {
     top: number;
@@ -41,31 +42,6 @@ export interface OverlayComponentProps<TMap> {
     map: TMap;
 }
 
-export interface ExifData {
-    /**
-     * @example YYYY:MM:DD HH:mm:ss local
-     */
-    DateTime?: string;
-    /**
-     * @example YYYY:MM:DD HH:mm:ss local
-     */
-    DateTimeOriginal?: string;
-    /**
-     * @example YYYY:MM:DD HH:mm:ss local
-     */
-    DateTimeDigitized?: string;
-    /**
-     * @example YYYY:MM:DD local
-     */
-    GPSDateStamp?: string;
-    GPSDestBearing?: { denominator: number; numerator: number };
-    GPSDestBearingRef?: string;
-    GPSLongitude?: number | [number, number, number];
-    GPSLongitudeRef?: string | 'E' | 'W';
-    GPSLatitude?: number | [number, number, number];
-    GPSLatitudeRef?: string | 'N' | 'S';
-}
-
 export interface MarkerImage {
     id: number;
     name: string;
@@ -75,4 +51,10 @@ export interface MarkerImage {
     exif?: ExifData;
     error?: string;
     featureId?: number;
+}
+
+export interface LoadedImageData extends Omit<MarkerImage, 'progress' | 'error' | 'featureId' | 'data' | 'lngLat'> {
+    lngLat: LngLat;
+    featureId: number;
+    data: string;
 }

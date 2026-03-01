@@ -12,4 +12,8 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap> {
    public playerComponent = Player
    public routeLayerComponent = RouteLayer;
    public imagesLayerComponent = ImagesLayer;
+
+   public fitBounds = (map: MobileMap, sw: [number, number], ne: [number, number]) => {
+      map.camera?.fitBounds(sw, ne, 20);
+   }
 }

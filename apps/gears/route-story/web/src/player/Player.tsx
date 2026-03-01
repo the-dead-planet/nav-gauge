@@ -6,7 +6,7 @@ import { WebChronoLens } from "../chrono-lens/chrono-lens";
 import { updateRouteLayer } from "../tinkers";
 import * as styles from './player.module.css';
 
-export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps> = ({
+export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map>> = ({
     map,
     data$,
     routeTimes$,
@@ -17,18 +17,14 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps> 
     const [{ geojson }] = useSubjectState(data$);
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
-    const [progressMs, setProgressMs] = useSubjectState(progressMs$);
+    const [progressMs] = useSubjectState(progressMs$);
     const { individuator } = useMachineWard();
-    const { animatrix, cartomancer, chronoLens, signaliumBureau } = useStateWarden();
-    const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
-    const { showRouteLine, showRoutePoints } = gaugeControls;
+    const { chronoLens, signaliumBureau } = useStateWarden();
     const [settings] = useSubjectState(individuator.settings$);
     const [isPlaying, setIsPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [surveillanceState, setSurveillanceState] = useSubjectState(chronoLens.surveillanceState$);
     const [downloadName] = useSubjectState(chronoLens.downloadName$);
     const [fps] = useSubjectState(chronoLens.fps$);
-    const [animationControls] = useSubjectState(animatrix.controls$)
-    const { bearingLineLengthInMeters } = animationControls;
 
     const WebLens = useMemo(() => new WebChronoLens(individuator), [individuator]);
 
@@ -68,28 +64,14 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps> 
         };
     }, []);
 
-    const handlePlayClick = () => setIsPlaying((prev) => !prev);
-    const handleRecordClick = () => setSurveillanceState((prev) => prev === SurveillanceState.Stopped
-        ? SurveillanceState.InProgress
-        : SurveillanceState.Stopped);
-    const handleRecordPauseClick = () => setSurveillanceState((prev) => prev === SurveillanceState.Paused
-        ? SurveillanceState.InProgress
-        : SurveillanceState.Paused);
-
     const progressPercentage = getProgressPercentage(progressMs, routeTimes);
 
     const handleProgressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         playerOperator.updateProgress(
             Number(event.target.value),
-            chronoLens,
-            (geojson, routeTimes, value) => updateRouteLayer(
-                { showRouteLine, showRoutePoints },
-                map,
-                geojson,
-                routeTimes.startTimeEpoch,
-                value,
-                bearingLineLengthInMeters
-            )
+            (currentPoint, lines) => {
+                updateRouteLayer(map, currentPoint, lines);
+            }
         )
     }
 
@@ -127,14 +109,14 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps> 
                 <p className={styles.text}>
                     {formatCurrentTimestamp(progressMs, progressPercentage)}
                 </p>
-                <button onClick={handlePlayClick}>
+                <button onClick={playerOperator.onPlay}>
                     {isPlaying ? 'Pause' : 'Play'}
                 </button>
-                <button onClick={handleRecordClick}>
+                <button onClick={playerOperator.onRecord}>
                     {surveillanceState === SurveillanceState.Stopped ? 'Start' : 'Stop'} recording
                 </button>
                 {surveillanceState !== SurveillanceState.Stopped ? (
-                    <button onClick={handleRecordPauseClick}>
+                    <button onClick={playerOperator.onRecordPause}>
                         {surveillanceState === SurveillanceState.Paused ? 'Resume' : 'Pause'} recording
                     </button>
                 ) : null}
