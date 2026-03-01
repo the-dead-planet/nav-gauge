@@ -1,13 +1,14 @@
-import { FC, useEffect, useMemo } from "react";
+import { FC, useRef, useEffect } from "react";
 import { View, Button } from "react-native";
-import Slider from "@react-native-community/slider";
+import Slider, { SliderReferenceType } from "@react-native-community/slider";
 import { OverlayComponentProps, SurveillanceState, useMachineWard, useStateWarden, useSubjectState } from "@apparatus";
 import { formatCurrentTimestamp, getProgressPercentage, RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Text } from "@mobile-ui";
 import { MobileMap } from "@mobile-ui";
 import { useTheme } from "@ui";
+import { currentPointRef$, linesRef$ } from "../RouteLayer";
 
-export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps> = ({
+export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap>> = ({
     map,
     data$,
     routeTimes$,
@@ -18,19 +19,21 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps> = ({
     const theme = useTheme();
     const [{ geojson }] = useSubjectState(data$);
     const [routeTimes] = useSubjectState(routeTimes$);
-    const [images] = useSubjectState(images$);
-    const [progressMs, setProgressMs] = useSubjectState(progressMs$);
+    const [progressMs] = useSubjectState(progressMs$);
     const { individuator } = useMachineWard();
-    const { animatrix, cartomancer, chronoLens, signaliumBureau } = useStateWarden();
-    const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
-    const { showRouteLine, showRoutePoints } = gaugeControls;
+    const { animatrix, chronoLens } = useStateWarden();
     const [settings] = useSubjectState(individuator.settings$);
     const [isPlaying, setIsPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [surveillanceState, setSurveillanceState] = useSubjectState(chronoLens.surveillanceState$);
     const [downloadName] = useSubjectState(chronoLens.downloadName$);
     const [fps] = useSubjectState(chronoLens.fps$);
-    const [animationControls] = useSubjectState(animatrix.controls$)
-    const { bearingLineLengthInMeters } = animationControls;
+
+    const handleProgressChange = (value: number) => {
+        playerOperator.updateProgress(value, (currentPoint, lines) => {
+            linesRef$.value?.current?.setNativeProps({ shape: lines });
+            currentPointRef$.value?.current?.setNativeProps({ shape: currentPoint });
+        });
+    };
 
     // TODO: 
     // const MobileLens = useMemo(() => new WebChronoLens(individuator), [individuator]);
@@ -71,23 +74,7 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps> = ({
     //     };
     // }, []);
 
-    const handlePlayClick = () => setIsPlaying((prev) => !prev);
-    // const handleRecordClick = () => setSurveillanceState((prev) => prev === SurveillanceState.Stopped
-    //     ? SurveillanceState.InProgress
-    //     : SurveillanceState.Stopped);
-    // const handleRecordPauseClick = () => setSurveillanceState((prev) => prev === SurveillanceState.Paused
-    //     ? SurveillanceState.InProgress
-    //     : SurveillanceState.Paused);
-
     const progressPercentage = getProgressPercentage(progressMs, routeTimes);
-
-    const handleProgressChange = (value: number) => {
-        playerOperator.updateProgress(value, chronoLens, 
-            (geojson, routeTimes, value) => {
-                // TODO: Update layer
-            }
-        )
-    }
 
     const getPosition = (featureId: number) => {
         const feature = geojson?.features.find((feature) => feature.properties.id === featureId);
@@ -97,26 +84,60 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps> = ({
         return (new Date(feature.properties.time).valueOf() - new Date(routeTimes.startTime).valueOf()) / routeTimes.duration * 100;
     };
 
+    const sliderRef = useRef<Slider | null>(null);
+
+    useEffect(() => {
+        // When passed to props animation slows down.
+        sliderRef.current?.setNativeProps({ value: progressMs })
+    }, [progressMs]);
+
     return (
-        <View>
+        <View style={{ flex: 1 }}>
             <Slider
-                style={{ left: 10, right: 10, height: 40 }}
+                ref={sliderRef as SliderReferenceType}
                 minimumValue={0}
-                maximumValue={1}
-                value={progressMs}
-                minimumTrackTintColor="#FFFFFF"
-                maximumTrackTintColor="#000000"
+                maximumValue={routeTimes?.duration ?? 1}
+                step={1}
                 onValueChange={handleProgressChange}
+                style={{ height: 40 }}
+                minimumTrackTintColor="#0000FF"
+                maximumTrackTintColor="#000000"
+                thumbTintColor="gray"
             />
-            <View style={{ flexDirection: "row", justifyContent: "center" }}>
+            <View style={{
+                flexDirection: "row",
+                justifyContent: "center",
+            }}>
                 <Text>
                     {formatCurrentTimestamp(progressMs, progressPercentage)}
                 </Text>
                 <Button
                     title={isPlaying ? 'Pause' : 'Play'}
                     color={theme.colors.button}
-                    onPress={handlePlayClick}
+                    onPress={playerOperator.onPlay}
                 />
+                <Button
+                    title={`${surveillanceState === SurveillanceState.Stopped ? 'Start' : 'Stop'} recording`}
+                    color={theme.colors.button}
+                    onPress={playerOperator.onRecord}
+                />
+                {surveillanceState !== SurveillanceState.Stopped ? (
+                    <Button
+                        title={`${surveillanceState === SurveillanceState.Paused ? 'Resume' : 'Pause'} recording`}
+                        color={theme.colors.button}
+                        onPress={playerOperator.onRecordPause}
+                    />
+                ) : null}
+                <Button
+                    title={'Clear'}
+                    color={theme.colors.button}
+                    onPress={() => {
+                        // WebLens.destroyRecording();
+                    }}
+                />
+                <Text>
+                    {!routeTimes ? "" : individuator.formatTimestamp(progressMs + routeTimes.startTimeEpoch, settings)}
+                </Text>
             </View>
         </View>
     );

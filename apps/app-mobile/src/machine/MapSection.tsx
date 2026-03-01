@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef } from "react";
 import { StyleSheet } from "react-native";
-import { Camera, CameraRef, MapView, MapViewRef } from "@maplibre/maplibre-react-native";
+import { Camera, CameraRef, MapView, MapViewRef, UserLocation, UserLocationRef } from "@maplibre/maplibre-react-native";
 import { Cartomancer, useSubjectState, useStateWarden } from "@apparatus";
 import { MapTools } from "./map-tools/MapTools";
 
@@ -13,9 +13,11 @@ const styles = StyleSheet.create({
 export const MapSection: FC = () => {
     const mapRef = useRef<MapViewRef>(null);
     const cameraRef = useRef<CameraRef>(null);
+    const userLocationRef = useRef<UserLocationRef>(null);
     const map = {
         map: mapRef.current,
-        camera: cameraRef.current
+        camera: cameraRef.current,
+        userLocation: userLocationRef.current,
     };
     const { cartomancer, signaliumBureau } = useStateWarden();
     const [_isInitialised, setIsInitialised] = useSubjectState(cartomancer.isInitialised$);
@@ -40,12 +42,16 @@ export const MapSection: FC = () => {
                     signaliumBureau.addNotice({
                         id: 'map-failed',
                         type: 'error',
-                        error: new Error( 'Map loading failed'),
+                        error: new Error('Map loading failed'),
                         text: 'Something went wrong'
                     })
                 }}
+                onRegionIsChanging={(feature) => {
+                    cartomancer.bearing$.next(feature.properties.heading);
+                }}
             >
                 <Camera ref={cameraRef} />
+                {/* <UserLocation ref={userLocationRef} visible={false} onUpdate={(_location) => { }} /> */}
                 {[...overlays.entries()].map(([id, OverlayComponent]) => (
                     <OverlayComponent
                         key={id}

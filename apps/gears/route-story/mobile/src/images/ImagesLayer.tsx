@@ -1,48 +1,42 @@
-import { FC } from "react";
-import { OverlayComponentProps, useSubjectState } from "@apparatus";
-import { RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { FC, useMemo } from "react";
+import { OverlayComponentProps, useLoadedImages, useSubjectState } from "@apparatus";
+import { getIconImageId, getImageSource, IMAGE_PROPERTY, RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMap } from "@mobile-ui";
 import { Images, ShapeSource, SymbolLayer } from "@maplibre/maplibre-react-native";
 
-export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps> = ({
+export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap>> = ({
     map,
     data$,
     images$
 }) => {
+    const [{ geojson }] = useSubjectState(data$);
     const [images] = useSubjectState(images$);
-    const imagesWithData = images.filter((image) => !!image.data && !!image.lngLat);
+    const loadedImages = useLoadedImages(images);
 
-    if (imagesWithData.length === 0) {
+    const sourceDataGeojson = useMemo(
+        () => getImageSource(loadedImages, geojson),
+        [loadedImages, geojson]
+    );
+
+    if (loadedImages.length === 0) {
         return null;
     }
 
     return (
         <>
             <Images
-                images={Object.fromEntries(imagesWithData.map((image) => [`image-${image.id}`, {
-                    uri: image.data
-                }]))}
+                images={Object.fromEntries(
+                    loadedImages.map((image) => [getIconImageId(image), { uri: image.data }])
+                )}
             />
             <ShapeSource
                 id="markerSource"
-                shape={{
-                    type: 'FeatureCollection',
-                    features: imagesWithData.map((image) => ({
-                        type: 'Feature',
-                        geometry: {
-                            type: 'Point',
-                            coordinates: [image.lngLat!.lng, image.lngLat!.lat],
-                        },
-                        properties: {
-                            imageName: `image-${image.id}`
-                        }
-                    }))
-                }}
+                shape={sourceDataGeojson}
             >
                 <SymbolLayer
                     id="markerLayer"
                     style={{
-                        iconImage: ['get', 'imageName'],
+                        iconImage: ['get', IMAGE_PROPERTY],
                         iconSize: .05,
                     }}
                 />

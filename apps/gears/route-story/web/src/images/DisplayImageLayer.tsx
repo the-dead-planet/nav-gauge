@@ -6,7 +6,6 @@ import {
     MapLayerData,
 } from "@apparatus";
 import { emptyCollection, GeoJson } from "@tinker-chest";
-import { getIconImageId } from "../tinkers";
 import { LoadedImageData } from "./image-parser";
 import {
     layerIds,
@@ -15,7 +14,9 @@ import {
     getDisplayImageLayers,
     ImageFeatureProperties,
     getImageIconSize,
-    IMAGE_SIZE
+    IMAGE_SIZE,
+    getIconImageId,
+    IMAGE_PROPERTY
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 
 const ANIMATION_DURATION = 250;
@@ -37,7 +38,7 @@ const getData = (
 
     const properties: ImageFeatureProperties = {
         imageId: image.id,
-        iconImageId: getIconImageId(image)
+        [IMAGE_PROPERTY]: getIconImageId(image)
     };
 
     return {

@@ -1,7 +1,7 @@
 import { FC, ReactNode } from "react";
 import { StyleSheet, View } from "react-native";
-import { CameraRef, MapViewRef } from "@maplibre/maplibre-react-native";
 import { useObservableState, useSubjectState, useStateWarden } from "@apparatus";
+import { MobileMap } from "@mobile-ui";
 
 const styles = StyleSheet.create({
     container: {
@@ -29,10 +29,7 @@ const styles = StyleSheet.create({
 });
 
 interface Props {
-    map: {
-        map: MapViewRef | null;
-        camera: CameraRef | null;
-    };
+    map: MobileMap;
     children?: ReactNode;
 }
 

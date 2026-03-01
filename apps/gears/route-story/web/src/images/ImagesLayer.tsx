@@ -9,21 +9,22 @@ import {
     MapLayerData,
     useSubjectState
 } from "@apparatus";
-import { useLoadedImages } from "../hooks/useLoadedImages";
+import { useLoadedWebImages } from "../hooks/useLoadedWebImages";
 import { DisplayImageLayer } from "./DisplayImageLayer";
-import { getIconImageId, updateImageFeatureId } from "../tinkers";
+import { updateImageFeatureId } from "../tinkers";
 import { useMapImages } from "../hooks";
 import {
     RouteToolProps,
     getImagesLayers,
-    ImageFeature,
-    ImageFeatureProperties,
     layerIds,
     sourceIds,
-    IMAGE_SIZE
+    IMAGE_SIZE,
+    getIconImageId,
+    getImageSource,
+    IMAGE_PROPERTY
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 
-export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps> = ({
+export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map>> = ({
     map,
     data$,
     images$
@@ -31,36 +32,23 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
     const { themeName } = useTheme();
     const [{ geojson }] = useSubjectState(data$);
     const [images] = useSubjectState(images$);
-    const loadedImages = useLoadedImages(images);
+    const loadedImages = useLoadedWebImages(images);
     const [highlightIds, setHighlightIds] = useState<Set<string>>(new Set());
     const [draggingId, setDraggingId] = useState<number | null>(null);
 
     useMapImages(map, loadedImages.filter((image) => !!image.bitmap).map((image) => ({
         icon: image.bitmap,
-        iconImageId: getIconImageId(image),
+        [IMAGE_PROPERTY]: getIconImageId(image),
         options: {
             width: IMAGE_SIZE,
             height: IMAGE_SIZE
         }
-    })))
+    })));
 
-    const sourceDataGeojson = useMemo((): GeoJSON.FeatureCollection<GeoJSON.Point, ImageFeatureProperties> => ({
-        type: 'FeatureCollection',
-        features: loadedImages.reduce<ImageFeature[]>((acc, image) => {
-            const feature = geojson?.features.find((f) => f.properties.id === image.featureId);
-            if (feature) {
-                acc.push({
-                    type: 'Feature',
-                    geometry: feature.geometry,
-                    properties: {
-                        imageId: image.id,
-                        iconImageId: getIconImageId(image)
-                    }
-                });
-            }
-            return acc;
-        }, [])
-    }), [loadedImages, geojson]);
+    const sourceDataGeojson = useMemo(
+        () => getImageSource(loadedImages, geojson),
+        [loadedImages, geojson]
+    );
 
     const mapLayerData = useMemo((): MapLayerData => {
         return {
@@ -134,7 +122,7 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
                     geometry: feature.geometry,
                     properties: {
                         imageId: -1,
-                        iconImageId: getIconImageId(image)
+                        [IMAGE_PROPERTY]: getIconImageId(image)
                     }
                 }])
             });

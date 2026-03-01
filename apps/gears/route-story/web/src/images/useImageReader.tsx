@@ -8,7 +8,7 @@ import { FileOperator } from "@the-dead-planet/nav-gauge-gears-route-story-commo
 type ImageReaderResult = (file: File, geojson?: GeoJson) => void;
 
 export const useImageReader = (
-    fileOperator: FileOperator,
+    fileOperator: FileOperator<maplibregl.Map>,
     images$: BehaviorSubject<WebMarkerImage[]>
 ): ImageReaderResult => {
     const [_images, setImages] = useSubjectState(images$);

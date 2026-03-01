@@ -1,8 +1,9 @@
+import { IMAGE_PROPERTY } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { useEffect } from "react";
 
 export interface MapImageData {
     icon: string | ImageBitmap;
-    iconImageId: string;
+    [IMAGE_PROPERTY]: string;
     options?: {
         width?: number;
         height?: number;

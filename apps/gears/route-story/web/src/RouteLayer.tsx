@@ -1,6 +1,6 @@
 import { FC, useEffect, useMemo } from "react";
 import { LayerSpecification, SourceSpecification } from "@maplibre/maplibre-gl-style-spec";
-import maplibregl from "maplibre-gl";
+import maplibregl, { LngLat } from "maplibre-gl";
 import bbox from "@turf/bbox";
 import {
     OverlayComponentProps,
@@ -19,20 +19,20 @@ import {
     routePointsLayer
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { updateRouteLayer } from "./tinkers";
-import { useLoadedImages } from "./hooks";
-import { LoadedImageData } from "./images/image-parser";
+import { useLoadedWebImages } from "./hooks";
 
-export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps> = ({
+export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map>> = ({
     map,
     data$,
     routeTimes$,
     images$,
     progressMs$,
+    playerOperator,
 }) => {
     const [{ geojson }, setData] = useSubjectState(data$);
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
-    const [progressMs, setProgressMs] = useSubjectState(progressMs$);
+    const [progressMs] = useSubjectState(progressMs$);
     const { animatrix, cartomancer, chronoLens } = useStateWarden();
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const { showRouteLine, showRoutePoints } = gaugeControls;
@@ -63,7 +63,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPro
             } : {}));
     }, []);
 
-    const loadedImages = useLoadedImages(images);
+    const loadedImages = useLoadedWebImages(images);
 
     const sources = useMemo((): { [key in string]: SourceSpecification } => {
         if (!geojson || !routeTimes) {
@@ -110,7 +110,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPro
 
     const mapLayerData = useMemo(
         (): MapLayerData => ({ sources, layers }),
-        [sources,layers]
+        [sources, layers]
     );
 
     useMapLayerData(map, mapLayerData)
@@ -119,91 +119,29 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPro
         if (!isPlaying || !geojson || !routeTimes) {
             return;
         }
-        let animation: number | undefined;
-        let displayImageTimeout: NodeJS.Timeout | undefined;
-        const { startTimeEpoch, endTimeEpoch } = routeTimes;
-        const sortedImageFeatures = loadedImages.toSorted((a, b) => a.featureId - b.featureId);
-        let last = performance.now();
-        let current = progressMs;
-        let nextImageIndex = sortedImageFeatures.findIndex((imageFeature): boolean => {
-            const f = geojson.features.find((feature) => feature.properties.id === imageFeature.featureId);
-            return !!f && new Date(f.properties.time).valueOf() >= new Date(startTimeEpoch + progressMs).valueOf();
-        });
-
-        // TODO: Move to animatrix
-        const animate = () => {
-            const now = performance.now();
-            const dt = now - last;
-            last = now;
-            current += dt + speedMultiplier;
-            if (startTimeEpoch + current >= endTimeEpoch) {
-                current = 0;
-                nextImageIndex = 0;
-            }
-            const nextImage: LoadedImageData | undefined = sortedImageFeatures[nextImageIndex];
-            const { currentPoint, currentPointBearing } = updateRouteLayer({ showRouteLine, showRoutePoints }, map, geojson, startTimeEpoch, current, bearingLineLengthInMeters, nextImage?.featureId);
-
-            if (animation !== undefined && nextImage && nextImage.featureId <= Number(currentPoint.id)) {
-                animatrix.displayImageId$.next(nextImage.id);
-                nextImageIndex = nextImageIndex + 1;
-                cancelAnimationFrame(animation);
-                displayImageTimeout = setTimeout(() => {
-                    animatrix.displayImageId$.next(null);
-                    animation = requestAnimationFrame(animate);
-                }, displayImageDuration);
-
-                return;
-            }
-
-            if (followCurrentPoint) {
-                const lngLat = new maplibregl.LngLat(currentPoint.geometry.coordinates[0], currentPoint.geometry.coordinates[1]);
-                const currentBearing = map.getBearing();
-                const nextBearing = (cameraAngle + (autoRotate ? currentPointBearing : 0));
-                const bearingDiff = ((nextBearing - currentBearing + 540) % 360) - 180;
-
+        playerOperator.animateRoute(loadedImages,
+            (currentPoint, lines) => {
+                updateRouteLayer(map, currentPoint, lines);
+            },
+            (position, bearing) => {
                 map.easeTo({
                     easeId: 'follow-current-point',
                     animate: true,
-                    center: lngLat,
+                    center: new LngLat(position[0], position[1]),
                     essential: true,
                     duration: easeDuration,
                     zoom,
                     pitch,
-                    bearing: currentBearing + Math.max(-maxBearingDiffPerFrame, Math.min(maxBearingDiffPerFrame, bearingDiff)),
+                    bearing,
                     roll: cameraRoll,
                 });
-            }
-
-            // TODO: Calculate % of geometry done based on current progressMs and update paint property line gradient instead of all data.
-            setProgressMs(current);
-            animation = requestAnimationFrame(animate);
-        };
-
-        animate();
+            },
+        );
 
         return () => {
-            clearTimeout(displayImageTimeout);
-            animatrix.displayImageId$.next(null);
-            if (animation !== undefined) {
-                cancelAnimationFrame(animation);
-            }
+            playerOperator.cleanupAnimateRoute();
         };
-    }, [
-        isPlaying,
-        followCurrentPoint,
-        cameraAngle,
-        cameraRoll,
-        autoRotate,
-        pitch,
-        zoom,
-        zoomInToImages,
-        speedMultiplier,
-        easeDuration,
-        bearingLineLengthInMeters,
-        maxBearingDiffPerFrame,
-        displayImageDuration,
-        loadedImages,
-    ]);
+    }, [isPlaying, loadedImages, easeDuration, zoom, pitch, cameraRoll]);
 
     return null;
 };
