@@ -21,21 +21,19 @@ const styles = StyleSheet.create({
 
 export const RouteLayerFitBounds: FC<ToolProps<MobileMap> & RouteFitBoundsProps<MobileMap>> = ({
     map,
-    data$, 
+    data$,
     onFitBounds,
 }) => {
     const [data] = useSubjectState(data$);
     const { boundingBox } = data;
 
     const handleFitBounds = () => {
-        const { camera } = map;
-        if (!camera || !boundingBox) {
-            return;
+        if (boundingBox) {
+            onFitBounds(map,
+                [boundingBox[0], boundingBox[1]],
+                [boundingBox[2], boundingBox[3]],
+            );
         }
-        onFitBounds(map,
-            [boundingBox[0], boundingBox[1]],
-            [boundingBox[2], boundingBox[3]],
-        );
     };
 
     useEffect(() => {

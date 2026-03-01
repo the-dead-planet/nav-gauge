@@ -6,6 +6,7 @@ import { formatCurrentTimestamp, getProgressPercentage, RouteToolProps } from "@
 import { Text } from "@mobile-ui";
 import { MobileMap } from "@mobile-ui";
 import { useTheme } from "@ui";
+import { updateRouteLayer } from "../tinkers";
 
 export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap>> = ({
     map,
@@ -26,6 +27,10 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mobile
     const [surveillanceState, setSurveillanceState] = useSubjectState(chronoLens.surveillanceState$);
     const [downloadName] = useSubjectState(chronoLens.downloadName$);
     const [fps] = useSubjectState(chronoLens.fps$);
+
+    const handleProgressChange = (value: number) => {
+        playerOperator.updateProgress(value, (currentPoint, lines) => updateRouteLayer(currentPoint, lines));
+    };
 
     // TODO: 
     // const MobileLens = useMemo(() => new WebChronoLens(individuator), [individuator]);
@@ -90,7 +95,7 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mobile
                 minimumValue={0}
                 maximumValue={routeTimes?.duration ?? 1}
                 step={1}
-                onValueChange={playerOperator.updateProgress}
+                onValueChange={handleProgressChange}
                 style={{ height: 40 }}
                 minimumTrackTintColor="#0000FF"
                 maximumTrackTintColor="#000000"

@@ -13,12 +13,12 @@ export const RouteLayerFitBounds: FC<ToolProps<maplibregl.Map> & RouteFitBoundsP
     const { boundingBox } = data;
 
     const handleFitBounds = () => {
-        if (!boundingBox) {
-            return;
+        if (boundingBox) {
+            onFitBounds(map,
+                [boundingBox[0], boundingBox[1]],
+                [boundingBox[2], boundingBox[3]],
+            );
         }
-        onFitBounds(map,
-            [boundingBox[0], boundingBox[1]], [boundingBox[2], boundingBox[3]],
-        );
     };
 
     useEffect(() => {
