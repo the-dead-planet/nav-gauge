@@ -141,22 +141,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPro
         return () => {
             playerOperator.cleanupAnimateRoute();
         };
-    }, [
-        isPlaying,
-        followCurrentPoint,
-        cameraAngle,
-        cameraRoll,
-        autoRotate,
-        pitch,
-        zoom,
-        zoomInToImages,
-        speedMultiplier,
-        easeDuration,
-        bearingLineLengthInMeters,
-        maxBearingDiffPerFrame,
-        displayImageDuration,
-        loadedImages,
-    ]);
+    }, [isPlaying, loadedImages, easeDuration, zoom, pitch, cameraRoll]);
 
     return null;
 };

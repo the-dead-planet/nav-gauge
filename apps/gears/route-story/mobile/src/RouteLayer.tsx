@@ -115,22 +115,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mo
         return () => {
             playerOperator.cleanupAnimateRoute();
         };
-    }, [
-        isPlaying,
-        followCurrentPoint,
-        cameraAngle,
-        cameraRoll,
-        autoRotate,
-        pitch,
-        zoom,
-        zoomInToImages,
-        speedMultiplier,
-        easeDuration,
-        bearingLineLengthInMeters,
-        maxBearingDiffPerFrame,
-        displayImageDuration,
-        loadedImages
-    ]);
+    }, [isPlaying, loadedImages, easeDuration, zoom, pitch]);
 
     if (!sources) {
         return null;
