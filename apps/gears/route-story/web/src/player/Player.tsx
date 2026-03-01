@@ -6,7 +6,7 @@ import { WebChronoLens } from "../chrono-lens/chrono-lens";
 import { updateRouteLayer } from "../tinkers";
 import * as styles from './player.module.css';
 
-export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps> = ({
+export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map>> = ({
     map,
     data$,
     routeTimes$,
@@ -19,16 +19,12 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps> 
     const [images] = useSubjectState(images$);
     const [progressMs] = useSubjectState(progressMs$);
     const { individuator } = useMachineWard();
-    const { animatrix, cartomancer, chronoLens, signaliumBureau } = useStateWarden();
-    const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
-    const { showRouteLine, showRoutePoints } = gaugeControls;
+    const { chronoLens, signaliumBureau } = useStateWarden();
     const [settings] = useSubjectState(individuator.settings$);
     const [isPlaying, setIsPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [surveillanceState, setSurveillanceState] = useSubjectState(chronoLens.surveillanceState$);
     const [downloadName] = useSubjectState(chronoLens.downloadName$);
     const [fps] = useSubjectState(chronoLens.fps$);
-    const [animationControls] = useSubjectState(animatrix.controls$)
-    const { bearingLineLengthInMeters } = animationControls;
 
     const WebLens = useMemo(() => new WebChronoLens(individuator), [individuator]);
 

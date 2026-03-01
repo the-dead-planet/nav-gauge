@@ -1,5 +1,5 @@
 import { FC, useEffect } from "react";
-import { ToolProps, useStateWarden, useSubjectState } from "@apparatus";
+import { ToolProps, useSubjectState } from "@apparatus";
 import { Icons } from "@web-ui";
 import { RouteFitBoundsProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import * as styles from './route-layer.module.css';
@@ -9,7 +9,6 @@ export const RouteLayerFitBounds: FC<ToolProps<maplibregl.Map> & RouteFitBoundsP
     data$,
     onFitBounds,
 }) => {
-    const stateWarden = useStateWarden();
     const [data] = useSubjectState(data$);
     const { boundingBox } = data;
 
@@ -17,10 +16,9 @@ export const RouteLayerFitBounds: FC<ToolProps<maplibregl.Map> & RouteFitBoundsP
         if (!boundingBox) {
             return;
         }
-        onFitBounds(stateWarden, () => map.fitBounds(
-            [boundingBox[0], boundingBox[1], boundingBox[2], boundingBox[3]],
-            { animate: true, padding: 50 }
-        ));
+        onFitBounds(map,
+            [boundingBox[0], boundingBox[1]], [boundingBox[2], boundingBox[3]],
+        );
     };
 
     useEffect(() => {

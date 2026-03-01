@@ -24,7 +24,7 @@ import {
     IMAGE_PROPERTY
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 
-export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps> = ({
+export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map>> = ({
     map,
     data$,
     images$

@@ -1,11 +1,10 @@
 import { FC } from "react";
 import { FileInputStatus } from "@web-ui";
 import { useImageReader } from "./images/useImageReader";
-import { useSubjectState, parsers, useStateWarden } from "@apparatus";
+import { useSubjectState, parsers } from "@apparatus";
 import { RouteFileInputProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 
-export const RouteStoryFileInput: FC<RouteFileInputProps> = ({ data$, images$, fileOperator }) => {
-    const { signaliumBureau } = useStateWarden();
+export const RouteStoryFileInput: FC<RouteFileInputProps<maplibregl.Map>> = ({ data$, images$, fileOperator }) => {
     const [{ geojson, routeName, error }] = useSubjectState(data$);
     const [isLoading] = useSubjectState(fileOperator.isLoading$);
     const readImage = useImageReader(fileOperator, images$);
@@ -21,7 +20,6 @@ export const RouteStoryFileInput: FC<RouteFileInputProps> = ({ data$, images$, f
 
         fileOperator.uploadFile<File>(
             files,
-            signaliumBureau,
             (file) => file.text(),
             readImage
         );

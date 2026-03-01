@@ -4,7 +4,7 @@ import { getIconImageId, getImageSource, IMAGE_PROPERTY, RouteToolProps } from "
 import { MobileMap } from "@mobile-ui";
 import { Images, ShapeSource, SymbolLayer } from "@maplibre/maplibre-react-native";
 
-export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps> = ({
+export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap>> = ({
     map,
     data$,
     images$

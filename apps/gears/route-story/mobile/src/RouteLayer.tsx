@@ -1,6 +1,6 @@
 import { FC, useEffect, useMemo, useRef } from "react";
 import { CircleLayer, CircleLayerStyle, LineLayer, LineLayerStyle, ShapeSource, ShapeSourceRef } from "@maplibre/maplibre-react-native";
-import { LoadedImageData, OverlayComponentProps, useLoadedImages, useStateWarden, useSubjectState } from "@apparatus";
+import { OverlayComponentProps, useLoadedImages, useStateWarden, useSubjectState } from "@apparatus";
 import {
     getRouteSourceData,
     RouteToolProps,
@@ -11,9 +11,8 @@ import {
     routePointsLayer
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMap } from "@mobile-ui";
-import { updateRouteLayer } from "./tinkers";
 
-export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps> = ({
+export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap>> = ({
     map,
     data$,
     routeTimes$,

@@ -1,13 +1,13 @@
-import { FC, useRef, createRef, useState, useEffect } from "react";
+import { FC, useRef, useEffect } from "react";
 import { View, Button } from "react-native";
-import Slider, { SliderRef, SliderReferenceType } from "@react-native-community/slider";
+import Slider, { SliderReferenceType } from "@react-native-community/slider";
 import { OverlayComponentProps, SurveillanceState, useMachineWard, useStateWarden, useSubjectState } from "@apparatus";
 import { formatCurrentTimestamp, getProgressPercentage, RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Text } from "@mobile-ui";
 import { MobileMap } from "@mobile-ui";
 import { useTheme } from "@ui";
 
-export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps> = ({
+export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap>> = ({
     map,
     data$,
     routeTimes$,
@@ -18,19 +18,14 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps> = ({
     const theme = useTheme();
     const [{ geojson }] = useSubjectState(data$);
     const [routeTimes] = useSubjectState(routeTimes$);
-    const [images] = useSubjectState(images$);
-    const [progressMs, setProgressMs] = useSubjectState(progressMs$);
+    const [progressMs] = useSubjectState(progressMs$);
     const { individuator } = useMachineWard();
-    const { animatrix, cartomancer, chronoLens, signaliumBureau } = useStateWarden();
-    const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
-    const { showRouteLine, showRoutePoints } = gaugeControls;
+    const { animatrix, chronoLens } = useStateWarden();
     const [settings] = useSubjectState(individuator.settings$);
     const [isPlaying, setIsPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [surveillanceState, setSurveillanceState] = useSubjectState(chronoLens.surveillanceState$);
     const [downloadName] = useSubjectState(chronoLens.downloadName$);
     const [fps] = useSubjectState(chronoLens.fps$);
-    const [animationControls] = useSubjectState(animatrix.controls$)
-    const { bearingLineLengthInMeters } = animationControls;
 
     // TODO: 
     // const MobileLens = useMemo(() => new WebChronoLens(individuator), [individuator]);

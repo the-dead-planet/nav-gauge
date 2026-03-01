@@ -20,9 +20,8 @@ import {
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { updateRouteLayer } from "./tinkers";
 import { useLoadedWebImages } from "./hooks";
-import { LoadedImageData } from "./images/image-parser";
 
-export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps> = ({
+export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map>> = ({
     map,
     data$,
     routeTimes$,
@@ -33,7 +32,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPro
     const [{ geojson }, setData] = useSubjectState(data$);
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
-    const [progressMs, setProgressMs] = useSubjectState(progressMs$);
+    const [progressMs] = useSubjectState(progressMs$);
     const { animatrix, cartomancer, chronoLens } = useStateWarden();
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const { showRouteLine, showRoutePoints } = gaugeControls;

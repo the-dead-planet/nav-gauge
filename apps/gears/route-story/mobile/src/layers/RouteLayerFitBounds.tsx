@@ -1,7 +1,7 @@
 import { FC, useEffect } from "react";
 import { Pressable, StyleSheet } from "react-native";
 import { Text } from "@mobile-ui";
-import { ToolProps, useStateWarden, useSubjectState } from "@apparatus";
+import { ToolProps, useSubjectState } from "@apparatus";
 import { RouteFitBoundsProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMap } from "@mobile-ui";
 
@@ -21,10 +21,9 @@ const styles = StyleSheet.create({
 
 export const RouteLayerFitBounds: FC<ToolProps<MobileMap> & RouteFitBoundsProps<MobileMap>> = ({
     map,
-    data$,
+    data$, 
     onFitBounds,
 }) => {
-    const stateWarden = useStateWarden();
     const [data] = useSubjectState(data$);
     const { boundingBox } = data;
 
@@ -33,11 +32,10 @@ export const RouteLayerFitBounds: FC<ToolProps<MobileMap> & RouteFitBoundsProps<
         if (!camera || !boundingBox) {
             return;
         }
-        onFitBounds(stateWarden, () => camera.fitBounds(
+        onFitBounds(map,
             [boundingBox[0], boundingBox[1]],
             [boundingBox[2], boundingBox[3]],
-            20
-        ));
+        );
     };
 
     useEffect(() => {

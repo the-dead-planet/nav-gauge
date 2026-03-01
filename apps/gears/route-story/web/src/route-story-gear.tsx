@@ -13,6 +13,10 @@ export class WebRouteStoryGear extends RouteStoryGear<maplibregl.Map> {
    public routeLayerComponent = RouteLayer;
    public imagesLayerComponent = ImagesLayer;
 
+   public fitBounds = (map: maplibregl.Map, sw: [number, number], ne: [number, number]) => {
+      map.fitBounds([sw, ne], { animate: true, padding: 50 });
+   }
+
    private confirmBeforeLeaveSubscription: Subscription | null = null;
 
    public engageRouteStory = () => {

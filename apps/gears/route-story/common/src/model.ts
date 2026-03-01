@@ -1,6 +1,8 @@
-import { LoadedImageData, MarkerImage, SignaliumBureau, StateWarden } from "@apparatus";
-import { GeoJson, LngLat, ParsingResultWithError } from "@tinker-chest";
+import { MarkerImage } from "@apparatus";
+import { ParsingResultWithError } from "@tinker-chest";
 import { BehaviorSubject } from "rxjs";
+import { FileOperator } from "./file-operator";
+import { PlayerOperator } from "./player-operator";
 
 export interface RouteTimes {
     startTime: string;
@@ -10,59 +12,21 @@ export interface RouteTimes {
     duration: number;
 }
 
-export interface RouteToolProps {
+export interface RouteToolProps<TMap> {
     data$: BehaviorSubject<ParsingResultWithError>;
     routeTimes$: BehaviorSubject<RouteTimes | null>;
     images$: BehaviorSubject<MarkerImage[]>;
     progressMs$: BehaviorSubject<number>;
-    playerOperator: PlayerOperator;
+    playerOperator: PlayerOperator<TMap>;
 }
 
-export interface RouteFileInputProps {
+export interface RouteFileInputProps<TMap> {
     data$: BehaviorSubject<ParsingResultWithError>;
     images$: BehaviorSubject<MarkerImage[]>;
-    fileOperator: FileOperator;
+    fileOperator: FileOperator<TMap>;
 }
 
 export interface RouteFitBoundsProps<TMap> {
     data$: BehaviorSubject<ParsingResultWithError>;
-    onFitBounds: (
-        stateWarden: StateWarden,
-        handler: () => void
-    ) => void;
-}
-
-export interface FileOperator {
-    isLoading$: BehaviorSubject<boolean>;
-    onError: (error: Error, signaliumBureau: SignaliumBureau) => void;
-    uploadFile: <TFile extends { name?: string | null; type: string | null; }>(
-        files: TFile[],
-        signaliumBureau: SignaliumBureau,
-        getText: (file: TFile) => Promise<string>,
-        readImage: (file: TFile, geojson?: GeoJson) => void,
-    ) => void;
-    pushInitialImage: (fileName: string) => void;
-    updateImageProgress: (fileName: string, progress: number) => void;
-    updateImageError: (fileName: string, message?: string) => void;
-}
-
-export interface PlayerOperator {
-    onPlay: () => void;
-    onRecord: () => void;
-    onRecordPause: () => void;
-    updateProgress: (
-        value: number,
-        updateLayer?: (
-            currentPoint: GeoJSON.Feature<GeoJSON.Point>,
-            lines: GeoJSON.GeoJSON,
-        ) => void,
-    ) => void,
-    animation: number | undefined,
-    displayImageTimeout: Timer | undefined,
-    animateRoute: (
-        loadedImages: LoadedImageData[],
-        onUpdateLayer: (currentPoint: GeoJSON.Feature<GeoJSON.Point>, lines: GeoJSON.GeoJSON) => void,
-        onUpdateMapCamera: (position: GeoJSON.Position, bearing: number) => void,
-    ) => void;
-    cleanupAnimateRoute: () => void;
+    onFitBounds: (map: TMap, sw: [number, number], ne: [number, number]) => void;
 }
