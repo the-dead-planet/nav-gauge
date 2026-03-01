@@ -1,4 +1,5 @@
 import { FC, useEffect, useMemo, useRef } from "react";
+import { BehaviorSubject } from "rxjs";
 import { CircleLayer, CircleLayerStyle, LineLayer, LineLayerStyle, ShapeSource, ShapeSourceRef } from "@maplibre/maplibre-react-native";
 import { OverlayComponentProps, useLoadedImages, useStateWarden, useSubjectState } from "@apparatus";
 import {
@@ -11,6 +12,9 @@ import {
     routePointsLayer
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMap } from "@mobile-ui";
+
+export const currentPointRef$ = new BehaviorSubject<React.RefObject<ShapeSourceRef | null> | null>(null);
+export const linesRef$ = new BehaviorSubject<React.RefObject<ShapeSourceRef | null> | null>(null);
 
 export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap>> = ({
     map,
@@ -44,7 +48,12 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mo
         maxBearingDiffPerFrame,
     } = animationControls;
 
+    const lineSourceRef = useRef<ShapeSourceRef>(null);
+    const pointSourceRef = useRef<ShapeSourceRef>(null);
+
     useEffect(() => {
+        linesRef$.next(lineSourceRef);
+        currentPointRef$.next(pointSourceRef);
         // fetch('/example.gpx')
         //     .then((file) => file.text())
         //     .then((text) => parsers.get('.gpx')?.parseTextToGeoJson(text))
@@ -52,6 +61,11 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mo
         //         ...result,
         //         boundingBox: bbox(result.geojson)
         //     } : {}));
+
+        return () => {
+            linesRef$.next(null);
+            currentPointRef$.next(null);
+        };
     }, []);
 
     const loadedImages = useLoadedImages(images);
@@ -76,9 +90,6 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mo
             [sourceIds.currentPoint]: currentPoint
         };
     }, [geojson, routeTimes?.startTimeEpoch, bearingLineLengthInMeters, showRouteLine, showRoutePoints]);
-
-    const lineSourceRef = useRef<ShapeSourceRef>(null);
-    const pointSourceRef = useRef<ShapeSourceRef>(null);
 
     useEffect(() => {
         if (!isPlaying || !geojson || !routeTimes) {

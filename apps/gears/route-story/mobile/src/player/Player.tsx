@@ -6,7 +6,7 @@ import { formatCurrentTimestamp, getProgressPercentage, RouteToolProps } from "@
 import { Text } from "@mobile-ui";
 import { MobileMap } from "@mobile-ui";
 import { useTheme } from "@ui";
-import { updateRouteLayer } from "../tinkers";
+import { currentPointRef$, linesRef$ } from "../RouteLayer";
 
 export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap>> = ({
     map,
@@ -29,7 +29,10 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mobile
     const [fps] = useSubjectState(chronoLens.fps$);
 
     const handleProgressChange = (value: number) => {
-        playerOperator.updateProgress(value, (currentPoint, lines) => updateRouteLayer(currentPoint, lines));
+        playerOperator.updateProgress(value, (currentPoint, lines) => {
+            linesRef$.value?.current?.setNativeProps({ shape: lines });
+            currentPointRef$.value?.current?.setNativeProps({ shape: currentPoint });
+        });
     };
 
     // TODO: 
