@@ -3,6 +3,8 @@ import { StateWarden, SurveillanceState, LoadedImageData } from "@apparatus";
 import { ParsingResultWithError } from "@tinker-chest";
 import { RouteTimes } from "./model";
 import { getRouteSourceData } from "./tinkers";
+import { ANIMATION_DURATION, DEFAULT_IMAGE_SIZE } from "./layers";
+import { getImageIconSize, IMAGE_SIZE } from "./images";
 
 export class PlayerOperator<TMap> {
     private stateWarden: StateWarden<TMap>;
@@ -155,5 +157,52 @@ export class PlayerOperator<TMap> {
         if (this.animation !== undefined) {
             cancelAnimationFrame(this.animation);
         }
+    };
+
+    private easeInOut(t: number) {
+        return t < 0.5
+            ? 2 * t * t
+            : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    }
+
+    private animateIconSize = (
+        from: number,
+        to: number,
+        updateIconSize: (value: number) => void,
+    ): void => {
+        const start = Date.now();
+
+        const frame = () => {
+            const progress = Math.min((Date.now() - start) / ANIMATION_DURATION, 1);
+            const value = from + (to - from) * this.easeInOut(progress);
+
+            updateIconSize(value);
+
+            if (progress < 1) {
+                requestAnimationFrame(frame);
+            }
+        };
+
+        requestAnimationFrame(frame);
+    };
+
+    private inDisplayImageTimeout: Timer | undefined;
+
+    public animateDisplayImage = (
+        mapSize: { width: number; height: number; },
+        updateIconSize: (value: number) => void,
+    ) => {
+
+        const from = getImageIconSize(IMAGE_SIZE, DEFAULT_IMAGE_SIZE);
+        const to = getImageIconSize(IMAGE_SIZE, Math.min(mapSize.width, mapSize.height)) / 2;
+
+        this.animateIconSize(from, to, updateIconSize);
+        const animationControls = this.stateWarden.animatrix.controls$.value;
+        this.inDisplayImageTimeout = setTimeout(() => this.animateIconSize(to, from, updateIconSize), animationControls.displayImageDuration - ANIMATION_DURATION)
+    };
+
+    public cleanupAnimateDisplayImage = (updateIconSize: (value: number) => void) => {
+        clearTimeout(this.inDisplayImageTimeout);
+        updateIconSize(getImageIconSize(IMAGE_SIZE, DEFAULT_IMAGE_SIZE));
     };
 };

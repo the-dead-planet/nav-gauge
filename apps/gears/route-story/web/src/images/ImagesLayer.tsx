@@ -27,7 +27,8 @@ import {
 export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map>> = ({
     map,
     data$,
-    images$
+    images$,
+    playerOperator,
 }) => {
     const { themeName } = useTheme();
     const [{ geojson }] = useSubjectState(data$);
@@ -160,5 +161,10 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
         return null;
     }
 
-    return <DisplayImageLayer map={map} geojson={geojson} loadedImages={loadedImages} />;
+    return <DisplayImageLayer
+        map={map}
+        geojson={geojson}
+        loadedImages={loadedImages}
+        playerOperator={playerOperator}
+    />;
 };

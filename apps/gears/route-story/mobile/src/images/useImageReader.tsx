@@ -5,9 +5,10 @@ import { Cartomancer, MarkerImage, useSubjectState } from "@apparatus";
 import { DocumentPickerResponse } from "@react-native-documents/picker";
 import { FileOperator } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { GeoJson, getExifError, getExifLngLat } from "@tinker-chest";
+import { MobileMap } from '@mobile-ui';
 
 export const useImageReader = (
-    fileOperator: FileOperator,
+    fileOperator: FileOperator<MobileMap>,
     images$: BehaviorSubject<MarkerImage[]>
 ) => {
     const [_images, setImages] = useSubjectState(images$);

@@ -177,6 +177,8 @@ export const getImagesLayers = (themeName: ThemeName): LayerSpecification[] => {
     ];
 }
 
+export const ANIMATION_DURATION = 250;
+
 export const getDisplayImageLayers = (): SymbolLayerSpecification[] => {
     const imageLayer = getImageLayer();
 

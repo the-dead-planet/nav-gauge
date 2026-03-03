@@ -101,7 +101,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mo
                 pointSourceRef.current?.setNativeProps({ shape: currentPoint });
             },
             (position, bearing) => {
-                map.camera?.setCamera({
+                map.camera.current?.setCamera({
                     animationMode: 'easeTo',
                     centerCoordinate: position,
                     animationDuration: easeDuration,
