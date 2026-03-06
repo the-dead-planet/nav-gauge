@@ -1,17 +1,41 @@
-import { FC, useMemo } from "react";
-import { OverlayComponentProps, useLoadedImages, useSubjectState } from "@apparatus";
-import { getIconImageId, getImageSource, IMAGE_PROPERTY, RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { MobileMap } from "@mobile-ui";
+import { FC, useMemo, useState, useEffect } from "react";
 import { Images, ShapeSource, SymbolLayer } from "@maplibre/maplibre-react-native";
+import { OverlayComponentProps, useLoadedImages, useStateWarden, useSubjectState } from "@apparatus";
+import {
+    DEFAULT_IMAGE_SIZE,
+    getIconImageId,
+    getImageIconSize,
+    getImageSource,
+    IMAGE_PROPERTY,
+    IMAGE_SIZE,
+    RouteToolProps
+} from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { MobileMap } from "@mobile-ui";
+import { DocumentPickerResponse } from "@react-native-documents/picker";
 
-export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap>> = ({
+export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap, DocumentPickerResponse>> = ({
     map,
     data$,
-    images$
+    images$,
+    playerOperator
 }) => {
     const [{ geojson }] = useSubjectState(data$);
     const [images] = useSubjectState(images$);
     const loadedImages = useLoadedImages(images);
+    const { animatrix } = useStateWarden();
+    const [displayImageId] = useSubjectState(animatrix.displayImageId$);
+    const isInDisplay = displayImageId !== null;
+    const [iconSize, setIconSize] = useState(getImageIconSize(IMAGE_SIZE, DEFAULT_IMAGE_SIZE));
+
+    useEffect(() => {
+        if (isInDisplay) {
+            playerOperator.animateDisplayImage({ width: map.width, height: map.height }, setIconSize)
+        }
+
+        return () => {
+            playerOperator.cleanupAnimateDisplayImage(setIconSize);
+        };
+    }, [isInDisplay]);
 
     const sourceDataGeojson = useMemo(
         () => getImageSource(loadedImages, geojson),
@@ -37,7 +61,13 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<M
                     id="markerLayer"
                     style={{
                         iconImage: ['get', IMAGE_PROPERTY],
-                        iconSize: .05,
+                        iconSize: [
+                            'case',
+                            ['==', ['get', 'imageId'], displayImageId ?? '-1'],
+                            iconSize,
+                            getImageIconSize(IMAGE_SIZE, DEFAULT_IMAGE_SIZE)
+                        ],
+                        iconAllowOverlap: true
                     }}
                 />
             </ShapeSource>

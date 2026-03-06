@@ -1,14 +1,7 @@
 import { FC } from "react";
-import { ButtonProps, StyleSheet, View, ViewProps } from "react-native";
+import { ButtonProps, View, ViewProps } from "react-native";
 import { DocumentPickerOptions, DocumentPickerResponse, pick } from '@react-native-documents/picker';
 import { Button } from "../../button/Button";
-
-const styles = StyleSheet.create({
-    container: {
-    },
-    button: {
-    },
-});
 
 export interface FileInputProps {
     /**
@@ -51,7 +44,7 @@ export const FileInput: FC<FileInputProps & ViewProps> = ({
     };
 
     return (
-        <View style={styles.container} {...props}>
+        <View {...props}>
             <Button
                 title={title}
                 onPress={handleUpload}

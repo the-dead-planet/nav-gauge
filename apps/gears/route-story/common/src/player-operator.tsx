@@ -1,40 +1,33 @@
 import { BehaviorSubject } from "rxjs";
-import { StateWarden, SurveillanceState, LoadedImageData } from "@apparatus";
-import { ParsingResultWithError } from "@tinker-chest";
-import { RouteTimes } from "./model";
+import { SurveillanceState, LoadedImageData } from "@apparatus";
 import { getRouteSourceData } from "./tinkers";
+import { ANIMATION_DURATION, DEFAULT_IMAGE_SIZE } from "./layers";
+import { getImageIconSize, IMAGE_SIZE } from "./images";
+import { RouteStoryGear } from "./route-story-gear";
 
-export class PlayerOperator<TMap> {
-    private stateWarden: StateWarden<TMap>;
-    private data$: BehaviorSubject<ParsingResultWithError>;
-    private routeTimes$: BehaviorSubject<RouteTimes | null>;
-    private progressMs$: BehaviorSubject<number>;
+export class PlayerOperator<TMap, TFile extends { name?: string | null; type: string | null; }> {
+    private gear: RouteStoryGear<TMap, TFile>;
+
     public isLoading$ = new BehaviorSubject(false);
 
     constructor(
-        stateWarden: StateWarden<TMap>,
-        data$: BehaviorSubject<ParsingResultWithError>,
-        routeTimes$: BehaviorSubject<RouteTimes | null>,
-        progressMs$: BehaviorSubject<number>,
+        gear: RouteStoryGear<TMap, TFile>,
     ) {
-        this.stateWarden = stateWarden;
-        this.data$ = data$;
-        this.routeTimes$ = routeTimes$;
-        this.progressMs$ = progressMs$;
+        this.gear = gear;
     }
 
     public onPlay = () => {
-        this.stateWarden.chronoLens.isPlaying$.next(!this.stateWarden.chronoLens.isPlaying$.value);
+        this.gear.stateWarden.chronoLens.isPlaying$.next(!this.gear.stateWarden.chronoLens.isPlaying$.value);
     };
 
     public onRecord = () => {
-        this.stateWarden.chronoLens.surveillanceState$.next(this.stateWarden.chronoLens.surveillanceState$.value === SurveillanceState.Stopped
+        this.gear.stateWarden.chronoLens.surveillanceState$.next(this.gear.stateWarden.chronoLens.surveillanceState$.value === SurveillanceState.Stopped
             ? SurveillanceState.InProgress
             : SurveillanceState.Stopped)
     };
 
     public onRecordPause = () => {
-        this.stateWarden.chronoLens.surveillanceState$.next(this.stateWarden.chronoLens.surveillanceState$.value === SurveillanceState.Paused
+        this.gear.stateWarden.chronoLens.surveillanceState$.next(this.gear.stateWarden.chronoLens.surveillanceState$.value === SurveillanceState.Paused
             ? SurveillanceState.InProgress
             : SurveillanceState.Paused)
     };
@@ -46,27 +39,27 @@ export class PlayerOperator<TMap> {
             lines: GeoJSON.GeoJSON,
         ) => void,
     ) => {
-        if (!this.routeTimes$.value || isNaN(value)) {
+        if (!this.gear.routeTimes$.value || isNaN(value)) {
             return;
         }
         // Halt playing animations to allow manual update.
-        if (this.stateWarden.chronoLens.isPlaying$.value) {
-            this.stateWarden.chronoLens.isPlaying$.next(false);
+        if (this.gear.stateWarden.chronoLens.isPlaying$.value) {
+            this.gear.stateWarden.chronoLens.isPlaying$.next(false);
         }
-        this.progressMs$.next(value);
-        if (this.data$.value.geojson) {
+        this.gear.progressMs$.next(value);
+        if (this.gear.data$.value.geojson) {
             const { currentPoint, lines } = getRouteSourceData(
-                this.stateWarden.cartomancer.gaugeControls$.value,
-                this.data$.value.geojson,
-                this.routeTimes$.value.startTimeEpoch,
+                this.gear.stateWarden.cartomancer.gaugeControls$.value,
+                this.gear.data$.value.geojson,
+                this.gear.routeTimes$.value.startTimeEpoch,
                 value,
-                this.stateWarden.animatrix.controls$.value.bearingLineLengthInMeters
+                this.gear.stateWarden.animatrix.controls$.value.bearingLineLengthInMeters
             );
             updateLayer?.(currentPoint, lines);
         }
         // Resume playing animations
-        if (this.stateWarden.chronoLens.isPlaying$.value) {
-            setTimeout(() => this.stateWarden.chronoLens.isPlaying$.next(true), 0);
+        if (this.gear.stateWarden.chronoLens.isPlaying$.value) {
+            setTimeout(() => this.gear.stateWarden.chronoLens.isPlaying$.next(true), 0);
         }
     };
 
@@ -78,10 +71,10 @@ export class PlayerOperator<TMap> {
         onUpdateLayer: (currentPoint: GeoJSON.Feature<GeoJSON.Point>, lines: GeoJSON.GeoJSON) => void,
         onUpdateMapCamera: (position: GeoJSON.Position, bearing: number) => void,
     ) => {
-        const isPlaying = this.stateWarden.chronoLens.isPlaying$.value;
-        const progressMs = this.progressMs$.value;
-        const geojson = this.data$.value.geojson;
-        const routeTimes = this.routeTimes$.value;
+        const isPlaying = this.gear.stateWarden.chronoLens.isPlaying$.value;
+        const progressMs = this.gear.progressMs$.value;
+        const geojson = this.gear.data$.value.geojson;
+        const routeTimes = this.gear.routeTimes$.value;
         const {
             speedMultiplier,
             bearingLineLengthInMeters,
@@ -90,8 +83,8 @@ export class PlayerOperator<TMap> {
             cameraAngle,
             autoRotate,
             maxBearingDiffPerFrame,
-        } = this.stateWarden.animatrix.controls$.value;
-        const gaugeControls = this.stateWarden.cartomancer.gaugeControls$.value;
+        } = this.gear.stateWarden.animatrix.controls$.value;
+        const gaugeControls = this.gear.stateWarden.cartomancer.gaugeControls$.value;
 
         if (!isPlaying || !geojson || !routeTimes) {
             return;
@@ -100,7 +93,7 @@ export class PlayerOperator<TMap> {
         const { startTimeEpoch, endTimeEpoch } = routeTimes;
         const sortedImageFeatures = [...loadedImages].sort((a, b) => a.featureId - b.featureId);
         let last = Date.now();
-        let currentProgressMs = this.progressMs$.value;
+        let currentProgressMs = this.gear.progressMs$.value;
         let nextImageIndex = sortedImageFeatures.findIndex((imageFeature): boolean => {
             const f = geojson.features.find((feature) => feature.properties.id === imageFeature.featureId);
             return !!f && new Date(f.properties.time).valueOf() >= new Date(startTimeEpoch + progressMs).valueOf();
@@ -120,11 +113,11 @@ export class PlayerOperator<TMap> {
             onUpdateLayer(currentPoint, lines);
 
             if (this.animation !== undefined && nextImage && nextImage.featureId <= Number(currentPoint.id)) {
-                this.stateWarden.animatrix.displayImageId$.next(nextImage.id);
+                this.gear.stateWarden.animatrix.displayImageId$.next(nextImage.id);
                 nextImageIndex = nextImageIndex + 1;
                 cancelAnimationFrame(this.animation);
                 this.displayImageTimeout = setTimeout(() => {
-                    this.stateWarden.animatrix.displayImageId$.next(null);
+                    this.gear.stateWarden.animatrix.displayImageId$.next(null);
                     this.animation = requestAnimationFrame(animate);
                 }, displayImageDuration);
 
@@ -133,7 +126,7 @@ export class PlayerOperator<TMap> {
 
             if (followCurrentPoint) {
                 const lngLat: GeoJSON.Position = [currentPoint.geometry.coordinates[0], currentPoint.geometry.coordinates[1]];
-                const currentBearing = this.stateWarden.cartomancer.bearing$.value; const nextBearing = (cameraAngle + (autoRotate ? currentPointBearing : 0));
+                const currentBearing = this.gear.stateWarden.cartomancer.bearing$.value; const nextBearing = (cameraAngle + (autoRotate ? currentPointBearing : 0));
                 const bearingDiff = ((nextBearing - currentBearing + 540) % 360) - 180;
                 const bearing = currentBearing + Math.max(-maxBearingDiffPerFrame, Math.min(maxBearingDiffPerFrame, bearingDiff));
 
@@ -141,7 +134,7 @@ export class PlayerOperator<TMap> {
             }
 
             // TODO: Calculate % of geometry done based on current progressMs and update paint property line gradient instead of all data.
-            this.progressMs$.next(currentProgressMs);
+            this.gear.progressMs$.next(currentProgressMs);
             this.animation = requestAnimationFrame(animate);
         };
 
@@ -150,10 +143,57 @@ export class PlayerOperator<TMap> {
 
     public cleanupAnimateRoute = () => {
         clearTimeout(this.displayImageTimeout);
-        this.stateWarden.animatrix.displayImageId$.next(null);
+        this.gear.stateWarden.animatrix.displayImageId$.next(null);
 
         if (this.animation !== undefined) {
             cancelAnimationFrame(this.animation);
         }
+    };
+
+    private easeInOut(t: number) {
+        return t < 0.5
+            ? 2 * t * t
+            : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    }
+
+    private animateIconSize = (
+        from: number,
+        to: number,
+        updateIconSize: (value: number) => void,
+    ): void => {
+        const start = Date.now();
+
+        const frame = () => {
+            const progress = Math.min((Date.now() - start) / ANIMATION_DURATION, 1);
+            const value = from + (to - from) * this.easeInOut(progress);
+
+            updateIconSize(value);
+
+            if (progress < 1) {
+                requestAnimationFrame(frame);
+            }
+        };
+
+        requestAnimationFrame(frame);
+    };
+
+    private inDisplayImageTimeout: Timer | undefined;
+
+    public animateDisplayImage = (
+        mapSize: { width: number; height: number; },
+        updateIconSize: (value: number) => void,
+    ) => {
+
+        const from = getImageIconSize(IMAGE_SIZE, DEFAULT_IMAGE_SIZE);
+        const to = getImageIconSize(IMAGE_SIZE, Math.min(mapSize.width, mapSize.height)) / 2;
+
+        this.animateIconSize(from, to, updateIconSize);
+        const animationControls = this.gear.stateWarden.animatrix.controls$.value;
+        this.inDisplayImageTimeout = setTimeout(() => this.animateIconSize(to, from, updateIconSize), animationControls.displayImageDuration - ANIMATION_DURATION)
+    };
+
+    public cleanupAnimateDisplayImage = (updateIconSize: (value: number) => void) => {
+        clearTimeout(this.inDisplayImageTimeout);
+        updateIconSize(getImageIconSize(IMAGE_SIZE, DEFAULT_IMAGE_SIZE));
     };
 };

@@ -21,7 +21,7 @@ import {
 import { updateRouteLayer } from "./tinkers";
 import { useLoadedWebImages } from "./hooks";
 
-export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map>> = ({
+export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map, File>> = ({
     map,
     data$,
     routeTimes$,
@@ -39,18 +39,11 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPro
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [animationControls] = useSubjectState(animatrix.controls$);
     const {
-        followCurrentPoint,
-        cameraAngle,
-        autoRotate,
         pitch,
         zoom,
-        zoomInToImages,
-        displayImageDuration,
         cameraRoll,
-        speedMultiplier,
         easeDuration,
         bearingLineLengthInMeters,
-        maxBearingDiffPerFrame,
     } = animationControls;
 
     useEffect(() => {

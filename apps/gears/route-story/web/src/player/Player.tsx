@@ -6,7 +6,7 @@ import { WebChronoLens } from "../chrono-lens/chrono-lens";
 import { updateRouteLayer } from "../tinkers";
 import * as styles from './player.module.css';
 
-export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map>> = ({
+export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map, File>> = ({
     map,
     data$,
     routeTimes$,

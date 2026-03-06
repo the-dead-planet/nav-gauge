@@ -1,12 +1,12 @@
 import { ComponentType, FC } from "react";
 import { BehaviorSubject, Subscription } from "rxjs";
 import { ToolProps, MarkerImage, OverlayComponentProps, StateWarden, Gear, ControlComponentProps } from "@apparatus";
-import { ParsingResultWithError } from "@tinker-chest";
+import { GeoJson, ParsingResultWithError } from "@tinker-chest";
 import { RouteToolProps, RouteTimes, RouteFileInputProps, RouteFitBoundsProps } from "./model";
 import { FileOperator } from "./file-operator";
 import { PlayerOperator } from "./player-operator";
 
-export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
+export abstract class RouteStoryGear<TMap, TFile extends { name?: string | null; type: string | null; }> extends Gear<TMap, 'route-story'> {
     public readonly id = 'route-story';
     private dataSubscription: Subscription | null = null;
     public readonly data$ = new BehaviorSubject<ParsingResultWithError>({});
@@ -15,6 +15,9 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
     public readonly progressMs$ = new BehaviorSubject(0);
 
     public abstract fitBounds: (map: TMap, sw: [number, number], ne: [number, number]) => void;
+    public abstract fileToText: (file: TFile,) => Promise<string>;
+    public abstract readImage: (file: TFile, geojson?: GeoJson) => Promise<void>;
+    public abstract onCleanupStory: (data: ParsingResultWithError, images: MarkerImage[]) => Promise<void>;
 
     public engageRouteStory?: () => void;
     public disengageRouteStory?: () => void;
@@ -45,19 +48,19 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
     };
 
     private fileInputControlId = 'file-input';
-    public abstract fileInputComponent: ComponentType<ControlComponentProps & RouteFileInputProps<TMap>>;
+    public abstract fileInputComponent: ComponentType<ControlComponentProps & RouteFileInputProps<TMap, TFile>>;
 
     private routeLayerFitBoundsToolId = 'fit-bounds';
     public abstract routeLayerFitBoundsComponent: ComponentType<ToolProps<TMap> & RouteFitBoundsProps<TMap>>;
 
     private playerToolId = 'player';
-    public abstract playerComponent: ComponentType<ToolProps<TMap> & RouteToolProps<TMap>>;
+    public abstract playerComponent: ComponentType<ToolProps<TMap> & RouteToolProps<TMap, TFile>>;
 
     private routeOverlayId = 'route';
-    public abstract routeLayerComponent: ComponentType<OverlayComponentProps<TMap> & RouteToolProps<TMap>>;
+    public abstract routeLayerComponent: ComponentType<OverlayComponentProps<TMap> & RouteToolProps<TMap, TFile>>;
 
     private imagesOverlayId = 'images';
-    public abstract imagesLayerComponent: ComponentType<OverlayComponentProps<TMap> & RouteToolProps<TMap>>;
+    public abstract imagesLayerComponent: ComponentType<OverlayComponentProps<TMap> & RouteToolProps<TMap, TFile>>;
 
     /**
      * Wrapper to avoid binding issues in react native if components are wrapped in arg list.
@@ -77,7 +80,7 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
 
         stateWarden.toolsStation.addControlComponent(
             this.fileInputControlId,
-            this.wrapProps<RouteFileInputProps<TMap>, ControlComponentProps>(this.fileInputComponent, {
+            this.wrapProps<RouteFileInputProps<TMap, TFile>, ControlComponentProps>(this.fileInputComponent, {
                 data$: this.data$,
                 images$: this.images$,
                 fileOperator: this.fileOperator,
@@ -95,7 +98,7 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
         stateWarden.toolsStation.addToolComponent(
             this.playerToolId,
             'bottom',
-            this.wrapProps<RouteToolProps<TMap>, ToolProps<TMap>>(this.playerComponent, {
+            this.wrapProps<RouteToolProps<TMap, TFile>, ToolProps<TMap>>(this.playerComponent, {
                 data$: this.data$,
                 routeTimes$: this.routeTimes$,
                 images$: this.images$,
@@ -106,7 +109,7 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
 
         stateWarden.cartomancer.addOverlay(
             this.routeOverlayId,
-            this.wrapProps<RouteToolProps<TMap>, OverlayComponentProps<TMap>>(this.routeLayerComponent, {
+            this.wrapProps<RouteToolProps<TMap, TFile>, OverlayComponentProps<TMap>>(this.routeLayerComponent, {
                 data$: this.data$,
                 routeTimes$: this.routeTimes$,
                 images$: this.images$,
@@ -116,7 +119,7 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
         );
         stateWarden.cartomancer.addOverlay(
             this.imagesOverlayId,
-            this.wrapProps<RouteToolProps<TMap>, OverlayComponentProps<TMap>>(this.imagesLayerComponent, {
+            this.wrapProps<RouteToolProps<TMap, TFile>, OverlayComponentProps<TMap>>(this.imagesLayerComponent, {
                 data$: this.data$,
                 routeTimes$: this.routeTimes$,
                 images$: this.images$,
@@ -152,6 +155,6 @@ export abstract class RouteStoryGear<TMap> extends Gear<TMap, 'route-story'> {
         }
     };
 
-    private fileOperator = new FileOperator(this.stateWarden, this.data$, this.images$);
-    private playerOperator = new PlayerOperator(this.stateWarden, this.data$, this.routeTimes$, this.progressMs$);
+    public fileOperator = new FileOperator(this);
+    private playerOperator = new PlayerOperator(this);
 };

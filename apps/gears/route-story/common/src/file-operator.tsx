@@ -1,26 +1,31 @@
 import { BehaviorSubject } from "rxjs";
-import { parsers, FileToGeoJSONParser, MarkerImage, StateWarden } from "@apparatus";
-import { GeoJson, getNext, ParsingResultWithError } from "@tinker-chest";
+import { parsers, FileToGeoJSONParser } from "@apparatus";
+import { GeoJson, getNext } from "@tinker-chest";
+import { RouteStoryGear } from "./route-story-gear";
 
-export class FileOperator<TMap> {
-    private stateWarden: StateWarden<TMap>;
-    private data$: BehaviorSubject<ParsingResultWithError>;
-    private images$: BehaviorSubject<MarkerImage[]>;
+export class FileOperator<TMap, TFile extends { name?: string | null; type: string | null; }> {
+    private gear: RouteStoryGear<TMap, TFile>;
     public isLoading$ = new BehaviorSubject(false);
 
     constructor(
-        stateWarden: StateWarden<TMap>,
-        data$: BehaviorSubject<ParsingResultWithError>,
-        images$: BehaviorSubject<MarkerImage[]>,
+        gear: RouteStoryGear<TMap, TFile>,
     ) {
-        this.stateWarden = stateWarden;
-        this.data$ = data$;
-        this.images$ = images$;
+        this.gear = gear;
     }
+
+    public resetStory = async (): Promise<void> => {
+        this.isLoading$.next(true);
+        await this.gear.onCleanupStory(this.gear.data$.value, this.gear.images$.value);
+        this.gear.progressMs$.next(0);
+        this.gear.data$.next({});
+        this.gear.images$.next([]);
+        this.gear.routeTimes$.next(null);
+        this.gear.fileOperator.isLoading$.next(false);
+    };
 
     public onError = (error: Error) => {
         const id = 'file-upload';
-        this.stateWarden.signaliumBureau.addNotice({
+        this.gear.stateWarden.signaliumBureau.addNotice({
             id,
             type: 'error',
             text: 'File upload failed',
@@ -28,17 +33,13 @@ export class FileOperator<TMap> {
         });
     };
 
-    public uploadFile = async <TFile extends { name?: string | null; type: string | null; }>(
-        files: TFile[],
-        getText: (file: TFile) => Promise<string>,
-        readImage: (file: TFile, geojson?: GeoJson) => void,
-    ) => {
+    public uploadFile = async (files: TFile[]) => {
         try {
             if (files.length === 0) {
                 return;
             }
             this.isLoading$.next(true);
-            let currentGeojson: GeoJson | undefined = this.data$.value.geojson;
+            let currentGeojson: GeoJson | undefined = this.gear.data$.value.geojson;
             let geojsonFile: TFile | undefined = undefined;
             let imageFiles: TFile[] = [];
             const geoExtensions = [...parsers.values()].flatMap((p) => p.acceptedFileExtensions);
@@ -55,8 +56,8 @@ export class FileOperator<TMap> {
             }
 
             if (geojsonFile) {
-                this.data$.next({});
-                const text = await getText(geojsonFile).catch((error: Error) => {
+                this.gear.data$.next({});
+                const text = await this.gear.fileToText(geojsonFile).catch((error: Error) => {
                     this.onError(error);
                     this.isLoading$.next(false);
                 }) ?? '';
@@ -64,11 +65,11 @@ export class FileOperator<TMap> {
                     .get(FileToGeoJSONParser.getFileExtension(geojsonFile.name!))
                     ?.parse(text);
 
-                this.data$.next(result ?? { error: new Error('No parser found for file.') });
+                this.gear.data$.next(result ?? { error: new Error('No parser found for file.') });
                 currentGeojson = result?.geojson
             }
 
-            imageFiles.forEach((file) => readImage(file, currentGeojson));
+            imageFiles.forEach((file) => this.gear.readImage(file, currentGeojson));
         } catch (err) {
             this.onError(err as Error);
         } finally {
@@ -77,7 +78,7 @@ export class FileOperator<TMap> {
     };
 
     public pushInitialImage = (fileName: string) => {
-        const current = this.images$.value;
+        const current = this.gear.images$.value;
         const nextImages = current
             .filter((el) => el.name !== fileName)
             .concat([{
@@ -86,24 +87,24 @@ export class FileOperator<TMap> {
                 progress: 0
             }]);
 
-        this.images$.next(nextImages);
+        this.gear.images$.next(nextImages);
     };
 
     public updateImageProgress = (fileName: string, progress: number) => {
-        const current = this.images$.value;
+        const current = this.gear.images$.value;
         const nextImages = current.slice();
         const index = current.findIndex((el) => el.name === fileName);
         nextImages[index] = { ...nextImages[index], progress: Number(progress.toFixed(0)) };
 
-        this.images$.next(nextImages);
+        this.gear.images$.next(nextImages);
     };
 
     public updateImageError = (fileName: string, message?: string) => {
-        const current = this.images$.value;
+        const current = this.gear.images$.value;
         const nextImages = current.slice();
         const index = current.findIndex((el) => el.name === fileName);
         nextImages[index] = { ...nextImages[index], error: message ?? 'Cannot read file' };
 
-        this.images$.next(nextImages);
+        this.gear.images$.next(nextImages);
     }
 }

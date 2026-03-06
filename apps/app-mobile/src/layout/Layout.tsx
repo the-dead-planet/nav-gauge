@@ -1,9 +1,13 @@
 import { FC } from "react";
-import { StyleSheet, View } from "react-native";
-import { useTheme } from "@ui";
+import { StatusBar, StyleSheet, View } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { ThemeName, useTheme } from "@ui";
 import { MachineWardLayoutProps } from "@apparatus";
 
 const styles = StyleSheet.create({
+    safeArea: {
+        flex: 1,
+    },
     container: {
         flex: 1
     }
@@ -13,8 +17,13 @@ export const Layout: FC<MachineWardLayoutProps> = ({ children }) => {
     const theme = useTheme();
 
     return (
-        <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-            {children}
-        </View>
+        <SafeAreaProvider>
+            <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.colors.background }]}>
+                <StatusBar barStyle={theme.themeName === ThemeName.Light ? "dark-content" : "light-content"} />
+                <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+                    {children}
+                </View>
+            </SafeAreaView>
+        </SafeAreaProvider>
     );
 };

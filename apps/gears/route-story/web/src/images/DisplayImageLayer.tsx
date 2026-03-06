@@ -10,16 +10,13 @@ import { LoadedImageData } from "./image-parser";
 import {
     layerIds,
     sourceIds,
-    DEFAULT_IMAGE_SIZE,
     getDisplayImageLayers,
     ImageFeatureProperties,
-    getImageIconSize,
-    IMAGE_SIZE,
     getIconImageId,
-    IMAGE_PROPERTY
+    IMAGE_PROPERTY,
+    ANIMATION_DURATION
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-
-const ANIMATION_DURATION = 250;
+import { PlayerOperator } from "@the-dead-planet/nav-gauge-gears-route-story-common/src/player-operator";
 
 const getData = (
     geojson: GeoJson,
@@ -52,12 +49,14 @@ interface Props {
     map: maplibregl.Map,
     geojson: GeoJson;
     loadedImages: LoadedImageData[];
+    playerOperator: PlayerOperator<maplibregl.Map, File>;
 }
 
 export const DisplayImageLayer: FC<Props> = ({
     map,
     geojson,
     loadedImages,
+    playerOperator,
 }) => {
     const { animatrix } = useStateWarden();
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
@@ -87,46 +86,20 @@ export const DisplayImageLayer: FC<Props> = ({
     useMapLayerData(map, mapLayerData, [], updateData);
 
     useEffect(() => {
-        function easeInOut(t: number) {
-            return t < 0.5
-                ? 2 * t * t
-                : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        const updateIconSize = (value: number) => {
+            if (map.getLayer(layerIds.imageInDisplay)) {
+                map.setLayoutProperty(layerIds.imageInDisplay, 'icon-size', value);
+            }
         }
-
-        function animateIconSize(
-            from: number,
-            to: number,
-            onFinish?: () => void,
-        ): void {
-            const start = performance.now();
-
-            const frame = (now: number) => {
-                const progress = Math.min((now - start) / ANIMATION_DURATION, 1);
-                const value = from + (to - from) * easeInOut(progress);
-
-                if (map.getLayer(layerIds.imageInDisplay)) {
-                    map.setLayoutProperty(layerIds.imageInDisplay, 'icon-size', value);
-                }
-
-                if (progress < 1) {
-                    requestAnimationFrame(frame);
-                } else {
-                    onFinish?.();
-                }
-            };
-
-            requestAnimationFrame(frame);
-        }
-
-        const canvas = map.getCanvas();
-        const from = getImageIconSize(IMAGE_SIZE, DEFAULT_IMAGE_SIZE);
-        const to = getImageIconSize(IMAGE_SIZE, Math.min(canvas.width, canvas.height)) / 2;
 
         if (isInDisplay) {
-            animateIconSize(from, to);
-        } else {
-            animateIconSize(to, from);
+            const canvas = map.getCanvas();
+            playerOperator.animateDisplayImage({ width: canvas.width, height: canvas.height }, updateIconSize)
         }
+
+        return () => {
+            playerOperator.cleanupAnimateDisplayImage(updateIconSize);
+        };
     }, [isInDisplay]);
 
     return null;

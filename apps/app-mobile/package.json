@@ -22,6 +22,7 @@
         "test:e2e:prod": "jest"
     },
     "dependencies": {
+        "@bam.tech/react-native-image-resizer": "^3.0.11",
         "@lodev09/react-native-exify": "^1.0.0",
         "@maplibre/maplibre-react-native": "^10.4.2",
         "@react-native-async-storage/async-storage": "^2.2.0",
@@ -33,7 +34,8 @@
         "@the-dead-planet/nav-gauge-ui-mobile": "*",
         "fast-text-encoding": "^1.0.6",
         "react-native": "0.83.1",
-        "react-native-fs": "^2.20.0"
+        "react-native-fs": "^2.20.0",
+        "react-native-safe-area-context": "^5.7.0"
     },
     "devDependencies": {
         "@babel/core": "^7.28.6",
