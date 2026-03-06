@@ -57,11 +57,9 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPick
 
    public onCleanupStory = async (_data: ParsingResultWithError, images: MarkerImage[]): Promise<void> => {
       for (const image of images) {
-         console.log("Attempt delete", image)
          if (!image.data) {
             continue;
          }
-         console.log("Deleting", extractFilePathFromData(image.data))
          await removeFromCache(extractFilePathFromData(image.data));
       }
    };
