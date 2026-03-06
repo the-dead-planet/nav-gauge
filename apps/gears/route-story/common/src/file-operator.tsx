@@ -33,10 +33,7 @@ export class FileOperator<TMap, TFile extends { name?: string | null; type: stri
         });
     };
 
-    public uploadFile = async (
-        files: TFile[],
-        getText: (file: TFile) => Promise<string>,
-    ) => {
+    public uploadFile = async (files: TFile[]) => {
         try {
             if (files.length === 0) {
                 return;
@@ -60,7 +57,7 @@ export class FileOperator<TMap, TFile extends { name?: string | null; type: stri
 
             if (geojsonFile) {
                 this.gear.data$.next({});
-                const text = await getText(geojsonFile).catch((error: Error) => {
+                const text = await this.gear.fileToText(geojsonFile).catch((error: Error) => {
                     this.onError(error);
                     this.isLoading$.next(false);
                 }) ?? '';

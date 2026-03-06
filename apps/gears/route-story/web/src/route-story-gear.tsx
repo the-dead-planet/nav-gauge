@@ -21,8 +21,9 @@ export class WebRouteStoryGear extends RouteStoryGear<maplibregl.Map, File> {
       map.fitBounds([sw, ne], { animate: true, padding: 50 });
    }
 
+   public fileToText = async (file: File) => file.text();
+
    public readImage = async (file: File, geojson?: GeoJson) => {
-      console.log("webn")
       const reader = new FileReader();
 
       reader.onloadstart = () => {

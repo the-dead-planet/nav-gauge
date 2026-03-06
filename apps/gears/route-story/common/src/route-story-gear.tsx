@@ -15,7 +15,8 @@ export abstract class RouteStoryGear<TMap, TFile extends { name?: string | null;
     public readonly progressMs$ = new BehaviorSubject(0);
 
     public abstract fitBounds: (map: TMap, sw: [number, number], ne: [number, number]) => void;
-    public abstract readImage: (_file: TFile, _geojson?: GeoJson) => Promise<void>
+    public abstract fileToText: (file: TFile,) => Promise<string>;
+    public abstract readImage: (file: TFile, geojson?: GeoJson) => Promise<void>;
     public abstract onCleanupStory: (data: ParsingResultWithError, images: MarkerImage[]) => Promise<void>;
 
     public engageRouteStory?: () => void;

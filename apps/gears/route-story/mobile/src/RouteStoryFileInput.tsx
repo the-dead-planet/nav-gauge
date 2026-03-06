@@ -1,7 +1,6 @@
 import { FC } from "react";
 import { StyleSheet, View, } from "react-native";
 import { DocumentPickerResponse, types } from "@react-native-documents/picker";
-import RNFS from 'react-native-fs';
 import { RouteFileInputProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { FileInputStatus, FileInput, MobileMap, Button } from "@mobile-ui";
 import { parsers, useSubjectState } from "@apparatus";
@@ -24,13 +23,6 @@ export const RouteStoryFileInput: FC<RouteFileInputProps<MobileMap, DocumentPick
     const [{ geojson, routeName, error }] = useSubjectState(data$);
     const [isLoading, setIsLoading] = useSubjectState(fileOperator.isLoading$);
 
-    const handleUpload = async (files: DocumentPickerResponse[]) => {
-        fileOperator.uploadFile(
-            files,
-            (file) => RNFS.readFile(file.uri, 'utf8'),
-        );
-    };
-
     return (
         <View>
             <View style={styles.container}>
@@ -41,7 +33,7 @@ export const RouteStoryFileInput: FC<RouteFileInputProps<MobileMap, DocumentPick
                     ]}
                     allowMultiSelection
                     onIsLoadingChange={setIsLoading}
-                    onUpload={handleUpload}
+                    onUpload={fileOperator.uploadFile}
                     onError={fileOperator.onError}
                     style={styles.uploadButton}
                 />

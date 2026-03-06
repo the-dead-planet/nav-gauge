@@ -16,11 +16,7 @@ export const RouteStoryFileInput: FC<RouteFileInputProps<maplibregl.Map, File>> 
         for (let i = 0; i < event.target.files.length; i++) {
             files.push(event.target.files.item(i)!);
         }
-
-        fileOperator.uploadFile(
-            files,
-            (file) => file.text(),
-        );
+        fileOperator.uploadFile(files);
     };
 
     return (

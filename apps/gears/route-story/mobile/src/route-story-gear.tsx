@@ -1,3 +1,4 @@
+import RNFS from 'react-native-fs';
 import * as Exify from '@lodev09/react-native-exify';
 import { RouteStoryGear } from '@the-dead-planet/nav-gauge-gears-route-story-common';
 import { RouteLayer } from './RouteLayer';
@@ -21,6 +22,8 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPick
    public fitBounds = (map: MobileMap, sw: [number, number], ne: [number, number]) => {
       map.camera.current?.fitBounds(sw, ne, 20);
    }
+
+   public fileToText = async (file: DocumentPickerResponse) => RNFS.readFile(file.uri, 'utf8');
 
    public readImage = async (file: DocumentPickerResponse, geojson?: GeoJson) => {
       const fileName = file.name;
