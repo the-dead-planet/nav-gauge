@@ -4,7 +4,7 @@ import { StateWarden } from "../state-warden";
 export abstract class Gear<TMap, TID extends string = string> {
     public abstract id: TID;
 
-    protected stateWarden: StateWarden<TMap>;
+    public stateWarden: StateWarden<TMap>;
     protected individuator: Individuator;
 
     public abstract engage: (stateWarden: StateWarden<TMap>, individuator: Individuator) => void;

@@ -1,13 +1,12 @@
 import { FC } from "react";
 import { FileInputStatus } from "@web-ui";
-import { useImageReader } from "./images/useImageReader";
 import { useSubjectState, parsers } from "@apparatus";
 import { RouteFileInputProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import * as styles from './file-input.module.css';
 
-export const RouteStoryFileInput: FC<RouteFileInputProps<maplibregl.Map>> = ({ data$, images$, fileOperator }) => {
+export const RouteStoryFileInput: FC<RouteFileInputProps<maplibregl.Map, File>> = ({ data$, images$, fileOperator }) => {
     const [{ geojson, routeName, error }] = useSubjectState(data$);
     const [isLoading] = useSubjectState(fileOperator.isLoading$);
-    const readImage = useImageReader(fileOperator, images$);
 
     const handleInput = async (event: React.ChangeEvent<HTMLInputElement>) => {
         if (!event.target.files) {
@@ -18,22 +17,26 @@ export const RouteStoryFileInput: FC<RouteFileInputProps<maplibregl.Map>> = ({ d
             files.push(event.target.files.item(i)!);
         }
 
-        fileOperator.uploadFile<File>(
+        fileOperator.uploadFile(
             files,
             (file) => file.text(),
-            readImage
         );
     };
 
     return (
         <div>
-            <input
-                id="files"
-                type="file"
-                multiple
-                accept={[...parsers.keys(), "image/png", "image/jpeg", "image/jpg"].join(', ')}
-                onChange={handleInput}
-            />
+            <div className={styles.container}>
+                <input
+                    id="files"
+                    type="file"
+                    multiple
+                    accept={[...parsers.keys(), "image/png", "image/jpeg", "image/jpg"].join(', ')}
+                    onChange={handleInput}
+                />
+                <button onClick={fileOperator.resetStory}>
+                    Reset story
+                </button>
+            </div>
             <FileInputStatus
                 isLoading={isLoading}
                 ok={!!geojson && !error}

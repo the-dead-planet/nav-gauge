@@ -15,19 +15,21 @@
         "@the-dead-planet/nav-gauge-gears-route-story-common": "*"
     },
     "devDependencies": {
+        "@bam.tech/react-native-image-resizer": "^3.0.11",
         "@lodev09/react-native-exify": "^1.0.0",
         "@maplibre/maplibre-react-native": "^10.4.2",
-        "@react-native-documents/picker": "^12.0.1",
         "@react-native-community/slider": "^5.1.2",
+        "@react-native-documents/picker": "^12.0.1",
         "react": "^19.2.3",
         "react-native": "0.83.1",
         "react-native-fs": "^2.20.0"
     },
     "peerDependencies": {
+        "@bam.tech/react-native-image-resizer": "^3.0.11",
         "@lodev09/react-native-exify": "^1.0.0",
         "@maplibre/maplibre-react-native": "^10.4.2",
-        "@react-native-documents/picker": "^12.0.1",
         "@react-native-community/slider": "^5.1.2",
+        "@react-native-documents/picker": "^12.0.1",
         "react": "^19.2.3",
         "react-native": "0.83.1",
         "react-native-fs": "^2.20.0"

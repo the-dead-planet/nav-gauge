@@ -38,7 +38,7 @@ export const parseImage = async (
             shape: 'circle'
         });
     } catch (err) {
-        console.error(err);
+        console.error('Error resizing image', err);
     }
 
     // TODO: Derive timezone

@@ -49,7 +49,7 @@ interface Props {
     map: maplibregl.Map,
     geojson: GeoJson;
     loadedImages: LoadedImageData[];
-    playerOperator: PlayerOperator<maplibregl.Map>;
+    playerOperator: PlayerOperator<maplibregl.Map, File>;
 }
 
 export const DisplayImageLayer: FC<Props> = ({

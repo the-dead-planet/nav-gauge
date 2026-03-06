@@ -1,4 +1,5 @@
-import { FC, useMemo, useState, useEffect } from "react";
+import { FC, useMemo, useState, useEffect, useRef } from "react";
+import { Images, ShapeSource, SymbolLayer } from "@maplibre/maplibre-react-native";
 import { OverlayComponentProps, useLoadedImages, useStateWarden, useSubjectState } from "@apparatus";
 import {
     DEFAULT_IMAGE_SIZE,
@@ -10,7 +11,7 @@ import {
     RouteToolProps
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMap } from "@mobile-ui";
-import { Images, ShapeSource, SymbolLayer } from "@maplibre/maplibre-react-native";
+import { AppState } from "react-native";
 
 export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap>> = ({
     map,
@@ -18,13 +19,32 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<M
     images$,
     playerOperator
 }) => {
+    const appStateRef = useRef(AppState.currentState);
     const [{ geojson }] = useSubjectState(data$);
     const [images] = useSubjectState(images$);
     const loadedImages = useLoadedImages(images);
     const { animatrix } = useStateWarden();
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
     const isInDisplay = displayImageId !== null;
-    const [iconSize, setIconSize] = useState(.05);
+    const [iconSize, setIconSize] = useState(getImageIconSize(IMAGE_SIZE, DEFAULT_IMAGE_SIZE));
+
+    useEffect(() => {
+        return () => {
+            console.log("unmount", images);
+        };
+    }, []);
+
+    useEffect(() => {
+        const subscription = AppState.addEventListener('change', nextAppState => {
+            if (appStateRef.current === 'active' && nextAppState.match(/inactive|background/)) {
+                console.log('App moved to background', images);
+                // Good place to save state or cleanup temporary files
+            }
+            appStateRef.current = nextAppState;
+        });
+
+        return () => subscription.remove();
+    }, []);
 
     useEffect(() => {
         if (isInDisplay) {
