@@ -1,9 +1,12 @@
 package com.app
 
+import android.content.Intent
+import android.util.Log
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
+import com.margelo.nitro.nitroscreenrecorder.NitroScreenRecorder
 
 class MainActivity : ReactActivity() {
 
@@ -18,5 +21,17 @@ class MainActivity : ReactActivity() {
    * which allows you to enable New Architecture with a single boolean flags [fabricEnabled]
    */
   override fun createReactActivityDelegate(): ReactActivityDelegate =
-      DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled)
+          DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled)
+
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
+    Log.d("MainActivity", "onActivityResult: requestCode=$requestCode, resultCode=$resultCode")
+
+    try {
+      NitroScreenRecorder.handleActivityResult(requestCode, resultCode, data)
+    } catch (e: Exception) {
+      Log.e("MainActivity", "Error handling activity result: ${e.message}")
+      e.printStackTrace()
+    }
+  }
 }

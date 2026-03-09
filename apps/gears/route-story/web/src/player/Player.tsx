@@ -2,9 +2,9 @@ import { CSSProperties, FC, useEffect, useMemo } from "react";
 import { pairwise } from "rxjs";
 import { OverlayComponentProps, SurveillanceState, useMachineWard, useStateWarden, useSubjectState } from "@apparatus";
 import { formatCurrentTimestamp, getProgressPercentage, RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { WebChronoLens } from "../chrono-lens/chrono-lens";
 import { updateRouteLayer } from "../tinkers";
 import * as styles from './player.module.css';
+import { WebChronoLens } from "../chrono-lens/chrono-lens";
 
 export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map, File>> = ({
     map,
@@ -18,17 +18,14 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<m
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [progressMs] = useSubjectState(progressMs$);
-    const { individuator } = useMachineWard();
-    const { chronoLens, signaliumBureau } = useStateWarden();
+    const { individuator, chronoLens } = useMachineWard();
+    const { signaliumBureau } = useStateWarden();
     const [settings] = useSubjectState(individuator.settings$);
-    const [isPlaying, setIsPlaying] = useSubjectState(chronoLens.isPlaying$);
-    const [surveillanceState, setSurveillanceState] = useSubjectState(chronoLens.surveillanceState$);
-    const [downloadName] = useSubjectState(chronoLens.downloadName$);
-    const [fps] = useSubjectState(chronoLens.fps$);
-
-    const WebLens = useMemo(() => new WebChronoLens(individuator), [individuator]);
+    const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
+    const [surveillanceState] = useSubjectState(chronoLens.surveillanceState$);
 
     useEffect(() => {
+        (chronoLens as WebChronoLens).canvas = map.getCanvas();
         const noticeId = 'player-recording';
 
         const subscription = chronoLens.surveillanceState$
@@ -36,16 +33,16 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<m
             .subscribe(([prev, next]) => {
                 switch (next) {
                     case SurveillanceState.Stopped:
-                        WebLens.stopRecording();
+                        chronoLens.stopRecording();
                         break;
                     case SurveillanceState.Paused:
-                        WebLens.pauseRecording(setIsPlaying);
+                        chronoLens.pauseRecording();
                         break;
                     case SurveillanceState.InProgress: {
                         if (prev === SurveillanceState.Paused) {
-                            WebLens.resumeRecording(setIsPlaying);
+                            chronoLens.resumeRecording();
                         } else {
-                            WebLens.startRecording(map.getCanvas(), downloadName, settings, fps, setIsPlaying, setSurveillanceState, (stage, error) => {
+                            chronoLens.startRecording((stage, error) => {
                                 signaliumBureau.addNotice({
                                     id: noticeId,
                                     type: 'error',
@@ -120,7 +117,7 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<m
                         {surveillanceState === SurveillanceState.Paused ? 'Resume' : 'Pause'} recording
                     </button>
                 ) : null}
-                <button onClick={() => WebLens.destroyRecording()}>Clear</button>
+                <button onClick={chronoLens.destroyRecording}>Clear</button>
                 <p className={styles.text}>
                     {!routeTimes ? "" : individuator.formatTimestamp(progressMs + routeTimes.startTimeEpoch, settings)}
                 </p>

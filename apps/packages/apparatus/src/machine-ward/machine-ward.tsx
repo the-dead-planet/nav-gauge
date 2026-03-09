@@ -2,7 +2,8 @@ import { ReactElement } from "react";
 import { pairwise, Subscription } from "rxjs";
 import { MachineWardApp } from "./MachineWardApp";
 import { Individuator, OrientationSubscriptionDefinition } from "./individuator";
-import { Cartomancer, ChronoLens, StateWarden } from "../state-warden";
+import { ChronoLens } from "./chrono-lens";
+import { StateWarden } from "../state-warden";
 import { Engine } from "./engine";
 import { Gear, GearId } from "../gears";
 import { StorageKeeper } from "./storage-keeper";
@@ -18,23 +19,26 @@ export abstract class MachineWard<TMap = unknown> {
 
     public readonly individuator: Individuator;
     public readonly storageKeeper: StorageKeeper;
+    public readonly chronoLens: ChronoLens;
     public readonly stateWarden: StateWarden<TMap>;
     public readonly engine = new Engine<TMap>();
 
     public constructor(
-        gears: { [K in GearId]: (new (stateWarden: StateWarden<TMap>, individuator: Individuator) => Gear<TMap, K>) | null },
+        gears: { [K in GearId]: (new (stateWarden: StateWarden<TMap>, individuator: Individuator, chronoLens: ChronoLens) => Gear<TMap, K>) | null },
+        chronoLens: new (individuator: Individuator) => ChronoLens,
         storage: StorageLike,
         prefersLightColorScheme: boolean,
         orientationSubscription: OrientationSubscriptionDefinition
     ) {
         this.storageKeeper = new StorageKeeper(storage);
         this.individuator = new Individuator(prefersLightColorScheme, orientationSubscription);
+        this.chronoLens = new chronoLens(this.individuator);
         this.stateWarden = new StateWarden<TMap>();
 
         this.engine.addGears(
             Object.values(gears).reduce<Gear<TMap, GearId>[]>((acc, Gear) => {
                 if (Gear) {
-                    acc.push(new Gear(this.stateWarden, this.individuator));
+                    acc.push(new Gear(this.stateWarden, this.individuator, this.chronoLens));
                 }
                 return acc;
             }, [])
@@ -66,6 +70,7 @@ export abstract class MachineWard<TMap = unknown> {
                 individuator={this.individuator}
                 storageKeeper={this.storageKeeper}
                 stateWarden={this.stateWarden}
+                chronoLens={this.chronoLens}
                 components={this.components}
                 onMount={this.initializeValves}
                 onUnmount={this.cleanUp}

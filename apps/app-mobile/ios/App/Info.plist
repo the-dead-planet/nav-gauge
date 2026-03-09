@@ -50,5 +50,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Allow $(PRODUCT_NAME) to access your camera for screen recording with camera overlay</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Allow $(PRODUCT_NAME) to access your microphone for screen recording with audio</string>
+	</dict>
 </plist>

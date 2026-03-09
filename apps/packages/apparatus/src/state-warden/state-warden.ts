@@ -2,7 +2,7 @@ import { combineLatest, pairwise, Subscription } from "rxjs";
 import { Animatrix } from "./animatrix";
 import { AttributionVault } from "./attribution-vault"
 import { Cartomancer } from "./cartomancer";
-import { ChronoLens } from "./chrono-lens";
+import { ChronoLens } from "../machine-ward/chrono-lens";
 import { SignaliumBureau } from "./signalium-bureau";
 import { ToolsStation } from "./tools-station";
 import { StorageKeeper } from "../machine-ward";
@@ -90,7 +90,6 @@ export class StateWarden<TMap = unknown> {
         })
     };
 
-    public chronoLens = new ChronoLens();
     public attributionVault = new AttributionVault();
     public signaliumBureau = new SignaliumBureau();
 }

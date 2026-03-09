@@ -1,5 +1,6 @@
 import { FC, useRef, useEffect } from "react";
 import { View, Button } from "react-native";
+import { DocumentPickerResponse } from "@react-native-documents/picker";
 import Slider, { SliderReferenceType } from "@react-native-community/slider";
 import { OverlayComponentProps, SurveillanceState, useMachineWard, useStateWarden, useSubjectState } from "@apparatus";
 import { formatCurrentTimestamp, getProgressPercentage, RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
@@ -8,7 +9,7 @@ import { MobileMap } from "@mobile-ui";
 import { useTheme } from "@ui";
 import { currentPointRef$, linesRef$ } from "../RouteLayer";
 
-export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap>> = ({
+export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap, DocumentPickerResponse>> = ({
     map,
     data$,
     routeTimes$,
@@ -20,13 +21,10 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mobile
     const [{ geojson }] = useSubjectState(data$);
     const [routeTimes] = useSubjectState(routeTimes$);
     const [progressMs] = useSubjectState(progressMs$);
-    const { individuator } = useMachineWard();
-    const { animatrix, chronoLens } = useStateWarden();
+    const { individuator, chronoLens } = useMachineWard();
     const [settings] = useSubjectState(individuator.settings$);
     const [isPlaying, setIsPlaying] = useSubjectState(chronoLens.isPlaying$);
-    const [surveillanceState, setSurveillanceState] = useSubjectState(chronoLens.surveillanceState$);
-    const [downloadName] = useSubjectState(chronoLens.downloadName$);
-    const [fps] = useSubjectState(chronoLens.fps$);
+    const [surveillanceState] = useSubjectState(chronoLens.surveillanceState$);
 
     const handleProgressChange = (value: number) => {
         playerOperator.updateProgress(value, (currentPoint, lines) => {

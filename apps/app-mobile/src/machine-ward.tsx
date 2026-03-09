@@ -7,6 +7,7 @@ import { ErrorFallback } from "./ErrorFallback";
 import { NoticesList } from "./notices/NoticesList";
 import { MobileRouteStoryGear } from "@the-dead-planet/nav-gauge-gears-route-story-mobile";
 import { MobileMap } from "@mobile-ui";
+import { MobileChronoLens } from "./chrono-lens";
 
 export class MobileMachineWard extends MachineWard<MobileMap> {
     public constructor() {
@@ -40,6 +41,7 @@ export class MobileMachineWard extends MachineWard<MobileMap> {
                 "record-route": null,
                 "submit-data": null
             },
+            MobileChronoLens,
             AsyncStorage,
             Appearance.getColorScheme() === 'light',
             orientationSubscription

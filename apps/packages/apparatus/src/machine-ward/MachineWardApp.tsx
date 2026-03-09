@@ -4,6 +4,7 @@ import { MachineWardNotices } from "./MachineWardNotices";
 import { StateWarden, StateWardenContext } from "../state-warden";
 import { Individuator } from "./individuator";
 import { StorageKeeper } from "./storage-keeper";
+import { ChronoLens } from "./chrono-lens";
 import { MachineWardContext, MachineWardContextValue } from "./MachineWardContext";
 import { useSubjectState } from "../state";
 import { MachineWardComponents } from "./model";
@@ -13,6 +14,7 @@ interface MachineWardProps<TMap> {
     individuator: Individuator;
     storageKeeper: StorageKeeper;
     stateWarden: StateWarden<TMap>;
+    chronoLens: ChronoLens;
     components: MachineWardComponents;
     onMount: () => void;
     onUnmount: () => void;
@@ -22,6 +24,7 @@ export function MachineWardApp<TMap>({
     title,
     individuator,
     storageKeeper,
+    chronoLens,
     stateWarden,
     components,
     onMount,
@@ -31,8 +34,9 @@ export function MachineWardApp<TMap>({
 
     const machineWardContextValue = useMemo((): MachineWardContextValue => ({
         individuator,
-        storageKeeper
-    }), [individuator, storageKeeper]);
+        storageKeeper,
+        chronoLens,
+    }), [individuator, storageKeeper, chronoLens]);
 
     useEffect(() => {
         storageKeeper.initialize();
