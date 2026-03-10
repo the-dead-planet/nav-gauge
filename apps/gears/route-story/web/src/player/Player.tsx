@@ -1,10 +1,9 @@
-import { CSSProperties, FC, useEffect, useMemo } from "react";
-import { pairwise } from "rxjs";
+import { CSSProperties, FC, useEffect } from "react";
 import { OverlayComponentProps, SurveillanceState, useMachineWard, useStateWarden, useSubjectState } from "@apparatus";
 import { formatCurrentTimestamp, getProgressPercentage, RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { updateRouteLayer } from "../tinkers";
-import * as styles from './player.module.css';
 import { WebChronoLens } from "../chrono-lens/chrono-lens";
+import * as styles from './player.module.css';
 
 export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map, File>> = ({
     map,
@@ -18,46 +17,18 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<m
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [progressMs] = useSubjectState(progressMs$);
-    const { individuator, chronoLens } = useMachineWard();
-    const { signaliumBureau } = useStateWarden();
+    const { individuator } = useMachineWard();
+    const { chronoLens, signaliumBureau } = useStateWarden();
     const [settings] = useSubjectState(individuator.settings$);
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [surveillanceState] = useSubjectState(chronoLens.surveillanceState$);
 
     useEffect(() => {
         (chronoLens as WebChronoLens).canvas = map.getCanvas();
-        const noticeId = 'player-recording';
-
-        const subscription = chronoLens.surveillanceState$
-            .pipe(pairwise())
-            .subscribe(([prev, next]) => {
-                switch (next) {
-                    case SurveillanceState.Stopped:
-                        chronoLens.stopRecording();
-                        break;
-                    case SurveillanceState.Paused:
-                        chronoLens.pauseRecording();
-                        break;
-                    case SurveillanceState.InProgress: {
-                        if (prev === SurveillanceState.Paused) {
-                            chronoLens.resumeRecording();
-                        } else {
-                            chronoLens.startRecording((stage, error) => {
-                                signaliumBureau.addNotice({
-                                    id: noticeId,
-                                    type: 'error',
-                                    error,
-                                    text: `Something went wrong during the ${stage} stage.`
-                                });
-                            });
-                        }
-                        break;
-                    }
-                }
-            });
+        chronoLens.setUpSurveillance(signaliumBureau);
 
         return () => {
-            subscription.unsubscribe();
+            chronoLens.clearSurveillance();
         };
     }, []);
 

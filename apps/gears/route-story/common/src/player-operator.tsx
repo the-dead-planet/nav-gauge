@@ -17,17 +17,17 @@ export class PlayerOperator<TMap, TFile extends { name?: string | null; type: st
     }
 
     public onPlay = () => {
-        this.gear.chronoLens.isPlaying$.next(!this.gear.chronoLens.isPlaying$.value);
+        this.gear.stateWarden.chronoLens.isPlaying$.next(!this.gear.stateWarden.chronoLens.isPlaying$.value);
     };
 
     public onRecord = () => {
-        this.gear.chronoLens.surveillanceState$.next(this.gear.chronoLens.surveillanceState$.value === SurveillanceState.Stopped
+        this.gear.stateWarden.chronoLens.surveillanceState$.next(this.gear.stateWarden.chronoLens.surveillanceState$.value === SurveillanceState.Stopped
             ? SurveillanceState.InProgress
             : SurveillanceState.Stopped)
     };
 
     public onRecordPause = () => {
-        this.gear.chronoLens.surveillanceState$.next(this.gear.chronoLens.surveillanceState$.value === SurveillanceState.Paused
+        this.gear.stateWarden.chronoLens.surveillanceState$.next(this.gear.stateWarden.chronoLens.surveillanceState$.value === SurveillanceState.Paused
             ? SurveillanceState.InProgress
             : SurveillanceState.Paused)
     };
@@ -43,8 +43,8 @@ export class PlayerOperator<TMap, TFile extends { name?: string | null; type: st
             return;
         }
         // Halt playing animations to allow manual update.
-        if (this.gear.chronoLens.isPlaying$.value) {
-            this.gear.chronoLens.isPlaying$.next(false);
+        if (this.gear.stateWarden.chronoLens.isPlaying$.value) {
+            this.gear.stateWarden.chronoLens.isPlaying$.next(false);
         }
         this.gear.progressMs$.next(value);
         if (this.gear.data$.value.geojson) {
@@ -58,8 +58,8 @@ export class PlayerOperator<TMap, TFile extends { name?: string | null; type: st
             updateLayer?.(currentPoint, lines);
         }
         // Resume playing animations
-        if (this.gear.chronoLens.isPlaying$.value) {
-            setTimeout(() => this.gear.chronoLens.isPlaying$.next(true), 0);
+        if (this.gear.stateWarden.chronoLens.isPlaying$.value) {
+            setTimeout(() => this.gear.stateWarden.chronoLens.isPlaying$.next(true), 0);
         }
     };
 
@@ -71,7 +71,7 @@ export class PlayerOperator<TMap, TFile extends { name?: string | null; type: st
         onUpdateLayer: (currentPoint: GeoJSON.Feature<GeoJSON.Point>, lines: GeoJSON.GeoJSON) => void,
         onUpdateMapCamera: (position: GeoJSON.Position, bearing: number) => void,
     ) => {
-        const isPlaying = this.gear.chronoLens.isPlaying$.value;
+        const isPlaying = this.gear.stateWarden.chronoLens.isPlaying$.value;
         const progressMs = this.gear.progressMs$.value;
         const geojson = this.gear.data$.value.geojson;
         const routeTimes = this.gear.routeTimes$.value;

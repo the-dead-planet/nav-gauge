@@ -2,10 +2,10 @@ import { combineLatest, pairwise, Subscription } from "rxjs";
 import { Animatrix } from "./animatrix";
 import { AttributionVault } from "./attribution-vault"
 import { Cartomancer } from "./cartomancer";
-import { ChronoLens } from "../machine-ward/chrono-lens";
+import { ChronoLens } from "./chrono-lens";
 import { SignaliumBureau } from "./signalium-bureau";
 import { ToolsStation } from "./tools-station";
-import { StorageKeeper } from "../machine-ward";
+import { Individuator, StorageKeeper } from "../machine-ward";
 
 /**
  * Warden does what warden needs to do.
@@ -14,13 +14,15 @@ import { StorageKeeper } from "../machine-ward";
 export class StateWarden<TMap = unknown> {
     public animatrix: Animatrix;
     public cartomancer: Cartomancer<TMap>;
+    public chronoLens: ChronoLens;
     public toolsStation: ToolsStation<TMap>;
     private toolsStationPresetSubscription: Subscription | null = null;
     private toolsStationPresetActiveSubscription: Subscription | null = null;
 
-    public constructor() {
+    public constructor(chronoLens: ChronoLens) {
         this.animatrix = new Animatrix();
         this.cartomancer = new Cartomancer();
+        this.chronoLens = chronoLens;
 
         const initialPreset = ToolsStation.detectPreset(
             this.cartomancer.mapLayout$.value,

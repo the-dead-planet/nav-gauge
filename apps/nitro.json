@@ -1,0 +1,17 @@
+{
+  "$schema": "https://nitro.margelo.com/nitro.schema.json",
+  "cxxNamespace": ["margelo", "nitro", "screenrecorder"],
+  "ios": {
+    "iosModuleName": "NitroScreenRecorder"
+  },
+  "android": {
+    "androidNamespace": ["com", "margelo", "nitro", "screenrecorder"],
+    "androidCxxLibName": "NitroScreenRecorder"
+  },
+  "autolinking": {
+    "NitroScreenRecorder": {
+      "kotlin": "com.margelo.nitro.nitroscreenrecorder.NitroScreenRecorder"
+    }
+  },
+  "ignorePaths": ["node_modules"]
+}

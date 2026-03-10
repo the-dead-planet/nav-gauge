@@ -4,3 +4,11 @@ extensions.configure(com.facebook.react.ReactSettingsExtension){ ex -> ex.autoli
 rootProject.name = 'App'
 include ':app'
 includeBuild('../../node_modules/@react-native/gradle-plugin')
+// Nitro modules
+include(":react-native-nitro-modules")
+project(":react-native-nitro-modules").projectDir =
+    file("../../node_modules/react-native-nitro-modules/android")
+
+include(":react-native-nitro-screen-recorder")
+project(":react-native-nitro-screen-recorder").projectDir =
+    file("../../node_modules/react-native-nitro-screen-recorder/android")

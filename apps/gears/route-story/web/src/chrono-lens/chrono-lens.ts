@@ -19,17 +19,17 @@ export class WebChronoLens extends ChronoLens {
         this.recorder?.start();
     };
 
-    public pauseRecording = () => {
+    public pauseRecording = async () => {
         this.recorder?.pause();
         this.isPlaying$.next(false);
     };
 
-    public resumeRecording = () => {
+    public resumeRecording = async () => {
         this.recorder?.resume();
         this.isPlaying$.next(true);
     };
 
-    public stopRecording = () => {
+    public stopRecording = async () => {
         this.recorder?.stop();
     };
 
@@ -74,6 +74,7 @@ export class WebChronoLens extends ChronoLens {
     ): MediaRecorder => {
         const recorder = new MediaRecorder(stream, {
             mimeType: "video/webm; codecs=vp9",
+            videoBitsPerSecond: 8_000_000 
         });
 
         recorder.ondataavailable = (event) => {
