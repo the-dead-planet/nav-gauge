@@ -24,10 +24,12 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<m
     const [surveillanceState] = useSubjectState(chronoLens.surveillanceState$);
 
     useEffect(() => {
+        const abortController = new AbortController();
         (chronoLens as WebChronoLens).canvas = map.getCanvas();
-        chronoLens.setUpSurveillance(signaliumBureau);
+        chronoLens.setUpSurveillance(signaliumBureau, abortController.signal);
 
         return () => {
+            abortController.abort();
             chronoLens.clearSurveillance();
         };
     }, []);

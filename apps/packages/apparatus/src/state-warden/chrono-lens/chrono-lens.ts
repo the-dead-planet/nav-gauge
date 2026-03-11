@@ -25,7 +25,7 @@ export abstract class ChronoLens {
         this.individuator = individuator;
     }
 
-    public setUpSurveillance = (signaliumBureau: SignaliumBureau) => {
+    public setUpSurveillance = (signaliumBureau: SignaliumBureau, abortSignal: AbortSignal) => {
         this.subscription = this.surveillanceState$
             .pipe(pairwise())
             .subscribe(([prev, next]) => {
@@ -47,7 +47,7 @@ export abstract class ChronoLens {
                                     error,
                                     text: `Something went wrong during the ${stage} stage.`
                                 });
-                            });
+                            }, abortSignal);
                         }
                         break;
                     }
@@ -69,7 +69,10 @@ export abstract class ChronoLens {
     /**
      * Callback to trigger when user starts the screen recording
      */
-    public abstract startRecording: (onError?: (stage: string, error: Error) => void) => Promise<void>;
+    public abstract startRecording: (
+        onError: (stage: string, error: Error) => void,
+        abortSignal: AbortSignal,
+    ) => Promise<void>;
 
     /**
      * Callback to pause recording (user should be able to resume later).

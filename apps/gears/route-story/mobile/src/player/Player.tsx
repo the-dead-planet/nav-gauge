@@ -1,5 +1,6 @@
-import { FC, useRef, useEffect } from "react";
+import { FC, useRef, useEffect, useState } from "react";
 import { View, Button } from "react-native";
+import { useViewRecorder, ViewRecorder } from "react-native-view-recorder";
 import { DocumentPickerResponse } from "@react-native-documents/picker";
 import Slider, { SliderReferenceType } from "@react-native-community/slider";
 import { OverlayComponentProps, SurveillanceState, useMachineWard, useStateWarden, useSubjectState } from "@apparatus";
@@ -8,8 +9,10 @@ import { Text } from "@mobile-ui";
 import { MobileMap } from "@mobile-ui";
 import { useTheme } from "@ui";
 import { currentPointRef$, linesRef$ } from "../RouteLayer";
+import { MobileChronoLens } from "../../../../../app-mobile/src/chrono-lens";
 
 export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap, DocumentPickerResponse>> = ({
+    map,
     routeTimes$,
     progressMs$,
     playerOperator,
@@ -22,14 +25,6 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mobile
     const [settings] = useSubjectState(individuator.settings$);
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [surveillanceState] = useSubjectState(chronoLens.surveillanceState$);
-
-    useEffect(() => {
-        chronoLens.setUpSurveillance(signaliumBureau);
-
-        return () => {
-            chronoLens.clearSurveillance();
-        };
-    }, []);
 
     const handleProgressChange = (value: number) => {
         playerOperator.updateProgress(value, (currentPoint, lines) => {

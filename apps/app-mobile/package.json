@@ -35,7 +35,8 @@
         "fast-text-encoding": "^1.0.6",
         "react-native": "0.83.1",
         "react-native-fs": "^2.20.0",
-        "react-native-safe-area-context": "^5.7.0"
+        "react-native-safe-area-context": "^5.7.0",
+        "react-native-view-recorder": "^0.4.0"
     },
     "devDependencies": {
         "@babel/core": "^7.28.6",
