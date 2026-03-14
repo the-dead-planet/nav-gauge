@@ -1,9 +1,8 @@
-import { CSSProperties, FC, useEffect, useMemo } from "react";
-import { pairwise } from "rxjs";
+import { CSSProperties, FC, useEffect } from "react";
 import { OverlayComponentProps, SurveillanceState, useMachineWard, useStateWarden, useSubjectState } from "@apparatus";
 import { formatCurrentTimestamp, getProgressPercentage, RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { WebChronoLens } from "../chrono-lens/chrono-lens";
 import { updateRouteLayer } from "../tinkers";
+import { WebChronoLens } from "../chrono-lens/chrono-lens";
 import * as styles from './player.module.css';
 
 export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map, File>> = ({
@@ -21,46 +20,17 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<m
     const { individuator } = useMachineWard();
     const { chronoLens, signaliumBureau } = useStateWarden();
     const [settings] = useSubjectState(individuator.settings$);
-    const [isPlaying, setIsPlaying] = useSubjectState(chronoLens.isPlaying$);
-    const [surveillanceState, setSurveillanceState] = useSubjectState(chronoLens.surveillanceState$);
-    const [downloadName] = useSubjectState(chronoLens.downloadName$);
-    const [fps] = useSubjectState(chronoLens.fps$);
-
-    const WebLens = useMemo(() => new WebChronoLens(individuator), [individuator]);
+    const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
+    const [surveillanceState] = useSubjectState(chronoLens.surveillanceState$);
 
     useEffect(() => {
-        const noticeId = 'player-recording';
-
-        const subscription = chronoLens.surveillanceState$
-            .pipe(pairwise())
-            .subscribe(([prev, next]) => {
-                switch (next) {
-                    case SurveillanceState.Stopped:
-                        WebLens.stopRecording();
-                        break;
-                    case SurveillanceState.Paused:
-                        WebLens.pauseRecording(setIsPlaying);
-                        break;
-                    case SurveillanceState.InProgress: {
-                        if (prev === SurveillanceState.Paused) {
-                            WebLens.resumeRecording(setIsPlaying);
-                        } else {
-                            WebLens.startRecording(map.getCanvas(), downloadName, settings, fps, setIsPlaying, setSurveillanceState, (stage, error) => {
-                                signaliumBureau.addNotice({
-                                    id: noticeId,
-                                    type: 'error',
-                                    error,
-                                    text: `Something went wrong during the ${stage} stage.`
-                                });
-                            });
-                        }
-                        break;
-                    }
-                }
-            });
+        const abortController = new AbortController();
+        (chronoLens as WebChronoLens).canvas = map.getCanvas();
+        chronoLens.setUpSurveillance(signaliumBureau, abortController.signal);
 
         return () => {
-            subscription.unsubscribe();
+            abortController.abort();
+            chronoLens.clearSurveillance();
         };
     }, []);
 
@@ -120,7 +90,7 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<m
                         {surveillanceState === SurveillanceState.Paused ? 'Resume' : 'Pause'} recording
                     </button>
                 ) : null}
-                <button onClick={() => WebLens.destroyRecording()}>Clear</button>
+                <button onClick={chronoLens.destroyRecording}>Clear</button>
                 <p className={styles.text}>
                     {!routeTimes ? "" : individuator.formatTimestamp(progressMs + routeTimes.startTimeEpoch, settings)}
                 </p>

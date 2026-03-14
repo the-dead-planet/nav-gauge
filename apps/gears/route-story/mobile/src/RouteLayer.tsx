@@ -12,11 +12,12 @@ import {
     routePointsLayer
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMap } from "@mobile-ui";
+import { DocumentPickerResponse } from "@react-native-documents/picker";
 
 export const currentPointRef$ = new BehaviorSubject<React.RefObject<ShapeSourceRef | null> | null>(null);
 export const linesRef$ = new BehaviorSubject<React.RefObject<ShapeSourceRef | null> | null>(null);
 
-export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap>> = ({
+export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap, DocumentPickerResponse>> = ({
     map,
     data$,
     routeTimes$,

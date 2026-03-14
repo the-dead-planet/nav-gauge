@@ -2,7 +2,8 @@ import { ReactElement } from "react";
 import { pairwise, Subscription } from "rxjs";
 import { MachineWardApp } from "./MachineWardApp";
 import { Individuator, OrientationSubscriptionDefinition } from "./individuator";
-import { Cartomancer, ChronoLens, StateWarden } from "../state-warden";
+import { ChronoLens } from "../state-warden/chrono-lens";
+import { StateWarden } from "../state-warden";
 import { Engine } from "./engine";
 import { Gear, GearId } from "../gears";
 import { StorageKeeper } from "./storage-keeper";
@@ -23,13 +24,14 @@ export abstract class MachineWard<TMap = unknown> {
 
     public constructor(
         gears: { [K in GearId]: (new (stateWarden: StateWarden<TMap>, individuator: Individuator) => Gear<TMap, K>) | null },
+        chronoLens: new (individuator: Individuator) => ChronoLens,
         storage: StorageLike,
         prefersLightColorScheme: boolean,
         orientationSubscription: OrientationSubscriptionDefinition
     ) {
         this.storageKeeper = new StorageKeeper(storage);
         this.individuator = new Individuator(prefersLightColorScheme, orientationSubscription);
-        this.stateWarden = new StateWarden<TMap>();
+        this.stateWarden = new StateWarden<TMap>(new chronoLens(this.individuator));
 
         this.engine.addGears(
             Object.values(gears).reduce<Gear<TMap, GearId>[]>((acc, Gear) => {

@@ -4,6 +4,7 @@ import { ErrorFallback } from "./ErrorFallback";
 import { Footer, Layout, TopBar } from "./layout";
 import { Machine } from "./machine/Machine";
 import { Notices } from "./notices/Notices";
+import { WebChronoLens } from "@the-dead-planet/nav-gauge-gears-route-story-web/src/chrono-lens/chrono-lens";
 
 export class WebMachineWard extends MachineWard<maplibregl.Map> {
     public constructor() {
@@ -34,6 +35,7 @@ export class WebMachineWard extends MachineWard<maplibregl.Map> {
                 "record-route": null,
                 "submit-data": null,
             },
+            WebChronoLens,
             localStorage,
             window.matchMedia("(prefers-color-scheme: light)").matches,
             orientationSubscription

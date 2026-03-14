@@ -31,7 +31,7 @@ export function MachineWardApp<TMap>({
 
     const machineWardContextValue = useMemo((): MachineWardContextValue => ({
         individuator,
-        storageKeeper
+        storageKeeper,
     }), [individuator, storageKeeper]);
 
     useEffect(() => {
