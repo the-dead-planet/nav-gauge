@@ -18,8 +18,13 @@ export abstract class ChronoLens {
     public isPlaying$ = new BehaviorSubject(false);
     public downloadName$ = new BehaviorSubject('Voyage Log');
 
+    /**
+     * For example "webm" or "mp4". Format in which videos are generated. Will be used in the file name.
+     */
+    public abstract fileType: string;
+
     private subscription: Subscription | null = null;
-    private noticeId = 'chrono-lens-recording';
+    protected noticeId = 'chrono-lens-recording';
 
     public constructor(individuator: Individuator) {
         this.individuator = individuator;
@@ -31,7 +36,7 @@ export abstract class ChronoLens {
             .subscribe(([prev, next]) => {
                 switch (next) {
                     case SurveillanceState.Stopped:
-                        this.stopRecording();
+                        this.stop(signaliumBureau);
                         break;
                     case SurveillanceState.Paused:
                         this.pauseRecording?.();
@@ -59,12 +64,27 @@ export abstract class ChronoLens {
         this.subscription?.unsubscribe();
     };
 
+    private stop = (signaliumBureau: SignaliumBureau) => {
+        this.isPlaying$.next(false);
+        this.stopRecording();
+        this.download(signaliumBureau).then(this.destroyRecording);
+    }
+
     /**
      * Removes spaces and underscores.
      */
     public static sanitiseName(value: string): string {
         return value.replaceAll(/[.:_\s]/g, "");
     }
+
+    /**
+     * Provides the sanitised name with a timestamp formatted according to individuator settings.
+     * @example getDownloadFileName() "VoyageLog_Sat13032026092231.webm"
+     */
+    protected getDownloadFileName = (): string => {
+        const timestamp = this.individuator.formatTimestamp(new Date().valueOf(), this.individuator.settings$.value);
+        return `${ChronoLens.sanitiseName(this.downloadName$.value + timestamp)}.${this.fileType}`;
+    };
 
     /**
      * Callback to trigger when user starts the screen recording
@@ -92,7 +112,7 @@ export abstract class ChronoLens {
     /**
      * Creates a video file with the data recorded by the screen recorder.
      */
-    public abstract download: () => void;
+    public abstract download: (signaliumBureau: SignaliumBureau) => Promise<void>;
 
     /**
      * Resets the recorder and any files created on the way completely.

@@ -1,4 +1,4 @@
-import { ChronoLens, SurveillanceState } from "@apparatus";
+import { ChronoLens, SignaliumBureau, SurveillanceState } from "@apparatus";
 
 /**
  * Records the videos.
@@ -8,6 +8,7 @@ export class WebChronoLens extends ChronoLens {
     private stream: MediaStream | undefined;
     private chunks: Blob[] = [];
     public canvas: HTMLCanvasElement | null = null;
+    public fileType = "webm";
 
     public startRecording = async (
         onError?: (stage: string, error: Error) => void
@@ -74,7 +75,7 @@ export class WebChronoLens extends ChronoLens {
     ): MediaRecorder => {
         const recorder = new MediaRecorder(stream, {
             mimeType: "video/webm; codecs=vp9",
-            videoBitsPerSecond: 8_000_000 
+            videoBitsPerSecond: 8_000_000
         });
 
         recorder.ondataavailable = (event) => {
@@ -85,12 +86,11 @@ export class WebChronoLens extends ChronoLens {
         recorder.onresume = () => { }
 
         recorder.onstop = () => {
-            this.stop();
-            this.download();
-            this.destroyRecording();
+            // Handled by surveillance state subscription
         };
 
         recorder.onerror = (event) => {
+            this.surveillanceState$.next(SurveillanceState.Stopped);
             this.destroyRecording();
             onError?.("recording", event.error);
         };
@@ -98,13 +98,7 @@ export class WebChronoLens extends ChronoLens {
         return recorder;
     }
 
-    private stop = () => {
-        this.isPlaying$.next(false);
-        this.surveillanceState$.next(SurveillanceState.Stopped);
-    };
-
-    public download = () => {
-        const timestamp = this.individuator.formatTimestamp(new Date().valueOf(), this.individuator.settings$.value);
+    public download = async (_signaliumBureau: SignaliumBureau) => {
         const blob = new Blob(this.chunks, {
             type: "video/webm",
         });
@@ -114,7 +108,7 @@ export class WebChronoLens extends ChronoLens {
         a.style = "display: none";
         a.href = url;
         document.body.appendChild(a);
-        a.download = `${ChronoLens.sanitiseName(this.downloadName$.value + timestamp)}.webm`;
+        a.download = this.getDownloadFileName();
         a.click();
 
         URL.revokeObjectURL(url);
