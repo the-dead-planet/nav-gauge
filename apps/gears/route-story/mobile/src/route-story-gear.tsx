@@ -9,7 +9,7 @@ import { Player } from './player/Player';
 import { MobileMap } from '@mobile-ui';
 import { GeoJson, getExifError, getExifLngLat, ParsingResultWithError } from '@tinker-chest';
 import { Cartomancer, MarkerImage } from '@apparatus';
-import { cacheReducedImage, createDataFromFilePath, extractFilePathFromData, removeFromCache } from './images/image-parser';
+import { cacheReducedImage, createDataFromFilePath, extractFilePathFromData, removeIfExists, resetTempSubfolder } from './images/image-parser';
 import { DocumentPickerResponse } from '@react-native-documents/picker';
 
 export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPickerResponse> {
@@ -18,6 +18,10 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPick
    public playerComponent = Player
    public routeLayerComponent = RouteLayer;
    public imagesLayerComponent = ImagesLayer;
+
+   public engageRouteStory = () => {
+      resetTempSubfolder();
+   };
 
    public fitBounds = (map: MobileMap, sw: [number, number], ne: [number, number]) => {
       map.camera.current?.fitBounds(sw, ne, 20);
@@ -60,7 +64,8 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPick
          if (!image.data) {
             continue;
          }
-         await removeFromCache(extractFilePathFromData(image.data));
+         await removeIfExists(extractFilePathFromData(image.data));
       }
+      resetTempSubfolder();
    };
 }

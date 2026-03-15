@@ -2,12 +2,12 @@ import { FC, useMemo, useState, useEffect } from "react";
 import { Images, ShapeSource, SymbolLayer } from "@maplibre/maplibre-react-native";
 import { OverlayComponentProps, useLoadedImages, useStateWarden, useSubjectState } from "@apparatus";
 import {
-    DEFAULT_IMAGE_SIZE,
+    IMAGE_MARKER_SIZE,
     getIconImageId,
     getImageIconSize,
     getImageSource,
     IMAGE_PROPERTY,
-    IMAGE_SIZE,
+    IMAGE_IN_DISPLAY_SIZE,
     RouteToolProps
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMap } from "@mobile-ui";
@@ -25,7 +25,7 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<M
     const { animatrix } = useStateWarden();
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
     const isInDisplay = displayImageId !== null;
-    const [iconSize, setIconSize] = useState(getImageIconSize(IMAGE_SIZE, DEFAULT_IMAGE_SIZE));
+    const [iconSize, setIconSize] = useState(getImageIconSize(IMAGE_IN_DISPLAY_SIZE, IMAGE_MARKER_SIZE));
 
     useEffect(() => {
         if (isInDisplay) {
@@ -65,7 +65,7 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<M
                             'case',
                             ['==', ['get', 'imageId'], displayImageId ?? '-1'],
                             iconSize,
-                            getImageIconSize(IMAGE_SIZE, DEFAULT_IMAGE_SIZE)
+                            getImageIconSize(IMAGE_IN_DISPLAY_SIZE, IMAGE_MARKER_SIZE)
                         ],
                         iconAllowOverlap: true
                     }}

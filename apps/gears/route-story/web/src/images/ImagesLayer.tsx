@@ -18,7 +18,7 @@ import {
     getImagesLayers,
     layerIds,
     sourceIds,
-    IMAGE_SIZE,
+    IMAGE_IN_DISPLAY_SIZE,
     getIconImageId,
     getImageSource,
     IMAGE_PROPERTY
@@ -41,8 +41,8 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
         icon: image.bitmap,
         [IMAGE_PROPERTY]: getIconImageId(image),
         options: {
-            width: IMAGE_SIZE,
-            height: IMAGE_SIZE
+            width: IMAGE_IN_DISPLAY_SIZE,
+            height: IMAGE_IN_DISPLAY_SIZE
         }
     })));
 

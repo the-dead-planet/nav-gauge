@@ -1,7 +1,7 @@
 import { CircleLayerSpecification, LayerSpecification, LineLayerSpecification, SymbolLayerSpecification } from "@maplibre/maplibre-gl-style-spec";
 import { FeatureStateProps, LoadedImageData } from "@apparatus";
 import { ThemeName } from "@ui";
-import { getImageIconSize, IMAGE_SIZE } from "./images";
+import { getImageIconSize, IMAGE_MARKER_SIZE, IMAGE_THUMBNAIL_SIZE } from "./images";
 import { GeoJson } from "@tinker-chest";
 import { getIconImageId } from "./tinkers";
 
@@ -85,8 +85,6 @@ export const currentPointLayers: CircleLayerSpecification[] = [
 ];
 
 export const IMAGE_PROPERTY = 'iconImageId';
-const CIRCLE_RADIUS = 25;
-export const DEFAULT_IMAGE_SIZE = 2 * CIRCLE_RADIUS;
 
 export type ImageFeature = GeoJSON.Feature<GeoJSON.Point, ImageFeatureProperties>;
 export interface ImageFeatureProperties {
@@ -121,7 +119,7 @@ const getImageLayer = (): SymbolLayerSpecification => ({
     type: 'symbol',
     layout: {
         'icon-image': ['get', IMAGE_PROPERTY],
-        'icon-size': getImageIconSize(IMAGE_SIZE, DEFAULT_IMAGE_SIZE),
+        'icon-size': getImageIconSize(IMAGE_THUMBNAIL_SIZE, IMAGE_MARKER_SIZE),
         'icon-allow-overlap': true,
     },
     paint: {
@@ -149,7 +147,7 @@ export const getImagesLayers = (themeName: ThemeName): LayerSpecification[] => {
                 'circle-color': 'transparent',
                 'circle-stroke-color': 'white',
                 'circle-stroke-width': 2,
-                "circle-radius": CIRCLE_RADIUS,
+                "circle-radius": Math.round(IMAGE_MARKER_SIZE / 2),
                 'circle-stroke-opacity': [
                     'case',
                     ["==", ["feature-state", FeatureStateProps.Dragging], true],

@@ -1,7 +1,7 @@
 import maplibregl from "maplibre-gl";
 import EXIF from 'exif-js';
 import { ExifData, MarkerImage } from '@apparatus';
-import { IMAGE_SIZE } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { IMAGE_IN_DISPLAY_SIZE } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { getExifError, getExifLngLat, LngLat } from "@tinker-chest";
 
 export interface WebMarkerImage extends MarkerImage {
@@ -33,7 +33,7 @@ export const parseImage = async (
     let bitmap: ImageBitmap | undefined;
     try {
         bitmap = await resizeImage(e.target?.result, {
-            targetSize: IMAGE_SIZE,
+            targetSize: IMAGE_IN_DISPLAY_SIZE,
             keepAspectRatio: false,
             shape: 'circle'
         });
