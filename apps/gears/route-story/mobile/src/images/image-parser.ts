@@ -2,11 +2,18 @@ import { Image } from 'react-native';
 import RNFS from 'react-native-fs';
 import { DocumentPickerResponse } from '@react-native-documents/picker';
 import ImageResizer from '@bam.tech/react-native-image-resizer';
-import { IMAGE_IN_DISPLAY_SIZE } from '@the-dead-planet/nav-gauge-gears-route-story-common';
+import { IMAGE_IN_DISPLAY_SIZE, IMAGE_THUMBNAIL_SIZE } from '@the-dead-planet/nav-gauge-gears-route-story-common';
+import { getResizeDimensions } from '@the-dead-planet/nav-gauge-gears-route-story-common/src/file-parser';
+
+export interface MobileMarkerImageData {
+    fullSize?: string;
+    thumbnail?: string;
+    uri: string;
+}
 
 export const filePrefix = 'file://';
 
-export const createDataFromFilePath = (filePath: string): string => {
+export const prependFilePrefix = (filePath: string): string => {
     return `${filePrefix}${filePath}`;
 };
 
@@ -40,38 +47,41 @@ export const removeIfExists = async (path: string): Promise<void> => {
 };
 
 /**
- * Creates a cached copy with reduced file size.
- * @returns Destination path
+ * Creates two cached copies with reduced file size: thumbnail and full size.
+ * @returns Destination paths to cached images
  */
-export const cacheReducedImage = async (file: DocumentPickerResponse): Promise<string | null> => {
-    const destPath = `${getTempSubfolder()}/${file.name}`;
-
-    try {
-        const destPath = `${getTempSubfolder()}/${file.name}`;
-        const reducedFileUri = await reduceSize(file.uri, IMAGE_IN_DISPLAY_SIZE);
-        await removeIfExists(destPath); // to prevent from iOS throwing
-        await RNFS.copyFile(reducedFileUri, destPath);
-    } catch (err) {
-        console.error('Error while reducing image size', err);
-        return null;
-    }
-
-    return destPath;
+export const cacheReducedImage = async (
+    file: DocumentPickerResponse,
+    onError?: (error: Error) => void,
+): Promise<{ fullSize?: string; thumbnail?: string; }> => {
+    return Promise.all([
+        reduceSize(file.uri, IMAGE_IN_DISPLAY_SIZE),
+        reduceSize(file.uri, IMAGE_THUMBNAIL_SIZE),
+    ])
+        .then(([fullSize, thumbnail]) => ({ fullSize, thumbnail }))
+        .catch((err) => {
+            onError?.(err);
+            return {};
+        });
 };
 
 /**
  * Target size will be used to set the lower size of height/width (the other will keep ratio).
  * @returns Uri of the resized file
  */
-export const reduceSize = async (uri: string, targetSize: number): Promise<string> => {
-    const { width, height } = await determineSize(uri);
-    const scale = width > height ? width / height : height / width;
-    const quality = 80;
+export const reduceSize = async (
+    uri: string,
+    targetSize: number,
+    options: { quality?: number } = {}
+): Promise<string> => {
+    const img = await determineSize(uri);
+    const { targetWidth, targetHeight } = getResizeDimensions(img, targetSize);
+    const { quality = 80 } = options;
     const rotation = 0;
     const resizedFile = await ImageResizer.createResizedImage(
         uri,
-        width < height ? targetSize : targetSize / scale,
-        height < width ? targetSize : targetSize / scale,
+        targetWidth,
+        targetHeight,
         'JPEG',
         quality,
         rotation,
@@ -79,7 +89,6 @@ export const reduceSize = async (uri: string, targetSize: number): Promise<strin
         false,
         { mode: 'cover' }
     );
-
     return resizedFile.uri;
 };
 

@@ -3,9 +3,10 @@ import { OverlayComponentProps, SurveillanceState, useMachineWard, useStateWarde
 import { formatCurrentTimestamp, getProgressPercentage, RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { updateRouteLayer } from "../tinkers";
 import { WebChronoLens } from "../chrono-lens/chrono-lens";
+import { WebMarkerImageData } from "../images/image-parser";
 import * as styles from './player.module.css';
 
-export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map, File>> = ({
+export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map, File, WebMarkerImageData>> = ({
     map,
     data$,
     routeTimes$,

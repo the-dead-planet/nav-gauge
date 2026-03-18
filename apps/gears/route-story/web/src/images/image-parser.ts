@@ -1,42 +1,42 @@
 import maplibregl from "maplibre-gl";
 import EXIF from 'exif-js';
-import { ExifData, MarkerImage } from '@apparatus';
-import { IMAGE_IN_DISPLAY_SIZE } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { ExifData } from '@apparatus';
+import { IMAGE_IN_DISPLAY_SIZE, IMAGE_THUMBNAIL_SIZE } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { getExifError, getExifLngLat, LngLat } from "@tinker-chest";
+import { getResizeDimensions } from "@the-dead-planet/nav-gauge-gears-route-story-common/src/file-parser";
 
-export interface WebMarkerImage extends MarkerImage {
+export interface WebMarkerImageData {
+    data?: string;
     marker?: maplibregl.Marker;
     bitmap?: ImageBitmap;
+    thumbnailBitmap?: ImageBitmap;
     markerElement?: HTMLDivElement;
 }
 
-export interface LoadedImageData extends Omit<WebMarkerImage, 'progress' | 'error' | 'featureId' | 'data' | 'lngLat'> {
-    lngLat: LngLat;
-    featureId: number;
-    data: string;
-    bitmap: ImageBitmap;
-}
-
 export const parseImage = async (
+    e: ProgressEvent<FileReader>,
     file: File,
-    e: ProgressEvent<FileReader>
+    options: { shape?: ResizeImageOptions['shape'] } = {}
 ): Promise<{
     data?: string;
     bitmap?: ImageBitmap;
+    thumbnailBitmap?: ImageBitmap;
     exif?: ExifData;
     error?: string;
     lngLat?: LngLat;
 }> => {
+    const { shape } = options;
     const buffer = await file.arrayBuffer();
     const exif = EXIF.readFromBinaryFile(buffer) as false | ExifData;
 
     let bitmap: ImageBitmap | undefined;
+    let thumbnailBitmap: ImageBitmap | undefined;
     try {
-        bitmap = await resizeImage(e.target?.result, {
-            targetSize: IMAGE_IN_DISPLAY_SIZE,
-            keepAspectRatio: false,
-            shape: 'circle'
-        });
+        // TODO: Only leave full size original ratio and add shape processing in the component - user can select what shapes they want for thumbnails and display
+        [bitmap, thumbnailBitmap] = await Promise.all([
+            resizeImage(e.target?.result, { targetSize: IMAGE_IN_DISPLAY_SIZE }),
+            resizeImage(e.target?.result, { targetSize: IMAGE_THUMBNAIL_SIZE, shape }),
+        ]);
     } catch (err) {
         console.error('Error resizing image', err);
     }
@@ -45,10 +45,16 @@ export const parseImage = async (
     return {
         data: e.target?.result?.toString(),
         bitmap,
+        thumbnailBitmap,
         lngLat: getExifLngLat(exif || undefined),
         error: getExifError(exif),
     };
 };
+
+export interface ResizeImageOptions {
+    targetSize?: number;
+    shape?: 'circle' | 'square',
+}
 
 /**
  * @param e File progress event
@@ -57,17 +63,10 @@ export const parseImage = async (
  */
 const resizeImage = (
     result?: FileReader['result'],
-    options: {
-        targetSize?: number;
-        shape?: 'circle' | 'square',
-        keepAspectRatio?: boolean,
-    } = {}
+    options: ResizeImageOptions = {}
 ): Promise<ImageBitmap> => {
-    const {
-        targetSize = 200,
-        shape = 'square',
-        keepAspectRatio = false
-    } = options;
+    const { targetSize = 200, shape } = options;
+    const keepAspectRatio: boolean = shape === 'square' || shape === 'circle';
 
     return new Promise((resolve, reject) => {
         if (!result) {
@@ -78,21 +77,14 @@ const resizeImage = (
         let img = new Image();
 
         img.onload = () => {
-            const sourceSize = Math.min(img.width, img.height);
-            const sourceX = (img.width - sourceSize) / 2;
-            const sourceY = (img.height - sourceSize) / 2;
-            let sourceWidth = sourceSize;
-            let sourceHeight = sourceSize;
-            let targetWidth = targetSize;
-            let targetHeight = targetSize;
-
-            if (keepAspectRatio) {
-                sourceWidth = img.width;
-                sourceHeight = img.height;
-                const scale = Math.min(targetSize / img.width, targetSize / img.height, 1);
-                targetWidth = img.width * scale;
-                targetHeight = img.height * scale;
-            }
+            const {
+                sourceX,
+                sourceY,
+                sourceWidth,
+                sourceHeight,
+                targetWidth,
+                targetHeight,
+            } = getResizeDimensions(img, targetSize, { keepAspectRatio });
 
             const canvas = document.createElement("canvas");
             canvas.width = targetWidth;

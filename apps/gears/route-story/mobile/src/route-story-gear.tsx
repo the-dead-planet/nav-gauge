@@ -9,10 +9,10 @@ import { Player } from './player/Player';
 import { MobileMap } from '@mobile-ui';
 import { GeoJson, getExifError, getExifLngLat, ParsingResultWithError } from '@tinker-chest';
 import { Cartomancer, MarkerImage } from '@apparatus';
-import { cacheReducedImage, createDataFromFilePath, extractFilePathFromData, removeIfExists, resetTempSubfolder } from './images/image-parser';
+import { cacheReducedImage, prependFilePrefix, MobileMarkerImageData, resetTempSubfolder } from './images/image-parser';
 import { DocumentPickerResponse } from '@react-native-documents/picker';
 
-export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPickerResponse> {
+export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPickerResponse, MobileMarkerImageData> {
    public routeLayerFitBoundsComponent = RouteLayerFitBounds;
    public fileInputComponent = RouteStoryFileInput;
    public playerComponent = Player
@@ -38,7 +38,14 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPick
 
       try {
          const exif = await Exify.read(file.uri);
-         const destPath = await cacheReducedImage(file);
+         const { fullSize, thumbnail } = await cacheReducedImage(file, (error) => {
+            this.stateWarden.signaliumBureau.addNotice({
+               id: 'image-resize',
+               type: 'error',
+               error,
+               text: 'Error processing images',
+            });
+         });
 
          const nextImages = this.images$.value.slice();
          const index = this.images$.value.findIndex((el) => el.name === file.name);
@@ -49,7 +56,11 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPick
             ...nextImages[index],
             progress: 100,
             lngLat,
-            data: destPath ? createDataFromFilePath(destPath) : undefined,
+            data: {
+               uri: file.uri,
+               fullSize: fullSize ? prependFilePrefix(fullSize) : undefined,
+               thumbnail: thumbnail ? prependFilePrefix(thumbnail) : undefined,
+            },
             error: getExifError(exif),
             featureId,
          };
@@ -59,13 +70,10 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPick
       }
    }
 
-   public onCleanupStory = async (_data: ParsingResultWithError, images: MarkerImage[]): Promise<void> => {
-      for (const image of images) {
-         if (!image.data) {
-            continue;
-         }
-         await removeIfExists(extractFilePathFromData(image.data));
-      }
+   public onCleanupStory = async (
+      _data: ParsingResultWithError,
+      _images: MarkerImage<MobileMarkerImageData>[]
+   ): Promise<void> => {
       resetTempSubfolder();
    };
 }

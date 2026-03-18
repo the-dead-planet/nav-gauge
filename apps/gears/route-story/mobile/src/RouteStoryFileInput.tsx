@@ -4,6 +4,7 @@ import { DocumentPickerResponse, types } from "@react-native-documents/picker";
 import { RouteFileInputProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { FileInputStatus, FileInput, MobileMap, Button } from "@mobile-ui";
 import { parsers, useSubjectState } from "@apparatus";
+import { MobileMarkerImageData } from "./images/image-parser";
 
 const styles = StyleSheet.create({
     container: {
@@ -19,7 +20,11 @@ const styles = StyleSheet.create({
     }
 });
 
-export const RouteStoryFileInput: FC<RouteFileInputProps<MobileMap, DocumentPickerResponse>> = ({ data$, images$, fileOperator }) => {
+export const RouteStoryFileInput: FC<RouteFileInputProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({
+    data$,
+    images$,
+    fileOperator
+}) => {
     const [{ geojson, routeName, error }] = useSubjectState(data$);
     const [isLoading, setIsLoading] = useSubjectState(fileOperator.isLoading$);
 

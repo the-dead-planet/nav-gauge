@@ -4,9 +4,9 @@ import {
     useMapLayerData,
     useSubjectState,
     MapLayerData,
+    LoadedImageData,
 } from "@apparatus";
 import { emptyCollection, GeoJson } from "@tinker-chest";
-import { LoadedImageData } from "./image-parser";
 import {
     layerIds,
     sourceIds,
@@ -14,15 +14,18 @@ import {
     ImageFeatureProperties,
     getIconImageId,
     IMAGE_PROPERTY,
-    ANIMATION_DURATION
+    ANIMATION_DURATION,
+    IMAGE_IN_DISPLAY_SIZE,
+    IMAGE_THUMBNAIL_PROPERTY,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { PlayerOperator } from "@the-dead-planet/nav-gauge-gears-route-story-common/src/player-operator";
+import { WebMarkerImageData } from "./image-parser";
 
-const getData = (
+function getData<TImageData>(
     geojson: GeoJson,
-    loadedImages: LoadedImageData[],
+    loadedImages: LoadedImageData<TImageData>[],
     displayImageId: number | null
-): GeoJSON.GeoJSON => {
+): GeoJSON.GeoJSON {
     const image = loadedImages.find((image) => image.id === displayImageId);
     if (!image) {
         return emptyCollection;
@@ -35,7 +38,8 @@ const getData = (
 
     const properties: ImageFeatureProperties = {
         imageId: image.id,
-        [IMAGE_PROPERTY]: getIconImageId(image)
+        [IMAGE_PROPERTY]: getIconImageId(image),
+        [IMAGE_THUMBNAIL_PROPERTY]: getIconImageId(image, { thumbnail: true }),
     };
 
     return {
@@ -43,13 +47,13 @@ const getData = (
         geometry,
         properties
     };
-};
+}
 
 interface Props {
     map: maplibregl.Map,
     geojson: GeoJson;
-    loadedImages: LoadedImageData[];
-    playerOperator: PlayerOperator<maplibregl.Map, File>;
+    loadedImages: LoadedImageData<WebMarkerImageData>[];
+    playerOperator: PlayerOperator<maplibregl.Map, File, WebMarkerImageData>;
 }
 
 export const DisplayImageLayer: FC<Props> = ({
@@ -94,7 +98,11 @@ export const DisplayImageLayer: FC<Props> = ({
 
         if (isInDisplay) {
             const canvas = map.getCanvas();
-            playerOperator.animateDisplayImage({ width: canvas.width, height: canvas.height }, updateIconSize)
+            playerOperator.animateDisplayImage({
+                width: canvas.width,
+                height: canvas.height,
+                devicePixelRatio: window.devicePixelRatio
+            }, updateIconSize)
         }
 
         return () => {

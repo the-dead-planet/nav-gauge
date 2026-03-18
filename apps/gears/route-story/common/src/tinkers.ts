@@ -150,4 +150,9 @@ export const formatCurrentTimestamp = (progressMs: number, progressPercentage: n
     return `${formatTimeMsAsStandard(progressMs)} (${progressPercentage.toFixed(0)}%)`;
 };
 
-export const getIconImageId = (image: LoadedImageData): string => `image-${image.id}`;
+export function getIconImageId<TImageData>(
+    imageData: LoadedImageData<TImageData>,
+    { thumbnail }: { thumbnail?: boolean } = {}
+): string {
+    return `image-${imageData.id}${thumbnail ? '-thumbnail' : ''}`;
+}

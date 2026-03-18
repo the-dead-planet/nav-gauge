@@ -9,7 +9,6 @@ import {
     useMapLayerData,
     MapLayerData,
     parsers,
-    useMachineWard,
 } from "@apparatus";
 import {
     getRouteSourceData,
@@ -21,8 +20,9 @@ import {
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { updateRouteLayer } from "./tinkers";
 import { useLoadedWebImages } from "./hooks";
+import { WebMarkerImageData } from "./images/image-parser";
 
-export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map, File>> = ({
+export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map, File, WebMarkerImageData>> = ({
     map,
     data$,
     routeTimes$,
