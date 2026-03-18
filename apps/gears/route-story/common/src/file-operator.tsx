@@ -3,12 +3,12 @@ import { parsers, FileToGeoJSONParser } from "@apparatus";
 import { GeoJson, getNext } from "@tinker-chest";
 import { RouteStoryGear } from "./route-story-gear";
 
-export class FileOperator<TMap, TFile extends { name?: string | null; type: string | null; }> {
-    private gear: RouteStoryGear<TMap, TFile>;
+export class FileOperator<TMap, TFile extends { name?: string | null; type: string | null; }, TImageData> {
+    private gear: RouteStoryGear<TMap, TFile, TImageData>;
     public isLoading$ = new BehaviorSubject(false);
 
     constructor(
-        gear: RouteStoryGear<TMap, TFile>,
+        gear: RouteStoryGear<TMap, TFile, TImageData>,
     ) {
         this.gear = gear;
     }

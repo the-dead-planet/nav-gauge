@@ -1,7 +1,7 @@
 import { FC, useEffect, useMemo, useRef } from "react";
 import { BehaviorSubject } from "rxjs";
 import { CircleLayer, CircleLayerStyle, LineLayer, LineLayerStyle, ShapeSource, ShapeSourceRef } from "@maplibre/maplibre-react-native";
-import { OverlayComponentProps, useLoadedImages, useStateWarden, useSubjectState } from "@apparatus";
+import { OverlayComponentProps, useStateWarden, useSubjectState } from "@apparatus";
 import {
     getRouteSourceData,
     RouteToolProps,
@@ -13,11 +13,13 @@ import {
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMap } from "@mobile-ui";
 import { DocumentPickerResponse } from "@react-native-documents/picker";
+import { useLoadedMobileImages } from "./images/useLoadedMobileImages";
+import { MobileMarkerImageData } from "./images/image-parser";
 
 export const currentPointRef$ = new BehaviorSubject<React.RefObject<ShapeSourceRef | null> | null>(null);
 export const linesRef$ = new BehaviorSubject<React.RefObject<ShapeSourceRef | null> | null>(null);
 
-export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap, DocumentPickerResponse>> = ({
+export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({
     map,
     data$,
     routeTimes$,
@@ -69,7 +71,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mo
         };
     }, []);
 
-    const loadedImages = useLoadedImages(images);
+    const loadedImages = useLoadedMobileImages(images);
 
     const sources = useMemo((): {
         [key in string]?: GeoJSON.GeoJSON;

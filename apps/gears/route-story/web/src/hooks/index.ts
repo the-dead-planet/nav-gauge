@@ -1,2 +1,2 @@
 export * from './useLoadedWebImages';
-export * from './useMapImages';
+export * from './useRouteLayerImages';

@@ -42,19 +42,19 @@ export interface OverlayComponentProps<TMap> {
     map: TMap;
 }
 
-export interface MarkerImage {
+export interface MarkerImage<TImageData> {
     id: number;
     name: string;
     progress: number;
     lngLat?: LngLat;
-    data?: string;
+    data?: TImageData;
     exif?: ExifData;
     error?: string;
     featureId?: number;
 }
 
-export interface LoadedImageData extends Omit<MarkerImage, 'progress' | 'error' | 'featureId' | 'data' | 'lngLat'> {
+export interface LoadedImageData<TImageData> extends Omit<MarkerImage<TImageData>, 'progress' | 'error' | 'featureId' | 'data' | 'lngLat'> {
     lngLat: LngLat;
     featureId: number;
-    data: string;
+    data: TImageData;
 }

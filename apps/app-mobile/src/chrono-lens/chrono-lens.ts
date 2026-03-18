@@ -82,6 +82,6 @@ export class MobileChronoLens extends ChronoLens {
     };
 
     private getAppFolderPath = (): string => {
-        return `${RNFS.DocumentDirectoryPath}/NavGauge`;
+        return `${RNFS.DownloadDirectoryPath}/NavGauge`;
     };
 }

@@ -1,7 +1,7 @@
 import { CircleLayerSpecification, LayerSpecification, LineLayerSpecification, SymbolLayerSpecification } from "@maplibre/maplibre-gl-style-spec";
 import { FeatureStateProps, LoadedImageData } from "@apparatus";
 import { ThemeName } from "@ui";
-import { getImageIconSize, IMAGE_SIZE } from "./images";
+import { getImageIconSize, IMAGE_IN_DISPLAY_SIZE, IMAGE_MARKER_SIZE, IMAGE_THUMBNAIL_SIZE } from "./images";
 import { GeoJson } from "@tinker-chest";
 import { getIconImageId } from "./tinkers";
 
@@ -85,61 +85,61 @@ export const currentPointLayers: CircleLayerSpecification[] = [
 ];
 
 export const IMAGE_PROPERTY = 'iconImageId';
-const CIRCLE_RADIUS = 25;
-export const DEFAULT_IMAGE_SIZE = 2 * CIRCLE_RADIUS;
+export const IMAGE_THUMBNAIL_PROPERTY = 'iconImageThumbnailId';
 
 export type ImageFeature = GeoJSON.Feature<GeoJSON.Point, ImageFeatureProperties>;
 export interface ImageFeatureProperties {
     imageId: number;
     [IMAGE_PROPERTY]: string;
+    [IMAGE_THUMBNAIL_PROPERTY]: string;
 }
 
-export const getImageSource = (
-    loadedImages: LoadedImageData[],
+export function getImageSource<TImageData>(
+    loadedImages: LoadedImageData<TImageData>[],
     geojson?: GeoJson
-): GeoJSON.FeatureCollection<GeoJSON.Point, ImageFeatureProperties> => ({
-    type: 'FeatureCollection',
-    features: loadedImages.reduce<ImageFeature[]>((acc, image) => {
-        const feature = geojson?.features.find((f) => f.properties.id === image.featureId);
-        if (feature) {
-            acc.push({
-                type: 'Feature',
-                geometry: feature.geometry,
-                properties: {
-                    imageId: image.id,
-                    [IMAGE_PROPERTY]: getIconImageId(image)
-                }
-            });
-        }
-        return acc;
-    }, [])
-});
-
-const getImageLayer = (): SymbolLayerSpecification => ({
-    id: layerIds.images,
-    source: sourceIds.image,
-    type: 'symbol',
-    layout: {
-        'icon-image': ['get', IMAGE_PROPERTY],
-        'icon-size': getImageIconSize(IMAGE_SIZE, DEFAULT_IMAGE_SIZE),
-        'icon-allow-overlap': true,
-    },
-    paint: {
-        'icon-opacity': [
-            'case',
-            ["==", ["feature-state", FeatureStateProps.Dragging], true],
-            0.5,
-            1
-        ]
-    }
-});
+): GeoJSON.FeatureCollection<GeoJSON.Point, ImageFeatureProperties> {
+    return {
+        type: 'FeatureCollection',
+        features: loadedImages.reduce<ImageFeature[]>((acc, image) => {
+            const feature = geojson?.features.find((f) => f.properties.id === image.featureId);
+            if (feature) {
+                acc.push({
+                    type: 'Feature',
+                    geometry: feature.geometry,
+                    properties: {
+                        imageId: image.id,
+                        [IMAGE_PROPERTY]: getIconImageId(image),
+                        [IMAGE_THUMBNAIL_PROPERTY]: getIconImageId(image, { thumbnail: true }),
+                    }
+                });
+            }
+            return acc;
+        }, [])
+    };
+}
 
 // TODO: Depoendent on base map style
-export const getImagesLayers = (themeName: ThemeName): LayerSpecification[] => {
-    const imageLayer = getImageLayer();
+export const getImagesLayers = (_themeName: ThemeName): LayerSpecification[] => {
+    const imageLayer: LayerSpecification = {
+        id: layerIds.images,
+        source: sourceIds.image,
+        type: 'symbol',
+        layout: {
+            'icon-image': ['get', IMAGE_THUMBNAIL_PROPERTY],
+            'icon-size': getImageIconSize(IMAGE_THUMBNAIL_SIZE, IMAGE_MARKER_SIZE),
+            'icon-allow-overlap': true,
+        },
+        paint: {
+            'icon-opacity': [
+                'case',
+                ["==", ["feature-state", FeatureStateProps.Dragging], true],
+                0.5,
+                1
+            ]
+        }
+    };
 
     return [
-        imageLayer,
         {
             id: layerIds.imagesHighlightOutline,
             source: sourceIds.image,
@@ -149,7 +149,7 @@ export const getImagesLayers = (themeName: ThemeName): LayerSpecification[] => {
                 'circle-color': 'transparent',
                 'circle-stroke-color': 'white',
                 'circle-stroke-width': 2,
-                "circle-radius": CIRCLE_RADIUS,
+                "circle-radius": Math.round(IMAGE_MARKER_SIZE / 2),
                 'circle-stroke-opacity': [
                     'case',
                     ["==", ["feature-state", FeatureStateProps.Dragging], true],
@@ -160,6 +160,7 @@ export const getImagesLayers = (themeName: ThemeName): LayerSpecification[] => {
                 ]
             }
         },
+        imageLayer,
         {
             ...imageLayer,
             id: layerIds.imagesHighlight,
@@ -180,14 +181,17 @@ export const getImagesLayers = (themeName: ThemeName): LayerSpecification[] => {
 export const ANIMATION_DURATION = 250;
 
 export const getDisplayImageLayers = (): SymbolLayerSpecification[] => {
-    const imageLayer = getImageLayer();
-
     return [{
-        ...imageLayer,
-        source: sourceIds.imageInDisplay,
         id: layerIds.imageInDisplay,
+        type: 'symbol',
+        source: sourceIds.imageInDisplay,
+        layout: {
+            'icon-image': ['get', IMAGE_PROPERTY],
+            'icon-size': getImageIconSize(IMAGE_IN_DISPLAY_SIZE, IMAGE_MARKER_SIZE),
+            'icon-allow-overlap': true,
+        },
         paint: {
             'icon-opacity': 1
-        }
+        },
     }];
 };

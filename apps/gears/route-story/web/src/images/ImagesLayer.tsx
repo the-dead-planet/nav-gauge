@@ -12,19 +12,20 @@ import {
 import { useLoadedWebImages } from "../hooks/useLoadedWebImages";
 import { DisplayImageLayer } from "./DisplayImageLayer";
 import { updateImageFeatureId } from "../tinkers";
-import { useMapImages } from "../hooks";
+import { MapImageData, useRouteLayerImages } from "../hooks";
 import {
     RouteToolProps,
     getImagesLayers,
     layerIds,
     sourceIds,
-    IMAGE_SIZE,
     getIconImageId,
     getImageSource,
-    IMAGE_PROPERTY
+    IMAGE_PROPERTY,
+    IMAGE_THUMBNAIL_PROPERTY
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { WebMarkerImageData } from "./image-parser";
 
-export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map, File>> = ({
+export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map, File, WebMarkerImageData>> = ({
     map,
     data$,
     images$,
@@ -37,14 +38,20 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
     const [highlightIds, setHighlightIds] = useState<Set<string>>(new Set());
     const [draggingId, setDraggingId] = useState<number | null>(null);
 
-    useMapImages(map, loadedImages.filter((image) => !!image.bitmap).map((image) => ({
-        icon: image.bitmap,
-        [IMAGE_PROPERTY]: getIconImageId(image),
-        options: {
-            width: IMAGE_SIZE,
-            height: IMAGE_SIZE
-        }
-    })));
+    useRouteLayerImages(
+        map,
+        loadedImages
+            .filter((image) => !!image.data.bitmap)
+            .map((image): MapImageData => ({
+                fullSize: {
+                    iconImageName: getIconImageId(image),
+                    data: image.data.bitmap!,
+                },
+                thumbnail: {
+                    iconImageName: getIconImageId(image, { thumbnail: true }),
+                    data: image.data.thumbnailBitmap!
+                }
+            })));
 
     const sourceDataGeojson = useMemo(
         () => getImageSource(loadedImages, geojson),
@@ -123,7 +130,8 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
                     geometry: feature.geometry,
                     properties: {
                         imageId: -1,
-                        [IMAGE_PROPERTY]: getIconImageId(image)
+                        [IMAGE_PROPERTY]: getIconImageId(image),
+                        [IMAGE_THUMBNAIL_PROPERTY]: getIconImageId(image, { thumbnail: true }),
                     }
                 }])
             });
@@ -161,10 +169,12 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
         return null;
     }
 
-    return <DisplayImageLayer
-        map={map}
-        geojson={geojson}
-        loadedImages={loadedImages}
-        playerOperator={playerOperator}
-    />;
+    return (
+        <DisplayImageLayer
+            map={map}
+            geojson={geojson}
+            loadedImages={loadedImages}
+            playerOperator={playerOperator}
+        />
+    );
 };

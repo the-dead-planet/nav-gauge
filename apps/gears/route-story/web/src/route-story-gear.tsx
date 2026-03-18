@@ -8,9 +8,9 @@ import { RouteLayerFitBounds } from './layers/RouteLayerFitBounds';
 import { Player } from './player/Player';
 import { GeoJson, ParsingResultWithError } from '@tinker-chest';
 import { Cartomancer, MarkerImage } from '@apparatus';
-import { parseImage, WebMarkerImage } from './images/image-parser';
+import { parseImage, WebMarkerImageData } from './images/image-parser';
 
-export class WebRouteStoryGear extends RouteStoryGear<maplibregl.Map, File> {
+export class WebRouteStoryGear extends RouteStoryGear<maplibregl.Map, File, WebMarkerImageData> {
    public routeLayerFitBoundsComponent = RouteLayerFitBounds;
    public fileInputComponent = RouteStoryFileInput;
    public playerComponent = Player
@@ -35,9 +35,9 @@ export class WebRouteStoryGear extends RouteStoryGear<maplibregl.Map, File> {
       };
 
       reader.onload = async (e) => {
-         const { data, bitmap, lngLat, error } = await parseImage(file, e);
+         const { data, bitmap, thumbnailBitmap, lngLat, error } = await parseImage(e, file, { shape: 'circle' });
 
-         const nextImages: WebMarkerImage[] = this.images$.value.slice();
+         const nextImages = this.images$.value.slice();
          const index = this.images$.value.findIndex((el) => el.name === file.name);
          const [featureId, feature] = geojson ? Cartomancer.getClosestFeature(geojson, lngLat) : [0, undefined];
 
@@ -45,8 +45,7 @@ export class WebRouteStoryGear extends RouteStoryGear<maplibregl.Map, File> {
             ...nextImages[index],
             progress: 100,
             lngLat,
-            data,
-            bitmap,
+            data: { data, bitmap, thumbnailBitmap },
             error,
             featureId,
          };
@@ -55,8 +54,8 @@ export class WebRouteStoryGear extends RouteStoryGear<maplibregl.Map, File> {
             const markerElement = document.createElement('div');
             const featureLngLat = new maplibregl.LngLat(feature.geometry.coordinates[0], feature.geometry.coordinates[1]);
 
-            nextImages[index].markerElement = markerElement;
-            nextImages[index].marker = new maplibregl.Marker({
+            nextImages[index].data!.markerElement = markerElement;
+            nextImages[index].data!.marker = new maplibregl.Marker({
                element: markerElement,
                draggable: true,
             }).setLngLat(featureLngLat);
@@ -72,7 +71,7 @@ export class WebRouteStoryGear extends RouteStoryGear<maplibregl.Map, File> {
       reader.readAsDataURL(file);
    };
 
-   public onCleanupStory = async (_data: ParsingResultWithError, _images: MarkerImage[]): Promise<void> => { };
+   public onCleanupStory = async (_data: ParsingResultWithError, _images: MarkerImage<WebMarkerImageData>[]): Promise<void> => { };
 
    private confirmBeforeLeaveSubscription: Subscription | null = null;
 

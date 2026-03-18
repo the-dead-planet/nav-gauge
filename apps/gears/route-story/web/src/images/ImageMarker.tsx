@@ -2,27 +2,25 @@ import { CSSProperties, FC, useEffect, useState } from "react";
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import maplibregl from "maplibre-gl";
-import { Cartomancer, MarkerImage, useStateWarden, useSubjectState, FeatureStateProps } from "@apparatus";
+import { Cartomancer, useStateWarden, useSubjectState, FeatureStateProps } from "@apparatus";
 import { GeoJson } from "@tinker-chest";
 import { sourceIds } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import * as styles from './images.module.css';
 
 const imageSize = 30;
 
-export type MarkerImageData = Omit<MarkerImage, 'marker' | 'markerElement'> & {
-    marker: maplibregl.Marker;
-    markerElement: HTMLDivElement;
-}
-
 interface Props {
     map: maplibregl.Map;
-    image: MarkerImageData;
+    imageId: number,
+    data: string;
+    marker: maplibregl.Marker;
+    markerElement: HTMLDivElement;
     onUpdateImageFeatureId: (imageId: number, featureId: number) => void;
     geojson: GeoJson;
 }
 
 // TODO: If multiple in the same location, render all
-export const ImageMarker: FC<Props> = ({ map, image, geojson, onUpdateImageFeatureId }) => {
+export const ImageMarker: FC<Props> = ({ map, imageId, data, marker, markerElement, geojson, onUpdateImageFeatureId }) => {
     const { animatrix, cartomancer } = useStateWarden();
     const [closestFeatureId, setClosestFeatureId] = useState<number | null>(null);
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
@@ -30,27 +28,27 @@ export const ImageMarker: FC<Props> = ({ map, image, geojson, onUpdateImageFeatu
 
     useEffect(() => {
         const handleDrag = () => {
-            setClosestFeatureId(Cartomancer.getClosestFeature(geojson, image.marker.getLngLat())[0]);
+            setClosestFeatureId(Cartomancer.getClosestFeature(geojson, marker.getLngLat())[0]);
         };
 
         const handleDragEnd = () => {
-            const [id, feature] = Cartomancer.getClosestFeature(geojson, image.marker.getLngLat());
-            image.marker.setLngLat(new maplibregl.LngLat(feature.geometry.coordinates[0], feature.geometry.coordinates[1]));
-            onUpdateImageFeatureId(image.id, id);
+            const [id, feature] = Cartomancer.getClosestFeature(geojson, marker.getLngLat());
+            marker.setLngLat(new maplibregl.LngLat(feature.geometry.coordinates[0], feature.geometry.coordinates[1]));
+            onUpdateImageFeatureId(imageId, id);
 
             setClosestFeatureId(null);
         };
 
-        image.marker.addTo(map);
-        image.marker.on('drag', handleDrag);
-        image.marker.on('dragend', handleDragEnd);
+        marker.addTo(map);
+        marker.on('drag', handleDrag);
+        marker.on('dragend', handleDragEnd);
 
         return () => {
-            image.marker.off('drag', handleDrag);
-            image.marker.off('dragend', handleDragEnd);
-            image.marker.remove();
+            marker.off('drag', handleDrag);
+            marker.off('dragend', handleDragEnd);
+            marker.remove();
         };
-    }, [image]);
+    }, [imageId, marker]);
 
     useEffect(() => {
         if (closestFeatureId === null) {
@@ -70,23 +68,23 @@ export const ImageMarker: FC<Props> = ({ map, image, geojson, onUpdateImageFeatu
     }, [closestFeatureId]);
 
     useEffect(() => {
-        if (displayImageId !== image.id) {
+        if (displayImageId !== imageId) {
             return;
         }
-        image.markerElement.classList.add(styles['display-container']);
+        markerElement.classList.add(styles['display-container']);
 
         return () => {
-            image.markerElement.classList.remove(styles['display-container']);
+            markerElement.classList.remove(styles['display-container']);
         };
-    }, [displayImageId, image.id]);
+    }, [displayImageId, imageId]);
 
     // TODO: Check if string data should be supported
     return ReactDOM.createPortal(
         <img
-            src={image.data}
-            alt={`image ${image.id}`}
+            src={data}
+            alt={`image ${imageId}`}
             className={classNames(styles['image-marker'], {
-                [styles['in-display']]: displayImageId === image.id
+                [styles['in-display']]: displayImageId === imageId
             })}
             style={{
                 // TODO: Add ref client size observer to handle the "full screen" size
@@ -94,6 +92,6 @@ export const ImageMarker: FC<Props> = ({ map, image, geojson, onUpdateImageFeatu
                 '--image-display-scale': Math.ceil(Math.min(mapLayout.size.width, mapLayout.size.height) / imageSize)
             } as CSSProperties}
         />,
-        image.markerElement
+        markerElement
     );
 };

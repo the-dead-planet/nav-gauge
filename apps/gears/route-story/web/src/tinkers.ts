@@ -15,10 +15,10 @@ export const updateRouteLayer = (
     map.getSource<maplibregl.GeoJSONSource>(sourceIds.line)?.setData(lines);
 };
 
-export const updateImageFeatureId = (
-    images$: BehaviorSubject<MarkerImage[]>,
+export function updateImageFeatureId<TImageData>(
+    images$: BehaviorSubject<MarkerImage<TImageData>[]>,
     imageId: number,
     featureId: number
-) => {
+) {
     images$.next(images$.value.map((im) => im.id === imageId ? { ...im, featureId } : im))
-};
+}

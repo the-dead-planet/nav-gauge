@@ -2,9 +2,14 @@ import { FC } from "react";
 import { FileInputStatus } from "@web-ui";
 import { useSubjectState, parsers } from "@apparatus";
 import { RouteFileInputProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { WebMarkerImageData } from "../images/image-parser";
 import * as styles from './file-input.module.css';
 
-export const RouteStoryFileInput: FC<RouteFileInputProps<maplibregl.Map, File>> = ({ data$, images$, fileOperator }) => {
+export const RouteStoryFileInput: FC<RouteFileInputProps<maplibregl.Map, File, WebMarkerImageData>> = ({
+    data$,
+    images$,
+    fileOperator
+}) => {
     const [{ geojson, routeName, error }] = useSubjectState(data$);
     const [isLoading] = useSubjectState(fileOperator.isLoading$);
 

@@ -1,17 +1,17 @@
 import { BehaviorSubject } from "rxjs";
 import { SurveillanceState, LoadedImageData } from "@apparatus";
 import { getRouteSourceData } from "./tinkers";
-import { ANIMATION_DURATION, DEFAULT_IMAGE_SIZE } from "./layers";
-import { getImageIconSize, IMAGE_SIZE } from "./images";
+import { ANIMATION_DURATION } from "./layers";
+import { getImageIconSize, IMAGE_IN_DISPLAY_SIZE, IMAGE_MARKER_SIZE } from "./images";
 import { RouteStoryGear } from "./route-story-gear";
 
-export class PlayerOperator<TMap, TFile extends { name?: string | null; type: string | null; }> {
-    private gear: RouteStoryGear<TMap, TFile>;
+export class PlayerOperator<TMap, TFile extends { name?: string | null; type: string | null; }, TImageData> {
+    private gear: RouteStoryGear<TMap, TFile, TImageData>;
 
     public isLoading$ = new BehaviorSubject(false);
 
     constructor(
-        gear: RouteStoryGear<TMap, TFile>,
+        gear: RouteStoryGear<TMap, TFile, TImageData>,
     ) {
         this.gear = gear;
     }
@@ -67,7 +67,7 @@ export class PlayerOperator<TMap, TFile extends { name?: string | null; type: st
     private displayImageTimeout: Timer | undefined;
 
     public animateRoute = (
-        loadedImages: LoadedImageData[],
+        loadedImages: LoadedImageData<TImageData>[],
         onUpdateLayer: (currentPoint: GeoJSON.Feature<GeoJSON.Point>, lines: GeoJSON.GeoJSON) => void,
         onUpdateMapCamera: (position: GeoJSON.Position, bearing: number) => void,
     ) => {
@@ -108,7 +108,7 @@ export class PlayerOperator<TMap, TFile extends { name?: string | null; type: st
                 currentProgressMs = 0;
                 nextImageIndex = 0;
             }
-            const nextImage: LoadedImageData | undefined = sortedImageFeatures[nextImageIndex];
+            const nextImage: LoadedImageData<TImageData> | undefined = sortedImageFeatures[nextImageIndex];
             const { currentPoint, lines, currentPointBearing } = getRouteSourceData(gaugeControls, geojson, startTimeEpoch, currentProgressMs, bearingLineLengthInMeters, nextImage?.featureId);
             onUpdateLayer(currentPoint, lines);
 
@@ -180,13 +180,16 @@ export class PlayerOperator<TMap, TFile extends { name?: string | null; type: st
     private inDisplayImageTimeout: Timer | undefined;
 
     public animateDisplayImage = (
-        mapSize: { width: number; height: number; },
+        mapSize: {
+            width: number;
+            height: number;
+            devicePixelRatio?: number;
+        },
         updateIconSize: (value: number) => void,
     ) => {
-
-        const from = getImageIconSize(IMAGE_SIZE, DEFAULT_IMAGE_SIZE);
-        const to = getImageIconSize(IMAGE_SIZE, Math.min(mapSize.width, mapSize.height)) / 2;
-
+        const { width, height, devicePixelRatio = 1 } = mapSize;
+        const from = getImageIconSize(IMAGE_IN_DISPLAY_SIZE, IMAGE_MARKER_SIZE);
+        const to = getImageIconSize(IMAGE_IN_DISPLAY_SIZE, Math.min(width / devicePixelRatio, height / devicePixelRatio));
         this.animateIconSize(from, to, updateIconSize);
         const animationControls = this.gear.stateWarden.animatrix.controls$.value;
         this.inDisplayImageTimeout = setTimeout(() => this.animateIconSize(to, from, updateIconSize), animationControls.displayImageDuration - ANIMATION_DURATION)
@@ -194,6 +197,6 @@ export class PlayerOperator<TMap, TFile extends { name?: string | null; type: st
 
     public cleanupAnimateDisplayImage = (updateIconSize: (value: number) => void) => {
         clearTimeout(this.inDisplayImageTimeout);
-        updateIconSize(getImageIconSize(IMAGE_SIZE, DEFAULT_IMAGE_SIZE));
+        updateIconSize(getImageIconSize(IMAGE_IN_DISPLAY_SIZE, IMAGE_MARKER_SIZE));
     };
 };

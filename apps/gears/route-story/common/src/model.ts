@@ -12,18 +12,18 @@ export interface RouteTimes {
     duration: number;
 }
 
-export interface RouteToolProps<TMap, TFile extends { name?: string | null; type: string | null; }> {
+export interface RouteToolProps<TMap, TFile extends { name?: string | null; type: string | null; }, TImageData> {
     data$: BehaviorSubject<ParsingResultWithError>;
     routeTimes$: BehaviorSubject<RouteTimes | null>;
-    images$: BehaviorSubject<MarkerImage[]>;
+    images$: BehaviorSubject<MarkerImage<TImageData>[]>;
     progressMs$: BehaviorSubject<number>;
-    playerOperator: PlayerOperator<TMap, TFile>;
+    playerOperator: PlayerOperator<TMap, TFile, TImageData>;
 }
 
-export interface RouteFileInputProps<TMap, TFile extends { name?: string | null; type: string | null; }> {
+export interface RouteFileInputProps<TMap, TFile extends { name?: string | null; type: string | null; }, TImageData> {
     data$: BehaviorSubject<ParsingResultWithError>;
-    images$: BehaviorSubject<MarkerImage[]>;
-    fileOperator: FileOperator<TMap, TFile>;
+    images$: BehaviorSubject<MarkerImage<TImageData>[]>;
+    fileOperator: FileOperator<TMap, TFile, TImageData>;
 }
 
 export interface RouteFitBoundsProps<TMap> {
