@@ -1,16 +1,13 @@
 import { FC, useMemo, useState, useEffect } from "react";
-import { Images, ShapeSource, SymbolLayer } from "@maplibre/maplibre-react-native";
+import { CircleLayer, Images, ShapeSource, SymbolLayer } from "@maplibre/maplibre-react-native";
 import { OverlayComponentProps, useStateWarden, useSubjectState } from "@apparatus";
 import {
-    IMAGE_MARKER_SIZE,
     getIconImageId,
-    getImageIconSize,
     getImageSource,
     RouteToolProps,
-    IMAGE_PROPERTY,
-    IMAGE_THUMBNAIL_PROPERTY,
-    IMAGE_THUMBNAIL_SIZE,
-    IMAGE_IN_DISPLAY_SIZE
+    ImagesLayers,
+    imageLayerIds,
+    imageSourceIds,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMap } from "@mobile-ui";
 import { DocumentPickerResponse } from "@react-native-documents/picker";
@@ -29,7 +26,7 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<M
     const { animatrix } = useStateWarden();
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
     const isInDisplay = displayImageId !== null;
-    const [iconSize, setIconSize] = useState(getImageIconSize(IMAGE_IN_DISPLAY_SIZE, IMAGE_MARKER_SIZE));
+    const [iconSize, setIconSize] = useState(ImagesLayers.imageInDisplay.iconSize);
 
     useEffect(() => {
         if (isInDisplay) {
@@ -48,10 +45,10 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<M
 
     const imageSources = Object.fromEntries(
         loadedImages.flatMap((loadedImage) => {
-            const thumbnail = [getIconImageId(loadedImage, { thumbnail: true }), { uri: loadedImage.data.image }];
-            const image = [getIconImageId(loadedImage), { uri: loadedImage.data.image }];
+            const thumbnail = [getIconImageId(loadedImage, { thumbnail: true }), { uri: loadedImage.data.thumbnail }];
+            const fullSize = [getIconImageId(loadedImage), { uri: loadedImage.data.fullSize }];
             if (displayImageId === loadedImage.id) {
-                return [image, thumbnail]
+                return [fullSize, thumbnail]
             }
             return [thumbnail];
         })
@@ -64,22 +61,25 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<M
     return (
         <>
             <Images images={imageSources} />
-            <ShapeSource id="markerSource" shape={sourceDataGeojson}            >
-                <SymbolLayer
-                    id="markerLayer"
-                    style={{
-                        iconImage: ['get', IMAGE_THUMBNAIL_PROPERTY],
-                        iconSize: getImageIconSize(IMAGE_THUMBNAIL_SIZE, IMAGE_MARKER_SIZE),
-                        iconAllowOverlap: true
-                    }}
+            <ShapeSource id={imageSourceIds.thumbnails} shape={sourceDataGeojson}>
+                <CircleLayer
+                    id={imageLayerIds.thumbnailsOutline}
+                    style={ImagesLayers.thumbnailsOutline}
                 />
                 <SymbolLayer
-                    id="markerLayerFullSize"
+                    id={imageLayerIds.thumbnails}
+                    style={ImagesLayers.thumbnails}
+                />
+                <SymbolLayer
+                    id={imageLayerIds.thumbnailsHighlight}
+                    style={ImagesLayers.thumbnailsHighlight}
+                />
+                <SymbolLayer
+                    id={imageLayerIds.imageInDisplay}
                     filter={['==', ['get', 'imageId'], displayImageId ?? -1]}
                     style={{
-                        iconImage: ['get', IMAGE_PROPERTY],
+                        ...ImagesLayers.imageInDisplay,
                         iconSize: iconSize,
-                        iconAllowOverlap: true
                     }}
                 />
             </ShapeSource>

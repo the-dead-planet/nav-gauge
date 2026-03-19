@@ -13,14 +13,12 @@ import {
 import {
     getRouteSourceData,
     RouteToolProps,
-    sourceIds,
-    currentPointLayers,
-    routeLineLayer,
-    routePointsLayer
+    routeSourceIds,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { updateRouteLayer } from "./tinkers";
-import { useLoadedWebImages } from "./hooks";
-import { WebMarkerImageData } from "./images/image-parser";
+import { updateRouteLayer } from "../tinkers";
+import { useLoadedWebImages } from "../hooks";
+import { WebMarkerImageData } from "../images/image-parser";
+import { currentPointLayers, routeLineLayer, routePointsLayer } from "./route-layers";
 
 export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map, File, WebMarkerImageData>> = ({
     map,
@@ -73,12 +71,12 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPro
         );
 
         return {
-            [sourceIds.line]: {
+            [routeSourceIds.line]: {
                 type: 'geojson',
                 data: lines,
                 promoteId: 'id'
             },
-            [sourceIds.currentPoint]: {
+            [routeSourceIds.currentPoint]: {
                 type: 'geojson',
                 data: currentPoint,
             }

@@ -8,8 +8,9 @@ import { Text } from "@mobile-ui";
 import { MobileMap } from "@mobile-ui";
 import { useTheme } from "@ui";
 import { currentPointRef$, linesRef$ } from "../RouteLayer";
+import { MobileMarkerImageData } from "../images/image-parser";
 
-export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap, DocumentPickerResponse>> = ({
+export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({
     routeTimes$,
     progressMs$,
     playerOperator,

@@ -8,13 +8,20 @@ import { FeatureStateProps } from "../map-layers";
 
 const DEFAULT_BUFFER = 4;
 
+export interface LayerBeforeId {
+    beforeLayerId?: string;
+}
+
+export type LayerSpecificationWithBeforeId = LayerSpecification & LayerBeforeId;
+
 export interface MapLayerData {
     sources: { [key in string]: SourceSpecification };
     /**
      * Tuples [layer specification, before id]
      */
-    layers: LayerSpecification[];
+    layers: LayerSpecificationWithBeforeId[];
     beforeLayerId?: string;
+    // beforeLayerId?: string;
     handlers?: MapDataHandlers;
 }
 
@@ -119,9 +126,9 @@ export const useMapLayerData = (
     }, [map, data]);
 
     useUpdateSourceData(
-        map, 
-        updatedData?.[0] ?? '', 
-        updatedData?.[1] ?? emptyCollection, 
+        map,
+        updatedData?.[0] ?? '',
+        updatedData?.[1] ?? emptyCollection,
         updatedData?.[2]
     );
 

@@ -1,15 +1,13 @@
 import { FC, useEffect, useMemo, useRef } from "react";
 import { BehaviorSubject } from "rxjs";
-import { CircleLayer, CircleLayerStyle, LineLayer, LineLayerStyle, ShapeSource, ShapeSourceRef } from "@maplibre/maplibre-react-native";
+import { CircleLayer, LineLayer, ShapeSource, ShapeSourceRef } from "@maplibre/maplibre-react-native";
 import { OverlayComponentProps, useStateWarden, useSubjectState } from "@apparatus";
 import {
     getRouteSourceData,
     RouteToolProps,
-    sourceIds,
-    layerIds,
-    routeLineLayer,
-    currentPointLayers,
-    routePointsLayer
+    routeSourceIds,
+    routeLayerIds,
+    RouteLayers
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMap } from "@mobile-ui";
 import { DocumentPickerResponse } from "@react-native-documents/picker";
@@ -89,8 +87,8 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mo
         );
 
         return {
-            [sourceIds.line]: lines,
-            [sourceIds.currentPoint]: currentPoint
+            [routeSourceIds.line]: lines,
+            [routeSourceIds.currentPoint]: currentPoint
         };
     }, [geojson, routeTimes?.startTimeEpoch, bearingLineLengthInMeters, showRouteLine, showRoutePoints]);
 
@@ -126,51 +124,55 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mo
 
     return (
         <>
-            {(showRouteLine || showRoutePoints) && sources[sourceIds.line] ? (
+            {(showRouteLine || showRoutePoints) && sources[routeSourceIds.line] ? (
                 <ShapeSource
                     ref={lineSourceRef}
-                    id={sourceIds.line}
-                    shape={sources[sourceIds.line]}
+                    id={routeSourceIds.line}
+                    shape={sources[routeSourceIds.line]}
                 >
                     {showRouteLine ? (
                         <LineLayer
-                            id={layerIds.line}
+                            id={routeLayerIds.line}
                             style={{
-                                lineColor: routeLineLayer.paint?.["line-color"]!,
-                                lineWidth: routeLineLayer.paint?.["line-width"]!,
-                                lineOpacity: routeLineLayer.paint?.["line-opacity"]!,
-                                lineCap: routeLineLayer.layout?.["line-cap"]!,
-                                lineJoin: routeLineLayer.layout?.["line-join"]
-                            } as LineLayerStyle}
+                                lineColor: RouteLayers.lines.lineColor,
+                                lineWidth: RouteLayers.lines.lineWidth,
+                                lineOpacity: RouteLayers.lines.lineOpacity,
+                                lineCap: RouteLayers.lines.lineCap,
+                                lineJoin: RouteLayers.lines.lineJoin,
+                            }}
                         />
                     ) : null}
                     {showRoutePoints ? (
                         <CircleLayer
-                            id={layerIds.points}
+                            id={routeLayerIds.points}
                             style={{
-                                circleRadius: routePointsLayer.paint?.["circle-radius"],
-                                circleColor: routePointsLayer.paint?.["circle-color"],
-                            } as CircleLayerStyle}
+                                circleRadius: RouteLayers.points.circleRadius,
+                                circleColor: RouteLayers.points.circleColor,
+                            }}
                         />
                     ) : null}
                 </ShapeSource>
             ) : null}
-            {sources[sourceIds.currentPoint] ? (
+            {sources[routeSourceIds.currentPoint] ? (
                 <ShapeSource
                     ref={pointSourceRef}
-                    id={sourceIds.currentPoint}
-                    shape={sources[sourceIds.currentPoint]}
+                    id={routeSourceIds.currentPoint}
+                    shape={sources[routeSourceIds.currentPoint]}
                 >
-                    {currentPointLayers.map((layer) => (
-                        <CircleLayer
-                            key={layer.id}
-                            id={layerIds.currentPointOutline}
-                            style={{
-                                circleColor: layer.paint?.["circle-color"],
-                                circleRadius: layer.paint?.["circle-radius"],
-                            } as CircleLayerStyle}
-                        />
-                    ))}
+                    <CircleLayer
+                        id={routeLayerIds.currentPointOutline}
+                        style={{
+                            circleColor: RouteLayers.currentPointOutline.circleColor,
+                            circleRadius: RouteLayers.currentPointOutline.circleRadius,
+                        }}
+                    />
+                    <CircleLayer
+                        id={routeLayerIds.currentPoint}
+                        style={{
+                            circleColor: RouteLayers.currentPoint.circleColor,
+                            circleRadius: RouteLayers.currentPoint.circleRadius,
+                        }}
+                    />
                 </ShapeSource>
             ) : null}
         </>

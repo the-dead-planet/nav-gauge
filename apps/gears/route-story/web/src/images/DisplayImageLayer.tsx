@@ -8,18 +8,17 @@ import {
 } from "@apparatus";
 import { emptyCollection, GeoJson } from "@tinker-chest";
 import {
-    layerIds,
-    sourceIds,
-    getDisplayImageLayers,
     ImageFeatureProperties,
     getIconImageId,
     IMAGE_PROPERTY,
-    ANIMATION_DURATION,
-    IMAGE_IN_DISPLAY_SIZE,
+    IMAGE_ANIMATION_DURATION,
     IMAGE_THUMBNAIL_PROPERTY,
+    imageSourceIds,
+    imageLayerIds,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { PlayerOperator } from "@the-dead-planet/nav-gauge-gears-route-story-common/src/player-operator";
 import { WebMarkerImageData } from "./image-parser";
+import { displayImageLayers } from "./layers";
 
 function getData<TImageData>(
     geojson: GeoJson,
@@ -69,20 +68,21 @@ export const DisplayImageLayer: FC<Props> = ({
     const mapLayerData = useMemo((): MapLayerData => {
         return {
             sources: {
-                [sourceIds.imageInDisplay]: {
+                [imageSourceIds.imageInDisplay]: {
                     type: 'geojson',
                     data: getData(geojson, loadedImages, displayImageId)
                 }
             },
-            layers: getDisplayImageLayers()
+            layers: displayImageLayers,
+            beforeLayerId: imageLayerIds.imageInDisplay,
         };
     }, [])
 
     const updateData = useMemo(
         (): [string, GeoJSON.GeoJSON, number | undefined] => [
-            sourceIds.imageInDisplay,
+            imageSourceIds.imageInDisplay,
             getData(geojson, loadedImages, displayImageId),
-            displayImageId === null ? ANIMATION_DURATION : undefined
+            displayImageId === null ? IMAGE_ANIMATION_DURATION : undefined
         ],
         [geojson, loadedImages, displayImageId]
     );
@@ -91,8 +91,8 @@ export const DisplayImageLayer: FC<Props> = ({
 
     useEffect(() => {
         const updateIconSize = (value: number) => {
-            if (map.getLayer(layerIds.imageInDisplay)) {
-                map.setLayoutProperty(layerIds.imageInDisplay, 'icon-size', value);
+            if (map.getLayer(imageLayerIds.imageInDisplay)) {
+                map.setLayoutProperty(imageLayerIds.imageInDisplay, 'icon-size', value);
             }
         }
 

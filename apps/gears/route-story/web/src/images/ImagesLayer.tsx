@@ -15,15 +15,14 @@ import { updateImageFeatureId } from "../tinkers";
 import { MapImageData, useRouteLayerImages } from "../hooks";
 import {
     RouteToolProps,
-    getImagesLayers,
-    layerIds,
-    sourceIds,
     getIconImageId,
     getImageSource,
     IMAGE_PROPERTY,
-    IMAGE_THUMBNAIL_PROPERTY
+    IMAGE_THUMBNAIL_PROPERTY,
+    imageSourceIds,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { WebMarkerImageData } from "./image-parser";
+import { getImagesLayers } from "./layers";
 
 export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map, File, WebMarkerImageData>> = ({
     map,
@@ -61,17 +60,16 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
     const mapLayerData = useMemo((): MapLayerData => {
         return {
             sources: {
-                [sourceIds.image]: {
+                [imageSourceIds.thumbnails]: {
                     type: "geojson",
                     data: sourceDataGeojson,
                     promoteId: 'imageId'
                 }
             },
             layers: getImagesLayers(themeName),
-            beforeLayerId: layerIds.imageInDisplay,
             handlers: {
                 onMouseMove: ({ features, isTopRelated }) => {
-                    if (!isTopRelated) {
+                    if (!isTopRelated || draggingId !== null) {
                         return;
                     }
                     setHighlightIds(new Set(features.map((f) => f.id?.toString() ?? '')));
@@ -87,15 +85,15 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
         };
     }, [themeName, sourceDataGeojson]);
 
-    useMapLayerData(map, mapLayerData, [[sourceIds.image, highlightIds]]);
+    useMapLayerData(map, mapLayerData, [[imageSourceIds.thumbnails, highlightIds]]);
 
     useEffect(() => {
         if (draggingId === null) {
             return
         }
         const update = (value: boolean) => {
-            if (map.getSource(sourceIds.image)) {
-                map.setFeatureState({ source: sourceIds.image, id: draggingId }, { [FeatureStateProps.Dragging]: value });
+            if (map.getSource(imageSourceIds.thumbnails)) {
+                map.setFeatureState({ source: imageSourceIds.thumbnails, id: draggingId }, { [FeatureStateProps.Dragging]: value });
             }
         };
         update(true);
@@ -117,7 +115,7 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
             event.preventDefault();
             const [_id, feature] = Cartomancer.getClosestFeature(geojson, event.lngLat);
             const image = loadedImages.find((image) => image.id === draggingId);
-            const source = map.getSource(sourceIds.image) as maplibregl.GeoJSONSource | undefined;
+            const source = map.getSource(imageSourceIds.thumbnails) as maplibregl.GeoJSONSource | undefined;
 
             if (!source || !image) {
                 return;

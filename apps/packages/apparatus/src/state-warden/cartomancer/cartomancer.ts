@@ -7,6 +7,7 @@ import { FeatureProperties, GeoJson, LngLat } from "@tinker-chest";
 import { backgroundMapStyle, customRoadsMapStyle, osmMapStyle } from "./map-styles";
 import { StorageKeeper } from "../../machine-ward/storage-keeper";
 import { GaugeControlsType, MapLayout, OverlayComponentProps } from "./model";
+import { LayerSpecificationWithBeforeId } from "./hooks";
 
 interface SelectedStyle {
     id: keyof typeof Cartomancer.styles;
@@ -174,15 +175,16 @@ export class Cartomancer<TMap> {
     public addSourcesAndLayers = (
         map: maplibregl.Map,
         sources: { [key in string]: maplibregl.SourceSpecification },
-        layers: maplibregl.LayerSpecification[],
+        layers: LayerSpecificationWithBeforeId[],
         beforeId?: string,
     ) => {
         for (const [sourceId, source] of Object.entries(sources)) {
             map.addSource(sourceId, source);
         }
 
-        for (const layer of layers) {
-            map.addLayer(layer, beforeId && map.getLayer(beforeId) ? beforeId : undefined);
+        for (const { beforeLayerId, ...layer } of layers) {
+            const before = beforeId || beforeLayerId;
+            map.addLayer(layer, before && map.getLayer(before) ? before : undefined);
         }
     };
 
