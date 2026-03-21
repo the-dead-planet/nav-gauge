@@ -5,6 +5,7 @@ import { getIconImageId } from "../tinkers";
 export const IMAGE_ANIMATION_DURATION = 250;
 export const IMAGE_PROPERTY = 'iconImageId';
 export const IMAGE_THUMBNAIL_PROPERTY = 'iconImageThumbnailId';
+export const DRAGGED_IMAGE_ID = -1;
 
 export type ImageFeature = GeoJSON.Feature<GeoJSON.Point, ImageFeatureProperties>;
 export interface ImageFeatureProperties {

@@ -5,6 +5,7 @@ import {
     useSubjectState,
     MapLayerData,
     LoadedImageData,
+    UpdatedData,
 } from "@apparatus";
 import { emptyCollection, GeoJson } from "@tinker-chest";
 import {
@@ -15,10 +16,11 @@ import {
     IMAGE_THUMBNAIL_PROPERTY,
     imageSourceIds,
     imageLayerIds,
+    layerOrder,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { PlayerOperator } from "@the-dead-planet/nav-gauge-gears-route-story-common/src/player-operator";
 import { WebMarkerImageData } from "./image-parser";
-import { displayImageLayers } from "./layers";
+import { displayImageLayers } from "./images-layers";
 
 function getData<TImageData>(
     geojson: GeoJson,
@@ -50,12 +52,12 @@ function getData<TImageData>(
 
 interface Props {
     map: maplibregl.Map,
-    geojson: GeoJson;
+    geojson?: GeoJson;
     loadedImages: LoadedImageData<WebMarkerImageData>[];
     playerOperator: PlayerOperator<maplibregl.Map, File, WebMarkerImageData>;
 }
 
-export const DisplayImageLayer: FC<Props> = ({
+export const ImageInDisplayLayer: FC<Props> = ({
     map,
     geojson,
     loadedImages,
@@ -70,24 +72,23 @@ export const DisplayImageLayer: FC<Props> = ({
             sources: {
                 [imageSourceIds.imageInDisplay]: {
                     type: 'geojson',
-                    data: getData(geojson, loadedImages, displayImageId)
+                    data: !geojson ? emptyCollection : getData(geojson, loadedImages, displayImageId)
                 }
             },
             layers: displayImageLayers,
-            beforeLayerId: imageLayerIds.imageInDisplay,
         };
     }, [])
 
-    const updateData = useMemo(
-        (): [string, GeoJSON.GeoJSON, number | undefined] => [
-            imageSourceIds.imageInDisplay,
-            getData(geojson, loadedImages, displayImageId),
-            displayImageId === null ? IMAGE_ANIMATION_DURATION : undefined
-        ],
+    const updatedData = useMemo(
+        (): UpdatedData => ({
+            sourceId: imageSourceIds.imageInDisplay,
+            data: !geojson ? emptyCollection : getData(geojson, loadedImages, displayImageId),
+            delayMs: displayImageId === null ? IMAGE_ANIMATION_DURATION : undefined
+        }),
         [geojson, loadedImages, displayImageId]
     );
 
-    useMapLayerData(map, mapLayerData, [], updateData);
+    useMapLayerData(map, mapLayerData, { updatedData, layerOrder });
 
     useEffect(() => {
         const updateIconSize = (value: number) => {

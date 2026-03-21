@@ -1,27 +1,18 @@
 import { useEffect } from "react";
 import maplibregl from "maplibre-gl";
 import { LayerSpecification, SourceSpecification } from "@maplibre/maplibre-gl-style-spec";
-import { emptyCollection } from "@tinker-chest";
-import { useUpdateSourceData } from "./useUpdateSourceData";
+import { UpdatedData, useUpdateSourceData } from "./useUpdateSourceData";
 import { useStateWarden } from "../../useStateWarden";
 import { FeatureStateProps } from "../map-layers";
 
 const DEFAULT_BUFFER = 4;
-
-export interface LayerBeforeId {
-    beforeLayerId?: string;
-}
-
-export type LayerSpecificationWithBeforeId = LayerSpecification & LayerBeforeId;
 
 export interface MapLayerData {
     sources: { [key in string]: SourceSpecification };
     /**
      * Tuples [layer specification, before id]
      */
-    layers: LayerSpecificationWithBeforeId[];
-    beforeLayerId?: string;
-    // beforeLayerId?: string;
+    layers: LayerSpecification[];
     handlers?: MapDataHandlers;
 }
 
@@ -44,23 +35,33 @@ export interface MapDataHandlers {
     };
 }
 
+export interface MapLayerDataUpdateParams {
+    highlightIdsBySourceId?: Map<string, Set<(string | number)>>,
+    updatedData?: UpdatedData;
+    layerOrder?: string[];
+}
+
 /**
  * @param data Sources, layers and event handlers. When this dependency changes, layers will be removed and added again.
- * @param highlightIds Tuple `[sourceId, featureIds]` to apply highlight feature state to.
- * @param updatedData Tuple `[sourceId, data, delay in ms (optional)]` Changes to this dependency will trigger `source.setData` event (without removing the layers and sources).
+ * @param highlightIdsBySourceId Map of `sourceId -> featureIds` to apply highlight feature state to.
+ * @param updatedData Changes to this dependency will trigger `source.setData` event (without removing the layers and sources).
  */
 export const useMapLayerData = (
     map: maplibregl.Map,
     data: MapLayerData,
-    highlightIds: [string, Set<(string | number)>][] = [],
-    updatedData?: [string, GeoJSON.GeoJSON, number | undefined]
+    {
+        highlightIdsBySourceId,
+        updatedData,
+        layerOrder,
+    }: MapLayerDataUpdateParams = {},
 ) => {
     const { cartomancer } = useStateWarden();
 
     useEffect(() => {
-        const { sources, layers, beforeLayerId, handlers } = data;
+        const abortController = new AbortController();
+        const { sources, layers, handlers } = data;
         const { buffer = DEFAULT_BUFFER } = data.handlers?.options ?? {};
-        cartomancer.addSourcesAndLayers(map, sources, layers, beforeLayerId);
+        cartomancer.addSourcesAndLayers(map, abortController.signal, sources, layers, layerOrder);
 
         const queryFeatures = (event: maplibregl.MapMouseEvent | maplibregl.MapTouchEvent): {
             features: maplibregl.MapGeoJSONFeature[];
@@ -111,6 +112,8 @@ export const useMapLayerData = (
         map.on('touchend', mouseUpHandler);
 
         return () => {
+            abortController.abort();
+            
             map.off('click', clickHandler);
 
             map.off('mousemove', mouseMoveHandler);
@@ -125,20 +128,15 @@ export const useMapLayerData = (
         };
     }, [map, data]);
 
-    useUpdateSourceData(
-        map,
-        updatedData?.[0] ?? '',
-        updatedData?.[1] ?? emptyCollection,
-        updatedData?.[2]
-    );
+    useUpdateSourceData(map, updatedData);
 
     useEffect(() => {
-        if (highlightIds.length === 0) {
+        if (!highlightIdsBySourceId || highlightIdsBySourceId.size === 0) {
             return;
         }
         const update = (value: boolean) => {
-            for (const [source, featureIds] of highlightIds) {
-                cartomancer.updateFeatureState(map, source, featureIds, FeatureStateProps.Highlight, value)
+            for (const [sourceId, featureIds] of highlightIdsBySourceId) {
+                cartomancer.updateFeatureState(map, sourceId, featureIds, FeatureStateProps.Highlight, value)
             }
         };
 
@@ -147,7 +145,7 @@ export const useMapLayerData = (
         return () => {
             update(false);
         };
-    }, [highlightIds]);
+    }, [highlightIdsBySourceId]);
 
     return null;
 };

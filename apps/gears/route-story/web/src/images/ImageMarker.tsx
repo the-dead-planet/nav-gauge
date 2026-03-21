@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import maplibregl from "maplibre-gl";
 import { Cartomancer, useStateWarden, useSubjectState, FeatureStateProps } from "@apparatus";
 import { GeoJson } from "@tinker-chest";
-import { sourceIds } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { routeSourceIds } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import * as styles from './images.module.css';
 
 const imageSize = 30;
@@ -56,7 +56,7 @@ export const ImageMarker: FC<Props> = ({ map, imageId, data, marker, markerEleme
         }
         // TODO: Add another source for all points or closest point and update data here
         const updateHighlight = (highlight: boolean) => {
-            map.setFeatureState({ source: sourceIds.line, id: closestFeatureId }, {
+            map.setFeatureState({ source: routeSourceIds.line, id: closestFeatureId }, {
                 [FeatureStateProps.Highlight]: highlight
             });
         }

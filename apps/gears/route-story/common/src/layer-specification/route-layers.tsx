@@ -6,6 +6,9 @@ export const routeSourceIds = {
     line: 'route-line',
 }
 
+/**
+ * Keys follow layer order
+ */
 export const routeLayerIds = {
     line: 'route-line',
     points: 'route-points',

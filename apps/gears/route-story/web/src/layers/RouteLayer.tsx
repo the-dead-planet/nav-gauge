@@ -14,11 +14,14 @@ import {
     getRouteSourceData,
     RouteToolProps,
     routeSourceIds,
+    imageLayerIds,
+    layerOrder,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { updateRouteLayer } from "../tinkers";
 import { useLoadedWebImages } from "../hooks";
 import { WebMarkerImageData } from "../images/image-parser";
 import { currentPointLayers, routeLineLayer, routePointsLayer } from "./route-layers";
+import { emptyCollection } from "@tinker-chest";
 
 export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map, File, WebMarkerImageData>> = ({
     map,
@@ -58,17 +61,18 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPro
     const loadedImages = useLoadedWebImages(images);
 
     const sources = useMemo((): { [key in string]: SourceSpecification } => {
-        if (!geojson || !routeTimes) {
-            return {};
-        }
-
-        const { currentPoint, lines } = getRouteSourceData(
-            { showRouteLine, showRoutePoints },
-            geojson,
-            routeTimes.startTimeEpoch,
-            progressMs,
-            bearingLineLengthInMeters
-        );
+        const { currentPoint, lines } = !geojson || !routeTimes
+            ? {
+                currentPoint: emptyCollection,
+                lines: emptyCollection
+            }
+            : getRouteSourceData(
+                { showRouteLine, showRoutePoints },
+                geojson,
+                routeTimes.startTimeEpoch,
+                progressMs,
+                bearingLineLengthInMeters
+            );
 
         return {
             [routeSourceIds.line]: {
@@ -105,7 +109,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPro
         [sources, layers]
     );
 
-    useMapLayerData(map, mapLayerData)
+    useMapLayerData(map, mapLayerData, { layerOrder })
 
     useEffect(() => {
         if (!isPlaying || !geojson || !routeTimes) {

@@ -1,5 +1,6 @@
 import { ComponentType } from "react";
 import { BehaviorSubject, Subscription } from "rxjs";
+import { LayerSpecification } from "@maplibre/maplibre-gl-style-spec";
 import turfDistance from "@turf/distance";
 import { point as turfPoint } from "@turf/helpers";
 import { Option } from "@ui";
@@ -7,7 +8,6 @@ import { FeatureProperties, GeoJson, LngLat } from "@tinker-chest";
 import { backgroundMapStyle, customRoadsMapStyle, osmMapStyle } from "./map-styles";
 import { StorageKeeper } from "../../machine-ward/storage-keeper";
 import { GaugeControlsType, MapLayout, OverlayComponentProps } from "./model";
-import { LayerSpecificationWithBeforeId } from "./hooks";
 
 interface SelectedStyle {
     id: keyof typeof Cartomancer.styles;
@@ -169,22 +169,45 @@ export class Cartomancer<TMap> {
         this.overlays$.next(nextOverlays);
     };
 
+    private timeout: Timer;
+
     /**
      * Adds sources and afterwards layers.
      */
-    public addSourcesAndLayers = (
+    public addSourcesAndLayers = async (
         map: maplibregl.Map,
+        abortSignal: AbortSignal,
         sources: { [key in string]: maplibregl.SourceSpecification },
-        layers: LayerSpecificationWithBeforeId[],
-        beforeId?: string,
+        layers: LayerSpecification[],
+        layerOrder: string[] = []
     ) => {
+        clearTimeout(this.timeout);
+
         for (const [sourceId, source] of Object.entries(sources)) {
+            if (abortSignal.aborted) {
+                break;
+            }
             map.addSource(sourceId, source);
         }
 
-        for (const { beforeLayerId, ...layer } of layers) {
-            const before = beforeId || beforeLayerId;
-            map.addLayer(layer, before && map.getLayer(before) ? before : undefined);
+        for (const layer of layers) {
+            if (abortSignal.aborted) {
+                break;
+            }
+            map.addLayer(layer);
+        }
+
+        this.reorderLayers(map, layerOrder);
+    };
+
+    private reorderLayers = (
+        map: maplibregl.Map,
+        layerOrder: string[]
+    ) => {
+        const existing = layerOrder.filter(id => map.getLayer(id));
+
+        for (let i = existing.length - 1; i >= 0; i--) {
+            map.moveLayer(existing[i], existing[i + 1]);
         }
     };
 

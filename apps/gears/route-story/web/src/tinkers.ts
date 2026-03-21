@@ -1,7 +1,7 @@
 import { BehaviorSubject } from "rxjs";
 import maplibregl from "maplibre-gl";
 import { MarkerImage } from "@apparatus";
-import { sourceIds } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { routeSourceIds } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 
 /**
  * Gets current point data, updates map sources, and returns it.
@@ -11,8 +11,8 @@ export const updateRouteLayer = (
     currentPoint: GeoJSON.Feature<GeoJSON.Point>,
     lines: GeoJSON.GeoJSON,
 ): void => {
-    map.getSource<maplibregl.GeoJSONSource>(sourceIds.currentPoint)?.setData(currentPoint);
-    map.getSource<maplibregl.GeoJSONSource>(sourceIds.line)?.setData(lines);
+    map.getSource<maplibregl.GeoJSONSource>(routeSourceIds.currentPoint)?.setData(currentPoint);
+    map.getSource<maplibregl.GeoJSONSource>(routeSourceIds.line)?.setData(lines);
 };
 
 export function updateImageFeatureId<TImageData>(

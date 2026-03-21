@@ -70,6 +70,10 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<M
                     id={imageLayerIds.thumbnails}
                     style={ImagesLayers.thumbnails}
                 />
+                <CircleLayer
+                    id={imageLayerIds.thumbnailsHighlightOutline}
+                    style={ImagesLayers.thumbnailsHighlightOutline}
+                />
                 <SymbolLayer
                     id={imageLayerIds.thumbnailsHighlight}
                     style={ImagesLayers.thumbnailsHighlight}

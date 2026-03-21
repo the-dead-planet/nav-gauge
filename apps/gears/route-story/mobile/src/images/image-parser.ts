@@ -89,7 +89,7 @@ export const reduceSize = async (
         false,
         { mode: 'cover' }
     );
-    console.log({resizedFile})
+    
     return resizedFile.uri;
 };
 

@@ -46,7 +46,6 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPick
                text: 'Error processing images',
             });
          });
-         console.log({fullSize, thumbnail})
 
          const nextImages = this.images$.value.slice();
          const index = this.images$.value.findIndex((el) => el.name === file.name);

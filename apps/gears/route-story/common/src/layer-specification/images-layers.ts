@@ -8,9 +8,13 @@ export const imageSourceIds = {
     imageInDisplay: 'route-story-image-in-display',
 }
 
+/**
+ * Keys follow layer order.
+ */
 export const imageLayerIds = {
     thumbnailsOutline: 'route-story-thumbnails-outline',
     thumbnails: 'route-story-thumbnails',
+    thumbnailsHighlightOutline: 'route-story-thumbnails-highlight-outline',
     thumbnailsHighlight: 'route-story-thumbnails-highlight',
     imageInDisplay: 'route-story-image-in-display',
 }
@@ -23,14 +27,6 @@ const thumbnailDraggingOpacity: Opacity = [
     ["==", ["feature-state", FeatureStateProps.Dragging], true],
     dragOpacity,
     1
-];
-const thumbnailDraggingHighlightOpacity: Opacity = [
-    'case',
-    ["==", ["feature-state", FeatureStateProps.Dragging], true],
-    dragOpacity,
-    ["==", ["feature-state", FeatureStateProps.Highlight], true],
-    1,
-    0
 ];
 
 const inDisplayIconImage: GetProperty = ['get', IMAGE_PROPERTY];
@@ -49,11 +45,17 @@ export default {
         iconAllowOverlap: true,
         iconOpacity: thumbnailDraggingOpacity,
     },
+    thumbnailsHighlightOutline: {
+        circleRadius: Math.round(IMAGE_MARKER_SIZE / 2) * 1.1,
+        circleColor: 'transparent',
+        circleStrokeColor: 'green',
+        circleStrokeWidth: 2,
+    },
     thumbnailsHighlight: {
         iconImage: thumbnailIconImage,
-        iconSize: thumbnailIconSize,
+        iconSize: thumbnailIconSize * 1.1,
         iconAllowOverlap: true,
-        iconOpacity: thumbnailDraggingHighlightOpacity,
+        iconOpacity: 1,
     },
     imageInDisplay: {
         iconImage: inDisplayIconImage,
