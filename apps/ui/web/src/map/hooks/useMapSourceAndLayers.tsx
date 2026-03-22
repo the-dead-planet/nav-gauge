@@ -1,14 +1,12 @@
 import { useEffect } from "react";
 import maplibregl from "maplibre-gl";
-import { UpdatedData, useUpdateSourceData } from "@the-dead-planet/nav-gauge-apparatus/src/state-warden/cartomancer/hooks/useUpdateSourceData";
+import { UpdatedData, useUpdateSourceData } from "./useUpdateSourceData";
 import { FeatureStateProps } from "@the-dead-planet/nav-gauge-apparatus/src/state-warden/cartomancer/map-layers";
 import { Cartomancer } from "@the-dead-planet/nav-gauge-apparatus/src/state-warden/cartomancer/cartomancer";
 
 export interface MapLayerData {
-    sources: { [key in string]: maplibregl.SourceSpecification };
-    /**
-     * Tuples [layer specification, before id]
-     */
+    sourceId: string;
+    source: maplibregl.SourceSpecification;
     layers: maplibregl.LayerSpecification[];
     handlers?: MapDataHandlers;
 }
@@ -43,7 +41,7 @@ export interface MapLayerDataUpdateParams {
  * @param highlightIdsBySourceId Map of `sourceId -> featureIds` to apply highlight feature state to.
  * @param updatedData Changes to this dependency will trigger `source.setData` event (without removing the layers and sources).
  */
-export const useMapLayerData = (
+export const useMapSourceAndLayers = (
     map: maplibregl.Map,
     data: MapLayerData,
     {
@@ -52,10 +50,8 @@ export const useMapLayerData = (
         layerOrder = [],
     }: MapLayerDataUpdateParams = {},
 ) => {
-    const addLayersAndSources = (layers: maplibregl.LayerSpecification[], sources: { [key: string]: maplibregl.SourceSpecification }, layerOrder: string[] = []) => {
-        for (const [sourceId, source] of Object.entries(sources)) {
-            map.addSource(sourceId, source);
-        }
+    const addSourceAndLayers = (sourceId: string, source: maplibregl.SourceSpecification, layers: maplibregl.LayerSpecification[]) => {
+        map.addSource(sourceId, source);
 
         for (const layer of layers) {
             map.addLayer(layer);
@@ -68,9 +64,7 @@ export const useMapLayerData = (
         }
     };
 
-    function clearLayersAndSources(layers: maplibregl.LayerSpecification[], sources: { [key: string]: maplibregl.SourceSpecification }): void;
-    function clearLayersAndSources(layers: string[], sources: string[]): void;
-    function clearLayersAndSources(layers: maplibregl.LayerSpecification[] | string[], sources: { [key: string]: maplibregl.SourceSpecification } | string[]): void {
+    function clearSourceAndLayers(sourceId: string, layers: maplibregl.LayerSpecification[]) {
         for (const el of layers) {
             const id: string = typeof el === 'string' ? el : el.id;
             if (map.getLayer(id)) {
@@ -78,20 +72,17 @@ export const useMapLayerData = (
             }
         }
 
-        const sourceIds: string[] = Array.isArray(sources) ? sources : Object.keys(sources);
-        for (const id of sourceIds) {
-            if (map.getSource(id)) {
-                map.removeSource(id);
-            }
+        if (map.getSource(sourceId)) {
+            map.removeSource(sourceId);
         }
     };
 
     useEffect(() => {
         const abortController = new AbortController();
-        const { sources, layers, handlers } = data;
+        const { sourceId, source, layers, handlers } = data;
         const { buffer = Cartomancer.interactionBuffer } = data.handlers?.options ?? {};
 
-        addLayersAndSources(layers, sources, layerOrder)
+        addSourceAndLayers(sourceId, source, layers)
 
         const queryFeatures = (event: maplibregl.MapMouseEvent | maplibregl.MapTouchEvent): {
             features: maplibregl.MapGeoJSONFeature[];
@@ -104,7 +95,7 @@ export const useMapLayerData = (
                 [event.point.x + buffer, event.point.y + buffer],
             ]);
 
-            if (allFeatures.every((feature) => !layerIds.includes(feature.layer.id))) {
+            if (allFeatures.every((feature) => feature.source !== sourceId || !layerIds.includes(feature.layer.id))) {
                 return { features: [], allFeatures: [], isTopRelated: false };
             }
 
@@ -154,7 +145,7 @@ export const useMapLayerData = (
             map.off('touchstart', mouseDownHandler);
             map.off('touchend', mouseUpHandler);
 
-            clearLayersAndSources(layers, sources);
+            clearSourceAndLayers(sourceId, layers);
         };
     }, [map, data]);
 

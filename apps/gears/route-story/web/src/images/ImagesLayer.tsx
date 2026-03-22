@@ -2,7 +2,7 @@ import { FC, useEffect, useMemo, useState } from "react";
 import maplibregl from "maplibre-gl";
 import { useTheme } from "@ui";
 import { OverlayComponentProps, Cartomancer, FeatureStateProps, useSubjectState } from "@apparatus";
-import { useMapLayerData, MapLayerData, } from "@web-ui";
+import { MapLayerData, MapSourceAndLayers, } from "@web-ui";
 import { useLoadedWebImages } from "../hooks/useLoadedWebImages";
 import { ImageInDisplayLayer } from "./ImageInDisplayLayer";
 import { updateImageFeatureId } from "../tinkers";
@@ -14,7 +14,6 @@ import {
     IMAGE_PROPERTY,
     IMAGE_THUMBNAIL_PROPERTY,
     imageSourceIds,
-    imageLayerIds,
     DRAGGED_IMAGE_ID,
     layerOrder,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
@@ -56,13 +55,11 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
 
     const mapLayerData = useMemo((): MapLayerData => {
         return {
-            // beforeLayerId: imageLayerIds.imageInDisplay,
-            sources: {
-                [imageSourceIds.thumbnails]: {
-                    type: "geojson",
-                    data: sourceDataGeojson,
-                    promoteId: 'imageId'
-                }
+            sourceId: imageSourceIds.thumbnails,
+            source: {
+                type: "geojson",
+                data: sourceDataGeojson,
+                promoteId: 'imageId'
             },
             layers: getImagesLayers(themeName),
             handlers: {
@@ -87,8 +84,6 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
             },
         };
     }, [themeName, sourceDataGeojson, draggingId]);
-
-    useMapLayerData(map, mapLayerData, { highlightIdsBySourceId, layerOrder });
 
     useEffect(() => {
         if (draggingId === null) {
@@ -178,11 +173,19 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
     }, [draggingId, loadedImages, geojson]);
 
     return (
-        <ImageInDisplayLayer
-            map={map}
-            geojson={geojson}
-            loadedImages={loadedImages}
-            playerOperator={playerOperator}
-        />
+        <>
+            <MapSourceAndLayers
+                map={map}
+                mapLayerData={mapLayerData}
+                highlightIdsBySourceId={highlightIdsBySourceId}
+                layerOrder={layerOrder}
+            />
+            <ImageInDisplayLayer
+                map={map}
+                geojson={geojson}
+                loadedImages={loadedImages}
+                playerOperator={playerOperator}
+            />
+        </>
     );
 };

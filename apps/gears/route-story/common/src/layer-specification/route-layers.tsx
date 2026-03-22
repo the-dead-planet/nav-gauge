@@ -2,8 +2,8 @@ import { FeatureStateProps } from "@apparatus";
 import { EqualBooleanFeatureState, EqualPropertyString, GetPropertyCaseCondition, LineCap } from "./model";
 
 export const routeSourceIds = {
-    currentPoint: 'route-current-point',
-    line: 'route-line',
+    line: 'route-story-line',
+    currentPoint: 'route-story-current-point',
 }
 
 /**

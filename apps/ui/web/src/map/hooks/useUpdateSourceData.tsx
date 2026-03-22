@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { emptyCollection } from "@tinker-chest";
 
 let timeout: Timer | undefined;
 
@@ -31,7 +30,7 @@ export const useUpdateSourceData = (
 
         if (delayMs) {
             timeout = setTimeout(() => {
-                source.setData(data ?? emptyCollection);
+                source.setData(data ?? { type: 'FeatureCollection', features: [] });
             }, delayMs);
         } else {
             source.setData(data);

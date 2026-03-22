@@ -35,8 +35,8 @@ export class PlayerOperator<TMap, TFile extends { name?: string | null; type: st
     public updateProgress = (
         value: number,
         updateLayer?: (
+            line: GeoJSON.GeoJSON,
             currentPoint: GeoJSON.Feature<GeoJSON.Point>,
-            lines: GeoJSON.GeoJSON,
         ) => void,
     ) => {
         if (!this.gear.routeTimes$.value || isNaN(value)) {
@@ -48,14 +48,14 @@ export class PlayerOperator<TMap, TFile extends { name?: string | null; type: st
         }
         this.gear.progressMs$.next(value);
         if (this.gear.data$.value.geojson) {
-            const { currentPoint, lines } = getRouteSourceData(
+            const { currentPoint, line } = getRouteSourceData(
                 this.gear.stateWarden.cartomancer.gaugeControls$.value,
                 this.gear.data$.value.geojson,
                 this.gear.routeTimes$.value.startTimeEpoch,
                 value,
                 this.gear.stateWarden.animatrix.controls$.value.bearingLineLengthInMeters
             );
-            updateLayer?.(currentPoint, lines);
+            updateLayer?.(line, currentPoint);
         }
         // Resume playing animations
         if (this.gear.stateWarden.chronoLens.isPlaying$.value) {
@@ -109,8 +109,8 @@ export class PlayerOperator<TMap, TFile extends { name?: string | null; type: st
                 nextImageIndex = 0;
             }
             const nextImage: LoadedImageData<TImageData> | undefined = sortedImageFeatures[nextImageIndex];
-            const { currentPoint, lines, currentPointBearing } = getRouteSourceData(gaugeControls, geojson, startTimeEpoch, currentProgressMs, bearingLineLengthInMeters, nextImage?.featureId);
-            onUpdateLayer(currentPoint, lines);
+            const { currentPoint, line, currentPointBearing } = getRouteSourceData(gaugeControls, geojson, startTimeEpoch, currentProgressMs, bearingLineLengthInMeters, nextImage?.featureId);
+            onUpdateLayer(currentPoint, line);
 
             if (this.animation !== undefined && nextImage && nextImage.featureId <= Number(currentPoint.id)) {
                 this.gear.stateWarden.animatrix.displayImageId$.next(nextImage.id);

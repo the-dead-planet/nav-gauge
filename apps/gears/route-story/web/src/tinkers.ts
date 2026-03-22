@@ -8,11 +8,11 @@ import { routeSourceIds } from "@the-dead-planet/nav-gauge-gears-route-story-com
  */
 export const updateRouteLayer = (
     map: maplibregl.Map,
+    line: GeoJSON.GeoJSON,
     currentPoint: GeoJSON.Feature<GeoJSON.Point>,
-    lines: GeoJSON.GeoJSON,
 ): void => {
+    map.getSource<maplibregl.GeoJSONSource>(routeSourceIds.line)?.setData(line);
     map.getSource<maplibregl.GeoJSONSource>(routeSourceIds.currentPoint)?.setData(currentPoint);
-    map.getSource<maplibregl.GeoJSONSource>(routeSourceIds.line)?.setData(lines);
 };
 
 export function updateImageFeatureId<TImageData>(

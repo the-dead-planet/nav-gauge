@@ -3,9 +3,8 @@ import {
     useStateWarden,
     useSubjectState,
     LoadedImageData,
-    UpdatedData,
 } from "@apparatus";
-import { useMapLayerData, MapLayerData, } from "@web-ui";
+import { useMapSourceAndLayers, MapLayerData, UpdatedData, MapSourceAndLayers } from "@web-ui";
 import { emptyCollection, GeoJson } from "@tinker-chest";
 import {
     ImageFeatureProperties,
@@ -66,17 +65,14 @@ export const ImageInDisplayLayer: FC<Props> = ({
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
     const isInDisplay = displayImageId !== null;
 
-    const mapLayerData = useMemo((): MapLayerData => {
-        return {
-            sources: {
-                [imageSourceIds.imageInDisplay]: {
-                    type: 'geojson',
-                    data: !geojson ? emptyCollection : getData(geojson, loadedImages, displayImageId)
-                }
-            },
-            layers: displayImageLayers,
-        };
-    }, [])
+    const mapLayerData = useMemo((): MapLayerData => ({
+        sourceId: imageSourceIds.imageInDisplay,
+        source: {
+            type: 'geojson',
+            data: !geojson ? emptyCollection : getData(geojson, loadedImages, displayImageId)
+        },
+        layers: displayImageLayers,
+    }), [])
 
     const updatedData = useMemo(
         (): UpdatedData => ({
@@ -86,8 +82,6 @@ export const ImageInDisplayLayer: FC<Props> = ({
         }),
         [geojson, loadedImages, displayImageId]
     );
-
-    useMapLayerData(map, mapLayerData, { updatedData, layerOrder });
 
     useEffect(() => {
         const updateIconSize = (value: number) => {
@@ -110,5 +104,7 @@ export const ImageInDisplayLayer: FC<Props> = ({
         };
     }, [isInDisplay]);
 
-    return null;
+    return (
+        <MapSourceAndLayers map={map} mapLayerData={mapLayerData} updatedData={updatedData} layerOrder={layerOrder} />
+    );
 };
