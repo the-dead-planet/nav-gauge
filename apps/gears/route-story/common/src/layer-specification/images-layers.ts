@@ -1,7 +1,8 @@
 import { FeatureStateProps } from "@apparatus";
 import { DRAGGED_IMAGE_ID, IMAGE_PROPERTY, IMAGE_THUMBNAIL_PROPERTY } from "./images-sources";
 import { getImageIconSize, IMAGE_IN_DISPLAY_SIZE, IMAGE_MARKER_SIZE, IMAGE_THUMBNAIL_SIZE } from "../images";
-import { ComparisonProperty, GetProperty, Opacity } from "./model";
+import { ComparisonProperty, GetProperty, CaseFeatureStateCondition } from "./model";
+import { BehaviorSubject } from "rxjs";
 
 export const imageSourceIds = {
     thumbnails: 'route-story-thumbnails',
@@ -18,15 +19,29 @@ export const imageLayerIds = {
     imageInDisplay: 'route-story-image-in-display',
 }
 
+export const draggingImageId$ = new BehaviorSubject<number | null>(null);
+
 const thumbnailsFilter: ComparisonProperty = ['!=', ['get', 'imageId'], DRAGGED_IMAGE_ID];
 const thumbnailIconImage: GetProperty = ['get', IMAGE_THUMBNAIL_PROPERTY];
 const thumbnailIconSize: number = getImageIconSize(IMAGE_THUMBNAIL_SIZE, IMAGE_MARKER_SIZE);
 const dragOpacity = .4;
-const thumbnailDraggingOpacity: Opacity = [
+const thumbnailDraggingOpacity: CaseFeatureStateCondition = [
     'case',
     ["==", ["feature-state", FeatureStateProps.Dragging], true],
     dragOpacity,
     1
+];
+const thumbnailsOutlineStrokeWidth: CaseFeatureStateCondition = [
+    'case',
+    ["==", ["feature-state", FeatureStateProps.Highlight], true],
+    3,
+    2
+];
+const thumbnailsOutlineStrokeColor: CaseFeatureStateCondition = [
+    'case',
+    ["==", ["feature-state", FeatureStateProps.Highlight], true],
+    'green',
+    'white'
 ];
 
 const thumbnailsHighlightOutlineFilter: ComparisonProperty = ['==', ['get', 'imageId'], DRAGGED_IMAGE_ID];
@@ -38,8 +53,8 @@ export default {
     thumbnailsOutline: {
         circleRadius: Math.round(IMAGE_MARKER_SIZE / 2),
         circleColor: 'transparent',
-        circleStrokeColor: 'white',
-        circleStrokeWidth: 2,
+        circleStrokeColor: thumbnailsOutlineStrokeColor,
+        circleStrokeWidth: thumbnailsOutlineStrokeWidth,
         circleStrokeOpacity: thumbnailDraggingOpacity,
     },
     thumbnailsFilter,
@@ -63,7 +78,7 @@ export default {
         iconAllowOverlap: true,
         iconOpacity: 1,
     },
-    getImageInDisplayFilter: (displayImageId: number | null): ComparisonProperty => ['==', ['get', 'imageId'], displayImageId ?? -1],
+    getImageInDisplayFilter: (displayImageId: number | null): ComparisonProperty => ['==', ['get', 'imageId'], displayImageId ?? ''],
     imageInDisplay: {
         iconImage: inDisplayIconImage,
         iconSize: getImageIconSize(IMAGE_IN_DISPLAY_SIZE, IMAGE_MARKER_SIZE),

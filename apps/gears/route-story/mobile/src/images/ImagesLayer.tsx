@@ -1,4 +1,4 @@
-import { FC, useMemo, useState, useEffect } from "react";
+import { FC, useMemo } from "react";
 import { CircleLayer, Images, ShapeSource, SymbolLayer } from "@maplibre/maplibre-react-native";
 import { OverlayComponentProps, useStateWarden, useSubjectState } from "@apparatus";
 import {
@@ -13,6 +13,7 @@ import { MobileMap } from "@mobile-ui";
 import { DocumentPickerResponse } from "@react-native-documents/picker";
 import { MobileMarkerImageData } from "./image-parser";
 import { useLoadedMobileImages } from "./useLoadedMobileImages";
+import { useImageInDisplay } from "./useImageInDisplay";
 
 export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({
     map,
@@ -44,22 +45,7 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<M
         })
     );
 
-    const [imageInDisplayIconSize, setImageInDisplayIconSize] = useState(ImagesLayers.imageInDisplay.iconSize);
-
-    useEffect(() => {
-        if (displayImageId === null) {
-            return;
-        }
-        playerOperator.animateDisplayImage({ width: map.width, height: map.height }, setImageInDisplayIconSize);
-
-        return () => {
-            playerOperator.cleanupAnimateDisplayImage(setImageInDisplayIconSize);
-        };
-    }, [displayImageId]);
-
-    if (loadedImages.length === 0) {
-        return null;
-    }
+    const imageInDisplayIconSize = useImageInDisplay(map, playerOperator);
 
     return (
         <>

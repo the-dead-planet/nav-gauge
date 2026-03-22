@@ -2,17 +2,17 @@ export type GetProperty = ['get', string];
 export type ComparisonProperty = ['==' | '!=', GetProperty, string | number];
 export type EqualBooleanFeatureState = ['==', ['feature-state', string], boolean];
 
-export type OpacitySingleCondition = [
+export type CaseFeatureStateSingleCondition = [
     'case',
-    EqualBooleanFeatureState, number,
-    number
+    EqualBooleanFeatureState, number | string,
+    number | string
 ];
 
-export type OpacityDoubleCondition = [
+export type CaseFeatureStateDoubleCondition = [
     'case',
-    EqualBooleanFeatureState, number,
-    EqualBooleanFeatureState, number,
-    number
+    EqualBooleanFeatureState, number | string,
+    EqualBooleanFeatureState, number | string,
+    number | string
 ];
 
 export type GetPropertyCaseCondition = [
@@ -24,4 +24,4 @@ export type GetPropertyCaseCondition = [
 
 export type LineCap = "round";
 
-export type Opacity = OpacitySingleCondition | OpacityDoubleCondition;
+export type CaseFeatureStateCondition = CaseFeatureStateSingleCondition | CaseFeatureStateDoubleCondition;

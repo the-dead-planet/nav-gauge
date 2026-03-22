@@ -1,6 +1,5 @@
 import { FC, useEffect, useMemo, useState } from "react";
 import maplibregl from "maplibre-gl";
-import { useTheme } from "@ui";
 import { OverlayComponentProps, Cartomancer, FeatureStateProps, useSubjectState, useStateWarden } from "@apparatus";
 import { MapLayerData, MapSourceAndLayers, } from "@web-ui";
 import { useLoadedWebImages } from "../hooks/useLoadedWebImages";
@@ -16,6 +15,7 @@ import {
     imageSourceIds,
     DRAGGED_IMAGE_ID,
     layerOrder,
+    draggingImageId$,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { WebMarkerImageData } from "./image-parser";
 import { getImagesLayers } from "./images-layers";
@@ -26,14 +26,13 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
     images$,
     playerOperator,
 }) => {
-    const { themeName } = useTheme();
     const { animatrix } = useStateWarden();
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
     const [{ geojson }] = useSubjectState(data$);
     const [images] = useSubjectState(images$);
     const loadedImages = useLoadedWebImages(images);
     const [highlightIdsBySourceId, setHighlightIdsBySourceId] = useState<Map<string, Set<string>>>(new Map());
-    const [draggingId, setDraggingId] = useState<number | null>(null);
+    const [draggingImageId, setDraggingImageId] = useSubjectState(draggingImageId$);
 
     useRouteLayerImages(
         map,
@@ -65,13 +64,12 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
         layers: getImagesLayers(displayImageId), // displayImageId is not a dependency, filter will be updated in effect of useImageInDisplay
         handlers: {
             onMouseMove: ({ features, isTopRelated }) => {
-                if (draggingId !== null) {
+                if (!isTopRelated || draggingImageId$.value !== null) {
+                    if (draggingImageId$.value === null) map.getCanvas().style.cursor = 'grab';
+                    setHighlightIdsBySourceId(new Map());
                     return;
                 }
-                map.getCanvas().style.cursor = 'grab';
-                if (!isTopRelated) {
-                    return;
-                }
+                
                 map.getCanvas().style.cursor = 'pointer';
                 const ids = new Set(features.map((f) => f.id?.toString() ?? ''));
                 setHighlightIdsBySourceId(new Map([[imageSourceIds.thumbnails, ids]]));
@@ -82,23 +80,23 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
                     return;
                 }
                 map.dragPan.disable();
-                setDraggingId(features[0].properties.imageId);
+                setDraggingImageId(features[0].properties.imageId);
             },
             onMouseUp: () => {
                 map.getCanvas().style.cursor = 'grab';
-                setDraggingId(null);
+                setDraggingImageId(null);
                 map.dragPan.enable();
             }
         },
-    }), [themeName, sourceDataGeojson, draggingId]);
+    }), [sourceDataGeojson]);
 
     useEffect(() => {
-        if (draggingId === null) {
+        if (draggingImageId === null) {
             return;
         }
         const update = (value: boolean) => {
             if (map.getSource(imageSourceIds.thumbnails)) {
-                map.setFeatureState({ source: imageSourceIds.thumbnails, id: draggingId }, { [FeatureStateProps.Dragging]: value });
+                map.setFeatureState({ source: imageSourceIds.thumbnails, id: draggingImageId }, { [FeatureStateProps.Dragging]: value });
             }
         };
         update(true);
@@ -106,10 +104,10 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
         return () => {
             update(false);
         };
-    }, [draggingId]);
+    }, [draggingImageId]);
 
     useEffect(() => {
-        if (draggingId === null) {
+        if (draggingImageId === null) {
             return;
         }
 
@@ -122,7 +120,7 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
             }
             event.preventDefault?.();
             const [_id, feature] = Cartomancer.getClosestFeature(geojson, event.lngLat);
-            const image = loadedImages.find((image) => image.id === draggingId);
+            const image = loadedImages.find((image) => image.id === draggingImageId);
             const source = map.getSource(imageSourceIds.thumbnails) as maplibregl.GeoJSONSource | undefined;
 
             if (!source || !image) {
@@ -149,7 +147,7 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
             }
             event.preventDefault();
             const [id, _feature] = Cartomancer.getClosestFeature(geojson, event.lngLat);
-            const image = loadedImages.find((image) => image.id === draggingId)
+            const image = loadedImages.find((image) => image.id === draggingImageId)
             if (!image) {
                 return;
             }
@@ -159,7 +157,7 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
 
         map.dragPan.disable();
 
-        const imageFeatureId = loadedImages.find((image) => image.id === draggingId)?.featureId;
+        const imageFeatureId = loadedImages.find((image) => image.id === draggingImageId)?.featureId;
         const imageCoordinates = geojson?.features.find((feature) => feature.id === imageFeatureId)?.geometry.coordinates;
         if (imageCoordinates) {
             handleDrag({ lngLat: new maplibregl.LngLat(imageCoordinates[0], imageCoordinates[1]) });
@@ -177,7 +175,7 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
             map.off('touchmove', handleDrag);
             map.off('touchend', handleDragEnd);
         };
-    }, [draggingId, loadedImages, geojson]);
+    }, [draggingImageId, loadedImages, geojson]);
 
     useImageInDisplay(map, playerOperator);
 
