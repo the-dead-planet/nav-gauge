@@ -1,9 +1,9 @@
 import { BehaviorSubject } from "rxjs";
 import { SurveillanceState, LoadedImageData } from "@apparatus";
 import { getRouteSourceData } from "./tinkers";
-import { ANIMATION_DURATION } from "./layers";
 import { getImageIconSize, IMAGE_IN_DISPLAY_SIZE, IMAGE_MARKER_SIZE } from "./images";
 import { RouteStoryGear } from "./route-story-gear";
+import { IMAGE_ANIMATION_DURATION } from "./layer-specification";
 
 export class PlayerOperator<TMap, TFile extends { name?: string | null; type: string | null; }, TImageData> {
     private gear: RouteStoryGear<TMap, TFile, TImageData>;
@@ -35,8 +35,8 @@ export class PlayerOperator<TMap, TFile extends { name?: string | null; type: st
     public updateProgress = (
         value: number,
         updateLayer?: (
+            line: GeoJSON.GeoJSON,
             currentPoint: GeoJSON.Feature<GeoJSON.Point>,
-            lines: GeoJSON.GeoJSON,
         ) => void,
     ) => {
         if (!this.gear.routeTimes$.value || isNaN(value)) {
@@ -48,14 +48,14 @@ export class PlayerOperator<TMap, TFile extends { name?: string | null; type: st
         }
         this.gear.progressMs$.next(value);
         if (this.gear.data$.value.geojson) {
-            const { currentPoint, lines } = getRouteSourceData(
+            const { currentPoint, line } = getRouteSourceData(
                 this.gear.stateWarden.cartomancer.gaugeControls$.value,
                 this.gear.data$.value.geojson,
                 this.gear.routeTimes$.value.startTimeEpoch,
                 value,
                 this.gear.stateWarden.animatrix.controls$.value.bearingLineLengthInMeters
             );
-            updateLayer?.(currentPoint, lines);
+            updateLayer?.(line, currentPoint);
         }
         // Resume playing animations
         if (this.gear.stateWarden.chronoLens.isPlaying$.value) {
@@ -109,8 +109,8 @@ export class PlayerOperator<TMap, TFile extends { name?: string | null; type: st
                 nextImageIndex = 0;
             }
             const nextImage: LoadedImageData<TImageData> | undefined = sortedImageFeatures[nextImageIndex];
-            const { currentPoint, lines, currentPointBearing } = getRouteSourceData(gaugeControls, geojson, startTimeEpoch, currentProgressMs, bearingLineLengthInMeters, nextImage?.featureId);
-            onUpdateLayer(currentPoint, lines);
+            const { currentPoint, line, currentPointBearing } = getRouteSourceData(gaugeControls, geojson, startTimeEpoch, currentProgressMs, bearingLineLengthInMeters, nextImage?.featureId);
+            onUpdateLayer(currentPoint, line);
 
             if (this.animation !== undefined && nextImage && nextImage.featureId <= Number(currentPoint.id)) {
                 this.gear.stateWarden.animatrix.displayImageId$.next(nextImage.id);
@@ -164,7 +164,7 @@ export class PlayerOperator<TMap, TFile extends { name?: string | null; type: st
         const start = Date.now();
 
         const frame = () => {
-            const progress = Math.min((Date.now() - start) / ANIMATION_DURATION, 1);
+            const progress = Math.min((Date.now() - start) / IMAGE_ANIMATION_DURATION, 1);
             const value = from + (to - from) * this.easeInOut(progress);
 
             updateIconSize(value);
@@ -192,7 +192,7 @@ export class PlayerOperator<TMap, TFile extends { name?: string | null; type: st
         const to = getImageIconSize(IMAGE_IN_DISPLAY_SIZE, Math.min(width / devicePixelRatio, height / devicePixelRatio));
         this.animateIconSize(from, to, updateIconSize);
         const animationControls = this.gear.stateWarden.animatrix.controls$.value;
-        this.inDisplayImageTimeout = setTimeout(() => this.animateIconSize(to, from, updateIconSize), animationControls.displayImageDuration - ANIMATION_DURATION)
+        this.inDisplayImageTimeout = setTimeout(() => this.animateIconSize(to, from, updateIconSize), animationControls.displayImageDuration - IMAGE_ANIMATION_DURATION)
     };
 
     public cleanupAnimateDisplayImage = (updateIconSize: (value: number) => void) => {

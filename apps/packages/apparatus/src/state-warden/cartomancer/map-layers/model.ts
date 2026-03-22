@@ -4,7 +4,7 @@ export enum FeatureStateProps {
 }
 
 export interface CurrentPointData {
-    lines: GeoJSON.GeoJSON;
+    line: GeoJSON.GeoJSON;
     currentPoint: GeoJSON.Feature<GeoJSON.Point>;
     currentPointBearing: number;
     currentPointSpeed: number;

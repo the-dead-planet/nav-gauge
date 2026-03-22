@@ -1,20 +1,13 @@
 import { useEffect } from "react";
 import maplibregl from "maplibre-gl";
-import { LayerSpecification, SourceSpecification } from "@maplibre/maplibre-gl-style-spec";
-import { emptyCollection } from "@tinker-chest";
-import { useUpdateSourceData } from "./useUpdateSourceData";
-import { useStateWarden } from "../../useStateWarden";
-import { FeatureStateProps } from "../map-layers";
-
-const DEFAULT_BUFFER = 4;
+import { UpdatedData, useUpdateSourceData } from "./useUpdateSourceData";
+import { FeatureStateProps } from "@the-dead-planet/nav-gauge-apparatus/src/state-warden/cartomancer/map-layers";
+import { Cartomancer } from "@the-dead-planet/nav-gauge-apparatus/src/state-warden/cartomancer/cartomancer";
 
 export interface MapLayerData {
-    sources: { [key in string]: SourceSpecification };
-    /**
-     * Tuples [layer specification, before id]
-     */
-    layers: LayerSpecification[];
-    beforeLayerId?: string;
+    sourceId: string;
+    source: maplibregl.SourceSpecification;
+    layers: maplibregl.LayerSpecification[];
     handlers?: MapDataHandlers;
 }
 
@@ -37,23 +30,59 @@ export interface MapDataHandlers {
     };
 }
 
+export interface MapLayerDataUpdateParams {
+    highlightIdsBySourceId?: Map<string, Set<(string | number)>>,
+    updatedData?: UpdatedData;
+    layerOrder?: string[];
+}
+
 /**
  * @param data Sources, layers and event handlers. When this dependency changes, layers will be removed and added again.
- * @param highlightIds Tuple `[sourceId, featureIds]` to apply highlight feature state to.
- * @param updatedData Tuple `[sourceId, data, delay in ms (optional)]` Changes to this dependency will trigger `source.setData` event (without removing the layers and sources).
+ * @param highlightIdsBySourceId Map of `sourceId -> featureIds` to apply highlight feature state to.
+ * @param updatedData Changes to this dependency will trigger `source.setData` event (without removing the layers and sources).
  */
-export const useMapLayerData = (
+export const useMapSourceAndLayers = (
     map: maplibregl.Map,
     data: MapLayerData,
-    highlightIds: [string, Set<(string | number)>][] = [],
-    updatedData?: [string, GeoJSON.GeoJSON, number | undefined]
+    {
+        highlightIdsBySourceId,
+        updatedData,
+        layerOrder = [],
+    }: MapLayerDataUpdateParams = {},
 ) => {
-    const { cartomancer } = useStateWarden();
+    const addSourceAndLayers = (sourceId: string, source: maplibregl.SourceSpecification, layers: maplibregl.LayerSpecification[]) => {
+        map.addSource(sourceId, source);
+
+        for (const layer of layers) {
+            map.addLayer(layer);
+        }
+
+        const existing = layerOrder.filter(id => map.getLayer(id));
+
+        for (let i = existing.length - 1; i >= 0; i--) {
+            map.moveLayer(existing[i], existing[i + 1]);
+        }
+    };
+
+    function clearSourceAndLayers(sourceId: string, layers: maplibregl.LayerSpecification[]) {
+        for (const el of layers) {
+            const id: string = typeof el === 'string' ? el : el.id;
+            if (map.getLayer(id)) {
+                map.removeLayer(id);
+            }
+        }
+
+        if (map.getSource(sourceId)) {
+            map.removeSource(sourceId);
+        }
+    };
 
     useEffect(() => {
-        const { sources, layers, beforeLayerId, handlers } = data;
-        const { buffer = DEFAULT_BUFFER } = data.handlers?.options ?? {};
-        cartomancer.addSourcesAndLayers(map, sources, layers, beforeLayerId);
+        const abortController = new AbortController();
+        const { sourceId, source, layers, handlers } = data;
+        const { buffer = Cartomancer.interactionBuffer } = data.handlers?.options ?? {};
+
+        addSourceAndLayers(sourceId, source, layers)
 
         const queryFeatures = (event: maplibregl.MapMouseEvent | maplibregl.MapTouchEvent): {
             features: maplibregl.MapGeoJSONFeature[];
@@ -66,7 +95,7 @@ export const useMapLayerData = (
                 [event.point.x + buffer, event.point.y + buffer],
             ]);
 
-            if (allFeatures.every((feature) => !layerIds.includes(feature.layer.id))) {
+            if (allFeatures.every((feature) => feature.source !== sourceId || !layerIds.includes(feature.layer.id))) {
                 return { features: [], allFeatures: [], isTopRelated: false };
             }
 
@@ -104,6 +133,8 @@ export const useMapLayerData = (
         map.on('touchend', mouseUpHandler);
 
         return () => {
+            abortController.abort();
+
             map.off('click', clickHandler);
 
             map.off('mousemove', mouseMoveHandler);
@@ -114,24 +145,32 @@ export const useMapLayerData = (
             map.off('touchstart', mouseDownHandler);
             map.off('touchend', mouseUpHandler);
 
-            cartomancer.clearLayersAndSources(map, layers, sources);
+            clearSourceAndLayers(sourceId, layers);
         };
     }, [map, data]);
 
-    useUpdateSourceData(
-        map, 
-        updatedData?.[0] ?? '', 
-        updatedData?.[1] ?? emptyCollection, 
-        updatedData?.[2]
-    );
+    useUpdateSourceData(map, updatedData);
+
+    const updateFeatureState = (
+        source: string,
+        featureIds: Set<string | number>,
+        property: string,
+        value: boolean,
+    ) => {
+        for (const id of featureIds) {
+            if (map.getSource(source)) {
+                map.setFeatureState({ source, id: id }, { [property]: value });
+            }
+        }
+    };
 
     useEffect(() => {
-        if (highlightIds.length === 0) {
+        if (!highlightIdsBySourceId || highlightIdsBySourceId.size === 0) {
             return;
         }
         const update = (value: boolean) => {
-            for (const [source, featureIds] of highlightIds) {
-                cartomancer.updateFeatureState(map, source, featureIds, FeatureStateProps.Highlight, value)
+            for (const [sourceId, featureIds] of highlightIdsBySourceId) {
+                updateFeatureState(sourceId, featureIds, FeatureStateProps.Highlight, value)
             }
         };
 
@@ -140,7 +179,7 @@ export const useMapLayerData = (
         return () => {
             update(false);
         };
-    }, [highlightIds]);
+    }, [highlightIdsBySourceId]);
 
     return null;
 };

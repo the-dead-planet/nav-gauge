@@ -1,20 +1,15 @@
 import { FC, useEffect, useMemo, useRef } from "react";
 import { BehaviorSubject } from "rxjs";
-import { CircleLayer, CircleLayerStyle, LineLayer, LineLayerStyle, ShapeSource, ShapeSourceRef } from "@maplibre/maplibre-react-native";
+import { ShapeSourceRef } from "@maplibre/maplibre-react-native";
 import { OverlayComponentProps, useStateWarden, useSubjectState } from "@apparatus";
-import {
-    getRouteSourceData,
-    RouteToolProps,
-    sourceIds,
-    layerIds,
-    routeLineLayer,
-    currentPointLayers,
-    routePointsLayer
-} from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { getRouteSourceData, RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMap } from "@mobile-ui";
 import { DocumentPickerResponse } from "@react-native-documents/picker";
-import { useLoadedMobileImages } from "./images/useLoadedMobileImages";
-import { MobileMarkerImageData } from "./images/image-parser";
+import { useLoadedMobileImages } from "../images/useLoadedMobileImages";
+import { MobileMarkerImageData } from "../images/image-parser";
+import { RouteLineLayer } from "./RouteLineLayer";
+import { RouteCurrentPointLayer } from "./RouteCurrentPointLayer";
+import { emptyCollection } from "@tinker-chest";
 
 export const currentPointRef$ = new BehaviorSubject<React.RefObject<ShapeSourceRef | null> | null>(null);
 export const linesRef$ = new BehaviorSubject<React.RefObject<ShapeSourceRef | null> | null>(null);
@@ -27,28 +22,20 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mo
     progressMs$,
     playerOperator
 }) => {
-    const [{ geojson }] = useSubjectState(data$);
+    const [{ geojson }, setData] = useSubjectState(data$);
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
-    const [progressMs, setProgressMs] = useSubjectState(progressMs$);
+    const [progressMs] = useSubjectState(progressMs$);
     const { animatrix, cartomancer, chronoLens } = useStateWarden();
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const { showRouteLine, showRoutePoints } = gaugeControls;
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [animationControls] = useSubjectState(animatrix.controls$);
     const {
-        followCurrentPoint,
-        cameraAngle,
-        autoRotate,
         pitch,
         zoom,
-        zoomInToImages,
-        displayImageDuration,
-        cameraRoll,
-        speedMultiplier,
         easeDuration,
         bearingLineLengthInMeters,
-        maxBearingDiffPerFrame,
     } = animationControls;
 
     const lineSourceRef = useRef<ShapeSourceRef>(null);
@@ -74,23 +61,23 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mo
     const loadedImages = useLoadedMobileImages(images);
 
     const sources = useMemo((): {
-        [key in string]?: GeoJSON.GeoJSON;
-    } | null => {
+        [key in 'line' | 'currentPoint']: GeoJSON.GeoJSON;
+    } => {
         if (!geojson || !routeTimes) {
-            return null;
+            return { line: emptyCollection, currentPoint: emptyCollection };
         }
 
-        const { currentPoint, lines } = getRouteSourceData(
+        const { currentPoint, line } = getRouteSourceData(
             { showRouteLine, showRoutePoints },
             geojson,
             routeTimes.startTimeEpoch,
-            progressMs,
+            progressMs, // Not a dependency of this memo, data is updated later in the animateRoute hook
             bearingLineLengthInMeters
         );
 
         return {
-            [sourceIds.line]: lines,
-            [sourceIds.currentPoint]: currentPoint
+            line,
+            currentPoint
         };
     }, [geojson, routeTimes?.startTimeEpoch, bearingLineLengthInMeters, showRouteLine, showRoutePoints]);
 
@@ -120,59 +107,10 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mo
         };
     }, [isPlaying, loadedImages, easeDuration, zoom, pitch]);
 
-    if (!sources) {
-        return null;
-    }
-
     return (
         <>
-            {(showRouteLine || showRoutePoints) && sources[sourceIds.line] ? (
-                <ShapeSource
-                    ref={lineSourceRef}
-                    id={sourceIds.line}
-                    shape={sources[sourceIds.line]}
-                >
-                    {showRouteLine ? (
-                        <LineLayer
-                            id={layerIds.line}
-                            style={{
-                                lineColor: routeLineLayer.paint?.["line-color"]!,
-                                lineWidth: routeLineLayer.paint?.["line-width"]!,
-                                lineOpacity: routeLineLayer.paint?.["line-opacity"]!,
-                                lineCap: routeLineLayer.layout?.["line-cap"]!,
-                                lineJoin: routeLineLayer.layout?.["line-join"]
-                            } as LineLayerStyle}
-                        />
-                    ) : null}
-                    {showRoutePoints ? (
-                        <CircleLayer
-                            id={layerIds.points}
-                            style={{
-                                circleRadius: routePointsLayer.paint?.["circle-radius"],
-                                circleColor: routePointsLayer.paint?.["circle-color"],
-                            } as CircleLayerStyle}
-                        />
-                    ) : null}
-                </ShapeSource>
-            ) : null}
-            {sources[sourceIds.currentPoint] ? (
-                <ShapeSource
-                    ref={pointSourceRef}
-                    id={sourceIds.currentPoint}
-                    shape={sources[sourceIds.currentPoint]}
-                >
-                    {currentPointLayers.map((layer) => (
-                        <CircleLayer
-                            key={layer.id}
-                            id={layerIds.currentPointOutline}
-                            style={{
-                                circleColor: layer.paint?.["circle-color"],
-                                circleRadius: layer.paint?.["circle-radius"],
-                            } as CircleLayerStyle}
-                        />
-                    ))}
-                </ShapeSource>
-            ) : null}
+            <RouteLineLayer sourceRef={lineSourceRef} source={sources.line} />
+            <RouteCurrentPointLayer sourceRef={pointSourceRef} source={sources.currentPoint} />
         </>
     );
 };

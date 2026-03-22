@@ -27,7 +27,7 @@ export const getRouteSourceData = (
         currentPoint,
         currentPointBearing,
         currentPointSpeed,
-        lines: !showRouteLine && !showRoutePoints
+        line: !showRouteLine && !showRoutePoints
             ? emptyCollection
             : {
                 ...geojson,

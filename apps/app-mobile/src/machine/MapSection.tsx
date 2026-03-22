@@ -1,11 +1,12 @@
 import { FC, useEffect, useRef, useState } from "react";
-import { LayoutChangeEvent, StyleSheet, View } from "react-native";
+import { LayoutChangeEvent, StyleSheet } from "react-native";
 import { RecordingView, useViewRecorder } from "react-native-view-recorder";
 import { Camera, CameraRef, MapView, MapViewRef, UserLocation, UserLocationRef } from "@maplibre/maplibre-react-native";
 import { Cartomancer, useSubjectState, useStateWarden } from "@apparatus";
 import { MapTools } from "./map-tools/MapTools";
-import { MobileMap, Text } from "@mobile-ui";
+import { MobileMap, PressEventFeature } from "@mobile-ui";
 import { MobileChronoLens } from "../chrono-lens";
+import { BehaviorSubject } from "rxjs";
 
 const styles = StyleSheet.create({
     viewRecorder: {
@@ -16,6 +17,10 @@ const styles = StyleSheet.create({
         flex: 1,
     }
 });
+
+const onPressHandlers$ = new BehaviorSubject(new Map());
+const onLongPressHandlers$ = new BehaviorSubject(new Map());
+const onTouchMoveHandlers$ = new BehaviorSubject(new Map());
 
 export const MapSection: FC = () => {
     const mapRef = useRef<MapViewRef>(null);
@@ -30,6 +35,9 @@ export const MapSection: FC = () => {
         userLocation: userLocationRef,
         width: mapSize.width,
         height: mapSize.height,
+        onPressHandlers$,
+        onLongPressHandlers$,
+        onTouchMoveHandlers$,
     };
     const { cartomancer, chronoLens, signaliumBureau } = useStateWarden();
     const lens = chronoLens as MobileChronoLens;
@@ -37,6 +45,9 @@ export const MapSection: FC = () => {
     const [_isStyleLoaded, setIsStyleLoaded] = useSubjectState(cartomancer.isStyleLoaded$);
     const [selectedStyle] = useSubjectState(cartomancer.selectedStyle$);
     const [overlays] = useSubjectState(cartomancer.overlays$);
+    const [onPressHandlers] = useSubjectState(map.onPressHandlers$);
+    const [onLongPressHandlers] = useSubjectState(map.onLongPressHandlers$);
+    const [onTouchMoveHandlers] = useSubjectState(map.onTouchMoveHandlers$);
 
     useEffect(() => {
         setIsInitialised(true);
@@ -67,6 +78,11 @@ export const MapSection: FC = () => {
                 sessionId={recorder.sessionId}
                 style={styles.viewRecorder}
                 onLayout={handleLayoutChange}
+                onTouchMove={(event) => {
+                    for (const [_handlerId, handler] of onTouchMoveHandlers) {
+                        handler(event);
+                    }
+                }}
             >
                 <MapView
                     ref={mapRef}
@@ -84,6 +100,16 @@ export const MapSection: FC = () => {
                     }}
                     onRegionIsChanging={(feature) => {
                         cartomancer.bearing$.next(feature.properties.heading);
+                    }}
+                    onPress={(feature) => {
+                        for (const [_handlerId, handler] of onPressHandlers) {
+                            handler(feature as PressEventFeature);
+                        }
+                    }}
+                    onLongPress={(feature) => {
+                        for (const [_handlerId, handler] of onLongPressHandlers) {
+                            handler(feature as PressEventFeature);
+                        }
                     }}
                 >
                     <Camera ref={cameraRef} />

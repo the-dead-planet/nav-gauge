@@ -7,9 +7,10 @@ import { formatCurrentTimestamp, getProgressPercentage, RouteToolProps } from "@
 import { Text } from "@mobile-ui";
 import { MobileMap } from "@mobile-ui";
 import { useTheme } from "@ui";
-import { currentPointRef$, linesRef$ } from "../RouteLayer";
+import { currentPointRef$, linesRef$ } from "../layers/RouteLayer";
+import { MobileMarkerImageData } from "../images/image-parser";
 
-export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap, DocumentPickerResponse>> = ({
+export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({
     routeTimes$,
     progressMs$,
     playerOperator,
@@ -24,8 +25,8 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mobile
     const [surveillanceState] = useSubjectState(chronoLens.surveillanceState$);
 
     const handleProgressChange = (value: number) => {
-        playerOperator.updateProgress(value, (currentPoint, lines) => {
-            linesRef$.value?.current?.setNativeProps({ shape: lines });
+        playerOperator.updateProgress(value, (line, currentPoint) => {
+            linesRef$.value?.current?.setNativeProps({ shape: line });
             currentPointRef$.value?.current?.setNativeProps({ shape: currentPoint });
         });
     };
