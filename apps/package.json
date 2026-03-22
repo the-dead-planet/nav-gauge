@@ -46,7 +46,7 @@
         "@turf/helpers": "^7.3.2",
         "@turf/length": "^7.3.2",
         "luxon": "^3.7.2",
-        "react": "^19.2.3",
+        "react": "19.2.3",
         "rxjs": "^7.8.2"
     },
     "devDependencies": {
@@ -54,20 +54,20 @@
         "@types/eslint": "^9.6.1",
         "@types/luxon": "^3.7.1",
         "@types/mocha": "^10.0.10",
-        "@types/node": "^25.0.8",
-        "@types/react": "^19.2.9",
-        "@typescript-eslint/eslint-plugin": "^8.53.0",
-        "@typescript-eslint/parser": "^8.53.0",
+        "@types/node": "^25.5.0",
+        "@types/react": "^19.2.14",
+        "@typescript-eslint/eslint-plugin": "^8.57.1",
+        "@typescript-eslint/parser": "^8.57.1",
         "chai": "^6.2.2",
         "concurrently": "^9.2.1",
-        "eslint": "^9.39.2",
+        "eslint": "^10.1.0",
         "mocha": "^11.7.5",
         "path": "^0.12.7",
         "tsx": "^4.21.0",
         "typescript": "^5.9.3"
     },
     "resolutions": {
-        "react": "^19.2.3"
+        "react": "19.2.3"
     },
     "workspaces": {
         "packages": [
