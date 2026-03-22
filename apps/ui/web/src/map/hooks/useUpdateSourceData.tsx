@@ -2,37 +2,42 @@ import { useEffect } from "react";
 
 let timeout: Timer | undefined;
 
+export interface UpdatedData {
+    sourceId: string;
+    data: GeoJSON.GeoJSON;
+    delayMs?: number | undefined;
+}
+
 /**
  * For geojson sources.
- * @param sourceId GeoJSON source ID.
+ * @param map
  * @param updatedData Memoized data. Changes will trigger `source.setData` action.
  */
 export const useUpdateSourceData = (
     map: maplibregl.Map,
-    sourceId: string,
-    updatedData: GeoJSON.GeoJSON,
-    delay?: number
+    updatedData?: UpdatedData,
 ) => {
     useEffect(() => {
-        if (!sourceId) {
+        if (!updatedData) {
             return;
         }
-
+        const { sourceId, data, delayMs } = updatedData;
         const source = map.getSource(sourceId) as maplibregl.GeoJSONSource | undefined;
+
         if (!source || source.type !== 'geojson') {
             return;
         }
 
-        if (delay) {
+        if (delayMs) {
             timeout = setTimeout(() => {
-                source.setData(updatedData);
-            }, delay);
+                source.setData(data ?? { type: 'FeatureCollection', features: [] });
+            }, delayMs);
         } else {
-            source.setData(updatedData);
+            source.setData(data);
         }
 
         return () => {
             clearTimeout(timeout);
         };
-    }, [map, sourceId, updatedData, delay]);
+    }, [map, updatedData]);
 };

@@ -89,6 +89,7 @@ export const reduceSize = async (
         false,
         { mode: 'cover' }
     );
+    
     return resizedFile.uri;
 };
 

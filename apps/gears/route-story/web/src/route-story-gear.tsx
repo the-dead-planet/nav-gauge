@@ -1,7 +1,7 @@
 import { combineLatest, Subscription } from 'rxjs';
 import maplibregl from "maplibre-gl";
 import { RouteStoryGear } from '@the-dead-planet/nav-gauge-gears-route-story-common';
-import { RouteLayer } from './RouteLayer';
+import { RouteLayer } from './layers/RouteLayer';
 import { ImagesLayer } from './images/ImagesLayer';
 import { RouteStoryFileInput } from './file-input/RouteStoryFileInput';
 import { RouteLayerFitBounds } from './layers/RouteLayerFitBounds';

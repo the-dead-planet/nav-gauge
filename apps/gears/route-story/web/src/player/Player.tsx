@@ -40,8 +40,8 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<m
     const handleProgressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         playerOperator.updateProgress(
             Number(event.target.value),
-            (currentPoint, lines) => {
-                updateRouteLayer(map, currentPoint, lines);
+            (line, currentPoint) => {
+                updateRouteLayer(map, line, currentPoint);
             }
         )
     }
