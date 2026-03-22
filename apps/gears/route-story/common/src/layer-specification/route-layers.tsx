@@ -1,5 +1,5 @@
 import { FeatureStateProps } from "@apparatus";
-import { EqualBooleanFeatureState, EqualPropertyString, GetPropertyCaseCondition, LineCap } from "./model";
+import { EqualBooleanFeatureState, ComparisonProperty, GetPropertyCaseCondition, LineCap } from "./model";
 
 export const routeSourceIds = {
     line: 'route-story-line',
@@ -32,7 +32,7 @@ const pointsCircleColor: [
     'case',
     EqualBooleanFeatureState,
     string,
-    EqualPropertyString,
+    ComparisonProperty,
     string,
     string
 ] = [

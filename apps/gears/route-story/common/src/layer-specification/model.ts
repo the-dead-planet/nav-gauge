@@ -1,5 +1,5 @@
 export type GetProperty = ['get', string];
-export type EqualPropertyString = ['==', GetProperty, string];
+export type ComparisonProperty = ['==' | '!=', GetProperty, string | number];
 export type EqualBooleanFeatureState = ['==', ['feature-state', string], boolean];
 
 export type OpacitySingleCondition = [
@@ -17,7 +17,7 @@ export type OpacityDoubleCondition = [
 
 export type GetPropertyCaseCondition = [
     'case',
-    EqualPropertyString,
+    ComparisonProperty,
     string,
     string,
 ];

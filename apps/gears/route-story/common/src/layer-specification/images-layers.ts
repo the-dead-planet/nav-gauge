@@ -1,11 +1,10 @@
 import { FeatureStateProps } from "@apparatus";
-import { IMAGE_PROPERTY, IMAGE_THUMBNAIL_PROPERTY } from "./images-sources";
+import { DRAGGED_IMAGE_ID, IMAGE_PROPERTY, IMAGE_THUMBNAIL_PROPERTY } from "./images-sources";
 import { getImageIconSize, IMAGE_IN_DISPLAY_SIZE, IMAGE_MARKER_SIZE, IMAGE_THUMBNAIL_SIZE } from "../images";
-import { GetProperty, Opacity } from "./model";
+import { ComparisonProperty, GetProperty, Opacity } from "./model";
 
 export const imageSourceIds = {
     thumbnails: 'route-story-thumbnails',
-    imageInDisplay: 'route-story-image-in-display',
 }
 
 /**
@@ -19,6 +18,7 @@ export const imageLayerIds = {
     imageInDisplay: 'route-story-image-in-display',
 }
 
+const thumbnailsFilter: ComparisonProperty = ['!=', ['get', 'imageId'], DRAGGED_IMAGE_ID];
 const thumbnailIconImage: GetProperty = ['get', IMAGE_THUMBNAIL_PROPERTY];
 const thumbnailIconSize: number = getImageIconSize(IMAGE_THUMBNAIL_SIZE, IMAGE_MARKER_SIZE);
 const dragOpacity = .4;
@@ -28,6 +28,9 @@ const thumbnailDraggingOpacity: Opacity = [
     dragOpacity,
     1
 ];
+
+const thumbnailsHighlightOutlineFilter: ComparisonProperty = ['==', ['get', 'imageId'], DRAGGED_IMAGE_ID];
+const thumbnailsHighlightFilter: ComparisonProperty = ['==', ['get', 'imageId'], DRAGGED_IMAGE_ID];
 
 const inDisplayIconImage: GetProperty = ['get', IMAGE_PROPERTY];
 
@@ -39,24 +42,28 @@ export default {
         circleStrokeWidth: 2,
         circleStrokeOpacity: thumbnailDraggingOpacity,
     },
+    thumbnailsFilter,
     thumbnails: {
         iconImage: thumbnailIconImage,
         iconSize: thumbnailIconSize,
         iconAllowOverlap: true,
         iconOpacity: thumbnailDraggingOpacity,
     },
+    thumbnailsHighlightOutlineFilter,
     thumbnailsHighlightOutline: {
         circleRadius: Math.round(IMAGE_MARKER_SIZE / 2) * 1.1,
         circleColor: 'transparent',
         circleStrokeColor: 'green',
         circleStrokeWidth: 2,
     },
+    thumbnailsHighlightFilter,
     thumbnailsHighlight: {
         iconImage: thumbnailIconImage,
         iconSize: thumbnailIconSize * 1.1,
         iconAllowOverlap: true,
         iconOpacity: 1,
     },
+    getImageInDisplayFilter: (displayImageId: number | null): ComparisonProperty => ['==', ['get', 'imageId'], displayImageId ?? -1],
     imageInDisplay: {
         iconImage: inDisplayIconImage,
         iconSize: getImageIconSize(IMAGE_IN_DISPLAY_SIZE, IMAGE_MARKER_SIZE),

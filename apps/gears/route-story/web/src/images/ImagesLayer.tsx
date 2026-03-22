@@ -1,10 +1,10 @@
 import { FC, useEffect, useMemo, useState } from "react";
 import maplibregl from "maplibre-gl";
 import { useTheme } from "@ui";
-import { OverlayComponentProps, Cartomancer, FeatureStateProps, useSubjectState } from "@apparatus";
+import { OverlayComponentProps, Cartomancer, FeatureStateProps, useSubjectState, useStateWarden } from "@apparatus";
 import { MapLayerData, MapSourceAndLayers, } from "@web-ui";
 import { useLoadedWebImages } from "../hooks/useLoadedWebImages";
-import { ImageInDisplayLayer } from "./ImageInDisplayLayer";
+import { useImageInDisplay } from "./useImageInDisplay";
 import { updateImageFeatureId } from "../tinkers";
 import { MapImageData, useRouteLayerImages } from "../hooks";
 import {
@@ -27,6 +27,8 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
     playerOperator,
 }) => {
     const { themeName } = useTheme();
+    const { animatrix } = useStateWarden();
+    const [displayImageId] = useSubjectState(animatrix.displayImageId$);
     const [{ geojson }] = useSubjectState(data$);
     const [images] = useSubjectState(images$);
     const loadedImages = useLoadedWebImages(images);
@@ -53,37 +55,42 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
         [loadedImages, geojson]
     );
 
-    const mapLayerData = useMemo((): MapLayerData => {
-        return {
-            sourceId: imageSourceIds.thumbnails,
-            source: {
-                type: "geojson",
-                data: sourceDataGeojson,
-                promoteId: 'imageId'
-            },
-            layers: getImagesLayers(themeName),
-            handlers: {
-                onMouseMove: ({ features, isTopRelated }) => {
-                    if (!isTopRelated || draggingId !== null) {
-                        return;
-                    }
-                    const ids = new Set(features.map((f) => f.id?.toString() ?? ''));
-                    setHighlightIdsBySourceId(new Map([[imageSourceIds.thumbnails, ids]]));
-                },
-                onMouseDown: ({ features, isTopRelated }) => {
-                    if (!isTopRelated || features.length === 0) {
-                        return;
-                    }
-                    map.dragPan.disable();
-                    setDraggingId(features[0].properties.imageId);
-                },
-                onMouseUp: () => {
-                    setDraggingId(null);
-                    map.dragPan.enable();
+    const mapLayerData = useMemo((): MapLayerData => ({
+        sourceId: imageSourceIds.thumbnails,
+        source: {
+            type: "geojson",
+            data: sourceDataGeojson,
+            promoteId: 'imageId'
+        },
+        layers: getImagesLayers(displayImageId), // displayImageId is not a dependency, filter will be updated in effect of useImageInDisplay
+        handlers: {
+            onMouseMove: ({ features, isTopRelated }) => {
+                if (draggingId !== null) {
+                    return;
                 }
+                map.getCanvas().style.cursor = 'grab';
+                if (!isTopRelated) {
+                    return;
+                }
+                map.getCanvas().style.cursor = 'pointer';
+                const ids = new Set(features.map((f) => f.id?.toString() ?? ''));
+                setHighlightIdsBySourceId(new Map([[imageSourceIds.thumbnails, ids]]));
             },
-        };
-    }, [themeName, sourceDataGeojson, draggingId]);
+            onMouseDown: ({ features, isTopRelated }) => {
+                map.getCanvas().style.cursor = 'grabbing';
+                if (!isTopRelated || features.length === 0) {
+                    return;
+                }
+                map.dragPan.disable();
+                setDraggingId(features[0].properties.imageId);
+            },
+            onMouseUp: () => {
+                map.getCanvas().style.cursor = 'grab';
+                setDraggingId(null);
+                map.dragPan.enable();
+            }
+        },
+    }), [themeName, sourceDataGeojson, draggingId]);
 
     useEffect(() => {
         if (draggingId === null) {
@@ -172,20 +179,14 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
         };
     }, [draggingId, loadedImages, geojson]);
 
+    useImageInDisplay(map, playerOperator);
+
     return (
-        <>
-            <MapSourceAndLayers
-                map={map}
-                mapLayerData={mapLayerData}
-                highlightIdsBySourceId={highlightIdsBySourceId}
-                layerOrder={layerOrder}
-            />
-            <ImageInDisplayLayer
-                map={map}
-                geojson={geojson}
-                loadedImages={loadedImages}
-                playerOperator={playerOperator}
-            />
-        </>
+        <MapSourceAndLayers
+            map={map}
+            mapLayerData={mapLayerData}
+            highlightIdsBySourceId={highlightIdsBySourceId}
+            layerOrder={layerOrder}
+        />
     );
 };

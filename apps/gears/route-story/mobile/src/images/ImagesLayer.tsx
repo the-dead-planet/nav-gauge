@@ -25,34 +25,37 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<M
     const loadedImages = useLoadedMobileImages(images);
     const { animatrix } = useStateWarden();
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
-    const isInDisplay = displayImageId !== null;
-    const [iconSize, setIconSize] = useState(ImagesLayers.imageInDisplay.iconSize);
-
-    useEffect(() => {
-        if (isInDisplay) {
-            playerOperator.animateDisplayImage({ width: map.width, height: map.height }, setIconSize)
-        }
-
-        return () => {
-            playerOperator.cleanupAnimateDisplayImage(setIconSize);
-        };
-    }, [isInDisplay]);
 
     const sourceDataGeojson = useMemo(
         () => getImageSource(loadedImages, geojson),
         [loadedImages, geojson]
     );
 
-    const imageSources = Object.fromEntries(
+    const imageSources: { [key in string]: { uri: string } } = Object.fromEntries(
         loadedImages.flatMap((loadedImage) => {
-            const thumbnail = [getIconImageId(loadedImage, { thumbnail: true }), { uri: loadedImage.data.thumbnail }];
-            const fullSize = [getIconImageId(loadedImage), { uri: loadedImage.data.fullSize }];
+            const thumbnail: [string, { uri: string }] = [getIconImageId(loadedImage, { thumbnail: true }), { uri: loadedImage.data.thumbnail }];
+            const fullSize: [string, { uri: string }] = [getIconImageId(loadedImage), { uri: loadedImage.data.fullSize }];
+
             if (displayImageId === loadedImage.id) {
                 return [fullSize, thumbnail]
             }
+
             return [thumbnail];
         })
     );
+
+    const [imageInDisplayIconSize, setImageInDisplayIconSize] = useState(ImagesLayers.imageInDisplay.iconSize);
+
+    useEffect(() => {
+        if (displayImageId === null) {
+            return;
+        }
+        playerOperator.animateDisplayImage({ width: map.width, height: map.height }, setImageInDisplayIconSize);
+
+        return () => {
+            playerOperator.cleanupAnimateDisplayImage(setImageInDisplayIconSize);
+        };
+    }, [displayImageId]);
 
     if (loadedImages.length === 0) {
         return null;
@@ -68,14 +71,17 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<M
                 />
                 <SymbolLayer
                     id={imageLayerIds.thumbnails}
+                    filter={ImagesLayers.thumbnailsFilter}
                     style={ImagesLayers.thumbnails}
                 />
                 <CircleLayer
                     id={imageLayerIds.thumbnailsHighlightOutline}
+                    filter={ImagesLayers.thumbnailsHighlightOutlineFilter}
                     style={ImagesLayers.thumbnailsHighlightOutline}
                 />
                 <SymbolLayer
                     id={imageLayerIds.thumbnailsHighlight}
+                    filter={ImagesLayers.thumbnailsHighlightFilter}
                     style={ImagesLayers.thumbnailsHighlight}
                 />
                 <SymbolLayer
@@ -83,7 +89,7 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<M
                     filter={['==', ['get', 'imageId'], displayImageId ?? -1]}
                     style={{
                         ...ImagesLayers.imageInDisplay,
-                        iconSize: iconSize,
+                        iconSize: imageInDisplayIconSize,
                     }}
                 />
             </ShapeSource>
