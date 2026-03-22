@@ -46,7 +46,7 @@
         "@turf/helpers": "^7.3.2",
         "@turf/length": "^7.3.2",
         "luxon": "^3.7.2",
-        "react": "^19.2.4",
+        "react": "19.2.3",
         "rxjs": "^7.8.2"
     },
     "devDependencies": {
@@ -67,7 +67,7 @@
         "typescript": "^5.9.3"
     },
     "resolutions": {
-        "react": "^19.2.4"
+        "react": "19.2.3"
     },
     "workspaces": {
         "packages": [
