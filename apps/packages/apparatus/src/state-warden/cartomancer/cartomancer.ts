@@ -1,6 +1,5 @@
 import { ComponentType } from "react";
 import { BehaviorSubject, Subscription } from "rxjs";
-import { LayerSpecification } from "@maplibre/maplibre-gl-style-spec";
 import turfDistance from "@turf/distance";
 import { point as turfPoint } from "@turf/helpers";
 import { Option } from "@ui";
@@ -22,6 +21,7 @@ export class Cartomancer<TMap> {
         'osm': osmMapStyle,
         'custom-roads': customRoadsMapStyle
     }
+
     private defaultStyleId: keyof typeof Cartomancer.styles = 'osm';
 
     /**
@@ -60,6 +60,11 @@ export class Cartomancer<TMap> {
         boxShadow: '',
         innerBoxShadow: '',
     };
+
+    /**
+     * For mouse and touch events
+     */
+    public static interactionBuffer = 4;
 
     public isInitialised$ = new BehaviorSubject(false);
     public isStyleLoaded$ = new BehaviorSubject(false);
@@ -109,48 +114,6 @@ export class Cartomancer<TMap> {
     };
 
     /**
-     * Safely updates style and resolves when the `map.isStyleLoaded()` check resolves.
-     */
-    public updateStyle = async (
-        map: maplibregl.Map,
-        style: string | maplibregl.StyleSpecification,
-        abortSignal: AbortSignal,
-        onError?: (err: unknown) => void
-    ) => {
-        try {
-            this.isStyleLoaded$.next(false);
-            map.setStyle(style);
-            await this.validateStyleLoaded(map, abortSignal);
-            this.isStyleLoaded$.next(true);
-        } catch (err) {
-            onError?.(err);
-        }
-    };
-
-    /**
-     * Subscribes to map `idle` events and resolves when `map.isStyleLoaded()` resolves.
-     */
-    private validateStyleLoaded = (
-        map: maplibregl.Map,
-        abortSignal: AbortSignal
-    ): Promise<void> => {
-        return new Promise((resolve, reject) => {
-            const isLoadedHandler = (_event: maplibregl.MapDataEvent) => {
-                if (abortSignal.aborted) {
-                    map.off('idle', isLoadedHandler);
-                    reject("User aborted map style validation.")
-                } else
-                    if (map.isStyleLoaded()) {
-                        map.off('idle', isLoadedHandler);
-                        resolve();
-                    }
-            }
-
-            map.on('idle', isLoadedHandler);
-        });
-    };
-
-    /**
      * Adds map overlay components rendered in the map area unconditionally.
      * If an overlay with a given id exists, it will be overwritten.
      */
@@ -167,69 +130,6 @@ export class Cartomancer<TMap> {
         const nextOverlays = new Map(this.overlays$.value);
         nextOverlays.delete(id);
         this.overlays$.next(nextOverlays);
-    };
-
-    private timeout: Timer;
-
-    /**
-     * Adds sources and afterwards layers.
-     */
-    public addSourcesAndLayers = async (
-        map: maplibregl.Map,
-        abortSignal: AbortSignal,
-        sources: { [key in string]: maplibregl.SourceSpecification },
-        layers: LayerSpecification[],
-        layerOrder: string[] = []
-    ) => {
-        clearTimeout(this.timeout);
-
-        for (const [sourceId, source] of Object.entries(sources)) {
-            if (abortSignal.aborted) {
-                break;
-            }
-            map.addSource(sourceId, source);
-        }
-
-        for (const layer of layers) {
-            if (abortSignal.aborted) {
-                break;
-            }
-            map.addLayer(layer);
-        }
-
-        this.reorderLayers(map, layerOrder);
-    };
-
-    private reorderLayers = (
-        map: maplibregl.Map,
-        layerOrder: string[]
-    ) => {
-        const existing = layerOrder.filter(id => map.getLayer(id));
-
-        for (let i = existing.length - 1; i >= 0; i--) {
-            map.moveLayer(existing[i], existing[i + 1]);
-        }
-    };
-
-    /**
-     * Removes layers with given `layerIds` and afterwards sources with given `sourceIds`.
-     */
-    public clearLayersAndSources(map: maplibregl.Map, layers: maplibregl.LayerSpecification[], sources: { [key: string]: maplibregl.SourceSpecification }): void;
-    public clearLayersAndSources(map: maplibregl.Map, layers: string[], sources: string[]): void;
-    public clearLayersAndSources(map: maplibregl.Map, layers: maplibregl.LayerSpecification[] | string[], sources: { [key: string]: maplibregl.SourceSpecification } | string[]): void {
-        for (const el of layers) {
-            const id: string = typeof el === 'string' ? el : el.id;
-            if (map.getLayer(id)) {
-                map.removeLayer(id);
-            }
-        }
-
-        const sourceIds: string[] = Array.isArray(sources) ? sources : Object.keys(sources);
-        for (const id of sourceIds) {
-            if (map.getSource(id)) {
-                map.removeSource(id);
-            }
-        }
     };
 
     /**
@@ -264,19 +164,5 @@ export class Cartomancer<TMap> {
         }, Infinity]);
 
         return [feature.properties.id, feature];
-    };
-
-    public updateFeatureState = (
-        map: maplibregl.Map,
-        source: string,
-        featureIds: Set<string | number>,
-        property: string,
-        value: boolean,
-    ) => {
-        for (const id of featureIds) {
-            if (map.getSource(source)) {
-                map.setFeatureState({ source, id: id }, { [property]: value });
-            }
-        }
     };
 }

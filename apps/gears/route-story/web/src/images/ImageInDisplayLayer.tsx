@@ -1,12 +1,11 @@
 import { FC, useEffect, useMemo } from "react";
 import {
     useStateWarden,
-    useMapLayerData,
     useSubjectState,
-    MapLayerData,
     LoadedImageData,
     UpdatedData,
 } from "@apparatus";
+import { useMapLayerData, MapLayerData, } from "@web-ui";
 import { emptyCollection, GeoJson } from "@tinker-chest";
 import {
     ImageFeatureProperties,

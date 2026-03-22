@@ -1,18 +1,15 @@
 import { useEffect } from "react";
 import maplibregl from "maplibre-gl";
-import { LayerSpecification, SourceSpecification } from "@maplibre/maplibre-gl-style-spec";
-import { UpdatedData, useUpdateSourceData } from "./useUpdateSourceData";
-import { useStateWarden } from "../../useStateWarden";
-import { FeatureStateProps } from "../map-layers";
-
-const DEFAULT_BUFFER = 4;
+import { UpdatedData, useUpdateSourceData } from "@the-dead-planet/nav-gauge-apparatus/src/state-warden/cartomancer/hooks/useUpdateSourceData";
+import { FeatureStateProps } from "@the-dead-planet/nav-gauge-apparatus/src/state-warden/cartomancer/map-layers";
+import { Cartomancer } from "@the-dead-planet/nav-gauge-apparatus/src/state-warden/cartomancer/cartomancer";
 
 export interface MapLayerData {
-    sources: { [key in string]: SourceSpecification };
+    sources: { [key in string]: maplibregl.SourceSpecification };
     /**
      * Tuples [layer specification, before id]
      */
-    layers: LayerSpecification[];
+    layers: maplibregl.LayerSpecification[];
     handlers?: MapDataHandlers;
 }
 
@@ -52,16 +49,49 @@ export const useMapLayerData = (
     {
         highlightIdsBySourceId,
         updatedData,
-        layerOrder,
+        layerOrder = [],
     }: MapLayerDataUpdateParams = {},
 ) => {
-    const { cartomancer } = useStateWarden();
+    const addLayersAndSources = (layers: maplibregl.LayerSpecification[], sources: { [key: string]: maplibregl.SourceSpecification }, layerOrder: string[] = []) => {
+        for (const [sourceId, source] of Object.entries(sources)) {
+            map.addSource(sourceId, source);
+        }
+
+        for (const layer of layers) {
+            map.addLayer(layer);
+        }
+
+        const existing = layerOrder.filter(id => map.getLayer(id));
+
+        for (let i = existing.length - 1; i >= 0; i--) {
+            map.moveLayer(existing[i], existing[i + 1]);
+        }
+    };
+
+    function clearLayersAndSources(layers: maplibregl.LayerSpecification[], sources: { [key: string]: maplibregl.SourceSpecification }): void;
+    function clearLayersAndSources(layers: string[], sources: string[]): void;
+    function clearLayersAndSources(layers: maplibregl.LayerSpecification[] | string[], sources: { [key: string]: maplibregl.SourceSpecification } | string[]): void {
+        for (const el of layers) {
+            const id: string = typeof el === 'string' ? el : el.id;
+            if (map.getLayer(id)) {
+                map.removeLayer(id);
+            }
+        }
+
+        const sourceIds: string[] = Array.isArray(sources) ? sources : Object.keys(sources);
+        for (const id of sourceIds) {
+            if (map.getSource(id)) {
+                map.removeSource(id);
+            }
+        }
+    };
 
     useEffect(() => {
         const abortController = new AbortController();
         const { sources, layers, handlers } = data;
-        const { buffer = DEFAULT_BUFFER } = data.handlers?.options ?? {};
-        cartomancer.addSourcesAndLayers(map, abortController.signal, sources, layers, layerOrder);
+        const { buffer = Cartomancer.interactionBuffer } = data.handlers?.options ?? {};
+
+        addLayersAndSources(layers, sources, layerOrder)
 
         const queryFeatures = (event: maplibregl.MapMouseEvent | maplibregl.MapTouchEvent): {
             features: maplibregl.MapGeoJSONFeature[];
@@ -113,7 +143,7 @@ export const useMapLayerData = (
 
         return () => {
             abortController.abort();
-            
+
             map.off('click', clickHandler);
 
             map.off('mousemove', mouseMoveHandler);
@@ -124,11 +154,24 @@ export const useMapLayerData = (
             map.off('touchstart', mouseDownHandler);
             map.off('touchend', mouseUpHandler);
 
-            cartomancer.clearLayersAndSources(map, layers, sources);
+            clearLayersAndSources(layers, sources);
         };
     }, [map, data]);
 
     useUpdateSourceData(map, updatedData);
+
+    const updateFeatureState = (
+        source: string,
+        featureIds: Set<string | number>,
+        property: string,
+        value: boolean,
+    ) => {
+        for (const id of featureIds) {
+            if (map.getSource(source)) {
+                map.setFeatureState({ source, id: id }, { [property]: value });
+            }
+        }
+    };
 
     useEffect(() => {
         if (!highlightIdsBySourceId || highlightIdsBySourceId.size === 0) {
@@ -136,7 +179,7 @@ export const useMapLayerData = (
         }
         const update = (value: boolean) => {
             for (const [sourceId, featureIds] of highlightIdsBySourceId) {
-                cartomancer.updateFeatureState(map, sourceId, featureIds, FeatureStateProps.Highlight, value)
+                updateFeatureState(sourceId, featureIds, FeatureStateProps.Highlight, value)
             }
         };
 

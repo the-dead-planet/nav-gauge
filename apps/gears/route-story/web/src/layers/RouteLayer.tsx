@@ -2,21 +2,9 @@ import { FC, useEffect, useMemo } from "react";
 import { LayerSpecification, SourceSpecification } from "@maplibre/maplibre-gl-style-spec";
 import maplibregl, { LngLat } from "maplibre-gl";
 import bbox from "@turf/bbox";
-import {
-    OverlayComponentProps,
-    useStateWarden,
-    useSubjectState,
-    useMapLayerData,
-    MapLayerData,
-    parsers,
-} from "@apparatus";
-import {
-    getRouteSourceData,
-    RouteToolProps,
-    routeSourceIds,
-    imageLayerIds,
-    layerOrder,
-} from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { OverlayComponentProps, useStateWarden, useSubjectState, parsers } from "@apparatus";
+import { useMapLayerData, MapLayerData, } from "@web-ui";
+import { getRouteSourceData, RouteToolProps, routeSourceIds, layerOrder } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { updateRouteLayer } from "../tinkers";
 import { useLoadedWebImages } from "../hooks";
 import { WebMarkerImageData } from "../images/image-parser";
