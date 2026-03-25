@@ -80,7 +80,7 @@ export const useMapSourceAndLayers = (
     useEffect(() => {
         const abortController = new AbortController();
         const { sourceId, source, layers, handlers } = data;
-        const { buffer = Cartomancer.interactionBuffer } = data.handlers?.options ?? {};
+        const { buffer = Cartomancer.interactionBufferPx } = data.handlers?.options ?? {};
 
         addSourceAndLayers(sourceId, source, layers)
 

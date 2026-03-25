@@ -1,7 +1,7 @@
 import { BehaviorSubject } from "rxjs";
 import { SurveillanceState, LoadedImageData } from "@apparatus";
 import { getRouteSourceData } from "./tinkers";
-import { getImageIconSize, IMAGE_IN_DISPLAY_SIZE, IMAGE_MARKER_SIZE } from "./images";
+import { getImageIconSize, IMAGE_IN_DISPLAY_SIZE, THUMBNAIL_SIZE } from "./images";
 import { RouteStoryGear } from "./route-story-gear";
 import { IMAGE_ANIMATION_DURATION } from "./layer-specification";
 
@@ -188,7 +188,7 @@ export class PlayerOperator<TMap, TFile extends { name?: string | null; type: st
         updateIconSize: (value: number) => void,
     ) => {
         const { width, height, devicePixelRatio = 1 } = mapSize;
-        const from = getImageIconSize(IMAGE_IN_DISPLAY_SIZE, IMAGE_MARKER_SIZE);
+        const from = getImageIconSize(IMAGE_IN_DISPLAY_SIZE, THUMBNAIL_SIZE);
         const to = getImageIconSize(IMAGE_IN_DISPLAY_SIZE, Math.min(width / devicePixelRatio, height / devicePixelRatio));
         this.animateIconSize(from, to, updateIconSize);
         const animationControls = this.gear.stateWarden.animatrix.controls$.value;
@@ -197,6 +197,6 @@ export class PlayerOperator<TMap, TFile extends { name?: string | null; type: st
 
     public cleanupAnimateDisplayImage = (updateIconSize: (value: number) => void) => {
         clearTimeout(this.inDisplayImageTimeout);
-        updateIconSize(getImageIconSize(IMAGE_IN_DISPLAY_SIZE, IMAGE_MARKER_SIZE));
+        updateIconSize(getImageIconSize(IMAGE_IN_DISPLAY_SIZE, THUMBNAIL_SIZE));
     };
 };

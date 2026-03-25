@@ -25,6 +25,7 @@ export function getImageSource<TImageData>(
             if (feature) {
                 acc.push({
                     type: 'Feature',
+                    id: image.id,
                     geometry: feature.geometry,
                     properties: {
                         imageId: image.id,
