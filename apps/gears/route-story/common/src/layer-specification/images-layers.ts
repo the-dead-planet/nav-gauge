@@ -1,6 +1,6 @@
 import { FeatureStateProps } from "@apparatus";
 import { DRAGGED_IMAGE_ID, IMAGE_PROPERTY, IMAGE_THUMBNAIL_PROPERTY } from "./images-sources";
-import { getImageIconSize, IMAGE_IN_DISPLAY_SIZE, THUMBNAIL_SIZE, IMAGE_IMAGE_MARKER_SIZE} from "../images";
+import { getImageIconSize, IMAGE_IN_DISPLAY_SIZE, IMAGE_MARKER_SIZE, IMAGE_IMAGE_MARKER_SIZE} from "../images";
 import { ComparisonProperty, GetProperty, CaseFeatureStateCondition } from "./model";
 import { BehaviorSubject } from "rxjs";
 
@@ -23,7 +23,7 @@ export const draggingImageId$ = new BehaviorSubject<number | null>(null);
 
 const thumbnailsFilter: ComparisonProperty = ['!=', ['get', 'imageId'], DRAGGED_IMAGE_ID];
 const thumbnailIconImage: GetProperty = ['get', IMAGE_THUMBNAIL_PROPERTY];
-const thumbnailIconSize: number = getImageIconSize(IMAGE_THUMBNAIL_SIZE, THUMBNAIL_SIZE);
+const thumbnailIconSize: number = getImageIconSize(IMAGE_IMAGE_MARKER_SIZE, IMAGE_MARKER_SIZE);
 const dragOpacity = .4;
 const thumbnailDraggingOpacity: CaseFeatureStateCondition = [
     'case',
@@ -81,7 +81,7 @@ export default {
     getImageInDisplayFilter: (displayImageId: number | null): ComparisonProperty => ['==', ['get', 'imageId'], displayImageId ?? ''],
     imageInDisplay: {
         iconImage: inDisplayIconImage,
-        iconSize: getImageIconSize(IMAGE_IN_DISPLAY_SIZE, THUMBNAIL_SIZE),
+        iconSize: getImageIconSize(IMAGE_IN_DISPLAY_SIZE, IMAGE_MARKER_SIZE),
         iconAllowOverlap: true,
     }
 };

@@ -35,7 +35,7 @@ export const parseImage = async (
         // TODO: Only leave full size original ratio and add shape processing in the component - user can select what shapes they want for thumbnails and display
         [bitmap, thumbnailBitmap] = await Promise.all([
             resizeImage(e.target?.result, { targetSize: IMAGE_IN_DISPLAY_SIZE }),
-            resizeImage(e.target?.result, { targetSize: IMAGE_THUMBNAIL_SIZE, shape }),
+            resizeImage(e.target?.result, { targetSize: IMAGE_IMAGE_MARKER_SIZE, shape }),
         ]);
     } catch (err) {
         console.error('Error resizing image', err);

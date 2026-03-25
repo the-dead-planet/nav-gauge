@@ -56,7 +56,7 @@ export const cacheReducedImage = async (
 ): Promise<{ fullSize?: string; thumbnail?: string; }> => {
     return Promise.all([
         reduceSize(file.uri, IMAGE_IN_DISPLAY_SIZE),
-        reduceSize(file.uri, IMAGE_THUMBNAIL_SIZE),
+        reduceSize(file.uri, IMAGE_IMAGE_MARKER_SIZE),
     ])
         .then(([fullSize, thumbnail]) => ({ fullSize, thumbnail }))
         .catch((err) => {
