@@ -56,7 +56,7 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<M
         const nextPressHandlers = new Map(map.onLongPressHandlers$.value);
         nextPressHandlers.set(id, async (eventFeature) => {
             const c = [eventFeature.geometry.coordinates[0], eventFeature.geometry.coordinates[1]];
-            const buffer = Cartomancer.getBufferInMeters(c[1], cartomancer.zoom$.value, Math.round(IMAGE_MARKER_SIZE/ 2));
+            const buffer = Cartomancer.getBufferInMeters(c[1], cartomancer.zoom$.value, Math.round(IMAGE_MARKER_SIZE / 2));
             const imageFeatures = loadedImages
                 .reduce<GeoJSON.Feature<GeoJSON.Point, FeatureProperties>[]>((acc, image) => {
                     const f = geojson?.features.find((f) => f.properties.id === image.featureId);

@@ -1,7 +1,7 @@
 import maplibregl from "maplibre-gl";
 import EXIF from 'exif-js';
 import { ExifData } from '@apparatus';
-import { IMAGE_IN_DISPLAY_SIZE, IMAGE_IMAGE_MARKER_SIZE} from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { IMAGE_IN_DISPLAY_SIZE, IMAGE_IMAGE_MARKER_SIZE } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { getExifError, getExifLngLat, LngLat } from "@tinker-chest";
 import { getResizeDimensions } from "@the-dead-planet/nav-gauge-gears-route-story-common/src/file-parser";
 

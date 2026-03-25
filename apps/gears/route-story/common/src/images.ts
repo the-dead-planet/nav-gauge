@@ -1,5 +1,5 @@
-export const IMAGE_MARKER_SIZE= 50;
-export const IMAGE_IMAGE_MARKER_SIZE= 3 * IMAGE_MARKER_SIZE;
+export const IMAGE_MARKER_SIZE = 50;
+export const IMAGE_IMAGE_MARKER_SIZE = 3 * IMAGE_MARKER_SIZE;
 export const IMAGE_IN_DISPLAY_SIZE = 800;
 
 export const getImageIconSize = (
