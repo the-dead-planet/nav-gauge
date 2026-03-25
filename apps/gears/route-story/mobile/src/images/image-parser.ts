@@ -2,7 +2,7 @@ import { Image } from 'react-native';
 import RNFS from 'react-native-fs';
 import { DocumentPickerResponse } from '@react-native-documents/picker';
 import ImageResizer from '@bam.tech/react-native-image-resizer';
-import { IMAGE_IN_DISPLAY_SIZE, IMAGE_THUMBNAIL_SIZE } from '@the-dead-planet/nav-gauge-gears-route-story-common';
+import { IMAGE_IN_DISPLAY_SIZE, IMAGE_IMAGE_MARKER_SIZE} from '@the-dead-planet/nav-gauge-gears-route-story-common';
 import { getResizeDimensions } from '@the-dead-planet/nav-gauge-gears-route-story-common/src/file-parser';
 
 export interface MobileMarkerImageData {
