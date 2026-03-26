@@ -186,6 +186,6 @@ export class Cartomancer<TMap> {
      * @returns 
      */
     public static getBufferInMeters(lat: number, zoom: number, bufferPx = 0) {
-        return this.metersPerPixel(lat, zoom) * (bufferPx + this.interactionBufferPx);
+        return Math.round(this.metersPerPixel(lat, zoom) * (bufferPx + this.interactionBufferPx));
     }
 }

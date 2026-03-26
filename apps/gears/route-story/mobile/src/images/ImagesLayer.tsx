@@ -1,5 +1,6 @@
 import { FC, useEffect, useMemo, useState } from "react";
 import { CircleLayer, Images, ShapeSource, SymbolLayer } from "@maplibre/maplibre-react-native";
+import distance from "@turf/distance";
 import { Cartomancer, OverlayComponentProps, useStateWarden, useSubjectState } from "@apparatus";
 import {
     getIconImageId,
@@ -16,7 +17,6 @@ import { DocumentPickerResponse } from "@react-native-documents/picker";
 import { MobileMarkerImageData } from "./image-parser";
 import { useLoadedMobileImages } from "./useLoadedMobileImages";
 import { useImageInDisplay } from "./useImageInDisplay";
-import distance from "@turf/distance";
 import { FeatureProperties } from "@tinker-chest";
 
 export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({

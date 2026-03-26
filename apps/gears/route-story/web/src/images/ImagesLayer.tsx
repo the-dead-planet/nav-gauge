@@ -63,6 +63,14 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
         },
         layers: getImagesLayers(displayImageId), // displayImageId is not a dependency, filter will be updated in effect of useImageInDisplay
         handlers: {
+            onMouseDown: ({ features, isTopRelated }) => {
+                map.getCanvas().style.cursor = 'grabbing';
+                if (!isTopRelated || features.length === 0) {
+                    return;
+                }
+                map.dragPan.disable();
+                setDraggingImageId(features[0].properties.imageId);
+            },
             onMouseMove: ({ features, isTopRelated }) => {
                 if (!isTopRelated || draggingImageId$.value !== null) {
                     if (draggingImageId$.value === null) map.getCanvas().style.cursor = 'grab';
@@ -73,14 +81,6 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
                 map.getCanvas().style.cursor = 'pointer';
                 const ids = new Set(features.map((f) => f.id?.toString() ?? ''));
                 setHighlightIdsBySourceId(new Map([[imageSourceIds.thumbnails, ids]]));
-            },
-            onMouseDown: ({ features, isTopRelated }) => {
-                map.getCanvas().style.cursor = 'grabbing';
-                if (!isTopRelated || features.length === 0) {
-                    return;
-                }
-                map.dragPan.disable();
-                setDraggingImageId(features[0].properties.imageId);
             },
             onMouseUp: () => {
                 map.getCanvas().style.cursor = 'grab';
