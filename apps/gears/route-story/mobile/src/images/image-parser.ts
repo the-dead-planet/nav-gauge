@@ -2,7 +2,7 @@ import { Image } from 'react-native';
 import RNFS from 'react-native-fs';
 import { DocumentPickerResponse } from '@react-native-documents/picker';
 import ImageResizer from '@bam.tech/react-native-image-resizer';
-import { IMAGE_IN_DISPLAY_SIZE, IMAGE_IMAGE_MARKER_SIZE } from '@the-dead-planet/nav-gauge-gears-route-story-common';
+import { FULL_SIZE_IMAGE_SIZE, MAP_THUMBNAIL_SIZE   } from '@the-dead-planet/nav-gauge-gears-route-story-common';
 import { getResizeDimensions } from '@the-dead-planet/nav-gauge-gears-route-story-common/src/file-parser';
 
 export interface MobileMarkerImageData {
@@ -55,8 +55,8 @@ export const cacheReducedImage = async (
     onError?: (error: Error) => void,
 ): Promise<{ fullSize?: string; thumbnail?: string; }> => {
     return Promise.all([
-        reduceSize(file.uri, IMAGE_IN_DISPLAY_SIZE),
-        reduceSize(file.uri, IMAGE_IMAGE_MARKER_SIZE),
+        reduceSize(file.uri, FULL_SIZE_IMAGE_SIZE),
+        reduceSize(file.uri, MAP_THUMBNAIL_SIZE  ),
     ])
         .then(([fullSize, thumbnail]) => ({ fullSize, thumbnail }))
         .catch((err) => {

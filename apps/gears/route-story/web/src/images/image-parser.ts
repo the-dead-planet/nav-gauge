@@ -1,7 +1,7 @@
 import maplibregl from "maplibre-gl";
 import EXIF from 'exif-js';
 import { ExifData } from '@apparatus';
-import { IMAGE_IN_DISPLAY_SIZE, IMAGE_IMAGE_MARKER_SIZE } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { FULL_SIZE_IMAGE_SIZE, MAP_THUMBNAIL_SIZE   } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { getExifError, getExifLngLat, LngLat } from "@tinker-chest";
 import { getResizeDimensions } from "@the-dead-planet/nav-gauge-gears-route-story-common/src/file-parser";
 
@@ -34,8 +34,8 @@ export const parseImage = async (
     try {
         // TODO: Only leave full size original ratio and add shape processing in the component - user can select what shapes they want for thumbnails and display
         [bitmap, thumbnailBitmap] = await Promise.all([
-            resizeImage(e.target?.result, { targetSize: IMAGE_IN_DISPLAY_SIZE }),
-            resizeImage(e.target?.result, { targetSize: IMAGE_IMAGE_MARKER_SIZE, shape }),
+            resizeImage(e.target?.result, { targetSize: FULL_SIZE_IMAGE_SIZE }),
+            resizeImage(e.target?.result, { targetSize: MAP_THUMBNAIL_SIZE  , shape }),
         ]);
     } catch (err) {
         console.error('Error resizing image', err);

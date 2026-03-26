@@ -1,6 +1,5 @@
 import { expect } from "chai";
-import { describe } from "mocha";
-import { Cartomancer } from "../../src/index.js";
+import { findThumbnailsWithinBuffer } from "../src/tinkers";
 import { GeoJson } from "@tinker-chest";
 
 const geojson: GeoJson = {
@@ -42,22 +41,26 @@ const geojson: GeoJson = {
     ],
 };
 
-describe("Cartomancer", () => {
-    describe("Features", () => {
-        it("should get closest feature", () => {
-            const closestFeature = Cartomancer.getClosestFeature(geojson, { lng: 99.123456, lat: 1.123456 });
-            const expected = geojson.features[2];
-
-            expect(closestFeature).to.deep.equal([expected.properties.id, expected]);
-        });
-    });
-
-    describe("Buffer", () => {
-        it("should get correct buffer in meters for a latitude and zoom", () => {
-            expect(Cartomancer.getBufferInMeters(52, 13)).to.be.equal(47);
-        });
-        it("should get correct buffer in meters for a latitude and zoom with added offset", () => {
-            expect(Cartomancer.getBufferInMeters(52, 18, 10)).to.be.equal(5);
+describe("Mobile route story gear", () => {
+    describe("Example test", () => {
+        it("should be equal 1", () => {
+            const features = findThumbnailsWithinBuffer([100.851959, 1.190170], 15, geojson, [
+                {
+                    id: 0,
+                    lngLat: { lng: 104.951959, lat: 1.360270 },
+                    featureId: 1,
+                    data: { fullSize: '', thumbnail: '', uri: '' },
+                    name: 'foo'
+                },
+                {
+                    id: 1,
+                    lngLat: { lng: 103.851959, lat: 1.850270 },
+                    featureId: 2,
+                    data: { fullSize: '', thumbnail: '', uri: '' },
+                    name: 'bar'
+                },
+            ])
+            expect(features).to.deep.equal([geojson.features[2]]);
         });
     });
 });
