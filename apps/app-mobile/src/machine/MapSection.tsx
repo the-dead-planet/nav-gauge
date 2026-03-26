@@ -1,12 +1,12 @@
 import { FC, useEffect, useMemo, useRef, useState } from "react";
+import { BehaviorSubject } from "rxjs";
 import { LayoutChangeEvent, PanResponder, StyleSheet } from "react-native";
 import { RecordingView, useViewRecorder } from "react-native-view-recorder";
 import { Camera, CameraRef, MapView, MapViewRef, UserLocation, UserLocationRef } from "@maplibre/maplibre-react-native";
 import { Cartomancer, useSubjectState, useStateWarden } from "@apparatus";
-import { MapTools } from "./map-tools/MapTools";
 import { MobileMap, PressEventFeature } from "@mobile-ui";
+import { MapTools } from "./map-tools/MapTools";
 import { MobileChronoLens } from "../chrono-lens";
-import { BehaviorSubject } from "rxjs";
 
 const styles = StyleSheet.create({
     viewRecorder: {
@@ -21,7 +21,9 @@ const styles = StyleSheet.create({
 const scrollEnabled$ = new BehaviorSubject(true);
 const onPressHandlers$ = new BehaviorSubject(new Map());
 const onLongPressHandlers$ = new BehaviorSubject(new Map());
-const onTouchMoveHandlers$ = new BehaviorSubject(new Map());
+const onPanResponderStartHandlers$ = new BehaviorSubject(new Map());
+const onPanResponderMoveHandlers$ = new BehaviorSubject(new Map());
+const onPanResponderEndHandlers$ = new BehaviorSubject(new Map());
 
 export const MapSection: FC = () => {
     const mapRef = useRef<MapViewRef>(null);
@@ -39,7 +41,9 @@ export const MapSection: FC = () => {
         scrollEnabled$,
         onPressHandlers$,
         onLongPressHandlers$,
-        onTouchMoveHandlers$,
+        onPanResponderStartHandlers$,
+        onPanResponderMoveHandlers$,
+        onPanResponderEndHandlers$,
     }), [mapSize]);
     const { cartomancer, chronoLens, signaliumBureau } = useStateWarden();
     const lens = chronoLens as MobileChronoLens;
@@ -52,7 +56,9 @@ export const MapSection: FC = () => {
     const [overlays] = useSubjectState(cartomancer.overlays$);
     const [onPressHandlers] = useSubjectState(map.onPressHandlers$);
     const [onLongPressHandlers] = useSubjectState(map.onLongPressHandlers$);
-    const [onTouchMoveHandlers] = useSubjectState(map.onTouchMoveHandlers$);
+    const [onPanResponderStartHandlers] = useSubjectState(map.onPanResponderStartHandlers$);
+    const [onPanResponderMoveHandlers] = useSubjectState(map.onPanResponderMoveHandlers$);
+    const [onPanResponderEndHandlers] = useSubjectState(map.onPanResponderEndHandlers$);
 
     useEffect(() => {
         setIsInitialised(true);
@@ -76,23 +82,36 @@ export const MapSection: FC = () => {
         setMapSize({ width, height })
     };
 
-    const panResponder = PanResponder.create({
+    const panResponder = useMemo(() => PanResponder.create({
         onStartShouldSetPanResponder: () => true,
-        onPanResponderMove: async (event) => {
-            const { locationX, locationY } = event.nativeEvent;
-
+        onPanResponderStart: async (event) => {
             if (map.map.current) {
-                const lngLat = await map.map.current.getCoordinateFromView([locationX, locationY]);
+                const lngLat = await map.map.current.getCoordinateFromView([event.nativeEvent.locationX, event.nativeEvent.locationY]);
 
-                for (const [_handlerId, handler] of onTouchMoveHandlers) {
+                for (const [_handlerId, handler] of onPanResponderStartHandlers) {
                     handler(lngLat, event);
                 }
             }
         },
-        onPanResponderEnd: (_event) => {
-            map.scrollEnabled$.next(true);
+        onPanResponderMove: async (event) => {
+            if (map.map.current) {
+                const lngLat = await map.map.current.getCoordinateFromView([event.nativeEvent.locationX, event.nativeEvent.locationY]);
+
+                for (const [_handlerId, handler] of onPanResponderMoveHandlers) {
+                    handler(lngLat, event);
+                }
+            }
+        },
+        onPanResponderEnd: async (event) => {
+            if (map.map.current) {
+                const lngLat = await map.map.current.getCoordinateFromView([event.nativeEvent.locationX, event.nativeEvent.locationY]);
+
+                for (const [_handlerId, handler] of onPanResponderEndHandlers) {
+                    handler(lngLat, event);
+                }
+            }
         }
-    });
+    }), [map, onPanResponderStartHandlers, onPanResponderMoveHandlers, onPanResponderEndHandlers]);
 
     return (
         <MapTools map={map}>

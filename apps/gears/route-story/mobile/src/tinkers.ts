@@ -5,26 +5,24 @@ import { THUMBNAIL_IMAGE_SIZE } from "@the-dead-planet/nav-gauge-gears-route-sto
 import { FeatureProperties, GeoJson } from "@tinker-chest";
 
 /**
- * Finds
- * @param coordinate 
- * @param zoom 
- * @param geojson 
- * @param images 
- * @returns 
+ * Finds thumbnails in at given (touch) coordinate considering a buffer in pixels.
  */
 export const findThumbnailsWithinBuffer = (
-    [lng, lat]: [number, number],
+    [lng, lat]: number[],
     zoom: number,
-    geojson: GeoJson,
-    images: LoadedMobileImageData[]
+    images: LoadedMobileImageData[],
+    geojson: GeoJson | undefined,
+    { devicePixelRatio }: { devicePixelRatio: number; }
 ): GeoJSON.Feature<GeoJSON.Point, FeatureProperties>[] => {
-    const buffer = Cartomancer.getBufferInMeters(lat, zoom, Math.round(THUMBNAIL_IMAGE_SIZE / 2));
-    const imageFeatures = images
+    if (!geojson) {
+        return [];
+    }
+    const buffer = Cartomancer.getBufferInMeters(lat, zoom, THUMBNAIL_IMAGE_SIZE / 2 / devicePixelRatio);
+
+    return images
         .reduce<GeoJSON.Feature<GeoJSON.Point, FeatureProperties>[]>((acc, image) => {
-            const f = geojson?.features.find((f) => f.properties.id === image.featureId);
+            const f = geojson.features.find((f) => f.properties.id === image.featureId);
             return f ? acc.concat([f]) : acc;
         }, [])
         .filter((f) => distance([lng, lat], f.geometry.coordinates, { units: 'meters' }) <= buffer);
-
-    return imageFeatures;
 };

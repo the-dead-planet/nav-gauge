@@ -44,7 +44,7 @@ const geojson: GeoJson = {
 describe("Mobile route story gear", () => {
     describe("Example test", () => {
         it("should be equal 1", () => {
-            const features = findThumbnailsWithinBuffer([100.851959, 1.190170], 15, geojson, [
+            const features = findThumbnailsWithinBuffer([100.851959, 1.190170], 15, [
                 {
                     id: 0,
                     lngLat: { lng: 104.951959, lat: 1.360270 },
@@ -59,7 +59,7 @@ describe("Mobile route story gear", () => {
                     data: { fullSize: '', thumbnail: '', uri: '' },
                     name: 'bar'
                 },
-            ])
+            ], geojson, { devicePixelRatio: 1 });
             expect(features).to.deep.equal([geojson.features[2]]);
         });
     });

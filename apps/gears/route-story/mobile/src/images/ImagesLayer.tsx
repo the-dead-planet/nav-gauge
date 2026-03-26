@@ -11,6 +11,9 @@ import {
     imageSourceIds,
     draggingImageId$,
     THUMBNAIL_IMAGE_SIZE,
+    DRAGGED_IMAGE_ID,
+    IMAGE_PROPERTY,
+    IMAGE_THUMBNAIL_PROPERTY,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMap } from "@mobile-ui";
 import { DocumentPickerResponse } from "@react-native-documents/picker";
@@ -18,6 +21,8 @@ import { MobileMarkerImageData } from "./image-parser";
 import { useLoadedMobileImages } from "./useLoadedMobileImages";
 import { useImageInDisplay } from "./useImageInDisplay";
 import { FeatureProperties } from "@tinker-chest";
+import { findThumbnailsWithinBuffer } from "../tinkers";
+import { PixelRatio } from "react-native";
 
 export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({
     map,
@@ -30,7 +35,7 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<M
     const [{ geojson }] = useSubjectState(data$);
     const [images] = useSubjectState(images$);
     const loadedImages = useLoadedMobileImages(images);
-    const [highlightIdsBySourceId, setHighlightIdsBySourceId] = useState<Map<string, Set<string>>>(new Map());
+    const [highlightIdsBySourceId, setHighlightIdsBySourceId] = useState<Map<string, Set<string | number>>>(new Map());
     const [draggingImageId, setDraggingImageId] = useSubjectState(draggingImageId$);
 
     const sourceDataGeojson = useMemo(
@@ -52,33 +57,75 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<M
     );
 
     useEffect(() => {
-        const id = 'route-story-images-layer';
-        const nextPressHandlers = new Map(map.onLongPressHandlers$.value);
-        nextPressHandlers.set(id, async (eventFeature) => {
-            const c = [eventFeature.geometry.coordinates[0], eventFeature.geometry.coordinates[1]];
-            const buffer = Cartomancer.getBufferInMeters(c[1], cartomancer.zoom$.value, Math.round(THUMBNAIL_IMAGE_SIZE / 2));
-            const imageFeatures = loadedImages
-                .reduce<GeoJSON.Feature<GeoJSON.Point, FeatureProperties>[]>((acc, image) => {
-                    const f = geojson?.features.find((f) => f.properties.id === image.featureId);
-                    return f ? acc.concat([f]) : acc;
-                }, [])
-                .filter((f) => distance(c, f.geometry.coordinates, { units: 'meters' }) <= buffer);
-            const imageFeature = imageFeatures[0];
+        const id = 'route-story-thumbnails-layer';
 
+        // Start
+        // TODO: Test if long press is better
+        const nextPanResponderStartHandlers = new Map(map.onPanResponderStartHandlers$.value);
+        nextPanResponderStartHandlers.set(id, async (lngLat) => {
+            const imageFeature = findThumbnailsWithinBuffer(lngLat, cartomancer.zoom$.value, loadedImages, geojson, { devicePixelRatio: PixelRatio.get() })[0];
             if (imageFeature) {
                 map.scrollEnabled$.next(false);
                 setDraggingImageId(imageFeature.properties.id);
             }
         });
+        map.onPanResponderStartHandlers$.next(nextPanResponderStartHandlers);
 
-        map.onLongPressHandlers$.next(nextPressHandlers);
+        // Move
+        const nextPanResponderMoveHandlers = new Map(map.onPanResponderMoveHandlers$.value);
+        nextPanResponderMoveHandlers.set(id, async (lngLat) => {
+            const id = draggingImageId$.value;
+            if (!geojson || id === null) {
+                return;
+            }
+            const [_id, feature] = Cartomancer.getClosestFeature(geojson, { lng: lngLat[0], lat: lngLat[1] });
+            const image = loadedImages.find((image) => image.id === draggingImageId);
+            if (!image) {
+                return;
+            }
+            const updated = {
+                ...sourceDataGeojson,
+                features: sourceDataGeojson.features.concat([{
+                    type: 'Feature',
+                    geometry: feature.geometry,
+                    properties: {
+                        imageId: DRAGGED_IMAGE_ID,
+                        [IMAGE_PROPERTY]: getIconImageId(image),
+                        [IMAGE_THUMBNAIL_PROPERTY]: getIconImageId(image, { thumbnail: true }),
+                    }
+                }])
+            };
+            // TODO:
+
+            setHighlightIdsBySourceId(new Map([[imageSourceIds.thumbnails, new Set([id])]]));
+        });
+        map.onPanResponderMoveHandlers$.next(nextPanResponderMoveHandlers);
+
+        // End
+        const nextPanResponderEndHandlers = new Map(map.onPanResponderEndHandlers$.value);
+        nextPanResponderEndHandlers.set(id, async (_lngLat) => {
+            map.scrollEnabled$.next(true);
+            if (draggingImageId$.value !== null) {
+                setHighlightIdsBySourceId(new Map());
+                setDraggingImageId(null);
+            }
+        });
+        map.onPanResponderEndHandlers$.next(nextPanResponderEndHandlers);
 
         return () => {
-            const nextPressHandlers = new Map(map.onLongPressHandlers$.value);
-            nextPressHandlers.delete(id);
-            map.onLongPressHandlers$.next(nextPressHandlers);
+            const nextPanResponderStartHandlers = new Map(map.onPanResponderStartHandlers$.value);
+            nextPanResponderStartHandlers.delete(id);
+            map.onPanResponderStartHandlers$.next(nextPanResponderStartHandlers);
+
+            const nextPanResponderMoveHandlers = new Map(map.onPanResponderMoveHandlers$.value);
+            nextPanResponderMoveHandlers.delete(id);
+            map.onPanResponderMoveHandlers$.next(nextPanResponderMoveHandlers);
+
+            const nextPanResponderEndHandlers = new Map(map.onPanResponderEndHandlers$.value);
+            nextPanResponderEndHandlers.delete(id);
+            map.onPanResponderEndHandlers$.next(nextPanResponderEndHandlers);
         };
-    }, [map, loadedImages]);
+    }, [map, loadedImages, geojson]);
 
     const imageInDisplayIconSize = useImageInDisplay(map, playerOperator);
 
