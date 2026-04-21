@@ -23,7 +23,7 @@ export const RouteLayerFitBounds: FC<ToolProps<maplibregl.Map> & RouteFitBoundsP
 
     useEffect(() => {
         handleFitBounds();
-    }, [boundingBox]);
+    }, [boundingBox?.[0], boundingBox?.[1], boundingBox?.[2], boundingBox?.[3]]);
 
     return (
         <button

@@ -15,7 +15,10 @@ export interface MobileMap {
     userLocation: React.RefObject<UserLocationRef | null>;
     width: number;
     height: number;
-    onPressHandlers$: BehaviorSubject<Map<string, (feature: PressEventFeature) => void>>
-    onLongPressHandlers$: BehaviorSubject<Map<string, (feature: PressEventFeature) => void>>
-    onTouchMoveHandlers$: BehaviorSubject<Map<string, (event: GestureResponderEvent) => void>>
+    scrollEnabled$: BehaviorSubject<boolean>
+    onPressHandlers$: BehaviorSubject<Map<string, (feature: PressEventFeature) => Promise<void>>>
+    onLongPressHandlers$: BehaviorSubject<Map<string, (feature: PressEventFeature) => Promise<void>>>
+    onPanResponderStartHandlers$: BehaviorSubject<Map<string, (lngLat: number[], event: GestureResponderEvent) => Promise<void>>>
+    onPanResponderMoveHandlers$: BehaviorSubject<Map<string, (lngLat: number[], event: GestureResponderEvent) => Promise<void>>>
+    onPanResponderEndHandlers$: BehaviorSubject<Map<string, (lngLat: number[], event: GestureResponderEvent) => Promise<void>>>
 }

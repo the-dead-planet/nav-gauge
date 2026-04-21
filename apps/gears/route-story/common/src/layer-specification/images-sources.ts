@@ -1,4 +1,4 @@
-import { LoadedImageData } from "@apparatus";
+import { FeatureStateProps, LoadedImageData } from "@apparatus";
 import { GeoJson } from "@tinker-chest";
 import { getIconImageId } from "../tinkers";
 
@@ -12,6 +12,8 @@ export interface ImageFeatureProperties {
     imageId: number;
     [IMAGE_PROPERTY]: string;
     [IMAGE_THUMBNAIL_PROPERTY]: string;
+    [FeatureStateProps.Highlight]?: boolean;
+    [FeatureStateProps.Dragging]?: boolean;
 }
 
 export function getImageSource<TImageData>(
@@ -25,6 +27,7 @@ export function getImageSource<TImageData>(
             if (feature) {
                 acc.push({
                     type: 'Feature',
+                    id: image.id,
                     geometry: feature.geometry,
                     properties: {
                         imageId: image.id,

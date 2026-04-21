@@ -1,6 +1,7 @@
-export const IMAGE_MARKER_SIZE = 50;
-export const IMAGE_THUMBNAIL_SIZE = 3 * IMAGE_MARKER_SIZE;
-export const IMAGE_IN_DISPLAY_SIZE = 800;
+export const THUMBNAIL_IMAGE_SIZE = 50;
+export const FULL_SIZE_IMAGE_SIZE = 800;
+
+export const MAP_THUMBNAIL_SIZE = 3 * THUMBNAIL_IMAGE_SIZE;
 
 export const getImageIconSize = (
     imageSize: number,

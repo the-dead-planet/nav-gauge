@@ -4,9 +4,10 @@ import turfBearing from "@turf/bearing";
 import turfDistance from "@turf/distance";
 import { point as turfPoint, lineString as turfLine } from "@turf/helpers";
 import turfLength from "@turf/length";
-import { CurrentPointData, LoadedImageData } from "@apparatus";
+import { CurrentPointData, LoadedImageData, MarkerImage } from "@apparatus";
 import { emptyCollection, formatTimeMsAsStandard, GeoJson } from "@tinker-chest";
 import { RouteTimes } from "./model";
+import { BehaviorSubject } from "rxjs";
 
 export const getRouteSourceData = (
     { showRouteLine, showRoutePoints }: { showRouteLine: boolean; showRoutePoints: boolean },
@@ -155,4 +156,12 @@ export function getIconImageId<TImageData>(
     { thumbnail }: { thumbnail?: boolean } = {}
 ): string {
     return `image-${imageData.id}${thumbnail ? '-thumbnail' : ''}`;
+}
+
+export function updateImageFeatureId<TImageData>(
+    images$: BehaviorSubject<MarkerImage<TImageData>[]>,
+    imageId: number,
+    featureId: number
+) {
+    images$.next(images$.value.map((im) => im.id === imageId ? { ...im, featureId } : im))
 }

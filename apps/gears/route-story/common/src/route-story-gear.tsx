@@ -151,7 +151,7 @@ export abstract class RouteStoryGear<TMap, TFile extends { name?: string | null;
                 id: notificationId,
                 text: (err as Error).message ?? 'Could not fit bounds to route',
                 error: err as Error,
-            })
+            });
         }
     };
 
