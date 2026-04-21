@@ -1,6 +1,6 @@
 import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { BehaviorSubject } from "rxjs";
-import { LayoutChangeEvent, PanResponder, StyleSheet } from "react-native";
+import { LayoutChangeEvent, StyleSheet } from "react-native";
 import { RecordingView, useViewRecorder } from "react-native-view-recorder";
 import { Camera, CameraRef, MapView, MapViewRef, UserLocation, UserLocationRef } from "@maplibre/maplibre-react-native";
 import { Cartomancer, useSubjectState, useStateWarden } from "@apparatus";
@@ -56,9 +56,6 @@ export const MapSection: FC = () => {
     const [overlays] = useSubjectState(cartomancer.overlays$);
     const [onPressHandlers] = useSubjectState(map.onPressHandlers$);
     const [onLongPressHandlers] = useSubjectState(map.onLongPressHandlers$);
-    const [onPanResponderStartHandlers] = useSubjectState(map.onPanResponderStartHandlers$);
-    const [onPanResponderMoveHandlers] = useSubjectState(map.onPanResponderMoveHandlers$);
-    const [onPanResponderEndHandlers] = useSubjectState(map.onPanResponderEndHandlers$);
 
     useEffect(() => {
         setIsInitialised(true);
@@ -82,37 +79,6 @@ export const MapSection: FC = () => {
         setMapSize({ width, height })
     };
 
-    const panResponder = useMemo(() => PanResponder.create({
-        onStartShouldSetPanResponder: () => true,
-        onPanResponderStart: async (event) => {
-            if (map.map.current) {
-                const lngLat = await map.map.current.getCoordinateFromView([event.nativeEvent.locationX, event.nativeEvent.locationY]);
-
-                for (const [_handlerId, handler] of onPanResponderStartHandlers) {
-                    handler(lngLat, event);
-                }
-            }
-        },
-        onPanResponderMove: async (event) => {
-            if (map.map.current) {
-                const lngLat = await map.map.current.getCoordinateFromView([event.nativeEvent.locationX, event.nativeEvent.locationY]);
-
-                for (const [_handlerId, handler] of onPanResponderMoveHandlers) {
-                    handler(lngLat, event);
-                }
-            }
-        },
-        onPanResponderEnd: async (event) => {
-            if (map.map.current) {
-                const lngLat = await map.map.current.getCoordinateFromView([event.nativeEvent.locationX, event.nativeEvent.locationY]);
-
-                for (const [_handlerId, handler] of onPanResponderEndHandlers) {
-                    handler(lngLat, event);
-                }
-            }
-        }
-    }), [map, onPanResponderStartHandlers, onPanResponderMoveHandlers, onPanResponderEndHandlers]);
-
     return (
         <MapTools map={map}>
             <RecordingView
@@ -120,7 +86,6 @@ export const MapSection: FC = () => {
                 sessionId={recorder.sessionId}
                 style={styles.viewRecorder}
                 onLayout={handleLayoutChange}
-                {...panResponder.panHandlers}
             >
                 <MapView
                     ref={mapRef}

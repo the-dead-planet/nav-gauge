@@ -1,7 +1,7 @@
 import { FeatureStateProps } from "@apparatus";
 import { DRAGGED_IMAGE_ID, IMAGE_PROPERTY, IMAGE_THUMBNAIL_PROPERTY } from "./images-sources";
 import { getImageIconSize, FULL_SIZE_IMAGE_SIZE, THUMBNAIL_IMAGE_SIZE, MAP_THUMBNAIL_SIZE } from "../images";
-import { ComparisonProperty, GetProperty, CaseFeatureStateCondition } from "./model";
+import { ComparisonProperty, GetProperty, CaseFeatureStateCondition, CaseFeatureStateOrPropertyCondition } from "./model";
 import { BehaviorSubject } from "rxjs";
 
 export const imageSourceIds = {
@@ -25,21 +25,33 @@ const thumbnailsFilter: ComparisonProperty = ['!=', ['get', 'imageId'], DRAGGED_
 const thumbnailIconImage: GetProperty = ['get', IMAGE_THUMBNAIL_PROPERTY];
 const thumbnailIconSize: number = getImageIconSize(MAP_THUMBNAIL_SIZE, THUMBNAIL_IMAGE_SIZE);
 const dragOpacity = .4;
-const thumbnailDraggingOpacity: CaseFeatureStateCondition = [
+const thumbnailDraggingOpacity: CaseFeatureStateOrPropertyCondition = [
     'case',
-    ["==", ["feature-state", FeatureStateProps.Dragging], true],
+    [
+        'any',
+        ["==", ["feature-state", FeatureStateProps.Dragging], true],
+        ["==", ["get", FeatureStateProps.Dragging], true]
+    ],
     dragOpacity,
     1
 ];
-const thumbnailsOutlineStrokeWidth: CaseFeatureStateCondition = [
+const thumbnailsOutlineStrokeWidth: CaseFeatureStateOrPropertyCondition = [
     'case',
-    ["==", ["feature-state", FeatureStateProps.Highlight], true],
+    [
+        'any',
+        ["==", ["feature-state", FeatureStateProps.Highlight], true],
+        ['==', ['get', FeatureStateProps.Highlight], true]
+    ],
     3,
     2
 ];
-const thumbnailsOutlineStrokeColor: CaseFeatureStateCondition = [
+const thumbnailsOutlineStrokeColor: CaseFeatureStateOrPropertyCondition = [
     'case',
-    ["==", ["feature-state", FeatureStateProps.Highlight], true],
+    [
+        'any',
+        ["==", ["feature-state", FeatureStateProps.Highlight], true],
+        ['==', ['get', FeatureStateProps.Highlight], true]
+    ],
     'green',
     'white'
 ];

@@ -13,16 +13,22 @@ export const findThumbnailsWithinBuffer = (
     images: LoadedMobileImageData[],
     geojson: GeoJson | undefined,
     { devicePixelRatio }: { devicePixelRatio: number; }
-): GeoJSON.Feature<GeoJSON.Point, FeatureProperties>[] => {
+): GeoJSON.Feature<GeoJSON.Point, FeatureProperties & { imageId: number; }>[] => {
     if (!geojson) {
         return [];
     }
     const buffer = Cartomancer.getBufferInMeters(lat, zoom, THUMBNAIL_IMAGE_SIZE / 2 / devicePixelRatio);
 
     return images
-        .reduce<GeoJSON.Feature<GeoJSON.Point, FeatureProperties>[]>((acc, image) => {
+        .reduce<GeoJSON.Feature<GeoJSON.Point, FeatureProperties & { imageId: number; }>[]>((acc, image) => {
             const f = geojson.features.find((f) => f.properties.id === image.featureId);
-            return f ? acc.concat([f]) : acc;
+            return f ? acc.concat([{
+                ...f,
+                properties: {
+                    ...f.properties,
+                    imageId: image.id,
+                }
+            }]) : acc;
         }, [])
         .filter((f) => distance([lng, lat], f.geometry.coordinates, { units: 'meters' }) <= buffer);
 };

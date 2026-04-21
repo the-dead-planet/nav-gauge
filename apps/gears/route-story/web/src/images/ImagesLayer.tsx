@@ -4,7 +4,6 @@ import { OverlayComponentProps, Cartomancer, FeatureStateProps, useSubjectState,
 import { MapLayerData, MapSourceAndLayers, } from "@web-ui";
 import { useLoadedWebImages } from "../hooks/useLoadedWebImages";
 import { useImageInDisplay } from "./useImageInDisplay";
-import { updateImageFeatureId } from "../tinkers";
 import { MapImageData, useRouteLayerImages } from "../hooks";
 import {
     RouteToolProps,
@@ -16,6 +15,7 @@ import {
     DRAGGED_IMAGE_ID,
     layerOrder,
     draggingImageId$,
+    updateImageFeatureId,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { WebMarkerImageData } from "./image-parser";
 import { getImagesLayers } from "./images-layers";
@@ -131,6 +131,7 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
                 ...sourceDataGeojson,
                 features: sourceDataGeojson.features.concat([{
                     type: 'Feature',
+                    id: -1,
                     geometry: feature.geometry,
                     properties: {
                         imageId: DRAGGED_IMAGE_ID,
@@ -152,7 +153,6 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
                 return;
             }
             updateImageFeatureId(images$, image.id, id);
-
         };
 
         map.dragPan.disable();

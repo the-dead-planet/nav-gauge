@@ -38,10 +38,12 @@ export const RouteLayerFitBounds: FC<ToolProps<MobileMap> & RouteFitBoundsProps<
 
     useEffect(() => {
         handleFitBounds();
-    }, [boundingBox]);
+    }, [boundingBox?.[0], boundingBox?.[1], boundingBox?.[2], boundingBox?.[3]]);
 
     return (
-        <Pressable style={styles.button} onPress={handleFitBounds}>
+        <Pressable style={styles.button} onPress={() => {
+            handleFitBounds()
+        }}>
             <Text style={styles.text}>Fit</Text>
         </Pressable>
     );

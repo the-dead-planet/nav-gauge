@@ -1,5 +1,5 @@
 export type GetProperty = ['get', string];
-export type ComparisonProperty = ['==' | '!=', GetProperty, string | number];
+export type ComparisonProperty = ['==' | '!=', GetProperty, string | number | boolean];
 export type EqualBooleanFeatureState = ['==', ['feature-state', string], boolean];
 
 export type CaseFeatureStateSingleCondition = [
@@ -15,6 +15,19 @@ export type CaseFeatureStateDoubleCondition = [
     number | string
 ];
 
+export type CaseFeatureStateOrPropertySingleCondition = [
+    'case',
+    ['any', EqualBooleanFeatureState, ComparisonProperty], number | string,
+    number | string
+];
+
+export type CaseFeatureStateOrPropertyDoubleCondition = [
+    'case',
+    ['any', EqualBooleanFeatureState, ComparisonProperty], number | string,
+    ['any', EqualBooleanFeatureState, ComparisonProperty], number | string,
+    number | string
+];
+
 export type GetPropertyCaseCondition = [
     'case',
     ComparisonProperty,
@@ -25,3 +38,4 @@ export type GetPropertyCaseCondition = [
 export type LineCap = "round";
 
 export type CaseFeatureStateCondition = CaseFeatureStateSingleCondition | CaseFeatureStateDoubleCondition;
+export type CaseFeatureStateOrPropertyCondition = CaseFeatureStateOrPropertySingleCondition | CaseFeatureStateOrPropertyDoubleCondition;
