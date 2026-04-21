@@ -62,9 +62,9 @@ export class Cartomancer<TMap> {
     };
 
     /**
-     * For mouse and touch events
+     * For mouse and touch events, in pixels
      */
-    public static interactionBuffer = 4;
+    public static interactionBufferPx = 4;
 
     public isInitialised$ = new BehaviorSubject(false);
     public isStyleLoaded$ = new BehaviorSubject(false);
@@ -165,4 +165,27 @@ export class Cartomancer<TMap> {
 
         return [feature.properties.id, feature];
     };
+
+    private static EARTH_RADIUS = 6378137;
+
+    private static metersPerPixel(latitude: number, zoom: number) {
+        return (
+            Math.cos((latitude * Math.PI) / 180) *
+            2 *
+            Math.PI *
+            this.EARTH_RADIUS /
+            (256 * Math.pow(2, zoom))
+        );
+    }
+
+    /**
+     * Converts pixel buffer to meters.
+     * @param lat Latitude of the location.
+     * @param zoom Current map zoom.
+     * @param bufferPx Will be added to the main interaction buffer.
+     * @returns 
+     */
+    public static getBufferInMeters(lat: number, zoom: number, bufferPx = 0) {
+        return Math.round(this.metersPerPixel(lat, zoom) * (bufferPx + this.interactionBufferPx));
+    }
 }

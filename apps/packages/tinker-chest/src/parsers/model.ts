@@ -15,6 +15,7 @@ export interface ParsingResultWithError {
 export interface FeatureProperties {
     id: number;
     time: string;
+    imageId?: number;
 }
 
 export enum KnownErrorCauses {
