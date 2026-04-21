@@ -35,6 +35,7 @@ const geojson: GeoJson = {
             },
             properties: {
                 id: 2,
+                imageId: 1,
                 time: "2026-03-26T07:16:34.786Z"
             }
         },
