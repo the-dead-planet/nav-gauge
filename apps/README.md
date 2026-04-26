@@ -88,28 +88,33 @@ More info in mobile app's [README](/apps/app-mobile/app/README.md).
 
 ### Unit tests
 
-```
+```bash
 yarn test:all
 ```
 
-```
+```bash
 yarn test:web
 ```
 
-```
+```bash
 yarn test:mobile
+```
+
+```bash
+yarn test:gear <gear-name>
+yarn test:gear route-story
 ```
 
 ### E2E
 
 #### Web with Cypress
 
-```
+```bash
 test:e2e:web
 ```
 
 #### Mobile with Jest
 
-```
+```bash
 test:e2e:mobile
 ```
