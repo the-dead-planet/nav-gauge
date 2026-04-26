@@ -5,11 +5,12 @@
         "esModuleInterop": true,
         "target": "ESNext",
         "module": "ESNext",
-        "moduleResolution": "node",
+        "moduleResolution": "bundler",
         "resolveJsonModule": true,
         "sourceMap": true,
         "skipLibCheck": true,
         "isolatedModules": true,
+        "rootDir": "./",
         "lib": [
             "ESNext"
         ],

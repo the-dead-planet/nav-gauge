@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AETHERIC_MAP_EDITOR_V.2.4</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-variant": "#e2e3e1",
+                    "secondary-container": "#ffbf00",
+                    "inverse-surface": "#2f3130",
+                    "on-primary-fixed": "#002022",
+                    "tertiary-fixed": "#e1e2e6",
+                    "secondary": "#795900",
+                    "on-tertiary-container": "#5c5f62",
+                    "tertiary": "#5c5f62",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed-variant": "#5c4300",
+                    "on-surface": "#1a1c1b",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "background": "#f9f9f7",
+                    "primary-fixed": "#7df4ff",
+                    "primary-container": "#00f0ff",
+                    "on-primary-container": "#006970",
+                    "on-primary-fixed-variant": "#004f54",
+                    "on-error-container": "#93000a",
+                    "surface-container-highest": "#e2e3e1",
+                    "on-secondary-container": "#6d5000",
+                    "tertiary-container": "#d7d9dd",
+                    "surface-bright": "#f9f9f7",
+                    "outline-variant": "#b9cacb",
+                    "surface-container": "#eeeeec",
+                    "outline": "#6a7a7b",
+                    "inverse-primary": "#00dbe9",
+                    "tertiary-fixed-dim": "#c5c6ca",
+                    "secondary-fixed": "#ffdfa0",
+                    "on-tertiary-fixed-variant": "#44474a",
+                    "primary-fixed-dim": "#00dbe9",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-fixed": "#191c1f",
+                    "secondary-fixed-dim": "#fbbc00",
+                    "error-container": "#ffdad6",
+                    "surface-container-high": "#e8e8e6",
+                    "on-error": "#ffffff",
+                    "surface": "#f9f9f7",
+                    "on-background": "#1a1c1b",
+                    "primary": "#006970",
+                    "on-tertiary": "#ffffff",
+                    "surface-tint": "#006970",
+                    "on-surface-variant": "#3b494b",
+                    "inverse-on-surface": "#f1f1ef",
+                    "surface-container-low": "#f4f4f2",
+                    "surface-dim": "#dadad8",
+                    "on-secondary-fixed": "#261a00"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "mechanical-offset": "8px",
+                    "container-max": "1280px",
+                    "unit": "4px",
+                    "margin": "32px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Space Grotesk"],
+                    "title-sm": ["Space Grotesk"],
+                    "label-caps": ["Space Grotesk"],
+                    "display-lg": ["Space Grotesk"],
+                    "mono-data": ["Space Grotesk"],
+                    "body-rg": ["Space Grotesk"]
+            },
+            "fontSize": {
+                    "headline-md": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "title-sm": ["20px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "mono-data": ["14px", {"lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                    "body-rg": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glow-cyan { text-shadow: 0 0 8px rgba(0, 240, 255, 0.5); }
+        .glow-amber { text-shadow: 0 0 8px rgba(245, 158, 11, 0.5); }
+        .parchment-texture { background-image: radial-gradient(#e2e3e1 1px, transparent 1px); background-size: 20px 20px; }
+        .blueprint-bg { background-image: linear-gradient(rgba(0,105,112,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,105,112,0.05) 1px, transparent 1px); background-size: 40px 40px; }
+        .mechanical-border { box-shadow: 2px 2px 0 0 #2f3130; }
+        .holographic-panel { backdrop-filter: blur(12px); border: 1px solid rgba(0, 240, 255, 0.2); }
+        .scanline { background: linear-gradient(to bottom, transparent 50%, rgba(0, 240, 255, 0.05) 50%); background-size: 100% 4px; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background font-body-rg text-on-background h-screen overflow-hidden flex flex-col parchment-texture">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-12 bg-stone-100/80 dark:bg-stone-950/90 backdrop-blur-2xl border-b-2 border-stone-800 dark:border-stone-700 shadow-sm">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-cyan-500" data-icon="history_edu">history_edu</span>
+<h1 class="font-['Space_Grotesk'] uppercase tracking-widest font-bold text-xs text-stone-900 dark:text-stone-100">AETHERIC_MAP_EDITOR_V.2.4</h1>
+</div>
+<div class="flex items-center gap-8">
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-cyan-500 font-black underline decoration-double font-['Space_Grotesk'] uppercase tracking-widest text-[10px]" href="#">EDITOR</a>
+<a class="text-stone-500 hover:text-amber-500 transition-colors font-['Space_Grotesk'] uppercase tracking-widest text-[10px]" href="#">ARCHIVE</a>
+<a class="text-stone-500 hover:text-amber-500 transition-colors font-['Space_Grotesk'] uppercase tracking-widest text-[10px]" href="#">CHRONICLE</a>
+</nav>
+<button class="bg-primary-container text-on-primary-container px-3 py-1 font-['Space_Grotesk'] uppercase font-bold text-[10px] mechanical-border hover:bg-secondary-container transition-all active:scale-95">
+                SYNC_CHRONOS
+            </button>
+</div>
+</header>
+<div class="flex flex-1 pt-12 pb-[90px] overflow-hidden">
+<!-- NavigationDrawer (Left Sidebar) -->
+<aside class="fixed left-0 top-12 bottom-[90px] w-10 flex flex-col items-center py-4 gap-2 z-40 overflow-hidden bg-stone-200 dark:bg-stone-900 border-r-2 border-stone-800 dark:border-stone-700 shadow-[2px_0_0_0_rgba(0,240,255,0.2)]">
+<div class="flex flex-col gap-2 w-full px-0">
+<button class="w-10 h-10 flex items-center justify-center bg-cyan-500 text-black shadow-[inset_2px_2px_0_rgba(0,0,0,0.3)] transition-all duration-100">
+<span class="material-symbols-outlined text-[18px]" data-icon="rebase_edit">rebase_edit</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center text-stone-600 grayscale hover:grayscale-0 hover:bg-stone-300 transition-all duration-100">
+<span class="material-symbols-outlined text-[18px]" data-icon="explore">explore</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center text-stone-600 grayscale hover:grayscale-0 hover:bg-stone-300 transition-all duration-100">
+<span class="material-symbols-outlined text-[18px]" data-icon="hourglass_empty">hourglass_empty</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center text-stone-600 grayscale hover:grayscale-0 hover:bg-stone-300 transition-all duration-100">
+<span class="material-symbols-outlined text-[18px]" data-icon="layers">layers</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center text-stone-600 grayscale hover:grayscale-0 hover:bg-stone-300 transition-all duration-100">
+<span class="material-symbols-outlined text-[18px]" data-icon="terminal">terminal</span>
+</button>
+</div>
+<div class="mt-auto flex flex-col items-center gap-4 py-4">
+<div class="w-[2px] h-12 bg-stone-400 opacity-30"></div>
+<span class="material-symbols-outlined text-stone-500 text-sm rotate-90" data-icon="settings">settings</span>
+</div>
+</aside>
+<!-- Main View (Map) -->
+<main class="flex-1 ml-10 mr-[300px] relative blueprint-bg overflow-hidden">
+<!-- Map Container -->
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-700" data-alt="Detailed vintage-style topographical map of London with intricate pen-drawn streets, glowing cyan digital overlays, and copper gear illustrations" data-location="London" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGa_QAqtF7Zb5y4p34YrjrK-PLtMg3-8hPpYk1VNpjlvwGga4OvUi6UxbbHwtkkpQN5vb3Q2X5fvoidxkLKblLt2e3n_a4PvSoidqoKTEfM3_h2L64HVOWAu209pX3HV5leQfJv-55jt4B5G_Tm3YNceLIfducpQUg7THWWP2k_pTqg_oIkfHJtEBD_BvaRiG7F7eObyNsi4HhthuPt40AMcnY2x2wP7z0kalzRZTQViYDf0dKyPzZRvd8kxzVyuBprCNGzqcs7Vse"/>
+</div>
+<!-- Route Overlay -->
+<div class="absolute inset-0 pointer-events-none z-10 p-12">
+<svg class="opacity-80" height="100%" width="100%">
+<path d="M100 500 L300 400 L450 450 L700 200" fill="none" stroke="#00f0ff" stroke-dasharray="10,5" stroke-width="3"></path>
+<circle class="animate-pulse" cx="100" cy="500" fill="#ffbf00" r="6"></circle>
+<circle cx="700" cy="200" fill="#00f0ff" r="8"></circle>
+</svg>
+</div>
+<!-- HUD Floating Panels -->
+<div class="absolute top-8 left-8 z-20 w-64 holographic-panel bg-surface-container-low/40 p-4 border-2 border-stone-800 shadow-xl scanline">
+<div class="flex justify-between items-center mb-3 border-b border-stone-800 pb-1">
+<span class="text-label-caps font-label-caps text-on-surface-variant uppercase">Route Vector Data</span>
+<span class="material-symbols-outlined text-cyan-500 text-sm" data-icon="query_stats">query_stats</span>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-end">
+<span class="text-[10px] font-mono-data opacity-60">ALTITUDE_MSL</span>
+<span class="text-title-sm font-title-sm text-primary">1,244m</span>
+</div>
+<div class="w-full h-1 bg-stone-300/30 overflow-hidden">
+<div class="h-full bg-primary-container w-3/4"></div>
+</div>
+<div class="flex justify-between items-end">
+<span class="text-[10px] font-mono-data opacity-60">AETHER_PRESSURE</span>
+<span class="text-title-sm font-title-sm text-secondary">0.982 atm</span>
+</div>
+<div class="flex gap-1 h-8 items-end">
+<div class="w-1 bg-primary h-1/2"></div>
+<div class="w-1 bg-primary h-2/3"></div>
+<div class="w-1 bg-primary h-full"></div>
+<div class="w-1 bg-primary h-4/5"></div>
+<div class="w-1 bg-primary h-1/2"></div>
+<div class="w-1 bg-primary h-3/4"></div>
+</div>
+</div>
+</div>
+<div class="absolute bottom-8 right-8 z-20 w-56 holographic-panel bg-surface-container-low/40 p-4 border-2 border-stone-800 shadow-xl">
+<div class="flex justify-between items-center mb-3 border-b border-stone-800 pb-1">
+<span class="text-label-caps font-label-caps text-on-surface-variant uppercase">System Status</span>
+<div class="flex gap-1">
+<div class="w-2 h-2 rounded-full bg-green-500"></div>
+<div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+</div>
+</div>
+<div class="flex justify-center py-2 relative">
+<!-- Gauge Mockup -->
+<svg class="w-32 h-16" viewbox="0 0 100 50">
+<path d="M10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#ccc" stroke-linecap="round" stroke-width="4"></path>
+<path d="M10 50 A 40 40 0 0 1 70 20" fill="none" stroke="#00f0ff" stroke-linecap="round" stroke-width="4"></path>
+<line stroke="#ffbf00" stroke-width="2" x1="50" x2="30" y1="50" y2="15"></line>
+<circle cx="50" cy="50" fill="#ffbf00" r="3"></circle>
+</svg>
+<div class="absolute bottom-2 text-center w-full">
+<span class="text-[9px] font-mono-data">TEMPORAL_STABILITY</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Right Panel (Configuration) -->
+<aside class="fixed right-0 top-12 bottom-[90px] w-[300px] bg-surface-container-low px-1 border-l-2 border-stone-800 z-40 flex flex-col">
+<div class="p-4 flex-1 overflow-y-auto">
+<div class="mb-6">
+<h3 class="text-label-caps font-label-caps mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="tune">tune</span>
+                        PARAMETERS_CONFIG
+                    </h3>
+<div class="space-y-6">
+<!-- Control Group -->
+<div class="p-3 bg-white/50 border border-stone-200 mechanical-border">
+<label class="block text-[10px] font-bold text-stone-500 uppercase mb-2">Parchment Opacity</label>
+<input class="w-full h-1 bg-stone-300 rounded-lg appearance-none cursor-pointer accent-primary" type="range"/>
+<div class="flex justify-between mt-1 text-[9px] font-mono-data">
+<span>MIN</span>
+<span>MAX</span>
+</div>
+</div>
+<div class="p-3 bg-white/50 border border-stone-200 mechanical-border">
+<label class="block text-[10px] font-bold text-stone-500 uppercase mb-2">Temporal Skew</label>
+<div class="grid grid-cols-2 gap-2">
+<button class="py-2 bg-stone-800 text-white text-[10px] font-bold uppercase hover:bg-primary transition-colors">LINEAR</button>
+<button class="py-2 border-2 border-stone-800 text-stone-800 text-[10px] font-bold uppercase bg-primary-container">LOGARITHMIC</button>
+</div>
+</div>
+<div class="p-3 bg-white/50 border border-stone-200 mechanical-border">
+<label class="block text-[10px] font-bold text-stone-500 uppercase mb-2">Projection Depth</label>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full border-4 border-double border-stone-800 flex items-center justify-center relative">
+<div class="w-1 h-5 bg-secondary absolute top-1 origin-bottom rotate-45"></div>
+</div>
+<span class="text-title-sm font-title-sm">42.8°</span>
+</div>
+</div>
+<div class="space-y-2">
+<label class="block text-[10px] font-bold text-stone-500 uppercase">Aetheric Tags</label>
+<div class="flex flex-wrap gap-2">
+<span class="bg-primary/10 text-primary-container px-2 py-1 text-[9px] font-bold border border-primary/20 rounded-sm">#VICTORIAN</span>
+<span class="bg-primary/10 text-primary-container px-2 py-1 text-[9px] font-bold border border-primary/20 rounded-sm">#STEAM</span>
+<span class="bg-secondary/10 text-secondary-container px-2 py-1 text-[9px] font-bold border border-secondary/20 rounded-sm">#CRONOS</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 border-t-2 border-stone-800 bg-stone-200">
+<button class="w-full py-3 bg-secondary-container text-on-secondary-fixed font-bold uppercase text-xs mechanical-border hover:shadow-[4px_4px_0_0_#2f3130] transition-all">
+                    COMMIT_REVISIONS
+                </button>
+</div>
+</aside>
+</div>
+<!-- Bottom Player (90px height) -->
+<footer class="fixed bottom-0 left-0 w-full z-50 h-[90px] bg-stone-100 dark:bg-stone-950 border-t-4 border-double border-stone-800 dark:border-stone-700 shadow-inner flex items-center px-10 gap-10 bg-[url('https://www.transparenttextures.com/patterns/pinstriped-dark.png')] opacity-95">
+<!-- Transport Controls -->
+<div class="flex items-center gap-4">
+<button class="text-stone-400 hover:text-cyan-300 transition-all scale-90 hover:scale-110 flex items-center justify-center">
+<span class="material-symbols-outlined text-[32px]" data-icon="skip_previous">skip_previous</span>
+</button>
+<button class="w-14 h-14 bg-amber-500 text-black rounded-sm shadow-[0_0_12px_rgba(245,158,11,0.6)] flex items-center justify-center hover:scale-105 active:translate-y-1 transition-all">
+<span class="material-symbols-outlined text-[40px]" data-icon="play_arrow" data-weight="fill" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+<button class="text-stone-400 hover:text-cyan-300 transition-all scale-90 hover:scale-110 flex items-center justify-center">
+<span class="material-symbols-outlined text-[32px]" data-icon="skip_next">skip_next</span>
+</button>
+</div>
+<!-- Timeline / Scrub Slider -->
+<div class="flex-1 flex flex-col gap-2">
+<div class="flex justify-between items-end text-[10px] font-mono-data text-stone-500 uppercase">
+<div class="flex gap-4">
+<span>EPOCH: 1884.Q3</span>
+<span class="text-cyan-500">CURR: 04:22:15</span>
+</div>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-xs" data-icon="linear_scale">linear_scale</span>
+<span>BUFFERING_AETHER...</span>
+</div>
+</div>
+<div class="relative h-4 flex items-center">
+<div class="absolute w-full h-[2px] bg-stone-800 dark:bg-stone-700"></div>
+<div class="absolute w-1/3 h-[2px] bg-cyan-500 shadow-[0_0_8px_#00f0ff]"></div>
+<div class="absolute left-1/3 w-1 h-6 bg-amber-500 border border-stone-800 -translate-x-1/2"></div>
+<!-- Timeline Markers -->
+<div class="absolute left-0 w-[1px] h-2 bg-stone-500"></div>
+<div class="absolute left-1/4 w-[1px] h-2 bg-stone-500 opacity-30"></div>
+<div class="absolute left-1/2 w-[1px] h-2 bg-stone-500 opacity-30"></div>
+<div class="absolute left-3/4 w-[1px] h-2 bg-stone-500 opacity-30"></div>
+<div class="absolute right-0 w-[1px] h-2 bg-stone-500"></div>
+</div>
+</div>
+<!-- Status & Meta -->
+<div class="hidden lg:flex flex-col items-end gap-1 border-l-2 border-stone-300 dark:border-stone-800 pl-10 h-12 justify-center">
+<span class="text-[10px] font-black text-cyan-500 tracking-tighter">BITRATE: 4.8 THz</span>
+<span class="text-[9px] text-stone-400 uppercase font-bold">Latency: 12ms (Lunar Node)</span>
+</div>
+</footer>
+</body></html>
