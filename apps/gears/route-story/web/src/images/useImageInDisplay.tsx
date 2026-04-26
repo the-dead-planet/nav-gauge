@@ -13,7 +13,7 @@ export const useImageInDisplay = (
     const isInDisplay = displayImageId !== null;
 
     useEffect(() => {
-        map.getLayer(imageLayerIds.imageInDisplay)?.setFilter(ImagesLayers.getImageInDisplayFilter(displayImageId));
+        map.getLayer(imageLayerIds.imageInDisplay)?.setFilter(ImagesLayers.imageInDisplay.getFilter(displayImageId));
     }, [displayImageId]);
 
     useEffect(() => {

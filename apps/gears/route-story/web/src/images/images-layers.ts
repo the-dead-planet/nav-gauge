@@ -9,66 +9,37 @@ export const getImagesLayers = (
             id: imageLayerIds.thumbnailsOutline,
             source: imageSourceIds.thumbnails,
             type: 'circle',
-            layout: {},
-            paint: {
-                "circle-radius": ImagesLayers.thumbnailsOutline.circleRadius,
-                'circle-color': ImagesLayers.thumbnailsOutline.circleColor,
-                'circle-stroke-color': ImagesLayers.thumbnailsOutline.circleStrokeColor,
-                'circle-stroke-width': ImagesLayers.thumbnailsOutline.circleStrokeWidth,
-                'circle-stroke-opacity': ImagesLayers.thumbnailsOutline.circleStrokeOpacity,
-            }
+            paint: ImagesLayers.thumbnailsOutline.paint,
         },
         {
             id: imageLayerIds.thumbnails,
             source: imageSourceIds.thumbnails,
             type: 'symbol',
-            filter: ImagesLayers.thumbnailsFilter,
-            layout: {
-                'icon-image': ImagesLayers.thumbnails.iconImage,
-                'icon-size': ImagesLayers.thumbnails.iconSize,
-                'icon-allow-overlap': ImagesLayers.thumbnails.iconAllowOverlap,
-            },
-            paint: {
-                'icon-opacity': ImagesLayers.thumbnails.iconOpacity
-            }
+            filter: ImagesLayers.thumbnails.filter,
+            layout: ImagesLayers.thumbnails.layout,
+            paint: ImagesLayers.thumbnails.paint
         },
         {
             id: imageLayerIds.thumbnailsHighlightOutline,
             source: imageSourceIds.thumbnails,
             type: 'circle',
-            filter: ImagesLayers.thumbnailsHighlightOutlineFilter,
-            layout: {},
-            paint: {
-                "circle-radius": ImagesLayers.thumbnailsHighlightOutline.circleRadius,
-                'circle-color': ImagesLayers.thumbnailsHighlightOutline.circleColor,
-                'circle-stroke-color': ImagesLayers.thumbnailsHighlightOutline.circleStrokeColor,
-                'circle-stroke-width': ImagesLayers.thumbnailsHighlightOutline.circleStrokeWidth,
-            }
+            filter: ImagesLayers.thumbnailsHighlightOutline.filter,
+            paint: ImagesLayers.thumbnailsHighlightOutline.paint,
         },
         {
             id: imageLayerIds.thumbnailsHighlight,
             source: imageSourceIds.thumbnails,
             type: 'symbol',
-            filter: ImagesLayers.thumbnailsHighlightFilter,
-            layout: {
-                'icon-image': ImagesLayers.thumbnailsHighlight.iconImage,
-                'icon-size': ImagesLayers.thumbnailsHighlight.iconSize,
-                'icon-allow-overlap': ImagesLayers.thumbnailsHighlight.iconAllowOverlap,
-            },
-            paint: {
-                'icon-opacity': ImagesLayers.thumbnailsHighlight.iconOpacity,
-            }
+            filter: ImagesLayers.thumbnailsHighlight.filter,
+            layout: ImagesLayers.thumbnailsHighlight.layout,
+            paint: ImagesLayers.thumbnailsHighlight.paint,
         },
         {
             id: imageLayerIds.imageInDisplay,
             type: 'symbol',
-            filter: ImagesLayers.getImageInDisplayFilter(displayImageId),
+            filter: ImagesLayers.imageInDisplay.getFilter(displayImageId),
             source: imageSourceIds.thumbnails,
-            layout: {
-                'icon-image': ImagesLayers.imageInDisplay.iconImage,
-                'icon-size': ImagesLayers.imageInDisplay.iconSize,
-                'icon-allow-overlap': ImagesLayers.imageInDisplay.iconAllowOverlap,
-            }
+            layout: ImagesLayers.imageInDisplay.layout
         }
     ];
 };

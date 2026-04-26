@@ -1,6 +1,5 @@
-import { FC, useEffect, useMemo, useRef } from "react";
+import { FC, useEffect } from "react";
 import { BehaviorSubject } from "rxjs";
-import { ShapeSourceRef } from "@maplibre/maplibre-react-native";
 import { OverlayComponentProps, useStateWarden, useSubjectState } from "@apparatus";
 import { getRouteSourceData, RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMap } from "@mobile-ui";
@@ -11,8 +10,8 @@ import { RouteLineLayer } from "./RouteLineLayer";
 import { RouteCurrentPointLayer } from "./RouteCurrentPointLayer";
 import { emptyCollection } from "@tinker-chest";
 
-export const currentPointRef$ = new BehaviorSubject<React.RefObject<ShapeSourceRef | null> | null>(null);
-export const linesRef$ = new BehaviorSubject<React.RefObject<ShapeSourceRef | null> | null>(null);
+export const currentPointRef$ = new BehaviorSubject<GeoJSON.GeoJSON>(emptyCollection);
+export const linesRef$ = new BehaviorSubject<GeoJSON.GeoJSON>(emptyCollection);
 
 export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({
     map,
@@ -22,7 +21,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mo
     progressMs$,
     playerOperator
 }) => {
-    const [{ geojson }, setData] = useSubjectState(data$);
+    const [{ geojson }] = useSubjectState(data$);
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [progressMs] = useSubjectState(progressMs$);
@@ -37,13 +36,12 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mo
         easeDuration,
         bearingLineLengthInMeters,
     } = animationControls;
-
-    const lineSourceRef = useRef<ShapeSourceRef>(null);
-    const pointSourceRef = useRef<ShapeSourceRef>(null);
+    const [currentPointSourceData, setCurrentPointSourceData] = useSubjectState(currentPointRef$);
+    const [lineSourceData, setLineSourceData] = useSubjectState(linesRef$);
 
     useEffect(() => {
-        linesRef$.next(lineSourceRef);
-        currentPointRef$.next(pointSourceRef);
+        // lineRef$.next();
+        // currentPointRef$.next();
         // fetch('/example.gpx')
         //     .then((file) => file.text())
         //     .then((text) => parsers.get('.gpx')?.parseTextToGeoJson(text))
@@ -53,21 +51,21 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mo
         //     } : {}));
 
         return () => {
-            linesRef$.next(null);
-            currentPointRef$.next(null);
+            setLineSourceData(emptyCollection);
+            setCurrentPointSourceData(emptyCollection);
         };
     }, []);
 
     const loadedImages = useLoadedMobileImages(images);
 
-    const sources = useMemo((): {
-        [key in 'line' | 'currentPoint']: GeoJSON.GeoJSON;
-    } => {
+    useEffect(() => {
         if (!geojson || !routeTimes) {
-            return { line: emptyCollection, currentPoint: emptyCollection };
+            setLineSourceData(emptyCollection);
+            setCurrentPointSourceData(emptyCollection);
+            return;
         }
 
-        const { currentPoint, line } = getRouteSourceData(
+        const { line, currentPoint } = getRouteSourceData(
             { showRouteLine, showRoutePoints },
             geojson,
             routeTimes.startTimeEpoch,
@@ -75,10 +73,8 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mo
             bearingLineLengthInMeters
         );
 
-        return {
-            line,
-            currentPoint
-        };
+        setLineSourceData(line);
+        setCurrentPointSourceData(currentPoint);
     }, [geojson, routeTimes?.startTimeEpoch, bearingLineLengthInMeters, showRouteLine, showRoutePoints]);
 
     useEffect(() => {
@@ -87,17 +83,16 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mo
         }
         playerOperator.animateRoute(loadedImages,
             (currentPoint, lines) => {
-                lineSourceRef.current?.setNativeProps({ shape: lines });
-                pointSourceRef.current?.setNativeProps({ shape: currentPoint });
+                setLineSourceData(lines);
+                setCurrentPointSourceData(currentPoint);
             },
             (position, bearing) => {
-                map.camera.current?.setCamera({
-                    animationMode: 'easeTo',
-                    centerCoordinate: position,
-                    animationDuration: easeDuration,
-                    zoomLevel: zoom,
+                map.camera.current?.easeTo({
+                    center: [position[0], position[1]],
+                    duration: easeDuration,
+                    zoom,
                     pitch,
-                    heading: bearing,
+                    bearing,
                 });
             },
         );
@@ -109,8 +104,8 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mo
 
     return (
         <>
-            <RouteLineLayer sourceRef={lineSourceRef} source={sources.line} />
-            <RouteCurrentPointLayer sourceRef={pointSourceRef} source={sources.currentPoint} />
+            <RouteLineLayer source={lineSourceData} />
+            <RouteCurrentPointLayer source={currentPointSourceData} />
         </>
     );
 };

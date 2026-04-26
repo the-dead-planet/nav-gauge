@@ -45,7 +45,7 @@ export const MapTools: FC<Props> = ({ map, children }) => {
         },
         onPanResponderStart: async (event) => {
             if (map.map.current) {
-                const lngLat = await map.map.current.getCoordinateFromView([event.nativeEvent.locationX, event.nativeEvent.locationY]);
+                const lngLat = await map.map.current.unproject([event.nativeEvent.locationX, event.nativeEvent.locationY]);
 
                 for (const [_handlerId, handler] of onPanResponderStartHandlers) {
                     handler(lngLat, event);
@@ -54,7 +54,7 @@ export const MapTools: FC<Props> = ({ map, children }) => {
         },
         onPanResponderMove: async (event) => {
             if (map.map.current) {
-                const lngLat = await map.map.current.getCoordinateFromView([event.nativeEvent.locationX, event.nativeEvent.locationY]);
+                const lngLat = await map.map.current.unproject([event.nativeEvent.locationX, event.nativeEvent.locationY]);
 
                 for (const [_handlerId, handler] of onPanResponderMoveHandlers) {
                     handler(lngLat, event);
@@ -63,7 +63,7 @@ export const MapTools: FC<Props> = ({ map, children }) => {
         },
         onPanResponderEnd: async (event) => {
             if (map.map.current) {
-                const lngLat = await map.map.current.getCoordinateFromView([event.nativeEvent.locationX, event.nativeEvent.locationY]);
+                const lngLat = await map.map.current.unproject([event.nativeEvent.locationX, event.nativeEvent.locationY]);
 
                 for (const [_handlerId, handler] of onPanResponderEndHandlers) {
                     handler(lngLat, event);

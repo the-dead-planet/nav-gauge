@@ -1,5 +1,5 @@
 import { Appearance, Dimensions, ScaledSize } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createAsyncStorage } from "@react-native-async-storage/async-storage";
 import { MachineWard, MachineWardComponents, Orientation, OrientationSubscriptionDefinition } from "@apparatus";
 import { Footer, Layout, TopBar } from "./layout";
 import { Machine } from "./machine/Machine";
@@ -8,6 +8,8 @@ import { NoticesList } from "./notices/NoticesList";
 import { MobileRouteStoryGear } from "@the-dead-planet/nav-gauge-gears-route-story-mobile";
 import { MobileMap } from "@mobile-ui";
 import { MobileChronoLens } from "./chrono-lens";
+
+const AsyncStorage = createAsyncStorage('nav-gauge');
 
 export class MobileMachineWard extends MachineWard<MobileMap> {
     public constructor() {

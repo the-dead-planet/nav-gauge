@@ -26,8 +26,8 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mobile
 
     const handleProgressChange = (value: number) => {
         playerOperator.updateProgress(value, (line, currentPoint) => {
-            linesRef$.value?.current?.setNativeProps({ shape: line });
-            currentPointRef$.value?.current?.setNativeProps({ shape: currentPoint });
+            linesRef$.next(line);
+            currentPointRef$.next(currentPoint);
         });
     };
 

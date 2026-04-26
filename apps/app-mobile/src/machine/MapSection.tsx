@@ -2,7 +2,7 @@ import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { BehaviorSubject } from "rxjs";
 import { LayoutChangeEvent, StyleSheet } from "react-native";
 import { RecordingView, useViewRecorder } from "react-native-view-recorder";
-import { Camera, CameraRef, MapView, MapViewRef, UserLocation, UserLocationRef } from "@maplibre/maplibre-react-native";
+import { Camera, CameraRef, Map as MaplibreMap, MapRef, NativeUserLocation, useCurrentPosition, UserLocation } from "@maplibre/maplibre-react-native";
 import { Cartomancer, useSubjectState, useStateWarden } from "@apparatus";
 import { MobileMap, PressEventFeature } from "@mobile-ui";
 import { MapTools } from "./map-tools/MapTools";
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     }
 });
 
-const scrollEnabled$ = new BehaviorSubject(true);
+const dragPan$ = new BehaviorSubject(true);
 const onPressHandlers$ = new BehaviorSubject(new Map());
 const onLongPressHandlers$ = new BehaviorSubject(new Map());
 const onPanResponderStartHandlers$ = new BehaviorSubject(new Map());
@@ -26,19 +26,17 @@ const onPanResponderMoveHandlers$ = new BehaviorSubject(new Map());
 const onPanResponderEndHandlers$ = new BehaviorSubject(new Map());
 
 export const MapSection: FC = () => {
-    const mapRef = useRef<MapViewRef>(null);
+    const mapRef = useRef<MapRef>(null);
     const cameraRef = useRef<CameraRef>(null);
-    const userLocationRef = useRef<UserLocationRef>(null);
     const viewRecorderRef = useRef(null);
     const recorder = useViewRecorder();
     const [mapSize, setMapSize] = useState<{ width: number; height: number; }>({ width: 100, height: 100 });
     const map = useMemo((): MobileMap => ({
         map: mapRef,
         camera: cameraRef,
-        userLocation: userLocationRef,
         width: mapSize.width,
         height: mapSize.height,
-        scrollEnabled$,
+        dragPan$,
         onPressHandlers$,
         onLongPressHandlers$,
         onPanResponderStartHandlers$,
@@ -47,7 +45,7 @@ export const MapSection: FC = () => {
     }), [mapSize]);
     const { cartomancer, chronoLens, signaliumBureau } = useStateWarden();
     const lens = chronoLens as MobileChronoLens;
-    const [scrollEnabled] = useSubjectState(map.scrollEnabled$);
+    const [dragPan] = useSubjectState(map.dragPan$);
     const [_isInitialised, setIsInitialised] = useSubjectState(cartomancer.isInitialised$);
     const [_isStyleLoaded, setIsStyleLoaded] = useSubjectState(cartomancer.isStyleLoaded$);
     const [selectedStyle] = useSubjectState(cartomancer.selectedStyle$);
@@ -79,6 +77,8 @@ export const MapSection: FC = () => {
         setMapSize({ width, height })
     };
 
+    // const currentPosition = useCurrentPosition({ enabled: true, minDisplacement: 1});
+
     return (
         <MapTools map={map}>
             <RecordingView
@@ -87,10 +87,10 @@ export const MapSection: FC = () => {
                 style={styles.viewRecorder}
                 onLayout={handleLayoutChange}
             >
-                <MapView
+                <MaplibreMap
                     ref={mapRef}
                     style={styles.mapView}
-                    scrollEnabled={scrollEnabled}
+                    dragPan={dragPan}
                     mapStyle={Cartomancer.styles[selectedStyle.id]?.style}
                     onDidFinishLoadingMap={() => setIsInitialised(true)}
                     onDidFinishLoadingStyle={() => setIsStyleLoaded(true)}
@@ -102,27 +102,28 @@ export const MapSection: FC = () => {
                             text: 'Something went wrong'
                         })
                     }}
-                    onRegionDidChange={(feature) => {
-                        setMapZoom(parseFloat(feature.properties.zoomLevel.toFixed(1)));
-                        setMapBearing(feature.properties.heading);
+                    onRegionDidChange={(event) => {
+                        setMapZoom(parseFloat(event.nativeEvent.zoom.toFixed(1)));
+                        setMapBearing(event.nativeEvent.bearing);
                     }}
-                    onPress={(feature) => {
+                    onPress={(event) => {
                         for (const [_handlerId, handler] of onPressHandlers) {
-                            handler(feature as PressEventFeature);
+                            handler(event.nativeEvent);
                         }
                     }}
-                    onLongPress={(feature) => {
+                    onLongPress={(event) => {
                         for (const [_handlerId, handler] of onLongPressHandlers) {
-                            handler(feature as PressEventFeature);
+                            handler(event.nativeEvent);
                         }
                     }}
                 >
                     <Camera ref={cameraRef} />
-                    <UserLocation ref={userLocationRef} visible={false} onUpdate={(_location) => { }} />
+                    {/* <NativeUserLocation mode="heading" />
+                    <UserLocation /> */}
                     {[...overlays.entries()].map(([id, OverlayComponent]) => (
                         <OverlayComponent key={id} map={map} />
                     ))}
-                </MapView>
+                </MaplibreMap>
             </RecordingView>
         </MapTools>
     );

@@ -12,7 +12,7 @@ export const useImageInDisplay = (
 ): number => {
     const { animatrix } = useStateWarden();
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
-    const [imageInDisplayIconSize, setImageInDisplayIconSize] = useState(ImagesLayers.imageInDisplay.iconSize);
+    const [imageInDisplayIconSize, setImageInDisplayIconSize] = useState(ImagesLayers.imageInDisplay.layout["icon-size"]);
 
     useEffect(() => {
         if (displayImageId === null) {
