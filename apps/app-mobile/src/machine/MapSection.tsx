@@ -2,16 +2,19 @@ import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { BehaviorSubject } from "rxjs";
 import { LayoutChangeEvent, StyleSheet } from "react-native";
 import { RecordingView, useViewRecorder } from "react-native-view-recorder";
-import { Camera, CameraRef, Map as MaplibreMap, MapRef, NativeUserLocation, useCurrentPosition, UserLocation } from "@maplibre/maplibre-react-native";
+import { Camera, CameraRef, Map as MaplibreMap, MapRef } from "@maplibre/maplibre-react-native";
 import { Cartomancer, useSubjectState, useStateWarden } from "@apparatus";
-import { MobileMap, PressEventFeature } from "@mobile-ui";
+import { MobileMap } from "@mobile-ui";
 import { MapTools } from "./map-tools/MapTools";
 import { MobileChronoLens } from "../chrono-lens";
 
 const styles = StyleSheet.create({
     viewRecorder: {
         flex: 1,
-        position: 'relative'
+        position: 'relative',
+        borderColor: "1px",
+        borderWidth: 10,
+        borderStyle: "dashed",
     },
     mapView: {
         flex: 1,
