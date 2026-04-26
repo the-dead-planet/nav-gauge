@@ -44,6 +44,7 @@
         "test:ui-web": "yarn workspace @the-dead-planet/nav-gauge-ui-web test",
 
         "test:e2e:web": "yarn workspace @the-dead-planet/nav-gauge-app-web test:e2e:prod",
+        "test:e2e:web:dev": "yarn workspace @the-dead-planet/nav-gauge-app-web test:e2e:dev",
         "test:e2e:mobile": "yarn workspace @the-dead-planet/nav-gauge-app-mobile test:e2e:prod"
     },
     "dependencies": {

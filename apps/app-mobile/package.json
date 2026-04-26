@@ -16,7 +16,7 @@
         "lint": "eslint .",
         "start": "react-native start",
         "start:r": "react-native start --reset-cache",
-        "test": "mocha",
+        "test": "jest",
         "test:e2e": "jest",
         "test:e2e:dev": "jest",
         "test:e2e:prod": "jest"
