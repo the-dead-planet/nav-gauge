@@ -1,7 +1,16 @@
-const path = require("path");
-const rspack = require("@rspack/core");
+import path from "path";
+import rspack, { Configuration } from "@rspack/core";
 
-module.exports = () => ({
+export type Env = {
+    production?: boolean;
+    analyze?: boolean;
+};
+
+export type Argv = {
+    mode?: 'development' | 'production' | 'none';
+};
+
+export const baseConfig = (_env: Env, _argv: Argv): Configuration => ({
     resolve: {
         extensions: [".js", ".ts", ".tsx"],
         fallback: {
@@ -138,3 +147,5 @@ module.exports = () => ({
         clean: true
     }
 });
+
+export default baseConfig;
