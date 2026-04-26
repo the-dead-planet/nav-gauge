@@ -18,23 +18,30 @@
         "start:mobile": "yarn workspace @the-dead-planet/nav-gauge-app-mobile start",
         "start:mobile:r": "yarn workspace @the-dead-planet/nav-gauge-app-mobile start:r",
         "build:web": "yarn workspace @the-dead-planet/nav-gauge-app-web build",
-        "test:ui": "yarn workspace @the-dead-planet/nav-gauge-ui-common test",
+        
+        "test:all": "concurrently \"yarn test:common\" \"yarn test:web\" \"yarn test:mobile\"",
+        
+        "test:common": "yarn test:packages && yarn test:gears-common && yarn test:ui-common",
+        "test:mobile": "yarn test:app-mobile && yarn test:gears-mobile && yarn test:ui-mobile",
+        "test:web": "yarn test:app-web && yarn test:gears-web && yarn test:ui-web",
+        
+        "test:app-web": "yarn workspace @the-dead-planet/nav-gauge-app-web test",
+        "test:app-mobile": "yarn workspace @the-dead-planet/nav-gauge-app-mobile test",
+
+        "test:gears": "yarn test:gears-common && yarn test:gears-mobile && yarn test:gears-web",
+        "test:gears-common": "yarn workspace @the-dead-planet/nav-gauge-gears-route-story-common test",
+        "test:gears-mobile": "yarn workspace @the-dead-planet/nav-gauge-gears-route-story-mobile test",
+        "test:gears-web": "yarn workspace @the-dead-planet/nav-gauge-gears-route-story-web test",
+
         "test:packages": "yarn test:apparatus && yarn test:tinker-chest",
         "test:apparatus": "yarn workspace @the-dead-planet/nav-gauge-apparatus test",
         "test:tinker-chest": "yarn workspace @the-dead-planet/nav-gauge-tinker-chest test",
-        "test:common": "yarn test:common-gears",
-        "test:web": "yarn test:app-web && yarn test:web-gears && yarn test:web-ui",
-        "test:app-web": "yarn workspace @the-dead-planet/nav-gauge-app-web test",
-        "test:common-gears": "yarn workspace @the-dead-planet/nav-gauge-gears-route-story-common test",
-        "test:web-gears": "yarn workspace @the-dead-planet/nav-gauge-gears-route-story-web test",
-        "test:web-ui": "yarn workspace @the-dead-planet/nav-gauge-ui-web test",
-        "test:mobile": "yarn test:app-mobile && yarn test:mobile-gears && yarn test:mobile-ui",
-        "test:app-mobile": "yarn workspace @the-dead-planet/nav-gauge-app-mobile test",
-        "test:mobile-gears": "yarn workspace @the-dead-planet/nav-gauge-gears-route-story-mobile test",
-        "test:mobile-ui": "yarn workspace @the-dead-planet/nav-gauge-ui-mobile test",
-        "test:all": "concurrently \"yarn test:ui\" \"yarn test:packages\" \"yarn test:common\" \"yarn test:web\" \"yarn test:mobile\"",
-        "test:all:web": "concurrently \"yarn test:ui\" \"yarn test:packages\" \"yarn test:web\"",
-        "test:all:mobile": "concurrently \"yarn test:ui\" \"yarn test:packages\" \"yarn test:mobile\"",
+
+        "test:ui": "yarn test:ui-common && yarn test:ui-mobile && yarn test:ui-web",
+        "test:ui-common": "yarn workspace @the-dead-planet/nav-gauge-ui-common test",
+        "test:ui-mobile": "yarn workspace @the-dead-planet/nav-gauge-ui-mobile test",
+        "test:ui-web": "yarn workspace @the-dead-planet/nav-gauge-ui-web test",
+
         "test:e2e:web": "yarn workspace @the-dead-planet/nav-gauge-app-web test:e2e:prod",
         "test:e2e:mobile": "yarn workspace @the-dead-planet/nav-gauge-app-mobile test:e2e:prod"
     },
