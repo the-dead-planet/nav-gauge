@@ -39,15 +39,15 @@
         "test:e2e:mobile": "yarn workspace @the-dead-planet/nav-gauge-app-mobile test:e2e:prod"
     },
     "dependencies": {
-        "@maplibre/maplibre-gl-style-spec": "^24.4.1",
-        "@turf/along": "^7.3.2",
-        "@turf/bbox": "^7.3.2",
-        "@turf/bearing": "^7.3.2",
-        "@turf/distance": "^7.3.2",
-        "@turf/helpers": "^7.3.2",
-        "@turf/length": "^7.3.2",
+        "@maplibre/maplibre-gl-style-spec": "^24.8.1",
+        "@turf/along": "^7.3.5",
+        "@turf/bbox": "^7.3.5",
+        "@turf/bearing": "^7.3.5",
+        "@turf/distance": "^7.3.5",
+        "@turf/helpers": "^7.3.5",
+        "@turf/length": "^7.3.5",
         "luxon": "^3.7.2",
-        "react": "19.2.3",
+        "react": "19.2.5",
         "rxjs": "^7.8.2"
     },
     "devDependencies": {
@@ -55,20 +55,20 @@
         "@types/eslint": "^9.6.1",
         "@types/luxon": "^3.7.1",
         "@types/mocha": "^10.0.10",
-        "@types/node": "^25.5.0",
+        "@types/node": "^25.6.0",
         "@types/react": "^19.2.14",
-        "@typescript-eslint/eslint-plugin": "^8.57.1",
-        "@typescript-eslint/parser": "^8.57.1",
+        "@typescript-eslint/eslint-plugin": "^8.59.0",
+        "@typescript-eslint/parser": "^8.59.0",
         "chai": "^6.2.2",
         "concurrently": "^9.2.1",
-        "eslint": "^10.1.0",
+        "eslint": "^10.2.1",
         "mocha": "^11.7.5",
         "path": "^0.12.7",
         "tsx": "^4.21.0",
         "typescript": "^6.0.3"
     },
     "resolutions": {
-        "react": "19.2.3"
+        "react": "19.2.5"
     },
     "workspaces": {
         "packages": [
