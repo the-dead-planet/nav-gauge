@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Layer, GeoJSONSource, GeoJSONSourceRef } from "@maplibre/maplibre-react-native";
+import { Layer, GeoJSONSource } from "@maplibre/maplibre-react-native";
 import { routeSourceIds, routeLayerIds, RouteLayers } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 
 interface Props {
