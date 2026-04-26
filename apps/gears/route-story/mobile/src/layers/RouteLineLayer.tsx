@@ -1,48 +1,47 @@
 import { FC } from "react";
-import { CircleLayer, LineLayer, ShapeSource, ShapeSourceRef } from "@maplibre/maplibre-react-native";
+import { Layer, GeoJSONSource } from "@maplibre/maplibre-react-native";
 import { useStateWarden, useSubjectState } from "@apparatus";
 import { routeSourceIds, routeLayerIds, RouteLayers } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 
 interface Props {
-    sourceRef: React.RefObject<ShapeSourceRef | null>;
     source: GeoJSON.GeoJSON
 }
 
-export const RouteLineLayer: FC<Props> = ({
-    sourceRef,
-    source,
-}) => {
+export const RouteLineLayer: FC<Props> = ({ source, }) => {
     const { cartomancer } = useStateWarden();
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const { showRouteLine, showRoutePoints } = gaugeControls;
 
     return (
-        <ShapeSource
-            ref={sourceRef}
+        <GeoJSONSource
             id={routeSourceIds.line}
-            shape={source}
+            data={source}
         >
             {showRouteLine ? (
-                <LineLayer
+                <Layer
+                    type="line"
                     id={routeLayerIds.line}
-                    style={{
-                        lineColor: RouteLayers.lines.lineColor,
-                        lineWidth: RouteLayers.lines.lineWidth,
-                        lineOpacity: RouteLayers.lines.lineOpacity,
-                        lineCap: RouteLayers.lines.lineCap,
-                        lineJoin: RouteLayers.lines.lineJoin,
+                    layout={{
+                        "line-cap": RouteLayers.lines.lineCap,
+                        "line-join": RouteLayers.lines.lineJoin,
+                    }}
+                    paint={{
+                        "line-color": RouteLayers.lines.lineColor,
+                        "line-width": RouteLayers.lines.lineWidth,
+                        "line-opacity": RouteLayers.lines.lineOpacity,
                     }}
                 />
             ) : null}
             {showRoutePoints ? (
-                <CircleLayer
+                <Layer
+                    type="circle"
                     id={routeLayerIds.points}
-                    style={{
-                        circleRadius: RouteLayers.points.circleRadius,
-                        circleColor: RouteLayers.points.circleColor,
+                    paint={{
+                        "circle-radius": RouteLayers.points.circleRadius,
+                        "circle-color": RouteLayers.points.circleColor,
                     }}
                 />
             ) : null}
-        </ShapeSource>
+        </GeoJSONSource>
     );
 };

@@ -60,7 +60,7 @@ More info: TBD
 
 Follow the [architectures](/docs/ARCHITECTURES.md) flow when importing from other workspaces. Do not import in the wrong direction.
 
-Import paths are setup as `@package-name` in the `tsconfig.json` files in each workspace, in [Rspack config](/apps/app-web/app/rspack.config.cjs) and in [mobile babel config](/apps/app-mobile/app/babel.config.js). 
+Import paths are setup as `@package-name` in the `tsconfig.json` files in each workspace, in [Rspack config](/apps/app-web/app/rspack.config.ts) and in [mobile babel config](/apps/app-mobile/app/babel.config.js). 
 
 If suddenly something is imported, for example, from `../../apparatus/src` instead of `@apparatus` when importing to a file in `tinker-chest` workspace, and importing from `@apparatus` is not possible... it's a sign of a forbidden import. Consider moving stuff around or creating another package to assure correct import flow. 
 
@@ -68,7 +68,7 @@ Remember about updating the [architectures chart](/docs/assets/architecture.draw
 
 #### Code splitting
 
-Code splitting is set up for web in [Rspack config](/apps/app-web/app/rspack.config.production.cjs) per larger dependencies and per application workspace to enable better caching for faster startup.
+Code splitting is set up for web in [Rspack config](/apps/app-web/app/rspack.config.production.ts) per larger dependencies and per application workspace to enable better caching for faster startup.
 
 #### Preferred environment
 

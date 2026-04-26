@@ -1,11 +1,14 @@
-const { merge } = require('webpack-merge');
-const path = require("path");
-const config = require('./rspack.config.cjs');
-const { TsCheckerRspackPlugin } = require('ts-checker-rspack-plugin');
-const ReactRefreshRspackPlugin = require("@rspack/plugin-react-refresh");
+import { merge } from 'webpack-merge';
+import path from "path";
+import { TsCheckerRspackPlugin } from 'ts-checker-rspack-plugin';
+import { ReactRefreshRspackPlugin } from "@rspack/plugin-react-refresh";
+import { Configuration } from '@rspack/core';
+import { baseConfig, Env, Argv } from './rspack.config';
 
-module.exports = () => {
-    return merge(config(), {
+const config = (env: Env, argv: Argv): Configuration => {
+    const base = baseConfig(env, argv);
+    
+    return merge(base, {
         mode: 'development',
         devtool: 'source-map',
         entry: {
@@ -31,7 +34,7 @@ module.exports = () => {
             },
             'react-vendors': ['react', 'react-dom']
         },
-        module: Object.assign({}, config.module, {
+        module: Object.assign({}, base.module, {
             rules: [
                 {
                     test: /\.module\.css$/,
@@ -97,3 +100,5 @@ module.exports = () => {
         },
     });
 };
+
+export default config;

@@ -24,7 +24,7 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPick
    };
 
    public fitBounds = (map: MobileMap, sw: [number, number], ne: [number, number]) => {
-      map.camera.current?.fitBounds(sw, ne, 20);
+      map.camera.current?.fitBounds([...sw, ...ne], { padding: { bottom: 20, left: 20, right: 20, top: 20 } });
    }
 
    public fileToText = async (file: DocumentPickerResponse) => RNFS.readFile(file.uri, 'utf8');

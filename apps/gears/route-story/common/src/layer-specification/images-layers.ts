@@ -63,37 +63,51 @@ const inDisplayIconImage: GetProperty = ['get', IMAGE_PROPERTY];
 
 export default {
     thumbnailsOutline: {
-        circleRadius: Math.round(THUMBNAIL_IMAGE_SIZE / 2),
-        circleColor: 'transparent',
-        circleStrokeColor: thumbnailsOutlineStrokeColor,
-        circleStrokeWidth: thumbnailsOutlineStrokeWidth,
-        circleStrokeOpacity: thumbnailDraggingOpacity,
+        paint: {
+            "circle-radius": Math.round(THUMBNAIL_IMAGE_SIZE / 2),
+            'circle-color': 'transparent',
+            'circle-stroke-color': thumbnailsOutlineStrokeColor,
+            'circle-stroke-width': thumbnailsOutlineStrokeWidth,
+            'circle-stroke-opacity': thumbnailDraggingOpacity,
+        },
     },
-    thumbnailsFilter,
     thumbnails: {
-        iconImage: thumbnailIconImage,
-        iconSize: thumbnailIconSize,
-        iconAllowOverlap: true,
-        iconOpacity: thumbnailDraggingOpacity,
+        filter: thumbnailsFilter,
+        layout: {
+            'icon-image': thumbnailIconImage,
+            'icon-size': thumbnailIconSize,
+            'icon-allow-overlap': true,
+        },
+        paint: {
+            'icon-opacity': thumbnailDraggingOpacity,
+        }
     },
-    thumbnailsHighlightOutlineFilter,
     thumbnailsHighlightOutline: {
-        circleRadius: Math.round(THUMBNAIL_IMAGE_SIZE / 2) * 1.1,
-        circleColor: 'transparent',
-        circleStrokeColor: 'green',
-        circleStrokeWidth: 2,
+        filter: thumbnailsHighlightOutlineFilter,
+        paint: {
+            'circle-radius': Math.round(THUMBNAIL_IMAGE_SIZE / 2) * 1.1,
+            'circle-color': 'transparent',
+            'circle-stroke-color': 'green',
+            'circle-stroke-width': 2,
+        },
     },
-    thumbnailsHighlightFilter,
     thumbnailsHighlight: {
-        iconImage: thumbnailIconImage,
-        iconSize: thumbnailIconSize * 1.1,
-        iconAllowOverlap: true,
-        iconOpacity: 1,
+        filter: thumbnailsHighlightFilter,
+        layout: {
+            'icon-image': thumbnailIconImage,
+            'icon-size': thumbnailIconSize * 1.1,
+            'icon-allow-overlap': true,
+        },
+        paint: {
+            'icon-opacity': 1,
+        },
     },
-    getImageInDisplayFilter: (displayImageId: number | null): ComparisonProperty => ['==', ['get', 'imageId'], displayImageId ?? ''],
     imageInDisplay: {
-        iconImage: inDisplayIconImage,
-        iconSize: getImageIconSize(FULL_SIZE_IMAGE_SIZE, THUMBNAIL_IMAGE_SIZE),
-        iconAllowOverlap: true,
+        getFilter: (displayImageId: number | null): ComparisonProperty => ['==', ['get', 'imageId'], displayImageId ?? -1],
+        layout: {
+            'icon-image': inDisplayIconImage,
+            'icon-size': getImageIconSize(FULL_SIZE_IMAGE_SIZE, THUMBNAIL_IMAGE_SIZE),
+            'icon-allow-overlap': true,
+        }
     }
 };

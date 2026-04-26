@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Chronoroute - The Cartographer’s Studio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#feb700",
+                        "on-secondary-fixed-variant": "#5e4200",
+                        "surface-variant": "#353436",
+                        "on-background": "#e5e2e3",
+                        "tertiary-fixed-dim": "#d1bcff",
+                        "outline-variant": "#3b494b",
+                        "surface-dim": "#131314",
+                        "error-container": "#93000a",
+                        "on-secondary": "#412d00",
+                        "surface-container": "#201f20",
+                        "on-error-container": "#ffdad6",
+                        "tertiary": "#faf3ff",
+                        "on-tertiary-fixed": "#23005b",
+                        "surface-container-low": "#1c1b1c",
+                        "inverse-surface": "#e5e2e3",
+                        "on-secondary-container": "#6b4b00",
+                        "on-primary-container": "#006970",
+                        "on-primary-fixed-variant": "#004f54",
+                        "primary-container": "#00f0ff",
+                        "surface": "#131314",
+                        "on-tertiary": "#3c0090",
+                        "surface-container-lowest": "#0e0e0f",
+                        "primary-fixed": "#7df4ff",
+                        "primary": "#dbfcff",
+                        "surface-tint": "#00dbe9",
+                        "error": "#ffb4ab",
+                        "on-primary": "#00363a",
+                        "surface-container-high": "#2a2a2b",
+                        "on-surface": "#e5e2e3",
+                        "secondary-fixed-dim": "#ffba20",
+                        "on-error": "#690005",
+                        "tertiary-fixed": "#e9ddff",
+                        "on-tertiary-container": "#7213ff",
+                        "primary-fixed-dim": "#00dbe9",
+                        "inverse-on-surface": "#313031",
+                        "tertiary-container": "#e1d2ff",
+                        "inverse-primary": "#006970",
+                        "outline": "#849495",
+                        "on-tertiary-fixed-variant": "#5700c9",
+                        "secondary": "#ffdb9d",
+                        "on-secondary-fixed": "#271900",
+                        "surface-bright": "#3a393a",
+                        "on-primary-fixed": "#002022",
+                        "secondary-fixed": "#ffdea8",
+                        "surface-container-highest": "#353436",
+                        "on-surface-variant": "#b9cacb",
+                        "background": "#131314"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "margin": "32px",
+                        "unit": "4px",
+                        "container-max": "1440px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Space Grotesk"],
+                        "body-md": ["Space Grotesk"],
+                        "mono-technical": ["Space Grotesk"],
+                        "headline-xl": ["Space Grotesk"],
+                        "headline-lg": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "mono-technical": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .v-tube-glow {
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.4), inset 0 0 5px rgba(0, 240, 255, 0.2);
+        }
+        .rivet {
+            width: 4px;
+            height: 4px;
+            background: #3b494b;
+            border-radius: 50%;
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0e0e0f; }
+        ::-webkit-scrollbar-thumb { background: #00dbe9; }
+        .blueprint-lines {
+            background-image: linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+            background-size: 100px 100px;
+        }
+        .faint-cityscape {
+            mask-image: linear-gradient(to top, black 20%, transparent 80%);
+            -webkit-mask-image: linear-gradient(to top, black 20%, transparent 80%);
+        }
+        @keyframes slow-rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-slow-rotate {
+            animation: slow-rotate 120s linear infinite;
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden selection:bg-primary-container selection:text-on-primary-container">
+<header class="fixed top-0 w-full z-50 flex flex-col bg-black/90 backdrop-blur-lg border-b border-cyan-900/50 shadow-[0_4_20px_rgba(0,0,0,0.9)]">
+<div class="flex justify-between items-center px-6 h-16">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-cyan-400">settings</span>
+<h1 class="text-xl font-bold tracking-tighter text-cyan-400 drop-shadow-[0_0_8px_rgba(0,240,255,0.8)] font-['Space_Grotesk'] uppercase">CHRONOROUTE</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 px-3 py-1 bg-cyan-400/10 border border-cyan-400/30 rounded-sm">
+<span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+<span class="font-mono-technical text-[10px] text-cyan-400 uppercase tracking-widest">Live Studio Link</span>
+</div>
+<button class="font-['Space_Grotesk'] tracking-widest uppercase text-sm text-cyan-400 hover:bg-cyan-400/20 hover:text-cyan-300 transition-all duration-300 px-4 py-2 border border-cyan-400/30">
+                SAVE MANIFEST
+            </button>
+</div>
+</div>
+<div class="flex items-center h-10 px-6 border-t border-cyan-900/30 bg-[#121214]/95">
+<span class="font-['Space_Grotesk'] text-[10px] uppercase font-bold text-cyan-400 tracking-widest mr-6">TOOLS</span>
+<nav class="flex gap-2">
+<button class="flex items-center justify-center bg-cyan-400/20 text-cyan-400 border border-cyan-400/50 shadow-[0_0_10px_rgba(0,240,255,0.2)] transition-all hover:bg-cyan-400/30 w-10 h-10"><span class="material-symbols-outlined text-sm">near_me</span></button>
+<button class="flex items-center justify-center text-slate-500 border border-transparent hover:border-cyan-900/50 hover:bg-white/5 hover:text-cyan-200 transition-all w-10 h-10"><span class="material-symbols-outlined text-sm">content_cut</span></button>
+<button class="flex items-center justify-center text-slate-500 border border-transparent hover:border-cyan-900/50 hover:bg-white/5 hover:text-cyan-200 transition-all w-10 h-10"><span class="material-symbols-outlined text-sm">linear_scale</span></button>
+<button class="flex items-center justify-center text-slate-500 border border-transparent hover:border-cyan-900/50 hover:bg-white/5 hover:text-cyan-200 transition-all w-10 h-10"><span class="material-symbols-outlined text-sm">anchor</span></button>
+<button class="flex items-center justify-center text-slate-500 border border-transparent hover:border-cyan-900/50 hover:bg-white/5 hover:text-cyan-200 transition-all w-10 h-10"><span class="material-symbols-outlined text-sm">adjust</span></button>
+<button class="flex items-center justify-center text-slate-500 border border-transparent hover:border-cyan-900/50 hover:bg-white/5 hover:text-cyan-200 transition-all w-10 h-10"><span class="material-symbols-outlined text-sm">visibility</span></button>
+</nav>
+</div>
+</header>
+<main class="fixed inset-0 top-[104px] bottom-20 bg-surface-container-lowest overflow-hidden">
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 blueprint-lines opacity-10 pointer-events-none"></div>
+<div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#00f0ff 1px, transparent 0); background-size: 40px 40px;"></div>
+<div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1526778548025-fa2f459cd5ce?auto=format&amp;fit=crop&amp;q=80&amp;w=2000')] bg-cover bg-center mix-blend-overlay grayscale contrast-150 opacity-20 pointer-events-none"></div>
+<div class="absolute inset-0 pointer-events-none overflow-hidden select-none">
+<div class="absolute -bottom-24 -left-24 w-96 h-96 opacity-[0.03] animate-slow-rotate">
+<svg fill="none" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+<circle cx="50" cy="50" r="45" stroke="#00f0ff" stroke-dasharray="2 2" stroke-width="0.5"></circle>
+<circle cx="50" cy="50" r="10" stroke="#00f0ff" stroke-width="0.5"></circle>
+<path d="M50 5 L50 15 M50 85 L50 95 M5 50 L15 50 M85 50 L95 50" stroke="#00f0ff" stroke-width="2"></path>
+</svg>
+</div>
+<div class="absolute bottom-0 right-0 w-full h-1/3 opacity-[0.04] faint-cityscape pointer-events-none flex items-end">
+<svg class="w-full h-full" fill="#00f0ff" preserveAspectRatio="none" viewBox="0 0 1000 200">
+<path d="M0,200 L50,150 L80,180 L120,100 L150,160 L200,80 L250,180 L300,120 L350,190 L400,60 L450,140 L500,90 L550,170 L600,40 L650,150 L700,110 L750,190 L800,70 L850,160 L900,100 L950,180 L1000,200 Z"></path>
+</svg>
+</div>
+</div>
+</div>
+<svg class="absolute inset-0 w-full h-full z-10" fill="none" viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg">
+<path class="drop-shadow-[0_0_8px_rgba(0,240,255,1)]" d="M100 500C150 450 300 550 450 400C600 250 700 350 900 100" stroke="#00f0ff" stroke-dasharray="8 4" stroke-width="2"></path>
+<circle cx="100" cy="500" fill="#00f0ff" r="4"></circle>
+<circle cx="450" cy="400" fill="#00f0ff" r="4"></circle>
+<circle cx="900" cy="100" fill="#00f0ff" r="4"></circle>
+</svg>
+<div class="absolute z-20 top-[400px] left-[650px] -translate-x-1/2 -translate-y-1/2 group">
+<div class="relative w-10 h-10 flex items-center justify-center bg-black/60 backdrop-blur-md border border-cyan-400 rounded-sm cursor-pointer hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-cyan-400" style="font-variation-settings: 'FILL' 1;">image</span>
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-black px-2 py-1 border border-cyan-900 text-[8px] text-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity">IMG_092.RAW</div>
+</div>
+</div>
+<div class="absolute top-8 left-8 z-30 w-64 flex flex-col gap-4">
+<div class="bg-black/60 backdrop-blur-xl border border-cyan-900/50 p-4 rounded-lg relative">
+<div class="absolute top-2 right-2 flex gap-1">
+<div class="rivet"></div><div class="rivet"></div>
+</div>
+<h3 class="text-cyan-400 text-xs font-bold uppercase tracking-widest mb-2 font-mono-technical">Route Vector Data</h3>
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] text-on-surface-variant font-mono-technical">
+<span>LATITUDE</span>
+<span class="text-on-surface">51.5074° N</span>
+</div>
+<div class="flex justify-between text-[10px] text-on-surface-variant font-mono-technical">
+<span>LONGITUDE</span>
+<span class="text-on-surface">0.1278° W</span>
+</div>
+<div class="flex justify-between text-[10px] text-on-surface-variant font-mono-technical">
+<span>VELOCITY</span>
+<span class="text-cyan-400">MACH 0.82</span>
+</div>
+</div>
+</div>
+<div class="bg-black/60 backdrop-blur-xl border border-cyan-900/50 p-4 rounded-lg relative overflow-hidden h-40">
+<div class="absolute inset-0 opacity-10 bg-[url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&amp;fit=crop&amp;q=80&amp;w=400')]"></div>
+<h3 class="text-cyan-400 text-xs font-bold uppercase tracking-widest mb-4 font-mono-technical z-10 relative">System Status</h3>
+<div class="flex items-end justify-between h-16 z-10 relative">
+<div class="w-2 h-12 bg-cyan-900/30 relative"><div class="absolute bottom-0 w-full h-4/5 bg-cyan-400 v-tube-glow"></div></div>
+<div class="w-2 h-12 bg-cyan-900/30 relative"><div class="absolute bottom-0 w-full h-2/5 bg-cyan-400 v-tube-glow"></div></div>
+<div class="w-2 h-12 bg-cyan-900/30 relative"><div class="absolute bottom-0 w-full h-5/6 bg-cyan-400 v-tube-glow"></div></div>
+<div class="w-2 h-12 bg-cyan-900/30 relative"><div class="absolute bottom-0 w-full h-3/4 bg-amber-500 shadow-[0_0_10px_rgba(251,191,36,0.5)]"></div></div>
+<div class="w-2 h-12 bg-cyan-900/30 relative"><div class="absolute bottom-0 w-full h-2/3 bg-cyan-400 v-tube-glow"></div></div>
+</div>
+</div>
+</div>
+</main>
+<footer class="fixed bottom-0 left-0 w-full z-50 h-20 flex bg-gradient-to-t from-black to-[#121214] border-t border-amber-500/30 shadow-[0_-10px_30px_rgba(0,0,0,0.8)] px-8">
+<div class="flex-1 flex items-center justify-between gap-8">
+<div class="flex items-center gap-4">
+<div class="text-[10px] font-mono-technical text-amber-900/60 leading-tight">
+                FRAME<br/>
+<span class="text-amber-500 text-lg">00:42:15</span>
+</div>
+<div class="w-px h-8 bg-amber-900/30"></div>
+</div>
+<div class="flex items-center gap-3">
+<button class="w-8 h-8 flex items-center justify-center border border-cyan-900/50 text-cyan-900 hover:text-cyan-400 hover:border-cyan-400 transition-all">
+<span class="material-symbols-outlined text-sm">layers</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center border border-cyan-900/50 text-cyan-900 hover:text-cyan-400 hover:border-cyan-400 transition-all">
+<span class="material-symbols-outlined text-sm">history</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center border border-cyan-900/50 text-cyan-900 hover:text-cyan-400 hover:border-cyan-400 transition-all">
+<span class="material-symbols-outlined text-sm">info</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center border border-amber-900/50 text-amber-900 hover:text-amber-500 hover:border-amber-500 transition-all">
+<span class="material-symbols-outlined text-sm">warning</span>
+</button>
+</div>
+<div class="w-px h-8 bg-amber-900/20"></div>
+<div class="flex items-center gap-6">
+<button class="text-amber-900/60 hover:text-amber-300 transition-colors">
+<span class="material-symbols-outlined text-2xl">fast_rewind</span>
+</button>
+<button class="text-amber-400 scale-125 drop-shadow-[0_0_10px_rgba(255,191,0,0.6)]">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">play_circle</span>
+</button>
+<button class="text-amber-900/60 hover:text-amber-300 transition-colors">
+<span class="material-symbols-outlined text-2xl">fast_forward</span>
+</button>
+</div>
+<div class="flex-1 relative group h-8 flex items-center min-w-[150px]">
+<div class="absolute inset-x-0 h-px bg-amber-900/40"></div>
+<div class="absolute inset-x-0 h-4 flex justify-between px-2 pointer-events-none">
+<div class="w-px h-full bg-amber-900/20"></div><div class="w-px h-2 bg-amber-900/20 mt-1"></div>
+<div class="w-px h-full bg-amber-900/20"></div><div class="w-px h-2 bg-amber-900/20 mt-1"></div>
+</div>
+<div class="absolute left-1/3 w-px h-12 bg-amber-500 shadow-[0_0_8px_rgba(251,191,36,0.8)] z-10">
+<div class="absolute -top-1 -left-1 w-2 h-2 rotate-45 bg-amber-500"></div>
+</div>
+<div class="absolute left-1/4 w-32 h-1 bg-cyan-400/30 rounded-full"></div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-amber-900/60 hover:text-amber-300">
+<span class="material-symbols-outlined">more_time</span>
+</button>
+<button class="text-amber-900/60 hover:text-amber-300">
+<span class="material-symbols-outlined">analytics</span>
+</button>
+</div>
+</div>
+</footer>
+
+</body></html>

@@ -17,21 +17,22 @@
     "devDependencies": {
         "@bam.tech/react-native-image-resizer": "^3.0.11",
         "@lodev09/react-native-exify": "^1.0.3",
-        "@maplibre/maplibre-react-native": "^10.4.2",
-        "@react-native-community/slider": "^5.1.2",
+        "@maplibre/maplibre-react-native": "11.0.2",
+        "@react-native-community/slider": "^5.2.0",
         "@react-native-documents/picker": "^12.0.1",
         "react": "19.2.3",
-        "react-native": "0.84.1",
+        "react-native": "0.85.2",
         "react-native-fs": "^2.20.0"
     },
     "peerDependencies": {
         "@bam.tech/react-native-image-resizer": "^3.0.11",
         "@lodev09/react-native-exify": "^1.0.3",
-        "@maplibre/maplibre-react-native": "^10.4.2",
-        "@react-native-community/slider": "^5.1.2",
+        "@maplibre/maplibre-react-native": "11.0.2",
+        "@react-native-community/slider": "^5.2.0",
         "@react-native-documents/picker": "^12.0.1",
         "react": "19.2.3",
-        "react-native": "0.84.1",
-        "react-native-fs": "^2.20.0"
+        "react-native": "0.85.2",
+        "react-native-fs": "^2.20.0",
+        "rxjs": "^7.8.2"
     }
 }

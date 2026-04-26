@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { PixelRatio } from "react-native";
-import { CircleLayer, Images, ShapeSource, SymbolLayer } from "@maplibre/maplibre-react-native";
+import { Layer, Images, GeoJSONSource, ImageEntry } from "@maplibre/maplibre-react-native";
 import { Cartomancer, FeatureStateProps, OverlayComponentProps, useStateWarden, useSubjectState } from "@apparatus";
 import {
     getIconImageId,
@@ -40,10 +40,10 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<M
         setSourceDataGeojson(getImageSource(loadedImages, geojson));
     }, [loadedImages, geojson]);
 
-    const imageSources: { [key in string]: { uri: string } } = Object.fromEntries(
+    const imageSources: { [key in string]: ImageEntry } = Object.fromEntries(
         loadedImages.flatMap((loadedImage) => {
-            const thumbnail: [string, { uri: string }] = [getIconImageId(loadedImage, { thumbnail: true }), { uri: loadedImage.data.thumbnail }];
-            const fullSize: [string, { uri: string }] = [getIconImageId(loadedImage), { uri: loadedImage.data.fullSize }];
+            const thumbnail: [string, ImageEntry] = [getIconImageId(loadedImage, { thumbnail: true }), { source: { uri: loadedImage.data.thumbnail } }];
+            const fullSize: [string, ImageEntry] = [getIconImageId(loadedImage), { source: { uri: loadedImage.data.fullSize } }];
 
             if (displayImageId === loadedImage.id) {
                 return [fullSize, thumbnail]
@@ -61,7 +61,7 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<M
         nextPanResponderStartHandlers.set(id, async (lngLat) => {
             const imageFeature = findThumbnailsWithinBuffer(lngLat, cartomancer.zoom$.value, loadedImages, geojson, { devicePixelRatio: PixelRatio.get() })[0];
             if (imageFeature) {
-                map.scrollEnabled$.next(false);
+                map.dragPan$.next(false);
                 draggingImageId$.next(imageFeature.properties.imageId);
             }
         });
@@ -104,7 +104,7 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<M
         nextPanResponderEndHandlers.set(id, async (lngLat) => {
             const dragImId = draggingImageId$.value;
 
-            map.scrollEnabled$.next(true);
+            map.dragPan$.next(true);
             draggingImageId$.next(null);
             setSourceDataGeojson(getImageSource(loadedImages, geojson));
 
@@ -140,35 +140,42 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<M
     return (
         <>
             <Images images={imageSources} />
-            <ShapeSource id={imageSourceIds.thumbnails} shape={sourceDataGeojson}>
-                <CircleLayer
+            <GeoJSONSource id={imageSourceIds.thumbnails} data={sourceDataGeojson}>
+                <Layer
+                    type="circle"
                     id={imageLayerIds.thumbnailsOutline}
-                    style={ImagesLayers.thumbnailsOutline}
+                    paint={ImagesLayers.thumbnailsOutline.paint}
                 />
-                <SymbolLayer
+                <Layer
+                    type="symbol"
                     id={imageLayerIds.thumbnails}
-                    filter={ImagesLayers.thumbnailsFilter}
-                    style={ImagesLayers.thumbnails}
+                    filter={ImagesLayers.thumbnails.filter}
+                    layout={ImagesLayers.thumbnails.layout}
+                    paint={ImagesLayers.thumbnails.paint}
                 />
-                <CircleLayer
+                <Layer
+                    type="circle"
                     id={imageLayerIds.thumbnailsHighlightOutline}
-                    filter={ImagesLayers.thumbnailsHighlightOutlineFilter}
-                    style={ImagesLayers.thumbnailsHighlightOutline}
+                    filter={ImagesLayers.thumbnailsHighlightOutline.filter}
+                    paint={ImagesLayers.thumbnailsHighlightOutline.paint}
                 />
-                <SymbolLayer
+                <Layer
+                    type="symbol"
                     id={imageLayerIds.thumbnailsHighlight}
-                    filter={ImagesLayers.thumbnailsHighlightFilter}
-                    style={ImagesLayers.thumbnailsHighlight}
+                    filter={ImagesLayers.thumbnailsHighlight.filter}
+                    layout={ImagesLayers.thumbnailsHighlight.layout}
+                    paint={ImagesLayers.thumbnailsHighlight.paint}
                 />
-                <SymbolLayer
+                <Layer
+                    type="symbol"
                     id={imageLayerIds.imageInDisplay}
-                    filter={['==', ['get', 'imageId'], displayImageId ?? -1]}
-                    style={{
-                        ...ImagesLayers.imageInDisplay,
-                        iconSize: imageInDisplayIconSize,
+                    filter={ImagesLayers.imageInDisplay.getFilter(displayImageId)}
+                    layout={{
+                        ...ImagesLayers.imageInDisplay.layout,
+                        'icon-size': imageInDisplayIconSize,
                     }}
                 />
-            </ShapeSource>
+            </GeoJSONSource>
         </>
     );
 };

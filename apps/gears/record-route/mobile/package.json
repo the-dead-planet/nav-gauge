@@ -15,13 +15,14 @@
         "@the-dead-planet/nav-gauge-gears-record-route-common": "*"
     },
     "devDependencies": {
-        "@maplibre/maplibre-react-native": "^10.4.2",
+        "@maplibre/maplibre-react-native": "11.0.2",
         "react": "19.2.3",
-        "react-native": "0.84.1"
+        "react-native": "0.85.2"
     },
     "peerDependencies": {
-        "@maplibre/maplibre-react-native": "^10.4.2",
+        "@maplibre/maplibre-react-native": "11.0.2",
         "react": "19.2.3",
-        "react-native": "0.84.1"
+        "react-native": "0.85.2",
+        "rxjs": "^7.8.2"
     }
 }

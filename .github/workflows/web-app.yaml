@@ -32,7 +32,7 @@ jobs:
         working-directory: apps
 
       - name: Run tests
-        run: yarn test:all:web
+        run: yarn test:web
         working-directory: apps
 
   test-e2e:
