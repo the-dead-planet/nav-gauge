@@ -13,7 +13,7 @@
     },
     "scripts": {
         "dev:web": "yarn workspace @the-dead-planet/nav-gauge-app-web dev",
-        "dev:mobile": "yarn workspace @the-dead-planet/nav-gauge-app-mobile dev",
+        "dev:mobile": "yarn workspace @the-dead-planet/nav-gauge-app-mobile android",
         "start:web": "yarn workspace @the-dead-planet/nav-gauge-app-web start",
         "start:mobile": "yarn workspace @the-dead-planet/nav-gauge-app-mobile start",
         "start:mobile:r": "yarn workspace @the-dead-planet/nav-gauge-app-mobile start:r",

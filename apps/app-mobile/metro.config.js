@@ -3,10 +3,15 @@ const path = require('path');
 const fs = require('fs');
 
 const root = path.resolve(__dirname, '..');
+const gearsRoot = path.resolve(root, 'gears');
 
-const gearsWatchFolders = fs
-    .readdirSync(path.resolve(root, 'gears'), { withFileTypes: true })
-    .filter((dir) => dir.isDirectory())
+const gearsDirs = fs
+    .readdirSync(gearsRoot, { withFileTypes: true })
+    .filter((dir) => dir.isDirectory());
+
+// const gearNames = gearsDirs.map((dir) => dir.name);
+
+const gearsWatchFolders = gearsDirs
     .reduce((acc, dir) => {
         acc.push(path.resolve(root, `gears/${dir.name}/common`));
         acc.push(path.resolve(root, `gears/${dir.name}/mobile`));
@@ -14,9 +19,7 @@ const gearsWatchFolders = fs
         return acc;
     }, []);
 
-const extraNodeModules = fs
-    .readdirSync(path.resolve(root, 'gears'), { withFileTypes: true })
-    .filter((dir) => dir.isDirectory())
+const gearsExtraNodeModules = gearsDirs
     .reduce((acc, dir) => {
         acc[`@the-dead-planet/nav-gauge-gears-${dir.name}-common`] = path.resolve(root, `gears/${dir.name}/common/src`);
         acc[`@the-dead-planet/nav-gauge-gears-${dir.name}-mobile`] = path.resolve(root, `gears/${dir.name}/mobile/src`);
@@ -46,7 +49,7 @@ const config = {
             '@tinker-chest': path.resolve(root, 'packages/tinker-chest/src'),
             '@ui': path.resolve(root, 'ui/common/src'),
             '@mobile-ui': path.resolve(root, 'ui/mobile/src'),
-            ...extraNodeModules
+            ...gearsExtraNodeModules
         },
         nodeModulesPaths: [
             path.resolve(__dirname, 'node_modules'),

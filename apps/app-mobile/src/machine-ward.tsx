@@ -1,18 +1,17 @@
 import { Appearance, Dimensions, ScaledSize } from "react-native";
 import { createAsyncStorage } from "@react-native-async-storage/async-storage";
-import { MachineWard, MachineWardComponents, Orientation, OrientationSubscriptionDefinition } from "@apparatus";
+import { MachineGear, MachineWard, MachineWardComponents, Orientation, OrientationSubscriptionDefinition } from "@apparatus";
 import { Footer, Layout, TopBar } from "./layout";
 import { Machine } from "./machine/Machine";
 import { ErrorFallback } from "./ErrorFallback";
 import { NoticesList } from "./notices/NoticesList";
-import { MobileRouteStoryGear } from "@the-dead-planet/nav-gauge-gears-route-story-mobile";
 import { MobileMap } from "@mobile-ui";
 import { MobileChronoLens } from "./chrono-lens";
 
 const AsyncStorage = createAsyncStorage('nav-gauge');
 
 export class MobileMachineWard extends MachineWard<MobileMap> {
-    public constructor() {
+    public constructor(gears: MachineGear<MobileMap>[]) {
         const getOrientation = (window: ScaledSize): Orientation => {
             return window.width > Dimensions.get('window').height
                 ? Orientation.Landscape
@@ -37,12 +36,7 @@ export class MobileMachineWard extends MachineWard<MobileMap> {
         };
 
         super(
-            {
-                "navigate": null,
-                'route-story': MobileRouteStoryGear,
-                "record-route": null,
-                "submit-data": null
-            },
+            gears,
             MobileChronoLens,
             AsyncStorage,
             Appearance.getColorScheme() === 'light',
