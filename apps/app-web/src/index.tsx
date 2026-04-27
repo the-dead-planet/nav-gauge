@@ -11,9 +11,9 @@ const root = createRoot(container!);
 
 async function initializeApp() {
     root.render(<LoadingPage stage="gears" />);
-    
+
     try {
-        const modules = await Promise.allSettled(__GEAR_REGISTRY__.map((name) => import(`../../gears/${name}/web/src`)));
+        const modules = await Promise.allSettled(__GEAR_REGISTRY__.map((gearName) => import(`../../gears/${gearName}/web/src`)));
         const [gears, rejected] = modules
             .reduce<[MachineGear<maplibregl.Map>[], string[]]>(
                 (acc, module, i) => {
