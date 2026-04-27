@@ -1,4 +1,3 @@
-import { ErrorBoundaryProps } from "@ui";
 import * as styles from './pages.module.css';
 import { ErrorInfo, FC } from "react";
 
