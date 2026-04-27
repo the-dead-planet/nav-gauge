@@ -23,6 +23,7 @@
     "exclude": [
         "**/app-web/**/*",
         "**/web/**/*",
+        "**/scripts/**/*",
         "node_modules",
         "**/node_modules",
         "**/Pods"

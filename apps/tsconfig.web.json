@@ -21,6 +21,7 @@
     "exclude": [
         "**/app-mobile/**/*",
         "**/mobile/**/*",
+        "**/scripts/**/*",
         "node_modules",
         "**/node_modules",
         "**/dist",

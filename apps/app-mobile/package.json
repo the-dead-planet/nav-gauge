@@ -12,6 +12,7 @@
     },
     "scripts": {
         "android": "react-native run-android",
+        "dev": "concurrently -n METRO,TSC -c green,blue \"yarn android\" \"yarn typecheck\"",
         "ios": "react-native run-ios",
         "lint": "eslint .",
         "start": "react-native start",
@@ -19,7 +20,8 @@
         "test": "jest",
         "test:e2e": "jest",
         "test:e2e:dev": "jest",
-        "test:e2e:prod": "jest"
+        "test:e2e:prod": "jest",
+        "typecheck": "tsc --noEmit --watch"
     },
     "dependencies": {
         "@bam.tech/react-native-image-resizer": "^3.0.11",
