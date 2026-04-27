@@ -1,7 +1,7 @@
 // import { render } from '@testing-library/react-native';
 // import { MobileMachineWard } from '../src/machine-ward';
 
-// const machineWard = new MobileMachineWard();
+// const machineWard = new MobileMachineWard([]);
 
 test('basic test', () => {
     // render(<App />);

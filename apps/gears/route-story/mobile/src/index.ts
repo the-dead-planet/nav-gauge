@@ -1,1 +1,3 @@
-export * from './route-story-gear';
+import { MobileRouteStoryGear } from "./route-story-gear";
+
+export default MobileRouteStoryGear;

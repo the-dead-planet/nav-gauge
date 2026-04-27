@@ -6,7 +6,7 @@ import { RouteToolProps, RouteTimes, RouteFileInputProps, RouteFitBoundsProps } 
 import { FileOperator } from "./file-operator";
 import { PlayerOperator } from "./player-operator";
 
-export abstract class RouteStoryGear<TMap, TFile extends { name?: string | null; type: string | null; }, TImageData> extends Gear<TMap, 'route-story'> {
+export abstract class RouteStoryGear<TMap, TFile extends { name?: string | null; type: string | null; }, TImageData> extends Gear<TMap> {
     public readonly id = 'route-story';
     private dataSubscription: Subscription | null = null;
     public readonly data$ = new BehaviorSubject<ParsingResultWithError>({});

@@ -1,5 +1,4 @@
-import { MachineWard, MachineWardComponents, Orientation, OrientationSubscriptionDefinition } from "@apparatus";
-import { WebRouteStoryGear } from "@the-dead-planet/nav-gauge-gears-route-story-web";
+import { MachineGear, MachineWard, MachineWardComponents, Orientation, OrientationSubscriptionDefinition } from "@apparatus";
 import { ErrorFallback } from "./ErrorFallback";
 import { Footer, Layout, TopBar } from "./layout";
 import { Machine } from "./machine/Machine";
@@ -7,7 +6,7 @@ import { Notices } from "./notices/Notices";
 import { WebChronoLens } from "@the-dead-planet/nav-gauge-gears-route-story-web/src/chrono-lens/chrono-lens";
 
 export class WebMachineWard extends MachineWard<maplibregl.Map> {
-    public constructor() {
+    public constructor(gears: MachineGear<maplibregl.Map>[]) {
         const getOrientation = (): Orientation => {
             return window.innerWidth > window.innerHeight
                 ? Orientation.Landscape
@@ -29,12 +28,7 @@ export class WebMachineWard extends MachineWard<maplibregl.Map> {
         };
 
         super(
-            {
-                navigate: null,
-                'route-story': WebRouteStoryGear,
-                "record-route": null,
-                "submit-data": null,
-            },
+            gears,
             WebChronoLens,
             localStorage,
             window.matchMedia("(prefers-color-scheme: light)").matches,

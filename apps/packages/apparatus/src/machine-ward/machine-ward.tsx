@@ -5,9 +5,9 @@ import { Individuator, OrientationSubscriptionDefinition } from "./individuator"
 import { ChronoLens } from "../state-warden/chrono-lens";
 import { StateWarden } from "../state-warden";
 import { Engine } from "./engine";
-import { Gear, GearId } from "../gears";
+import { Gear } from "../gears";
 import { StorageKeeper } from "./storage-keeper";
-import { MachineWardComponents } from "./model";
+import { MachineGear, MachineWardComponents } from "./model";
 
 /**
  * Ward with machines. 
@@ -23,7 +23,7 @@ export abstract class MachineWard<TMap = unknown> {
     public readonly engine = new Engine<TMap>();
 
     public constructor(
-        gears: { [K in GearId]: (new (stateWarden: StateWarden<TMap>, individuator: Individuator) => Gear<TMap, K>) | null },
+        gears: MachineGear<TMap>[],
         chronoLens: new (individuator: Individuator) => ChronoLens,
         storage: StorageLike,
         prefersLightColorScheme: boolean,
@@ -34,7 +34,7 @@ export abstract class MachineWard<TMap = unknown> {
         this.stateWarden = new StateWarden<TMap>(new chronoLens(this.individuator));
 
         this.engine.addGears(
-            Object.values(gears).reduce<Gear<TMap, GearId>[]>((acc, Gear) => {
+            gears.reduce<Gear<TMap>[]>((acc, Gear) => {
                 if (Gear) {
                     acc.push(new Gear(this.stateWarden, this.individuator));
                 }

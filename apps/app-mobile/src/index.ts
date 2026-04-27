@@ -1,3 +1,7 @@
+import { MachineGear } from "@apparatus";
+import { MobileMap } from "@mobile-ui";
 import { MobileMachineWard } from "./machine-ward";
 
-export const machineWard = new MobileMachineWard();
+const gears: MachineGear<MobileMap>[] = [];
+
+export const machineWard = new MobileMachineWard(gears);

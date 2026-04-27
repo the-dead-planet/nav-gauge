@@ -1,8 +1,8 @@
 import { Individuator } from "../machine-ward";
 import { StateWarden } from "../state-warden";
 
-export abstract class Gear<TMap, TID extends string = string> {
-    public abstract id: TID;
+export abstract class Gear<TMap> {
+    public abstract id: string;
 
     public stateWarden: StateWarden<TMap>;
     protected individuator: Individuator;

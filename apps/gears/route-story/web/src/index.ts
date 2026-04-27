@@ -1,1 +1,3 @@
-export * from './route-story-gear';
+import { WebRouteStoryGear } from "./route-story-gear";
+
+export default WebRouteStoryGear;
