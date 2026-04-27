@@ -1,5 +1,5 @@
 import { MachineGear, MachineWard, MachineWardComponents, Orientation, OrientationSubscriptionDefinition } from "@apparatus";
-import { ErrorFallback } from "./ErrorFallback";
+import { ErrorFallbackPage } from "./pages";
 import { Footer, Layout, TopBar } from "./layout";
 import { Machine } from "./machine/Machine";
 import { Notices } from "./notices/Notices";
@@ -37,7 +37,7 @@ export class WebMachineWard extends MachineWard<maplibregl.Map> {
     }
 
     public components: MachineWardComponents = {
-        errorFallbackComponent: ErrorFallback,
+        errorFallbackComponent: ErrorFallbackPage,
         layoutComponent: Layout,
         topBarComponent: TopBar,
         machineComponent: Machine,

@@ -1,5 +1,6 @@
 import path from "path";
 import rspack, { Configuration } from "@rspack/core";
+import GearRegistryGenerator from "./rspack.gears";
 
 export type Env = {
     production?: boolean;
@@ -110,6 +111,7 @@ export const baseConfig = (_env: Env, _argv: Argv): Configuration => ({
         ],
     },
     plugins: [
+        new GearRegistryGenerator(),
         new rspack.HtmlRspackPlugin({
             filename: 'index.html',
             template: './src/index.html',
@@ -140,6 +142,7 @@ export const baseConfig = (_env: Env, _argv: Argv): Configuration => ({
         }),
     ],
     output: {
+        uniqueName: 'app',
         filename: '[name].bundle.js',
         chunkFilename: '[name].bundle.js',
         assetModuleFilename: 'static/[name]-[contenthash][ext][query]',
