@@ -41,6 +41,10 @@ func download(urlStr, fileName string) error {
 	}
 	defer res.Body.Close()
 
+	if res.StatusCode < http.StatusOK || res.StatusCode >= http.StatusMultipleChoices {
+		return fmt.Errorf("unexpected HTTP status %d (%s) for URL %q", res.StatusCode, res.Status, parsedURL.String())
+	}
+
 	out, err := os.Create(fileName)
 	if err != nil {
 		return err
