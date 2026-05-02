@@ -50,7 +50,7 @@ func unzip(destination string, fileName string) (string, error) {
 		if file.FileInfo().IsDir() {
 			if i == 0 {
 				directory = file.Name
-				slog.Info("Directory", fileName, directory)
+				slog.Info("Directory", "fileName", fileName, "directory", directory)
 			}
 			os.MkdirAll(filePath, 0o755)
 			continue
