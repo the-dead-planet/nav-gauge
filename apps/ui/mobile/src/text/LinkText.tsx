@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Linking, Pressable, StyleSheet, TextProps } from "react-native";
+import { Linking, Pressable, TextProps } from "react-native";
 import { useTheme } from "@ui";
 import { Text } from "./Text";
 

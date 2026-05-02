@@ -26,7 +26,6 @@ export const FileInputStatus: FC<FileInputStatusProps> = ({
     routeName,
 }) => {
     const theme = useTheme();
-    const stack = getCauseProp('stack', error);
     const cause = getCauseProp('cause', error);
 
     return (
