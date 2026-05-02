@@ -59,7 +59,7 @@ func unzip(destination string, fileName string) (string, error) {
 		err = os.MkdirAll(filepath.Dir(filePath), 0o755)
 		validator.ExitIfError(err, "")
 
-		destinationFile, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, file.Mode())
+		destinationFile, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, file.Mode()&0o777)
 		validator.ExitIfError(err, filePath)
 
 		fileInArchive, err := file.Open()
