@@ -3,12 +3,15 @@ package tiles
 import (
 	"archive/zip"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"os"
 	"overture/validator"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"log/slog"
 
@@ -16,8 +19,23 @@ import (
 )
 
 // Downloads from given url and saves as given file name
-func download(url, fileName string) error {
-	res, err := http.Get(url)
+func download(urlStr, fileName string) error {
+	parsedURL, err := url.Parse(urlStr)
+	if err != nil {
+		return fmt.Errorf("invalid URL: %w", err)
+	}
+	if parsedURL.Scheme != "https" {
+		return fmt.Errorf("invalid URL scheme %q: only https is allowed", parsedURL.Scheme)
+	}
+	if parsedURL.Host == "" {
+		return errors.New("invalid URL: missing host")
+	}
+
+	client := &http.Client{
+		Timeout: 30 * time.Second,
+	}
+
+	res, err := client.Get(parsedURL.String())
 	if err != nil {
 		return err
 	}
