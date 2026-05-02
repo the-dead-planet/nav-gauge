@@ -41,6 +41,10 @@ func download(urlStr, fileName string) error {
 	}
 	defer res.Body.Close()
 
+	if res.StatusCode < http.StatusOK || res.StatusCode >= http.StatusMultipleChoices {
+		return fmt.Errorf("unexpected HTTP status %d (%s) for URL %q", res.StatusCode, res.Status, parsedURL.String())
+	}
+
 	out, err := os.Create(fileName)
 	if err != nil {
 		return err
@@ -58,11 +62,13 @@ func unzip(destination string, fileName string) (string, error) {
 	defer archive.Close()
 
 	var directory string
+	cleanDestination := filepath.Clean(destination)
+	destinationPrefix := cleanDestination + string(os.PathSeparator)
 
 	for i, file := range archive.File {
-		filePath := filepath.Join(destination, file.Name)
+		filePath := filepath.Clean(filepath.Join(destination, file.Name))
 
-		if !strings.HasPrefix(filePath, filepath.Clean(destination)+string(os.PathSeparator)) {
+		if !(filePath == cleanDestination || strings.HasPrefix(filePath, destinationPrefix)) {
 			return "", errors.New("invalid path")
 		}
 		if file.FileInfo().IsDir() {
@@ -70,7 +76,8 @@ func unzip(destination string, fileName string) (string, error) {
 				directory = file.Name
 				slog.Info("Directory", "fileName", fileName, "directory", directory)
 			}
-			os.MkdirAll(filePath, 0o755)
+			err = os.MkdirAll(filePath, 0o755)
+			validator.ExitIfError(err, filePath)
 			continue
 		}
 
