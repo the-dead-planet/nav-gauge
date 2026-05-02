@@ -70,7 +70,8 @@ func unzip(destination string, fileName string) (string, error) {
 				directory = file.Name
 				slog.Info("Directory", "fileName", fileName, "directory", directory)
 			}
-			os.MkdirAll(filePath, 0o755)
+			err = os.MkdirAll(filePath, 0o755)
+			validator.ExitIfError(err, filePath)
 			continue
 		}
 
