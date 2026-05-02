@@ -19,6 +19,8 @@ export class StateWarden<TMap = unknown> {
     private toolsStationPresetSubscription: Subscription | null = null;
     private toolsStationPresetActiveSubscription: Subscription | null = null;
 
+    private attributionVaultSubscription: Subscription | null = null;
+
     public constructor(chronoLens: ChronoLens) {
         this.animatrix = new Animatrix();
         this.cartomancer = new Cartomancer();
@@ -47,8 +49,6 @@ export class StateWarden<TMap = unknown> {
         this.toolsStationPresetSubscription?.unsubscribe();
         this.attributionVaultSubscription?.unsubscribe();
     };
-
-    private attributionVaultSubscription: Subscription | null = null;
 
     private subscribeAttributionVault = (): Subscription => {
         const addEntry = (styleId: keyof typeof Cartomancer.styles) => {

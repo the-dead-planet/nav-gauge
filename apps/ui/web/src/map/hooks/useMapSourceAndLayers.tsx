@@ -60,7 +60,8 @@ export const useMapSourceAndLayers = (
         const existing = layerOrder.filter(id => map.getLayer(id));
 
         for (let i = existing.length - 1; i >= 0; i--) {
-            map.moveLayer(existing[i], existing[i + 1]);
+            const beforeId = i + 1 < existing.length ? existing[i + 1] : undefined;
+            map.moveLayer(existing[i], beforeId);
         }
     };
 
@@ -82,7 +83,7 @@ export const useMapSourceAndLayers = (
         const { sourceId, source, layers, handlers } = data;
         const { buffer = Cartomancer.interactionBufferPx } = data.handlers?.options ?? {};
 
-       addSourceAndLayers(sourceId, source, layers);
+        addSourceAndLayers(sourceId, source, layers);
 
         const queryFeatures = (event: maplibregl.MapMouseEvent | maplibregl.MapTouchEvent): {
             features: maplibregl.MapGeoJSONFeature[];

@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    mapContainter: {
+    mapContainer: {
         flex: 1
     },
     backgroundMap: {
@@ -79,7 +79,7 @@ export const MapTools: FC<Props> = ({ map, children }) => {
                 {[...controlComponents.entries()].map(([id, ControlComponent]) => <ControlComponent key={id} />)}
             </View>
 
-            <View style={styles.mapContainter}>
+            <View style={styles.mapContainer}>
                 <View style={styles.backgroundMap} {...panResponder.panHandlers}>
                     {children}
                 </View>
