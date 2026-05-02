@@ -58,11 +58,13 @@ func unzip(destination string, fileName string) (string, error) {
 	defer archive.Close()
 
 	var directory string
+	cleanDestination := filepath.Clean(destination)
+	destinationPrefix := cleanDestination + string(os.PathSeparator)
 
 	for i, file := range archive.File {
-		filePath := filepath.Join(destination, file.Name)
+		filePath := filepath.Clean(filepath.Join(destination, file.Name))
 
-		if !strings.HasPrefix(filePath, filepath.Clean(destination)+string(os.PathSeparator)) {
+		if !(filePath == cleanDestination || strings.HasPrefix(filePath, destinationPrefix)) {
 			return "", errors.New("invalid path")
 		}
 		if file.FileInfo().IsDir() {
