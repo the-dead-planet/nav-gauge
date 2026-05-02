@@ -1,8 +1,8 @@
 import { FC } from "react";
-import { MachineWardFooterProps, useStateWarden, useSubjectState } from "@apparatus";
+import { useStateWarden, useSubjectState } from "@apparatus";
 import * as styles from './layout.module.css';
 
-export const Footer: FC<MachineWardFooterProps> = () => {
+export const Footer: FC = () => {
     const stateWarden = useStateWarden();
     const [attrributions] = useSubjectState(stateWarden.attributionVault.attributions$);
 

@@ -68,7 +68,9 @@ func unzip(destination string, fileName string) (string, error) {
 		_, err = io.Copy(destinationFile, fileInArchive)
 		validator.ExitIfError(err, "copy file")
 
-		destinationFile.Close()
+		err = destinationFile.Close()
+		validator.ExitIfError(err, filePath)
+
 		fileInArchive.Close()
 	}
 
