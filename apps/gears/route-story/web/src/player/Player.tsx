@@ -44,7 +44,7 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<m
                 updateRouteLayer(map, line, currentPoint);
             }
         )
-    }
+    };
 
     const getPosition = (featureId: number) => {
         const feature = geojson?.features.find((feature) => feature.properties.id === featureId);

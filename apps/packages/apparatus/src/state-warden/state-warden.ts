@@ -5,7 +5,7 @@ import { Cartomancer } from "./cartomancer";
 import { ChronoLens } from "./chrono-lens";
 import { SignaliumBureau } from "./signalium-bureau";
 import { ToolsStation } from "./tools-station";
-import { Individuator, StorageKeeper } from "../machine-ward";
+import { StorageKeeper } from "../machine-ward";
 
 /**
  * Warden does what warden needs to do.

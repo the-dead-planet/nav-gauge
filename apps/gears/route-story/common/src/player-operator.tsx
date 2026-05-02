@@ -130,7 +130,7 @@ export class PlayerOperator<TMap, TFile extends { name?: string | null; type: st
                 const bearingDiff = ((nextBearing - currentBearing + 540) % 360) - 180;
                 const bearing = currentBearing + Math.max(-maxBearingDiffPerFrame, Math.min(maxBearingDiffPerFrame, bearingDiff));
 
-                onUpdateMapCamera(lngLat, bearing)
+                onUpdateMapCamera(lngLat, bearing);
             }
 
             // TODO: Calculate % of geometry done based on current progressMs and update paint property line gradient instead of all data.

@@ -104,7 +104,7 @@ export class WebChronoLens extends ChronoLens {
         });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
-        a.id = "download-action"
+        a.id = "download-action";
         a.style = "display: none";
         a.href = url;
         document.body.appendChild(a);

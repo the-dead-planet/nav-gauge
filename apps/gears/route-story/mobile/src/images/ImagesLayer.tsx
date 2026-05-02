@@ -30,7 +30,7 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<M
 }) => {
     const { animatrix, cartomancer } = useStateWarden();
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
-    const [{ geojson }, setData] = useSubjectState(data$);
+    const [{ geojson }] = useSubjectState(data$);
     const [images] = useSubjectState(images$);
     const loadedImages = useLoadedMobileImages(images);
 

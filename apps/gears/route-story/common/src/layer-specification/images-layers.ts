@@ -1,7 +1,7 @@
 import { FeatureStateProps } from "@apparatus";
 import { DRAGGED_IMAGE_ID, IMAGE_PROPERTY, IMAGE_THUMBNAIL_PROPERTY } from "./images-sources";
 import { getImageIconSize, FULL_SIZE_IMAGE_SIZE, THUMBNAIL_IMAGE_SIZE, MAP_THUMBNAIL_SIZE } from "../images";
-import { ComparisonProperty, GetProperty, CaseFeatureStateCondition, CaseFeatureStateOrPropertyCondition } from "./model";
+import { ComparisonProperty, GetProperty, CaseFeatureStateOrPropertyCondition } from "./model";
 import { BehaviorSubject } from "rxjs";
 
 export const imageSourceIds = {

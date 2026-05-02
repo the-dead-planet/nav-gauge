@@ -207,7 +207,7 @@ export const MapTools: FC<Props> = ({ map, children }) => {
     }, [isInitialised]);
 
     const toolComponents = useObservableState(toolsStation.toolComponentsByPlacement$, []);
-    const toolsByPlacement = toolsStation.getToolsByPlacement(toolComponents)
+    const toolsByPlacement = toolsStation.getToolsByPlacement(toolComponents);
 
     return (
         <div className={styles["container"]}>
