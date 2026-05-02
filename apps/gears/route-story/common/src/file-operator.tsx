@@ -66,7 +66,7 @@ export class FileOperator<TMap, TFile extends { name?: string | null; type: stri
                     ?.parse(text);
 
                 this.gear.data$.next(result ?? { error: new Error('No parser found for file.') });
-                currentGeojson = result?.geojson
+                currentGeojson = result?.geojson;
             }
 
             imageFiles.forEach((file) => this.gear.readImage(file, currentGeojson));

@@ -34,7 +34,7 @@ export const MapTools: FC<Props> = ({ map, children }) => {
     const { toolsStation } = useStateWarden();
     const [controlComponents] = useSubjectState(toolsStation.controlComponents$);
     const toolComponents = useObservableState(toolsStation.toolComponentsByPlacement$, []);
-    const toolsByPlacement = toolsStation.getToolsByPlacement(toolComponents)
+    const toolsByPlacement = toolsStation.getToolsByPlacement(toolComponents);
     const [onPanResponderStartHandlers] = useSubjectState(map.onPanResponderStartHandlers$);
     const [onPanResponderMoveHandlers] = useSubjectState(map.onPanResponderMoveHandlers$);
     const [onPanResponderEndHandlers] = useSubjectState(map.onPanResponderEndHandlers$);

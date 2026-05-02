@@ -86,7 +86,7 @@ const getCurrentPoint = (
     const currentPoint = { ...currentLineEnd };
 
     if (!('featureId' in currentPoint.properties)) {
-        currentPoint.geometry = turfAlong(line, totalDistanceMeters * fraction, { units: 'meters' }).geometry
+        currentPoint.geometry = turfAlong(line, totalDistanceMeters * fraction, { units: 'meters' }).geometry;
     };
 
     const currentPointSpeed = (totalDistanceMeters) / (totalTimeMs / 3600);

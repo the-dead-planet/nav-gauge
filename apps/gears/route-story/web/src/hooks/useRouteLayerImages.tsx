@@ -48,7 +48,7 @@ export const useRouteLayerImages = (
                         map.removeImage(iconImageName);
                     }
                     map.addImage(iconImageName, image, metadata);
-                }
+                };
 
                 image.src = data.data;
             } else {

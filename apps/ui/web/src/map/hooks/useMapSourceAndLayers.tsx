@@ -82,7 +82,7 @@ export const useMapSourceAndLayers = (
         const { sourceId, source, layers, handlers } = data;
         const { buffer = Cartomancer.interactionBufferPx } = data.handlers?.options ?? {};
 
-        addSourceAndLayers(sourceId, source, layers)
+       addSourceAndLayers(sourceId, source, layers);
 
         const queryFeatures = (event: maplibregl.MapMouseEvent | maplibregl.MapTouchEvent): {
             features: maplibregl.MapGeoJSONFeature[];
