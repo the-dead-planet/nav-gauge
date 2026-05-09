@@ -23,7 +23,7 @@ const config = (env: Env, argv: Argv): Configuration => {
                         {
                             loader: rspack.CssExtractRspackPlugin.loader,
                             options: {
-                                esModule: false,
+                                esModule: true,
                             },
                         },
                         {
@@ -31,12 +31,15 @@ const config = (env: Env, argv: Argv): Configuration => {
                             options: {
                                 esModule: false,
                                 modules: process.env.NODE_ENV === "production" ? {
+                                    mode: "local",
                                     localIdentName: "[hash:base64:5]",
-                                    namedExport: false
+                                    namedExport: false,
+                                    exportLocalsConvention: "camelCase",
                                 } : {
                                     mode: "local",
                                     localIdentName: "[name]---[local]---[hash:base64:5]",
-                                    namedExport: false
+                                    namedExport: false,
+                                    exportLocalsConvention: "camelCase",
                                 },
                             },
                         },
