@@ -62,12 +62,12 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mobile
                 </Text>
                 <Button
                     title={isPlaying ? 'Pause' : 'Play'}
-                    color={theme.colors.button}
+                    color={theme.componentColor('button')}
                     onPress={playerOperator.onPlay}
                 />
                 <Button
                     title={`${surveillanceState === SurveillanceState.Stopped ? 'Start' : 'Stop'} recording`}
-                    color={theme.colors.button}
+                    color={theme.componentColor('button')}
                     onPress={playerOperator.onRecord}
                 />
                 <Text>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .recessed-hole {
+            box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.8), inset -2px -2px 4px rgba(255, 255, 255, 0.05);
+        }
+        .mechanical-box {
+            background: linear-gradient(145deg, #1a1c1e, #0d0f11);
+            border: 1px solid #2a2d31;
+        }
+        .brass-pipe {
+            background: linear-gradient(to right, #3d2b1f, #8b5e34, #b8860b, #5d3a1a);
+        }
+        .copper-bolt {
+            background: radial-gradient(circle at 30% 30%, #b87333, #3d2b1f);
+            border: 1px solid #1a110a;
+        }
+        .glass-panel {
+            background: rgba(10, 15, 18, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(118, 214, 213, 0.2);
+        }
+        .mercury-fill {
+            background: linear-gradient(to top, #b93bba, #ffaaf7);
+            box-shadow: 0 0 15px rgba(255, 170, 247, 0.5);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary": "#003737",
+                      "inverse-on-surface": "#2c3131",
+                      "secondary": "#e6c443",
+                      "on-surface-variant": "#bdc9c8",
+                      "error-container": "#93000a",
+                      "surface-bright": "#353a3a",
+                      "primary-container": "#008080",
+                      "on-surface": "#dfe3e2",
+                      "error": "#ffb4ab",
+                      "tertiary-fixed": "#ffd7f7",
+                      "surface-container-low": "#181c1c",
+                      "secondary-fixed-dim": "#e6c443",
+                      "on-tertiary-container": "#fff7f9",
+                      "tertiary-fixed-dim": "#ffaaf7",
+                      "surface-variant": "#313635",
+                      "secondary-container": "#ac8e01",
+                      "primary-fixed": "#93f2f2",
+                      "on-error": "#690005",
+                      "on-background": "#dfe3e2",
+                      "tertiary-container": "#b93bba",
+                      "surface-container": "#1c2020",
+                      "primary": "#76d6d5",
+                      "secondary-fixed": "#ffe179",
+                      "outline-variant": "#3e4949",
+                      "on-tertiary-fixed-variant": "#800084",
+                      "on-primary-fixed": "#002020",
+                      "background": "#101414",
+                      "tertiary": "#ffaaf7",
+                      "surface-container-highest": "#313635",
+                      "on-secondary-fixed": "#231b00",
+                      "inverse-surface": "#dfe3e2",
+                      "on-error-container": "#ffdad6",
+                      "on-secondary": "#3b2f00",
+                      "surface": "#101414",
+                      "surface-container-high": "#262b2b",
+                      "on-secondary-fixed-variant": "#554500",
+                      "inverse-primary": "#006a6a",
+                      "primary-fixed-dim": "#76d6d5",
+                      "on-tertiary": "#5a005d",
+                      "on-primary-container": "#e3fffe",
+                      "surface-container-lowest": "#0a0f0f",
+                      "surface-dim": "#101414",
+                      "outline": "#879392",
+                      "on-tertiary-fixed": "#380039",
+                      "surface-tint": "#76d6d5",
+                      "on-primary-fixed-variant": "#004f4f",
+                      "on-secondary-container": "#332900"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-padding": "16px",
+                      "margin": "12px",
+                      "unit": "4px",
+                      "gutter": "8px"
+              },
+              "fontFamily": {
+                      "mono-data": ["Space Grotesk"],
+                      "label-caps": ["Space Grotesk"],
+                      "body-md": ["Space Grotesk"],
+                      "headline-lg": ["Space Grotesk"],
+                      "headline-md": ["Space Grotesk"]
+              },
+              "fontSize": {
+                      "mono-data": ["12px", {"lineHeight": "16px", "letterSpacing": "0em", "fontWeight": "500"}],
+                      "label-caps": ["11px", {"lineHeight": "14px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "body-md": ["13px", {"lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                      "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "headline-md": ["18px", {"lineHeight": "24px", "letterSpacing": "0.02em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden h-screen w-screen">
+<!-- Top Navigation Bar -->
+<header class="bg-[#0a0f12]/90 backdrop-blur-md docked full-width top-0 border-b-2 border-[#1a2426] border-b border-teal-900/40 shadow-[0_4px_20px_rgba(0,0,0,0.8)] flex justify-between items-center w-full px-6 py-2 z-50 fixed">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-teal-500">visibility</span>
+<h1 class="font-mono-data text-mono-data tracking-widest uppercase font-bold text-xs text-teal-500">REALITY_INTEGRITY_STABILITY: 98.4%</h1>
+</div>
+<div class="flex items-center gap-8">
+<div class="flex flex-col items-end">
+<span class="text-[10px] text-teal-800 font-label-caps tracking-widest">ACTIVE_UNITS</span>
+<span class="text-secondary font-mono-data font-bold">14,209 M_TILES</span>
+</div>
+<span class="material-symbols-outlined text-teal-800 hover:text-pink-500 hover:scale-105 transition-all cursor-pointer">settings_suggest</span>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="relative w-full h-full pt-12 pb-16">
+<!-- Full-screen 3D Surveillance Map Representation -->
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-60" data-alt="A sophisticated 3D wireframe topographic map of a dense urban metropolis, glowing in holographic teal and pink neon. The scene is viewed from a high-altitude surveillance perspective with architectural silhouettes rendered in translucent glass. The atmosphere is dark and industrial, punctuated by floating data clusters and tactical monitoring points that emit a soft mustard yellow light against a deep black background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBT_KyiBU6xQK_Xpbvx1naXzpryrBOQxjOTYeWH0uXh4OR7pyeIPJn7u9M1aKJ_eiTbgpkPbxSfhEnKJrLePE2o30iLbCzBCw3qmV7IduedjWMoz9O-VcTSW2eZkgx3xl2-oq_8ud6oST91gKczXqGQgwPspIm8Rr2piqRqvrxlSX-c3GPX6UnqahTfmGFBvmFIsp5-w_PR9tVR5MCcQaYvBhNVpmvVkGJ2y5g8pLHG7lss7M06q_qVe-LqsEL81wQ_8XD8Oya6EMsI"/>
+<div class="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none"></div>
+</div>
+<!-- Left Side Tactical Gauges -->
+<div class="absolute left-6 top-24 z-20 flex flex-col gap-6">
+<div class="glass-panel p-4 rounded-lg w-48 shadow-2xl relative overflow-hidden">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-caps text-teal-400 text-[10px]">OSC_LEVELS</span>
+<span class="material-symbols-outlined text-secondary text-sm">bolt</span>
+</div>
+<div class="h-32 w-full flex items-end gap-2 bg-black/40 p-2 recessed-hole">
+<div class="w-full h-3/4 mercury-fill"></div>
+<div class="w-full h-1/2 mercury-fill"></div>
+<div class="w-full h-4/5 mercury-fill"></div>
+<div class="w-full h-2/3 mercury-fill"></div>
+</div>
+<div class="mt-2 text-[10px] font-mono-data text-teal-700 uppercase">Fluctuation: 0.04hz</div>
+</div>
+<div class="glass-panel p-4 rounded-lg w-48 shadow-2xl">
+<div class="font-label-caps text-teal-400 text-[10px] mb-3">SECTOR_LOAD</div>
+<div class="relative h-24 w-24 mx-auto">
+<svg class="transform -rotate-90 w-24 h-24">
+<circle class="text-[#1a1a1a]" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-secondary" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" stroke-dasharray="251.2" stroke-dashoffset="62.8" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center font-mono-data text-lg text-secondary font-bold">75%</div>
+</div>
+</div>
+</div>
+<!-- Center Overlay Widgets -->
+<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+<div class="w-[600px] h-[400px] border border-teal-500/30 rounded-full flex items-center justify-center relative">
+<div class="absolute w-full h-[1px] bg-teal-500/20"></div>
+<div class="absolute h-full w-[1px] bg-teal-500/20"></div>
+<div class="w-24 h-24 border-2 border-secondary/50 rounded-full animate-pulse shadow-[0_0_20px_rgba(230,196,67,0.3)]"></div>
+</div>
+</div>
+<!-- The Right Toolbar: Mechanical 3D Box -->
+<aside class="fixed right-0 top-12 h-[calc(100vh-96px)] w-24 z-40 flex items-center justify-center">
+<!-- Brass Pipes Decoration -->
+<div class="absolute right-10 top-0 bottom-0 w-2 brass-pipe rounded-full shadow-lg"></div>
+<div class="absolute right-4 top-10 bottom-10 w-3 brass-pipe rounded-full shadow-lg"></div>
+<div class="mechanical-box h-[80%] w-16 rounded-xl flex flex-col items-center justify-start py-8 gap-6 shadow-[-10px_0_30px_rgba(0,0,0,0.9)] relative">
+<!-- Copper Bolts -->
+<div class="absolute -top-1 -left-1 w-3 h-3 copper-bolt rounded-full shadow-md"></div>
+<div class="absolute -top-1 -right-1 w-3 h-3 copper-bolt rounded-full shadow-md"></div>
+<div class="absolute -bottom-1 -left-1 w-3 h-3 copper-bolt rounded-full shadow-md"></div>
+<div class="absolute -bottom-1 -right-1 w-3 h-3 copper-bolt rounded-full shadow-md"></div>
+<!-- Navigation Slots -->
+<div class="recessed-hole w-12 h-12 flex items-center justify-center bg-[#1a1a1a] shadow-[inset_0_2px_10px_rgba(0,0,0,1)] rounded-md cursor-pointer transition-transform duration-300">
+<span class="material-symbols-outlined text-yellow-500 drop-shadow-[0_0_5px_rgba(234,179,8,0.8)]" style="font-variation-settings: 'FILL' 1;">radar</span>
+</div>
+<div class="recessed-hole w-12 h-12 flex items-center justify-center hover:bg-[#151515] transition-all group rounded-md cursor-pointer">
+<span class="material-symbols-outlined text-teal-900 group-hover:text-teal-200">sensors</span>
+</div>
+<div class="recessed-hole w-12 h-12 flex items-center justify-center hover:bg-[#151515] transition-all group rounded-md cursor-pointer">
+<span class="material-symbols-outlined text-teal-900 group-hover:text-teal-200">precision_manufacturing</span>
+</div>
+<div class="recessed-hole w-12 h-12 flex items-center justify-center hover:bg-[#151515] transition-all group rounded-md cursor-pointer">
+<span class="material-symbols-outlined text-teal-900 group-hover:text-teal-200">settings_input_component</span>
+</div>
+<div class="mt-auto">
+<div class="w-10 h-[1px] bg-teal-900/40 mb-4 mx-auto"></div>
+<div class="recessed-hole w-12 h-12 flex items-center justify-center hover:bg-[#151515] transition-all group rounded-md cursor-pointer">
+<span class="material-symbols-outlined text-pink-500">warning</span>
+</div>
+</div>
+</div>
+</aside>
+</main>
+<!-- Bottom Temporal Console -->
+<footer class="fixed bottom-0 left-0 w-full h-20 bg-[#0a0f12] border-t-2 border-[#1a2426] shadow-[0_-10px_40px_rgba(0,0,0,0.7)] z-50 flex items-center px-12 gap-8">
+<div class="flex items-center gap-4 min-w-[150px]">
+<span class="material-symbols-outlined text-teal-800 hover:text-yellow-400 cursor-pointer transition-all">fast_rewind</span>
+<div class="bg-pink-500/20 p-2 rounded-full border border-pink-500/50 cursor-pointer active:scale-90 duration-150">
+<span class="material-symbols-outlined text-pink-500 drop-shadow-[0_0_12px_rgba(236,72,153,0.9)] scale-125" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+<span class="material-symbols-outlined text-teal-800 hover:text-yellow-400 cursor-pointer transition-all">fast_forward</span>
+</div>
+<!-- Temporal Slider -->
+<div class="flex-grow flex flex-col gap-1">
+<div class="flex justify-between font-mono-data text-[10px] text-teal-700">
+<span>T-MINUS 04:22:11</span>
+<span class="text-secondary">REAL-TIME SYNC</span>
+<span>T-PLUS 00:00:00</span>
+</div>
+<div class="relative w-full h-4 bg-black rounded-full border border-teal-900/20 overflow-hidden recessed-hole">
+<div class="absolute top-0 left-0 h-full w-[65%] bg-gradient-to-r from-teal-900 via-teal-500 to-pink-500"></div>
+<div class="absolute top-0 left-[65%] w-1 h-full bg-white shadow-[0_0_10px_white] z-10"></div>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-teal-800 hover:text-yellow-400 cursor-pointer">route</span>
+<span class="text-[9px] font-label-caps text-teal-900">PATH</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-teal-800 hover:text-yellow-400 cursor-pointer">navigation</span>
+<span class="text-[9px] font-label-caps text-teal-900">AUTO</span>
+</div>
+</div>
+</footer>
+<!-- Status Tags -->
+<div class="fixed top-20 right-28 z-30 flex flex-col gap-2">
+<div class="bg-secondary text-on-secondary text-[10px] font-bold px-3 py-1 rounded-sm shadow-lg border-t border-white/20 uppercase tracking-tighter">
+            Operational_Priority: High
+        </div>
+<div class="bg-[#1a1a1a] border border-teal-500/50 text-teal-500 text-[10px] font-bold px-3 py-1 rounded-sm shadow-lg uppercase tracking-tighter">
+            Signal: Stabilized
+        </div>
+</div>
+</body></html>

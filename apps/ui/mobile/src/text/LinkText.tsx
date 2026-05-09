@@ -15,7 +15,7 @@ export const LinkText: FC<LinkTextProps> = ({ href, children, ...props }) => {
             onPressOut={() => Linking.openURL(href)}
             style={({ pressed }) => ({
                 borderBottomWidth: 1,
-                borderBottomColor: pressed ? theme.colors.text : 'transparent'
+                borderBottomColor: pressed ? theme.colors.componentstext : 'transparent'
             })}
         >
             <Text {...props}>

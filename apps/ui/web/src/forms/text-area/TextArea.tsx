@@ -1,5 +1,5 @@
 import { FC, DetailedHTMLProps, TextareaHTMLAttributes, MouseEvent } from "react";
-import * as styles from './text-area.module.css';
+import styles from './text-area.module.css';
 
 interface Props {
     label: string;

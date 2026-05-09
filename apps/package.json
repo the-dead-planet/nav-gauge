@@ -12,6 +12,8 @@
         "url": "https://github.com/the-dead-planet/nav-gauge/issues"
     },
     "scripts": {
+        "ui:web": "yarn workspace @the-dead-planet/nav-gauge-ui-web storybook",
+        "ui:build:web": "yarn workspace @the-dead-planet/nav-gauge-ui-web build-storybook",
         "dev:web": "yarn workspace @the-dead-planet/nav-gauge-app-web dev",
         "dev:mobile": "yarn workspace @the-dead-planet/nav-gauge-app-mobile android",
         "start:web": "yarn workspace @the-dead-planet/nav-gauge-app-web start",

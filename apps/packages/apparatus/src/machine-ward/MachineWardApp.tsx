@@ -1,5 +1,5 @@
 import { StrictMode, useEffect, useMemo } from "react";
-import { ErrorBoundary, ThemeContext, themes } from "@ui";
+import { ErrorBoundary, Theme, ThemeContext, themeSpecifications } from "@ui";
 import { MachineWardNotices } from "./MachineWardNotices";
 import { StateWarden, StateWardenContext } from "../state-warden";
 import { Individuator } from "./individuator";
@@ -48,9 +48,14 @@ export function MachineWardApp<TMap>({
         };
     }, []);
 
+    const theme = useMemo(
+        () => new Theme(themeSpecifications[settings.themeName]),
+        [settings.themeName],
+    );
+
     return (
         <StrictMode>
-            <ThemeContext.Provider value={themes[settings.themeName]}>
+            <ThemeContext.Provider value={theme}>
                 <ErrorBoundary fallbackComponent={components.errorFallbackComponent}>
                     <MachineWardContext.Provider value={machineWardContextValue}>
                         <StateWardenContext.Provider value={stateWarden as StateWarden}>

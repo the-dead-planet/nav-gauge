@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { getCauseProp } from "@ui";
-import * as styles from './file-input-status.module.css';
+import styles from './file-input-status.module.css';
 
 interface Props {
     isLoading?: boolean;

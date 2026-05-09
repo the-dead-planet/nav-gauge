@@ -1,17 +1,36 @@
 import { FC, useEffect } from "react";
 import { MachineWardLayoutProps } from "@apparatus";
-import { useTheme } from "@ui";
+import { allShades, DesignSystemColor, PaletteColor, ThemeComponentColor, useTheme } from "@ui";
 import './app.css';
 
 export const Layout: FC<MachineWardLayoutProps> = ({ children }) => {
     const theme = useTheme();
 
     useEffect(() => {
-        for (const [key, value] of Object.entries(theme.colors)) {
-            document.documentElement.style.setProperty(`--${key}-color`, value);
+        for (const [key] of Object.entries(theme.componentColors)) {
+            const componentColorName = key as ThemeComponentColor;
+            document.documentElement.style.setProperty(
+                `--${componentColorName}-color`,
+                theme.componentColor(componentColorName)
+            );
         }
-        document.body.setAttribute("data-theme", theme.themeName);
-    }, [theme.themeName]);
+        
+        for (const [key] of Object.entries(theme.colors)) {
+            const colorName = key as PaletteColor | DesignSystemColor;
+            document.documentElement.style.setProperty(
+                `--${colorName}-color`,
+                theme.color(colorName, 500)
+            );
+
+            for (const shade of allShades) {
+                document.documentElement.style.setProperty(
+                    `--${colorName}-color-${shade}`,
+                    theme.color(colorName, shade)
+                );
+            }
+        }
+        document.body.setAttribute("data-theme", theme.name);
+    }, [theme.name]);
 
     return children;
 }

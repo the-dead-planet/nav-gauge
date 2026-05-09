@@ -3,7 +3,7 @@ import { FileInputStatus } from "@web-ui";
 import { useSubjectState, parsers } from "@apparatus";
 import { RouteFileInputProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { WebMarkerImageData } from "../images/image-parser";
-import * as styles from './file-input.module.css';
+import styles from './file-input.module.css';
 
 export const RouteStoryFileInput: FC<RouteFileInputProps<maplibregl.Map, File, WebMarkerImageData>> = ({
     data$,

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#002020",
+                        "secondary-fixed": "#ffe179",
+                        "on-secondary-fixed": "#231b00",
+                        "surface-bright": "#353a3a",
+                        "on-secondary": "#3b2f00",
+                        "primary-fixed-dim": "#76d6d5",
+                        "inverse-primary": "#006a6a",
+                        "on-tertiary-fixed-variant": "#800084",
+                        "on-primary-fixed-variant": "#004f4f",
+                        "on-background": "#dfe3e2",
+                        "tertiary-fixed": "#ffd7f7",
+                        "surface-container": "#1c2020",
+                        "primary": "#76d6d5",
+                        "surface-container-low": "#181c1c",
+                        "on-surface": "#dfe3e2",
+                        "on-primary-container": "#e3fffe",
+                        "tertiary-fixed-dim": "#ffaaf7",
+                        "on-tertiary": "#5a005d",
+                        "on-error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#e6c443",
+                        "on-error": "#690005",
+                        "primary-container": "#008080",
+                        "on-secondary-fixed-variant": "#554500",
+                        "secondary-container": "#ac8e01",
+                        "surface-variant": "#313635",
+                        "inverse-surface": "#dfe3e2",
+                        "outline": "#879392",
+                        "background": "#101414",
+                        "surface": "#101414",
+                        "error": "#ffb4ab",
+                        "outline-variant": "#3e4949",
+                        "surface-container-lowest": "#0a0f0f",
+                        "secondary": "#e6c443",
+                        "surface-container-highest": "#313635",
+                        "on-tertiary-fixed": "#380039",
+                        "on-surface-variant": "#bdc9c8",
+                        "error-container": "#93000a",
+                        "surface-tint": "#76d6d5",
+                        "surface-dim": "#101414",
+                        "on-primary": "#003737",
+                        "surface-container-high": "#262b2b",
+                        "inverse-on-surface": "#2c3131",
+                        "tertiary": "#ffaaf7",
+                        "primary-fixed": "#93f2f2",
+                        "tertiary-container": "#b93bba",
+                        "on-tertiary-container": "#fff7f9",
+                        "on-secondary-container": "#332900"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "margin": "12px",
+                        "gutter": "8px",
+                        "container-padding": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Space Grotesk"],
+                        "body-md": ["Space Grotesk"],
+                        "mono-data": ["Space Grotesk"],
+                        "label-caps": ["Space Grotesk"],
+                        "headline-lg": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["18px", {"lineHeight": "24px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                        "body-md": ["13px", {"lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "mono-data": ["12px", {"lineHeight": "16px", "letterSpacing": "0em", "fontWeight": "500"}],
+                        "label-caps": ["11px", {"lineHeight": "14px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "0.05em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .brass-border {
+            border: 2px solid #ac8e01;
+            box-shadow: inset 0 0 10px rgba(172, 142, 1, 0.4), 0 0 15px rgba(0,0,0,0.8);
+        }
+        .glass-panel {
+            background: rgba(16, 20, 20, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(118, 214, 213, 0.2);
+        }
+        .mercury-tube {
+            background: linear-gradient(to top, #76d6d5 0%, #76d6d5 60%, transparent 60%);
+        }
+        .conduit-vertical {
+            width: 8px;
+            background: linear-gradient(to right, #3b2f00, #ac8e01, #3b2f00);
+            box-shadow: 2px 0 5px rgba(0,0,0,0.5);
+        }
+        .conduit-horizontal {
+            height: 8px;
+            background: linear-gradient(to bottom, #3b2f00, #ac8e01, #3b2f00);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+        .neon-glow-teal {
+            filter: drop-shadow(0 0 8px rgba(118, 214, 213, 0.8));
+        }
+        .neon-glow-pink {
+            filter: drop-shadow(0 0 8px rgba(255, 170, 247, 0.8));
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary/30 overflow-hidden h-screen w-screen flex flex-col">
+<!-- TOP NAVIGATION SHELL (TopAppBar) -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 w-full z-50 bg-slate-950/80 backdrop-blur-md border-b border-teal-900/50 shadow-[0_4px_20px_rgba(0,0,0,0.8)]">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-teal-500" data-icon="settings_backup_restore">settings_backup_restore</span>
+<h1 class="text-teal-400 drop-shadow-[0_0_8px_rgba(20,184,166,0.8)] font-black italic font-['Space_Grotesk'] tracking-widest uppercase">REALITY_INTEGRITY</h1>
+</div>
+<div class="flex gap-8 items-center h-full">
+<nav class="flex h-full items-center gap-6">
+<button class="font-['Space_Grotesk'] tracking-widest uppercase font-bold text-teal-300 border-b-2 border-teal-400 h-full flex items-center px-2">SYST_LIVE</button>
+<button class="font-['Space_Grotesk'] tracking-widest uppercase font-bold text-teal-900 hover:text-teal-200 hover:bg-teal-900/20 px-2 h-full flex items-center transition-all">RECORDS</button>
+<button class="font-['Space_Grotesk'] tracking-widest uppercase font-bold text-teal-900 hover:text-teal-200 hover:bg-teal-900/20 px-2 h-full flex items-center transition-all">CHRONO_MAP</button>
+</nav>
+<span class="material-symbols-outlined text-teal-500" data-icon="query_stats">query_stats</span>
+</div>
+</header>
+<!-- SUB NAVIGATION / MODE SWITCHING (Custom) -->
+<div class="fixed top-16 w-full h-12 glass-panel border-b border-secondary/30 flex items-center justify-center gap-12 px-12 z-40">
+<div class="flex items-center gap-2 text-secondary group cursor-pointer">
+<span class="material-symbols-outlined text-headline-md" data-icon="settings_suggest">settings_suggest</span>
+<span class="font-label-caps text-label-caps">GEAR_PHASE</span>
+</div>
+<div class="flex items-center gap-2 text-outline group cursor-pointer hover:text-secondary-fixed">
+<span class="material-symbols-outlined text-headline-md" data-icon="precision_manufacturing">precision_manufacturing</span>
+<span class="font-label-caps text-label-caps">FORGE_SYNC</span>
+</div>
+<div class="flex items-center gap-2 text-secondary-fixed neon-glow-teal cursor-pointer">
+<span class="material-symbols-outlined text-headline-md" data-icon="visibility">visibility</span>
+<span class="font-label-caps text-label-caps">SURVEILLANCE</span>
+</div>
+<div class="flex items-center gap-2 text-outline group cursor-pointer hover:text-secondary-fixed">
+<span class="material-symbols-outlined text-headline-md" data-icon="hub">hub</span>
+<span class="font-label-caps text-label-caps">CONDUIT_LINK</span>
+</div>
+</div>
+<!-- MAIN INTERFACE CANVAS -->
+<main class="relative flex-grow mt-28 mb-20 overflow-hidden flex">
+<!-- FULL WIDTH MAP BACKGROUND -->
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-40 mix-blend-luminosity" data-alt="A sprawling, high-contrast monochrome topographical map of a Victorian-era industrial district with intricate street layouts and dockyards. The image is overlaid with a deep teal and charcoal digital filter, giving it a weathered, tactical surveillance aesthetic. Golden light leaks from major intersections like glowing embers, and a subtle film grain texture adds to the steampunk atmosphere of Chronos Labs." data-location="London" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvB44w-tvgfc_sYxsoh-GBEXscG3ybzbKE2ZHiPhEndnMAFYXdm2YAVqoPpOF03ISPnEBr0WG0w1gCQwUsc9gUtq0ZxCRz3IxjEobBhK3m6-lh2h4lizir66m3KWFEN5cR1So170UXeTjVBuBpk_-8h0bZ0yZXc6dz2nQ6EnhhtkSvBdixvYSCtQVbcoVg_DC5Kh8yd9GChF6NVxqXrbv3KYv6XACcWtJy4kLGGaChMnVnLe8P95gBvyEiXmsCAbD6sdv_Ab6TYGG2"/>
+<div class="absolute inset-0 bg-gradient-to-b from-background/80 via-transparent to-background/90"></div>
+</div>
+<!-- LEFT DRAWER (NavigationDrawer) -->
+<aside class="z-30 fixed left-0 top-16 h-[calc(100vh-128px)] w-20 bg-stone-900/90 backdrop-blur-xl border-r border-amber-900/30 flex flex-col items-center py-8 gap-12 shadow-black">
+<div class="text-amber-600 font-bold uppercase font-['Space_Grotesk'] text-[10px] transform -rotate-90 origin-center whitespace-nowrap mb-4">CHRONOS_LABS</div>
+<div class="flex flex-col gap-8">
+<button class="bg-amber-500/20 text-amber-400 shadow-[inset_0_0_10px_rgba(245,158,11,0.5)] p-3 rounded-lg flex flex-col items-center group">
+<span class="material-symbols-outlined" data-icon="radar">radar</span>
+<span class="text-[8px] font-mono mt-1">SCAN</span>
+</button>
+<button class="text-stone-600 hover:bg-amber-900/40 hover:text-amber-200 p-3 rounded-lg flex flex-col items-center transition-all group">
+<span class="material-symbols-outlined" data-icon="waves">waves</span>
+<span class="text-[8px] font-mono mt-1">OSCIL</span>
+</button>
+<button class="text-stone-600 hover:bg-amber-900/40 hover:text-amber-200 p-3 rounded-lg flex flex-col items-center transition-all group">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+<span class="text-[8px] font-mono mt-1">GEAR</span>
+</button>
+<button class="text-stone-600 hover:bg-amber-900/40 hover:text-amber-200 p-3 rounded-lg flex flex-col items-center transition-all group">
+<span class="material-symbols-outlined" data-icon="settings_ethernet">settings_ethernet</span>
+<span class="text-[8px] font-mono mt-1">FEED</span>
+</button>
+</div>
+<!-- VERTICAL CONDUIT DECORATION -->
+<div class="mt-auto h-32 w-2 bg-gradient-to-b from-secondary-container to-transparent rounded-full opacity-50"></div>
+</aside>
+<!-- CENTRAL CLOCKWORK CORE -->
+<div class="relative z-10 flex-grow flex items-center justify-center pointer-events-none">
+<div class="w-[500px] h-[500px] rounded-full border-[12px] border-secondary-container/50 bg-surface-container-lowest/40 backdrop-blur-md relative flex items-center justify-center shadow-[0_0_100px_rgba(0,128,128,0.3)]">
+<!-- Inner Clockwork UI -->
+<div class="w-[420px] h-[420px] rounded-full border-4 border-dashed border-primary/40 animate-[spin_60s_linear_infinite] absolute"></div>
+<div class="w-[380px] h-[380px] rounded-full border-2 border-primary-container absolute flex items-center justify-center">
+<div class="text-center pointer-events-auto">
+<div class="font-headline-lg text-primary neon-glow-teal mb-2">CORE_STABILITY</div>
+<div class="flex gap-4 justify-center items-end h-24">
+<div class="w-4 h-full bg-surface-container-high relative rounded-t-sm overflow-hidden border border-outline-variant">
+<div class="absolute bottom-0 w-full h-3/4 bg-primary neon-glow-teal"></div>
+</div>
+<div class="w-4 h-full bg-surface-container-high relative rounded-t-sm overflow-hidden border border-outline-variant">
+<div class="absolute bottom-0 w-full h-1/2 bg-primary neon-glow-teal"></div>
+</div>
+<div class="w-4 h-full bg-surface-container-high relative rounded-t-sm overflow-hidden border border-outline-variant">
+<div class="absolute bottom-0 w-full h-2/3 bg-tertiary neon-glow-pink"></div>
+</div>
+</div>
+<div class="font-mono-data text-secondary-fixed mt-4 tracking-[0.3em]">00:44:21:09</div>
+</div>
+</div>
+<!-- Vacuum Tubes -->
+<div class="absolute -top-12 left-1/4 w-12 h-24 glass-panel brass-border rounded-t-full flex flex-col items-center p-1">
+<div class="w-full flex-grow bg-primary/20 rounded-t-full relative overflow-hidden">
+<div class="absolute bottom-0 w-full h-2/3 bg-primary/40 blur-sm"></div>
+<div class="absolute top-4 left-1/2 -translate-x-1/2 w-1 h-12 bg-primary/80 blur-[2px]"></div>
+</div>
+</div>
+<div class="absolute -top-12 right-1/4 w-12 h-24 glass-panel brass-border rounded-t-full flex flex-col items-center p-1">
+<div class="w-full flex-grow bg-tertiary/20 rounded-t-full relative overflow-hidden">
+<div class="absolute bottom-0 w-full h-1/2 bg-tertiary/40 blur-sm"></div>
+<div class="absolute top-4 left-1/2 -translate-x-1/2 w-1 h-12 bg-tertiary/80 blur-[2px]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT SIDEBAR & DATA PANEL -->
+<div class="relative z-20 flex pr-6 py-6 pointer-events-none">
+<!-- Porthole Toolbar -->
+<div class="flex flex-col gap-1 mb-4 pointer-events-auto">
+<div class="glass-panel brass-border px-3 py-1.5 rounded-sm flex flex-col border-l-4 border-l-primary shadow-[0_0_15px_rgba(0,0,0,0.6)]">
+<div class="flex items-center gap-2 border-b border-primary/20 pb-1 mb-1">
+<span class="material-symbols-outlined text-[14px] text-primary" data-icon="straighten">straighten</span>
+<span class="font-label-caps text-[10px] text-primary/70 tracking-widest">COORD_TRACKER</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-mono-data text-[10px] text-secondary">M_TILES:</span>
+<span class="font-mono-data text-headline-md text-primary neon-glow-teal">14,208</span>
+</div>
+<div class="flex gap-1 mt-1">
+<div class="h-1 flex-grow bg-primary/40"></div>
+<div class="h-1 w-2 bg-primary"></div>
+<div class="h-1 w-8 bg-surface-container-high"></div>
+</div>
+</div>
+</div><div class="flex flex-col gap-4 pointer-events-auto">
+<button class="w-16 h-16 rounded-full glass-panel brass-border flex items-center justify-center text-primary-fixed shadow-[0_0_20px_rgba(118,214,213,0.6)] neon-glow-teal ring-4 ring-primary/30">
+<span class="material-symbols-outlined text-headline-lg" data-icon="biotech">biotech</span>
+</button>
+<button class="w-16 h-16 rounded-full glass-panel border border-secondary/20 flex items-center justify-center text-outline hover:text-secondary-fixed transition-colors">
+<span class="material-symbols-outlined text-headline-lg" data-icon="visibility">visibility</span>
+</button>
+<button class="w-16 h-16 rounded-full glass-panel border border-secondary/20 flex items-center justify-center text-outline hover:text-secondary-fixed transition-colors">
+<span class="material-symbols-outlined text-headline-lg" data-icon="electric_bolt">electric_bolt</span>
+</button>
+<button class="w-16 h-16 rounded-full glass-panel border border-secondary/20 flex items-center justify-center text-outline hover:text-secondary-fixed transition-colors">
+<span class="material-symbols-outlined text-headline-lg" data-icon="history">history</span>
+</button>
+</div>
+<!-- Pulsing Teal Fluid Pipe -->
+<div class="w-12 flex items-start pt-8 -ml-1">
+<div class="h-2 w-full bg-gradient-to-r from-secondary to-primary relative">
+<div class="absolute inset-0 bg-primary/40 blur-sm animate-pulse"></div>
+</div>
+</div>
+<!-- SECTOR_METRICS_ALPHA Panel -->
+<div class="w-80 glass-panel brass-border rounded-lg pointer-events-auto flex flex-col overflow-hidden">
+<div class="bg-secondary-container/30 px-4 py-3 border-b border-secondary/50 flex justify-between items-center">
+<h3 class="font-label-caps text-label-caps text-secondary-fixed">SECTOR_METRICS_ALPHA</h3>
+<span class="material-symbols-outlined text-sm text-secondary" data-icon="close">close</span>
+</div>
+<div class="p-4 space-y-6">
+<!-- Bio Stasis Metric -->
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<span class="font-mono-data text-primary">BIO_STASIS</span>
+<span class="font-mono-data text-primary">98.4%</span>
+</div>
+<div class="h-3 bg-surface-container-high rounded-sm border border-outline-variant p-[2px]">
+<div class="h-full w-[98%] bg-primary shadow-[0_0_10px_rgba(118,214,213,0.5)]"></div>
+</div>
+</div>
+<!-- Vacuum Pressure Metric -->
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<span class="font-mono-data text-tertiary">VACUUM_PRESSURE</span>
+<span class="font-mono-data text-tertiary">0.02 MBAR</span>
+</div>
+<div class="grid grid-cols-12 gap-1 h-2">
+<div class="bg-tertiary"></div><div class="bg-tertiary"></div><div class="bg-tertiary"></div><div class="bg-tertiary"></div>
+<div class="bg-tertiary"></div><div class="bg-tertiary"></div><div class="bg-surface-container-high"></div><div class="bg-surface-container-high"></div>
+<div class="bg-surface-container-high"></div><div class="bg-surface-container-high"></div><div class="bg-surface-container-high"></div><div class="bg-surface-container-high"></div>
+</div>
+</div>
+<!-- Readout List -->
+<div class="bg-surface-container-lowest/50 border border-outline-variant p-3 space-y-3">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary" data-icon="air">air</span>
+<div>
+<div class="text-[10px] text-outline uppercase">Oxy_Mix</div>
+<div class="font-mono-data text-on-surface">OPTIMAL_19.2</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
+<div>
+<div class="text-[10px] text-outline uppercase">Seal_Integrity</div>
+<div class="font-mono-data text-error">NOMINAL_FLUX</div>
+</div>
+</div>
+</div>
+<!-- Mini Gauge Grid -->
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col items-center">
+<div class="w-16 h-16 rounded-full border-4 border-secondary/30 relative flex items-center justify-center">
+<div class="w-1 h-8 bg-secondary absolute -top-1 origin-bottom rotate-45"></div>
+<div class="text-[10px] font-bold text-secondary">TMP</div>
+</div>
+<span class="text-[10px] mt-1 text-outline">CELL_4A</span>
+</div>
+<div class="flex flex-col items-center">
+<div class="w-16 h-16 rounded-full border-4 border-primary/30 relative flex items-center justify-center">
+<div class="w-1 h-8 bg-primary absolute -top-1 origin-bottom -rotate-12"></div>
+<div class="text-[10px] font-bold text-primary">PWR</div>
+</div>
+<span class="text-[10px] mt-1 text-outline">GEN_09</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="absolute left-20 top-0 bottom-0 w-8 z-20 flex flex-col justify-between py-4 pointer-events-none opacity-60 border-r border-secondary/20 bg-gradient-to-r from-background/40 to-transparent">
+<div class="flex flex-col gap-8 items-end pr-2">
+<div class="flex items-center gap-1"><span class="text-[8px] font-mono-data text-secondary/50">800</span><div class="w-3 h-[1px] bg-secondary"></div></div>
+<div class="w-1.5 h-[1px] bg-outline"></div>
+<div class="w-1.5 h-[1px] bg-outline"></div>
+<div class="w-1.5 h-[1px] bg-outline"></div>
+<div class="flex items-center gap-1"><span class="text-[8px] font-mono-data text-secondary/50">600</span><div class="w-3 h-[1px] bg-secondary"></div></div>
+<div class="w-1.5 h-[1px] bg-outline"></div>
+<div class="w-1.5 h-[1px] bg-outline"></div>
+<div class="w-1.5 h-[1px] bg-outline"></div>
+<div class="flex items-center gap-1"><span class="text-[8px] font-mono-data text-secondary/50">400</span><div class="w-3 h-[1px] bg-secondary"></div></div>
+<div class="w-1.5 h-[1px] bg-outline"></div>
+<div class="w-1.5 h-[1px] bg-outline"></div>
+<div class="w-1.5 h-[1px] bg-outline"></div>
+<div class="flex items-center gap-1"><span class="text-[8px] font-mono-data text-secondary/50">200</span><div class="w-3 h-[1px] bg-secondary"></div></div>
+<div class="w-1.5 h-[1px] bg-outline"></div>
+<div class="w-1.5 h-[1px] bg-outline"></div>
+<div class="w-1.5 h-[1px] bg-outline"></div>
+<div class="flex items-center gap-1"><span class="text-[8px] font-mono-data text-secondary/50">000</span><div class="w-3 h-[1px] bg-secondary"></div></div>
+</div>
+</div><div class="absolute bottom-0 left-20 right-0 h-8 z-20 flex flex-row items-start px-4 pointer-events-none opacity-60 border-t border-secondary/20 bg-gradient-to-b from-transparent to-background/40">
+<div class="flex w-full justify-between items-start pt-2">
+<div class="flex flex-col items-center gap-1"><div class="w-[1px] h-3 bg-secondary"></div><span class="text-[8px] font-mono-data text-secondary/50">000</span></div>
+<div class="w-[1px] h-1.5 bg-outline"></div>
+<div class="w-[1px] h-1.5 bg-outline"></div>
+<div class="w-[1px] h-1.5 bg-outline"></div>
+<div class="flex flex-col items-center gap-1"><div class="w-[1px] h-3 bg-secondary"></div><span class="text-[8px] font-mono-data text-secondary/50">250</span></div>
+<div class="w-[1px] h-1.5 bg-outline"></div>
+<div class="w-[1px] h-1.5 bg-outline"></div>
+<div class="w-[1px] h-1.5 bg-outline"></div>
+<div class="flex flex-col items-center gap-1"><div class="w-[1px] h-3 bg-secondary"></div><span class="text-[8px] font-mono-data text-secondary/50">500</span></div>
+<div class="w-[1px] h-1.5 bg-outline"></div>
+<div class="w-[1px] h-1.5 bg-outline"></div>
+<div class="w-[1px] h-1.5 bg-outline"></div>
+<div class="flex flex-col items-center gap-1"><div class="w-[1px] h-3 bg-secondary"></div><span class="text-[8px] font-mono-data text-secondary/50">750</span></div>
+<div class="w-[1px] h-1.5 bg-outline"></div>
+<div class="w-[1px] h-1.5 bg-outline"></div>
+<div class="w-[1px] h-1.5 bg-outline"></div>
+<div class="flex flex-col items-center gap-1"><div class="w-[1px] h-3 bg-secondary"></div><span class="text-[8px] font-mono-data text-secondary/50">1000</span></div>
+</div>
+</div></main>
+<!-- BOTTOM CONSOLE (BottomNavBar) -->
+<footer class="fixed bottom-0 left-0 w-full z-50 flex justify-center items-center gap-8 px-10 pb-4 h-20 bg-stone-950/95 border-t-2 border-stone-800 rounded-t-xl shadow-[0_-10px_30px_rgba(0,0,0,0.9)]">
+<!-- Media Controls Integrated -->
+<div class="flex items-center gap-4 bg-surface-container-low px-6 py-2 rounded-full border border-outline-variant">
+<button class="text-stone-700 p-2 hover:text-fuchsia-400 hover:scale-110 transition-all">
+<span class="material-symbols-outlined" data-icon="fast_rewind">fast_rewind</span>
+</button>
+<button class="bg-fuchsia-500/30 text-fuchsia-300 rounded-full p-3 shadow-[0_0_15px_rgba(217,70,239,0.6)] Active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="play_arrow">play_arrow</span>
+</button>
+<button class="text-stone-700 p-2 hover:text-fuchsia-400 hover:scale-110 transition-all">
+<span class="material-symbols-outlined" data-icon="pause">pause</span>
+</button>
+<button class="text-stone-700 p-2 hover:text-fuchsia-400 hover:scale-110 transition-all">
+<span class="material-symbols-outlined" data-icon="fast_forward">fast_forward</span>
+</button>
+</div>
+<!-- Mechanical Slider -->
+<div class="flex-grow max-w-xl flex items-center gap-4">
+<span class="font-mono-data text-[10px] text-fuchsia-500">T-MINUS</span>
+<div class="relative flex-grow h-6 flex items-center">
+<div class="absolute w-full h-1 bg-stone-800 rounded-full"></div>
+<div class="absolute w-2/3 h-1 bg-fuchsia-600 rounded-full shadow-[0_0_10px_rgba(217,70,239,0.5)]"></div>
+<div class="absolute left-2/3 -translate-x-1/2 w-4 h-8 bg-gradient-to-b from-secondary to-secondary-container border border-on-secondary shadow-lg rounded-sm cursor-pointer"></div>
+</div>
+<span class="font-mono-data text-[10px] text-stone-500">REALTIME</span>
+</div>
+<button class="text-stone-700 p-3 hover:text-fuchsia-400 transition-all">
+<span class="material-symbols-outlined" data-icon="history_toggle_off">history_toggle_off</span>
+</button>
+</footer>
+<!-- BRASS PIPE FRAME DECORATION -->
+<div class="fixed top-0 left-0 h-screen w-2 conduit-vertical z-[60] opacity-80"></div>
+<div class="fixed top-0 right-0 h-screen w-2 conduit-vertical z-[60] opacity-80"></div>
+<div class="fixed bottom-20 left-0 w-full h-2 conduit-horizontal z-[60] opacity-80"></div>
+<!-- Porthole Corner Accents -->
+<div class="fixed top-4 left-4 w-12 h-12 glass-panel brass-border rounded-full z-[70] flex items-center justify-center">
+<div class="w-4 h-4 bg-primary neon-glow-teal rounded-full animate-pulse"></div>
+</div>
+<div class="fixed top-4 right-4 w-12 h-12 glass-panel brass-border rounded-full z-[70] flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="lock">lock</span>
+</div>
+</body></html>

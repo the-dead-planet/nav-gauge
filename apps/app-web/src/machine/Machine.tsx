@@ -7,7 +7,7 @@ import { MapLayoutControls } from "./controls/MapLayoutControls";
 import { ApplicationSettingsSection } from "./controls/ApplicationSettings";
 import { GaugeControls } from "./controls/GaugeControls";
 import { MapStyleSelection } from "./controls/MapStyleSelection";
-import * as styles from './machine.module.css';
+import styles from './machine.module.css';
 
 export const Machine: FC = () => {
     const { cartomancer, toolsStation } = useStateWarden();
