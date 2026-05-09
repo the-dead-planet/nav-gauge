@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { Color } from './Color';
 import { Theme } from '@ui';
