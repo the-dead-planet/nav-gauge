@@ -47,7 +47,7 @@ export const Notice: FC<Props> = ({
     return (
         <Animated.View style={[styles.container, {
             borderColor: theme.colors[notice.type],
-            backgroundColor: theme.colors.background,
+            backgroundColor: theme.colors.componentsbackground,
             shadowColor: theme.colors["box-shadow"],
             opacity,
             transform: [{ translateY }]

@@ -5,6 +5,8 @@
     "main": "src/index.ts",
     "scripts": {
         "build": "tsc -b",
+        "storybook": "storybook dev -p 6006",
+        "build-storybook": "storybook build",
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
         "test": "mocha"
     },
@@ -13,9 +15,14 @@
         "classnames": "^2.5.1"
     },
     "devDependencies": {
+        "@rsbuild/core": "^2.0.5",
+        "@rsbuild/plugin-react": "^2.0.0",
+        "css-loader": "^7.1.4",
         "maplibre-gl": "5.24.0",
         "react": "19.2.3",
-        "react-dom": "19.2.3"
+        "react-dom": "19.2.3",
+        "storybook": "^10.3.6",
+        "storybook-react-rsbuild": "^3.3.3"
     },
     "peerDependencies": {
         "maplibre-gl": "5.24.0",

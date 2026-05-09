@@ -1,6 +1,6 @@
 import { FC, ReactNode } from "react"
 import classNames from "classnames";
-import * as styles from './fieldset.module.css';
+import styles from './fieldset.module.css';
 
 interface Props {
     label: string;

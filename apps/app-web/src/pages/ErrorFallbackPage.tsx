@@ -1,4 +1,4 @@
-import * as styles from './pages.module.css';
+import styles from './pages.module.css';
 import { ErrorInfo, FC } from "react";
 
 interface Props {

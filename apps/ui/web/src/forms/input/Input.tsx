@@ -1,6 +1,6 @@
 import { DetailedHTMLProps, FC, InputHTMLAttributes, MouseEvent } from "react";
 import classNames from "classnames";
-import * as styles from './input.module.css';
+import styles from './input.module.css';
 
 interface Props {
     label: string;

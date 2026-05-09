@@ -1,7 +1,7 @@
 import { CSSProperties, FC } from "react";
 import classNames from 'classnames';
 import { SignaliumNotice } from "@apparatus";
-import * as styles from './notices.module.css';
+import styles from './notices.module.css';
 
 interface Props {
     index: number;

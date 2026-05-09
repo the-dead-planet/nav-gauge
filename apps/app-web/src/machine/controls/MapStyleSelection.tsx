@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Cartomancer, useStateWarden, useSubjectState } from "@apparatus";
-import * as styles from './controls.module.css';
+import styles from './controls.module.css';
 
 export const MapStyleSelection: FC = () => {
     const { cartomancer } = useStateWarden();

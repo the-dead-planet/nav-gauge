@@ -1,9 +1,9 @@
 import { createContext, useContext } from "react";
-import { ThemeSpecification } from "./model";
+import { Theme } from "./theme";
 
-export const ThemeContext = createContext<ThemeSpecification | undefined>(undefined);
+export const ThemeContext = createContext<Theme | undefined>(undefined);
 
-export const useTheme = (): ThemeSpecification => {
+export const useTheme = (): Theme => {
     const context = useContext(ThemeContext);
 
     if (!context) {

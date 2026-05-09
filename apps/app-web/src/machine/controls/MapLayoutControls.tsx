@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Fieldset, Input, TextArea } from "@web-ui";
 import { MapLayout, useStateWarden, useSubjectState } from "@apparatus";
-import * as styles from './controls.module.css';
+import styles from './controls.module.css';
 
 interface Props { }
 

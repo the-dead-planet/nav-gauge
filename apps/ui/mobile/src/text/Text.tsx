@@ -6,6 +6,6 @@ export const Text: FC<TextProps> = ({ style, ...props }) => {
     const theme = useTheme();
 
     return (
-        <RNText {...props} style={[{ color: theme.colors.text }, style]} />
+        <RNText {...props} style={[{ color: theme.colors.componentstext }, style]} />
     );
 };

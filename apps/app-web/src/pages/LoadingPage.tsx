@@ -1,5 +1,5 @@
 import { FC } from "react";
-import * as styles from './pages.module.css';
+import styles from './pages.module.css';
 
 interface Props {
     stage?: string;

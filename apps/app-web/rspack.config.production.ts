@@ -23,17 +23,20 @@ const config = (env: Env, argv: Argv): Configuration => {
                         {
                             loader: rspack.CssExtractRspackPlugin.loader,
                             options: {
-                                esModule: true,
+                                esModule: false,
                             },
                         },
                         {
                             loader: 'css-loader',
                             options: {
+                                esModule: false,
                                 modules: process.env.NODE_ENV === "production" ? {
                                     localIdentName: "[hash:base64:5]",
+                                    namedExport: false
                                 } : {
                                     mode: "local",
-                                    localIdentName: "[name]---[local]---[hash:base64:5]"
+                                    localIdentName: "[name]---[local]---[hash:base64:5]",
+                                    namedExport: false
                                 },
                             },
                         },
@@ -47,12 +50,13 @@ const config = (env: Env, argv: Argv): Configuration => {
                         {
                             loader: rspack.CssExtractRspackPlugin.loader,
                             options: {
-                                esModule: true,
+                                esModule: false,
                             },
                         },
                         {
                             loader: 'css-loader',
                             options: {
+                                esModule: false,
                                 modules: false,
                             },
                         },

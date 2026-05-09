@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .brass-gradient {
+            background: linear-gradient(145deg, #ac8e01 0%, #554500 100%);
+        }
+        .copper-pipe {
+            background: linear-gradient(90deg, #3b2f00 0%, #ac8e01 50%, #3b2f00 100%);
+        }
+        .glass-panel {
+            background: rgba(16, 20, 20, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(118, 214, 213, 0.2);
+        }
+        .porthole {
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8), 0 0 5px rgba(172, 142, 1, 0.4);
+        }
+        .holographic-glow {
+            filter: drop-shadow(0 0 8px rgba(255, 170, 247, 0.6));
+        }
+    
+        @keyframes fluid-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .holographic-fluid {
+            background: linear-gradient(270deg, rgba(118, 214, 213, 0.4), rgba(255, 170, 247, 0.4), rgba(118, 214, 213, 0.4));
+            background-size: 200% 200%;
+            animation: fluid-flow 3s ease infinite;
+        }
+        .active-pumping {
+            background-color: var(--tw-color-primary) !important;
+            box-shadow: 0 0 15px var(--tw-color-primary), inset 0 0 5px white;
+            animation: pulse-glow 2s infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { filter: drop-shadow(0 0 2px var(--tw-color-primary)); }
+            50% { filter: drop-shadow(0 0 10px var(--tw-color-primary)); }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#93f2f2",
+                        "on-primary-fixed": "#002020",
+                        "on-background": "#dfe3e2",
+                        "tertiary-container": "#b93bba",
+                        "background": "#101414",
+                        "outline": "#879392",
+                        "inverse-surface": "#dfe3e2",
+                        "surface-container-lowest": "#0a0f0f",
+                        "on-secondary-fixed": "#231b00",
+                        "on-primary": "#003737",
+                        "on-surface": "#dfe3e2",
+                        "error": "#ffb4ab",
+                        "secondary-container": "#ac8e01",
+                        "on-error": "#690005",
+                        "on-tertiary": "#5a005d",
+                        "on-tertiary-fixed-variant": "#800084",
+                        "on-error-container": "#ffdad6",
+                        "inverse-primary": "#006a6a",
+                        "on-secondary-container": "#332900",
+                        "tertiary": "#ffaaf7",
+                        "inverse-on-surface": "#2c3131",
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed": "#380039",
+                        "surface-variant": "#313635",
+                        "secondary": "#e6c443",
+                        "on-secondary-fixed-variant": "#554500",
+                        "on-primary-container": "#e3fffe",
+                        "tertiary-fixed-dim": "#ffaaf7",
+                        "primary-container": "#008080",
+                        "tertiary-fixed": "#ffd7f7",
+                        "surface-bright": "#353a3a",
+                        "on-primary-fixed-variant": "#004f4f",
+                        "outline-variant": "#3e4949",
+                        "surface-dim": "#101414",
+                        "secondary-fixed": "#ffe179",
+                        "primary-fixed-dim": "#76d6d5",
+                        "primary": "#76d6d5",
+                        "on-surface-variant": "#bdc9c8",
+                        "on-secondary": "#3b2f00",
+                        "surface-container-highest": "#313635",
+                        "surface": "#101414",
+                        "secondary-fixed-dim": "#e6c443",
+                        "surface-container": "#1c2020",
+                        "on-tertiary-container": "#fff7f9",
+                        "surface-tint": "#76d6d5",
+                        "surface-container-low": "#181c1c",
+                        "surface-container-high": "#262b2b"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Space Grotesk"],
+                        "headline-lg": ["Space Grotesk"],
+                        "label-caps": ["Space Grotesk"],
+                        "headline-md": ["Space Grotesk"],
+                        "mono-data": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-md": ["13px", {"lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "label-caps": ["11px", {"lineHeight": "14px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-md": ["18px", {"lineHeight": "24px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                        "mono-data": ["12px", {"lineHeight": "16px", "letterSpacing": "0em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  
+        @keyframes fluid-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .holographic-fluid {
+            background: linear-gradient(270deg, rgba(118, 214, 213, 0.4), rgba(255, 170, 247, 0.4), rgba(118, 214, 213, 0.4));
+            background-size: 200% 200%;
+            animation: fluid-flow 3s ease infinite;
+        }
+        .active-pumping {
+            background-color: var(--tw-color-primary) !important;
+            box-shadow: 0 0 15px var(--tw-color-primary), inset 0 0 5px white;
+            animation: pulse-glow 2s infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { filter: drop-shadow(0 0 2px var(--tw-color-primary)); }
+            50% { filter: drop-shadow(0 0 10px var(--tw-color-primary)); }
+        }
+    </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface overflow-hidden h-screen w-full font-body-md">
+<!-- Global Map Background -->
+<div class="fixed inset-0 z-0 opacity-40">
+<img class="w-full h-full object-cover grayscale brightness-50 sepia-[.3]" data-alt="A highly detailed top-down view of a Victorian-era city map at night. The streets are narrow and labyrinthine, illuminated by flickering gaslight amber glows. The map features hand-drawn topographical details, industrial warehouses, and winding rivers, all rendered in deep charcoal and muted bronze tones to match a cyber-steam aesthetic." data-location="London 1890" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6xkRutcOnAwg9xf3__1subozfWM3HDX7lxZNZwRLm6ivsbqmewSi_ub_QiQT-bsLRDRElxMesfU-goHcdFthRaqOsV_l5GfJCqcVZG6HNls_lmpMQo0-0KZ-r_RSvNH6NnbHhsJxdATUqEL7hGugvrPG_tVXHsUM_drPk-CMJY9Vq55af8W9zspv5zlCDlbJEubfb2eSohpYJbaddMGTx_l2XvWpnC4e9QSXDsg0_8UIyNoAmvsDKkMq4bXHPo7fxRfCR7qg0X4Sz"/>
+</div>
+<!-- Pipe Chassis Infrastructure -->
+<!-- Top Horizontal Pipe -->
+<div class="fixed top-12 left-0 w-full h-[6px] copper-pipe z-50"></div>
+<div class="fixed top-24 left-0 w-full h-[4px] copper-pipe opacity-60 z-50"></div>
+<!-- Vertical Pipes (Left/Right) -->
+<div class="fixed left-12 top-12 bottom-20 w-[6px] copper-pipe z-50"></div>
+<div class="fixed right-12 top-12 bottom-20 w-[6px] copper-pipe z-50"></div>
+<!-- Pipe Joints with SVG Cogs -->
+<div class="fixed top-11 left-11 z-[60] text-secondary">
+<svg fill="currentColor" height="24" viewbox="0 0 24 24" width="24">
+<path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm10-3h-2.1c-.2-1.1-.6-2.1-1.2-3l1.5-1.5-1.4-1.4-1.5 1.5c-.9-.6-1.9-1-3-1.2V2h-2v2.1c-1.1.2-2.1.6-3 1.2l-1.5-1.5-1.4 1.4 1.5 1.5c-.6.9-1 1.9-1.2 3H2v2h2.1c.2 1.1.6 2.1 1.2 3l-1.5 1.5 1.4 1.4 1.5-1.5c.9.6 1.9 1 3 1.2V22h2v-2.1c1.1-.2 2.1-.6 3-1.2l1.5 1.5 1.4-1.4-1.5-1.5c.6-.9 1-1.9 1.2-3H22v-2z"></path>
+</svg>
+</div>
+<div class="fixed top-11 right-11 z-[60] text-secondary">
+<svg fill="currentColor" height="24" viewbox="0 0 24 24" width="24">
+<path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm10-3h-2.1c-.2-1.1-.6-2.1-1.2-3l1.5-1.5-1.4-1.4-1.5 1.5c-.9-.6-1.9-1-3-1.2V2h-2v2.1c-1.1.2-2.1.6-3 1.2l-1.5-1.5-1.4 1.4 1.5 1.5c-.6.9-1 1.9-1.2 3H2v2h2.1c.2 1.1.6 2.1 1.2 3l-1.5 1.5 1.4 1.4 1.5-1.5c.9.6 1.9 1 3 1.2V22h2v-2.1c1.1-.2 2.1-.6 3-1.2l1.5 1.5 1.4-1.4-1.5-1.5c.6-.9 1-1.9 1.2-3H22v-2z"></path>
+</svg>
+</div>
+<!-- Top Navigation Cluster -->
+<header class="fixed top-0 w-full z-50 flex flex-col">
+<!-- TopAppBar (From Shared JSON) -->
+<div class="bg-slate-900/80 backdrop-blur-md text-teal-400 font-['Space_Grotesk'] tracking-tighter uppercase font-bold border-b border-teal-900/50 shadow-[inset_0_-2px_4px_rgba(0,0,0,0.6)] h-12 px-4 flex justify-between items-center w-full">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-teal-400 drop-shadow-[0_0_8px_rgba(20,184,166,0.8)] font-black text-sm">security</span>
+<span class="text-sm">TACTICAL_SURVEILLANCE_OS</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex gap-1 items-center">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></div>
+<span class="text-[10px] font-mono-data text-on-surface-variant">LINK_ACTIVE</span>
+</div>
+<span class="material-symbols-outlined hover:text-teal-200 transition-all cursor-pointer">settings_input_component</span>
+</div>
+</div>
+<!-- Gear Switcher Bar -->
+<div class="h-12 w-full glass-panel flex items-center px-14 gap-4 overflow-x-auto no-scrollbar border-b border-secondary/20">
+<button class="flex-none px-3 py-1 bg-secondary/20 text-secondary border border-secondary/40 rounded-sm text-[10px] font-bold tracking-widest uppercase">Drive_C</button>
+<button class="flex-none px-3 py-1 bg-surface-container text-on-surface-variant border border-outline-variant/40 rounded-sm text-[10px] font-bold tracking-widest uppercase">Optic_Mod</button>
+<button class="flex-none px-3 py-1 bg-surface-container text-on-surface-variant border border-outline-variant/40 rounded-sm text-[10px] font-bold tracking-widest uppercase">Steam_Press</button>
+<button class="flex-none px-3 py-1 bg-surface-container text-on-surface-variant border border-outline-variant/40 rounded-sm text-[10px] font-bold tracking-widest uppercase">Bio_Scan</button>
+</div>
+</header>
+<!-- Side Navigation Bars (Left & Right) -->
+<!-- Left NavigationDrawer (From Shared JSON) -->
+<aside class="fixed left-0 top-24 bottom-20 w-12 z-40 bg-stone-900/90 backdrop-blur-xl border-r-2 border-amber-700/20 flex flex-col items-center py-6 gap-8">
+<div class="flex flex-col gap-8">
+<div class="w-8 h-8 rounded-full border-2 border-amber-500/50 flex items-center justify-center bg-amber-500/20 ring-1 ring-amber-500/50 shadow-lg cursor-pointer">
+<span class="material-symbols-outlined text-amber-400 text-sm">grid_view</span>
+</div>
+<div class="w-8 h-8 rounded-full border border-stone-700 flex items-center justify-center text-stone-500 hover:bg-stone-800 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-sm">sensors</span>
+</div>
+<div class="w-8 h-8 rounded-full border border-stone-700 flex items-center justify-center text-stone-500 hover:bg-stone-800 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-sm">terminal</span>
+</div>
+<div class="w-8 h-8 rounded-full border border-stone-700 flex items-center justify-center text-stone-500 hover:bg-stone-800 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-sm">settings</span>
+</div>
+</div>
+<div class="mt-auto pb-4">
+<div class="rotate-90 text-[8px] font-bold text-amber-600/50 tracking-[0.2em] uppercase origin-center whitespace-nowrap">CHASSIS_IDENT:L</div>
+</div>
+</aside>
+<!-- Right Auxiliary Bar -->
+<aside class="fixed right-12 top-24 bottom-20 w-64 z-30 glass-panel border-r-0 rounded-l-xl holographic-fluid flex flex-col p-4 shadow-2xl transition-all transform translate-x-0">
+<div class="flex items-center justify-between border-b border-primary/30 pb-2 mb-4">
+<h3 class="text-label-caps text-primary">SECTOR_METRICS_ALPHA</h3>
+<span class="material-symbols-outlined text-primary text-xs animate-pulse">bolt</span>
+</div>
+<div class="space-y-4 font-mono-data">
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-[10px]">
+<span class="text-on-surface-variant">BIO_STASIS</span>
+<span class="text-primary">STABLE</span>
+</div>
+<div class="h-1 w-full bg-black/40 rounded-full">
+<div class="h-full bg-primary shadow-[0_0_8px_rgba(118,214,213,0.8)] w-[92%]"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-[10px]">
+<span class="text-on-surface-variant">STEAM_PRESSURE</span>
+<span class="text-secondary">8.4 BAR</span>
+</div>
+<div class="h-1 w-full bg-black/40 rounded-full">
+<div class="h-full bg-secondary w-[65%]"></div>
+</div>
+</div>
+<div class="mt-4 p-2 bg-black/20 rounded border border-white/5">
+<p class="text-[9px] leading-tight text-on-surface-variant">
+                DATASTREAM_STABLE: RE-ROUTING ANALYTICS THROUGH BRASS CONDUIT_4... FLUID DENSITY NOMINAL.
+            </p>
+</div>
+</div>
+</aside>
+<aside class="fixed right-0 top-24 bottom-20 w-12 z-40 glass-panel border-l border-teal-500/20 flex flex-col items-center py-6 gap-8">
+<div class="w-8 h-8 porthole rounded-full border-2 border-primary/30 flex items-center justify-center text-primary-fixed cursor-pointer active-pumping bg-primary/40 border-primary">
+<span class="material-symbols-outlined text-sm">visibility</span>
+</div>
+<div class="w-8 h-8 porthole rounded-full border-2 border-primary/30 flex items-center justify-center text-primary-fixed cursor-pointer">
+<span class="material-symbols-outlined text-sm">target</span>
+</div>
+<div class="w-8 h-8 porthole rounded-full border-2 border-primary/30 flex items-center justify-center text-primary-fixed cursor-pointer">
+<span class="material-symbols-outlined text-sm">location_searching</span>
+</div>
+<div class="w-8 h-8 porthole rounded-full border-2 border-primary/30 flex items-center justify-center text-primary-fixed cursor-pointer">
+<span class="material-symbols-outlined text-sm">leak_add</span>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="fixed inset-0 pt-24 px-16 pb-24 z-10 flex flex-col pointer-events-none">
+<!-- Reality Integrity Floating Data -->
+<div class="mt-8 self-start w-48 glass-panel rounded-lg p-3 border-l-4 border-tertiary-container shadow-2xl pointer-events-auto holographic-glow">
+<div class="flex justify-between items-center mb-2">
+<span class="text-label-caps text-tertiary uppercase">REALITY_INTEGRITY</span>
+<span class="material-symbols-outlined text-tertiary text-xs">analytics</span>
+</div>
+<div class="space-y-2">
+<div>
+<div class="flex justify-between text-[10px] mb-1 font-mono-data text-on-surface-variant">
+<span>STABILITY</span>
+<span>84.2%</span>
+</div>
+<div class="h-1 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-tertiary-container w-[84%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-[10px] mb-1 font-mono-data text-on-surface-variant">
+<span>LATENCY</span>
+<span>04 MS</span>
+</div>
+<div class="h-1 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[15%]"></div>
+</div>
+</div>
+</div>
+<div class="mt-3 pt-2 border-t border-white/10 flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-error animate-ping"></div>
+<span class="text-[9px] text-error font-bold uppercase">Breach_Detected</span>
+</div>
+</div>
+<!-- Center Target Reticle (Static Overlay) -->
+<div class="absolute inset-0 flex items-center justify-center opacity-20 pointer-events-none">
+<div class="w-64 h-64 border border-primary-fixed rounded-full flex items-center justify-center">
+<div class="w-48 h-48 border border-primary-fixed/50 rounded-full flex items-center justify-center">
+<div class="w-1 h-12 bg-primary-fixed absolute top-0"></div>
+<div class="w-1 h-12 bg-primary-fixed absolute bottom-0"></div>
+<div class="h-1 w-12 bg-primary-fixed absolute left-0"></div>
+<div class="h-1 w-12 bg-primary-fixed absolute right-0"></div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Heavy-Duty Console (BottomNavBar from Shared JSON) -->
+<footer class="fixed bottom-0 w-full z-50 h-20 bg-stone-950/95 border-t-2 border-stone-800 flex justify-around items-center px-6 rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.9)]">
+<!-- Media Slider Left -->
+<div class="hidden md:flex flex-col w-32 gap-1">
+<div class="h-1 w-full bg-stone-800 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-2/3"></div>
+</div>
+<span class="text-[8px] font-mono-data text-stone-500 uppercase tracking-widest text-center">Output_Gain</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-stone-600 p-3 hover:text-teal-400 transition-colors cursor-pointer">fast_rewind</span>
+<!-- Central Clockwork Gear Play Button -->
+<div class="relative flex items-center justify-center group">
+<div class="absolute inset-0 bg-primary/20 rounded-full blur-xl group-hover:bg-primary/40 transition-all"></div>
+<div class="w-16 h-16 bg-stone-900 border-4 border-secondary rounded-full flex items-center justify-center relative z-10 shadow-xl active:scale-95 active:rotate-12 transition-transform duration-300 cursor-pointer">
+<!-- Rotating Gear SVG -->
+<svg class="absolute w-full h-full text-secondary/30 animate-[spin_10s_linear_infinite]" viewbox="0 0 100 100">
+<path d="M50 20 L55 5 L45 5 L50 20 M80 50 L95 55 L95 45 L80 50 M50 80 L55 95 L45 95 L50 80 M20 50 L5 55 L5 45 L20 50" fill="none" stroke="currentColor" stroke-width="2"></path>
+<circle cx="50" cy="50" fill="none" r="30" stroke="currentColor" stroke-dasharray="4 4" stroke-width="2"></circle>
+</svg>
+<span class="material-symbols-outlined text-primary text-3xl" data-weight="fill">play_arrow</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-stone-600 p-3 hover:text-teal-400 transition-colors cursor-pointer">pause</span>
+</div>
+<!-- Media Slider Right -->
+<div class="hidden md:flex flex-col w-32 gap-1">
+<div class="h-1 w-full bg-stone-800 rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-1/2"></div>
+</div>
+<span class="text-[8px] font-mono-data text-stone-500 uppercase tracking-widest text-center">Sync_Phase</span>
+</div>
+<!-- Static Gear/Steam Vents Decoration -->
+<div class="absolute right-8 bottom-4 opacity-30 text-stone-600">
+<svg fill="currentColor" height="40" viewbox="0 0 24 24" width="40">
+<path d="M12 16.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5zM10.5 5h3v2h-3zm0 12h3v2h-3zM5 10.5h2v3H5zm12 0h2v3h-2zM4.22 4.22l1.42 1.42L7.05 4.22 5.63 2.8zM18.37 18.37l1.42 1.42 1.41-1.41-1.41-1.42zM4.22 19.78l1.42-1.42-1.41-1.41-1.42 1.42zm14.15-14.15l1.42-1.42-1.42-1.41-1.41 1.42z"></path>
+</svg>
+</div>
+</footer>
+</body></html>

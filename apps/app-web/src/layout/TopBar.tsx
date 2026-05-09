@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { MachineWardTopBarProps } from "@apparatus";
-import * as styles from './layout.module.css';
+import styles from './layout.module.css';
 
 export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
     return (

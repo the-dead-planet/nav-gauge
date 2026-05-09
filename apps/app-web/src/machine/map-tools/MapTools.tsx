@@ -4,7 +4,7 @@ import { Protocol } from "pmtiles";
 import classNames from "classnames";
 import { Icons } from "@web-ui";
 import { Cartomancer, useObservableState, useStateWarden, useSubjectState, ToolsStation } from "@apparatus";
-import * as styles from './map-tools.module.css';
+import styles from './map-tools.module.css';
 import './map.css';
 
 interface Props {

@@ -35,17 +35,17 @@ export const FileInputStatus: FC<FileInputStatusProps> = ({
             ) : error ? (
                 <View>
                     {cause ? (
-                        <Heading style={{ color: theme.colors.error }}>
+                        <Heading style={{ color: theme.colors.componentserror }}>
                             {cause}
                         </Heading>
                     ) : null}
-                    <Text style={{ color: theme.colors.error }}>
+                    <Text style={{ color: theme.colors.componentserror }}>
                         {error.message}
                     </Text>
                 </View>
             ) : ok
                 ? (
-                    <Text style={[styles.text, { color: theme.colors.success }]}>
+                    <Text style={[styles.text, { color: theme.colors.componentssuccess }]}>
                         {routeName || "Let's go!"}
                     </Text>
                 ) : <Text>No file uploaded yet.</Text>}

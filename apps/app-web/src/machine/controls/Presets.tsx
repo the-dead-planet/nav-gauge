@@ -12,7 +12,7 @@ import {
     validateGaugeControls,
     validateMapLayout
 } from "@apparatus";
-import * as styles from './controls.module.css';
+import styles from './controls.module.css';
 
 interface Props { }
 

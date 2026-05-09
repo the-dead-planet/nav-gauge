@@ -4,7 +4,7 @@ import { formatCurrentTimestamp, getProgressPercentage, RouteToolProps } from "@
 import { updateRouteLayer } from "../tinkers";
 import { WebChronoLens } from "../chrono-lens/chrono-lens";
 import { WebMarkerImageData } from "../images/image-parser";
-import * as styles from './player.module.css';
+import styles from './player.module.css';
 
 export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map, File, WebMarkerImageData>> = ({
     map,

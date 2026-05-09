@@ -7,7 +7,7 @@ import { baseConfig, Env, Argv } from './rspack.config';
 
 const config = (env: Env, argv: Argv): Configuration => {
     const base = baseConfig(env, argv);
-    
+
     return merge(base, {
         mode: 'development',
         devtool: 'source-map',
@@ -44,10 +44,13 @@ const config = (env: Env, argv: Argv): Configuration => {
                         {
                             loader: "css-loader",
                             options: {
+                                esModule: false,
                                 sourceMap: true,
                                 modules: {
                                     mode: "local",
                                     localIdentName: "[name]---[local]---[hash:base64:5]",
+                                    exportLocalsConvention: "camelCase",
+                                    namedExport: false,
                                 },
                             },
                         },
