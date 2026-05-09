@@ -24,7 +24,7 @@ export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
 
     return (
         <View style={[styles.container, {
-            borderBottomColor: theme.colors.componentsborder
+            borderBottomColor: theme.componentColor('border')
         }]}>
             <Text style={styles.header}>
                 {title}

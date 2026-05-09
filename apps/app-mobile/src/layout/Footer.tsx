@@ -24,7 +24,7 @@ export const Footer: FC = ({ }) => {
 
     return (
         <View style={[styles.container, {
-            borderColor: theme.colors.componentsborder
+            borderColor: theme.componentColor('border')
         }]}>
             {[...attrributions.entries()].map(([id, { text, href }]) => (
                 <LinkText key={id} href={href}>
