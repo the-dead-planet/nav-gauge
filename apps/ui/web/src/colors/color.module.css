@@ -1,5 +1,6 @@
-.container {
+.palette {
     display: flex;
+    align-items: center;
 }
 
 .box {
