@@ -143,3 +143,5 @@ Own light & dark themes are created and applied to the wrappers for native compo
 Use with caution. Use it as a tool or as an advanced search or autocomplete and don't depend on it too much. 
 
 There is no plan to jump the hype train. If there is ever a need to include an AI component and if it would be beneficial as an option to a certain feature, it can be added. In general it's an AI-last application.
+
+...but there is an [AGENTS.md](/AGENTS.md) and [OpenCode](https://opencode.ai) is configured in [opencode.json](/opencode.json).
