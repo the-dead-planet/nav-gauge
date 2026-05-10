@@ -40,6 +40,8 @@ module.exports = [
             'react-hooks/exhaustive-deps': 'off',
             'react-hooks/rules-of-hooks': 'off',
             'react-hooks/refs': 'off',
+            'react-hooks/immutability': 'off',
+            'react-hooks/set-state-in-effect': 'off',
         },
     }),
 
