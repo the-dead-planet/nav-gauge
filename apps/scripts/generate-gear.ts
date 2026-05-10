@@ -1,5 +1,6 @@
 import { cpSync, existsSync, readdirSync, readFileSync, renameSync, writeFileSync } from 'fs';
 import { join } from 'path';
+import { createInterface, Interface } from 'readline';
 
 const root = join(__dirname, '..');
 const gearsRoot = join(root, 'gears');
@@ -11,21 +12,49 @@ const mobileOnlyTemplate = join(templatesRoot, 'mobile-only');
 const toPascal = (s: string) =>
     s.split('-').map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join('');
 
-const usage = () => {
-    console.log(`Usage: yarn tsx ./scripts/generate-gear.ts <name> [options]
-
-Options:
-  --web-only        Generate only web/ package (no common/ intermediate)
-  --mobile-only     Generate only mobile/ package (no common/ intermediate)
-
-If no platform flag is given, common/ + web/ + mobile/ are all generated.
-
-The gear name should be in kebab-case (e.g. "route-story").`);
-};
-
 const die = (msg: string) => {
     console.error(`Error: ${msg}`);
     process.exit(1);
+};
+
+const prompt = (rl: Interface, query: string): Promise<string> =>
+    new Promise((resolve) => rl.question(query, (answer) => resolve(answer.trim())));
+
+const validateName = (name: string): string | null => {
+    if (!name) return 'Name cannot be empty.';
+    if (!/^[a-z][a-z0-9]*(-[a-z0-9]+)*$/.test(name)) {
+        return 'Use kebab-case (e.g. "my-feature").';
+    }
+    if (existsSync(join(gearsRoot, name))) {
+        return `Gear "${name}" already exists.`;
+    }
+    return null;
+};
+
+const promptName = async (rl: Interface): Promise<string> => {
+    while (true) {
+        const name = await prompt(rl, 'Gear name (kebab-case): ');
+        const error = validateName(name);
+        if (error) {
+            console.log(`  ${error}`);
+            continue;
+        }
+        return name;
+    }
+};
+
+const promptPlatform = async (rl: Interface): Promise<string> => {
+    console.log('\nPlatform:');
+    console.log('  1) Web + Mobile (default)');
+    console.log('  2) Web only');
+    console.log('  3) Mobile only');
+    while (true) {
+        const choice = await prompt(rl, 'Choice [1]: ');
+        if (!choice || choice === '1') return 'default';
+        if (choice === '2') return 'web-only';
+        if (choice === '3') return 'mobile-only';
+        console.log('  Invalid choice. Enter 1, 2, or 3.');
+    }
 };
 
 const replacePlaceholders = (dir: string, kebab: string) => {
@@ -58,52 +87,73 @@ const replacePlaceholders = (dir: string, kebab: string) => {
     }
 };
 
-const main = () => {
-    const nameArg = process.argv[2];
+const generate = (name: string, templateDir: string) => {
+    const gearDir = join(gearsRoot, name);
 
-    if (!nameArg || nameArg.startsWith('--')) {
-        usage();
-        process.exit(1);
+    const templateLabel = templateDir === webOnlyTemplate
+        ? 'web-only (no common)'
+        : templateDir === mobileOnlyTemplate
+            ? 'mobile-only (no common)'
+            : 'common + web + mobile';
+
+    console.log(`\nGenerating gear "${name}"...`);
+    console.log(`  Template: ${templateLabel}`);
+
+    cpSync(templateDir, gearDir, { recursive: true });
+    replacePlaceholders(gearDir, name);
+
+    console.log(`\nDone. Gear "${name}" created at ${gearDir}`);
+    console.log('\nNext steps:');
+    console.log(`  1. cd apps`);
+    console.log(`  2. yarn install`);
+    console.log(`  3. yarn test:gear ${name}`);
+    console.log(`  4. Implement engage/disengage logic`);
+};
+
+const getTemplateDir = (platform: string) => {
+    if (platform === 'web-only') return webOnlyTemplate;
+    if (platform === 'mobile-only') return mobileOnlyTemplate;
+    return defaultTemplate;
+};
+
+const main = async () => {
+    const args = process.argv.slice(2);
+    const webOnly = args.includes('--web-only');
+    const mobileOnly = args.includes('--mobile-only');
+    const nameArg = args.find((a) => !a.startsWith('--'));
+
+    let name = '';
+    let platform = '';
+
+    if (nameArg) {
+        const error = validateName(nameArg);
+        if (error) die(error);
+        name = nameArg;
     }
 
-    if (!/^[a-z][a-z0-9]*(-[a-z0-9]+)*$/.test(nameArg)) {
-        die(`Invalid gear name "${nameArg}". Use kebab-case (e.g. "my-feature"). Rerun with a valid name.`);
+    if (webOnly || mobileOnly) {
+        platform = webOnly ? 'web-only' : 'mobile-only';
+    } else if (nameArg) {
+        platform = 'default';
     }
 
-    const gearDir = join(gearsRoot, nameArg);
-
-    if (existsSync(gearDir)) {
-        die(`Gear "${nameArg}" already exists at ${gearDir}.`);
+    if (!name || !platform) {
+        const rl = createInterface({ input: process.stdin, output: process.stdout });
+        try {
+            if (!name) name = await promptName(rl);
+            if (!platform) platform = await promptPlatform(rl);
+        } finally {
+            rl.close();
+        }
     }
 
-    const flags = process.argv.slice(3);
-    const webOnly = flags.includes('--web-only');
-    const mobileOnly = flags.includes('--mobile-only');
-
-    const templateDir = webOnly
-        ? webOnlyTemplate
-        : mobileOnly
-            ? mobileOnlyTemplate
-            : defaultTemplate;
+    const templateDir = getTemplateDir(platform);
 
     if (!existsSync(templateDir)) {
         die(`Template not found at ${templateDir}.`);
     }
 
-    console.log(`Generating gear "${nameArg}"...`);
-    if (webOnly) console.log('  Template: web-only (no common)');
-    else if (mobileOnly) console.log('  Template: mobile-only (no common)');
-    else console.log('  Template: common + web + mobile');
-
-    cpSync(templateDir, gearDir, { recursive: true });
-    replacePlaceholders(gearDir, nameArg);
-
-    console.log(`\nDone. Gear "${nameArg}" created at ${gearDir}`);
-    console.log('\nNext steps:');
-    console.log(`  1. cd apps`);
-    console.log(`  2. yarn install`);
-    console.log(`  3. yarn test:gear ${nameArg}`);
-    console.log(`  4. Implement engage/disengage logic`);
+    generate(name, templateDir);
 };
 
 main();
