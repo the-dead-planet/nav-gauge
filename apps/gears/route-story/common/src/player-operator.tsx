@@ -10,7 +10,7 @@ export class PlayerOperator<TMap, TFile extends { name?: string | null; type: st
 
     public isLoading$ = new BehaviorSubject(false);
 
-    constructor(
+    public constructor(
         gear: RouteStoryGear<TMap, TFile, TImageData>,
     ) {
         this.gear = gear;

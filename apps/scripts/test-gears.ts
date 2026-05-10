@@ -15,7 +15,7 @@ if (!target || !targets.includes(target)) {
 }
 
 const categoryEntry = { base: join(root, 'gears'), suffix: target };
-const tasks = collectCategoryTasks(target, categoryEntry);
+const tasks = collectCategoryTasks(categoryEntry);
 
 if (tasks.length === 0) {
   console.log(`No packages with tests found for category: ${target}`);
@@ -27,7 +27,7 @@ interface Task {
   pkgDir: string;
 }
 
-function collectCategoryTasks(category: string, entry: { base: string; suffix: string | null }): Task[] {
+function collectCategoryTasks(entry: { base: string; suffix: string | null }): Task[] {
   const { base, suffix } = entry;
 
   if (!existsSync(base) || !statSync(base).isDirectory()) {
@@ -77,4 +77,3 @@ const runTask = (task: Task) =>
     process.exit(1);
   }
 })();
-

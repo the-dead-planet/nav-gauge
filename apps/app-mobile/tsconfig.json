@@ -18,5 +18,11 @@
                 "../ui/mobile/src"
             ]
         }
-    }
+    },
+    "include": [
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "__tests__/**/*",
+        "../types/**/*"
+    ]
 }

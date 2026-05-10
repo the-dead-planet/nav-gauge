@@ -1,0 +1,6 @@
+{
+    "extends": "../../tsconfig.gears.mobile.json",
+    "include": [
+        "src/**/*.ts"
+    ]
+}

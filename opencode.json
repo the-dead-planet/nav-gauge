@@ -1,0 +1,24 @@
+{
+    "$schema": "https://opencode.ai/config.json",
+    "model": "opencode/big-pickle",
+    "permission": {
+        "read": "ask",
+        "write": "ask",
+        "edit": "ask",
+        "bash": "ask",
+        "glob": "ask",
+        "grep": "ask"
+    },
+    "watcher": {
+        "ignore": [
+            "node_modules",
+            "dist",
+            "coverage",
+            "android/build",
+            "ios/build",
+            "ios/Pods",
+            "DerivedData",
+            "ztestfiles"
+        ]
+    }
+}

@@ -5,7 +5,7 @@ import { useMachineWard } from "../useMachineWard";
  * On mount initializes the state with the data in storage, if available (otherwise with the `defaultState`).
  * On each change of `state` value, updates storage.
  */
-export function useStorageState<T extends Object>(
+export function useStorageState<T extends object>(
     storageId: string,
     defaultState: T,
     cleanUp: (state: unknown) => Partial<T> = ((state) => state as Partial<T>)

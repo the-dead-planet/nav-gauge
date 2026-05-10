@@ -79,7 +79,7 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<M
             if (!image) {
                 return;
             }
-            let updated: typeof sourceDataGeojson = getImageSource(loadedImages, geojson);
+            const updated: typeof sourceDataGeojson = getImageSource(loadedImages, geojson);
             for (const feature of updated.features) {
                 if (feature.id === id) {
                     feature.properties[FeatureStateProps.Dragging] = true;

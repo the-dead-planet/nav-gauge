@@ -7,12 +7,12 @@ export interface ButtonProps {
 }
 
 export const Button: FC<ButtonProps & RNButtonProps> = ({
-    variant,
+    variant: _variant,
     ...props
 }) => {
     const theme = useTheme();
 
     return (
-        <RNButton {...props} color={props.color ?? theme.colors.componentsbutton} />
+        <RNButton {...props} color={props.color ?? theme.componentColor('button')} />
     );
 };

@@ -6,13 +6,16 @@ on:
       - main
     tags:
       - v*
+    paths:
+      - 'apps/**'
   pull_request:
+    paths:
+      - 'apps/**'
 env:
   IMAGE_NAME: nav-gauge
   IMAGE_REGISTRY: ghcr.io/the-dead-planet
 jobs:
   test:
-    if: contains(github.event.pull_request.changed_files, 'apps/')
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -33,8 +36,58 @@ jobs:
         run: yarn test:web
         working-directory: apps
 
+  typecheck-mobile:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+        working-directory: apps
+
+      - name: Typecheck app-mobile
+        run: npx tsc --noEmit -p app-mobile
+        working-directory: apps
+
+      - name: Typecheck gear mobile packages
+        run: |
+          for dir in gears/*/mobile; do
+            if [ -d "$dir" ]; then
+              echo "Typechecking $dir..."
+              npx tsc --noEmit -p "$dir"
+            fi
+          done
+        shell: bash
+        working-directory: apps
+
+  lint:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+        working-directory: apps
+
+      - name: Lint sources
+        run: npx eslint . --no-warn-ignored --max-warnings 0
+        working-directory: apps
+
   test-e2e:
-    if: contains(github.event.pull_request.changed_files, 'apps/')
     runs-on: ubuntu-24.04
     permissions:
       contents: read

@@ -13,7 +13,7 @@ export type LoadedMobileImageData = Omit<LoadedImageData<MobileMarkerImageData>,
  * @returns Filtered images with valid data and assignment to a feature id.
  */
 export const useLoadedMobileImages = (images: MarkerImage<MobileMarkerImageData>[]) => {
-    const loadedImages: LoadedMobileImageData[] = useMemo(() => images.filter(({ progress, error, ...image }) =>
+    const loadedImages: LoadedMobileImageData[] = useMemo(() => images.filter(({ progress, ...image }) =>
         progress === 100 && !!image.data?.thumbnail && !!image.data.fullSize && image.featureId !== undefined
     ) as LoadedMobileImageData[], [images]);
 

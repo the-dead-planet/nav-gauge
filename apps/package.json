@@ -40,7 +40,9 @@
         "test:ui-web": "yarn workspace @the-dead-planet/nav-gauge-ui-web test",
         "test:e2e:web": "yarn workspace @the-dead-planet/nav-gauge-app-web test:e2e:prod",
         "test:e2e:web:dev": "yarn workspace @the-dead-planet/nav-gauge-app-web test:e2e:dev",
-        "test:e2e:mobile": "yarn workspace @the-dead-planet/nav-gauge-app-mobile test:e2e:prod"
+        "test:e2e:mobile": "yarn workspace @the-dead-planet/nav-gauge-app-mobile test:e2e:prod",
+        "generate:gear": "yarn tsx ./scripts/generate-gear.ts",
+        "add:gear": "yarn tsx ./scripts/add-to-gear.ts"
     },
     "dependencies": {
         "@maplibre/maplibre-gl-style-spec": "^24.8.1",
@@ -55,6 +57,7 @@
         "rxjs": "^7.8.2"
     },
     "devDependencies": {
+        "@eslint/eslintrc": "^3.3.5",
         "@types/chai": "^5.2.3",
         "@types/eslint": "^9.6.1",
         "@types/luxon": "^3.7.1",

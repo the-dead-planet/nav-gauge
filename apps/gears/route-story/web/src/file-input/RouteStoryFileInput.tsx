@@ -7,7 +7,6 @@ import styles from './file-input.module.css';
 
 export const RouteStoryFileInput: FC<RouteFileInputProps<maplibregl.Map, File, WebMarkerImageData>> = ({
     data$,
-    images$,
     fileOperator
 }) => {
     const [{ geojson, routeName, error }] = useSubjectState(data$);
