@@ -1,9 +1,12 @@
-import { cpSync, existsSync, readdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'fs';
+import { cpSync, existsSync, readdirSync, readFileSync, renameSync, writeFileSync } from 'fs';
 import { join } from 'path';
 
 const root = join(__dirname, '..');
 const gearsRoot = join(root, 'gears');
-const templateDir = join(root, 'gears', '.template');
+const templatesRoot = join(root, 'gears', '.templates');
+const defaultTemplate = join(templatesRoot, 'default');
+const webOnlyTemplate = join(templatesRoot, 'web-only');
+const mobileOnlyTemplate = join(templatesRoot, 'mobile-only');
 
 const toPascal = (s: string) =>
     s.split('-').map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join('');
@@ -12,20 +15,20 @@ const usage = () => {
     console.log(`Usage: yarn tsx ./scripts/generate-gear.ts <name> [options]
 
 Options:
-  --web-only        Generate only common/ and web/ packages
-  --mobile-only     Generate only common/ and mobile/ packages
+  --web-only        Generate only web/ package (no common/ intermediate)
+  --mobile-only     Generate only mobile/ package (no common/ intermediate)
 
-If no platform flag is given, both web and mobile are generated.
+If no platform flag is given, common/ + web/ + mobile/ are all generated.
 
 The gear name should be in kebab-case (e.g. "route-story").`);
 };
 
-const exit = (msg: string) => {
+const die = (msg: string) => {
     console.error(`Error: ${msg}`);
     process.exit(1);
 };
 
-const replaceTemplateName = (dir: string, kebab: string) => {
+const replacePlaceholders = (dir: string, kebab: string) => {
     const pascal = toPascal(kebab);
     const entries = readdirSync(dir, { withFileTypes: true });
 
@@ -33,7 +36,7 @@ const replaceTemplateName = (dir: string, kebab: string) => {
         const fullPath = join(dir, entry.name);
 
         if (entry.isDirectory()) {
-            replaceTemplateName(fullPath, kebab);
+            replacePlaceholders(fullPath, kebab);
 
             if (entry.name.includes('__name__')) {
                 renameSync(fullPath, join(dir, entry.name.split('__name__').join(kebab)));
@@ -64,51 +67,43 @@ const main = () => {
     }
 
     if (!/^[a-z][a-z0-9]*(-[a-z0-9]+)*$/.test(nameArg)) {
-        exit(`Invalid gear name "${nameArg}". Use kebab-case (e.g. "my-feature"). Rerun with a valid name.`);
+        die(`Invalid gear name "${nameArg}". Use kebab-case (e.g. "my-feature"). Rerun with a valid name.`);
     }
 
     const gearDir = join(gearsRoot, nameArg);
 
     if (existsSync(gearDir)) {
-        exit(`Gear "${nameArg}" already exists at ${gearDir}.`);
+        die(`Gear "${nameArg}" already exists at ${gearDir}.`);
     }
 
     const flags = process.argv.slice(3);
     const webOnly = flags.includes('--web-only');
     const mobileOnly = flags.includes('--mobile-only');
 
+    const templateDir = webOnly
+        ? webOnlyTemplate
+        : mobileOnly
+            ? mobileOnlyTemplate
+            : defaultTemplate;
+
+    if (!existsSync(templateDir)) {
+        die(`Template not found at ${templateDir}.`);
+    }
+
     console.log(`Generating gear "${nameArg}"...`);
-    if (webOnly) console.log('  Platform: web only');
-    else if (mobileOnly) console.log('  Platform: mobile only');
-    else console.log('  Platform: web + mobile');
+    if (webOnly) console.log('  Template: web-only (no common)');
+    else if (mobileOnly) console.log('  Template: mobile-only (no common)');
+    else console.log('  Template: common + web + mobile');
 
     cpSync(templateDir, gearDir, { recursive: true });
-
-    replaceTemplateName(gearDir, nameArg);
-
-    if (mobileOnly) {
-        const webDir = join(gearDir, 'web');
-        if (existsSync(webDir)) {
-            rmSync(webDir, { recursive: true, force: true });
-        }
-    }
-
-    if (webOnly) {
-        const mobileDir = join(gearDir, 'mobile');
-        if (existsSync(mobileDir)) {
-            rmSync(mobileDir, { recursive: true, force: true });
-        }
-    }
+    replacePlaceholders(gearDir, nameArg);
 
     console.log(`\nDone. Gear "${nameArg}" created at ${gearDir}`);
     console.log('\nNext steps:');
     console.log(`  1. cd apps`);
     console.log(`  2. yarn install`);
     console.log(`  3. yarn test:gear ${nameArg}`);
-    console.log(`  4. Implement the engage/disengage logic in:`);
-    console.log(`     - ${nameArg}/common/src/${nameArg}-gear.ts`);
-    if (!mobileOnly) console.log(`     - ${nameArg}/web/src/${nameArg}-gear.ts`);
-    if (!webOnly) console.log(`     - ${nameArg}/mobile/src/${nameArg}-gear.ts`);
+    console.log(`  4. Implement engage/disengage logic`);
 };
 
 main();
