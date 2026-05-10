@@ -12,7 +12,7 @@ const mobileOnlyTemplate = join(templatesRoot, 'mobile-only');
 const toPascal = (s: string) =>
     s.split('-').map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join('');
 
-const die = (msg: string) => {
+const exit = (msg: string) => {
     console.error(`Error: ${msg}`);
     process.exit(1);
 };
@@ -127,7 +127,7 @@ const main = async () => {
 
     if (nameArg) {
         const error = validateName(nameArg);
-        if (error) die(error);
+        if (error) exit(error);
         name = nameArg;
     }
 
@@ -150,7 +150,7 @@ const main = async () => {
     const templateDir = getTemplateDir(platform);
 
     if (!existsSync(templateDir)) {
-        die(`Template not found at ${templateDir}.`);
+        exit(`Template not found at ${templateDir}.`);
     }
 
     generate(name, templateDir);

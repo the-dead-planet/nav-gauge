@@ -13,6 +13,12 @@ Gears are automatically discovered by the web build — no manual registration n
 ## Generating a new gear
 
 ```bash
+yarn generate:gear                      # will enquire about the details
+```
+
+Or provide the name and optional flags right away 
+
+```bash
 yarn generate:gear <name>               # common + web + mobile
 yarn generate:gear <name> --web-only    # web only (no common)
 yarn generate:gear <name> --mobile-only # mobile only (no common)

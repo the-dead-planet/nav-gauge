@@ -89,6 +89,12 @@ More info in mobile app's [README](/apps/app-mobile/app/README.md).
 ### Generate a gear
 
 ```bash
+yarn generate:gear
+```
+
+Or provide the name and optional flags right away:
+
+```bash
 yarn generate:gear <name>
 ```
 

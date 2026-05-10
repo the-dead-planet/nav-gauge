@@ -13,7 +13,7 @@ Examples:
   yarn add:gear submit-data mobile react-native-fs`);
 };
 
-const die = (msg: string) => {
+const exit = (msg: string) => {
     console.error(`Error: ${msg}`);
     process.exit(1);
 };
@@ -30,16 +30,16 @@ const main = () => {
     const platform = args[1];
 
     if (!/^[a-z][a-z0-9]*(-[a-z0-9]+)*$/.test(gearName)) {
-        die(`Invalid gear name "${gearName}". Use kebab-case.`);
+        exit(`Invalid gear name "${gearName}". Use kebab-case.`);
     }
 
     if (!['common', 'web', 'mobile'].includes(platform)) {
-        die(`Platform must be "common", "web", or "mobile", got "${platform}".`);
+        exit(`Platform must be "common", "web", or "mobile", got "${platform}".`);
     }
 
     const gearDir = join(root, 'gears', gearName, platform);
     if (!existsSync(gearDir)) {
-        die(`Gear not found at ${gearDir}.`);
+        exit(`Gear not found at ${gearDir}.`);
     }
 
     const workspaceName = `@the-dead-planet/nav-gauge-gears-${gearName}-${platform}`;
