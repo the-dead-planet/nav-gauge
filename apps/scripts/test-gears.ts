@@ -36,7 +36,7 @@ function collectCategoryTasks(entry: { base: string; suffix: string | null }): T
   }
 
   const directories = readdirSync(base, { withFileTypes: true })
-    .filter((dirent: Dirent) => dirent.isDirectory() && !dirent.name.startsWith('.'))
+    .filter((dirent: Dirent) => dirent.isDirectory())
     .map((dirent: Dirent) => dirent.name)
     .sort();
 

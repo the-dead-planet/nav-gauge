@@ -24,7 +24,7 @@ yarn generate:gear <name> --web-only    # web only (no common)
 yarn generate:gear <name> --mobile-only # mobile only (no common)
 ```
 
-This copies the relevant template from [.templates/](./.templates/), replaces `__name__` / `__PascalName__` placeholders, and links the packages. Run `yarn install` after generating.
+This copies the relevant template from [.templates/](../.templates/), replaces `__name__` / `__PascalName__` placeholders, and links the packages. Run `yarn install` after generating.
 
 ## Adding dependencies to a gear
 

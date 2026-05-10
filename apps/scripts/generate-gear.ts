@@ -4,7 +4,7 @@ import { createInterface, Interface } from 'readline';
 
 const root = join(__dirname, '..');
 const gearsRoot = join(root, 'gears');
-const templatesRoot = join(root, 'gears', '.templates');
+const templatesRoot = join(root, '.templates');
 const defaultTemplate = join(templatesRoot, 'default');
 const webOnlyTemplate = join(templatesRoot, 'web-only');
 const mobileOnlyTemplate = join(templatesRoot, 'mobile-only');

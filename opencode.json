@@ -1,23 +1,24 @@
 {
-    "model": "big-pickle",
-    "fallback_model": "minimax-m2.5",
-    "temperature": 0.2,
-    "permissions": {
-        "allow": [
-            "read",
-            "write",
-            "bash",
-            "git"
-        ]
+    "$schema": "https://opencode.ai/config.json",
+    "model": "opencode/big-pickle",
+    "permission": {
+        "read": "ask",
+        "write": "ask",
+        "edit": "ask",
+        "bash": "ask",
+        "glob": "ask",
+        "grep": "ask"
     },
-    "ignored_paths": [
-        "node_modules",
-        "dist",
-        "coverage",
-        "android/build",
-        "ios/build",
-        "ios/Pods",
-        "DerivedData",
-        "ztestfiles"
-    ]
+    "watcher": {
+        "ignore": [
+            "node_modules",
+            "dist",
+            "coverage",
+            "android/build",
+            "ios/build",
+            "ios/Pods",
+            "DerivedData",
+            "ztestfiles"
+        ]
+    }
 }

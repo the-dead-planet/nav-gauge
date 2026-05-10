@@ -1,6 +1,6 @@
 ---
 name: add-gear
-description: Scaffold a new pluggable Gear feature from the templates at apps/gears/.templates/
+description: Scaffold a new pluggable Gear feature from the templates at apps/.templates/
 license: AGPL-3.0
 compatibility: opencode
 metadata:
@@ -10,7 +10,7 @@ metadata:
 
 ## What I do
 
-Scaffold a new **Gear** — the pluggable feature unit in nav-gauge — by running `yarn generate:gear <name>` from `apps/`. The script copies the relevant template from `apps/gears/.templates/` (real TypeScript files that are linted and type-checked), replaces `__name__` and `__PascalName__` placeholders with the gear name, and removes unwanted platform directories.
+Scaffold a new **Gear** — the pluggable feature unit in nav-gauge — by running `yarn generate:gear <name>` from `apps/`. The script copies the relevant template from `apps/.templates/` (real TypeScript files that are linted and type-checked), replaces `__name__` and `__PascalName__` placeholders with the gear name, and removes unwanted platform directories.
 
 ## When to use me
 
@@ -29,7 +29,7 @@ The script validates the name (must be valid kebab-case), picks the right templa
 
 ## Template reference
 
-The canonical boilerplate lives at `apps/gears/.templates/default/`. Each gear has up to three packages:
+The canonical boilerplate lives at `apps/.templates/default/`. Each gear has up to three packages:
 
 | Package | Contents |
 |---------|----------|
@@ -37,7 +37,7 @@ The canonical boilerplate lives at `apps/gears/.templates/default/`. Each gear h
 | `web/` | `Web{PascalName}Gear` extending abstract gear with `TMap = maplibregl.Map` |
 | `mobile/` | `Mobile{PascalName}Gear` extending abstract gear with `TMap = MobileMap` |
 
-View the actual template files at `apps/gears/.templates/` for the exact structure — they are the source of truth.
+View the actual template files at `apps/.templates/` for the exact structure — they are the source of truth.
 
 ## Naming conventions
 

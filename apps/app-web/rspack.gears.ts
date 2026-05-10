@@ -7,7 +7,7 @@ class GearRegistryGenerator {
         const gearsDir = path.resolve(compiler.context, "../gears");
         const gearNames = fs
             .readdirSync(gearsDir, { withFileTypes: true })
-            .filter((dirent) => dirent.isDirectory() && !dirent.name.startsWith('.') && fs.existsSync(path.join(gearsDir, dirent.name, "web/src/index.ts")))
+            .filter((dirent) => dirent.isDirectory() && fs.existsSync(path.join(gearsDir, dirent.name, "web/src/index.ts")))
             .map((dirent) => dirent.name);
 
         new rspack.DefinePlugin({
