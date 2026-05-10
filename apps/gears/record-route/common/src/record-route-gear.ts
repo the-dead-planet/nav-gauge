@@ -1,7 +1,4 @@
 import { Gear, Individuator, StateWarden } from "@apparatus";
-// TODO: Delete - test
-import RouteStoryGear from "@the-dead-planet/nav-gauge-gears-route-story-common";
-RouteStoryGear;
 
 export abstract class RecordRouteGear<TMap> extends Gear<TMap> {
     public readonly id = 'record-route';
