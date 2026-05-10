@@ -74,7 +74,7 @@ const resizeImage = (
             return;
         }
 
-        let img = new Image();
+        const img = new Image();
 
         img.onload = () => {
             const {

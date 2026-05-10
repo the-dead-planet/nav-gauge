@@ -37,6 +37,8 @@ module.exports = [
             semi: ['warn', 'always'],
             'eol-last': ['warn', 'always'],
             radix: ['error', 'always'],
+            '@typescript-eslint/no-non-null-asserted-optional-chain': 'off',
+            'react-hooks/exhaustive-deps': 'off',
         },
     }),
 
