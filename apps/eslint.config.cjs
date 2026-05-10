@@ -1,5 +1,4 @@
 const { FlatCompat } = require('@eslint/eslintrc');
-const path = require('path');
 const prettierConfig = require('eslint-config-prettier');
 const customRule = require('./eslint-rules/no-cross-gear-imports');
 
