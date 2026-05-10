@@ -86,9 +86,9 @@
             "app-mobile",
             "ui/*",
             "packages/*",
-            "gears/*/common",
-            "gears/*/mobile",
-            "gears/*/web"
+            "gears/[!.]*/common",
+            "gears/[!.]*/mobile",
+            "gears/[!.]*/web"
         ]
     }
 }

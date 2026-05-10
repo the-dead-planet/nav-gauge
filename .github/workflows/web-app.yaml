@@ -84,7 +84,7 @@ jobs:
         working-directory: apps
 
       - name: Lint sources
-        run: npx eslint "gears/*/{common,mobile,web}/src/**/*.ts" "gears/*/{common,mobile,web}/src/**/*.tsx" "packages/tinker-chest/src/**/*.ts" "packages/apparatus/src/**/*.ts" "packages/apparatus/src/**/*.tsx" "ui/common/src/**/*.ts" "ui/web/src/**/*.ts" "ui/web/src/**/*.tsx" "ui/mobile/src/**/*.ts" "ui/mobile/src/**/*.tsx" "app-web/src/**/*.ts" "app-web/src/**/*.tsx" "app-mobile/src/**/*.ts" "app-mobile/src/**/*.tsx"
+        run: npx eslint gears/*/common/src/**/*.ts gears/*/mobile/src/**/*.ts gears/*/web/src/**/*.ts gears/*/mobile/src/**/*.tsx gears/*/web/src/**/*.tsx packages/tinker-chest/src/**/*.ts packages/apparatus/src/**/*.ts packages/apparatus/src/**/*.tsx ui/common/src/**/*.ts ui/web/src/**/*.ts ui/web/src/**/*.tsx ui/mobile/src/**/*.ts app-web/src/**/*.ts app-web/src/**/*.tsx app-mobile/src/**/*.ts app-mobile/src/**/*.tsx
         working-directory: apps
 
   test-e2e:
