@@ -38,6 +38,8 @@ module.exports = [
             radix: ['error', 'always'],
             '@typescript-eslint/no-non-null-asserted-optional-chain': 'off',
             'react-hooks/exhaustive-deps': 'off',
+            'react-hooks/rules-of-hooks': 'error',
+            'react-hooks/refs': 'off',
         },
     }),
 
