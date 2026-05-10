@@ -12,6 +12,6 @@ export const Heading: FC<TextProps> = ({ style, ...props }) => {
     const theme = useTheme();
 
     return (
-        <Text {...props} style={[styles.heading, { color: theme.colors.componentstext }, style]} />
+        <Text {...props} style={[styles.heading, { color: theme.componentColor('text') }, style]} />
     );
 };
