@@ -23,6 +23,7 @@
         "**/app-mobile/**/*",
         "**/mobile/**/*",
         "**/scripts/**/*",
+        "**/.templates/**/*",
         "node_modules",
         "**/node_modules",
         "**/dist",

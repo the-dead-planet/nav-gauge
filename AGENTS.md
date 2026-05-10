@@ -19,6 +19,8 @@ nav-gauge — open-source map & route data tools for content creators. Offline-f
 | `yarn start:mobile` | Start Metro server |
 | `yarn lint` (in workspace) | ESLint check (zero warnings policy) |
 | `yarn ui:web` | Start Storybook for web UI |
+| `yarn generate:gear <name>` | Scaffold a new gear from `.templates/` |
+| `yarn add:gear <name> <platform> <pkg>` | Add a dependency to a gear package |
 
 ## Architecture
 
@@ -34,7 +36,7 @@ tinker-chest → apparatus → ui/common, gears/common
 No reverse imports. Always use `@package-name` aliases, never relative paths across workspaces.
 
 ### Gears (features)
-Each feature is a pluggable **Gear** with three parts: `common/`, `web/`, `mobile/`. Gears implement the `Gear` interface from `@apparatus`.
+Each feature is a pluggable **Gear** with 1-3 packages depending on template: `common/` (abstract class), `web/`, `mobile/`. Gears implement the `Gear` interface from `@apparatus`. Generate with `yarn generate:gear <name>` from `apps/`.
 
 ## Code Style
 

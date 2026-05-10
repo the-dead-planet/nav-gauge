@@ -24,6 +24,7 @@
         "**/app-web/**/*",
         "**/web/**/*",
         "**/scripts/**/*",
+        "**/.templates/**/*",
         "node_modules",
         "**/node_modules",
         "**/Pods"

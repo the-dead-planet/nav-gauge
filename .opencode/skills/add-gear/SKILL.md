@@ -1,6 +1,6 @@
 ---
 name: add-gear
-description: Scaffold a new pluggable Gear feature from the template at apps/gears/.template/
+description: Scaffold a new pluggable Gear feature from the templates at apps/gears/.templates/
 license: AGPL-3.0
 compatibility: opencode
 metadata:
@@ -10,7 +10,7 @@ metadata:
 
 ## What I do
 
-Scaffold a new **Gear** — the pluggable feature unit in nav-gauge — by running `yarn generate:gear <name>` from `apps/`. The script copies `apps/gears/.template/` (real TypeScript files that are linted and type-checked), replaces placeholders with the gear name, and removes unwanted platform directories.
+Scaffold a new **Gear** — the pluggable feature unit in nav-gauge — by running `yarn generate:gear <name>` from `apps/`. The script copies the relevant template from `apps/gears/.templates/` (real TypeScript files that are linted and type-checked), replaces `__name__` and `__PascalName__` placeholders with the gear name, and removes unwanted platform directories.
 
 ## When to use me
 
@@ -25,11 +25,11 @@ yarn generate:gear <name> --web-only
 yarn generate:gear <name> --mobile-only
 ```
 
-The script validates the name (must be valid kebab-case), copies the template, replaces `__name__` and `__PascalName__` in filenames and content, and removes `web/` or `mobile/` if the corresponding flag was passed.
+The script validates the name (must be valid kebab-case), picks the right template (`default`, `web-only`, or `mobile-only`) based on flags, and replaces `__name__` and `__PascalName__` in filenames and content.
 
 ## Template reference
 
-The canonical boilerplate lives at `apps/gears/.template/`. Each gear has three packages:
+The canonical boilerplate lives at `apps/gears/.templates/default/`. Each gear has up to three packages:
 
 | Package | Contents |
 |---------|----------|
@@ -37,7 +37,7 @@ The canonical boilerplate lives at `apps/gears/.template/`. Each gear has three 
 | `web/` | `Web{PascalName}Gear` extending abstract gear with `TMap = maplibregl.Map` |
 | `mobile/` | `Mobile{PascalName}Gear` extending abstract gear with `TMap = MobileMap` |
 
-View the actual template files at `apps/gears/.template/` for the exact structure — they are the source of truth.
+View the actual template files at `apps/gears/.templates/` for the exact structure — they are the source of truth.
 
 ## Naming conventions
 
