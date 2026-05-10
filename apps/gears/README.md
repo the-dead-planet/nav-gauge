@@ -23,7 +23,7 @@ This copies the relevant template from [.templates/](./.templates/), replaces `_
 ## Adding dependencies to a gear
 
 ```bash
-yarn add:gear <name> <common|web|mobile> <package...>
+yarn add:gear <name> <common|web|mobile> <package>
 ```
 
 Resolves the long workspace name for you:

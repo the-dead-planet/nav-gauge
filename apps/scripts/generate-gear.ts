@@ -104,8 +104,8 @@ const generate = (name: string, templateDir: string) => {
 
     console.log(`\nDone. Gear "${name}" created at ${gearDir}`);
     console.log('\nNext steps:');
-    console.log(`  1. cd apps`);
-    console.log(`  2. yarn install`);
+    console.log(`  1. yarn install`);
+    console.log(`  2. yarn install:gear ${name} <common|web|mobile> <package>`);
     console.log(`  3. yarn test:gear ${name}`);
     console.log(`  4. Implement engage/disengage logic`);
 };
