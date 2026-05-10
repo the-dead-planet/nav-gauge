@@ -7,7 +7,7 @@ export class FileOperator<TMap, TFile extends { name?: string | null; type: stri
     private gear: RouteStoryGear<TMap, TFile, TImageData>;
     public isLoading$ = new BehaviorSubject(false);
 
-    constructor(
+    public constructor(
         gear: RouteStoryGear<TMap, TFile, TImageData>,
     ) {
         this.gear = gear;
@@ -41,7 +41,7 @@ export class FileOperator<TMap, TFile extends { name?: string | null; type: stri
             this.isLoading$.next(true);
             let currentGeojson: GeoJson | undefined = this.gear.data$.value.geojson;
             let geojsonFile: TFile | undefined = undefined;
-            let imageFiles: TFile[] = [];
+            const imageFiles: TFile[] = [];
             const geoExtensions = [...parsers.values()].flatMap((p) => p.acceptedFileExtensions);
 
             for (const file of files) {

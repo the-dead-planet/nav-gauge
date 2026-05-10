@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 
 export const RouteStoryFileInput: FC<RouteFileInputProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({
     data$,
-    images$,
+    images$: _images$,
     fileOperator
 }) => {
     const [{ geojson, routeName, error }] = useSubjectState(data$);

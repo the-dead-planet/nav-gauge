@@ -8,6 +8,21 @@ const compat = new FlatCompat({
 });
 
 module.exports = [
+    {
+        ignores: [
+            "**/dist/**",
+            "**/build/**",
+            "**/node_modules/**",
+            "**/android/**",
+            "**/ios/**",
+            "**/coverage/**",
+            "**/*.lock",
+            "**/*.yaml",
+            "**/*.yml",
+            "**/*.json",
+            "**/*.html",
+        ],
+    },
     ...compat.config({
         extends: [
             'plugin:react-hooks/recommended',
@@ -58,4 +73,17 @@ module.exports = [
         },
     },
     prettierConfig,
+    {
+        files: ['**/*.cjs', '**/*.js'],
+        rules: {
+            '@typescript-eslint/no-require-imports': 'off',
+        },
+    },
+    {
+        files: ['**/*.d.ts'],
+        rules: {
+            '@typescript-eslint/no-explicit-any': 'off',
+            '@typescript-eslint/explicit-member-accessibility': 'off',
+        },
+    },
 ];

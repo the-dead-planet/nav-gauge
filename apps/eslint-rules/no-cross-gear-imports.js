@@ -14,7 +14,7 @@ const FILE_PATTERNS = [
 function getSourceInfo(filename) {
     for (const p of FILE_PATTERNS) {
         const m = filename.match(p.re);
-        if (m) return { type: p.type, gear: p.gearIdx != null ? m[p.gearIdx] : undefined };
+        if (m) return { type: p.type, gear: p.gearIdx !== undefined ? m[p.gearIdx] : undefined };
     }
     return null;
 }
@@ -35,7 +35,7 @@ const IMPORT_PATTERNS = [
 function parseImport(source) {
     for (const p of IMPORT_PATTERNS) {
         const m = source.match(p.re);
-        if (m) return { type: p.type, gear: p.gearIdx != null ? m[p.gearIdx] : undefined };
+        if (m) return { type: p.type, gear: p.gearIdx !== undefined ? m[p.gearIdx] : undefined };
     }
     return null;
 }

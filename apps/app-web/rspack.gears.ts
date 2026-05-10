@@ -3,7 +3,7 @@ import path from "path";
 import { type Compiler, rspack } from "@rspack/core";
 
 class GearRegistryGenerator {
-    apply(compiler: Compiler) {
+    public apply(compiler: Compiler) {
         const gearsDir = path.resolve(compiler.context, "../gears");
         const gearNames = fs
             .readdirSync(gearsDir, { withFileTypes: true })
