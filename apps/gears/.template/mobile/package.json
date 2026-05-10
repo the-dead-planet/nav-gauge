@@ -1,0 +1,28 @@
+{
+    "name": "@the-dead-planet/nav-gauge-gears-__name__-mobile",
+    "version": "1.0.0",
+    "private": true,
+    "main": "src/index.ts",
+    "scripts": {
+        "build": "tsc -b",
+        "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+        "test": "mocha"
+    },
+    "dependencies": {
+        "@the-dead-planet/nav-gauge-apparatus": "*",
+        "@the-dead-planet/nav-gauge-gears-__name__-common": "*",
+        "@the-dead-planet/nav-gauge-tinker-chest": "*",
+        "@the-dead-planet/nav-gauge-ui-common": "*"
+    },
+    "devDependencies": {
+        "@maplibre/maplibre-react-native": "11.0.2",
+        "react": "19.2.3",
+        "react-native": "0.85.2"
+    },
+    "peerDependencies": {
+        "@maplibre/maplibre-react-native": "11.0.2",
+        "react": "19.2.3",
+        "react-native": "0.85.2",
+        "rxjs": "^7.8.2"
+    }
+}

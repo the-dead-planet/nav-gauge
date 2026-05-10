@@ -132,7 +132,8 @@ Styling should be steampunk inspired.
 
 Variables used repeatedly and those which which depend on the theme should be added to [theme specifications](/apps/ui/common/src/theme/specifications.ts) in the common [UI package](/apps/).
 
-The library is currently not deployed as a separate app with component docs. Maybe it will be in the future.
+The web library with component docs is deployed ausing [storybook with rsbuild](https://storybook.js.org/addons/storybook-react-rsbuild) app at the `/storybook` path. 
+The mobile library is not deployed yet but will probably also be [storybook for React Native](https://www.npmjs.com/package/@storybook/react-native).
 
 #### Theme
 
@@ -144,4 +145,4 @@ Use with caution. Use it as a tool or as an advanced search or autocomplete and 
 
 There is no plan to jump the hype train. If there is ever a need to include an AI component and if it would be beneficial as an option to a certain feature, it can be added. In general it's an AI-last application.
 
-...but there is an [AGENTS.md](/AGENTS.md) and [OpenCode](https://opencode.ai) is configured in [opencode.json](/opencode.json).
+...but there is an [AGENTS.md](/AGENTS.md) and [OpenCode](https://opencode.ai) is configured in [opencode.json](/opencode.json)... and some skills in the [skills folder](/.opencode/skills).

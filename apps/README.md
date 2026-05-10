@@ -84,6 +84,16 @@ yarn dev:mobile
 
 More info in mobile app's [README](/apps/app-mobile/app/README.md).
 
+## Generating
+
+### Generate a gear
+
+```bash
+yarn generate:gear <name>
+```
+
+Scaffolds a new pluggable feature from `apps/gears/.template/`. Supports `--web-only` and `--mobile-only` flags. See [gears README](/apps/gears/README.md).
+
 ## Tests
 
 ### Unit tests

@@ -7,7 +7,7 @@ const gearsRoot = path.resolve(root, 'gears');
 
 const gearsDirs = fs
     .readdirSync(gearsRoot, { withFileTypes: true })
-    .filter((dir) => dir.isDirectory());
+    .filter((dir) => !dir.name.startsWith('.') && dir.isDirectory());
 
 // const gearNames = gearsDirs.map((dir) => dir.name);
 
