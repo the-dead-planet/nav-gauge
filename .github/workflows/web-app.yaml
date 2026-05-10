@@ -6,13 +6,16 @@ on:
       - main
     tags:
       - v*
+    paths:
+      - 'apps/**'
   pull_request:
+    paths:
+      - 'apps/**'
 env:
   IMAGE_NAME: nav-gauge
   IMAGE_REGISTRY: ghcr.io/the-dead-planet
 jobs:
   test:
-    if: contains(github.event.pull_request.changed_files, 'apps/')
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -34,7 +37,6 @@ jobs:
         working-directory: apps
 
   typecheck-mobile:
-    if: contains(github.event.pull_request.changed_files, 'apps/')
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -66,7 +68,6 @@ jobs:
         working-directory: apps
 
   lint:
-    if: contains(github.event.pull_request.changed_files, 'apps/')
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -87,7 +88,6 @@ jobs:
         working-directory: apps
 
   test-e2e:
-    if: contains(github.event.pull_request.changed_files, 'apps/')
     runs-on: ubuntu-24.04
     permissions:
       contents: read
