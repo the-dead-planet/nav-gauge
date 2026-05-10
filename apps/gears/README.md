@@ -1,12 +1,12 @@
 # Gears
 
-Pluggable features. Each gear is split into three packages:
+Pluggable features. Gears can span one or more packages depending on the platforms they target:
 
-| Package | Layer |
-|---------|-------|
-| `common/` | Abstract `Gear<TMap>` class with platform-agnostic logic |
-| `web/` | Web-specific implementation (maplibregl.Map) |
-| `mobile/` | Mobile-specific implementation (MobileMap) |
+| Template | Packages |
+|----------|----------|
+| `default` | `common/` (abstract `Gear<TMap>`), `web/` (maplibregl.Map), `mobile/` (MobileMap) |
+| `web-only` | `web/` (extends `Gear<maplibregl.Map>` directly) |
+| `mobile-only` | `mobile/` (extends `Gear<MobileMap>` directly) |
 
 Gears are automatically discovered by the web build — no manual registration needed.
 
@@ -14,8 +14,8 @@ Gears are automatically discovered by the web build — no manual registration n
 
 ```bash
 yarn generate:gear <name>               # common + web + mobile
-yarn generate:gear <name> --web-only    # common + web only
-yarn generate:gear <name> --mobile-only # common + mobile only
+yarn generate:gear <name> --web-only    # web only (no common)
+yarn generate:gear <name> --mobile-only # mobile only (no common)
 ```
 
 This copies the relevant template from [.templates/](./.templates/), replaces `__name__` / `__PascalName__` placeholders, and links the packages. Run `yarn install` after generating.

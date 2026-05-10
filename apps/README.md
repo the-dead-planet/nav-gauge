@@ -92,7 +92,7 @@ More info in mobile app's [README](/apps/app-mobile/app/README.md).
 yarn generate:gear <name>
 ```
 
-Scaffolds a new pluggable feature from `apps/gears/.template/`. Supports `--web-only` and `--mobile-only` flags. See [gears README](/apps/gears/README.md).
+Scaffolds a new pluggable feature from `apps/gears/.templates/`. Supports `--web-only` and `--mobile-only` flags. See [gears README](/apps/gears/README.md).
 
 ## Tests
 
