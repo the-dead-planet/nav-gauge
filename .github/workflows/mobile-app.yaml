@@ -6,13 +6,7 @@ on:
       - main
     tags:
       - v*
-    paths:
-      - 'apps/app-mobile/**'
-      - 'apps/gears/*/mobile/**'
   pull_request:
-    paths:
-      - 'apps/app-mobile/**'
-      - 'apps/gears/*/mobile/**'
 
 jobs:
   typecheck-mobile:
