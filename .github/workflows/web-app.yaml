@@ -166,6 +166,48 @@ jobs:
             
             echo "Pruning images..."
             docker image prune -f
+  
+  deploy-storybook:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' 
+    needs: storybook-build-and-push
+    permissions:
+      contents: read
+    steps:
+      - name: Deploy
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            set -e
+
+            IMAGE="ghcr.io/the-dead-planet/nav-gauge-storybook"
+            PORT="8086"
+            PORTS="-p $PORT:8080"
+
+            echo "Pulling new image $STORYBOOK_IMAGE..."
+            docker pull $STORYBOOK_IMAGE:latest
+
+            CONTAINER_ID=$(docker ps --filter "publish=$PORT" --format "{{.ID}}")
+            echo "Current container $CONTAINER_ID"
+
+            if [ -n "$CONTAINER_ID" ]; then
+              echo "Stopping container..."
+              docker stop $CONTAINER_ID
+            fi
+
+            echo "Starting new container..."
+            docker run -d --restart=always $PORTS $STORYBOOK_IMAGE
+
+            if [ -n "$CONTAINER_ID" ]; then
+              echo "Removing previous container..."
+              docker rm $CONTAINER_ID
+            fi
+            
+            echo "Pruning images..."
+            docker image prune -f
  
   test-e2e-prod:
     runs-on: ubuntu-latest
