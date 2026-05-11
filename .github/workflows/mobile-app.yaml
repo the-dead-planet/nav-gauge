@@ -1,0 +1,47 @@
+name: Mobile app typecheck
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - v*
+    paths:
+      - 'apps/app-mobile/**'
+      - 'apps/gears/*/mobile/**'
+  pull_request:
+    paths:
+      - 'apps/app-mobile/**'
+      - 'apps/gears/*/mobile/**'
+
+jobs:
+  typecheck-mobile:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+        working-directory: apps
+
+      - name: Typecheck app-mobile
+        run: npx tsc --noEmit -p app-mobile
+        working-directory: apps
+
+      - name: Typecheck gear mobile packages
+        run: |
+          for dir in gears/*/mobile; do
+            if [ -d "$dir" ]; then
+              echo "Typechecking $dir..."
+              npx tsc --noEmit -p "$dir"
+            fi
+          done
+        shell: bash
+        working-directory: apps
