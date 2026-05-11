@@ -183,8 +183,8 @@ jobs:
             PORT="8086"
             PORTS="-p $PORT:8080"
 
-            echo "Pulling new image $STORYBOOK_IMAGE..."
-            docker pull $STORYBOOK_IMAGE:latest
+            echo "Pulling new image $IMAGE..."
+            docker pull $IMAGE:latest
 
             CONTAINER_ID=$(docker ps --filter "publish=$PORT" --format "{{.ID}}")
             echo "Current container $CONTAINER_ID"
@@ -195,7 +195,7 @@ jobs:
             fi
 
             echo "Starting new container..."
-            docker run -d --restart=always $PORTS $STORYBOOK_IMAGE
+            docker run -d --restart=always $PORTS $IMAGE
 
             if [ -n "$CONTAINER_ID" ]; then
               echo "Removing previous container..."
