@@ -6,11 +6,7 @@ on:
       - main
     tags:
       - v*
-    paths:
-      - 'apps/**'
   pull_request:
-    paths:
-      - 'apps/**'
 env:
   IMAGE_NAME: nav-gauge
   STORYBOOK_IMAGE_NAME: nav-gauge-storybook
