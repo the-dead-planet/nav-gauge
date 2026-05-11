@@ -97,33 +97,6 @@ jobs:
           echo VERSION=$VERSION
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
-
-  storybook-build-and-push:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' 
-    permissions:
-      packages: write
-      contents: read
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Build image
-        run: docker build . --file apps/ui/web/Dockerfile --tag $STORYBOOK_IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
-
-      - name: Log in to registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-        
-      - name: Push image
-        run: |
-          IMAGE_ID=$IMAGE_REGISTRY/$STORYBOOK_IMAGE_NAME
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-          [ "$VERSION" == "main" ] && VERSION=latest
-          echo IMAGE_ID=$IMAGE_ID
-          echo VERSION=$VERSION
-          docker tag $STORYBOOK_IMAGE_NAME $IMAGE_ID:$VERSION
-          docker push $IMAGE_ID:$VERSION
   
   deploy:
     runs-on: ubuntu-latest
@@ -166,8 +139,35 @@ jobs:
             
             echo "Pruning images..."
             docker image prune -f
+
+  storybook-build-and-push:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' 
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build . --file apps/ui/web/Dockerfile --tag $STORYBOOK_IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
+
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        
+      - name: Push image
+        run: |
+          IMAGE_ID=$IMAGE_REGISTRY/$STORYBOOK_IMAGE_NAME
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          [ "$VERSION" == "main" ] && VERSION=latest
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $STORYBOOK_IMAGE_NAME $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
   
-  deploy-storybook:
+  storybook-deploy:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' 
     needs: storybook-build-and-push
