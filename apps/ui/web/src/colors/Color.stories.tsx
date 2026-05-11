@@ -17,16 +17,16 @@ export const ColorPalette = {
       alignItems: 'center',
       columnGap: '20px',
     }}>
-      <Color name="Blue" color={Theme.palette.blue} />
-      <Color name="Copper" color={Theme.palette.copper} />
       <Color name="Grey" color={Theme.palette.grey} />
-      <Color name="Lime" color={Theme.palette.lime} />
-      <Color name="Magenta" color={Theme.palette.magenta} />
-      <Color name="Pink" color={Theme.palette.pink} />
-      <Color name="Purple" color={Theme.palette.purple} />
-      <Color name="Red" color={Theme.palette.red} />
-      <Color name="Teal" color={Theme.palette.teal} />
       <Color name="Yellow" color={Theme.palette.yellow} />
+      <Color name="Copper" color={Theme.palette.copper} />
+      <Color name="Red" color={Theme.palette.red} />
+      <Color name="Pink" color={Theme.palette.pink} />
+      <Color name="Magenta" color={Theme.palette.magenta} />
+      <Color name="Purple" color={Theme.palette.purple} />
+      <Color name="Teal" color={Theme.palette.teal} />
+      <Color name="Lime" color={Theme.palette.lime} />
+      <Color name="Blue" color={Theme.palette.blue} />
     </div>
   ),
 } satisfies Story;
