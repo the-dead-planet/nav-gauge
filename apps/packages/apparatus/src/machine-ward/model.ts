@@ -8,8 +8,9 @@ export interface MachineWardLayoutProps {
     children?: ReactNode;
 }
 
-export interface MachineWardTopBarProps {
+export interface MachineWardTopBarProps<TNavigationPath extends string = string> {
     title: string;
+    navigate: (path: TNavigationPath) => void;
 }
 
 export interface MachineWardNoticesProps {
@@ -17,10 +18,10 @@ export interface MachineWardNoticesProps {
     onRemove: (id: string) => void;
 }
 
-export interface MachineWardComponents {
+export interface MachineWardComponents<TNavigationPath extends string = string> {
     errorFallbackComponent: ErrorBoundaryProps['fallbackComponent'];
     layoutComponent: ComponentType<MachineWardLayoutProps>;
-    topBarComponent: ComponentType<MachineWardTopBarProps>;
+    topBarComponent: ComponentType<MachineWardTopBarProps<TNavigationPath>>;
     machineComponent: ComponentType;
     footerComponent: ComponentType;
     noticesComponent: ComponentType<MachineWardNoticesProps>;

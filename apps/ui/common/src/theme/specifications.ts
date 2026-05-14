@@ -15,6 +15,10 @@ export const themeSpecifications: { [key in ThemeName]: ThemeSpecification } = {
                 name: 'neutral',
                 shade: 900
             },
+            "menu-background": {
+                name: 'neutral',
+                shade: 700
+            },
             border: {
                 name: 'neutral',
                 shade: 800
@@ -75,6 +79,10 @@ export const themeSpecifications: { [key in ThemeName]: ThemeSpecification } = {
             background: {
                 name: 'neutral',
                 shade: 900
+            },
+            "menu-background": {
+                name: 'neutral',
+                shade: 700
             },
             border: {
                 name: 'neutral',

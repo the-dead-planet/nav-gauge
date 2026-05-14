@@ -14,7 +14,7 @@ import { MachineGear, MachineWardComponents } from "./model";
  * 
  * Describes the expected content of the applications and renders complete app.
  */
-export abstract class MachineWard<TMap = unknown> {
+export abstract class MachineWard<TMap = unknown, TNavigationPath extends string = string> {
     public title = 'nav gauge';
 
     public readonly individuator: Individuator;
@@ -59,7 +59,17 @@ export abstract class MachineWard<TMap = unknown> {
         this.gearsSubscription?.unsubscribe();
     }
 
-    public abstract components: MachineWardComponents;
+    /**
+     * Routing and navigation between aplication views
+     */
+    public abstract navigate: (path: TNavigationPath) => void;
+
+    /**
+     * Routing and navigation back
+     */
+    public abstract navigateBack: () => void;
+
+    public abstract components: MachineWardComponents<TNavigationPath>;
 
     public render = (): ReactElement => {
         return (
@@ -69,6 +79,7 @@ export abstract class MachineWard<TMap = unknown> {
                 storageKeeper={this.storageKeeper}
                 stateWarden={this.stateWarden}
                 components={this.components}
+                navigate={this.navigate}
                 onMount={this.initializeValves}
                 onUnmount={this.cleanUp}
             />

@@ -8,25 +8,27 @@ import { MachineWardContext, MachineWardContextValue } from "./MachineWardContex
 import { useSubjectState } from "../state";
 import { MachineWardComponents } from "./model";
 
-interface MachineWardProps<TMap> {
+interface MachineWardProps<TMap, TNavigationPath extends string> {
     title: string;
     individuator: Individuator;
     storageKeeper: StorageKeeper;
     stateWarden: StateWarden<TMap>;
-    components: MachineWardComponents;
+    components: MachineWardComponents<TNavigationPath>;
+    navigate: (path: TNavigationPath) => void;
     onMount: () => void;
     onUnmount: () => void;
 }
 
-export function MachineWardApp<TMap>({
+export function MachineWardApp<TMap, TNavigationPath extends string>({
     title,
     individuator,
     storageKeeper,
     stateWarden,
     components,
+    navigate,
     onMount,
     onUnmount,
-}: MachineWardProps<TMap>) {
+}: MachineWardProps<TMap, TNavigationPath>) {
     const [settings] = useSubjectState(individuator.settings$);
 
     const machineWardContextValue = useMemo((): MachineWardContextValue => ({
@@ -60,7 +62,7 @@ export function MachineWardApp<TMap>({
                     <MachineWardContext.Provider value={machineWardContextValue}>
                         <StateWardenContext.Provider value={stateWarden as StateWarden}>
                             <components.layoutComponent>
-                                <components.topBarComponent title={title} />
+                                <components.topBarComponent title={title} navigate={navigate} />
                                 <components.machineComponent />
                                 <components.footerComponent />
                                 <MachineWardNotices noticesComponent={components.noticesComponent} />

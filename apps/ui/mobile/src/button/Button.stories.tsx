@@ -6,3 +6,9 @@ export const PrimaryButton: FC = () => {
         <Button title="Primary button" onPress={() => console.log("Pressed")} />
     );
 };
+
+export const SecondaryButton: FC = () => {
+    return (
+        <Button title="Secondary button" onPress={() => console.log("Pressed")} />
+    );
+};

@@ -1,8 +1,9 @@
 import { FC } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, } from "react-native";
 import { useTheme } from "@ui";
-import { Text } from '@mobile-ui';
+import { Menu, MenuOption, Text } from '@mobile-ui';
 import { MachineWardTopBarProps } from "@apparatus";
+import { RootStackParamList } from "../navigation";
 
 const styles = StyleSheet.create({
     container: {
@@ -16,10 +17,13 @@ const styles = StyleSheet.create({
     header: {
         fontSize: 20,
         paddingHorizontal: 15
-    }
+    },
 });
 
-export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
+export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
+    title,
+    navigate
+}) => {
     const theme = useTheme();
 
     return (
@@ -29,6 +33,11 @@ export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
             <Text style={styles.header}>
                 {title}
             </Text>
+            <Menu>
+                <MenuOption label="Stories" onPress={() => { 
+                    navigate('Stories');
+                }} />
+            </Menu>
         </View>
     );
 };
