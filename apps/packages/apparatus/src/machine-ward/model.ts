@@ -10,7 +10,13 @@ export interface MachineWardLayoutProps {
 
 export interface MachineWardTopBarProps<TNavigationPath extends string = string> {
     title: string;
-    navigate: (path: TNavigationPath) => void;
+    onNavigate: (path: TNavigationPath) => void;
+    onNavigateBack: () => void;
+}
+
+export interface MachineWardMachineProps<TNavigationPath extends string = string> {
+    onNavigate: (path: TNavigationPath) => void;
+    onNavigateBack: () => void;
 }
 
 export interface MachineWardNoticesProps {
@@ -22,7 +28,7 @@ export interface MachineWardComponents<TNavigationPath extends string = string> 
     errorFallbackComponent: ErrorBoundaryProps['fallbackComponent'];
     layoutComponent: ComponentType<MachineWardLayoutProps>;
     topBarComponent: ComponentType<MachineWardTopBarProps<TNavigationPath>>;
-    machineComponent: ComponentType;
+    machineComponent: ComponentType<MachineWardMachineProps<TNavigationPath>>;
     footerComponent: ComponentType;
     noticesComponent: ComponentType<MachineWardNoticesProps>;
 }

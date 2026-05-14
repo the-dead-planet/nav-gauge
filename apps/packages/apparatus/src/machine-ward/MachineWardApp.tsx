@@ -14,7 +14,8 @@ interface MachineWardProps<TMap, TNavigationPath extends string> {
     storageKeeper: StorageKeeper;
     stateWarden: StateWarden<TMap>;
     components: MachineWardComponents<TNavigationPath>;
-    navigate: (path: TNavigationPath) => void;
+    onNavigate: (path: TNavigationPath) => void;
+    onNavigateBack: () => void;
     onMount: () => void;
     onUnmount: () => void;
 }
@@ -25,7 +26,8 @@ export function MachineWardApp<TMap, TNavigationPath extends string>({
     storageKeeper,
     stateWarden,
     components,
-    navigate,
+    onNavigate,
+    onNavigateBack,
     onMount,
     onUnmount,
 }: MachineWardProps<TMap, TNavigationPath>) {
@@ -62,8 +64,8 @@ export function MachineWardApp<TMap, TNavigationPath extends string>({
                     <MachineWardContext.Provider value={machineWardContextValue}>
                         <StateWardenContext.Provider value={stateWarden as StateWarden}>
                             <components.layoutComponent>
-                                <components.topBarComponent title={title} navigate={navigate} />
-                                <components.machineComponent />
+                                <components.topBarComponent title={title} onNavigate={onNavigate} onNavigateBack={onNavigateBack} />
+                                <components.machineComponent onNavigate={onNavigate} onNavigateBack={onNavigateBack} />
                                 <components.footerComponent />
                                 <MachineWardNotices noticesComponent={components.noticesComponent} />
                             </components.layoutComponent>

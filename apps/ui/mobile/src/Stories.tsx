@@ -9,6 +9,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         rowGap: 40,
     },
+    backText: {
+        fontWeight: 700,
+        fontSize: 16
+    },
     back: {
         paddingVertical: 12,
     },
@@ -75,7 +79,7 @@ export const Stories: FC = () => {
         return (
             <View style={styles.container}>
                 <TouchableOpacity onPress={() => setSelected(null)} style={styles.back}>
-                    <Text style={{ color: theme.color('blue', 400), fontWeight: 700, fontSize: 16}}>{"< Back"}</Text>
+                    <Text style={[styles.backText, { color: theme.color('blue', 400) }]}>{"< Back"}</Text>
                 </TouchableOpacity>
                 {selected.components.map(({ label, Component }) => (
                     <View key={label}>
@@ -90,9 +94,9 @@ export const Stories: FC = () => {
     return (
         <ScrollView contentContainerStyle={styles.list}>
             <Text style={styles.heading}>UI Components</Text>
-            {stories.map((entry, i) => (
+            {stories.map((entry) => (
                 <TouchableOpacity
-                    key={i}
+                    key={entry.label}
                     onPress={() => setSelected(entry)}
                     style={[styles.item, {
                         borderBottomColor: theme.componentColor('border'),

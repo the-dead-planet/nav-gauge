@@ -55,8 +55,12 @@ export class MobileMachineWard extends MachineWard<MobileMap, keyof RootStackPar
     };
 
     public navigate = (path: keyof RootStackParamList) => {
-        if (navigationRef.isReady()) {
+        const routeExists = navigationRef.getRootState().routeNames.includes(path);
+
+        if (routeExists) {
             navigationRef.navigate(path);
+        } else {
+            navigationRef.navigate('NotFound');
         }
     };
 

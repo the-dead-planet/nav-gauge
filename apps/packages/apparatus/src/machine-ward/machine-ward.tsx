@@ -79,7 +79,8 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
                 storageKeeper={this.storageKeeper}
                 stateWarden={this.stateWarden}
                 components={this.components}
-                navigate={this.navigate}
+                onNavigate={this.navigate}
+                onNavigateBack={this.navigateBack}
                 onMount={this.initializeValves}
                 onUnmount={this.cleanUp}
             />

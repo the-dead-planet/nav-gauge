@@ -22,10 +22,10 @@ const styles = StyleSheet.create({
 
 export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
     title,
-    navigate
+    onNavigate,
 }) => {
     const theme = useTheme();
-    const items = [__DEV__ ? <MenuItem label="Stories" onPress={() => navigate('Stories')} /> : null].filter(Boolean);
+    const items = [__DEV__ ? <MenuItem key="stories" label="Stories" onPress={() => onNavigate('Stories')} /> : null].filter(Boolean);
 
     return (
         <View style={[styles.container, {
