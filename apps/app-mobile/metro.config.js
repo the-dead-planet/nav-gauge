@@ -40,6 +40,9 @@ const config = {
         path.resolve(root, 'ui/mobile'),
         ...gearsWatchFolders,
     ],
+    transformer: {
+        unstable_allowRequireContext: true,
+    },
     resolver: {
         extraNodeModules: {
             react: path.resolve(root, "node_modules/react"),
