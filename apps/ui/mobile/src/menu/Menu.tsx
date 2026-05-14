@@ -1,4 +1,4 @@
-import { useState, useRef, ReactNode, useEffect } from 'react';
+import { useState, useRef, ReactNode } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -6,6 +6,7 @@ import {
     StyleSheet,
     Pressable,
     Dimensions,
+    TransformsStyle,
 } from 'react-native';
 import { useTheme } from '@ui';
 import { Text } from '../text';
@@ -41,42 +42,60 @@ const styles = StyleSheet.create({
 export interface MenuPosition {
     top?: number;
     right?: number;
-    bottom?: number;
     left?: number;
+    transform?: TransformsStyle['transform'];
 }
 
 export type MenuAnchor = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
 
 export interface MenuProps {
-    iconAnchor?: MenuAnchor;
-    menuAnchor?: MenuAnchor;
+    placement?: MenuAnchor;
     children?: ReactNode;
 }
 
+function placementPair(p: MenuAnchor): { icon: MenuAnchor; menu: MenuAnchor } {
+    const vertical = p.startsWith('top') ? 'bottom' : 'top';
+    const horizontal = p.endsWith('right') ? 'right' : 'left';
+    return { icon: p, menu: `${vertical}-${horizontal}` as MenuAnchor };
+}
+
 export const Menu: React.FC<MenuProps> = ({
-    iconAnchor = 'bottom-right',
-    menuAnchor = 'top-right',
+    placement = 'bottom-right',
     children,
 }) => {
+    const { icon: iconAnchor, menu: menuAnchor } = placementPair(placement);
     const theme = useTheme();
     const [visible, setVisible] = useState<boolean>(false);
     const [menuPosition, setMenuPosition] = useState<MenuPosition>({});
 
-    const anchorRef = useRef<View>(null);
+    const iconAnchorRef = useRef<View>(null);
+
+    function iconAnchorPoint(anchor: MenuAnchor, x: number, y: number, w: number, h: number): { iconX: number; iconY: number } {
+        switch (anchor) {
+            case 'top-left': return { iconX: x, iconY: y };
+            case 'top-right': return { iconX: x + w, iconY: y };
+            case 'bottom-left': return { iconX: x, iconY: y + h };
+            case 'bottom-right': return { iconX: x + w, iconY: y + h };
+        }
+    }
+
+    function menuAnchorStyle(anchor: MenuAnchor, iconX: number, iconY: number, windowWidth: number): MenuPosition {
+        switch (anchor) {
+            case 'top-left': return { top: iconY, left: iconX };
+            case 'top-right': return { top: iconY, right: windowWidth - iconX };
+            case 'bottom-left': return { top: iconY, left: iconX, transform: [{ translateY: '-100%' }] };
+            case 'bottom-right': return { top: iconY, right: windowWidth - iconX, transform: [{ translateY: '-100%' }] };
+        }
+    }
 
     const toggleMenu = (): void => {
-        if (!anchorRef.current) {
-            return;
-        }
-        anchorRef.current.measureInWindow((x, y, width, height) => {
+        const ref = iconAnchorRef.current;
+        if (!ref) { return; }
+        ref.measureInWindow((x, y, width, height) => {
             const window = Dimensions.get('window');
-            const windowWidth = window.width;
-            const windowHeight = window.height;
-
-            setMenuPosition({
-                right: windowWidth - (x + width),
-                top: y + height,
-            });
+            const { iconX, iconY } = iconAnchorPoint(iconAnchor, x, y, width, height);
+            const position = menuAnchorStyle(menuAnchor, iconX, iconY, window.width);
+            setMenuPosition(position);
             setVisible(true);
         });
     };
@@ -84,7 +103,7 @@ export const Menu: React.FC<MenuProps> = ({
     return (
         <View style={styles.container}>
             <TouchableOpacity
-                ref={anchorRef}
+                ref={iconAnchorRef}
                 onPress={toggleMenu}
                 style={styles.iconButton}
                 activeOpacity={0.7}
@@ -106,8 +125,7 @@ export const Menu: React.FC<MenuProps> = ({
                         style={[
                             styles.menuList,
                             {
-                                top: menuPosition.top,
-                                right: menuPosition.right,
+                                ...menuPosition,
                                 backgroundColor: theme.componentColor('menu-background'),
                                 shadowColor: theme.componentColor('box-shadow'),
                             }
