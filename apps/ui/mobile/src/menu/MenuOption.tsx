@@ -1,5 +1,6 @@
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { Text } from '../text';
+import { useMenuClose } from './Menu';
 
 const styles = StyleSheet.create({
     menuItem: {
@@ -19,8 +20,12 @@ export interface MenuOptionsProps {
 export const MenuOption: React.FC<MenuOptionsProps> = ({
     label,
     onPress,
-}) => (
-    <TouchableOpacity style={styles.menuItem} onPress={onPress}>
-        <Text style={styles.menuText}>{label}</Text>
-    </TouchableOpacity>
-);
+}) => {
+    const handleClose = useMenuClose();
+
+    return (
+        <TouchableOpacity style={styles.menuItem} onPress={() => { onPress(); handleClose(); }}>
+            <Text style={styles.menuText}>{label}</Text>
+        </TouchableOpacity>
+    );
+};

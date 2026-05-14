@@ -28,6 +28,7 @@ export const PlacementBottomLeft = () => (
             <Menu placement="bottom-left">
                 <MenuOption label="Option A" onPress={() => console.log("Option A")} />
                 <MenuOption label="Option B" onPress={() => console.log("Option B")} />
+                    <Text>hello</Text>
             </Menu>
         </View>
     </View>

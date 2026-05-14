@@ -1,4 +1,4 @@
-import { useState, useRef, ReactNode } from 'react';
+import { useState, useRef, ReactNode, createContext, useContext } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -6,10 +6,13 @@ import {
     StyleSheet,
     Pressable,
     Dimensions,
-    TransformsStyle,
 } from 'react-native';
 import { useTheme } from '@ui';
 import { Text } from '../text';
+
+const MenuContext = createContext<{ close: () => void }>({ close: () => { } });
+
+export const useMenuClose = (): (() => void) => useContext(MenuContext).close;
 
 const styles = StyleSheet.create({
     container: {
@@ -42,8 +45,8 @@ const styles = StyleSheet.create({
 export interface MenuPosition {
     top?: number;
     right?: number;
+    bottom?: number;
     left?: number;
-    transform?: TransformsStyle['transform'];
 }
 
 export type MenuAnchor = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
@@ -79,12 +82,12 @@ export const Menu: React.FC<MenuProps> = ({
         }
     }
 
-    function menuAnchorStyle(anchor: MenuAnchor, iconX: number, iconY: number, windowWidth: number): MenuPosition {
+    function menuAnchorStyle(anchor: MenuAnchor, iconX: number, iconY: number, windowWidth: number, windowHeight: number): MenuPosition {
         switch (anchor) {
             case 'top-left': return { top: iconY, left: iconX };
             case 'top-right': return { top: iconY, right: windowWidth - iconX };
-            case 'bottom-left': return { top: iconY, left: iconX, transform: [{ translateY: '-100%' }] };
-            case 'bottom-right': return { top: iconY, right: windowWidth - iconX, transform: [{ translateY: '-100%' }] };
+            case 'bottom-left': return { bottom: windowHeight - iconY, left: iconX };
+            case 'bottom-right': return { bottom: windowHeight - iconY, right: windowWidth - iconX };
         }
     }
 
@@ -94,7 +97,7 @@ export const Menu: React.FC<MenuProps> = ({
         ref.measureInWindow((x, y, width, height) => {
             const window = Dimensions.get('window');
             const { iconX, iconY } = iconAnchorPoint(iconAnchor, x, y, width, height);
-            const position = menuAnchorStyle(menuAnchor, iconX, iconY, window.width);
+            const position = menuAnchorStyle(menuAnchor, iconX, iconY, window.width, window.height);
             setMenuPosition(position);
             setVisible(true);
         });
@@ -117,10 +120,7 @@ export const Menu: React.FC<MenuProps> = ({
                 animationType="fade"
                 onRequestClose={() => setVisible(false)}
             >
-                <Pressable
-                    style={styles.modalOverlay}
-                    onPress={() => setVisible(false)}
-                >
+                <View style={styles.modalOverlay}>
                     <View
                         style={[
                             styles.menuList,
@@ -131,9 +131,11 @@ export const Menu: React.FC<MenuProps> = ({
                             }
                         ]}
                     >
-                        {children}
+                        <MenuContext.Provider value={{ close: () => setVisible(false) }}>
+                            {children}
+                        </MenuContext.Provider>
                     </View>
-                </Pressable>
+                </View>
             </Modal>
         </View>
     );
