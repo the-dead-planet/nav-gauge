@@ -4,7 +4,6 @@ import {
     TouchableOpacity,
     Modal,
     StyleSheet,
-    Pressable,
     Dimensions,
 } from 'react-native';
 import { useTheme } from '@ui';
