@@ -7,10 +7,11 @@ import { ErrorFallback } from "./ErrorFallback";
 import { NoticesList } from "./notices/NoticesList";
 import { MobileMap } from "@mobile-ui";
 import { MobileChronoLens } from "./chrono-lens";
+import { navigationRef, RootStackParamList } from "./navigation";
 
 const AsyncStorage = createAsyncStorage('nav-gauge');
 
-export class MobileMachineWard extends MachineWard<MobileMap> {
+export class MobileMachineWard extends MachineWard<MobileMap, keyof RootStackParamList> {
     public constructor(gears: MachineGear<MobileMap>[]) {
         const getOrientation = (window: ScaledSize): Orientation => {
             return window.width > Dimensions.get('window').height
@@ -44,12 +45,28 @@ export class MobileMachineWard extends MachineWard<MobileMap> {
         );
     }
 
-    public components: MachineWardComponents = {
+    public components: MachineWardComponents<keyof RootStackParamList> = {
         errorFallbackComponent: ErrorFallback,
         layoutComponent: Layout,
         topBarComponent: TopBar,
         machineComponent: Machine,
         footerComponent: Footer,
         noticesComponent: NoticesList,
+    };
+
+    public navigate = (path: keyof RootStackParamList) => {
+        const routeExists = navigationRef.getRootState().routeNames.includes(path);
+
+        if (routeExists) {
+            navigationRef.navigate(path);
+        } else {
+            navigationRef.navigate('NotFound');
+        }
+    };
+
+    public navigateBack = () => {
+        if (navigationRef.isReady() && navigationRef.canGoBack()) {
+            navigationRef.goBack();
+        }
     };
 }
