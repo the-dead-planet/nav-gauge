@@ -25,6 +25,7 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
     navigate
 }) => {
     const theme = useTheme();
+    const items = [__DEV__ ? <MenuItem label="Stories" onPress={() => navigate('Stories')} /> : null].filter(Boolean);
 
     return (
         <View style={[styles.container, {
@@ -33,11 +34,11 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
             <Text style={styles.header}>
                 {title}
             </Text>
-            <Menu>
-                <MenuItem label="Stories" onPress={() => { 
-                    navigate('Stories');
-                }} />
-            </Menu>
+            {items.length > 0 ? (
+                <Menu>
+                    {items}
+                </Menu>
+            ) : null}
         </View>
     );
 };
