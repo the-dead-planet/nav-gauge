@@ -14,7 +14,7 @@
         "android": "react-native run-android",
         "dev": "concurrently -n METRO,TSC -c green,blue \"yarn android\" \"yarn typecheck\"",
         "ios": "react-native run-ios",
-        "lint": "eslint .",
+        "lint": "eslint . --max-warnings -1",
         "start": "react-native start",
         "start:r": "react-native start --reset-cache",
         "test": "jest",
