@@ -12,12 +12,12 @@ const styles = StyleSheet.create({
     },
 });
 
-export interface MenuOptionsProps {
+export interface MenuItemProps {
     label: string;
     onPress: () => void;
 }
 
-export const MenuOption: React.FC<MenuOptionsProps> = ({
+export const MenuItem: React.FC<MenuItemProps> = ({
     label,
     onPress,
 }) => {

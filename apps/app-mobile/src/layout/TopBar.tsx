@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { StyleSheet, View, } from "react-native";
 import { useTheme } from "@ui";
-import { Menu, MenuOption, Text } from '@mobile-ui';
+import { Menu, MenuItem, Text } from '@mobile-ui';
 import { MachineWardTopBarProps } from "@apparatus";
 import { RootStackParamList } from "../navigation";
 
@@ -34,7 +34,7 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
                 {title}
             </Text>
             <Menu>
-                <MenuOption label="Stories" onPress={() => { 
+                <MenuItem label="Stories" onPress={() => { 
                     navigate('Stories');
                 }} />
             </Menu>
