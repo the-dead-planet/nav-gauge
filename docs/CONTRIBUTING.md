@@ -135,7 +135,7 @@ Styling should be steampunk inspired.
 Variables used repeatedly and those which which depend on the theme should be added to [theme specifications](/apps/ui/common/src/theme/specifications.ts) in the common [UI package](/apps/).
 
 The web library with component docs is deployed using [storybook with rsbuild](https://storybook.js.org/addons/storybook-react-rsbuild) app at the `/storybook` path. 
-The mobile library is not deployed yet but will probably also be [storybook for React Native](https://www.npmjs.com/package/@storybook/react-native).
+The mobile library is accessible from the top bar menu in dev mode.
 
 #### Theme
 

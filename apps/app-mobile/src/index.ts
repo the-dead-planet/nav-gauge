@@ -14,4 +14,3 @@ const gears: MachineGear<MobileMap>[] = [
 ];
 
 export const machineWard = new MobileMachineWard(gears);
-console.log({machineWard})
