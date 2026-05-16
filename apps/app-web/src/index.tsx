@@ -33,7 +33,7 @@ async function initializeApp() {
 
         if (rejected.length > 0) {
             console.warn('Some gears could not be engaged:', rejected);
-            machineWard.stateWarden.signaliumBureau.addNotice({
+            machineWard.signaliumBureau.addNotice({
                 id: 'gear-load-errors',
                 type: 'warning',
                 text: `Some gears could not be engaged: ${rejected.join(', ')}.`,

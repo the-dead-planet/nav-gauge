@@ -1,6 +1,6 @@
 import { FC, ReactNode, useMemo } from "react";
 import { PanResponder, StyleSheet, View } from "react-native";
-import { useStateWarden } from "@apparatus";
+import { useMachineWard } from "@apparatus";
 import { useObservableState, useSubjectState } from "@tinker-chest";
 import { MobileMap } from "@mobile-ui";
 
@@ -32,7 +32,7 @@ interface Props {
 }
 
 export const MapTools: FC<Props> = ({ map, children }) => {
-    const { toolsStation } = useStateWarden();
+    const { toolsStation } = useMachineWard();
     const [controlComponents] = useSubjectState(toolsStation.controlComponents$);
     const toolComponents = useObservableState(toolsStation.toolComponentsByPlacement$, []);
     const toolsByPlacement = toolsStation.getToolsByPlacement(toolComponents);

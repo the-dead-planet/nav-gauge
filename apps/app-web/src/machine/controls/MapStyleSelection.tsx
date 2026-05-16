@@ -1,10 +1,10 @@
 import { FC } from "react";
-import { Cartomancer, useStateWarden } from "@apparatus";
+import { Cartomancer, useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import styles from './controls.module.css';
 
 export const MapStyleSelection: FC = () => {
-    const { cartomancer } = useStateWarden();
+    const { cartomancer } = useMachineWard();
     const [selectedStyle, setSelectedStyle] = useSubjectState(cartomancer.selectedStyle$)
 
     const handleMapStyleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {

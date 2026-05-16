@@ -5,7 +5,7 @@ import { point as turfPoint } from "@turf/helpers";
 import { Option } from "@ui";
 import { FeatureProperties, GeoJson, LngLat } from "@tinker-chest";
 import { backgroundMapStyle, customRoadsMapStyle, osmMapStyle } from "./map-styles";
-import { StorageKeeper } from "../../machine-ward/storage-keeper";
+import { StorageKeeper } from "../storage-keeper";
 import { GaugeControlsType, MapLayout, OverlayComponentProps } from "./model";
 
 interface SelectedStyle {

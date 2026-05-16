@@ -25,7 +25,7 @@ export class FileOperator<TMap, TFile extends { name?: string | null; type: stri
 
     public onError = (error: Error) => {
         const id = 'file-upload';
-        this.gear.stateWarden.signaliumBureau.addNotice({
+        this.gear.apparatus.signaliumBureau.addNotice({
             id,
             type: 'error',
             text: 'File upload failed',

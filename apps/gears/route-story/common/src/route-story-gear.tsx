@@ -1,6 +1,6 @@
 import { ComponentType, FC } from "react";
 import { BehaviorSubject, Subscription } from "rxjs";
-import { ToolProps, MarkerImage, OverlayComponentProps, StateWarden, Gear, ControlComponentProps } from "@apparatus";
+import { ToolProps, MarkerImage, OverlayComponentProps, Gear, ControlComponentProps } from "@apparatus";
 import { GeoJson, ParsingResultWithError } from "@tinker-chest";
 import { RouteToolProps, RouteTimes, RouteFileInputProps, RouteFitBoundsProps } from "./model";
 import { FileOperator } from "./file-operator";
@@ -74,11 +74,11 @@ export abstract class RouteStoryGear<TMap, TFile extends { name?: string | null;
         );
     }
 
-    public engage = (stateWarden: StateWarden<TMap>) => {
+    public engage = () => {
         this.engageRouteStory?.();
         this.dataSubscription = this.subscribeToDataUpdates();
 
-        stateWarden.toolsStation.addControlComponent(
+        this.apparatus.toolsStation.addControlComponent(
             this.fileInputControlId,
             this.wrapProps<RouteFileInputProps<TMap, TFile, TImageData>, ControlComponentProps>(this.fileInputComponent, {
                 data$: this.data$,
@@ -87,7 +87,7 @@ export abstract class RouteStoryGear<TMap, TFile extends { name?: string | null;
             })
         );
 
-        stateWarden.toolsStation.addToolComponent(
+        this.apparatus.toolsStation.addToolComponent(
             this.routeLayerFitBoundsToolId,
             'left',
             this.wrapProps<RouteFitBoundsProps<TMap>, ToolProps<TMap>>(this.routeLayerFitBoundsComponent, {
@@ -95,7 +95,7 @@ export abstract class RouteStoryGear<TMap, TFile extends { name?: string | null;
                 onFitBounds: this.fitBoundsHandler
             })
         );
-        stateWarden.toolsStation.addToolComponent(
+        this.apparatus.toolsStation.addToolComponent(
             this.playerToolId,
             'bottom',
             this.wrapProps<RouteToolProps<TMap, TFile, TImageData>, ToolProps<TMap>>(this.playerComponent, {
@@ -107,7 +107,7 @@ export abstract class RouteStoryGear<TMap, TFile extends { name?: string | null;
             })
         );
 
-        stateWarden.cartomancer.addOverlay(
+        this.apparatus.cartomancer.addOverlay(
             this.routeOverlayId,
             this.wrapProps<RouteToolProps<TMap, TFile, TImageData>, OverlayComponentProps<TMap>>(this.routeLayerComponent, {
                 data$: this.data$,
@@ -117,7 +117,7 @@ export abstract class RouteStoryGear<TMap, TFile extends { name?: string | null;
                 playerOperator: this.playerOperator,
             })
         );
-        stateWarden.cartomancer.addOverlay(
+        this.apparatus.cartomancer.addOverlay(
             this.imagesOverlayId,
             this.wrapProps<RouteToolProps<TMap, TFile, TImageData>, OverlayComponentProps<TMap>>(this.imagesLayerComponent, {
                 data$: this.data$,
@@ -129,24 +129,24 @@ export abstract class RouteStoryGear<TMap, TFile extends { name?: string | null;
         );
     };
 
-    public disengage = (stateWarden: StateWarden<TMap>) => {
-        stateWarden.cartomancer.removeOverlay(this.imagesOverlayId);
-        stateWarden.cartomancer.removeOverlay(this.routeOverlayId);
-        stateWarden.toolsStation.removeToolComponent(this.playerToolId);
-        stateWarden.toolsStation.removeToolComponent(this.routeLayerFitBoundsToolId);
-        stateWarden.toolsStation.removeControlComponent(this.fileInputControlId);
+    public disengage = () => {
+        this.apparatus.cartomancer.removeOverlay(this.imagesOverlayId);
+        this.apparatus.cartomancer.removeOverlay(this.routeOverlayId);
+        this.apparatus.toolsStation.removeToolComponent(this.playerToolId);
+        this.apparatus.toolsStation.removeToolComponent(this.routeLayerFitBoundsToolId);
+        this.apparatus.toolsStation.removeControlComponent(this.fileInputControlId);
         this.dataSubscription?.unsubscribe();
         this.disengageRouteStory?.();
     };
 
     private fitBoundsHandler = (map: TMap, sw: [number, number], ne: [number, number]) => {
         const notificationId = 'route-fit-bounds';
-        this.stateWarden.signaliumBureau.removeNotice(notificationId);
+        this.apparatus.signaliumBureau.removeNotice(notificationId);
 
         try {
             this.fitBounds(map, sw, ne);
         } catch (err) {
-            this.stateWarden.signaliumBureau.addNotice({
+            this.apparatus.signaliumBureau.addNotice({
                 type: 'error',
                 id: notificationId,
                 text: (err as Error).message ?? 'Could not fit bounds to route',

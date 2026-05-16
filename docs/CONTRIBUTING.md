@@ -48,11 +48,11 @@ Web and mobile applications should follow the same structure which is defined by
 
 #### State management
 
-The main application state is provided via the [State Warden](/apps/apparatus/common/src/state-warden/state-warden.ts) object accessible using the [useStateWarden](/apps/apparatus/common/src/state-warden/useStateWarden.tsx) hook.
+The main application state is provided via the [Machine Ward](/apps/apparatus/common/src/machine-ward/machine-ward.ts) object accessible using the [useMachineWard](/apps/apparatus/common/src/machine-ward/useMachineWard.tsx) hook.
 
 #### Separation of features
 
-All features should be opt-in, easily plugged in and out of the app. You can find them stored in the [Engine](/apps/apparatus/common/src/state-warden/engine/engine.ts) and they should implement a [Gear interface](/apps/apparatus/common/src/state-warden/engine/model.ts).
+All features should be opt-in, easily plugged in and out of the app. You can find them stored in the [Engine](/apps/apparatus/common/src/engine/engine.ts) and they should implement a [Gear interface](/apps/apparatus/common/src/engine/model.ts).
 
 More info: TBD
 

@@ -3,7 +3,7 @@ import maplibregl from "maplibre-gl";
 import { Protocol } from "pmtiles";
 import classNames from "classnames";
 import { Icons } from "@web-ui";
-import { Cartomancer, useStateWarden, ToolsStation } from "@apparatus";
+import { Cartomancer, useMachineWard, ToolsStation } from "@apparatus";
 import { useObservableState, useSubjectState } from "@tinker-chest";
 import styles from './map-tools.module.css';
 import './map.css';
@@ -17,7 +17,7 @@ interface Props {
 }
 
 export const MapTools: FC<Props> = ({ map, children }) => {
-    const { cartomancer, toolsStation } = useStateWarden();
+    const { cartomancer, toolsStation } = useMachineWard();
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const [containerRef, setContainerRef] = useState<HTMLElement | null>(null);
     const [cssLoaded, setCssLoaded] = useState(false);

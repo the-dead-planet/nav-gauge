@@ -1,7 +1,7 @@
 import { FC, useEffect } from "react";
 import { BehaviorSubject } from "rxjs";
 import { DocumentPickerResponse } from "@react-native-documents/picker";
-import { OverlayComponentProps, useStateWarden } from "@apparatus";
+import { OverlayComponentProps, useMachineWard } from "@apparatus";
 import { getRouteSourceData, RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMap } from "@mobile-ui";
 import { emptyCollection, useSubjectState } from "@tinker-chest";
@@ -25,7 +25,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mo
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [progressMs] = useSubjectState(progressMs$);
-    const { animatrix, cartomancer, chronoLens } = useStateWarden();
+    const { animatrix, cartomancer, chronoLens } = useMachineWard();
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const { showRouteLine, showRoutePoints } = gaugeControls;
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);

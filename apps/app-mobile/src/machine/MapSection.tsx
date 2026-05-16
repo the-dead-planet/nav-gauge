@@ -3,7 +3,7 @@ import { BehaviorSubject } from "rxjs";
 import { LayoutChangeEvent, StyleSheet } from "react-native";
 import { RecordingView, useViewRecorder } from "react-native-view-recorder";
 import { Camera, CameraRef, Map as MaplibreMap, MapRef } from "@maplibre/maplibre-react-native";
-import { Cartomancer, useStateWarden } from "@apparatus";
+import { Cartomancer, useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { MobileMap } from "@mobile-ui";
 import { MapTools } from "./map-tools/MapTools";
@@ -47,7 +47,7 @@ export const MapSection: FC = () => {
         onPanResponderMoveHandlers$,
         onPanResponderEndHandlers$,
     }), [mapSize]);
-    const { cartomancer, chronoLens, signaliumBureau } = useStateWarden();
+    const { cartomancer, chronoLens, signaliumBureau } = useMachineWard();
     const lens = chronoLens as MobileChronoLens;
     const [dragPan] = useSubjectState(map.dragPan$);
     const [_isInitialised, setIsInitialised] = useSubjectState(cartomancer.isInitialised$);

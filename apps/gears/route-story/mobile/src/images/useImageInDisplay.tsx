@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useStateWarden } from "@apparatus";
+import { useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { ImagesLayers } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMap } from "@mobile-ui";
@@ -11,7 +11,7 @@ export const useImageInDisplay = (
     map: MobileMap,
     playerOperator: PlayerOperator<MobileMap, DocumentPickerResponse, MobileMarkerImageData>,
 ): number => {
-    const { animatrix } = useStateWarden();
+    const { animatrix } = useMachineWard();
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
     const [imageInDisplayIconSize, setImageInDisplayIconSize] = useState(ImagesLayers.imageInDisplay.layout["icon-size"]);
 

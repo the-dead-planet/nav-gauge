@@ -1,5 +1,5 @@
 import { CSSProperties, FC, useEffect } from "react";
-import { OverlayComponentProps, SurveillanceState, useMachineWard, useStateWarden } from "@apparatus";
+import { OverlayComponentProps, SurveillanceState, useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { formatCurrentTimestamp, getProgressPercentage, RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { updateRouteLayer } from "../tinkers";
@@ -19,8 +19,7 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<m
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [progressMs] = useSubjectState(progressMs$);
-    const { individuator } = useMachineWard();
-    const { chronoLens, signaliumBureau } = useStateWarden();
+    const { chronoLens, signaliumBureau, individuator} = useMachineWard();
     const [settings] = useSubjectState(individuator.settings$);
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [surveillanceState] = useSubjectState(chronoLens.surveillanceState$);

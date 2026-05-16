@@ -7,7 +7,7 @@ import {
     MapLayout,
     Preset,
     ToolsStation,
-    useStateWarden,
+    useMachineWard,
     validateGaugeControls,
     validateMapLayout
 } from "@apparatus";
@@ -17,7 +17,7 @@ import styles from './controls.module.css';
 interface Props { }
 
 export const Presets: FC<Props> = () => {
-    const { animatrix, cartomancer, toolsStation } = useStateWarden();
+    const { animatrix, cartomancer, toolsStation } = useMachineWard();
     const [animationControls] = useSubjectState(animatrix.controls$);
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const [mapLayout] = useSubjectState(cartomancer.mapLayout$);

@@ -1,6 +1,6 @@
 import { FC, useEffect, useMemo, useState } from "react";
 import maplibregl from "maplibre-gl";
-import { OverlayComponentProps, Cartomancer, useStateWarden, FeatureStateProps } from "@apparatus";
+import { OverlayComponentProps, Cartomancer, useMachineWard, FeatureStateProps } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { MapLayerData, MapSourceAndLayers } from "@web-apparatus";
 import { useLoadedWebImages } from "../hooks/useLoadedWebImages";
@@ -27,7 +27,7 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPr
     images$,
     playerOperator,
 }) => {
-    const { animatrix } = useStateWarden();
+    const { animatrix } = useMachineWard();
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
     const [{ geojson }] = useSubjectState(data$);
     const [images] = useSubjectState(images$);

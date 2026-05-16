@@ -8,12 +8,11 @@
             "@ui": [
                 "../../ui/common/src"
             ]
-        },
-        "types": [],
+        }
     },
     "include": [
-        "*/src/**/*",
-        "*/test/**/*",
+        "src/**/*",
+        "test/**/*",
         "../../types/**/*"
     ],
     "exclude": [
