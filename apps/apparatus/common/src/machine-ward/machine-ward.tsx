@@ -81,17 +81,14 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
             });
     };
 
-    public initialize = (storageKeeper: StorageKeeper) => {
-        this.attributionVaultSubscription = this.subscribeAttributionVault();
-        this.toolsStationPresetSubscription = this.subscribeToolsStationPreset();
-        this.toolsStationPresetActiveSubscription = this.subscribeToolsStationPresetActive();
-        this.animatrix.initialize(storageKeeper);
-        this.cartomancer.initialize(storageKeeper);
-    }
-
     private mount = () => {
         this.storageKeeper.initialize();
         this.individuator.initialize(this.storageKeeper);
+        this.attributionVaultSubscription = this.subscribeAttributionVault();
+        this.toolsStationPresetSubscription = this.subscribeToolsStationPreset();
+        this.toolsStationPresetActiveSubscription = this.subscribeToolsStationPresetActive();
+        this.animatrix.initialize(this.storageKeeper);
+        this.cartomancer.initialize(this.storageKeeper);
         this.initializeValves();
     };
 
@@ -99,11 +96,11 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
         this.gearsSubscription?.unsubscribe();
         this.cartomancer.cleanUp();
         this.animatrix.cleanUp();
-        this.individuator.cleanUp();
-        this.storageKeeper.cleanUp();
         this.toolsStationPresetActiveSubscription?.unsubscribe();
         this.toolsStationPresetSubscription?.unsubscribe();
         this.attributionVaultSubscription?.unsubscribe();
+        this.individuator.cleanUp();
+        this.storageKeeper.cleanUp();
     };
 
     private subscribeAttributionVault = (): Subscription => {
