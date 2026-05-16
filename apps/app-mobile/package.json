@@ -37,8 +37,11 @@
         "@the-dead-planet/nav-gauge-tinker-chest": "*",
         "@the-dead-planet/nav-gauge-ui-common": "*",
         "@the-dead-planet/nav-gauge-ui-mobile": "*",
+        "@react-native-documents/viewer": "^4.0.0",
+        "react-native-view-recorder": "^0.4.0",
         "fast-text-encoding": "^1.0.6",
         "react-native": "0.85.2",
+        "react-native-fs": "^2.20.0",
         "react-native-safe-area-context": "^5.7.0",
         "react-native-screens": "^4.25.0"
     },
