@@ -1,6 +1,6 @@
 import { FC, useMemo } from "react";
 import maplibregl from "maplibre-gl";
-import { useStateWarden } from "@apparatus";
+import { useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { MapLayerData, MapSourceAndLayers, } from "@web-apparatus";
 import { routeSourceIds, layerOrder } from "@the-dead-planet/nav-gauge-gears-route-story-common";
@@ -15,7 +15,7 @@ export const RouteLineLayer: FC<Props> = ({
     map,
     source,
 }) => {
-    const { cartomancer } = useStateWarden();
+    const { cartomancer } = useMachineWard();
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const { showRouteLine, showRoutePoints } = gaugeControls;
 

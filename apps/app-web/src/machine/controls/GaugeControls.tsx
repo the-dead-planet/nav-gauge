@@ -1,14 +1,14 @@
 import { FC, useMemo } from "react";
 import maplibregl from "maplibre-gl";
 import { Input, Fieldset } from "@web-ui";
-import { Cartomancer, ControlPlacement, useStateWarden } from "@apparatus";
+import { Cartomancer, ControlPlacement, useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import styles from './controls.module.css';
 
 interface Props { }
 
 export const GaugeControls: FC<Props> = () => {
-    const { cartomancer } = useStateWarden();
+    const { cartomancer } = useMachineWard();
     const [gaugeControls, setGaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const {
         globeProjection,

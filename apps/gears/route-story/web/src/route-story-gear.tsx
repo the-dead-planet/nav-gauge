@@ -90,7 +90,7 @@ export class WebRouteStoryGear extends RouteStoryGear<maplibregl.Map, File, WebM
    };
 
    private subscribeConfirmBeforeLeave = (): Subscription => {
-      return combineLatest([this.individuator.settings$, this.data$, this.images$])
+      return combineLatest([this.stateWarden.individuator.settings$, this.data$, this.images$])
          .subscribe(([settings, { geojson }, images]) => {
             if (settings.confirmBeforeLeave && (geojson || images.length > 0)) {
                window.addEventListener("beforeunload", this.confirmationHandler);

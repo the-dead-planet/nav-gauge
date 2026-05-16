@@ -1,11 +1,11 @@
 import { FC } from "react";
-import { useStateWarden } from "@apparatus";
+import { useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import styles from './layout.module.css';
 
 export const Footer: FC = () => {
-    const stateWarden = useStateWarden();
-    const [attrributions] = useSubjectState(stateWarden.attributionVault.attributions$);
+    const { attributionVault } = useMachineWard();
+    const [attrributions] = useSubjectState(attributionVault.attributions$);
 
     return (
         <footer className={styles["footer"]}>

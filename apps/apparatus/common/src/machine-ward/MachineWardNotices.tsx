@@ -1,14 +1,14 @@
 import { ComponentType, FC } from "react";
 import { MachineWardNoticesProps } from "./model";
-import { useStateWarden } from "../state-warden";
 import { useSubjectState } from "@tinker-chest";
+import { useMachineWard } from "./useMachineWard";
 
 interface Props {
     noticesComponent: ComponentType<MachineWardNoticesProps>;
 }
 
 export const MachineWardNotices: FC<Props> = (props) => {
-    const { signaliumBureau } = useStateWarden();
+    const { signaliumBureau } = useMachineWard();
     const [notices] = useSubjectState(signaliumBureau.notices$);
 
     return (

@@ -1,20 +1,27 @@
 import { Individuator } from "../machine-ward";
-import { StateWarden } from "../state-warden";
+import { Animatrix, AttributionVault, Cartomancer, ChronoLens, SignaliumBureau, ToolsStation } from "../state-warden";
+
+export interface GearStateWarden<TMap> {
+    individuator: Individuator;
+    signaliumBureau: SignaliumBureau;
+    attributionVault: AttributionVault;
+    chronoLens: ChronoLens;
+    cartomancer: Cartomancer<TMap>;
+    animatrix: Animatrix;
+    toolsStation: ToolsStation<TMap>;
+}
 
 export abstract class Gear<TMap> {
     public abstract id: string;
 
-    public stateWarden: StateWarden<TMap>;
-    protected individuator: Individuator;
+    public stateWarden: GearStateWarden<TMap>;
 
-    public abstract engage: (stateWarden: StateWarden<TMap>, individuator: Individuator) => void;
-    public abstract disengage: (stateWarden: StateWarden<TMap>, individuator: Individuator) => void;
+    public abstract engage: () => void;
+    public abstract disengage: () => void;
 
     public constructor(
-        stateWarden: StateWarden<TMap>,
-        individuator: Individuator,
+        stateWarden: GearStateWarden<TMap>,
     ) {
         this.stateWarden = stateWarden;
-        this.individuator = individuator;
     }
 }

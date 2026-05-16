@@ -2,7 +2,7 @@ import { FC } from "react";
 import { StyleSheet, View } from "react-native";
 import { useTheme } from "@ui";
 import { LinkText } from '@mobile-ui';
-import { useStateWarden } from "@apparatus";
+import { useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 
 const styles = StyleSheet.create({
@@ -20,8 +20,8 @@ const styles = StyleSheet.create({
 
 export const Footer: FC = ({ }) => {
     const theme = useTheme();
-    const stateWarden = useStateWarden();
-    const [attrributions] = useSubjectState(stateWarden.attributionVault.attributions$);
+    const { attributionVault } = useMachineWard();
+    const [attrributions] = useSubjectState(attributionVault.attributions$);
 
     return (
         <View style={[styles.container, {

@@ -1,7 +1,7 @@
 import { FC, useEffect, useMemo } from "react";
 import maplibregl, { LngLat } from "maplibre-gl";
 import bbox from "@turf/bbox";
-import { OverlayComponentProps, useStateWarden, parsers } from "@apparatus";
+import { OverlayComponentProps, useMachineWard, parsers } from "@apparatus";
 import { getRouteSourceData, RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { emptyCollection, useSubjectState } from "@tinker-chest";
 import { updateRouteLayer } from "../tinkers";
@@ -22,7 +22,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPro
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [progressMs] = useSubjectState(progressMs$);
-    const { animatrix, cartomancer, chronoLens } = useStateWarden();
+    const { animatrix, cartomancer, chronoLens } = useMachineWard();
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const { showRouteLine, showRoutePoints } = gaugeControls;
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);

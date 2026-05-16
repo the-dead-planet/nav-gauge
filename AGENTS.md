@@ -63,7 +63,7 @@ Each feature is a pluggable **Gear** with 1-3 packages: `common/` (abstract clas
 ## Code Style
 
 - Strict **TypeScript** — no `any`, explicit member accessibility
-- **React** + **RxJS** for state management (use `useStateWarden` hook)
+- **React** + **RxJS** for state management (use `useMachineWard` hook)
 - **Luxon** for all date/time formatting
 - **4-space indentation**, semicolons required
 - Minimal JSDocs — code should be self-documenting; refactor if unclear

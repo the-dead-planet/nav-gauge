@@ -48,7 +48,7 @@ Web and mobile applications should follow the same structure which is defined by
 
 #### State management
 
-The main application state is provided via the [State Warden](/apps/apparatus/common/src/state-warden/state-warden.ts) object accessible using the [useStateWarden](/apps/apparatus/common/src/state-warden/useStateWarden.tsx) hook.
+The main application state is provided via the [Machine Ward](/apps/apparatus/common/src/machine-ward/machine-ward.ts) object accessible using the [useMachineWard](/apps/apparatus/common/src/machine-ward/useMachineWard.tsx) hook.
 
 #### Separation of features
 

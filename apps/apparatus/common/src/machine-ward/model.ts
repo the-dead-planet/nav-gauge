@@ -1,8 +1,7 @@
 import { ComponentType, ReactNode } from "react";
 import { ErrorBoundaryProps } from "@ui";
-import { SignaliumNotice, StateWarden } from "../state-warden";
-import { Gear } from "../gears";
-import { Individuator } from "./individuator";
+import { SignaliumNotice } from "../state-warden";
+import { Gear, GearStateWarden } from "../gears";
 
 export interface MachineWardLayoutProps {
     children?: ReactNode;
@@ -33,4 +32,4 @@ export interface MachineWardComponents<TNavigationPath extends string = string> 
     noticesComponent: ComponentType<MachineWardNoticesProps>;
 }
 
-export type MachineGear<TMap> = new (stateWarden: StateWarden<TMap>, individuator: Individuator) => Gear<TMap>;
+export type MachineGear<TMap> = new (stateWarden: GearStateWarden<TMap>) => Gear<TMap>;

@@ -2,7 +2,7 @@ import { FC, useRef, useEffect } from "react";
 import { View, Button } from "react-native";
 import { DocumentPickerResponse } from "@react-native-documents/picker";
 import Slider, { SliderReferenceType } from "@react-native-community/slider";
-import { OverlayComponentProps, SurveillanceState, useMachineWard, useStateWarden } from "@apparatus";
+import { OverlayComponentProps, SurveillanceState, useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { formatCurrentTimestamp, getProgressPercentage, RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Text } from "@mobile-ui";
@@ -19,8 +19,7 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mobile
     const theme = useTheme();
     const [routeTimes] = useSubjectState(routeTimes$);
     const [progressMs] = useSubjectState(progressMs$);
-    const { individuator } = useMachineWard();
-    const { chronoLens } = useStateWarden();
+    const { chronoLens, individuator } = useMachineWard();
     const [settings] = useSubjectState(individuator.settings$);
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [surveillanceState] = useSubjectState(chronoLens.surveillanceState$);

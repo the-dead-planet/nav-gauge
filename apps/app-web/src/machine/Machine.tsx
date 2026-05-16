@@ -1,5 +1,5 @@
 import { CSSProperties, FC, useMemo } from "react";
-import { useStateWarden } from "@apparatus";
+import { useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { MapSection } from "./MapSection";
 import { Presets } from "./controls/Presets";
@@ -11,7 +11,7 @@ import { MapStyleSelection } from "./controls/MapStyleSelection";
 import styles from './machine.module.css';
 
 export const Machine: FC = () => {
-    const { cartomancer, toolsStation } = useStateWarden();
+    const { cartomancer, toolsStation } = useMachineWard();
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const [mapLayout] = useSubjectState(cartomancer.mapLayout$);
     const [controlComponents] = useSubjectState(toolsStation.controlComponents$);

@@ -1,13 +1,13 @@
 import { FC } from "react";
 import { Fieldset, Input, TextArea } from "@web-ui";
-import { MapLayout, useStateWarden } from "@apparatus";
+import { MapLayout, useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import styles from './controls.module.css';
 
 interface Props { }
 
 export const MapLayoutControls: FC<Props> = () => {
-    const { cartomancer } = useStateWarden();
+    const { cartomancer } = useMachineWard();
     const [mapLayout, setMapLayout] = useSubjectState(cartomancer.mapLayout$);
 
     return (

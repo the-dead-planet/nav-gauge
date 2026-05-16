@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Layer, GeoJSONSource } from "@maplibre/maplibre-react-native";
-import { useStateWarden } from "@apparatus";
+import { useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { routeSourceIds, routeLayerIds, RouteLayers } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 
@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const RouteLineLayer: FC<Props> = ({ source, }) => {
-    const { cartomancer } = useStateWarden();
+    const { cartomancer } = useMachineWard();
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const { showRouteLine, showRoutePoints } = gaugeControls;
 
