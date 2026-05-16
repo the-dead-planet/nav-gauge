@@ -78,7 +78,7 @@ export abstract class RouteStoryGear<TMap, TFile extends { name?: string | null;
         this.engageRouteStory?.();
         this.dataSubscription = this.subscribeToDataUpdates();
 
-        this.stateWarden.toolsStation.addControlComponent(
+        this.apparatus.toolsStation.addControlComponent(
             this.fileInputControlId,
             this.wrapProps<RouteFileInputProps<TMap, TFile, TImageData>, ControlComponentProps>(this.fileInputComponent, {
                 data$: this.data$,
@@ -87,7 +87,7 @@ export abstract class RouteStoryGear<TMap, TFile extends { name?: string | null;
             })
         );
 
-        this.stateWarden.toolsStation.addToolComponent(
+        this.apparatus.toolsStation.addToolComponent(
             this.routeLayerFitBoundsToolId,
             'left',
             this.wrapProps<RouteFitBoundsProps<TMap>, ToolProps<TMap>>(this.routeLayerFitBoundsComponent, {
@@ -95,7 +95,7 @@ export abstract class RouteStoryGear<TMap, TFile extends { name?: string | null;
                 onFitBounds: this.fitBoundsHandler
             })
         );
-        this.stateWarden.toolsStation.addToolComponent(
+        this.apparatus.toolsStation.addToolComponent(
             this.playerToolId,
             'bottom',
             this.wrapProps<RouteToolProps<TMap, TFile, TImageData>, ToolProps<TMap>>(this.playerComponent, {
@@ -107,7 +107,7 @@ export abstract class RouteStoryGear<TMap, TFile extends { name?: string | null;
             })
         );
 
-        this.stateWarden.cartomancer.addOverlay(
+        this.apparatus.cartomancer.addOverlay(
             this.routeOverlayId,
             this.wrapProps<RouteToolProps<TMap, TFile, TImageData>, OverlayComponentProps<TMap>>(this.routeLayerComponent, {
                 data$: this.data$,
@@ -117,7 +117,7 @@ export abstract class RouteStoryGear<TMap, TFile extends { name?: string | null;
                 playerOperator: this.playerOperator,
             })
         );
-        this.stateWarden.cartomancer.addOverlay(
+        this.apparatus.cartomancer.addOverlay(
             this.imagesOverlayId,
             this.wrapProps<RouteToolProps<TMap, TFile, TImageData>, OverlayComponentProps<TMap>>(this.imagesLayerComponent, {
                 data$: this.data$,
@@ -130,23 +130,23 @@ export abstract class RouteStoryGear<TMap, TFile extends { name?: string | null;
     };
 
     public disengage = () => {
-        this.stateWarden.cartomancer.removeOverlay(this.imagesOverlayId);
-        this.stateWarden.cartomancer.removeOverlay(this.routeOverlayId);
-        this.stateWarden.toolsStation.removeToolComponent(this.playerToolId);
-        this.stateWarden.toolsStation.removeToolComponent(this.routeLayerFitBoundsToolId);
-        this.stateWarden.toolsStation.removeControlComponent(this.fileInputControlId);
+        this.apparatus.cartomancer.removeOverlay(this.imagesOverlayId);
+        this.apparatus.cartomancer.removeOverlay(this.routeOverlayId);
+        this.apparatus.toolsStation.removeToolComponent(this.playerToolId);
+        this.apparatus.toolsStation.removeToolComponent(this.routeLayerFitBoundsToolId);
+        this.apparatus.toolsStation.removeControlComponent(this.fileInputControlId);
         this.dataSubscription?.unsubscribe();
         this.disengageRouteStory?.();
     };
 
     private fitBoundsHandler = (map: TMap, sw: [number, number], ne: [number, number]) => {
         const notificationId = 'route-fit-bounds';
-        this.stateWarden.signaliumBureau.removeNotice(notificationId);
+        this.apparatus.signaliumBureau.removeNotice(notificationId);
 
         try {
             this.fitBounds(map, sw, ne);
         } catch (err) {
-            this.stateWarden.signaliumBureau.addNotice({
+            this.apparatus.signaliumBureau.addNotice({
                 type: 'error',
                 id: notificationId,
                 text: (err as Error).message ?? 'Could not fit bounds to route',

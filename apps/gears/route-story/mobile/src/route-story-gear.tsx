@@ -39,7 +39,7 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPick
       try {
          const exif = await Exify.read(file.uri);
          const { fullSize, thumbnail } = await cacheReducedImage(file, (error) => {
-            this.stateWarden.signaliumBureau.addNotice({
+            this.apparatus.signaliumBureau.addNotice({
                id: 'image-resize',
                type: 'error',
                error,
