@@ -8,6 +8,9 @@
             "DOM.Iterable"
         ],
         "paths": {
+            "@tinker-chest": [
+                "./tinker-chest/src"
+            ],
             "@ui": [
                 "./ui/common/src"
             ]

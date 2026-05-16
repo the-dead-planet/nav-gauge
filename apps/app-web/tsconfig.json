@@ -4,13 +4,13 @@
         "moduleResolution": "bundler",
         "paths": {
             "@apparatus": [
-                "../packages/apparatus/common/src"
+                "../apparatus/common/src"
             ],
             "@web-apparatus": [
-                "../packages/apparatus/web/src"
+                "../apparatus/web/src"
             ],
             "@tinker-chest": [
-                "../packages/tinker-chest/src"
+                "../tinker-chest/src"
             ],
             "@ui": [
                 "../ui/common/src"

@@ -44,15 +44,15 @@ Mix of object oriented and functional programming. Try to separate modules and a
 
 #### Web & mobile alignment
 
-Web and mobile applications should follow the same structure which is defined by [Machine Ward](/apps/packages/apparatus/common/src/machine-ward/machine-ward.tsx). Both apps should implement specifics using the DOM (for web) and native components (for mobile).
+Web and mobile applications should follow the same structure which is defined by [Machine Ward](/apps/apparatus/common/src/machine-ward/machine-ward.tsx). Both apps should implement specifics using the DOM (for web) and native components (for mobile).
 
 #### State management
 
-The main application state is provided via the [State Warden](/apps/packages/apparatus/common/src/state-warden/state-warden.ts) object accessible using the [useStateWarden](/apps/packages/apparatus/common/src/state-warden/useStateWarden.tsx) hook.
+The main application state is provided via the [State Warden](/apps/apparatus/common/src/state-warden/state-warden.ts) object accessible using the [useStateWarden](/apps/apparatus/common/src/state-warden/useStateWarden.tsx) hook.
 
 #### Separation of features
 
-All features should be opt-in, easily plugged in and out of the app. You can find them stored in the [Engine](/apps/packages/apparatus/common/src/state-warden/engine/engine.ts) and they should implement a [Gear interface](/apps/packages/apparatus/common/src/state-warden/engine/model.ts).
+All features should be opt-in, easily plugged in and out of the app. You can find them stored in the [Engine](/apps/apparatus/common/src/state-warden/engine/engine.ts) and they should implement a [Gear interface](/apps/apparatus/common/src/state-warden/engine/model.ts).
 
 More info: TBD
 

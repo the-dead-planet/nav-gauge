@@ -18,9 +18,9 @@ export const baseConfig = (_env: Env, _argv: Argv): Configuration => ({
             url: require.resolve("url"),
         },
         alias: {
-            '@apparatus': path.resolve(__dirname, '../packages/apparatus/common/src'),
-            '@web-apparatus': path.resolve(__dirname, '../packages/apparatus/web/src'),
-            '@tinker-chest': path.resolve(__dirname, '../packages/tinker-chest/src'),
+            '@apparatus': path.resolve(__dirname, '../apparatus/common/src'),
+            '@web-apparatus': path.resolve(__dirname, '../apparatus/web/src'),
+            '@tinker-chest': path.resolve(__dirname, '../tinker-chest/src'),
             '@ui': path.resolve(__dirname, '../ui/common/src'),
             '@web-ui': path.resolve(__dirname, '../ui/web/src'),
         },

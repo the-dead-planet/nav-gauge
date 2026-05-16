@@ -86,8 +86,8 @@
             "app-web",
             "app-mobile",
             "ui/*",
-            "packages/apparatus/*",
-            "packages/tinker-chest",
+            "apparatus/*",
+            "tinker-chest",
             "gears/*/common",
             "gears/*/mobile",
             "gears/*/web"

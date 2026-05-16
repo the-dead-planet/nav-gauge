@@ -10,6 +10,7 @@
         "test": "mocha"
     },
     "dependencies": {
+        "@the-dead-planet/nav-gauge-tinker-chest": "*",
         "@the-dead-planet/nav-gauge-ui-common": "*"
     },
     "devDependencies": {

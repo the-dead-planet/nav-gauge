@@ -6,13 +6,13 @@
         ],
         "paths": {
             "@apparatus": [
-                "../packages/apparatus/common/src"
+                "../apparatus/common/src"
             ],
             "@mobile-apparatus": [
-                "../packages/apparatus/mobile/src"
+                "../apparatus/mobile/src"
             ],
             "@tinker-chest": [
-                "../packages/tinker-chest/src"
+                "../tinker-chest/src"
             ],
             "@ui": [
                 "../ui/common/src"
