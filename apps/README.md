@@ -6,9 +6,10 @@ First `yarn install` from this folder.
 
 - [web app](/apps/app-web/README.md) - How to run and develop the web application
 - [mobile app](/apps/app-mobile/README.md) - How to run and develop the mobile application
-- [packages](/apps/packages/README.md) - Packages
-- [gears](/apps/gears/README.md) - Gears
-- [ui](/apps/ui/README.md) - UI
+- [apparatus](/apps/apparatus/) - Shared logic (common/web/mobile)
+- [tinker-chest](/apps/tinker-chest/) - Foundational utilities (single package)
+- [gears](/apps/gears/README.md) - Pluggable features
+- [ui](/apps/ui/README.md) - UI library (common/web/mobile)
 
 See [ARCHITECTURES](/docs/ARCHITECTURES.md).
 

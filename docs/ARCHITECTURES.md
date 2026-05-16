@@ -6,9 +6,15 @@ To be implemented later.
 
 ## Apps
 
-This space is for web and mobile applications and packages shared between them. 
+All code lives under `apps/`. Import direction: `tinker-chest` → `apparatus` → `gears` → `app`.
 
-Allowed sequences of importing is presented on the diagram below.
+- `tinker-chest/` — foundational utilities (single package, no internal deps)
+- `apparatus/{common,web,mobile}/` — shared logic (common split from platform)
+- `gears/*/{common,web,mobile}/` — pluggable features
+- `ui/{common,web,mobile}/` — UI library, can import from anywhere
+- `app-{web,mobile}/` — application shells
+
+The import sequence is shown in the diagram below.
 
 ### Import sequence diagram
 

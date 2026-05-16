@@ -62,7 +62,9 @@ Follow the [architectures](/docs/ARCHITECTURES.md) flow when importing from othe
 
 Import paths are setup as `@package-name` in the `tsconfig.json` files in each workspace, in [Rspack config](/apps/app-web/app/rspack.config.ts) and in [mobile babel config](/apps/app-mobile/app/babel.config.js). 
 
-If suddenly something is imported, for example, from `../../apparatus/common/src` instead of `@apparatus` when importing to a file in `tinker-chest` workspace, and importing from `@apparatus` is not possible... it's a sign of a forbidden import. Consider moving stuff around or creating another package to assure correct import flow. 
+The import sequence is: `tinker-chest` → `apparatus/{common,web,mobile}` → `gears/*/{common,web,mobile}` → `app-{web,mobile}`.
+
+If suddenly something is imported, for example, from `../../apparatus/common/src` instead of `@the-dead-planet/nav-gauge-apparatus-common` when importing to a file in `tinker-chest` workspace, and importing from the alias is not possible... it's a sign of a forbidden import. Consider moving stuff around or creating another package to assure correct import flow. 
 
 Remember about updating the [architectures chart](/docs/assets/architecture.drawio) and [svg](/docs/assets/architecture.svg) using [Draw.io](https://app.diagrams.net), if needed.
 
