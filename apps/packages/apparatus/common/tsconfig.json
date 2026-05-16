@@ -1,12 +1,12 @@
 {
-    "extends": "../tsconfig.packages.json",
+    "extends": "../../tsconfig.packages.json",
     "compilerOptions": {
         "paths": {
             "@tinker-chest": [
-                "../tinker-chest/src"
+                "../../tinker-chest/src"
             ],
             "@ui": [
-                "../../ui/common/src"
+                "../../../ui/common/src"
             ]
         }
     }

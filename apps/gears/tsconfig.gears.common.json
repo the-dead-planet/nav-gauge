@@ -3,7 +3,7 @@
     "compilerOptions": {
         "paths": {
             "@apparatus": [
-                "../packages/apparatus/src"
+                "../packages/apparatus/common/src"
             ],
             "@tinker-chest": [
                 "../packages/tinker-chest/src"

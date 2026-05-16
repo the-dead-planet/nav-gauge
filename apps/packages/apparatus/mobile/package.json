@@ -1,5 +1,5 @@
 {
-    "name": "@the-dead-planet/nav-gauge-apparatus",
+    "name": "@the-dead-planet/nav-gauge-apparatus-mobile",
     "version": "1.0.0",
     "private": true,
     "main": "src/index.ts",
@@ -10,9 +10,12 @@
         "test": "mocha"
     },
     "dependencies": {
+        "@the-dead-planet/nav-gauge-apparatus-common": "*",
         "@the-dead-planet/nav-gauge-tinker-chest": "*",
         "@the-dead-planet/nav-gauge-ui-common": "*",
-        "fast-xml-parser": "^5.7.2"
+        "@react-native-documents/viewer": "^4.0.0",
+        "react-native-fs": "^2.20.0",
+        "react-native-view-recorder": "^0.4.0"
     },
     "devDependencies": {
         "@maplibre/maplibre-gl-style-spec": "^24.8.1",

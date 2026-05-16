@@ -1,4 +1,4 @@
-import { DateFormat, TimeFormat } from "@ui";
+import { DateFormat, TimeFormat } from "./model";
 import { DateTime } from "luxon";
 
 /**

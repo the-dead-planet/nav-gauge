@@ -44,15 +44,15 @@ Mix of object oriented and functional programming. Try to separate modules and a
 
 #### Web & mobile alignment
 
-Web and mobile applications should follow the same structure which is defined by [Machine Ward](/apps/packages/apparatus/src/machine-ward/machine-ward.tsx). Both apps should implement specifics using the DOM (for web) and native components (for mobile).
+Web and mobile applications should follow the same structure which is defined by [Machine Ward](/apps/packages/apparatus/common/src/machine-ward/machine-ward.tsx). Both apps should implement specifics using the DOM (for web) and native components (for mobile).
 
 #### State management
 
-The main application state is provided via the [State Warden](/apps/packages/apparatus/src/state-warden/state-warden.ts) object accessible using the [useStateWarden](/apps/packages/apparatus/src/state-warden/useStateWarden.tsx) hook.
+The main application state is provided via the [State Warden](/apps/packages/apparatus/common/src/state-warden/state-warden.ts) object accessible using the [useStateWarden](/apps/packages/apparatus/common/src/state-warden/useStateWarden.tsx) hook.
 
 #### Separation of features
 
-All features should be opt-in, easily plugged in and out of the app. You can find them stored in the [Engine](/apps/packages/apparatus/src/state-warden/engine/engine.ts) and they should implement a [Gear interface](/apps/packages/apparatus/src/state-warden/engine/model.ts).
+All features should be opt-in, easily plugged in and out of the app. You can find them stored in the [Engine](/apps/packages/apparatus/common/src/state-warden/engine/engine.ts) and they should implement a [Gear interface](/apps/packages/apparatus/common/src/state-warden/engine/model.ts).
 
 More info: TBD
 
@@ -62,7 +62,7 @@ Follow the [architectures](/docs/ARCHITECTURES.md) flow when importing from othe
 
 Import paths are setup as `@package-name` in the `tsconfig.json` files in each workspace, in [Rspack config](/apps/app-web/app/rspack.config.ts) and in [mobile babel config](/apps/app-mobile/app/babel.config.js). 
 
-If suddenly something is imported, for example, from `../../apparatus/src` instead of `@apparatus` when importing to a file in `tinker-chest` workspace, and importing from `@apparatus` is not possible... it's a sign of a forbidden import. Consider moving stuff around or creating another package to assure correct import flow. 
+If suddenly something is imported, for example, from `../../apparatus/common/src` instead of `@apparatus` when importing to a file in `tinker-chest` workspace, and importing from `@apparatus` is not possible... it's a sign of a forbidden import. Consider moving stuff around or creating another package to assure correct import flow. 
 
 Remember about updating the [architectures chart](/docs/assets/architecture.drawio) and [svg](/docs/assets/architecture.svg) using [Draw.io](https://app.diagrams.net), if needed.
 

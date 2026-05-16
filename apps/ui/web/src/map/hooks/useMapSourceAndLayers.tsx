@@ -1,8 +1,6 @@
 import { useEffect } from "react";
 import maplibregl from "maplibre-gl";
 import { UpdatedData, useUpdateSourceData } from "./useUpdateSourceData";
-import { FeatureStateProps } from "@the-dead-planet/nav-gauge-apparatus/src/state-warden/cartomancer/map-layers";
-import { Cartomancer } from "@the-dead-planet/nav-gauge-apparatus/src/state-warden/cartomancer/cartomancer";
 
 export interface MapLayerData {
     sourceId: string;
@@ -81,7 +79,7 @@ export const useMapSourceAndLayers = (
     useEffect(() => {
         const abortController = new AbortController();
         const { sourceId, source, layers, handlers } = data;
-        const { buffer = Cartomancer.interactionBufferPx } = data.handlers?.options ?? {};
+        const { buffer = 4 } = data.handlers?.options ?? {};
 
         addSourceAndLayers(sourceId, source, layers);
 
@@ -171,7 +169,8 @@ export const useMapSourceAndLayers = (
         }
         const update = (value: boolean) => {
             for (const [sourceId, featureIds] of highlightIdsBySourceId) {
-                updateFeatureState(sourceId, featureIds, FeatureStateProps.Highlight, value)
+                // TODO: Use enum FeatureStateProps - this hook should not be in ui
+                updateFeatureState(sourceId, featureIds, 'highlight', value)
             }
         };
 

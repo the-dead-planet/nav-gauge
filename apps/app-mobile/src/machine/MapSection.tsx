@@ -6,7 +6,7 @@ import { Camera, CameraRef, Map as MaplibreMap, MapRef } from "@maplibre/maplibr
 import { Cartomancer, useSubjectState, useStateWarden } from "@apparatus";
 import { MobileMap } from "@mobile-ui";
 import { MapTools } from "./map-tools/MapTools";
-import { MobileChronoLens } from "../chrono-lens";
+import { MobileChronoLens } from "@mobile-apparatus";
 
 const styles = StyleSheet.create({
     viewRecorder: {

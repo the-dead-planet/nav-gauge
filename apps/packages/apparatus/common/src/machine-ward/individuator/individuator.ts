@@ -1,6 +1,5 @@
 import { BehaviorSubject, Subscription } from "rxjs";
-import { DateFormat, Option, ThemeName, TimeFormat } from "@ui";
-import { formatTimestamp } from "@tinker-chest";
+import { DateFormat, Option, ThemeName, TimeFormat, formatTimestamp } from "@ui";
 import { StorageKeeper } from "../storage-keeper";
 import { IndividuatorSettings, Orientation, OrientationSubscriptionDefinition } from "./model";
 

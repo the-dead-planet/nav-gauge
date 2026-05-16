@@ -6,7 +6,7 @@ import { Machine } from "./machine/Machine";
 import { ErrorFallback } from "./ErrorFallback";
 import { NoticesList } from "./notices/NoticesList";
 import { MobileMap } from "@mobile-ui";
-import { MobileChronoLens } from "./chrono-lens";
+import { MobileChronoLens } from "@mobile-apparatus";
 import { navigationRef, RootStackParamList } from "./navigation";
 
 const AsyncStorage = createAsyncStorage('nav-gauge');

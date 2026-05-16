@@ -9,7 +9,7 @@ module.exports = {
             {
                 extensions: ['.ts', '.tsx', '.js', '.jsx'],
                 alias: {
-                    '@apparatus': '../packages/apparatus/src',
+                    '@apparatus': '../packages/apparatus/common/src',
                     '@tinker-chest': '../packages/tinker-chest/src',
                     '@ui': '../ui/common/src',
                     '@mobile-ui': '../ui/mobile/src',

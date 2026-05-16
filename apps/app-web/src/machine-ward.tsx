@@ -3,7 +3,7 @@ import { ErrorFallbackPage } from "./pages";
 import { Footer, Layout, TopBar } from "./layout";
 import { Machine } from "./machine/Machine";
 import { Notices } from "./notices/Notices";
-import { WebChronoLens } from "@the-dead-planet/nav-gauge-gears-route-story-web/src/chrono-lens/chrono-lens";
+import { WebChronoLens } from "@web-apparatus";
 
 export class WebMachineWard extends MachineWard<maplibregl.Map> {
     public constructor(gears: MachineGear<maplibregl.Map>[]) {

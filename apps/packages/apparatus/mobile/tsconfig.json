@@ -1,0 +1,20 @@
+{
+    "extends": "../../../tsconfig.mobile.json",
+    "compilerOptions": {
+        "lib": ["ESNext"],
+        "paths": {
+            "@tinker-chest": [
+                "../../tinker-chest/src"
+            ],
+            "@apparatus": [
+                "../common/src"
+            ],
+            "@ui": [
+                "../../../ui/common/src"
+            ],
+            "@mobile-ui": [
+                "../../../ui/mobile/src"
+            ]
+        }
+    }
+}

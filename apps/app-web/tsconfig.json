@@ -4,7 +4,10 @@
         "moduleResolution": "bundler",
         "paths": {
             "@apparatus": [
-                "../packages/apparatus/src"
+                "../packages/apparatus/common/src"
+            ],
+            "@web-apparatus": [
+                "../packages/apparatus/web/src"
             ],
             "@tinker-chest": [
                 "../packages/tinker-chest/src"
