@@ -16,7 +16,7 @@ export class MobileMachineWard extends MachineWard<MobileMap, keyof RootStackPar
         const getOrientation = (window: ScaledSize): Orientation => {
             return window.width > Dimensions.get('window').height
                 ? Orientation.Landscape
-                : Orientation.Portait;
+                : Orientation.Portrait;
         };
 
         const orientationSubscription: OrientationSubscriptionDefinition = {

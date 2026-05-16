@@ -1,7 +1,7 @@
 import { DateFormat, ThemeName, TimeFormat } from "@ui";
 
 export enum Orientation {
-    Portait,
+    Portrait,
     Landscape,
 }
 

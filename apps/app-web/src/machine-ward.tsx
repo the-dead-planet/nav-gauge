@@ -10,7 +10,7 @@ export class WebMachineWard extends MachineWard<maplibregl.Map> {
         const getOrientation = (): Orientation => {
             return window.innerWidth > window.innerHeight
                 ? Orientation.Landscape
-                : Orientation.Portait;
+                : Orientation.Portrait;
         };
         const orientationSubscription: OrientationSubscriptionDefinition = {
             initial: () => getOrientation(),

@@ -1,3 +1,10 @@
 {
-    "extends": "../tsconfig.packages.json"
+    "extends": "../tsconfig.packages.json",
+    "compilerOptions": {
+        "paths": {
+            "@ui": [
+                "../../ui/common/src"
+            ]
+        }
+    }
 }

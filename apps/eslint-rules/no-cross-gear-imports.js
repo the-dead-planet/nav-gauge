@@ -41,11 +41,11 @@ function parseImport(source) {
 }
 
 const ALLOWED = {
-    'tinker-chest':  [],
-    'apparatus':     ['tinker-chest'],
-    'ui-common':     ['tinker-chest', 'apparatus'],
-    'ui-web':        ['tinker-chest', 'apparatus', 'ui-common'],
-    'ui-mobile':     ['tinker-chest', 'apparatus', 'ui-common'],
+    'tinker-chest':  ['ui-common'],
+    'apparatus':     ['tinker-chest', 'ui-common'],
+    'ui-common':     [],
+    'ui-web':        ['ui-common'],
+    'ui-mobile':     ['ui-common'],
     'gear-common':   ['tinker-chest', 'apparatus', 'ui-common'],
     'gear-web':      ['tinker-chest', 'apparatus', 'ui-common', 'ui-web', 'gear-common'],
     'gear-mobile':   ['tinker-chest', 'apparatus', 'ui-common', 'ui-mobile', 'gear-common'],
