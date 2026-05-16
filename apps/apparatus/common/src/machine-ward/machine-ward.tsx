@@ -20,15 +20,15 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
     public readonly individuator: Individuator;
     public readonly storageKeeper: StorageKeeper;
     public readonly engine = new Engine<TMap>();
-    public attributionVault = new AttributionVault();
-    public signaliumBureau = new SignaliumBureau();
-    public animatrix: Animatrix;
-    public cartomancer: Cartomancer<TMap>;
-    public chronoLens: ChronoLens;
-    public toolsStation: ToolsStation<TMap>;
+    public readonly attributionVault = new AttributionVault();
+    public readonly signaliumBureau = new SignaliumBureau();
+    public readonly animatrix: Animatrix;
+    public readonly cartomancer: Cartomancer<TMap>;
+    public readonly chronoLens: ChronoLens;
+    public readonly toolsStation: ToolsStation<TMap>;
+
     private toolsStationPresetSubscription: Subscription | null = null;
     private toolsStationPresetActiveSubscription: Subscription | null = null;
-
     private attributionVaultSubscription: Subscription | null = null;
 
     public constructor(
