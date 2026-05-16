@@ -1,7 +1,7 @@
 import { FC } from "react";
 import classNames from "classnames";
-import { useSubjectState, Animatrix, useStateWarden } from "@apparatus";
-import { clamp } from "@tinker-chest";
+import { Animatrix, useStateWarden } from "@apparatus";
+import { clamp, useSubjectState } from "@tinker-chest";
 import { Fieldset, Input } from "@web-ui";
 import styles from './controls.module.css';
 

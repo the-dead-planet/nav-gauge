@@ -1,5 +1,6 @@
 import { FC } from "react";
-import { Cartomancer, useStateWarden, useSubjectState } from "@apparatus";
+import { Cartomancer, useStateWarden } from "@apparatus";
+import { useSubjectState } from "@tinker-chest";
 import styles from './controls.module.css';
 
 export const MapStyleSelection: FC = () => {

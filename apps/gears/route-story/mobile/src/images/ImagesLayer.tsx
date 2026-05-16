@@ -1,7 +1,8 @@
 import { FC, useEffect, useState } from "react";
 import { PixelRatio } from "react-native";
 import { Layer, Images, GeoJSONSource, ImageEntry } from "@maplibre/maplibre-react-native";
-import { Cartomancer, FeatureStateProps, OverlayComponentProps, useStateWarden, useSubjectState } from "@apparatus";
+import { Cartomancer, OverlayComponentProps, useStateWarden, FeatureStateProps } from "@apparatus";
+import { useSubjectState } from "@tinker-chest";
 import {
     getIconImageId,
     getImageSource,

@@ -1,7 +1,8 @@
 import { FC, useMemo } from "react";
 import maplibregl from "maplibre-gl";
 import { Input, Fieldset } from "@web-ui";
-import { Cartomancer, ControlPlacement, useStateWarden, useSubjectState } from "@apparatus";
+import { Cartomancer, ControlPlacement, useStateWarden } from "@apparatus";
+import { useSubjectState } from "@tinker-chest";
 import styles from './controls.module.css';
 
 interface Props { }

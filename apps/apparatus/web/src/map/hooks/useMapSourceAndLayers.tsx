@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import maplibregl from "maplibre-gl";
 import { UpdatedData, useUpdateSourceData } from "./useUpdateSourceData";
+import { FeatureStateProps } from "@apparatus";
 
 export interface MapLayerData {
     sourceId: string;
@@ -169,8 +170,7 @@ export const useMapSourceAndLayers = (
         }
         const update = (value: boolean) => {
             for (const [sourceId, featureIds] of highlightIdsBySourceId) {
-                // TODO: Use enum FeatureStateProps - this hook should not be in ui
-                updateFeatureState(sourceId, featureIds, 'highlight', value)
+                updateFeatureState(sourceId, featureIds, FeatureStateProps.Highlight, value)
             }
         };
 

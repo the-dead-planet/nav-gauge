@@ -1,14 +1,10 @@
 import { FC, useEffect } from "react";
 import { BehaviorSubject } from "rxjs";
-import { OverlayComponentProps, useStateWarden, useSubjectState } from "@apparatus";
+import { OverlayComponentProps, useStateWarden } from "@apparatus";
 import { getRouteSourceData, RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMap } from "@mobile-ui";
-import { DocumentPickerResponse } from "@react-native-documents/picker";
-import { useLoadedMobileImages } from "../images/useLoadedMobileImages";
-import { MobileMarkerImageData } from "../images/image-parser";
-import { RouteLineLayer } from "./RouteLineLayer";
-import { RouteCurrentPointLayer } from "./RouteCurrentPointLayer";
-import { emptyCollection } from "@tinker-chest";
+import { BehaviorSubject } from "rxjs";
+import { emptyCollection, useSubjectState } from "@tinker-chest";
 
 export const currentPointRef$ = new BehaviorSubject<GeoJSON.GeoJSON>(emptyCollection);
 export const linesRef$ = new BehaviorSubject<GeoJSON.GeoJSON>(emptyCollection);

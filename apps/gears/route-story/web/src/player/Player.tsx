@@ -1,5 +1,6 @@
 import { CSSProperties, FC, useEffect } from "react";
-import { OverlayComponentProps, SurveillanceState, useMachineWard, useStateWarden, useSubjectState } from "@apparatus";
+import { OverlayComponentProps, SurveillanceState, useMachineWard, useStateWarden } from "@apparatus";
+import { useSubjectState } from "@tinker-chest";
 import { formatCurrentTimestamp, getProgressPercentage, RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { updateRouteLayer } from "../tinkers";
 import { WebChronoLens } from "@web-apparatus";

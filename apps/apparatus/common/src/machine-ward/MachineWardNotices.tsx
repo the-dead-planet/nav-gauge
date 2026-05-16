@@ -1,7 +1,7 @@
 import { ComponentType, FC } from "react";
 import { MachineWardNoticesProps } from "./model";
 import { useStateWarden } from "../state-warden";
-import { useSubjectState } from "../state";
+import { useSubjectState } from "@tinker-chest";
 
 interface Props {
     noticesComponent: ComponentType<MachineWardNoticesProps>;

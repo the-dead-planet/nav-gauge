@@ -2,8 +2,8 @@ import { CSSProperties, FC, useEffect, useState } from "react";
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import maplibregl from "maplibre-gl";
-import { Cartomancer, useStateWarden, useSubjectState, FeatureStateProps } from "@apparatus";
-import { GeoJson } from "@tinker-chest";
+import { Cartomancer, useStateWarden, FeatureStateProps } from "@apparatus";
+import { GeoJson, useSubjectState } from "@tinker-chest";
 import { routeSourceIds } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import styles from './images.module.css';
 

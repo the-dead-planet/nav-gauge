@@ -3,7 +3,8 @@ import maplibregl from "maplibre-gl";
 import { Protocol } from "pmtiles";
 import classNames from "classnames";
 import { Icons } from "@web-ui";
-import { Cartomancer, useObservableState, useStateWarden, useSubjectState, ToolsStation } from "@apparatus";
+import { Cartomancer, useStateWarden, ToolsStation } from "@apparatus";
+import { useObservableState, useSubjectState } from "@tinker-chest";
 import styles from './map-tools.module.css';
 import './map.css';
 

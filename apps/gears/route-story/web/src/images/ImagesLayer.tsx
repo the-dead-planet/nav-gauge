@@ -1,7 +1,8 @@
 import { FC, useEffect, useMemo, useState } from "react";
 import maplibregl from "maplibre-gl";
-import { OverlayComponentProps, Cartomancer, FeatureStateProps, useSubjectState, useStateWarden } from "@apparatus";
-import { MapLayerData, MapSourceAndLayers, } from "@web-ui";
+import { OverlayComponentProps, Cartomancer, useStateWarden, FeatureStateProps } from "@apparatus";
+import { useSubjectState } from "@tinker-chest";
+import { MapLayerData, MapSourceAndLayers } from "@web-apparatus";
 import { useLoadedWebImages } from "../hooks/useLoadedWebImages";
 import { useImageInDisplay } from "./useImageInDisplay";
 import { MapImageData, useRouteLayerImages } from "../hooks";

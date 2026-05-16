@@ -5,7 +5,7 @@ import { StateWarden, StateWardenContext } from "../state-warden";
 import { Individuator } from "./individuator";
 import { StorageKeeper } from "./storage-keeper";
 import { MachineWardContext, MachineWardContextValue } from "./MachineWardContext";
-import { useSubjectState } from "../state";
+import { useSubjectState } from "@tinker-chest";
 import { MachineWardComponents } from "./model";
 
 interface MachineWardProps<TMap, TNavigationPath extends string> {

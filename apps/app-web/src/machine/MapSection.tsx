@@ -1,5 +1,6 @@
 import { useMemo } from "react";
-import { useStateWarden, useSubjectState } from "@apparatus";
+import { useStateWarden } from "@apparatus";
+import { useSubjectState } from "@tinker-chest";
 import { MapTools } from "./map-tools/MapTools";
 import { createMap } from "./map";
 

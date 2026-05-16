@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { useStateWarden, useSubjectState } from "@apparatus";
+import { useStateWarden } from "@apparatus";
+import { useSubjectState } from "@tinker-chest";
 import { imageLayerIds, ImagesLayers } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { PlayerOperator } from "@the-dead-planet/nav-gauge-gears-route-story-common/src/player-operator";
 import { WebMarkerImageData } from "./image-parser";

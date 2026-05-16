@@ -1,6 +1,6 @@
 import { FC, useMemo } from "react";
 import maplibregl from "maplibre-gl";
-import { MapLayerData, MapSourceAndLayers, } from "@web-ui";
+import { MapLayerData, MapSourceAndLayers, } from "@web-apparatus";
 import { routeSourceIds, layerOrder } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { currentPointLayers } from "./route-layers";
 
