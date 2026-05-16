@@ -26,12 +26,15 @@ nav-gauge — open-source map & route data tools for content creators. Offline-f
 
 Monorepo with Yarn workspaces. Strict **import direction**:
 
-```
-tinker-chest → apparatus → ui/common, gears/common
-                                     ↓
-                          ui/web, gears/web → app-web
-                          ui/mobile, gears/mobile → app-mobile
-```
+### Import rules summary
+
+| Package | Can be imported by |
+|---------|-------------------|
+| Tinker Chest | Apparatus, all Gears, both Apps — NOT UI |
+| Apparatus | All Gears, both Apps — NOT UI, NOT Tinker Chest |
+| UI Common | ALL other modules (including Tinker Chest, Apparatus) |
+| UI Web | Gear Web, App Web |
+| UI Mobile | Gear Mobile, App Mobile |
 
 No reverse imports. Always use `@package-name` aliases, never relative paths across workspaces.
 
