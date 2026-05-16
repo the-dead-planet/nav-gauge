@@ -20,8 +20,8 @@ const config = (env: Env, argv: Argv): Configuration => {
                 import: path.resolve('../packages/apparatus/common/src/index.ts'),
                 dependOn: ['react-vendors']
             },
-            ['mobile-apparatus']: {
-                import: path.resolve('../packages/apparatus/mobile/src/index.ts'),
+            ['web-apparatus']: {
+                import: path.resolve('../packages/apparatus/web/src/index.ts'),
                 dependOn: ['react-vendors']
             },
             ['tinker-chest']: {

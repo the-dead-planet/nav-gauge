@@ -10,6 +10,7 @@ module.exports = {
                 extensions: ['.ts', '.tsx', '.js', '.jsx'],
                 alias: {
                     '@apparatus': '../packages/apparatus/common/src',
+                    '@mobile-apparatus': '../packages/apparatus/mobile/src',
                     '@tinker-chest': '../packages/tinker-chest/src',
                     '@ui': '../ui/common/src',
                     '@mobile-ui': '../ui/mobile/src',

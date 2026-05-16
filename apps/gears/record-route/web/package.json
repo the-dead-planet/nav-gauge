@@ -10,6 +10,7 @@
     },
     "dependencies": {
         "@the-dead-planet/nav-gauge-apparatus-common": "*",
+        "@the-dead-planet/nav-gauge-apparatus-web": "*",
         "@the-dead-planet/nav-gauge-gears-record-route-common": "*",
         "@the-dead-planet/nav-gauge-tinker-chest": "*",
         "@the-dead-planet/nav-gauge-ui-common": "*"
