@@ -1,5 +1,12 @@
 {
     "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+        "paths": {
+            "@tinker-chest": [
+                "../../tinker-chest/src"
+            ]
+        }
+    },
     "include": [
         "src/**/*",
         "test/**/*",

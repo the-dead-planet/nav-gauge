@@ -1,7 +1,8 @@
 import { FC } from "react";
 import { themeOptions, ThemeName } from "@ui";
 import { Fieldset, Input } from "@web-ui";
-import { IndividuatorSettings, useMachineWard, useSubjectState } from "@apparatus";
+import { IndividuatorSettings, useMachineWard } from "@apparatus";
+import { useSubjectState } from "@tinker-chest";
 import styles from './controls.module.css';
 
 export const ApplicationSettingsSection: FC = () => {

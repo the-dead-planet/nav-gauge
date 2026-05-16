@@ -44,15 +44,15 @@ Mix of object oriented and functional programming. Try to separate modules and a
 
 #### Web & mobile alignment
 
-Web and mobile applications should follow the same structure which is defined by [Machine Ward](/apps/packages/apparatus/src/machine-ward/machine-ward.tsx). Both apps should implement specifics using the DOM (for web) and native components (for mobile).
+Web and mobile applications should follow the same structure which is defined by [Machine Ward](/apps/apparatus/common/src/machine-ward/machine-ward.tsx). Both apps should implement specifics using the DOM (for web) and native components (for mobile).
 
 #### State management
 
-The main application state is provided via the [State Warden](/apps/packages/apparatus/src/state-warden/state-warden.ts) object accessible using the [useStateWarden](/apps/packages/apparatus/src/state-warden/useStateWarden.tsx) hook.
+The main application state is provided via the [State Warden](/apps/apparatus/common/src/state-warden/state-warden.ts) object accessible using the [useStateWarden](/apps/apparatus/common/src/state-warden/useStateWarden.tsx) hook.
 
 #### Separation of features
 
-All features should be opt-in, easily plugged in and out of the app. You can find them stored in the [Engine](/apps/packages/apparatus/src/state-warden/engine/engine.ts) and they should implement a [Gear interface](/apps/packages/apparatus/src/state-warden/engine/model.ts).
+All features should be opt-in, easily plugged in and out of the app. You can find them stored in the [Engine](/apps/apparatus/common/src/state-warden/engine/engine.ts) and they should implement a [Gear interface](/apps/apparatus/common/src/state-warden/engine/model.ts).
 
 More info: TBD
 
@@ -62,7 +62,9 @@ Follow the [architectures](/docs/ARCHITECTURES.md) flow when importing from othe
 
 Import paths are setup as `@package-name` in the `tsconfig.json` files in each workspace, in [Rspack config](/apps/app-web/app/rspack.config.ts) and in [mobile babel config](/apps/app-mobile/app/babel.config.js). 
 
-If suddenly something is imported, for example, from `../../apparatus/src` instead of `@apparatus` when importing to a file in `tinker-chest` workspace, and importing from `@apparatus` is not possible... it's a sign of a forbidden import. Consider moving stuff around or creating another package to assure correct import flow. 
+The import sequence is: `tinker-chest` → `apparatus/{common,web,mobile}` → `gears/*/{common,web,mobile}` → `app-{web,mobile}`.
+
+If suddenly something is imported, for example, from `../../apparatus/common/src` instead of `@the-dead-planet/nav-gauge-apparatus-common` when importing to a file in `tinker-chest` workspace, and importing from the alias is not possible... it's a sign of a forbidden import. Consider moving stuff around or creating another package to assure correct import flow. 
 
 Remember about updating the [architectures chart](/docs/assets/architecture.drawio) and [svg](/docs/assets/architecture.svg) using [Draw.io](https://app.diagrams.net), if needed.
 
@@ -133,7 +135,7 @@ Styling should be steampunk inspired.
 Variables used repeatedly and those which which depend on the theme should be added to [theme specifications](/apps/ui/common/src/theme/specifications.ts) in the common [UI package](/apps/).
 
 The web library with component docs is deployed using [storybook with rsbuild](https://storybook.js.org/addons/storybook-react-rsbuild) app at the `/storybook` path. 
-The mobile library is not deployed yet but will probably also be [storybook for React Native](https://www.npmjs.com/package/@storybook/react-native).
+The mobile library is accessible from the top bar menu in dev mode.
 
 #### Theme
 

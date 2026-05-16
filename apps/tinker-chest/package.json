@@ -1,0 +1,20 @@
+{
+    "name": "@the-dead-planet/nav-gauge-tinker-chest",
+    "version": "1.0.0",
+    "private": true,
+    "main": "src/index.ts",
+    "react-native": "src/index.ts",
+    "scripts": {
+        "build": "tsc -b",
+        "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings -1",
+        "test": "mocha"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "react": "19.2.3"
+    },
+    "peerDependencies": {
+        "react": "19.2.3",
+        "rxjs": "^7.8.2"
+    }
+}

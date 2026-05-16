@@ -2,7 +2,8 @@ import { FC } from "react";
 import { StyleSheet, View } from "react-native";
 import { useTheme } from "@ui";
 import { LinkText } from '@mobile-ui';
-import { useStateWarden, useSubjectState } from "@apparatus";
+import { useStateWarden } from "@apparatus";
+import { useSubjectState } from "@tinker-chest";
 
 const styles = StyleSheet.create({
     container: {

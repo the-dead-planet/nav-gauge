@@ -1,12 +1,12 @@
 import { FC, useEffect, useMemo } from "react";
 import maplibregl, { LngLat } from "maplibre-gl";
 import bbox from "@turf/bbox";
-import { OverlayComponentProps, useStateWarden, useSubjectState, parsers } from "@apparatus";
+import { OverlayComponentProps, useStateWarden, parsers } from "@apparatus";
 import { getRouteSourceData, RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { emptyCollection, useSubjectState } from "@tinker-chest";
 import { updateRouteLayer } from "../tinkers";
 import { useLoadedWebImages } from "../hooks";
 import { WebMarkerImageData } from "../images/image-parser";
-import { emptyCollection } from "@tinker-chest";
 import { RouteLineLayer } from "./RouteLineLayer";
 import { RouteCurrentPointLayer } from "./RouteCurrentPointLayer";
 

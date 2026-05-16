@@ -6,7 +6,7 @@ import { Machine } from "./machine/Machine";
 import { ErrorFallback } from "./ErrorFallback";
 import { NoticesList } from "./notices/NoticesList";
 import { MobileMap } from "@mobile-ui";
-import { MobileChronoLens } from "./chrono-lens";
+import { MobileChronoLens } from "@mobile-apparatus";
 import { navigationRef, RootStackParamList } from "./navigation";
 
 const AsyncStorage = createAsyncStorage('nav-gauge');
@@ -16,7 +16,7 @@ export class MobileMachineWard extends MachineWard<MobileMap, keyof RootStackPar
         const getOrientation = (window: ScaledSize): Orientation => {
             return window.width > Dimensions.get('window').height
                 ? Orientation.Landscape
-                : Orientation.Portait;
+                : Orientation.Portrait;
         };
 
         const orientationSubscription: OrientationSubscriptionDefinition = {

@@ -35,7 +35,9 @@ const config = {
     projectRoot: __dirname,
     watchFolders: [
         path.resolve(root, 'node_modules'),
-        path.resolve(root, 'packages'),
+        path.resolve(root, 'apparatus/common'),
+        path.resolve(root, 'apparatus/mobile'),
+        path.resolve(root, 'tinker-chest'),
         path.resolve(root, 'ui/common'),
         path.resolve(root, 'ui/mobile'),
         ...gearsWatchFolders,
@@ -46,8 +48,9 @@ const config = {
     resolver: {
         extraNodeModules: {
             react: path.resolve(root, "node_modules/react"),
-            '@apparatus': path.resolve(root, 'packages/apparatus/src'),
-            '@tinker-chest': path.resolve(root, 'packages/tinker-chest/src'),
+            '@apparatus': path.resolve(root, 'apparatus/common/src'),
+            '@mobile-apparatus': path.resolve(root, 'apparatus/mobile/src'),
+            '@tinker-chest': path.resolve(root, 'tinker-chest/src'),
             '@ui': path.resolve(root, 'ui/common/src'),
             '@mobile-ui': path.resolve(root, 'ui/mobile/src'),
             ...gearsExtraNodeModules

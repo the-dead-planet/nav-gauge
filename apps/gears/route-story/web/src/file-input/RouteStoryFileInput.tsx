@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { FileInputStatus } from "@web-ui";
-import { useSubjectState, parsers } from "@apparatus";
+import { parsers } from "@apparatus";
+import { useSubjectState } from "@tinker-chest";
 import { RouteFileInputProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { WebMarkerImageData } from "../images/image-parser";
 import styles from './file-input.module.css';

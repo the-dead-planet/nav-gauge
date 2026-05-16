@@ -1,7 +1,8 @@
 import { FC, useMemo } from "react";
 import maplibregl from "maplibre-gl";
-import { useStateWarden, useSubjectState } from "@apparatus";
-import { MapLayerData, MapSourceAndLayers, } from "@web-ui";
+import { useStateWarden } from "@apparatus";
+import { useSubjectState } from "@tinker-chest";
+import { MapLayerData, MapSourceAndLayers, } from "@web-apparatus";
 import { routeSourceIds, layerOrder } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { routeLineLayer, routePointsLayer } from "./route-layers";
 

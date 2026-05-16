@@ -3,14 +3,14 @@ import { ErrorFallbackPage } from "./pages";
 import { Footer, Layout, TopBar } from "./layout";
 import { Machine } from "./machine/Machine";
 import { Notices } from "./notices/Notices";
-import { WebChronoLens } from "@the-dead-planet/nav-gauge-gears-route-story-web/src/chrono-lens/chrono-lens";
+import { WebChronoLens } from "@web-apparatus";
 
 export class WebMachineWard extends MachineWard<maplibregl.Map> {
     public constructor(gears: MachineGear<maplibregl.Map>[]) {
         const getOrientation = (): Orientation => {
             return window.innerWidth > window.innerHeight
                 ? Orientation.Landscape
-                : Orientation.Portait;
+                : Orientation.Portrait;
         };
         const orientationSubscription: OrientationSubscriptionDefinition = {
             initial: () => getOrientation(),

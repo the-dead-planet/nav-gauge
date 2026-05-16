@@ -1,5 +1,6 @@
 import { CSSProperties, FC, useMemo } from "react";
-import { useSubjectState, useStateWarden } from "@apparatus";
+import { useStateWarden } from "@apparatus";
+import { useSubjectState } from "@tinker-chest";
 import { MapSection } from "./MapSection";
 import { Presets } from "./controls/Presets";
 import { AnimationControls } from "./controls/AnimationControls";

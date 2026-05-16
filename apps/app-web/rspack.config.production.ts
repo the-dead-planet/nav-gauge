@@ -95,7 +95,7 @@ const config = (env: Env, argv: Argv): Configuration => {
                         name: 'vendors-node-modules',
                     },
                     apparatus: {
-                        test: /[\\/]apparatus[\\/]src[\\/]/,
+                        test: /[\\/]apparatus[\\/](common|web)[\\/]src[\\/]/,
                         name: 'apparatus',
                     },
                     ['tinker-chest']: {

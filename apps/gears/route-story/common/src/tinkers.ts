@@ -5,9 +5,10 @@ import turfDistance from "@turf/distance";
 import { point as turfPoint, lineString as turfLine } from "@turf/helpers";
 import turfLength from "@turf/length";
 import { CurrentPointData, LoadedImageData, MarkerImage } from "@apparatus";
-import { emptyCollection, formatTimeMsAsStandard, GeoJson } from "@tinker-chest";
+import { emptyCollection, GeoJson } from "@tinker-chest";
 import { RouteTimes } from "./model";
 import { BehaviorSubject } from "rxjs";
+import { formatTimeMsAsStandard } from "@ui";
 
 export const getRouteSourceData = (
     { showRouteLine, showRoutePoints }: { showRouteLine: boolean; showRoutePoints: boolean },

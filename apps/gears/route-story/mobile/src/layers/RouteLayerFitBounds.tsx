@@ -1,7 +1,8 @@
 import { FC, useEffect } from "react";
 import { Pressable, StyleSheet } from "react-native";
 import { Text } from "@mobile-ui";
-import { ToolProps, useSubjectState } from "@apparatus";
+import { ToolProps } from "@apparatus";
+import { useSubjectState } from "@tinker-chest";
 import { RouteFitBoundsProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMap } from "@mobile-ui";
 

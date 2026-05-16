@@ -24,19 +24,41 @@ nav-gauge — open-source map & route data tools for content creators. Offline-f
 
 ## Architecture
 
-Monorepo with Yarn workspaces. Strict **import direction**:
+Monorepo with Yarn workspaces. Strict **import direction** (`apps/` layout):
 
-```
-tinker-chest → apparatus → ui/common, gears/common
-                                     ↓
-                          ui/web, gears/web → app-web
-                          ui/mobile, gears/mobile → app-mobile
-```
+### Import sequence
+
+`tinker-chest` → `apparatus/{common,web,mobile}` → `gears/*/{common,web,mobile}` → `app-{web,mobile}`
+
+### Package locations
+
+| Package | Path |
+|---------|------|
+| Tinker Chest | `apps/tinker-chest/` (single package, not split) |
+| Apparatus Common | `apps/apparatus/common/` |
+| Apparatus Web | `apps/apparatus/web/` |
+| Apparatus Mobile | `apps/apparatus/mobile/` |
+| Gears | `apps/gears/*/{common,web,mobile}/` |
+| UI Common | `apps/ui/common/` |
+| UI Web | `apps/ui/web/` |
+| UI Mobile | `apps/ui/mobile/` |
+
+### Import rules summary
+
+| Package | Can be imported by |
+|---------|-------------------|
+| Tinker Chest | Apparatus (all), all Gears, both Apps, UI (all) |
+| Apparatus Common | Apparatus Web, Apparatus Mobile, all Gears, both Apps — NOT UI, NOT Tinker Chest |
+| Apparatus Web | Gear Web, App Web |
+| Apparatus Mobile | Gear Mobile, App Mobile |
+| UI Common | ALL modules — NOT Tinker Chest |
+| UI Web | Gear Web, App Web |
+| UI Mobile | Gear Mobile, App Mobile |
 
 No reverse imports. Always use `@package-name` aliases, never relative paths across workspaces.
 
 ### Gears (features)
-Each feature is a pluggable **Gear** with 1-3 packages depending on template: `common/` (abstract class), `web/`, `mobile/`. Gears implement the `Gear` interface from `@apparatus`. Generate with `yarn generate:gear <name>` from `apps/`.
+Each feature is a pluggable **Gear** with 1-3 packages: `common/` (abstract class), `web/`, `mobile/`. Gears implement the `Gear` interface from `@the-dead-planet/nav-gauge-apparatus-common`. Generate with `yarn generate:gear <name>` from `apps/`.
 
 ## Code Style
 

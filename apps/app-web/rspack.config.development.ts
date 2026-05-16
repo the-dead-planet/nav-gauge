@@ -17,11 +17,15 @@ const config = (env: Env, argv: Argv): Configuration => {
                 dependOn: ['react-vendors']
             },
             apparatus: {
-                import: path.resolve('../packages/apparatus/src/index.ts'),
+                import: path.resolve('../apparatus/common/src/index.ts'),
+                dependOn: ['react-vendors']
+            },
+            ['web-apparatus']: {
+                import: path.resolve('../apparatus/web/src/index.ts'),
                 dependOn: ['react-vendors']
             },
             ['tinker-chest']: {
-                import: path.resolve('../packages/tinker-chest/src/index.ts'),
+                import: path.resolve('../tinker-chest/src/index.ts'),
                 dependOn: ['react-vendors']
             },
             ui: {

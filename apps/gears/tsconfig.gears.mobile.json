@@ -4,10 +4,13 @@
         "lib": ["ESNext"],
         "paths": {
             "@apparatus": [
-                "../packages/apparatus/src"
+                "../apparatus/common/src"
+            ],
+            "@mobile-apparatus": [
+                "../apparatus/mobile/src"
             ],
             "@tinker-chest": [
-                "../packages/tinker-chest/src"
+                "../tinker-chest/src"
             ],
             "@ui": [
                 "../ui/common/src"
