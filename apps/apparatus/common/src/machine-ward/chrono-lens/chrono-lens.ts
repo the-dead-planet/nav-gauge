@@ -1,6 +1,6 @@
 import { BehaviorSubject, pairwise, Subscription } from "rxjs";
 import { FrameRate, SurveillanceState } from "./model";
-import { Individuator } from "../../machine-ward";
+import { Individuator } from "../machine-ward";
 import { SignaliumBureau } from "../signalium-bureau";
 
 /**

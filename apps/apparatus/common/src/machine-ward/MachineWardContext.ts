@@ -1,7 +1,7 @@
 import { createContext, } from "react";
 import { StorageKeeper } from "./storage-keeper";
 import { Individuator } from "./individuator";
-import { Animatrix, AttributionVault, Cartomancer, ChronoLens, SignaliumBureau, ToolsStation } from "../state-warden";
+import { Animatrix, AttributionVault, Cartomancer, ChronoLens, SignaliumBureau, ToolsStation } from "..";
 
 export interface MachineWardContextValue<TMap = unknown> {
     individuator: Individuator;

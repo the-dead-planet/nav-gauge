@@ -1,7 +1,7 @@
 import { BehaviorSubject, Subscription } from "rxjs";
 import { validateBoolean, validateNumber } from "@tinker-chest";
 import { AnimationControlsType } from "./model";
-import { StorageKeeper } from "../../machine-ward/storage-keeper";
+import { StorageKeeper } from "../storage-keeper";
 
 /**
  * Animation central processing unit.

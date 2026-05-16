@@ -52,7 +52,7 @@ The main application state is provided via the [Machine Ward](/apps/apparatus/co
 
 #### Separation of features
 
-All features should be opt-in, easily plugged in and out of the app. You can find them stored in the [Engine](/apps/apparatus/common/src/state-warden/engine/engine.ts) and they should implement a [Gear interface](/apps/apparatus/common/src/state-warden/engine/model.ts).
+All features should be opt-in, easily plugged in and out of the app. You can find them stored in the [Engine](/apps/apparatus/common/src/engine/engine.ts) and they should implement a [Gear interface](/apps/apparatus/common/src/engine/model.ts).
 
 More info: TBD
 

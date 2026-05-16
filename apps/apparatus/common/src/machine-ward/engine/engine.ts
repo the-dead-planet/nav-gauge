@@ -1,5 +1,5 @@
 import { BehaviorSubject } from "rxjs";
-import { Gear } from "../../gears";
+import { Gear } from "../gears";
 
 export class Engine<TMap> {
     public constructor() { }

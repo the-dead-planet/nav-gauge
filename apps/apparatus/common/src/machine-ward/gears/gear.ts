@@ -1,5 +1,4 @@
-import { Individuator } from "../machine-ward";
-import { Animatrix, AttributionVault, Cartomancer, ChronoLens, SignaliumBureau, ToolsStation } from "../state-warden";
+import { Animatrix, AttributionVault, Cartomancer, ChronoLens, Individuator, SignaliumBureau, ToolsStation } from "../..";
 
 export interface GearApparatus<TMap> {
     individuator: Individuator;

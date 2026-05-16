@@ -1,7 +1,7 @@
 import { StrictMode, useEffect, useMemo } from "react";
 import { ErrorBoundary, Theme, ThemeContext, themeSpecifications } from "@ui";
 import { MachineWardNotices } from "./MachineWardNotices";
-import { Animatrix, AttributionVault, Cartomancer, ChronoLens, SignaliumBureau, ToolsStation } from "../state-warden";
+import { Animatrix, AttributionVault, Cartomancer, ChronoLens, SignaliumBureau, ToolsStation } from "..";
 import { Individuator } from "./individuator";
 import { StorageKeeper } from "./storage-keeper";
 import { MachineWardContext, MachineWardContextValue } from "./MachineWardContext";

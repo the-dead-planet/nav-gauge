@@ -1,7 +1,7 @@
 import { ComponentType, ReactNode } from "react";
 import { ErrorBoundaryProps } from "@ui";
-import { SignaliumNotice } from "../state-warden";
-import { Gear, GearApparatus } from "../gears";
+import { SignaliumNotice } from "..";
+import { Gear, GearApparatus } from "./gears";
 
 export interface MachineWardLayoutProps {
     children?: ReactNode;

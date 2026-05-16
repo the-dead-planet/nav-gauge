@@ -2,10 +2,10 @@ import { ReactElement } from "react";
 import { combineLatest, pairwise, Subscription } from "rxjs";
 import { MachineWardApp } from "./MachineWardApp";
 import { Individuator, OrientationSubscriptionDefinition } from "./individuator";
-import { ChronoLens } from "../state-warden/chrono-lens";
-import { Animatrix, AttributionVault, Cartomancer, SignaliumBureau, ToolsStation } from "../state-warden";
+import { ChronoLens } from "./chrono-lens";
+import { Animatrix, AttributionVault, Cartomancer, SignaliumBureau, ToolsStation } from "..";
 import { Engine } from "./engine";
-import { Gear } from "../gears";
+import { Gear } from "./gears";
 import { StorageKeeper } from "./storage-keeper";
 import { MachineGear, MachineWardComponents } from "./model";
 
