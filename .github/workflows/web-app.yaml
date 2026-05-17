@@ -269,22 +269,22 @@ jobs:
           corepack prepare yarn@4.14.1 --activate
           yarn -v
 
-      - name: Install dependencies
-        run: yarn install --immutable
-        working-directory: apps/app-web
+      - name: Restore Cypress binary cache
+        id: cache-cypress
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-binary-${{ runner.os }}-${{ hashFiles('apps/yarn.lock') }}
 
       - name: Install Cypress binary
-        run: yarn cypress install
-        working-directory: apps/app-web
+        if: steps.cache-cypress.outputs.cache-hit != 'true'
+        run: npx --yes cypress@15.15.0 install
 
-      - name: Build app
-        run: yarn build
-        working-directory: apps/app-web
-
-      - name: Start app
-        run: yarn start &
-        working-directory: apps/app-web
-
-      - name: Run Cypress tests
-        run: yarn cypress run --config baseUrl=https://gauge.spookydoodle.com
+      - name: Cypress E2E tests (production)
+        uses: cypress-io/github-action@v7
+        with:
+          working-directory: apps/app-web
+          install-command: yarn install --immutable
+          build: yarn build
+          config: baseUrl=https://gauge.spookydoodle.com
         working-directory: apps/app-web
