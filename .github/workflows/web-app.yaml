@@ -287,4 +287,3 @@ jobs:
           install-command: yarn install --immutable
           build: yarn build
           config: baseUrl=https://gauge.spookydoodle.com
-        working-directory: apps/app-web
