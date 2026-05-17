@@ -99,6 +99,10 @@ jobs:
 
       - name: Install dependencies
         run: yarn install --immutable
+        working-directory: apps
+
+      - name: Install Cypress binary
+        run: yarn cypress install --force
         working-directory: apps/app-web
 
       - name: Build app
