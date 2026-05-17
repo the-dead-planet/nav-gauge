@@ -211,21 +211,15 @@ export const MapTools: FC<Props> = ({ map, children }) => {
     const toolsByPlacement = toolsStation.getToolsByPlacement(toolComponents);
 
     return (
-        <div className={styles["container"]}>
-            {ToolsStation.placements.map((p) => (
+        <div ref={setContainerRef} className={styles["container"]} >
+            {/* {ToolsStation.placements.map((p) => (
                 <div key={p} className={classNames(styles["toolbox"], styles[p])}>
                     {toolsByPlacement[p].map(({ id, component: ToolComponent }) => (
                         <ToolComponent key={id} map={map} />
                     ))}
                 </div>
-            ))}
-            <div className={styles["map-area"]}>
-                <div ref={setContainerRef} className={classNames(styles["nav-gauge-map"], {
-                    [styles["with-green-screen"]]: gaugeControls.showGreenScreen
-                })}>
-                    {isStyleLoaded ? children : null}
-                </div>
-            </div>
+            ))} */}
+            {isStyleLoaded ? children : null}
         </div>
     );
 };

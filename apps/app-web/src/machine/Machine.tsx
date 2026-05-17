@@ -31,21 +31,10 @@ export const Machine: FC = () => {
     );
 
     return (
-        <div className={styles.layout} style={{
+        <div className={styles.machine} style={{
             ...controlsCssStyle,
-            '--map-width': mapLayout.size.type === 'full-screen' ? '100%' : `${mapLayout.size.width}px`,
-            '--map-height': mapLayout.size.type === 'full-screen' ? '100%' : `${mapLayout.size.height}px`,
-            '--map-border-width': mapLayout.borderWidth + 'px',
-            '--map-border-color': mapLayout.borderColor,
-            '--map-inner-border-width': mapLayout.innerBorderWidth + 'px',
-            '--map-inner-border-color': mapLayout.innerBorderColor,
-            '--map-radius': mapLayout.borderRadius,
-            '--map-box-shadow': mapLayout.boxShadow,
-            '--map-inner-box-shadow': mapLayout.innerBoxShadow,
-            // TODO: Make draggable on mobile
-            '--side-panel-height-sm': "240px",
         } as unknown as CSSProperties}>
-            <div className={styles["side-panel"]}>
+            {/* <div className={styles["side-panel"]}>
                 {[...controlComponents.entries()].map(([id, ControlComponent]) => <ControlComponent key={id} />)}
                 <hr className={styles.divider} />
                 <Presets />
@@ -54,10 +43,12 @@ export const Machine: FC = () => {
                 <GaugeControls />
                 <AnimationControls />
                 <ApplicationSettingsSection />
-            </div>
-            <div className={styles["main-area"]}>
-                <MapSection />
-            </div>
+            </div> */}
+            <MapSection />
+            <div className={styles['top-toolbar']}><p>gears</p></div>
+            <div className={styles['left-toolbar']}><p>left</p></div>
+            <div className={styles['right-toolbar']}><p>right</p></div>
+            <div className={styles['bottom-toolbar']}><p>bottom</p></div>
         </div>
     );
 };

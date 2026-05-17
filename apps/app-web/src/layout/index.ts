@@ -1,3 +1,3 @@
 export * from './Footer';
 export * from './Layout';
-export * from './TopBar';
+export * from './top-bar/TopBar';

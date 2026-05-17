@@ -1,6 +1,7 @@
 import { FC, useEffect } from "react";
 import { MachineWardLayoutProps } from "@apparatus";
 import { allShades, DesignSystemColor, PaletteColor, ThemeComponentColor, useTheme } from "@ui";
+import styles from './layout.module.css';
 import './app.css';
 
 export const Layout: FC<MachineWardLayoutProps> = ({ children }) => {
@@ -32,5 +33,9 @@ export const Layout: FC<MachineWardLayoutProps> = ({ children }) => {
         document.body.setAttribute("data-theme", theme.name);
     }, [theme.name]);
 
-    return children;
+    return (
+        <div className={styles.layout}>
+            {children}
+        </div>
+    );
 }
