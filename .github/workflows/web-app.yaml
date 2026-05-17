@@ -91,12 +91,14 @@ jobs:
           corepack prepare yarn@4.14.1 --activate
           yarn -v
 
+      - name: Cache Cypress binary
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
       - name: Install dependencies
         run: yarn install --immutable
-        working-directory: apps/app-web
-
-      - name: Install Cypress binary
-        run: yarn cypress install
         working-directory: apps/app-web
 
       - name: Build app
@@ -271,12 +273,14 @@ jobs:
           corepack prepare yarn@4.14.1 --activate
           yarn -v
 
+      - name: Cache Cypress binary
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
       - name: Install dependencies
         run: yarn install --immutable
-        working-directory: apps/app-web
-
-      - name: Install Cypress binary
-        run: yarn cypress install
         working-directory: apps/app-web
 
       - name: Build app
@@ -290,4 +294,3 @@ jobs:
       - name: Run Cypress tests (prod)
         run: yarn cypress run --config baseUrl=https://gauge.spookydoodle.com
         working-directory: apps/app-web
-
