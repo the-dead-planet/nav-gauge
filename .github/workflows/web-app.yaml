@@ -20,13 +20,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
+
+      - name: Activate Yarn from packageManager field
+        run: corepack prepare yarn@4.14.1 --activate
+
+      - name: Check Yarn version
+        run: yarn -v
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
         working-directory: apps
 
       - name: Run tests
@@ -40,13 +49,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
+
+      - name: Activate Yarn from packageManager field
+        run: corepack prepare yarn@4.14.1 --activate
+
+      - name: Check Yarn version
+        run: yarn -v
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
         working-directory: apps
 
       - name: Lint sources
@@ -57,15 +75,39 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: read
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
+
+      - run: corepack enable
+
+      - name: Setup Node + Yarn cache
+        uses: actions/setup-node@v4
         with:
+          node-version: 24
+          cache: yarn
+          cache-dependency-path: apps/yarn.lock
+
+      - name: Restore Cypress binary cache
+        id: cache-cypress
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-binary-${{ runner.os }}-${{ hashFiles('apps/yarn.lock') }}
+
+      - name: Install Cypress binary
+        if: steps.cache-cypress.outputs.cache-hit != 'true'
+        run: npx --yes cypress@15.15.0 install
+
+      - name: Cypress E2E tests
+        uses: cypress-io/github-action@v7
+        with:
+          working-directory: apps/app-web
+          install-command: yarn install --immutable
           build: yarn build
           start: yarn start
-          working-directory: apps/app-web
+          wait-on: 'http://localhost:3000'
 
   build-and-push:
     runs-on: ubuntu-latest
@@ -211,13 +253,38 @@ jobs:
     needs: deploy
     permissions:
       contents: read
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          working-directory: apps/app-web
-          config: baseUrl=https://gauge.spookydoodle.com
+          node-version: 24
 
+      - name: Enable Corepack + Yarn
+        run: |
+          corepack enable
+          corepack prepare yarn@4.14.1 --activate
+          yarn -v
+
+      - name: Install dependencies
+        run: yarn install --immutable
+        working-directory: apps/app-web
+
+      - name: Install Cypress binary
+        run: yarn cypress install
+        working-directory: apps/app-web
+
+      - name: Build app
+        run: yarn build
+        working-directory: apps/app-web
+
+      - name: Start app
+        run: yarn start &
+        working-directory: apps/app-web
+
+      - name: Run Cypress tests
+        run: yarn cypress run --config baseUrl=https://gauge.spookydoodle.com
+        working-directory: apps/app-web

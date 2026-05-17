@@ -16,17 +16,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
+
+      - name: Activate Yarn from packageManager field
+        run: corepack prepare yarn@4.14.1 --activate
+
+      - name: Check Yarn version
+        run: yarn -v
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
         working-directory: apps
 
       - name: Typecheck app-mobile
-        run: npx tsc --noEmit -p app-mobile
+        run: yarn tsc --noEmit -p app-mobile
         working-directory: apps
 
       - name: Typecheck gear mobile packages

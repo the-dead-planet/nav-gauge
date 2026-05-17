@@ -9,7 +9,7 @@ See [ARCHITECTURES](/docs/ARCHITECTURES.md).
 ## Dependencies
 
 - [TypeScript v5](https://www.typescriptlang.org/)
-- [Node v22](https://nodejs.org/en/download)
+- [Node v24](https://nodejs.org/en/download)
 - [React v19](https://react.dev)
 - [React Native v0.83](https://reactnative.dev)
 - [RxJS v7](https://rxjs.dev)

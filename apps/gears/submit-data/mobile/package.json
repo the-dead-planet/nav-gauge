@@ -11,9 +11,9 @@
     "dependencies": {
         "@the-dead-planet/nav-gauge-apparatus-common": "*",
         "@the-dead-planet/nav-gauge-apparatus-mobile": "*",
+        "@the-dead-planet/nav-gauge-gears-submit-data-common": "*",
         "@the-dead-planet/nav-gauge-tinker-chest": "*",
-        "@the-dead-planet/nav-gauge-ui-common": "*",
-        "@the-dead-planet/nav-gauge-gears-submit-data-common": "*"
+        "@the-dead-planet/nav-gauge-ui-common": "*"
     },
     "devDependencies": {
         "@maplibre/maplibre-react-native": "11.0.2",

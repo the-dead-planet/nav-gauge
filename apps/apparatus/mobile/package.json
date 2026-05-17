@@ -10,10 +10,10 @@
         "test": "mocha"
     },
     "dependencies": {
+        "@react-native-documents/viewer": "^4.0.0",
         "@the-dead-planet/nav-gauge-apparatus-common": "*",
         "@the-dead-planet/nav-gauge-tinker-chest": "*",
         "@the-dead-planet/nav-gauge-ui-common": "*",
-        "@react-native-documents/viewer": "^4.0.0",
         "react-native-fs": "^2.20.0",
         "react-native-view-recorder": "^0.4.0"
     },
