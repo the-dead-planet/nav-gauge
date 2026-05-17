@@ -105,15 +105,8 @@ jobs:
         run: yarn build
         working-directory: apps/app-web
 
-      - name: Start app
-        run: yarn start &
-        working-directory: apps/app-web
-
-      - name: Wait for app to be ready
-        run: npx wait-on http://localhost:3000
-
-      - name: Run Cypress tests
-        run: yarn cypress run
+      - name: Run E2E tests
+        run: npx start-server-and-test "yarn start" http://localhost:3000 "yarn cypress run"
         working-directory: apps/app-web
 
   build-and-push:

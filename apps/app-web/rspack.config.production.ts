@@ -118,6 +118,10 @@ const config = (env: Env, argv: Argv): Configuration => {
                 new rspack.LightningCssMinimizerRspackPlugin()
             ],
         },
+        devServer: {
+            port: Number(process.env.PORT) || 3000,
+            historyApiFallback: true,
+        },
         plugins: [
             new rspack.CssExtractRspackPlugin({ filename: "[name].[contenthash].css" }),
             new BundleAnalyzerPlugin({
