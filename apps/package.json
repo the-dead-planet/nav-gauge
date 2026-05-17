@@ -92,5 +92,6 @@
             "gears/*/mobile",
             "gears/*/web"
         ]
-    }
+    },
+    "packageManager": "yarn@4.14.1"
 }

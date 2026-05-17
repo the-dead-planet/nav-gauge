@@ -9,7 +9,7 @@ See [ARCHITECTURES](/docs/ARCHITECTURES.md).
 ## Dependencies
 
 - [TypeScript v5](https://www.typescriptlang.org/)
-- [Node v22](https://nodejs.org/en/download)
+- [Node v24](https://nodejs.org/en/download)
 - [React v19](https://react.dev)
 - [RxJS v7](https://rxjs.dev)
 - [Mocha v11](https://mochajs.org) for unit tests
