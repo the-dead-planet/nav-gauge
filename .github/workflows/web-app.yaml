@@ -109,6 +109,9 @@ jobs:
         run: yarn start &
         working-directory: apps/app-web
 
+      - name: Wait for app to be ready
+        run: npx wait-on http://localhost:3000
+
       - name: Run Cypress tests
         run: yarn cypress run
         working-directory: apps/app-web
@@ -267,30 +270,28 @@ jobs:
         with:
           node-version: 24
 
-      - name: Enable Corepack + Yarn 4
+      - name: Enable Corepack + Yarn
         run: |
           corepack enable
           corepack prepare yarn@4.14.1 --activate
           yarn -v
 
-      - name: Cache Cypress binary
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/Cypress
-          key: cypress-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-
       - name: Install dependencies
         run: yarn install --immutable
+        working-directory: apps/app-web
+
+      - name: Install Cypress binary (FORCED)
+        run: yarn cypress install --force
         working-directory: apps/app-web
 
       - name: Build app
         run: yarn build
         working-directory: apps/app-web
 
-      - name: Start app (background)
+      - name: Start app
         run: yarn start &
         working-directory: apps/app-web
 
-      - name: Run Cypress tests (prod)
+      - name: Run Cypress tests
         run: yarn cypress run --config baseUrl=https://gauge.spookydoodle.com
         working-directory: apps/app-web
