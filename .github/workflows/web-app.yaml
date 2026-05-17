@@ -102,7 +102,7 @@ jobs:
         working-directory: apps
 
       - name: Install Cypress binary
-        run: yarn cypress install --force
+        run: yarn cypress install
         working-directory: apps/app-web
 
       - name: Build app
@@ -277,8 +277,8 @@ jobs:
         run: yarn install --immutable
         working-directory: apps/app-web
 
-      - name: Install Cypress binary (FORCED)
-        run: yarn cypress install --force
+      - name: Install Cypress binary
+        run: yarn cypress install
         working-directory: apps/app-web
 
       - name: Build app
