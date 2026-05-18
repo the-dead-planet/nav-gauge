@@ -56,6 +56,9 @@ const config = (env: Env, argv: Argv): Configuration => {
                                     exportLocalsConvention: "camelCase",
                                     namedExport: false,
                                 },
+                                url: {
+                                    filter: (url: string) => !url.startsWith("/"),
+                                },
                             },
                         },
                     ],
@@ -70,6 +73,9 @@ const config = (env: Env, argv: Argv): Configuration => {
                             options: {
                                 sourceMap: true,
                                 modules: false,
+                                url: {
+                                    filter: (url: string) => !url.startsWith("/"),
+                                },
                             },
                         },
                     ],

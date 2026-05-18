@@ -41,6 +41,9 @@ const config = (env: Env, argv: Argv): Configuration => {
                                     namedExport: false,
                                     exportLocalsConvention: "camelCase",
                                 },
+                                url: {
+                                    filter: (url: string) => !url.startsWith("/"),
+                                },
                             },
                         },
                     ],
@@ -61,6 +64,9 @@ const config = (env: Env, argv: Argv): Configuration => {
                             options: {
                                 esModule: false,
                                 modules: false,
+                                url: {
+                                    filter: (url: string) => !url.startsWith("/"),
+                                },
                             },
                         },
                     ],

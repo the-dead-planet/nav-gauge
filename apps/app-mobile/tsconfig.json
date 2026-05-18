@@ -27,5 +27,5 @@
         "src/**/*.tsx",
         "__tests__/**/*",
         "../types/**/*"
-    ]
+, "src/machine-ward.tsx"    ]
 }

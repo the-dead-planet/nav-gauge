@@ -1,4 +1,5 @@
 .machine {
+    background-color: var(--background-color);
     position: relative;
     display: grid;
     grid-template-columns: max-content auto max-content;
@@ -9,43 +10,41 @@
         "bottom-toolbar bottom-toolbar bottom-toolbar";
 }
 
-.machine > * {
+.machine>* {
     z-index: 0;
 }
 
-.top-toolbar {
+.toolbar {
+    background-color: rgb(from var(--background-color) r g b / .82);
+    box-sizing: border-box;
+    backdrop-filter: blur(2px);
+}
+
+.toolbar.top {
     grid-area: top-toolbar;
-    background-color: rgb(from var(--background-color) r g b / .92);
     height: 40px;
     border-bottom: 1px solid var(--secondary-color);
-    box-sizing: border-box;
     box-shadow: 1px 1px 3px rgb(from var(--box-shadow-color) r g b / .4);
 }
 
-.left-toolbar {
+.toolbar.left {
     grid-area: left-toolbar;
-    background-color: rgb(from var(--background-color) r g b / .92);
     width: 40px;
     border-right: 1px solid var(--primary-color);
-    box-sizing: border-box;
     box-shadow: 1px 1px 3px rgb(from var(--box-shadow-color) r g b / .4);
 }
 
-.right-toolbar {
+.toolbar.right {
     grid-area: right-toolbar;
-    background-color: rgb(from var(--background-color) r g b / .92);
     width: 50px;
     border-left: 1px solid var(--primary-color);
-    box-sizing: border-box;
     box-shadow: -1px 1px 3px rgb(from var(--box-shadow-color) r g b / .4);
 }
 
-.bottom-toolbar {
+.toolbar.bottom {
     grid-area: bottom-toolbar;
-    background-color: rgb(from var(--background-color) r g b / .92);
-    height: 60px;
+    height: 80px;
     border-top: 2px solid var(--primary-color);
-    box-sizing: border-box;
     box-shadow: 1px -1px 3px rgb(from var(--box-shadow-color) r g b / .4);
 }
 
