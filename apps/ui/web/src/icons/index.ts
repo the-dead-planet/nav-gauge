@@ -1,1 +1,2 @@
-export { default as Find } from '../icons/find.svg';
+export * from './svg';
+export * from './components';

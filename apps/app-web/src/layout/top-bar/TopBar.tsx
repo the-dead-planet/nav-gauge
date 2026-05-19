@@ -15,9 +15,9 @@ export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
                 {title}
             </span>
             <div className={classNames(styles["section"], styles["right"])}>
-                <img src={Icons.Find} width={20} />
-                <img src={Icons.Find} width={20} />
-                <img src={Icons.Find} width={20} />
+                <button style={{ display: 'flex', padding: 0, alignItems: 'center', justifyContent: "center" }}>
+                    <Icons.FindIcon />
+                </button>
             </div>
         </nav>
     );

@@ -87,7 +87,7 @@ export const baseConfig = (_env: Env, _argv: Argv): Configuration => ({
                 issuer: /\.[jt]sx?$/,
                 oneOf: [
                     {
-                        resourceQuery: /react/,
+                        resourceQuery: /component/,
                         use: [
                             {
                                 loader: '@svgr/webpack',
@@ -99,6 +99,9 @@ export const baseConfig = (_env: Env, _argv: Argv): Configuration => ({
                     },
                     {
                         type: 'asset/resource',
+                        generator: {
+                            filename: 'static/media/[name].[contenthash][ext]',
+                        },
                     },
                 ],
             },

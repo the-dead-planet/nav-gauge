@@ -13,7 +13,8 @@
     "dependencies": {
         "@the-dead-planet/nav-gauge-tinker-chest": "*",
         "@the-dead-planet/nav-gauge-ui-common": "*",
-        "classnames": "^2.5.1"
+        "classnames": "^2.5.1",
+        "react-svg": "^17.2.4"
     },
     "devDependencies": {
         "@rsbuild/core": "^2.0.5",
