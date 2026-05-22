@@ -1,9 +1,8 @@
 import { FC } from 'react';
 import { IconProps } from './model';
 import { Icon } from './Icon';
+import { Icons } from '@ui'
 
-import beaker from './svg/beaker.svg';
-import find from './svg/find.svg';
-
-export const BeakerIcon: FC<IconProps> = (props) => <Icon src={beaker} {...props} />;
-export const FindIcon: FC<IconProps> = (props) => <Icon src={find} {...props} />;
+export const BeakerIcon: FC<IconProps> = (props) => <Icon src={Icons.Beaker} {...props} />;
+export const CyberIcon: FC<IconProps> = (props) => <Icon src={Icons.NounProject.Cyber} {...props} />;
+export const FindIcon: FC<IconProps> = (props) => <Icon src={Icons.Find} {...props} />;

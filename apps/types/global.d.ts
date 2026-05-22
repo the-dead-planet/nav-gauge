@@ -18,6 +18,11 @@ declare module '*.jpeg' {
     export default content;
 }
 
+declare module '*.svg' {
+  const src: string;
+  export default src;
+}
+
 declare global {
     type Timer = ReturnType<typeof setTimeout>;
 

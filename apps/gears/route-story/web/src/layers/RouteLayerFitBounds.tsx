@@ -1,7 +1,7 @@
 import { FC, useEffect } from "react";
 import { ToolProps } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
-import { Icons } from "@web-ui";
+import { Icons } from "@ui";
 import { RouteFitBoundsProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import styles from './route-layer.module.css';
 

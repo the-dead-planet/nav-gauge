@@ -1,2 +1,3 @@
 export * from './forms';
-export * as Icons from './icons';
+export * from './icon-button';
+export * from './icons';

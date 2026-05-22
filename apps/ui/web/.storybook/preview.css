@@ -20,3 +20,7 @@ a:-webkit-any-link {
   text-decoration: none;
   color: inherit;
 }
+
+a:hover {
+  color: rgb(15, 133, 132);
+}

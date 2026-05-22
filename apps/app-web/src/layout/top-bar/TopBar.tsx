@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { MachineWardTopBarProps } from "@apparatus";
-import { Icons } from "@web-ui";
+import { Icons } from "@ui";
+import { FindIcon, CyberIcon } from "@web-ui";
 import styles from './top-bar.module.css';
 import classNames from "classnames";
 
@@ -16,7 +17,10 @@ export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
             </span>
             <div className={classNames(styles["section"], styles["right"])}>
                 <button style={{ display: 'flex', padding: 0, alignItems: 'center', justifyContent: "center" }}>
-                    <Icons.FindIcon />
+                    <CyberIcon />
+                </button>
+                <button style={{ display: 'flex', padding: 0, alignItems: 'center', justifyContent: "center" }}>
+                    <FindIcon />
                 </button>
             </div>
         </nav>

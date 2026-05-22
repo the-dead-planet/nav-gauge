@@ -1,0 +1,1 @@
+// TODO: List what gets submitted to the db and what stays on device
