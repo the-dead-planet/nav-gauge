@@ -1,191 +1,175 @@
 /// <reference types="node" />
 
-import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { parseSync, stringify } from 'svgson';
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { parseSync, stringify } from "svgson";
+import { Resvg } from "@resvg/resvg-js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-function computeBBoxFromPaths(datas: string[]): { x: number; y: number; width: number; height: number } | null {
-  const tokenRe = /[MLHVCSQTAZmlhvcsqtaz]|-?\d+\.?\d*(?:e[+-]?\d+)?/g;
+const RAW_DIR = path.join(__dirname, "raw");
+const OUT_DIR = path.join(__dirname, "output");
+const REGISTRY_FILE = path.join(__dirname, "icon-registry.json");
 
-  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-  let cx = 0, cy = 0;
+fs.mkdirSync(OUT_DIR, { recursive: true });
 
-  const update = (x: number, y: number): void => {
-    if (x < minX) minX = x;
-    if (y < minY) minY = y;
-    if (x > maxX) maxX = x;
-    if (y > maxY) maxY = y;
+const PADDING_Y = 2.5;
+const PADDING_X = 2;
+
+function applyPadding(bbox: any) {
+  return {
+    x: bbox.x - PADDING_X,
+    y: bbox.y - PADDING_Y,
+    width: bbox.width + PADDING_X * 2,
+    height: bbox.height + PADDING_Y + PADDING_Y,
   };
-
-  const absCoord = (ctx: number, v: number, rel: boolean): number => rel ? ctx + v : v;
-
-  for (const d of datas) {
-    const tokens: (string | number)[] = [];
-    let mt: RegExpExecArray | null;
-    while ((mt = tokenRe.exec(d)) !== null) {
-      tokens.push(/[MLHVCSQTAZmlhvcsqtaz]/.test(mt[0]) ? mt[0] : parseFloat(mt[0]));
-    }
-
-    let i = 0;
-    cx = 0; cy = 0;
-
-    while (i < tokens.length) {
-      const t = tokens[i];
-      if (typeof t !== 'string') { i++; continue; }
-      const rel = t === t.toLowerCase();
-      i++;
-
-      const nx = (v: number): number => absCoord(cx, v, rel);
-      const ny = (v: number): number => absCoord(cy, v, rel);
-
-      const endPt = (): void => {
-        const x = tokens[i++] as number; const y = tokens[i++] as number;
-        cx = nx(x); cy = ny(y);
-        update(cx, cy);
-      };
-
-      switch (t.toLowerCase()) {
-        case 'm': { endPt(); break; }
-        case 'l': { while (i < tokens.length && typeof tokens[i] === 'number') { endPt(); } break; }
-        case 'h': {
-          while (i < tokens.length && typeof tokens[i] === 'number') {
-            cx = nx(tokens[i++] as number);
-            update(cx, cy);
-          }
-          break;
-        }
-        case 'v': {
-          while (i < tokens.length && typeof tokens[i] === 'number') {
-            cy = ny(tokens[i++] as number);
-            update(cx, cy);
-          }
-          break;
-        }
-        case 'c': {
-          while (i + 5 < tokens.length && typeof tokens[i] === 'number') {
-            i += 4; // skip control points
-            endPt();
-          }
-          break;
-        }
-        case 's': {
-          while (i + 3 < tokens.length && typeof tokens[i] === 'number') {
-            i += 2; // skip second control point
-            endPt();
-          }
-          break;
-        }
-        case 'q': {
-          while (i + 3 < tokens.length && typeof tokens[i] === 'number') {
-            i += 2; // skip control point
-            endPt();
-          }
-          break;
-        }
-        case 't': { while (i + 1 < tokens.length && typeof tokens[i] === 'number') { endPt(); } break; }
-        case 'a': {
-          while (i + 6 < tokens.length && typeof tokens[i] === 'number') {
-            const rx = tokens[i++] as number;
-            const ry = tokens[i++] as number;
-            i += 3;
-            endPt();
-            update(cx - rx, cy - ry);
-            update(cx + rx, cy + ry);
-          }
-          break;
-        }
-        case 'z': break;
-      }
-    }
-  }
-
-  if (minX === Infinity) return null;
-  return { x: minX, y: minY, width: maxX - minX || 24, height: maxY - minY || 24 };
 }
 
-const RAW_DIR = path.join(__dirname, 'raw');
-const OUTPUT_COMPONENTS_DIR = __dirname;
-const REGISTRY_FILE = path.join(__dirname, 'icon-registry.json');
-const OUTPUT_SVG_DIR = __dirname;
+function toViewBox(b: any) {
+  return `${b.x} ${b.y} ${b.width} ${b.height}`;
+}
 
-if (!fs.existsSync(OUTPUT_COMPONENTS_DIR)) fs.mkdirSync(OUTPUT_COMPONENTS_DIR, { recursive: true });
+function extractCreator(ast: any): string {
+  const chunks: string[] = [];
 
-const files: string[] = fs.readdirSync(RAW_DIR).filter((file: string) => file.endsWith('.svg'));
-const registryData: Array<{ id: string; title: string; creator: string; source: string; href: string; license: string; }> = [];
+  function walk(node: any) {
+    if (!node) return;
 
-files.forEach((file: string) => {
-  const filePath = path.join(RAW_DIR, file);
-  const rawSvgString = fs.readFileSync(filePath, 'utf8');
-
-  const ast = parseSync(rawSvgString);
-
-  let creator = 'Unknown Artist';
-  const textNodes: string[] = [];
-
-  const findTextAndMetadata = (node: { name?: string; value?: string; children?: any[] }): void => {
-    if (node.name === 'text') {
-      textNodes.push(node.value || (node.children && node.children[0]?.value) || '');
+    // capture metadata (IMPORTANT for Noun Project)
+    if (node.name === "metadata") {
+      if (typeof node.value === "string") {
+        chunks.push(node.value);
+      }
+      if (node.children) {
+        node.children.forEach(walk);
+      }
     }
-    if (node.children) node.children.forEach(findTextAndMetadata);
-  };
-  findTextAndMetadata(ast);
 
-  const fullText = textNodes.join(' ');
-  const creatorMatch = fullText.match(/Created\s+by\s+(.*?)\s+from/i);
-  if (creatorMatch && creatorMatch[1]) {
-    creator = creatorMatch[1].trim();
+    // capture text nodes + tspans
+    if (node.name === "text" || node.name === "tspan") {
+      if (typeof node.value === "string") {
+        chunks.push(node.value);
+      }
+    }
+
+    // generic fallback (some SVGs just dump strings here)
+    if (typeof node.value === "string") {
+      chunks.push(node.value);
+    }
+
+    node.children?.forEach(walk);
   }
 
-  const filterOutTextTags = (node: { name?: string; children?: any[]; attributes?: Record<string, string>; value?: string }): any => {
-    if (!node.children) return node;
-    node.children = node.children.filter((child: { name?: string }) => child.name !== 'text');
-    node.children.forEach(filterOutTextTags);
-    return node;
-  };
-  const cleanedAst = filterOutTextTags(ast);
+  walk(ast);
 
-  const innerPathsString = cleanedAst.children.map((child: any) => stringify(child)).join('\n    ');
+  const full = chunks
+    .join(" ")
+    .replace(/\s+/g, " ")
+    .trim();
 
-  const collectPathData = (node: any): string[] => {
-    const data: string[] = [];
-    if (node.name === 'path' && node.attributes?.d) {
-      data.push(node.attributes.d);
-    }
-    if (node.children) node.children.forEach((c: any) => data.push(...collectPathData(c)));
-    return data;
-  };
-  const pathData = collectPathData(cleanedAst);
+  // normalize variations
+  const match =
+    full.match(/Created\s+by\s+(.+?)\s+from/i) ||
+    full.match(/by\s+(.+?)\s+from/i);
 
-  const bbox = computeBBoxFromPaths(pathData);
-  const padding = 2;
-  const paddedViewBox = bbox
-    ? `${bbox.x - padding} ${bbox.y - padding} ${bbox.width + padding * 2} ${bbox.height + padding * 2}`
-    : (ast.attributes.viewBox || "0 0 100 100");
+  return match?.[1]?.trim() ?? "Unknown Artist";
+}
 
-  const standardizedSvgTemplate = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="100%" height="100%">
-  <svg viewBox="${paddedViewBox}" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
-    ${innerPathsString}
-  </svg>
-</svg>`;
+// -----------------------------
+// remove text nodes
+// -----------------------------
+function stripText(node: any): any {
+  if (!node.children) return node;
 
-  fs.writeFileSync(path.join(OUTPUT_SVG_DIR, file), standardizedSvgTemplate);
+  node.children = node.children
+    .filter((c: any) => c.name !== "text")
+    .map(stripText);
 
-  const baseName = path.basename(file, '.svg');
-  registryData.push({
-    id: baseName,
-    title: baseName.replace(/-/g, ' ').toUpperCase(),
+  return node;
+}
+
+// -----------------------------
+// remove colors (important for RN + web consistency)
+// -----------------------------
+function stripColors(node: any): any {
+  if (node.attributes) {
+    delete node.attributes.fill;
+    delete node.attributes.stroke;
+  }
+
+  node.children?.forEach(stripColors);
+  return node;
+}
+
+// -----------------------------
+// convert AST → svg string
+// -----------------------------
+function toSVG(ast: any) {
+  const inner = (ast.children || [])
+    .map((c: any) => stringify(c))
+    .join("\n");
+
+  return `
+<svg xmlns="http://www.w3.org/2000/svg">
+${inner}
+</svg>`.trim();
+}
+
+// -----------------------------
+// compute accurate viewBox using resvg
+// -----------------------------
+function computeViewBox(svg: string) {
+  const resvg = new Resvg(svg);
+  const bbox = resvg.getBBox(); // accurate rendered bbox
+  const padded = applyPadding(bbox);
+
+  return toViewBox(padded);
+}
+
+// -----------------------------
+// MAIN
+// -----------------------------
+const files = fs.readdirSync(RAW_DIR).filter(f => f.endsWith(".svg"));
+
+const registry: any[] = [];
+
+for (const file of files) {
+  const raw = fs.readFileSync(path.join(RAW_DIR, file), "utf8");
+
+  let ast = parseSync(raw);
+
+  const creator = extractCreator(ast);
+
+  ast = stripText(ast);
+  ast = stripColors(ast);
+
+  const baseSvg = toSVG(ast);
+
+  // 🔥 correct bbox (no guessing, no drift)
+  const viewBox = computeViewBox(baseSvg);
+
+  const finalSvg = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}">
+${baseSvg.replace(/<svg[^>]*>|<\/svg>/g, "")}
+</svg>`.trim();
+
+  fs.writeFileSync(path.join(OUT_DIR, file), finalSvg);
+
+  const id = path.basename(file, ".svg");
+
+  registry.push({
+    id,
+    title: id.replace(/-/g, " "),
     creator,
-    source: 'The Noun Project',
-    href: 'https://thenounproject.com',
+    source: "The Noun Project",
     license: "CC BY 3.0",
   });
 
-  console.log(`Fixed & Processed: ${file} (Author: ${creator})`);
-});
+  console.log(`✔ ${file} (${creator})`);
+}
 
-fs.writeFileSync(REGISTRY_FILE, JSON.stringify(registryData, null, 2));
-console.log(`\nProcess complete! Cleaned SVGs saved to ${OUTPUT_SVG_DIR}`);
+fs.writeFileSync(REGISTRY_FILE, JSON.stringify(registry, null, 2));
+
+console.log("\nDone.");

@@ -2,6 +2,9 @@ const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 const path = require('path');
 const fs = require('fs');
 
+const defaultConfig = getDefaultConfig(__dirname);
+const { assetExts, sourceExts } = defaultConfig.resolver;
+
 const root = path.resolve(__dirname, '..');
 const gearsRoot = path.resolve(root, 'gears');
 
@@ -44,8 +47,13 @@ const config = {
     ],
     transformer: {
         unstable_allowRequireContext: true,
+        babelTransformerPath: require.resolve(
+            "react-native-svg-transformer/react-native"
+        )
     },
     resolver: {
+        assetExts: assetExts.filter((ext) => ext !== "svg"),
+        sourceExts: [...sourceExts, "svg"],
         extraNodeModules: {
             react: path.resolve(root, "node_modules/react"),
             '@apparatus': path.resolve(root, 'apparatus/common/src'),
@@ -62,4 +70,4 @@ const config = {
     }
 };
 
-module.exports = mergeConfig(getDefaultConfig(__dirname), config);
+module.exports = mergeConfig(defaultConfig, config);
