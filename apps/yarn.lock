@@ -5171,6 +5171,7 @@ __metadata:
     react: "npm:19.2.3"
     react-native: "npm:0.85.2"
     react-native-fs: "npm:^2.20.0"
+    react-native-svg: "npm:^15.15.5"
   peerDependencies:
     "@maplibre/maplibre-react-native": 11.0.2
     "@react-native-documents/picker": ^12.0.1

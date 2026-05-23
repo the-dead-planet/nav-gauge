@@ -1,8 +1,9 @@
+import { Fragment } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from "../text";
 import { Icons } from "@ui";
 import iconRegistry from '../../../common/src/icons/svg/noun-project/icon-registry.json';
-import { Fragment } from 'react';
+import { Icon } from './Icon';
 
 const { NounProject, ...rest } = Icons;
 const IconData = {
@@ -17,7 +18,6 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         alignItems: 'center',
         width: '100%',
-        borderWidth: 2
     },
     item: {
         width: '33.3333%',
@@ -47,7 +47,7 @@ export const IconsOptions = () => (
                 return (
                     <Fragment key={iconName}>
                         <View style={styles.item}>
-                            <Component width={50} height={50} stroke="white" strokeWidth={2} />
+                            <Icon icon={Component} width={50} height={50} />
                         </View>
                         <Text style={styles.item}>{iconName}</Text>
                         {data

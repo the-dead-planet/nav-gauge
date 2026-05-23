@@ -1,11 +1,14 @@
 import { FC } from "react";
-import { MachineWardTopBarProps } from "@apparatus";
-import { Icons } from "@ui";
-import { FindIcon, CyberIcon } from "@web-ui";
+import { MachineWardTopBarProps, useMachineWard } from "@apparatus";
+import { Icons, ThemeName, useTheme } from "@ui";
+import { Icon } from "@web-ui";
 import styles from './top-bar.module.css';
 import classNames from "classnames";
 
 export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
+    const theme = useTheme();
+    const { individuator } = useMachineWard();
+    console.log({ theme })
     // TODO: Icons: light/dark mode, sound, geolocation on/off, recording on/off?, menu
     return (
         <nav className={styles["top-bar"]}>
@@ -16,11 +19,17 @@ export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
                 {title}
             </span>
             <div className={classNames(styles["section"], styles["right"])}>
-                <button style={{ display: 'flex', padding: 0, alignItems: 'center', justifyContent: "center" }}>
-                    <CyberIcon />
+                <button
+                    style={{ display: 'flex', padding: 0, alignItems: 'center', justifyContent: "center", backgroundColor: theme.componentColor('button') }}
+                    onClick={() => individuator.settings$.next(({
+                        ...individuator.settings$.value,
+                        themeName: individuator.settings$.value.themeName === ThemeName.Dark ? ThemeName.Light : ThemeName.Dark
+                    }))}
+                >
+                    <Icon src={Icons.NounProject.Cyber} />
                 </button>
-                <button style={{ display: 'flex', padding: 0, alignItems: 'center', justifyContent: "center" }}>
-                    <FindIcon />
+                <button style={{ display: 'flex', padding: 0, alignItems: 'center', justifyContent: "center", backgroundColor: theme.componentColor('button') }}>
+                    <Icon src={Icons.Find} />
                 </button>
             </div>
         </nav>

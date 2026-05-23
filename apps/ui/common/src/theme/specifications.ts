@@ -13,11 +13,11 @@ export const themeSpecifications: { [key in ThemeName]: ThemeSpecification } = {
         componentColors: {
             background: {
                 name: 'neutral',
-                shade: 900
+                shade: 100
             },
             "menu-background": {
                 name: 'neutral',
-                shade: 700
+                shade: 200
             },
             border: {
                 name: 'neutral',
@@ -33,11 +33,11 @@ export const themeSpecifications: { [key in ThemeName]: ThemeSpecification } = {
             },
             button: {
                 name: 'neutral',
-                shade: 900
+                shade: 200
             },
             text: {
                 name: 'neutral',
-                shade: 100
+                shade: 900
             },
             'text-active': {
                 name: 'teal',
@@ -98,7 +98,7 @@ export const themeSpecifications: { [key in ThemeName]: ThemeSpecification } = {
             },
             button: {
                 name: 'neutral',
-                shade: 900
+                shade: 800
             },
             text: {
                 name: 'neutral',
