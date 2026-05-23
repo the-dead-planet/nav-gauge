@@ -1,0 +1,59 @@
+.p,
+.span,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+    margin: 0;
+    color: var(--color-text);
+}
+
+.p {
+    color: var(--color-text)
+}
+
+.span {
+    color: var(--color-text)
+}
+
+.h1 {
+    color: var(--color-text)
+}
+
+.h2 {
+    color: var(--color-text)
+}
+
+.h3 {
+    color: var(--color-text)
+}
+
+.h4 {
+    color: var(--color-text)
+}
+
+.h5 {
+    color: var(--color-text)
+}
+
+.h6 {
+    color: var(--color-text)
+}
+
+.variant-primary {
+    color: var(--color-primary);
+}
+
+.variant-secondary {
+    color: var(--color-secondary);
+}
+
+.variant-tertiary {
+    color: var(--color-tertiary);
+}
+
+.variant-neutral {
+    color: var(--color-neutral);
+}

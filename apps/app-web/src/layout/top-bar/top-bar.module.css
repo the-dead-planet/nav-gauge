@@ -1,7 +1,7 @@
 .top-bar {
     height: var(--app-top-bar-height);
-    border-bottom: 1px solid var(--border-color);
-    box-shadow: 0px 0px 8px var(--box-shadow-color);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: 0px 0px 8px var(--color-box-shadow);
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;

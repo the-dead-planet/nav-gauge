@@ -1,4 +1,4 @@
-import { FC, DetailedHTMLProps, TextareaHTMLAttributes, MouseEvent } from "react";
+import { FC, MouseEvent, ComponentProps } from "react";
 import styles from './text-area.module.css';
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
     containerClassName?: string;
 }
 
-export const TextArea: FC<Props & Omit<DetailedHTMLProps<TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>, 'name'>> = ({
+export const TextArea: FC<Props & Omit<ComponentProps<'textarea'>, 'name'>> = ({
     label,
     autoSelect,
     name,

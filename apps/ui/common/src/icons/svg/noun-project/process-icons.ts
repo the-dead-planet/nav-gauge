@@ -164,6 +164,7 @@ ${baseSvg.replace(/<svg[^>]*>|<\/svg>/g, "")}
     title: id.replace(/-/g, " "),
     creator,
     source: "The Noun Project",
+    href: "https://thenounproject.com",
     license: "CC BY 3.0",
   });
 

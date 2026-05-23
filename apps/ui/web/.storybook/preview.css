@@ -7,7 +7,7 @@ body {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  color: var(--text-color);
+  color: var(--color-text);
 }
 
 code {
@@ -23,4 +23,31 @@ a:-webkit-any-link {
 
 a:hover {
   color: rgb(15, 133, 132);
+}
+
+.theme-selection {
+  background: var(--color-background);
+  border-radius: 8px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+}
+
+.theme-selection-label {
+  font-weight: 700;
+}
+
+.select {
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+}
+
+.story {
+  padding: 16px;
+  border-radius: 8px;
+  background: var(--color-background);
+  color: var(--color-text);
 }

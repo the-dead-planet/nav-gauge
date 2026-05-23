@@ -1,35 +1,27 @@
 import { useState, type ReactNode } from 'react';
 import type { Preview } from 'storybook-react-rsbuild';
 import { Theme, ThemeContext, ThemeName, themeOptions, themeSpecifications } from '@ui';
+import { P, useThemeVariables } from '../src';
 import './preview.css';
 
 const ThemeDecorator = ({ children }: { children: ReactNode }) => {
     const [themeName, setThemeName] = useState<ThemeName>(ThemeName.Light);
     const theme = new Theme(themeSpecifications[themeName]);
 
+    useThemeVariables(theme);
+
     return (
         <ThemeContext.Provider value={theme}>
-            <div style={{
-                padding: '16px',
-                fontFamily: '-apple-system, BlinkMacSystemFont, "Century Gothic", sans-serif',
-            }}>
-                <div style={{
-                    marginBottom: '16px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                }}>
-                    <label htmlFor="theme-select" style={{ fontWeight: 'bold' }}>Theme:</label>
+            <div>
+                <div className="theme-selection">
+                    <label htmlFor="theme-select" className="theme-selection-label">
+                        <P>Theme:</P>
+                    </label>
                     <select
                         id="theme-select"
                         value={themeName}
                         onChange={(e) => setThemeName(e.target.value as ThemeName)}
-                        style={{
-                            padding: '4px 8px',
-                            borderRadius: '4px',
-                            border: '1px solid #ccc',
-                            fontSize: '14px',
-                        }}
+                        className="select"
                     >
                         {themeOptions.map((option) => (
                             <option key={option.value} value={option.value}>
@@ -38,12 +30,7 @@ const ThemeDecorator = ({ children }: { children: ReactNode }) => {
                         ))}
                     </select>
                 </div>
-                <div style={{
-                    padding: '16px',
-                    borderRadius: '8px',
-                    background: theme.componentColor('background'),
-                    color: theme.componentColor('text'),
-                }}>
+                <div className="story">
                     {children}
                 </div>
             </div>
