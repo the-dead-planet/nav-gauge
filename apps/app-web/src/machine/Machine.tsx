@@ -10,6 +10,7 @@ import { GaugeControls } from "./controls/GaugeControls";
 import { MapStyleSelection } from "./controls/MapStyleSelection";
 import styles from './machine.module.css';
 import classNames from "classnames";
+import { P } from "@web-ui";
 
 export const Machine: FC = () => {
     const { cartomancer, toolsStation } = useMachineWard();
@@ -46,10 +47,10 @@ export const Machine: FC = () => {
                 <ApplicationSettingsSection />
             </div> */}
             <MapSection />
-            <div className={classNames(styles['toolbar'], styles['top'])}><p>gears</p></div>
-            <div className={classNames(styles['toolbar'], styles['left'])}><p>left</p></div>
-            <div className={classNames(styles['toolbar'], styles['right'])}><p>right</p></div>
-            <div className={classNames(styles['toolbar'], styles['bottom'])}><p>bottom</p></div>
+            <div className={classNames(styles['toolbar'], styles['top'])}><P>Sample text to test 12346. Abc Gedg Xseuyie QtrtyyuSAH</P></div>
+            <div className={classNames(styles['toolbar'], styles['left'])}><P>left</P></div>
+            <div className={classNames(styles['toolbar'], styles['right'])}><P>right</P></div>
+            <div className={classNames(styles['toolbar'], styles['bottom'])}><P>bottom</P></div>
         </div>
     );
 };

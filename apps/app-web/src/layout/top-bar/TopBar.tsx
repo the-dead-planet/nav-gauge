@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { MachineWardTopBarProps, useMachineWard } from "@apparatus";
 import { Icons, ThemeName, useTheme } from "@ui";
-import { Icon } from "@web-ui";
+import { H4, Icon } from "@web-ui";
 import styles from './top-bar.module.css';
 import classNames from "classnames";
 
@@ -15,9 +15,9 @@ export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
             <div className={classNames(styles["section"], styles["left"])}>
                 <img src={Icons.Find} width={20} />
             </div>
-            <span>
+            <H4>
                 {title}
-            </span>
+            </H4>
             <div className={classNames(styles["section"], styles["right"])}>
                 <button
                     style={{ display: 'flex', padding: 0, alignItems: 'center', justifyContent: "center", backgroundColor: theme.componentColor('button') }}

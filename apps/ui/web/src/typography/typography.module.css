@@ -10,36 +10,9 @@
     color: var(--color-text);
 }
 
-.p {
-    color: var(--color-text)
-}
-
+.p,
 .span {
-    color: var(--color-text)
-}
-
-.h1 {
-    color: var(--color-text)
-}
-
-.h2 {
-    color: var(--color-text)
-}
-
-.h3 {
-    color: var(--color-text)
-}
-
-.h4 {
-    color: var(--color-text)
-}
-
-.h5 {
-    color: var(--color-text)
-}
-
-.h6 {
-    color: var(--color-text)
+    font-weight: 400;
 }
 
 .variant-primary {
@@ -56,4 +29,24 @@
 
 .variant-neutral {
     color: var(--color-neutral);
+}
+
+.font-default {
+    font-family: var(--font-default);
+}
+
+.font-numeric {
+    font-family: var(--font-numeric);
+}
+
+.font-special-messaging {
+    font-family: var(--font-special-messaging);
+}
+
+.font-neon-header {
+    font-family: var(--font-neon-header);
+}
+
+.font-neon-text {
+    font-family: var(--font-neon-text);
 }

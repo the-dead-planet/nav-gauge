@@ -1,4 +1,3 @@
-export * from './model';
 export * from './P';
 export * from './Span';
 export * from './H1';

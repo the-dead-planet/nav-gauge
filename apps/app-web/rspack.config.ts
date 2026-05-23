@@ -143,9 +143,9 @@ export const baseConfig = (_env: Env, _argv: Argv): Configuration => ({
                     to: './'
                 },
                 {
-                    context: '../ui/common',
-                    from: 'public/**/*',
-                    to: '[name][ext]',
+                    context: '../ui/common/public',
+                    from: '**/*',
+                    to: '[path][name][ext]',
                     toType: 'template',
                     noErrorOnMissing: true,
                 },

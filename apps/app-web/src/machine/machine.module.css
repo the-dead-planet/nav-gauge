@@ -2,8 +2,8 @@
     background-color: var(--color-background);
     position: relative;
     display: grid;
-    grid-template-columns: max-content auto max-content;
-    grid-template-rows: max-content auto max-content;
+    grid-template-columns: max-content 1fr max-content;
+    grid-template-rows: max-content 1fr max-content;
     grid-template-areas:
         "top-toolbar top-toolbar top-toolbar"
         "left-toolbar . right-toolbar"

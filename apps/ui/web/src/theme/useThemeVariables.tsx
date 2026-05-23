@@ -1,4 +1,4 @@
-import { allColorShades, DesignSystemColor, PaletteColor, Theme, ThemeComponentColor } from "@ui";
+import { allColorShades, DesignSystemColor, fontTypeToFamily, PaletteColor, Theme, ThemeComponentColor } from "@ui";
 import { useEffect } from "react";
 
 /**
@@ -7,6 +7,15 @@ import { useEffect } from "react";
  * @example var(--color-yellow-500)
  */
 export const useThemeVariables = (theme: Theme) => {
+    useEffect(() => {
+        for (const [fontType, fontFamilyName] of Object.entries(fontTypeToFamily)) {
+            document.documentElement.style.setProperty(
+                `--font-${fontType}`,
+                fontFamilyName
+            );
+        }
+    }, []);
+
     useEffect(() => {
         for (const [key] of Object.entries(theme.componentColors)) {
             const componentColorName = key as ThemeComponentColor;
