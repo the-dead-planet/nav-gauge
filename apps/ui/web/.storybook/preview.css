@@ -1,6 +1,21 @@
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/fonts/Space_Grotesk/SpaceGrotesk-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@supports (font-variation-settings: normal) {
+  body {
+    font-family: "Space Grotesk";
+    font-weight: 200;
+  }
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Century Gothic", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Space Grotesk", "Century Gothic", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin: 0;

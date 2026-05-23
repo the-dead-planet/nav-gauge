@@ -8,6 +8,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const config: StorybookConfig = {
     framework: 'storybook-react-rsbuild',
     stories: ['../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
+    staticDirs: [path.resolve(__dirname, '../../common/public')],
     addons: [],
     async rsbuildFinal(config) {
         return mergeRsbuildConfig(config, {
@@ -18,6 +19,9 @@ const config: StorybookConfig = {
             },
             tools: {
                 cssLoader: {
+                    url: {
+                        filter: (url: string) => !url.startsWith('/'),
+                    },
                     modules: {
                         auto: /\.module\.css$/,
                         mode: "local",
