@@ -5,5 +5,5 @@
         "test/**/*",
         "types/**/*",
         ".storybook/**/*"
-, "../common/src/typography/utils.ts", "../common/src/typography/model.ts"    ]
+    ]
 }
