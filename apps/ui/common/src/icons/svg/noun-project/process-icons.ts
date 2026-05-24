@@ -1,5 +1,3 @@
-/// <reference types="node" />
-
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -35,9 +33,10 @@ function extractCreator(ast: any): string {
   const chunks: string[] = [];
 
   function walk(node: any) {
-    if (!node) return;
+    if (!node) {
+      return;
+    };
 
-    // capture metadata (IMPORTANT for Noun Project)
     if (node.name === "metadata") {
       if (typeof node.value === "string") {
         chunks.push(node.value);
@@ -47,14 +46,12 @@ function extractCreator(ast: any): string {
       }
     }
 
-    // capture text nodes + tspans
     if (node.name === "text" || node.name === "tspan") {
       if (typeof node.value === "string") {
         chunks.push(node.value);
       }
     }
 
-    // generic fallback (some SVGs just dump strings here)
     if (typeof node.value === "string") {
       chunks.push(node.value);
     }
@@ -69,7 +66,6 @@ function extractCreator(ast: any): string {
     .replace(/\s+/g, " ")
     .trim();
 
-  // normalize variations
   const match =
     full.match(/Created\s+by\s+(.+?)\s+from/i) ||
     full.match(/by\s+(.+?)\s+from/i);
@@ -77,9 +73,6 @@ function extractCreator(ast: any): string {
   return match?.[1]?.trim() ?? "Unknown Artist";
 }
 
-// -----------------------------
-// remove text nodes
-// -----------------------------
 function stripText(node: any): any {
   if (!node.children) return node;
 
@@ -90,9 +83,6 @@ function stripText(node: any): any {
   return node;
 }
 
-// -----------------------------
-// remove colors (important for RN + web consistency)
-// -----------------------------
 function stripColors(node: any): any {
   if (node.attributes) {
     delete node.attributes.fill;
@@ -103,34 +93,25 @@ function stripColors(node: any): any {
   return node;
 }
 
-// -----------------------------
-// convert AST → svg string
-// -----------------------------
 function toSVG(ast: any) {
   const inner = (ast.children || [])
     .map((c: any) => stringify(c))
     .join("\n");
 
   return `
-<svg xmlns="http://www.w3.org/2000/svg">
-${inner}
-</svg>`.trim();
+    <svg xmlns="http://www.w3.org/2000/svg">
+    ${inner}
+    </svg>`.trim();
 }
 
-// -----------------------------
-// compute accurate viewBox using resvg
-// -----------------------------
 function computeViewBox(svg: string) {
   const resvg = new Resvg(svg);
-  const bbox = resvg.getBBox(); // accurate rendered bbox
+  const bbox = resvg.getBBox();
   const padded = applyPadding(bbox);
 
   return toViewBox(padded);
 }
 
-// -----------------------------
-// MAIN
-// -----------------------------
 const files = fs.readdirSync(RAW_DIR).filter(f => f.endsWith(".svg"));
 
 const registry: any[] = [];
@@ -146,14 +127,12 @@ for (const file of files) {
   ast = stripColors(ast);
 
   const baseSvg = toSVG(ast);
-
-  // 🔥 correct bbox (no guessing, no drift)
   const viewBox = computeViewBox(baseSvg);
 
   const finalSvg = `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}">
-${baseSvg.replace(/<svg[^>]*>|<\/svg>/g, "")}
-</svg>`.trim();
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}">
+    ${baseSvg.replace(/<svg[^>]*>|<\/svg>/g, "")}
+    </svg>`.trim();
 
   fs.writeFileSync(path.join(OUT_DIR, file), finalSvg);
 
