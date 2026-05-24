@@ -4,7 +4,7 @@ import { defaultTypographyProps, TypographyProps } from "@ui";
 import styles from './typography.module.css';
 
 export const H3: FC<ComponentProps<'h3'> & TypographyProps> = ({
-    variant = defaultTypographyProps.variant,
+    color = defaultTypographyProps.color,
     fontType = defaultTypographyProps.fontType,
     className,
     children,
@@ -15,7 +15,7 @@ export const H3: FC<ComponentProps<'h3'> & TypographyProps> = ({
             className={classNames(
                 styles.h3,
                 styles[`font-${fontType}`],
-                { [styles[`variant-${variant}`]]: !!variant },
+                { [styles[`color-${color}`]]: !!color },
                 className
             )}
             {...props}

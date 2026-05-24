@@ -1,5 +1,5 @@
 /** Design system color tokens for text. Maps to `var(--color-<variant>)`. */
-export type TypographyVariant = 'primary' | 'secondary' | 'tertiary' | 'neutral';
+export type TypographyColor = 'primary' | 'secondary' | 'tertiary' | 'neutral';
 
 /**
  * Fonts available for typography components. Usage and role:
@@ -26,6 +26,6 @@ export enum FontType {
 }
 
 export interface TypographyProps {
-    variant?: TypographyVariant;
+    color?: TypographyColor;
     fontType?: FontType;
 }

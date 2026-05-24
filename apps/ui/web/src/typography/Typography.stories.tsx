@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { FontType, TypographyVariant } from '@ui';
-import { H1, H2, H3, H4, H5, H6, P, Span } from './';
+import { FontType, TypographyColor } from '@ui';
+import { H1, H2, H3, H4, H5, H6, P, Span, Text } from './';
 
-const variants: (TypographyVariant | undefined)[] = [undefined, 'primary', 'secondary', 'tertiary', 'neutral'];
+const colors: (TypographyColor | undefined)[] = [undefined, 'primary', 'secondary', 'tertiary', 'neutral'];
 const variantLabels = ['Default', 'Primary', 'Secondary', 'Tertiary', 'Neutral'];
 
 const meta = {
@@ -12,6 +12,45 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+export const TextStory = {
+    name: 'Text',
+    args: {
+        variant: 'body' as const,
+        fontType: FontType.Default,
+        children: 'The quick brown fox jumps over the lazy dog.',
+    },
+    argTypes: {
+        variant: {
+            control: 'select',
+            options: ['header', 'body', 'caption'],
+        },
+        as: {
+            control: 'select',
+            options: ['(auto)', 'p', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+            mapping: { '(auto)': undefined },
+        },
+        color: {
+            control: 'select',
+            options: ['(default)', 'primary', 'secondary', 'tertiary', 'neutral'],
+            mapping: { '(default)': undefined },
+        },
+        fontType: {
+            control: 'select',
+            options: Object.values(FontType),
+        },
+    },
+    render: (args: Record<string, unknown>) => (
+        <Text
+            variant={args.variant as 'header' | 'body' | 'caption'}
+            as={args.as as 'p' | 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | undefined}
+            color={args.color as 'primary' | 'secondary' | 'tertiary' | 'neutral' | undefined}
+            fontType={args.fontType as FontType}
+        >
+            {args.children as string}
+        </Text>
+    ),
+} satisfies StoryObj;
 
 export const All = {
     render: () => {
@@ -36,20 +75,20 @@ export const All = {
                 </div>
                 <div style={{
                     display: 'grid',
-                    gridTemplateColumns: `repeat(${variants.length}, max-content)`,
+                    gridTemplateColumns: `repeat(${colors.length}, max-content)`,
                     gap: '16px 32px',
                     alignItems: 'center',
                 }}>
-                    {variants.map((variant, i) => (
-                        <h5 key={variant} style={{ margin: 0 }}>{variantLabels[i]}</h5>
+                    {colors.map((color, i) => (
+                        <h5 key={color} style={{ margin: 0 }}>{variantLabels[i]}</h5>
                     ))}
                     {(['P', 'Span', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'] as const).map((Tag) => (
-                        variants.map((variant) => {
+                        colors.map((color) => {
                             const Component = { P, Span, H1, H2, H3, H4, H5, H6 }[Tag];
 
                             return (
-                                <Component key={`${Tag}-${variant}`} variant={variant} fontType={fontType}>
-                                    {Tag}{variant ? ` (${variant})` : ''}
+                                <Component key={`${Tag}-${color}`} color={color} fontType={fontType}>
+                                    {Tag}{color ? ` (${color})` : ''}
                                 </Component>
                             );
                         })

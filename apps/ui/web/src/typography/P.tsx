@@ -4,7 +4,7 @@ import { defaultTypographyProps, TypographyProps } from "@ui";
 import styles from './typography.module.css';
 
 export const P: FC<ComponentProps<'p'> & TypographyProps> = ({
-    variant = defaultTypographyProps.variant,
+    color = defaultTypographyProps.color,
     fontType = defaultTypographyProps.fontType,
     className,
     children,
@@ -15,7 +15,7 @@ export const P: FC<ComponentProps<'p'> & TypographyProps> = ({
             className={classNames(
                 styles.p,
                 styles[`font-${fontType}`],
-                { [styles[`variant-${variant}`]]: !!variant },
+                { [styles[`color-${color}`]]: !!color },
                 className
             )}
             {...props}

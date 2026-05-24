@@ -15,19 +15,19 @@
     font-weight: 400;
 }
 
-.variant-primary {
+.color-primary {
     color: var(--color-primary);
 }
 
-.variant-secondary {
+.color-secondary {
     color: var(--color-secondary);
 }
 
-.variant-tertiary {
+.color-tertiary {
     color: var(--color-tertiary);
 }
 
-.variant-neutral {
+.color-neutral {
     color: var(--color-neutral);
 }
 
@@ -50,3 +50,4 @@
 .font-neon-text {
     font-family: var(--font-neon-text);
 }
+
