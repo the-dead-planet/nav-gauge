@@ -6,7 +6,9 @@ import { useTheme } from "@ui";
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: 16,
+        padding: 16,
+    },
+    detail: {
         rowGap: 40,
     },
     backText: {
@@ -24,7 +26,7 @@ const styles = StyleSheet.create({
     list: {
         paddingTop: 20,
         paddingHorizontal: 16,
-        paddingBottom: 40
+        paddingBottom: 40,
     },
     heading: {
         fontSize: 22,
@@ -81,12 +83,14 @@ export const Stories: FC = () => {
                 <TouchableOpacity onPress={() => setSelected(null)} style={styles.back}>
                     <Text style={[styles.backText, { color: theme.color('blue', 400) }]}>{"< Back"}</Text>
                 </TouchableOpacity>
-                {selected.components.map(({ label, Component }) => (
-                    <View key={label}>
-                        <Text style={styles.componentName}>{label}</Text>
-                        <Component />
-                    </View>
-                ))}
+                <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.detail}>
+                    {selected.components.map(({ label, Component }) => (
+                        <View key={label}>
+                            <Text style={styles.componentName}>{label}</Text>
+                            <Component />
+                        </View>
+                    ))}
+                </ScrollView>
             </View>
         );
     }
