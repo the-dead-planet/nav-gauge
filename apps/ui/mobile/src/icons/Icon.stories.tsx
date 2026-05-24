@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text } from "../text";
+import { Text } from "../typography";
 import { Icons } from "@ui";
 import iconRegistry from '../../../common/src/icons/svg/noun-project/icon-registry.json';
 import { Icon } from './Icon';

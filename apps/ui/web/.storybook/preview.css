@@ -117,8 +117,10 @@ a:hover {
 }
 
 .story {
+  box-sizing: border-box;
   padding: 16px;
   border-radius: 8px;
   background: var(--color-background);
   color: var(--color-text);
+  overflow: auto;
 }

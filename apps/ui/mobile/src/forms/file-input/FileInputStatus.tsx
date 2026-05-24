@@ -1,7 +1,7 @@
 import { getCauseProp, useTheme } from "@ui";
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import { Heading, Text } from "../../text";
+import { Heading, Text } from "../../typography";
 
 const styles = StyleSheet.create({
     container: {

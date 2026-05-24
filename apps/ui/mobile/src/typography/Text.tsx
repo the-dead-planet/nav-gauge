@@ -4,7 +4,6 @@ import { useTheme } from "@ui";
 
 export const Text: FC<TextProps> = ({ style, ...props }) => {
     const theme = useTheme();
-    console.log({theme})
 
     return (
         <RNText {...props} style={[{ color: theme.componentColor('text') }, style]} />

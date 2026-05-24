@@ -1,7 +1,7 @@
 import { View, StyleSheet } from 'react-native';
 import { Menu } from "./Menu";
 import { MenuItem } from "./MenuItem";
-import { Text } from "../text";
+import { Text } from "../typography";
 
 const styles = StyleSheet.create({
     wrapper: {

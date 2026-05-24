@@ -1,6 +1,6 @@
 import { FC, ComponentType, useState } from "react";
 import { ScrollView, TouchableOpacity, View, StyleSheet } from "react-native";
-import { Text } from "./text";
+import { Text } from "./typography";
 import { useTheme } from "@ui";
 
 const styles = StyleSheet.create({

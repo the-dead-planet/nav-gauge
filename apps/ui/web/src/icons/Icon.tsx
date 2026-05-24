@@ -10,7 +10,6 @@ interface Props {
 export const Icon: FC<Props & IconProps> = ({ src, ...props }) => {
     const theme = useTheme();
     const color = theme.componentColor('text');
-    console.log({color})
 
     return (
         <ReactSVG

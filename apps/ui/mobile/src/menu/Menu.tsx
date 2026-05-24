@@ -5,9 +5,10 @@ import {
     Modal,
     StyleSheet,
     Dimensions,
+    Pressable,
 } from 'react-native';
 import { useTheme } from '@ui';
-import { Text } from '../text';
+import { Text } from '../typography';
 
 const MenuContext = createContext<{ close: () => void }>({ close: () => { } });
 
@@ -92,7 +93,9 @@ export const Menu: React.FC<MenuProps> = ({
 
     const toggleMenu = (): void => {
         const ref = iconAnchorRef.current;
-        if (!ref) { return; }
+        if (!ref) { 
+            return;
+        }
         ref.measureInWindow((x, y, width, height) => {
             const window = Dimensions.get('window');
             const { iconX, iconY } = iconAnchorPoint(iconAnchor, x, y, width, height);
@@ -117,9 +120,8 @@ export const Menu: React.FC<MenuProps> = ({
                 transparent={true}
                 visible={visible}
                 animationType="fade"
-                onRequestClose={() => setVisible(false)}
             >
-                <View style={styles.modalOverlay}>
+                <Pressable style={styles.modalOverlay} onPress={() => setVisible(false)}>
                     <View
                         style={[
                             styles.menuList,
@@ -134,7 +136,7 @@ export const Menu: React.FC<MenuProps> = ({
                             {children}
                         </MenuContext.Provider>
                     </View>
-                </View>
+                </Pressable>
             </Modal>
         </View>
     );

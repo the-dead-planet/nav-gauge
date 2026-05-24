@@ -1,5 +1,5 @@
 import { TouchableOpacity, StyleSheet } from 'react-native';
-import { Text } from '../text';
+import { Text } from '../typography';
 import { useMenuClose } from './Menu';
 
 const styles = StyleSheet.create({

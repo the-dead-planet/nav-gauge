@@ -8,7 +8,7 @@ import classNames from "classnames";
 export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
     const theme = useTheme();
     const { individuator } = useMachineWard();
-    console.log({ theme })
+    
     // TODO: Icons: light/dark mode, sound, geolocation on/off, recording on/off?, menu
     return (
         <nav className={styles["top-bar"]}>
