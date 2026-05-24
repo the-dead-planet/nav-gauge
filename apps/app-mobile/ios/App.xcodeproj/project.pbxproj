@@ -11,54 +11,14 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		F53A0C3576DB4223A0A915C1 /* BitcountSingle-VariableFont_CRSV,ELSH,ELXP,slnt,wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1630510A4A1A4812800FE54C /* BitcountSingle-VariableFont_CRSV,ELSH,ELXP,slnt,wght.ttf */; };
-		8BE00C6DE68346A2B0544FBB /* BitcountSingle-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F46B81F79DD14E4981663C46 /* BitcountSingle-Black.ttf */; };
-		88CCF60FFC2C4CD99C497A44 /* BitcountSingle-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 61A8B291AB4943FC9ADCEB8B /* BitcountSingle-Bold.ttf */; };
-		025C80E2AD844C62BBDA6FF4 /* BitcountSingle-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A32A7C392CAB4085AB292E20 /* BitcountSingle-ExtraBold.ttf */; };
-		CFE4A008A2F9477699A2EBA3 /* BitcountSingle-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A0FCD18D141348C9AF382582 /* BitcountSingle-ExtraLight.ttf */; };
-		0F5A0C038D1D49B6BDA297D4 /* BitcountSingle-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E28507D8C67A413298D0A8A0 /* BitcountSingle-Light.ttf */; };
-		BE0929BBE59F44F5B6D59BA1 /* BitcountSingle-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3DC437D264DB4E18A10047A6 /* BitcountSingle-Medium.ttf */; };
-		58DF3E0D7FD04E33A82A892C /* BitcountSingle-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D9A900DA71A747428D860683 /* BitcountSingle-Regular.ttf */; };
-		4A7D423DECE24DBC9AF5DC84 /* BitcountSingle-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A35C7747727449BC9337DD51 /* BitcountSingle-SemiBold.ttf */; };
-		3D93F318C4584D52AE4BE01A /* BitcountSingle-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 310A2EDB6DA5460E83D82B51 /* BitcountSingle-Thin.ttf */; };
-		4970F47B62FB43B98C8F3F9A /* BitcountSingle_Cursive-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D5784902D57147DA852BA8BC /* BitcountSingle_Cursive-Black.ttf */; };
-		B97B8AB7B4AE4EC2AD444F1D /* BitcountSingle_Cursive-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 66F11DD0A7CB4DF0BF1BEC1F /* BitcountSingle_Cursive-Bold.ttf */; };
-		958FE5C064524834A91D65A5 /* BitcountSingle_Cursive-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D3920733D36D480F9F58AD6E /* BitcountSingle_Cursive-ExtraBold.ttf */; };
-		DB1D2C6918694FDA8F36BB61 /* BitcountSingle_Cursive-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 065D98338454491297A008EC /* BitcountSingle_Cursive-ExtraLight.ttf */; };
-		0722A5C22965438DAC1F4F08 /* BitcountSingle_Cursive-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A65F0C30EF17495C9344B13F /* BitcountSingle_Cursive-Light.ttf */; };
-		BDFAFDEE2B66489689135D50 /* BitcountSingle_Cursive-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 701A0A8077BD4116A45644B5 /* BitcountSingle_Cursive-Medium.ttf */; };
-		86F306ABE99243BB80A1AE99 /* BitcountSingle_Cursive-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D7395592F05422BBDF1314C /* BitcountSingle_Cursive-Regular.ttf */; };
-		408B7E19A89D44DF8E5B9C23 /* BitcountSingle_Cursive-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A8A06C1B5AA047A4ABB0A3D9 /* BitcountSingle_Cursive-SemiBold.ttf */; };
-		E266070C228645DBA243F895 /* BitcountSingle_Cursive-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8652CE7B81134E6B930131A4 /* BitcountSingle_Cursive-Thin.ttf */; };
-		66DA3981B1AC44BB8F3B011F /* BitcountSingle_Roman-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7491E7CEAB054039B96F1822 /* BitcountSingle_Roman-Black.ttf */; };
-		9CD67D94182B49EB88CC0B4D /* BitcountSingle_Roman-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 755AD76F27B844A8ADED4AF1 /* BitcountSingle_Roman-Bold.ttf */; };
-		28D6AAD45D174F2988B60AB3 /* BitcountSingle_Roman-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 537D07A7570544FFA2FC6917 /* BitcountSingle_Roman-ExtraBold.ttf */; };
-		42024FFCE107404C8AAB4FD0 /* BitcountSingle_Roman-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 59C5B09F16A3457BB92ED78A /* BitcountSingle_Roman-ExtraLight.ttf */; };
-		CC4ADE70F46841F393CA1FBB /* BitcountSingle_Roman-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1CEF628A67F14755BE55EB4A /* BitcountSingle_Roman-Light.ttf */; };
-		08D9ADA2B26C427BB8AD7CE8 /* BitcountSingle_Roman-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 54994438C81147C393AA40B0 /* BitcountSingle_Roman-Medium.ttf */; };
-		E02DC09B48414422AA8B7646 /* BitcountSingle_Roman-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2071FAECB9594B47BDE03C06 /* BitcountSingle_Roman-Regular.ttf */; };
-		27C5177ACED341C895C47FC4 /* BitcountSingle_Roman-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7194F7AAB98648B4805943E9 /* BitcountSingle_Roman-SemiBold.ttf */; };
-		51485BFDF7A7473A81546478 /* BitcountSingle_Roman-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4DF407EA72CF44C1BD9AF236 /* BitcountSingle_Roman-Thin.ttf */; };
 		7FB996EF418B409F8B3712B9 /* Michroma-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C88EB414CDBD49F399D5CEE2 /* Michroma-Regular.ttf */; };
 		9BC8B46B2FF14E8C8407D278 /* Quantico-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E5EB49C3A2A848D8934F905C /* Quantico-Bold.ttf */; };
 		E8BED45C344D4E55A8E4EA25 /* Quantico-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 995F558A58C645598DEA248A /* Quantico-BoldItalic.ttf */; };
 		636683DEB16E46718C739D05 /* Quantico-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6A395A26D470436596CDEBAD /* Quantico-Italic.ttf */; };
 		A339AEF84CE4439A92A945CA /* Quantico-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8E3498D75B3C4A4BB7876EE3 /* Quantico-Regular.ttf */; };
-		3C0BF62C2199408796F34A32 /* Sixtyfour-Regular-VariableFont_BLED,SCAN.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 52B9DCE6B20A44FF8D5573B9 /* Sixtyfour-Regular-VariableFont_BLED,SCAN.ttf */; };
-		4B4A3D962C0A4B41B471CA57 /* SpaceGrotesk-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BEAEA30AC6CE455984B7470E /* SpaceGrotesk-VariableFont_wght.ttf */; };
-		98706F7551574937A48A60EB /* SpaceGrotesk-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ED12C388E8C341BE8D00192B /* SpaceGrotesk-Bold.ttf */; };
-		F07A7CF468704137BC1FBBF5 /* SpaceGrotesk-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AD93BB728F90487B863DAEC5 /* SpaceGrotesk-Light.ttf */; };
-		7DAD6BB17E33402588AC5FB7 /* SpaceGrotesk-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 91C9672591E64CB3AAD8643A /* SpaceGrotesk-Medium.ttf */; };
-		08DDAE62F1AE4F33A0562EDB /* SpaceGrotesk-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 89316AF11603413BB63B9972 /* SpaceGrotesk-Regular.ttf */; };
-		2B029228D02F45F9AC6CC3B1 /* SpaceGrotesk-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0FFB986ADEE04C77B3B34D3A /* SpaceGrotesk-SemiBold.ttf */; };
 		61DE980267DC4C4FA44777F6 /* SpecialElite-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 82CA03FD2D5D486BB28EB13E /* SpecialElite-Regular.ttf */; };
 		82A4649D3E874AA7839E42B7 /* Syncopate-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7B04B91D01AB4249B83C68CF /* Syncopate-Bold.ttf */; };
 		FED0252009E04F61802593BA /* Syncopate-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CA9F10A09A4393AC0014DA /* Syncopate-Regular.ttf */; };
-		A49A98F5CE524E4CB30C7C81 /* SyneMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48300ABF12A646628943A36B /* SyneMono-Regular.ttf */; };
-		E9E9244DED384F4C9706EAA4 /* UbuntuMono-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FE4CD66013D64FFB8BDC9928 /* UbuntuMono-Bold.ttf */; };
-		017A5A05E56C457DBB166C1C /* UbuntuMono-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04EBA2A7BD8147C384082D2B /* UbuntuMono-BoldItalic.ttf */; };
-		90AF7C92362144808C3470BC /* UbuntuMono-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E911E541C6744119A8DAD15A /* UbuntuMono-Italic.ttf */; };
-		3852B8EA935F4D258BEF0DA4 /* UbuntuMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2F367AE0E4674234A371F2A6 /* UbuntuMono-Regular.ttf */; };
 		E92175C1F79F48FCA7DAC953 /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = BF138434949D4537A83F3E4A /* OFL.txt */; };
 		B13D3C5C39D149A3948B6AE3 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = CE6C4F443847453E9803CBDC /* README.txt */; };
 		505200341F1D46ACB5884862 /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = A6D7A0D6055048F0A992B547 /* OFL.txt */; };
@@ -70,6 +30,46 @@
 		512B0256C7F346A58D754552 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9BDC385CF93544B88578B018 /* LICENSE.txt */; };
 		9D18425C36994A71890F443F /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = E0BFC9D43E3240DEBF35213C /* OFL.txt */; };
 		8EE9121848A446398E3DF111 /* UFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 74200DEC543845E4ADF0E2D7 /* UFL.txt */; };
+		8CDE6497BDCA43EEA06932FE /* BitcountSingle-VariableFont_CRSV,ELSH,ELXP,slnt,wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D3BCEDE8EDDC4D95BC44FF77 /* BitcountSingle-VariableFont_CRSV,ELSH,ELXP,slnt,wght.ttf */; };
+		FFF6B6039365443B82BABE12 /* BitcountSingle-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3712DCB486134778B7BFD1EC /* BitcountSingle-Black.ttf */; };
+		E36903BD605F4E60BAA77192 /* BitcountSingle-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 277CF0D970714284B5B1BCAA /* BitcountSingle-Bold.ttf */; };
+		B93B54D8C14D4DFDB6B21DC3 /* BitcountSingle-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8E3F38502AEE469EAAE74DBC /* BitcountSingle-ExtraBold.ttf */; };
+		CEAE787F695E47CEA6603D1F /* BitcountSingle-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 73A937701BAF41A1BBC530C8 /* BitcountSingle-ExtraLight.ttf */; };
+		BB3978545A944773A246C0E7 /* BitcountSingle-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AC8DF21730D54A9D8C9B823D /* BitcountSingle-Light.ttf */; };
+		4642BE6354E84010B844BAF1 /* BitcountSingle-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 005DEEB19F4249C689085C45 /* BitcountSingle-Medium.ttf */; };
+		E9508D4C478A4896B63F7A1A /* BitcountSingle-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 560BBD649A6649B88299FA06 /* BitcountSingle-Regular.ttf */; };
+		32186ECD3B714C8BBE6C7814 /* BitcountSingle-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C3F67B80B6484A81982CD7F7 /* BitcountSingle-SemiBold.ttf */; };
+		B5187E909B1B4ABC8F64CD93 /* BitcountSingle-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B6157D40DDE64EDEA882C34B /* BitcountSingle-Thin.ttf */; };
+		7C0DE29BD55F41848BAEBA0D /* BitcountSingle_Cursive-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 679D862FFD8B4434BCB0596B /* BitcountSingle_Cursive-Black.ttf */; };
+		DE7D04799E4347248FD66E62 /* BitcountSingle_Cursive-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7BD9724299F3467BB8FF8217 /* BitcountSingle_Cursive-Bold.ttf */; };
+		AC3BD93AB0DA43C6B8368EF5 /* BitcountSingle_Cursive-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D5754621556E41B783328EB1 /* BitcountSingle_Cursive-ExtraBold.ttf */; };
+		E998389F1CDC4D9D9AA516AE /* BitcountSingle_Cursive-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 266842ADED384FAC849FC872 /* BitcountSingle_Cursive-ExtraLight.ttf */; };
+		E55B9D66C5D145E297C7EFBD /* BitcountSingle_Cursive-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 47779F534AA440BBBC833D6E /* BitcountSingle_Cursive-Light.ttf */; };
+		893075E978CB4228BD6721D4 /* BitcountSingle_Cursive-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D9E97CBFD38D4B738EF0C51B /* BitcountSingle_Cursive-Medium.ttf */; };
+		BD7F4F51F2EA467FA4CA57A3 /* BitcountSingle_Cursive-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F0AD181523EA4E918B4A8299 /* BitcountSingle_Cursive-Regular.ttf */; };
+		558BD5A9BCF547D28ED6F8BE /* BitcountSingle_Cursive-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FCD9442C4E7542528C15C541 /* BitcountSingle_Cursive-SemiBold.ttf */; };
+		C51998B91DB44F8B8C6F303A /* BitcountSingle_Cursive-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 00909DBE1BF94DEFB2130966 /* BitcountSingle_Cursive-Thin.ttf */; };
+		D780419ADB104EB684406AF4 /* BitcountSingle_Roman-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA6D82222BB94E4BB790D867 /* BitcountSingle_Roman-Black.ttf */; };
+		5B4FF92721914BAE8D985EE5 /* BitcountSingle_Roman-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4739B2BCFE1D4D9DB1C59FB2 /* BitcountSingle_Roman-Bold.ttf */; };
+		E963BF4E54BF431C8180DFD5 /* BitcountSingle_Roman-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3FEC9C1237944FC48CB7B061 /* BitcountSingle_Roman-ExtraBold.ttf */; };
+		BA54FF66493A464BB693E8E7 /* BitcountSingle_Roman-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03F5FB9C99A94B6196369387 /* BitcountSingle_Roman-ExtraLight.ttf */; };
+		DFE7733162AE41DE80029B77 /* BitcountSingle_Roman-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8C9986EBA81D498484B52B65 /* BitcountSingle_Roman-Light.ttf */; };
+		57E1B06FE4B74066BFC781AE /* BitcountSingle_Roman-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E3E05F0CBAE8434BBF2EF21B /* BitcountSingle_Roman-Medium.ttf */; };
+		D4979DD7C57E4E658E1371D3 /* BitcountSingle_Roman-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0E6A4395D4BE4C6691914F52 /* BitcountSingle_Roman-Regular.ttf */; };
+		807335EC83504ED0A7786C2D /* BitcountSingle_Roman-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1723BC688F0247BD86ADF9DB /* BitcountSingle_Roman-SemiBold.ttf */; };
+		5FF449ED49EC44798F1DD365 /* BitcountSingle_Roman-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EE030776F8E34DF6B3AECFF6 /* BitcountSingle_Roman-Thin.ttf */; };
+		557D8409F6EC4BF9A556573F /* Sixtyfour-Regular-VariableFont_BLED,SCAN.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A9297D735BDF41F8ADBF6F80 /* Sixtyfour-Regular-VariableFont_BLED,SCAN.ttf */; };
+		6EE1E24367A546898872CE4E /* SpaceGrotesk-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8909B2BC226045D3B5998385 /* SpaceGrotesk-VariableFont_wght.ttf */; };
+		B7580523A7584206A4A2386A /* SpaceGrotesk-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A6117774A0CD4DA9A342524E /* SpaceGrotesk-Bold.ttf */; };
+		C7BFF950F2024130BE640A4C /* SpaceGrotesk-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FEA6CE3F64E04010B13732E0 /* SpaceGrotesk-Light.ttf */; };
+		17522EC7BE734DDA901346CD /* SpaceGrotesk-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5F8C66661F594DEABE8D2B78 /* SpaceGrotesk-Medium.ttf */; };
+		41582AC20EFC4316B7498FAF /* SpaceGrotesk-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6455976C9B6B4129A70DF886 /* SpaceGrotesk-Regular.ttf */; };
+		211691C77E9A4654B6601F0E /* SpaceGrotesk-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D2C22AA5DB84C5B8C1FFAE0 /* SpaceGrotesk-SemiBold.ttf */; };
+		DE4B56F99A094A9DBF7F4536 /* SyneMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC75427372304270A8970958 /* SyneMono-Regular.ttf */; };
+		BC3E8EBD2BCA42138113DD9B /* UbuntuMono-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1EDE7F3DA8A843928B626C22 /* UbuntuMono-Bold.ttf */; };
+		8BC04AAAFBC84CCFB50C8ECA /* UbuntuMono-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 20BE61E3F4E7461F922705D6 /* UbuntuMono-BoldItalic.ttf */; };
+		ACC91A59C8934BD884AB6184 /* UbuntuMono-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F3D14D92074A47FF9BBBF261 /* UbuntuMono-Italic.ttf */; };
+		11ECDB3AC70545E799FDBF69 /* UbuntuMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 03B6F6795B944213A2CD7807 /* UbuntuMono-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -83,54 +83,14 @@
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = App/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = App/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		1630510A4A1A4812800FE54C /* BitcountSingle-VariableFont_CRSV,ELSH,ELXP,slnt,wght.ttf */ = {isa = PBXFileReference; name = "BitcountSingle-VariableFont_CRSV,ELSH,ELXP,slnt,wght.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/BitcountSingle-VariableFont_CRSV,ELSH,ELXP,slnt,wght.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		F46B81F79DD14E4981663C46 /* BitcountSingle-Black.ttf */ = {isa = PBXFileReference; name = "BitcountSingle-Black.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle-Black.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		61A8B291AB4943FC9ADCEB8B /* BitcountSingle-Bold.ttf */ = {isa = PBXFileReference; name = "BitcountSingle-Bold.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		A32A7C392CAB4085AB292E20 /* BitcountSingle-ExtraBold.ttf */ = {isa = PBXFileReference; name = "BitcountSingle-ExtraBold.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle-ExtraBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		A0FCD18D141348C9AF382582 /* BitcountSingle-ExtraLight.ttf */ = {isa = PBXFileReference; name = "BitcountSingle-ExtraLight.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle-ExtraLight.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		E28507D8C67A413298D0A8A0 /* BitcountSingle-Light.ttf */ = {isa = PBXFileReference; name = "BitcountSingle-Light.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		3DC437D264DB4E18A10047A6 /* BitcountSingle-Medium.ttf */ = {isa = PBXFileReference; name = "BitcountSingle-Medium.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		D9A900DA71A747428D860683 /* BitcountSingle-Regular.ttf */ = {isa = PBXFileReference; name = "BitcountSingle-Regular.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		A35C7747727449BC9337DD51 /* BitcountSingle-SemiBold.ttf */ = {isa = PBXFileReference; name = "BitcountSingle-SemiBold.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		310A2EDB6DA5460E83D82B51 /* BitcountSingle-Thin.ttf */ = {isa = PBXFileReference; name = "BitcountSingle-Thin.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle-Thin.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		D5784902D57147DA852BA8BC /* BitcountSingle_Cursive-Black.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Cursive-Black.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Cursive-Black.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		66F11DD0A7CB4DF0BF1BEC1F /* BitcountSingle_Cursive-Bold.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Cursive-Bold.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Cursive-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		D3920733D36D480F9F58AD6E /* BitcountSingle_Cursive-ExtraBold.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Cursive-ExtraBold.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Cursive-ExtraBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		065D98338454491297A008EC /* BitcountSingle_Cursive-ExtraLight.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Cursive-ExtraLight.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Cursive-ExtraLight.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		A65F0C30EF17495C9344B13F /* BitcountSingle_Cursive-Light.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Cursive-Light.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Cursive-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		701A0A8077BD4116A45644B5 /* BitcountSingle_Cursive-Medium.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Cursive-Medium.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Cursive-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		0D7395592F05422BBDF1314C /* BitcountSingle_Cursive-Regular.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Cursive-Regular.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Cursive-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		A8A06C1B5AA047A4ABB0A3D9 /* BitcountSingle_Cursive-SemiBold.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Cursive-SemiBold.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Cursive-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		8652CE7B81134E6B930131A4 /* BitcountSingle_Cursive-Thin.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Cursive-Thin.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Cursive-Thin.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		7491E7CEAB054039B96F1822 /* BitcountSingle_Roman-Black.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Roman-Black.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Roman-Black.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		755AD76F27B844A8ADED4AF1 /* BitcountSingle_Roman-Bold.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Roman-Bold.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Roman-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		537D07A7570544FFA2FC6917 /* BitcountSingle_Roman-ExtraBold.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Roman-ExtraBold.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Roman-ExtraBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		59C5B09F16A3457BB92ED78A /* BitcountSingle_Roman-ExtraLight.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Roman-ExtraLight.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Roman-ExtraLight.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		1CEF628A67F14755BE55EB4A /* BitcountSingle_Roman-Light.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Roman-Light.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Roman-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		54994438C81147C393AA40B0 /* BitcountSingle_Roman-Medium.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Roman-Medium.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Roman-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		2071FAECB9594B47BDE03C06 /* BitcountSingle_Roman-Regular.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Roman-Regular.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Roman-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		7194F7AAB98648B4805943E9 /* BitcountSingle_Roman-SemiBold.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Roman-SemiBold.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Roman-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		4DF407EA72CF44C1BD9AF236 /* BitcountSingle_Roman-Thin.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Roman-Thin.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Roman-Thin.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		C88EB414CDBD49F399D5CEE2 /* Michroma-Regular.ttf */ = {isa = PBXFileReference; name = "Michroma-Regular.ttf"; path = "../../ui/common/public/fonts/Michroma/Michroma-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		E5EB49C3A2A848D8934F905C /* Quantico-Bold.ttf */ = {isa = PBXFileReference; name = "Quantico-Bold.ttf"; path = "../../ui/common/public/fonts/Quantico/Quantico-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		995F558A58C645598DEA248A /* Quantico-BoldItalic.ttf */ = {isa = PBXFileReference; name = "Quantico-BoldItalic.ttf"; path = "../../ui/common/public/fonts/Quantico/Quantico-BoldItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		6A395A26D470436596CDEBAD /* Quantico-Italic.ttf */ = {isa = PBXFileReference; name = "Quantico-Italic.ttf"; path = "../../ui/common/public/fonts/Quantico/Quantico-Italic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		8E3498D75B3C4A4BB7876EE3 /* Quantico-Regular.ttf */ = {isa = PBXFileReference; name = "Quantico-Regular.ttf"; path = "../../ui/common/public/fonts/Quantico/Quantico-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		52B9DCE6B20A44FF8D5573B9 /* Sixtyfour-Regular-VariableFont_BLED,SCAN.ttf */ = {isa = PBXFileReference; name = "Sixtyfour-Regular-VariableFont_BLED,SCAN.ttf"; path = "../../ui/common/public/fonts/Sixtyfour/Sixtyfour-Regular-VariableFont_BLED,SCAN.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		BEAEA30AC6CE455984B7470E /* SpaceGrotesk-VariableFont_wght.ttf */ = {isa = PBXFileReference; name = "SpaceGrotesk-VariableFont_wght.ttf"; path = "../../ui/common/public/fonts/Space_Grotesk/SpaceGrotesk-VariableFont_wght.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		ED12C388E8C341BE8D00192B /* SpaceGrotesk-Bold.ttf */ = {isa = PBXFileReference; name = "SpaceGrotesk-Bold.ttf"; path = "../../ui/common/public/fonts/Space_Grotesk/static/SpaceGrotesk-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		AD93BB728F90487B863DAEC5 /* SpaceGrotesk-Light.ttf */ = {isa = PBXFileReference; name = "SpaceGrotesk-Light.ttf"; path = "../../ui/common/public/fonts/Space_Grotesk/static/SpaceGrotesk-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		91C9672591E64CB3AAD8643A /* SpaceGrotesk-Medium.ttf */ = {isa = PBXFileReference; name = "SpaceGrotesk-Medium.ttf"; path = "../../ui/common/public/fonts/Space_Grotesk/static/SpaceGrotesk-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		89316AF11603413BB63B9972 /* SpaceGrotesk-Regular.ttf */ = {isa = PBXFileReference; name = "SpaceGrotesk-Regular.ttf"; path = "../../ui/common/public/fonts/Space_Grotesk/static/SpaceGrotesk-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		0FFB986ADEE04C77B3B34D3A /* SpaceGrotesk-SemiBold.ttf */ = {isa = PBXFileReference; name = "SpaceGrotesk-SemiBold.ttf"; path = "../../ui/common/public/fonts/Space_Grotesk/static/SpaceGrotesk-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		82CA03FD2D5D486BB28EB13E /* SpecialElite-Regular.ttf */ = {isa = PBXFileReference; name = "SpecialElite-Regular.ttf"; path = "../../ui/common/public/fonts/Special_Elite/SpecialElite-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		7B04B91D01AB4249B83C68CF /* Syncopate-Bold.ttf */ = {isa = PBXFileReference; name = "Syncopate-Bold.ttf"; path = "../../ui/common/public/fonts/Syncopate/Syncopate-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		D4CA9F10A09A4393AC0014DA /* Syncopate-Regular.ttf */ = {isa = PBXFileReference; name = "Syncopate-Regular.ttf"; path = "../../ui/common/public/fonts/Syncopate/Syncopate-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		48300ABF12A646628943A36B /* SyneMono-Regular.ttf */ = {isa = PBXFileReference; name = "SyneMono-Regular.ttf"; path = "../../ui/common/public/fonts/Syne_Mono/SyneMono-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		FE4CD66013D64FFB8BDC9928 /* UbuntuMono-Bold.ttf */ = {isa = PBXFileReference; name = "UbuntuMono-Bold.ttf"; path = "../../ui/common/public/fonts/Ubuntu_Mono/UbuntuMono-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		04EBA2A7BD8147C384082D2B /* UbuntuMono-BoldItalic.ttf */ = {isa = PBXFileReference; name = "UbuntuMono-BoldItalic.ttf"; path = "../../ui/common/public/fonts/Ubuntu_Mono/UbuntuMono-BoldItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		E911E541C6744119A8DAD15A /* UbuntuMono-Italic.ttf */ = {isa = PBXFileReference; name = "UbuntuMono-Italic.ttf"; path = "../../ui/common/public/fonts/Ubuntu_Mono/UbuntuMono-Italic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		2F367AE0E4674234A371F2A6 /* UbuntuMono-Regular.ttf */ = {isa = PBXFileReference; name = "UbuntuMono-Regular.ttf"; path = "../../ui/common/public/fonts/Ubuntu_Mono/UbuntuMono-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		BF138434949D4537A83F3E4A /* OFL.txt */ = {isa = PBXFileReference; name = "OFL.txt"; path = "../../ui/common/public/fonts/Bitcount_Single/OFL.txt"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		CE6C4F443847453E9803CBDC /* README.txt */ = {isa = PBXFileReference; name = "README.txt"; path = "../../ui/common/public/fonts/Bitcount_Single/README.txt"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		A6D7A0D6055048F0A992B547 /* OFL.txt */ = {isa = PBXFileReference; name = "OFL.txt"; path = "../../ui/common/public/fonts/Michroma/OFL.txt"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
@@ -142,6 +102,46 @@
 		9BDC385CF93544B88578B018 /* LICENSE.txt */ = {isa = PBXFileReference; name = "LICENSE.txt"; path = "../../ui/common/public/fonts/Syncopate/LICENSE.txt"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		E0BFC9D43E3240DEBF35213C /* OFL.txt */ = {isa = PBXFileReference; name = "OFL.txt"; path = "../../ui/common/public/fonts/Syne_Mono/OFL.txt"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		74200DEC543845E4ADF0E2D7 /* UFL.txt */ = {isa = PBXFileReference; name = "UFL.txt"; path = "../../ui/common/public/fonts/Ubuntu_Mono/UFL.txt"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		D3BCEDE8EDDC4D95BC44FF77 /* BitcountSingle-VariableFont_CRSV,ELSH,ELXP,slnt,wght.ttf */ = {isa = PBXFileReference; name = "BitcountSingle-VariableFont_CRSV,ELSH,ELXP,slnt,wght.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/BitcountSingle-VariableFont_CRSV,ELSH,ELXP,slnt,wght.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		3712DCB486134778B7BFD1EC /* BitcountSingle-Black.ttf */ = {isa = PBXFileReference; name = "BitcountSingle-Black.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle-Black.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		277CF0D970714284B5B1BCAA /* BitcountSingle-Bold.ttf */ = {isa = PBXFileReference; name = "BitcountSingle-Bold.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		8E3F38502AEE469EAAE74DBC /* BitcountSingle-ExtraBold.ttf */ = {isa = PBXFileReference; name = "BitcountSingle-ExtraBold.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle-ExtraBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		73A937701BAF41A1BBC530C8 /* BitcountSingle-ExtraLight.ttf */ = {isa = PBXFileReference; name = "BitcountSingle-ExtraLight.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle-ExtraLight.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		AC8DF21730D54A9D8C9B823D /* BitcountSingle-Light.ttf */ = {isa = PBXFileReference; name = "BitcountSingle-Light.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		005DEEB19F4249C689085C45 /* BitcountSingle-Medium.ttf */ = {isa = PBXFileReference; name = "BitcountSingle-Medium.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		560BBD649A6649B88299FA06 /* BitcountSingle-Regular.ttf */ = {isa = PBXFileReference; name = "BitcountSingle-Regular.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		C3F67B80B6484A81982CD7F7 /* BitcountSingle-SemiBold.ttf */ = {isa = PBXFileReference; name = "BitcountSingle-SemiBold.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		B6157D40DDE64EDEA882C34B /* BitcountSingle-Thin.ttf */ = {isa = PBXFileReference; name = "BitcountSingle-Thin.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle-Thin.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		679D862FFD8B4434BCB0596B /* BitcountSingle_Cursive-Black.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Cursive-Black.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Cursive-Black.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		7BD9724299F3467BB8FF8217 /* BitcountSingle_Cursive-Bold.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Cursive-Bold.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Cursive-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		D5754621556E41B783328EB1 /* BitcountSingle_Cursive-ExtraBold.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Cursive-ExtraBold.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Cursive-ExtraBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		266842ADED384FAC849FC872 /* BitcountSingle_Cursive-ExtraLight.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Cursive-ExtraLight.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Cursive-ExtraLight.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		47779F534AA440BBBC833D6E /* BitcountSingle_Cursive-Light.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Cursive-Light.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Cursive-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		D9E97CBFD38D4B738EF0C51B /* BitcountSingle_Cursive-Medium.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Cursive-Medium.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Cursive-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F0AD181523EA4E918B4A8299 /* BitcountSingle_Cursive-Regular.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Cursive-Regular.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Cursive-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FCD9442C4E7542528C15C541 /* BitcountSingle_Cursive-SemiBold.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Cursive-SemiBold.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Cursive-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		00909DBE1BF94DEFB2130966 /* BitcountSingle_Cursive-Thin.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Cursive-Thin.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Cursive-Thin.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		CA6D82222BB94E4BB790D867 /* BitcountSingle_Roman-Black.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Roman-Black.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Roman-Black.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		4739B2BCFE1D4D9DB1C59FB2 /* BitcountSingle_Roman-Bold.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Roman-Bold.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Roman-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		3FEC9C1237944FC48CB7B061 /* BitcountSingle_Roman-ExtraBold.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Roman-ExtraBold.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Roman-ExtraBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		03F5FB9C99A94B6196369387 /* BitcountSingle_Roman-ExtraLight.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Roman-ExtraLight.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Roman-ExtraLight.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		8C9986EBA81D498484B52B65 /* BitcountSingle_Roman-Light.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Roman-Light.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Roman-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		E3E05F0CBAE8434BBF2EF21B /* BitcountSingle_Roman-Medium.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Roman-Medium.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Roman-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		0E6A4395D4BE4C6691914F52 /* BitcountSingle_Roman-Regular.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Roman-Regular.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Roman-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		1723BC688F0247BD86ADF9DB /* BitcountSingle_Roman-SemiBold.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Roman-SemiBold.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Roman-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		EE030776F8E34DF6B3AECFF6 /* BitcountSingle_Roman-Thin.ttf */ = {isa = PBXFileReference; name = "BitcountSingle_Roman-Thin.ttf"; path = "../../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Roman-Thin.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A9297D735BDF41F8ADBF6F80 /* Sixtyfour-Regular-VariableFont_BLED,SCAN.ttf */ = {isa = PBXFileReference; name = "Sixtyfour-Regular-VariableFont_BLED,SCAN.ttf"; path = "../../ui/common/public/fonts/Sixtyfour/Sixtyfour-Regular-VariableFont_BLED,SCAN.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		8909B2BC226045D3B5998385 /* SpaceGrotesk-VariableFont_wght.ttf */ = {isa = PBXFileReference; name = "SpaceGrotesk-VariableFont_wght.ttf"; path = "../../ui/common/public/fonts/Space_Grotesk/SpaceGrotesk-VariableFont_wght.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A6117774A0CD4DA9A342524E /* SpaceGrotesk-Bold.ttf */ = {isa = PBXFileReference; name = "SpaceGrotesk-Bold.ttf"; path = "../../ui/common/public/fonts/Space_Grotesk/static/SpaceGrotesk-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FEA6CE3F64E04010B13732E0 /* SpaceGrotesk-Light.ttf */ = {isa = PBXFileReference; name = "SpaceGrotesk-Light.ttf"; path = "../../ui/common/public/fonts/Space_Grotesk/static/SpaceGrotesk-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		5F8C66661F594DEABE8D2B78 /* SpaceGrotesk-Medium.ttf */ = {isa = PBXFileReference; name = "SpaceGrotesk-Medium.ttf"; path = "../../ui/common/public/fonts/Space_Grotesk/static/SpaceGrotesk-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		6455976C9B6B4129A70DF886 /* SpaceGrotesk-Regular.ttf */ = {isa = PBXFileReference; name = "SpaceGrotesk-Regular.ttf"; path = "../../ui/common/public/fonts/Space_Grotesk/static/SpaceGrotesk-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		5D2C22AA5DB84C5B8C1FFAE0 /* SpaceGrotesk-SemiBold.ttf */ = {isa = PBXFileReference; name = "SpaceGrotesk-SemiBold.ttf"; path = "../../ui/common/public/fonts/Space_Grotesk/static/SpaceGrotesk-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FC75427372304270A8970958 /* SyneMono-Regular.ttf */ = {isa = PBXFileReference; name = "SyneMono-Regular.ttf"; path = "../../ui/common/public/fonts/Syne_Mono/SyneMono-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		1EDE7F3DA8A843928B626C22 /* UbuntuMono-Bold.ttf */ = {isa = PBXFileReference; name = "UbuntuMono-Bold.ttf"; path = "../../ui/common/public/fonts/Ubuntu_Mono/UbuntuMono-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		20BE61E3F4E7461F922705D6 /* UbuntuMono-BoldItalic.ttf */ = {isa = PBXFileReference; name = "UbuntuMono-BoldItalic.ttf"; path = "../../ui/common/public/fonts/Ubuntu_Mono/UbuntuMono-BoldItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F3D14D92074A47FF9BBBF261 /* UbuntuMono-Italic.ttf */ = {isa = PBXFileReference; name = "UbuntuMono-Italic.ttf"; path = "../../ui/common/public/fonts/Ubuntu_Mono/UbuntuMono-Italic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		03B6F6795B944213A2CD7807 /* UbuntuMono-Regular.ttf */ = {isa = PBXFileReference; name = "UbuntuMono-Regular.ttf"; path = "../../ui/common/public/fonts/Ubuntu_Mono/UbuntuMono-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -219,54 +219,14 @@
 		830880308E7C4B97AC046189 /* Resources */ = {
 			isa = "PBXGroup";
 			children = (
-				1630510A4A1A4812800FE54C /* BitcountSingle-VariableFont_CRSV,ELSH,ELXP,slnt,wght.ttf */,
-				F46B81F79DD14E4981663C46 /* BitcountSingle-Black.ttf */,
-				61A8B291AB4943FC9ADCEB8B /* BitcountSingle-Bold.ttf */,
-				A32A7C392CAB4085AB292E20 /* BitcountSingle-ExtraBold.ttf */,
-				A0FCD18D141348C9AF382582 /* BitcountSingle-ExtraLight.ttf */,
-				E28507D8C67A413298D0A8A0 /* BitcountSingle-Light.ttf */,
-				3DC437D264DB4E18A10047A6 /* BitcountSingle-Medium.ttf */,
-				D9A900DA71A747428D860683 /* BitcountSingle-Regular.ttf */,
-				A35C7747727449BC9337DD51 /* BitcountSingle-SemiBold.ttf */,
-				310A2EDB6DA5460E83D82B51 /* BitcountSingle-Thin.ttf */,
-				D5784902D57147DA852BA8BC /* BitcountSingle_Cursive-Black.ttf */,
-				66F11DD0A7CB4DF0BF1BEC1F /* BitcountSingle_Cursive-Bold.ttf */,
-				D3920733D36D480F9F58AD6E /* BitcountSingle_Cursive-ExtraBold.ttf */,
-				065D98338454491297A008EC /* BitcountSingle_Cursive-ExtraLight.ttf */,
-				A65F0C30EF17495C9344B13F /* BitcountSingle_Cursive-Light.ttf */,
-				701A0A8077BD4116A45644B5 /* BitcountSingle_Cursive-Medium.ttf */,
-				0D7395592F05422BBDF1314C /* BitcountSingle_Cursive-Regular.ttf */,
-				A8A06C1B5AA047A4ABB0A3D9 /* BitcountSingle_Cursive-SemiBold.ttf */,
-				8652CE7B81134E6B930131A4 /* BitcountSingle_Cursive-Thin.ttf */,
-				7491E7CEAB054039B96F1822 /* BitcountSingle_Roman-Black.ttf */,
-				755AD76F27B844A8ADED4AF1 /* BitcountSingle_Roman-Bold.ttf */,
-				537D07A7570544FFA2FC6917 /* BitcountSingle_Roman-ExtraBold.ttf */,
-				59C5B09F16A3457BB92ED78A /* BitcountSingle_Roman-ExtraLight.ttf */,
-				1CEF628A67F14755BE55EB4A /* BitcountSingle_Roman-Light.ttf */,
-				54994438C81147C393AA40B0 /* BitcountSingle_Roman-Medium.ttf */,
-				2071FAECB9594B47BDE03C06 /* BitcountSingle_Roman-Regular.ttf */,
-				7194F7AAB98648B4805943E9 /* BitcountSingle_Roman-SemiBold.ttf */,
-				4DF407EA72CF44C1BD9AF236 /* BitcountSingle_Roman-Thin.ttf */,
 				C88EB414CDBD49F399D5CEE2 /* Michroma-Regular.ttf */,
 				E5EB49C3A2A848D8934F905C /* Quantico-Bold.ttf */,
 				995F558A58C645598DEA248A /* Quantico-BoldItalic.ttf */,
 				6A395A26D470436596CDEBAD /* Quantico-Italic.ttf */,
 				8E3498D75B3C4A4BB7876EE3 /* Quantico-Regular.ttf */,
-				52B9DCE6B20A44FF8D5573B9 /* Sixtyfour-Regular-VariableFont_BLED,SCAN.ttf */,
-				BEAEA30AC6CE455984B7470E /* SpaceGrotesk-VariableFont_wght.ttf */,
-				ED12C388E8C341BE8D00192B /* SpaceGrotesk-Bold.ttf */,
-				AD93BB728F90487B863DAEC5 /* SpaceGrotesk-Light.ttf */,
-				91C9672591E64CB3AAD8643A /* SpaceGrotesk-Medium.ttf */,
-				89316AF11603413BB63B9972 /* SpaceGrotesk-Regular.ttf */,
-				0FFB986ADEE04C77B3B34D3A /* SpaceGrotesk-SemiBold.ttf */,
 				82CA03FD2D5D486BB28EB13E /* SpecialElite-Regular.ttf */,
 				7B04B91D01AB4249B83C68CF /* Syncopate-Bold.ttf */,
 				D4CA9F10A09A4393AC0014DA /* Syncopate-Regular.ttf */,
-				48300ABF12A646628943A36B /* SyneMono-Regular.ttf */,
-				FE4CD66013D64FFB8BDC9928 /* UbuntuMono-Bold.ttf */,
-				04EBA2A7BD8147C384082D2B /* UbuntuMono-BoldItalic.ttf */,
-				E911E541C6744119A8DAD15A /* UbuntuMono-Italic.ttf */,
-				2F367AE0E4674234A371F2A6 /* UbuntuMono-Regular.ttf */,
 				BF138434949D4537A83F3E4A /* OFL.txt */,
 				CE6C4F443847453E9803CBDC /* README.txt */,
 				A6D7A0D6055048F0A992B547 /* OFL.txt */,
@@ -278,6 +238,46 @@
 				9BDC385CF93544B88578B018 /* LICENSE.txt */,
 				E0BFC9D43E3240DEBF35213C /* OFL.txt */,
 				74200DEC543845E4ADF0E2D7 /* UFL.txt */,
+				D3BCEDE8EDDC4D95BC44FF77 /* BitcountSingle-VariableFont_CRSV,ELSH,ELXP,slnt,wght.ttf */,
+				3712DCB486134778B7BFD1EC /* BitcountSingle-Black.ttf */,
+				277CF0D970714284B5B1BCAA /* BitcountSingle-Bold.ttf */,
+				8E3F38502AEE469EAAE74DBC /* BitcountSingle-ExtraBold.ttf */,
+				73A937701BAF41A1BBC530C8 /* BitcountSingle-ExtraLight.ttf */,
+				AC8DF21730D54A9D8C9B823D /* BitcountSingle-Light.ttf */,
+				005DEEB19F4249C689085C45 /* BitcountSingle-Medium.ttf */,
+				560BBD649A6649B88299FA06 /* BitcountSingle-Regular.ttf */,
+				C3F67B80B6484A81982CD7F7 /* BitcountSingle-SemiBold.ttf */,
+				B6157D40DDE64EDEA882C34B /* BitcountSingle-Thin.ttf */,
+				679D862FFD8B4434BCB0596B /* BitcountSingle_Cursive-Black.ttf */,
+				7BD9724299F3467BB8FF8217 /* BitcountSingle_Cursive-Bold.ttf */,
+				D5754621556E41B783328EB1 /* BitcountSingle_Cursive-ExtraBold.ttf */,
+				266842ADED384FAC849FC872 /* BitcountSingle_Cursive-ExtraLight.ttf */,
+				47779F534AA440BBBC833D6E /* BitcountSingle_Cursive-Light.ttf */,
+				D9E97CBFD38D4B738EF0C51B /* BitcountSingle_Cursive-Medium.ttf */,
+				F0AD181523EA4E918B4A8299 /* BitcountSingle_Cursive-Regular.ttf */,
+				FCD9442C4E7542528C15C541 /* BitcountSingle_Cursive-SemiBold.ttf */,
+				00909DBE1BF94DEFB2130966 /* BitcountSingle_Cursive-Thin.ttf */,
+				CA6D82222BB94E4BB790D867 /* BitcountSingle_Roman-Black.ttf */,
+				4739B2BCFE1D4D9DB1C59FB2 /* BitcountSingle_Roman-Bold.ttf */,
+				3FEC9C1237944FC48CB7B061 /* BitcountSingle_Roman-ExtraBold.ttf */,
+				03F5FB9C99A94B6196369387 /* BitcountSingle_Roman-ExtraLight.ttf */,
+				8C9986EBA81D498484B52B65 /* BitcountSingle_Roman-Light.ttf */,
+				E3E05F0CBAE8434BBF2EF21B /* BitcountSingle_Roman-Medium.ttf */,
+				0E6A4395D4BE4C6691914F52 /* BitcountSingle_Roman-Regular.ttf */,
+				1723BC688F0247BD86ADF9DB /* BitcountSingle_Roman-SemiBold.ttf */,
+				EE030776F8E34DF6B3AECFF6 /* BitcountSingle_Roman-Thin.ttf */,
+				A9297D735BDF41F8ADBF6F80 /* Sixtyfour-Regular-VariableFont_BLED,SCAN.ttf */,
+				8909B2BC226045D3B5998385 /* SpaceGrotesk-VariableFont_wght.ttf */,
+				A6117774A0CD4DA9A342524E /* SpaceGrotesk-Bold.ttf */,
+				FEA6CE3F64E04010B13732E0 /* SpaceGrotesk-Light.ttf */,
+				5F8C66661F594DEABE8D2B78 /* SpaceGrotesk-Medium.ttf */,
+				6455976C9B6B4129A70DF886 /* SpaceGrotesk-Regular.ttf */,
+				5D2C22AA5DB84C5B8C1FFAE0 /* SpaceGrotesk-SemiBold.ttf */,
+				FC75427372304270A8970958 /* SyneMono-Regular.ttf */,
+				1EDE7F3DA8A843928B626C22 /* UbuntuMono-Bold.ttf */,
+				20BE61E3F4E7461F922705D6 /* UbuntuMono-BoldItalic.ttf */,
+				F3D14D92074A47FF9BBBF261 /* UbuntuMono-Italic.ttf */,
+				03B6F6795B944213A2CD7807 /* UbuntuMono-Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -345,54 +345,14 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				F53A0C3576DB4223A0A915C1 /* BitcountSingle-VariableFont_CRSV,ELSH,ELXP,slnt,wght.ttf in Resources */,
-				8BE00C6DE68346A2B0544FBB /* BitcountSingle-Black.ttf in Resources */,
-				88CCF60FFC2C4CD99C497A44 /* BitcountSingle-Bold.ttf in Resources */,
-				025C80E2AD844C62BBDA6FF4 /* BitcountSingle-ExtraBold.ttf in Resources */,
-				CFE4A008A2F9477699A2EBA3 /* BitcountSingle-ExtraLight.ttf in Resources */,
-				0F5A0C038D1D49B6BDA297D4 /* BitcountSingle-Light.ttf in Resources */,
-				BE0929BBE59F44F5B6D59BA1 /* BitcountSingle-Medium.ttf in Resources */,
-				58DF3E0D7FD04E33A82A892C /* BitcountSingle-Regular.ttf in Resources */,
-				4A7D423DECE24DBC9AF5DC84 /* BitcountSingle-SemiBold.ttf in Resources */,
-				3D93F318C4584D52AE4BE01A /* BitcountSingle-Thin.ttf in Resources */,
-				4970F47B62FB43B98C8F3F9A /* BitcountSingle_Cursive-Black.ttf in Resources */,
-				B97B8AB7B4AE4EC2AD444F1D /* BitcountSingle_Cursive-Bold.ttf in Resources */,
-				958FE5C064524834A91D65A5 /* BitcountSingle_Cursive-ExtraBold.ttf in Resources */,
-				DB1D2C6918694FDA8F36BB61 /* BitcountSingle_Cursive-ExtraLight.ttf in Resources */,
-				0722A5C22965438DAC1F4F08 /* BitcountSingle_Cursive-Light.ttf in Resources */,
-				BDFAFDEE2B66489689135D50 /* BitcountSingle_Cursive-Medium.ttf in Resources */,
-				86F306ABE99243BB80A1AE99 /* BitcountSingle_Cursive-Regular.ttf in Resources */,
-				408B7E19A89D44DF8E5B9C23 /* BitcountSingle_Cursive-SemiBold.ttf in Resources */,
-				E266070C228645DBA243F895 /* BitcountSingle_Cursive-Thin.ttf in Resources */,
-				66DA3981B1AC44BB8F3B011F /* BitcountSingle_Roman-Black.ttf in Resources */,
-				9CD67D94182B49EB88CC0B4D /* BitcountSingle_Roman-Bold.ttf in Resources */,
-				28D6AAD45D174F2988B60AB3 /* BitcountSingle_Roman-ExtraBold.ttf in Resources */,
-				42024FFCE107404C8AAB4FD0 /* BitcountSingle_Roman-ExtraLight.ttf in Resources */,
-				CC4ADE70F46841F393CA1FBB /* BitcountSingle_Roman-Light.ttf in Resources */,
-				08D9ADA2B26C427BB8AD7CE8 /* BitcountSingle_Roman-Medium.ttf in Resources */,
-				E02DC09B48414422AA8B7646 /* BitcountSingle_Roman-Regular.ttf in Resources */,
-				27C5177ACED341C895C47FC4 /* BitcountSingle_Roman-SemiBold.ttf in Resources */,
-				51485BFDF7A7473A81546478 /* BitcountSingle_Roman-Thin.ttf in Resources */,
 				7FB996EF418B409F8B3712B9 /* Michroma-Regular.ttf in Resources */,
 				9BC8B46B2FF14E8C8407D278 /* Quantico-Bold.ttf in Resources */,
 				E8BED45C344D4E55A8E4EA25 /* Quantico-BoldItalic.ttf in Resources */,
 				636683DEB16E46718C739D05 /* Quantico-Italic.ttf in Resources */,
 				A339AEF84CE4439A92A945CA /* Quantico-Regular.ttf in Resources */,
-				3C0BF62C2199408796F34A32 /* Sixtyfour-Regular-VariableFont_BLED,SCAN.ttf in Resources */,
-				4B4A3D962C0A4B41B471CA57 /* SpaceGrotesk-VariableFont_wght.ttf in Resources */,
-				98706F7551574937A48A60EB /* SpaceGrotesk-Bold.ttf in Resources */,
-				F07A7CF468704137BC1FBBF5 /* SpaceGrotesk-Light.ttf in Resources */,
-				7DAD6BB17E33402588AC5FB7 /* SpaceGrotesk-Medium.ttf in Resources */,
-				08DDAE62F1AE4F33A0562EDB /* SpaceGrotesk-Regular.ttf in Resources */,
-				2B029228D02F45F9AC6CC3B1 /* SpaceGrotesk-SemiBold.ttf in Resources */,
 				61DE980267DC4C4FA44777F6 /* SpecialElite-Regular.ttf in Resources */,
 				82A4649D3E874AA7839E42B7 /* Syncopate-Bold.ttf in Resources */,
 				FED0252009E04F61802593BA /* Syncopate-Regular.ttf in Resources */,
-				A49A98F5CE524E4CB30C7C81 /* SyneMono-Regular.ttf in Resources */,
-				E9E9244DED384F4C9706EAA4 /* UbuntuMono-Bold.ttf in Resources */,
-				017A5A05E56C457DBB166C1C /* UbuntuMono-BoldItalic.ttf in Resources */,
-				90AF7C92362144808C3470BC /* UbuntuMono-Italic.ttf in Resources */,
-				3852B8EA935F4D258BEF0DA4 /* UbuntuMono-Regular.ttf in Resources */,
 				E92175C1F79F48FCA7DAC953 /* OFL.txt in Resources */,
 				B13D3C5C39D149A3948B6AE3 /* README.txt in Resources */,
 				505200341F1D46ACB5884862 /* OFL.txt in Resources */,
@@ -404,6 +364,46 @@
 				512B0256C7F346A58D754552 /* LICENSE.txt in Resources */,
 				9D18425C36994A71890F443F /* OFL.txt in Resources */,
 				8EE9121848A446398E3DF111 /* UFL.txt in Resources */,
+				8CDE6497BDCA43EEA06932FE /* BitcountSingle-VariableFont_CRSV,ELSH,ELXP,slnt,wght.ttf in Resources */,
+				FFF6B6039365443B82BABE12 /* BitcountSingle-Black.ttf in Resources */,
+				E36903BD605F4E60BAA77192 /* BitcountSingle-Bold.ttf in Resources */,
+				B93B54D8C14D4DFDB6B21DC3 /* BitcountSingle-ExtraBold.ttf in Resources */,
+				CEAE787F695E47CEA6603D1F /* BitcountSingle-ExtraLight.ttf in Resources */,
+				BB3978545A944773A246C0E7 /* BitcountSingle-Light.ttf in Resources */,
+				4642BE6354E84010B844BAF1 /* BitcountSingle-Medium.ttf in Resources */,
+				E9508D4C478A4896B63F7A1A /* BitcountSingle-Regular.ttf in Resources */,
+				32186ECD3B714C8BBE6C7814 /* BitcountSingle-SemiBold.ttf in Resources */,
+				B5187E909B1B4ABC8F64CD93 /* BitcountSingle-Thin.ttf in Resources */,
+				7C0DE29BD55F41848BAEBA0D /* BitcountSingle_Cursive-Black.ttf in Resources */,
+				DE7D04799E4347248FD66E62 /* BitcountSingle_Cursive-Bold.ttf in Resources */,
+				AC3BD93AB0DA43C6B8368EF5 /* BitcountSingle_Cursive-ExtraBold.ttf in Resources */,
+				E998389F1CDC4D9D9AA516AE /* BitcountSingle_Cursive-ExtraLight.ttf in Resources */,
+				E55B9D66C5D145E297C7EFBD /* BitcountSingle_Cursive-Light.ttf in Resources */,
+				893075E978CB4228BD6721D4 /* BitcountSingle_Cursive-Medium.ttf in Resources */,
+				BD7F4F51F2EA467FA4CA57A3 /* BitcountSingle_Cursive-Regular.ttf in Resources */,
+				558BD5A9BCF547D28ED6F8BE /* BitcountSingle_Cursive-SemiBold.ttf in Resources */,
+				C51998B91DB44F8B8C6F303A /* BitcountSingle_Cursive-Thin.ttf in Resources */,
+				D780419ADB104EB684406AF4 /* BitcountSingle_Roman-Black.ttf in Resources */,
+				5B4FF92721914BAE8D985EE5 /* BitcountSingle_Roman-Bold.ttf in Resources */,
+				E963BF4E54BF431C8180DFD5 /* BitcountSingle_Roman-ExtraBold.ttf in Resources */,
+				BA54FF66493A464BB693E8E7 /* BitcountSingle_Roman-ExtraLight.ttf in Resources */,
+				DFE7733162AE41DE80029B77 /* BitcountSingle_Roman-Light.ttf in Resources */,
+				57E1B06FE4B74066BFC781AE /* BitcountSingle_Roman-Medium.ttf in Resources */,
+				D4979DD7C57E4E658E1371D3 /* BitcountSingle_Roman-Regular.ttf in Resources */,
+				807335EC83504ED0A7786C2D /* BitcountSingle_Roman-SemiBold.ttf in Resources */,
+				5FF449ED49EC44798F1DD365 /* BitcountSingle_Roman-Thin.ttf in Resources */,
+				557D8409F6EC4BF9A556573F /* Sixtyfour-Regular-VariableFont_BLED,SCAN.ttf in Resources */,
+				6EE1E24367A546898872CE4E /* SpaceGrotesk-VariableFont_wght.ttf in Resources */,
+				B7580523A7584206A4A2386A /* SpaceGrotesk-Bold.ttf in Resources */,
+				C7BFF950F2024130BE640A4C /* SpaceGrotesk-Light.ttf in Resources */,
+				17522EC7BE734DDA901346CD /* SpaceGrotesk-Medium.ttf in Resources */,
+				41582AC20EFC4316B7498FAF /* SpaceGrotesk-Regular.ttf in Resources */,
+				211691C77E9A4654B6601F0E /* SpaceGrotesk-SemiBold.ttf in Resources */,
+				DE4B56F99A094A9DBF7F4536 /* SyneMono-Regular.ttf in Resources */,
+				BC3E8EBD2BCA42138113DD9B /* UbuntuMono-Bold.ttf in Resources */,
+				8BC04AAAFBC84CCFB50C8ECA /* UbuntuMono-BoldItalic.ttf in Resources */,
+				ACC91A59C8934BD884AB6184 /* UbuntuMono-Italic.ttf in Resources */,
+				11ECDB3AC70545E799FDBF69 /* UbuntuMono-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
