@@ -18,7 +18,7 @@ export const TextStory = {
     args: {
         variant: 'body' as const,
         fontType: FontType.Default,
-        children: 'The quick brown fox jumps over the lazy dog.',
+        children: 'The management of the dead planet wishes you a very fine day.',
     },
     argTypes: {
         variant: {
