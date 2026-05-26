@@ -1,18 +1,22 @@
-import { useState, useRef, ReactNode, createContext, useContext } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import {
     View,
     TouchableOpacity,
     Modal,
     StyleSheet,
-    Dimensions,
+    LayoutChangeEvent,
     Pressable,
 } from 'react-native';
-import { useTheme } from '@ui';
+import {
+    useTheme,
+    MenuAnchor,
+    MenuPosition,
+    getIconAndMenuAnchors,
+    MenuContext,
+    getIconAnchorPoint,
+    getMenuPosition,
+} from '@ui';
 import { Text } from '../typography';
-
-const MenuContext = createContext<{ close: () => void }>({ close: () => { } });
-
-export const useMenuClose = (): (() => void) => useContext(MenuContext).close;
 
 const styles = StyleSheet.create({
     container: {
@@ -42,68 +46,41 @@ const styles = StyleSheet.create({
     }
 });
 
-export interface MenuPosition {
-    top?: number;
-    right?: number;
-    bottom?: number;
-    left?: number;
-}
-
-export type MenuAnchor = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
-
 export interface MenuProps {
     placement?: MenuAnchor;
-    children?: ReactNode;
-}
-
-function placementPair(p: MenuAnchor): { icon: MenuAnchor; menu: MenuAnchor } {
-    const vertical = p.startsWith('top') ? 'bottom' : 'top';
-    const horizontal = p.endsWith('right') ? 'right' : 'left';
-    return { icon: p, menu: `${vertical}-${horizontal}` as MenuAnchor };
+    children?: React.ReactNode;
 }
 
 export const Menu: React.FC<MenuProps> = ({
     placement = 'bottom-right',
     children,
 }) => {
-    const { icon: iconAnchor, menu: menuAnchor } = placementPair(placement);
+    const { icon: iconAnchor, menu: menuAnchor } = getIconAndMenuAnchors(placement);
     const theme = useTheme();
     const [visible, setVisible] = useState<boolean>(false);
+    const [positionKey, setPositionKey] = useState<number>(0);
     const [menuPosition, setMenuPosition] = useState<MenuPosition>({});
 
     const iconAnchorRef = useRef<View>(null);
-
-    function iconAnchorPoint(anchor: MenuAnchor, x: number, y: number, w: number, h: number): { iconX: number; iconY: number } {
-        switch (anchor) {
-            case 'top-left': return { iconX: x, iconY: y };
-            case 'top-right': return { iconX: x + w, iconY: y };
-            case 'bottom-left': return { iconX: x, iconY: y + h };
-            case 'bottom-right': return { iconX: x + w, iconY: y + h };
-        }
-    }
-
-    function menuAnchorStyle(anchor: MenuAnchor, iconX: number, iconY: number, windowWidth: number, windowHeight: number): MenuPosition {
-        switch (anchor) {
-            case 'top-left': return { top: iconY, left: iconX };
-            case 'top-right': return { top: iconY, right: windowWidth - iconX };
-            case 'bottom-left': return { bottom: windowHeight - iconY, left: iconX };
-            case 'bottom-right': return { bottom: windowHeight - iconY, right: windowWidth - iconX };
-        }
-    }
+    const anchorRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
     const toggleMenu = (): void => {
         const ref = iconAnchorRef.current;
-        if (!ref) { 
+        if (!ref) {
             return;
         }
         ref.measureInWindow((x, y, width, height) => {
-            const window = Dimensions.get('window');
-            const { iconX, iconY } = iconAnchorPoint(iconAnchor, x, y, width, height);
-            const position = menuAnchorStyle(menuAnchor, iconX, iconY, window.width, window.height);
-            setMenuPosition(position);
+            anchorRef.current = getIconAnchorPoint(iconAnchor, x, y, width, height);
+            setMenuPosition({});
+            setPositionKey((k) => k + 1);
             setVisible(true);
         });
     };
+
+    const onOverlayLayout = useCallback((e: LayoutChangeEvent) => {
+        const { width, height } = e.nativeEvent.layout;
+        setMenuPosition(getMenuPosition(menuAnchor, anchorRef.current, width, height));
+    }, [menuAnchor]);
 
     return (
         <View style={styles.container}>
@@ -121,8 +98,9 @@ export const Menu: React.FC<MenuProps> = ({
                 visible={visible}
                 animationType="fade"
             >
-                <Pressable style={styles.modalOverlay} onPress={() => setVisible(false)}>
+                <Pressable style={styles.modalOverlay} onPress={() => setVisible(false)} onLayout={onOverlayLayout}>
                     <View
+                        key={positionKey}
                         style={[
                             styles.menuList,
                             {

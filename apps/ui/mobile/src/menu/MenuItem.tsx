@@ -1,6 +1,6 @@
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { Text } from '../typography';
-import { useMenuClose } from './Menu';
+import { useMenuClose } from '@ui';
 
 const styles = StyleSheet.create({
     menuItem: {

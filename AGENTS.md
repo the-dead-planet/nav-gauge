@@ -83,6 +83,7 @@ Each feature is a pluggable **Gear** with 1-3 packages: `common/` (abstract clas
 - Steampunk/cyber-inspired styling
 - Theme variables in `@ui/common/src/theme/specifications.ts`
 - Reusable components must not contain business logic
+- Web elements: CSS modules (`*.module.css`) with `className` are preferred over inline `style` props; only use `style` for truly dynamic values (e.g. computed positions).
 
 ## Other
 
