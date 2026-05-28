@@ -7,13 +7,9 @@ import {
     MenuContext,
     getIconAnchorPoint,
     getMenuPosition,
+    MenuProps,
 } from '@ui';
 import styles from './menu.module.css';
-
-export interface MenuProps {
-    placement?: MenuAnchor;
-    children?: React.ReactNode;
-}
 
 export const Menu: React.FC<MenuProps> = ({
     placement = 'bottom-right',

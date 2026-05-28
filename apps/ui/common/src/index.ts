@@ -1,3 +1,4 @@
+export * from './button';
 export * from './date-time';
 export * from './error-boundary';
 export * from './icons';

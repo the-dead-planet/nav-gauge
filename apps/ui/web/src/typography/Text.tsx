@@ -1,5 +1,5 @@
 import { ComponentProps, FC } from "react";
-import { defaultTypographyProps, TypographyProps } from "@ui";
+import { TypographyProps } from "@ui";
 import { P, Span, H1, H2, H3, H4, H5, H6 } from './';
 
 export type TextVariant = 'header' | 'body' | 'caption';

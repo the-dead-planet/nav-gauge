@@ -9,6 +9,7 @@ import {
 } from "./model";
 
 export class Theme {
+    public mode: 'light' | 'dark';
     public name: string;
     public componentColors: ThemeComponentColors;
 
@@ -138,6 +139,7 @@ export class Theme {
     public colors: { [key in PaletteColor | DesignSystemColor]: ThemeColor };
 
     public constructor(specification: ThemeSpecification) {
+        this.mode = specification.mode;
         this.name = specification.themeName;
         this.colors = Object.assign({}, Theme.palette, specification.colors);
         this.componentColors = specification.componentColors;

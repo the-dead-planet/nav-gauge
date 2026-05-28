@@ -9,6 +9,7 @@ export const themeOptions: Option<ThemeName>[] = [
 
 export const themeSpecifications: { [key in ThemeName]: ThemeSpecification } = {
     [ThemeName.Light]: {
+        mode: 'light',
         themeName: ThemeName.Light,
         componentColors: {
             background: {
@@ -68,6 +69,7 @@ export const themeSpecifications: { [key in ThemeName]: ThemeSpecification } = {
         }
     },
     [ThemeName.Dark]: {
+        mode: 'dark',
         themeName: ThemeName.Dark,
         colors: {
             primary: Theme.palette.teal,

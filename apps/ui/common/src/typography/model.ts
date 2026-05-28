@@ -1,5 +1,4 @@
-/** Design system color tokens for text. Maps to `var(--color-<variant>)`. */
-export type TypographyColor = 'primary' | 'secondary' | 'tertiary' | 'neutral';
+import { ColorVariant } from "../model";
 
 /**
  * Fonts available for typography components. Usage and role:
@@ -26,6 +25,6 @@ export enum FontType {
 }
 
 export interface TypographyProps {
-    color?: TypographyColor;
+    color?: ColorVariant;
     fontType?: FontType;
 }

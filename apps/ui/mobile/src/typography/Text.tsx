@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Text as RNText, TextProps as RNTextProps, StyleSheet } from "react-native";
-import { defaultTypographyProps, FontType, TypographyColor, TypographyProps, useTheme } from "@ui";
+import { defaultTypographyProps, FontType, ColorVariant, TypographyProps, useTheme } from "@ui";
 
 export type TextVariant = 'header' | 'body' | 'caption';
 
@@ -52,7 +52,7 @@ export const Text: FC<TextProps> = ({
                 {
                     fontFamily: fontType ? mobileFontFamily[fontType] : undefined,
                     color: color
-                        ? theme.color(color as TypographyColor)
+                        ? theme.color(color as ColorVariant)
                         : theme.componentColor('text'),
                 },
                 style,

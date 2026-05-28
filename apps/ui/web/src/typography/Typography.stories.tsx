@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { FontType, TypographyColor } from '@ui';
+import { FontType, ColorVariant } from '@ui';
 import { H1, H2, H3, H4, H5, H6, P, Span, Text } from './';
 
-const colors: (TypographyColor | undefined)[] = [undefined, 'primary', 'secondary', 'tertiary', 'neutral'];
+const colors: (ColorVariant | undefined)[] = [undefined, 'primary', 'secondary', 'tertiary', 'neutral'];
 const variantLabels = ['Default', 'Primary', 'Secondary', 'Tertiary', 'Neutral'];
 
 const meta = {

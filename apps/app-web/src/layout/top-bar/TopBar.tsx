@@ -1,9 +1,9 @@
 import { FC } from "react";
+import classNames from "classnames";
 import { MachineWardTopBarProps, useMachineWard } from "@apparatus";
 import { Icons, ThemeName, useTheme } from "@ui";
 import { H4, Icon } from "@web-ui";
 import styles from './top-bar.module.css';
-import classNames from "classnames";
 
 export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
     const theme = useTheme();

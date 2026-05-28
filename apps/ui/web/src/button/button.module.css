@@ -1,0 +1,127 @@
+.button {
+    line-height: 1.1;
+    box-sizing: border-box;
+}
+
+.color-neutral {
+    color: var(--color-neutral);
+}
+
+.color-primary {
+    color: var(--color-primary);
+}
+
+.color-secondary {
+    color: var(--color-secondary);
+}
+
+.color-tertiary {
+    color: var(--color-tertiary);
+}
+
+.size-md {
+    font-size: 14px;
+    height: 32px;
+    padding: 6px 16px;
+}
+
+.size-sm {
+    font-size: 14px;
+    height: 24px;
+    padding: 2px 16px;
+}
+
+.size-xs {
+    height: 18px;
+    font-size: 12px;
+    padding: 0px 16px;
+}
+
+.variant-ghost {
+    background-color: transparent;
+    border: none;
+}
+
+.variant-fill {
+    border: none;
+}
+
+.variant-fill.color-neutral {
+    background-color: rgb(from var(--color-neutral) r g b / .24);
+}
+
+.variant-fill.color-primary {
+    background-color: rgb(from var(--color-primary) r g b / .24);
+}
+
+.variant-fill.color-secondary {
+    background-color: rgb(from var(--color-secondary) r g b / .24);
+}
+
+.variant-fill.color-tertiary {
+    background-color: rgb(from var(--color-tertiary) r g b / .24);
+}
+
+.variant-outline {
+    background-color: transparent;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.variant-outline.color-neutral {
+    border-color: var(--color-neutral);
+}
+
+.variant-outline.color-primary {
+    border-color: var(--color-primary);
+}
+
+.variant-outline.color-secondary {
+    border-color: var(--color-secondary);
+}
+
+.variant-outline.color-tertiary {
+    border-color: var(--color-tertiary);
+}
+
+.variant-inset {
+    border: none;
+    background-color: transparent;
+}
+
+.variant-inset.mode-light {
+    box-shadow:
+        rgba(0, 0, 0, .18) 4px 4px 8px inset,
+        rgba(0, 0, 0, .04) -2px -2px 4px inset;
+}
+
+.variant-inset.mode-dark {
+    box-shadow:
+        rgba(0, 0, 0, .80) 4px 4px 8px inset,
+        rgba(0, 0, 0, .24) -2px -2px 4px inset;
+}
+
+.corners-square {
+    border-radius: 0;
+}
+
+.corners-rounded.size-md {
+    border-radius: 6px;
+}
+
+.corners-rounded.size-sm,
+.corners-rounded.size-xs {
+    border-radius: 4px;
+}
+
+.corners-circle.size-md {
+    border-radius: 16px;
+}
+
+.corners-circle.size-sm {
+    border-radius: 12px;
+}
+
+.corners-circle.size-xs {
+    border-radius: 10px;
+}

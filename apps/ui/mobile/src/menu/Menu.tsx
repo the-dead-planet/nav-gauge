@@ -15,6 +15,7 @@ import {
     MenuContext,
     getIconAnchorPoint,
     getMenuPosition,
+    MenuProps,
 } from '@ui';
 import { Text } from '../typography';
 
@@ -45,11 +46,6 @@ const styles = StyleSheet.create({
         shadowRadius: 1,
     }
 });
-
-export interface MenuProps {
-    placement?: MenuAnchor;
-    children?: React.ReactNode;
-}
 
 export const Menu: React.FC<MenuProps> = ({
     placement = 'bottom-right',

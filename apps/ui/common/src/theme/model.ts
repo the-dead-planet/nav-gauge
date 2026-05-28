@@ -70,9 +70,12 @@ export type ThemeComponentColors = {
 }
 
 export interface ThemeSpecification {
+    mode: ThemeMode;
     themeName: ThemeName;
     colors: {
         [key in DesignSystemColor]: ThemeColor;
     };
     componentColors: ThemeComponentColors;
 }
+
+export type ThemeMode = 'light' | 'dark';
