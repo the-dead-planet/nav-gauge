@@ -9,6 +9,8 @@ export const Button: FC<ComponentProps<'button'> & ButtonProps> = ({
     size = 'sm',
     corners = 'square',
     active = false,
+    highlightEffects,
+    activeEffects,
     children,
     className,
     ...props
@@ -24,6 +26,11 @@ export const Button: FC<ComponentProps<'button'> & ButtonProps> = ({
                 styles[`variant-${variant}`],
                 styles[`size-${size}`],
                 styles[`corners-${corners}`],
+                {
+                    [styles['active-fill']]: active && activeEffects?.includes('fill'),
+                    [styles['active-color']]: active && activeEffects?.includes('color'),
+                    [styles['active-outline']]: active && activeEffects?.includes('outline'),
+                },
                 className
             )}
             {...props}

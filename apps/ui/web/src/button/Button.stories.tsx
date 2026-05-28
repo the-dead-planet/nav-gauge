@@ -68,6 +68,7 @@ const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
 const allVariants: ButtonVariant[] = ['ghost', 'fill', 'outline', 'inset'];
 const allCorners: ButtonCorners[] = ['square', 'rounded', 'circle'];
+const allEffects: ButtonEffect[] = ['fill', 'color', 'outline'];
 
 export const AllVariants = {
     render: () => (
