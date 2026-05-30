@@ -10,6 +10,7 @@ export const Button: FC<ComponentProps<'button'> & ButtonProps> = ({
     size = 'sm',
     corners = 'square',
     active = false,
+    mode,
     children,
     className,
     ...props
@@ -20,7 +21,7 @@ export const Button: FC<ComponentProps<'button'> & ButtonProps> = ({
         <button
             className={classNames(
                 styles['button'],
-                styles[`mode-${theme.mode}`],
+                styles[`mode-${mode || theme.mode}`],
                 styles[`color-${color}`],
                 styles[`highlight-${ highlightColor || color}`],
                 styles[`variant-${variant}`],

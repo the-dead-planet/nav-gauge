@@ -17,5 +17,9 @@ export interface ButtonProps {
     size?: SizeVariant;
     corners?: ButtonCorners;
     active?: boolean;
+    /**
+     * If styles should always use a certain mode, instead of the dynamic theme mode.
+     */
+    mode?: boolean;
     children?: ReactNode;
 }
