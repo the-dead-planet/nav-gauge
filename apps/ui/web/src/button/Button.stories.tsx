@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { ColorVariant, SizeVariant, ButtonCorners, ButtonVariant } from '@ui';
+import { ColorVariant, SizeVariant, ButtonCorners, ButtonVariant, Icons } from '@ui';
 import { Button } from './Button';
 import { Text } from '../typography';
 import { useState } from 'react';
@@ -28,6 +28,7 @@ export const ButtonVariants = {
                     {[undefined, ...allColors].map((c) => (
                         <Button
                             key={c ?? 'default'}
+                            icon={Icons.Beaker}
                             variant="ghost"
                             color={c}
                             size="xs"
@@ -57,6 +58,7 @@ export const ButtonVariants = {
                                                 {allVariants.map((variant) => (
                                                     <Button
                                                         key={variant}
+                                                        icon={Icons.Beaker}
                                                         variant={variant}
                                                         color={color}
                                                         corners={corners}

@@ -4,7 +4,6 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 4px;
 }
 
 .mode-light {
@@ -103,18 +102,21 @@
     font-size: 14px;
     height: 32px;
     padding: 6px 16px;
+    gap: 10px;
 }
 
 .size-sm {
     font-size: 14px;
     height: 24px;
     padding: 2px 16px;
+    gap: 6px;
 }
 
 .size-xs {
     height: 18px;
     font-size: 12px;
     padding: 0px 16px;
+    gap: 4px;
 }
 
 .variant-ghost {
@@ -130,6 +132,11 @@
 .variant-ghost.active {
     color: var(--hl-inset);
     text-shadow: 0 0 12px rgb(from var(--hl-inset) r g b / .45);
+}
+
+.variant-ghost:active .icon,
+.variant-ghost.active .icon {
+    filter: drop-shadow(0 0 12px rgb(from var(--hl-inset) r g b / .45));
 }
 
 .variant-fill {
@@ -240,12 +247,22 @@
     text-shadow: 0 0 12px rgb(from var(--hl-inset) r g b / 0.4);
 }
 
+.variant-inset.mode-light:active .icon,
+.variant-inset.mode-light.active .icon {
+    filter: drop-shadow(0 0 12px rgb(from var(--hl-inset) r g b / .4));
+}
+
 .variant-inset.mode-dark:active,
 .variant-inset.mode-dark.active {
     text-shadow: 0 0 12px rgb(from var(--hl-inset) r g b / .85);
     box-shadow:
         rgba(0, 0, 0, .80) 4px 4px 8px inset,
         rgba(0, 0, 0, .24) -2px -2px 4px inset;
+}
+
+.variant-inset.mode-dark:active .icon,
+.variant-inset.mode-dark.active .icon {
+    filter: drop-shadow(0 0 12px rgb(from var(--hl-inset) r g b / .85));
 }
 
 .corners-square {

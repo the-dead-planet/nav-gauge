@@ -21,5 +21,9 @@ export interface ButtonProps {
      * If styles should always use a certain mode, instead of the dynamic theme mode.
      */
     mode?: boolean;
+    /**
+     * Icon to display before the children
+     */
+    icon?: string;
     children?: ReactNode;
 }
