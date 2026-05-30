@@ -4,7 +4,14 @@ import { ButtonProps, useTheme } from "@ui";
 import { Icon } from "../icons";
 import styles from './button.module.css';
 
-export const Button: FC<ComponentProps<'button'> & ButtonProps> = ({
+interface Props {
+    /**
+     * Icon to display before the children
+     */
+    icon?: string;
+}
+
+export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     color = 'neutral',
     highlightColor,
     variant = 'ghost',
@@ -18,13 +25,12 @@ export const Button: FC<ComponentProps<'button'> & ButtonProps> = ({
     ...props
 }) => {
     const theme = useTheme();
-
     const iconSizes = {
         xs: 12,
         sm: 16,
         md: 20,
     }
-    const iconSize = iconSizes[size]
+    const iconSize = iconSizes[size];
 
     return (
         <button

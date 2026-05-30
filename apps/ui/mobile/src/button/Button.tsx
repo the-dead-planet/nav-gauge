@@ -1,8 +1,10 @@
-import { FC, useState } from "react";
-import { Pressable, PressableProps, Text as RNText, TextStyle, View, ViewStyle } from "react-native";
+import { ComponentType, FC, useState } from "react";
+import { Pressable, PressableProps, Text as RNText, ViewStyle } from "react-native";
 import { ButtonProps, useTheme } from "@ui";
+import { Icon } from "../icons";
+import { SvgProps } from "react-native-svg";
 
-export const Button: FC<PressableProps & ButtonProps & { title?: string }> = ({
+export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<SvgProps>; title?: string }> = ({
     color = 'neutral',
     highlightColor: hlColor,
     variant = 'ghost',
@@ -11,6 +13,7 @@ export const Button: FC<PressableProps & ButtonProps & { title?: string }> = ({
     active = false,
     mode,
     title,
+    icon,
     children,
     style,
     disabled,
@@ -27,6 +30,7 @@ export const Button: FC<PressableProps & ButtonProps & { title?: string }> = ({
     const baseColor = theme.color(color);
 
     const container: ViewStyle = {
+        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
         boxSizing: 'border-box',
@@ -37,16 +41,19 @@ export const Button: FC<PressableProps & ButtonProps & { title?: string }> = ({
             container.height = 32;
             container.paddingHorizontal = 16;
             container.paddingVertical = 6;
+            container.gap = 10;
             break;
         case 'sm':
             container.height = 24;
             container.paddingHorizontal = 16;
             container.paddingVertical = 2;
+            container.gap = 6;
             break;
         case 'xs':
             container.height = 18;
             container.paddingHorizontal = 16;
             container.paddingVertical = 0;
+            container.gap = 4;
             break;
     }
 
@@ -106,6 +113,14 @@ export const Button: FC<PressableProps & ButtonProps & { title?: string }> = ({
 
     const showTextShadow = hl && (variant === 'inset' || variant === 'ghost');
 
+    const iconSizes = {
+        xs: 12,
+        sm: 16,
+        md: 20,
+    }
+
+    const iconSize = iconSizes[size];
+
     return (
         <Pressable
             disabled={disabled}
@@ -114,6 +129,18 @@ export const Button: FC<PressableProps & ButtonProps & { title?: string }> = ({
             style={[container, style as ViewStyle]}
             {...props}
         >
+            {icon ? (
+                <Icon
+                    icon={icon}
+                    width={iconSize}
+                    height={iconSize}
+                    color={theme.color(
+                        pressed || active ? highlightColor || color : color,
+                        pressed || active ? (theme.mode === 'dark' ? 300 : 600) : 500
+                    )}
+                    filter={showTextShadow ? `drop-shadow(0px 0px 6px ${hlInset})` : undefined}
+                />
+            ) : null}
             <RNText
                 style={[
                     { color: textColor, fontSize, lineHeight: fontSize * 1.1 },

@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 import { Button } from "./Button";
 import { Text } from "../typography";
-import { ColorVariant, ButtonVariant, ButtonCorners, SizeVariant } from "@ui";
+import { ColorVariant, ButtonVariant, ButtonCorners, SizeVariant, Icons } from "@ui";
 
 const styles = StyleSheet.create({
     container: {
@@ -46,6 +46,7 @@ export const AllVariants: FC = () => {
                     {[undefined, ...allColors].map((c) => (
                         <Button
                             key={c ?? 'default'}
+                            icon={Icons.Beaker}
                             variant="ghost"
                             color={c}
                             size="xs"
@@ -75,8 +76,9 @@ export const AllVariants: FC = () => {
                             {allColors.map((color) => (
                                 <View key={color} style={styles.row}>
                                     {allVariants.map((variant) => (
-                                        <View key={variant} style={styles.cell}>
+                                        <View key={`${size}-${corners}-${color}-${variant}`} style={styles.cell}>
                                             <Button
+                                                icon={Icons.Beaker}
                                                 variant={variant}
                                                 color={color}
                                                 corners={corners}
