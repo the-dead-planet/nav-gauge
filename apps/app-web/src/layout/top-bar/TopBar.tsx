@@ -21,10 +21,7 @@ export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
             <div className={classNames(styles["section"], styles["right"])}>
                 <button
                     style={{ display: 'flex', padding: 0, alignItems: 'center', justifyContent: "center", backgroundColor: theme.componentColor('button') }}
-                    onClick={() => individuator.settings$.next(({
-                        ...individuator.settings$.value,
-                        themeName: individuator.settings$.value.themeName === ThemeName.Dark ? ThemeName.Light : ThemeName.Dark
-                    }))}
+                    onClick={individuator.toggleMode}
                 >
                     <Icon src={Icons.NounProject.Cyber} />
                 </button>

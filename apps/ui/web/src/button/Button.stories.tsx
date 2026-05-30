@@ -69,51 +69,52 @@ const allCorners: ButtonCorners[] = ['square', 'rounded', 'circle'];
 export const AllVariants = {
     render: () => {
         const [highlightColor, setHighlightColor] = useState<ColorVariant | undefined>(undefined);
-        console.log({ highlightColor })
+
         return (
             <>
-                <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <label htmlFor="color-select" style={{ fontWeight: 700 }}>Active Color:</label>
-                    <select
-                        id="color-select"
-                        value={highlightColor}
-                        onChange={(e) => {
-                            setHighlightColor(e.target.value === 'Default' ? undefined : e.target.value as ColorVariant)
-                        }}
-                        style={{ padding: '4px 8px', borderRadius: 4, border: '1px solid var(--color-border)', fontSize: 14 }}
-                    >
-                        {[undefined, ...allColors].map((c) => (
-                            <option key={c} value={c}>
-                                {c || 'Default'}
-                            </option>
-                        ))}
-                    </select>
+                <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                    <span style={{ fontWeight: 700 }}>Active highlightColor: {highlightColor ?? 'default'}</span>
+                    {[undefined, ...allColors].map((c) => (
+                        <Button
+                            key={c ?? 'default'}
+                            variant="ghost"
+                            color="neutral"
+                            size="xs"
+                            corners="rounded"
+                            active={highlightColor === c}
+                            onClick={() => setHighlightColor(c)}
+                        >
+                            {c ?? 'default'}
+                        </Button>
+                    ))}
                 </div>
                 <div style={{ display: 'grid', gap: 40 }}>
                     {allSizes.map((size) => (
-                        <div>
+                        <div key={size}>
                             <Text>{size}</Text>
-                            <div style={{ display: 'grid', gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
+                            <div style={{ display: 'grid', gap: 20 }}>
                                 {allCorners.map((corners) => (
-                                    <div style={{ display: 'grid', gap: 20 }}>
+                                    <div key={corners} style={{ display: 'grid', gap: 12 }}>
                                         <Text>{corners}</Text>
+                                        <div style={{ display: 'grid', gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
+                                            {allVariants.map((variant) => (
+                                                <Text key={variant}>{variant}</Text>
+                                            ))}
+                                        </div>
                                         {allColors.map((color) => (
-                                            <div>
-                                                <Text>{color}</Text>
-                                                <div style={{ display: 'grid', gap: 8 }}>
-                                                    {allVariants.map((variant) => (
-                                                        <Button
-                                                            key={`${size}-${corners}-${color}-${variant}`}
-                                                            variant={variant}
-                                                            color={color}
-                                                            corners={corners}
-                                                            size={size}
-                                                            highlightColor={highlightColor}
-                                                        >
-                                                            {variant}
-                                                        </Button>
-                                                    ))}
-                                                </div>
+                                            <div key={color} style={{ display: 'grid', gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
+                                                {allVariants.map((variant) => (
+                                                    <Button
+                                                        key={variant}
+                                                        variant={variant}
+                                                        color={color}
+                                                        corners={corners}
+                                                        size={size}
+                                                        highlightColor={highlightColor}
+                                                    >
+                                                        {color}
+                                                    </Button>
+                                                ))}
                                             </div>
                                         ))}
                                     </div>

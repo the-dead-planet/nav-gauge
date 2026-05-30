@@ -1,8 +1,8 @@
 import { FC } from "react";
 import { StyleSheet, View, } from "react-native";
 import { useTheme } from "@ui";
-import { Menu, MenuItem, Text } from '@mobile-ui';
-import { MachineWardTopBarProps } from "@apparatus";
+import { Button, Menu, MenuItem, Text } from '@mobile-ui';
+import { MachineWardTopBarProps, useMachineWard } from "@apparatus";
 import { RootStackParamList } from "../navigation";
 
 const styles = StyleSheet.create({
@@ -18,6 +18,9 @@ const styles = StyleSheet.create({
         fontSize: 20,
         paddingHorizontal: 15
     },
+    button: {
+        marginLeft: "auto"
+    }
 });
 
 export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
@@ -25,7 +28,12 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
     onNavigate,
 }) => {
     const theme = useTheme();
-    const items = [__DEV__ ? <MenuItem key="stories" label="Stories" onPress={() => onNavigate('Stories')} /> : null].filter(Boolean);
+    const { individuator } = useMachineWard();
+    const items = [
+        __DEV__
+            ? <MenuItem key="stories" label="Stories" onPress={() => onNavigate('Stories')} />
+            : null,
+    ].filter(Boolean);
 
     return (
         <View style={[styles.container, {
@@ -34,6 +42,7 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
             <Text style={styles.header}>
                 {title}
             </Text>
+            <Button variant="outline" onPress={individuator.toggleMode} style={styles.button}>M</Button>
             {items.length > 0 ? (
                 <Menu>
                     {items}

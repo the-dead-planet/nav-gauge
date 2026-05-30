@@ -1,73 +1,98 @@
-import { FC } from "react";
-import { View, StyleSheet } from "react-native";
+import { FC, useState } from "react";
+import { ScrollView, View, StyleSheet } from "react-native";
 import { Button } from "./Button";
 import { Text } from "../typography";
-import { ColorVariant, ButtonVariant, ButtonCorners } from "@ui";
+import { ColorVariant, ButtonVariant, ButtonCorners, SizeVariant } from "@ui";
 
 const styles = StyleSheet.create({
-    row: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        gap: 8,
-        paddingVertical: 8,
+    container: {
+        padding: 16,
     },
     section: {
         paddingVertical: 12,
     },
+    row: {
+        flexDirection: 'row',
+        gap: 8,
+        paddingVertical: 4,
+    },
+    cell: {
+        flex: 1,
+    },
     label: {
-        marginBottom: 8,
+        marginBottom: 4,
+    },
+    selector: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+        marginBottom: 16,
     },
 });
 
+const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
 const allVariants: ButtonVariant[] = ['ghost', 'fill', 'outline', 'inset'];
 const allCorners: ButtonCorners[] = ['square', 'rounded', 'circle'];
 
-export const AllVariants: FC = () => (
-    <View style={{ padding: 16 }}>
-        {allCorners.map((corners) => (
-            <View key={corners} style={styles.section}>
-                <Text style={styles.label}>{corners}</Text>
-                {allVariants.map((variant) => (
-                    <View key={variant} style={styles.section}>
-                        <Text style={styles.label}>{variant}</Text>
-                        <View style={styles.row}>
-                            {allColors.map((color) => (
-                                <Button
-                                    key={color}
-                                    variant={variant}
-                                    color={color}
-                                    corners={corners}
-                                >
-                                    {color}
-                                </Button>
-                            ))}
-                        </View>
-                    </View>
-                ))}
-            </View>
-        ))}
-    </View>
-);
+export const AllVariants: FC = () => {
+    const [highlightColor, setHighlightColor] = useState<ColorVariant | undefined>(undefined);
 
-export const ActiveStates: FC = () => (
-    <View style={{ padding: 16 }}>
-        {allVariants.map((variant) => (
-            <View key={variant} style={styles.section}>
-                <Text style={styles.label}>{variant} active</Text>
+    return (
+        <ScrollView contentContainerStyle={styles.container}>
+            <View style={styles.section}>
+                <Text>Active highlightColor: {highlightColor ?? 'default'}</Text>
                 <View style={styles.row}>
-                    {allColors.map((color) => (
+                    {[undefined, ...allColors].map((c) => (
                         <Button
-                            key={color}
-                            variant={variant}
-                            color={color}
-                            active
+                            key={c ?? 'default'}
+                            variant="ghost"
+                            color={c}
+                            size="xs"
+                            corners="rounded"
+                            active={highlightColor === c}
+                            onPress={() => setHighlightColor(c)}
                         >
-                            {color}
+                            {c ?? 'default'}
                         </Button>
                     ))}
                 </View>
             </View>
-        ))}
-    </View>
-);
+
+            {allSizes.map((size) => (
+                <View key={size} style={styles.section}>
+                    <Text style={styles.label}>{size}</Text>
+                    {allCorners.map((corners) => (
+                        <View key={corners} style={styles.section}>
+                            <Text style={styles.label}>{corners}</Text>
+                            <View style={styles.row}>
+                                {allVariants.map((variant) => (
+                                    <View key={variant} style={styles.cell}>
+                                        <Text style={styles.label}>{variant}</Text>
+                                    </View>
+                                ))}
+                            </View>
+                            {allColors.map((color) => (
+                                <View key={color} style={styles.row}>
+                                    {allVariants.map((variant) => (
+                                        <View key={variant} style={styles.cell}>
+                                            <Button
+                                                variant={variant}
+                                                color={color}
+                                                corners={corners}
+                                                size={size}
+                                                highlightColor={highlightColor}
+                                            >
+                                                {color}
+                                            </Button>
+                                        </View>
+                                    ))}
+                                </View>
+                            ))}
+                        </View>
+                    ))}
+                </View>
+            ))}
+        </ScrollView>
+    );
+};

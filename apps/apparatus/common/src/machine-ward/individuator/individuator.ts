@@ -1,5 +1,5 @@
 import { BehaviorSubject, Subscription } from "rxjs";
-import { DateFormat, Option, ThemeName, TimeFormat, formatTimestamp } from "@ui";
+import { DateFormat, Option, ThemeMode, ThemeName, TimeFormat, formatTimestamp } from "@ui";
 import { StorageKeeper } from "../storage-keeper";
 import { IndividuatorSettings, Orientation, OrientationSubscriptionDefinition } from "./model";
 
@@ -67,4 +67,17 @@ export class Individuator {
     ): string => {
         return formatTimestamp(epochMs, { dateFormat: settings.dateFormat, timeFormat: settings.timeFormat });
     };
+
+    /**
+     * Toggles between light and dark mode.
+     */
+    public toggleMode = () => {
+        this.settings$.next(({
+            ...this.settings$.value,
+            themeName: this.settings$.value.themeName === ThemeName.Dark
+                ? ThemeName.Light
+                : ThemeName.Dark
+        }));
+    };
+
 }
