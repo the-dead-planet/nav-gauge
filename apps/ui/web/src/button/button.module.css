@@ -13,18 +13,26 @@
 
 .color-neutral {
     color: var(--color-neutral);
+    --color-bg: var(--color-neutral-500);
+    --color-shadow: var(--color-neutral-700);
 }
 
 .color-primary {
     color: var(--color-primary);
+    --color-bg: var(--color-primary-500);
+    --color-shadow: var(--color-primary-700);
 }
 
 .color-secondary {
     color: var(--color-secondary);
+    --color-bg: var(--color-secondary-500);
+    --color-shadow: var(--color-secondary-700);
 }
 
 .color-tertiary {
     color: var(--color-tertiary);
+    --color-bg: var(--color-tertiary-500);
+    --color-shadow: var(--color-tertiary-700);
 }
 
 .highlight-neutral {
@@ -117,7 +125,7 @@
 .variant-ghost:active,
 .variant-ghost.active {
     color: var(--hl-inset);
-    text-shadow: 0 0 12px rgb(from var(--hl-inset) r g b / .3);
+    text-shadow: 0 0 12px rgb(from var(--hl-inset) r g b / .45);
 }
 
 .variant-fill {
@@ -189,15 +197,15 @@
 }
 
 .variant-inset {
-    border: 1px inset rgb(from var(--hl-bg) r g b / .3);
+    border: 1px inset rgb(from var(--color-bg) r g b / .3);
     background-color: transparent;
 }
 
 .variant-inset.mode-light {
-    background-color: rgb(from var(--hl-bg) r g b / .04);
+    background-color: rgb(from var(--color-bg) r g b / .04);
     box-shadow:
-        rgb(from var(--hl-shadow) r g b / .18) 4px 4px 8px inset,
-        rgb(from var(--hl-shadow) r g b / .04) -2px -2px 4px inset;
+        rgb(from var(--color-shadow) r g b / .18) 4px 4px 8px inset,
+        rgb(from var(--color-shadow) r g b / .04) -2px -2px 4px inset;
 }
 
 .variant-inset.mode-dark {
@@ -215,7 +223,18 @@
 .variant-inset.active {
     color: var(--hl-inset);
     background-color: rgb(from var(--hl-bg) r g b / var(--hl-bg-opacity));
-    text-shadow: 0 0 12px rgb(from var(--hl-inset) r g b / .3);
+}
+.variant-inset.mode-light:active,
+.variant-inset.mode-light.active {
+    box-shadow:
+        rgb(from var(--hl-shadow) r g b / .18) 4px 4px 8px inset,
+        rgb(from var(--hl-shadow) r g b / .04) -2px -2px 4px inset;
+    border-color: rgb(from var(--hl-bg) r g b / .3);
+    text-shadow: 0 0 12px rgb(from var(--hl-inset) r g b / 0.4);
+}
+.variant-inset.mode-dark:active,
+.variant-inset.mode-dark.active {
+    text-shadow: 0 0 12px rgb(from var(--hl-inset) r g b / .85);
 }
 
 .corners-square {

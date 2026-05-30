@@ -69,7 +69,7 @@ const allCorners: ButtonCorners[] = ['square', 'rounded', 'circle'];
 export const AllVariants = {
     render: () => {
         const [highlightColor, setHighlightColor] = useState<ColorVariant | undefined>(undefined);
-console.log({highlightColor})
+        console.log({ highlightColor })
         return (
             <>
                 <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -91,32 +91,34 @@ console.log({highlightColor})
                 </div>
                 <div style={{ display: 'grid', gap: 40 }}>
                     {allSizes.map((size) => (
-                        <div style={{ display: 'grid', gap: 20 }}>
+                        <div>
                             <Text>{size}</Text>
-                            {allCorners.map((corners) => (
-                                <div style={{ display: 'grid', gap: 20 }}>
-                                    <Text>{corners}</Text>
-                                    {allColors.map((color) => (
-                                        <div>
-                                            <Text>{size} {corners} {color}</Text>
-                                            <div style={{ display: 'grid', gap: 8 }}>
-                                                {allVariants.map((variant) => (
-                                                    <Button
-                                                        key={`${size}-${corners}-${color}-${variant}`}
-                                                        variant={variant}
-                                                        color={color}
-                                                        corners={corners}
-                                                        size={size}
-                                                        highlightColor={highlightColor}
-                                                    >
-                                                        {variant}
-                                                    </Button>
-                                                ))}
+                            <div style={{ display: 'grid', gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
+                                {allCorners.map((corners) => (
+                                    <div style={{ display: 'grid', gap: 20 }}>
+                                        <Text>{corners}</Text>
+                                        {allColors.map((color) => (
+                                            <div>
+                                                <Text>{color}</Text>
+                                                <div style={{ display: 'grid', gap: 8 }}>
+                                                    {allVariants.map((variant) => (
+                                                        <Button
+                                                            key={`${size}-${corners}-${color}-${variant}`}
+                                                            variant={variant}
+                                                            color={color}
+                                                            corners={corners}
+                                                            size={size}
+                                                            highlightColor={highlightColor}
+                                                        >
+                                                            {variant}
+                                                        </Button>
+                                                    ))}
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            ))}
+                                        ))}
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     ))}
                 </div>
