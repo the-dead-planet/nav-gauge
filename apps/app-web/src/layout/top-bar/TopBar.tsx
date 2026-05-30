@@ -1,8 +1,8 @@
 import { FC } from "react";
 import classNames from "classnames";
 import { MachineWardTopBarProps, useMachineWard } from "@apparatus";
-import { Icons, ThemeName, useTheme } from "@ui";
-import { H4, Icon } from "@web-ui";
+import { FontType, Icons, useTheme } from "@ui";
+import { Button, H4 } from "@web-ui";
 import styles from './top-bar.module.css';
 
 export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
@@ -15,19 +15,18 @@ export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
             <div className={classNames(styles["section"], styles["left"])}>
                 <img src={Icons.Find} width={20} />
             </div>
-            <H4>
+            <H4 color="primary" fontType={FontType.NeonHeader}>
                 {title}
             </H4>
             <div className={classNames(styles["section"], styles["right"])}>
-                <button
-                    style={{ display: 'flex', padding: 0, alignItems: 'center', justifyContent: "center", backgroundColor: theme.componentColor('button') }}
+                <Button
+                    icon={Icons.NounProject.LightBulbCogWheel}
                     onClick={individuator.toggleMode}
-                >
-                    <Icon src={Icons.NounProject.Cyber} />
-                </button>
-                <button style={{ display: 'flex', padding: 0, alignItems: 'center', justifyContent: "center", backgroundColor: theme.componentColor('button') }}>
-                    <Icon src={Icons.Find} />
-                </button>
+                    variant="inset"
+                    size="md"
+                    color={theme.mode === 'dark' ? "secondary" : 'neutral'}
+                    highlightColor={theme.mode === 'dark' ? "neutral" : 'secondary'}
+                />
             </div>
         </nav>
     );

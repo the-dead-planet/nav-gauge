@@ -24,8 +24,7 @@ If it's from The Noun Project, then add it in [the noun project folder index](/a
 
 #### Mobile
 
-Add the i
-
+No action needed.
 
 ## Sources
 

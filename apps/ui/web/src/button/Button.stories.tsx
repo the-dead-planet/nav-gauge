@@ -55,10 +55,10 @@ export const ButtonVariants = {
                                         </div>
                                         {allColors.map((color) => (
                                             <div key={color} style={{ display: 'grid', gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
-                                                {allVariants.map((variant) => (
+                                                {allVariants.map((variant, i) => (
                                                     <Button
                                                         key={variant}
-                                                        icon={Icons.Beaker}
+                                                        icon={i % 2 ? Icons.Beaker : Icons.NounProject.LightBulbCogWheel}
                                                         variant={variant}
                                                         color={color}
                                                         corners={corners}

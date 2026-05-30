@@ -75,10 +75,10 @@ export const AllVariants: FC = () => {
                             </View>
                             {allColors.map((color) => (
                                 <View key={color} style={styles.row}>
-                                    {allVariants.map((variant) => (
+                                    {allVariants.map((variant, i) => (
                                         <View key={`${size}-${corners}-${color}-${variant}`} style={styles.cell}>
                                             <Button
-                                                icon={Icons.Beaker}
+                                                icon={i % 2 === 0 ? Icons.NounProject.LightBulbCogWheel : Icons.Beaker}
                                                 variant={variant}
                                                 color={color}
                                                 corners={corners}

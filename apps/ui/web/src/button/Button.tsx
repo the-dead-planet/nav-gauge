@@ -44,6 +44,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
                 styles[`corners-${corners}`],
                 {
                     [styles['active']]: active,
+                    [styles[`only-icon-${size}`]]: !children
                 },
                 className
             )}
@@ -54,7 +55,6 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
                     src={icon}
                     width={iconSize}
                     height={iconSize}
-                    color={color}
                     className={styles['icon']}
                 />
             ) : null}

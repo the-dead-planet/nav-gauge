@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { StyleSheet, View, } from "react-native";
-import { useTheme } from "@ui";
+import { Icons, useTheme } from "@ui";
 import { Button, Menu, MenuItem, Text } from '@mobile-ui';
 import { MachineWardTopBarProps, useMachineWard } from "@apparatus";
 import { RootStackParamList } from "../navigation";
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15
     },
     button: {
-        marginLeft: "auto"
+        marginLeft: "auto",
     }
 });
 
@@ -42,7 +42,14 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
             <Text style={styles.header}>
                 {title}
             </Text>
-            <Button variant="outline" onPress={individuator.toggleMode} style={styles.button}>M</Button>
+            <Button
+                icon={Icons.NounProject.LightBulbCogWheel}
+                color={theme.mode === 'dark' ? "secondary" : "neutral"}
+                size="md"
+                variant="inset"
+                onPress={individuator.toggleMode}
+                style={styles.button}
+            />
             {items.length > 0 ? (
                 <Menu>
                     {items}

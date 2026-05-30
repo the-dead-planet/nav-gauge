@@ -39,19 +39,19 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
     switch (size) {
         case 'md':
             container.height = 32;
-            container.paddingHorizontal = 16;
+            container.paddingHorizontal = !children ? 5 : 16;
             container.paddingVertical = 6;
             container.gap = 10;
             break;
         case 'sm':
             container.height = 24;
-            container.paddingHorizontal = 16;
+            container.paddingHorizontal = !children ? 3 : 16;
             container.paddingVertical = 2;
             container.gap = 6;
             break;
         case 'xs':
             container.height = 18;
-            container.paddingHorizontal = 16;
+            container.paddingHorizontal = !children ? 2 : 16;
             container.paddingVertical = 0;
             container.gap = 4;
             break;
@@ -141,18 +141,20 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
                     filter={showTextShadow ? `drop-shadow(0px 0px 6px ${hlInset})` : undefined}
                 />
             ) : null}
-            <RNText
-                style={[
-                    { color: textColor, fontSize, lineHeight: fontSize * 1.1 },
-                    showTextShadow && {
-                        textShadowColor: hlInset,
-                        textShadowRadius: 12,
-                        textShadowOffset: { width: 0, height: 0 },
-                    },
-                ]}
-            >
-                {children ?? title}
-            </RNText>
+            {children || title ? (
+                <RNText
+                    style={[
+                        { color: textColor, fontSize, lineHeight: fontSize * 1.1 },
+                        showTextShadow && {
+                            textShadowColor: hlInset,
+                            textShadowRadius: 12,
+                            textShadowOffset: { width: 0, height: 0 },
+                        },
+                    ]}
+                >
+                    {children ?? title}
+                </RNText>
+            ) : null}
         </Pressable>
     );
 };

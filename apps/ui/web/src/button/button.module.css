@@ -20,10 +20,22 @@
     --color-shadow: var(--color-neutral-700);
 }
 
+.color-neutral .icon {
+    color: var(--color-neutral);
+    stroke: var(--color-neutral);
+    fill: var(--color-neutral);
+}
+
 .color-primary {
     color: var(--color-primary);
     --color-bg: var(--color-primary-500);
     --color-shadow: var(--color-primary-700);
+}
+
+.color-primary .icon {
+    color: var(--color-primary);
+    stroke: var(--color-primary);
+    fill: var(--color-primary);
 }
 
 .color-secondary {
@@ -32,10 +44,22 @@
     --color-shadow: var(--color-secondary-700);
 }
 
+.color-secondary .icon {
+    color: var(--color-secondary);
+    stroke: var(--color-secondary);
+    fill: var(--color-secondary);
+}
+
 .color-tertiary {
     color: var(--color-tertiary);
     --color-bg: var(--color-tertiary-500);
     --color-shadow: var(--color-tertiary-700);
+}
+
+.color-tertiary .icon {
+    color: var(--color-tertiary);
+    stroke: var(--color-tertiary);
+    fill: var(--color-tertiary);
 }
 
 .highlight-neutral {
@@ -105,11 +129,19 @@
     gap: 10px;
 }
 
+.only-icon-md {
+    padding: 6px 5px;
+}
+
 .size-sm {
     font-size: 14px;
     height: 24px;
     padding: 2px 16px;
     gap: 6px;
+}
+
+.only-icon-sm {
+    padding: 2px 3px;
 }
 
 .size-xs {
@@ -119,6 +151,10 @@
     gap: 4px;
 }
 
+.only-icon-xs {
+    padding: 0px 2px;
+}
+
 .variant-ghost {
     background-color: transparent;
     border: none;
@@ -126,6 +162,14 @@
 
 .variant-ghost:hover {
     color: var(--hl-inset);
+}
+
+.variant-ghost:hover .icon,
+.variant-ghost:active .icon,
+.variant-ghost.active .icon {
+    color: var(--hl-inset);
+    stroke: var(--hl-inset);
+    fill: var(--hl-inset);
 }
 
 .variant-ghost:active,
@@ -164,6 +208,14 @@
     background-color: rgb(from var(--hl) r g b / .36);
 }
 
+.variant-fill:hover .icon,
+.variant-fill:active .icon,
+.variant-fill.active .icon {
+    color: var(--hl-inset);
+    stroke: var(--hl-inset);
+    fill: var(--hl-inset);
+}
+
 .variant-fill:active,
 .variant-fill.active {
     color: var(--hl-inset);
@@ -197,6 +249,13 @@
     border-color: var(--hl-inset);
     background-color: rgb(from var(--hl) r g b / .12);
 }
+.variant-outline:hover .icon,
+.variant-outline:active .icon,
+.variant-outline.active .icon {
+    color: var(--hl-inset);
+    stroke: var(--hl-inset);
+    fill: var(--hl-inset);
+}
 
 .variant-outline:active,
 .variant-outline.active {
@@ -229,6 +288,14 @@
 
 .variant-inset:hover {
     color: var(--hl-inset);
+}
+
+.variant-inset:hover .icon,
+.variant-inset:active .icon,
+.variant-inset.active .icon {
+    color: var(--hl-inset);
+    stroke: var(--hl-inset);
+    fill: var(--hl-inset);
 }
 
 .variant-inset:active,
