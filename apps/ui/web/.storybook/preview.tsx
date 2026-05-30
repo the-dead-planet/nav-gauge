@@ -5,7 +5,7 @@ import { P, useThemeVariables } from '../src';
 import './preview.css';
 
 const ThemeDecorator = ({ children }: { children: ReactNode }) => {
-    const [themeName, setThemeName] = useState<ThemeName>(ThemeName.Light);
+    const [themeName, setThemeName] = useState<ThemeName>(ThemeName.Dark);
     const theme = new Theme(themeSpecifications[themeName]);
 
     useThemeVariables(theme);

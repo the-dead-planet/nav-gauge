@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { Pressable, PressableProps, Text as RNText, ViewStyle } from "react-native";
+import { Pressable, PressableProps, Text as RNText, TextStyle, View, ViewStyle } from "react-native";
 import { ButtonProps, useTheme } from "@ui";
 
 export const Button: FC<PressableProps & ButtonProps & { title?: string }> = ({
@@ -29,6 +29,7 @@ export const Button: FC<PressableProps & ButtonProps & { title?: string }> = ({
     const container: ViewStyle = {
         alignItems: 'center',
         justifyContent: 'center',
+        boxSizing: 'border-box',
     };
 
     switch (size) {
@@ -47,19 +48,6 @@ export const Button: FC<PressableProps & ButtonProps & { title?: string }> = ({
             container.paddingHorizontal = 16;
             container.paddingVertical = 0;
             break;
-    }
-
-    switch (corners) {
-        case 'rounded':
-            container.borderRadius = size === 'md' ? 6 : 4;
-            break;
-        case 'circle':
-            if (size === 'md') container.borderRadius = 16;
-            else if (size === 'sm') container.borderRadius = 12;
-            else container.borderRadius = 10;
-            break;
-        default:
-            container.borderRadius = 0;
     }
 
     switch (variant) {
@@ -95,13 +83,19 @@ export const Button: FC<PressableProps & ButtonProps & { title?: string }> = ({
             if (isLight) {
                 container.borderTopColor = theme.color(color, 700, 0.18);
                 container.borderLeftColor = theme.color(color, 700, 0.18);
-                container.borderBottomColor = theme.color(color, 700, 0.04);
-                container.borderRightColor = theme.color(color, 700, 0.04);
+                container.borderBottomColor = 'rgba(255,255,255,0.35)';
+                container.borderRightColor = 'rgba(255,255,255,0.35)';
+                container.boxShadow = active || pressed
+                    ? `4px 4px 8px ${theme.color(color, 700, 0.18)} inset, -2px -2px 4px ${theme.color(color, 700, 0.04)} inset, -2px -2px 3px rgba(255, 255, 255, .25) inset`
+                    : `4px 4px 8px ${theme.color(color, 700, 0.18)} inset, -2px -2px 4px ${theme.color(color, 700, 0.04)} inset, -2px -2px 4px rgba(255, 255, 255, .35) inset`;
             } else {
-                container.borderTopColor = `rgba(0,0,0,0.80)`;
-                container.borderLeftColor = `rgba(0,0,0,0.80)`;
-                container.borderBottomColor = `rgba(0,0,0,0.24)`;
-                container.borderRightColor = `rgba(0,0,0,0.24)`;
+                container.borderTopColor = 'rgba(0,0,0,0.80)';
+                container.borderLeftColor = 'rgba(0,0,0,0.80)';
+                container.borderBottomColor = 'rgba(255,255,255,0.08)';
+                container.borderRightColor = 'rgba(255,255,255,0.08)';
+                container.boxShadow = active || pressed
+                    ? `4px 4px 8px rgba(0,0,0,0.80) inset, -2px -2px 4px rgba(0, 0, 0, .24) inset`
+                    : `4px 4px 8px rgba(0,0,0,0.80) inset, -2px -2px 4px rgba(255,255,255,0.08) inset`;
             }
             break;
     }

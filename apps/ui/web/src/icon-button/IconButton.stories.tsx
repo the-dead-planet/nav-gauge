@@ -1,13 +1,13 @@
-import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { ColorVariant, SizeVariant, ButtonCorners, ButtonVariant } from '@ui';
-import { Button } from './Button';
-import { Text } from '../typography';
 import { useState } from 'react';
+import type { Meta, StoryObj } from 'storybook-react-rsbuild';
+import { ColorVariant, SizeVariant, ButtonCorners, ButtonVariant, Icons } from '@ui';
+import { IconButton } from './IconButton';
+import { Text } from '../typography';
 
 const meta = {
-    title: 'Button',
-    component: Button,
-} satisfies Meta<typeof Button>;
+    title: 'IconButton',
+    component: IconButton,
+} satisfies Meta<typeof IconButton>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -17,7 +17,10 @@ const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'
 const allVariants: ButtonVariant[] = ['ghost', 'fill', 'outline', 'inset'];
 const allCorners: ButtonCorners[] = ['square', 'rounded', 'circle'];
 
-export const ButtonVariants = {
+export const IconButtonVariants = {
+    args: {
+        icon: Icons.Beaker,
+    },
     render: () => {
         const [highlightColor, setHighlightColor] = useState<ColorVariant | undefined>(undefined);
 
@@ -26,8 +29,9 @@ export const ButtonVariants = {
                 <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
                     <span style={{ fontWeight: 700 }}>Active highlightColor: {highlightColor ?? 'default'}</span>
                     {[undefined, ...allColors].map((c) => (
-                        <Button
+                        <IconButton
                             key={c ?? 'default'}
+                            icon={Icons.Beaker}
                             variant="ghost"
                             color={c}
                             size="xs"
@@ -36,7 +40,7 @@ export const ButtonVariants = {
                             onClick={() => setHighlightColor(c)}
                         >
                             {c ?? 'default'}
-                        </Button>
+                        </IconButton>
                     ))}
                 </div>
                 <div style={{ display: 'grid', gap: 40 }}>
@@ -55,8 +59,9 @@ export const ButtonVariants = {
                                         {allColors.map((color) => (
                                             <div key={color} style={{ display: 'grid', gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
                                                 {allVariants.map((variant) => (
-                                                    <Button
+                                                    <IconButton
                                                         key={variant}
+                                                        icon={Icons.Beaker}
                                                         variant={variant}
                                                         color={color}
                                                         corners={corners}
@@ -64,7 +69,7 @@ export const ButtonVariants = {
                                                         highlightColor={highlightColor}
                                                     >
                                                         {color}
-                                                    </Button>
+                                                    </IconButton>
                                                 ))}
                                             </div>
                                         ))}

@@ -1,6 +1,10 @@
 .button {
     line-height: 1.1;
     box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
 }
 
 .mode-light {
@@ -205,14 +209,15 @@
     background-color: rgb(from var(--color-bg) r g b / .04);
     box-shadow:
         rgb(from var(--color-shadow) r g b / .18) 4px 4px 8px inset,
-        rgb(from var(--color-shadow) r g b / .04) -2px -2px 4px inset;
+        rgb(from var(--color-shadow) r g b / .04) -2px -2px 6px inset,
+        rgba(255, 255, 255, .35) -2px -2px 4px inset;
 }
 
 .variant-inset.mode-dark {
     border-color: transparent;
     box-shadow:
         rgba(0, 0, 0, .80) 4px 4px 8px inset,
-        rgba(0, 0, 0, .24) -2px -2px 4px inset;
+        rgba(255, 255, 255, .08) -2px -2px 4px inset;
 }
 
 .variant-inset:hover {
@@ -224,17 +229,23 @@
     color: var(--hl-inset);
     background-color: rgb(from var(--hl-bg) r g b / var(--hl-bg-opacity));
 }
+
 .variant-inset.mode-light:active,
 .variant-inset.mode-light.active {
     box-shadow:
         rgb(from var(--hl-shadow) r g b / .18) 4px 4px 8px inset,
-        rgb(from var(--hl-shadow) r g b / .04) -2px -2px 4px inset;
+        rgb(from var(--hl-shadow) r g b / .04) -2px -2px 4px inset,
+        rgba(255, 255, 255, .25) -2px -2px 3px inset;
     border-color: rgb(from var(--hl-bg) r g b / .3);
     text-shadow: 0 0 12px rgb(from var(--hl-inset) r g b / 0.4);
 }
+
 .variant-inset.mode-dark:active,
 .variant-inset.mode-dark.active {
     text-shadow: 0 0 12px rgb(from var(--hl-inset) r g b / .85);
+    box-shadow:
+        rgba(0, 0, 0, .80) 4px 4px 8px inset,
+        rgba(0, 0, 0, .24) -2px -2px 4px inset;
 }
 
 .corners-square {
