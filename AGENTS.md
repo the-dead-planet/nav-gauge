@@ -4,6 +4,8 @@
 
 nav-gauge — open-source map & route data tools for content creators. Offline-first, no account required. Steampunk/cyber-inspired design.
 
+The workspace root is `apps/` (package.json and yarn commands live there, not at repo root).
+
 ## Commands
 
 | Command | Description |

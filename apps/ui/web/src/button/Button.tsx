@@ -5,12 +5,11 @@ import styles from './button.module.css';
 
 export const Button: FC<ComponentProps<'button'> & ButtonProps> = ({
     color = 'neutral',
+    highlightColor,
     variant = 'ghost',
     size = 'sm',
     corners = 'square',
     active = false,
-    highlightEffects,
-    activeEffects,
     children,
     className,
     ...props
@@ -23,13 +22,12 @@ export const Button: FC<ComponentProps<'button'> & ButtonProps> = ({
                 styles['button'],
                 styles[`mode-${theme.mode}`],
                 styles[`color-${color}`],
+                styles[`highlight-${ highlightColor || color}`],
                 styles[`variant-${variant}`],
                 styles[`size-${size}`],
                 styles[`corners-${corners}`],
                 {
-                    [styles['active-fill']]: active && activeEffects?.includes('fill'),
-                    [styles['active-color']]: active && activeEffects?.includes('color'),
-                    [styles['active-outline']]: active && activeEffects?.includes('outline'),
+                    [styles['active']]: active,
                 },
                 className
             )}

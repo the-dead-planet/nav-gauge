@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { ColorVariant, SizeVariant, ButtonEffect, ButtonCorners, ButtonVariant } from '@ui';
+import { ColorVariant, SizeVariant, ButtonCorners, ButtonVariant } from '@ui';
 import { Button } from './Button';
 import { Text } from '../typography';
+import { useState } from 'react';
 
 const meta = {
     title: 'Button',
@@ -18,6 +19,11 @@ export const ButtonStory = {
     },
     argTypes: {
         color: {
+            control: 'select',
+            options: ['(default)', 'primary', 'secondary', 'tertiary', 'neutral'],
+            mapping: { '(default)': undefined },
+        },
+        highlightColor: {
             control: 'select',
             options: ['(default)', 'primary', 'secondary', 'tertiary', 'neutral'],
             mapping: { '(default)': undefined },
@@ -40,24 +46,15 @@ export const ButtonStory = {
         active: {
             control: 'boolean',
         },
-        highlightEffects: {
-            control: 'check',
-            options: ['color', 'fill', 'outline'],
-        },
-        activeEffects: {
-            control: 'check',
-            options: ['color', 'fill', 'outline'],
-        },
     },
     render: (args: Record<string, unknown>) => (
         <Button
             color={args.color as ColorVariant | undefined}
-            variant={args.variant as 'ghost' | 'fill' | 'outline' | 'inset' | undefined}
+            highlightColor={args.highlightColor as ColorVariant | undefined}
+            variant={args.variant as ButtonVariant | undefined}
             size={args.size as SizeVariant | undefined}
-            corners={args.corners as 'square' | 'rounded' | 'circle' | undefined}
+            corners={args.corners as ButtonCorners | undefined}
             active={args.active as boolean | undefined}
-            highlightEffects={args.highlightEffects as ButtonEffect[] | undefined}
-            activeEffects={args.activeEffects as ButtonEffect[] | undefined}
         >
             {args.children as string}
         </Button>
@@ -68,41 +65,64 @@ const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
 const allVariants: ButtonVariant[] = ['ghost', 'fill', 'outline', 'inset'];
 const allCorners: ButtonCorners[] = ['square', 'rounded', 'circle'];
-const allEffects: ButtonEffect[] = ['fill', 'color', 'outline'];
 
 export const AllVariants = {
-    render: () => (
-        <div style={{ display: 'grid', gap: 40 }}>
-            {allSizes.map((size) => (
-                <div style={{ display: 'grid', gap: 20 }}>
-                    <Text>{size}</Text>
-                    {allCorners.map((corners) => (
+    render: () => {
+        const [highlightColor, setHighlightColor] = useState<ColorVariant | undefined>(undefined);
+console.log({highlightColor})
+        return (
+            <>
+                <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <label htmlFor="color-select" style={{ fontWeight: 700 }}>Active Color:</label>
+                    <select
+                        id="color-select"
+                        value={highlightColor}
+                        onChange={(e) => {
+                            setHighlightColor(e.target.value === 'Default' ? undefined : e.target.value as ColorVariant)
+                        }}
+                        style={{ padding: '4px 8px', borderRadius: 4, border: '1px solid var(--color-border)', fontSize: 14 }}
+                    >
+                        {[undefined, ...allColors].map((c) => (
+                            <option key={c} value={c}>
+                                {c || 'Default'}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div style={{ display: 'grid', gap: 40 }}>
+                    {allSizes.map((size) => (
                         <div style={{ display: 'grid', gap: 20 }}>
-                            <Text>{corners}</Text>
-                            {allColors.map((color) => (
-                                <div>
-                                    <Text>{size} {corners} {color}</Text>
-                                    <div style={{ display: 'grid', gap: 8 }}>
-                                        {allVariants.map((variant) => (
-                                            <Button
-                                                key={`${size}-${corners}-${color}-${variant}`}
-                                                variant={variant}
-                                                color={color}
-                                                corners={corners}
-                                                size={size}
-                                            >
-                                                {variant}
-                                            </Button>
-                                        ))}
-                                    </div>
+                            <Text>{size}</Text>
+                            {allCorners.map((corners) => (
+                                <div style={{ display: 'grid', gap: 20 }}>
+                                    <Text>{corners}</Text>
+                                    {allColors.map((color) => (
+                                        <div>
+                                            <Text>{size} {corners} {color}</Text>
+                                            <div style={{ display: 'grid', gap: 8 }}>
+                                                {allVariants.map((variant) => (
+                                                    <Button
+                                                        key={`${size}-${corners}-${color}-${variant}`}
+                                                        variant={variant}
+                                                        color={color}
+                                                        corners={corners}
+                                                        size={size}
+                                                        highlightColor={highlightColor}
+                                                    >
+                                                        {variant}
+                                                    </Button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             ))}
                         </div>
                     ))}
                 </div>
-            ))}
-        </div>
-    ),
+            </>
+        );
+    },
 } satisfies Story;
 
 const sizes: (SizeVariant | undefined)[] = [undefined, 'xs', 'sm', 'md'];
@@ -111,7 +131,7 @@ export const AllSizes = {
     render: () => (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {sizes.map((size) => (
-                <Button key={size ?? 'default'} size={size}>
+                <Button key={size ?? 'default'} variant="outline" size={size}>
                     {size ?? 'default'}
                 </Button>
             ))}
