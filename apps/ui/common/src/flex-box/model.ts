@@ -1,11 +1,14 @@
-import { CSSProperties, ReactNode } from "react";
+import { ReactNode } from "react";
+import { AlignItems, JustifyContent, SpacingVariant } from "../model";
+
+export type FlexDirection = 'row' | 'column' | 'row-reverse' | 'column-reverse';
 
 export interface FlexBoxProps {
-    direction?: CSSProperties['flexDirection'];
-    gap?: CSSProperties['gap'];
-    rowGap?: CSSProperties['rowGap'];
-    colGap?: CSSProperties['columnGap'];
-    justifyContent?: CSSProperties['justifyContent'];
-    alignItems?: CSSProperties['alignItems'];
+    direction?: FlexDirection;
+    gap?: SpacingVariant;
+    rowGap?: SpacingVariant;
+    colGap?: SpacingVariant;
+    justifyContent?: JustifyContent;
+    alignItems?: AlignItems;
     children?: ReactNode;
 }

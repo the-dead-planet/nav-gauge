@@ -17,14 +17,12 @@ export const FlexBox: FC<FlexBoxProps> = ({
             className={classNames(
                 styles["flex-box"],
                 styles[`direction-${direction}`],
-                justifyContent && styles[`justify-${justifyContent}`],
-                alignItems && styles[`align-${alignItems}`],
+                { [styles[`justify-${justifyContent}`]]: !!justifyContent },
+                { [styles[`align-${alignItems}`]]: !!alignItems },
+                { [styles[`gap-${gap}`]]: !!gap },
+                { [styles[`row-gap-${rowGap}`]]: !!rowGap },
+                { [styles[`col-gap-${colGap}`]]: !!colGap },
             )}
-            style={{
-                gap,
-                rowGap,
-                columnGap: colGap,
-            }}
         >
             {children}
         </div>

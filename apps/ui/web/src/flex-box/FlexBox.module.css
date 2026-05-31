@@ -66,3 +66,63 @@
 .align-baseline {
     align-items: baseline;
 }
+
+.gap-xs {
+    gap: 5px;
+}
+
+.gap-sm {
+    gap: 10px;
+}
+
+.gap-md {
+    gap: 15px;
+}
+
+.gap-lg {
+    gap: 20px;
+}
+
+.gap-xl {
+    gap: 28px;
+}
+
+.row-gap-xs {
+    row-gap: 5px;
+}
+
+.row-gap-sm {
+    row-gap: 10px;
+}
+
+.row-gap-md {
+    row-gap: 15px;
+}
+
+.row-gap-lg {
+    row-gap: 20px;
+}
+
+.row-gap-xl {
+    row-gap: 28px;
+}
+
+.col-gap-xs {
+    column-gap: 5px;
+}
+
+.col-gap-sm {
+    column-gap: 10px;
+}
+
+.col-gap-md {
+    column-gap: 15px;
+}
+
+.col-gap-lg {
+    column-gap: 20px;
+}
+
+.col-gap-xl {
+    column-gap: 28px;
+}

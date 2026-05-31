@@ -5196,7 +5196,7 @@ __metadata:
     react: "npm:19.2.3"
     react-dom: "npm:19.2.3"
     react-svg: "npm:^17.2.4"
-    storybook: "npm:^10.3.6"
+    storybook: "npm:^10.4.1"
     storybook-react-rsbuild: "npm:^3.3.3"
   peerDependencies:
     maplibre-gl: 5.24.0
@@ -14790,9 +14790,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"storybook@npm:^10.3.6":
-  version: 10.4.0
-  resolution: "storybook@npm:10.4.0"
+"storybook@npm:^10.4.1":
+  version: 10.4.1
+  resolution: "storybook@npm:10.4.1"
   dependencies:
     "@storybook/global": "npm:^5.0.0"
     "@storybook/icons": "npm:^2.0.2"
@@ -14822,7 +14822,7 @@ __metadata:
       optional: true
   bin:
     storybook: ./dist/bin/dispatcher.js
-  checksum: 10/bef6d2ff347d9a6fc9a5b428d2ced86e17acddfce6849d59ab22438d4b57765a9116a30230b8dbc0512236e7a4a2be65195db0c05ea2da1d73a5d224778f8b22
+  checksum: 10/4ffa39558d1d6919dcedd051d1fc5cdab15bf8d09be2807234a0d97dcde4cd1b7b8186fd5f16c3244f1d427bfc2c1fbf21c27dc524cc5dc5111b26691af17aa9
   languageName: node
   linkType: hard
 

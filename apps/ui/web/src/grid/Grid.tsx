@@ -5,10 +5,7 @@ import styles from "./Grid.module.css";
 
 export const Grid: FC<GridProps> = ({
     cols,
-    rows,
-    templateAreas,
     justifyContent,
-    alignContent,
     alignItems,
     gap,
     rowGap,
@@ -19,18 +16,13 @@ export const Grid: FC<GridProps> = ({
         <div
             className={classNames(
                 styles.grid,
-                justifyContent && styles[`justify-${justifyContent}`],
-                alignItems && styles[`align-${alignItems}`],
-                alignContent && styles[`align-content-${alignContent}`],
+                { [styles[`justify-${justifyContent}`]]: !!justifyContent },
+                { [styles[`align-${alignItems}`]]: !!alignItems },
+                { [styles[`gap-${gap}`]]: !!gap },
+                { [styles[`row-gap-${rowGap}`]]: !!rowGap },
+                { [styles[`col-gap-${colGap}`]]: !!colGap },
+                { [styles[`cols-${cols}`]]: !!cols },
             )}
-            style={{
-                gridTemplateColumns: cols,
-                gridTemplateRows: rows,
-                gridTemplateAreas: templateAreas,
-                gap,
-                rowGap,
-                columnGap: colGap,
-            }}
         >
             {children}
         </div>
