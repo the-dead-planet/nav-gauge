@@ -1,5 +1,5 @@
 import { ComponentType, ReactNode } from "react";
-import { Breakpoint, ErrorBoundaryProps } from "@ui";
+import { Breakpoint, ErrorBoundaryProps, Media } from "@ui";
 import { SignaliumNotice } from "..";
 import { Gear, GearApparatus } from "./gears";
 
@@ -33,38 +33,3 @@ export interface MachineWardComponents<TNavigationPath extends string = string> 
 }
 
 export type MachineGear<TMap> = new (apparatus: GearApparatus<TMap>) => Gear<TMap>;
-
-export interface Media {
-    orientation: Orientation;
-    windowWidth: number;
-    windowHeight: number;
-}
-
-export interface MediaWithBreakpoints extends Media {
-    breakpoint: Breakpoint;
-    isXs: boolean;
-    isSm: boolean;
-    isMd: boolean;
-    isLg: boolean;
-    isXl: boolean;
-    isXxl: boolean;
-    isXxxl: boolean;
-    isLessThanMd: boolean;
-    isLessThanLg: boolean;
-    isLessThanXl: boolean;
-    isLessThanXxl: boolean;
-    isMoreThanXl: boolean;
-    isMoreThanLg: boolean;
-    isMoreThanMd: boolean;
-    isMoreThanSm: boolean;
-}
-
-export enum Orientation {
-    Portrait,
-    Landscape,
-}
-
-export interface MediaSubscriptionDefinition {
-    initial: () => Media,
-    subscribe: (onChange: (media: Media) => void) => ({ unsubscribe: () => void }),
-}

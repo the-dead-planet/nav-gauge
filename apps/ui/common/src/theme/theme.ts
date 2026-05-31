@@ -1,7 +1,11 @@
+import { BehaviorSubject } from 'rxjs';
 import {
     Breakpoint,
     ColorShade,
     DesignSystemColor,
+    Media,
+    MediaSubscriptionDefinition,
+    MediaWithBreakpoints,
     PaletteColor,
     ThemeColor,
     ThemeComponentColor,
@@ -12,6 +16,10 @@ import {
 export class Theme {
     public mode: 'light' | 'dark';
     public name: string;
+
+    private mediaSubscription: { unsubscribe: () => void } | null = null;
+
+    public readonly media$: BehaviorSubject<MediaWithBreakpoints>;
 
     /**
      * Minimum value in pixels from which a breakpoint is active
@@ -24,6 +32,33 @@ export class Theme {
         xl: 1280,
         xxl: 1600,
         xxxl: 1920
+    };
+
+    public static calculateMedia = ({ windowWidth, ...media }: Media): MediaWithBreakpoints => {
+        const breakpoint = (Object.entries(Theme.breakpointThresholds) as [Breakpoint, number][])
+            .toSorted((a, b) => a[1] - b[1])
+            .reduce<Breakpoint>((acc, [b, threshold]) => windowWidth > threshold ? b : acc, 'xs');
+
+        return {
+            ...media,
+            windowWidth,
+            breakpoint,
+            isXs: breakpoint === 'xs',
+            isSm: breakpoint === 'sm',
+            isMd: breakpoint === 'md',
+            isLg: breakpoint === 'lg',
+            isXl: breakpoint === 'xl',
+            isXxl: breakpoint === 'xxl',
+            isXxxl: breakpoint === 'xxxl',
+            isLessThanMd: windowWidth < Theme.breakpointThresholds.md,
+            isLessThanLg: windowWidth < Theme.breakpointThresholds.lg,
+            isLessThanXl: windowWidth < Theme.breakpointThresholds.xl,
+            isLessThanXxl: windowWidth < Theme.breakpointThresholds.xxl,
+            isMoreThanXl: windowWidth >= Theme.breakpointThresholds.xxl,
+            isMoreThanLg: windowWidth >= Theme.breakpointThresholds.xl,
+            isMoreThanMd: windowWidth >= Theme.breakpointThresholds.lg,
+            isMoreThanSm: windowWidth >= Theme.breakpointThresholds.md,
+        };
     };
 
     public componentColors: ThemeComponentColors;
@@ -153,12 +188,24 @@ export class Theme {
 
     public colors: { [key in PaletteColor | DesignSystemColor]: ThemeColor };
 
-    public constructor(specification: ThemeSpecification) {
+    public constructor(specification: ThemeSpecification, protected media: MediaSubscriptionDefinition) {
         this.mode = specification.mode;
         this.name = specification.themeName;
         this.colors = Object.assign({}, Theme.palette, specification.colors);
         this.componentColors = specification.componentColors;
+        this.media$ = new BehaviorSubject<MediaWithBreakpoints>(Theme.calculateMedia(media.initial()));
+        this.mediaSubscription = this.subscribeMedia();
     }
+
+    private subscribeMedia = (): { unsubscribe: () => void } => {
+        return this.media.subscribe((m) => {
+            this.media$.next(Theme.calculateMedia(m));
+        });
+    }
+
+    public destroy = () => {
+        this.mediaSubscription?.unsubscribe();
+    };
 
     /**
      * Returns an rgb or rgba color string.

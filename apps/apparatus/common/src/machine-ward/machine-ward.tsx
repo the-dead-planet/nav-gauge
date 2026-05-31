@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { BehaviorSubject, combineLatest, pairwise, Subscription } from "rxjs";
+import { combineLatest, pairwise, Subscription } from "rxjs";
 import { MachineWardApp } from "./MachineWardApp";
 import { Individuator } from "./individuator";
 import { ChronoLens } from "./chrono-lens";
@@ -7,8 +7,8 @@ import { Animatrix, AttributionVault, Cartomancer, SignaliumBureau, ToolsStation
 import { Engine } from "./engine";
 import { Gear } from "./gears";
 import { StorageKeeper } from "./storage-keeper";
-import { MachineGear, MachineWardComponents, Media, MediaSubscriptionDefinition, MediaWithBreakpoints } from "./model";
-import { Breakpoint, Theme } from "@ui";
+import { MachineGear, MachineWardComponents } from "./model";
+import { MediaSubscriptionDefinition } from "@ui";
 
 /**
  * Ward with machines. 
@@ -17,35 +17,6 @@ import { Breakpoint, Theme } from "@ui";
  */
 export abstract class MachineWard<TMap = unknown, TNavigationPath extends string = string> {
     public title = 'nav gauge';
-
-    public readonly media$: BehaviorSubject<MediaWithBreakpoints>;
-
-    private calculateMedia = ({ windowWidth, ...media }: Media): MediaWithBreakpoints => {
-        const breakpoint = (Object.entries(Theme.breakpointThresholds) as [Breakpoint, number][])
-            .toSorted((a, b) => a[1] - b[1])
-            .reduce<Breakpoint>((acc, [b, threshold]) => windowWidth > threshold ? b : acc, 'xs');
-
-        return {
-            ...media,
-            windowWidth,
-            breakpoint,
-            isXs: breakpoint === 'xs',
-            isSm: breakpoint === 'sm',
-            isMd: breakpoint === 'md',
-            isLg: breakpoint === 'lg',
-            isXl: breakpoint === 'xl',
-            isXxl: breakpoint === 'xxl',
-            isXxxl: breakpoint === 'xxxl',
-            isLessThanMd: windowWidth < Theme.breakpointThresholds.md,
-            isLessThanLg: windowWidth < Theme.breakpointThresholds.lg,
-            isLessThanXl: windowWidth < Theme.breakpointThresholds.xl,
-            isLessThanXxl: windowWidth < Theme.breakpointThresholds.xxl,
-            isMoreThanXl: windowWidth >= Theme.breakpointThresholds.xxl,
-            isMoreThanLg: windowWidth >= Theme.breakpointThresholds.xl,
-            isMoreThanMd: windowWidth >= Theme.breakpointThresholds.lg,
-            isMoreThanSm: windowWidth >= Theme.breakpointThresholds.md,
-        };
-    };
 
     public readonly individuator: Individuator;
     public readonly storageKeeper: StorageKeeper;
@@ -57,7 +28,6 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
     public readonly chronoLens: ChronoLens;
     public readonly toolsStation: ToolsStation<TMap>;
 
-    private mediaSubscription: { unsubscribe: () => void } | null = null;
     private toolsStationPresetSubscription: Subscription | null = null;
     private toolsStationPresetActiveSubscription: Subscription | null = null;
     private attributionVaultSubscription: Subscription | null = null;
@@ -69,7 +39,6 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
         prefersLightColorScheme: boolean,
         protected media: MediaSubscriptionDefinition
     ) {
-        this.media$ = new BehaviorSubject<MediaWithBreakpoints>(this.calculateMedia(media.initial()));
         this.storageKeeper = new StorageKeeper(storage);
         this.individuator = new Individuator(prefersLightColorScheme);
         this.animatrix = new Animatrix();
@@ -114,7 +83,6 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
     };
 
     private mount = () => {
-        this.mediaSubscription = this.subscribeMedia();
         this.storageKeeper.initialize();
         this.individuator.initialize(this.storageKeeper);
         this.attributionVaultSubscription = this.subscribeAttributionVault();
@@ -134,14 +102,7 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
         this.attributionVaultSubscription?.unsubscribe();
         this.individuator.cleanUp();
         this.storageKeeper.cleanUp();
-        this.mediaSubscription?.unsubscribe();
     };
-
-    private subscribeMedia = (): { unsubscribe: () => void } => {
-        return this.media.subscribe((m) => {
-            this.media$.next(this.calculateMedia(m));
-        });
-    }
 
     private subscribeAttributionVault = (): Subscription => {
         const addEntry = (styleId: keyof typeof Cartomancer.styles) => {
@@ -201,7 +162,7 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
         return (
             <MachineWardApp
                 title={this.title}
-                media$={this.media$}
+                media={this.media}
                 individuator={this.individuator}
                 storageKeeper={this.storageKeeper}
                 signaliumBureau={this.signaliumBureau}

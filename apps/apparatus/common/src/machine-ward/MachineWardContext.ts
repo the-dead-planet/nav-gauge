@@ -1,11 +1,10 @@
 import { createContext, } from "react";
 import { StorageKeeper } from "./storage-keeper";
 import { Individuator } from "./individuator";
-import { Animatrix, AttributionVault, Cartomancer, ChronoLens, Engine, MediaWithBreakpoints, SignaliumBureau, ToolsStation } from "..";
+import { Animatrix, AttributionVault, Cartomancer, ChronoLens, Engine, SignaliumBureau, ToolsStation } from "..";
 import { BehaviorSubject } from "rxjs";
 
 export interface MachineWardContextValue<TMap = unknown> {
-    media$: BehaviorSubject<MediaWithBreakpoints>
     individuator: Individuator;
     storageKeeper: StorageKeeper;
     animatrix: Animatrix;

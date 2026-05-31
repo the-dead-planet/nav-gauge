@@ -16,7 +16,7 @@ import styles from './map-section.module.css';
 
 export const MapSection: FC = () => {
     const [map, setMap] = useState<maplibregl.Map>();
-    const { engine, cartomancer, media$ } = useMachineWard();
+    const { engine, cartomancer } = useMachineWard();
     const [overlays] = useSubjectState(cartomancer.overlays$);
     const gearsWithEngaged$ = engine.gears$.pipe(switchMap((gears) => {
         if (gears.length === 0) {

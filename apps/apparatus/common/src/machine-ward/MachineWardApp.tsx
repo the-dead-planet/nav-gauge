@@ -1,17 +1,16 @@
 import { StrictMode, useEffect, useMemo } from "react";
-import { BehaviorSubject } from "rxjs";
-import { ErrorBoundary, Theme, ThemeContext, themeSpecifications } from "@ui";
+import { ErrorBoundary, MediaSubscriptionDefinition, Theme, ThemeContext, themeSpecifications } from "@ui";
 import { MachineWardNotices } from "./MachineWardNotices";
 import { Animatrix, AttributionVault, Cartomancer, ChronoLens, Engine, SignaliumBureau, ToolsStation } from "..";
 import { Individuator } from "./individuator";
 import { StorageKeeper } from "./storage-keeper";
 import { MachineWardContext, MachineWardContextValue } from "./MachineWardContext";
 import { useSubjectState } from "@tinker-chest";
-import { MachineWardComponents, MediaWithBreakpoints } from "./model";
+import { MachineWardComponents } from "./model";
 
 interface MachineWardProps<TMap, TNavigationPath extends string> {
     title: string;
-    media$: BehaviorSubject<MediaWithBreakpoints>;
+    media: MediaSubscriptionDefinition;
     individuator: Individuator;
     storageKeeper: StorageKeeper;
     signaliumBureau: SignaliumBureau;
@@ -30,7 +29,7 @@ interface MachineWardProps<TMap, TNavigationPath extends string> {
 
 export function MachineWardApp<TMap, TNavigationPath extends string>({
     title,
-    media$,
+    media,
     individuator,
     storageKeeper,
     animatrix,
@@ -57,16 +56,19 @@ export function MachineWardApp<TMap, TNavigationPath extends string>({
     }, []);
 
     const theme = useMemo(
-        () => new Theme(themeSpecifications[settings.themeName]),
-        [settings.themeName],
+        () => new Theme(themeSpecifications[settings.themeName], media),
+        [settings.themeName, media],
     );
+
+    useEffect(() => {
+        return theme.destroy;
+    }, [theme])
 
     return (
         <StrictMode>
             <ThemeContext.Provider value={theme}>
                 <ErrorBoundary fallbackComponent={components.errorFallbackComponent}>
                     <MachineWardContext.Provider value={{
-                        media$,
                         individuator,
                         storageKeeper,
                         animatrix,

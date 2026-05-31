@@ -1,9 +1,10 @@
-import { MachineGear, MachineWard, MachineWardComponents, Orientation, Media, MediaSubscriptionDefinition } from "@apparatus";
+import { MachineGear, MachineWard, MachineWardComponents } from "@apparatus";
 import { ErrorFallbackPage } from "./pages";
 import { Footer, Layout, TopBar } from "./layout";
 import { Machine } from "./machine/Machine";
 import { Notices } from "./notices/Notices";
 import { WebChronoLens } from "@web-apparatus";
+import { Media, MediaSubscriptionDefinition, Orientation } from "@ui";
 
 export class WebMachineWard extends MachineWard<maplibregl.Map> {
     public constructor(gears: MachineGear<maplibregl.Map>[]) {
