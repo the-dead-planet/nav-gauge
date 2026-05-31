@@ -1,41 +1,35 @@
-import { CSSProperties, FC, useMemo } from "react";
+import { FC, useEffect, useState } from "react";
+import classNames from "classnames";
 import { useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
-import { MapSection } from "./MapSection";
 import { Presets } from "./controls/Presets";
 import { AnimationControls } from "./controls/AnimationControls";
 import { MapLayoutControls } from "./controls/MapLayoutControls";
 import { ApplicationSettingsSection } from "./controls/ApplicationSettings";
 import { GaugeControls } from "./controls/GaugeControls";
 import { MapStyleSelection } from "./controls/MapStyleSelection";
-import styles from './machine.module.css';
-import classNames from "classnames";
+import { MapTools } from "./map-tools/MapTools";
 import { P } from "@web-ui";
+import { createMap } from "./map";
+import styles from './machine.module.css';
 
 export const Machine: FC = () => {
+    const [map, setMap] = useState<maplibregl.Map>();
     const { cartomancer, toolsStation } = useMachineWard();
-    const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
-    const [mapLayout] = useSubjectState(cartomancer.mapLayout$);
-    const [controlComponents] = useSubjectState(toolsStation.controlComponents$);
+    const [overlays] = useSubjectState(cartomancer.overlays$);
 
-    const controlsCssStyle = useMemo(
-        () => {
-            const { top, bottom, right, left } = gaugeControls.controlPlacement;
+    useEffect(() => {
+        let m = createMap();
+        setMap(m);
 
-            switch (gaugeControls.controlPosition) {
-                case 'top-left': return { '--ctrl-top': top + 'px', '--ctrl-left': left + 'px' }
-                case 'top-right': return { '--ctrl-top': top + 'px', '--ctrl-right': right + 'px' }
-                case 'bottom-left': return { '--ctrl-bottom': bottom + 'px', '--ctrl-left': left + 'px' }
-                case 'bottom-right': return { '--ctrl-bottom': bottom + 'px', '--ctrl-right': right + 'px' }
-            }
-        },
-        [gaugeControls]
-    );
+        return () => {
+            setMap(undefined);
+            requestAnimationFrame(() => m.remove());
+        };
+    }, []);
 
     return (
-        <div className={styles.machine} style={{
-            ...controlsCssStyle,
-        } as unknown as CSSProperties}>
+        <div className={styles.machine}>
             {/* <div className={styles["side-panel"]}>
                 {[...controlComponents.entries()].map(([id, ControlComponent]) => <ControlComponent key={id} />)}
                 <hr className={styles.divider} />
@@ -46,7 +40,11 @@ export const Machine: FC = () => {
                 <AnimationControls />
                 <ApplicationSettingsSection />
             </div> */}
-            <MapSection />
+            {map ? (
+                <MapTools map={map}>
+                    {[...overlays.entries()].map(([id, OverlayComponent]) => <OverlayComponent key={id} map={map} />)}
+                </MapTools>
+            ) : null}
             <div className={classNames(styles['toolbar'], styles['top'])}><P>Sample text to test 12346. Abc Gedg Xseuyie QtrtyyuSAH</P></div>
             <div className={classNames(styles['toolbar'], styles['left'])}><P>left</P></div>
             <div className={classNames(styles['toolbar'], styles['right'])}><P>right</P></div>

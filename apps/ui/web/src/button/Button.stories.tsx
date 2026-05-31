@@ -23,16 +23,16 @@ export const ButtonVariants = {
 
         return (
             <>
+                <Text style={{ fontWeight: 700, marginBottom: 10 }}>Active highlightColor: {highlightColor ?? 'default'}</Text>
                 <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                    <span style={{ fontWeight: 700 }}>Active highlightColor: {highlightColor ?? 'default'}</span>
                     {[undefined, ...allColors].map((c) => (
                         <Button
                             key={c ?? 'default'}
                             icon={Icons.Beaker}
-                            variant="ghost"
+                            variant="fill"
                             color={c}
                             size="xs"
-                            corners="rounded"
+                            corners="circle"
                             active={highlightColor === c}
                             onClick={() => setHighlightColor(c)}
                         >

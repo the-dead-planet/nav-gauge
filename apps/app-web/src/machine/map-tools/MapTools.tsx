@@ -1,4 +1,4 @@
-import { FC, ReactNode, useState, useEffect } from "react";
+import { FC, ReactNode, useState, useEffect, CSSProperties, useMemo } from "react";
 import maplibregl from "maplibre-gl";
 import { Protocol } from "pmtiles";
 import classNames from "classnames";
@@ -24,8 +24,6 @@ export const MapTools: FC<Props> = ({ map, children }) => {
     const [isInitialised, setIsInitialised] = useSubjectState(cartomancer.isInitialised$);
     const [isStyleLoaded, setIsStyleLoaded] = useSubjectState(cartomancer.isStyleLoaded$);
     const [selectedStyle] = useSubjectState(cartomancer.selectedStyle$);
-    const [_mapZoom, setMapZoom] = useSubjectState(cartomancer.zoom$);
-    const [_mapBearing, setMapBearing] = useSubjectState(cartomancer.bearing$);
 
     /**
      * Safely updates style and resolves when the `map.isStyleLoaded()` check resolves.
@@ -129,12 +127,12 @@ export const MapTools: FC<Props> = ({ map, children }) => {
 
     useEffect(() => {
         const zoomHandler = () => {
-            setMapZoom(map.getZoom());
+            cartomancer.zoom$.next(map.getZoom());
         };
         map.on("zoomend", zoomHandler);
 
         const rotateHandler = () => {
-            setMapBearing(map.getBearing());
+            cartomancer.bearing$.next(map.getBearing());
         };
         map.on("rotate", rotateHandler);
 
@@ -210,8 +208,24 @@ export const MapTools: FC<Props> = ({ map, children }) => {
     const toolComponents = useObservableState(toolsStation.toolComponentsByPlacement$, []);
     const toolsByPlacement = toolsStation.getToolsByPlacement(toolComponents);
 
+    const controlsCssStyle = useMemo(
+        () => {
+            const { top, bottom, right, left } = gaugeControls.controlPlacement;
+
+            switch (gaugeControls.controlPosition) {
+                case 'top-left': return { '--ctrl-top': top + 'px', '--ctrl-left': left + 'px' }
+                case 'top-right': return { '--ctrl-top': top + 'px', '--ctrl-right': right + 'px' }
+                case 'bottom-left': return { '--ctrl-bottom': bottom + 'px', '--ctrl-left': left + 'px' }
+                case 'bottom-right': return { '--ctrl-bottom': bottom + 'px', '--ctrl-right': right + 'px' }
+            }
+        },
+        [gaugeControls]
+    );
+
     return (
-        <div ref={setContainerRef} className={styles["container"]} >
+        <div ref={setContainerRef} className={styles["container"]}  style={{
+            ...controlsCssStyle,
+        } as unknown as CSSProperties}>
             {/* {ToolsStation.placements.map((p) => (
                 <div key={p} className={classNames(styles["toolbox"], styles[p])}>
                     {toolsByPlacement[p].map(({ id, component: ToolComponent }) => (

@@ -1,5 +1,5 @@
-import { Cartomancer } from "@apparatus";
 import maplibregl from "maplibre-gl";
+import { Cartomancer } from "@apparatus";
 
 export const createMap = () => new maplibregl.Map({
     container: document.createElement('div'),
