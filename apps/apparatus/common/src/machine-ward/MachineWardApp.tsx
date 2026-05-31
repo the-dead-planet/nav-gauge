@@ -7,11 +7,11 @@ import { Individuator } from "./individuator";
 import { StorageKeeper } from "./storage-keeper";
 import { MachineWardContext, MachineWardContextValue } from "./MachineWardContext";
 import { useSubjectState } from "@tinker-chest";
-import { MachineWardComponents, Media } from "./model";
+import { MachineWardComponents, MediaWithBreakpoints } from "./model";
 
 interface MachineWardProps<TMap, TNavigationPath extends string> {
     title: string;
-    media$: BehaviorSubject<Media>;
+    media$: BehaviorSubject<MediaWithBreakpoints>;
     individuator: Individuator;
     storageKeeper: StorageKeeper;
     signaliumBureau: SignaliumBureau;

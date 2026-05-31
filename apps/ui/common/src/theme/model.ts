@@ -79,3 +79,5 @@ export interface ThemeSpecification {
 }
 
 export type ThemeMode = 'light' | 'dark';
+
+export type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl';

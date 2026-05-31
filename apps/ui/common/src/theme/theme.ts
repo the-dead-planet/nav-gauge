@@ -1,4 +1,5 @@
 import {
+    Breakpoint,
     ColorShade,
     DesignSystemColor,
     PaletteColor,
@@ -11,6 +12,20 @@ import {
 export class Theme {
     public mode: 'light' | 'dark';
     public name: string;
+
+    /**
+     * Minimum value in pixels from which a breakpoint is active
+     */
+    public static breakpointThresholds: { [key in Breakpoint]: number } = {
+        xs: 0,
+        sm: 480,
+        md: 768,
+        lg: 1024,
+        xl: 1280,
+        xxl: 1600,
+        xxxl: 1920
+    };
+
     public componentColors: ThemeComponentColors;
 
     public static palette: { [key in PaletteColor]: ThemeColor } = {
@@ -171,7 +186,7 @@ export class Theme {
      */
     public componentColor = (componentName: ThemeComponentColor): string => {
         const { name, shade } = this.componentColors[componentName];
-        
+
         return this.color(name, shade);
     };
 }

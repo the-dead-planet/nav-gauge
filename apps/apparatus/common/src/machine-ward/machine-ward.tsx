@@ -7,7 +7,8 @@ import { Animatrix, AttributionVault, Cartomancer, SignaliumBureau, ToolsStation
 import { Engine } from "./engine";
 import { Gear } from "./gears";
 import { StorageKeeper } from "./storage-keeper";
-import { MachineGear, MachineWardComponents, Media, MediaSubscriptionDefinition } from "./model";
+import { MachineGear, MachineWardComponents, Media, MediaSubscriptionDefinition, MediaWithBreakpoints } from "./model";
+import { Breakpoint, Theme } from "@ui";
 
 /**
  * Ward with machines. 
@@ -17,7 +18,35 @@ import { MachineGear, MachineWardComponents, Media, MediaSubscriptionDefinition 
 export abstract class MachineWard<TMap = unknown, TNavigationPath extends string = string> {
     public title = 'nav gauge';
 
-    public readonly media$: BehaviorSubject<Media>;
+    public readonly media$: BehaviorSubject<MediaWithBreakpoints>;
+
+    private calculateMedia = ({ windowWidth, ...media }: Media): MediaWithBreakpoints => {
+        const breakpoint = (Object.entries(Theme.breakpointThresholds) as [Breakpoint, number][])
+            .toSorted((a, b) => a[1] - b[1])
+            .reduce<Breakpoint>((acc, [b, threshold]) => windowWidth > threshold ? b : acc, 'xs');
+
+        return {
+            ...media,
+            windowWidth,
+            breakpoint,
+            isXs: breakpoint === 'xs',
+            isSm: breakpoint === 'sm',
+            isMd: breakpoint === 'md',
+            isLg: breakpoint === 'lg',
+            isXl: breakpoint === 'xl',
+            isXxl: breakpoint === 'xxl',
+            isXxxl: breakpoint === 'xxxl',
+            isLessThanMd: windowWidth < Theme.breakpointThresholds.md,
+            isLessThanLg: windowWidth < Theme.breakpointThresholds.lg,
+            isLessThanXl: windowWidth < Theme.breakpointThresholds.xl,
+            isLessThanXxl: windowWidth < Theme.breakpointThresholds.xxl,
+            isMoreThanXl: windowWidth >= Theme.breakpointThresholds.xxl,
+            isMoreThanLg: windowWidth >= Theme.breakpointThresholds.xl,
+            isMoreThanMd: windowWidth >= Theme.breakpointThresholds.lg,
+            isMoreThanSm: windowWidth >= Theme.breakpointThresholds.md,
+        };
+    };
+
     public readonly individuator: Individuator;
     public readonly storageKeeper: StorageKeeper;
     public readonly engine = new Engine<TMap>();
@@ -40,7 +69,7 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
         prefersLightColorScheme: boolean,
         protected media: MediaSubscriptionDefinition
     ) {
-        this.media$ = new BehaviorSubject<Media>(media.initial());
+        this.media$ = new BehaviorSubject<MediaWithBreakpoints>(this.calculateMedia(media.initial()));
         this.storageKeeper = new StorageKeeper(storage);
         this.individuator = new Individuator(prefersLightColorScheme);
         this.animatrix = new Animatrix();
@@ -109,8 +138,8 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
     };
 
     private subscribeMedia = (): { unsubscribe: () => void } => {
-        return this.media.subscribe((o) => {
-            this.media$.next(o);
+        return this.media.subscribe((m) => {
+            this.media$.next(this.calculateMedia(m));
         });
     }
 
