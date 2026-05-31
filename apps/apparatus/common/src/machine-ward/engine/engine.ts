@@ -22,13 +22,21 @@ export class Engine<TMap> {
 
     public openValves = (gears: Gear<TMap>[]) => {
         for (const gear of gears) {
-            gear.engage();
+            gear.setup();
         }
     };
 
-    public closeValves = (gears: Gear<TMap>[]) => {
+    public closeValves = (gears: Gear<TMap>[] = this.gears$.value) => {
         for (const gear of gears) {
-            gear.disengage();
+            gear.cleanup();
         }
+    };
+
+    public engageGear = (gear: Gear<TMap>) => {
+        gear.isEngaged$.next(true);
+    };
+
+    public disengageGear = (gear: Gear<TMap>) => {
+        gear.isEngaged$.next(false);
     };
 }

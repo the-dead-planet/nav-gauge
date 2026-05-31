@@ -43,6 +43,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
                 styles[`size-${size}`],
                 styles[`corners-${corners}`],
                 {
+                    [styles['interactive']]: !!props.onClick,
                     [styles['active']]: active,
                     [styles[`only-icon-${size}`]]: !children
                 },

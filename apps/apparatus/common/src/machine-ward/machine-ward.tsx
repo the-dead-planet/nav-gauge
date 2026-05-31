@@ -1,13 +1,13 @@
 import { ReactElement } from "react";
-import { combineLatest, pairwise, Subscription } from "rxjs";
+import { BehaviorSubject, combineLatest, pairwise, Subscription } from "rxjs";
 import { MachineWardApp } from "./MachineWardApp";
-import { Individuator, OrientationSubscriptionDefinition } from "./individuator";
+import { Individuator } from "./individuator";
 import { ChronoLens } from "./chrono-lens";
 import { Animatrix, AttributionVault, Cartomancer, SignaliumBureau, ToolsStation } from "..";
 import { Engine } from "./engine";
 import { Gear } from "./gears";
 import { StorageKeeper } from "./storage-keeper";
-import { MachineGear, MachineWardComponents } from "./model";
+import { MachineGear, MachineWardComponents, Media, MediaSubscriptionDefinition } from "./model";
 
 /**
  * Ward with machines. 
@@ -17,6 +17,7 @@ import { MachineGear, MachineWardComponents } from "./model";
 export abstract class MachineWard<TMap = unknown, TNavigationPath extends string = string> {
     public title = 'nav gauge';
 
+    public readonly media$: BehaviorSubject<Media>;
     public readonly individuator: Individuator;
     public readonly storageKeeper: StorageKeeper;
     public readonly engine = new Engine<TMap>();
@@ -27,6 +28,7 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
     public readonly chronoLens: ChronoLens;
     public readonly toolsStation: ToolsStation<TMap>;
 
+    private mediaSubscription: { unsubscribe: () => void } | null = null;
     private toolsStationPresetSubscription: Subscription | null = null;
     private toolsStationPresetActiveSubscription: Subscription | null = null;
     private attributionVaultSubscription: Subscription | null = null;
@@ -36,10 +38,11 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
         chronoLens: new (individuator: Individuator) => ChronoLens,
         storage: StorageLike,
         prefersLightColorScheme: boolean,
-        orientationSubscription: OrientationSubscriptionDefinition
+        protected media: MediaSubscriptionDefinition
     ) {
+        this.media$ = new BehaviorSubject<Media>(media.initial());
         this.storageKeeper = new StorageKeeper(storage);
-        this.individuator = new Individuator(prefersLightColorScheme, orientationSubscription);
+        this.individuator = new Individuator(prefersLightColorScheme);
         this.animatrix = new Animatrix();
         this.cartomancer = new Cartomancer();
         this.chronoLens = new chronoLens(this.individuator);
@@ -82,6 +85,7 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
     };
 
     private mount = () => {
+        this.mediaSubscription = this.subscribeMedia();
         this.storageKeeper.initialize();
         this.individuator.initialize(this.storageKeeper);
         this.attributionVaultSubscription = this.subscribeAttributionVault();
@@ -101,7 +105,14 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
         this.attributionVaultSubscription?.unsubscribe();
         this.individuator.cleanUp();
         this.storageKeeper.cleanUp();
+        this.mediaSubscription?.unsubscribe();
     };
+
+    private subscribeMedia = (): { unsubscribe: () => void } => {
+        return this.media.subscribe((o) => {
+            this.media$.next(o);
+        });
+    }
 
     private subscribeAttributionVault = (): Subscription => {
         const addEntry = (styleId: keyof typeof Cartomancer.styles) => {
@@ -161,6 +172,7 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
         return (
             <MachineWardApp
                 title={this.title}
+                media$={this.media$}
                 individuator={this.individuator}
                 storageKeeper={this.storageKeeper}
                 signaliumBureau={this.signaliumBureau}
@@ -169,6 +181,7 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
                 cartomancer={this.cartomancer}
                 chronoLens={this.chronoLens}
                 toolsStation={this.toolsStation}
+                engine={this.engine}
                 components={this.components}
                 onMount={this.mount}
                 onUnmount={this.unmount}

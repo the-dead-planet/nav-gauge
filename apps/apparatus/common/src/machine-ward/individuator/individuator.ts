@@ -1,11 +1,9 @@
 import { BehaviorSubject, Subscription } from "rxjs";
-import { DateFormat, Option, ThemeMode, ThemeName, TimeFormat, formatTimestamp } from "@ui";
+import { DateFormat, Option, ThemeName, TimeFormat, formatTimestamp } from "@ui";
 import { StorageKeeper } from "../storage-keeper";
-import { IndividuatorSettings, Orientation, OrientationSubscriptionDefinition } from "./model";
+import { IndividuatorSettings } from "./model";
 
 export class Individuator {
-    public readonly orientation$: BehaviorSubject<Orientation>;
-
     private readonly settingsStorageId = 'application-settings';
     private settingsStorageSubscription: Subscription | null = null;
     public readonly settings$: BehaviorSubject<IndividuatorSettings>;
@@ -36,26 +34,19 @@ export class Individuator {
         timeFormat: this.defaultTimeFormat,
     });
 
-    private orientationSubscription: { unsubscribe: () => void } | null = null;
-
     public constructor(
-        prefersLightColorScheme: boolean,
-        protected orientation: OrientationSubscriptionDefinition
+        prefersLightColorScheme: boolean
     ) {
         const initialSettings = Individuator.getDefaultApplicationSettings(prefersLightColorScheme ? ThemeName.Light : ThemeName.Dark);
         this.settings$ = new BehaviorSubject<IndividuatorSettings>(initialSettings);
-
-        this.orientation$ = new BehaviorSubject<Orientation>(orientation.initial());
     }
 
     public initialize = (storageKeeper: StorageKeeper) => {
         this.settingsStorageSubscription = storageKeeper.synchronizeSubjectWithStorage(this.settings$, this.settingsStorageId);
-        this.orientationSubscription = this.orientation.subscribe((o) => this.orientation$.next(o));
     };
 
     public cleanUp = () => {
         this.settingsStorageSubscription?.unsubscribe();
-        this.orientationSubscription?.unsubscribe();
     };
 
     /**

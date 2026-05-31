@@ -1,3 +1,4 @@
+import { BehaviorSubject, Subscription } from "rxjs";
 import { Animatrix, AttributionVault, Cartomancer, ChronoLens, Individuator, SignaliumBureau, ToolsStation } from "../..";
 
 export interface GearApparatus<TMap> {
@@ -12,8 +13,13 @@ export interface GearApparatus<TMap> {
 
 export abstract class Gear<TMap> {
     public abstract id: string;
+    public abstract name: string;
+    public abstract description: string;
+    public icon?: string;
 
-    public apparatus: GearApparatus<TMap>;
+    public isEngaged$ = new BehaviorSubject(false);
+
+    protected apparatus: GearApparatus<TMap>;
 
     public abstract engage: () => void;
     public abstract disengage: () => void;
@@ -23,4 +29,20 @@ export abstract class Gear<TMap> {
     ) {
         this.apparatus = apparatus;
     }
+
+    private subscription: Subscription | null = null;
+
+    public setup = () => {
+        this.subscription = this.isEngaged$.subscribe((isEngaged) => {
+            if (isEngaged) {
+                this.engage();
+            } else {
+                this.disengage();
+            }
+        });
+    };
+
+    public cleanup = () => {
+        this.subscription?.unsubscribe();
+    };
 }

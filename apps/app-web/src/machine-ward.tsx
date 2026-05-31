@@ -1,4 +1,4 @@
-import { MachineGear, MachineWard, MachineWardComponents, Orientation, OrientationSubscriptionDefinition } from "@apparatus";
+import { MachineGear, MachineWard, MachineWardComponents, Orientation, Media, MediaSubscriptionDefinition } from "@apparatus";
 import { ErrorFallbackPage } from "./pages";
 import { Footer, Layout, TopBar } from "./layout";
 import { Machine } from "./machine/Machine";
@@ -7,18 +7,21 @@ import { WebChronoLens } from "@web-apparatus";
 
 export class WebMachineWard extends MachineWard<maplibregl.Map> {
     public constructor(gears: MachineGear<maplibregl.Map>[]) {
-        const getOrientation = (): Orientation => {
-            return window.innerWidth > window.innerHeight
-                ? Orientation.Landscape
-                : Orientation.Portrait;
+        const getMedia = (): Media => {
+            return {
+                windowWidth: window.innerWidth,
+                windowHeight: window.innerHeight,
+                orientation: window.innerWidth > window.innerHeight
+                    ? Orientation.Landscape
+                    : Orientation.Portrait
+            };
         };
-        const orientationSubscription: OrientationSubscriptionDefinition = {
-            initial: () => getOrientation(),
+        const mediaSubscription: MediaSubscriptionDefinition = {
+            initial: () => getMedia(),
             subscribe: (onChange) => {
                 const handler = () => {
-                    onChange(getOrientation());
+                    onChange(getMedia());
                 };
-
                 window.addEventListener('resize', handler);
 
                 return {
@@ -32,7 +35,7 @@ export class WebMachineWard extends MachineWard<maplibregl.Map> {
             WebChronoLens,
             localStorage,
             window.matchMedia("(prefers-color-scheme: light)").matches,
-            orientationSubscription
+            mediaSubscription
         );
     }
 

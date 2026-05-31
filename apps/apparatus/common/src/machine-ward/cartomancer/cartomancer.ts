@@ -42,6 +42,7 @@ export class Cartomancer<TMap> {
         showGreenScreen: false,
         controlPosition: 'top-right',
         controlPlacement: { top: 0, bottom: 0, left: 0, right: 0 },
+        // TODO: This belongs in the route story gear
         showRouteLine: true,
         showRoutePoints: true,
     }

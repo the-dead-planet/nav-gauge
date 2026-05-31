@@ -1,6 +1,6 @@
 import { Appearance, Dimensions, ScaledSize } from "react-native";
 import { createAsyncStorage } from "@react-native-async-storage/async-storage";
-import { MachineGear, MachineWard, MachineWardComponents, Orientation, OrientationSubscriptionDefinition } from "@apparatus";
+import { MachineGear, MachineWard, MachineWardComponents, Orientation, Media, MediaSubscriptionDefinition } from "@apparatus";
 import { Footer, Layout, TopBar } from "./layout";
 import { Machine } from "./machine/Machine";
 import { ErrorFallback } from "./ErrorFallback";
@@ -13,17 +13,23 @@ const AsyncStorage = createAsyncStorage('nav-gauge');
 
 export class MobileMachineWard extends MachineWard<MobileMap, keyof RootStackParamList> {
     public constructor(gears: MachineGear<MobileMap>[]) {
-        const getOrientation = (window: ScaledSize): Orientation => {
-            return window.width > Dimensions.get('window').height
-                ? Orientation.Landscape
-                : Orientation.Portrait;
+        const getMedia = (window: ScaledSize): Media => {
+            const { width, height } = Dimensions.get('window');
+
+            return {
+                windowWidth: width,
+                windowHeight: height,
+                orientation: window.width > height
+                    ? Orientation.Landscape
+                    : Orientation.Portrait
+            };
         };
 
-        const orientationSubscription: OrientationSubscriptionDefinition = {
-            initial: () => getOrientation(Dimensions.get('window')),
+        const mediaSubscription: MediaSubscriptionDefinition = {
+            initial: () => getMedia(Dimensions.get('window')),
             subscribe: (onChange) => {
                 const handler = ({ window }: { window: ScaledSize }) => {
-                    onChange(getOrientation(window));
+                    onChange(getMedia(window));
                 };
 
                 const subscription = Dimensions.addEventListener('change', handler);
@@ -41,7 +47,7 @@ export class MobileMachineWard extends MachineWard<MobileMap, keyof RootStackPar
             MobileChronoLens,
             AsyncStorage,
             Appearance.getColorScheme() === 'light',
-            orientationSubscription
+            mediaSubscription
         );
     }
 

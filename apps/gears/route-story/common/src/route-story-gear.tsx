@@ -5,9 +5,14 @@ import { GeoJson, ParsingResultWithError } from "@tinker-chest";
 import { RouteToolProps, RouteTimes, RouteFileInputProps, RouteFitBoundsProps } from "./model";
 import { FileOperator } from "./file-operator";
 import { PlayerOperator } from "./player-operator";
+import { Icons } from "@ui";
 
 export abstract class RouteStoryGear<TMap, TFile extends { name?: string | null; type: string | null; }, TImageData> extends Gear<TMap> {
     public readonly id = 'route-story';
+    public readonly name = 'Route Story';
+    public readonly description = 'Create a video story out of your GPS traces and image data';
+    public icon = Icons.NounProject.PinCinema;
+
     private dataSubscription: Subscription | null = null;
     public readonly data$ = new BehaviorSubject<ParsingResultWithError>({});
     public readonly routeTimes$ = new BehaviorSubject<RouteTimes | null>(null);

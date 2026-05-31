@@ -1,9 +1,11 @@
 import { createContext, } from "react";
 import { StorageKeeper } from "./storage-keeper";
 import { Individuator } from "./individuator";
-import { Animatrix, AttributionVault, Cartomancer, ChronoLens, SignaliumBureau, ToolsStation } from "..";
+import { Animatrix, AttributionVault, Cartomancer, ChronoLens, Engine, Media, SignaliumBureau, ToolsStation } from "..";
+import { BehaviorSubject } from "rxjs";
 
 export interface MachineWardContextValue<TMap = unknown> {
+    media$: BehaviorSubject<Media>
     individuator: Individuator;
     storageKeeper: StorageKeeper;
     animatrix: Animatrix;
@@ -12,6 +14,7 @@ export interface MachineWardContextValue<TMap = unknown> {
     chronoLens: ChronoLens;
     toolsStation: ToolsStation<TMap>;
     signaliumBureau: SignaliumBureau;
+    engine: Engine<TMap>
 }
 
 export const MachineWardContext = createContext<MachineWardContextValue | null>(null);

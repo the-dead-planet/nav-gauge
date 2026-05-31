@@ -15,10 +15,10 @@
         "@the-dead-planet/nav-gauge-ui-common": "*"
     },
     "devDependencies": {
-        "react": "19.2.3"
+        "react": "19.2.6"
     },
     "peerDependencies": {
-        "react": "19.2.3",
+        "react": "19.2.6",
         "rxjs": "^7.8.2"
     }
 }

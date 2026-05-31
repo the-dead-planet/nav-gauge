@@ -6,6 +6,10 @@
     justify-content: center;
 }
 
+.interactive {
+    cursor: pointer;
+}
+
 .mode-light {
     --hl-bg-opacity: .08;
 }

@@ -33,3 +33,19 @@ export interface MachineWardComponents<TNavigationPath extends string = string> 
 }
 
 export type MachineGear<TMap> = new (apparatus: GearApparatus<TMap>) => Gear<TMap>;
+
+export interface Media {
+    orientation: Orientation;
+    windowWidth: number;
+    windowHeight: number;
+}
+
+export enum Orientation {
+    Portrait,
+    Landscape,
+}
+
+export interface MediaSubscriptionDefinition {
+    initial: () => Media,
+    subscribe: (onChange: (media: Media) => void) => ({ unsubscribe: () => void }),
+}

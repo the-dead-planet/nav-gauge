@@ -16,7 +16,7 @@
     "devDependencies": {
         "@maplibre/maplibre-react-native": "11.0.2",
         "@react-native-documents/picker": "^12.0.1",
-        "react": "19.2.3",
+        "react": "19.2.6",
         "react-native": "0.85.2",
         "react-native-fs": "^2.20.0",
         "react-native-svg": "^15.15.5"
@@ -24,7 +24,7 @@
     "peerDependencies": {
         "@maplibre/maplibre-react-native": "11.0.2",
         "@react-native-documents/picker": "^12.0.1",
-        "react": "19.2.3",
+        "react": "19.2.6",
         "react-native": "0.85.2",
         "react-native-fs": "^2.20.0",
         "rxjs": "^7.8.2"
