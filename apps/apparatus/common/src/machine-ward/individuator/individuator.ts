@@ -2,6 +2,7 @@ import { BehaviorSubject, Subscription } from "rxjs";
 import { DateFormat, Option, ThemeName, TimeFormat, formatTimestamp } from "@ui";
 import { StorageKeeper } from "../storage-keeper";
 import { IndividuatorSettings } from "./model";
+import { Translatron } from "../translatron";
 
 export class Individuator {
     private readonly settingsStorageId = 'application-settings';
@@ -32,6 +33,7 @@ export class Individuator {
         confirmBeforeLeave: false,
         dateFormat: this.defaultDateFormat,
         timeFormat: this.defaultTimeFormat,
+        language: Translatron.defaultLanguage,
     });
 
     public constructor(

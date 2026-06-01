@@ -1,5 +1,5 @@
 import { BehaviorSubject, Subscription } from "rxjs";
-import { Animatrix, AttributionVault, Cartomancer, ChronoLens, Individuator, SignaliumBureau, ToolsStation } from "../..";
+import { Animatrix, AttributionVault, Cartomancer, ChronoLens, Individuator, SignaliumBureau, ToolsStation, Translatron, TranslationTable, Language } from "../..";
 
 export interface GearApparatus<TMap> {
     individuator: Individuator;
@@ -9,17 +9,21 @@ export interface GearApparatus<TMap> {
     cartomancer: Cartomancer<TMap>;
     animatrix: Animatrix;
     toolsStation: ToolsStation<TMap>;
+    translatron: Translatron;
+}
+
+export type GearTranslationTable = {
+    [key in Language]?: { [key in 'name' | 'description']: string; } & { [key in string]: string };
 }
 
 export abstract class Gear<TMap> {
     public abstract id: string;
-    public abstract name: string;
-    public abstract description: string;
     public icon?: string;
+    public abstract translations: GearTranslationTable
 
     public isEngaged$ = new BehaviorSubject(false);
 
-    protected apparatus: GearApparatus<TMap>;
+    public apparatus: GearApparatus<TMap>;
 
     public abstract engage: () => void;
     public abstract disengage: () => void;
@@ -35,9 +39,11 @@ export abstract class Gear<TMap> {
     public setup = () => {
         this.subscription = this.isEngaged$.subscribe((isEngaged) => {
             if (isEngaged) {
+                this.apparatus.translatron.register(this.id, this.translations);
                 this.engage();
             } else {
                 this.disengage();
+                this.apparatus.translatron.deregister(this.id);
             }
         });
     };

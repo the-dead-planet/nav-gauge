@@ -1,4 +1,5 @@
 import { DateFormat, ThemeName, TimeFormat } from "@ui";
+import { Language } from "../translatron";
 
 export interface IndividuatorSettings {
     themeName: ThemeName;
@@ -8,4 +9,5 @@ export interface IndividuatorSettings {
     confirmBeforeLeave: boolean;
     dateFormat: DateFormat;
     timeFormat: TimeFormat;
+    language: Language;
 }

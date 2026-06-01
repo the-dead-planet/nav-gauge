@@ -1,5 +1,5 @@
 import { ComponentType, ReactNode } from "react";
-import { Breakpoint, ErrorBoundaryProps, Media } from "@ui";
+import { ErrorBoundaryProps } from "@ui";
 import { SignaliumNotice } from "..";
 import { Gear, GearApparatus } from "./gears";
 

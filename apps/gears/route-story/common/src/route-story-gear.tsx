@@ -1,6 +1,6 @@
 import { ComponentType, FC } from "react";
 import { BehaviorSubject, Subscription } from "rxjs";
-import { ToolProps, MarkerImage, OverlayComponentProps, Gear, ControlComponentProps } from "@apparatus";
+import { ToolProps, MarkerImage, OverlayComponentProps, Gear, ControlComponentProps, GearTranslationTable } from "@apparatus";
 import { GeoJson, ParsingResultWithError } from "@tinker-chest";
 import { RouteToolProps, RouteTimes, RouteFileInputProps, RouteFitBoundsProps } from "./model";
 import { FileOperator } from "./file-operator";
@@ -9,8 +9,14 @@ import { Icons } from "@ui";
 
 export abstract class RouteStoryGear<TMap, TFile extends { name?: string | null; type: string | null; }, TImageData> extends Gear<TMap> {
     public readonly id = 'route-story';
-    public readonly name = 'Route Story';
-    public readonly description = 'Create a video story out of your GPS traces and image data';
+
+    public translations: GearTranslationTable = {
+        en: {
+            name: 'Route Story',
+            description: 'Create a video story out of your GPS traces and image data'
+        }
+    }
+    
     public icon = Icons.NounProject.PinCinema;
 
     private dataSubscription: Subscription | null = null;

@@ -1,7 +1,7 @@
 import { StrictMode, useEffect, useMemo } from "react";
 import { ErrorBoundary, MediaSubscriptionDefinition, Theme, ThemeContext, themeSpecifications } from "@ui";
 import { MachineWardNotices } from "./MachineWardNotices";
-import { Animatrix, AttributionVault, Cartomancer, ChronoLens, Engine, SignaliumBureau, ToolsStation } from "..";
+import { Animatrix, AttributionVault, Cartomancer, ChronoLens, Engine, SignaliumBureau, ToolsStation, Translatron } from "..";
 import { Individuator } from "./individuator";
 import { StorageKeeper } from "./storage-keeper";
 import { MachineWardContext, MachineWardContextValue } from "./MachineWardContext";
@@ -19,6 +19,7 @@ interface MachineWardProps<TMap, TNavigationPath extends string> {
     cartomancer: Cartomancer<TMap>;
     chronoLens: ChronoLens;
     toolsStation: ToolsStation<TMap>;
+    translatron: Translatron;
     engine: Engine<TMap>
     components: MachineWardComponents<TNavigationPath>;
     onMount: () => void;
@@ -38,6 +39,7 @@ export function MachineWardApp<TMap, TNavigationPath extends string>({
     chronoLens,
     toolsStation,
     signaliumBureau,
+    translatron,
     engine,
     components,
     onMount,
@@ -77,6 +79,7 @@ export function MachineWardApp<TMap, TNavigationPath extends string>({
                         chronoLens,
                         toolsStation,
                         signaliumBureau,
+                        translatron,
                         engine,
                     } as MachineWardContextValue}>
                         <components.layoutComponent>

@@ -3,7 +3,7 @@ import { combineLatest, pairwise, Subscription } from "rxjs";
 import { MachineWardApp } from "./MachineWardApp";
 import { Individuator } from "./individuator";
 import { ChronoLens } from "./chrono-lens";
-import { Animatrix, AttributionVault, Cartomancer, SignaliumBureau, ToolsStation } from "..";
+import { Animatrix, AttributionVault, Cartomancer, SignaliumBureau, ToolsStation, Translatron } from "..";
 import { Engine } from "./engine";
 import { Gear } from "./gears";
 import { StorageKeeper } from "./storage-keeper";
@@ -23,6 +23,7 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
     public readonly engine = new Engine<TMap>();
     public readonly attributionVault = new AttributionVault();
     public readonly signaliumBureau = new SignaliumBureau();
+    public readonly translatron = new Translatron();
     public readonly animatrix: Animatrix;
     public readonly cartomancer: Cartomancer<TMap>;
     public readonly chronoLens: ChronoLens;
@@ -63,6 +64,7 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
                         cartomancer: this.cartomancer,
                         animatrix: this.animatrix,
                         toolsStation: this.toolsStation,
+                        translatron: this.translatron,
                     }));
                 }
                 return acc;
@@ -171,6 +173,7 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
                 cartomancer={this.cartomancer}
                 chronoLens={this.chronoLens}
                 toolsStation={this.toolsStation}
+                translatron={this.translatron}
                 engine={this.engine}
                 components={this.components}
                 onMount={this.mount}
