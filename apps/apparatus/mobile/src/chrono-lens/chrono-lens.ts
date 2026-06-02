@@ -1,7 +1,7 @@
 import RNFS from 'react-native-fs';
 import { viewDocument } from '@react-native-documents/viewer'
 import { ViewRecorder } from "react-native-view-recorder";
-import { ChronoLens, Individuator, SignaliumBureau } from "@apparatus";
+import { ChronoLens, glitchmitter, Individuator, SignaliumBureau } from "@apparatus";
 
 export class MobileChronoLens extends ChronoLens {
     public viewRecorder: ViewRecorder | null = null;
@@ -63,7 +63,7 @@ export class MobileChronoLens extends ChronoLens {
             try {
                 await RNFS.mkdir(appFolder);
             } catch (err) {
-                console.error("Error creating app folder", err);
+                glitchmitter.transmit("Error creating app folder", err);
             }
         }
     };

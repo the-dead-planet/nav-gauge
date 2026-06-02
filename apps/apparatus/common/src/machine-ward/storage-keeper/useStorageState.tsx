@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useMachineWard } from "../useMachineWard";
+import { glitchmitter } from "../..";
 
 /**
  * On mount initializes the state with the data in storage, if available (otherwise with the `defaultState`).
@@ -25,7 +26,7 @@ export function useStorageState<T extends object>(
                     })
                 }
             } catch (err) {
-                console.error(`Error getting ${storageId} storage state`, err);
+                glitchmitter.transmit(`Error getting ${storageId} storage state`, err);
             }
         })();
     }, []);
@@ -34,7 +35,7 @@ export function useStorageState<T extends object>(
         try {
             storageKeeper.storage.setItem(storageId, JSON.stringify(state));
         } catch (err) {
-            console.error(`Error setting ${storageId} storage state`, err);
+            glitchmitter.transmit(`Error setting ${storageId} storage state`, err);
         }
     }, [state]);
 

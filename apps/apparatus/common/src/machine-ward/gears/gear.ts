@@ -37,18 +37,18 @@ export abstract class Gear<TMap> {
     private subscription: Subscription | null = null;
 
     public setup = () => {
+        this.apparatus.translatron.register(this.id, this.translations);
         this.subscription = this.isEngaged$.subscribe((isEngaged) => {
             if (isEngaged) {
-                this.apparatus.translatron.register(this.id, this.translations);
                 this.engage();
             } else {
                 this.disengage();
-                this.apparatus.translatron.deregister(this.id);
             }
         });
     };
 
     public cleanup = () => {
         this.subscription?.unsubscribe();
+        this.apparatus.translatron.deregister(this.id);
     };
 }

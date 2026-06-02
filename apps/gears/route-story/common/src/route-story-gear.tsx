@@ -14,6 +14,10 @@ export abstract class RouteStoryGear<TMap, TFile extends { name?: string | null;
         en: {
             name: 'Route Story',
             description: 'Create a video story out of your GPS traces and image data'
+        },
+        jp: {
+            name: 'ルートストーリー',
+            description: 'GPSトレースと画像データから動画ストーリーを作成する'
         }
     }
     

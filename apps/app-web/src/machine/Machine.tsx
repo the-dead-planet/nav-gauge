@@ -1,6 +1,5 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { MapSection } from "./MapSection";
-import { useTheme } from "@ui";
 
 export const Machine: FC = () => {
     return (

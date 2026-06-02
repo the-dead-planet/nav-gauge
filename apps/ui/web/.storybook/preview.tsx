@@ -1,12 +1,34 @@
 import { useState, type ReactNode } from 'react';
 import type { Preview } from 'storybook-react-rsbuild';
-import { Theme, ThemeContext, ThemeName, themeOptions, themeSpecifications } from '@ui';
+import { Orientation, Theme, ThemeContext, ThemeName, themeOptions, themeSpecifications } from '@ui';
 import { P, useThemeVariables } from '../src';
 import './preview.css';
 
+const getMedia = () => {
+    return {
+        windowWidth: window.innerWidth,
+        windowHeight: window.innerHeight,
+        orientation: window.innerWidth > window.innerHeight
+            ? Orientation.Landscape
+            : Orientation.Portrait
+    }
+};
+
 const ThemeDecorator = ({ children }: { children: ReactNode }) => {
     const [themeName, setThemeName] = useState<ThemeName>(ThemeName.Dark);
-    const theme = new Theme(themeSpecifications[themeName]);
+    const theme = new Theme(themeSpecifications[themeName], {
+        initial: () => getMedia(),
+        subscribe: (onChange) => {
+            const handler = () => {
+                onChange(getMedia());
+            };
+            window.addEventListener('resize', handler);
+
+            return {
+                unsubscribe: () => window.removeEventListener('resize', handler)
+            }
+        }
+    });
 
     useThemeVariables(theme);
 

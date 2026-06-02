@@ -5,4 +5,5 @@ export * from './grid';
 export * from './icons';
 export * from './menu';
 export * from './theme';
+export * from './tooltip';
 export * from './typography';

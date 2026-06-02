@@ -1,14 +1,16 @@
-import { ComponentProps, FC } from "react";
+import { ComponentProps, FC, ReactNode } from "react";
 import classNames from "classnames";
 import { ButtonProps, useTheme } from "@ui";
 import { Icon } from "../icons";
 import styles from './button.module.css';
+import { Tooltip } from "../tooltip";
 
 interface Props {
     /**
      * Icon to display before the children
      */
     icon?: string;
+    tooltip?: ReactNode;
 }
 
 export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
@@ -20,6 +22,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     active = false,
     mode,
     icon,
+    tooltip,
     children,
     className,
     ...props
@@ -32,7 +35,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     }
     const iconSize = iconSizes[size];
 
-    return (
+    const button = (
         <button
             className={classNames(
                 styles['button'],
@@ -62,4 +65,14 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
             {children}
         </button>
     );
+
+
+
+    if (tooltip) {
+        <Tooltip content={tooltip}>
+            {button}
+        </Tooltip>
+    };
+
+    return button;
 };

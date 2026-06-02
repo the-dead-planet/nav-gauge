@@ -1,4 +1,5 @@
 import { BehaviorSubject, Subscription } from "rxjs";
+import { glitchmitter } from "../..";
 
 export class StorageKeeper {
     public storage: StorageLike;
@@ -44,14 +45,14 @@ export class StorageKeeper {
                 maybePromise?.then(setState)
             }
         } catch (err) {
-            console.error(`Error getting ${storageId} storage state`, err);
+            glitchmitter.transmit(`Error getting ${storageId} storage state`, err);
         }
 
         return state$.subscribe((next) => {
             try {
                 this.storage.setItem(storageId, JSON.stringify(next));
             } catch (err) {
-                console.error(`Error setting ${storageId} storage state`, err);
+                glitchmitter.transmit(`Error setting ${storageId} storage state`, err);
             }
         });
     };

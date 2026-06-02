@@ -1,6 +1,6 @@
 import maplibregl from "maplibre-gl";
 import EXIF from 'exif-js';
-import { ExifData } from '@apparatus';
+import { ExifData, glitchmitter } from '@apparatus';
 import { FULL_SIZE_IMAGE_SIZE, MAP_THUMBNAIL_SIZE   } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { getExifError, getExifLngLat, LngLat } from "@tinker-chest";
 import { getResizeDimensions } from "@the-dead-planet/nav-gauge-gears-route-story-common/src/file-parser";
@@ -38,7 +38,7 @@ export const parseImage = async (
             resizeImage(e.target?.result, { targetSize: MAP_THUMBNAIL_SIZE  , shape }),
         ]);
     } catch (err) {
-        console.error('Error resizing image', err);
+        glitchmitter.transmit('Error resizing image', err);
     }
 
     // TODO: Derive timezone

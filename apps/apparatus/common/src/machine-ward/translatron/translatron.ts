@@ -3,7 +3,6 @@ import { Language, TranslationRegistry, TranslationTable } from "./model";
 
 export class Translatron {
     public static defaultLanguage: Language = 'en';
-    private placeholderText = 'Translatron oopsie';
 
     /**
      * Mapping of namespaces to translation tables, for example `Map<'my-namespace', { en: { "title": "Have a good day" }}>`
@@ -29,7 +28,7 @@ export class Translatron {
 
         return new Set<Language>(languages);
     };
-    
+
     /**
      * Translates to the desired language with fallback to the default language (en).
      * @param params For template strings, for example `{ distance: '1,234 km' }` if the template string is `Traveled {{distance}} distance.`
@@ -44,17 +43,16 @@ export class Translatron {
         const table = registry.get(namespace);
 
         if (!table) {
-            console.warn(`Could not find translation namespace: "${namespace}"`);
-            return this.placeholderText;
+            throw new Error(`Could not find translation namespace: "${namespace}"`);
         }
 
         const translation = table[lang]?.[key] ?? table[Translatron.defaultLanguage]?.[key];
 
-        if (translation !== undefined) {
-            return params ? this.interpolate(translation, params) : translation;
+        if (translation === undefined) {
+            throw new Error(`Could not find translation for key: "${key}" in namespace: "${namespace}" for language: "${lang}" or default language: "${Translatron.defaultLanguage}"`);
         }
 
-        return key;
+        return params ? this.interpolate(translation, params) : translation;
     };
 
     /**

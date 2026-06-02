@@ -4,6 +4,7 @@ import {
     Animatrix,
     Cartomancer,
     GaugeControlsType,
+    glitchmitter,
     MapLayout,
     Preset,
     ToolsStation,
@@ -74,10 +75,10 @@ export const Presets: FC<Props> = () => {
                         setPreset(nextPreset);
                     }
                 } catch (e) {
-                    console.error(e);
+                    glitchmitter.transmit(e);
                 }
             })
-            .catch(console.error);
+            .catch(glitchmitter.transmit);
     };
 
     return (

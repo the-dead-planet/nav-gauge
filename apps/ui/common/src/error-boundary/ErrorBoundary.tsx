@@ -50,6 +50,7 @@ export class ErrorBoundary extends PureComponent<ErrorBoundaryProps, State> {
 
     public render() {
         const error = this.props.error ?? this.state.error;
+        
         if (error instanceof Error) {
             const errorInfo = this.props.errorInfo ?? this.state.errorInfo;
 

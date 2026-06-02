@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { combineLatest, of, switchMap, map as rxjsMap } from "rxjs";
 import classNames from "classnames";
 import { useMachineWard } from "@apparatus";
+import { T } from "@web-apparatus";
 import { useObservableState, useSubjectState } from "@tinker-chest";
 import { Presets } from "./controls/Presets";
 import { AnimationControls } from "./controls/AnimationControls";
@@ -71,9 +72,9 @@ export const MapSection: FC = () => {
                                 engine.engageGear(gear);
                             }
                         }}
-                        title={gear.description}
+                        tooltip={<T n={gear.id} t="description" />}
                     >
-                        {gear.name}
+                        <T n={gear.id} t="name" />
                     </Button>
                 ))}
             </FlexBox>

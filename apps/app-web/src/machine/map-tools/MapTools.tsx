@@ -3,7 +3,7 @@ import maplibregl from "maplibre-gl";
 import { Protocol } from "pmtiles";
 import classNames from "classnames";
 import { Icons } from "@ui";
-import { Cartomancer, useMachineWard, ToolsStation } from "@apparatus";
+import { Cartomancer, useMachineWard, ToolsStation, glitchmitter } from "@apparatus";
 import { useObservableState, useSubjectState } from "@tinker-chest";
 import styles from './map-tools.module.css';
 import './map.css';
@@ -74,7 +74,7 @@ export const MapTools: FC<Props> = ({ map, children }) => {
         link.rel = 'stylesheet';
         link.type = 'text/css';
         link.onload = () => setCssLoaded(true);
-        link.onerror = (err) => console.error(err);
+        link.onerror = (err) => glitchmitter.transmit(err);
         link.href = `https://unpkg.com/maplibre-gl@${maplibregl.getVersion()}/dist/maplibre-gl.css`;
         head.appendChild(link);
 
@@ -171,7 +171,7 @@ export const MapTools: FC<Props> = ({ map, children }) => {
         const abortController = new AbortController();
         updateStyle(map, nextStyle.style, abortController.signal, (err) => {
             if (!abortController.signal.aborted) {
-                console.error(err)
+                glitchmitter.transmit(err)
             }
         });
 
