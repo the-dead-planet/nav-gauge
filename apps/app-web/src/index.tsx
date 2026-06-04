@@ -13,7 +13,7 @@ async function initializeApp() {
     root.render(<LoadingPage stage="gears" />);
 
     try {
-        const modules = await Promise.allSettled(__GEAR_REGISTRY__.map((gearName) => import(/* webpackChunkName: "gear-[request]" */ `../../gears/${gearName}/web/src`)));
+        const modules = await Promise.allSettled(__GEAR_REGISTRY__.map((gearName) => import(`../../gears/${gearName}/web/src`)));
         const [gears, rejected] = modules
             .reduce<[MachineGear<maplibregl.Map>[], string[]]>(
                 (acc, module, i) => {

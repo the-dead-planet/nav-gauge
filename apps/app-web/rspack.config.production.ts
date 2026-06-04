@@ -116,10 +116,23 @@ const config = (env: Env, argv: Argv): Configuration => {
                         name: 'tinker-chest',
                     },
                     ...(Object.fromEntries(
-                        gearNames.map((gearName) => [gearName, {
-                            test: new RegExp(`[\\\\/]gears[\\\\/]${gearName}[\\\\/](common|web)[\\\\/]src[\\\\/]`),
-                            name: `gear-${gearName}`,
-                        }])
+                        gearNames.map((gearName) => [
+                            gearName + '-i18n',
+                            {
+                                test: new RegExp(`[\\\\/]gears[\\\\/]${gearName}[\\\\/](common|web)[\\\\/]src[\\\\/]translations[\\\\/]`),
+                                name: `gear-${gearName}-i18n`,
+                                priority: 5,
+                            }
+                        ])
+                    )),
+                    ...(Object.fromEntries(
+                        gearNames.map((gearName) => [
+                            gearName,
+                            {
+                                test: new RegExp(`[\\\\/]gears[\\\\/]${gearName}[\\\\/](common|web)[\\\\/]src[\\\\/]`),
+                                name: `gear-${gearName}`,
+                            }
+                        ])
                     )),
                     ui: {
                         test: /[\\/]ui[\\/](common|web)[\\/]src[\\/]/,
