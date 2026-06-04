@@ -10,10 +10,10 @@
         "test": "mocha"
     },
     "devDependencies": {
-        "react": "19.2.6"
+        "react": "19.2.7"
     },
     "peerDependencies": {
-        "react": "19.2.6",
+        "react": "19.2.7",
         "rxjs": "^7.8.2"
     }
 }

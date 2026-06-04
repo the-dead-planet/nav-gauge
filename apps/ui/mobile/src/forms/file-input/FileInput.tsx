@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { ButtonProps, View, ViewProps } from "react-native";
+import { View, ViewProps } from "react-native";
 import { DocumentPickerOptions, DocumentPickerResponse, pick } from '@react-native-documents/picker';
 import { Button } from "../../button/Button";
 
@@ -10,7 +10,6 @@ export interface FileInputProps {
     title?: string;
     type: DocumentPickerOptions['type'],
     allowMultiSelection?: boolean,
-    buttonProps?: Omit<ButtonProps, 'title' | 'onPress'>;
     onIsLoadingChange?: (isLoading: boolean) => void;
     onUpload: (files: DocumentPickerResponse[]) => Promise<void>;
     onError?: (error: Error) => void;
@@ -20,7 +19,6 @@ export const FileInput: FC<FileInputProps & ViewProps> = ({
     title = 'Upload',
     type,
     allowMultiSelection,
-    buttonProps = {},
     onIsLoadingChange,
     onUpload,
     onError,
@@ -45,11 +43,7 @@ export const FileInput: FC<FileInputProps & ViewProps> = ({
 
     return (
         <View {...props}>
-            <Button
-                title={title}
-                onPress={handleUpload}
-                {...buttonProps}
-            />
+            <Button title={title} onPress={handleUpload} />
         </View>
     );
 };

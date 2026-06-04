@@ -12,7 +12,7 @@ export interface RouteTimes {
     duration: number;
 }
 
-export interface RouteToolProps<TMap, TFile extends { name?: string | null; type: string | null; }, TImageData> {
+export interface RouteToolProps<TMap, TFile extends RouteStoryFile, TImageData> {
     data$: BehaviorSubject<ParsingResultWithError>;
     routeTimes$: BehaviorSubject<RouteTimes | null>;
     images$: BehaviorSubject<MarkerImage<TImageData>[]>;
@@ -20,7 +20,7 @@ export interface RouteToolProps<TMap, TFile extends { name?: string | null; type
     playerOperator: PlayerOperator<TMap, TFile, TImageData>;
 }
 
-export interface RouteFileInputProps<TMap, TFile extends { name?: string | null; type: string | null; }, TImageData> {
+export interface RouteFileInputProps<TMap, TFile extends RouteStoryFile, TImageData> {
     data$: BehaviorSubject<ParsingResultWithError>;
     images$: BehaviorSubject<MarkerImage<TImageData>[]>;
     fileOperator: FileOperator<TMap, TFile, TImageData>;
@@ -29,4 +29,9 @@ export interface RouteFileInputProps<TMap, TFile extends { name?: string | null;
 export interface RouteFitBoundsProps<TMap> {
     data$: BehaviorSubject<ParsingResultWithError>;
     onFitBounds: (map: TMap, sw: [number, number], ne: [number, number]) => void;
+}
+
+export interface RouteStoryFile {
+    name?: string | null;
+    type: string | null;
 }

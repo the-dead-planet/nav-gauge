@@ -71,16 +71,23 @@ More info in web app's [README](/apps/app-web/README.md).
 
 Set up android environment following https://reactnative.dev/docs/set-up-your-environment
 
-To start metro service:
+To start metro service or start with clear cache:
 
 ```
 yarn start:mobile
+yarn start:mobile:r 
 ```
 
 To run on the development device (emulator or connected real device):
 
 ```
 yarn dev:mobile
+```
+
+To run type check in watch mode:
+
+```
+yarn typecheck:mobile
 ```
 
 More info in mobile app's [README](/apps/app-mobile/app/README.md).

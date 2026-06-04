@@ -16,13 +16,13 @@
     },
     "devDependencies": {
         "@maplibre/maplibre-react-native": "11.0.2",
-        "react": "19.2.6",
-        "react-native": "0.85.2"
+        "react": "19.2.7",
+        "react-native": "0.85.3"
     },
     "peerDependencies": {
         "@maplibre/maplibre-react-native": "11.0.2",
-        "react": "19.2.6",
-        "react-native": "0.85.2",
+        "react": "19.2.7",
+        "react-native": "0.85.3",
         "rxjs": "^7.8.2"
     }
 }

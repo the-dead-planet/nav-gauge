@@ -2,8 +2,9 @@ import { BehaviorSubject } from "rxjs";
 import { parsers, FileToGeoJSONParser } from "@apparatus";
 import { GeoJson, getNext } from "@tinker-chest";
 import { RouteStoryGear } from "./route-story-gear";
+import { RouteStoryFile } from "./model";
 
-export class FileOperator<TMap, TFile extends { name?: string | null; type: string | null; }, TImageData> {
+export class FileOperator<TMap, TFile extends RouteStoryFile, TImageData> {
     private gear: RouteStoryGear<TMap, TFile, TImageData>;
     public isLoading$ = new BehaviorSubject(false);
 
