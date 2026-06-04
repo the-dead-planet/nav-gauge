@@ -1,8 +1,15 @@
 import path from "path";
+import fs from "fs";
 import { merge } from "webpack-merge";
 import rspack, { Configuration } from "@rspack/core";
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { baseConfig, Env, Argv } from "./rspack.config";
+
+const gearsDir = path.resolve(__dirname, "../gears");
+const gearNames = fs
+    .readdirSync(gearsDir, { withFileTypes: true })
+    .filter((dirent) => dirent.isDirectory() && fs.existsSync(path.join(gearsDir, dirent.name, "web/src/index.ts")))
+    .map((dirent) => dirent.name);
 
 const config = (env: Env, argv: Argv): Configuration => {
     const base = baseConfig(env, argv);
@@ -108,10 +115,12 @@ const config = (env: Env, argv: Argv): Configuration => {
                         test: /[\\/]tinker-chest[\\/]src[\\/]/,
                         name: 'tinker-chest',
                     },
-                    gears: {
-                        test: /[\\/]gears[\\/].*[\\/](common|web)[\\/]src[\\/]/,
-                        name: 'gears',
-                    },
+                    ...(Object.fromEntries(
+                        gearNames.map((gearName) => [gearName, {
+                            test: new RegExp(`[\\\\/]gears[\\\\/]${gearName}[\\\\/](common|web)[\\\\/]src[\\\\/]`),
+                            name: `gear-${gearName}`,
+                        }])
+                    )),
                     ui: {
                         test: /[\\/]ui[\\/](common|web)[\\/]src[\\/]/,
                         name: 'ui',

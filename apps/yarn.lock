@@ -4854,7 +4854,7 @@ __metadata:
     maplibre-gl: "npm:5.24.0"
     pmtiles: "npm:^4.4.1"
     react: "npm:19.2.3"
-    react-dom: "npm:19.2.6"
+    react-dom: "npm:19.2.3"
     react-refresh: "npm:^0.18.0"
     react-svg: "npm:^17.2.4"
     style-loader: "npm:^4.0.0"
@@ -4914,11 +4914,11 @@ __metadata:
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
     maplibre-gl: "npm:5.24.0"
     react: "npm:19.2.3"
-    react-dom: "npm:19.2.6"
+    react-dom: "npm:19.2.3"
   peerDependencies:
     maplibre-gl: 5.24.0
     react: 19.2.3
-    react-dom: 19.2.6
+    react-dom: 19.2.3
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -4968,11 +4968,11 @@ __metadata:
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
     maplibre-gl: "npm:5.24.0"
     react: "npm:19.2.3"
-    react-dom: "npm:19.2.6"
+    react-dom: "npm:19.2.3"
   peerDependencies:
     maplibre-gl: 5.24.0
     react: 19.2.3
-    react-dom: 19.2.6
+    react-dom: 19.2.3
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -5022,11 +5022,11 @@ __metadata:
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
     maplibre-gl: "npm:5.24.0"
     react: "npm:19.2.3"
-    react-dom: "npm:19.2.6"
+    react-dom: "npm:19.2.3"
   peerDependencies:
     maplibre-gl: 5.24.0
     react: 19.2.3
-    react-dom: 19.2.6
+    react-dom: 19.2.3
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -5088,11 +5088,11 @@ __metadata:
     exif-js: "npm:^2.3.0"
     maplibre-gl: "npm:5.24.0"
     react: "npm:19.2.3"
-    react-dom: "npm:19.2.6"
+    react-dom: "npm:19.2.3"
   peerDependencies:
     maplibre-gl: 5.24.0
     react: 19.2.3
-    react-dom: 19.2.6
+    react-dom: 19.2.3
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -5142,11 +5142,11 @@ __metadata:
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
     maplibre-gl: "npm:5.24.0"
     react: "npm:19.2.3"
-    react-dom: "npm:19.2.6"
+    react-dom: "npm:19.2.3"
   peerDependencies:
     maplibre-gl: 5.24.0
     react: 19.2.3
-    react-dom: 19.2.6
+    react-dom: 19.2.3
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -5211,14 +5211,14 @@ __metadata:
     css-loader: "npm:^7.1.4"
     maplibre-gl: "npm:5.24.0"
     react: "npm:19.2.3"
-    react-dom: "npm:19.2.6"
+    react-dom: "npm:19.2.3"
     react-svg: "npm:^17.2.4"
     storybook: "npm:^10.4.1"
     storybook-react-rsbuild: "npm:^3.3.3"
   peerDependencies:
     maplibre-gl: 5.24.0
     react: 19.2.3
-    react-dom: 19.2.6
+    react-dom: 19.2.3
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -13612,14 +13612,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:19.2.6":
-  version: 19.2.6
-  resolution: "react-dom@npm:19.2.6"
+"react-dom@npm:19.2.3":
+  version: 19.2.3
+  resolution: "react-dom@npm:19.2.3"
   dependencies:
     scheduler: "npm:^0.27.0"
   peerDependencies:
-    react: ^19.2.6
-  checksum: 10/695122e37dec3460311231ff1f9a96368d74457d4ccf60010eaebc08c3e1c47b054c9267b40d98c689ae99d0c29a340acacfd405016a954a4f11613146191e68
+    react: ^19.2.3
+  checksum: 10/5780f6d4c8e8ece09f82c5500ba2d55e01c30b5273f9281734d7d3b65013cd1fa52ec4e4436e5248c0a9e5bc340836044051168bbad8d7eac4d33ee6c2a867a1
   languageName: node
   linkType: hard
 

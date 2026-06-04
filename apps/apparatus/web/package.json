@@ -18,12 +18,12 @@
         "@maplibre/maplibre-gl-style-spec": "^24.8.1",
         "maplibre-gl": "5.24.0",
         "react": "19.2.3",
-        "react-dom": "19.2.6"
+        "react-dom": "19.2.3"
     },
     "peerDependencies": {
         "maplibre-gl": "5.24.0",
         "react": "19.2.3",
-        "react-dom": "19.2.6",
+        "react-dom": "19.2.3",
         "rxjs": "^7.8.2"
     }
 }
