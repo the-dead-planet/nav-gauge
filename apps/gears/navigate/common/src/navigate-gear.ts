@@ -1,18 +1,9 @@
 import { Gear, GearTranslationTable } from "@apparatus";
+import * as Translations from "./translations";
 
 export abstract class NavigateGear<TMap> extends Gear<TMap> {
     public readonly id = 'navigate';
-
-    public translations: GearTranslationTable = {
-        en: {
-            name: 'Navigate',
-            description: 'Navigate using a custom route'
-        },
-        jp: {
-            name: 'ナビゲート',
-            description: 'カスタムルートでナビゲーションします。'
-        }
-    }
+    public translations: GearTranslationTable = Translations;
 
     public engage = () => {
         // To be implemented

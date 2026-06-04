@@ -1,12 +1,10 @@
-import { FC } from "react";
 import { BehaviorSubject, Subscription } from "rxjs";
-import { SvgProps } from "./internal-model";
 import { GearApparatus, GearTranslationTable } from "./model";
 
 export abstract class Gear<TMap> {
     public abstract id: string;
-    public icon?: string | FC<SvgProps>;
-    public abstract translations: GearTranslationTable
+    public icon?: string;
+    public abstract translations: GearTranslationTable;
 
     public isEngaged$ = new BehaviorSubject(false);
 

@@ -6,22 +6,13 @@ import { RouteToolProps, RouteTimes, RouteFileInputProps, RouteFitBoundsProps, R
 import { FileOperator } from "./file-operator";
 import { PlayerOperator } from "./player-operator";
 import { Icons } from "@ui";
+import * as Translations from "./translations";
 
 export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageData> extends Gear<TMap> {
     public readonly id = 'route-story';
+    public translations: GearTranslationTable = Translations;
 
-    public translations: GearTranslationTable = {
-        en: {
-            name: 'Route Story',
-            description: 'Create a video story out of your GPS traces and image data'
-        },
-        jp: {
-            name: 'ルートストーリー',
-            description: 'GPSトレースと画像データから動画ストーリーを作成する'
-        }
-    }
-    
-    public icon = Icons.NounProject.PinCinema;
+    public icon = Icons.NounProject.PinCinema as unknown as string;
 
     private dataSubscription: Subscription | null = null;
     public readonly data$ = new BehaviorSubject<ParsingResultWithError>({});

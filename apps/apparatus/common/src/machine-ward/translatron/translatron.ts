@@ -33,11 +33,11 @@ export class Translatron {
      * Translates to the desired language with fallback to the default language (en).
      * @param params For template strings, for example `{ distance: '1,234 km' }` if the template string is `Traveled {{distance}} distance.`
      */
-    public translate = (
+    public translate = <T extends string>(
         lang: Language,
         registry: TranslationRegistry,
         namespace: string,
-        key: string,
+        key: T,
         params?: { [key in string]: string | number; },
     ): string => {
         const table = registry.get(namespace);
