@@ -131,6 +131,7 @@ const config = (env: Env, argv: Argv): Configuration => {
                             {
                                 test: new RegExp(`[\\\\/]gears[\\\\/]${gearName}[\\\\/](common|web)[\\\\/]src[\\\\/]`),
                                 name: `gear-${gearName}`,
+                                minSize: 0,
                             }
                         ])
                     )),
