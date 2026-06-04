@@ -4810,7 +4810,7 @@ __metadata:
     jest: "npm:^29.7.0"
     jest-environment-jsdom: "npm:^29.7.0"
     prettier: "npm:^3.8.3"
-    react: "npm:19.2.7"
+    react: "npm:19.2.3"
     react-native: "npm:0.85.3"
     react-native-fs: "npm:^2.20.0"
     react-native-safe-area-context: "npm:^5.7.0"
@@ -4818,9 +4818,9 @@ __metadata:
     react-native-svg: "npm:^15.15.5"
     react-native-svg-transformer: "npm:^1.5.3"
     react-native-view-recorder: "npm:^0.4.0"
-    react-test-renderer: "npm:19.2.7"
+    react-test-renderer: "npm:19.2.3"
   peerDependencies:
-    react: 19.2.7
+    react: 19.2.3
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -4853,8 +4853,8 @@ __metadata:
     cypress: "npm:^15.15.0"
     maplibre-gl: "npm:5.24.0"
     pmtiles: "npm:^4.4.1"
-    react: "npm:19.2.7"
-    react-dom: "npm:19.2.7"
+    react: "npm:19.2.3"
+    react-dom: "npm:19.2.6"
     react-refresh: "npm:^0.18.0"
     react-svg: "npm:^17.2.4"
     style-loader: "npm:^4.0.0"
@@ -4862,7 +4862,7 @@ __metadata:
     webpack-bundle-analyzer: "npm:^5.3.0"
     webpack-merge: "npm:^6.0.1"
   peerDependencies:
-    react: 19.2.7
+    react: 19.2.3
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -4875,9 +4875,9 @@ __metadata:
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
     fast-xml-parser: "npm:^5.7.2"
-    react: "npm:19.2.7"
+    react: "npm:19.2.3"
   peerDependencies:
-    react: 19.2.7
+    react: 19.2.3
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -4892,13 +4892,13 @@ __metadata:
     "@the-dead-planet/nav-gauge-apparatus-common": "npm:*"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
-    react: "npm:19.2.7"
+    react: "npm:19.2.3"
     react-native: "npm:0.85.3"
     react-native-fs: "npm:^2.20.0"
     react-native-view-recorder: "npm:^0.4.0"
   peerDependencies:
     "@maplibre/maplibre-react-native": 11.0.2
-    react: 19.2.7
+    react: 19.2.3
     react-native: 0.85.3
     rxjs: ^7.8.2
   languageName: unknown
@@ -4913,12 +4913,12 @@ __metadata:
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
     maplibre-gl: "npm:5.24.0"
-    react: "npm:19.2.7"
-    react-dom: "npm:19.2.7"
+    react: "npm:19.2.3"
+    react-dom: "npm:19.2.6"
   peerDependencies:
     maplibre-gl: 5.24.0
-    react: 19.2.7
-    react-dom: 19.2.7
+    react: 19.2.3
+    react-dom: 19.2.6
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -4930,9 +4930,9 @@ __metadata:
     "@the-dead-planet/nav-gauge-apparatus-common": "npm:*"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
-    react: "npm:19.2.7"
+    react: "npm:19.2.3"
   peerDependencies:
-    react: 19.2.7
+    react: 19.2.3
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -4947,11 +4947,11 @@ __metadata:
     "@the-dead-planet/nav-gauge-gears-navigate-common": "npm:*"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
-    react: "npm:19.2.7"
+    react: "npm:19.2.3"
     react-native: "npm:0.85.3"
   peerDependencies:
     "@maplibre/maplibre-react-native": 11.0.2
-    react: 19.2.7
+    react: 19.2.3
     react-native: 0.85.3
     rxjs: ^7.8.2
   languageName: unknown
@@ -4967,12 +4967,12 @@ __metadata:
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
     maplibre-gl: "npm:5.24.0"
-    react: "npm:19.2.7"
-    react-dom: "npm:19.2.7"
+    react: "npm:19.2.3"
+    react-dom: "npm:19.2.6"
   peerDependencies:
     maplibre-gl: 5.24.0
-    react: 19.2.7
-    react-dom: 19.2.7
+    react: 19.2.3
+    react-dom: 19.2.6
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -4984,9 +4984,9 @@ __metadata:
     "@the-dead-planet/nav-gauge-apparatus-common": "npm:*"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
-    react: "npm:19.2.7"
+    react: "npm:19.2.3"
   peerDependencies:
-    react: 19.2.7
+    react: 19.2.3
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -5001,11 +5001,11 @@ __metadata:
     "@the-dead-planet/nav-gauge-gears-record-route-common": "npm:*"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
-    react: "npm:19.2.7"
+    react: "npm:19.2.3"
     react-native: "npm:0.85.3"
   peerDependencies:
     "@maplibre/maplibre-react-native": 11.0.2
-    react: 19.2.7
+    react: 19.2.3
     react-native: 0.85.3
     rxjs: ^7.8.2
   languageName: unknown
@@ -5021,12 +5021,12 @@ __metadata:
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
     maplibre-gl: "npm:5.24.0"
-    react: "npm:19.2.7"
-    react-dom: "npm:19.2.7"
+    react: "npm:19.2.3"
+    react-dom: "npm:19.2.6"
   peerDependencies:
     maplibre-gl: 5.24.0
-    react: 19.2.7
-    react-dom: 19.2.7
+    react: 19.2.3
+    react-dom: 19.2.6
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -5038,9 +5038,9 @@ __metadata:
     "@the-dead-planet/nav-gauge-apparatus-common": "npm:*"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
-    react: "npm:19.2.7"
+    react: "npm:19.2.3"
   peerDependencies:
-    react: 19.2.7
+    react: 19.2.3
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -5059,7 +5059,7 @@ __metadata:
     "@the-dead-planet/nav-gauge-gears-route-story-common": "npm:*"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
-    react: "npm:19.2.7"
+    react: "npm:19.2.3"
     react-native: "npm:0.85.3"
     react-native-fs: "npm:^2.20.0"
   peerDependencies:
@@ -5068,7 +5068,7 @@ __metadata:
     "@maplibre/maplibre-react-native": 11.0.2
     "@react-native-community/slider": ^5.2.0
     "@react-native-documents/picker": ^12.0.1
-    react: 19.2.7
+    react: 19.2.3
     react-native: 0.85.3
     react-native-fs: ^2.20.0
     rxjs: ^7.8.2
@@ -5087,12 +5087,12 @@ __metadata:
     "@types/exif-js": "npm:^2.3.1"
     exif-js: "npm:^2.3.0"
     maplibre-gl: "npm:5.24.0"
-    react: "npm:19.2.7"
-    react-dom: "npm:19.2.7"
+    react: "npm:19.2.3"
+    react-dom: "npm:19.2.6"
   peerDependencies:
     maplibre-gl: 5.24.0
-    react: 19.2.7
-    react-dom: 19.2.7
+    react: 19.2.3
+    react-dom: 19.2.6
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -5104,9 +5104,9 @@ __metadata:
     "@the-dead-planet/nav-gauge-apparatus-common": "npm:*"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
-    react: "npm:19.2.7"
+    react: "npm:19.2.3"
   peerDependencies:
-    react: 19.2.7
+    react: 19.2.3
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -5121,11 +5121,11 @@ __metadata:
     "@the-dead-planet/nav-gauge-gears-submit-data-common": "npm:*"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
-    react: "npm:19.2.7"
+    react: "npm:19.2.3"
     react-native: "npm:0.85.3"
   peerDependencies:
     "@maplibre/maplibre-react-native": 11.0.2
-    react: 19.2.7
+    react: 19.2.3
     react-native: 0.85.3
     rxjs: ^7.8.2
   languageName: unknown
@@ -5141,12 +5141,12 @@ __metadata:
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
     maplibre-gl: "npm:5.24.0"
-    react: "npm:19.2.7"
-    react-dom: "npm:19.2.7"
+    react: "npm:19.2.3"
+    react-dom: "npm:19.2.6"
   peerDependencies:
     maplibre-gl: 5.24.0
-    react: 19.2.7
-    react-dom: 19.2.7
+    react: 19.2.3
+    react-dom: 19.2.6
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -5155,9 +5155,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@the-dead-planet/nav-gauge-tinker-chest@workspace:tinker-chest"
   dependencies:
-    react: "npm:19.2.7"
+    react: "npm:19.2.3"
   peerDependencies:
-    react: 19.2.7
+    react: 19.2.3
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -5169,10 +5169,10 @@ __metadata:
     "@resvg/resvg-js": "npm:2.6.2"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@types/node": "npm:^25.9.1"
-    react: "npm:19.2.7"
+    react: "npm:19.2.3"
     svgson: "npm:^5.3.1"
   peerDependencies:
-    react: 19.2.7
+    react: 19.2.3
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -5185,14 +5185,14 @@ __metadata:
     "@react-native-documents/picker": "npm:^12.0.1"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
-    react: "npm:19.2.7"
+    react: "npm:19.2.3"
     react-native: "npm:0.85.3"
     react-native-fs: "npm:^2.20.0"
     react-native-svg: "npm:^15.15.5"
   peerDependencies:
     "@maplibre/maplibre-react-native": 11.0.2
     "@react-native-documents/picker": ^12.0.1
-    react: 19.2.7
+    react: 19.2.3
     react-native: 0.85.3
     react-native-fs: ^2.20.0
     rxjs: ^7.8.2
@@ -5210,15 +5210,15 @@ __metadata:
     classnames: "npm:^2.5.1"
     css-loader: "npm:^7.1.4"
     maplibre-gl: "npm:5.24.0"
-    react: "npm:19.2.7"
-    react-dom: "npm:19.2.7"
+    react: "npm:19.2.3"
+    react-dom: "npm:19.2.6"
     react-svg: "npm:^17.2.4"
     storybook: "npm:^10.4.1"
     storybook-react-rsbuild: "npm:^3.3.3"
   peerDependencies:
     maplibre-gl: 5.24.0
-    react: 19.2.7
-    react-dom: 19.2.7
+    react: 19.2.3
+    react-dom: 19.2.6
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -5248,7 +5248,7 @@ __metadata:
     luxon: "npm:^3.7.2"
     mocha: "npm:^11.7.5"
     path: "npm:^0.12.7"
-    react: "npm:19.2.7"
+    react: "npm:19.2.3"
     rxjs: "npm:^7.8.2"
     tsx: "npm:^4.21.0"
     typescript: "npm:^6.0.3"
@@ -13612,14 +13612,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:19.2.7":
-  version: 19.2.7
-  resolution: "react-dom@npm:19.2.7"
+"react-dom@npm:19.2.6":
+  version: 19.2.6
+  resolution: "react-dom@npm:19.2.6"
   dependencies:
     scheduler: "npm:^0.27.0"
   peerDependencies:
-    react: ^19.2.7
-  checksum: 10/9564f4b83843ca5518ed5f807c93cb1663706559cde52f3ef814b41e60b63b16e684d849926458f0ba436745d7eabf822cba1c528be370e7b2f35a4c91e35941
+    react: ^19.2.6
+  checksum: 10/695122e37dec3460311231ff1f9a96368d74457d4ccf60010eaebc08c3e1c47b054c9267b40d98c689ae99d0c29a340acacfd405016a954a4f11613146191e68
   languageName: node
   linkType: hard
 
@@ -13660,7 +13660,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-is@npm:^19.2.7":
+"react-is@npm:^19.2.3":
   version: 19.2.7
   resolution: "react-is@npm:19.2.7"
   checksum: 10/ae0d3ae7638aa2fa2a82a78a817daf2806e57fa0aef357d07e1e8d1e9a301902e5967168e9334b5816db0df8fa980a725cd57569ba5a9e6e76a71e117b18be04
@@ -13828,22 +13828,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-test-renderer@npm:19.2.7":
-  version: 19.2.7
-  resolution: "react-test-renderer@npm:19.2.7"
+"react-test-renderer@npm:19.2.3":
+  version: 19.2.3
+  resolution: "react-test-renderer@npm:19.2.3"
   dependencies:
-    react-is: "npm:^19.2.7"
+    react-is: "npm:^19.2.3"
     scheduler: "npm:^0.27.0"
   peerDependencies:
-    react: ^19.2.7
-  checksum: 10/edc70e537ec32e546f5bdc9a5c657cd62f375d35673a1fa568169fcb4e8e0cdfb6b328920850209f5e59875c16b9fdaa85533c6785869b6326f00b84696fe8cb
+    react: ^19.2.3
+  checksum: 10/a9de4d869b1555a54c02e8701be262dfa669eb366ff5cdb43ba49fa516beae439cbec2c3e5606c909e773c232328993e231b393af5eef25e87a845d4c7fb00dc
   languageName: node
   linkType: hard
 
-"react@npm:19.2.7":
-  version: 19.2.7
-  resolution: "react@npm:19.2.7"
-  checksum: 10/2939997e87d7f0ee0d9d2bb556866b616b999dfb7916283647034eda867a045a39c4f7a736c8ea6beffffcd78397fc30f63a7a3aaf8425b683c3060670859560
+"react@npm:19.2.3":
+  version: 19.2.3
+  resolution: "react@npm:19.2.3"
+  checksum: 10/d16b7f35c0d35a56f63d9d1693819762e4abc479c57dd6310298920bed3820fcec7e17a99d44983416d8f5049143ea45b8005d3ab8324bae8973224400502b08
   languageName: node
   linkType: hard
 

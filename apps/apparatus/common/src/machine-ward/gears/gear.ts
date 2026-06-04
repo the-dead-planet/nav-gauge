@@ -1,24 +1,11 @@
+import { FC } from "react";
 import { BehaviorSubject, Subscription } from "rxjs";
-import { Animatrix, AttributionVault, Cartomancer, ChronoLens, Individuator, SignaliumBureau, ToolsStation, Translatron, TranslationTable, Language } from "../..";
-
-export interface GearApparatus<TMap> {
-    individuator: Individuator;
-    signaliumBureau: SignaliumBureau;
-    attributionVault: AttributionVault;
-    chronoLens: ChronoLens;
-    cartomancer: Cartomancer<TMap>;
-    animatrix: Animatrix;
-    toolsStation: ToolsStation<TMap>;
-    translatron: Translatron;
-}
-
-export type GearTranslationTable = {
-    [key in Language]?: { [key in 'name' | 'description']: string; } & { [key in string]: string };
-}
+import { SvgProps } from "./internal-model";
+import { GearApparatus, GearTranslationTable } from "./model";
 
 export abstract class Gear<TMap> {
     public abstract id: string;
-    public icon?: string;
+    public icon?: string | FC<SvgProps>;
     public abstract translations: GearTranslationTable
 
     public isEngaged$ = new BehaviorSubject(false);

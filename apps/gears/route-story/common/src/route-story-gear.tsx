@@ -21,7 +21,7 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
         }
     }
     
-    // public icon = Icons.NounProject.PinCinema;
+    public icon = Icons.NounProject.PinCinema;
 
     private dataSubscription: Subscription | null = null;
     public readonly data$ = new BehaviorSubject<ParsingResultWithError>({});
