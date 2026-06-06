@@ -11,7 +11,7 @@ interface Props {
 const POINTY_TOP = "50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25";
 const FLAT_TOP = "100,50 75,93.3 25,93.3 0,50 25,6.7 75,6.7";
 
-export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
+export const Hexagon: FC<HexagonProps & Props & ComponentProps<'svg'>> = ({
     shape = "pointy-top",
     strokeWidth = 2,
     interactive = false,
@@ -20,7 +20,7 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
     highlightColor,
     size,
     variant,
-    mode,
+    themeMode,
     className,
     style,
     children,
@@ -29,21 +29,21 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
     const theme = useTheme();
     const points = shape === "pointy-top" ? POINTY_TOP : FLAT_TOP;
     const filterId = useId();
-    const resolvedMode = mode !== undefined ? (mode ? 'dark' : 'light') : theme.mode;
+    const resolvedMode = themeMode !== undefined ? (themeMode ? 'dark' : 'light') : theme.mode;
 
     return (
         <div
             className={classNames(
                 styles.hexagon,
                 styles[shape],
+                variant && styles[`variant-${variant}`],
                 color && styles[`color-${color}`],
                 (highlightColor || color) && styles[`highlight-${highlightColor || color}`],
                 size && styles[`size-${size}`],
-                variant && styles[`variant-${variant}`],
                 styles[`mode-${resolvedMode}`],
                 {
                     [styles.interactive]: interactive,
-                    [styles[hoverStyle]]: interactive,
+                    [styles[`hover-style-${hoverStyle}`]]: interactive,
                 },
                 className
             )}
@@ -51,11 +51,11 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
                 ...style,
                 "--hex-filter": `url(#${filterId})`,
             } as CSSProperties}
-            {...props}
         >
             <svg
                 viewBox="0 0 100 100"
                 className={styles.svg}
+                {...props}
             >
                 <defs>
                     <filter

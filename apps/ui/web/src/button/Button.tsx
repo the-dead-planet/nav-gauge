@@ -21,7 +21,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     size = 'sm',
     corners = 'square',
     active = false,
-    mode,
+    themeMode,
     icon,
     tooltip,
     children,
@@ -40,10 +40,10 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
         <button
             className={classNames(
                 styles['button'],
-                styles[`mode-${mode || theme.mode}`],
+                styles[`mode-${themeMode || theme.mode}`],
                 styles[`color-${color}`],
                 styles[`highlight-${highlightColor || color}`],
-                styles[`variant-${variant}`],
+                styles[`variant-${corners === 'hexagon' ? 'ghost' : variant}`],
                 styles[`size-${size}`],
                 styles[`corners-${corners}`],
                 {
@@ -67,15 +67,15 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
         </button>
     );
 
-    const tryHandle = (e: MouseEvent<HTMLDivElement>, handler?: (e: MouseEvent<HTMLButtonElement>) => void) => {
+    const tryHandle = (e: MouseEvent<SVGSVGElement>, handler?: (e: MouseEvent<HTMLButtonElement>) => void) => {
         e.stopPropagation();
         try {
             handler?.(e as unknown as MouseEvent<HTMLButtonElement>);
         } catch {
-            //
+            console.error("eee", e)
         }
     };
-    const tryHandleKeyboard = (e: KeyboardEvent<HTMLDivElement>, handler?: (e: KeyboardEvent<HTMLButtonElement>) => void) => {
+    const tryHandleKeyboard = (e: KeyboardEvent<SVGSVGElement>, handler?: (e: KeyboardEvent<HTMLButtonElement>) => void) => {
         e.stopPropagation()
         try {
             handler?.(e as unknown as KeyboardEvent<HTMLButtonElement>);
@@ -86,18 +86,9 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
 
     const button = corners === 'hexagon' ? (
         <Hexagon
-            role="button"
-            tabIndex={0}
-            onClickCapture={(e) => tryHandle(e, props.onClick)}
-            onMouseDownCapture={(e) => tryHandle(e, props.onMouseDown)}
-            onMouseUpCapture={(e) => tryHandle(e, props.onMouseUp)}
-            onMouseEnter={(e) => tryHandle(e, props.onMouseEnter)}
-            onMouseLeave={(e) => tryHandle(e, props.onMouseLeave)}
-            onKeyDownCapture={(e) => tryHandleKeyboard(e, props.onKeyDown)}
-            onKeyUpCapture={(e) => tryHandleKeyboard(e, props.onKeyUp)}
             size={size}
             variant={variant}
-            mode={mode}
+            themeMode={themeMode}
             color={color}
             highlightColor={highlightColor || color}
             interactive

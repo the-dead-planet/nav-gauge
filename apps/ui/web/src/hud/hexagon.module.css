@@ -199,18 +199,18 @@
     border-color: rgb(from var(--hl-bg) r g b / .3);
 }
 
-.glow:hover .polygonGlow {
+.hover-style-glow:hover .polygonGlow {
     opacity: 1;
     filter: var(--hex-filter);
 }
 
-.fill:hover .polygonGlow {
+.hover-style-fill:hover .polygonGlow {
     opacity: 1;
     fill: currentColor;
     fill-opacity: 0.24;
 }
 
-.animate-borders-glow:hover .polygonGlow {
+.hover-style-animate-borders-glow:hover .polygonGlow {
     opacity: 1;
     filter: var(--hex-filter);
     stroke-dasharray: 0 300;

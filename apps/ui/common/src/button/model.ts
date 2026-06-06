@@ -19,6 +19,6 @@ export interface ButtonProps {
     /**
      * If styles should always use a certain mode, instead of the dynamic theme mode.
      */
-    mode?: boolean;
+    themeMode?: boolean;
     children?: ReactNode;
 }

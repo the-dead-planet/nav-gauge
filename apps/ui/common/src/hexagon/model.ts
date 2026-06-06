@@ -13,6 +13,6 @@ export interface HexagonProps {
     highlightColor?: ColorVariant;
     size?: SizeVariant;
     variant?: SurfaceVariant;
-    mode?: boolean;
+    themeMode?: boolean;
     children?: ReactNode;
 }
