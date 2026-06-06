@@ -49,7 +49,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
                 styles[`mode-${themeMode || theme.mode}`],
                 styles[`color-${color}`],
                 styles[`highlight-${highlightColor || color}`],
-                styles[`variant-${corners === 'hexagon' ? 'ghost' : variant}`],
+                styles[`variant-${variant}`],
                 styles[`size-${size}`],
                 styles[`corners-${corners}`],
                 {

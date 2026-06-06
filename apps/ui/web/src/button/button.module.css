@@ -72,21 +72,25 @@
 
 .highlight-neutral {
     --hl: var(--color-neutral);
+    --hl-300: var(--color-neutral-300);
     --hl-fill-color: var(--color-neutral-900);
 }
 
 .highlight-primary {
     --hl: var(--color-primary);
+    --hl-300: var(--color-primary-300);
     --hl-fill-color: var(--color-primary-900);
 }
 
 .highlight-secondary {
     --hl: var(--color-secondary);
+    --hl-300: var(--color-secondary-300);
     --hl-fill-color: var(--color-secondary-900);
 }
 
 .highlight-tertiary {
     --hl: var(--color-tertiary);
+    --hl-300: var(--color-tertiary-300);
     --hl-fill-color: var(--color-tertiary-900);
 }
 
@@ -202,6 +206,12 @@
 
 .variant-fill.color-neutral {
     background-color: var(--color-neutral);
+}
+
+.mode-light.variant-fill:hover,
+.mode-light.variant-fill:active,
+.mode-light.variant-fill.active {
+    background-color: var(--hl-300);
 }
 
 .variant-fill.color-primary {
@@ -392,6 +402,10 @@
     filter: drop-shadow(0 0 12px rgb(from var(--hl-inset) r g b / .85));
 }
 
+.corners-hexagon {
+    border-radius: 0;
+}
+
 .corners-square {
     border-radius: 0;
 }
@@ -415,4 +429,96 @@
 
 .corners-circle.size-xs {
     border-radius: 10px;
+}
+
+/* ── Hexagon button overrides ── */
+
+.corners-hexagon.variant-fill,
+.corners-hexagon.variant-fill-translucent,
+.corners-hexagon.variant-inset,
+.corners-hexagon.variant-outline {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.corners-hexagon.variant-fill,
+.corners-hexagon.variant-fill-translucent,
+.corners-hexagon.variant-inset,
+.corners-hexagon.variant-outline,
+.corners-hexagon.variant-ghost {
+    color: var(--hexagon-color);
+}
+
+.corners-hexagon.variant-fill .icon,
+.corners-hexagon.variant-fill-translucent .icon,
+.corners-hexagon.variant-inset .icon,
+.corners-hexagon.variant-outline .icon,
+.corners-hexagon.variant-ghost .icon {
+    color: var(--hexagon-color);
+    stroke: var(--hexagon-color);
+    fill: var(--hexagon-color);
+}
+
+.corners-hexagon.variant-ghost:hover,
+.corners-hexagon.variant-fill-translucent:hover,
+.corners-hexagon.variant-inset:hover,
+.corners-hexagon.variant-outline:hover {
+    color: var(--hl-inset);
+}
+
+.corners-hexagon.variant-ghost:hover .icon,
+.corners-hexagon.variant-ghost:active .icon,
+.corners-hexagon.variant-ghost.active .icon,
+.corners-hexagon.variant-fill-translucent:hover .icon,
+.corners-hexagon.variant-fill-translucent:active .icon,
+.corners-hexagon.variant-fill-translucent.active .icon,
+.corners-hexagon.variant-inset:hover .icon,
+.corners-hexagon.variant-inset:active .icon,
+.corners-hexagon.variant-inset.active .icon,
+.corners-hexagon.variant-outline:hover .icon,
+.corners-hexagon.variant-outline:active .icon,
+.corners-hexagon.variant-outline.active .icon {
+    color: var(--hl-inset);
+    stroke: var(--hl-inset);
+    fill: var(--hl-inset);
+}
+
+.corners-hexagon.variant-ghost:active,
+.corners-hexagon.variant-ghost.active,
+.corners-hexagon.variant-fill-translucent:active,
+.corners-hexagon.variant-fill-translucent.active,
+.corners-hexagon.variant-inset:active,
+.corners-hexagon.variant-inset.active,
+.corners-hexagon.variant-outline:active,
+.corners-hexagon.variant-outline.active {
+    color: var(--hl-inset);
+    text-shadow: 0 0 12px rgb(from var(--hl-inset) r g b / .45);
+}
+
+.corners-hexagon.variant-ghost:active .icon,
+.corners-hexagon.variant-ghost.active .icon,
+.corners-hexagon.variant-fill-translucent:active .icon,
+.corners-hexagon.variant-fill-translucent.active .icon,
+.corners-hexagon.variant-inset:active .icon,
+.corners-hexagon.variant-inset.active .icon,
+.corners-hexagon.variant-outline:active .icon,
+.corners-hexagon.variant-outline.active .icon {
+    filter: drop-shadow(0 0 12px rgb(from var(--hl-inset) r g b / .45));
+}
+
+/* Fill variant hover — hexagon manages visuals, button stays transparent */
+.corners-hexagon.variant-fill:hover,
+.corners-hexagon.variant-fill:active,
+.corners-hexagon.variant-fill.active {
+    background-color: transparent;
+    color: var(--hexagon-color);
+}
+
+.corners-hexagon.variant-fill:hover .icon,
+.corners-hexagon.variant-fill:active .icon,
+.corners-hexagon.variant-fill.active .icon {
+    color: var(--hexagon-color);
+    stroke: var(--hexagon-color);
+    fill: var(--hexagon-color);
 }

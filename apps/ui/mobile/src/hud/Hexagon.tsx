@@ -125,14 +125,17 @@ export const Hexagon: FC<HexagonProps & { style?: StyleProp<ViewStyle> }> = ({
         }
 
         if (variant === 'fill') {
-            const bgShade = color === 'neutral' ? 800 : 900;
-            const hlShade = (highlightColor || color) === 'neutral' ? 800 : 900;
+            const isNeutral = color === 'neutral';
+            const hlIsNeutral = (highlightColor || color) === 'neutral';
+            const bgShade = isNeutral ? (isLight ? 100 : 800) : 900;
+            const hlShade = hlIsNeutral ? (isLight ? 900 : 800) : 900;
+            const borderShade = hlIsNeutral && isLight ? 700 : 300;
             const fillColor = hl && hlColor
                 ? theme.color((highlightColor || color) as ColorVariant, hlShade)
                 : theme.color(color as ColorVariant, bgShade);
             const borderColor = hl && hlColor
-                ? theme.color((highlightColor || color) as ColorVariant, 300)
-                : strokeColor;
+                ? theme.color((highlightColor || color) as ColorVariant, borderShade)
+                : (isNeutral && isLight ? theme.color('neutral', 700) : strokeColor);
 
             return (
                 <>

@@ -118,8 +118,12 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
             break;
     }
 
-    const fillTextColor = theme.color(color, 900);
-    const hlFillTextColor = theme.color(highlightColor, 900);
+    const fillTextColor = color === 'neutral' && isLight
+        ? theme.color('neutral', 700)
+        : theme.color(color, 900);
+    const hlFillTextColor = highlightColor === 'neutral' && isLight
+        ? theme.color('neutral', 900)
+        : theme.color(highlightColor, 900);
     const textColor = effectiveVariant === 'fill'
         ? (hl ? hlFillTextColor : fillTextColor)
         : (hl ? hlInset : baseColor);
@@ -151,7 +155,9 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
                     height={iconSize}
                     color={theme.color(
                         pressed || active ? highlightColor || color : color,
-                        effectiveVariant === 'fill' ? 900 : (pressed || active ? (theme.mode === 'dark' ? 300 : 600) : 500)
+                        effectiveVariant === 'fill'
+                            ? ((pressed || active ? highlightColor || color : color) === 'neutral' && isLight ? 700 : 900)
+                            : (pressed || active ? (theme.mode === 'dark' ? 300 : 600) : 500)
                     )}
                     filter={showTextShadow ? `drop-shadow(0px 0px 6px ${hlInset})` : undefined}
                 />

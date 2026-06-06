@@ -51,6 +51,7 @@
 
 .color-neutral {
     color: var(--color-neutral);
+    --hexagon-color: var(--color-neutral);
     --fill: var(--color-neutral);
     --fill-300: var(--color-neutral-300);
     --fill-400: var(--color-neutral-400);
@@ -61,6 +62,7 @@
 
 .color-primary {
     color: var(--color-primary);
+    --hexagon-color: var(--color-primary);
     --fill: var(--color-primary);
     --fill-300: var(--color-primary-300);
     --fill-400: var(--color-primary-400);
@@ -71,6 +73,7 @@
 
 .color-secondary {
     color: var(--color-secondary);
+    --hexagon-color: var(--color-secondary);
     --fill: var(--color-secondary);
     --fill-300: var(--color-secondary-300);
     --fill-400: var(--color-secondary-400);
@@ -81,6 +84,7 @@
 
 .color-tertiary {
     color: var(--color-tertiary);
+    --hexagon-color: var(--color-tertiary);
     --fill: var(--color-tertiary);
     --fill-300: var(--color-tertiary-300);
     --fill-400: var(--color-tertiary-400);
@@ -197,6 +201,27 @@
 .variant-fill:active,
 .variant-fill.active {
     color: var(--hl-300, var(--fill-300));
+    --hexagon-color: var(--hl-300, var(--fill-300));
+}
+
+.mode-light.color-neutral.variant-fill {
+    --fill-900: var(--color-neutral-100);
+    --hexagon-color: var(--color-neutral-700);
+    color: var(--color-neutral-700);
+}
+
+.mode-light.color-neutral.variant-fill:hover,
+.mode-light.color-neutral.variant-fill:active,
+.mode-light.color-neutral.variant-fill.active {
+    --hexagon-color: var(--hl-300, var(--fill-300));
+}
+
+.mode-light.color-neutral.variant-fill .polygon-base {
+    stroke: var(--color-neutral-700);
+}
+
+.mode-light.highlight-neutral.variant-fill {
+    --hl-900: var(--color-neutral-900);
 }
 
 .variant-fill-translucent .polygon-base {
@@ -212,10 +237,6 @@
 .variant-fill-translucent:active .polygon-base,
 .variant-fill-translucent.active .polygon-base {
     fill-opacity: 0.48;
-}
-
-.variant-outline.mode-light {
-    box-shadow: 0 0 0 1px rgb(from var(--color-bg) r g b / .3);
 }
 
 .variant-outline:hover .polygon-base {
