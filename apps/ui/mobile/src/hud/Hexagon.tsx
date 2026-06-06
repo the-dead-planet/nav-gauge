@@ -34,12 +34,14 @@ export const Hexagon: FC<HexagonProps & { style?: StyleProp<ViewStyle> }> = ({
     themeMode,
     size,
     interactive = false,
+    active = false,
     hoverStyle,
     style,
     children
 }) => {
     const theme = useTheme();
     const [pressed, setPressed] = useState(false);
+    const hl = pressed || active;
     const isPointy = shape === "pointy-top";
     const points = isPointy ? POINTY_TOP : FLAT_TOP;
     const aspectRatio = isPointy ? 86.6 / 100 : 100 / 86.6;
@@ -49,7 +51,7 @@ export const Hexagon: FC<HexagonProps & { style?: StyleProp<ViewStyle> }> = ({
     const clipPathId = useId();
 
     const renderGlow = () => {
-        if (!pressed || !interactive) return null;
+        if (!hl || !interactive) return null;
 
         const glowColor = hlColor || strokeColor || theme.color("neutral", 500);
         const glowOpacity = hoverStyle === "fill" ? 0.18 : 0.12;
@@ -106,7 +108,7 @@ export const Hexagon: FC<HexagonProps & { style?: StyleProp<ViewStyle> }> = ({
         }
 
         if (variant === 'fill-translucent') {
-            const fill = pressed && hlColor
+            const fill = hl && hlColor
                 ? theme.color((highlightColor || color) as ColorVariant, 500, 0.36)
                 : theme.color(color as ColorVariant, 500, 0.24);
             return (
@@ -122,7 +124,30 @@ export const Hexagon: FC<HexagonProps & { style?: StyleProp<ViewStyle> }> = ({
             );
         }
 
-        const bgFill = pressed && hlColor
+        if (variant === 'fill') {
+            const bgShade = color === 'neutral' ? 800 : 900;
+            const hlShade = (highlightColor || color) === 'neutral' ? 800 : 900;
+            const fillColor = hl && hlColor
+                ? theme.color((highlightColor || color) as ColorVariant, hlShade)
+                : theme.color(color as ColorVariant, bgShade);
+            const borderColor = hl && hlColor
+                ? theme.color((highlightColor || color) as ColorVariant, 300)
+                : strokeColor;
+
+            return (
+                <>
+                    <Polygon
+                        points={points}
+                        fill={fillColor}
+                        stroke={borderColor}
+                        strokeWidth={strokeWidth}
+                    />
+                    {renderGlow()}
+                </>
+            );
+        }
+
+        const bgFill = hl && hlColor
             ? theme.color((highlightColor || color) as ColorVariant, 500, 0.24)
             : 'none';
 

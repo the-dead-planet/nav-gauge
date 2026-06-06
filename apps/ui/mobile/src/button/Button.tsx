@@ -65,6 +65,14 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
             container.backgroundColor = 'transparent';
             container.borderWidth = 0;
             break;
+        case 'fill':
+            container.borderWidth = 0;
+            if (hl) {
+                container.backgroundColor = theme.color(highlightColor, 500);
+            } else {
+                container.backgroundColor = theme.color(color, 500);
+            }
+            break;
         case 'fill-translucent':
             container.borderWidth = 0;
             container.backgroundColor = hl
@@ -110,7 +118,11 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
             break;
     }
 
-    const textColor = hl ? hlInset : baseColor;
+    const fillTextColor = theme.color(color, 900);
+    const hlFillTextColor = theme.color(highlightColor, 900);
+    const textColor = effectiveVariant === 'fill'
+        ? (hl ? hlFillTextColor : fillTextColor)
+        : (hl ? hlInset : baseColor);
     let fontSize = 14;
     if (size === 'xs') fontSize = 12;
 
@@ -139,7 +151,7 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
                     height={iconSize}
                     color={theme.color(
                         pressed || active ? highlightColor || color : color,
-                        pressed || active ? (theme.mode === 'dark' ? 300 : 600) : 500
+                        effectiveVariant === 'fill' ? 900 : (pressed || active ? (theme.mode === 'dark' ? 300 : 600) : 500)
                     )}
                     filter={showTextShadow ? `drop-shadow(0px 0px 6px ${hlInset})` : undefined}
                 />
@@ -169,6 +181,7 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
                 themeMode={themeMode}
                 color={color}
                 highlightColor={hlColor || color}
+                active={active || pressed}
                 interactive
                 style={typeof style === 'function' ? undefined : style}
             >
