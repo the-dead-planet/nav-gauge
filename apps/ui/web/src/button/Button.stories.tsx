@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { ColorVariant, SizeVariant, ButtonCorners, ButtonVariant, Icons } from '@ui';
+import { ColorVariant, SizeVariant, ButtonCorners, SurfaceVariant, Icons } from '@ui';
 import { Button } from './Button';
 import { Text } from '../typography';
 import { useState } from 'react';
@@ -14,10 +14,10 @@ type Story = StoryObj<typeof meta>;
 
 const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: ButtonVariant[] = ['ghost', 'fill', 'outline', 'inset'];
+const allVariants: SurfaceVariant[] = ['ghost', 'fill', 'outline', 'inset'];
 const allCorners: ButtonCorners[] = ['square', 'rounded', 'circle'];
 
-export const ButtonVariants = {
+export const SurfaceVariants = {
     render: () => {
         const [highlightColor, setHighlightColor] = useState<ColorVariant | undefined>(undefined);
 

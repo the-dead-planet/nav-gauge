@@ -1,7 +1,6 @@
 import { ReactNode } from "react";
-import { ColorVariant, SizeVariant } from "../model";
+import { ColorVariant, SizeVariant, SurfaceVariant } from "../model";
 
-export type ButtonVariant = 'ghost' | 'fill' | 'outline' | 'inset';
 export type ButtonCorners = 'square' | 'rounded' | 'circle' | 'hexagon';
 
 export interface ButtonProps {
@@ -10,7 +9,7 @@ export interface ButtonProps {
     /**
      * Defaults to `ghost`
      */
-    variant?: ButtonVariant;
+    variant?: SurfaceVariant;
     /**
      * Defaults to `sm`
      */

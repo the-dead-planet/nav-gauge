@@ -1,5 +1,5 @@
 import { ComponentProps, CSSProperties, FC, useId } from "react";
-import { HexagonHoverStyle, HexagonProps } from "@ui";
+import { HexagonProps, useTheme } from "@ui";
 import classNames from "classnames";
 import styles from "./hexagon.module.css";
 
@@ -12,27 +12,35 @@ const POINTY_TOP = "50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25";
 const FLAT_TOP = "100,50 75,93.3 25,93.3 0,50 25,6.7 75,6.7";
 
 export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
-    variant = "pointy-top",
+    shape = "pointy-top",
     strokeWidth = 2,
     interactive = false,
     hoverStyle = "glow",
     color,
+    highlightColor,
     size,
+    variant,
+    mode,
     className,
     style,
     children,
     ...props
 }) => {
-    const points = variant === "pointy-top" ? POINTY_TOP : FLAT_TOP;
+    const theme = useTheme();
+    const points = shape === "pointy-top" ? POINTY_TOP : FLAT_TOP;
     const filterId = useId();
-    const hexColor = color ? `var(--color-${color})` : undefined;
+    const resolvedMode = mode !== undefined ? (mode ? 'dark' : 'light') : theme.mode;
 
     return (
         <div
             className={classNames(
                 styles.hexagon,
-                styles[variant],
+                styles[shape],
+                color && styles[`color-${color}`],
+                (highlightColor || color) && styles[`highlight-${highlightColor || color}`],
                 size && styles[`size-${size}`],
+                variant && styles[`variant-${variant}`],
+                styles[`mode-${resolvedMode}`],
                 {
                     [styles.interactive]: interactive,
                     [styles[hoverStyle]]: interactive,
@@ -41,7 +49,7 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
             )}
             style={{
                 ...style,
-                "--hex-filter": `url(#${filterId})`, color: hexColor,
+                "--hex-filter": `url(#${filterId})`,
             } as CSSProperties}
             {...props}
         >

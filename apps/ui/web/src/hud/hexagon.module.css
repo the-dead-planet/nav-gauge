@@ -49,8 +49,154 @@
     width: 64px;
 }
 
+.color-neutral {
+    color: var(--color-neutral);
+    --color-bg: var(--color-neutral-500);
+    --color-shadow: var(--color-neutral-700);
+}
+
+.color-primary {
+    color: var(--color-primary);
+    --color-bg: var(--color-primary-500);
+    --color-shadow: var(--color-primary-700);
+}
+
+.color-secondary {
+    color: var(--color-secondary);
+    --color-bg: var(--color-secondary-500);
+    --color-shadow: var(--color-secondary-700);
+}
+
+.color-tertiary {
+    color: var(--color-tertiary);
+    --color-bg: var(--color-tertiary-500);
+    --color-shadow: var(--color-tertiary-700);
+}
+
+.mode-light {
+    --hl-bg-opacity: .08;
+}
+
+.mode-dark {
+    --hl-bg-opacity: .04;
+}
+
+.highlight-neutral {
+    --hl: var(--color-neutral);
+    --hl-inset: var(--color-neutral-600);
+    --hl-bg: var(--color-neutral-500);
+    --hl-shadow: var(--color-neutral-700);
+}
+
+.highlight-primary {
+    --hl: var(--color-primary);
+    --hl-inset: var(--color-primary-600);
+    --hl-bg: var(--color-primary-500);
+    --hl-shadow: var(--color-primary-700);
+}
+
+.highlight-secondary {
+    --hl: var(--color-secondary);
+    --hl-inset: var(--color-secondary-600);
+    --hl-bg: var(--color-secondary-500);
+    --hl-shadow: var(--color-secondary-700);
+}
+
+.highlight-tertiary {
+    --hl: var(--color-tertiary);
+    --hl-inset: var(--color-tertiary-600);
+    --hl-bg: var(--color-tertiary-500);
+    --hl-shadow: var(--color-tertiary-700);
+}
+
+.mode-dark.highlight-neutral {
+    --hl-inset: var(--color-neutral-300);
+    --hl-bg: var(--color-neutral-300);
+}
+
+.mode-dark.highlight-primary {
+    --hl-inset: var(--color-primary-300);
+    --hl-bg: var(--color-primary-300);
+}
+
+.mode-dark.highlight-secondary {
+    --hl-inset: var(--color-secondary-300);
+    --hl-bg: var(--color-secondary-300);
+}
+
+.mode-dark.highlight-tertiary {
+    --hl-inset: var(--color-tertiary-300);
+    --hl-bg: var(--color-tertiary-300);
+}
+
 .polygonGlow {
     opacity: 0;
+}
+
+.variant-ghost .polygonBase {
+    fill: none;
+}
+
+.variant-fill .polygonBase {
+    fill: currentColor;
+    fill-opacity: 0.24;
+}
+
+.variant-fill:hover .polygonBase {
+    fill-opacity: 0.36;
+}
+
+.variant-fill:active .polygonBase,
+.variant-fill.active .polygonBase {
+    fill-opacity: 0.48;
+}
+
+.variant-outline.mode-light {
+    box-shadow: 0 0 0 1px rgb(from var(--color-bg) r g b / .3);
+}
+
+.variant-outline:hover .polygonGlow {
+    opacity: 1;
+    filter: var(--hex-filter);
+}
+
+.variant-inset {
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(from var(--color-bg) r g b / .3);
+}
+
+.variant-inset.mode-light {
+    background-color: rgb(from var(--color-bg) r g b / .04);
+    box-shadow:
+        rgb(from var(--color-shadow) r g b / .18) 4px 4px 8px inset,
+        rgb(from var(--color-shadow) r g b / .04) -2px -2px 6px inset,
+        rgba(255, 255, 255, .35) -2px -2px 4px inset;
+}
+
+.variant-inset.mode-dark {
+    border-color: transparent;
+    box-shadow:
+        rgba(0, 0, 0, .80) 4px 4px 8px inset,
+        rgba(255, 255, 255, .08) -2px -2px 4px inset;
+}
+
+.variant-inset:hover {
+    color: var(--hl-inset);
+}
+
+.variant-inset:active,
+.variant-inset.active {
+    background-color: rgb(from var(--hl-bg) r g b / var(--hl-bg-opacity));
+}
+
+.variant-inset.mode-light:active,
+.variant-inset.mode-light.active {
+    box-shadow:
+        rgb(from var(--hl-shadow) r g b / .18) 4px 4px 8px inset,
+        rgb(from var(--hl-shadow) r g b / .04) -2px -2px 4px inset,
+        rgba(255, 255, 255, .25) -2px -2px 3px inset;
+    border-color: rgb(from var(--hl-bg) r g b / .3);
 }
 
 .glow:hover .polygonGlow {

@@ -14,20 +14,20 @@ export const Hexagons = {
         <FlexBox direction="column" gap="xl">
             <span style={{ fontWeight: 700 }}>glow (default)</span>
             <FlexBox gap="md" alignItems="center">
-                <Hexagon variant="pointy-top" interactive color="primary" style={{ width: 100 }}>
+                <Hexagon shape="pointy-top" interactive color="primary" style={{ width: 100 }}>
                     <span>1</span>
                 </Hexagon>
-                <Hexagon variant="flat-top" interactive hoverStyle="glow" color="secondary" style={{ width: 100 }}>
+                <Hexagon shape="flat-top" interactive hoverStyle="glow" color="secondary" style={{ width: 100 }}>
                     <span>2</span>
                 </Hexagon>
             </FlexBox>
 
             <span style={{ fontWeight: 700 }}>fill</span>
             <FlexBox gap="md" alignItems="center">
-                <Hexagon variant="pointy-top" interactive hoverStyle="fill" color="primary" style={{ width: 100 }}>
+                <Hexagon shape="pointy-top" interactive hoverStyle="fill" color="primary" style={{ width: 100 }}>
                     <span>1</span>
                 </Hexagon>
-                <Hexagon variant="flat-top" interactive hoverStyle="fill" color="secondary" style={{ width: 100 }}>
+                <Hexagon shape="flat-top" interactive hoverStyle="fill" color="secondary" style={{ width: 100 }}>
                     <span>2</span>
                 </Hexagon>
                 <Hexagon interactive hoverStyle="fill" color="tertiary" style={{ width: 100 }} />
@@ -35,10 +35,10 @@ export const Hexagons = {
 
             <span style={{ fontWeight: 700 }}>animate-borders-glow</span>
             <FlexBox gap="md" alignItems="center">
-                <Hexagon variant="pointy-top" interactive hoverStyle="animate-borders-glow" color="primary" style={{ width: 100 }}>
+                <Hexagon shape="pointy-top" interactive hoverStyle="animate-borders-glow" color="primary" style={{ width: 100 }}>
                     <span>1</span>
                 </Hexagon>
-                <Hexagon variant="flat-top" interactive hoverStyle="animate-borders-glow" color="secondary" style={{ width: 100 }}>
+                <Hexagon shape="flat-top" interactive hoverStyle="animate-borders-glow" color="secondary" style={{ width: 100 }}>
                     <span>2</span>
                 </Hexagon>
             </FlexBox>

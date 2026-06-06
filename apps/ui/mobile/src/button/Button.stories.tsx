@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 import { Button } from "./Button";
 import { Text } from "../typography";
-import { ColorVariant, ButtonVariant, ButtonCorners, SizeVariant, Icons } from "@ui";
+import { ColorVariant, SurfaceVariant, ButtonCorners, SizeVariant, Icons } from "@ui";
 
 const styles = StyleSheet.create({
     container: {
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 
 const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: ButtonVariant[] = ['ghost', 'fill', 'outline', 'inset'];
+const allVariants: SurfaceVariant[] = ['ghost', 'fill', 'outline', 'inset'];
 const allCorners: ButtonCorners[] = ['square', 'rounded', 'circle'];
 
 export const AllVariants: FC = () => {

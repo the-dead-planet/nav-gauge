@@ -7,9 +7,9 @@ const POINTY_TOP = "50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25";
 const FLAT_TOP = "100,50 75,93.3 25,93.3 0,50 25,6.7 75,6.7";
 
 const sizeWidth: Record<SizeVariant, number> = {
-    xs: 40,
-    sm: 56,
-    md: 72,
+    xs: 36,
+    sm: 48,
+    md: 64,
 };
 
 const styles = StyleSheet.create({
@@ -26,16 +26,17 @@ const styles = StyleSheet.create({
 });
 
 export const Hexagon: FC<HexagonProps & { style?: object }> = ({
-    variant = "pointy-top",
+    shape = "pointy-top",
     strokeWidth = 2,
     color,
+    variant,
     size,
     style,
     children
 }) => {
     const theme = useTheme();
-    const points = variant === "pointy-top" ? POINTY_TOP : FLAT_TOP;
-    const aspectRatio = variant === "pointy-top" ? 2 / 1.7320508 : 1.7320508 / 2;
+    const points = shape === "pointy-top" ? POINTY_TOP : FLAT_TOP;
+    const aspectRatio = shape === "pointy-top" ? 2 / 1.7320508 : 1.7320508 / 2;
     const strokeColor = color ? theme.color(color as ColorVariant, 500) : undefined;
 
     return (

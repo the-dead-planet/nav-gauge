@@ -3,7 +3,7 @@ import { ScrollView, View, StyleSheet } from "react-native";
 import { Hexagon } from "./Hexagon";
 import { FlexBox } from "../flex-box";
 import { Text } from "../typography";
-import { ColorVariant, useTheme } from "@ui";
+import { ColorVariant, HexagonShape, useTheme } from "@ui";
 
 const styles = StyleSheet.create({
     container: {
@@ -26,23 +26,19 @@ const styles = StyleSheet.create({
 export const All: FC = () => {
     const theme = useTheme();
     const textColor = (color: ColorVariant) => theme.color(color, 500);
+    const shapes: HexagonShape[] = ["pointy-top", "flat-top"];
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <FlexBox direction="column" gap="xl">
-                <View style={styles.section}>
-                    <Text style={styles.label}>pointy-top (default)</Text>
-                    <Hexagon variant="pointy-top" style={{ width: 120 }} color="primary">
-                        <Text style={{ color: textColor("primary") }}>1</Text>
-                    </Hexagon>
-                </View>
-
-                <View style={styles.section}>
-                    <Text style={styles.label}>flat-top</Text>
-                    <Hexagon variant="flat-top" style={{ width: 120 }} color="secondary">
-                        <Text style={{ color: textColor("secondary") }}>2</Text>
-                    </Hexagon>
-                </View>
+                {shapes.map((s) => (
+                    <View key={s} style={styles.section}>
+                        <Text style={styles.label}>{s}</Text>
+                        <Hexagon shape={s} style={{ width: 120 }} color="primary">
+                            <Text style={{ color: textColor("primary") }}>1</Text>
+                        </Hexagon>
+                    </View>
+                ))}
 
                 <View style={styles.section}>
                     <Text style={styles.label}>sizes</Text>

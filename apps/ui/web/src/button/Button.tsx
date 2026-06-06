@@ -1,4 +1,4 @@
-import { ComponentProps, FC, ReactNode } from "react";
+import { ComponentProps, FC, KeyboardEvent, MouseEvent, ReactNode } from "react";
 import classNames from "classnames";
 import { ButtonProps, useTheme } from "@ui";
 import { Icon } from "../icons";
@@ -67,11 +67,38 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
         </button>
     );
 
+    const tryHandle = (e: MouseEvent<HTMLDivElement>, handler?: (e: MouseEvent<HTMLButtonElement>) => void) => {
+        try {
+            handler?.(e as unknown as MouseEvent<HTMLButtonElement>);
+        } catch {
+            //
+        }
+    };
+    const tryHandleKeyboard = (e: KeyboardEvent<HTMLDivElement>, handler?: (e: KeyboardEvent<HTMLButtonElement>) => void) => {
+        try {
+            handler?.(e as unknown as KeyboardEvent<HTMLButtonElement>);
+        } catch {
+            //
+        }
+    };
+
     const button = corners === 'hexagon' ? (
         <Hexagon
             role="button"
             tabIndex={0}
+            onClick={(e) => tryHandle(e, props.onClick)}
+            onMouseDown={(e) => tryHandle(e, props.onMouseDown)}
+            onMouseUp={(e) => tryHandle(e, props.onMouseUp)}
+            onMouseEnter={(e) => tryHandle(e, props.onMouseEnter)}
+            onMouseLeave={(e) => tryHandle(e, props.onMouseLeave)}
+            onKeyDown={(e) => tryHandleKeyboard(e, props.onKeyDown)}
+            onKeyUp={(e) => tryHandleKeyboard(e, props.onKeyUp)}
             size={size}
+            variant={variant}
+            mode={mode}
+            color={color}
+            highlightColor={highlightColor || color}
+            interactive
         >
             {buttonBase}
         </Hexagon>
