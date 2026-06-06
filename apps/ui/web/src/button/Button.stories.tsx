@@ -125,9 +125,7 @@ export const HexagonButton = {
                                                 corners="hexagon"
                                                 size={size}
                                                 highlightColor={highlightColor}
-                                                onClick={(e) => {
-                                                    console.log("TEST", e)
-                                                }}
+                                                onClick={(e) => console.log('clicked', e)}
                                             />
                                         ))}
                                     </div>

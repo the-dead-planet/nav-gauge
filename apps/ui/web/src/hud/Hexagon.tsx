@@ -29,6 +29,8 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'svg'>> = ({
     const theme = useTheme();
     const points = shape === "pointy-top" ? POINTY_TOP : FLAT_TOP;
     const filterId = useId();
+    const insetFilterLightId = useId();
+    const insetFilterDarkId = useId();
     const resolvedMode = themeMode !== undefined ? (themeMode ? 'dark' : 'light') : theme.mode;
 
     return (
@@ -42,7 +44,6 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'svg'>> = ({
                 size && styles[`size-${size}`],
                 styles[`mode-${resolvedMode}`],
                 {
-                    [styles.interactive]: interactive,
                     [styles[`hover-style-${hoverStyle}`]]: interactive,
                 },
                 className
@@ -50,6 +51,8 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'svg'>> = ({
             style={{
                 ...style,
                 "--hex-filter": `url(#${filterId})`,
+                "--inset-filter-light": `url(#${insetFilterLightId})`,
+                "--inset-filter-dark": `url(#${insetFilterDarkId})`,
             } as CSSProperties}
         >
             <svg
@@ -79,6 +82,56 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'svg'>> = ({
                             <feMergeNode in="blur2" />
                             <feMergeNode in="blur1" />
                             <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                    </filter>
+                    <filter
+                        id={insetFilterLightId}
+                        x="-20%"
+                        y="-20%"
+                        width="140%"
+                        height="140%"
+                    >
+                        <feOffset dx="4" dy="4" in="SourceAlpha" result="off1"/>
+                        <feGaussianBlur stdDeviation="3" in="off1" result="blur1"/>
+                        <feComposite operator="out" in="blur1" in2="SourceAlpha" result="shadow1"/>
+                        <feFlood flood-color="black" flood-opacity="0.18" result="color1"/>
+                        <feComposite operator="in" in="color1" in2="shadow1" result="darkshadow"/>
+
+                        <feOffset dx="-2" dy="-2" in="SourceAlpha" result="off2"/>
+                        <feGaussianBlur stdDeviation="2" in="off2" result="blur2"/>
+                        <feComposite operator="out" in="blur2" in2="SourceAlpha" result="shadow2"/>
+                        <feFlood flood-color="white" flood-opacity="0.35" result="color2"/>
+                        <feComposite operator="in" in="color2" in2="shadow2" result="lightshadow"/>
+
+                        <feMerge>
+                            <feMergeNode in="SourceGraphic"/>
+                            <feMergeNode in="darkshadow"/>
+                            <feMergeNode in="lightshadow"/>
+                        </feMerge>
+                    </filter>
+                    <filter
+                        id={insetFilterDarkId}
+                        x="-20%"
+                        y="-20%"
+                        width="140%"
+                        height="140%"
+                    >
+                        <feOffset dx="4" dy="4" in="SourceAlpha" result="off1"/>
+                        <feGaussianBlur stdDeviation="3" in="off1" result="blur1"/>
+                        <feComposite operator="out" in="blur1" in2="SourceAlpha" result="shadow1"/>
+                        <feFlood flood-color="black" flood-opacity="0.80" result="color1"/>
+                        <feComposite operator="in" in="color1" in2="shadow1" result="darkshadow"/>
+
+                        <feOffset dx="-2" dy="-2" in="SourceAlpha" result="off2"/>
+                        <feGaussianBlur stdDeviation="2" in="off2" result="blur2"/>
+                        <feComposite operator="out" in="blur2" in2="SourceAlpha" result="shadow2"/>
+                        <feFlood flood-color="white" flood-opacity="0.08" result="color2"/>
+                        <feComposite operator="in" in="color2" in2="shadow2" result="lightshadow"/>
+
+                        <feMerge>
+                            <feMergeNode in="SourceGraphic"/>
+                            <feMergeNode in="darkshadow"/>
+                            <feMergeNode in="lightshadow"/>
                         </feMerge>
                     </filter>
                 </defs>
