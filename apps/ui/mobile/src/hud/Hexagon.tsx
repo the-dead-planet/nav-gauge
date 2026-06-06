@@ -105,7 +105,7 @@ export const Hexagon: FC<HexagonProps & { style?: StyleProp<ViewStyle> }> = ({
             );
         }
 
-        if (variant === 'fill') {
+        if (variant === 'fill-translucent') {
             const fill = pressed && hlColor
                 ? theme.color((highlightColor || color) as ColorVariant, 500, 0.36)
                 : theme.color(color as ColorVariant, 500, 0.24);
