@@ -1,5 +1,5 @@
 import { FlexBoxProps } from "@ui";
-import { CSSProperties, FC } from "react";
+import { ComponentProps, CSSProperties, FC } from "react";
 import classNames from "classnames";
 import styles from "./FlexBox.module.css";
 
@@ -8,7 +8,7 @@ interface Props {
     style?: CSSProperties;
 }
 
-export const FlexBox: FC<FlexBoxProps & Props> = ({
+export const FlexBox: FC<FlexBoxProps & Props & ComponentProps<'div'>> = ({
     direction = "row",
     justifyContent,
     alignItems,
@@ -17,7 +17,8 @@ export const FlexBox: FC<FlexBoxProps & Props> = ({
     colGap,
     className,
     style,
-    children
+    children,
+    ...props
 }) => {
     return (
         <div
@@ -34,6 +35,7 @@ export const FlexBox: FC<FlexBoxProps & Props> = ({
                 className,
             )}
             style={style}
+            {...props}
         >
             {children}
         </div >

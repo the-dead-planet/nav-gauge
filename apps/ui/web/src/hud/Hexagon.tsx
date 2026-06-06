@@ -1,4 +1,4 @@
-import { CSSProperties, FC, useId } from "react";
+import { ComponentProps, CSSProperties, FC, useId } from "react";
 import { HexagonHoverStyle, HexagonProps } from "@ui";
 import classNames from "classnames";
 import styles from "./hexagon.module.css";
@@ -11,7 +11,7 @@ interface Props {
 const POINTY_TOP = "50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25";
 const FLAT_TOP = "100,50 75,93.3 25,93.3 0,50 25,6.7 75,6.7";
 
-export const Hexagon: FC<HexagonProps & Props> = ({
+export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
     variant = "pointy-top",
     strokeWidth = 2,
     interactive = false,
@@ -19,7 +19,8 @@ export const Hexagon: FC<HexagonProps & Props> = ({
     color,
     className,
     style,
-    children
+    children,
+    ...props
 }) => {
     const points = variant === "pointy-top" ? POINTY_TOP : FLAT_TOP;
     const filterId = useId();
@@ -40,6 +41,7 @@ export const Hexagon: FC<HexagonProps & Props> = ({
                 ...style,
                 "--hex-filter": `url(#${filterId})`, color: hexColor,
             } as CSSProperties}
+            {...props}
         >
             <svg
                 viewBox="0 0 100 100"

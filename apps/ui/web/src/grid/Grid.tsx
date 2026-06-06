@@ -1,4 +1,4 @@
-import { CSSProperties, FC } from "react";
+import { ComponentProps, CSSProperties, FC } from "react";
 import { GridProps } from "@ui";
 import classNames from "classnames";
 import styles from "./Grid.module.css";
@@ -8,7 +8,7 @@ interface Props {
     style?: CSSProperties;
 }
 
-export const Grid: FC<GridProps & Props> = ({
+export const Grid: FC<GridProps & Props & ComponentProps<'div'>> = ({
     cols,
     justifyContent,
     alignItems,
@@ -17,7 +17,8 @@ export const Grid: FC<GridProps & Props> = ({
     colGap,
     className,
     style,
-    children
+    children,
+    ...props
 }) => {
     return (
         <div
@@ -34,6 +35,7 @@ export const Grid: FC<GridProps & Props> = ({
                 className
             )}
             style={style}
+            {...props}
         >
             {children}
         </div>

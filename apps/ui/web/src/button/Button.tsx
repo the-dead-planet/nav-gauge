@@ -68,7 +68,12 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     );
 
     const button = corners === 'hexagon' ? (
-        <Hexagon>{buttonBase}</Hexagon>
+        <Hexagon
+            role="button"
+            tabIndex={0}
+        >
+            {buttonBase}
+        </Hexagon>
     ) : buttonBase;
 
     if (tooltip) {
