@@ -45,9 +45,14 @@ export const Hexagons = {
 
             <span style={{ fontWeight: 700 }}>sizes</span>
             <FlexBox gap="md" alignItems="center">
-                <Hexagon interactive color="tertiary" style={{ width: 60 }} />
-                <Hexagon interactive color="tertiary" style={{ width: 100 }} />
-                <Hexagon interactive color="tertiary" style={{ width: 140 }} />
+                <Hexagon shape='pointy-top' interactive color="tertiary" size="xs" />
+                <Hexagon shape='pointy-top' interactive color="tertiary" size="sm" />
+                <Hexagon shape='pointy-top' interactive color="tertiary" size="md" />
+            </FlexBox>
+            <FlexBox gap="md" alignItems="center">
+                <Hexagon shape='flat-top' interactive color="tertiary" size="xs" />
+                <Hexagon shape='flat-top' interactive color="tertiary" size="sm" />
+                <Hexagon shape='flat-top' interactive color="tertiary" size="md" />
             </FlexBox>
             <span style={{ fontWeight: 700 }}>stroke width</span>
             <FlexBox gap="md" alignItems="center">

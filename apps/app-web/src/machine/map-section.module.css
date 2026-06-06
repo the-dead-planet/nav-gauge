@@ -29,7 +29,7 @@
 
 .toolbar.left {
     grid-area: left-toolbar;
-    width: 40px;
+    width: max-content;
     border-right: 1px solid var(--color-primary);
     box-shadow: 1px 1px 3px rgb(from var(--color-box-shadow) r g b / .4);
 }

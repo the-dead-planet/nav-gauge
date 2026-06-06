@@ -8,11 +8,11 @@
 }
 
 .pointy-top {
-    aspect-ratio: 2 / 1.7320508;
+    aspect-ratio: 86.6 / 100;
 }
 
 .flat-top {
-    aspect-ratio: 1.7320508 / 2;
+    aspect-ratio: 100 / 86.6;
 }
 
 .svg {

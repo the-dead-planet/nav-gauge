@@ -39,8 +39,9 @@ export const Hexagon: FC<HexagonProps & { style?: StyleProp<ViewStyle> }> = ({
 }) => {
     const theme = useTheme();
     const [pressed, setPressed] = useState(false);
-    const points = shape === "pointy-top" ? POINTY_TOP : FLAT_TOP;
-    const aspectRatio = shape === "pointy-top" ? 2 / 1.7320508 : 1.7320508 / 2;
+    const isPointy = shape === "pointy-top";
+    const points = isPointy ? POINTY_TOP : FLAT_TOP;
+    const aspectRatio = isPointy ? 86.6 / 100 : 100 / 86.6;
     const strokeColor = color ? theme.color(color as ColorVariant, 500) : undefined;
     const isLight = themeMode !== undefined ? !themeMode : theme.mode === 'light';
     const clipPathId = useId();
@@ -133,7 +134,7 @@ export const Hexagon: FC<HexagonProps & { style?: StyleProp<ViewStyle> }> = ({
     const container = (
         <View style={[styles.container, { aspectRatio }, size ? { width: sizeWidth[size] } : undefined, style]}>
             <Svg
-                viewBox="0 0 100 100"
+                viewBox={isPointy ? "6.7 0 86.6 100" : "0 6.7 100 86.6"}
                 style={StyleSheet.absoluteFill}
             >
                 {renderVariant()}

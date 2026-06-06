@@ -14,6 +14,7 @@ import { MapTools } from "./map-tools/MapTools";
 import { Button, FlexBox, P } from "@web-ui";
 import { createMap } from "./map";
 import styles from './map-section.module.css';
+import { Icons } from "@ui";
 
 export const MapSection: FC = () => {
     const [map, setMap] = useState<maplibregl.Map>();
@@ -78,7 +79,14 @@ export const MapSection: FC = () => {
                     </Button>
                 ))}
             </FlexBox>
-            <div className={classNames(styles['toolbar'], styles['left'])}><P>left</P></div>
+            <div className={classNames(styles['toolbar'], styles['left'])}>
+                {[
+                    { id: 1, icon: Icons.Beaker },
+                    { id: 2, icon: Icons.Find },
+                ].map(({ id, icon }) => (
+                    <Button key={id} icon={icon} variant="outline" corners="hexagon" />
+                ))}
+            </div>
             <div className={classNames(styles['toolbar'], styles['right'])}><P>right</P></div>
             <div className={classNames(styles['toolbar'], styles['bottom'])}><P>bottom</P></div>
         </div>

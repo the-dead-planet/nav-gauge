@@ -33,9 +33,11 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'svg'>> = ({
     ...props
 }) => {
     const theme = useTheme();
-    const points = shape === "pointy-top" ? POINTY_TOP : FLAT_TOP;
-    const overPoints = shape === "pointy-top" ? POINTY_TOP_OVER : FLAT_TOP_OVER;
-    const inPoints = shape === "pointy-top" ? POINTY_TOP_IN : FLAT_TOP_IN;
+    const isPointy = shape === "pointy-top";
+    const points = isPointy ? POINTY_TOP : FLAT_TOP;
+    const overPoints = isPointy ? POINTY_TOP_OVER : FLAT_TOP_OVER;
+    const inPoints = isPointy ? POINTY_TOP_IN : FLAT_TOP_IN;
+    const viewBox = isPointy ? "6.7 0 86.6 100" : "0 6.7 100 86.6";
     const filterId = useId();
     const clipPathId = useId();
     const shadowBlurId = useId();
@@ -62,7 +64,7 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'svg'>> = ({
             } as CSSProperties}
         >
             <svg
-                viewBox="0 0 100 100"
+                viewBox={viewBox}
                 className={styles.svg}
                 {...props}
             >
