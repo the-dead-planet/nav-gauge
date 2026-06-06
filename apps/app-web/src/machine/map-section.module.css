@@ -15,9 +15,7 @@
 }
 
 .toolbar {
-    background-color: rgb(from var(--color-background) r g b / .82);
     box-sizing: border-box;
-    backdrop-filter: blur(2px);
 }
 
 .toolbar.top {
@@ -25,13 +23,28 @@
     height: 40px;
     border-bottom: 1px solid var(--color-secondary);
     box-shadow: 1px 1px 3px rgb(from var(--color-box-shadow) r g b / .4);
+    background-color: rgb(from var(--color-background) r g b / .82);
+    backdrop-filter: blur(2px);
 }
 
 .toolbar.left {
     grid-area: left-toolbar;
-    width: max-content;
+    width: calc(100% - 24px);
     border-right: 1px solid var(--color-primary);
-    box-shadow: 1px 1px 3px rgb(from var(--color-box-shadow) r g b / .4);
+    /* box-shadow: 1px 1px 3px rgb(from var(--color-box-shadow) r g b / .4); */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 0;
+    align-content: start;
+    pointer-events: none;
+}
+
+.toolbar.left * {
+    pointer-events: auto;
+}
+
+.toolbar.left button {
+    backdrop-filter: blur(2px);
 }
 
 .toolbar.right {
@@ -39,6 +52,8 @@
     width: 50px;
     border-left: 1px solid var(--color-primary);
     box-shadow: -1px 1px 3px rgb(from var(--color-box-shadow) r g b / .4);
+    background-color: rgb(from var(--color-background) r g b / .82);
+    backdrop-filter: blur(2px);
 }
 
 .toolbar.bottom {
@@ -46,6 +61,8 @@
     height: 80px;
     border-top: 2px solid var(--color-primary);
     box-shadow: 1px -1px 3px rgb(from var(--color-box-shadow) r g b / .4);
+    background-color: rgb(from var(--color-background) r g b / .82);
+    backdrop-filter: blur(2px);
 }
 
 @media screen and (min-width: 800px) {

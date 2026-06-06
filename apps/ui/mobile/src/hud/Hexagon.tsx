@@ -29,6 +29,7 @@ export const Hexagon: FC<HexagonProps & { style?: StyleProp<ViewStyle> }> = ({
     shape = "pointy-top",
     strokeWidth = 2,
     color,
+    highlightColor,
     variant,
     themeMode,
     size,
@@ -43,13 +44,14 @@ export const Hexagon: FC<HexagonProps & { style?: StyleProp<ViewStyle> }> = ({
     const points = isPointy ? POINTY_TOP : FLAT_TOP;
     const aspectRatio = isPointy ? 86.6 / 100 : 100 / 86.6;
     const strokeColor = color ? theme.color(color as ColorVariant, 500) : undefined;
+    const hlColor = (highlightColor || color) ? theme.color((highlightColor || color) as ColorVariant, 500) : undefined;
     const isLight = themeMode !== undefined ? !themeMode : theme.mode === 'light';
     const clipPathId = useId();
 
     const renderGlow = () => {
         if (!pressed || !interactive) return null;
 
-        const glowColor = strokeColor || theme.color("neutral", 500);
+        const glowColor = hlColor || strokeColor || theme.color("neutral", 500);
         const glowOpacity = hoverStyle === "fill" ? 0.18 : 0.12;
 
         return (
@@ -104,7 +106,9 @@ export const Hexagon: FC<HexagonProps & { style?: StyleProp<ViewStyle> }> = ({
         }
 
         if (variant === 'fill') {
-            const fill = theme.color(color as ColorVariant, 500, 0.24);
+            const fill = pressed && hlColor
+                ? theme.color((highlightColor || color) as ColorVariant, 500, 0.36)
+                : theme.color(color as ColorVariant, 500, 0.24);
             return (
                 <>
                     <Polygon
@@ -118,11 +122,15 @@ export const Hexagon: FC<HexagonProps & { style?: StyleProp<ViewStyle> }> = ({
             );
         }
 
+        const bgFill = pressed && hlColor
+            ? theme.color((highlightColor || color) as ColorVariant, 500, 0.24)
+            : 'none';
+
         return (
             <>
                 <Polygon
                     points={points}
-                    fill="none"
+                    fill={bgFill}
                     stroke={strokeColor}
                     strokeWidth={strokeWidth}
                 />

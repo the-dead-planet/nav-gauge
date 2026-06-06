@@ -26,6 +26,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     tooltip,
     children,
     className,
+    style,
     ...props
 }) => {
     const theme = useTheme();
@@ -34,7 +35,12 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
         sm: 16,
         md: 20,
     }
-    const iconSize = iconSizes[size];
+    const hexagonIconSizes = {
+        xs: 16,
+        sm: 20,
+        md: 28,
+    }
+    const iconSize = corners === 'hexagon' ? hexagonIconSizes[size] : iconSizes[size];
 
     const buttonBase = (
         <button
@@ -53,6 +59,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
                 },
                 className
             )}
+            style={corners !== 'hexagon' ? style : undefined}
             {...props}
         >
             {icon ? (
@@ -67,25 +74,9 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
         </button>
     );
 
-    const tryHandle = (e: MouseEvent<SVGSVGElement>, handler?: (e: MouseEvent<HTMLButtonElement>) => void) => {
-        e.stopPropagation();
-        try {
-            handler?.(e as unknown as MouseEvent<HTMLButtonElement>);
-        } catch {
-            console.error("eee", e)
-        }
-    };
-    const tryHandleKeyboard = (e: KeyboardEvent<SVGSVGElement>, handler?: (e: KeyboardEvent<HTMLButtonElement>) => void) => {
-        e.stopPropagation()
-        try {
-            handler?.(e as unknown as KeyboardEvent<HTMLButtonElement>);
-        } catch {
-            //
-        }
-    };
-
     const button = corners === 'hexagon' ? (
         <Hexagon
+            shape="flat-top"
             size={size}
             variant={variant}
             themeMode={themeMode}
@@ -93,6 +84,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
             highlightColor={highlightColor || color}
             interactive
             hoverStyle="animate-borders-glow"
+            style={style}
         >
             {buttonBase}
         </Hexagon>

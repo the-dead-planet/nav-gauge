@@ -81,10 +81,29 @@ export const MapSection: FC = () => {
             </FlexBox>
             <div className={classNames(styles['toolbar'], styles['left'])}>
                 {[
-                    { id: 1, icon: Icons.Beaker },
+                    { id: 1, icon:null },
                     { id: 2, icon: Icons.Find },
-                ].map(({ id, icon }) => (
-                    <Button key={id} icon={icon} variant="outline" corners="hexagon" />
+                    { id: 3, icon: Icons.Beaker },
+                    { id: 4, icon: Icons.Find },
+                    { id: 5, icon: Icons.Beaker },
+                    { id: 6, icon: Icons.Find },
+                    { id: 7, icon: Icons.Beaker },
+                    { id: 8, icon: Icons.Find },
+                    { id: 9, icon: Icons.Beaker },
+                    { id: 10, icon: Icons.Find },
+                ].map(({ id, icon }, i) => !icon ? <span /> : (
+                    <Button
+                        key={id}
+                        icon={icon}
+                        size="sm"
+                        variant="fill"
+                        corners="hexagon"
+                        color="neutral"
+                        highlightColor="primary"
+                        style={{
+                            transform: `translate(${i % 2 === 1 ? '-24px, 50%' : '-12px, 0%'})`
+                        }}
+                    />
                 ))}
             </div>
             <div className={classNames(styles['toolbar'], styles['right'])}><P>right</P></div>
