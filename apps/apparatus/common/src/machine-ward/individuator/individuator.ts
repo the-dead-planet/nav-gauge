@@ -44,7 +44,8 @@ export class Individuator {
     }
 
     public initialize = (storageKeeper: StorageKeeper) => {
-        this.settingsStorageSubscription = storageKeeper.synchronizeSubjectWithStorage(this.settings$, this.settingsStorageId);
+        storageKeeper.synchronizeSubjectWithStorage(this.settings$, this.settingsStorageId)
+            .then((s) => this.settingsStorageSubscription = s);
     };
 
     public cleanUp = () => {

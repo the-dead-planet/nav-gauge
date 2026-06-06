@@ -35,7 +35,6 @@ export class Theme {
     };
 
     public static calculateMedia = ({ windowWidth, ...media }: Media): MediaWithBreakpoints => {
-        // console.log({breakpoint})
         const breakpoint = (Object.entries(Theme.breakpointThresholds) as [Breakpoint, number][])
             .sort((a, b) => a[1] - b[1])
             .reduce<Breakpoint>((acc, [b, threshold]) => windowWidth > threshold ? b : acc, 'xs');
@@ -193,7 +192,6 @@ export class Theme {
         specification: ThemeSpecification, 
         protected media: MediaSubscriptionDefinition
     ) {
-        console.log({specification, media})
         this.mode = specification.mode;
         this.name = specification.themeName;
         this.colors = Object.assign({}, Theme.palette, specification.colors);

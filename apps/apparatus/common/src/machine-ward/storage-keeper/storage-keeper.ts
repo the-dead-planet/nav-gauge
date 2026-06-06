@@ -26,13 +26,14 @@ export class StorageKeeper {
      * @param storage Storage to get the state from.
      * @param cleanUp Optionally, clean up function to adjust the state from storage to fit into current model `T`.
      */
-    public synchronizeSubjectWithStorage = <T extends {}>(
+    public synchronizeSubjectWithStorage = async <T extends {}>(
         state$: BehaviorSubject<T>,
         storageId: string,
         cleanUp: (state: unknown) => Partial<T> = ((state) => state as Partial<T>)
-    ): Subscription => {
+    ): Promise<Subscription> => {
         const setState = (savedData: string | null) => {
             if (savedData) {
+                console.log("getting", cleanUp(JSON.parse(savedData) as T) )
                 state$.next({ ...state$.value, ...cleanUp(JSON.parse(savedData) as T) });
             }
         };
@@ -41,8 +42,9 @@ export class StorageKeeper {
             const maybePromise = this.storage.getItem(storageId);
             if (typeof maybePromise === 'string') {
                 setState(maybePromise);
-            } else {
-                maybePromise?.then(setState)
+            } else if (maybePromise) {
+                const s = await maybePromise
+                setState(s);
             }
         } catch (err) {
             glitchmitter.transmit(`Error getting ${storageId} storage state`, err);
@@ -50,6 +52,7 @@ export class StorageKeeper {
 
         return state$.subscribe((next) => {
             try {
+                console.log("Setting", storageId, next, JSON.stringify(next))
                 this.storage.setItem(storageId, JSON.stringify(next));
             } catch (err) {
                 glitchmitter.transmit(`Error setting ${storageId} storage state`, err);

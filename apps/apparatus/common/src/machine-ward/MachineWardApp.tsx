@@ -61,7 +61,6 @@ export function MachineWardApp<TMap, TNavigationPath extends string>({
         () => new Theme(themeSpecifications[settings.themeName], media),
         [settings.themeName, media],
     );
-    console.log(theme)
 
     useEffect(() => {
         return theme.destroy;
