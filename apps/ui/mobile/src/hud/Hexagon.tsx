@@ -1,6 +1,6 @@
-import { FC } from "react";
-import { View, StyleSheet } from "react-native";
-import Svg, { Polygon } from "react-native-svg";
+import { FC, useId, useState } from "react";
+import { View, ViewStyle, StyleProp, StyleSheet, Pressable } from "react-native";
+import Svg, { Polygon, Defs, ClipPath, G, LinearGradient, Stop } from "react-native-svg";
 import { ColorVariant, HexagonProps, SizeVariant, useTheme } from "@ui";
 
 const POINTY_TOP = "50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25";
@@ -25,36 +25,135 @@ const styles = StyleSheet.create({
     },
 });
 
-export const Hexagon: FC<HexagonProps & { style?: object }> = ({
+export const Hexagon: FC<HexagonProps & { style?: StyleProp<ViewStyle> }> = ({
     shape = "pointy-top",
     strokeWidth = 2,
     color,
     variant,
+    themeMode,
     size,
+    interactive = false,
+    hoverStyle,
     style,
     children
 }) => {
     const theme = useTheme();
+    const [pressed, setPressed] = useState(false);
     const points = shape === "pointy-top" ? POINTY_TOP : FLAT_TOP;
     const aspectRatio = shape === "pointy-top" ? 2 / 1.7320508 : 1.7320508 / 2;
     const strokeColor = color ? theme.color(color as ColorVariant, 500) : undefined;
+    const isLight = themeMode !== undefined ? !themeMode : theme.mode === 'light';
+    const clipPathId = useId();
 
-    return (
-        <View style={[styles.container, { aspectRatio }, size ? { width: sizeWidth[size] } : undefined, style]}>
-            <Svg
-                viewBox="0 0 100 100"
-                style={StyleSheet.absoluteFill}
-            >
+    const renderGlow = () => {
+        if (!pressed || !interactive) return null;
+
+        const glowColor = strokeColor || theme.color("neutral", 500);
+        const glowOpacity = hoverStyle === "fill" ? 0.18 : 0.12;
+
+        return (
+            <Polygon
+                points={points}
+                fill={glowColor}
+                fillOpacity={glowOpacity}
+                stroke="none"
+            />
+        );
+    };
+
+    const renderVariant = () => {
+        if (variant === 'inset') {
+            const bgTint = theme.color(color as ColorVariant, 500, 0.10);
+            const shadowColor = "#000000";
+            const shadowOpacity = isLight ? 0.35 : 0.65;
+            const lightColor = "#ffffff";
+            const lightOpacity = isLight ? 0.45 : 0.12;
+
+            return (
+                <>
+                    <Defs>
+                        <ClipPath id={clipPathId}>
+                            <Polygon points={points} />
+                        </ClipPath>
+                        <LinearGradient id="shadowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <Stop offset="0%" stopColor={shadowColor} stopOpacity={shadowOpacity} />
+                            <Stop offset="15%" stopColor={shadowColor} stopOpacity={0} />
+                            <Stop offset="100%" stopColor={shadowColor} stopOpacity={0} />
+                        </LinearGradient>
+                        <LinearGradient id="highlightGrad" x1="100%" y1="100%" x2="0%" y2="0%">
+                            <Stop offset="0%" stopColor={lightColor} stopOpacity={lightOpacity} />
+                            <Stop offset="15%" stopColor={lightColor} stopOpacity={0} />
+                            <Stop offset="100%" stopColor={lightColor} stopOpacity={0} />
+                        </LinearGradient>
+                    </Defs>
+                    <G clipPath={`url(#${clipPathId})`}>
+                        <Polygon points={points} fill={bgTint} />
+                        {renderGlow()}
+                        <Polygon points={points} fill="url(#shadowGrad)" />
+                        <Polygon points={points} fill="url(#highlightGrad)" />
+                    </G>
+                    <Polygon
+                        points={points}
+                        fill="none"
+                        stroke={strokeColor}
+                        strokeWidth={strokeWidth}
+                    />
+                </>
+            );
+        }
+
+        if (variant === 'fill') {
+            const fill = theme.color(color as ColorVariant, 500, 0.24);
+            return (
+                <>
+                    <Polygon
+                        points={points}
+                        fill={fill}
+                        stroke={strokeColor}
+                        strokeWidth={strokeWidth}
+                    />
+                    {renderGlow()}
+                </>
+            );
+        }
+
+        return (
+            <>
                 <Polygon
                     points={points}
                     fill="none"
                     stroke={strokeColor}
                     strokeWidth={strokeWidth}
                 />
+                {renderGlow()}
+            </>
+        );
+    };
+
+    const container = (
+        <View style={[styles.container, { aspectRatio }, size ? { width: sizeWidth[size] } : undefined, style]}>
+            <Svg
+                viewBox="0 0 100 100"
+                style={StyleSheet.absoluteFill}
+            >
+                {renderVariant()}
             </Svg>
             <View style={styles.content}>
                 {children}
             </View>
         </View>
     );
+
+    if (interactive) {
+        return (
+            <Pressable
+                onPressIn={() => setPressed(true)}
+                onPressOut={() => setPressed(false)}
+            >
+                {container}
+            </Pressable>
+        );
+    }
+
+    return container;
 };

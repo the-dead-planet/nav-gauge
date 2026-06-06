@@ -1,8 +1,9 @@
 import { ComponentType, FC, useState } from "react";
-import { Pressable, PressableProps, Text as RNText, ViewStyle } from "react-native";
+import { Pressable, PressableProps, Text as RNText, StyleProp, ViewStyle } from "react-native";
 import { ButtonProps, useTheme } from "@ui";
 import { Icon } from "../icons";
 import { SvgProps } from "react-native-svg";
+import { Hexagon } from "../hud";
 
 export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<SvgProps>; title?: string }> = ({
     color = 'neutral',
@@ -11,7 +12,7 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
     size = 'sm',
     corners = 'square',
     active = false,
-    mode,
+    themeMode,
     title,
     icon,
     children,
@@ -24,7 +25,7 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
     const [pressed, setPressed] = useState(false);
     const hl = pressed || active;
 
-    const isLight = (mode || theme.mode) === 'light';
+    const isLight = (themeMode || theme.mode) === 'light';
 
     const hlInset = theme.color(highlightColor, isLight ? 600 : 300);
     const baseColor = theme.color(color);
@@ -57,7 +58,9 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
             break;
     }
 
-    switch (variant) {
+    const effectiveVariant = corners === 'hexagon' ? 'ghost' : variant;
+
+    switch (effectiveVariant) {
         case 'ghost':
             container.backgroundColor = 'transparent';
             container.borderWidth = 0;
@@ -121,12 +124,12 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
 
     const iconSize = iconSizes[size];
 
-    return (
+    const pressable = (
         <Pressable
             disabled={disabled}
             onPressIn={() => setPressed(true)}
             onPressOut={() => setPressed(false)}
-            style={[container, style as ViewStyle]}
+            style={[container, corners === 'hexagon' ? undefined : style as ViewStyle]}
             {...props}
         >
             {icon ? (
@@ -157,4 +160,22 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
             ) : null}
         </Pressable>
     );
+
+    if (corners === 'hexagon') {
+        return (
+            <Hexagon
+                size={size}
+                variant={variant}
+                themeMode={themeMode}
+                color={color}
+                highlightColor={hlColor || color}
+                interactive
+                style={typeof style === 'function' ? undefined : style}
+            >
+                {pressable}
+            </Hexagon>
+        );
+    }
+
+    return pressable;
 };

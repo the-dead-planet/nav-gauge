@@ -131,6 +131,7 @@
 
 .variant-ghost .polygonBase {
     fill: none;
+    stroke: transparent;
 }
 
 .variant-fill .polygonBase {
@@ -156,37 +157,41 @@
     filter: var(--hex-filter);
 }
 
-.variant-inset {
-    border: none;
-}
-
-.variant-inset .polygonBase {
+.insetBg {
     fill: currentColor;
-    fill-opacity: 0.04;
+    fill-opacity: 0.10;
 }
 
-.variant-inset.mode-light .polygonBase {
-    filter: var(--inset-filter-light);
+.insetDark {
+    fill: none;
+    stroke: #000000;
+    stroke-width: 12;
+    opacity: 0.35;
 }
 
-.variant-inset.mode-dark .polygonBase {
-    filter: var(--inset-filter-dark);
+.insetLight {
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 8;
+    opacity: 0.45;
+}
+
+.mode-dark .insetDark {
+    opacity: 0.65;
+}
+
+.mode-dark .insetLight {
+    opacity: 0.12;
 }
 
 .variant-inset:hover {
     color: var(--hl-inset);
 }
 
-.variant-inset:active .polygonBase,
-.variant-inset.active .polygonBase {
+.variant-inset:active .insetBg,
+.variant-inset.active .insetBg {
     fill: currentColor;
     fill-opacity: var(--hl-bg-opacity);
-    filter: var(--inset-filter-light);
-}
-
-.variant-inset.mode-dark:active .polygonBase,
-.variant-inset.mode-dark.active .polygonBase {
-    filter: var(--inset-filter-dark);
 }
 
 .hover-style-glow:hover .polygonGlow {

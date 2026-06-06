@@ -92,6 +92,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
             color={color}
             highlightColor={highlightColor || color}
             interactive
+            hoverStyle="animate-borders-glow"
         >
             {buttonBase}
         </Hexagon>
