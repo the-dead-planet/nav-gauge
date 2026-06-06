@@ -4,6 +4,7 @@ import { ButtonProps, useTheme } from "@ui";
 import { Icon } from "../icons";
 import styles from './button.module.css';
 import { Tooltip } from "../tooltip";
+import { Hexagon } from "../hud";
 
 interface Props {
     /**
@@ -35,7 +36,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     }
     const iconSize = iconSizes[size];
 
-    const button = (
+    const buttonBase = (
         <button
             className={classNames(
                 styles['button'],
@@ -66,7 +67,9 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
         </button>
     );
 
-
+    const button = corners === 'hexagon' ? (
+        <Hexagon>{buttonBase}</Hexagon>
+    ) : buttonBase;
 
     if (tooltip) {
         <Tooltip content={tooltip}>

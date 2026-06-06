@@ -11,12 +11,6 @@ interface Props {
 const POINTY_TOP = "50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25";
 const FLAT_TOP = "100,50 75,93.3 25,93.3 0,50 25,6.7 75,6.7";
 
-const HOVER_STYLE_MAP: Record<HexagonHoverStyle, string> = {
-    glow: styles.glow,
-    fill: styles.fill,
-    "animate-borders-glow": styles["animate-borders-glow"],
-};
-
 export const Hexagon: FC<HexagonProps & Props> = ({
     variant = "pointy-top",
     strokeWidth = 2,
@@ -38,7 +32,7 @@ export const Hexagon: FC<HexagonProps & Props> = ({
                 styles[variant],
                 {
                     [styles.interactive]: interactive,
-                    [HOVER_STYLE_MAP[hoverStyle]]: interactive,
+                    [styles[hoverStyle]]: interactive,
                 },
                 className
             )}

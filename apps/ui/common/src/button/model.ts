@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { ColorVariant, SizeVariant } from "../model";
 
 export type ButtonVariant = 'ghost' | 'fill' | 'outline' | 'inset';
-export type ButtonCorners = 'square' | 'rounded' | 'circle';
+export type ButtonCorners = 'square' | 'rounded' | 'circle' | 'hexagon';
 
 export interface ButtonProps {
     color?: ColorVariant;

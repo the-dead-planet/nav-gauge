@@ -48,13 +48,13 @@ export const ButtonVariants = {
                                 {allCorners.map((corners) => (
                                     <div key={corners} style={{ display: 'grid', gap: 12 }}>
                                         <Text>{corners}</Text>
-                                        <div style={{ display: 'grid', gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
+                                        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${allVariants.length}, 1fr)`, gap: 8 }}>
                                             {allVariants.map((variant) => (
                                                 <Text key={variant}>{variant}</Text>
                                             ))}
                                         </div>
                                         {allColors.map((color) => (
-                                            <div key={color} style={{ display: 'grid', gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
+                                            <div key={color} style={{ display: 'grid', gridTemplateColumns: `repeat(${allVariants.length}, 1fr)`, gap: 8 }}>
                                                 {allVariants.map((variant, i) => (
                                                     <Button
                                                         key={variant}
@@ -69,6 +69,63 @@ export const ButtonVariants = {
                                                     </Button>
                                                 ))}
                                             </div>
+                                        ))}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </>
+        );
+    },
+} satisfies Story;
+
+export const HexagonButton = {
+    render: () => {
+        const [highlightColor, setHighlightColor] = useState<ColorVariant | undefined>(undefined);
+
+        return (
+            <>
+                <Text style={{ fontWeight: 700, marginBottom: 10 }}>Active highlightColor: {highlightColor ?? 'default'}</Text>
+                <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                    {[undefined, ...allColors].map((c) => (
+                        <Button
+                            key={c ?? 'default'}
+                            icon={Icons.Beaker}
+                            variant="fill"
+                            color={c}
+                            size="xs"
+                            corners="circle"
+                            active={highlightColor === c}
+                            onClick={() => setHighlightColor(c)}
+                        >
+                            {c ?? 'default'}
+                        </Button>
+                    ))}
+                </div>
+                <div style={{ display: 'grid', gap: 40 }}>
+                    {allSizes.map((size) => (
+                        <div key={size}>
+                            <Text>{size}</Text>
+                            <div style={{ display: 'grid', gap: 12 }}>
+                                <div style={{ display: 'grid', gridTemplateColumns: `repeat(${allVariants.length}, 1fr)`, gap: 8 }}>
+                                    {allVariants.map((variant) => (
+                                        <Text key={variant}>{variant}</Text>
+                                    ))}
+                                </div>
+                                {allColors.map((color) => (
+                                    <div key={color} style={{ display: 'grid', gridTemplateColumns: `repeat(${allVariants.length}, 1fr)`, gap: 8 }}>
+                                        {allVariants.map((variant, i) => (
+                                            <Button
+                                                key={variant}
+                                                icon={i % 2 ? Icons.Beaker : Icons.NounProject.LightBulbCogWheel}
+                                                variant={variant}
+                                                color={color}
+                                                corners="hexagon"
+                                                size={size}
+                                                highlightColor={highlightColor}
+                                            />
                                         ))}
                                     </div>
                                 ))}
