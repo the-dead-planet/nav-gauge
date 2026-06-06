@@ -100,7 +100,7 @@ export const MapSection: FC = () => {
                         corners="hexagon"
                         highlightColor="secondary"
                         style={{
-                            transform: `translate(${i % 2 === 1 ? `-6px, calc(50% + 4px)` : undefined})`
+                            transform: `translate(${i % 2 === 1 ? `-8px, calc(50% + 3px)` : undefined})`
                         }}
                     />
                 ))}

@@ -54,7 +54,7 @@
     --fill: var(--color-neutral);
     --fill-300: var(--color-neutral-300);
     --fill-400: var(--color-neutral-400);
-    --fill-900: var(--color-neutral-900);
+    --fill-900: var(--color-neutral-800);
     --color-bg: var(--color-neutral-500);
     --color-shadow: var(--color-neutral-700);
 }
@@ -100,41 +100,41 @@
 .highlight-neutral {
     --hl: var(--color-neutral);
     --hl-300: var(--color-neutral-300);
-    --hl-900: var(--color-neutral-900);
+    --hl-400: var(--color-neutral-400);
+    --hl-900: var(--color-neutral-800);
     --hl-inset: var(--color-neutral-600);
     --hl-bg: var(--color-neutral-500);
     --hl-shadow: var(--color-neutral-700);
-    --hl-fill-color: var(--color-neutral-900);
 }
 
 .highlight-primary {
     --hl: var(--color-primary);
     --hl-300: var(--color-primary-300);
+    --hl-400: var(--color-primary-400);
     --hl-900: var(--color-primary-900);
     --hl-inset: var(--color-primary-600);
     --hl-bg: var(--color-primary-500);
     --hl-shadow: var(--color-primary-700);
-    --hl-fill-color: var(--color-primary-900);
 }
 
 .highlight-secondary {
     --hl: var(--color-secondary);
     --hl-300: var(--color-secondary-300);
+    --hl-400: var(--color-secondary-400);
     --hl-900: var(--color-secondary-900);
     --hl-inset: var(--color-secondary-600);
     --hl-bg: var(--color-secondary-500);
     --hl-shadow: var(--color-secondary-700);
-    --hl-fill-color: var(--color-secondary-900);
 }
 
 .highlight-tertiary {
     --hl: var(--color-tertiary);
     --hl-300: var(--color-tertiary-300);
+    --hl-400: var(--color-tertiary-400);
     --hl-900: var(--color-tertiary-900);
     --hl-inset: var(--color-tertiary-600);
     --hl-bg: var(--color-tertiary-500);
     --hl-shadow: var(--color-tertiary-700);
-    --hl-fill-color: var(--color-tertiary-900);
 }
 
 .mode-dark.highlight-neutral {
@@ -180,30 +180,20 @@
     fill-opacity: 1;
 }
 
-.variant-fill:hover .polygon-base {
-    fill: var(--hl-900, var(--fill-900));
-    stroke: var(--hl-300, var(--fill-300));
-}
-
-.variant-fill:hover .polygon-glow {
-    stroke: var(--hl-300, var(--fill-300));
-}
-
-.variant-fill:hover {
-    color: var(--hl-300, var(--fill-300));
-}
-
+.variant-fill:hover .polygon-base,
 .variant-fill:active .polygon-base,
 .variant-fill.active .polygon-base {
     fill: var(--hl-900, var(--fill-900));
     stroke: var(--hl-300, var(--fill-300));
 }
 
+.variant-fill:hover .polygon-glow,
 .variant-fill:active .polygon-glow,
 .variant-fill.active .polygon-glow {
     stroke: var(--hl-300, var(--fill-300));
 }
 
+.variant-fill:hover,
 .variant-fill:active,
 .variant-fill.active {
     color: var(--hl-300, var(--fill-300));
@@ -279,20 +269,20 @@
 .hover-style-glow:hover .polygon-glow {
     opacity: 1;
     filter: var(--hex-filter);
-    stroke: var(--hl, var(--fill));
+    stroke: var(--hl-300, var(--fill-300));
 }
 
 .hover-style-fill:hover .polygon-glow {
     opacity: 1;
-    fill: var(--hl, var(--fill));
+    fill: var(--hl-300, var(--fill-300));
     fill-opacity: 0.24;
-    stroke: var(--hl, var(--fill));
+    stroke: var(--hl-300, var(--fill-300));
 }
 
 .hover-style-animate-borders-glow:hover .polygon-glow {
     opacity: 1;
     filter: var(--hex-filter);
-    stroke: var(--hl, var(--fill));
+    stroke: var(--hl-300, var(--fill-300));
     stroke-dasharray: 0 300;
     animation: border-glow 0.3s linear forwards;
 }

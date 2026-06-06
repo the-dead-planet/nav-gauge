@@ -229,8 +229,6 @@
     fill: var(--hl-fill-color);
 }
 
-.variant-fill .icon,
-.variant-fill .icon,
 .variant-fill .icon {
     color: var(--fill-text);
     stroke: var(--fill-text);
