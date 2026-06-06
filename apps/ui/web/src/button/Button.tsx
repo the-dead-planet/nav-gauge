@@ -68,6 +68,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     );
 
     const tryHandle = (e: MouseEvent<HTMLDivElement>, handler?: (e: MouseEvent<HTMLButtonElement>) => void) => {
+        e.stopPropagation();
         try {
             handler?.(e as unknown as MouseEvent<HTMLButtonElement>);
         } catch {
@@ -75,6 +76,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
         }
     };
     const tryHandleKeyboard = (e: KeyboardEvent<HTMLDivElement>, handler?: (e: KeyboardEvent<HTMLButtonElement>) => void) => {
+        e.stopPropagation()
         try {
             handler?.(e as unknown as KeyboardEvent<HTMLButtonElement>);
         } catch {
@@ -86,13 +88,13 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
         <Hexagon
             role="button"
             tabIndex={0}
-            onClick={(e) => tryHandle(e, props.onClick)}
-            onMouseDown={(e) => tryHandle(e, props.onMouseDown)}
-            onMouseUp={(e) => tryHandle(e, props.onMouseUp)}
+            onClickCapture={(e) => tryHandle(e, props.onClick)}
+            onMouseDownCapture={(e) => tryHandle(e, props.onMouseDown)}
+            onMouseUpCapture={(e) => tryHandle(e, props.onMouseUp)}
             onMouseEnter={(e) => tryHandle(e, props.onMouseEnter)}
             onMouseLeave={(e) => tryHandle(e, props.onMouseLeave)}
-            onKeyDown={(e) => tryHandleKeyboard(e, props.onKeyDown)}
-            onKeyUp={(e) => tryHandleKeyboard(e, props.onKeyUp)}
+            onKeyDownCapture={(e) => tryHandleKeyboard(e, props.onKeyDown)}
+            onKeyUpCapture={(e) => tryHandleKeyboard(e, props.onKeyUp)}
             size={size}
             variant={variant}
             mode={mode}
