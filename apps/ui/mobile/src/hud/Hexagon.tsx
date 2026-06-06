@@ -1,10 +1,16 @@
 import { FC } from "react";
 import { View, StyleSheet } from "react-native";
 import Svg, { Polygon } from "react-native-svg";
-import { ColorVariant, HexagonProps, useTheme } from "@ui";
+import { ColorVariant, HexagonProps, SizeVariant, useTheme } from "@ui";
 
 const POINTY_TOP = "50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25";
 const FLAT_TOP = "100,50 75,93.3 25,93.3 0,50 25,6.7 75,6.7";
+
+const sizeWidth: Record<SizeVariant, number> = {
+    xs: 40,
+    sm: 56,
+    md: 72,
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -23,6 +29,7 @@ export const Hexagon: FC<HexagonProps & { style?: object }> = ({
     variant = "pointy-top",
     strokeWidth = 2,
     color,
+    size,
     style,
     children
 }) => {
@@ -32,7 +39,7 @@ export const Hexagon: FC<HexagonProps & { style?: object }> = ({
     const strokeColor = color ? theme.color(color as ColorVariant, 500) : undefined;
 
     return (
-        <View style={[styles.container, { aspectRatio }, style]}>
+        <View style={[styles.container, { aspectRatio }, size ? { width: sizeWidth[size] } : undefined, style]}>
             <Svg
                 viewBox="0 0 100 100"
                 style={StyleSheet.absoluteFill}

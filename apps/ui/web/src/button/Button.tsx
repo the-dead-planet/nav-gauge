@@ -2,9 +2,9 @@ import { ComponentProps, FC, ReactNode } from "react";
 import classNames from "classnames";
 import { ButtonProps, useTheme } from "@ui";
 import { Icon } from "../icons";
-import styles from './button.module.css';
 import { Tooltip } from "../tooltip";
 import { Hexagon } from "../hud";
+import styles from './button.module.css';
 
 interface Props {
     /**
@@ -71,6 +71,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
         <Hexagon
             role="button"
             tabIndex={0}
+            size={size}
         >
             {buttonBase}
         </Hexagon>

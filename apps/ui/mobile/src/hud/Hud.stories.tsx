@@ -1,7 +1,8 @@
 import { FC } from "react";
-import { ScrollView, View, Text, StyleSheet } from "react-native";
+import { ScrollView, View, StyleSheet } from "react-native";
 import { Hexagon } from "./Hexagon";
 import { FlexBox } from "../flex-box";
+import { Text } from "../typography";
 import { ColorVariant, useTheme } from "@ui";
 
 const styles = StyleSheet.create({
@@ -46,9 +47,15 @@ export const All: FC = () => {
                 <View style={styles.section}>
                     <Text style={styles.label}>sizes</Text>
                     <View style={styles.row}>
-                        <Hexagon style={{ width: 60 }} color="tertiary" />
-                        <Hexagon style={{ width: 100 }} color="tertiary" />
-                        <Hexagon style={{ width: 140 }} color="tertiary" />
+                        <Hexagon size="xs" color="tertiary">
+                            <Text color="tertiary">xs</Text>
+                        </Hexagon>
+                        <Hexagon size="sm" color="tertiary">
+                            <Text color="tertiary">sm</Text>
+                        </Hexagon>
+                        <Hexagon size="md" color="tertiary">
+                            <Text color="tertiary">md</Text>
+                        </Hexagon>
                     </View>
                 </View>
 

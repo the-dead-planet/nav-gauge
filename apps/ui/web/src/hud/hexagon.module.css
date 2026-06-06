@@ -37,6 +37,18 @@
     cursor: pointer;
 }
 
+.size-xs {
+    width: 36px;
+}
+
+.size-sm {
+    width: 48px;
+}
+
+.size-md {
+    width: 64px;
+}
+
 .polygonGlow {
     opacity: 0;
 }

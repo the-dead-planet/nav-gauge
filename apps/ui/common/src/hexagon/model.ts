@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { ColorVariant } from "../model";
+import { ColorVariant, SizeVariant } from "../model";
 
 export type HexagonVariant = 'pointy-top' | 'flat-top';
 export type HexagonHoverStyle = 'glow' | 'fill' | 'animate-borders-glow';
@@ -10,5 +10,6 @@ export interface HexagonProps {
     interactive?: boolean;
     hoverStyle?: HexagonHoverStyle;
     color?: ColorVariant;
+    size?: SizeVariant;
     children?: ReactNode;
 }

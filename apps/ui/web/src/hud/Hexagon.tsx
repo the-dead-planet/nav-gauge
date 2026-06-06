@@ -17,6 +17,7 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
     interactive = false,
     hoverStyle = "glow",
     color,
+    size,
     className,
     style,
     children,
@@ -31,6 +32,7 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
             className={classNames(
                 styles.hexagon,
                 styles[variant],
+                size && styles[`size-${size}`],
                 {
                     [styles.interactive]: interactive,
                     [styles[hoverStyle]]: interactive,
