@@ -81,7 +81,8 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
             variant={variant}
             themeMode={themeMode}
             color={color}
-            highlightColor={highlightColor || color}
+            highlightColor={highlightColor}
+            active={active}
             interactive
             hoverStyle="animate-borders-glow"
             style={style}

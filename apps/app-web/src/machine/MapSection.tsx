@@ -81,7 +81,7 @@ export const MapSection: FC = () => {
             </FlexBox>
             <div className={classNames(styles['toolbar'], styles['left'])}>
                 {[
-                    { id: 1, icon:null },
+                    { id: 1, icon: null },
                     { id: 2, icon: Icons.Find },
                     { id: 3, icon: Icons.Beaker },
                     { id: 4, icon: Icons.Find },
@@ -96,12 +96,11 @@ export const MapSection: FC = () => {
                         key={id}
                         icon={icon}
                         size="sm"
-                        variant="fill-translucent"
+                        variant="fill"
                         corners="hexagon"
-                        color="neutral"
                         highlightColor="secondary"
                         style={{
-                            transform: `translate(${i % 2 === 1 ? '-24px, 50%' : '-12px, 0%'})`
+                            transform: `translate(${i % 2 === 1 ? `-6px, calc(50% + 4px)` : undefined})`
                         }}
                     />
                 ))}

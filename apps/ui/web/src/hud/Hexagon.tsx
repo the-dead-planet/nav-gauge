@@ -21,12 +21,13 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'svg'>> = ({
     shape = "pointy-top",
     strokeWidth = 2,
     interactive = false,
-    hoverStyle = "glow",
+    hoverStyle = "animate-borders-glow",
     color,
     highlightColor,
     size,
     variant,
     themeMode,
+    active = false,
     className,
     style,
     children,
@@ -54,6 +55,7 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'svg'>> = ({
                 size && styles[`size-${size}`],
                 styles[`mode-${resolvedMode}`],
                 {
+                    [styles['active']]: active,
                     [styles[`hover-style-${hoverStyle}`]]: interactive,
                 },
                 className
@@ -110,26 +112,26 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'svg'>> = ({
                         <g clipPath={`url(#${clipPathId})`}>
                             <polygon
                                 points={points}
-                                className={styles.insetBg}
+                                className={styles['inset-bg']}
                             />
                             <polygon
                                 points={overPoints}
                                 fill="none"
-                                className={styles.insetDark}
+                                className={styles['inset-dark']}
                                 filter={`url(#${shadowBlurId})`}
                             />
                             <polygon
                                 points={inPoints}
                                 fill="none"
-                                className={styles.insetLight}
+                                className={styles['inset-light']}
                                 filter={`url(#${shadowBlurId})`}
                             />
                         </g>
                         <polygon
                             points={points}
                             fill="none"
-                            stroke="currentColor"
                             strokeWidth={strokeWidth}
+                            className={styles['polygon-base']}
                         />
                     </>
                 ) : (
@@ -137,16 +139,14 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'svg'>> = ({
                         <polygon
                             points={points}
                             fill="none"
-                            stroke="currentColor"
                             strokeWidth={strokeWidth}
-                            className={styles.polygonBase}
+                            className={styles['polygon-base']}
                         />
                         <polygon
                             points={points}
                             fill="none"
-                            stroke="currentColor"
                             strokeWidth={strokeWidth}
-                            className={styles.polygonGlow}
+                            className={styles['polygon-glow']}
                         />
                     </>
                 )}

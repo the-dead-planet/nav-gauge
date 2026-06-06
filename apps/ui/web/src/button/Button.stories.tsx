@@ -14,7 +14,7 @@ type Story = StoryObj<typeof meta>;
 
 const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: SurfaceVariant[] = ['ghost', 'fill-translucent', 'outline', 'inset'];
+const allVariants: SurfaceVariant[] = ['ghost', 'fill', 'fill-translucent', 'outline', 'inset'];
 const allCorners: ButtonCorners[] = ['square', 'rounded', 'circle', 'hexagon'];
 
 export const ButtonVariants = {
