@@ -33,12 +33,12 @@ export const Hexagons = {
                 <Hexagon interactive hoverStyle="fill" color="tertiary" style={{ width: 100 }} />
             </FlexBox>
 
-            <span style={{ fontWeight: 700 }}>animate-borders</span>
+            <span style={{ fontWeight: 700 }}>animate-borders-glow</span>
             <FlexBox gap="md" alignItems="center">
-                <Hexagon variant="pointy-top" interactive hoverStyle="animate-borders" color="primary" style={{ width: 100 }}>
+                <Hexagon variant="pointy-top" interactive hoverStyle="animate-borders-glow" color="primary" style={{ width: 100 }}>
                     <span>1</span>
                 </Hexagon>
-                <Hexagon variant="flat-top" interactive hoverStyle="animate-borders" color="secondary" style={{ width: 100 }}>
+                <Hexagon variant="flat-top" interactive hoverStyle="animate-borders-glow" color="secondary" style={{ width: 100 }}>
                     <span>2</span>
                 </Hexagon>
             </FlexBox>

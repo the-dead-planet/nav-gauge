@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { ChangeEvent, FC } from "react";
 import { FileInputStatus } from "@web-ui";
 import { parsers } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
@@ -13,7 +13,7 @@ export const RouteStoryFileInput: FC<RouteFileInputProps<maplibregl.Map, File, W
     const [{ geojson, routeName, error }] = useSubjectState(data$);
     const [isLoading] = useSubjectState(fileOperator.isLoading$);
 
-    const handleInput = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleInput = async (event: ChangeEvent<HTMLInputElement>) => {
         if (!event.target.files) {
             return;
         }

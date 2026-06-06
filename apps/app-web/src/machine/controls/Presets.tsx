@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { ChangeEvent, FC } from "react";
 import {
     AnimationControlsType,
     Animatrix,
@@ -25,7 +25,7 @@ export const Presets: FC<Props> = () => {
     const [preset, setPreset] = useSubjectState(toolsStation.preset$);
     const [isPresetActive] = useSubjectState(toolsStation.isPresetActive$);
 
-    const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setPreset(event.target.value as Preset);
     };
 
@@ -45,7 +45,7 @@ export const Presets: FC<Props> = () => {
         URL.revokeObjectURL(url);
     };
 
-    const handleImport = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleImport = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.item(0);
         if (!file) {
             return;

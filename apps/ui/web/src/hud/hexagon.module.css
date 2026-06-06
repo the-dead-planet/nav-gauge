@@ -37,22 +37,33 @@
     cursor: pointer;
 }
 
-.glow:hover .polygon {
+.polygonGlow {
+    opacity: 0;
+}
+
+.glow:hover .polygonGlow {
+    opacity: 1;
     filter: var(--hex-filter);
 }
 
-.fill:hover .polygon {
+.fill:hover .polygonGlow {
+    opacity: 1;
     fill: currentColor;
     fill-opacity: 0.24;
 }
 
-.animate-borders:hover .polygon {
-    stroke-dasharray: 30 15;
-    animation: border-dash 1.5s linear infinite;
+.animate-borders-glow:hover .polygonGlow {
+    opacity: 1;
+    filter: var(--hex-filter);
+    stroke-dasharray: 0 300;
+    animation: border-glow 0.3s linear forwards;
 }
 
-@keyframes border-dash {
+@keyframes border-glow {
+    from {
+        stroke-dasharray: 0 300;
+    }
     to {
-        stroke-dashoffset: -180;
+        stroke-dasharray: 300 0;
     }
 }

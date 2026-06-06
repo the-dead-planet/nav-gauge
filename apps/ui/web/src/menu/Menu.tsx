@@ -1,7 +1,6 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback, FC, CSSProperties } from 'react';
 import { createPortal } from 'react-dom';
 import {
-    MenuAnchor,
     MenuPosition,
     getIconAndMenuAnchors,
     MenuContext,
@@ -11,7 +10,7 @@ import {
 } from '@ui';
 import styles from './menu.module.css';
 
-export const Menu: React.FC<MenuProps> = ({
+export const Menu: FC<MenuProps> = ({
     placement = 'bottom-right',
     children,
 }) => {
@@ -48,7 +47,7 @@ export const Menu: React.FC<MenuProps> = ({
         };
     }, [visible, close]);
 
-    const positionStyle: React.CSSProperties = {};
+    const positionStyle: CSSProperties = {};
     
     if (menuPosition.top !== undefined) positionStyle.top = menuPosition.top;
     if (menuPosition.left !== undefined) positionStyle.left = menuPosition.left;

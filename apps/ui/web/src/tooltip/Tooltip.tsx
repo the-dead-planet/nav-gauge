@@ -1,4 +1,4 @@
-import { Fragment, ReactNode, useRef } from "react";
+import { FC, Fragment, ReactNode, useRef } from "react";
 import style from './tooltip.module.css';
 
 export interface TooltipProps {
@@ -6,7 +6,7 @@ export interface TooltipProps {
     children: ReactNode;
 }
 
-export const Tooltip: React.FC<TooltipProps> = ({ content, children }) => {
+export const Tooltip: FC<TooltipProps> = ({ content, children }) => {
     const tooltipRef = useRef<HTMLDivElement>(null);
 
     return (

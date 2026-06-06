@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { ChangeEvent, FC } from "react";
 import { themeOptions, ThemeName } from "@ui";
 import { Fieldset, Input } from "@web-ui";
 import { IndividuatorSettings, useMachineWard } from "@apparatus";
@@ -10,7 +10,7 @@ export const ApplicationSettingsSection: FC = () => {
     const [settings, setSettings] = useSubjectState(individuator.settings$);
     const { confirmBeforeLeave } = settings;
 
-    const handleThemeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleThemeChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setSettings((prev): IndividuatorSettings => ({
             ...prev,
             themeName: event.target.value as ThemeName

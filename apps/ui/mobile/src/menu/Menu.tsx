@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, FC } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     }
 });
 
-export const Menu: React.FC<MenuProps> = ({
+export const Menu: FC<MenuProps> = ({
     placement = 'bottom-right',
     children,
 }) => {

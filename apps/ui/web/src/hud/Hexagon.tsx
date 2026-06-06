@@ -14,7 +14,7 @@ const FLAT_TOP = "100,50 75,93.3 25,93.3 0,50 25,6.7 75,6.7";
 const HOVER_STYLE_MAP: Record<HexagonHoverStyle, string> = {
     glow: styles.glow,
     fill: styles.fill,
-    "animate-borders": styles["animate-borders"],
+    "animate-borders-glow": styles["animate-borders-glow"],
 };
 
 export const Hexagon: FC<HexagonProps & Props> = ({
@@ -38,11 +38,14 @@ export const Hexagon: FC<HexagonProps & Props> = ({
                 styles[variant],
                 {
                     [styles.interactive]: interactive,
+                    [HOVER_STYLE_MAP[hoverStyle]]: interactive,
                 },
-                interactive && HOVER_STYLE_MAP[hoverStyle],
                 className
             )}
-            style={{ ...style, "--hex-filter": `url(#${filterId})`, color: hexColor } as React.CSSProperties}
+            style={{
+                ...style,
+                "--hex-filter": `url(#${filterId})`, color: hexColor,
+            } as CSSProperties}
         >
             <svg
                 viewBox="0 0 100 100"
@@ -78,7 +81,14 @@ export const Hexagon: FC<HexagonProps & Props> = ({
                     fill="none"
                     stroke="currentColor"
                     strokeWidth={strokeWidth}
-                    className={styles.polygon}
+                    className={styles.polygonBase}
+                />
+                <polygon
+                    points={points}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={strokeWidth}
+                    className={styles.polygonGlow}
                 />
             </svg>
             <div className={styles.content}>

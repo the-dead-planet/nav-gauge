@@ -1,4 +1,4 @@
-import { CSSProperties, FC, useEffect } from "react";
+import { ChangeEvent, CSSProperties, FC, useEffect } from "react";
 import { OverlayComponentProps, SurveillanceState, useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { formatCurrentTimestamp, getProgressPercentage, RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
@@ -37,7 +37,7 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<m
 
     const progressPercentage = getProgressPercentage(progressMs, routeTimes);
 
-    const handleProgressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleProgressChange = (event: ChangeEvent<HTMLInputElement>) => {
         playerOperator.updateProgress(
             Number(event.target.value),
             (line, currentPoint) => {

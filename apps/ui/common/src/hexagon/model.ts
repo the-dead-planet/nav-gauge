@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { ColorVariant } from "../model";
 
 export type HexagonVariant = 'pointy-top' | 'flat-top';
-export type HexagonHoverStyle = 'glow' | 'fill' | 'animate-borders';
+export type HexagonHoverStyle = 'glow' | 'fill' | 'animate-borders-glow';
 
 export interface HexagonProps {
     variant?: HexagonVariant;
