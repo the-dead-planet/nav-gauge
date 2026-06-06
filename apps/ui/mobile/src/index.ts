@@ -2,6 +2,7 @@ export * from './button';
 export * from './flex-box';
 export * from './forms';
 export * from './grid';
+export * from './hud';
 export * from './icons';
 export * from './menu';
 export * from './model';

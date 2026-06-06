@@ -1,0 +1,58 @@
+.hexagon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    color: var(--color-border);
+}
+
+.pointy-top {
+    aspect-ratio: 2 / 1.7320508;
+}
+
+.flat-top {
+    aspect-ratio: 1.7320508 / 2;
+}
+
+.svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.interactive {
+    cursor: pointer;
+}
+
+.glow:hover .polygon {
+    filter: var(--hex-filter);
+}
+
+.fill:hover .polygon {
+    fill: currentColor;
+    fill-opacity: 0.24;
+}
+
+.animate-borders:hover .polygon {
+    stroke-dasharray: 30 15;
+    animation: border-dash 1.5s linear infinite;
+}
+
+@keyframes border-dash {
+    to {
+        stroke-dashoffset: -180;
+    }
+}

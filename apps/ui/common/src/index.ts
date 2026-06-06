@@ -1,4 +1,5 @@
 export * from './button';
+export * from './hexagon';
 export * from './date-time';
 export * from './error-boundary';
 export * from './flex-box';

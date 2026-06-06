@@ -1,9 +1,13 @@
 import maplibregl from "maplibre-gl";
 import { Cartomancer } from "@apparatus";
 
-export const createMap = () => new maplibregl.Map({
-    container: document.createElement('div'),
-    style: Cartomancer.styles['osm'].style,
-    attributionControl: false,
-    maxPitch: 80,
-});
+export const createMap = () => {
+    const container = document.createElement('div');
+    
+    return new maplibregl.Map({
+        container,
+        style: Cartomancer.styles['osm'].style,
+        attributionControl: false,
+        maxPitch: 80,
+    });
+};

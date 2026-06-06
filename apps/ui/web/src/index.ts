@@ -1,5 +1,6 @@
 export * from './button';
 export * from './flex-box';
+export * from './hud';
 export * from './forms';
 export * from './grid';
 export * from './icons';
