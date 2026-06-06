@@ -65,7 +65,7 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
             container.backgroundColor = 'transparent';
             container.borderWidth = 0;
             break;
-        case 'fill':
+        case 'fill-translucent':
             container.borderWidth = 0;
             container.backgroundColor = hl
                 ? theme.color(highlightColor, 500, active ? 0.48 : 0.36)
