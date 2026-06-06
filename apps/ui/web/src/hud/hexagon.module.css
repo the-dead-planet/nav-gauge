@@ -7,6 +7,10 @@
     color: var(--color-border);
 }
 
+.hexagon:hover {
+    z-index: 1;
+}
+
 .pointy-top {
     aspect-ratio: 86.6 / 100;
 }
@@ -139,18 +143,18 @@
     fill-opacity: 0.24;
 }
 
-.variant-fill .polygonBase {
+.variant-fill-translucent .polygonBase {
     fill: currentColor;
     fill-opacity: 0.24;
 }
 
-.variant-fill:hover .polygonBase {
+.variant-fill-translucent:hover .polygonBase {
     fill: var(--hl, currentColor);
     fill-opacity: 0.36;
 }
 
-.variant-fill:active .polygonBase,
-.variant-fill.active .polygonBase {
+.variant-fill-translucent:active .polygonBase,
+.variant-fill-translucent.active .polygonBase {
     fill-opacity: 0.48;
 }
 

@@ -14,7 +14,7 @@ type Story = StoryObj<typeof meta>;
 
 const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: SurfaceVariant[] = ['ghost', 'fill', 'outline', 'inset'];
+const allVariants: SurfaceVariant[] = ['ghost', 'fill-translucent', 'outline', 'inset'];
 const allCorners: ButtonCorners[] = ['square', 'rounded', 'circle', 'hexagon'];
 
 export const ButtonVariants = {
@@ -29,7 +29,7 @@ export const ButtonVariants = {
                         <Button
                             key={c ?? 'default'}
                             icon={Icons.Beaker}
-                            variant="fill"
+                            variant="fill-translucent"
                             color={c}
                             size="xs"
                             corners="circle"

@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 
 const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: SurfaceVariant[] = ['ghost', 'fill', 'outline', 'inset'];
+const allVariants: SurfaceVariant[] = ['ghost', 'fill-translucent', 'outline', 'inset'];
 const allCorners: ButtonCorners[] = ['square', 'rounded', 'circle', 'hexagon'];
 
 export const AllVariants: FC = () => {

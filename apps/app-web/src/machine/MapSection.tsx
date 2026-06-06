@@ -96,10 +96,10 @@ export const MapSection: FC = () => {
                         key={id}
                         icon={icon}
                         size="sm"
-                        variant="fill"
+                        variant="fill-translucent"
                         corners="hexagon"
                         color="neutral"
-                        highlightColor="primary"
+                        highlightColor="secondary"
                         style={{
                             transform: `translate(${i % 2 === 1 ? '-24px, 50%' : '-12px, 0%'})`
                         }}

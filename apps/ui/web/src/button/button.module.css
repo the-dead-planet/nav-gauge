@@ -187,41 +187,41 @@
     filter: drop-shadow(0 0 12px rgb(from var(--hl-inset) r g b / .45));
 }
 
-.variant-fill {
+.variant-fill-translucent {
     border: none;
 }
 
-.variant-fill.color-neutral {
+.variant-fill-translucent.color-neutral {
     background-color: rgb(from var(--color-neutral) r g b / .24);
 }
 
-.variant-fill.color-primary {
+.variant-fill-translucent.color-primary {
     background-color: rgb(from var(--color-primary) r g b / .24);
 }
 
-.variant-fill.color-secondary {
+.variant-fill-translucent.color-secondary {
     background-color: rgb(from var(--color-secondary) r g b / .24);
 }
 
-.variant-fill.color-tertiary {
+.variant-fill-translucent.color-tertiary {
     background-color: rgb(from var(--color-tertiary) r g b / .24);
 }
 
-.variant-fill:hover {
+.variant-fill-translucent:hover {
     color: var(--hl-inset);
     background-color: rgb(from var(--hl) r g b / .36);
 }
 
-.variant-fill:hover .icon,
-.variant-fill:active .icon,
-.variant-fill.active .icon {
+.variant-fill-translucent:hover .icon,
+.variant-fill-translucent:active .icon,
+.variant-fill-translucent.active .icon {
     color: var(--hl-inset);
     stroke: var(--hl-inset);
     fill: var(--hl-inset);
 }
 
-.variant-fill:active,
-.variant-fill.active {
+.variant-fill-translucent:active,
+.variant-fill-translucent.active {
     color: var(--hl-inset);
     background-color: rgb(from var(--hl) r g b / .48);
 }

@@ -30,8 +30,9 @@
 .toolbar.left {
     grid-area: left-toolbar;
     width: calc(100% - 24px);
-    border-right: 1px solid var(--color-primary);
+    /* border-right: 1px solid var(--color-primary); */
     /* box-shadow: 1px 1px 3px rgb(from var(--color-box-shadow) r g b / .4); */
+    /* background-color: rgb(from var(--color-background) r g b / .82); */
     display: grid;
     grid-template-columns: 1fr 1fr;
     row-gap: 0;
@@ -44,7 +45,7 @@
 }
 
 .toolbar.left button {
-    backdrop-filter: blur(2px);
+    /* backdrop-filter: blur(2px); */
 }
 
 .toolbar.right {
