@@ -99,6 +99,7 @@ export const MapSection: FC = () => {
                         size="sm"
                         variant={"fill-inverse"}
                         corners="hexagon"
+                        glowStyle="animate-borders-glow"
                         // color="primary"
                         highlightColor="secondary"
                         style={{
@@ -109,7 +110,12 @@ export const MapSection: FC = () => {
                 ))}
             </div>
             <div className={classNames(styles['toolbar'], styles['right'])}><P>right</P></div>
-            <div className={classNames(styles['toolbar'], styles['bottom'])}><P>bottom</P></div>
+            <div className={classNames(styles['toolbar'], styles['bottom'])}>
+                <Button variant="fill-inverse" corners="rounded">Test</Button>
+                <Button variant="fill-inverse" corners="rounded" color="primary">Test</Button>
+                <Button variant="fill-inverse" corners="rounded" color="secondary">Test</Button>
+                <Button variant="fill-inverse" corners="rounded" color="tertiary">Test</Button>
+            </div>
         </div>
     );
 };
