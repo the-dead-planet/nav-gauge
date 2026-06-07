@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { ColorVariant, SizeVariant, SurfaceVariant } from "../model";
+import { ColorVariant, GlowStyle, SizeVariant, SurfaceVariant } from "../model";
 
 export type ButtonCorners = 'square' | 'rounded' | 'circle' | 'hexagon';
 
@@ -10,6 +10,7 @@ export interface ButtonProps {
      * Defaults to `ghost`
      */
     variant?: SurfaceVariant;
+    glowStyle?: GlowStyle;
     /**
      * Defaults to `sm`
      */

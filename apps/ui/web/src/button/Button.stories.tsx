@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { ColorVariant, SizeVariant, ButtonCorners, SurfaceVariant, Icons } from '@ui';
+import { ColorVariant, SizeVariant, ButtonCorners, SurfaceVariant, Icons, GlowStyle } from '@ui';
 import { Button } from './Button';
 import { Text } from '../typography';
 import { useState } from 'react';
@@ -16,10 +16,12 @@ const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
 const allVariants: SurfaceVariant[] = ['ghost', 'fill', 'fill-inverse', 'fill-translucent', 'outline', 'inset'];
 const allCorners: ButtonCorners[] = ['square', 'rounded', 'circle', 'hexagon'];
+const allGlowStyles: (GlowStyle | undefined)[] = [undefined, 'glow', 'animate-borders-glow'];
 
 export const ButtonVariants = {
     render: () => {
         const [highlightColor, setHighlightColor] = useState<ColorVariant | undefined>(undefined);
+        const [glowStyle, setGlowStyle] = useState<GlowStyle>();
 
         return (
             <>
@@ -37,6 +39,20 @@ export const ButtonVariants = {
                             onClick={() => setHighlightColor(c)}
                         >
                             {c ?? 'default'}
+                        </Button>
+                    ))}
+                </div>
+                <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                    {allGlowStyles.map((gs) => (
+                        <Button
+                            key={gs ?? 'default'}
+                            variant={glowStyle === gs ? "fill" : "ghost"}
+                            size="xs"
+                            corners="circle"
+                            active={glowStyle === gs}
+                            onClick={() => setGlowStyle(gs)}
+                        >
+                            {gs ?? 'none'}
                         </Button>
                     ))}
                 </div>
@@ -64,6 +80,7 @@ export const ButtonVariants = {
                                                         corners={corners}
                                                         size={size}
                                                         highlightColor={highlightColor}
+                                                        glowStyle={glowStyle}
                                                     >
                                                         {corners !== 'hexagon' ? color : null}
                                                     </Button>

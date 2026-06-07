@@ -130,12 +130,6 @@
 .variant-ghost:active,
 .variant-ghost.active {
     color: var(--button-highlight-light);
-    text-shadow: 0 0 12px rgb(from var(--button-highlight-light) r g b / .45);
-}
-
-.variant-ghost:active .icon,
-.variant-ghost.active .icon {
-    filter: drop-shadow(0 0 12px rgb(from var(--button-highlight-light) r g b / .45));
 }
 
 .variant-fill {
@@ -340,8 +334,6 @@
     color: var(--button-highlight-light);
     border-color: var(--button-highlight-light);
     background-color: rgb(from var(--button-highlight) r g b / .24);
-    box-shadow: 0px 0px 4px rgb(from var(--button-highlight) r g b / .3),
-        0px 0px 20px rgb(from var(--button-highlight) r g b / .6);
 }
 
 .variant-inset {
@@ -396,25 +388,13 @@
         rgb(from var(--button-highlight-shadow) r g b / .04) -2px -2px 4px inset,
         rgba(255, 255, 255, .25) -2px -2px 3px inset;
     border-color: rgb(from var(--button-highlight-light) r g b / .3);
-    text-shadow: 0 0 12px rgb(from var(--button-highlight-light) r g b / 0.4);
-}
-
-.variant-inset.mode-light:active .icon,
-.variant-inset.mode-light.active .icon {
-    filter: drop-shadow(0 0 12px rgb(from var(--button-highlight-light) r g b / .4));
 }
 
 .variant-inset.mode-dark:active,
 .variant-inset.mode-dark.active {
-    text-shadow: 0 0 12px rgb(from var(--button-highlight-light) r g b / .85);
     box-shadow:
         rgba(0, 0, 0, .80) 4px 4px 8px inset,
         rgba(0, 0, 0, .24) -2px -2px 4px inset;
-}
-
-.variant-inset.mode-dark:active .icon,
-.variant-inset.mode-dark.active .icon {
-    filter: drop-shadow(0 0 12px rgb(from var(--button-highlight-light) r g b / .85));
 }
 
 .corners-hexagon {
@@ -528,29 +508,188 @@
     fill: var(--button-highlight-light);
 }
 
-.corners-hexagon.variant-fill-inverse:active,
-.corners-hexagon.variant-fill-inverse.active,
-.corners-hexagon.variant-ghost:active,
-.corners-hexagon.variant-ghost.active,
-.corners-hexagon.variant-fill-translucent:active,
-.corners-hexagon.variant-fill-translucent.active,
-.corners-hexagon.variant-inset:active,
-.corners-hexagon.variant-inset.active,
-.corners-hexagon.variant-outline:active,
-.corners-hexagon.variant-outline.active {
-    color: var(--button-highlight-light);
+/* ── Conditional glow effects (glowStyle prop) ── */
+
+/* box-shadow on hover/active for all non-hexagon variants */
+.glow-style-glow.variant-ghost:hover,
+.glow-style-glow.variant-ghost:active,
+.glow-style-glow.variant-ghost.active,
+.glow-style-animate-borders-glow.variant-ghost:hover,
+.glow-style-animate-borders-glow.variant-ghost:active,
+.glow-style-animate-borders-glow.variant-ghost.active,
+.glow-style-glow.variant-fill:hover,
+.glow-style-glow.variant-fill:active,
+.glow-style-glow.variant-fill.active,
+.glow-style-animate-borders-glow.variant-fill:hover,
+.glow-style-animate-borders-glow.variant-fill:active,
+.glow-style-animate-borders-glow.variant-fill.active,
+.glow-style-glow.variant-fill-inverse:hover,
+.glow-style-glow.variant-fill-inverse:active,
+.glow-style-glow.variant-fill-inverse.active,
+.glow-style-animate-borders-glow.variant-fill-inverse:hover,
+.glow-style-animate-borders-glow.variant-fill-inverse:active,
+.glow-style-animate-borders-glow.variant-fill-inverse.active,
+.glow-style-glow.variant-fill-translucent:hover,
+.glow-style-glow.variant-fill-translucent:active,
+.glow-style-glow.variant-fill-translucent.active,
+.glow-style-animate-borders-glow.variant-fill-translucent:hover,
+.glow-style-animate-borders-glow.variant-fill-translucent:active,
+.glow-style-animate-borders-glow.variant-fill-translucent.active,
+.glow-style-glow.variant-outline:hover,
+.glow-style-glow.variant-outline:active,
+.glow-style-glow.variant-outline.active,
+.glow-style-animate-borders-glow.variant-outline:hover,
+.glow-style-animate-borders-glow.variant-outline:active,
+.glow-style-animate-borders-glow.variant-outline.active,
+.glow-style-glow.variant-inset:hover,
+.glow-style-glow.variant-inset:active,
+.glow-style-glow.variant-inset.active,
+.glow-style-animate-borders-glow.variant-inset:hover,
+.glow-style-animate-borders-glow.variant-inset:active,
+.glow-style-animate-borders-glow.variant-inset.active {
+    box-shadow: 0px 0px 4px rgb(from var(--button-highlight) r g b / .3),
+        0px 0px 20px rgb(from var(--button-highlight) r g b / .6);
+}
+
+/* Hexagon: no box-shadow glow (handled by SVG) */
+.corners-hexagon.glow-style-glow:hover,
+.corners-hexagon.glow-style-glow:active,
+.corners-hexagon.glow-style-glow.active,
+.corners-hexagon.glow-style-animate-borders-glow:hover,
+.corners-hexagon.glow-style-animate-borders-glow:active,
+.corners-hexagon.glow-style-animate-borders-glow.active {
+    box-shadow: none;
+}
+
+/* text-shadow: ghost, outline, inset only */
+.glow-style-glow.variant-ghost:hover,
+.glow-style-glow.variant-ghost:active,
+.glow-style-glow.variant-ghost.active,
+.glow-style-animate-borders-glow.variant-ghost:hover,
+.glow-style-animate-borders-glow.variant-ghost:active,
+.glow-style-animate-borders-glow.variant-ghost.active,
+.glow-style-glow.variant-outline:hover,
+.glow-style-glow.variant-outline:active,
+.glow-style-glow.variant-outline.active,
+.glow-style-animate-borders-glow.variant-outline:hover,
+.glow-style-animate-borders-glow.variant-outline:active,
+.glow-style-animate-borders-glow.variant-outline.active,
+.glow-style-glow.variant-inset:hover,
+.glow-style-glow.variant-inset:active,
+.glow-style-glow.variant-inset.active,
+.glow-style-animate-borders-glow.variant-inset:hover,
+.glow-style-animate-borders-glow.variant-inset:active,
+.glow-style-animate-borders-glow.variant-inset.active {
     text-shadow: 0 0 12px rgb(from var(--button-highlight-light) r g b / .45);
 }
 
-.corners-hexagon.variant-ghost:active .icon,
-.corners-hexagon.variant-ghost.active .icon,
-.corners-hexagon.variant-fill-translucent:active .icon,
-.corners-hexagon.variant-fill-translucent.active .icon,
-.corners-hexagon.variant-inset:active .icon,
-.corners-hexagon.variant-inset.active .icon,
-.corners-hexagon.variant-outline:active .icon,
-.corners-hexagon.variant-outline.active .icon {
+/* filter drop-shadow: ghost, outline, inset icons only */
+.glow-style-glow.variant-ghost:hover .icon,
+.glow-style-glow.variant-ghost:active .icon,
+.glow-style-glow.variant-ghost.active .icon,
+.glow-style-animate-borders-glow.variant-ghost:hover .icon,
+.glow-style-animate-borders-glow.variant-ghost:active .icon,
+.glow-style-animate-borders-glow.variant-ghost.active .icon,
+.glow-style-glow.variant-outline:hover .icon,
+.glow-style-glow.variant-outline:active .icon,
+.glow-style-glow.variant-outline.active .icon,
+.glow-style-animate-borders-glow.variant-outline:hover .icon,
+.glow-style-animate-borders-glow.variant-outline:active .icon,
+.glow-style-animate-borders-glow.variant-outline.active .icon,
+.glow-style-glow.variant-inset:hover .icon,
+.glow-style-glow.variant-inset:active .icon,
+.glow-style-glow.variant-inset.active .icon,
+.glow-style-animate-borders-glow.variant-inset:hover .icon,
+.glow-style-animate-borders-glow.variant-inset:active .icon,
+.glow-style-animate-borders-glow.variant-inset.active .icon {
     filter: drop-shadow(0 0 12px rgb(from var(--button-highlight-light) r g b / .45));
+}
+
+/* animate-borders-glow: single perimeter sweep for non-hexagon */
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-ghost:hover,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-ghost:active,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-ghost.active,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill:hover,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill:active,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill.active,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill-inverse:hover,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill-inverse:active,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill-inverse.active,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill-translucent:hover,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill-translucent:active,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill-translucent.active,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-outline:hover,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-outline:active,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-outline.active,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-inset:hover,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-inset:active,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-inset.active {
+    animation: glow-sweep 0.4s ease-in-out forwards;
+}
+
+/* Hexagon: no animation (SVG handles it), suppress animate override */
+.corners-hexagon.glow-style-animate-borders-glow:hover,
+.corners-hexagon.glow-style-animate-borders-glow:active,
+.corners-hexagon.glow-style-animate-borders-glow.active {
+    animation: none;
+    box-shadow: none;
+}
+
+/* glow-drawn: keep glow visible after first interaction */
+.glow-drawn.glow-style-animate-borders-glow.variant-ghost,
+.glow-drawn.glow-style-animate-borders-glow.variant-fill,
+.glow-drawn.glow-style-animate-borders-glow.variant-fill-inverse,
+.glow-drawn.glow-style-animate-borders-glow.variant-fill-translucent,
+.glow-drawn.glow-style-animate-borders-glow.variant-outline,
+.glow-drawn.glow-style-animate-borders-glow.variant-inset {
+    box-shadow: 0px 0px 4px rgb(from var(--button-highlight) r g b / .3),
+        0px 0px 20px rgb(from var(--button-highlight) r g b / .6);
+}
+
+.glow-drawn.corners-hexagon.glow-style-animate-borders-glow {
+    box-shadow: none;
+}
+
+.glow-drawn.glow-style-animate-borders-glow.variant-ghost,
+.glow-drawn.glow-style-animate-borders-glow.variant-outline,
+.glow-drawn.glow-style-animate-borders-glow.variant-inset {
+    text-shadow: 0 0 12px rgb(from var(--button-highlight-light) r g b / .45);
+}
+
+.glow-drawn.glow-style-animate-borders-glow.variant-ghost .icon,
+.glow-drawn.glow-style-animate-borders-glow.variant-outline .icon,
+.glow-drawn.glow-style-animate-borders-glow.variant-inset .icon {
+    filter: drop-shadow(0 0 12px rgb(from var(--button-highlight-light) r g b / .45));
+}
+
+@keyframes glow-sweep {
+    0% {
+        box-shadow:
+            rgb(from var(--button-highlight-light) r g b / .6) -2px 2px 6px,
+            rgb(from var(--button-highlight-light) r g b / 0) 0px 0px 10px;
+    }
+    33% {
+        box-shadow:
+            rgb(from var(--button-highlight-light) r g b / .6) -2px 2px 6px,
+            rgb(from var(--button-highlight-light) r g b / .6) -2px -2px 6px,
+            rgb(from var(--button-highlight-light) r g b / 0) 0px 0px 10px;
+    }
+    66% {
+        box-shadow:
+            rgb(from var(--button-highlight-light) r g b / .6) -2px 2px 6px,
+            rgb(from var(--button-highlight-light) r g b / .6) -2px -2px 6px,
+            rgb(from var(--button-highlight-light) r g b / .6) 2px -2px 6px,
+            rgb(from var(--button-highlight-light) r g b / 0) 0px 0px 10px;
+    }
+    100% {
+        box-shadow:
+            rgb(from var(--button-highlight-light) r g b / .6) -2px 2px 6px,
+            rgb(from var(--button-highlight-light) r g b / .6) -2px -2px 6px,
+            rgb(from var(--button-highlight-light) r g b / .6) 2px -2px 6px,
+            rgb(from var(--button-highlight-light) r g b / .6) 2px 2px 6px,
+            rgb(from var(--button-highlight-light) r g b / 0) 0px 0px 10px,
+            rgb(from var(--button-highlight) r g b / .6) 0px 0px 10px;
+    }
 }
 
 

@@ -97,11 +97,13 @@ export const MapSection: FC = () => {
                         key={id}
                         icon={icon}
                         size="sm"
-                        variant={theme.mode === 'dark' ? "fill-inverse" : "fill"}
+                        variant={"fill-inverse"}
                         corners="hexagon"
+                        // color="primary"
                         highlightColor="secondary"
                         style={{
-                            transform: `translate(${i % 2 === 1 ? `-8px, calc(50% + 3px)` : undefined})`
+                            transform: `translate(${i % 2 === 1 ? `-8px, calc(50% + 3px)` : undefined})`,
+                            filter: 'drop-shadow(1px 2px 8px rgba(0, 0, 0, .3))'
                         }}
                     />
                 ))}

@@ -1,4 +1,4 @@
-import { ComponentProps, FC, KeyboardEvent, MouseEvent, ReactNode } from "react";
+import { ComponentProps, FC, KeyboardEvent, MouseEvent, ReactNode, useCallback, useState } from "react";
 import classNames from "classnames";
 import { ButtonProps, useTheme } from "@ui";
 import { Icon } from "../icons";
@@ -18,6 +18,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     color = 'neutral',
     highlightColor,
     variant = 'ghost',
+    glowStyle = 'none',
     size = 'sm',
     corners = 'square',
     active = false,
@@ -30,6 +31,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     ...props
 }) => {
     const theme = useTheme();
+    const [glowDrawn, setGlowDrawn] = useState(false);
     const iconSizes = {
         xs: 12,
         sm: 16,
@@ -50,12 +52,14 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
                 styles[`color-${color}`],
                 styles[`highlight-${highlightColor || color}`],
                 styles[`variant-${variant}`],
+                styles[`glow-style-${glowStyle}`],
                 styles[`size-${size}`],
                 styles[`corners-${corners}`],
                 {
                     [styles['interactive']]: !!props.onClick,
                     [styles['active']]: active,
-                    [styles[`only-icon-${size}`]]: !children
+                    [styles[`only-icon-${size}`]]: !children,
+                    [styles['glow-drawn']]: glowDrawn,
                 },
                 className
             )}
@@ -79,6 +83,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
             shape="flat-top"
             size={size}
             variant={variant}
+            glowStyle={glowStyle}
             themeMode={themeMode}
             color={color}
             highlightColor={highlightColor}
