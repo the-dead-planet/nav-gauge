@@ -3,7 +3,8 @@ export interface Option<T> {
     label: string;
 }
 
-export type SurfaceVariant = 'ghost' | 'fill' | 'fill-translucent' | 'outline' | 'inset';
+export type GlowStyle = 'none' | 'glow' | 'animate-borders-glow';
+export type SurfaceVariant = 'ghost' | 'fill' | 'fill-inverse' | 'fill-translucent' | 'outline' | 'inset';
 export type ColorVariant = 'primary' | 'secondary' | 'tertiary' | 'neutral';
 export type SizeVariant = 'xs' | 'sm' | 'md';
 export type SpacingVariant = 'xs' | 'sm' | 'md' | 'lg' | 'xl';

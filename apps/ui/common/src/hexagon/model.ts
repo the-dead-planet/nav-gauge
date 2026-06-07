@@ -1,14 +1,13 @@
 import { ReactNode } from "react";
-import { ColorVariant, SizeVariant, SurfaceVariant } from "../model";
+import { ColorVariant, GlowStyle, SizeVariant, SurfaceVariant } from "../model";
 
 export type HexagonShape = 'pointy-top' | 'flat-top';
-export type HexagonHoverStyle = 'glow' | 'fill' | 'animate-borders-glow' | 'none';
 
 export interface HexagonProps {
     shape?: HexagonShape;
     strokeWidth?: number;
     interactive?: boolean;
-    hoverStyle?: HexagonHoverStyle;
+    glowStyle?: GlowStyle;
     color?: ColorVariant;
     highlightColor?: ColorVariant;
     size?: SizeVariant;

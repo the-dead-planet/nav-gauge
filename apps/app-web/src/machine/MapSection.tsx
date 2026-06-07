@@ -96,7 +96,7 @@ export const MapSection: FC = () => {
                         key={id}
                         icon={icon}
                         size="sm"
-                        variant="fill"
+                        variant="fill-inverse"
                         corners="hexagon"
                         highlightColor="secondary"
                         style={{

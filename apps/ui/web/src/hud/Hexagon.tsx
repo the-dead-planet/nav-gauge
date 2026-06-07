@@ -11,18 +11,12 @@ interface Props {
 const POINTY_TOP = "50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25";
 const FLAT_TOP = "100,50 75,93.3 25,93.3 0,50 25,6.7 75,6.7";
 
-const POINTY_TOP_OVER = "50,-10 103.3,15 103.3,85 50,110 -3.3,85 -3.3,15";
-const FLAT_TOP_OVER = "110,50 85,103.3 15,103.3 -10,50 15,-3.3 85,-3.3";
-
-const POINTY_TOP_IN = "50,8 85.3,33 85.3,67 50,92 14.7,67 14.7,33";
-const FLAT_TOP_IN = "92,50 67,85.3 33,85.3 8,50 33,14.7 67,14.7";
-
 export const Hexagon: FC<HexagonProps & Props & ComponentProps<'svg'>> = ({
     shape = "pointy-top",
     strokeWidth = 2,
     interactive = false,
-    hoverStyle = "animate-borders-glow",
-    color,
+    glowStyle = "none",
+    color = 'neutral',
     highlightColor,
     size,
     variant,
@@ -36,8 +30,6 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'svg'>> = ({
     const theme = useTheme();
     const isPointy = shape === "pointy-top";
     const points = isPointy ? POINTY_TOP : FLAT_TOP;
-    const overPoints = isPointy ? POINTY_TOP_OVER : FLAT_TOP_OVER;
-    const inPoints = isPointy ? POINTY_TOP_IN : FLAT_TOP_IN;
     const viewBox = isPointy ? "6.7 0 86.6 100" : "0 6.7 100 86.6";
     const filterId = useId();
     const clipPathId = useId();
@@ -51,12 +43,13 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'svg'>> = ({
                 styles[shape],
                 variant && styles[`variant-${variant}`],
                 color && styles[`color-${color}`],
-                (highlightColor || color) && styles[`highlight-${highlightColor || color}`],
+                styles[`highlight-color-${highlightColor || color}`],
                 size && styles[`size-${size}`],
                 styles[`mode-${resolvedMode}`],
                 {
                     [styles['active']]: active,
-                    [styles[`hover-style-${hoverStyle}`]]: interactive,
+                    [styles['interactive']]: interactive,
+                    [styles[`glow-style-${glowStyle}`]]: interactive,
                 },
                 className
             )}
@@ -107,49 +100,18 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'svg'>> = ({
                         </feMerge>
                     </filter>
                 </defs>
-                {variant === "inset" ? (
-                    <>
-                        <g clipPath={`url(#${clipPathId})`}>
-                            <polygon
-                                points={points}
-                                className={styles['inset-bg']}
-                            />
-                            <polygon
-                                points={overPoints}
-                                fill="none"
-                                className={styles['inset-dark']}
-                                filter={`url(#${shadowBlurId})`}
-                            />
-                            <polygon
-                                points={inPoints}
-                                fill="none"
-                                className={styles['inset-light']}
-                                filter={`url(#${shadowBlurId})`}
-                            />
-                        </g>
-                        <polygon
-                            points={points}
-                            fill="none"
-                            strokeWidth={strokeWidth}
-                            className={styles['polygon-base']}
-                        />
-                    </>
-                ) : (
-                    <>
-                        <polygon
-                            points={points}
-                            fill="none"
-                            strokeWidth={strokeWidth}
-                            className={styles['polygon-base']}
-                        />
-                        <polygon
-                            points={points}
-                            fill="none"
-                            strokeWidth={strokeWidth}
-                            className={styles['polygon-glow']}
-                        />
-                    </>
-                )}
+                <polygon
+                    points={points}
+                    fill="none"
+                    strokeWidth={strokeWidth}
+                    className={styles['polygon-base']}
+                />
+                <polygon
+                    points={points}
+                    fill="none"
+                    strokeWidth={strokeWidth}
+                    className={styles['polygon-glow']}
+                />
             </svg>
             <div className={styles.content}>
                 {children}
