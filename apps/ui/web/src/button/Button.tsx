@@ -84,7 +84,6 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
             highlightColor={highlightColor}
             active={active}
             interactive
-            hoverStyle="animate-borders-glow"
             style={style}
         >
             {buttonBase}

@@ -11,131 +11,63 @@
 }
 
 .mode-light {
-    --hl-bg-opacity: .08;
+    --button-highlight-bg-opacity: .08;
 }
 
 .mode-dark {
-    --hl-bg-opacity: .04;
+    --button-highlight-bg-opacity: .04;
 }
 
 .color-neutral {
-    color: var(--color-neutral);
-    --fill-text: var(--color-neutral-900);
-    --color-bg: var(--color-neutral-500);
-    --color-shadow: var(--color-neutral-700);
-}
-
-.color-neutral .icon {
-    color: var(--color-neutral);
-    stroke: var(--color-neutral);
-    fill: var(--color-neutral);
+    --button-color: var(--color-neutral);
+    --button-color-dark: var(--color-neutral-900);
+    --button-color-shadow: var(--color-neutral-700);
 }
 
 .color-primary {
-    color: var(--color-primary);
-    --fill-text: var(--color-primary-900);
-    --color-bg: var(--color-primary-500);
-    --color-shadow: var(--color-primary-700);
-}
-
-.color-primary .icon {
-    color: var(--color-primary);
-    stroke: var(--color-primary);
-    fill: var(--color-primary);
+    --button-color: var(--color-primary);
+    --button-color-dark: var(--color-primary-900);
+    --button-color-shadow: var(--color-primary-700);
 }
 
 .color-secondary {
-    color: var(--color-secondary);
-    --fill-text: var(--color-secondary-900);
-    --color-bg: var(--color-secondary-500);
-    --color-shadow: var(--color-secondary-700);
-}
-
-.color-secondary .icon {
-    color: var(--color-secondary);
-    stroke: var(--color-secondary);
-    fill: var(--color-secondary);
+    --button-color: var(--color-secondary);
+    --button-color-dark: var(--color-secondary-900);
+    --button-color-shadow: var(--color-secondary-700);
 }
 
 .color-tertiary {
-    color: var(--color-tertiary);
-    --fill-text: var(--color-tertiary-900);
-    --color-bg: var(--color-tertiary-500);
-    --color-shadow: var(--color-tertiary-700);
-}
-
-.color-tertiary .icon {
-    color: var(--color-tertiary);
-    stroke: var(--color-tertiary);
-    fill: var(--color-tertiary);
+    --button-color: var(--color-tertiary);
+    --button-color-dark: var(--color-tertiary-900);
+    --button-color-shadow: var(--color-tertiary-700);
 }
 
 .highlight-neutral {
-    --hl: var(--color-neutral);
-    --hl-300: var(--color-neutral-300);
-    --hl-fill-color: var(--color-neutral-900);
+    --button-highlight: var(--color-neutral);
+    --button-highlight-light: var(--color-neutral-300);
+    --button-highlight-dark: var(--color-neutral-800);
+    --button-highlight-shadow: var(--color-neutral-700);
 }
 
 .highlight-primary {
-    --hl: var(--color-primary);
-    --hl-300: var(--color-primary-300);
-    --hl-fill-color: var(--color-primary-900);
+    --button-highlight: var(--color-primary);
+    --button-highlight-light: var(--color-primary-300);
+    --button-highlight-dark: var(--color-primary-900);
+    --button-highlight-shadow: var(--color-primary-700);
 }
 
 .highlight-secondary {
-    --hl: var(--color-secondary);
-    --hl-300: var(--color-secondary-300);
-    --hl-fill-color: var(--color-secondary-900);
+    --button-highlight: var(--color-secondary);
+    --button-highlight-light: var(--color-secondary-300);
+    --button-highlight-dark: var(--color-secondary-900);
+    --button-highlight-shadow: var(--color-secondary-700);
 }
 
 .highlight-tertiary {
-    --hl: var(--color-tertiary);
-    --hl-300: var(--color-tertiary-300);
-    --hl-fill-color: var(--color-tertiary-900);
-}
-
-.mode-light.highlight-neutral {
-    --hl-inset: var(--color-neutral-600);
-    --hl-bg: var(--color-neutral-500);
-    --hl-shadow: var(--color-neutral-700);
-}
-
-.mode-dark.highlight-neutral {
-    --hl-inset: var(--color-neutral-300);
-    --hl-bg: var(--color-neutral-300);
-}
-
-.mode-light.highlight-primary {
-    --hl-inset: var(--color-primary-600);
-    --hl-bg: var(--color-primary-500);
-    --hl-shadow: var(--color-primary-700);
-}
-
-.mode-dark.highlight-primary {
-    --hl-inset: var(--color-primary-300);
-    --hl-bg: var(--color-primary-300);
-}
-
-.mode-light.highlight-secondary {
-    --hl-inset: var(--color-secondary-600);
-    --hl-bg: var(--color-secondary-500);
-    --hl-shadow: var(--color-secondary-700);
-}
-
-.mode-dark.highlight-secondary {
-    --hl-inset: var(--color-secondary-300);
-    --hl-bg: var(--color-secondary-300);
-}
-
-.mode-light.highlight-tertiary {
-    --hl-inset: var(--color-tertiary-600);
-    --hl-bg: var(--color-tertiary-500);
-    --hl-shadow: var(--color-tertiary-700);
-}
-
-.mode-dark.highlight-tertiary {
-    --hl-inset: var(--color-tertiary-300);
-    --hl-bg: var(--color-tertiary-300);
+    --button-highlight: var(--color-tertiary);
+    --button-highlight-light: var(--color-tertiary-300);
+    --button-highlight-dark: var(--color-tertiary-900);
+    --button-highlight-shadow: var(--color-tertiary-700);
 }
 
 .size-md {
@@ -174,44 +106,45 @@
 .variant-ghost {
     background-color: transparent;
     border: none;
+    color: var(--button-color);
+}
+
+.variant-ghost .icon {
+    color: var(--button-color);
+    stroke: var(--button-color);
+    fill: var(--button-color);
 }
 
 .variant-ghost:hover {
-    color: var(--hl-inset);
+    color: var(--button-highlight-light);
 }
 
 .variant-ghost:hover .icon,
 .variant-ghost:active .icon,
 .variant-ghost.active .icon {
-    color: var(--hl-inset);
-    stroke: var(--hl-inset);
-    fill: var(--hl-inset);
+    color: var(--button-highlight-light);
+    stroke: var(--button-highlight-light);
+    fill: var(--button-highlight-light);
 }
 
 .variant-ghost:active,
 .variant-ghost.active {
-    color: var(--hl-inset);
-    text-shadow: 0 0 12px rgb(from var(--hl-inset) r g b / .45);
+    color: var(--button-highlight-light);
+    text-shadow: 0 0 12px rgb(from var(--button-highlight-light) r g b / .45);
 }
 
 .variant-ghost:active .icon,
 .variant-ghost.active .icon {
-    filter: drop-shadow(0 0 12px rgb(from var(--hl-inset) r g b / .45));
+    filter: drop-shadow(0 0 12px rgb(from var(--button-highlight-light) r g b / .45));
 }
 
 .variant-fill {
     border: none;
-    color: var(--fill-text);
+    color: var(--button-color-dark);
 }
 
 .variant-fill.color-neutral {
     background-color: var(--color-neutral);
-}
-
-.mode-light.variant-fill:hover,
-.mode-light.variant-fill:active,
-.mode-light.variant-fill.active {
-    background-color: var(--hl-300);
 }
 
 .variant-fill.color-primary {
@@ -227,32 +160,92 @@
 }
 
 .variant-fill:hover {
-    background-color: var(--hl-bg);
-    color: var(--hl-fill-color);
+    background-color: var(--button-highlight-light);
+    color: var(--button-highlight-dark);
 }
 
 .variant-fill:hover .icon,
 .variant-fill:active .icon,
 .variant-fill.active .icon {
-    color: var(--hl-fill-color);
-    stroke: var(--hl-fill-color);
-    fill: var(--hl-fill-color);
+    color: var(--button-highlight-dark);
+    stroke: var(--button-highlight-dark);
+    fill: var(--button-highlight-dark);
 }
 
 .variant-fill .icon {
-    color: var(--fill-text);
-    stroke: var(--fill-text);
-    fill: var(--fill-text);
+    color: var(--button-color-dark);
+    stroke: var(--button-color-dark);
+    fill: var(--button-color-dark);
 }
 
 .variant-fill:active,
 .variant-fill.active {
-    background-color: var(--hl);
-    color: var(--hl-fill-color);
+    background-color: var(--button-highlight);
+    color: var(--button-highlight-dark);
+}
+
+.variant-fill-inverse {
+    border: 1px solid var(--button-color);
+    color: var(--button-color);
+}
+
+.variant-fill-inverse.color-neutral {
+    background-color: var(--color-neutral-800);
+}
+
+.variant-fill-inverse.color-primary {
+    background-color: var(--color-primary-900);
+}
+
+.variant-fill-inverse.color-secondary {
+    background-color: var(--color-secondary-900);
+}
+
+.variant-fill-inverse.color-tertiary {
+    background-color: var(--color-tertiary-900);
+}
+
+.variant-fill-inverse .icon {
+    color: var(--button-color);
+    stroke: var(--button-color);
+    fill: var(--button-color);
+}
+
+.variant-fill-inverse:hover {
+    background-color: var(--button-highlight-dark);
+    border-color: var(--button-highlight-light);
+    color: var(--button-highlight-light);
+}
+
+.variant-fill-inverse:hover .icon {
+    color: var(--button-highlight-light);
+    stroke: var(--button-highlight-light);
+    fill: var(--button-highlight-light);
+}
+
+.variant-fill-inverse:active,
+.variant-fill-inverse.active {
+    background-color: var(--button-highlight-dark);
+    border-color: var(--button-highlight);
+    color: var(--button-highlight);
+}
+
+.variant-fill-inverse:active .icon,
+.variant-fill-inverse.active .icon {
+    color: var(--button-highlight);
+    stroke: var(--button-highlight);
+    fill: var(--button-highlight);
 }
 
 .variant-fill-translucent {
-    border: none;
+    border: 1px solid rgb(from var(--button-color) r g b / .3);
+    color: var(--button-color);
+}
+
+.variant-fill-translucent .icon {
+    color: var(--button-color);
+    stroke: var(--button-color);
+    fill: var(--button-color);
 }
 
 .variant-fill-translucent.color-neutral {
@@ -272,22 +265,30 @@
 }
 
 .variant-fill-translucent:hover {
-    color: var(--hl-inset);
-    background-color: rgb(from var(--hl) r g b / .36);
+    border-color: var(--button-highlight-light);
+    color: var(--button-highlight-light);
+    background-color: rgb(from var(--button-highlight) r g b / .36);
 }
 
 .variant-fill-translucent:hover .icon,
 .variant-fill-translucent:active .icon,
 .variant-fill-translucent.active .icon {
-    color: var(--hl-inset);
-    stroke: var(--hl-inset);
-    fill: var(--hl-inset);
+    color: var(--button-highlight-light);
+    stroke: var(--button-highlight-light);
+    fill: var(--button-highlight-light);
 }
 
 .variant-fill-translucent:active,
 .variant-fill-translucent.active {
-    color: var(--hl-inset);
-    background-color: rgb(from var(--hl) r g b / .48);
+    border-color: var(--button-highlight);
+    color: var(--button-highlight);
+    background-color: rgb(from var(--button-highlight) r g b / .48);
+}
+
+.variant-fill-translucent:active,
+.variant-fill-translucent.active {
+    color: var(--button-highlight-light);
+    background-color: rgb(from var(--button-highlight) r g b / .48);
 }
 
 /*  */
@@ -295,6 +296,13 @@
     background-color: transparent;
     border-style: solid;
     border-width: 1px;
+    color: var(--button-color);
+}
+
+.variant-outline .icon {
+    color: var(--button-color);
+    stroke: var(--button-color);
+    fill: var(--button-color);
 }
 
 .variant-outline.color-neutral {
@@ -314,38 +322,45 @@
 }
 
 .variant-outline:hover {
-    color: var(--hl-inset);
-    border-color: var(--hl-inset);
-    background-color: rgb(from var(--hl) r g b / .12);
+    color: var(--button-highlight-light);
+    border-color: var(--button-highlight-light);
+    background-color: rgb(from var(--button-highlight) r g b / .12);
 }
 
 .variant-outline:hover .icon,
 .variant-outline:active .icon,
 .variant-outline.active .icon {
-    color: var(--hl-inset);
-    stroke: var(--hl-inset);
-    fill: var(--hl-inset);
+    color: var(--button-highlight-light);
+    stroke: var(--button-highlight-light);
+    fill: var(--button-highlight-light);
 }
 
 .variant-outline:active,
 .variant-outline.active {
-    color: var(--hl-inset);
-    border-color: var(--hl-inset);
-    background-color: rgb(from var(--hl) r g b / .24);
-    box-shadow: 0px 0px 4px rgb(from var(--hl) r g b / .3),
-        0px 0px 20px rgb(from var(--hl) r g b / .6);
+    color: var(--button-highlight-light);
+    border-color: var(--button-highlight-light);
+    background-color: rgb(from var(--button-highlight) r g b / .24);
+    box-shadow: 0px 0px 4px rgb(from var(--button-highlight) r g b / .3),
+        0px 0px 20px rgb(from var(--button-highlight) r g b / .6);
 }
 
 .variant-inset {
-    border: 1px inset rgb(from var(--color-bg) r g b / .3);
+    border: 1px inset rgb(from var(--button-color) r g b / .3);
     background-color: transparent;
+    color: var(--button-color);
+}
+
+.variant-inset .icon {
+    color: var(--button-color);
+    stroke: var(--button-color);
+    fill: var(--button-color);
 }
 
 .variant-inset.mode-light {
-    background-color: rgb(from var(--color-bg) r g b / .04);
+    background-color: rgb(from var(--button-color) r g b / .04);
     box-shadow:
-        rgb(from var(--color-shadow) r g b / .18) 4px 4px 8px inset,
-        rgb(from var(--color-shadow) r g b / .04) -2px -2px 6px inset,
+        rgb(from var(--button-color-shadow) r g b / .18) 4px 4px 8px inset,
+        rgb(from var(--button-color-shadow) r g b / .04) -2px -2px 6px inset,
         rgba(255, 255, 255, .35) -2px -2px 4px inset;
 }
 
@@ -357,41 +372,41 @@
 }
 
 .variant-inset:hover {
-    color: var(--hl-inset);
+    color: var(--button-highlight-light);
 }
 
 .variant-inset:hover .icon,
 .variant-inset:active .icon,
 .variant-inset.active .icon {
-    color: var(--hl-inset);
-    stroke: var(--hl-inset);
-    fill: var(--hl-inset);
+    color: var(--button-highlight-light);
+    stroke: var(--button-highlight-light);
+    fill: var(--button-highlight-light);
 }
 
 .variant-inset:active,
 .variant-inset.active {
-    color: var(--hl-inset);
-    background-color: rgb(from var(--hl-bg) r g b / var(--hl-bg-opacity));
+    color: var(--button-highlight-light);
+    background-color: rgb(from var(--button-highlight-light) r g b / var(--button-highlight-bg-opacity));
 }
 
 .variant-inset.mode-light:active,
 .variant-inset.mode-light.active {
     box-shadow:
-        rgb(from var(--hl-shadow) r g b / .18) 4px 4px 8px inset,
-        rgb(from var(--hl-shadow) r g b / .04) -2px -2px 4px inset,
+        rgb(from var(--button-highlight-shadow) r g b / .18) 4px 4px 8px inset,
+        rgb(from var(--button-highlight-shadow) r g b / .04) -2px -2px 4px inset,
         rgba(255, 255, 255, .25) -2px -2px 3px inset;
-    border-color: rgb(from var(--hl-bg) r g b / .3);
-    text-shadow: 0 0 12px rgb(from var(--hl-inset) r g b / 0.4);
+    border-color: rgb(from var(--button-highlight-light) r g b / .3);
+    text-shadow: 0 0 12px rgb(from var(--button-highlight-light) r g b / 0.4);
 }
 
 .variant-inset.mode-light:active .icon,
 .variant-inset.mode-light.active .icon {
-    filter: drop-shadow(0 0 12px rgb(from var(--hl-inset) r g b / .4));
+    filter: drop-shadow(0 0 12px rgb(from var(--button-highlight-light) r g b / .4));
 }
 
 .variant-inset.mode-dark:active,
 .variant-inset.mode-dark.active {
-    text-shadow: 0 0 12px rgb(from var(--hl-inset) r g b / .85);
+    text-shadow: 0 0 12px rgb(from var(--button-highlight-light) r g b / .85);
     box-shadow:
         rgba(0, 0, 0, .80) 4px 4px 8px inset,
         rgba(0, 0, 0, .24) -2px -2px 4px inset;
@@ -399,7 +414,7 @@
 
 .variant-inset.mode-dark:active .icon,
 .variant-inset.mode-dark.active .icon {
-    filter: drop-shadow(0 0 12px rgb(from var(--hl-inset) r g b / .85));
+    filter: drop-shadow(0 0 12px rgb(from var(--button-highlight-light) r g b / .85));
 }
 
 .corners-hexagon {
@@ -434,6 +449,7 @@
 /* ── Hexagon button overrides ── */
 
 .corners-hexagon.variant-fill,
+.corners-hexagon.variant-fill-inverse,
 .corners-hexagon.variant-fill-translucent,
 .corners-hexagon.variant-inset,
 .corners-hexagon.variant-outline {
@@ -442,7 +458,7 @@
     box-shadow: none;
 }
 
-.corners-hexagon.variant-fill,
+.corners-hexagon.variant-fill-inverse,
 .corners-hexagon.variant-fill-translucent,
 .corners-hexagon.variant-inset,
 .corners-hexagon.variant-outline,
@@ -450,7 +466,11 @@
     color: var(--hexagon-color);
 }
 
-.corners-hexagon.variant-fill .icon,
+.corners-hexagon.variant-fill {
+    color: var(--button-color-dark);
+}
+
+.corners-hexagon.variant-fill-inverse .icon,
 .corners-hexagon.variant-fill-translucent .icon,
 .corners-hexagon.variant-inset .icon,
 .corners-hexagon.variant-outline .icon,
@@ -460,13 +480,37 @@
     fill: var(--hexagon-color);
 }
 
+.corners-hexagon.variant-fill .icon {
+    color: var(--button-color-dark);
+    stroke: var(--button-color-dark);
+    fill: var(--button-color-dark);
+}
+
+.corners-hexagon.variant-fill:hover,
+.corners-hexagon.variant-fill:active,
+.corners-hexagon.variant-fill.active {
+    color: var(--button-color-dark);
+}
+
+.corners-hexagon.variant-fill:hover .icon,
+.corners-hexagon.variant-fill:active .icon,
+.corners-hexagon.variant-fill.active .icon {
+    color: var(--button-color-dark);
+    stroke: var(--button-color-dark);
+    fill: var(--button-color-dark);
+}
+
+.corners-hexagon.variant-fill-inverse:hover,
 .corners-hexagon.variant-ghost:hover,
 .corners-hexagon.variant-fill-translucent:hover,
 .corners-hexagon.variant-inset:hover,
 .corners-hexagon.variant-outline:hover {
-    color: var(--hl-inset);
+    color: var(--button-highlight-light);
 }
 
+.corners-hexagon.variant-fill-inverse:hover .icon,
+.corners-hexagon.variant-fill-inverse:active .icon,
+.corners-hexagon.variant-fill-inverse.active .icon,
 .corners-hexagon.variant-ghost:hover .icon,
 .corners-hexagon.variant-ghost:active .icon,
 .corners-hexagon.variant-ghost.active .icon,
@@ -479,11 +523,13 @@
 .corners-hexagon.variant-outline:hover .icon,
 .corners-hexagon.variant-outline:active .icon,
 .corners-hexagon.variant-outline.active .icon {
-    color: var(--hl-inset);
-    stroke: var(--hl-inset);
-    fill: var(--hl-inset);
+    color: var(--button-highlight-light);
+    stroke: var(--button-highlight-light);
+    fill: var(--button-highlight-light);
 }
 
+.corners-hexagon.variant-fill-inverse:active,
+.corners-hexagon.variant-fill-inverse.active,
 .corners-hexagon.variant-ghost:active,
 .corners-hexagon.variant-ghost.active,
 .corners-hexagon.variant-fill-translucent:active,
@@ -492,8 +538,8 @@
 .corners-hexagon.variant-inset.active,
 .corners-hexagon.variant-outline:active,
 .corners-hexagon.variant-outline.active {
-    color: var(--hl-inset);
-    text-shadow: 0 0 12px rgb(from var(--hl-inset) r g b / .45);
+    color: var(--button-highlight-light);
+    text-shadow: 0 0 12px rgb(from var(--button-highlight-light) r g b / .45);
 }
 
 .corners-hexagon.variant-ghost:active .icon,
@@ -504,21 +550,7 @@
 .corners-hexagon.variant-inset.active .icon,
 .corners-hexagon.variant-outline:active .icon,
 .corners-hexagon.variant-outline.active .icon {
-    filter: drop-shadow(0 0 12px rgb(from var(--hl-inset) r g b / .45));
+    filter: drop-shadow(0 0 12px rgb(from var(--button-highlight-light) r g b / .45));
 }
 
-/* Fill variant hover — hexagon manages visuals, button stays transparent */
-.corners-hexagon.variant-fill:hover,
-.corners-hexagon.variant-fill:active,
-.corners-hexagon.variant-fill.active {
-    background-color: transparent;
-    color: var(--hexagon-color);
-}
 
-.corners-hexagon.variant-fill:hover .icon,
-.corners-hexagon.variant-fill:active .icon,
-.corners-hexagon.variant-fill.active .icon {
-    color: var(--hexagon-color);
-    stroke: var(--hexagon-color);
-    fill: var(--hexagon-color);
-}

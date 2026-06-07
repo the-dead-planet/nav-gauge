@@ -13,10 +13,11 @@ import { MapStyleSelection } from "./controls/MapStyleSelection";
 import { MapTools } from "./map-tools/MapTools";
 import { Button, FlexBox, P } from "@web-ui";
 import { createMap } from "./map";
+import { Icons, useTheme } from "@ui";
 import styles from './map-section.module.css';
-import { Icons } from "@ui";
 
 export const MapSection: FC = () => {
+    const theme = useTheme();
     const [map, setMap] = useState<maplibregl.Map>();
     const { engine, cartomancer } = useMachineWard();
     const [overlays] = useSubjectState(cartomancer.overlays$);
@@ -96,7 +97,7 @@ export const MapSection: FC = () => {
                         key={id}
                         icon={icon}
                         size="sm"
-                        variant="fill-inverse"
+                        variant={theme.mode === 'dark' ? "fill-inverse" : "fill"}
                         corners="hexagon"
                         highlightColor="secondary"
                         style={{

@@ -79,7 +79,7 @@
 .highlight-color-neutral {
     --hexagon-highlight-color: var(--color-neutral-500);
     --hexagon-highlight-color-lighter: var(--color-neutral-300);
-    --hexagon-highlight-color-dark: var(--color-neutral-900);
+    --hexagon-highlight-color-dark: var(--color-neutral-800);
 }
 
 .highlight-color-primary {
