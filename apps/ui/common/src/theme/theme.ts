@@ -82,8 +82,8 @@ export class Theme {
             200: { r: 255, g: 226, b: 102 },
             300: { r: 255, g: 217, b: 51 },
             400: { r: 255, g: 204, b: 26 },
-            500: { r: 255, g: 191, b: 0 },
-            600: { r: 230, g: 172, b: 0 },
+            500: { r: 230, g: 172, b: 0 },
+            600: { r: 205, g: 153, b: 0 },
             700: { r: 179, g: 134, b: 0 },
             800: { r: 128, g: 96, b: 0 },
             900: { r: 77, g: 57, b: 0 },
@@ -189,7 +189,7 @@ export class Theme {
     public colors: { [key in PaletteColor | DesignSystemColor]: ThemeColor };
 
     public constructor(
-        specification: ThemeSpecification, 
+        specification: ThemeSpecification,
         protected media: MediaSubscriptionDefinition
     ) {
         this.mode = specification.mode;

@@ -17,7 +17,9 @@ export const ColorPalette = {
       alignItems: 'center',
       columnGap: '20px',
     }}>
-      {Object.entries(Theme.palette).map(([name, color]) => <Color key={name} name={name} color={color} />)}
+      {Object.entries(Theme.palette).map(([name, color]) => (
+        <Color key={name} name={name} color={color} />
+      ))}
     </div>
   ),
 } satisfies Story;

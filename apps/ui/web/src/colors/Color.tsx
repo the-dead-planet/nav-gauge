@@ -9,14 +9,13 @@ export interface ColorProps {
 
 export const Color: FC<ColorProps> = ({ name, color }) => {
     const data = (Object.entries(color) as unknown as [ColorShade, RGBColor][]);
-    const reversed = data.toReversed();
 
     return (
         <>
             <h3>{name}</h3>
             <div className={styles.palette}>
                 {data.map(([shade, c], i) => {
-                    const textColor = reversed[i][1];
+                    const textColor = shade >= 500 ? data[0][1] : data[9][1];
 
                     return (
                         <p
