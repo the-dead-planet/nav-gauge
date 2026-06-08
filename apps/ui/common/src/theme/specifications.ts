@@ -62,9 +62,9 @@ export const themeSpecifications: { [key in ThemeName]: ThemeSpecification } = {
             },
         },
         colors: {
-            primary: Theme.palette.teal,
-            secondary: Theme.palette.yellow,
-            tertiary: Theme.palette.pink,
+            primary: Theme.palette.green,
+            secondary: Theme.palette.copper,
+            tertiary: Theme.palette.magenta,
             neutral: Theme.palette.grey,
         }
     },

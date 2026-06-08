@@ -44,14 +44,6 @@
     width: 64px;
 }
 
-.mode-light {
-    --hexagon-inset-active-fill-opacity: .08;
-}
-
-.mode-dark {
-    --hexagon-inset-active-fill-opacity: .04;
-}
-
 .color-neutral {
     --hexagon-color: var(--color-neutral);
     --hexagon-color-dark: var(--color-neutral-800);
@@ -61,43 +53,65 @@
 .color-primary {
     --hexagon-color: var(--color-primary);
     --hexagon-color-dark: var(--color-primary-900);
-    --hexagon-color-light: var(--color-primary-500);
+    --hexagon-color-light: var(--color-primary-100);
 }
 
 .color-secondary {
     --hexagon-color: var(--color-secondary);
     --hexagon-color-dark: var(--color-secondary-900);
-    --hexagon-color-light: var(--color-secondary-500);
+    --hexagon-color-light: var(--color-secondary-100);
 }
 
 .color-tertiary {
     --hexagon-color: var(--color-tertiary);
     --hexagon-color-dark: var(--color-tertiary-900);
-    --hexagon-color-light: var(--color-tertiary-500);
+    --hexagon-color-light: var(--color-tertiary-100);
 }
 
 .highlight-color-neutral {
     --hexagon-highlight-color: var(--color-neutral-500);
-    --hexagon-highlight-color-lighter: var(--color-neutral-300);
+    --hexagon-highlight-color-accent-darker: var(--color-neutral-600);
+    --hexagon-highlight-color-accent-lighter: var(--color-neutral-300);
     --hexagon-highlight-color-dark: var(--color-neutral-800);
+    --hexagon-highlight-color-light: var(--color-neutral-100);
 }
 
 .highlight-color-primary {
     --hexagon-highlight-color: var(--color-primary-500);
-    --hexagon-highlight-color-lighter: var(--color-primary-300);
+    --hexagon-highlight-color-accent-darker: var(--color-primary-600);
+    --hexagon-highlight-color-accent-lighter: var(--color-primary-300);
     --hexagon-highlight-color-dark: var(--color-primary-900);
+    --hexagon-highlight-color-light: var(--color-primary-100);
 }
 
 .highlight-color-secondary {
     --hexagon-highlight-color: var(--color-secondary-500);
-    --hexagon-highlight-color-lighter: var(--color-secondary-300);
+    --hexagon-highlight-color-accent-darker: var(--color-secondary-600);
+    --hexagon-highlight-color-accent-lighter: var(--color-secondary-300);
     --hexagon-highlight-color-dark: var(--color-secondary-900);
+    --hexagon-highlight-color-light: var(--color-secondary-100);
 }
 
 .highlight-color-tertiary {
     --hexagon-highlight-color: var(--color-tertiary-500);
-    --hexagon-highlight-color-lighter: var(--color-tertiary-300);
+    --hexagon-highlight-color-accent-darker: var(--color-tertiary-600);
+    --hexagon-highlight-color-accent-lighter: var(--color-tertiary-300);
     --hexagon-highlight-color-dark: var(--color-tertiary-900);
+    --hexagon-highlight-color-light: var(--color-tertiary-100);
+}
+
+.mode-light {
+    --hexagon-color-inverse: var(--hexagon-color-light);
+    --hexagon-highlight-color-inverse: var(--hexagon-highlight-color-light);
+    --hexagon-highlight-color-accent: var(--hexagon-highlight-color-accent-darker);
+    --hexagon-inset-active-fill-opacity: .08;
+}
+
+.mode-dark {
+    --hexagon-color-inverse: var(--hexagon-color-dark);
+    --hexagon-highlight-color-inverse: var(--hexagon-highlight-color-dark);
+    --hexagon-highlight-color-accent: var(--hexagon-highlight-color-accent-lighter);
+    --hexagon-inset-active-fill-opacity: .04;
 }
 
 .polygon-base,
@@ -116,7 +130,7 @@
 }
 
 .variant-ghost.interactive:hover .polygon-base {
-    fill: var(--hexagon-highlight-color-lighter);
+    fill: var(--hexagon-highlight-color-accent);
     fill-opacity: 0.1;
 }
 
@@ -133,8 +147,8 @@
 }
 
 .variant-fill.interactive:hover .polygon-base {
-    fill: var(--hexagon-highlight-color-lighter);
-    stroke: var(--hexagon-highlight-color-lighter);
+    fill: var(--hexagon-highlight-color-accent);
+    stroke: var(--hexagon-highlight-color-accent);
 }
 
 .variant-fill.interactive:active .polygon-base,
@@ -145,18 +159,18 @@
 
 /* Fill inverse */
 .variant-fill-inverse .polygon-base {
-    fill: var(--hexagon-color-dark);
+    fill: var(--hexagon-color-inverse);
     fill-opacity: 1;
 }
 
 .variant-fill-inverse.interactive:hover .polygon-base {
-    fill: var(--hexagon-highlight-color-dark);
-    stroke: var(--hexagon-highlight-color-lighter);
+    fill: var(--hexagon-highlight-color-inverse);
+    stroke: var(--hexagon-highlight-color-accent);
 }
 
 .variant-fill-inverse.interactive:active .polygon-base,
 .variant-fill-inverse.interactive.active .polygon-base {
-    fill: var(--hexagon-highlight-color-dark);
+    fill: var(--hexagon-highlight-color-inverse);
     stroke: var(--hexagon-highlight-color);
 }
 
@@ -167,8 +181,8 @@
 }
 
 .variant-fill-translucent.interactive:hover .polygon-base {
-    stroke: var(--hexagon-highlight-color-lighter);
-    fill: var(--hexagon-highlight-color-lighter);
+    stroke: var(--hexagon-highlight-color-accent);
+    fill: var(--hexagon-highlight-color-accent);
     fill-opacity: 0.36;
 }
 
@@ -181,8 +195,8 @@
 
 /* Outline */
 .variant-outline.interactive:hover .polygon-base {
-    stroke: var(--hexagon-highlight-color-lighter);
-    fill: var(--hexagon-highlight-color-lighter);
+    stroke: var(--hexagon-highlight-color-accent);
+    fill: var(--hexagon-highlight-color-accent);
     fill-opacity: 0.12;
 }
 
@@ -195,8 +209,8 @@
 
 /* Inset */
 .variant-inset.interactive:hover .polygon-base {
-    stroke: var(--hexagon-highlight-color-lighter);
-    fill: var(--hexagon-highlight-color-lighter);
+    stroke: var(--hexagon-highlight-color-accent);
+    fill: var(--hexagon-highlight-color-accent);
     fill-opacity: 0.12;
 }
 
@@ -211,13 +225,13 @@
 .glow-style-glow:hover .polygon-glow {
     opacity: 1;
     filter: var(--hex-filter);
-    stroke: var(--hexagon-highlight-color-lighter);
+    stroke: var(--hexagon-highlight-color-accent);
 }
 
 .glow-style-animate-borders-glow:hover .polygon-glow {
     opacity: 1;
     filter: var(--hex-filter);
-    stroke: var(--hexagon-highlight-color-lighter);
+    stroke: var(--hexagon-highlight-color-accent);
     stroke-dasharray: 0 300;
     animation: border-glow 0.3s linear forwards;
 }

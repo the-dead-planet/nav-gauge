@@ -1,4 +1,4 @@
-import { FC, useId, useState } from "react";
+import { FC, useCallback, useId, useState } from "react";
 import { View, ViewStyle, StyleProp, StyleSheet, Pressable } from "react-native";
 import Svg, { Polygon, Defs, ClipPath, G, LinearGradient, Stop } from "react-native-svg";
 import { ColorVariant, HexagonProps, SizeVariant, useTheme } from "@ui";
@@ -25,146 +25,229 @@ const styles = StyleSheet.create({
     },
 });
 
+const GlowPolygons: FC<{ points: string; glowColor: string; strokeWidth: number }> = ({
+    points,
+    glowColor,
+    strokeWidth,
+}) => (
+    <>
+        <Polygon
+            points={points}
+            fill="none"
+            stroke={glowColor}
+            strokeWidth={strokeWidth + 12}
+            strokeOpacity={0.08}
+        />
+        <Polygon
+            points={points}
+            fill="none"
+            stroke={glowColor}
+            strokeWidth={strokeWidth + 6}
+            strokeOpacity={0.15}
+        />
+        <Polygon
+            points={points}
+            fill="none"
+            stroke={glowColor}
+            strokeWidth={strokeWidth + 2}
+            strokeOpacity={0.3}
+        />
+    </>
+);
+
 export const Hexagon: FC<HexagonProps & { style?: StyleProp<ViewStyle> }> = ({
     shape = "pointy-top",
     strokeWidth = 2,
-    color,
-    highlightColor,
+    color: colorProp,
+    highlightColor: hlColorProp,
     variant,
+    glowStyle = "none",
     themeMode,
     size,
     interactive = false,
     active = false,
-    hoverStyle,
     style,
     children
 }) => {
     const theme = useTheme();
+    const hlColor = (hlColorProp || colorProp) as ColorVariant;
     const [pressed, setPressed] = useState(false);
+    const [glowDrawn, setGlowDrawn] = useState(false);
     const hl = pressed || active;
     const isPointy = shape === "pointy-top";
     const points = isPointy ? POINTY_TOP : FLAT_TOP;
     const aspectRatio = isPointy ? 86.6 / 100 : 100 / 86.6;
-    const strokeColor = color ? theme.color(color as ColorVariant, 500) : undefined;
-    const hlColor = (highlightColor || color) ? theme.color((highlightColor || color) as ColorVariant, 500) : undefined;
     const isLight = themeMode !== undefined ? !themeMode : theme.mode === 'light';
     const clipPathId = useId();
 
+    const color = (colorProp || 'neutral') as ColorVariant;
+    const baseColor = theme.color(color, 500);
+    const highlight500 = theme.color(hlColor, 500);
+    const highlight300 = theme.color(hlColor, 300);
+    const highlight900 = theme.color(hlColor, 900);
+
+    const showGlow = (glowStyle !== 'none') && (hl || glowDrawn);
+
+    const markGlowDrawn = useCallback(() => {
+        if (glowStyle !== 'none') {
+            setGlowDrawn(true);
+        }
+    }, [glowStyle]);
+
     const renderGlow = () => {
-        if (!hl || !interactive) return null;
-
-        const glowColor = hlColor || strokeColor || theme.color("neutral", 500);
-        const glowOpacity = hoverStyle === "fill" ? 0.18 : 0.12;
-
-        return (
-            <Polygon
-                points={points}
-                fill={glowColor}
-                fillOpacity={glowOpacity}
-                stroke="none"
-            />
-        );
+        if (!showGlow) return null;
+        return <GlowPolygons points={points} glowColor={highlight500} strokeWidth={strokeWidth} />;
     };
 
     const renderVariant = () => {
-        if (variant === 'inset') {
-            const bgTint = theme.color(color as ColorVariant, 500, 0.10);
-            const shadowColor = "#000000";
-            const shadowOpacity = isLight ? 0.35 : 0.65;
-            const lightColor = "#ffffff";
-            const lightOpacity = isLight ? 0.45 : 0.12;
+        switch (variant) {
+            case 'inset': {
+                const bgTint = theme.color(color, 500, 0.10);
+                const shadowColor = "#000000";
+                const shadowOpacity = isLight ? 0.35 : 0.65;
+                const lightColor = "#ffffff";
+                const lightOpacity = isLight ? 0.45 : 0.12;
 
-            return (
-                <>
-                    <Defs>
-                        <ClipPath id={clipPathId}>
-                            <Polygon points={points} />
-                        </ClipPath>
-                        <LinearGradient id="shadowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <Stop offset="0%" stopColor={shadowColor} stopOpacity={shadowOpacity} />
-                            <Stop offset="15%" stopColor={shadowColor} stopOpacity={0} />
-                            <Stop offset="100%" stopColor={shadowColor} stopOpacity={0} />
-                        </LinearGradient>
-                        <LinearGradient id="highlightGrad" x1="100%" y1="100%" x2="0%" y2="0%">
-                            <Stop offset="0%" stopColor={lightColor} stopOpacity={lightOpacity} />
-                            <Stop offset="15%" stopColor={lightColor} stopOpacity={0} />
-                            <Stop offset="100%" stopColor={lightColor} stopOpacity={0} />
-                        </LinearGradient>
-                    </Defs>
-                    <G clipPath={`url(#${clipPathId})`}>
-                        <Polygon points={points} fill={bgTint} />
+                return (
+                    <>
+                        <Defs>
+                            <ClipPath id={clipPathId}>
+                                <Polygon points={points} />
+                            </ClipPath>
+                            <LinearGradient id="shadowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <Stop offset="0%" stopColor={shadowColor} stopOpacity={shadowOpacity} />
+                                <Stop offset="15%" stopColor={shadowColor} stopOpacity={0} />
+                                <Stop offset="100%" stopColor={shadowColor} stopOpacity={0} />
+                            </LinearGradient>
+                            <LinearGradient id="highlightGrad" x1="100%" y1="100%" x2="0%" y2="0%">
+                                <Stop offset="0%" stopColor={lightColor} stopOpacity={lightOpacity} />
+                                <Stop offset="15%" stopColor={lightColor} stopOpacity={0} />
+                                <Stop offset="100%" stopColor={lightColor} stopOpacity={0} />
+                            </LinearGradient>
+                        </Defs>
+                        <G clipPath={`url(#${clipPathId})`}>
+                            <Polygon points={points} fill={bgTint} />
+                            {renderGlow()}
+                            <Polygon points={points} fill="url(#shadowGrad)" />
+                            <Polygon points={points} fill="url(#highlightGrad)" />
+                        </G>
+                        <Polygon
+                            points={points}
+                            fill="none"
+                            stroke={baseColor}
+                            strokeWidth={strokeWidth}
+                        />
+                    </>
+                );
+            }
+
+            case 'fill-translucent': {
+                const fill = hl
+                    ? theme.color(hlColor, 500, active ? 0.48 : 0.36)
+                    : theme.color(color, 500, 0.24);
+                const border = hl ? highlight300 : baseColor;
+                return (
+                    <>
+                        <Polygon
+                            points={points}
+                            fill={fill}
+                            stroke={border}
+                            strokeWidth={strokeWidth}
+                        />
                         {renderGlow()}
-                        <Polygon points={points} fill="url(#shadowGrad)" />
-                        <Polygon points={points} fill="url(#highlightGrad)" />
-                    </G>
-                    <Polygon
-                        points={points}
-                        fill="none"
-                        stroke={strokeColor}
-                        strokeWidth={strokeWidth}
-                    />
-                </>
-            );
+                    </>
+                );
+            }
+
+            case 'fill': {
+                const isNeutral = color === 'neutral';
+                const hlIsNeutral = hlColor === 'neutral';
+                const bgShade = isNeutral ? (isLight ? 700 : 400) : 500;
+                const hlShade = hlIsNeutral ? (isLight ? 600 : 300) : 500;
+                const hlShadeActive = hlIsNeutral ? (isLight ? 800 : 500) : 500;
+                let fillColor: string;
+                let borderColor: string;
+                if (active) {
+                    fillColor = theme.color(hlColor, hlShadeActive);
+                    borderColor = highlight500;
+                } else if (pressed) {
+                    fillColor = theme.color(hlColor, hlShade);
+                    borderColor = highlight300;
+                } else {
+                    fillColor = theme.color(color, bgShade);
+                    borderColor = baseColor;
+                }
+                return (
+                    <>
+                        <Polygon
+                            points={points}
+                            fill={fillColor}
+                            stroke={borderColor}
+                            strokeWidth={strokeWidth}
+                        />
+                        {renderGlow()}
+                    </>
+                );
+            }
+
+            case 'fill-inverse': {
+                const isNeutral = color === 'neutral';
+                const hlIsNeutral = hlColor === 'neutral';
+                const bgShade = isNeutral ? (isLight ? 100 : 800) : 900;
+                const hlShade = hlIsNeutral ? (isLight ? 900 : 800) : 900;
+                let fillColor: string;
+                let borderColor: string;
+                if (active) {
+                    fillColor = theme.color(hlColor, hlShade);
+                    borderColor = highlight500;
+                } else if (pressed) {
+                    fillColor = theme.color(hlColor, hlShade);
+                    borderColor = highlight300;
+                } else {
+                    fillColor = theme.color(color, bgShade);
+                    borderColor = baseColor;
+                }
+                return (
+                    <>
+                        <Polygon
+                            points={points}
+                            fill={fillColor}
+                            stroke={borderColor}
+                            strokeWidth={strokeWidth}
+                        />
+                        {renderGlow()}
+                    </>
+                );
+            }
+
+            default: {
+                // ghost / outline
+                const isOutline = variant === 'outline';
+                let bgFill: string;
+                let bColor: string;
+                if (active) {
+                    bgFill = theme.color(hlColor, 500, 0.24);
+                    bColor = highlight500;
+                } else if (pressed) {
+                    bgFill = theme.color(hlColor, 500, 0.12);
+                    bColor = highlight300;
+                } else {
+                    bgFill = 'none';
+                    bColor = isOutline ? baseColor : 'transparent';
+                }
+                return (
+                    <>
+                        <Polygon
+                            points={points}
+                            fill={bgFill}
+                            stroke={bColor}
+                            strokeWidth={strokeWidth}
+                        />
+                        {renderGlow()}
+                    </>
+                );
+            }
         }
-
-        if (variant === 'fill-translucent') {
-            const fill = hl && hlColor
-                ? theme.color((highlightColor || color) as ColorVariant, 500, 0.36)
-                : theme.color(color as ColorVariant, 500, 0.24);
-            return (
-                <>
-                    <Polygon
-                        points={points}
-                        fill={fill}
-                        stroke={strokeColor}
-                        strokeWidth={strokeWidth}
-                    />
-                    {renderGlow()}
-                </>
-            );
-        }
-
-        if (variant === 'fill') {
-            const isNeutral = color === 'neutral';
-            const hlIsNeutral = (highlightColor || color) === 'neutral';
-            const bgShade = isNeutral ? (isLight ? 100 : 800) : 900;
-            const hlShade = hlIsNeutral ? (isLight ? 900 : 800) : 900;
-            const borderShade = hlIsNeutral && isLight ? 700 : 300;
-            const fillColor = hl && hlColor
-                ? theme.color((highlightColor || color) as ColorVariant, hlShade)
-                : theme.color(color as ColorVariant, bgShade);
-            const borderColor = hl && hlColor
-                ? theme.color((highlightColor || color) as ColorVariant, borderShade)
-                : (isNeutral && isLight ? theme.color('neutral', 700) : strokeColor);
-
-            return (
-                <>
-                    <Polygon
-                        points={points}
-                        fill={fillColor}
-                        stroke={borderColor}
-                        strokeWidth={strokeWidth}
-                    />
-                    {renderGlow()}
-                </>
-            );
-        }
-
-        const bgFill = hl && hlColor
-            ? theme.color((highlightColor || color) as ColorVariant, 500, 0.24)
-            : 'none';
-
-        return (
-            <>
-                <Polygon
-                    points={points}
-                    fill={bgFill}
-                    stroke={strokeColor}
-                    strokeWidth={strokeWidth}
-                />
-                {renderGlow()}
-            </>
-        );
     };
 
     const container = (
@@ -184,7 +267,10 @@ export const Hexagon: FC<HexagonProps & { style?: StyleProp<ViewStyle> }> = ({
     if (interactive) {
         return (
             <Pressable
-                onPressIn={() => setPressed(true)}
+                onPressIn={() => {
+                    setPressed(true);
+                    markGlowDrawn();
+                }}
                 onPressOut={() => setPressed(false)}
             >
                 {container}

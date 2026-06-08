@@ -1,4 +1,4 @@
-import { ComponentType, FC, useState } from "react";
+import { ComponentType, FC, useCallback, useState } from "react";
 import { Pressable, PressableProps, Text as RNText, StyleProp, ViewStyle } from "react-native";
 import { ButtonProps, useTheme } from "@ui";
 import { Icon } from "../icons";
@@ -9,6 +9,7 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
     color = 'neutral',
     highlightColor: hlColor,
     variant = 'ghost',
+    glowStyle = 'none',
     size = 'sm',
     corners = 'square',
     active = false,
@@ -23,12 +24,24 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
     const theme = useTheme();
     const highlightColor = hlColor ?? color;
     const [pressed, setPressed] = useState(false);
+    const [glowDrawn, setGlowDrawn] = useState(false);
     const hl = pressed || active;
-
     const isLight = (themeMode || theme.mode) === 'light';
 
     const hlInset = theme.color(highlightColor, isLight ? 600 : 300);
     const baseColor = theme.color(color);
+    const hl500 = theme.color(highlightColor, 500);
+
+    const showGlow = glowStyle !== 'none' && (hl || glowDrawn);
+
+    const markGlowDrawn = useCallback(() => {
+        if (glowStyle !== 'none') {
+            setGlowDrawn(true);
+        }
+    }, [glowStyle]);
+
+    const isTextGlowVariant = variant === 'ghost' || variant === 'outline' || variant === 'inset';
+    const showTextGlow = showGlow && isTextGlowVariant;
 
     const container: ViewStyle = {
         flexDirection: 'row',
@@ -67,17 +80,39 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
             break;
         case 'fill':
             container.borderWidth = 0;
-            if (hl) {
+            if (active) {
                 container.backgroundColor = theme.color(highlightColor, 500);
+            } else if (pressed) {
+                container.backgroundColor = theme.color(highlightColor, 300);
             } else {
                 container.backgroundColor = theme.color(color, 500);
             }
             break;
+        case 'fill-inverse':
+            container.borderWidth = 1;
+            if (active) {
+                container.backgroundColor = theme.color(highlightColor, 900);
+                container.borderColor = hl500;
+            } else if (pressed) {
+                container.backgroundColor = theme.color(highlightColor, 900);
+                container.borderColor = theme.color(highlightColor, 300);
+            } else {
+                container.backgroundColor = theme.color(color, 900);
+                container.borderColor = baseColor;
+            }
+            break;
         case 'fill-translucent':
-            container.borderWidth = 0;
-            container.backgroundColor = hl
-                ? theme.color(highlightColor, 500, active ? 0.48 : 0.36)
-                : theme.color(color, 500, 0.24);
+            container.borderWidth = 1;
+            if (active) {
+                container.backgroundColor = theme.color(highlightColor, 500, 0.48);
+                container.borderColor = theme.color(highlightColor, 300);
+            } else if (pressed) {
+                container.backgroundColor = theme.color(highlightColor, 500, 0.36);
+                container.borderColor = theme.color(highlightColor, 300);
+            } else {
+                container.backgroundColor = theme.color(color, 500, 0.24);
+                container.borderColor = theme.color(color, 500, 0.3);
+            }
             break;
         case 'outline':
             container.borderWidth = 1;
@@ -118,6 +153,15 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
             break;
     }
 
+    if (showGlow && corners !== 'hexagon') {
+        const glowBoxShadow = `0px 0px 4px ${theme.color(highlightColor, 500, 0.3)}, 0px 0px 20px ${theme.color(highlightColor, 500, 0.6)}`;
+        if (container.boxShadow) {
+            container.boxShadow = `${container.boxShadow}, ${glowBoxShadow}`;
+        } else {
+            container.boxShadow = glowBoxShadow;
+        }
+    }
+
     const fillTextColor = color === 'neutral' && isLight
         ? theme.color('neutral', 700)
         : theme.color(color, 900);
@@ -130,7 +174,7 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
     let fontSize = 14;
     if (size === 'xs') fontSize = 12;
 
-    const showTextShadow = hl && (variant === 'inset' || variant === 'ghost');
+    const showTextShadow = showTextGlow || (hl && (variant === 'inset' || variant === 'ghost'));
 
     const iconSizes = {
         xs: 12,
@@ -143,7 +187,10 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
     const pressable = (
         <Pressable
             disabled={disabled}
-            onPressIn={() => setPressed(true)}
+            onPressIn={() => {
+                setPressed(true);
+                markGlowDrawn();
+            }}
             onPressOut={() => setPressed(false)}
             style={[container, corners === 'hexagon' ? undefined : style as ViewStyle]}
             {...props}
@@ -154,12 +201,12 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
                     width={iconSize}
                     height={iconSize}
                     color={theme.color(
-                        pressed || active ? highlightColor || color : color,
+                        pressed || active ? highlightColor : color,
                         effectiveVariant === 'fill'
-                            ? ((pressed || active ? highlightColor || color : color) === 'neutral' && isLight ? 700 : 900)
+                            ? ((pressed || active ? highlightColor : color) === 'neutral' && isLight ? 700 : 900)
                             : (pressed || active ? (theme.mode === 'dark' ? 300 : 600) : 500)
                     )}
-                    filter={showTextShadow ? `drop-shadow(0px 0px 6px ${hlInset})` : undefined}
+                    filter={showTextShadow ? `drop-shadow(0px 0px 12px ${hlInset})` : undefined}
                 />
             ) : null}
             {children || title ? (
@@ -184,6 +231,7 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
             <Hexagon
                 size={size}
                 variant={variant}
+                glowStyle={glowStyle}
                 themeMode={themeMode}
                 color={color}
                 highlightColor={hlColor || color}

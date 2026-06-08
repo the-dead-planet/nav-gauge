@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 import { Button } from "./Button";
 import { Text } from "../typography";
-import { ColorVariant, SurfaceVariant, ButtonCorners, SizeVariant, Icons } from "@ui";
+import { ColorVariant, GlowStyle, SurfaceVariant, ButtonCorners, SizeVariant, Icons } from "@ui";
 
 const styles = StyleSheet.create({
     container: {
@@ -22,26 +22,23 @@ const styles = StyleSheet.create({
     label: {
         marginBottom: 4,
     },
-    selector: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 8,
-        marginBottom: 16,
-    },
 });
 
 const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: SurfaceVariant[] = ['ghost', 'fill', 'fill-translucent', 'outline', 'inset'];
+const allVariants: SurfaceVariant[] = ['ghost', 'fill', 'fill-inverse', 'fill-translucent', 'outline', 'inset'];
 const allCorners: ButtonCorners[] = ['square', 'rounded', 'circle', 'hexagon'];
+
+const allGlowStyles: GlowStyle[] = ['none', 'glow', 'animate-borders-glow'];
 
 export const AllVariants: FC = () => {
     const [highlightColor, setHighlightColor] = useState<ColorVariant | undefined>(undefined);
+    const [glowStyle, setGlowStyle] = useState<GlowStyle>('none');
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <View style={styles.section}>
-                <Text>Active highlightColor: {highlightColor ?? 'default'}</Text>
+                <Text style={styles.label}>highlightColor: {highlightColor ?? 'default'}</Text>
                 <View style={styles.row}>
                     {[undefined, ...allColors].map((c) => (
                         <Button
@@ -55,6 +52,25 @@ export const AllVariants: FC = () => {
                             onPress={() => setHighlightColor(c)}
                         >
                             {c ?? 'default'}
+                        </Button>
+                    ))}
+                </View>
+            </View>
+
+            <View style={styles.section}>
+                <Text style={styles.label}>glowStyle: {glowStyle}</Text>
+                <View style={styles.row}>
+                    {allGlowStyles.map((g) => (
+                        <Button
+                            key={g}
+                            variant={glowStyle === g ? 'fill' : 'ghost'}
+                            color="primary"
+                            size="xs"
+                            corners="rounded"
+                            active={glowStyle === g}
+                            onPress={() => setGlowStyle(g)}
+                        >
+                            {g}
                         </Button>
                     ))}
                 </View>
@@ -80,6 +96,7 @@ export const AllVariants: FC = () => {
                                             <Button
                                                 icon={i % 2 === 0 ? Icons.NounProject.LightBulbCogWheel : Icons.Beaker}
                                                 variant={variant}
+                                                glowStyle={glowStyle}
                                                 color={color}
                                                 corners={corners}
                                                 size={size}

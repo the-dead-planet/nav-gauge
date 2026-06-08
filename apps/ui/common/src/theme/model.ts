@@ -29,7 +29,8 @@ export type PaletteColor =
     'blue' |
     'red' |
     'purple' |
-    'lime';
+    'lime' |
+    'green';
 
 export type DesignSystemColor =
     'primary' |

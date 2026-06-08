@@ -100,11 +100,13 @@ export const MapSection: FC = () => {
                         variant={"fill-inverse"}
                         corners="hexagon"
                         glowStyle="animate-borders-glow"
-                        // color="primary"
                         highlightColor="secondary"
                         style={{
                             transform: `translate(${i % 2 === 1 ? `-8px, calc(50% + 3px)` : undefined})`,
-                            filter: 'drop-shadow(1px 2px 8px rgba(0, 0, 0, .3))'
+                            filter: `
+                            drop-shadow(0 0 2px rgba(255, 255, 255, 0.2))
+                            drop-shadow(0 2px 2px rgba(0, 0, 0, 0.12))
+                            drop-shadow(0 8px 4px rgba(0, 0, 0, 0.06))`,
                         }}
                     />
                 ))}
