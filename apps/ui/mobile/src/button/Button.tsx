@@ -1,5 +1,5 @@
 import { ComponentType, FC, useCallback, useState } from "react";
-import { Pressable, PressableProps, Text as RNText, StyleProp, ViewStyle } from "react-native";
+import { Pressable, PressableProps, Text as RNText, ViewStyle } from "react-native";
 import { ButtonProps, useTheme } from "@ui";
 import { Icon } from "../icons";
 import { SvgProps } from "react-native-svg";
@@ -71,7 +71,7 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
             break;
     }
 
-    const effectiveVariant = corners === 'hexagon' ? 'ghost' : variant;
+    const effectiveVariant = variant;
 
     switch (effectiveVariant) {
         case 'ghost':
@@ -91,13 +91,13 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
         case 'fill-inverse':
             container.borderWidth = 1;
             if (active) {
-                container.backgroundColor = theme.color(highlightColor, 900);
+                container.backgroundColor = theme.color(highlightColor, isLight ? 100 : (highlightColor === 'neutral' ? 800 : 900));
                 container.borderColor = hl500;
             } else if (pressed) {
-                container.backgroundColor = theme.color(highlightColor, 900);
-                container.borderColor = theme.color(highlightColor, 300);
+                container.backgroundColor = theme.color(highlightColor, isLight ? 100 : (highlightColor === 'neutral' ? 800 : 900));
+                container.borderColor = theme.color(highlightColor, isLight ? 600 : 300);
             } else {
-                container.backgroundColor = theme.color(color, 900);
+                container.backgroundColor = theme.color(color, isLight ? 100 : (color === 'neutral' ? 800 : 900));
                 container.borderColor = baseColor;
             }
             break;
@@ -105,10 +105,10 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
             container.borderWidth = 1;
             if (active) {
                 container.backgroundColor = theme.color(highlightColor, 500, 0.48);
-                container.borderColor = theme.color(highlightColor, 300);
+                container.borderColor = hl500;
             } else if (pressed) {
                 container.backgroundColor = theme.color(highlightColor, 500, 0.36);
-                container.borderColor = theme.color(highlightColor, 300);
+                container.borderColor = theme.color(highlightColor, isLight ? 600 : 300);
             } else {
                 container.backgroundColor = theme.color(color, 500, 0.24);
                 container.borderColor = theme.color(color, 500, 0.3);
@@ -162,11 +162,17 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
         }
     }
 
-    const fillTextColor = color === 'neutral' && isLight
-        ? theme.color('neutral', 700)
+    if (corners === 'hexagon') {
+        container.backgroundColor = 'transparent';
+        container.borderWidth = 0;
+        container.boxShadow = undefined;
+    }
+
+    const fillTextColor = color === 'neutral'
+        ? theme.color('neutral', 800)
         : theme.color(color, 900);
-    const hlFillTextColor = highlightColor === 'neutral' && isLight
-        ? theme.color('neutral', 900)
+    const hlFillTextColor = highlightColor === 'neutral'
+        ? theme.color('neutral', 800)
         : theme.color(highlightColor, 900);
     const textColor = effectiveVariant === 'fill'
         ? (hl ? hlFillTextColor : fillTextColor)
@@ -184,49 +190,45 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
 
     const iconSize = iconSizes[size];
 
-    const pressable = (
-        <Pressable
-            disabled={disabled}
-            onPressIn={() => {
-                setPressed(true);
-                markGlowDrawn();
-            }}
-            onPressOut={() => setPressed(false)}
-            style={[container, corners === 'hexagon' ? undefined : style as ViewStyle]}
-            {...props}
+    const iconElement = icon ? (
+        <Icon
+            icon={icon}
+            width={iconSize}
+            height={iconSize}
+            color={theme.color(
+                pressed || active ? highlightColor : color,
+                effectiveVariant === 'fill'
+                    ? ((pressed || active ? highlightColor : color) === 'neutral' && isLight ? 700 : 900)
+                    : (pressed || active ? (theme.mode === 'dark' ? 300 : 600) : 500)
+            )}
+            filter={showTextShadow ? `drop-shadow(0px 0px 12px ${hlInset})` : undefined}
+        />
+    ) : null;
+
+    const textElement = children || title ? (
+        <RNText
+            style={[
+                { color: textColor, fontSize, lineHeight: fontSize * 1.1 },
+                showTextShadow && {
+                    textShadowColor: hlInset,
+                    textShadowRadius: 12,
+                    textShadowOffset: { width: 0, height: 0 },
+                },
+            ]}
         >
-            {icon ? (
-                <Icon
-                    icon={icon}
-                    width={iconSize}
-                    height={iconSize}
-                    color={theme.color(
-                        pressed || active ? highlightColor : color,
-                        effectiveVariant === 'fill'
-                            ? ((pressed || active ? highlightColor : color) === 'neutral' && isLight ? 700 : 900)
-                            : (pressed || active ? (theme.mode === 'dark' ? 300 : 600) : 500)
-                    )}
-                    filter={showTextShadow ? `drop-shadow(0px 0px 12px ${hlInset})` : undefined}
-                />
-            ) : null}
-            {children || title ? (
-                <RNText
-                    style={[
-                        { color: textColor, fontSize, lineHeight: fontSize * 1.1 },
-                        showTextShadow && {
-                            textShadowColor: hlInset,
-                            textShadowRadius: 12,
-                            textShadowOffset: { width: 0, height: 0 },
-                        },
-                    ]}
-                >
-                    {children ?? title}
-                </RNText>
-            ) : null}
-        </Pressable>
+            {children ?? title}
+        </RNText>
+    ) : null;
+
+    const content = (
+        <>
+            {iconElement}
+            {textElement}
+        </>
     );
 
     if (corners === 'hexagon') {
+        const { onPress, onLongPress, ...rest } = props;
         return (
             <Hexagon
                 size={size}
@@ -235,14 +237,38 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
                 themeMode={themeMode}
                 color={color}
                 highlightColor={hlColor || color}
-                active={active || pressed}
-                interactive
+                active={active}
+                interactive={!disabled}
+                onPress={onPress}
+                onLongPress={onLongPress}
+                onPressIn={() => {
+                    setPressed(true);
+                    markGlowDrawn();
+                    rest.onPressIn?.();
+                }}
+                onPressOut={() => {
+                    setPressed(false);
+                    rest.onPressOut?.();
+                }}
                 style={typeof style === 'function' ? undefined : style}
             >
-                {pressable}
+                {content}
             </Hexagon>
         );
     }
 
-    return pressable;
+    return (
+        <Pressable
+            disabled={disabled}
+            onPressIn={() => {
+                setPressed(true);
+                markGlowDrawn();
+            }}
+            onPressOut={() => setPressed(false)}
+            style={[container, style as ViewStyle]}
+            {...props}
+        >
+            {content}
+        </Pressable>
+    );
 };

@@ -23,6 +23,7 @@ export type PaletteColor =
     'grey' |
     'yellow' |
     'copper' |
+    'copper-dark' |
     'teal' |
     'magenta' |
     'pink' |

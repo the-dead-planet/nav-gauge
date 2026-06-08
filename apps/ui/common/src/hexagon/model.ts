@@ -14,5 +14,9 @@ export interface HexagonProps {
     variant?: SurfaceVariant;
     themeMode?: boolean;
     active?: boolean;
+    onPress?: () => void;
+    onLongPress?: () => void;
+    onPressIn?: () => void;
+    onPressOut?: () => void;
     children?: ReactNode;
 }

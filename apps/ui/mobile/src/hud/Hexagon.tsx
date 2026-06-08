@@ -66,6 +66,10 @@ export const Hexagon: FC<HexagonProps & { style?: StyleProp<ViewStyle> }> = ({
     size,
     interactive = false,
     active = false,
+    onPress,
+    onLongPress,
+    onPressIn: onParentPressIn,
+    onPressOut: onParentPressOut,
     style,
     children
 }) => {
@@ -83,8 +87,7 @@ export const Hexagon: FC<HexagonProps & { style?: StyleProp<ViewStyle> }> = ({
     const color = (colorProp || 'neutral') as ColorVariant;
     const baseColor = theme.color(color, 500);
     const highlight500 = theme.color(hlColor, 500);
-    const highlight300 = theme.color(hlColor, 300);
-    const highlight900 = theme.color(hlColor, 900);
+    const highlightAccent = theme.color(hlColor, isLight ? 600 : 300);
 
     const showGlow = (glowStyle !== 'none') && (hl || glowDrawn);
 
@@ -96,7 +99,7 @@ export const Hexagon: FC<HexagonProps & { style?: StyleProp<ViewStyle> }> = ({
 
     const renderGlow = () => {
         if (!showGlow) return null;
-        return <GlowPolygons points={points} glowColor={highlight500} strokeWidth={strokeWidth} />;
+        return <GlowPolygons points={points} glowColor={highlightAccent} strokeWidth={strokeWidth} />;
     };
 
     const renderVariant = () => {
@@ -145,7 +148,7 @@ export const Hexagon: FC<HexagonProps & { style?: StyleProp<ViewStyle> }> = ({
                 const fill = hl
                     ? theme.color(hlColor, 500, active ? 0.48 : 0.36)
                     : theme.color(color, 500, 0.24);
-                const border = hl ? highlight300 : baseColor;
+                const border = hl ? (active ? highlight500 : highlightAccent) : baseColor;
                 return (
                     <>
                         <Polygon
@@ -160,21 +163,16 @@ export const Hexagon: FC<HexagonProps & { style?: StyleProp<ViewStyle> }> = ({
             }
 
             case 'fill': {
-                const isNeutral = color === 'neutral';
-                const hlIsNeutral = hlColor === 'neutral';
-                const bgShade = isNeutral ? (isLight ? 700 : 400) : 500;
-                const hlShade = hlIsNeutral ? (isLight ? 600 : 300) : 500;
-                const hlShadeActive = hlIsNeutral ? (isLight ? 800 : 500) : 500;
                 let fillColor: string;
                 let borderColor: string;
                 if (active) {
-                    fillColor = theme.color(hlColor, hlShadeActive);
+                    fillColor = theme.color(hlColor, 500);
                     borderColor = highlight500;
                 } else if (pressed) {
-                    fillColor = theme.color(hlColor, hlShade);
-                    borderColor = highlight300;
+                    fillColor = highlightAccent;
+                    borderColor = highlightAccent;
                 } else {
-                    fillColor = theme.color(color, bgShade);
+                    fillColor = theme.color(color, 500);
                     borderColor = baseColor;
                 }
                 return (
@@ -193,16 +191,16 @@ export const Hexagon: FC<HexagonProps & { style?: StyleProp<ViewStyle> }> = ({
             case 'fill-inverse': {
                 const isNeutral = color === 'neutral';
                 const hlIsNeutral = hlColor === 'neutral';
-                const bgShade = isNeutral ? (isLight ? 100 : 800) : 900;
-                const hlShade = hlIsNeutral ? (isLight ? 900 : 800) : 900;
+                const bgShade = isLight ? 100 : (isNeutral ? 800 : 900);
+                const hlBgShade = isLight ? 100 : (hlIsNeutral ? 800 : 900);
                 let fillColor: string;
                 let borderColor: string;
                 if (active) {
-                    fillColor = theme.color(hlColor, hlShade);
+                    fillColor = theme.color(hlColor, hlBgShade);
                     borderColor = highlight500;
                 } else if (pressed) {
-                    fillColor = theme.color(hlColor, hlShade);
-                    borderColor = highlight300;
+                    fillColor = theme.color(hlColor, hlBgShade);
+                    borderColor = highlightAccent;
                 } else {
                     fillColor = theme.color(color, bgShade);
                     borderColor = baseColor;
@@ -223,16 +221,21 @@ export const Hexagon: FC<HexagonProps & { style?: StyleProp<ViewStyle> }> = ({
             default: {
                 // ghost / outline
                 const isOutline = variant === 'outline';
+                const isGhost = variant === 'ghost';
                 let bgFill: string;
+                let fillOpacity: number | undefined;
                 let bColor: string;
                 if (active) {
-                    bgFill = theme.color(hlColor, 500, 0.24);
-                    bColor = highlight500;
+                    bgFill = highlight500;
+                    fillOpacity = isGhost ? 0.14 : 0.24;
+                    bColor = isGhost ? 'transparent' : highlight500;
                 } else if (pressed) {
-                    bgFill = theme.color(hlColor, 500, 0.12);
-                    bColor = highlight300;
+                    bgFill = highlightAccent;
+                    fillOpacity = isGhost ? 0.10 : 0.12;
+                    bColor = isGhost ? 'transparent' : highlightAccent;
                 } else {
                     bgFill = 'none';
+                    fillOpacity = undefined;
                     bColor = isOutline ? baseColor : 'transparent';
                 }
                 return (
@@ -240,6 +243,7 @@ export const Hexagon: FC<HexagonProps & { style?: StyleProp<ViewStyle> }> = ({
                         <Polygon
                             points={points}
                             fill={bgFill}
+                            fillOpacity={fillOpacity}
                             stroke={bColor}
                             strokeWidth={strokeWidth}
                         />
@@ -267,11 +271,17 @@ export const Hexagon: FC<HexagonProps & { style?: StyleProp<ViewStyle> }> = ({
     if (interactive) {
         return (
             <Pressable
+                onPress={onPress}
+                onLongPress={onLongPress}
                 onPressIn={() => {
                     setPressed(true);
                     markGlowDrawn();
+                    onParentPressIn?.();
                 }}
-                onPressOut={() => setPressed(false)}
+                onPressOut={() => {
+                    setPressed(false);
+                    onParentPressOut?.();
+                }}
             >
                 {container}
             </Pressable>

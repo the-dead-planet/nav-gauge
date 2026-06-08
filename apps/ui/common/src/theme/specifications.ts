@@ -63,7 +63,7 @@ export const themeSpecifications: { [key in ThemeName]: ThemeSpecification } = {
         },
         colors: {
             primary: Theme.palette.green,
-            secondary: Theme.palette.copper,
+            secondary: Theme.palette['copper-dark'],
             tertiary: Theme.palette.magenta,
             neutral: Theme.palette.grey,
         }
