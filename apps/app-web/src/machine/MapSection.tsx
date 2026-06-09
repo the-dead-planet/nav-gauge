@@ -80,29 +80,56 @@ export const MapSection: FC = () => {
                     </Button>
                 ))}
             </FlexBox>
-            <div className={classNames(styles['toolbar'], styles['left'])}>
+            <div className={classNames(styles['toolbar'], styles['left'])}><P>left</P></div>
+            <div className={classNames(styles['icons'], styles['left'])}>
+                <div />
                 {[
-                    { id: 1, icon: null },
                     { id: 2, icon: Icons.Find },
                     { id: 3, icon: Icons.Beaker },
                     { id: 4, icon: Icons.Find },
                     { id: 5, icon: Icons.Beaker },
                     { id: 6, icon: Icons.Find },
-                    { id: 7, icon: Icons.Beaker },
-                    { id: 8, icon: Icons.Find },
-                    { id: 9, icon: Icons.Beaker },
-                    { id: 10, icon: Icons.Find },
-                ].map(({ id, icon }, i) => !icon ? <span /> : (
+                ].map(({ id, icon }, i) => (
                     <Button
                         key={id}
                         icon={icon}
                         size="sm"
                         variant={"fill-inverse"}
                         corners="hexagon"
-                        glowStyle="animate-borders-glow"
+                        glowStyle={theme.mode === 'dark' ? "animate-borders-glow" : 'none'}
                         highlightColor="secondary"
                         style={{
-                            transform: `translate(${i % 2 === 1 ? `-8px, calc(50% + 3px)` : undefined})`,
+                            transform: `translate(${i % 2 === 0 ? `-7px, calc(50% + 3px)` : undefined})`,
+                            filter: `
+                            drop-shadow(0 0 2px rgba(255, 255, 255, 0.2))
+                            drop-shadow(0 2px 2px rgba(0, 0, 0, 0.12))
+                            drop-shadow(0 8px 4px rgba(0, 0, 0, 0.06))`,
+                        }}
+                    />
+                ))}
+            </div>
+            <div className={classNames(styles['icons'], styles['right'])}>
+                {[
+                    { id: 1, icon: Icons.Beaker },
+                    { id: 2, icon: Icons.Find },
+                    { id: 3, icon: Icons.Beaker },
+                    { id: 4, icon: Icons.Find },
+                    { id: 5, icon: Icons.Beaker },
+                    { id: 6, icon: Icons.Find },
+                    { id: 7, icon: Icons.Beaker },
+                    { id: 8, icon: Icons.Beaker },
+                ].map(({ id, icon }, i) => !icon ? <span /> : (
+                    <Button
+                        key={id}
+                        icon={icon}
+                        size="xs"
+                        variant={"fill-inverse"}
+                        corners="hexagon"
+                        glowStyle={theme.mode === 'dark' ? "animate-borders-glow" : 'none'}
+                        color="primary"
+                        // highlightColor="secondary"
+                        style={{
+                            transform: `translate(${i % 2 === 0 ? `6px, calc(-50% - 2px)` : undefined})`,
                             filter: `
                             drop-shadow(0 0 2px rgba(255, 255, 255, 0.2))
                             drop-shadow(0 2px 2px rgba(0, 0, 0, 0.12))

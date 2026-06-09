@@ -36,7 +36,7 @@ export const Primary = {
                     .toSorted((a, b) => a[0].localeCompare(b[0]))
                     .map(([iconName, src]) => {
                         const data = iconRegistry.find(
-                            (el) => el.id.replace('-', '') === iconName.toLowerCase()
+                            (el) => el.id.replaceAll('-', '').toLowerCase() === iconName.toLowerCase()
                         ) as { creator: string; source: string; href: string } | undefined;
 
                         return (

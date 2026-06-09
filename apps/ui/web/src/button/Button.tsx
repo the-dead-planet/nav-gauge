@@ -31,7 +31,6 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     ...props
 }) => {
     const theme = useTheme();
-    const [glowDrawn, setGlowDrawn] = useState(false);
     const iconSizes = {
         xs: 12,
         sm: 16,
@@ -59,7 +58,6 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
                     [styles['interactive']]: !!props.onClick,
                     [styles['active']]: active,
                     [styles[`only-icon-${size}`]]: !children,
-                    [styles['glow-drawn']]: glowDrawn,
                 },
                 className
             )}

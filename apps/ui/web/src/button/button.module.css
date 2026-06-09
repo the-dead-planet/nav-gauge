@@ -603,33 +603,6 @@
     box-shadow: none;
 }
 
-/* glow-drawn: keep glow visible after first interaction */
-.glow-drawn.glow-style-animate-borders-glow.variant-ghost,
-.glow-drawn.glow-style-animate-borders-glow.variant-fill,
-.glow-drawn.glow-style-animate-borders-glow.variant-fill-inverse,
-.glow-drawn.glow-style-animate-borders-glow.variant-fill-translucent,
-.glow-drawn.glow-style-animate-borders-glow.variant-outline,
-.glow-drawn.glow-style-animate-borders-glow.variant-inset {
-    box-shadow: 0px 0px 4px rgb(from var(--button-highlight-color) r g b / .3),
-        0px 0px 20px rgb(from var(--button-highlight-color) r g b / .6);
-}
-
-.glow-drawn.corners-hexagon.glow-style-animate-borders-glow {
-    box-shadow: none;
-}
-
-.glow-drawn.glow-style-animate-borders-glow.variant-ghost,
-.glow-drawn.glow-style-animate-borders-glow.variant-outline,
-.glow-drawn.glow-style-animate-borders-glow.variant-inset {
-    text-shadow: 0 0 12px rgb(from var(--button-highlight-color-accent) r g b / .45);
-}
-
-.glow-drawn.glow-style-animate-borders-glow.variant-ghost .icon,
-.glow-drawn.glow-style-animate-borders-glow.variant-outline .icon,
-.glow-drawn.glow-style-animate-borders-glow.variant-inset .icon {
-    filter: drop-shadow(0 0 12px rgb(from var(--button-highlight-color-accent) r g b / .45));
-}
-
 @keyframes glow-sweep {
     0% {
         box-shadow:
