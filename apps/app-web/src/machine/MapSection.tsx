@@ -80,7 +80,44 @@ export const MapSection: FC = () => {
                     </Button>
                 ))}
             </FlexBox>
-            <div className={classNames(styles['toolbar'], styles['left'])}><P>left</P></div>
+            <div className={classNames(styles['toolbar'], styles['left'])}>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                <P>left</P>
+                </div>
             <div className={classNames(styles['icons'], styles['left'])}>
                 <div />
                 {[

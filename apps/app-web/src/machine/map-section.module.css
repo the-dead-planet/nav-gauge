@@ -8,43 +8,21 @@
         "top-toolbar top-toolbar top-toolbar top-toolbar top-toolbar"
         "left-toolbar left-icons . right-icons right-toolbar"
         "bottom-toolbar bottom-toolbar bottom-toolbar bottom-toolbar bottom-toolbar";
+    overflow: hidden;
 }
 
 .machine>* {
     z-index: 0;
 }
 
-.toolbar,
 .icons {
     box-sizing: border-box;
-}
-
-.toolbar.top {
-    grid-area: top-toolbar;
-    height: 40px;
-    border-bottom: 1px solid var(--color-secondary);
-    box-shadow: 1px 1px 3px rgb(from var(--color-box-shadow) r g b / .4);
-    background-color: rgb(from var(--color-background) r g b / .82);
-    backdrop-filter: blur(2px);
-}
-
-.toolbar.left {
-    grid-area: left-toolbar;
-    width: 50px;
-    border-right: 1px solid var(--color-neutral);
-    box-shadow: 1px 1px 3px rgb(from var(--color-box-shadow) r g b / .4);
-    background-color: rgb(from var(--color-background) r g b / .82);
-    backdrop-filter: blur(2px);
-}
-
-.icons.left,
-.icons.right {
     pointer-events: none;
     overflow: hidden;
 }
 
-.icons.left *,
-.icons.right * {
+.icons>*,
+.icons>* {
     pointer-events: auto;
 }
 
@@ -70,13 +48,37 @@
     align-content: end;
 }
 
+.toolbar {
+    box-sizing: border-box;
+    background-color: rgb(from var(--color-background) r g b / .82);
+    backdrop-filter: blur(2px);
+}
+
+.toolbar.top {
+    grid-area: top-toolbar;
+    height: 40px;
+    border-bottom: 1px solid var(--color-secondary);
+    box-shadow: 1px 1px 3px rgb(from var(--color-box-shadow) r g b / .4);
+}
+
+.toolbar.left,
+.toolbar.right {
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-right: 12px;
+}
+
+.toolbar.left {
+    grid-area: left-toolbar;
+    border-right: 1px solid var(--color-neutral);
+    box-shadow: 1px 1px 3px rgb(from var(--color-box-shadow) r g b / .4);
+}
+
 .toolbar.right {
     grid-area: right-toolbar;
     width: 50px;
     border-left: 1px solid var(--color-primary);
     box-shadow: -1px 1px 3px rgb(from var(--color-box-shadow) r g b / .4);
-    background-color: rgb(from var(--color-background) r g b / .82);
-    backdrop-filter: blur(2px);
 }
 
 .toolbar.bottom {
