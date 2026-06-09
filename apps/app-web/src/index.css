@@ -91,7 +91,7 @@ a:-webkit-any-link {
 }
 
 #app {
-  height: 90dvh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
