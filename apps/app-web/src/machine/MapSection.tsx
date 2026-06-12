@@ -63,27 +63,29 @@ export const MapSection: FC = () => {
                     {[...overlays.entries()].map(([id, OverlayComponent]) => <OverlayComponent key={id} map={map} />)}
                 </MapTools>
             ) : null}
-            <FlexBox gap="md" alignItems="center" className={classNames(styles['toolbar'], styles['top'])}>
-                {gears.map(({ gear, isEngaged }) => (
-                    <Button
-                        key={gear.id}
-                        variant="ghost"
-                        highlightColor="secondary"
-                        active={isEngaged}
-                        icon={gear.icon}
-                        onClick={() => {
-                            if (isEngaged) {
-                                engine.disengageGear(gear);
-                            } else {
-                                engine.engageGear(gear);
-                            }
-                        }}
-                        tooltip={<T n={gear.id} t="description" />}
-                    >
-                        <T n={gear.id} t="name" />
-                    </Button>
-                ))}
-            </FlexBox>
+            <div className={classNames(styles['toolbar'], styles['top'])}>
+                <FlexBox gap="md" alignItems="center" className={styles['content']}>
+                    {gears.map(({ gear, isEngaged }) => (
+                        <Button
+                            key={gear.id}
+                            variant="ghost"
+                            highlightColor="secondary"
+                            active={isEngaged}
+                            icon={gear.icon}
+                            onClick={() => {
+                                if (isEngaged) {
+                                    engine.disengageGear(gear);
+                                } else {
+                                    engine.engageGear(gear);
+                                }
+                            }}
+                            tooltip={<T n={gear.id} t="description" />}
+                        >
+                            <T n={gear.id} t="name" />
+                        </Button>
+                    ))}
+                </FlexBox>
+            </div>
             <div className={classNames(styles['toolbar'], styles['left'])}>
                 {/* TODO: Collapsible sections list, panel expand/collapse, when collapsed just icons. */}
                 {toolPanelsByPlacement.left.length > 0 ? (
@@ -143,7 +145,7 @@ export const MapSection: FC = () => {
             </div>
             <div className={classNames(styles['toolbar'], styles['bottom'])}>
                 {/* TODO: Should just be one at a time? */}
-                 {toolPanelsByPlacement.bottom.length > 0 ? (
+                {toolPanelsByPlacement.bottom.length > 0 ? (
                     <div className={styles['content']}>
                         {toolPanelsByPlacement.bottom.map(({ id, icon, title, component: Component }) => (
                             <Component key={id} map={map} />
