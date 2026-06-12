@@ -102,7 +102,7 @@
     grid-area: bottom-toolbar;
 }
 
-.toolbar.bottom {
+.toolbar.bottom .content {
     height: 80px;
     border-top: 2px solid var(--color-primary);
     box-shadow: 1px -1px 3px rgb(from var(--color-box-shadow) r g b / .4);
