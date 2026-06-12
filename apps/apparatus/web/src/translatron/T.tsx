@@ -44,7 +44,7 @@ function InternalT<T extends string = string>(props: TranslatronWrapperProps<T>)
 
     return (
         <span>
-            {translatron.translate(settings.language, registry, n, t, p)}
+            {translatron.translate(settings.language, registry, { n, t, p })}
         </span>
     );
 };

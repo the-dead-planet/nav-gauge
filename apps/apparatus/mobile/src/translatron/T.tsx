@@ -23,5 +23,5 @@ function InternalT<T extends string = string>(props: TranslatronWrapperProps<T>)
     const [settings] = useSubjectState(individuator.settings$);
     const [registry] = useSubjectState(translatron.registry$);
 
-    return translatron.translate(settings.language, registry, n, t, p);
+    return translatron.translate(settings.language, registry, { n, t, p });
 };

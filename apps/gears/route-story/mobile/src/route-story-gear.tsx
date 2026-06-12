@@ -4,7 +4,6 @@ import { RouteStoryGear } from '@the-dead-planet/nav-gauge-gears-route-story-com
 import { RouteLayer } from './layers/RouteLayer';
 import { ImagesLayer } from './images/ImagesLayer';
 import { RouteStoryFileInput } from './RouteStoryFileInput';
-import { RouteLayerFitBounds } from './layers/RouteLayerFitBounds';
 import { Player } from './player/Player';
 import { MobileMap } from '@mobile-ui';
 import { GeoJson, getExifError, getExifLngLat, ParsingResultWithError } from '@tinker-chest';
@@ -13,7 +12,6 @@ import { cacheReducedImage, prependFilePrefix, MobileMarkerImageData, resetTempS
 import { DocumentPickerResponse } from '@react-native-documents/picker';
 
 export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPickerResponse, MobileMarkerImageData> {
-   public routeLayerFitBoundsComponent = RouteLayerFitBounds;
    public fileInputComponent = RouteStoryFileInput;
    public playerComponent = Player
    public routeLayerComponent = RouteLayer;

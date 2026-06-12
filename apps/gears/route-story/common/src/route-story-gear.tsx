@@ -1,6 +1,6 @@
 import { ComponentType, FC } from "react";
 import { BehaviorSubject, Subscription } from "rxjs";
-import { ToolProps, MarkerImage, OverlayComponentProps, Gear, ControlComponentProps, GearTranslationTable } from "@apparatus";
+import { ToolPanelProps, MarkerImage, OverlayComponentProps, Gear, ControlComponentProps, GearTranslationTable } from "@apparatus";
 import { GeoJson, ParsingResultWithError } from "@tinker-chest";
 import { RouteToolProps, RouteTimes, RouteFileInputProps, RouteFitBoundsProps, RouteStoryFile } from "./model";
 import { FileOperator } from "./file-operator";
@@ -56,11 +56,10 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
     private fileInputControlId = 'file-input';
     public abstract fileInputComponent: ComponentType<ControlComponentProps & RouteFileInputProps<TMap, TFile, TImageData>>;
 
-    private routeLayerFitBoundsToolId = 'fit-bounds';
-    public abstract routeLayerFitBoundsComponent: ComponentType<ToolProps<TMap> & RouteFitBoundsProps<TMap>>;
+    private routeLayerFitBoundsToolIconId = 'fit-bounds';
 
     private playerToolId = 'player';
-    public abstract playerComponent: ComponentType<ToolProps<TMap> & RouteToolProps<TMap, TFile, TImageData>>;
+    public abstract playerComponent: ComponentType<ToolPanelProps<TMap> & RouteToolProps<TMap, TFile, TImageData>>;
 
     private routeOverlayId = 'route';
     public abstract routeLayerComponent: ComponentType<OverlayComponentProps<TMap> & RouteToolProps<TMap, TFile, TImageData>>;
@@ -93,24 +92,34 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
             })
         );
 
-        this.apparatus.toolsStation.addToolComponent(
-            this.routeLayerFitBoundsToolId,
-            'left',
-            this.wrapProps<RouteFitBoundsProps<TMap>, ToolProps<TMap>>(this.routeLayerFitBoundsComponent, {
-                data$: this.data$,
-                onFitBounds: this.fitBoundsHandler
-            })
-        );
-        this.apparatus.toolsStation.addToolComponent(
+        this.apparatus.toolsStation.addToolIcon(
+            this.routeLayerFitBoundsToolIconId,
+            {
+                tooltip: { n: this.id, t: 'fit-bounds' },
+                placement: 'left',
+                icon: Icons.Find,
+                onClick: (map) => {
+                    const boundingBox = this.data$.value.boundingBox;
+                    if (!boundingBox) {
+                        return;
+                    }
+                    this.fitBoundsHandler(map, [boundingBox[0], boundingBox[1]], [boundingBox[2], boundingBox[3]]);
+                }
+            });
+        this.apparatus.toolsStation.addToolPanel(
             this.playerToolId,
-            'bottom',
-            this.wrapProps<RouteToolProps<TMap, TFile, TImageData>, ToolProps<TMap>>(this.playerComponent, {
-                data$: this.data$,
-                routeTimes$: this.routeTimes$,
-                images$: this.images$,
-                progressMs$: this.progressMs$,
-                playerOperator: this.playerOperator,
-            })
+            {
+                title: { n: this.id, t: 'player' },
+                placement: 'bottom',
+                icon: Icons.Beaker, // TODO: Icon
+                component: this.wrapProps<RouteToolProps<TMap, TFile, TImageData>, ToolPanelProps<TMap>>(this.playerComponent, {
+                    data$: this.data$,
+                    routeTimes$: this.routeTimes$,
+                    images$: this.images$,
+                    progressMs$: this.progressMs$,
+                    playerOperator: this.playerOperator,
+                })
+            }
         );
 
         this.apparatus.cartomancer.addOverlay(
@@ -138,8 +147,8 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
     public disengage = () => {
         this.apparatus.cartomancer.removeOverlay(this.imagesOverlayId);
         this.apparatus.cartomancer.removeOverlay(this.routeOverlayId);
-        this.apparatus.toolsStation.removeToolComponent(this.playerToolId);
-        this.apparatus.toolsStation.removeToolComponent(this.routeLayerFitBoundsToolId);
+        this.apparatus.toolsStation.removeToolPanel(this.playerToolId);
+        this.apparatus.toolsStation.removeToolIcon(this.routeLayerFitBoundsToolIconId);
         this.apparatus.toolsStation.removeControlComponent(this.fileInputControlId);
         this.dataSubscription?.unsubscribe();
         this.disengageRouteStory?.();

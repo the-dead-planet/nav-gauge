@@ -48,6 +48,18 @@
     align-content: end;
 }
 
+.icon-button {
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.2)) drop-shadow(0 2px 2px rgba(0, 0, 0, 0.12)) drop-shadow(0 8px 4px rgba(0, 0, 0, 0.06));
+}
+
+.icons.left .icon-button:nth-child(even) {
+    transform: translate(-7px, calc(50% + 3px));
+}
+
+.icons.right .icon-button:nth-child(odd) {
+    transform: translate(6px, calc(-50% - 2px));
+}
+
 .toolbar {
     box-sizing: border-box;
     background-color: rgb(from var(--color-background) r g b / .82);
@@ -65,29 +77,35 @@
 .toolbar.right {
     overflow-x: hidden;
     overflow-y: auto;
-    padding-right: 12px;
 }
 
 .toolbar.left {
     grid-area: left-toolbar;
+}
+
+.toolbar.left .content {
+    padding-right: 12px;
     border-right: 1px solid var(--color-neutral);
     box-shadow: 1px 1px 3px rgb(from var(--color-box-shadow) r g b / .4);
 }
 
 .toolbar.right {
     grid-area: right-toolbar;
-    width: 50px;
+}
+
+.toolbar.right .content {
     border-left: 1px solid var(--color-primary);
     box-shadow: -1px 1px 3px rgb(from var(--color-box-shadow) r g b / .4);
 }
 
 .toolbar.bottom {
     grid-area: bottom-toolbar;
+}
+
+.toolbar.bottom {
     height: 80px;
     border-top: 2px solid var(--color-primary);
     box-shadow: 1px -1px 3px rgb(from var(--color-box-shadow) r g b / .4);
-    background-color: rgb(from var(--color-background) r g b / .82);
-    backdrop-filter: blur(2px);
 }
 
 @media screen and (min-width: 800px) {

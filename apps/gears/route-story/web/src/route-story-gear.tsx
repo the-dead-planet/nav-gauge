@@ -4,14 +4,12 @@ import { RouteStoryGear } from '@the-dead-planet/nav-gauge-gears-route-story-com
 import { RouteLayer } from './layers/RouteLayer';
 import { ImagesLayer } from './images/ImagesLayer';
 import { RouteStoryFileInput } from './file-input/RouteStoryFileInput';
-import { RouteLayerFitBounds } from './layers/RouteLayerFitBounds';
 import { Player } from './player/Player';
 import { GeoJson, ParsingResultWithError } from '@tinker-chest';
 import { Cartomancer, MarkerImage } from '@apparatus';
 import { parseImage, WebMarkerImageData } from './images/image-parser';
 
 export class WebRouteStoryGear extends RouteStoryGear<maplibregl.Map, File, WebMarkerImageData> {
-   public routeLayerFitBoundsComponent = RouteLayerFitBounds;
    public fileInputComponent = RouteStoryFileInput;
    public playerComponent = Player
    public routeLayerComponent = RouteLayer;

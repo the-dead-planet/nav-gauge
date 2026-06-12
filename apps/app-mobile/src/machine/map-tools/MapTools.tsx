@@ -14,9 +14,6 @@ const styles = StyleSheet.create({
     backgroundMap: {
         ...StyleSheet.absoluteFill,
     },
-    top: {
-        flexDirection: 'row'
-    },
     left: {},
     right: {
         marginLeft: 'auto'
@@ -34,8 +31,8 @@ interface Props {
 export const MapTools: FC<Props> = ({ map, children }) => {
     const { toolsStation } = useMachineWard();
     const [controlComponents] = useSubjectState(toolsStation.controlComponents$);
-    const toolComponents = useObservableState(toolsStation.toolComponentsByPlacement$, []);
-    const toolsByPlacement = toolsStation.getToolsByPlacement(toolComponents);
+    const toolPanels = useObservableState(toolsStation.toolPanelsByPlacement$, []);
+    const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
     const [onPanResponderStartHandlers] = useSubjectState(map.onPanResponderStartHandlers$);
     const [onPanResponderMoveHandlers] = useSubjectState(map.onPanResponderMoveHandlers$);
     const [onPanResponderEndHandlers] = useSubjectState(map.onPanResponderEndHandlers$);
@@ -73,7 +70,6 @@ export const MapTools: FC<Props> = ({ map, children }) => {
         },
     }), [map, onPanResponderStartHandlers, onPanResponderMoveHandlers, onPanResponderEndHandlers]);
 
-
     return (
         <View style={styles.container}>
             <View>
@@ -84,27 +80,22 @@ export const MapTools: FC<Props> = ({ map, children }) => {
                 <View style={styles.backgroundMap} {...panResponder.panHandlers}>
                     {children}
                 </View>
-                <View style={styles.top}>
-                    {toolsByPlacement.top.map(({ id, component: ToolComponent }) => (
-                        <ToolComponent key={id} map={map} />
-                    ))}
-                </View>
 
                 <View style={styles.left}>
-                    {toolsByPlacement.left.map(({ id, component: ToolComponent }) => (
+                    {toolPanelsByPlacement.left.map(({ id, component: ToolComponent }) => (
                         <ToolComponent key={id} map={map} />
                     ))}
                 </View>
 
                 <View style={styles.right}>
-                    {toolsByPlacement.right.map(({ id, component: ToolComponent }) => (
+                    {toolPanelsByPlacement.right.map(({ id, component: ToolComponent }) => (
                         <ToolComponent key={id} map={map} />
                     ))}
                 </View>
             </View>
 
             <View style={styles.bottom}>
-                {toolsByPlacement.bottom.map(({ id, component: ToolComponent }) => (
+                {toolPanelsByPlacement.bottom.map(({ id, component: ToolComponent }) => (
                     <ToolComponent key={id} map={map} />
                 ))}
             </View>

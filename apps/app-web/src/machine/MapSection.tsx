@@ -19,8 +19,7 @@ import styles from './map-section.module.css';
 export const MapSection: FC = () => {
     const theme = useTheme();
     const [map, setMap] = useState<maplibregl.Map>();
-    const { engine, cartomancer } = useMachineWard();
-    const [overlays] = useSubjectState(cartomancer.overlays$);
+    const { engine, cartomancer, toolsStation } = useMachineWard();
     const gearsWithEngaged$ = engine.gears$.pipe(switchMap((gears) => {
         if (gears.length === 0) {
             return of([]);
@@ -31,6 +30,11 @@ export const MapSection: FC = () => {
         )));
     }));
     const gears = useObservableState(gearsWithEngaged$, []);
+    const [overlays] = useSubjectState(cartomancer.overlays$);
+    const toolPanels = useObservableState(toolsStation.toolPanelsByPlacement$, []);
+    const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
+    const toolIcons = useObservableState(toolsStation.toolIconsByPlacement$, []);
+    const toolIconsByPlacement = toolsStation.getToolIconsByPlacement(toolIcons);
 
     useEffect(() => {
         let m = createMap();
@@ -81,106 +85,71 @@ export const MapSection: FC = () => {
                 ))}
             </FlexBox>
             <div className={classNames(styles['toolbar'], styles['left'])}>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                <P>left</P>
-                </div>
+                {/* TODO: Collapsible sections list, panel expand/collapse, when collapsed just icons. */}
+                {toolPanelsByPlacement.left.length > 0 ? (
+                    <div className={styles['content']}>
+                        {toolPanelsByPlacement.left.map(({ id, icon, title, component: Component }) => (
+                            <Component key={id} map={map} />
+                        ))}
+                    </div>
+                ) : null}
+            </div>
             <div className={classNames(styles['icons'], styles['left'])}>
-                <div />
-                {[
-                    { id: 2, icon: Icons.Find },
-                    { id: 3, icon: Icons.Beaker },
-                    { id: 4, icon: Icons.Find },
-                    { id: 5, icon: Icons.Beaker },
-                    { id: 6, icon: Icons.Find },
-                ].map(({ id, icon }, i) => (
+                {toolIconsByPlacement.left.length > 1 ? <div /> : null}
+                {toolIconsByPlacement.left.map(({ id, icon, active, onClick, tooltip }) => (
                     <Button
                         key={id}
                         icon={icon}
+                        tooltip={<T {...tooltip} />}
                         size="sm"
-                        variant={"fill-inverse"}
+                        variant="fill-inverse"
                         corners="hexagon"
                         glowStyle={theme.mode === 'dark' ? "animate-borders-glow" : 'none'}
                         highlightColor="secondary"
-                        style={{
-                            transform: `translate(${i % 2 === 0 ? `-7px, calc(50% + 3px)` : undefined})`,
-                            filter: `
-                            drop-shadow(0 0 2px rgba(255, 255, 255, 0.2))
-                            drop-shadow(0 2px 2px rgba(0, 0, 0, 0.12))
-                            drop-shadow(0 8px 4px rgba(0, 0, 0, 0.06))`,
-                        }}
+                        active={active}
+                        onClick={() => onClick(map)}
+                        className={classNames(styles['icon-button'], styles['left'])}
                     />
                 ))}
             </div>
+            {/* TODO: Bind right icons with right panel? */}
+            {/* TODO: Rename right/left panels according to their use */}
+            {/* TODO: Add option to swap left/right */}
             <div className={classNames(styles['icons'], styles['right'])}>
-                {[
-                    { id: 1, icon: Icons.Beaker },
-                    { id: 2, icon: Icons.Find },
-                    { id: 3, icon: Icons.Beaker },
-                    { id: 4, icon: Icons.Find },
-                    { id: 5, icon: Icons.Beaker },
-                    { id: 6, icon: Icons.Find },
-                    { id: 7, icon: Icons.Beaker },
-                    { id: 8, icon: Icons.Beaker },
-                ].map(({ id, icon }, i) => !icon ? <span /> : (
+                {toolIconsByPlacement.right.map(({ id, icon, active, onClick, tooltip }) => (
                     <Button
                         key={id}
                         icon={icon}
+                        tooltip={<T {...tooltip} />}
                         size="xs"
-                        variant={"fill-inverse"}
+                        variant="fill-inverse"
                         corners="hexagon"
                         glowStyle={theme.mode === 'dark' ? "animate-borders-glow" : 'none'}
                         color="primary"
-                        // highlightColor="secondary"
-                        style={{
-                            transform: `translate(${i % 2 === 0 ? `6px, calc(-50% - 2px)` : undefined})`,
-                            filter: `
-                            drop-shadow(0 0 2px rgba(255, 255, 255, 0.2))
-                            drop-shadow(0 2px 2px rgba(0, 0, 0, 0.12))
-                            drop-shadow(0 8px 4px rgba(0, 0, 0, 0.06))`,
-                        }}
+                        active={active}
+                        onClick={() => onClick(map)}
+                        className={classNames(styles['icon-button'], styles['right'])}
                     />
                 ))}
             </div>
-            <div className={classNames(styles['toolbar'], styles['right'])}><P>right</P></div>
+            <div className={classNames(styles['toolbar'], styles['right'])}>
+                {toolPanelsByPlacement.right.length > 0 ? (
+                    <div className={styles['content']}>
+                        {toolPanelsByPlacement.right.map(({ id, icon, title, component: Component }) => (
+                            <Component key={id} map={map} />
+                        ))}
+                    </div>
+                ) : null}
+            </div>
             <div className={classNames(styles['toolbar'], styles['bottom'])}>
-                <Button variant="fill-inverse" corners="rounded">Test</Button>
-                <Button variant="fill-inverse" corners="rounded" color="primary">Test</Button>
-                <Button variant="fill-inverse" corners="rounded" color="secondary">Test</Button>
-                <Button variant="fill-inverse" corners="rounded" color="tertiary">Test</Button>
+                {/* TODO: Should just be one at a time? */}
+                 {toolPanelsByPlacement.bottom.length > 0 ? (
+                    <div className={styles['content']}>
+                        {toolPanelsByPlacement.bottom.map(({ id, icon, title, component: Component }) => (
+                            <Component key={id} map={map} />
+                        ))}
+                    </div>
+                ) : null}
             </div>
         </div>
     );

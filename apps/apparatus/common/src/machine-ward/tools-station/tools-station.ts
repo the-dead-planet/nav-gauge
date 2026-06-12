@@ -2,33 +2,76 @@ import { ComponentType } from "react";
 import { BehaviorSubject, combineLatest, map, Observable, of, switchMap } from "rxjs";
 import { AnimationControlsType, Animatrix } from "../animatrix";
 import { Cartomancer, ControlPlacement, GaugeControlsType, MapLayout } from "../cartomancer";
-import { Tool, Preset, PresetOption, ToolPlacement, ToolProps, ControlComponentProps, ObservedTool } from "./model";
+import { ToolPanel, Preset, PresetOption, ToolPanelPlacement, ToolPanelProps, ControlComponentProps, ObservedToolPanel, ToolIcon, ObservedToolIcon, ToolIconPlacement } from "./model";
+import { TranslationId } from "../translatron";
 
 export class ToolsStation<TMap> {
-    public static placements: ToolPlacement[] = ["top", "right", "bottom", "left"];
+    public static placements: ToolPanelPlacement[] = ["right", "bottom", "left"];
 
     /**
-     * Tools to display around the map.
+     * Tools to display in panels.
      * Tools have access to map context and will not be unmounted for the duration of the style updates. 
      * Do not update sources and layers in components passed in this prop as it might lead to MapLibre's `Style is not done loading` errors.
      * If a tool with a given `id` already exists, it will be overwritten.
      */
-    public toolComponents$ = new BehaviorSubject<Map<string, Tool<TMap>>>(new Map());
+    public toolPanels$ = new BehaviorSubject<Map<string, ToolPanel<TMap>>>(new Map());
 
     /**
      * Subscribe to changes of tools and their placement.
      */
-    public toolComponentsByPlacement$: Observable<ObservedTool<TMap>[]> = this.toolComponents$.pipe(switchMap((toolsMap) => {
-        const tools = [...toolsMap.entries()];
+    public toolPanelsByPlacement$: Observable<ObservedToolPanel<TMap>[]> = this.toolPanels$.pipe(switchMap((toolsMap) => {
+        const toolPanels = [...toolsMap.entries()];
 
-        if (tools.length === 0) {
+        if (toolPanels.length === 0) {
             return of([]);
         }
 
-        return combineLatest(tools.map(([id, tool]) => tool.placement$.pipe(
-            map((placement) => ({ placement, id, component: tool.component }))
+        return combineLatest(toolPanels.map(([id, toolPanel]) => toolPanel.placement$.pipe(
+            map((placement): ObservedToolPanel<TMap> => ({
+                placement,
+                id,
+                icon: toolPanel.icon,
+                title: toolPanel.title,
+                component: toolPanel.component,
+            }))
         )));
     }));
+
+    /**
+     * Tools to display in icons around the map.
+     * Tools have access to map context and will not be unmounted for the duration of the style updates. 
+     * Do not update sources and layers in components passed in this prop as it might lead to MapLibre's `Style is not done loading` errors.
+     * If a tool with a given `id` already exists, it will be overwritten.
+     */
+    public toolIcons$ = new BehaviorSubject<Map<string, ToolIcon<TMap>>>(new Map());
+
+    /**
+     * Subscribe to changes of tool icons and their placements and activity.
+     */
+    public toolIconsByPlacement$: Observable<ObservedToolIcon<TMap>[]> = this.toolIcons$.pipe(
+        switchMap((toolsMap) => {
+            const toolIcons = [...toolsMap.entries()];
+
+            if (toolIcons.length === 0) {
+                return of([]);
+            }
+
+            return combineLatest(
+                toolIcons.map(([id, toolIcon]) =>
+                    combineLatest([toolIcon.placement$, toolIcon.active$]).pipe(
+                        map(([placement, active]): ObservedToolIcon<TMap> => ({
+                            id,
+                            placement,
+                            active,
+                            icon: toolIcon.icon,
+                            tooltip: toolIcon.tooltip,
+                            onClick: toolIcon.onClick,
+                        }))
+                    )
+                )
+            );
+        })
+    );
 
     /**
      * Do not have access to map context.
@@ -49,37 +92,90 @@ export class ToolsStation<TMap> {
         this.preset$ = new BehaviorSubject<Preset>(preset);
     }
 
-    public getToolsByPlacement = (toolComponents: ObservedTool<TMap>[]) => {
-        return toolComponents.reduce<{ [key in ToolPlacement]: ObservedTool<TMap>[] }>((acc, val) => {
+    public getToolPanelsByPlacement = (toolComponents: ObservedToolPanel<TMap>[]) => {
+        return toolComponents.reduce<{ [key in ToolPanelPlacement]: ObservedToolPanel<TMap>[] }>((acc, val) => {
             acc[val.placement].push(val);
             return acc;
-        }, { top: [], right: [], bottom: [], left: [] });
+        }, { right: [], bottom: [], left: [] });
+    };
+
+    public getToolIconsByPlacement = (toolIcons: ObservedToolIcon<TMap>[]) => {
+        return toolIcons.reduce<{ [key in ToolIconPlacement]: ObservedToolIcon<TMap>[] }>((acc, val) => {
+            acc[val.placement].push(val);
+            return acc;
+        }, { right: [], left: [] });
     };
 
     /**
-     * Adds a new map tool to display around the map.
+     * Adds a new tool panel to display.
      * Have access to map context and will not be unmounted for the duration of the style updates. 
      * Do not update sources and layers in components passed in this prop as it might lead to MapLibre's `Style is not done loading` errors.
-     * If a tool with a given `id` already exists, it will be overwritten.
+     * If a tool panel with a given `id` already exists, it will be overwritten.
      */
-    public addToolComponent = (id: string, placement: ToolPlacement, component: ComponentType<ToolProps<TMap>>) => {
-        const nextTools = new Map(this.toolComponents$.value);
-        nextTools.set(id, {
+    public addToolPanel = (
+        id: string,
+        { title, icon, placement, component }: {
+            title: TranslationId, icon: string,
+            placement: ToolPanelPlacement,
+            component: ComponentType<ToolPanelProps<TMap>>,
+        }
+    ) => {
+        const nextToolPanels = new Map(this.toolPanels$.value);
+        nextToolPanels.set(id, {
+            title,
+            icon,
             placement$: new BehaviorSubject(placement),
             component,
         });
-        this.toolComponents$.next(nextTools);
+        this.toolPanels$.next(nextToolPanels);
     };
 
     /**
-     * Removes the tool with a given `id`.
+     * Removes the tool panel with a given `id`.
      */
-    public removeToolComponent = (id: string) => {
-        const nextTools = new Map(this.toolComponents$.value);
-        nextTools.delete(id);
-        this.toolComponents$.next(nextTools);
+    public removeToolPanel = (id: string) => {
+        const nextToolPanels = new Map(this.toolPanels$.value);
+        nextToolPanels.delete(id);
+        this.toolPanels$.next(nextToolPanels);
     };
 
+    /**
+     * Adds a new tool icon to display.
+     * Have access to map context and will not be unmounted for the duration of the style updates. 
+     * Do not update sources and layers in components passed in this prop as it might lead to MapLibre's `Style is not done loading` errors.
+     * If a tool icon with a given `id` already exists, it will be overwritten.
+     */
+    public addToolIcon = (
+        id: string,
+        { tooltip, icon, placement, onClick, active = false }: {
+            icon: string,
+            tooltip: TranslationId,
+            placement: ToolIconPlacement;
+            active?: boolean;
+            onClick: (map: TMap) => void;
+        },
+    ) => {
+        const nextToolIcons = new Map(this.toolIcons$.value);
+        nextToolIcons.set(id, {
+            tooltip,
+            icon,
+            placement$: new BehaviorSubject(placement),
+            active$: new BehaviorSubject(active),
+            onClick
+        });
+        this.toolIcons$.next(nextToolIcons);
+    };
+
+    /**
+     * Removes the tool icon with a given `id`.
+     */
+    public removeToolIcon = (id: string) => {
+        const nextToolIcons = new Map(this.toolIcons$.value);
+        nextToolIcons.delete(id);
+        this.toolIcons$.next(nextToolIcons);
+    };
+
+    // TODO: Remove this observable, this content will go to bottom panel
     /**
      * Adds a new map tool to display around the map.
      * Have access to map context and will not be unmounted for the duration of the style updates. 

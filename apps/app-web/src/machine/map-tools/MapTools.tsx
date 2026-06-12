@@ -205,8 +205,8 @@ export const MapTools: FC<Props> = ({ map, children }) => {
         };
     }, [isInitialised]);
 
-    const toolComponents = useObservableState(toolsStation.toolComponentsByPlacement$, []);
-    const toolsByPlacement = toolsStation.getToolsByPlacement(toolComponents);
+    const toolPanels = useObservableState(toolsStation.toolPanelsByPlacement$, []);
+    const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
 
     const controlsCssStyle = useMemo(
         () => {

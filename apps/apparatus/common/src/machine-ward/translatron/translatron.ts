@@ -1,5 +1,5 @@
 import { BehaviorSubject } from "rxjs";
-import { Language, TranslationRegistry, TranslationTable } from "./model";
+import { Language, TranslationId, TranslationRegistry, TranslationTable } from "./model";
 
 export class Translatron {
     public static defaultLanguage: Language = 'en';
@@ -36,23 +36,21 @@ export class Translatron {
     public translate = <T extends string>(
         lang: Language,
         registry: TranslationRegistry,
-        namespace: string,
-        key: T,
-        params?: { [key in string]: string | number; },
+        { n, t, p }: TranslationId<T>,
     ): string => {
-        const table = registry.get(namespace);
+        const table = registry.get(n);
 
         if (!table) {
-            throw new Error(`Could not find translation namespace: "${namespace}"`);
+            throw new Error(`Could not find translation namespace: "${n}"`);
         }
 
-        const translation = table[lang]?.[key] ?? table[Translatron.defaultLanguage]?.[key];
+        const translation = table[lang]?.[t] ?? table[Translatron.defaultLanguage]?.[t];
 
         if (translation === undefined) {
-            throw new Error(`Could not find translation for key: "${key}" in namespace: "${namespace}" for language: "${lang}" or default language: "${Translatron.defaultLanguage}"`);
+            throw new Error(`Could not find translation for key: "${t}" in namespace: "${n}" for language: "${lang}" or default language: "${Translatron.defaultLanguage}"`);
         }
 
-        return params ? this.interpolate(translation, params) : translation;
+        return p ? this.interpolate(translation, p) : translation;
     };
 
     /**

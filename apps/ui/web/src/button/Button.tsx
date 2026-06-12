@@ -59,7 +59,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
                     [styles['active']]: active,
                     [styles[`only-icon-${size}`]]: !children,
                 },
-                className
+                corners !== 'hexagon' ? className : null
             )}
             style={corners !== 'hexagon' ? style : undefined}
             {...props}
@@ -88,6 +88,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
             active={active}
             interactive
             style={style}
+            className={className}
         >
             {buttonBase}
         </Hexagon>

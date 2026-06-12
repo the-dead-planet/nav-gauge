@@ -2,16 +2,45 @@ import { ComponentType } from "react";
 import { BehaviorSubject } from "rxjs";
 import { AnimationControlsType } from "../animatrix";
 import { GaugeControlsType, MapLayout } from "../cartomancer";
+import { TranslationId } from "../translatron";
 
-export type ToolPlacement = 'top' | 'right' | 'bottom' | 'left';
+export type ToolPanelPlacement = 'right' | 'bottom' | 'left';
+export type ToolIconPlacement = 'right' | 'left';
 
-export interface ToolProps<TMap> {
+export interface ToolPanelProps<TMap> {
     map: TMap;
 }
 
-export interface Tool<TMap> {
-    placement$: BehaviorSubject<ToolPlacement>;
-    component: ComponentType<ToolProps<TMap>>;
+export interface ToolPanel<TMap> {
+    icon: string;
+    placement$: BehaviorSubject<ToolPanelPlacement>;
+    title: TranslationId;
+    component: ComponentType<ToolPanelProps<TMap>>;
+}
+
+export interface ObservedToolPanel<TMap> {
+    id: string;
+    icon: string;
+    title: TranslationId;
+    placement: ToolPanelPlacement;
+    component: ComponentType<ToolPanelProps<TMap>>;
+}
+
+export interface ToolIcon<TMap> {
+    icon: string;
+    placement$: BehaviorSubject<ToolIconPlacement>;
+    tooltip: TranslationId;
+    onClick: (map: TMap) => void;
+    active$: BehaviorSubject<boolean>
+}
+
+export interface ObservedToolIcon<TMap> {
+    id: string;
+    icon: string;
+    tooltip: TranslationId;
+    placement: ToolIconPlacement;
+    active: boolean;
+    onClick: (map: TMap) => void;
 }
 
 export type Preset = 'default' | 'racing-game';
@@ -30,12 +59,7 @@ export interface PresetValues {
     presetAnimationControls?: AnimationControlsType;
 }
 
+// TODO: Remove?
 export interface ControlComponentProps {
     
-}
-
-export interface ObservedTool<TMap> {
-    id: string;
-    placement: ToolPlacement;
-    component: ComponentType<ToolProps<TMap>>;
 }
