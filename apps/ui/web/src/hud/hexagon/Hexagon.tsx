@@ -35,7 +35,7 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
     const filterId = useId();
     const clipPathId = useId();
     const shadowBlurId = useId();
-    const resolvedMode = themeMode !== undefined ? (themeMode ? 'dark' : 'light') : theme.mode;
+    const effectiveMode = themeMode !== undefined ? (themeMode ? 'dark' : 'light') : theme.mode;
 
     return (
         <div
@@ -47,7 +47,7 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
                 color && styles[`color-${color}`],
                 styles[`highlight-color-${highlightColor || color}`],
                 size && styles[`size-${size}`],
-                styles[`mode-${resolvedMode}`],
+                styles[`mode-${effectiveMode}`],
                 {
                     [styles['active']]: active,
                     [styles['interactive']]: interactive || onClick,

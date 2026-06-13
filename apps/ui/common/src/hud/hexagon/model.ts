@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { ColorVariant, GlowStyle, SizeVariant, SurfaceVariant } from "../model";
+import { ColorVariant, GlowStyle, SizeVariant, SurfaceVariant } from "../../model";
 
 export type HexagonShape = 'pointy-top' | 'flat-top';
 

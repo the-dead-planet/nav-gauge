@@ -4,7 +4,8 @@ export interface Option<T> {
 }
 
 export type GlowStyle = 'none' | 'glow' | 'animate-borders-glow';
-export type SurfaceVariant = 'ghost' | 'fill' | 'fill-inverse' | 'fill-translucent' | 'outline' | 'inset';
+export type SurfaceFillVariant = 'fill' | 'fill-inverse' | 'fill-translucent';
+export type SurfaceVariant = SurfaceFillVariant | 'ghost' | 'outline' | 'inset';
 export type ColorVariant = 'primary' | 'secondary' | 'tertiary' | 'neutral';
 export type SizeVariant = 'xs' | 'sm' | 'md';
 export type SpacingVariant = 'xs' | 'sm' | 'md' | 'lg' | 'xl';

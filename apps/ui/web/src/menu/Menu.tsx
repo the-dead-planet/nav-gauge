@@ -7,8 +7,10 @@ import {
     getIconAnchorPoint,
     getMenuPosition,
     MenuProps,
+    Icons,
 } from '@ui';
 import styles from './menu.module.css';
+import { Button } from '../button';
 
 export const Menu: FC<MenuProps> = ({
     placement = 'bottom-right',
@@ -56,13 +58,13 @@ export const Menu: FC<MenuProps> = ({
 
     return (
         <>
-            <button
+            <Button
                 ref={triggerRef}
+                variant="ghost"
+                icon={Icons.NounProject.KebabMenu}
                 onClick={open}
                 className={styles.trigger}
-            >
-                ⋮
-            </button>
+            />
             {visible && createPortal(
                 <div
                     className={styles.overlay}
