@@ -1,1 +1,2 @@
-export * from './Hexagon';
+export * from './hexagon';
+export * from './panel';

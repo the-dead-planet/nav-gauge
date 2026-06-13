@@ -5,7 +5,6 @@ export type PanelShape = 'default';
 
 export interface PanelProps {
     shape?: PanelShape;
-    strokeWidth?: number;
     interactive?: boolean;
     glowStyle?: GlowStyle;
     color?: ColorVariant;

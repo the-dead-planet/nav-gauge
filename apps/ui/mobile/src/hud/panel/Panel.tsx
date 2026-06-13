@@ -1,0 +1,141 @@
+import { FC, useState } from "react";
+import { View, ViewStyle, StyleProp, Pressable } from "react-native";
+import { PanelProps, SizeVariant, useTheme } from "@ui";
+
+type Props = PanelProps & { style?: StyleProp<ViewStyle> };
+
+const paddingMap: Record<SizeVariant, number> = {
+    xs: 6,
+    sm: 10,
+    md: 14,
+};
+
+export const Panel: FC<Props> = ({
+    shape,
+    color: colorProp,
+    highlightColor: hlColorProp,
+    variant,
+    glowStyle: _glowStyle,
+    themeMode,
+    padding = "md",
+    interactive = false,
+    active = false,
+    style,
+    children,
+}) => {
+    const theme = useTheme();
+    const [pressed, setPressed] = useState(false);
+    const hl = pressed || active;
+    const isLight = themeMode !== undefined ? !themeMode : theme.mode === 'light';
+
+    const color = (colorProp || 'neutral');
+    const hlColor = (hlColorProp || color);
+    const baseColor = theme.color(color, 500);
+    const highlight500 = theme.color(hlColor, 500);
+    const highlightAccent = theme.color(hlColor, isLight ? 600 : 300);
+
+    const containerStyle: ViewStyle = (() => {
+        switch (variant) {
+            case 'fill': {
+                let fillColor: string;
+                let borderColor: string;
+                if (active) {
+                    fillColor = theme.color(hlColor, 500);
+                    borderColor = highlight500;
+                } else if (pressed) {
+                    fillColor = highlightAccent;
+                    borderColor = highlightAccent;
+                } else {
+                    fillColor = theme.color(color, 500);
+                    borderColor = baseColor;
+                }
+                return {
+                    backgroundColor: fillColor,
+                    borderColor: borderColor,
+                    borderWidth: 2,
+                    padding: paddingMap[padding],
+                };
+            }
+
+            case 'fill-inverse': {
+                const isNeutral = color === 'neutral';
+                const bgShade = isLight ? 100 : (isNeutral ? 800 : 900);
+                const hlBgShade = isLight ? 100 : 900;
+                let fillColor: string;
+                let borderColor: string;
+                if (active) {
+                    fillColor = theme.color(hlColor, hlBgShade);
+                    borderColor = highlight500;
+                } else if (pressed) {
+                    fillColor = theme.color(hlColor, hlBgShade);
+                    borderColor = highlightAccent;
+                } else {
+                    fillColor = theme.color(color, bgShade);
+                    borderColor = baseColor;
+                }
+                return {
+                    backgroundColor: fillColor,
+                    borderColor: borderColor,
+                    borderWidth: 2,
+                    padding: paddingMap[padding],
+                };
+            }
+
+            case 'fill-translucent': {
+                const fill = hl
+                    ? theme.color(hlColor, 500, active ? 0.48 : 0.36)
+                    : theme.color(color, 500, 0.24);
+                const border = hl ? (active ? highlight500 : highlightAccent) : baseColor;
+                return {
+                    backgroundColor: fill,
+                    borderColor: border,
+                    borderWidth: 2,
+                    padding: paddingMap[padding],
+                };
+            }
+
+            default: {
+                const isOutline = variant === 'outline';
+                const isGhost = variant === 'ghost';
+                let bgFill: string | undefined;
+                let bColor: string;
+                if (active) {
+                    bgFill = theme.color(hlColor, 500, isOutline ? 0.24 : 0.14);
+                    bColor = isOutline ? highlight500 : 'transparent';
+                } else if (pressed) {
+                    bgFill = theme.color(hlColor, 500, isOutline ? 0.12 : 0.10);
+                    bColor = isOutline ? highlightAccent : 'transparent';
+                } else {
+                    bgFill = isGhost ? 'transparent' : undefined;
+                    bColor = isOutline ? baseColor : 'transparent';
+                }
+                return {
+                    backgroundColor: bgFill,
+                    borderColor: bColor,
+                    borderWidth: isOutline ? 2 : 0,
+                    padding: paddingMap[padding],
+                };
+            }
+        }
+    })();
+
+    const container = (
+        <View style={[containerStyle, style]}>
+            {children}
+        </View>
+    );
+
+    if (interactive) {
+        return (
+            <Pressable
+                onPress={() => { /* external click handling via parent */ }}
+                onPressIn={() => setPressed(true)}
+                onPressOut={() => setPressed(false)}
+            >
+                {container}
+            </Pressable>
+        );
+    }
+
+    return container;
+};

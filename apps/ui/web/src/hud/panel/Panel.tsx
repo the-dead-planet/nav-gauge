@@ -10,7 +10,6 @@ interface Props {
 
 export const Panel: FC<PanelProps & Props & ComponentProps<'div'>> = ({
     shape,
-    strokeWidth = 2,
     interactive = false,
     glowStyle = "none",
     color = 'neutral',

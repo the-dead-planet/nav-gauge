@@ -55,7 +55,15 @@ const GlowPolygons: FC<{ points: string; glowColor: string; strokeWidth: number 
     </>
 );
 
-export const Hexagon: FC<HexagonProps & { style?: StyleProp<ViewStyle> }> = ({
+interface Props {
+    onPress?: () => void;
+    onLongPress?: () => void;
+    onPressIn?: () => void;
+    onPressOut?: () => void;
+    style?: StyleProp<ViewStyle>
+}
+
+export const Hexagon: FC<HexagonProps & Props> = ({
     shape = "pointy-top",
     strokeWidth = 2,
     color: colorProp,
