@@ -123,6 +123,10 @@
     opacity: 0;
 }
 
+.interactive {
+    cursor: pointer;
+}
+
 /* Ghost */
 .variant-ghost .polygon-base {
     fill: none;

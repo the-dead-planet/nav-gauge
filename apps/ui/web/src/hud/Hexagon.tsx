@@ -11,7 +11,7 @@ interface Props {
 const POINTY_TOP = "50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25";
 const FLAT_TOP = "100,50 75,93.3 25,93.3 0,50 25,6.7 75,6.7";
 
-export const Hexagon: FC<HexagonProps & Props & ComponentProps<'svg'>> = ({
+export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
     shape = "pointy-top",
     strokeWidth = 2,
     interactive = false,
@@ -22,6 +22,7 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'svg'>> = ({
     variant,
     themeMode,
     active = false,
+    onClick,
     className,
     style,
     children,
@@ -38,6 +39,7 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'svg'>> = ({
 
     return (
         <div
+            onClick={onClick}
             className={classNames(
                 styles.hexagon,
                 styles[shape],
@@ -48,7 +50,7 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'svg'>> = ({
                 styles[`mode-${resolvedMode}`],
                 {
                     [styles['active']]: active,
-                    [styles['interactive']]: interactive,
+                    [styles['interactive']]: interactive || onClick,
                     [styles[`glow-style-${glowStyle}`]]: interactive,
                 },
                 className
@@ -57,11 +59,11 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'svg'>> = ({
                 ...style,
                 "--hex-filter": `url(#${filterId})`,
             } as CSSProperties}
+            {...props}
         >
             <svg
                 viewBox={viewBox}
                 className={styles.svg}
-                {...props}
             >
                 <defs>
                     <clipPath id={clipPathId}>

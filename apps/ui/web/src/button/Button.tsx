@@ -1,4 +1,4 @@
-import { ComponentProps, FC, KeyboardEvent, MouseEvent, ReactNode, useCallback, useState } from "react";
+import { ComponentProps, FC, MouseEvent, ReactNode, useState } from "react";
 import classNames from "classnames";
 import { ButtonProps, useTheme } from "@ui";
 import { Icon } from "../icons";
@@ -25,6 +25,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     themeMode,
     icon,
     tooltip,
+    onClick,
     children,
     className,
     style,
@@ -43,8 +44,9 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     }
     const iconSize = corners === 'hexagon' ? hexagonIconSizes[size] : iconSizes[size];
 
-    const buttonBase = (
+    const renderButton = (isHovered?: boolean) => (
         <button
+            onClick={corners !== 'hexagon' ? onClick : undefined}
             className={classNames(
                 styles['button'],
                 styles[`mode-${themeMode || theme.mode}`],
@@ -55,7 +57,8 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
                 styles[`size-${size}`],
                 styles[`corners-${corners}`],
                 {
-                    [styles['interactive']]: !!props.onClick,
+                    [styles['interactive']]: !!onClick,
+                    [styles['hovered']]: isHovered,
                     [styles['active']]: active,
                     [styles[`only-icon-${size}`]]: !children,
                 },
@@ -76,6 +79,8 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
         </button>
     );
 
+    const [isHoveringHud, setIsHoveringHud] = useState(false);
+
     const button = corners === 'hexagon' ? (
         <Hexagon
             shape="flat-top"
@@ -87,12 +92,23 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
             highlightColor={highlightColor}
             active={active}
             interactive
+            role="button"
+            onClick={(e) => {
+                try {
+                    onClick?.(e as unknown as MouseEvent<HTMLButtonElement>);
+                } catch (e) {
+                    console.log("EERRR", e)
+                    //
+                }
+            }}
+            onMouseEnter={() => setIsHoveringHud(true)}
+            onMouseLeave={() => setIsHoveringHud(false)}
             style={style}
             className={className}
         >
-            {buttonBase}
+            {renderButton(isHoveringHud)}
         </Hexagon>
-    ) : buttonBase;
+    ) : renderButton();
 
     if (tooltip) {
         <Tooltip content={tooltip}>

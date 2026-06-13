@@ -133,11 +133,13 @@
     fill: var(--button-color);
 }
 
-.variant-ghost:hover {
+.variant-ghost:hover,
+.variant-ghost.hovered {
     color: var(--button-highlight-color-accent);
 }
 
-.variant-ghost:hover .icon {
+.variant-ghost:hover .icon,
+.variant-ghost.hovered .icon {
     color: var(--button-highlight-color-accent);
     stroke: var(--button-highlight-color-accent);
     fill: var(--button-highlight-color-accent);
@@ -161,12 +163,14 @@
     background-color: var(--button-color);
 }
 
-.variant-fill:hover {
+.variant-fill:hover,
+.variant-fill.hovered {
     background-color: var(--button-highlight-color-accent);
     color: var(--button-highlight-color-dark);
 }
 
 .variant-fill:hover .icon,
+.variant-fill.hovered .icon,
 .variant-fill:active .icon,
 .variant-fill.active .icon {
     color: var(--button-highlight-color-dark);
@@ -198,13 +202,15 @@
     fill: var(--button-color);
 }
 
-.variant-fill-inverse:hover {
+.variant-fill-inverse:hover,
+.variant-fill-inverse.hovered {
     background-color: var(--button-highlight-color-inverse);
     border-color: var(--button-highlight-color-accent);
     color: var(--button-highlight-color-accent);
 }
 
-.variant-fill-inverse:hover .icon {
+.variant-fill-inverse:hover .icon,
+.variant-fill-inverse.hovered .icon {
     color: var(--button-highlight-color-accent);
     stroke: var(--button-highlight-color-accent);
     fill: var(--button-highlight-color-accent);
@@ -236,13 +242,15 @@
     fill: var(--button-color);
 }
 
-.variant-fill-translucent:hover {
+.variant-fill-translucent:hover,
+.variant-fill-translucent.hovered {
     border-color: var(--button-highlight-color-accent);
     color: var(--button-highlight-color-accent);
     background-color: rgb(from var(--button-highlight-color) r g b / .36);
 }
 
 .variant-fill-translucent:hover .icon,
+.variant-fill-translucent.hovered .icon,
 .variant-fill-translucent:active .icon,
 .variant-fill-translucent.active .icon {
     color: var(--button-highlight-color-accent);
@@ -278,13 +286,15 @@
     fill: var(--button-color);
 }
 
-.variant-outline:hover {
+.variant-outline:hover,
+.variant-outline.hovered {
     color: var(--button-highlight-color-accent);
     border-color: var(--button-highlight-color-accent);
     background-color: rgb(from var(--button-highlight-color) r g b / .12);
 }
 
 .variant-outline:hover .icon,
+.variant-outline.hovered .icon,
 .variant-outline:active .icon,
 .variant-outline.active .icon {
     color: var(--button-highlight-color-accent);
@@ -326,11 +336,13 @@
         rgba(255, 255, 255, .08) -2px -2px 4px inset;
 }
 
-.variant-inset:hover {
+.variant-inset:hover,
+.variant-inset.hovered {
     color: var(--button-highlight-color-accent);
 }
 
 .variant-inset:hover .icon,
+.variant-inset.hovered .icon,
 .variant-inset:active .icon,
 .variant-inset.active .icon {
     color: var(--button-highlight-color-accent);
@@ -430,12 +442,14 @@
 }
 
 .corners-hexagon.variant-fill:hover,
+.corners-hexagon.variant-fill.hovered,
 .corners-hexagon.variant-fill:active,
 .corners-hexagon.variant-fill.active {
     color: var(--button-color-dark);
 }
 
 .corners-hexagon.variant-fill:hover .icon,
+.corners-hexagon.variant-fill.hovered .icon,
 .corners-hexagon.variant-fill:active .icon,
 .corners-hexagon.variant-fill.active .icon {
     color: var(--button-color-dark);
@@ -447,17 +461,27 @@
 .corners-hexagon.variant-ghost:hover,
 .corners-hexagon.variant-fill-translucent:hover,
 .corners-hexagon.variant-inset:hover,
-.corners-hexagon.variant-outline:hover {
+.corners-hexagon.variant-outline:hover,
+.corners-hexagon.variant-fill-inverse.hovered,
+.corners-hexagon.variant-ghost.hovered,
+.corners-hexagon.variant-fill-translucent.hovered,
+.corners-hexagon.variant-inset.hovered,
+.corners-hexagon.variant-outline.hovered {
     color: var(--button-highlight-color-accent);
 }
 
 .corners-hexagon.variant-fill-inverse:hover .icon,
 .corners-hexagon.variant-ghost:hover .icon,
 .corners-hexagon.variant-fill-translucent:hover .icon,
-.corners-hexagon.variant-fill-translucent:active .icon,
-.corners-hexagon.variant-fill-translucent.active .icon,
 .corners-hexagon.variant-inset:hover .icon,
 .corners-hexagon.variant-outline:hover .icon,
+.corners-hexagon.variant-fill-inverse.hovered .icon,
+.corners-hexagon.variant-ghost.hovered .icon,
+.corners-hexagon.variant-fill-translucent.hovered .icon,
+.corners-hexagon.variant-inset.hovered .icon,
+.corners-hexagon.variant-outline.hovered .icon,
+.corners-hexagon.variant-fill-translucent:active .icon,
+.corners-hexagon.variant-fill-translucent.active .icon,
 .corners-hexagon.variant-outline:active .icon,
 .corners-hexagon.variant-outline.active .icon {
     color: var(--button-highlight-color-accent);
@@ -521,9 +545,11 @@
 
 /* Hexagon: no box-shadow glow (handled by SVG) */
 .corners-hexagon.glow-style-glow:hover,
+.corners-hexagon.glow-style-glow.hovered,
 .corners-hexagon.glow-style-glow:active,
 .corners-hexagon.glow-style-glow.active,
 .corners-hexagon.glow-style-animate-borders-glow:hover,
+.corners-hexagon.glow-style-animate-borders-glow.hovered,
 .corners-hexagon.glow-style-animate-borders-glow:active,
 .corners-hexagon.glow-style-animate-borders-glow.active {
     box-shadow: none;
@@ -531,21 +557,27 @@
 
 /* text-shadow: ghost, outline, inset only */
 .glow-style-glow.variant-ghost:hover,
+.glow-style-glow.variant-ghost.hovered,
 .glow-style-glow.variant-ghost:active,
 .glow-style-glow.variant-ghost.active,
 .glow-style-animate-borders-glow.variant-ghost:hover,
+.glow-style-animate-borders-glow.variant-ghost.hovered,
 .glow-style-animate-borders-glow.variant-ghost:active,
 .glow-style-animate-borders-glow.variant-ghost.active,
 .glow-style-glow.variant-outline:hover,
+.glow-style-glow.variant-outline.hovered,
 .glow-style-glow.variant-outline:active,
 .glow-style-glow.variant-outline.active,
 .glow-style-animate-borders-glow.variant-outline:hover,
+.glow-style-animate-borders-glow.variant-outline.hovered,
 .glow-style-animate-borders-glow.variant-outline:active,
 .glow-style-animate-borders-glow.variant-outline.active,
 .glow-style-glow.variant-inset:hover,
+.glow-style-glow.variant-inset.hovered,
 .glow-style-glow.variant-inset:active,
 .glow-style-glow.variant-inset.active,
 .glow-style-animate-borders-glow.variant-inset:hover,
+.glow-style-animate-borders-glow.variant-inset.hovered,
 .glow-style-animate-borders-glow.variant-inset:active,
 .glow-style-animate-borders-glow.variant-inset.active {
     text-shadow: 0 0 12px rgb(from var(--button-highlight-color-accent) r g b / .45);
@@ -553,21 +585,27 @@
 
 /* filter drop-shadow: ghost, outline, inset icons only */
 .glow-style-glow.variant-ghost:hover .icon,
+.glow-style-glow.variant-ghost.hovered .icon,
 .glow-style-glow.variant-ghost:active .icon,
 .glow-style-glow.variant-ghost.active .icon,
 .glow-style-animate-borders-glow.variant-ghost:hover .icon,
+.glow-style-animate-borders-glow.variant-ghost.hovered .icon,
 .glow-style-animate-borders-glow.variant-ghost:active .icon,
 .glow-style-animate-borders-glow.variant-ghost.active .icon,
 .glow-style-glow.variant-outline:hover .icon,
+.glow-style-glow.variant-outline.hovered .icon,
 .glow-style-glow.variant-outline:active .icon,
 .glow-style-glow.variant-outline.active .icon,
 .glow-style-animate-borders-glow.variant-outline:hover .icon,
+.glow-style-animate-borders-glow.variant-outline.hovered .icon,
 .glow-style-animate-borders-glow.variant-outline:active .icon,
 .glow-style-animate-borders-glow.variant-outline.active .icon,
 .glow-style-glow.variant-inset:hover .icon,
+.glow-style-glow.variant-inset.hovered .icon,
 .glow-style-glow.variant-inset:active .icon,
 .glow-style-glow.variant-inset.active .icon,
 .glow-style-animate-borders-glow.variant-inset:hover .icon,
+.glow-style-animate-borders-glow.variant-inset.hovered .icon,
 .glow-style-animate-borders-glow.variant-inset:active .icon,
 .glow-style-animate-borders-glow.variant-inset.active .icon {
     filter: drop-shadow(0 0 12px rgb(from var(--button-highlight-color-accent) r g b / .45));
@@ -575,21 +613,27 @@
 
 /* animate-borders-glow: single perimeter sweep for non-hexagon */
 .glow-style-animate-borders-glow:not(.corners-hexagon).variant-ghost:hover,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-ghost.hovered,
 .glow-style-animate-borders-glow:not(.corners-hexagon).variant-ghost:active,
 .glow-style-animate-borders-glow:not(.corners-hexagon).variant-ghost.active,
 .glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill:hover,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill.hovered,
 .glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill:active,
 .glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill.active,
 .glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill-inverse:hover,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill-inverse.hovered,
 .glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill-inverse:active,
 .glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill-inverse.active,
 .glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill-translucent:hover,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill-translucent.hovered,
 .glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill-translucent:active,
 .glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill-translucent.active,
 .glow-style-animate-borders-glow:not(.corners-hexagon).variant-outline:hover,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-outline.hovered,
 .glow-style-animate-borders-glow:not(.corners-hexagon).variant-outline:active,
 .glow-style-animate-borders-glow:not(.corners-hexagon).variant-outline.active,
 .glow-style-animate-borders-glow:not(.corners-hexagon).variant-inset:hover,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-inset.hovered,
 .glow-style-animate-borders-glow:not(.corners-hexagon).variant-inset:active,
 .glow-style-animate-borders-glow:not(.corners-hexagon).variant-inset.active {
     animation: glow-sweep 0.4s ease-in-out forwards;
@@ -597,6 +641,7 @@
 
 /* Hexagon: no animation (SVG handles it), suppress animate override */
 .corners-hexagon.glow-style-animate-borders-glow:hover,
+.corners-hexagon.glow-style-animate-borders-glow.hovered,
 .corners-hexagon.glow-style-animate-borders-glow:active,
 .corners-hexagon.glow-style-animate-borders-glow.active {
     animation: none;
