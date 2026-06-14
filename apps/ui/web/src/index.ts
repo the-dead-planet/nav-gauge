@@ -1,4 +1,3 @@
-export * from './animations';
 export * from './button';
 export * from './flex-box';
 export * from './hud';
@@ -8,4 +7,5 @@ export * from './icons';
 export * from './menu';
 export * from './theme';
 export * from './tooltip';
+export * from './transition';
 export * from './typography';
