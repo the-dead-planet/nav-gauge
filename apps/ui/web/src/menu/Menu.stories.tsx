@@ -16,32 +16,32 @@ export const MenuPlacements: Story = {
             <p>placement="bottom-right" (default)</p>
             <div style={{ margin: '0 auto', width: 'max-content' }}>
                 <Menu placement="bottom-right">
-                    <MenuItem label="Option 1" onPress={() => console.log("Option 1")} />
-                    <MenuItem label="Option 2" onPress={() => console.log("Option 2")} />
+                    <MenuItem key={1} type="button" onClick={() => console.info("Option 1")} >Option 1</MenuItem>
+                    <MenuItem key={2} type="button" onClick={() => console.info("Option 2")} >Option 2</MenuItem>
                 </Menu>
             </div>
 
             <p>placement="bottom-left"</p>
             <div style={{ margin: '0 auto', width: 'max-content' }}>
                 <Menu placement="bottom-left">
-                    <MenuItem label="Option A" onPress={() => console.log("Option A")} />
-                    <MenuItem label="Option B" onPress={() => console.log("Option B")} />
+                    <MenuItem key={1} type="button" onClick={() => console.info("Option 1")}>Option 1</MenuItem>
+                    <MenuItem key={2} type="button" onClick={() => console.info("Option 2")}>Option 2</MenuItem>
                 </Menu>
             </div>
 
             <p>placement="top-right"</p>
             <div style={{ margin: '0 auto', width: 'max-content' }}>
                 <Menu placement="top-right">
-                    <MenuItem label="Option X" onPress={() => console.log("Option X")} />
-                    <MenuItem label="Option Y" onPress={() => console.log("Option Y")} />
+                    <MenuItem key={1} type="button" onClick={() => console.info("Option 1")} >Option 1</MenuItem>
+                    <MenuItem key={2} type="button" onClick={() => console.info("Option 2")} >Option 2</MenuItem>
                 </Menu>
             </div>
 
             <p>placement="top-left"</p>
             <div style={{ margin: '0 auto', width: 'max-content' }}>
                 <Menu placement="top-left">
-                    <MenuItem label="Option 1" onPress={() => console.log("Option 1")} />
-                    <MenuItem label="Option 2" onPress={() => console.log("Option 2")} />
+                    <MenuItem key={1} type="button" onClick={() => console.info("Option 1")} >Option 1</MenuItem>
+                    <MenuItem key={2} type="button" onClick={() => console.info("Option 2")} >Option 2</MenuItem>
                 </Menu>
             </div>
         </div>

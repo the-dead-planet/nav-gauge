@@ -147,9 +147,9 @@ for (const file of files) {
     license: "CC BY 3.0",
   });
 
-  console.log(`✔ ${file} (${creator})`);
+  console.info(`✔ ${file} (${creator})`);
 }
 
 fs.writeFileSync(REGISTRY_FILE, JSON.stringify(registry, null, 2));
 
-console.log("\nDone.");
+console.info("\nDone.");

@@ -18,7 +18,7 @@ export interface MenuProps {
 }
 
 export interface MenuItemProps {
-    label: string;
-    onPress: () => void;
+    key: string | number;
     closeOnPress?: boolean;
+    children: ReactNode;
 }

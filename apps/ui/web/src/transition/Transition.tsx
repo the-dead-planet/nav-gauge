@@ -1,19 +1,11 @@
-import { cloneElement, CSSProperties, FC, isValidElement, ReactNode, useEffect, useState } from "react";
+import { CSSProperties, FC, useEffect, useState } from "react";
 import classNames from "classnames";
-import { ErrorBoundary } from "@ui";
+import { ErrorBoundary, TransitionProps } from "@ui";
 import styles from './transition.module.css';
 
-export interface TransitionProps {
-    render: boolean;
-    /**
-     * Defaults to 200 [ms]
-     */
-    durationMs?: number;
-    slide?: 'to-top' | 'to-right' | 'to-bottom' | 'to-left';
-    fade?: boolean;
-    children: ReactNode;
-}
-
+/**
+ * Wraps the component in a `div` and adds mount and unmount animations
+ */
 export const Transition: FC<TransitionProps> = (props) => {
     return (
         <ErrorBoundary fallbackComponent={() => props.children}>
@@ -41,26 +33,19 @@ const TransitionBase: FC<TransitionProps> = ({
         return () => clearTimeout(timeout);
     }, [render]);
 
-    const effectiveChildren = Array.isArray(children) ? children : [children];
-
     if (unmount) {
         return null;
     }
 
-    return effectiveChildren.map((child) => {
-        if (isValidElement<{ className?: string; style?: CSSProperties }>(child)) {
-            return cloneElement(child, {
-                key: child.key,
-                style: { '--duration': `${durationMs}ms` } as CSSProperties,
-                className: classNames(child.props.className, {
-                    [styles['slide']]: !!slide,
-                    [styles[slide ?? '']]: !!slide,
-                    [styles['fade']]: !!fade,
-                    [styles['out']]: !render,
-                }),
-            });
-        } else {
-            return child;
-        }
-    });
+    return (
+        <div className={classNames({
+            [styles['slide']]: !!slide,
+            [styles[slide ?? '']]: !!slide,
+            [styles['fade']]: !!fade,
+            [styles['out']]: !render,
+        })}
+            style={{ '--duration': `${durationMs}ms` } as CSSProperties}>
+            {children}
+        </div>
+    );
 };

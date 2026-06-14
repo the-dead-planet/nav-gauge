@@ -31,7 +31,7 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
     const { individuator } = useMachineWard();
     const items = [
         __DEV__
-            ? <MenuItem key="stories" label="Stories" onPress={() => onNavigate('Stories')} />
+            ? <MenuItem key="stories" onPress={() => onNavigate('Stories')}>Stories</MenuItem>
             : null,
     ].filter(Boolean);
 

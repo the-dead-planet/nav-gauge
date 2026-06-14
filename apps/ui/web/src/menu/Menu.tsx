@@ -11,6 +11,8 @@ import {
 } from '@ui';
 import { Button } from '../button';
 import styles from './menu.module.css';
+import { Panel } from '../hud';
+import { Transition } from '../transition';
 
 export const Menu: FC<MenuProps> = ({
     icon = Icons.NounProject.KebabMenu,
@@ -75,16 +77,18 @@ export const Menu: FC<MenuProps> = ({
                 className={styles.trigger}
             />
             {visible && createPortal(
-                <div
-                    ref={containerRef}
-                    className={styles.menuList}
+                <Panel
+                    forwardRef={containerRef}
+                    variant='fill-inverse'
+                    className={styles['menu-list']}
                     style={positionStyle}
-                    onClick={(e) => e.stopPropagation()}
                 >
                     <MenuContext.Provider value={{ onClose: handleClose }}>
-                        {children}
+                        <Transition slide={menuPosition.bottom ? "to-top" : "to-bottom"} render>
+                            {children}
+                        </Transition>
                     </MenuContext.Provider>
-                </div>,
+                </Panel>,
                 document.body,
             )}
         </>

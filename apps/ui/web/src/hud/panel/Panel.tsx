@@ -1,9 +1,10 @@
-import { ComponentProps, CSSProperties, FC } from "react";
+import { ComponentProps, CSSProperties, FC, RefObject } from "react";
 import { PanelProps, useTheme } from "@ui";
 import classNames from "classnames";
 import styles from "./panel.module.css";
 
 interface Props {
+    forwardRef?: RefObject<HTMLDivElement | null>;
     className?: string;
     style?: CSSProperties;
 }
@@ -19,6 +20,7 @@ export const Panel: FC<PanelProps & Props & ComponentProps<'div'>> = ({
     themeMode,
     active = false,
     onClick,
+    forwardRef,
     className,
     style,
     children,
@@ -29,6 +31,7 @@ export const Panel: FC<PanelProps & Props & ComponentProps<'div'>> = ({
 
     return (
         <div
+            ref={forwardRef}
             onClick={onClick}
             className={classNames(
                 styles.panel,
@@ -45,6 +48,7 @@ export const Panel: FC<PanelProps & Props & ComponentProps<'div'>> = ({
                 },
                 className
             )}
+            style={style}
             {...props}
         >
             {children}

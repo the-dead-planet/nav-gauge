@@ -129,6 +129,7 @@
 .variant-fill-translucent {
     background-color: rgb(from var(--panel-color) r g b / .24);
     border: 2px solid var(--panel-color);
+    backdrop-filter: blur(6px);
 }
 
 .variant-fill-translucent.interactive:hover {

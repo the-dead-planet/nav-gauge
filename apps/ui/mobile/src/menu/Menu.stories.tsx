@@ -15,18 +15,18 @@ export const MenuPlacements = () => (
             <Text>placement="bottom-right" (default)</Text>
             <View style={styles.wrapper}>
                 <Menu placement="bottom-right">
-                    <MenuItem label="Option 1" onPress={() => console.log("Option 1")} />
-                    <MenuItem label="Option 2" onPress={() => console.log("Option 2")} />
+                    <MenuItem key={1} onPress={() => console.info("Option 1")}>Option 1</MenuItem>
+                    <MenuItem key={2} onPress={() => console.info("Option 2")} >Option 2</MenuItem>
                 </Menu>
             </View>
         </View>
-        
+
         <View>
             <Text>placement="bottom-left"</Text>
             <View style={styles.wrapper}>
                 <Menu placement="bottom-left">
-                    <MenuItem label="Option A" onPress={() => console.log("Option A")} />
-                    <MenuItem label="Option B" onPress={() => console.log("Option B")} />
+                    <MenuItem key={1} onPress={() => console.info("Option A")}>Option 1</MenuItem>
+                    <MenuItem key={2} onPress={() => console.info("Option B")} >Option 2</MenuItem>
                 </Menu>
             </View>
         </View>
@@ -35,8 +35,8 @@ export const MenuPlacements = () => (
             <Text>placement="top-right"</Text>
             <View style={styles.wrapper}>
                 <Menu placement="top-right">
-                    <MenuItem label="Option X" onPress={() => console.log("Option X")} />
-                    <MenuItem label="Option Y" onPress={() => console.log("Option Y")} />
+                    <MenuItem key={1} onPress={() => console.info("Option X")} >Option 1</MenuItem>
+                    <MenuItem key={2} onPress={() => console.info("Option Y")}>Option 2</MenuItem>
                 </Menu>
             </View>
         </View>
@@ -45,11 +45,11 @@ export const MenuPlacements = () => (
             <Text>placement="top-left"</Text>
             <View style={styles.wrapper}>
                 <Menu placement="top-left">
-                    <MenuItem label="Option 1" onPress={() => console.log("Option 1")} />
-                    <MenuItem label="Option 2" onPress={() => console.log("Option 2")} />
-                    <MenuItem label="Option 3" onPress={() => console.log("Option 3")} />
-                    <MenuItem label="Option 4" onPress={() => console.log("Option 4")} />
-                    <MenuItem label="Option 5" onPress={() => console.log("Option 5")} />
+                    <MenuItem key={1} onPress={() => console.info("Option 1")} >Option 1</MenuItem>
+                    <MenuItem key={2} onPress={() => console.info("Option 2")} >Option 2</MenuItem>
+                    <MenuItem key={3} onPress={() => console.info("Option 3")} >Option 3</MenuItem>
+                    <MenuItem key={4} onPress={() => console.info("Option 4")} >Option 4</MenuItem>
+                    <MenuItem key={5} onPress={() => console.info("Option 5")} >Option 5</MenuItem>
                 </Menu>
             </View>
         </View>
