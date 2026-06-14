@@ -1,8 +1,9 @@
 import { cloneElement, CSSProperties, FC, isValidElement, ReactNode, useEffect, useState } from "react";
 import classNames from "classnames";
-import styles from './animations.module.css';
+import { ErrorBoundary } from "@ui";
+import styles from './transition.module.css';
 
-export interface SlideProps {
+export interface TransitionProps {
     render: boolean;
     /**
      * Defaults to 200 [ms]
@@ -13,7 +14,15 @@ export interface SlideProps {
     children: ReactNode;
 }
 
-export const Transition: FC<SlideProps> = ({
+export const Transition: FC<TransitionProps> = (props) => {
+    return (
+        <ErrorBoundary fallbackComponent={() => props.children}>
+            <TransitionBase {...props} />
+        </ErrorBoundary>
+    );
+};
+
+const TransitionBase: FC<TransitionProps> = ({
     render,
     durationMs = 200,
     slide,
@@ -39,7 +48,7 @@ export const Transition: FC<SlideProps> = ({
     }
 
     return effectiveChildren.map((child) => {
-        if (isValidElement<{ className?: string; style?: CSSProperties }>(child) && typeof child.type === 'string') {
+        if (isValidElement<{ className?: string; style?: CSSProperties }>(child)) {
             return cloneElement(child, {
                 key: child.key,
                 style: { '--duration': `${durationMs}ms` } as CSSProperties,

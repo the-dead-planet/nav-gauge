@@ -99,19 +99,21 @@ export const MapSection: FC = () => {
             <div className={classNames(styles['icons'], styles['left'])}>
                 {toolIconsByPlacement.left.length > 1 ? <div /> : null}
                 {toolIconsByPlacement.left.map(({ id, icon, active, onClick, tooltip }) => (
-                    <Button
-                        key={id}
-                        icon={icon}
-                        tooltip={<T {...tooltip} />}
-                        size="sm"
-                        variant="fill-inverse"
-                        corners="hexagon"
-                        glowStyle={theme.mode === 'dark' ? "animate-borders-glow" : 'none'}
-                        highlightColor="secondary"
-                        active={active}
-                        onClick={() => onClick(map)}
-                        className={classNames(styles['icon-button'], styles['left'])}
-                    />
+                    <Transition fade render>
+                        <Button
+                            key={id}
+                            icon={icon}
+                            tooltip={<T {...tooltip} />}
+                            size="sm"
+                            variant="fill-inverse"
+                            corners="hexagon"
+                            glowStyle={theme.mode === 'dark' ? "animate-borders-glow" : 'none'}
+                            highlightColor="secondary"
+                            active={active}
+                            onClick={() => onClick(map)}
+                            className={classNames(styles['icon-button'], styles['left'])}
+                        />
+                    </Transition>
                 ))}
             </div>
             {/* TODO: Bind right icons with right panel? */}
@@ -119,19 +121,21 @@ export const MapSection: FC = () => {
             {/* TODO: Add option to swap left/right */}
             <div className={classNames(styles['icons'], styles['right'])}>
                 {toolIconsByPlacement.right.map(({ id, icon, active, onClick, tooltip }) => (
-                    <Button
-                        key={id}
-                        icon={icon}
-                        tooltip={<T {...tooltip} />}
-                        size="xs"
-                        variant="fill-inverse"
-                        corners="hexagon"
-                        glowStyle={theme.mode === 'dark' ? "animate-borders-glow" : 'none'}
-                        color="primary"
-                        active={active}
-                        onClick={() => onClick(map)}
-                        className={classNames(styles['icon-button'], styles['right'])}
-                    />
+                    <Transition fade render>
+                        <Button
+                            key={id}
+                            icon={icon}
+                            tooltip={<T {...tooltip} />}
+                            size="xs"
+                            variant="fill-inverse"
+                            corners="hexagon"
+                            glowStyle={theme.mode === 'dark' ? "animate-borders-glow" : 'none'}
+                            color="primary"
+                            active={active}
+                            onClick={() => onClick(map)}
+                            className={classNames(styles['icon-button'], styles['right'])}
+                        />
+                    </Transition>
                 ))}
             </div>
             <div className={classNames(styles['toolbar'], styles['right'])}>
