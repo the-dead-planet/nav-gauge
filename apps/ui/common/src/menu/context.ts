@@ -1,9 +1,9 @@
 import { createContext, useContext } from "react";
 
 export interface MenuContextValue {
-    close: () => void;
+    onClose: () => void;
 }
 
-export const MenuContext = createContext<MenuContextValue>({ close: () => { } });
+export const MenuContext = createContext<MenuContextValue>({ onClose: () => { } });
 
-export const useMenuClose = (): (() => void) => useContext(MenuContext).close;
+export const useMenuClose = (): (() => void) => useContext(MenuContext).onClose;

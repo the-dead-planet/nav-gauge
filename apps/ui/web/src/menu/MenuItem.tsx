@@ -1,22 +1,23 @@
-import { useMenuClose } from '@ui';
-import styles from './menu.module.css';
 import { FC } from 'react';
-
-export interface MenuItemProps {
-    label: string;
-    onPress: () => void;
-}
+import { MenuItemProps, useMenuClose } from '@ui';
+import styles from './menu.module.css';
 
 export const MenuItem: FC<MenuItemProps> = ({
     label,
     onPress,
+    closeOnPress,
 }) => {
     const handleClose = useMenuClose();
 
     return (
         <button
             className={styles.menuItem}
-            onClick={() => { onPress(); handleClose(); }}
+            onClick={() => {
+                onPress();
+                if (closeOnPress) {
+                    handleClose();
+                }
+            }}
         >
             {label}
         </button>

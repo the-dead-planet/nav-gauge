@@ -1,3 +1,4 @@
+export * from './animations';
 export * from './button';
 export * from './flex-box';
 export * from './hud';

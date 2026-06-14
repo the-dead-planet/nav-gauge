@@ -96,10 +96,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
             onClick={(e) => {
                 try {
                     onClick?.(e as unknown as MouseEvent<HTMLButtonElement>);
-                } catch (e) {
-                    console.log("EERRR", e)
-                    //
-                }
+                } catch { }
             }}
             onMouseEnter={() => setIsHoveringHud(true)}
             onMouseLeave={() => setIsHoveringHud(false)}

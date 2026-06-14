@@ -1,6 +1,6 @@
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { Text } from '../typography';
-import { useMenuClose } from '@ui';
+import { MenuItemProps, useMenuClose } from '@ui';
 import { FC } from 'react';
 
 const styles = StyleSheet.create({
@@ -12,11 +12,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
 });
-
-export interface MenuItemProps {
-    label: string;
-    onPress: () => void;
-}
 
 export const MenuItem: FC<MenuItemProps> = ({
     label,

@@ -11,7 +11,7 @@ import { ApplicationSettingsSection } from "./controls/ApplicationSettings";
 import { GaugeControls } from "./controls/GaugeControls";
 import { MapStyleSelection } from "./controls/MapStyleSelection";
 import { MapTools } from "./map-tools/MapTools";
-import { Button, FlexBox, P } from "@web-ui";
+import { Button, FlexBox, P, Slide } from "@web-ui";
 import { createMap } from "./map";
 import { Icons, useTheme } from "@ui";
 import styles from './map-section.module.css';
@@ -88,13 +88,13 @@ export const MapSection: FC = () => {
             </div>
             <div className={classNames(styles['toolbar'], styles['left'])}>
                 {/* TODO: Collapsible sections list, panel expand/collapse, when collapsed just icons. */}
-                {toolPanelsByPlacement.left.length > 0 ? (
+                <Slide direction="to-left" shouldRender={toolPanelsByPlacement.left.length > 0}>
                     <div className={styles['content']}>
                         {toolPanelsByPlacement.left.map(({ id, icon, title, component: Component }) => (
                             <Component key={id} map={map} />
                         ))}
                     </div>
-                ) : null}
+                </Slide>
             </div>
             <div className={classNames(styles['icons'], styles['left'])}>
                 {toolIconsByPlacement.left.length > 1 ? <div /> : null}
@@ -135,23 +135,23 @@ export const MapSection: FC = () => {
                 ))}
             </div>
             <div className={classNames(styles['toolbar'], styles['right'])}>
-                {toolPanelsByPlacement.right.length > 0 ? (
+                <Slide direction="to-left" shouldRender={toolPanelsByPlacement.right.length > 0}>
                     <div className={styles['content']}>
                         {toolPanelsByPlacement.right.map(({ id, icon, title, component: Component }) => (
                             <Component key={id} map={map} />
                         ))}
                     </div>
-                ) : null}
+                </Slide>
             </div>
             <div className={classNames(styles['toolbar'], styles['bottom'])}>
                 {/* TODO: Should just be one at a time? */}
-                {toolPanelsByPlacement.bottom.length > 0 ? (
+                <Slide direction="to-top" shouldRender={toolPanelsByPlacement.bottom.length > 0}>
                     <div className={styles['content']}>
                         {toolPanelsByPlacement.bottom.map(({ id, icon, title, component: Component }) => (
                             <Component key={id} map={map} />
                         ))}
                     </div>
-                ) : null}
+                </Slide>
             </div>
         </div>
     );

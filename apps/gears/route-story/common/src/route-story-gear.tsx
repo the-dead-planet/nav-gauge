@@ -97,7 +97,7 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
             {
                 tooltip: { n: this.id, t: 'fit-bounds' },
                 placement: 'left',
-                icon: Icons.Find,
+                icon: Icons.Find as unknown as string,
                 onClick: (map) => {
                     const boundingBox = this.data$.value.boundingBox;
                     if (!boundingBox) {
@@ -111,7 +111,7 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
             {
                 title: { n: this.id, t: 'player' },
                 placement: 'bottom',
-                icon: Icons.Beaker, // TODO: Icon
+                icon: Icons.Beaker as unknown as string, // TODO: Icon
                 component: this.wrapProps<RouteToolProps<TMap, TFile, TImageData>, ToolPanelProps<TMap>>(this.playerComponent, {
                     data$: this.data$,
                     routeTimes$: this.routeTimes$,

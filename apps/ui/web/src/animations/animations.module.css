@@ -1,0 +1,44 @@
+@starting-style {
+    .to-top {
+        transform: translate(0, 100%);
+    }
+
+    .to-right {
+        transform: translate(-100%, 0);
+    }
+
+    .to-bottom {
+        transform: translate(0, -100%);
+    }
+
+    .to-left {
+        transform: translate(100%, 0);
+    }
+}
+
+.to-top,
+.to-right,
+.to-bottom,
+.to-left,
+.to-top-out,
+.to-right-out,
+.to-bottom-out,
+.to-left-out {
+    transition: transform var(--slide-duration) ease-out;
+}
+
+.to-top-out {
+    transform: translate(0, 100%);
+}
+
+.to-right-out {
+    transform: translate(-100%, 0);
+}
+
+.to-bottom-out {
+    transform: translate(0, -100%);
+}
+
+.to-left-out {
+    transform: translate(100%, 0);
+}

@@ -69,8 +69,6 @@
 .toolbar .content {
     background-color: rgb(from var(--color-background) r g b / .82);
     backdrop-filter: blur(2px);
-    transform: translate(0%, 0%);
-    transition: transform .2s ease-out;
 }
 
 .toolbar.top {
@@ -116,24 +114,6 @@
     height: 80px;
     border-top: 2px solid var(--color-primary);
     box-shadow: 1px -1px 3px rgb(from var(--color-box-shadow) r g b / .4);
-}
-
-@starting-style {
-    .toolbar.top .content {
-        transform: translate(0, -100%);
-    }
-    .toolbar.bottom .content {
-        transform: translate(0, 100%);
-    }
-    .toolbar.left .content {
-        transform: translate(-100%, 0);
-    }
-    .toolbar.right .content {
-        transform: translate(100%, 0);
-    }
-    .icon-button {
-        opacity: 0;
-    }
 }
 
 @media screen and (min-width: 800px) {

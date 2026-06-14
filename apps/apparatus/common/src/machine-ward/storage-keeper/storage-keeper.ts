@@ -33,7 +33,6 @@ export class StorageKeeper {
     ): Promise<Subscription> => {
         const setState = (savedData: string | null) => {
             if (savedData) {
-                console.log("getting", cleanUp(JSON.parse(savedData) as T) )
                 state$.next({ ...state$.value, ...cleanUp(JSON.parse(savedData) as T) });
             }
         };
@@ -52,7 +51,6 @@ export class StorageKeeper {
 
         return state$.subscribe((next) => {
             try {
-                console.log("Setting", storageId, next, JSON.stringify(next))
                 this.storage.setItem(storageId, JSON.stringify(next));
             } catch (err) {
                 glitchmitter.transmit(`Error setting ${storageId} storage state`, err);

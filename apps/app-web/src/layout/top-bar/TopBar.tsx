@@ -27,8 +27,8 @@ export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
                     color={theme.mode === 'dark' ? "secondary" : 'neutral'}
                     highlightColor={theme.mode === 'dark' ? "neutral" : 'secondary'}
                 />
-                <Menu placement="bottom-right">
-                    <MenuItem label="Option 1" onPress={() => console.log("Option 1")} />
+                <Menu placement="bottom-right" iconActiveColor="secondary">
+                    <MenuItem label="Option 1" closeOnPress onPress={() => console.log("Option 1")} />
                     <MenuItem label="Option 2" onPress={() => console.log("Option 2")} />
                 </Menu>
             </div>

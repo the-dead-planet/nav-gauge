@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback, FC, CSSProperties } from 'react';
+import { useState, useRef, useEffect, FC, CSSProperties } from 'react';
 import { createPortal } from 'react-dom';
 import {
     MenuPosition,
@@ -9,10 +9,12 @@ import {
     MenuProps,
     Icons,
 } from '@ui';
-import styles from './menu.module.css';
 import { Button } from '../button';
+import styles from './menu.module.css';
 
 export const Menu: FC<MenuProps> = ({
+    icon = Icons.NounProject.KebabMenu,
+    iconActiveColor,
     placement = 'bottom-right',
     children,
 }) => {
@@ -20,8 +22,13 @@ export const Menu: FC<MenuProps> = ({
     const [visible, setVisible] = useState<boolean>(false);
     const [menuPosition, setMenuPosition] = useState<MenuPosition>({});
     const triggerRef = useRef<HTMLButtonElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
 
-    const open = useCallback(() => {
+    const handleToggle = () => {
+        if (visible) {
+            setVisible(false);
+            return;
+        }
         const el = triggerRef.current;
         if (!el) {
             return;
@@ -29,17 +36,17 @@ export const Menu: FC<MenuProps> = ({
         const { left, top, width, height } = el.getBoundingClientRect();
         setMenuPosition(getMenuPosition(menuAnchor, getIconAnchorPoint(iconAnchor, left, top, width, height), window.innerWidth, window.innerHeight));
         setVisible(true);
-    }, [iconAnchor, menuAnchor]);
+    };
 
-    const close = useCallback(() => setVisible(false), []);
+    const handleClose = () => setVisible(false);
 
     useEffect(() => {
         if (!visible) {
             return;
         }
         const handler = (e: MouseEvent) => {
-            if (triggerRef.current && !triggerRef.current.contains(e.target as Node)) {
-                close();
+            if (triggerRef.current && !triggerRef.current?.contains(e.target as Node) && !containerRef.current?.contains(e.target as Node)) {
+                handleClose();
             }
         };
         document.addEventListener('mousedown', handler);
@@ -47,10 +54,10 @@ export const Menu: FC<MenuProps> = ({
         return () => {
             document.removeEventListener('mousedown', handler);
         };
-    }, [visible, close]);
+    }, [visible]);
 
     const positionStyle: CSSProperties = {};
-    
+
     if (menuPosition.top !== undefined) positionStyle.top = menuPosition.top;
     if (menuPosition.left !== undefined) positionStyle.left = menuPosition.left;
     if (menuPosition.right !== undefined) positionStyle.right = menuPosition.right;
@@ -61,24 +68,22 @@ export const Menu: FC<MenuProps> = ({
             <Button
                 ref={triggerRef}
                 variant="ghost"
-                icon={Icons.NounProject.KebabMenu}
-                onClick={open}
+                icon={icon}
+                active={visible}
+                highlightColor={iconActiveColor}
+                onClick={handleToggle}
                 className={styles.trigger}
             />
             {visible && createPortal(
                 <div
-                    className={styles.overlay}
-                    onClick={close}
+                    ref={containerRef}
+                    className={styles.menuList}
+                    style={positionStyle}
+                    onClick={(e) => e.stopPropagation()}
                 >
-                    <div
-                        className={styles.menuList}
-                        style={positionStyle}
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <MenuContext.Provider value={{ close }}>
-                            {children}
-                        </MenuContext.Provider>
-                    </div>
+                    <MenuContext.Provider value={{ onClose: handleClose }}>
+                        {children}
+                    </MenuContext.Provider>
                 </div>,
                 document.body,
             )}

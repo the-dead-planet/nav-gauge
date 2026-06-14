@@ -51,7 +51,7 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
                 style={styles.button}
             />
             {items.length > 0 ? (
-                <Menu>
+                <Menu iconActiveColor="secondary">
                     {items}
                 </Menu>
             ) : null}

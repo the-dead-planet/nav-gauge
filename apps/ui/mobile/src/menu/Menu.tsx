@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, FC } from 'react';
+import { useState, useRef, useCallback, FC, ComponentProps } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -16,8 +16,10 @@ import {
     getIconAnchorPoint,
     getMenuPosition,
     MenuProps,
+    Icons,
 } from '@ui';
 import { Text } from '../typography';
+import { Button } from '../button';
 
 const styles = StyleSheet.create({
     container: {
@@ -48,6 +50,8 @@ const styles = StyleSheet.create({
 });
 
 export const Menu: FC<MenuProps> = ({
+    icon = Icons.NounProject.KebabMenu,
+    iconActiveColor,
     placement = 'bottom-right',
     children,
 }) => {
@@ -80,14 +84,14 @@ export const Menu: FC<MenuProps> = ({
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity
-                ref={iconAnchorRef}
+            <Button
+                forwardRef={iconAnchorRef}
+                icon={icon as ComponentProps<typeof Button>['icon']}
+                highlightColor={iconActiveColor}
+                active={visible}
                 onPress={toggleMenu}
                 style={styles.iconButton}
-                activeOpacity={0.7}
-            >
-                <Text style={{ fontSize: 18 }}>⋮</Text>
-            </TouchableOpacity>
+            />
 
             <Modal
                 transparent={true}
@@ -106,7 +110,7 @@ export const Menu: FC<MenuProps> = ({
                             }
                         ]}
                     >
-                        <MenuContext.Provider value={{ close: () => setVisible(false) }}>
+                        <MenuContext.Provider value={{ onClose: () => setVisible(false) }}>
                             {children}
                         </MenuContext.Provider>
                     </View>

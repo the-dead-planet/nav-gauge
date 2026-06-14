@@ -1,11 +1,18 @@
-import { ComponentType, FC, useCallback, useState } from "react";
-import { Pressable, PressableProps, Text as RNText, ViewStyle } from "react-native";
+import { ComponentType, FC, Ref, useCallback, useState } from "react";
+import { Pressable, PressableProps, Text as RNText, View, ViewStyle } from "react-native";
 import { ButtonProps, useTheme } from "@ui";
 import { Icon } from "../icons";
 import { SvgProps } from "react-native-svg";
 import { Hexagon } from "../hud";
 
-export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<SvgProps>; title?: string }> = ({
+interface Props {
+    forwardRef?: Ref<View>;
+    icon?: ComponentType<SvgProps>;
+    title?: string;
+}
+
+export const Button: FC<PressableProps & ButtonProps & Props> = ({
+    forwardRef,
     color = 'neutral',
     highlightColor: hlColor,
     variant = 'ghost',
@@ -19,6 +26,10 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
     children,
     style,
     disabled,
+    onPress,
+    onLongPress,
+    onPressIn,
+    onPressOut,
     ...props
 }) => {
     const theme = useTheme();
@@ -228,9 +239,9 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
     );
 
     if (corners === 'hexagon') {
-        const { onPress, onLongPress, ...rest } = props;
         return (
             <Hexagon
+                forwardRef={forwardRef}
                 size={size}
                 variant={variant}
                 glowStyle={glowStyle}
@@ -239,16 +250,16 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
                 highlightColor={hlColor || color}
                 active={active}
                 interactive={!disabled}
-                onPress={onPress}
-                onLongPress={onLongPress}
-                onPressIn={() => {
+                onPress={onPress ?? undefined}
+                onLongPress={onLongPress ?? undefined}
+                onPressIn={(e) => {
                     setPressed(true);
                     markGlowDrawn();
-                    rest.onPressIn?.();
+                    onPressIn?.(e);
                 }}
-                onPressOut={() => {
+                onPressOut={(e) => {
                     setPressed(false);
-                    rest.onPressOut?.();
+                    onPressOut?.(e);
                 }}
                 style={typeof style === 'function' ? undefined : style}
             >
@@ -259,7 +270,10 @@ export const Button: FC<PressableProps & ButtonProps & { icon?: ComponentType<Sv
 
     return (
         <Pressable
+            ref={forwardRef}
             disabled={disabled}
+            onPress={onPress ?? undefined}
+            onLongPress={onLongPress ?? undefined}
             onPressIn={() => {
                 setPressed(true);
                 markGlowDrawn();

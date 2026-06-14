@@ -1,5 +1,5 @@
-import { FC, useCallback, useId, useState } from "react";
-import { View, ViewStyle, StyleProp, StyleSheet, Pressable } from "react-native";
+import { FC, Ref, useCallback, useId, useState } from "react";
+import { View, ViewStyle, StyleProp, StyleSheet, Pressable, GestureResponderEvent } from "react-native";
 import Svg, { Polygon, Defs, ClipPath, G, LinearGradient, Stop } from "react-native-svg";
 import { ColorVariant, HexagonProps, SizeVariant, useTheme } from "@ui";
 
@@ -56,14 +56,16 @@ const GlowPolygons: FC<{ points: string; glowColor: string; strokeWidth: number 
 );
 
 interface Props {
-    onPress?: () => void;
-    onLongPress?: () => void;
-    onPressIn?: () => void;
-    onPressOut?: () => void;
+    forwardRef?: Ref<View>;
+    onPress?: (e: GestureResponderEvent) => void;
+    onLongPress?: (e: GestureResponderEvent) => void;
+    onPressIn?: (e: GestureResponderEvent) => void;
+    onPressOut?: (e: GestureResponderEvent) => void;
     style?: StyleProp<ViewStyle>
 }
 
 export const Hexagon: FC<HexagonProps & Props> = ({
+    forwardRef,
     shape = "pointy-top",
     strokeWidth = 2,
     color: colorProp,
@@ -263,7 +265,15 @@ export const Hexagon: FC<HexagonProps & Props> = ({
     };
 
     const container = (
-        <View style={[styles.container, { aspectRatio }, size ? { width: sizeWidth[size] } : undefined, style]}>
+        <View
+            ref={forwardRef}
+            style={[
+                styles.container,
+                { aspectRatio },
+                size ? { width: sizeWidth[size] } : undefined,
+                style
+            ]}
+        >
             <Svg
                 viewBox={isPointy ? "6.7 0 86.6 100" : "0 6.7 100 86.6"}
                 style={StyleSheet.absoluteFill}
@@ -281,14 +291,14 @@ export const Hexagon: FC<HexagonProps & Props> = ({
             <Pressable
                 onPress={onPress}
                 onLongPress={onLongPress}
-                onPressIn={() => {
+                onPressIn={(e) => {
                     setPressed(true);
                     markGlowDrawn();
-                    onParentPressIn?.();
+                    onParentPressIn?.(e);
                 }}
-                onPressOut={() => {
+                onPressOut={(e) => {
                     setPressed(false);
-                    onParentPressOut?.();
+                    onParentPressOut?.(e);
                 }}
             >
                 {container}
