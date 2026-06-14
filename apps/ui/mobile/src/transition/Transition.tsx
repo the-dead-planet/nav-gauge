@@ -1,12 +1,18 @@
 import { FC, useEffect, useRef, useState } from "react";
-import { Animated, useWindowDimensions, ViewStyle } from "react-native";
+import { Animated, StyleProp, useWindowDimensions, ViewStyle } from "react-native";
 import { TransitionProps } from "@ui";
 
-export const Transition: FC<TransitionProps> = ({
+interface Props {
+    style?: StyleProp<ViewStyle>;
+}
+
+export const Transition: FC<TransitionProps & Props> = ({
     render,
     durationMs = 200,
     slide,
     fade,
+    onUnmount,
+    style,
     children,
 }) => {
     const [unmount, setUnmount] = useState(!render);
@@ -27,7 +33,10 @@ export const Transition: FC<TransitionProps> = ({
                 toValue: 1,
                 duration: durationMs,
                 useNativeDriver: true,
-            }).start(() => setUnmount(true));
+            }).start(() => {
+                setUnmount(true);
+                onUnmount?.();
+            });
         }
     }, [render]);
 
@@ -37,11 +46,11 @@ export const Transition: FC<TransitionProps> = ({
 
     const offsets = ((): { x: number; y: number } => {
         switch (slide) {
-            case 'to-top':    return { x: 0, y: height };
+            case 'to-top': return { x: 0, y: height };
             case 'to-bottom': return { x: 0, y: -height };
-            case 'to-left':   return { x: width, y: 0 };
-            case 'to-right':  return { x: -width, y: 0 };
-            default:          return { x: 0, y: 0 };
+            case 'to-left': return { x: width, y: 0 };
+            case 'to-right': return { x: -width, y: 0 };
+            default: return { x: 0, y: 0 };
         }
     })();
 
@@ -67,5 +76,9 @@ export const Transition: FC<TransitionProps> = ({
         ...(opacity !== undefined && { opacity }),
     };
 
-    return <Animated.View style={animatedStyle}>{children}</Animated.View>;
+    return (
+        <Animated.View style={[animatedStyle, style]}>
+            {children}
+        </Animated.View>
+    );
 };

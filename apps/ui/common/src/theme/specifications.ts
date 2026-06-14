@@ -22,7 +22,7 @@ export const themeSpecifications: { [key in ThemeName]: ThemeSpecification } = {
             },
             border: {
                 name: 'neutral',
-                shade: 800
+                shade: 200
             },
             'box-shadow': {
                 name: 'neutral',

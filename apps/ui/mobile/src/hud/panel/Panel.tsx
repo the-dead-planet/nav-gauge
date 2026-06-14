@@ -2,7 +2,9 @@ import { FC, useState } from "react";
 import { View, ViewStyle, StyleProp, Pressable } from "react-native";
 import { PanelProps, SizeVariant, useTheme } from "@ui";
 
-type Props = PanelProps & { style?: StyleProp<ViewStyle> };
+interface Props {
+    style?: StyleProp<ViewStyle>;
+}
 
 const paddingMap: Record<SizeVariant, number> = {
     xs: 6,
@@ -10,14 +12,13 @@ const paddingMap: Record<SizeVariant, number> = {
     md: 14,
 };
 
-export const Panel: FC<Props> = ({
-    shape,
+export const Panel: FC<PanelProps & Props> = ({
     color: colorProp,
     highlightColor: hlColorProp,
     variant,
     glowStyle: _glowStyle,
     themeMode,
-    padding = "md",
+    padding,
     interactive = false,
     active = false,
     style,
@@ -53,7 +54,7 @@ export const Panel: FC<Props> = ({
                     backgroundColor: fillColor,
                     borderColor: borderColor,
                     borderWidth: 2,
-                    padding: paddingMap[padding],
+                    padding: padding ? paddingMap[padding] : undefined,
                 };
             }
 
@@ -77,7 +78,7 @@ export const Panel: FC<Props> = ({
                     backgroundColor: fillColor,
                     borderColor: borderColor,
                     borderWidth: 2,
-                    padding: paddingMap[padding],
+                    padding: padding ? paddingMap[padding] : undefined,
                 };
             }
 
@@ -90,7 +91,7 @@ export const Panel: FC<Props> = ({
                     backgroundColor: fill,
                     borderColor: border,
                     borderWidth: 2,
-                    padding: paddingMap[padding],
+                    padding: padding ? paddingMap[padding] : undefined,
                 };
             }
 
@@ -113,7 +114,7 @@ export const Panel: FC<Props> = ({
                     backgroundColor: bgFill,
                     borderColor: bColor,
                     borderWidth: isOutline ? 2 : 0,
-                    padding: paddingMap[padding],
+                    padding: padding ? paddingMap[padding] : undefined,
                 };
             }
         }
