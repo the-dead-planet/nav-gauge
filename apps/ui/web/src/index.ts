@@ -1,4 +1,5 @@
 export * from './button';
+export * from './dialog';
 export * from './flex-box';
 export * from './hud';
 export * from './forms';

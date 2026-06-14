@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { useState } from 'react';
+import { CSSProperties, useState } from 'react';
 import { Transition } from './Transition';
 import { Button } from '../button';
 import { Text } from '../typography';
@@ -10,19 +10,21 @@ const meta = {
 } satisfies Meta<typeof Transition>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
-const DemoBox = ({ label, color, className }: { label: string; color: string, className?: string }) => (
-    <div style={{
+const DemoBox = ({ label, className, style }: { label: string; className?: string; style?: CSSProperties }) => (
+    <div className={className} style={{
         width: 200,
         height: 200,
-        backgroundColor: color,
+        backgroundColor: 'var(--color-secondary)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 8,
-    }} className={className}>
-        <Text style={{ fontWeight: 700 }}>{label}</Text>
+        ...style
+    }}>
+        <Text style={{ fontWeight: 700 }}>
+            {label}
+        </Text>
     </div>
 );
 
@@ -65,7 +67,7 @@ export const Slide = {
                 </Button>
 
                 <Transition render={render} slide={direction} fade={fade} durationMs={400}>
-                    <DemoBox label={`${direction}${fade ? ' + fade' : ''}`} color="#1a3a5c" className="a" />
+                    <DemoBox label={`${direction}${fade ? ' + fade' : ''}`} />
                 </Transition>
             </div>
         );

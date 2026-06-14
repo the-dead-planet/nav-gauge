@@ -1,11 +1,23 @@
-import { CSSProperties, FC, useEffect, useState } from "react";
+import { cloneElement, CSSProperties, FC, isValidElement, ReactNode, useEffect, useState } from "react";
 import classNames from "classnames";
-import { ErrorBoundary, TransitionProps } from "@ui";
+import { ErrorBoundary } from "@ui";
 import styles from './transition.module.css';
 
-/**
- * Wraps the component in a `div` and adds mount and unmount animations
- */
+export interface TransitionProps {
+    render: boolean;
+    /**
+     * Defaults to 200 [ms]
+     */
+    durationMs?: number;
+    slide?: 'to-top' | 'to-right' | 'to-bottom' | 'to-left';
+    fade?: boolean;
+    /**
+     * Triggered when the out transition is done.
+     */
+    onUnmount?: () => void;
+    children: ReactNode;
+}
+
 export const Transition: FC<TransitionProps> = (props) => {
     return (
         <ErrorBoundary fallbackComponent={() => props.children}>
@@ -19,6 +31,7 @@ const TransitionBase: FC<TransitionProps> = ({
     durationMs = 200,
     slide,
     fade,
+    onUnmount,
     children
 }) => {
     const [unmount, setUnmount] = useState(!render);
@@ -28,24 +41,35 @@ const TransitionBase: FC<TransitionProps> = ({
             setUnmount(false);
             return;
         }
-        const timeout = setTimeout(() => setUnmount(true), durationMs);
+        const timeout = setTimeout(() => {
+            setUnmount(true);
+            onUnmount?.();
+        }, durationMs);
 
         return () => clearTimeout(timeout);
     }, [render]);
+
+    const effectiveChildren = Array.isArray(children) ? children : [children];
 
     if (unmount) {
         return null;
     }
 
-    return (
-        <div className={classNames({
-            [styles['slide']]: !!slide,
-            [styles[slide ?? '']]: !!slide,
-            [styles['fade']]: !!fade,
-            [styles['out']]: !render,
-        })}
-            style={{ '--duration': `${durationMs}ms` } as CSSProperties}>
-            {children}
-        </div>
-    );
+    return effectiveChildren.map((child, i) => {
+        if (isValidElement<{ className?: string; style?: CSSProperties }>(child)) {
+            return cloneElement(child, {
+                key: child.key || i,
+                style: { ...(child.props.style ?? {}), '--duration': `${durationMs}ms` } as CSSProperties,
+                className: classNames({
+                    [child.props.className ?? '']: !!child.props.className,
+                    [styles['slide']]: !!slide,
+                    [styles[slide ?? '']]: !!slide,
+                    [styles['fade']]: !!fade,
+                    [styles['out']]: !render,
+                }),
+            });
+        } else {
+            return child;
+        }
+    });
 };

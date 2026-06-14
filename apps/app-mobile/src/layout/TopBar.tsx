@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     },
     header: {
         fontSize: 20,
-        paddingHorizontal: 15
+    paddingHorizontal: 15
     },
     button: {
         marginLeft: "auto",
