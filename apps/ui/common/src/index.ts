@@ -1,5 +1,6 @@
 export * from './button';
 export * from './dialog';
+export * from './dropdown';
 export * from './hud';
 export * from './date-time';
 export * from './error-boundary';

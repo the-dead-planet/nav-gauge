@@ -1,0 +1,302 @@
+.dropdown-select {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+/* ── Color themes ── */
+.color-neutral {
+    --dropdown-color: var(--color-neutral);
+    --dropdown-color-dark: var(--color-neutral-800);
+    --dropdown-color-light: var(--color-neutral-100);
+    --dropdown-color-shadow: var(--color-neutral-700);
+}
+
+.color-primary {
+    --dropdown-color: var(--color-primary);
+    --dropdown-color-dark: var(--color-primary-900);
+    --dropdown-color-light: var(--color-primary-100);
+    --dropdown-color-shadow: var(--color-primary-700);
+}
+
+.color-secondary {
+    --dropdown-color: var(--color-secondary);
+    --dropdown-color-dark: var(--color-secondary-900);
+    --dropdown-color-light: var(--color-secondary-100);
+    --dropdown-color-shadow: var(--color-secondary-700);
+}
+
+.color-tertiary {
+    --dropdown-color: var(--color-tertiary);
+    --dropdown-color-dark: var(--color-tertiary-900);
+    --dropdown-color-light: var(--color-tertiary-100);
+    --dropdown-color-shadow: var(--color-tertiary-700);
+}
+
+/* ── Highlight colors ── */
+.highlight-neutral {
+    --dropdown-highlight-color: var(--color-neutral);
+    --dropdown-highlight-color-accent-lighter: var(--color-neutral-300);
+    --dropdown-highlight-color-accent-darker: var(--color-neutral-600);
+    --dropdown-highlight-color-dark: var(--color-neutral-800);
+    --dropdown-highlight-color-light: var(--color-neutral-100);
+    --dropdown-highlight-color-shadow: var(--color-neutral-700);
+}
+
+.highlight-primary {
+    --dropdown-highlight-color: var(--color-primary);
+    --dropdown-highlight-color-accent-lighter: var(--color-primary-300);
+    --dropdown-highlight-color-accent-darker: var(--color-primary-600);
+    --dropdown-highlight-color-dark: var(--color-primary-900);
+    --dropdown-highlight-color-light: var(--color-primary-100);
+    --dropdown-highlight-color-shadow: var(--color-primary-700);
+}
+
+.highlight-secondary {
+    --dropdown-highlight-color: var(--color-secondary);
+    --dropdown-highlight-color-accent-lighter: var(--color-secondary-300);
+    --dropdown-highlight-color-accent-darker: var(--color-secondary-600);
+    --dropdown-highlight-color-dark: var(--color-secondary-900);
+    --dropdown-highlight-color-light: var(--color-secondary-100);
+    --dropdown-highlight-color-shadow: var(--color-secondary-700);
+}
+
+.highlight-tertiary {
+    --dropdown-highlight-color: var(--color-tertiary);
+    --dropdown-highlight-color-accent-lighter: var(--color-tertiary-300);
+    --dropdown-highlight-color-accent-darker: var(--color-tertiary-600);
+    --dropdown-highlight-color-dark: var(--color-tertiary-900);
+    --dropdown-highlight-color-light: var(--color-tertiary-100);
+    --dropdown-highlight-color-shadow: var(--color-tertiary-700);
+}
+
+/* ── Mode ── */
+.mode-light {
+    --dropdown-color-inverse: var(--dropdown-color-light);
+    --dropdown-highlight-color-inverse: var(--dropdown-highlight-color-light);
+    --dropdown-highlight-color-accent: var(--dropdown-highlight-color-accent-darker);
+    --dropdown-menu-bg: var(--dropdown-color-light);
+}
+
+.mode-dark {
+    --dropdown-color-inverse: var(--dropdown-color-dark);
+    --dropdown-highlight-color-inverse: var(--dropdown-highlight-color-dark);
+    --dropdown-highlight-color-accent: var(--dropdown-highlight-color-accent-lighter);
+    --dropdown-menu-bg: var(--dropdown-color-dark);
+}
+
+/* ── Trigger button ── */
+.trigger {
+    line-height: 1.1;
+    font-family: inherit;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    gap: inherit;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    width: 100%;
+}
+
+.trigger::-moz-focus-inner {
+    border: 0;
+}
+
+.trigger .icon {
+    flex-shrink: 0;
+}
+
+.label {
+    flex: 1;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.placeholder {
+    flex: 1;
+    text-align: left;
+    opacity: .45;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.arrow {
+    flex-shrink: 0;
+    transition: transform .15s ease;
+}
+
+.arrow-open {
+    transform: rotate(180deg);
+}
+
+/* ── Sizes (matches Button heights) ── */
+.size-md {
+    font-size: 14px;
+}
+
+.size-md .trigger {
+    height: 32px;
+    padding: 6px 12px;
+    gap: 10px;
+}
+
+.size-md .option {
+    gap: 10px;
+}
+
+.size-sm {
+    font-size: 14px;
+}
+
+.size-sm .trigger {
+    height: 24px;
+    padding: 2px 10px;
+    gap: 6px;
+}
+
+.size-sm .option {
+    gap: 6px;
+}
+
+.size-xs {
+    font-size: 12px;
+}
+
+.size-xs .trigger {
+    height: 18px;
+    padding: 0px 8px;
+    gap: 4px;
+}
+
+.size-xs .option {
+    gap: 4px;
+}
+
+/* ── Variants ── */
+.variant-fill .trigger {
+    color: var(--dropdown-color-dark);
+    background-color: var(--dropdown-color);
+}
+
+.variant-fill .trigger .icon {
+    color: var(--dropdown-color-dark);
+    stroke: var(--dropdown-color-dark);
+    fill: var(--dropdown-color-dark);
+}
+
+.variant-fill .trigger:hover {
+    background-color: var(--dropdown-highlight-color-accent);
+}
+
+.variant-fill-inverse .trigger {
+    border: 1px solid var(--dropdown-color);
+    color: var(--dropdown-color);
+    background-color: var(--dropdown-color-inverse);
+}
+
+.variant-fill-inverse .trigger .icon {
+    color: var(--dropdown-color);
+    stroke: var(--dropdown-color);
+    fill: var(--dropdown-color);
+}
+
+.variant-fill-inverse .trigger:hover {
+    border-color: var(--dropdown-highlight-color-accent);
+    color: var(--dropdown-highlight-color-accent);
+}
+
+.variant-fill-inverse .trigger:hover .icon {
+    color: var(--dropdown-highlight-color-accent);
+    stroke: var(--dropdown-highlight-color-accent);
+    fill: var(--dropdown-highlight-color-accent);
+}
+
+.variant-fill-translucent .trigger {
+    border: 1px solid rgb(from var(--dropdown-color) r g b / .3);
+    color: var(--dropdown-color);
+    background-color: rgb(from var(--dropdown-color) r g b / .24);
+}
+
+.variant-fill-translucent .trigger .icon {
+    color: var(--dropdown-color);
+    stroke: var(--dropdown-color);
+    fill: var(--dropdown-color);
+}
+
+.variant-fill-translucent .trigger:hover {
+    border-color: var(--dropdown-highlight-color-accent);
+    color: var(--dropdown-highlight-color-accent);
+    background-color: rgb(from var(--dropdown-highlight-color) r g b / .36);
+}
+
+.variant-fill-translucent .trigger:hover .icon {
+    color: var(--dropdown-highlight-color-accent);
+    stroke: var(--dropdown-highlight-color-accent);
+    fill: var(--dropdown-highlight-color-accent);
+}
+
+/* ── Disabled state ── */
+.disabled {
+    opacity: .4;
+    pointer-events: none;
+}
+
+/* ── Menu (dropdown list) ── */
+.menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    list-style: none;
+    margin: 4px 0 0;
+    padding: 4px 0;
+    border: 1px solid var(--dropdown-color);
+    border-radius: 4px;
+    background-color: var(--dropdown-menu-bg);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .3);
+    max-height: 240px;
+    overflow-y: auto;
+}
+
+/* ── Option items ── */
+.option {
+    display: flex;
+    align-items: center;
+    padding: 4px 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    color: var(--dropdown-color);
+    transition: background-color .1s ease, color .1s ease;
+}
+
+.option .icon {
+    flex-shrink: 0;
+}
+
+.option:hover {
+    background-color: rgb(from var(--dropdown-highlight-color) r g b / .14);
+    color: var(--dropdown-highlight-color-accent);
+}
+
+.option:hover .icon {
+    color: var(--dropdown-highlight-color-accent);
+    stroke: var(--dropdown-highlight-color-accent);
+    fill: var(--dropdown-highlight-color-accent);
+}
+
+.option-selected {
+    background-color: rgb(from var(--dropdown-highlight-color) r g b / .1);
+    color: var(--dropdown-highlight-color);
+}
+
+.option-selected .icon {
+    color: var(--dropdown-highlight-color);
+    stroke: var(--dropdown-highlight-color);
+    fill: var(--dropdown-highlight-color);
+}
