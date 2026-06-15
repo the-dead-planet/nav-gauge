@@ -1,9 +1,13 @@
 import { FC, useState } from "react";
 import { createPortal } from "react-dom";
-import { FontType } from "@ui";
-import { Dialog, H3, Menu, MenuItem, P, Panel, Span } from "@web-ui";
+import { Dialog, Menu, MenuItem, P, Span } from "@web-ui";
+import { useMachineWard } from "@apparatus";
+import { useSubjectState } from "@tinker-chest";
 
 export const LayoutMenu: FC = () => {
+    const { individuator } = useMachineWard();
+    const [settings, setSettings] = useSubjectState(individuator.settings$);
+    const [pendingSettings, setPendingSettings] = useState(individuator.settings$.value);
     const [showIndividuatorDialog, setShowIndividuatorDialog] = useState(false);
 
     return (
