@@ -1,6 +1,8 @@
+import { ReactNode } from "react";
+
 export interface Option<T> {
     value: T;
-    label: string;
+    label: ReactNode;
 }
 
 export type GlowStyle = 'none' | 'glow' | 'animate-borders-glow';

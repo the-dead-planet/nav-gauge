@@ -36,7 +36,7 @@
 }
 
 .header {
-    padding: 15px 20px 0 20px;
+    margin: 15px 20px 5px 20px;
 }
 
 .content {
@@ -44,6 +44,7 @@
 }
 
 .footer {
+    margin-top: 5px;
     display: grid;
     grid-template-columns: 1fr 1fr;
 }

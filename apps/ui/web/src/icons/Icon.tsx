@@ -1,12 +1,13 @@
 import { FC } from "react";
 import { ReactSVG } from 'react-svg';
 import { IconProps } from "./model";
+import { Icons } from "@ui";
 
 interface Props {
     src: string;
 }
 
-export const Icon: FC<Props & IconProps> = ({ src, width = 24, height = 24, strokeWidth , ...props }) => {
+export const Icon: FC<Props & IconProps> = ({ src, width = 24, height = 24, strokeWidth, ...props }) => {
     const color = props.color;
     const fill = props.fill || color;
     const stroke = props.stroke || color;
@@ -14,7 +15,7 @@ export const Icon: FC<Props & IconProps> = ({ src, width = 24, height = 24, stro
     return (
         <ReactSVG
             src={src}
-            fallback={props.fallback || (() => <div>error</div>)}
+            fallback={props.fallback || (() => <Icon {...props} width={width} height={height} strokeWidth={strokeWidth} src={Icons.NounProject.Crash} fallback={() => <span>Err!</span>} />)}
             wrapper="span"
             beforeInjection={(svg) => {
                 svg.setAttribute('style', `

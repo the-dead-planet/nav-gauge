@@ -3,8 +3,8 @@ import classNames from "classnames";
 import { DropdownOption, DropdownProps, useTheme } from "@ui";
 import { Icon } from "../icons";
 import { Icons } from "@ui";
-import styles from './dropdown.module.css';
 import { Span } from "../typography";
+import styles from './dropdown.module.css';
 
 const ICON_SIZES: Record<string, number> = {
     xs: 12,
@@ -12,7 +12,11 @@ const ICON_SIZES: Record<string, number> = {
     md: 20,
 };
 
-export function Dropdown<T>({
+interface Props  {
+    labelledBy?: string;
+}
+
+export function Dropdown<T = string>({
     color = 'neutral',
     highlightColor,
     size = 'sm',
@@ -22,15 +26,16 @@ export function Dropdown<T>({
     onChange,
     placeholder = 'Select...',
     disabled = false,
+    labelledBy,
     className,
     style,
     ...props
-}: DropdownProps<T> & Omit<ComponentProps<'div'>, 'onChange'>) {
+}: DropdownProps<T> & Props & Omit<ComponentProps<'div'>, 'onChange'>) {
     const theme = useTheme();
     const [isOpen, setIsOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    const selectedOption = options.find(o => o.value === value);
+    const selectedOption = options.find((option) => option.value === value);
     const iconSize = ICON_SIZES[size];
 
     useEffect(() => {
@@ -72,6 +77,8 @@ export function Dropdown<T>({
             <button
                 type="button"
                 className={styles['trigger']}
+                aria-haspopup="listbox"
+                aria-labelledby={labelledBy}
                 disabled={disabled}
                 onClick={disabled ? undefined : (() => setIsOpen(!isOpen))}
             >
@@ -108,7 +115,9 @@ export function Dropdown<T>({
                             role="option"
                             className={classNames(
                                 styles['option'],
-                                { [styles['option-selected']]: option.value === value }
+                                {
+                                    [styles['option-selected']]: option.value === value,
+                                }
                             )}
                             onClick={() => { handleSelect(option); }}
                         >

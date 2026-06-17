@@ -13,11 +13,31 @@ export class Individuator {
     public static defaultTimeFormat: TimeFormat = TimeFormat.HHmmss;
 
     public static dateFormatOptions: Option<DateFormat>[] = [
-        { value: DateFormat.EEEddMMyyyy, label: DateFormat.EEEddMMyyyy }
+        { value: DateFormat.EEEEMMMMdyyyy, label: 'Wednesday, June 17, 2026' },
+        { value: DateFormat.EEEEMMMdyyyy, label: 'Wednesday, Jun 17, 2026' },
+        { value: DateFormat.EEEEMMddyyyy, label: 'Wednesday 06/17/2026' },
+        { value: DateFormat.EEEEdMMMMyyyy, label: 'Wednesday, 17 June, 2026' },
+        { value: DateFormat.EEEEdMMMyyyy, label: 'Wednesday, 17 Jun, 2026' },
+        { value: DateFormat.EEEEddMMyyyy, label: 'Wednesday 17/06/2026' },
+        { value: DateFormat.EEEEMMMMdyyyy, label: 'Wednesday, 17 June, 2026' },
+        { value: DateFormat.EEEMMMdyyyy, label: 'Wed, Jun 17, 2026' },
+        { value: DateFormat.EEEMMddyyyy, label: 'Wed 06/17/2026' },
+        { value: DateFormat.EEEdMMMMyyyy, label: 'Wed, 17 June, 2026' },
+        { value: DateFormat.EEEdMMMyyyy, label: 'Wed, 17 Jun, 2026' },
+        { value: DateFormat.EEEddMMyyyy, label: 'Wed 17/06/2026' },
+        { value: DateFormat.MMMMdyyyy, label: 'June 17, 2026' },
+        { value: DateFormat.MMMdyyyy, label: 'Jun 17, 2026' },
+        { value: DateFormat.MMddyyyy, label: '06/17/2026' },
+        { value: DateFormat.dMMMMyyyy, label: '17 June, 2026' },
+        { value: DateFormat.dMMMyyyy, label: '17 Jun, 2026' },
+        { value: DateFormat.ddMMyyyy, label: '17/06/2026' },
     ];
 
     public static timeFormatOptions: Option<TimeFormat>[] = [
-        { value: TimeFormat.HHmmss, label: TimeFormat.HHmmss }
+        { value: TimeFormat.HHmmss, label: '14:30:00 (24h, zero-padded)' },
+        { value: TimeFormat.Hmmss, label: '9:30:00 (24h)' },
+        { value: TimeFormat.hhmmssa, label: '02:30:00 pm (12h, zero-padded)' },
+        { value: TimeFormat.hmmssa, label: '9:30:00 am (12h)' },
     ];
 
     /**

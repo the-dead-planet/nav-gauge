@@ -1,7 +1,19 @@
 import { BehaviorSubject } from "rxjs";
-import { Language, TranslationId, TranslationRegistry, TranslationTable } from "./model";
+import { Language, LanguageInfo, TranslationId, TranslationRegistry, TranslationTable } from "./model";
 
 export class Translatron {
+    public static languages: Record<Language, LanguageInfo> = {
+        de: { label: 'Deutsch', locale: 'de-DE', symbol: '🇩🇪' },
+        en: { label: 'English', locale: 'en-US', symbol: '🇺🇸' },
+        es: { label: 'Español', locale: 'es-ES', symbol: '🇪🇸' },
+        fr: { label: 'Français', locale: 'fr-FR', symbol: '🇫🇷' },
+        it: { label: 'Italiano', locale: 'it-IT', symbol: '🇮🇹' },
+        jp: { label: '日本語', locale: 'ja-JP', symbol: '🇯🇵' },
+        nl: { label: 'Nederlands', locale: 'nl-NL', symbol: '🇳🇱' },
+        pl: { label: 'Polski', locale: 'pl-PL', symbol: '🇵🇱' },
+        ru: { label: 'Русский', locale: 'ru-RU', symbol: '🇷🇺' },
+    };
+
     public static defaultLanguage: Language = 'en';
 
     /**

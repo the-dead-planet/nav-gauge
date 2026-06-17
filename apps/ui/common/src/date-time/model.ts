@@ -63,7 +63,6 @@ export enum DateFormat {
      * @example 17 June, 2026
      */
     dMMMMyyyy = 'd MMMM, yyyy',
-
     /**
      * Short day of the week zero-padded month day year
      * @example Wed 06/17/2026
@@ -93,7 +92,7 @@ export enum DateFormat {
      * Day long month, year
      * @example Wednesday, June 17, 2026
      */
-    EEEEMMMMdyyyy = 'EEEE, d MMMM, yyyy',
+    EEEEMMMMdyyyy = 'EEEE, MMMM d, yyyy',
     /**
      * Zero-padded month day year
      * @example 06/17/2026

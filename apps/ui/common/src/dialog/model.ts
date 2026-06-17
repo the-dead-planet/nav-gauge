@@ -6,5 +6,6 @@ export interface DialogProps {
     header: string;
     placement?: DialogPlacement;
     onClose: () => void;
+    onSave?: () => void;
     children?: ReactNode;
 }

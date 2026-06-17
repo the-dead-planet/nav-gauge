@@ -5,7 +5,6 @@
     box-sizing: border-box;
 }
 
-/* ── Color themes ── */
 .color-neutral {
     --dropdown-color: var(--color-neutral);
     --dropdown-color-dark: var(--color-neutral-800);
@@ -34,7 +33,6 @@
     --dropdown-color-shadow: var(--color-tertiary-700);
 }
 
-/* ── Highlight colors ── */
 .highlight-neutral {
     --dropdown-highlight-color: var(--color-neutral);
     --dropdown-highlight-color-accent-lighter: var(--color-neutral-300);
@@ -71,7 +69,6 @@
     --dropdown-highlight-color-shadow: var(--color-tertiary-700);
 }
 
-/* ── Mode ── */
 .mode-light {
     --dropdown-color-inverse: var(--dropdown-color-light);
     --dropdown-highlight-color-inverse: var(--dropdown-highlight-color-light);
@@ -86,7 +83,6 @@
     --dropdown-menu-bg: var(--dropdown-color-dark);
 }
 
-/* ── Trigger button ── */
 .trigger {
     line-height: 1.1;
     font-family: inherit;
@@ -131,10 +127,10 @@
 }
 
 .arrow-open {
+    transform-origin: center;
     transform: rotate(180deg);
 }
 
-/* ── Sizes (matches Button heights) ── */
 .size-md {
     font-size: 14px;
 }
@@ -177,7 +173,6 @@
     gap: 4px;
 }
 
-/* ── Variants ── */
 .variant-fill .trigger {
     color: var(--dropdown-color-dark);
     background-color: var(--dropdown-color);
@@ -240,13 +235,11 @@
     fill: var(--dropdown-highlight-color-accent);
 }
 
-/* ── Disabled state ── */
 .disabled {
     opacity: .4;
     pointer-events: none;
 }
 
-/* ── Menu (dropdown list) ── */
 .menu {
     position: absolute;
     top: 100%;
@@ -264,7 +257,6 @@
     overflow-y: auto;
 }
 
-/* ── Option items ── */
 .option {
     display: flex;
     align-items: center;

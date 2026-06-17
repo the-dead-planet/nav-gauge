@@ -22,3 +22,9 @@ export interface TranslationId<T extends string = string> {
      */
     p?: { [key in string]: string | number; }
 }
+
+export interface LanguageInfo {
+    label: string;
+    locale: string;
+    symbol: string;
+}

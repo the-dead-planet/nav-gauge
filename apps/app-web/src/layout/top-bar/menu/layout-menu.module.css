@@ -1,0 +1,12 @@
+.container {
+    display: grid;
+    grid-template-columns: 1fr max-content;
+    column-gap: 40px;
+    row-gap: 10px;
+    text-transform: uppercase;
+}
+
+.option {
+    display: flex;
+    gap: 12px;
+}

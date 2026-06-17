@@ -10,24 +10,40 @@
     color: var(--color-text);
 }
 
+.bold {
+    font-weight: bold;
+}
+
+.shadow {
+    text-shadow: -1px 0px 1px rgb(from var(--typography-color-dark) r g b / .5);
+}
+
 .p,
 .span {
     font-weight: 400;
 }
 
+.p {
+    font-size: 14px;
+}
+
 .color-primary {
+    --typography-color-dark: var(--color-primary-900);
     color: var(--color-primary);
 }
 
 .color-secondary {
+    --typography-color-dark: var(--color-secondary-900);
     color: var(--color-secondary);
 }
 
 .color-tertiary {
+    --typography-color-dark: var(--color-tertiary-900);
     color: var(--color-tertiary);
 }
 
 .color-neutral {
+    --typography-color-dark: var(--color-neutral-800);
     color: var(--color-neutral);
 }
 

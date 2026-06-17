@@ -6,6 +6,8 @@ import styles from './typography.module.css';
 export const H4: FC<ComponentProps<'h4'> & TypographyProps> = ({
     color = defaultTypographyProps.color,
     fontType = defaultTypographyProps.fontType,
+    bold,
+    shadow,
     className,
     children,
     ...props
@@ -15,7 +17,11 @@ export const H4: FC<ComponentProps<'h4'> & TypographyProps> = ({
             className={classNames(
                 styles.h4,
                 styles[`font-${fontType}`],
-                { [styles[`color-${color}`]]: !!color },
+                {
+                    [styles[`color-${color}`]]: !!color,
+                    [styles['bold']]: !!bold,
+                    [styles['shadow']]: !!shadow,
+                },
                 className
             )}
             {...props}

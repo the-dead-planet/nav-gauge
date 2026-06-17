@@ -12,6 +12,8 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
     header,
     placement = 'middle',
     onClose,
+    onSave,
+    className,
     children,
     ...props
 }) => {
@@ -24,11 +26,11 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
 
     return createPortal(
         <Transition render={render} slide={slide[placement]} fade onUnmount={onClose}>
-            <div className={classNames(styles['container'], styles[placement])} {...props}>
+            <div className={classNames(styles['container'], styles[placement], className)} {...props}>
                 <Panel
                     variant='fill-translucent'
                     color="primary"
-                    className={styles['dialog']}
+                    className={classNames(styles['dialog'])}
                 >
                     <H3 fontType={FontType.NeonText} color="primary" className={styles['header']}>
                         {header.toUpperCase()}
@@ -38,7 +40,10 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
                     </div>
                     <div className={styles['footer']}>
                         <Button variant="fill-translucent" color="primary" onClick={() => setRender(false)}>Close</Button>
-                        <Button variant="fill" color="primary" onClick={() => setRender(false)}>Save</Button>
+                        {onSave? <Button variant="fill" color="primary" onClick={() => {
+                            onSave();
+                            setRender(false);
+                        }}>Save</Button> : null}
                     </div>
                 </Panel>
             </div>
