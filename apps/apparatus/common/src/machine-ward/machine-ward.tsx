@@ -8,7 +8,9 @@ import { Engine } from "./engine";
 import { Gear } from "./gears";
 import { StorageKeeper } from "./storage-keeper";
 import { MachineGear, MachineWardComponents } from "./model";
+import { TranslationTable } from "./translatron";
 import { MediaSubscriptionDefinition } from "@ui";
+import * as Translations from "./translations";
 
 /**
  * Ward with machines. 
@@ -17,6 +19,9 @@ import { MediaSubscriptionDefinition } from "@ui";
  */
 export abstract class MachineWard<TMap = unknown, TNavigationPath extends string = string> {
     public title = 'nav gauge';
+
+    public readonly id = 'machine-ward';
+    public readonly translations: TranslationTable = Translations;
 
     public readonly individuator: Individuator;
     public readonly storageKeeper: StorageKeeper;
@@ -40,6 +45,8 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
         prefersLightColorScheme: boolean,
         protected media: MediaSubscriptionDefinition
     ) {
+        this.translatron.register(this.id, this.translations);
+        
         this.storageKeeper = new StorageKeeper(storage);
 
         this.individuator = new Individuator(prefersLightColorScheme);

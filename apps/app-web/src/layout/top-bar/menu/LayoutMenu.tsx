@@ -2,14 +2,14 @@ import { FC, useState } from "react";
 import { createPortal } from "react-dom";
 import { Dialog, Dropdown, Menu, MenuItem, P, Span } from "@web-ui";
 import { Individuator, Language, Translatron, useMachineWard } from "@apparatus";
+import { T } from "@web-apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { DateFormat, TimeFormat } from "@ui";
 import styles from './layout-menu.module.css';
 
 export const LayoutMenu: FC = () => {
-    const { individuator, translatron } = useMachineWard();
-    const [registry] = useSubjectState(translatron.registry$);
-    const [settings, setSettings] = useSubjectState(individuator.settings$);
+    const { individuator } = useMachineWard();
+    const [_settings, setSettings] = useSubjectState(individuator.settings$);
     const [pendingSettings, setPendingSettings] = useState(individuator.settings$.value);
     const [showIndividuatorDialog, setShowIndividuatorDialog] = useState(false);
 
@@ -17,9 +17,7 @@ export const LayoutMenu: FC = () => {
         <>
             <Menu placement="bottom-right" iconActiveColor="secondary">
                 <MenuItem key="individuator" type="button" closeOnPress onClick={() => setShowIndividuatorDialog(true)}>
-                    <Span>
-                        {translatron.translate(settings.language, registry, { n: 'individuator', t: 'individuatorName' })}
-                    </Span>
+                    <T n="individuator" t="individuatorName" />
                 </MenuItem>
                 <MenuItem
                     key="legal"
@@ -28,16 +26,16 @@ export const LayoutMenu: FC = () => {
                     target="_blank"
                     rel="noreferrer"
                 >
-                    <Span>Legal</Span>
+                    <T n="machine-ward" t="legal" />
                 </MenuItem>
                 <MenuItem
-                    key="link"
+                    key="privacy"
                     type="link"
                     href="/privacy"
                     target="_blank"
                     rel="noreferrer"
                 >
-                    <Span>Privacy</Span>
+                    <T n="machine-ward" t="privacy" />
                 </MenuItem>
             </Menu>
 
