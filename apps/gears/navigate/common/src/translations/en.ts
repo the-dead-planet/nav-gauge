@@ -1,6 +1,6 @@
 const en = {
-    gearName: 'Navigate',
-    gearDescription: 'Navigate using a custom route'
+    "gear-name": 'Navigate',
+    "gear-description": 'Navigate using a custom route'
 };
 
 export default en;

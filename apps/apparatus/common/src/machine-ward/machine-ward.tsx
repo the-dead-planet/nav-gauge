@@ -20,7 +20,7 @@ import * as Translations from "./translations";
 export abstract class MachineWard<TMap = unknown, TNavigationPath extends string = string> {
     public title = 'nav gauge';
 
-    public readonly id = 'machine-ward';
+    public readonly namespace = 'machine-ward';
     public readonly translations: TranslationTable = Translations;
 
     public readonly individuator: Individuator;
@@ -45,12 +45,12 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
         prefersLightColorScheme: boolean,
         protected media: MediaSubscriptionDefinition
     ) {
-        this.translatron.register(this.id, this.translations);
+        this.translatron.register(this.namespace, this.translations);
         
         this.storageKeeper = new StorageKeeper(storage);
 
         this.individuator = new Individuator(prefersLightColorScheme);
-        this.translatron.register(this.individuator.id, this.individuator.translations);
+        this.translatron.register(this.individuator.namespace, this.individuator.translations);
         
         this.animatrix = new Animatrix();
         this.cartomancer = new Cartomancer();
@@ -173,6 +173,7 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
     public render = (): ReactElement => {
         return (
             <MachineWardApp
+                namespace={this.namespace}
                 title={this.title}
                 media={this.media}
                 individuator={this.individuator}

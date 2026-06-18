@@ -1,6 +1,6 @@
 const fr = {
-    gearName: "Enregistrer l'itinéraire",
-    gearDescription: 'Enregistrer vos traces'
+    "gear-name": "Enregistrer l'itinéraire",
+    "gear-description": 'Enregistrer vos traces'
 };
 
 export default fr;

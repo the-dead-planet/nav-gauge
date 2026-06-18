@@ -1,6 +1,6 @@
 const de = {
-    gearName: 'Routengeschichte',
-    gearDescription: 'Erstellen Sie eine Videogeschichte aus Ihren GPS-Spuren und Bilddaten'
+    "gear-name": 'Routengeschichte',
+    "gear-description": 'Erstellen Sie eine Videogeschichte aus Ihren GPS-Spuren und Bilddaten'
 };
 
 export default de;

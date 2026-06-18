@@ -1,6 +1,6 @@
 const it = {
-    gearName: 'Naviga',
-    gearDescription: 'Navigare utilizzando un percorso personalizzato'
+    "gear-name": 'Naviga',
+    "gear-description": 'Navigare utilizzando un percorso personalizzato'
 };
 
 export default it;

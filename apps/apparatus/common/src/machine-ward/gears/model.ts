@@ -18,6 +18,8 @@ export interface GearApparatus<TMap> {
     translatron: Translatron;
 }
 
+export type GearTranslationKeys = 'gear-name' | 'gear-description';
+
 export type GearTranslationTable = {
-    [key in Language]?: { [key in 'gearName' | 'gearDescription']: string; } & { [key in string]: string };
+    [key in Language]?: { [key in GearTranslationKeys]: string; } & { [key in string]: string };
 }

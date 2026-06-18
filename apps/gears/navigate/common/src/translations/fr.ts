@@ -1,6 +1,6 @@
 const fr = {
-    gearName: 'Naviguer',
-    gearDescription: 'Naviguer en utilisant un itinéraire personnalisé'
+    "gear-name": 'Naviguer',
+    "gear-description": 'Naviguer en utilisant un itinéraire personnalisé'
 };
 
 export default fr;

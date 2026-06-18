@@ -1,6 +1,6 @@
 const it = {
-    gearName: 'Invia dati',
-    gearDescription: 'Invia punti dati di arte di strada'
+    "gear-name": 'Invia dati',
+    "gear-description": 'Invia punti dati di arte di strada'
 };
 
 export default it;

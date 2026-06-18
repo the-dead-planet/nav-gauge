@@ -1,6 +1,6 @@
 const pl = {
-    gearName: '__PascalName__',
-    gearDescription: 'Opis dla __PascalName__'
+    "gear-name": '__PascalName__',
+    "gear-description": 'Opis dla __PascalName__'
 };
 
 export default pl;

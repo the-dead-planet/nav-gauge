@@ -4,6 +4,7 @@ import { Individuator } from "./individuator";
 import { Animatrix, AttributionVault, Cartomancer, ChronoLens, Engine, SignaliumBureau, ToolsStation, Translatron } from "..";
 
 export interface MachineWardContextValue<TMap = unknown> {
+    namespace: string;
     individuator: Individuator;
     storageKeeper: StorageKeeper;
     animatrix: Animatrix;

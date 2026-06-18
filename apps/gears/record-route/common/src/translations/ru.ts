@@ -1,6 +1,6 @@
 const ru = {
-    gearName: 'Запись маршрута',
-    gearDescription: 'Записывайте свои маршруты'
+    "gear-name": 'Запись маршрута',
+    "gear-description": 'Записывайте свои маршруты'
 };
 
 export default ru;

@@ -1,6 +1,6 @@
 const en = {
-    gearName: 'Record Route',
-    gearDescription: 'Record your traces'
+    "gear-name": 'Record Route',
+    "gear-description": 'Record your traces'
 };
 
 export default en;

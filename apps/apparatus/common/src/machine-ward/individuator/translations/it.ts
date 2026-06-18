@@ -1,5 +1,5 @@
 const it = {
-    individuatorName: 'Individuatore',
+    "individuator-name": 'Individuatore',
 };
 
 export default it;

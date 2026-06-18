@@ -1,6 +1,6 @@
 const de = {
-    gearName: 'Navigieren',
-    gearDescription: 'Mit einer benutzerdefinierten Route navigieren'
+    "gear-name": 'Navigieren',
+    "gear-description": 'Mit einer benutzerdefinierten Route navigieren'
 };
 
 export default de;

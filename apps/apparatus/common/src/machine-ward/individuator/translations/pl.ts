@@ -1,5 +1,5 @@
 const pl = {
-    individuatorName: 'Indywiduator',
+    "individuator-name": 'Indywiduator',
 };
 
 export default pl;

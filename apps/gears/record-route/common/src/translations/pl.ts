@@ -1,6 +1,6 @@
 const pl = {
-    gearName: 'Nagraj trasę',
-    gearDescription: 'Nagraj swoją trasę'
+    "gear-name": 'Nagraj trasę',
+    "gear-description": 'Nagraj swoją trasę'
 };
 
 export default pl;

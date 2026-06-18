@@ -1,6 +1,6 @@
 const de = {
-    gearName: 'Daten einreichen',
-    gearDescription: 'Datenpunkte zu Straßenkunst einreichen'
+    "gear-name": 'Daten einreichen',
+    "gear-description": 'Datenpunkte zu Straßenkunst einreichen'
 };
 
 export default de;

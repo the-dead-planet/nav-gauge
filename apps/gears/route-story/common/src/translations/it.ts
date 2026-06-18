@@ -1,6 +1,6 @@
 const it = {
-    gearName: 'Storia del percorso',
-    gearDescription: 'Crea una storia video dai tuoi tracciati GPS e dati immagine'
+    "gear-name": 'Storia del percorso',
+    "gear-description": 'Crea una storia video dai tuoi tracciati GPS e dati immagine'
 };
 
 export default it;

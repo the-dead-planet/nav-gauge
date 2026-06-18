@@ -1,5 +1,5 @@
 const jp = {
-    individuatorName: 'インディヴィデュエーター',
+    "individuator-name": 'インディヴィデュエーター',
 };
 
 export default jp;

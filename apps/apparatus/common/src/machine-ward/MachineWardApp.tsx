@@ -9,6 +9,7 @@ import { useSubjectState } from "@tinker-chest";
 import { MachineWardComponents } from "./model";
 
 interface MachineWardProps<TMap, TNavigationPath extends string> {
+    namespace: string;
     title: string;
     media: MediaSubscriptionDefinition;
     individuator: Individuator;
@@ -29,6 +30,7 @@ interface MachineWardProps<TMap, TNavigationPath extends string> {
 }
 
 export function MachineWardApp<TMap, TNavigationPath extends string>({
+    namespace,
     title,
     media,
     individuator,
@@ -71,6 +73,7 @@ export function MachineWardApp<TMap, TNavigationPath extends string>({
             <ThemeContext.Provider value={theme}>
                 <ErrorBoundary fallbackComponent={components.errorFallbackComponent}>
                     <MachineWardContext.Provider value={{
+                        namespace,
                         individuator,
                         storageKeeper,
                         animatrix,

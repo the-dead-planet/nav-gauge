@@ -1,5 +1,5 @@
 const de = {
-    individuatorName: 'Individuator',
+    "individuator-name": 'Individuator',
 };
 
 export default de;

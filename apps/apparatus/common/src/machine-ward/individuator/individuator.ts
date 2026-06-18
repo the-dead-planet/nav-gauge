@@ -6,7 +6,7 @@ import { TranslationTable, Translatron } from "../translatron";
 import * as Translations from "./translations";
 
 export class Individuator {
-    public id = 'individuator';
+    public namespace = 'individuator';
     public translations: TranslationTable = Translations;
 
     private readonly settingsStorageId = 'application-settings';

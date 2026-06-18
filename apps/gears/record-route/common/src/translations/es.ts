@@ -1,6 +1,6 @@
 const es = {
-    gearName: 'Grabar Ruta',
-    gearDescription: 'Grabar tus trazas'
+    "gear-name": 'Grabar Ruta',
+    "gear-description": 'Grabar tus trazas'
 };
 
 export default es;

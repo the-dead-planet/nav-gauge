@@ -1,6 +1,6 @@
 const es = {
-    gearName: '__PascalName__',
-    gearDescription: 'Descripción para __PascalName__'
+    "gear-name": '__PascalName__',
+    "gear-description": 'Descripción para __PascalName__'
 };
 
 export default es;

@@ -1,6 +1,6 @@
 const nl = {
-    gearName: 'Routeverhaal',
-    gearDescription: 'Maak een videoverhaal van je GPS-sporen en beeldgegevens'
+    "gear-name": 'Routeverhaal',
+    "gear-description": 'Maak een videoverhaal van je GPS-sporen en beeldgegevens'
 };
 
 export default nl;

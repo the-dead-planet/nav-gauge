@@ -1,5 +1,5 @@
 const ru = {
-    individuatorName: 'Индивидуатор',
+    "individuator-name": 'Индивидуатор',
 };
 
 export default ru;

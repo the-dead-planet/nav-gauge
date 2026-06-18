@@ -1,6 +1,6 @@
 const jp = {
-    gearName: 'データを提出',
-    gearDescription: 'ストリートアートのデータポイントを投稿する'
+    "gear-name": 'データを提出',
+    "gear-description": 'ストリートアートのデータポイントを投稿する'
 };
 
 export default jp;

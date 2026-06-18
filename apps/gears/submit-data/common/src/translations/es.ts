@@ -1,6 +1,6 @@
 const es = {
-    gearName: 'Enviar Datos',
-    gearDescription: 'Enviar puntos de datos de arte callejero'
+    "gear-name": 'Enviar Datos',
+    "gear-description": 'Enviar puntos de datos de arte callejero'
 };
 
 export default es;

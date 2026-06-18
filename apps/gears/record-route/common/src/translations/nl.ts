@@ -1,6 +1,6 @@
 const nl = {
-    gearName: 'Route opnemen',
-    gearDescription: 'Registreer je routes'
+    "gear-name": 'Route opnemen',
+    "gear-description": 'Registreer je routes'
 };
 
 export default nl;

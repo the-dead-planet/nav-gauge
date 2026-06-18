@@ -1,5 +1,5 @@
 const nl = {
-    individuatorName: 'Individuator',
+    "individuator-name": 'Individuator',
 };
 
 export default nl;

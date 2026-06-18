@@ -1,6 +1,6 @@
 const it = {
-    gearName: 'Registra percorso',
-    gearDescription: 'Registra i tuoi percorsi'
+    "gear-name": 'Registra percorso',
+    "gear-description": 'Registra i tuoi percorsi'
 };
 
 export default it;
