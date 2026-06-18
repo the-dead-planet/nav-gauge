@@ -32,6 +32,7 @@ export const Overview = {
                     <Dialog
                         header={open.replace('-', ' ')}
                         placement={open}
+                        closeText="Close"
                         onClose={() => setOpen(null)}
                     >
                         <div>

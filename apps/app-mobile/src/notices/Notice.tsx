@@ -1,8 +1,9 @@
 import { FC, useEffect, useRef } from "react";
 import { Animated, Button, StyleSheet } from "react-native";
 import { Text } from '@mobile-ui';
-import { SignaliumNotice } from "@apparatus";
+import { SignaliumNotice, useMachineWard } from "@apparatus";
 import { useTheme } from "@ui";
+import { useSubjectState } from "@tinker-chest";
 
 const styles = StyleSheet.create({
     container: {
@@ -28,6 +29,9 @@ export const Notice: FC<Props> = ({
     const theme = useTheme();
     const translateY = useRef(new Animated.Value(-80)).current;
     const opacity = useRef(new Animated.Value(0)).current;
+    const { namespace, individuator, translatron } = useMachineWard();
+    const [registry] = useSubjectState(translatron.registry$);
+    const [settings] = useSubjectState(individuator.settings$);
 
     useEffect(() => {
         Animated.parallel([
@@ -53,7 +57,10 @@ export const Notice: FC<Props> = ({
             transform: [{ translateY }]
         }]}>
             <Text>{notice.text} {notice.type === 'error' ? notice.error.message || '' : ''}</Text>
-            <Button title='Close' onPress={() => onRemove(notice.id)} />
+            <Button
+                title={translatron.translate(settings.language, registry, { n: namespace, t: 'close' })}
+                onPress={() => onRemove(notice.id)}
+            />
         </Animated.View>
     );
 };

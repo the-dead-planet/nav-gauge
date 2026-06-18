@@ -45,6 +45,6 @@
 
 .footer {
     margin-top: 5px;
-    display: grid;
-    grid-template-columns: 1fr max-content;
+    display: flex;
+    justify-content: flex-end;
 }

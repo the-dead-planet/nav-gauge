@@ -11,8 +11,9 @@ import styles from './dialog.module.css';
 export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
     header,
     placement = 'middle',
+    closeText,
     onClose,
-    onSave,
+    save,
     className,
     children,
     ...props
@@ -39,11 +40,15 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
                         {children}
                     </div>
                     <div className={styles['footer']}>
-                        <Button variant="fill-translucent" color="primary" onClick={() => setRender(false)}>Close</Button>
-                        {onSave? <Button variant="fill" color="primary" onClick={() => {
-                            onSave();
-                            setRender(false);
-                        }}>Save</Button> : null}
+                        <Button variant="fill-translucent" color="primary" onClick={() => setRender(false)}>{closeText}</Button>
+                        {save ? (
+                            <Button variant="fill" color="primary" onClick={() => {
+                                save.onSave();
+                                setRender(false);
+                            }}>
+                                {save.saveText}
+                            </Button>
+                        ) : null}
                     </div>
                 </Panel>
             </div>

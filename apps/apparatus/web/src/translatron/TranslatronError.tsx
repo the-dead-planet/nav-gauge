@@ -5,6 +5,7 @@ interface Props {
     errorInfo?: ErrorInfo;
 }
 
+// TODO: Make it an error icon with a tooltip
 export const TranslatronError: FC<Props> = ({ error, errorInfo }) => {
     return (
         <span title={`${error.message}. Stack: ${errorInfo?.componentStack ?? undefined}`}>
