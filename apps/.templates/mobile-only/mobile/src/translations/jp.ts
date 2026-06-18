@@ -1,6 +1,6 @@
 const jp = {
-    name: '__PascalName__',
-    description: '__PascalName__の説明'
+    gearName: '__PascalName__',
+    gearDescription: '__PascalName__の説明'
 };
 
 export default jp;

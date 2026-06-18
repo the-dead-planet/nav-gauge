@@ -34,10 +34,10 @@ export class Individuator {
     ];
 
     public static timeFormatOptions: Option<TimeFormat>[] = [
-        { value: TimeFormat.HHmmss, label: '14:30:00 (24h, zero-padded)' },
+        { value: TimeFormat.HHmmss, label: '09:30:00 (24h, zero-padded)' },
         { value: TimeFormat.Hmmss, label: '9:30:00 (24h)' },
         { value: TimeFormat.hhmmssa, label: '02:30:00 pm (12h, zero-padded)' },
-        { value: TimeFormat.hmmssa, label: '9:30:00 am (12h)' },
+        { value: TimeFormat.hmmssa, label: '2:30:00 pm (12h)' },
     ];
 
     /**

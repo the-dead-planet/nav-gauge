@@ -79,9 +79,9 @@ export const MapSection: FC = () => {
                                     engine.engageGear(gear);
                                 }
                             }}
-                            tooltip={<T n={gear.id} t="description" />}
+                            tooltip={<T n={gear.id} t="gearDescription" />}
                         >
-                            <T n={gear.id} t="name" />
+                            <T n={gear.id} t="gearName" />
                         </Button>
                     ))}
                 </FlexBox>

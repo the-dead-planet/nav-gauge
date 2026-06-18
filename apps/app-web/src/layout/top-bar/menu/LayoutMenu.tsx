@@ -8,7 +8,7 @@ import styles from './layout-menu.module.css';
 
 export const LayoutMenu: FC = () => {
     const { individuator } = useMachineWard();
-    const [settings, setSettings] = useSubjectState(individuator.settings$);
+    const [_settings, setSettings] = useSubjectState(individuator.settings$);
     const [pendingSettings, setPendingSettings] = useState(individuator.settings$.value);
     const [showIndividuatorDialog, setShowIndividuatorDialog] = useState(false);
 
@@ -56,7 +56,12 @@ export const LayoutMenu: FC = () => {
                             options={Object.entries(Translatron.languages)
                                 .map(([language, { label, locale, symbol }]) => ({
                                     value: language as Language,
-                                    label: <span className={styles['option']}><span>{symbol}</span><span>{label} ({locale})</span></span>,
+                                    label: (
+                                        <span className={styles['option']}>
+                                            <span>{symbol}</span>
+                                            <span>{label} ({locale})</span>
+                                        </span>
+                                    ),
                                 }))}
                             onChange={(language) => setPendingSettings((prev) => ({ ...prev, language }))}
                         />

@@ -1,6 +1,6 @@
 const jp = {
-    name: 'ナビゲート',
-    description: 'カスタムルートでナビゲーションします。'
+    gearName: 'ナビゲート',
+    gearDescription: 'カスタムルートでナビゲーションします。'
 };
 
 export default jp;

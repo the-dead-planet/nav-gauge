@@ -1,6 +1,6 @@
 const en = {
-    name: '__PascalName__',
-    description: 'Description for __PascalName__'
+    gearName: '__PascalName__',
+    gearDescription: 'Description for __PascalName__'
 };
 
 export default en;

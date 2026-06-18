@@ -19,5 +19,5 @@ export interface GearApparatus<TMap> {
 }
 
 export type GearTranslationTable = {
-    [key in Language]?: { [key in 'name' | 'description']: string; } & { [key in string]: string };
+    [key in Language]?: { [key in 'gearName' | 'gearDescription']: string; } & { [key in string]: string };
 }

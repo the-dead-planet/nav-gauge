@@ -2,14 +2,9 @@ import { useMachineWard } from "@the-dead-planet/nav-gauge-apparatus-common/src/
 import { useSubjectState } from "@tinker-chest";
 import { ErrorBoundary } from "@ui";
 import { TranslatronError } from "./TranslatronError";
+import { TranslationId } from "@apparatus";
 
-export interface TranslatronWrapperProps<T = string> {
-    n: string;
-    t: T;
-    p?: { [key in string]: string | number; };
-}
-
-export function T<T extends string = string>(props: TranslatronWrapperProps<T>) {
+export function T<T extends string = string>(props: TranslationId<T>) {
     return (
         <ErrorBoundary fallbackComponent={TranslatronError}>
             <InternalT {...props} />
@@ -17,7 +12,7 @@ export function T<T extends string = string>(props: TranslatronWrapperProps<T>) 
     );
 };
 
-function InternalT<T extends string = string>(props: TranslatronWrapperProps<T>) {
+function InternalT<T extends string = string>(props: TranslationId<T>) {
     const { n, t, p } = props;
     const { individuator, translatron } = useMachineWard();
     const [settings] = useSubjectState(individuator.settings$);
