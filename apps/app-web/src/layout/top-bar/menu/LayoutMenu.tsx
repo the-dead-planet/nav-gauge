@@ -7,8 +7,9 @@ import { DateFormat, TimeFormat } from "@ui";
 import styles from './layout-menu.module.css';
 
 export const LayoutMenu: FC = () => {
-    const { individuator } = useMachineWard();
-    const [_settings, setSettings] = useSubjectState(individuator.settings$);
+    const { individuator, translatron } = useMachineWard();
+    const [registry] = useSubjectState(translatron.registry$);
+    const [settings, setSettings] = useSubjectState(individuator.settings$);
     const [pendingSettings, setPendingSettings] = useState(individuator.settings$.value);
     const [showIndividuatorDialog, setShowIndividuatorDialog] = useState(false);
 
@@ -16,7 +17,9 @@ export const LayoutMenu: FC = () => {
         <>
             <Menu placement="bottom-right" iconActiveColor="secondary">
                 <MenuItem key="individuator" type="button" closeOnPress onClick={() => setShowIndividuatorDialog(true)}>
-                    <Span>Individuator</Span>
+                    <Span>
+                        {translatron.translate(settings.language, registry, { n: 'individuator', t: 'individuatorName' })}
+                    </Span>
                 </MenuItem>
                 <MenuItem
                     key="legal"

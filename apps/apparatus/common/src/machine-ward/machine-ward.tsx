@@ -41,7 +41,10 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
         protected media: MediaSubscriptionDefinition
     ) {
         this.storageKeeper = new StorageKeeper(storage);
+
         this.individuator = new Individuator(prefersLightColorScheme);
+        this.translatron.register(this.individuator.id, this.individuator.translations);
+        
         this.animatrix = new Animatrix();
         this.cartomancer = new Cartomancer();
         this.chronoLens = new chronoLens(this.individuator);
