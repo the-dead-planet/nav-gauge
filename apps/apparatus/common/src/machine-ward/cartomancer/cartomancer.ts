@@ -27,7 +27,7 @@ export class Cartomancer<TMap> {
     /**
      * All available controls position options.
      */
-    public static controlsPositionOptions: Option<GaugeControlsType['controlPosition']>[] = [
+    public static controlsPositionOptions: { value: GaugeControlsType['controlPosition']; label: string; }[] = [
         { value: "top-left", label: 'Top left' },
         { value: "top-right", label: "Top right" },
         { value: "bottom-left", label: "Bottom left" },
