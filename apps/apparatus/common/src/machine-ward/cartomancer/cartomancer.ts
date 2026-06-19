@@ -2,7 +2,6 @@ import { ComponentType } from "react";
 import { BehaviorSubject, Subscription } from "rxjs";
 import turfDistance from "@turf/distance";
 import { point as turfPoint } from "@turf/helpers";
-import { Option } from "@ui";
 import { FeatureProperties, GeoJson, LngLat } from "@tinker-chest";
 import { backgroundMapStyle, customRoadsMapStyle, osmMapStyle } from "./map-styles";
 import { StorageKeeper } from "../storage-keeper";

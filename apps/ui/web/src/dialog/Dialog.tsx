@@ -40,12 +40,18 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
                         {children}
                     </div>
                     <div className={styles['footer']}>
-                        <Button variant="fill-translucent" color="primary" onClick={() => setRender(false)}>{closeText}</Button>
+                        <Button variant="fill-translucent" color="primary" onClick={() => setRender(false)}>
+                            {closeText}
+                        </Button>
                         {save ? (
-                            <Button variant="fill" color="primary" onClick={() => {
-                                save.onSave();
-                                setRender(false);
-                            }}>
+                            <Button
+                                variant="fill"
+                                color="primary"
+                                onClick={() => {
+                                    save.onSave();
+                                    setRender(false);
+                                }}
+                            >
                                 {save.saveText}
                             </Button>
                         ) : null}
