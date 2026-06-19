@@ -1,9 +1,9 @@
 import { ComponentProps, useEffect, useRef, useState } from "react";
 import classNames from "classnames";
-import { DropdownOption, DropdownProps, useTheme } from "@ui";
+import { DropdownList } from "./DropdownList";
+import { DropdownProps, useTheme } from "@ui";
 import { Icon } from "../icons";
 import { Icons } from "@ui";
-import { Span } from "../typography";
 import styles from './dropdown.module.css';
 
 const ICON_SIZES: Record<string, number> = {
@@ -12,7 +12,7 @@ const ICON_SIZES: Record<string, number> = {
     md: 20,
 };
 
-interface Props  {
+interface Props {
     labelledBy?: string;
 }
 
@@ -49,11 +49,6 @@ export function Dropdown<T = string>({
         }
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [isOpen]);
-
-    const handleSelect = (option: DropdownOption<T>) => {
-        onChange?.(option.value);
-        setIsOpen(false);
-    };
 
     return (
         <div
@@ -108,33 +103,13 @@ export function Dropdown<T = string>({
             </button>
 
             {isOpen ? (
-                <ul role="listbox" className={styles['menu']}>
-                    {options.map((option) => (
-                        <li
-                            key={String(option.value)}
-                            role="option"
-                            className={classNames(
-                                styles['option'],
-                                {
-                                    [styles['option-selected']]: option.value === value,
-                                }
-                            )}
-                            onClick={() => { handleSelect(option); }}
-                        >
-                            {option.icon ? (
-                                <Icon
-                                    src={option.icon}
-                                    width={iconSize}
-                                    height={iconSize}
-                                    className={styles['icon']}
-                                />
-                            ) : null}
-                            <Span color={color}>
-                                {option.label}
-                            </Span>
-                        </li>
-                    ))}
-                </ul>
+                <DropdownList
+                    onClose={() => setIsOpen(false)}
+                    iconSize={iconSize}
+                    color={color}
+                    value={value}
+                    options={options}
+                />
             ) : null}
         </div>
     );
