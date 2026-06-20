@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { createPortal } from "react-dom";
 import { DateTime } from "luxon";
 import { Dialog, Dropdown, P } from "@web-ui";
-import { Individuator, Language, Translatron, useMachineWard } from "@apparatus";
+import { Individuator, IndividuatorSettings, Language, Translatron, useMachineWard } from "@apparatus";
 import { T } from "@web-apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { DateFormat, TimeFormat } from "@ui";
@@ -49,7 +49,7 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                                 </span>
                             ),
                         }))}
-                    onChange={(language) => setPendingSettings((prev) => ({ ...prev, language }))}
+                    onChange={(language) => setPendingSettings((prev): IndividuatorSettings => ({ ...prev, language }))}
                 />
 
                 <P shadow color="primary">

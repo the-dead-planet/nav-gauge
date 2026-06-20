@@ -48,11 +48,8 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
         this.translatron.register(this.namespace, this.translations);
         
         this.storageKeeper = new StorageKeeper(storage);
-
-        this.individuator = new Individuator(prefersLightColorScheme);
-        this.translatron.register(this.individuator.namespace, this.individuator.translations);
-        
-        this.animatrix = new Animatrix();
+        this.individuator = new Individuator(prefersLightColorScheme);        
+        this.animatrix = new Animatrix();        
         this.cartomancer = new Cartomancer();
         this.chronoLens = new chronoLens(this.individuator);
 
@@ -96,12 +93,12 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
 
     private mount = () => {
         this.storageKeeper.initialize();
-        this.individuator.initialize(this.storageKeeper);
+        this.individuator.initialize(this.storageKeeper, this.translatron);
         this.attributionVaultSubscription = this.subscribeAttributionVault();
         this.toolsStationPresetSubscription = this.subscribeToolsStationPreset();
         this.toolsStationPresetActiveSubscription = this.subscribeToolsStationPresetActive();
         this.animatrix.initialize(this.storageKeeper);
-        this.cartomancer.initialize(this.storageKeeper);
+        this.cartomancer.initialize(this.storageKeeper, this.translatron, this.toolsStation);
         this.initializeValves();
     };
 
@@ -141,9 +138,9 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
             if (!option) {
                 return;
             }
-            const { mapLayout: { size, ...mapLayout }, gaugeControls: { controlPlacement, ...gaugeControls }, animationControls } = option;
+            const { mapLayout: { size, ...mapLayout }, gaugeControls: { ...gaugeControls }, animationControls } = option;
             this.cartomancer.mapLayout$.next({ size: { ...size }, ...mapLayout });
-            this.cartomancer.gaugeControls$.next({ controlPlacement: { ...controlPlacement }, ...gaugeControls });
+            this.cartomancer.gaugeControls$.next({ ...gaugeControls });
             this.animatrix.controls$.next({ ...animationControls });
         });
     };

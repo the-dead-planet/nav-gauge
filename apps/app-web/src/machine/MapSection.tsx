@@ -15,6 +15,8 @@ import { Button, FlexBox, Transition } from "@web-ui";
 import { createMap } from "./map";
 import { useTheme } from "@ui";
 import styles from './map-section.module.css';
+import { ToolIconRight } from "./map-tools/ToolIconRight";
+import { ToolIconLeft } from "./map-tools/ToolIconLeft";
 
 export const MapSection: FC = () => {
     const theme = useTheme();
@@ -98,45 +100,30 @@ export const MapSection: FC = () => {
             </div>
             <div className={classNames(styles['icons'], styles['left'])}>
                 {toolIconsByPlacement.left.length > 1 ? <div /> : null}
-                {toolIconsByPlacement.left.map(({ id, icon, active, onClick, tooltip }) => (
-                    <Transition fade render>
-                        <Button
-                            key={id}
-                            icon={icon}
-                            tooltip={<T {...tooltip} />}
-                            size="sm"
-                            variant="fill-inverse"
-                            corners="hexagon"
-                            glowStyle={theme.mode === 'dark' ? "animate-borders-glow" : 'none'}
-                            highlightColor="secondary"
-                            active={active}
-                            onClick={() => onClick(map)}
-                            className={classNames(styles['icon-button'], styles['left'])}
-                        />
-                    </Transition>
+                {!!map && toolIconsByPlacement.left.map((toolIcon) => (
+                    <ToolIconLeft
+                        key={toolIcon.id}
+                        map={map}
+                        className={classNames(styles['icon-button'], styles['left'])}
+                        {...toolIcon}
+                    />
                 ))}
             </div>
             {/* TODO: Bind right icons with right panel? */}
             {/* TODO: Rename right/left panels according to their use */}
             {/* TODO: Add option to swap left/right */}
             <div className={classNames(styles['icons'], styles['right'])}>
-                {toolIconsByPlacement.right.map(({ id, icon, active, onClick, tooltip }) => (
-                    <Transition fade render>
-                        <Button
-                            key={id}
-                            icon={icon}
-                            tooltip={<T {...tooltip} />}
-                            size="xs"
-                            variant="fill-inverse"
-                            corners="hexagon"
-                            glowStyle={theme.mode === 'dark' ? "animate-borders-glow" : 'none'}
-                            color="primary"
-                            active={active}
-                            onClick={() => onClick(map)}
+                {toolIconsByPlacement.right.length === 1 ? <div /> : null}
+                {!map
+                    ? null
+                    : toolIconsByPlacement.right.map((toolIcon) => (
+                        <ToolIconRight
+                            key={toolIcon.id}
+                            map={map}
                             className={classNames(styles['icon-button'], styles['right'])}
+                            {...toolIcon}
                         />
-                    </Transition>
-                ))}
+                    ))}
             </div>
             <div className={classNames(styles['toolbar'], styles['right'])}>
                 <Transition slide="to-left" render={toolPanelsByPlacement.right.length > 0}>

@@ -1,4 +1,4 @@
-import { ComponentProps, FC, MouseEvent, ReactNode, useState } from "react";
+import { ComponentProps, CSSProperties, FC, MouseEvent, ReactNode, useState } from "react";
 import classNames from "classnames";
 import { ButtonProps, useTheme } from "@ui";
 import { Icon } from "../icons";
@@ -11,6 +11,8 @@ interface Props {
      * Icon to display before the children
      */
     icon?: string;
+    iconRotateX?: number;
+    iconRotateZ?: number;
     tooltip?: ReactNode;
 }
 
@@ -24,6 +26,8 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     active = false,
     themeMode,
     icon,
+    iconRotateX = 0,
+    iconRotateZ = 0,
     tooltip,
     onClick,
     children,
@@ -72,7 +76,13 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
                     src={icon}
                     width={iconSize}
                     height={iconSize}
-                    className={styles['icon']}
+                    style={{
+                        '--rotate-x': `${iconRotateX}deg`,
+                        '--rotate-z': `${iconRotateZ}deg`,
+                    } as CSSProperties}
+                    className={classNames(styles['icon'], {
+                        [styles['rotate']]: iconRotateX || iconRotateZ
+                    })}
                 />
             ) : null}
             {children}

@@ -1,10 +1,9 @@
-import { FC, ReactNode, useState, useEffect, CSSProperties, useMemo } from "react";
+import { FC, ReactNode, useState, useEffect } from "react";
 import maplibregl from "maplibre-gl";
 import { Protocol } from "pmtiles";
-import classNames from "classnames";
 import { Icons } from "@ui";
-import { Cartomancer, useMachineWard, ToolsStation, glitchmitter } from "@apparatus";
-import { useObservableState, useSubjectState } from "@tinker-chest";
+import { Cartomancer, useMachineWard, glitchmitter } from "@apparatus";
+import { useSubjectState } from "@tinker-chest";
 import styles from './map-tools.module.css';
 import './map.css';
 
@@ -17,7 +16,7 @@ interface Props {
 }
 
 export const MapTools: FC<Props> = ({ map, children }) => {
-    const { cartomancer, toolsStation } = useMachineWard();
+    const { cartomancer, toolsStation } = useMachineWard<maplibregl.Map>();
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const [containerRef, setContainerRef] = useState<HTMLElement | null>(null);
     const [cssLoaded, setCssLoaded] = useState(false);
@@ -102,28 +101,19 @@ export const MapTools: FC<Props> = ({ map, children }) => {
     }, [containerRef, cssLoaded]);
 
     useEffect(() => {
-        const showControls = gaugeControls.showZoomButtons || gaugeControls.showCompass;
-        if (!isInitialised || !showControls) {
+        if (!isInitialised) {
             return;
         }
         const resizeHandler = () => {
             map.resize();
         };
-        // TODO: Observer parent
         window.addEventListener('resize', resizeHandler);
-        const control = new maplibregl.NavigationControl({
-            showZoom: gaugeControls.showZoomButtons,
-            showCompass: gaugeControls.showCompass,
-            visualizePitch: true
-        });
-        map.addControl(control, gaugeControls.controlPosition);
         map.resize();
 
         return () => {
-            map.removeControl(control);
             window.removeEventListener('resize', resizeHandler);
         };
-    }, [isInitialised, gaugeControls.showZoomButtons, gaugeControls.showCompass, gaugeControls.controlPosition]);
+    }, [isInitialised]);
 
     useEffect(() => {
         const zoomHandler = () => {
@@ -205,34 +195,40 @@ export const MapTools: FC<Props> = ({ map, children }) => {
         };
     }, [isInitialised]);
 
-    const toolPanels = useObservableState(toolsStation.toolPanelsByPlacement$, []);
-    const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
+    useEffect(() => {
+        if (!gaugeControls.showCompass) {
+            return;
+        }
+        const id = 'cartomancer-compass';
+        const toolIcon = toolsStation.addToolIcon(id, {
+            icon: Icons.NounProject.North,
+            onClick: (map) => {
+                map.setBearing(0);
+                map.setPitch(0);
+            },
+            placement: 'right',
+            tooltip: { n: cartomancer.namespace, t: 'compass' },
+        });
+        
+        const rotateHandler = () => {
+            toolIcon.rotate$.next(Math.round(map.getBearing()));
+        };
+        const pitchHandler = () => {
+            toolIcon.pitch$.next(Math.round(map.getPitch()));
+        };
 
-    const controlsCssStyle = useMemo(
-        () => {
-            const { top, bottom, right, left } = gaugeControls.controlPlacement;
+        map.on('rotate', rotateHandler);
+        map.on('pitch', pitchHandler);
 
-            switch (gaugeControls.controlPosition) {
-                case 'top-left': return { '--ctrl-top': top + 'px', '--ctrl-left': left + 'px' }
-                case 'top-right': return { '--ctrl-top': top + 'px', '--ctrl-right': right + 'px' }
-                case 'bottom-left': return { '--ctrl-bottom': bottom + 'px', '--ctrl-left': left + 'px' }
-                case 'bottom-right': return { '--ctrl-bottom': bottom + 'px', '--ctrl-right': right + 'px' }
-            }
-        },
-        [gaugeControls]
-    );
+        return () => {
+            map.off('rotate', rotateHandler);
+            map.off('pitch', pitchHandler);
+            toolsStation.removeToolIcon(id);
+        };
+    }, [gaugeControls.showCompass]);
 
     return (
-        <div ref={setContainerRef} className={styles["container"]}  style={{
-            ...controlsCssStyle,
-        } as unknown as CSSProperties}>
-            {/* {ToolsStation.placements.map((p) => (
-                <div key={p} className={classNames(styles["toolbox"], styles[p])}>
-                    {toolsByPlacement[p].map(({ id, component: ToolComponent }) => (
-                        <ToolComponent key={id} map={map} />
-                    ))}
-                </div>
-            ))} */}
+        <div ref={setContainerRef} className={styles["container"]}>
             {isStyleLoaded ? children : null}
         </div>
     );

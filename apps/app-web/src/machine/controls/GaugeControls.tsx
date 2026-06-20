@@ -1,7 +1,7 @@
 import { FC, useMemo } from "react";
 import maplibregl from "maplibre-gl";
 import { Input, Fieldset } from "@web-ui";
-import { Cartomancer, ControlPlacement, useMachineWard } from "@apparatus";
+import { useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import styles from './controls.module.css';
 
@@ -17,28 +17,14 @@ export const GaugeControls: FC<Props> = () => {
         showCurrentZoom,
         showCompass,
         showGreenScreen,
-        controlPosition,
-        controlPlacement,
         showRouteLine,
         showRoutePoints,
     } = gaugeControls;
 
-    const placements = useMemo(
-        (): (keyof ControlPlacement)[] => {
-            switch (controlPosition) {
-                case 'top-left': return ['top', 'left']
-                case 'top-right': return ['top', 'right']
-                case 'bottom-left': return ['bottom', 'left']
-                case 'bottom-right': return ['bottom', 'right']
-            }
-        },
-        [controlPosition]
-    );
-
     return (
         <Fieldset label="Gauge controls">
             {/* TODO: move select  */}
-            <div>
+            {/* <div>
                 <label htmlFor="controls-position" style={{ fontSize: "12px" }}>Controls position</label>
                 <select
                     id="controls-position"
@@ -75,7 +61,7 @@ export const GaugeControls: FC<Props> = () => {
                         />
                     );
                 })}
-            </div>
+            </div> */}
 
             <Input
                 id="controls-globe-projection"

@@ -30,8 +30,10 @@ export interface ToolIcon<TMap> {
     icon: string;
     placement$: BehaviorSubject<ToolIconPlacement>;
     tooltip: TranslationId;
-    onClick: (map: TMap) => void;
-    active$: BehaviorSubject<boolean>
+    onClick?: (map: TMap) => void;
+    active$: BehaviorSubject<boolean>;
+    rotate$: BehaviorSubject<number>;
+    pitch$: BehaviorSubject<number>;
 }
 
 export interface ObservedToolIcon<TMap> {
@@ -39,8 +41,10 @@ export interface ObservedToolIcon<TMap> {
     icon: string;
     tooltip: TranslationId;
     placement: ToolIconPlacement;
-    active: boolean;
-    onClick: (map: TMap) => void;
+    active$: BehaviorSubject<boolean>;
+    rotate$: BehaviorSubject<number>;
+    pitch$: BehaviorSubject<number>;
+    onClick?: (map: TMap) => void;
 }
 
 export type Preset = 'default' | 'racing-game';

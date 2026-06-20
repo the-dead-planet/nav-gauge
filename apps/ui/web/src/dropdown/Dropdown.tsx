@@ -109,6 +109,7 @@ export function Dropdown<T = string>({
                     color={color}
                     value={value}
                     options={options}
+                    onChange={onChange}
                 />
             ) : null}
         </div>

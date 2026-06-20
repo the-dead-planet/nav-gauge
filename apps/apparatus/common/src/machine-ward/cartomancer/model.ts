@@ -1,21 +1,12 @@
 import { LngLat } from "@tinker-chest";
 import { ExifData } from "../../parsers";
 
-export interface ControlPlacement {
-    top: number;
-    bottom: number;
-    left: number;
-    right: number;
-}
-
 export interface GaugeControlsType {
     globeProjection: boolean;
     showZoomButtons: boolean;
     showCurrentZoom: boolean;
     showCompass: boolean;
     showGreenScreen: boolean;
-    controlPosition: "top-left" | "top-right" | "bottom-left" | "bottom-right";
-    controlPlacement: ControlPlacement;
     // TODO: Belongs to route gear
     showRouteLine: boolean;
     showRoutePoints: boolean;

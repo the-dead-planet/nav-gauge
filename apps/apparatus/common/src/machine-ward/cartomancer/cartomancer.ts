@@ -6,6 +6,10 @@ import { FeatureProperties, GeoJson, LngLat } from "@tinker-chest";
 import { backgroundMapStyle, customRoadsMapStyle, osmMapStyle } from "./map-styles";
 import { StorageKeeper } from "../storage-keeper";
 import { GaugeControlsType, MapLayout, OverlayComponentProps } from "./model";
+import { ToolsStation } from "../tools-station";
+import { Icons } from "@ui";
+import { TranslationTable, Translatron } from "../translatron";
+import * as Translations from "./translations";
 
 interface SelectedStyle {
     id: keyof typeof Cartomancer.styles;
@@ -15,6 +19,9 @@ interface SelectedStyle {
  * Stores and manages the map.
  */
 export class Cartomancer<TMap> {
+    public namespace = 'cartomancer';
+    public translations: TranslationTable = Translations;
+
     public static styles = {
         'background': backgroundMapStyle,
         'osm': osmMapStyle,
@@ -23,24 +30,12 @@ export class Cartomancer<TMap> {
 
     private defaultStyleId: keyof typeof Cartomancer.styles = 'osm';
 
-    /**
-     * All available controls position options.
-     */
-    public static controlsPositionOptions: { value: GaugeControlsType['controlPosition']; label: string; }[] = [
-        { value: "top-left", label: 'Top left' },
-        { value: "top-right", label: "Top right" },
-        { value: "bottom-left", label: "Bottom left" },
-        { value: "bottom-right", label: "Bottom right" }
-    ];
-
     public static defaultGaugeControls: GaugeControlsType = {
         globeProjection: true,
         showZoomButtons: false,
         showCurrentZoom: true,
         showCompass: true,
         showGreenScreen: false,
-        controlPosition: 'top-right',
-        controlPlacement: { top: 0, bottom: 0, left: 0, right: 0 },
         // TODO: This belongs in the route story gear
         showRouteLine: true,
         showRoutePoints: true,
@@ -87,7 +82,13 @@ export class Cartomancer<TMap> {
         this.mapLayout$ = new BehaviorSubject(Cartomancer.defaultMapLayout);
     }
 
-    public initialize = (storageKeeper: StorageKeeper) => {
+    public initialize = (
+        storageKeeper: StorageKeeper,
+        translatron: Translatron,
+        toolsStation: ToolsStation<TMap>
+    ) => {
+        translatron.register(this.namespace, this.translations);
+
         storageKeeper.synchronizeSubjectWithStorage(this.selectedStyle$, this.selectedStyleStorageId, this.cleanUpSelectedStyle)
             .then((s) => this.selectedStyleStorageSubscription = s);
         storageKeeper.synchronizeSubjectWithStorage(this.gaugeControls$, this.gaugeControlsStorageId)

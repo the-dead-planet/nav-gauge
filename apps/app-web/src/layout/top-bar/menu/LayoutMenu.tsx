@@ -11,7 +11,12 @@ export const LayoutMenu: FC = () => {
     return (
         <>
             <Menu placement="bottom-right" iconActiveColor="secondary">
-                <MenuItem key="individuator" type="button" closeOnPress onClick={() => setShowIndividuatorDialog(true)}>
+                <MenuItem
+                    key="individuator"
+                    type="button"
+                    closeOnPress
+                    onClick={() => setShowIndividuatorDialog(true)}
+                >
                     <T n={individuator.namespace} t="individuator-name" />
                 </MenuItem>
                 <MenuItem

@@ -1,8 +1,19 @@
 import { ComponentType } from "react";
 import { BehaviorSubject, combineLatest, map, Observable, of, switchMap } from "rxjs";
 import { AnimationControlsType, Animatrix } from "../animatrix";
-import { Cartomancer, ControlPlacement, GaugeControlsType, MapLayout } from "../cartomancer";
-import { ToolPanel, Preset, PresetOption, ToolPanelPlacement, ToolPanelProps, ControlComponentProps, ObservedToolPanel, ToolIcon, ObservedToolIcon, ToolIconPlacement } from "./model";
+import { Cartomancer, GaugeControlsType, MapLayout } from "../cartomancer";
+import {
+    ToolPanel,
+    Preset,
+    PresetOption,
+    ToolPanelPlacement,
+    ToolPanelProps,
+    ControlComponentProps,
+    ObservedToolPanel,
+    ToolIcon,
+    ObservedToolIcon,
+    ToolIconPlacement,
+} from "./model";
 import { TranslationId } from "../translatron";
 
 export class ToolsStation<TMap> {
@@ -58,11 +69,13 @@ export class ToolsStation<TMap> {
 
             return combineLatest(
                 toolIcons.map(([id, toolIcon]) =>
-                    combineLatest([toolIcon.placement$, toolIcon.active$]).pipe(
-                        map(([placement, active]): ObservedToolIcon<TMap> => ({
+                    combineLatest([toolIcon.placement$]).pipe(
+                        map(([placement]): ObservedToolIcon<TMap> => ({
                             id,
                             placement,
-                            active,
+                            active$: toolIcon.active$,
+                            rotate$: toolIcon.rotate$,
+                            pitch$: toolIcon.pitch$,
                             icon: toolIcon.icon,
                             tooltip: toolIcon.tooltip,
                             onClick: toolIcon.onClick,
@@ -147,23 +160,30 @@ export class ToolsStation<TMap> {
      */
     public addToolIcon = (
         id: string,
-        { tooltip, icon, placement, onClick, active = false }: {
+        { tooltip, icon, placement, onClick, active = false, rotate = 0, pitch = 0 }: {
             icon: string,
             tooltip: TranslationId,
             placement: ToolIconPlacement;
             active?: boolean;
-            onClick: (map: TMap) => void;
+            rotate?: number;
+            pitch?: number;
+            onClick?: (map: TMap) => void;
         },
-    ) => {
+    ): ToolIcon<TMap> => {
         const nextToolIcons = new Map(this.toolIcons$.value);
-        nextToolIcons.set(id, {
+        const toolIcon: ToolIcon<TMap> = {
             tooltip,
             icon,
             placement$: new BehaviorSubject(placement),
             active$: new BehaviorSubject(active),
+            rotate$: new BehaviorSubject(rotate),
+            pitch$: new BehaviorSubject(pitch),
             onClick
-        });
+        };
+        nextToolIcons.set(id, toolIcon);
         this.toolIcons$.next(nextToolIcons);
+
+        return toolIcon;
     };
 
     /**
@@ -229,13 +249,12 @@ export class ToolsStation<TMap> {
 
     public static detectPreset = (
         { size, ...mapLayout }: MapLayout,
-        { controlPlacement, ...gaugeControls }: GaugeControlsType,
+        { ...gaugeControls }: GaugeControlsType,
         animationControls: AnimationControlsType
     ): Preset | undefined => {
         return ToolsStation.presetOptions.find((option) => (
             Object.entries(size).every(([key, value]) => option.mapLayout.size[key as keyof MapLayout['size']] === value) &&
             Object.entries(mapLayout).every(([key, value]) => option.mapLayout[key as keyof MapLayout] === value) &&
-            Object.entries(controlPlacement).every(([key, value]) => option.gaugeControls.controlPlacement[key as keyof ControlPlacement] === value) &&
             Object.entries(gaugeControls).every(([key, value]) => option.gaugeControls[key as keyof GaugeControlsType] === value) &&
             Object.entries(animationControls).every(([key, value]) => option.animationControls[key as keyof AnimationControlsType] === value)
         ))?.value;
@@ -276,12 +295,7 @@ export class ToolsStation<TMap> {
      * Returns a new deep copy of gauge controls
      */
     public copyGaugeControls = (gaugeControls: GaugeControlsType): GaugeControlsType => {
-        const { controlPlacement, ...controls } = gaugeControls;
-
-        return {
-            ...controls,
-            controlPlacement: { ...controlPlacement }
-        };
+        return { ...gaugeControls };
     };
 
     /**

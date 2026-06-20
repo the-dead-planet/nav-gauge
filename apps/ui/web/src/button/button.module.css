@@ -121,6 +121,10 @@
     padding: 0px 2px;
 }
 
+.icon.rotate {
+    transform: rotateX(var(--rotate-x)) rotateZ(var(--rotate-z));
+}
+
 .variant-ghost {
     background-color: transparent;
     border: none;

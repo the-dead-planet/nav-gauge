@@ -17,24 +17,25 @@ export class Individuator {
     public static defaultTimeFormat: TimeFormat = TimeFormat.HHmmss;
 
     public static dateFormatOptions: { value: DateFormat; _example: string }[] = [
-        { value: DateFormat.EEEEMMMMdyyyy, _example: 'Wednesday, June 17, 2026' },
-        { value: DateFormat.EEEEMMMdyyyy, _example: 'Wednesday, Jun 17, 2026' },
-        { value: DateFormat.EEEEMMddyyyy, _example: 'Wednesday 06/17/2026' },
-        { value: DateFormat.EEEEdMMMMyyyy, _example: 'Wednesday, 17 June, 2026' },
-        { value: DateFormat.EEEEdMMMyyyy, _example: 'Wednesday, 17 Jun, 2026' },
-        { value: DateFormat.EEEEddMMyyyy, _example: 'Wednesday 17/06/2026' },
-        { value: DateFormat.EEEEMMMMdyyyy, _example: 'Wednesday, 17 June, 2026' },
-        { value: DateFormat.EEEMMMdyyyy, _example: 'Wed, Jun 17, 2026' },
-        { value: DateFormat.EEEMMddyyyy, _example: 'Wed 06/17/2026' },
-        { value: DateFormat.EEEdMMMMyyyy, _example: 'Wed, 17 June, 2026' },
-        { value: DateFormat.EEEdMMMyyyy, _example: 'Wed, 17 Jun, 2026' },
-        { value: DateFormat.EEEddMMyyyy, _example: 'Wed 17/06/2026' },
-        { value: DateFormat.MMMMdyyyy, _example: 'June 17, 2026' },
-        { value: DateFormat.MMMdyyyy, _example: 'Jun 17, 2026' },
-        { value: DateFormat.MMddyyyy, _example: '06/17/2026' },
-        { value: DateFormat.dMMMMyyyy, _example: '17 June, 2026' },
-        { value: DateFormat.dMMMyyyy, _example: '17 Jun, 2026' },
         { value: DateFormat.ddMMyyyy, _example: '17/06/2026' },
+        { value: DateFormat.dMMMyyyy, _example: '17 Jun, 2026' },
+        { value: DateFormat.dMMMMyyyy, _example: '17 June, 2026' },
+        { value: DateFormat.EEEddMMyyyy, _example: 'Wed 17/06/2026' },
+        { value: DateFormat.EEEdMMMyyyy, _example: 'Wed, 17 Jun, 2026' },
+        { value: DateFormat.EEEdMMMMyyyy, _example: 'Wed, 17 June, 2026' },
+        { value: DateFormat.EEEEddMMyyyy, _example: 'Wednesday 17/06/2026' },
+        { value: DateFormat.EEEEdMMMyyyy, _example: 'Wednesday, 17 Jun, 2026' },
+        { value: DateFormat.EEEEdMMMMyyyy, _example: 'Wednesday, 17 June, 2026' },
+
+        { value: DateFormat.MMddyyyy, _example: '06/17/2026' },
+        { value: DateFormat.MMMdyyyy, _example: 'Jun 17, 2026' },
+        { value: DateFormat.MMMMdyyyy, _example: 'June 17, 2026' },
+        { value: DateFormat.EEEMMddyyyy, _example: 'Wed 06/17/2026' },
+        { value: DateFormat.EEEMMMdyyyy, _example: 'Wed, Jun 17, 2026' },
+        { value: DateFormat.EEEMMMMdyyyy, _example: 'Wed, June 17, 2026' },
+        { value: DateFormat.EEEEMMddyyyy, _example: 'Wednesday 06/17/2026' },
+        { value: DateFormat.EEEEMMMdyyyy, _example: 'Wednesday, Jun 17, 2026' },
+        { value: DateFormat.EEEEMMMMdyyyy, _example: 'Wednesday, June 17, 2026' },
     ];
 
     public static timeFormatOptions: Option<TimeFormat>[] = [
@@ -67,7 +68,12 @@ export class Individuator {
         this.settings$ = new BehaviorSubject<IndividuatorSettings>(initialSettings);
     }
 
-    public initialize = (storageKeeper: StorageKeeper) => {
+    public initialize = (
+        storageKeeper: StorageKeeper,
+        translatron: Translatron,
+    ) => {
+        translatron.register(this.namespace, this.translations);
+
         storageKeeper.synchronizeSubjectWithStorage(this.settings$, this.settingsStorageId)
             .then((s) => this.settingsStorageSubscription = s);
     };
