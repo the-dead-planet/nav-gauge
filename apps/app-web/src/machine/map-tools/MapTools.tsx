@@ -1,4 +1,4 @@
-import { FC, ReactNode, useState, useEffect } from "react";
+import { FC, ReactNode, useState, useEffect, useRef } from "react";
 import maplibregl from "maplibre-gl";
 import { Protocol } from "pmtiles";
 import { Icons } from "@ui";
@@ -195,6 +195,8 @@ export const MapTools: FC<Props> = ({ map, children }) => {
         };
     }, [isInitialised]);
 
+    const clickedZoom = useRef(map.getZoom());
+
     useEffect(() => {
         if (!gaugeControls.showCompass) {
             return;
@@ -209,7 +211,7 @@ export const MapTools: FC<Props> = ({ map, children }) => {
             placement: 'right',
             tooltip: { n: cartomancer.namespace, t: 'compass' },
         });
-        
+
         const rotateHandler = () => {
             toolIcon.rotate$.next(Math.round(map.getBearing()));
         };
@@ -226,6 +228,58 @@ export const MapTools: FC<Props> = ({ map, children }) => {
             toolsStation.removeToolIcon(id);
         };
     }, [gaugeControls.showCompass]);
+
+    useEffect(() => {
+        if (!gaugeControls.showZoomButtons) {
+            return;
+        }
+        const idIn = 'cartomancer-zoom-in';
+        toolsStation.addToolIcon(idIn, {
+            icon: Icons.NounProject.Plus,
+            onClick: (map) => {
+                clickedZoom.current = Math.max(clickedZoom.current + 1, Math.floor(map.getZoom() + 1));
+                map.easeTo({ zoom: clickedZoom.current });
+            },
+            placement: 'right',
+            tooltip: { n: cartomancer.namespace, t: 'compass' },
+        });
+
+        const idCurrentZoom = 'cartomancer-current-zoom';
+        toolsStation.addToolIcon(idCurrentZoom, {
+            icon: Icons.NounProject.BrokenBox,
+            onClick: (map) => {
+                map.easeTo({ zoom: Math.round(map.getZoom()) });
+            },
+            placement: 'right',
+            tooltip: { n: cartomancer.namespace, t: 'compass' },
+        });
+
+        const idOut = 'cartomancer-zoom-out';
+        toolsStation.addToolIcon(idOut, {
+            icon: Icons.NounProject.Minus,
+            onClick: (map) => {
+                clickedZoom.current = Math.min(clickedZoom.current - 1, Math.ceil(map.getZoom() - 1));
+                map.easeTo({ zoom: clickedZoom.current });
+            },
+            placement: 'right',
+            tooltip: { n: cartomancer.namespace, t: 'compass' },
+        });
+
+        let timeout: number;
+        const handler = () => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => clickedZoom.current = map.getZoom(), 200);
+        };
+
+        map.on("zoomend", handler);
+
+        return () => {
+            map.off("zoomend", handler);
+            toolsStation.removeToolIcon(idIn);
+            toolsStation.removeToolIcon(idCurrentZoom);
+            toolsStation.removeToolIcon(idOut);
+        };
+    }, [gaugeControls.showZoomButtons]);
 
     return (
         <div ref={setContainerRef} className={styles["container"]}>

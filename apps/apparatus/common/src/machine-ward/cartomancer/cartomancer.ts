@@ -32,8 +32,7 @@ export class Cartomancer<TMap> {
 
     public static defaultGaugeControls: GaugeControlsType = {
         globeProjection: true,
-        showZoomButtons: false,
-        showCurrentZoom: true,
+        showZoomButtons: true,
         showCompass: true,
         showGreenScreen: false,
         // TODO: This belongs in the route story gear

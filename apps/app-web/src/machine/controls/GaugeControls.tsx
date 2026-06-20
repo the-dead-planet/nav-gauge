@@ -14,7 +14,6 @@ export const GaugeControls: FC<Props> = () => {
         globeProjection,
         showZoomButtons,
         // TODO: Implement
-        showCurrentZoom,
         showCompass,
         showGreenScreen,
         showRouteLine,
@@ -83,17 +82,6 @@ export const GaugeControls: FC<Props> = () => {
                 checked={showZoomButtons}
                 onChange={() => { }}
                 onContainerClick={() => setGaugeControls((prev) => ({ ...prev, showZoomButtons: !prev.showZoomButtons }))}
-                containerClassName={styles["checkbox"]}
-            />
-            <Input
-                id="controls-show-current-zoom"
-                name="controls-show-current-zoom"
-                label="Show current zoom"
-                labelPlacement="after"
-                type='checkbox'
-                checked={showCurrentZoom}
-                onChange={() => { }}
-                onContainerClick={() => setGaugeControls((prev) => ({ ...prev, showCurrentZoom: !prev.showCurrentZoom }))}
                 containerClassName={styles["checkbox"]}
             />
             <Input

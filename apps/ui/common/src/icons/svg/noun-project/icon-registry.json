@@ -96,6 +96,14 @@
     "license": "CC BY 3.0"
   },
   {
+    "id": "minus",
+    "title": "minus",
+    "creator": "Lorena Salagre",
+    "source": "The Noun Project",
+    "href": "https://thenounproject.com",
+    "license": "CC BY 3.0"
+  },
+  {
     "id": "north",
     "title": "north",
     "creator": "Lluisa Iborra",
@@ -107,6 +115,14 @@
     "id": "pin-cinema",
     "title": "pin cinema",
     "creator": "dinnerchief",
+    "source": "The Noun Project",
+    "href": "https://thenounproject.com",
+    "license": "CC BY 3.0"
+  },
+  {
+    "id": "plus",
+    "title": "plus",
+    "creator": "Lorena Salagre",
     "source": "The Noun Project",
     "href": "https://thenounproject.com",
     "license": "CC BY 3.0"

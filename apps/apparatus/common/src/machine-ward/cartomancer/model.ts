@@ -4,7 +4,6 @@ import { ExifData } from "../../parsers";
 export interface GaugeControlsType {
     globeProjection: boolean;
     showZoomButtons: boolean;
-    showCurrentZoom: boolean;
     showCompass: boolean;
     showGreenScreen: boolean;
     // TODO: Belongs to route gear

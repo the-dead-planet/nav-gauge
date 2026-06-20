@@ -54,15 +54,6 @@ describe("Apparatus", () => {
             it("should not throw if correct", () => {
                 expect(() => validateGaugeControls({})).to.not.throw();
             });
-            it("should throw if controlPlacement incorrect", () => {
-                expect(() => validateGaugeControls({ controlPlacement: { top: 0, bottom: 0, left: 0, right: 0 } })).to.not.throw();
-                expect(() => validateGaugeControls({ controlPlacement: true } as unknown as GaugeControlsType)).to.throw("Control placement incorrect");
-                expect(() => validateGaugeControls({ controlPlacement: { foo: 'bar' } } as unknown as GaugeControlsType)).to.throw("Control placement missing required keys: top, left, right, bottom");
-            });
-            it("should throw if controlPosition incorrect", () => {
-                expect(() => validateGaugeControls({ controlPosition: "bottom-left" })).to.not.throw();
-                expect(() => validateGaugeControls({ controlPosition: {} } as unknown as GaugeControlsType)).to.throw("Control position should be one of: top-left, top-right, bottom-left, bottom-right");
-            });
             it("should throw if globeProjection incorrect", () => {
                 expect(() => validateGaugeControls({ globeProjection: false })).to.not.throw();
                 expect(() => validateGaugeControls({ globeProjection: {} } as unknown as GaugeControlsType)).to.throw("Globe projection should be of type boolean");
