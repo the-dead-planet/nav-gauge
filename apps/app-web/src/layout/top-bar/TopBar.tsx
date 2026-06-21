@@ -2,7 +2,7 @@ import { FC } from "react";
 import classNames from "classnames";
 import { MachineWardTopBarProps, useMachineWard } from "@apparatus";
 import { FontType, Icons, useTheme } from "@ui";
-import { Button, H4 } from "@web-ui";
+import { Button, H1 } from "@web-ui";
 import { LayoutMenu } from "./menu/LayoutMenu";
 import styles from './top-bar.module.css';
 
@@ -14,11 +14,10 @@ export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
     return (
         <nav className={styles["top-bar"]}>
             <div className={classNames(styles["section"], styles["left"])}>
-                <img src={Icons.Find} width={20} />
             </div>
-            <H4 color="primary" fontType={FontType.NeonHeader}>
+            <H1 color="primary" fontType={FontType.NeonHeader} className={styles['header']}>
                 {title}
-            </H4>
+            </H1>
             <div className={classNames(styles["section"], styles["right"])}>
                 <Button
                     icon={Icons.NounProject.LightBulbCogWheel}

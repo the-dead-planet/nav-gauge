@@ -4,6 +4,7 @@ import { ButtonProps, useTheme } from "@ui";
 import { Icon } from "../icons";
 import { SvgProps } from "react-native-svg";
 import { Hexagon } from "../hud";
+import { Tooltip } from "../tooltip";
 
 interface Props {
     forwardRef?: Ref<View>;
@@ -28,6 +29,7 @@ export const Button: FC<PressableProps & ButtonProps & Props> = ({
     disabled,
     tooltip,
     tooltipPlacement,
+    showTooltipConnection,
     onPress,
     onLongPress,
     onPressIn,
@@ -240,37 +242,33 @@ export const Button: FC<PressableProps & ButtonProps & Props> = ({
         </>
     );
 
-    if (corners === 'hexagon') {
-        return (
-            <Hexagon
-                forwardRef={forwardRef}
-                size={size}
-                variant={variant}
-                glowStyle={glowStyle}
-                themeMode={themeMode}
-                color={color}
-                highlightColor={hlColor || color}
-                active={active}
-                interactive={!disabled}
-                onPress={onPress ?? undefined}
-                onLongPress={onLongPress ?? undefined}
-                onPressIn={(e) => {
-                    setPressed(true);
-                    markGlowDrawn();
-                    onPressIn?.(e);
-                }}
-                onPressOut={(e) => {
-                    setPressed(false);
-                    onPressOut?.(e);
-                }}
-                style={typeof style === 'function' ? undefined : style}
-            >
-                {content}
-            </Hexagon>
-        );
-    }
-
-    return (
+    const buttonElement = corners === 'hexagon' ? (
+        <Hexagon
+            forwardRef={forwardRef}
+            size={size}
+            variant={variant}
+            glowStyle={glowStyle}
+            themeMode={themeMode}
+            color={color}
+            highlightColor={hlColor || color}
+            active={active}
+            interactive={!disabled}
+            onPress={onPress ?? undefined}
+            onLongPress={onLongPress ?? undefined}
+            onPressIn={(e) => {
+                setPressed(true);
+                markGlowDrawn();
+                onPressIn?.(e);
+            }}
+            onPressOut={(e) => {
+                setPressed(false);
+                onPressOut?.(e);
+            }}
+            style={typeof style === 'function' ? undefined : style}
+        >
+            {content}
+        </Hexagon>
+    ) : (
         <Pressable
             ref={forwardRef}
             disabled={disabled}
@@ -279,12 +277,36 @@ export const Button: FC<PressableProps & ButtonProps & Props> = ({
             onPressIn={() => {
                 setPressed(true);
                 markGlowDrawn();
+                onPressIn?.();
             }}
-            onPressOut={() => setPressed(false)}
+            onPressOut={() => {
+                setPressed(false);
+                onPressOut?.();
+            }}
             style={[container, style as ViewStyle]}
             {...props}
         >
             {content}
         </Pressable>
     );
+
+    if (tooltip) {
+        return (
+            <Tooltip
+                placement={tooltipPlacement}
+                content={tooltip}
+                color={highlightColor || color}
+                variant={variant === 'fill'
+                    ? 'fill'
+                    : variant === 'fill-translucent'
+                        ? 'fill-translucent'
+                        : 'fill-inverse'}
+                showConnection={showTooltipConnection}
+            >
+                {buttonElement}
+            </Tooltip>
+        );
+    }
+
+    return buttonElement;
 };

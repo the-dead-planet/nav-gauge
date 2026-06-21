@@ -1,7 +1,7 @@
 import { Children, cloneElement, FC, ReactElement, useCallback, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import classNames from "classnames";
-import { TooltipPlacement, TooltipProps, useTheme } from "@ui";
+import { ErrorBoundary, TooltipPlacement, TooltipProps, useTheme } from "@ui";
 import style from './tooltip.module.css';
 
 interface ChildProps {
@@ -123,7 +123,15 @@ const getConnectionLineGeom = (
     }
 };
 
-export const Tooltip: FC<TooltipProps> = ({
+export const Tooltip: FC<TooltipProps> = (props) => {
+    return (
+        <ErrorBoundary>
+            <InternalTooltip {...props} />
+        </ErrorBoundary>
+    );
+};
+
+const InternalTooltip: FC<TooltipProps> = ({
     content,
     children,
     placement = 'auto',
