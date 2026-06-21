@@ -1,4 +1,4 @@
-import { ComponentProps, useEffect, useRef, useState } from "react";
+import { ComponentProps, useCallback, useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import { DropdownList } from "./DropdownList";
 import { DropdownProps, useTheme } from "@ui";
@@ -34,6 +34,27 @@ export function Dropdown<T = string>({
     const theme = useTheme();
     const [isOpen, setIsOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
+    const triggerRef = useRef<HTMLButtonElement>(null);
+
+    const handleClose = useCallback(() => {
+        setIsOpen(false);
+        triggerRef.current?.focus();
+    }, []);
+
+    const handleTriggerKeyDown = (e: React.KeyboardEvent) => {
+        if (disabled) return;
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            setIsOpen(true);
+        }
+    };
+
+    const handleContainerKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Escape' && isOpen) {
+            e.preventDefault();
+            handleClose();
+        }
+    };
 
     const selectedOption = options.find((option) => option.value === value);
     const iconSize = ICON_SIZES[size];
@@ -67,15 +88,19 @@ export function Dropdown<T = string>({
                 className
             )}
             style={style}
+            onKeyDown={handleContainerKeyDown}
             {...props}
         >
             <button
+                ref={triggerRef}
                 type="button"
                 className={styles['trigger']}
                 aria-haspopup="listbox"
+                aria-expanded={isOpen}
                 aria-labelledby={labelledBy}
                 disabled={disabled}
                 onClick={disabled ? undefined : (() => setIsOpen(!isOpen))}
+                onKeyDown={handleTriggerKeyDown}
             >
                 {selectedOption ? (
                     <>
@@ -104,7 +129,7 @@ export function Dropdown<T = string>({
 
             {isOpen ? (
                 <DropdownList
-                    onClose={() => setIsOpen(false)}
+                    onClose={handleClose}
                     iconSize={iconSize}
                     color={color}
                     value={value}

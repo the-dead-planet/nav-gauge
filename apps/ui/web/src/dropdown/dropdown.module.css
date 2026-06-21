@@ -96,6 +96,12 @@
     width: 100%;
 }
 
+.trigger:focus-visible {
+    outline: 2px solid var(--dropdown-highlight-color-accent);
+    outline-offset: 1px;
+    border-radius: 2px;
+}
+
 .trigger::-moz-focus-inner {
     border: 0;
 }
@@ -271,11 +277,13 @@
     flex-shrink: 0;
 }
 
+.option-highlighted,
 .option:hover {
     background-color: rgb(from var(--dropdown-highlight-color) r g b / .14);
     color: var(--dropdown-highlight-color-accent);
 }
 
+.option-highlighted .icon,
 .option:hover .icon {
     color: var(--dropdown-highlight-color-accent);
     stroke: var(--dropdown-highlight-color-accent);
