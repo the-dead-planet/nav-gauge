@@ -50,15 +50,22 @@ export const Menu: FC<MenuProps & ComponentProps<'button'>> = ({
         if (!visible) {
             return;
         }
-        const handler = (e: MouseEvent) => {
+        const mousedownHandler = (e: MouseEvent) => {
             if (triggerRef.current && !triggerRef.current?.contains(e.target as Node) && !containerRef.current?.contains(e.target as Node)) {
                 handleClose();
             }
         };
-        document.addEventListener('mousedown', handler);
+        const keydownHandler = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                handleClose();
+            }
+        };
+        document.addEventListener('mousedown', mousedownHandler);
+        document.addEventListener('keydown', keydownHandler);
 
         return () => {
-            document.removeEventListener('mousedown', handler);
+            document.removeEventListener('mousedown', mousedownHandler);
+            document.removeEventListener('keydown', keydownHandler);
         };
     }, [visible]);
 
@@ -91,7 +98,7 @@ export const Menu: FC<MenuProps & ComponentProps<'button'>> = ({
                     className={styles['menu-list']}
                     style={positionStyle}
                 >
-                    <MenuContext.Provider value={{ onClose: handleClose }}>
+                    <MenuContext.Provider value={{ onClose: handleClose, triggerRef }}>
                         <Transition slide={menuPosition.bottom ? "to-top" : "to-bottom"} render>
                             {children}
                         </Transition>

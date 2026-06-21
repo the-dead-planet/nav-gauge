@@ -9,8 +9,13 @@
     box-sizing: border-box;
     position: relative;
     border-radius: var(--map-radius);
-    border: var(--map-inner-border-width) solid var(--map-inner-border-color);
+    /* border: var(--map-inner-border-width) solid var(--map-inner-border-color); */
+    border: 1px solid transparent;
     box-shadow: var(--map-inner-box-shadow);
+}
+
+.maplibregl-canvas:focus {
+    border-color: var(--color-secondary);
 }
 
 .maplibregl-map::before {

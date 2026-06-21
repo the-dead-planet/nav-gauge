@@ -14,6 +14,7 @@ export const LayoutMenu: FC = () => {
             <Menu aria-label={tooltip} tooltip={tooltip} tooltipPlacement="bottom" placement="bottom-right" iconActiveColor="secondary">
                 <MenuItem
                     key="individuator"
+                    isFirst
                     type="button"
                     closeOnPress
                     onClick={() => setShowIndividuatorDialog(true)}
@@ -31,6 +32,7 @@ export const LayoutMenu: FC = () => {
                 </MenuItem>
                 <MenuItem
                     key="privacy"
+                    isLast
                     type="link"
                     href="/privacy"
                     target="_blank"
