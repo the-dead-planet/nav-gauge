@@ -209,7 +209,7 @@ export const MapTools: FC<Props> = ({ map, children }) => {
                 map.setPitch(0);
             },
             placement: 'right',
-            tooltip: { n: cartomancer.namespace, t: 'compass' },
+            tooltip: { n: cartomancer.namespace, t: cartomancer.translationKey.Compass },
         });
 
         const rotateHandler = () => {
@@ -241,7 +241,7 @@ export const MapTools: FC<Props> = ({ map, children }) => {
                 map.easeTo({ zoom: clickedZoom.current });
             },
             placement: 'right',
-            tooltip: { n: cartomancer.namespace, t: 'compass' },
+            tooltip: { n: cartomancer.namespace, t: cartomancer.translationKey.ZoomIn },
         });
 
         const idCurrentZoom = 'cartomancer-current-zoom';
@@ -251,7 +251,7 @@ export const MapTools: FC<Props> = ({ map, children }) => {
                 map.easeTo({ zoom: Math.round(map.getZoom()) });
             },
             placement: 'right',
-            tooltip: { n: cartomancer.namespace, t: 'compass' },
+            tooltip: { n: cartomancer.namespace, t: cartomancer.translationKey.RoundCurrentZoom },
         });
 
         const idOut = 'cartomancer-zoom-out';
@@ -262,7 +262,7 @@ export const MapTools: FC<Props> = ({ map, children }) => {
                 map.easeTo({ zoom: clickedZoom.current });
             },
             placement: 'right',
-            tooltip: { n: cartomancer.namespace, t: 'compass' },
+            tooltip: { n: cartomancer.namespace, t: cartomancer.translationKey.ZoomOut },
         });
 
         let timeout: number;

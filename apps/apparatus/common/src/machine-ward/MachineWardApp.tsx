@@ -6,7 +6,7 @@ import { Individuator } from "./individuator";
 import { StorageKeeper } from "./storage-keeper";
 import { MachineWardContext, MachineWardContextValue } from "./MachineWardContext";
 import { useSubjectState } from "@tinker-chest";
-import { MachineWardComponents } from "./model";
+import { MachineTranslationKey, MachineWardComponents } from "./model";
 
 interface MachineWardProps<TMap, TNavigationPath extends string> {
     namespace: string;
@@ -74,6 +74,7 @@ export function MachineWardApp<TMap, TNavigationPath extends string>({
                 <ErrorBoundary fallbackComponent={components.errorFallbackComponent}>
                     <MachineWardContext.Provider value={{
                         namespace,
+                        translationKey: MachineTranslationKey,
                         individuator,
                         storageKeeper,
                         animatrix,

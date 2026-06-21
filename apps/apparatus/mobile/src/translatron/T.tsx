@@ -12,8 +12,7 @@ export function T<T extends string = string>(props: TranslationId<T>) {
     );
 };
 
-function InternalT<T extends string = string>(props: TranslationId<T>) {
-    const { n, t, p } = props;
+function InternalT<T extends string = string>({ n, t, p }: TranslationId<T>) {
     const { individuator, translatron } = useMachineWard();
     const [settings] = useSubjectState(individuator.settings$);
     const [registry] = useSubjectState(translatron.registry$);

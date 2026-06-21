@@ -1,5 +1,11 @@
-const en = {
-    "compass": 'Set to north',
+import { TranslationTable } from "../../translatron";
+import { CartomancerTranslationKey } from "../model";
+
+const en: TranslationTable<CartomancerTranslationKey>['en'] = {
+    "compass": 'Set to North',
+    "zoom-in": 'Zoom in',
+    "round-current-zoom": 'Round current zoom',
+    "zoom-out": 'Zoom out',
 };
 
 export default en;

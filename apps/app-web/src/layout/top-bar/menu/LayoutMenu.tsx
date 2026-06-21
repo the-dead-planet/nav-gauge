@@ -5,7 +5,7 @@ import { T } from "@web-apparatus";
 import { SettingsDialog } from "./SettingsDialog";
 
 export const LayoutMenu: FC = () => {
-    const { namespace, individuator } = useMachineWard();
+    const { namespace, translationKey, individuator } = useMachineWard();
     const [showIndividuatorDialog, setShowIndividuatorDialog] = useState(false);
 
     return (
@@ -17,7 +17,7 @@ export const LayoutMenu: FC = () => {
                     closeOnPress
                     onClick={() => setShowIndividuatorDialog(true)}
                 >
-                    <T n={individuator.namespace} t="individuator-name" />
+                    <T n={individuator.namespace} t={individuator.translationKey.IndividuatorName} />
                 </MenuItem>
                 <MenuItem
                     key="legal"
@@ -26,7 +26,7 @@ export const LayoutMenu: FC = () => {
                     target="_blank"
                     rel="noreferrer"
                 >
-                    <T n={namespace} t="legal" />
+                    <T n={namespace} t={translationKey.Legal} />
                 </MenuItem>
                 <MenuItem
                     key="privacy"
@@ -35,7 +35,7 @@ export const LayoutMenu: FC = () => {
                     target="_blank"
                     rel="noreferrer"
                 >
-                    <T n={namespace} t="privacy" />
+                    <T n={namespace} t={translationKey.Privacy} />
                 </MenuItem>
             </Menu>
             {showIndividuatorDialog ? (

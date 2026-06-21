@@ -33,3 +33,10 @@ export interface MachineWardComponents<TNavigationPath extends string = string> 
 }
 
 export type MachineGear<TMap> = new (apparatus: GearApparatus<TMap>) => Gear<TMap>;
+
+export enum MachineTranslationKey {
+    Legal = 'legal',
+    Privacy = 'privacy',
+    Close = 'close',
+    Save = 'save',
+}

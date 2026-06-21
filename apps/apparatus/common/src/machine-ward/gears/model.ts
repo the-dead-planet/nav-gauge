@@ -5,7 +5,7 @@ import { ChronoLens } from "../chrono-lens";
 import { Individuator } from "../individuator";
 import { SignaliumBureau } from "../signalium-bureau";
 import { ToolsStation } from "../tools-station";
-import { Language, Translatron } from "../translatron";
+import { Translatron, TranslationTable } from "../translatron";
 
 export interface GearApparatus<TMap> {
     individuator: Individuator;
@@ -18,8 +18,9 @@ export interface GearApparatus<TMap> {
     translatron: Translatron;
 }
 
-export type GearTranslationKeys = 'gear-name' | 'gear-description';
+export enum GearTranslationKey {
+    GearName = 'gear-name',
+    GearDescription = 'gear-description',
+};
 
-export type GearTranslationTable = {
-    [key in Language]?: { [key in GearTranslationKeys]: string; } & { [key in string]: string };
-}
+export type GearTranslationTable = TranslationTable<GearTranslationKey>;

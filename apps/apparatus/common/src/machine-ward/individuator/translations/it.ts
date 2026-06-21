@@ -1,4 +1,7 @@
-const it = {
+import { TranslationTable } from "../../translatron";
+import { IndividuatorTranslationKey } from "../model";
+
+const it: TranslationTable<IndividuatorTranslationKey>['it'] = {
     "individuator-name": 'Individuatore',
     language: 'Lingua',
     "date-format": 'Formato data',

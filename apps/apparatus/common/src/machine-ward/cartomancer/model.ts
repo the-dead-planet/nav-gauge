@@ -48,3 +48,10 @@ export interface LoadedImageData<TImageData> extends Omit<MarkerImage<TImageData
     featureId: number;
     data: TImageData;
 }
+
+export enum CartomancerTranslationKey {
+    Compass = 'compass',
+    ZoomIn = 'zoom-in',
+    RoundCurrentZoom = 'round-current-zoom',
+    ZoomOut = 'zoom-out',
+};

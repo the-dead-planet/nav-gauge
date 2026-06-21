@@ -5,9 +5,8 @@ import { point as turfPoint } from "@turf/helpers";
 import { FeatureProperties, GeoJson, LngLat } from "@tinker-chest";
 import { backgroundMapStyle, customRoadsMapStyle, osmMapStyle } from "./map-styles";
 import { StorageKeeper } from "../storage-keeper";
-import { GaugeControlsType, MapLayout, OverlayComponentProps } from "./model";
+import { CartomancerTranslationKey, GaugeControlsType, MapLayout, OverlayComponentProps } from "./model";
 import { ToolsStation } from "../tools-station";
-import { Icons } from "@ui";
 import { TranslationTable, Translatron } from "../translatron";
 import * as Translations from "./translations";
 
@@ -20,7 +19,8 @@ interface SelectedStyle {
  */
 export class Cartomancer<TMap> {
     public namespace = 'cartomancer';
-    public translations: TranslationTable = Translations;
+    public translations: TranslationTable<CartomancerTranslationKey> = Translations;
+    public translationKey = CartomancerTranslationKey;
 
     public static styles = {
         'background': backgroundMapStyle,

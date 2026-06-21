@@ -1,8 +1,8 @@
 import { ComponentType, FC } from "react";
 import { BehaviorSubject, Subscription } from "rxjs";
-import { ToolPanelProps, MarkerImage, OverlayComponentProps, Gear, ControlComponentProps, GearTranslationTable } from "@apparatus";
+import { ToolPanelProps, MarkerImage, OverlayComponentProps, Gear, ControlComponentProps, GearTranslationTable, TranslationTable, GearTranslationKey } from "@apparatus";
 import { GeoJson, ParsingResultWithError } from "@tinker-chest";
-import { RouteToolProps, RouteTimes, RouteFileInputProps, RouteFitBoundsProps, RouteStoryFile } from "./model";
+import { RouteToolProps, RouteTimes, RouteFileInputProps, RouteStoryFile, RouteStoryTranslationKey } from "./model";
 import { FileOperator } from "./file-operator";
 import { PlayerOperator } from "./player-operator";
 import { Icons } from "@ui";
@@ -10,7 +10,8 @@ import * as Translations from "./translations";
 
 export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageData> extends Gear<TMap> {
     public readonly id = 'route-story';
-    public translations: GearTranslationTable = Translations;
+    public translations: TranslationTable<GearTranslationKey | RouteStoryTranslationKey> = Translations;
+    public internalTranslationKey = RouteStoryTranslationKey;
 
     public icon = Icons.NounProject.PinCinema as unknown as string;
 
@@ -95,7 +96,7 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
         this.apparatus.toolsStation.addToolIcon(
             this.routeLayerFitBoundsToolIconId,
             {
-                tooltip: { n: this.id, t: 'fit-bounds' },
+                tooltip: { n: this.id, t: this.internalTranslationKey.FitBounds },
                 placement: 'left',
                 icon: Icons.Find as unknown as string,
                 onClick: (map) => {

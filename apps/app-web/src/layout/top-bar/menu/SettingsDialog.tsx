@@ -13,7 +13,7 @@ interface Props {
 }
 
 export const SettingsDialog: FC<Props> = ({ onClose }) => {
-    const { namespace, individuator, translatron } = useMachineWard();
+    const { namespace, translationKey, individuator, translatron } = useMachineWard();
     const [registry] = useSubjectState(translatron.registry$);
     const [settings, setSettings] = useSubjectState(individuator.settings$);
     const [pendingSettings, setPendingSettings] = useState(individuator.settings$.value);
@@ -21,17 +21,17 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
     return createPortal(
         <Dialog
             placement="right-drawer"
-            header={translatron.translate(settings.language, registry, { n: individuator.namespace, t: 'individuator-name' })}
-            closeText={translatron.translate(settings.language, registry, { n: namespace, t: 'close' })}
+            header={translatron.translate(settings.language, registry, { n: individuator.namespace, t: individuator.translationKey.IndividuatorName })}
+            closeText={translatron.translate(settings.language, registry, { n: namespace, t: translationKey.Close })}
             onClose={onClose}
             save={{
-                saveText: translatron.translate(settings.language, registry, { n: namespace, t: 'save' }),
+                saveText: translatron.translate(settings.language, registry, { n: namespace, t: translationKey.Save }),
                 onSave: () => setSettings(pendingSettings),
             }}
         >
             <div className={styles['container']}>
                 <P id="individuator-language-label" shadow color="primary">
-                    <T n={individuator.namespace} t="language" />
+                    <T n={individuator.namespace} t={individuator.translationKey.Language} />
                 </P>
                 <Dropdown<Language>
                     labelledBy="individuator-language-label"
@@ -53,7 +53,7 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                 />
 
                 <P shadow color="primary">
-                    <T n={individuator.namespace} t="date-format" />
+                    <T n={individuator.namespace} t={individuator.translationKey.DateFormat} />
                 </P>
                 <Dropdown<DateFormat>
                     labelledBy="individuator-language-label"
@@ -72,7 +72,7 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                 />
 
                 <P shadow color="primary">
-                    <T n={individuator.namespace} t="time-format" />
+                    <T n={individuator.namespace} t={individuator.translationKey.TimeFormat} />
                 </P>
                 <Dropdown<TimeFormat>
                     labelledBy="individuator-language-label"

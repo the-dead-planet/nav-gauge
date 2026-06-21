@@ -1,13 +1,14 @@
 import { BehaviorSubject, Subscription } from "rxjs";
 import { DateFormat, Option, ThemeName, TimeFormat, formatTimestamp } from "@ui";
 import { StorageKeeper } from "../storage-keeper";
-import { IndividuatorSettings } from "./model";
+import { IndividuatorSettings, IndividuatorTranslationKey } from "./model";
 import { TranslationTable, Translatron } from "../translatron";
 import * as Translations from "./translations";
 
 export class Individuator {
     public namespace = 'individuator';
-    public translations: TranslationTable = Translations;
+    public translations: TranslationTable<IndividuatorTranslationKey> = Translations;
+    public translationKey = IndividuatorTranslationKey;
 
     private readonly settingsStorageId = 'application-settings';
     private settingsStorageSubscription: Subscription | null = null;

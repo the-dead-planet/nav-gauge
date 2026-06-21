@@ -1,4 +1,6 @@
-const jp = {
+import { GearTranslationKey, TranslationTable } from "@apparatus";
+
+const jp: TranslationTable<GearTranslationKey>['jp'] = {
     "gear-name": 'ナビゲート',
     "gear-description": 'カスタムルートでナビゲーションします。'
 };

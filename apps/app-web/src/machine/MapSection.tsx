@@ -13,13 +13,11 @@ import { MapStyleSelection } from "./controls/MapStyleSelection";
 import { MapTools } from "./map-tools/MapTools";
 import { Button, FlexBox, Transition } from "@web-ui";
 import { createMap } from "./map";
-import { useTheme } from "@ui";
 import styles from './map-section.module.css';
 import { ToolIconRight } from "./map-tools/ToolIconRight";
 import { ToolIconLeft } from "./map-tools/ToolIconLeft";
 
 export const MapSection: FC = () => {
-    const theme = useTheme();
     const [map, setMap] = useState<maplibregl.Map>();
     const { engine, cartomancer, toolsStation } = useMachineWard();
     const gearsWithEngaged$ = engine.gears$.pipe(switchMap((gears) => {
@@ -81,9 +79,9 @@ export const MapSection: FC = () => {
                                     engine.engageGear(gear);
                                 }
                             }}
-                            tooltip={<T n={gear.id} t="gear-description" />}
+                            tooltip={<T n={gear.id} t={gear.translationKey.GearDescription} />}
                         >
-                            <T n={gear.id} t="gear-name" />
+                            <T n={gear.id} t={gear.translationKey.GearName} />
                         </Button>
                     ))}
                 </FlexBox>

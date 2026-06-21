@@ -29,7 +29,7 @@ export const Notice: FC<Props> = ({
     const theme = useTheme();
     const translateY = useRef(new Animated.Value(-80)).current;
     const opacity = useRef(new Animated.Value(0)).current;
-    const { namespace, individuator, translatron } = useMachineWard();
+    const { namespace, translationKey, individuator, translatron } = useMachineWard();
     const [registry] = useSubjectState(translatron.registry$);
     const [settings] = useSubjectState(individuator.settings$);
 
@@ -58,7 +58,7 @@ export const Notice: FC<Props> = ({
         }]}>
             <Text>{notice.text} {notice.type === 'error' ? notice.error.message || '' : ''}</Text>
             <Button
-                title={translatron.translate(settings.language, registry, { n: namespace, t: 'close' })}
+                title={translatron.translate(settings.language, registry, { n: namespace, t: translationKey.Close })}
                 onPress={() => onRemove(notice.id)}
             />
         </Animated.View>

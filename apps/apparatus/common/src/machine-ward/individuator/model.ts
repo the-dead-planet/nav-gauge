@@ -11,3 +11,10 @@ export interface IndividuatorSettings {
     timeFormat: TimeFormat;
     language: Language;
 }
+
+export enum IndividuatorTranslationKey {
+    IndividuatorName = "individuator-name",
+    Language = "language",
+    DateFormat = "date-format",
+    TimeFormat = "time-format",
+};

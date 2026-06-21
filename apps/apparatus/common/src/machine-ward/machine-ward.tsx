@@ -7,7 +7,7 @@ import { Animatrix, AttributionVault, Cartomancer, SignaliumBureau, ToolsStation
 import { Engine } from "./engine";
 import { Gear } from "./gears";
 import { StorageKeeper } from "./storage-keeper";
-import { MachineGear, MachineWardComponents } from "./model";
+import { MachineGear, MachineTranslationKey, MachineWardComponents } from "./model";
 import { TranslationTable } from "./translatron";
 import { MediaSubscriptionDefinition } from "@ui";
 import * as Translations from "./translations";
@@ -21,7 +21,8 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
     public title = 'nav gauge';
 
     public readonly namespace = 'machine-ward';
-    public readonly translations: TranslationTable = Translations;
+    public readonly translations: TranslationTable<MachineTranslationKey> = Translations;
+    public readonly translationKey = MachineTranslationKey;
 
     public readonly individuator: Individuator;
     public readonly storageKeeper: StorageKeeper;

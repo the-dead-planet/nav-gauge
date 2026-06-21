@@ -1,10 +1,11 @@
 import { BehaviorSubject, Subscription } from "rxjs";
-import { GearApparatus, GearTranslationTable } from "./model";
+import { GearApparatus, GearTranslationKey, GearTranslationTable } from "./model";
 
 export abstract class Gear<TMap> {
     public abstract id: string;
     public icon?: string;
     public abstract translations: GearTranslationTable;
+    public translationKey = GearTranslationKey;
 
     public isEngaged$ = new BehaviorSubject(false);
 
