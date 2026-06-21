@@ -69,6 +69,45 @@ export const Menu: FC<MenuProps & ComponentProps<'button'>> = ({
         };
     }, [visible]);
 
+    useEffect(() => {
+        if (visible && containerRef.current) {
+            const firstItem = containerRef.current.querySelector<HTMLElement>('[role="menuitem"]');
+            firstItem?.focus();
+        }
+    }, [visible]);
+
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        const items = containerRef.current?.querySelectorAll<HTMLElement>('[role="menuitem"]');
+        if (!items || items.length === 0) return;
+
+        const currentIndex = Array.from(items).findIndex((item) => item === document.activeElement);
+
+        switch (e.key) {
+            case 'ArrowDown':
+                e.preventDefault();
+                {
+                    const next = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
+                    items[next]?.focus();
+                }
+                break;
+            case 'ArrowUp':
+                e.preventDefault();
+                {
+                    const prev = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
+                    items[prev]?.focus();
+                }
+                break;
+            case 'Home':
+                e.preventDefault();
+                items[0]?.focus();
+                break;
+            case 'End':
+                e.preventDefault();
+                items[items.length - 1]?.focus();
+                break;
+        }
+    };
+
     const positionStyle: CSSProperties = {};
 
     if (menuPosition.top !== undefined) positionStyle.top = menuPosition.top;
@@ -97,6 +136,9 @@ export const Menu: FC<MenuProps & ComponentProps<'button'>> = ({
                     variant='fill-inverse'
                     className={styles['menu-list']}
                     style={positionStyle}
+                    role="menu"
+                    aria-orientation="vertical"
+                    onKeyDown={handleKeyDown}
                 >
                     <MenuContext.Provider value={{ onClose: handleClose, triggerRef }}>
                         <Transition slide={menuPosition.bottom ? "to-top" : "to-bottom"} render>

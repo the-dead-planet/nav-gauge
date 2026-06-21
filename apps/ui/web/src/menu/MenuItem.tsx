@@ -26,6 +26,7 @@ export const MenuItem: FC<MenuItemProps & Props> = ({
     if (props.type === 'link') {
         return (
             <a
+                role="menuitem"
                 className={classNames(styles['menu-item'], className)}
                 autoFocus={props.autoFocus || isFirst}
                 {...props}
@@ -43,6 +44,7 @@ export const MenuItem: FC<MenuItemProps & Props> = ({
 
     return (
         <button
+            role="menuitem"
             autoFocus={props.autoFocus || isFirst}
             className={classNames(styles['menu-item'], className)}
             {...props}
