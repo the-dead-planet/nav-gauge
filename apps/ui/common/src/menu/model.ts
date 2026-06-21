@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { ColorVariant } from "../model";
+import { TooltipProps } from "../tooltip";
 
 export type MenuAnchor = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
 
@@ -16,6 +17,7 @@ export interface MenuProps {
     icon?: string;
     iconActiveColor?: ColorVariant;
     tooltip?: ReactNode;
+    tooltipPlacement?: TooltipProps['placement'];
     children?: ReactNode;
 }
 

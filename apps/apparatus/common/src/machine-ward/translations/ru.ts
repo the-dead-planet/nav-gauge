@@ -6,6 +6,8 @@ const ru: TranslationTable<MachineTranslationKey>['ru'] = {
     privacy: 'Конфиденциальность',
     close: 'Закрыть',
     save: 'Сохранить',
+    menu: 'Меню приложения',
+    'toggle-mode': 'Переключить светлый и темный режимы',
 };
 
 export default ru;

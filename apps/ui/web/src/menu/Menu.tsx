@@ -19,6 +19,7 @@ export const Menu: FC<MenuProps & ComponentProps<'button'>> = ({
     iconActiveColor,
     placement = 'bottom-right',
     tooltip,
+    tooltipPlacement,
     color,
     children,
     ...props
@@ -79,6 +80,7 @@ export const Menu: FC<MenuProps & ComponentProps<'button'>> = ({
                 highlightColor={iconActiveColor}
                 onClick={handleToggle}
                 tooltip={tooltip}
+                tooltipPlacement={tooltipPlacement}
                 className={styles.trigger}
                 {...props}
             />

@@ -39,4 +39,6 @@ export enum MachineTranslationKey {
     Privacy = 'privacy',
     Close = 'close',
     Save = 'save',
+    Menu = 'menu',
+    ToggleMode = 'toggle-mode'
 }

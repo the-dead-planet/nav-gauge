@@ -1,16 +1,17 @@
 import { FC, useState } from "react";
 import { Menu, MenuItem } from "@web-ui";
-import { useMachineWard } from "@apparatus";
+import { useMachineWard, useTranslation } from "@apparatus";
 import { T } from "@web-apparatus";
 import { SettingsDialog } from "./SettingsDialog";
 
 export const LayoutMenu: FC = () => {
     const { namespace, translationKey, individuator } = useMachineWard();
     const [showIndividuatorDialog, setShowIndividuatorDialog] = useState(false);
+    const tooltip = useTranslation({ n: namespace, t: translationKey.Menu })
 
     return (
         <>
-            <Menu aria-label="Application menu" placement="bottom-right" iconActiveColor="secondary">
+            <Menu aria-label={tooltip} tooltip={tooltip} tooltipPlacement="bottom" placement="bottom-right" iconActiveColor="secondary">
                 <MenuItem
                     key="individuator"
                     type="button"

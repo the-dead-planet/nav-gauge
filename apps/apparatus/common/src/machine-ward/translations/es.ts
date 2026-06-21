@@ -6,6 +6,8 @@ const es: TranslationTable<MachineTranslationKey>['es'] = {
     privacy: 'Privacidad',
     close: 'Cerrar',
     save: 'Guardar',
+    menu: 'Menú de aplicación',
+    'toggle-mode': 'Alternar modos claro y oscuro',
 };
 
 export default es;
