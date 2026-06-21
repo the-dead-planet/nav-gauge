@@ -11,9 +11,11 @@ export interface MenuPosition {
 }
 
 export interface MenuProps {
+    color?: ColorVariant;
     placement?: MenuAnchor;
     icon?: string;
     iconActiveColor?: ColorVariant;
+    tooltip?: ReactNode;
     children?: ReactNode;
 }
 

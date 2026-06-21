@@ -1,11 +1,10 @@
-import { ComponentProps, CSSProperties, FC, MouseEvent, ReactNode, useState } from "react";
+import { ComponentProps, CSSProperties, FC, MouseEvent, useState } from "react";
 import classNames from "classnames";
 import { ButtonProps, useTheme } from "@ui";
 import { Icon } from "../icons";
 import { Tooltip } from "../tooltip";
 import { Hexagon } from "../hud";
 import styles from './button.module.css';
-import { Span } from "../typography";
 
 interface Props {
     /**

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, FC, CSSProperties } from 'react';
+import { useState, useRef, useEffect, FC, CSSProperties, ComponentProps } from 'react';
 import { createPortal } from 'react-dom';
 import {
     MenuPosition,
@@ -14,11 +14,14 @@ import styles from './menu.module.css';
 import { Panel } from '../hud';
 import { Transition } from '../transition';
 
-export const Menu: FC<MenuProps> = ({
+export const Menu: FC<MenuProps & ComponentProps<'button'>> = ({
     icon = Icons.NounProject.KebabMenu,
     iconActiveColor,
     placement = 'bottom-right',
+    tooltip,
+    color,
     children,
+    ...props
 }) => {
     const { icon: iconAnchor, menu: menuAnchor } = getIconAndMenuAnchors(placement);
     const [visible, setVisible] = useState<boolean>(false);
@@ -72,9 +75,12 @@ export const Menu: FC<MenuProps> = ({
                 variant="ghost"
                 icon={icon}
                 active={visible}
+                color={color}
                 highlightColor={iconActiveColor}
                 onClick={handleToggle}
+                tooltip={tooltip}
                 className={styles.trigger}
+                {...props}
             />
             {visible && createPortal(
                 <Panel

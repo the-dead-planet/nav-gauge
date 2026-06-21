@@ -20,6 +20,7 @@ export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
             </H1>
             <div className={classNames(styles["section"], styles["right"])}>
                 <Button
+                    aria-label="toggle light and dark modes"
                     icon={Icons.NounProject.LightBulbCogWheel}
                     onClick={individuator.toggleMode}
                     variant="inset"

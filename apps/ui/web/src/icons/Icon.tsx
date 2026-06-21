@@ -5,9 +5,13 @@ import { Icons } from "@ui";
 
 interface Props {
     src: string;
+    /**
+     * Defaults to "true"
+     */
+    ariaHidden?: boolean;
 }
 
-export const Icon: FC<Props & IconProps> = ({ src, width = 24, height = 24, strokeWidth, ...props }) => {
+export const Icon: FC<Props & IconProps> = ({ src, width = 24, height = 24, strokeWidth, ariaHidden = true, ...props }) => {
     const color = props.color;
     const fill = props.fill || color;
     const stroke = props.stroke || color;
@@ -17,6 +21,7 @@ export const Icon: FC<Props & IconProps> = ({ src, width = 24, height = 24, stro
             src={src}
             fallback={props.fallback || (() => <Icon {...props} width={width} height={height} strokeWidth={strokeWidth} src={Icons.NounProject.Crash} fallback={() => <span>Err!</span>} />)}
             wrapper="span"
+            aria-hidden={ariaHidden}
             beforeInjection={(svg) => {
                 svg.setAttribute('style', `
                     width:${width}px;

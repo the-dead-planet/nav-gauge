@@ -1,6 +1,5 @@
 import { FC } from "react";
-import classNames from "classnames";
-import { ObservedToolIcon } from "@apparatus";
+import { ObservedToolIcon, useTranslation } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { useTheme } from "@ui";
 import { Button, Transition } from "@web-ui";
@@ -22,6 +21,7 @@ export const ToolIconRight: FC<ObservedToolIcon<maplibregl.Map> & Props> = ({
     className,
 }) => {
     const theme = useTheme();
+    const ariaLabel = useTranslation(tooltip);
     const [active] = useSubjectState(active$);
     const [rotate] = useSubjectState(rotate$);
     const [pitch] = useSubjectState(pitch$);
@@ -29,6 +29,7 @@ export const ToolIconRight: FC<ObservedToolIcon<maplibregl.Map> & Props> = ({
     return (
         <Transition fade render>
             <Button
+                aria-label={ariaLabel}
                 icon={icon}
                 iconRotateX={pitch}
                 iconRotateZ={-rotate}

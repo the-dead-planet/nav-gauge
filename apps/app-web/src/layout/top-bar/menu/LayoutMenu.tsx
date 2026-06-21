@@ -10,7 +10,7 @@ export const LayoutMenu: FC = () => {
 
     return (
         <>
-            <Menu placement="bottom-right" iconActiveColor="secondary">
+            <Menu aria-label="Application menu" placement="bottom-right" iconActiveColor="secondary">
                 <MenuItem
                     key="individuator"
                     type="button"
