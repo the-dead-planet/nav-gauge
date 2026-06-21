@@ -5,6 +5,7 @@ import { Icon } from "../icons";
 import { Tooltip } from "../tooltip";
 import { Hexagon } from "../hud";
 import styles from './button.module.css';
+import { Span } from "../typography";
 
 interface Props {
     /**
@@ -13,7 +14,6 @@ interface Props {
     icon?: string;
     iconRotateX?: number;
     iconRotateZ?: number;
-    tooltip?: ReactNode;
 }
 
 export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
@@ -29,6 +29,8 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     iconRotateX = 0,
     iconRotateZ = 0,
     tooltip,
+    tooltipPlacement,
+    showTooltipConnection,
     onClick,
     children,
     className,
@@ -118,9 +120,21 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     ) : renderButton();
 
     if (tooltip) {
-        <Tooltip content={tooltip}>
-            {button}
-        </Tooltip>
+        return (
+            <Tooltip
+                placement={tooltipPlacement}
+                content={tooltip}
+                color={highlightColor || color}
+                variant={variant === 'fill'
+                    ? 'fill'
+                    : variant === 'fill-translucent'
+                        ? 'fill-translucent'
+                        : 'fill-inverse'}
+                showConnection={showTooltipConnection}
+            >
+                {button}
+            </Tooltip>
+        );
     };
 
     return button;

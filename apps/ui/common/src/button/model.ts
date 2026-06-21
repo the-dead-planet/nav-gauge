@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { ColorVariant, GlowStyle, SizeVariant, SurfaceVariant } from "../model";
+import { TooltipProps } from "../tooltip";
 
 export type ButtonCorners = 'square' | 'rounded' | 'circle' | 'hexagon';
 
@@ -21,5 +22,8 @@ export interface ButtonProps {
      * If styles should always use a certain mode, instead of the dynamic theme mode.
      */
     themeMode?: boolean;
+    tooltip?: ReactNode;
+    tooltipPlacement?: TooltipProps['placement'];
+    showTooltipConnection?: boolean;
     children?: ReactNode;
 }

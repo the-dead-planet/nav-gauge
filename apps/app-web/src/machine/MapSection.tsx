@@ -80,6 +80,7 @@ export const MapSection: FC = () => {
                                 }
                             }}
                             tooltip={<T n={gear.id} t={gear.translationKey.GearDescription} />}
+                            tooltipPlacement="bottom"
                         >
                             <T n={gear.id} t={gear.translationKey.GearName} />
                         </Button>

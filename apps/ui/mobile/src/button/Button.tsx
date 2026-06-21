@@ -26,6 +26,8 @@ export const Button: FC<PressableProps & ButtonProps & Props> = ({
     children,
     style,
     disabled,
+    tooltip,
+    tooltipPlacement,
     onPress,
     onLongPress,
     onPressIn,

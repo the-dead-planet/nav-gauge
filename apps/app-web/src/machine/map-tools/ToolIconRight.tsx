@@ -33,6 +33,8 @@ export const ToolIconRight: FC<ObservedToolIcon<maplibregl.Map> & Props> = ({
                 iconRotateX={pitch}
                 iconRotateZ={-rotate}
                 tooltip={<T {...tooltip} />}
+                tooltipPlacement="left"
+                showTooltipConnection
                 size="xs"
                 variant="fill-inverse"
                 corners="hexagon"

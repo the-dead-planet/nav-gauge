@@ -11,5 +11,6 @@ export * from './menu';
 export * from './model';
 export * from './theme';
 export * from './tinkers';
+export * from './tooltip';
 export * from './transition';
 export * from './typography';
