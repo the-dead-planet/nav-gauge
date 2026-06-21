@@ -1,10 +1,11 @@
-import { Children, cloneElement, FC, ReactElement, useCallback, useEffect, useRef, useState } from "react";
+import { Children, cloneElement, FC, ReactElement, useCallback, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import classNames from "classnames";
 import { TooltipPlacement, TooltipProps, useTheme } from "@ui";
 import style from './tooltip.module.css';
 
 interface ChildProps {
+    "aria-describedby"?: string;
     ref?: unknown;
     onMouseEnter?: (e: MouseEvent) => void;
     onMouseLeave?: (e: MouseEvent) => void;
@@ -133,6 +134,7 @@ export const Tooltip: FC<TooltipProps> = ({
     showConnection = false,
 }) => {
     const theme = useTheme();
+    const tooltipId = useId();
     const childRef = useRef<HTMLElement>(null);
     const tooltipRef = useRef<HTMLDivElement>(null);
     const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
@@ -202,6 +204,7 @@ export const Tooltip: FC<TooltipProps> = ({
     const trigger = cloneElement(
         child,
         {
+            "aria-describedby": visible ? tooltipId : undefined,
             ref: (node: HTMLElement | null) => {
                 childRef.current = node;
                 const originalRef = childProps.ref;
@@ -237,6 +240,7 @@ export const Tooltip: FC<TooltipProps> = ({
                 <>
                     <div
                         ref={tooltipRef}
+                        id={tooltipId}
                         role="tooltip"
                         className={classNames(
                             style['tooltip-content'],
