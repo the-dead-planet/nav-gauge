@@ -7,7 +7,6 @@ import { useObservableState, useSubjectState } from "@tinker-chest";
 import { Presets } from "./controls/Presets";
 import { AnimationControls } from "./controls/AnimationControls";
 import { MapLayoutControls } from "./controls/MapLayoutControls";
-import { ApplicationSettingsSection } from "./controls/ApplicationSettings";
 import { GaugeControls } from "./controls/GaugeControls";
 import { MapStyleSelection } from "./controls/MapStyleSelection";
 import { MapTools } from "./map-tools/MapTools";
@@ -56,7 +55,6 @@ export const MapSection: FC = () => {
                 <MapLayoutControls />
                 <GaugeControls />
                 <AnimationControls />
-                <ApplicationSettingsSection />
             </div> */}
             {map ? (
                 <MapTools map={map}>

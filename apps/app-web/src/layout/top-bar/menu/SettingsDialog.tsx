@@ -5,7 +5,7 @@ import { Dialog, Dropdown, P } from "@web-ui";
 import { Individuator, IndividuatorSettings, Language, Translatron, useMachineWard } from "@apparatus";
 import { T } from "@web-apparatus";
 import { useSubjectState } from "@tinker-chest";
-import { DateFormat, TimeFormat } from "@ui";
+import { DateFormat, ThemeName, TimeFormat } from "@ui";
 import styles from './settings-dialog.module.css';
 
 interface Props {
@@ -52,11 +52,11 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                     onChange={(language) => setPendingSettings((prev): IndividuatorSettings => ({ ...prev, language }))}
                 />
 
-                <P shadow color="primary">
+                <P id="individuator-date-format-label" shadow color="primary">
                     <T n={individuator.namespace} t={individuator.translationKey.DateFormat} />
                 </P>
                 <Dropdown<DateFormat>
-                    labelledBy="individuator-language-label"
+                    labelledBy="individuator-date-format-label"
                     size="xs"
                     color="primary"
                     variant="fill"
@@ -71,17 +71,30 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                     onChange={(dateFormat) => setPendingSettings((prev) => ({ ...prev, dateFormat }))}
                 />
 
-                <P shadow color="primary">
+                <P id="individuator-time-format-label" shadow color="primary">
                     <T n={individuator.namespace} t={individuator.translationKey.TimeFormat} />
                 </P>
                 <Dropdown<TimeFormat>
-                    labelledBy="individuator-language-label"
+                    labelledBy="individuator-time-format-label"
                     size="xs"
                     color="primary"
                     variant="fill"
                     value={pendingSettings.timeFormat}
                     options={Individuator.timeFormatOptions}
                     onChange={(timeFormat) => setPendingSettings((prev) => ({ ...prev, timeFormat }))}
+                />
+
+                <P id="individuator-theme-label" shadow color="primary">
+                    <T n={individuator.namespace} t={individuator.translationKey.Theme} />
+                </P>
+                <Dropdown<ThemeName>
+                    labelledBy="individuator-theme-label"
+                    size="xs"
+                    color="primary"
+                    variant="fill"
+                    value={pendingSettings.themeName}
+                    options={Individuator.themeOptions}
+                    onChange={(themeName) => setPendingSettings((prev) => ({ ...prev, themeName }))}
                 />
             </div>
         </Dialog>,

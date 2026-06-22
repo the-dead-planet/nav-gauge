@@ -91,7 +91,8 @@ export const Hexagon: FC<HexagonProps & Props> = ({
     const isPointy = shape === "pointy-top";
     const points = isPointy ? POINTY_TOP : FLAT_TOP;
     const aspectRatio = isPointy ? 86.6 / 100 : 100 / 86.6;
-    const isLight = themeMode !== undefined ? !themeMode : theme.mode === 'light';
+    const effectiveTheme = themeMode || theme.mode;
+    const isLight = effectiveTheme === 'light';
     const clipPathId = useId();
 
     const color = (colorProp || 'neutral') as ColorVariant;

@@ -60,8 +60,8 @@ export function MachineWardApp<TMap, TNavigationPath extends string>({
     }, []);
 
     const theme = useMemo(
-        () => new Theme(themeSpecifications[settings.themeName], media),
-        [settings.themeName, media],
+        () => new Theme(themeSpecifications[settings.themeName][settings.themeMode], media),
+        [settings.themeName, settings.themeMode, media],
     );
 
     useEffect(() => {

@@ -27,7 +27,7 @@ export const Panel: FC<PanelProps & Props & ComponentProps<'div'>> = ({
     ...props
 }) => {
     const theme = useTheme();
-    const effectiveMode = themeMode !== undefined ? (themeMode ? 'dark' : 'light') : theme.mode;
+    const effectiveMode = themeMode !== undefined ? themeMode : theme.mode;
 
     return (
         <div

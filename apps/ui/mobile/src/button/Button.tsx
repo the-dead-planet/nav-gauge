@@ -41,7 +41,8 @@ export const Button: FC<PressableProps & ButtonProps & Props> = ({
     const [pressed, setPressed] = useState(false);
     const [glowDrawn, setGlowDrawn] = useState(false);
     const hl = pressed || active;
-    const isLight = (themeMode || theme.mode) === 'light';
+    const effectiveTheme = themeMode || theme.mode;
+    const isLight = effectiveTheme === 'light';
 
     const hlInset = theme.color(highlightColor, isLight ? 600 : 300);
     const baseColor = theme.color(color);

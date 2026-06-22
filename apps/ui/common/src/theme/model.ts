@@ -1,6 +1,6 @@
 export enum ThemeName {
-    Light = 'theme-light',
-    Dark = 'theme-dark',
+    Default = 'Default',
+    NeonBlue = 'Neon Blue',
 }
 
 export type ColorShade =

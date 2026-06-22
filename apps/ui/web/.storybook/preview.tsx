@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from 'react';
 import type { Preview } from 'storybook-react-rsbuild';
-import { Orientation, Theme, ThemeContext, ThemeName, themeOptions, themeSpecifications } from '@ui';
+import { Orientation, Theme, ThemeContext, ThemeMode, ThemeName, themeNameOptions, themeModeOptions, themeSpecifications } from '@ui';
 import { P, useThemeVariables } from '../src';
 import './preview.css';
 
@@ -15,8 +15,9 @@ const getMedia = () => {
 };
 
 const ThemeDecorator = ({ children }: { children: ReactNode }) => {
-    const [themeName, setThemeName] = useState<ThemeName>(ThemeName.Dark);
-    const theme = new Theme(themeSpecifications[themeName], {
+    const [themeMode, setThemeMode] = useState<ThemeMode>('dark');
+    const [themeName, setThemeName] = useState<ThemeName>(ThemeName.Default);
+    const theme = new Theme(themeSpecifications[themeName][themeMode], {
         initial: () => getMedia(),
         subscribe: (onChange) => {
             const handler = () => {
@@ -35,17 +36,32 @@ const ThemeDecorator = ({ children }: { children: ReactNode }) => {
     return (
         <ThemeContext.Provider value={theme}>
             <div>
-                <div className="theme-selection">
-                    <label htmlFor="theme-select" className="theme-selection-label">
+                <div className="theme-mode-selection">
+                    <label htmlFor="theme-mode-select" className="theme-mode-selection-label">
+                        <P>Mode:</P>
+                    </label>
+                    <select
+                        id="theme-mode-select"
+                        value={themeMode}
+                        onChange={(e) => setThemeMode(e.target.value as ThemeMode)}
+                        className="select"
+                    >
+                        {themeModeOptions.map((option) => (
+                            <option key={option.value} value={option.value}>
+                                {option.label}
+                            </option>
+                        ))}
+                    </select>
+                    <label htmlFor="theme-name-select" className="theme-name-selection-label">
                         <P>Theme:</P>
                     </label>
                     <select
-                        id="theme-select"
-                        value={themeName}
+                        id="theme-name-select"
+                        value={themeMode}
                         onChange={(e) => setThemeName(e.target.value as ThemeName)}
                         className="select"
                     >
-                        {themeOptions.map((option) => (
+                        {themeNameOptions.map((option) => (
                             <option key={option.value} value={option.value}>
                                 {option.label}
                             </option>

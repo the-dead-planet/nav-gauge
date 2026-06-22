@@ -33,7 +33,11 @@ export class StorageKeeper {
     ): Promise<Subscription> => {
         const setState = (savedData: string | null) => {
             if (savedData) {
-                state$.next({ ...state$.value, ...cleanUp(JSON.parse(savedData) as T) });
+                let sanitized = {};
+                try {
+                    sanitized = cleanUp(JSON.parse(savedData));
+                } catch { }
+                state$.next({ ...state$.value, ...sanitized });
             }
         };
 

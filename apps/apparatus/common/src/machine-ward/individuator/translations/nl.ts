@@ -6,6 +6,7 @@ const nl: TranslationTable<IndividuatorTranslationKey>['nl'] = {
     language: 'Taal',
     "date-format": 'Datumnotatie',
     "time-format": 'Tijdnotatie',
+    theme: 'Thema',
 };
 
 export default nl;

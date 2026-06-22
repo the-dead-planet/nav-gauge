@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { ColorVariant, GlowStyle, SizeVariant, SurfaceVariant } from "../../model";
+import { ThemeMode } from "../../theme";
 
 export type HexagonShape = 'pointy-top' | 'flat-top';
 
@@ -12,7 +13,7 @@ export interface HexagonProps {
     highlightColor?: ColorVariant;
     size?: SizeVariant;
     variant?: SurfaceVariant;
-    themeMode?: boolean;
+    themeMode?: ThemeMode;
     active?: boolean;
     children?: ReactNode;
 }

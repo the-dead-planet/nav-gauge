@@ -1,5 +1,5 @@
 import { BehaviorSubject, Subscription } from "rxjs";
-import { DateFormat, Option, ThemeName, TimeFormat, formatTimestamp } from "@ui";
+import { DateFormat, Option, ThemeMode, ThemeName, TimeFormat, formatTimestamp, themeModeOptions, themeNameOptions } from "@ui";
 import { StorageKeeper } from "../storage-keeper";
 import { IndividuatorSettings, IndividuatorTranslationKey } from "./model";
 import { TranslationTable, Translatron } from "../translatron";
@@ -46,13 +46,19 @@ export class Individuator {
         { value: TimeFormat.hmmssa, label: '2:30:00 pm (12h, H)' },
     ];
 
+    public static themeOptions: Option<ThemeName>[] = [
+        { value: ThemeName.Default, label: 'Default' },
+        { value: ThemeName.NeonBlue, label: 'Neon Blue' },
+    ];
+
     /**
      * Provides default settings which can be later changed by user.
      * @param defaultTheme Defaults to dark theme.
      * @returns 
      */
-    private static getDefaultApplicationSettings = (defaultThemeName?: ThemeName): IndividuatorSettings => ({
-        themeName: defaultThemeName || ThemeName.Dark,
+    private static getDefaultApplicationSettings = (defaultThemeMode: ThemeMode = 'dark'): IndividuatorSettings => ({
+        themeMode: defaultThemeMode,
+        themeName: ThemeName.Default,
         /**
          * When set to true, user will be shown a confirmation popup on page close or reload.
          */
@@ -65,7 +71,7 @@ export class Individuator {
     public constructor(
         prefersLightColorScheme: boolean
     ) {
-        const initialSettings = Individuator.getDefaultApplicationSettings(prefersLightColorScheme ? ThemeName.Light : ThemeName.Dark);
+        const initialSettings = Individuator.getDefaultApplicationSettings(prefersLightColorScheme ? 'light' : 'dark');
         this.settings$ = new BehaviorSubject<IndividuatorSettings>(initialSettings);
     }
 
@@ -75,7 +81,15 @@ export class Individuator {
     ) => {
         translatron.register(this.namespace, this.translations);
 
-        storageKeeper.synchronizeSubjectWithStorage(this.settings$, this.settingsStorageId)
+        storageKeeper.synchronizeSubjectWithStorage(this.settings$, this.settingsStorageId, (state) => {
+            const maybeSettings = state as IndividuatorSettings;
+            
+            return {
+                ...maybeSettings,
+                themeMode: themeModeOptions.some(({value}) => value === maybeSettings.themeMode) ? maybeSettings.themeMode : themeModeOptions[0].value,
+                themeName: themeNameOptions.some(({value}) => value === maybeSettings.themeName) ? maybeSettings.themeName : themeNameOptions[0].value,
+            }
+        })
             .then((s) => this.settingsStorageSubscription = s);
     };
 
@@ -99,10 +113,9 @@ export class Individuator {
     public toggleMode = () => {
         this.settings$.next(({
             ...this.settings$.value,
-            themeName: this.settings$.value.themeName === ThemeName.Dark
-                ? ThemeName.Light
-                : ThemeName.Dark
+            themeMode: this.settings$.value.themeMode === 'dark'
+                ? 'light'
+                : 'dark'
         }));
     };
-
 }

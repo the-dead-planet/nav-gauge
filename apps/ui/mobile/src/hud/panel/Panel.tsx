@@ -27,7 +27,8 @@ export const Panel: FC<PanelProps & Props> = ({
     const theme = useTheme();
     const [pressed, setPressed] = useState(false);
     const hl = pressed || active;
-    const isLight = themeMode !== undefined ? !themeMode : theme.mode === 'light';
+    const effectiveTheme = themeMode || theme.mode;
+    const isLight = effectiveTheme === 'light';
 
     const color = (colorProp || 'neutral');
     const hlColor = (hlColorProp || color);

@@ -6,6 +6,7 @@ const es: TranslationTable<IndividuatorTranslationKey>['es'] = {
     language: 'Idioma',
     "date-format": 'Formato de fecha',
     "time-format": 'Formato de hora',
+    theme: 'Tema',
 };
 
 export default es;
