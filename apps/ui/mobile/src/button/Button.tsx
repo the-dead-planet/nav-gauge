@@ -274,14 +274,14 @@ export const Button: FC<PressableProps & ButtonProps & Props> = ({
             disabled={disabled}
             onPress={onPress ?? undefined}
             onLongPress={onLongPress ?? undefined}
-            onPressIn={() => {
+            onPressIn={(e) => {
                 setPressed(true);
                 markGlowDrawn();
-                onPressIn?.();
+                onPressIn?.(e);
             }}
-            onPressOut={() => {
+            onPressOut={(e) => {
                 setPressed(false);
-                onPressOut?.();
+                onPressOut?.(e);
             }}
             style={[container, style as ViewStyle]}
             {...props}
