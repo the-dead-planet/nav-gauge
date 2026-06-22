@@ -4,7 +4,7 @@ import { CartomancerTranslationKey } from "../model";
 const es: TranslationTable<CartomancerTranslationKey>['es'] = {
     "compass": 'Apuntar al norte',
     "zoom-in": 'Acercar',
-    "round-current-zoom": 'Redondear zoom actual',
+    "round-current-zoom": 'Acercar a {{zoom}}',
     "zoom-out": 'Alejar',
 };
 

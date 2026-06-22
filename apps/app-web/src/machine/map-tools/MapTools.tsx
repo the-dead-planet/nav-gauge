@@ -245,13 +245,17 @@ export const MapTools: FC<Props> = ({ map, children }) => {
         });
 
         const idCurrentZoom = 'cartomancer-current-zoom';
-        toolsStation.addToolIcon(idCurrentZoom, {
-            icon: Icons.NounProject.BrokenBox,
+        const currentZoomIcon = toolsStation.addToolIcon(idCurrentZoom, {
+            value: map.getZoom().toFixed(1),
             onClick: (map) => {
                 map.easeTo({ zoom: Math.round(map.getZoom()) });
             },
             placement: 'right',
-            tooltip: { n: cartomancer.namespace, t: cartomancer.translationKey.RoundCurrentZoom },
+            tooltip: (value) => ({
+                n: cartomancer.namespace,
+                t: cartomancer.translationKey.RoundCurrentZoom,
+                p: typeof value === 'string' ? { zoom: Number(value).toFixed(0) } : undefined,
+            }),
         });
 
         const idOut = 'cartomancer-zoom-out';
@@ -266,15 +270,16 @@ export const MapTools: FC<Props> = ({ map, children }) => {
         });
 
         let timeout: number;
-        const handler = () => {
+        const zoomEndHandler = () => {
             clearTimeout(timeout);
             timeout = setTimeout(() => clickedZoom.current = map.getZoom(), 200);
+            currentZoomIcon.value$.next(map.getZoom().toFixed(1));
         };
 
-        map.on("zoomend", handler);
+        map.on("zoomend", zoomEndHandler);
 
         return () => {
-            map.off("zoomend", handler);
+            map.off("zoomend", zoomEndHandler);
             toolsStation.removeToolIcon(idIn);
             toolsStation.removeToolIcon(idCurrentZoom);
             toolsStation.removeToolIcon(idOut);

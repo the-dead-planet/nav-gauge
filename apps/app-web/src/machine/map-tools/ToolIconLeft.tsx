@@ -12,8 +12,9 @@ interface Props {
 
 export const ToolIconLeft: FC<ObservedToolIcon<maplibregl.Map> & Props> = ({
     map,
-    active$,
     icon,
+    value$,
+    active$,
     rotate$,
     pitch$,
     tooltip,
@@ -21,10 +22,12 @@ export const ToolIconLeft: FC<ObservedToolIcon<maplibregl.Map> & Props> = ({
     className,
 }) => {
     const theme = useTheme();
-    const ariaLabel = useTranslation(tooltip);
+    const [value] = useSubjectState(value$);
     const [active] = useSubjectState(active$);
     const [rotate] = useSubjectState(rotate$);
     const [pitch] = useSubjectState(pitch$);
+    const effectiveTooltip = typeof tooltip === 'function' ? tooltip(value) : tooltip;
+    const ariaLabel = useTranslation(effectiveTooltip);
 
     return (
         <Transition fade render>
@@ -33,7 +36,7 @@ export const ToolIconLeft: FC<ObservedToolIcon<maplibregl.Map> & Props> = ({
                 icon={icon}
                 iconRotateX={pitch}
                 iconRotateZ={-rotate}
-                tooltip={<T {...tooltip} />}
+                tooltip={<T {...effectiveTooltip} />}
                 tooltipPlacement="right"
                 showTooltipConnection
                 size="sm"

@@ -57,7 +57,7 @@ export class ToolsStation<TMap> {
     public toolIcons$ = new BehaviorSubject<Map<string, ToolIcon<TMap>>>(new Map());
 
     /**
-     * Subscribe to changes of tool icons and their placements and activity.
+     * Subscribe to changes of tool icon placements.
      */
     public toolIconsByPlacement$: Observable<ObservedToolIcon<TMap>[]> = this.toolIcons$.pipe(
         switchMap((toolsMap) => {
@@ -68,18 +68,9 @@ export class ToolsStation<TMap> {
             }
 
             return combineLatest(
-                toolIcons.map(([id, toolIcon]) =>
-                    combineLatest([toolIcon.placement$]).pipe(
-                        map(([placement]): ObservedToolIcon<TMap> => ({
-                            id,
-                            placement,
-                            active$: toolIcon.active$,
-                            rotate$: toolIcon.rotate$,
-                            pitch$: toolIcon.pitch$,
-                            icon: toolIcon.icon,
-                            tooltip: toolIcon.tooltip,
-                            onClick: toolIcon.onClick,
-                        }))
+                toolIcons.map(([id, { placement$, ...toolIcon }]) =>
+                    combineLatest([placement$]).pipe(
+                        map(([placement]): ObservedToolIcon<TMap> => ({ id, placement, ...toolIcon }))
                     )
                 )
             );
@@ -160,9 +151,10 @@ export class ToolsStation<TMap> {
      */
     public addToolIcon = (
         id: string,
-        { tooltip, icon, placement, onClick, active = false, rotate = 0, pitch = 0 }: {
-            icon: string,
-            tooltip: TranslationId,
+        { tooltip, value = null, icon, placement, onClick, active = false, rotate = 0, pitch = 0 }: {
+            icon?: string,
+            value?: string | null,
+            tooltip: TranslationId | ((value: string | null) => TranslationId),
             placement: ToolIconPlacement;
             active?: boolean;
             rotate?: number;
@@ -174,6 +166,7 @@ export class ToolsStation<TMap> {
         const toolIcon: ToolIcon<TMap> = {
             tooltip,
             icon,
+            value$: new BehaviorSubject(value),
             placement$: new BehaviorSubject(placement),
             active$: new BehaviorSubject(active),
             rotate$: new BehaviorSubject(rotate),

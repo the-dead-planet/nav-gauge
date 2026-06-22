@@ -4,7 +4,7 @@ import { CartomancerTranslationKey } from "../model";
 const nl: TranslationTable<CartomancerTranslationKey>['nl'] = {
     "compass": 'Naar het noorden richten',
     "zoom-in": 'Inzoomen',
-    "round-current-zoom": 'Huidige zoom afronden',
+    "round-current-zoom": 'Inzoomen op {{zoom}}',
     "zoom-out": 'Uitzoomen',
 };
 
