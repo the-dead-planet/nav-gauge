@@ -15,3 +15,4 @@ export { default as PinCinema } from './output/pin-cinema.svg';
 export { default as Plus } from './output/plus.svg';
 export { default as SunSmile } from './output/sun-smile.svg';
 export { default as SunSunglasses } from './output/sun-sunglasses.svg';
+export { default as Target } from './output/target.svg';

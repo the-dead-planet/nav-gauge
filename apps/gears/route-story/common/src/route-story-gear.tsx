@@ -98,7 +98,7 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
             {
                 tooltip: { n: this.id, t: this.internalTranslationKey.FitBounds },
                 placement: 'left',
-                icon: Icons.Find as unknown as string,
+                icon: Icons.NounProject.Target as unknown as string,
                 onClick: (map) => {
                     const boundingBox = this.data$.value.boundingBox;
                     if (!boundingBox) {

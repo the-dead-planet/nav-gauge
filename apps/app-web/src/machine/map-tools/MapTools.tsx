@@ -180,7 +180,7 @@ export const MapTools: FC<Props> = ({ map, children }) => {
                 const promise = new Promise((resolve) => {
                     image.onload = resolve;
                 });
-                image.src = Icons.Find;
+                image.src = Icons.NounProject.AlienGun;
                 await promise;
                 image.width = 20;
                 image.height = 20;

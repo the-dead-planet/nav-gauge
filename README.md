@@ -72,7 +72,6 @@ See [ARCHITECTURES](/docs/ARCHITECTURES.md).
 
 Go to the subfolder and run commands described in:
 
-- [api](/api/README.md) - Application backend with user data, preferences, app persistence, proxy end points etc. (to be implemented in the future)
 - [apps](/apps/README.md) - Client application workspaces (web, mobile and shared packages and UI)
 - [scripts](/scripts/README.md) - Ad-hoc scripts, for example for map tile sourcing and generation
 
