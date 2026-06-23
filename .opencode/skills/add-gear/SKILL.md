@@ -19,7 +19,6 @@ Use this when you are asked to add a new feature that should be implemented as a
 ## Usage
 
 ```bash
-cd apps
 yarn generate:gear <name>           # common + web + mobile
 yarn generate:gear <name> --web-only
 yarn generate:gear <name> --mobile-only

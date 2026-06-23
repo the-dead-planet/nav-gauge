@@ -25,7 +25,7 @@
     "exclude": [
         "**/app-mobile/**/*",
         "**/mobile/**/*",
-        "**/scripts/app/**/*",
+        "**/scripts/**/*",
         "**/.templates/**/*",
         "node_modules",
         "**/node_modules",

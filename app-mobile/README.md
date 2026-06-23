@@ -28,7 +28,7 @@ Add required RN dependencies in this mobile app workspace and also list them as 
 
 The standard JS libraries, compatible with both web and mobile, should be installed in the workspace which needs them. 
 
-If it's a package used across the whole project, then it can be installed in apps root.
+If it's a package used across the whole project, then it can be installed in root.
 
 ## Development
 
