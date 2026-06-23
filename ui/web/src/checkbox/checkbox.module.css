@@ -44,6 +44,14 @@
     flex: 1;
 }
 
+.mode-light .label {
+    color: var(--checkbox-color-dark);
+}
+
+.mode-dark .label {
+    color: var(--checkbox-color-light);
+}
+
 .color-primary {
     --checkbox-color: var(--color-primary);
     --checkbox-color-dark: var(--color-primary-900);
@@ -155,4 +163,9 @@
 
 .checkbox:hover .box:not(.box-checked) {
     border-color: var(--checkbox-color);
+}
+
+.checkbox:has(:focus-visible) .box {
+    outline: 2px solid var(--checkbox-color);
+    outline-offset: 2px;
 }

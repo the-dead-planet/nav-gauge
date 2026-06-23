@@ -19,4 +19,5 @@ export enum IndividuatorTranslationKey {
     DateFormat = "date-format",
     TimeFormat = "time-format",
     Theme = 'theme',
+    ConfirmBeforeLeave = 'confirm-before-leave',
 };

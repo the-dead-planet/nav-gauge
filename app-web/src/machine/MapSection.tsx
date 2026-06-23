@@ -36,7 +36,7 @@ export const MapSection: FC = () => {
     const toolIconsByPlacement = toolsStation.getToolIconsByPlacement(toolIcons);
 
     useEffect(() => {
-        let m = createMap();
+        const m = createMap();
         setMap(m);
 
         return () => {

@@ -63,7 +63,7 @@ export const SlideDemo: FC = () => {
 
             <Transition render={render} slide={direction} fade={fade} durationMs={400}>
                 <View style={[styles.box, { backgroundColor: '#1a3a5c' }]}>
-                    <Text style={{ fontWeight: '700' as any, color: '#fff' }}>
+                    <Text style={{ fontWeight: '700', color: '#fff' }}>
                         {direction}{fade ? ' + fade' : ''}
                     </Text>
                 </View>

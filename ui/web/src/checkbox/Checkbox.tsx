@@ -42,7 +42,6 @@ export const Checkbox: FC<Omit<ComponentProps<'label'>, 'onChange'> & CheckboxPr
                 checked={checked}
                 onChange={handleChange}
                 disabled={disabled}
-                aria-hidden
             />
             <span className={classNames(styles['box'], { [styles['box-checked']]: checked })}>
                 {checked ? (

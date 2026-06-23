@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from 'storybook-react-rsbuild';
+import type { Meta } from 'storybook-react-rsbuild';
 import { CSSProperties, useState } from 'react';
 import { Transition } from './Transition';
 import { Button } from '../button';

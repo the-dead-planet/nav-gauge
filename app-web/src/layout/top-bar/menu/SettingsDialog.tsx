@@ -103,7 +103,7 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                     checked={pendingSettings.confirmBeforeLeave}
                     onChange={(checked) => setPendingSettings((prev): IndividuatorSettings => ({ ...prev, confirmBeforeLeave: checked }))}
                 >
-                    <T n={individuator.namespace} t={individuator.translationKey.Theme} />
+                    <T n={individuator.namespace} t={individuator.translationKey.ConfirmBeforeLeave} />
                 </Checkbox>
             </div>
         </Dialog>,

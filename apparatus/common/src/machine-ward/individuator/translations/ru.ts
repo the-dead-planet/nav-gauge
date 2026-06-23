@@ -7,6 +7,7 @@ const ru: TranslationTable<IndividuatorTranslationKey>['ru'] = {
     "date-format": 'Формат даты',
     "time-format": 'Формат времени',
     theme: 'Тема',
+    "confirm-before-leave": 'Подтверждение перед выходом',
 };
 
 export default ru;

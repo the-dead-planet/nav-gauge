@@ -1,8 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { parseSync, stringify } from "svgson";
-import { Resvg } from "@resvg/resvg-js";
+import { parseSync, stringify, INode } from "svgson";
+import { Resvg, BBox } from "@resvg/resvg-js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -16,7 +16,7 @@ fs.mkdirSync(OUT_DIR, { recursive: true });
 const PADDING_Y = 2.5;
 const PADDING_X = 2;
 
-function applyPadding(bbox: any) {
+function applyPadding(bbox: BBox) {
   return {
     x: bbox.x - PADDING_X,
     y: bbox.y - PADDING_Y,
@@ -25,14 +25,14 @@ function applyPadding(bbox: any) {
   };
 }
 
-function toViewBox(b: any) {
+function toViewBox(b: BBox) {
   return `${b.x} ${b.y} ${b.width} ${b.height}`;
 }
 
-function extractCreator(ast: any): string {
+function extractCreator(ast: INode): string {
   const chunks: string[] = [];
 
-  function walk(node: any) {
+  function walk(node: INode) {
     if (!node) {
       return;
     };
@@ -73,17 +73,17 @@ function extractCreator(ast: any): string {
   return match?.[1]?.trim() ?? "Unknown Artist";
 }
 
-function stripText(node: any): any {
+function stripText(node: INode): INode {
   if (!node.children) return node;
 
   node.children = node.children
-    .filter((c: any) => c.name !== "text")
+    .filter((c) => c.name !== "text")
     .map(stripText);
 
   return node;
 }
 
-function stripColors(node: any): any {
+function stripColors(node: INode): INode {
   if (node.attributes) {
     delete node.attributes.fill;
     delete node.attributes.stroke;
@@ -93,9 +93,9 @@ function stripColors(node: any): any {
   return node;
 }
 
-function toSVG(ast: any) {
+function toSVG(ast: INode) {
   const inner = (ast.children || [])
-    .map((c: any) => stringify(c))
+    .map((c) => stringify(c))
     .join("\n");
 
   return `
@@ -107,14 +107,26 @@ function toSVG(ast: any) {
 function computeViewBox(svg: string) {
   const resvg = new Resvg(svg);
   const bbox = resvg.getBBox();
+  if (!bbox) {
+    throw new Error("Could not compute bounding box");
+  }
   const padded = applyPadding(bbox);
 
   return toViewBox(padded);
 }
 
+interface RegistryEntry {
+  id: string;
+  title: string;
+  creator: string;
+  source: string;
+  href: string;
+  license: string;
+}
+
 const files = fs.readdirSync(RAW_DIR).filter(f => f.endsWith(".svg"));
 
-const registry: any[] = [];
+const registry: RegistryEntry[] = [];
 
 for (const file of files) {
   const raw = fs.readFileSync(path.join(RAW_DIR, file), "utf8");

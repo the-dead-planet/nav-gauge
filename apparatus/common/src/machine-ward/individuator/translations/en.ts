@@ -7,6 +7,7 @@ const en:TranslationTable<IndividuatorTranslationKey>['en'] = {
     "date-format": 'Date format',
     "time-format": 'Time format',
     theme: 'Theme',
+    "confirm-before-leave": 'Confirm before leaving',
 };
 
 export default en;
