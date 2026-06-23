@@ -35,6 +35,7 @@ export const Overview: FC = () => {
                 <Dialog
                     header={open.replace('-', ' ')}
                     placement={open}
+                    closeText='Close'
                     onClose={() => setOpen(null)}
                 >
                     <View style={{ rowGap: 8 }}>

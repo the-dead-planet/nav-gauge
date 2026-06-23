@@ -78,12 +78,13 @@ jobs:
 
       - run: corepack enable
 
-      - name: Setup Node + Yarn cache
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: yarn
-          cache-dependency-path: yarn.lock
+
+      - name: Install dependencies
+        run: yarn install --immutable
 
       - name: Restore Cypress binary cache
         id: cache-cypress
@@ -94,13 +95,13 @@ jobs:
 
       - name: Install Cypress binary
         if: steps.cache-cypress.outputs.cache-hit != 'true'
-        run: npx --yes cypress@15.15.0 install
+        working-directory: app-web
+        run: npx --yes cypress install
 
       - name: Cypress E2E tests
         uses: cypress-io/github-action@v7
         with:
           working-directory: app-web
-          install-command: yarn install --immutable
           build: yarn build
           start: yarn start
           wait-on: 'http://localhost:3000'
@@ -265,6 +266,9 @@ jobs:
           corepack prepare yarn@4.14.1 --activate
           yarn -v
 
+      - name: Install dependencies
+        run: yarn install --immutable
+
       - name: Restore Cypress binary cache
         id: cache-cypress
         uses: actions/cache@v4
@@ -274,12 +278,12 @@ jobs:
 
       - name: Install Cypress binary
         if: steps.cache-cypress.outputs.cache-hit != 'true'
-        run: npx --yes cypress@15.15.0 install
+        working-directory: app-web
+        run: npx --yes cypress install
 
       - name: Cypress E2E tests (production)
         uses: cypress-io/github-action@v7
         with:
           working-directory: app-web
-          install-command: yarn install --immutable
           build: yarn build
           config: baseUrl=https://gauge.spookydoodle.com
