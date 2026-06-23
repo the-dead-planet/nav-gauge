@@ -1,0 +1,8 @@
+# Mobile UI library
+
+Mobile UI components to use in the mobile app.
+See [README](/app-mobile/README.md).
+
+## Import sequence
+
+See [ARCHITECTURES](/docs/ARCHITECTURES.md).

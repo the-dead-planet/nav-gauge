@@ -1,0 +1,35 @@
+{
+    "extends": "@react-native/typescript-config",
+    "compilerOptions": {
+        "paths": {
+            "@tinker-chest": [
+                "./tinker-chest/src"
+            ],
+            "@ui": [
+                "./ui/common/src"
+            ]
+        },
+        "types": [
+            "react",
+            "react-native",
+            "jest"
+        ]
+    },
+    "include": [
+        "**/*.ts",
+        "**/*.tsx",
+        "**/test/**/*",
+        "**/__tests__/**/*",
+        "**/types/**/*",
+        "./types/**/*",
+    ],
+    "exclude": [
+        "**/app-web/**/*",
+        "**/web/**/*",
+        "**/scripts/app/**/*",
+        "**/.templates/**/*",
+        "node_modules",
+        "**/node_modules",
+        "**/Pods"
+    ]
+}

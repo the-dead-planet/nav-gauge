@@ -44,15 +44,15 @@ Mix of object oriented and functional programming. Try to separate modules and a
 
 #### Web & mobile alignment
 
-Web and mobile applications should follow the same structure which is defined by [Machine Ward](/apps/apparatus/common/src/machine-ward/machine-ward.tsx). Both apps should implement specifics using the DOM (for web) and native components (for mobile).
+Web and mobile applications should follow the same structure which is defined by [Machine Ward](/apparatus/common/src/machine-ward/machine-ward.tsx). Both apps should implement specifics using the DOM (for web) and native components (for mobile).
 
 #### State management
 
-The main application state is provided via the [Machine Ward](/apps/apparatus/common/src/machine-ward/machine-ward.ts) object accessible using the [useMachineWard](/apps/apparatus/common/src/machine-ward/useMachineWard.tsx) hook.
+The main application state is provided via the [Machine Ward](/apparatus/common/src/machine-ward/machine-ward.ts) object accessible using the [useMachineWard](/apparatus/common/src/machine-ward/useMachineWard.tsx) hook.
 
 #### Separation of features
 
-All features should be opt-in, easily plugged in and out of the app. You can find them stored in the [Engine](/apps/apparatus/common/src/engine/engine.ts) and they should implement a [Gear interface](/apps/apparatus/common/src/engine/model.ts).
+All features should be opt-in, easily plugged in and out of the app. You can find them stored in the [Engine](/apparatus/common/src/engine/engine.ts) and they should implement a [Gear interface](/apparatus/common/src/engine/model.ts).
 
 More info: TBD
 
@@ -60,7 +60,7 @@ More info: TBD
 
 Follow the [architectures](/docs/ARCHITECTURES.md) flow when importing from other workspaces. Do not import in the wrong direction.
 
-Import paths are setup as `@package-name` in the `tsconfig.json` files in each workspace, in [Rspack config](/apps/app-web/app/rspack.config.ts) and in [mobile babel config](/apps/app-mobile/app/babel.config.js). 
+Import paths are setup as `@package-name` in the `tsconfig.json` files in each workspace, in [Rspack config](/app-web/app/rspack.config.ts) and in [mobile babel config](/app-mobile/app/babel.config.js). 
 
 The import sequence is: `tinker-chest` → `apparatus/{common,web,mobile}` → `gears/*/{common,web,mobile}` → `app-{web,mobile}`.
 
@@ -70,7 +70,7 @@ Remember about updating the [architectures chart](/docs/assets/architecture.draw
 
 #### Code splitting
 
-Code splitting is set up for web in [Rspack config](/apps/app-web/app/rspack.config.production.ts) per larger dependencies and per application workspace to enable better caching for faster startup.
+Code splitting is set up for web in [Rspack config](/app-web/app/rspack.config.production.ts) per larger dependencies and per application workspace to enable better caching for faster startup.
 
 #### Preferred environment
 
@@ -121,9 +121,9 @@ Add unit, component and end-to-end tests for more complex logic but do not overc
 
 ##### Testing environments:
 
-- Unit tests in `/apps/**/test/*.test.ts` using [Mocha](https://mochajs.org) and [Chai](https://www.chaijs.com).
-- Web component and end-to-end tests in [`/apps/app-web/app/cypress/e2e/*.cy.ts`](/apps/app-web/app/cypress/e2e) using [Cypress](https://docs.cypress.io/app/component-testing/react/overview).
-- Mobile component and end-to-end tests in [`/apps/app-mobile/app/__tests__/*.test.tsx`](/apps/app-mobile/app/__tests__) using [Jest](https://jestjs.io/docs/tutorial-react-native).
+- Unit tests in `/**/test/*.test.ts` using [Mocha](https://mochajs.org) and [Chai](https://www.chaijs.com).
+- Web component and end-to-end tests in [`/app-web/app/cypress/e2e/*.cy.ts`](/app-web/app/cypress/e2e) using [Cypress](https://docs.cypress.io/app/component-testing/react/overview).
+- Mobile component and end-to-end tests in [`/app-mobile/app/__tests__/*.test.tsx`](/app-mobile/app/__tests__) using [Jest](https://jestjs.io/docs/tutorial-react-native).
 - Backend tests in [TBD](/api/)
 
 #### UI library
@@ -132,7 +132,7 @@ Own UI library is created with focus on semantics, accessibility and minimalism.
 
 Styling should be steampunk inspired.
 
-Variables used repeatedly and those which which depend on the theme should be added to [theme specifications](/apps/ui/common/src/theme/specifications.ts) in the common [UI package](/apps/).
+Variables used repeatedly and those which which depend on the theme should be added to [theme specifications](/ui/common/src/theme/specifications.ts) in the common [UI package](/).
 
 The web library with component docs is deployed using [storybook with rsbuild](https://storybook.js.org/addons/storybook-react-rsbuild) app at the `/storybook` path. 
 The mobile library is accessible from the top bar menu in dev mode.
