@@ -5,6 +5,7 @@ import styles from './checkbox.module.css';
 
 export const Checkbox: FC<Omit<ComponentProps<'label'>, 'onChange'> & CheckboxProps> = ({
     color = 'primary',
+    highlightColor: hlColor,
     size = 'sm',
     checked,
     onChange,
@@ -15,6 +16,7 @@ export const Checkbox: FC<Omit<ComponentProps<'label'>, 'onChange'> & CheckboxPr
     ...props
 }) => {
     const theme = useTheme();
+    const highlightColor = hlColor || color;
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         onChange(e.target.checked);
@@ -26,6 +28,7 @@ export const Checkbox: FC<Omit<ComponentProps<'label'>, 'onChange'> & CheckboxPr
                 styles['checkbox'],
                 styles[`mode-${theme.mode}`],
                 styles[`color-${color}`],
+                styles[`highlight-${highlightColor}`],
                 styles[`size-${size}`],
                 {
                     [styles['disabled']]: disabled,

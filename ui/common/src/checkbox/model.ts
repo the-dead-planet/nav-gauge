@@ -3,6 +3,7 @@ import { ColorVariant, SizeVariant } from "../model";
 
 export interface CheckboxProps {
     color?: ColorVariant;
+    highlightColor?: ColorVariant;
     size?: SizeVariant;
     disabled?: boolean;
     checked: boolean;
