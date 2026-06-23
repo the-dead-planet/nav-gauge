@@ -5,7 +5,7 @@ import { Dirent } from 'fs';
 import { targets } from './utils';
 
 const target = process.argv[2]?.toLowerCase();
-const root = join(__dirname, '..');
+const root = join(__dirname, '../..');
 
 if (!target || !targets.includes(target)) {
   console.error(

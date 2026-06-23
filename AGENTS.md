@@ -4,7 +4,7 @@
 
 nav-gauge — open-source map & route data tools for content creators. Offline-first, no account required. Steampunk/cyber-inspired design.
 
-The workspace root is `apps/` (package.json and yarn commands live there, not at repo root).
+The workspace root is `/` (package.json and yarn commands live there, not at repo root).
 
 ## Commands
 
@@ -26,7 +26,7 @@ The workspace root is `apps/` (package.json and yarn commands live there, not at
 
 ## Architecture
 
-Monorepo with Yarn workspaces. Strict **import direction** (`apps/` layout):
+Monorepo with Yarn workspaces. Strict **import direction** (`/` layout):
 
 ### Import sequence
 
@@ -36,14 +36,14 @@ Monorepo with Yarn workspaces. Strict **import direction** (`apps/` layout):
 
 | Package | Path |
 |---------|------|
-| Tinker Chest | `apps/tinker-chest/` (single package, not split) |
-| Apparatus Common | `apps/apparatus/common/` |
-| Apparatus Web | `apps/apparatus/web/` |
-| Apparatus Mobile | `apps/apparatus/mobile/` |
-| Gears | `apps/gears/*/{common,web,mobile}/` |
-| UI Common | `apps/ui/common/` |
-| UI Web | `apps/ui/web/` |
-| UI Mobile | `apps/ui/mobile/` |
+| Tinker Chest | `/tinker-chest/` (single package, not split) |
+| Apparatus Common | `/apparatus/common/` |
+| Apparatus Web | `/apparatus/web/` |
+| Apparatus Mobile | `/apparatus/mobile/` |
+| Gears | `/gears/*/{common,web,mobile}/` |
+| UI Common | `/ui/common/` |
+| UI Web | `/ui/web/` |
+| UI Mobile | `/ui/mobile/` |
 
 ### Import rules summary
 
@@ -60,7 +60,7 @@ Monorepo with Yarn workspaces. Strict **import direction** (`apps/` layout):
 No reverse imports. Always use `@package-name` aliases, never relative paths across workspaces.
 
 ### Gears (features)
-Each feature is a pluggable **Gear** with 1-3 packages: `common/` (abstract class), `web/`, `mobile/`. Gears implement the `Gear` interface from `@the-dead-planet/nav-gauge-apparatus-common`. Generate with `yarn generate:gear <name>` from `apps/`.
+Each feature is a pluggable **Gear** with 1-3 packages: `common/` (abstract class), `web/`, `mobile/`. Gears implement the `Gear` interface from `@the-dead-planet/nav-gauge-apparatus-common`. Generate with `yarn generate:gear <name>` from `/`.
 
 ## Code Style
 
@@ -81,7 +81,7 @@ Each feature is a pluggable **Gear** with 1-3 packages: `common/` (abstract clas
 
 ## UI
 
-- Own UI library in `apps/ui/` — semantic, accessible, minimal
+- Own UI library in `/ui/` — semantic, accessible, minimal
 - Steampunk/cyber-inspired styling
 - Theme variables in `@ui/common/src/theme/specifications.ts`
 - Reusable components must not contain business logic

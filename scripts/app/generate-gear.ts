@@ -2,7 +2,7 @@ import { cpSync, existsSync, readdirSync, readFileSync, renameSync, writeFileSyn
 import { join } from 'path';
 import { createInterface, Interface } from 'readline';
 
-const root = join(__dirname, '..');
+const root = join(__dirname, '../..');
 const gearsRoot = join(root, 'gears');
 const templatesRoot = join(root, '.templates');
 const defaultTemplate = join(templatesRoot, 'default');

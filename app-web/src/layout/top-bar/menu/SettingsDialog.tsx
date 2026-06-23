@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { createPortal } from "react-dom";
 import { DateTime } from "luxon";
-import { Dialog, Dropdown, P } from "@web-ui";
+import { Checkbox, Dialog, Dropdown, P } from "@web-ui";
 import { Individuator, IndividuatorSettings, Language, Translatron, useMachineWard } from "@apparatus";
 import { T } from "@web-apparatus";
 import { useSubjectState } from "@tinker-chest";
@@ -97,18 +97,14 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                     onChange={(themeName) => setPendingSettings((prev) => ({ ...prev, themeName }))}
                 />
 
-                <P id="individuator-confirm-before-leave-label" shadow color="primary">
-                    <T n={individuator.namespace} t={individuator.translationKey.Theme} />
-                </P>
-                <Dropdown<ThemeName>
-                    labelledBy="individuator-confirm-before-leave-label"
+                <Checkbox
                     size="xs"
                     color="primary"
-                    variant="fill"
-                    value={pendingSettings.themeName}
-                    options={Individuator.themeOptions}
-                    onChange={(themeName) => setPendingSettings((prev) => ({ ...prev, themeName }))}
-                />
+                    checked={pendingSettings.confirmBeforeLeave}
+                    onChange={(checked) => setPendingSettings((prev): IndividuatorSettings => ({ ...prev, confirmBeforeLeave: checked }))}
+                >
+                    <T n={individuator.namespace} t={individuator.translationKey.Theme} />
+                </Checkbox>
             </div>
         </Dialog>,
         document.body,

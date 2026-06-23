@@ -2,17 +2,17 @@ FROM node:24-alpine AS builder
 
 WORKDIR /app/
 
-COPY apps/package.json apps/yarn.lock apps/.yarnrc.yml apps/tsconfig.base.json apps/tsconfig.packages.json apps/tsconfig.web.json ./
+COPY /package.json /yarn.lock /.yarnrc.yml /tsconfig.base.json /tsconfig.packages.json /tsconfig.web.json ./
 
-COPY apps/app-web ./app-web
-COPY apps/apparatus ./apparatus
-COPY apps/tinker-chest ./tinker-chest
-COPY apps/ui/common ./ui/common
-COPY apps/ui/web ./ui/web
-COPY apps/types ./types
+COPY /app-web ./app-web
+COPY /apparatus ./apparatus
+COPY /tinker-chest ./tinker-chest
+COPY /ui/common ./ui/common
+COPY /ui/web ./ui/web
+COPY /types ./types
 
-COPY apps/gears ./gears
-RUN rm -rf apps/gears/*/mobile apps/gears/*/mobile
+COPY /gears ./gears
+RUN rm -rf /gears/*/mobile /gears/*/mobile
 
 RUN corepack enable && yarn install --network-timeout 300000
 RUN yarn build:web
@@ -21,7 +21,7 @@ FROM nginx:1.28.0-alpine
 
 COPY --from=builder /app/app-web/dist /usr/share/nginx/html
 
-COPY apps/app-web/conf/conf.d/nginx.conf /etc/nginx/conf.d/default.conf
+COPY /app-web/conf/conf.d/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

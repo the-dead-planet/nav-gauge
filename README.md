@@ -186,7 +186,7 @@ Or provide the name and optional flags right away:
 yarn generate:gear <name>
 ```
 
-Scaffolds a new pluggable feature from `apps/.templates/`. Supports `--web-only` and `--mobile-only` flags. See [gears README](/gears/README.md).
+Scaffolds a new pluggable feature from `/.templates/`. Supports `--web-only` and `--mobile-only` flags. See [gears README](/gears/README.md).
 
 ## Tests
 

@@ -1,0 +1,57 @@
+import { ChangeEvent, ComponentProps, FC } from "react";
+import classNames from "classnames";
+import { CheckboxProps, useTheme } from "@ui";
+import styles from './checkbox.module.css';
+
+export const Checkbox: FC<Omit<ComponentProps<'label'>, 'onChange'> & CheckboxProps> = ({
+    color = 'primary',
+    size = 'sm',
+    checked,
+    onChange,
+    disabled = false,
+    children,
+    className,
+    style,
+    ...props
+}) => {
+    const theme = useTheme();
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        onChange(e.target.checked);
+    };
+
+    return (
+        <label
+            className={classNames(
+                styles['checkbox'],
+                styles[`mode-${theme.mode}`],
+                styles[`color-${color}`],
+                styles[`size-${size}`],
+                {
+                    [styles['disabled']]: disabled,
+                    [styles['checked']]: checked,
+                },
+                className
+            )}
+            style={style}
+            {...props}
+        >
+            <input
+                type="checkbox"
+                className={styles['input']}
+                checked={checked}
+                onChange={handleChange}
+                disabled={disabled}
+                aria-hidden
+            />
+            <span className={classNames(styles['box'], { [styles['box-checked']]: checked })}>
+                {checked ? (
+                    <svg className={styles['checkmark']} viewBox="0 0 12 12" width="12" height="12" aria-hidden>
+                        <path d="M2 6l3 3 5-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                ) : null}
+            </span>
+            {children ? <span className={styles['label']}>{children}</span> : null}
+        </label>
+    );
+};

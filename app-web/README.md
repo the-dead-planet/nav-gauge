@@ -48,7 +48,7 @@ yarn start:web
 To run docker image locally from root of the repository:
 
 ```
-docker build . --file apps/web/app/Dockerfile -t nav-gauge
+docker build . --file /web/app/Dockerfile -t nav-gauge
 docker run -p 8080:8080 nav-gauge
 ```
 

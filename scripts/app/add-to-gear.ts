@@ -2,7 +2,7 @@ import { spawnSync } from 'child_process';
 import { existsSync } from 'fs';
 import { join } from 'path';
 
-const root = join(__dirname, '..');
+const root = join(__dirname, '../..');
 
 const usage = () => {
     console.log(`Usage: yarn add:gear <gear-name> <common|web|mobile> <package...>

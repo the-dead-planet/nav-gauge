@@ -4,7 +4,7 @@ import { runAll, Task } from './tasks';
 import { targets } from './utils';
 
 const gearName = process.argv[2]?.toLowerCase();
-const root = join(__dirname, '..');
+const root = join(__dirname, '../..');
 
 if (!gearName) {
   console.error('Usage: yarn tsx ./scripts/test-gears.ts <gear-name>');
