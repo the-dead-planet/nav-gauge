@@ -32,7 +32,6 @@ export const LayoutMenu: FC = () => {
                 </MenuItem>
                 <MenuItem
                     key="privacy"
-                    isLast
                     type="link"
                     href="/privacy"
                     target="_blank"

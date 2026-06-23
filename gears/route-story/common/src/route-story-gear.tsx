@@ -1,6 +1,6 @@
 import { ComponentType, FC } from "react";
 import { BehaviorSubject, Subscription } from "rxjs";
-import { ToolPanelProps, MarkerImage, OverlayComponentProps, Gear, ControlComponentProps, GearTranslationTable, TranslationTable, GearTranslationKey } from "@apparatus";
+import { ToolPanelProps, MarkerImage, OverlayComponentProps, Gear, ControlComponentProps, TranslationTable, GearTranslationKey } from "@apparatus";
 import { GeoJson, ParsingResultWithError } from "@tinker-chest";
 import { RouteToolProps, RouteTimes, RouteFileInputProps, RouteStoryFile, RouteStoryTranslationKey } from "./model";
 import { FileOperator } from "./file-operator";

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from 'storybook-react-rsbuild';
+import type { Meta } from 'storybook-react-rsbuild';
 import { useState } from 'react';
 import { Dialog } from './Dialog';
 import { Button } from '../button';
@@ -10,7 +10,6 @@ const meta = {
 } satisfies Meta<typeof Dialog>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
 const placements: DialogPlacement[] = ['middle', 'left-drawer', 'right-drawer'];
 

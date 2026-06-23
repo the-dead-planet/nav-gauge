@@ -14,7 +14,7 @@ export const Color: FC<ColorProps> = ({ name, color }) => {
         <>
             <h3>{name}</h3>
             <div className={styles.palette}>
-                {data.map(([shade, c], i) => {
+                {data.map(([shade, c]) => {
                     const textColor = shade >= 500 ? data[0][1] : data[9][1];
 
                     return (

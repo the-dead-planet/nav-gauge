@@ -24,7 +24,6 @@ export interface MenuProps {
 export interface MenuItemProps {
     key: string | number;
     isFirst?: boolean;
-    isLast?: boolean;
     closeOnPress?: boolean;
     children: ReactNode;
 }

@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode } from "react";
+import { ReactNode } from "react";
 
 /**
  * Type to satisfy the react native svg pack - cannot use mobile specific packages in the common section.

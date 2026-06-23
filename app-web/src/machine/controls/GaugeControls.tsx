@@ -1,5 +1,4 @@
-import { FC, useMemo } from "react";
-import maplibregl from "maplibre-gl";
+import { FC } from "react";
 import { Input, Fieldset } from "@web-ui";
 import { useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";

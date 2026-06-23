@@ -4,17 +4,12 @@ import classNames from "classnames";
 import { useMachineWard } from "@apparatus";
 import { T } from "@web-apparatus";
 import { useObservableState, useSubjectState } from "@tinker-chest";
-import { Presets } from "./controls/Presets";
-import { AnimationControls } from "./controls/AnimationControls";
-import { MapLayoutControls } from "./controls/MapLayoutControls";
-import { GaugeControls } from "./controls/GaugeControls";
-import { MapStyleSelection } from "./controls/MapStyleSelection";
 import { MapTools } from "./map-tools/MapTools";
 import { Button, FlexBox, Transition } from "@web-ui";
 import { createMap } from "./map";
-import styles from './map-section.module.css';
 import { ToolIconRight } from "./map-tools/ToolIconRight";
 import { ToolIconLeft } from "./map-tools/ToolIconLeft";
+import styles from './map-section.module.css';
 
 export const MapSection: FC = () => {
     const [map, setMap] = useState<maplibregl.Map>();
@@ -89,7 +84,7 @@ export const MapSection: FC = () => {
                 {/* TODO: Collapsible sections list, panel expand/collapse, when collapsed just icons. */}
                 <Transition slide="to-left" render={toolPanelsByPlacement.left.length > 0}>
                     <div className={styles['content']}>
-                        {toolPanelsByPlacement.left.map(({ id, icon, title, component: Component }) => (
+                        {toolPanelsByPlacement.left.map(({ id, component: Component }) => (
                             <Component key={id} map={map} />
                         ))}
                     </div>
@@ -125,7 +120,7 @@ export const MapSection: FC = () => {
             <div className={classNames(styles['toolbar'], styles['right'])}>
                 <Transition slide="to-left" render={toolPanelsByPlacement.right.length > 0}>
                     <div className={styles['content']}>
-                        {toolPanelsByPlacement.right.map(({ id, icon, title, component: Component }) => (
+                        {toolPanelsByPlacement.right.map(({ id, component: Component }) => (
                             <Component key={id} map={map} />
                         ))}
                     </div>
@@ -134,7 +129,7 @@ export const MapSection: FC = () => {
             <div className={classNames(styles['toolbar'], styles['bottom'])}>
                 <Transition slide="to-top" render={toolPanelsByPlacement.bottom.length > 0}>
                     <div className={styles['content']}>
-                        {toolPanelsByPlacement.bottom.map(({ id, icon, title, component: Component }) => (
+                        {toolPanelsByPlacement.bottom.map(({ id, component: Component }) => (
                             <Component key={id} map={map} />
                         ))}
                     </div>

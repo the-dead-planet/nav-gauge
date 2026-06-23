@@ -82,7 +82,7 @@ export const Hexagons = {
                                     </div>
                                     {allColors.map((color) => (
                                         <div key={color} style={{ display: 'grid', gridTemplateColumns: `repeat(${allVariants.length}, 1fr)`, gap: 8 }}>
-                                            {allVariants.map((variant, i) => (
+                                            {allVariants.map((variant) => (
                                                 <Hexagon
                                                     key={variant}
                                                     variant={variant}

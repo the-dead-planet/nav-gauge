@@ -1,7 +1,6 @@
 import { useState, useRef, useCallback, FC, ComponentProps } from 'react';
 import {
     View,
-    TouchableOpacity,
     Modal,
     StyleSheet,
     LayoutChangeEvent,
@@ -9,7 +8,6 @@ import {
 } from 'react-native';
 import {
     useTheme,
-    MenuAnchor,
     MenuPosition,
     getIconAndMenuAnchors,
     MenuContext,
@@ -18,7 +16,6 @@ import {
     MenuProps,
     Icons,
 } from '@ui';
-import { Text } from '../typography';
 import { Button } from '../button';
 
 const styles = StyleSheet.create({

@@ -12,13 +12,9 @@ export const Checkbox: FC<CheckboxProps> = ({
     children,
 }) => {
     const theme = useTheme();
-    const isLight = theme.mode === 'light';
 
     const baseColor = theme.color(color);
     const darkColor = theme.color(color, 900);
-    const accentColor = checked
-        ? theme.color(color, isLight ? 600 : 300)
-        : theme.color(color, 500, 0.5);
 
     const boxWidthHeight = size === 'md' ? 18 : size === 'sm' ? 16 : 14;
     const fontSize = size === 'xs' ? 12 : 14;

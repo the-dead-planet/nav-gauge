@@ -84,7 +84,7 @@ export class Cartomancer<TMap> {
     public initialize = (
         storageKeeper: StorageKeeper,
         translatron: Translatron,
-        toolsStation: ToolsStation<TMap>
+        _toolsStation: ToolsStation<TMap>
     ) => {
         translatron.register(this.namespace, this.translations);
 
