@@ -96,6 +96,19 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                     options={Individuator.themeOptions}
                     onChange={(themeName) => setPendingSettings((prev) => ({ ...prev, themeName }))}
                 />
+
+                <P id="individuator-confirm-before-leave-label" shadow color="primary">
+                    <T n={individuator.namespace} t={individuator.translationKey.Theme} />
+                </P>
+                <Dropdown<ThemeName>
+                    labelledBy="individuator-confirm-before-leave-label"
+                    size="xs"
+                    color="primary"
+                    variant="fill"
+                    value={pendingSettings.themeName}
+                    options={Individuator.themeOptions}
+                    onChange={(themeName) => setPendingSettings((prev) => ({ ...prev, themeName }))}
+                />
             </div>
         </Dialog>,
         document.body,
