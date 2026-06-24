@@ -8,7 +8,6 @@ import {
     PresetOption,
     ToolPanelPlacement,
     ToolPanelProps,
-    ControlComponentProps,
     ObservedToolPanel,
     ToolIcon,
     ObservedToolIcon,
@@ -76,11 +75,6 @@ export class ToolsStation<TMap> {
             );
         })
     );
-
-    /**
-     * Do not have access to map context.
-     */
-    public controlComponents$ = new BehaviorSubject<Map<string, ComponentType>>(new Map());
 
     /**
      * Update of a preset will trigger control state update to predefined values which user can later further configure.
@@ -186,28 +180,6 @@ export class ToolsStation<TMap> {
         const nextToolIcons = new Map(this.toolIcons$.value);
         nextToolIcons.delete(id);
         this.toolIcons$.next(nextToolIcons);
-    };
-
-    // TODO: Remove this observable, this content will go to bottom panel
-    /**
-     * Adds a new map tool to display around the map.
-     * Have access to map context and will not be unmounted for the duration of the style updates. 
-     * Do not update sources and layers in components passed in this prop as it might lead to MapLibre's `Style is not done loading` errors.
-     * If a tool with a given `id` already exists, it will be overwritten.
-     */
-    public addControlComponent = (id: string, component: ComponentType<ControlComponentProps>) => {
-        const nextControls = new Map(this.controlComponents$.value);
-        nextControls.set(id, component);
-        this.controlComponents$.next(nextControls);
-    };
-
-    /**
-     * Removes the tool with a given `id`.
-     */
-    public removeControlComponent = (id: string) => {
-        const nextControls = new Map(this.controlComponents$.value);
-        nextControls.delete(id);
-        this.controlComponents$.next(nextControls);
     };
 
     public static presetOptions: PresetOption[] = [

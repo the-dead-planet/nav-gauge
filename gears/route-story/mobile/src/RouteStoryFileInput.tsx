@@ -1,11 +1,12 @@
 import { FC } from "react";
 import { StyleSheet, View, } from "react-native";
 import { DocumentPickerResponse, types } from "@react-native-documents/picker";
-import { RouteFileInputProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { FileOperator } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { FileInputStatus, FileInput, MobileMap, Button } from "@mobile-ui";
 import { parsers } from "@apparatus";
-import { useSubjectState } from "@tinker-chest";
+import { ParsingResultWithError, useSubjectState } from "@tinker-chest";
 import { MobileMarkerImageData } from "./images/image-parser";
+import { BehaviorSubject } from "rxjs";
 
 const styles = StyleSheet.create({
     container: {
@@ -21,9 +22,13 @@ const styles = StyleSheet.create({
     }
 });
 
-export const RouteStoryFileInput: FC<RouteFileInputProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({
+interface Props {
+    data$: BehaviorSubject<ParsingResultWithError>;
+    fileOperator: FileOperator<MobileMap, DocumentPickerResponse, MobileMarkerImageData>;
+}
+
+export const RouteStoryFileInput: FC<Props> = ({
     data$,
-    images$: _images$,
     fileOperator
 }) => {
     const [{ geojson, routeName, error }] = useSubjectState(data$);

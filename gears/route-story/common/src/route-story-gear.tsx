@@ -1,8 +1,8 @@
 import { ComponentType, FC } from "react";
 import { BehaviorSubject, Subscription } from "rxjs";
-import { ToolPanelProps, MarkerImage, OverlayComponentProps, Gear, ControlComponentProps, TranslationTable, GearTranslationKey } from "@apparatus";
+import { ToolPanelProps, MarkerImage, OverlayComponentProps, Gear, TranslationTable, GearTranslationKey } from "@apparatus";
 import { GeoJson, ParsingResultWithError } from "@tinker-chest";
-import { RouteToolProps, RouteTimes, RouteFileInputProps, RouteStoryFile, RouteStoryTranslationKey } from "./model";
+import { RouteToolProps, RouteTimes, RouteStoryFile, RouteStoryTranslationKey } from "./model";
 import { FileOperator } from "./file-operator";
 import { PlayerOperator } from "./player-operator";
 import { Icons } from "@ui";
@@ -54,9 +54,6 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
         });
     };
 
-    private fileInputControlId = 'file-input';
-    public abstract fileInputComponent: ComponentType<ControlComponentProps & RouteFileInputProps<TMap, TFile, TImageData>>;
-
     private routeLayerFitBoundsToolIconId = 'fit-bounds';
 
     private playerToolId = 'player';
@@ -84,15 +81,6 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
         this.engageRouteStory?.();
         this.dataSubscription = this.subscribeToDataUpdates();
 
-        this.apparatus.toolsStation.addControlComponent(
-            this.fileInputControlId,
-            this.wrapProps<RouteFileInputProps<TMap, TFile, TImageData>, ControlComponentProps>(this.fileInputComponent, {
-                data$: this.data$,
-                images$: this.images$,
-                fileOperator: this.fileOperator,
-            })
-        );
-
         this.apparatus.toolsStation.addToolIcon(
             this.routeLayerFitBoundsToolIconId,
             {
@@ -118,6 +106,7 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
                     routeTimes$: this.routeTimes$,
                     images$: this.images$,
                     progressMs$: this.progressMs$,
+                    fileOperator: this.fileOperator,
                     playerOperator: this.playerOperator,
                 })
             }
@@ -130,6 +119,7 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
                 routeTimes$: this.routeTimes$,
                 images$: this.images$,
                 progressMs$: this.progressMs$,
+                fileOperator: this.fileOperator,
                 playerOperator: this.playerOperator,
             })
         );
@@ -140,6 +130,7 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
                 routeTimes$: this.routeTimes$,
                 images$: this.images$,
                 progressMs$: this.progressMs$,
+                fileOperator: this.fileOperator,
                 playerOperator: this.playerOperator,
             })
         );
@@ -150,7 +141,6 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
         this.apparatus.cartomancer.removeOverlay(this.routeOverlayId);
         this.apparatus.toolsStation.removeToolPanel(this.playerToolId);
         this.apparatus.toolsStation.removeToolIcon(this.routeLayerFitBoundsToolIconId);
-        this.apparatus.toolsStation.removeControlComponent(this.fileInputControlId);
         this.dataSubscription?.unsubscribe();
         this.disengageRouteStory?.();
     };

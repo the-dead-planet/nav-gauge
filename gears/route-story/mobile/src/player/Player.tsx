@@ -10,10 +10,13 @@ import { MobileMap } from "@mobile-ui";
 import { useTheme } from "@ui";
 import { currentPointRef$, linesRef$ } from "../layers/RouteLayer";
 import { MobileMarkerImageData } from "../images/image-parser";
+import { RouteStoryFileInput } from "../RouteStoryFileInput";
 
 export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({
+    data$,
     routeTimes$,
     progressMs$,
+    fileOperator,
     playerOperator,
 }) => {
     const theme = useTheme();
@@ -42,6 +45,7 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mobile
 
     return (
         <View style={{ flex: 1 }}>
+            <RouteStoryFileInput data$={data$} fileOperator={fileOperator}/>
             <Slider
                 ref={sliderRef as SliderReferenceType}
                 minimumValue={0}

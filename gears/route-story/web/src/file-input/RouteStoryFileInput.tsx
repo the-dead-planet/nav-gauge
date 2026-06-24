@@ -1,12 +1,18 @@
 import { ChangeEvent, FC } from "react";
 import { FileInputStatus } from "@web-ui";
 import { parsers } from "@apparatus";
-import { useSubjectState } from "@tinker-chest";
-import { RouteFileInputProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { ParsingResultWithError, useSubjectState } from "@tinker-chest";
+import { FileOperator } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { WebMarkerImageData } from "../images/image-parser";
 import styles from './file-input.module.css';
+import { BehaviorSubject } from "rxjs";
 
-export const RouteStoryFileInput: FC<RouteFileInputProps<maplibregl.Map, File, WebMarkerImageData>> = ({
+interface Props {
+    data$: BehaviorSubject<ParsingResultWithError>;
+    fileOperator: FileOperator<maplibregl.Map, File, WebMarkerImageData>;
+}
+
+export const RouteStoryFileInput: FC<Props> = ({
     data$,
     fileOperator
 }) => {

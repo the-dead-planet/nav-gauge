@@ -45,7 +45,6 @@ export const MapSection: FC = () => {
     return (
         <div className={styles.machine}>
             {/* <div className={styles["side-panel"]}>
-                {[...controlComponents.entries()].map(([id, ControlComponent]) => <ControlComponent key={id} />)}
                 <hr className={styles.divider} />
                 <Presets />
                 <MapStyleSelection />

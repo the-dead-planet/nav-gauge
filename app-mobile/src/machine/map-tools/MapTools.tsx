@@ -30,7 +30,6 @@ interface Props {
 
 export const MapTools: FC<Props> = ({ map, children }) => {
     const { toolsStation } = useMachineWard();
-    const [controlComponents] = useSubjectState(toolsStation.controlComponents$);
     const toolPanels = useObservableState(toolsStation.toolPanelsByPlacement$, []);
     const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
     const [onPanResponderStartHandlers] = useSubjectState(map.onPanResponderStartHandlers$);
@@ -72,10 +71,6 @@ export const MapTools: FC<Props> = ({ map, children }) => {
 
     return (
         <View style={styles.container}>
-            <View>
-                {[...controlComponents.entries()].map(([id, ControlComponent]) => <ControlComponent key={id} />)}
-            </View>
-
             <View style={styles.mapContainer}>
                 <View style={styles.backgroundMap} {...panResponder.panHandlers}>
                     {children}

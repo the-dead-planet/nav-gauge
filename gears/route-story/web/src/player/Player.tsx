@@ -6,6 +6,7 @@ import { updateRouteLayer } from "../tinkers";
 import { WebChronoLens } from "@web-apparatus";
 import { WebMarkerImageData } from "../images/image-parser";
 import styles from './player.module.css';
+import { RouteStoryFileInput } from "../file-input/RouteStoryFileInput";
 
 export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map, File, WebMarkerImageData>> = ({
     map,
@@ -13,13 +14,14 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<m
     routeTimes$,
     images$,
     progressMs$,
+    fileOperator,
     playerOperator,
 }) => {
     const [{ geojson }] = useSubjectState(data$);
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [progressMs] = useSubjectState(progressMs$);
-    const { chronoLens, signaliumBureau, individuator} = useMachineWard();
+    const { chronoLens, signaliumBureau, individuator } = useMachineWard();
     const [settings] = useSubjectState(individuator.settings$);
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [surveillanceState] = useSubjectState(chronoLens.surveillanceState$);
@@ -56,45 +58,48 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<m
 
     return (
         <div className={styles.player}>
-            <div className={styles.pictures}>
-                {images
-                    .filter((image) => image.featureId !== undefined)
-                    .map((image) => (
-                        <span key={image.id} className={styles['image-marker']} style={{ left: `${getPosition(image.featureId!).toFixed(0)}%` }} />
-                    ))}
-            </div>
-            <input
-                type="range"
-                value={progressMs}
-                min={0}
-                max={routeTimes?.duration ?? 1}
-                step={1}
-                onChange={handleProgressChange}
-                // TODO: Fix styles for all browsers
-                // className={styles['progress-slider']}
-                style={{
-                    '--track-complete': `${progressPercentage}%`
-                } as CSSProperties}
-            />
-            <div className={styles.buttons}>
-                <p className={styles.text}>
-                    {formatCurrentTimestamp(progressMs, progressPercentage)}
-                </p>
-                <button onClick={playerOperator.onPlay}>
-                    {isPlaying ? 'Pause' : 'Play'}
-                </button>
-                <button onClick={playerOperator.onRecord}>
-                    {surveillanceState === SurveillanceState.Stopped ? 'Start' : 'Stop'} recording
-                </button>
-                {surveillanceState !== SurveillanceState.Stopped ? (
-                    <button onClick={playerOperator.onRecordPause}>
-                        {surveillanceState === SurveillanceState.Paused ? 'Resume' : 'Pause'} recording
+            <RouteStoryFileInput data$={data$} fileOperator={fileOperator} />
+            <div className={styles['player-player']}>
+                <div className={styles.pictures}>
+                    {images
+                        .filter((image) => image.featureId !== undefined)
+                        .map((image) => (
+                            <span key={image.id} className={styles['image-marker']} style={{ left: `${getPosition(image.featureId!).toFixed(0)}%` }} />
+                        ))}
+                </div>
+                <input
+                    type="range"
+                    value={progressMs}
+                    min={0}
+                    max={routeTimes?.duration ?? 1}
+                    step={1}
+                    onChange={handleProgressChange}
+                    // TODO: Fix styles for all browsers
+                    // className={styles['progress-slider']}
+                    style={{
+                        '--track-complete': `${progressPercentage}%`
+                    } as CSSProperties}
+                />
+                <div className={styles.buttons}>
+                    <p className={styles.text}>
+                        {formatCurrentTimestamp(progressMs, progressPercentage)}
+                    </p>
+                    <button onClick={playerOperator.onPlay}>
+                        {isPlaying ? 'Pause' : 'Play'}
                     </button>
-                ) : null}
-                <button onClick={chronoLens.destroyRecording}>Clear</button>
-                <p className={styles.text}>
-                    {!routeTimes ? "" : individuator.formatTimestamp(progressMs + routeTimes.startTimeEpoch, settings)}
-                </p>
+                    <button onClick={playerOperator.onRecord}>
+                        {surveillanceState === SurveillanceState.Stopped ? 'Start' : 'Stop'} recording
+                    </button>
+                    {surveillanceState !== SurveillanceState.Stopped ? (
+                        <button onClick={playerOperator.onRecordPause}>
+                            {surveillanceState === SurveillanceState.Paused ? 'Resume' : 'Pause'} recording
+                        </button>
+                    ) : null}
+                    <button onClick={chronoLens.destroyRecording}>Clear</button>
+                    <p className={styles.text}>
+                        {!routeTimes ? "" : individuator.formatTimestamp(progressMs + routeTimes.startTimeEpoch, settings)}
+                    </p>
+                </div>
             </div>
         </div>
     );

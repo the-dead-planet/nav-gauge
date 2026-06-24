@@ -17,13 +17,8 @@ export interface RouteToolProps<TMap, TFile extends RouteStoryFile, TImageData> 
     routeTimes$: BehaviorSubject<RouteTimes | null>;
     images$: BehaviorSubject<MarkerImage<TImageData>[]>;
     progressMs$: BehaviorSubject<number>;
-    playerOperator: PlayerOperator<TMap, TFile, TImageData>;
-}
-
-export interface RouteFileInputProps<TMap, TFile extends RouteStoryFile, TImageData> {
-    data$: BehaviorSubject<ParsingResultWithError>;
-    images$: BehaviorSubject<MarkerImage<TImageData>[]>;
     fileOperator: FileOperator<TMap, TFile, TImageData>;
+    playerOperator: PlayerOperator<TMap, TFile, TImageData>;
 }
 
 export interface RouteFitBoundsProps<TMap> {

@@ -64,8 +64,3 @@ export interface PresetValues {
     presetGaugeControls?: GaugeControlsType;
     presetAnimationControls?: AnimationControlsType;
 }
-
-// TODO: Remove?
-export interface ControlComponentProps {
-    
-}
