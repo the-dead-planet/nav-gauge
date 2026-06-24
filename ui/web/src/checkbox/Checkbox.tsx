@@ -3,7 +3,12 @@ import classNames from "classnames";
 import { CheckboxProps, useTheme } from "@ui";
 import styles from './checkbox.module.css';
 
-export const Checkbox: FC<Omit<ComponentProps<'label'>, 'onChange'> & CheckboxProps> = ({
+interface Props {
+    labelledBy?: string;
+}
+
+export const Checkbox: FC<CheckboxProps & Props & Omit<ComponentProps<'label'>, 'onChange'>> = ({
+    labelledBy,
     color = 'primary',
     highlightColor: hlColor,
     size = 'sm',
@@ -24,6 +29,7 @@ export const Checkbox: FC<Omit<ComponentProps<'label'>, 'onChange'> & CheckboxPr
 
     return (
         <label
+            aria-labelledby={labelledBy}
             className={classNames(
                 styles['checkbox'],
                 styles[`mode-${theme.mode}`],

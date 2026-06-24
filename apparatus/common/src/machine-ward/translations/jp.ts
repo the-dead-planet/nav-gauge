@@ -8,6 +8,7 @@ const jp: TranslationTable<MachineTranslationKey>['jp'] = {
     save: '保存',
     menu: 'アプリケーションメニュー',
     'toggle-mode': 'ライトモードとダークモードを切り替え',
+    gears: 'ギア',
 };
 
 export default jp;

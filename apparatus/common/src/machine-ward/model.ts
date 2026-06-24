@@ -40,5 +40,6 @@ export enum MachineTranslationKey {
     Close = 'close',
     Save = 'save',
     Menu = 'menu',
-    ToggleMode = 'toggle-mode'
+    ToggleMode = 'toggle-mode',
+    Gears = 'gears'
 }

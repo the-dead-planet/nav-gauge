@@ -101,6 +101,7 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                     <T n={individuator.namespace} t={individuator.translationKey.ConfirmBeforeLeave} />
                 </P>
                 <Checkbox
+                    labelledBy="individuator-confirm-before-leave-label"
                     size="xs"
                     color="primary"
                     checked={pendingSettings.confirmBeforeLeave}

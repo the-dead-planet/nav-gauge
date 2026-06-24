@@ -8,6 +8,7 @@ const nl: TranslationTable<MachineTranslationKey>['nl'] = {
     save: 'Opslaan',
     menu: 'Applicatiemenu',
     'toggle-mode': 'Schakel tussen lichte en donkere modus',
+    gears: 'Versnellingen',
 };
 
 export default nl;

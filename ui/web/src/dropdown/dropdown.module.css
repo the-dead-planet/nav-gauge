@@ -180,14 +180,14 @@
 }
 
 .variant-fill .trigger {
-    color: var(--dropdown-color-dark);
+    color: var(--dropdown-color-light);
     background-color: var(--dropdown-color);
 }
 
 .variant-fill .trigger .icon {
-    color: var(--dropdown-color-dark);
-    stroke: var(--dropdown-color-dark);
-    fill: var(--dropdown-color-dark);
+    color: var(--dropdown-color-light);
+    stroke: var(--dropdown-color-light);
+    fill: var(--dropdown-color-light);
 }
 
 .variant-fill .trigger:hover {

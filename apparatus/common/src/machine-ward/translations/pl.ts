@@ -8,6 +8,7 @@ const pl: TranslationTable<MachineTranslationKey>['pl'] = {
     save: 'Zapisz',
     menu: 'Menu aplikacji',
     'toggle-mode': 'Przełącz tryb jasny i ciemny',
+    gears: 'Tryby',
 };
 
 export default pl;

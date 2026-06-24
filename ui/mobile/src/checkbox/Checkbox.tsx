@@ -57,7 +57,7 @@ export const Checkbox: FC<CheckboxProps> = ({
                             {checked ? (
                                 <Text
                                     style={{
-                                        color: theme.color(highlightColor, 900),
+                                        color: theme.color(highlightColor, 100),
                                         fontSize: boxWidthHeight * 0.7,
                                         lineHeight: boxWidthHeight,
                                     }}

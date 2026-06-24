@@ -5,7 +5,7 @@ import { useMachineWard } from "@apparatus";
 import { T } from "@web-apparatus";
 import { useObservableState, useSubjectState } from "@tinker-chest";
 import { MapTools } from "./map-tools/MapTools";
-import { Button, FlexBox, Transition } from "@web-ui";
+import { Button, FlexBox, H2, Transition } from "@web-ui";
 import { createMap } from "./map";
 import { ToolIconRight } from "./map-tools/ToolIconRight";
 import { ToolIconLeft } from "./map-tools/ToolIconLeft";
@@ -13,7 +13,7 @@ import styles from './map-section.module.css';
 
 export const MapSection: FC = () => {
     const [map, setMap] = useState<maplibregl.Map>();
-    const { engine, cartomancer, toolsStation } = useMachineWard();
+    const { namespace, translationKey, engine, cartomancer, toolsStation } = useMachineWard();
     const gearsWithEngaged$ = engine.gears$.pipe(switchMap((gears) => {
         if (gears.length === 0) {
             return of([]);
@@ -58,6 +58,9 @@ export const MapSection: FC = () => {
             ) : null}
             <div className={classNames(styles['toolbar'], styles['top'])}>
                 <FlexBox gap="md" alignItems="center" className={styles['content']}>
+                    <H2 className={styles['gears-heading']}>
+                        <T n={namespace} t={translationKey.Gears} />
+                    </H2>
                     {gears.map(({ gear, isEngaged }) => (
                         <Button
                             key={gear.id}

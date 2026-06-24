@@ -37,7 +37,7 @@
 }
 
 .checkmark {
-    color: var(--checkbox-color-dark);
+    color: var(--checkbox-color-light);
 }
 
 .label {

@@ -91,7 +91,7 @@ export function Dropdown<T>({
 
     const getTextColor = (pressed: boolean): string => {
         if (variant === 'fill') {
-            return theme.color(color, 900);
+            return theme.color(color, 100);
         }
         return pressed
             ? theme.color(highlightColor, theme.isLight ? 600 : 300)

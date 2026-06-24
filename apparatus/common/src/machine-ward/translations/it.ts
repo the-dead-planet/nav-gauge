@@ -8,6 +8,7 @@ const it: TranslationTable<MachineTranslationKey>['it'] = {
     save: 'Salva',
     menu: 'Menu applicazione',
     'toggle-mode': 'Alterna modalità chiara e scura',
+    gears: 'Ingranaggi',
 };
 
 export default it;
