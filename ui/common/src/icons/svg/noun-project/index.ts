@@ -6,6 +6,7 @@ export { default as ChevronDownDouble } from './output/chevron-down-double.svg';
 export { default as ChevronDownSingle } from './output/chevron-down-single.svg';
 export { default as Crash } from './output/crash.svg';
 export { default as Cyber } from './output/cyber.svg';
+export { default as Gear } from './output/gear.svg';
 export { default as KebabMenu } from './output/kebab-menu.svg';
 export { default as LightBulbCogWheel } from './output/light-bulb-cog-wheel.svg';
 export { default as LightBulbHeart } from './output/light-bulb-heart.svg';

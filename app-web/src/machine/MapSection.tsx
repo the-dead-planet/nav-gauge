@@ -5,13 +5,15 @@ import { useMachineWard } from "@apparatus";
 import { T } from "@web-apparatus";
 import { useObservableState, useSubjectState } from "@tinker-chest";
 import { MapTools } from "./map-tools/MapTools";
-import { Button, FlexBox, H2, Transition } from "@web-ui";
+import { Button, FlexBox, H2, Icon, Transition } from "@web-ui";
 import { createMap } from "./map";
 import { ToolIconRight } from "./map-tools/ToolIconRight";
 import { ToolIconLeft } from "./map-tools/ToolIconLeft";
+import { Icons, useTheme } from "@ui";
 import styles from './map-section.module.css';
 
 export const MapSection: FC = () => {
+    const theme = useTheme();
     const [map, setMap] = useState<maplibregl.Map>();
     const { namespace, translationKey, engine, cartomancer, toolsStation } = useMachineWard();
     const gearsWithEngaged$ = engine.gears$.pipe(switchMap((gears) => {
@@ -58,7 +60,8 @@ export const MapSection: FC = () => {
             ) : null}
             <div className={classNames(styles['toolbar'], styles['top'])}>
                 <FlexBox gap="md" alignItems="center" className={styles['content']}>
-                    <H2 className={styles['gears-heading']}>
+                    <H2 color="secondary" className={styles['gears-heading']}>
+                        <Icon src={Icons.NounProject.Gear} color={theme.color('secondary')} width={20} height={20} />
                         <T n={namespace} t={translationKey.Gears} />
                     </H2>
                     {gears.map(({ gear, isEngaged }) => (
