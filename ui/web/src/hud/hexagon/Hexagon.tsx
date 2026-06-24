@@ -35,7 +35,7 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
     const filterId = useId();
     const clipPathId = useId();
     const shadowBlurId = useId();
-    const effectiveMode = themeMode !== undefined ? themeMode : theme.mode;
+    const effectiveMode = themeMode ?? theme.mode;
 
     return (
         <div

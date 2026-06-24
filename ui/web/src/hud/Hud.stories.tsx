@@ -93,7 +93,7 @@ export const Hexagons = {
                                                     interactive={interactive}
                                                 >
                                                     <Text style={{
-                                                        color: theme.mode === 'dark' ? "white" : "black",
+                                                        color: theme.isDark ? "white" : "black",
                                                         fontSize: { xs: 10, sm: 12, md: 14 }[size || 'md'],
                                                     }}
                                                     >
@@ -218,7 +218,7 @@ export const Panels = {
                                             padding="md"
                                         >
                                             <Text style={{
-                                                color: theme.mode === 'dark' ? "white" : "black",
+                                                color: theme.isDark ? "white" : "black",
                                             }}
                                             >
                                                 {color}

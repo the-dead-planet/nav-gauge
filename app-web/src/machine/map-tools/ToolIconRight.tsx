@@ -42,7 +42,7 @@ export const ToolIconRight: FC<ObservedToolIcon<maplibregl.Map> & Props> = ({
                 size="xs"
                 variant="fill-inverse"
                 corners="hexagon"
-                glowStyle={theme.mode === 'dark' ? "animate-borders-glow" : 'none'}
+                glowStyle={theme.isDark ? "animate-borders-glow" : 'none'}
                 color="primary"
                 active={active}
                 onClick={() => onClick?.(map)}

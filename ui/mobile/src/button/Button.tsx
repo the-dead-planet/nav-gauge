@@ -215,7 +215,7 @@ export const Button: FC<PressableProps & ButtonProps & Props> = ({
                 pressed || active ? highlightColor : color,
                 effectiveVariant === 'fill'
                     ? ((pressed || active ? highlightColor : color) === 'neutral' && isLight ? 700 : 900)
-                    : (pressed || active ? (theme.mode === 'dark' ? 300 : 600) : 500)
+                    : (pressed || active ? (theme.isDark ? 300 : 600) : 500)
             )}
             filter={showTextShadow ? `drop-shadow(0px 0px 12px ${hlInset})` : undefined}
         />

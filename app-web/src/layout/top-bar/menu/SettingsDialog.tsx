@@ -5,7 +5,7 @@ import { Checkbox, Dialog, Dropdown, P } from "@web-ui";
 import { Individuator, IndividuatorSettings, Language, Translatron, useMachineWard } from "@apparatus";
 import { T } from "@web-apparatus";
 import { useSubjectState } from "@tinker-chest";
-import { DateFormat, ThemeName, TimeFormat } from "@ui";
+import { DateFormat, ThemeName, themeNameOptions, TimeFormat } from "@ui";
 import styles from './settings-dialog.module.css';
 
 interface Props {
@@ -68,7 +68,7 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                             { locale: Translatron.languages[pendingSettings.language].locale }
                         ).toFormat(value).toUpperCase(),
                     }))}
-                    onChange={(dateFormat) => setPendingSettings((prev) => ({ ...prev, dateFormat }))}
+                    onChange={(dateFormat) => setPendingSettings((prev): IndividuatorSettings => ({ ...prev, dateFormat }))}
                 />
 
                 <P id="individuator-time-format-label" shadow color="primary">
@@ -81,7 +81,7 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                     variant="fill"
                     value={pendingSettings.timeFormat}
                     options={Individuator.timeFormatOptions}
-                    onChange={(timeFormat) => setPendingSettings((prev) => ({ ...prev, timeFormat }))}
+                    onChange={(timeFormat) => setPendingSettings((prev): IndividuatorSettings => ({ ...prev, timeFormat }))}
                 />
 
                 <P id="individuator-theme-label" shadow color="primary">
@@ -93,8 +93,8 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                     color="primary"
                     variant="fill"
                     value={pendingSettings.themeName}
-                    options={Individuator.themeOptions}
-                    onChange={(themeName) => setPendingSettings((prev) => ({ ...prev, themeName }))}
+                    options={themeNameOptions}
+                    onChange={(themeName) => setPendingSettings((prev): IndividuatorSettings => ({ ...prev, themeName }))}
                 />
 
                 <P id="individuator-confirm-before-leave-label" shadow color="primary">

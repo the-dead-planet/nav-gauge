@@ -14,9 +14,8 @@ export const Checkbox: FC<CheckboxProps> = ({
 }) => {
     const theme = useTheme();
     const highlightColor = hlColor || color;
-    const isLight = theme.mode === 'light';
 
-    const accentColor = isLight
+    const accentColor = theme.isLight
         ? theme.color(highlightColor, 600)
         : theme.color(highlightColor, 300);
     const baseColor = theme.color(color);

@@ -48,7 +48,6 @@ export function Dropdown<T>({
     const s = SIZE_MAP[size];
     const iconSize = ICON_SIZE_MAP[size];
     const baseColor = theme.color(color, 500);
-    const isLight = theme.mode === 'light';
 
     const getTriggerStyle = (pressed: boolean): ViewStyle => {
         const style: ViewStyle = {
@@ -72,17 +71,17 @@ export function Dropdown<T>({
                 style.borderWidth = 1;
                 style.backgroundColor = theme.color(
                     color,
-                    isLight ? 100 : (color === 'neutral' ? 800 : 900)
+                    theme.isLight ? 100 : (color === 'neutral' ? 800 : 900)
                 );
                 style.borderColor = pressed
-                    ? theme.color(highlightColor, isLight ? 600 : 300)
+                    ? theme.color(highlightColor, theme.isLight ? 600 : 300)
                     : baseColor;
                 break;
             case 'fill-translucent':
                 style.borderWidth = 1;
                 style.backgroundColor = theme.color(color, 500, 0.24);
                 style.borderColor = pressed
-                    ? theme.color(highlightColor, isLight ? 600 : 300)
+                    ? theme.color(highlightColor, theme.isLight ? 600 : 300)
                     : theme.color(color, 500, 0.3);
                 break;
         }
@@ -95,7 +94,7 @@ export function Dropdown<T>({
             return theme.color(color, 900);
         }
         return pressed
-            ? theme.color(highlightColor, isLight ? 600 : 300)
+            ? theme.color(highlightColor, theme.isLight ? 600 : 300)
             : baseColor;
     };
 

@@ -11,11 +11,15 @@ import {
     ThemeComponentColor,
     ThemeComponentColors,
     ThemeSpecification,
+    ThemeMode,
 } from "./model";
 
 export class Theme {
-    public mode: 'light' | 'dark';
     public name: string;
+    public mode: ThemeMode;
+    public isLight: boolean;
+    public isDark: boolean;
+    public otherMode: ThemeMode;
 
     private mediaSubscription: { unsubscribe: () => void } | null = null;
 
@@ -217,6 +221,9 @@ export class Theme {
         protected media: MediaSubscriptionDefinition
     ) {
         this.mode = specification.mode;
+        this.isLight = specification.mode === 'light';
+        this.isDark = specification.mode === 'dark';
+        this.otherMode = specification.mode === 'light' ? 'dark' : 'light';
         this.name = specification.themeName;
         this.colors = Object.assign({}, Theme.palette, specification.colors);
         this.componentColors = specification.componentColors;

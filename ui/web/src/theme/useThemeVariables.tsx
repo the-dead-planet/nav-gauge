@@ -39,6 +39,6 @@ export const useThemeVariables = (theme: Theme) => {
                 );
             }
         }
-        document.body.setAttribute("data-theme", theme.name);
-    }, [theme.name]);
+        document.body.setAttribute("data-theme", theme.mode);
+    }, [theme]);
 };

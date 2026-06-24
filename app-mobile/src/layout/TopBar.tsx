@@ -44,7 +44,7 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
             </Text>
             <Button
                 icon={Icons.NounProject.LightBulbCogWheel}
-                color={theme.mode === 'dark' ? "secondary" : "neutral"}
+                color={theme.isDark ? "secondary" : "neutral"}
                 size="md"
                 variant="inset"
                 onPress={individuator.toggleMode}

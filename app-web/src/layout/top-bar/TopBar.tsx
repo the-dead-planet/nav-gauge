@@ -28,8 +28,8 @@ export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
                     onClick={individuator.toggleMode}
                     variant="inset"
                     size="md"
-                    color={theme.mode === 'dark' ? "secondary" : 'neutral'}
-                    highlightColor={theme.mode === 'dark' ? "neutral" : 'secondary'}
+                    color={theme.isDark ? "secondary" : 'neutral'}
+                    highlightColor={theme.isDark ? "neutral" : 'secondary'}
                 />
                 <LayoutMenu />
             </div>

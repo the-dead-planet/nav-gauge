@@ -112,10 +112,9 @@ const hasCurrent = (ref: unknown): ref is { current: unknown } => (
 );
 
 const getVariantColors = (theme: ReturnType<typeof useTheme>, colorName: ColorVariant, variant: string) => {
-    const isLight = theme.mode === 'light';
     const base = theme.color(colorName, 500);
-    const inverseBg = theme.color(colorName, isLight ? 100 : 800);
-    const accent = theme.color(colorName, isLight ? 600 : 300);
+    const inverseBg = theme.color(colorName, theme.isLight ? 100 : 800);
+    const accent = theme.color(colorName, theme.isLight ? 600 : 300);
 
     switch (variant) {
         case 'fill':
@@ -123,7 +122,7 @@ const getVariantColors = (theme: ReturnType<typeof useTheme>, colorName: ColorVa
         case 'fill-inverse':
             return { backgroundColor: inverseBg, color: accent, borderColor: accent };
         case 'fill-translucent': {
-            const opacity = isLight ? 0.85 : 0.78;
+            const opacity = theme.isLight ? 0.85 : 0.78;
             return { backgroundColor: theme.color(colorName, 500, opacity), color: accent };
         }
         default:
