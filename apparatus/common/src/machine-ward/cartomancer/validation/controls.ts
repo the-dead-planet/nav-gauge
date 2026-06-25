@@ -19,6 +19,4 @@ export const validateGaugeControls = (gaugeControls: Partial<GaugeControlsType>)
     validateBoolean(gaugeControls.showCompass, 'Show compass');
     validateBoolean(gaugeControls.showZoomButtons, 'Show zoom buttons');
     validateBoolean(gaugeControls.showGreenScreen, 'Show green screen');
-    validateBoolean(gaugeControls.showRouteLine, 'Show route line');
-    validateBoolean(gaugeControls.showRoutePoints, 'Show route points');
 };

@@ -66,14 +66,6 @@ describe("Apparatus", () => {
                 expect(() => validateGaugeControls({ showGreenScreen: false })).to.not.throw();
                 expect(() => validateGaugeControls({ showGreenScreen: "" } as unknown as GaugeControlsType)).to.throw("Show green screen should be of type boolean");
             });
-            it("should throw if showRouteLine incorrect", () => {
-                expect(() => validateGaugeControls({ showRouteLine: false })).to.not.throw();
-                expect(() => validateGaugeControls({ showRouteLine: "" } as unknown as GaugeControlsType)).to.throw("Show route line should be of type boolean");
-            });
-            it("should throw if showRoutePoints incorrect", () => {
-                expect(() => validateGaugeControls({ showRoutePoints: false })).to.not.throw();
-                expect(() => validateGaugeControls({ showRoutePoints: "" } as unknown as GaugeControlsType)).to.throw("Show route points should be of type boolean");
-            });
             it("should throw if showZoomButtons incorrect", () => {
                 expect(() => validateGaugeControls({ showZoomButtons: false })).to.not.throw();
                 expect(() => validateGaugeControls({ showZoomButtons: "" } as unknown as GaugeControlsType)).to.throw("Show zoom buttons should be of type boolean");

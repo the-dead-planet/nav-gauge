@@ -1,14 +1,14 @@
 import { ChangeEvent, CSSProperties, FC, useEffect } from "react";
 import { OverlayComponentProps, SurveillanceState, useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
-import { formatCurrentTimestamp, getProgressPercentage, RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { formatCurrentTimestamp, getProgressPercentage, RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { updateRouteLayer } from "../tinkers";
 import { WebChronoLens } from "@web-apparatus";
 import { WebMarkerImageData } from "../images/image-parser";
 import styles from './player.module.css';
 import { RouteStoryFileInput } from "../file-input/RouteStoryFileInput";
 
-export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map, File, WebMarkerImageData>> = ({
+export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteStoryProps<maplibregl.Map, File, WebMarkerImageData>> = ({
     map,
     data$,
     routeTimes$,

@@ -15,8 +15,6 @@ export const GaugeControls: FC<Props> = () => {
         // TODO: Implement
         showCompass,
         showGreenScreen,
-        showRouteLine,
-        showRoutePoints,
     } = gaugeControls;
 
     return (
@@ -103,28 +101,6 @@ export const GaugeControls: FC<Props> = () => {
                 checked={showGreenScreen}
                 onChange={() => { }}
                 onContainerClick={() => setGaugeControls((prev) => ({ ...prev, showGreenScreen: !prev.showGreenScreen }))}
-                containerClassName={styles["checkbox"]}
-            />
-            <Input
-                id="route-line"
-                name="route-line"
-                label="Show route line"
-                labelPlacement="after"
-                type='checkbox'
-                checked={showRouteLine}
-                onChange={() => { }}
-                onContainerClick={() => setGaugeControls((prev) => ({ ...prev, showRouteLine: !prev.showRouteLine }))}
-                containerClassName={styles["checkbox"]}
-            />
-            <Input
-                id="route-points"
-                name="route-points"
-                label="Show route points"
-                labelPlacement="after"
-                type='checkbox'
-                checked={showRoutePoints}
-                onChange={() => { }}
-                onContainerClick={() => setGaugeControls((prev) => ({ ...prev, showRoutePoints: !prev.showRoutePoints }))}
                 containerClassName={styles["checkbox"]}
             />
         </Fieldset>

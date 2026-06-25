@@ -2,7 +2,7 @@ import { FC, useEffect } from "react";
 import { BehaviorSubject } from "rxjs";
 import { DocumentPickerResponse } from "@react-native-documents/picker";
 import { OverlayComponentProps, useMachineWard } from "@apparatus";
-import { getRouteSourceData, RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { getRouteSourceData, RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMap } from "@mobile-ui";
 import { emptyCollection, useSubjectState } from "@tinker-chest";
 import { MobileMarkerImageData } from "../images/image-parser";
@@ -13,9 +13,10 @@ import { RouteCurrentPointLayer } from "./RouteCurrentPointLayer";
 export const currentPointRef$ = new BehaviorSubject<GeoJSON.GeoJSON>(emptyCollection);
 export const linesRef$ = new BehaviorSubject<GeoJSON.GeoJSON>(emptyCollection);
 
-export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({
+export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({
     map,
     data$,
+    state$,
     routeTimes$,
     images$,
     progressMs$,
@@ -25,9 +26,8 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mo
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [progressMs] = useSubjectState(progressMs$);
-    const { animatrix, cartomancer, chronoLens } = useMachineWard();
-    const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
-    const { showRouteLine, showRoutePoints } = gaugeControls;
+    const { animatrix, chronoLens } = useMachineWard();
+    const [state] = useSubjectState(state$);
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [animationControls] = useSubjectState(animatrix.controls$);
     const {
@@ -66,7 +66,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mo
         }
 
         const { line, currentPoint } = getRouteSourceData(
-            { showRouteLine, showRoutePoints },
+            state,
             geojson,
             routeTimes.startTimeEpoch,
             progressMs, // Not a dependency of this memo, data is updated later in the animateRoute hook
@@ -75,7 +75,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mo
 
         setLineSourceData(line);
         setCurrentPointSourceData(currentPoint);
-    }, [geojson, routeTimes?.startTimeEpoch, bearingLineLengthInMeters, showRouteLine, showRoutePoints]);
+    }, [geojson, routeTimes?.startTimeEpoch, bearingLineLengthInMeters, state]);
 
     useEffect(() => {
         if (!isPlaying || !geojson || !routeTimes) {
@@ -104,7 +104,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<Mo
 
     return (
         <>
-            <RouteLineLayer source={lineSourceData} />
+            <RouteLineLayer source={lineSourceData} state={state} />
             <RouteCurrentPointLayer source={currentPointSourceData} />
         </>
     );

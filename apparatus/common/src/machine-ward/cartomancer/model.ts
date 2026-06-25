@@ -6,9 +6,6 @@ export interface GaugeControlsType {
     showZoomButtons: boolean;
     showCompass: boolean;
     showGreenScreen: boolean;
-    // TODO: Belongs to route gear
-    showRouteLine: boolean;
-    showRoutePoints: boolean;
 }
 
 export interface MapLayout {

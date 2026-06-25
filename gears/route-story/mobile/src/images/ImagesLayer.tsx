@@ -6,7 +6,7 @@ import { useSubjectState } from "@tinker-chest";
 import {
     getIconImageId,
     getImageSource,
-    RouteToolProps,
+    RouteStoryProps,
     ImagesLayers,
     imageLayerIds,
     imageSourceIds,
@@ -23,7 +23,7 @@ import { useLoadedMobileImages } from "./useLoadedMobileImages";
 import { useImageInDisplay } from "./useImageInDisplay";
 import { findThumbnailsWithinBuffer } from "../tinkers";
 
-export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({
+export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({
     map,
     data$,
     images$,

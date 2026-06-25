@@ -1,17 +1,13 @@
 import { FC } from "react";
 import { Layer, GeoJSONSource } from "@maplibre/maplibre-react-native";
-import { useMachineWard } from "@apparatus";
-import { useSubjectState } from "@tinker-chest";
-import { routeSourceIds, routeLayerIds, RouteLayers } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { routeSourceIds, routeLayerIds, RouteLayers, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 
 interface Props {
-    source: GeoJSON.GeoJSON
+    source: GeoJSON.GeoJSON;
+    state: RouteStoryState;
 }
 
-export const RouteLineLayer: FC<Props> = ({ source, }) => {
-    const { cartomancer } = useMachineWard();
-    const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
-    const { showRouteLine, showRoutePoints } = gaugeControls;
+export const RouteLineLayer: FC<Props> = ({ source, state: { showRouteLine, showRoutePoints } }) => {
 
     return (
         <GeoJSONSource

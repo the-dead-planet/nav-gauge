@@ -7,7 +7,7 @@ import { useLoadedWebImages } from "../hooks/useLoadedWebImages";
 import { useImageInDisplay } from "./useImageInDisplay";
 import { MapImageData, useRouteLayerImages } from "../hooks";
 import {
-    RouteToolProps,
+    RouteStoryProps,
     getIconImageId,
     getImageSource,
     IMAGE_PROPERTY,
@@ -21,7 +21,7 @@ import {
 import { WebMarkerImageData } from "./image-parser";
 import { getImagesLayers } from "./images-layers";
 
-export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map, File, WebMarkerImageData>> = ({
+export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteStoryProps<maplibregl.Map, File, WebMarkerImageData>> = ({
     map,
     data$,
     images$,

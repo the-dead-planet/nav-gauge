@@ -2,7 +2,7 @@ import { FC, useEffect, useMemo } from "react";
 import maplibregl, { LngLat } from "maplibre-gl";
 import bbox from "@turf/bbox";
 import { OverlayComponentProps, useMachineWard, parsers } from "@apparatus";
-import { getRouteSourceData, RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { getRouteSourceData, RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { emptyCollection, useSubjectState } from "@tinker-chest";
 import { updateRouteLayer } from "../tinkers";
 import { useLoadedWebImages } from "../hooks";
@@ -10,9 +10,10 @@ import { WebMarkerImageData } from "../images/image-parser";
 import { RouteLineLayer } from "./RouteLineLayer";
 import { RouteCurrentPointLayer } from "./RouteCurrentPointLayer";
 
-export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolProps<maplibregl.Map, File, WebMarkerImageData>> = ({
+export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteStoryProps<maplibregl.Map, File, WebMarkerImageData>> = ({
     map,
     data$,
+    state$,
     routeTimes$,
     images$,
     progressMs$,
@@ -22,9 +23,8 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPro
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [progressMs] = useSubjectState(progressMs$);
-    const { animatrix, cartomancer, chronoLens } = useMachineWard();
-    const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
-    const { showRouteLine, showRoutePoints } = gaugeControls;
+    const { animatrix, chronoLens } = useMachineWard();
+    const [state] = useSubjectState(state$);
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [animationControls] = useSubjectState(animatrix.controls$);
     const {
@@ -52,13 +52,13 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPro
             return { currentPoint: emptyCollection, line: emptyCollection }
         }
         return getRouteSourceData(
-            { showRouteLine, showRoutePoints },
+            state,
             geojson,
             routeTimes.startTimeEpoch,
             progressMs, // Not a dependency of this memo, data is updated later in the animateRoute hook
             bearingLineLengthInMeters
         );
-    }, [geojson, routeTimes, bearingLineLengthInMeters, showRouteLine, showRoutePoints]);
+    }, [geojson, routeTimes, bearingLineLengthInMeters, state]);
 
     useEffect(() => {
         if (!isPlaying || !geojson || !routeTimes) {
@@ -90,7 +90,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteToolPro
 
     return (
         <>
-            <RouteLineLayer map={map} source={sources.line} />
+            <RouteLineLayer map={map} source={sources.line} state={state} />
             <RouteCurrentPointLayer map={map} source={sources.currentPoint} />
         </>
     );

@@ -35,9 +35,6 @@ export class Cartomancer<TMap> {
         showZoomButtons: true,
         showCompass: true,
         showGreenScreen: false,
-        // TODO: This belongs in the route story gear
-        showRouteLine: true,
-        showRoutePoints: true,
     }
 
     public static defaultMapLayout: MapLayout = {

@@ -12,8 +12,14 @@ export interface RouteTimes {
     duration: number;
 }
 
-export interface RouteToolProps<TMap, TFile extends RouteStoryFile, TImageData> {
+export interface RouteStoryState {
+    showRouteLine: boolean;
+    showRoutePoints: boolean;
+}
+
+export interface RouteStoryProps<TMap, TFile extends RouteStoryFile, TImageData> {
     data$: BehaviorSubject<ParsingResultWithError>;
+    state$: BehaviorSubject<RouteStoryState>;
     routeTimes$: BehaviorSubject<RouteTimes | null>;
     images$: BehaviorSubject<MarkerImage<TImageData>[]>;
     progressMs$: BehaviorSubject<number>;

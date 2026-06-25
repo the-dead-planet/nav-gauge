@@ -2,7 +2,7 @@ import { ComponentType, FC } from "react";
 import { BehaviorSubject, Subscription } from "rxjs";
 import { ToolPanelProps, MarkerImage, OverlayComponentProps, Gear, TranslationTable, GearTranslationKey } from "@apparatus";
 import { GeoJson, ParsingResultWithError } from "@tinker-chest";
-import { RouteToolProps, RouteTimes, RouteStoryFile, RouteStoryTranslationKey } from "./model";
+import { RouteStoryProps, RouteTimes, RouteStoryFile, RouteStoryTranslationKey, RouteStoryState } from "./model";
 import { FileOperator } from "./file-operator";
 import { PlayerOperator } from "./player-operator";
 import { Icons } from "@ui";
@@ -17,6 +17,7 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
 
     private dataSubscription: Subscription | null = null;
     public readonly data$ = new BehaviorSubject<ParsingResultWithError>({});
+    public readonly state$ = new BehaviorSubject<RouteStoryState>({ showRouteLine: true, showRoutePoints: true });
     public readonly routeTimes$ = new BehaviorSubject<RouteTimes | null>(null);
     public readonly images$ = new BehaviorSubject<MarkerImage<TImageData>[]>([]);
     public readonly progressMs$ = new BehaviorSubject(0);
@@ -57,13 +58,13 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
     private routeLayerFitBoundsToolIconId = 'fit-bounds';
 
     private playerToolId = 'player';
-    public abstract playerComponent: ComponentType<ToolPanelProps<TMap> & RouteToolProps<TMap, TFile, TImageData>>;
+    public abstract playerComponent: ComponentType<ToolPanelProps<TMap> & RouteStoryProps<TMap, TFile, TImageData>>;
 
     private routeOverlayId = 'route';
-    public abstract routeLayerComponent: ComponentType<OverlayComponentProps<TMap> & RouteToolProps<TMap, TFile, TImageData>>;
+    public abstract routeLayerComponent: ComponentType<OverlayComponentProps<TMap> & RouteStoryProps<TMap, TFile, TImageData>>;
 
     private imagesOverlayId = 'images';
-    public abstract imagesLayerComponent: ComponentType<OverlayComponentProps<TMap> & RouteToolProps<TMap, TFile, TImageData>>;
+    public abstract imagesLayerComponent: ComponentType<OverlayComponentProps<TMap> & RouteStoryProps<TMap, TFile, TImageData>>;
 
     /**
      * Wrapper to avoid binding issues in react native if components are wrapped in arg list.
@@ -76,6 +77,16 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
             <Component {...props} {...toolProps} />
         );
     }
+
+    private getProps = (): RouteStoryProps<TMap, TFile, TImageData> => ({
+        data$: this.data$,
+        state$: this.state$,
+        routeTimes$: this.routeTimes$,
+        images$: this.images$,
+        progressMs$: this.progressMs$,
+        fileOperator: this.fileOperator,
+        playerOperator: this.playerOperator,
+    });
 
     public engage = () => {
         this.engageRouteStory?.();
@@ -101,38 +112,17 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
                 title: { n: this.id, t: 'player' },
                 placement: 'bottom',
                 icon: Icons.Beaker as unknown as string, // TODO: Icon
-                component: this.wrapProps<RouteToolProps<TMap, TFile, TImageData>, ToolPanelProps<TMap>>(this.playerComponent, {
-                    data$: this.data$,
-                    routeTimes$: this.routeTimes$,
-                    images$: this.images$,
-                    progressMs$: this.progressMs$,
-                    fileOperator: this.fileOperator,
-                    playerOperator: this.playerOperator,
-                })
+                component: this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, ToolPanelProps<TMap>>(this.playerComponent, this.getProps())
             }
         );
 
         this.apparatus.cartomancer.addOverlay(
             this.routeOverlayId,
-            this.wrapProps<RouteToolProps<TMap, TFile, TImageData>, OverlayComponentProps<TMap>>(this.routeLayerComponent, {
-                data$: this.data$,
-                routeTimes$: this.routeTimes$,
-                images$: this.images$,
-                progressMs$: this.progressMs$,
-                fileOperator: this.fileOperator,
-                playerOperator: this.playerOperator,
-            })
+            this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, OverlayComponentProps<TMap>>(this.routeLayerComponent, this.getProps())
         );
         this.apparatus.cartomancer.addOverlay(
             this.imagesOverlayId,
-            this.wrapProps<RouteToolProps<TMap, TFile, TImageData>, OverlayComponentProps<TMap>>(this.imagesLayerComponent, {
-                data$: this.data$,
-                routeTimes$: this.routeTimes$,
-                images$: this.images$,
-                progressMs$: this.progressMs$,
-                fileOperator: this.fileOperator,
-                playerOperator: this.playerOperator,
-            })
+            this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, OverlayComponentProps<TMap>>(this.imagesLayerComponent, this.getProps())
         );
     };
 

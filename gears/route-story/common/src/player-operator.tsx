@@ -50,7 +50,7 @@ export class PlayerOperator<TMap, TFile extends RouteStoryFile, TImageData> {
         this.gear.progressMs$.next(value);
         if (this.gear.data$.value.geojson) {
             const { currentPoint, line } = getRouteSourceData(
-                this.gear.apparatus.cartomancer.gaugeControls$.value,
+                this.gear.state$.value,
                 this.gear.data$.value.geojson,
                 this.gear.routeTimes$.value.startTimeEpoch,
                 value,
@@ -85,7 +85,6 @@ export class PlayerOperator<TMap, TFile extends RouteStoryFile, TImageData> {
             autoRotate,
             maxBearingDiffPerFrame,
         } = this.gear.apparatus.animatrix.controls$.value;
-        const gaugeControls = this.gear.apparatus.cartomancer.gaugeControls$.value;
 
         if (!isPlaying || !geojson || !routeTimes) {
             return;
@@ -110,7 +109,7 @@ export class PlayerOperator<TMap, TFile extends RouteStoryFile, TImageData> {
                 nextImageIndex = 0;
             }
             const nextImage: LoadedImageData<TImageData> | undefined = sortedImageFeatures[nextImageIndex];
-            const { currentPoint, line, currentPointBearing } = getRouteSourceData(gaugeControls, geojson, startTimeEpoch, currentProgressMs, bearingLineLengthInMeters, nextImage?.featureId);
+            const { currentPoint, line, currentPointBearing } = getRouteSourceData(this.gear.state$.value, geojson, startTimeEpoch, currentProgressMs, bearingLineLengthInMeters, nextImage?.featureId);
             onUpdateLayer(currentPoint, line);
 
             if (this.animation !== undefined && nextImage && nextImage.featureId <= Number(currentPoint.id)) {

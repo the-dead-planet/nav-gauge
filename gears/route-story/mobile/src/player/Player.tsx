@@ -4,7 +4,7 @@ import { DocumentPickerResponse } from "@react-native-documents/picker";
 import Slider, { SliderReferenceType } from "@react-native-community/slider";
 import { OverlayComponentProps, SurveillanceState, useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
-import { formatCurrentTimestamp, getProgressPercentage, RouteToolProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { formatCurrentTimestamp, getProgressPercentage, RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Text } from "@mobile-ui";
 import { MobileMap } from "@mobile-ui";
 import { useTheme } from "@ui";
@@ -12,7 +12,7 @@ import { currentPointRef$, linesRef$ } from "../layers/RouteLayer";
 import { MobileMarkerImageData } from "../images/image-parser";
 import { RouteStoryFileInput } from "../RouteStoryFileInput";
 
-export const Player: FC<OverlayComponentProps<MobileMap> & RouteToolProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({
+export const Player: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({
     data$,
     routeTimes$,
     progressMs$,

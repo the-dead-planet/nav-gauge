@@ -1,24 +1,20 @@
 import { FC, useMemo } from "react";
 import maplibregl from "maplibre-gl";
-import { useMachineWard } from "@apparatus";
-import { useSubjectState } from "@tinker-chest";
 import { MapLayerData, MapSourceAndLayers, } from "@web-apparatus";
-import { routeSourceIds, layerOrder } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { routeSourceIds, layerOrder, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { routeLineLayer, routePointsLayer } from "./route-layers";
 
 interface Props {
     map: maplibregl.Map;
     source: GeoJSON.GeoJSON;
+    state: RouteStoryState;
 }
 
 export const RouteLineLayer: FC<Props> = ({
     map,
     source,
+    state: { showRouteLine, showRoutePoints },
 }) => {
-    const { cartomancer } = useMachineWard();
-    const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
-    const { showRouteLine, showRoutePoints } = gaugeControls;
-
     const mapLayerData = useMemo((): MapLayerData => {
         const routeLayers: MapLayerData['layers'] = [];
 
