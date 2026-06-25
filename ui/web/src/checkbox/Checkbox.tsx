@@ -1,4 +1,4 @@
-import { ChangeEvent, ComponentProps, FC } from "react";
+import { ChangeEvent, ComponentProps, FC, useId } from "react";
 import classNames from "classnames";
 import { CheckboxProps, useTheme } from "@ui";
 import styles from './checkbox.module.css';
@@ -7,9 +7,10 @@ interface Props {
     labelledBy?: string;
 }
 
-export const Checkbox: FC<CheckboxProps & Props & Omit<ComponentProps<'label'>, 'onChange'>> = ({
+export const Checkbox: FC<Omit<ComponentProps<'label'>, 'onChange'> & CheckboxProps & Props> = ({
+    id,
     labelledBy,
-    color = 'primary',
+    color = 'neutral',
     highlightColor: hlColor,
     size = 'sm',
     checked,
@@ -20,6 +21,8 @@ export const Checkbox: FC<CheckboxProps & Props & Omit<ComponentProps<'label'>, 
     style,
     ...props
 }) => {
+    const generatedId = useId();
+    const effectiveId = id || generatedId;
     const theme = useTheme();
     const highlightColor = hlColor || color;
 
@@ -30,6 +33,7 @@ export const Checkbox: FC<CheckboxProps & Props & Omit<ComponentProps<'label'>, 
     return (
         <label
             aria-labelledby={labelledBy}
+            htmlFor={effectiveId}
             className={classNames(
                 styles['checkbox'],
                 styles[`mode-${theme.mode}`],
@@ -46,6 +50,7 @@ export const Checkbox: FC<CheckboxProps & Props & Omit<ComponentProps<'label'>, 
             {...props}
         >
             <input
+                id={effectiveId}
                 type="checkbox"
                 className={styles['input']}
                 checked={checked}

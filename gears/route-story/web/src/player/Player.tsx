@@ -5,12 +5,14 @@ import { formatCurrentTimestamp, getProgressPercentage, RouteStoryProps } from "
 import { updateRouteLayer } from "../tinkers";
 import { WebChronoLens } from "@web-apparatus";
 import { WebMarkerImageData } from "../images/image-parser";
-import styles from './player.module.css';
 import { RouteStoryFileInput } from "../file-input/RouteStoryFileInput";
+import styles from './player.module.css';
+import { Checkbox } from "@web-ui";
 
 export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteStoryProps<maplibregl.Map, File, WebMarkerImageData>> = ({
     map,
     data$,
+    state$,
     routeTimes$,
     images$,
     progressMs$,
@@ -18,6 +20,7 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteStoryProps<
     playerOperator,
 }) => {
     const [{ geojson }] = useSubjectState(data$);
+    const [state, setState] = useSubjectState(state$);
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [progressMs] = useSubjectState(progressMs$);
@@ -100,6 +103,14 @@ export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteStoryProps<
                         {!routeTimes ? "" : individuator.formatTimestamp(progressMs + routeTimes.startTimeEpoch, settings)}
                     </p>
                 </div>
+            </div>
+            <div>
+                <Checkbox checked={state.showRouteLine} onChange={(checked) => setState((prev) => ({ ...prev, showRouteLine: checked }))}>
+                    Show route lines
+                </Checkbox>
+                <Checkbox checked={state.showRoutePoints} onChange={(checked) => setState((prev) => ({ ...prev, showRoutePoints: checked }))}>
+                    Show route points
+                </Checkbox>
             </div>
         </div>
     );

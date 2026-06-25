@@ -28,6 +28,7 @@
     flex-shrink: 0;
     border-width: 1px;
     border-style: solid;
+    border-color: transparent;
     background-color: transparent;
     transition: background-color .15s ease, border-color .15s ease;
 }
@@ -42,7 +43,7 @@
 
 .label {
     flex: 1;
-    color: var(--checkbox-color);
+    color: var(--checkbox-color-light);
 }
 
 .color-primary {
