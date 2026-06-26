@@ -93,7 +93,6 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
     };
 
     private mount = () => {
-        this.storageKeeper.initialize();
         this.individuator.initialize(this.storageKeeper, this.translatron);
         this.attributionVaultSubscription = this.subscribeAttributionVault();
         this.toolsStationPresetSubscription = this.subscribeToolsStationPreset();
@@ -111,7 +110,7 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
         this.toolsStationPresetSubscription?.unsubscribe();
         this.attributionVaultSubscription?.unsubscribe();
         this.individuator.cleanUp();
-        this.storageKeeper.cleanUp();
+        this.toolsStation.cleanUp();
     };
 
     private subscribeAttributionVault = (): Subscription => {

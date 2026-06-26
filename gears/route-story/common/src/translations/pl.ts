@@ -4,7 +4,8 @@ import { RouteStoryTranslationKey } from "../model";
 const pl: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['pl'] = {
     "gear-name": 'Historia trasy',
     "gear-description": 'Stwórz historię wideo ze swoich śladów GPS i danych obrazu',
-    "fit-bounds": 'Uzyskaj cel'
+    "fit-bounds": 'Uzyskaj cel',
+    "player": 'Konfiguracja odtwarzacza trasy'
 };
 
 export default pl;

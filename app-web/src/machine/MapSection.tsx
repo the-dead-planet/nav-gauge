@@ -6,9 +6,9 @@ import { T } from "@web-apparatus";
 import { useObservableState, useSubjectState } from "@tinker-chest";
 import { MapTools } from "./map-tools/MapTools";
 import { Button, FlexBox, H2, Icon, Transition } from "@web-ui";
-import { createMap } from "./map";
-import { ToolIconRight } from "./map-tools/ToolIconRight";
+import { createMap } from "./map";;
 import { ToolIconLeft } from "./map-tools/ToolIconLeft";
+import { ToolPanel } from "./ToolPanel";
 import { Icons, useTheme } from "@ui";
 import styles from './map-section.module.css';
 
@@ -31,6 +31,9 @@ export const MapSection: FC = () => {
     const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
     const toolIcons = useObservableState(toolsStation.toolIconsByPlacement$, []);
     const toolIconsByPlacement = toolsStation.getToolIconsByPlacement(toolIcons);
+    const [activeLeftPanelToolId, setActiveLeftPanelToolId] = useSubjectState(toolsStation.activeLeftPanelToolId$);
+    const [activeRightPanelToolId, setActiveRightPanelToolId] = useSubjectState(toolsStation.activeRightPanelToolId$);
+    const [activeBottomPanelToolId, setActiveBottomPanelToolId] = useSubjectState(toolsStation.activeBottomPanelToolId$);
 
     useEffect(() => {
         const m = createMap();
@@ -109,37 +112,9 @@ export const MapSection: FC = () => {
             {/* TODO: Bind right icons with right panel? */}
             {/* TODO: Rename right/left panels according to their use */}
             {/* TODO: Add option to swap left/right */}
-            <div className={classNames(styles['icons'], styles['right'])}>
-                {toolIconsByPlacement.right.length === 1 ? <div /> : null}
-                {!map
-                    ? null
-                    : toolIconsByPlacement.right.map((toolIcon) => (
-                        <ToolIconRight
-                            key={toolIcon.id}
-                            map={map}
-                            className={classNames(styles['icon-button'], styles['right'])}
-                            {...toolIcon}
-                        />
-                    ))}
-            </div>
-            <div className={classNames(styles['toolbar'], styles['right'])}>
-                <Transition slide="to-left" render={toolPanelsByPlacement.right.length > 0}>
-                    <div className={styles['content']}>
-                        {toolPanelsByPlacement.right.map(({ id, component: Component }) => (
-                            <Component key={id} map={map} />
-                        ))}
-                    </div>
-                </Transition>
-            </div>
-            <div className={classNames(styles['toolbar'], styles['bottom'])}>
-                <Transition slide="to-top" render={toolPanelsByPlacement.bottom.length > 0}>
-                    <div className={styles['content']}>
-                        {toolPanelsByPlacement.bottom.map(({ id, component: Component }) => (
-                            <Component key={id} map={map} />
-                        ))}
-                    </div>
-                </Transition>
-            </div>
+            <ToolPanel placement="left" map={map} activeId={activeLeftPanelToolId} onActiveIdChange={setActiveLeftPanelToolId} />
+            <ToolPanel placement="right" map={map} activeId={activeRightPanelToolId} onActiveIdChange={setActiveRightPanelToolId} />
+            <ToolPanel placement="bottom" map={map} activeId={activeBottomPanelToolId} onActiveIdChange={setActiveBottomPanelToolId} />
         </div>
     );
 };

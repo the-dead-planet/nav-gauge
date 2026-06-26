@@ -39,4 +39,5 @@ export interface RouteStoryFile {
 
 export enum RouteStoryTranslationKey {
     FitBounds = 'fit-bounds',
+    Player = 'player',
 }

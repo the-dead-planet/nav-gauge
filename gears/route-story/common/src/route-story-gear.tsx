@@ -8,6 +8,7 @@ import { PlayerOperator } from "./player-operator";
 import { Icons } from "@ui";
 import * as Translations from "./translations";
 
+
 export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageData> extends Gear<TMap> {
     public readonly id = 'route-story';
     public translations: TranslationTable<GearTranslationKey | RouteStoryTranslationKey> = Translations;
@@ -109,9 +110,9 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
         this.apparatus.toolsStation.addToolPanel(
             this.playerToolId,
             {
-                title: { n: this.id, t: 'player' },
+                title: { n: this.id, t: this.internalTranslationKey.Player },
                 placement: 'bottom',
-                icon: Icons.Beaker as unknown as string, // TODO: Icon
+                icon: Icons.NounProject.PayerConfiguration as unknown as string,
                 component: this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, ToolPanelProps<TMap>>(this.playerComponent, this.getProps())
             }
         );

@@ -1,5 +1,5 @@
 import { ComponentType } from "react";
-import { BehaviorSubject, combineLatest, map, Observable, of, switchMap } from "rxjs";
+import { BehaviorSubject, combineLatest, map, Observable, of, Subscription, switchMap } from "rxjs";
 import { AnimationControlsType, Animatrix } from "../animatrix";
 import { Cartomancer, GaugeControlsType, MapLayout } from "../cartomancer";
 import {
@@ -47,6 +47,10 @@ export class ToolsStation<TMap> {
         )));
     }));
 
+    public activeLeftPanelToolId$ = new BehaviorSubject<string | null>(null);
+    public activeRightPanelToolId$ = new BehaviorSubject<string | null>(null);
+    public activeBottomPanelToolId$ = new BehaviorSubject<string | null>(null);
+
     /**
      * Tools to display in icons around the map.
      * Tools have access to map context and will not be unmounted for the duration of the style updates. 
@@ -86,9 +90,27 @@ export class ToolsStation<TMap> {
      */
     public isPresetActive$ = new BehaviorSubject<boolean>(true);
 
+    private toolPanelsIndexesSubscription: Subscription
+
     public constructor(preset: Preset) {
         this.preset$ = new BehaviorSubject<Preset>(preset);
+        this.toolPanelsIndexesSubscription = this.toolPanelsByPlacement$.subscribe((value) => {
+            const toolPanelsByPlacement = this.getToolPanelsByPlacement(value);
+            if (toolPanelsByPlacement.left.every(({ id }) => id !== this.activeLeftPanelToolId$.value)) {
+                this.activeLeftPanelToolId$.next(toolPanelsByPlacement.left[0]?.id ?? null);
+            }
+            if (toolPanelsByPlacement.right.every(({ id }) => id !== this.activeRightPanelToolId$.value)) {
+                this.activeRightPanelToolId$.next(toolPanelsByPlacement.right[0]?.id ?? null);
+            }
+            if (toolPanelsByPlacement.bottom.every(({ id }) => id !== this.activeBottomPanelToolId$.value)) {
+                this.activeBottomPanelToolId$.next(toolPanelsByPlacement.bottom[0]?.id ?? null);
+            }
+        });
     }
+
+    public cleanUp = () => {
+        this.toolPanelsIndexesSubscription.unsubscribe();
+    };
 
     public getToolPanelsByPlacement = (toolComponents: ObservedToolPanel<TMap>[]) => {
         return toolComponents.reduce<{ [key in ToolPanelPlacement]: ObservedToolPanel<TMap>[] }>((acc, val) => {

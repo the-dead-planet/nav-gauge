@@ -13,6 +13,7 @@ export { default as LightBulbHeart } from './output/light-bulb-heart.svg';
 export { default as Minus } from './output/minus.svg';
 export { default as North } from './output/north.svg';
 export { default as PinCinema } from './output/pin-cinema.svg';
+export { default as PayerConfiguration } from './output/player-configuration.svg';
 export { default as Plus } from './output/plus.svg';
 export { default as SunSmile } from './output/sun-smile.svg';
 export { default as SunSunglasses } from './output/sun-sunglasses.svg';

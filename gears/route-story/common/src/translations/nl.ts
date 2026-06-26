@@ -4,7 +4,8 @@ import { RouteStoryTranslationKey } from "../model";
 const nl: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['nl'] = {
     "gear-name": 'Routeverhaal',
     "gear-description": 'Maak een videoverhaal van je GPS-sporen en beeldgegevens',
-    "fit-bounds": 'Doelwit vastleggen'
+    "fit-bounds": 'Doelwit vastleggen',
+    "player": 'Routeplayerconfiguratie'
 };
 
 export default nl;

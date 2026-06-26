@@ -152,14 +152,14 @@
 
 .variant-ghost:active .icon,
 .variant-ghost.active .icon {
-    color: var(--button-highlight-color);
-    stroke: var(--button-highlight-color);
-    fill: var(--button-highlight-color);
+    color: var(--button-highlight-color-accent);
+    stroke: var(--button-highlight-color-accent);
+    fill: var(--button-highlight-color-accent);
 }
 
 .variant-ghost:active,
 .variant-ghost.active {
-    color: var(--button-highlight-color);
+    color: var(--button-highlight-color-accent);
 }
 
 .variant-fill {

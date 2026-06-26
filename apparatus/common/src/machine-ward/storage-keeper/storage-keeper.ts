@@ -8,14 +8,6 @@ export class StorageKeeper {
         this.storage = storage;
     }
 
-    public initialize = () => {
-
-    };
-
-    public cleanUp = () => {
-
-    };
-
     /**
      * Finds data with a given `storageId` in provided `storage` and updates the `state$` object using found value (if one exists).
      * 

@@ -109,9 +109,14 @@
 }
 
 .toolbar.bottom .content {
-    height: 80px;
+    min-height: 80px;
     border-top: 2px solid var(--color-primary);
     box-shadow: 1px -1px 3px rgb(from var(--color-box-shadow) r g b / .4);
+}
+
+.content-header {
+    margin-top: -1px;
+    border-bottom: 1px solid rgb(from var(--color-primary) r g b / .4);
 }
 
 @media screen and (min-width: 800px) {
