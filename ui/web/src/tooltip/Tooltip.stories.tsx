@@ -94,19 +94,6 @@ export const AutoDemo = {
     ),
 };
 
-export const Delay = {
-    render: () => (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 24, padding: 48 }}>
-            <Text>Custom delay (1000ms)</Text>
-            <Tooltip content="Delayed tooltip" delay={1000}>
-                <Button variant="outline" color="secondary" corners="rounded">
-                    Slow tooltip
-                </Button>
-            </Tooltip>
-        </div>
-    ),
-};
-
 export const ShowConnection = {
     render: () => (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 32, padding: 48 }}>

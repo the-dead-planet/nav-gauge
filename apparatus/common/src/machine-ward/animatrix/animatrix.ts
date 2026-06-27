@@ -1,12 +1,18 @@
 import { BehaviorSubject, Subscription } from "rxjs";
 import { validateBoolean, validateNumber } from "@tinker-chest";
-import { AnimationControlsType } from "./model";
+import { AnimationControlsType, AnimatrixTranslationKey } from "./model";
 import { StorageKeeper } from "../storage-keeper";
+import { TranslationTable, Translatron } from "../translatron";
+import * as Translations from "./translations";
 
 /**
  * Animation central processing unit.
  */
 export class Animatrix {
+    public namespace = 'animatrix';
+    public translations: TranslationTable<AnimatrixTranslationKey> = Translations;
+    public translationKey = AnimatrixTranslationKey;
+
     public static defaultControls: AnimationControlsType = {
         followCurrentPoint: true,
         autoRotate: true,
@@ -42,7 +48,11 @@ export class Animatrix {
         this.controls$ = new BehaviorSubject(Animatrix.defaultControls);
     }
 
-    public initialize = (storageKeeper: StorageKeeper) => {
+    public initialize = (
+        storageKeeper: StorageKeeper,
+        translatron: Translatron,
+    ) => {
+        translatron.register(this.namespace, this.translations);
         storageKeeper.synchronizeSubjectWithStorage(this.controls$, this.controlsStorageId, this.cleanUpAnimationControls)
             .then((s) => {
                 this.controlsStorageSubscription = s;

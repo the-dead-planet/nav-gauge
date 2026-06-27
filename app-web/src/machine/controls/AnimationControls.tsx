@@ -1,13 +1,11 @@
 import { FC } from "react";
 import classNames from "classnames";
-import { Animatrix, useMachineWard } from "@apparatus";
+import { Animatrix, ToolPanelProps, useMachineWard } from "@apparatus";
 import { clamp, useSubjectState } from "@tinker-chest";
 import { Fieldset, Input } from "@web-ui";
 import styles from './controls.module.css';
 
-interface Props { }
-
-export const AnimationControls: FC<Props> = () => {
+export const AnimationControls: FC<ToolPanelProps<maplibregl.Map>> = () => {
     const { animatrix } = useMachineWard();
     const [animationControls, setAnimationControls] = useSubjectState(animatrix.controls$);
     const {

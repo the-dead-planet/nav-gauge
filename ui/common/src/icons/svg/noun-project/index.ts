@@ -1,4 +1,5 @@
 export { default as AlienGun } from './output/alien-gun.svg';
+export { default as Animation } from './output/animation.svg';
 export { default as BrokenBox } from './output/broken-box.svg';
 export { default as ChevronDownDoubleSquareFill } from './output/chevron-down-double-square-fill.svg';
 export { default as ChevronDownDoubleTriangle } from './output/chevron-down-double-triangle.svg';

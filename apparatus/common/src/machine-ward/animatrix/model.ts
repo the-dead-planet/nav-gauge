@@ -53,3 +53,7 @@ export interface AnimationControlsType {
      */
     easeDuration: number;
 }
+
+export enum AnimatrixTranslationKey {
+    AnimatrixControls = 'animatrix-controls',
+}

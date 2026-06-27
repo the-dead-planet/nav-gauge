@@ -79,8 +79,7 @@
     box-shadow: 1px 1px 3px rgb(from var(--color-box-shadow) r g b / .4);
 }
 
-.toolbar.left,
-.toolbar.right {
+.toolbar {
     overflow-x: hidden;
     overflow-y: auto;
 }
@@ -124,6 +123,7 @@
 
 .toolbar.bottom .content {
     min-height: 80px;
+    max-height: 30dvh;
     border-top: 2px solid var(--color-primary);
     box-shadow: 1px -1px 3px rgb(from var(--color-box-shadow) r g b / .4);
 }
@@ -131,6 +131,7 @@
 .toolbar.bottom .content-header {
     margin-top: -1px;
     border-bottom: 1px solid rgb(from var(--color-primary) r g b / .4);
+    display: flex;
 }
 
 .toolbar.left .content-header {

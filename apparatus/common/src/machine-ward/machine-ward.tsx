@@ -97,7 +97,7 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
         this.attributionVaultSubscription = this.subscribeAttributionVault();
         this.toolsStationPresetSubscription = this.subscribeToolsStationPreset();
         this.toolsStationPresetActiveSubscription = this.subscribeToolsStationPresetActive();
-        this.animatrix.initialize(this.storageKeeper);
+        this.animatrix.initialize(this.storageKeeper, this.translatron);
         this.cartomancer.initialize(this.storageKeeper, this.translatron, this.toolsStation);
         this.initializeValves();
     };
