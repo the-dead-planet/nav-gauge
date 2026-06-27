@@ -6,7 +6,10 @@ import { Fieldset, Input } from "@web-ui";
 import styles from './controls.module.css';
 
 export const AnimationControls: FC<ToolPanelProps<maplibregl.Map>> = () => {
-    const { animatrix } = useMachineWard();
+    const { animatrix, translatron, individuator } = useMachineWard();
+    const [registry] = useSubjectState(translatron.registry$);
+    const [settings] = useSubjectState(individuator.settings$);
+    const t = (key: string) => translatron.translate(settings.language, registry, { n: animatrix.namespace, t: key });
     const [animationControls, setAnimationControls] = useSubjectState(animatrix.controls$);
     const {
         followCurrentPoint,
@@ -24,11 +27,11 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map>> = () => {
     } = animationControls;
 
     return (
-        <Fieldset label="Animation controls">
+        <Fieldset label={t(animatrix.translationKey.AnimatrixControls)}>
             <Input
                 id="animation-controls-follow-current-point"
                 name="animation-controls-follow-current-point"
-                label="Follow current point"
+                label={t(animatrix.translationKey.FollowCurrentPoint)}
                 labelPlacement="after"
                 type='checkbox'
                 checked={followCurrentPoint}
@@ -41,7 +44,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map>> = () => {
                     <Input
                         id="animation-controls-auto-rotate"
                         name="animation-controls-auto-rotate"
-                        label="Auto rotate"
+                        label={t(animatrix.translationKey.AutoRotate)}
                         labelPlacement="after"
                         type='checkbox'
                         checked={autoRotate}
@@ -53,7 +56,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map>> = () => {
                     <Input
                         id="animation-controls-camera-angle"
                         name="animation-controls-camera-angle"
-                        label="Camera angle"
+                        label={t(animatrix.translationKey.CameraAngle)}
                         type='number'
                         value={cameraAngle}
                         min={Animatrix.cameraAngleRange[0]}
@@ -65,7 +68,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map>> = () => {
                     <Input
                         id="animation-controls-camera-roll"
                         name="animation-controls-camera-roll"
-                        label="Camera roll"
+                        label={t(animatrix.translationKey.CameraRoll)}
                         type='number'
                         value={cameraRoll}
                         min={Animatrix.cameraRollRange[0]}
@@ -77,7 +80,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map>> = () => {
                     <Input
                         id="animation-controls-bearing-line-length-in-meters"
                         name="animation-controls-bearing-line-length-in-meters"
-                        label="Bearing line length in meters roll"
+                        label={t(animatrix.translationKey.BearingLineLengthInMeters)}
                         type='number'
                         value={bearingLineLengthInMeters}
                         min={Animatrix.bearingLineLengthInMetersRange[0]}
@@ -89,7 +92,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map>> = () => {
                     <Input
                         id="animation-controls-max-bearing-diff-per-frame"
                         name="animation-controls-max-bearing-diff-per-frame"
-                        label="Max bearing diff per frame"
+                        label={t(animatrix.translationKey.MaxBearingDiffPerFrame)}
                         type='number'
                         value={maxBearingDiffPerFrame}
                         min={Animatrix.maxBearingDiffPerFrameRange[0]}
@@ -101,7 +104,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map>> = () => {
                     <Input
                         id="animation-controls-pitch"
                         name="animation-controls-pitch"
-                        label="Pitch"
+                        label={t(animatrix.translationKey.Pitch)}
                         type='number'
                         value={pitch}
                         min={Animatrix.pitchRange[0]}
@@ -113,7 +116,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map>> = () => {
                     <Input
                         id="animation-controls-zoom"
                         name="animation-controls-zoom"
-                        label="Zoom"
+                        label={t(animatrix.translationKey.Zoom)}
                         type='number'
                         value={zoom}
                         min={Animatrix.zoomRange[0]}
@@ -125,7 +128,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map>> = () => {
                     <Input
                         id="animation-controls-zoom-in-to-images"
                         name="animation-controls-zoom-in-to-images"
-                        label="Zoom in to images"
+                        label={t(animatrix.translationKey.ZoomInToImages)}
                         labelPlacement="after"
                         type='checkbox'
                         checked={zoomInToImages !== false}
@@ -139,7 +142,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map>> = () => {
                     <Input
                         id="animation-controls-zoom-in-to-images-value"
                         name="animation-controls-zoom-in-to-images-value"
-                        label="Zoom in to images"
+                        label={t(animatrix.translationKey.ZoomInToImages)}
                         type='number'
                         value={zoomInToImages || zoom}
                         min={Animatrix.zoomRange[0]}
@@ -152,7 +155,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map>> = () => {
                     <Input
                         id="animation-controls-image-pause-duration"
                         name="animation-controls-image-pause-duration"
-                        label="Image pause duration (ms)"
+                        label={t(animatrix.translationKey.ImagePauseDuration)}
                         type='number'
                         value={displayImageDuration}
                         min={Animatrix.displayImageDurationRange[0]}
@@ -165,7 +168,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map>> = () => {
                     <Input
                         id="animation-controls-speed-multiplier"
                         name="animation-controls-speed-multiplier"
-                        label="Speed multiplier"
+                        label={t(animatrix.translationKey.SpeedMultiplier)}
                         type='number'
                         value={speedMultiplier}
                         min={Animatrix.speedMultiplierRange[0]}
@@ -177,7 +180,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map>> = () => {
                     <Input
                         id="animation-controls-ease-duration"
                         name="animation-controls-ease-duration"
-                        label="Ease duration"
+                        label={t(animatrix.translationKey.EaseDuration)}
                         type='number'
                         value={easeDuration}
                         min={Animatrix.easeDurationRange[0]}

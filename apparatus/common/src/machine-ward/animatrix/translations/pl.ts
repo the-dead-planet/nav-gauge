@@ -3,6 +3,18 @@ import { AnimatrixTranslationKey } from "../model";
 
 const pl: TranslationTable<AnimatrixTranslationKey>['pl'] = {
     "animatrix-controls": 'Sterowanie Animatrix',
+    "follow-current-point": 'Podążaj za bieżącym punktem',
+    "auto-rotate": 'Auto obrót',
+    "camera-angle": 'Kąt kamery',
+    "camera-roll": 'Przechylenie kamery',
+    "bearing-line-length-in-meters": 'Długość linii namiaru w metrach',
+    "max-bearing-diff-per-frame": 'Maks. różnica namiaru na klatkę',
+    "pitch": 'Nachylenie',
+    "zoom": 'Zoom',
+    "zoom-in-to-images": 'Przybliż do obrazów',
+    "image-pause-duration": 'Czas pauzy obrazu (ms)',
+    "speed-multiplier": 'Mnożnik prędkości',
+    "ease-duration": 'Czas przejścia',
 };
 
 export default pl;

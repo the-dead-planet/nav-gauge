@@ -56,4 +56,16 @@ export interface AnimationControlsType {
 
 export enum AnimatrixTranslationKey {
     AnimatrixControls = 'animatrix-controls',
+    FollowCurrentPoint = 'follow-current-point',
+    AutoRotate = 'auto-rotate',
+    CameraAngle = 'camera-angle',
+    CameraRoll = 'camera-roll',
+    BearingLineLengthInMeters = 'bearing-line-length-in-meters',
+    MaxBearingDiffPerFrame = 'max-bearing-diff-per-frame',
+    Pitch = 'pitch',
+    Zoom = 'zoom',
+    ZoomInToImages = 'zoom-in-to-images',
+    ImagePauseDuration = 'image-pause-duration',
+    SpeedMultiplier = 'speed-multiplier',
+    EaseDuration = 'ease-duration',
 }
