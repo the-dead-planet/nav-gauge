@@ -9,6 +9,8 @@ const it: TranslationTable<MachineTranslationKey>['it'] = {
     menu: 'Menu applicazione',
     'toggle-mode': 'Alterna modalità chiara e scura',
     gears: 'Ingranaggi',
+    collapse: 'Comprimi',
+    expand: 'Espandi',
 };
 
 export default it;

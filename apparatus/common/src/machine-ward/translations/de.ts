@@ -9,6 +9,8 @@ const de: TranslationTable<MachineTranslationKey>['de'] = {
     menu: 'Anwendungsmenü',
     'toggle-mode': 'Helle und dunkle Modi umschalten',
     gears: 'Getriebe',
+    collapse: 'Einklappen',
+    expand: 'Ausklappen',
 };
 
 export default de;

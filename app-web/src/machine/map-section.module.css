@@ -80,13 +80,22 @@
 }
 
 .toolbar {
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: hidden;
 }
 
 .toolbar.left .content,
 .toolbar.right .content {
-    min-height: 100%;
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+}
+
+.toolbar.left .component,
+.toolbar.right .component {
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-width: 360px;
+    max-height: 100%;
 }
 
 .toolbar.left {
@@ -128,24 +137,28 @@
     box-shadow: 1px -1px 3px rgb(from var(--color-box-shadow) r g b / .4);
 }
 
+.content-header {
+    display: flex;
+}
+
 .toolbar.bottom .content-header {
+    flex-direction: row;
     margin-top: -1px;
     border-bottom: 1px solid rgb(from var(--color-primary) r g b / .4);
-    display: flex;
     position: sticky;
     top: 0;
 }
 
 .toolbar.left .content-header {
+    flex-direction: column;
     margin-right: -1px;
     border-right: 1px solid rgb(from var(--color-primary) r g b / .4);
-    display: block;
 }
 
 .toolbar.right .content-header {
+    flex-direction: column;
     margin-left: -1px;
     border-left: 1px solid rgb(from var(--color-primary) r g b / .4);
-    display: block;
 }
 
 @media screen and (min-width: 800px) {

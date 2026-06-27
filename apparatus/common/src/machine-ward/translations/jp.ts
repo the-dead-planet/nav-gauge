@@ -9,6 +9,8 @@ const jp: TranslationTable<MachineTranslationKey>['jp'] = {
     menu: 'アプリケーションメニュー',
     'toggle-mode': 'ライトモードとダークモードを切り替え',
     gears: 'ギア',
+    collapse: '折りたたむ',
+    expand: '展開する',
 };
 
 export default jp;

@@ -9,6 +9,8 @@ const en: TranslationTable<MachineTranslationKey>['en'] = {
     menu: 'Application menu',
     'toggle-mode': 'Toggle light and dark modes',
     gears: 'Gears',
+    collapse: 'Collapse',
+    expand: 'Expand',
 };
 
 export default en;
