@@ -1,4 +1,12 @@
 
+.container {
+    padding: 10px;
+    box-sizing: border-box;
+    display: grid;
+    gap: 20px;
+    width: 360px;
+}
+
 .section {
     display: grid;
     grid-template-columns: 1fr 1fr;

@@ -1,7 +1,7 @@
 .button {
     line-height: 1.1;
     box-sizing: border-box;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     font-family: var(--font-default);

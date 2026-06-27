@@ -4,7 +4,7 @@ import { Button, Transition } from "@web-ui";
 import { useObservableState, useSubjectState } from "@tinker-chest";
 import { ToolPanelPlacement, useMachineWard } from "@apparatus";
 import styles from './map-section.module.css';
-import { TransitionProps } from "@ui";
+import { TooltipPlacement, TransitionProps } from "@ui";
 
 interface Props {
     placement: ToolPanelPlacement;
@@ -26,31 +26,43 @@ export const MapSectionPanel: FC<Props> = ({
     const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
     const effectivePanels = toolPanelsByPlacement[placement];
     const toolPanel = effectivePanels.find(({ id }) => id === activeId);
-    const slide: {[key in ToolPanelPlacement]: TransitionProps['slide']} = {
+    const slide: { [key in ToolPanelPlacement]: TransitionProps['slide'] } = {
         left: "to-right",
         right: "to-left",
         bottom: "to-top",
     };
+    const tooltipPlacement: { [key in ToolPanelPlacement]: TooltipPlacement } = {
+        left: "right",
+        right: "left",
+        bottom: "top",
+    };
+    const showHeaders = effectivePanels.length > 1;
 
+    // TODO: Allow changing from one panel at a time to all listed in collapsible sections?
+    // TODO: Allow manual resize
     return (
         <div className={classNames(styles['toolbar'], styles[placement])}>
             <Transition slide={slide[placement]} render={effectivePanels.length > 0}>
-                <div className={styles['content']}>
-                    {effectivePanels.length > 1 ? (
+                <div className={classNames(styles['content'], {
+                    [styles['with-header']]: showHeaders
+                })}>
+                    {showHeaders ? (
                         <div className={styles['content-header']}>
                             {effectivePanels.map(({ id, icon, title, }) => {
                                 const tooltip = translatron.translate(settings.language, registry, title);
 
                                 return (
                                     <Button
-                                        size="sm"
+                                        key={id}
+                                        size="md"
                                         variant={activeId === id ? 'outline' : 'ghost'}
                                         color="primary"
                                         active={activeId === id}
                                         icon={icon}
                                         aria-label={tooltip}
                                         tooltip={tooltip}
-                                        tooltipPlacement="top"
+                                        tooltipPlacement={tooltipPlacement[placement]}
+                                        showTooltipConnection
                                         onClick={() => onActiveIdChange(id)}
                                     />
                                 );

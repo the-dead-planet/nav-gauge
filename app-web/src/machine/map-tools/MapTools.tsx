@@ -4,9 +4,9 @@ import { Protocol } from "pmtiles";
 import { Icons } from "@ui";
 import { Cartomancer, useMachineWard, glitchmitter } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
+import { CartoConfigPanel } from "../controls/CartoConfigPanel";
 import styles from './map-tools.module.css';
 import './map.css';
-import { H3 } from "@web-ui";
 
 interface Props {
     map: maplibregl.Map;
@@ -291,27 +291,26 @@ export const MapTools: FC<Props> = ({ map, children }) => {
         const mapLayoutControlsId = 'map-layout-controls';
 
         toolsStation.addToolIcon(mapLayoutControlsId, {
-            placement: 'right',
-            tooltip: { n: cartomancer.namespace, t: cartomancer.translationKey.MapLayout },
+            placement: 'left',
+            tooltip: { n: cartomancer.namespace, t: cartomancer.translationKey.CartoConfig },
             icon: Icons.NounProject.MapLayout,
             onClick: () => {
-                const toolIcon =toolsStation.toolIcons$.value.get(mapLayoutControlsId)
+                const toolIcon =toolsStation.toolIcons$.value.get(mapLayoutControlsId);
+                
                 if (toolsStation.toolPanels$.value.has(mapLayoutControlsId)) {
                     toolIcon?.active$.next(false);
                     toolsStation.removeToolPanel(mapLayoutControlsId);
                 } else {
                     toolIcon?.active$.next(true);
                     toolsStation.addToolPanel(mapLayoutControlsId, {
-                        title: { n: '', t: '' },
-                        component: () => <div>
-                            <H3>AAAA</H3>
-                            </div>,
-                        icon: Icons.Beaker,
-                        placement: 'right'
+                        title: { n: cartomancer.namespace, t: cartomancer.translationKey.CartoConfig },
+                        component: CartoConfigPanel,
+                        icon: Icons.NounProject.MapLayout,
+                        placement: 'left'
                     });
                 }
             }
-        })
+        });
     }, []);
 
     return (
