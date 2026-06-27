@@ -119,11 +119,11 @@
 
 .toolbar.bottom {
     grid-area: bottom-toolbar;
+    max-height: 30dvh;
 }
 
 .toolbar.bottom .content {
     min-height: 80px;
-    max-height: 30dvh;
     border-top: 2px solid var(--color-primary);
     box-shadow: 1px -1px 3px rgb(from var(--color-box-shadow) r g b / .4);
 }
@@ -132,6 +132,8 @@
     margin-top: -1px;
     border-bottom: 1px solid rgb(from var(--color-primary) r g b / .4);
     display: flex;
+    position: sticky;
+    top: 0;
 }
 
 .toolbar.left .content-header {

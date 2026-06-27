@@ -38,15 +38,7 @@ export const MapSectionPanel: FC<Props> = ({
     };
     const showHeaders = effectivePanels.length > 1;
 
-    // TODO: Allow changing from one panel at a time to all listed in collapsible sections?
-    // TODO: Allow manual resize
-    return (
-        <div className={classNames(styles['toolbar'], styles[placement])}>
-            <Transition slide={slide[placement]} render={effectivePanels.length > 0}>
-                <div className={classNames(styles['content'], {
-                    [styles['with-header']]: showHeaders
-                })}>
-                    {showHeaders ? (
+    const headers = showHeaders ? (
                         <div className={styles['content-header']}>
                             {effectivePanels.map(({ id, icon, title, }) => {
                                 const tooltip = translatron.translate(settings.language, registry, title);
@@ -68,8 +60,19 @@ export const MapSectionPanel: FC<Props> = ({
                                 );
                             })}
                         </div>
-                    ) : null}
+                    ) : null;
+
+    // TODO: Allow changing from one panel at a time to all listed in collapsible sections?
+    // TODO: Allow manual resize
+    return (
+        <div className={classNames(styles['toolbar'], styles[placement])}>
+            <Transition slide={slide[placement]} render={effectivePanels.length > 0}>
+                <div className={classNames(styles['content'], {
+                    [styles['with-header']]: showHeaders
+                })}>
+                    {placement === 'right' ? headers : null}
                     {toolPanel ? <toolPanel.component map={map} /> : null}
+                    {placement === 'left' ? headers : null}
                 </div>
             </Transition>
         </div>

@@ -290,53 +290,26 @@ export const MapTools: FC<Props> = ({ map, children }) => {
 
     useEffect(() => {
         const mapLayoutControlsId = 'map-layout-controls';
-
-        toolsStation.addToolIcon(mapLayoutControlsId, {
-            placement: 'left',
-            tooltip: { n: cartomancer.namespace, t: cartomancer.translationKey.CartoConfig },
+        toolsStation.addToolPanel(mapLayoutControlsId, {
+            title: { n: cartomancer.namespace, t: cartomancer.translationKey.CartoConfig },
+            component: CartoConfigPanel,
             icon: Icons.NounProject.MapLayout,
-            onClick: () => {
-                const toolIcon = toolsStation.toolIcons$.value.get(mapLayoutControlsId);
-
-                if (toolsStation.toolPanels$.value.has(mapLayoutControlsId)) {
-                    toolIcon?.active$.next(false);
-                    toolsStation.removeToolPanel(mapLayoutControlsId);
-                } else {
-                    toolIcon?.active$.next(true);
-                    toolsStation.addToolPanel(mapLayoutControlsId, {
-                        title: { n: cartomancer.namespace, t: cartomancer.translationKey.CartoConfig },
-                        component: CartoConfigPanel,
-                        icon: Icons.NounProject.MapLayout,
-                        placement: 'left'
-                    });
-                }
-            }
+            placement: 'left'
         });
 
         // TODO: Initialize in a more appropriate place
         const animatrixControlsId = 'animatrix-controls';
-
-        toolsStation.addToolIcon(animatrixControlsId, {
-            placement: 'left',
-            tooltip: { n: animatrix.namespace, t: animatrix.translationKey.AnimatrixControls },
+        toolsStation.addToolPanel(animatrixControlsId, {
+            title: { n: animatrix.namespace, t: animatrix.translationKey.AnimatrixControls },
+            component: AnimationControls,
             icon: Icons.NounProject.Animation,
-            onClick: () => {
-                const toolIcon = toolsStation.toolIcons$.value.get(animatrixControlsId);
-
-                if (toolsStation.toolPanels$.value.has(animatrixControlsId)) {
-                    toolIcon?.active$.next(false);
-                    toolsStation.removeToolPanel(animatrixControlsId);
-                } else {
-                    toolIcon?.active$.next(true);
-                    toolsStation.addToolPanel(animatrixControlsId, {
-                        title: { n: animatrix.namespace, t: animatrix.translationKey.AnimatrixControls },
-                        component: AnimationControls,
-                        icon: Icons.NounProject.Animation,
-                        placement: 'bottom'
-                    });
-                }
-            }
+            placement: 'left'
         });
+
+        return () => {
+            toolsStation.removeToolPanel(mapLayoutControlsId);
+            toolsStation.removeToolPanel(animatrixControlsId);
+        };
     }, []);
 
     return (
