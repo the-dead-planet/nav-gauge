@@ -43,14 +43,6 @@ export const MapSection: FC = () => {
 
     return (
         <div className={styles.machine}>
-            {/* <div className={styles["side-panel"]}>
-                <hr className={styles.divider} />
-                <Presets />
-                <MapStyleSelection />
-                <MapLayoutControls />
-                <GaugeControls />
-                <AnimationControls />
-            </div> */}
             {map ? (
                 <MapTools map={map}>
                     {[...overlays.entries()].map(([id, OverlayComponent]) => <OverlayComponent key={id} map={map} />)}
