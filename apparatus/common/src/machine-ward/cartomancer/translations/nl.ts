@@ -23,6 +23,7 @@ const nl: TranslationTable<CartomancerTranslationKey>['nl'] = {
     "show-zoom-buttons": 'Zoomknoppen tonen',
     "show-compass-button": 'Kompasknop tonen',
     "show-green-screen": 'Groen scherm tonen',
+    "style": 'Stijl',
 };
 
 export default nl;

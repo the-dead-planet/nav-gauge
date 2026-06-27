@@ -68,4 +68,5 @@ export enum CartomancerTranslationKey {
     ShowZoomButtons = 'show-zoom-buttons',
     ShowCompassButton = 'show-compass-button',
     ShowGreenScreen = 'show-green-screen',
+    Style = 'style',
 };

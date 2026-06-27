@@ -32,7 +32,7 @@ export const CartoConfigPanel: FC<ToolPanelProps<maplibregl.Map>> = () => {
             <div className={styles['map-style-selection']}>
                 {/* TODO: Move to reusable component */}
                 <div>
-                    <label htmlFor="map-style-selection" style={{ fontSize: "12px" }}>Map style</label>
+                    <label htmlFor="map-style-selection" style={{ fontSize: "12px" }}>{t(cartomancer.translationKey.Style)}</label>
                     <select name="map-style-selection" id="map-style-selection" value={selectedStyle.id} onChange={handleMapStyleChange}>
                         {[...Object.entries(Cartomancer.styles)].map(([id, option]) => (
                             <option key={id} value={id}>

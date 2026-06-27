@@ -23,6 +23,7 @@ const jp: TranslationTable<CartomancerTranslationKey>['jp'] = {
     "show-zoom-buttons": 'ズームボタンを表示',
     "show-compass-button": 'コンパスボタンを表示',
     "show-green-screen": 'グリーンスクリーンを表示',
+    "style": 'スタイル',
 };
 
 export default jp;

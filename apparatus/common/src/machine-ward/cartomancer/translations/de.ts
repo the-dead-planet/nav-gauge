@@ -23,6 +23,7 @@ const de: TranslationTable<CartomancerTranslationKey>['de'] = {
     "show-zoom-buttons": 'Zoom-Schaltflächen anzeigen',
     "show-compass-button": 'Kompass-Schaltfläche anzeigen',
     "show-green-screen": 'Greenscreen anzeigen',
+    "style": 'Stil',
 };
 
 export default de;

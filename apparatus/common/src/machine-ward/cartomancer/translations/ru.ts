@@ -23,6 +23,7 @@ const ru: TranslationTable<CartomancerTranslationKey>['ru'] = {
     "show-zoom-buttons": 'Показать кнопки зума',
     "show-compass-button": 'Показать кнопку компаса',
     "show-green-screen": 'Показать зеленый экран',
+    "style": 'Стиль',
 };
 
 export default ru;

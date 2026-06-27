@@ -23,6 +23,7 @@ const pl: TranslationTable<CartomancerTranslationKey>['pl'] = {
     "show-zoom-buttons": 'Pokaż przyciski zoomu',
     "show-compass-button": 'Pokaż przycisk kompasu',
     "show-green-screen": 'Pokaż zielony ekran',
+    "style": 'Styl',
 };
 
 export default pl;
