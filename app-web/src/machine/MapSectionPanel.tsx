@@ -64,12 +64,20 @@ export const MapSectionPanel: FC<Props> = ({
                 variant='ghost'
                 color="primary"
                 icon={Icons.NounProject.ChevronDownDouble}
-                iconRotateZ={placement === 'bottom' ? 0 : placement === 'left' ? 90 : -90}
-                aria-label={translatron.translate(settings.language, registry, { n: namespace, t: translationKey.Collapse })}
-                tooltip={translatron.translate(settings.language, registry, { n: namespace, t: translationKey.Collapse })}
+                iconRotateZ={((placement === 'bottom'
+                    ? 0
+                    : placement === 'left'
+                        ? 90
+                        : -90) + (activeId === null ? 180 : 0) + 360) % 360}
+                aria-label={translatron.translate(settings.language, registry, { n: namespace, t: activeId === null ? translationKey.Expand : translationKey.Collapse })}
+                tooltip={translatron.translate(settings.language, registry, { n: namespace, t: activeId === null ? translationKey.Expand : translationKey.Collapse })}
                 tooltipPlacement={tooltipPlacement[placement]}
                 onClick={() => {
-                    //
+                    if (activeId !== null) {
+                        onActiveIdChange(null);
+                    } else {
+                        onActiveIdChange(effectivePanels[0]?.id)
+                    }
                 }}
                 style={placement === 'bottom' ? { marginLeft: 'auto' } : { marginTop: 'auto' }}
             />
