@@ -6,6 +6,7 @@ const jp: TranslationTable<CartomancerTranslationKey>['jp'] = {
     "zoom-in": 'ズームイン',
     "round-current-zoom": '{{zoom}} にズーム',
     "zoom-out": 'ズームアウト',
+    "map-layout": '地図レイアウト',
 };
 
 export default jp;

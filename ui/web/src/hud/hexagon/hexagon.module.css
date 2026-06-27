@@ -175,7 +175,7 @@
 .variant-fill-inverse.interactive:active .polygon-base,
 .variant-fill-inverse.interactive.active .polygon-base {
     fill: var(--hexagon-highlight-color-inverse);
-    stroke: var(--hexagon-highlight-color);
+    stroke: var(--hexagon-highlight-color-accent);
 }
 
 /* Fill translucent */

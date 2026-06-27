@@ -144,13 +144,11 @@ const InternalTooltip: FC<TooltipProps> = ({
     placement = 'auto',
     color = 'neutral',
     variant = 'fill-inverse',
-    delay = 200,
     maxWidth = 220,
     showConnection = false,
 }) => {
     const theme = useTheme();
     const { width: windowWidth, height: windowHeight } = useWindowDimensions();
-    const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
     const [visible, setVisible] = useState(false);
     const [position, setPosition] = useState({ top: -9999, left: -9999 });
     const [connectionLine, setConnectionLine] = useState<{ top: number; left: number; width: number; height: number } | null>(null);
@@ -172,20 +170,8 @@ const InternalTooltip: FC<TooltipProps> = ({
         }
     }, [placement, windowWidth, windowHeight, triggerLayout, tooltipSize, showConnection]);
 
-    const show = useCallback(() => {
-        timeoutRef.current = setTimeout(() => {
-            setVisible(true);
-        }, delay);
-    }, [delay]);
-
-    const cancelShow = useCallback(() => {
-        clearTimeout(timeoutRef.current);
-    }, []);
-
-    const dismiss = useCallback(() => {
-        clearTimeout(timeoutRef.current);
-        setVisible(false);
-    }, []);
+    const show = () => setVisible(true);
+    const dismiss = () => setVisible(false);
 
     const measureTrigger = useCallback(() => {
         (triggerRef as unknown as { current?: { measureInWindow?: (cb: (x: number, y: number, w: number, h: number) => void) => void } }).current?.measureInWindow?.((x, y, width, height) => {
@@ -228,7 +214,7 @@ const InternalTooltip: FC<TooltipProps> = ({
                 childProps.onPressIn?.(e);
             },
             onPressOut: (e: GestureResponderEvent) => {
-                cancelShow();
+                // cancelShow();
                 childProps.onPressOut?.(e);
             },
         }

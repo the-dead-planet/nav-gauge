@@ -9,7 +9,6 @@ export interface TooltipProps {
     placement?: TooltipPlacement;
     color?: ColorVariant;
     variant?: SurfaceFillVariant;
-    delay?: number;
     maxWidth?: number;
     showConnection?: boolean;
 }

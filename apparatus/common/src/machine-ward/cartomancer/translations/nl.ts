@@ -6,6 +6,7 @@ const nl: TranslationTable<CartomancerTranslationKey>['nl'] = {
     "zoom-in": 'Inzoomen',
     "round-current-zoom": 'Inzoomen op {{zoom}}',
     "zoom-out": 'Uitzoomen',
+    "map-layout": 'Kaartindeling',
 };
 
 export default nl;

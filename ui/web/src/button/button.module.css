@@ -224,15 +224,15 @@
 .variant-fill-inverse:active,
 .variant-fill-inverse.active {
     background-color: var(--button-highlight-color-inverse);
-    border-color: var(--button-highlight-color);
-    color: var(--button-highlight-color);
+    border-color: var(--button-highlight-color-accent-lighter);
+    color: var(--button-highlight-color-accent-lighter);
 }
 
 .variant-fill-inverse:active .icon,
 .variant-fill-inverse.active .icon {
-    color: var(--button-highlight-color);
-    stroke: var(--button-highlight-color);
-    fill: var(--button-highlight-color);
+    color: var(--button-highlight-color-accent-lighter);
+    stroke: var(--button-highlight-color-accent-lighter);
+    fill: var(--button-highlight-color-accent-lighter);
 }
 
 .variant-fill-translucent {
@@ -500,9 +500,9 @@
 .corners-hexagon.variant-ghost.active .icon,
 .corners-hexagon.variant-inset:active .icon,
 .corners-hexagon.variant-inset.active .icon {
-    color: var(--button-highlight-color);
-    stroke: var(--button-highlight-color);
-    fill: var(--button-highlight-color);
+    color: var(--button-highlight-color-accent-lighter);
+    stroke: var(--button-highlight-color-accent-lighter);
+    fill: var(--button-highlight-color-accent-lighter);
 }
 
 /* ── Conditional glow effects (glowStyle prop) ── */

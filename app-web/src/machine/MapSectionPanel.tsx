@@ -1,9 +1,10 @@
 import { FC } from "react";
 import classNames from "classnames";
-import styles from './map-section.module.css';
 import { Button, Transition } from "@web-ui";
 import { useObservableState, useSubjectState } from "@tinker-chest";
 import { ToolPanelPlacement, useMachineWard } from "@apparatus";
+import styles from './map-section.module.css';
+import { TransitionProps } from "@ui";
 
 interface Props {
     placement: ToolPanelPlacement;
@@ -12,7 +13,7 @@ interface Props {
     onActiveIdChange: (activeId: string | null) => void;
 }
 
-export const ToolPanel: FC<Props> = ({
+export const MapSectionPanel: FC<Props> = ({
     placement,
     map,
     activeId,
@@ -25,10 +26,15 @@ export const ToolPanel: FC<Props> = ({
     const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
     const effectivePanels = toolPanelsByPlacement[placement];
     const toolPanel = effectivePanels.find(({ id }) => id === activeId);
+    const slide: {[key in ToolPanelPlacement]: TransitionProps['slide']} = {
+        left: "to-right",
+        right: "to-left",
+        bottom: "to-top",
+    };
 
     return (
         <div className={classNames(styles['toolbar'], styles[placement])}>
-            <Transition slide="to-top" render={effectivePanels.length > 0}>
+            <Transition slide={slide[placement]} render={effectivePanels.length > 0}>
                 <div className={styles['content']}>
                     {effectivePanels.length > 1 ? (
                         <div className={styles['content-header']}>

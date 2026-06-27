@@ -6,6 +6,7 @@ const ru: TranslationTable<CartomancerTranslationKey>['ru'] = {
     "zoom-in": 'Увеличить',
     "round-current-zoom": 'Приблизить к {{zoom}}',
     "zoom-out": 'Уменьшить',
+    "map-layout": 'Макет карты',
 };
 
 export default ru;

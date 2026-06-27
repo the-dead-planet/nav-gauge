@@ -5,10 +5,10 @@ import { useMachineWard } from "@apparatus";
 import { T } from "@web-apparatus";
 import { useObservableState, useSubjectState } from "@tinker-chest";
 import { MapTools } from "./map-tools/MapTools";
-import { Button, FlexBox, H2, Icon, Transition } from "@web-ui";
-import { createMap } from "./map";;
-import { ToolIconLeft } from "./map-tools/ToolIconLeft";
-import { ToolPanel } from "./ToolPanel";
+import { Button, FlexBox, H2, Icon } from "@web-ui";
+import { createMap } from "./map";
+import { MapSectionPanel } from "./MapSectionPanel";
+import { MapSectionIcons } from "./MapSectionIcons";
 import { Icons, useTheme } from "@ui";
 import styles from './map-section.module.css';
 
@@ -27,10 +27,6 @@ export const MapSection: FC = () => {
     }));
     const gears = useObservableState(gearsWithEngaged$, []);
     const [overlays] = useSubjectState(cartomancer.overlays$);
-    const toolPanels = useObservableState(toolsStation.toolPanelsByPlacement$, []);
-    const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
-    const toolIcons = useObservableState(toolsStation.toolIconsByPlacement$, []);
-    const toolIconsByPlacement = toolsStation.getToolIconsByPlacement(toolIcons);
     const [activeLeftPanelToolId, setActiveLeftPanelToolId] = useSubjectState(toolsStation.activeLeftPanelToolId$);
     const [activeRightPanelToolId, setActiveRightPanelToolId] = useSubjectState(toolsStation.activeRightPanelToolId$);
     const [activeBottomPanelToolId, setActiveBottomPanelToolId] = useSubjectState(toolsStation.activeBottomPanelToolId$);
@@ -88,33 +84,11 @@ export const MapSection: FC = () => {
                     ))}
                 </FlexBox>
             </div>
-            <div className={classNames(styles['toolbar'], styles['left'])}>
-                {/* TODO: Collapsible sections list, panel expand/collapse, when collapsed just icons. */}
-                <Transition slide="to-left" render={toolPanelsByPlacement.left.length > 0}>
-                    <div className={styles['content']}>
-                        {toolPanelsByPlacement.left.map(({ id, component: Component }) => (
-                            <Component key={id} map={map} />
-                        ))}
-                    </div>
-                </Transition>
-            </div>
-            <div className={classNames(styles['icons'], styles['left'])}>
-                {toolIconsByPlacement.left.length > 1 ? <div /> : null}
-                {!!map && toolIconsByPlacement.left.map((toolIcon) => (
-                    <ToolIconLeft
-                        key={toolIcon.id}
-                        map={map}
-                        className={classNames(styles['icon-button'], styles['left'])}
-                        {...toolIcon}
-                    />
-                ))}
-            </div>
-            {/* TODO: Bind right icons with right panel? */}
-            {/* TODO: Rename right/left panels according to their use */}
-            {/* TODO: Add option to swap left/right */}
-            <ToolPanel placement="left" map={map} activeId={activeLeftPanelToolId} onActiveIdChange={setActiveLeftPanelToolId} />
-            <ToolPanel placement="right" map={map} activeId={activeRightPanelToolId} onActiveIdChange={setActiveRightPanelToolId} />
-            <ToolPanel placement="bottom" map={map} activeId={activeBottomPanelToolId} onActiveIdChange={setActiveBottomPanelToolId} />
+            <MapSectionPanel placement="left" map={map} activeId={activeLeftPanelToolId} onActiveIdChange={setActiveLeftPanelToolId} />
+            <MapSectionIcons placement="left" map={map} />
+            <MapSectionIcons placement="right" map={map} />
+            <MapSectionPanel placement="right" map={map} activeId={activeRightPanelToolId} onActiveIdChange={setActiveRightPanelToolId} />
+            <MapSectionPanel placement="bottom" map={map} activeId={activeBottomPanelToolId} onActiveIdChange={setActiveBottomPanelToolId} />
         </div>
     );
 };

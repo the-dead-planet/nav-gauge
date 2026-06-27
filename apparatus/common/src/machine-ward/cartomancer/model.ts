@@ -51,4 +51,5 @@ export enum CartomancerTranslationKey {
     ZoomIn = 'zoom-in',
     RoundCurrentZoom = 'round-current-zoom',
     ZoomOut = 'zoom-out',
+    MapLayout = 'map-layout',
 };

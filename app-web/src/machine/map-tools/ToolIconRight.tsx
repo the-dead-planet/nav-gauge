@@ -11,6 +11,7 @@ interface Props {
 }
 
 export const ToolIconRight: FC<ObservedToolIcon<maplibregl.Map> & Props> = ({
+    id,
     map,
     icon,
     value$,

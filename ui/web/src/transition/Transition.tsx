@@ -1,22 +1,7 @@
 import { cloneElement, CSSProperties, FC, isValidElement, ReactNode, useEffect, useState } from "react";
 import classNames from "classnames";
-import { ErrorBoundary } from "@ui";
+import { ErrorBoundary, TransitionProps } from "@ui";
 import styles from './transition.module.css';
-
-export interface TransitionProps {
-    render: boolean;
-    /**
-     * Defaults to 200 [ms]
-     */
-    durationMs?: number;
-    slide?: 'to-top' | 'to-right' | 'to-bottom' | 'to-left';
-    fade?: boolean;
-    /**
-     * Triggered when the out transition is done.
-     */
-    onUnmount?: () => void;
-    children: ReactNode;
-}
 
 export const Transition: FC<TransitionProps> = (props) => {
     return (

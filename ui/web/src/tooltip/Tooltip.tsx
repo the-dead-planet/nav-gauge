@@ -7,6 +7,7 @@ import style from './tooltip.module.css';
 interface ChildProps {
     "aria-describedby"?: string;
     ref?: unknown;
+    onClick?: (e: MouseEvent) => void;
     onMouseEnter?: (e: MouseEvent) => void;
     onMouseLeave?: (e: MouseEvent) => void;
     onFocus?: (e: FocusEvent) => void;
@@ -137,7 +138,6 @@ const InternalTooltip: FC<TooltipProps> = ({
     placement = 'auto',
     color = 'neutral',
     variant = 'fill-inverse',
-    delay = 200,
     maxWidth = 220,
     showConnection = false,
 }) => {
@@ -145,7 +145,6 @@ const InternalTooltip: FC<TooltipProps> = ({
     const tooltipId = useId();
     const childRef = useRef<HTMLElement>(null);
     const tooltipRef = useRef<HTMLDivElement>(null);
-    const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
     const [visible, setVisible] = useState(false);
     const [position, setPosition] = useState({ top: -9999, left: -9999 });
     const [effectivePlacement, setEffectivePlacement] = useState<TooltipPlacement>(
@@ -183,12 +182,10 @@ const InternalTooltip: FC<TooltipProps> = ({
     }, [visible, recalculatePosition]);
 
     const show = () => {
-        clearTimeout(timeoutRef.current);
-        timeoutRef.current = setTimeout(() => setVisible(true), delay);
+        setVisible(true)
     };
 
     const hide = () => {
-        clearTimeout(timeoutRef.current);
         setVisible(false);
     };
 
@@ -221,6 +218,11 @@ const InternalTooltip: FC<TooltipProps> = ({
                 } else if (hasCurrent(originalRef)) {
                     originalRef.current = node;
                 }
+            },
+            onClick: (e: MouseEvent) => {
+                console.log("click hide")
+                hide();
+                childProps.onClick?.(e);
             },
             onMouseEnter: (e: MouseEvent) => {
                 show();

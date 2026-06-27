@@ -6,6 +6,7 @@ const fr: TranslationTable<CartomancerTranslationKey>['fr'] = {
     "zoom-in": 'Zoom avant',
     "round-current-zoom": 'Zoomer à {{zoom}}',
     "zoom-out": 'Zoom arrière',
+    "map-layout": 'Disposition de la carte',
 };
 
 export default fr;
