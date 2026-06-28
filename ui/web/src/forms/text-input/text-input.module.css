@@ -1,0 +1,141 @@
+.container {
+    display: grid;
+    row-gap: 4px;
+}
+
+.label {
+    font-size: 12px;
+    display: block;
+}
+
+.input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 6px 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+    background: transparent;
+    color: inherit;
+    min-width: 0;
+    width: 100%;
+}
+
+.input:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+}
+
+.color-neutral {
+    --ni-color: var(--color-neutral);
+    --ni-color-dark: var(--color-neutral-800);
+    --ni-color-light: var(--color-neutral-100);
+    --ni-highlight-color: var(--color-neutral);
+}
+
+.color-primary {
+    --ni-color: var(--color-primary);
+    --ni-color-dark: var(--color-primary-900);
+    --ni-color-light: var(--color-primary-100);
+    --ni-highlight-color: var(--color-primary);
+}
+
+.color-secondary {
+    --ni-color: var(--color-secondary);
+    --ni-color-dark: var(--color-secondary-900);
+    --ni-color-light: var(--color-secondary-100);
+    --ni-highlight-color: var(--color-secondary);
+}
+
+.color-tertiary {
+    --ni-color: var(--color-tertiary);
+    --ni-color-dark: var(--color-tertiary-900);
+    --ni-color-light: var(--color-tertiary-100);
+    --ni-highlight-color: var(--color-tertiary);
+}
+
+.highlight-neutral .input-wrapper:focus-within {
+    --ni-highlight-color: var(--color-neutral);
+}
+
+.highlight-primary .input-wrapper:focus-within {
+    --ni-highlight-color: var(--color-primary);
+}
+
+.highlight-secondary .input-wrapper:focus-within {
+    --ni-highlight-color: var(--color-secondary);
+}
+
+.highlight-tertiary .input-wrapper:focus-within {
+    --ni-highlight-color: var(--color-tertiary);
+}
+
+.size-xs .input {
+    font-size: 11px;
+    padding: 0 6px;
+}
+
+.size-xs .label {
+    font-size: 11px;
+}
+
+.size-sm .input {
+    font-size: 12px;
+    padding: 2px 8px;
+}
+
+.size-sm .label {
+    font-size: 12px;
+}
+
+.size-md .input {
+    font-size: 14px;
+    padding: 6px 10px;
+}
+
+.size-md .label {
+    font-size: 13px;
+}
+
+.mode-light .label {
+    color: var(--ni-color-dark);
+}
+
+.mode-light .input {
+    background-color: var(--ni-color-light);
+    color: var(--ni-color-dark);
+    border: 1px solid var(--ni-color);
+}
+
+.mode-light .input:focus {
+    border-color: var(--ni-highlight-color);
+    box-shadow: 0 0 0 1px var(--ni-highlight-color);
+}
+
+.mode-dark .label {
+    color: var(--ni-color-light);
+}
+
+.mode-dark .input {
+    background-color: var(--ni-color-dark);
+    color: var(--ni-color-light);
+    border: 1px solid var(--ni-color);
+}
+
+.mode-dark .input:focus {
+    border-color: var(--ni-highlight-color);
+    box-shadow: 0 0 0 1px var(--ni-highlight-color);
+}
+
+.variant-fill .input {
+    background-color: var(--ni-color);
+    color: var(--ni-color-light);
+}
+
+.variant-fill-inverse .input {
+    background-color: transparent;
+}
+
+.variant-fill-translucent .input {
+    opacity: .85;
+}

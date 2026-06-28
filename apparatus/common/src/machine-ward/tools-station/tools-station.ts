@@ -96,13 +96,13 @@ export class ToolsStation<TMap> {
         this.preset$ = new BehaviorSubject<Preset>(preset);
         this.toolPanelsIndexesSubscription = this.toolPanelsByPlacement$.subscribe((value) => {
             const toolPanelsByPlacement = this.getToolPanelsByPlacement(value);
-            if (toolPanelsByPlacement.left.every(({ id }) => id !== this.activeLeftPanelToolId$.value)) {
+            if (this.activeLeftPanelToolId$.value !== null && toolPanelsByPlacement.left.every(({ id }) => id !== this.activeLeftPanelToolId$.value)) {
                 this.activeLeftPanelToolId$.next(toolPanelsByPlacement.left[0]?.id ?? null);
             }
-            if (toolPanelsByPlacement.right.every(({ id }) => id !== this.activeRightPanelToolId$.value)) {
+            if (this.activeRightPanelToolId$.value !== null && toolPanelsByPlacement.right.every(({ id }) => id !== this.activeRightPanelToolId$.value)) {
                 this.activeRightPanelToolId$.next(toolPanelsByPlacement.right[0]?.id ?? null);
             }
-            if (toolPanelsByPlacement.bottom.every(({ id }) => id !== this.activeBottomPanelToolId$.value)) {
+            if (this.activeBottomPanelToolId$.value !== null && toolPanelsByPlacement.bottom.every(({ id }) => id !== this.activeBottomPanelToolId$.value)) {
                 this.activeBottomPanelToolId$.next(toolPanelsByPlacement.bottom[0]?.id ?? null);
             }
         });

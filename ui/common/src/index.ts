@@ -1,5 +1,6 @@
 export * from './button';
 export * from './checkbox';
+export * from './color-input';
 export * from './dialog';
 export * from './dropdown';
 export * from './hud';
@@ -10,6 +11,8 @@ export * from './grid';
 export * from './icons';
 export * from './menu';
 export * from './model';
+export * from './number-input';
+export * from './text-input';
 export * from './theme';
 export * from './tinkers';
 export * from './tooltip';

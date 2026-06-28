@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Checkbox, Dropdown, Fieldset, Input, Label, TextArea } from "@web-ui";
+import { Checkbox, ColorInput, Dropdown, Fieldset, Label, NumberInput, TextArea, TextInput } from "@web-ui";
 import { Cartomancer, MapLayout, ToolPanelProps, useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import styles from './controls.module.css';
@@ -59,95 +59,75 @@ export const CartoConfigPanel: FC<ToolPanelProps<maplibregl.Map>> = () => {
                         {t(cartomancer.translationKey.FullScreen)}
                     </Checkbox>
                     <div />
-                    <Input
+                    <NumberInput
                         id="map-width"
-                        name="map-width"
                         label={t(cartomancer.translationKey.Width)}
-                        type='number'
                         disabled={mapLayout.size.type === 'full-screen'}
                         autoSelect
                         min={0}
                         value={mapLayout.size.width}
-                        onChange={(event) => {
-                            if (!isNaN(Number(event.target.value))) {
-                                setMapLayout((prev): MapLayout => ({
-                                    ...prev,
-                                    size: {
-                                        ...prev.size,
-                                        width: Number(event.target.value)
-                                    }
-                                }))
-                            }
+                        onChange={(value) => {
+                            setMapLayout((prev): MapLayout => ({
+                                ...prev,
+                                size: {
+                                    ...prev.size,
+                                    width: value
+                                }
+                            }))
                         }}
                     />
-                    <Input
+                    <NumberInput
                         id="map-height"
-                        name="map-height"
                         label={t(cartomancer.translationKey.Height)}
-                        type='number'
                         disabled={mapLayout.size.type === 'full-screen'}
                         autoSelect
                         min={0}
                         value={mapLayout.size.height}
-                        onChange={(event) => {
-                            if (!isNaN(Number(event.target.value))) {
-                                setMapLayout((prev): MapLayout => ({
-                                    ...prev,
-                                    size: {
-                                        ...prev.size,
-                                        height: Number(event.target.value)
-                                    }
-                                }));
-                            }
+                        onChange={(value) => {
+                            setMapLayout((prev): MapLayout => ({
+                                ...prev,
+                                size: {
+                                    ...prev.size,
+                                    height: value
+                                }
+                            }));
                         }}
                     />
-                    <Input
+                    <NumberInput
                         id="map-border-width"
-                        name="map-border-width"
                         label={t(cartomancer.translationKey.BorderWidth)}
-                        type='number'
                         autoSelect
                         min={0}
                         value={mapLayout.borderWidth}
-                        onChange={(event) => {
-                            if (!isNaN(Number(event.target.value))) {
-                                setMapLayout((prev): MapLayout => ({ ...prev, borderWidth: Number(event.target.value) }));
-                            }
+                        onChange={(value) => {
+                            setMapLayout((prev): MapLayout => ({ ...prev, borderWidth: value }));
                         }}
                     />
-                    <Input
+                    <NumberInput
                         id="map-inner-border-width"
-                        name="map-inner-border-width"
                         label={t(cartomancer.translationKey.InnerBorderWidth)}
-                        type='number'
                         autoSelect
                         min={0}
                         value={mapLayout.innerBorderWidth}
-                        onChange={(event) => {
-                            if (!isNaN(Number(event.target.value))) {
-                                setMapLayout((prev): MapLayout => ({ ...prev, innerBorderWidth: Number(event.target.value) }));
-                            }
+                        onChange={(value) => {
+                            setMapLayout((prev): MapLayout => ({ ...prev, innerBorderWidth: value }));
                         }}
                     />
-                    <Input
+                    <ColorInput
                         id="map-border-color"
-                        name="map-border-color"
                         label={t(cartomancer.translationKey.BorderColor)}
-                        type='color'
                         value={mapLayout.borderColor}
-                        onChange={(event) => {
-                            setMapLayout((prev): MapLayout => ({ ...prev, borderColor: event.target.value }));
+                        onChange={(value) => {
+                            setMapLayout((prev): MapLayout => ({ ...prev, borderColor: value }));
                         }}
                         className={styles["input-color"]}
                     />
-                    <Input
+                    <ColorInput
                         id="map-inner-border-color"
-                        name="map-inner-border-color"
                         label={t(cartomancer.translationKey.InnerBorderColor)}
-                        type='color'
                         value={mapLayout.innerBorderColor}
-                        onChange={(event) => {
-                            setMapLayout((prev): MapLayout => ({ ...prev, innerBorderColor: event.target.value }));
+                        onChange={(value) => {
+                            setMapLayout((prev): MapLayout => ({ ...prev, innerBorderColor: value }));
                         }}
                         className={styles["input-color"]}
                     />
@@ -173,15 +153,13 @@ export const CartoConfigPanel: FC<ToolPanelProps<maplibregl.Map>> = () => {
                         autoSelect
                         className={styles["textarea"]}
                     />
-                    <Input
+                    <TextInput
                         id="map-border-radius"
-                        name="map-border-radius"
                         label={t(cartomancer.translationKey.Radius)}
-                        type='text'
                         autoSelect
                         value={mapLayout.borderRadius}
-                        onChange={(event) => {
-                            setMapLayout((prev): MapLayout => ({ ...prev, borderRadius: event.target.value }));
+                        onChange={(value) => {
+                            setMapLayout((prev): MapLayout => ({ ...prev, borderRadius: value }));
                         }}
                         className={styles["input-color"]}
                     />

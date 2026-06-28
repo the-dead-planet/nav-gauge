@@ -116,6 +116,7 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
                 component: this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, ToolPanelProps<TMap>>(this.playerComponent, this.getProps())
             }
         );
+        this.apparatus.toolsStation.activeBottomPanelToolId$.next(this.playerToolId);
 
         this.apparatus.cartomancer.addOverlay(
             this.routeOverlayId,
