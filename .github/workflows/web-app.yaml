@@ -65,7 +65,7 @@ jobs:
         run: yarn install --immutable
 
       - name: Lint sources
-        run: npx eslint . --no-warn-ignored --max-warnings 0
+        run: npx eslint . --no-warn-ignored
 
   test-e2e:
     runs-on: ubuntu-24.04

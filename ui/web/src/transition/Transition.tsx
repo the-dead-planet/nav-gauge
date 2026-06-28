@@ -1,4 +1,4 @@
-import { cloneElement, CSSProperties, FC, isValidElement, ReactNode, useEffect, useState } from "react";
+import { cloneElement, CSSProperties, FC, isValidElement, useEffect, useState } from "react";
 import classNames from "classnames";
 import { ErrorBoundary, TransitionProps } from "@ui";
 import styles from './transition.module.css';
