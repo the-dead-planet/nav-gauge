@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Dropdown, Fieldset, Input, Label, TextArea } from "@web-ui";
+import { Checkbox, Dropdown, Fieldset, Input, Label, TextArea } from "@web-ui";
 import { Cartomancer, MapLayout, ToolPanelProps, useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import styles from './controls.module.css';
@@ -44,15 +44,10 @@ export const CartoConfigPanel: FC<ToolPanelProps<maplibregl.Map>> = () => {
             </div>
             <Fieldset label={t(cartomancer.translationKey.CartoLayout)}>
                 <div className={styles["section"]}>
-                    <Input
+                    <Checkbox
                         id="map-size"
-                        name="map-size"
-                        label={t(cartomancer.translationKey.FullScreen)}
-                        labelPlacement="after"
-                        type='checkbox'
                         checked={mapLayout.size.type === 'full-screen'}
-                        onChange={() => { }}
-                        onContainerClick={() => setMapLayout((prev): MapLayout => ({
+                        onChange={() => setMapLayout((prev): MapLayout => ({
                             ...prev, size: {
                                 ...prev.size,
                                 type: prev.size.type === 'full-screen'
@@ -60,8 +55,9 @@ export const CartoConfigPanel: FC<ToolPanelProps<maplibregl.Map>> = () => {
                                     : 'full-screen'
                             }
                         }))}
-                        containerClassName={styles["checkbox"]}
-                    />
+                    >
+                        {t(cartomancer.translationKey.FullScreen)}
+                    </Checkbox>
                     <div />
                     <Input
                         id="map-width"
@@ -192,50 +188,34 @@ export const CartoConfigPanel: FC<ToolPanelProps<maplibregl.Map>> = () => {
                 </div>
             </Fieldset>
             <Fieldset label={t(cartomancer.translationKey.GaugeControls)}>
-                <Input
+                <Checkbox
                     id="controls-globe-projection"
-                    name="controls-globe-projection"
-                    label={t(cartomancer.translationKey.GlobeView)}
-                    labelPlacement="after"
-                    type='checkbox'
                     checked={globeProjection}
-                    onChange={() => { }}
-                    onContainerClick={() => setGaugeControls((prev) => ({ ...prev, globeProjection: !prev.globeProjection }))}
-                    containerClassName={styles["checkbox"]}
-                />
-                <Input
+                    onChange={() => setGaugeControls((prev) => ({ ...prev, globeProjection: !prev.globeProjection }))}
+                >
+                    {t(cartomancer.translationKey.GlobeView)}
+                </Checkbox>
+                <Checkbox
                     id="controls-zoom"
-                    name="controls-zoom"
-                    label={t(cartomancer.translationKey.ShowZoomButtons)}
-                    labelPlacement="after"
-                    type='checkbox'
                     checked={showZoomButtons}
-                    onChange={() => { }}
-                    onContainerClick={() => setGaugeControls((prev) => ({ ...prev, showZoomButtons: !prev.showZoomButtons }))}
-                    containerClassName={styles["checkbox"]}
-                />
-                <Input
+                    onChange={() => setGaugeControls((prev) => ({ ...prev, showZoomButtons: !prev.showZoomButtons }))}
+                >
+                    {t(cartomancer.translationKey.ShowZoomButtons)}
+                </Checkbox>
+                <Checkbox
                     id="controls-compass"
-                    name="controls-compass"
-                    label={t(cartomancer.translationKey.ShowCompassButton)}
-                    labelPlacement="after"
-                    type='checkbox'
                     checked={showCompass}
-                    onChange={() => { }}
-                    onContainerClick={() => setGaugeControls((prev) => ({ ...prev, showCompass: !prev.showCompass }))}
-                    containerClassName={styles["checkbox"]}
-                />
-                <Input
+                    onChange={() => setGaugeControls((prev) => ({ ...prev, showCompass: !prev.showCompass }))}
+                >
+                    {t(cartomancer.translationKey.ShowCompassButton)}
+                </Checkbox>
+                <Checkbox
                     id="green-screen"
-                    name="green-screen"
-                    label={t(cartomancer.translationKey.ShowGreenScreen)}
-                    labelPlacement="after"
-                    type='checkbox'
                     checked={showGreenScreen}
-                    onChange={() => { }}
-                    onContainerClick={() => setGaugeControls((prev) => ({ ...prev, showGreenScreen: !prev.showGreenScreen }))}
-                    containerClassName={styles["checkbox"]}
-                />
+                    onChange={() => setGaugeControls((prev) => ({ ...prev, showGreenScreen: !prev.showGreenScreen }))}
+                >
+                    {t(cartomancer.translationKey.ShowGreenScreen)}
+                </Checkbox>
             </Fieldset>
         </div>
     );

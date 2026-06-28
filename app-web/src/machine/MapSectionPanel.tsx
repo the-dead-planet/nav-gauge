@@ -37,19 +37,22 @@ export const MapSectionPanel: FC<Props> = ({
         bottom: "top",
     };
     const showHeaders = effectivePanels.length > (placement === 'bottom' ? 0 : 0);
+                const color = placement === 'bottom' ? 'primary' : 'secondary';
 
     const headers = showHeaders ? (
         <div className={styles['content-header']}>
             {effectivePanels.map(({ id, icon, title, }) => {
                 const tooltip = translatron.translate(settings.language, registry, title);
+                const isActive = activeId === id;
 
                 return (
                     <Button
                         key={id}
                         size="md"
-                        variant={activeId === id ? 'outline' : 'ghost'}
-                        color="primary"
-                        active={activeId === id}
+                        variant={isActive ? 'outline' : 'ghost'}
+                        color={isActive ? color : "neutral"}
+                        highlightColor={color}
+                        active={isActive}
                         icon={icon}
                         aria-label={tooltip}
                         tooltip={tooltip}
@@ -62,7 +65,7 @@ export const MapSectionPanel: FC<Props> = ({
             <Button
                 size="md"
                 variant='ghost'
-                color="primary"
+                color={color}
                 icon={Icons.NounProject.ChevronDownDouble}
                 iconRotateZ={((placement === 'bottom'
                     ? 0
