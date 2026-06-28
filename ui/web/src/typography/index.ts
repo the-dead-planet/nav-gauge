@@ -1,3 +1,4 @@
+export * from './Label';
 export * from './P';
 export * from './Span';
 export * from './H1';

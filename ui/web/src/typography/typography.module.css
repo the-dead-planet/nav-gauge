@@ -1,5 +1,6 @@
 .p,
 .span,
+.label,
 .h1,
 .h2,
 .h3,
@@ -19,7 +20,8 @@
 }
 
 .p,
-.span {
+.span,
+.label {
     font-weight: 400;
 }
 

@@ -138,6 +138,8 @@
 
 .content-header {
     display: flex;
+    padding: 5px;
+    gap: 5px;
 }
 
 .toolbar.bottom .content-header {

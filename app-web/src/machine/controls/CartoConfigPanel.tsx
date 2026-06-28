@@ -1,5 +1,5 @@
-import { ChangeEvent, FC } from "react";
-import { Fieldset, Input, TextArea } from "@web-ui";
+import { FC } from "react";
+import { Dropdown, Fieldset, Input, Label, TextArea } from "@web-ui";
 import { Cartomancer, MapLayout, ToolPanelProps, useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import styles from './controls.module.css';
@@ -20,8 +20,8 @@ export const CartoConfigPanel: FC<ToolPanelProps<maplibregl.Map>> = () => {
         showGreenScreen,
     } = gaugeControls;
 
-    const handleMapStyleChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        const id = event.target.value as keyof typeof Cartomancer.styles;
+    const handleMapStyleChange = (value: string) => {
+        const id = value as keyof typeof Cartomancer.styles;
         if (id in Cartomancer.styles) {
             setSelectedStyle({ id });
         }
@@ -30,17 +30,17 @@ export const CartoConfigPanel: FC<ToolPanelProps<maplibregl.Map>> = () => {
     return (
         <div className={styles['container']}>
             <div className={styles['map-style-selection']}>
-                {/* TODO: Move to reusable component */}
-                <div>
-                    <label htmlFor="map-style-selection" style={{ fontSize: "12px" }}>{t(cartomancer.translationKey.Style)}</label>
-                    <select name="map-style-selection" id="map-style-selection" value={selectedStyle.id} onChange={handleMapStyleChange}>
-                        {[...Object.entries(Cartomancer.styles)].map(([id, option]) => (
-                            <option key={id} value={id}>
-                                {option.label}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+                <Label
+                    id="map-style-label"
+                >
+                    {t(cartomancer.translationKey.Style)}
+                </Label>
+                <Dropdown
+                    value={selectedStyle.id}
+                    labelledBy="map-style-label"
+                    options={[...Object.entries(Cartomancer.styles)].map(([id, option]) => ({ value: id, label: option.label }))}
+                    onChange={handleMapStyleChange}
+                />
             </div>
             <Fieldset label={t(cartomancer.translationKey.CartoLayout)}>
                 <div className={styles["section"]}>
