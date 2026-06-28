@@ -30,8 +30,16 @@ export const Checkbox: FC<Omit<ComponentProps<'label'>, 'onChange'> & CheckboxPr
         onChange(e.target.checked);
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLLabelElement>) => {
+        if (e.key === 'Enter' && !disabled) {
+            e.preventDefault();
+            onChange(!checked);
+        }
+    };
+
     return (
         <label
+            onKeyDown={handleKeyDown}
             aria-labelledby={labelledBy}
             htmlFor={effectiveId}
             className={classNames(
