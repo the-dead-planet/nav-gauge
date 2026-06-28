@@ -1,23 +1,22 @@
-import { FC, MouseEvent, ComponentProps } from "react";
+import { ComponentProps, FC, MouseEvent } from "react";
+import classNames from "classnames";
+import { TextAreaProps, useTheme } from "@ui";
 import styles from './text-area.module.css';
 
-interface Props {
-    label: string;
-    name: string;
-    autoSelect?: boolean;
-    onContainerClick?: (event: MouseEvent<HTMLDivElement>) => void;
-    containerClassName?: string;
-}
-
-export const TextArea: FC<Props & Omit<ComponentProps<'textarea'>, 'name'>> = ({
+export const TextArea: FC<Omit<ComponentProps<'textarea'>, 'size'> & TextAreaProps> = ({
+    color = 'neutral',
+    highlightColor,
+    size = 'sm',
+    variant = 'fill-inverse',
     label,
-    autoSelect,
-    name,
+    autoSelect = false,
     onClick,
-    onContainerClick,
-    containerClassName,
+    className,
     ...props
 }) => {
+    const theme = useTheme();
+    const hlColor = highlightColor || color;
+
     const handleClick = (event: MouseEvent<HTMLTextAreaElement>) => {
         if (autoSelect) {
             event.currentTarget.select();
@@ -26,9 +25,20 @@ export const TextArea: FC<Props & Omit<ComponentProps<'textarea'>, 'name'>> = ({
     };
 
     return (
-        <div onClick={onContainerClick} className={containerClassName}>
-            <label htmlFor={name} className={styles.label}>{label}</label>
-            <textarea  {...props} name={name} onClick={handleClick} />
+        <div className={classNames(
+            styles.container,
+            styles[`mode-${theme.mode}`],
+            styles[`color-${color}`],
+            styles[`highlight-${hlColor}`],
+            styles[`size-${size}`],
+            styles[`variant-${variant}`],
+        )}>
+            <label htmlFor={props.id} className={styles.label}>{label}</label>
+            <textarea
+                onClick={handleClick}
+                className={classNames(styles.textarea, className)}
+                {...props}
+            />
         </div>
     );
 };

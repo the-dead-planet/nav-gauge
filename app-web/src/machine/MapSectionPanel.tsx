@@ -37,7 +37,8 @@ export const MapSectionPanel: FC<Props> = ({
         bottom: "top",
     };
     const showHeaders = effectivePanels.length > (placement === 'bottom' ? 0 : 0);
-                const color = placement === 'bottom' ? 'primary' : 'secondary';
+    const color = placement === 'bottom' ? 'primary' : 'secondary';
+    const buttonSize = placement === 'bottom' ? 'sm' : 'md';
 
     const headers = showHeaders ? (
         <div className={styles['content-header']}>
@@ -48,7 +49,7 @@ export const MapSectionPanel: FC<Props> = ({
                 return (
                     <Button
                         key={id}
-                        size="md"
+                        size={buttonSize}
                         variant={isActive ? 'outline' : 'ghost'}
                         color={isActive ? color : "neutral"}
                         highlightColor={color}
@@ -63,7 +64,7 @@ export const MapSectionPanel: FC<Props> = ({
                 );
             })}
             <Button
-                size="md"
+                size={buttonSize}
                 variant='ghost'
                 color={color}
                 icon={Icons.NounProject.ChevronDownDouble}

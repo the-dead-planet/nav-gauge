@@ -138,8 +138,6 @@
 
 .content-header {
     display: flex;
-    padding: 5px;
-    gap: 5px;
 }
 
 .toolbar.bottom .content-header {
@@ -150,14 +148,20 @@
     top: 0;
 }
 
-.toolbar.left .content-header {
+.toolbar.left .content-header,
+.toolbar.right .content-header {
     flex-direction: column;
+    padding: 5px;
+    gap: 5px;
+
+}
+
+.toolbar.left .content-header {
     margin-right: -1px;
     border-right: 1px solid rgb(from var(--color-primary) r g b / .4);
 }
 
 .toolbar.right .content-header {
-    flex-direction: column;
     margin-left: -1px;
     border-left: 1px solid rgb(from var(--color-primary) r g b / .4);
 }

@@ -12,6 +12,7 @@ export * from './icons';
 export * from './menu';
 export * from './model';
 export * from './number-input';
+export * from './text-area';
 export * from './text-input';
 export * from './theme';
 export * from './tinkers';

@@ -1,4 +1,141 @@
+.container {
+    display: grid;
+    row-gap: 4px;
+}
+
 .label {
     font-size: 12px;
     display: block;
+}
+
+.textarea {
+    border: none;
+    outline: none;
+    padding: 6px 8px;
+    font-size: 14px;
+    font-family: inherit;
+    box-sizing: border-box;
+    background: transparent;
+    color: inherit;
+    min-width: 0;
+    width: 100%;
+    resize: vertical;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 4px;
+    transition: border-color .15s ease, background-color .15s ease;
+}
+
+.textarea:focus {
+    border-color: var(--ni-highlight-color);
+    box-shadow: 0 0 0 1px var(--ni-highlight-color);
+}
+
+.textarea:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+}
+
+.color-neutral {
+    --ni-color: var(--color-neutral);
+    --ni-color-dark: var(--color-neutral-800);
+    --ni-color-light: var(--color-neutral-100);
+    --ni-highlight-color: var(--color-neutral);
+}
+
+.color-primary {
+    --ni-color: var(--color-primary);
+    --ni-color-dark: var(--color-primary-900);
+    --ni-color-light: var(--color-primary-100);
+    --ni-highlight-color: var(--color-primary);
+}
+
+.color-secondary {
+    --ni-color: var(--color-secondary);
+    --ni-color-dark: var(--color-secondary-900);
+    --ni-color-light: var(--color-secondary-100);
+    --ni-highlight-color: var(--color-secondary);
+}
+
+.color-tertiary {
+    --ni-color: var(--color-tertiary);
+    --ni-color-dark: var(--color-tertiary-900);
+    --ni-color-light: var(--color-tertiary-100);
+    --ni-highlight-color: var(--color-tertiary);
+}
+
+.highlight-neutral .textarea:focus {
+    --ni-highlight-color: var(--color-neutral);
+}
+
+.highlight-primary .textarea:focus {
+    --ni-highlight-color: var(--color-primary);
+}
+
+.highlight-secondary .textarea:focus {
+    --ni-highlight-color: var(--color-secondary);
+}
+
+.highlight-tertiary .textarea:focus {
+    --ni-highlight-color: var(--color-tertiary);
+}
+
+.size-xs .textarea {
+    font-size: 11px;
+    padding: 0 6px;
+}
+
+.size-xs .label {
+    font-size: 11px;
+}
+
+.size-sm .textarea {
+    font-size: 12px;
+    padding: 2px 8px;
+}
+
+.size-sm .label {
+    font-size: 12px;
+}
+
+.size-md .textarea {
+    font-size: 14px;
+    padding: 6px 10px;
+}
+
+.size-md .label {
+    font-size: 13px;
+}
+
+.mode-light .label {
+    color: var(--ni-color-dark);
+}
+
+.mode-light .textarea {
+    background-color: var(--ni-color-light);
+    color: var(--ni-color-dark);
+    border-color: var(--ni-color);
+}
+
+.mode-dark .label {
+    color: var(--ni-color-light);
+}
+
+.mode-dark .textarea {
+    background-color: var(--ni-color-dark);
+    color: var(--ni-color-light);
+    border-color: var(--ni-color);
+}
+
+.variant-fill .textarea {
+    background-color: var(--ni-color);
+    color: var(--ni-color-light);
+}
+
+.variant-fill-inverse .textarea {
+    background-color: transparent;
+}
+
+.variant-fill-translucent .textarea {
+    opacity: .85;
 }
