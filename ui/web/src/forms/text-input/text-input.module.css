@@ -133,9 +133,11 @@
 }
 
 .variant-fill-inverse .input {
-    background-color: transparent;
+    color: var(--ni-color);
 }
 
 .variant-fill-translucent .input {
-    opacity: .85;
+    background-color: rgb(from var(--ni-color) r g b / .24);
+    color: var(--ni-color);
+    border-color: rgb(from var(--ni-color) r g b / .3);
 }
