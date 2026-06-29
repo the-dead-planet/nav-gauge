@@ -106,6 +106,17 @@ jobs:
           start: yarn start
           wait-on: 'http://localhost:3000'
 
+      - name: Upload Cypress screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots
+          path: app-web/cypress/screenshots/
+
+      - name: Print artifact URL
+        if: always()
+        run: echo "Screenshots: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifacts"
+
   build-and-push:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' 
@@ -287,3 +298,14 @@ jobs:
           working-directory: app-web
           build: yarn build
           config: baseUrl=https://gauge.spookydoodle.com
+
+      - name: Upload Cypress screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots-prod
+          path: app-web/cypress/screenshots/
+
+      - name: Print artifact URL
+        if: always()
+        run: echo "Screenshots: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifacts"
