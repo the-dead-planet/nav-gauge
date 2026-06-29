@@ -1,4 +1,4 @@
-import { ColorVariant } from "../model";
+import { ColorVariant, SpacingVariant } from "../model";
 
 /**
  * Fonts available for typography components. Usage and role:
@@ -29,4 +29,60 @@ export interface TypographyProps {
     fontType?: FontType;
     shadow?: boolean;
     bold?: boolean;
+    /**
+     * Margin (all sides)
+     */
+    m?: SpacingVariant;
+    /**
+     * Margin horizontal (left & right)
+     */
+    mh?: SpacingVariant;
+    /**
+     * Margin vertical (top & bottom)
+     */
+    mv?: SpacingVariant;
+    /**
+     * Margin top
+     */
+    mt?: SpacingVariant;
+    /**
+     * Margin right
+     */
+    mr?: SpacingVariant;
+    /**
+     * Margin bottom
+     */
+    mb?: SpacingVariant;
+    /**
+     * Margin left
+     */
+    ml?: SpacingVariant;
+    /**
+     * Padding (all sides)
+     */
+    p?: SpacingVariant;
+    /**
+     * Padding horizontal (left & right)
+     */
+    ph?: SpacingVariant;
+    /**
+     * Padding vertical (top & bottom)
+     */
+    pv?: SpacingVariant;
+    /**
+     * Padding top
+     */
+    pt?: SpacingVariant;
+    /**
+     * Padding right
+     */
+    pr?: SpacingVariant;
+    /**
+     * Padding bottom
+     */
+    pb?: SpacingVariant;
+    /**
+     * Padding left
+     */
+    pl?: SpacingVariant;
 }

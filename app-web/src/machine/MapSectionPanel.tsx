@@ -101,7 +101,7 @@ export const MapSectionPanel: FC<Props> = ({
                     <div className={styles['component']}>
                         {toolPanel ? (
                             <>
-                                <H3><T {...toolPanel.title} /></H3>
+                                <H3 m="sm"><T {...toolPanel.title} /></H3>
                                 <toolPanel.component map={map} />
                             </>
                         ) : null}

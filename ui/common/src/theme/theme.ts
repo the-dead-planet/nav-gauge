@@ -13,6 +13,7 @@ import {
     ThemeSpecification,
     ThemeMode,
 } from "./model";
+import { SpacingVariant } from '../model';
 
 export class Theme {
     public name: string;
@@ -215,6 +216,14 @@ export class Theme {
     }
 
     public colors: { [key in PaletteColor | DesignSystemColor]: ThemeColor };
+
+    public static spacing: { [key in SpacingVariant]: string } = {
+        xs: '6px',
+        sm: '12px',
+        md: '16px',
+        lg: '24px',
+        xl: '32px',
+    }
 
     public constructor(
         specification: ThemeSpecification,

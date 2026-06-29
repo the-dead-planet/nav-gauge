@@ -1,5 +1,5 @@
-import { allColorShades, DesignSystemColor, fontTypeToFamily, PaletteColor, Theme, ThemeComponentColor } from "@ui";
 import { useEffect } from "react";
+import { allColorShades, DesignSystemColor, fontTypeToFamily, PaletteColor, Theme, ThemeComponentColor } from "@ui";
 
 /**
  * Adds the CSS variables using theme colors in format `--color-<name>`.
@@ -12,6 +12,12 @@ export const useThemeVariables = (theme: Theme) => {
             document.documentElement.style.setProperty(
                 `--font-${fontType}`,
                 fontFamilyName
+            );
+        }
+        for (const [spacing, spacingValue] of Object.entries(Theme.spacing)) {
+            document.documentElement.style.setProperty(
+                `--spacing-${spacing}`,
+                spacingValue
             );
         }
     }, []);
