@@ -1,10 +1,11 @@
 import { FC } from "react";
 import classNames from "classnames";
-import { Button, Transition } from "@web-ui";
+import { Button, H3, Transition } from "@web-ui";
 import { useObservableState, useSubjectState } from "@tinker-chest";
 import { ToolPanelPlacement, useMachineWard } from "@apparatus";
 import styles from './map-section.module.css';
 import { Icons, TooltipPlacement, TransitionProps } from "@ui";
+import { T } from "@web-apparatus";
 
 interface Props {
     placement: ToolPanelPlacement;
@@ -98,7 +99,12 @@ export const MapSectionPanel: FC<Props> = ({
                 })}>
                     {placement !== 'left' ? headers : null}
                     <div className={styles['component']}>
-                        {toolPanel ? <toolPanel.component map={map} /> : null}
+                        {toolPanel ? (
+                            <>
+                                <H3><T {...toolPanel.title} /></H3>
+                                <toolPanel.component map={map} />
+                            </>
+                        ) : null}
                     </div>
                     {placement === 'left' ? headers : null}
                 </div>
