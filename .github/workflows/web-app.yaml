@@ -115,7 +115,8 @@ jobs:
 
       - name: Print artifact URL
         if: always()
-        run: echo "Screenshots: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}%23artifacts"
+        run: |
+          echo "Screenshots: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifacts"
 
   build-and-push:
     runs-on: ubuntu-latest
