@@ -1,15 +1,55 @@
 import { ComponentProps, FC } from "react";
 import classNames from "classnames";
-import { TypographyProps } from "@ui";
+import { defaultTypographyProps, TypographyProps } from "@ui";
 import { textCssNames } from "./cssUtil";
 import styles from './typography.module.css';
 
 export const H1: FC<ComponentProps<'h1'> & TypographyProps> = ({
+    color = defaultTypographyProps.color,
+    fontType = defaultTypographyProps.fontType,
+    bold,
+    shadow,
+    m,
+    mv,
+    mh,
+    mt,
+    mr,
+    mb,
+    ml,
+    p,
+    pv,
+    ph,
+    pt,
+    pr,
+    pb,
+    pl,
+    className,
     children,
     ...props
 }) => {
+    const cssNames = textCssNames({
+        color,
+        fontType,
+        bold,
+        shadow,
+        m,
+        mv,
+        mh,
+        mt,
+        mr,
+        mb,
+        ml,
+        p,
+        pv,
+        ph,
+        pt,
+        pr,
+        pb,
+        pl,
+        className,
+    });
     return (
-        <h1 className={classNames(styles.h1, ...textCssNames(props))} {...props}>
+        <h1 className={classNames(styles.h1, ...cssNames)} {...props}>
             {children}
         </h1>
     );
