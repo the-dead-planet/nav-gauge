@@ -8,6 +8,7 @@ import {
     ToolIcon,
     ObservedToolIcon,
     ToolIconPlacement,
+    TopToolsProps,
 } from "./model";
 import { TranslationId } from "../translatron";
 
@@ -54,6 +55,11 @@ export class ToolsStation<TMap> {
      * If a tool with a given `id` already exists, it will be overwritten.
      */
     public toolIcons$ = new BehaviorSubject<Map<string, ToolIcon<TMap>>>(new Map());
+
+    /**
+     * Custom tools to display in a top section of the map.
+     */
+    public topTools$ = new BehaviorSubject<Map<string, ComponentType<TopToolsProps<TMap>>>>(new Map());
 
     /**
      * Subscribe to changes of tool icon placements.
@@ -192,5 +198,26 @@ export class ToolsStation<TMap> {
         const nextToolIcons = new Map(this.toolIcons$.value);
         nextToolIcons.delete(id);
         this.toolIcons$.next(nextToolIcons);
+    };
+
+    /**
+     * Adds a new top tool to display.
+     * Have access to map context and will not be unmounted for the duration of the style updates. 
+     * Do not update sources and layers in components passed in this prop as it might lead to MapLibre's `Style is not done loading` errors.
+     * If a tool with a given `id` already exists, it will be overwritten.
+     */
+    public addTopTool = (id: string, component: ComponentType<TopToolsProps<TMap>>) => {
+        const nextTopTools = new Map(this.topTools$.value);
+        nextTopTools.set(id, component);
+        this.topTools$.next(nextTopTools);
+    };
+
+    /**
+     * Removes the top tool with a given `id`.
+     */
+    public removeTopTool = (id: string) => {
+        const nextTopTools = new Map(this.topTools$.value);
+        nextTopTools.delete(id);
+        this.topTools$.next(nextTopTools);
     };
 }

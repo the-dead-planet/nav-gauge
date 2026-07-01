@@ -1,5 +1,5 @@
 import { ChangeEvent, FC } from "react";
-import { FileInputStatus } from "@web-ui";
+import { Button, FileInputStatus } from "@web-ui";
 import { parsers } from "@apparatus";
 import { ParsingResultWithError, useSubjectState } from "@tinker-chest";
 import { FileOperator } from "@the-dead-planet/nav-gauge-gears-route-story-common";
@@ -40,9 +40,9 @@ export const RouteStoryFileInput: FC<Props> = ({
                     accept={[...parsers.keys(), "image/png", "image/jpeg", "image/jpg"].join(', ')}
                     onChange={handleInput}
                 />
-                <button onClick={fileOperator.resetStory}>
+                <Button variant="outline" onClick={fileOperator.resetStory}>
                     Reset story
-                </button>
+                </Button>
             </div>
             <FileInputStatus
                 isLoading={isLoading}

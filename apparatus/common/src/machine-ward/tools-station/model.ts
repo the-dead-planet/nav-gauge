@@ -46,3 +46,7 @@ export interface ObservedToolIcon<TMap> {
     pitch$: BehaviorSubject<number>;
     onClick?: (map: TMap) => void;
 }
+
+export interface TopToolsProps<TMap> {
+    map: TMap;
+}

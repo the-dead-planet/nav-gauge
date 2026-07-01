@@ -11,6 +11,7 @@ import { Checkbox } from "@web-ui";
 
 export const Player: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibregl.Map, File, WebMarkerImageData>> = ({
     map,
+    animatrix,
     data$,
     state$,
     routeTimes$,

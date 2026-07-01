@@ -11,6 +11,7 @@ import { MapSectionPanel } from "./MapSectionPanel";
 import { MapSectionIcons } from "./MapSectionIcons";
 import { Icons, useTheme } from "@ui";
 import styles from './map-section.module.css';
+import { MapSectionTopTools } from "./MapSectionTopTools";
 
 export const MapSection: FC = () => {
     const theme = useTheme();
@@ -81,6 +82,7 @@ export const MapSection: FC = () => {
             <MapSectionIcons placement="right" map={map} />
             <MapSectionPanel placement="right" map={map} activeId={activeRightPanelToolId} onActiveIdChange={setActiveRightPanelToolId} />
             <MapSectionPanel placement="bottom" map={map} activeId={activeBottomPanelToolId} onActiveIdChange={setActiveBottomPanelToolId} />
+            <MapSectionTopTools map={map} />
         </div>
     );
 };

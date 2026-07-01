@@ -3,9 +3,10 @@
     position: relative;
     display: grid;
     grid-template-columns: max-content max-content 1fr max-content max-content;
-    grid-template-rows: max-content 1fr max-content;
+    grid-template-rows: max-content max-content 1fr max-content;
     grid-template-areas:
         "top-toolbar top-toolbar top-toolbar top-toolbar top-toolbar"
+        "left-toolbar left-icons top-tools right-icons right-toolbar"
         "left-toolbar left-icons . right-icons right-toolbar"
         "bottom-toolbar bottom-toolbar bottom-toolbar bottom-toolbar bottom-toolbar";
     overflow: hidden;
@@ -22,7 +23,8 @@
 }
 
 .icons>*,
-.icons>* {
+.icons>*,
+.top-tools>* {
     pointer-events: auto;
 }
 
@@ -165,6 +167,11 @@
 .toolbar.right .content-header {
     margin-left: -1px;
     border-left: 1px solid rgb(from var(--color-primary) r g b / .4);
+}
+
+.top-tools {
+    grid-area: top-tools;
+    pointer-events: none;
 }
 
 @media screen and (min-width: 800px) {

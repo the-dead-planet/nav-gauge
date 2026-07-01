@@ -1,6 +1,6 @@
 import { ComponentType, FC } from "react";
 import { BehaviorSubject, combineLatest, Subscription } from "rxjs";
-import { ToolPanelProps, MarkerImage, OverlayComponentProps, Gear, TranslationTable, GearTranslationKey, Cartomancer, MapLayout, GaugeControlsType, GearApparatus } from "@apparatus";
+import { ToolPanelProps, MarkerImage, OverlayComponentProps, Gear, TranslationTable, GearTranslationKey, Cartomancer, MapLayout, GaugeControlsType, GearApparatus, TopToolsProps } from "@apparatus";
 import { GeoJson, ParsingResultWithError } from "@tinker-chest";
 import { RouteStoryProps, RouteTimes, RouteStoryFile, RouteStoryTranslationKey, RouteStoryState, PresetOption, Preset } from "./model";
 import { FileOperator } from "./file-operator";
@@ -79,6 +79,9 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
 
     private routeLayerFitBoundsToolIconId = 'fit-bounds';
 
+    private routeNameToolId = 'route-name';
+    public abstract routeNameComponent: ComponentType<TopToolsProps<TMap> & RouteStoryProps<TMap, TFile, TImageData>>;
+
     private playerToolId = 'player';
     public abstract playerComponent: ComponentType<ToolPanelProps<TMap> & RouteStoryProps<TMap, TFile, TImageData>>;
 
@@ -135,6 +138,13 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
                     this.fitBoundsHandler(map, [boundingBox[0], boundingBox[1]], [boundingBox[2], boundingBox[3]]);
                 }
             });
+            
+            console.log("Addiong", this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, TopToolsProps<TMap>>(this.routeNameComponent, this.getProps()))
+        this.apparatus.toolsStation.addTopTool(
+            this.routeNameToolId,
+            this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, TopToolsProps<TMap>>(this.routeNameComponent, this.getProps())
+        );
+
         this.apparatus.toolsStation.addToolPanel(
             this.playerToolId,
             {
@@ -171,6 +181,7 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
         this.apparatus.cartomancer.removeOverlay(this.routeOverlayId);
         this.apparatus.toolsStation.removeToolPanel(this.animatrixToolId);
         this.apparatus.toolsStation.removeToolPanel(this.playerToolId);
+        this.apparatus.toolsStation.removeTopTool(this.routeNameToolId);
         this.apparatus.toolsStation.removeToolIcon(this.routeLayerFitBoundsToolIconId);
         this.dataSubscription?.unsubscribe();
         this.disengageRouteStory?.();

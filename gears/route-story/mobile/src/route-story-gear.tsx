@@ -10,10 +10,12 @@ import { GeoJson, getExifError, getExifLngLat, ParsingResultWithError } from '@t
 import { Cartomancer, MarkerImage } from '@apparatus';
 import { cacheReducedImage, prependFilePrefix, MobileMarkerImageData, resetTempSubfolder } from './images/image-parser';
 import { DocumentPickerResponse } from '@react-native-documents/picker';
+import { RouteName } from './player/RouteName';
 
 export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPickerResponse, MobileMarkerImageData> {
    public fileInputComponent = RouteStoryFileInput;
    public playerComponent = Player;
+   public routeNameComponent = RouteName;
    public animatrixComponent = Player; // TODO: Add Animatrix component
    public routeLayerComponent = RouteLayer;
    public imagesLayerComponent = ImagesLayer;
