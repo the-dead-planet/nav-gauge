@@ -1,12 +1,13 @@
 import { ComponentType, FC } from "react";
-import { BehaviorSubject, Subscription } from "rxjs";
-import { ToolPanelProps, MarkerImage, OverlayComponentProps, Gear, TranslationTable, GearTranslationKey } from "@apparatus";
+import { BehaviorSubject, combineLatest, Subscription } from "rxjs";
+import { ToolPanelProps, MarkerImage, OverlayComponentProps, Gear, TranslationTable, GearTranslationKey, Cartomancer, MapLayout, GaugeControlsType, GearApparatus } from "@apparatus";
 import { GeoJson, ParsingResultWithError } from "@tinker-chest";
-import { RouteStoryProps, RouteTimes, RouteStoryFile, RouteStoryTranslationKey, RouteStoryState } from "./model";
+import { RouteStoryProps, RouteTimes, RouteStoryFile, RouteStoryTranslationKey, RouteStoryState, PresetOption, Preset } from "./model";
 import { FileOperator } from "./file-operator";
 import { PlayerOperator } from "./player-operator";
 import { Icons } from "@ui";
 import * as Translations from "./translations";
+import { AnimationControlsType, Animatrix } from "./animatrix";
 
 
 export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageData> extends Gear<TMap> {
@@ -16,12 +17,32 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
 
     public icon = Icons.NounProject.PinCinema as unknown as string;
 
+    public animatrix = new Animatrix();
     private dataSubscription: Subscription | null = null;
     public readonly data$ = new BehaviorSubject<ParsingResultWithError>({});
     public readonly state$ = new BehaviorSubject<RouteStoryState>({ showRouteLine: true, showRoutePoints: true });
     public readonly routeTimes$ = new BehaviorSubject<RouteTimes | null>(null);
     public readonly images$ = new BehaviorSubject<MarkerImage<TImageData>[]>([]);
     public readonly progressMs$ = new BehaviorSubject(0);
+
+    /**
+     * Update of a preset will trigger control state update to predefined values which user can later further configure.
+     */
+    public preset$: BehaviorSubject<Preset>;
+
+    public constructor(apparatus: GearApparatus<TMap>) {
+        super(apparatus);
+
+        const initialPreset = RouteStoryGear.detectPreset(
+            apparatus.cartomancer.mapLayout$.value,
+            apparatus.cartomancer.gaugeControls$.value,
+            this.animatrix.controls$.value
+        );
+        this.preset$ = new BehaviorSubject<Preset>(initialPreset || 'default');
+    }
+
+    private presetSubscription: Subscription | null = null;
+    private presetActiveSubscription: Subscription | null = null;
 
     public abstract fitBounds: (map: TMap, sw: [number, number], ne: [number, number]) => void;
     public abstract fileToText: (file: TFile,) => Promise<string>;
@@ -61,6 +82,9 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
     private playerToolId = 'player';
     public abstract playerComponent: ComponentType<ToolPanelProps<TMap> & RouteStoryProps<TMap, TFile, TImageData>>;
 
+    private animatrixToolId = 'animatrix';
+    public abstract animatrixComponent: ComponentType<ToolPanelProps<TMap> & RouteStoryProps<TMap, TFile, TImageData>>;
+
     private routeOverlayId = 'route';
     public abstract routeLayerComponent: ComponentType<OverlayComponentProps<TMap> & RouteStoryProps<TMap, TFile, TImageData>>;
 
@@ -80,6 +104,7 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
     }
 
     private getProps = (): RouteStoryProps<TMap, TFile, TImageData> => ({
+        animatrix: this.animatrix,
         data$: this.data$,
         state$: this.state$,
         routeTimes$: this.routeTimes$,
@@ -90,6 +115,9 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
     });
 
     public engage = () => {
+        this.animatrix.initialize(this.apparatus.storageKeeper, this.apparatus.translatron);
+        this.presetSubscription = this.subscribeToolsStationPreset();
+        this.presetActiveSubscription = this.subscribeToolsStationPresetActive();
         this.engageRouteStory?.();
         this.dataSubscription = this.subscribeToDataUpdates();
 
@@ -116,6 +144,16 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
                 component: this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, ToolPanelProps<TMap>>(this.playerComponent, this.getProps())
             }
         );
+
+        this.apparatus.toolsStation.addToolPanel(
+            this.animatrixToolId,
+            {
+                title: { n: this.animatrix.namespace, t: this.animatrix.translationKey.AnimatrixControls },
+                placement: 'left',
+                icon: Icons.NounProject.Animation as unknown as string,
+                component: this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, ToolPanelProps<TMap>>(this.animatrixComponent, this.getProps())
+            });
+
         this.apparatus.toolsStation.activeBottomPanelToolId$.next(this.playerToolId);
 
         this.apparatus.cartomancer.addOverlay(
@@ -131,10 +169,14 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
     public disengage = () => {
         this.apparatus.cartomancer.removeOverlay(this.imagesOverlayId);
         this.apparatus.cartomancer.removeOverlay(this.routeOverlayId);
+        this.apparatus.toolsStation.removeToolPanel(this.animatrixToolId);
         this.apparatus.toolsStation.removeToolPanel(this.playerToolId);
         this.apparatus.toolsStation.removeToolIcon(this.routeLayerFitBoundsToolIconId);
         this.dataSubscription?.unsubscribe();
         this.disengageRouteStory?.();
+        this.presetActiveSubscription?.unsubscribe();
+        this.presetSubscription?.unsubscribe();
+        this.animatrix.cleanUp();
     };
 
     private fitBoundsHandler = (map: TMap, sw: [number, number], ne: [number, number]) => {
@@ -155,4 +197,115 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
 
     public fileOperator = new FileOperator(this);
     private playerOperator = new PlayerOperator(this);
+
+    private subscribeToolsStationPreset = (): Subscription => {
+        return this.preset$.subscribe((next) => {
+            const option = RouteStoryGear.presetOptions.find((option) => option.value === next);
+            if (!option) {
+                return;
+            }
+            const { mapLayout: { size, ...mapLayout }, gaugeControls: { ...gaugeControls }, animationControls } = option;
+            this.apparatus.cartomancer.mapLayout$.next({ size: { ...size }, ...mapLayout });
+            this.apparatus.cartomancer.gaugeControls$.next({ ...gaugeControls });
+            this.animatrix.controls$.next({ ...animationControls });
+        });
+    };
+
+    private subscribeToolsStationPresetActive = (): Subscription => {
+        return combineLatest([
+            this.apparatus.cartomancer.mapLayout$,
+            this.apparatus.cartomancer.gaugeControls$,
+            this.animatrix.controls$
+        ]).subscribe((args) => {
+            this.apparatus.toolsStation.isPresetActive$.next(RouteStoryGear.detectPreset(...args) === this.preset$.value);
+        })
+    };
+
+    public static presetOptions: PresetOption[] = [
+        {
+            value: 'default',
+            label: 'Default',
+            mapLayout: Cartomancer.defaultMapLayout,
+            gaugeControls: Cartomancer.defaultGaugeControls,
+            animationControls: Animatrix.defaultControls,
+        },
+        {
+            value: 'racing-game',
+            label: 'Racing game',
+            mapLayout: {
+                size: {
+                    type: 'manual',
+                    width: 400,
+                    height: 400
+                },
+                borderWidth: 5,
+                borderColor: '#ff0000',
+                borderRadius: '50%',
+                innerBorderWidth: 0,
+                innerBorderColor: '#000000',
+                boxShadow: '0px 0px 16px #ff0000, 0px 0px 16px #ff0000',
+                innerBoxShadow: '',
+            },
+            gaugeControls: Cartomancer.defaultGaugeControls,
+            animationControls: Animatrix.defaultControls,
+        },
+    ];
+
+    public static detectPreset = (
+        { size, ...mapLayout }: MapLayout,
+        { ...gaugeControls }: GaugeControlsType,
+        animationControls: AnimationControlsType,
+    ): Preset | undefined => {
+        return this.presetOptions.find((option) => (
+            Object.entries(size).every(([key, value]) => option.mapLayout.size[key as keyof MapLayout['size']] === value) &&
+            Object.entries(mapLayout).every(([key, value]) => option.mapLayout[key as keyof MapLayout] === value) &&
+            Object.entries(gaugeControls).every(([key, value]) => option.gaugeControls[key as keyof GaugeControlsType] === value) &&
+            Object.entries(animationControls).every(([key, value]) => option.animationControls[key as keyof AnimationControlsType] === value)
+        ))?.value;
+    };
+
+    /**
+     * @returns A copy of preset values, if found for a given `preset`.
+     */
+    public getPresetValues = (preset: Preset): {
+        mapLayout: MapLayout;
+        gaugeControls: GaugeControlsType;
+        animationControls: AnimationControlsType;
+    } | undefined => {
+        const option = RouteStoryGear.presetOptions.find((option) => option.value === preset);
+
+        if (option) {
+            return {
+                mapLayout: this.copyMapLayout(option.mapLayout),
+                gaugeControls: this.copyGaugeControls(option.gaugeControls),
+                animationControls: this.copyAnimationControls(option.animationControls)
+            };
+        }
+    };
+
+    /**
+     * Returns a new deep copy of gauge controls
+     */
+    public copyMapLayout = (mapLayout: MapLayout): MapLayout => {
+        const { size, ...layout } = mapLayout;
+
+        return {
+            ...layout,
+            size: { ...size }
+        };
+    };
+
+    /**
+     * Returns a new deep copy of gauge controls
+     */
+    public copyGaugeControls = (gaugeControls: GaugeControlsType): GaugeControlsType => {
+        return { ...gaugeControls };
+    };
+
+    /**
+     * Returns a new deep copy of animation controls
+     */
+    public copyAnimationControls = (animationControls: AnimationControlsType): AnimationControlsType => {
+        return { ...animationControls };
+    };
 };

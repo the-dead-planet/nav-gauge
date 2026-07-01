@@ -1,15 +1,14 @@
 import { useEffect } from "react";
-import { useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
-import { imageLayerIds, ImagesLayers } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { Animatrix, imageLayerIds, ImagesLayers } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { PlayerOperator } from "@the-dead-planet/nav-gauge-gears-route-story-common/src/player-operator";
 import { WebMarkerImageData } from "./image-parser";
 
 export const useImageInDisplay = (
     map: maplibregl.Map,
+    animatrix: Animatrix,
     playerOperator: PlayerOperator<maplibregl.Map, File, WebMarkerImageData>,
 ) => {
-    const { animatrix } = useMachineWard();
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
     const isInDisplay = displayImageId !== null;
 

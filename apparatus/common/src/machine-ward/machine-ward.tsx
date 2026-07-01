@@ -3,7 +3,7 @@ import { combineLatest, pairwise, Subscription } from "rxjs";
 import { MachineWardApp } from "./MachineWardApp";
 import { Individuator } from "./individuator";
 import { ChronoLens } from "./chrono-lens";
-import { Animatrix, AttributionVault, Cartomancer, SignaliumBureau, ToolsStation, Translatron } from "..";
+import { AttributionVault, Cartomancer, SignaliumBureau, ToolsStation, Translatron } from "..";
 import { Engine } from "./engine";
 import { Gear } from "./gears";
 import { StorageKeeper } from "./storage-keeper";
@@ -30,13 +30,10 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
     public readonly attributionVault = new AttributionVault();
     public readonly signaliumBureau = new SignaliumBureau();
     public readonly translatron = new Translatron();
-    public readonly animatrix: Animatrix;
     public readonly cartomancer: Cartomancer<TMap>;
     public readonly chronoLens: ChronoLens;
-    public readonly toolsStation: ToolsStation<TMap>;
+    public readonly toolsStation = new ToolsStation<TMap>()
 
-    private toolsStationPresetSubscription: Subscription | null = null;
-    private toolsStationPresetActiveSubscription: Subscription | null = null;
     private attributionVaultSubscription: Subscription | null = null;
 
     public constructor(
@@ -49,28 +46,20 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
         this.translatron.register(this.namespace, this.translations);
         
         this.storageKeeper = new StorageKeeper(storage);
-        this.individuator = new Individuator(prefersLightColorScheme);        
-        this.animatrix = new Animatrix();        
+        this.individuator = new Individuator(prefersLightColorScheme);      
         this.cartomancer = new Cartomancer();
         this.chronoLens = new chronoLens(this.individuator);
-
-        const initialPreset = ToolsStation.detectPreset(
-            this.cartomancer.mapLayout$.value,
-            this.cartomancer.gaugeControls$.value,
-            this.animatrix.controls$.value
-        );
-        this.toolsStation = new ToolsStation(initialPreset ?? 'default');
 
         this.engine.addGears(
             gears.reduce<Gear<TMap>[]>((acc, Gear) => {
                 if (Gear) {
                     acc.push(new Gear({
                         individuator: this.individuator,
+                        storageKeeper: this.storageKeeper,
                         signaliumBureau: this.signaliumBureau,
                         attributionVault: this.attributionVault,
                         chronoLens: this.chronoLens,
                         cartomancer: this.cartomancer,
-                        animatrix: this.animatrix,
                         toolsStation: this.toolsStation,
                         translatron: this.translatron,
                     }));
@@ -95,9 +84,6 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
     private mount = () => {
         this.individuator.initialize(this.storageKeeper, this.translatron);
         this.attributionVaultSubscription = this.subscribeAttributionVault();
-        this.toolsStationPresetSubscription = this.subscribeToolsStationPreset();
-        this.toolsStationPresetActiveSubscription = this.subscribeToolsStationPresetActive();
-        this.animatrix.initialize(this.storageKeeper, this.translatron);
         this.cartomancer.initialize(this.storageKeeper, this.translatron, this.toolsStation);
         this.initializeValves();
     };
@@ -105,9 +91,6 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
     public unmount = () => {
         this.gearsSubscription?.unsubscribe();
         this.cartomancer.cleanUp();
-        this.animatrix.cleanUp();
-        this.toolsStationPresetActiveSubscription?.unsubscribe();
-        this.toolsStationPresetSubscription?.unsubscribe();
         this.attributionVaultSubscription?.unsubscribe();
         this.individuator.cleanUp();
         this.toolsStation.cleanUp();
@@ -132,29 +115,6 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
             });
     };
 
-    private subscribeToolsStationPreset = (): Subscription => {
-        return this.toolsStation.preset$.subscribe((next) => {
-            const option = ToolsStation.presetOptions.find((option) => option.value === next);
-            if (!option) {
-                return;
-            }
-            const { mapLayout: { size, ...mapLayout }, gaugeControls: { ...gaugeControls }, animationControls } = option;
-            this.cartomancer.mapLayout$.next({ size: { ...size }, ...mapLayout });
-            this.cartomancer.gaugeControls$.next({ ...gaugeControls });
-            this.animatrix.controls$.next({ ...animationControls });
-        });
-    };
-
-    private subscribeToolsStationPresetActive = (): Subscription => {
-        return combineLatest([
-            this.cartomancer.mapLayout$,
-            this.cartomancer.gaugeControls$,
-            this.animatrix.controls$
-        ]).subscribe((args) => {
-            this.toolsStation.isPresetActive$.next(ToolsStation.detectPreset(...args) === this.toolsStation.preset$.value);
-        })
-    };
-
     /**
      * Routing and navigation between aplication views
      */
@@ -177,7 +137,6 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
                 storageKeeper={this.storageKeeper}
                 signaliumBureau={this.signaliumBureau}
                 attributionVault={this.attributionVault}
-                animatrix={this.animatrix}
                 cartomancer={this.cartomancer}
                 chronoLens={this.chronoLens}
                 toolsStation={this.toolsStation}

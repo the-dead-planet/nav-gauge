@@ -60,10 +60,11 @@ export const MapSectionPanel: FC<Props> = ({
                         tooltip={tooltip}
                         tooltipPlacement={tooltipPlacement[placement]}
                         showTooltipConnection
-                        onClick={() => onActiveIdChange(id)}
+                        onClick={() => onActiveIdChange(activeId === id ? null : id)}
                     />
                 );
             })}
+            {placement !== 'bottom' ? <span className={styles['spacer-line']} /> : null}
             <Button
                 size={buttonSize}
                 variant='ghost'
@@ -101,7 +102,7 @@ export const MapSectionPanel: FC<Props> = ({
                     <div className={styles['component']}>
                         {toolPanel ? (
                             <>
-                                <H3 m="sm"><T {...toolPanel.title} /></H3>
+                                {placement !== 'bottom' ? <H3 m="sm"><T {...toolPanel.title} /></H3> : null}
                                 <toolPanel.component map={map} />
                             </>
                         ) : null}

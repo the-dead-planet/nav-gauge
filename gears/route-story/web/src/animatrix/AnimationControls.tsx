@@ -1,11 +1,15 @@
 import { FC } from "react";
-import { Animatrix, ToolPanelProps, useMachineWard } from "@apparatus";
+import { ToolPanelProps, useMachineWard } from "@apparatus";
 import { clamp, useSubjectState } from "@tinker-chest";
 import { Checkbox, Fieldset, NumberInput } from "@web-ui";
-import styles from './controls.module.css';
+import { Animatrix, RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { WebMarkerImageData } from "../images/image-parser";
+import styles from './animation-controls.module.css';
 
-export const AnimationControls: FC<ToolPanelProps<maplibregl.Map>> = () => {
-    const { animatrix, translatron, individuator } = useMachineWard();
+export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibregl.Map, File, WebMarkerImageData>> = ({ 
+    animatrix
+}) => {
+    const { translatron, individuator } = useMachineWard();
     const [registry] = useSubjectState(translatron.registry$);
     const [settings] = useSubjectState(individuator.settings$);
     const t = (key: string) => translatron.translate(settings.language, registry, { n: animatrix.namespace, t: key });

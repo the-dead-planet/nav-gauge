@@ -13,7 +13,8 @@ import { DocumentPickerResponse } from '@react-native-documents/picker';
 
 export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPickerResponse, MobileMarkerImageData> {
    public fileInputComponent = RouteStoryFileInput;
-   public playerComponent = Player
+   public playerComponent = Player;
+   public animatrixComponent = Player; // TODO: Add Animatrix component
    public routeLayerComponent = RouteLayer;
    public imagesLayerComponent = ImagesLayer;
 

@@ -1,11 +1,7 @@
 import { ComponentType } from "react";
 import { BehaviorSubject, combineLatest, map, Observable, of, Subscription, switchMap } from "rxjs";
-import { AnimationControlsType, Animatrix } from "../animatrix";
-import { Cartomancer, GaugeControlsType, MapLayout } from "../cartomancer";
 import {
     ToolPanel,
-    Preset,
-    PresetOption,
     ToolPanelPlacement,
     ToolPanelProps,
     ObservedToolPanel,
@@ -81,19 +77,13 @@ export class ToolsStation<TMap> {
     );
 
     /**
-     * Update of a preset will trigger control state update to predefined values which user can later further configure.
-     */
-    public preset$: BehaviorSubject<Preset>;
-
-    /**
      * Whether current control state matches the value of `preset$`.
      */
     public isPresetActive$ = new BehaviorSubject<boolean>(true);
 
     private toolPanelsIndexesSubscription: Subscription
 
-    public constructor(preset: Preset) {
-        this.preset$ = new BehaviorSubject<Preset>(preset);
+    public constructor() {
         this.toolPanelsIndexesSubscription = this.toolPanelsByPlacement$.subscribe((value) => {
             const toolPanelsByPlacement = this.getToolPanelsByPlacement(value);
             if (this.activeLeftPanelToolId$.value !== null && toolPanelsByPlacement.left.every(({ id }) => id !== this.activeLeftPanelToolId$.value)) {
@@ -202,93 +192,5 @@ export class ToolsStation<TMap> {
         const nextToolIcons = new Map(this.toolIcons$.value);
         nextToolIcons.delete(id);
         this.toolIcons$.next(nextToolIcons);
-    };
-
-    public static presetOptions: PresetOption[] = [
-        {
-            value: 'default',
-            label: 'Default',
-            mapLayout: Cartomancer.defaultMapLayout,
-            gaugeControls: Cartomancer.defaultGaugeControls,
-            animationControls: Animatrix.defaultControls,
-        },
-        {
-            value: 'racing-game',
-            label: 'Racing game',
-            mapLayout: {
-                size: {
-                    type: 'manual',
-                    width: 400,
-                    height: 400
-                },
-                borderWidth: 5,
-                borderColor: '#ff0000',
-                borderRadius: '50%',
-                innerBorderWidth: 0,
-                innerBorderColor: '#000000',
-                boxShadow: '0px 0px 16px #ff0000, 0px 0px 16px #ff0000',
-                innerBoxShadow: '',
-            },
-            gaugeControls: Cartomancer.defaultGaugeControls,
-            animationControls: Animatrix.defaultControls,
-        },
-    ];
-
-    public static detectPreset = (
-        { size, ...mapLayout }: MapLayout,
-        { ...gaugeControls }: GaugeControlsType,
-        animationControls: AnimationControlsType
-    ): Preset | undefined => {
-        return ToolsStation.presetOptions.find((option) => (
-            Object.entries(size).every(([key, value]) => option.mapLayout.size[key as keyof MapLayout['size']] === value) &&
-            Object.entries(mapLayout).every(([key, value]) => option.mapLayout[key as keyof MapLayout] === value) &&
-            Object.entries(gaugeControls).every(([key, value]) => option.gaugeControls[key as keyof GaugeControlsType] === value) &&
-            Object.entries(animationControls).every(([key, value]) => option.animationControls[key as keyof AnimationControlsType] === value)
-        ))?.value;
-    };
-
-    /**
-     * @returns A copy of preset values, if found for a given `preset`.
-     */
-    public getPresetValues = (preset: Preset): {
-        mapLayout: MapLayout;
-        gaugeControls: GaugeControlsType;
-        animationControls: AnimationControlsType;
-    } | undefined => {
-        const option = ToolsStation.presetOptions.find((option) => option.value === preset);
-
-        if (option) {
-            return {
-                mapLayout: this.copyMapLayout(option.mapLayout),
-                gaugeControls: this.copyGaugeControls(option.gaugeControls),
-                animationControls: this.copyAnimationControls(option.animationControls)
-            };
-        }
-    };
-
-    /**
-     * Returns a new deep copy of gauge controls
-     */
-    public copyMapLayout = (mapLayout: MapLayout): MapLayout => {
-        const { size, ...layout } = mapLayout;
-
-        return {
-            ...layout,
-            size: { ...size }
-        };
-    };
-
-    /**
-     * Returns a new deep copy of gauge controls
-     */
-    public copyGaugeControls = (gaugeControls: GaugeControlsType): GaugeControlsType => {
-        return { ...gaugeControls };
-    };
-
-    /**
-     * Returns a new deep copy of animation controls
-     */
-    public copyAnimationControls = (animationControls: AnimationControlsType): AnimationControlsType => {
-        return { ...animationControls };
     };
 }

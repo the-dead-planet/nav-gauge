@@ -15,6 +15,7 @@ export const linesRef$ = new BehaviorSubject<GeoJSON.GeoJSON>(emptyCollection);
 
 export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({
     map,
+    animatrix,
     data$,
     state$,
     routeTimes$,
@@ -26,7 +27,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<M
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [progressMs] = useSubjectState(progressMs$);
-    const { animatrix, chronoLens } = useMachineWard();
+    const { chronoLens } = useMachineWard();
     const [state] = useSubjectState(state$);
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [animationControls] = useSubjectState(animatrix.controls$);

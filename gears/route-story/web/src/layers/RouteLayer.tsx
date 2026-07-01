@@ -12,6 +12,7 @@ import { RouteCurrentPointLayer } from "./RouteCurrentPointLayer";
 
 export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteStoryProps<maplibregl.Map, File, WebMarkerImageData>> = ({
     map,
+    animatrix,
     data$,
     state$,
     routeTimes$,
@@ -23,7 +24,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteStoryPr
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [progressMs] = useSubjectState(progressMs$);
-    const { animatrix, chronoLens } = useMachineWard();
+    const { chronoLens } = useMachineWard();
     const [state] = useSubjectState(state$);
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [animationControls] = useSubjectState(animatrix.controls$);

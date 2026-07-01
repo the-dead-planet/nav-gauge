@@ -14,9 +14,7 @@ export abstract class Gear<TMap> {
     public abstract engage: () => void;
     public abstract disengage: () => void;
 
-    public constructor(
-        apparatus: GearApparatus<TMap>,
-    ) {
+    public constructor(apparatus: GearApparatus<TMap>) {
         this.apparatus = apparatus;
     }
 

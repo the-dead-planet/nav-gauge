@@ -1,8 +1,9 @@
-import { MarkerImage } from "@apparatus";
+import { GaugeControlsType, MapLayout, MarkerImage } from "@apparatus";
 import { ParsingResultWithError } from "@tinker-chest";
 import { BehaviorSubject } from "rxjs";
 import { FileOperator } from "./file-operator";
 import { PlayerOperator } from "./player-operator";
+import { AnimationControlsType, Animatrix } from "./animatrix";
 
 export interface RouteTimes {
     startTime: string;
@@ -18,6 +19,7 @@ export interface RouteStoryState {
 }
 
 export interface RouteStoryProps<TMap, TFile extends RouteStoryFile, TImageData> {
+    animatrix: Animatrix;
     data$: BehaviorSubject<ParsingResultWithError>;
     state$: BehaviorSubject<RouteStoryState>;
     routeTimes$: BehaviorSubject<RouteTimes | null>;
@@ -40,4 +42,20 @@ export interface RouteStoryFile {
 export enum RouteStoryTranslationKey {
     FitBounds = 'fit-bounds',
     Player = 'player',
+}
+
+export type Preset = 'default' | 'racing-game';
+
+export interface PresetOption {
+    value: Preset;
+    label: string;
+    mapLayout: MapLayout;
+    gaugeControls: GaugeControlsType;
+    animationControls: AnimationControlsType;
+}
+
+export interface PresetValues {
+    presetMapLayout?: MapLayout;
+    presetGaugeControls?: GaugeControlsType;
+    presetAnimationControls?: AnimationControlsType;
 }

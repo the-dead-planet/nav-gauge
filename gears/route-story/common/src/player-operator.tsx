@@ -54,7 +54,7 @@ export class PlayerOperator<TMap, TFile extends RouteStoryFile, TImageData> {
                 this.gear.data$.value.geojson,
                 this.gear.routeTimes$.value.startTimeEpoch,
                 value,
-                this.gear.apparatus.animatrix.controls$.value.bearingLineLengthInMeters
+                this.gear.animatrix.controls$.value.bearingLineLengthInMeters
             );
             updateLayer?.(line, currentPoint);
         }
@@ -84,7 +84,7 @@ export class PlayerOperator<TMap, TFile extends RouteStoryFile, TImageData> {
             cameraAngle,
             autoRotate,
             maxBearingDiffPerFrame,
-        } = this.gear.apparatus.animatrix.controls$.value;
+        } = this.gear.animatrix.controls$.value;
 
         if (!isPlaying || !geojson || !routeTimes) {
             return;
@@ -113,11 +113,11 @@ export class PlayerOperator<TMap, TFile extends RouteStoryFile, TImageData> {
             onUpdateLayer(currentPoint, line);
 
             if (this.animation !== undefined && nextImage && nextImage.featureId <= Number(currentPoint.id)) {
-                this.gear.apparatus.animatrix.displayImageId$.next(nextImage.id);
+                this.gear.animatrix.displayImageId$.next(nextImage.id);
                 nextImageIndex = nextImageIndex + 1;
                 cancelAnimationFrame(this.animation);
                 this.displayImageTimeout = setTimeout(() => {
-                    this.gear.apparatus.animatrix.displayImageId$.next(null);
+                    this.gear.animatrix.displayImageId$.next(null);
                     this.animation = requestAnimationFrame(animate);
                 }, displayImageDuration);
 
@@ -143,7 +143,7 @@ export class PlayerOperator<TMap, TFile extends RouteStoryFile, TImageData> {
 
     public cleanupAnimateRoute = () => {
         clearTimeout(this.displayImageTimeout);
-        this.gear.apparatus.animatrix.displayImageId$.next(null);
+        this.gear.animatrix.displayImageId$.next(null);
 
         if (this.animation !== undefined) {
             cancelAnimationFrame(this.animation);
@@ -191,7 +191,7 @@ export class PlayerOperator<TMap, TFile extends RouteStoryFile, TImageData> {
         const from = getImageIconSize(FULL_SIZE_IMAGE_SIZE, THUMBNAIL_IMAGE_SIZE);
         const to = getImageIconSize(FULL_SIZE_IMAGE_SIZE, Math.min(width / devicePixelRatio, height / devicePixelRatio));
         this.animateIconSize(from, to, updateIconSize);
-        const animationControls = this.gear.apparatus.animatrix.controls$.value;
+        const animationControls = this.gear.animatrix.controls$.value;
         this.inDisplayImageTimeout = setTimeout(() => this.animateIconSize(to, from, updateIconSize), animationControls.displayImageDuration - IMAGE_ANIMATION_DURATION)
     };
 

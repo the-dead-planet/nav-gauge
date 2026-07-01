@@ -1,28 +1,29 @@
 import { ChangeEvent, FC } from "react";
 import {
-    AnimationControlsType,
-    Animatrix,
     Cartomancer,
     GaugeControlsType,
     glitchmitter,
     MapLayout,
-    Preset,
-    ToolsStation,
     useMachineWard,
     validateGaugeControls,
     validateMapLayout
 } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
+import RouteStoryGear, { AnimationControlsType, Animatrix, Preset } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import styles from './controls.module.css';
+import { BehaviorSubject } from "rxjs";
 
-interface Props { }
+interface Props {
+    animatrix: Animatrix;
+    preset$: BehaviorSubject<Preset>;
+}
 
-export const Presets: FC<Props> = () => {
-    const { animatrix, cartomancer, toolsStation } = useMachineWard();
+export const Presets: FC<Props> = ({ animatrix, preset$ }) => {
+    const { cartomancer, toolsStation } = useMachineWard();
     const [animationControls] = useSubjectState(animatrix.controls$);
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const [mapLayout] = useSubjectState(cartomancer.mapLayout$);
-    const [preset, setPreset] = useSubjectState(toolsStation.preset$);
+    const [preset, setPreset] = useSubjectState(preset$);
     const [isPresetActive] = useSubjectState(toolsStation.isPresetActive$);
 
     const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -70,7 +71,7 @@ export const Presets: FC<Props> = () => {
                     const possibleAnimationControls = { ...Animatrix.defaultControls, ...(result.animationControls as AnimationControlsType) };
                     Animatrix.validateAnimationControls(possibleAnimationControls);
 
-                    const nextPreset = ToolsStation.detectPreset(possibleMapLayout, possibleGaugeControls, possibleAnimationControls);
+                    const nextPreset = RouteStoryGear.detectPreset(possibleMapLayout, possibleGaugeControls, possibleAnimationControls);
                     if (nextPreset) {
                         setPreset(nextPreset);
                     }
@@ -88,7 +89,7 @@ export const Presets: FC<Props> = () => {
                 <label htmlFor="presets" style={{ fontSize: "12px" }}>Preset</label>
                 <select name="presets" id="presets" value={isPresetActive ? preset : ""} onChange={handleChange}>
                     <option value="" disabled defaultValue="">Custom</option>
-                    {ToolsStation.presetOptions.map((option) => (
+                    {RouteStoryGear.presetOptions.map((option) => (
                         <option key={option.value} value={option.value}>
                             {option.label}
                         </option>

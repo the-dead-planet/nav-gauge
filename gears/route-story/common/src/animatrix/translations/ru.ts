@@ -1,4 +1,4 @@
-import { TranslationTable } from "../../translatron";
+import { TranslationTable } from "@apparatus";
 import { AnimatrixTranslationKey } from "../model";
 
 const ru: TranslationTable<AnimatrixTranslationKey>['ru'] = {

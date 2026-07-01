@@ -7,7 +7,6 @@ import { useSubjectState } from "@tinker-chest";
 import { CartoConfigPanel } from "../controls/CartoConfigPanel";
 import styles from './map-tools.module.css';
 import './map.css';
-import { AnimationControls } from "../controls/AnimationControls";
 
 interface Props {
     map: maplibregl.Map;
@@ -18,7 +17,7 @@ interface Props {
 }
 
 export const MapTools: FC<Props> = ({ map, children }) => {
-    const { animatrix, cartomancer, toolsStation } = useMachineWard<maplibregl.Map>();
+    const { cartomancer, toolsStation } = useMachineWard<maplibregl.Map>();
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const [containerRef, setContainerRef] = useState<HTMLElement | null>(null);
     const [cssLoaded, setCssLoaded] = useState(false);
@@ -297,18 +296,8 @@ export const MapTools: FC<Props> = ({ map, children }) => {
             placement: 'left'
         });
 
-        // TODO: Initialize in a more appropriate place
-        const animatrixControlsId = 'animatrix-controls';
-        toolsStation.addToolPanel(animatrixControlsId, {
-            title: { n: animatrix.namespace, t: animatrix.translationKey.AnimatrixControls },
-            component: AnimationControls,
-            icon: Icons.NounProject.Animation,
-            placement: 'left'
-        });
-
         return () => {
             toolsStation.removeToolPanel(mapLayoutControlsId);
-            toolsStation.removeToolPanel(animatrixControlsId);
         };
     }, []);
 

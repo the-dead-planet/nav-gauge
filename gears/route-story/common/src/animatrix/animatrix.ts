@@ -1,8 +1,7 @@
 import { BehaviorSubject, Subscription } from "rxjs";
 import { validateBoolean, validateNumber } from "@tinker-chest";
 import { AnimationControlsType, AnimatrixTranslationKey } from "./model";
-import { StorageKeeper } from "../storage-keeper";
-import { TranslationTable, Translatron } from "../translatron";
+import { StorageKeeper, TranslationTable, Translatron } from "@apparatus";
 import * as Translations from "./translations";
 
 /**

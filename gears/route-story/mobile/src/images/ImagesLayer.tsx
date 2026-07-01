@@ -25,11 +25,12 @@ import { findThumbnailsWithinBuffer } from "../tinkers";
 
 export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({
     map,
+    animatrix,
     data$,
     images$,
     playerOperator
 }) => {
-    const { animatrix, cartomancer } = useMachineWard();
+    const { cartomancer } = useMachineWard();
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
     const [{ geojson }] = useSubjectState(data$);
     const [images] = useSubjectState(images$);
@@ -136,7 +137,7 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<
         };
     }, [map, loadedImages, geojson]);
 
-    const imageInDisplayIconSize = useImageInDisplay(map, playerOperator);
+    const imageInDisplayIconSize = useImageInDisplay(map, animatrix, playerOperator);
 
     return (
         <>

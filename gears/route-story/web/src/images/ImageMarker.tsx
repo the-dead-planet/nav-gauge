@@ -4,13 +4,14 @@ import classNames from 'classnames';
 import maplibregl from "maplibre-gl";
 import { Cartomancer, useMachineWard, FeatureStateProps } from "@apparatus";
 import { GeoJson, useSubjectState } from "@tinker-chest";
-import { routeSourceIds } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { Animatrix, routeSourceIds } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import styles from './images.module.css';
 
 const imageSize = 30;
 
 interface Props {
     map: maplibregl.Map;
+    animatrix: Animatrix;
     imageId: number,
     data: string;
     marker: maplibregl.Marker;
@@ -20,8 +21,17 @@ interface Props {
 }
 
 // TODO: If multiple in the same location, render all
-export const ImageMarker: FC<Props> = ({ map, imageId, data, marker, markerElement, geojson, onUpdateImageFeatureId }) => {
-    const { animatrix, cartomancer } = useMachineWard();
+export const ImageMarker: FC<Props> = ({
+    map,
+    animatrix,
+    imageId,
+    data,
+    marker,
+    markerElement,
+    geojson,
+    onUpdateImageFeatureId,
+}) => {
+    const { cartomancer } = useMachineWard();
     const [closestFeatureId, setClosestFeatureId] = useState<number | null>(null);
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
     const [mapLayout] = useSubjectState(cartomancer.mapLayout$);

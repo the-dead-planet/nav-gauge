@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
-import { ImagesLayers } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { Animatrix, ImagesLayers } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMap } from "@mobile-ui";
 import { DocumentPickerResponse } from "@react-native-documents/picker";
 import { MobileMarkerImageData } from "./image-parser";
@@ -9,9 +8,9 @@ import { PlayerOperator } from "@the-dead-planet/nav-gauge-gears-route-story-com
 
 export const useImageInDisplay = (
     map: MobileMap,
+    animatrix: Animatrix,
     playerOperator: PlayerOperator<MobileMap, DocumentPickerResponse, MobileMarkerImageData>,
 ): number => {
-    const { animatrix } = useMachineWard();
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
     const [imageInDisplayIconSize, setImageInDisplayIconSize] = useState(ImagesLayers.imageInDisplay.layout["icon-size"]);
 

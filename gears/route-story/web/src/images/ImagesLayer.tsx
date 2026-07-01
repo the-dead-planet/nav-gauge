@@ -23,11 +23,11 @@ import { getImagesLayers } from "./images-layers";
 
 export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteStoryProps<maplibregl.Map, File, WebMarkerImageData>> = ({
     map,
+    animatrix,
     data$,
     images$,
     playerOperator,
 }) => {
-    const { animatrix } = useMachineWard();
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
     const [{ geojson }] = useSubjectState(data$);
     const [images] = useSubjectState(images$);
@@ -178,7 +178,7 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteStoryP
         };
     }, [draggingImageId, loadedImages, geojson]);
 
-    useImageInDisplay(map, playerOperator);
+    useImageInDisplay(map, animatrix, playerOperator);
 
     return (
         <MapSourceAndLayers

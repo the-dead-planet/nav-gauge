@@ -1,5 +1,5 @@
 import { ChangeEvent, CSSProperties, FC, useEffect } from "react";
-import { OverlayComponentProps, SurveillanceState, useMachineWard } from "@apparatus";
+import { OverlayComponentProps, SurveillanceState, ToolPanelProps, useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { formatCurrentTimestamp, getProgressPercentage, RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { updateRouteLayer } from "../tinkers";
@@ -9,7 +9,7 @@ import { RouteStoryFileInput } from "../file-input/RouteStoryFileInput";
 import styles from './player.module.css';
 import { Checkbox } from "@web-ui";
 
-export const Player: FC<OverlayComponentProps<maplibregl.Map> & RouteStoryProps<maplibregl.Map, File, WebMarkerImageData>> = ({
+export const Player: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibregl.Map, File, WebMarkerImageData>> = ({
     map,
     data$,
     state$,

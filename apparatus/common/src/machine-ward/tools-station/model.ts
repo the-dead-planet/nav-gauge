@@ -1,7 +1,5 @@
 import { ComponentType } from "react";
 import { BehaviorSubject } from "rxjs";
-import { AnimationControlsType } from "../animatrix";
-import { GaugeControlsType, MapLayout } from "../cartomancer";
 import { TranslationId } from "../translatron";
 
 export type ToolPanelPlacement = 'right' | 'bottom' | 'left';
@@ -47,20 +45,4 @@ export interface ObservedToolIcon<TMap> {
     rotate$: BehaviorSubject<number>;
     pitch$: BehaviorSubject<number>;
     onClick?: (map: TMap) => void;
-}
-
-export type Preset = 'default' | 'racing-game';
-
-export interface PresetOption {
-    value: Preset;
-    label: string;
-    mapLayout: MapLayout;
-    gaugeControls: GaugeControlsType;
-    animationControls: AnimationControlsType;
-}
-
-export interface PresetValues {
-    presetMapLayout?: MapLayout;
-    presetGaugeControls?: GaugeControlsType;
-    presetAnimationControls?: AnimationControlsType;
 }
