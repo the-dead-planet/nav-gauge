@@ -7,7 +7,8 @@ const ru: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['ru'] 
     "fit-bounds": 'Захватить цель',
     "player": 'Конфигурация плеера маршрута',
     "no-name": 'Обозначение аннулировано',
-    "file": 'Файл'
+    "file": 'Файл',
+    "purge-story": 'Очистить историю'
 };
 
 export default ru;

@@ -7,7 +7,8 @@ const de: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['de'] 
     "fit-bounds": 'Ziel erfassen',
     "player": 'Routen-Player-Konfiguration',
     "no-name": 'Bezeichnung aufgehoben',
-    "file": 'Datei'
+    "file": 'Datei',
+    "purge-story": 'Geschichte löschen'
 };
 
 export default de;

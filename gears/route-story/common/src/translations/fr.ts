@@ -7,7 +7,8 @@ const fr: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['fr'] 
     "fit-bounds": 'Acquérir la cible',
     "player": 'Configuration du lecteur d\'itinéraire',
     "no-name": 'Désignation nulle',
-    "file": 'Fichier'
+    "file": 'Fichier',
+    "purge-story": 'Purger l\'histoire'
 };
 
 export default fr;

@@ -1,11 +1,11 @@
 import { ChangeEvent, FC } from "react";
+import { BehaviorSubject } from "rxjs";
 import { Button, FileInputStatus } from "@web-ui";
 import { parsers } from "@apparatus";
 import { ParsingResultWithError, useSubjectState } from "@tinker-chest";
 import { FileOperator } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { WebMarkerImageData } from "../images/image-parser";
 import styles from './file-input.module.css';
-import { BehaviorSubject } from "rxjs";
 
 interface Props {
     data$: BehaviorSubject<ParsingResultWithError>;

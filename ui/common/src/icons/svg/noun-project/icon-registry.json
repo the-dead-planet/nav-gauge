@@ -64,6 +64,14 @@
     "license": "CC BY 3.0"
   },
   {
+    "id": "clear",
+    "title": "clear",
+    "creator": "The Icon Z",
+    "source": "The Noun Project",
+    "href": "https://thenounproject.com",
+    "license": "CC BY 3.0"
+  },
+  {
     "id": "crash",
     "title": "crash",
     "creator": "Andi Nur Abdillah",
@@ -179,6 +187,14 @@
     "id": "target",
     "title": "target",
     "creator": "DinosoftLabs",
+    "source": "The Noun Project",
+    "href": "https://thenounproject.com",
+    "license": "CC BY 3.0"
+  },
+  {
+    "id": "upload",
+    "title": "upload",
+    "creator": "BUSAIRI",
     "source": "The Noun Project",
     "href": "https://thenounproject.com",
     "license": "CC BY 3.0"

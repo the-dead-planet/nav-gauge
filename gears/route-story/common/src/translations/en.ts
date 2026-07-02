@@ -7,7 +7,8 @@ const en: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['en'] 
     "fit-bounds": 'Acquire target',
     "player": 'Route player configuration',
     "no-name": 'Designation void',
-    "file": 'File'
+    "file": 'File',
+    "purge-story": 'Purge story'
 };
 
 export default en;

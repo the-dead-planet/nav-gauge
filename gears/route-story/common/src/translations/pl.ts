@@ -7,7 +7,8 @@ const pl: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['pl'] 
     "fit-bounds": 'Uzyskaj cel',
     "player": 'Konfiguracja odtwarzacza trasy',
     "no-name": 'Oznaczenie unieważnione',
-    "file": 'Plik'
+    "file": 'Plik',
+    "purge-story": 'Wyczyść historię'
 };
 
 export default pl;

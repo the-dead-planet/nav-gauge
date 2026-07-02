@@ -7,7 +7,8 @@ const nl: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['nl'] 
     "fit-bounds": 'Doelwit vastleggen',
     "player": 'Routeplayerconfiguratie',
     "no-name": 'Aanduiding nietig',
-    "file": 'Bestand'
+    "file": 'Bestand',
+    "purge-story": 'Verhaal zuiveren'
 };
 
 export default nl;

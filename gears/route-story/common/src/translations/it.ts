@@ -7,7 +7,8 @@ const it: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['it'] 
     "fit-bounds": 'Acquisisci bersaglio',
     "player": 'Configurazione del lettore di percorso',
     "no-name": 'Designazione nulla',
-    "file": 'File'
+    "file": 'File',
+    "purge-story": 'Epura storia'
 };
 
 export default it;
