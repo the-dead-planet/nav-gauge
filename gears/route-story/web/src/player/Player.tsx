@@ -1,23 +1,20 @@
 import { ChangeEvent, CSSProperties, FC, useEffect } from "react";
-import { OverlayComponentProps, SurveillanceState, ToolPanelProps, useMachineWard } from "@apparatus";
+import { SurveillanceState, ToolPanelProps, useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { formatCurrentTimestamp, getProgressPercentage, RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { updateRouteLayer } from "../tinkers";
 import { WebChronoLens } from "@web-apparatus";
 import { WebMarkerImageData } from "../images/image-parser";
-import { RouteStoryFileInput } from "../file-input/RouteStoryFileInput";
 import styles from './player.module.css';
 import { Checkbox } from "@web-ui";
 
 export const Player: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibregl.Map, File, WebMarkerImageData>> = ({
     map,
-    animatrix,
     data$,
     state$,
     routeTimes$,
     images$,
     progressMs$,
-    fileOperator,
     playerOperator,
 }) => {
     const [{ geojson }] = useSubjectState(data$);
@@ -62,7 +59,6 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibr
 
     return (
         <div className={styles.player}>
-            <RouteStoryFileInput data$={data$} fileOperator={fileOperator} />
             <div className={styles['player-player']}>
                 <div className={styles.pictures}>
                     {images
