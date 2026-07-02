@@ -6,6 +6,7 @@ import { Text } from "../typography";
 import { ColorVariant, GlowStyle, SizeVariant, SurfaceFillVariant, useTheme, Icons } from "@ui";
 import { Button } from "../button";
 import { Panel } from "./panel";
+import { BevelPanel } from "./bevel-panel";
 
 const styles = StyleSheet.create({
     container: {
@@ -252,6 +253,92 @@ export const Panels: FC = () => {
                                         {color}
                                     </Text>
                                 </Panel>
+                            ))}
+                        </View>
+                    </View>
+                ))}
+            </FlexBox>
+        </ScrollView>
+    );
+};
+
+export const BevelPanels: FC = () => {
+    const theme = useTheme();
+    const [highlightColor, setHighlightColor] = useState<ColorVariant | undefined>(undefined);
+    const [glowStyle, setGlowStyle] = useState<GlowStyle>();
+    const [interactive, setInteractive] = useState(false);
+
+    return (
+        <ScrollView contentContainerStyle={styles.container}>
+            <View style={styles.section}>
+                <Text style={styles.label}>Active highlightColor:</Text>
+                <View style={styles.row}>
+                    {[undefined, ...allColors].map((c) => (
+                        <Button
+                            key={c ?? "default"}
+                            icon={Icons.Beaker}
+                            variant={highlightColor === c ? "fill" : "ghost"}
+                            color={c}
+                            size="xs"
+                            corners="circle"
+                            active={highlightColor === c}
+                            onPress={() => setHighlightColor(c)}
+                        >
+                            {c ?? "default"}
+                        </Button>
+                    ))}
+                </View>
+            </View>
+
+            <View style={styles.section}>
+                <View style={styles.row}>
+                    <Switch value={interactive} onValueChange={setInteractive} />
+                    <Text>Interactive</Text>
+                </View>
+            </View>
+
+            {interactive ? (
+                <View style={styles.section}>
+                    <View style={styles.row}>
+                        {allGlowStyles.map((gs) => (
+                            <Button
+                                key={gs ?? "default"}
+                                variant={glowStyle === gs ? "fill" : "ghost"}
+                                size="xs"
+                                corners="circle"
+                                active={glowStyle === gs}
+                                onPress={() => setGlowStyle(gs)}
+                            >
+                                {gs ?? "none"}
+                            </Button>
+                        ))}
+                    </View>
+                </View>
+            ) : null}
+
+            <FlexBox direction="column" gap="xl">
+                <Text style={styles.label}>All variants</Text>
+
+                {allFillVariants.map((variant) => (
+                    <View key={variant} style={styles.section}>
+                        <Text style={styles.label}>{variant}</Text>
+                        <View style={styles.row}>
+                            {allColors.map((color) => (
+                                <BevelPanel
+                                    key={color}
+                                    color={color}
+                                    highlightColor={highlightColor}
+                                    variant={variant}
+                                    glowStyle={glowStyle}
+                                    interactive={interactive}
+                                    padding="md"
+                                >
+                                    <Text style={{
+                                        color: theme.isDark ? "white" : "black",
+                                    }}>
+                                        {color}
+                                    </Text>
+                                </BevelPanel>
                             ))}
                         </View>
                     </View>

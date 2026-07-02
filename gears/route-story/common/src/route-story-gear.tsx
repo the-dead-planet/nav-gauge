@@ -79,8 +79,8 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
 
     private routeLayerFitBoundsToolIconId = 'fit-bounds';
 
-    private routeNameToolId = 'route-name';
-    public abstract routeNameComponent: ComponentType<TopToolsProps<TMap> & RouteStoryProps<TMap, TFile, TImageData>>;
+    private routeNameToolId = 'route-upload';
+    public abstract routeUploadComponent: ComponentType<TopToolsProps<TMap> & RouteStoryProps<TMap, TFile, TImageData>>;
 
     private playerToolId = 'player';
     public abstract playerComponent: ComponentType<ToolPanelProps<TMap> & RouteStoryProps<TMap, TFile, TImageData>>;
@@ -107,6 +107,8 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
     }
 
     private getProps = (): RouteStoryProps<TMap, TFile, TImageData> => ({
+        gearId: this.id,
+        translationKey: this.internalTranslationKey,
         animatrix: this.animatrix,
         data$: this.data$,
         state$: this.state$,
@@ -139,10 +141,9 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
                 }
             });
             
-            console.log("Addiong", this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, TopToolsProps<TMap>>(this.routeNameComponent, this.getProps()))
         this.apparatus.toolsStation.addTopTool(
             this.routeNameToolId,
-            this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, TopToolsProps<TMap>>(this.routeNameComponent, this.getProps())
+            this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, TopToolsProps<TMap>>(this.routeUploadComponent, this.getProps())
         );
 
         this.apparatus.toolsStation.addToolPanel(

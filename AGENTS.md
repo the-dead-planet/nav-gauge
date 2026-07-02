@@ -65,9 +65,11 @@ Each feature is a pluggable **Gear** with 1-3 packages: `common/` (abstract clas
 ## Code Style
 
 - Strict **TypeScript** — no `any`, explicit member accessibility
+- No shortened variable names (e.g. `hl` for `highlight`, `btn` for `button`); always use the full word
 - **React** + **RxJS** for state management (use `useMachineWard` hook)
 - **Luxon** for all date/time formatting
 - **4-space indentation**, semicolons required
+- Web CSS modules: class names use kebab-case (`variant-fill`), never camelCase (`variantFill`)
 - Minimal JSDocs — code should be self-documenting; refactor if unclear
 - No bloated comments, no `TODO:`s (use GitHub issues instead)
 - Prefer fewer dependencies; write your own when feasible

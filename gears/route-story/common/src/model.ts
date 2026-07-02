@@ -19,6 +19,8 @@ export interface RouteStoryState {
 }
 
 export interface RouteStoryProps<TMap, TFile extends RouteStoryFile, TImageData> {
+    gearId: string;
+    translationKey: typeof RouteStoryTranslationKey;
     animatrix: Animatrix;
     data$: BehaviorSubject<ParsingResultWithError>;
     state$: BehaviorSubject<RouteStoryState>;
@@ -42,6 +44,8 @@ export interface RouteStoryFile {
 export enum RouteStoryTranslationKey {
     FitBounds = 'fit-bounds',
     Player = 'player',
+    NoName = 'no-name',
+    File = 'file',
 }
 
 export type Preset = 'default' | 'racing-game';

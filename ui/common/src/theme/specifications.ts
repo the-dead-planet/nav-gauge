@@ -3,8 +3,8 @@ import { ThemeMode, ThemeName, ThemeSpecification } from "./model";
 import { Theme } from "./theme";
 
 export const themeNameOptions: Option<ThemeName>[] = [
-    { value: ThemeName.Default, label: 'Default' },
-    { value: ThemeName.NeonBlue, label: 'Neon Blue' },
+    { value: ThemeName.Default, label: ThemeName.Default },
+    { value: ThemeName.NeonBlue, label: ThemeName.NeonBlue },
 ];
 
 export const themeModeOptions: Option<ThemeMode>[] = [

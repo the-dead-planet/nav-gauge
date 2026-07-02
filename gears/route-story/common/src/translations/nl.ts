@@ -5,7 +5,9 @@ const nl: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['nl'] 
     "gear-name": 'Routeverhaal',
     "gear-description": 'Maak een videoverhaal van je GPS-sporen en beeldgegevens',
     "fit-bounds": 'Doelwit vastleggen',
-    "player": 'Routeplayerconfiguratie'
+    "player": 'Routeplayerconfiguratie',
+    "no-name": 'Aanduiding nietig',
+    "file": 'Bestand'
 };
 
 export default nl;

@@ -13,7 +13,7 @@ import { RouteName } from './file-input/RouteName';
 
 export class WebRouteStoryGear extends RouteStoryGear<maplibregl.Map, File, WebMarkerImageData> {
    public fileInputComponent = RouteStoryFileInput;
-   public routeNameComponent = RouteName;
+   public routeUploadComponent = RouteName;
    public playerComponent = Player;
    public animatrixComponent = AnimationControls;
    public routeLayerComponent = RouteLayer;

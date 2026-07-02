@@ -57,7 +57,7 @@ const ThemeDecorator = ({ children }: { children: ReactNode }) => {
                     </label>
                     <select
                         id="theme-name-select"
-                        value={themeMode}
+                        value={themeName}
                         onChange={(e) => setThemeName(e.target.value as ThemeName)}
                         className="select"
                     >
