@@ -8,7 +8,8 @@ const es: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['es'] 
     "player": 'Configuración del reproductor de ruta',
     "no-name": 'Designación anulada',
     "file": 'Archivo',
-    "purge-story": 'Purgar historia'
+    "purge-story": 'Purgar historia',
+    "cancel": 'Cancelar'
 };
 
 export default es;

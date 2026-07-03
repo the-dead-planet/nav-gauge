@@ -8,7 +8,8 @@ const ru: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['ru'] 
     "player": 'Конфигурация плеера маршрута',
     "no-name": 'Обозначение аннулировано',
     "file": 'Файл',
-    "purge-story": 'Очистить историю'
+    "purge-story": 'Очистить историю',
+    "cancel": 'Отмена'
 };
 
 export default ru;

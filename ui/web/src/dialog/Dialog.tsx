@@ -10,6 +10,7 @@ import styles from './dialog.module.css';
 
 export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
     header,
+    variant = 'fill-translucent',
     placement = 'middle',
     closeText,
     onClose,
@@ -29,7 +30,7 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
         <Transition render={render} slide={slide[placement]} fade onUnmount={onClose}>
             <div className={classNames(styles['container'], styles[placement], className)} {...props}>
                 <Panel
-                    variant='fill-translucent'
+                    variant={variant}
                     color="primary"
                     className={classNames(styles['dialog'])}
                 >

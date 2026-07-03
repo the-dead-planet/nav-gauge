@@ -8,7 +8,8 @@ const jp: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['jp'] 
     "player": 'ルートプレーヤー設定',
     "no-name": '指定解除',
     "file": 'ファイル',
-    "purge-story": 'ストーリーをパージ'
+    "purge-story": 'ストーリーをパージ',
+    "cancel": 'キャンセル'
 };
 
 export default jp;

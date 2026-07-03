@@ -1,30 +1,4 @@
-.file-input {
-    display: none;
-}
-
 .panel {
     margin-top: 6px;
-    display: inline-flex;
-}
-
-.panel-content {
-    display: inline-flex;
-    gap: 8px;
-    align-items: center;
-}
-
-.route-name {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    min-width: 50px;
-    max-width: calc(50dvw - 350px);
-}
-
-.route-name.sm {
-    font-size: 14px;
-}
-
-.purge-button {
-    margin-left: 8px;
+    display: inline-block;
 }

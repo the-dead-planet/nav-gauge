@@ -19,6 +19,8 @@ The workspace root is `/` (package.json and yarn commands live there, not at rep
 | `yarn test:e2e:web:dev` | Cypress E2E against localhost |
 | `yarn dev:mobile` | Start mobile dev (Android) |
 | `yarn start:mobile` | Start Metro server |
+| `yarn typecheck:web` | TypeScript check for web packages |
+| `yarn typecheck:mobile` | TypeScript check for mobile packages |
 | `yarn lint` (in workspace) | ESLint check (zero warnings policy) |
 | `yarn ui:web` | Start Storybook for web UI |
 | `yarn generate:gear <name>` | Scaffold a new gear from `.templates/` |
@@ -44,6 +46,10 @@ See `.opencode/rules/testing.mdc`.
 ## UI
 
 - Own UI library in `/ui/` — see `.opencode/rules/ui-conventions.mdc`
+
+## After changes
+
+Always run `yarn typecheck:web` (or `yarn typecheck:mobile` for mobile changes), `yarn lint`, and relevant tests after every code edit.
 
 ## Other
 

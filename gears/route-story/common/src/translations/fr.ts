@@ -8,7 +8,8 @@ const fr: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['fr'] 
     "player": 'Configuration du lecteur d\'itinéraire',
     "no-name": 'Désignation nulle',
     "file": 'Fichier',
-    "purge-story": 'Purger l\'histoire'
+    "purge-story": 'Purger l\'histoire',
+    "cancel": 'Annuler'
 };
 
 export default fr;

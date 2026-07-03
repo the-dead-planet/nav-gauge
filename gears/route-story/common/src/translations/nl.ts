@@ -8,7 +8,8 @@ const nl: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['nl'] 
     "player": 'Routeplayerconfiguratie',
     "no-name": 'Aanduiding nietig',
     "file": 'Bestand',
-    "purge-story": 'Verhaal zuiveren'
+    "purge-story": 'Verhaal zuiveren',
+    "cancel": 'Annuleren'
 };
 
 export default nl;

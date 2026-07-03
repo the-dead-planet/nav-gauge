@@ -17,6 +17,7 @@
         "dev": "rspack serve --mode development --config rspack.config.development.ts",
         "start": "rspack serve --mode production --config rspack.config.production.ts",
         "build": "tsc --noEmit && rspack --mode production --config rspack.config.production.ts",
+        "typecheck": "tsc --noEmit",
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings -1",
         "clean": "npx shx rm -rf node_modules/",
         "test": "mocha",

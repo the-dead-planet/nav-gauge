@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
 
 export const Dialog: FC<DialogProps> = ({
     header,
+    variant = 'fill-translucent',
     placement = 'middle',
     onClose,
     children,
@@ -68,7 +69,7 @@ export const Dialog: FC<DialogProps> = ({
                     'right-drawer': styles.drawerRight
                 }[placement]}
             >
-                <Panel variant="fill-translucent" color="primary" style={styles.panel}>
+                <Panel variant={variant} color="primary" style={styles.panel}>
                     <View style={styles.header}>
                         <Text color="primary">
                             {header.toUpperCase()}

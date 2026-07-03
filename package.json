@@ -20,6 +20,7 @@
         "start:mobile:r": "yarn workspace @the-dead-planet/nav-gauge-app-mobile start:r",
         "build:web": "yarn workspace @the-dead-planet/nav-gauge-app-web build",
         "build:ui:web": "yarn workspace @the-dead-planet/nav-gauge-ui-web build-storybook",
+        "typecheck:web": "yarn workspace @the-dead-planet/nav-gauge-app-web typecheck",
         "typecheck:mobile": "yarn workspace @the-dead-planet/nav-gauge-app-mobile typecheck",
         "test:all": "concurrently \"yarn test:web\" \"yarn test:mobile\"",
         "test:common": "yarn test:tinker-chest && yarn test:apparatus-common && yarn test:gears-common && yarn test:ui:common",

@@ -1,27 +1,49 @@
 import { FC } from "react";
-import { View, ViewProps } from "react-native";
+import { Alert, StyleSheet, View, ViewProps } from "react-native";
 import { DocumentPickerOptions, DocumentPickerResponse, pick } from '@react-native-documents/picker';
-import { Button } from "../../button/Button";
+import { Button } from "../../button";
+import { Text } from "../../typography";
 
+// TODO: Extract common props
 export interface FileInputProps {
-    /**
-     * Defaults to `Upload`
-     */
-    title?: string;
-    type: DocumentPickerOptions['type'],
-    allowMultiSelection?: boolean,
-    onIsLoadingChange?: (isLoading: boolean) => void;
+    fileName: string | null | undefined;
+    fileLabel: string;
+    purgeLabel: string;
+    cancelLabel: string;
+    noNameLabel: string;
+    type: DocumentPickerOptions['type'];
+    allowMultiSelection?: boolean;
     onUpload: (files: DocumentPickerResponse[]) => Promise<void>;
+    onPurge: () => void;
     onError?: (error: Error) => void;
+    onIsLoadingChange?: (isLoading: boolean) => void;
 }
 
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+    },
+    routeName: {
+        flex: 1,
+        overflow: 'hidden',
+    },
+});
+
 export const FileInput: FC<FileInputProps & ViewProps> = ({
-    title = 'Upload',
+    fileName,
+    fileLabel,
+    purgeLabel,
+    cancelLabel,
+    noNameLabel,
     type,
     allowMultiSelection,
-    onIsLoadingChange,
     onUpload,
+    onPurge,
     onError,
+    onIsLoadingChange,
+    style,
     ...props
 }) => {
     const handleUpload = async () => {
@@ -41,9 +63,28 @@ export const FileInput: FC<FileInputProps & ViewProps> = ({
         }
     };
 
+    const handlePurge = () => {
+        Alert.alert(
+            purgeLabel,
+            'Are you sure you want to purge all story data? This will remove the route and images and cannot be undone.',
+            [
+                { text: cancelLabel, style: 'cancel' },
+                {
+                    text: purgeLabel,
+                    style: 'destructive',
+                    onPress: onPurge,
+                },
+            ],
+        );
+    };
+
     return (
-        <View {...props}>
-            <Button title={title} onPress={handleUpload} />
+        <View style={[styles.container, style]} {...props}>
+            <Button title={fileLabel} onPress={handleUpload} />
+            <Text style={styles.routeName}>
+                {fileName || noNameLabel}
+            </Text>
+            <Button title={purgeLabel} onPress={handlePurge} />
         </View>
     );
 };

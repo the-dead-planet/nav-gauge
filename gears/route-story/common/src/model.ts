@@ -47,6 +47,7 @@ export enum RouteStoryTranslationKey {
     NoName = 'no-name',
     File = 'file',
     PurgeStory = 'purge-story',
+    Cancel = 'cancel',
 }
 
 export type Preset = 'default' | 'racing-game';

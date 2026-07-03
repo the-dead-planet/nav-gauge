@@ -1,1 +1,1 @@
-export { FileInputStatus } from './FileInputStatus';
+export { FileInput } from './FileInput';

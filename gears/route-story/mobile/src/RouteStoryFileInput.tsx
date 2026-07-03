@@ -2,7 +2,7 @@ import { FC } from "react";
 import { StyleSheet, View, } from "react-native";
 import { DocumentPickerResponse, types } from "@react-native-documents/picker";
 import { FileOperator } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { FileInputStatus, FileInput, MobileMap, Button } from "@mobile-ui";
+import { FileInput, MobileMap, Button } from "@mobile-ui";
 import { parsers } from "@apparatus";
 import { ParsingResultWithError, useSubjectState } from "@tinker-chest";
 import { MobileMarkerImageData } from "./images/image-parser";
@@ -37,7 +37,9 @@ export const RouteStoryFileInput: FC<Props> = ({
     return (
         <View>
             <View style={styles.container}>
-                <FileInput
+                {/* TODO: */}
+                {/* <FileInput
+                    fileName={routeName}
                     type={[
                         ...[...parsers.values()].flatMap((parser) => parser.fileTypes),
                         types.images
@@ -47,17 +49,17 @@ export const RouteStoryFileInput: FC<Props> = ({
                     onUpload={fileOperator.uploadFile}
                     onError={fileOperator.onError}
                     style={styles.uploadButton}
-                />
+                /> */}
                 <View style={styles.resetButton}>
                     <Button title='Reset story' onPress={fileOperator.resetStory} />
                 </View>
             </View>
-            <FileInputStatus
+            {/* <FileInputStatus
                 isLoading={isLoading}
                 ok={!!geojson && !error}
                 error={error}
                 routeName={routeName}
-            />
+            /> */}
         </View>
     );
 };

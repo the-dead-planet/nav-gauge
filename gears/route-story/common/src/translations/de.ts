@@ -8,7 +8,8 @@ const de: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['de'] 
     "player": 'Routen-Player-Konfiguration',
     "no-name": 'Bezeichnung aufgehoben',
     "file": 'Datei',
-    "purge-story": 'Geschichte löschen'
+    "purge-story": 'Geschichte löschen',
+    "cancel": 'Abbrechen'
 };
 
 export default de;

@@ -8,7 +8,8 @@ const en: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['en'] 
     "player": 'Route player configuration',
     "no-name": 'Designation void',
     "file": 'File',
-    "purge-story": 'Purge story'
+    "purge-story": 'Purge story',
+    "cancel": 'Cancel'
 };
 
 export default en;
