@@ -28,66 +28,22 @@ The workspace root is `/` (package.json and yarn commands live there, not at rep
 
 Monorepo with Yarn workspaces. Strict **import direction** (`/` layout):
 
-### Import sequence
-
-`tinker-chest` → `apparatus/{common,web,mobile}` → `gears/*/{common,web,mobile}` → `app-{web,mobile}`
-
-### Package locations
-
-| Package | Path |
-|---------|------|
-| Tinker Chest | `/tinker-chest/` (single package, not split) |
-| Apparatus Common | `/apparatus/common/` |
-| Apparatus Web | `/apparatus/web/` |
-| Apparatus Mobile | `/apparatus/mobile/` |
-| Gears | `/gears/*/{common,web,mobile}/` |
-| UI Common | `/ui/common/` |
-| UI Web | `/ui/web/` |
-| UI Mobile | `/ui/mobile/` |
-
-### Import rules summary
-
-| Package | Can be imported by |
-|---------|-------------------|
-| Tinker Chest | Apparatus (all), all Gears, both Apps, UI (all) |
-| Apparatus Common | Apparatus Web, Apparatus Mobile, all Gears, both Apps — NOT UI, NOT Tinker Chest |
-| Apparatus Web | Gear Web, App Web |
-| Apparatus Mobile | Gear Mobile, App Mobile |
-| UI Common | ALL modules — NOT Tinker Chest |
-| UI Web | Gear Web, App Web |
-| UI Mobile | Gear Mobile, App Mobile |
-
-No reverse imports. Always use `@package-name` aliases, never relative paths across workspaces.
+Strict import direction — see `.opencode/rules/import-constraints.mdc` for allowed importers and package paths.
 
 ### Gears (features)
 Each feature is a pluggable **Gear** with 1-3 packages: `common/` (abstract class), `web/`, `mobile/`. Gears implement the `Gear` interface from `@the-dead-planet/nav-gauge-apparatus-common`. Generate with `yarn generate:gear <name>` from `/`.
 
 ## Code Style
 
-- Strict **TypeScript** — no `any`, explicit member accessibility
-- No shortened variable names (e.g. `hl` for `highlight`, `btn` for `button`); always use the full word
-- **React** + **RxJS** for state management (use `useMachineWard` hook)
-- **Luxon** for all date/time formatting
-- **4-space indentation**, semicolons required
-- Web CSS modules: class names use kebab-case (`variant-fill`), never camelCase (`variantFill`)
-- Minimal JSDocs — code should be self-documenting; refactor if unclear
-- No bloated comments, no `TODO:`s (use GitHub issues instead)
-- Prefer fewer dependencies; write your own when feasible
+See `.opencode/rules/code-style.mdc`.
 
 ## Testing
 
-- **Web unit**: Mocha + Chai in `test/**/*.test.ts`
-- **Mobile unit**: Jest in `__tests__/*.test.tsx`
-- **Web E2E**: Cypress in `app-web/cypress/e2e/*.cy.ts`
-- Test complex logic; don't overcomplicate
+See `.opencode/rules/testing.mdc`.
 
 ## UI
 
-- Own UI library in `/ui/` — semantic, accessible, minimal
-- Steampunk/cyber-inspired styling
-- Theme variables in `@ui/common/src/theme/specifications.ts`
-- Reusable components must not contain business logic
-- Web elements: CSS modules (`*.module.css`) with `className` are preferred over inline `style` props; only use `style` for truly dynamic values (e.g. computed positions).
+- Own UI library in `/ui/` — see `.opencode/rules/ui-conventions.mdc`
 
 ## Other
 

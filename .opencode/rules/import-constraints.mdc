@@ -1,0 +1,34 @@
+---
+description: Strict import direction rules for the nav-gauge monorepo
+globs: "*.ts"
+alwaysApply: false
+---
+
+- Import sequence: `tinker-chest` → `ui/{common,web,mobile}` → `apparatus/{common,web,mobile}` → `gears/*/{common,web,mobile}` → `app-{web,mobile}`
+- Never import reverse (e.g. apparatus importing from gears)
+- Always use `@package-name` aliases, never relative paths across workspaces
+
+### Package locations
+
+| Package | Path |
+|---------|------|
+| Tinker Chest | `/tinker-chest/` |
+| UI Common | `/ui/common/` |
+| UI Web | `/ui/web/` |
+| UI Mobile | `/ui/mobile/` |
+| Apparatus Common | `/apparatus/common/` |
+| Apparatus Web | `/apparatus/web/` |
+| Apparatus Mobile | `/apparatus/mobile/` |
+| Gears | `/gears/*/{common,web,mobile}/` |
+
+### Allowed importers
+
+| Package | Can be imported by |
+|---------|-------------------|
+| Tinker Chest | Apparatus (all), Gears, Apps, UI (all) |
+| Apparatus Common | Apparatus Web/Mobile, Gears, Apps — NOT UI, NOT Tinker Chest |
+| Apparatus Web | Gear Web, App Web |
+| Apparatus Mobile | Gear Mobile, App Mobile |
+| UI Common | ALL modules |
+| UI Web | Gear Web, App Web |
+| UI Mobile | Gear Mobile, App Mobile |

@@ -1,0 +1,19 @@
+---
+description: TypeScript and code style conventions
+globs: "*.{ts,tsx}"
+alwaysApply: false
+---
+
+- Strict **TypeScript** — no `any`, explicit member accessibility
+- No shortened variable names (e.g. `hl` for `highlight`, `btn` for `button`); always use the full word
+- **React** + **RxJS** for state management (use `useMachineWard` hook)
+- **Luxon** for all date/time formatting
+- **4-space indentation**, semicolons required
+- Minimal JSDocs — code should be self-documenting; refactor if unclear
+- No bloated comments, no `TODO:`s (use GitHub issues instead)
+- Prefer fewer dependencies; write your own when feasible
+
+### Platform split (`common` / `web` / `mobile`)
+- Keep as much logic and state management in `common/` as possible
+- `web/` and `mobile/` should focus only on component rendering and platform-specific wiring
+- Abstract classes in `common/`, concrete rendering in platform packages

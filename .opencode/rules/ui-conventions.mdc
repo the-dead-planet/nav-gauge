@@ -1,0 +1,17 @@
+---
+description: UI library conventions
+globs: "ui/**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+- Own UI library in `/ui/` — semantic, accessible, minimal
+- Reusable components must not contain business logic
+- Theme variables in `@ui/common/src/theme/specifications.ts`
+
+### Web only
+- Class names use kebab-case in CSS modules
+- CSS modules (`*.module.css`) with `className` over inline `style`
+
+### Mobile (React Native) only
+- Use `StyleSheet.create` for styles
+- No CSS modules, no CSS custom properties

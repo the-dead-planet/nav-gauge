@@ -1,0 +1,10 @@
+---
+description: Testing conventions
+globs: "*.test.{ts,tsx}"
+alwaysApply: false
+---
+
+- **Web unit**: Mocha + Chai in `test/**/*.test.ts`
+- **Mobile unit**: Jest in `__tests__/*.test.tsx`
+- **Web E2E**: Cypress in `app-web/cypress/e2e/*.cy.ts`
+- Test complex logic; don't overcomplicate
