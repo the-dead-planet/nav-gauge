@@ -1,5 +1,6 @@
 export * from './button';
 export * from './checkbox';
+export * from './slider';
 export * from './dialog';
 export * from './dropdown';
 export * from './flex-box';

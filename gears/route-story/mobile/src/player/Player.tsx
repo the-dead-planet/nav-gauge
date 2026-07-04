@@ -1,11 +1,10 @@
 import { FC, useRef, useEffect } from "react";
 import { View, Button } from "react-native";
 import { DocumentPickerResponse } from "@react-native-documents/picker";
-import Slider, { SliderReferenceType } from "@react-native-community/slider";
 import { OverlayComponentProps, SurveillanceState, useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { formatCurrentTimestamp, getProgressPercentage, RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { Text } from "@mobile-ui";
+import { Slider, Text } from "@mobile-ui";
 import { MobileMap } from "@mobile-ui";
 import { useTheme } from "@ui";
 import { currentPointRef$, linesRef$ } from "../layers/RouteLayer";
@@ -33,25 +32,23 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<Mobil
 
     const progressPercentage = getProgressPercentage(progressMs, routeTimes);
 
-    const sliderRef = useRef<Slider | null>(null);
+    const sliderRef = useRef<any>(null);
 
     useEffect(() => {
-        // When passed to props animation slows down.
         sliderRef.current?.setNativeProps({ value: progressMs })
     }, [progressMs]);
 
     return (
         <View style={{ flex: 1 }}>
             <Slider
-                ref={sliderRef as SliderReferenceType}
-                minimumValue={0}
-                maximumValue={routeTimes?.duration ?? 1}
+                ref={sliderRef}
+                min={0}
+                max={routeTimes?.duration ?? 1}
                 step={1}
-                onValueChange={handleProgressChange}
-                style={{ height: 40 }}
-                minimumTrackTintColor="#0000FF"
-                maximumTrackTintColor="#000000"
-                thumbTintColor="gray"
+                value={progressMs}
+                onChange={handleProgressChange}
+                color="tertiary"
+                size="sm"
             />
             <View style={{
                 flexDirection: "row",

@@ -1,12 +1,12 @@
-import { ChangeEvent, CSSProperties, FC, useEffect } from "react";
+import { CSSProperties, FC, useEffect } from "react";
 import { SurveillanceState, ToolPanelProps, useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
-import { formatCurrentTimestamp, getProgressPercentage, RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { getProgressPercentage, RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { updateRouteLayer } from "../tinkers";
 import { WebChronoLens } from "@web-apparatus";
 import { WebMarkerImageData } from "../images/image-parser";
 import styles from './player.module.css';
-import { Button, Checkbox, P } from "@web-ui";
+import { Button, Checkbox, P, Slider } from "@web-ui";
 import { FontType, formatTimeMsAsStandard, Icons } from "@ui";
 
 export const Player: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibregl.Map, File, WebMarkerImageData>> = ({
@@ -41,9 +41,9 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibr
 
     const progressPercentage = getProgressPercentage(progressMs, routeTimes);
 
-    const handleProgressChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleProgressChange = (value: number) => {
         playerOperator.updateProgress(
-            Number(event.target.value),
+            value,
             (line, currentPoint) => {
                 updateRouteLayer(map, line, currentPoint);
             }
@@ -112,19 +112,15 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibr
                             <span key={image.id} className={styles['image-marker']} style={{ left: `${getPosition(image.featureId!).toFixed(0)}%` }} />
                         ))}
                 </div> */}
-                <input
-                    type="range"
+                <Slider
                     value={progressMs}
                     min={0}
                     max={routeTimes?.duration ?? 1}
                     step={1}
                     onChange={handleProgressChange}
-                    // TODO: Fix styles for all browsers
-                    // className={styles['progress-slider']}
-                    style={{
-                        flex: 1,
-                        '--track-complete': `${progressPercentage}%`
-                    } as CSSProperties}
+                    color="tertiary"
+                    size="sm"
+                    style={{ flex: 1 } as CSSProperties}
                 />
             </div>
             {/* <div className={styles.buttons}>
