@@ -7,7 +7,8 @@ const de: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['de'] 
     "fit-bounds": 'Ziel erfassen',
     "player": 'Routen-Player-Konfiguration',
     "no-name": 'Bezeichnung aufgehoben',
-    "file": 'Datei',
+    "upload-file": 'GPS-Datei hochladen',
+    "replace-file": 'GPS-Datei ersetzen',
     "purge-story": 'Geschichte löschen',
     "cancel": 'Abbrechen'
 };

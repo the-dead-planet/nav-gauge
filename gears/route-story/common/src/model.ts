@@ -45,7 +45,8 @@ export enum RouteStoryTranslationKey {
     FitBounds = 'fit-bounds',
     Player = 'player',
     NoName = 'no-name',
-    File = 'file',
+    UploadFile = 'upload-file',
+    ReplaceFile = 'replace-file',
     PurgeStory = 'purge-story',
     Cancel = 'cancel',
 }

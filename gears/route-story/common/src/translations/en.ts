@@ -7,7 +7,8 @@ const en: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['en'] 
     "fit-bounds": 'Acquire target',
     "player": 'Route player configuration',
     "no-name": 'Designation void',
-    "file": 'File',
+    "upload-file": 'Upload file with GPS tracks',
+    "replace-file": 'Replace file with GPS tracks',
     "purge-story": 'Purge story',
     "cancel": 'Cancel'
 };

@@ -7,7 +7,8 @@ const pl: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['pl'] 
     "fit-bounds": 'Uzyskaj cel',
     "player": 'Konfiguracja odtwarzacza trasy',
     "no-name": 'Oznaczenie unieważnione',
-    "file": 'Plik',
+    "upload-file": 'Prześlij plik ze śladami GPS',
+    "replace-file": 'Zastąp plik ze śladami GPS',
     "purge-story": 'Wyczyść historię',
     "cancel": 'Anuluj'
 };

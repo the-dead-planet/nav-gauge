@@ -7,7 +7,8 @@ const it: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['it'] 
     "fit-bounds": 'Acquisisci bersaglio',
     "player": 'Configurazione del lettore di percorso',
     "no-name": 'Designazione nulla',
-    "file": 'File',
+    "upload-file": 'Carica file con tracce GPS',
+    "replace-file": 'Sostituisci file con tracce GPS',
     "purge-story": 'Epura storia',
     "cancel": 'Annulla'
 };

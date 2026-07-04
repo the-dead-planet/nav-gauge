@@ -7,7 +7,8 @@ const jp: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['jp'] 
     "fit-bounds": 'ターゲットを捕捉',
     "player": 'ルートプレーヤー設定',
     "no-name": '指定解除',
-    "file": 'ファイル',
+    "upload-file": 'GPSトラックを含むファイルをアップロード',
+    "replace-file": 'GPSトラックを含むファイルを置き換え',
     "purge-story": 'ストーリーをパージ',
     "cancel": 'キャンセル'
 };

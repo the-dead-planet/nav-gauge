@@ -17,7 +17,7 @@ export const RouteName: FC<TopToolsProps<maplibregl.Map> & RouteStoryProps<mapli
     const [registry] = useSubjectState(translatron.registry$);
     const [settings] = useSubjectState(individuator.settings$);
     const [{ routeName }] = useSubjectState(data$);
-    const fileLabel = translatron.translate(settings.language, registry, { n: gearId, t: translationKey.File });
+    const fileLabel = translatron.translate(settings.language, registry, { n: gearId, t: routeName ? translationKey.ReplaceFile : translationKey.UploadFile });
     const purgeLabel = translatron.translate(settings.language, registry, { n: gearId, t: translationKey.PurgeStory });
     const cancelLabel = translatron.translate(settings.language, registry, { n: gearId, t: translationKey.Cancel });
     const noNameLabel = translatron.translate(settings.language, registry, { n: gearId, t: translationKey.NoName });

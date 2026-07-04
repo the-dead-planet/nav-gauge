@@ -7,7 +7,8 @@ const es: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['es'] 
     "fit-bounds": 'Adquirir objetivo',
     "player": 'Configuración del reproductor de ruta',
     "no-name": 'Designación anulada',
-    "file": 'Archivo',
+    "upload-file": 'Subir archivo con rutas GPS',
+    "replace-file": 'Reemplazar archivo con rutas GPS',
     "purge-story": 'Purgar historia',
     "cancel": 'Cancelar'
 };

@@ -7,7 +7,8 @@ const nl: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['nl'] 
     "fit-bounds": 'Doelwit vastleggen',
     "player": 'Routeplayerconfiguratie',
     "no-name": 'Aanduiding nietig',
-    "file": 'Bestand',
+    "upload-file": 'Bestand met GPS-tracks uploaden',
+    "replace-file": 'Bestand met GPS-tracks vervangen',
     "purge-story": 'Verhaal zuiveren',
     "cancel": 'Annuleren'
 };
