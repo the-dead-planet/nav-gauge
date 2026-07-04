@@ -44,11 +44,6 @@ export const MapSection: FC = () => {
 
     return (
         <div className={styles.machine}>
-            {map ? (
-                <MapTools map={map}>
-                    {[...overlays.entries()].map(([id, OverlayComponent]) => <OverlayComponent key={id} map={map} />)}
-                </MapTools>
-            ) : null}
             <div className={classNames(styles['toolbar'], styles['top'])}>
                 <FlexBox gap="md" alignItems="center" className={styles['content']}>
                     <H2 color="secondary" className={styles['gears-heading']}>
@@ -77,12 +72,17 @@ export const MapSection: FC = () => {
                     ))}
                 </FlexBox>
             </div>
+            {map ? (
+                <MapTools map={map}>
+                    {[...overlays.entries()].map(([id, OverlayComponent]) => <OverlayComponent key={id} map={map} />)}
+                </MapTools>
+            ) : null}
             <MapSectionPanel placement="left" map={map} activeId={activeLeftPanelToolId} onActiveIdChange={setActiveLeftPanelToolId} />
             <MapSectionIcons placement="left" map={map} />
+            <MapSectionTopTools map={map} />
             <MapSectionIcons placement="right" map={map} />
             <MapSectionPanel placement="right" map={map} activeId={activeRightPanelToolId} onActiveIdChange={setActiveRightPanelToolId} />
             <MapSectionPanel placement="bottom" map={map} activeId={activeBottomPanelToolId} onActiveIdChange={setActiveBottomPanelToolId} />
-            <MapSectionTopTools map={map} />
         </div>
     );
 };

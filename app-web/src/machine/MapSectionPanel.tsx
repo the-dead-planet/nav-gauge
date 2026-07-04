@@ -1,11 +1,12 @@
 import { FC } from "react";
 import classNames from "classnames";
-import { Button, H3, Transition } from "@web-ui";
-import { useObservableState, useSubjectState } from "@tinker-chest";
+import { H3, Transition } from "@web-ui";
+import { useObservableState } from "@tinker-chest";
 import { ToolPanelPlacement, useMachineWard } from "@apparatus";
-import styles from './map-section.module.css';
-import { Icons, TooltipPlacement, TransitionProps } from "@ui";
+import { TransitionProps } from "@ui";
 import { T } from "@web-apparatus";
+import { MapSectionPanelHeader } from "./MapSectionPanelHeader";
+import styles from './map-section.module.css';
 
 interface Props {
     placement: ToolPanelPlacement;
@@ -20,9 +21,7 @@ export const MapSectionPanel: FC<Props> = ({
     activeId,
     onActiveIdChange,
 }) => {
-    const { namespace, translationKey, toolsStation, translatron, individuator } = useMachineWard();
-    const [registry] = useSubjectState(translatron.registry$);
-    const [settings] = useSubjectState(individuator.settings$);
+    const { toolsStation } = useMachineWard();
     const toolPanels = useObservableState(toolsStation.toolPanelsByPlacement$, []);
     const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
     const effectivePanels = toolPanelsByPlacement[placement];
@@ -32,62 +31,10 @@ export const MapSectionPanel: FC<Props> = ({
         right: "to-left",
         bottom: "to-top",
     };
-    const tooltipPlacement: { [key in ToolPanelPlacement]: TooltipPlacement } = {
-        left: "right",
-        right: "left",
-        bottom: "top",
-    };
-    const showHeaders = effectivePanels.length > (placement === 'bottom' ? 0 : 0);
-    const color = placement === 'bottom' ? 'primary' : 'secondary';
-    const buttonSize = placement === 'bottom' ? 'sm' : 'md';
+    const showHeader = effectivePanels.length > (placement === 'bottom' ? 1 : 0)
 
-    const headers = showHeaders ? (
-        <div className={styles['content-header']}>
-            {effectivePanels.map(({ id, icon, title, }) => {
-                const tooltip = translatron.translate(settings.language, registry, title);
-                const isActive = activeId === id;
-
-                return (
-                    <Button
-                        key={id}
-                        size={buttonSize}
-                        variant={isActive ? 'outline' : 'ghost'}
-                        color={isActive ? color : "neutral"}
-                        highlightColor={color}
-                        active={isActive}
-                        icon={icon}
-                        aria-label={tooltip}
-                        tooltip={tooltip}
-                        tooltipPlacement={tooltipPlacement[placement]}
-                        showTooltipConnection
-                        onClick={() => onActiveIdChange(activeId === id ? null : id)}
-                    />
-                );
-            })}
-            {placement !== 'bottom' ? <span className={styles['spacer-line']} /> : null}
-            <Button
-                size={buttonSize}
-                variant='ghost'
-                color={color}
-                icon={Icons.NounProject.ChevronDownDouble}
-                iconRotateZ={((placement === 'bottom'
-                    ? 0
-                    : placement === 'left'
-                        ? 90
-                        : -90) + (activeId === null ? 180 : 0) + 360) % 360}
-                aria-label={translatron.translate(settings.language, registry, { n: namespace, t: activeId === null ? translationKey.Expand : translationKey.Collapse })}
-                tooltip={translatron.translate(settings.language, registry, { n: namespace, t: activeId === null ? translationKey.Expand : translationKey.Collapse })}
-                tooltipPlacement={tooltipPlacement[placement]}
-                onClick={() => {
-                    if (activeId !== null) {
-                        onActiveIdChange(null);
-                    } else {
-                        onActiveIdChange(effectivePanels[0]?.id)
-                    }
-                }}
-                style={placement === 'bottom' ? { marginLeft: 'auto' } : { marginTop: 'auto' }}
-            />
-        </div>
+    const sideHeader = showHeader ? (
+        <MapSectionPanelHeader placement={placement} activeId={activeId} onActiveIdChange={onActiveIdChange} />
     ) : null;
 
     // TODO: Allow changing from one panel at a time to all listed in collapsible sections?
@@ -96,9 +43,9 @@ export const MapSectionPanel: FC<Props> = ({
         <div className={classNames(styles['toolbar'], styles[placement])}>
             <Transition slide={slide[placement]} render={effectivePanels.length > 0}>
                 <div className={classNames(styles['content'], {
-                    [styles['with-header']]: showHeaders
+                    [styles['with-header']]: showHeader,
                 })}>
-                    {placement !== 'left' ? headers : null}
+                    {placement !== 'left' ? sideHeader : null}
                     <div className={styles['component']}>
                         {toolPanel ? (
                             <>
@@ -107,7 +54,7 @@ export const MapSectionPanel: FC<Props> = ({
                             </>
                         ) : null}
                     </div>
-                    {placement === 'left' ? headers : null}
+                    {placement === 'left' ? sideHeader : null}
                 </div>
             </Transition>
         </div>

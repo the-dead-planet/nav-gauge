@@ -73,16 +73,13 @@
 
 .toolbar.top {
     grid-area: top-toolbar;
+    z-index: 1;
 }
 
 .toolbar.top .content {
     height: 40px;
     border-bottom: 1px solid var(--color-secondary);
     box-shadow: 1px 1px 3px rgb(from var(--color-box-shadow) r g b / .4);
-}
-
-.toolbar {
-    overflow: hidden;
 }
 
 .toolbar.left .content,
@@ -144,10 +141,18 @@
 
 .toolbar.bottom .content-header {
     flex-direction: row;
-    margin-top: -1px;
-    border-bottom: 1px solid rgb(from var(--color-primary) r g b / .4);
-    position: sticky;
-    top: 0;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, calc(-100% - 2px));
+    display: flex;
+    border-style: solid;
+    border-width: 2px;
+    border-bottom: none;
+    border-color: var(--color-primary);
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+    padding: 2px 4px 0 4px;
+    background-color: rgb(from var(--color-background) r g b / .82);
 }
 
 .toolbar.left .content-header,
