@@ -27,48 +27,13 @@ export const MapSectionPanelHeader: FC<Props> = ({
         right: "left",
         bottom: "top",
     };
-    const color = placement === 'bottom' ? 'primary' : 'secondary';
-    const buttonSize = placement === 'bottom' ? 'sm' : 'md';
+    const color = 'secondary';
+    const buttonSize = 'md';
 
     // TODO: Allow changing from one panel at a time to all listed in collapsible sections?
     // TODO: Allow manual resize
     return (
         <div className={styles['content-header']}>
-            {placement === 'bottom' ? (
-                <>
-                    <svg width="28" height="28" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
-                        style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                        }}
-                    >
-                        <path d="M0,100 C60,100 40,0 100,0"
-                            fill="none"
-                            stroke="var(--color-primary)"
-                            stroke-width="5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        />
-                    </svg>
-                    <svg width="28" height="28" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
-                        style={{
-                            position: 'absolute',
-                            top: 0,
-                            right: 0,
-                            transform: 'scaleX(-1)',
-                        }}
-                    >
-                        <path d="M0,100 C60,100 40,0 100,0"
-                            fill="none"
-                            stroke="var(--color-primary)"
-                            stroke-width="5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        />
-                    </svg>
-                </>
-            ) : null}
             {effectivePanels.map(({ id, icon, title, }) => {
                 const tooltip = translatron.translate(settings.language, registry, title);
                 const isActive = activeId === id;
@@ -77,7 +42,7 @@ export const MapSectionPanelHeader: FC<Props> = ({
                     <Button
                         key={id}
                         size={buttonSize}
-                        variant={isActive && placement !== 'bottom' ? 'outline' : 'ghost'}
+                        variant={isActive ? 'outline' : 'ghost'}
                         color={isActive ? color : "neutral"}
                         highlightColor={color}
                         active={isActive}
@@ -90,27 +55,25 @@ export const MapSectionPanelHeader: FC<Props> = ({
                     />
                 );
             })}
-            {placement !== 'bottom' ? <span className={styles['spacer-line']} /> : null}
-            {placement !== 'bottom' ? (
-                <Button
-                    size={buttonSize}
-                    variant='ghost'
-                    color={color}
-                    icon={Icons.NounProject.ChevronDownDouble}
-                    iconRotateZ={((placement === 'left' ? 90 : -90) + (activeId === null ? 180 : 0) + 360) % 360}
-                    aria-label={translatron.translate(settings.language, registry, { n: namespace, t: activeId === null ? translationKey.Expand : translationKey.Collapse })}
-                    tooltip={translatron.translate(settings.language, registry, { n: namespace, t: activeId === null ? translationKey.Expand : translationKey.Collapse })}
-                    tooltipPlacement={tooltipPlacement[placement]}
-                    onClick={() => {
-                        if (activeId !== null) {
-                            onActiveIdChange(null);
-                        } else {
-                            onActiveIdChange(effectivePanels[0]?.id)
-                        }
-                    }}
-                    style={{ marginTop: 'auto' }}
-                />
-            ) : null}
+            <span className={styles['spacer-line']} />
+            <Button
+                size={buttonSize}
+                variant='ghost'
+                color={color}
+                icon={Icons.NounProject.ChevronDownDouble}
+                iconRotateZ={((placement === 'left' ? 90 : -90) + (activeId === null ? 180 : 0) + 360) % 360}
+                aria-label={translatron.translate(settings.language, registry, { n: namespace, t: activeId === null ? translationKey.Expand : translationKey.Collapse })}
+                tooltip={translatron.translate(settings.language, registry, { n: namespace, t: activeId === null ? translationKey.Expand : translationKey.Collapse })}
+                tooltipPlacement={tooltipPlacement[placement]}
+                onClick={() => {
+                    if (activeId !== null) {
+                        onActiveIdChange(null);
+                    } else {
+                        onActiveIdChange(effectivePanels[0]?.id)
+                    }
+                }}
+                style={{ marginTop: 'auto' }}
+            />
         </div>
     );
 };

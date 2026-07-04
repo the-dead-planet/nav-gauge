@@ -7,6 +7,7 @@ import { TransitionProps } from "@ui";
 import { T } from "@web-apparatus";
 import { MapSectionPanelHeader } from "./MapSectionPanelHeader";
 import styles from './map-section.module.css';
+import { MapSectionBottomPanelHeader } from "./MapSectionBottomPanelHeader";
 
 interface Props {
     placement: ToolPanelPlacement;
@@ -45,7 +46,8 @@ export const MapSectionPanel: FC<Props> = ({
                 <div className={classNames(styles['content'], {
                     [styles['with-header']]: showHeader,
                 })}>
-                    {placement !== 'left' ? sideHeader : null}
+                    {placement === 'bottom' ? <MapSectionBottomPanelHeader placement={placement} activeId={activeId} onActiveIdChange={onActiveIdChange} /> : null}
+                    {placement === 'right' ? sideHeader : null}
                     <div className={styles['component']}>
                         {toolPanel ? (
                             <>
