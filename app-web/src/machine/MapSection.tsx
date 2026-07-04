@@ -10,8 +10,8 @@ import { createMap } from "./map";
 import { MapSectionPanel } from "./panels/MapSectionPanel";
 import { MapSectionIcons } from "./MapSectionIcons";
 import { Icons, useTheme } from "@ui";
-import styles from './map-section.module.css';
 import { MapSectionTopTools } from "./MapSectionTopTools";
+import styles from './map-section.module.css';
 
 export const MapSection: FC = () => {
     const theme = useTheme();

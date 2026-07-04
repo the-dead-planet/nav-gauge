@@ -1,7 +1,9 @@
 import { FC } from "react";
 import { ReactSVG } from 'react-svg';
+import classNames from "classnames";
 import { IconProps } from "./model";
 import { Icons } from "@ui";
+import styles from './icon.module.css';
 
 interface Props {
     src: string;
@@ -11,7 +13,7 @@ interface Props {
     ariaHidden?: boolean;
 }
 
-export const Icon: FC<Props & IconProps> = ({ src, width = 24, height = 24, strokeWidth, ariaHidden = true, ...props }) => {
+export const Icon: FC<Props & IconProps> = ({ src, width = 24, height = 24, strokeWidth, ariaHidden = true, className, ...props }) => {
     const color = props.color;
     const fill = props.fill || color;
     const stroke = props.stroke || color;
@@ -32,6 +34,7 @@ export const Icon: FC<Props & IconProps> = ({ src, width = 24, height = 24, stro
                     stroke-width:${strokeWidth || 'inherit'}px
                 `)
             }}
+            className={classNames(styles['icon'], className)}
             {...props}
         />
     );

@@ -5,6 +5,7 @@ export interface TransitionProps {
     durationMs?: number;
     slide?: 'to-top' | 'to-right' | 'to-bottom' | 'to-left';
     fade?: boolean;
+    keepAlive?: boolean;
     onUnmount?: () => void;
     children: ReactNode;
 }

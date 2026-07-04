@@ -42,7 +42,7 @@ export const MapSectionPanel: FC<Props> = ({
     // TODO: Allow manual resize
     return (
         <div className={classNames(styles['toolbar'], styles[placement])}>
-            <Transition slide={slide[placement]} render={effectivePanels.length > 0}>
+            <Transition slide={slide[placement]} fade render={effectivePanels.length > 0}>
                 <div className={classNames(styles['content'], {
                     [styles['with-header']]: showHeader,
                 })}>

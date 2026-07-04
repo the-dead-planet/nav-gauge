@@ -3,21 +3,7 @@ import { Alert, StyleSheet, View, ViewProps } from "react-native";
 import { DocumentPickerOptions, DocumentPickerResponse, pick } from '@react-native-documents/picker';
 import { Button } from "../../button";
 import { Text } from "../../typography";
-
-// TODO: Extract common props
-export interface FileInputProps {
-    fileName: string | null | undefined;
-    fileLabel: string;
-    purgeLabel: string;
-    cancelLabel: string;
-    noNameLabel: string;
-    type: DocumentPickerOptions['type'];
-    allowMultiSelection?: boolean;
-    onUpload: (files: DocumentPickerResponse[]) => Promise<void>;
-    onPurge: () => void;
-    onError?: (error: Error) => void;
-    onIsLoadingChange?: (isLoading: boolean) => void;
-}
+import { FileInputProps } from "@ui";
 
 const styles = StyleSheet.create({
     container: {
@@ -31,7 +17,12 @@ const styles = StyleSheet.create({
     },
 });
 
-export const FileInput: FC<FileInputProps & ViewProps> = ({
+interface Props extends FileInputProps<DocumentPickerResponse> {
+    type: DocumentPickerOptions['type'];
+    allowMultiSelection?: boolean;
+}
+
+export const FileInput: FC<Props & ViewProps> = ({
     fileName,
     fileLabel,
     purgeLabel,

@@ -3,6 +3,7 @@ export * from './checkbox';
 export * from './color-input';
 export * from './dialog';
 export * from './dropdown';
+export * from './forms';
 export * from './hud';
 export * from './date-time';
 export * from './error-boundary';

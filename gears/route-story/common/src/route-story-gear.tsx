@@ -151,7 +151,7 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
             {
                 title: { n: this.id, t: this.internalTranslationKey.Player },
                 placement: 'bottom',
-                icon: Icons.NounProject.PayerConfiguration as unknown as string,
+                icon: Icons.NounProject.PlayerConfiguration as unknown as string,
                 component: this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, ToolPanelProps<TMap>>(this.playerComponent, this.getProps())
             }
         );

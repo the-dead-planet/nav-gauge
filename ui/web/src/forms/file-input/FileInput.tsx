@@ -1,36 +1,29 @@
 import { ChangeEvent, ComponentProps, ElementType, FC, useRef, useState } from "react";
-import { ColorVariant, Icons } from "@ui";
+import {  FileInputProps, Icons } from "@ui";
 import { Button } from "../../button";
 import { Dialog } from "../../dialog";
 import { P, Label } from "../../typography";
 import classNames from "classnames";
 import styles from './file-input.module.css';
 
-export interface FileInputProps {
-    fileName: string | null | undefined;
-    color?: ColorVariant;
-    fileLabel: string;
-    purgeLabel: string;
-    cancelLabel: string;
-    noNameLabel: string;
+interface Props extends FileInputProps<File> {
     accept: string;
-    onUpload: (files: File[]) => void;
-    onPurge: () => void;
-    disabled?: boolean;
     fileNameComponent?: ElementType;
 }
 
-export const FileInput: FC<FileInputProps & ComponentProps<'div'>> = ({
+export const FileInput: FC<Props & ComponentProps<'div'>> = ({
+    fileIcon = Icons.NounProject.Upload,
     fileName,
     color,
     fileLabel,
+    fileTooltipPlacement,
     purgeLabel,
+    purgeTooltipPlacement,
     cancelLabel,
     noNameLabel,
     accept,
     onUpload,
     onPurge,
-    disabled,
     fileNameComponent: FileNameComponent = Label,
     className,
     ...props
@@ -63,8 +56,12 @@ export const FileInput: FC<FileInputProps & ComponentProps<'div'>> = ({
                 aria-label={fileLabel}
                 variant="fill"
                 color={color}
+                size="sm"
                 corners="circle"
-                icon={Icons.NounProject.Upload}
+                icon={fileIcon}
+                tooltip={fileLabel}
+                tooltipPlacement={fileTooltipPlacement}
+                showTooltipConnection
                 onClick={() => inputRef.current?.click()}
             />
             <FileNameComponent
@@ -82,8 +79,9 @@ export const FileInput: FC<FileInputProps & ComponentProps<'div'>> = ({
                 onClick={() => setShowPurgeDialog(true)}
                 aria-label={purgeLabel}
                 tooltip={purgeLabel}
+                tooltipPlacement={purgeTooltipPlacement}
                 showTooltipConnection
-                disabled={disabled ?? !fileName}
+                disabled={!fileName}
                 className={styles['purge-button']}
             />
             {showPurgeDialog ? (
