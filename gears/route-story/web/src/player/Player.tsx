@@ -113,6 +113,7 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibr
                         ))}
                 </div> */}
                 <Slider
+                    aria-label="TODO: Slider"
                     value={progressMs}
                     min={0}
                     max={routeTimes?.duration ?? 1}

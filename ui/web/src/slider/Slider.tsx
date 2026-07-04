@@ -1,9 +1,9 @@
-import { ChangeEvent, CSSProperties, FC } from "react";
+import { ChangeEvent, ComponentProps, CSSProperties, FC } from "react";
 import classNames from "classnames";
 import { SliderProps, useTheme } from "@ui";
 import styles from './slider.module.css';
 
-export const Slider: FC<SliderProps & { className?: string; style?: CSSProperties }> = ({
+export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' | 'size'>> = ({
     color = 'neutral',
     highlightColor: hlColor,
     size = 'md',
@@ -16,6 +16,7 @@ export const Slider: FC<SliderProps & { className?: string; style?: CSSPropertie
     disabled = false,
     className,
     style,
+    ...props
 }) => {
     const theme = useTheme();
     const highlightColor = hlColor || color;
@@ -51,6 +52,7 @@ export const Slider: FC<SliderProps & { className?: string; style?: CSSPropertie
                 '--track-complete': `${progress}%`,
                 ...style,
             } as CSSProperties}
+            {...props}
         />
     );
 };

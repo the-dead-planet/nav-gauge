@@ -1,5 +1,5 @@
 import { FC, forwardRef, useMemo } from "react";
-import { ViewStyle } from "react-native";
+import { Platform, ViewStyle } from "react-native";
 import RNRCSlider from "@react-native-community/slider";
 import { SliderProps, useTheme } from "@ui";
 
@@ -9,16 +9,7 @@ const sliderHeights: Record<string, number> = { xs: 16, sm: 22, md: 28 };
 function thumbUri(size: number, fill: string, stroke: string): string {
     const half = size / 2;
     const svg = `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-            <filter id="g" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="1.5" result="b"/>
-                <feMerge>
-                    <feMergeNode in="b"/>
-                    <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-            </filter>
-        </defs>
-        <rect x="1" y="1" width="${size - 2}" height="${size - 2}" fill="${fill}" stroke="${stroke}" stroke-width="2" transform="rotate(45 ${half} ${half})" filter="url(#g)"/>
+        <rect x="1" y="1" width="${size - 2}" height="${size - 2}" fill="${fill}" stroke="${stroke}" stroke-width="2" transform="rotate(45 ${half} ${half})"/>
     </svg>`;
     return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
@@ -62,7 +53,8 @@ export const Slider = forwardRef<any, SliderProps & { style?: ViewStyle }>(({
             disabled={disabled}
             minimumTrackTintColor={hlTrackColor}
             maximumTrackTintColor={trackBg}
-            thumbImage={thumb}
+            thumbImage={Platform.OS !== 'android' ? thumb : undefined}
+            thumbTintColor={Platform.OS === 'android' ? fillColor : undefined}
             style={sliderStyle}
         />
     );
