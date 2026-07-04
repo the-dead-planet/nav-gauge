@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useId } from "react";
 import { Button } from "@web-ui";
 import { useObservableState, useSubjectState } from "@tinker-chest";
 import { ToolPanelPlacement, useMachineWard } from "@apparatus";
@@ -29,14 +29,16 @@ export const MapSectionBottomPanelHeader: FC<Props> = ({
     };
     const color = 'primary';
     const buttonSize = 'sm';
+    const clipId = useId();
 
     // TODO: Allow changing from one panel at a time to all listed in collapsible sections?
     // TODO: Allow manual resize
     return (
         <div className={styles['content-header']}>
-            <div style={{ flexGrow: 1, height: '2px', backgroundColor: 'var(--color-primary)' }} />
+            <div className={styles['bezier-spacer']} />
 
             <div className={styles['header-content']}>
+                <div className={styles['bottom-header-content-background']} />
                 <svg width="28" height="28" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
                     style={{
                         position: 'absolute',
@@ -45,9 +47,8 @@ export const MapSectionBottomPanelHeader: FC<Props> = ({
                     }}
                 >
                     <path
-                        transform="translate(0, -5)"
-                        d="M0,100 C60,100 40,0 100,0"
-                        fill="none"
+                        d="M0,95 C60,100 40,0 100,5"
+                        fill="var(--toolbar-background-color)"
                         stroke="var(--color-primary)"
                         stroke-width="8"
                         stroke-linecap="round"
@@ -99,12 +100,10 @@ export const MapSectionBottomPanelHeader: FC<Props> = ({
                         position: 'absolute',
                         top: 0,
                         right: 0,
-                        transform: 'scaleX(-1)',
                     }}
                 >
                     <path
-                        transform="translate(0, -5)"
-                        d="M0,100 C60,100 40,0 100,0"
+                        d="M100,95 C40,100 60,0 0,5"
                         fill="none"
                         stroke="var(--color-primary)"
                         stroke-width="8"
@@ -114,7 +113,7 @@ export const MapSectionBottomPanelHeader: FC<Props> = ({
                 </svg>
             </div>
 
-            <div style={{ flexGrow: 1, height: '2px', backgroundColor: 'var(--color-primary)' }} />
+            <div className={styles['bezier-spacer']} />
         </div>
     );
 };

@@ -64,10 +64,12 @@
 
 .toolbar {
     box-sizing: border-box;
+
+    --toolbar-background-color: rgb(from var(--color-background) r g b / .82);
 }
 
 .toolbar .content {
-    background-color: rgb(from var(--color-background) r g b / .82);
+    background-color: var(--toolbar-background-color);
     backdrop-filter: blur(2px);
 }
 
@@ -146,12 +148,26 @@
 
 .toolbar.bottom .content-header .header-content {
     position: relative;
-    background-color: rgb(from var(--color-background) r g b / .82);
     padding: 2px 28px;
     box-sizing: border-box;
     display: flex;
     margin-bottom: 0px;
-    border-top: 2px solid var(--color-primary);
+}
+
+.bezier-spacer {
+    flex-grow: 1;
+    height: 2px;
+    background-color: var(--color-primary);
+}
+
+.bottom-header-content-background {
+    background-color: var(--toolbar-background-color);
+    position: absolute;
+    z-index: -1;
+    left: 28px;
+    right: 28px;
+    height: 100%;
+    top: 0;
 }
 
 .toolbar.left .content-header,
