@@ -18,7 +18,7 @@ import * as Translations from "./translations";
  * Describes the expected content of the applications and renders complete app.
  */
 export abstract class MachineWard<TMap = unknown, TNavigationPath extends string = string> {
-    public title = 'zone 99';
+    public title = 'nav gauge';
 
     public readonly namespace = 'machine-ward';
     public readonly translations: TranslationTable<MachineTranslationKey> = Translations;
