@@ -184,6 +184,10 @@ export const Button: FC<PressableProps & ButtonProps & Props> = ({
         container.boxShadow = undefined;
     }
 
+    if (disabled) {
+        container.opacity = 0.45;
+    }
+
     const fillTextColor = color === 'neutral'
         ? theme.color('neutral', 100)
         : theme.color(color, 100);
@@ -257,15 +261,17 @@ export const Button: FC<PressableProps & ButtonProps & Props> = ({
             onPress={onPress ?? undefined}
             onLongPress={onLongPress ?? undefined}
             onPressIn={(e) => {
-                setPressed(true);
-                markGlowDrawn();
+                if (!disabled) {
+                    setPressed(true);
+                    markGlowDrawn();
+                }
                 onPressIn?.(e);
             }}
             onPressOut={(e) => {
                 setPressed(false);
                 onPressOut?.(e);
             }}
-            style={typeof style === 'function' ? undefined : style}
+            style={typeof style === 'function' ? undefined : (disabled ? { ...(style as ViewStyle || {}), opacity: 0.45 } as ViewStyle : style as ViewStyle)}
         >
             {content}
         </Hexagon>
@@ -276,8 +282,10 @@ export const Button: FC<PressableProps & ButtonProps & Props> = ({
             onPress={onPress ?? undefined}
             onLongPress={onLongPress ?? undefined}
             onPressIn={(e) => {
-                setPressed(true);
-                markGlowDrawn();
+                if (!disabled) {
+                    setPressed(true);
+                    markGlowDrawn();
+                }
                 onPressIn?.(e);
             }}
             onPressOut={(e) => {

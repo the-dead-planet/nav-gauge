@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
 
 interface Props extends FileInputProps<DocumentPickerResponse> {
     type: DocumentPickerOptions['type'];
-    allowMultiSelection?: boolean;
 }
 
 export const FileInput: FC<Props & ViewProps> = ({
@@ -29,7 +28,7 @@ export const FileInput: FC<Props & ViewProps> = ({
     cancelLabel,
     noNameLabel,
     type,
-    allowMultiSelection,
+    mutiple,
     onUpload,
     onPurge,
     onError,
@@ -44,7 +43,7 @@ export const FileInput: FC<Props & ViewProps> = ({
             const files = await pick({
                 mode: 'open',
                 type,
-                allowMultiSelection,
+                allowMultiSelection: mutiple,
             });
             await onUpload(files);
         } catch (err) {

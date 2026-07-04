@@ -34,9 +34,24 @@ const allGlowStyles: GlowStyle[] = ['none', 'glow', 'animate-borders-glow'];
 export const AllVariants: FC = () => {
     const [highlightColor, setHighlightColor] = useState<ColorVariant | undefined>(undefined);
     const [glowStyle, setGlowStyle] = useState<GlowStyle>('none');
+    const [disabled, setDisabled] = useState(false);
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
+            <View style={styles.section}>
+                <View style={styles.row}>
+                    <Button
+                        variant={disabled ? 'fill' : 'ghost'}
+                        color="primary"
+                        size="xs"
+                        corners="rounded"
+                        active={disabled}
+                        onPress={() => setDisabled((d) => !d)}
+                    >
+                        disabled: {String(disabled)}
+                    </Button>
+                </View>
+            </View>
             <View style={styles.section}>
                 <Text style={styles.label}>highlightColor: {highlightColor ?? 'default'}</Text>
                 <View style={styles.row}>
@@ -49,6 +64,7 @@ export const AllVariants: FC = () => {
                             size="xs"
                             corners="rounded"
                             active={highlightColor === c}
+                            disabled={disabled}
                             onPress={() => setHighlightColor(c)}
                         >
                             {c ?? 'default'}
@@ -68,6 +84,7 @@ export const AllVariants: FC = () => {
                             size="xs"
                             corners="rounded"
                             active={glowStyle === g}
+                            disabled={disabled}
                             onPress={() => setGlowStyle(g)}
                         >
                             {g}
@@ -101,6 +118,7 @@ export const AllVariants: FC = () => {
                                                 corners={corners}
                                                 size={size}
                                                 highlightColor={highlightColor}
+                                                disabled={disabled}
                                             >
                                                 {corners !== 'hexagon' ? color : null}
                                             </Button>

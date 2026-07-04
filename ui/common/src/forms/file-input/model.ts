@@ -4,6 +4,7 @@ import { TooltipPlacement } from "../../tooltip";
 export interface FileInputProps<TFile> {
     fileIcon?: string;
     color?: ColorVariant;
+    mutiple?: boolean;
     fileName: string | null | undefined;
     fileLabel: string;
     fileTooltipPlacement?: TooltipPlacement;

@@ -14,6 +14,7 @@ interface Props extends FileInputProps<File> {
 export const FileInput: FC<Props & ComponentProps<'div'>> = ({
     fileIcon = Icons.NounProject.Upload,
     fileName,
+    mutiple,
     color,
     fileLabel,
     fileTooltipPlacement,
@@ -45,8 +46,9 @@ export const FileInput: FC<Props & ComponentProps<'div'>> = ({
     return (
         <div className={classNames(styles['container'], className)} {...props}>
             <input
+                aria-label={fileLabel}
                 type="file"
-                multiple
+                multiple={mutiple}
                 accept={accept}
                 onChange={handleInput}
                 ref={inputRef}
@@ -78,7 +80,7 @@ export const FileInput: FC<Props & ComponentProps<'div'>> = ({
                 icon={Icons.NounProject.Clear}
                 onClick={() => setShowPurgeDialog(true)}
                 aria-label={purgeLabel}
-                tooltip={purgeLabel}
+                tooltip={fileName ? purgeLabel : undefined}
                 tooltipPlacement={purgeTooltipPlacement}
                 showTooltipConnection
                 disabled={!fileName}

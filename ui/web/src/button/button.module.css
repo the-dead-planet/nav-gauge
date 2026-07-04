@@ -656,6 +656,156 @@
     box-shadow: none;
 }
 
+/* ── Disabled state ── */
+
+.button.disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.button.disabled.interactive {
+    cursor: not-allowed;
+}
+
+.button.disabled:is(.variant-ghost, .variant-fill, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset):hover,
+.button.disabled:is(.variant-ghost, .variant-fill, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset).hovered,
+.button.disabled:is(.variant-ghost, .variant-fill, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset):active,
+.button.disabled:is(.variant-ghost, .variant-fill, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset).active {
+    cursor: not-allowed;
+    box-shadow: none;
+    text-shadow: none;
+    filter: none;
+    animation: none;
+}
+
+.button.disabled:is(.variant-ghost, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset):hover,
+.button.disabled:is(.variant-ghost, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset).hovered,
+.button.disabled:is(.variant-ghost, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset):active,
+.button.disabled:is(.variant-ghost, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset).active,
+.button.disabled:is(.variant-ghost, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset):hover .icon,
+.button.disabled:is(.variant-ghost, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset).hovered .icon,
+.button.disabled:is(.variant-ghost, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset):active .icon,
+.button.disabled:is(.variant-ghost, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset).active .icon {
+    color: var(--button-color);
+    stroke: var(--button-color);
+    fill: var(--button-color);
+}
+
+.button.disabled.variant-fill:hover,
+.button.disabled.variant-fill.hovered,
+.button.disabled.variant-fill:active,
+.button.disabled.variant-fill.active,
+.button.disabled.variant-fill:hover .icon,
+.button.disabled.variant-fill.hovered .icon,
+.button.disabled.variant-fill:active .icon,
+.button.disabled.variant-fill.active .icon {
+    background-color: var(--button-color);
+    color: var(--button-color-light);
+    stroke: var(--button-color-light);
+    fill: var(--button-color-light);
+}
+
+.button.disabled.variant-fill-inverse:hover,
+.button.disabled.variant-fill-inverse.hovered,
+.button.disabled.variant-fill-inverse:active,
+.button.disabled.variant-fill-inverse.active,
+.button.disabled.variant-fill-inverse:hover .icon,
+.button.disabled.variant-fill-inverse.hovered .icon,
+.button.disabled.variant-fill-inverse:active .icon,
+.button.disabled.variant-fill-inverse.active .icon {
+    background-color: var(--button-color-inverse);
+    border-color: var(--button-color);
+    color: var(--button-color);
+    stroke: var(--button-color);
+    fill: var(--button-color);
+}
+
+.button.disabled.variant-fill-translucent:hover,
+.button.disabled.variant-fill-translucent.hovered,
+.button.disabled.variant-fill-translucent:active,
+.button.disabled.variant-fill-translucent.active,
+.button.disabled.variant-fill-translucent:hover .icon,
+.button.disabled.variant-fill-translucent.hovered .icon,
+.button.disabled.variant-fill-translucent:active .icon,
+.button.disabled.variant-fill-translucent.active .icon {
+    border-color: rgb(from var(--button-color) r g b / .3);
+    color: var(--button-color);
+    background-color: rgb(from var(--button-color) r g b / .24);
+    stroke: var(--button-color);
+    fill: var(--button-color);
+}
+
+.button.disabled.variant-outline:hover,
+.button.disabled.variant-outline.hovered,
+.button.disabled.variant-outline:active,
+.button.disabled.variant-outline.active,
+.button.disabled.variant-outline:hover .icon,
+.button.disabled.variant-outline.hovered .icon,
+.button.disabled.variant-outline:active .icon,
+.button.disabled.variant-outline.active .icon {
+    background-color: transparent;
+    border-color: var(--button-color);
+    color: var(--button-color);
+    stroke: var(--button-color);
+    fill: var(--button-color);
+}
+
+.button.disabled.variant-inset:hover,
+.button.disabled.variant-inset.hovered,
+.button.disabled.variant-inset:active,
+.button.disabled.variant-inset.active,
+.button.disabled.variant-inset:hover .icon,
+.button.disabled.variant-inset.hovered .icon,
+.button.disabled.variant-inset:active .icon,
+.button.disabled.variant-inset.active .icon {
+    color: var(--button-color);
+    stroke: var(--button-color);
+    fill: var(--button-color);
+}
+
+.button.disabled.variant-inset.mode-light:hover,
+.button.disabled.variant-inset.mode-light.hovered,
+.button.disabled.variant-inset.mode-light:active,
+.button.disabled.variant-inset.mode-light.active {
+    box-shadow:
+        rgb(from var(--button-color-shadow) r g b / .18) 4px 4px 8px inset,
+        rgb(from var(--button-color-shadow) r g b / .04) -2px -2px 6px inset,
+        rgba(255, 255, 255, .35) -2px -2px 4px inset;
+}
+
+.button.disabled.variant-inset.mode-dark:hover,
+.button.disabled.variant-inset.mode-dark.hovered,
+.button.disabled.variant-inset.mode-dark:active,
+.button.disabled.variant-inset.mode-dark.active {
+    box-shadow:
+        rgba(0, 0, 0, .80) 4px 4px 8px inset,
+        rgba(255, 255, 255, .08) -2px -2px 4px inset;
+}
+
+/* Hexagon disabled: keep base color, dim via opacity only */
+.button.disabled.corners-hexagon,
+.button.disabled.corners-hexagon .icon,
+.button.disabled.corners-hexagon:hover,
+.button.disabled.corners-hexagon.hovered,
+.button.disabled.corners-hexagon:active,
+.button.disabled.corners-hexagon.active {
+    color: var(--button-color);
+}
+
+.button.disabled.corners-hexagon.variant-fill,
+.button.disabled.corners-hexagon.variant-fill .icon,
+.button.disabled.corners-hexagon.variant-fill:hover,
+.button.disabled.corners-hexagon.variant-fill.hovered,
+.button.disabled.corners-hexagon.variant-fill:active,
+.button.disabled.corners-hexagon.variant-fill.active {
+    color: var(--button-color-light);
+}
+
+/* Prevent double‑dimming: hexagon wrapper handles opacity */
+.button.disabled.corners-hexagon {
+    opacity: 1;
+}
+
 @keyframes glow-sweep {
     0% {
         box-shadow:

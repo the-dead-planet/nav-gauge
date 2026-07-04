@@ -22,9 +22,21 @@ export const ButtonVariants = {
     render: () => {
         const [highlightColor, setHighlightColor] = useState<ColorVariant | undefined>(undefined);
         const [glowStyle, setGlowStyle] = useState<GlowStyle>();
+        const [disabled, setDisabled] = useState(false);
 
         return (
             <>
+                <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                    <Button
+                        variant={disabled ? 'fill' : 'ghost'}
+                        size="xs"
+                        corners="circle"
+                        active={disabled}
+                        onClick={() => setDisabled((d) => !d)}
+                    >
+                        disabled: {String(disabled)}
+                    </Button>
+                </div>
                 <Text style={{ fontWeight: 700, marginBottom: 10 }}>Active highlightColor: {highlightColor ?? 'default'}</Text>
                 <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
                     {[undefined, ...allColors].map((c) => (
@@ -36,6 +48,7 @@ export const ButtonVariants = {
                             size="xs"
                             corners="circle"
                             active={highlightColor === c}
+                            disabled={disabled}
                             onClick={() => setHighlightColor(c)}
                         >
                             {c ?? 'default'}
@@ -50,6 +63,7 @@ export const ButtonVariants = {
                             size="xs"
                             corners="circle"
                             active={glowStyle === gs}
+                            disabled={disabled}
                             onClick={() => setGlowStyle(gs)}
                         >
                             {gs ?? 'none'}
@@ -81,6 +95,7 @@ export const ButtonVariants = {
                                                         size={size}
                                                         highlightColor={highlightColor}
                                                         glowStyle={glowStyle}
+                                                        disabled={disabled}
                                                     >
                                                         {corners !== 'hexagon' ? color : null}
                                                     </Button>

@@ -24,6 +24,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     corners = 'square',
     active = false,
     themeMode,
+    disabled,
     icon,
     iconRotateX = 0,
     iconRotateZ = 0,
@@ -62,10 +63,11 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
                 styles[`size-${size}`],
                 styles[`corners-${corners}`],
                 {
-                    [styles['interactive']]: !!onClick,
+                    [styles['interactive']]: !!onClick && !disabled,
                     [styles['hovered']]: isHovered,
                     [styles['active']]: active,
                     [styles[`only-icon-${size}`]]: !children,
+                    [styles['disabled']]: disabled,
                 },
                 corners !== 'hexagon' ? className : null
             )}
@@ -80,6 +82,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
                     style={{
                         '--rotate-x': `${iconRotateX}deg`,
                         '--rotate-z': `${iconRotateZ}deg`,
+                        cursor: disabled ? 'not-allowed' : undefined
                     } as CSSProperties}
                     className={classNames(styles['icon'], {
                         [styles['rotate']]: iconRotateX || iconRotateZ
@@ -102,16 +105,16 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
             color={color}
             highlightColor={highlightColor}
             active={active}
-            interactive
+            interactive={!disabled}
             role="button"
-            onClick={(e) => {
+            onClick={!disabled ? (e) => {
                 try {
                     onClick?.(e as unknown as MouseEvent<HTMLButtonElement>);
                 } catch { }
-            }}
+            } : undefined}
             onMouseEnter={() => setIsHoveringHud(true)}
             onMouseLeave={() => setIsHoveringHud(false)}
-            style={style}
+            style={disabled ? { ...style, opacity: 0.45, cursor: 'not-allowed' } : style}
             className={className}
         >
             {renderButton(isHoveringHud)}
