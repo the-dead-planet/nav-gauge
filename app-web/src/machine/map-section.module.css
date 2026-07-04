@@ -145,14 +145,12 @@
     left: 50%;
     transform: translate(-50%, calc(-100% - 2px));
     display: flex;
-    border-style: solid;
-    border-width: 2px;
-    border-bottom: none;
-    border-color: var(--color-primary);
-    border-top-right-radius: 8px;
-    border-top-left-radius: 8px;
-    padding: 2px 4px 0 4px;
+    /* border-top: 2px solid var(--color-primary); */
+    padding-top: 2px;
+    box-sizing: border-box;
     background-color: rgb(from var(--color-background) r g b / .82);
+    padding-left: 28px;
+    padding-right: 28px;
 }
 
 .toolbar.left .content-header,

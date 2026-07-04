@@ -31,7 +31,7 @@ export const MapSectionPanel: FC<Props> = ({
         right: "to-left",
         bottom: "to-top",
     };
-    const showHeader = effectivePanels.length > (placement === 'bottom' ? 1 : 0)
+    const showHeader = effectivePanels.length > (placement === 'bottom' ? 0 : 0)
 
     const sideHeader = showHeader ? (
         <MapSectionPanelHeader placement={placement} activeId={activeId} onActiveIdChange={onActiveIdChange} />

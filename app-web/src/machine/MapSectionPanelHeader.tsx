@@ -34,6 +34,41 @@ export const MapSectionPanelHeader: FC<Props> = ({
     // TODO: Allow manual resize
     return (
         <div className={styles['content-header']}>
+            {placement === 'bottom' ? (
+                <>
+                    <svg width="28" height="28" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                        }}
+                    >
+                        <path d="M0,100 C60,100 40,0 100,0"
+                            fill="none"
+                            stroke="var(--color-primary)"
+                            stroke-width="5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+                    </svg>
+                    <svg width="28" height="28" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            right: 0,
+                            transform: 'scaleX(-1)',
+                        }}
+                    >
+                        <path d="M0,100 C60,100 40,0 100,0"
+                            fill="none"
+                            stroke="var(--color-primary)"
+                            stroke-width="5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        />
+                    </svg>
+                </>
+            ) : null}
             {effectivePanels.map(({ id, icon, title, }) => {
                 const tooltip = translatron.translate(settings.language, registry, title);
                 const isActive = activeId === id;
