@@ -61,8 +61,7 @@ export const MapSectionBottomPanelHeader: FC<Props> = ({
                         key={id}
                         size={buttonSize}
                         variant={isActive && placement !== 'bottom' ? 'outline' : 'ghost'}
-                        color={isActive ? color : "neutral"}
-                        highlightColor={color}
+                        color={color}
                         active={isActive}
                         icon={icon}
                         aria-label={tooltip}

@@ -6,8 +6,8 @@ import { ToolPanelPlacement, useMachineWard } from "@apparatus";
 import { TransitionProps } from "@ui";
 import { T } from "@web-apparatus";
 import { MapSectionSidePanelHeader } from "./panels/MapSectionSidePanelHeader";
+import { MapSectionBottomPanelHeader } from "./panels/bottom/MapSectionBottomPanelHeader";
 import styles from './map-section.module.css';
-import { MapSectionBottomPanelHeader } from "./MapSectionBottomPanelHeader";
 
 interface Props {
     placement: ToolPanelPlacement;

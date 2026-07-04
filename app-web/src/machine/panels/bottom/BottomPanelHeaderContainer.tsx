@@ -44,8 +44,6 @@ export const BottomPanelHeaderContainer: FC<Props> = ({
                 <CurveRight />
 
                 {children}
-                {children}
-                {children}
                 {joined ? sideActions : null}
             </div>
 

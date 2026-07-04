@@ -19,7 +19,7 @@ export const RouteStoryFileInput: FC<Props> = ({
 
     return (
         <FileInput
-            routeName={routeName}
+            fileName={routeName}
             fileLabel="File"
             purgeLabel="Purge story"
             cancelLabel="Cancel"
