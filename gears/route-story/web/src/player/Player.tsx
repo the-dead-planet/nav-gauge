@@ -6,7 +6,8 @@ import { updateRouteLayer } from "../tinkers";
 import { WebChronoLens } from "@web-apparatus";
 import { WebMarkerImageData } from "../images/image-parser";
 import styles from './player.module.css';
-import { Checkbox } from "@web-ui";
+import { Button, Checkbox, P } from "@web-ui";
+import { FontType, formatTimeMsAsStandard, Icons } from "@ui";
 
 export const Player: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibregl.Map, File, WebMarkerImageData>> = ({
     map,
@@ -59,14 +60,58 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibr
 
     return (
         <div className={styles.player}>
-            <div className={styles['player-player']}>
-                <div className={styles.pictures}>
+            {/* TODO: Icons */}
+            <Button
+                icon={surveillanceState === SurveillanceState.Stopped ? Icons.RecordCapture : Icons.Stop}
+                size="md"
+                variant="ghost"
+                color="secondary"
+                corners="circle"
+                aria-label="TODO: Record/StopRecord"
+                tooltip="TODO: Record/StopRecord"
+                onClick={playerOperator.onRecord}
+            />
+            {surveillanceState !== SurveillanceState.Stopped ? (
+                <Button
+                    icon={surveillanceState === SurveillanceState.Paused ? Icons.Play : Icons.Pause}
+                    size="md"
+                    variant="outline"
+                    color="secondary"
+                    corners="circle"
+                    aria-label="TODO: Pause record"
+                    tooltip="TODO: Pause erecord"
+                    onClick={playerOperator.onRecordPause}
+                />
+            ) : null}
+            <Button
+                icon={isPlaying ? Icons.Pause : Icons.Play}
+                size="md"
+                variant="outline"
+                color="secondary"
+                corners="circle"
+                aria-label="TODO: Play payse"
+                tooltip="TODO: Play/Pause"
+                onClick={playerOperator.onPlay}
+            />
+            <div style={{ flex: 1, display: 'grid' }}>
+                <div style={{ display: 'flex', columnGap: "10px" }}>
+                    <P fontType={FontType.Numeric} color="tertiary" className={styles.text} style={{ fontSize: '12px', fontVariantNumeric: 'tabular-nums' }}>
+                        {formatTimeMsAsStandard(progressMs)}
+                    </P>
+                    <P fontType={FontType.Numeric} color="tertiary" className={styles.text} style={{ fontSize: '12px', fontVariantNumeric: 'tabular-nums' }}>
+                        {progressPercentage.toFixed(0)}%
+                    </P>
+                    <P fontType={FontType.Numeric} color="tertiary" className={styles.text} style={{ fontSize: '12px', marginLeft: 'auto', fontVariantNumeric: 'tabular-nums' }}>
+                        {!routeTimes ? "" : individuator.formatTimestamp(progressMs + routeTimes.startTimeEpoch, settings)}
+                    </P>
+                </div>
+                {/* <div className={styles.pictures}>
                     {images
                         .filter((image) => image.featureId !== undefined)
                         .map((image) => (
                             <span key={image.id} className={styles['image-marker']} style={{ left: `${getPosition(image.featureId!).toFixed(0)}%` }} />
                         ))}
-                </div>
+                </div> */}
                 <input
                     type="range"
                     value={progressMs}
@@ -77,31 +122,15 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibr
                     // TODO: Fix styles for all browsers
                     // className={styles['progress-slider']}
                     style={{
+                        flex: 1,
                         '--track-complete': `${progressPercentage}%`
                     } as CSSProperties}
                 />
-                <div className={styles.buttons}>
-                    <p className={styles.text}>
-                        {formatCurrentTimestamp(progressMs, progressPercentage)}
-                    </p>
-                    <button onClick={playerOperator.onPlay}>
-                        {isPlaying ? 'Pause' : 'Play'}
-                    </button>
-                    <button onClick={playerOperator.onRecord}>
-                        {surveillanceState === SurveillanceState.Stopped ? 'Start' : 'Stop'} recording
-                    </button>
-                    {surveillanceState !== SurveillanceState.Stopped ? (
-                        <button onClick={playerOperator.onRecordPause}>
-                            {surveillanceState === SurveillanceState.Paused ? 'Resume' : 'Pause'} recording
-                        </button>
-                    ) : null}
-                    <button onClick={chronoLens.destroyRecording}>Clear</button>
-                    <p className={styles.text}>
-                        {!routeTimes ? "" : individuator.formatTimestamp(progressMs + routeTimes.startTimeEpoch, settings)}
-                    </p>
-                </div>
             </div>
-            <div>
+            {/* <div className={styles.buttons}>
+                    <button onClick={chronoLens.destroyRecording}>Clear</button>
+                </div> */}
+            <div style={{ display: 'grid', rowGap: '4px' }}>
                 <Checkbox checked={state.showRouteLine} onChange={(checked) => setState((prev) => ({ ...prev, showRouteLine: checked }))}>
                     Show route lines
                 </Checkbox>

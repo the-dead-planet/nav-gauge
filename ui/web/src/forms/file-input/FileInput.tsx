@@ -48,7 +48,7 @@ export const FileInput: FC<Props & ComponentProps<'div'>> = ({
             <input
                 aria-label={fileLabel}
                 type="file"
-                multiple={mutiple}
+                multiple={!!mutiple}
                 accept={accept}
                 onChange={handleInput}
                 ref={inputRef}

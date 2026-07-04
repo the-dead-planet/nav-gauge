@@ -30,6 +30,7 @@ export const RouteName: FC<TopToolsProps<maplibregl.Map> & RouteStoryProps<mapli
             className={styles['panel']}
         >
             <FileInput
+                mutiple
                 fileIcon={routeName ? Icons.NounProject.ReplaceFile : Icons.NounProject.Upload}
                 fileName={routeName}
                 fileLabel={fileLabel}

@@ -125,6 +125,10 @@
     padding: 0px 2px;
 }
 
+.icon {
+    pointer-events: none;
+}
+
 .icon.rotate {
     transform: rotateX(var(--rotate-x)) rotateZ(var(--rotate-z));
 }

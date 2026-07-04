@@ -18,6 +18,7 @@ export class PlayerOperator<TMap, TFile extends RouteStoryFile, TImageData> {
     }
 
     public onPlay = () => {
+        console.log(!this.gear.apparatus.chronoLens.isPlaying$.value)
         this.gear.apparatus.chronoLens.isPlaying$.next(!this.gear.apparatus.chronoLens.isPlaying$.value);
     };
 
