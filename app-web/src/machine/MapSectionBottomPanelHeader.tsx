@@ -39,18 +39,17 @@ export const MapSectionBottomPanelHeader: FC<Props> = ({
 
             <div className={styles['header-content']}>
                 <div className={styles['bottom-header-content-background']} />
-                <svg width="28" height="28" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                    }}
-                >
+                <svg width="28" height="28" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" className={styles['curve-left']}>
                     <path
-                        d="M0,95 C60,100 40,0 100,5"
+                        d="M0,98 C60,100 40,0 105,5 L105,100 L0,100 Z"
                         fill="var(--toolbar-background-color)"
+                        stroke="none"
+                    />
+                    <path
+                        d="M0,96 C60,100 40,0 100,4"
+                        fill="none"
                         stroke="var(--color-primary)"
-                        stroke-width="8"
+                        stroke-width="7"
                         stroke-linecap="round"
                         stroke-linejoin="round"
                     />
@@ -95,18 +94,17 @@ export const MapSectionBottomPanelHeader: FC<Props> = ({
                     style={{ marginTop: 'auto' }}
                 />
 
-                <svg width="28" height="28" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        right: 0,
-                    }}
-                >
+                <svg width="28" height="28" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" className={styles['curve-right']}>
                     <path
-                        d="M100,95 C40,100 60,0 0,5"
+                        d="M100,98 C40,100 60,0 0,5 L0,100 L100,100 Z"
+                        fill="var(--toolbar-background-color)"
+                        stroke="none"
+                    />
+                    <path
+                        d="M100,96 C40,100 60,0 0,4"
                         fill="none"
                         stroke="var(--color-primary)"
-                        stroke-width="8"
+                        stroke-width="7"
                         stroke-linecap="round"
                         stroke-linejoin="round"
                     />
