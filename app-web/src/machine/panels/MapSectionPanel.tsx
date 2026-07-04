@@ -5,9 +5,9 @@ import { useObservableState } from "@tinker-chest";
 import { ToolPanelPlacement, useMachineWard } from "@apparatus";
 import { TransitionProps } from "@ui";
 import { T } from "@web-apparatus";
-import { MapSectionSidePanelHeader } from "./panels/MapSectionSidePanelHeader";
-import styles from './map-section.module.css';
-import { MapSectionBottomPanelHeader } from "./MapSectionBottomPanelHeader";
+import { MapSectionSidePanelHeader } from "./MapSectionSidePanelHeader";
+import { MapSectionBottomPanelHeader } from "./bottom/MapSectionBottomPanelHeader";
+import styles from '../map-section.module.css';
 
 interface Props {
     placement: ToolPanelPlacement;

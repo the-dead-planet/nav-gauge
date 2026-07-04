@@ -1,9 +1,9 @@
-import { FC, useId } from "react";
+import { FC } from "react";
 import { Button } from "@web-ui";
 import { useObservableState, useSubjectState } from "@tinker-chest";
 import { ToolPanelPlacement, useMachineWard } from "@apparatus";
 import { Icons, TooltipPlacement, } from "@ui";
-import styles from './map-section.module.css';
+import styles from '../map-section.module.css';
 
 interface Props {
     placement: ToolPanelPlacement;
@@ -11,7 +11,7 @@ interface Props {
     onActiveIdChange: (activeId: string | null) => void;
 }
 
-export const MapSectionPanelHeader: FC<Props> = ({
+export const MapSectionSidePanelHeader: FC<Props> = ({
     placement,
     activeId,
     onActiveIdChange,
@@ -29,11 +29,9 @@ export const MapSectionPanelHeader: FC<Props> = ({
     };
     const color = placement === 'bottom' ? 'primary' : 'secondary';
     const buttonSize = placement === 'bottom' ? 'sm' : 'md';
-    const isBottom = placement === 'bottom';
-    const clipId = useId();
 
-    const buttons = (
-        <>
+    return (
+        <div className={styles['content-header']}>
             {effectivePanels.map(({ id, icon, title, }) => {
                 const tooltip = translatron.translate(settings.language, registry, title);
                 const isActive = activeId === id;
@@ -74,76 +72,6 @@ export const MapSectionPanelHeader: FC<Props> = ({
                 }}
                 style={{ marginTop: 'auto' }}
             />
-        </>
-    );
-
-    return (
-        <div className={styles['content-header']}>
-            {isBottom ? (
-                <>
-                    <svg width="28" height="28" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
-                        style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                        }}
-                    >
-                        <path d="M0,100 C60,100 40,0 100,0"
-                            fill="none"
-                            stroke="var(--color-primary)"
-                            strokeWidth={5}
-                            vectorEffect="non-scaling-stroke"
-                            strokeLinecap="round"
-                        />
-                    </svg>
-                    <svg width="28" height="28" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
-                        style={{
-                            position: 'absolute',
-                            top: 0,
-                            right: 0,
-                            transform: 'scaleX(-1)',
-                        }}
-                    >
-                        <path d="M0,100 C60,100 40,0 100,0"
-                            fill="none"
-                            stroke="var(--color-primary)"
-                            strokeWidth={5}
-                            vectorEffect="non-scaling-stroke"
-                            strokeLinecap="round"
-                        />
-                    </svg>
-                    <div style={{
-                        position: 'absolute',
-                        top: 28,
-                        left: 0,
-                        bottom: 0,
-                        width: 2,
-                        backgroundColor: 'var(--color-primary)',
-                    }} />
-                    <div style={{
-                        position: 'absolute',
-                        top: 28,
-                        right: 0,
-                        bottom: 0,
-                        width: 2,
-                        backgroundColor: 'var(--color-primary)',
-                    }} />
-                    <svg width="0" height="0" style={{ position: 'absolute' }}>
-                        <defs>
-                            <clipPath id={clipId} clipPathUnits="objectBoundingBox">
-                                <path d="M0,1 C0.6,1 0.4,0 1,0 L1,1 Z" />
-                            </clipPath>
-                        </defs>
-                    </svg>
-                    <div className={styles['header-content']}
-                        style={{ clipPath: `url(#${clipId})` } as React.CSSProperties}
-                    >
-                        {buttons}
-                    </div>
-                </>
-            ) : (
-                buttons
-            )}
         </div>
     );
 };

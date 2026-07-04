@@ -1,0 +1,28 @@
+.curve-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.bottom-header-content-background {
+    background-color: var(--toolbar-background-color);
+    border-top: 2px solid var(--color-primary);
+    box-sizing: border-box;
+    position: absolute;
+    z-index: -1;
+    left: 28px;
+    right: 28px;
+    height: 100%;
+    top: 0;
+}
+
+.curve-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.curve-spacer {
+    height: 2px;
+    background-color: var(--color-primary);
+}

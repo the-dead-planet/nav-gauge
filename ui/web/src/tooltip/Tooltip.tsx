@@ -220,7 +220,6 @@ const InternalTooltip: FC<TooltipProps> = ({
                 }
             },
             onClick: (e: MouseEvent) => {
-                console.log("click hide")
                 hide();
                 childProps.onClick?.(e);
             },

@@ -42,7 +42,7 @@
 .icons.right {
     grid-area: right-icons;
     margin-right: 4px;
-    padding-bottom: 4px;
+    padding-bottom: 8px;
     padding-top: 4px;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -132,60 +132,9 @@
     max-height: 30dvh;
 }
 
-.content-header {
-    display: flex;
-}
-
-.toolbar.bottom .content-header {
-    position: absolute;
-    left: 0;
-    right: 0;
-    box-sizing: border-box;
-    transform: translate(0, calc(-100% - 0px));
-    flex-direction: row;
-    align-items: end;
-}
-
-.toolbar.bottom .content-header .header-content {
-    position: relative;
-    padding: 2px 28px;
-    box-sizing: border-box;
-    display: flex;
-    margin-bottom: 0px;
-}
-
-.bezier-spacer {
-    flex-grow: 1;
-    height: 2px;
-    background-color: var(--color-primary);
-}
-
-.bottom-header-content-background {
-    background-color: var(--toolbar-background-color);
-    border-top: 2px solid var(--color-primary);
-    box-sizing: border-box;
-    position: absolute;
-    z-index: -1;
-    left: 28px;
-    right: 28px;
-    height: 100%;
-    top: 0;
-}
-
-.curve-left {
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-.curve-right {
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-
 .toolbar.left .content-header,
 .toolbar.right .content-header {
+    display: flex;
     flex-direction: column;
     align-items: center;
     padding: 5px;

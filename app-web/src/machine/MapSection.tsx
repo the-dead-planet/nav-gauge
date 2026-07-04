@@ -7,7 +7,7 @@ import { useObservableState, useSubjectState } from "@tinker-chest";
 import { MapTools } from "./map-tools/MapTools";
 import { Button, FlexBox, H2, Icon } from "@web-ui";
 import { createMap } from "./map";
-import { MapSectionPanel } from "./MapSectionPanel";
+import { MapSectionPanel } from "./panels/MapSectionPanel";
 import { MapSectionIcons } from "./MapSectionIcons";
 import { Icons, useTheme } from "@ui";
 import styles from './map-section.module.css';
