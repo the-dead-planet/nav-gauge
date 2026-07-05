@@ -12,14 +12,23 @@
 }
 
 .color-neutral {
-    --button-color: var(--color-neutral);
+    --button-color-fill: var(--color-neutral);
     --button-color-dark: var(--color-neutral-800);
     --button-color-light: var(--color-neutral-100);
     --button-color-shadow: var(--color-neutral-700);
 }
 
+.mode-light.color-neutral {
+    --button-color: var(--color-neutral-600);
+}
+
+.mode-dark.color-neutral {
+    --button-color: var(--color-neutral-400);
+}
+
 .color-primary {
     --button-color: var(--color-primary);
+    --button-color-fill: var(--color-primary);
     --button-color-dark: var(--color-primary-900);
     --button-color-light: var(--color-primary-100);
     --button-color-shadow: var(--color-primary-700);
@@ -27,6 +36,7 @@
 
 .color-secondary {
     --button-color: var(--color-secondary);
+    --button-color-fill: var(--color-secondary);
     --button-color-dark: var(--color-secondary-900);
     --button-color-light: var(--color-secondary-100);
     --button-color-shadow: var(--color-secondary-700);
@@ -34,6 +44,7 @@
 
 .color-tertiary {
     --button-color: var(--color-tertiary);
+    --button-color-fill: var(--color-tertiary);
     --button-color-dark: var(--color-tertiary-900);
     --button-color-light: var(--color-tertiary-100);
     --button-color-shadow: var(--color-tertiary-700);
@@ -172,7 +183,7 @@
 .variant-fill {
     border: none;
     color: var(--button-color-light);
-    background-color: var(--button-color);
+    background-color: var(--button-color-fill);
 }
 
 .variant-fill:hover,

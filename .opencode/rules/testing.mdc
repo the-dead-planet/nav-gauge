@@ -1,7 +1,7 @@
 ---
 description: Testing conventions
 globs: "*.test.{ts,tsx}"
-alwaysApply: false
+alwaysApply: true
 ---
 
 - **Web unit**: Mocha + Chai in `test/**/*.test.ts`

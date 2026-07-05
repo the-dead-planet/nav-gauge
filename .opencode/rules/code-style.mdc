@@ -1,7 +1,7 @@
 ---
 description: TypeScript and code style conventions
 globs: "*.{ts,tsx}"
-alwaysApply: false
+alwaysApply: true
 ---
 
 - Strict **TypeScript** — no `any`, explicit member accessibility

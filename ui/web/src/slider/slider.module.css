@@ -65,11 +65,13 @@
 .slider:hover:not(.disabled)::-webkit-slider-thumb {
     background: var(--slider-highlight-color-dark);
     border-color: var(--slider-highlight-color-accent);
+    box-shadow: 0 0 6px var(--slider-highlight-color-accent), 0 0 14px var(--slider-highlight-color-dark);
 }
 
 .slider:hover:not(.disabled)::-moz-range-thumb {
     background: var(--slider-highlight-color-dark);
     border-color: var(--slider-highlight-color-accent);
+    box-shadow: 0 0 6px var(--slider-highlight-color-accent), 0 0 14px var(--slider-highlight-color-dark);
 }
 
 /* Active / focus / drag: show shadow */

@@ -1,7 +1,7 @@
 ---
 description: Strict import direction rules for the nav-gauge monorepo
 globs: "*.ts"
-alwaysApply: false
+alwaysApply: true
 ---
 
 - Import sequence: `tinker-chest` → `ui/{common,web,mobile}` → `apparatus/{common,web,mobile}` → `gears/*/{common,web,mobile}` → `app-{web,mobile}`

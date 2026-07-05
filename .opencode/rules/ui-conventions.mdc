@@ -1,7 +1,7 @@
 ---
 description: UI library conventions
 globs: "ui/**/*.{ts,tsx}"
-alwaysApply: false
+alwaysApply: true
 ---
 
 - Own UI library in `/ui/` — semantic, accessible, minimal

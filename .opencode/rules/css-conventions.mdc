@@ -1,7 +1,7 @@
 ---
 description: CSS module and styling conventions (web only)
 globs: "*.{css,module.css}"
-alwaysApply: false
+alwaysApply: true
 ---
 
 - Class names use kebab-case (`variant-fill`), never camelCase (`variantFill`)
