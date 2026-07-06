@@ -49,6 +49,14 @@ export enum RouteStoryTranslationKey {
     ReplaceFile = 'replace-file',
     PurgeStory = 'purge-story',
     Cancel = 'cancel',
+    DestroyRecording = 'destroy-recording',
+    StartRecording = 'start-recording',
+    StopRecording = 'stop-recording',
+    PauseRecording = 'pause-recording',
+    ResumeRecording = 'resume-recording',
+    LayerConfiguration = 'layer-configuration',
+    Lines = 'lines',
+    Points = 'points',
 }
 
 export type Preset = 'default' | 'racing-game';

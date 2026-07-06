@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
 export const Menu: FC<MenuProps> = ({
     icon = Icons.NounProject.KebabMenu,
     iconActiveColor,
+    iconSize,
     placement = 'bottom-right',
     children,
 }) => {
@@ -85,6 +86,7 @@ export const Menu: FC<MenuProps> = ({
                 forwardRef={iconAnchorRef}
                 icon={icon as ComponentProps<typeof Button>['icon']}
                 highlightColor={iconActiveColor}
+                size={iconSize}
                 active={visible}
                 onPress={toggleMenu}
                 style={styles.iconButton}

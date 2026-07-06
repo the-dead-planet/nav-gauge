@@ -10,7 +10,15 @@ const jp: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['jp'] 
     "upload-file": 'GPSトラックを含むファイルをアップロード',
     "replace-file": 'GPSトラックを含むファイルを置き換え',
     "purge-story": 'ストーリーをパージ',
-    "cancel": 'キャンセル'
+    "cancel": 'キャンセル',
+    "destroy-recording": '監視資料を破棄',
+    "start-recording": '監視を開始',
+    "stop-recording": '監視を停止',
+    "pause-recording": '監視を一時停止',
+    "resume-recording": '監視を再開',
+    "layer-configuration": 'レイヤーの美学',
+    "lines": '線',
+    "points": '点'
 };
 
 export default jp;

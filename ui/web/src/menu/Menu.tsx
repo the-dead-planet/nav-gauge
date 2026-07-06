@@ -13,14 +13,21 @@ import { Button } from '../button';
 import styles from './menu.module.css';
 import { Panel } from '../hud';
 import { Transition } from '../transition';
+import classNames from 'classnames';
 
-export const Menu: FC<MenuProps & ComponentProps<'button'>> = ({
+interface Props extends MenuProps {
+    menuListClassName?: string;
+}
+
+export const Menu: FC<Props & ComponentProps<'button'>> = ({
     icon = Icons.NounProject.KebabMenu,
     iconActiveColor,
+    iconSize,
     placement = 'bottom-right',
     tooltip,
     tooltipPlacement,
     color,
+    menuListClassName,
     children,
     ...props
 }) => {
@@ -121,20 +128,20 @@ export const Menu: FC<MenuProps & ComponentProps<'button'>> = ({
                 ref={triggerRef}
                 variant="ghost"
                 icon={icon}
+                size={iconSize}
                 active={visible}
                 color={color}
                 highlightColor={iconActiveColor}
                 onClick={handleToggle}
                 tooltip={tooltip}
                 tooltipPlacement={tooltipPlacement}
-                className={styles.trigger}
                 {...props}
             />
             {visible && createPortal(
                 <Panel
                     forwardRef={containerRef}
                     variant='fill-inverse'
-                    className={styles['menu-list']}
+                    className={classNames(styles['menu-list'], menuListClassName)}
                     style={positionStyle}
                     role="menu"
                     aria-orientation="vertical"

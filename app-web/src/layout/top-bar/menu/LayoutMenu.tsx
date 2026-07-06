@@ -3,6 +3,7 @@ import { Menu, MenuItem } from "@web-ui";
 import { useMachineWard, useTranslation } from "@apparatus";
 import { T } from "@web-apparatus";
 import { SettingsDialog } from "./SettingsDialog";
+import styles from './layout-menu.module.css';
 
 export const LayoutMenu: FC = () => {
     const { namespace, translationKey, individuator } = useMachineWard();
@@ -11,7 +12,14 @@ export const LayoutMenu: FC = () => {
 
     return (
         <>
-            <Menu aria-label={tooltip} tooltip={tooltip} tooltipPlacement="bottom" placement="bottom-right" iconActiveColor="secondary">
+            <Menu
+                aria-label={tooltip}
+                tooltip={tooltip}
+                tooltipPlacement="bottom"
+                placement="bottom-right"
+                iconActiveColor="secondary"
+                menuListClassName={styles['menu']}
+            >
                 <MenuItem
                     key="individuator"
                     isFirst

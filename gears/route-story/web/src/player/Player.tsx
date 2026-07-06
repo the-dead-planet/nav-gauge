@@ -1,16 +1,20 @@
-import { CSSProperties, FC, useEffect } from "react";
-import { SurveillanceState, ToolPanelProps, useMachineWard } from "@apparatus";
+import { CSSProperties, FC } from "react";
+import { ToolPanelProps, useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { getProgressPercentage, RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { updateRouteLayer } from "../tinkers";
-import { WebChronoLens } from "@web-apparatus";
-import { WebMarkerImageData } from "../images/image-parser";
-import styles from './player.module.css';
 import { Button, Checkbox, Divider, P, Slider } from "@web-ui";
 import { FontType, formatTimeMsAsStandard, Icons } from "@ui";
+import { WebMarkerImageData } from "../images/image-parser";
+import { RecordingButtons } from "./RecordingButtons";
+import styles from './player.module.css';
+import { ConfigurationButtons } from "./ConfigurationButtons";
 
 export const Player: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibregl.Map, File, WebMarkerImageData>> = ({
+    gearId,
+    translationKey,
     map,
+    animatrix,
     data$,
     state$,
     routeTimes$,
@@ -19,26 +23,12 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibr
     playerOperator,
 }) => {
     const [{ geojson }] = useSubjectState(data$);
-    const [state, setState] = useSubjectState(state$);
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [progressMs] = useSubjectState(progressMs$);
-    const { chronoLens, signaliumBureau, individuator } = useMachineWard();
+    const { chronoLens, individuator } = useMachineWard();
     const [settings] = useSubjectState(individuator.settings$);
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
-    const [surveillanceState] = useSubjectState(chronoLens.surveillanceState$);
-
-    useEffect(() => {
-        const abortController = new AbortController();
-        (chronoLens as WebChronoLens).canvas = map.getCanvas();
-        chronoLens.setUpSurveillance(signaliumBureau, abortController.signal);
-
-        return () => {
-            abortController.abort();
-            chronoLens.clearSurveillance();
-        };
-    }, []);
-
     const progressPercentage = getProgressPercentage(progressMs, routeTimes);
 
     const handleProgressChange = (value: number) => {
@@ -60,40 +50,8 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibr
 
     return (
         <div className={styles.player}>
-            <Button
-                icon={Icons.NounProject.Destroy}
-                size="md"
-                variant="ghost"
-                corners="circle"
-                aria-label="TODO: Destroy record"
-                tooltip="TODO: Destroy recording"
-                tooltipPlacement="top"
-                onClick={() => chronoLens.destroyRecording()}
-                disabled
-            />
-            <Button
-                icon={surveillanceState === SurveillanceState.Stopped ? Icons.RecordCapture : Icons.NounProject.Recording}
-                size="md"
-                variant="ghost"
-                corners="circle"
-                aria-label="TODO: Record/StopRecord"
-                tooltip="TODO: Record/StopRecord"
-                tooltipPlacement="top"
-                onClick={() => playerOperator.onRecord()}
-                className={surveillanceState === SurveillanceState.Stopped ? undefined : styles['blinking']}
-            />
-            <Button
-                icon={surveillanceState === SurveillanceState.Paused ? Icons.NounProject.ResumeRecording : Icons.NounProject.PauseRecording}
-                size="md"
-                variant="ghost"
-                corners="circle"
-                aria-label="TODO: Pause record"
-                tooltip="TODO: Pause erecord"
-                tooltipPlacement="top"
-                onClick={() => playerOperator.onRecordPause()}
-                disabled={surveillanceState === SurveillanceState.Stopped}
-            />
-            <Divider orientation="vertical" />
+            <RecordingButtons gearId={gearId} translationKey={translationKey} map={map} playerOperator={playerOperator} />
+            <Divider color="neutral" orientation="vertical" mh="xs" />
             <Button
                 icon={isPlaying ? Icons.Pause : Icons.Play}
                 size="md"
@@ -136,14 +94,13 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibr
                     style={{ flex: 1 } as CSSProperties}
                 />
             </div>
-            <div style={{ display: 'grid', rowGap: '4px' }}>
-                <Checkbox checked={state.showRouteLine} onChange={(checked) => setState((prev) => ({ ...prev, showRouteLine: checked }))}>
-                    Show route lines
-                </Checkbox>
-                <Checkbox checked={state.showRoutePoints} onChange={(checked) => setState((prev) => ({ ...prev, showRoutePoints: checked }))}>
-                    Show route points
-                </Checkbox>
-            </div>
+            <Divider color="neutral" orientation="vertical" mh="sm" />
+            <ConfigurationButtons
+                gearId={gearId}
+                translationKey={translationKey}
+                animatrix={animatrix}
+                state$={state$}
+            />
         </div>
     );
 };

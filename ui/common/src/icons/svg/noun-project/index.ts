@@ -16,6 +16,7 @@ export { default as LightBulbHeart } from './output/light-bulb-heart.svg';
 export { default as Minus } from './output/minus.svg';
 export { default as MapLayout } from './output/map-layout.svg';
 export { default as North } from './output/north.svg';
+export { default as Paint } from './output/paint.svg';
 export { default as PauseRecording } from './output/pause-recording.svg';
 export { default as PinCinema } from './output/pin-cinema.svg';
 export { default as PlayerConfiguration } from './output/player-configuration.svg';

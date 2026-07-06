@@ -48,18 +48,16 @@ export const MapSectionPanel: FC<Props> = ({
                 })}>
                     {placement === 'bottom' ? <MapSectionBottomPanelHeader placement={placement} activeId={activeId} onActiveIdChange={onActiveIdChange} /> : null}
                     {placement === 'right' ? sideHeader : null}
-                    <div className={styles['component']}>
-                        {toolPanel ? (
-                            <>
-                                {placement !== 'bottom' ? (
-                                    <H3 m="sm">
-                                        <T {...toolPanel.title} />
-                                    </H3>
-                                ) : null}
-                                <toolPanel.component map={map} />
-                            </>
-                        ) : null}
-                    </div>
+                    {toolPanel ? (
+                        <div className={styles['component']}>
+                            {placement !== 'bottom' ? (
+                                <H3 m="sm">
+                                    <T {...toolPanel.title} />
+                                </H3>
+                            ) : null}
+                            <toolPanel.component map={map} />
+                        </div>
+                    ) : null}
                     {placement === 'left' ? sideHeader : null}
                 </div>
             </Transition>

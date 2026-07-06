@@ -10,7 +10,15 @@ const pl: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['pl'] 
     "upload-file": 'Prześlij plik ze śladami GPS',
     "replace-file": 'Zastąp plik ze śladami GPS',
     "purge-story": 'Wyczyść historię',
-    "cancel": 'Anuluj'
+    "cancel": 'Anuluj',
+    "destroy-recording": 'Zniszcz materiał obserwacyjny',
+    "start-recording": 'Rozpocznij obserwację',
+    "stop-recording": 'Zatrzymaj obserwację',
+    "pause-recording": 'Wstrzymaj obserwację',
+    "resume-recording": 'Wznów obserwację',
+    "layer-configuration": 'Estetyka warstw',
+    "lines": 'Linie',
+    "points": 'Punkty'
 };
 
 export default pl;

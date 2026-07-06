@@ -10,7 +10,15 @@ const en: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['en'] 
     "upload-file": 'Upload file with GPS tracks',
     "replace-file": 'Replace file with GPS tracks',
     "purge-story": 'Purge story',
-    "cancel": 'Cancel'
+    "cancel": 'Cancel',
+    "destroy-recording": 'Destroy surveillance material',
+    "start-recording": 'Start surveilling',
+    "stop-recording": 'Stop surveilling',
+    "pause-recording": 'Pause surveilling',
+    "resume-recording": 'Resume surveilling',
+    "layer-configuration": 'Layer aesthetics',
+    "lines": 'Lines',
+    "points": 'Points'
 };
 
 export default en;
