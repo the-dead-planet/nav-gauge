@@ -6,7 +6,7 @@ import { updateRouteLayer } from "../tinkers";
 import { WebChronoLens } from "@web-apparatus";
 import { WebMarkerImageData } from "../images/image-parser";
 import styles from './player.module.css';
-import { Button, Checkbox, P, Slider } from "@web-ui";
+import { Button, Checkbox, Divider, P, Slider } from "@web-ui";
 import { FontType, formatTimeMsAsStandard, Icons } from "@ui";
 
 export const Player: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibregl.Map, File, WebMarkerImageData>> = ({
@@ -60,29 +60,40 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibr
 
     return (
         <div className={styles.player}>
-            {/* TODO: Icons */}
             <Button
-                icon={surveillanceState === SurveillanceState.Stopped ? Icons.RecordCapture : Icons.Stop}
+                icon={Icons.NounProject.Destroy}
                 size="md"
                 variant="ghost"
-                color="secondary"
+                corners="circle"
+                aria-label="TODO: Destroy record"
+                tooltip="TODO: Destroy recording"
+                tooltipPlacement="top"
+                onClick={() => chronoLens.destroyRecording()}
+                disabled
+            />
+            <Button
+                icon={surveillanceState === SurveillanceState.Stopped ? Icons.RecordCapture : Icons.NounProject.Recording}
+                size="md"
+                variant="ghost"
                 corners="circle"
                 aria-label="TODO: Record/StopRecord"
                 tooltip="TODO: Record/StopRecord"
-                onClick={playerOperator.onRecord}
+                tooltipPlacement="top"
+                onClick={() => playerOperator.onRecord()}
+                className={surveillanceState === SurveillanceState.Stopped ? undefined : styles['blinking']}
             />
-            {surveillanceState !== SurveillanceState.Stopped ? (
-                <Button
-                    icon={surveillanceState === SurveillanceState.Paused ? Icons.Play : Icons.Pause}
-                    size="md"
-                    variant="outline"
-                    color="secondary"
-                    corners="circle"
-                    aria-label="TODO: Pause record"
-                    tooltip="TODO: Pause erecord"
-                    onClick={playerOperator.onRecordPause}
-                />
-            ) : null}
+            <Button
+                icon={surveillanceState === SurveillanceState.Paused ? Icons.NounProject.ResumeRecording : Icons.NounProject.PauseRecording}
+                size="md"
+                variant="ghost"
+                corners="circle"
+                aria-label="TODO: Pause record"
+                tooltip="TODO: Pause erecord"
+                tooltipPlacement="top"
+                onClick={() => playerOperator.onRecordPause()}
+                disabled={surveillanceState === SurveillanceState.Stopped}
+            />
+            <Divider orientation="vertical" />
             <Button
                 icon={isPlaying ? Icons.Pause : Icons.Play}
                 size="md"
@@ -91,7 +102,8 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibr
                 corners="circle"
                 aria-label="TODO: Play payse"
                 tooltip="TODO: Play/Pause"
-                onClick={playerOperator.onPlay}
+                tooltipPlacement="top"
+                onClick={() => playerOperator.onPlay()}
             />
             <div style={{ flex: 1, display: 'grid' }}>
                 <div style={{ display: 'flex', columnGap: "10px" }}>
@@ -124,9 +136,6 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibr
                     style={{ flex: 1 } as CSSProperties}
                 />
             </div>
-            {/* <div className={styles.buttons}>
-                    <button onClick={chronoLens.destroyRecording}>Clear</button>
-                </div> */}
             <div style={{ display: 'grid', rowGap: '4px' }}>
                 <Checkbox checked={state.showRouteLine} onChange={(checked) => setState((prev) => ({ ...prev, showRouteLine: checked }))}>
                     Show route lines

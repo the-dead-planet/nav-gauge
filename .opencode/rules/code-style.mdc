@@ -13,6 +13,8 @@ alwaysApply: true
 - No bloated comments, no `TODO:`s (use GitHub issues instead)
 - Prefer fewer dependencies; write your own when feasible
 
+- **Accessibility & semantic HTML** — use native semantic elements (`<hr>`, `<button>`, `<nav>`, `<label>`, etc.) over generic `<div>`s; ensure interactive elements have keyboard support and ARIA attributes where needed
+
 ### Platform split (`common` / `web` / `mobile`)
 - Keep as much logic and state management in `common/` as possible
 - `web/` and `mobile/` should focus only on component rendering and platform-specific wiring

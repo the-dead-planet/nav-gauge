@@ -5,7 +5,7 @@ import styles from './slider.module.css';
 
 export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' | 'size'>> = ({
     color = 'neutral',
-    highlightColor: hlColor,
+    highlightColor,
     size = 'md',
     min = 0,
     max = 100,
@@ -19,7 +19,7 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
     ...props
 }) => {
     const theme = useTheme();
-    const highlightColor = hlColor || color;
+    const effectiveHighlightColor = highlightColor || color;
     const range = max - min;
     const progress = range > 0 ? ((value - min) / range) * 100 : 0;
 
@@ -40,7 +40,7 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
                 styles['slider'],
                 styles[`mode-${theme.mode}`],
                 styles[`color-${color}`],
-                styles[`highlight-${highlightColor}`],
+                styles[`highlight-${effectiveHighlightColor}`],
                 styles[`size-${size}`],
                 {
                     [styles['active']]: active,

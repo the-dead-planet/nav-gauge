@@ -2,6 +2,7 @@ export * from './button';
 export * from './checkbox';
 export * from './slider';
 export * from './dialog';
+export * from './divider';
 export * from './dropdown';
 export * from './flex-box';
 export * from './hud';

@@ -13,7 +13,7 @@ const trackThicknesses: Record<string, number> = { xs: 3, sm: 6, md: 8 };
 
 function snap(v: number, min: number, max: number, step: number): number {
     const stepped = Math.round((v - min) / step) * step + min;
-    
+
     return Math.min(max, Math.max(min, stepped));
 }
 
@@ -69,9 +69,12 @@ export const Slider = forwardRef<any, SliderProps & { style?: ViewStyle }>(({
         onMoveShouldSetPanResponder: () => !disabled,
         onPanResponderGrant: (evt) => {
             const ctx = contextReference.current;
-            if (ctx.disabled) return;
+            if (ctx.disabled) {
+                return;
+            }
             setIsDragging(true);
             startValueRef.current = valueRef.current;
+            
             if (ctx.trackWidth > 0) {
                 const touchX = evt.nativeEvent.pageX - hitAreaPageXRef.current;
                 const ratio = Math.max(0, Math.min(1, touchX / ctx.trackWidth));

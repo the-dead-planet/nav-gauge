@@ -88,6 +88,14 @@
     "license": "CC BY 3.0"
   },
   {
+    "id": "destroy",
+    "title": "destroy",
+    "creator": "Martin Baudin",
+    "source": "The Noun Project",
+    "href": "https://thenounproject.com",
+    "license": "CC BY 3.0"
+  },
+  {
     "id": "gear",
     "title": "gear",
     "creator": "MUHAMAD KHOTIBUL UMAM",
@@ -144,6 +152,14 @@
     "license": "CC BY 3.0"
   },
   {
+    "id": "pause-recording",
+    "title": "pause recording",
+    "creator": "Ally Hwang",
+    "source": "The Noun Project",
+    "href": "https://thenounproject.com",
+    "license": "CC BY 3.0"
+  },
+  {
     "id": "pin-cinema",
     "title": "pin cinema",
     "creator": "dinnerchief",
@@ -168,9 +184,33 @@
     "license": "CC BY 3.0"
   },
   {
+    "id": "recording",
+    "title": "recording",
+    "creator": "Lora",
+    "source": "The Noun Project",
+    "href": "https://thenounproject.com",
+    "license": "CC BY 3.0"
+  },
+  {
     "id": "replace-file",
     "title": "replace file",
     "creator": "Flowicon",
+    "source": "The Noun Project",
+    "href": "https://thenounproject.com",
+    "license": "CC BY 3.0"
+  },
+  {
+    "id": "resume-recording",
+    "title": "resume recording",
+    "creator": "Ally Hwang",
+    "source": "The Noun Project",
+    "href": "https://thenounproject.com",
+    "license": "CC BY 3.0"
+  },
+  {
+    "id": "stop-recording",
+    "title": "stop recording",
+    "creator": "shashank singh",
     "source": "The Noun Project",
     "href": "https://thenounproject.com",
     "license": "CC BY 3.0"
