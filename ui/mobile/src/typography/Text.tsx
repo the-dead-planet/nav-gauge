@@ -39,6 +39,7 @@ export interface TextProps extends RNTextProps, TypographyProps {
 export const Text: FC<TextProps> = ({
     variant = 'body',
     color,
+    tabular,
     fontType = defaultTypographyProps.fontType,
     style,
     ...props
@@ -54,6 +55,7 @@ export const Text: FC<TextProps> = ({
                     color: color
                         ? theme.color(color as ColorVariant)
                         : theme.componentColor('text'),
+                    fontVariant: tabular ? ['tabular-nums'] : undefined,
                 },
                 style,
             ]}

@@ -29,6 +29,7 @@ export interface TypographyProps {
     fontType?: FontType;
     shadow?: boolean;
     bold?: boolean;
+    tabular?: boolean;
     /**
      * Margin (all sides)
      */

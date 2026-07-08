@@ -13,8 +13,8 @@ const paddingMap: Record<SizeVariant, number> = {
 };
 
 export const Panel: FC<PanelProps & Props> = ({
-    color: colorProp,
-    highlightColor: hlColorProp,
+    color = "neutral",
+    highlightColor = color,
     variant,
     glowStyle: _glowStyle,
     themeMode,
@@ -30,11 +30,9 @@ export const Panel: FC<PanelProps & Props> = ({
     const effectiveTheme = themeMode || theme.mode;
     const isLight = effectiveTheme === 'light';
 
-    const color = (colorProp || 'neutral');
-    const hlColor = (hlColorProp || color);
     const baseColor = theme.color(color, 500);
-    const highlight500 = theme.color(hlColor, 500);
-    const highlightAccent = theme.color(hlColor, isLight ? 600 : 300);
+    const highlight500 = theme.color(highlightColor, 500);
+    const highlightAccent = theme.color(highlightColor, isLight ? 600 : 300);
 
     const containerStyle: ViewStyle = (() => {
         switch (variant) {
@@ -42,7 +40,7 @@ export const Panel: FC<PanelProps & Props> = ({
                 let fillColor: string;
                 let borderColor: string;
                 if (active) {
-                    fillColor = theme.color(hlColor, 500);
+                    fillColor = theme.color(highlightColor, 500);
                     borderColor = highlight500;
                 } else if (pressed) {
                     fillColor = highlightAccent;
@@ -66,10 +64,10 @@ export const Panel: FC<PanelProps & Props> = ({
                 let fillColor: string;
                 let borderColor: string;
                 if (active) {
-                    fillColor = theme.color(hlColor, hlBgShade);
+                    fillColor = theme.color(highlightColor, hlBgShade);
                     borderColor = highlight500;
                 } else if (pressed) {
-                    fillColor = theme.color(hlColor, hlBgShade);
+                    fillColor = theme.color(highlightColor, hlBgShade);
                     borderColor = highlightAccent;
                 } else {
                     fillColor = theme.color(color, bgShade);
@@ -85,7 +83,7 @@ export const Panel: FC<PanelProps & Props> = ({
 
             case 'fill-translucent': {
                 const fill = hl
-                    ? theme.color(hlColor, 500, active ? 0.48 : 0.36)
+                    ? theme.color(highlightColor, 500, active ? 0.48 : 0.36)
                     : theme.color(color, 500, 0.24);
                 const border = hl ? (active ? highlight500 : highlightAccent) : baseColor;
                 return {
@@ -102,10 +100,10 @@ export const Panel: FC<PanelProps & Props> = ({
                 let bgFill: string | undefined;
                 let bColor: string;
                 if (active) {
-                    bgFill = theme.color(hlColor, 500, isOutline ? 0.24 : 0.14);
+                    bgFill = theme.color(highlightColor, 500, isOutline ? 0.24 : 0.14);
                     bColor = isOutline ? highlight500 : 'transparent';
                 } else if (pressed) {
-                    bgFill = theme.color(hlColor, 500, isOutline ? 0.12 : 0.10);
+                    bgFill = theme.color(highlightColor, 500, isOutline ? 0.12 : 0.10);
                     bColor = isOutline ? highlightAccent : 'transparent';
                 } else {
                     bgFill = isGhost ? 'transparent' : undefined;

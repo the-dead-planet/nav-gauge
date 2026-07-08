@@ -27,7 +27,7 @@ const ICON_SIZE_MAP = { xs: 12, sm: 16, md: 20 } as const;
 
 export function Dropdown<T>({
     color = 'neutral',
-    highlightColor: hlColor,
+    highlightColor = color,
     size = 'sm',
     variant = 'fill-inverse',
     value,
@@ -43,7 +43,6 @@ export function Dropdown<T>({
     const [menuWidth, setMenuWidth] = useState(0);
     const triggerRef = useRef<View>(null);
 
-    const highlightColor = hlColor ?? color;
     const selectedOption = options.find(o => o.value === value);
     const s = SIZE_MAP[size];
     const iconSize = ICON_SIZE_MAP[size];

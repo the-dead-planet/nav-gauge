@@ -5,7 +5,7 @@ import styles from './text-area.module.css';
 
 export const TextArea: FC<Omit<ComponentProps<'textarea'>, 'size'> & TextAreaProps> = ({
     color = 'neutral',
-    highlightColor,
+    highlightColor = color,
     size = 'sm',
     variant = 'fill-inverse',
     label,
@@ -15,7 +15,6 @@ export const TextArea: FC<Omit<ComponentProps<'textarea'>, 'size'> & TextAreaPro
     ...props
 }) => {
     const theme = useTheme();
-    const hlColor = highlightColor || color;
 
     const handleClick = (event: MouseEvent<HTMLTextAreaElement>) => {
         if (autoSelect) {
@@ -29,7 +28,7 @@ export const TextArea: FC<Omit<ComponentProps<'textarea'>, 'size'> & TextAreaPro
             styles.container,
             styles[`mode-${theme.mode}`],
             styles[`color-${color}`],
-            styles[`highlight-${hlColor}`],
+            styles[`highlight-${highlightColor}`],
             styles[`size-${size}`],
             styles[`variant-${variant}`],
         )}>

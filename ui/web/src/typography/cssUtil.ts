@@ -7,6 +7,7 @@ export const textCssNames = ({
     fontType = defaultTypographyProps.fontType,
     bold,
     shadow,
+    tabular,
     m,
     mv,
     mh,
@@ -29,6 +30,7 @@ export const textCssNames = ({
             [styles[`color-${color}`]]: !!color,
             [styles['bold']]: !!bold,
             [styles['shadow']]: !!shadow,
+            [styles['tabular']]: !!tabular,
             ...(
                 Object.fromEntries(['xs', 'sm', 'md', 'lg', 'xl']
                     .flatMap((size): [string, boolean][] => [

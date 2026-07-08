@@ -11,7 +11,7 @@ export const Checkbox: FC<Omit<ComponentProps<'label'>, 'onChange'> & CheckboxPr
     id,
     labelledBy,
     color = 'neutral',
-    highlightColor: hlColor,
+    highlightColor = color,
     size = 'sm',
     checked,
     onChange,
@@ -24,7 +24,6 @@ export const Checkbox: FC<Omit<ComponentProps<'label'>, 'onChange'> & CheckboxPr
     const generatedId = useId();
     const effectiveId = id || generatedId;
     const theme = useTheme();
-    const highlightColor = hlColor || color;
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         onChange(e.target.checked);

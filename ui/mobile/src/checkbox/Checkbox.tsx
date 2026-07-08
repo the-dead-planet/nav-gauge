@@ -5,7 +5,7 @@ import { Text } from "../typography";
 
 export const Checkbox: FC<CheckboxProps> = ({
     color = 'primary',
-    highlightColor: hlColor,
+    highlightColor = color,
     size = 'sm',
     checked,
     onChange,
@@ -13,7 +13,6 @@ export const Checkbox: FC<CheckboxProps> = ({
     children,
 }) => {
     const theme = useTheme();
-    const highlightColor = hlColor || color;
 
     const accentColor = theme.isLight
         ? theme.color(highlightColor, 600)

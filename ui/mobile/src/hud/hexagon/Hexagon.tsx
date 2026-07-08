@@ -68,8 +68,8 @@ export const Hexagon: FC<HexagonProps & Props> = ({
     forwardRef,
     shape = "pointy-top",
     strokeWidth = 2,
-    color: colorProp,
-    highlightColor: hlColorProp,
+    color = "neutral",
+    highlightColor = color,
     variant,
     glowStyle = "none",
     themeMode,
@@ -84,7 +84,6 @@ export const Hexagon: FC<HexagonProps & Props> = ({
     children
 }) => {
     const theme = useTheme();
-    const hlColor = (hlColorProp || colorProp) as ColorVariant;
     const [pressed, setPressed] = useState(false);
     const [glowDrawn, setGlowDrawn] = useState(false);
     const hl = pressed || active;
@@ -95,10 +94,9 @@ export const Hexagon: FC<HexagonProps & Props> = ({
     const isLight = effectiveTheme === 'light';
     const clipPathId = useId();
 
-    const color = (colorProp || 'neutral') as ColorVariant;
     const baseColor = theme.color(color, 500);
-    const highlight500 = theme.color(hlColor, 500);
-    const highlightAccent = theme.color(hlColor, isLight ? 600 : 300);
+    const highlight500 = theme.color(highlightColor, 500);
+    const highlightAccent = theme.color(highlightColor, isLight ? 600 : 300);
 
     const showGlow = (glowStyle !== 'none') && (hl || glowDrawn);
 
@@ -157,7 +155,7 @@ export const Hexagon: FC<HexagonProps & Props> = ({
 
             case 'fill-translucent': {
                 const fill = hl
-                    ? theme.color(hlColor, 500, active ? 0.48 : 0.36)
+                    ? theme.color(highlightColor, 500, active ? 0.48 : 0.36)
                     : theme.color(color, 500, 0.24);
                 const border = hl ? (active ? highlight500 : highlightAccent) : baseColor;
                 return (
@@ -177,7 +175,7 @@ export const Hexagon: FC<HexagonProps & Props> = ({
                 let fillColor: string;
                 let borderColor: string;
                 if (active) {
-                    fillColor = theme.color(hlColor, 500);
+                    fillColor = theme.color(highlightColor, 500);
                     borderColor = highlight500;
                 } else if (pressed) {
                     fillColor = highlightAccent;
@@ -201,16 +199,16 @@ export const Hexagon: FC<HexagonProps & Props> = ({
 
             case 'fill-inverse': {
                 const isNeutral = color === 'neutral';
-                const hlIsNeutral = hlColor === 'neutral';
+                const hlIsNeutral = highlightColor === 'neutral';
                 const bgShade = isLight ? 100 : (isNeutral ? 800 : 900);
                 const hlBgShade = isLight ? 100 : (hlIsNeutral ? 800 : 900);
                 let fillColor: string;
                 let borderColor: string;
                 if (active) {
-                    fillColor = theme.color(hlColor, hlBgShade);
+                    fillColor = theme.color(highlightColor, hlBgShade);
                     borderColor = highlight500;
                 } else if (pressed) {
-                    fillColor = theme.color(hlColor, hlBgShade);
+                    fillColor = theme.color(highlightColor, hlBgShade);
                     borderColor = highlightAccent;
                 } else {
                     fillColor = theme.color(color, bgShade);

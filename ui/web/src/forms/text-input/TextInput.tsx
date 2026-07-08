@@ -6,7 +6,7 @@ import styles from './text-input.module.css';
 export const TextInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' | 'type' | 'size'> & TextInputProps> = ({
     id,
     color = 'neutral',
-    highlightColor,
+    highlightColor = color,
     size = 'sm',
     variant = 'fill-inverse',
     label,
@@ -18,7 +18,6 @@ export const TextInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' | 
     ...props
 }) => {
     const theme = useTheme();
-    const hlColor = highlightColor || color;
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         onChange(e.target.value);
@@ -35,7 +34,7 @@ export const TextInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' | 
             styles.container,
             styles[`mode-${theme.mode}`],
             styles[`color-${color}`],
-            styles[`highlight-${hlColor}`],
+            styles[`highlight-${highlightColor}`],
             styles[`size-${size}`],
             styles[`variant-${variant}`],
         )}>

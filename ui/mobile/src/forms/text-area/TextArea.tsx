@@ -5,7 +5,7 @@ import { Text } from "../../typography";
 
 export const TextArea: FC<TextAreaProps & ComponentProps<typeof RNTextInput>> = ({
     color = 'neutral',
-    highlightColor: hlColor,
+    highlightColor = color,
     size = 'sm',
     label,
     autoSelect = false,
@@ -13,7 +13,6 @@ export const TextArea: FC<TextAreaProps & ComponentProps<typeof RNTextInput>> = 
 }) => {
     const theme = useTheme();
     const [isFocused, setIsFocused] = useState(false);
-    const highlightColor = hlColor ?? color;
     const borderColor = isFocused
         ? theme.color(highlightColor, theme.isLight ? 600 : 300)
         : theme.color(color, 500);

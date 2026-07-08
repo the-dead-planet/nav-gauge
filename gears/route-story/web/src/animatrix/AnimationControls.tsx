@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { ToolPanelProps, useMachineWard } from "@apparatus";
 import { clamp, useSubjectState } from "@tinker-chest";
-import { Checkbox, Fieldset, NumberInput } from "@web-ui";
+import { AngleInput, Checkbox, Fieldset, NumberInput } from "@web-ui";
 import { Animatrix, RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { WebMarkerImageData } from "../images/image-parser";
 import styles from './animation-controls.module.css';
@@ -50,12 +50,14 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
                             {t(animatrix.translationKey.AutoRotate)}
                         </Checkbox>
                         <div />
-                        <NumberInput
+                        <AngleInput
                             id="animation-controls-camera-angle"
                             label={t(animatrix.translationKey.CameraAngle)}
+                            size='xs'
                             value={cameraAngle}
-                            min={Animatrix.cameraAngleRange[0]}
-                            max={Animatrix.cameraAngleRange[1]}
+                            min={0}
+                            max={360}
+                            step={6}
                             onChange={(value) => setAnimationControls((prev) => ({
                                 ...prev, cameraAngle: clamp(value, Animatrix.cameraAngleRange)
                             }))}

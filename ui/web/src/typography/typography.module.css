@@ -19,10 +19,18 @@
     text-shadow: -1px 0px 1px rgb(from var(--typography-color-dark) r g b / .5);
 }
 
+.tabular {
+    font-variant-numeric: tabular-nums;
+}
+
 .p,
 .span,
 .label {
     font-weight: 400;
+}
+
+.label {
+    font-size: 12px;
 }
 
 .p {

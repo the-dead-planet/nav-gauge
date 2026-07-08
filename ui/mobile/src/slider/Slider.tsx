@@ -19,7 +19,7 @@ function snap(v: number, min: number, max: number, step: number): number {
 
 export const Slider = forwardRef<any, SliderProps & { style?: ViewStyle }>(({
     color = 'neutral',
-    highlightColor,
+    highlightColor = color,
     size = 'md',
     min = 0,
     max = 100,
@@ -31,7 +31,6 @@ export const Slider = forwardRef<any, SliderProps & { style?: ViewStyle }>(({
     style,
 }, ref) => {
     const theme = useTheme();
-    const effectiveHighlightColor = highlightColor || color;
     const isLight = theme.mode === 'light';
     const height = heights[size];
     const thumbSize = thumbSizes[size];
@@ -42,12 +41,12 @@ export const Slider = forwardRef<any, SliderProps & { style?: ViewStyle }>(({
     const hitAreaRef = useRef<View>(null);
 
     const trackBackground = theme.color(color, 500, isLight ? 0.15 : 0.3);
-    const highlightAccent = theme.color(effectiveHighlightColor, isLight ? 600 : 300);
+    const highlightAccent = theme.color(highlightColor, isLight ? 600 : 300);
     const fillColor = theme.color(color, 800);
     const strokeColor = theme.color(color, 500);
     const isActive = active || isDragging;
-    const highlightTrackColor = isActive ? highlightAccent : theme.color(effectiveHighlightColor, 500);
-    const thumbBackground = isActive ? theme.color(effectiveHighlightColor, 900) : fillColor;
+    const highlightTrackColor = isActive ? highlightAccent : theme.color(highlightColor, 500);
+    const thumbBackground = isActive ? theme.color(highlightColor, 900) : fillColor;
     const thumbBorderColor = isActive ? highlightAccent : strokeColor;
     const hitAreaPageXRef = useRef(0);
     const valueRef = useRef(value);
@@ -146,7 +145,7 @@ export const Slider = forwardRef<any, SliderProps & { style?: ViewStyle }>(({
         borderColor: thumbBorderColor,
         transform: [{ rotate: "45deg" }],
         ...(isActive ? {
-            boxShadow: `0px 0px 4px ${highlightAccent}, 0px 0px 20px ${theme.color(effectiveHighlightColor, 900)}`,
+            boxShadow: `0px 0px 4px ${highlightAccent}, 0px 0px 20px ${theme.color(highlightColor, 900)}`,
         } : {}),
     };
 

@@ -1,3 +1,4 @@
+export * from './angle-input';
 export * from './button';
 export * from './checkbox';
 export * from './slider';

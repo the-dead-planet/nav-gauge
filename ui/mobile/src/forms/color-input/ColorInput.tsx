@@ -5,7 +5,7 @@ import { Text } from "../../typography";
 
 export const ColorInput: FC<ColorInputProps> = ({
     color = 'neutral',
-    highlightColor: hlColor,
+    highlightColor = color,
     size = 'sm',
     label,
     value,
@@ -13,7 +13,6 @@ export const ColorInput: FC<ColorInputProps> = ({
     disabled = false,
 }) => {
     const theme = useTheme();
-    const highlightColor = hlColor ?? color;
     const borderColor = theme.color(color, 500);
     const swatchSize = size === 'xs' ? 18 : size === 'sm' ? 22 : 26;
 

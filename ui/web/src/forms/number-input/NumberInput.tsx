@@ -7,7 +7,7 @@ import styles from './number-input.module.css';
 export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' | 'type' | 'size'> & NumberInputProps> = ({
     id,
     color = 'neutral',
-    highlightColor,
+    highlightColor = color,
     size = 'sm',
     variant = 'fill-inverse',
     label,
@@ -22,7 +22,6 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
     ...props
 }) => {
     const theme = useTheme();
-    const hlColor = highlightColor || color;
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const parsed = Number(e.target.value);
@@ -62,7 +61,7 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
             styles.container,
             styles[`mode-${theme.mode}`],
             styles[`color-${color}`],
-            styles[`highlight-${hlColor}`],
+            styles[`highlight-${highlightColor}`],
             styles[`size-${size}`],
             styles[`variant-${variant}`],
         )}>

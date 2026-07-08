@@ -15,7 +15,7 @@ interface Props {
 export const Button: FC<PressableProps & ButtonProps & Props> = ({
     forwardRef,
     color = 'neutral',
-    highlightColor: hlColor,
+    highlightColor = color,
     variant = 'ghost',
     glowStyle = 'none',
     size = 'sm',
@@ -37,7 +37,6 @@ export const Button: FC<PressableProps & ButtonProps & Props> = ({
     ...props
 }) => {
     const theme = useTheme();
-    const highlightColor = hlColor ?? color;
     const [pressed, setPressed] = useState(false);
     const [glowDrawn, setGlowDrawn] = useState(false);
     const hl = pressed || active;
@@ -255,7 +254,7 @@ export const Button: FC<PressableProps & ButtonProps & Props> = ({
             glowStyle={glowStyle}
             themeMode={themeMode}
             color={color}
-            highlightColor={hlColor || color}
+            highlightColor={highlightColor}
             active={active}
             interactive={!disabled}
             onPress={onPress ?? undefined}
