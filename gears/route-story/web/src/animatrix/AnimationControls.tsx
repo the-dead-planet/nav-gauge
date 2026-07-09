@@ -55,21 +55,32 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
                             label={t(animatrix.translationKey.CameraAngle)}
                             size='xs'
                             value={cameraAngle}
-                            min={0}
-                            max={360}
-                            step={6}
+                            min={Animatrix.cameraAngleRange[0]}
+                            max={Animatrix.cameraAngleRange[1]}
                             onChange={(value) => setAnimationControls((prev) => ({
                                 ...prev, cameraAngle: clamp(value, Animatrix.cameraAngleRange)
                             }))}
                         />
-                        <NumberInput
+                        <AngleInput
                             id="animation-controls-camera-roll"
                             label={t(animatrix.translationKey.CameraRoll)}
+                            size='xs'
                             value={cameraRoll}
                             min={Animatrix.cameraRollRange[0]}
                             max={Animatrix.cameraRollRange[1]}
                             onChange={(value) => setAnimationControls((prev) => ({
                                 ...prev, cameraRoll: clamp(value, Animatrix.cameraRollRange)
+                            }))}
+                        />
+                        <AngleInput
+                            id="animation-controls-max-bearing-diff-per-frame"
+                            label={t(animatrix.translationKey.MaxBearingDiffPerFrame)}
+                            size='xs'
+                            value={maxBearingDiffPerFrame}
+                            min={Animatrix.maxBearingDiffPerFrameRange[0]}
+                            max={Animatrix.maxBearingDiffPerFrameRange[1]}
+                            onChange={(value) => setAnimationControls((prev) => ({
+                                ...prev, maxBearingDiffPerFrame: clamp(value, Animatrix.maxBearingDiffPerFrameRange)
                             }))}
                         />
                         <NumberInput
@@ -80,16 +91,6 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
                             max={Animatrix.bearingLineLengthInMetersRange[1]}
                             onChange={(value) => setAnimationControls((prev) => ({
                                 ...prev, bearingLineLengthInMeters: clamp(value, Animatrix.bearingLineLengthInMetersRange)
-                            }))}
-                        />
-                        <NumberInput
-                            id="animation-controls-max-bearing-diff-per-frame"
-                            label={t(animatrix.translationKey.MaxBearingDiffPerFrame)}
-                            value={maxBearingDiffPerFrame}
-                            min={Animatrix.maxBearingDiffPerFrameRange[0]}
-                            max={Animatrix.maxBearingDiffPerFrameRange[1]}
-                            onChange={(value) => setAnimationControls((prev) => ({
-                                ...prev, maxBearingDiffPerFrame: clamp(value, Animatrix.maxBearingDiffPerFrameRange)
                             }))}
                         />
                         <NumberInput

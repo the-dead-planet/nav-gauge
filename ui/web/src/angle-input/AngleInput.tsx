@@ -1,12 +1,8 @@
 import { ComponentProps, FC, useCallback, useEffect, useRef, useState } from "react";
 import classNames from "classnames";
-import { AngleInputProps, useTheme } from "@ui";
-import styles from './angle-input.module.css';
+import { AngleInputProps, useTheme, TICK_COUNT, STEP_DEG, MAJOR_TICK_INTERVAL, snap, clockAngleToRadians, svgAtan2ToClockAngle, ANGLE_INPUT_RANGE } from "@ui";
 import { Label, Span } from "../typography";
-
-const TICK_COUNT = 60;
-const STEP_DEG = 360 / TICK_COUNT;
-const MAJOR_TICK_INTERVAL = 5;
+import styles from './angle-input.module.css';
 
 const sizeMap: Record<string, number> = { xs: 45, sm: 60, md: 75 };
 const thumbRadii: Record<string, number> = { xs: 1.5, sm: 2, md: 2.5 };
@@ -16,32 +12,15 @@ const tickMajorLengths: Record<string, number> = { xs: 4, sm: 5, md: 6 };
 const tickMinorLengths: Record<string, number> = { xs: 2, sm: 2.5, md: 3 };
 const strokeWidths: Record<string, number> = { xs: 0.75, sm: 1, md: 1.25 };
 
-function snap(v: number, min: number, max: number, step: number): number {
-    const stepped = Math.round((v - min) / step) * step + min;
-    const clamped = Math.min(max, Math.max(min, stepped));
-
-    return ((clamped % 360) + 360) % 360;
-}
-
-function clockAngleToRadians(clockAngleDeg: number): number {
-    return (clockAngleDeg - 90) * (Math.PI / 180);
-}
-
-function svgAtan2ToClockAngle(dx: number, dy: number): number {
-    const svgDeg = Math.atan2(dy, dx) * (180 / Math.PI);
-
-    return ((svgDeg + 90) % 360 + 360) % 360;
-}
-
 export const AngleInput: FC<AngleInputProps & Omit<ComponentProps<'div'>, 'onChange' | 'value'>> = ({
     id,
     color = 'neutral',
     highlightColor,
     size = 'sm',
-    variant = 'fill-translucent',
-    value = 0,
-    min = 0,
-    max = 360,
+    variant = 'fill-inverse',
+    value = ANGLE_INPUT_RANGE[0],
+    min = ANGLE_INPUT_RANGE[0],
+    max = ANGLE_INPUT_RANGE[1],
     step = STEP_DEG,
     onChange,
     label,

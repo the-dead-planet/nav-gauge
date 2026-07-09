@@ -8,11 +8,7 @@ import {
     TextStyle,
 } from "react-native";
 import Svg, { Circle, Line, G } from "react-native-svg";
-import { AngleInputProps, useTheme } from "@ui";
-
-const TICK_COUNT = 60;
-const STEP_DEG = 360 / TICK_COUNT;
-const MAJOR_TICK_INTERVAL = 5;
+import { AngleInputProps, useTheme, TICK_COUNT, STEP_DEG, MAJOR_TICK_INTERVAL, snap, clockAngleToRadians, svgAtan2ToClockAngle, ANGLE_INPUT_RANGE } from "@ui";
 
 const sizeMap: Record<string, number> = { xs: 42, sm: 80, md: 100 };
 const thumbRadii: Record<string, number> = { xs: 1.5, sm: 2.5, md: 3 };
@@ -21,29 +17,14 @@ const tickMajorLengths: Record<string, number> = { xs: 3.5, sm: 6, md: 7 };
 const tickMinorLengths: Record<string, number> = { xs: 2, sm: 3.5, md: 4 };
 const strokeWidths: Record<string, number> = { xs: 0.75, sm: 1.25, md: 1.5 };
 
-function snap(v: number, min: number, max: number, step: number): number {
-    const stepped = Math.round((v - min) / step) * step + min;
-    const clamped = Math.min(max, Math.max(min, stepped));
-    return ((clamped % 360) + 360) % 360;
-}
-
-function clockAngleToRadians(clockAngleDeg: number): number {
-    return (clockAngleDeg - 90) * (Math.PI / 180);
-}
-
-function svgAtan2ToClockAngle(dx: number, dy: number): number {
-    const svgDeg = Math.atan2(dy, dx) * (180 / Math.PI);
-    return ((svgDeg + 90) % 360 + 360) % 360;
-}
-
 export const AngleInput = forwardRef<View, AngleInputProps & { style?: ViewStyle }>(({
     color = 'neutral',
     highlightColor,
     size = 'md',
     variant = 'fill-translucent',
-    value = 0,
-    min = 0,
-    max = 360,
+    value = ANGLE_INPUT_RANGE[0],
+    min = ANGLE_INPUT_RANGE[0],
+    max = ANGLE_INPUT_RANGE[1],
     step = STEP_DEG,
     label,
     onChange,
