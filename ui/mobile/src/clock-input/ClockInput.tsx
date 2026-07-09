@@ -7,8 +7,8 @@ import {
     Text,
     TextStyle,
 } from "react-native";
-import Svg, { Circle, Line, G } from "react-native-svg";
-import { AngleInputProps, useTheme, TICK_COUNT, STEP_DEG, MAJOR_TICK_INTERVAL, snap, clockAngleToRadians, svgAtan2ToClockAngle, ANGLE_INPUT_RANGE } from "@ui";
+import Svg, { Circle, Line, Path, G } from "react-native-svg";
+import { ClockInputProps, useTheme, TICK_COUNT, STEP_DEG, MAJOR_TICK_INTERVAL, snapSlice, clockAngleToRadians, svgAtan2ToClockAngle, describeArc, CLOCK_INPUT_RANGE } from "@ui";
 
 const sizeMap: Record<string, number> = { xs: 42, sm: 80, md: 100 };
 const thumbRadii: Record<string, number> = { xs: 1.5, sm: 2.5, md: 3 };
@@ -17,14 +17,14 @@ const tickMajorLengths: Record<string, number> = { xs: 3.5, sm: 6, md: 7 };
 const tickMinorLengths: Record<string, number> = { xs: 2, sm: 3.5, md: 4 };
 const strokeWidths: Record<string, number> = { xs: 0.75, sm: 1.25, md: 1.5 };
 
-export const AngleInput = forwardRef<View, AngleInputProps & { style?: ViewStyle }>(({
+export const ClockInput = forwardRef<View, ClockInputProps & { style?: ViewStyle }>(({
     color = 'neutral',
     highlightColor,
     size = 'md',
     variant = 'fill-translucent',
-    value = ANGLE_INPUT_RANGE[0],
-    min = ANGLE_INPUT_RANGE[0],
-    max = ANGLE_INPUT_RANGE[1],
+    value = CLOCK_INPUT_RANGE[0],
+    min = CLOCK_INPUT_RANGE[0],
+    max = CLOCK_INPUT_RANGE[1],
     step = STEP_DEG,
     label,
     onChange,
@@ -40,6 +40,7 @@ export const AngleInput = forwardRef<View, AngleInputProps & { style?: ViewStyle
     const thumbRadius = thumbRadii[size];
     const centerDotRadius = centerDotRadii[size];
     const strokeWidth = strokeWidths[size];
+    const isFullCircle = max - min >= 360;
 
     const [isDragging, setIsDragging] = useState(false);
     const svgPageCenterRef = useRef({ x: 0, y: 0 });
@@ -82,14 +83,18 @@ export const AngleInput = forwardRef<View, AngleInputProps & { style?: ViewStyle
     onChangeRef.current = onChange;
 
     const handleInteraction = useCallback((pageX: number, pageY: number) => {
-        if (disabledRef.current) return;
+        if (disabledRef.current) {
+            return;
+        }
         const { x: cx, y: cy } = svgPageCenterRef.current;
         const dx = pageX - cx;
         const dy = pageY - cy;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 4) return;
+        if (dist < 4) {
+            return;
+        }
         const clockAngle = svgAtan2ToClockAngle(dx, dy);
-        const snapped = snap(clockAngle, min, max, step);
+        const snapped = snapSlice(clockAngle, min, max, step);
         if (snapped !== valueRef.current) {
             valueRef.current = snapped;
             onChangeRef.current?.(snapped);
@@ -103,12 +108,16 @@ export const AngleInput = forwardRef<View, AngleInputProps & { style?: ViewStyle
         onStartShouldSetPanResponder: () => !disabledRef.current,
         onMoveShouldSetPanResponder: () => !disabledRef.current,
         onPanResponderGrant: (evt) => {
-            if (disabledRef.current) return;
+            if (disabledRef.current) {
+                return;
+            }
             setIsDragging(true);
             contextRef.current.handleInteraction(evt.nativeEvent.pageX, evt.nativeEvent.pageY);
         },
         onPanResponderMove: (evt) => {
-            if (disabledRef.current) return;
+            if (disabledRef.current) {
+                return;
+            }
             contextRef.current.handleInteraction(evt.nativeEvent.pageX, evt.nativeEvent.pageY);
         },
         onPanResponderRelease: () => {
@@ -165,6 +174,7 @@ export const AngleInput = forwardRef<View, AngleInputProps & { style?: ViewStyle
             y2: center + Math.sin(rad) * outerRadius,
             width: tickWidth,
             isMajor,
+            angleDeg,
         };
     });
 
@@ -192,15 +202,24 @@ export const AngleInput = forwardRef<View, AngleInputProps & { style?: ViewStyle
                             r={outerRadius + strokeWidth}
                             fill={bgCircleFill}
                         />
-                        <Circle
-                            cx={center}
-                            cy={center}
-                            r={outerRadius}
-                            fill="none"
-                            stroke={dialColor}
-                            strokeWidth={strokeWidth}
-                        />
-                        {ticks.map((tick, i) => (
+                        {isFullCircle ? (
+                            <Circle
+                                cx={center}
+                                cy={center}
+                                r={outerRadius}
+                                fill="none"
+                                stroke={dialColor}
+                                strokeWidth={strokeWidth}
+                            />
+                        ) : (
+                            <Path
+                                d={describeArc(center, center, outerRadius, min, max)}
+                                fill="none"
+                                stroke={dialColor}
+                                strokeWidth={strokeWidth}
+                            />
+                        )}
+                        {ticks.filter((tick) => isFullCircle || (tick.angleDeg >= min && tick.angleDeg <= max)).map((tick, i) => (
                             <Line
                                 key={i}
                                 x1={tick.x1}
@@ -243,4 +262,4 @@ export const AngleInput = forwardRef<View, AngleInputProps & { style?: ViewStyle
     );
 });
 
-AngleInput.displayName = 'AngleInput';
+ClockInput.displayName = 'ClockInput';

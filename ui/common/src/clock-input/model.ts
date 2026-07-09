@@ -1,6 +1,6 @@
 import { ColorVariant, SizeVariant, SurfaceFillVariant } from "../model";
 
-export interface AngleInputProps {
+export interface ClockInputProps {
     color?: ColorVariant;
     highlightColor?: ColorVariant;
     size?: SizeVariant;

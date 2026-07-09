@@ -3,7 +3,7 @@ import { validateBoolean, validateNumber } from "@tinker-chest";
 import { AnimationControlsType, AnimatrixTranslationKey } from "./model";
 import { StorageKeeper, TranslationTable, Translatron } from "@apparatus";
 import * as Translations from "./translations";
-import { ANGLE_INPUT_RANGE } from "@ui";
+import { CLOCK_INPUT_RANGE } from "@ui";
 
 /**
  * Animation central processing unit.
@@ -34,9 +34,9 @@ export class Animatrix {
     public static pitchRange: [number, number] = [0, 85];
     public static zoomRange: [number, number] = [0, 20];
     public static bearingLineLengthInMetersRange: [number, number] = [0, 100000];
-    public static maxBearingDiffPerFrameRange: [number, number] = [ANGLE_INPUT_RANGE[0], ANGLE_INPUT_RANGE[1]];
-    public static cameraAngleRange: [number, number] = [ANGLE_INPUT_RANGE[0], ANGLE_INPUT_RANGE[1]];
-    public static cameraRollRange: [number, number] = [ANGLE_INPUT_RANGE[0], ANGLE_INPUT_RANGE[1]];
+    public static maxBearingDiffPerFrameRange: [number, number] = [CLOCK_INPUT_RANGE[0], CLOCK_INPUT_RANGE[1]];
+    public static cameraAngleRange: [number, number] = [CLOCK_INPUT_RANGE[0], CLOCK_INPUT_RANGE[1]];
+    public static cameraRollRange: [number, number] = [CLOCK_INPUT_RANGE[0], CLOCK_INPUT_RANGE[1]];
     public static speedMultiplierRange: [number, number] = [0, 1000000];
     public static easeDurationRange: [number, number] = [0, 1000];
 

@@ -79,7 +79,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteStoryPr
                     zoom,
                     pitch,
                     bearing,
-                    roll: cameraRoll,
+                    roll: pitch !== 0 ? cameraRoll : 0,
                 });
             },
         );

@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { ToolPanelProps, useMachineWard } from "@apparatus";
 import { clamp, useSubjectState } from "@tinker-chest";
-import { AngleInput, Checkbox, Fieldset, NumberInput } from "@web-ui";
+import { ClockInput, Checkbox, Fieldset, NumberInput, ClockSliceInput } from "@web-ui";
 import { Animatrix, RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { WebMarkerImageData } from "../images/image-parser";
 import styles from './animation-controls.module.css';
@@ -50,7 +50,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
                             {t(animatrix.translationKey.AutoRotate)}
                         </Checkbox>
                         <div />
-                        <AngleInput
+                        <ClockInput
                             id="animation-controls-camera-angle"
                             label={t(animatrix.translationKey.CameraAngle)}
                             size='xs'
@@ -61,18 +61,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
                                 ...prev, cameraAngle: clamp(value, Animatrix.cameraAngleRange)
                             }))}
                         />
-                        <AngleInput
-                            id="animation-controls-camera-roll"
-                            label={t(animatrix.translationKey.CameraRoll)}
-                            size='xs'
-                            value={cameraRoll}
-                            min={Animatrix.cameraRollRange[0]}
-                            max={Animatrix.cameraRollRange[1]}
-                            onChange={(value) => setAnimationControls((prev) => ({
-                                ...prev, cameraRoll: clamp(value, Animatrix.cameraRollRange)
-                            }))}
-                        />
-                        <AngleInput
+                        <ClockInput
                             id="animation-controls-max-bearing-diff-per-frame"
                             label={t(animatrix.translationKey.MaxBearingDiffPerFrame)}
                             size='xs'
@@ -83,6 +72,28 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
                                 ...prev, maxBearingDiffPerFrame: clamp(value, Animatrix.maxBearingDiffPerFrameRange)
                             }))}
                         />
+                        <ClockInput
+                            id="animation-controls-camera-roll"
+                            label={t(animatrix.translationKey.CameraRoll)}
+                            size='xs'
+                            value={cameraRoll}
+                            min={Animatrix.cameraRollRange[0]}
+                            max={Animatrix.cameraRollRange[1]}
+                            onChange={(value) => setAnimationControls((prev) => ({
+                                ...prev, cameraRoll: clamp(value, Animatrix.cameraRollRange)
+                            }))}
+                        />
+                        <ClockSliceInput
+                            id="animation-controls-pitch"
+                            label={t(animatrix.translationKey.Pitch)}
+                            size='xs'
+                            value={pitch}
+                            min={Animatrix.pitchRange[0]}
+                            max={Animatrix.pitchRange[1]}
+                            onChange={(value) => setAnimationControls((prev) => ({
+                                ...prev, pitch: clamp(value, Animatrix.pitchRange)
+                            }))}
+                        />
                         <NumberInput
                             id="animation-controls-bearing-line-length-in-meters"
                             label={t(animatrix.translationKey.BearingLineLengthInMeters)}
@@ -91,16 +102,6 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
                             max={Animatrix.bearingLineLengthInMetersRange[1]}
                             onChange={(value) => setAnimationControls((prev) => ({
                                 ...prev, bearingLineLengthInMeters: clamp(value, Animatrix.bearingLineLengthInMetersRange)
-                            }))}
-                        />
-                        <NumberInput
-                            id="animation-controls-pitch"
-                            label={t(animatrix.translationKey.Pitch)}
-                            value={pitch}
-                            min={Animatrix.pitchRange[0]}
-                            max={Animatrix.pitchRange[1]}
-                            onChange={(value) => setAnimationControls((prev) => ({
-                                ...prev, pitch: clamp(value, Animatrix.pitchRange)
                             }))}
                         />
                         <NumberInput

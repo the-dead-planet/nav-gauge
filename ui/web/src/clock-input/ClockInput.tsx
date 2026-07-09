@@ -1,8 +1,8 @@
 import { ComponentProps, FC, useCallback, useEffect, useRef, useState } from "react";
 import classNames from "classnames";
-import { AngleInputProps, useTheme, TICK_COUNT, STEP_DEG, MAJOR_TICK_INTERVAL, snap, clockAngleToRadians, svgAtan2ToClockAngle, ANGLE_INPUT_RANGE } from "@ui";
+import { ClockInputProps, useTheme, TICK_COUNT, STEP_DEG, MAJOR_TICK_INTERVAL, snapSlice, clockAngleToRadians, svgAtan2ToClockAngle, describeArc, CLOCK_INPUT_RANGE } from "@ui";
 import { Label, Span } from "../typography";
-import styles from './angle-input.module.css';
+import styles from './clock-input.module.css';
 
 const sizeMap: Record<string, number> = { xs: 45, sm: 60, md: 75 };
 const thumbRadii: Record<string, number> = { xs: 1.5, sm: 2, md: 2.5 };
@@ -12,15 +12,15 @@ const tickMajorLengths: Record<string, number> = { xs: 4, sm: 5, md: 6 };
 const tickMinorLengths: Record<string, number> = { xs: 2, sm: 2.5, md: 3 };
 const strokeWidths: Record<string, number> = { xs: 0.75, sm: 1, md: 1.25 };
 
-export const AngleInput: FC<AngleInputProps & Omit<ComponentProps<'div'>, 'onChange' | 'value'>> = ({
+export const ClockInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, 'onChange' | 'value'>> = ({
     id,
     color = 'neutral',
     highlightColor,
     size = 'sm',
     variant = 'fill-inverse',
-    value = ANGLE_INPUT_RANGE[0],
-    min = ANGLE_INPUT_RANGE[0],
-    max = ANGLE_INPUT_RANGE[1],
+    value = CLOCK_INPUT_RANGE[0],
+    min = CLOCK_INPUT_RANGE[0],
+    max = CLOCK_INPUT_RANGE[1],
     step = STEP_DEG,
     onChange,
     label,
@@ -37,6 +37,7 @@ export const AngleInput: FC<AngleInputProps & Omit<ComponentProps<'div'>, 'onCha
     const thumbRadius = thumbRadii[size];
     const centerDotRadius = centerDotRadii[size];
     const strokeWidth = strokeWidths[size];
+    const isFullCircle = max - min >= 360;
 
     const [isDragging, setIsDragging] = useState(false);
     const svgRef = useRef<SVGSVGElement>(null);
@@ -64,7 +65,7 @@ export const AngleInput: FC<AngleInputProps & Omit<ComponentProps<'div'>, 'onCha
         }
 
         const clockAngle = svgAtan2ToClockAngle(dx, dy);
-        const snapped = snap(clockAngle, min, max, step);
+        const snapped = snapSlice(clockAngle, min, max, step);
 
         if (snapped !== valueRef.current) {
             valueRef.current = snapped;
@@ -194,17 +195,27 @@ export const AngleInput: FC<AngleInputProps & Omit<ComponentProps<'div'>, 'onCha
                     r={outerRadius + strokeWidth}
                     className={styles['bg-circle']}
                 />
-                <circle
-                    cx={center}
-                    cy={center}
-                    r={outerRadius}
-                    fill="none"
-                    className={styles.dial}
-                    strokeWidth={strokeWidth}
-                />
+                {isFullCircle ? (
+                    <circle
+                        cx={center}
+                        cy={center}
+                        r={outerRadius}
+                        fill="none"
+                        className={styles.dial}
+                        strokeWidth={strokeWidth}
+                    />
+                ) : (
+                    <path
+                        d={describeArc(center, center, outerRadius, min, max)}
+                        fill="none"
+                        className={styles.dial}
+                        strokeWidth={strokeWidth}
+                    />
+                )}
 
                 {Array.from({ length: TICK_COUNT }, (_, i) => {
                     const angleDeg = i * STEP_DEG;
+                    if (!isFullCircle && (angleDeg < min || angleDeg > max)) return null;
                     const isMajor = i % MAJOR_TICK_INTERVAL === 0;
                     const tickLen = isMajor
                         ? tickMajorLengths[size]

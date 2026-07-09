@@ -77,15 +77,6 @@ export class PlayerOperator<TMap, TFile extends RouteStoryFile, TImageData> {
         const progressMs = this.gear.progressMs$.value;
         const geojson = this.gear.data$.value.geojson;
         const routeTimes = this.gear.routeTimes$.value;
-        const {
-            speedMultiplier,
-            bearingLineLengthInMeters,
-            displayImageDuration,
-            followCurrentPoint,
-            cameraAngle,
-            autoRotate,
-            maxBearingDiffPerFrame,
-        } = this.gear.animatrix.controls$.value;
 
         if (!isPlaying || !geojson || !routeTimes) {
             return;
@@ -101,6 +92,16 @@ export class PlayerOperator<TMap, TFile extends RouteStoryFile, TImageData> {
         });
 
         const animate = () => {
+            const {
+                speedMultiplier,
+                bearingLineLengthInMeters,
+                displayImageDuration,
+                followCurrentPoint,
+                cameraAngle,
+                autoRotate,
+                maxBearingDiffPerFrame,
+            } = this.gear.animatrix.controls$.value;
+
             const now = Date.now();
             const dt = now - last;
             last = now;
