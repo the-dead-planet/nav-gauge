@@ -30,3 +30,11 @@ Any independent visual or logical element that appears inside a component's JSX 
 - Interaction logic, sub-structure, and sub-component rendering lives in the extracted components.
 - Remove any imports no longer needed in the parent.
 - Run typecheck after every extraction.
+
+### Styling ownership
+
+- **Leaf sub-components own their own styles.** Pass raw semantic params (`color`, `activeHighlight`, `variant`, `isLight`) not pre-computed style values. This keeps color logic in one place per leaf instead of duplicated across parent components.
+- **Web:** Variant/style overrides cascade from the container via CSS module descendant selectors (`.variant-fill .tick`). Leaf elements use `className` not inline `style`/`fill` for variant-dependent properties.
+- **Mobile:** Leaf sub-components compute their own colors via `useTheme()` from raw params. They are not pure presentational components — they know how to style themselves.
+- Shared literal maps (`sizeMap`, `thumbRadii`, etc.) duplicated across parent components belong in a `constants.ts` in the same directory.
+- **`children`** should be typed as optional (`children?: ReactNode`) on wrapper components that not all parents will fill.

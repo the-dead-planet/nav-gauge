@@ -3,6 +3,7 @@ export { default as Animation } from './output/animation.svg';
 export { default as BrokenBox } from './output/broken-box.svg';
 export { default as CameraRecording } from './output/camera-recording.svg';
 export { default as CameraVideoFront } from './output/camera-video-front.svg';
+export { default as CameraVideoSide } from './output/camera-video-side.svg';
 export { default as ChevronDownDoubleSquareFill } from './output/chevron-down-double-square-fill.svg';
 export { default as ChevronDownDoubleTriangle } from './output/chevron-down-double-triangle.svg';
 export { default as ChevronDownDouble } from './output/chevron-down-double.svg';
