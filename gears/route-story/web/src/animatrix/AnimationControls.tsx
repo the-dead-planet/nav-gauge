@@ -62,17 +62,6 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
                             }))}
                         />
                         <ClockInput
-                            id="animation-controls-max-bearing-diff-per-frame"
-                            label={t(animatrix.translationKey.MaxBearingDiffPerFrame)}
-                            size='xs'
-                            value={maxBearingDiffPerFrame}
-                            min={Animatrix.maxBearingDiffPerFrameRange[0]}
-                            max={Animatrix.maxBearingDiffPerFrameRange[1]}
-                            onChange={(value) => setAnimationControls((prev) => ({
-                                ...prev, maxBearingDiffPerFrame: clamp(value, Animatrix.maxBearingDiffPerFrameRange)
-                            }))}
-                        />
-                        <ClockInput
                             id="animation-controls-camera-roll"
                             label={t(animatrix.translationKey.CameraRoll)}
                             size='xs'
@@ -92,6 +81,18 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
                             max={Animatrix.pitchRange[1]}
                             onChange={(value) => setAnimationControls((prev) => ({
                                 ...prev, pitch: clamp(value, Animatrix.pitchRange)
+                            }))}
+                        />
+                        <div />
+                        <ClockInput
+                            id="animation-controls-max-bearing-diff-per-frame"
+                            label={t(animatrix.translationKey.MaxBearingDiffPerFrame)}
+                            size='xs'
+                            value={maxBearingDiffPerFrame}
+                            min={Animatrix.maxBearingDiffPerFrameRange[0]}
+                            max={Animatrix.maxBearingDiffPerFrameRange[1]}
+                            onChange={(value) => setAnimationControls((prev) => ({
+                                ...prev, maxBearingDiffPerFrame: clamp(value, Animatrix.maxBearingDiffPerFrameRange)
                             }))}
                         />
                         <NumberInput

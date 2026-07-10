@@ -89,6 +89,20 @@ export function arcViewBox(
     };
 }
 
+export interface PointerCoords {
+    x: number;
+    y: number;
+}
+
+export function pointerCoords(value: number, outerRadius: number): PointerCoords {
+    const rad = clockAngleToRadians(value);
+    const len = outerRadius - 3;
+    return {
+        x: Math.cos(rad) * len,
+        y: Math.sin(rad) * len,
+    };
+}
+
 export function describeArc(
     cx: number, cy: number, r: number,
     clockStart: number, clockEnd: number,

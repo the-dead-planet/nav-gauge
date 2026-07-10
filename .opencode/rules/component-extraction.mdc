@@ -1,0 +1,32 @@
+---
+description: Keep components atomic by extracting distinct visual/logical elements into leaf sub-components
+globs: "ui/**/*.{ts,tsx}"
+alwaysApply: true
+---
+
+Break apart monolithic components into composable leaf sub-components. A single component should not define deeply nested JSX inlined — distinct visual or logical elements should be extracted.
+
+### When to extract
+
+Any independent visual or logical element that appears inside a component's JSX is a candidate, regardless of rendering target (React DOM, React Native, SVG, etc.). Common patterns:
+- A single element or tight grouping rendered with props (e.g. a thumb circle, a tick line, a pointer + center dot)
+- A conditional rendering block that picks between two element types based on a prop (e.g. full circle vs arc path)
+- An outer container plus all interaction wiring, when the only varying child is a single element slot
+
+### Extraction order (bottom-up)
+
+1. **Smallest elements** first — these take props and render a single element or tight grouping.
+2. **Composite groupings** — conditionals or combinations of smaller elements that were previously inlined.
+3. **Full wrapper** — absorbs the container, all refs, interaction handlers, state, and renders every sub-component from steps 1-2 internally. The only varying part is passed as `children`.
+
+### Naming
+
+- Prefix: same stem as the parent
+- Suffix: describes what it renders
+
+### After extraction
+
+- The parent component should only compute values and render the wrapper + outer structure.
+- Interaction logic, sub-structure, and sub-component rendering lives in the extracted components.
+- Remove any imports no longer needed in the parent.
+- Run typecheck after every extraction.
