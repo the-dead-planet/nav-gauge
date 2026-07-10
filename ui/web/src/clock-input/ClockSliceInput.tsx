@@ -1,8 +1,9 @@
 import { ComponentProps, FC, useCallback, useEffect, useRef, useState } from "react";
-import { ClockInputProps, useTheme, STEP_DEG, snapSlice, clockAngleToRadians, pointerCoords, svgAtan2ToClockAngle, arcViewBox } from "@ui";
+import { ClockInputProps, useTheme, snapSlice, clockAngleToRadians, pointerCoords, svgAtan2ToClockAngle, arcViewBox } from "@ui";
 import { ClockSvg } from "./ClockSvg";
 import { ClockA11yInput } from "./ClockA11yInput";
 import { ClockContainer } from "./ClockContainer";
+import styles from './clock-input.module.css';
 
 const sizeMap: Record<string, number> = { xs: 45, sm: 60, md: 75 };
 const thumbRadii: Record<string, number> = { xs: 1.5, sm: 2, md: 2.5 };
@@ -189,8 +190,7 @@ export const ClockSliceInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, '
             >
                 <path
                     d={wedgePath}
-                    fill="var(--angle-color)"
-                    fillOpacity={0.12}
+                    className={styles['wedge']}
                 />
             </ClockSvg>
         </ClockContainer>

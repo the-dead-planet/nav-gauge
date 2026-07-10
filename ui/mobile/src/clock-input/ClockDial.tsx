@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Circle, Path } from "react-native-svg";
-import { describeArc } from "@ui";
+import { describeArc, useTheme, ColorVariant, SurfaceFillVariant } from "@ui";
 
 interface Props {
     center: number;
@@ -8,7 +8,9 @@ interface Props {
     strokeWidth: number;
     min: number;
     max: number;
-    dialColor: string;
+    color: ColorVariant;
+    variant: SurfaceFillVariant;
+    isLight: boolean;
     isFullCircle?: boolean;
 }
 
@@ -18,28 +20,51 @@ export const ClockDial: FC<Props> = ({
     strokeWidth,
     min,
     max,
-    dialColor,
+    color,
+    variant,
+    isLight,
     isFullCircle = false,
 }) => {
-    if (isFullCircle) {
-        return (
-            <Circle
-                cx={center}
-                cy={center}
-                r={outerRadius}
-                fill="none"
-                stroke={dialColor}
-                strokeWidth={strokeWidth}
-            />
-        );
-    }
+    const theme = useTheme();
+
+    const useDark = variant === 'fill';
+
+    const defaultDialColor = theme.color(color, 500, isLight ? 0.25 : 0.35);
+    const dialColor = useDark ? theme.color(color, 800) : defaultDialColor;
+
+    const bgCircleFill = variant === 'fill'
+        ? theme.color(color, 500)
+        : variant === 'fill-inverse'
+            ? theme.color(color, isLight ? 100 : 800)
+            : theme.color(color, 500, 0.24);
 
     return (
-        <Path
-            d={describeArc(center, center, outerRadius, min, max)}
-            fill="none"
-            stroke={dialColor}
-            strokeWidth={strokeWidth}
-        />
+        <>
+            {isFullCircle && (
+                <Circle
+                    cx={center}
+                    cy={center}
+                    r={outerRadius + strokeWidth}
+                    fill={bgCircleFill}
+                />
+            )}
+            {isFullCircle ? (
+                <Circle
+                    cx={center}
+                    cy={center}
+                    r={outerRadius}
+                    fill="none"
+                    stroke={dialColor}
+                    strokeWidth={strokeWidth}
+                />
+            ) : (
+                <Path
+                    d={describeArc(center, center, outerRadius, min, max)}
+                    fill="none"
+                    stroke={dialColor}
+                    strokeWidth={strokeWidth}
+                />
+            )}
+        </>
     );
 };

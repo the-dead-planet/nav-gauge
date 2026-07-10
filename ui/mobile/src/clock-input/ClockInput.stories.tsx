@@ -177,10 +177,7 @@ export const AllVariants: FC = () => {
     );
 };
 
-const sliceSizes: SizeVariant[] = ['sm', 'md'];
-const sliceColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-
-export const PitchGauge: FC = () => {
+export const SliceVariants: FC = () => {
     const pitchRange: [number, number] = [0, 85];
     const [value, setValue] = useState(30);
     const [size, setSize] = useState<SizeVariant>('sm');
@@ -189,7 +186,7 @@ export const PitchGauge: FC = () => {
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <View style={[styles.row, { marginBottom: 12 }]}>
-                {sliceSizes.map((s) => (
+                {allSizes.map((s) => (
                     <Button
                         key={s}
                         variant={size === s ? 'fill' : 'ghost'}
@@ -219,21 +216,31 @@ export const PitchGauge: FC = () => {
                     pitch [{pitchRange[0]}–{pitchRange[1]}] | value: {value}°
                 </Text>
                 <View style={styles.row}>
-                    {sliceColors.map((color) => (
-                        <View key={color} style={styles.cell}>
-                            <ClockSliceInput
-                                value={value}
-                                onChange={setValue}
-                                color={color}
-                                size={size}
-                                label={color}
-                                disabled={disabled}
-                                min={pitchRange[0]}
-                                max={pitchRange[1]}
-                            />
+                    {allVariants.map((variant) => (
+                        <View key={variant} style={styles.cell}>
+                            <Text style={styles.headerLabel}>{variant}</Text>
                         </View>
                     ))}
                 </View>
+                {allColors.map((color) => (
+                    <View key={color} style={styles.row}>
+                        {allVariants.map((variant) => (
+                            <View key={variant} style={styles.cell}>
+                                <ClockSliceInput
+                                    value={value}
+                                    onChange={setValue}
+                                    color={color}
+                                    variant={variant}
+                                    size={size}
+                                    label={color}
+                                    disabled={disabled}
+                                    min={pitchRange[0]}
+                                    max={pitchRange[1]}
+                                />
+                            </View>
+                        ))}
+                    </View>
+                ))}
             </View>
 
             <View style={styles.section}>

@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Line } from "react-native-svg";
-import { TICK_COUNT, STEP_DEG, MAJOR_TICK_INTERVAL, clockAngleToRadians } from "@ui";
+import { TICK_COUNT, STEP_DEG, MAJOR_TICK_INTERVAL, clockAngleToRadians, useTheme, ColorVariant, SurfaceFillVariant } from "@ui";
 
 const tickMajorLengths: Record<string, number> = { xs: 3.5, sm: 6, md: 7 };
 const tickMinorLengths: Record<string, number> = { xs: 2, sm: 3.5, md: 4 };
@@ -12,9 +12,10 @@ interface Props {
     strokeWidth: number;
     min: number;
     max: number;
-    tickColor: string;
-    tickMajorColor: string;
-    tickMinorOpacity: number;
+    color: ColorVariant;
+    activeHighlight: ColorVariant;
+    variant: SurfaceFillVariant;
+    isLight: boolean;
 }
 
 export const ClockTicks: FC<Props> = ({
@@ -24,10 +25,21 @@ export const ClockTicks: FC<Props> = ({
     strokeWidth,
     min,
     max,
-    tickColor,
-    tickMajorColor,
-    tickMinorOpacity,
+    color,
+    activeHighlight,
+    variant,
+    isLight,
 }) => {
+    const theme = useTheme();
+
+    const useDark = variant === 'fill';
+    const useRegular = variant === 'fill-inverse';
+
+    const defaultTickColor = theme.color(color, 500, isLight ? 0.35 : 0.5);
+    const tickColor = useDark ? theme.color(color, 800) : defaultTickColor;
+    const tickMajorColor = useDark ? theme.color(color, 800) : theme.color(activeHighlight, isLight ? 500 : 300);
+    const tickMinorOpacity = (useDark || useRegular) ? 0.5 : (isLight ? 0.3 : 0.5);
+
     const ticks = Array.from({ length: TICK_COUNT }, (_, i) => {
         const angleDeg = i * STEP_DEG;
         const isMajor = i % MAJOR_TICK_INTERVAL === 0;
@@ -35,7 +47,7 @@ export const ClockTicks: FC<Props> = ({
         const tickWidth = isMajor ? strokeWidth : strokeWidth * 0.6;
         const rad = clockAngleToRadians(angleDeg);
         const innerR = outerRadius - tickLen;
-        
+
         return {
             x1: center + Math.cos(rad) * innerR,
             y1: center + Math.sin(rad) * innerR,

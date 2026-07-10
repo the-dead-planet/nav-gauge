@@ -191,6 +191,10 @@
     stroke: var(--angle-color-dark);
 }
 
+.variant-fill .wedge {
+    fill: var(--angle-color);
+}
+
 .variant-fill .pointer-active {
     stroke: var(--angle-color-dark);
 }
@@ -206,7 +210,11 @@
 }
 
 .variant-fill-inverse .bg-circle {
-    fill: var(--angle-color-dark);
+    fill: var(--angle-color-inverse);
+}
+
+.variant-fill-inverse .wedge {
+    fill: var(--angle-color-inverse);
 }
 
 .variant-fill-inverse .center-dot {
@@ -231,6 +239,14 @@
 
 .variant-fill-translucent .bg-circle {
     fill: rgb(from var(--angle-color) r g b / .24);
+}
+
+.variant-fill-translucent .wedge {
+    fill: rgb(from var(--angle-color) r g b / .12);
+}
+
+.wedge {
+    fill: rgb(from var(--angle-color) r g b / .12);
 }
 
 .variant-fill-translucent .center-dot {

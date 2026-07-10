@@ -5,7 +5,7 @@ import {
     View,
 } from "react-native";
 import Svg, { G } from "react-native-svg";
-import { snapSlice, svgAtan2ToClockAngle } from "@ui";
+import { snapSlice, svgAtan2ToClockAngle, ColorVariant, SurfaceFillVariant } from "@ui";
 import { ClockDial } from "./ClockDial";
 import { ClockTicks } from "./ClockTicks";
 import { ClockPointer } from "./ClockPointer";
@@ -14,7 +14,7 @@ import { ClockThumb } from "./ClockThumb";
 interface Props {
     svgSize: number;
     size: string;
-    children: ReactNode;
+    children?: ReactNode;
     center: number;
     outerRadius: number;
     strokeWidth: number;
@@ -24,18 +24,11 @@ interface Props {
     thumbRadius: number;
     min: number;
     max: number;
-    dialColor: string;
+    color: ColorVariant;
+    activeHighlight: ColorVariant;
+    variant: SurfaceFillVariant;
+    isLight: boolean;
     isFullCircle?: boolean;
-    tickColor: string;
-    tickMajorColor: string;
-    tickMinorOpacity: number;
-    pointerColor: string;
-    pointerActiveColor: string;
-    centerDotFill: string;
-    thumbFill: string;
-    thumbStroke: string;
-    thumbFillActive: string;
-    thumbStrokeActive: string;
     disabled: boolean;
     onChange?: (value: number) => void;
     step: number;
@@ -55,18 +48,11 @@ export const ClockSvg: FC<Props> = ({
     thumbRadius,
     min,
     max,
-    dialColor,
+    color,
+    activeHighlight,
+    variant,
+    isLight,
     isFullCircle,
-    tickColor,
-    tickMajorColor,
-    tickMinorOpacity,
-    pointerColor,
-    pointerActiveColor,
-    centerDotFill,
-    thumbFill,
-    thumbStroke,
-    thumbFillActive,
-    thumbStrokeActive,
     disabled,
     onChange,
     step,
@@ -154,7 +140,9 @@ export const ClockSvg: FC<Props> = ({
                         strokeWidth={strokeWidth}
                         min={min}
                         max={max}
-                        dialColor={dialColor}
+                        color={color}
+                        variant={variant}
+                        isLight={isLight}
                         isFullCircle={isFullCircle}
                     />
                     <ClockTicks
@@ -164,9 +152,10 @@ export const ClockSvg: FC<Props> = ({
                         strokeWidth={strokeWidth}
                         min={min}
                         max={max}
-                        tickColor={tickColor}
-                        tickMajorColor={tickMajorColor}
-                        tickMinorOpacity={tickMinorOpacity}
+                        color={color}
+                        activeHighlight={activeHighlight}
+                        variant={variant}
+                        isLight={isLight}
                     />
                     <ClockPointer
                         center={center}
@@ -175,9 +164,10 @@ export const ClockSvg: FC<Props> = ({
                         strokeWidth={strokeWidth}
                         isDragging={isDragging}
                         centerDotRadius={centerDotRadius}
-                        pointerColor={pointerColor}
-                        pointerActiveColor={pointerActiveColor}
-                        centerDotFill={centerDotFill}
+                        color={color}
+                        activeHighlight={activeHighlight}
+                        variant={variant}
+                        isLight={isLight}
                     />
                     <ClockThumb
                         center={center}
@@ -186,10 +176,10 @@ export const ClockSvg: FC<Props> = ({
                         thumbRadius={thumbRadius}
                         isDragging={isDragging}
                         strokeWidth={strokeWidth}
-                        thumbFill={thumbFill}
-                        thumbStroke={thumbStroke}
-                        thumbFillActive={thumbFillActive}
-                        thumbStrokeActive={thumbStrokeActive}
+                        color={color}
+                        activeHighlight={activeHighlight}
+                        variant={variant}
+                        isLight={isLight}
                     />
                 </G>
             </Svg>
