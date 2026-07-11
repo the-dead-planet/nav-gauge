@@ -42,9 +42,9 @@ export const PlayerSlider: FC<Props> = ({
         playLabel,
         pauseLabel,
     ] = useMultipleTranslations([
-        { n: gearId, t: translationKey.Player },
-        { n: gearId, t: translationKey.Player },
-        { n: gearId, t: translationKey.Player },
+        { n: gearId, t: translationKey.Slider },
+        { n: gearId, t: translationKey.Play },
+        { n: gearId, t: translationKey.Pause },
     ]);
     const playPauseLabel = isPlaying ? pauseLabel : playLabel;
 

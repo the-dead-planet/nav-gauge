@@ -18,7 +18,11 @@ const nl: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['nl'] 
     "resume-recording": 'Surveillance hervatten',
     "layer-configuration": 'Laagesthetiek',
     "lines": 'Lijnen',
-    "points": 'Punten'
+    "points": 'Punten',
+    "slider": 'Schuif',
+    "play": 'Afspelen',
+    "pause": 'Pauze',
+    "image": 'Afbeelding',
 };
 
 export default nl;

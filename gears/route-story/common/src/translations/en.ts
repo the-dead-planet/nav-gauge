@@ -18,7 +18,11 @@ const en: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['en'] 
     "resume-recording": 'Resume surveilling',
     "layer-configuration": 'Layer aesthetics',
     "lines": 'Lines',
-    "points": 'Points'
+    "points": 'Points',
+    "slider": 'Slider',
+    "play": 'Play',
+    "pause": 'Pause',
+    "image": 'Image',
 };
 
 export default en;

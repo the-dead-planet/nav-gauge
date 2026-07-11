@@ -18,7 +18,11 @@ const ru: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['ru'] 
     "resume-recording": 'Возобновить наблюдение',
     "layer-configuration": 'Эстетика слоёв',
     "lines": 'Линии',
-    "points": 'Точки'
+    "points": 'Точки',
+    "slider": 'Ползунок',
+    "play": 'Воспроизвести',
+    "pause": 'Пауза',
+    "image": 'Изображение',
 };
 
 export default ru;

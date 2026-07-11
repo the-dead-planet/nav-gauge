@@ -18,7 +18,11 @@ const it: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['it'] 
     "resume-recording": 'Riprendere sorveglianza',
     "layer-configuration": 'Estetica dei livelli',
     "lines": 'Linee',
-    "points": 'Punti'
+    "points": 'Punti',
+    "slider": 'Dispositivo di scorrimento',
+    "play": 'Riproduci',
+    "pause": 'Pausa',
+    "image": 'Immagine',
 };
 
 export default it;

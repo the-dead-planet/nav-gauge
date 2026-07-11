@@ -18,7 +18,11 @@ const jp: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['jp'] 
     "resume-recording": '監視を再開',
     "layer-configuration": 'レイヤーの美学',
     "lines": '線',
-    "points": '点'
+    "points": '点',
+    "slider": 'スライダー',
+    "play": '再生',
+    "pause": '一時停止',
+    "image": '画像',
 };
 
 export default jp;

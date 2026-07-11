@@ -35,11 +35,9 @@ export const SliderMarkers: FC<Props> = ({
     const [highlightIdsBySourceId, setHighlightIdsBySourceId] = useSubjectState(highlightIdsBySourceId$);
     const [draggingImageId, setDraggingImageId] = useSubjectState(draggingImageId$);
     const [
-        playLabel,
-        pauseLabel,
+        imageLabel,
     ] = useMultipleTranslations([
-        { n: gearId, t: translationKey.Player },
-        { n: gearId, t: translationKey.Player },
+        { n: gearId, t: translationKey.Image },
     ]);
 
     const getPosition = (featureId: number) => {
@@ -82,6 +80,8 @@ export const SliderMarkers: FC<Props> = ({
                         key={image.id}
                         role="button"
                         tabIndex={0}
+                        aria-label={`${imageLabel} ${image.id}`}
+                        title={`${imageLabel} ${image.id}`}
                         onMouseEnter={() => {
                             setHighlightIdsBySourceId(new Map([[imageSourceIds.thumbnails, new Set([image.id.toString()])]]));
                         }}
@@ -89,7 +89,9 @@ export const SliderMarkers: FC<Props> = ({
                             setHighlightIdsBySourceId(new Map());
                         }}
                         onMouseDown={() => setDraggingImageId(image.id)}
-                        className={classNames(styles['image-marker'], { [styles['highlight']]: false })}
+                        className={classNames(styles['image-marker'], { 
+                            [styles['highlight']]: highlightIdsBySourceId.get(imageSourceIds.thumbnails)?.has(image.id.toString())
+                         })}
                         style={{
                             left: `${getPosition(image.featureId!).toFixed(0)}%`
                         }}

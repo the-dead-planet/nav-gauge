@@ -57,6 +57,10 @@ export enum RouteStoryTranslationKey {
     LayerConfiguration = 'layer-configuration',
     Lines = 'lines',
     Points = 'points',
+    Slider = 'slider',
+    Play = 'play',
+    Pause = 'pause',
+    Image = 'image',
 }
 
 export type Preset = 'default' | 'racing-game';
