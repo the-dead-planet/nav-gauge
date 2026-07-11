@@ -155,6 +155,7 @@ export const ClockInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, 'onCha
                 step={step}
                 value={value}
                 onChange={onChange}
+                onSync={onChange}
                 disabled={disabled}
                 label={label}
             />

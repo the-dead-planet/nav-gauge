@@ -12,6 +12,7 @@ export * from './date-time';
 export * from './error-boundary';
 export * from './flex-box';
 export * from './grid';
+export * from './icon-rotate-input';
 export * from './icons';
 export * from './menu';
 export * from './model';

@@ -17,6 +17,7 @@ import {
     layerOrder,
     draggingImageId$,
     updateImageFeatureId,
+    highlightIdsBySourceId$,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { WebMarkerImageData } from "./image-parser";
 import { getImagesLayers } from "./images-layers";
@@ -32,7 +33,7 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteStoryP
     const [{ geojson }] = useSubjectState(data$);
     const [images] = useSubjectState(images$);
     const loadedImages = useLoadedWebImages(images);
-    const [highlightIdsBySourceId, setHighlightIdsBySourceId] = useState<Map<string, Set<string>>>(new Map());
+    const [highlightIdsBySourceId, setHighlightIdsBySourceId] = useSubjectState(highlightIdsBySourceId$);
     const [draggingImageId, setDraggingImageId] = useSubjectState(draggingImageId$);
 
     useRouteLayerImages(
@@ -74,11 +75,14 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteStoryP
             },
             onMouseMove: ({ features, isTopRelated }) => {
                 if (!isTopRelated || draggingImageId$.value !== null) {
-                    if (draggingImageId$.value === null) map.getCanvas().style.cursor = 'grab';
+                    if (draggingImageId$.value === null) {
+                        map.getCanvas().style.cursor = 'grab';
+                    }
                     setHighlightIdsBySourceId(new Map());
+                    
                     return;
                 }
-                
+
                 map.getCanvas().style.cursor = 'pointer';
                 const ids = new Set(features.map((f) => f.id?.toString() ?? ''));
                 setHighlightIdsBySourceId(new Map([[imageSourceIds.thumbnails, ids]]));

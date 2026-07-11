@@ -9,7 +9,7 @@ alwaysApply: true
 - **React** + **RxJS** for state management (use `useMachineWard` hook)
 - **Luxon** for all date/time formatting
 - **4-space indentation**, semicolons required
-- **Braces & newlines**: always use curly braces with line breaks for control flow statements (`if`, `for`, `while`, etc.). Do `if (condition) {\n  return;\n}` not `if (condition) return;`
+- **Braces & newlines**: always use curly braces with line breaks for control flow statements (`if`, `for`, `while`, etc.). Do `if (condition) {\n    return;\n}` not `if (condition) return;` or `if (condition) { return; }`
 - Minimal JSDocs — code should be self-documenting; refactor if unclear
 - No bloated comments, no `TODO:`s (use GitHub issues instead)
 - Prefer fewer dependencies; write your own when feasible

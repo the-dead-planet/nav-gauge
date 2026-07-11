@@ -8,10 +8,13 @@ Break apart monolithic components into composable leaf sub-components. A single 
 
 ### When to extract
 
-Any independent visual or logical element that appears inside a component's JSX is a candidate, regardless of rendering target (React DOM, React Native, SVG, etc.). Common patterns:
-- A single element or tight grouping rendered with props (e.g. a thumb circle, a tick line, a pointer + center dot)
-- A conditional rendering block that picks between two element types based on a prop (e.g. full circle vs arc path)
-- An outer container plus all interaction wiring, when the only varying child is a single element slot
+Any independent visual or logical element that appears inside a component's JSX is a candidate, regardless of rendering target (React DOM, React Native, SVG, etc.). **Always extract** when any of these apply:
+
+- **Inline SVG sub-elements** — paths, arcs, circles, arrowheads, rings, or any SVG geometry that is rendered as sibling elements with shared computed values (radii, angles, stroke widths). These should never stay inlined in the parent even if they are only a few lines.
+- **Tight groupings of 2+ elements** that share props and render together (e.g. a pointer + center dot, a tick line with a label, an arc with arrowheads at both ends).
+- **Geometry/math helpers** that exist solely to produce data for a specific visual element — move them into that element's component.
+- A conditional rendering block that picks between two element types based on a prop (e.g. full circle vs arc path).
+- An outer container plus all interaction wiring, when the only varying child is a single element slot.
 
 ### Extraction order (bottom-up)
 

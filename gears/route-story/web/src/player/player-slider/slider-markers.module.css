@@ -1,0 +1,60 @@
+.slider-markers {
+    height: 0;
+}
+
+.image-marker {
+    --marker-width: 2px;
+    --marker-border-width: 2px;
+    --marker-border-color: var(--color-secondary-800);
+
+    position: absolute;
+    height: 52px;
+    bottom: -8px;
+    width: var(--marker-width);
+    background-color: var(--color-secondary);
+    cursor: pointer;
+}
+
+.image-marker:hover,
+.image-marker:focus,
+.image-marker.highlight {
+    border-left: var(--marker-border-width) solid var(--marker-border-color);
+    border-right: var(--marker-border-width) solid var(--marker-border-color);
+}
+
+.image-marker:hover::before,
+.image-marker:hover::after,
+.image-marker:focus::before,
+.image-marker:focus::after,
+.image-marker.highlight::before,
+.image-marker.highlight::after {
+    border: var(--marker-border-width) solid var(--marker-border-color);
+}
+
+.image-marker:hover,
+.image-marker:focus,
+.image-marker.highlight {
+    transform: translateX(calc(-1 * var(--marker-border-width)));
+}
+
+.image-marker::after,
+.image-marker::before {
+    content: '';
+    position: absolute;
+    left: calc(var(--marker-width) / 2);
+    background-color: var(--color-secondary);
+}
+
+.image-marker::after {
+    top: 0;
+    transform: translate(-50%, -50%) rotate(45deg);
+    width: 6px;
+    height: 6px;
+}
+
+.image-marker::before {
+    bottom: 0;
+    transform: translate(-50%, 50%);
+    width: 4px;
+    height: 2px;
+}

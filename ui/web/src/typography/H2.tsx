@@ -1,6 +1,6 @@
 import { ComponentProps, FC } from "react";
 import classNames from "classnames";
-import {  defaultTypographyProps, TypographyProps } from "@ui";
+import { defaultTypographyProps, TypographyProps } from "@ui";
 import { textCssNames } from "./cssUtil";
 import styles from './typography.module.css';
 
@@ -9,6 +9,7 @@ export const H2: FC<ComponentProps<'h2'> & TypographyProps> = ({
     fontType = defaultTypographyProps.fontType,
     bold,
     shadow,
+    tabular,
     m,
     mv,
     mh,
@@ -32,6 +33,7 @@ export const H2: FC<ComponentProps<'h2'> & TypographyProps> = ({
         fontType,
         bold,
         shadow,
+        tabular,
         m,
         mv,
         mh,

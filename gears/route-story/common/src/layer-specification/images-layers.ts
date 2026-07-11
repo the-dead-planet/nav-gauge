@@ -19,6 +19,7 @@ export const imageLayerIds = {
     imageInDisplay: 'route-story-image-in-display',
 }
 
+export const highlightIdsBySourceId$ = new BehaviorSubject<Map<string, Set<string>>>(new Map());
 export const draggingImageId$ = new BehaviorSubject<number | null>(null);
 
 const thumbnailsFilter: ComparisonProperty = ['!=', ['get', 'imageId'], DRAGGED_IMAGE_ID];

@@ -22,6 +22,14 @@
     border: 0;
 }
 
+/* ── Focus ring ── */
+
+.container:focus-within:not(.disabled) .svg {
+    outline: 2px solid var(--angle-highlight);
+    outline-offset: 0px;
+    border-radius: 50%;
+}
+
 /* ── Label ── */
 
 .label {

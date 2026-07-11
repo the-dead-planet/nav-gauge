@@ -9,6 +9,7 @@ export * from './flex-box';
 export * from './hud';
 export * from './forms';
 export * from './grid';
+export * from './icon-rotate-input';
 export * from './icons';
 export * from './menu';
 export * from './theme';

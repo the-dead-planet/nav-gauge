@@ -167,6 +167,7 @@ export const ClockSliceInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, '
                 step={step}
                 value={value}
                 onChange={onChange}
+                onSync={onChange}
                 disabled={disabled}
                 label={label}
             />
