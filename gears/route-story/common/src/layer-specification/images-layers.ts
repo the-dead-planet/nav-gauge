@@ -21,6 +21,7 @@ export const imageLayerIds = {
 
 export const highlightIdsBySourceId$ = new BehaviorSubject<Map<string, Set<string>>>(new Map());
 export const draggingImageId$ = new BehaviorSubject<number | null>(null);
+export const draggingFeatureId$ = new BehaviorSubject<number | null>(null);
 
 const thumbnailsFilter: ComparisonProperty = ['!=', ['get', 'imageId'], DRAGGED_IMAGE_ID];
 const thumbnailIconImage: GetProperty = ['get', IMAGE_THUMBNAIL_PROPERTY];

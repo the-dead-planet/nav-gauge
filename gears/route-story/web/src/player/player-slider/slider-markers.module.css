@@ -12,7 +12,7 @@
     bottom: -8px;
     width: var(--marker-width);
     background-color: var(--color-secondary);
-    cursor: pointer;
+    cursor: grab;
 }
 
 .image-marker:hover,
@@ -57,4 +57,9 @@
     transform: translate(-50%, 50%);
     width: 4px;
     height: 2px;
+}
+
+.drag-marker {
+    opacity: 0.5;
+    pointer-events: none;
 }

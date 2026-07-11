@@ -3,7 +3,7 @@ import { BehaviorSubject } from "rxjs";
 import classNames from "classnames";
 import { MarkerImage, useMultipleTranslations } from "@apparatus";
 import { ParsingResultWithError, useSubjectState } from "@tinker-chest";
-import { draggingImageId$, highlightIdsBySourceId$, imageSourceIds, RouteStoryTranslationKey, RouteTimes } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { draggingImageId$, draggingFeatureId$, highlightIdsBySourceId$, imageSourceIds, RouteStoryTranslationKey, RouteTimes } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { WebMarkerImageData } from "../../images/image-parser";
 import { PlayerOperator } from "@the-dead-planet/nav-gauge-gears-route-story-common/src/player-operator";
 import styles from './slider-markers.module.css';
@@ -34,6 +34,7 @@ export const SliderMarkers: FC<Props> = ({
     const [images] = useSubjectState(images$);
     const [highlightIdsBySourceId, setHighlightIdsBySourceId] = useSubjectState(highlightIdsBySourceId$);
     const [draggingImageId, setDraggingImageId] = useSubjectState(draggingImageId$);
+    const [draggingFeatureId] = useSubjectState(draggingFeatureId$);
     const [
         imageLabel,
     ] = useMultipleTranslations([
@@ -49,27 +50,22 @@ export const SliderMarkers: FC<Props> = ({
     };
 
     useEffect(() => {
-        console.log({draggingImageId})
         if (draggingImageId === null) {
             return;
         }
-        
-        const mouseMoveHandler = () => {
-            console.log("moving")
-        };
 
         const mouseUpHandler = () => {
             setDraggingImageId(null);
         };
 
-        window.addEventListener('mousemove', mouseMoveHandler);
         window.addEventListener('mouseup', mouseUpHandler);
 
         return () => {
-            window.removeEventListener('mousemove', mouseMoveHandler);
             window.removeEventListener('mouseup', mouseUpHandler);
         };
     }, [draggingImageId]);
+
+    const draggingFeaturePosition = draggingFeatureId !== null ? getPosition(draggingFeatureId) : null;
 
     return (
         <div className={styles['slider-markers']}>
@@ -89,14 +85,22 @@ export const SliderMarkers: FC<Props> = ({
                             setHighlightIdsBySourceId(new Map());
                         }}
                         onMouseDown={() => setDraggingImageId(image.id)}
-                        className={classNames(styles['image-marker'], { 
-                            [styles['highlight']]: highlightIdsBySourceId.get(imageSourceIds.thumbnails)?.has(image.id.toString())
-                         })}
+                        className={classNames(styles['image-marker'], {
+                            [styles['highlight']]: draggingImageId === image.id || highlightIdsBySourceId.get(imageSourceIds.thumbnails)?.has(image.id.toString())
+                        })}
                         style={{
                             left: `${getPosition(image.featureId!).toFixed(0)}%`
                         }}
                     />
                 ))}
+            {draggingFeaturePosition !== null && (
+                <span
+                    className={classNames(styles['image-marker'], styles['drag-marker'])}
+                    style={{
+                        left: `${draggingFeaturePosition.toFixed(0)}%`
+                    }}
+                />
+            )}
         </div>
     );
 };

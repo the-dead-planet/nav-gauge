@@ -16,6 +16,7 @@ import {
     DRAGGED_IMAGE_ID,
     layerOrder,
     draggingImageId$,
+    draggingFeatureId$,
     updateImageFeatureId,
     highlightIdsBySourceId$,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
@@ -124,7 +125,7 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteStoryP
                 return;
             }
             event.preventDefault?.();
-            const [_id, feature] = Cartomancer.getClosestFeature(geojson, event.lngLat);
+            const [closestId, closestFeature] = Cartomancer.getClosestFeature(geojson, event.lngLat);
             const image = loadedImages.find((image) => image.id === draggingImageId);
             const source = map.getSource(imageSourceIds.thumbnails) as maplibregl.GeoJSONSource | undefined;
 
@@ -132,12 +133,14 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteStoryP
                 return;
             }
 
+            draggingFeatureId$.next(closestId);
+
             source.setData({
                 ...sourceDataGeojson,
                 features: sourceDataGeojson.features.concat([{
                     type: 'Feature',
                     id: -1,
-                    geometry: feature.geometry,
+                    geometry: closestFeature.geometry,
                     properties: {
                         imageId: DRAGGED_IMAGE_ID,
                         [IMAGE_PROPERTY]: getIconImageId(image),
@@ -157,6 +160,7 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteStoryP
             if (!image) {
                 return;
             }
+            draggingFeatureId$.next(null);
             updateImageFeatureId(images$, image.id, id);
         };
 
@@ -174,6 +178,7 @@ export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteStoryP
         map.on('touchend', handleDragEnd);
 
         return () => {
+            draggingFeatureId$.next(null);
             map.dragPan.enable();
             map.off('mousemove', handleDrag);
             map.off('mouseup', handleDragEnd);
