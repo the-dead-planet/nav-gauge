@@ -1,4 +1,4 @@
-import { ComponentProps, FC, useCallback, useEffect, useRef, useState } from "react";
+import { ComponentProps, FC, useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import { IconRotateInputProps, useTheme } from "@ui";
 import { RotationArrows } from "./RotationArrows";
@@ -53,24 +53,24 @@ export const IconRotateInput: FC<IconRotateInputProps & Omit<ComponentProps<'div
         setDisplayWrapped(angle);
     }
 
-    const snapAngle = useCallback((raw: number): number => {
+    const snapAngle = (raw: number): number => {
         if (max - min >= 360) {
             const stepped = Math.round(raw / step) * step;
             return ((stepped % 360) + 360) % 360;
         }
         const stepped = Math.round((raw - min) / step) * step + min;
         return Math.min(max, Math.max(min, stepped));
-    }, [min, max, step]);
+    };
 
-    const mouseToClockAngle = useCallback((clientX: number, clientY: number): number => {
+    const mouseToClockAngle = (clientX: number, clientY: number): number => {
         const { x: cx, y: cy } = centerRef.current;
         const dx = clientX - cx;
         const dy = clientY - cy;
         const svgDeg = Math.atan2(dy, dx) * (180 / Math.PI);
         return ((svgDeg + 90) % 360 + 360) % 360;
-    }, []);
+    };
 
-    const handleDragMove = useCallback((clientX: number, clientY: number) => {
+    const handleDragMove = (clientX: number, clientY: number) => {
         if (disabledRef.current) {
             return;
         }
@@ -92,9 +92,9 @@ export const IconRotateInput: FC<IconRotateInputProps & Omit<ComponentProps<'div
             setDisplayWrapped(wrapped);
             onAngleChangeRef.current?.(wrapped);
         }
-    }, [mouseToClockAngle, snapAngle]);
+    };
 
-    const handleDragStart = useCallback((clientX: number, clientY: number) => {
+    const handleDragStart = (clientX: number, clientY: number) => {
         if (disabledRef.current || !containerRef.current) {
             return;
         }
@@ -103,17 +103,17 @@ export const IconRotateInput: FC<IconRotateInputProps & Omit<ComponentProps<'div
         prevMouseAngleRef.current = mouseToClockAngle(clientX, clientY);
         isDraggingRef.current = true;
         setIsDragging(true);
-    }, [mouseToClockAngle]);
+    };
 
-    const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    const handleMouseDown = (e: React.MouseEvent) => {
         e.preventDefault();
         handleDragStart(e.clientX, e.clientY);
-    }, [handleDragStart]);
+    };
 
-    const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    const handleTouchStart = (e: React.TouchEvent) => {
         const t = e.touches[0];
         handleDragStart(t.clientX, t.clientY);
-    }, [handleDragStart]);
+    };
 
     useEffect(() => {
         const handleGlobalMouseMove = (e: MouseEvent) => {

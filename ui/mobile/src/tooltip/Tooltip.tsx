@@ -1,4 +1,4 @@
-import { Children, cloneElement, FC, ReactElement, useCallback, useEffect, useRef, useState } from "react";
+import { Children, cloneElement, FC, ReactElement, useEffect, useRef, useState } from "react";
 import { View, Text, Modal, Pressable, useWindowDimensions, GestureResponderEvent, LayoutChangeEvent } from "react-native";
 import { ColorVariant, ErrorBoundary, TooltipPlacement, TooltipProps, useTheme } from "@ui";
 
@@ -155,7 +155,7 @@ const InternalTooltip: FC<TooltipProps> = ({
     const [triggerLayout, setTriggerLayout] = useState<{ x: number; y: number; width: number; height: number }>({ x: 0, y: 0, width: 0, height: 0 });
     const [tooltipSize, setTooltipSize] = useState<{ width: number; height: number }>({ width: 0, height: 0 });
 
-    const recalculatePosition = useCallback(() => {
+    const recalculatePosition = () => {
         const effective = placement === 'auto'
             ? getAutoPlacement(triggerLayout, windowWidth, windowHeight)
             : placement;
@@ -168,21 +168,21 @@ const InternalTooltip: FC<TooltipProps> = ({
         } else {
             setConnectionLine(null);
         }
-    }, [placement, windowWidth, windowHeight, triggerLayout, tooltipSize, showConnection]);
+    };
 
     const show = () => setVisible(true);
     const dismiss = () => setVisible(false);
 
-    const measureTrigger = useCallback(() => {
+    const measureTrigger = () => {
         (triggerRef as unknown as { current?: { measureInWindow?: (cb: (x: number, y: number, w: number, h: number) => void) => void } }).current?.measureInWindow?.((x, y, width, height) => {
             setTriggerLayout({ x, y, width, height });
         });
-    }, []);
+    };
 
     const triggerRef = useRef<View>(null);
-    const triggerRefCallback = useCallback((node: View | null) => {
+    const triggerRefCallback = (node: View | null) => {
         (triggerRef as { current: View | null }).current = node;
-    }, []);
+    };
 
     const recalculateRef = useRef(recalculatePosition);
     recalculateRef.current = recalculatePosition;
@@ -225,11 +225,11 @@ const InternalTooltip: FC<TooltipProps> = ({
         ? { borderWidth: 1, borderColor: (variantColors as { borderColor: string }).borderColor }
         : {};
 
-    const onTooltipLayout = useCallback((e: LayoutChangeEvent) => {
+    const onTooltipLayout = (e: LayoutChangeEvent) => {
         const { width, height } = e.nativeEvent.layout;
         setTooltipSize({ width, height });
         recalculateRef.current();
-    }, []);
+    };
 
     return (
         <>

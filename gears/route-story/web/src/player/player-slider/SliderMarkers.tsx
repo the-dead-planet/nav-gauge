@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useRef } from "react";
+import { FC, useEffect, useRef } from "react";
 import { BehaviorSubject } from "rxjs";
 import classNames from "classnames";
 import { MarkerImage, useMultipleTranslations } from "@apparatus";
@@ -50,7 +50,7 @@ export const SliderMarkers: FC<Props> = ({
         return (new Date(feature.properties.time).valueOf() - new Date(routeTimes.startTime).valueOf()) / routeTimes.duration * 100;
     };
 
-    const getClosestFeatureFromPosition = useCallback((positionPercent: number): GeoJSON.Feature<GeoJSON.Point, FeatureProperties> | null => {
+    const getClosestFeatureFromPosition = (positionPercent: number): GeoJSON.Feature<GeoJSON.Point, FeatureProperties> | null => {
         if (!geojson || !routeTimes) {
             return null;
         }
@@ -66,7 +66,7 @@ export const SliderMarkers: FC<Props> = ({
             }
         }
         return closestFeature;
-    }, [geojson, routeTimes]);
+    };
 
     const containerRef = useRef<HTMLDivElement>(null);
 

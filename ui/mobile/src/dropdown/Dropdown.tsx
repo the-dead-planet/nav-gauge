@@ -1,4 +1,4 @@
-import { ComponentType, useCallback, useRef, useState } from "react";
+import { ComponentType, useRef, useState } from "react";
 import {
     Modal,
     Pressable,
@@ -97,7 +97,7 @@ export function Dropdown<T>({
             : baseColor;
     };
 
-    const handleOpen = useCallback(() => {
+    const handleOpen = () => {
         if (triggerRef.current) {
             triggerRef.current.measureInWindow((x, y, w, h) => {
                 setMenuTop(y + h);
@@ -106,7 +106,7 @@ export function Dropdown<T>({
                 setIsOpen(true);
             });
         }
-    }, []);
+    };
 
     return (
         <View>

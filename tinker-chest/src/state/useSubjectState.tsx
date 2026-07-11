@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { BehaviorSubject, Observable} from 'rxjs';
 
 export function useSubjectState<T>(subject$: BehaviorSubject<T>): [T, Dispatch<SetStateAction<T>>] {
@@ -12,17 +12,16 @@ export function useSubjectState<T>(subject$: BehaviorSubject<T>): [T, Dispatch<S
         };
     }, [subject$]);
 
-    const handleChange = useCallback(
-        (value: T | ((prev: T) => T)) => {
-            if (typeof value === 'function') {
-                const nextValue = (value as (prev: T) => T)(subject$.value);
-                subject$.next(nextValue)
-            } else {
-                subject$.next(value);
-            }
-        },
-        [subject$]
-    );
+    const handleChange = (
+        value: T | ((prev: T) => T)
+    ) => {
+        if (typeof value === 'function') {
+            const nextValue = (value as (prev: T) => T)(subject$.value);
+            subject$.next(nextValue)
+        } else {
+            subject$.next(value);
+        }
+    };
 
     return [subject, handleChange];
 }
@@ -55,19 +54,18 @@ export function useNullableSubjectState<T>(subject$: BehaviorSubject<T> | undefi
         };
     }, [subject$]);
 
-    const handleChange = useCallback(
-        (value: T | ((prev: T) => T)) => {
-            if (!subject$) {
-                setSubject(value);
-            } else if (typeof value === 'function') {
-                const nextValue = (value as (prev: T) => T)(subject$.value);
-                subject$.next(nextValue)
-            } else {
-                subject$.next(value);
-            }
-        },
-        [subject$]
-    );
+    const handleChange = (
+        value: T | ((prev: T) => T)
+    ) => {
+        if (!subject$) {
+            setSubject(value);
+        } else if (typeof value === 'function') {
+            const nextValue = (value as (prev: T) => T)(subject$.value);
+            subject$.next(nextValue)
+        } else {
+            subject$.next(value);
+        }
+    };
 
     return [subject, handleChange];
 }

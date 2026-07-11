@@ -1,4 +1,4 @@
-import { FC, ReactNode, useCallback, useMemo, useRef, useState } from "react";
+import { FC, ReactNode, useMemo, useRef, useState } from "react";
 import {
     LayoutChangeEvent,
     PanResponder,
@@ -69,16 +69,16 @@ export const ClockSvg: FC<Props> = ({
     const disabledRef = useRef(disabled);
     disabledRef.current = disabled;
 
-    const handleLayout = useCallback((_e: LayoutChangeEvent) => {
+    const handleLayout = (_e: LayoutChangeEvent) => {
         svgRef.current?.measureInWindow((x, y, width, height) => {
             svgPageCenterRef.current = {
                 x: x + width / 2,
                 y: y + height / 2,
             };
         });
-    }, []);
+    };
 
-    const handleInteraction = useCallback((pageX: number, pageY: number) => {
+    const handleInteraction = (pageX: number, pageY: number) => {
         if (disabledRef.current) {
             return;
         }
@@ -95,7 +95,7 @@ export const ClockSvg: FC<Props> = ({
             valueRef.current = snapped;
             onChangeRef.current?.(snapped);
         }
-    }, [min, max, step]);
+    };
 
     const contextRef = useRef({ handleInteraction });
     contextRef.current = { handleInteraction };

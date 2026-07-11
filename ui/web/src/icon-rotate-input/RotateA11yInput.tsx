@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useRef } from "react";
+import { FC, useEffect, useRef } from "react";
 import { Label } from "../typography";
 import styles from './icon-rotate-input.module.css';
 
@@ -43,7 +43,7 @@ export const RotateA11yInput: FC<Props> = ({
         }
     }, [value]);
 
-    const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         const input = inputRef.current;
         if (!input) {
             return;
@@ -63,7 +63,7 @@ export const RotateA11yInput: FC<Props> = ({
             onChangeRef.current?.(wrapped);
             onSyncRef.current?.(wrapped);
         }
-    }, [min, max]);
+    };
 
     return (
         <>

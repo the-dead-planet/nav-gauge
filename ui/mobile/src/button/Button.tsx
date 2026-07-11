@@ -1,4 +1,4 @@
-import { ComponentType, FC, Ref, useCallback, useState } from "react";
+import { ComponentType, FC, Ref, useState } from "react";
 import { Pressable, PressableProps, Text as RNText, View, ViewStyle } from "react-native";
 import { ButtonProps, useTheme } from "@ui";
 import { Icon } from "../icons";
@@ -49,11 +49,11 @@ export const Button: FC<PressableProps & ButtonProps & Props> = ({
 
     const showGlow = glowStyle !== 'none' && (hl || glowDrawn);
 
-    const markGlowDrawn = useCallback(() => {
+    const markGlowDrawn = () => {
         if (glowStyle !== 'none') {
             setGlowDrawn(true);
         }
-    }, [glowStyle]);
+    };
 
     const isTextGlowVariant = variant === 'ghost' || variant === 'outline' || variant === 'inset';
     const showTextGlow = showGlow && isTextGlowVariant;

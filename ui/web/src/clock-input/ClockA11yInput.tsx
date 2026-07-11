@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useRef } from "react";
+import { FC, useEffect, useRef } from "react";
 import { Label, Span } from "../typography";
 import styles from './clock-input.module.css';
 
@@ -41,7 +41,7 @@ export const ClockA11yInput: FC<Props> = ({
         }
     }, [value]);
 
-    const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         const input = inputRef.current;
         if (!input) {
             return;
@@ -61,7 +61,7 @@ export const ClockA11yInput: FC<Props> = ({
             onChangeRef.current?.(wrapped);
             onSyncRef.current?.(wrapped);
         }
-    }, [min, max]);
+    };
 
     return (
         <>

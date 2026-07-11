@@ -1,4 +1,4 @@
-import { ComponentProps, FC, useCallback, useEffect, useRef, useState } from "react";
+import { ComponentProps, FC, useEffect, useRef, useState } from "react";
 import { ClockInputProps, useTheme, STEP_DEG, snapSlice, pointerCoords, svgAtan2ToClockAngle, CLOCK_INPUT_RANGE } from "@ui";
 import styles from './clock-input.module.css';
 import { ClockSvg } from "./ClockSvg";
@@ -47,7 +47,7 @@ export const ClockInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, 'onCha
     disabledRef.current = disabled;
     const centerRef = useRef({ x: 0, y: 0 });
 
-    const handleInteraction = useCallback((clientX: number, clientY: number) => {
+    const handleInteraction = (clientX: number, clientY: number) => {
         if (disabledRef.current) {
             return;
         }
@@ -68,9 +68,9 @@ export const ClockInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, 'onCha
             valueRef.current = snapped;
             onChangeRef.current?.(snapped);
         }
-    }, [min, max, step]);
+    };
 
-    const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    const handleMouseDown = (e: React.MouseEvent) => {
         if (disabledRef.current || !svgRef.current) {
             return;
         }
@@ -80,9 +80,9 @@ export const ClockInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, 'onCha
         isDraggingRef.current = true;
         setIsDragging(true);
         handleInteraction(e.clientX, e.clientY);
-    }, [handleInteraction]);
+    };
 
-    const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    const handleTouchStart = (e: React.TouchEvent) => {
         if (disabledRef.current || !svgRef.current) {
             return;
         }
@@ -92,7 +92,7 @@ export const ClockInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, 'onCha
         setIsDragging(true);
         const t = e.touches[0];
         handleInteraction(t.clientX, t.clientY);
-    }, [handleInteraction]);
+    };
 
     useEffect(() => {
         const handleGlobalMouseMove = (e: MouseEvent) => {

@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, FC, ComponentProps } from 'react';
+import { useState, useRef, FC, ComponentProps } from 'react';
 import {
     View,
     Modal,
@@ -75,10 +75,10 @@ export const Menu: FC<MenuProps> = ({
         });
     };
 
-    const onOverlayLayout = useCallback((e: LayoutChangeEvent) => {
+    const onOverlayLayout = (e: LayoutChangeEvent) => {
         const { width, height } = e.nativeEvent.layout;
         setMenuPosition(getMenuPosition(menuAnchor, anchorRef.current, width, height));
-    }, [menuAnchor]);
+    };
 
     return (
         <View style={styles.container}>

@@ -1,4 +1,4 @@
-import { ComponentProps, useCallback, useEffect, useRef, useState } from "react";
+import { ComponentProps, useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import { DropdownList } from "./DropdownList";
 import { DropdownProps, useTheme } from "@ui";
@@ -36,10 +36,10 @@ export function Dropdown<T = string>({
     const containerRef = useRef<HTMLDivElement>(null);
     const triggerRef = useRef<HTMLButtonElement>(null);
 
-    const handleClose = useCallback(() => {
+    const handleClose = () => {
         setIsOpen(false);
         triggerRef.current?.focus();
-    }, []);
+    };
 
     const handleTriggerKeyDown = (e: React.KeyboardEvent) => {
         if (disabled) return;

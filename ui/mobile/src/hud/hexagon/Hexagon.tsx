@@ -1,4 +1,4 @@
-import { FC, Ref, useCallback, useId, useState } from "react";
+import { FC, Ref, useId, useState } from "react";
 import { View, ViewStyle, StyleProp, StyleSheet, Pressable, GestureResponderEvent } from "react-native";
 import Svg, { Polygon, Defs, ClipPath, G, LinearGradient, Stop } from "react-native-svg";
 import { ColorVariant, HexagonProps, SizeVariant, useTheme } from "@ui";
@@ -100,11 +100,11 @@ export const Hexagon: FC<HexagonProps & Props> = ({
 
     const showGlow = (glowStyle !== 'none') && (hl || glowDrawn);
 
-    const markGlowDrawn = useCallback(() => {
+    const markGlowDrawn = () => {
         if (glowStyle !== 'none') {
             setGlowDrawn(true);
         }
-    }, [glowStyle]);
+    };
 
     const renderGlow = () => {
         if (!showGlow) return null;

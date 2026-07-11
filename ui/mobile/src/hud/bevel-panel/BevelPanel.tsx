@@ -1,4 +1,4 @@
-import { FC, Ref, useCallback, useRef, useState } from "react";
+import { FC, Ref, useRef, useState } from "react";
 import {
     View,
     ViewStyle,
@@ -99,11 +99,11 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
 
     const showGlow = (glowStyle !== 'none') && (pressed || active);
 
-    const onLayout = useCallback((e: LayoutChangeEvent) => {
+    const onLayout = (e: LayoutChangeEvent) => {
         const { width, height } = e.nativeEvent.layout;
         setContainerWidth(width);
         setContainerHeight(height);
-    }, []);
+    };
 
     const hasBorder = variant !== 'fill';
 

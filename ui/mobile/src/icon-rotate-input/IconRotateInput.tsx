@@ -1,4 +1,4 @@
-import { ComponentType, FC, useCallback, useMemo, useRef, useState } from "react";
+import { ComponentType, FC, useMemo, useRef, useState } from "react";
 import {
     LayoutChangeEvent,
     PanResponder,
@@ -60,25 +60,25 @@ export const IconRotateInput: FC<Props> = ({
         setDisplayWrapped(angle);
     }
 
-    const snapAngle = useCallback((raw: number): number => {
+    const snapAngle = (raw: number): number => {
         if (max - min >= 360) {
             const stepped = Math.round(raw / step) * step;
             return ((stepped % 360) + 360) % 360;
         }
         const stepped = Math.round((raw - min) / step) * step + min;
         return Math.min(max, Math.max(min, stepped));
-    }, [min, max, step]);
+    };
 
-    const handleLayout = useCallback((_e: LayoutChangeEvent) => {
+    const handleLayout = (_e: LayoutChangeEvent) => {
         svgRef.current?.measureInWindow((x, y, width, height) => {
             svgPageCenterRef.current = {
                 x: x + width / 2,
                 y: y + height / 2,
             };
         });
-    }, []);
+    };
 
-    const handleInteraction = useCallback((pageX: number, pageY: number) => {
+    const handleInteraction = (pageX: number, pageY: number) => {
         if (disabledRef.current) {
             return;
         }
@@ -105,7 +105,7 @@ export const IconRotateInput: FC<Props> = ({
             setDisplayWrapped(wrapped);
             onAngleChangeRef.current?.(wrapped);
         }
-    }, [snapAngle]);
+    };
 
     const contextRef = useRef({ handleInteraction });
     contextRef.current = { handleInteraction };

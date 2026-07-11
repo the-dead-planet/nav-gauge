@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useMemo, useRef, useState } from "react";
+import { forwardRef, useMemo, useRef, useState } from "react";
 import {
     LayoutChangeEvent,
     PanResponder,
@@ -56,12 +56,12 @@ export const Slider = forwardRef<any, SliderProps & { style?: ViewStyle }>(({
     const contextReference = useRef({ disabled, trackWidth, min, max, step, onChange });
     contextReference.current = { disabled, trackWidth, min, max, step, onChange };
 
-    const handleLayout = useCallback((e: LayoutChangeEvent) => {
+    const handleLayout = (e: LayoutChangeEvent) => {
         setTrackWidth(e.nativeEvent.layout.width);
         hitAreaRef.current?.measureInWindow((x) => {
             hitAreaPageXRef.current = x;
         });
-    }, []);
+    };
 
     const panResponder = useMemo(() => PanResponder.create({
         onStartShouldSetPanResponder: () => !disabled,

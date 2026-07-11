@@ -1,4 +1,4 @@
-import { ComponentProps, FC, useCallback, useEffect, useRef, useState } from "react";
+import { ComponentProps, FC, useEffect, useRef, useState } from "react";
 import { ClockInputProps, useTheme, snapSlice, clockAngleToRadians, pointerCoords, svgAtan2ToClockAngle, arcViewBox } from "@ui";
 import { ClockSvg } from "./ClockSvg";
 import { ClockA11yInput } from "./ClockA11yInput";
@@ -71,7 +71,7 @@ export const ClockSliceInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, '
         };
     }
 
-    const handleInteraction = useCallback((clientX: number, clientY: number) => {
+    const handleInteraction = (clientX: number, clientY: number) => {
         if (disabledRef.current) {
             return;
         }
@@ -91,9 +91,9 @@ export const ClockSliceInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, '
             valueRef.current = snapped;
             onChangeRef.current?.(snapped);
         }
-    }, [min, max, step, vb, center]);
+    };
 
-    const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    const handleMouseDown = (e: React.MouseEvent) => {
         if (disabledRef.current || !svgRef.current) {
             return;
         }
@@ -101,9 +101,9 @@ export const ClockSliceInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, '
         isDraggingRef.current = true;
         setIsDragging(true);
         handleInteraction(e.clientX, e.clientY);
-    }, [handleInteraction]);
+    };
 
-    const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    const handleTouchStart = (e: React.TouchEvent) => {
         if (disabledRef.current || !svgRef.current) {
             return;
         }
@@ -111,7 +111,7 @@ export const ClockSliceInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, '
         setIsDragging(true);
         const t = e.touches[0];
         handleInteraction(t.clientX, t.clientY);
-    }, [handleInteraction]);
+    };
 
     useEffect(() => {
         const handleGlobalMouseMove = (e: MouseEvent) => {
