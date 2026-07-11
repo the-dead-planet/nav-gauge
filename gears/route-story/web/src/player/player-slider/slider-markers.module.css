@@ -5,19 +5,22 @@
 .image-marker {
     --marker-width: 2px;
     --marker-border-width: 2px;
-    --marker-border-color: var(--color-secondary-800);
+    --marker-border-color: var(--color-tertiary-400);
+    --marker-color: var(--color-tertiary);
+    --marker-highlight-color: var(--color-tertiary-800);
 
     position: absolute;
     height: 52px;
     bottom: -8px;
     width: var(--marker-width);
-    background-color: var(--color-secondary);
+    background-color: var(--marker-color);
     cursor: grab;
 }
 
 .image-marker:hover,
 .image-marker:focus,
 .image-marker.highlight {
+    background-color: var(--marker-highlight-color);
     border-left: var(--marker-border-width) solid var(--marker-border-color);
     border-right: var(--marker-border-width) solid var(--marker-border-color);
 }
@@ -42,7 +45,7 @@
     content: '';
     position: absolute;
     left: calc(var(--marker-width) / 2);
-    background-color: var(--color-secondary);
+    background-color: var(--marker-color);
 }
 
 .image-marker::after {
@@ -59,7 +62,11 @@
     height: 2px;
 }
 
-.drag-marker {
+.dragging {
     opacity: 0.5;
+    pointer-events: none;
+}
+
+.drag-marker {
     pointer-events: none;
 }

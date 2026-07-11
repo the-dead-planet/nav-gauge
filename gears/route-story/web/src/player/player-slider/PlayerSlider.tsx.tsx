@@ -85,12 +85,9 @@ export const PlayerSlider: FC<Props> = ({
                 <SliderMarkers
                     gearId={gearId}
                     translationKey={translationKey}
-                    map={map}
                     data$={data$}
                     routeTimes$={routeTimes$}
                     images$={images$}
-                    progressMs$={progressMs$}
-                    playerOperator={playerOperator}
                 />
             </div>
         </div>

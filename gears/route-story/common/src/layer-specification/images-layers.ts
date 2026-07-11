@@ -3,6 +3,7 @@ import { DRAGGED_IMAGE_ID, IMAGE_PROPERTY, IMAGE_THUMBNAIL_PROPERTY } from "./im
 import { getImageIconSize, FULL_SIZE_IMAGE_SIZE, THUMBNAIL_IMAGE_SIZE, MAP_THUMBNAIL_SIZE } from "../images";
 import { ComparisonProperty, GetProperty, CaseFeatureStateOrPropertyCondition } from "./model";
 import { BehaviorSubject } from "rxjs";
+import { FeatureProperties } from "@tinker-chest";
 
 export const imageSourceIds = {
     thumbnails: 'route-story-thumbnails',
@@ -20,8 +21,8 @@ export const imageLayerIds = {
 }
 
 export const highlightIdsBySourceId$ = new BehaviorSubject<Map<string, Set<string>>>(new Map());
-export const draggingImageId$ = new BehaviorSubject<number | null>(null);
-export const draggingFeatureId$ = new BehaviorSubject<number | null>(null);
+export const draggingImage$ = new BehaviorSubject<{ interaction: 'map' | 'player'; id: number } | null>(null);
+export const draggingClosestFeature$ = new BehaviorSubject<GeoJSON.Feature<GeoJSON.Point, FeatureProperties> | null>(null);
 
 const thumbnailsFilter: ComparisonProperty = ['!=', ['get', 'imageId'], DRAGGED_IMAGE_ID];
 const thumbnailIconImage: GetProperty = ['get', IMAGE_THUMBNAIL_PROPERTY];
