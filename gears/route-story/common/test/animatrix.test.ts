@@ -27,13 +27,13 @@ describe("Route story gear", () => {
                 expect(() => Animatrix.validateAnimationControls({ maxBearingDiffPerFrame: "" } as unknown as AnimationControlsType)).to.throw("Max bearing diff per frame should be of type number");
             });
             it("should throw if cameraAngle incorrect", () => {
-                expect(() => Animatrix.validateAnimationControls({ cameraAngle: -90 })).to.not.throw();
-                expect(() => Animatrix.validateAnimationControls({ cameraAngle: 2000000 } as unknown as AnimationControlsType)).to.throw("Camera angle should be within range [-360, 360]");
+                expect(() => Animatrix.validateAnimationControls({ cameraAngle: 90 })).to.not.throw();
+                expect(() => Animatrix.validateAnimationControls({ cameraAngle: 2000000 } as unknown as AnimationControlsType)).to.throw("Camera angle should be within range [0, 360]");
                 expect(() => Animatrix.validateAnimationControls({ cameraAngle: "" } as unknown as AnimationControlsType)).to.throw("Camera angle should be of type number");
             });
             it("should throw if cameraRoll incorrect", () => {
-                expect(() => Animatrix.validateAnimationControls({ cameraRoll: -90 })).to.not.throw();
-                expect(() => Animatrix.validateAnimationControls({ cameraRoll: 2000000 } as unknown as AnimationControlsType)).to.throw("Camera roll should be within range [-360, 360]");
+                expect(() => Animatrix.validateAnimationControls({ cameraRoll: 90 })).to.not.throw();
+                expect(() => Animatrix.validateAnimationControls({ cameraRoll: 2000000 } as unknown as AnimationControlsType)).to.throw("Camera roll should be within range [0, 360]");
                 expect(() => Animatrix.validateAnimationControls({ cameraRoll: "" } as unknown as AnimationControlsType)).to.throw("Camera roll should be of type number");
             });
             it("should throw if pitch incorrect", () => {
