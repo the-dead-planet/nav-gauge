@@ -99,7 +99,7 @@ export class Individuator {
         epochMs: number,
         settings: IndividuatorSettings,
     ): string => {
-        return formatTimestamp(epochMs, { dateFormat: settings.dateFormat, timeFormat: settings.timeFormat });
+        return formatTimestamp(epochMs, { locale: settings.language, dateFormat: settings.dateFormat, timeFormat: settings.timeFormat });
     };
 
     /**

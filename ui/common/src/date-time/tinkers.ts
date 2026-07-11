@@ -16,9 +16,10 @@ export const formatTimeMsAsStandard = (epochMs: number): string => {
  */
 export const formatTimestamp = (epochMs: number, options: {
     zone?: string;
+    locale?: string;
     dateFormat: DateFormat;
     timeFormat: TimeFormat
 }): string => {
-    const { zone, dateFormat, timeFormat } = options ?? {};
-    return DateTime.fromMillis(epochMs, { zone }).toFormat(`${dateFormat} ${timeFormat}`);
+    const { zone, locale, dateFormat, timeFormat } = options ?? {};
+    return DateTime.fromMillis(epochMs, { zone, locale }).toFormat(`${dateFormat} ${timeFormat}`);
 };
