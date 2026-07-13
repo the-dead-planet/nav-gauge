@@ -4,9 +4,14 @@
 }
 
 .box {
-    width: 40px;
+    width: 55px;
     height: 60px;
     display: grid;
     align-items: center;
     justify-content: center;
+}
+
+.rgb-text {
+    display: block;
+    font-size: 8px;
 }

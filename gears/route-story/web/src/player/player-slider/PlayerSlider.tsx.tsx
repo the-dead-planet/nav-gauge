@@ -37,6 +37,7 @@ export const PlayerSlider: FC<Props> = ({
     const [progressMs] = useSubjectState(progressMs$);
     const { chronoLens } = useMachineWard();
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
+    const [showImageMarkers, setShowImageMarkers] = useSubjectState(playerOperator.showImageMarkers$);
     const [
         sliderLabel,
         playLabel,
@@ -56,6 +57,16 @@ export const PlayerSlider: FC<Props> = ({
             }
         )
     };
+
+    const [
+        showImageMarkerLabel,
+        hideImageMarkerLabel,
+    ] = useMultipleTranslations([
+        { n: gearId, t: translationKey.ShowImageMarkers },
+        { n: gearId, t: translationKey.HideImageMarkers },
+    ]);
+
+    const markersLabel = showImageMarkers ? hideImageMarkerLabel : showImageMarkerLabel;
 
     return (
         <div className={styles['container']}>
@@ -82,14 +93,28 @@ export const PlayerSlider: FC<Props> = ({
                     color="tertiary"
                     size="sm"
                 />
-                <SliderMarkers
-                    gearId={gearId}
-                    translationKey={translationKey}
-                    data$={data$}
-                    routeTimes$={routeTimes$}
-                    images$={images$}
-                />
+                {showImageMarkers ? (
+                    <SliderMarkers
+                        gearId={gearId}
+                        translationKey={translationKey}
+                        data$={data$}
+                        routeTimes$={routeTimes$}
+                        images$={images$}
+                    />
+                ) : null}
             </div>
+            <Button
+                icon={Icons.NounProject.ImageMarker}
+                size="md"
+                variant="ghost"
+                corners="circle"
+                color={showImageMarkers ? 'tertiary' : 'neutral'}
+                highlightColor="tertiary"
+                aria-label={markersLabel}
+                tooltip={markersLabel}
+                tooltipPlacement="top"
+                onClick={() => setShowImageMarkers((prev) => !prev)}
+            />
         </div>
     );
 };

@@ -23,6 +23,8 @@ const fr: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['fr'] 
     "play": 'Lecture',
     "pause": 'Pause',
     "image": 'Image',
+    "show-image-markers": 'Afficher les marqueurs d\'image',
+    "hide-image-markers": 'Masquer les marqueurs d\'image',
 };
 
 export default fr;

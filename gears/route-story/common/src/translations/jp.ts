@@ -23,6 +23,8 @@ const jp: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['jp'] 
     "play": '再生',
     "pause": '一時停止',
     "image": '画像',
+    "show-image-markers": '画像マーカーを表示',
+    "hide-image-markers": '画像マーカーを非表示',
 };
 
 export default jp;

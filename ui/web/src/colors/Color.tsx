@@ -27,6 +27,9 @@ export const Color: FC<ColorProps> = ({ name, color }) => {
                             }}
                         >
                             {shade}
+                            <span className={styles['rgb-text']}>
+                                {c.r}, {c.g}, {c.b}
+                            </span>
                         </p>
                     );
                 })}

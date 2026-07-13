@@ -16,8 +16,8 @@ export const routeLayerIds = {
     currentPoint: 'route-current-point',
 }
 
-const colorActive = '#003161';
-const colorInactive = 'grey';
+const colorActive = 'rgb(160, 48, 160)';
+const colorInactive = 'rgb(221, 160, 221)';
 
 const routeLineColor: GetPropertyCaseCondition = [
     'case',
@@ -47,7 +47,7 @@ const pointsCircleColor: [
 export default {
     lines: {
         lineColor: routeLineColor,
-        lineWidth: 2,
+        lineWidth: 3,
         lineOpacity: .6,
         lineCap: routeLineCap,
         lineJoin: routeLineCap,

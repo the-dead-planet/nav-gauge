@@ -10,6 +10,7 @@ export class PlayerOperator<TMap, TFile extends RouteStoryFile, TImageData> {
     private gear: RouteStoryGear<TMap, TFile, TImageData>;
 
     public isLoading$ = new BehaviorSubject(false);
+    public showImageMarkers$ = new BehaviorSubject(true);
 
     public constructor(
         gear: RouteStoryGear<TMap, TFile, TImageData>,
