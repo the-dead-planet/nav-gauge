@@ -11,4 +11,6 @@ export interface SliderProps {
     onChange?: (value: number) => void;
     active?: boolean;
     disabled?: boolean;
+    id?: string;
+    label?: string;
 }

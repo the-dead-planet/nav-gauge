@@ -1,3 +1,17 @@
+.container {
+    display: grid;
+    row-gap: 5px;
+}
+
+.label {
+    display: flex;
+    column-gap: 6px;
+}
+
+.disabled .label {
+    opacity: .4;
+}
+
 /* ── Base ── */
 
 .slider {
@@ -291,3 +305,4 @@
     opacity: .4;
     cursor: not-allowed;
 }
+

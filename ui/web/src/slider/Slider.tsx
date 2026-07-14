@@ -1,6 +1,7 @@
 import { ChangeEvent, ComponentProps, CSSProperties, FC } from "react";
 import classNames from "classnames";
 import { SliderProps, useTheme } from "@ui";
+import { Label } from "../typography";
 import styles from './slider.module.css';
 
 export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' | 'size'>> = ({
@@ -14,6 +15,8 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
     onChange,
     active = false,
     disabled = false,
+    id,
+    label,
     className,
     style,
     ...props
@@ -27,31 +30,40 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
     };
 
     return (
-        <input
-            type="range"
-            min={min}
-            max={max}
-            step={step}
-            value={value}
-            disabled={disabled}
-            onChange={handleChange}
-            className={classNames(
-                styles['slider'],
-                styles[`mode-${theme.mode}`],
-                styles[`color-${color}`],
-                styles[`highlight-${highlightColor}`],
-                styles[`size-${size}`],
-                {
-                    [styles['active']]: active,
-                    [styles['disabled']]: disabled,
-                },
-                className
+        <div className={classNames(styles['container'], { [styles['disabled']]: disabled })}>
+            {label && (
+                <Label htmlFor={id} tabular className={styles['label']}>
+                    {label} <span>{value}</span>
+                </Label>
             )}
-            style={{
-                '--track-complete': `${progress}%`,
-                ...style,
-            } as CSSProperties}
-            {...props}
-        />
+            <input
+                type="range"
+                id={id}
+                min={min}
+                max={max}
+                step={step}
+                value={value}
+                disabled={disabled}
+                onChange={handleChange}
+                aria-label={label || 'Slider'}
+                className={classNames(
+                    styles['slider'],
+                    styles[`mode-${theme.mode}`],
+                    styles[`color-${color}`],
+                    styles[`highlight-${highlightColor}`],
+                    styles[`size-${size}`],
+                    {
+                        [styles['active']]: active,
+                        [styles['disabled']]: disabled,
+                    },
+                    className
+                )}
+                style={{
+                    '--track-complete': `${progress}%`,
+                    ...style,
+                } as CSSProperties}
+                {...props}
+            />
+        </div>
     );
 };

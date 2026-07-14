@@ -2,8 +2,9 @@ import { ColorVariant, SizeVariant } from "../model";
 
 export interface IconRotateInputProps {
     icon?: string;
-    angle: number;
-    onAngleChange?: (angle: number) => void;
+    value: number;
+    onChange?: (value: number) => void;
+    valueAdjustment?: number;
     color?: ColorVariant;
     highlightColor?: ColorVariant;
     size?: SizeVariant;

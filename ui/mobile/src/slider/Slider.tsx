@@ -6,6 +6,7 @@ import {
     ViewStyle,
 } from "react-native";
 import { SliderProps, useTheme } from "@ui";
+import { Text } from "../typography";
 
 const heights: Record<string, number> = { xs: 16, sm: 22, md: 28 };
 const thumbSizes: Record<string, number> = { xs: 12, sm: 14, md: 17 };
@@ -28,6 +29,7 @@ export const Slider = forwardRef<any, SliderProps & { style?: ViewStyle }>(({
     onChange,
     active,
     disabled = false,
+    label,
     style,
 }, ref) => {
     const theme = useTheme();
@@ -162,6 +164,11 @@ export const Slider = forwardRef<any, SliderProps & { style?: ViewStyle }>(({
                     <View style={thumbStyle} />
                 </View>
             </View>
+            {label && (
+                <Text style={{ fontSize: 11, color: theme.componentColor('text'), marginTop: 4 }}>
+                    {label} {value}
+                </Text>
+            )}
         </View>
     );
 });

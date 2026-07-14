@@ -1,9 +1,6 @@
 /* ── Container ── */
 
 .container {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
     user-select: none;
     font-family: var(--font-default, 'Space Grotesk', sans-serif);
 }
@@ -27,6 +24,10 @@
 
 .container-dragging .visual-container {
     cursor: grabbing;
+}
+
+.disabled .visual-container {
+    cursor: not-allowed;
 }
 
 /* ── Disabled ── */

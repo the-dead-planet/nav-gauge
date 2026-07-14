@@ -11,8 +11,9 @@ const iconSizes: Record<string, number> = { xs: 12, sm: 20, md: 32 };
 
 export const IconRotateInput: FC<IconRotateInputProps & Omit<ComponentProps<'div'>, 'onChange' | 'value'>> = ({
     icon,
-    angle = 0,
-    onAngleChange,
+    value = 0,
+    onChange,
+    valueAdjustment = 0,
     color = 'neutral',
     highlightColor,
     size = 'sm',
@@ -33,24 +34,24 @@ export const IconRotateInput: FC<IconRotateInputProps & Omit<ComponentProps<'div
 
     const [isDragging, setIsDragging] = useState(false);
     const [isHovering, setIsHovering] = useState(false);
-    const [displayAngle, setDisplayAngle] = useState(angle);
-    const [displayWrapped, setDisplayWrapped] = useState(angle);
+    const [displayAngle, setDisplayAngle] = useState(value);
+    const [displayWrapped, setDisplayWrapped] = useState(value);
     const containerRef = useRef<HTMLDivElement>(null);
     const isDraggingRef = useRef(false);
-    const angleRef = useRef(angle);
-    angleRef.current = angle;
-    const onAngleChangeRef = useRef(onAngleChange);
-    onAngleChangeRef.current = onAngleChange;
+    const angleRef = useRef(value);
+    angleRef.current = value;
+    const onAngleChangeRef = useRef(onChange);
+    onAngleChangeRef.current = onChange;
     const disabledRef = useRef(disabled);
     disabledRef.current = disabled;
     const centerRef = useRef({ x: 0, y: 0 });
     const prevMouseAngleRef = useRef(0);
-    const displayAngleRef = useRef(angle);
+    const displayAngleRef = useRef(value);
     displayAngleRef.current = displayAngle;
 
-    if (!isDragging && angle !== angleRef.current) {
-        setDisplayAngle(angle);
-        setDisplayWrapped(angle);
+    if (!isDragging && value !== angleRef.current) {
+        setDisplayAngle(value);
+        setDisplayWrapped(value);
     }
 
     const snapAngle = (raw: number): number => {
@@ -184,7 +185,7 @@ export const IconRotateInput: FC<IconRotateInputProps & Omit<ComponentProps<'div
                 max={max}
                 step={step}
                 value={displayWrapped}
-                onChange={onAngleChange}
+                onChange={onChange}
                 onSync={(newValue) => {
                     setDisplayAngle(newValue);
                     setDisplayWrapped(newValue);
@@ -211,7 +212,7 @@ export const IconRotateInput: FC<IconRotateInputProps & Omit<ComponentProps<'div
                 <RotateIconWrapper
                     icon={icon}
                     iconSize={iconSize}
-                    displayAngle={displayAngle}
+                    displayAngle={displayAngle + valueAdjustment}
                     iconColor={iconColor}
                 />
             </div>
