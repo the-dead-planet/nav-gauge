@@ -64,8 +64,8 @@ export const AllColors: FC = () => {
                         <View style={styles.cell}>
                             <IconRotateInput
                                 icon={Icons.NounProject.CameraVideoFront}
-                                angle={angle}
-                                onAngleChange={setAngle}
+                                value={angle}
+                                onChange={setAngle}
                                 color={color}
                                 size={size}
                                 disabled={disabled}

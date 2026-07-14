@@ -81,8 +81,8 @@ export const Default = {
                 <div style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
                     <IconRotateInput
                         icon={Icons.NounProject.CameraVideoFront}
-                        angle={angle}
-                        onAngleChange={setAngle}
+                        value={angle}
+                        onChange={setAngle}
                         color={color}
                         size={size}
                         disabled={disabled}
