@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { ColorVariant, SizeVariant, SurfaceFillVariant, Icons } from '@ui';
+import { ColorVariant, SizeVariant, Icons } from '@ui';
 import { IconRotateInput } from './IconRotateInput';
 import { Text } from '../typography';
 import { useState } from 'react';
@@ -17,7 +17,7 @@ const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'
 
 export const Default = {
     args: {
-        angle: 0,
+        value: 0,
     },
     render: () => {
         const [angle, setAngle] = useState(0);

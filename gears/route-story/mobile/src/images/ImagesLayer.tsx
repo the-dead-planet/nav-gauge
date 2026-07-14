@@ -10,7 +10,7 @@ import {
     ImagesLayers,
     imageLayerIds,
     imageSourceIds,
-    draggingImageId$,
+    draggingImage$,
     DRAGGED_IMAGE_ID,
     IMAGE_PROPERTY,
     IMAGE_THUMBNAIL_PROPERTY,
@@ -64,7 +64,7 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<
             const imageFeature = findThumbnailsWithinBuffer(lngLat, cartomancer.zoom$.value, loadedImages, geojson, { devicePixelRatio: PixelRatio.get() })[0];
             if (imageFeature) {
                 map.dragPan$.next(false);
-                draggingImageId$.next(imageFeature.properties.imageId);
+                draggingImage$.next({ id: imageFeature.properties.imageId, interaction: 'map'});
             }
         });
         map.onPanResponderStartHandlers$.next(nextPanResponderStartHandlers);
@@ -72,18 +72,18 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<
         // Move
         const nextPanResponderMoveHandlers = new Map(map.onPanResponderMoveHandlers$.value);
         nextPanResponderMoveHandlers.set(id, async (lngLat) => {
-            const id = draggingImageId$.value;
-            if (!geojson || id === null) {
+            const draggingImage = draggingImage$.value;
+            if (!geojson || draggingImage === null) {
                 return;
             }
             const [_id, feature] = Cartomancer.getClosestFeature(geojson, { lng: lngLat[0], lat: lngLat[1] });
-            const image = loadedImages.find((image) => image.id === id);
+            const image = loadedImages.find((image) => image.id === draggingImage.id);
             if (!image) {
                 return;
             }
             const updated: typeof sourceDataGeojson = getImageSource(loadedImages, geojson);
             for (const feature of updated.features) {
-                if (feature.id === id) {
+                if (feature.id === draggingImage.id) {
                     feature.properties[FeatureStateProps.Dragging] = true;
                 }
             }
@@ -104,17 +104,17 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<
         // End
         const nextPanResponderEndHandlers = new Map(map.onPanResponderEndHandlers$.value);
         nextPanResponderEndHandlers.set(id, async (lngLat) => {
-            const dragImId = draggingImageId$.value;
+            const draggingImage = draggingImage$.value;
 
             map.dragPan$.next(true);
-            draggingImageId$.next(null);
+            draggingImage$.next(null);
             setSourceDataGeojson(getImageSource(loadedImages, geojson));
 
             if (!geojson) {
                 return;
             }
             const [id, _feature] = Cartomancer.getClosestFeature(geojson, { lng: lngLat[0], lat: lngLat[1] });
-            const image = loadedImages.find((image) => image.id === dragImId);
+            const image = loadedImages.find((image) => image.id === draggingImage?.id);
             if (!image) {
                 return;
             }
