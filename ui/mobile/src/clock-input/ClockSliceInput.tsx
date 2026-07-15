@@ -5,7 +5,7 @@ import {
 } from "react-native";
 import { Path } from "react-native-svg";
 import { ClockSvg } from "./ClockSvg";
-import { ClockInputProps, useTheme, STEP_DEG, clockAngleToRadians, pointerCoords } from "@ui";
+import { ClockInputProps, useTheme, clockAngleToRadians, pointerCoords } from "@ui";
 import { ClockLabel } from "./ClockLabel";
 import { sizeMap, thumbRadii, centerDotRadii, strokeWidths } from "./constants";
 

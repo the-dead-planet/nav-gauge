@@ -32,7 +32,7 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<Mobil
 
     const progressPercentage = getProgressPercentage(progressMs, routeTimes);
 
-    const sliderRef = useRef<any>(null);
+    const sliderRef = useRef<View>(null);
 
     useEffect(() => {
         sliderRef.current?.setNativeProps({ value: progressMs })

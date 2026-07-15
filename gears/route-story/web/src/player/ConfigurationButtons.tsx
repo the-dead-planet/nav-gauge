@@ -2,7 +2,7 @@ import { FC } from "react";
 import { BehaviorSubject } from "rxjs";
 import { useMultipleTranslations } from "@apparatus";
 import { Animatrix, RouteStoryState, RouteStoryTranslationKey } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { Button, Checkbox, Menu } from "@web-ui";
+import { Checkbox, Menu } from "@web-ui";
 import { Icons } from "@ui";
 import { useSubjectState } from "@tinker-chest";
 import styles from './configuration-buttons.module.css';

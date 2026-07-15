@@ -46,7 +46,8 @@
         "test:e2e:mobile": "yarn workspace @the-dead-planet/nav-gauge-app-mobile test:e2e:prod",
         "generate:gear": "yarn tsx ./scripts/app/generate-gear.ts",
         "add:gear": "yarn tsx ./scripts/app/add-to-gear.ts",
-        "icons": "yarn tsx ./ui/common/src/icons/svg/noun-project/process-icons.ts"
+        "icons": "yarn tsx ./ui/common/src/icons/svg/noun-project/process-icons.ts",
+        "lint": "npx eslint . --no-warn-ignored"
     },
     "dependencies": {
         "@maplibre/maplibre-gl-style-spec": "^24.8.1",

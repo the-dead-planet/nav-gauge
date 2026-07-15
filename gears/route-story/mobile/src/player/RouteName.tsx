@@ -5,8 +5,6 @@ import { MobileMarkerImageData } from "../images/image-parser";
 import { MobileMap, Text } from "@mobile-ui";
 import { DocumentPickerResponse } from "@react-native-documents/picker";
 
-export const RouteName: FC<TopToolsProps<MobileMap> & RouteStoryProps<MobileMap,DocumentPickerResponse, MobileMarkerImageData>> = ({
-    data$
-}) => {
+export const RouteName: FC<TopToolsProps<MobileMap> & RouteStoryProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({ }) => {
     return <Text>Route name</Text>
 };

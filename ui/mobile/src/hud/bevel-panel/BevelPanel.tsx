@@ -1,4 +1,4 @@
-import { FC, Ref, useRef, useState } from "react";
+import { FC, Ref, useState } from "react";
 import {
     View,
     ViewStyle,
@@ -8,8 +8,8 @@ import {
     GestureResponderEvent,
     LayoutChangeEvent,
 } from "react-native";
-import Svg, { Polygon, Defs, ClipPath, G, LinearGradient, Stop } from "react-native-svg";
-import { BevelPanelProps, ColorVariant, SizeVariant, SurfaceFillVariant, useTheme } from "@ui";
+import Svg, { Polygon } from "react-native-svg";
+import { BevelPanelProps, ColorVariant, SizeVariant, useTheme } from "@ui";
 
 const paddingMap: Record<SizeVariant, number> = {
     xs: 6,

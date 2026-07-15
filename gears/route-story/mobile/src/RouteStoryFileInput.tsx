@@ -1,9 +1,8 @@
 import { FC } from "react";
 import { StyleSheet, View, } from "react-native";
-import { DocumentPickerResponse, types } from "@react-native-documents/picker";
+import { DocumentPickerResponse } from "@react-native-documents/picker";
 import { FileOperator } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { FileInput, MobileMap, Button } from "@mobile-ui";
-import { parsers } from "@apparatus";
+import { MobileMap, Button } from "@mobile-ui";
 import { ParsingResultWithError, useSubjectState } from "@tinker-chest";
 import { MobileMarkerImageData } from "./images/image-parser";
 import { BehaviorSubject } from "rxjs";
