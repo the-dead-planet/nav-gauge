@@ -25,6 +25,7 @@ interface Props {
     max: number;
     size: string;
     isFullCircle?: boolean;
+    thumbIcon?: string;
 }
 
 export const ClockSvg: FC<Props> = ({
@@ -46,6 +47,7 @@ export const ClockSvg: FC<Props> = ({
     max,
     size,
     isFullCircle,
+    thumbIcon,
 }) => (
     <svg
         ref={svgRef}
@@ -92,6 +94,7 @@ export const ClockSvg: FC<Props> = ({
             thumbRadius={thumbRadius}
             isDragging={isDragging}
             strokeWidth={strokeWidth}
+            icon={thumbIcon}
         />
     </svg>
 );

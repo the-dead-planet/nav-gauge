@@ -14,8 +14,11 @@ export const ClockSliceInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, '
     id,
     color = 'neutral',
     highlightColor,
+    variant = 'fill-inverse',
     size = 'sm',
+    thumbIcon,
     value = 0,
+    formatValue,
     min = 0,
     max = 85,
     step = 1,
@@ -156,6 +159,7 @@ export const ClockSliceInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, '
             color={color}
             highlightColor={highlightColor}
             size={size}
+            variant={variant}
             disabled={disabled}
             className={className}
             {...props}
@@ -166,6 +170,7 @@ export const ClockSliceInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, '
                 max={max}
                 step={step}
                 value={value}
+                formatValue={formatValue}
                 onChange={onChange}
                 onSync={onChange}
                 disabled={disabled}
@@ -188,6 +193,7 @@ export const ClockSliceInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, '
                 min={arcStartAngle}
                 max={arcEndAngle}
                 size={size}
+                thumbIcon={thumbIcon}
             >
                 <path
                     d={wedgePath}

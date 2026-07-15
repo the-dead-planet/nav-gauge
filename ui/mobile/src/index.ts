@@ -14,6 +14,7 @@ export * from './icons';
 export * from './menu';
 export * from './model';
 export * from './tooltip';
+export * from './toggle-switch';
 export * from './transition';
 export * from './typography';
 export * from './Stories';

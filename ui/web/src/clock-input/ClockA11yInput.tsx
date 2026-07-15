@@ -8,6 +8,7 @@ interface Props {
     max: number;
     step: number;
     value: number;
+    formatValue?: (angle: number) => string;
     onChange?: (value: number) => void;
     onSync?: (value: number) => void;
     disabled: boolean;
@@ -20,6 +21,7 @@ export const ClockA11yInput: FC<Props> = ({
     max,
     step,
     value,
+    formatValue,
     onChange,
     onSync,
     disabled,
@@ -87,7 +89,7 @@ export const ClockA11yInput: FC<Props> = ({
             {label && (
                 <Label htmlFor={id} className={styles['label']}>
                     {label}
-                    <Span tabular>{value}°</Span>
+                    <Span tabular>{formatValue?.(value) || `${value}°`}</Span>
                 </Label>
             )}
         </>

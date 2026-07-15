@@ -18,6 +18,7 @@ export const ClockInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, 'onCha
     size = 'sm',
     variant = 'fill-inverse',
     value = CLOCK_INPUT_RANGE[0],
+    formatValue,
     min = CLOCK_INPUT_RANGE[0],
     max = CLOCK_INPUT_RANGE[1],
     step = STEP_DEG,
@@ -154,6 +155,7 @@ export const ClockInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, 'onCha
                 max={max}
                 step={step}
                 value={value}
+                formatValue={formatValue}
                 onChange={onChange}
                 onSync={onChange}
                 disabled={disabled}

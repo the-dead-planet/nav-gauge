@@ -1,7 +1,7 @@
-import { ColorVariant, SpacingVariant } from "../model";
+import { ColorVariant, LayoutOrientation, SpacingVariant } from "../model";
 
 export interface DividerProps {
-    orientation?: "horizontal" | "vertical";
+    orientation?: LayoutOrientation;
     color?: ColorVariant;
     m?: SpacingVariant;
     mv?: SpacingVariant;

@@ -37,7 +37,7 @@ export class Animatrix {
     public static maxBearingDiffPerFrameRange: [number, number] = [CLOCK_INPUT_RANGE[0], CLOCK_INPUT_RANGE[1]];
     public static cameraAngleRange: [number, number] = [CLOCK_INPUT_RANGE[0], CLOCK_INPUT_RANGE[1]];
     public static cameraRollRange: [number, number] = [CLOCK_INPUT_RANGE[0], CLOCK_INPUT_RANGE[1]];
-    public static speedMultiplierRange: [number, number] = [0, 1000000];
+    public static speedMultiplierRange: [number, number] = [0, 250000];
     public static easeDurationRange: [number, number] = [0, 1000];
 
     private controlsStorageId = 'animatrix:controls';

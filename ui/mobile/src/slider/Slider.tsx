@@ -18,7 +18,7 @@ function snap(v: number, min: number, max: number, step: number): number {
     return Math.min(max, Math.max(min, stepped));
 }
 
-export const Slider = forwardRef<any, SliderProps & { style?: ViewStyle }>(({
+export const Slider = forwardRef<View, SliderProps & { style?: ViewStyle }>(({
     color = 'neutral',
     highlightColor = color,
     size = 'md',

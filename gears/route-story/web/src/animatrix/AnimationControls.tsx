@@ -79,10 +79,11 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
                             ...prev, cameraAngle: clamp(value, Animatrix.cameraAngleRange)
                         }))}
                     />
-                    <ClockInput
+                    <IconRotateInput
                         id="animation-controls-camera-roll"
                         label={t(animatrix.translationKey.CameraRoll)}
-                        size='xs'
+                        icon={Icons.NounProject.CameraVideoFront}
+                        size='sm'
                         value={cameraRoll}
                         min={Animatrix.cameraRollRange[0]}
                         max={Animatrix.cameraRollRange[1]}
@@ -98,6 +99,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
                     <ClockSliceInput
                         id="animation-controls-pitch"
                         label={t(animatrix.translationKey.Pitch)}
+                        thumbIcon={Icons.NounProject.CameraVideoSide}
                         size='xs'
                         value={pitch}
                         min={Animatrix.pitchRange[0]}
@@ -141,51 +143,53 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
                         }}
                         size="xs"
                     />
-                    <Slider
-                        id="animation-controls-zoom-in-to-images-value"
-                        label={(
-                            <Checkbox
-                                id="animation-controls-zoom-in-to-images"
-                                checked={zoomInToImages !== false}
-                                onChange={() => setAnimationControls((prev) => ({
-                                    ...prev,
-                                    zoomInToImages: prev.zoomInToImages === false ? Animatrix.defaultZoomInToImages : false
-                                }))}
-                                size="xs"
-                            >
-                                {t(animatrix.translationKey.ZoomInToImages)}
-                            </Checkbox>
-                        )}
-                        aria-label={t(animatrix.translationKey.ZoomInToImages)}
-                        value={zoomInToImages || zoom}
-                        min={Animatrix.zoomRange[0]}
-                        max={Animatrix.zoomRange[1]}
-                        onChange={(value) => setAnimationControls((prev) => ({
-                            ...prev, zoomInToImages: clamp(value, Animatrix.zoomRange)
-                        }))}
-                        disabled={zoomInToImages === false}
-                        size="xs"
-                    />
-                    <NumberInput
+                    <div>
+                        <Checkbox
+                            id="animation-controls-zoom-in-to-images"
+                            checked={zoomInToImages !== false}
+                            onChange={() => setAnimationControls((prev) => ({
+                                ...prev,
+                                zoomInToImages: prev.zoomInToImages === false ? Animatrix.defaultZoomInToImages : false
+                            }))}
+                            size="xs"
+                        >
+                            {t(animatrix.translationKey.ZoomInToImages)}
+                        </Checkbox>
+                        <Slider
+                            id="animation-controls-zoom-in-to-images-value"
+                            aria-label={t(animatrix.translationKey.ZoomInToImages)}
+                            value={zoomInToImages || zoom}
+                            min={Animatrix.zoomRange[0]}
+                            max={Animatrix.zoomRange[1]}
+                            onChange={(value) => setAnimationControls((prev) => ({
+                                ...prev, zoomInToImages: clamp(value, Animatrix.zoomRange)
+                            }))}
+                            disabled={zoomInToImages === false}
+                            size="xs"
+                        />
+                    </div>
+                    <ClockInput
                         id="animation-controls-image-pause-duration"
                         label={t(animatrix.translationKey.ImagePauseDuration)}
-                        value={displayImageDuration}
-                        min={Animatrix.displayImageDurationRange[0]}
-                        max={Animatrix.displayImageDurationRange[1]}
-                        step={500}
+                        value={displayImageDuration / 1000 * 6}
+                        formatValue={(angle) => `${Math.round(angle / 6)}s`}
+                        min={Animatrix.displayImageDurationRange[0] / 1000 * 6}
+                        max={Animatrix.displayImageDurationRange[1] / 1000 * 6}
                         onChange={(value) => setAnimationControls((prev) => ({
-                            ...prev, displayImageDuration: clamp(value, Animatrix.displayImageDurationRange)
+                            ...prev, displayImageDuration: clamp(value * 1000 / 6, Animatrix.displayImageDurationRange)
                         }))}
                     />
-                    <NumberInput
+                    <Slider
                         id="animation-controls-speed-multiplier"
                         label={t(animatrix.translationKey.SpeedMultiplier)}
                         value={speedMultiplier}
                         min={Animatrix.speedMultiplierRange[0]}
                         max={Animatrix.speedMultiplierRange[1]}
+                        step={1000}
                         onChange={(value) => setAnimationControls((prev) => ({
                             ...prev, speedMultiplier: clamp(value, Animatrix.speedMultiplierRange)
                         }))}
+                        size="xs"
                     />
                     <NumberInput
                         id="animation-controls-ease-duration"

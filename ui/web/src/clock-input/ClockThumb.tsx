@@ -9,6 +9,7 @@ interface Props {
     thumbRadius: number;
     isDragging: boolean;
     strokeWidth: number;
+    icon?: string;
 }
 
 export const ClockThumb: FC<Props> = ({
@@ -17,7 +18,8 @@ export const ClockThumb: FC<Props> = ({
     pointerY,
     thumbRadius,
     isDragging,
-    strokeWidth
+    strokeWidth,
+    icon,
 }) => {
     return (
         <circle

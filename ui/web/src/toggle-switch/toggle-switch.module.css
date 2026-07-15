@@ -1,0 +1,451 @@
+.toggle-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+    font-family: var(--font-default);
+}
+
+.toggle-switch.disabled {
+    cursor: not-allowed;
+    opacity: .4;
+}
+
+.input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+.track {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border-width: 1px;
+    border-style: solid;
+    transition: background .2s ease, border-color .2s ease, box-shadow .2s ease;
+    flex-shrink: 0;
+    /* outer rim — recessed housing */
+    box-shadow:
+        inset 0 2px 4px rgb(0 0 0 / .4),
+        inset 0 -1px 2px rgb(255 255 255 / .08),
+        0 1px 2px rgb(0 0 0 / .2);
+}
+
+.thumb {
+    position: absolute;
+    border-radius: 2px;
+    transition: transform .2s ease, background-color .2s ease, box-shadow .2s ease;
+    /* base of the stick sits at the center of the track */
+    top: 50%;
+    left: 50%;
+    /* perspective taper — narrow at base (bottom), wide at top */
+    clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+    /* pivot at the base (bottom center) */
+    transform-origin: 50% 100%;
+    /* shift so the base sits at the track center */
+    margin-left: calc(var(--thumb-half-w) * -1);
+    margin-top: calc(var(--thumb-h) * -1);
+}
+
+.thumb-pivot {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background-color: inherit;
+    box-shadow: inset 0 1px 2px rgb(0 0 0 / .3), 0 1px 0 rgb(255 255 255 / .1);
+    z-index: 1;
+}
+
+.thumb-knob {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background-color: inherit;
+    box-shadow: inset 0 1px 2px rgb(0 0 0 / .2), 0 1px 0 rgb(255 255 255 / .15);
+}
+
+.lamp {
+    border-radius: 50%;
+    flex-shrink: 0;
+    transition: background-color .2s ease, box-shadow .2s ease;
+}
+
+.label {
+    flex: 1;
+}
+
+/* ── Orientation ── */
+
+.orientation-horizontal {
+    flex-direction: row;
+}
+
+.orientation-horizontal .track {
+    flex-direction: row;
+}
+
+.orientation-vertical {
+    flex-direction: column;
+}
+
+.orientation-vertical .track {
+    flex-direction: column;
+}
+
+.orientation-vertical .lamp-off {
+    order: 3;
+}
+
+.orientation-vertical .track {
+    order: 2;
+}
+
+.orientation-vertical .lamp-on {
+    order: 1;
+}
+
+.orientation-vertical .label {
+    order: 4;
+}
+
+/* ── Mode ── */
+
+.mode-light .label {
+    color: var(--ts-color-dark);
+}
+
+.mode-dark .label {
+    color: var(--ts-color-light);
+}
+
+/* ── Color ── */
+
+.color-primary {
+    --ts-color: var(--color-primary);
+    --ts-color-dark: var(--color-primary-900);
+    --ts-color-light: var(--color-primary-100);
+}
+
+.color-secondary {
+    --ts-color: var(--color-secondary);
+    --ts-color-dark: var(--color-secondary-900);
+    --ts-color-light: var(--color-secondary-100);
+}
+
+.color-tertiary {
+    --ts-color: var(--color-tertiary);
+    --ts-color-dark: var(--color-tertiary-900);
+    --ts-color-light: var(--color-tertiary-100);
+}
+
+.color-neutral {
+    --ts-color: var(--color-neutral);
+    --ts-color-dark: var(--color-neutral-800);
+    --ts-color-light: var(--color-neutral-100);
+}
+
+/* ── Highlight ── */
+
+.highlight-primary {
+    --ts-highlight-color: var(--color-primary);
+    --ts-highlight-color-accent-lighter: var(--color-primary-300);
+    --ts-highlight-color-accent-darker: var(--color-primary-600);
+}
+
+.highlight-secondary {
+    --ts-highlight-color: var(--color-secondary);
+    --ts-highlight-color-accent-lighter: var(--color-secondary-300);
+    --ts-highlight-color-accent-darker: var(--color-secondary-600);
+}
+
+.highlight-tertiary {
+    --ts-highlight-color: var(--color-tertiary);
+    --ts-highlight-color-accent-lighter: var(--color-tertiary-300);
+    --ts-highlight-color-accent-darker: var(--color-tertiary-600);
+}
+
+.highlight-neutral {
+    --ts-highlight-color: var(--color-neutral);
+    --ts-highlight-color-accent-lighter: var(--color-neutral-300);
+    --ts-highlight-color-accent-darker: var(--color-neutral-600);
+}
+
+.mode-light {
+    --ts-highlight-color-accent: var(--ts-highlight-color-accent-darker);
+}
+
+.mode-dark {
+    --ts-highlight-color-accent: var(--ts-highlight-color-accent-lighter);
+}
+
+/* ── Lamp states ── */
+
+.lamp-error {
+    background-color: var(--color-error);
+}
+
+.lamp-success {
+    background-color: var(--color-success);
+}
+
+.lamp-inactive {
+    background-color: var(--color-neutral);
+    opacity: .3;
+}
+
+/* Off lamp glows when unchecked */
+:not(.checked) .lamp-off.lamp-error {
+    box-shadow: 0 0 6px 2px var(--color-error);
+}
+
+/* On lamp glows when checked */
+.checked .lamp-on.lamp-success {
+    box-shadow: 0 0 6px 2px var(--color-success);
+}
+
+/* ── Track variant: fill ── */
+
+.variant-fill .track {
+    background:
+        radial-gradient(circle at 35% 35%, rgb(255 255 255 / .15), transparent 50%),
+        radial-gradient(circle at 50% 50%, var(--ts-color), var(--ts-color-dark));
+    border-color: var(--ts-color-dark);
+}
+
+.variant-fill .thumb {
+    background-color: var(--ts-color-light);
+}
+
+/* ── Track variant: ghost ── */
+
+.variant-ghost .track {
+    background:
+        radial-gradient(circle at 35% 35%, rgb(255 255 255 / .08), transparent 50%),
+        radial-gradient(circle at 50% 50%, rgb(from var(--ts-color) r g b / .12), rgb(from var(--ts-color) r g b / .05));
+    border-color: var(--ts-color);
+}
+
+.variant-ghost .thumb {
+    background-color: var(--ts-color);
+}
+
+/* ── Track variant: outline ── */
+
+.variant-outline .track {
+    background:
+        radial-gradient(circle at 35% 35%, rgb(255 255 255 / .08), transparent 50%),
+        radial-gradient(circle at 50% 50%, rgb(from var(--ts-color) r g b / .1), rgb(from var(--ts-color) r g b / .04));
+    border-color: var(--ts-color);
+}
+
+.variant-outline .thumb {
+    background-color: var(--ts-color);
+}
+
+/* ── Track variant: fill-inverse ── */
+
+.variant-fill-inverse .track {
+    background:
+        radial-gradient(circle at 35% 35%, rgb(255 255 255 / .2), transparent 50%),
+        radial-gradient(circle at 50% 50%, var(--ts-color-light), rgb(from var(--ts-color-light) r g b / .8));
+    border-color: rgb(from var(--ts-color-light) r g b / .7);
+}
+
+.variant-fill-inverse .thumb {
+    background-color: var(--ts-color);
+}
+
+/* ── Track variant: fill-translucent ── */
+
+.variant-fill-translucent .track {
+    background:
+        radial-gradient(circle at 35% 35%, rgb(255 255 255 / .1), transparent 50%),
+        radial-gradient(circle at 50% 50%, rgb(from var(--ts-color) r g b / .2), rgb(from var(--ts-color) r g b / .08));
+    border-color: var(--ts-color);
+}
+
+.variant-fill-translucent .thumb {
+    background-color: var(--ts-color);
+}
+
+/* ── Track variant: inset ── */
+
+.variant-inset .track {
+    background:
+        radial-gradient(circle at 35% 35%, rgb(255 255 255 / .06), transparent 50%),
+        radial-gradient(circle at 50% 50%, rgb(from var(--ts-color) r g b / .08), rgb(from var(--ts-color) r g b / .03));
+    border-color: var(--ts-color);
+    box-shadow:
+        inset 0 3px 6px rgb(0 0 0 / .5),
+        inset 0 -1px 2px rgb(255 255 255 / .06),
+        0 1px 2px rgb(0 0 0 / .2);
+}
+
+.variant-inset .thumb {
+    background-color: var(--ts-color);
+}
+
+/* ── Thumb movement (horizontal) ── */
+
+.orientation-horizontal .thumb {
+    transform: rotate(-25deg);
+}
+
+.orientation-horizontal.checked .thumb {
+    transform: rotate(25deg);
+}
+
+/* ── Thumb movement (vertical) ── */
+
+.orientation-vertical .thumb {
+    transform: rotate(-25deg);
+}
+
+.orientation-vertical.checked .thumb {
+    transform: rotate(25deg);
+}
+
+/* ── Hover ── */
+
+.toggle-switch:hover .track {
+    box-shadow: 0 0 0 2px rgb(from var(--ts-highlight-color-accent) r g b / .3);
+}
+
+/* ── Focus ── */
+
+.toggle-switch:has(:focus-visible) .track {
+    outline: 2px solid var(--ts-color);
+    outline-offset: 2px;
+}
+
+/* ── Sizes ── */
+
+/* xs */
+.size-xs .track {
+    width: 28px;
+    height: 28px;
+}
+
+.size-xs .thumb {
+    --thumb-half-w: 4px;
+    --thumb-h: 14px;
+    width: 8px;
+    height: 14px;
+}
+
+.size-xs .thumb-pivot {
+    width: 6px;
+    height: 6px;
+}
+
+.size-xs .thumb-knob {
+    width: 8px;
+    height: 8px;
+}
+
+.size-xs .lamp {
+    width: 6px;
+    height: 6px;
+}
+
+.size-xs .label {
+    font-size: 11px;
+}
+
+.orientation-horizontal.size-xs {
+    gap: 6px;
+}
+
+.orientation-vertical.size-xs {
+    gap: 6px;
+}
+
+/* sm */
+.size-sm .track {
+    width: 34px;
+    height: 34px;
+}
+
+.size-sm .thumb {
+    --thumb-half-w: 5px;
+    --thumb-h: 17px;
+    width: 10px;
+    height: 17px;
+}
+
+.size-sm .thumb-pivot {
+    width: 7px;
+    height: 7px;
+}
+
+.size-sm .thumb-knob {
+    width: 9px;
+    height: 9px;
+}
+
+.size-sm .lamp {
+    width: 8px;
+    height: 8px;
+}
+
+.size-sm .label {
+    font-size: 12px;
+}
+
+.orientation-horizontal.size-sm {
+    gap: 8px;
+}
+
+.orientation-vertical.size-sm {
+    gap: 8px;
+}
+
+/* md */
+.size-md .track {
+    width: 40px;
+    height: 40px;
+}
+
+.size-md .thumb {
+    --thumb-half-w: 6px;
+    --thumb-h: 20px;
+    width: 12px;
+    height: 20px;
+}
+
+.size-md .thumb-pivot {
+    width: 8px;
+    height: 8px;
+}
+
+.size-md .thumb-knob {
+    width: 10px;
+    height: 10px;
+}
+
+.size-md .lamp {
+    width: 10px;
+    height: 10px;
+}
+
+.size-md .label {
+    font-size: 14px;
+}
+
+.orientation-horizontal.size-md {
+    gap: 10px;
+}
+
+.orientation-vertical.size-md {
+    gap: 10px;
+}

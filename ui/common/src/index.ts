@@ -22,5 +22,6 @@ export * from './text-input';
 export * from './theme';
 export * from './tinkers';
 export * from './tooltip';
+export * from './toggle-switch';
 export * from './transition';
 export * from './typography';

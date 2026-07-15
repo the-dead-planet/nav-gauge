@@ -61,7 +61,7 @@ describe("Route story gear", () => {
             });
             it("should throw if speed incorrect", () => {
                 expect(() => Animatrix.validateAnimationControls({ speedMultiplier: 120 })).to.not.throw();
-                expect(() => Animatrix.validateAnimationControls({ speedMultiplier: 2000000 } as unknown as AnimationControlsType)).to.throw("Speed in seconds per frame should be within range [0, 1000000]");
+                expect(() => Animatrix.validateAnimationControls({ speedMultiplier: 2000000 } as unknown as AnimationControlsType)).to.throw("Speed in seconds per frame should be within range [0, 250000]");
                 expect(() => Animatrix.validateAnimationControls({ speedMultiplier: "" } as unknown as AnimationControlsType)).to.throw("Speed in seconds per frame should be of type number");
             });
             it("should throw if easeDuration incorrect", () => {
