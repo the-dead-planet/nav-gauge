@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { ColorVariant, SizeVariant } from "../model";
 
 export interface SliderProps {
@@ -12,5 +13,5 @@ export interface SliderProps {
     active?: boolean;
     disabled?: boolean;
     id?: string;
-    label?: string;
+    label?: ReactNode;
 }

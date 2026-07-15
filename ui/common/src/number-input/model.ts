@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { ColorVariant, SizeVariant, SurfaceFillVariant } from "../model";
 
 export interface NumberInputProps {
@@ -5,7 +6,7 @@ export interface NumberInputProps {
     highlightColor?: ColorVariant;
     size?: SizeVariant;
     variant?: SurfaceFillVariant;
-    label: string;
+    label?: ReactNode;
     value: number;
     onChange: (value: number) => void;
     min?: number;

@@ -19,9 +19,9 @@ export const Checkbox: FC<CheckboxProps> = ({
         : theme.color(highlightColor, 300);
     const baseColor = theme.color(color);
 
-    const boxWidthHeight = size === 'md' ? 18 : size === 'sm' ? 16 : 14;
-    const fontSize = size === 'xs' ? 12 : 14;
-    const borderRadius = size === 'md' ? 4 : size === 'sm' ? 3 : 2;
+    const boxWidthHeight = size === 'md' ? 16 : size === 'sm' ? 14 : 12;
+    const fontSize = size === 'xs' ? 11 : size === 'sm' ? 12 : 14;
+    const borderRadius = size === 'md' ? 3 : 2;
 
     const containerStyle: ViewStyle = {
         flexDirection: 'row',

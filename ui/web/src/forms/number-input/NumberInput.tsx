@@ -65,7 +65,11 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
             styles[`size-${size}`],
             styles[`variant-${variant}`],
         )}>
-            <label htmlFor={id} className={styles.label}>{label}</label>
+            {typeof label === 'string' ? (
+                <label htmlFor={id} className={styles.label}>
+                    {label}
+                </label>
+            ) : label}
             <div className={styles['input-wrapper']}>
                 <input
                     id={id}

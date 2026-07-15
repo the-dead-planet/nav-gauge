@@ -31,11 +31,11 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
 
     return (
         <div className={classNames(styles['container'], { [styles['disabled']]: disabled })}>
-            {label && (
+            {typeof label === 'string' ? (
                 <Label htmlFor={id} tabular className={styles['label']}>
                     {label} <span>{value}</span>
                 </Label>
-            )}
+            ) : label}
             <input
                 type="range"
                 id={id}
@@ -45,7 +45,7 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
                 value={value}
                 disabled={disabled}
                 onChange={handleChange}
-                aria-label={label || 'Slider'}
+                aria-label={props['aria-label'] || (typeof label === 'string' ? label : '') || 'Slider'}
                 className={classNames(
                     styles['slider'],
                     styles[`mode-${theme.mode}`],

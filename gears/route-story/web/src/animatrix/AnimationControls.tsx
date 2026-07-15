@@ -49,7 +49,6 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
                         checked={autoRotate}
                         size="xs"
                         onChange={() => setAnimationControls((prev) => ({ ...prev, autoRotate: !prev.autoRotate }))}
-                        className={styles["top-margin"]}
                     >
                         {t(animatrix.translationKey.AutoRotate)}
                     </Checkbox>
@@ -142,22 +141,22 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
                         }}
                         size="xs"
                     />
-                    <div />
-                    <Checkbox
-                        id="animation-controls-zoom-in-to-images"
-                        checked={zoomInToImages !== false}
-                        onChange={() => setAnimationControls((prev) => ({
-                            ...prev,
-                            zoomInToImages: prev.zoomInToImages === false ? Animatrix.defaultZoomInToImages : false
-                        }))}
-                        size="xs"
-                        className={styles["top-margin"]}
-                    >
-                        {t(animatrix.translationKey.ZoomInToImages)}
-                    </Checkbox>
-                    <NumberInput
+                    <Slider
                         id="animation-controls-zoom-in-to-images-value"
-                        label={t(animatrix.translationKey.ZoomInToImages)}
+                        label={(
+                            <Checkbox
+                                id="animation-controls-zoom-in-to-images"
+                                checked={zoomInToImages !== false}
+                                onChange={() => setAnimationControls((prev) => ({
+                                    ...prev,
+                                    zoomInToImages: prev.zoomInToImages === false ? Animatrix.defaultZoomInToImages : false
+                                }))}
+                                size="xs"
+                            >
+                                {t(animatrix.translationKey.ZoomInToImages)}
+                            </Checkbox>
+                        )}
+                        aria-label={t(animatrix.translationKey.ZoomInToImages)}
                         value={zoomInToImages || zoom}
                         min={Animatrix.zoomRange[0]}
                         max={Animatrix.zoomRange[1]}
@@ -165,6 +164,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
                             ...prev, zoomInToImages: clamp(value, Animatrix.zoomRange)
                         }))}
                         disabled={zoomInToImages === false}
+                        size="xs"
                     />
                     <NumberInput
                         id="animation-controls-image-pause-duration"

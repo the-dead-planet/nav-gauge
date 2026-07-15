@@ -141,49 +141,49 @@
     background-color: var(--color-neutral);
 }
 
-.size-sm .box {
+.size-md .box {
     width: 16px;
     height: 16px;
     border-radius: 3px;
 }
 
-.size-sm .checkmark svg {
+.size-md .checkmark svg {
     width: 10px;
     height: 10px;
 }
 
-.size-sm .label {
+.size-md .label {
     font-size: 14px;
 }
 
-.size-xs .box {
+.size-sm .box {
     width: 14px;
     height: 14px;
     border-radius: 2px;
 }
 
-.size-xs .checkmark svg {
+.size-sm .checkmark svg {
     width: 8px;
     height: 8px;
 }
 
-.size-xs .label {
+.size-sm .label {
     font-size: 12px;
 }
 
-.size-md .box {
-    width: 18px;
-    height: 18px;
-    border-radius: 4px;
-}
-
-.size-md .checkmark svg {
+.size-xs .box {
     width: 12px;
     height: 12px;
+    border-radius: 2px;
 }
 
-.size-md .label {
-    font-size: 14px;
+.size-xs .checkmark svg {
+    width: 6px;
+    height: 6px;
+}
+
+.size-xs .label {
+    font-size: 11px;
 }
 
 .checkbox:hover .box {
