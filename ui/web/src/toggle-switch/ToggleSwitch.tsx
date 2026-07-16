@@ -73,6 +73,7 @@ export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & Toggle
             <span className={styles['track']}>
                 <span className={styles['thumb']}>
                     <span className={styles['thumb-pivot']} />
+                    <span className={styles['thumb-body']} />
                     <span className={styles['thumb-knob']} />
                 </span>
             </span>

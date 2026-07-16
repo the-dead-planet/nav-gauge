@@ -1,5 +1,5 @@
-import { FC } from "react";
-import { Pressable, View, ViewStyle } from "react-native";
+import { FC, useEffect, useRef } from "react";
+import { Animated, Pressable, View, ViewStyle } from "react-native";
 import { ToggleSwitchProps, useTheme } from "@ui";
 import { Text } from "../typography";
 
@@ -16,16 +16,13 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
 }) => {
     const theme = useTheme();
 
-    const accentColor = theme.isLight
-        ? theme.color(highlightColor, 600)
-        : theme.color(highlightColor, 300);
     const baseColor = theme.color(color);
 
     const trackSize = size === 'md' ? 40 : size === 'sm' ? 34 : 28;
-    const thumbWidth = size === 'md' ? 12 : size === 'sm' ? 10 : 8;
-    const thumbHeight = size === 'md' ? 20 : size === 'sm' ? 17 : 14;
-    const pivotSize = size === 'md' ? 8 : size === 'sm' ? 7 : 6;
-    const knobSize = size === 'md' ? 10 : size === 'sm' ? 9 : 8;
+    const stickLength = size === 'md' ? 16 : size === 'sm' ? 14 : 12;
+    const stickThickness = size === 'md' ? 12 : size === 'sm' ? 10 : 8;
+    const thumbPivotSize = size === 'md' ? 8 : size === 'sm' ? 7 : 6;
+    const thumbKnobSize = size === 'md' ? 10 : size === 'sm' ? 9 : 8;
     const lampSize = size === 'md' ? 10 : size === 'sm' ? 8 : 6;
     const fontSize = size === 'xs' ? 11 : size === 'sm' ? 12 : 14;
     const gap = size === 'md' ? 10 : size === 'sm' ? 8 : 6;
@@ -35,6 +32,23 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
     const neutralColor = theme.color('grey');
 
     const isHorizontal = orientation === 'horizontal';
+
+    const knobScale = useRef(new Animated.Value(1)).current;
+
+    useEffect(() => {
+        Animated.sequence([
+            Animated.timing(knobScale, {
+                toValue: 1.25,
+                duration: 100,
+                useNativeDriver: true,
+            }),
+            Animated.timing(knobScale, {
+                toValue: 1,
+                duration: 100,
+                useNativeDriver: true,
+            }),
+        ]).start();
+    }, [checked, knobScale]);
 
     const trackBackgroundColor = (() => {
         switch (variant) {
@@ -113,22 +127,109 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
         justifyContent: 'center',
     };
 
-    const thumbStyle: ViewStyle = {
-        width: thumbWidth,
-        height: thumbHeight,
-        borderRadius: 2,
-        backgroundColor: thumbColor,
-        // Tapered shape: narrow at bottom (base), wide at top (handle)
-        // In React Native we simulate this with a polygon via overflow and nested views
-        transform: [
-            { rotate: `${checked ? 25 : -25}deg` },
-        ],
-        // Position base at center of track
-        position: 'absolute',
-        bottom: '50%',
-        left: '50%',
-        marginLeft: -thumbWidth / 2,
-    };
+    const thumbStyle: ViewStyle = isHorizontal
+        ? {
+            width: stickLength,
+            height: stickThickness,
+            backgroundColor: thumbColor,
+            transform: [{ scaleX: checked ? 1 : -1 }],
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            marginTop: -stickThickness / 2,
+        }
+        : {
+            width: stickThickness,
+            height: stickLength,
+            backgroundColor: thumbColor,
+            transform: [{ scaleY: checked ? 1 : -1 }],
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            marginLeft: -stickThickness / 2,
+        };
+
+    const thumbBodyStyle: ViewStyle = isHorizontal
+        ? {
+            position: 'absolute',
+            inset: 0,
+            backgroundColor: thumbColor,
+        }
+        : {
+            position: 'absolute',
+            inset: 0,
+            backgroundColor: thumbColor,
+        };
+
+    const thumbPivotStyle: ViewStyle = isHorizontal
+        ? {
+            position: 'absolute',
+            left: 0,
+            top: '50%',
+            marginLeft: -thumbPivotSize / 2,
+            marginTop: -thumbPivotSize / 2,
+            width: thumbPivotSize,
+            height: thumbPivotSize,
+            borderRadius: thumbPivotSize / 2,
+            backgroundColor: thumbColor,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 1 },
+            shadowOpacity: 0.3,
+            shadowRadius: 1,
+            elevation: 2,
+        }
+        : {
+            position: 'absolute',
+            top: 0,
+            left: '50%',
+            marginLeft: -thumbPivotSize / 2,
+            marginTop: -thumbPivotSize / 2,
+            width: thumbPivotSize,
+            height: thumbPivotSize,
+            borderRadius: thumbPivotSize / 2,
+            backgroundColor: thumbColor,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 1 },
+            shadowOpacity: 0.3,
+            shadowRadius: 1,
+            elevation: 2,
+        };
+
+    const thumbKnobStyle: ViewStyle = isHorizontal
+        ? {
+            position: 'absolute',
+            right: 0,
+            top: '50%',
+            marginRight: -thumbKnobSize / 2,
+            marginTop: -thumbKnobSize / 2,
+            width: thumbKnobSize,
+            height: thumbKnobSize,
+            borderRadius: thumbKnobSize / 2,
+            backgroundColor: thumbColor,
+            transform: [{ scale: knobScale }],
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 1 },
+            shadowOpacity: 0.35,
+            shadowRadius: 2,
+            elevation: 3,
+        }
+        : {
+            position: 'absolute',
+            bottom: 0,
+            left: '50%',
+            marginLeft: -thumbKnobSize / 2,
+            marginBottom: -thumbKnobSize / 2,
+            width: thumbKnobSize,
+            height: thumbKnobSize,
+            borderRadius: thumbKnobSize / 2,
+            backgroundColor: thumbColor,
+            transform: [{ scale: knobScale }],
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 1 },
+            shadowOpacity: 0.35,
+            shadowRadius: 2,
+            elevation: 3,
+        };
 
     const lampStyle = (lampColor: string, lampOpacity: number): ViewStyle => ({
         width: lampSize,
@@ -136,6 +237,11 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
         borderRadius: lampSize / 2,
         backgroundColor: lampColor,
         opacity: lampOpacity,
+        shadowColor: '#fff',
+        shadowOffset: { width: -1, height: -1 },
+        shadowOpacity: 0.3,
+        shadowRadius: 1,
+        elevation: 2,
     });
 
     const lampOffGlow = checked ? undefined : `0 0 6px 2px ${errorColor}`;
@@ -183,7 +289,11 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
         >
             {isHorizontal ? lampOffElement : lampOnElement}
             <View style={trackStyle}>
-                <View style={thumbStyle} />
+                <View style={thumbStyle}>
+                    <View style={thumbPivotStyle} />
+                    <View style={thumbBodyStyle} />
+                    <Animated.View style={thumbKnobStyle} />
+                </View>
             </View>
             {isHorizontal ? lampOnElement : lampOffElement}
             {children ? (

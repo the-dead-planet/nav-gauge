@@ -39,39 +39,27 @@
 
 .thumb {
     position: absolute;
-    border-radius: 2px;
     transition: transform .2s ease, background-color .2s ease, box-shadow .2s ease;
-    /* base of the stick sits at the center of the track */
     top: 50%;
     left: 50%;
-    /* perspective taper — narrow at base (bottom), wide at top */
-    clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
-    /* pivot at the base (bottom center) */
-    transform-origin: 50% 100%;
-    /* shift so the base sits at the track center */
-    margin-left: calc(var(--thumb-half-w) * -1);
-    margin-top: calc(var(--thumb-h) * -1);
+}
+
+.thumb-body {
+    position: absolute;
+    inset: 0;
+    background-color: inherit;
 }
 
 .thumb-pivot {
     position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
     border-radius: 50%;
     background-color: inherit;
-    box-shadow: inset 0 1px 2px rgb(0 0 0 / .3), 0 1px 0 rgb(255 255 255 / .1);
-    z-index: 1;
 }
 
 .thumb-knob {
     position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
     border-radius: 50%;
     background-color: inherit;
-    box-shadow: inset 0 1px 2px rgb(0 0 0 / .2), 0 1px 0 rgb(255 255 255 / .15);
 }
 
 .lamp {
@@ -192,10 +180,12 @@
 
 .lamp-error {
     background-color: var(--color-error);
+    background-image: radial-gradient(circle at 35% 30%, rgb(255 255 255 / .4), transparent 50%);
 }
 
 .lamp-success {
     background-color: var(--color-success);
+    background-image: radial-gradient(circle at 35% 30%, rgb(255 255 255 / .4), transparent 50%);
 }
 
 .lamp-inactive {
@@ -295,24 +285,92 @@
     background-color: var(--ts-color);
 }
 
-/* ── Thumb movement (horizontal) ── */
+/* ── Thumb: horizontal lever ── */
 
 .orientation-horizontal .thumb {
-    transform: rotate(-25deg);
+    width: var(--thumb-length);
+    height: var(--thumb-thickness);
+    margin-top: calc(var(--thumb-thickness) / -2);
+    transform-origin: 0% 50%;
+    transform: scaleX(-1);
 }
 
 .orientation-horizontal.checked .thumb {
-    transform: rotate(25deg);
+    transform: scaleX(1);
 }
 
-/* ── Thumb movement (vertical) ── */
+.orientation-horizontal .thumb-body {
+    inset: 0;
+    background-color: inherit;
+    background-image: linear-gradient(to bottom, rgb(255 255 255 / .2), rgb(0 0 0 / .2));
+    clip-path: polygon(0% var(--ts-clip-pivot-start), 100% var(--ts-clip-knob-start), 100% var(--ts-clip-knob-end), 0% var(--ts-clip-pivot-end));
+}
+
+.orientation-horizontal .thumb-pivot {
+    left: 0;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: inherit;
+    background-image: radial-gradient(circle at 35% 30%, rgb(255 255 255 / .35), transparent 50%);
+    box-shadow:
+        inset 0 -1px 2px rgb(0 0 0 / .3),
+        0 1px 1px rgb(0 0 0 / .2);
+}
+
+.orientation-horizontal .thumb-knob {
+    right: 0;
+    top: 50%;
+    transform: translate(50%, -50%);
+    animation: var(--knob-pulse-name) 0.2s ease-out;
+    background-color: inherit;
+    background-image: radial-gradient(circle at 35% 30%, rgb(255 255 255 / .45), transparent 50%);
+    box-shadow:
+        inset 0 -1px 3px rgb(0 0 0 / .35),
+        0 1px 2px rgb(0 0 0 / .25);
+}
+
+/* ── Thumb: vertical lever ── */
 
 .orientation-vertical .thumb {
-    transform: rotate(-25deg);
+    width: var(--thumb-thickness);
+    height: var(--thumb-length);
+    margin-left: calc(var(--thumb-thickness) / -2);
+    transform-origin: 50% 0%;
+    transform: scaleY(-1);
 }
 
 .orientation-vertical.checked .thumb {
-    transform: rotate(25deg);
+    transform: scaleY(1);
+}
+
+.orientation-vertical .thumb-body {
+    inset: 0;
+    background-color: inherit;
+    background-image: linear-gradient(to right, rgb(255 255 255 / .2), rgb(0 0 0 / .2));
+    clip-path: polygon(var(--ts-clip-pivot-start) 0%, var(--ts-clip-pivot-end) 0%, var(--ts-clip-knob-end) 100%, var(--ts-clip-knob-start) 100%);
+}
+
+.orientation-vertical .thumb-pivot {
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: inherit;
+    background-image: radial-gradient(circle at 30% 35%, rgb(255 255 255 / .35), transparent 50%);
+    box-shadow:
+        inset 0 -1px 2px rgb(0 0 0 / .3),
+        0 1px 1px rgb(0 0 0 / .2);
+}
+
+.orientation-vertical .thumb-knob {
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    animation: var(--knob-pulse-name) 0.2s ease-out;
+    background-color: inherit;
+    background-image: radial-gradient(circle at 30% 35%, rgb(255 255 255 / .45), transparent 50%);
+    box-shadow:
+        inset 0 -1px 3px rgb(0 0 0 / .35),
+        0 1px 2px rgb(0 0 0 / .25);
 }
 
 /* ── Hover ── */
@@ -337,10 +395,12 @@
 }
 
 .size-xs .thumb {
-    --thumb-half-w: 4px;
-    --thumb-h: 14px;
-    width: 8px;
-    height: 14px;
+    --thumb-length: 12px;
+    --thumb-thickness: 8px;
+    --ts-clip-pivot-start: 12.5%;
+    --ts-clip-pivot-end: 87.5%;
+    --ts-clip-knob-start: 0%;
+    --ts-clip-knob-end: 100%;
 }
 
 .size-xs .thumb-pivot {
@@ -377,10 +437,12 @@
 }
 
 .size-sm .thumb {
-    --thumb-half-w: 5px;
-    --thumb-h: 17px;
-    width: 10px;
-    height: 17px;
+    --thumb-length: 14px;
+    --thumb-thickness: 10px;
+    --ts-clip-pivot-start: 15%;
+    --ts-clip-pivot-end: 85%;
+    --ts-clip-knob-start: 5%;
+    --ts-clip-knob-end: 95%;
 }
 
 .size-sm .thumb-pivot {
@@ -417,10 +479,12 @@
 }
 
 .size-md .thumb {
-    --thumb-half-w: 6px;
-    --thumb-h: 20px;
-    width: 12px;
-    height: 20px;
+    --thumb-length: 16px;
+    --thumb-thickness: 12px;
+    --ts-clip-pivot-start: 16.67%;
+    --ts-clip-pivot-end: 83.33%;
+    --ts-clip-knob-start: 8.33%;
+    --ts-clip-knob-end: 91.67%;
 }
 
 .size-md .thumb-pivot {
@@ -448,4 +512,70 @@
 
 .orientation-vertical.size-md {
     gap: 10px;
+}
+
+/* ── Knob pulse animation ── */
+
+@keyframes knob-pulse-off {
+    0% {
+        transform: translate(50%, -50%) scale(1);
+    }
+    50% {
+        transform: translate(50%, -50%) scale(1.25);
+    }
+    100% {
+        transform: translate(50%, -50%) scale(1);
+    }
+}
+
+@keyframes knob-pulse-on {
+    0% {
+        transform: translate(50%, -50%) scale(1);
+    }
+    50% {
+        transform: translate(50%, -50%) scale(1.25);
+    }
+    100% {
+        transform: translate(50%, -50%) scale(1);
+    }
+}
+
+@keyframes knob-pulse-off-vertical {
+    0% {
+        transform: translate(-50%, 50%) scale(1);
+    }
+    50% {
+        transform: translate(-50%, 50%) scale(1.25);
+    }
+    100% {
+        transform: translate(-50%, 50%) scale(1);
+    }
+}
+
+@keyframes knob-pulse-on-vertical {
+    0% {
+        transform: translate(-50%, 50%) scale(1);
+    }
+    50% {
+        transform: translate(-50%, 50%) scale(1.25);
+    }
+    100% {
+        transform: translate(-50%, 50%) scale(1);
+    }
+}
+
+:not(.checked) .orientation-horizontal .thumb-knob {
+    --knob-pulse-name: knob-pulse-off;
+}
+
+.checked .orientation-horizontal .thumb-knob {
+    --knob-pulse-name: knob-pulse-on;
+}
+
+:not(.checked) .orientation-vertical .thumb-knob {
+    --knob-pulse-name: knob-pulse-off-vertical;
+}
+
+.checked .orientation-vertical .thumb-knob {
+    --knob-pulse-name: knob-pulse-on-vertical;
 }
