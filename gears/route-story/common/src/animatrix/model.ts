@@ -36,10 +36,6 @@ export interface AnimationControlsType {
      */
     zoom: number;
     /**
-     * If set to a number, will apply it to the map zoom when route animation pauses to show the images.
-     */
-    zoomInToImages: false | number;
-    /**
      * How long to view the image for (in milliseconds).
      * Defaults to `3000` (3 seconds).
      */
@@ -64,7 +60,6 @@ export enum AnimatrixTranslationKey {
     MaxBearingDiffPerFrame = 'max-bearing-diff-per-frame',
     Pitch = 'pitch',
     Zoom = 'zoom',
-    ZoomInToImages = 'zoom-in-to-images',
     ImagePauseDuration = 'image-pause-duration',
     SpeedMultiplier = 'speed-multiplier',
     EaseDuration = 'ease-duration',

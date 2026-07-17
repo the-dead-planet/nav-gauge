@@ -21,14 +21,11 @@ export class Animatrix {
         cameraAngle: 0,
         pitch: 0,
         zoom: 12,
-        zoomInToImages: false,
         displayImageDuration: 3000,
         cameraRoll: 0,
         speedMultiplier: 5000,
         easeDuration: 100,
     };
-
-    public static defaultZoomInToImages = 15;
 
     public static displayImageDurationRange: [number, number] = [0, 10000];
     public static pitchRange: [number, number] = [0, 85];
@@ -85,12 +82,6 @@ export class Animatrix {
         validateNumber(animationControls.cameraRoll, 'Camera roll', Animatrix.cameraRollRange);
         validateNumber(animationControls.pitch, 'Pitch', Animatrix.pitchRange);
         validateNumber(animationControls.zoom, 'Zoom', Animatrix.zoomRange);
-        if (animationControls.zoomInToImages !== undefined && animationControls.zoomInToImages !== false && typeof animationControls.zoomInToImages !== 'number') {
-            throw new Error(`Zoom in to images should be either false or of type number within range [${Animatrix.zoomRange.join(', ')}]`);
-        }
-        if (animationControls.zoomInToImages && typeof animationControls.zoomInToImages === 'number') {
-            validateNumber(animationControls.zoomInToImages, 'Zoom in to images', Animatrix.zoomRange);
-        }
         validateNumber(animationControls.displayImageDuration, 'Image pause duration', Animatrix.displayImageDurationRange);
         validateNumber(animationControls.speedMultiplier, 'Speed in seconds per frame', Animatrix.speedMultiplierRange);
         validateNumber(animationControls.easeDuration, 'Ease duration', Animatrix.easeDurationRange);

@@ -2,6 +2,8 @@ import { ChangeEvent, ComponentProps, FC, useId } from "react";
 import classNames from "classnames";
 import { ToggleSwitchProps, useTheme } from "@ui";
 import styles from './toggle-switch.module.css';
+import { Span } from "../typography";
+import { Lamp } from "./Lamp";
 
 interface Props {
     labelledBy?: string;
@@ -9,6 +11,7 @@ interface Props {
 
 export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & ToggleSwitchProps & Props> = ({
     id,
+    label,
     labelledBy,
     color = 'neutral',
     highlightColor = color,
@@ -51,7 +54,6 @@ export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & Toggle
                 styles[`highlight-${highlightColor}`],
                 styles[`size-${size}`],
                 styles[`variant-${variant}`],
-                styles[`orientation-${orientation}`],
                 {
                     [styles['disabled']]: disabled,
                     [styles['checked']]: checked,
@@ -69,16 +71,22 @@ export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & Toggle
                 onChange={handleChange}
                 disabled={disabled}
             />
-            <span className={classNames(styles['lamp'], styles['lamp-off'], checked ? styles['lamp-inactive'] : styles['lamp-error'])} />
-            <span className={styles['track']}>
-                <span className={styles['thumb']}>
-                    <span className={styles['thumb-pivot']} />
-                    <span className={styles['thumb-body']} />
-                    <span className={styles['thumb-knob']} />
+            {typeof label === 'string' ? (
+                <Span className={styles['label']}>
+                    {label}
+                </Span>
+            ) : label}
+            <span className={classNames(styles['toggle-row'], styles[`orientation-${orientation}`])}>
+                <Lamp variant="off" active={!checked} />
+                <span className={styles['track']}>
+                    <span className={styles['thumb']}>
+                        <span className={styles['thumb-pivot']} />
+                        <span className={styles['thumb-body']} />
+                        <span className={styles['thumb-knob']} />
+                    </span>
                 </span>
+                <Lamp variant="on" active={checked} />
             </span>
-            <span className={classNames(styles['lamp'], styles['lamp-on'], checked ? styles['lamp-success'] : styles['lamp-inactive'])} />
-            {children ? <span className={styles['label']}>{children}</span> : null}
         </label>
     );
 };

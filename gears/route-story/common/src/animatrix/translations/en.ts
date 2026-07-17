@@ -11,7 +11,6 @@ const en: TranslationTable<AnimatrixTranslationKey>['en'] = {
     "max-bearing-diff-per-frame": 'Max bearing diff per frame',
     "pitch": 'Pitch',
     "zoom": 'Zoom',
-    "zoom-in-to-images": 'Zoom in to images',
     "image-pause-duration": 'Image pause duration (ms)',
     "speed-multiplier": 'Speed multiplier',
     "ease-duration": 'Ease duration',

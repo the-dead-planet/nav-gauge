@@ -6,10 +6,17 @@
 }
 
 .section {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: start;
+    justify-content: space-between;
     row-gap: 10px;
     column-gap: 10px;
+}
+
+.section > * {
+    box-sizing: border-box;
+    max-width: calc(50% - 5px);
 }
 
 .top-margin {

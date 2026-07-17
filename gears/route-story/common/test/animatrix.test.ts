@@ -46,13 +46,6 @@ describe("Route story gear", () => {
                 expect(() => Animatrix.validateAnimationControls({ zoom: 200 } as unknown as AnimationControlsType)).to.throw("Zoom should be within range [0, 20]");
                 expect(() => Animatrix.validateAnimationControls({ zoom: "" } as unknown as AnimationControlsType)).to.throw("Zoom should be of type number");
             });
-            it("should throw if zoomInToImages incorrect", () => {
-                expect(() => Animatrix.validateAnimationControls({ zoomInToImages: false })).to.not.throw();
-                expect(() => Animatrix.validateAnimationControls({ zoomInToImages: 15 })).to.not.throw();
-                expect(() => Animatrix.validateAnimationControls({ zoomInToImages: true } as unknown as AnimationControlsType)).to.throw("Zoom in to images should be either false or of type number within range [0, 20]");
-                expect(() => Animatrix.validateAnimationControls({ zoomInToImages: 200 } as unknown as AnimationControlsType)).to.throw("Zoom in to images should be within range [0, 20]");
-                expect(() => Animatrix.validateAnimationControls({ zoomInToImages: "" } as unknown as AnimationControlsType)).to.throw("Zoom in to images should be either false or of type number within range [0, 20]");
-            });
             it("should throw if displayImageDuration incorrect", () => {
                 expect(() => Animatrix.validateAnimationControls({ displayImageDuration: 4500 })).to.not.throw();
                 expect(() => Animatrix.validateAnimationControls({ displayImageDuration: 2000000 } as unknown as AnimationControlsType)).to.throw("Image pause duration should be within range [0, 10000]");

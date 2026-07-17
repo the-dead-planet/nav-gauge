@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef } from "react";
-import { Label } from "../typography";
+import { Label, Span } from "../typography";
 import styles from './icon-rotate-input.module.css';
 
 interface Props {
@@ -87,8 +87,8 @@ export const RotateA11yInput: FC<Props> = ({
                 tabIndex={0}
             />
             {label && (
-                <Label htmlFor={id} tabular className={styles.label}>
-                    {label} {value}°
+                <Label htmlFor={id} className={styles.label}>
+                    {label} <Span tabular>{value}°</Span>
                 </Label>
             )}
         </>

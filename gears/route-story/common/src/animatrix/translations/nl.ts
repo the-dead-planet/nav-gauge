@@ -11,7 +11,6 @@ const nl: TranslationTable<AnimatrixTranslationKey>['nl'] = {
     "max-bearing-diff-per-frame": 'Max koersverschil per frame',
     "pitch": 'Helling',
     "zoom": 'Zoom',
-    "zoom-in-to-images": 'Inzoomen op afbeeldingen',
     "image-pause-duration": 'Beeldpauzeduur (ms)',
     "speed-multiplier": 'Snelheidsvermenigvuldiger',
     "ease-duration": 'Overgangsduur',

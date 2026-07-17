@@ -2,6 +2,7 @@ import { FC, useEffect, useRef } from "react";
 import { Animated, Pressable, View, ViewStyle } from "react-native";
 import { ToggleSwitchProps, useTheme } from "@ui";
 import { Text } from "../typography";
+import { Lamp } from "./Lamp";
 
 export const ToggleSwitch: FC<ToggleSwitchProps> = ({
     color = 'neutral',
@@ -110,10 +111,16 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
     const lampOnOpacity = checked ? 1 : 0.3;
 
     const containerStyle: ViewStyle = {
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        gap,
+        opacity: disabled ? 0.4 : 1,
+    };
+
+    const toggleRowStyle: ViewStyle = {
         flexDirection: isHorizontal ? 'row' : 'column',
         alignItems: 'center',
         gap,
-        opacity: disabled ? 0.4 : 1,
     };
 
     const trackStyle: ViewStyle = {
@@ -133,6 +140,7 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
             height: stickThickness,
             backgroundColor: thumbColor,
             transform: [{ scaleX: checked ? 1 : -1 }],
+            transformOrigin: [0, '50%', 0],
             position: 'absolute',
             top: '50%',
             left: '50%',
@@ -142,7 +150,8 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
             width: stickThickness,
             height: stickLength,
             backgroundColor: thumbColor,
-            transform: [{ scaleY: checked ? 1 : -1 }],
+            transform: [{ scaleY: checked ? -1 : 1 }],
+            transformOrigin: ['50%', 0, 0],
             position: 'absolute',
             top: '50%',
             left: '50%',
@@ -231,76 +240,38 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
             elevation: 3,
         };
 
-    const lampStyle = (lampColor: string, lampOpacity: number): ViewStyle => ({
-        width: lampSize,
-        height: lampSize,
-        borderRadius: lampSize / 2,
-        backgroundColor: lampColor,
-        opacity: lampOpacity,
-        shadowColor: '#fff',
-        shadowOffset: { width: -1, height: -1 },
-        shadowOpacity: 0.3,
-        shadowRadius: 1,
-        elevation: 2,
-    });
-
-    const lampOffGlow = checked ? undefined : `0 0 6px 2px ${errorColor}`;
-    const lampOnGlow = checked ? `0 0 6px 2px ${successColor}` : undefined;
-
-    const lampOffElement = (
-        <View style={lampStyle(lampOffColor, lampOffOpacity)}>
-            {lampOffGlow ? (
-                <View style={{
-                    width: lampSize,
-                    height: lampSize,
-                    borderRadius: lampSize / 2,
-                    shadowColor: errorColor,
-                    shadowOffset: { width: 0, height: 0 },
-                    shadowOpacity: 0.8,
-                    shadowRadius: 4,
-                    elevation: 4,
-                }} />
-            ) : null}
-        </View>
-    );
-
-    const lampOnElement = (
-        <View style={lampStyle(lampOnColor, lampOnOpacity)}>
-            {lampOnGlow ? (
-                <View style={{
-                    width: lampSize,
-                    height: lampSize,
-                    borderRadius: lampSize / 2,
-                    shadowColor: successColor,
-                    shadowOffset: { width: 0, height: 0 },
-                    shadowOpacity: 0.8,
-                    shadowRadius: 4,
-                    elevation: 4,
-                }} />
-            ) : null}
-        </View>
-    );
-
     return (
         <Pressable
             disabled={disabled}
             onPress={() => onChange(!checked)}
             style={containerStyle}
         >
-            {isHorizontal ? lampOffElement : lampOnElement}
-            <View style={trackStyle}>
-                <View style={thumbStyle}>
-                    <View style={thumbPivotStyle} />
-                    <View style={thumbBodyStyle} />
-                    <Animated.View style={thumbKnobStyle} />
-                </View>
-            </View>
-            {isHorizontal ? lampOnElement : lampOffElement}
             {children ? (
                 <Text style={{ color: baseColor, fontSize, lineHeight: fontSize * 1.1 }}>
                     {children}
                 </Text>
             ) : null}
+            <View style={toggleRowStyle}>
+                <Lamp
+                    color={lampOffColor}
+                    size={lampSize}
+                    opacity={lampOffOpacity}
+                    glowColor={checked ? undefined : errorColor}
+                />
+                <View style={trackStyle}>
+                    <View style={thumbStyle}>
+                        <View style={thumbPivotStyle} />
+                        <View style={thumbBodyStyle} />
+                        <Animated.View style={thumbKnobStyle} />
+                    </View>
+                </View>
+                <Lamp
+                    color={lampOnColor}
+                    size={lampSize}
+                    opacity={lampOnOpacity}
+                    glowColor={checked ? successColor : undefined}
+                />
+            </View>
         </Pressable>
     );
 };

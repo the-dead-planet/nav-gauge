@@ -1,7 +1,7 @@
 import { ChangeEvent, ComponentProps, CSSProperties, FC } from "react";
 import classNames from "classnames";
 import { SliderProps, useTheme } from "@ui";
-import { Label } from "../typography";
+import { Label, Span } from "../typography";
 import styles from './slider.module.css';
 
 export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' | 'size'>> = ({
@@ -30,10 +30,10 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
     };
 
     return (
-        <div className={classNames(styles['container'], { [styles['disabled']]: disabled })}>
+        <div className={classNames(styles['container'])}>
             {typeof label === 'string' ? (
-                <Label htmlFor={id} tabular className={styles['label']}>
-                    {label} <span>{value}</span>
+                <Label htmlFor={id} className={styles['label']}>
+                    {label} <Span tabular>{value}</Span>
                 </Label>
             ) : label}
             <input
