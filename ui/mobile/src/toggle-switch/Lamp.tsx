@@ -22,14 +22,19 @@ export const Lamp: FC<LampProps> = ({ color, size, opacity, glowColor }) => {
         elevation: 2,
     };
 
+    const glowSize = size + 6;
+
     const glowStyle: ViewStyle = {
-        width: size,
-        height: size,
-        borderRadius: size / 2,
+        position: 'absolute',
+        width: glowSize,
+        height: glowSize,
+        borderRadius: glowSize / 2,
+        top: (size - glowSize) / 2,
+        left: (size - glowSize) / 2,
         shadowColor: glowColor,
         shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 0.8,
-        shadowRadius: 4,
+        shadowOpacity: 1,
+        shadowRadius: 6,
         elevation: 4,
     };
 

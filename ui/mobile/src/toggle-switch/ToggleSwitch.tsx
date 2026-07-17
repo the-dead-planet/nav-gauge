@@ -3,6 +3,23 @@ import { Animated, Pressable, View, ViewStyle } from "react-native";
 import { ToggleSwitchProps, useTheme } from "@ui";
 import { Text } from "../typography";
 import { Lamp } from "./Lamp";
+import { ThumbBody } from "./ThumbBody";
+
+const clipPaths = {
+    xs: { pivotStart: 0.125, pivotEnd: 0.875, knobStart: 0, knobEnd: 1 },
+    sm: { pivotStart: 0.15, pivotEnd: 0.85, knobStart: 0.05, knobEnd: 0.95 },
+    md: { pivotStart: 0.1667, pivotEnd: 0.8333, knobStart: 0.0833, knobEnd: 0.9167 },
+} as const;
+
+function buildHorizontalPoints(width: number, height: number, clip: { pivotStart: number; pivotEnd: number; knobStart: number; knobEnd: number }): string {
+    const { pivotStart, pivotEnd, knobStart, knobEnd } = clip;
+    return `0,${height * pivotStart} ${width},${height * knobStart} ${width},${height * knobEnd} 0,${height * pivotEnd}`;
+}
+
+function buildVerticalPoints(width: number, height: number, clip: { pivotStart: number; pivotEnd: number; knobStart: number; knobEnd: number }): string {
+    const { pivotStart, pivotEnd, knobStart, knobEnd } = clip;
+    return `${width * pivotStart},0 ${width * pivotEnd},0 ${width * knobEnd},${height} ${width * knobStart},${height}`;
+}
 
 export const ToggleSwitch: FC<ToggleSwitchProps> = ({
     color = 'neutral',
@@ -33,8 +50,22 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
     const neutralColor = theme.color('grey');
 
     const isHorizontal = orientation === 'horizontal';
+    const clip = clipPaths[size];
 
+    const bodyPoints = isHorizontal
+        ? buildHorizontalPoints(stickLength, stickThickness, clip)
+        : buildVerticalPoints(stickThickness, stickLength, clip);
+
+    const flipAnim = useRef(new Animated.Value(checked ? 1 : -1)).current;
     const knobScale = useRef(new Animated.Value(1)).current;
+
+    useEffect(() => {
+        Animated.timing(flipAnim, {
+            toValue: checked ? 1 : -1,
+            duration: 200,
+            useNativeDriver: true,
+        }).start();
+    }, [checked, flipAnim]);
 
     useEffect(() => {
         Animated.sequence([
@@ -134,41 +165,31 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
         justifyContent: 'center',
     };
 
-    const thumbStyle: ViewStyle = isHorizontal
+    const thumbContainerStyle: ViewStyle = isHorizontal
         ? {
             width: stickLength,
             height: stickThickness,
-            backgroundColor: thumbColor,
-            transform: [{ scaleX: checked ? 1 : -1 }],
             transformOrigin: [0, '50%', 0],
             position: 'absolute',
             top: '50%',
             left: '50%',
             marginTop: -stickThickness / 2,
+            overflow: 'visible',
         }
         : {
             width: stickThickness,
             height: stickLength,
-            backgroundColor: thumbColor,
-            transform: [{ scaleY: checked ? -1 : 1 }],
             transformOrigin: ['50%', 0, 0],
             position: 'absolute',
             top: '50%',
             left: '50%',
             marginLeft: -stickThickness / 2,
+            overflow: 'visible',
         };
 
-    const thumbBodyStyle: ViewStyle = isHorizontal
-        ? {
-            position: 'absolute',
-            inset: 0,
-            backgroundColor: thumbColor,
-        }
-        : {
-            position: 'absolute',
-            inset: 0,
-            backgroundColor: thumbColor,
-        };
+    const thumbAnimatedStyle = isHorizontal
+        ? { transform: [{ scaleX: flipAnim }] }
+        : { transform: [{ scaleY: flipAnim }] };
 
     const thumbPivotStyle: ViewStyle = isHorizontal
         ? {
@@ -204,6 +225,17 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
             elevation: 2,
         };
 
+    const pivotHighlightStyle: ViewStyle = {
+        position: 'absolute',
+        width: thumbPivotSize * 0.6,
+        height: thumbPivotSize * 0.6,
+        borderRadius: thumbPivotSize * 0.3,
+        top: '15%',
+        left: '15%',
+        backgroundColor: 'white',
+        opacity: 0.35,
+    };
+
     const thumbKnobStyle: ViewStyle = isHorizontal
         ? {
             position: 'absolute',
@@ -215,7 +247,6 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
             height: thumbKnobSize,
             borderRadius: thumbKnobSize / 2,
             backgroundColor: thumbColor,
-            transform: [{ scale: knobScale }],
             shadowColor: '#000',
             shadowOffset: { width: 0, height: 1 },
             shadowOpacity: 0.35,
@@ -232,13 +263,27 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
             height: thumbKnobSize,
             borderRadius: thumbKnobSize / 2,
             backgroundColor: thumbColor,
-            transform: [{ scale: knobScale }],
             shadowColor: '#000',
             shadowOffset: { width: 0, height: 1 },
             shadowOpacity: 0.35,
             shadowRadius: 2,
             elevation: 3,
         };
+
+    const knobHighlightStyle: ViewStyle = {
+        position: 'absolute',
+        width: thumbKnobSize * 0.6,
+        height: thumbKnobSize * 0.6,
+        borderRadius: thumbKnobSize * 0.3,
+        top: '15%',
+        left: '15%',
+        backgroundColor: 'white',
+        opacity: 0.45,
+    };
+
+    const knobAnimatedStyle = {
+        transform: [{ scale: knobScale }],
+    };
 
     return (
         <Pressable
@@ -259,11 +304,21 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
                     glowColor={checked ? undefined : errorColor}
                 />
                 <View style={trackStyle}>
-                    <View style={thumbStyle}>
-                        <View style={thumbPivotStyle} />
-                        <View style={thumbBodyStyle} />
-                        <Animated.View style={thumbKnobStyle} />
-                    </View>
+                    <Animated.View style={[thumbContainerStyle, thumbAnimatedStyle]}>
+                        <ThumbBody
+                            width={isHorizontal ? stickLength : stickThickness}
+                            height={isHorizontal ? stickThickness : stickLength}
+                            color={thumbColor}
+                            points={bodyPoints}
+                            orientation={orientation}
+                        />
+                        <View style={thumbPivotStyle}>
+                            <View style={pivotHighlightStyle} />
+                        </View>
+                        <Animated.View style={[thumbKnobStyle, knobAnimatedStyle]}>
+                            <View style={knobHighlightStyle} />
+                        </Animated.View>
+                    </Animated.View>
                 </View>
                 <Lamp
                     color={lampOnColor}
