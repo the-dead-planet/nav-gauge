@@ -8,7 +8,7 @@ import { Player } from './player/Player';
 import { GeoJson, ParsingResultWithError } from '@tinker-chest';
 import { Cartomancer, MarkerImage } from '@apparatus';
 import { parseImage, WebMarkerImageData } from './images/image-parser';
-import { AnimationControls } from './animatrix/AnimationControls';
+import { AnimationControls } from './player/player-configuration/AnimationControls';
 import { RouteName } from './file-input/RouteName';
 
 export class WebRouteStoryGear extends RouteStoryGear<maplibregl.Map, File, WebMarkerImageData> {

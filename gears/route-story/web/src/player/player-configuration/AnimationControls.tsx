@@ -1,13 +1,17 @@
 import { FC } from "react";
-import { ToolPanelProps, useMachineWard } from "@apparatus";
+import { useMachineWard } from "@apparatus";
 import { clamp, useSubjectState } from "@tinker-chest";
 import { ClockInput, Checkbox, Fieldset, ClockSliceInput, IconRotateInput, Slider, ToggleSwitch } from "@web-ui";
-import { Animatrix, RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { WebMarkerImageData } from "../images/image-parser";
+import { Animatrix } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Icons } from "@ui";
 import styles from './animation-controls.module.css';
 
-export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibregl.Map, File, WebMarkerImageData>> = ({
+interface Props {
+    map: maplibregl.Map;
+    animatrix: Animatrix;
+}
+
+export const AnimationControls: FC<Props> = ({
     map,
     animatrix,
 }) => {

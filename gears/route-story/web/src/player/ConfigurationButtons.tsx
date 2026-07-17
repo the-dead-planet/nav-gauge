@@ -2,14 +2,15 @@ import { FC } from "react";
 import { BehaviorSubject } from "rxjs";
 import { useMultipleTranslations } from "@apparatus";
 import { Animatrix, RouteStoryState, RouteStoryTranslationKey } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { Checkbox, Menu } from "@web-ui";
+import { Menu } from "@web-ui";
 import { Icons } from "@ui";
-import { useSubjectState } from "@tinker-chest";
-import styles from './configuration-buttons.module.css';
+import { AnimationControls } from "./player-configuration/AnimationControls";
+import { LayersControls } from "./player-configuration/LayersControls";
 
 interface Props {
     gearId: string;
     translationKey: typeof RouteStoryTranslationKey;
+    map: maplibregl.Map;
     animatrix: Animatrix;
     state$: BehaviorSubject<RouteStoryState>;
 }
@@ -17,20 +18,16 @@ interface Props {
 export const ConfigurationButtons: FC<Props> = ({
     gearId,
     translationKey,
+    map,
     animatrix,
     state$,
 }) => {
-    const [state, setState] = useSubjectState(state$);
     const [
         animatrixControlsLabel,
         layerConfigurationLabel,
-        linesLabel,
-        pointsLabel
     ] = useMultipleTranslations([
         { n: animatrix.namespace, t: animatrix.translationKey.AnimatrixControls },
         { n: gearId, t: translationKey.LayerConfiguration },
-        { n: gearId, t: translationKey.Lines },
-        { n: gearId, t: translationKey.Points },
     ]);
 
     return (
@@ -43,9 +40,7 @@ export const ConfigurationButtons: FC<Props> = ({
                 tooltipPlacement="top"
                 placement="top-right"
             >
-                <div className={styles['container']}>
-                    animatrix
-                </div>
+                <AnimationControls map={map} animatrix={animatrix} />
             </Menu>
             <Menu
                 icon={Icons.NounProject.Paint}
@@ -55,14 +50,7 @@ export const ConfigurationButtons: FC<Props> = ({
                 tooltipPlacement="top"
                 placement="top-right"
             >
-                <div className={styles['container']}>
-                    <Checkbox role="menuitem" size="xs" checked={state.showRouteLine} onChange={(checked) => setState((prev) => ({ ...prev, showRouteLine: checked }))}>
-                        {linesLabel}
-                    </Checkbox>
-                    <Checkbox role="menuitem" size="xs" checked={state.showRoutePoints} onChange={(checked) => setState((prev) => ({ ...prev, showRoutePoints: checked }))}>
-                        {pointsLabel}
-                    </Checkbox>
-                </div>
+                <LayersControls gearId={gearId} translationKey={translationKey} state$={state$} />
             </Menu>
         </>
     );
