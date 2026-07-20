@@ -3,7 +3,6 @@ import maplibregl from "maplibre-gl";
 import { RouteStoryGear } from '@the-dead-planet/nav-gauge-gears-route-story-common';
 import { RouteLayer } from './layers/RouteLayer';
 import { ImagesLayer } from './images/ImagesLayer';
-import { RouteStoryFileInput } from './file-input/RouteStoryFileInput';
 import { Player } from './player/Player';
 import { GeoJson, ParsingResultWithError } from '@tinker-chest';
 import { Cartomancer, MarkerImage } from '@apparatus';
@@ -12,7 +11,6 @@ import { AnimationControls } from './player/player-configuration/AnimationContro
 import { RouteName } from './file-input/RouteName';
 
 export class WebRouteStoryGear extends RouteStoryGear<maplibregl.Map, File, WebMarkerImageData> {
-   public fileInputComponent = RouteStoryFileInput;
    public routeUploadComponent = RouteName;
    public playerComponent = Player;
    public animatrixComponent = AnimationControls;

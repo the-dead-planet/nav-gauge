@@ -3,7 +3,6 @@ import * as Exify from '@lodev09/react-native-exify';
 import { RouteStoryGear } from '@the-dead-planet/nav-gauge-gears-route-story-common';
 import { RouteLayer } from './layers/RouteLayer';
 import { ImagesLayer } from './images/ImagesLayer';
-import { RouteStoryFileInput } from './RouteStoryFileInput';
 import { Player } from './player/Player';
 import { MobileMap } from '@mobile-ui';
 import { GeoJson, getExifError, getExifLngLat, ParsingResultWithError } from '@tinker-chest';
@@ -13,10 +12,9 @@ import { DocumentPickerResponse } from '@react-native-documents/picker';
 import { RouteName } from './player/RouteName';
 
 export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPickerResponse, MobileMarkerImageData> {
-   public fileInputComponent = RouteStoryFileInput;
    public playerComponent = Player;
    public routeUploadComponent = RouteName;
-   public animatrixComponent = Player; // TODO: Add Animatrix component
+   public animatrixComponent = Player;
    public routeLayerComponent = RouteLayer;
    public imagesLayerComponent = ImagesLayer;
 
