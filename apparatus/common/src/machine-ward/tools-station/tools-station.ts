@@ -163,11 +163,12 @@ export class ToolsStation<TMap> {
      */
     public addToolIcon = (
         id: string,
-        { tooltip, value = null, icon, placement, onClick, active = false, rotate = 0, pitch = 0 }: {
+        { tooltip, value = null, icon, placement, disabled = false, onClick, active = false, rotate = 0, pitch = 0 }: {
             icon?: string,
             value?: string | null,
             tooltip: TranslationId | ((value: string | null) => TranslationId),
             placement: ToolIconPlacement;
+            disabled?: boolean;
             active?: boolean;
             rotate?: number;
             pitch?: number;
@@ -180,6 +181,7 @@ export class ToolsStation<TMap> {
             icon,
             value$: new BehaviorSubject(value),
             placement$: new BehaviorSubject(placement),
+            disabled$: new BehaviorSubject(disabled),
             active$: new BehaviorSubject(active),
             rotate$: new BehaviorSubject(rotate),
             pitch$: new BehaviorSubject(pitch),

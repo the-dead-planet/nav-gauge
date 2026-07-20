@@ -28,6 +28,7 @@ export interface ToolIcon<TMap> {
     icon?: string;
     value$: BehaviorSubject<string | null>;
     placement$: BehaviorSubject<ToolIconPlacement>;
+    disabled$: BehaviorSubject<boolean>;
     tooltip: TranslationId | ((value: string | null) => TranslationId);
     onClick?: (map: TMap) => void;
     active$: BehaviorSubject<boolean>;
@@ -41,6 +42,7 @@ export interface ObservedToolIcon<TMap> {
     tooltip: TranslationId | ((value: string | null) => TranslationId);
     placement: ToolIconPlacement;
     value$: BehaviorSubject<string | null>;
+    disabled$: BehaviorSubject<boolean>;
     active$: BehaviorSubject<boolean>;
     rotate$: BehaviorSubject<number>;
     pitch$: BehaviorSubject<number>;

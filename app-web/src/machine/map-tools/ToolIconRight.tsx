@@ -14,6 +14,7 @@ export const ToolIconRight: FC<ObservedToolIcon<maplibregl.Map> & Props> = ({
     map,
     icon,
     value$,
+    disabled$,
     active$,
     rotate$,
     pitch$,
@@ -23,6 +24,7 @@ export const ToolIconRight: FC<ObservedToolIcon<maplibregl.Map> & Props> = ({
 }) => {
     const theme = useTheme();
     const [value] = useSubjectState(value$);
+    const [disabled] = useSubjectState(disabled$);
     const [active] = useSubjectState(active$);
     const [rotate] = useSubjectState(rotate$);
     const [pitch] = useSubjectState(pitch$);
@@ -46,6 +48,7 @@ export const ToolIconRight: FC<ObservedToolIcon<maplibregl.Map> & Props> = ({
                 color="primary"
                 active={active}
                 onClick={() => onClick?.(map)}
+                disabled={disabled}
                 className={className}
             >
                 {value}

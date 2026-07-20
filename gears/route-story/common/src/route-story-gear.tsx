@@ -125,22 +125,8 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
         this.presetActiveSubscription = this.subscribeToolsStationPresetActive();
         this.engageRouteStory?.();
         this.dataSubscription = this.subscribeToDataUpdates();
+        this.addFitBoundsIcon();
 
-        this.apparatus.toolsStation.addToolIcon(
-            this.routeLayerFitBoundsToolIconId,
-            {
-                tooltip: { n: this.id, t: this.internalTranslationKey.FitBounds },
-                placement: 'left',
-                icon: Icons.NounProject.Target as unknown as string,
-                onClick: (map) => {
-                    const boundingBox = this.data$.value.boundingBox;
-                    if (!boundingBox) {
-                        return;
-                    }
-                    this.fitBoundsHandler(map, [boundingBox[0], boundingBox[1]], [boundingBox[2], boundingBox[3]]);
-                }
-            });
-            
         this.apparatus.toolsStation.addTopTool(
             this.routeNameToolId,
             this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, TopToolsProps<TMap>>(this.routeUploadComponent, this.getProps())
@@ -158,6 +144,10 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
 
         this.apparatus.toolsStation.activeBottomPanelToolId$.next(this.playerToolId);
 
+        // TODO: Add as bottom panel:
+        // this.apparatus.toolsStation.addToolPanel(this.animatrixToolId);
+        // TODO: Add layers controls too or keep in menu
+
         this.apparatus.cartomancer.addOverlay(
             this.routeOverlayId,
             this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, OverlayComponentProps<TMap>>(this.routeLayerComponent, this.getProps())
@@ -174,7 +164,7 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
         this.apparatus.toolsStation.removeToolPanel(this.animatrixToolId);
         this.apparatus.toolsStation.removeToolPanel(this.playerToolId);
         this.apparatus.toolsStation.removeTopTool(this.routeNameToolId);
-        this.apparatus.toolsStation.removeToolIcon(this.routeLayerFitBoundsToolIconId);
+        this.removeFitBoundsIcon();
         this.dataSubscription?.unsubscribe();
         this.disengageRouteStory?.();
         this.presetActiveSubscription?.unsubscribe();
@@ -182,11 +172,34 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
         this.animatrix.cleanUp();
     };
 
-    private fitBoundsHandler = (map: TMap, sw: [number, number], ne: [number, number]) => {
+    private fitBoundsDisabledSubscription: Subscription | null = null;
+
+    private addFitBoundsIcon = () => {
+        const fitBoundsIcon = this.apparatus.toolsStation.addToolIcon(
+            this.routeLayerFitBoundsToolIconId,
+            {
+                tooltip: { n: this.id, t: this.internalTranslationKey.FitBounds },
+                placement: 'left',
+                icon: Icons.NounProject.Target as unknown as string,
+                onClick: (map: TMap) => {
+                    this.fitBoundsHandler(map, this.data$.value.boundingBox);
+                },
+            });
+        this.fitBoundsDisabledSubscription = this.data$.subscribe((value) => fitBoundsIcon.disabled$.next(!value.geojson));
+    };
+
+    public fitBoundsHandler = (map: TMap, boundingBox?: GeoJSON.BBox) => {
+        if (!boundingBox) {
+            return;
+        }
+
         const notificationId = 'route-fit-bounds';
         this.apparatus.signaliumBureau.removeNotice(notificationId);
 
         try {
+            const sw: [number, number] = [boundingBox[0], boundingBox[1]];
+            const ne: [number, number] = [boundingBox[2], boundingBox[3]];
+
             this.fitBounds(map, sw, ne);
         } catch (err) {
             this.apparatus.signaliumBureau.addNotice({
@@ -196,6 +209,11 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
                 error: err as Error,
             });
         }
+    };
+
+    private removeFitBoundsIcon = () => {
+        this.fitBoundsDisabledSubscription?.unsubscribe();
+        this.apparatus.toolsStation.removeToolIcon(this.routeLayerFitBoundsToolIconId);
     };
 
     public fileOperator = new FileOperator(this);

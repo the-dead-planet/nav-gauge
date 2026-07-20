@@ -34,7 +34,7 @@ export class FileOperator<TMap, TFile extends RouteStoryFile, TImageData> {
         });
     };
 
-    public uploadFile = async (files: TFile[]) => {
+    public uploadFile = async (files: TFile[], map: TMap) => {
         try {
             if (files.length === 0) {
                 return;
@@ -68,6 +68,7 @@ export class FileOperator<TMap, TFile extends RouteStoryFile, TImageData> {
 
                 this.gear.data$.next(result ?? { error: new Error('No parser found for file.') });
                 currentGeojson = result?.geojson;
+                this.gear.fitBoundsHandler(map, result?.boundingBox);
             }
 
             imageFiles.forEach((file) => this.gear.readImage(file, currentGeojson));

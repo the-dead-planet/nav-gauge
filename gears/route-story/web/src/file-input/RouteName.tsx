@@ -10,6 +10,7 @@ import styles from './file-input.module.css';
 export const RouteName: FC<TopToolsProps<maplibregl.Map> & RouteStoryProps<maplibregl.Map, File, WebMarkerImageData>> = ({
     gearId,
     translationKey,
+    map,
     data$,
     fileOperator,
 }) => {
@@ -41,7 +42,7 @@ export const RouteName: FC<TopToolsProps<maplibregl.Map> & RouteStoryProps<mapli
                 noNameLabel={noNameLabel}
                 color="primary"
                 accept={[...parsers.keys(), "image/png", "image/jpeg", "image/jpg"].join(', ')}
-                onUpload={(files) => fileOperator.uploadFile(files)}
+                onUpload={(files) => fileOperator.uploadFile(files, map)}
                 onPurge={() => fileOperator.resetStory()}
             />
         </BevelPanel>
