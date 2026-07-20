@@ -23,7 +23,7 @@ function buildVerticalPoints(width: number, height: number, clip: { pivotStart: 
 
 export const ToggleSwitch: FC<ToggleSwitchProps> = ({
     color = 'neutral',
-    highlightColor = color,
+    // highlightColor = color, // TODO
     size = 'sm',
     variant = 'ghost',
     orientation = 'horizontal',

@@ -2,7 +2,7 @@ import type { Meta } from 'storybook-react-rsbuild';
 import { useState } from 'react';
 import { ToggleSwitch } from './ToggleSwitch';
 import { Text } from '../typography';
-import { ColorVariant, LayoutOrientation, SizeVariant, SurfaceVariant, GlowStyle } from '@ui';
+import { ColorVariant, LayoutOrientation, SizeVariant, SurfaceVariant } from '@ui';
 
 const meta = {
     title: 'ToggleSwitch',
@@ -24,7 +24,6 @@ export const ToggleSwitchVariants = {
         const [variant, setVariant] = useState<SurfaceVariant>('ghost');
         const [orientation, setOrientation] = useState<LayoutOrientation>('horizontal');
         const [disabled, setDisabled] = useState(false);
-        const [glowStyle, setGlowStyle] = useState<GlowStyle>('none');
 
         return (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 24, padding: 24 }}>
@@ -33,7 +32,6 @@ export const ToggleSwitchVariants = {
                     color={color}
                     variant={variant}
                     orientation={orientation}
-                    glowStyle={glowStyle}
                     checked={checked}
                     onChange={setChecked}
                     disabled={disabled}

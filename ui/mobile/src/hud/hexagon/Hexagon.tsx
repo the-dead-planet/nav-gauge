@@ -1,7 +1,7 @@
 import { FC, Ref, useId, useState } from "react";
 import { View, ViewStyle, StyleProp, StyleSheet, Pressable, GestureResponderEvent } from "react-native";
 import Svg, { Polygon, Defs, ClipPath, G, LinearGradient, Stop } from "react-native-svg";
-import { ColorVariant, HexagonProps, SizeVariant, useTheme } from "@ui";
+import { HexagonProps, SizeVariant, useTheme } from "@ui";
 
 const POINTY_TOP = "50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25";
 const FLAT_TOP = "100,50 75,93.3 25,93.3 0,50 25,6.7 75,6.7";

@@ -19,7 +19,7 @@ export const ClockThumb: FC<Props> = ({
     thumbRadius,
     isDragging,
     strokeWidth,
-    icon, // TODO:
+    // icon, // TODO:
 }) => {
     return (
         <circle

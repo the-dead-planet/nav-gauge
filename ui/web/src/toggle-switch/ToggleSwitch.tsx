@@ -5,11 +5,11 @@ import styles from './toggle-switch.module.css';
 import { Span } from "../typography";
 import { Lamp } from "./Lamp";
 
-interface Props {
+interface Props extends ToggleSwitchProps {
     labelledBy?: string;
 }
 
-export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & ToggleSwitchProps & Props> = ({
+export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & Props> = ({
     id,
     label,
     labelledBy,
@@ -17,12 +17,10 @@ export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & Toggle
     highlightColor = color,
     size = 'sm',
     variant = 'ghost',
-    glowStyle = 'none',
     orientation = 'horizontal',
     checked,
     onChange,
     disabled = false,
-    children,
     className,
     style,
     ...props
