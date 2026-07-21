@@ -29,6 +29,7 @@ export interface RouteStoryProps<TMap, TFile extends RouteStoryFile, TImageData>
     progressMs$: BehaviorSubject<number>;
     fileOperator: FileOperator<TMap, TFile, TImageData>;
     playerOperator: PlayerOperator<TMap, TFile, TImageData>;
+    fitBoundsHandler: (map: TMap, boundingBox?: GeoJSON.BBox) => void;
 }
 
 export interface RouteFitBoundsProps<TMap> {

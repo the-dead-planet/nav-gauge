@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { ColorVariant } from "../../model";
 import { TooltipPlacement } from "../../tooltip";
 
@@ -12,6 +13,7 @@ export interface FileInputProps<TFile> {
     purgeTooltipPlacement?: TooltipPlacement;
     cancelLabel: string;
     noNameLabel: string;
+    actionButtons?: { id: string; element: ReactNode }[];
     onUpload: (files: TFile[]) => void;
     onPurge: () => void;
     onError?: (error: Error) => void;

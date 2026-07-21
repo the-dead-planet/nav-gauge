@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, Fragment } from "react";
 import { Alert, StyleSheet, View, ViewProps } from "react-native";
 import { DocumentPickerOptions, DocumentPickerResponse, pick } from '@react-native-documents/picker';
 import { Button } from "../../button";
@@ -29,6 +29,7 @@ export const FileInput: FC<Props & ViewProps> = ({
     noNameLabel,
     type,
     mutiple,
+    actionButtons,
     onUpload,
     onPurge,
     onError,
@@ -74,6 +75,7 @@ export const FileInput: FC<Props & ViewProps> = ({
             <Text style={styles.routeName}>
                 {fileName || noNameLabel}
             </Text>
+            {actionButtons?.map(({ id, element }) => <Fragment key={id}>{element}</Fragment>)}
             <Button title={purgeLabel} onPress={handlePurge} />
         </View>
     );

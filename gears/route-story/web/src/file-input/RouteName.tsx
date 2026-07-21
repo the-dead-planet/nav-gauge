@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { parsers, TopToolsProps, useMachineWard } from "@apparatus";
 import { RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { BevelPanel, FileInput } from "@web-ui";
+import { BevelPanel, Button, FileInput } from "@web-ui";
 import { WebMarkerImageData } from "../images/image-parser";
 import { useSubjectState } from "@tinker-chest";
 import { Icons } from "@ui";
@@ -13,15 +13,17 @@ export const RouteName: FC<TopToolsProps<maplibregl.Map> & RouteStoryProps<mapli
     map,
     data$,
     fileOperator,
+    fitBoundsHandler,
 }) => {
     const { translatron, individuator } = useMachineWard();
     const [registry] = useSubjectState(translatron.registry$);
     const [settings] = useSubjectState(individuator.settings$);
-    const [{ routeName }] = useSubjectState(data$);
+    const [{ routeName, geojson }] = useSubjectState(data$);
     const fileLabel = translatron.translate(settings.language, registry, { n: gearId, t: routeName ? translationKey.ReplaceFile : translationKey.UploadFile });
     const purgeLabel = translatron.translate(settings.language, registry, { n: gearId, t: translationKey.PurgeStory });
     const cancelLabel = translatron.translate(settings.language, registry, { n: gearId, t: translationKey.Cancel });
     const noNameLabel = translatron.translate(settings.language, registry, { n: gearId, t: translationKey.NoName });
+    const fitBoundsLabel = translatron.translate(settings.language, registry, { n: gearId, t: translationKey.FitBounds });
 
     return (
         <BevelPanel
@@ -44,6 +46,25 @@ export const RouteName: FC<TopToolsProps<maplibregl.Map> & RouteStoryProps<mapli
                 accept={[...parsers.keys(), "image/png", "image/jpeg", "image/jpg"].join(', ')}
                 onUpload={(files) => fileOperator.uploadFile(files, map)}
                 onPurge={() => fileOperator.resetStory()}
+                actionButtons={[
+                    {
+                        id: 'fit-bounds',
+                        element: (
+                            <Button
+                                variant="ghost"
+                                color="primary"
+                                corners="circle"
+                                icon={Icons.NounProject.Target}
+                                onClick={() => fitBoundsHandler(map, data$.value.boundingBox)}
+                                aria-label={fitBoundsLabel}
+                                tooltip={fitBoundsLabel}
+                                tooltipPlacement="bottom"
+                                showTooltipConnection
+                                disabled={!geojson}
+                            />
+                        ),
+                    },
+                ]}
             />
         </BevelPanel>
     );

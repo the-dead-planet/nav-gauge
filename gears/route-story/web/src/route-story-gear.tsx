@@ -18,7 +18,14 @@ export class WebRouteStoryGear extends RouteStoryGear<maplibregl.Map, File, WebM
    public imagesLayerComponent = ImagesLayer;
 
    public fitBounds = (map: maplibregl.Map, sw: [number, number], ne: [number, number]) => {
-      map.fitBounds([sw, ne], { animate: true, padding: 50 });
+      map.fitBounds([sw, ne], {
+         animate: true, padding: {
+            top: 50,
+            right: 50,
+            bottom: 50,
+            left: 50,
+         }
+      });
    }
 
    public fileToText = async (file: File) => file.text();

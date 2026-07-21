@@ -77,8 +77,6 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
         });
     };
 
-    private routeLayerFitBoundsToolIconId = 'fit-bounds';
-
     private routeNameToolId = 'route-upload';
     public abstract routeUploadComponent: ComponentType<TopToolsProps<TMap> & RouteStoryProps<TMap, TFile, TImageData>>;
 
@@ -117,6 +115,7 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
         progressMs$: this.progressMs$,
         fileOperator: this.fileOperator,
         playerOperator: this.playerOperator,
+        fitBoundsHandler: this.fitBoundsHandler,
     });
 
     public engage = () => {
@@ -125,7 +124,6 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
         this.presetActiveSubscription = this.subscribeToolsStationPresetActive();
         this.engageRouteStory?.();
         this.dataSubscription = this.subscribeToDataUpdates();
-        this.addFitBoundsIcon();
 
         this.apparatus.toolsStation.addTopTool(
             this.routeNameToolId,
@@ -164,28 +162,11 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
         this.apparatus.toolsStation.removeToolPanel(this.animatrixToolId);
         this.apparatus.toolsStation.removeToolPanel(this.playerToolId);
         this.apparatus.toolsStation.removeTopTool(this.routeNameToolId);
-        this.removeFitBoundsIcon();
         this.dataSubscription?.unsubscribe();
         this.disengageRouteStory?.();
         this.presetActiveSubscription?.unsubscribe();
         this.presetSubscription?.unsubscribe();
         this.animatrix.cleanUp();
-    };
-
-    private fitBoundsDisabledSubscription: Subscription | null = null;
-
-    private addFitBoundsIcon = () => {
-        const fitBoundsIcon = this.apparatus.toolsStation.addToolIcon(
-            this.routeLayerFitBoundsToolIconId,
-            {
-                tooltip: { n: this.id, t: this.internalTranslationKey.FitBounds },
-                placement: 'left',
-                icon: Icons.NounProject.Target as unknown as string,
-                onClick: (map: TMap) => {
-                    this.fitBoundsHandler(map, this.data$.value.boundingBox);
-                },
-            });
-        this.fitBoundsDisabledSubscription = this.data$.subscribe((value) => fitBoundsIcon.disabled$.next(!value.geojson));
     };
 
     public fitBoundsHandler = (map: TMap, boundingBox?: GeoJSON.BBox) => {
@@ -209,11 +190,6 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
                 error: err as Error,
             });
         }
-    };
-
-    private removeFitBoundsIcon = () => {
-        this.fitBoundsDisabledSubscription?.unsubscribe();
-        this.apparatus.toolsStation.removeToolIcon(this.routeLayerFitBoundsToolIconId);
     };
 
     public fileOperator = new FileOperator(this);

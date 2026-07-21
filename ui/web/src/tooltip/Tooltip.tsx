@@ -1,4 +1,4 @@
-import { Children, cloneElement, FC, ReactElement, useEffect, useId, useRef, useState } from "react";
+import { Children, cloneElement, FC, ReactElement, useCallback, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import classNames from "classnames";
 import { ErrorBoundary, TooltipPlacement, TooltipProps, useTheme } from "@ui";
@@ -152,7 +152,7 @@ const InternalTooltip: FC<TooltipProps> = ({
     );
     const [connectionLine, setConnectionLine] = useState<{ top: number; left: number; width: number; height: number } | null>(null);
 
-    const recalculatePosition = () => {
+    const recalculatePosition = useCallback(() => {
         if (!childRef.current || !visible) {
             return;
         };
@@ -173,7 +173,7 @@ const InternalTooltip: FC<TooltipProps> = ({
         } else {
             setConnectionLine(null);
         }
-    };
+    }, [visible, placement, showConnection, theme]);
 
     useEffect(() => {
         if (visible) {

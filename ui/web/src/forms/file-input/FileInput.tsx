@@ -1,4 +1,4 @@
-import { ChangeEvent, ComponentProps, ElementType, FC, useRef, useState } from "react";
+import { ChangeEvent, ComponentProps, ElementType, FC, Fragment, useRef, useState } from "react";
 import {  FileInputProps, Icons } from "@ui";
 import { Button } from "../../button";
 import { Dialog } from "../../dialog";
@@ -22,6 +22,7 @@ export const FileInput: FC<Props & ComponentProps<'div'>> = ({
     purgeTooltipPlacement,
     cancelLabel,
     noNameLabel,
+    actionButtons,
     accept,
     onUpload,
     onPurge,
@@ -73,6 +74,7 @@ export const FileInput: FC<Props & ComponentProps<'div'>> = ({
             >
                 {fileName || noNameLabel}
             </FileNameComponent>
+            {actionButtons?.map(({ id, element }) => <Fragment key={id}>{element}</Fragment>)}
             <Button
                 variant="ghost"
                 color={color}
@@ -84,7 +86,6 @@ export const FileInput: FC<Props & ComponentProps<'div'>> = ({
                 tooltipPlacement={purgeTooltipPlacement}
                 showTooltipConnection
                 disabled={!fileName}
-                className={styles['purge-button']}
             />
             {showPurgeDialog ? (
                 <Dialog

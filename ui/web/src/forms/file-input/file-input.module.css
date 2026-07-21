@@ -15,7 +15,3 @@
     min-width: 50px;
     max-width: calc(50dvw - 350px);
 }
-
-.purge-button {
-    margin-left: 8px;
-}
