@@ -4,8 +4,8 @@ import { useMachineWard } from "@apparatus";
 import { CurveLeft } from "./curve/CurveLeft";
 import { CurveRight } from "./curve/CurveRight";
 import { CurveMiddle } from "./curve/CurveMiddle";
-import styles from './panel-bottom.module.css';
 import { CurveSpacer } from "./curve/CurveSpacer";
+import styles from './panel-bottom.module.css';
 
 interface Props {
     sideActions: ReactNode;
@@ -27,15 +27,17 @@ export const BottomPanelHeaderContainer: FC<Props> = ({
     const joined = !noSidePanels;
 
     return (
-        <div className={styles['content-header']} style={{
-            gridTemplateColumns: bothSidePanels
-                ? '1fr max-content 1fr'
-                : onlyLeftPanel
-                    ? '1fr max-content 110px'
-                    : onlyRightPanel
-                        ? '140px max-content 1fr'
-                        : '140px max-content 1fr max-content 100px'
-        }}>
+        <div
+            className={styles['content-header']}
+            style={{
+                gridTemplateColumns: bothSidePanels
+                    ? '1fr max-content 1fr'
+                    : onlyLeftPanel
+                        ? '1fr max-content 110px'
+                        : onlyRightPanel
+                            ? '140px max-content 1fr'
+                            : '140px max-content 1fr max-content 100px'
+            }}>
             <CurveSpacer />
 
             <div className={styles['header-content']}>

@@ -13,9 +13,9 @@ export const CurveRight: FC = () => {
                 d="M100,96 C40,100 60,0 0,4"
                 fill="none"
                 stroke="var(--color-primary)"
-                stroke-width="7"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
             />
         </svg>
     );

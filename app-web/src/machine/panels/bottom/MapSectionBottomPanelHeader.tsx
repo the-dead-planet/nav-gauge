@@ -49,8 +49,8 @@ export const MapSectionBottomPanelHeader: FC<Props> = ({
                             onActiveIdChange(effectivePanels[0]?.id)
                         }
                     }}
-                    style={{ marginTop: 'auto' }}
-                />}
+                />
+            }
         >
             {effectivePanels.map(({ id, icon, title, }) => {
                 const tooltip = translatron.translate(settings.language, registry, title);
