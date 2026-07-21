@@ -3,7 +3,7 @@ import { ParsingResultWithError } from "@tinker-chest";
 import { BehaviorSubject } from "rxjs";
 import { FileOperator } from "./file-operator";
 import { PlayerOperator } from "./player-operator";
-import { AnimationControlsType, Animatrix } from "./animatrix";
+import { Animatrix } from "./animatrix";
 
 export interface RouteTimes {
     startTime: string;
@@ -73,11 +73,4 @@ export interface PresetOption {
     label: string;
     mapLayout: MapLayout;
     gaugeControls: GaugeControlsType;
-    animationControls: AnimationControlsType;
-}
-
-export interface PresetValues {
-    presetMapLayout?: MapLayout;
-    presetGaugeControls?: GaugeControlsType;
-    presetAnimationControls?: AnimationControlsType;
 }

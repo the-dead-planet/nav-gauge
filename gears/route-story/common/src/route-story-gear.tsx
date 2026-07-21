@@ -36,7 +36,6 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
         const initialPreset = RouteStoryGear.detectPreset(
             apparatus.cartomancer.mapLayout$.value,
             apparatus.cartomancer.gaugeControls$.value,
-            this.animatrix.controls$.value
         );
         this.preset$ = new BehaviorSubject<Preset>(initialPreset || 'default');
     }
@@ -120,8 +119,8 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
 
     public engage = () => {
         this.animatrix.initialize(this.apparatus.storageKeeper, this.apparatus.translatron);
-        this.presetSubscription = this.subscribeToolsStationPreset();
-        this.presetActiveSubscription = this.subscribeToolsStationPresetActive();
+        this.presetSubscription = this.subscribePreset();
+        this.presetActiveSubscription = this.subscribePresetActive();
         this.engageRouteStory?.();
         this.dataSubscription = this.subscribeToDataUpdates();
 
@@ -195,26 +194,29 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
     public fileOperator = new FileOperator(this);
     private playerOperator = new PlayerOperator(this);
 
-    private subscribeToolsStationPreset = (): Subscription => {
+    /**
+     * Whether current control state matches the value of `preset$`.
+     */
+    public isPresetActive$ = new BehaviorSubject<boolean>(true);
+
+    private subscribePreset = (): Subscription => {
         return this.preset$.subscribe((next) => {
             const option = RouteStoryGear.presetOptions.find((option) => option.value === next);
             if (!option) {
                 return;
             }
-            const { mapLayout: { size, ...mapLayout }, gaugeControls: { ...gaugeControls }, animationControls } = option;
+            const { mapLayout: { size, ...mapLayout }, gaugeControls: { ...gaugeControls } } = option;
             this.apparatus.cartomancer.mapLayout$.next({ size: { ...size }, ...mapLayout });
             this.apparatus.cartomancer.gaugeControls$.next({ ...gaugeControls });
-            this.animatrix.controls$.next({ ...animationControls });
         });
     };
 
-    private subscribeToolsStationPresetActive = (): Subscription => {
+    private subscribePresetActive = (): Subscription => {
         return combineLatest([
             this.apparatus.cartomancer.mapLayout$,
             this.apparatus.cartomancer.gaugeControls$,
-            this.animatrix.controls$
         ]).subscribe((args) => {
-            this.apparatus.toolsStation.isPresetActive$.next(RouteStoryGear.detectPreset(...args) === this.preset$.value);
+            this.isPresetActive$.next(RouteStoryGear.detectPreset(...args) === this.preset$.value);
         })
     };
 
@@ -224,7 +226,6 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
             label: 'Default',
             mapLayout: Cartomancer.defaultMapLayout,
             gaugeControls: Cartomancer.defaultGaugeControls,
-            animationControls: Animatrix.defaultControls,
         },
         {
             value: 'racing-game',
@@ -244,20 +245,17 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
                 innerBoxShadow: '',
             },
             gaugeControls: Cartomancer.defaultGaugeControls,
-            animationControls: Animatrix.defaultControls,
         },
     ];
 
     public static detectPreset = (
         { size, ...mapLayout }: MapLayout,
         { ...gaugeControls }: GaugeControlsType,
-        animationControls: AnimationControlsType,
     ): Preset | undefined => {
         return this.presetOptions.find((option) => (
             Object.entries(size).every(([key, value]) => option.mapLayout.size[key as keyof MapLayout['size']] === value) &&
             Object.entries(mapLayout).every(([key, value]) => option.mapLayout[key as keyof MapLayout] === value) &&
-            Object.entries(gaugeControls).every(([key, value]) => option.gaugeControls[key as keyof GaugeControlsType] === value) &&
-            Object.entries(animationControls).every(([key, value]) => option.animationControls[key as keyof AnimationControlsType] === value)
+            Object.entries(gaugeControls).every(([key, value]) => option.gaugeControls[key as keyof GaugeControlsType] === value)
         ))?.value;
     };
 
@@ -267,7 +265,6 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
     public getPresetValues = (preset: Preset): {
         mapLayout: MapLayout;
         gaugeControls: GaugeControlsType;
-        animationControls: AnimationControlsType;
     } | undefined => {
         const option = RouteStoryGear.presetOptions.find((option) => option.value === preset);
 
@@ -275,7 +272,6 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
             return {
                 mapLayout: this.copyMapLayout(option.mapLayout),
                 gaugeControls: this.copyGaugeControls(option.gaugeControls),
-                animationControls: this.copyAnimationControls(option.animationControls)
             };
         }
     };

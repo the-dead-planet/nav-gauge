@@ -82,11 +82,6 @@ export class ToolsStation<TMap> {
         })
     );
 
-    /**
-     * Whether current control state matches the value of `preset$`.
-     */
-    public isPresetActive$ = new BehaviorSubject<boolean>(true);
-
     private toolPanelsIndexesSubscription: Subscription
 
     public constructor() {

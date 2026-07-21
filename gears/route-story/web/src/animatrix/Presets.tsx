@@ -1,4 +1,5 @@
 import { ChangeEvent, FC } from "react";
+import { BehaviorSubject } from "rxjs";
 import {
     Cartomancer,
     GaugeControlsType,
@@ -9,22 +10,22 @@ import {
     validateMapLayout
 } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
-import RouteStoryGear, { AnimationControlsType, Animatrix, Preset } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import RouteStoryGear, { Animatrix, Preset } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import styles from './controls.module.css';
-import { BehaviorSubject } from "rxjs";
 
 interface Props {
     animatrix: Animatrix;
     preset$: BehaviorSubject<Preset>;
+    isPresetActive$: BehaviorSubject<boolean>;
 }
 
-export const Presets: FC<Props> = ({ animatrix, preset$ }) => {
-    const { cartomancer, toolsStation } = useMachineWard();
+export const Presets: FC<Props> = ({ animatrix, preset$, isPresetActive$ }) => {
+    const { cartomancer } = useMachineWard();
     const [animationControls] = useSubjectState(animatrix.controls$);
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const [mapLayout] = useSubjectState(cartomancer.mapLayout$);
     const [preset, setPreset] = useSubjectState(preset$);
-    const [isPresetActive] = useSubjectState(toolsStation.isPresetActive$);
+    const [isPresetActive] = useSubjectState(isPresetActive$);
 
     const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setPreset(event.target.value as Preset);
@@ -68,10 +69,7 @@ export const Presets: FC<Props> = ({ animatrix, preset$ }) => {
                     };
                     validateGaugeControls({ ...possibleGaugeControls });
 
-                    const possibleAnimationControls = { ...Animatrix.defaultControls, ...(result.animationControls as AnimationControlsType) };
-                    Animatrix.validateAnimationControls(possibleAnimationControls);
-
-                    const nextPreset = RouteStoryGear.detectPreset(possibleMapLayout, possibleGaugeControls, possibleAnimationControls);
+                    const nextPreset = RouteStoryGear.detectPreset(possibleMapLayout, possibleGaugeControls);
                     if (nextPreset) {
                         setPreset(nextPreset);
                     }
