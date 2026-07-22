@@ -51,6 +51,10 @@ declare global {
 }
 
 declare global {
+    const performance: {
+        now(): number;
+    };
+
     const console: {
         log: (...args: any[]) => void;
         warn: (...args: any[]) => void;
