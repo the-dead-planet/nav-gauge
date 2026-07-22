@@ -1,6 +1,7 @@
 export * from './checkbox';
 export * from './clock-input';
 export * from './color-input';
+export * from './fieldset';
 export * from './file-input';
 export * from './icon-rotate-input';
 export * from './number-input';

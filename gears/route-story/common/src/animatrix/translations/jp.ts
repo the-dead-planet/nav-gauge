@@ -3,6 +3,7 @@ import { AnimatrixTranslationKey } from "../model";
 
 const jp: TranslationTable<AnimatrixTranslationKey>['jp'] = {
     "animatrix-controls": 'Animatrixコントロール',
+    "general": '一般',
     "follow-current-point": '現在地に追従',
     "auto-rotate": '自動回転',
     "camera-angle": 'カメラアングル',

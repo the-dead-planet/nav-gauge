@@ -3,6 +3,7 @@ import { AnimatrixTranslationKey } from "../model";
 
 const pl: TranslationTable<AnimatrixTranslationKey>['pl'] = {
     "animatrix-controls": 'Sterowanie Animatrix',
+    "general": 'Ogólne',
     "follow-current-point": 'Podążaj za bieżącym punktem',
     "auto-rotate": 'Auto obrót',
     "camera-angle": 'Kąt kamery',

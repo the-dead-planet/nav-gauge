@@ -5,7 +5,7 @@ export interface TextInputProps {
     highlightColor?: ColorVariant;
     size?: SizeVariant;
     variant?: SurfaceFillVariant;
-    label: string;
+    label?: string;
     value: string;
     onChange: (value: string) => void;
     disabled?: boolean;

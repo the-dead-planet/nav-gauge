@@ -8,6 +8,10 @@
     max-height: calc(100dvh - 140px);
 }
 
+.search {
+    justify-self: center;
+}
+
 .section {
     display: flex;
     flex-wrap: wrap;

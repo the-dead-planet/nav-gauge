@@ -28,7 +28,7 @@ export const MapSectionSidePanelHeader: FC<Props> = ({
         bottom: "top",
     };
     const color = placement === 'bottom' ? 'primary' : 'secondary';
-    const buttonSize = placement === 'bottom' ? 'sm' : 'md';
+    const buttonSize = placement === 'left' ? 'md' : 'sm';
 
     return (
         <div className={styles['content-header']}>
@@ -40,7 +40,7 @@ export const MapSectionSidePanelHeader: FC<Props> = ({
                     <Button
                         key={id}
                         size={buttonSize}
-                        variant={isActive && placement !== 'bottom' ? 'outline' : 'ghost'}
+                        variant={isActive && placement === 'right' ? 'outline' : 'ghost'}
                         color={isActive ? color : "neutral"}
                         highlightColor={color}
                         active={isActive}
@@ -53,7 +53,7 @@ export const MapSectionSidePanelHeader: FC<Props> = ({
                     />
                 );
             })}
-            {placement !== 'bottom' ? <span className={styles['spacer-line']} /> : null}
+            {placement === 'left' ? <span className={styles['spacer-line']} /> : null}
             <Button
                 size={buttonSize}
                 variant='ghost'

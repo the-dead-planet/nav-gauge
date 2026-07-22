@@ -52,6 +52,7 @@ export interface AnimationControlsType {
 
 export enum AnimatrixTranslationKey {
     AnimatrixControls = 'animatrix-controls',
+    General = 'general',
     FollowCurrentPoint = 'follow-current-point',
     AutoRotate = 'auto-rotate',
     CameraAngle = 'camera-angle',
