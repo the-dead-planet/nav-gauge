@@ -13,6 +13,7 @@ alwaysApply: true
 - Minimal JSDocs — code should be self-documenting; refactor if unclear
 - No bloated comments, no `TODO:`s (use GitHub issues instead)
 - Prefer fewer dependencies; write your own when feasible
+- **Cross-platform globals** — when using globals not in the default TypeScript lib (e.g. `performance`, `AbortController`), declare them in `types/global.d.ts` so they work in both web and mobile (React Native/Hermes). The `lib` in `tsconfig.base.json` only includes `ESNext`, not `dom`.
 
 - **Accessibility & semantic HTML** — use native semantic elements (`<hr>`, `<button>`, `<nav>`, `<label>`, etc.) over generic `<div>`s; ensure interactive elements have keyboard support and ARIA attributes where needed
 
