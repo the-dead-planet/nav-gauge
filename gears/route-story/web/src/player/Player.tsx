@@ -12,7 +12,6 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibr
     gearId,
     translationKey,
     map,
-    animatrix,
     data$,
     state$,
     routeTimes$,
@@ -43,8 +42,6 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibr
             <ConfigurationButtons
                 gearId={gearId}
                 translationKey={translationKey}
-                map={map}
-                animatrix={animatrix}
                 state$={state$}
             />
         </div>

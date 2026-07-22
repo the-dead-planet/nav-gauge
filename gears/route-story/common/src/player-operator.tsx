@@ -84,7 +84,7 @@ export class PlayerOperator<TMap, TFile extends RouteStoryFile, TImageData> {
 
         const { startTimeEpoch, endTimeEpoch } = routeTimes;
         const sortedImageFeatures = [...loadedImages].sort((a, b) => a.featureId - b.featureId);
-        let last = Date.now();
+        let last = performance.now();
         let currentProgressMs = this.gear.progressMs$.value;
         let nextImageIndex = sortedImageFeatures.findIndex((imageFeature): boolean => {
             const f = geojson.features.find((feature) => feature.properties.id === imageFeature.featureId);
@@ -102,7 +102,7 @@ export class PlayerOperator<TMap, TFile extends RouteStoryFile, TImageData> {
                 maxBearingDiffPerFrame,
             } = this.gear.animatrix.controls$.value;
 
-            const now = Date.now();
+            const now = performance.now();
             const dt = now - last;
             last = now;
             currentProgressMs += dt + speedMultiplier;
@@ -163,10 +163,10 @@ export class PlayerOperator<TMap, TFile extends RouteStoryFile, TImageData> {
         to: number,
         updateIconSize: (value: number) => void,
     ): void => {
-        const start = Date.now();
+        const start = performance.now();
 
         const frame = () => {
-            const progress = Math.min((Date.now() - start) / IMAGE_ANIMATION_DURATION, 1);
+            const progress = Math.min((performance.now() - start) / IMAGE_ANIMATION_DURATION, 1);
             const value = from + (to - from) * this.easeInOut(progress);
 
             updateIconSize(value);

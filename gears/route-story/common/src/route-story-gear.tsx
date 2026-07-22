@@ -141,9 +141,15 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
 
         this.apparatus.toolsStation.activeBottomPanelToolId$.next(this.playerToolId);
 
-        // TODO: Add as bottom panel:
-        // this.apparatus.toolsStation.addToolPanel(this.animatrixToolId);
-        // TODO: Add layers controls too or keep in menu
+        this.apparatus.toolsStation.addToolPanel(
+            this.animatrixToolId,
+            {
+                title: { n: this.animatrix.namespace, t: this.animatrix.translationKey.AnimatrixControls },
+                placement: 'right',
+                icon: Icons.NounProject.Animation as unknown as string,
+                component: this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, ToolPanelProps<TMap>>(this.animatrixComponent, this.getProps())
+            }
+        );
 
         this.apparatus.cartomancer.addOverlay(
             this.routeOverlayId,

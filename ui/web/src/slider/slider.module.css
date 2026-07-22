@@ -8,10 +8,6 @@
     column-gap: 6px;
 }
 
-.disabled .label {
-    opacity: .4;
-}
-
 /* ── Base ── */
 
 .slider {

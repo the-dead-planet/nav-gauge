@@ -30,7 +30,9 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
     };
 
     return (
-        <div className={classNames(styles['container'])}>
+        <div className={classNames(styles['container'], {
+            [styles['disabled']]: disabled,
+        })}>
             {typeof label === 'string' ? (
                 <Label htmlFor={id} className={styles['label']}>
                     {label} <Span tabular>{value}</Span>
@@ -54,7 +56,6 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
                     styles[`size-${size}`],
                     {
                         [styles['active']]: active,
-                        [styles['disabled']]: disabled,
                     },
                     className
                 )}

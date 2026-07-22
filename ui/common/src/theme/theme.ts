@@ -225,6 +225,10 @@ export class Theme {
         xl: '32px',
     }
 
+    public static properties = {
+        disabledOpacity: 0.4,
+    }
+
     public constructor(
         specification: ThemeSpecification,
         protected media: MediaSubscriptionDefinition
