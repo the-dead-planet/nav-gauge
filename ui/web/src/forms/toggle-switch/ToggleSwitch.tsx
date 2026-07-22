@@ -2,7 +2,7 @@ import { ChangeEvent, ComponentProps, FC, useId } from "react";
 import classNames from "classnames";
 import { ToggleSwitchProps, useTheme } from "@ui";
 import styles from './toggle-switch.module.css';
-import { Span } from "../typography";
+import { Span } from "../../typography";
 import { Lamp } from "./Lamp";
 
 interface Props extends ToggleSwitchProps {

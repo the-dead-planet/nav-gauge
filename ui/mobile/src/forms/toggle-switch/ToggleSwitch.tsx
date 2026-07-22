@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef } from "react";
 import { Animated, Pressable, View, ViewStyle } from "react-native";
 import { ToggleSwitchProps, useTheme } from "@ui";
-import { Text } from "../typography";
+import { Text } from "../../typography";
 import { Lamp } from "./Lamp";
 import { ThumbBody } from "./ThumbBody";
 

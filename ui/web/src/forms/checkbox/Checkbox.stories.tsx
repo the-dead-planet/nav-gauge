@@ -1,7 +1,7 @@
 import type { Meta } from 'storybook-react-rsbuild';
 import { useState } from 'react';
 import { Checkbox } from './Checkbox';
-import { Text } from '../typography';
+import { Text } from '../../typography';
 import { ColorVariant, SizeVariant } from '@ui';
 
 const meta = {

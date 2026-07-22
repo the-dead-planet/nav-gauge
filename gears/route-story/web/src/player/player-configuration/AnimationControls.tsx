@@ -152,21 +152,20 @@ export const AnimationControls: FC<Props> = ({
                         }}
                         disabled={!followCurrentPoint}
                     />
-                    {/* TODO: Delete this param and leave only autorotate */}
                     <Checkbox
                         id="animation-controls-auto-rotate"
+                        
                         checked={autoRotate}
                         size="sm"
                         onChange={() => setAnimationControls((prev) => ({ ...prev, autoRotate: !prev.autoRotate }))}
                         disabled={!followCurrentPoint}
                     >
-                        {t(animatrix.translationKey.AutoRotate)} {autoRotate
-                            ? `/ ${t(animatrix.translationKey.BearingLineLengthInMeters)}`
-                            : null}
+                        {t(animatrix.translationKey.AutoRotate)}
                     </Checkbox>
+                    {/* TODO: Delete this param and leave only autorotate */}
                     <Slider
                         id="animation-controls-bearing-line-length-in-meters"
-                        aria-labelledby="animation-controls-auto-rotate"
+                        label={t(animatrix.translationKey.BearingLineLengthInMeters)}
                         value={bearingLineLengthInMeters}
                         step={100}
                         min={Animatrix.bearingLineLengthInMetersRange[0]}

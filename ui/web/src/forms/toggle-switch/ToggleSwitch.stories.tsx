@@ -1,7 +1,7 @@
 import type { Meta } from 'storybook-react-rsbuild';
 import { useState } from 'react';
 import { ToggleSwitch } from './ToggleSwitch';
-import { Text } from '../typography';
+import { Text } from '../../typography';
 import { ColorVariant, LayoutOrientation, SizeVariant, SurfaceVariant } from '@ui';
 
 const meta = {

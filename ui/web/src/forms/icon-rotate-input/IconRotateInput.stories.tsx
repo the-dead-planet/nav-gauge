@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { ColorVariant, SizeVariant, Icons } from '@ui';
 import { IconRotateInput } from './IconRotateInput';
-import { Text } from '../typography';
+import { Text } from '../../typography';
 import { useState } from 'react';
 
 const meta = {

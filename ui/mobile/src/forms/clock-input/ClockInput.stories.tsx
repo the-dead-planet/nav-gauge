@@ -2,8 +2,8 @@ import { FC, useState } from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 import { ClockInput } from "./ClockInput";
 import { ClockSliceInput } from "./ClockSliceInput";
-import { Button } from "../button";
-import { Text } from "../typography";
+import { Button } from "../../button";
+import { Text } from "../../typography";
 import { ColorVariant, SizeVariant, SurfaceFillVariant, CLOCK_INPUT_RANGE } from "@ui";
 
 const styles = StyleSheet.create({

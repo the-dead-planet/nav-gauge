@@ -1,7 +1,7 @@
 import { ComponentType, FC } from "react";
 import { View } from "react-native";
 import { SvgProps } from "react-native-svg";
-import { Icon } from "../icons";
+import { Icon } from "../../icons";
 
 interface Props {
     icon?: ComponentType<SvgProps>;

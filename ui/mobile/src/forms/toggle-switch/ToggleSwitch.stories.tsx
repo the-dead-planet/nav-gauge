@@ -1,8 +1,8 @@
 import { FC, useState } from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
-import { Checkbox } from "./Checkbox";
-import { Text } from "../typography";
-import { ColorVariant, SizeVariant } from "@ui";
+import { ToggleSwitch } from "./ToggleSwitch";
+import { Text } from "../../typography";
+import { ColorVariant, LayoutOrientation, SizeVariant } from "@ui";
 
 const styles = StyleSheet.create({
     container: {
@@ -26,27 +26,29 @@ const styles = StyleSheet.create({
 const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
 
-export const CheckboxVariants: FC = () => {
+export const ToggleSwitchVariants: FC = () => {
     const [checked, setChecked] = useState(false);
     const [size, setSize] = useState<SizeVariant>('sm');
     const [color, setColor] = useState<ColorVariant>('primary');
+    const [orientation, setOrientation] = useState<LayoutOrientation>('horizontal');
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
-            <Checkbox
+            <ToggleSwitch
                 size={size}
                 color={color}
+                orientation={orientation}
                 checked={checked}
                 onChange={setChecked}
             >
-                {checked ? 'Checked' : 'Unchecked'}
-            </Checkbox>
+                {checked ? 'On' : 'Off'}
+            </ToggleSwitch>
 
             <View style={styles.section}>
                 <Text style={styles.label}>Size</Text>
                 <View style={styles.row}>
                     {allSizes.map(s => (
-                        <Checkbox
+                        <ToggleSwitch
                             key={s}
                             size="xs"
                             color={color}
@@ -54,7 +56,7 @@ export const CheckboxVariants: FC = () => {
                             onChange={() => setSize(s)}
                         >
                             {s}
-                        </Checkbox>
+                        </ToggleSwitch>
                     ))}
                 </View>
             </View>
@@ -63,7 +65,7 @@ export const CheckboxVariants: FC = () => {
                 <Text style={styles.label}>Color</Text>
                 <View style={styles.row}>
                     {allColors.map(c => (
-                        <Checkbox
+                        <ToggleSwitch
                             key={c}
                             size="xs"
                             color={c}
@@ -71,7 +73,24 @@ export const CheckboxVariants: FC = () => {
                             onChange={() => setColor(c)}
                         >
                             {c}
-                        </Checkbox>
+                        </ToggleSwitch>
+                    ))}
+                </View>
+            </View>
+
+            <View style={styles.section}>
+                <Text style={styles.label}>Orientation</Text>
+                <View style={styles.row}>
+                    {(['horizontal', 'vertical'] as LayoutOrientation[]).map(o => (
+                        <ToggleSwitch
+                            key={o}
+                            size="xs"
+                            color={color}
+                            checked={orientation === o}
+                            onChange={() => setOrientation(o)}
+                        >
+                            {o}
+                        </ToggleSwitch>
                     ))}
                 </View>
             </View>
@@ -82,9 +101,9 @@ export const CheckboxVariants: FC = () => {
                     <View key={s} style={styles.row}>
                         <Text style={styles.label}>{s}</Text>
                         {allColors.map(c => (
-                            <Checkbox key={c} size={s} color={c} checked onChange={() => { }}>
+                            <ToggleSwitch key={c} size={s} color={c} checked onChange={() => { }}>
                                 {c}
-                            </Checkbox>
+                            </ToggleSwitch>
                         ))}
                     </View>
                 ))}
@@ -96,10 +115,24 @@ export const CheckboxVariants: FC = () => {
                     <View key={s} style={styles.row}>
                         <Text style={styles.label}>{s}</Text>
                         {allColors.map(c => (
-                            <Checkbox key={c} size={s} color={c} checked={false} onChange={() => { }}>
+                            <ToggleSwitch key={c} size={s} color={c} checked={false} onChange={() => { }}>
                                 {c}
-                            </Checkbox>
+                            </ToggleSwitch>
                         ))}
+                    </View>
+                ))}
+            </View>
+
+            <View style={styles.section}>
+                <Text>Vertical orientation</Text>
+                {allSizes.map(s => (
+                    <View key={s} style={[styles.row, { flexDirection: 'column', alignItems: 'center', gap: 16 }]}>
+                        <Text>{s}</Text>
+                        <View style={{ flexDirection: 'row', gap: 16 }}>
+                            {allColors.map(c => (
+                                <ToggleSwitch key={c} size={s} color={c} orientation="vertical" checked onChange={() => { }} />
+                            ))}
+                        </View>
                     </View>
                 ))}
             </View>

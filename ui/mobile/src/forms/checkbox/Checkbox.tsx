@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Pressable, View, ViewStyle } from "react-native";
 import { CheckboxProps, useTheme } from "@ui";
-import { Text } from "../typography";
+import { Text } from "../../typography";
 
 export const Checkbox: FC<CheckboxProps> = ({
     color = 'primary',

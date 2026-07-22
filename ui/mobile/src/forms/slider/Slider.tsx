@@ -6,7 +6,7 @@ import {
     ViewStyle,
 } from "react-native";
 import { SliderProps, useTheme } from "@ui";
-import { Text } from "../typography";
+import { Text } from "../../typography";
 
 const heights: Record<string, number> = { xs: 16, sm: 22, md: 28 };
 const thumbSizes: Record<string, number> = { xs: 12, sm: 14, md: 17 };

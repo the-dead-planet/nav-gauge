@@ -1,8 +1,8 @@
 import { FC, useState } from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 import { Slider } from "./Slider";
-import { Button } from "../button";
-import { Text } from "../typography";
+import { Button } from "../../button";
+import { Text } from "../../typography";
 import { ColorVariant, SizeVariant } from "@ui";
 
 const styles = StyleSheet.create({

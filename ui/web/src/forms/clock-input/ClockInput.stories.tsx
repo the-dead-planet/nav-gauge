@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { ColorVariant, SizeVariant, SurfaceFillVariant, CLOCK_INPUT_RANGE } from '@ui';
 import { ClockSliceInput } from './ClockSliceInput';
 import { ClockInput } from './ClockInput';
-import { Text } from '../typography';
+import { Text } from '../../typography';
 import { useState } from 'react';
 
 const meta = {

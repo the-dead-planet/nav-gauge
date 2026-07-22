@@ -2,8 +2,8 @@ import { ComponentType, FC } from "react";
 import { View } from "react-native";
 import { SvgProps } from "react-native-svg";
 import { useTheme } from "@ui";
-import { Icon } from "../icons";
-import { Text } from "../typography";
+import { Icon } from "../../icons";
+import { Text } from "../../typography";
 
 interface Props {
     label?: string;

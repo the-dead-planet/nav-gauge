@@ -1,7 +1,7 @@
 import { ChangeEvent, ComponentProps, CSSProperties, FC } from "react";
 import classNames from "classnames";
 import { SliderProps, useTheme } from "@ui";
-import { Label, Span } from "../typography";
+import { Label, Span } from "../../typography";
 import styles from './slider.module.css';
 
 export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' | 'size'>> = ({

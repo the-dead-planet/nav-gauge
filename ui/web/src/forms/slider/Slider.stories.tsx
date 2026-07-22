@@ -1,7 +1,7 @@
 import type { Meta } from 'storybook-react-rsbuild';
 import { ColorVariant, SizeVariant } from '@ui';
 import { Slider } from './Slider';
-import { Text } from '../typography';
+import { Text } from '../../typography';
 import { useState } from 'react';
 
 const meta = {

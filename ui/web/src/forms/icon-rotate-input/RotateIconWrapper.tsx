@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Icon } from "../icons";
+import { Icon } from "../../icons";
 import styles from './icon-rotate-input.module.css';
 
 interface Props {
