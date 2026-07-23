@@ -54,7 +54,8 @@ export const Fieldset: FC<FieldsetProps & {
         borderWidth: 1,
         borderColor,
         borderRadius: 4,
-        padding: isCollapsed ? { paddingVertical: 4, paddingHorizontal: 10 } : padding,
+        padding,
+        ...(isCollapsed && { paddingVertical: 4, paddingHorizontal: 10 }),
         gap: 10,
     };
 

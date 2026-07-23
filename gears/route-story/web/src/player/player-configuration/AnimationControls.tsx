@@ -132,6 +132,7 @@ export const AnimationControls: FC<Props> = ({
                     append={
                         <ToggleSwitch
                             id="animation-controls-follow-current-point"
+                            aria-label={followCurrentPointLabel}
                             checked={followCurrentPoint}
                             onChange={() => setAnimationControls((prev) => ({ ...prev, followCurrentPoint: !prev.followCurrentPoint }))}
                             size="sm"

@@ -38,7 +38,7 @@ export const TextInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' | 
             styles[`size-${size}`],
             styles[`variant-${variant}`],
         )}>
-            <label htmlFor={id} className={styles.label}>{label}</label>
+            {label ? <label htmlFor={id} className={styles.label}>{label}</label> : null}
             <input
                 id={id}
                 type="text"

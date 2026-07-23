@@ -1,10 +1,9 @@
 import { FC } from "react";
 import classNames from "classnames";
-import { H3, Transition } from "@web-ui";
+import { Transition } from "@web-ui";
 import { useObservableState } from "@tinker-chest";
 import { ToolPanelPlacement, useMachineWard } from "@apparatus";
 import { TransitionProps } from "@ui";
-import { T } from "@web-apparatus";
 import { MapSectionSidePanelHeader } from "./MapSectionSidePanelHeader";
 import { MapSectionBottomPanelHeader } from "./bottom/MapSectionBottomPanelHeader";
 import styles from '../map-section.module.css';
