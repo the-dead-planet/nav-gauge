@@ -10,10 +10,14 @@
         "left-toolbar left-icons . right-icons right-toolbar"
         "bottom-toolbar bottom-toolbar bottom-toolbar bottom-toolbar bottom-toolbar";
     overflow: hidden;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .machine>* {
     z-index: 0;
+    max-width: 100dvw;
+    box-sizing: border-box;
 }
 
 .icons {
@@ -93,10 +97,31 @@
 
 .toolbar.left .component,
 .toolbar.right .component {
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: auto;
     max-width: 360px;
     max-height: 100%;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+    .toolbar.left .component,
+    .toolbar.right .component {
+        scrollbar-color: var(--color-secondary) rgb(from var(--scrollbar-track-color) r g b / .7);
+    }
+
+    .toolbar.left .component > *,
+    .toolbar.right .component > * {
+        scrollbar-color: var(--scrollbar-thumb-color) rgb(from var(--scrollbar-track-color) r g b / .7);
+    }
+}
+
+.toolbar.left .component::-webkit-scrollbar-thumb,
+.toolbar.right .component::-webkit-scrollbar-thumb {
+    background: var(--color-secondary-500);
+}
+
+.toolbar.left .component::-webkit-scrollbar-thumb:hover,
+.toolbar.right .component::-webkit-scrollbar-thumb:hover {
+    background: var(--color-secondary-400);
 }
 
 .toolbar.left {
@@ -157,15 +182,6 @@
 .top-tools {
     grid-area: top-tools;
     pointer-events: none;
-}
-
-@media screen and (min-width: 800px) {
-    .machine {}
-}
-
-.divider {
-    width: 100%;
-    margin: 0;
 }
 
 .gears-heading {

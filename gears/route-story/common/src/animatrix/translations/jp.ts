@@ -15,6 +15,7 @@ const jp: TranslationTable<AnimatrixTranslationKey>['jp'] = {
     "image-pause-duration": '画像の一時停止時間（ms）',
     "speed-multiplier": '速度倍率',
     "ease-duration": 'イーズ時間',
+    "search": 'コントロールを検索',
 };
 
 export default jp;

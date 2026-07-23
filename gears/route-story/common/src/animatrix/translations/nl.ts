@@ -15,6 +15,7 @@ const nl: TranslationTable<AnimatrixTranslationKey>['nl'] = {
     "image-pause-duration": 'Beeldpauzeduur (ms)',
     "speed-multiplier": 'Snelheidsvermenigvuldiger',
     "ease-duration": 'Overgangsduur',
+    "search": 'Bedieningen zoeken',
 };
 
 export default nl;

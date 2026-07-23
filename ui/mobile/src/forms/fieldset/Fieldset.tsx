@@ -1,6 +1,7 @@
 import { FC, useState } from "react";
 import { Pressable, View, ViewStyle } from "react-native";
-import { FieldsetProps, useTheme } from "@ui";
+import { FieldsetProps, Icons, useTheme } from "@ui";
+import { Icon } from "../../icons";
 import { Text } from "../../typography";
 
 const sizeMap = {
@@ -15,7 +16,9 @@ export const Fieldset: FC<FieldsetProps & {
 }> = ({
     label,
     prepend,
+    append,
     size = 'md',
+    color,
     expandable,
     expanded: controlledExpanded,
     onExpandedChange,
@@ -35,19 +38,23 @@ export const Fieldset: FC<FieldsetProps & {
 
     const { fontSize, padding } = sizeMap[size];
 
-    const borderColor = theme.isLight
-        ? theme.color('grey', 300)
-        : theme.color('grey', 700);
+    const borderColor = color
+        ? theme.color(color)
+        : theme.isLight
+            ? theme.color('grey', 300)
+            : theme.color('grey', 700);
 
     const labelColor = theme.isLight
         ? theme.color('grey', 800)
         : theme.color('grey', 200);
 
+    const isCollapsed = expandable && !isExpanded;
+
     const containerStyle: ViewStyle = {
         borderWidth: 1,
         borderColor,
         borderRadius: 4,
-        padding,
+        padding: isCollapsed ? { paddingVertical: 4, paddingHorizontal: 10 } : padding,
         gap: 10,
     };
 
@@ -66,11 +73,14 @@ export const Fieldset: FC<FieldsetProps & {
 
     const headerContent = (
         <View style={headerStyle}>
+            {expandable ? (
+                <View style={{ transform: [{ rotate: isExpanded ? '0deg' : '-90deg' }] }}>
+                    <Icon icon={Icons.NounProject.ChevronDownDoubleTriangle} width={12} height={12} color={labelColor} />
+                </View>
+            ) : null}
             {prepend ? <View>{prepend}</View> : null}
             <Text style={labelStyle}>{label}</Text>
-            {expandable ? (
-                <Text style={[labelStyle, { flex: 0, fontSize: 16 }]}>›</Text>
-            ) : null}
+            {append ? <View>{append}</View> : null}
         </View>
     );
 

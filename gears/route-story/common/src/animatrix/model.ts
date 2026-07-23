@@ -64,4 +64,5 @@ export enum AnimatrixTranslationKey {
     ImagePauseDuration = 'image-pause-duration',
     SpeedMultiplier = 'speed-multiplier',
     EaseDuration = 'ease-duration',
+    Search = 'search',
 }

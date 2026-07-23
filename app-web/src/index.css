@@ -69,6 +69,20 @@
   }
 }
 
+html {
+  --scrollbar-track-color: var(--color-neutral-800);
+  --scrollbar-thumb-color: var(--color-neutral-500);
+  --scrollbar-thumb-hover-color: var(--color-neutral-400);
+}
+
+/* Firefox */
+@supports not selector(::-webkit-scrollbar) {
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb-color) rgb(from var(--scrollbar-track-color) r g b / .7);
+  }
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Space Grotesk", "Ubuntu Mono", sans-serif;
@@ -95,4 +109,23 @@ a:-webkit-any-link {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+}
+
+/* Chromium */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(from var(--scrollbar-track-color) r g b / .7);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-color);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover-color);
 }

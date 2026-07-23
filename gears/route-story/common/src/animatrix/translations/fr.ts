@@ -15,6 +15,7 @@ const fr: TranslationTable<AnimatrixTranslationKey>['fr'] = {
     "image-pause-duration": 'Durée de pause d\'image (ms)',
     "speed-multiplier": 'Multiplicateur de vitesse',
     "ease-duration": 'Durée de transition',
+    "search": 'Rechercher des commandes',
 };
 
 export default fr;

@@ -7,6 +7,22 @@
     border-radius: 4px;
 }
 
+.color-primary {
+    border-color: var(--color-primary);
+}
+
+.color-secondary {
+    border-color: var(--color-secondary);
+}
+
+.color-tertiary {
+    border-color: var(--color-tertiary);
+}
+
+.color-neutral {
+    border-color: var(--color-neutral);
+}
+
 .size-xs {
     padding: 6px;
 }
@@ -17,6 +33,10 @@
 
 .size-md {
     padding: 10px;
+}
+
+.collapsed {
+    padding: 4px 10px;
 }
 
 .legend {
@@ -50,6 +70,12 @@
     align-items: center;
 }
 
+.append {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
 .label {
     display: flex;
     align-items: center;
@@ -58,14 +84,12 @@
 .chevron {
     display: inline-flex;
     align-items: center;
-    font-size: 16px;
     transition: transform 0.2s ease;
-    transform: rotate(0deg);
-    margin-left: auto;
+    transform: rotate(-90deg);
 }
 
 .chevron-expanded {
-    transform: rotate(90deg);
+    transform: rotate(0deg);
 }
 
 .content {

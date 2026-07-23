@@ -33,6 +33,7 @@ export const AnimationControls: FC<Props> = ({
         imagePauseDurationLabel,
         speedMultiplierLabel,
         easeDurationLabel,
+        searchLabel,
     ] = useMultipleTranslations([
         { n: animatrix.namespace, t: animatrix.translationKey.General },
         { n: animatrix.namespace, t: animatrix.translationKey.FollowCurrentPoint },
@@ -46,6 +47,7 @@ export const AnimationControls: FC<Props> = ({
         { n: animatrix.namespace, t: animatrix.translationKey.ImagePauseDuration },
         { n: animatrix.namespace, t: animatrix.translationKey.SpeedMultiplier },
         { n: animatrix.namespace, t: animatrix.translationKey.EaseDuration },
+        { n: animatrix.namespace, t: animatrix.translationKey.Search },
     ]);
 
     const matchesSearch = (label: string): boolean => {
@@ -89,7 +91,8 @@ export const AnimationControls: FC<Props> = ({
                 id="animation-controls-search"
                 value={searchQuery}
                 onChange={setSearchQuery}
-                placeholder="Search controls..."
+                placeholder={searchLabel}
+                aria-label={searchLabel}
                 size="xs"
                 className={styles['search']}
             />
@@ -126,7 +129,7 @@ export const AnimationControls: FC<Props> = ({
                 <Fieldset
                     label={followCurrentPointLabel}
                     size="sm"
-                    prepend={
+                    append={
                         <ToggleSwitch
                             id="animation-controls-follow-current-point"
                             checked={followCurrentPoint}

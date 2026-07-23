@@ -15,6 +15,7 @@ const ru: TranslationTable<AnimatrixTranslationKey>['ru'] = {
     "image-pause-duration": 'Длительность паузы изображения (мс)',
     "speed-multiplier": 'Множитель скорости',
     "ease-duration": 'Длительность перехода',
+    "search": 'Поиск управления',
 };
 
 export default ru;

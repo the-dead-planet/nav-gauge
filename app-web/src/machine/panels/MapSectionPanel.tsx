@@ -50,11 +50,6 @@ export const MapSectionPanel: FC<Props> = ({
                     {placement === 'right' ? sideHeader : null}
                     {toolPanel ? (
                         <div className={styles['component']}>
-                            {placement !== 'bottom' ? (
-                                <H3 m="sm">
-                                    <T {...toolPanel.title} />
-                                </H3>
-                            ) : null}
                             <toolPanel.component map={map} />
                         </div>
                     ) : null}
