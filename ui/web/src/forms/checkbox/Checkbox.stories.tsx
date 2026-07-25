@@ -5,7 +5,7 @@ import { Text } from '../../typography';
 import { ColorVariant, SizeVariant } from '@ui';
 
 const meta = {
-    title: 'Checkbox',
+    title: 'Forms/Checkbox',
     component: Checkbox,
 } satisfies Meta<typeof Checkbox>;
 

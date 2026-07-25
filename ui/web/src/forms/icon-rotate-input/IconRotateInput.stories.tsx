@@ -5,7 +5,7 @@ import { Text } from '../../typography';
 import { useState } from 'react';
 
 const meta = {
-    title: 'IconRotateInput',
+    title: 'Forms/IconRotateInput',
     component: IconRotateInput,
 } satisfies Meta<typeof IconRotateInput>;
 

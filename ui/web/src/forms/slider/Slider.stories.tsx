@@ -5,7 +5,7 @@ import { Text } from '../../typography';
 import { useState } from 'react';
 
 const meta = {
-    title: 'Slider',
+    title: 'Forms/Slider',
     component: Slider,
 } satisfies Meta<typeof Slider>;
 

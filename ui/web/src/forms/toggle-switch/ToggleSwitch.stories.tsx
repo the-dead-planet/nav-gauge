@@ -5,7 +5,7 @@ import { Text } from '../../typography';
 import { ColorVariant, LayoutOrientation, SizeVariant, SurfaceVariant } from '@ui';
 
 const meta = {
-    title: 'ToggleSwitch',
+    title: 'Forms/ToggleSwitch',
     component: ToggleSwitch,
 } satisfies Meta<typeof ToggleSwitch>;
 

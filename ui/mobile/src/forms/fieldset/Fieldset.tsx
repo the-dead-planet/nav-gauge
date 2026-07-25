@@ -1,8 +1,12 @@
-import { FC, useState } from "react";
-import { Pressable, View, ViewStyle } from "react-native";
+import { FC, useEffect, useRef, useState } from "react";
+import { Animated, LayoutAnimation, Platform, Pressable, UIManager, View, ViewStyle } from "react-native";
 import { FieldsetProps, Icons, useTheme } from "@ui";
 import { Icon } from "../../icons";
 import { Text } from "../../typography";
+
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 const sizeMap = {
     xs: { fontSize: 11, padding: 6 },
@@ -27,8 +31,18 @@ export const Fieldset: FC<FieldsetProps & {
     const theme = useTheme();
     const [internalExpanded, setInternalExpanded] = useState(true);
     const isExpanded = controlledExpanded ?? internalExpanded;
+    const chevronRotation = useRef(new Animated.Value(isExpanded ? 0 : -90)).current;
+
+    useEffect(() => {
+        Animated.timing(chevronRotation, {
+            toValue: isExpanded ? 0 : -90,
+            duration: 200,
+            useNativeDriver: true,
+        }).start();
+    }, [isExpanded]);
 
     const handleToggle = () => {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         if (onExpandedChange) {
             onExpandedChange(!isExpanded);
         } else {
@@ -75,9 +89,16 @@ export const Fieldset: FC<FieldsetProps & {
     const headerContent = (
         <View style={headerStyle}>
             {expandable ? (
-                <View style={{ transform: [{ rotate: isExpanded ? '0deg' : '-90deg' }] }}>
+                <Animated.View style={{
+                    transform: [{
+                        rotate: chevronRotation.interpolate({
+                            inputRange: [-90, 0],
+                            outputRange: ['-90deg', '0deg'],
+                        })
+                    }]
+                }}>
                     <Icon icon={Icons.NounProject.ChevronDownDoubleTriangle} width={12} height={12} color={labelColor} />
-                </View>
+                </Animated.View>
             ) : null}
             {prepend ? <View>{prepend}</View> : null}
             <Text style={labelStyle}>{label}</Text>

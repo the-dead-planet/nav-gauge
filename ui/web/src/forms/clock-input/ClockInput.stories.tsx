@@ -6,7 +6,7 @@ import { Text } from '../../typography';
 import { useState } from 'react';
 
 const meta = {
-    title: 'ClockInput',
+    title: 'Forms/ClockInput',
     component: ClockInput,
 } satisfies Meta<typeof ClockInput>;
 

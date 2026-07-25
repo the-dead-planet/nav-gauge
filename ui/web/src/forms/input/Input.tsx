@@ -15,6 +15,7 @@ interface Props {
     containerClassName?: string;
 }
 
+// TODO: Remove
 export const Input: FC<Props & Omit<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'name' | 'id'>> = ({
     label,
     labelPlacement = 'before',

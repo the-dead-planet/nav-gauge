@@ -33,14 +33,19 @@ export const Fieldset: FC<Omit<FieldsetProps, 'expanded' | 'onExpandedChange'> &
                 className={classNames(
                     styles.fieldset,
                     styles[`size-${size}`],
-                    { [styles[`color-${color}`]]: !!color },
-                    { [styles.collapsed]: expandable && !isExpanded },
+                    {
+                        [styles[`color-${color}`]]: !!color,
+                        [styles['collapsed']]: !isExpanded
+                    },
                     className
                 )}>
                 <legend
                     className={classNames(
                         styles.legend,
-                        { [styles['legend-expandable']]: expandable }
+                        { 
+                            [styles['legend-expandable']]: expandable,
+                            [styles['with-append']]: !!append,
+                        }
                     )}
                     onClick={expandable ? handleToggle : undefined}
                 >
@@ -53,7 +58,14 @@ export const Fieldset: FC<Omit<FieldsetProps, 'expanded' | 'onExpandedChange'> &
                     <span className={styles['label']}>{label}</span>
                     {append && <span className={styles['append']}>{append}</span>}
                 </legend>
-                {(!expandable || isExpanded) && (
+                {expandable && (
+                    <div className={classNames(styles['content'], { [styles['content-collapsed']]: !isExpanded })}>
+                        <div className={styles['content-inner']}>
+                            {children}
+                        </div>
+                    </div>
+                )}
+                {!expandable && (
                     <div className={styles['content']}>
                         {children}
                     </div>
