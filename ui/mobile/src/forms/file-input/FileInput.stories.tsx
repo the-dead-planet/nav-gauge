@@ -25,7 +25,7 @@ const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'
 
 export const FileInputVariants: FC = () => {
     const [fileName, setFileName] = useState<string | null>(null);
-    const [color, setColor] = useState<ColorVariant>('primary');
+    const [color] = useState<ColorVariant>('primary');
 
     return (
         <ScrollView contentContainerStyle={styles.container}>

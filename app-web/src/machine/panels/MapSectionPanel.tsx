@@ -1,13 +1,12 @@
 import { FC } from "react";
 import classNames from "classnames";
-import { Button, Menu, MenuItem, Transition } from "@web-ui";
+import { Menu, MenuItem, Transition } from "@web-ui";
 import { useObservableState } from "@tinker-chest";
 import { ToolPanelPlacement, useMachineWard, useMultipleTranslations } from "@apparatus";
-import { Icons, TransitionProps } from "@ui";
+import { TransitionProps } from "@ui";
 import { MapSectionSidePanelHeader } from "./MapSectionSidePanelHeader";
 import { MapSectionBottomPanelHeader } from "./bottom/MapSectionBottomPanelHeader";
 import styles from '../map-section.module.css';
-import { T } from "@web-apparatus";
 
 interface Props {
     placement: ToolPanelPlacement;

@@ -1,7 +1,7 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { ToolPanelProps, useMachineWard, useMultipleTranslations } from "@apparatus";
 import { clamp, useSubjectState } from "@tinker-chest";
-import { ClockInput, Checkbox, Fieldset, ClockSliceInput, IconRotateInput, Slider, TextInput, ToggleSwitch, Label, Span } from "@web-ui";
+import { ClockInput, Checkbox, Fieldset, ClockSliceInput, IconRotateInput, Slider, ToggleSwitch, Label, Span } from "@web-ui";
 import { Animatrix, RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { WebMarkerImageData } from "../images/image-parser";
 import { Icons } from "@ui";
@@ -14,7 +14,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
     const { chronoLens } = useMachineWard();
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [animationControls, setAnimationControls] = useSubjectState(animatrix.controls$);
-    const [searchQuery, setSearchQuery] = useSubjectState(animatrix.searchQuery$);
+    const [searchQuery] = useSubjectState(animatrix.searchQuery$);
 
     const [
         generalLabel,
