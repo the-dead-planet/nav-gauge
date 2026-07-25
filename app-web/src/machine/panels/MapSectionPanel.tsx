@@ -60,7 +60,7 @@ export const MapSectionPanel: FC<Props> = ({
                         <div className={styles['component']}>
                             {toolPanel.placement !== 'bottom' || toolPanel?.headerComponent ? (
                                 <div className={styles['component-header']}>
-                                    {toolPanel.headerComponent ? <toolPanel.headerComponent map={map} /> : null}
+                                    {toolPanel.headerComponent ? <toolPanel.headerComponent map={map} placement={toolPanel.placement} /> : null}
                                     {toolPanel.placement !== 'bottom' ? (
                                         <Menu
                                             aria-label={panelMenuLabel}
@@ -93,7 +93,7 @@ export const MapSectionPanel: FC<Props> = ({
                                 </div>
                             ) : null}
                             <div className={styles['component-content']}>
-                                <toolPanel.contentComponent map={map} />
+                                <toolPanel.contentComponent map={map} placement={toolPanel.placement} />
                             </div>
                         </div>
                     ) : null}

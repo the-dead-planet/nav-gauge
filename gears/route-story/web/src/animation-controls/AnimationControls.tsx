@@ -1,4 +1,5 @@
 import { FC } from "react";
+import classNames from "classnames";
 import { ToolPanelProps, useMachineWard, useMultipleTranslations } from "@apparatus";
 import { clamp, useSubjectState } from "@tinker-chest";
 import { ClockInput, Checkbox, Fieldset, ClockSliceInput, IconRotateInput, Slider, ToggleSwitch, Label, Span } from "@web-ui";
@@ -10,6 +11,7 @@ import styles from './animation-controls.module.css';
 export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibregl.Map, File, WebMarkerImageData>> = ({
     map,
     animatrix,
+    placement,
 }) => {
     const { chronoLens } = useMachineWard();
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
@@ -80,7 +82,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
     } = animationControls;
 
     return (
-        <div className={styles['container']}>
+        <div className={classNames(styles['container'], styles[placement])}>
             {showGeneral && (
                 <Fieldset label={generalLabel} expandable contentClassName={styles['fieldset']}>
                     <Label htmlFor="animation-controls-image-pause-duration" align="right">
@@ -195,9 +197,11 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
                             <Label htmlFor="animation-controls-camera-angle" align="right">
                                 {cameraAngleLabel}
                             </Label>
-                            <ClockInput
+                            <IconRotateInput
                                 id="animation-controls-camera-angle"
-                                size='xs'
+                                valueAdjustment={-90}
+                                icon={Icons.NounProject.CameraVideoSide}
+                                size='sm'
                                 value={cameraAngle}
                                 min={Animatrix.cameraAngleRange[0]}
                                 max={Animatrix.cameraAngleRange[1]}

@@ -7,6 +7,7 @@ export type ToolIconPlacement = 'right' | 'left';
 
 export interface ToolPanelProps<TMap> {
     map: TMap;
+    placement: ToolPanelPlacement;
 }
 
 export interface ToolPanel<TMap> {

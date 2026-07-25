@@ -69,7 +69,7 @@
 .toolbar {
     box-sizing: border-box;
 
-    --toolbar-background-color: rgb(from var(--color-background) r g b / .82);
+    --toolbar-background-color: rgb(from var(--color-background) r g b / .87);
 }
 
 .toolbar .content {

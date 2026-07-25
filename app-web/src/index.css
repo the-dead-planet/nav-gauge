@@ -69,15 +69,21 @@
   }
 }
 
-html {
+body[data-theme="dark"] {
   --scrollbar-track-color: var(--color-neutral-800);
   --scrollbar-thumb-color: var(--color-neutral-500);
   --scrollbar-thumb-hover-color: var(--color-neutral-400);
 }
 
+body[data-theme="light"] {
+  --scrollbar-track-color: var(--color-neutral-200);
+  --scrollbar-thumb-color: var(--color-neutral-500);
+  --scrollbar-thumb-hover-color: var(--color-neutral-600);
+}
+
 /* Firefox */
 @supports not selector(::-webkit-scrollbar) {
-  html {
+  body {
     scrollbar-width: thin;
     scrollbar-color: var(--scrollbar-thumb-color) rgb(from var(--scrollbar-track-color) r g b / .7);
   }
