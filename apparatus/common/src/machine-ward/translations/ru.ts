@@ -11,6 +11,8 @@ const ru: TranslationTable<MachineTranslationKey>['ru'] = {
     gears: 'Механизмы',
     collapse: 'Свернуть',
     expand: 'Развернуть',
+    'panel-menu': 'Panel options',
+    'swap-placement': 'Place panel on the {{placement}}',
 };
 
 export default ru;

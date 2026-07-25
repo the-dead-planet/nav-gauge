@@ -80,6 +80,7 @@
 }
 
 .size-sm .input {
+    height: 24px;
     font-size: 12px;
     padding: 2px 8px;
 }

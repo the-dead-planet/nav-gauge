@@ -30,7 +30,7 @@ export const LayersControls: FC<Props> = ({
 
     return (
         <div className={styles['container']}>
-            <Fieldset label={layerConfigurationLabel}>
+            <Fieldset size="xs" label={layerConfigurationLabel}>
                 <Checkbox role="menuitem" size="xs" checked={state.showRouteLine} onChange={(checked) => setState((prev) => ({ ...prev, showRouteLine: checked }))}>
                     {linesLabel}
                 </Checkbox>

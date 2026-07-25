@@ -12,7 +12,7 @@ const de: TranslationTable<AnimatrixTranslationKey>['de'] = {
     "max-bearing-diff-per-frame": 'Max. Kursabweichung pro Frame',
     "pitch": 'Neigung',
     "zoom": 'Zoom',
-    "image-pause-duration": 'Bildpausendauer (ms)',
+    "image-pause-duration": 'Bildpausendauer',
     "speed-multiplier": 'Geschwindigkeitsmultiplikator',
     "ease-duration": 'Übergangsdauer',
     "search": 'Steuerungen durchsuchen',

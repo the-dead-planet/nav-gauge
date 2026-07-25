@@ -83,7 +83,8 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
     public abstract playerComponent: ComponentType<ToolPanelProps<TMap> & RouteStoryProps<TMap, TFile, TImageData>>;
 
     private animatrixToolId = 'animatrix';
-    public abstract animatrixComponent: ComponentType<ToolPanelProps<TMap> & RouteStoryProps<TMap, TFile, TImageData>>;
+    public abstract animatrixHeaderComponent: ComponentType<ToolPanelProps<TMap> & RouteStoryProps<TMap, TFile, TImageData>>;
+    public abstract animatrixContentComponent: ComponentType<ToolPanelProps<TMap> & RouteStoryProps<TMap, TFile, TImageData>>;
 
     private routeOverlayId = 'route';
     public abstract routeLayerComponent: ComponentType<OverlayComponentProps<TMap> & RouteStoryProps<TMap, TFile, TImageData>>;
@@ -135,7 +136,7 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
                 title: { n: this.id, t: this.internalTranslationKey.Player },
                 placement: 'bottom',
                 icon: Icons.NounProject.PlayerConfiguration as unknown as string,
-                component: this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, ToolPanelProps<TMap>>(this.playerComponent, this.getProps())
+                contentComponent: this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, ToolPanelProps<TMap>>(this.playerComponent, this.getProps())
             }
         );
 
@@ -147,7 +148,8 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
                 title: { n: this.animatrix.namespace, t: this.animatrix.translationKey.AnimatrixControls },
                 placement: 'right',
                 icon: Icons.NounProject.Animation as unknown as string,
-                component: this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, ToolPanelProps<TMap>>(this.animatrixComponent, this.getProps())
+                headerComponent: this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, ToolPanelProps<TMap>>(this.animatrixHeaderComponent, this.getProps()),
+                contentComponent: this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, ToolPanelProps<TMap>>(this.animatrixContentComponent, this.getProps())
             }
         );
 

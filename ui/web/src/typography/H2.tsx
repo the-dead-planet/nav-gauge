@@ -7,6 +7,7 @@ import styles from './typography.module.css';
 export const H2: FC<ComponentProps<'h2'> & TypographyProps> = ({
     color = defaultTypographyProps.color,
     fontType = defaultTypographyProps.fontType,
+    align,
     bold,
     shadow,
     tabular,
@@ -31,6 +32,7 @@ export const H2: FC<ComponentProps<'h2'> & TypographyProps> = ({
     const cssNames = textCssNames({
         color,
         fontType,
+        align,
         bold,
         shadow,
         tabular,

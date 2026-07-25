@@ -7,6 +7,7 @@ import styles from './typography.module.css';
 export const Label: FC<ComponentProps<'label'> & TypographyProps> = ({
     color = defaultTypographyProps.color,
     fontType = defaultTypographyProps.fontType,
+    align,
     bold,
     shadow,
     tabular,
@@ -31,6 +32,7 @@ export const Label: FC<ComponentProps<'label'> & TypographyProps> = ({
     const cssNames = textCssNames({
         color,
         fontType,
+        align,
         bold,
         shadow,
         tabular,

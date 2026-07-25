@@ -28,7 +28,8 @@ export const MapSectionSidePanelHeader: FC<Props> = ({
         bottom: "top",
     };
     const color = placement === 'bottom' ? 'primary' : 'secondary';
-    const buttonSize = placement === 'left' ? 'md' : 'sm';
+    const buttonSize = placement === 'bottom' ? 'sm' : 'md';
+    const expandCollapseLabel = translatron.translate(settings.language, registry, { n: namespace, t: activeId === null ? translationKey.Expand : translationKey.Collapse });
 
     return (
         <div className={styles['content-header']}>
@@ -53,15 +54,15 @@ export const MapSectionSidePanelHeader: FC<Props> = ({
                     />
                 );
             })}
-            {placement === 'left' ? <span className={styles['spacer-line']} /> : null}
+            {placement !== 'bottom' ? <span className={styles['spacer-line']} /> : null}
             <Button
                 size={buttonSize}
                 variant='ghost'
                 color={color}
                 icon={Icons.NounProject.ChevronDownDouble}
                 iconRotateZ={((placement === 'left' ? 90 : -90) + (activeId === null ? 180 : 0) + 360) % 360}
-                aria-label={translatron.translate(settings.language, registry, { n: namespace, t: activeId === null ? translationKey.Expand : translationKey.Collapse })}
-                tooltip={translatron.translate(settings.language, registry, { n: namespace, t: activeId === null ? translationKey.Expand : translationKey.Collapse })}
+                aria-label={expandCollapseLabel}
+                tooltip={expandCollapseLabel}
                 tooltipPlacement={tooltipPlacement[placement]}
                 onClick={() => {
                     if (activeId !== null) {
@@ -70,7 +71,7 @@ export const MapSectionSidePanelHeader: FC<Props> = ({
                         onActiveIdChange(effectivePanels[0]?.id)
                     }
                 }}
-                style={{ marginTop: 'auto' }}
+                className={styles['expand-collapse-button']}
             />
         </div>
     );

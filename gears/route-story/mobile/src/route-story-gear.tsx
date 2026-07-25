@@ -14,7 +14,8 @@ import { RouteName } from './player/RouteName';
 export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPickerResponse, MobileMarkerImageData> {
    public playerComponent = Player;
    public routeUploadComponent = RouteName;
-   public animatrixComponent = Player;
+   public animatrixHeaderComponent = Player;
+   public animatrixContentComponent = Player;
    public routeLayerComponent = RouteLayer;
    public imagesLayerComponent = ImagesLayer;
 

@@ -12,7 +12,7 @@ const jp: TranslationTable<AnimatrixTranslationKey>['jp'] = {
     "max-bearing-diff-per-frame": '1フレームあたりの最大方位差',
     "pitch": 'ピッチ',
     "zoom": 'ズーム',
-    "image-pause-duration": '画像の一時停止時間（ms）',
+    "image-pause-duration": '画像の一時停止時間',
     "speed-multiplier": '速度倍率',
     "ease-duration": 'イーズ時間',
     "search": 'コントロールを検索',

@@ -1,0 +1,34 @@
+.container {
+    position: relative;
+    padding: 2px 4px 2px 2px;
+    box-sizing: border-box;
+    display: grid;
+    gap: 20px;
+    max-width: 300px;
+}
+
+
+@supports not selector(::-webkit-scrollbar) {
+    .container {
+        padding-right: 12px;
+    }
+}
+
+.search {
+    display: block;
+    margin: 0 auto;
+    max-width: min(160px, calc(100% - 4px));
+    align-self: center;
+}
+
+.fieldset {
+    display: grid;
+    grid-template-columns: 4fr 3fr 1fr;
+    gap: 5px;
+    align-items: center;
+    font-size: 12px;
+}
+
+.top-margin {
+    margin-top: 15px;
+}

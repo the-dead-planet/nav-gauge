@@ -13,7 +13,8 @@ export interface ToolPanel<TMap> {
     icon: string;
     placement$: BehaviorSubject<ToolPanelPlacement>;
     title: TranslationId;
-    component: ComponentType<ToolPanelProps<TMap>>;
+    headerComponent?: ComponentType<ToolPanelProps<TMap>>;
+    contentComponent: ComponentType<ToolPanelProps<TMap>>;
 }
 
 export interface ObservedToolPanel<TMap> {
@@ -21,7 +22,8 @@ export interface ObservedToolPanel<TMap> {
     icon: string;
     title: TranslationId;
     placement: ToolPanelPlacement;
-    component: ComponentType<ToolPanelProps<TMap>>;
+    headerComponent?: ComponentType<ToolPanelProps<TMap>>;
+    contentComponent: ComponentType<ToolPanelProps<TMap>>;
 }
 
 export interface ToolIcon<TMap> {

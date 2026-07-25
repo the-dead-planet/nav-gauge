@@ -1,12 +1,16 @@
 import { FC, useEffect, useRef, useState } from "react";
-import { Animated, LayoutAnimation, Platform, Pressable, UIManager, View, ViewStyle } from "react-native";
+import {
+    Animated,
+    Pressable,
+    View,
+    ViewStyle,
+} from "react-native";
+import Svg, { Polygon } from "react-native-svg";
 import { FieldsetProps, Icons, useTheme } from "@ui";
 import { Icon } from "../../icons";
 import { Text } from "../../typography";
 
-if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
-    UIManager.setLayoutAnimationEnabledExperimental(true);
-}
+const bevelBySize = { xs: 6, sm: 10, md: 20 } as const;
 
 const sizeMap = {
     xs: { fontSize: 11, padding: 6 },
@@ -31,6 +35,14 @@ export const Fieldset: FC<FieldsetProps & {
     const theme = useTheme();
     const [internalExpanded, setInternalExpanded] = useState(true);
     const isExpanded = controlledExpanded ?? internalExpanded;
+
+    const contentHeight = useRef(new Animated.Value(-1)).current;
+    const [containerWidth, setContainerWidth] = useState(0);
+    const [containerHeight, setContainerHeight] = useState(0);
+    const measuredHeight = useRef(0);
+    const [hasMeasured, setHasMeasured] = useState(false);
+    const contentRef = useRef<View>(null);
+
     const chevronRotation = useRef(new Animated.Value(isExpanded ? 0 : -90)).current;
 
     useEffect(() => {
@@ -41,12 +53,86 @@ export const Fieldset: FC<FieldsetProps & {
         }).start();
     }, [isExpanded]);
 
+    useEffect(() => {
+        const listenerId = contentHeight.addListener(({ value }) => {
+            if (value >= 0) {
+                setContainerHeight(Math.round(value));
+            }
+        });
+        return () => contentHeight.removeListener(listenerId);
+    }, [contentHeight]);
+
+    const measureContent = () => {
+        contentRef.current?.measure((_x, _y, w, h) => {
+            if (w > 0) {
+                setContainerWidth(w);
+            }
+            if (h > 0) {
+                measuredHeight.current = h;
+                if (!hasMeasured) {
+                    contentHeight.setValue(h);
+                    setHasMeasured(true);
+                }
+            }
+        });
+    };
+
+    useEffect(() => {
+        const timer = setTimeout(measureContent, 50);
+        return () => clearTimeout(timer);
+    }, []);
+
+    useEffect(() => {
+        if (isExpanded) {
+            const timer = setTimeout(measureContent, 50);
+            return () => clearTimeout(timer);
+        }
+    }, [isExpanded]);
+
     const handleToggle = () => {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        if (onExpandedChange) {
-            onExpandedChange(!isExpanded);
+        if (measuredHeight.current === 0) {
+            contentRef.current?.measure((_x, _y, w, h) => {
+                if (w > 0) setContainerWidth(w);
+                if (h > 0) {
+                    measuredHeight.current = h;
+                    animateToggle(h);
+                }
+            });
         } else {
-            setInternalExpanded(!internalExpanded);
+            animateToggle(measuredHeight.current);
+        }
+    };
+
+    const animateToggle = (targetHeight: number) => {
+        if (isExpanded) {
+            contentHeight.stopAnimation((currentValue) => {
+                contentHeight.setValue(currentValue ?? targetHeight);
+                Animated.timing(contentHeight, {
+                    toValue: 0,
+                    duration: 250,
+                    useNativeDriver: false,
+                }).start(() => {
+                    onExpandedChange?.(false);
+                    setInternalExpanded(false);
+                });
+            });
+        } else {
+            onExpandedChange?.(true);
+            setInternalExpanded(true);
+            requestAnimationFrame(() => {
+                contentRef.current?.measure((_x, _y, w, h) => {
+                    if (w > 0) setContainerWidth(w);
+                    if (h > 0) {
+                        measuredHeight.current = h;
+                        contentHeight.setValue(0);
+                        Animated.timing(contentHeight, {
+                            toValue: h,
+                            duration: 250,
+                            useNativeDriver: false,
+                        }).start();
+                    }
+                });
+            });
         }
     };
 
@@ -58,20 +144,21 @@ export const Fieldset: FC<FieldsetProps & {
             ? theme.color('grey', 300)
             : theme.color('grey', 700);
 
+    const bgColor = theme.componentColor('background');
+
     const labelColor = theme.isLight
         ? theme.color('grey', 800)
         : theme.color('grey', 200);
 
-    const isCollapsed = expandable && !isExpanded;
+    const bevel = bevelBySize[size];
 
-    const containerStyle: ViewStyle = {
-        borderWidth: 1,
-        borderColor,
-        borderRadius: 4,
-        padding,
-        ...(isCollapsed && { paddingVertical: 4, paddingHorizontal: 10 }),
-        gap: 10,
-    };
+    const effectiveBevel = containerWidth > 0
+        ? Math.min(bevel, containerWidth / 2 - 1)
+        : bevel;
+
+    const bevelPoints = containerWidth > 0 && containerHeight > 0
+        ? `${effectiveBevel},0 ${containerWidth - effectiveBevel},0 ${containerWidth},${effectiveBevel} ${containerWidth},${containerHeight - effectiveBevel} ${containerWidth - effectiveBevel},${containerHeight} ${effectiveBevel},${containerHeight} 0,${containerHeight - effectiveBevel} 0,${effectiveBevel}`
+        : '';
 
     const headerStyle: ViewStyle = {
         flexDirection: 'row',
@@ -107,19 +194,42 @@ export const Fieldset: FC<FieldsetProps & {
     );
 
     return (
-        <View style={containerStyle}>
-            {expandable ? (
-                <Pressable onPress={handleToggle}>
-                    {headerContent}
-                </Pressable>
-            ) : (
-                headerContent
+        <View style={{ position: 'relative', overflow: 'hidden', backgroundColor: bgColor }}>
+            {containerWidth > 0 && containerHeight > 0 && (
+                <Svg
+                    viewBox={`0 0 ${containerWidth} ${containerHeight}`}
+                    style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, pointerEvents: 'none' }}
+                >
+                    <Polygon
+                        points={bevelPoints}
+                        fill="none"
+                        stroke={borderColor}
+                        strokeWidth={1}
+                    />
+                </Svg>
             )}
-            {(!expandable || isExpanded) ? (
-                <View style={{ gap: 10 }}>
-                    {children}
+            <Animated.View
+                ref={contentRef}
+                style={hasMeasured
+                    ? { height: contentHeight, overflow: 'hidden' as const }
+                    : undefined
+                }
+            >
+                <View style={{ paddingLeft: effectiveBevel, paddingRight: effectiveBevel, padding }}>
+                    {expandable ? (
+                        <Pressable onPress={handleToggle}>
+                            {headerContent}
+                        </Pressable>
+                    ) : (
+                        headerContent
+                    )}
+                    {(!expandable || isExpanded) ? (
+                        <View style={{ gap: 10 }}>
+                            {children}
+                        </View>
+                    ) : null}
                 </View>
-            ) : null}
+            </Animated.View>
         </View>
     );
 };

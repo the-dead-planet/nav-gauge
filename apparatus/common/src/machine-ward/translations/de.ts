@@ -11,6 +11,8 @@ const de: TranslationTable<MachineTranslationKey>['de'] = {
     gears: 'Getriebe',
     collapse: 'Einklappen',
     expand: 'Ausklappen',
+    'panel-menu': 'Panel options',
+    'swap-placement': 'Place panel on the {{placement}}',
 };
 
 export default de;

@@ -23,6 +23,14 @@
     font-variant-numeric: tabular-nums;
 }
 
+.align-left {
+    text-align: left;
+}
+
+.align-right {
+    text-align: right;
+}
+
 .p,
 .span,
 .label {

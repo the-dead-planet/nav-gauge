@@ -39,7 +39,8 @@ export class ToolsStation<TMap> {
                 id,
                 icon: toolPanel.icon,
                 title: toolPanel.title,
-                component: toolPanel.component,
+                headerComponent: toolPanel.headerComponent,
+                contentComponent: toolPanel.contentComponent,
             }))
         )));
     }));
@@ -125,10 +126,11 @@ export class ToolsStation<TMap> {
      */
     public addToolPanel = (
         id: string,
-        { title, icon, placement, component }: {
+        { title, icon, placement, headerComponent, contentComponent }: {
             title: TranslationId, icon: string,
             placement: ToolPanelPlacement,
-            component: ComponentType<ToolPanelProps<TMap>>,
+            headerComponent?: ComponentType<ToolPanelProps<TMap>>,
+            contentComponent: ComponentType<ToolPanelProps<TMap>>,
         }
     ) => {
         const nextToolPanels = new Map(this.toolPanels$.value);
@@ -136,7 +138,8 @@ export class ToolsStation<TMap> {
             title,
             icon,
             placement$: new BehaviorSubject(placement),
-            component,
+            headerComponent,
+            contentComponent,
         });
         this.toolPanels$.next(nextToolPanels);
     };
@@ -148,6 +151,15 @@ export class ToolsStation<TMap> {
         const nextToolPanels = new Map(this.toolPanels$.value);
         nextToolPanels.delete(id);
         this.toolPanels$.next(nextToolPanels);
+    };
+
+    /**
+     * Updates the placement of a panel with a given `id`.
+     * @param id 
+     * @param placement 
+     */
+    public updateToolPanelPlacement = (id: string, placement: ToolPanelPlacement) => {
+        this.toolPanels$.value.get(id)?.placement$.next(placement);
     };
 
     /**

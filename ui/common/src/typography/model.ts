@@ -27,6 +27,7 @@ export enum FontType {
 export interface TypographyProps {
     color?: ColorVariant;
     fontType?: FontType;
+    align?: 'left' | 'right';
     shadow?: boolean;
     bold?: boolean;
     tabular?: boolean;

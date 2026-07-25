@@ -40,6 +40,7 @@ export class Animatrix {
     private controlsStorageId = 'animatrix:controls';
     private controlsStorageSubscription: Subscription | null = null;
     public controls$: BehaviorSubject<AnimationControlsType>;
+    public searchQuery$ = new BehaviorSubject<string>('');
 
     public constructor() {
         this.controls$ = new BehaviorSubject(Animatrix.defaultControls);

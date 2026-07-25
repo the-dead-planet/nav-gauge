@@ -1,24 +1,20 @@
 import { FC, useState } from "react";
-import { useMachineWard, useMultipleTranslations } from "@apparatus";
+import { ToolPanelProps, useMachineWard, useMultipleTranslations } from "@apparatus";
 import { clamp, useSubjectState } from "@tinker-chest";
-import { ClockInput, Checkbox, Fieldset, ClockSliceInput, IconRotateInput, Slider, TextInput, ToggleSwitch } from "@web-ui";
-import { Animatrix } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { ClockInput, Checkbox, Fieldset, ClockSliceInput, IconRotateInput, Slider, TextInput, ToggleSwitch, Label, Span } from "@web-ui";
+import { Animatrix, RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { WebMarkerImageData } from "../images/image-parser";
 import { Icons } from "@ui";
 import styles from './animation-controls.module.css';
 
-interface Props {
-    map: maplibregl.Map;
-    animatrix: Animatrix;
-}
-
-export const AnimationControls: FC<Props> = ({
+export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibregl.Map, File, WebMarkerImageData>> = ({
     map,
     animatrix,
 }) => {
     const { chronoLens } = useMachineWard();
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [animationControls, setAnimationControls] = useSubjectState(animatrix.controls$);
-    const [searchQuery, setSearchQuery] = useState('');
+    const [searchQuery, setSearchQuery] = useSubjectState(animatrix.searchQuery$);
 
     const [
         generalLabel,
@@ -33,7 +29,6 @@ export const AnimationControls: FC<Props> = ({
         imagePauseDurationLabel,
         speedMultiplierLabel,
         easeDurationLabel,
-        searchLabel,
     ] = useMultipleTranslations([
         { n: animatrix.namespace, t: animatrix.translationKey.General },
         { n: animatrix.namespace, t: animatrix.translationKey.FollowCurrentPoint },
@@ -47,7 +42,6 @@ export const AnimationControls: FC<Props> = ({
         { n: animatrix.namespace, t: animatrix.translationKey.ImagePauseDuration },
         { n: animatrix.namespace, t: animatrix.translationKey.SpeedMultiplier },
         { n: animatrix.namespace, t: animatrix.translationKey.EaseDuration },
-        { n: animatrix.namespace, t: animatrix.translationKey.Search },
     ]);
 
     const matchesSearch = (label: string): boolean => {
@@ -87,42 +81,38 @@ export const AnimationControls: FC<Props> = ({
 
     return (
         <div className={styles['container']}>
-            <TextInput
-                id="animation-controls-search"
-                value={searchQuery}
-                onChange={setSearchQuery}
-                placeholder={searchLabel}
-                aria-label={searchLabel}
-                size="xs"
-                className={styles['search']}
-            />
             {showGeneral && (
-                <Fieldset label={generalLabel} size="sm" expandable>
-                    <div className={styles["section"]}>
-                        <ClockInput
-                            id="animation-controls-image-pause-duration"
-                            label={imagePauseDurationLabel}
-                            value={displayImageDuration / 1000 * 6}
-                            formatValue={(angle) => `${Math.round(angle / 6)}s`}
-                            min={Animatrix.displayImageDurationRange[0] / 1000 * 6}
-                            max={Animatrix.displayImageDurationRange[1] / 1000 * 6}
-                            onChange={(value) => setAnimationControls((prev) => ({
-                                ...prev, displayImageDuration: clamp(value * 1000 / 6, Animatrix.displayImageDurationRange)
-                            }))}
-                        />
-                        <Slider
-                            id="animation-controls-speed-multiplier"
-                            label={speedMultiplierLabel}
-                            value={speedMultiplier}
-                            min={Animatrix.speedMultiplierRange[0]}
-                            max={Animatrix.speedMultiplierRange[1]}
-                            step={1000}
-                            onChange={(value) => setAnimationControls((prev) => ({
-                                ...prev, speedMultiplier: clamp(value, Animatrix.speedMultiplierRange)
-                            }))}
-                            size="xs"
-                        />
-                    </div>
+                <Fieldset label={generalLabel} size="sm" expandable contentClassName={styles['fieldset']}>
+                    <Label htmlFor="animation-controls-image-pause-duration" align="right">
+                        {imagePauseDurationLabel}
+                    </Label>
+                    <ClockInput
+                        id="animation-controls-image-pause-duration"
+                        variant="fill-inverse"
+                        value={displayImageDuration / 1000 * 6}
+                        formatValue={(angle) => `${Math.round(angle / 6)}s`}
+                        min={Animatrix.displayImageDurationRange[0] / 1000 * 6}
+                        max={Animatrix.displayImageDurationRange[1] / 1000 * 6}
+                        onChange={(value) => setAnimationControls((prev) => ({
+                            ...prev, displayImageDuration: clamp(value * 1000 / 6, Animatrix.displayImageDurationRange)
+                        }))}
+                    />
+                    <Span tabular>{Math.round(displayImageDuration / 1000)}s</Span>
+                    <Label htmlFor="animation-controls-speed-multiplier" align="right">
+                        {speedMultiplierLabel}
+                    </Label>
+                    <Slider
+                        id="animation-controls-speed-multiplier"
+                        value={speedMultiplier}
+                        min={Animatrix.speedMultiplierRange[0]}
+                        max={Animatrix.speedMultiplierRange[1]}
+                        step={1000}
+                        onChange={(value) => setAnimationControls((prev) => ({
+                            ...prev, speedMultiplier: clamp(value, Animatrix.speedMultiplierRange)
+                        }))}
+                        size="xs"
+                    />
+                    <Span tabular>{speedMultiplier}</Span>
                 </Fieldset>
             )}
             {showFollowCurrentPoint && (
@@ -139,6 +129,7 @@ export const AnimationControls: FC<Props> = ({
                         />
                     }
                     expandable
+                    contentClassName={styles['fieldset']}
                 >
                     <div className={styles["section"]}>
                         {matchesSearch(zoomLabel) && (

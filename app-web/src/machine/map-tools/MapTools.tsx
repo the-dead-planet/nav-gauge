@@ -291,7 +291,7 @@ export const MapTools: FC<Props> = ({ map, children }) => {
         const mapLayoutControlsId = 'map-layout-controls';
         toolsStation.addToolPanel(mapLayoutControlsId, {
             title: { n: cartomancer.namespace, t: cartomancer.translationKey.CartoConfig },
-            component: CartoConfigPanel,
+            contentComponent: CartoConfigPanel,
             icon: Icons.NounProject.MapLayout,
             placement: 'left'
         });

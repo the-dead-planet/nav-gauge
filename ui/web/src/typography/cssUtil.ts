@@ -5,6 +5,7 @@ import styles from './typography.module.css';
 export const textCssNames = ({
     color = defaultTypographyProps.color,
     fontType = defaultTypographyProps.fontType,
+    align,
     bold,
     shadow,
     tabular,
@@ -28,6 +29,7 @@ export const textCssNames = ({
         styles[`font-${fontType}`],
         {
             [styles[`color-${color}`]]: !!color,
+            [styles[`align-${align}`]]: !!align,
             [styles['bold']]: !!bold,
             [styles['shadow']]: !!shadow,
             [styles['tabular']]: !!tabular,

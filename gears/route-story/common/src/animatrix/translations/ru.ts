@@ -12,7 +12,7 @@ const ru: TranslationTable<AnimatrixTranslationKey>['ru'] = {
     "max-bearing-diff-per-frame": 'Макс. изменение пеленга за кадр',
     "pitch": 'Наклон',
     "zoom": 'Зум',
-    "image-pause-duration": 'Длительность паузы изображения (мс)',
+    "image-pause-duration": 'Длительность паузы изображения',
     "speed-multiplier": 'Множитель скорости',
     "ease-duration": 'Длительность перехода',
     "search": 'Поиск управления',

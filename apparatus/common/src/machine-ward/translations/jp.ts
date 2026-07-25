@@ -11,6 +11,8 @@ const jp: TranslationTable<MachineTranslationKey>['jp'] = {
     gears: 'ギア',
     collapse: '折りたたむ',
     expand: '展開する',
+    'panel-menu': 'Panel options',
+    'swap-placement': 'Place panel on the {{placement}}',
 };
 
 export default jp;

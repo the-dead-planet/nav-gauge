@@ -44,4 +44,6 @@ export enum MachineTranslationKey {
     Gears = 'gears',
     Collapse = 'collapse',
     Expand = 'expand',
+    PanelMenu = 'panel-menu',
+    SwapPlacement = 'swap-placement',
 }

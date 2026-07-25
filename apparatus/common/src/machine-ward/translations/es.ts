@@ -11,6 +11,8 @@ const es: TranslationTable<MachineTranslationKey>['es'] = {
     gears: 'Engranajes',
     collapse: 'Contraer',
     expand: 'Expandir',
+    'panel-menu': 'Panel options',
+    'swap-placement': 'Place panel on the {{placement}}',
 };
 
 export default es;

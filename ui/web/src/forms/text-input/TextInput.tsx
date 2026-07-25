@@ -37,6 +37,7 @@ export const TextInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' | 
             styles[`highlight-${highlightColor}`],
             styles[`size-${size}`],
             styles[`variant-${variant}`],
+            className
         )}>
             {label ? <label htmlFor={id} className={styles.label}>{label}</label> : null}
             <input
@@ -46,7 +47,7 @@ export const TextInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' | 
                 onChange={handleChange}
                 onClick={handleClick}
                 disabled={disabled}
-                className={classNames(styles.input, className)}
+                className={styles.input}
                 {...props}
             />
         </div>

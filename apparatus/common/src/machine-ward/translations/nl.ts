@@ -11,6 +11,8 @@ const nl: TranslationTable<MachineTranslationKey>['nl'] = {
     gears: 'Versnellingen',
     collapse: 'Inklappen',
     expand: 'Uitklappen',
+    'panel-menu': 'Panel options',
+    'swap-placement': 'Place panel on the {{placement}}',
 };
 
 export default nl;
