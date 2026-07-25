@@ -23,8 +23,9 @@
 
 .fieldset {
     display: grid;
-    grid-template-columns: 4fr 3fr 1fr;
-    gap: 5px;
+    grid-template-columns: 4fr 5fr 1fr;
+    column-gap: 5px;
+    row-gap: 20px;
     align-items: center;
     font-size: 12px;
 }

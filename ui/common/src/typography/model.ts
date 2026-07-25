@@ -28,6 +28,7 @@ export interface TypographyProps {
     color?: ColorVariant;
     fontType?: FontType;
     align?: 'left' | 'right';
+    nowrap?: boolean;
     shadow?: boolean;
     bold?: boolean;
     tabular?: boolean;

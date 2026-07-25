@@ -40,6 +40,7 @@ export const Text: FC<TextProps> = ({
     variant = 'body',
     color,
     align,
+    nowrap,
     tabular,
     fontType = defaultTypographyProps.fontType,
     style,
@@ -49,6 +50,7 @@ export const Text: FC<TextProps> = ({
 
     return (
         <RNText
+            numberOfLines={nowrap ? 1 : undefined}
             style={[
                 variantStyles[variant],
                 {
@@ -58,6 +60,7 @@ export const Text: FC<TextProps> = ({
                         : theme.componentColor('text'),
                     fontVariant: tabular ? ['tabular-nums'] : undefined,
                     textAlign: align,
+                    flexShrink: nowrap ? 1 : undefined,
                 },
                 style,
             ]}

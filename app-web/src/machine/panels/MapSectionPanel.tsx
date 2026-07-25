@@ -66,7 +66,7 @@ export const MapSectionPanel: FC<Props> = ({
                                             aria-label={panelMenuLabel}
                                             tooltip={panelMenuLabel}
                                             tooltipPlacement="bottom"
-                                            placement="bottom-right"
+                                            placement={toolPanel.placement === "right" ? "bottom-right" : "bottom-left"}
                                             iconActiveColor="secondary"
                                             iconSize="xs"
                                         // menuListClassName={styles['menu']}

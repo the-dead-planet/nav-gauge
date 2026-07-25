@@ -82,7 +82,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
     return (
         <div className={styles['container']}>
             {showGeneral && (
-                <Fieldset label={generalLabel} size="sm" expandable contentClassName={styles['fieldset']}>
+                <Fieldset label={generalLabel} expandable contentClassName={styles['fieldset']}>
                     <Label htmlFor="animation-controls-image-pause-duration" align="right">
                         {imagePauseDurationLabel}
                     </Label>
@@ -118,7 +118,6 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
             {showFollowCurrentPoint && (
                 <Fieldset
                     label={followCurrentPointLabel}
-                    size="sm"
                     append={
                         <ToggleSwitch
                             id="animation-controls-follow-current-point"
@@ -131,11 +130,13 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
                     expandable
                     contentClassName={styles['fieldset']}
                 >
-                    <div className={styles["section"]}>
-                        {matchesSearch(zoomLabel) && (
+                    {matchesSearch(zoomLabel) && (
+                        <>
+                            <Label htmlFor="animation-controls-zoom" align="right">
+                                {zoomLabel}
+                            </Label>
                             <Slider
                                 id="animation-controls-zoom"
-                                label={zoomLabel}
                                 value={zoom}
                                 step={0.1}
                                 min={Animatrix.zoomRange[0]}
@@ -151,11 +152,16 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
                                 size="xs"
                                 disabled={!followCurrentPoint}
                             />
-                        )}
-                        {matchesSearch(easeDurationLabel) && (
+                            <Span tabular>{zoom.toFixed(1)}</Span>
+                        </>
+                    )}
+                    {matchesSearch(easeDurationLabel) && (
+                        <>
+                            <Label htmlFor="animation-controls-ease-duration" align="right">
+                                {easeDurationLabel}
+                            </Label>
                             <Slider
                                 id="animation-controls-ease-duration"
-                                label={easeDurationLabel}
                                 value={easeDuration}
                                 min={Animatrix.easeDurationRange[0]}
                                 max={Animatrix.easeDurationRange[1]}
@@ -166,14 +172,32 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
                                 size="xs"
                                 disabled={!followCurrentPoint}
                             />
-                        )}
-                        {matchesSearch(cameraAngleLabel) && (
-                            <IconRotateInput
+                            <Span tabular>{easeDuration}ms</Span>
+                        </>
+                    )}
+                    {matchesSearch(autoRotateLabel) && (
+                        <>
+                            <span />
+                            <Checkbox
+                                id="animation-controls-auto-rotate"
+                                checked={autoRotate}
+                                size="sm"
+                                onChange={() => setAnimationControls((prev) => ({ ...prev, autoRotate: !prev.autoRotate }))}
+                                disabled={!followCurrentPoint}
+                            >
+                                {autoRotateLabel}
+                            </Checkbox>
+                            <span />
+                        </>
+                    )}
+                    {matchesSearch(cameraAngleLabel) && (
+                        <>
+                            <Label htmlFor="animation-controls-camera-angle" align="right">
+                                {cameraAngleLabel}
+                            </Label>
+                            <ClockInput
                                 id="animation-controls-camera-angle"
-                                valueAdjustment={-90}
-                                icon={Icons.NounProject.CameraVideoSide}
-                                label={cameraAngleLabel}
-                                size='sm'
+                                size='xs'
                                 value={cameraAngle}
                                 min={Animatrix.cameraAngleRange[0]}
                                 max={Animatrix.cameraAngleRange[1]}
@@ -182,31 +206,16 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
                                 }))}
                                 disabled={!followCurrentPoint}
                             />
-                        )}
-                        {matchesSearch(cameraRollLabel) && (
-                            <IconRotateInput
-                                id="animation-controls-camera-roll"
-                                label={cameraRollLabel}
-                                icon={Icons.NounProject.CameraVideoFront}
-                                size='sm'
-                                value={cameraRoll}
-                                min={Animatrix.cameraRollRange[0]}
-                                max={Animatrix.cameraRollRange[1]}
-                                onChange={(value) => {
-                                    setAnimationControls((prev) => ({
-                                        ...prev, cameraRoll: clamp(value, Animatrix.cameraRollRange)
-                                    }));
-                                    if (!isPlaying) {
-                                        map.setRoll(value);
-                                    }
-                                }}
-                                disabled={!followCurrentPoint}
-                            />
-                        )}
-                        {matchesSearch(pitchLabel) && (
+                            <Span tabular>{cameraAngle}°</Span>
+                        </>
+                    )}
+                    {matchesSearch(pitchLabel) && (
+                        <>
+                            <Label htmlFor="animation-controls-pitch" align="right">
+                                {pitchLabel}
+                            </Label>
                             <ClockSliceInput
                                 id="animation-controls-pitch"
-                                label={pitchLabel}
                                 thumbIcon={Icons.NounProject.CameraVideoSide}
                                 size='xs'
                                 value={pitch}
@@ -222,22 +231,41 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
                                 }}
                                 disabled={!followCurrentPoint}
                             />
-                        )}
-                        {matchesSearch(autoRotateLabel) && (
-                            <Checkbox
-                                id="animation-controls-auto-rotate"
-                                checked={autoRotate}
-                                size="sm"
-                                onChange={() => setAnimationControls((prev) => ({ ...prev, autoRotate: !prev.autoRotate }))}
+                            <Span tabular>{pitch}°</Span>
+                        </>
+                    )}
+                    {matchesSearch(cameraRollLabel) && (
+                        <>
+                            <Label htmlFor="animation-controls-camera-roll" align="right">
+                                {cameraRollLabel}
+                            </Label>
+                            <IconRotateInput
+                                id="animation-controls-camera-roll"
+                                icon={Icons.NounProject.CameraVideoFront}
+                                size='sm'
+                                value={cameraRoll}
+                                min={Animatrix.cameraRollRange[0]}
+                                max={Animatrix.cameraRollRange[1]}
+                                onChange={(value) => {
+                                    setAnimationControls((prev) => ({
+                                        ...prev, cameraRoll: clamp(value, Animatrix.cameraRollRange)
+                                    }));
+                                    if (!isPlaying) {
+                                        map.setRoll(value);
+                                    }
+                                }}
                                 disabled={!followCurrentPoint}
-                            >
-                                {autoRotateLabel}
-                            </Checkbox>
-                        )}
-                        {matchesSearch(bearingLineLengthInMetersLabel) && (
+                            />
+                            <Span tabular>{cameraRoll}°</Span>
+                        </>
+                    )}
+                    {matchesSearch(bearingLineLengthInMetersLabel) && (
+                        <>
+                            <Label htmlFor="animation-controls-bearing-line-length-in-meters" align="right">
+                                {bearingLineLengthInMetersLabel}
+                            </Label>
                             <Slider
                                 id="animation-controls-bearing-line-length-in-meters"
-                                label={bearingLineLengthInMetersLabel}
                                 value={bearingLineLengthInMeters}
                                 step={100}
                                 min={Animatrix.bearingLineLengthInMetersRange[0]}
@@ -248,11 +276,16 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
                                 size="xs"
                                 disabled={!followCurrentPoint || !autoRotate}
                             />
-                        )}
-                        {matchesSearch(maxBearingDiffPerFrameLabel) && (
+                            <Span tabular>{bearingLineLengthInMeters}m</Span>
+                        </>
+                    )}
+                    {matchesSearch(maxBearingDiffPerFrameLabel) && (
+                        <>
+                            <Label htmlFor="animation-controls-max-bearing-diff-per-frame" align="right">
+                                {maxBearingDiffPerFrameLabel}
+                            </Label>
                             <ClockInput
                                 id="animation-controls-max-bearing-diff-per-frame"
-                                label={maxBearingDiffPerFrameLabel}
                                 size='xs'
                                 value={maxBearingDiffPerFrame}
                                 min={Animatrix.maxBearingDiffPerFrameRange[0]}
@@ -262,8 +295,9 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
                                 }))}
                                 disabled={!followCurrentPoint}
                             />
-                        )}
-                    </div>
+                            <Span tabular>{maxBearingDiffPerFrame}°</Span>
+                        </>
+                    )}
                 </Fieldset>
             )}
         </div>

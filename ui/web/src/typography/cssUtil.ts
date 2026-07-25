@@ -6,6 +6,7 @@ export const textCssNames = ({
     color = defaultTypographyProps.color,
     fontType = defaultTypographyProps.fontType,
     align,
+    nowrap,
     bold,
     shadow,
     tabular,
@@ -30,6 +31,7 @@ export const textCssNames = ({
         {
             [styles[`color-${color}`]]: !!color,
             [styles[`align-${align}`]]: !!align,
+            [styles['nowrap']]: !!nowrap,
             [styles['bold']]: !!bold,
             [styles['shadow']]: !!shadow,
             [styles['tabular']]: !!tabular,
