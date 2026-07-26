@@ -10,6 +10,7 @@ const jp: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['jp'] 
     "upload-file": 'GPSトラックを含むファイルをアップロード',
     "replace-file": 'GPSトラックを含むファイルを置き換え',
     "purge-story": 'ストーリーをパージ',
+    "purge-story-text": 'すべてのストーリーデータをパージしてもよろしいですか？ルートと画像が削除され、元に戻せません。',
     "cancel": 'キャンセル',
     "destroy-recording": '監視資料を破棄',
     "start-recording": '監視を開始',

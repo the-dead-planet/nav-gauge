@@ -130,7 +130,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryPr
                         />
                     }
                     expandable
-                    contentClassName={styles['fieldset']}
+                    contentClassName={classNames(styles['fieldset'], styles['top-padding'])}
                 >
                     {matchesSearch(zoomLabel) && (
                         <>

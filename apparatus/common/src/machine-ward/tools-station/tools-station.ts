@@ -9,6 +9,7 @@ import {
     ObservedToolIcon,
     ToolIconPlacement,
     TopToolsProps,
+    PanelLayout,
 } from "./model";
 import { TranslationId } from "../translatron";
 
@@ -48,6 +49,8 @@ export class ToolsStation<TMap> {
     public activeLeftPanelToolId$ = new BehaviorSubject<string | null>(null);
     public activeRightPanelToolId$ = new BehaviorSubject<string | null>(null);
     public activeBottomPanelToolId$ = new BehaviorSubject<string | null>(null);
+
+    public panelWidths$ = new BehaviorSubject<PanelLayout>({ leftWidth: 360, rightWidth: 360 });
 
     /**
      * Tools to display in icons around the map.

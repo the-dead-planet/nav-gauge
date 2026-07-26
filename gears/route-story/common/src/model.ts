@@ -64,6 +64,7 @@ export enum RouteStoryTranslationKey {
     Image = 'image',
     ShowImageMarkers = 'show-image-markers',
     HideImageMarkers = 'hide-image-markers',
+    PurgeStoryText = 'purge-story-text',
 }
 
 export type Preset = 'default' | 'racing-game';

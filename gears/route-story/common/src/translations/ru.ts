@@ -10,6 +10,7 @@ const ru: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['ru'] 
     "upload-file": 'Загрузить файл с GPS-треками',
     "replace-file": 'Заменить файл с GPS-треками',
     "purge-story": 'Очистить историю',
+    "purge-story-text": 'Вы уверены, что хотите очистить все данные истории? Это удалит маршрут и изображения, и это невозможно отменить.',
     "cancel": 'Отмена',
     "destroy-recording": 'Уничтожить материалы наблюдения',
     "start-recording": 'Начать наблюдение',

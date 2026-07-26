@@ -3,7 +3,7 @@ import { Button } from "@web-ui";
 import { useObservableState, useSubjectState } from "@tinker-chest";
 import { ToolPanelPlacement, useMachineWard } from "@apparatus";
 import { Icons, TooltipPlacement, } from "@ui";
-import { BottomPanelHeaderContainer } from "./BottomPanelHeaderContainer";
+import styles from '../machine.module.css';
 
 interface Props {
     placement: ToolPanelPlacement;
@@ -11,7 +11,7 @@ interface Props {
     onActiveIdChange: (activeId: string | null) => void;
 }
 
-export const MapSectionBottomPanelHeader: FC<Props> = ({
+export const SideToolPanelHeader: FC<Props> = ({
     placement,
     activeId,
     onActiveIdChange,
@@ -27,31 +27,12 @@ export const MapSectionBottomPanelHeader: FC<Props> = ({
         right: "left",
         bottom: "top",
     };
-    const color = 'primary';
-    const buttonSize = 'sm';
+    const color = placement === 'bottom' ? 'primary' : 'secondary';
+    const buttonSize = placement === 'bottom' ? 'sm' : 'md';
+    const expandCollapseLabel = translatron.translate(settings.language, registry, { n: namespace, t: activeId === null ? translationKey.Expand : translationKey.Collapse });
 
     return (
-        <BottomPanelHeaderContainer
-            sideActions={
-                <Button
-                    size={buttonSize}
-                    variant='ghost'
-                    color={color}
-                    icon={Icons.NounProject.ChevronDownDouble}
-                    iconRotateZ={activeId === null ? 180 : 0}
-                    aria-label={translatron.translate(settings.language, registry, { n: namespace, t: activeId === null ? translationKey.Expand : translationKey.Collapse })}
-                    tooltip={translatron.translate(settings.language, registry, { n: namespace, t: activeId === null ? translationKey.Expand : translationKey.Collapse })}
-                    tooltipPlacement={tooltipPlacement[placement]}
-                    onClick={() => {
-                        if (activeId !== null) {
-                            onActiveIdChange(null);
-                        } else {
-                            onActiveIdChange(effectivePanels[0]?.id)
-                        }
-                    }}
-                />
-            }
-        >
+        <div className={styles['content-header']}>
             {effectivePanels.map(({ id, icon, title, }) => {
                 const tooltip = translatron.translate(settings.language, registry, title);
                 const isActive = activeId === id;
@@ -60,8 +41,9 @@ export const MapSectionBottomPanelHeader: FC<Props> = ({
                     <Button
                         key={id}
                         size={buttonSize}
-                        variant={isActive && placement !== 'bottom' ? 'outline' : 'ghost'}
-                        color={color}
+                        variant={isActive && placement === 'right' ? 'outline' : 'ghost'}
+                        color={isActive ? color : "neutral"}
+                        highlightColor={color}
                         active={isActive}
                         icon={icon}
                         aria-label={tooltip}
@@ -72,6 +54,25 @@ export const MapSectionBottomPanelHeader: FC<Props> = ({
                     />
                 );
             })}
-        </BottomPanelHeaderContainer >
+            {placement !== 'bottom' ? <span className={styles['spacer-line']} /> : null}
+            <Button
+                size={buttonSize}
+                variant='ghost'
+                color={color}
+                icon={Icons.NounProject.ChevronDownDouble}
+                iconRotateZ={((placement === 'left' ? 90 : -90) + (activeId === null ? 180 : 0) + 360) % 360}
+                aria-label={expandCollapseLabel}
+                tooltip={expandCollapseLabel}
+                tooltipPlacement={tooltipPlacement[placement]}
+                onClick={() => {
+                    if (activeId !== null) {
+                        onActiveIdChange(null);
+                    } else {
+                        onActiveIdChange(effectivePanels[0]?.id)
+                    }
+                }}
+                className={styles['expand-collapse-button']}
+            />
+        </div>
     );
 };

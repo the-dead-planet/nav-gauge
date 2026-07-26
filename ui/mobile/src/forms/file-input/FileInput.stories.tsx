@@ -40,6 +40,7 @@ export const FileInputVariants: FC = () => {
                     noNameLabel="No file selected"
                     onUpload={() => {}}
                     onPurge={() => {}}
+                    purgeText="Are you sure?"
                 />
             </View>
 
@@ -54,6 +55,7 @@ export const FileInputVariants: FC = () => {
                     noNameLabel="No file selected"
                     onUpload={() => {}}
                     onPurge={() => {}}
+                    purgeText="Are you sure?"
                 />
             </View>
 
@@ -71,6 +73,7 @@ export const FileInputVariants: FC = () => {
                             noNameLabel="No file selected"
                             onUpload={() => {}}
                             onPurge={() => {}}
+                            purgeText="Are you sure?"
                         />
                     </View>
                 ))}
@@ -97,6 +100,7 @@ export const FileInputVariants: FC = () => {
                         noNameLabel="No file selected"
                         onUpload={() => {}}
                         onPurge={() => setFileName(null)}
+                        purgeText="Are you sure?"
                     />
                 </View>
             </View>

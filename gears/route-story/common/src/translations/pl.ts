@@ -10,6 +10,7 @@ const pl: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['pl'] 
     "upload-file": 'Prześlij plik ze śladami GPS',
     "replace-file": 'Zastąp plik ze śladami GPS',
     "purge-story": 'Wyczyść historię',
+    "purge-story-text": 'Czy na pewno chcesz wyczyścić wszystkie dane historii? Spowoduje to usunięcie trasy i obrazów i nie można tego cofnąć.',
     "cancel": 'Anuluj',
     "destroy-recording": 'Zniszcz materiał obserwacyjny',
     "start-recording": 'Rozpocznij obserwację',

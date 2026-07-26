@@ -10,6 +10,7 @@ const de: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['de'] 
     "upload-file": 'GPS-Datei hochladen',
     "replace-file": 'GPS-Datei ersetzen',
     "purge-story": 'Geschichte löschen',
+    "purge-story-text": 'Sind Sie sicher, dass Sie alle Geschichtsdaten löschen möchten? Die Route und Bilder werden entfernt und dies kann nicht rückgängig gemacht werden.',
     "cancel": 'Abbrechen',
     "destroy-recording": 'Überwachungsmaterial vernichten',
     "start-recording": 'Überwachung starten',

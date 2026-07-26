@@ -5,7 +5,7 @@ import { Icons } from "@ui";
 import { Cartomancer, useMachineWard, glitchmitter } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { CartoConfigPanel } from "../controls/CartoConfigPanel";
-import styles from './map-tools.module.css';
+import styles from './map-canvas.module.css';
 import './map.css';
 
 interface Props {
@@ -16,7 +16,7 @@ interface Props {
     children?: ReactNode;
 }
 
-export const MapTools: FC<Props> = ({ map, children }) => {
+export const MapCanvas: FC<Props> = ({ map, children }) => {
     const { cartomancer, toolsStation } = useMachineWard<maplibregl.Map>();
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const [containerRef, setContainerRef] = useState<HTMLElement | null>(null);

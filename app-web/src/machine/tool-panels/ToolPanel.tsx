@@ -1,12 +1,13 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import classNames from "classnames";
-import { Menu, MenuItem, Transition } from "@web-ui";
-import { useObservableState } from "@tinker-chest";
+import { Menu, MenuItem } from "@web-ui";
+import { useObservableState, useSubjectState } from "@tinker-chest";
 import { ToolPanelPlacement, useMachineWard, useMultipleTranslations } from "@apparatus";
-import { TransitionProps } from "@ui";
-import { MapSectionSidePanelHeader } from "./MapSectionSidePanelHeader";
-import { MapSectionBottomPanelHeader } from "./bottom/MapSectionBottomPanelHeader";
-import styles from '../map-section.module.css';
+import { SideToolPanelHeader } from "./SideToolPanelHeader";
+import { BottomToolPanelHeader } from "./bottom/BottomToolPanelPanelHeader";
+import { DEFAULT_WIDTH, PANEL_MIN, PANEL_MIN_LEFT } from "./tool-panel-size";
+import { ToolPanelResizeHandle } from "./ToolPanelResizeHandle";
+import styles from '../machine.module.css';
 
 interface Props {
     placement: ToolPanelPlacement;
@@ -15,27 +16,42 @@ interface Props {
     onActiveIdChange: (activeId: string | null) => void;
 }
 
-export const MapSectionPanel: FC<Props> = ({
+export const ToolPanel: FC<Props> = ({
     placement,
     map,
     activeId,
     onActiveIdChange,
 }) => {
     const { toolsStation, namespace, translationKey } = useMachineWard();
+    const [panelWidths, setPanelWidths] = useSubjectState(toolsStation.panelWidths$);
     const toolPanels = useObservableState(toolsStation.toolPanelsByPlacement$, []);
     const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
     const effectivePanels = toolPanelsByPlacement[placement];
     const toolPanel = effectivePanels.find(({ id }) => id === activeId);
     const targetPlacement = toolPanel?.placement === 'right' ? 'left' : 'right';
-    const slide: { [key in ToolPanelPlacement]: TransitionProps['slide'] } = {
-        left: "to-right",
-        right: "to-left",
-        bottom: "to-top",
+    const showHeader = effectivePanels.length > 0;
+    const isCollapsed = activeId === null;
+    const isLeft = placement === 'left';
+    const panelMin = isLeft ? PANEL_MIN_LEFT : PANEL_MIN;
+    const currentWidth = !showHeader ? 0 : isCollapsed ? panelMin : (isLeft ? panelWidths.leftWidth : panelWidths.rightWidth);
+
+    const [isDragging, setIsDragging] = useState(false);
+
+    const handleActiveIdChange = (newId: string | null) => {
+        onActiveIdChange(newId);
+        if (newId !== null) {
+            const current = isLeft ? panelWidths.leftWidth : panelWidths.rightWidth;
+            if (current <= panelMin) {
+                setPanelWidths((prev) => ({
+                    ...prev,
+                    [isLeft ? 'leftWidth' : 'rightWidth']: DEFAULT_WIDTH,
+                }));
+            }
+        }
     };
-    const showHeader = effectivePanels.length > (placement === 'bottom' ? 0 : 0)
 
     const sideHeader = showHeader ? (
-        <MapSectionSidePanelHeader placement={placement} activeId={activeId} onActiveIdChange={onActiveIdChange} />
+        <SideToolPanelHeader placement={placement} activeId={activeId} onActiveIdChange={handleActiveIdChange} />
     ) : null;
 
     const [
@@ -46,15 +62,47 @@ export const MapSectionPanel: FC<Props> = ({
         { n: namespace, t: translationKey.SwapPlacement, p: { placement: targetPlacement } },
     ]);
 
-    // TODO: Allow changing from one panel at a time to all listed in collapsible sections?
-    // TODO: Allow manual resize
+    if (placement === 'bottom') {
+        return (
+            <div className={classNames(styles['toolbar'], styles[placement])}>
+                {effectivePanels.length > 0 && (
+                    <div className={classNames(styles['content'], {
+                        [styles['with-header']]: showHeader,
+                    })}>
+                        <BottomToolPanelHeader placement={placement} activeId={activeId} onActiveIdChange={onActiveIdChange} />
+                        {toolPanel ? (
+                            <div className={styles['component']}>
+                                {toolPanel.headerComponent ? (
+                                    <div className={styles['component-header']}>
+                                        <toolPanel.headerComponent map={map} placement={toolPanel.placement} />
+                                    </div>
+                                ) : null}
+                                <div className={styles['component-content']}>
+                                    <toolPanel.contentComponent map={map} placement={toolPanel.placement} />
+                                </div>
+                            </div>
+                        ) : null}
+                    </div>
+                )}
+            </div>
+        );
+    }
+
     return (
-        <div className={classNames(styles['toolbar'], styles[placement])}>
-            <Transition slide={slide[placement]} fade render={effectivePanels.length > 0}>
+        <div
+            className={classNames(
+                styles['toolbar'],
+                styles[placement],
+                { [styles['dragging']]: isDragging },
+                { [styles['collapsed']]: isCollapsed },
+                { [styles['expanded']]: !isCollapsed },
+            )}
+            style={{ width: currentWidth }}
+        >
+            {effectivePanels.length > 0 && (
                 <div className={classNames(styles['content'], {
                     [styles['with-header']]: showHeader,
                 })}>
-                    {placement === 'bottom' ? <MapSectionBottomPanelHeader placement={placement} activeId={activeId} onActiveIdChange={onActiveIdChange} /> : null}
                     {placement === 'right' ? sideHeader : null}
                     {toolPanel ? (
                         <div className={styles['component']}>
@@ -69,7 +117,6 @@ export const MapSectionPanel: FC<Props> = ({
                                             placement={toolPanel.placement === "right" ? "bottom-right" : "bottom-left"}
                                             iconActiveColor="secondary"
                                             iconSize="xs"
-                                        // menuListClassName={styles['menu']}
                                         >
                                             <MenuItem
                                                 key="swap-placement"
@@ -99,7 +146,8 @@ export const MapSectionPanel: FC<Props> = ({
                     ) : null}
                     {placement === 'left' ? sideHeader : null}
                 </div>
-            </Transition>
+            )}
+            <ToolPanelResizeHandle placement={placement} onDraggingChange={setIsDragging} />
         </div>
     );
 };

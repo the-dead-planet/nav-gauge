@@ -1,13 +1,13 @@
 import { FC } from "react";
 import { useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
-import styles from './map-section.module.css';
+import styles from '../machine.module.css';
 
 interface Props {
     map?: maplibregl.Map;
 }
 
-export const MapSectionTopTools: FC<Props> = ({
+export const TopToolsGridArea: FC<Props> = ({
     map,
 }) => {
     const { toolsStation } = useMachineWard();

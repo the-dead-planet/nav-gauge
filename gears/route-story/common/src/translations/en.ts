@@ -10,6 +10,7 @@ const en: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['en'] 
     "upload-file": 'Upload file with GPS tracks',
     "replace-file": 'Replace file with GPS tracks',
     "purge-story": 'Purge story',
+    "purge-story-text": 'Are you sure you want to purge all story data? This will remove the route and images and cannot be undone.',
     "cancel": 'Cancel',
     "destroy-recording": 'Destroy surveillance material',
     "start-recording": 'Start surveilling',

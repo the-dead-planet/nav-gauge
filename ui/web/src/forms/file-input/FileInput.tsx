@@ -26,6 +26,7 @@ export const FileInput: FC<Props & ComponentProps<'div'>> = ({
     accept,
     onUpload,
     onPurge,
+    purgeText,
     fileNameComponent: FileNameComponent = Label,
     className,
     ...props
@@ -102,7 +103,7 @@ export const FileInput: FC<Props & ComponentProps<'div'>> = ({
                     }}
                 >
                     <P color={color}>
-                        Are you sure you want to purge all story data? This will remove the route and images and cannot be undone.
+                        {purgeText}
                     </P>
                 </Dialog>
             ) : null}

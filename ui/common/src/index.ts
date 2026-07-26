@@ -23,5 +23,6 @@ export * from './theme';
 export * from './tinkers';
 export * from './tooltip';
 export * from './toggle-switch';
+export * from './resize-handle';
 export * from './transition';
 export * from './typography';

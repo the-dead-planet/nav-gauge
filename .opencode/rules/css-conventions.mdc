@@ -9,4 +9,5 @@ alwaysApply: true
 - CSS modules (`*.module.css`) with `className` are preferred over inline `style` props
 - Only use `style` for truly dynamic values (e.g. computed positions, runtime `transform` with variable degrees)
 - CSS custom properties (`var(--color-foo)`) are web-only; mobile uses theme tokens from `@ui/common/src/theme/specifications.ts`
+- No `!important` — always use higher specificity or source order instead
 - Steampunk/cyber-inspired styling

@@ -3,7 +3,6 @@
     box-sizing: border-box;
     display: grid;
     gap: 20px;
-    max-width: 300px;
 }
 
 .container.left {
@@ -36,6 +35,6 @@
     font-size: 12px;
 }
 
-.top-margin {
+.top-padding {
     margin-top: 15px;
 }

@@ -25,6 +25,7 @@ export const Default = {
                 noNameLabel="No file selected"
                 onUpload={() => {}}
                 onPurge={() => {}}
+                purgeText="Are you sure?"
             />
         </div>
     ),
@@ -42,6 +43,7 @@ export const WithFile = {
                 noNameLabel="No file selected"
                 onUpload={() => {}}
                 onPurge={() => {}}
+                purgeText="Are you sure?"
             />
         </div>
     ),
@@ -62,6 +64,7 @@ export const Colors = {
                     noNameLabel="No file selected"
                     onUpload={() => {}}
                     onPurge={() => {}}
+                    purgeText="Are you sure?"
                 />
             ))}
         </div>
@@ -85,6 +88,7 @@ export const Interactive = {
                     noNameLabel="No file selected"
                     onUpload={(files) => setFileName(files[0]?.name ?? null)}
                     onPurge={() => setFileName(null)}
+                    purgeText="Are you sure?"
                 />
                 <Text>Current file: {fileName ?? 'none'}</Text>
                 <div style={{ display: 'flex', gap: 8 }}>

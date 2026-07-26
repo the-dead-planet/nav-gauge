@@ -13,27 +13,43 @@ interface Props {
     ariaHidden?: boolean;
 }
 
-export const Icon: FC<Props & IconProps> = ({ src, width = 24, height = 24, strokeWidth, ariaHidden = true, className, ...props }) => {
+export const Icon: FC<Props & IconProps> = ({ src, width = 24, height = 24, strokeWidth, ariaHidden = true, className, fallback: userFallback, ...props }) => {
     const color = props.color;
     const fill = props.fill || color;
     const stroke = props.stroke || color;
 
+    const beforeInjection = (svg: SVGSVGElement) => {
+        svg.setAttribute('style', `
+            width:${width}px;
+            height:${height}px;
+            fill:${fill || 'inherit'};
+            stroke:${stroke || 'inherit'};
+            color:${color || 'inherit'};
+            stroke-width:${strokeWidth || 'inherit'}px
+        `);
+    };
+
+    const fallback = () => (
+        <Icon
+            color={color}
+            fill={fill}
+            stroke={stroke}
+            width={width}
+            height={height}
+            strokeWidth={strokeWidth}
+            ariaHidden={ariaHidden}
+            src={Icons.NounProject.Crash}
+            fallback={() => <span>Err!</span>}
+        />
+    );
+
     return (
         <ReactSVG
             src={src}
-            fallback={props.fallback || (() => <Icon {...props} width={width} height={height} strokeWidth={strokeWidth} src={Icons.NounProject.Crash} fallback={() => <span>Err!</span>} />)}
+            fallback={userFallback || fallback}
             wrapper="span"
             aria-hidden={ariaHidden}
-            beforeInjection={(svg) => {
-                svg.setAttribute('style', `
-                    width:${width}px;
-                    height:${height}px;
-                    fill:${fill || 'inherit'};
-                    stroke:${stroke || 'inherit'};
-                    color:${color || 'inherit'};
-                    stroke-width:${strokeWidth || 'inherit'}px
-                `)
-            }}
+            beforeInjection={beforeInjection}
             className={classNames(styles['icon'], className)}
             {...props}
         />

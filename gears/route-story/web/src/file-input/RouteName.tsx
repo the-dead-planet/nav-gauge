@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { parsers, TopToolsProps, useMachineWard } from "@apparatus";
+import { parsers, TopToolsProps, useMultipleTranslations } from "@apparatus";
 import { RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { BevelPanel, Button, FileInput } from "@web-ui";
 import { WebMarkerImageData } from "../images/image-parser";
@@ -15,15 +15,24 @@ export const RouteName: FC<TopToolsProps<maplibregl.Map> & RouteStoryProps<mapli
     fileOperator,
     fitBoundsHandler,
 }) => {
-    const { translatron, individuator } = useMachineWard();
-    const [registry] = useSubjectState(translatron.registry$);
-    const [settings] = useSubjectState(individuator.settings$);
     const [{ routeName, geojson }] = useSubjectState(data$);
-    const fileLabel = translatron.translate(settings.language, registry, { n: gearId, t: routeName ? translationKey.ReplaceFile : translationKey.UploadFile });
-    const purgeLabel = translatron.translate(settings.language, registry, { n: gearId, t: translationKey.PurgeStory });
-    const cancelLabel = translatron.translate(settings.language, registry, { n: gearId, t: translationKey.Cancel });
-    const noNameLabel = translatron.translate(settings.language, registry, { n: gearId, t: translationKey.NoName });
-    const fitBoundsLabel = translatron.translate(settings.language, registry, { n: gearId, t: translationKey.FitBounds });
+
+    const [
+        fileLabel,
+        purgeLabel,
+        cancelLabel,
+        noNameLabel,
+        fitBoundsLabel,
+        purgeStoryText
+    ] = useMultipleTranslations([
+        { n: gearId, t: routeName ? translationKey.ReplaceFile : translationKey.UploadFile },
+        { n: gearId, t: translationKey.PurgeStory },
+        { n: gearId, t: translationKey.Cancel },
+        { n: gearId, t: translationKey.NoName },
+        { n: gearId, t: translationKey.FitBounds },
+        { n: gearId, t: translationKey.FitBounds },
+        { n: gearId, t: translationKey.PurgeStoryText },
+    ]);
 
     return (
         <BevelPanel
@@ -46,6 +55,7 @@ export const RouteName: FC<TopToolsProps<maplibregl.Map> & RouteStoryProps<mapli
                 accept={[...parsers.keys(), "image/png", "image/jpeg", "image/jpg"].join(', ')}
                 onUpload={(files) => fileOperator.uploadFile(files, map)}
                 onPurge={() => fileOperator.resetStory()}
+                purgeText={purgeStoryText}
                 actionButtons={[
                     {
                         id: 'fit-bounds',

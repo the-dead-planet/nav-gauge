@@ -10,6 +10,7 @@ const nl: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['nl'] 
     "upload-file": 'Bestand met GPS-tracks uploaden',
     "replace-file": 'Bestand met GPS-tracks vervangen',
     "purge-story": 'Verhaal zuiveren',
+    "purge-story-text": 'Weet u zeker dat u alle verhaalgegevens wilt zuiveren? Dit verwijdert de route en afbeeldingen en kan niet ongedaan worden gemaakt.',
     "cancel": 'Annuleren',
     "destroy-recording": 'Vernietig surveillantiemateriaal',
     "start-recording": 'Surveillance starten',

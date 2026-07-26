@@ -16,6 +16,7 @@ export interface FileInputProps<TFile> {
     actionButtons?: { id: string; element: ReactNode }[];
     onUpload: (files: TFile[]) => void;
     onPurge: () => void;
+    purgeText: string;
     onError?: (error: Error) => void;
     onIsLoadingChange?: (isLoading: boolean) => void;
 }

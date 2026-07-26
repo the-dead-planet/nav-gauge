@@ -5,14 +5,14 @@ import { CurveLeft } from "./curve/CurveLeft";
 import { CurveRight } from "./curve/CurveRight";
 import { CurveMiddle } from "./curve/CurveMiddle";
 import { CurveSpacer } from "./curve/CurveSpacer";
-import styles from './panel-bottom.module.css';
+import styles from './bottom-tool-panel.module.css';
 
 interface Props {
     sideActions: ReactNode;
     children: ReactNode;
 }
 
-export const BottomPanelHeaderContainer: FC<Props> = ({
+export const BottomToolPanelHeaderContainer: FC<Props> = ({
     sideActions,
     children
 }) => {

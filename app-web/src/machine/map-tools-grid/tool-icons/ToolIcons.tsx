@@ -2,16 +2,16 @@ import { FC } from "react";
 import classNames from "classnames";
 import { useMachineWard } from "@apparatus";
 import { useObservableState } from "@tinker-chest";
-import { ToolIconRight } from "./map-tools/ToolIconRight";
-import { ToolIconLeft } from "./map-tools/ToolIconLeft";
-import styles from './map-section.module.css';
+import { ToolIconRight } from "./ToolIconRight";
+import { ToolIconLeft } from "./ToolIconLeft";
+import styles from '../../machine.module.css';
 
 interface Props {
     map?: maplibregl.Map;
     placement: 'right' | 'left';
 }
 
-export const MapSectionIcons: FC<Props> = ({
+export const ToolIcons: FC<Props> = ({
     map,
     placement,
 }) => {

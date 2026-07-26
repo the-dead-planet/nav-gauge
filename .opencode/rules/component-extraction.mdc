@@ -1,12 +1,12 @@
 ---
-description: Keep components atomic by extracting distinct visual/logical elements into leaf sub-components
-globs: "ui/**/*.{ts,tsx}"
+description: Keep components atomic by extracting distinct visual/logical elements into leaf sub-components and reusable hooks
+globs: "**/*.{ts,tsx}"
 alwaysApply: true
 ---
 
-Break apart monolithic components into composable leaf sub-components. A single component should not define deeply nested JSX inlined — distinct visual or logical elements should be extracted.
+Break apart monolithic components into composable leaf sub-components and extract reusable behavior into custom hooks. A single component should not define deeply nested JSX inlined or hold multiple concerns — distinct visual elements and reusable logic should be extracted.
 
-### When to extract
+### When to extract a component
 
 Any independent visual or logical element that appears inside a component's JSX is a candidate, regardless of rendering target (React DOM, React Native, SVG, etc.). **Always extract** when any of these apply:
 
@@ -15,22 +15,43 @@ Any independent visual or logical element that appears inside a component's JSX 
 - **Geometry/math helpers** that exist solely to produce data for a specific visual element — move them into that element's component.
 - A conditional rendering block that picks between two element types based on a prop (e.g. full circle vs arc path).
 - An outer container plus all interaction wiring, when the only varying child is a single element slot.
+- **A component that exists only to receive and forward handler/subscription/state props** — if a child receives callbacks, state, or observable values that only it uses, the child should subscribe and manage those itself. The parent should not be a passthrough for logic that belongs in the child.
+
+### When to extract a hook
+
+Extract a custom hook when behavior is reusable across components or when a component holds multiple independent concerns. **Always extract** when any of these apply:
+
+- **Interaction logic with refs and callbacks** — drag handlers, resize logic, pointer capture, gesture handling. These are self-contained units of behavior that should not live inline in a component.
+- **State machines or state transitions** — expand/collapse, open/close, active/inactive lifecycle logic with multiple coordinated state updates.
+- **Observer subscriptions** — ResizeObserver, MutationObserver, IntersectionObserver, or any callback-based API that needs setup/teardown. Wrap in a hook that returns reactive values.
+- **A component that mixes rendering with complex stateful behavior** — extract the behavior into a hook, leave only rendering in the component.
+- **The same stateful pattern appears in 2+ components** — extract once, reuse via the hook.
 
 ### Extraction order (bottom-up)
 
 1. **Smallest elements** first — these take props and render a single element or tight grouping.
 2. **Composite groupings** — conditionals or combinations of smaller elements that were previously inlined.
 3. **Full wrapper** — absorbs the container, all refs, interaction handlers, state, and renders every sub-component from steps 1-2 internally. The only varying part is passed as `children`.
+4. **Behavior hooks** — extract interaction logic, state transitions, and observer patterns into hooks co-located with the component.
 
 ### Naming
 
+**Components:**
 - Prefix: same stem as the parent
 - Suffix: describes what it renders
+
+**Hooks:**
+- Prefix: `use`
+- Suffix: describes the behavior (e.g. `usePanelResizeHandle`, `useExpandCollapse`)
 
 ### After extraction
 
 - The parent component should only compute values and render the wrapper + outer structure.
 - Interaction logic, sub-structure, and sub-component rendering lives in the extracted components.
+- Reusable behavior lives in extracted hooks. Components call hooks, hooks do not call components.
+- **Self-contained logic** — the extracted component owns all subscriptions, state, refs, and handlers it needs. If the parent's only reason to hold a piece of state or subscribe to an observable is to forward it as a prop to a single child, the child should internalize that logic instead.
+- **Removability** — deleting the extracted component's file must cleanly remove all its associated logic from the codebase. No handler callbacks, state variables, effect deps, or observable subscriptions should remain orphaned in the parent.
+- **Split data subscriptions from rendering** — when a component subscribes to observables that emit during interaction (e.g. dragging), extract the UI into a leaf subcomponent that receives only stable handler callbacks. Use a `useRef` to bridge the gap: the outer component writes the latest handler to a ref, the inner component receives a stable wrapper `(args) => ref.current(args)` that is auto-memoized by React Compiler (depends only on the stable ref object). This prevents the inner component from re-rendering on every observable emission.
 - Remove any imports no longer needed in the parent.
 - Run typecheck after every extraction.
 
