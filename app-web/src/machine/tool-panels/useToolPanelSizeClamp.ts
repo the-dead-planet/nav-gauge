@@ -21,20 +21,18 @@ export const useToolPanelSizeClamp = () => {
     const leftIconsPresent = toolIconsByPlacement.left.length > 0;
     const rightIconsPresent = toolIconsByPlacement.right.length > 0;
 
-    const [activeLeftPanelToolId] = useSubjectState(toolsStation.activeLeftPanelToolId$);
-    const [activeRightPanelToolId] = useSubjectState(toolsStation.activeRightPanelToolId$);
-    const leftCollapsed = activeLeftPanelToolId === null;
-    const rightCollapsed = activeRightPanelToolId === null;
+    const leftActiveId = useObservableState(toolsStation.activeLeftPanelToolId$, null);
+    const rightActiveId = useObservableState(toolsStation.activeRightPanelToolId$, null);
 
     useEffect(() => {
         const leftState: PanelState = {
             hasToolPanels: leftHasToolPanels,
-            isCollapsed: leftCollapsed,
+            isCollapsed: leftActiveId === null,
             storedWidth: toolsStation.panelWidths$.value.leftWidth,
         };
         const rightState: PanelState = {
             hasToolPanels: rightHasToolPanels,
-            isCollapsed: rightCollapsed,
+            isCollapsed: rightActiveId === null,
             storedWidth: toolsStation.panelWidths$.value.rightWidth,
         };
         const prev = toolsStation.panelWidths$.value;
@@ -43,5 +41,5 @@ export const useToolPanelSizeClamp = () => {
         if (next !== prev) {
             toolsStation.panelWidths$.next(next);
         }
-    }, [windowWidth, leftIconsPresent, rightIconsPresent, leftHasToolPanels, rightHasToolPanels, leftCollapsed, rightCollapsed]);
+    }, [windowWidth, leftIconsPresent, rightIconsPresent, leftHasToolPanels, rightHasToolPanels, leftActiveId, rightActiveId]);
 };

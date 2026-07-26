@@ -1,7 +1,7 @@
 import { FC, useRef } from "react";
 import classNames from "classnames";
 import { ResizeHandle } from "@web-ui";
-import { useObservableState } from "@tinker-chest";
+import { useObservableState, useSubjectState } from "@tinker-chest";
 import type { ToolPanelPlacement } from "@apparatus";
 import { useMachineWard } from "@apparatus";
 import { useTheme } from "@ui";
@@ -20,19 +20,23 @@ interface Props {
     onDraggingChange?: (isDragging: boolean) => void;
 }
 
-interface TriggerProps {
+interface DragState {
+    startX: number;
+    currentX: number;
+    startWidth: number;
+    panelMin: number;
+    hasLeftIcons: boolean;
+    hasRightIcons: boolean;
+    hasLeftPanels: boolean;
+    hasRightPanels: boolean;
+}
+
+const ToolPanelResizeHandleTrigger: FC<{
     placement: ToolPanelPlacement;
     onDrag: (delta: number) => void;
     onDragStart: (clientX: number) => void;
     onDragEnd: () => void;
-}
-
-const ToolPanelResizeHandleTrigger: FC<TriggerProps> = ({
-    placement,
-    onDrag,
-    onDragStart,
-    onDragEnd,
-}) => (
+}> = ({ placement, onDrag, onDragStart, onDragEnd }) => (
     <div className={classNames(styles['resize-handle'], styles[`resize-handle--${placement}`])}>
         <ResizeHandle
             direction="horizontal"
@@ -46,65 +50,67 @@ const ToolPanelResizeHandleTrigger: FC<TriggerProps> = ({
 export const ToolPanelResizeHandle: FC<Props> = ({ placement, onDraggingChange }) => {
     const { toolsStation } = useMachineWard();
     const theme = useTheme();
+    const [activeLeftToolId] = useSubjectState(toolsStation.activeLeftPanelToolId$);
+    const [activeRightToolId] = useSubjectState(toolsStation.activeRightPanelToolId$);
 
-    const isLeft = placement === 'left';
-    const panelMin = isLeft ? PANEL_MIN_LEFT : PANEL_MIN;
-
-    const toolPanels = useObservableState(toolsStation.toolPanelsByPlacement$, []);
-    const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
     const toolIcons = useObservableState(toolsStation.toolIconsByPlacement$, []);
     const toolIconsByPlacement = toolsStation.getToolIconsByPlacement(toolIcons);
+    const toolPanels = useObservableState(toolsStation.toolPanelsByPlacement$, []);
+    const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
 
-    const leftIconsPresent = toolIconsByPlacement.left.length > 0;
-    const rightIconsPresent = toolIconsByPlacement.right.length > 0;
+    const isLeft = placement === 'left';
+    const dragStateRef = useRef<DragState | null>(null);
+
     const hasToolPanels = toolPanelsByPlacement[placement].length > 0;
-
-    const startClientXRef = useRef(0);
-    const startWidthRef = useRef(0);
-    const accumulatedDeltaRef = useRef(0);
-    const handleDragRef = useRef((_delta: number) => {});
-    const handleDragStartRef = useRef((_clientX: number) => {});
-    const handleDragEndRef = useRef(() => {});
-    const onDraggingChangeRef = useRef<((v: boolean) => void) | undefined>(undefined);
-
     if (!hasToolPanels) {
         return null;
     }
 
     const handleDragStart = (clientX: number) => {
-        onDraggingChangeRef.current?.(true);
-        accumulatedDeltaRef.current = 0;
-        startClientXRef.current = clientX;
-        const isCollapsed = (isLeft ? toolsStation.activeLeftPanelToolId$.value : toolsStation.activeRightPanelToolId$.value) === null;
-        startWidthRef.current = isCollapsed
-            ? panelMin
-            : (isLeft ? toolsStation.panelWidths$.value.leftWidth : toolsStation.panelWidths$.value.rightWidth);
+        onDraggingChange?.(true);
+        dragStateRef.current = {
+            startX: clientX,
+            currentX: clientX,
+            startWidth: isLeft
+                ? (activeLeftToolId === null ? PANEL_MIN_LEFT : toolsStation.panelWidths$.value.leftWidth)
+                : (activeRightToolId === null ? PANEL_MIN : toolsStation.panelWidths$.value.rightWidth),
+            panelMin: isLeft ? PANEL_MIN_LEFT : PANEL_MIN,
+            hasLeftIcons: toolIconsByPlacement.left.length > 0,
+            hasRightIcons: toolIconsByPlacement.right.length > 0,
+            hasLeftPanels: toolPanelsByPlacement.left.length > 0,
+            hasRightPanels: toolPanelsByPlacement.right.length > 0,
+        };
     };
 
     const handleDrag = (delta: number) => {
-        accumulatedDeltaRef.current += delta;
+        const ds = dragStateRef.current;
+        if (!ds) return;
 
-        const currentClientX = startClientXRef.current + accumulatedDeltaRef.current;
-        const leftEdge = startClientXRef.current - startWidthRef.current;
-        const widthFromCursor = isLeft
-            ? currentClientX - leftEdge
-            : leftEdge - currentClientX;
+        ds.currentX += delta;
+        const totalDelta = ds.currentX - ds.startX;
 
-        const activeLeftPanelToolId = toolsStation.activeLeftPanelToolId$.value;
-        const activeRightPanelToolId = toolsStation.activeRightPanelToolId$.value;
-        const windowWidth = theme.media$.value.windowWidth;
+        const otherHasPanels = isLeft ? ds.hasRightPanels : ds.hasLeftPanels;
+        const otherCollapsed = isLeft ? activeRightToolId === null : activeLeftToolId === null;
+        const otherWidth = isLeft
+            ? (otherHasPanels && activeRightToolId !== null ? toolsStation.panelWidths$.value.rightWidth : 0)
+            : (otherHasPanels && activeLeftToolId !== null ? toolsStation.panelWidths$.value.leftWidth : 0);
+        const otherMin = isLeft
+            ? (otherHasPanels ? (otherCollapsed ? PANEL_MIN : otherWidth) : 0)
+            : (otherHasPanels ? (otherCollapsed ? PANEL_MIN_LEFT : otherWidth) : 0);
 
-        const iconsReserved = (leftIconsPresent ? LEFT_ICONS_WIDTH : 0) + (rightIconsPresent ? RIGHT_ICONS_WIDTH : 0);
-        const otherHasToolPanels = !isLeft ? toolPanelsByPlacement.left.length > 0 : toolPanelsByPlacement.right.length > 0;
-        const otherCollapsed = !isLeft ? activeLeftPanelToolId === null : activeRightPanelToolId === null;
-        const otherStoredWidth = !isLeft ? toolsStation.panelWidths$.value.leftWidth : toolsStation.panelWidths$.value.rightWidth;
-        const otherMin = !isLeft ? PANEL_MIN_LEFT : PANEL_MIN;
-        const otherEffective = !otherHasToolPanels ? 0 : otherCollapsed ? otherMin : otherStoredWidth;
-        const column3Min = Math.max(TOP_TOOLS_MIN, MAP_MIN);
-        const maxWidth = windowWidth - otherEffective - iconsReserved - column3Min;
+        const iconsReserved = (ds.hasLeftIcons ? LEFT_ICONS_WIDTH : 0)
+            + (ds.hasRightIcons ? RIGHT_ICONS_WIDTH : 0);
 
-        const clampedWidth = Math.max(Math.min(widthFromCursor, maxWidth), panelMin);
-        const currentStored = isLeft ? toolsStation.panelWidths$.value.leftWidth : toolsStation.panelWidths$.value.rightWidth;
+        const maxWidth = theme.media$.value.windowWidth
+            - otherMin
+            - iconsReserved
+            - Math.max(TOP_TOOLS_MIN, MAP_MIN);
+
+        const clampedWidth = Math.max(Math.min(ds.startWidth + (isLeft ? totalDelta : -totalDelta), maxWidth), ds.panelMin);
+
+        const currentStored = isLeft
+            ? toolsStation.panelWidths$.value.leftWidth
+            : toolsStation.panelWidths$.value.rightWidth;
 
         if (clampedWidth !== currentStored) {
             toolsStation.panelWidths$.next({
@@ -113,36 +119,28 @@ export const ToolPanelResizeHandle: FC<Props> = ({ placement, onDraggingChange }
             });
         }
 
+        const currentActiveId = isLeft ? activeLeftToolId : activeRightToolId;
+        const activeIdSubject = isLeft ? toolsStation.activeLeftPanelToolId$ : toolsStation.activeRightPanelToolId$;
         const effectivePanels = toolPanelsByPlacement[placement];
-        const isCollapsed = (isLeft ? activeLeftPanelToolId : activeRightPanelToolId) === null;
-        const activeId$ = isLeft ? toolsStation.activeLeftPanelToolId$ : toolsStation.activeRightPanelToolId$;
 
-        if (isCollapsed && clampedWidth > panelMin && effectivePanels.length > 0) {
-            activeId$.next(effectivePanels[0].id);
-        } else if (!isCollapsed && clampedWidth === panelMin) {
-            activeId$.next(null);
+        if (currentActiveId === null && clampedWidth > ds.panelMin && effectivePanels.length > 0) {
+            activeIdSubject.next(effectivePanels[0].id);
+        } else if (currentActiveId !== null && clampedWidth === ds.panelMin) {
+            activeIdSubject.next(null);
         }
     };
 
     const handleDragEnd = () => {
-        onDraggingChangeRef.current?.(false);
+        dragStateRef.current = null;
+        onDraggingChange?.(false);
     };
-
-    handleDragRef.current = handleDrag;
-    handleDragStartRef.current = handleDragStart;
-    handleDragEndRef.current = handleDragEnd;
-    onDraggingChangeRef.current = onDraggingChange;
-
-    const stableOnDrag = (delta: number) => handleDragRef.current(delta);
-    const stableOnDragStart = (clientX: number) => handleDragStartRef.current(clientX);
-    const stableOnDragEnd = () => handleDragEndRef.current();
 
     return (
         <ToolPanelResizeHandleTrigger
             placement={placement}
-            onDrag={stableOnDrag}
-            onDragStart={stableOnDragStart}
-            onDragEnd={stableOnDragEnd}
+            onDrag={handleDrag}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
         />
     );
 };

@@ -203,7 +203,6 @@
     grid-area: top-tools;
     pointer-events: none;
     min-width: 160px;
-    overflow: hidden;
 }
 
 .gears-heading {
@@ -229,10 +228,7 @@
     margin-top: auto;
 }
 
-.toolbar.dragging {
-    transition: none;
-}
-
+.toolbar.dragging,
 .toolbar.dragging * {
     transition: none;
 }
