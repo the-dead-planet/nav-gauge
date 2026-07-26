@@ -77,21 +77,21 @@ export const MapTools: FC<Props> = ({ map, children }) => {
                 </View>
 
                 <View style={styles.left}>
-                    {toolPanelsByPlacement.left.map(({ id, contentComponent: ToolComponent }) => (
-                        <ToolComponent key={id} map={map} />
+                    {toolPanelsByPlacement.left.map(({ id, placement, contentComponent: ToolComponent }) => (
+                        <ToolComponent key={id} map={map} placement={placement} />
                     ))}
                 </View>
 
                 <View style={styles.right}>
-                    {toolPanelsByPlacement.right.map(({ id, contentComponent: ToolComponent }) => (
-                        <ToolComponent key={id} map={map} />
+                    {toolPanelsByPlacement.right.map(({ id, placement, contentComponent: ToolComponent }) => (
+                        <ToolComponent key={id} map={map} placement={placement} />
                     ))}
                 </View>
             </View>
 
             <View style={styles.bottom}>
-                {toolPanelsByPlacement.bottom.map(({ id, contentComponent: ToolComponent }) => (
-                    <ToolComponent key={id} map={map} />
+                {toolPanelsByPlacement.bottom.map(({ id, placement, contentComponent: ToolComponent }) => (
+                    <ToolComponent key={id} map={map} placement={placement} />
                 ))}
             </View>
         </View>

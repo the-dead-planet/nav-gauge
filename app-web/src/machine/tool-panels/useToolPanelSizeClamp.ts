@@ -25,6 +25,7 @@ export const useToolPanelSizeClamp = () => {
     const rightActiveId = useObservableState(toolsStation.activeRightPanelToolId$, null);
 
     useEffect(() => {
+        console.log({windowWidth})
         const leftState: PanelState = {
             hasToolPanels: leftHasToolPanels,
             isCollapsed: leftActiveId === null,
