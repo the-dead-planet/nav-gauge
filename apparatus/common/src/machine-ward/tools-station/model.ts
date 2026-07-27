@@ -60,3 +60,10 @@ export interface PanelLayout {
     leftWidth: number;
     rightWidth: number;
 }
+
+export interface ToolbarSizeRef {
+    current: {
+        clientHeight: number;
+        clientWidth: number;
+    } | null;
+}

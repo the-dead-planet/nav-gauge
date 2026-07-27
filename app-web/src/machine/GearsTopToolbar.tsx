@@ -10,7 +10,7 @@ import styles from './machine.module.css';
 
 export const GearsTopToolbar: FC = () => {
     const theme = useTheme();
-    const { namespace, translationKey, engine } = useMachineWard();
+    const { namespace, translationKey, engine, toolsStation } = useMachineWard();
 
     const gearsWithEngaged$ = useMemo(() => engine.gears$.pipe(switchMap((gears) => {
         if (gears.length === 0) {
@@ -25,7 +25,12 @@ export const GearsTopToolbar: FC = () => {
     const gears = useObservableState(gearsWithEngaged$, []);
 
     return (
-        <div className={classNames(styles['toolbar'], styles['top'])}>
+        <div
+            ref={(instance) => {
+                toolsStation.topToolbarSizeRef.current = instance;
+            }}
+            className={classNames(styles['toolbar'], styles['top'])}
+        >
             <FlexBox gap="md" alignItems="center" className={styles['content']}>
                 <H2 color="secondary" className={styles['gears-heading']}>
                     <Icon src={Icons.NounProject.Gear} color={theme.color('secondary')} width={20} height={20} />

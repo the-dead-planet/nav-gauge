@@ -131,7 +131,8 @@
     top: 0;
     height: 32px;
     margin-bottom: 15px;
-    background-color: var(--color-background);
+    background-color: rgb(from var(--color-background) r g b / .87);
+    backdrop-filter: blur(2px);
     z-index: 1;
 }
 

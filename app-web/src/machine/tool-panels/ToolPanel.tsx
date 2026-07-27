@@ -59,6 +59,7 @@ export const ToolPanel: FC<Props> = ({
             const maxAvailable = theme.media$.value.windowWidth - otherWidth - iconsReserved - column3Min;
             const clampedWidth = Math.min(Math.max(thisStoredWidth, thisMin), maxAvailable);
             const targetWidth = clampedWidth === thisMin ? DEFAULT_WIDTH : clampedWidth;
+
             setPanelWidths(() => calculateExpandToDefault(
                 targetWidth,
                 otherWidth,
@@ -89,7 +90,12 @@ export const ToolPanel: FC<Props> = ({
 
     if (placement === 'bottom') {
         return (
-            <div className={classNames(styles['toolbar'], styles[placement])}>
+            <div
+                ref={(instance) => {
+                    toolsStation.bottomToolPanelSizeRef.current = instance;
+                }}
+                className={classNames(styles['toolbar'], styles[placement])}
+            >
                 {effectivePanels.length > 0 && (
                     <div className={styles['content']}>
                         <BottomToolPanelHeader placement={placement} activeId={activeId} onActiveIdChange={onActiveIdChange} />
@@ -113,6 +119,16 @@ export const ToolPanel: FC<Props> = ({
 
     return (
         <div
+            ref={(instance) => {
+                switch (placement) {
+                    case "left":
+                        toolsStation.leftToolPanelSizeRef.current = instance;
+                        break;
+                    case "right":
+                        toolsStation.rightToolPanelSizeRef.current = instance;
+                        break;
+                }
+            }}
             className={classNames(
                 styles['toolbar'],
                 styles[placement],

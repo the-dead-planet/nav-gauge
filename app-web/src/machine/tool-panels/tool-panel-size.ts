@@ -21,7 +21,6 @@ export function computeEffectiveWidth(state: PanelState, minWidth: number): numb
     if (!state.hasToolPanels) {
         return 0;
     }
-
     if (state.isCollapsed) {
         return minWidth;
     }
@@ -51,6 +50,7 @@ export function computeLayoutConstraints(
     const column3Min = Math.max(TOP_TOOLS_MIN, MAP_MIN);
     const leftMax = windowWidth - rightEffective - iconsReserved - column3Min;
     const rightMax = windowWidth - leftEffective - iconsReserved - column3Min;
+
     return { leftMax, rightMax, iconsReserved, column3Min };
 }
 
@@ -89,6 +89,7 @@ export function calculateExpandToDefault(
     const column3Min = Math.max(TOP_TOOLS_MIN, MAP_MIN);
     const otherMax = windowWidth - targetWidth - iconsReserved - column3Min;
     const newOther = Math.max(Math.min(otherWidth, otherMax), otherMinWidth);
+    
     return isLeft
         ? { leftWidth: targetWidth, rightWidth: newOther }
         : { leftWidth: newOther, rightWidth: targetWidth };

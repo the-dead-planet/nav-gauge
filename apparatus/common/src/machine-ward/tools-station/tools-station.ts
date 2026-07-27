@@ -10,6 +10,7 @@ import {
     ToolIconPlacement,
     TopToolsProps,
     PanelLayout,
+    ToolbarSizeRef,
 } from "./model";
 import { TranslationId } from "../translatron";
 
@@ -49,6 +50,11 @@ export class ToolsStation<TMap> {
     public activeLeftPanelToolId$ = new BehaviorSubject<string | null>(null);
     public activeRightPanelToolId$ = new BehaviorSubject<string | null>(null);
     public activeBottomPanelToolId$ = new BehaviorSubject<string | null>(null);
+
+    public topToolbarSizeRef: ToolbarSizeRef = { current: null };
+    public rightToolPanelSizeRef: ToolbarSizeRef = { current: null };
+    public bottomToolPanelSizeRef: ToolbarSizeRef = { current: null };
+    public leftToolPanelSizeRef: ToolbarSizeRef = { current: null };
 
     public panelWidths$ = new BehaviorSubject<PanelLayout>({ leftWidth: 360, rightWidth: 360 });
 
