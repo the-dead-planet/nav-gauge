@@ -31,22 +31,6 @@ interface DragState {
     hasRightPanels: boolean;
 }
 
-const ToolPanelResizeHandleTrigger: FC<{
-    placement: ToolPanelPlacement;
-    onDrag: (delta: number) => void;
-    onDragStart: (clientX: number) => void;
-    onDragEnd: () => void;
-}> = ({ placement, onDrag, onDragStart, onDragEnd }) => (
-    <div className={classNames(styles['resize-handle'], styles[`resize-handle--${placement}`])}>
-        <ResizeHandle
-            direction="horizontal"
-            onDrag={onDrag}
-            onDragStart={onDragStart}
-            onDragEnd={onDragEnd}
-        />
-    </div>
-);
-
 export const ToolPanelResizeHandle: FC<Props> = ({ placement, onDraggingChange }) => {
     const { toolsStation } = useMachineWard();
     const theme = useTheme();
@@ -62,6 +46,7 @@ export const ToolPanelResizeHandle: FC<Props> = ({ placement, onDraggingChange }
     const dragStateRef = useRef<DragState | null>(null);
 
     const hasToolPanels = toolPanelsByPlacement[placement].length > 0;
+
     if (!hasToolPanels) {
         return null;
     }
@@ -84,7 +69,9 @@ export const ToolPanelResizeHandle: FC<Props> = ({ placement, onDraggingChange }
 
     const handleDrag = (delta: number) => {
         const ds = dragStateRef.current;
-        if (!ds) return;
+        if (!ds) {
+            return;
+        }
 
         ds.currentX += delta;
         const totalDelta = ds.currentX - ds.startX;
@@ -136,11 +123,13 @@ export const ToolPanelResizeHandle: FC<Props> = ({ placement, onDraggingChange }
     };
 
     return (
-        <ToolPanelResizeHandleTrigger
-            placement={placement}
-            onDrag={handleDrag}
-            onDragStart={handleDragStart}
-            onDragEnd={handleDragEnd}
-        />
+        <div className={classNames(styles['resize-handle'], styles[`resize-handle--${placement}`])}>
+            <ResizeHandle
+                direction="horizontal"
+                onDrag={handleDrag}
+                onDragStart={handleDragStart}
+                onDragEnd={handleDragEnd}
+            />
+        </div>
     );
 };
