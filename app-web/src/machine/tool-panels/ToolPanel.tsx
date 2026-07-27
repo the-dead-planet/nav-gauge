@@ -33,10 +33,11 @@ export const ToolPanel: FC<Props> = ({
     const effectivePanels = toolPanelsByPlacement[placement];
     const toolPanel = effectivePanels.find(({ id }) => id === activeId);
     const targetPlacement = toolPanel?.placement === 'right' ? 'left' : 'right';
+    const showHeader = effectivePanels.length > 0;
     const isCollapsed = activeId === null;
     const isLeft = placement === 'left';
     const panelMin = isLeft ? PANEL_MIN_LEFT : PANEL_MIN;
-    const currentWidth = isCollapsed ? panelMin : (isLeft ? panelWidths.leftWidth : panelWidths.rightWidth);
+    const currentWidth = !showHeader ? 0 : isCollapsed ? panelMin : (isLeft ? panelWidths.leftWidth : panelWidths.rightWidth);
 
     const [isDragging, setIsDragging] = useState(false);
 
@@ -72,13 +73,13 @@ export const ToolPanel: FC<Props> = ({
         }
     };
 
-    const sideHeader = (
+    const sideHeader = showHeader ? (
         <SideToolPanelHeader
             placement={placement}
             activeId={activeId}
             onActiveIdChange={handleActiveIdChange}
         />
-    );
+    ) : null;
 
     const [
         panelMenuLabel,
@@ -97,7 +98,7 @@ export const ToolPanel: FC<Props> = ({
                 className={classNames(styles['toolbar'], styles[placement])}
             >
                 {effectivePanels.length > 0 && (
-                    <div className={styles['content']}>
+                    <div className={classNames(styles['content'], { [styles['with-header']]: showHeader })}>
                         <BottomToolPanelHeader placement={placement} activeId={activeId} onActiveIdChange={onActiveIdChange} />
                         {toolPanel ? (
                             <div className={styles['component']}>
@@ -139,7 +140,7 @@ export const ToolPanel: FC<Props> = ({
             style={{ width: currentWidth }}
         >
             {effectivePanels.length > 0 && (
-                <div className={styles['content']}>
+                <div className={classNames(styles['content'], { [styles['with-header']]: showHeader })}>
                     {/* {placement === 'right' ? sideHeader : null} */}
                     {sideHeader}
                     {toolPanel ? (

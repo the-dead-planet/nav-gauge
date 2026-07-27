@@ -145,11 +145,15 @@
 
 .toolbar.left .content {
     box-shadow: 1px 1px 3px rgb(from var(--color-box-shadow) r g b / .4);
+}
+
+.toolbar.left .content.with-header {
     display: grid;
     grid-template-columns: max-content 1fr;
 }
 
-.toolbar.left.collapsed .content {
+
+.toolbar.left.collapsed .content.with-header {
     display: flex;
     justify-content: center;
 }
@@ -163,6 +167,9 @@
 
 .toolbar.right .content {
     box-shadow: -1px 1px 3px rgb(from var(--color-box-shadow) r g b / .4);
+}
+
+.toolbar.right .content.with-header {
     display: grid;
     grid-template-columns: max-content 1fr;
 }
