@@ -60,15 +60,28 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                     size="xs"
                     color="primary"
                     variant="fill"
-                    value={pendingSettings.dateFormat}
-                    options={Individuator.dateFormatOptions.map(({ value }) => ({
+                    value={pendingSettings.dateFormat.value}
+                    options={Individuator.dateFormatOptions.map(({ value, short }) => ({
                         value,
+                        short,
                         label: DateTime.fromObject(
                             { year: 2026, month: 6, day: 17 },
                             { locale: Translatron.languages[pendingSettings.language].locale }
                         ).toFormat(value).toUpperCase(),
                     }))}
-                    onChange={(dateFormat) => setPendingSettings((prev): IndividuatorSettings => ({ ...prev, dateFormat }))}
+                    onChange={(dateFormat) => setPendingSettings((prev): IndividuatorSettings => {
+                        const option = Individuator.dateFormatOptions.find((option) => option.value === dateFormat);
+                        if (!option) {
+                            return prev;
+                        }
+                        return {
+                            ...prev,
+                            dateFormat: {
+                                value: option.value,
+                                short: option.short,
+                            }
+                        };
+                    })}
                 />
 
                 <P id="individuator-time-format-label" shadow color="primary">

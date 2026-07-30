@@ -8,7 +8,7 @@ export interface IndividuatorSettings {
      * When set to `true`, a native confirmation popup will be shown before closing or reloading the page.
      */
     confirmBeforeLeave: boolean;
-    dateFormat: DateFormat;
+    dateFormat: { value: DateFormat; short: DateFormat; };
     timeFormat: TimeFormat;
     language: Language;
 }

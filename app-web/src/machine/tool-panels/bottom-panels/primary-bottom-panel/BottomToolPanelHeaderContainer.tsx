@@ -9,22 +9,23 @@ import styles from './bottom-tool-panel.module.css';
 
 interface Props {
     sideActions: ReactNode;
+    joinHeaderButtons?: boolean;
     children: ReactNode;
 }
 
 export const BottomToolPanelHeaderContainer: FC<Props> = ({
     sideActions,
+    joinHeaderButtons,
     children
 }) => {
     const { toolsStation } = useMachineWard();
     const [activeLeftPanelToolId] = useSubjectState(toolsStation.activeLeftPanelToolId$);
     const [activeRightPanelToolId] = useSubjectState(toolsStation.activeRightPanelToolId$);
-    const noSidePanels = activeLeftPanelToolId === null && activeRightPanelToolId === null;
-    const bothSidePanels = activeLeftPanelToolId !== null && activeRightPanelToolId !== null;
+    const bothSidePanels = !joinHeaderButtons &&  activeLeftPanelToolId !== null && activeRightPanelToolId !== null;
     const onlyLeftPanel = !bothSidePanels && activeLeftPanelToolId !== null;
     const onlyRightPanel = !bothSidePanels && activeRightPanelToolId !== null;
 
-    const joined = !noSidePanels;
+    const joined = joinHeaderButtons || !(activeLeftPanelToolId === null && activeRightPanelToolId === null);
 
     return (
         <div

@@ -3,9 +3,12 @@ import classNames from "classnames";
 import { ResizeHandle } from "@web-ui";
 import { useObservableState, useSubjectState } from "@tinker-chest";
 import type { ToolPanelPlacement } from "@apparatus";
+
+type ResizeHandlePlacement = ToolPanelPlacement | "bottom-secondary";
 import { useMachineWard } from "@apparatus";
 import { useTheme } from "@ui";
 import {
+    BOTTOM_SECONDARY_PANEL_MIN,
     LEFT_ICONS_WIDTH,
     MAP_MIN,
     PANEL_MIN,
@@ -16,7 +19,7 @@ import {
 import styles from '../machine.module.css';
 
 interface Props {
-    placement: ToolPanelPlacement;
+    placement: ResizeHandlePlacement;
     onDraggingChange?: (isDragging: boolean) => void;
 }
 
@@ -31,6 +34,13 @@ interface DragState {
     hasRightPanels: boolean;
 }
 
+interface BottomSecondaryDragState {
+    startY: number;
+    currentY: number;
+    startHeight: number;
+    panelMin: number;
+}
+
 export const ToolPanelResizeHandle: FC<Props> = ({ placement, onDraggingChange }) => {
     const { toolsStation } = useMachineWard();
     const theme = useTheme();
@@ -43,7 +53,58 @@ export const ToolPanelResizeHandle: FC<Props> = ({ placement, onDraggingChange }
     const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
 
     const isLeft = placement === 'left';
+    const isBottomSecondary = placement === 'bottom-secondary';
     const dragStateRef = useRef<DragState | null>(null);
+    const bottomSecondaryDragStateRef = useRef<BottomSecondaryDragState | null>(null);
+
+    const handleVerticalDragStart = (clientY: number) => {
+        onDraggingChange?.(true);
+        const heightClampMin = BOTTOM_SECONDARY_PANEL_MIN;
+        const heightClampMax = theme.media$.value.windowHeight - 100;
+        bottomSecondaryDragStateRef.current = {
+            startY: clientY,
+            currentY: clientY,
+            startHeight: Math.min(Math.max(toolsStation.panelWidths$.value.bottomSecondaryHeight, heightClampMin), heightClampMax),
+            panelMin: heightClampMin,
+        };
+    };
+
+    const handleVerticalDrag = (delta: number) => {
+        const ds = bottomSecondaryDragStateRef.current;
+        if (!ds) {
+            return;
+        }
+
+        ds.currentY += delta;
+        const totalDelta = ds.currentY - ds.startY;
+        const newHeight = Math.max(Math.min(ds.startHeight - totalDelta, theme.media$.value.windowHeight - 100), ds.panelMin);
+        const currentStored = toolsStation.panelWidths$.value.bottomSecondaryHeight;
+
+        if (newHeight !== currentStored) {
+            toolsStation.panelWidths$.next({
+                ...toolsStation.panelWidths$.value,
+                bottomSecondaryHeight: newHeight,
+            });
+        }
+    };
+
+    const handleVerticalDragEnd = () => {
+        bottomSecondaryDragStateRef.current = null;
+        onDraggingChange?.(false);
+    };
+
+    if (isBottomSecondary) {
+        return (
+            <div className={classNames(styles['resize-handle'], styles['resize-handle--bottom-secondary'])}>
+                <ResizeHandle
+                    direction="vertical"
+                    onDrag={handleVerticalDrag}
+                    onDragStart={handleVerticalDragStart}
+                    onDragEnd={handleVerticalDragEnd}
+                />
+            </div>
+        );
+    }
 
     const hasToolPanels = toolPanelsByPlacement[placement].length > 0;
 

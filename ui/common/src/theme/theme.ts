@@ -30,8 +30,9 @@ export class Theme {
      * Minimum value in pixels from which a breakpoint is active
      */
     public static breakpointThresholds: { [key in Breakpoint]: number } = {
-        xs: 0,
-        sm: 480,
+        xxs: 0,
+        xs: 480,
+        sm: 600,
         md: 768,
         lg: 1024,
         xl: 1280,
@@ -48,6 +49,7 @@ export class Theme {
             ...media,
             windowWidth,
             breakpoint,
+            isXxs: breakpoint === 'xxs',
             isXs: breakpoint === 'xs',
             isSm: breakpoint === 'sm',
             isMd: breakpoint === 'md',
@@ -55,6 +57,7 @@ export class Theme {
             isXl: breakpoint === 'xl',
             isXxl: breakpoint === 'xxl',
             isXxxl: breakpoint === 'xxxl',
+            isLessThanSm: windowWidth < Theme.breakpointThresholds.sm,
             isLessThanMd: windowWidth < Theme.breakpointThresholds.md,
             isLessThanLg: windowWidth < Theme.breakpointThresholds.lg,
             isLessThanXl: windowWidth < Theme.breakpointThresholds.xl,
@@ -63,6 +66,7 @@ export class Theme {
             isMoreThanLg: windowWidth >= Theme.breakpointThresholds.xl,
             isMoreThanMd: windowWidth >= Theme.breakpointThresholds.lg,
             isMoreThanSm: windowWidth >= Theme.breakpointThresholds.md,
+            isMoreThanXs: windowWidth >= Theme.breakpointThresholds.sm,
         };
     };
 

@@ -5,10 +5,13 @@ export const DEFAULT_WIDTH = 360;
 export const LEFT_ICONS_WIDTH = 102;
 export const RIGHT_ICONS_WIDTH = 76;
 export const TOP_TOOLS_MIN = 160;
+export const BOTTOM_SECONDARY_PANEL_MIN = 32;
+export const DEFAULT_BOTTOM_SECONDARY_HEIGHT = 300;
 
 export interface PanelLayout {
     leftWidth: number;
     rightWidth: number;
+    bottomSecondaryHeight: number;
 }
 
 export interface PanelState {
@@ -73,7 +76,7 @@ export function clampPanelLayout(
         return prev;
     }
 
-    return { leftWidth: newLeft, rightWidth: newRight };
+    return { leftWidth: newLeft, rightWidth: newRight, bottomSecondaryHeight: prev.bottomSecondaryHeight };
 }
 
 export function calculateExpandToDefault(
@@ -84,6 +87,7 @@ export function calculateExpandToDefault(
     leftIconsPresent: boolean,
     rightIconsPresent: boolean,
     isLeft: boolean,
+    prevLayout: PanelLayout,
 ): PanelLayout {
     const iconsReserved = (leftIconsPresent ? LEFT_ICONS_WIDTH : 0) + (rightIconsPresent ? RIGHT_ICONS_WIDTH : 0);
     const column3Min = Math.max(TOP_TOOLS_MIN, MAP_MIN);
@@ -91,6 +95,6 @@ export function calculateExpandToDefault(
     const newOther = Math.max(Math.min(otherWidth, otherMax), otherMinWidth);
     
     return isLeft
-        ? { leftWidth: targetWidth, rightWidth: newOther }
-        : { leftWidth: newOther, rightWidth: targetWidth };
+        ? { leftWidth: targetWidth, rightWidth: newOther, bottomSecondaryHeight: prevLayout.bottomSecondaryHeight }
+        : { leftWidth: newOther, rightWidth: targetWidth, bottomSecondaryHeight: prevLayout.bottomSecondaryHeight };
 }

@@ -2,7 +2,7 @@ import { ComponentType } from "react";
 import { BehaviorSubject } from "rxjs";
 import { TranslationId } from "../translatron";
 
-export type ToolPanelPlacement = 'right' | 'bottom' | 'left';
+export type ToolPanelPlacement = 'right' | 'left' | 'bottom';
 export type ToolIconPlacement = 'right' | 'left';
 
 export interface ToolPanelProps<TMap> {
@@ -59,6 +59,7 @@ export interface TopToolsProps<TMap> {
 export interface PanelLayout {
     leftWidth: number;
     rightWidth: number;
+    bottomSecondaryHeight: number;
 }
 
 export interface ToolbarSizeRef {

@@ -50,13 +50,14 @@ export class ToolsStation<TMap> {
     public activeLeftPanelToolId$ = new BehaviorSubject<string | null>(null);
     public activeRightPanelToolId$ = new BehaviorSubject<string | null>(null);
     public activeBottomPanelToolId$ = new BehaviorSubject<string | null>(null);
+    public activeBottomSecondaryPanelToolId$ = new BehaviorSubject<string | null>(null);
 
     public topToolbarSizeRef: ToolbarSizeRef = { current: null };
     public rightToolPanelSizeRef: ToolbarSizeRef = { current: null };
     public bottomToolPanelSizeRef: ToolbarSizeRef = { current: null };
     public leftToolPanelSizeRef: ToolbarSizeRef = { current: null };
 
-    public panelWidths$ = new BehaviorSubject<PanelLayout>({ leftWidth: 360, rightWidth: 360 });
+    public panelWidths$ = new BehaviorSubject<PanelLayout>({ leftWidth: 360, rightWidth: 360, bottomSecondaryHeight: 300 });
 
     /**
      * Tools to display in icons around the map.

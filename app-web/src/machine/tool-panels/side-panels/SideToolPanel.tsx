@@ -2,22 +2,21 @@ import { FC, useState } from "react";
 import classNames from "classnames";
 import { Menu, MenuItem } from "@web-ui";
 import { useObservableState, useSubjectState } from "@tinker-chest";
-import { ToolPanelPlacement, useMachineWard, useMultipleTranslations } from "@apparatus";
+import { useMachineWard, useMultipleTranslations } from "@apparatus";
 import { useTheme } from "@ui";
-import { SideToolPanelHeader } from "./SideToolPanelHeader";
-import { BottomToolPanelHeader } from "./bottom/BottomToolPanelPanelHeader";
-import { DEFAULT_WIDTH, PANEL_MIN, PANEL_MIN_LEFT, calculateExpandToDefault, LEFT_ICONS_WIDTH, RIGHT_ICONS_WIDTH, TOP_TOOLS_MIN, MAP_MIN } from "./tool-panel-size";
-import { ToolPanelResizeHandle } from "./ToolPanelResizeHandle";
-import styles from '../machine.module.css';
+import { ToolPanelHeader } from "../ToolPanelHeader";
+import { DEFAULT_WIDTH, PANEL_MIN, PANEL_MIN_LEFT, calculateExpandToDefault, LEFT_ICONS_WIDTH, RIGHT_ICONS_WIDTH, TOP_TOOLS_MIN, MAP_MIN } from "../tool-panel-size";
+import { ToolPanelResizeHandle } from "../ToolPanelResizeHandle";
+import styles from '../../machine.module.css';
 
 interface Props {
-    placement: ToolPanelPlacement;
+    placement: "left" | "right";
     map?: maplibregl.Map;
     activeId: string | null;
     onActiveIdChange: (activeId: string | null) => void;
 }
 
-export const ToolPanel: FC<Props> = ({
+export const SideToolPanel: FC<Props> = ({
     placement,
     map,
     activeId,
@@ -41,8 +40,9 @@ export const ToolPanel: FC<Props> = ({
 
     const [isDragging, setIsDragging] = useState(false);
 
-    const handleActiveIdChange = (newId: string | null) => {
+    const handleSidePanelActiveIdChange = (newId: string | null) => {
         onActiveIdChange(newId);
+
         if (newId !== null) {
             const otherCollapsed = isLeft
                 ? toolsStation.activeRightPanelToolId$.value === null
@@ -61,7 +61,7 @@ export const ToolPanel: FC<Props> = ({
             const clampedWidth = Math.min(Math.max(thisStoredWidth, thisMin), maxAvailable);
             const targetWidth = clampedWidth === thisMin ? DEFAULT_WIDTH : clampedWidth;
 
-            setPanelWidths(() => calculateExpandToDefault(
+            setPanelWidths((prev) => calculateExpandToDefault(
                 targetWidth,
                 otherWidth,
                 thisMin,
@@ -69,17 +69,10 @@ export const ToolPanel: FC<Props> = ({
                 toolIconsByPlacement.left.length > 0,
                 toolIconsByPlacement.right.length > 0,
                 isLeft,
+                prev,
             ));
         }
     };
-
-    const sideHeader = showHeader ? (
-        <SideToolPanelHeader
-            placement={placement}
-            activeId={activeId}
-            onActiveIdChange={handleActiveIdChange}
-        />
-    ) : null;
 
     const [
         panelMenuLabel,
@@ -89,34 +82,13 @@ export const ToolPanel: FC<Props> = ({
         { n: namespace, t: translationKey.SwapPlacement, p: { placement: targetPlacement } },
     ]);
 
-    if (placement === 'bottom') {
-        return (
-            <div
-                ref={(instance) => {
-                    toolsStation.bottomToolPanelSizeRef.current = instance;
-                }}
-                className={classNames(styles['toolbar'], styles[placement])}
-            >
-                {effectivePanels.length > 0 && (
-                    <div className={classNames(styles['content'], { [styles['with-header']]: showHeader })}>
-                        <BottomToolPanelHeader placement={placement} activeId={activeId} onActiveIdChange={onActiveIdChange} />
-                        {toolPanel ? (
-                            <div className={styles['component']}>
-                                {toolPanel.headerComponent ? (
-                                    <div className={styles['component-header']}>
-                                        <toolPanel.headerComponent map={map} placement={toolPanel.placement} />
-                                    </div>
-                                ) : null}
-                                <div className={styles['component-content']}>
-                                    <toolPanel.contentComponent map={map} placement={toolPanel.placement} />
-                                </div>
-                            </div>
-                        ) : null}
-                    </div>
-                )}
-            </div>
-        );
-    }
+    const sideHeader = showHeader ? (
+        <ToolPanelHeader
+            placement={placement}
+            activeId={activeId}
+            onActiveIdChange={handleSidePanelActiveIdChange}
+        />
+    ) : null;
 
     return (
         <div
@@ -141,7 +113,6 @@ export const ToolPanel: FC<Props> = ({
         >
             {effectivePanels.length > 0 && (
                 <div className={classNames(styles['content'], { [styles['with-header']]: showHeader })}>
-                    {/* {placement === 'right' ? sideHeader : null} */}
                     {sideHeader}
                     {toolPanel ? (
                         <div className={styles['component']}>
@@ -183,10 +154,12 @@ export const ToolPanel: FC<Props> = ({
                             </div>
                         </div>
                     ) : null}
-                    {/* {placement === 'left' ? sideHeader : null} */}
                 </div>
             )}
-            <ToolPanelResizeHandle placement={placement} onDraggingChange={setIsDragging} />
+            <ToolPanelResizeHandle
+                placement={placement}
+                onDraggingChange={setIsDragging}
+            />
         </div>
     );
 };

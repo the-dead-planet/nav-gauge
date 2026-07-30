@@ -5,13 +5,15 @@ import { ToolPanelPlacement, useMachineWard } from "@apparatus";
 import { Icons, TooltipPlacement, } from "@ui";
 import styles from '../machine.module.css';
 
+// TODO: Test decrease tool icon size if isLessThanMd
+
 interface Props {
     placement: ToolPanelPlacement;
     activeId: string | null;
     onActiveIdChange: (activeId: string | null) => void;
 }
 
-export const SideToolPanelHeader: FC<Props> = ({
+export const ToolPanelHeader: FC<Props> = ({
     placement,
     activeId,
     onActiveIdChange,
@@ -21,7 +23,7 @@ export const SideToolPanelHeader: FC<Props> = ({
     const [settings] = useSubjectState(individuator.settings$);
     const toolPanels = useObservableState(toolsStation.toolPanelsByPlacement$, []);
     const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
-    const effectivePanels = toolPanelsByPlacement[placement];
+    const effectivePanels = placement === "bottom" ? toolPanelsByPlacement["left"].concat(toolPanelsByPlacement["right"]) : toolPanelsByPlacement[placement];
     const tooltipPlacement: { [key in ToolPanelPlacement]: TooltipPlacement } = {
         left: "right",
         right: "left",
@@ -41,7 +43,7 @@ export const SideToolPanelHeader: FC<Props> = ({
                     <Button
                         key={id}
                         size={buttonSize}
-                        variant={isActive && placement === 'right' ? 'outline' : 'ghost'}
+                        variant={isActive && placement !== 'left' ? 'outline' : 'ghost'}
                         color={isActive ? color : "neutral"}
                         highlightColor={color}
                         active={isActive}
@@ -60,7 +62,7 @@ export const SideToolPanelHeader: FC<Props> = ({
                 variant='ghost'
                 color={color}
                 icon={Icons.NounProject.ChevronDownDouble}
-                iconRotateZ={((placement === 'left' ? 90 : -90) + (activeId === null ? 180 : 0) + 360) % 360}
+                iconRotateZ={((placement === 'left' ? 90 : placement === "right" ? -90 : 0) + (activeId === null ? 180 : 0) + 360) % 360}
                 aria-label={expandCollapseLabel}
                 tooltip={expandCollapseLabel}
                 tooltipPlacement={tooltipPlacement[placement]}

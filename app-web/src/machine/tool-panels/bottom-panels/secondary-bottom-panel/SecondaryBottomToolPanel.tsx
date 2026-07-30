@@ -1,0 +1,94 @@
+import { FC, useState } from "react";
+import classNames from "classnames";
+import { useObservableState, useSubjectState } from "@tinker-chest";
+import { useMachineWard } from "@apparatus";
+import { useTheme } from "@ui";
+import { BOTTOM_SECONDARY_PANEL_MIN, DEFAULT_BOTTOM_SECONDARY_HEIGHT } from "../../tool-panel-size";
+import { ToolPanelResizeHandle } from "../../ToolPanelResizeHandle";
+import { ToolPanelHeader } from "../../ToolPanelHeader";
+import styles from '../../../machine.module.css';
+
+interface Props {
+    map?: maplibregl.Map;
+    activeId: string | null;
+    onActiveIdChange: (activeId: string | null) => void;
+}
+
+export const SecondaryBottomToolPanel: FC<Props> = ({
+    map,
+    activeId,
+    onActiveIdChange,
+}) => {
+    const { toolsStation } = useMachineWard();
+    const theme = useTheme();
+    const [panelWidths, setPanelWidths] = useSubjectState(toolsStation.panelWidths$);
+    const toolPanels = useObservableState(toolsStation.toolPanelsByPlacement$, []);
+    const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
+    const effectivePanels = toolPanelsByPlacement["left"].concat(toolPanelsByPlacement["right"]);
+    const toolPanel = effectivePanels.find(({ id }) => id === activeId);
+    const showHeader = effectivePanels.length > 0;
+    const isCollapsed = activeId === null;
+    const [isDragging, setIsDragging] = useState(false);
+
+    const effectiveHeight = !showHeader
+        ? 0
+        : isCollapsed
+            ? BOTTOM_SECONDARY_PANEL_MIN
+            : panelWidths.bottomSecondaryHeight;
+
+    const handleToolSelect = (newId: string | null) => {
+        onActiveIdChange(newId);
+
+        if (newId !== null) {
+            const thisMin = BOTTOM_SECONDARY_PANEL_MIN;
+            const thisStoredHeight = panelWidths.bottomSecondaryHeight;
+            const maxAvailable = theme.media$.value.windowHeight - 100;
+            const clampedHeight = Math.min(Math.max(thisStoredHeight, thisMin), maxAvailable);
+            const targetHeight = clampedHeight === thisMin ? DEFAULT_BOTTOM_SECONDARY_HEIGHT : clampedHeight;
+
+            setPanelWidths((prev) => ({
+                ...prev,
+                bottomSecondaryHeight: targetHeight,
+            }));
+        }
+    };
+
+    return (
+        <div
+            className={classNames(
+                styles['toolbar'],
+                styles['bottom-secondary'],
+                { [styles['dragging']]: isDragging },
+                { [styles['collapsed']]: isCollapsed },
+                { [styles['expanded']]: !isCollapsed },
+            )}
+            style={{ height: effectiveHeight }}
+        >
+            <div className={classNames(styles['content'], { [styles['with-header']]: showHeader })}>
+                {showHeader && (
+                    <ToolPanelHeader
+                        placement="bottom"
+                        activeId={activeId}
+                        onActiveIdChange={handleToolSelect}
+                    />
+                )}
+                {toolPanel ? (
+                    <div className={styles['component']}>
+                        {toolPanel.headerComponent ? (
+                            <div className={styles['component-header']}>
+                                <toolPanel.headerComponent map={map} placement={toolPanel.placement} />
+                            </div>
+                        ) : null}
+                        <div className={styles['component-content']}>
+                            <toolPanel.contentComponent map={map} placement={toolPanel.placement} />
+                        </div>
+                    </div>
+                ) : null}
+            </div>
+            <ToolPanelResizeHandle
+                placement="bottom-secondary"
+                onDraggingChange={setIsDragging}
+            />
+        </div>
+    );
+};

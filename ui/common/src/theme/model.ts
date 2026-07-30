@@ -82,7 +82,7 @@ export interface ThemeSpecification {
 
 export type ThemeMode = 'light' | 'dark';
 
-export type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl';
+export type Breakpoint = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl';
 
 export enum Orientation {
     Portrait,
@@ -97,6 +97,7 @@ export interface Media {
 
 export interface MediaWithBreakpoints extends Media {
     breakpoint: Breakpoint;
+    isXxs: boolean;
     isXs: boolean;
     isSm: boolean;
     isMd: boolean;
@@ -104,6 +105,7 @@ export interface MediaWithBreakpoints extends Media {
     isXl: boolean;
     isXxl: boolean;
     isXxxl: boolean;
+    isLessThanSm: boolean;
     isLessThanMd: boolean;
     isLessThanLg: boolean;
     isLessThanXl: boolean;
@@ -112,6 +114,7 @@ export interface MediaWithBreakpoints extends Media {
     isMoreThanLg: boolean;
     isMoreThanMd: boolean;
     isMoreThanSm: boolean;
+    isMoreThanXs: boolean;
 }
 
 export interface MediaSubscriptionDefinition {
