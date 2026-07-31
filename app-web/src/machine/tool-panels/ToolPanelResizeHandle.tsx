@@ -41,7 +41,10 @@ interface BottomSecondaryDragState {
     panelMin: number;
 }
 
-export const ToolPanelResizeHandle: FC<Props> = ({ placement, onDraggingChange }) => {
+export const ToolPanelResizeHandle: FC<Props> = ({ 
+    placement, 
+    onDraggingChange,
+}) => {
     const { toolsStation } = useMachineWard();
     const theme = useTheme();
     const [activeLeftToolId] = useSubjectState(toolsStation.activeLeftPanelToolId$);
@@ -77,7 +80,7 @@ export const ToolPanelResizeHandle: FC<Props> = ({ placement, onDraggingChange }
 
         ds.currentY += delta;
         const totalDelta = ds.currentY - ds.startY;
-        const newHeight = Math.max(Math.min(ds.startHeight - totalDelta, theme.media$.value.windowHeight - 100), ds.panelMin);
+        const newHeight = Math.max(Math.min(ds.startHeight - totalDelta, theme.media$.value.windowHeight - 100 - 50 - 40 - 70), ds.panelMin);
         const currentStored = toolsStation.panelWidths$.value.bottomSecondaryHeight;
 
         if (newHeight !== currentStored) {

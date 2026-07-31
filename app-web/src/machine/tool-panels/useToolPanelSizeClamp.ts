@@ -8,7 +8,6 @@ import { clampPanelLayout } from "./tool-panel-size";
 export const useToolPanelSizeClamp = () => {
     const theme = useTheme();
     const [media] = useSubjectState(theme.media$);
-    const windowWidth = media.windowWidth;
     const { toolsStation } = useMachineWard();
 
     const toolPanels = useObservableState(toolsStation.toolPanelsByPlacement$, []);
@@ -23,23 +22,39 @@ export const useToolPanelSizeClamp = () => {
 
     const leftActiveId = useObservableState(toolsStation.activeLeftPanelToolId$, null);
     const rightActiveId = useObservableState(toolsStation.activeRightPanelToolId$, null);
+    const bottomSecondaryActiveId = useObservableState(toolsStation.activeBottomSecondaryPanelToolId$, null);
 
     useEffect(() => {
         const leftState: PanelState = {
             hasToolPanels: leftHasToolPanels,
             isCollapsed: leftActiveId === null,
-            storedWidth: toolsStation.panelWidths$.value.leftWidth,
+            storedSize: toolsStation.panelWidths$.value.leftWidth,
         };
         const rightState: PanelState = {
             hasToolPanels: rightHasToolPanels,
             isCollapsed: rightActiveId === null,
-            storedWidth: toolsStation.panelWidths$.value.rightWidth,
+            storedSize: toolsStation.panelWidths$.value.rightWidth,
+        };
+        const bottomSecondaryState: PanelState = {
+            hasToolPanels: leftHasToolPanels || rightHasToolPanels,
+            isCollapsed: bottomSecondaryActiveId === null,
+            storedSize: toolsStation.panelWidths$.value.bottomSecondaryHeight,
         };
         const prev = toolsStation.panelWidths$.value;
-        const next = clampPanelLayout(prev, leftState, rightState, windowWidth, leftIconsPresent, rightIconsPresent);
+        const next = clampPanelLayout(prev, leftState, rightState, bottomSecondaryState, { width: media.windowWidth, height: media.windowHeight }, leftIconsPresent, rightIconsPresent);
 
         if (next !== prev) {
             toolsStation.panelWidths$.next(next);
         }
-    }, [windowWidth, leftIconsPresent, rightIconsPresent, leftHasToolPanels, rightHasToolPanels, leftActiveId, rightActiveId]);
+    }, [
+        media.windowHeight,
+        media.windowHeight,
+        leftIconsPresent,
+        rightIconsPresent,
+        leftHasToolPanels,
+        rightHasToolPanels,
+        leftActiveId,
+        rightActiveId,
+        bottomSecondaryActiveId,
+    ]);
 };

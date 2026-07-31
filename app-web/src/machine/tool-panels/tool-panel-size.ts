@@ -17,7 +17,7 @@ export interface PanelLayout {
 export interface PanelState {
     hasToolPanels: boolean;
     isCollapsed: boolean;
-    storedWidth: number;
+    storedSize: number;
 }
 
 export function computeEffectiveWidth(state: PanelState, minWidth: number): number {
@@ -28,7 +28,7 @@ export function computeEffectiveWidth(state: PanelState, minWidth: number): numb
         return minWidth;
     }
 
-    return state.storedWidth;
+    return state.storedSize;
 }
 
 export function clampPanelWidth(
@@ -43,40 +43,56 @@ export function clampPanelWidth(
 }
 
 export function computeLayoutConstraints(
-    windowWidth: number,
+    window: { width: number; height: number },
     leftEffective: number,
     rightEffective: number,
+    bottomSecondaryEffective: number,
     leftIconsPresent: boolean,
     rightIconsPresent: boolean,
-): { leftMax: number; rightMax: number; iconsReserved: number; column3Min: number } {
+): { leftMax: number; rightMax: number; iconsReserved: number; column3Min: number; bottomSecondaryMax: number; } {
     const iconsReserved = (leftIconsPresent ? LEFT_ICONS_WIDTH : 0) + (rightIconsPresent ? RIGHT_ICONS_WIDTH : 0);
     const column3Min = Math.max(TOP_TOOLS_MIN, MAP_MIN);
-    const leftMax = windowWidth - rightEffective - iconsReserved - column3Min;
-    const rightMax = windowWidth - leftEffective - iconsReserved - column3Min;
+    const leftMax = window.width - rightEffective - iconsReserved - column3Min;
+    const rightMax = window.width - leftEffective - iconsReserved - column3Min;
+    const bottomSecondaryMax = window.height - bottomSecondaryEffective - 50 - 40 - 70 - 100;
+    console.log({bottomSecondaryMax, window, bottomSecondaryEffective})
 
-    return { leftMax, rightMax, iconsReserved, column3Min };
+    return {
+        leftMax,
+        rightMax,
+        iconsReserved,
+        column3Min,
+        bottomSecondaryMax,
+    };
 }
 
 export function clampPanelLayout(
     prev: PanelLayout,
     leftState: PanelState,
     rightState: PanelState,
-    windowWidth: number,
+    bottomSecondaryState: PanelState,
+    window: { width: number; height: number },
     leftIconsPresent: boolean,
     rightIconsPresent: boolean,
 ): PanelLayout {
     const leftEffective = computeEffectiveWidth(leftState, PANEL_MIN_LEFT);
     const rightEffective = computeEffectiveWidth(rightState, PANEL_MIN);
-    const { leftMax, rightMax } = computeLayoutConstraints(windowWidth, leftEffective, rightEffective, leftIconsPresent, rightIconsPresent);
+    const bottomSecondaryEffective = computeEffectiveWidth(bottomSecondaryState, PANEL_MIN);
+    const { leftMax, rightMax, bottomSecondaryMax } = computeLayoutConstraints(window, leftEffective, rightEffective, bottomSecondaryEffective, leftIconsPresent, rightIconsPresent);
 
     const newLeft = leftState.isCollapsed ? prev.leftWidth : Math.min(Math.max(prev.leftWidth, PANEL_MIN_LEFT), leftMax);
     const newRight = rightState.isCollapsed ? prev.rightWidth : Math.min(Math.max(prev.rightWidth, PANEL_MIN), rightMax);
+    const newBottomSecondary = bottomSecondaryState.isCollapsed ? prev.bottomSecondaryHeight : Math.min(Math.max(prev.bottomSecondaryHeight, PANEL_MIN), bottomSecondaryMax);
 
-    if (newLeft === prev.leftWidth && newRight === prev.rightWidth) {
+    if (newLeft === prev.leftWidth && newRight === prev.rightWidth && newBottomSecondary === prev.bottomSecondaryHeight) {
         return prev;
     }
 
-    return { leftWidth: newLeft, rightWidth: newRight, bottomSecondaryHeight: prev.bottomSecondaryHeight };
+    return {
+        leftWidth: newLeft,
+        rightWidth: newRight,
+        bottomSecondaryHeight: newBottomSecondary,
+    };
 }
 
 export function calculateExpandToDefault(
@@ -93,7 +109,7 @@ export function calculateExpandToDefault(
     const column3Min = Math.max(TOP_TOOLS_MIN, MAP_MIN);
     const otherMax = windowWidth - targetWidth - iconsReserved - column3Min;
     const newOther = Math.max(Math.min(otherWidth, otherMax), otherMinWidth);
-    
+
     return isLeft
         ? { leftWidth: targetWidth, rightWidth: newOther, bottomSecondaryHeight: prevLayout.bottomSecondaryHeight }
         : { leftWidth: newOther, rightWidth: targetWidth, bottomSecondaryHeight: prevLayout.bottomSecondaryHeight };

@@ -6,23 +6,23 @@ import type { PanelLayout, PanelState } from "../src/machine/tool-panels/tool-pa
 describe("panel-layout", () => {
     describe("computeEffectiveWidth", () => {
         it("returns 0 when no toolPanels", () => {
-            const state: PanelState = { hasToolPanels: false, isCollapsed: false, storedWidth: 360 };
+            const state: PanelState = { hasToolPanels: false, isCollapsed: false, storedSize: 360 };
             expect(computeEffectiveWidth(state, PANEL_MIN_LEFT)).to.equal(0);
         });
 
         it("returns minWidth when collapsed", () => {
-            const state: PanelState = { hasToolPanels: true, isCollapsed: true, storedWidth: 360 };
+            const state: PanelState = { hasToolPanels: true, isCollapsed: true, storedSize: 360 };
             expect(computeEffectiveWidth(state, PANEL_MIN_LEFT)).to.equal(PANEL_MIN_LEFT);
             expect(computeEffectiveWidth(state, PANEL_MIN)).to.equal(PANEL_MIN);
         });
 
-        it("returns storedWidth when expanded", () => {
-            const state: PanelState = { hasToolPanels: true, isCollapsed: false, storedWidth: 400 };
+        it("returns storedSize when expanded", () => {
+            const state: PanelState = { hasToolPanels: true, isCollapsed: false, storedSize: 400 };
             expect(computeEffectiveWidth(state, PANEL_MIN_LEFT)).to.equal(400);
         });
 
         it("returns 0 when no toolPanels even if collapsed", () => {
-            const state: PanelState = { hasToolPanels: false, isCollapsed: true, storedWidth: 360 };
+            const state: PanelState = { hasToolPanels: false, isCollapsed: true, storedSize: 360 };
             expect(computeEffectiveWidth(state, PANEL_MIN)).to.equal(0);
         });
     });
@@ -51,8 +51,8 @@ describe("panel-layout", () => {
     });
 
     describe("clampPanelLayout", () => {
-        const baseLeft: PanelState = { hasToolPanels: true, isCollapsed: false, storedWidth: 400 };
-        const baseRight: PanelState = { hasToolPanels: true, isCollapsed: false, storedWidth: 400 };
+        const baseLeft: PanelState = { hasToolPanels: true, isCollapsed: false, storedSize: 400 };
+        const baseRight: PanelState = { hasToolPanels: true, isCollapsed: false, storedSize: 400 };
         const column3Min = Math.max(TOP_TOOLS_MIN, MAP_MIN);
 
         it("returns prev reference when nothing changed", () => {
@@ -76,7 +76,7 @@ describe("panel-layout", () => {
         });
 
         it("uses effective width of 0 for absent panels", () => {
-            const noPanels: PanelState = { hasToolPanels: false, isCollapsed: false, storedWidth: 400 };
+            const noPanels: PanelState = { hasToolPanels: false, isCollapsed: false, storedSize: 400 };
             const prev: PanelLayout = { leftWidth: 400, rightWidth: 400, bottomSecondaryHeight: 300 };
             const result = clampPanelLayout(prev, baseLeft, noPanels, 1200, false, false);
             const max = 1200 - 0 - column3Min;
@@ -84,7 +84,7 @@ describe("panel-layout", () => {
         });
 
         it("preserves collapsed panel stored width and clamps other side", () => {
-            const collapsedRight: PanelState = { hasToolPanels: true, isCollapsed: true, storedWidth: 400 };
+            const collapsedRight: PanelState = { hasToolPanels: true, isCollapsed: true, storedSize: 400 };
             const prev: PanelLayout = { leftWidth: 1000, rightWidth: 400, bottomSecondaryHeight: 300 };
             const result = clampPanelLayout(prev, baseLeft, collapsedRight, 1200, false, false);
             expect(result.rightWidth).to.equal(400);
@@ -99,8 +99,8 @@ describe("panel-layout", () => {
             expect(result.leftWidth).to.equal(maxLeft);
         });
 
-        it("does not clamp collapsed panel storedWidth even when max is lower", () => {
-            const collapsedRight: PanelState = { hasToolPanels: true, isCollapsed: true, storedWidth: 500 };
+        it("does not clamp collapsed panel storedSize even when max is lower", () => {
+            const collapsedRight: PanelState = { hasToolPanels: true, isCollapsed: true, storedSize: 500 };
             const prev: PanelLayout = { leftWidth: 1000, rightWidth: 500, bottomSecondaryHeight: 300 };
             const result = clampPanelLayout(prev, baseLeft, collapsedRight, 600, false, false);
             expect(result.rightWidth).to.equal(500);
