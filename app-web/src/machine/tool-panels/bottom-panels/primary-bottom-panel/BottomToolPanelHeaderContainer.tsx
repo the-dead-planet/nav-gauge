@@ -21,7 +21,7 @@ export const BottomToolPanelHeaderContainer: FC<Props> = ({
     const { toolsStation } = useMachineWard();
     const [activeLeftPanelToolId] = useSubjectState(toolsStation.activeLeftPanelToolId$);
     const [activeRightPanelToolId] = useSubjectState(toolsStation.activeRightPanelToolId$);
-    const bothSidePanels = !joinHeaderButtons &&  activeLeftPanelToolId !== null && activeRightPanelToolId !== null;
+    const bothSidePanels = activeLeftPanelToolId !== null && activeRightPanelToolId !== null;
     const onlyLeftPanel = !bothSidePanels && activeLeftPanelToolId !== null;
     const onlyRightPanel = !bothSidePanels && activeRightPanelToolId !== null;
 
@@ -31,7 +31,7 @@ export const BottomToolPanelHeaderContainer: FC<Props> = ({
         <div
             className={styles['content-header']}
             style={{
-                gridTemplateColumns: bothSidePanels
+                gridTemplateColumns: joinHeaderButtons || bothSidePanels
                     ? '1fr max-content 1fr'
                     : onlyLeftPanel
                         ? '1fr max-content 110px'
