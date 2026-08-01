@@ -4,6 +4,7 @@
     "instructions": [
         ".opencode/rules/*.mdc"
     ],
+    "share": "disabled",
     "watcher": {
         "ignore": [
             "node_modules",
