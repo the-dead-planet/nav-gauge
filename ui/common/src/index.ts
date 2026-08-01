@@ -1,6 +1,7 @@
 export * from './clock-input';
 export * from './button';
 export * from './checkbox';
+export * from './chip';
 export * from './slider';
 export * from './color-input';
 export * from './dialog';
