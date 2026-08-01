@@ -53,32 +53,34 @@ describe("panel-layout", () => {
     describe("clampPanelLayout", () => {
         const baseLeft: PanelState = { hasToolPanels: true, isCollapsed: false, storedSize: 400 };
         const baseRight: PanelState = { hasToolPanels: true, isCollapsed: false, storedSize: 400 };
+        const baseBottomSecondary: PanelState = { hasToolPanels: true, isCollapsed: false, storedSize: 300 };
+        const window = { width: 1200, height: 1000 };
         const column3Min = Math.max(TOP_TOOLS_MIN, MAP_MIN);
 
         it("returns prev reference when nothing changed", () => {
             const prev: PanelLayout = { leftWidth: 400, rightWidth: 400, bottomSecondaryHeight: 300 };
-            const result = clampPanelLayout(prev, baseLeft, baseRight, 1200, false, false);
+            const result = clampPanelLayout(prev, baseLeft, baseRight, baseBottomSecondary, window, false, false);
             expect(result).to.equal(prev);
         });
 
         it("clamps left when too large", () => {
             const prev: PanelLayout = { leftWidth: 1000, rightWidth: 400, bottomSecondaryHeight: 300 };
             const maxLeft = 1200 - 400 - column3Min;
-            const result = clampPanelLayout(prev, baseLeft, baseRight, 1200, false, false);
+            const result = clampPanelLayout(prev, baseLeft, baseRight, baseBottomSecondary, window, false, false);
             expect(result.leftWidth).to.equal(maxLeft);
         });
 
         it("clamps right when too large", () => {
             const prev: PanelLayout = { leftWidth: 400, rightWidth: 1000, bottomSecondaryHeight: 300 };
             const max = 1200 - 400 - column3Min;
-            const result = clampPanelLayout(prev, baseLeft, baseRight, 1200, false, false);
+            const result = clampPanelLayout(prev, baseLeft, baseRight, baseBottomSecondary, window, false, false);
             expect(result.rightWidth).to.equal(max);
         });
 
         it("uses effective width of 0 for absent panels", () => {
             const noPanels: PanelState = { hasToolPanels: false, isCollapsed: false, storedSize: 400 };
             const prev: PanelLayout = { leftWidth: 400, rightWidth: 400, bottomSecondaryHeight: 300 };
-            const result = clampPanelLayout(prev, baseLeft, noPanels, 1200, false, false);
+            const result = clampPanelLayout(prev, baseLeft, noPanels, baseBottomSecondary, window, false, false);
             const max = 1200 - 0 - column3Min;
             expect(result.leftWidth).to.be.at.most(max);
         });
@@ -86,7 +88,7 @@ describe("panel-layout", () => {
         it("preserves collapsed panel stored width and clamps other side", () => {
             const collapsedRight: PanelState = { hasToolPanels: true, isCollapsed: true, storedSize: 400 };
             const prev: PanelLayout = { leftWidth: 1000, rightWidth: 400, bottomSecondaryHeight: 300 };
-            const result = clampPanelLayout(prev, baseLeft, collapsedRight, 1200, false, false);
+            const result = clampPanelLayout(prev, baseLeft, collapsedRight, baseBottomSecondary, window, false, false);
             expect(result.rightWidth).to.equal(400);
             const max = 1200 - PANEL_MIN - column3Min;
             expect(result.leftWidth).to.be.at.most(max);
@@ -95,21 +97,21 @@ describe("panel-layout", () => {
         it("accounts for left icons reserved width", () => {
             const prev: PanelLayout = { leftWidth: 1000, rightWidth: 400, bottomSecondaryHeight: 300 };
             const maxLeft = 1200 - 400 - LEFT_ICONS_WIDTH - column3Min;
-            const result = clampPanelLayout(prev, baseLeft, baseRight, 1200, true, false);
+            const result = clampPanelLayout(prev, baseLeft, baseRight, baseBottomSecondary, window, true, false);
             expect(result.leftWidth).to.equal(maxLeft);
         });
 
         it("does not clamp collapsed panel storedSize even when max is lower", () => {
             const collapsedRight: PanelState = { hasToolPanels: true, isCollapsed: true, storedSize: 500 };
             const prev: PanelLayout = { leftWidth: 1000, rightWidth: 500, bottomSecondaryHeight: 300 };
-            const result = clampPanelLayout(prev, baseLeft, collapsedRight, 600, false, false);
+            const result = clampPanelLayout(prev, baseLeft, collapsedRight, baseBottomSecondary, { width: 600, height: 800 }, false, false);
             expect(result.rightWidth).to.equal(500);
         });
 
         it("accounts for right icons reserved width", () => {
             const prev: PanelLayout = { leftWidth: 400, rightWidth: 1000, bottomSecondaryHeight: 300 };
             const max = 1200 - 400 - RIGHT_ICONS_WIDTH - column3Min;
-            const result = clampPanelLayout(prev, baseLeft, baseRight, 1200, false, true);
+            const result = clampPanelLayout(prev, baseLeft, baseRight, baseBottomSecondary, window, false, true);
             expect(result.rightWidth).to.equal(max);
         });
     });

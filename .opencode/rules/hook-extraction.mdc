@@ -1,0 +1,18 @@
+---
+description: Extract reusable behavior into hooks
+globs: "**/*.{ts,tsx}"
+---
+
+Extract a hook when logic represents an independent behavior.
+
+Good candidates include:
+
+- interaction handling
+- subscriptions
+- state transitions
+- async workflows
+- reusable derived state
+
+Components should describe rendering.
+
+Hooks should own behavior.

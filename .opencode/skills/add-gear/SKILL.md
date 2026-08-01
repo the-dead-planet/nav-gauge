@@ -1,7 +1,6 @@
 ---
 name: add-gear
 description: Scaffold a new pluggable Gear feature from the templates at /.templates/
-license: AGPL-3.0
 compatibility: opencode
 metadata:
   audience: developers
@@ -12,7 +11,7 @@ metadata:
 
 Scaffold a new **Gear** — the pluggable feature unit in nav-gauge — by running `yarn generate:gear <name>` from `/`. The script copies the relevant template from `/.templates/` (real TypeScript files that are linted and type-checked), replaces `__name__` and `__PascalName__` placeholders with the gear name, and removes unwanted platform directories.
 
-## When to use me
+## When to use
 
 Use this when you are asked to add a new feature that should be implemented as a Gear. The gear name must be in **kebab-case** (e.g. `route-story`, `navigate`, `submit-data`). Ask the user for the name if it is not clear.
 
@@ -28,14 +27,7 @@ The script validates the name (must be valid kebab-case), picks the right templa
 
 ## Template reference
 
-The canonical boilerplate lives at `/.templates/default/`. Each gear has up to three packages:
-
-| Package | Contents |
-|---------|----------|
-| `common/` | Abstract `{PascalName}Gear<TMap>` extending `Gear<TMap>`, `engage`/`disengage` lifecycle stubs |
-| `web/` | `Web{PascalName}Gear` extending abstract gear with `TMap = maplibregl.Map` |
-| `mobile/` | `Mobile{PascalName}Gear` extending abstract gear with `TMap = MobileMap` |
-
+The canonical boilerplate lives at `/.templates/default/`. 
 View the actual template files at `/.templates/` for the exact structure — they are the source of truth.
 
 ## Naming conventions

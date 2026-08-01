@@ -8,19 +8,6 @@ alwaysApply: true
 - Never import reverse (e.g. apparatus importing from gears)
 - Always use `@package-name` aliases, never relative paths across workspaces
 
-### Package locations
-
-| Package | Path |
-|---------|------|
-| Tinker Chest | `/tinker-chest/` |
-| UI Common | `/ui/common/` |
-| UI Web | `/ui/web/` |
-| UI Mobile | `/ui/mobile/` |
-| Apparatus Common | `/apparatus/common/` |
-| Apparatus Web | `/apparatus/web/` |
-| Apparatus Mobile | `/apparatus/mobile/` |
-| Gears | `/gears/*/{common,web,mobile}/` |
-
 ### Allowed importers
 
 | Package | Can be imported by |

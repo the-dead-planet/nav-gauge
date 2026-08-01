@@ -89,6 +89,15 @@ export const ToolPanelResizeHandle: FC<Props> = ({
                 bottomSecondaryHeight: newHeight,
             });
         }
+
+        const currentActiveId = toolsStation.activeBottomSecondaryPanelToolId$.value;
+        const effectivePanels = toolPanelsByPlacement["left"].concat(toolPanelsByPlacement["right"]);
+
+        if (currentActiveId === null && newHeight > ds.panelMin && effectivePanels.length > 0) {
+            toolsStation.activeBottomSecondaryPanelToolId$.next(effectivePanels[0].id);
+        } else if (currentActiveId !== null && newHeight === ds.panelMin) {
+            toolsStation.activeBottomSecondaryPanelToolId$.next(null);
+        }
     };
 
     const handleVerticalDragEnd = () => {

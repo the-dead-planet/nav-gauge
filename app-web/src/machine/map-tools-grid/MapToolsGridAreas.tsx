@@ -21,6 +21,7 @@ export const MapToolsGridAreas: FC<Props> = ({ map }) => {
     const [activeLeftPanelToolId, setActiveLeftPanelToolId] = useSubjectState(toolsStation.activeLeftPanelToolId$);
     const [activeRightPanelToolId, setActiveRightPanelToolId] = useSubjectState(toolsStation.activeRightPanelToolId$);
     const [activeBottomPanelToolId, setActiveBottomPanelToolId] = useSubjectState(toolsStation.activeBottomPanelToolId$);
+    const [activeBottomSecondaryPanelToolId, setActiveBottomSecondaryPanelToolId] = useSubjectState(toolsStation.activeBottomSecondaryPanelToolId$);
     const groupSidePanelsInBottomSecondaryToolbar = media.isLessThanSm;
 
     useToolPanelSizeClamp();
@@ -60,8 +61,8 @@ export const MapToolsGridAreas: FC<Props> = ({ map }) => {
                 ? (
                     <SecondaryBottomToolPanel
                         map={map}
-                        activeId={activeRightPanelToolId}
-                        onActiveIdChange={setActiveRightPanelToolId}
+                        activeId={activeBottomSecondaryPanelToolId}
+                        onActiveIdChange={setActiveBottomSecondaryPanelToolId}
                     />
                 )
                 : <PlaceholderToolPanel placement="bottom-secondary" />}

@@ -1,0 +1,9 @@
+---
+description: Accessibility conventions
+globs: "*.{ts,tsx}"
+alwaysApply: true
+---
+
+In web, use native semantic elements (`<hr>`, `<button>`, `<nav>`, `<label>`, etc.) over generic `<div>`s.
+
+Ensure interactive elements have keyboard support and ARIA attributes where needed.

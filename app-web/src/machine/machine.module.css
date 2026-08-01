@@ -103,23 +103,27 @@
 }
 
 .toolbar.left .component,
-.toolbar.right .component {
+.toolbar.right .component,
+.toolbar.bottom-secondary .component {
     scrollbar-width: thin;
     scrollbar-color: rgb(from var(--color-secondary-700) r g b / .7) rgb(from var(--scrollbar-track-color) r g b / .7);
 }
 
 .toolbar.left .component > *,
-.toolbar.right .component > * {
+.toolbar.right .component > *,
+.toolbar.bottom-secondary .component > * {
     scrollbar-color: var(--scrollbar-thumb-color) rgb(from var(--scrollbar-track-color) r g b / .7);
 }
 
 .toolbar.left .component::-webkit-scrollbar-thumb,
-.toolbar.right .component::-webkit-scrollbar-thumb {
+.toolbar.right .component::-webkit-scrollbar-thumb,
+.toolbar.bottom-secondary .component::-webkit-scrollbar-thumb {
     background: rgb(from var(--color-secondary-700) r g b / .7);
 }
 
 .toolbar.left .component::-webkit-scrollbar-thumb:hover,
-.toolbar.right .component::-webkit-scrollbar-thumb:hover {
+.toolbar.right .component::-webkit-scrollbar-thumb:hover,
+.toolbar.bottom-secondary .component::-webkit-scrollbar-thumb:hover {
     background: var(--color-secondary);
 }
 
@@ -220,16 +224,6 @@
     overflow: auto;
     flex: 1;
     min-height: 0;
-}
-
-.toolbar.bottom-secondary .component::-webkit-scrollbar-thumb,
-.toolbar.bottom-secondary .component-content::-webkit-scrollbar-thumb {
-    background: rgb(from var(--color-secondary-700) r g b / .7);
-}
-
-.toolbar.bottom-secondary .component::-webkit-scrollbar-thumb:hover,
-.toolbar.bottom-secondary .component-content::-webkit-scrollbar-thumb:hover {
-    background: var(--color-secondary);
 }
 
 /* On isLessThanSm left and right toolbars are displayed combined in a secondary bottom toolbar */

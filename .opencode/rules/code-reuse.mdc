@@ -1,0 +1,11 @@
+---
+description: Reuse existing logic before creating new abstractions
+globs: "**/*.{ts,tsx}"
+alwaysApply: true
+---
+
+Before implementing new logic, search for existing helpers, hooks, services, or utilities that solve the same problem.
+
+Prefer extending or composing existing abstractions over creating parallel implementations.
+
+Avoid duplicating business logic, validation, transformations, formatting, or data-fetching logic.
