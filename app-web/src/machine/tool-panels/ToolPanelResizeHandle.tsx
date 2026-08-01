@@ -62,12 +62,16 @@ export const ToolPanelResizeHandle: FC<Props> = ({
 
     const handleVerticalDragStart = (clientY: number) => {
         onDraggingChange?.(true);
+        const activeBottomSecondaryId = toolsStation.activeBottomSecondaryPanelToolId$.value;
+        const isCollapsed = activeBottomSecondaryId === null;
+        const storedHeight = isCollapsed ? BOTTOM_SECONDARY_PANEL_MIN : toolsStation.panelWidths$.value.bottomSecondaryHeight;
         const heightClampMin = BOTTOM_SECONDARY_PANEL_MIN;
         const heightClampMax = theme.media$.value.windowHeight - 100;
+        const clampedStored = Math.min(Math.max(storedHeight, heightClampMin), heightClampMax);
         bottomSecondaryDragStateRef.current = {
             startY: clientY,
             currentY: clientY,
-            startHeight: Math.min(Math.max(toolsStation.panelWidths$.value.bottomSecondaryHeight, heightClampMin), heightClampMax),
+            startHeight: clampedStored,
             panelMin: heightClampMin,
         };
     };
@@ -81,21 +85,31 @@ export const ToolPanelResizeHandle: FC<Props> = ({
         ds.currentY += delta;
         const totalDelta = ds.currentY - ds.startY;
         const newHeight = Math.max(Math.min(ds.startHeight - totalDelta, theme.media$.value.windowHeight - 100 - 50 - 40 - 70), ds.panelMin);
-        const currentStored = toolsStation.panelWidths$.value.bottomSecondaryHeight;
 
-        if (newHeight !== currentStored) {
-            toolsStation.panelWidths$.next({
-                ...toolsStation.panelWidths$.value,
-                bottomSecondaryHeight: newHeight,
-            });
+        const activeBottomSecondaryId = toolsStation.activeBottomSecondaryPanelToolId$.value;
+        const isCollapsed = activeBottomSecondaryId === null;
+        const effectivePanels = toolPanelsByPlacement["left"].concat(toolPanelsByPlacement["right"]);
+        const willCollapse = !isCollapsed && newHeight === ds.panelMin;
+        const willExpand = isCollapsed && newHeight > ds.panelMin && effectivePanels.length > 0;
+
+        if (!willCollapse) {
+            const currentStored = toolsStation.panelWidths$.value.bottomSecondaryHeight;
+
+            if (newHeight !== currentStored) {
+                toolsStation.panelWidths$.next({
+                    ...toolsStation.panelWidths$.value,
+                    bottomSecondaryHeight: newHeight,
+                });
+            }
         }
 
-        const currentActiveId = toolsStation.activeBottomSecondaryPanelToolId$.value;
-        const effectivePanels = toolPanelsByPlacement["left"].concat(toolPanelsByPlacement["right"]);
-
-        if (currentActiveId === null && newHeight > ds.panelMin && effectivePanels.length > 0) {
+        if (willExpand) {
             toolsStation.activeBottomSecondaryPanelToolId$.next(effectivePanels[0].id);
-        } else if (currentActiveId !== null && newHeight === ds.panelMin) {
+        } else if (willCollapse) {
+            toolsStation.panelWidths$.next({
+                ...toolsStation.panelWidths$.value,
+                bottomSecondaryHeight: ds.startHeight,
+            });
             toolsStation.activeBottomSecondaryPanelToolId$.next(null);
         }
     };

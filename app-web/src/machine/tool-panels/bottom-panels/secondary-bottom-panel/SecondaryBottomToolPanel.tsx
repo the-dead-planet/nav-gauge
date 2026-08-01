@@ -41,9 +41,8 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
 
         if (newId !== null) {
             const thisMin = BOTTOM_SECONDARY_PANEL_MIN;
-            const thisStoredHeight = panelWidths.bottomSecondaryHeight;
             const maxAvailable = theme.media$.value.windowHeight - 100;
-            const clampedHeight = Math.min(Math.max(thisStoredHeight, thisMin), maxAvailable);
+            const clampedHeight = Math.min(Math.max(panelWidths.bottomSecondaryHeight, thisMin), maxAvailable);
             const targetHeight = clampedHeight === thisMin ? DEFAULT_BOTTOM_SECONDARY_HEIGHT : clampedHeight;
 
             setPanelWidths((prev) => ({

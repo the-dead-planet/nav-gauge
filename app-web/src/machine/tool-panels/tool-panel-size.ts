@@ -46,7 +46,6 @@ export function computeLayoutConstraints(
     window: { width: number; height: number },
     leftEffective: number,
     rightEffective: number,
-    bottomSecondaryEffective: number,
     leftIconsPresent: boolean,
     rightIconsPresent: boolean,
 ): { leftMax: number; rightMax: number; iconsReserved: number; column3Min: number; bottomSecondaryMax: number; } {
@@ -54,8 +53,7 @@ export function computeLayoutConstraints(
     const column3Min = Math.max(TOP_TOOLS_MIN, MAP_MIN);
     const leftMax = window.width - rightEffective - iconsReserved - column3Min;
     const rightMax = window.width - leftEffective - iconsReserved - column3Min;
-    const bottomSecondaryMax = window.height - bottomSecondaryEffective - 50 - 40 - 70 - 100;
-    console.log({bottomSecondaryMax, window, bottomSecondaryEffective})
+    const bottomSecondaryMax = window.height - 50 - 40 - 70 - 100;
 
     return {
         leftMax,
@@ -77,8 +75,7 @@ export function clampPanelLayout(
 ): PanelLayout {
     const leftEffective = computeEffectiveWidth(leftState, PANEL_MIN_LEFT);
     const rightEffective = computeEffectiveWidth(rightState, PANEL_MIN);
-    const bottomSecondaryEffective = computeEffectiveWidth(bottomSecondaryState, PANEL_MIN);
-    const { leftMax, rightMax, bottomSecondaryMax } = computeLayoutConstraints(window, leftEffective, rightEffective, bottomSecondaryEffective, leftIconsPresent, rightIconsPresent);
+    const { leftMax, rightMax, bottomSecondaryMax } = computeLayoutConstraints(window, leftEffective, rightEffective, leftIconsPresent, rightIconsPresent);
 
     const newLeft = leftState.isCollapsed ? prev.leftWidth : Math.min(Math.max(prev.leftWidth, PANEL_MIN_LEFT), leftMax);
     const newRight = rightState.isCollapsed ? prev.rightWidth : Math.min(Math.max(prev.rightWidth, PANEL_MIN), rightMax);

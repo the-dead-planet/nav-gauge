@@ -22,8 +22,8 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
         (e.target as HTMLElement).setPointerCapture(e.pointerId);
         lastPositionRef.current = { x: e.clientX, y: e.clientY };
         setIsDragging(true);
-        onDragStart?.(e.clientX);
-    }, [disabled, onDragStart]);
+        onDragStart?.(direction === 'horizontal' ? e.clientX : e.clientY);
+    }, [disabled, onDragStart, direction]);
 
     const handlePointerMove = useCallback((e: React.PointerEvent) => {
         if (!lastPositionRef.current) {
