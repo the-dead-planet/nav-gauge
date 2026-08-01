@@ -5,7 +5,7 @@ export const DEFAULT_WIDTH = 360;
 export const LEFT_ICONS_WIDTH = 102;
 export const RIGHT_ICONS_WIDTH = 76;
 export const TOP_TOOLS_MIN = 160;
-export const BOTTOM_SECONDARY_PANEL_MIN = 32;
+export const BOTTOM_SECONDARY_PANEL_MIN = 24;
 export const DEFAULT_BOTTOM_SECONDARY_HEIGHT = 300;
 
 export interface PanelLayout {
