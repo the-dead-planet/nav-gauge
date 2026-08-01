@@ -41,7 +41,7 @@ export const useToolPanelSizeClamp = () => {
             storedSize: toolsStation.panelWidths$.value.bottomSecondaryHeight,
         };
         const prev = toolsStation.panelWidths$.value;
-        const next = clampPanelLayout(prev, leftState, rightState, bottomSecondaryState, { width: media.windowWidth, height: media.windowHeight }, leftIconsPresent, rightIconsPresent, toolsStation.getReservedChromeHeight());
+        const next = clampPanelLayout(prev, leftState, rightState, bottomSecondaryState, { width: media.windowWidth, height: media.windowHeight }, leftIconsPresent, rightIconsPresent, toolsStation.getReservedToolbarHeight());
 
         if (next !== prev) {
             toolsStation.panelWidths$.next(next);

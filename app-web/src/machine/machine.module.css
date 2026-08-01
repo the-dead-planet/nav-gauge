@@ -196,15 +196,18 @@
     max-height: 30dvh;
 }
 
-.toolbar.bottom-secondary {
+.secondary-bottom-toolbar {
     grid-area: bottom-secondary-toolbar;
+    position: relative;
+}
+
+.toolbar.bottom-secondary {
     min-height: 32px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    position: relative;
     transition: height 0.25s ease;
-    border-top: 1px solid var(--color-neutral);
+    border-top: 1px solid var(--color-primary);
 }
 
 .toolbar.bottom-secondary .content {
@@ -304,20 +307,18 @@
     z-index: 10;
 }
 
-.resize-handle--left {
+.resize-handle-left {
     right: -4px;
 }
 
-.resize-handle--right {
+.resize-handle-right {
     left: -4px;
 }
 
-.resize-handle--bottom-secondary {
+.resize-handle-bottom-secondary {
     top: -4px;
     bottom: auto;
     width: 100%;
     height: 8px;
     cursor: row-resize;
-    background-color: rgb(from var(--color-background) r g b / .87);
-    backdrop-filter: blur(2px);
 }

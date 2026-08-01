@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { useObservableState, useSubjectState } from "@tinker-chest";
 import { useMachineWard } from "@apparatus";
 import { useTheme } from "@ui";
-import { BOTTOM_SECONDARY_PANEL_MIN, DEFAULT_BOTTOM_SECONDARY_HEIGHT } from "../../tool-panel-size";
+import { BOTTOM_SECONDARY_PANEL_MIN, DEFAULT_BOTTOM_SECONDARY_HEIGHT, MIN_REMAINING_MAIN_AREA } from "../../tool-panel-size";
 import { ToolPanelResizeHandle } from "../../ToolPanelResizeHandle";
 import { ToolPanelHeader } from "../../ToolPanelHeader";
 import styles from '../../../machine.module.css';
@@ -41,7 +41,7 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
 
         if (newId !== null) {
             const thisMin = BOTTOM_SECONDARY_PANEL_MIN;
-            const maxAvailable = theme.media$.value.windowHeight - 100;
+            const maxAvailable = theme.media$.value.windowHeight - MIN_REMAINING_MAIN_AREA.height;
             const clampedHeight = Math.min(Math.max(panelWidths.bottomSecondaryHeight, thisMin), maxAvailable);
             const targetHeight = clampedHeight === thisMin ? DEFAULT_BOTTOM_SECONDARY_HEIGHT : clampedHeight;
 
@@ -53,36 +53,38 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
     };
 
     return (
-        <div
-            className={classNames(
-                styles['toolbar'],
-                styles['bottom-secondary'],
-                { [styles['dragging']]: isDragging },
-                { [styles['collapsed']]: isCollapsed },
-                { [styles['expanded']]: !isCollapsed },
-            )}
-            style={{ height: effectiveHeight }}
-        >
-            <div className={classNames(styles['content'], { [styles['with-header']]: showHeader })}>
-                {showHeader && (
-                    <ToolPanelHeader
-                        placement="bottom"
-                        activeId={activeId}
-                        onActiveIdChange={handleToolSelect}
-                    />
+        <div className={styles['secondary-bottom-toolbar']}>
+            <div
+                className={classNames(
+                    styles['toolbar'],
+                    styles['bottom-secondary'],
+                    { [styles['dragging']]: isDragging },
+                    { [styles['collapsed']]: isCollapsed },
+                    { [styles['expanded']]: !isCollapsed },
                 )}
-                {toolPanel ? (
-                    <div className={styles['component']}>
-                        {toolPanel.headerComponent ? (
-                            <div className={styles['component-header']}>
-                                <toolPanel.headerComponent map={map} placement={toolPanel.placement} />
+                style={{ height: effectiveHeight }}
+            >
+                <div className={classNames(styles['content'], { [styles['with-header']]: showHeader })}>
+                    {showHeader && (
+                        <ToolPanelHeader
+                            placement="bottom"
+                            activeId={activeId}
+                            onActiveIdChange={handleToolSelect}
+                        />
+                    )}
+                    {toolPanel ? (
+                        <div className={styles['component']}>
+                            {toolPanel.headerComponent ? (
+                                <div className={styles['component-header']}>
+                                    <toolPanel.headerComponent map={map} placement={toolPanel.placement} />
+                                </div>
+                            ) : null}
+                            <div className={styles['component-content']}>
+                                <toolPanel.contentComponent map={map} placement={toolPanel.placement} />
                             </div>
-                        ) : null}
-                        <div className={styles['component-content']}>
-                            <toolPanel.contentComponent map={map} placement={toolPanel.placement} />
                         </div>
-                    </div>
-                ) : null}
+                    ) : null}
+                </div>
             </div>
             <ToolPanelResizeHandle
                 placement="bottom-secondary"

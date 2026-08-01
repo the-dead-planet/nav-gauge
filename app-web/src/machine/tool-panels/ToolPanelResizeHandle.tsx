@@ -84,7 +84,7 @@ export const ToolPanelResizeHandle: FC<Props> = ({
 
         ds.currentY += delta;
         const totalDelta = ds.currentY - ds.startY;
-        const newHeight = Math.max(Math.min(ds.startHeight - totalDelta, theme.media$.value.windowHeight - MIN_REMAINING_MAIN_AREA.height - toolsStation.getReservedChromeHeight()), ds.panelMin);
+        const newHeight = Math.max(Math.min(ds.startHeight - totalDelta, theme.media$.value.windowHeight - MIN_REMAINING_MAIN_AREA.height - toolsStation.getReservedToolbarHeight()), ds.panelMin);
 
         const activeBottomSecondaryId = toolsStation.activeBottomSecondaryPanelToolId$.value;
         const isCollapsed = activeBottomSecondaryId === null;
@@ -121,7 +121,7 @@ export const ToolPanelResizeHandle: FC<Props> = ({
 
     if (isBottomSecondary) {
         return (
-            <div className={classNames(styles['resize-handle'], styles['resize-handle--bottom-secondary'])}>
+            <div className={classNames(styles['resize-handle'], styles['resize-handle-bottom-secondary'])}>
                 <ResizeHandle
                     direction="vertical"
                     onDrag={handleVerticalDrag}
@@ -210,7 +210,7 @@ export const ToolPanelResizeHandle: FC<Props> = ({
     };
 
     return (
-        <div className={classNames(styles['resize-handle'], styles[`resize-handle--${placement}`])}>
+        <div className={classNames(styles['resize-handle'], styles[`resize-handle-${placement}`])}>
             <ResizeHandle
                 direction="horizontal"
                 onDrag={handleDrag}

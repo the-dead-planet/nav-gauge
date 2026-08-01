@@ -59,10 +59,10 @@ export class ToolsStation<TMap> {
     public leftToolPanelSizeRef: ToolbarSizeRef = { current: null };
 
     /**
-     * Vertical space occupied by chrome that surrounds the map area
+     * Vertical space occupied by the toolbars that frame the map area
      * (top bar, gears toolbar and bottom tool panel).
      */
-    public getReservedChromeHeight = (): number =>
+    public getReservedToolbarHeight = (): number =>
         (this.topBarSizeRef.current?.clientHeight ?? 0)
         + (this.topToolbarSizeRef.current?.clientHeight ?? 0)
         + (this.bottomToolPanelSizeRef.current?.clientHeight ?? 0);
