@@ -10,7 +10,7 @@ import { useTheme } from "@ui";
 import {
     BOTTOM_SECONDARY_PANEL_MIN,
     LEFT_ICONS_WIDTH,
-    MAP_MIN,
+    MIN_REMAINING_MAIN_AREA,
     PANEL_MIN,
     PANEL_MIN_LEFT,
     RIGHT_ICONS_WIDTH,
@@ -66,7 +66,7 @@ export const ToolPanelResizeHandle: FC<Props> = ({
         const isCollapsed = activeBottomSecondaryId === null;
         const storedHeight = isCollapsed ? BOTTOM_SECONDARY_PANEL_MIN : toolsStation.panelWidths$.value.bottomSecondaryHeight;
         const heightClampMin = BOTTOM_SECONDARY_PANEL_MIN;
-        const heightClampMax = theme.media$.value.windowHeight - 100;
+        const heightClampMax = theme.media$.value.windowHeight - MIN_REMAINING_MAIN_AREA.height;
         const clampedStored = Math.min(Math.max(storedHeight, heightClampMin), heightClampMax);
         bottomSecondaryDragStateRef.current = {
             startY: clientY,
@@ -84,7 +84,7 @@ export const ToolPanelResizeHandle: FC<Props> = ({
 
         ds.currentY += delta;
         const totalDelta = ds.currentY - ds.startY;
-        const newHeight = Math.max(Math.min(ds.startHeight - totalDelta, theme.media$.value.windowHeight - 100 - 50 - 40 - 70), ds.panelMin);
+        const newHeight = Math.max(Math.min(ds.startHeight - totalDelta, theme.media$.value.windowHeight - MIN_REMAINING_MAIN_AREA.height - toolsStation.getReservedChromeHeight()), ds.panelMin);
 
         const activeBottomSecondaryId = toolsStation.activeBottomSecondaryPanelToolId$.value;
         const isCollapsed = activeBottomSecondaryId === null;
@@ -178,7 +178,7 @@ export const ToolPanelResizeHandle: FC<Props> = ({
         const maxWidth = theme.media$.value.windowWidth
             - otherMin
             - iconsReserved
-            - Math.max(TOP_TOOLS_MIN, MAP_MIN);
+            - Math.max(TOP_TOOLS_MIN, MIN_REMAINING_MAIN_AREA.width);
 
         const clampedWidth = Math.max(Math.min(ds.startWidth + (isLeft ? totalDelta : -totalDelta), maxWidth), ds.panelMin);
 

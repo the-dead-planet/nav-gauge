@@ -52,10 +52,20 @@ export class ToolsStation<TMap> {
     public activeBottomPanelToolId$ = new BehaviorSubject<string | null>(null);
     public activeBottomSecondaryPanelToolId$ = new BehaviorSubject<string | null>(null);
 
+    public topBarSizeRef: ToolbarSizeRef = { current: null };
     public topToolbarSizeRef: ToolbarSizeRef = { current: null };
     public rightToolPanelSizeRef: ToolbarSizeRef = { current: null };
     public bottomToolPanelSizeRef: ToolbarSizeRef = { current: null };
     public leftToolPanelSizeRef: ToolbarSizeRef = { current: null };
+
+    /**
+     * Vertical space occupied by chrome that surrounds the map area
+     * (top bar, gears toolbar and bottom tool panel).
+     */
+    public getReservedChromeHeight = (): number =>
+        (this.topBarSizeRef.current?.clientHeight ?? 0)
+        + (this.topToolbarSizeRef.current?.clientHeight ?? 0)
+        + (this.bottomToolPanelSizeRef.current?.clientHeight ?? 0);
 
     public panelWidths$ = new BehaviorSubject<PanelLayout>({ leftWidth: 360, rightWidth: 360, bottomSecondaryHeight: 300 });
 

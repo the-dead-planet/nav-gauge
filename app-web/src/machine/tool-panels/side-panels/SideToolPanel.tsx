@@ -5,7 +5,7 @@ import { useObservableState, useSubjectState } from "@tinker-chest";
 import { useMachineWard, useMultipleTranslations } from "@apparatus";
 import { useTheme } from "@ui";
 import { ToolPanelHeader } from "../ToolPanelHeader";
-import { DEFAULT_WIDTH, PANEL_MIN, PANEL_MIN_LEFT, calculateExpandToDefault, LEFT_ICONS_WIDTH, RIGHT_ICONS_WIDTH, TOP_TOOLS_MIN, MAP_MIN } from "../tool-panel-size";
+import { DEFAULT_WIDTH, PANEL_MIN, PANEL_MIN_LEFT, calculateExpandToDefault, LEFT_ICONS_WIDTH, RIGHT_ICONS_WIDTH, TOP_TOOLS_MIN, MIN_REMAINING_MAIN_AREA } from "../tool-panel-size";
 import { ToolPanelResizeHandle } from "../ToolPanelResizeHandle";
 import styles from '../../machine.module.css';
 
@@ -56,7 +56,7 @@ export const SideToolPanel: FC<Props> = ({
             const thisMin = isLeft ? PANEL_MIN_LEFT : PANEL_MIN;
             const thisStoredWidth = isLeft ? panelWidths.leftWidth : panelWidths.rightWidth;
             const iconsReserved = (toolIconsByPlacement.left.length > 0 ? LEFT_ICONS_WIDTH : 0) + (toolIconsByPlacement.right.length > 0 ? RIGHT_ICONS_WIDTH : 0);
-            const column3Min = Math.max(TOP_TOOLS_MIN, MAP_MIN);
+            const column3Min = Math.max(TOP_TOOLS_MIN, MIN_REMAINING_MAIN_AREA.width);
             const maxAvailable = theme.media$.value.windowWidth - otherWidth - iconsReserved - column3Min;
             const clampedWidth = Math.min(Math.max(thisStoredWidth, thisMin), maxAvailable);
             const targetWidth = clampedWidth === thisMin ? DEFAULT_WIDTH : clampedWidth;

@@ -1,4 +1,4 @@
-export const MAP_MIN = 200;
+export const MIN_REMAINING_MAIN_AREA = { width: 200, height: 100 };
 export const PANEL_MIN = 32;
 export const PANEL_MIN_LEFT = 42;
 export const DEFAULT_WIDTH = 360;
@@ -37,7 +37,7 @@ export function clampPanelWidth(
     otherEffective: number,
     windowWidth: number,
 ): number {
-    const max = windowWidth - otherEffective - MAP_MIN;
+    const max = windowWidth - otherEffective - MIN_REMAINING_MAIN_AREA.width;
 
     return Math.min(Math.max(requestedWidth, thisMin), max);
 }
@@ -48,12 +48,13 @@ export function computeLayoutConstraints(
     rightEffective: number,
     leftIconsPresent: boolean,
     rightIconsPresent: boolean,
+    reservedChromeHeight: number,
 ): { leftMax: number; rightMax: number; iconsReserved: number; column3Min: number; bottomSecondaryMax: number; } {
     const iconsReserved = (leftIconsPresent ? LEFT_ICONS_WIDTH : 0) + (rightIconsPresent ? RIGHT_ICONS_WIDTH : 0);
-    const column3Min = Math.max(TOP_TOOLS_MIN, MAP_MIN);
+    const column3Min = Math.max(TOP_TOOLS_MIN, MIN_REMAINING_MAIN_AREA.width);
     const leftMax = window.width - rightEffective - iconsReserved - column3Min;
     const rightMax = window.width - leftEffective - iconsReserved - column3Min;
-    const bottomSecondaryMax = window.height - 50 - 40 - 70 - 100;
+    const bottomSecondaryMax = window.height - MIN_REMAINING_MAIN_AREA.height - reservedChromeHeight;
 
     return {
         leftMax,
@@ -72,10 +73,11 @@ export function clampPanelLayout(
     window: { width: number; height: number },
     leftIconsPresent: boolean,
     rightIconsPresent: boolean,
+    reservedChromeHeight: number,
 ): PanelLayout {
     const leftEffective = computeEffectiveWidth(leftState, PANEL_MIN_LEFT);
     const rightEffective = computeEffectiveWidth(rightState, PANEL_MIN);
-    const { leftMax, rightMax, bottomSecondaryMax } = computeLayoutConstraints(window, leftEffective, rightEffective, leftIconsPresent, rightIconsPresent);
+    const { leftMax, rightMax, bottomSecondaryMax } = computeLayoutConstraints(window, leftEffective, rightEffective, leftIconsPresent, rightIconsPresent, reservedChromeHeight);
 
     const newLeft = leftState.isCollapsed ? prev.leftWidth : Math.min(Math.max(prev.leftWidth, PANEL_MIN_LEFT), leftMax);
     const newRight = rightState.isCollapsed ? prev.rightWidth : Math.min(Math.max(prev.rightWidth, PANEL_MIN), rightMax);
@@ -103,7 +105,7 @@ export function calculateExpandToDefault(
     prevLayout: PanelLayout,
 ): PanelLayout {
     const iconsReserved = (leftIconsPresent ? LEFT_ICONS_WIDTH : 0) + (rightIconsPresent ? RIGHT_ICONS_WIDTH : 0);
-    const column3Min = Math.max(TOP_TOOLS_MIN, MAP_MIN);
+    const column3Min = Math.max(TOP_TOOLS_MIN, MIN_REMAINING_MAIN_AREA.width);
     const otherMax = windowWidth - targetWidth - iconsReserved - column3Min;
     const newOther = Math.max(Math.min(otherWidth, otherMax), otherMinWidth);
 

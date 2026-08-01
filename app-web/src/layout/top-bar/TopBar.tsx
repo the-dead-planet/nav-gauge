@@ -9,7 +9,7 @@ import styles from './top-bar.module.css';
 
 export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
     const theme = useTheme();
-    const { namespace, translationKey, individuator } = useMachineWard();
+    const { namespace, translationKey, individuator, toolsStation } = useMachineWard();
     const [
         modeTooltip,
     ] = useMultipleTranslations([
@@ -18,7 +18,12 @@ export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
 
     // TODO: Icons: light/dark mode, sound, geolocation on/off, recording on/off?, menu
     return (
-        <nav className={styles["top-bar"]}>
+        <nav
+            ref={(instance) => {
+                toolsStation.topBarSizeRef.current = instance;
+            }}
+            className={styles["top-bar"]}
+        >
             <div className={classNames(styles["section"], styles["left"])}>
             </div>
             <H1 color="primary" fontType={FontType.NeonHeader} className={styles['header']}>
