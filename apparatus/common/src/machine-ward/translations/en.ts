@@ -13,6 +13,7 @@ const en: TranslationTable<MachineTranslationKey>['en'] = {
     expand: 'Expand',
     'panel-menu': 'Panel options',
     'swap-placement': 'Place panel on the {{placement}}',
+    'under-construction': 'Under construction',
 };
 
 export default en;

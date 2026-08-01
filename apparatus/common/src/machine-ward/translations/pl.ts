@@ -13,6 +13,7 @@ const pl: TranslationTable<MachineTranslationKey>['pl'] = {
     expand: 'Rozwiń',
     'panel-menu': 'Panel options',
     'swap-placement': 'Place panel on the {{placement}}',
+    'under-construction': 'W budowie',
 };
 
 export default pl;

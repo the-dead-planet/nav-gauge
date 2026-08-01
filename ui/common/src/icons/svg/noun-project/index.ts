@@ -32,4 +32,5 @@ export { default as StopRecording } from './output/stop-recording.svg';
 export { default as SunSmile } from './output/sun-smile.svg';
 export { default as SunSunglasses } from './output/sun-sunglasses.svg';
 export { default as Target } from './output/target.svg';
+export { default as UnderConstruction } from './output/under-construction.svg';
 export { default as Upload } from './output/upload.svg';

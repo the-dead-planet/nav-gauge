@@ -46,4 +46,5 @@ export enum MachineTranslationKey {
     Expand = 'expand',
     PanelMenu = 'panel-menu',
     SwapPlacement = 'swap-placement',
+    UnderConstruction = 'under-construction',
 }

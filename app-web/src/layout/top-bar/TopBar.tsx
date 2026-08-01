@@ -1,15 +1,20 @@
 import { FC } from "react";
 import classNames from "classnames";
-import { MachineWardTopBarProps, useMachineWard, useTranslation } from "@apparatus";
+import { MachineWardTopBarProps, useMachineWard, useMultipleTranslations } from "@apparatus";
 import { FontType, Icons, useTheme } from "@ui";
 import { Button, H1 } from "@web-ui";
 import { LayoutMenu } from "./menu/LayoutMenu";
+import { UnderConstructionChip } from "./UnderConstructionChip";
 import styles from './top-bar.module.css';
 
 export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
     const theme = useTheme();
     const { namespace, translationKey, individuator } = useMachineWard();
-    const modeTooltip = useTranslation({ n: namespace, t: translationKey.ToggleMode });
+    const [
+        modeTooltip,
+    ] = useMultipleTranslations([
+        { n: namespace, t: translationKey.ToggleMode },
+    ]);
 
     // TODO: Icons: light/dark mode, sound, geolocation on/off, recording on/off?, menu
     return (
@@ -20,6 +25,7 @@ export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
                 {title}
             </H1>
             <div className={classNames(styles["section"], styles["right"])}>
+                <UnderConstructionChip />
                 <Button
                     aria-label={modeTooltip}
                     tooltip={modeTooltip}
@@ -35,4 +41,4 @@ export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
             </div>
         </nav>
     );
-}
+};

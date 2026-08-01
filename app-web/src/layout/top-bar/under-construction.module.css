@@ -1,0 +1,13 @@
+.badge {
+    background-color: var(--color-warning);
+    padding: 2px 4px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.badge span {
+    font-size: 12px;
+    color: var(--color-background);
+}

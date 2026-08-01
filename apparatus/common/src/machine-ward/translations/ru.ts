@@ -13,6 +13,7 @@ const ru: TranslationTable<MachineTranslationKey>['ru'] = {
     expand: 'Развернуть',
     'panel-menu': 'Panel options',
     'swap-placement': 'Place panel on the {{placement}}',
+    'under-construction': 'В разработке',
 };
 
 export default ru;

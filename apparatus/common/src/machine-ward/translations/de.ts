@@ -2,17 +2,18 @@ import { TranslationTable } from "../translatron";
 import { MachineTranslationKey } from "../model";
 
 const de: TranslationTable<MachineTranslationKey>['de'] = {
-    legal: 'Impressum',
+    legal: 'Rechtliches',
     privacy: 'Datenschutz',
     close: 'Schließen',
     save: 'Speichern',
     menu: 'Anwendungsmenü',
-    'toggle-mode': 'Helle und dunkle Modi umschalten',
+    'toggle-mode': 'Hell- und Dunkelmodus umschalten',
     gears: 'Getriebe',
     collapse: 'Einklappen',
     expand: 'Ausklappen',
-    'panel-menu': 'Panel options',
-    'swap-placement': 'Place panel on the {{placement}}',
+    'panel-menu': 'Paneloptionen',
+    'swap-placement': 'Platzieren Sie das Panel auf der {{placement}}',
+    'under-construction': 'Im Aufbau',
 };
 
 export default de;
