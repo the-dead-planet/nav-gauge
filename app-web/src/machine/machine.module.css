@@ -255,8 +255,15 @@
 .toolbar.bottom-secondary .content-header {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    align-items: center;
     gap: 5px;
+}
+
+.toolbar.bottom-secondary .content-header-controls {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-left: auto;
 }
 
 .top-tools {
@@ -287,10 +294,6 @@
 .toolbar.left .expand-collapse-button,
 .toolbar.right .expand-collapse-button {
     margin-top: auto;
-}
-
-.toolbar.bottom-secondary .expand-collapse-button {
-    margin-left: auto;
 }
 
 .toolbar.dragging,

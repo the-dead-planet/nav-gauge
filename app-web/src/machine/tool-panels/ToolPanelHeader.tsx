@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import { Button } from "@web-ui";
 import { useObservableState, useSubjectState } from "@tinker-chest";
 import { ToolPanelPlacement, useMachineWard } from "@apparatus";
@@ -11,12 +11,14 @@ interface Props {
     placement: ToolPanelPlacement;
     activeId: string | null;
     onActiveIdChange: (activeId: string | null) => void;
+    headerControls?: ReactNode;
 }
 
 export const ToolPanelHeader: FC<Props> = ({
     placement,
     activeId,
     onActiveIdChange,
+    headerControls,
 }) => {
     const { namespace, translationKey, toolsStation, translatron, individuator } = useMachineWard();
     const [registry] = useSubjectState(translatron.registry$);
@@ -32,6 +34,27 @@ export const ToolPanelHeader: FC<Props> = ({
     const color = placement === 'bottom' ? 'primary' : 'secondary';
     const buttonSize = placement === 'bottom' ? 'sm' : 'md';
     const expandCollapseLabel = translatron.translate(settings.language, registry, { n: namespace, t: activeId === null ? translationKey.Expand : translationKey.Collapse });
+
+    const expandCollapseButton = (
+        <Button
+            size={buttonSize}
+            variant='ghost'
+            color={color}
+            icon={Icons.NounProject.ChevronDownDouble}
+            iconRotateZ={((placement === 'left' ? 90 : placement === "right" ? -90 : 0) + (activeId === null ? 180 : 0) + 360) % 360}
+            aria-label={expandCollapseLabel}
+            tooltip={expandCollapseLabel}
+            tooltipPlacement={tooltipPlacement[placement]}
+            onClick={() => {
+                if (activeId !== null) {
+                    onActiveIdChange(null);
+                } else {
+                    onActiveIdChange(effectivePanels[0]?.id)
+                }
+            }}
+            className={placement === 'bottom' ? undefined : styles['expand-collapse-button']}
+        />
+    );
 
     return (
         <div className={styles['content-header']}>
@@ -56,25 +79,17 @@ export const ToolPanelHeader: FC<Props> = ({
                     />
                 );
             })}
-            {placement !== 'bottom' ? <span className={styles['spacer-line']} /> : null}
-            <Button
-                size={buttonSize}
-                variant='ghost'
-                color={color}
-                icon={Icons.NounProject.ChevronDownDouble}
-                iconRotateZ={((placement === 'left' ? 90 : placement === "right" ? -90 : 0) + (activeId === null ? 180 : 0) + 360) % 360}
-                aria-label={expandCollapseLabel}
-                tooltip={expandCollapseLabel}
-                tooltipPlacement={tooltipPlacement[placement]}
-                onClick={() => {
-                    if (activeId !== null) {
-                        onActiveIdChange(null);
-                    } else {
-                        onActiveIdChange(effectivePanels[0]?.id)
-                    }
-                }}
-                className={styles['expand-collapse-button']}
-            />
+            {placement === 'bottom' ? (
+                <div className={styles['content-header-controls']}>
+                    {headerControls}
+                    {expandCollapseButton}
+                </div>
+            ) : (
+                <>
+                    <span className={styles['spacer-line']} />
+                    {expandCollapseButton}
+                </>
+            )}
         </div>
     );
 };

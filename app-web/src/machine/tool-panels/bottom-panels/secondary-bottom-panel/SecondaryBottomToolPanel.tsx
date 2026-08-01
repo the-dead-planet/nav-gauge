@@ -70,15 +70,13 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
                             placement="bottom"
                             activeId={activeId}
                             onActiveIdChange={handleToolSelect}
+                            headerControls={toolPanel?.headerComponent ? (
+                                <toolPanel.headerComponent map={map} placement={toolPanel.placement} />
+                            ) : undefined}
                         />
                     )}
                     {toolPanel ? (
                         <div className={styles['component']}>
-                            {toolPanel.headerComponent ? (
-                                <div className={styles['component-header']}>
-                                    <toolPanel.headerComponent map={map} placement={toolPanel.placement} />
-                                </div>
-                            ) : null}
                             <div className={styles['component-content']}>
                                 <toolPanel.contentComponent map={map} placement={toolPanel.placement} />
                             </div>
