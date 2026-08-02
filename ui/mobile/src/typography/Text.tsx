@@ -42,6 +42,7 @@ export const Text: FC<TextProps> = ({
     align,
     nowrap,
     tabular,
+    shadow,
     fontType = defaultTypographyProps.fontType,
     style,
     ...props
@@ -61,6 +62,11 @@ export const Text: FC<TextProps> = ({
                     fontVariant: tabular ? ['tabular-nums'] : undefined,
                     textAlign: align,
                     flexShrink: nowrap ? 1 : undefined,
+                    textShadowColor: shadow
+                        ? theme.color(color ?? 'neutral', color === 'neutral' ? 800 : 900, 0.5)
+                        : undefined,
+                    textShadowOffset: shadow ? { width: -1, height: 0 } : undefined,
+                    textShadowRadius: shadow ? 1 : undefined,
                 },
                 style,
             ]}

@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { View, StyleSheet, Modal } from "react-native";
+import { View, StyleSheet, Modal, StyleProp, ViewStyle } from "react-native";
 import { DialogProps, TransitionProps } from "@ui";
 import { Panel } from "../hud";
 import { Button } from "../button";
@@ -46,15 +46,23 @@ const styles = StyleSheet.create({
     },
 });
 
-export const Dialog: FC<DialogProps> = ({
+interface Props extends DialogProps {
+    style?: StyleProp<ViewStyle>;
+}
+
+export const Dialog: FC<Props> = ({
     header,
     variant = 'fill-translucent',
     placement = 'middle',
+    closeText,
     onClose,
+    save,
+    style,
     children,
 }) => {
     const [render, setRender] = useState(true);
     const handleClose = () => setRender(false);
+    const addShadow = variant === 'fill-translucent';
 
     return (
         <Modal visible transparent animationType="none" onRequestClose={handleClose}>
@@ -69,9 +77,9 @@ export const Dialog: FC<DialogProps> = ({
                     'right-drawer': styles.drawerRight
                 }[placement]}
             >
-                <Panel variant={variant} color="primary" style={styles.panel}>
+                <Panel variant={variant} color="primary" style={[styles.panel, style]}>
                     <View style={styles.header}>
-                        <Text color="primary">
+                        <Text color="primary" shadow={addShadow}>
                             {header.toUpperCase()}
                         </Text>
                     </View>
@@ -81,14 +89,23 @@ export const Dialog: FC<DialogProps> = ({
                     <View style={styles.footer}>
                         <View style={styles.buttonCell}>
                             <Button variant="fill-translucent" color="primary" onPress={handleClose}>
-                                Close
+                                {closeText}
                             </Button>
                         </View>
-                        <View style={styles.buttonCell}>
-                            <Button variant="fill" color="primary" onPress={handleClose}>
-                                Save
-                            </Button>
-                        </View>
+                        {save ? (
+                            <View style={styles.buttonCell}>
+                                <Button
+                                    variant="fill"
+                                    color="primary"
+                                    onPress={() => {
+                                        save.onSave();
+                                        handleClose();
+                                    }}
+                                >
+                                    {save.saveText}
+                                </Button>
+                            </View>
+                        ) : null}
                     </View>
                 </Panel>
             </Transition>

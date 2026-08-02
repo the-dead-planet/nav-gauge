@@ -203,6 +203,20 @@ export const Button: FC<PressableProps & ButtonProps & Props> = ({
 
     const showTextShadow = showTextGlow || (hl && (variant === 'inset' || variant === 'ghost'));
 
+    const textShadowStyle = showTextShadow
+        ? {
+            textShadowColor: hlInset,
+            textShadowRadius: 12,
+            textShadowOffset: { width: 0, height: 0 },
+        }
+        : variant === 'fill-translucent'
+            ? {
+                textShadowColor: theme.color(color, color === 'neutral' ? 800 : 900, 0.5),
+                textShadowOffset: { width: -1, height: 0 },
+                textShadowRadius: 1,
+            }
+            : undefined;
+
     const iconSizes = {
         xs: 12,
         sm: 16,
@@ -232,11 +246,7 @@ export const Button: FC<PressableProps & ButtonProps & Props> = ({
         <RNText
             style={[
                 { color: textColor, fontSize, lineHeight: fontSize * 1.1 },
-                showTextShadow && {
-                    textShadowColor: hlInset,
-                    textShadowRadius: 12,
-                    textShadowOffset: { width: 0, height: 0 },
-                },
+                textShadowStyle,
             ]}
         >
             {children ?? title}
