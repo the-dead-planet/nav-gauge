@@ -1,15 +1,49 @@
 import { FC, useState } from "react";
-import classNames from "classnames";
+import { StyleSheet, View } from "react-native";
 import { useObservableState, useSubjectState } from "@tinker-chest";
 import { useMachineWard } from "@apparatus";
 import { useTheme } from "@ui";
 import { BOTTOM_SECONDARY_PANEL_MIN, DEFAULT_BOTTOM_SECONDARY_HEIGHT, MIN_REMAINING_MAIN_AREA } from "../../tool-panel-size";
 import { ToolPanelResizeHandle } from "../../ToolPanelResizeHandle";
 import { ToolPanelHeader } from "../../ToolPanelHeader";
-import styles from '../../../machine.module.css';
+import { MobileMap } from "@mobile-ui";
+
+const styles = StyleSheet.create({
+    container: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+    },
+    toolbar: {
+        backgroundColor: 'transparent',
+    },
+    content: {
+        flex: 1,
+    },
+    withHeader: {
+        borderTopWidth: 1,
+        borderTopColor: 'rgba(255,255,255,0.1)',
+    },
+    component: {
+        flex: 1,
+    },
+    componentContent: {
+        flex: 1,
+    },
+    dragging: {
+        opacity: 0.9,
+    },
+    collapsed: {
+        opacity: 0.7,
+    },
+    expanded: {
+        opacity: 1,
+    },
+});
 
 interface Props {
-    map?: maplibregl.Map;
+    map?: MobileMap;
     activeId: string | null;
     onActiveIdChange: (activeId: string | null) => void;
 }
@@ -53,23 +87,20 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
     };
 
     return (
-        <div
-            ref={(instance) => {
-                toolsStation.bottomSecondaryToolPanelSizeRef.current = instance;
-            }}
-            className={styles['secondary-bottom-toolbar']}
-        >
-            <div
-                className={classNames(
-                    styles['toolbar'],
-                    styles['bottom-secondary'],
-                    { [styles['dragging']]: isDragging },
-                    { [styles['collapsed']]: isCollapsed },
-                    { [styles['expanded']]: !isCollapsed },
-                )}
-                style={{ height: effectiveHeight }}
+        <View style={styles.container}>
+            <View
+                style={[
+                    styles.toolbar,
+                    isDragging && styles.dragging,
+                    isCollapsed && styles.collapsed,
+                    !isCollapsed && styles.expanded,
+                    { 
+                        height: effectiveHeight,
+                        backgroundColor: theme.componentColor('background', 0.87),
+                    },
+                ]}
             >
-                <div className={classNames(styles['content'], { [styles['with-header']]: showHeader })}>
+                <View style={[styles.content, showHeader && styles.withHeader]}>
                     {showHeader && (
                         <ToolPanelHeader
                             placement="bottom"
@@ -81,18 +112,18 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
                         />
                     )}
                     {toolPanel ? (
-                        <div className={styles['component']}>
-                            <div className={styles['component-content']}>
+                        <View style={styles.component}>
+                            <View style={styles.componentContent}>
                                 <toolPanel.contentComponent map={map} placement={toolPanel.placement} />
-                            </div>
-                        </div>
+                            </View>
+                        </View>
                     ) : null}
-                </div>
-            </div>
+                </View>
+            </View>
             <ToolPanelResizeHandle
                 placement="bottom-secondary"
                 onDraggingChange={setIsDragging}
             />
-        </div>
+        </View>
     );
 };

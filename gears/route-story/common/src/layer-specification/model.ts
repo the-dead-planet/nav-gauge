@@ -31,8 +31,8 @@ export type CaseFeatureStateOrPropertyDoubleCondition = [
 export type GetPropertyCaseCondition = [
     'case',
     ComparisonProperty,
-    string,
-    string,
+    string | number,
+    string | number,
 ];
 
 export type LineCap = "round";

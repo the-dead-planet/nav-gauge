@@ -20,14 +20,15 @@ export class WebRouteStoryGear extends RouteStoryGear<maplibregl.Map, File, WebM
    public imagesLayerComponent = ImagesLayer;
 
    public fitBounds = (map: maplibregl.Map, sw: [number, number], ne: [number, number]) => {
+      const { topToolbarSizeRef, rightToolPanelSizeRef, leftToolPanelSizeRef, bottomToolPanelSizeRef, bottomSecondaryToolPanelSizeRef } = this.apparatus.toolsStation;
       const offset = 50;
 
       map.fitBounds([sw, ne], {
          animate: true, padding: {
-            top: (this.apparatus.toolsStation.topToolbarSizeRef.current?.clientHeight ?? 0) + offset,
-            right: (this.apparatus.toolsStation.rightToolPanelSizeRef.current?.clientWidth ?? 0) + offset,
-            bottom: (this.apparatus.toolsStation.bottomToolPanelSizeRef.current?.clientHeight ?? 0) + offset,
-            left: (this.apparatus.toolsStation.leftToolPanelSizeRef.current?.clientWidth ?? 0) + offset,
+            top: (topToolbarSizeRef.current?.clientHeight ?? 0) + offset,
+            right: (rightToolPanelSizeRef.current?.clientWidth ?? 0) + offset,
+            bottom: (bottomToolPanelSizeRef.current?.clientHeight ?? 0) + (bottomSecondaryToolPanelSizeRef.current?.clientHeight ?? 0) + offset,
+            left: (leftToolPanelSizeRef.current?.clientWidth ?? 0) + offset,
          }
       });
    }

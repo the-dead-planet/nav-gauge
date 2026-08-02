@@ -1,20 +1,36 @@
 import { CircleLayerSpecification, LineLayerSpecification } from "maplibre-gl";
 import { routeLayerIds, RouteLayers, routeSourceIds } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 
-export const routeLineLayer: LineLayerSpecification = {
-    id: routeLayerIds.line,
-    source: routeSourceIds.line,
-    type: 'line',
-    paint: {
-        'line-color': RouteLayers.lines.lineColor,
-        'line-width': RouteLayers.lines.lineWidth,
-        'line-opacity': RouteLayers.lines.lineOpacity,
+export const routeLineLayers: LineLayerSpecification[] = [
+    {
+        id: routeLayerIds.lineOutline,
+        source: routeSourceIds.line,
+        type: 'line',
+        paint: {
+            'line-color': RouteLayers.lines.lineOutlineColor,
+            'line-width': RouteLayers.lines.lineOutlineWidth,
+            'line-opacity': RouteLayers.lines.lineOpacity,
+        },
+        layout: {
+            'line-cap': RouteLayers.lines.lineCap,
+            'line-join': RouteLayers.lines.lineJoin
+        }
     },
-    layout: {
-        'line-cap': RouteLayers.lines.lineCap,
-        'line-join': RouteLayers.lines.lineJoin
-    }
-};
+    {
+        id: routeLayerIds.line,
+        source: routeSourceIds.line,
+        type: 'line',
+        paint: {
+            'line-color': RouteLayers.lines.lineColor,
+            'line-width': RouteLayers.lines.lineWidth,
+            'line-opacity': RouteLayers.lines.lineOpacity,
+        },
+        layout: {
+            'line-cap': RouteLayers.lines.lineCap,
+            'line-join': RouteLayers.lines.lineJoin
+        }
+    },
+];
 
 export const routePointsLayer: CircleLayerSpecification = {
     id: routeLayerIds.points,

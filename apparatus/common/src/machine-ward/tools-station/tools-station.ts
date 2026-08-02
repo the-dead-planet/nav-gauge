@@ -1,5 +1,7 @@
 import { ComponentType } from "react";
 import { BehaviorSubject, combineLatest, map, Observable, of, Subscription, switchMap } from "rxjs";
+
+
 import {
     ToolPanel,
     ToolPanelPlacement,
@@ -55,8 +57,15 @@ export class ToolsStation<TMap> {
     public topBarSizeRef: ToolbarSizeRef = { current: null };
     public topToolbarSizeRef: ToolbarSizeRef = { current: null };
     public rightToolPanelSizeRef: ToolbarSizeRef = { current: null };
-    public bottomToolPanelSizeRef: ToolbarSizeRef = { current: null };
     public leftToolPanelSizeRef: ToolbarSizeRef = { current: null };
+    public bottomToolPanelSizeRef: ToolbarSizeRef = { current: null };
+    public bottomSecondaryToolPanelSizeRef: ToolbarSizeRef = { current: null };
+
+    /**
+     * Mobile-only: height of the bottom panel. Updated by BottomToolPanel via onLayout.
+     * Used by side panels to position above the bottom panel.
+     */
+    public mobileBottomPanelHeight = 0;
 
     /**
      * Vertical space occupied by the toolbars that frame the map area

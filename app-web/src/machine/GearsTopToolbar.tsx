@@ -3,13 +3,14 @@ import { combineLatest, of, switchMap, map as rxjsMap } from "rxjs";
 import classNames from "classnames";
 import { useMachineWard } from "@apparatus";
 import { T } from "@web-apparatus";
-import { useObservableState } from "@tinker-chest";
+import { useObservableState, useSubjectState } from "@tinker-chest";
 import { Button, FlexBox, H2, Icon } from "@web-ui";
 import { Icons, useTheme } from "@ui";
 import styles from './machine.module.css';
 
 export const GearsTopToolbar: FC = () => {
     const theme = useTheme();
+    const [media] = useSubjectState(theme.media$);
     const { namespace, translationKey, engine, toolsStation } = useMachineWard();
 
     const gearsWithEngaged$ = useMemo(() => engine.gears$.pipe(switchMap((gears) => {
@@ -53,7 +54,7 @@ export const GearsTopToolbar: FC = () => {
                         tooltip={<T n={gear.id} t={gear.translationKey.GearDescription} />}
                         tooltipPlacement="bottom"
                     >
-                        <T n={gear.id} t={gear.translationKey.GearName} />
+                        {media.isMoreThanSm ? <T n={gear.id} t={gear.translationKey.GearName} /> : null}
                     </Button>
                 ))}
             </FlexBox>

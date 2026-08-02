@@ -25,12 +25,12 @@ export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
             className={styles["top-bar"]}
         >
             <div className={classNames(styles["section"], styles["left"])}>
+                <UnderConstructionChip />
             </div>
             <H1 color="primary" fontType={FontType.NeonHeader} className={styles['header']}>
                 {title}
             </H1>
             <div className={classNames(styles["section"], styles["right"])}>
-                <UnderConstructionChip />
                 <Button
                     aria-label={modeTooltip}
                     tooltip={modeTooltip}

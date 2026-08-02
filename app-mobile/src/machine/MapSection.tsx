@@ -4,22 +4,22 @@ import { LayoutChangeEvent, StyleSheet } from "react-native";
 import { RecordingView, useViewRecorder } from "react-native-view-recorder";
 import { Camera, CameraRef, Map as MaplibreMap, MapRef } from "@maplibre/maplibre-react-native";
 import { Cartomancer, useMachineWard } from "@apparatus";
+import { Icons } from "@ui";
 import { useSubjectState } from "@tinker-chest";
 import { MobileMap } from "@mobile-ui";
-import { MapTools } from "./map-tools/MapTools";
+import { MapToolsGridAreas } from "./map-tools-grid/MapToolsGridAreas";
+import { GearsTopToolbar } from "./GearsTopToolbar";
 import { MobileChronoLens } from "@mobile-apparatus";
+import { CartoConfigPanel } from "./controls/CartoConfigPanel";
 
 const styles = StyleSheet.create({
     viewRecorder: {
         flex: 1,
         position: 'relative',
-        borderColor: "1px",
-        borderWidth: 10,
-        borderStyle: "dashed",
     },
     mapView: {
         flex: 1,
-    }
+    },
 });
 
 const dragPan$ = new BehaviorSubject(true);
@@ -47,7 +47,7 @@ export const MapSection: FC = () => {
         onPanResponderMoveHandlers$,
         onPanResponderEndHandlers$,
     }), [mapSize]);
-    const { cartomancer, chronoLens, signaliumBureau } = useMachineWard();
+    const { cartomancer, chronoLens, signaliumBureau, toolsStation } = useMachineWard();
     const lens = chronoLens as MobileChronoLens;
     const [dragPan] = useSubjectState(map.dragPan$);
     const [_isInitialised, setIsInitialised] = useSubjectState(cartomancer.isInitialised$);
@@ -76,59 +76,69 @@ export const MapSection: FC = () => {
         };
     }, [recorder]);
 
+    useEffect(() => {
+        const mapLayoutControlsId = 'map-layout-controls';
+        toolsStation.addToolPanel(mapLayoutControlsId, {
+            title: { n: cartomancer.namespace, t: cartomancer.translationKey.CartoConfig },
+            contentComponent: CartoConfigPanel as never,
+            icon: Icons.NounProject.MapLayout as never,
+            placement: 'left'
+        });
+
+        return () => {
+            toolsStation.removeToolPanel(mapLayoutControlsId);
+        };
+    }, []);
+
     const handleLayoutChange = (event: LayoutChangeEvent) => {
         const { width, height } = event.nativeEvent.layout;
         setMapSize({ width, height })
     };
 
-    // const currentPosition = useCurrentPosition({ enabled: true, minDisplacement: 1});
-
     return (
-        <MapTools map={map}>
-            <RecordingView
-                ref={viewRecorderRef}
-                sessionId={recorder.sessionId}
-                style={styles.viewRecorder}
-                onLayout={handleLayoutChange}
+        <RecordingView
+            ref={viewRecorderRef}
+            sessionId={recorder.sessionId}
+            style={styles.viewRecorder}
+            onLayout={handleLayoutChange}
+        >
+            <MaplibreMap
+                ref={mapRef}
+                style={styles.mapView}
+                dragPan={dragPan}
+                mapStyle={Cartomancer.styles[selectedStyle.id]?.style}
+                onDidFinishLoadingMap={() => setIsInitialised(true)}
+                onDidFinishLoadingStyle={() => setIsStyleLoaded(true)}
+                onDidFailLoadingMap={() => {
+                    signaliumBureau.addNotice({
+                        id: 'map-failed',
+                        type: 'error',
+                        error: new Error('Map loading failed'),
+                        text: 'Something went wrong'
+                    })
+                }}
+                onRegionDidChange={(event) => {
+                    setMapZoom(parseFloat(event.nativeEvent.zoom.toFixed(1)));
+                    setMapBearing(event.nativeEvent.bearing);
+                }}
+                onPress={(event) => {
+                    for (const [_handlerId, handler] of onPressHandlers) {
+                        handler(event.nativeEvent);
+                    }
+                }}
+                onLongPress={(event) => {
+                    for (const [_handlerId, handler] of onLongPressHandlers) {
+                        handler(event.nativeEvent);
+                    }
+                }}
             >
-                <MaplibreMap
-                    ref={mapRef}
-                    style={styles.mapView}
-                    dragPan={dragPan}
-                    mapStyle={Cartomancer.styles[selectedStyle.id]?.style}
-                    onDidFinishLoadingMap={() => setIsInitialised(true)}
-                    onDidFinishLoadingStyle={() => setIsStyleLoaded(true)}
-                    onDidFailLoadingMap={() => {
-                        signaliumBureau.addNotice({
-                            id: 'map-failed',
-                            type: 'error',
-                            error: new Error('Map loading failed'),
-                            text: 'Something went wrong'
-                        })
-                    }}
-                    onRegionDidChange={(event) => {
-                        setMapZoom(parseFloat(event.nativeEvent.zoom.toFixed(1)));
-                        setMapBearing(event.nativeEvent.bearing);
-                    }}
-                    onPress={(event) => {
-                        for (const [_handlerId, handler] of onPressHandlers) {
-                            handler(event.nativeEvent);
-                        }
-                    }}
-                    onLongPress={(event) => {
-                        for (const [_handlerId, handler] of onLongPressHandlers) {
-                            handler(event.nativeEvent);
-                        }
-                    }}
-                >
-                    <Camera ref={cameraRef} />
-                    {/* <NativeUserLocation mode="heading" />
-                    <UserLocation /> */}
-                    {[...overlays.entries()].map(([id, OverlayComponent]) => (
-                        <OverlayComponent key={id} map={map} />
-                    ))}
-                </MaplibreMap>
-            </RecordingView>
-        </MapTools>
+                <Camera ref={cameraRef} />
+                {[...overlays.entries()].map(([id, OverlayComponent]) => (
+                    <OverlayComponent key={id} map={map} />
+                ))}
+            </MaplibreMap>
+            <GearsTopToolbar />
+            <MapToolsGridAreas map={map} />
+        </RecordingView>
     );
 };

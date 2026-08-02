@@ -10,6 +10,7 @@ export const routeSourceIds = {
  * Keys follow layer order
  */
 export const routeLayerIds = {
+    lineOutline: 'route-line-outline',
     line: 'route-line',
     points: 'route-points',
     currentPointOutline: 'route-current-point-outline',
@@ -19,11 +20,18 @@ export const routeLayerIds = {
 const colorActive = 'rgb(160, 48, 160)';
 const colorInactive = 'rgb(221, 160, 221)';
 
+const routeLineOutlineColor = 'rgb(255, 255, 255)';
 const routeLineColor: GetPropertyCaseCondition = [
     'case',
     ['==', ['get', 'status'], 'before'],
     colorActive,
     colorInactive
+];
+const routeOpacity: GetPropertyCaseCondition = [
+    'case',
+    ['==', ['get', 'status'], 'before'],
+    1,
+    0.4
 ];
 
 const routeLineCap: LineCap = 'round';
@@ -46,9 +54,11 @@ const pointsCircleColor: [
 
 export default {
     lines: {
+        lineOutlineColor: routeLineOutlineColor,
         lineColor: routeLineColor,
-        lineWidth: 3,
-        lineOpacity: .6,
+        lineOutlineWidth: 6,
+        lineWidth: 4,
+        lineOpacity: routeOpacity,
         lineCap: routeLineCap,
         lineJoin: routeLineCap,
     },

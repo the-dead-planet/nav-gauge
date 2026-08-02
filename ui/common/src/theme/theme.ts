@@ -282,9 +282,12 @@ export class Theme {
     /**
      * Returns a css color string from the current theme.
      */
-    public componentColor = (componentName: ThemeComponentColor): string => {
+    public componentColor = (
+        componentName: ThemeComponentColor,
+        opacity?: number,
+    ): string => {
         const { name, shade } = this.componentColors[componentName];
 
-        return this.color(name, shade);
+        return this.color(name, shade, opacity);
     };
 }

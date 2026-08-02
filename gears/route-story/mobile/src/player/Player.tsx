@@ -4,7 +4,7 @@ import { DocumentPickerResponse } from "@react-native-documents/picker";
 import { OverlayComponentProps, SurveillanceState, useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { formatCurrentTimestamp, getProgressPercentage, RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { Slider, Text } from "@mobile-ui";
+import { Slider, Text, Divider } from "@mobile-ui";
 import { MobileMap } from "@mobile-ui";
 import { useTheme } from "@ui";
 import { currentPointRef$, linesRef$ } from "../layers/RouteLayer";
@@ -39,22 +39,15 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<Mobil
     }, [progressMs]);
 
     return (
-        <View style={{ flex: 1 }}>
-            <Slider
-                ref={sliderRef}
-                min={0}
-                max={routeTimes?.duration ?? 1}
-                step={1}
-                value={progressMs}
-                onChange={handleProgressChange}
-                color="tertiary"
-                size="sm"
-            />
-            <View style={{
-                flexDirection: "row",
-                justifyContent: "center",
-            }}>
-                <Text>
+        <View style={{
+            height: 70,
+            flexDirection: "row",
+            alignItems: "center",
+            paddingHorizontal: 10,
+            gap: 10,
+        }}>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+                <Text style={{ fontSize: 12 }}>
                     {formatCurrentTimestamp(progressMs, progressPercentage)}
                 </Text>
                 <Button
@@ -67,10 +60,23 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<Mobil
                     color={theme.componentColor('button')}
                     onPress={playerOperator.onRecord}
                 />
-                <Text>
-                    {!routeTimes ? "" : individuator.formatTimestamp(progressMs + routeTimes.startTimeEpoch, settings)}
-                </Text>
             </View>
+            <Divider orientation="vertical" mh="sm" />
+            <Slider
+                ref={sliderRef}
+                min={0}
+                max={routeTimes?.duration ?? 1}
+                step={1}
+                value={progressMs}
+                onChange={handleProgressChange}
+                color="tertiary"
+                size="sm"
+                style={{ flex: 1 }}
+            />
+            <Divider orientation="vertical" mh="sm" />
+            <Text style={{ fontSize: 12 }}>
+                {!routeTimes ? "" : individuator.formatTimestamp(progressMs + routeTimes.startTimeEpoch, settings)}
+            </Text>
         </View>
     );
 };

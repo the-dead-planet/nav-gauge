@@ -10,6 +10,7 @@ interface Props {
     forwardRef?: Ref<View>;
     icon?: ComponentType<SvgProps>;
     title?: string;
+    iconRotateZ?: number;
 }
 
 export const Button: FC<PressableProps & ButtonProps & Props> = ({
@@ -24,6 +25,7 @@ export const Button: FC<PressableProps & ButtonProps & Props> = ({
     themeMode,
     title,
     icon,
+    iconRotateZ = 0,
     children,
     style,
     disabled,
@@ -210,18 +212,20 @@ export const Button: FC<PressableProps & ButtonProps & Props> = ({
     const iconSize = iconSizes[size];
 
     const iconElement = icon ? (
-        <Icon
-            icon={icon}
-            width={iconSize}
-            height={iconSize}
-            color={theme.color(
-                pressed || active ? highlightColor : color,
-                effectiveVariant === 'fill'
-                    ? 100
-                    : (pressed || active ? (theme.isDark ? 300 : 600) : 500)
-            )}
-            filter={showTextShadow ? `drop-shadow(0px 0px 12px ${hlInset})` : undefined}
-        />
+        <View style={iconRotateZ ? { transform: [{ rotate: `${iconRotateZ}deg` }] } : undefined}>
+            <Icon
+                icon={icon}
+                width={iconSize}
+                height={iconSize}
+                color={theme.color(
+                    pressed || active ? highlightColor : color,
+                    effectiveVariant === 'fill'
+                        ? 100
+                        : (pressed || active ? (theme.isDark ? 300 : 600) : 500)
+                )}
+                filter={showTextShadow ? `drop-shadow(0px 0px 12px ${hlInset})` : undefined}
+            />
+        </View>
     ) : null;
 
     const textElement = children || title ? (

@@ -20,7 +20,7 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
     public animatrix = new Animatrix();
     private dataSubscription: Subscription | null = null;
     public readonly data$ = new BehaviorSubject<ParsingResultWithError>({});
-    public readonly state$ = new BehaviorSubject<RouteStoryState>({ showRouteLine: true, showRoutePoints: true });
+    public readonly state$ = new BehaviorSubject<RouteStoryState>({ showRouteLine: true, showRoutePoints: false });
     public readonly routeTimes$ = new BehaviorSubject<RouteTimes | null>(null);
     public readonly images$ = new BehaviorSubject<MarkerImage<TImageData>[]>([]);
     public readonly progressMs$ = new BehaviorSubject(0);
