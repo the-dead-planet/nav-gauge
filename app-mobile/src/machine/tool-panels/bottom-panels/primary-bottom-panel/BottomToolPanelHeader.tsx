@@ -5,6 +5,23 @@ import { useObservableState, useSubjectState } from "@tinker-chest";
 import { useMachineWard } from "@apparatus";
 import { Icons } from "@ui";
 
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 8,
+    },
+    leftSection: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    rightSection: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+});
+
 interface Props {
     activeId: string | null;
     onActiveIdChange: (activeId: string | null) => void;
@@ -70,20 +87,3 @@ export const BottomToolPanelHeader: FC<Props> = ({
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: 8,
-    },
-    leftSection: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    rightSection: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-});

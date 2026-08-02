@@ -17,35 +17,25 @@ import {
 } from "../tool-panels/tool-panel-size";
 
 const styles = StyleSheet.create({
-    container: {
+    mainArea: {
         flex: 1,
         flexDirection: 'row',
+        borderWidth: 2,
+        borderColor: 'green'
     },
     leftColumn: {
-        flexDirection: 'row',
-        zIndex: 50,
+        borderWidth: 1,
+        borderColor: 'red'
+    },
+    centerColumn: {
+        flex: 1,
+        borderWidth: 1,
+        borderColor: 'blue',
+        height: 40
     },
     rightColumn: {
-        flexDirection: 'row',
-        zIndex: 50,
-    },
-    centerArea: {
-        flex: 1,
-        position: 'relative',
-    },
-    topTools: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 60,
-    },
-    bottomPanel: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        zIndex: 50,
+        borderWidth: 1,
+        borderColor: 'red'
     },
 });
 
@@ -67,60 +57,59 @@ export const MapToolsGridAreas: FC<Props> = ({ map }) => {
     useToolPanelSizeClamp();
 
     return (
-        <View style={styles.container}>
-            {/* Left: left panel, then left icons (between panel and map) */}
-            {groupSidePanelsInBottomSecondaryToolbar
-                ? <PlaceholderToolPanel placement="left" />
-                : (
-                    <View style={styles.leftColumn}>
-                        <View style={{ width: panelWidths.leftWidth }}>
-                            <SideToolPanel
-                                placement="left"
-                                map={map}
-                                activeId={activeLeftPanelToolId}
-                                onActiveIdChange={setActiveLeftPanelToolId}
-                            />
+        <>
+            <View pointerEvents="box-none" style={styles.mainArea}>
+                {groupSidePanelsInBottomSecondaryToolbar
+                    ? <PlaceholderToolPanel placement="left" />
+                    : (
+                        <View
+                            style={[styles.leftColumn, {
+                                backgroundColor: theme.componentColor('background', .87),
+                            }]}>
+                            <View style={{ width: panelWidths.leftWidth }}>
+                                <SideToolPanel
+                                    placement="left"
+                                    map={map}
+                                    activeId={activeLeftPanelToolId}
+                                    onActiveIdChange={setActiveLeftPanelToolId}
+                                />
+                            </View>
+                            <View style={{ width: LEFT_ICONS_WIDTH }}>
+                                <ToolIcons placement="left" map={map} />
+                            </View>
                         </View>
-                        <View style={{ width: LEFT_ICONS_WIDTH }}>
-                            <ToolIcons placement="left" map={map} />
-                        </View>
-                    </View>
-                )}
+                    )}
 
-            {/* Center area - map fills remaining space */}
-            <View style={styles.centerArea}>
-                <TopToolsGridArea map={map} />
+                <View pointerEvents="box-none" style={styles.centerColumn}>
+                    <TopToolsGridArea map={map} />
+                </View>
+
+                {/* Right: right icons, then right panel (between map and panel) */}
+                {groupSidePanelsInBottomSecondaryToolbar
+                    ? <PlaceholderToolPanel placement="right" />
+                    : (
+                        <View style={[styles.rightColumn, {
+                            backgroundColor: theme.componentColor('background', .87),
+                        }]}>
+                            <View style={{ width: RIGHT_ICONS_WIDTH }}>
+                                <ToolIcons placement="right" map={map} />
+                            </View>
+                            <View style={{ width: panelWidths.rightWidth }}>
+                                <SideToolPanel
+                                    placement="right"
+                                    map={map}
+                                    activeId={activeRightPanelToolId}
+                                    onActiveIdChange={setActiveRightPanelToolId}
+                                />
+                            </View>
+                        </View>
+                    )}
             </View>
-
-            {/* Right: right icons, then right panel (between map and panel) */}
-            {groupSidePanelsInBottomSecondaryToolbar
-                ? <PlaceholderToolPanel placement="right" />
-                : (
-                    <View style={styles.rightColumn}>
-                        <View style={{ width: RIGHT_ICONS_WIDTH }}>
-                            <ToolIcons placement="right" map={map} />
-                        </View>
-                        <View style={{ width: panelWidths.rightWidth }}>
-                            <SideToolPanel
-                                placement="right"
-                                map={map}
-                                activeId={activeRightPanelToolId}
-                                onActiveIdChange={setActiveRightPanelToolId}
-                            />
-                        </View>
-                    </View>
-                )}
-
-            {/* Bottom panel - overlays everything at the bottom */}
-            <View style={styles.bottomPanel}>
-                <BottomToolPanel
-                    map={map}
-                    activeId={activeBottomPanelToolId}
-                    onActiveIdChange={setActiveBottomPanelToolId}
-                />
-            </View>
-
-            {/* Bottom secondary */}
+            <BottomToolPanel
+                map={map}
+                activeId={activeBottomPanelToolId}
+                onActiveIdChange={setActiveBottomPanelToolId}
+            />
             {groupSidePanelsInBottomSecondaryToolbar
                 ? (
                     <SecondaryBottomToolPanel
@@ -130,6 +119,6 @@ export const MapToolsGridAreas: FC<Props> = ({ map }) => {
                     />
                 )
                 : <PlaceholderToolPanel placement="bottom-secondary" />}
-        </View>
+        </>
     );
 };

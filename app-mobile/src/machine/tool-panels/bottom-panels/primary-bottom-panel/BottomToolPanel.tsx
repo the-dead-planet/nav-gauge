@@ -3,8 +3,15 @@ import { StyleSheet, View } from "react-native";
 import { useObservableState } from "@tinker-chest";
 import { useMachineWard } from "@apparatus";
 import { BottomToolPanelHeader } from "./BottomToolPanelHeader";
-import { MobileMap } from "@mobile-ui";
+import { MobileMap, Text } from "@mobile-ui";
 import { useTheme } from "@ui";
+
+const styles = StyleSheet.create({
+    componentHeader: {
+        flexDirection: 'row',
+        paddingHorizontal: 8,
+    },
+});
 
 interface Props {
     map?: MobileMap;
@@ -23,7 +30,6 @@ export const BottomToolPanel: FC<Props> = ({
     const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
     const effectivePanels = toolPanelsByPlacement["bottom"];
     const toolPanel = effectivePanels.find(({ id }) => id === activeId);
-    const showHeader = effectivePanels.length > 0;
     const viewRef = useRef<View | null>(null);
 
     const updateSize = useCallback(() => {
@@ -36,27 +42,21 @@ export const BottomToolPanel: FC<Props> = ({
     }, [toolsStation.bottomToolPanelSizeRef]);
 
     return (
-        <View
-            ref={viewRef}
-            onLayout={updateSize}
-            style={[styles.toolbar, {
-                backgroundColor: theme.componentColor('background', 0.87),
-            }]}
-        >
+        <View ref={viewRef} onLayout={updateSize}>
             {effectivePanels.length > 0 && (
-                <View style={[styles.content, showHeader && styles.withHeader]}>
-                    <BottomToolPanelHeader
-                        activeId={activeId}
-                        onActiveIdChange={onActiveIdChange}
-                    />
+                <View style={[{
+                    backgroundColor: theme.componentColor('background', 0.87),
+                    borderTopColor: theme.color('primary'),
+                }]}>
+                    <BottomToolPanelHeader activeId={activeId} onActiveIdChange={onActiveIdChange} />
                     {toolPanel ? (
-                        <View style={styles.component}>
+                        <View>
                             {toolPanel.headerComponent ? (
                                 <View style={styles.componentHeader}>
                                     <toolPanel.headerComponent map={map} placement={toolPanel.placement} />
                                 </View>
                             ) : null}
-                            <View style={styles.componentContent}>
+                            <View>
                                 <toolPanel.contentComponent map={map} placement={toolPanel.placement} />
                             </View>
                         </View>
@@ -66,32 +66,3 @@ export const BottomToolPanel: FC<Props> = ({
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    toolbar: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        zIndex: 50,
-    },
-    content: {
-        flex: 1,
-        backgroundColor: 'transparent',
-    },
-    withHeader: {
-        borderTopWidth: 1,
-        borderTopColor: 'rgba(255,255,255,0.1)',
-    },
-    component: {
-        flex: 1,
-    },
-    componentHeader: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingHorizontal: 8,
-    },
-    componentContent: {
-        flex: 1,
-    },
-});
