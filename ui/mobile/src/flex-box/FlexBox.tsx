@@ -10,7 +10,8 @@ const spacingMap: Record<SpacingVariant, number> = {
     xl: 28,
 };
 
-export const FlexBox: FC<FlexBoxProps & { style?: StyleProp<ViewStyle> }> = ({
+export const FlexBox: FC<FlexBoxProps & { ref?: React.Ref<View>; style?: StyleProp<ViewStyle> }> = ({
+    ref,
     direction,
     justifyContent,
     alignItems,
@@ -22,6 +23,7 @@ export const FlexBox: FC<FlexBoxProps & { style?: StyleProp<ViewStyle> }> = ({
 }) => {
     return (
         <View
+            ref={ref}
             style={[
                 {
                     flexDirection: direction,

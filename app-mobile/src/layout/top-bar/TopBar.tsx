@@ -5,11 +5,12 @@ import { Button, Text } from '@mobile-ui';
 import { MachineWardTopBarProps, useMachineWard, useMultipleTranslations } from "@apparatus";
 import { RootStackParamList } from "../../navigation";
 import { UnderConstructionChip } from "./UnderConstructionChip";
-import { TOP_BAR_HEIGHT } from "../layout-sizes";
+import { TOP_BAR_HEIGHT } from "../../machine-sizes";
 import { LayoutMenu } from "./menu/LayoutMenu";
 
 const styles = StyleSheet.create({
     container: {
+        height: TOP_BAR_HEIGHT,
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 5,
@@ -46,7 +47,6 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
 
     return (
         <View style={[styles.container, {
-            height: TOP_BAR_HEIGHT,
             backgroundColor: theme.componentColor('background'),
             borderBottomColor: theme.componentColor('border'),
             shadowColor: theme.componentColor('box-shadow'),

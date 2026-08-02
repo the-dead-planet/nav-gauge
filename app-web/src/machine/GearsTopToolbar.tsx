@@ -23,7 +23,7 @@ export const GearsTopToolbar: FC = () => {
             <FlexBox gap="md" alignItems="center" className={styles['content']}>
                 <H2 color="secondary" className={styles['gears-heading']}>
                     <Icon src={Icons.NounProject.Gear} color={theme.color('secondary')} width={20} height={20} />
-                    <T n={namespace} t={translationKey.Gears} />
+                    {media.isMoreThanXs ? <T n={namespace} t={translationKey.Gears} /> : null}
                 </H2>
                 {gears.map(({ gear, isEngaged }) => (
                     <Button
