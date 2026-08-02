@@ -1,5 +1,4 @@
-import { FC, useMemo } from "react";
-import { combineLatest, of, switchMap, map as rxjsMap } from "rxjs";
+import { FC } from "react";
 import classNames from "classnames";
 import { useMachineWard } from "@apparatus";
 import { T } from "@web-apparatus";
@@ -12,18 +11,7 @@ export const GearsTopToolbar: FC = () => {
     const theme = useTheme();
     const [media] = useSubjectState(theme.media$);
     const { namespace, translationKey, engine, toolsStation } = useMachineWard();
-
-    const gearsWithEngaged$ = useMemo(() => engine.gears$.pipe(switchMap((gears) => {
-        if (gears.length === 0) {
-            return of([]);
-        }
-
-        return combineLatest(gears.map((gear) => gear.isEngaged$.pipe(
-            rxjsMap((isEngaged) => ({ gear, isEngaged }))
-        )));
-    })), [engine]);
-
-    const gears = useObservableState(gearsWithEngaged$, []);
+    const gears = useObservableState(engine.gearsWithEngaged$, []);
 
     return (
         <div

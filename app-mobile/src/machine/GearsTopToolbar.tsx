@@ -36,27 +36,12 @@ export const GearsTopToolbar: FC = () => {
     const theme = useTheme();
     const [media] = useSubjectState(theme.media$);
     const { namespace, translationKey, engine, toolsStation, translatron, individuator } = useMachineWard();
+    const gears = useObservableState(engine.gearsWithEngaged$, []);
     const [settings] = useSubjectState(individuator.settings$);
     const [registry] = useSubjectState(translatron.registry$);
     const [gearLabel] = useMultipleTranslations([
         { n: namespace, t: translationKey.Gears },
     ]);
-
-    const gearsWithEngaged$ = useMemo(() => engine.gears$.pipe(switchMap((gears) => {
-        if (gears.length === 0) {
-            return of([]);
-        }
-
-        return combineLatest(gears.map((gear) => gear.isEngaged$.pipe(
-            rxjsMap((isEngaged) => ({ gear, isEngaged }))
-        )));
-    })), [engine]);
-
-    const gears = useObservableState(gearsWithEngaged$, []);
-
-    if (gears.length === 0) {
-        return null;
-    }
 
     return (
         <View

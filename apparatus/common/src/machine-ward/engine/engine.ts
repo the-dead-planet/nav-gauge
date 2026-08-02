@@ -1,10 +1,20 @@
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, combineLatest, of, switchMap, map } from "rxjs";
 import { Gear } from "../gears";
 
 export class Engine<TMap> {
     public constructor() { }
 
     public gears$ = new BehaviorSubject<Gear<TMap>[]>([]);
+
+    public gearsWithEngaged$ = this.gears$.pipe(switchMap((gears) => {
+        if (gears.length === 0) {
+            return of([]);
+        }
+
+        return combineLatest(gears.map((gear) => gear.isEngaged$.pipe(
+            map((isEngaged) => ({ gear, isEngaged }))
+        )));
+    }));
 
     public addGears = (gear: Gear<TMap> | Gear<TMap>[]) => {
         const gears = Array.isArray(gear) ? gear : [gear];

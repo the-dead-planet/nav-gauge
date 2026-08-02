@@ -1,6 +1,6 @@
 import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { BehaviorSubject } from "rxjs";
-import { LayoutChangeEvent, StyleSheet } from "react-native";
+import { LayoutChangeEvent, StyleSheet, View } from "react-native";
 import { RecordingView, useViewRecorder } from "react-native-view-recorder";
 import { Camera, CameraRef, Map as MaplibreMap, MapRef } from "@maplibre/maplibre-react-native";
 import { Cartomancer, useMachineWard } from "@apparatus";
@@ -13,9 +13,11 @@ import { MobileChronoLens } from "@mobile-apparatus";
 import { CartoConfigPanel } from "./controls/CartoConfigPanel";
 
 const styles = StyleSheet.create({
-    viewRecorder: {
+    container: {
         flex: 1,
         position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
     },
     mapView: {
         flex: 1,
@@ -96,49 +98,51 @@ export const MapSection: FC = () => {
     };
 
     return (
-        <RecordingView
-            ref={viewRecorderRef}
-            sessionId={recorder.sessionId}
-            style={styles.viewRecorder}
-            onLayout={handleLayoutChange}
-        >
-            <MaplibreMap
-                ref={mapRef}
-                style={styles.mapView}
-                dragPan={dragPan}
-                mapStyle={Cartomancer.styles[selectedStyle.id]?.style}
-                onDidFinishLoadingMap={() => setIsInitialised(true)}
-                onDidFinishLoadingStyle={() => setIsStyleLoaded(true)}
-                onDidFailLoadingMap={() => {
-                    signaliumBureau.addNotice({
-                        id: 'map-failed',
-                        type: 'error',
-                        error: new Error('Map loading failed'),
-                        text: 'Something went wrong'
-                    })
-                }}
-                onRegionDidChange={(event) => {
-                    setMapZoom(parseFloat(event.nativeEvent.zoom.toFixed(1)));
-                    setMapBearing(event.nativeEvent.bearing);
-                }}
-                onPress={(event) => {
-                    for (const [_handlerId, handler] of onPressHandlers) {
-                        handler(event.nativeEvent);
-                    }
-                }}
-                onLongPress={(event) => {
-                    for (const [_handlerId, handler] of onLongPressHandlers) {
-                        handler(event.nativeEvent);
-                    }
-                }}
+        <View style={styles.container}>
+            <RecordingView
+                ref={viewRecorderRef}
+                sessionId={recorder.sessionId}
+                style={StyleSheet.absoluteFill}
+                onLayout={handleLayoutChange}
             >
-                <Camera ref={cameraRef} />
-                {[...overlays.entries()].map(([id, OverlayComponent]) => (
-                    <OverlayComponent key={id} map={map} />
-                ))}
-            </MaplibreMap>
+                <MaplibreMap
+                    ref={mapRef}
+                    style={styles.mapView}
+                    dragPan={dragPan}
+                    mapStyle={Cartomancer.styles[selectedStyle.id]?.style}
+                    onDidFinishLoadingMap={() => setIsInitialised(true)}
+                    onDidFinishLoadingStyle={() => setIsStyleLoaded(true)}
+                    onDidFailLoadingMap={() => {
+                        signaliumBureau.addNotice({
+                            id: 'map-failed',
+                            type: 'error',
+                            error: new Error('Map loading failed'),
+                            text: 'Something went wrong'
+                        })
+                    }}
+                    onRegionDidChange={(event) => {
+                        setMapZoom(parseFloat(event.nativeEvent.zoom.toFixed(1)));
+                        setMapBearing(event.nativeEvent.bearing);
+                    }}
+                    onPress={(event) => {
+                        for (const [_handlerId, handler] of onPressHandlers) {
+                            handler(event.nativeEvent);
+                        }
+                    }}
+                    onLongPress={(event) => {
+                        for (const [_handlerId, handler] of onLongPressHandlers) {
+                            handler(event.nativeEvent);
+                        }
+                    }}
+                >
+                    <Camera ref={cameraRef} />
+                    {[...overlays.entries()].map(([id, OverlayComponent]) => (
+                        <OverlayComponent key={id} map={map} />
+                    ))}
+                </MaplibreMap>
+            </RecordingView>
             <GearsTopToolbar />
             <MapToolsGridAreas map={map} />
-        </RecordingView>
+        </View>
     );
 };
