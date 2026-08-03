@@ -53,7 +53,7 @@ export const SideToolPanel: FC<Props> = ({
     const show = effectivePanels.length > 0;
     const isLeft = placement === 'left';
 
-    const [isDragging, setIsDragging] = useState(false);
+    const [_isDragging, setIsDragging] = useState(false);
 
     const handleSidePanelActiveIdChange = (newId: string | null) => {
         onActiveIdChange(newId);

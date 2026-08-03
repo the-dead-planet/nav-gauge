@@ -74,7 +74,7 @@ export const FileInput: FC<Props & ViewProps> = ({
     return (
         <View style={[styles.container, style]} {...props}>
             <Button
-                icon={Icons.NounProject.Upload}
+                icon={fileIcon}
                 color={color}
                 variant="fill"
                 corners="circle"

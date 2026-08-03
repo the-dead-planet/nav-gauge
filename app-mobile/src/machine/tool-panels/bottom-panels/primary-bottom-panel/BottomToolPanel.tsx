@@ -3,7 +3,7 @@ import { LayoutAnimation, StyleSheet, View } from "react-native";
 import { useObservableState } from "@tinker-chest";
 import { useMachineWard } from "@apparatus";
 import { BottomToolPanelHeader } from "./BottomToolPanelHeader";
-import { MobileMap, Text } from "@mobile-ui";
+import { MobileMap } from "@mobile-ui";
 import { useTheme } from "@ui";
 
 const styles = StyleSheet.create({
@@ -53,7 +53,7 @@ export const BottomToolPanel: FC<Props> = ({
     if (!show) {
         return null;
     }
-    
+
     return (
         <View ref={viewRef} onLayout={updateSize}>
             <View style={[{

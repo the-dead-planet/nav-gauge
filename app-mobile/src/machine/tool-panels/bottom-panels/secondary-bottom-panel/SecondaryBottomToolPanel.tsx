@@ -40,7 +40,7 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
     const toolPanel = effectivePanels.find(({ id }) => id === activeId);
     const show = effectivePanels.length > 0;
     const isCollapsed = activeId === null;
-    const [isDragging, setIsDragging] = useState(false);
+    const [_isDragging, setIsDragging] = useState(false);
 
     const effectiveHeight = !show
         ? 0

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { parsers, TopToolsProps, useMultipleTranslations } from "@apparatus";
 import { RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { BevelPanel, Button, FileInput } from "@mobile-ui";
