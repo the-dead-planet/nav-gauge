@@ -1,4 +1,4 @@
-import { FC, useCallback, useRef } from "react";
+import { FC, useCallback, useRef, useState } from "react";
 import { GestureResponderEvent, PanResponder, View } from "react-native";
 import { ResizeHandleProps, useTheme } from "@ui";
 
@@ -11,6 +11,7 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
 }) => {
     const theme = useTheme();
     const lastPositionRef = useRef<{ x: number; y: number } | null>(null);
+    const [isDragging, setIsDragging] = useState(false);
 
     const handleMove = useCallback((_: GestureResponderEvent, gestureState: { dx: number; dy: number }) => {
         if (!lastPositionRef.current) {
@@ -28,15 +29,18 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
         onPanResponderGrant: (evt) => {
             lastPositionRef.current = { x: 0, y: 0 };
             onDragStart?.(evt.nativeEvent.pageX);
+            setIsDragging(true);
         },
         onPanResponderMove: handleMove,
         onPanResponderRelease: () => {
             lastPositionRef.current = null;
             onDragEnd?.();
+            setIsDragging(false);
         },
         onPanResponderTerminate: () => {
             lastPositionRef.current = null;
             onDragEnd?.();
+            setIsDragging(false);
         },
     })).current;
 
@@ -54,17 +58,15 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
                     width: hitAreaWidth,
                     alignItems: 'center',
                     justifyContent: 'center',
-                    zIndex: 10,
+                    transform: [{ translateX: '50%' }],
+                    zIndex: 1,
                 }}
             >
                 <View
-                    style={{
-                        width: borderWidth,
-                        height: '100%',
-                        backgroundColor: disabled ? 'transparent' : theme.color('secondary'),
-                        borderRadius: 1,
-                        opacity: 0.4,
-                    }}
+                    style={[
+                        { width: borderWidth, height: '100%' },
+                        isDragging && { backgroundColor: theme.color('secondary') },
+                    ]}
                 />
             </View>
         );
@@ -80,17 +82,15 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
                 height: hitAreaWidth,
                 justifyContent: 'center',
                 alignItems: 'center',
-                zIndex: 10,
+                transform: [{ translateY: '-50%' }],
+                zIndex: 1,
             }}
         >
             <View
-                style={{
-                    height: borderWidth,
-                    width: '100%',
-                    backgroundColor: disabled ? 'transparent' : theme.color('secondary'),
-                    borderRadius: 1,
-                    opacity: 0.4,
-                }}
+                style={[
+                    { height: borderWidth, width: '100%' },
+                    isDragging && { backgroundColor: theme.color('secondary') },
+                ]}
             />
         </View>
     );

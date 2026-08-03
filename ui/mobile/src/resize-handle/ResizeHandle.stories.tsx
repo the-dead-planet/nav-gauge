@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#1a1a1a",
         borderRightWidth: 1,
         borderRightColor: "#666",
-        overflow: "hidden",
     },
     mapArea: {
         flex: 1,
@@ -46,7 +45,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#1a1a1a",
         borderTopWidth: 1,
         borderTopColor: "#666",
-        overflow: "hidden",
     },
     handleRight: {
         position: "absolute",
