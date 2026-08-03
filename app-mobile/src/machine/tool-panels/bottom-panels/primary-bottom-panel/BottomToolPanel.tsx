@@ -1,5 +1,5 @@
-import { FC, useCallback, useRef } from "react";
-import { StyleSheet, View } from "react-native";
+import { FC, useCallback, useLayoutEffect, useRef } from "react";
+import { LayoutAnimation, StyleSheet, View } from "react-native";
 import { useObservableState } from "@tinker-chest";
 import { useMachineWard } from "@apparatus";
 import { BottomToolPanelHeader } from "./BottomToolPanelHeader";
@@ -30,7 +30,16 @@ export const BottomToolPanel: FC<Props> = ({
     const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
     const effectivePanels = toolPanelsByPlacement["bottom"];
     const toolPanel = effectivePanels.find(({ id }) => id === activeId);
+    const show = effectivePanels.length > 0;
     const viewRef = useRef<View | null>(null);
+
+    const prevActiveId = useRef(activeId);
+    useLayoutEffect(() => {
+        if (prevActiveId.current !== activeId) {
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+            prevActiveId.current = activeId;
+        }
+    }, [activeId]);
 
     const updateSize = useCallback(() => {
         const view = viewRef.current;
@@ -41,16 +50,20 @@ export const BottomToolPanel: FC<Props> = ({
         }
     }, [toolsStation.bottomToolPanelSizeRef]);
 
+    if (!show) {
+        return null;
+    }
+    
     return (
         <View ref={viewRef} onLayout={updateSize}>
-            {effectivePanels.length > 0 && (
-                <View style={[{
-                    backgroundColor: theme.componentColor('background', 0.87),
-                    borderTopColor: theme.color('primary'),
-                }]}>
-                    <BottomToolPanelHeader activeId={activeId} onActiveIdChange={onActiveIdChange} />
+            <View style={[{
+                backgroundColor: theme.componentColor('background', 0.87),
+                borderTopColor: theme.color('primary'),
+            }]}>
+                <BottomToolPanelHeader activeId={activeId} onActiveIdChange={onActiveIdChange} />
+                <View>
                     {toolPanel ? (
-                        <View>
+                        <>
                             {toolPanel.headerComponent ? (
                                 <View style={styles.componentHeader}>
                                     <toolPanel.headerComponent map={map} placement={toolPanel.placement} />
@@ -59,10 +72,10 @@ export const BottomToolPanel: FC<Props> = ({
                             <View>
                                 <toolPanel.contentComponent map={map} placement={toolPanel.placement} />
                             </View>
-                        </View>
+                        </>
                     ) : null}
                 </View>
-            )}
+            </View>
         </View>
     );
 };

@@ -12,12 +12,7 @@ import { MobileMap } from "@mobile-ui";
 const styles = StyleSheet.create({
     content: {
         flex: 1,
-        backgroundColor: 'transparent',
         flexDirection: 'row',
-    },
-    withHeader: {
-        borderTopWidth: 1,
-        borderTopColor: 'rgba(255,255,255,0.1)',
     },
     component: {
         flex: 1,
@@ -29,15 +24,6 @@ const styles = StyleSheet.create({
     },
     componentContent: {
         flex: 1,
-    },
-    dragging: {
-        opacity: 0.9,
-    },
-    collapsed: {
-        opacity: 0.7,
-    },
-    expanded: {
-        opacity: 1,
     },
 });
 
@@ -64,11 +50,8 @@ export const SideToolPanel: FC<Props> = ({
     const effectivePanels = toolPanelsByPlacement[placement];
     const toolPanel = effectivePanels.find(({ id }) => id === activeId);
     const targetPlacement = toolPanel?.placement === 'right' ? 'left' : 'right';
-    const showHeader = effectivePanels.length > 0;
-    const isCollapsed = activeId === null;
+    const show = effectivePanels.length > 0;
     const isLeft = placement === 'left';
-    const panelMin = isLeft ? PANEL_MIN_LEFT : PANEL_MIN;
-    const _currentWidth = !showHeader ? 0 : isCollapsed ? panelMin : (isLeft ? panelWidths.leftWidth : panelWidths.rightWidth);
 
     const [isDragging, setIsDragging] = useState(false);
 
@@ -114,29 +97,32 @@ export const SideToolPanel: FC<Props> = ({
         { n: namespace, t: translationKey.SwapPlacement, p: { placement: targetPlacement } },
     ]);
 
-    const sideHeader = showHeader ? (
+    const sideHeader = (
         <ToolPanelHeader
             placement={placement}
             activeId={activeId}
             onActiveIdChange={handleSidePanelActiveIdChange}
         />
-    ) : null;
+    );
+
+    if (!show) {
+        return null;
+    }
 
     return (
         <View
             style={[
-                styles.dragging,
-                isDragging && styles.dragging,
-                isCollapsed && styles.collapsed,
-                !isCollapsed && styles.expanded,
                 {
-                    flex: 1,
                     backgroundColor: theme.componentColor('background', 0.87),
+                    width: placement === 'right' ? panelWidths.rightWidth : panelWidths.leftWidth,
                 },
+                placement === 'right'
+                    ? { borderLeftWidth: 1, borderLeftColor: theme.color('neutral') }
+                    : { borderRightWidth: 1, borderRightColor: theme.color('neutral') },
             ]}
         >
             {effectivePanels.length > 0 && (
-                <View style={[styles.content, showHeader && styles.withHeader]}>
+                <View style={styles.content}>
                     {sideHeader}
                     {toolPanel ? (
                         <View style={styles.component}>

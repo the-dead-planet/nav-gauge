@@ -5,56 +5,7 @@ import { useObservableState } from "@tinker-chest";
 import { ToolIconRight } from "./tool-icons/ToolIconRight";
 import { ToolIconLeft } from "./tool-icons/ToolIconLeft";
 import { MobileMap } from "@mobile-ui";
-
-interface Props {
-    map?: MobileMap;
-    placement: 'right' | 'left';
-}
-
-export const ToolIcons: FC<Props> = ({
-    map,
-    placement,
-}) => {
-    const { toolsStation } = useMachineWard();
-    const toolIcons = useObservableState(toolsStation.toolIconsByPlacement$, []);
-    const toolIconsByPlacement = toolsStation.getToolIconsByPlacement(toolIcons);
-    const len = toolIconsByPlacement[placement].length;
-    const Component = placement === 'left' ? ToolIconLeft : ToolIconRight;
-
-    if (!map || len === 0) {
-        return null;
-    }
-
-    const hasSpacer = (placement === 'right' && len === 1) || (placement === 'left' && len > 1);
-
-    return (
-        <View style={[styles.icons, placement === 'right' ? styles.right : styles.left]}>
-            {hasSpacer ? <View /> : null}
-            {toolIconsByPlacement[placement].map((toolIcon, index) => {
-                // nth-child parity in the web CSS counts the spacer as a child
-                const childNumber = index + 1 + (hasSpacer ? 1 : 0);
-                const isStaggered = placement === 'left'
-                    ? childNumber % 2 === 0
-                    : childNumber % 2 === 1;
-
-                return (
-                    <View
-                        key={toolIcon.id}
-                        style={[
-                            styles.cell,
-                            isStaggered ? (placement === 'left' ? styles.cellStaggered : styles.cellStaggeredRight) : null,
-                        ]}
-                    >
-                        <Component
-                            map={map}
-                            {...toolIcon}
-                        />
-                    </View>
-                );
-            })}
-        </View>
-    );
-};
+import { LEFT_ICONS_WIDTH, RIGHT_ICONS_WIDTH } from "../tool-panels/tool-panel-size";
 
 const styles = StyleSheet.create({
     icons: {
@@ -92,3 +43,56 @@ const styles = StyleSheet.create({
         ],
     },
 });
+
+interface Props {
+    map?: MobileMap;
+    placement: 'right' | 'left';
+}
+
+export const ToolIcons: FC<Props> = ({
+    map,
+    placement,
+}) => {
+    const { toolsStation } = useMachineWard();
+    const toolIcons = useObservableState(toolsStation.toolIconsByPlacement$, []);
+    const toolIconsByPlacement = toolsStation.getToolIconsByPlacement(toolIcons);
+    const len = toolIconsByPlacement[placement].length;
+    const Component = placement === 'left' ? ToolIconLeft : ToolIconRight;
+    const hasSpacer = (placement === 'right' && len === 1) || (placement === 'left' && len > 1);
+
+    return (
+        <View style={[
+            styles.icons,
+            styles[placement], {
+                width: placement === 'right' ? RIGHT_ICONS_WIDTH : LEFT_ICONS_WIDTH,
+                borderColor: 'green',
+                borderWidth: 1,
+            }
+        ]}>
+            {!map
+                ? null
+                : toolIconsByPlacement[placement].map((toolIcon, index) => {
+                    // nth-child parity in the web CSS counts the spacer as a child
+                    const childNumber = index + 1 + (hasSpacer ? 1 : 0);
+                    const isStaggered = placement === 'left'
+                        ? childNumber % 2 === 0
+                        : childNumber % 2 === 1;
+
+                    return (
+                        <View
+                            key={toolIcon.id}
+                            style={[
+                                styles.cell,
+                                isStaggered ? (placement === 'left' ? styles.cellStaggered : styles.cellStaggeredRight) : null,
+                            ]}
+                        >
+                            <Component
+                                map={map}
+                                {...toolIcon}
+                            />
+                        </View>
+                    );
+                })}
+        </View>
+    );
+};

@@ -6,6 +6,28 @@ import { ToolPanelPlacement, useMachineWard } from "@apparatus";
 import { useTheme } from "@ui";
 import { Icons, TooltipPlacement } from "@ui";
 
+const styles = StyleSheet.create({
+    headerContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 8,
+    },
+    headerContainerSide: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: 5,
+        gap: 5,
+    },
+    headerControlsContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    spacerLine: {
+        flex: 1,
+        width: 1,
+    },
+});
+
 interface Props {
     placement: ToolPanelPlacement;
     activeId: string | null;
@@ -94,25 +116,3 @@ export const ToolPanelHeader: FC<Props> = ({
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    headerContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: 8,
-    },
-    headerContainerSide: {
-        flexDirection: 'column',
-        alignItems: 'center',
-        padding: 5,
-        gap: 5,
-    },
-    headerControlsContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    spacerLine: {
-        flex: 1,
-        width: 1,
-    },
-});

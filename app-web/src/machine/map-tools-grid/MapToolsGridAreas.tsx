@@ -13,7 +13,7 @@ import { useTheme } from "@ui";
 interface Props {
     map?: maplibregl.Map;
 }
-// xxs, xs - panels bottom
+
 export const MapToolsGridAreas: FC<Props> = ({ map }) => {
     const theme = useTheme();
     const [media] = useSubjectState(theme.media$);

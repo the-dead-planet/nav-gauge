@@ -3,7 +3,7 @@ import { Alert, StyleSheet, View, ViewProps } from "react-native";
 import { DocumentPickerOptions, DocumentPickerResponse, pick } from '@react-native-documents/picker';
 import { Button } from "../../button";
 import { Text } from "../../typography";
-import { FileInputProps } from "@ui";
+import { FileInputProps, Icons } from "@ui";
 
 const styles = StyleSheet.create({
     container: {
@@ -22,6 +22,8 @@ interface Props extends FileInputProps<DocumentPickerResponse> {
 }
 
 export const FileInput: FC<Props & ViewProps> = ({
+    color,
+    fileIcon = Icons.NounProject.Upload,
     fileName,
     fileLabel,
     purgeLabel,
@@ -71,12 +73,28 @@ export const FileInput: FC<Props & ViewProps> = ({
 
     return (
         <View style={[styles.container, style]} {...props}>
-            <Button title={fileLabel} onPress={handleUpload} />
-            <Text style={styles.routeName}>
+            <Button
+                icon={Icons.NounProject.Upload}
+                color={color}
+                variant="fill"
+                corners="circle"
+                size="sm"
+                tooltip={fileLabel}
+                onPress={handleUpload}
+            />
+            <Text color={color} style={styles.routeName}>
                 {fileName || noNameLabel}
             </Text>
             {actionButtons?.map(({ id, element }) => <Fragment key={id}>{element}</Fragment>)}
-            <Button title={purgeLabel} onPress={handlePurge} />
+            <Button
+                icon={Icons.NounProject.Clear}
+                color={color}
+                variant="outline"
+                corners="circle"
+                size="sm"
+                tooltip={purgeLabel}
+                onPress={handlePurge}
+            />
         </View>
     );
 };

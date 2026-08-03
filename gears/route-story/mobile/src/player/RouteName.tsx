@@ -12,6 +12,7 @@ import { DocumentPickerResponse } from "@react-native-documents/picker";
 const styles = StyleSheet.create({
     panel: {
         marginTop: 6,
+        height: 40,
     },
 });
 

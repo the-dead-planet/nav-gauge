@@ -10,35 +10,13 @@ import { MobileMap } from "@mobile-ui";
 
 const styles = StyleSheet.create({
     container: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-    },
-    toolbar: {
-        backgroundColor: 'transparent',
-    },
-    content: {
-        flex: 1,
-    },
-    withHeader: {
-        borderTopWidth: 1,
-        borderTopColor: 'rgba(255,255,255,0.1)',
+        position: 'relative',
     },
     component: {
         flex: 1,
     },
     componentContent: {
         flex: 1,
-    },
-    dragging: {
-        opacity: 0.9,
-    },
-    collapsed: {
-        opacity: 0.7,
-    },
-    expanded: {
-        opacity: 1,
     },
 });
 
@@ -60,11 +38,11 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
     const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
     const effectivePanels = toolPanelsByPlacement["left"].concat(toolPanelsByPlacement["right"]);
     const toolPanel = effectivePanels.find(({ id }) => id === activeId);
-    const showHeader = effectivePanels.length > 0;
+    const show = effectivePanels.length > 0;
     const isCollapsed = activeId === null;
     const [isDragging, setIsDragging] = useState(false);
 
-    const effectiveHeight = !showHeader
+    const effectiveHeight = !show
         ? 0
         : isCollapsed
             ? BOTTOM_SECONDARY_PANEL_MIN
@@ -86,39 +64,35 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
         }
     };
 
+    if (!show) {
+        return null;
+    }
+
     return (
         <View style={styles.container}>
             <View
-                style={[
-                    styles.toolbar,
-                    isDragging && styles.dragging,
-                    isCollapsed && styles.collapsed,
-                    !isCollapsed && styles.expanded,
-                    { 
-                        height: effectiveHeight,
-                        backgroundColor: theme.componentColor('background', 0.87),
-                    },
-                ]}
+                style={{
+                    height: effectiveHeight,
+                    backgroundColor: theme.componentColor('background', 0.87),
+                    borderTopWidth: 1,
+                    borderTopColor: theme.color('primary'),
+                }}
             >
-                <View style={[styles.content, showHeader && styles.withHeader]}>
-                    {showHeader && (
-                        <ToolPanelHeader
-                            placement="bottom"
-                            activeId={activeId}
-                            onActiveIdChange={handleToolSelect}
-                            headerControls={toolPanel?.headerComponent ? (
-                                <toolPanel.headerComponent map={map} placement={toolPanel.placement} />
-                            ) : undefined}
-                        />
-                    )}
-                    {toolPanel ? (
-                        <View style={styles.component}>
-                            <View style={styles.componentContent}>
-                                <toolPanel.contentComponent map={map} placement={toolPanel.placement} />
-                            </View>
+                <ToolPanelHeader
+                    placement="bottom"
+                    activeId={activeId}
+                    onActiveIdChange={handleToolSelect}
+                    headerControls={toolPanel?.headerComponent ? (
+                        <toolPanel.headerComponent map={map} placement={toolPanel.placement} />
+                    ) : undefined}
+                />
+                {toolPanel ? (
+                    <View style={styles.component}>
+                        <View style={styles.componentContent}>
+                            <toolPanel.contentComponent map={map} placement={toolPanel.placement} />
                         </View>
-                    ) : null}
-                </View>
+                    </View>
+                ) : null}
             </View>
             <ToolPanelResizeHandle
                 placement="bottom-secondary"
