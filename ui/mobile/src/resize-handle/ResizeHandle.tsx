@@ -13,11 +13,13 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
     const lastPositionRef = useRef<{ x: number; y: number } | null>(null);
     const [isDragging, setIsDragging] = useState(false);
 
-    const handleMove = useCallback((_: GestureResponderEvent, gestureState: { dx: number; dy: number }) => {
-        if (!lastPositionRef.current) {
+    const handleMove = useCallback((_: GestureResponderEvent, gestureState: { moveX: number; moveY: number }) => {
+        const lastPosition = lastPositionRef.current;
+        if (!lastPosition) {
             return;
         }
-        const delta = direction === 'horizontal' ? gestureState.dx : gestureState.dy;
+        const delta = direction === 'horizontal' ? gestureState.moveX - lastPosition.x : gestureState.moveY - lastPosition.y;
+        lastPositionRef.current = { x: gestureState.moveX, y: gestureState.moveY };
         if (delta !== 0) {
             onDrag(delta);
         }
@@ -27,7 +29,7 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
         onStartShouldSetPanResponder: () => !disabled,
         onMoveShouldSetPanResponder: () => !disabled,
         onPanResponderGrant: (evt) => {
-            lastPositionRef.current = { x: 0, y: 0 };
+            lastPositionRef.current = { x: evt.nativeEvent.pageX, y: evt.nativeEvent.pageY };
             onDragStart?.(evt.nativeEvent.pageX);
             setIsDragging(true);
         },
