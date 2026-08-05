@@ -15,9 +15,12 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         width: '100%',
         height: '100%',
+        borderColor: 'green',
+        borderWidth: 1,
     },
     left: {
-        rowGap: 6,
+        paddingLeft: 4,
+        rowGap: 4,
         alignContent: 'flex-start',
     },
     right: {
@@ -26,20 +29,17 @@ const styles = StyleSheet.create({
     },
     cell: {
         width: '50%',
-        alignItems: 'center',
     },
-    cellStaggered: {
-        // ponytail: translateY approximates the web calc(50% + 3px)/calc(-50% - 2px) with
-        // known hexagon heights (sm 48, xs 36); RN transforms can't use percentages here
+    cellStaggeredLeft: {
         transform: [
-            { translateX: -7 },
-            { translateY: 27 },
+            { translateX: -8 },
+            { translateY: 23 },
         ],
     },
     cellStaggeredRight: {
         transform: [
             { translateX: 6 },
-            { translateY: -20 },
+            { translateY: -18 },
         ],
     },
 });
@@ -63,37 +63,40 @@ export const ToolIcons: FC<Props> = ({
     if (len === 0) {
         return null;
     }
-    
+
     return (
-        <View style={[
+        <View pointerEvents="box-none" style={[
             styles.icons,
             styles[placement], {
-                width: placement === 'right' ? RIGHT_ICONS_WIDTH : LEFT_ICONS_WIDTH,
-                borderColor: 'green',
-                borderWidth: 1,
+                width: placement === 'left' ? LEFT_ICONS_WIDTH : RIGHT_ICONS_WIDTH,
             }
         ]}>
+            {hasSpacer ? <View pointerEvents="none" style={{
+                width: "50%",
+                height: placement === 'left' ? 41 : 32,
+                borderColor: 'red',
+                borderWidth: 1,
+            }} /> : null}
             {!map
                 ? null
                 : toolIconsByPlacement[placement].map((toolIcon, index) => {
-                    // nth-child parity in the web CSS counts the spacer as a child
-                    const childNumber = index + 1 + (hasSpacer ? 1 : 0);
+                    const i = index + 1 + (hasSpacer ? 1 : 0);
                     const isStaggered = placement === 'left'
-                        ? childNumber % 2 === 0
-                        : childNumber % 2 === 1;
+                        ? i % 2 === 0
+                        : i % 2 === 1;
 
                     return (
                         <View
                             key={toolIcon.id}
                             style={[
                                 styles.cell,
-                                isStaggered ? (placement === 'left' ? styles.cellStaggered : styles.cellStaggeredRight) : null,
+                                {
+                                    marginTop: placement === 'right' ? 0 : hasSpacer ? -18 : 6
+                                },
+                                isStaggered ? (placement === 'left' ? styles.cellStaggeredLeft : styles.cellStaggeredRight) : null,
                             ]}
                         >
-                            <Component
-                                map={map}
-                                {...toolIcon}
-                            />
+                            <Component map={map} {...toolIcon} />
                         </View>
                     );
                 })}

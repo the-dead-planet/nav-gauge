@@ -134,7 +134,7 @@ export const MapCanvas: FC<Props> = ({
                     })
                     .catch(console.error);
             },
-            placement: 'right',
+            placement: 'left',
             tooltip: { n: cartomancer.namespace, t: cartomancer.translationKey.Compass },
         });
 
@@ -157,7 +157,7 @@ export const MapCanvas: FC<Props> = ({
                         map.camera$.value?.easeTo({ zoom: clickedZoom.current, center: viewState.center });
                     });
             },
-            placement: 'right',
+            placement: 'left',
             tooltip: { n: cartomancer.namespace, t: cartomancer.translationKey.ZoomIn },
         });
 

@@ -263,6 +263,7 @@ export const Button: FC<PressableProps & ButtonProps & Props> = ({
     const buttonElement = corners === 'hexagon' ? (
         <Hexagon
             forwardRef={forwardRef}
+            shape="flat-top"
             size={size}
             variant={variant}
             glowStyle={glowStyle}

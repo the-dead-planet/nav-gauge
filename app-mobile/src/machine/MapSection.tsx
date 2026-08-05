@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
+import { BehaviorSubject } from "rxjs";
 import { CameraRef, MapRef } from "@maplibre/maplibre-react-native";
 import { useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
@@ -15,7 +16,6 @@ import {
     onPanResponderMoveHandlers$,
     onPanResponderEndHandlers$
 } from "./map-canvas/MapCanvas";
-import { BehaviorSubject } from "rxjs";
 
 const styles = StyleSheet.create({
     container: {

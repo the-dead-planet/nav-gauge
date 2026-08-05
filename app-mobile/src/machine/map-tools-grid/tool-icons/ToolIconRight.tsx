@@ -42,6 +42,7 @@ export const ToolIconRight: FC<ObservedToolIcon<MobileMap> & Props> = ({
             size="xs"
             variant="fill-inverse"
             corners="hexagon"
+            
             glowStyle={theme.isDark ? "animate-borders-glow" : 'none'}
             color="primary"
             active={active}
