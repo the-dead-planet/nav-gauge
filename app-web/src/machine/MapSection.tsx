@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import { useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
-import { MapCanvas } from "./map/MapCanvas";
+import { MapCanvas } from "./map-canvas/MapCanvas";
 import { MapToolsGridAreas } from "./map-tools-grid/MapToolsGridAreas";
 import { GearsTopToolbar } from "./GearsTopToolbar";
 import { createMap } from "./map";

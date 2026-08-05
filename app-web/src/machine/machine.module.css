@@ -163,12 +163,6 @@
     grid-template-columns: max-content 1fr;
 }
 
-
-.toolbar.left.collapsed .content.with-header {
-    display: flex;
-    justify-content: center;
-}
-
 /* On isLessThanSm left and right toolbars are displayed combined in a secondary bottom toolbar */
 .placeholder-toolbar.right {
     grid-area: right-toolbar;

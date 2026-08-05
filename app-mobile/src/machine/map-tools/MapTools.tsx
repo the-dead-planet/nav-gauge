@@ -28,21 +28,23 @@ interface Props {
     children?: ReactNode;
 }
 
-export const MapTools: FC<Props> = ({ map, children }) => {
+export const MapTools: FC<Props> = ({ children, ...props }) => {
     const { toolsStation } = useMachineWard();
     const toolPanels = useObservableState(toolsStation.toolPanelsByPlacement$, []);
     const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
-    const [onPanResponderStartHandlers] = useSubjectState(map.onPanResponderStartHandlers$);
-    const [onPanResponderMoveHandlers] = useSubjectState(map.onPanResponderMoveHandlers$);
-    const [onPanResponderEndHandlers] = useSubjectState(map.onPanResponderEndHandlers$);
+    const [onPanResponderStartHandlers] = useSubjectState(props.map.onPanResponderStartHandlers$);
+    const [onPanResponderMoveHandlers] = useSubjectState(props.map.onPanResponderMoveHandlers$);
+    const [onPanResponderEndHandlers] = useSubjectState(props.map.onPanResponderEndHandlers$);
+    const [map] = useSubjectState(props.map.map$);
+    const [camera] = useSubjectState(props.map.camera$);
 
     const panResponder = useMemo(() => PanResponder.create({
         onStartShouldSetPanResponder: () => {
             return true;
         },
         onPanResponderStart: async (event) => {
-            if (map.map.current) {
-                const lngLat = await map.map.current.unproject([event.nativeEvent.locationX, event.nativeEvent.locationY]);
+            if (map) {
+                const lngLat = await map.unproject([event.nativeEvent.locationX, event.nativeEvent.locationY]);
 
                 for (const [_handlerId, handler] of onPanResponderStartHandlers) {
                     handler(lngLat, event);
@@ -50,8 +52,8 @@ export const MapTools: FC<Props> = ({ map, children }) => {
             }
         },
         onPanResponderMove: async (event) => {
-            if (map.map.current) {
-                const lngLat = await map.map.current.unproject([event.nativeEvent.locationX, event.nativeEvent.locationY]);
+            if (map) {
+                const lngLat = await map.unproject([event.nativeEvent.locationX, event.nativeEvent.locationY]);
 
                 for (const [_handlerId, handler] of onPanResponderMoveHandlers) {
                     handler(lngLat, event);
@@ -59,8 +61,8 @@ export const MapTools: FC<Props> = ({ map, children }) => {
             }
         },
         onPanResponderEnd: async (event) => {
-            if (map.map.current) {
-                const lngLat = await map.map.current.unproject([event.nativeEvent.locationX, event.nativeEvent.locationY]);
+            if (map) {
+                const lngLat = await map.unproject([event.nativeEvent.locationX, event.nativeEvent.locationY]);
 
                 for (const [_handlerId, handler] of onPanResponderEndHandlers) {
                     handler(lngLat, event);

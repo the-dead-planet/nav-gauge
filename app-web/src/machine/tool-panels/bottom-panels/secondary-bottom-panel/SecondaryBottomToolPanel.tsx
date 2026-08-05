@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { useObservableState, useSubjectState } from "@tinker-chest";
 import { useMachineWard } from "@apparatus";
 import { useTheme } from "@ui";
-import { BOTTOM_SECONDARY_PANEL_MIN, DEFAULT_BOTTOM_SECONDARY_HEIGHT, MIN_REMAINING_MAIN_AREA } from "../../tool-panel-size";
+import { PANEL_MIN, DEFAULT_BOTTOM_SECONDARY_HEIGHT, MIN_REMAINING_MAIN_AREA } from "../../tool-panel-size";
 import { ToolPanelResizeHandle } from "../../ToolPanelResizeHandle";
 import { ToolPanelHeader } from "../../ToolPanelHeader";
 import styles from '../../../machine.module.css';
@@ -33,14 +33,14 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
     const effectiveHeight = !showHeader
         ? 0
         : isCollapsed
-            ? BOTTOM_SECONDARY_PANEL_MIN
+            ? PANEL_MIN.bottomSecondary
             : panelWidths.bottomSecondaryHeight;
 
     const handleToolSelect = (newId: string | null) => {
         onActiveIdChange(newId);
 
         if (newId !== null) {
-            const thisMin = BOTTOM_SECONDARY_PANEL_MIN;
+            const thisMin = PANEL_MIN.bottomSecondary;
             const maxAvailable = theme.media$.value.windowHeight - MIN_REMAINING_MAIN_AREA.height;
             const clampedHeight = Math.min(Math.max(panelWidths.bottomSecondaryHeight, thisMin), maxAvailable);
             const targetHeight = clampedHeight === thisMin ? DEFAULT_BOTTOM_SECONDARY_HEIGHT : clampedHeight;

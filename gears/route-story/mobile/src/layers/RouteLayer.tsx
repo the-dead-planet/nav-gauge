@@ -88,7 +88,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<M
                 setCurrentPointSourceData(currentPoint);
             },
             (position, bearing) => {
-                map.camera.current?.easeTo({
+                map.camera$.value?.easeTo({
                     center: [position[0], position[1]],
                     duration: easeDuration,
                     zoom,

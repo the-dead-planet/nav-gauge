@@ -11,12 +11,13 @@
         "url": "https://github.com/the-dead-planet/nav-gauge/issues"
     },
     "scripts": {
-        "android": "react-native run-android",
-        "dev": "concurrently -n METRO,TSC -c green,blue \"yarn android\" \"yarn typecheck\"",
+        "build": "react-native run-android",
         "ios": "react-native run-ios",
         "lint": "eslint . --max-warnings -1",
-        "start": "react-native start",
-        "start:r": "react-native start --reset-cache",
+        "dev:typecheck": "concurrently -n METRO,TSC -c green,blue \"react-native start\" \"yarn typecheck\"",
+        "dev": "react-native start",
+        "dev:r": "concurrently -n METRO,TSC -c green,blue \"react-native start --reset-cache\" \"yarn typecheck\"",
+        "start": "react-native start --reset-cache",
         "test": "jest",
         "test:e2e": "jest",
         "test:e2e:dev": "jest",

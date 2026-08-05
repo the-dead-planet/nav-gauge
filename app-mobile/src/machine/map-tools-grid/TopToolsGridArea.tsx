@@ -7,8 +7,8 @@ import { MobileMap } from "@mobile-ui";
 const styles = StyleSheet.create({
     topTools: {
         flexDirection: 'row',
-        justifyContent: 'center',
         flex: 1,
+        paddingHorizontal: 6
     },
 });
 

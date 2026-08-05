@@ -5,7 +5,7 @@ import { useObservableState, useSubjectState } from "@tinker-chest";
 import { useMachineWard, useMultipleTranslations } from "@apparatus";
 import { useTheme } from "@ui";
 import { ToolPanelHeader } from "../ToolPanelHeader";
-import { DEFAULT_WIDTH, PANEL_MIN, PANEL_MIN_LEFT, calculateExpandToDefault, LEFT_ICONS_WIDTH, RIGHT_ICONS_WIDTH, TOP_TOOLS_MIN, MIN_REMAINING_MAIN_AREA } from "../tool-panel-size";
+import { DEFAULT_WIDTH, PANEL_MIN, calculateExpandToDefault, LEFT_ICONS_WIDTH, RIGHT_ICONS_WIDTH, TOP_TOOLS_MIN, MIN_REMAINING_MAIN_AREA } from "../tool-panel-size";
 import { ToolPanelResizeHandle } from "../ToolPanelResizeHandle";
 import styles from '../../machine.module.css';
 
@@ -35,7 +35,7 @@ export const SideToolPanel: FC<Props> = ({
     const showHeader = effectivePanels.length > 0;
     const isCollapsed = activeId === null;
     const isLeft = placement === 'left';
-    const panelMin = isLeft ? PANEL_MIN_LEFT : PANEL_MIN;
+    const panelMin = isLeft ? PANEL_MIN.left : PANEL_MIN.right;
     const currentWidth = !showHeader ? 0 : isCollapsed ? panelMin : (isLeft ? panelWidths.leftWidth : panelWidths.rightWidth);
 
     const [isDragging, setIsDragging] = useState(false);
@@ -51,9 +51,9 @@ export const SideToolPanel: FC<Props> = ({
                 ? toolPanelsByPlacement.right.length > 0
                 : toolPanelsByPlacement.left.length > 0;
             const otherWidth = otherCollapsed
-                ? (isLeft ? PANEL_MIN : PANEL_MIN_LEFT)
+                ? (isLeft ? PANEL_MIN.right : PANEL_MIN.left)
                 : (otherHasPanels ? (isLeft ? panelWidths.rightWidth : panelWidths.leftWidth) : 0);
-            const thisMin = isLeft ? PANEL_MIN_LEFT : PANEL_MIN;
+            const thisMin = isLeft ? PANEL_MIN.left : PANEL_MIN.right;
             const thisStoredWidth = isLeft ? panelWidths.leftWidth : panelWidths.rightWidth;
             const iconsReserved = (toolIconsByPlacement.left.length > 0 ? LEFT_ICONS_WIDTH : 0) + (toolIconsByPlacement.right.length > 0 ? RIGHT_ICONS_WIDTH : 0);
             const column3Min = Math.max(TOP_TOOLS_MIN, MIN_REMAINING_MAIN_AREA.width);
@@ -106,8 +106,6 @@ export const SideToolPanel: FC<Props> = ({
                 styles['toolbar'],
                 styles[placement],
                 { [styles['dragging']]: isDragging },
-                { [styles['collapsed']]: isCollapsed },
-                { [styles['expanded']]: !isCollapsed },
             )}
             style={{ width: currentWidth }}
         >

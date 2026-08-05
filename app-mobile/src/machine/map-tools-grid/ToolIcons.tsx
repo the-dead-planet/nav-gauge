@@ -60,6 +60,10 @@ export const ToolIcons: FC<Props> = ({
     const Component = placement === 'left' ? ToolIconLeft : ToolIconRight;
     const hasSpacer = (placement === 'right' && len === 1) || (placement === 'left' && len > 1);
 
+    if (len === 0) {
+        return null;
+    }
+    
     return (
         <View style={[
             styles.icons,

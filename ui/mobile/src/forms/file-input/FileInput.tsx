@@ -1,9 +1,10 @@
-import { FC, Fragment } from "react";
+import { ComponentType, FC, Fragment } from "react";
 import { Alert, StyleSheet, View, ViewProps } from "react-native";
 import { DocumentPickerOptions, DocumentPickerResponse, pick } from '@react-native-documents/picker';
 import { Button } from "../../button";
 import { Text } from "../../typography";
 import { FileInputProps, Icons } from "@ui";
+import { SvgProps } from "react-native-svg";
 
 const styles = StyleSheet.create({
     container: {
@@ -74,7 +75,7 @@ export const FileInput: FC<Props & ViewProps> = ({
     return (
         <View style={[styles.container, style]} {...props}>
             <Button
-                icon={fileIcon}
+                icon={fileIcon as unknown as ComponentType<SvgProps>}
                 color={color}
                 variant="fill"
                 corners="circle"

@@ -1,11 +1,9 @@
 export const MIN_REMAINING_MAIN_AREA = { width: 200, height: 100 };
-export const PANEL_MIN = 32;
-export const PANEL_MIN_LEFT = 42;
+export const PANEL_MIN = { left: 42, right: 32, bottomSecondary: 24 };
 export const DEFAULT_WIDTH = 360;
 export const LEFT_ICONS_WIDTH = 102;
 export const RIGHT_ICONS_WIDTH = 76;
 export const TOP_TOOLS_MIN = 160;
-export const BOTTOM_SECONDARY_PANEL_MIN = 24;
 export const DEFAULT_BOTTOM_SECONDARY_HEIGHT = 300;
 
 export interface PanelLayout {
@@ -75,13 +73,13 @@ export function clampPanelLayout(
     rightIconsPresent: boolean,
     reservedChromeHeight: number,
 ): PanelLayout {
-    const leftEffective = computeEffectiveWidth(leftState, PANEL_MIN_LEFT);
-    const rightEffective = computeEffectiveWidth(rightState, PANEL_MIN);
+    const leftEffective = computeEffectiveWidth(leftState, PANEL_MIN.left);
+    const rightEffective = computeEffectiveWidth(rightState, PANEL_MIN.right);
     const { leftMax, rightMax, bottomSecondaryMax } = computeLayoutConstraints(window, leftEffective, rightEffective, leftIconsPresent, rightIconsPresent, reservedChromeHeight);
 
-    const newLeft = leftState.isCollapsed ? prev.leftWidth : Math.min(Math.max(prev.leftWidth, PANEL_MIN_LEFT), leftMax);
-    const newRight = rightState.isCollapsed ? prev.rightWidth : Math.min(Math.max(prev.rightWidth, PANEL_MIN), rightMax);
-    const newBottomSecondary = bottomSecondaryState.isCollapsed ? prev.bottomSecondaryHeight : Math.min(Math.max(prev.bottomSecondaryHeight, PANEL_MIN), bottomSecondaryMax);
+    const newLeft = leftState.isCollapsed ? prev.leftWidth : Math.min(Math.max(prev.leftWidth, PANEL_MIN.left), leftMax);
+    const newRight = rightState.isCollapsed ? prev.rightWidth : Math.min(Math.max(prev.rightWidth, PANEL_MIN.right), rightMax);
+    const newBottomSecondary = bottomSecondaryState.isCollapsed ? prev.bottomSecondaryHeight : Math.min(Math.max(prev.bottomSecondaryHeight, PANEL_MIN.right), bottomSecondaryMax);
 
     if (newLeft === prev.leftWidth && newRight === prev.rightWidth && newBottomSecondary === prev.bottomSecondaryHeight) {
         return prev;

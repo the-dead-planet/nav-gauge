@@ -18,7 +18,7 @@ export const useImageInDisplay = (
         if (displayImageId === null) {
             return;
         }
-        playerOperator.animateDisplayImage({ width: map.width, height: map.height }, setImageInDisplayIconSize);
+        playerOperator.animateDisplayImage({ width: map.mapSize$.value.width, height: map.mapSize$.value.height }, setImageInDisplayIconSize);
 
         return () => {
             playerOperator.cleanupAnimateDisplayImage(setImageInDisplayIconSize);
