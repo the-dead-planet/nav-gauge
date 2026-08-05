@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     left: {
+        paddingTop: 4,
         paddingLeft: 4,
         rowGap: 4,
         alignContent: 'flex-start',
@@ -26,19 +27,33 @@ const styles = StyleSheet.create({
     right: {
         rowGap: 4,
         alignContent: 'flex-end',
+        alignItems: 'flex-end',
+        paddingBottom: 4,
+        paddingRight: 4,
     },
     cell: {
         width: '50%',
     },
+    cellNotStaggeredLeftWithSpacer: {
+        transform: [
+            { translateY: -23 },
+        ],
+    },
+    cellStaggeredLeftWithSpacer: {
+        transform: [
+            { translateX: -8 },
+            { translateY: 18 - 18 },
+        ],
+    },
     cellStaggeredLeft: {
         transform: [
             { translateX: -8 },
-            { translateY: 23 },
+            { translateY: 18 },
         ],
     },
     cellStaggeredRight: {
         transform: [
-            { translateX: 6 },
+            { translateX: 5 },
             { translateY: -18 },
         ],
     },
@@ -58,7 +73,7 @@ export const ToolIcons: FC<Props> = ({
     const toolIconsByPlacement = toolsStation.getToolIconsByPlacement(toolIcons);
     const len = toolIconsByPlacement[placement].length;
     const Component = placement === 'left' ? ToolIconLeft : ToolIconRight;
-    const hasSpacer = (placement === 'right' && len === 1) || (placement === 'left' && len > 1);
+    const hasSpacer = (placement === 'right' && len % 2 === 1) || (placement === 'left' && len > 1);
 
     if (len === 0) {
         return null;
@@ -74,8 +89,6 @@ export const ToolIcons: FC<Props> = ({
             {hasSpacer ? <View pointerEvents="none" style={{
                 width: "50%",
                 height: placement === 'left' ? 41 : 32,
-                borderColor: 'red',
-                borderWidth: 1,
             }} /> : null}
             {!map
                 ? null
@@ -90,10 +103,12 @@ export const ToolIcons: FC<Props> = ({
                             key={toolIcon.id}
                             style={[
                                 styles.cell,
-                                {
-                                    marginTop: placement === 'right' ? 0 : hasSpacer ? -18 : 6
-                                },
-                                isStaggered ? (placement === 'left' ? styles.cellStaggeredLeft : styles.cellStaggeredRight) : null,
+                                !isStaggered
+                                    ? (placement === 'left' && hasSpacer ? styles.cellNotStaggeredLeftWithSpacer : null)
+                                    : placement === 'right'
+                                        ? styles.cellStaggeredRight
+                                        : hasSpacer ? styles.cellStaggeredLeftWithSpacer
+                                            : styles.cellStaggeredLeft,
                             ]}
                         >
                             <Component map={map} {...toolIcon} />
