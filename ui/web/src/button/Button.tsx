@@ -11,8 +11,6 @@ interface Props {
      * Icon to display before the children
      */
     icon?: string;
-    iconRotateX?: number;
-    iconRotateZ?: number;
 }
 
 export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({

@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useObservableState, useSubjectState } from "@tinker-chest";
-import { useMachineWard } from "@apparatus";
 import { useTheme } from "@ui";
-import type { PanelState } from "./tool-panel-size";
-import { clampPanelLayout } from "./tool-panel-size";
+import type { PanelState } from "../../../../../../app-mobile/src/machine/tool-panels/tool-panel-size";
+import { clampPanelLayout } from "../../../../../../app-mobile/src/machine/tool-panels/tool-panel-size";
+import { useMachineWard } from "../../useMachineWard";
 
 export const useToolPanelSizeClamp = () => {
     const theme = useTheme();
@@ -57,4 +57,10 @@ export const useToolPanelSizeClamp = () => {
         rightActiveId,
         bottomSecondaryActiveId,
     ]);
+
+    const groupSidePanelsInBottomSecondaryToolbar = media.isLessThanSm;
+
+    return {
+        groupSidePanelsInBottomSecondaryToolbar
+    };
 };

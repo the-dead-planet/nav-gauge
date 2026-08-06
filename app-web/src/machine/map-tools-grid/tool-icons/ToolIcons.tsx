@@ -1,7 +1,6 @@
 import { FC } from "react";
 import classNames from "classnames";
-import { useMachineWard } from "@apparatus";
-import { useObservableState } from "@tinker-chest";
+import { useToolIcons } from "@apparatus";
 import { ToolIconRight } from "./ToolIconRight";
 import { ToolIconLeft } from "./ToolIconLeft";
 import styles from '../../machine.module.css';
@@ -15,15 +14,9 @@ export const ToolIcons: FC<Props> = ({
     map,
     placement,
 }) => {
-    const { toolsStation } = useMachineWard();
-    const toolIcons = useObservableState(toolsStation.toolIconsByPlacement$, []);
-    const toolIconsByPlacement = toolsStation.getToolIconsByPlacement(toolIcons);
-    const len = toolIconsByPlacement[placement].length;
+    const { hasSpacer, toolIconsByPlacement } = useToolIcons(placement);
     const Component = placement === 'left' ? ToolIconLeft : ToolIconRight;
-    const hasSpacer = (placement === 'right' && len === 1) || (placement === 'left' && len > 1);
 
-    {/* TODO: Bind right icons with right panel? */ }
-    {/* TODO: Rename right/left panels according to their use */ }
     {/* TODO: Add option to swap left/right */ }
     return (
         <div className={classNames(styles['icons'], styles[placement])}>

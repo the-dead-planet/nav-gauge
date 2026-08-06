@@ -41,6 +41,7 @@ export const RouteName: FC<TopToolsProps<MobileMap> & RouteStoryProps<MobileMap,
         { n: gearId, t: translationKey.FitBounds },
         { n: gearId, t: translationKey.PurgeStoryText },
     ]);
+    const acceptedFileTypes = [...[...parsers.values()].flatMap((el) => el.fileTypes), "image/png", "image/jpeg", "image/jpg"];
 
     return (
         <BevelPanel
@@ -59,7 +60,7 @@ export const RouteName: FC<TopToolsProps<MobileMap> & RouteStoryProps<MobileMap,
                 cancelLabel={cancelLabel}
                 noNameLabel={noNameLabel}
                 color="primary"
-                type={[...parsers.keys(), "image/png", "image/jpeg", "image/jpg"]}
+                type={acceptedFileTypes}
                 purgeText={purgeStoryText}
                 onUpload={(files) => fileOperator.uploadFile(files, map)}
                 onPurge={() => fileOperator.resetStory()}

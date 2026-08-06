@@ -1,30 +1,24 @@
 import { FC } from "react";
-import { useMachineWard } from "@apparatus";
+import { useMachineWard, useToolPanelSizeClamp } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { SideToolPanel } from "../tool-panels/side-panels/SideToolPanel";
-import { useToolPanelSizeClamp } from "../tool-panels/useToolPanelSizeClamp";
 import { ToolIcons } from "./tool-icons/ToolIcons";
 import { TopToolsGridArea } from "./TopToolsGridArea";
 import { PlaceholderToolPanel } from "../tool-panels/PlaceholderToolPanel";
 import { SecondaryBottomToolPanel } from "../tool-panels/bottom-panels/secondary-bottom-panel/SecondaryBottomToolPanel";
 import { BottomToolPanel } from "../tool-panels/bottom-panels/primary-bottom-panel/BottomToolPanel";
-import { useTheme } from "@ui";
 
 interface Props {
     map?: maplibregl.Map;
 }
 
 export const MapToolsGridAreas: FC<Props> = ({ map }) => {
-    const theme = useTheme();
-    const [media] = useSubjectState(theme.media$);
     const { toolsStation } = useMachineWard();
     const [activeLeftPanelToolId, setActiveLeftPanelToolId] = useSubjectState(toolsStation.activeLeftPanelToolId$);
     const [activeRightPanelToolId, setActiveRightPanelToolId] = useSubjectState(toolsStation.activeRightPanelToolId$);
     const [activeBottomPanelToolId, setActiveBottomPanelToolId] = useSubjectState(toolsStation.activeBottomPanelToolId$);
     const [activeBottomSecondaryPanelToolId, setActiveBottomSecondaryPanelToolId] = useSubjectState(toolsStation.activeBottomSecondaryPanelToolId$);
-    const groupSidePanelsInBottomSecondaryToolbar = media.isLessThanSm;
-
-    useToolPanelSizeClamp();
+    const { groupSidePanelsInBottomSecondaryToolbar } = useToolPanelSizeClamp();
 
     return (
         <>

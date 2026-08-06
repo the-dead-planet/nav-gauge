@@ -12,3 +12,4 @@ export * from './machine-ward';
 export * from './MachineWardContext';
 export * from './useMachineWard';
 export * from './model';
+export * from './machine-layout';

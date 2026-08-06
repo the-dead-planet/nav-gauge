@@ -2,10 +2,10 @@ import { FC, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Menu, MenuItem } from "@mobile-ui";
 import { useObservableState, useSubjectState } from "@tinker-chest";
-import { useMachineWard, useMultipleTranslations } from "@apparatus";
+import { MIN_REMAINING_MAIN_AREA, useMachineWard, useMultipleTranslations } from "@apparatus";
 import { useTheme } from "@ui";
 import { ToolPanelHeader } from "../ToolPanelHeader";
-import { DEFAULT_WIDTH, PANEL_MIN, calculateExpandToDefault, LEFT_ICONS_WIDTH, RIGHT_ICONS_WIDTH, TOP_TOOLS_MIN, MIN_REMAINING_MAIN_AREA } from "../tool-panel-size";
+import { DEFAULT_WIDTH, PANEL_MIN, calculateExpandToDefault, LEFT_ICONS_WIDTH, RIGHT_ICONS_WIDTH, TOP_TOOLS_MIN } from "../tool-panel-size";
 import { ToolPanelResizeHandle } from "../ToolPanelResizeHandle";
 import { MobileMap } from "@mobile-ui";
 
@@ -56,7 +56,7 @@ export const SideToolPanel: FC<Props> = ({
     const panelMin = isLeft ? PANEL_MIN.left : PANEL_MIN.right;
     const currentWidth = !show ? 0 : isCollapsed ? panelMin : (isLeft ? panelWidths.leftWidth : panelWidths.rightWidth);
 
-    const [isDragging, setIsDragging] = useState(false); // TODO: Should disable transition when dragging
+    const [_isDragging, setIsDragging] = useState(false); // TODO: Should disable transition when dragging
 
     const handleSidePanelActiveIdChange = (newId: string | null) => {
         onActiveIdChange(newId);

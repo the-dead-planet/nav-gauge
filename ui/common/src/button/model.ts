@@ -19,6 +19,8 @@ export interface ButtonProps {
     size?: SizeVariant;
     corners?: ButtonCorners;
     active?: boolean;
+    iconRotateX?: number;
+    iconRotateZ?: number;
     /**
      * If styles should always use a certain mode, instead of the dynamic theme mode.
      */

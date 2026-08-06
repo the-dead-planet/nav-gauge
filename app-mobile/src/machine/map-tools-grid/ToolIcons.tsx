@@ -1,7 +1,6 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import { useMachineWard } from "@apparatus";
-import { useObservableState } from "@tinker-chest";
+import { useToolIcons } from "@apparatus";
 import { ToolIconRight } from "./tool-icons/ToolIconRight";
 import { ToolIconLeft } from "./tool-icons/ToolIconLeft";
 import { MobileMap } from "@mobile-ui";
@@ -15,8 +14,6 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         width: '100%',
         height: '100%',
-        borderColor: 'green',
-        borderWidth: 1,
     },
     left: {
         paddingTop: 4,
@@ -68,28 +65,32 @@ export const ToolIcons: FC<Props> = ({
     map,
     placement,
 }) => {
-    const { toolsStation } = useMachineWard();
-    const toolIcons = useObservableState(toolsStation.toolIconsByPlacement$, []);
-    const toolIconsByPlacement = toolsStation.getToolIconsByPlacement(toolIcons);
-    const len = toolIconsByPlacement[placement].length;
+    const { len, hasSpacer, toolIconsByPlacement } = useToolIcons(placement);
     const Component = placement === 'left' ? ToolIconLeft : ToolIconRight;
-    const hasSpacer = (placement === 'right' && len % 2 === 1) || (placement === 'left' && len > 1);
 
     if (len === 0) {
         return null;
     }
 
     return (
-        <View pointerEvents="box-none" style={[
-            styles.icons,
-            styles[placement], {
-                width: placement === 'left' ? LEFT_ICONS_WIDTH : RIGHT_ICONS_WIDTH,
-            }
-        ]}>
-            {hasSpacer ? <View pointerEvents="none" style={{
-                width: "50%",
-                height: placement === 'left' ? 41 : 32,
-            }} /> : null}
+        <View
+            pointerEvents="box-none"
+            style={[
+                styles.icons,
+                styles[placement], {
+                    width: placement === 'left' ? LEFT_ICONS_WIDTH : RIGHT_ICONS_WIDTH,
+                }
+            ]}
+        >
+            {hasSpacer ? (
+                <View
+                    pointerEvents="none"
+                    style={{
+                        width: "50%",
+                        height: placement === 'left' ? 41 : 32,
+                    }}
+                />
+            ) : null}
             {!map
                 ? null
                 : toolIconsByPlacement[placement].map((toolIcon, index) => {

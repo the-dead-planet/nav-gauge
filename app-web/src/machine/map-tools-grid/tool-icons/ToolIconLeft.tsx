@@ -36,8 +36,8 @@ export const ToolIconLeft: FC<ObservedToolIcon<maplibregl.Map> & Props> = ({
             <Button
                 aria-label={ariaLabel}
                 icon={icon}
-                iconRotateX={pitch}
-                iconRotateZ={-rotate}
+                iconRotateZ={pitch}
+                iconRotateX={-rotate}
                 tooltip={<T {...effectiveTooltip} />}
                 tooltipPlacement="right"
                 showTooltipConnection

@@ -36,7 +36,6 @@ export const MapTools: FC<Props> = ({ children, ...props }) => {
     const [onPanResponderMoveHandlers] = useSubjectState(props.map.onPanResponderMoveHandlers$);
     const [onPanResponderEndHandlers] = useSubjectState(props.map.onPanResponderEndHandlers$);
     const [map] = useSubjectState(props.map.map$);
-    const [camera] = useSubjectState(props.map.camera$);
 
     const panResponder = useMemo(() => PanResponder.create({
         onStartShouldSetPanResponder: () => {

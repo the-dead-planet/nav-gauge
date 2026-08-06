@@ -1,4 +1,5 @@
-export const MIN_REMAINING_MAIN_AREA = { width: 200, height: 100 };
+import { MIN_REMAINING_MAIN_AREA } from "@apparatus";
+
 export const PANEL_MIN = { left: 42, right: 32, bottomSecondary: 24 };
 export const DEFAULT_WIDTH = 360;
 export const LEFT_ICONS_WIDTH = 102;

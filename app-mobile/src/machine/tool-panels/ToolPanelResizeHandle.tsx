@@ -3,11 +3,10 @@ import { StyleSheet, View } from "react-native";
 import { ResizeHandle } from "@mobile-ui";
 import { useObservableState, useSubjectState } from "@tinker-chest";
 import type { ToolPanelPlacement } from "@apparatus";
-import { useMachineWard } from "@apparatus";
+import { MIN_REMAINING_MAIN_AREA, useMachineWard } from "@apparatus";
 import { useTheme } from "@ui";
 import {
     LEFT_ICONS_WIDTH,
-    MIN_REMAINING_MAIN_AREA,
     PANEL_MIN,
     RIGHT_ICONS_WIDTH,
     TOP_TOOLS_MIN,

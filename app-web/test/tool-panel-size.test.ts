@@ -1,7 +1,8 @@
 import { describe, it } from "mocha";
 import { expect } from "chai";
-import { computeEffectiveWidth, clampPanelWidth, clampPanelLayout, LEFT_ICONS_WIDTH, MIN_REMAINING_MAIN_AREA, PANEL_MIN, RIGHT_ICONS_WIDTH, TOP_TOOLS_MIN } from "../src/machine/tool-panels/tool-panel-size";
+import { computeEffectiveWidth, clampPanelWidth, clampPanelLayout, LEFT_ICONS_WIDTH, PANEL_MIN, RIGHT_ICONS_WIDTH, TOP_TOOLS_MIN } from "../src/machine/tool-panels/tool-panel-size";
 import type { PanelLayout, PanelState } from "../src/machine/tool-panels/tool-panel-size";
+import { MIN_REMAINING_MAIN_AREA } from "@apparatus";
 
 describe("panel-layout", () => {
     describe("computeEffectiveWidth", () => {

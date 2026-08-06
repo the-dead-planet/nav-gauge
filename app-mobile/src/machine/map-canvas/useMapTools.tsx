@@ -1,47 +1,41 @@
 import { useEffect, useRef } from "react";
-import maplibregl from "maplibre-gl";
-import { Icons } from "@ui";
 import {
     compassToolIconId,
     currentZoomIconId,
     mapLayoutControlsId,
-    updateCompassIcon,
-    updateCurrentZoomIcon,
     useMachineWard,
     zoomInIconId,
-    zoomOutIconId,
+    zoomOutIconId
 } from "@apparatus";
+import { Icons } from "@ui";
 import { useSubjectState } from "@tinker-chest";
+import { MobileMap } from "@mobile-ui";
 import { CartoConfigPanel } from "../controls/CartoConfigPanel";
 
-export const useMapTools = (map: maplibregl.Map) => {
-    const { cartomancer, toolsStation } = useMachineWard<maplibregl.Map>();
+export const useMapTools = (map: MobileMap) => {
+    const { cartomancer, toolsStation } = useMachineWard<MobileMap>();
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
-    const clickedZoom = useRef(map.getZoom());
+    const clickedZoom = useRef<number>(null);
 
     useEffect(() => {
-        if (!gaugeControls.showCompass) {
+        const m = map.map$.value;
+        if (!m || !gaugeControls.showCompass) {
             return;
         }
         toolsStation.addToolIcon(compassToolIconId, {
-            icon: Icons.NounProject.North,
+            icon: Icons.NounProject.North as unknown as string,
             onClick: (map) => {
-                map.easeTo({ bearing: 0, pitch: 0 });
+                map.map$.value?.getCenter()
+                    .then((center) => {
+                        map.camera$.value?.easeTo({ bearing: 0, pitch: 0, center });
+                    })
+                    .catch(console.error);
             },
             placement: 'right',
             tooltip: { n: cartomancer.namespace, t: cartomancer.translationKey.Compass },
         });
 
-        const rotateHandler = () => {
-            updateCompassIcon(toolsStation, { bearing: map.getBearing(), pitch: map.getPitch() })
-        };
-
-        map.on('rotate', rotateHandler);
-        map.on('pitch', rotateHandler);
-
         return () => {
-            map.off('rotate', rotateHandler);
-            map.off('pitch', rotateHandler);
             toolsStation.removeToolIcon(compassToolIconId);
         };
     }, [gaugeControls.showCompass]);
@@ -50,20 +44,28 @@ export const useMapTools = (map: maplibregl.Map) => {
         if (!gaugeControls.showZoomButtons) {
             return;
         }
+
         toolsStation.addToolIcon(zoomInIconId, {
-            icon: Icons.NounProject.Plus,
+            icon: Icons.NounProject.Plus as unknown as string,
             onClick: (map) => {
-                clickedZoom.current = Math.max(clickedZoom.current + 1, Math.floor(map.getZoom() + 1));
-                map.easeTo({ zoom: clickedZoom.current });
+                map.map$.value?.getViewState()
+                    .then((viewState) => {
+                        clickedZoom.current = Math.max((clickedZoom.current ?? 0) + 1, Math.floor(viewState.zoom + 1));
+                        map.camera$.value?.easeTo({ zoom: clickedZoom.current, center: viewState.center });
+                    });
             },
             placement: 'right',
             tooltip: { n: cartomancer.namespace, t: cartomancer.translationKey.ZoomIn },
         });
 
         toolsStation.addToolIcon(currentZoomIconId, {
-            value: map.getZoom().toFixed(1),
+            value: '20.0',
             onClick: (map) => {
-                map.easeTo({ zoom: Math.round(map.getZoom()) });
+                map.map$.value?.getViewState()
+                    .then((viewState) => {
+                        map.camera$.value?.easeTo({ zoom: Math.round(viewState.zoom), center: viewState.center });
+                    })
+                    .catch(console.error);
             },
             placement: 'right',
             tooltip: (value) => ({
@@ -74,23 +76,20 @@ export const useMapTools = (map: maplibregl.Map) => {
         });
 
         toolsStation.addToolIcon(zoomOutIconId, {
-            icon: Icons.NounProject.Minus,
+            icon: Icons.NounProject.Minus as unknown as string,
             onClick: (map) => {
-                clickedZoom.current = Math.min(clickedZoom.current - 1, Math.ceil(map.getZoom() - 1));
-                map.easeTo({ zoom: clickedZoom.current });
+                map.map$.value?.getViewState()
+                    .then((viewState) => {
+                        clickedZoom.current = Math.min((clickedZoom.current ?? 23) - 1, Math.ceil(viewState.zoom - 1));
+                        map.camera$.value?.easeTo({ zoom: clickedZoom.current, center: viewState.center });
+                    })
+                    .catch(console.error)
             },
             placement: 'right',
             tooltip: { n: cartomancer.namespace, t: cartomancer.translationKey.ZoomOut },
         });
 
-        const zoomEndHandler = () => {
-            updateCurrentZoomIcon(toolsStation, clickedZoom, async () => map.getZoom());
-        };
-
-        map.on("zoomend", zoomEndHandler);
-
         return () => {
-            map.off("zoomend", zoomEndHandler);
             toolsStation.removeToolIcon(zoomInIconId);
             toolsStation.removeToolIcon(currentZoomIconId);
             toolsStation.removeToolIcon(zoomOutIconId);
@@ -101,7 +100,7 @@ export const useMapTools = (map: maplibregl.Map) => {
         toolsStation.addToolPanel(mapLayoutControlsId, {
             title: { n: cartomancer.namespace, t: cartomancer.translationKey.CartoConfig },
             contentComponent: CartoConfigPanel,
-            icon: Icons.NounProject.MapLayout,
+            icon: Icons.NounProject.MapLayout as unknown as string,
             placement: 'left'
         });
 
@@ -109,6 +108,4 @@ export const useMapTools = (map: maplibregl.Map) => {
             toolsStation.removeToolPanel(mapLayoutControlsId);
         };
     }, []);
-
-    return null;
 };
