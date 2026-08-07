@@ -19,14 +19,14 @@
     },
     "devDependencies": {
         "@maplibre/maplibre-gl-style-spec": "^24.8.1",
-        "@maplibre/maplibre-react-native": "11.0.2",
-        "react": "19.2.3",
-        "react-native": "0.85.3"
+        "@maplibre/maplibre-react-native": "11.3.6",
+        "react": "19.2.8",
+        "react-native": "0.86.2"
     },
     "peerDependencies": {
-        "@maplibre/maplibre-react-native": "11.0.2",
-        "react": "19.2.3",
-        "react-native": "0.85.3",
+        "@maplibre/maplibre-react-native": "11.3.6",
+        "react": "19.2.8",
+        "react-native": "0.86.2",
         "rxjs": "^7.8.2"
     }
 }

@@ -58,7 +58,7 @@
         "@turf/helpers": "^7.3.5",
         "@turf/length": "^7.3.5",
         "luxon": "^3.7.2",
-        "react": "19.2.3",
+        "react": "19.2.8",
         "rxjs": "^7.8.2"
     },
     "devDependencies": {

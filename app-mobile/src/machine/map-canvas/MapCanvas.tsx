@@ -8,6 +8,7 @@ import { useSubjectState } from "@tinker-chest";
 import { MobileMap } from "@mobile-ui";
 import { MobileChronoLens } from "@mobile-apparatus";
 import { useMapTools } from "./useMapTools";
+import { useTheme } from "@ui";
 
 const styles = StyleSheet.create({
     container: {
@@ -45,15 +46,12 @@ export const MapCanvas: FC<Props> = ({
     const { cartomancer, chronoLens, signaliumBureau, toolsStation } = useMachineWard<MobileMap>();
     const lens = chronoLens as MobileChronoLens;
     const [dragPan] = useSubjectState(map.dragPan$);
+    const [isInitialised, setIsInitialised] = useSubjectState(cartomancer.isInitialised$);
+    const [isStyleLoaded, setIsStyleLoaded] = useSubjectState(cartomancer.isStyleLoaded$);
     const [selectedStyle] = useSubjectState(cartomancer.selectedStyle$);
     const [onPressHandlers] = useSubjectState(map.onPressHandlers$);
     const [onLongPressHandlers] = useSubjectState(map.onLongPressHandlers$);
     const clickedZoom = useRef<number>(null);
-
-    useEffect(() => {
-        cartomancer.isInitialised$.next(true);
-        cartomancer.isStyleLoaded$.next(true);
-    }, []);
 
     useEffect(() => {
         const abortController = new AbortController();
@@ -82,12 +80,21 @@ export const MapCanvas: FC<Props> = ({
             onLayout={handleLayoutChange}
         >
             <MaplibreMap
-                ref={(r) => map.map$.next(r)}
+                ref={(r) => {
+                    map.map$.next(r);
+                    console.log("REF", r)
+                }}
                 style={styles.mapView}
                 dragPan={dragPan}
                 mapStyle={Cartomancer.styles[selectedStyle.id]?.style}
-                onDidFinishLoadingMap={() => cartomancer.isInitialised$.next(true)}
-                onDidFinishLoadingStyle={() => cartomancer.isStyleLoaded$.next(true)}
+                onDidFinishRenderingMapFully={() => {
+                    setIsInitialised(true);
+                }}
+                onDidFinishLoadingStyle={() => {
+                    setIsStyleLoaded(true);
+                }}
+                logo={false}
+                scaleBar={false}
                 onDidFailLoadingMap={() => {
                     signaliumBureau.addNotice({
                         id: 'map-failed',
@@ -116,7 +123,7 @@ export const MapCanvas: FC<Props> = ({
                 }}
             >
                 <Camera ref={(r) => map.camera$.next(r)} />
-                {children}
+                {isInitialised && isStyleLoaded ? children : null}
             </MaplibreMap>
         </RecordingView>
     );

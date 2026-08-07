@@ -2,9 +2,10 @@ import { useEffect, useRef } from "react";
 import maplibregl from "maplibre-gl";
 import { Icons } from "@ui";
 import {
-    compassToolIconId,
+    addCompassToolIcon,
     currentZoomIconId,
     mapLayoutControlsId,
+    removeCompassToolIcon,
     updateCompassIcon,
     updateCurrentZoomIcon,
     useMachineWard,
@@ -23,14 +24,12 @@ export const useMapTools = (map: maplibregl.Map) => {
         if (!gaugeControls.showCompass) {
             return;
         }
-        toolsStation.addToolIcon(compassToolIconId, {
-            icon: Icons.NounProject.North,
-            onClick: (map) => {
-                map.easeTo({ bearing: 0, pitch: 0 });
-            },
-            placement: 'right',
-            tooltip: { n: cartomancer.namespace, t: cartomancer.translationKey.Compass },
-        });
+        addCompassToolIcon(
+            toolsStation,
+            cartomancer,
+            { bearing: map.getBearing(), pitch: map.getPitch() },
+            (options) => map.easeTo(options),
+        );
 
         const rotateHandler = () => {
             updateCompassIcon(toolsStation, { bearing: map.getBearing(), pitch: map.getPitch() })
@@ -42,7 +41,7 @@ export const useMapTools = (map: maplibregl.Map) => {
         return () => {
             map.off('rotate', rotateHandler);
             map.off('pitch', rotateHandler);
-            toolsStation.removeToolIcon(compassToolIconId);
+            removeCompassToolIcon(toolsStation);
         };
     }, [gaugeControls.showCompass]);
 

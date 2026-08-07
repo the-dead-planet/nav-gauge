@@ -200,7 +200,7 @@ export const MapCanvas: FC<Props> = ({ map, children }) => {
 
     return (
         <div ref={setContainerRef} className={styles["container"]}>
-            {isStyleLoaded ? children : null}
+            {isInitialised && isStyleLoaded ? children : null}
         </div>
     );
 };

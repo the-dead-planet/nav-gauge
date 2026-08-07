@@ -1,8 +1,9 @@
 import { useEffect, useRef } from "react";
 import {
-    compassToolIconId,
+    addCompassToolIcon,
     currentZoomIconId,
     mapLayoutControlsId,
+    removeCompassToolIcon,
     useMachineWard,
     zoomInIconId,
     zoomOutIconId
@@ -14,31 +15,36 @@ import { CartoConfigPanel } from "../controls/CartoConfigPanel";
 
 export const useMapTools = (map: MobileMap) => {
     const { cartomancer, toolsStation } = useMachineWard<MobileMap>();
+    const [isInitialised] = useSubjectState(cartomancer.isInitialised$);
+    const [isStyleLoaded] = useSubjectState(cartomancer.isStyleLoaded$);
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const clickedZoom = useRef<number>(null);
 
     useEffect(() => {
+        const abortController = new AbortController();
         const m = map.map$.value;
-        if (!m || !gaugeControls.showCompass) {
+        if (!isInitialised || !isStyleLoaded || !m || !gaugeControls.showCompass) {
             return;
         }
-        toolsStation.addToolIcon(compassToolIconId, {
-            icon: Icons.NounProject.North as unknown as string,
-            onClick: (map) => {
-                map.map$.value?.getCenter()
-                    .then((center) => {
-                        map.camera$.value?.easeTo({ bearing: 0, pitch: 0, center });
-                    })
-                    .catch(console.error);
-            },
-            placement: 'right',
-            tooltip: { n: cartomancer.namespace, t: cartomancer.translationKey.Compass },
-        });
+
+        m.getViewState()
+            .then(({ center, bearing, pitch }) => {
+                if (abortController.signal.aborted) {
+                    return;
+                }
+                addCompassToolIcon(toolsStation, cartomancer, { bearing, pitch }, (options) => {
+                    map.camera$.value?.easeTo({ center, ...options });
+                });
+            })
+            .catch((err) => {
+                console.error(err);
+            });
 
         return () => {
-            toolsStation.removeToolIcon(compassToolIconId);
+            abortController.abort();
+            removeCompassToolIcon(toolsStation);
         };
-    }, [gaugeControls.showCompass]);
+    }, [isInitialised, isStyleLoaded, gaugeControls.showCompass]);
 
     useEffect(() => {
         if (!gaugeControls.showZoomButtons) {

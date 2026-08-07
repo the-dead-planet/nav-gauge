@@ -2686,22 +2686,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@maplibre/maplibre-gl-style-spec@npm:24.8.1":
-  version: 24.8.1
-  resolution: "@maplibre/maplibre-gl-style-spec@npm:24.8.1"
+"@maplibre/maplibre-gl-style-spec@npm:24.8.5":
+  version: 24.8.5
+  resolution: "@maplibre/maplibre-gl-style-spec@npm:24.8.5"
   dependencies:
     "@mapbox/jsonlint-lines-primitives": "npm:~2.0.2"
     "@mapbox/unitbezier": "npm:^0.0.1"
     json-stringify-pretty-compact: "npm:^4.0.0"
     minimist: "npm:^1.2.8"
     quickselect: "npm:^3.0.0"
-    rw: "npm:^1.3.3"
     tinyqueue: "npm:^3.0.0"
   bin:
     gl-style-format: dist/gl-style-format.mjs
     gl-style-migrate: dist/gl-style-migrate.mjs
     gl-style-validate: dist/gl-style-validate.mjs
-  checksum: 10/092a2865884a2cfc675a28668e02d5dc44e94ad7e0d85dea0d8a4e85a09319cb93db388535b97836db2e842934fab6563b85bdafeb1e6acc01d0f7ce1a5482dd
+  checksum: 10/a88cd1f9631dc1724ad24205745ed2b38737c437f7bbe7c95f9659dd0c4f3b088ea48c0639fb7a1488491db81a1f35b8896338a6633a3feae5bb146d846c1862
   languageName: node
   linkType: hard
 
@@ -2723,29 +2722,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@maplibre/maplibre-react-native@npm:11.0.2":
-  version: 11.0.2
-  resolution: "@maplibre/maplibre-react-native@npm:11.0.2"
+"@maplibre/maplibre-react-native@npm:11.3.6":
+  version: 11.3.6
+  resolution: "@maplibre/maplibre-react-native@npm:11.3.6"
   dependencies:
-    "@maplibre/maplibre-gl-style-spec": "npm:24.8.1"
+    "@maplibre/maplibre-gl-style-spec": "npm:24.8.5"
     "@turf/distance": "npm:^7.3.5"
     "@turf/helpers": "npm:^7.3.5"
     "@turf/length": "npm:^7.3.5"
     "@turf/nearest-point-on-line": "npm:^7.3.5"
   peerDependencies:
-    "@expo/config-plugins": ">=54.0.0"
     "@types/geojson": ^7946.0.0
     "@types/react": ">=19.1.0"
+    expo: ">=54.0.0"
     react: ">=19.1.0"
     react-native: ">=0.80.0"
   peerDependenciesMeta:
-    "@expo/config-plugins":
-      optional: true
     "@types/geojson":
       optional: true
     "@types/react":
       optional: true
-  checksum: 10/41e5994013df9681993e97239056220f27537410d0ab1a8576cbb958df1636ca4d1018af4c342d16adb60d12b78b9b276a9d806522b0e8685558014be166fab8
+    expo:
+      optional: true
+  checksum: 10/0cfe2df1ad654854808dc7749040e751a2bdd6aebab8313e3252338ab96e41e58425c64846dd7ad0a4cb5e9533ade6d4e3dae6412e235815502743f95dc10228
   languageName: node
   linkType: hard
 
@@ -3348,10 +3347,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native/assets-registry@npm:0.85.3":
-  version: 0.85.3
-  resolution: "@react-native/assets-registry@npm:0.85.3"
-  checksum: 10/614892869515ec035b5e64c4ef310c6bd531bcd623941a40db08255e2b2ba7d988801092b5014a558af2e899388b63d1a818cf42dcb5d014bc87ec72dcc8d336
+"@react-native/assets-registry@npm:0.86.2":
+  version: 0.86.2
+  resolution: "@react-native/assets-registry@npm:0.86.2"
+  checksum: 10/e2883510bc5fd655ea1caaea12dbd12e574a101e20b944a6d0a7ab1d0f80123bc2a41120618f35221901bad7d7a0dabb57b7f2b0847e5b39c16cba41b713aeec
   languageName: node
   linkType: hard
 
@@ -3425,28 +3424,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native/codegen@npm:0.85.3":
-  version: 0.85.3
-  resolution: "@react-native/codegen@npm:0.85.3"
+"@react-native/codegen@npm:0.86.2":
+  version: 0.86.2
+  resolution: "@react-native/codegen@npm:0.86.2"
   dependencies:
     "@babel/core": "npm:^7.25.2"
     "@babel/parser": "npm:^7.29.0"
-    hermes-parser: "npm:0.33.3"
+    hermes-parser: "npm:0.36.0"
     invariant: "npm:^2.2.4"
     nullthrows: "npm:^1.1.1"
     tinyglobby: "npm:^0.2.15"
     yargs: "npm:^17.6.2"
   peerDependencies:
     "@babel/core": "*"
-  checksum: 10/71986731526148205e43d624b4d02348a55da03d05c302cad3a314c7f216bad4703abc8280dfb77c17c787bce1e1c980f1ea516b404a238ae858b1307717a1c9
+  checksum: 10/1e53ef322b099048fc21186bc2d21e1c4fc8437d19187ebabbad165bd033d88fc3f871f3a43c1fc788482f763205ea3df28e8a20b2c800aa84906f0135a536f0
   languageName: node
   linkType: hard
 
-"@react-native/community-cli-plugin@npm:0.85.3":
-  version: 0.85.3
-  resolution: "@react-native/community-cli-plugin@npm:0.85.3"
+"@react-native/community-cli-plugin@npm:0.86.2":
+  version: 0.86.2
+  resolution: "@react-native/community-cli-plugin@npm:0.86.2"
   dependencies:
-    "@react-native/dev-middleware": "npm:0.85.3"
+    "@react-native/dev-middleware": "npm:0.86.2"
     debug: "npm:^4.4.0"
     invariant: "npm:^2.2.4"
     metro: "npm:^0.84.3"
@@ -3455,41 +3454,41 @@ __metadata:
     semver: "npm:^7.1.3"
   peerDependencies:
     "@react-native-community/cli": "*"
-    "@react-native/metro-config": 0.85.3
+    "@react-native/metro-config": 0.86.2
   peerDependenciesMeta:
     "@react-native-community/cli":
       optional: true
     "@react-native/metro-config":
       optional: true
-  checksum: 10/e2a108d09d323208a7879cda0a622bb4e41d2960302cbea12c46e91cf40a861cc56bb83534354182e9149c2ff5ed8d8609a576da1f77220b4a2e6a859d447f54
+  checksum: 10/0fcce65bed24a7eac1ff59fbd8fa8dd92002cc54f1e96aceac524a01960c9ba730ca3dab8128a94ce80d7ab90169b935a248a3507d573cbdc30cc1eddeb7d322
   languageName: node
   linkType: hard
 
-"@react-native/debugger-frontend@npm:0.85.3":
-  version: 0.85.3
-  resolution: "@react-native/debugger-frontend@npm:0.85.3"
-  checksum: 10/c778ae789b23102c74113b08914f213b1da66327b1840bdb2d21600a6916c6d062f53d95bfea7001772a10be279a0038a577b5e4945d1159183658d5b1614668
+"@react-native/debugger-frontend@npm:0.86.2":
+  version: 0.86.2
+  resolution: "@react-native/debugger-frontend@npm:0.86.2"
+  checksum: 10/7636614ba8be9eaff9083708b979b0549d969ca8c6bd71386d6d931b5450c6e817af618b3ef30a916dd18ff00d57d97e6a6330fe85dc53aea3378c31784416fd
   languageName: node
   linkType: hard
 
-"@react-native/debugger-shell@npm:0.85.3":
-  version: 0.85.3
-  resolution: "@react-native/debugger-shell@npm:0.85.3"
+"@react-native/debugger-shell@npm:0.86.2":
+  version: 0.86.2
+  resolution: "@react-native/debugger-shell@npm:0.86.2"
   dependencies:
     cross-spawn: "npm:^7.0.6"
     debug: "npm:^4.4.0"
     fb-dotslash: "npm:0.5.8"
-  checksum: 10/5c6871ff071a1ad030d6791892d55e7003d67656a7e26bf30ea5a1d23cb71b9c81e55768a754e1fbab19e3ec5ed9b246f9409e84963b0877a61d73f6d193b9e1
+  checksum: 10/5e6ca82ffdd2c64a611a23e67ecdc060b24c7d2e17149d2ddc159d6eb55da1d431956f729b8ce75c2cbc66eab1d9eb7a9a654f26dbf2dd57629c68d759a60a56
   languageName: node
   linkType: hard
 
-"@react-native/dev-middleware@npm:0.85.3":
-  version: 0.85.3
-  resolution: "@react-native/dev-middleware@npm:0.85.3"
+"@react-native/dev-middleware@npm:0.86.2":
+  version: 0.86.2
+  resolution: "@react-native/dev-middleware@npm:0.86.2"
   dependencies:
     "@isaacs/ttlcache": "npm:^1.4.1"
-    "@react-native/debugger-frontend": "npm:0.85.3"
-    "@react-native/debugger-shell": "npm:0.85.3"
+    "@react-native/debugger-frontend": "npm:0.86.2"
+    "@react-native/debugger-shell": "npm:0.86.2"
     chrome-launcher: "npm:^0.15.2"
     chromium-edge-launcher: "npm:^0.3.0"
     connect: "npm:^3.6.5"
@@ -3499,7 +3498,7 @@ __metadata:
     open: "npm:^7.0.3"
     serve-static: "npm:^1.16.2"
     ws: "npm:^7.5.10"
-  checksum: 10/ff4d698edda3e205dc1de64961628a358f2f2cecbc3c50f4351761fff3eef87608f998ebaa3454b41b1ef6a1bfd5307cd1676fccd5eca348c7b54dac16f2fabc
+  checksum: 10/8db216e5ef1a74c27f31bf7b2a2f2c9ec8ee445d3bb5d7cbb482fa6ead21d5e2d6381a6fbcd398723c4fd73a2391dceb80602157f322b32f6c0c3d4909318e48
   languageName: node
   linkType: hard
 
@@ -3533,10 +3532,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native/gradle-plugin@npm:0.85.3":
-  version: 0.85.3
-  resolution: "@react-native/gradle-plugin@npm:0.85.3"
-  checksum: 10/c838736286d27a13d90fd14cf81cf2165360da01e43d1f95b0ea4fb5c7716b02153e1b2604a168a39dead6f77a66eaba155ea997b9db46f4887669fbf78f18df
+"@react-native/gradle-plugin@npm:0.86.2":
+  version: 0.86.2
+  resolution: "@react-native/gradle-plugin@npm:0.86.2"
+  checksum: 10/48569f53908b2b3cf6075f298d19e2a1c171240c6b46ff3ffd21014af872bfda716c7df98dbb927b7a5c7849d16f2d3349a7bc3959f86e81c3057ac5c9c90e8d
   languageName: node
   linkType: hard
 
@@ -3569,6 +3568,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native/js-polyfills@npm:0.86.2":
+  version: 0.86.2
+  resolution: "@react-native/js-polyfills@npm:0.86.2"
+  checksum: 10/3c076d314c4e220e7722ceb6e03020433607e0ff330ed43d22b8013da134926a9a267d4dd82776256e780c3bf4452b5fded9b1c05ac8604669813c4bc70a7889
+  languageName: node
+  linkType: hard
+
 "@react-native/metro-babel-transformer@npm:0.85.2":
   version: 0.85.2
   resolution: "@react-native/metro-babel-transformer@npm:0.85.2"
@@ -3595,10 +3601,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native/normalize-colors@npm:0.85.3":
-  version: 0.85.3
-  resolution: "@react-native/normalize-colors@npm:0.85.3"
-  checksum: 10/6ed3f85bf2405c72809ddc4c320910d4afaa399b9eb50ffa0ddd2e5ff478649abaa890517d6b7aeb431dd7d2e1a6412ac4df9da36acc74a8d470ffee44aeaed8
+"@react-native/normalize-colors@npm:0.86.2":
+  version: 0.86.2
+  resolution: "@react-native/normalize-colors@npm:0.86.2"
+  checksum: 10/876478b3010ab47e6a3335aeb9e1dc84a34fa9ce7c48cdf904a3ba9d289764f70b8306680522b0c8dd5db5b8358da525438fd22847577a47fe1a59e59bf7226e
   languageName: node
   linkType: hard
 
@@ -3609,20 +3615,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native/virtualized-lists@npm:0.85.3":
-  version: 0.85.3
-  resolution: "@react-native/virtualized-lists@npm:0.85.3"
+"@react-native/virtualized-lists@npm:0.86.2":
+  version: 0.86.2
+  resolution: "@react-native/virtualized-lists@npm:0.86.2"
   dependencies:
     invariant: "npm:^2.2.4"
     nullthrows: "npm:^1.1.1"
   peerDependencies:
     "@types/react": ^19.2.0
     react: "*"
-    react-native: 0.85.3
+    react-native: 0.86.2
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 10/a1ec317056cca51978c7947c89bf60ceb5c86e75a55b52035f4604281796ab4858b4cdb2a9350dd1eab161ab356c53094dde6448ebe5921e739de8f5c707e145
+  checksum: 10/a894716f737d797829afa8dda0324e7ff48d12918bef7b3e23c7351a34fa87e41d202a4618db7888e963ea107e758f68f6905307c5093a9fe2f24d38205ba0b3
   languageName: node
   linkType: hard
 
@@ -4514,7 +4520,7 @@ __metadata:
     "@babel/runtime": "npm:^7.29.2"
     "@bam.tech/react-native-image-resizer": "npm:^3.0.11"
     "@lodev09/react-native-exify": "npm:^1.0.3"
-    "@maplibre/maplibre-react-native": "npm:11.0.2"
+    "@maplibre/maplibre-react-native": "npm:11.3.6"
     "@react-native-async-storage/async-storage": "npm:^3.0.2"
     "@react-native-community/cli": "npm:^20.1.3"
     "@react-native-community/cli-platform-android": "npm:^20.1.3"
@@ -4543,17 +4549,17 @@ __metadata:
     jest: "npm:^29.7.0"
     jest-environment-jsdom: "npm:^29.7.0"
     prettier: "npm:^3.8.3"
-    react: "npm:19.2.3"
-    react-native: "npm:0.85.3"
+    react: "npm:19.2.8"
+    react-native: "npm:0.86.2"
     react-native-fs: "npm:^2.20.0"
     react-native-safe-area-context: "npm:^5.7.0"
     react-native-screens: "npm:^4.25.0"
     react-native-svg: "npm:^15.15.5"
     react-native-svg-transformer: "npm:^1.5.3"
     react-native-view-recorder: "npm:^0.4.0"
-    react-test-renderer: "npm:19.2.3"
+    react-test-renderer: "npm:19.2.8"
   peerDependencies:
-    react: 19.2.3
+    react: 19.2.8
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -4577,7 +4583,6 @@ __metadata:
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
     "@the-dead-planet/nav-gauge-ui-web": "npm:*"
-    "@types/react-dom": "npm:19.2.3"
     "@types/webpack-bundle-analyzer": "npm:^4.7.0"
     babel-loader: "npm:^10.1.1"
     babel-plugin-react-compiler: "npm:^1.0.0"
@@ -4586,8 +4591,8 @@ __metadata:
     cypress: "npm:^15.15.0"
     maplibre-gl: "npm:5.24.0"
     pmtiles: "npm:^4.4.1"
-    react: "npm:19.2.3"
-    react-dom: "npm:19.2.3"
+    react: "npm:19.2.8"
+    react-dom: "npm:19.2.8"
     react-refresh: "npm:^0.18.0"
     react-svg: "npm:^17.2.4"
     style-loader: "npm:^4.0.0"
@@ -4595,7 +4600,7 @@ __metadata:
     webpack-bundle-analyzer: "npm:^5.3.0"
     webpack-merge: "npm:^6.0.1"
   peerDependencies:
-    react: 19.2.3
+    react: 19.2.8
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -4608,9 +4613,9 @@ __metadata:
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
     fast-xml-parser: "npm:^5.7.2"
-    react: "npm:19.2.3"
+    react: "npm:19.2.8"
   peerDependencies:
-    react: 19.2.3
+    react: 19.2.8
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -4620,19 +4625,19 @@ __metadata:
   resolution: "@the-dead-planet/nav-gauge-apparatus-mobile@workspace:apparatus/mobile"
   dependencies:
     "@maplibre/maplibre-gl-style-spec": "npm:^24.8.1"
-    "@maplibre/maplibre-react-native": "npm:11.0.2"
+    "@maplibre/maplibre-react-native": "npm:11.3.6"
     "@react-native-documents/viewer": "npm:^4.0.0"
     "@the-dead-planet/nav-gauge-apparatus-common": "npm:*"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
-    react: "npm:19.2.3"
-    react-native: "npm:0.85.3"
+    react: "npm:19.2.8"
+    react-native: "npm:0.86.2"
     react-native-fs: "npm:^2.20.0"
     react-native-view-recorder: "npm:^0.4.0"
   peerDependencies:
-    "@maplibre/maplibre-react-native": 11.0.2
-    react: 19.2.3
-    react-native: 0.85.3
+    "@maplibre/maplibre-react-native": 11.3.6
+    react: 19.2.8
+    react-native: 0.86.2
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -4646,12 +4651,12 @@ __metadata:
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
     maplibre-gl: "npm:5.24.0"
-    react: "npm:19.2.3"
-    react-dom: "npm:19.2.3"
+    react: "npm:19.2.8"
+    react-dom: "npm:19.2.8"
   peerDependencies:
     maplibre-gl: 5.24.0
-    react: 19.2.3
-    react-dom: 19.2.3
+    react: 19.2.8
+    react-dom: 19.2.8
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -4663,9 +4668,9 @@ __metadata:
     "@the-dead-planet/nav-gauge-apparatus-common": "npm:*"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
-    react: "npm:19.2.3"
+    react: "npm:19.2.8"
   peerDependencies:
-    react: 19.2.3
+    react: 19.2.8
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -4674,18 +4679,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@the-dead-planet/nav-gauge-gears-navigate-mobile@workspace:gears/navigate/mobile"
   dependencies:
-    "@maplibre/maplibre-react-native": "npm:11.0.2"
+    "@maplibre/maplibre-react-native": "npm:11.3.6"
     "@the-dead-planet/nav-gauge-apparatus-common": "npm:*"
     "@the-dead-planet/nav-gauge-apparatus-mobile": "npm:*"
     "@the-dead-planet/nav-gauge-gears-navigate-common": "npm:*"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
-    react: "npm:19.2.3"
-    react-native: "npm:0.85.3"
+    react: "npm:19.2.8"
+    react-native: "npm:0.86.2"
   peerDependencies:
-    "@maplibre/maplibre-react-native": 11.0.2
-    react: 19.2.3
-    react-native: 0.85.3
+    "@maplibre/maplibre-react-native": 11.3.6
+    react: 19.2.8
+    react-native: 0.86.2
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -4700,12 +4705,12 @@ __metadata:
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
     maplibre-gl: "npm:5.24.0"
-    react: "npm:19.2.3"
-    react-dom: "npm:19.2.3"
+    react: "npm:19.2.8"
+    react-dom: "npm:19.2.8"
   peerDependencies:
     maplibre-gl: 5.24.0
-    react: 19.2.3
-    react-dom: 19.2.3
+    react: 19.2.8
+    react-dom: 19.2.8
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -4717,9 +4722,9 @@ __metadata:
     "@the-dead-planet/nav-gauge-apparatus-common": "npm:*"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
-    react: "npm:19.2.3"
+    react: "npm:19.2.8"
   peerDependencies:
-    react: 19.2.3
+    react: 19.2.8
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -4728,18 +4733,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@the-dead-planet/nav-gauge-gears-record-route-mobile@workspace:gears/record-route/mobile"
   dependencies:
-    "@maplibre/maplibre-react-native": "npm:11.0.2"
+    "@maplibre/maplibre-react-native": "npm:11.3.6"
     "@the-dead-planet/nav-gauge-apparatus-common": "npm:*"
     "@the-dead-planet/nav-gauge-apparatus-mobile": "npm:*"
     "@the-dead-planet/nav-gauge-gears-record-route-common": "npm:*"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
-    react: "npm:19.2.3"
-    react-native: "npm:0.85.3"
+    react: "npm:19.2.8"
+    react-native: "npm:0.86.2"
   peerDependencies:
-    "@maplibre/maplibre-react-native": 11.0.2
-    react: 19.2.3
-    react-native: 0.85.3
+    "@maplibre/maplibre-react-native": 11.3.6
+    react: 19.2.8
+    react-native: 0.86.2
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -4754,12 +4759,12 @@ __metadata:
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
     maplibre-gl: "npm:5.24.0"
-    react: "npm:19.2.3"
-    react-dom: "npm:19.2.3"
+    react: "npm:19.2.8"
+    react-dom: "npm:19.2.8"
   peerDependencies:
     maplibre-gl: 5.24.0
-    react: 19.2.3
-    react-dom: 19.2.3
+    react: 19.2.8
+    react-dom: 19.2.8
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -4771,9 +4776,9 @@ __metadata:
     "@the-dead-planet/nav-gauge-apparatus-common": "npm:*"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
-    react: "npm:19.2.3"
+    react: "npm:19.2.8"
   peerDependencies:
-    react: 19.2.3
+    react: 19.2.8
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -4784,23 +4789,23 @@ __metadata:
   dependencies:
     "@bam.tech/react-native-image-resizer": "npm:^3.0.11"
     "@lodev09/react-native-exify": "npm:^1.0.3"
-    "@maplibre/maplibre-react-native": "npm:11.0.2"
+    "@maplibre/maplibre-react-native": "npm:11.3.6"
     "@react-native-documents/picker": "npm:^12.0.1"
     "@the-dead-planet/nav-gauge-apparatus-common": "npm:*"
     "@the-dead-planet/nav-gauge-apparatus-mobile": "npm:*"
     "@the-dead-planet/nav-gauge-gears-route-story-common": "npm:*"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
-    react: "npm:19.2.3"
-    react-native: "npm:0.85.3"
+    react: "npm:19.2.8"
+    react-native: "npm:0.86.2"
     react-native-fs: "npm:^2.20.0"
   peerDependencies:
     "@bam.tech/react-native-image-resizer": ^3.0.11
     "@lodev09/react-native-exify": ^1.0.3
-    "@maplibre/maplibre-react-native": 11.0.2
+    "@maplibre/maplibre-react-native": 11.3.6
     "@react-native-documents/picker": ^12.0.1
-    react: 19.2.3
-    react-native: 0.85.3
+    react: 19.2.8
+    react-native: 0.86.2
     react-native-fs: ^2.20.0
     rxjs: ^7.8.2
   languageName: unknown
@@ -4818,12 +4823,12 @@ __metadata:
     "@types/exif-js": "npm:^2.3.1"
     exif-js: "npm:^2.3.0"
     maplibre-gl: "npm:5.24.0"
-    react: "npm:19.2.3"
-    react-dom: "npm:19.2.3"
+    react: "npm:19.2.8"
+    react-dom: "npm:19.2.8"
   peerDependencies:
     maplibre-gl: 5.24.0
-    react: 19.2.3
-    react-dom: 19.2.3
+    react: 19.2.8
+    react-dom: 19.2.8
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -4835,9 +4840,9 @@ __metadata:
     "@the-dead-planet/nav-gauge-apparatus-common": "npm:*"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
-    react: "npm:19.2.3"
+    react: "npm:19.2.8"
   peerDependencies:
-    react: 19.2.3
+    react: 19.2.8
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -4846,18 +4851,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@the-dead-planet/nav-gauge-gears-submit-data-mobile@workspace:gears/submit-data/mobile"
   dependencies:
-    "@maplibre/maplibre-react-native": "npm:11.0.2"
+    "@maplibre/maplibre-react-native": "npm:11.3.6"
     "@the-dead-planet/nav-gauge-apparatus-common": "npm:*"
     "@the-dead-planet/nav-gauge-apparatus-mobile": "npm:*"
     "@the-dead-planet/nav-gauge-gears-submit-data-common": "npm:*"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
-    react: "npm:19.2.3"
-    react-native: "npm:0.85.3"
+    react: "npm:19.2.8"
+    react-native: "npm:0.86.2"
   peerDependencies:
-    "@maplibre/maplibre-react-native": 11.0.2
-    react: 19.2.3
-    react-native: 0.85.3
+    "@maplibre/maplibre-react-native": 11.3.6
+    react: 19.2.8
+    react-native: 0.86.2
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -4872,12 +4877,12 @@ __metadata:
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
     maplibre-gl: "npm:5.24.0"
-    react: "npm:19.2.3"
-    react-dom: "npm:19.2.3"
+    react: "npm:19.2.8"
+    react-dom: "npm:19.2.8"
   peerDependencies:
     maplibre-gl: 5.24.0
-    react: 19.2.3
-    react-dom: 19.2.3
+    react: 19.2.8
+    react-dom: 19.2.8
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -4886,9 +4891,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@the-dead-planet/nav-gauge-tinker-chest@workspace:tinker-chest"
   dependencies:
-    react: "npm:19.2.3"
+    react: "npm:19.2.8"
   peerDependencies:
-    react: 19.2.3
+    react: 19.2.8
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -4900,10 +4905,10 @@ __metadata:
     "@resvg/resvg-js": "npm:2.6.2"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@types/node": "npm:^25.9.1"
-    react: "npm:19.2.3"
+    react: "npm:19.2.8"
     svgson: "npm:^5.3.1"
   peerDependencies:
-    react: 19.2.3
+    react: 19.2.8
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -4912,19 +4917,19 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@the-dead-planet/nav-gauge-ui-mobile@workspace:ui/mobile"
   dependencies:
-    "@maplibre/maplibre-react-native": "npm:11.0.2"
+    "@maplibre/maplibre-react-native": "npm:11.3.6"
     "@react-native-documents/picker": "npm:^12.0.1"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
-    react: "npm:19.2.3"
-    react-native: "npm:0.85.3"
+    react: "npm:19.2.8"
+    react-native: "npm:0.86.2"
     react-native-fs: "npm:^2.20.0"
     react-native-svg: "npm:^15.15.5"
   peerDependencies:
-    "@maplibre/maplibre-react-native": 11.0.2
+    "@maplibre/maplibre-react-native": 11.3.6
     "@react-native-documents/picker": ^12.0.1
-    react: 19.2.3
-    react-native: 0.85.3
+    react: 19.2.8
+    react-native: 0.86.2
     react-native-fs: ^2.20.0
     rxjs: ^7.8.2
   languageName: unknown
@@ -4941,15 +4946,15 @@ __metadata:
     classnames: "npm:^2.5.1"
     css-loader: "npm:^7.1.4"
     maplibre-gl: "npm:5.24.0"
-    react: "npm:19.2.3"
-    react-dom: "npm:19.2.3"
+    react: "npm:19.2.8"
+    react-dom: "npm:19.2.8"
     react-svg: "npm:^17.2.4"
     storybook: "npm:^10.4.1"
     storybook-react-rsbuild: "npm:^3.3.3"
   peerDependencies:
     maplibre-gl: 5.24.0
-    react: 19.2.3
-    react-dom: 19.2.3
+    react: 19.2.8
+    react-dom: 19.2.8
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -4979,7 +4984,7 @@ __metadata:
     luxon: "npm:^3.7.2"
     mocha: "npm:^11.7.5"
     path: "npm:^0.12.7"
-    react: "npm:19.2.3"
+    react: "npm:19.2.8"
     rxjs: "npm:^7.8.2"
     tsx: "npm:^4.21.0"
     typescript: "npm:^6.0.3"
@@ -5341,15 +5346,6 @@ __metadata:
   version: 15.7.15
   resolution: "@types/prop-types@npm:15.7.15"
   checksum: 10/31aa2f59b28f24da6fb4f1d70807dae2aedfce090ec63eaf9ea01727a9533ef6eaf017de5bff99fbccad7d1c9e644f52c6c2ba30869465dd22b1a7221c29f356
-  languageName: node
-  linkType: hard
-
-"@types/react-dom@npm:19.2.3":
-  version: 19.2.3
-  resolution: "@types/react-dom@npm:19.2.3"
-  peerDependencies:
-    "@types/react": ^19.2.0
-  checksum: 10/616c4a8aee250ea05fb1e7b98e7e00475dd3a6c1c30d7be18b4b93caba832f4203106b3a496a6b147e5acc2da14575eca47bce234c633bca1f8430ef8ffb234a
   languageName: node
   linkType: hard
 
@@ -6444,6 +6440,15 @@ __metadata:
   dependencies:
     hermes-parser: "npm:0.33.3"
   checksum: 10/250394dbe9fc7b6b2235ed7d0eaed287c811fbb79ab122a6d1a74f212dd85307273a06ae72e0b7f164f908f57d93f45f06183236f51d9fc704083cc67bce78c6
+  languageName: node
+  linkType: hard
+
+"babel-plugin-syntax-hermes-parser@npm:0.36.0":
+  version: 0.36.0
+  resolution: "babel-plugin-syntax-hermes-parser@npm:0.36.0"
+  dependencies:
+    hermes-parser: "npm:0.36.0"
+  checksum: 10/22489c19d416f1e071c046ab42d5dd475ed5b76514621f755f55b4e8019ecd665dce8da40be2a5436bbd5d4f2d258ebceda30601e078104ce11fe4371b7a36a0
   languageName: node
   linkType: hard
 
@@ -9554,10 +9559,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hermes-compiler@npm:250829098.0.10":
-  version: 250829098.0.10
-  resolution: "hermes-compiler@npm:250829098.0.10"
-  checksum: 10/7687ad73483d6f25e9056da647ade37e434dbb7f85700f0900f902078c106c9b0498a064446191347d16c20cf29c083f560805179caf49af21b12b8b6be1f16b
+"hermes-compiler@npm:250829098.0.16":
+  version: 250829098.0.16
+  resolution: "hermes-compiler@npm:250829098.0.16"
+  checksum: 10/49cd9558ed26ad2f11c897058f995fab113cf95b1ece9fda512045cebf60b75387aa0d2e7fdf3201b4d0102ea0d63963f7e7e4c3500c9dad2daa95e0c9f57146
   languageName: node
   linkType: hard
 
@@ -9582,6 +9587,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"hermes-estree@npm:0.36.0":
+  version: 0.36.0
+  resolution: "hermes-estree@npm:0.36.0"
+  checksum: 10/76f3fec9700a8ccb299cf53be22cd9038caf3bfba711370dd24f276444c1ed3c38c27fedd3097f6d9cccaa4dfaa4d02de0f8f02e208ab3fb00c97f8845b8aac5
+  languageName: node
+  linkType: hard
+
 "hermes-parser@npm:0.33.3":
   version: 0.33.3
   resolution: "hermes-parser@npm:0.33.3"
@@ -9597,6 +9609,15 @@ __metadata:
   dependencies:
     hermes-estree: "npm:0.35.0"
   checksum: 10/62be25fa41b708db21c4db9153b0d60cfbf9bd4645f1712eb559b3be8c191266b5b381df60fbbc45416799f73c2361eb69a81eead21dc5159fe2ea72f946d5f7
+  languageName: node
+  linkType: hard
+
+"hermes-parser@npm:0.36.0":
+  version: 0.36.0
+  resolution: "hermes-parser@npm:0.36.0"
+  dependencies:
+    hermes-estree: "npm:0.36.0"
+  checksum: 10/81150c00bd8da17187f421a75e6e427187465386681427024f3dc51de996c44cee18fb062d95254028aa1f4ffcdbe7cbdeda50e6edece5c378c9f909067f5bae
   languageName: node
   linkType: hard
 
@@ -13275,14 +13296,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:19.2.3":
-  version: 19.2.3
-  resolution: "react-dom@npm:19.2.3"
+"react-dom@npm:19.2.8":
+  version: 19.2.8
+  resolution: "react-dom@npm:19.2.8"
   dependencies:
     scheduler: "npm:^0.27.0"
   peerDependencies:
-    react: ^19.2.3
-  checksum: 10/5780f6d4c8e8ece09f82c5500ba2d55e01c30b5273f9281734d7d3b65013cd1fa52ec4e4436e5248c0a9e5bc340836044051168bbad8d7eac4d33ee6c2a867a1
+    react: ^19.2.8
+  checksum: 10/fb45d500a8615a36d71a821213a3d4bfe32a70aa1d04ce17d8791dd10c4ef0281e7fdd46694e1112f0f2dcf58df89d12043a13228be9788458aa82f4885a9cdc
   languageName: node
   linkType: hard
 
@@ -13302,7 +13323,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-is-19@npm:react-is@^19.2.5, react-is@npm:^19.1.0, react-is@npm:^19.2.3":
+"react-is-19@npm:react-is@^19.2.5, react-is@npm:^19.1.0":
   version: 19.2.7
   resolution: "react-is@npm:19.2.7"
   checksum: 10/ae0d3ae7638aa2fa2a82a78a817daf2806e57fa0aef357d07e1e8d1e9a301902e5967168e9334b5816db0df8fa980a725cd57569ba5a9e6e76a71e117b18be04
@@ -13320,6 +13341,13 @@ __metadata:
   version: 17.0.2
   resolution: "react-is@npm:17.0.2"
   checksum: 10/73b36281e58eeb27c9cc6031301b6ae19ecdc9f18ae2d518bdb39b0ac564e65c5779405d623f1df9abf378a13858b79442480244bd579968afc1faf9a2ce5e05
+  languageName: node
+  linkType: hard
+
+"react-is@npm:^19.2.8":
+  version: 19.2.8
+  resolution: "react-is@npm:19.2.8"
+  checksum: 10/09d053ff36e0ba4d47164baf9eab1c7772791f0371aa92281f0e547e0f6a5a5c8a1eb939aadd1a08b3c565958dd63ee59c746b6ac0d5ccb14ad742ac0314ab15
   languageName: node
   linkType: hard
 
@@ -13404,25 +13432,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native@npm:0.85.3":
-  version: 0.85.3
-  resolution: "react-native@npm:0.85.3"
+"react-native@npm:0.86.2":
+  version: 0.86.2
+  resolution: "react-native@npm:0.86.2"
   dependencies:
-    "@react-native/assets-registry": "npm:0.85.3"
-    "@react-native/codegen": "npm:0.85.3"
-    "@react-native/community-cli-plugin": "npm:0.85.3"
-    "@react-native/gradle-plugin": "npm:0.85.3"
-    "@react-native/js-polyfills": "npm:0.85.3"
-    "@react-native/normalize-colors": "npm:0.85.3"
-    "@react-native/virtualized-lists": "npm:0.85.3"
+    "@react-native/assets-registry": "npm:0.86.2"
+    "@react-native/codegen": "npm:0.86.2"
+    "@react-native/community-cli-plugin": "npm:0.86.2"
+    "@react-native/gradle-plugin": "npm:0.86.2"
+    "@react-native/js-polyfills": "npm:0.86.2"
+    "@react-native/normalize-colors": "npm:0.86.2"
+    "@react-native/virtualized-lists": "npm:0.86.2"
     abort-controller: "npm:^3.0.0"
     anser: "npm:^1.4.9"
     ansi-regex: "npm:^5.0.0"
-    babel-plugin-syntax-hermes-parser: "npm:0.33.3"
+    babel-plugin-syntax-hermes-parser: "npm:0.36.0"
     base64-js: "npm:^1.5.1"
     commander: "npm:^12.0.0"
     flow-enums-runtime: "npm:^0.0.6"
-    hermes-compiler: "npm:250829098.0.10"
+    hermes-compiler: "npm:250829098.0.16"
     invariant: "npm:^2.2.4"
     memoize-one: "npm:^5.0.0"
     metro-runtime: "npm:^0.84.3"
@@ -13441,7 +13469,7 @@ __metadata:
     ws: "npm:^7.5.10"
     yargs: "npm:^17.6.2"
   peerDependencies:
-    "@react-native/jest-preset": 0.85.3
+    "@react-native/jest-preset": 0.86.2
     "@types/react": ^19.1.1
     react: ^19.2.3
   peerDependenciesMeta:
@@ -13451,7 +13479,7 @@ __metadata:
       optional: true
   bin:
     react-native: cli.js
-  checksum: 10/1141ad27311f9bc4fe1111f7132e9fef90f66e6804a8982148bf6c0efee8f9479379d6ab4938ef84c1ef86fb472004cdfd2c0910b6a8e193e4e78a4e2e186bdb
+  checksum: 10/d0a666a94572d208f46c406c5feac1d976af3033712d09fd31f2a4db51f52c8bc1ec67f3b405cf942315cd1b5eb730e9adfac5741083213f9438f4024023056a
   languageName: node
   linkType: hard
 
@@ -13484,22 +13512,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-test-renderer@npm:19.2.3":
-  version: 19.2.3
-  resolution: "react-test-renderer@npm:19.2.3"
+"react-test-renderer@npm:19.2.8":
+  version: 19.2.8
+  resolution: "react-test-renderer@npm:19.2.8"
   dependencies:
-    react-is: "npm:^19.2.3"
+    react-is: "npm:^19.2.8"
     scheduler: "npm:^0.27.0"
   peerDependencies:
-    react: ^19.2.3
-  checksum: 10/a9de4d869b1555a54c02e8701be262dfa669eb366ff5cdb43ba49fa516beae439cbec2c3e5606c909e773c232328993e231b393af5eef25e87a845d4c7fb00dc
+    react: ^19.2.8
+  checksum: 10/cc8623d8534d14dc57c89d034068455de69d56686336c9f5347a7ae2c480fd177b68644f221ec6e13dbcce3432183df561731419fc70dd6503d87e3f5163f000
   languageName: node
   linkType: hard
 
-"react@npm:19.2.3":
-  version: 19.2.3
-  resolution: "react@npm:19.2.3"
-  checksum: 10/d16b7f35c0d35a56f63d9d1693819762e4abc479c57dd6310298920bed3820fcec7e17a99d44983416d8f5049143ea45b8005d3ab8324bae8973224400502b08
+"react@npm:19.2.8":
+  version: 19.2.8
+  resolution: "react@npm:19.2.8"
+  checksum: 10/a3c697798035e295ca9e51591d3a8700824535cb8c070fac1f8abbe69717ceb99108cbc4ba7b31a606806f336b1eba705705f63b9d39ace198fe51e8990ac843
   languageName: node
   linkType: hard
 
@@ -13875,13 +13903,6 @@ __metadata:
   dependencies:
     queue-microtask: "npm:^1.2.2"
   checksum: 10/cb4f97ad25a75ebc11a8ef4e33bb962f8af8516bb2001082ceabd8902e15b98f4b84b4f8a9b222e5d57fc3bd1379c483886ed4619367a7680dad65316993021d
-  languageName: node
-  linkType: hard
-
-"rw@npm:^1.3.3":
-  version: 1.3.3
-  resolution: "rw@npm:1.3.3"
-  checksum: 10/e90985d64777a00f4ab5f8c0bfea2fb5645c6bda5238840afa339c8a4f86f776e8ce83731155643a7425a0b27ce89077dab27b2f57519996ba4d2fe54cac1941
   languageName: node
   linkType: hard
 

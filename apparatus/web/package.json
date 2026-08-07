@@ -17,13 +17,13 @@
     "devDependencies": {
         "@maplibre/maplibre-gl-style-spec": "^24.8.1",
         "maplibre-gl": "5.24.0",
-        "react": "19.2.3",
-        "react-dom": "19.2.3"
+        "react": "19.2.8",
+        "react-dom": "19.2.8"
     },
     "peerDependencies": {
         "maplibre-gl": "5.24.0",
-        "react": "19.2.3",
-        "react-dom": "19.2.3",
+        "react": "19.2.8",
+        "react-dom": "19.2.8",
         "rxjs": "^7.8.2"
     }
 }
