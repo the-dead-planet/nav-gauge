@@ -44,6 +44,7 @@
         "test:e2e:web": "yarn workspace @the-dead-planet/nav-gauge-app-web test:e2e:prod",
         "test:e2e:web:dev": "yarn workspace @the-dead-planet/nav-gauge-app-web test:e2e:dev",
         "test:e2e:mobile": "yarn workspace @the-dead-planet/nav-gauge-app-mobile test:e2e:prod",
+        "test:e2e:mobile:dev": "yarn workspace @the-dead-planet/nav-gauge-app-mobile test:e2e:dev",
         "generate:gear": "yarn tsx ./scripts/app/generate-gear.ts",
         "add:gear": "yarn tsx ./scripts/app/add-to-gear.ts",
         "icons": "yarn tsx ./ui/common/src/icons/svg/noun-project/process-icons.ts",

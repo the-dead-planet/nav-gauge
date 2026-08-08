@@ -18,7 +18,7 @@
         "dev": "react-native start",
         "dev:r": "concurrently -n METRO,TSC -c green,blue \"react-native start --reset-cache\" \"yarn typecheck\"",
         "start": "react-native start --reset-cache",
-        "test": "jest",
+        "test": "mocha",
         "test:e2e": "jest",
         "test:e2e:dev": "jest",
         "test:e2e:prod": "jest",
