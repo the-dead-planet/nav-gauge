@@ -3,5 +3,8 @@ module.exports = {
         ios: {},
         android: {},
     },
-    assets: ['../ui/common/public/fonts'],
+    assets: [
+        '../apparatus/common/public/tiles',
+        '../ui/common/public/fonts',
+    ],
 };

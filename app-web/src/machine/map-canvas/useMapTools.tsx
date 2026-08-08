@@ -5,7 +5,6 @@ import {
     addCompassToolIcon,
     currentZoomIconId,
     mapLayoutControlsId,
-    removeCompassToolIcon,
     updateCompassIcon,
     updateCurrentZoomIcon,
     useMachineWard,
@@ -21,14 +20,19 @@ export const useMapTools = (map: maplibregl.Map) => {
     const clickedZoom = useRef(map.getZoom());
 
     useEffect(() => {
-        if (!gaugeControls.showCompass) {
-            return;
-        }
-        addCompassToolIcon(
+        const removeCompassToolIcon = addCompassToolIcon(
+            gaugeControls,
             toolsStation,
             cartomancer,
-            { bearing: map.getBearing(), pitch: map.getPitch() },
-            (options) => map.easeTo(options),
+            async () => {
+                const { lng, lat } = map.getCenter();
+                return {
+                    center: [lng, lat],
+                    bearing: map.getBearing(),
+                    pitch: map.getPitch(),
+                };
+            },
+            map.easeTo,
         );
 
         const rotateHandler = () => {
@@ -41,7 +45,7 @@ export const useMapTools = (map: maplibregl.Map) => {
         return () => {
             map.off('rotate', rotateHandler);
             map.off('pitch', rotateHandler);
-            removeCompassToolIcon(toolsStation);
+            removeCompassToolIcon();
         };
     }, [gaugeControls.showCompass]);
 

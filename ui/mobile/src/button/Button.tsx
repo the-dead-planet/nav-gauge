@@ -288,6 +288,7 @@ export const Button: FC<PressableProps & ButtonProps & Props> = ({
             }}
             onPressOut={(e) => {
                 setPressed(false);
+                setGlowDrawn(false);
                 onPressOut?.(e);
             }}
             style={typeof style === 'function' ? undefined : (disabled ? { ...(style as ViewStyle || {}), opacity: 0.45 } as ViewStyle : style as ViewStyle)}
@@ -309,6 +310,7 @@ export const Button: FC<PressableProps & ButtonProps & Props> = ({
             }}
             onPressOut={(e) => {
                 setPressed(false);
+                setGlowDrawn(false);
                 onPressOut?.(e);
             }}
             style={[container, style as ViewStyle]}

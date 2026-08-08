@@ -125,6 +125,10 @@ export const baseConfig = (_env: Env, _argv: Argv): Configuration => ({
         new rspack.CopyRspackPlugin({
             patterns: [
                 {
+                    from: "../apparatus/common/public",
+                    to: './'
+                },
+                {
                     context: '../gears/',
                     from: '*/common/public/**/*',
                     to: '[name][ext]',

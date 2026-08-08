@@ -2,13 +2,12 @@ import { FC, ReactNode, useEffect, useRef } from "react";
 import { BehaviorSubject } from "rxjs";
 import { LayoutChangeEvent, StyleSheet } from "react-native";
 import { RecordingView, useViewRecorder } from "react-native-view-recorder";
-import { Camera, Map as MaplibreMap } from "@maplibre/maplibre-react-native";
+import { Camera, Map as MaplibreMap, LogManager } from "@maplibre/maplibre-react-native";
 import { Cartomancer, updateCompassIcon, updateCurrentZoomIcon, useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { MobileMap } from "@mobile-ui";
 import { MobileChronoLens } from "@mobile-apparatus";
 import { useMapTools } from "./useMapTools";
-import { useTheme } from "@ui";
 
 const styles = StyleSheet.create({
     container: {
@@ -72,6 +71,30 @@ export const MapCanvas: FC<Props> = ({
         map.mapSize$.next({ width, height })
     };
 
+
+    useEffect(() => {
+        const notificationId = 'maplibre-map';
+
+        LogManager.onLog((event) => {
+            console.log(Cartomancer.styles[selectedStyle.id]?.style)
+            if (event.level === 'error' || event.level === 'warn') {
+                console.log("map logger", event); // TODO: Delete the log
+                signaliumBureau.addNotice({
+                    id: notificationId,
+                    type: event.level === 'error' ? 'error' : 'warning',
+                    text: `${event.message} (${event.tag})`,
+                    error: new Error(event.message, { cause: event.tag }),
+                });
+            }
+
+            return true;
+        });
+
+        return () => {
+            signaliumBureau.removeNotice(notificationId);
+        };
+    }, []);
+
     return (
         <RecordingView
             ref={viewRecorderRef}
@@ -80,19 +103,15 @@ export const MapCanvas: FC<Props> = ({
             onLayout={handleLayoutChange}
         >
             <MaplibreMap
-                ref={(r) => {
-                    map.map$.next(r);
-                    console.log("REF", r)
-                }}
+                ref={(r) => map.map$.next(r)}
                 style={styles.mapView}
                 dragPan={dragPan}
                 mapStyle={Cartomancer.styles[selectedStyle.id]?.style}
-                onDidFinishRenderingMapFully={() => {
+                onDidFinishRenderingMapFully={(event) => {
+                    console.log(event);
                     setIsInitialised(true);
                 }}
-                onDidFinishLoadingStyle={() => {
-                    setIsStyleLoaded(true);
-                }}
+                onDidFinishLoadingStyle={() => setIsStyleLoaded(true)}
                 logo={false}
                 scaleBar={false}
                 onDidFailLoadingMap={() => {

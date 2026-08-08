@@ -3,7 +3,6 @@ import {
     addCompassToolIcon,
     currentZoomIconId,
     mapLayoutControlsId,
-    removeCompassToolIcon,
     useMachineWard,
     zoomInIconId,
     zoomOutIconId
@@ -16,35 +15,23 @@ import { CartoConfigPanel } from "../controls/CartoConfigPanel";
 export const useMapTools = (map: MobileMap) => {
     const { cartomancer, toolsStation } = useMachineWard<MobileMap>();
     const [isInitialised] = useSubjectState(cartomancer.isInitialised$);
-    const [isStyleLoaded] = useSubjectState(cartomancer.isStyleLoaded$);
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const clickedZoom = useRef<number>(null);
 
     useEffect(() => {
-        const abortController = new AbortController();
         const m = map.map$.value;
-        if (!isInitialised || !isStyleLoaded || !m || !gaugeControls.showCompass) {
+        if (!isInitialised || !m) {
             return;
         }
 
-        m.getViewState()
-            .then(({ center, bearing, pitch }) => {
-                if (abortController.signal.aborted) {
-                    return;
-                }
-                addCompassToolIcon(toolsStation, cartomancer, { bearing, pitch }, (options) => {
-                    map.camera$.value?.easeTo({ center, ...options });
-                });
-            })
-            .catch((err) => {
-                console.error(err);
-            });
-
-        return () => {
-            abortController.abort();
-            removeCompassToolIcon(toolsStation);
-        };
-    }, [isInitialised, isStyleLoaded, gaugeControls.showCompass]);
+        return addCompassToolIcon(
+            gaugeControls,
+            toolsStation,
+            cartomancer,
+            m.getViewState,
+            map.camera$.value?.easeTo,
+        );
+    }, [isInitialised, gaugeControls.showCompass]);
 
     useEffect(() => {
         if (!gaugeControls.showZoomButtons) {

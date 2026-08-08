@@ -1,7 +1,7 @@
 import { RefObject } from "react";
 import { ToolsStation } from "../../tools-station";
 import { Icons } from "@ui";
-import { Cartomancer } from "../../cartomancer";
+import { Cartomancer, GaugeControlsType } from "../../cartomancer";
 import { CompassOptions } from "./model";
 
 export const MIN_REMAINING_MAIN_AREA = {
@@ -18,25 +18,41 @@ export const zoomOutIconId = 'cartomancer-zoom-out';
 export const mapLayoutControlsId = 'map-layout-controls';
 
 export const addCompassToolIcon = <TMap>(
+    gaugeControls: GaugeControlsType,
     toolsStation: ToolsStation<TMap>,
     cartomancer: Cartomancer<TMap>,
-    { bearing, pitch }: CompassOptions,
-    easeTo: (options: CompassOptions) => void,
-) => {
-    toolsStation.addToolIcon(compassToolIconId, {
-        icon: Icons.NounProject.North as unknown as string,
-        rotate: bearing,
-        pitch,
-        placement: 'right',
-        tooltip: { n: cartomancer.namespace, t: cartomancer.translationKey.Compass },
-        onClick: () => {
-            easeTo({ bearing: 0, pitch: 0 });
-        },
-    });
-};
+    getViewState: () => Promise<CompassOptions>,
+    easeTo: ((options: CompassOptions) => void) | undefined,
+): (() => void) => {
+    const abortController = new AbortController();
+    if (!gaugeControls.showCompass) {
+        return () => {};
+    }
 
-export const removeCompassToolIcon = <TMap>(toolsStation: ToolsStation<TMap>) => {
-    toolsStation.removeToolIcon(compassToolIconId)
+    getViewState()
+        .then(({ center, bearing, pitch }) => {
+            if (abortController.signal.aborted) {
+                return;
+            }
+            toolsStation.addToolIcon(compassToolIconId, {
+                icon: Icons.NounProject.North as unknown as string,
+                rotate: bearing,
+                pitch,
+                placement: 'right',
+                tooltip: { n: cartomancer.namespace, t: cartomancer.translationKey.Compass },
+                onClick: () => {
+                    easeTo?.({ center, bearing: 0, pitch: 0 });
+                },
+            });
+        })
+        .catch((err) => {
+            console.error(err);
+        });
+
+    return () => {
+        abortController.abort();
+        toolsStation.removeToolIcon(compassToolIconId);
+    };
 };
 
 export const updateCompassIcon = <TMap>(

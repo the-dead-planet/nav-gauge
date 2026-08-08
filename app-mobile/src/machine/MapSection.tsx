@@ -4,7 +4,7 @@ import { BehaviorSubject } from "rxjs";
 import { CameraRef, MapRef } from "@maplibre/maplibre-react-native";
 import { useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
-import { MobileMap } from "@mobile-ui";
+import { MobileMap, Text } from "@mobile-ui";
 import { MapToolsGridAreas } from "./map-tools-grid/MapToolsGridAreas";
 import { GearsTopToolbar } from "./GearsTopToolbar";
 import {
@@ -16,6 +16,7 @@ import {
     onPanResponderMoveHandlers$,
     onPanResponderEndHandlers$
 } from "./map-canvas/MapCanvas";
+import { ErrorBoundary } from "@ui";
 
 const styles = StyleSheet.create({
     container: {
@@ -47,11 +48,21 @@ export const MapSection: FC = () => {
 
     return (
         <View style={styles.container}>
-            <MapCanvas map={map}>
-                {[...overlays.entries()].map(([id, OverlayComponent]) => (
-                    <OverlayComponent key={id} map={map} />
-                ))}
-            </MapCanvas>
+            <ErrorBoundary fallbackComponent={({error, errorInfo }) => (
+                <View>
+                    <Text>Oops... some error happened</Text>
+                    <Text>{error.name}</Text>
+                    <Text>{error.message}</Text>
+                    <Text>{typeof error.cause == 'string' ? error.cause : 'Unknown cause'}</Text>
+                    <Text>{errorInfo?.componentStack ?? 'no stack'}</Text>
+                </View>
+            )}>
+                <MapCanvas map={map}>
+                    {[...overlays.entries()].map(([id, OverlayComponent]) => (
+                        <OverlayComponent key={id} map={map} />
+                    ))}
+                </MapCanvas>
+            </ErrorBoundary>
             <GearsTopToolbar />
             <MapToolsGridAreas map={map} />
         </View>
