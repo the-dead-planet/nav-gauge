@@ -4,7 +4,7 @@ import { Icons } from "@ui";
 import { Cartomancer, GaugeControlsType } from "../../cartomancer";
 import { CompassOptions, ZoomOptions } from "./model";
 
-let zoomEndHandlerTimeout: number;
+let zoomEndHandlerTimeout: Timer;
 
 const compassToolIconId = 'cartomancer-compass';
 const zoomInIconId = 'cartomancer-zoom-in';
