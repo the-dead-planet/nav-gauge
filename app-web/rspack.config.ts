@@ -28,7 +28,12 @@ export const baseConfig = (_env: Env, _argv: Argv): Configuration => ({
     module: {
         rules: [
             {
-                test: /\.[jt]s?$/,
+                test: /\.tsx$/,
+                exclude: /node_modules/,
+                use: 'babel-loader',
+            },
+            {
+                test: /\.ts$/,
                 exclude: /node_modules/,
                 use: {
                     loader: 'builtin:swc-loader',
@@ -38,39 +43,23 @@ export const baseConfig = (_env: Env, _argv: Argv): Configuration => ({
                                 syntax: 'typescript',
                                 tsx: true,
                             },
-                            transform: {
-                                react: {
-                                    runtime: 'automatic',
-                                },
-                            },
                         },
                     },
                 },
             },
             {
-                test: /\.[jt]sx?$/,
+                test: /\.jsx?$/,
                 exclude: /node_modules/,
-                use: [
-                    {
-                        loader: 'builtin:swc-loader',
-                        options: {
-                            jsc: {
-                                parser: {
-                                    syntax: 'typescript',
-                                    tsx: true,
-                                },
-                                transform: {
-                                    react: {
-                                        runtime: 'automatic',
-                                    },
-                                },
+                use: {
+                    loader: 'builtin:swc-loader',
+                    options: {
+                        jsc: {
+                            parser: {
+                                syntax: 'ecmascript',
                             },
-                        }
+                        },
                     },
-                    {
-                        loader: 'babel-loader'
-                    }
-                ],
+                },
             },
             {
                 test: /\.(json|xml|ttf|woff|woff2|otf|eot)$/,

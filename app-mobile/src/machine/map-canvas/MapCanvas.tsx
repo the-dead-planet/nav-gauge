@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect, useRef } from "react";
+import { FC, ReactNode, useEffect, useMemo, useRef } from "react";
 import { BehaviorSubject } from "rxjs";
 import { LayoutChangeEvent, StyleSheet } from "react-native";
 import { RecordingView, useViewRecorder } from "react-native-view-recorder";
@@ -95,6 +95,21 @@ export const MapCanvas: FC<Props> = ({
         };
     }, []);
 
+    const effectiveStyle = useMemo(() => {
+        const s = Cartomancer.styles[selectedStyle.id];
+
+        if (typeof s.style !== 'string') {
+            for (const k in s.style.sources) {
+                const source = s.style.sources[k];
+                if (source.type === 'vector' && source.url?.startsWith("pmtiles:///tiles")) {
+                    source.url = source.url.replace("pmtiles:///tiles", "pmtiles://asset://tiles");
+                }
+            }
+        }
+        console.log(s.style);
+        return s?.style;
+    }, [selectedStyle.id]);
+
     return (
         <RecordingView
             ref={viewRecorderRef}
@@ -106,7 +121,7 @@ export const MapCanvas: FC<Props> = ({
                 ref={(r) => map.map$.next(r)}
                 style={styles.mapView}
                 dragPan={dragPan}
-                mapStyle={Cartomancer.styles[selectedStyle.id]?.style}
+                mapStyle={effectiveStyle}
                 onDidFinishRenderingMapFully={(event) => {
                     console.log(event);
                     setIsInitialised(true);
