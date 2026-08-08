@@ -4,7 +4,7 @@ import { BehaviorSubject } from "rxjs";
 import { CameraRef, MapRef } from "@maplibre/maplibre-react-native";
 import { useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
-import { MobileMap, Text } from "@mobile-ui";
+import { MobileMap } from "@mobile-ui";
 import { MapToolsGridAreas } from "./map-tools-grid/MapToolsGridAreas";
 import { GearsTopToolbar } from "./GearsTopToolbar";
 import {
@@ -43,23 +43,28 @@ const map: MobileMap = {
 };
 
 export const MapSection: FC = () => {
-    const { cartomancer } = useMachineWard();
+    const { cartomancer, signaliumBureau } = useMachineWard();
     const [overlays] = useSubjectState(cartomancer.overlays$);
+
+    const handleError = (error: Error | null) => {
+        const msg = 'Something went wrong while rendering the map';
+
+        signaliumBureau.addNotice({
+            id: 'map-section',
+            type: 'error',
+            error: error || new Error(msg),
+            text: error?.message || msg,
+        })
+    };
 
     return (
         <View style={styles.container}>
-            <ErrorBoundary fallbackComponent={({error, errorInfo }) => (
-                <View>
-                    <Text>Oops... some error happened</Text>
-                    <Text>{error.name}</Text>
-                    <Text>{error.message}</Text>
-                    <Text>{typeof error.cause == 'string' ? error.cause : 'Unknown cause'}</Text>
-                    <Text>{errorInfo?.componentStack ?? 'no stack'}</Text>
-                </View>
-            )}>
+            <ErrorBoundary onError={handleError}>
                 <MapCanvas map={map}>
                     {[...overlays.entries()].map(([id, OverlayComponent]) => (
-                        <OverlayComponent key={id} map={map} />
+                        <ErrorBoundary onError={handleError}>
+                            <OverlayComponent key={id} map={map} />
+                        </ErrorBoundary>
                     ))}
                 </MapCanvas>
             </ErrorBoundary>

@@ -2,10 +2,19 @@ import { FC, useState } from "react";
 import classNames from "classnames";
 import { Menu, MenuItem } from "@web-ui";
 import { useObservableState, useSubjectState } from "@tinker-chest";
-import { MIN_REMAINING_MAIN_AREA, useMachineWard, useMultipleTranslations } from "@apparatus";
+import {
+    MIN_REMAINING_MAIN_AREA,
+    DEFAULT_WIDTH,
+    PANEL_MIN,
+    calculateExpandToDefault,
+    LEFT_ICONS_WIDTH,
+    RIGHT_ICONS_WIDTH,
+    TOP_TOOLS_MIN,
+    useMachineWard,
+    useMultipleTranslations
+} from "@apparatus";
 import { useTheme } from "@ui";
 import { ToolPanelHeader } from "../ToolPanelHeader";
-import { DEFAULT_WIDTH, PANEL_MIN, calculateExpandToDefault, LEFT_ICONS_WIDTH, RIGHT_ICONS_WIDTH, TOP_TOOLS_MIN } from "../tool-panel-size";
 import { ToolPanelResizeHandle } from "../ToolPanelResizeHandle";
 import styles from '../../machine.module.css';
 

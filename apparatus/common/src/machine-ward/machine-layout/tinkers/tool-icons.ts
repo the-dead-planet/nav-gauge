@@ -1,21 +1,16 @@
-import { RefObject } from "react";
-import { ToolsStation } from "../../tools-station";
+import { ComponentType, RefObject } from "react";
+import { ToolPanelProps, ToolsStation } from "../../tools-station";
 import { Icons } from "@ui";
 import { Cartomancer, GaugeControlsType } from "../../cartomancer";
-import { CompassOptions } from "./model";
-
-export const MIN_REMAINING_MAIN_AREA = {
-    width: 200,
-    height: 100,
-};
+import { CompassOptions, ZoomOptions } from "./model";
 
 let zoomEndHandlerTimeout: number;
 
-export const compassToolIconId = 'cartomancer-compass';
-export const zoomInIconId = 'cartomancer-zoom-in';
-export const currentZoomIconId = 'cartomancer-current-zoom';
-export const zoomOutIconId = 'cartomancer-zoom-out';
-export const mapLayoutControlsId = 'map-layout-controls';
+const compassToolIconId = 'cartomancer-compass';
+const zoomInIconId = 'cartomancer-zoom-in';
+const currentZoomIconId = 'cartomancer-current-zoom';
+const zoomOutIconId = 'cartomancer-zoom-out';
+const mapLayoutControlsId = 'map-layout-controls';
 
 export const addCompassToolIcon = <TMap>(
     gaugeControls: GaugeControlsType,
@@ -25,8 +20,9 @@ export const addCompassToolIcon = <TMap>(
     easeTo: ((options: CompassOptions) => void) | undefined,
 ): (() => void) => {
     const abortController = new AbortController();
+
     if (!gaugeControls.showCompass) {
-        return () => {};
+        return () => { };
     }
 
     getViewState()
@@ -64,6 +60,72 @@ export const updateCompassIcon = <TMap>(
     compassToolIcon?.pitch$.next(Math.round(pitch));
 };
 
+export const addZoomToolIcons = <TMap>(
+    gaugeControls: GaugeControlsType,
+    toolsStation: ToolsStation<TMap>,
+    cartomancer: Cartomancer<TMap>,
+    clickedZoom: RefObject<number | null>,
+    getViewState: () => Promise<ZoomOptions>,
+    easeTo: ((options: ZoomOptions) => void) | undefined,
+): (() => void) => {
+    const abortController = new AbortController();
+
+    if (!gaugeControls.showZoomButtons) {
+        return () => { };
+    }
+
+    toolsStation.addToolIcon(zoomInIconId, {
+        icon: Icons.NounProject.Plus as unknown as string,
+        onClick: () => {
+            getViewState()
+                .then((viewState) => {
+                    clickedZoom.current = Math.max((clickedZoom.current ?? 0) + 1, Math.floor(viewState.zoom + 1));
+                    easeTo?.({ zoom: clickedZoom.current, center: viewState.center });
+                });
+        },
+        placement: 'right',
+        tooltip: { n: cartomancer.namespace, t: cartomancer.translationKey.ZoomIn },
+    });
+
+    toolsStation.addToolIcon(currentZoomIconId, {
+        value: '20.0',
+        onClick: () => {
+            getViewState()
+                .then((viewState) => {
+                    easeTo?.({ zoom: Math.round(viewState.zoom), center: viewState.center });
+                })
+                .catch(console.error);
+        },
+        placement: 'right',
+        tooltip: (value) => ({
+            n: cartomancer.namespace,
+            t: cartomancer.translationKey.RoundCurrentZoom,
+            p: typeof value === 'string' ? { zoom: Number(value).toFixed(0) } : undefined,
+        }),
+    });
+
+    toolsStation.addToolIcon(zoomOutIconId, {
+        icon: Icons.NounProject.Minus as unknown as string,
+        onClick: () => {
+            getViewState()
+                .then((viewState) => {
+                    clickedZoom.current = Math.min((clickedZoom.current ?? 23) - 1, Math.ceil(viewState.zoom - 1));
+                    easeTo?.({ zoom: clickedZoom.current, center: viewState.center });
+                })
+                .catch(console.error)
+        },
+        placement: 'right',
+        tooltip: { n: cartomancer.namespace, t: cartomancer.translationKey.ZoomOut },
+    });
+
+    return () => {
+        abortController.abort();
+        toolsStation.removeToolIcon(zoomInIconId);
+        toolsStation.removeToolIcon(currentZoomIconId);
+        toolsStation.removeToolIcon(zoomOutIconId);
+    };
+};
+
 export const updateCurrentZoomIcon = <TMap>(
     toolsStation: ToolsStation<TMap>,
     clickedZoom: RefObject<number | null>,
@@ -80,4 +142,21 @@ export const updateCurrentZoomIcon = <TMap>(
         .then((mapZoom) => {
             toolsStation.toolIcons$.value.get(currentZoomIconId)?.value$.next(mapZoom.toFixed(1));
         });
+};
+
+export const addMapLayoutToolPanel = <TMap>(
+    contentComponent: ComponentType<ToolPanelProps<TMap>>,
+    toolsStation: ToolsStation<TMap>,
+    cartomancer: Cartomancer<TMap>,
+): (() => void) => {
+    toolsStation.addToolPanel(mapLayoutControlsId, {
+        title: { n: cartomancer.namespace, t: cartomancer.translationKey.CartoConfig },
+        contentComponent,
+        icon: Icons.NounProject.MapLayout as unknown as string,
+        placement: 'left'
+    });
+
+    return () => {
+        toolsStation.removeToolPanel(mapLayoutControlsId);
+    };
 };

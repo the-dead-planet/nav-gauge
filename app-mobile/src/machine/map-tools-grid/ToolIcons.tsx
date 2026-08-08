@@ -1,10 +1,9 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import { useToolIcons } from "@apparatus";
+import { useToolIcons, LEFT_ICONS_WIDTH, RIGHT_ICONS_WIDTH } from "@apparatus";
 import { ToolIconRight } from "./tool-icons/ToolIconRight";
 import { ToolIconLeft } from "./tool-icons/ToolIconLeft";
 import { MobileMap } from "@mobile-ui";
-import { LEFT_ICONS_WIDTH, RIGHT_ICONS_WIDTH } from "../tool-panels/tool-panel-size";
 
 const styles = StyleSheet.create({
     icons: {

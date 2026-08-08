@@ -56,12 +56,6 @@ export interface TopToolsProps<TMap> {
     map: TMap;
 }
 
-export interface PanelLayout {
-    leftWidth: number;
-    rightWidth: number;
-    bottomSecondaryHeight: number;
-}
-
 export interface ToolbarSizeRef {
     current: {
         clientHeight: number;

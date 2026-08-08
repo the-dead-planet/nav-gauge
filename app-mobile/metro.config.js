@@ -52,7 +52,7 @@ const config = {
         )
     },
     resolver: {
-        assetExts: assetExts.filter((ext) => ext !== "svg"),
+        assetExts: [...assetExts.filter((ext) => ext !== "svg"), "pmtiles"],
         sourceExts: [...sourceExts, "svg"],
         extraNodeModules: {
             react: path.resolve(root, "node_modules/react"),

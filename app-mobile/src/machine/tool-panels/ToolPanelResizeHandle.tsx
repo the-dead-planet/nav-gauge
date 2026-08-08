@@ -2,15 +2,15 @@ import { FC, useRef } from "react";
 import { StyleSheet, View } from "react-native";
 import { ResizeHandle } from "@mobile-ui";
 import { useObservableState, useSubjectState } from "@tinker-chest";
-import type { ToolPanelPlacement } from "@apparatus";
-import { MIN_REMAINING_MAIN_AREA, useMachineWard } from "@apparatus";
-import { useTheme } from "@ui";
 import {
+    type ToolPanelPlacement,
     LEFT_ICONS_WIDTH,
     PANEL_MIN,
     RIGHT_ICONS_WIDTH,
     TOP_TOOLS_MIN,
-} from "./tool-panel-size";
+} from "@apparatus";
+import { MIN_REMAINING_MAIN_AREA, useMachineWard } from "@apparatus";
+import { useTheme } from "@ui";
 
 type ResizeHandlePlacement = ToolPanelPlacement | "bottom-secondary";
 

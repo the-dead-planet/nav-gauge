@@ -1,9 +1,8 @@
 import { FC, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { useObservableState, useSubjectState } from "@tinker-chest";
-import { MIN_REMAINING_MAIN_AREA, useMachineWard } from "@apparatus";
+import { MIN_REMAINING_MAIN_AREA, useMachineWard, PANEL_MIN, DEFAULT_BOTTOM_SECONDARY_HEIGHT } from "@apparatus";
 import { useTheme } from "@ui";
-import { PANEL_MIN, DEFAULT_BOTTOM_SECONDARY_HEIGHT } from "../../tool-panel-size";
 import { ToolPanelResizeHandle } from "../../ToolPanelResizeHandle";
 import { ToolPanelHeader } from "../../ToolPanelHeader";
 import { MobileMap } from "@mobile-ui";

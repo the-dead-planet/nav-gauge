@@ -1,9 +1,8 @@
 import { FC, useState } from "react";
 import classNames from "classnames";
 import { useObservableState, useSubjectState } from "@tinker-chest";
-import { MIN_REMAINING_MAIN_AREA, useMachineWard } from "@apparatus";
+import { MIN_REMAINING_MAIN_AREA, PANEL_MIN, DEFAULT_BOTTOM_SECONDARY_HEIGHT, useMachineWard } from "@apparatus";
 import { useTheme } from "@ui";
-import { PANEL_MIN, DEFAULT_BOTTOM_SECONDARY_HEIGHT } from "../../tool-panel-size";
 import { ToolPanelResizeHandle } from "../../ToolPanelResizeHandle";
 import { ToolPanelHeader } from "../../ToolPanelHeader";
 import styles from '../../../machine.module.css';

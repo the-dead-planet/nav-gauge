@@ -1,7 +1,5 @@
 import { ComponentType } from "react";
 import { BehaviorSubject, combineLatest, map, Observable, of, Subscription, switchMap } from "rxjs";
-
-
 import {
     ToolPanel,
     ToolPanelPlacement,
@@ -11,10 +9,10 @@ import {
     ObservedToolIcon,
     ToolIconPlacement,
     TopToolsProps,
-    PanelLayout,
     ToolbarSizeRef,
 } from "./model";
-import { TranslationId } from "../translatron";
+import { type TranslationId } from "../translatron";
+import { type PanelLayout } from "../machine-layout";
 
 export class ToolsStation<TMap> {
     public static placements: ToolPanelPlacement[] = ["right", "bottom", "left"];

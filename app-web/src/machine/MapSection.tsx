@@ -5,11 +5,12 @@ import { MapCanvas } from "./map-canvas/MapCanvas";
 import { MapToolsGridAreas } from "./map-tools-grid/MapToolsGridAreas";
 import { GearsTopToolbar } from "./GearsTopToolbar";
 import { createMap } from "./map";
+import { ErrorBoundary } from "@ui";
 import styles from './machine.module.css';
 
 export const MapSection: FC = () => {
     const [map, setMap] = useState<maplibregl.Map>();
-    const { cartomancer } = useMachineWard();
+    const { cartomancer, signaliumBureau } = useMachineWard();
     const [overlays] = useSubjectState(cartomancer.overlays$);
 
     useEffect(() => {
@@ -22,13 +23,31 @@ export const MapSection: FC = () => {
         };
     }, []);
 
+
+    const handleError = (error: Error | null) => {
+        const msg = 'Something went wrong while rendering the map';
+
+        signaliumBureau.addNotice({
+            id: 'map-section',
+            type: 'error',
+            error: error || new Error(msg),
+            text: error?.message || msg,
+        })
+    };
+
     return (
         <div className={styles.machine}>
             <GearsTopToolbar />
             {map ? (
-                <MapCanvas map={map}>
-                    {[...overlays.entries()].map(([id, OverlayComponent]) => <OverlayComponent key={id} map={map} />)}
-                </MapCanvas>
+                <ErrorBoundary onError={handleError}>
+                    <MapCanvas map={map}>
+                        {[...overlays.entries()].map(([id, OverlayComponent]) => (
+                            <ErrorBoundary onError={handleError}>
+                                <OverlayComponent key={id} map={map} />
+                            </ErrorBoundary>
+                        ))}
+                    </MapCanvas>
+                </ErrorBoundary>
             ) : null}
             <MapToolsGridAreas map={map} />
         </div>

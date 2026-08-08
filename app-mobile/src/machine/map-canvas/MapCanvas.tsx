@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect, useMemo, useRef } from "react";
+import { FC, ReactNode, useEffect, useRef } from "react";
 import { BehaviorSubject } from "rxjs";
 import { LayoutChangeEvent, StyleSheet } from "react-native";
 import { RecordingView, useViewRecorder } from "react-native-view-recorder";
@@ -64,24 +64,19 @@ export const MapCanvas: FC<Props> = ({
         };
     }, [recorder]);
 
-    useMapTools(map);
-
     const handleLayoutChange = (event: LayoutChangeEvent) => {
         const { width, height } = event.nativeEvent.layout;
         map.mapSize$.next({ width, height })
     };
 
-
     useEffect(() => {
         const notificationId = 'maplibre-map';
 
         LogManager.onLog((event) => {
-            console.log(Cartomancer.styles[selectedStyle.id]?.style)
-            if (event.level === 'error' || event.level === 'warn') {
-                console.log("map logger", event); // TODO: Delete the log
+            if (event.level === 'error') {
                 signaliumBureau.addNotice({
                     id: notificationId,
-                    type: event.level === 'error' ? 'error' : 'warning',
+                    type: 'error',
                     text: `${event.message} (${event.tag})`,
                     error: new Error(event.message, { cause: event.tag }),
                 });
@@ -95,20 +90,7 @@ export const MapCanvas: FC<Props> = ({
         };
     }, []);
 
-    const effectiveStyle = useMemo(() => {
-        const s = Cartomancer.styles[selectedStyle.id];
-
-        if (typeof s.style !== 'string') {
-            for (const k in s.style.sources) {
-                const source = s.style.sources[k];
-                if (source.type === 'vector' && source.url?.startsWith("pmtiles:///tiles")) {
-                    source.url = source.url.replace("pmtiles:///tiles", "pmtiles://asset://tiles");
-                }
-            }
-        }
-        console.log(s.style);
-        return s?.style;
-    }, [selectedStyle.id]);
+    useMapTools(map);
 
     return (
         <RecordingView
@@ -121,11 +103,8 @@ export const MapCanvas: FC<Props> = ({
                 ref={(r) => map.map$.next(r)}
                 style={styles.mapView}
                 dragPan={dragPan}
-                mapStyle={effectiveStyle}
-                onDidFinishRenderingMapFully={(event) => {
-                    console.log(event);
-                    setIsInitialised(true);
-                }}
+                mapStyle={Cartomancer.styles[selectedStyle.id]?.style}
+                onDidFinishRenderingMapFully={() => setIsInitialised(true)}
                 onDidFinishLoadingStyle={() => setIsStyleLoaded(true)}
                 logo={false}
                 scaleBar={false}

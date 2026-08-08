@@ -1,9 +1,8 @@
 import { useEffect } from "react";
 import { useObservableState, useSubjectState } from "@tinker-chest";
 import { useTheme } from "@ui";
-import type { PanelState } from "../../../../../../app-mobile/src/machine/tool-panels/tool-panel-size";
-import { clampPanelLayout } from "../../../../../../app-mobile/src/machine/tool-panels/tool-panel-size";
 import { useMachineWard } from "../../useMachineWard";
+import { clampPanelLayout, PanelState } from "../tinkers";
 
 export const useToolPanelSizeClamp = () => {
     const theme = useTheme();

@@ -2,18 +2,19 @@ import { FC, useRef } from "react";
 import classNames from "classnames";
 import { ResizeHandle } from "@web-ui";
 import { useObservableState, useSubjectState } from "@tinker-chest";
-import type { ToolPanelPlacement } from "@apparatus";
-
-type ResizeHandlePlacement = ToolPanelPlacement | "bottom-secondary";
-import { MIN_REMAINING_MAIN_AREA, useMachineWard } from "@apparatus";
-import { useTheme } from "@ui";
 import {
+    useMachineWard,
+    MIN_REMAINING_MAIN_AREA,
     LEFT_ICONS_WIDTH,
     PANEL_MIN,
     RIGHT_ICONS_WIDTH,
     TOP_TOOLS_MIN,
-} from "./tool-panel-size";
+    type ToolPanelPlacement
+} from "@apparatus";
+import { useTheme } from "@ui";
 import styles from '../machine.module.css';
+
+type ResizeHandlePlacement = ToolPanelPlacement | "bottom-secondary";
 
 interface Props {
     placement: ResizeHandlePlacement;
@@ -38,8 +39,8 @@ interface BottomSecondaryDragState {
     panelMin: number;
 }
 
-export const ToolPanelResizeHandle: FC<Props> = ({ 
-    placement, 
+export const ToolPanelResizeHandle: FC<Props> = ({
+    placement,
     onDraggingChange,
 }) => {
     const { toolsStation } = useMachineWard();
