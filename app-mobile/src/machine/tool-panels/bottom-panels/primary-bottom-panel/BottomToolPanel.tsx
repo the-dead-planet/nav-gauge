@@ -1,7 +1,6 @@
-import { FC, useCallback, useLayoutEffect, useRef } from "react";
+import { FC, useLayoutEffect, useRef } from "react";
 import { LayoutAnimation, StyleSheet, View } from "react-native";
-import { useObservableState } from "@tinker-chest";
-import { useMachineWard } from "@apparatus";
+import { assignBottomToolPanelRef, useBottomToolPanel, useMachineWard } from "@apparatus";
 import { BottomToolPanelHeader } from "./BottomToolPanelHeader";
 import { MobileMap } from "@mobile-ui";
 import { useTheme } from "@ui";
@@ -26,12 +25,7 @@ export const BottomToolPanel: FC<Props> = ({
 }) => {
     const theme = useTheme();
     const { toolsStation } = useMachineWard();
-    const toolPanels = useObservableState(toolsStation.toolPanelsByPlacement$, []);
-    const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
-    const effectivePanels = toolPanelsByPlacement["bottom"];
-    const toolPanel = effectivePanels.find(({ id }) => id === activeId);
-    const show = effectivePanels.length > 0;
-    const viewRef = useRef<View | null>(null);
+    const { show, toolPanel } = useBottomToolPanel(activeId);
 
     const prevActiveId = useRef(activeId);
     useLayoutEffect(() => {
@@ -41,21 +35,12 @@ export const BottomToolPanel: FC<Props> = ({
         }
     }, [activeId]);
 
-    const updateSize = useCallback(() => {
-        const view = viewRef.current;
-        if (view) {
-            view.measure((_x, _y, width, height) => {
-                toolsStation.bottomToolPanelSizeRef.current = { clientWidth: width, clientHeight: height };
-            });
-        }
-    }, [toolsStation.bottomToolPanelSizeRef]);
-
     if (!show) {
         return null;
     }
 
     return (
-        <View ref={viewRef} onLayout={updateSize}>
+        <View ref={assignBottomToolPanelRef(toolsStation)}>
             <View style={[{
                 backgroundColor: theme.componentColor('background', 0.87),
                 borderTopColor: theme.color('primary'),

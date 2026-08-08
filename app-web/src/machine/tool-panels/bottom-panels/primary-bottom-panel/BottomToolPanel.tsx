@@ -1,7 +1,6 @@
 import { FC } from "react";
 import classNames from "classnames";
-import { useObservableState } from "@tinker-chest";
-import { useMachineWard } from "@apparatus";
+import { assignBottomToolPanelRef, useBottomToolPanel, useMachineWard } from "@apparatus";
 import { BottomToolPanelHeader } from "./BottomToolPanelPanelHeader";
 import styles from '../../../machine.module.css';
 
@@ -19,20 +18,14 @@ export const BottomToolPanel: FC<Props> = ({
     joinHeaderButtons,
 }) => {
     const { toolsStation } = useMachineWard();
-    const toolPanels = useObservableState(toolsStation.toolPanelsByPlacement$, []);
-    const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
-    const effectivePanels = toolPanelsByPlacement["bottom"];
-    const toolPanel = effectivePanels.find(({ id }) => id === activeId);
-    const showHeader = effectivePanels.length > 0;
+    const { show: showHeader, toolPanel } = useBottomToolPanel(activeId);
 
     return (
         <div
-            ref={(instance) => {
-                toolsStation.bottomToolPanelSizeRef.current = instance;
-            }}
+            ref={assignBottomToolPanelRef(toolsStation)}
             className={classNames(styles['toolbar'], styles["bottom"])}
         >
-            {effectivePanels.length > 0 && (
+            {showHeader && (
                 <div className={classNames(styles['content'], { [styles['with-header']]: showHeader })}>
                     <BottomToolPanelHeader
                         activeId={activeId}

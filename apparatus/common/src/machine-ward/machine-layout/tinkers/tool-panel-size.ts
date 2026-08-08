@@ -41,13 +41,13 @@ export function computeLayoutConstraints(
     rightEffective: number,
     leftIconsPresent: boolean,
     rightIconsPresent: boolean,
-    reservedChromeHeight: number,
+    reservedHeight: number,
 ): { leftMax: number; rightMax: number; iconsReserved: number; column3Min: number; bottomSecondaryMax: number; } {
     const iconsReserved = (leftIconsPresent ? LEFT_ICONS_WIDTH : 0) + (rightIconsPresent ? RIGHT_ICONS_WIDTH : 0);
     const column3Min = Math.max(TOP_TOOLS_MIN, MIN_REMAINING_MAIN_AREA.width);
     const leftMax = window.width - rightEffective - iconsReserved - column3Min;
     const rightMax = window.width - leftEffective - iconsReserved - column3Min;
-    const bottomSecondaryMax = window.height - MIN_REMAINING_MAIN_AREA.height - reservedChromeHeight;
+    const bottomSecondaryMax = window.height - MIN_REMAINING_MAIN_AREA.height - reservedHeight;
 
     return {
         leftMax,
@@ -66,11 +66,11 @@ export function clampPanelLayout(
     window: { width: number; height: number },
     leftIconsPresent: boolean,
     rightIconsPresent: boolean,
-    reservedChromeHeight: number,
+    reservedHeight: number,
 ): PanelLayout {
     const leftEffective = computeEffectiveWidth(leftState, PANEL_MIN.left);
     const rightEffective = computeEffectiveWidth(rightState, PANEL_MIN.right);
-    const { leftMax, rightMax, bottomSecondaryMax } = computeLayoutConstraints(window, leftEffective, rightEffective, leftIconsPresent, rightIconsPresent, reservedChromeHeight);
+    const { leftMax, rightMax, bottomSecondaryMax } = computeLayoutConstraints(window, leftEffective, rightEffective, leftIconsPresent, rightIconsPresent, reservedHeight);
 
     const newLeft = leftState.isCollapsed ? prev.leftWidth : Math.min(Math.max(prev.leftWidth, PANEL_MIN.left), leftMax);
     const newRight = rightState.isCollapsed ? prev.rightWidth : Math.min(Math.max(prev.rightWidth, PANEL_MIN.right), rightMax);
@@ -119,6 +119,12 @@ export const assignSideToolPanelRef = <TMap>(
             toolsStation.rightToolPanelSizeRef.current = instance;
             break;
     }
+};
+
+export const assignBottomToolPanelRef = <TMap>(
+    toolsStation: ToolsStation<TMap>,
+) => (instance: ToolbarSizeRef['current']) => {
+    toolsStation.bottomToolPanelSizeRef.current = instance;
 };
 
 export const swapSideToolPanelPlacement = <TMap>(
