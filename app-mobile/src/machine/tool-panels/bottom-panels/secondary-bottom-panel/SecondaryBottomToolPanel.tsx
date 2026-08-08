@@ -1,7 +1,6 @@
 import { FC, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { useObservableState, useSubjectState } from "@tinker-chest";
-import { MIN_REMAINING_MAIN_AREA, useMachineWard, PANEL_MIN, DEFAULT_BOTTOM_SECONDARY_HEIGHT } from "@apparatus";
+import { useSecondaryBottomToolPanel } from "@apparatus";
 import { useTheme } from "@ui";
 import { ToolPanelResizeHandle } from "../../ToolPanelResizeHandle";
 import { ToolPanelHeader } from "../../ToolPanelHeader";
@@ -30,38 +29,15 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
     activeId,
     onActiveIdChange,
 }) => {
-    const { toolsStation } = useMachineWard();
     const theme = useTheme();
-    const [panelWidths, setPanelWidths] = useSubjectState(toolsStation.panelWidths$);
-    const toolPanels = useObservableState(toolsStation.toolPanelsByPlacement$, []);
-    const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
-    const effectivePanels = toolPanelsByPlacement["left"].concat(toolPanelsByPlacement["right"]);
-    const toolPanel = effectivePanels.find(({ id }) => id === activeId);
-    const show = effectivePanels.length > 0;
-    const isCollapsed = activeId === null;
     const [_isDragging, setIsDragging] = useState(false);
 
-    const effectiveHeight = !show
-        ? 0
-        : isCollapsed
-            ? PANEL_MIN.bottomSecondary
-            : panelWidths.bottomSecondaryHeight;
-
-    const handleToolSelect = (newId: string | null) => {
-        onActiveIdChange(newId);
-
-        if (newId !== null) {
-            const thisMin = PANEL_MIN.bottomSecondary;
-            const maxAvailable = theme.media$.value.windowHeight - MIN_REMAINING_MAIN_AREA.height;
-            const clampedHeight = Math.min(Math.max(panelWidths.bottomSecondaryHeight, thisMin), maxAvailable);
-            const targetHeight = clampedHeight === thisMin ? DEFAULT_BOTTOM_SECONDARY_HEIGHT : clampedHeight;
-
-            setPanelWidths((prev) => ({
-                ...prev,
-                bottomSecondaryHeight: targetHeight,
-            }));
-        }
-    };
+    const {
+        show,
+        effectiveHeight,
+        toolPanel,
+        handleToolSelect,
+    } = useSecondaryBottomToolPanel(activeId, onActiveIdChange);
 
     if (!show) {
         return null;

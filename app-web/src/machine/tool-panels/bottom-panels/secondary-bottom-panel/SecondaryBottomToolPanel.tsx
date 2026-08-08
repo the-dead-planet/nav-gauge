@@ -1,8 +1,6 @@
 import { FC, useState } from "react";
 import classNames from "classnames";
-import { useObservableState, useSubjectState } from "@tinker-chest";
-import { MIN_REMAINING_MAIN_AREA, PANEL_MIN, DEFAULT_BOTTOM_SECONDARY_HEIGHT, useMachineWard } from "@apparatus";
-import { useTheme } from "@ui";
+import { useMachineWard, useSecondaryBottomToolPanel } from "@apparatus";
 import { ToolPanelResizeHandle } from "../../ToolPanelResizeHandle";
 import { ToolPanelHeader } from "../../ToolPanelHeader";
 import styles from '../../../machine.module.css';
@@ -19,37 +17,15 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
     onActiveIdChange,
 }) => {
     const { toolsStation } = useMachineWard();
-    const theme = useTheme();
-    const [panelWidths, setPanelWidths] = useSubjectState(toolsStation.panelWidths$);
-    const toolPanels = useObservableState(toolsStation.toolPanelsByPlacement$, []);
-    const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
-    const effectivePanels = toolPanelsByPlacement["left"].concat(toolPanelsByPlacement["right"]);
-    const toolPanel = effectivePanels.find(({ id }) => id === activeId);
-    const showHeader = effectivePanels.length > 0;
-    const isCollapsed = activeId === null;
     const [isDragging, setIsDragging] = useState(false);
 
-    const effectiveHeight = !showHeader
-        ? 0
-        : isCollapsed
-            ? PANEL_MIN.bottomSecondary
-            : panelWidths.bottomSecondaryHeight;
-
-    const handleToolSelect = (newId: string | null) => {
-        onActiveIdChange(newId);
-
-        if (newId !== null) {
-            const thisMin = PANEL_MIN.bottomSecondary;
-            const maxAvailable = theme.media$.value.windowHeight - MIN_REMAINING_MAIN_AREA.height;
-            const clampedHeight = Math.min(Math.max(panelWidths.bottomSecondaryHeight, thisMin), maxAvailable);
-            const targetHeight = clampedHeight === thisMin ? DEFAULT_BOTTOM_SECONDARY_HEIGHT : clampedHeight;
-
-            setPanelWidths((prev) => ({
-                ...prev,
-                bottomSecondaryHeight: targetHeight,
-            }));
-        }
-    };
+    const {
+        show: showHeader,
+        isCollapsed,
+        effectiveHeight,
+        toolPanel,
+        handleToolSelect,
+    } = useSecondaryBottomToolPanel(activeId, onActiveIdChange);
 
     return (
         <div
