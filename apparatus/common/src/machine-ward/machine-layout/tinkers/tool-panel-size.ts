@@ -1,3 +1,4 @@
+import { ObservedToolPanel, ToolbarSizeRef, ToolPanelPlacement, ToolsStation } from "../../tools-station";
 import { PanelLayout, PanelState } from "./model";
 
 export const MIN_REMAINING_MAIN_AREA = {
@@ -105,3 +106,30 @@ export function calculateExpandToDefault(
         ? { leftWidth: targetWidth, rightWidth: newOther, bottomSecondaryHeight: prevLayout.bottomSecondaryHeight }
         : { leftWidth: newOther, rightWidth: targetWidth, bottomSecondaryHeight: prevLayout.bottomSecondaryHeight };
 }
+
+export const assignSideToolPanelRef = <TMap>(
+    placement: ToolPanelPlacement,
+    toolsStation: ToolsStation<TMap>,
+) => (instance: ToolbarSizeRef['current']) => {
+    switch (placement) {
+        case "left":
+            toolsStation.leftToolPanelSizeRef.current = instance;
+            break;
+        case "right":
+            toolsStation.rightToolPanelSizeRef.current = instance;
+            break;
+    }
+};
+
+export const swapSideToolPanelPlacement = <TMap>(
+    toolPanel: ObservedToolPanel<unknown>,
+    toolsStation: ToolsStation<TMap>
+) => () => {
+    if (toolPanel.placement === 'right') {
+        toolsStation.updateToolPanelPlacement(toolPanel.id, 'left');
+        toolsStation.activeLeftPanelToolId$.next(toolPanel.id);
+    } else {
+        toolsStation.updateToolPanelPlacement(toolPanel.id, 'right');
+        toolsStation.activeRightPanelToolId$.next(toolPanel.id);
+    }
+};

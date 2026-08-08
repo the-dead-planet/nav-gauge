@@ -46,7 +46,7 @@ export const useToolPanelSizeClamp = () => {
             toolsStation.panelWidths$.next(next);
         }
     }, [
-        media.windowHeight,
+        media.windowWidth,
         media.windowHeight,
         leftIconsPresent,
         rightIconsPresent,

@@ -1,17 +1,7 @@
 import { FC, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Menu, MenuItem } from "@mobile-ui";
-import { useObservableState, useSubjectState } from "@tinker-chest";
-import {
-    MIN_REMAINING_MAIN_AREA,
-    DEFAULT_WIDTH, PANEL_MIN,
-    calculateExpandToDefault,
-    LEFT_ICONS_WIDTH,
-    RIGHT_ICONS_WIDTH,
-    TOP_TOOLS_MIN,
-    useMachineWard,
-    useMultipleTranslations,
-} from "@apparatus";
+import { assignSideToolPanelRef, swapSideToolPanelPlacement, useMachineWard, useSideToolPanel } from "@apparatus";
 import { useTheme } from "@ui";
 import { ToolPanelHeader } from "../ToolPanelHeader";
 import { ToolPanelResizeHandle } from "../ToolPanelResizeHandle";
@@ -48,65 +38,19 @@ export const SideToolPanel: FC<Props> = ({
     activeId,
     onActiveIdChange,
 }) => {
-    const { toolsStation, namespace, translationKey } = useMachineWard();
+    const { toolsStation } = useMachineWard();
     const theme = useTheme();
-    const [panelWidths, setPanelWidths] = useSubjectState(toolsStation.panelWidths$);
-    const toolPanels = useObservableState(toolsStation.toolPanelsByPlacement$, []);
-    const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
-    const toolIcons = useObservableState(toolsStation.toolIconsByPlacement$, []);
-    const toolIconsByPlacement = toolsStation.getToolIconsByPlacement(toolIcons);
-    const effectivePanels = toolPanelsByPlacement[placement];
-    const toolPanel = effectivePanels.find(({ id }) => id === activeId);
-    const targetPlacement = toolPanel?.placement === 'right' ? 'left' : 'right';
-    const show = effectivePanels.length > 0;
-    const isCollapsed = activeId === null;
-    const isLeft = placement === 'left';
-    const panelMin = isLeft ? PANEL_MIN.left : PANEL_MIN.right;
-    const currentWidth = !show ? 0 : isCollapsed ? panelMin : (isLeft ? panelWidths.leftWidth : panelWidths.rightWidth);
-
     const [_isDragging, setIsDragging] = useState(false); // TODO: Should disable transition when dragging
 
-    const handleSidePanelActiveIdChange = (newId: string | null) => {
-        onActiveIdChange(newId);
-
-        if (newId !== null) {
-            const otherCollapsed = isLeft
-                ? toolsStation.activeRightPanelToolId$.value === null
-                : toolsStation.activeLeftPanelToolId$.value === null;
-            const otherHasPanels = isLeft
-                ? toolPanelsByPlacement.right.length > 0
-                : toolPanelsByPlacement.left.length > 0;
-            const otherWidth = otherCollapsed
-                ? (isLeft ? PANEL_MIN.right : PANEL_MIN.left)
-                : (otherHasPanels ? (isLeft ? panelWidths.rightWidth : panelWidths.leftWidth) : 0);
-            const thisMin = isLeft ? PANEL_MIN.left : PANEL_MIN.right;
-            const thisStoredWidth = isLeft ? panelWidths.leftWidth : panelWidths.rightWidth;
-            const iconsReserved = (toolIconsByPlacement.left.length > 0 ? LEFT_ICONS_WIDTH : 0) + (toolIconsByPlacement.right.length > 0 ? RIGHT_ICONS_WIDTH : 0);
-            const column3Min = Math.max(TOP_TOOLS_MIN, MIN_REMAINING_MAIN_AREA.width);
-            const maxAvailable = theme.media$.value.windowWidth - otherWidth - iconsReserved - column3Min;
-            const clampedWidth = Math.min(Math.max(thisStoredWidth, thisMin), maxAvailable);
-            const targetWidth = clampedWidth === thisMin ? DEFAULT_WIDTH : clampedWidth;
-
-            setPanelWidths((prev) => calculateExpandToDefault(
-                targetWidth,
-                otherWidth,
-                thisMin,
-                theme.media$.value.windowWidth,
-                toolIconsByPlacement.left.length > 0,
-                toolIconsByPlacement.right.length > 0,
-                isLeft,
-                prev,
-            ));
-        }
-    };
-
-    const [
+    const {
         panelMenuLabel,
         swapPlacementLabel,
-    ] = useMultipleTranslations([
-        { n: namespace, t: translationKey.PanelMenu },
-        { n: namespace, t: translationKey.SwapPlacement, p: { placement: targetPlacement } },
-    ]);
+        show,
+        toolPanel,
+        effectivePanels,
+        currentWidth,
+        handleSidePanelActiveIdChange,
+    } = useSideToolPanel(placement, activeId, onActiveIdChange);
 
     const sideHeader = (
         <ToolPanelHeader
@@ -122,16 +66,7 @@ export const SideToolPanel: FC<Props> = ({
 
     return (
         <View
-            ref={(instance) => {
-                switch (placement) {
-                    case "left":
-                        toolsStation.leftToolPanelSizeRef.current = instance;
-                        break;
-                    case "right":
-                        toolsStation.rightToolPanelSizeRef.current = instance;
-                        break;
-                }
-            }}
+            ref={assignSideToolPanelRef(placement, toolsStation)}
             style={[
                 {
                     backgroundColor: theme.componentColor('background', 0.87),
@@ -158,18 +93,7 @@ export const SideToolPanel: FC<Props> = ({
                                             iconActiveColor="secondary"
                                             iconSize="xs"
                                         >
-                                            <MenuItem
-                                                key="swap-placement"
-                                                onPress={() => {
-                                                    if (toolPanel.placement === 'right') {
-                                                        toolsStation.updateToolPanelPlacement(toolPanel.id, 'left');
-                                                        toolsStation.activeLeftPanelToolId$.next(toolPanel.id);
-                                                    } else {
-                                                        toolsStation.updateToolPanelPlacement(toolPanel.id, 'right');
-                                                        toolsStation.activeRightPanelToolId$.next(toolPanel.id);
-                                                    }
-                                                }}
-                                            >
+                                            <MenuItem key="swap-placement" onPress={swapSideToolPanelPlacement(toolPanel, toolsStation)}>
                                                 {swapPlacementLabel}
                                             </MenuItem>
                                         </Menu>
@@ -183,10 +107,7 @@ export const SideToolPanel: FC<Props> = ({
                     ) : null}
                 </View>
             )}
-            <ToolPanelResizeHandle
-                placement={placement}
-                onDraggingChange={setIsDragging}
-            />
+            <ToolPanelResizeHandle placement={placement} onDraggingChange={setIsDragging} />
         </View>
     );
 };
