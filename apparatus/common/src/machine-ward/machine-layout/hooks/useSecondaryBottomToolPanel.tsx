@@ -1,7 +1,7 @@
 import { useTheme } from "@ui";
 import { useMachineWard } from "../../useMachineWard";
 import { useObservableState, useSubjectState } from "@tinker-chest";
-import { DEFAULT_BOTTOM_SECONDARY_HEIGHT, MIN_REMAINING_MAIN_AREA, PANEL_MIN } from "../tinkers";
+import { LAYOUT_DEFAULTS, LAYOUT_MINS } from "../tinkers";
 
 export const useSecondaryBottomToolPanel = (
     activeId: string | null,
@@ -20,17 +20,17 @@ export const useSecondaryBottomToolPanel = (
     const effectiveHeight = !show
         ? 0
         : isCollapsed
-            ? PANEL_MIN.bottomSecondary
+            ? LAYOUT_MINS.panels.bottomSecondary
             : panelWidths.bottomSecondaryHeight;
 
     const handleToolSelect = (newId: string | null) => {
         onActiveIdChange(newId);
 
         if (newId !== null) {
-            const thisMin = PANEL_MIN.bottomSecondary;
-            const maxAvailable = theme.media$.value.windowHeight - MIN_REMAINING_MAIN_AREA.height;
+            const thisMin = LAYOUT_MINS.panels.bottomSecondary;
+            const maxAvailable = theme.media$.value.windowHeight - LAYOUT_MINS.remainingArea.height;
             const clampedHeight = Math.min(Math.max(panelWidths.bottomSecondaryHeight, thisMin), maxAvailable);
-            const targetHeight = clampedHeight === thisMin ? DEFAULT_BOTTOM_SECONDARY_HEIGHT : clampedHeight;
+            const targetHeight = clampedHeight === thisMin ? LAYOUT_DEFAULTS.panels.bottomSecondary : clampedHeight;
 
             setPanelWidths((prev) => ({
                 ...prev,
@@ -38,6 +38,7 @@ export const useSecondaryBottomToolPanel = (
             }));
         }
     };
+
 
     return {
         show,

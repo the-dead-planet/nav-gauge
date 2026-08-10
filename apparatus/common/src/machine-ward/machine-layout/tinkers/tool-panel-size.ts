@@ -1,17 +1,32 @@
 import { ObservedToolPanel, ToolbarSizeRef, ToolPanelPlacement, ToolsStation } from "../../tools-station";
-import { PanelLayout, PanelState } from "./model";
+import { PanelLayout, PanelState } from "../model";
 
-export const MIN_REMAINING_MAIN_AREA = {
-    width: 200,
-    height: 100,
+export const LAYOUT_MINS = {
+    tools: {
+        top: 160,
+    },
+    panels: {
+        left: 42,
+        right: 32,
+        bottomSecondary: 24,
+    },
+    remainingArea: {
+        width: 200,
+        height: 100,
+    }
 };
 
-export const PANEL_MIN = { left: 42, right: 32, bottomSecondary: 24 };
-export const DEFAULT_WIDTH = 360;
-export const LEFT_ICONS_WIDTH = 102;
-export const RIGHT_ICONS_WIDTH = 76;
-export const TOP_TOOLS_MIN = 160;
-export const DEFAULT_BOTTOM_SECONDARY_HEIGHT = 300;
+export const LAYOUT_DEFAULTS = {
+    panels: {
+        left: 360,
+        right: 360,
+        bottomSecondary: 300,
+    },
+    icons: {
+        left: 102,
+        right: 76,
+    }
+};
 
 export function computeEffectiveWidth(state: PanelState, minWidth: number): number {
     if (!state.hasToolPanels) {
@@ -30,7 +45,7 @@ export function clampPanelWidth(
     otherEffective: number,
     windowWidth: number,
 ): number {
-    const max = windowWidth - otherEffective - MIN_REMAINING_MAIN_AREA.width;
+    const max = windowWidth - otherEffective - LAYOUT_MINS.remainingArea.width;
 
     return Math.min(Math.max(requestedWidth, thisMin), max);
 }
@@ -43,11 +58,11 @@ export function computeLayoutConstraints(
     rightIconsPresent: boolean,
     reservedHeight: number,
 ): { leftMax: number; rightMax: number; iconsReserved: number; column3Min: number; bottomSecondaryMax: number; } {
-    const iconsReserved = (leftIconsPresent ? LEFT_ICONS_WIDTH : 0) + (rightIconsPresent ? RIGHT_ICONS_WIDTH : 0);
-    const column3Min = Math.max(TOP_TOOLS_MIN, MIN_REMAINING_MAIN_AREA.width);
+    const iconsReserved = (leftIconsPresent ? LAYOUT_DEFAULTS.icons.left : 0) + (rightIconsPresent ? LAYOUT_DEFAULTS.icons.right : 0);
+    const column3Min = Math.max(LAYOUT_MINS.tools.top, LAYOUT_MINS.remainingArea.width);
     const leftMax = window.width - rightEffective - iconsReserved - column3Min;
     const rightMax = window.width - leftEffective - iconsReserved - column3Min;
-    const bottomSecondaryMax = window.height - MIN_REMAINING_MAIN_AREA.height - reservedHeight;
+    const bottomSecondaryMax = window.height - LAYOUT_MINS.remainingArea.height - reservedHeight;
 
     return {
         leftMax,
@@ -68,13 +83,13 @@ export function clampPanelLayout(
     rightIconsPresent: boolean,
     reservedHeight: number,
 ): PanelLayout {
-    const leftEffective = computeEffectiveWidth(leftState, PANEL_MIN.left);
-    const rightEffective = computeEffectiveWidth(rightState, PANEL_MIN.right);
+    const leftEffective = computeEffectiveWidth(leftState, LAYOUT_MINS.panels.left);
+    const rightEffective = computeEffectiveWidth(rightState, LAYOUT_MINS.panels.right);
     const { leftMax, rightMax, bottomSecondaryMax } = computeLayoutConstraints(window, leftEffective, rightEffective, leftIconsPresent, rightIconsPresent, reservedHeight);
 
-    const newLeft = leftState.isCollapsed ? prev.leftWidth : Math.min(Math.max(prev.leftWidth, PANEL_MIN.left), leftMax);
-    const newRight = rightState.isCollapsed ? prev.rightWidth : Math.min(Math.max(prev.rightWidth, PANEL_MIN.right), rightMax);
-    const newBottomSecondary = bottomSecondaryState.isCollapsed ? prev.bottomSecondaryHeight : Math.min(Math.max(prev.bottomSecondaryHeight, PANEL_MIN.right), bottomSecondaryMax);
+    const newLeft = leftState.isCollapsed ? prev.leftWidth : Math.min(Math.max(prev.leftWidth, LAYOUT_MINS.panels.left), leftMax);
+    const newRight = rightState.isCollapsed ? prev.rightWidth : Math.min(Math.max(prev.rightWidth, LAYOUT_MINS.panels.right), rightMax);
+    const newBottomSecondary = bottomSecondaryState.isCollapsed ? prev.bottomSecondaryHeight : Math.min(Math.max(prev.bottomSecondaryHeight, LAYOUT_MINS.panels.right), bottomSecondaryMax);
 
     if (newLeft === prev.leftWidth && newRight === prev.rightWidth && newBottomSecondary === prev.bottomSecondaryHeight) {
         return prev;
@@ -97,8 +112,8 @@ export function calculateExpandToDefault(
     isLeft: boolean,
     prevLayout: PanelLayout,
 ): PanelLayout {
-    const iconsReserved = (leftIconsPresent ? LEFT_ICONS_WIDTH : 0) + (rightIconsPresent ? RIGHT_ICONS_WIDTH : 0);
-    const column3Min = Math.max(TOP_TOOLS_MIN, MIN_REMAINING_MAIN_AREA.width);
+    const iconsReserved = (leftIconsPresent ? LAYOUT_DEFAULTS.icons.left : 0) + (rightIconsPresent ? LAYOUT_DEFAULTS.icons.right : 0);
+    const column3Min = Math.max(LAYOUT_MINS.tools.top, LAYOUT_MINS.remainingArea.width);
     const otherMax = windowWidth - targetWidth - iconsReserved - column3Min;
     const newOther = Math.max(Math.min(otherWidth, otherMax), otherMinWidth);
 

@@ -3,11 +3,8 @@ import { useMachineWard } from "../../useMachineWard";
 import { useObservableState, useSubjectState } from "@tinker-chest";
 import {
     calculateExpandToDefault,
-    DEFAULT_WIDTH,
-    LEFT_ICONS_WIDTH,
-    MIN_REMAINING_MAIN_AREA,
-    PANEL_MIN, RIGHT_ICONS_WIDTH,
-    TOP_TOOLS_MIN,
+    LAYOUT_DEFAULTS,
+    LAYOUT_MINS,
 } from "../tinkers";
 import { useMultipleTranslations } from "../../translatron";
 
@@ -29,7 +26,7 @@ export const useSideToolPanel = (
     const show = effectivePanels.length > 0;
     const isCollapsed = activeId === null;
     const isLeft = placement === 'left';
-    const panelMin = isLeft ? PANEL_MIN.left : PANEL_MIN.right;
+    const panelMin = isLeft ? LAYOUT_MINS.panels.left : LAYOUT_MINS.panels.right;
     const currentWidth = !show ? 0 : isCollapsed ? panelMin : (isLeft ? panelWidths.leftWidth : panelWidths.rightWidth);
 
     const handleSidePanelActiveIdChange = (newId: string | null) => {
@@ -43,15 +40,15 @@ export const useSideToolPanel = (
                 ? toolPanelsByPlacement.right.length > 0
                 : toolPanelsByPlacement.left.length > 0;
             const otherWidth = otherCollapsed
-                ? (isLeft ? PANEL_MIN.right : PANEL_MIN.left)
+                ? (isLeft ? LAYOUT_MINS.panels.right : LAYOUT_MINS.panels.left)
                 : (otherHasPanels ? (isLeft ? panelWidths.rightWidth : panelWidths.leftWidth) : 0);
-            const thisMin = isLeft ? PANEL_MIN.left : PANEL_MIN.right;
+            const thisMin = isLeft ? LAYOUT_MINS.panels.left : LAYOUT_MINS.panels.right;
             const thisStoredWidth = isLeft ? panelWidths.leftWidth : panelWidths.rightWidth;
-            const iconsReserved = (toolIconsByPlacement.left.length > 0 ? LEFT_ICONS_WIDTH : 0) + (toolIconsByPlacement.right.length > 0 ? RIGHT_ICONS_WIDTH : 0);
-            const column3Min = Math.max(TOP_TOOLS_MIN, MIN_REMAINING_MAIN_AREA.width);
+            const iconsReserved = (toolIconsByPlacement.left.length > 0 ? LAYOUT_DEFAULTS.icons.left : 0) + (toolIconsByPlacement.right.length > 0 ? LAYOUT_DEFAULTS.icons.right : 0);
+            const column3Min = Math.max(LAYOUT_MINS.tools.top, LAYOUT_MINS.remainingArea.width);
             const maxAvailable = theme.media$.value.windowWidth - otherWidth - iconsReserved - column3Min;
             const clampedWidth = Math.min(Math.max(thisStoredWidth, thisMin), maxAvailable);
-            const targetWidth = clampedWidth === thisMin ? DEFAULT_WIDTH : clampedWidth;
+            const targetWidth = clampedWidth === thisMin ? LAYOUT_DEFAULTS.panels[placement] : clampedWidth;
 
             setPanelWidths((prev) => calculateExpandToDefault(
                 targetWidth,

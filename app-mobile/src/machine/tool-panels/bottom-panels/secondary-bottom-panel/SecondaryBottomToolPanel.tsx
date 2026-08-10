@@ -1,9 +1,9 @@
 import { FC, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { useSecondaryBottomToolPanel } from "@apparatus";
+import { useMachineWard, useSecondaryBottomToolPanel } from "@apparatus";
 import { useTheme } from "@ui";
-import { ToolPanelResizeHandle } from "../../ToolPanelResizeHandle";
 import { ToolPanelHeader } from "../../ToolPanelHeader";
+import { BottomSecondaryToolPanelResizeHandle } from "./SecondaryBottomToolPanelResizeHandle";
 import { MobileMap } from "@mobile-ui";
 
 const styles = StyleSheet.create({
@@ -30,6 +30,7 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
     onActiveIdChange,
 }) => {
     const theme = useTheme();
+    const { toolsStation } = useMachineWard();
     const [_isDragging, setIsDragging] = useState(false);
 
     const {
@@ -44,7 +45,11 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
     }
 
     return (
-        <View style={styles.container}>
+        <View
+            ref={(instance) => {
+                toolsStation.bottomSecondaryToolPanelSizeRef.current = instance;
+            }}
+            style={styles.container}>
             <View
                 style={{
                     height: effectiveHeight,
@@ -69,10 +74,7 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
                     </View>
                 ) : null}
             </View>
-            <ToolPanelResizeHandle
-                placement="bottom-secondary"
-                onDraggingChange={setIsDragging}
-            />
+            <BottomSecondaryToolPanelResizeHandle onDraggingChange={setIsDragging} />
         </View>
     );
 };

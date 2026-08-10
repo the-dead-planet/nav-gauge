@@ -4,7 +4,7 @@ import { Menu, MenuItem } from "@mobile-ui";
 import { assignSideToolPanelRef, swapSideToolPanelPlacement, useMachineWard, useSideToolPanel } from "@apparatus";
 import { useTheme } from "@ui";
 import { ToolPanelHeader } from "../ToolPanelHeader";
-import { ToolPanelResizeHandle } from "../ToolPanelResizeHandle";
+import { SideToolPanelResizeHandle } from "./SideToolPanelResizeHandle";
 import { MobileMap } from "@mobile-ui";
 
 const styles = StyleSheet.create({
@@ -107,7 +107,7 @@ export const SideToolPanel: FC<Props> = ({
                     ) : null}
                 </View>
             )}
-            <ToolPanelResizeHandle placement={placement} onDraggingChange={setIsDragging} />
+            <SideToolPanelResizeHandle placement={placement} onDraggingChange={setIsDragging} />
         </View>
     );
 };

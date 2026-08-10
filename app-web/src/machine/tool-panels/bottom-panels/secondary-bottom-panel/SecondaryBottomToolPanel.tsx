@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import classNames from "classnames";
 import { useMachineWard, useSecondaryBottomToolPanel } from "@apparatus";
-import { ToolPanelResizeHandle } from "../../ToolPanelResizeHandle";
+import { BottomSecondaryToolPanelResizeHandle } from "./SecondaryBottomToolPanelResizeHandle";
 import { ToolPanelHeader } from "../../ToolPanelHeader";
 import styles from '../../../machine.module.css';
 
@@ -64,10 +64,7 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
                     ) : null}
                 </div>
             </div>
-            <ToolPanelResizeHandle
-                placement="bottom-secondary"
-                onDraggingChange={setIsDragging}
-            />
+            <BottomSecondaryToolPanelResizeHandle onDraggingChange={setIsDragging} />
         </div>
     );
 };

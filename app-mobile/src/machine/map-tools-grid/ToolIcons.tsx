@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import { useToolIcons, LEFT_ICONS_WIDTH, RIGHT_ICONS_WIDTH } from "@apparatus";
+import { useToolIcons, LAYOUT_DEFAULTS } from "@apparatus";
 import { ToolIconRight } from "./tool-icons/ToolIconRight";
 import { ToolIconLeft } from "./tool-icons/ToolIconLeft";
 import { MobileMap } from "@mobile-ui";
@@ -77,7 +77,7 @@ export const ToolIcons: FC<Props> = ({
             style={[
                 styles.icons,
                 styles[placement], {
-                    width: placement === 'left' ? LEFT_ICONS_WIDTH : RIGHT_ICONS_WIDTH,
+                    width: placement === 'left' ? LAYOUT_DEFAULTS.icons.left : LAYOUT_DEFAULTS.icons.right,
                 }
             ]}
         >

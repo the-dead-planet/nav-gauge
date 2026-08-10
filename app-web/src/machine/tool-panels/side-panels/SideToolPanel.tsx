@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { Menu, MenuItem } from "@web-ui";
 import { assignSideToolPanelRef, swapSideToolPanelPlacement, useMachineWard, useSideToolPanel } from "@apparatus";
 import { ToolPanelHeader } from "../ToolPanelHeader";
-import { ToolPanelResizeHandle } from "../ToolPanelResizeHandle";
+import { SideToolPanelResizeHandle } from "./SideToolPanelResizeHandle";
 import styles from '../../machine.module.css';
 
 interface Props {
@@ -51,43 +51,45 @@ export const SideToolPanel: FC<Props> = ({
             style={{ width: currentWidth }}
         >
             {effectivePanels.length > 0 && (
-                <div className={classNames(styles['content'], { [styles['with-header']]: showHeader })}>
-                    {sideHeader}
-                    {toolPanel ? (
-                        <div className={styles['component']}>
-                            {toolPanel.placement !== 'bottom' || toolPanel?.headerComponent ? (
-                                <div className={styles['component-header']}>
-                                    {toolPanel.headerComponent ? <toolPanel.headerComponent map={map} placement={toolPanel.placement} /> : null}
-                                    {toolPanel.placement !== 'bottom' ? (
-                                        <Menu
-                                            aria-label={panelMenuLabel}
-                                            tooltip={panelMenuLabel}
-                                            tooltipPlacement="bottom"
-                                            placement={toolPanel.placement === "right" ? "bottom-right" : "bottom-left"}
-                                            iconActiveColor="secondary"
-                                            iconSize="xs"
-                                        >
-                                            <MenuItem
-                                                key="swap-placement"
-                                                isFirst
-                                                type="button"
-                                                closeOnPress
-                                                onClick={swapSideToolPanelPlacement(toolPanel, toolsStation)}
+                <>
+                    <div className={classNames(styles['content'], { [styles['with-header']]: showHeader })}>
+                        {sideHeader}
+                        {toolPanel ? (
+                            <div className={styles['component']}>
+                                {toolPanel.placement !== 'bottom' || toolPanel?.headerComponent ? (
+                                    <div className={styles['component-header']}>
+                                        {toolPanel.headerComponent ? <toolPanel.headerComponent map={map} placement={toolPanel.placement} /> : null}
+                                        {toolPanel.placement !== 'bottom' ? (
+                                            <Menu
+                                                aria-label={panelMenuLabel}
+                                                tooltip={panelMenuLabel}
+                                                tooltipPlacement="bottom"
+                                                placement={toolPanel.placement === "right" ? "bottom-right" : "bottom-left"}
+                                                iconActiveColor="secondary"
+                                                iconSize="xs"
                                             >
-                                                {swapPlacementLabel}
-                                            </MenuItem>
-                                        </Menu>
-                                    ) : null}
+                                                <MenuItem
+                                                    key="swap-placement"
+                                                    isFirst
+                                                    type="button"
+                                                    closeOnPress
+                                                    onClick={swapSideToolPanelPlacement(toolPanel, toolsStation)}
+                                                >
+                                                    {swapPlacementLabel}
+                                                </MenuItem>
+                                            </Menu>
+                                        ) : null}
+                                    </div>
+                                ) : null}
+                                <div className={styles['component-content']}>
+                                    <toolPanel.contentComponent map={map} placement={toolPanel.placement} />
                                 </div>
-                            ) : null}
-                            <div className={styles['component-content']}>
-                                <toolPanel.contentComponent map={map} placement={toolPanel.placement} />
                             </div>
-                        </div>
-                    ) : null}
-                </div>
+                        ) : null}
+                    </div>
+                    <SideToolPanelResizeHandle placement={placement} onDraggingChange={setIsDragging} />
+                </>
             )}
-            <ToolPanelResizeHandle placement={placement} onDraggingChange={setIsDragging} />
         </div>
     );
 };
