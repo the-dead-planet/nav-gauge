@@ -1,5 +1,3 @@
-import { ToolPanelPlacement } from "../tools-station";
-
 export interface PanelLayout {
     leftWidth: number;
     rightWidth: number;
