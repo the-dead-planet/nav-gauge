@@ -141,7 +141,6 @@ const config = (env: Env, argv: Argv): Configuration => {
                     },
                 },
             },
-                minimize: true,
         },
         devServer: {
             port: Number(process.env.PORT) || 3000,
@@ -149,11 +148,12 @@ const config = (env: Env, argv: Argv): Configuration => {
         },
         plugins: [
             new rspack.CssExtractRspackPlugin({ filename: "[name].[contenthash].css" }),
-            new BundleAnalyzerPlugin({
+            process.env.ANALYZE === 'true' && new BundleAnalyzerPlugin({
                 analyzerMode: 'static',
                 openAnalyzer: false,
+                reportFilename: 'bundle-report.html',
             })
-        ],
+        ].filter(Boolean),
         output: {
             publicPath: '/',
             filename: "[name].[contenthash].bundle.js",

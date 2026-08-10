@@ -11,7 +11,7 @@ export type Argv = {
     mode?: 'development' | 'production' | 'none';
 };
 
-export const baseConfig = (_env: Env, _argv: Argv): Configuration => ({
+export const baseConfig = (_env: Env, argv: Argv): Configuration => ({
     resolve: {
         extensions: [".js", ".ts", ".tsx"],
         fallback: {
@@ -28,34 +28,19 @@ export const baseConfig = (_env: Env, _argv: Argv): Configuration => ({
     module: {
         rules: [
             {
-                test: /\.tsx$/,
-                exclude: /node_modules/,
-                use: 'babel-loader',
-            },
-            {
-                test: /\.ts$/,
+                test: /\.(?:js|jsx|ts|tsx)$/,
                 exclude: /node_modules/,
                 use: {
                     loader: 'builtin:swc-loader',
                     options: {
+                        detectSyntax: 'auto',
                         jsc: {
-                            parser: {
-                                syntax: 'typescript',
-                                tsx: true,
-                            },
-                        },
-                    },
-                },
-            },
-            {
-                test: /\.jsx?$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: 'builtin:swc-loader',
-                    options: {
-                        jsc: {
-                            parser: {
-                                syntax: 'ecmascript',
+                            transform: {
+                                react: {
+                                    runtime: 'automatic',
+                                    development: argv.mode !== 'production',
+                                },
+                                reactCompiler: true,
                             },
                         },
                     },

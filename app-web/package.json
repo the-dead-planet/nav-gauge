@@ -14,6 +14,7 @@
         "url": "https://github.com/the-dead-planet/nav-gauge/issues"
     },
     "scripts": {
+        "analyze": "tsc --noEmit && ANALYZE=true rspack --mode production --config rspack.config.production.ts",
         "dev": "rspack serve --mode development --config rspack.config.development.ts",
         "start": "rspack serve --mode production --config rspack.config.production.ts",
         "build": "tsc --noEmit && rspack --mode production --config rspack.config.production.ts",
