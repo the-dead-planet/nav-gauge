@@ -141,11 +141,7 @@ const config = (env: Env, argv: Argv): Configuration => {
                     },
                 },
             },
-            minimize: true,
-            minimizer: [
-                new rspack.SwcJsMinimizerRspackPlugin(),
-                new rspack.LightningCssMinimizerRspackPlugin()
-            ],
+                minimize: true,
         },
         devServer: {
             port: Number(process.env.PORT) || 3000,
