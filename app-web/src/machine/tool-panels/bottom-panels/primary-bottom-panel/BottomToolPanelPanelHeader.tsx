@@ -1,8 +1,7 @@
 import { FC } from "react";
 import { Button } from "@web-ui";
-import { useObservableState, useSubjectState } from "@tinker-chest";
-import { useMachineWard } from "@apparatus";
-import { Icons, } from "@ui";
+import { useSubjectState } from "@tinker-chest";
+import { useBottomToolPanelHeader, useMachineWard } from "@apparatus";
 import { BottomToolPanelHeaderContainer } from "./BottomToolPanelHeaderContainer";
 
 interface Props {
@@ -16,56 +15,42 @@ export const BottomToolPanelHeader: FC<Props> = ({
     onActiveIdChange,
     joinHeaderButtons,
 }) => {
-    const { namespace, translationKey, toolsStation, translatron, individuator } = useMachineWard();
+    const { translatron, individuator } = useMachineWard();
     const [registry] = useSubjectState(translatron.registry$);
     const [settings] = useSubjectState(individuator.settings$);
-    const toolPanels = useObservableState(toolsStation.toolPanelsByPlacement$, []);
-    const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
-    const effectivePanels = toolPanelsByPlacement["bottom"];
-    const tooltipPlacement = "top";
-    const color = 'primary';
-    const buttonSize = 'sm';
+
+    const {
+        effectivePanels,
+        buttonProps,
+        collapseExpandButtonProps: { accessibilityLabel, ...colExpProps },
+        onSelect,
+        onCollapseExpand,
+    } = useBottomToolPanelHeader(activeId, onActiveIdChange);
 
     return (
         <BottomToolPanelHeaderContainer
             sideActions={
                 <Button
-                    size={buttonSize}
-                    variant='ghost'
-                    color={color}
-                    icon={Icons.NounProject.ChevronDownDouble}
-                    iconRotateZ={activeId === null ? 180 : 0}
-                    aria-label={translatron.translate(settings.language, registry, { n: namespace, t: activeId === null ? translationKey.Expand : translationKey.Collapse })}
-                    tooltip={translatron.translate(settings.language, registry, { n: namespace, t: activeId === null ? translationKey.Expand : translationKey.Collapse })}
-                    tooltipPlacement={tooltipPlacement}
-                    onClick={() => {
-                        if (activeId !== null) {
-                            onActiveIdChange(null);
-                        } else {
-                            onActiveIdChange(effectivePanels[0]?.id)
-                        }
-                    }}
+                    aria-label={accessibilityLabel}
+                    onClick={onCollapseExpand}
+                    {...colExpProps}
                 />
             }
             joinHeaderButtons={joinHeaderButtons}
         >
-            {effectivePanels.map(({ id, icon, title, }) => {
-                const tooltip = translatron.translate(settings.language, registry, title);
-                const isActive = activeId === id;
+            {effectivePanels.map((toolPanel) => {
+                const tooltip = translatron.translate(settings.language, registry, toolPanel.title);
+                const isActive = activeId === toolPanel.id;
 
                 return (
                     <Button
-                        key={id}
-                        size={buttonSize}
-                        variant='ghost'
-                        color={color}
+                        key={toolPanel.id}
                         active={isActive}
-                        icon={icon}
+                        icon={toolPanel.icon}
                         aria-label={tooltip}
                         tooltip={tooltip}
-                        tooltipPlacement={tooltipPlacement}
-                        showTooltipConnection
-                        onClick={() => onActiveIdChange(activeId === id ? null : id)}
+                        onClick={onSelect(toolPanel)}
+                        {...buttonProps}
                     />
                 );
             })}

@@ -4,5 +4,6 @@ export * from './useToolPanelHeader';
 export * from './useSideToolPanel';
 export * from './useSideToolPanelResizeHandle';
 export * from './useBottomToolPanel';
+export * from './useBottomToolPanelHeader';
 export * from './useSecondaryBottomToolPanel';
 export * from './useBottomSecondaryToolPanelResizeHandle';

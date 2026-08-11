@@ -1,9 +1,8 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import { Button } from "@mobile-ui";
-import { useObservableState, useSubjectState } from "@tinker-chest";
-import { useMachineWard } from "@apparatus";
-import { Icons } from "@ui";
+import { Button, MobileButtonProps } from "@mobile-ui";
+import { useSubjectState } from "@tinker-chest";
+import { useBottomToolPanelHeader, useMachineWard } from "@apparatus";
 
 const styles = StyleSheet.create({
     container: {
@@ -31,57 +30,43 @@ export const BottomToolPanelHeader: FC<Props> = ({
     activeId,
     onActiveIdChange,
 }) => {
-    const { namespace, translationKey, toolsStation, translatron, individuator } = useMachineWard();
+    const { translatron, individuator } = useMachineWard();
     const [registry] = useSubjectState(translatron.registry$);
     const [settings] = useSubjectState(individuator.settings$);
-    const toolPanels = useObservableState(toolsStation.toolPanelsByPlacement$, []);
-    const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
-    const effectivePanels = toolPanelsByPlacement["bottom"];
-    const tooltipPlacement = "top";
-    const color = 'primary';
-    const buttonSize = 'sm';
+
+    const {
+        effectivePanels,
+        buttonProps,
+        collapseExpandButtonProps: { icon: collapseExpandIcon, ...colExpProps },
+        onSelect,
+        onCollapseExpand,
+    } = useBottomToolPanelHeader(activeId, onActiveIdChange);
 
     return (
         <View style={styles.container}>
             <View style={styles.leftSection}>
-                {effectivePanels.map(({ id, icon, title, }) => {
-                    const tooltip = translatron.translate(settings.language, registry, title);
-                    const isActive = activeId === id;
+                {effectivePanels.map((toolPanel) => {
+                    const tooltip = translatron.translate(settings.language, registry, toolPanel.title);
+                    const isActive = activeId === toolPanel.id;
 
                     return (
                         <Button
-                            key={id}
-                            size={buttonSize}
-                            variant='ghost'
-                            color={color}
+                            key={toolPanel.id}
                             active={isActive}
-                            icon={icon as never}
+                            icon={toolPanel.icon as unknown as MobileButtonProps['icon']}
                             accessibilityLabel={tooltip}
                             tooltip={tooltip}
-                            tooltipPlacement={tooltipPlacement}
-                            showTooltipConnection
-                            onPress={() => onActiveIdChange(activeId === id ? null : id)}
+                            onPress={onSelect(toolPanel)}
+                            {...buttonProps}
                         />
                     );
                 })}
             </View>
             <View style={styles.rightSection}>
                 <Button
-                    size={buttonSize}
-                    variant='ghost'
-                    color={color}
-                    icon={Icons.NounProject.ChevronDownDouble}
-                    iconRotateZ={activeId === null ? 180 : 0}
-                    accessibilityLabel={translatron.translate(settings.language, registry, { n: namespace, t: activeId === null ? translationKey.Expand : translationKey.Collapse })}
-                    tooltip={translatron.translate(settings.language, registry, { n: namespace, t: activeId === null ? translationKey.Expand : translationKey.Collapse })}
-                    tooltipPlacement={tooltipPlacement}
-                    onPress={() => {
-                        if (activeId !== null) {
-                            onActiveIdChange(null);
-                        } else {
-                            onActiveIdChange(effectivePanels[0]?.id)
-                        }
-                    }}
+                    icon={collapseExpandIcon as unknown as MobileButtonProps['icon']}
+                    onPress={onCollapseExpand}
+                    {...colExpProps}
                 />
             </View>
         </View>
