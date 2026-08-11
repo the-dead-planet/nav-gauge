@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import classNames from "classnames";
 import { useMachineWard, useSecondaryBottomToolPanel } from "@apparatus";
 import { BottomSecondaryToolPanelResizeHandle } from "./SecondaryBottomToolPanelResizeHandle";
-import { ToolPanelHeader } from "../../ToolPanelHeader";
+import { ToolPanelHeader } from "../../panel-header/ToolPanelHeader";
 import styles from '../../../machine.module.css';
 
 interface Props {

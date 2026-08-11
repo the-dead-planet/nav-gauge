@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { Menu, MenuItem } from "@mobile-ui";
 import { assignSideToolPanelRef, swapSideToolPanelPlacement, useMachineWard, useSideToolPanel } from "@apparatus";
 import { useTheme } from "@ui";
-import { ToolPanelHeader } from "../ToolPanelHeader";
+import { ToolPanelHeader } from "../panel-header/ToolPanelHeader";
 import { SideToolPanelResizeHandle } from "./SideToolPanelResizeHandle";
 import { MobileMap } from "@mobile-ui";
 

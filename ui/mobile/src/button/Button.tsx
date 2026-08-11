@@ -6,13 +6,13 @@ import { SvgProps } from "react-native-svg";
 import { Hexagon } from "../hud";
 import { Tooltip } from "../tooltip";
 
-interface Props {
+export interface MobileButtonProps {
     forwardRef?: Ref<View>;
     icon?: ComponentType<SvgProps>;
     title?: string;
 }
 
-export const Button: FC<PressableProps & ButtonProps & Props> = ({
+export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     forwardRef,
     color = 'neutral',
     highlightColor = color,

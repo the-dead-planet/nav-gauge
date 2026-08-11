@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { useMachineWard, useSecondaryBottomToolPanel } from "@apparatus";
 import { useTheme } from "@ui";
-import { ToolPanelHeader } from "../../ToolPanelHeader";
+import { ToolPanelHeader } from "../../panel-header/ToolPanelHeader";
 import { BottomSecondaryToolPanelResizeHandle } from "./SecondaryBottomToolPanelResizeHandle";
 import { MobileMap } from "@mobile-ui";
 
