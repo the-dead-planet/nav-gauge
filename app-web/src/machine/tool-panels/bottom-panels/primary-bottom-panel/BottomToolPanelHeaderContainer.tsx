@@ -2,6 +2,7 @@ import { FC, ReactNode } from "react";
 import { CurveSpacer } from "./curve/CurveSpacer";
 import { CurvesContainer } from "./curve/CurvesContainer";
 import styles from './bottom-tool-panel.module.css';
+import { PANEL_HEADER_CURVE_SIZES } from "@apparatus";
 
 interface Props {
     sideActions: ReactNode;
@@ -22,7 +23,6 @@ export const BottomToolPanelHeaderContainer: FC<Props> = ({
     joined,
     children
 }) => {
-    console.log({joinHeaderButtons, joined, bothSidePanels, onlyLeftPanel, onlyRightPanel})
     return (
         <div
             className={styles['container']}
@@ -30,10 +30,10 @@ export const BottomToolPanelHeaderContainer: FC<Props> = ({
                 gridTemplateColumns: joinHeaderButtons || bothSidePanels
                     ? '1fr max-content 1fr'
                     : onlyLeftPanel
-                        ? '1fr max-content 110px'
+                        ? `1fr max-content ${PANEL_HEADER_CURVE_SIZES.onlyLeftPanelRightSpacer}px`
                         : onlyRightPanel
-                            ? '140px max-content 1fr'
-                            : '140px max-content 1fr max-content 100px'
+                            ? `${PANEL_HEADER_CURVE_SIZES.leftSpacer}px max-content 1fr`
+                            : `${PANEL_HEADER_CURVE_SIZES.leftSpacer}px max-content 1fr max-content ${PANEL_HEADER_CURVE_SIZES.bothOrNoPanelsRightSpacer}px`
             }}>
             <CurveSpacer />
 

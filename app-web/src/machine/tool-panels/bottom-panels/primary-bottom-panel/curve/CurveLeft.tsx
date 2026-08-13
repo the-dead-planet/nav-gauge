@@ -1,9 +1,9 @@
 import { FC } from "react";
-import { CURVE_SIZE } from "@apparatus";
+import { PANEL_HEADER_CURVE_SIZES } from "@apparatus";
 
 export const CurveLeft: FC = () => {
     return (
-        <svg width={CURVE_SIZE} height={CURVE_SIZE} viewBox="0 0 100 100">
+        <svg width={PANEL_HEADER_CURVE_SIZES.size} height={PANEL_HEADER_CURVE_SIZES.size} viewBox="0 0 100 100">
             <path
                 d="M0,98 C60,100 40,0 105,5 L105,100 L0,100 Z"
                 fill="var(--toolbar-background-color)"

@@ -1,6 +1,6 @@
 import { FC, ReactNode } from "react";
 import { StyleSheet, View } from "react-native";
-import { CURVE_SIZE } from "@apparatus";
+import { PANEL_HEADER_CURVE_SIZES } from "@apparatus";
 import { Curves } from "./Curves";
 
 const styles = StyleSheet.create({
@@ -8,9 +8,9 @@ const styles = StyleSheet.create({
         position: 'relative',
         flexDirection: 'row',
         alignItems: 'center',
-        height: CURVE_SIZE,
+        height: PANEL_HEADER_CURVE_SIZES.size,
         paddingTop: 4,
-        paddingHorizontal: CURVE_SIZE,
+        paddingHorizontal: PANEL_HEADER_CURVE_SIZES.size,
         flexShrink: 0,
     },
 });

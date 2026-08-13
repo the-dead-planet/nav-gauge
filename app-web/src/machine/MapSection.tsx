@@ -42,7 +42,7 @@ export const MapSection: FC = () => {
                 <ErrorBoundary onError={handleError}>
                     <MapCanvas map={map}>
                         {[...overlays.entries()].map(([id, OverlayComponent]) => (
-                            <ErrorBoundary onError={handleError}>
+                            <ErrorBoundary key={id} onError={handleError}>
                                 <OverlayComponent key={id} map={map} />
                             </ErrorBoundary>
                         ))}

@@ -28,7 +28,12 @@ export const LAYOUT_DEFAULTS = {
     }
 };
 
-export const CURVE_SIZE = 28;
+export const PANEL_HEADER_CURVE_SIZES = {
+    size: 28,
+    onlyLeftPanelRightSpacer: 110,
+    bothOrNoPanelsRightSpacer: 100,
+    leftSpacer: 140,
+};
 
 export function computeEffectiveWidth(state: PanelState, minWidth: number): number {
     if (!state.hasToolPanels) {

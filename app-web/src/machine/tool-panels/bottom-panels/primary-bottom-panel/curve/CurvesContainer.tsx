@@ -1,5 +1,5 @@
 import { CSSProperties, FC, ReactNode } from "react";
-import { CURVE_SIZE } from "@apparatus";
+import { PANEL_HEADER_CURVE_SIZES } from "@apparatus";
 import { Curves } from "./Curves";
 import styles from './curve.module.css';
 
@@ -12,7 +12,7 @@ export const CurvesContainer: FC<Props> = ({ children }) => {
         <div
             className={styles['curves-container']}
             style={{
-                '--curve-size': `${CURVE_SIZE}px`
+                '--curve-size': `${PANEL_HEADER_CURVE_SIZES.size}px`
             } as CSSProperties}
         >
             <Curves />

@@ -2,6 +2,7 @@ import { FC, ReactNode } from "react";
 import { StyleSheet, View } from "react-native";
 import { CurveSpacer } from "./curve";
 import { CurvesContainer } from "./curve/CurvesContainer";
+import { PANEL_HEADER_CURVE_SIZES } from "@apparatus";
 
 const styles = StyleSheet.create({
     container: {
@@ -36,14 +37,12 @@ export const BottomToolPanelHeaderContainer: FC<Props> = ({
     onlyRightPanel,
     children,
 }) => {
-    console.log({joinHeaderButtons, joined, bothSidePanels, onlyLeftPanel, onlyRightPanel})
-
     return (
         <View style={styles.container} pointerEvents="box-none">
             <CurveSpacer
                 style={joinHeaderButtons || bothSidePanels || onlyLeftPanel
                     ? { flex: 1 }
-                    : { width: 140 }}
+                    : { width: PANEL_HEADER_CURVE_SIZES.leftSpacer }}
             />
 
             <CurvesContainer>
@@ -62,7 +61,11 @@ export const BottomToolPanelHeaderContainer: FC<Props> = ({
             <CurveSpacer
                 style={joinHeaderButtons || bothSidePanels
                     ? { flex: 1 }
-                    : { width: onlyRightPanel ? 110 : 100 }}
+                    : {
+                        width: onlyRightPanel
+                            ? PANEL_HEADER_CURVE_SIZES.onlyLeftPanelRightSpacer
+                            : PANEL_HEADER_CURVE_SIZES.bothOrNoPanelsRightSpacer
+                    }}
             />
         </View>
     );
