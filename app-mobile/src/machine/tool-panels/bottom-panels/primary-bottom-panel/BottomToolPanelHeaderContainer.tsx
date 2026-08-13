@@ -1,26 +1,19 @@
 import { FC, ReactNode } from "react";
 import { StyleSheet, View } from "react-native";
-import { CurveLeft, CurveMiddle, CurveRight, CurveSpacer } from "./curve";
-import { CURVE_SIZE } from "./curve/tinkers";
+import { CurveSpacer } from "./curve";
+import { CurvesContainer } from "./curve/CurvesContainer";
 
 const styles = StyleSheet.create({
-    header: {
+    container: {
         position: 'absolute',
-        left: 0,
-        right: 0,
         top: 0,
+        left: 0,
+        width: '100%',
         flexDirection: 'row',
         alignItems: 'flex-end',
         transform: [
             { translateY: "-100%" },
         ],
-    },
-    headerContent: {
-        position: 'relative',
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingTop: 4,
-        paddingHorizontal: CURVE_SIZE,
     },
 });
 
@@ -43,33 +36,34 @@ export const BottomToolPanelHeaderContainer: FC<Props> = ({
     onlyRightPanel,
     children,
 }) => {
+    console.log({joinHeaderButtons, joined, bothSidePanels, onlyLeftPanel, onlyRightPanel})
 
     return (
-        <View style={styles.header} pointerEvents="box-none">
-            <CurveSpacer />
+        <View style={styles.container} pointerEvents="box-none">
+            <CurveSpacer
+                style={joinHeaderButtons || bothSidePanels || onlyLeftPanel
+                    ? { flex: 1 }
+                    : { width: 140 }}
+            />
 
-            <View style={styles.headerContent} pointerEvents="box-none">
-                <CurveLeft />
-                <CurveMiddle />
-                <CurveRight />
-
+            <CurvesContainer>
                 {children}
                 {joined ? sideActions : null}
-            </View>
+            </CurvesContainer>
 
             {!joined ? (
                 <>
-                    <CurveSpacer />
-                    <View style={styles.headerContent}>
-                        <CurveLeft />
-                        <CurveMiddle />
-                        <CurveRight />
-
+                    <CurveSpacer style={{ flex: 1 }} />
+                    <CurvesContainer>
                         {sideActions}
-                    </View>
+                    </CurvesContainer>
                 </>
             ) : null}
-            <CurveSpacer />
+            <CurveSpacer
+                style={joinHeaderButtons || bothSidePanels
+                    ? { flex: 1 }
+                    : { width: onlyRightPanel ? 110 : 100 }}
+            />
         </View>
     );
 };

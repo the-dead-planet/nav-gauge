@@ -1,21 +1,29 @@
 import { FC } from "react";
-import { StyleSheet, View } from "react-native";
+import { DimensionValue, StyleSheet, View } from "react-native";
 import { useTheme } from "@ui";
 
 const styles = StyleSheet.create({
     spacer: {
-        flex: 1,
         height: 0,
         borderBottomWidth: 2,
     },
 });
 
-export const CurveSpacer: FC = () => {
+interface Props {
+    style?: { flex: 1 } | { width: DimensionValue };
+}
+
+export const CurveSpacer: FC<Props> = ({ style }) => {
     const theme = useTheme();
 
     return (
-        <View pointerEvents="none" style={[styles.spacer, { 
-            borderBottomColor: theme.color('primary')
-        }]} />
+        <View
+            pointerEvents="none"
+            style={[
+                styles.spacer,
+                { borderBottomColor: theme.color('primary') },
+                style,
+            ]}
+        />
     );
 };

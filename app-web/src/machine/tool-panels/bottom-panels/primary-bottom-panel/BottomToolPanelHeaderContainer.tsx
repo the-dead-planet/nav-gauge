@@ -1,10 +1,6 @@
 import { FC, ReactNode } from "react";
-import { useSubjectState } from "@tinker-chest";
-import { useMachineWard } from "@apparatus";
-import { CurveLeft } from "./curve/CurveLeft";
-import { CurveRight } from "./curve/CurveRight";
-import { CurveMiddle } from "./curve/CurveMiddle";
 import { CurveSpacer } from "./curve/CurveSpacer";
+import { CurvesContainer } from "./curve/CurvesContainer";
 import styles from './bottom-tool-panel.module.css';
 
 interface Props {
@@ -26,9 +22,10 @@ export const BottomToolPanelHeaderContainer: FC<Props> = ({
     joined,
     children
 }) => {
+    console.log({joinHeaderButtons, joined, bothSidePanels, onlyLeftPanel, onlyRightPanel})
     return (
         <div
-            className={styles['header']}
+            className={styles['container']}
             style={{
                 gridTemplateColumns: joinHeaderButtons || bothSidePanels
                     ? '1fr max-content 1fr'
@@ -40,25 +37,17 @@ export const BottomToolPanelHeaderContainer: FC<Props> = ({
             }}>
             <CurveSpacer />
 
-            <div className={styles['header-content']}>
-                <CurveLeft />
-                <CurveMiddle />
-                <CurveRight />
-
+            <CurvesContainer>
                 {children}
                 {joined ? sideActions : null}
-            </div>
+            </CurvesContainer>
 
             {!joined ? (
                 <>
                     <CurveSpacer />
-                    <div className={styles['header-content']}>
-                        <CurveLeft />
-                        <CurveMiddle />
-                        <CurveRight />
-
+                    <CurvesContainer>
                         {sideActions}
-                    </div>
+                    </CurvesContainer>
                 </>
             ) : null}
 

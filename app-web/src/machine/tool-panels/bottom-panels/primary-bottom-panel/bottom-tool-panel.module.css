@@ -1,4 +1,4 @@
-.header {
+.container {
     position: absolute;
     left: 0;
     right: 0;
@@ -7,13 +7,4 @@
     display: grid;
     grid-template-columns: 1fr max-content 1fr;
     pointer-events: none;
-}
-
-.header-content {
-    position: relative;
-    padding: 4px 28px 0 28px;
-    box-sizing: border-box;
-    display: flex;
-    margin-bottom: 0px;
-    pointer-events: all;
 }

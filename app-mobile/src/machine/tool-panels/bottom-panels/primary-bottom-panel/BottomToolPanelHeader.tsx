@@ -37,6 +37,7 @@ export const BottomToolPanelHeader: FC<Props> = ({
                     {...colExpProps}
                 />
             }
+            joinHeaderButtons={joinHeaderButtons}
             {...header}
         >
             {effectivePanels.map((toolPanel) => {

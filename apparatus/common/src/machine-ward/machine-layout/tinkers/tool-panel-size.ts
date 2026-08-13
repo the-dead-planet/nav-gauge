@@ -28,6 +28,8 @@ export const LAYOUT_DEFAULTS = {
     }
 };
 
+export const CURVE_SIZE = 28;
+
 export function computeEffectiveWidth(state: PanelState, minWidth: number): number {
     if (!state.hasToolPanels) {
         return 0;

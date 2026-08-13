@@ -1,9 +1,9 @@
 import { FC } from "react";
-import styles from './curve.module.css';
+import { CURVE_SIZE } from "@apparatus";
 
 export const CurveRight: FC = () => {
     return (
-        <svg width="28" height="28" viewBox="0 0 100 100" className={styles['curve-right']}>
+        <svg width={CURVE_SIZE} height={CURVE_SIZE} viewBox="0 0 100 100">
             <path
                 d="M100,98 C40,100 60,0 0,5 L0,100 L100,100 Z"
                 fill="var(--toolbar-background-color)"

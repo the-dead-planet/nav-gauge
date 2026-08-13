@@ -1,28 +1,32 @@
-.curve-left {
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-.bottom-header-content-background {
+.curve-middle {
     background-color: var(--toolbar-background-color);
     border-top: 2px solid var(--color-primary);
     box-sizing: border-box;
-    position: absolute;
+    flex: 1;
     z-index: -1;
-    left: 28px;
-    right: 28px;
     height: 100%;
-    top: 0;
-}
-
-.curve-right {
-    position: absolute;
-    top: 0;
-    right: 0;
 }
 
 .curve-spacer {
-    height: 2px;
-    background-color: var(--color-primary);
+    height: 0px;
+    border-bottom: 2px solid var(--color-primary);
+}
+
+.curves-container {
+    position: relative;
+    height: var(--curve-size);
+    padding: 4px var(--curve-size) 0 var(--curve-size);
+    box-sizing: border-box;
+    display: flex;
+    margin-bottom: 0px;
+    pointer-events: all;
+}
+
+.curves {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
 }
