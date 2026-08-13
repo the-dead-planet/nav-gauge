@@ -2,7 +2,7 @@ import { FC } from "react";
 import { StyleSheet, View } from "react-native";
 import { BehaviorSubject } from "rxjs";
 import { CameraRef, MapRef } from "@maplibre/maplibre-react-native";
-import { useMachineWard } from "@apparatus";
+import { useMachineWard, useMapSection } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { MobileMap } from "@mobile-ui";
 import { MapToolsGridAreas } from "./map-tools-grid/MapToolsGridAreas";
@@ -43,19 +43,9 @@ const map: MobileMap = {
 };
 
 export const MapSection: FC = () => {
-    const { cartomancer, signaliumBureau } = useMachineWard();
+    const { cartomancer } = useMachineWard();
     const [overlays] = useSubjectState(cartomancer.overlays$);
-
-    const handleError = (error: Error | null) => {
-        const msg = 'Something went wrong while rendering the map';
-
-        signaliumBureau.addNotice({
-            id: 'map-section',
-            type: 'error',
-            error: error || new Error(msg),
-            text: error?.message || msg,
-        })
-    };
+    const { handleError } = useMapSection();
 
     return (
         <View style={styles.container}>

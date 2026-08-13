@@ -7,3 +7,4 @@ export * from './useBottomToolPanel';
 export * from './useBottomToolPanelHeader';
 export * from './useSecondaryBottomToolPanel';
 export * from './useBottomSecondaryToolPanelResizeHandle';
+export * from './useMapSection';

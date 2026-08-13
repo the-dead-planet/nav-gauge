@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { useMachineWard } from "@apparatus";
+import { useMachineWard, useMapSection } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { MapCanvas } from "./map-canvas/MapCanvas";
 import { MapToolsGridAreas } from "./map-tools-grid/MapToolsGridAreas";
@@ -10,8 +10,9 @@ import styles from './machine.module.css';
 
 export const MapSection: FC = () => {
     const [map, setMap] = useState<maplibregl.Map>();
-    const { cartomancer, signaliumBureau } = useMachineWard();
+    const { cartomancer } = useMachineWard();
     const [overlays] = useSubjectState(cartomancer.overlays$);
+    const { handleError } = useMapSection();
 
     useEffect(() => {
         const m = createMap();
@@ -22,18 +23,6 @@ export const MapSection: FC = () => {
             requestAnimationFrame(() => m.remove());
         };
     }, []);
-
-
-    const handleError = (error: Error | null) => {
-        const msg = 'Something went wrong while rendering the map';
-
-        signaliumBureau.addNotice({
-            id: 'map-section',
-            type: 'error',
-            error: error || new Error(msg),
-            text: error?.message || msg,
-        })
-    };
 
     return (
         <div className={styles.machine}>
