@@ -8,7 +8,7 @@ export const LAYOUT_MINS = {
     panels: {
         left: 42,
         right: 32,
-        bottomSecondary: 24,
+        bottomSecondary: 32,
     },
     remainingArea: {
         width: 200,

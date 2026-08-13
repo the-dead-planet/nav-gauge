@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     headerControlsContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+        marginLeft: 'auto',
     },
     spacerLine: {
         flex: 1,

@@ -2,8 +2,8 @@ import { FC, ReactNode } from "react";
 import { Button } from "@web-ui";
 import { ToolPanelPlacement, useToolPanelHeader } from "@apparatus";
 import { Icons, } from "@ui";
-import styles from '../../machine.module.css';
 import { ToolPanelHeaderButton } from "./ToolPanelHeaderButton";
+import styles from '../../machine.module.css';
 
 // TODO: Test decrease tool icon size if isLessThanMd
 

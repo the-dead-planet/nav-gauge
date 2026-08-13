@@ -21,7 +21,7 @@ export const useToolPanelHeader = (
     };
     const getVariant = (isActive: boolean): ButtonProps['variant'] => isActive && placement !== 'left' ? 'outline' : 'ghost';
     const getColor = (isActive: boolean): ColorVariant => isActive ? placement === 'bottom' ? 'primary' : 'secondary' : "neutral";
-    const buttonSize: ButtonProps['size'] = placement === 'bottom' ? 'sm' : 'md';
+    const buttonSize: ButtonProps['size'] = 'md';
     const expandCollapseLabel = translatron.translate(settings.language, registry, { n: namespace, t: activeId === null ? translationKey.Expand : translationKey.Collapse });
 
     const handleCollapseExpand = () => {

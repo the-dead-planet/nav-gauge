@@ -10,12 +10,14 @@ import { Cartomancer, MarkerImage } from '@apparatus';
 import { cacheReducedImage, prependFilePrefix, MobileMarkerImageData, resetTempSubfolder } from './images/image-parser';
 import { DocumentPickerResponse } from '@react-native-documents/picker';
 import { RouteName } from './player/RouteName';
+import { AnimationControlsSearch } from './animation-controls/AnimationControlsSearch';
+import { AnimationControls } from './animation-controls/AnimationControls';
 
 export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPickerResponse, MobileMarkerImageData> {
    public playerComponent = Player;
    public routeUploadComponent = RouteName;
-   public animatrixHeaderComponent = Player;
-   public animatrixContentComponent = Player;
+   public animatrixHeaderComponent = AnimationControlsSearch;
+   public animatrixContentComponent = AnimationControls;
    public routeLayerComponent = RouteLayer;
    public imagesLayerComponent = ImagesLayer;
 
