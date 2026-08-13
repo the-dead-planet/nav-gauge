@@ -16,12 +16,14 @@ interface Props {
     map?: MobileMap;
     activeId: string | null;
     onActiveIdChange: (activeId: string | null) => void;
+    joinHeaderButtons?: boolean;
 }
 
 export const BottomToolPanel: FC<Props> = ({
     map,
     activeId,
     onActiveIdChange,
+    joinHeaderButtons,
 }) => {
     const theme = useTheme();
     const { toolsStation } = useMachineWard();
@@ -45,7 +47,11 @@ export const BottomToolPanel: FC<Props> = ({
                 backgroundColor: theme.componentColor('background', 0.87),
                 borderTopColor: theme.color('primary'),
             }]}>
-                <BottomToolPanelHeader activeId={activeId} onActiveIdChange={onActiveIdChange} />
+                <BottomToolPanelHeader
+                    activeId={activeId}
+                    onActiveIdChange={onActiveIdChange}
+                    joinHeaderButtons={joinHeaderButtons}
+                />
                 <View>
                     {toolPanel ? (
                         <>

@@ -6,10 +6,14 @@ import { ObservedToolPanel } from "../../tools-station";
 export const useBottomToolPanelHeader = (
     activeId: string | null,
     onActiveIdChange: (activeId: string | null) => void,
+    { joinHeaderButtons = false }: { joinHeaderButtons?: boolean } = {}
 ) => {
     const { toolsStation, namespace, translationKey, translatron, individuator } = useMachineWard();
     const [registry] = useSubjectState(translatron.registry$);
     const [settings] = useSubjectState(individuator.settings$);
+    const [activeLeftPanelToolId] = useSubjectState(toolsStation.activeLeftPanelToolId$);
+    const [activeRightPanelToolId] = useSubjectState(toolsStation.activeRightPanelToolId$);
+    const bothSidePanels = activeLeftPanelToolId !== null && activeRightPanelToolId !== null;
     const toolPanels = useObservableState(toolsStation.toolPanelsByPlacement$, []);
     const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
     const effectivePanels = toolPanelsByPlacement["bottom"];
@@ -53,5 +57,11 @@ export const useBottomToolPanelHeader = (
         collapseExpandButtonProps,
         onSelect,
         onCollapseExpand,
+        header: {
+            bothSidePanels,
+            onlyLeftPanel: !bothSidePanels && activeLeftPanelToolId !== null,
+            onlyRightPanel: !bothSidePanels && activeRightPanelToolId !== null,
+            joined: joinHeaderButtons || !(activeLeftPanelToolId === null && activeRightPanelToolId === null),
+        }
     };
 };

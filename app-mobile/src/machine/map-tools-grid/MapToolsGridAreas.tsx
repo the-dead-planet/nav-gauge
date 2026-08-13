@@ -59,6 +59,7 @@ export const MapToolsGridAreas: FC<Props> = ({ map }) => {
                 map={map}
                 activeId={activeBottomPanelToolId}
                 onActiveIdChange={setActiveBottomPanelToolId}
+                joinHeaderButtons={groupSidePanelsInBottomSecondaryToolbar}
             />
             {groupSidePanelsInBottomSecondaryToolbar
                 ? (

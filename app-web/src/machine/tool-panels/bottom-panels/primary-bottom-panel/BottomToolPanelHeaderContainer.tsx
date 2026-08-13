@@ -10,26 +10,25 @@ import styles from './bottom-tool-panel.module.css';
 interface Props {
     sideActions: ReactNode;
     joinHeaderButtons?: boolean;
+    joined: boolean;
+    bothSidePanels: boolean;
+    onlyLeftPanel: boolean;
+    onlyRightPanel: boolean;
     children: ReactNode;
 }
 
 export const BottomToolPanelHeaderContainer: FC<Props> = ({
     sideActions,
     joinHeaderButtons,
+    bothSidePanels,
+    onlyLeftPanel,
+    onlyRightPanel,
+    joined,
     children
 }) => {
-    const { toolsStation } = useMachineWard();
-    const [activeLeftPanelToolId] = useSubjectState(toolsStation.activeLeftPanelToolId$);
-    const [activeRightPanelToolId] = useSubjectState(toolsStation.activeRightPanelToolId$);
-    const bothSidePanels = activeLeftPanelToolId !== null && activeRightPanelToolId !== null;
-    const onlyLeftPanel = !bothSidePanels && activeLeftPanelToolId !== null;
-    const onlyRightPanel = !bothSidePanels && activeRightPanelToolId !== null;
-
-    const joined = joinHeaderButtons || !(activeLeftPanelToolId === null && activeRightPanelToolId === null);
-
     return (
         <div
-            className={styles['content-header']}
+            className={styles['header']}
             style={{
                 gridTemplateColumns: joinHeaderButtons || bothSidePanels
                     ? '1fr max-content 1fr'

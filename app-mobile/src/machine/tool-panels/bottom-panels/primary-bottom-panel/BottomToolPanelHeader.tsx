@@ -1,34 +1,19 @@
 import { FC } from "react";
-import { StyleSheet, View } from "react-native";
 import { Button, MobileButtonProps } from "@mobile-ui";
 import { useSubjectState } from "@tinker-chest";
 import { useBottomToolPanelHeader, useMachineWard } from "@apparatus";
-
-const styles = StyleSheet.create({
-    container: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: 8,
-    },
-    leftSection: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    rightSection: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-});
+import { BottomToolPanelHeaderContainer } from "./BottomToolPanelHeaderContainer";
 
 interface Props {
     activeId: string | null;
     onActiveIdChange: (activeId: string | null) => void;
+    joinHeaderButtons?: boolean;
 }
 
 export const BottomToolPanelHeader: FC<Props> = ({
     activeId,
     onActiveIdChange,
+    joinHeaderButtons,
 }) => {
     const { translatron, individuator } = useMachineWard();
     const [registry] = useSubjectState(translatron.registry$);
@@ -40,35 +25,36 @@ export const BottomToolPanelHeader: FC<Props> = ({
         collapseExpandButtonProps: { icon: collapseExpandIcon, ...colExpProps },
         onSelect,
         onCollapseExpand,
-    } = useBottomToolPanelHeader(activeId, onActiveIdChange);
+        header,
+    } = useBottomToolPanelHeader(activeId, onActiveIdChange, { joinHeaderButtons});
 
     return (
-        <View style={styles.container}>
-            <View style={styles.leftSection}>
-                {effectivePanels.map((toolPanel) => {
-                    const tooltip = translatron.translate(settings.language, registry, toolPanel.title);
-                    const isActive = activeId === toolPanel.id;
-
-                    return (
-                        <Button
-                            key={toolPanel.id}
-                            active={isActive}
-                            icon={toolPanel.icon as unknown as MobileButtonProps['icon']}
-                            accessibilityLabel={tooltip}
-                            tooltip={tooltip}
-                            onPress={onSelect(toolPanel)}
-                            {...buttonProps}
-                        />
-                    );
-                })}
-            </View>
-            <View style={styles.rightSection}>
+        <BottomToolPanelHeaderContainer
+            sideActions={
                 <Button
                     icon={collapseExpandIcon as unknown as MobileButtonProps['icon']}
                     onPress={onCollapseExpand}
                     {...colExpProps}
                 />
-            </View>
-        </View>
+            }
+            {...header}
+        >
+            {effectivePanels.map((toolPanel) => {
+                const tooltip = translatron.translate(settings.language, registry, toolPanel.title);
+                const isActive = activeId === toolPanel.id;
+
+                return (
+                    <Button
+                        key={toolPanel.id}
+                        active={isActive}
+                        icon={toolPanel.icon as unknown as MobileButtonProps['icon']}
+                        accessibilityLabel={tooltip}
+                        tooltip={tooltip}
+                        onPress={onSelect(toolPanel)}
+                        {...buttonProps}
+                    />
+                );
+            })}
+        </BottomToolPanelHeaderContainer>
     );
 };

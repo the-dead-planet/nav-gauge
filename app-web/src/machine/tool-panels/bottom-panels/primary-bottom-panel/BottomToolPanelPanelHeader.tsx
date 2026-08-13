@@ -25,7 +25,8 @@ export const BottomToolPanelHeader: FC<Props> = ({
         collapseExpandButtonProps: { accessibilityLabel, ...colExpProps },
         onSelect,
         onCollapseExpand,
-    } = useBottomToolPanelHeader(activeId, onActiveIdChange);
+        header,
+    } = useBottomToolPanelHeader(activeId, onActiveIdChange, { joinHeaderButtons });
 
     return (
         <BottomToolPanelHeaderContainer
@@ -37,6 +38,7 @@ export const BottomToolPanelHeader: FC<Props> = ({
                 />
             }
             joinHeaderButtons={joinHeaderButtons}
+            {...header}
         >
             {effectivePanels.map((toolPanel) => {
                 const tooltip = translatron.translate(settings.language, registry, toolPanel.title);
