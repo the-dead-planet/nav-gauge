@@ -19,8 +19,8 @@ The workspace root is `/` (package.json and yarn commands live there, not at rep
 | `yarn test:e2e:web:dev` | Cypress E2E against localhost |
 | `yarn dev:mobile` | Start mobile dev (Android) |
 | `yarn start:mobile` | Start Metro server |
-| `yarn typecheck:web` | TypeScript check for web packages |
-| `yarn typecheck:mobile` | TypeScript check for mobile packages |
+| `yarn typecheck:web` | TypeScript check for web packages (exits) |
+| `yarn typecheck:mobile` | TypeScript check for mobile packages (watch mode — never exits; 0 errors means it passed, just Ctrl-C) |
 | `yarn lint` (in workspace) | ESLint check (zero warnings policy) |
 | `yarn ui:web` | Start Storybook for web UI |
 | `yarn generate:gear <name>` | Scaffold a new gear from `.templates/` |

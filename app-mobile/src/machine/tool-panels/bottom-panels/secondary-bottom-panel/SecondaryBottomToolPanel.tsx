@@ -1,10 +1,11 @@
 import { FC, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { Animated, StyleSheet, View } from "react-native";
 import { useMachineWard, useSecondaryBottomToolPanel } from "@apparatus";
 import { useTheme } from "@ui";
 import { ToolPanelHeader } from "../../panel-header/ToolPanelHeader";
 import { BottomSecondaryToolPanelResizeHandle } from "./SecondaryBottomToolPanelResizeHandle";
 import { MobileMap } from "@mobile-ui";
+import { useAnimatedSize } from "../../useAnimatedSize";
 
 const styles = StyleSheet.create({
     container: {
@@ -31,7 +32,7 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
 }) => {
     const theme = useTheme();
     const { toolsStation } = useMachineWard();
-    const [_isDragging, setIsDragging] = useState(false);
+    const [isDragging, setIsDragging] = useState(false);
 
     const {
         show,
@@ -39,6 +40,8 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
         toolPanel,
         handleToolSelect,
     } = useSecondaryBottomToolPanel(activeId, onActiveIdChange);
+
+    const animatedHeight = useAnimatedSize(effectiveHeight, { animate: !isDragging });
 
     if (!show) {
         return null;
@@ -50,9 +53,9 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
                 toolsStation.bottomSecondaryToolPanelSizeRef.current = instance;
             }}
             style={styles.container}>
-            <View
+            <Animated.View
                 style={{
-                    height: effectiveHeight,
+                    height: animatedHeight,
                     backgroundColor: theme.componentColor('background', 0.87),
                     borderTopWidth: 1,
                     borderTopColor: theme.color('primary'),
@@ -73,7 +76,7 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
                         </View>
                     </View>
                 ) : null}
-            </View>
+            </Animated.View>
             <BottomSecondaryToolPanelResizeHandle onDraggingChange={setIsDragging} />
         </View>
     );

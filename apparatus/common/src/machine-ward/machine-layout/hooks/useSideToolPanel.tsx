@@ -76,7 +76,6 @@ export const useSideToolPanel = (
         swapPlacementLabel,
         show,
         toolPanel,
-        effectivePanels,
         currentWidth,
         handleSidePanelActiveIdChange,
     };

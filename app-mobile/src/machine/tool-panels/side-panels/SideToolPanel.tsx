@@ -1,11 +1,12 @@
 import { FC, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { Animated, StyleSheet, View } from "react-native";
 import { Menu, MenuItem } from "@mobile-ui";
 import { assignSideToolPanelRef, swapSideToolPanelPlacement, useMachineWard, useSideToolPanel } from "@apparatus";
 import { useTheme } from "@ui";
 import { ToolPanelHeader } from "../panel-header/ToolPanelHeader";
 import { SideToolPanelResizeHandle } from "./SideToolPanelResizeHandle";
 import { MobileMap } from "@mobile-ui";
+import { useAnimatedSize } from "../useAnimatedSize";
 
 const styles = StyleSheet.create({
     content: {
@@ -40,25 +41,18 @@ export const SideToolPanel: FC<Props> = ({
 }) => {
     const { toolsStation } = useMachineWard();
     const theme = useTheme();
-    const [_isDragging, setIsDragging] = useState(false); // TODO: Should disable transition when dragging
+    const [isDragging, setIsDragging] = useState(false);
 
     const {
         panelMenuLabel,
         swapPlacementLabel,
         show,
         toolPanel,
-        effectivePanels,
         currentWidth,
         handleSidePanelActiveIdChange,
     } = useSideToolPanel(placement, activeId, onActiveIdChange);
 
-    const sideHeader = (
-        <ToolPanelHeader
-            placement={placement}
-            activeId={activeId}
-            onActiveIdChange={handleSidePanelActiveIdChange}
-        />
-    );
+    const animatedWidth = useAnimatedSize(currentWidth, { animate: !isDragging });
 
     if (!show) {
         return null;
@@ -70,43 +64,44 @@ export const SideToolPanel: FC<Props> = ({
             style={[
                 {
                     backgroundColor: theme.componentColor('background', 0.87),
-                    width: currentWidth,
                 },
                 placement === 'right'
                     ? { borderLeftWidth: 1, borderLeftColor: theme.color('neutral') }
                     : { borderRightWidth: 1, borderRightColor: theme.color('neutral') },
             ]}
         >
-            {effectivePanels.length > 0 && (
+            <Animated.View style={{ flex: 1, width: animatedWidth, overflow: 'hidden' }}>
                 <View style={styles.content}>
-                    {sideHeader}
-                    {toolPanel ? (
-                        <View style={styles.component}>
-                            {toolPanel.placement !== 'bottom' || toolPanel?.headerComponent ? (
-                                <View style={styles.componentHeader}>
-                                    {toolPanel.headerComponent ? <toolPanel.headerComponent map={map} placement={toolPanel.placement} /> : null}
-                                    {toolPanel.placement !== 'bottom' ? (
-                                        <Menu
-                                            tooltip={panelMenuLabel}
-                                            tooltipPlacement="bottom"
-                                            placement={toolPanel.placement === "right" ? "bottom-right" : "bottom-left"}
-                                            iconActiveColor="secondary"
-                                            iconSize="xs"
-                                        >
-                                            <MenuItem key="swap-placement" onPress={swapSideToolPanelPlacement(toolPanel, toolsStation)}>
-                                                {swapPlacementLabel}
-                                            </MenuItem>
-                                        </Menu>
-                                    ) : null}
-                                </View>
-                            ) : null}
-                            <View style={styles.componentContent}>
-                                <toolPanel.contentComponent map={map} placement={toolPanel.placement} />
+                    <ToolPanelHeader
+                        placement={placement}
+                        activeId={activeId}
+                        onActiveIdChange={handleSidePanelActiveIdChange}
+                    />
+                    <View style={styles.component}>
+                        {toolPanel?.headerComponent ? (
+                            <View style={styles.componentHeader}>
+                                {toolPanel.headerComponent ? <toolPanel.headerComponent map={map} placement={toolPanel.placement} /> : null}
+                                {toolPanel.placement !== 'bottom' ? (
+                                    <Menu
+                                        tooltip={panelMenuLabel}
+                                        tooltipPlacement="bottom"
+                                        placement={toolPanel.placement === "right" ? "bottom-right" : "bottom-left"}
+                                        iconActiveColor="secondary"
+                                        iconSize="xs"
+                                    >
+                                        <MenuItem key="swap-placement" onPress={swapSideToolPanelPlacement(toolPanel, toolsStation)}>
+                                            {swapPlacementLabel}
+                                        </MenuItem>
+                                    </Menu>
+                                ) : null}
                             </View>
+                        ) : null}
+                        <View style={styles.componentContent}>
+                            {toolPanel ? <toolPanel.contentComponent map={map} placement={toolPanel.placement} /> : null}
                         </View>
-                    ) : null}
+                    </View>
                 </View>
-            )}
+            </Animated.View>
             <SideToolPanelResizeHandle placement={placement} onDraggingChange={setIsDragging} />
         </View>
     );

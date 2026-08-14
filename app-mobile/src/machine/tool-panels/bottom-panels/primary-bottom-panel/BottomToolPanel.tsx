@@ -1,14 +1,21 @@
-import { FC, useLayoutEffect, useRef } from "react";
-import { LayoutAnimation, StyleSheet, View } from "react-native";
+import { FC, useState } from "react";
+import { Animated, StyleSheet, View } from "react-native";
 import { assignBottomToolPanelRef, useBottomToolPanel, useMachineWard } from "@apparatus";
 import { BottomToolPanelHeader } from "./BottomToolPanelHeader";
 import { MobileMap } from "@mobile-ui";
 import { useTheme } from "@ui";
+import { useAnimatedSize } from "../../useAnimatedSize";
 
 const styles = StyleSheet.create({
     componentHeader: {
         flexDirection: 'row',
         paddingHorizontal: 8,
+    },
+    measuredContent: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
     },
 });
 
@@ -29,13 +36,8 @@ export const BottomToolPanel: FC<Props> = ({
     const { toolsStation } = useMachineWard();
     const { show, toolPanel } = useBottomToolPanel(activeId);
 
-    const prevActiveId = useRef(activeId);
-    useLayoutEffect(() => {
-        if (prevActiveId.current !== activeId) {
-            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-            prevActiveId.current = activeId;
-        }
-    }, [activeId]);
+    const [naturalHeight, setNaturalHeight] = useState(0);
+    const animatedHeight = useAnimatedSize(toolPanel !== undefined ? naturalHeight : 0);
 
     if (!show) {
         return null;
@@ -52,20 +54,29 @@ export const BottomToolPanel: FC<Props> = ({
                     onActiveIdChange={onActiveIdChange}
                     joinHeaderButtons={joinHeaderButtons}
                 />
-                <View>
-                    {toolPanel ? (
-                        <>
-                            {toolPanel.headerComponent ? (
-                                <View style={styles.componentHeader}>
-                                    <toolPanel.headerComponent map={map} placement={toolPanel.placement} />
+                <Animated.View style={{ height: animatedHeight, overflow: 'hidden' }}>
+                    <View
+                        style={styles.measuredContent}
+                        onLayout={(event) => {
+                            if (toolPanel) {
+                                setNaturalHeight(event.nativeEvent.layout.height);
+                            }
+                        }}
+                    >
+                        {toolPanel ? (
+                            <>
+                                {toolPanel.headerComponent ? (
+                                    <View style={styles.componentHeader}>
+                                        <toolPanel.headerComponent map={map} placement={toolPanel.placement} />
+                                    </View>
+                                ) : null}
+                                <View>
+                                    <toolPanel.contentComponent map={map} placement={toolPanel.placement} />
                                 </View>
-                            ) : null}
-                            <View>
-                                <toolPanel.contentComponent map={map} placement={toolPanel.placement} />
-                            </View>
-                        </>
-                    ) : null}
-                </View>
+                            </>
+                        ) : null}
+                    </View>
+                </Animated.View>
             </View>
         </View>
     );

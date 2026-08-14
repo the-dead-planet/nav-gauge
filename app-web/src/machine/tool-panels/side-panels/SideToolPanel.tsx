@@ -25,20 +25,11 @@ export const SideToolPanel: FC<Props> = ({
     const {
         panelMenuLabel,
         swapPlacementLabel,
-        show: showHeader,
+        show,
         toolPanel,
-        effectivePanels,
         currentWidth,
         handleSidePanelActiveIdChange,
     } = useSideToolPanel(placement, activeId, onActiveIdChange);
-
-    const sideHeader = showHeader ? (
-        <ToolPanelHeader
-            placement={placement}
-            activeId={activeId}
-            onActiveIdChange={handleSidePanelActiveIdChange}
-        />
-    ) : null;
 
     return (
         <div
@@ -50,10 +41,14 @@ export const SideToolPanel: FC<Props> = ({
             )}
             style={{ width: currentWidth }}
         >
-            {effectivePanels.length > 0 && (
+            {show ? (
                 <>
-                    <div className={classNames(styles['content'], { [styles['with-header']]: showHeader })}>
-                        {sideHeader}
+                    <div className={styles['content']}>
+                        <ToolPanelHeader
+                            placement={placement}
+                            activeId={activeId}
+                            onActiveIdChange={handleSidePanelActiveIdChange}
+                        />
                         {toolPanel ? (
                             <div className={styles['component']}>
                                 {toolPanel.placement !== 'bottom' || toolPanel?.headerComponent ? (
@@ -89,7 +84,7 @@ export const SideToolPanel: FC<Props> = ({
                     </div>
                     <SideToolPanelResizeHandle placement={placement} onDraggingChange={setIsDragging} />
                 </>
-            )}
+            ) : null}
         </div>
     );
 };

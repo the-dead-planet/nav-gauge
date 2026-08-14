@@ -155,12 +155,9 @@
 }
 
 .toolbar.left .content {
-    box-shadow: 1px 1px 3px rgb(from var(--color-box-shadow) r g b / .4);
-}
-
-.toolbar.left .content.with-header {
     display: grid;
     grid-template-columns: max-content 1fr;
+    box-shadow: 1px 1px 3px rgb(from var(--color-box-shadow) r g b / .4);
 }
 
 /* On isLessThanSm left and right toolbars are displayed combined in a secondary bottom toolbar */
@@ -177,17 +174,29 @@
 }
 
 .toolbar.right .content {
-    box-shadow: -1px 1px 3px rgb(from var(--color-box-shadow) r g b / .4);
-}
-
-.toolbar.right .content.with-header {
     display: grid;
     grid-template-columns: max-content 1fr;
+    box-shadow: -1px 1px 3px rgb(from var(--color-box-shadow) r g b / .4);
 }
 
 .toolbar.bottom {
     grid-area: bottom-toolbar;
     max-height: 30dvh;
+}
+
+.toolbar.bottom .content {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.25s ease;
+}
+
+.toolbar.bottom .content.expanded {
+    grid-template-rows: 1fr;
+}
+
+.toolbar.bottom .component {
+    min-height: 0;
+    overflow: hidden;
 }
 
 .secondary-bottom-toolbar {
