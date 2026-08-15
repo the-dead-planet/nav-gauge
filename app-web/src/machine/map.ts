@@ -7,9 +7,7 @@ export const createMap = () => {
     return new maplibregl.Map({
         container,
         style: Cartomancer.styles['osm'].style,
-        attributionControl: {
-            compact: false,
-        },
+        attributionControl: false,
         maxPitch: 80,
     });
 };

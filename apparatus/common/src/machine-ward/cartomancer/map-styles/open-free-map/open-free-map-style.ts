@@ -41,7 +41,7 @@ export const openFreeMapDarkStyle: MapStyle = {
 };
 
 export const openFreeMapFiordStyle: MapStyle = {
-    label: 'Open Free Map - Dark',
+    label: 'Open Free Map - Fiord',
     style: 'https://tiles.openfreemap.org/styles/fiord',
     attribution,
 };

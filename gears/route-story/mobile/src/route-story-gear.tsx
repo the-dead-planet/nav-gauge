@@ -6,12 +6,39 @@ import { ImagesLayer } from './images/ImagesLayer';
 import { Player } from './player/Player';
 import { MobileMap } from '@mobile-ui';
 import { GeoJson, getExifError, getExifLngLat, ParsingResultWithError } from '@tinker-chest';
-import { Cartomancer, MarkerImage } from '@apparatus';
+import { Cartomancer, MarkerImage, GearApparatus, parsers } from '@apparatus';
+import bbox from "@turf/bbox";
 import { cacheReducedImage, prependFilePrefix, MobileMarkerImageData, resetTempSubfolder } from './images/image-parser';
 import { DocumentPickerResponse } from '@react-native-documents/picker';
 import { RouteName } from './player/RouteName';
 import { AnimationControlsSearch } from './animation-controls/AnimationControlsSearch';
 import { AnimationControls } from './animation-controls/AnimationControls';
+
+const SAMPLE_ROUTE = {
+   name: 'Lisboa walk.kml',
+};
+
+const SAMPLE_IMAGES = [
+   'IMG20260403173904.jpg',
+   'IMG20260403171748.jpg',
+   'IMG20260403163310.jpg',
+   'IMG20260403151457.jpg',
+   'IMG20260403151228.jpg',
+   'IMG20260403145737.jpg',
+   'IMG20260403141115.jpg',
+];
+
+const toDocumentPickerResponse = (uri: string, name: string, type: string): DocumentPickerResponse => ({
+   uri,
+   name,
+   error: null,
+   type,
+   nativeType: type,
+   size: null,
+   isVirtual: false,
+   convertibleToMimeTypes: null,
+   hasRequestedType: true,
+});
 
 export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPickerResponse, MobileMarkerImageData> {
    public playerComponent = Player;
@@ -20,6 +47,43 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPick
    public animatrixContentComponent = AnimationControls;
    public routeLayerComponent = RouteLayer;
    public imagesLayerComponent = ImagesLayer;
+
+   public constructor(apparatus: GearApparatus<MobileMap>) {
+      super(apparatus);
+
+      this.loadSampleRoute()
+         .catch(console.error)
+         .then(() => this.loadSampleImages())
+         .catch(console.error)
+         .then(() => this.isEngaged$.next(true));
+
+   }
+
+   private loadSampleRoute = async (): Promise<void> => {
+      const text = await RNFS.readFileAssets(SAMPLE_ROUTE.name, 'utf8');
+      const result = parsers.get('.kml')?.parseTextToGeoJson(text);
+      if (!result) {
+         return;
+      }
+      this.data$.next({ ...result, boundingBox: bbox(result.geojson) });
+   };
+
+   private loadSampleImages = async (): Promise<void> => {
+      const sampleDir = `${RNFS.TemporaryDirectoryPath}/samples`;
+      await RNFS.mkdir(sampleDir).catch(() => undefined);
+
+      const files = await Promise.all(
+         SAMPLE_IMAGES.map(async (name) => {
+            const destination = `${sampleDir}/${name}`;
+            await RNFS.copyFileAssets(name, destination);
+            return toDocumentPickerResponse(prependFilePrefix(destination), name, 'image/jpeg');
+         }),
+      );
+
+      if (this.apparatus.cartomancer.map) {
+         this.fileOperator.uploadFile(files, this.apparatus.cartomancer.map);
+      }
+   };
 
    public engageRouteStory = () => {
       resetTempSubfolder();
@@ -40,6 +104,7 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPick
 
       try {
          const exif = await Exify.read(file.uri);
+         console.log(exif)
          const { fullSize, thumbnail } = await cacheReducedImage(file, (error) => {
             this.apparatus.signaliumBureau.addNotice({
                id: 'image-resize',

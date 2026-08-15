@@ -30,6 +30,7 @@ export class Cartomancer<TMap> {
     public namespace = 'cartomancer';
     public translations: TranslationTable<CartomancerTranslationKey> = Translations;
     public translationKey = CartomancerTranslationKey;
+    public map: TMap | null = null;
 
     public static styles = {
         'background': backgroundMapStyle,

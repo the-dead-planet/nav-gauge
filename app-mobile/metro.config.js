@@ -61,7 +61,7 @@ const config = {
             '@tinker-chest': path.resolve(root, 'tinker-chest/src'),
             '@ui': path.resolve(root, 'ui/common/src'),
             '@mobile-ui': path.resolve(root, 'ui/mobile/src'),
-            ...gearsExtraNodeModules
+            ...gearsExtraNodeModules,
         },
         nodeModulesPaths: [
             path.resolve(__dirname, 'node_modules'),

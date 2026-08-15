@@ -5,11 +5,22 @@ import { RouteLayer } from './layers/RouteLayer';
 import { ImagesLayer } from './images/ImagesLayer';
 import { Player } from './player/Player';
 import { GeoJson, ParsingResultWithError } from '@tinker-chest';
-import { Cartomancer, MarkerImage } from '@apparatus';
+import { Cartomancer, MarkerImage, GearApparatus, parsers } from '@apparatus';
+import bbox from "@turf/bbox";
 import { parseImage, WebMarkerImageData } from './images/image-parser';
 import { AnimationControls } from './animation-controls/AnimationControls';
 import { RouteName } from './file-input/RouteName';
 import { AnimationControlsSearch } from './animation-controls/AnimationControlsSearch';
+
+const SAMPLE_IMAGE_NAMES = [
+   'IMG20260403173904.jpg',
+   'IMG20260403171748.jpg',
+   'IMG20260403163310.jpg',
+   'IMG20260403151457.jpg',
+   'IMG20260403151228.jpg',
+   'IMG20260403145737.jpg',
+   'IMG20260403141115.jpg',
+];
 
 export class WebRouteStoryGear extends RouteStoryGear<maplibregl.Map, File, WebMarkerImageData> {
    public routeUploadComponent = RouteName;
@@ -18,6 +29,37 @@ export class WebRouteStoryGear extends RouteStoryGear<maplibregl.Map, File, WebM
    public animatrixContentComponent = AnimationControls;
    public routeLayerComponent = RouteLayer;
    public imagesLayerComponent = ImagesLayer;
+
+   public constructor(apparatus: GearApparatus<maplibregl.Map>) {
+      super(apparatus);
+
+      fetch('/Lisboa walk.kml')
+         .then((file) => file.text())
+         .then((text) => parsers.get('.kml')?.parseTextToGeoJson(text))
+         .then((result) => {
+            if (!result) {
+               return;
+            }
+            this.data$.next({ ...result, boundingBox: bbox(result.geojson) });
+         })
+         .catch(console.error)
+         .then(() => this.loadSampleImages())
+         .catch(console.error)
+         .then(() => this.isEngaged$.next(true));
+   }
+
+   private loadSampleImages = async (): Promise<void> => {
+      const files = await Promise.all(
+         SAMPLE_IMAGE_NAMES.map(async (name) => {
+            const blob = await fetch(`/${name}`).then((response) => response.blob());
+            return new File([blob], name, { type: blob.type || 'image/jpeg' });
+         }),
+      );
+
+      if (this.apparatus.cartomancer.map) {
+         this.fileOperator.uploadFile(files, this.apparatus.cartomancer.map);
+      }
+   };
 
    public fitBounds = (map: maplibregl.Map, sw: [number, number], ne: [number, number]) => {
       const { topToolbarSizeRef, rightToolPanelSizeRef, leftToolPanelSizeRef, bottomToolPanelSizeRef, bottomSecondaryToolPanelSizeRef } = this.apparatus.toolsStation;

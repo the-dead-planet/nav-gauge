@@ -26,7 +26,7 @@ export const addCompassToolIcon = <TMap>(
     }
 
     getViewState()
-        .then(({ center, bearing, pitch }) => {
+        .then(({ bearing, pitch }) => {
             if (abortController.signal.aborted) {
                 return;
             }
@@ -37,7 +37,11 @@ export const addCompassToolIcon = <TMap>(
                 placement: 'right',
                 tooltip: { n: cartomancer.namespace, t: cartomancer.translationKey.Compass },
                 onClick: () => {
-                    easeTo?.({ center, bearing: 0, pitch: 0 });
+                    getViewState()
+                        .then(({ center }) => {
+                            easeTo?.({ center, bearing: 0, pitch: 0 });
+                        })
+                        .catch(console.error)
                 },
             });
         })

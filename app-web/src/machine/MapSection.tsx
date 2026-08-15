@@ -17,8 +17,10 @@ export const MapSection: FC = () => {
     useEffect(() => {
         const m = createMap();
         setMap(m);
+        cartomancer.map = m;
 
         return () => {
+            cartomancer.map = null;
             setMap(undefined);
             requestAnimationFrame(() => m.remove());
         };

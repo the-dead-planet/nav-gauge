@@ -35,7 +35,7 @@ export const useMapTools = (map: maplibregl.Map) => {
                     pitch: map.getPitch(),
                 };
             },
-            map.easeTo,
+            (options) => map.easeTo(options),
         );
 
         const rotateHandler = () => {
@@ -69,7 +69,7 @@ export const useMapTools = (map: maplibregl.Map) => {
                     zoom: map.getZoom(),
                 };
             },
-            map.easeTo,
+            (options) => map.easeTo(options),
         );
         const zoomEndHandler = () => {
             updateCurrentZoomIcon(toolsStation, clickedZoom, async () => map.getZoom());

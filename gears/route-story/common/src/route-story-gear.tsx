@@ -123,6 +123,9 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
         this.presetSubscription = this.subscribePreset();
         this.presetActiveSubscription = this.subscribePresetActive();
         this.engageRouteStory?.();
+        if (this.apparatus.cartomancer.map) {
+            this.fitBoundsHandler(this.apparatus.cartomancer.map, this.data$.value.boundingBox);
+        }
         this.dataSubscription = this.subscribeToDataUpdates();
 
         this.apparatus.toolsStation.addTopTool(

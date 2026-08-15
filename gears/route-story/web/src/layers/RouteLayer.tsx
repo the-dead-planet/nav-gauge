@@ -36,16 +36,6 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteStoryPr
         bearingLineLengthInMeters,
     } = animationControls;
 
-    useEffect(() => {
-        fetch('/example.gpx')
-            .then((file) => file.text())
-            .then((text) => parsers.get('.gpx')?.parseTextToGeoJson(text))
-            .then((result) => setData(result ? {
-                ...result,
-                boundingBox: bbox(result.geojson)
-            } : {}));
-    }, []);
-
     const loadedImages = useLoadedWebImages(images);
 
     const sources = useMemo((): { [key in 'line' | 'currentPoint']: GeoJSON.GeoJSON } => {
