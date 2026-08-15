@@ -38,6 +38,16 @@ export const LayoutMenu: FC = () => {
                 >
                     <T n={namespace} t={translationKey.Legal} />
                 </MenuItem>
+                {/* TODO: Move to legal */}
+                <MenuItem
+                    key="legal"
+                    type="link"
+                    href="/storybook/?path=/story/icons"
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    Icon creators
+                </MenuItem>
                 <MenuItem
                     key="privacy"
                     type="link"
