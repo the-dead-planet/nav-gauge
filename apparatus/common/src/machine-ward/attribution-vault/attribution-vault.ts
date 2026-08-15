@@ -2,16 +2,16 @@ import { BehaviorSubject } from "rxjs";
 import { AttributionEntry } from "./model";
 
 export class AttributionVault {
-    public attributions$ = new BehaviorSubject<Map<string, AttributionEntry>>(new Map());
+    public attributions$ = new BehaviorSubject<Map<string, AttributionEntry[]>>(new Map());
 
-    public constructor() {}
+    public constructor() { }
 
     /**
      * Adds new entry. If an entry with a given id already exists, it will be overwritten.
      */
-    public addEntry = (id: string, entry: AttributionEntry) => {
+    public addEntry = (id: string, entry: AttributionEntry | AttributionEntry[]) => {
         const nextValue = new Map(this.attributions$.value);
-        nextValue.set(id, entry);
+        nextValue.set(id, Array.isArray(entry) ? entry : [entry]);
         this.attributions$.next(nextValue);
     };
 

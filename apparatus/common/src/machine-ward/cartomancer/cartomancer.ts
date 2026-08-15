@@ -3,7 +3,16 @@ import { BehaviorSubject, Subscription } from "rxjs";
 import turfDistance from "@turf/distance";
 import { point as turfPoint } from "@turf/helpers";
 import { FeatureProperties, GeoJson, LngLat } from "@tinker-chest";
-import { backgroundMapStyle, customRoadsMapStyle, osmMapStyle } from "./map-styles";
+import {
+    backgroundMapStyle,
+    customRoadsMapStyle,
+    openFreeMapBrightStyle,
+    openFreeMapDarkStyle,
+    openFreeMapLibertyStyle,
+    openFreeMapPositronStyle,
+    openFreeMapFiordStyle,
+    osmMapStyle,
+} from "./map-styles";
 import { StorageKeeper } from "../storage-keeper";
 import { CartomancerTranslationKey, GaugeControlsType, MapLayout, OverlayComponentProps } from "./model";
 import { ToolsStation } from "../tools-station";
@@ -24,11 +33,16 @@ export class Cartomancer<TMap> {
 
     public static styles = {
         'background': backgroundMapStyle,
+        'open-free-map-bright': openFreeMapBrightStyle,
+        'open-free-map-dark': openFreeMapDarkStyle,
+        'open-free-map-fiord': openFreeMapFiordStyle,
+        'open-free-map-positron': openFreeMapPositronStyle,
+        'open-free-map-liberty': openFreeMapLibertyStyle,
         'osm': osmMapStyle,
         'custom-roads': customRoadsMapStyle
     }
 
-    private defaultStyleId: keyof typeof Cartomancer.styles = 'osm';
+    private defaultStyleId: keyof typeof Cartomancer.styles = 'open-free-map-dark';
 
     public static defaultGaugeControls: GaugeControlsType = {
         globeProjection: true,
