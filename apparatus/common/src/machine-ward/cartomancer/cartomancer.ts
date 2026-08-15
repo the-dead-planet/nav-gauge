@@ -87,8 +87,10 @@ export class Cartomancer<TMap> {
     private mapLayoutStorageSubscription: Subscription | null = null;
     public mapLayout$: BehaviorSubject<MapLayout>;
 
-    public constructor(prefersLightColorScheme: boolean) {
-        this.defaultStyleId = prefersLightColorScheme ? 'open-free-map-positron' : 'open-free-map-dark';
+    public constructor(
+        _prefersLightColorScheme: boolean,
+    ) {
+        this.defaultStyleId = 'open-free-map-dark';
         this.selectedStyle$ = new BehaviorSubject<SelectedStyle>({ id: this.defaultStyleId });
         this.gaugeControls$ = new BehaviorSubject(Cartomancer.defaultGaugeControls);
         this.mapLayout$ = new BehaviorSubject(Cartomancer.defaultMapLayout);

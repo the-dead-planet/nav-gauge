@@ -12,6 +12,17 @@ import {
 import { Icon } from "../icons";
 import { Tooltip } from "../tooltip";
 
+const styles = StyleSheet.create({
+    chip: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        alignSelf: 'flex-start',
+    },
+    label: {
+        lineHeight: 18,
+    },
+});
+
 interface Props {
     /**
      * Icon component, e.g. an icon from `@ui/icons`
@@ -88,7 +99,7 @@ export const Chip: FC<ChipProps & Props> = ({
 
     const container: ViewStyle = {};
     let backgroundColor = chipColor;
-    let labelColor = background;
+    let labelColor =  theme.componentColor('text');
     let borderWidth = 0;
     let borderColor = chipColor;
 
@@ -176,14 +187,3 @@ export const Chip: FC<ChipProps & Props> = ({
 
     return chip;
 };
-
-const styles = StyleSheet.create({
-    chip: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        alignSelf: 'flex-start',
-    },
-    label: {
-        lineHeight: 18,
-    },
-});

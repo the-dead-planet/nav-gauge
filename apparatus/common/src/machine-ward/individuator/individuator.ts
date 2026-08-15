@@ -68,9 +68,9 @@ export class Individuator {
     });
 
     public constructor(
-        prefersLightColorScheme: boolean
+        _prefersLightColorScheme: boolean
     ) {
-        const initialSettings = Individuator.getDefaultApplicationSettings(prefersLightColorScheme ? 'light' : 'dark');
+        const initialSettings = Individuator.getDefaultApplicationSettings('dark');
         this.settings$ = new BehaviorSubject<IndividuatorSettings>(initialSettings);
     }
 

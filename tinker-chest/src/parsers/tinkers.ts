@@ -52,7 +52,10 @@ export const getExifLngLat = (exif?: ExifLngLat): LngLat | undefined => {
     }
 
     if (typeof GPSLongitude === 'number' && typeof GPSLatitude === 'number') {
-        return { lng: GPSLongitude, lat: GPSLatitude };
+        return {
+            lng: GPSLongitude * (GPSLongitudeRef === 'W' ? -1 : 1),
+            lat: GPSLatitude * (GPSLatitudeRef === 'S' ? -1 : 1)
+        };
     }
 
     if (Array.isArray(GPSLongitude) && Array.isArray(GPSLatitude)) {

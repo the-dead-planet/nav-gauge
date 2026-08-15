@@ -56,7 +56,6 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPick
          .then(() => this.loadSampleImages())
          .catch(console.error)
          .then(() => this.isEngaged$.next(true));
-
    }
 
    private loadSampleRoute = async (): Promise<void> => {

@@ -22,8 +22,8 @@ export const Icon: FC<Props & IconProps> = ({ src, width = 24, height = 24, stro
         svg.setAttribute('style', `
             width:${width}px;
             height:${height}px;
-            fill:${fill || 'inherit'};
-            stroke:${stroke || 'inherit'};
+            fill:${fill || 'currentColor'};
+            stroke:${stroke || 'currentColor'};
             color:${color || 'inherit'};
             stroke-width:${strokeWidth || 'inherit'}px
         `);

@@ -1,7 +1,6 @@
 import { FC, useEffect, useMemo } from "react";
 import maplibregl, { LngLat } from "maplibre-gl";
-import bbox from "@turf/bbox";
-import { OverlayComponentProps, useMachineWard, parsers } from "@apparatus";
+import { OverlayComponentProps, useMachineWard } from "@apparatus";
 import { getRouteSourceData, RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { emptyCollection, useSubjectState } from "@tinker-chest";
 import { updateRouteLayer } from "../tinkers";
