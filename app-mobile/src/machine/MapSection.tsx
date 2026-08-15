@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import { BehaviorSubject } from "rxjs";
 import { CameraRef, MapRef } from "@maplibre/maplibre-react-native";
@@ -46,6 +46,14 @@ export const MapSection: FC = () => {
     const { cartomancer } = useMachineWard();
     const [overlays] = useSubjectState(cartomancer.overlays$);
     const { handleError } = useMapSection();
+
+    useEffect(() => {
+        cartomancer.map = map;
+
+        return () => {
+            cartomancer.map = null;
+        };
+    }, []);
 
     return (
         <View style={styles.container}>

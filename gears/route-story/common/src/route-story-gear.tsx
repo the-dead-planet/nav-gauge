@@ -149,7 +149,7 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
             this.animatrixToolId,
             {
                 title: { n: this.animatrix.namespace, t: this.animatrix.translationKey.AnimatrixControls },
-                placement: 'right',
+                placement: 'left',
                 icon: Icons.NounProject.Animation as unknown as string,
                 headerComponent: this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, ToolPanelProps<TMap>>(this.animatrixHeaderComponent, this.getProps()),
                 contentComponent: this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, ToolPanelProps<TMap>>(this.animatrixContentComponent, this.getProps())

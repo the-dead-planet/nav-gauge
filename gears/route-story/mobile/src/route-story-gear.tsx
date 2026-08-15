@@ -69,24 +69,28 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPick
    };
 
    private loadSampleImages = async (): Promise<void> => {
-      const sampleDir = `${RNFS.TemporaryDirectoryPath}/samples`;
-      await RNFS.mkdir(sampleDir).catch(() => undefined);
-
       const files = await Promise.all(
          SAMPLE_IMAGES.map(async (name) => {
-            const destination = `${sampleDir}/${name}`;
+            const destination = `${RNFS.TemporaryDirectoryPath}/images/${name}`;
             await RNFS.copyFileAssets(name, destination);
             return toDocumentPickerResponse(prependFilePrefix(destination), name, 'image/jpeg');
          }),
       );
 
-      if (this.apparatus.cartomancer.map) {
-         this.fileOperator.uploadFile(files, this.apparatus.cartomancer.map);
-      }
+      setTimeout(() => {
+         if (this.apparatus.cartomancer.map) {
+            this.fileOperator.uploadFile(files, this.apparatus.cartomancer.map);
+         }
+      }, 3000);
    };
 
    public engageRouteStory = () => {
-      resetTempSubfolder();
+      // Temp files are cleaned at the purge boundary (onCleanupStory) and at the start of each sample load;
+      // resetting here would wipe the freshly-loaded sample files the moment the gear auto-engages.
+   };
+
+   public disengageRouteStory = () => {
+      // resetTempSubfolder();
    };
 
    public fitBounds = (map: MobileMap, sw: [number, number], ne: [number, number]) => {
@@ -104,7 +108,6 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPick
 
       try {
          const exif = await Exify.read(file.uri);
-         console.log(exif)
          const { fullSize, thumbnail } = await cacheReducedImage(file, (error) => {
             this.apparatus.signaliumBureau.addNotice({
                id: 'image-resize',

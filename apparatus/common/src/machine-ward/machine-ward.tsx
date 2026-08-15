@@ -47,7 +47,7 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
         
         this.storageKeeper = new StorageKeeper(storage);
         this.individuator = new Individuator(prefersLightColorScheme);      
-        this.cartomancer = new Cartomancer();
+        this.cartomancer = new Cartomancer(prefersLightColorScheme);
         this.chronoLens = new chronoLens(this.individuator);
 
         this.engine.addGears(
