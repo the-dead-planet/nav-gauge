@@ -24,7 +24,7 @@ export const Attributions: FC = () => {
         <View style={[styles.container, {
             backgroundColor: theme.componentColor('background', .6)
         }]}>
-            {entries.map(({ text, href }) => (
+            {entries.map(({ text }) => (
                 // TODO: Link
                 <Text key={text}>{text}</Text>
             ))}

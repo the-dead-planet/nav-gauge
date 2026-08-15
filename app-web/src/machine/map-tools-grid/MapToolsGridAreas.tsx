@@ -7,7 +7,6 @@ import { TopToolsGridArea } from "./TopToolsGridArea";
 import { PlaceholderToolPanel } from "../tool-panels/PlaceholderToolPanel";
 import { SecondaryBottomToolPanel } from "../tool-panels/bottom-panels/secondary-bottom-panel/SecondaryBottomToolPanel";
 import { BottomToolPanel } from "../tool-panels/bottom-panels/primary-bottom-panel/BottomToolPanel";
-import { Attributions } from "../../attributions/Attributions";
 
 interface Props {
     map?: maplibregl.Map;

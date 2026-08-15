@@ -3,7 +3,6 @@ import { ToolPanelProps, ToolsStation, TopToolsProps } from "../../tools-station
 import { Icons } from "@ui";
 import { Cartomancer, GaugeControlsType } from "../../cartomancer";
 import { CompassOptions, ZoomOptions } from "../model";
-import { AttributionVault } from "../../attribution-vault";
 
 let zoomEndHandlerTimeout: Timer;
 

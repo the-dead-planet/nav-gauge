@@ -19,7 +19,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteStoryPr
     progressMs$,
     playerOperator,
 }) => {
-    const [{ geojson }, setData] = useSubjectState(data$);
+    const [{ geojson }] = useSubjectState(data$);
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [progressMs] = useSubjectState(progressMs$);
