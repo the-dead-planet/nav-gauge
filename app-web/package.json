@@ -1,0 +1,84 @@
+{
+    "name": "@the-dead-planet/nav-gauge-app-web",
+    "version": "1.0.0",
+    "description": "Navigation gauge and route story generator for the web.",
+    "homepage": "https://gauge.spookydoodle.com",
+    "main": "src/index.tsx",
+    "type": "module",
+    "private": true,
+    "license": "AGPL-3.0",
+    "author": "spookydoodle",
+    "funding": "https://ko-fi.com/spookydoodle",
+    "repository": "https://github.com/the-dead-planet/nav-gauge",
+    "bugs": {
+        "url": "https://github.com/the-dead-planet/nav-gauge/issues"
+    },
+    "scripts": {
+        "analyze": "tsc --noEmit && ANALYZE=true rspack --mode production --config rspack.config.production.ts",
+        "dev": "rspack serve --mode development --config rspack.config.development.ts",
+        "start": "rspack serve --mode production --config rspack.config.production.ts",
+        "build": "tsc --noEmit && rspack --mode production --config rspack.config.production.ts",
+        "typecheck": "tsc --noEmit",
+        "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings -1",
+        "clean": "npx shx rm -rf node_modules/",
+        "test": "mocha",
+        "test:e2e": "cypress run",
+        "test:e2e:dev": "cypress run --config baseUrl=http://localhost:3000",
+        "test:e2e:prod": "cypress run --config baseUrl=https://gauge.spookydoodle.com",
+        "cypress": "cypress open"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "dependencies": {
+        "@the-dead-planet/nav-gauge-apparatus-common": "*",
+        "@the-dead-planet/nav-gauge-apparatus-web": "*",
+        "@the-dead-planet/nav-gauge-tinker-chest": "*",
+        "@the-dead-planet/nav-gauge-ui-common": "*",
+        "@the-dead-planet/nav-gauge-ui-web": "*",
+        "classnames": "^2.5.1",
+        "maplibre-gl": "5.24.0",
+        "pmtiles": "^4.4.1",
+        "react-dom": "19.2.8",
+        "react-svg": "^19.1.1"
+    },
+    "devDependencies": {
+        "@babel/core": "^8.0.1",
+        "@babel/preset-env": "^8.0.2",
+        "@babel/preset-react": "^8.0.1",
+        "@babel/preset-typescript": "^8.0.1",
+        "@rspack/cli": "2.1.8",
+        "@rspack/core": "2.1.8",
+        "@rspack/dev-server": "2.2.0",
+        "@rspack/plugin-react-refresh": "^2.0.2",
+        "@svgr/webpack": "^8.1.0",
+        "@testing-library/dom": "^10.4.1",
+        "@testing-library/react": "^16.3.2",
+        "@types/react-dom": "19.2.4",
+        "@types/react-refresh": "^0",
+        "@types/webpack-bundle-analyzer": "^4.7.0",
+        "babel-loader": "^10.1.1",
+        "babel-plugin-react-compiler": "^1.0.0",
+        "css-loader": "^7.1.4",
+        "cypress": "^15.20.0",
+        "react": "19.2.8",
+        "react-refresh": "^0.18.0",
+        "style-loader": "^4.0.0",
+        "ts-checker-rspack-plugin": "^1.6.0",
+        "webpack-bundle-analyzer": "^5.3.1",
+        "webpack-merge": "^6.0.1"
+    },
+    "peerDependencies": {
+        "react": "19.2.8",
+        "rxjs": "^7.8.2"
+    }
+}

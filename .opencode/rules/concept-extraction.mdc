@@ -1,0 +1,33 @@
+---
+description: Prefer extracting concepts over code
+alwaysApply: true
+---
+
+If a block of code can be described with a meaningful name,
+consider extracting it.
+
+Prefer:
+
+canDeleteProject()
+
+over
+
+if (...) { ... }
+
+Prefer:
+
+TimelineTicks
+
+over
+
+<div>...</div>
+
+Prefer:
+
+useDragSelection()
+
+over
+
+40 lines of pointer logic.
+
+Extraction should improve the language of the codebase, not simply reduce file size.

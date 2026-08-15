@@ -6,7 +6,7 @@ To be implemented later.
 
 ## Apps
 
-All code lives under `apps/`. Import direction: `tinker-chest` → `apparatus` → `gears` → `app`.
+All code lives under `/`. Import direction: `tinker-chest` → `apparatus` → `gears` → `app`.
 
 - `tinker-chest/` — foundational utilities (single package, no internal deps)
 - `apparatus/{common,web,mobile}/` — shared logic (common split from platform)

@@ -1,0 +1,93 @@
+.chip {
+    corner-shape: bevel;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+}
+
+.size-md {
+    font-size: 14px;
+    padding: 4px 8px;
+    gap: 8px;
+    border-radius: 6px;
+}
+
+.size-sm {
+    font-size: 12px;
+    padding: 2px 4px;
+    gap: 6px;
+    border-radius: 4px;
+}
+
+.size-xs {
+    font-size: 10px;
+    padding: 1px 3px;
+    gap: 4px;
+    border-radius: 2px;
+}
+
+.color-primary {
+    --chip-color: var(--color-primary);
+}
+
+.color-secondary {
+    --chip-color: var(--color-secondary);
+}
+
+.color-tertiary {
+    --chip-color: var(--color-tertiary);
+}
+
+.color-neutral {
+    --chip-color: var(--color-neutral);
+}
+
+.color-warning {
+    --chip-color: var(--color-warning);
+}
+
+.color-success {
+    --chip-color: var(--color-success);
+}
+
+.color-error {
+    --chip-color: var(--color-error);
+}
+
+.color-info {
+    --chip-color: var(--color-info);
+}
+
+.variant-fill {
+    background-color: var(--chip-color);
+    color: var(--color-background);
+}
+
+.variant-fill-inverse {
+    background-color: var(--color-background);
+    border: 1px solid var(--chip-color);
+    color: var(--chip-color);
+}
+
+.variant-fill-translucent {
+    background-color: rgb(from var(--chip-color) r g b / .24);
+    border: 1px solid rgb(from var(--chip-color) r g b / .3);
+    color: var(--chip-color);
+}
+
+.variant-ghost {
+    background-color: transparent;
+    color: var(--chip-color);
+}
+
+.variant-outline {
+    background-color: transparent;
+    border: 1px solid var(--chip-color);
+    color: var(--chip-color);
+}
+
+.variant-inset {
+    background-color: rgb(from var(--chip-color) r g b / .04);
+    border: 1px inset rgb(from var(--chip-color) r g b / .3);
+    color: var(--chip-color);
+}

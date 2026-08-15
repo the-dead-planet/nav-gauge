@@ -1,0 +1,15 @@
+---
+description: Reuse existing UI before creating new components
+globs: "**/*.{ts,tsx}"
+alwaysApply: true
+---
+
+Before introducing a new UI component, search the codebase for an existing implementation.
+
+Prefer, in order:
+1. Reuse an existing component.
+2. Extend an existing component.
+3. Compose existing components.
+4. Create a new component only when none of the above fit.
+
+Avoid creating components that duplicate existing behavior or styling with small differences.

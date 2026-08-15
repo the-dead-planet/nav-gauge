@@ -1,0 +1,10 @@
+---
+description: Keep rendering boundaries efficient
+globs: "**/*.{tsx}"
+---
+
+Keep rapidly changing UI state close to the component that renders it.
+
+Avoid passing subscriptions or rapidly changing values through intermediate components.
+
+Keep application state in RxJS state management and keep transient rendering state local.

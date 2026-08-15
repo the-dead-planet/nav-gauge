@@ -1,0 +1,1 @@
+export { BevelPanel } from './BevelPanel';

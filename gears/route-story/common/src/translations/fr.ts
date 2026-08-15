@@ -1,0 +1,31 @@
+import { GearTranslationKey, TranslationTable } from "@apparatus";
+import { RouteStoryTranslationKey } from "../model";
+
+const fr: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['fr'] = {
+    "gear-name": "Histoire d'itinéraire",
+    "gear-description": "Créer une histoire vidéo à partir de vos traces GPS et données d'image",
+    "fit-bounds": 'Acquérir la cible',
+    "player": 'Configuration du lecteur d\'itinéraire',
+    "no-name": 'Désignation nulle',
+    "upload-file": 'Télécharger un fichier avec traces GPS',
+    "replace-file": 'Remplacer le fichier avec traces GPS',
+    "purge-story": 'Purger l\'histoire',
+    "purge-story-text": 'Êtes-vous sûr de vouloir purger toutes les données de l\'histoire ? Cela supprimera l\'itinéraire et les images et ne peut pas être annulé.',
+    "cancel": 'Annuler',
+    "destroy-recording": 'Détruire le matériel de surveillance',
+    "start-recording": 'Commencer la surveillance',
+    "stop-recording": 'Arrêter la surveillance',
+    "pause-recording": 'Mettre en pause la surveillance',
+    "resume-recording": 'Reprendre la surveillance',
+    "layer-configuration": 'Esthétique des couches',
+    "lines": 'Lignes',
+    "points": 'Points',
+    "slider": 'Curseur',
+    "play": 'Lecture',
+    "pause": 'Pause',
+    "image": 'Image',
+    "show-image-markers": 'Afficher les marqueurs d\'image',
+    "hide-image-markers": 'Masquer les marqueurs d\'image',
+};
+
+export default fr;

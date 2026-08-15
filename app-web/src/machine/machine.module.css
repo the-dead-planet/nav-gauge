@@ -1,0 +1,331 @@
+.machine {
+    background-color: var(--color-background);
+    position: relative;
+    display: grid;
+    grid-template-columns: max-content max-content 1fr max-content max-content;
+    grid-template-rows: max-content max-content 1fr max-content max-content;
+    grid-template-areas:
+        "top-toolbar top-toolbar top-toolbar top-toolbar top-toolbar"
+        "left-toolbar left-icons top-tools right-icons right-toolbar"
+        "left-toolbar left-icons . right-icons right-toolbar"
+        "bottom-toolbar bottom-toolbar bottom-toolbar bottom-toolbar bottom-toolbar"
+        "bottom-secondary-toolbar bottom-secondary-toolbar bottom-secondary-toolbar bottom-secondary-toolbar bottom-secondary-toolbar";
+    overflow: hidden;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.machine>* {
+    z-index: 0;
+    max-width: 100dvw;
+    box-sizing: border-box;
+}
+
+.icons {
+    box-sizing: border-box;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.icons>*,
+.icons>*,
+.top-tools>* {
+    pointer-events: auto;
+}
+
+.icons.left {
+    grid-area: left-icons;
+    margin-left: 6px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 6px;
+    align-content: start;
+}
+
+.icons.right {
+    grid-area: right-icons;
+    margin-right: 4px;
+    padding-bottom: 8px;
+    padding-top: 4px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 4px;
+    align-content: end;
+}
+
+.icon-button {
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.2)) drop-shadow(0 2px 2px rgba(0, 0, 0, 0.12)) drop-shadow(0 8px 4px rgba(0, 0, 0, 0.06));
+}
+
+.icons.left .icon-button:nth-child(even) {
+    transform: translate(-7px, calc(50% + 3px));
+}
+
+.icons.right .icon-button:nth-child(odd) {
+    transform: translate(6px, calc(-50% - 2px));
+}
+
+.toolbar {
+    box-sizing: border-box;
+
+    --toolbar-background-color: rgb(from var(--color-background) r g b / .87);
+}
+
+.toolbar .content {
+    background-color: var(--toolbar-background-color);
+    backdrop-filter: blur(2px);
+}
+
+.toolbar.top {
+    grid-area: top-toolbar;
+    z-index: 1;
+}
+
+.toolbar.top .content {
+    height: 40px;
+    border-bottom: 1px solid var(--color-secondary);
+    box-shadow: 1px 1px 3px rgb(from var(--color-box-shadow) r g b / .4);
+}
+
+.toolbar.left .content,
+.toolbar.right .content {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+}
+
+.toolbar.left .component,
+.toolbar.right .component {
+    overflow: auto;
+    max-height: 100%;
+}
+
+.toolbar.left .component,
+.toolbar.right .component,
+.toolbar.bottom-secondary .component {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(from var(--color-secondary-700) r g b / .7) rgb(from var(--scrollbar-track-color) r g b / .7);
+}
+
+.toolbar.left .component > *,
+.toolbar.right .component > *,
+.toolbar.bottom-secondary .component > * {
+    scrollbar-color: var(--scrollbar-thumb-color) rgb(from var(--scrollbar-track-color) r g b / .7);
+}
+
+.toolbar.left .component::-webkit-scrollbar-thumb,
+.toolbar.right .component::-webkit-scrollbar-thumb,
+.toolbar.bottom-secondary .component::-webkit-scrollbar-thumb {
+    background: rgb(from var(--color-secondary-700) r g b / .7);
+}
+
+.toolbar.left .component::-webkit-scrollbar-thumb:hover,
+.toolbar.right .component::-webkit-scrollbar-thumb:hover,
+.toolbar.bottom-secondary .component::-webkit-scrollbar-thumb:hover {
+    background: var(--color-secondary);
+}
+
+.toolbar.left .component .component-header,
+.toolbar.right .component .component-header {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    position: sticky;
+    top: 0;
+    height: 32px;
+    margin-bottom: 15px;
+    background-color: rgb(from var(--color-background) r g b / .87);
+    backdrop-filter: blur(2px);
+    z-index: 1;
+}
+
+/* On isLessThanSm left and right toolbars are displayed combined in a secondary bottom toolbar */
+.placeholder-toolbar.left {
+    grid-area: left-toolbar;
+    width: 0;
+}
+
+.toolbar.left {
+    grid-area: left-toolbar;
+    border-right: 1px solid rgb(from var(--color-neutral) r g b / .4);
+    position: relative;
+    transition: width 0.25s ease;
+}
+
+.toolbar.left .content {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    box-shadow: 1px 1px 3px rgb(from var(--color-box-shadow) r g b / .4);
+}
+
+/* On isLessThanSm left and right toolbars are displayed combined in a secondary bottom toolbar */
+.placeholder-toolbar.right {
+    grid-area: right-toolbar;
+    width: 0;
+}
+
+.toolbar.right {
+    grid-area: right-toolbar;
+    border-left: 1px solid rgb(from var(--color-neutral) r g b / .4);
+    position: relative;
+    transition: width 0.25s ease;
+}
+
+.toolbar.right .content {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    box-shadow: -1px 1px 3px rgb(from var(--color-box-shadow) r g b / .4);
+}
+
+.toolbar.bottom {
+    grid-area: bottom-toolbar;
+    max-height: 30dvh;
+}
+
+.toolbar.bottom .content {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.25s ease;
+}
+
+.toolbar.bottom .content.expanded {
+    grid-template-rows: 1fr;
+}
+
+.toolbar.bottom .component {
+    min-height: 0;
+    overflow: hidden;
+}
+
+.secondary-bottom-toolbar {
+    grid-area: bottom-secondary-toolbar;
+    position: relative;
+}
+
+.toolbar.bottom-secondary {
+    min-height: 24px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: height 0.25s ease;
+    border-top: 1px solid var(--color-primary);
+}
+
+.toolbar.bottom-secondary .content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+.toolbar.bottom-secondary .component {
+    overflow: auto;
+    flex: 1;
+    min-height: 0;
+}
+
+.toolbar.bottom-secondary .component-content {
+    overflow: auto;
+    flex: 1;
+    min-height: 0;
+}
+
+/* On isLessThanSm left and right toolbars are displayed combined in a secondary bottom toolbar */
+.placeholder-toolbar.bottom-secondary {
+    grid-area: bottom-secondary-toolbar;
+}
+
+.toolbar.left .content-header,
+.toolbar.right .content-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.toolbar.left .content-header {
+    padding: 5px;
+    gap: 5px;
+}
+
+.toolbar.right .content-header {
+    padding: 0 0 5px 0;
+    gap: 1px;
+}
+
+.toolbar.bottom-secondary .content-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+
+.toolbar.bottom-secondary .content-header-controls {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-left: auto;
+}
+
+.top-tools {
+    grid-area: top-tools;
+    pointer-events: none;
+    min-width: 160px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.gears-heading {
+    font-size: 14px;
+    font-weight: 400;
+    height: 100%;
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    padding: 0 15px;
+    text-transform: uppercase;
+    border-right: 1px solid var(--color-border);
+}
+
+.spacer-line {
+    width: 1px;
+    background-color: var(--color-neutral-700);
+    height: auto;
+    flex-grow: 1;
+}
+
+.toolbar.left .expand-collapse-button,
+.toolbar.right .expand-collapse-button {
+    margin-top: auto;
+}
+
+.toolbar.dragging,
+.toolbar.dragging * {
+    transition: none;
+}
+
+.resize-handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 8px;
+    z-index: 10;
+}
+
+.resize-handle-left {
+    right: -4px;
+}
+
+.resize-handle-right {
+    left: -4px;
+}
+
+.resize-handle-bottom-secondary {
+    top: -4px;
+    bottom: auto;
+    width: 100%;
+    height: 8px;
+    cursor: row-resize;
+}

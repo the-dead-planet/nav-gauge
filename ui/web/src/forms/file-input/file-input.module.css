@@ -1,0 +1,17 @@
+.file-input {
+    display: none;
+}
+
+.container {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.route-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 50px;
+    max-width: calc(50dvw - 350px);
+}

@@ -1,0 +1,10 @@
+---
+description: TypeScript conventions
+globs: "**/*.{ts,tsx}"
+---
+
+- Strict TypeScript, no any.
+- Use explicit member accessibility.
+- Use full variable names, never abbreviations.
+- Prefer self-documenting code over comments.
+- Avoid unnecessary dependencies.

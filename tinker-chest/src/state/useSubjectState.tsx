@@ -1,0 +1,71 @@
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { BehaviorSubject, Observable} from 'rxjs';
+
+export function useSubjectState<T>(subject$: BehaviorSubject<T>): [T, Dispatch<SetStateAction<T>>] {
+    const [subject, setSubject] = useState<T>(subject$.value);
+
+    useEffect(() => {
+        const subscription = subject$.subscribe(setSubject);
+
+        return () => {
+            subscription.unsubscribe();
+        };
+    }, [subject$]);
+
+    const handleChange = (
+        value: T | ((prev: T) => T)
+    ) => {
+        if (typeof value === 'function') {
+            const nextValue = (value as (prev: T) => T)(subject$.value);
+            subject$.next(nextValue)
+        } else {
+            subject$.next(value);
+        }
+    };
+
+    return [subject, handleChange];
+}
+
+export function useObservableState<T>(subject$: Observable<T>, defaultValue: T): T {
+    const [subject, setSubject] = useState<T>(defaultValue);
+
+    useEffect(() => {
+        const subscription = subject$.subscribe(setSubject);
+
+        return () => {
+            subscription.unsubscribe();
+        };
+    }, [subject$]);
+
+    return subject;
+}
+
+export function useNullableSubjectState<T>(subject$: BehaviorSubject<T> | undefined, initialValue: T): [T, Dispatch<SetStateAction<T>>] {
+    const [subject, setSubject] = useState<T>(subject$?.value ?? initialValue);
+
+    useEffect(() => {
+        if (!subject$) {
+            return;
+        }
+        const subscription = subject$.subscribe(setSubject);
+
+        return () => {
+            subscription.unsubscribe();
+        };
+    }, [subject$]);
+
+    const handleChange = (
+        value: T | ((prev: T) => T)
+    ) => {
+        if (!subject$) {
+            setSubject(value);
+        } else if (typeof value === 'function') {
+            const nextValue = (value as (prev: T) => T)(subject$.value);
+            subject$.next(nextValue)
+        } else {
+            subject$.next(value);
+        }
+    };
+
+    return [subject, handleChange];
+}

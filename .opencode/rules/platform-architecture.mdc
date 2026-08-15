@@ -1,0 +1,29 @@
+---
+description: Platform and workspace architecture
+alwaysApply: true
+---
+
+Place code in the lowest-level package that owns the concept and satisfies its platform requirements.
+
+Package responsibilities:
+
+- `tinker-chest`: platform-agnostic utilities and primitives
+- `ui/common`: shared UI components and primitives
+- `ui/web`: web-specific UI components and styling
+- `ui/mobile`: mobile-specific UI components and styling
+- `apparatus/common`: shared application logic and state
+- `apparatus/web`: web-specific application logic and integrations
+- `apparatus/mobile`: mobile-specific application logic and integrations
+- `gears/*/common`: shared plugin logic
+- `gears/*/web`: web-specific plugin logic
+- `gears/*/mobile`: mobile-specific plugin logic
+- `app-web`: web application composition and entry points
+- `app-mobile`: mobile application composition and entry points
+
+Keep application packages focused on composition, wiring, and platform concerns.
+
+Keep reusable logic and state in lower-level packages.
+
+Only share code when behavior is genuinely platform-independent.
+
+Prefer duplication over incorrect abstraction.

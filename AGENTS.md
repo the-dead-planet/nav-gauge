@@ -4,6 +4,8 @@
 
 nav-gauge — open-source map & route data tools for content creators. Offline-first, no account required. Steampunk/cyber-inspired design.
 
+The workspace root is `/` (package.json and yarn commands live there, not at repo root).
+
 ## Commands
 
 | Command | Description |
@@ -17,6 +19,8 @@ nav-gauge — open-source map & route data tools for content creators. Offline-f
 | `yarn test:e2e:web:dev` | Cypress E2E against localhost |
 | `yarn dev:mobile` | Start mobile dev (Android) |
 | `yarn start:mobile` | Start Metro server |
+| `yarn typecheck:web` | TypeScript check for web packages (exits) |
+| `yarn typecheck:mobile` | TypeScript check for mobile packages (watch mode — never exits; 0 errors means it passed, just Ctrl-C) |
 | `yarn lint` (in workspace) | ESLint check (zero warnings policy) |
 | `yarn ui:web` | Start Storybook for web UI |
 | `yarn generate:gear <name>` | Scaffold a new gear from `.templates/` |
@@ -24,65 +28,28 @@ nav-gauge — open-source map & route data tools for content creators. Offline-f
 
 ## Architecture
 
-Monorepo with Yarn workspaces. Strict **import direction** (`apps/` layout):
+Monorepo with Yarn workspaces. Strict **import direction** (`/` layout):
 
-### Import sequence
-
-`tinker-chest` → `apparatus/{common,web,mobile}` → `gears/*/{common,web,mobile}` → `app-{web,mobile}`
-
-### Package locations
-
-| Package | Path |
-|---------|------|
-| Tinker Chest | `apps/tinker-chest/` (single package, not split) |
-| Apparatus Common | `apps/apparatus/common/` |
-| Apparatus Web | `apps/apparatus/web/` |
-| Apparatus Mobile | `apps/apparatus/mobile/` |
-| Gears | `apps/gears/*/{common,web,mobile}/` |
-| UI Common | `apps/ui/common/` |
-| UI Web | `apps/ui/web/` |
-| UI Mobile | `apps/ui/mobile/` |
-
-### Import rules summary
-
-| Package | Can be imported by |
-|---------|-------------------|
-| Tinker Chest | Apparatus (all), all Gears, both Apps, UI (all) |
-| Apparatus Common | Apparatus Web, Apparatus Mobile, all Gears, both Apps — NOT UI, NOT Tinker Chest |
-| Apparatus Web | Gear Web, App Web |
-| Apparatus Mobile | Gear Mobile, App Mobile |
-| UI Common | ALL modules — NOT Tinker Chest |
-| UI Web | Gear Web, App Web |
-| UI Mobile | Gear Mobile, App Mobile |
-
-No reverse imports. Always use `@package-name` aliases, never relative paths across workspaces.
+Strict import direction — see `.opencode/rules/import-constraints.mdc` for allowed importers and package paths.
 
 ### Gears (features)
-Each feature is a pluggable **Gear** with 1-3 packages: `common/` (abstract class), `web/`, `mobile/`. Gears implement the `Gear` interface from `@the-dead-planet/nav-gauge-apparatus-common`. Generate with `yarn generate:gear <name>` from `apps/`.
+Each feature is a pluggable **Gear** with 1-3 packages: `common/` (abstract class), `web/`, `mobile/`. Gears implement the `Gear` interface from `@the-dead-planet/nav-gauge-apparatus-common`. Generate with `yarn generate:gear <name>` from `/`.
 
 ## Code Style
 
-- Strict **TypeScript** — no `any`, explicit member accessibility
-- **React** + **RxJS** for state management (use `useMachineWard` hook)
-- **Luxon** for all date/time formatting
-- **4-space indentation**, semicolons required
-- Minimal JSDocs — code should be self-documenting; refactor if unclear
-- No bloated comments, no `TODO:`s (use GitHub issues instead)
-- Prefer fewer dependencies; write your own when feasible
+See `.opencode/rules/code-style.mdc`.
 
 ## Testing
 
-- **Web unit**: Mocha + Chai in `test/**/*.test.ts`
-- **Mobile unit**: Jest in `__tests__/*.test.tsx`
-- **Web E2E**: Cypress in `app-web/cypress/e2e/*.cy.ts`
-- Test complex logic; don't overcomplicate
+See `.opencode/rules/testing.mdc`.
 
 ## UI
 
-- Own UI library in `apps/ui/` — semantic, accessible, minimal
-- Steampunk/cyber-inspired styling
-- Theme variables in `@ui/common/src/theme/specifications.ts`
-- Reusable components must not contain business logic
+- Own UI library in `/ui/` — see `.opencode/rules/ui-conventions.mdc`
+
+## After changes
+
+Always run `yarn typecheck:web` (or `yarn typecheck:mobile` for mobile changes), `yarn lint`, and relevant tests after every code edit.
 
 ## Other
 

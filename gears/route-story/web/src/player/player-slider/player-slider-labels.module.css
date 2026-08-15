@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+    column-gap: 10px;
+}
+
+.text {
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+}
+
+.align-flex-right {
+    margin-left: auto;
+}

@@ -1,0 +1,53 @@
+@starting-style {
+    .slide.to-top {
+        transform: translate(0, 100%);
+    }
+
+    .slide.to-right {
+        transform: translate(-100%, 0);
+    }
+
+    .slide.to-bottom {
+        transform: translate(0, -100%);
+    }
+
+    .slide.to-left {
+        transform: translate(100%, 0);
+    }
+
+    .fade {
+        opacity: 0;
+    }
+}
+
+.slide {
+    transition: transform var(--duration) ease-out;
+}
+
+.slide.to-top.out {
+    transform: translate(0, 100%);
+}
+
+.slide.to-right.out {
+    transform: translate(-100%, 0);
+}
+
+.slide.to-bottom.out {
+    transform: translate(0, -100%);
+}
+
+.slide.to-left.out {
+    transform: translate(100%, 0);
+}
+
+.fade.out {
+    opacity: 0;
+}
+
+.fade {
+    transition: opacity var(--duration) ease-out;
+}
+
+.slide.fade {
+    transition: transform var(--duration) ease-out, opacity var(--duration) ease-out;
+}

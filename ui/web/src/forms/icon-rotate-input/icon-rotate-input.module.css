@@ -1,0 +1,200 @@
+/* ── Container ── */
+
+.container {
+    user-select: none;
+    font-family: var(--font-default, 'Space Grotesk', sans-serif);
+}
+
+/* ── Visual container (drag target) ── */
+
+.visual-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--rotate-size);
+    height: var(--rotate-size);
+    border-radius: 50%;
+    cursor: grab;
+}
+
+.container:focus-within:not(.disabled) .visual-container {
+    box-shadow: 0 0 0 2px var(--rotate-highlight), 0 0 8px var(--rotate-highlight-light);
+}
+
+.container-dragging .visual-container {
+    cursor: grabbing;
+}
+
+.disabled .visual-container {
+    cursor: not-allowed;
+}
+
+/* ── Disabled ── */
+
+.disabled {
+    opacity: .4;
+    cursor: not-allowed;
+}
+
+/* ── Mode ── */
+
+.mode-light {
+    --rotate-color-inverse: var(--rotate-color-light);
+    --rotate-highlight-inverse: var(--rotate-highlight-light);
+}
+
+.mode-dark {
+    --rotate-color-inverse: var(--rotate-color-dark);
+    --rotate-highlight-inverse: var(--rotate-highlight-dark);
+}
+
+/* ── Color ── */
+
+.color-neutral {
+    --rotate-color: var(--color-neutral);
+    --rotate-color-dark: var(--color-neutral-800);
+    --rotate-color-light: var(--color-neutral-100);
+}
+
+.color-primary {
+    --rotate-color: var(--color-primary);
+    --rotate-color-dark: var(--color-primary-900);
+    --rotate-color-light: var(--color-primary-100);
+}
+
+.color-secondary {
+    --rotate-color: var(--color-secondary);
+    --rotate-color-dark: var(--color-secondary-900);
+    --rotate-color-light: var(--color-secondary-100);
+}
+
+.color-tertiary {
+    --rotate-color: var(--color-tertiary);
+    --rotate-color-dark: var(--color-tertiary-900);
+    --rotate-color-light: var(--color-tertiary-100);
+}
+
+/* ── Highlight ── */
+
+.highlight-neutral {
+    --rotate-highlight: var(--color-neutral);
+    --rotate-highlight-dark: var(--color-neutral-800);
+    --rotate-highlight-light: var(--color-neutral-300);
+}
+
+.highlight-primary {
+    --rotate-highlight: var(--color-primary);
+    --rotate-highlight-dark: var(--color-primary-900);
+    --rotate-highlight-light: var(--color-primary-300);
+}
+
+.highlight-secondary {
+    --rotate-highlight: var(--color-secondary);
+    --rotate-highlight-dark: var(--color-secondary-900);
+    --rotate-highlight-light: var(--color-secondary-300);
+}
+
+.highlight-tertiary {
+    --rotate-highlight: var(--color-tertiary);
+    --rotate-highlight-dark: var(--color-tertiary-900);
+    --rotate-highlight-light: var(--color-tertiary-300);
+}
+
+/* ── Size ── */
+
+.size-xs {
+    --rotate-size: 48px;
+    --rotate-icon-size: 24px;
+    font-size: 10px;
+}
+
+.size-sm {
+    --rotate-size: 60px;
+    --rotate-icon-size: 32px;
+    font-size: 11px;
+}
+
+.size-md {
+    --rotate-size: 72px;
+    --rotate-icon-size: 40px;
+    font-size: 12px;
+}
+
+/* ── Overlay SVGs (ring + arrows) ── */
+
+.overlay-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .2s;
+}
+
+.container:hover .overlay-svg {
+    opacity: 1;
+}
+
+.container:focus-within .overlay-svg {
+    opacity: 1;
+}
+
+.container-dragging .overlay-svg {
+    opacity: 1;
+}
+
+/* ── Icon wrapper ── */
+
+.icon-wrapper {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    transition: transform .1s;
+}
+
+/* ── Overlay child elements ── */
+
+.overlay-ring,
+.overlay-arrows {
+    stroke: var(--rotate-color);
+}
+
+/* ── Hover highlight ── */
+
+.container:hover .overlay-ring,
+.container:hover .overlay-arrows {
+    stroke: var(--rotate-highlight-light);
+}
+
+.container-dragging .overlay-ring,
+.container-dragging .overlay-arrows {
+    stroke: var(--rotate-highlight-light);
+}
+
+/* ── A11y hidden slider ── */
+
+.a11y-slider {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ── Label ── */
+
+.label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}

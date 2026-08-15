@@ -32,11 +32,9 @@ jobs:
 
       - name: Install dependencies
         run: yarn install --immutable
-        working-directory: apps
 
       - name: Typecheck app-mobile
         run: yarn tsc --noEmit -p app-mobile
-        working-directory: apps
 
       - name: Typecheck gear mobile packages
         run: |
@@ -47,4 +45,3 @@ jobs:
             fi
           done
         shell: bash
-        working-directory: apps

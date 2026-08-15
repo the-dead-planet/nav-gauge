@@ -1,0 +1,171 @@
+.bevel-panel {
+    position: relative;
+    box-sizing: border-box;
+}
+
+.svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.color-neutral {
+    --bevel-color: var(--color-neutral);
+    --bevel-color-dark: var(--color-neutral-800);
+    --bevel-color-light: var(--color-neutral-100);
+}
+
+.color-primary {
+    --bevel-color: var(--color-primary);
+    --bevel-color-dark: var(--color-primary-900);
+    --bevel-color-light: var(--color-primary-100);
+}
+
+.color-secondary {
+    --bevel-color: var(--color-secondary);
+    --bevel-color-dark: var(--color-secondary-900);
+    --bevel-color-light: var(--color-secondary-100);
+}
+
+.color-tertiary {
+    --bevel-color: var(--color-tertiary);
+    --bevel-color-dark: var(--color-tertiary-900);
+    --bevel-color-light: var(--color-tertiary-100);
+}
+
+.highlight-color-neutral {
+    --bevel-highlight-color: var(--color-neutral-500);
+    --bevel-highlight-color-accent-darker: var(--color-neutral-600);
+    --bevel-highlight-color-accent-lighter: var(--color-neutral-300);
+    --bevel-highlight-color-dark: var(--color-neutral-800);
+    --bevel-highlight-color-light: var(--color-neutral-100);
+}
+
+.highlight-color-primary {
+    --bevel-highlight-color: var(--color-primary-500);
+    --bevel-highlight-color-accent-darker: var(--color-primary-600);
+    --bevel-highlight-color-accent-lighter: var(--color-primary-300);
+    --bevel-highlight-color-dark: var(--color-primary-900);
+    --bevel-highlight-color-light: var(--color-primary-100);
+}
+
+.highlight-color-secondary {
+    --bevel-highlight-color: var(--color-secondary-500);
+    --bevel-highlight-color-accent-darker: var(--color-secondary-600);
+    --bevel-highlight-color-accent-lighter: var(--color-secondary-300);
+    --bevel-highlight-color-dark: var(--color-secondary-900);
+    --bevel-highlight-color-light: var(--color-secondary-100);
+}
+
+.highlight-color-tertiary {
+    --bevel-highlight-color: var(--color-tertiary-500);
+    --bevel-highlight-color-accent-darker: var(--color-tertiary-600);
+    --bevel-highlight-color-accent-lighter: var(--color-tertiary-300);
+    --bevel-highlight-color-dark: var(--color-tertiary-900);
+    --bevel-highlight-color-light: var(--color-tertiary-100);
+}
+
+.mode-light {
+    --bevel-color-inverse: var(--bevel-color-light);
+    --bevel-highlight-color-inverse: var(--bevel-highlight-color-light);
+    --bevel-highlight-color-accent: var(--bevel-highlight-color-accent-darker);
+}
+
+.mode-dark {
+    --bevel-color-inverse: var(--bevel-color-dark);
+    --bevel-highlight-color-inverse: var(--bevel-highlight-color-dark);
+    --bevel-highlight-color-accent: var(--bevel-highlight-color-accent-lighter);
+}
+
+.polygon-base,
+.polygon-glow {
+    stroke: var(--bevel-color);
+}
+
+.polygon-glow {
+    opacity: 0;
+}
+
+.interactive {
+    cursor: pointer;
+}
+
+/* Fill */
+.variant-fill .polygon-base {
+    fill: var(--bevel-color);
+}
+
+.variant-fill.interactive:hover .polygon-base {
+    fill: var(--bevel-highlight-color-accent);
+}
+
+.variant-fill.interactive:active .polygon-base,
+.variant-fill.interactive.active .polygon-base {
+    fill: var(--bevel-highlight-color);
+}
+
+/* Fill inverse */
+.variant-fill-inverse .polygon-base {
+    fill: var(--bevel-color-inverse);
+    stroke: var(--bevel-color);
+}
+
+.variant-fill-inverse.interactive:hover .polygon-base {
+    fill: var(--bevel-highlight-color-inverse);
+    stroke: var(--bevel-highlight-color-accent);
+}
+
+.variant-fill-inverse.interactive:active .polygon-base,
+.variant-fill-inverse.interactive.active .polygon-base {
+    fill: var(--bevel-highlight-color-inverse);
+    stroke: var(--bevel-highlight-color);
+}
+
+/* Fill translucent */
+.variant-fill-translucent {
+    backdrop-filter: blur(6px);
+}
+
+.variant-fill-translucent .polygon-base {
+    fill: rgb(from var(--bevel-color) r g b / .24);
+    stroke: var(--bevel-color);
+}
+
+.variant-fill-translucent.interactive:hover .polygon-base {
+    fill: rgb(from var(--bevel-highlight-color-accent) r g b / .36);
+    stroke: var(--bevel-highlight-color-accent);
+}
+
+.variant-fill-translucent.interactive:active .polygon-base,
+.variant-fill-translucent.interactive.active .polygon-base {
+    fill: rgb(from var(--bevel-highlight-color) r g b / .48);
+    stroke: var(--bevel-highlight-color);
+}
+
+/* Glow styles */
+.glow-style-glow:hover .polygon-glow {
+    opacity: 1;
+    filter: var(--bevel-filter);
+    stroke: var(--bevel-highlight-color-accent);
+}
+
+.glow-style-animate-borders-glow:hover .polygon-glow {
+    opacity: 1;
+    filter: var(--bevel-filter);
+    stroke: var(--bevel-highlight-color-accent);
+    stroke-dasharray: 0 300;
+    animation: border-glow 0.3s linear forwards;
+}
+
+@keyframes border-glow {
+    from {
+        stroke-dasharray: 0 300;
+    }
+
+    to {
+        stroke-dasharray: 300 0;
+    }
+}

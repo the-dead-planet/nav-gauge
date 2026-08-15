@@ -1,0 +1,853 @@
+.button {
+    line-height: 1.1;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-default);
+}
+
+.interactive {
+    cursor: pointer;
+}
+
+.color-neutral {
+    --button-color-fill: var(--color-neutral);
+    --button-color-dark: var(--color-neutral-800);
+    --button-color-light: var(--color-neutral-100);
+    --button-color-shadow: var(--color-neutral-700);
+}
+
+.mode-light.color-neutral {
+    --button-color: var(--color-neutral-600);
+}
+
+.mode-dark.color-neutral {
+    --button-color: var(--color-neutral-400);
+}
+
+.color-primary {
+    --button-color: var(--color-primary);
+    --button-color-fill: var(--color-primary);
+    --button-color-dark: var(--color-primary-900);
+    --button-color-light: var(--color-primary-100);
+    --button-color-shadow: var(--color-primary-700);
+}
+
+.color-secondary {
+    --button-color: var(--color-secondary);
+    --button-color-fill: var(--color-secondary);
+    --button-color-dark: var(--color-secondary-900);
+    --button-color-light: var(--color-secondary-100);
+    --button-color-shadow: var(--color-secondary-700);
+}
+
+.color-tertiary {
+    --button-color: var(--color-tertiary);
+    --button-color-fill: var(--color-tertiary);
+    --button-color-dark: var(--color-tertiary-900);
+    --button-color-light: var(--color-tertiary-100);
+    --button-color-shadow: var(--color-tertiary-700);
+}
+
+.highlight-neutral {
+    --button-highlight-color: var(--color-neutral);
+    --button-highlight-color-accent-lighter: var(--color-neutral-300);
+    --button-highlight-color-accent-darker: var(--color-neutral-600);
+    --button-highlight-color-dark: var(--color-neutral-800);
+    --button-highlight-color-light: var(--color-neutral-100);
+    --button-highlight-color-shadow: var(--color-neutral-700);
+}
+
+.highlight-primary {
+    --button-highlight-color: var(--color-primary);
+    --button-highlight-color-accent-lighter: var(--color-primary-300);
+    --button-highlight-color-accent-darker: var(--color-primary-600);
+    --button-highlight-color-dark: var(--color-primary-900);
+    --button-highlight-color-light: var(--color-primary-100);
+    --button-highlight-color-shadow: var(--color-primary-700);
+}
+
+.highlight-secondary {
+    --button-highlight-color: var(--color-secondary);
+    --button-highlight-color-accent-lighter: var(--color-secondary-300);
+    --button-highlight-color-accent-darker: var(--color-secondary-600);
+    --button-highlight-color-dark: var(--color-secondary-900);
+    --button-highlight-color-light: var(--color-secondary-100);
+    --button-highlight-color-shadow: var(--color-secondary-700);
+}
+
+.highlight-tertiary {
+    --button-highlight-color: var(--color-tertiary);
+    --button-highlight-color-accent-lighter: var(--color-tertiary-300);
+    --button-highlight-color-accent-darker: var(--color-tertiary-600);
+    --button-highlight-color-dark: var(--color-tertiary-900);
+    --button-highlight-color-light: var(--color-tertiary-100);
+    --button-highlight-color-shadow: var(--color-tertiary-700);
+}
+
+.mode-light {
+    --button-color-inverse: var(--button-color-light);
+    --button-highlight-color-inverse: var(--button-highlight-color-light);
+    --button-highlight-color-accent: var(--button-highlight-color-accent-darker);
+    --button-highlight-color-bg-opacity: .08;
+}
+
+.mode-dark {
+    --button-color-inverse: var(--button-color-dark);
+    --button-highlight-color-inverse: var(--button-highlight-color-dark);
+    --button-highlight-color-accent: var(--button-highlight-color-accent-lighter);
+    --button-highlight-color-bg-opacity: .04;
+}
+
+.size-md {
+    font-size: 14px;
+    height: 32px;
+    min-width: 32px;
+    padding: 6px 16px;
+    gap: 10px;
+}
+
+.only-icon-md {
+    padding: 6px 5px;
+}
+
+.size-sm {
+    font-size: 14px;
+    height: 24px;
+    min-width: 24px;
+    padding: 2px 16px;
+    gap: 6px;
+}
+
+.only-icon-sm {
+    padding: 2px 3px;
+}
+
+.size-xs {
+    height: 18px;
+    min-width: 18px;
+    font-size: 12px;
+    padding: 0px 16px;
+    gap: 4px;
+}
+
+.only-icon-xs {
+    padding: 0px 2px;
+}
+
+.icon {
+    pointer-events: none;
+}
+
+.icon.rotate {
+    transform: rotateX(var(--rotate-x)) rotateZ(var(--rotate-z));
+}
+
+.variant-ghost {
+    background-color: transparent;
+    border: none;
+    color: var(--button-color);
+}
+
+.variant-ghost .icon {
+    color: var(--button-color);
+    stroke: var(--button-color);
+    fill: var(--button-color);
+}
+
+.variant-ghost:hover,
+.variant-ghost.hovered {
+    color: var(--button-highlight-color-accent);
+}
+
+.variant-ghost:hover .icon,
+.variant-ghost.hovered .icon {
+    color: var(--button-highlight-color-accent);
+    stroke: var(--button-highlight-color-accent);
+    fill: var(--button-highlight-color-accent);
+}
+
+.variant-ghost:active .icon,
+.variant-ghost.active .icon {
+    color: var(--button-highlight-color-accent);
+    stroke: var(--button-highlight-color-accent);
+    fill: var(--button-highlight-color-accent);
+}
+
+.variant-ghost:active,
+.variant-ghost.active {
+    color: var(--button-highlight-color-accent);
+}
+
+.variant-fill {
+    border: none;
+    color: var(--button-color-light);
+    background-color: var(--button-color-fill);
+}
+
+.variant-fill:hover,
+.variant-fill.hovered {
+    background-color: var(--button-highlight-color-accent);
+    color: var(--button-highlight-color-light);
+}
+
+.variant-fill:hover .icon,
+.variant-fill.hovered .icon,
+.variant-fill:active .icon,
+.variant-fill.active .icon {
+    color: var(--button-highlight-color-light);
+    stroke: var(--button-highlight-color-light);
+    fill: var(--button-highlight-color-light);
+}
+
+.variant-fill .icon {
+    color: var(--button-color-light);
+    stroke: var(--button-color-light);
+    fill: var(--button-color-light);
+}
+
+.variant-fill:active,
+.variant-fill.active {
+    background-color: var(--button-highlight-color);
+    color: var(--button-highlight-color-light);
+}
+
+.variant-fill-inverse {
+    border: 1px solid var(--button-color);
+    color: var(--button-color);
+    background-color: var(--button-color-inverse);
+}
+
+.variant-fill-inverse .icon {
+    color: var(--button-color);
+    stroke: var(--button-color);
+    fill: var(--button-color);
+}
+
+.variant-fill-inverse:hover,
+.variant-fill-inverse.hovered {
+    background-color: var(--button-highlight-color-inverse);
+    border-color: var(--button-highlight-color-accent);
+    color: var(--button-highlight-color-accent);
+}
+
+.variant-fill-inverse:hover .icon,
+.variant-fill-inverse.hovered .icon {
+    color: var(--button-highlight-color-accent);
+    stroke: var(--button-highlight-color-accent);
+    fill: var(--button-highlight-color-accent);
+}
+
+.variant-fill-inverse:active,
+.variant-fill-inverse.active {
+    background-color: var(--button-highlight-color-inverse);
+    border-color: var(--button-highlight-color-accent-lighter);
+    color: var(--button-highlight-color-accent-lighter);
+}
+
+.variant-fill-inverse:active .icon,
+.variant-fill-inverse.active .icon {
+    color: var(--button-highlight-color-accent-lighter);
+    stroke: var(--button-highlight-color-accent-lighter);
+    fill: var(--button-highlight-color-accent-lighter);
+}
+
+.variant-fill-translucent {
+    border: 1px solid rgb(from var(--button-color) r g b / .3);
+    color: var(--button-color);
+    background-color: rgb(from var(--button-color) r g b / .24);
+}
+
+.variant-fill-translucent .icon {
+    color: var(--button-color);
+    stroke: var(--button-color);
+    fill: var(--button-color);
+}
+
+.variant-fill-translucent:hover,
+.variant-fill-translucent.hovered {
+    border-color: var(--button-highlight-color-accent);
+    color: var(--button-highlight-color-accent);
+    background-color: rgb(from var(--button-highlight-color) r g b / .36);
+}
+
+.variant-fill-translucent:hover .icon,
+.variant-fill-translucent.hovered .icon,
+.variant-fill-translucent:active .icon,
+.variant-fill-translucent.active .icon {
+    color: var(--button-highlight-color-accent);
+    stroke: var(--button-highlight-color-accent);
+    fill: var(--button-highlight-color-accent);
+}
+
+.variant-fill-translucent:active,
+.variant-fill-translucent.active {
+    border-color: var(--button-highlight-color);
+    color: var(--button-highlight-color);
+    background-color: rgb(from var(--button-highlight-color) r g b / .48);
+}
+
+.variant-fill-translucent:active,
+.variant-fill-translucent.active {
+    color: var(--button-highlight-color-accent);
+    background-color: rgb(from var(--button-highlight-color) r g b / .48);
+}
+
+/*  */
+.variant-outline {
+    background-color: transparent;
+    border-style: solid;
+    border-width: 1px;
+    color: var(--button-color);
+    border-color: var(--button-color);
+}
+
+.variant-outline .icon {
+    color: var(--button-color);
+    stroke: var(--button-color);
+    fill: var(--button-color);
+}
+
+.variant-outline:hover,
+.variant-outline.hovered {
+    color: var(--button-highlight-color-accent);
+    border-color: var(--button-highlight-color-accent);
+    background-color: rgb(from var(--button-highlight-color) r g b / .12);
+}
+
+.variant-outline:hover .icon,
+.variant-outline.hovered .icon,
+.variant-outline:active .icon,
+.variant-outline.active .icon {
+    color: var(--button-highlight-color-accent);
+    stroke: var(--button-highlight-color-accent);
+    fill: var(--button-highlight-color-accent);
+}
+
+.variant-outline:active,
+.variant-outline.active {
+    color: var(--button-highlight-color-accent);
+    border-color: var(--button-highlight-color-accent);
+    background-color: rgb(from var(--button-highlight-color) r g b / .24);
+}
+
+.variant-inset {
+    border: 1px inset rgb(from var(--button-color) r g b / .3);
+    background-color: transparent;
+    color: var(--button-color);
+}
+
+.variant-inset .icon {
+    color: var(--button-color);
+    stroke: var(--button-color);
+    fill: var(--button-color);
+}
+
+.variant-inset.mode-light {
+    background-color: rgb(from var(--button-color) r g b / .04);
+    box-shadow:
+        rgb(from var(--button-color-shadow) r g b / .18) 4px 4px 8px inset,
+        rgb(from var(--button-color-shadow) r g b / .04) -2px -2px 6px inset,
+        rgba(255, 255, 255, .35) -2px -2px 4px inset;
+}
+
+.variant-inset.mode-dark {
+    border-color: transparent;
+    box-shadow:
+        rgba(0, 0, 0, .80) 4px 4px 8px inset,
+        rgba(255, 255, 255, .08) -2px -2px 4px inset;
+}
+
+.variant-inset:hover,
+.variant-inset.hovered {
+    color: var(--button-highlight-color-accent);
+}
+
+.variant-inset:hover .icon,
+.variant-inset.hovered .icon,
+.variant-inset:active .icon,
+.variant-inset.active .icon {
+    color: var(--button-highlight-color-accent);
+    stroke: var(--button-highlight-color-accent);
+    fill: var(--button-highlight-color-accent);
+}
+
+.variant-inset:active,
+.variant-inset.active {
+    color: var(--button-highlight-color-accent);
+    background-color: rgb(from var(--button-highlight-color-accent) r g b / var(--button-highlight-color-bg-opacity));
+}
+
+.variant-inset.mode-light:active,
+.variant-inset.mode-light.active {
+    box-shadow:
+        rgb(from var(--button-highlight-color-shadow) r g b / .18) 4px 4px 8px inset,
+        rgb(from var(--button-highlight-color-shadow) r g b / .04) -2px -2px 4px inset,
+        rgba(255, 255, 255, .25) -2px -2px 3px inset;
+    border-color: rgb(from var(--button-highlight-color-accent) r g b / .3);
+}
+
+.variant-inset.mode-dark:active,
+.variant-inset.mode-dark.active {
+    box-shadow:
+        rgba(0, 0, 0, .80) 4px 4px 8px inset,
+        rgba(0, 0, 0, .24) -2px -2px 4px inset;
+}
+
+.corners-hexagon {
+    border-radius: 0;
+}
+
+.corners-square {
+    border-radius: 0;
+}
+
+.corners-rounded.size-md {
+    border-radius: 6px;
+}
+
+.corners-rounded.size-sm,
+.corners-rounded.size-xs {
+    border-radius: 4px;
+}
+
+.corners-circle.size-md {
+    border-radius: 16px;
+}
+
+.corners-circle.size-sm {
+    border-radius: 12px;
+}
+
+.corners-circle.size-xs {
+    border-radius: 10px;
+}
+
+/* ── Hexagon button overrides ── */
+
+.corners-hexagon.variant-fill,
+.corners-hexagon.variant-fill-inverse,
+.corners-hexagon.variant-fill-translucent,
+.corners-hexagon.variant-inset,
+.corners-hexagon.variant-outline {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.corners-hexagon.variant-fill-inverse,
+.corners-hexagon.variant-fill-translucent,
+.corners-hexagon.variant-inset,
+.corners-hexagon.variant-outline,
+.corners-hexagon.variant-ghost {
+    color: var(--button-color);
+}
+
+.corners-hexagon.variant-fill {
+    color: var(--button-color-light);
+}
+
+.corners-hexagon.variant-fill-inverse .icon,
+.corners-hexagon.variant-fill-translucent .icon,
+.corners-hexagon.variant-inset .icon,
+.corners-hexagon.variant-outline .icon,
+.corners-hexagon.variant-ghost .icon {
+    color: var(--button-color);
+    stroke: var(--button-color);
+    fill: var(--button-color);
+}
+
+.corners-hexagon.variant-fill .icon {
+    color: var(--button-color-light);
+    stroke: var(--button-color-light);
+    fill: var(--button-color-light);
+}
+
+.corners-hexagon.variant-fill:hover,
+.corners-hexagon.variant-fill.hovered,
+.corners-hexagon.variant-fill:active,
+.corners-hexagon.variant-fill.active {
+    color: var(--button-color-light);
+}
+
+.corners-hexagon.variant-fill:hover .icon,
+.corners-hexagon.variant-fill.hovered .icon,
+.corners-hexagon.variant-fill:active .icon,
+.corners-hexagon.variant-fill.active .icon {
+    color: var(--button-color-light);
+    stroke: var(--button-color-light);
+    fill: var(--button-color-light);
+}
+
+.corners-hexagon.variant-fill-inverse:hover,
+.corners-hexagon.variant-ghost:hover,
+.corners-hexagon.variant-fill-translucent:hover,
+.corners-hexagon.variant-inset:hover,
+.corners-hexagon.variant-outline:hover,
+.corners-hexagon.variant-fill-inverse.hovered,
+.corners-hexagon.variant-ghost.hovered,
+.corners-hexagon.variant-fill-translucent.hovered,
+.corners-hexagon.variant-inset.hovered,
+.corners-hexagon.variant-outline.hovered {
+    color: var(--button-highlight-color-accent);
+}
+
+.corners-hexagon.variant-fill-inverse:hover .icon,
+.corners-hexagon.variant-ghost:hover .icon,
+.corners-hexagon.variant-fill-translucent:hover .icon,
+.corners-hexagon.variant-inset:hover .icon,
+.corners-hexagon.variant-outline:hover .icon,
+.corners-hexagon.variant-fill-inverse.hovered .icon,
+.corners-hexagon.variant-ghost.hovered .icon,
+.corners-hexagon.variant-fill-translucent.hovered .icon,
+.corners-hexagon.variant-inset.hovered .icon,
+.corners-hexagon.variant-outline.hovered .icon,
+.corners-hexagon.variant-fill-translucent:active .icon,
+.corners-hexagon.variant-fill-translucent.active .icon,
+.corners-hexagon.variant-outline:active .icon,
+.corners-hexagon.variant-outline.active .icon {
+    color: var(--button-highlight-color-accent);
+    stroke: var(--button-highlight-color-accent);
+    fill: var(--button-highlight-color-accent);
+}
+
+.corners-hexagon.variant-fill-inverse:active .icon,
+.corners-hexagon.variant-fill-inverse.active .icon,
+.corners-hexagon.variant-ghost:active .icon,
+.corners-hexagon.variant-ghost.active .icon,
+.corners-hexagon.variant-inset:active .icon,
+.corners-hexagon.variant-inset.active .icon {
+    color: var(--button-highlight-color-accent-lighter);
+    stroke: var(--button-highlight-color-accent-lighter);
+    fill: var(--button-highlight-color-accent-lighter);
+}
+
+/* ── Conditional glow effects (glowStyle prop) ── */
+
+/* box-shadow on hover/active for all non-hexagon variants */
+.glow-style-glow.variant-ghost:hover,
+.glow-style-glow.variant-ghost:active,
+.glow-style-glow.variant-ghost.active,
+.glow-style-animate-borders-glow.variant-ghost:hover,
+.glow-style-animate-borders-glow.variant-ghost:active,
+.glow-style-animate-borders-glow.variant-ghost.active,
+.glow-style-glow.variant-fill:hover,
+.glow-style-glow.variant-fill:active,
+.glow-style-glow.variant-fill.active,
+.glow-style-animate-borders-glow.variant-fill:hover,
+.glow-style-animate-borders-glow.variant-fill:active,
+.glow-style-animate-borders-glow.variant-fill.active,
+.glow-style-glow.variant-fill-inverse:hover,
+.glow-style-glow.variant-fill-inverse:active,
+.glow-style-glow.variant-fill-inverse.active,
+.glow-style-animate-borders-glow.variant-fill-inverse:hover,
+.glow-style-animate-borders-glow.variant-fill-inverse:active,
+.glow-style-animate-borders-glow.variant-fill-inverse.active,
+.glow-style-glow.variant-fill-translucent:hover,
+.glow-style-glow.variant-fill-translucent:active,
+.glow-style-glow.variant-fill-translucent.active,
+.glow-style-animate-borders-glow.variant-fill-translucent:hover,
+.glow-style-animate-borders-glow.variant-fill-translucent:active,
+.glow-style-animate-borders-glow.variant-fill-translucent.active,
+.glow-style-glow.variant-outline:hover,
+.glow-style-glow.variant-outline:active,
+.glow-style-glow.variant-outline.active,
+.glow-style-animate-borders-glow.variant-outline:hover,
+.glow-style-animate-borders-glow.variant-outline:active,
+.glow-style-animate-borders-glow.variant-outline.active,
+.glow-style-glow.variant-inset:hover,
+.glow-style-glow.variant-inset:active,
+.glow-style-glow.variant-inset.active,
+.glow-style-animate-borders-glow.variant-inset:hover,
+.glow-style-animate-borders-glow.variant-inset:active,
+.glow-style-animate-borders-glow.variant-inset.active {
+    box-shadow: 0px 0px 4px rgb(from var(--button-highlight-color) r g b / .3),
+        0px 0px 20px rgb(from var(--button-highlight-color) r g b / .6);
+}
+
+/* Hexagon: no box-shadow glow (handled by SVG) */
+.corners-hexagon.glow-style-glow:hover,
+.corners-hexagon.glow-style-glow.hovered,
+.corners-hexagon.glow-style-glow:active,
+.corners-hexagon.glow-style-glow.active,
+.corners-hexagon.glow-style-animate-borders-glow:hover,
+.corners-hexagon.glow-style-animate-borders-glow.hovered,
+.corners-hexagon.glow-style-animate-borders-glow:active,
+.corners-hexagon.glow-style-animate-borders-glow.active {
+    box-shadow: none;
+}
+
+/* text-shadow: ghost, outline, inset only */
+.glow-style-glow.variant-ghost:hover,
+.glow-style-glow.variant-ghost.hovered,
+.glow-style-glow.variant-ghost:active,
+.glow-style-glow.variant-ghost.active,
+.glow-style-animate-borders-glow.variant-ghost:hover,
+.glow-style-animate-borders-glow.variant-ghost.hovered,
+.glow-style-animate-borders-glow.variant-ghost:active,
+.glow-style-animate-borders-glow.variant-ghost.active,
+.glow-style-glow.variant-outline:hover,
+.glow-style-glow.variant-outline.hovered,
+.glow-style-glow.variant-outline:active,
+.glow-style-glow.variant-outline.active,
+.glow-style-animate-borders-glow.variant-outline:hover,
+.glow-style-animate-borders-glow.variant-outline.hovered,
+.glow-style-animate-borders-glow.variant-outline:active,
+.glow-style-animate-borders-glow.variant-outline.active,
+.glow-style-glow.variant-inset:hover,
+.glow-style-glow.variant-inset.hovered,
+.glow-style-glow.variant-inset:active,
+.glow-style-glow.variant-inset.active,
+.glow-style-animate-borders-glow.variant-inset:hover,
+.glow-style-animate-borders-glow.variant-inset.hovered,
+.glow-style-animate-borders-glow.variant-inset:active,
+.glow-style-animate-borders-glow.variant-inset.active {
+    text-shadow: 0 0 12px rgb(from var(--button-highlight-color-accent) r g b / .45);
+}
+
+/* filter drop-shadow: ghost, outline, inset icons only */
+.glow-style-glow.variant-ghost:hover .icon,
+.glow-style-glow.variant-ghost.hovered .icon,
+.glow-style-glow.variant-ghost:active .icon,
+.glow-style-glow.variant-ghost.active .icon,
+.glow-style-animate-borders-glow.variant-ghost:hover .icon,
+.glow-style-animate-borders-glow.variant-ghost.hovered .icon,
+.glow-style-animate-borders-glow.variant-ghost:active .icon,
+.glow-style-animate-borders-glow.variant-ghost.active .icon,
+.glow-style-glow.variant-outline:hover .icon,
+.glow-style-glow.variant-outline.hovered .icon,
+.glow-style-glow.variant-outline:active .icon,
+.glow-style-glow.variant-outline.active .icon,
+.glow-style-animate-borders-glow.variant-outline:hover .icon,
+.glow-style-animate-borders-glow.variant-outline.hovered .icon,
+.glow-style-animate-borders-glow.variant-outline:active .icon,
+.glow-style-animate-borders-glow.variant-outline.active .icon,
+.glow-style-glow.variant-inset:hover .icon,
+.glow-style-glow.variant-inset.hovered .icon,
+.glow-style-glow.variant-inset:active .icon,
+.glow-style-glow.variant-inset.active .icon,
+.glow-style-animate-borders-glow.variant-inset:hover .icon,
+.glow-style-animate-borders-glow.variant-inset.hovered .icon,
+.glow-style-animate-borders-glow.variant-inset:active .icon,
+.glow-style-animate-borders-glow.variant-inset.active .icon {
+    filter: drop-shadow(0 0 12px rgb(from var(--button-highlight-color-accent) r g b / .45));
+}
+
+/* animate-borders-glow: single perimeter sweep for non-hexagon */
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-ghost:hover,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-ghost.hovered,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-ghost:active,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-ghost.active,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill:hover,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill.hovered,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill:active,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill.active,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill-inverse:hover,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill-inverse.hovered,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill-inverse:active,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill-inverse.active,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill-translucent:hover,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill-translucent.hovered,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill-translucent:active,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-fill-translucent.active,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-outline:hover,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-outline.hovered,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-outline:active,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-outline.active,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-inset:hover,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-inset.hovered,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-inset:active,
+.glow-style-animate-borders-glow:not(.corners-hexagon).variant-inset.active {
+    animation: glow-sweep 0.4s ease-in-out forwards;
+}
+
+/* Hexagon: no animation (SVG handles it), suppress animate override */
+.corners-hexagon.glow-style-animate-borders-glow:hover,
+.corners-hexagon.glow-style-animate-borders-glow.hovered,
+.corners-hexagon.glow-style-animate-borders-glow:active,
+.corners-hexagon.glow-style-animate-borders-glow.active {
+    animation: none;
+    box-shadow: none;
+}
+
+/* ── Disabled state ── */
+
+.button.disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.button.disabled.interactive {
+    cursor: not-allowed;
+}
+
+.button.disabled:is(.variant-ghost, .variant-fill, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset):hover,
+.button.disabled:is(.variant-ghost, .variant-fill, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset).hovered,
+.button.disabled:is(.variant-ghost, .variant-fill, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset):active,
+.button.disabled:is(.variant-ghost, .variant-fill, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset).active {
+    cursor: not-allowed;
+    box-shadow: none;
+    text-shadow: none;
+    filter: none;
+    animation: none;
+}
+
+.button.disabled:is(.variant-ghost, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset):hover,
+.button.disabled:is(.variant-ghost, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset).hovered,
+.button.disabled:is(.variant-ghost, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset):active,
+.button.disabled:is(.variant-ghost, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset).active,
+.button.disabled:is(.variant-ghost, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset):hover .icon,
+.button.disabled:is(.variant-ghost, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset).hovered .icon,
+.button.disabled:is(.variant-ghost, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset):active .icon,
+.button.disabled:is(.variant-ghost, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset).active .icon {
+    color: var(--button-color);
+    stroke: var(--button-color);
+    fill: var(--button-color);
+}
+
+.button.disabled.variant-fill:hover,
+.button.disabled.variant-fill.hovered,
+.button.disabled.variant-fill:active,
+.button.disabled.variant-fill.active,
+.button.disabled.variant-fill:hover .icon,
+.button.disabled.variant-fill.hovered .icon,
+.button.disabled.variant-fill:active .icon,
+.button.disabled.variant-fill.active .icon {
+    background-color: var(--button-color);
+    color: var(--button-color-light);
+    stroke: var(--button-color-light);
+    fill: var(--button-color-light);
+}
+
+.button.disabled.variant-fill-inverse:hover,
+.button.disabled.variant-fill-inverse.hovered,
+.button.disabled.variant-fill-inverse:active,
+.button.disabled.variant-fill-inverse.active,
+.button.disabled.variant-fill-inverse:hover .icon,
+.button.disabled.variant-fill-inverse.hovered .icon,
+.button.disabled.variant-fill-inverse:active .icon,
+.button.disabled.variant-fill-inverse.active .icon {
+    background-color: var(--button-color-inverse);
+    border-color: var(--button-color);
+    color: var(--button-color);
+    stroke: var(--button-color);
+    fill: var(--button-color);
+}
+
+.button.disabled.variant-fill-translucent:hover,
+.button.disabled.variant-fill-translucent.hovered,
+.button.disabled.variant-fill-translucent:active,
+.button.disabled.variant-fill-translucent.active,
+.button.disabled.variant-fill-translucent:hover .icon,
+.button.disabled.variant-fill-translucent.hovered .icon,
+.button.disabled.variant-fill-translucent:active .icon,
+.button.disabled.variant-fill-translucent.active .icon {
+    border-color: rgb(from var(--button-color) r g b / .3);
+    color: var(--button-color);
+    background-color: rgb(from var(--button-color) r g b / .24);
+    stroke: var(--button-color);
+    fill: var(--button-color);
+}
+
+.button.disabled.variant-outline:hover,
+.button.disabled.variant-outline.hovered,
+.button.disabled.variant-outline:active,
+.button.disabled.variant-outline.active,
+.button.disabled.variant-outline:hover .icon,
+.button.disabled.variant-outline.hovered .icon,
+.button.disabled.variant-outline:active .icon,
+.button.disabled.variant-outline.active .icon {
+    background-color: transparent;
+    border-color: var(--button-color);
+    color: var(--button-color);
+    stroke: var(--button-color);
+    fill: var(--button-color);
+}
+
+.button.disabled.variant-inset:hover,
+.button.disabled.variant-inset.hovered,
+.button.disabled.variant-inset:active,
+.button.disabled.variant-inset.active,
+.button.disabled.variant-inset:hover .icon,
+.button.disabled.variant-inset.hovered .icon,
+.button.disabled.variant-inset:active .icon,
+.button.disabled.variant-inset.active .icon {
+    color: var(--button-color);
+    stroke: var(--button-color);
+    fill: var(--button-color);
+}
+
+.button.disabled.variant-inset.mode-light:hover,
+.button.disabled.variant-inset.mode-light.hovered,
+.button.disabled.variant-inset.mode-light:active,
+.button.disabled.variant-inset.mode-light.active {
+    box-shadow:
+        rgb(from var(--button-color-shadow) r g b / .18) 4px 4px 8px inset,
+        rgb(from var(--button-color-shadow) r g b / .04) -2px -2px 6px inset,
+        rgba(255, 255, 255, .35) -2px -2px 4px inset;
+}
+
+.button.disabled.variant-inset.mode-dark:hover,
+.button.disabled.variant-inset.mode-dark.hovered,
+.button.disabled.variant-inset.mode-dark:active,
+.button.disabled.variant-inset.mode-dark.active {
+    box-shadow:
+        rgba(0, 0, 0, .80) 4px 4px 8px inset,
+        rgba(255, 255, 255, .08) -2px -2px 4px inset;
+}
+
+/* Hexagon disabled: keep base color, dim via opacity only */
+.button.disabled.corners-hexagon,
+.button.disabled.corners-hexagon .icon,
+.button.disabled.corners-hexagon:hover,
+.button.disabled.corners-hexagon.hovered,
+.button.disabled.corners-hexagon:active,
+.button.disabled.corners-hexagon.active {
+    color: var(--button-color);
+}
+
+.button.disabled.corners-hexagon.variant-fill,
+.button.disabled.corners-hexagon.variant-fill .icon,
+.button.disabled.corners-hexagon.variant-fill:hover,
+.button.disabled.corners-hexagon.variant-fill.hovered,
+.button.disabled.corners-hexagon.variant-fill:active,
+.button.disabled.corners-hexagon.variant-fill.active {
+    color: var(--button-color-light);
+}
+
+/* Prevent double‑dimming: hexagon wrapper handles opacity */
+.button.disabled.corners-hexagon {
+    opacity: 1;
+}
+
+@keyframes glow-sweep {
+    0% {
+        box-shadow:
+            rgb(from var(--button-highlight-color-accent) r g b / .6) -1px 1px 4px,
+            rgb(from var(--button-highlight-color-accent) r g b / 0) 0px 0px 6px;
+    }
+    33% {
+        box-shadow:
+            rgb(from var(--button-highlight-color-accent) r g b / .6) -1px 1px 4px,
+            rgb(from var(--button-highlight-color-accent) r g b / .6) -1px -1px 4px,
+            rgb(from var(--button-highlight-color-accent) r g b / 0) 0px 0px 6px;
+    }
+    66% {
+        box-shadow:
+            rgb(from var(--button-highlight-color-accent) r g b / .6) -1px 1px 4px,
+            rgb(from var(--button-highlight-color-accent) r g b / .6) -1px -1px 4px,
+            rgb(from var(--button-highlight-color-accent) r g b / .6) 1px -1px 4px,
+            rgb(from var(--button-highlight-color-accent) r g b / 0) 0px 0px 6px;
+    }
+    100% {
+        box-shadow:
+            rgb(from var(--button-highlight-color-accent) r g b / .6) -1px 1px 4px,
+            rgb(from var(--button-highlight-color-accent) r g b / .6) -1px -1px 4px,
+            rgb(from var(--button-highlight-color-accent) r g b / .6) 1px -1px 4px,
+            rgb(from var(--button-highlight-color-accent) r g b / .6) 1px 1px 4px,
+            rgb(from var(--button-highlight-color-accent) r g b / 0) 0px 0px 6px;
+    }
+}
+
+

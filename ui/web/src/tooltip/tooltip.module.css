@@ -1,0 +1,100 @@
+.tooltip-content {
+    position: fixed;
+    z-index: 10000;
+    pointer-events: none;
+    padding: 4px 10px;
+    font-family: var(--font-default);
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.15s ease-in-out;
+}
+
+.tooltip-content.visible {
+    opacity: 1;
+}
+
+.placement-top {
+    transform: translate(-50%, -100%);
+}
+
+.placement-bottom {
+    transform: translate(-50%, 0);
+}
+
+.placement-left {
+    transform: translate(-100%, -50%);
+}
+
+.placement-right {
+    transform: translate(0, -50%);
+}
+
+.color-neutral {
+    --tooltip-color: var(--color-neutral);
+    --tooltip-color-dark: var(--color-neutral-800);
+    --tooltip-color-light: var(--color-neutral-100);
+    --tooltip-color-darker: var(--color-neutral-600);
+    --tooltip-color-lighter: var(--color-neutral-300);
+}
+
+.color-primary {
+    --tooltip-color: var(--color-primary);
+    --tooltip-color-dark: var(--color-primary-900);
+    --tooltip-color-light: var(--color-primary-100);
+    --tooltip-color-darker: var(--color-primary-600);
+    --tooltip-color-lighter: var(--color-primary-300);
+}
+
+.color-secondary {
+    --tooltip-color: var(--color-secondary);
+    --tooltip-color-dark: var(--color-secondary-900);
+    --tooltip-color-light: var(--color-secondary-100);
+    --tooltip-color-darker: var(--color-secondary-600);
+    --tooltip-color-lighter: var(--color-secondary-300);
+}
+
+.color-tertiary {
+    --tooltip-color: var(--color-tertiary);
+    --tooltip-color-dark: var(--color-tertiary-900);
+    --tooltip-color-light: var(--color-tertiary-100);
+    --tooltip-color-darker: var(--color-tertiary-600);
+    --tooltip-color-lighter: var(--color-tertiary-300);
+}
+
+.mode-light {
+    --tooltip-color-inverse: var(--tooltip-color-light);
+    --tooltip-highlight-color-accent: var(--tooltip-color-darker);
+}
+
+.mode-dark {
+    --tooltip-color-inverse: var(--tooltip-color-dark);
+    --tooltip-highlight-color-accent: var(--tooltip-color-lighter);
+}
+
+.variant-fill {
+    background-color: var(--tooltip-color);
+    color: var(--tooltip-highlight-color-accent);
+}
+
+.variant-fill-inverse {
+    background-color: var(--tooltip-color-inverse);
+    color: var(--tooltip-highlight-color-accent);
+    border: 1px solid var(--tooltip-highlight-color-accent);
+}
+
+.variant-fill-translucent {
+    background-color: rgb(from var(--tooltip-color) r g b / .85);
+    color: var(--tooltip-highlight-color-accent);
+    backdrop-filter: blur(6px);
+}
+
+.mode-dark.variant-fill-translucent {
+    background-color: rgb(from var(--tooltip-color) r g b / .78);
+}
+
+.connection-line {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    background-color: var(--tooltip-highlight-color-accent);
+}

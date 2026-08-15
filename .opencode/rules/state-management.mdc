@@ -1,0 +1,15 @@
+---
+description: Keep application state outside UI components
+globs: "**/*.{ts,tsx}"
+alwaysApply: true
+---
+
+Application state and business logic should live outside UI components using RxJS-based state management.
+
+UI components should consume application state and focus on rendering and user interaction.
+
+Keep purely local UI state inside components when it only affects that component (for example: open/closed state, hover, focus, animation, temporary UI state).
+
+Place shared state and logic in the appropriate common/core workspace when possible.
+
+Only implement separate web or mobile state logic when platform differences require different behavior.

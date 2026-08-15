@@ -1,0 +1,17 @@
+---
+description: Compose components from smaller, focused sub-components
+globs: "**/*.tsx"
+---
+
+Components should compose focused sub-components rather than implement large sections of UI directly.
+
+Extract a sub-component when a section has its own:
+- visual purpose
+- interactions
+- styling
+- state
+- meaningful name
+
+Apply this recursively. Compound components should also be composed of focused sub-components.
+
+Parent components should primarily orchestrate data flow and composition. Leaf components should own rendering details.

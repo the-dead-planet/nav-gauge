@@ -1,0 +1,10 @@
+---
+description: Keep client code focused on intent, not implementation
+alwaysApply: true
+---
+
+Every component, hook and module should have one obvious responsibility.
+
+Prefer boundaries that make the system easier to understand.
+
+The top-level code should describe the feature rather than implementation details.

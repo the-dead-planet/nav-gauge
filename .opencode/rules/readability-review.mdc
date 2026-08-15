@@ -1,0 +1,17 @@
+---
+description: Review the surrounding code for readability improvements
+alwaysApply: true
+---
+
+Before completing a task, review the surrounding codebase, not just the files you modified.
+
+Look for opportunities to:
+
+- simplify control flow
+- improve naming
+- remove duplication
+- extract meaningful concepts
+- improve component and module boundaries
+- consolidate related logic into existing abstractions
+
+If a small refactor outside the requested changes would make the affected area simpler or more consistent, perform it, provided it doesn't change behavior or significantly expand the scope of the task.

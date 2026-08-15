@@ -1,0 +1,101 @@
+import { ComponentType, FC, Fragment } from "react";
+import { Alert, StyleSheet, View, ViewProps } from "react-native";
+import { DocumentPickerOptions, DocumentPickerResponse, pick } from '@react-native-documents/picker';
+import { Button } from "../../button";
+import { Text } from "../../typography";
+import { FileInputProps, Icons } from "@ui";
+import { SvgProps } from "react-native-svg";
+
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+    },
+    routeName: {
+        flex: 1,
+        overflow: 'hidden',
+    },
+});
+
+interface Props extends FileInputProps<DocumentPickerResponse> {
+    type: DocumentPickerOptions['type'];
+}
+
+export const FileInput: FC<Props & ViewProps> = ({
+    color,
+    fileIcon = Icons.NounProject.Upload,
+    fileName,
+    fileLabel,
+    purgeLabel,
+    cancelLabel,
+    noNameLabel,
+    type,
+    mutiple,
+    actionButtons,
+    onUpload,
+    onPurge,
+    onError,
+    onIsLoadingChange,
+    style,
+    ...props
+}) => {
+    const handleUpload = async () => {
+        onIsLoadingChange?.(true);
+
+        try {
+            const files = await pick({
+                mode: 'open',
+                type,
+                allowMultiSelection: mutiple,
+            });
+            await onUpload(files);
+        } catch (err) {
+            onError?.(err as Error);
+        } finally {
+            onIsLoadingChange?.(false);
+        }
+    };
+
+    const handlePurge = () => {
+        Alert.alert(
+            purgeLabel,
+            'Are you sure you want to purge all story data? This will remove the route and images and cannot be undone.',
+            [
+                { text: cancelLabel, style: 'cancel' },
+                {
+                    text: purgeLabel,
+                    style: 'destructive',
+                    onPress: onPurge,
+                },
+            ],
+        );
+    };
+
+    return (
+        <View style={[styles.container, style]} {...props}>
+            <Button
+                icon={fileIcon as unknown as ComponentType<SvgProps>}
+                color={color}
+                variant="fill"
+                corners="circle"
+                size="sm"
+                tooltip={fileLabel}
+                onPress={handleUpload}
+            />
+            <Text color={color} style={styles.routeName}>
+                {fileName || noNameLabel}
+            </Text>
+            {actionButtons?.map(({ id, element }) => <Fragment key={id}>{element}</Fragment>)}
+            <Button
+                icon={Icons.NounProject.Clear}
+                color={color}
+                variant="outline"
+                corners="circle"
+                size="sm"
+                tooltip={purgeLabel}
+                onPress={handlePurge}
+            />
+        </View>
+    );
+};

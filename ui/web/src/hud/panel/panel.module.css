@@ -1,0 +1,186 @@
+.panel {
+    box-sizing: border-box;
+}
+
+.padding-xs {
+    padding: 5px 10px;
+}
+
+.padding-sm {
+    padding: 10px 15px;
+}
+
+.padding-md {
+    padding: 15px 20px;
+}
+
+.color-neutral {
+    --panel-color: var(--color-neutral);
+    --panel-color-dark: var(--color-neutral-800);
+    --panel-color-light: var(--color-neutral-100);
+}
+
+.color-primary {
+    --panel-color: var(--color-primary);
+    --panel-color-dark: var(--color-primary-900);
+    --panel-color-light: var(--color-primary-100);
+}
+
+.color-secondary {
+    --panel-color: var(--color-secondary);
+    --panel-color-dark: var(--color-secondary-900);
+    --panel-color-light: var(--color-secondary-100);
+}
+
+.color-tertiary {
+    --panel-color: var(--color-tertiary);
+    --panel-color-dark: var(--color-tertiary-900);
+    --panel-color-light: var(--color-tertiary-100);
+}
+
+.highlight-color-neutral {
+    --panel-highlight-color: var(--color-neutral-500);
+    --panel-highlight-color-accent-darker: var(--color-neutral-600);
+    --panel-highlight-color-accent-lighter: var(--color-neutral-300);
+    --panel-highlight-color-dark: var(--color-neutral-800);
+    --panel-highlight-color-light: var(--color-neutral-100);
+}
+
+.highlight-color-primary {
+    --panel-highlight-color: var(--color-primary-500);
+    --panel-highlight-color-accent-darker: var(--color-primary-600);
+    --panel-highlight-color-accent-lighter: var(--color-primary-300);
+    --panel-highlight-color-dark: var(--color-primary-900);
+    --panel-highlight-color-light: var(--color-primary-100);
+}
+
+.highlight-color-secondary {
+    --panel-highlight-color: var(--color-secondary-500);
+    --panel-highlight-color-accent-darker: var(--color-secondary-600);
+    --panel-highlight-color-accent-lighter: var(--color-secondary-300);
+    --panel-highlight-color-dark: var(--color-secondary-900);
+    --panel-highlight-color-light: var(--color-secondary-100);
+}
+
+.highlight-color-tertiary {
+    --panel-highlight-color: var(--color-tertiary-500);
+    --panel-highlight-color-accent-darker: var(--color-tertiary-600);
+    --panel-highlight-color-accent-lighter: var(--color-tertiary-300);
+    --panel-highlight-color-dark: var(--color-tertiary-900);
+    --panel-highlight-color-light: var(--color-tertiary-100);
+}
+
+.mode-light {
+    --panel-color-inverse: var(--panel-color-light);
+    --panel-highlight-color-inverse: var(--panel-highlight-color-light);
+    --panel-highlight-color-accent: var(--panel-highlight-color-accent-darker);
+}
+
+.mode-dark {
+    --panel-color-inverse: var(--panel-color-dark);
+    --panel-highlight-color-inverse: var(--panel-highlight-color-dark);
+    --panel-highlight-color-accent: var(--panel-highlight-color-accent-lighter);
+}
+
+.polygon-base,
+.polygon-glow {
+    stroke: var(--panel-color);
+}
+
+.polygon-glow {
+    opacity: 0;
+}
+
+.interactive {
+    cursor: pointer;
+}
+
+/* Fill */
+.variant-fill {
+    background-color: var(--panel-color);
+}
+
+.variant-fill.interactive:hover {
+    background-color: var(--panel-highlight-color-accent);
+}
+
+.variant-fill.interactive:active,
+.variant-fill.interactive.active {
+    background-color: var(--panel-highlight-color);
+}
+
+/* Fill inverse */
+.variant-fill-inverse {
+    background-color: var(--panel-color-inverse);
+    border: 2px solid var(--panel-color);
+}
+
+.variant-fill-inverse.interactive:hover {
+    background-color: var(--panel-highlight-color-inverse);
+    border-color: var(--panel-highlight-color-accent);
+}
+
+.variant-fill-inverse.interactive:active,
+.variant-fill-inverse.interactive.active {
+    background-color: var(--panel-highlight-color-inverse);
+}
+
+/* Fill translucent */
+.variant-fill-translucent {
+    background-color: rgb(from var(--panel-color) r g b / .24);
+    border: 2px solid var(--panel-color);
+    backdrop-filter: blur(6px);
+}
+
+.variant-fill-translucent.interactive:hover {
+    background-color: rgb(from var(--panel-highlight-color-accent) r g b / .36);
+    border-color: var(--panel-highlight-color-accent);
+}
+
+.variant-fill-translucent.interactive:active,
+.variant-fill-translucent.interactive.active {
+    background-color: rgb(from var(--panel-highlight-color) r g b / .48);
+    border-color: var(--panel-highlight-color);
+}
+
+/* Glow styles */
+.glow-style-glow:hover {
+    box-shadow: 0px 0px 4px rgb(from var(--panel-highlight-color) r g b / .3),
+        0px 0px 20px rgb(from var(--panel-highlight-color) r g b / .6);
+}
+
+.glow-style-animate-borders-glow:hover {
+    animation: glow-sweep 0.4s ease-in-out forwards;
+}
+
+@keyframes glow-sweep {
+    0% {
+        box-shadow:
+            rgb(from var(--panel-highlight-color-accent) r g b / .6) -2px 2px 5px,
+            rgb(from var(--panel-highlight-color-accent) r g b / 0) 0px 0px 8px;
+    }
+
+    33% {
+        box-shadow:
+            rgb(from var(--panel-highlight-color-accent) r g b / .6) -2px 2px 5px,
+            rgb(from var(--panel-highlight-color-accent) r g b / .6) -2px -2px 5px,
+            rgb(from var(--panel-highlight-color-accent) r g b / 0) 0px 0px 8px;
+    }
+
+    66% {
+        box-shadow:
+            rgb(from var(--panel-highlight-color-accent) r g b / .6) -2px 2px 5px,
+            rgb(from var(--panel-highlight-color-accent) r g b / .6) -2px -2px 5px,
+            rgb(from var(--panel-highlight-color-accent) r g b / .6) 2px -2px 5px,
+            rgb(from var(--panel-highlight-color-accent) r g b / 0) 0px 0px 8px;
+    }
+
+    100% {
+        box-shadow:
+            rgb(from var(--panel-highlight-color-accent) r g b / .6) -2px 2px 5px,
+            rgb(from var(--panel-highlight-color-accent) r g b / .6) -2px -2px 5px,
+            rgb(from var(--panel-highlight-color-accent) r g b / .6) 2px -2px 5px,
+            rgb(from var(--panel-highlight-color-accent) r g b / .6) 2px 2px 5px,
+            rgb(from var(--panel-highlight-color-accent) r g b / 0) 0px 0px 8px;
+    }
+}

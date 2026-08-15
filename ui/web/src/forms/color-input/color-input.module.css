@@ -1,0 +1,192 @@
+.container {
+    display: grid;
+    row-gap: 4px;
+}
+
+.label {
+    font-size: 12px;
+    display: block;
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: border-color .15s ease, background-color .15s ease;
+    gap: 8px;
+}
+
+.input-wrapper:focus-within {
+    border-color: var(--ni-highlight-color);
+    box-shadow: 0 0 0 1px var(--ni-highlight-color);
+}
+
+.swatch {
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 2px;
+    flex-shrink: 0;
+    cursor: pointer;
+    margin: 4px;
+    padding: 0;
+}
+
+.swatch:disabled {
+    cursor: not-allowed;
+    opacity: .4;
+}
+
+.hex-value {
+    font-family: monospace;
+    font-size: 12px;
+    line-height: 1;
+}
+
+.native-picker {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+.color-neutral {
+    --ni-color: var(--color-neutral);
+    --ni-color-dark: var(--color-neutral-800);
+    --ni-color-light: var(--color-neutral-100);
+    --ni-highlight-color: var(--color-neutral);
+}
+
+.color-primary {
+    --ni-color: var(--color-primary);
+    --ni-color-dark: var(--color-primary-900);
+    --ni-color-light: var(--color-primary-100);
+    --ni-highlight-color: var(--color-primary);
+}
+
+.color-secondary {
+    --ni-color: var(--color-secondary);
+    --ni-color-dark: var(--color-secondary-900);
+    --ni-color-light: var(--color-secondary-100);
+    --ni-highlight-color: var(--color-secondary);
+}
+
+.color-tertiary {
+    --ni-color: var(--color-tertiary);
+    --ni-color-dark: var(--color-tertiary-900);
+    --ni-color-light: var(--color-tertiary-100);
+    --ni-highlight-color: var(--color-tertiary);
+}
+
+.highlight-neutral .input-wrapper:focus-within {
+    --ni-highlight-color: var(--color-neutral);
+}
+
+.highlight-primary .input-wrapper:focus-within {
+    --ni-highlight-color: var(--color-primary);
+}
+
+.highlight-secondary .input-wrapper:focus-within {
+    --ni-highlight-color: var(--color-secondary);
+}
+
+.highlight-tertiary .input-wrapper:focus-within {
+    --ni-highlight-color: var(--color-tertiary);
+}
+
+.size-xs .hex-value {
+    font-size: 10px;
+}
+
+.size-xs .label {
+    font-size: 11px;
+}
+
+.size-xs .swatch {
+    width: 18px;
+    height: 18px;
+    margin: 2px;
+}
+
+.size-sm .hex-value {
+    font-size: 11px;
+}
+
+.size-sm .label {
+    font-size: 12px;
+}
+
+.size-sm .swatch {
+    width: 22px;
+    height: 22px;
+    margin: 3px;
+}
+
+.size-md .hex-value {
+    font-size: 12px;
+}
+
+.size-md .label {
+    font-size: 13px;
+}
+
+.size-md .swatch {
+    width: 26px;
+    height: 26px;
+    margin: 4px;
+}
+
+.mode-light .label {
+    color: var(--ni-color-dark);
+}
+
+.mode-light .input-wrapper {
+    background-color: var(--ni-color-light);
+    color: var(--ni-color-dark);
+    border-color: var(--ni-color);
+}
+
+.mode-dark .label {
+    color: var(--ni-color-light);
+}
+
+.mode-dark .input-wrapper {
+    background-color: var(--ni-color-dark);
+    color: var(--ni-color-light);
+    border-color: var(--ni-color);
+}
+
+.variant-fill .input-wrapper {
+    background-color: var(--ni-color);
+    color: var(--ni-color-light);
+}
+
+.variant-fill-inverse .input-wrapper {
+    color: var(--ni-color);
+}
+
+.variant-fill-translucent .input-wrapper {
+    background-color: rgb(from var(--ni-color) r g b / .24);
+    color: var(--ni-color);
+    border-color: rgb(from var(--ni-color) r g b / .3);
+}
+
+.highlight-neutral .input-wrapper:focus-within {
+    --ni-highlight-color: var(--color-neutral);
+}
+
+.highlight-primary .input-wrapper:focus-within {
+    --ni-highlight-color: var(--color-primary);
+}
+
+.highlight-secondary .input-wrapper:focus-within {
+    --ni-highlight-color: var(--color-secondary);
+}
+
+.highlight-tertiary .input-wrapper:focus-within {
+    --ni-highlight-color: var(--color-tertiary);
+}

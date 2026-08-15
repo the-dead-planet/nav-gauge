@@ -1,0 +1,556 @@
+.toggle-switch.disabled {
+    cursor: not-allowed;
+    opacity: .4;
+}
+
+.input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+.track {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border-width: 1px;
+    border-style: solid;
+    transition: background .2s ease, border-color .2s ease, box-shadow .2s ease;
+    flex-shrink: 0;
+    /* outer rim — recessed housing */
+    box-shadow:
+        inset 0 2px 4px rgb(0 0 0 / .4),
+        inset 0 -1px 2px rgb(255 255 255 / .08),
+        0 1px 2px rgb(0 0 0 / .2);
+}
+
+.thumb {
+    position: absolute;
+    transition: transform .2s ease, background-color .2s ease, box-shadow .2s ease;
+    top: 50%;
+    left: 50%;
+}
+
+.thumb-body {
+    position: absolute;
+    inset: 0;
+    background-color: var(--ts-thumb-color);
+}
+
+.thumb-pivot {
+    position: absolute;
+    border-radius: 50%;
+    background-color: var(--ts-thumb-color);
+}
+
+.thumb-knob {
+    position: absolute;
+    border-radius: 50%;
+    background-color: var(--ts-thumb-color);
+}
+
+.lamp {
+    border-radius: 50%;
+    flex-shrink: 0;
+    transition: background-color .2s ease, box-shadow .2s ease;
+}
+
+.label {
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* ── Orientation ── */
+
+.toggle-row {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.orientation-horizontal .toggle-row {
+    flex-direction: row;
+}
+
+.orientation-horizontal .track {
+    flex-direction: row;
+}
+
+.orientation-vertical .toggle-row {
+    flex-direction: column;
+}
+
+.orientation-vertical .track {
+    flex-direction: column;
+    order: 2;
+}
+
+.orientation-vertical .lamp-off {
+    order: 3;
+}
+
+.orientation-vertical .lamp-on {
+    order: 1;
+}
+
+/* ── Mode ── */
+
+.mode-light .label {
+    color: var(--ts-color-dark);
+}
+
+.mode-dark .label {
+    color: var(--ts-color-light);
+}
+
+/* ── Color ── */
+
+.color-primary {
+    --ts-color: var(--color-primary);
+    --ts-color-dark: var(--color-primary-900);
+    --ts-color-light: var(--color-primary-100);
+}
+
+.color-secondary {
+    --ts-color: var(--color-secondary);
+    --ts-color-dark: var(--color-secondary-900);
+    --ts-color-light: var(--color-secondary-100);
+}
+
+.color-tertiary {
+    --ts-color: var(--color-tertiary);
+    --ts-color-dark: var(--color-tertiary-900);
+    --ts-color-light: var(--color-tertiary-100);
+}
+
+.color-neutral {
+    --ts-color: var(--color-neutral);
+    --ts-color-dark: var(--color-neutral-800);
+    --ts-color-light: var(--color-neutral-100);
+}
+
+/* ── Highlight ── */
+
+.highlight-primary {
+    --ts-highlight-color: var(--color-primary);
+    --ts-highlight-color-accent-lighter: var(--color-primary-300);
+    --ts-highlight-color-accent-darker: var(--color-primary-600);
+}
+
+.highlight-secondary {
+    --ts-highlight-color: var(--color-secondary);
+    --ts-highlight-color-accent-lighter: var(--color-secondary-300);
+    --ts-highlight-color-accent-darker: var(--color-secondary-600);
+}
+
+.highlight-tertiary {
+    --ts-highlight-color: var(--color-tertiary);
+    --ts-highlight-color-accent-lighter: var(--color-tertiary-300);
+    --ts-highlight-color-accent-darker: var(--color-tertiary-600);
+}
+
+.highlight-neutral {
+    --ts-highlight-color: var(--color-neutral);
+    --ts-highlight-color-accent-lighter: var(--color-neutral-300);
+    --ts-highlight-color-accent-darker: var(--color-neutral-600);
+}
+
+.mode-light {
+    --ts-highlight-color-accent: var(--ts-highlight-color-accent-darker);
+}
+
+.mode-dark {
+    --ts-highlight-color-accent: var(--ts-highlight-color-accent-lighter);
+}
+
+/* ── Lamp states ── */
+
+.lamp-error {
+    background-color: var(--color-error);
+    background-image: radial-gradient(circle at 35% 30%, rgb(255 255 255 / .4), transparent 50%);
+}
+
+.lamp-success {
+    background-color: var(--color-success);
+    background-image: radial-gradient(circle at 35% 30%, rgb(255 255 255 / .4), transparent 50%);
+}
+
+.lamp-inactive {
+    background-color: var(--color-neutral);
+    opacity: .3;
+}
+
+/* Off lamp glows when unchecked */
+:not(.checked) .lamp-off.lamp-error {
+    box-shadow: 0 0 6px 2px var(--color-error);
+}
+
+/* On lamp glows when checked */
+.checked .lamp-on.lamp-success {
+    box-shadow: 0 0 6px 2px var(--color-success);
+}
+
+/* ── Track variant: fill ── */
+
+.variant-fill .track {
+    background:
+        radial-gradient(circle at 35% 35%, rgb(255 255 255 / .15), transparent 50%),
+        radial-gradient(circle at 50% 50%, var(--ts-color), var(--ts-color-dark));
+    border-color: var(--ts-color-dark);
+}
+
+.variant-fill .thumb {
+    --ts-thumb-color: var(--ts-color-light);
+}
+
+/* ── Track variant: ghost ── */
+
+.variant-ghost .track {
+    background:
+        radial-gradient(circle at 35% 35%, rgb(255 255 255 / .08), transparent 50%),
+        radial-gradient(circle at 50% 50%, rgb(from var(--ts-color) r g b / .12), rgb(from var(--ts-color) r g b / .05));
+    border-color: var(--ts-color);
+}
+
+.variant-ghost .thumb {
+    --ts-thumb-color: var(--ts-color);
+}
+
+/* ── Track variant: outline ── */
+
+.variant-outline .track {
+    background:
+        radial-gradient(circle at 35% 35%, rgb(255 255 255 / .08), transparent 50%),
+        radial-gradient(circle at 50% 50%, rgb(from var(--ts-color) r g b / .1), rgb(from var(--ts-color) r g b / .04));
+    border-color: var(--ts-color);
+}
+
+.variant-outline .thumb {
+    --ts-thumb-color: var(--ts-color);
+}
+
+/* ── Track variant: fill-inverse ── */
+
+.variant-fill-inverse .track {
+    background:
+        radial-gradient(circle at 35% 35%, rgb(255 255 255 / .2), transparent 50%),
+        radial-gradient(circle at 50% 50%, var(--ts-color-light), rgb(from var(--ts-color-light) r g b / .8));
+    border-color: rgb(from var(--ts-color-light) r g b / .7);
+}
+
+.variant-fill-inverse .thumb {
+    --ts-thumb-color: var(--ts-color);
+}
+
+/* ── Track variant: fill-translucent ── */
+
+.variant-fill-translucent .track {
+    background:
+        radial-gradient(circle at 35% 35%, rgb(255 255 255 / .1), transparent 50%),
+        radial-gradient(circle at 50% 50%, rgb(from var(--ts-color) r g b / .2), rgb(from var(--ts-color) r g b / .08));
+    border-color: var(--ts-color);
+}
+
+.variant-fill-translucent .thumb {
+    --ts-thumb-color: var(--ts-color);
+}
+
+/* ── Track variant: inset ── */
+
+.variant-inset .track {
+    background:
+        radial-gradient(circle at 35% 35%, rgb(255 255 255 / .06), transparent 50%),
+        radial-gradient(circle at 50% 50%, rgb(from var(--ts-color) r g b / .08), rgb(from var(--ts-color) r g b / .03));
+    border-color: var(--ts-color);
+    box-shadow:
+        inset 0 3px 6px rgb(0 0 0 / .5),
+        inset 0 -1px 2px rgb(255 255 255 / .06),
+        0 1px 2px rgb(0 0 0 / .2);
+}
+
+.variant-inset .thumb {
+    --ts-thumb-color: var(--ts-color);
+}
+
+/* ── Thumb: horizontal lever ── */
+
+.orientation-horizontal .thumb {
+    width: var(--thumb-length);
+    height: var(--thumb-thickness);
+    margin-top: calc(var(--thumb-thickness) / -2);
+    transform-origin: 0% 50%;
+    transform: scaleX(-1);
+}
+
+.checked .orientation-horizontal .thumb {
+    transform: scaleX(1);
+}
+
+.orientation-horizontal .thumb-body {
+    inset: 0;
+    background-image: linear-gradient(to bottom, rgb(255 255 255 / .2), rgb(0 0 0 / .2));
+    clip-path: polygon(0% var(--ts-clip-pivot-start), 100% var(--ts-clip-knob-start), 100% var(--ts-clip-knob-end), 0% var(--ts-clip-pivot-end));
+}
+
+.orientation-horizontal .thumb-pivot {
+    left: 0;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-image: radial-gradient(circle at 35% 30%, rgb(255 255 255 / .35), transparent 50%);
+    box-shadow:
+        inset 0 -1px 2px rgb(0 0 0 / .3),
+        0 1px 1px rgb(0 0 0 / .2);
+}
+
+.orientation-horizontal .thumb-knob {
+    right: 0;
+    top: 50%;
+    transform: translate(50%, -50%);
+    background-image: radial-gradient(circle at 35% 30%, rgb(255 255 255 / .45), transparent 50%);
+    box-shadow:
+        inset 0 -1px 3px rgb(0 0 0 / .35),
+        0 1px 2px rgb(0 0 0 / .25);
+}
+
+/* ── Thumb: vertical lever ── */
+
+.orientation-vertical .thumb {
+    width: var(--thumb-thickness);
+    height: var(--thumb-length);
+    margin-left: calc(var(--thumb-thickness) / -2);
+    transform-origin: 50% 0%;
+    transform: scaleY(1);
+}
+
+.checked .orientation-vertical .thumb {
+    transform: scaleY(-1);
+}
+
+.orientation-vertical .thumb-body {
+    inset: 0;
+    background-image: linear-gradient(to right, rgb(255 255 255 / .2), rgb(0 0 0 / .2));
+    clip-path: polygon(var(--ts-clip-pivot-start) 0%, var(--ts-clip-pivot-end) 0%, var(--ts-clip-knob-end) 100%, var(--ts-clip-knob-start) 100%);
+}
+
+.orientation-vertical .thumb-pivot {
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-image: radial-gradient(circle at 30% 35%, rgb(255 255 255 / .35), transparent 50%);
+    box-shadow:
+        inset 0 -1px 2px rgb(0 0 0 / .3),
+        0 1px 1px rgb(0 0 0 / .2);
+}
+
+.orientation-vertical .thumb-knob {
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    background-image: radial-gradient(circle at 30% 35%, rgb(255 255 255 / .45), transparent 50%);
+    box-shadow:
+        inset 0 -1px 3px rgb(0 0 0 / .35),
+        0 1px 2px rgb(0 0 0 / .25);
+}
+
+/* ── Hover ── */
+
+.toggle-switch:hover .track {
+    box-shadow: 0 0 0 2px rgb(from var(--ts-highlight-color-accent) r g b / .3);
+}
+
+/* ── Focus ── */
+
+.toggle-switch:has(:focus-visible) .track {
+    outline: 2px solid var(--ts-color);
+    outline-offset: 2px;
+}
+
+/* ── Sizes ── */
+
+/* xs */
+.size-xs .track {
+    width: 28px;
+    height: 28px;
+}
+
+.size-xs .thumb {
+    --thumb-length: 12px;
+    --thumb-thickness: 8px;
+    --ts-clip-pivot-start: 12.5%;
+    --ts-clip-pivot-end: 87.5%;
+    --ts-clip-knob-start: 0%;
+    --ts-clip-knob-end: 100%;
+}
+
+.size-xs .thumb-pivot {
+    width: 6px;
+    height: 6px;
+}
+
+.size-xs .thumb-knob {
+    width: 8px;
+    height: 8px;
+}
+
+.size-xs .lamp {
+    width: 6px;
+    height: 6px;
+}
+
+.size-xs .label {
+    font-size: 10px;
+}
+
+.size-xs .orientation-horizontal,
+.size-xs .orientation-vertical {
+    gap: 6px;
+}
+
+/* sm */
+.size-sm .track {
+    width: 34px;
+    height: 34px;
+}
+
+.size-sm .thumb {
+    --thumb-length: 14px;
+    --thumb-thickness: 10px;
+    --ts-clip-pivot-start: 15%;
+    --ts-clip-pivot-end: 85%;
+    --ts-clip-knob-start: 5%;
+    --ts-clip-knob-end: 95%;
+}
+
+.size-sm .thumb-pivot {
+    width: 7px;
+    height: 7px;
+}
+
+.size-sm .thumb-knob {
+    width: 9px;
+    height: 9px;
+}
+
+.size-sm .lamp {
+    width: 8px;
+    height: 8px;
+}
+
+.size-sm .label {
+    font-size: 12px;
+}
+
+.size-sm .orientation-horizontal,
+.size-sm .orientation-vertical {
+    gap: 8px;
+}
+
+/* md */
+.size-md .track {
+    width: 40px;
+    height: 40px;
+}
+
+.size-md .thumb {
+    --thumb-length: 16px;
+    --thumb-thickness: 12px;
+    --ts-clip-pivot-start: 16.67%;
+    --ts-clip-pivot-end: 83.33%;
+    --ts-clip-knob-start: 8.33%;
+    --ts-clip-knob-end: 91.67%;
+}
+
+.size-md .thumb-pivot {
+    width: 8px;
+    height: 8px;
+}
+
+.size-md .thumb-knob {
+    width: 10px;
+    height: 10px;
+}
+
+.size-md .lamp {
+    width: 10px;
+    height: 10px;
+}
+
+.size-md .label {
+    font-size: 14px;
+}
+
+.size-md .orientation-horizontal,
+.size-md .orientation-vertical {
+    gap: 10px;
+}
+
+/* ── Knob pulse animation ── */
+
+@keyframes knob-pulse-off {
+    0% {
+        transform: translate(50%, -50%) scale(1);
+    }
+    50% {
+        transform: translate(50%, -50%) scale(1.25);
+    }
+    100% {
+        transform: translate(50%, -50%) scale(1);
+    }
+}
+
+@keyframes knob-pulse-on {
+    0% {
+        transform: translate(50%, -50%) scale(1);
+    }
+    50% {
+        transform: translate(50%, -50%) scale(1.25);
+    }
+    100% {
+        transform: translate(50%, -50%) scale(1);
+    }
+}
+
+@keyframes knob-pulse-off-vertical {
+    0% {
+        transform: translate(-50%, 50%) scale(1);
+    }
+    50% {
+        transform: translate(-50%, 50%) scale(1.25);
+    }
+    100% {
+        transform: translate(-50%, 50%) scale(1);
+    }
+}
+
+@keyframes knob-pulse-on-vertical {
+    0% {
+        transform: translate(-50%, 50%) scale(1);
+    }
+    50% {
+        transform: translate(-50%, 50%) scale(1.25);
+    }
+    100% {
+        transform: translate(-50%, 50%) scale(1);
+    }
+}
+
+:not(.checked) .orientation-horizontal .thumb-knob {
+    animation: knob-pulse-off 0.2s ease-out;
+}
+
+.checked .orientation-horizontal .thumb-knob {
+    animation: knob-pulse-on 0.2s ease-out;
+}
+
+:not(.checked) .orientation-vertical .thumb-knob {
+    animation: knob-pulse-off-vertical 0.2s ease-out;
+}
+
+.checked .orientation-vertical .thumb-knob {
+    animation: knob-pulse-on-vertical 0.2s ease-out;
+}

@@ -1,0 +1,15 @@
+---
+description: State derivation conventions for effects and observables
+globs: "**/*.{ts,tsx}"
+alwaysApply: true
+---
+
+- **Derive state from actual observables, never from hardcoded defaults.** 
+  When an effect, hook, or component reads values to compute derived state, pull from the real source of truth (`useObservableState`, `useSubjectState`, props, context). 
+  Hardcoding fallback values (e.g. `isCollapsed: false`) silently overrides explicit sizing and creates subtle divergence between stored state and UI.
+
+- **If a default is necessary, make it explicit and documented.** 
+  A hardcoded value that must exist should be a named constant with a comment explaining why it's safe to fall back.
+
+- **When multiple sources of truth exist (stored width + clamped width), always use the source that reflects the current user intent.**
+  Explicit sizing calls and clamping effects must reference the same observables so they don't fight each other.

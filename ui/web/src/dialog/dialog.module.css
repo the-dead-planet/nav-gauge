@@ -1,0 +1,50 @@
+.container {
+    position: absolute;
+}
+
+.dialog {
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 10px;
+}
+
+.middle {
+    top: 50%;
+    left: 50%;
+}
+
+.middle .dialog {
+    transform: translate(-50%, -50%);
+}
+
+.right-drawer {
+    right: 0;
+    top: 100px;
+}
+
+.right-drawer .dialog {
+    transform: skew(-8deg) translate(-25px, 0);
+}
+
+.left-drawer {
+    left: 0;
+    top: 100px;
+}
+
+.left-drawer .dialog {
+    transform: skew(8deg) translate(25px, 0);
+}
+
+.header {
+    margin: 15px 20px 5px 20px;
+}
+
+.content {
+    padding: 0 20px;
+}
+
+.footer {
+    margin-top: 5px;
+    display: flex;
+    justify-content: flex-end;
+}

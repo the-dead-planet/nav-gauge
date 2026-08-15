@@ -1,0 +1,52 @@
+.maplibregl-map {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    position: relative;
+}
+
+.maplibregl-canvas {
+    box-sizing: border-box;
+    position: relative;
+    border-radius: var(--map-radius);
+    /* border: var(--map-inner-border-width) solid var(--map-inner-border-color); */
+    border: 1px solid transparent;
+    box-shadow: var(--map-inner-box-shadow);
+}
+
+.maplibregl-canvas:focus {
+    border-color: var(--color-secondary);
+}
+
+.maplibregl-map::before {
+    content: "";
+    position: absolute;
+    box-sizing: border-box;
+    left: calc(-1 * var(--map-border-width));
+    right: calc(-1 * var(--map-border-width));
+    top: calc(-1 * var(--map-border-width));
+    bottom: calc(-1 * var(--map-border-width));
+    border-radius: var(--map-radius);
+    border: var(--map-border-width) solid var(--map-border-color);
+    box-shadow: var(--map-box-shadow);
+}
+
+.maplibregl-control-container .maplibregl-ctrl-top-left {
+    top: var(--ctrl-top);
+    left: var(--ctrl-left);
+}
+
+.maplibregl-control-container .maplibregl-ctrl-top-right {
+    top: var(--ctrl-top);
+    right: var(--ctrl-right);
+}
+
+.maplibregl-control-container .maplibregl-ctrl-bottom-left {
+    bottom: var(--ctrl-bottom);
+    left: var(--ctrl-left);
+}
+
+.maplibregl-control-container .maplibregl-ctrl-bottom-right {
+    bottom: var(--ctrl-bottom);
+    left: var(--ctrl-right);
+}

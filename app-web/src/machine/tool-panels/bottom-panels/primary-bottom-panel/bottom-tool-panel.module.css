@@ -1,0 +1,13 @@
+.container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    transform: translate(0, -100%);
+    align-items: end;
+    display: grid;
+    pointer-events: none;
+}
+
+.container > * {
+    pointer-events: auto;
+} 

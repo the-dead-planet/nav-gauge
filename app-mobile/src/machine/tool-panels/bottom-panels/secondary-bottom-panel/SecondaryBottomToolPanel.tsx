@@ -1,0 +1,83 @@
+import { FC, useState } from "react";
+import { Animated, StyleSheet, View } from "react-native";
+import { useMachineWard, useSecondaryBottomToolPanel } from "@apparatus";
+import { useTheme } from "@ui";
+import { ToolPanelHeader } from "../../panel-header/ToolPanelHeader";
+import { BottomSecondaryToolPanelResizeHandle } from "./SecondaryBottomToolPanelResizeHandle";
+import { MobileMap } from "@mobile-ui";
+import { useAnimatedSize } from "../../useAnimatedSize";
+
+const styles = StyleSheet.create({
+    container: {
+        position: 'relative',
+    },
+    component: {
+        flex: 1,
+    },
+    componentContent: {
+        flex: 1,
+    },
+});
+
+interface Props {
+    map?: MobileMap;
+    activeId: string | null;
+    onActiveIdChange: (activeId: string | null) => void;
+}
+
+export const SecondaryBottomToolPanel: FC<Props> = ({
+    map,
+    activeId,
+    onActiveIdChange,
+}) => {
+    const theme = useTheme();
+    const { toolsStation } = useMachineWard();
+    const [isDragging, setIsDragging] = useState(false);
+
+    const {
+        show,
+        effectiveHeight,
+        toolPanel,
+        handleToolSelect,
+    } = useSecondaryBottomToolPanel(activeId, onActiveIdChange);
+
+    const animatedHeight = useAnimatedSize(effectiveHeight, { animate: !isDragging });
+
+    if (!show) {
+        return null;
+    }
+
+    return (
+        <View
+            ref={(instance) => {
+                toolsStation.bottomSecondaryToolPanelSizeRef.current = instance;
+            }}
+            style={styles.container}>
+            <Animated.View
+                style={{
+                    height: animatedHeight,
+                    backgroundColor: theme.componentColor('background', 0.87),
+                    borderTopWidth: 1,
+                    borderTopColor: theme.color('primary'),
+                }}
+            >
+                <ToolPanelHeader
+                    placement="bottom"
+                    activeId={activeId}
+                    onActiveIdChange={handleToolSelect}
+                    headerControls={toolPanel?.headerComponent ? (
+                        <toolPanel.headerComponent map={map} placement={toolPanel.placement} />
+                    ) : undefined}
+                />
+                {toolPanel ? (
+                    <View style={styles.component}>
+                        <View style={styles.componentContent}>
+                            <toolPanel.contentComponent map={map} placement={toolPanel.placement} />
+                        </View>
+                    </View>
+                ) : null}
+            </Animated.View>
+            <BottomSecondaryToolPanelResizeHandle onDraggingChange={setIsDragging} />
+        </View>
+    );
+};

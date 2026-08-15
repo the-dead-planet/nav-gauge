@@ -1,0 +1,23 @@
+---
+description: UI component and styling conventions
+globs: "**/*.{ts,tsx,css,module.css}"
+alwaysApply: true
+---
+
+UI components should be semantic, accessible, and minimal.
+
+Reusable UI components must not contain business logic.
+
+Theme variables live in `@ui/common/src/theme/specifications.ts`.
+
+### Web
+- Use CSS modules.
+- Class names use kebab-case.
+- Prefer `className` over inline `style`.
+- Use inline `style` only for runtime-computed values that cannot be expressed with CSS classes or CSS variables.
+- Use CSS variables for theming.
+- Never use `!important`.
+
+### Mobile
+- Use `StyleSheet.create` for styles.
+- Do not use CSS modules or CSS custom properties.
