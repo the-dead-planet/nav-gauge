@@ -90,10 +90,16 @@ export const useMapSourceAndLayers = (
             isTopRelated: boolean;
         } => {
             const layerIds = layers.map((layer) => layer.id);
-            const allFeatures = map.queryRenderedFeatures([
-                [event.point.x - buffer, event.point.y - buffer],
-                [event.point.x + buffer, event.point.y + buffer],
-            ]);
+            let allFeatures: maplibregl.MapGeoJSONFeature[];
+            try {
+                allFeatures = map.queryRenderedFeatures([
+                    [event.point.x - buffer, event.point.y - buffer],
+                    [event.point.x + buffer, event.point.y + buffer],
+                ]);
+            } catch {
+                // maplibre-gl race during source setData (#7752): querying a tile mid-reload throws.
+                return { features: [], allFeatures: [], isTopRelated: false };
+            }
 
             if (allFeatures.every((feature) => feature.source !== sourceId || !layerIds.includes(feature.layer.id))) {
                 return { features: [], allFeatures: [], isTopRelated: false };
