@@ -1,5 +1,6 @@
 export { default as AlienGun } from './output/alien-gun.svg';
 export { default as Animation } from './output/animation.svg';
+export { default as Attribution } from './output/attribution.svg';
 export { default as BrokenBox } from './output/broken-box.svg';
 export { default as CameraRecording } from './output/camera-recording.svg';
 export { default as CameraVideoFront } from './output/camera-video-front.svg';

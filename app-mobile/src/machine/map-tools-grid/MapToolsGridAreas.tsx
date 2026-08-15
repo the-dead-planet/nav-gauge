@@ -8,6 +8,7 @@ import { TopToolsGridArea } from "../map-tools-grid/TopToolsGridArea";
 import { SecondaryBottomToolPanel } from "../tool-panels/bottom-panels/secondary-bottom-panel/SecondaryBottomToolPanel";
 import { BottomToolPanel } from "../tool-panels/bottom-panels/primary-bottom-panel/BottomToolPanel";
 import { MobileMap } from "@mobile-ui";
+import { Attributions } from "../../attributions/Attributions";
 
 const styles = StyleSheet.create({
     mainArea: {
@@ -43,6 +44,7 @@ export const MapToolsGridAreas: FC<Props> = ({ map }) => {
                     )}
                 <ToolIcons placement="left" map={map} />
                 <TopToolsGridArea map={map} />
+                <Attributions />
                 <ToolIcons placement="right" map={map} />
                 {groupSidePanelsInBottomSecondaryToolbar
                     ? null

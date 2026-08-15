@@ -273,6 +273,8 @@
     grid-area: top-tools;
     pointer-events: none;
     min-width: 160px;
+    display: flex;
+    align-items: flex-start;
 }
 
 .gears-heading {

@@ -46,7 +46,7 @@ export class WebMachineWard extends MachineWard<maplibregl.Map> {
         topBarComponent: TopBar,
         machineComponent: Machine,
         footerComponent: Footer,
-        noticesComponent: Notices
+        noticesComponent: Notices,
     };
 
     public navigate = (_path: string) => {

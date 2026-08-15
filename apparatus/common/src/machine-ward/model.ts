@@ -1,6 +1,6 @@
 import { ComponentType, ReactNode } from "react";
 import { ErrorBoundaryProps } from "@ui";
-import { SignaliumNotice } from "..";
+import { AttributionVault, SignaliumNotice } from "..";
 import { Gear, GearApparatus } from "./gears";
 
 export interface MachineWardLayoutProps {

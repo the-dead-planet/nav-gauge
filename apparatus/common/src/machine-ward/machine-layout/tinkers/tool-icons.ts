@@ -1,16 +1,29 @@
 import { ComponentType, RefObject } from "react";
-import { ToolPanelProps, ToolsStation } from "../../tools-station";
+import { ToolPanelProps, ToolsStation, TopToolsProps } from "../../tools-station";
 import { Icons } from "@ui";
 import { Cartomancer, GaugeControlsType } from "../../cartomancer";
 import { CompassOptions, ZoomOptions } from "../model";
+import { AttributionVault } from "../../attribution-vault";
 
 let zoomEndHandlerTimeout: Timer;
 
+const attributionToolIconId = 'cartomancer-attribution';
 const compassToolIconId = 'cartomancer-compass';
 const zoomInIconId = 'cartomancer-zoom-in';
 const currentZoomIconId = 'cartomancer-current-zoom';
 const zoomOutIconId = 'cartomancer-zoom-out';
 const mapLayoutControlsId = 'map-layout-controls';
+
+export const addAttributionTool = <TMap>(
+    toolsStation: ToolsStation<TMap>,
+    component: ComponentType<TopToolsProps<TMap>>,
+): (() => void) => {
+    toolsStation.addTopTool(attributionToolIconId, component);
+
+    return () => {
+        toolsStation.removeTopTool(attributionToolIconId);
+    };
+};
 
 export const addCompassToolIcon = <TMap>(
     gaugeControls: GaugeControlsType,
@@ -39,6 +52,9 @@ export const addCompassToolIcon = <TMap>(
                 onClick: () => {
                     getViewState()
                         .then(({ center }) => {
+                            if (abortController.signal.aborted) {
+                                return;
+                            }
                             easeTo?.({ center, bearing: 0, pitch: 0 });
                         })
                         .catch(console.error)
