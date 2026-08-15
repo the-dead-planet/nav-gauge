@@ -30,7 +30,7 @@ export const useSecondaryBottomToolPanel = (
             const thisMin = LAYOUT_MINS.panels.bottomSecondary;
             const maxAvailable = theme.media$.value.windowHeight - LAYOUT_MINS.remainingArea.height;
             const clampedHeight = Math.min(Math.max(panelWidths.bottomSecondaryHeight, thisMin), maxAvailable);
-            const targetHeight = clampedHeight === thisMin ? LAYOUT_DEFAULTS.panels.bottomSecondary : clampedHeight;
+            const targetHeight = clampedHeight < thisMin * 2 ? LAYOUT_DEFAULTS.panels.bottomSecondary : clampedHeight;
 
             setPanelWidths((prev) => ({
                 ...prev,

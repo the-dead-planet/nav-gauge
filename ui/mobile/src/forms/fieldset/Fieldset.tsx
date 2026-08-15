@@ -1,14 +1,19 @@
 import { FC, useEffect, useRef, useState } from "react";
-import {
-    Animated,
-    Pressable,
-    View,
-    ViewStyle,
-} from "react-native";
-import Svg, { Polygon } from "react-native-svg";
-import { FieldsetProps, Icons, useTheme } from "@ui";
-import { Icon } from "../../icons";
-import { Text } from "../../typography";
+import { Animated, StyleSheet, View } from "react-native";
+import { FieldsetProps } from "@ui";
+import { FieldsetHeaderContent } from "./FieldsetHeaderContent";
+import { FieldsetBevelOutline } from "./FieldsetBevelOutline";
+import { FieldsetHeader } from "./FieldsetHeader";
+
+const styles = StyleSheet.create({
+    container: {
+        position: 'relative',
+        overflow: 'hidden',
+    },
+    content: {
+        gap: 10,
+    }
+});
 
 const bevelBySize = { xs: 6, sm: 10, md: 20 } as const;
 
@@ -18,10 +23,12 @@ const sizeMap = {
     md: { fontSize: 14, padding: 10 },
 } as const;
 
-export const Fieldset: FC<FieldsetProps & {
+interface Props extends FieldsetProps {
     expanded?: boolean;
     onExpandedChange?: (expanded: boolean) => void;
-}> = ({
+}
+
+export const Fieldset: FC<Props> = ({
     label,
     prepend,
     append,
@@ -32,7 +39,6 @@ export const Fieldset: FC<FieldsetProps & {
     onExpandedChange,
     children,
 }) => {
-    const theme = useTheme();
     const [internalExpanded, setInternalExpanded] = useState(true);
     const isExpanded = controlledExpanded ?? internalExpanded;
 
@@ -42,16 +48,6 @@ export const Fieldset: FC<FieldsetProps & {
     const measuredHeight = useRef(0);
     const [hasMeasured, setHasMeasured] = useState(false);
     const contentRef = useRef<View>(null);
-
-    const chevronRotation = useRef(new Animated.Value(isExpanded ? 0 : -90)).current;
-
-    useEffect(() => {
-        Animated.timing(chevronRotation, {
-            toValue: isExpanded ? 0 : -90,
-            duration: 200,
-            useNativeDriver: true,
-        }).start();
-    }, [isExpanded]);
 
     useEffect(() => {
         const listenerId = contentHeight.addListener(({ value }) => {
@@ -89,20 +85,6 @@ export const Fieldset: FC<FieldsetProps & {
         }
     }, [isExpanded]);
 
-    const handleToggle = () => {
-        if (measuredHeight.current === 0) {
-            contentRef.current?.measure((_x, _y, w, h) => {
-                if (w > 0) setContainerWidth(w);
-                if (h > 0) {
-                    measuredHeight.current = h;
-                    animateToggle(h);
-                }
-            });
-        } else {
-            animateToggle(measuredHeight.current);
-        }
-    };
-
     const animateToggle = (targetHeight: number) => {
         if (isExpanded) {
             contentHeight.stopAnimation((currentValue) => {
@@ -136,95 +118,53 @@ export const Fieldset: FC<FieldsetProps & {
         }
     };
 
+    const handleToggle = () => {
+        if (measuredHeight.current === 0) {
+            contentRef.current?.measure((_x, _y, w, h) => {
+                if (w > 0) setContainerWidth(w);
+                if (h > 0) {
+                    measuredHeight.current = h;
+                    animateToggle(h);
+                }
+            });
+        } else {
+            animateToggle(measuredHeight.current);
+        }
+    };
+
     const { fontSize, padding } = sizeMap[size];
-
-    const borderColor = color
-        ? theme.color(color)
-        : theme.isLight
-            ? theme.color('grey', 300)
-            : theme.color('grey', 700);
-
-    const bgColor = theme.componentColor('background');
-
-    const labelColor = theme.isLight
-        ? theme.color('grey', 800)
-        : theme.color('grey', 200);
-
-    const bevel = bevelBySize[size];
-
     const effectiveBevel = containerWidth > 0
-        ? Math.min(bevel, containerWidth / 2 - 1)
-        : bevel;
-
-    const bevelPoints = containerWidth > 0 && containerHeight > 0
-        ? `${effectiveBevel},0 ${containerWidth - effectiveBevel},0 ${containerWidth},${effectiveBevel} ${containerWidth},${containerHeight - effectiveBevel} ${containerWidth - effectiveBevel},${containerHeight} ${effectiveBevel},${containerHeight} 0,${containerHeight - effectiveBevel} 0,${effectiveBevel}`
-        : '';
-
-    const headerStyle: ViewStyle = {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 8,
-    };
-
-    const labelStyle = {
-        fontSize,
-        textTransform: 'uppercase' as const,
-        color: labelColor,
-        flex: 1,
-    };
-
-    const headerContent = (
-        <View style={headerStyle}>
-            {expandable ? (
-                <Animated.View style={{
-                    transform: [{
-                        rotate: chevronRotation.interpolate({
-                            inputRange: [-90, 0],
-                            outputRange: ['-90deg', '0deg'],
-                        })
-                    }]
-                }}>
-                    <Icon icon={Icons.NounProject.ChevronDownDoubleTriangle} width={12} height={12} color={labelColor} />
-                </Animated.View>
-            ) : null}
-            {prepend ? <View>{prepend}</View> : null}
-            <Text style={labelStyle}>{label}</Text>
-            {append ? <View>{append}</View> : null}
-        </View>
-    );
+        ? Math.min(bevelBySize[size], containerWidth / 2 - 1)
+        : bevelBySize[size];
 
     return (
-        <View style={{ position: 'relative', overflow: 'hidden', backgroundColor: bgColor }}>
-            {containerWidth > 0 && containerHeight > 0 && (
-                <Svg
-                    viewBox={`0 0 ${containerWidth} ${containerHeight}`}
-                    style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, pointerEvents: 'none' }}
-                >
-                    <Polygon
-                        points={bevelPoints}
-                        fill="none"
-                        stroke={borderColor}
-                        strokeWidth={1}
-                    />
-                </Svg>
-            )}
+        <View style={styles.container}>
+            <FieldsetBevelOutline
+                containerWidth={containerWidth}
+                containerHeight={containerHeight}
+                bevel={effectiveBevel}
+                color={color}
+            />
             <Animated.View
                 ref={contentRef}
                 style={hasMeasured
-                    ? { height: contentHeight, overflow: 'hidden' as const }
+                    ? { height: contentHeight, overflow: 'hidden' }
                     : undefined
                 }
             >
                 <View style={{ paddingLeft: effectiveBevel, paddingRight: effectiveBevel, padding }}>
-                    {expandable ? (
-                        <Pressable onPress={handleToggle}>
-                            {headerContent}
-                        </Pressable>
-                    ) : (
-                        headerContent
-                    )}
+                    <FieldsetHeader expandable={expandable} onToggle={handleToggle}>
+                        <FieldsetHeaderContent
+                            label={label}
+                            expandable={expandable}
+                            isExpanded={isExpanded}
+                            prepend={prepend}
+                            append={append}
+                            fontSize={fontSize}
+                        />
+                    </FieldsetHeader>
                     {(!expandable || isExpanded) ? (
-                        <View style={{ gap: 10 }}>
+                        <View style={styles.content}>
                             {children}
                         </View>
                     ) : null}

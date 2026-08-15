@@ -2,9 +2,33 @@ import { FC } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Cartomancer, MapLayout, ToolPanelProps, useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
-import { MobileMap } from "@mobile-ui";
+import { MobileMap, Text } from "@mobile-ui";
 import { Dropdown, Fieldset, FlexBox, NumberInput, TextArea, TextInput, ToggleSwitch } from "@mobile-ui";
 import { useTheme } from "@ui";
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 12,
+        rowGap:20,
+    },
+    inputRow: {
+        gap: 8,
+    },
+    colorRow: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        gap: 8,
+    },
+    colorPreview: {
+        width: 32,
+        height: 32,
+        borderRadius: 4,
+        borderWidth: 1,
+        borderColor: 'rgba(255,255,255,0.2)',
+        marginTop: 2,
+    },
+});
 
 export const CartoConfigPanel: FC<ToolPanelProps<MobileMap>> = () => {
     const { cartomancer, translatron, individuator } = useMachineWard();
@@ -31,15 +55,19 @@ export const CartoConfigPanel: FC<ToolPanelProps<MobileMap>> = () => {
 
     return (
         <ScrollView style={styles.container}>
-            <Fieldset label={t(cartomancer.translationKey.Style)}>
+            <View>
+                <Text>
+                    {t(cartomancer.translationKey.Style)}
+                </Text>
                 <Dropdown
                     value={selectedStyle.id}
                     options={styleOptions}
                     onChange={handleMapStyleChange}
                     color="secondary"
                 />
-            </Fieldset>
+            </View>
 
+<View>
             <Fieldset label={t(cartomancer.translationKey.CartoLayout)}>
                 <Fieldset label={t(cartomancer.translationKey.FullScreen)}>
                     <ToggleSwitch
@@ -148,7 +176,7 @@ export const CartoConfigPanel: FC<ToolPanelProps<MobileMap>> = () => {
                     color="secondary"
                 />
             </Fieldset>
-
+</View>
             <Fieldset label={t(cartomancer.translationKey.GaugeControls)}>
                 <ToggleSwitch
                     checked={globeProjection}
@@ -185,26 +213,3 @@ export const CartoConfigPanel: FC<ToolPanelProps<MobileMap>> = () => {
         </ScrollView>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 12,
-    },
-    inputRow: {
-        gap: 8,
-    },
-    colorRow: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        gap: 8,
-    },
-    colorPreview: {
-        width: 32,
-        height: 32,
-        borderRadius: 4,
-        borderWidth: 1,
-        borderColor: 'rgba(255,255,255,0.2)',
-        marginTop: 2,
-    },
-});

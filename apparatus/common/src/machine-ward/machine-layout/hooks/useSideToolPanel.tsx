@@ -48,7 +48,7 @@ export const useSideToolPanel = (
             const column3Min = Math.max(LAYOUT_MINS.tools.top, LAYOUT_MINS.remainingArea.width);
             const maxAvailable = theme.media$.value.windowWidth - otherWidth - iconsReserved - column3Min;
             const clampedWidth = Math.min(Math.max(thisStoredWidth, thisMin), maxAvailable);
-            const targetWidth = clampedWidth === thisMin ? LAYOUT_DEFAULTS.panels[placement] : clampedWidth;
+            const targetWidth = clampedWidth < thisMin * 2 ? LAYOUT_DEFAULTS.panels[placement] : clampedWidth;
 
             setPanelWidths((prev) => calculateExpandToDefault(
                 targetWidth,
