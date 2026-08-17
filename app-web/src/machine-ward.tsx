@@ -1,3 +1,4 @@
+import type * as maplibregl from "maplibre-gl";
 import { MachineGear, MachineWard, MachineWardComponents } from "@apparatus";
 import { ErrorFallbackPage } from "./pages";
 import { Footer, Layout, TopBar } from "./layout";

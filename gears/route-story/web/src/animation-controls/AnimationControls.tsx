@@ -1,3 +1,4 @@
+import type * as maplibregl from "maplibre-gl";
 import { FC } from "react";
 import classNames from "classnames";
 import { ToolPanelProps, useMachineWard, useMultipleTranslations } from "@apparatus";

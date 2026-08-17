@@ -1,7 +1,7 @@
 import { CSSProperties, FC, useEffect, useState } from "react";
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
-import maplibregl from "maplibre-gl";
+import * as maplibregl from "maplibre-gl";
 import { Cartomancer, useMachineWard, FeatureStateProps } from "@apparatus";
 import { GeoJson, useSubjectState } from "@tinker-chest";
 import { Animatrix, routeSourceIds } from "@the-dead-planet/nav-gauge-gears-route-story-common";

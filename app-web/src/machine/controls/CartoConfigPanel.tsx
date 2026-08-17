@@ -1,3 +1,4 @@
+import type * as maplibregl from "maplibre-gl";
 import { FC } from "react";
 import { Checkbox, ColorInput, Dropdown, Fieldset, Label, NumberInput, TextArea, TextInput } from "@web-ui";
 import { Cartomancer, MapLayout, ToolPanelProps, useMachineWard } from "@apparatus";

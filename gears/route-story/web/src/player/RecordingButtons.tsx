@@ -1,3 +1,4 @@
+import type * as maplibregl from "maplibre-gl";
 import { FC, useEffect } from "react";
 import { SurveillanceState, useMachineWard, useMultipleTranslations } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";

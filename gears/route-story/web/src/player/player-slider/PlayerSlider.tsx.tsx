@@ -1,3 +1,4 @@
+import type * as maplibregl from "maplibre-gl";
 import { FC } from "react";
 import { BehaviorSubject } from "rxjs";
 import { MarkerImage, useMachineWard, useMultipleTranslations } from "@apparatus";

@@ -1,5 +1,5 @@
 import { FC, ReactNode, useState, useEffect } from "react";
-import maplibregl from "maplibre-gl";
+import * as maplibregl from "maplibre-gl";
 import { Protocol } from "pmtiles";
 import { Icons } from "@ui";
 import { Cartomancer, useMachineWard, glitchmitter } from "@apparatus";
@@ -52,7 +52,7 @@ export const MapCanvas: FC<Props> = ({ map, children }) => {
         abortSignal: AbortSignal
     ): Promise<void> => {
         return new Promise((resolve, reject) => {
-            const isLoadedHandler = (_event: maplibregl.MapDataEvent) => {
+            const isLoadedHandler = () => {
                 if (abortSignal.aborted) {
                     map.off('idle', isLoadedHandler);
                     reject("User aborted map style validation.")

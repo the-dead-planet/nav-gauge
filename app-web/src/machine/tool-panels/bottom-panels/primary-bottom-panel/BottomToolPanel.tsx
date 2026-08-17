@@ -1,3 +1,4 @@
+import type * as maplibregl from "maplibre-gl";
 import { FC, useEffect, useState } from "react";
 import classNames from "classnames";
 import { assignBottomToolPanelRef, useBottomToolPanel, useMachineWard } from "@apparatus";

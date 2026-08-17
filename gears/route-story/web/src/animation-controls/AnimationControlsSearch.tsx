@@ -1,3 +1,4 @@
+import type * as maplibregl from "maplibre-gl";
 import { FC } from "react";
 import { ToolPanelProps, useMultipleTranslations } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
