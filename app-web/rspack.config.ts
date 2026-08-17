@@ -121,6 +121,16 @@ export const baseConfig = (_env: Env, argv: Argv): Configuration => ({
                     to: './'
                 },
                 {
+                    from: "../node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs",
+                    to: './maplibre-gl-worker.mjs',
+                    noErrorOnMissing: true,
+                },
+                {
+                    from: "../node_modules/maplibre-gl/dist/maplibre-gl-shared.mjs",
+                    to: './maplibre-gl-shared.mjs',
+                    noErrorOnMissing: true,
+                },
+                {
                     context: '../ui/common/public',
                     from: '**/*',
                     to: '[path][name][ext]',

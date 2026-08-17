@@ -1,3 +1,4 @@
+import type * as maplibregl from "maplibre-gl";
 import { FC } from "react";
 import { MarkerImage, OverlayComponentProps } from "@apparatus";
 import { ImageMarker } from "./ImageMarker";

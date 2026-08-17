@@ -1,3 +1,4 @@
+import type * as maplibregl from "maplibre-gl";
 import { useEffect } from "react";
 
 let timeout: Timer | undefined;

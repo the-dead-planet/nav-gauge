@@ -1,3 +1,4 @@
+import type * as maplibregl from "maplibre-gl";
 import { FC } from "react";
 import { MapLayerData, MapLayerDataUpdateParams, useMapSourceAndLayers } from "./hooks";
 

@@ -1,8 +1,9 @@
+import type * as maplibregl from "maplibre-gl";
 import { FC } from "react";
 import { useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
-import styles from '../machine.module.css';
 import { Attributions } from "../../attributions/Attributions";
+import styles from '../machine.module.css';
 
 interface Props {
     map?: maplibregl.Map;

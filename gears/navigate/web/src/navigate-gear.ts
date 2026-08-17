@@ -1,3 +1,4 @@
+import type * as maplibregl from "maplibre-gl";
 import NavigateGear from "@the-dead-planet/nav-gauge-gears-navigate-common";
 
 export class WebNavigateGear extends NavigateGear<maplibregl.Map> {

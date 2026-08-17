@@ -1,3 +1,4 @@
+import type * as maplibregl from "maplibre-gl";
 import { FC } from "react";
 import { useMachineWard, useToolPanelSizeClamp } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";

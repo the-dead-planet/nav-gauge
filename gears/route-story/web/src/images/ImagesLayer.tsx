@@ -1,5 +1,5 @@
 import { FC, useEffect, useMemo } from "react";
-import maplibregl from "maplibre-gl";
+import * as maplibregl from "maplibre-gl";
 import { OverlayComponentProps, Cartomancer, FeatureStateProps } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { MapLayerData, MapSourceAndLayers } from "@web-apparatus";

@@ -1,5 +1,5 @@
 import { FC, useEffect, useMemo } from "react";
-import maplibregl, { LngLat } from "maplibre-gl";
+import * as maplibregl from "maplibre-gl";
 import { OverlayComponentProps, useMachineWard } from "@apparatus";
 import { getRouteSourceData, RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { emptyCollection, useSubjectState } from "@tinker-chest";
@@ -62,7 +62,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteStoryPr
                 map.easeTo({
                     easeId: 'follow-current-point',
                     animate: true,
-                    center: new LngLat(position[0], position[1]),
+                    center: new maplibregl.LngLat(position[0], position[1]),
                     essential: true,
                     duration: easeDuration,
                     zoom,

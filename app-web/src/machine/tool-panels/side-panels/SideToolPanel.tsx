@@ -1,3 +1,4 @@
+import type * as maplibregl from "maplibre-gl";
 import { FC, useState } from "react";
 import classNames from "classnames";
 import { Menu, MenuItem } from "@web-ui";

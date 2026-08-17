@@ -1,3 +1,4 @@
+import type * as maplibregl from "maplibre-gl";
 import { createRoot } from 'react-dom/client';
 import { MachineGear } from '@apparatus';
 import { WebMachineWard } from './machine-ward';

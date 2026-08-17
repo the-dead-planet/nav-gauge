@@ -1,3 +1,4 @@
+import type * as maplibregl from "maplibre-gl";
 import { FC } from "react";
 import { parsers, TopToolsProps, useMultipleTranslations } from "@apparatus";
 import { RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
