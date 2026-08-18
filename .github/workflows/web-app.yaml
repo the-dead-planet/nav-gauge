@@ -28,12 +28,6 @@ jobs:
         with:
           node-version: 24
 
-      - name: Activate Yarn from packageManager field
-        run: corepack prepare yarn@4.14.1 --activate
-
-      - name: Check Yarn version
-        run: yarn -v
-
       - name: Install dependencies
         run: yarn install --immutable
 
@@ -54,12 +48,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 24
-
-      - name: Activate Yarn from packageManager field
-        run: corepack prepare yarn@4.14.1 --activate
-
-      - name: Check Yarn version
-        run: yarn -v
 
       - name: Install dependencies
         run: yarn install --immutable
@@ -272,11 +260,13 @@ jobs:
         with:
           node-version: 24
 
-      - name: Enable Corepack + Yarn
-        run: |
-          corepack enable
-          corepack prepare yarn@4.14.1 --activate
-          yarn -v
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
 
       - name: Install dependencies
         run: yarn install --immutable
