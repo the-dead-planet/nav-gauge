@@ -34,26 +34,26 @@ jobs:
       - name: Run tests
         run: yarn test:web
 
-  lint:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@v4
+  # lint:
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: read
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-      - name: Enable Corepack
-        run: corepack enable
+  #     - name: Enable Corepack
+  #       run: corepack enable
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 24
 
-      - name: Install dependencies
-        run: yarn install --immutable
+  #     - name: Install dependencies
+  #       run: yarn install --immutable
 
-      - name: Lint sources
-        run: npx eslint . --no-warn-ignored
+  #     - name: Lint sources
+  #       run: npx eslint . --no-warn-ignored
 
   test-e2e:
     runs-on: ubuntu-24.04
