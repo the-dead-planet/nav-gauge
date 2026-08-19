@@ -3,6 +3,7 @@ FROM node:24-alpine AS builder
 WORKDIR /app/
 
 COPY /package.json /yarn.lock /.yarnrc.yml /tsconfig.base.json /tsconfig.packages.json /tsconfig.web.json ./
+COPY /.yarn/patches ./.yarn/patches
 
 COPY /app-web ./app-web
 COPY /apparatus ./apparatus
@@ -12,7 +13,7 @@ COPY /ui/web ./ui/web
 COPY /types ./types
 
 COPY /gears ./gears
-RUN rm -rf /gears/*/mobile /gears/*/mobile
+RUN rm -rf /gears/*/mobile
 
 RUN corepack enable && yarn install --network-timeout 300000
 RUN yarn build:web
