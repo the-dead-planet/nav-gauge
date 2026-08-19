@@ -4,6 +4,7 @@ import {
     PanResponder,
     View,
     ViewStyle,
+    type ViewInstance,
 } from "react-native";
 import { IconRotateInputProps, useTheme } from "@ui";
 import { SvgProps } from "react-native-svg";
@@ -44,8 +45,9 @@ export const IconRotateInput: FC<Props> = ({
     const [isDragging, setIsDragging] = useState(false);
     const [displayAngle, setDisplayAngle] = useState(value);
     const [displayWrapped, setDisplayWrapped] = useState(value);
-    const svgRef = useRef<View>(null);
+    const svgRef = useRef<ViewInstance>(null);
     const svgPageCenterRef = useRef({ x: 0, y: 0 });
+    const svgLayoutRef = useRef({ x: 0, y: 0, width: 0, height: 0 });
     const angleRef = useRef(value);
     angleRef.current = value;
     const onAngleChangeRef = useRef(onChange);
@@ -70,13 +72,13 @@ export const IconRotateInput: FC<Props> = ({
         return Math.min(max, Math.max(min, stepped));
     };
 
-    const handleLayout = (_e: LayoutChangeEvent) => {
-        svgRef.current?.measureInWindow((x, y, width, height) => {
-            svgPageCenterRef.current = {
-                x: x + width / 2,
-                y: y + height / 2,
-            };
-        });
+    const handleLayout = (e: LayoutChangeEvent) => {
+        const { x, y, width, height } = e.nativeEvent.layout;
+        svgLayoutRef.current = { x, y, width, height };
+        svgPageCenterRef.current = {
+            x: x + width / 2,
+            y: y + height / 2,
+        };
     };
 
     const handleInteraction = (pageX: number, pageY: number) => {

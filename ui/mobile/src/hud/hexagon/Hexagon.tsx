@@ -1,5 +1,5 @@
 import { FC, Ref, useId, useState } from "react";
-import { View, ViewStyle, StyleProp, StyleSheet, Pressable, GestureResponderEvent } from "react-native";
+import { View, ViewStyle, StyleProp, StyleSheet, Pressable, GestureResponderEvent, type ViewInstance } from "react-native";
 import Svg, { Polygon, Defs, ClipPath, G, LinearGradient, Stop } from "react-native-svg";
 import { HexagonProps, SizeVariant, useTheme } from "@ui";
 
@@ -56,7 +56,7 @@ const GlowPolygons: FC<{ points: string; glowColor: string; strokeWidth: number 
 );
 
 interface Props {
-    forwardRef?: Ref<View>;
+    forwardRef?: Ref<ViewInstance>;
     onPress?: (e: GestureResponderEvent) => void;
     onLongPress?: (e: GestureResponderEvent) => void;
     onPressIn?: (e: GestureResponderEvent) => void;

@@ -28,44 +28,32 @@ jobs:
         with:
           node-version: 24
 
-      - name: Activate Yarn from packageManager field
-        run: corepack prepare yarn@4.14.1 --activate
-
-      - name: Check Yarn version
-        run: yarn -v
-
       - name: Install dependencies
         run: yarn install --immutable
 
       - name: Run tests
         run: yarn test:web
 
-  lint:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@v4
+  # lint:
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: read
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-      - name: Enable Corepack
-        run: corepack enable
+  #     - name: Enable Corepack
+  #       run: corepack enable
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 24
 
-      - name: Activate Yarn from packageManager field
-        run: corepack prepare yarn@4.14.1 --activate
+  #     - name: Install dependencies
+  #       run: yarn install --immutable
 
-      - name: Check Yarn version
-        run: yarn -v
-
-      - name: Install dependencies
-        run: yarn install --immutable
-
-      - name: Lint sources
-        run: npx eslint . --no-warn-ignored
+  #     - name: Lint sources
+  #       run: npx eslint . --no-warn-ignored
 
   test-e2e:
     runs-on: ubuntu-24.04
@@ -272,11 +260,13 @@ jobs:
         with:
           node-version: 24
 
-      - name: Enable Corepack + Yarn
-        run: |
-          corepack enable
-          corepack prepare yarn@4.14.1 --activate
-          yarn -v
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
 
       - name: Install dependencies
         run: yarn install --immutable

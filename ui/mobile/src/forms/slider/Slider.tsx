@@ -4,6 +4,7 @@ import {
     PanResponder,
     View,
     ViewStyle,
+    type ViewInstance,
 } from "react-native";
 import { SliderProps, useTheme } from "@ui";
 import { Text } from "../../typography";
@@ -18,7 +19,7 @@ function snap(v: number, min: number, max: number, step: number): number {
     return Math.min(max, Math.max(min, stepped));
 }
 
-export const Slider = forwardRef<View, SliderProps & { style?: ViewStyle }>(({
+export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle }>(({
     color = 'neutral',
     highlightColor = color,
     size = 'md',
@@ -40,7 +41,7 @@ export const Slider = forwardRef<View, SliderProps & { style?: ViewStyle }>(({
 
     const [trackWidth, setTrackWidth] = useState(0);
     const [isDragging, setIsDragging] = useState(false);
-    const hitAreaRef = useRef<View>(null);
+    const hitAreaRef = useRef<ViewInstance>(null);
 
     const trackBackground = theme.color(color, 500, isLight ? 0.15 : 0.3);
     const highlightAccent = theme.color(highlightColor, isLight ? 600 : 300);
@@ -60,9 +61,10 @@ export const Slider = forwardRef<View, SliderProps & { style?: ViewStyle }>(({
 
     const handleLayout = (e: LayoutChangeEvent) => {
         setTrackWidth(e.nativeEvent.layout.width);
-        hitAreaRef.current?.measureInWindow((x) => {
-            hitAreaPageXRef.current = x;
-        });
+    };
+
+    const handleHitAreaLayout = (e: LayoutChangeEvent) => {
+        hitAreaPageXRef.current = e.nativeEvent.layout.x;
     };
 
     const panResponder = useMemo(() => PanResponder.create({
@@ -155,7 +157,7 @@ export const Slider = forwardRef<View, SliderProps & { style?: ViewStyle }>(({
         <View ref={ref} style={containerStyle}>
             <View
                 ref={hitAreaRef}
-                onLayout={handleLayout}
+                onLayout={(e) => { handleLayout(e); handleHitAreaLayout(e); }}
                 style={hitAreaStyle}
                 {...panResponder.panHandlers}
             >

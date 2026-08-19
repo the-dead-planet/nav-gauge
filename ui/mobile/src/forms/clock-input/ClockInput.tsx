@@ -2,13 +2,14 @@ import { forwardRef } from "react";
 import {
     View,
     ViewStyle,
+    type ViewInstance,
 } from "react-native";
 import { ClockSvg } from "./ClockSvg";
 import { ClockInputProps, useTheme, STEP_DEG, pointerCoords, CLOCK_INPUT_RANGE } from "@ui";
 import { ClockLabel } from "./ClockLabel";
 import { sizeMap, thumbRadii, centerDotRadii, strokeWidths } from "./constants";
 
-export const ClockInput = forwardRef<View, ClockInputProps & { style?: ViewStyle }>(({
+export const ClockInput = forwardRef<ViewInstance, ClockInputProps & { style?: ViewStyle }>(({
     color = 'neutral',
     highlightColor,
     size = 'md',

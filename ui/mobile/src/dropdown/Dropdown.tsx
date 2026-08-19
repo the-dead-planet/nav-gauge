@@ -1,15 +1,18 @@
-import { ComponentType, useRef, useState } from "react";
+import { ComponentType, useCallback, useRef, useState } from "react";
 import {
+    LayoutChangeEvent,
     Modal,
     Pressable,
     ScrollView,
     View,
-    ViewStyle,
+    type ViewStyle,
+    type ViewInstance,
 } from "react-native";
 import { DropdownProps, Icons, useTheme } from "@ui";
 import { Icon } from "../icons";
 import { Text } from "../typography";
 import { SvgProps } from "react-native-svg";
+import { MutableViewStyle } from "../model";
 
 interface MobileOption<T> {
     value: T;
@@ -41,15 +44,16 @@ export function Dropdown<T>({
     const [menuTop, setMenuTop] = useState(0);
     const [menuLeft, setMenuLeft] = useState(0);
     const [menuWidth, setMenuWidth] = useState(0);
-    const triggerRef = useRef<View>(null);
+    const triggerRef = useRef<ViewInstance>(null);
+    const triggerLayoutRef = useRef({ x: 0, y: 0, width: 0, height: 0 });
 
     const selectedOption = options.find(o => o.value === value);
     const s = SIZE_MAP[size];
     const iconSize = ICON_SIZE_MAP[size];
     const baseColor = theme.color(color, 500);
 
-    const getTriggerStyle = (pressed: boolean): ViewStyle => {
-        const style: ViewStyle = {
+    const getTriggerStyle = (pressed: boolean): MutableViewStyle => {
+        const style: MutableViewStyle = {
             flexDirection: 'row',
             alignItems: 'center',
             height: s.height,
@@ -97,20 +101,22 @@ export function Dropdown<T>({
             : baseColor;
     };
 
+    const handleTriggerLayout = useCallback((e: LayoutChangeEvent) => {
+        const { x, y, width, height } = e.nativeEvent.layout;
+        triggerLayoutRef.current = { x, y, width, height };
+    }, []);
+
     const handleOpen = () => {
-        if (triggerRef.current) {
-            triggerRef.current.measureInWindow((x, y, w, h) => {
-                setMenuTop(y + h);
-                setMenuLeft(x);
-                setMenuWidth(w);
-                setIsOpen(true);
-            });
-        }
+        const { x, y, width, height } = triggerLayoutRef.current;
+        setMenuTop(y + height);
+        setMenuLeft(x);
+        setMenuWidth(width);
+        setIsOpen(true);
     };
 
     return (
         <View>
-            <View ref={triggerRef} collapsable={false}>
+            <View ref={triggerRef} onLayout={handleTriggerLayout} collapsable={false}>
                 <Pressable
                     disabled={disabled}
                     onPress={handleOpen}

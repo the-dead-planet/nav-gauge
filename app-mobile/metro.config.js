@@ -6,6 +6,7 @@ const defaultConfig = getDefaultConfig(__dirname);
 const { assetExts, sourceExts } = defaultConfig.resolver;
 
 const root = path.resolve(__dirname, '..');
+const rnRoot = path.resolve(root, 'node_modules/react-native');
 const gearsRoot = path.resolve(root, 'gears');
 
 const gearsDirs = fs
@@ -66,7 +67,17 @@ const config = {
         nodeModulesPaths: [
             path.resolve(__dirname, 'node_modules'),
             path.resolve(root, 'node_modules'),
-        ]
+        ],
+        resolveRequest: (context, moduleName, platform) => {
+            // RN 0.87 moved AssetRegistry but kept a stale exports map pointing to the old path
+            if (moduleName === 'react-native/Libraries/Image/AssetRegistry') {
+                return {
+                    filePath: path.resolve(rnRoot, 'src/private/assets/AssetRegistry.js'),
+                    type: 'sourceFile',
+                };
+            }
+            return context.resolveRequest(context, moduleName, platform);
+        },
     }
 };
 

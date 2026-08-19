@@ -2,6 +2,7 @@ import { forwardRef } from "react";
 import {
     View,
     ViewStyle,
+    type ViewInstance,
 } from "react-native";
 import { Path } from "react-native-svg";
 import { ClockSvg } from "./ClockSvg";
@@ -9,7 +10,7 @@ import { ClockInputProps, useTheme, clockAngleToRadians, pointerCoords } from "@
 import { ClockLabel } from "./ClockLabel";
 import { sizeMap, thumbRadii, centerDotRadii, strokeWidths } from "./constants";
 
-export const ClockSliceInput = forwardRef<View, ClockInputProps & { style?: ViewStyle }>(({
+export const ClockSliceInput = forwardRef<ViewInstance, ClockInputProps & { style?: ViewStyle }>(({
     color = 'neutral',
     highlightColor,
     size = 'sm',

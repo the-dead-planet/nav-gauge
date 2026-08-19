@@ -1,13 +1,14 @@
 import { ComponentType, FC, Ref, useState } from "react";
-import { Pressable, PressableProps, Text as RNText, View, ViewStyle } from "react-native";
+import { Pressable, PressableProps, Text as RNText, View, type ViewStyle, type ViewInstance } from "react-native";
 import { ButtonProps, useTheme } from "@ui";
 import { Icon } from "../icons";
 import { SvgProps } from "react-native-svg";
 import { Hexagon } from "../hud";
 import { Tooltip } from "../tooltip";
+import { MutableViewStyle } from "../model";
 
 export interface MobileButtonProps {
-    forwardRef?: Ref<View>;
+    forwardRef?: Ref<ViewInstance>;
     icon?: ComponentType<SvgProps>;
     title?: string;
 }
@@ -60,7 +61,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     const isTextGlowVariant = variant === 'ghost' || variant === 'outline' || variant === 'inset';
     const showTextGlow = showGlow && isTextGlowVariant;
 
-    const container: ViewStyle = {
+    const container: MutableViewStyle = {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
