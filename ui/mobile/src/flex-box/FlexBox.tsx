@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { View, StyleProp, ViewStyle } from "react-native";
+import { View, StyleProp, ViewStyle, type ViewInstance } from "react-native";
 import { FlexBoxProps, SpacingVariant } from "@ui";
 
 const spacingMap: Record<SpacingVariant, number> = {
@@ -10,7 +10,7 @@ const spacingMap: Record<SpacingVariant, number> = {
     xl: 28,
 };
 
-export const FlexBox: FC<FlexBoxProps & { ref?: React.Ref<View>; style?: StyleProp<ViewStyle> }> = ({
+export const FlexBox: FC<FlexBoxProps & { ref?: React.Ref<ViewInstance>; style?: StyleProp<ViewStyle> }> = ({
     ref,
     direction,
     justifyContent,

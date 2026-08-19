@@ -7,6 +7,7 @@ import {
     Pressable,
     GestureResponderEvent,
     LayoutChangeEvent,
+    type ViewInstance,
 } from "react-native";
 import Svg, { Polygon } from "react-native-svg";
 import { BevelPanelProps, ColorVariant, SizeVariant, useTheme } from "@ui";
@@ -18,7 +19,7 @@ const paddingMap: Record<SizeVariant, number> = {
 };
 
 interface Props {
-    forwardRef?: Ref<View>;
+    forwardRef?: Ref<ViewInstance>;
     onPress?: (e: GestureResponderEvent) => void;
     onLongPress?: (e: GestureResponderEvent) => void;
     onPressIn?: (e: GestureResponderEvent) => void;

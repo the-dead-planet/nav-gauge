@@ -15,7 +15,7 @@
         "@the-dead-planet/nav-gauge-tinker-chest": "*",
         "@the-dead-planet/nav-gauge-ui-common": "*",
         "react-native-fs": "^2.20.0",
-        "react-native-view-recorder": "^0.4.1"
+        "react-native-view-recorder": "patch:react-native-view-recorder@npm%3A0.4.1#~/.yarn/patches/react-native-view-recorder-npm-0.4.1-f65f857d14.patch"
     },
     "devDependencies": {
         "@maplibre/maplibre-gl-style-spec": "^24.8.1",

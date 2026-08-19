@@ -1,6 +1,6 @@
-import { CameraRef, MapRef, PressEvent, PressEventWithFeatures } from "@maplibre/maplibre-react-native";
-import { GestureResponderEvent } from "react-native";
+import { GestureResponderEvent, ViewStyle } from "react-native";
 import { BehaviorSubject } from "rxjs";
+import { CameraRef, MapRef, PressEvent, PressEventWithFeatures } from "@maplibre/maplibre-react-native";
 
 export interface PressFeatureProperties {
     screenPointX?: number;
@@ -20,3 +20,5 @@ export interface MobileMap {
     onPanResponderMoveHandlers$: BehaviorSubject<Map<string, (lngLat: number[], event: GestureResponderEvent) => Promise<void>>>
     onPanResponderEndHandlers$: BehaviorSubject<Map<string, (lngLat: number[], event: GestureResponderEvent) => Promise<void>>>
 }
+
+export type MutableViewStyle = { -readonly [K in keyof ViewStyle]: ViewStyle[K] };

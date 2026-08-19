@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { View, ViewStyle } from "react-native";
 import { DividerProps, SpacingVariant, useTheme } from "@ui";
+import { MutableViewStyle } from "../model";
 
 const spacingMap: Record<SpacingVariant, number> = {
     xs: 5,
@@ -21,7 +22,7 @@ export const Divider: FC<DividerProps & { style?: ViewStyle }> = ({
         ? theme.color(color)
         : theme.componentColor("border");
 
-    const marginStyle: ViewStyle = {};
+    const marginStyle: MutableViewStyle = {};
     if (m) {
         marginStyle.margin = spacingMap[m];
     }

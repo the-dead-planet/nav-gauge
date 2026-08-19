@@ -3,6 +3,7 @@ import {
     LayoutChangeEvent,
     PanResponder,
     View,
+    type ViewInstance,
 } from "react-native";
 import Svg, { G } from "react-native-svg";
 import { snapSlice, svgAtan2ToClockAngle, ColorVariant, SurfaceFillVariant } from "@ui";
@@ -60,7 +61,8 @@ export const ClockSvg: FC<Props> = ({
 }) => {
     const [isDragging, setIsDragging] = useState(false);
     const svgPageCenterRef = useRef({ x: 0, y: 0 });
-    const svgRef = useRef<View>(null);
+    const svgRef = useRef<ViewInstance>(null);
+    const svgLayoutRef = useRef({ x: 0, y: 0, width: 0, height: 0 });
 
     const valueRef = useRef(value);
     valueRef.current = value;
@@ -69,13 +71,13 @@ export const ClockSvg: FC<Props> = ({
     const disabledRef = useRef(disabled);
     disabledRef.current = disabled;
 
-    const handleLayout = (_e: LayoutChangeEvent) => {
-        svgRef.current?.measureInWindow((x, y, width, height) => {
-            svgPageCenterRef.current = {
-                x: x + width / 2,
-                y: y + height / 2,
-            };
-        });
+    const handleLayout = (e: LayoutChangeEvent) => {
+        const { x, y, width, height } = e.nativeEvent.layout;
+        svgLayoutRef.current = { x, y, width, height };
+        svgPageCenterRef.current = {
+            x: x + width / 2,
+            y: y + height / 2,
+        };
     };
 
     const handleInteraction = (pageX: number, pageY: number) => {

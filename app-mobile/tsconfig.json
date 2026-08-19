@@ -28,5 +28,5 @@
         "types",
         "__tests__/**/*",
         "../types/**/*"
-, "../apparatus/common/src/machine-ward/machine-layout/hooks/useToolPanelSizeClamp.ts"    ]
+    ]
 }

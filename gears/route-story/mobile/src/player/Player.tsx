@@ -1,4 +1,4 @@
-import { FC, useRef, useEffect } from "react";
+import { FC } from "react";
 import { View, Button } from "react-native";
 import { DocumentPickerResponse } from "@react-native-documents/picker";
 import { OverlayComponentProps, SurveillanceState, useMachineWard } from "@apparatus";
@@ -32,12 +32,6 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<Mobil
 
     const progressPercentage = getProgressPercentage(progressMs, routeTimes);
 
-    const sliderRef = useRef<View>(null);
-
-    useEffect(() => {
-        sliderRef.current?.setNativeProps({ value: progressMs })
-    }, [progressMs]);
-
     return (
         <View style={{
             height: 70,
@@ -63,7 +57,6 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<Mobil
             </View>
             <Divider orientation="vertical" mh="sm" />
             <Slider
-                ref={sliderRef}
                 min={0}
                 max={routeTimes?.duration ?? 1}
                 step={1}

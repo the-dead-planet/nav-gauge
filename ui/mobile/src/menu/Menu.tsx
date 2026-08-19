@@ -5,6 +5,7 @@ import {
     StyleSheet,
     LayoutChangeEvent,
     Pressable,
+    type ViewInstance,
 } from 'react-native';
 import {
     useTheme,
@@ -59,20 +60,21 @@ export const Menu: FC<MenuProps> = ({
     const [positionKey, setPositionKey] = useState<number>(0);
     const [menuPosition, setMenuPosition] = useState<MenuPosition>({});
 
-    const iconAnchorRef = useRef<View>(null);
+    const iconAnchorRef = useRef<ViewInstance>(null);
     const anchorRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+    const anchorLayoutRef = useRef({ x: 0, y: 0, width: 0, height: 0 });
+
+    const handleIconLayout = (e: LayoutChangeEvent) => {
+        const { x, y, width, height } = e.nativeEvent.layout;
+        anchorLayoutRef.current = { x, y, width, height };
+    };
 
     const toggleMenu = (): void => {
-        const ref = iconAnchorRef.current;
-        if (!ref) {
-            return;
-        }
-        ref.measureInWindow((x, y, width, height) => {
-            anchorRef.current = getIconAnchorPoint(iconAnchor, x, y, width, height);
-            setMenuPosition({});
-            setPositionKey((k) => k + 1);
-            setVisible(true);
-        });
+        const { x, y, width, height } = anchorLayoutRef.current;
+        anchorRef.current = getIconAnchorPoint(iconAnchor, x, y, width, height);
+        setMenuPosition({});
+        setPositionKey((k) => k + 1);
+        setVisible(true);
     };
 
     const onOverlayLayout = (e: LayoutChangeEvent) => {
@@ -82,15 +84,17 @@ export const Menu: FC<MenuProps> = ({
 
     return (
         <View style={styles.container}>
-            <Button
-                forwardRef={iconAnchorRef}
-                icon={icon as ComponentProps<typeof Button>['icon']}
-                highlightColor={iconActiveColor}
-                size={iconSize}
-                active={visible}
-                onPress={toggleMenu}
-                style={styles.iconButton}
-            />
+            <View onLayout={handleIconLayout}>
+                <Button
+                    forwardRef={iconAnchorRef}
+                    icon={icon as ComponentProps<typeof Button>['icon']}
+                    highlightColor={iconActiveColor}
+                    size={iconSize}
+                    active={visible}
+                    onPress={toggleMenu}
+                    style={styles.iconButton}
+                />
+            </View>
 
             <Modal
                 transparent={true}

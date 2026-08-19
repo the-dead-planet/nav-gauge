@@ -66,7 +66,7 @@ export const Transition: FC<TransitionProps & Props> = ({
         ? animValue.interpolate({ inputRange: [0, 1], outputRange: [1, 0] })
         : undefined;
 
-    const animatedStyle: Animated.WithAnimatedObject<ViewStyle> = {
+    const animatedStyle = {
         ...(interpolatedX !== undefined && {
             transform: [
                 ...(interpolatedX !== undefined ? [{ translateX: interpolatedX }] : []),
