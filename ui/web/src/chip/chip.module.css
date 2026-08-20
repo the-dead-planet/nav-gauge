@@ -58,9 +58,17 @@
     --chip-color: var(--color-info);
 }
 
+.mode-light {
+    --chip-text: var(--color-text);
+}
+
+.mode-dark {
+    --chip-text: var(--color-background);
+}
+
 .variant-fill {
     background-color: var(--chip-color);
-    color: var(--color-background);
+    color: var(--chip-text);
 }
 
 .variant-fill-inverse {

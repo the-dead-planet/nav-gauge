@@ -1,6 +1,8 @@
 export enum ThemeName {
     Default = 'Default',
     NeonBlue = 'Neon Blue',
+    Batman = 'Batman',
+    Joker = 'Joker',
 }
 
 export type ColorShade =
@@ -22,14 +24,20 @@ export type ThemeColor = {
 export type PaletteColor =
     'grey' |
     'yellow' |
+    'luminous-yellow' |
     'copper' |
     'copper-dark' |
     'teal' |
     'magenta' |
     'pink' |
     'blue' |
+    'greyblue' |
+    'navy' |
+    'burnt-orange' |
     'red' |
     'purple' |
+    'violet' |
+    'deep-violet' |
     'lime' |
     'green';
 

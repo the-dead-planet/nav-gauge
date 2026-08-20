@@ -45,6 +45,7 @@ export const Icon: FC<Props & IconProps> = ({ src, width = 24, height = 24, stro
 
     return (
         <ReactSVG
+            key={[width, height, fill, stroke, color, strokeWidth].join('')}
             src={src}
             fallback={userFallback || fallback}
             wrapper="span"

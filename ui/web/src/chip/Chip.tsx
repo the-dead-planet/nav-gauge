@@ -1,6 +1,6 @@
 import { FC } from "react";
 import classNames from "classnames";
-import { ChipProps, SizeVariant } from "@ui";
+import { ChipProps, SizeVariant, useTheme } from "@ui";
 import { Icon } from "../icons";
 import { Tooltip } from "../tooltip";
 import styles from './chip.module.css';
@@ -29,9 +29,12 @@ export const Chip: FC<ChipProps & Props> = ({
     showTooltipConnection,
     children,
 }) => {
+    const theme = useTheme();
+
     const chip = (
         <span className={classNames(
             styles['chip'],
+            styles[`mode-${theme.mode}`],
             styles[`color-${color}`],
             styles[`size-${size}`],
             styles[`variant-${variant}`],
