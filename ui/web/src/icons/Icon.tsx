@@ -1,4 +1,4 @@
-import { FC, useCallback } from "react";
+import { FC } from "react";
 import { ReactSVG } from 'react-svg';
 import classNames from "classnames";
 import { IconProps } from "./model";
