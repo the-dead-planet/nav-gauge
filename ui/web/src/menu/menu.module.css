@@ -10,6 +10,8 @@
     overflow: hidden;
     transition: opacity .2s ease-in;
     z-index: 2;
+    background-color: var(--color-menu-background);
+    border: 2px solid var(--color-menu-border);
 }
 
 .menu-item {
@@ -30,7 +32,7 @@
 }
 
 .menu-item:hover {
-    background: var(--color-menu-background);
+    background: var(--color-primary-300);
 }
 
 @starting-style {

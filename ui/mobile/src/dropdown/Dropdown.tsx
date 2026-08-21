@@ -1,12 +1,12 @@
-import { ComponentType, useCallback, useRef, useState } from "react";
+import { ComponentType, useRef, useState } from "react";
 import {
-    LayoutChangeEvent,
     Modal,
     Pressable,
     ScrollView,
     View,
     type ViewStyle,
-    type ViewInstance,
+    type HostInstance,
+    TouchableHighlight,
 } from "react-native";
 import { DropdownProps, Icons, useTheme } from "@ui";
 import { Icon } from "../icons";
@@ -44,8 +44,7 @@ export function Dropdown<T>({
     const [menuTop, setMenuTop] = useState(0);
     const [menuLeft, setMenuLeft] = useState(0);
     const [menuWidth, setMenuWidth] = useState(0);
-    const triggerRef = useRef<ViewInstance>(null);
-    const triggerLayoutRef = useRef({ x: 0, y: 0, width: 0, height: 0 });
+    const triggerRef = useRef<HostInstance>(null);
 
     const selectedOption = options.find(o => o.value === value);
     const s = SIZE_MAP[size];
@@ -101,22 +100,19 @@ export function Dropdown<T>({
             : baseColor;
     };
 
-    const handleTriggerLayout = useCallback((e: LayoutChangeEvent) => {
-        const { x, y, width, height } = e.nativeEvent.layout;
-        triggerLayoutRef.current = { x, y, width, height };
-    }, []);
-
     const handleOpen = () => {
-        const { x, y, width, height } = triggerLayoutRef.current;
-        setMenuTop(y + height);
-        setMenuLeft(x);
-        setMenuWidth(width);
-        setIsOpen(true);
+        // ponytail: measureInWindow because Modal overlay is full-screen; onLayout coords are parent-relative
+        triggerRef.current?.measureInWindow((x, y, width, height) => {
+            setMenuTop(y + height);
+            setMenuLeft(x);
+            setMenuWidth(width);
+            setIsOpen(true);
+        });
     };
 
     return (
         <View>
-            <View ref={triggerRef} onLayout={handleTriggerLayout} collapsable={false}>
+            <View ref={triggerRef} collapsable={false}>
                 <Pressable
                     disabled={disabled}
                     onPress={handleOpen}
@@ -185,8 +181,9 @@ export function Dropdown<T>({
                             {options.map((option) => {
                                 const selected = option.value === value;
                                 return (
-                                    <Pressable
+                                    <TouchableHighlight
                                         key={String(option.value)}
+                                        underlayColor={theme.color(highlightColor, theme.isLight ? 300 : 600)}
                                         onPress={() => {
                                             onChange?.(option.value);
                                             setIsOpen(false);
@@ -227,7 +224,7 @@ export function Dropdown<T>({
                                                 {option.label}
                                             </Text>
                                         </View>
-                                    </Pressable>
+                                    </TouchableHighlight>
                                 );
                             })}
                         </ScrollView>

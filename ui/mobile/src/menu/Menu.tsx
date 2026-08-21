@@ -3,9 +3,9 @@ import {
     View,
     Modal,
     StyleSheet,
-    LayoutChangeEvent,
     Pressable,
-    type ViewInstance,
+    LayoutChangeEvent,
+    type HostInstance,
 } from 'react-native';
 import {
     useTheme,
@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
     },
     menuList: {
         position: 'absolute',
-        borderRadius: 12,
         paddingVertical: 8,
         minWidth: 160,
         elevation: 10,
@@ -44,6 +43,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.6,
         shadowRadius: 1,
+        borderWidth: 2,
     }
 });
 
@@ -60,21 +60,17 @@ export const Menu: FC<MenuProps> = ({
     const [positionKey, setPositionKey] = useState<number>(0);
     const [menuPosition, setMenuPosition] = useState<MenuPosition>({});
 
-    const iconAnchorRef = useRef<ViewInstance>(null);
+    const iconWrapperRef = useRef<HostInstance>(null);
     const anchorRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
-    const anchorLayoutRef = useRef({ x: 0, y: 0, width: 0, height: 0 });
-
-    const handleIconLayout = (e: LayoutChangeEvent) => {
-        const { x, y, width, height } = e.nativeEvent.layout;
-        anchorLayoutRef.current = { x, y, width, height };
-    };
 
     const toggleMenu = (): void => {
-        const { x, y, width, height } = anchorLayoutRef.current;
-        anchorRef.current = getIconAnchorPoint(iconAnchor, x, y, width, height);
-        setMenuPosition({});
-        setPositionKey((k) => k + 1);
-        setVisible(true);
+        // ponytail: measureInWindow because Modal overlay is full-screen; onLayout coords are parent-relative
+        iconWrapperRef.current?.measureInWindow((x, y, width, height) => {
+            anchorRef.current = getIconAnchorPoint(iconAnchor, x, y, width, height);
+            setMenuPosition({});
+            setPositionKey((k) => k + 1);
+            setVisible(true);
+        });
     };
 
     const onOverlayLayout = (e: LayoutChangeEvent) => {
@@ -84,9 +80,8 @@ export const Menu: FC<MenuProps> = ({
 
     return (
         <View style={styles.container}>
-            <View onLayout={handleIconLayout}>
+            <View ref={iconWrapperRef}>
                 <Button
-                    forwardRef={iconAnchorRef}
                     icon={icon as ComponentProps<typeof Button>['icon']}
                     highlightColor={iconActiveColor}
                     size={iconSize}
@@ -109,6 +104,7 @@ export const Menu: FC<MenuProps> = ({
                             {
                                 ...menuPosition,
                                 backgroundColor: theme.componentColor('menu-background'),
+                                borderColor: theme.componentColor('menu-border'),
                                 shadowColor: theme.componentColor('box-shadow'),
                             }
                         ]}

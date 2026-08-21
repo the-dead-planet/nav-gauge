@@ -24,6 +24,7 @@ export interface MenuProps {
 
 export interface MenuItemProps {
     key: string | number;
+    highlightColor?: ColorVariant;
     isFirst?: boolean;
     closeOnPress?: boolean;
     children: ReactNode;

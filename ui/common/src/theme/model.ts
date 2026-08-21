@@ -50,6 +50,7 @@ export type DesignSystemColor =
 export type ThemeComponentColor =
     'background' |
     'menu-background' |
+    'menu-border' |
     'border' |
     'box-shadow' |
     'divider' |

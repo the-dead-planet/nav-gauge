@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import { TouchableOpacity, StyleSheet } from 'react-native';
+import { StyleSheet, TouchableHighlight } from 'react-native';
 import { Text } from '../typography';
-import { MenuItemProps, useMenuClose } from '@ui';
+import { MenuItemProps, useMenuClose, useTheme } from '@ui';
 
 const styles = StyleSheet.create({
     menuItem: {
@@ -14,19 +14,25 @@ const styles = StyleSheet.create({
 });
 
 export const MenuItem: FC<{ onPress: () => void; } & MenuItemProps> = ({
+    highlightColor = 'neutral',
     onPress,
     children,
 }) => {
+    const theme = useTheme();
     const handleClose = useMenuClose();
 
     return (
-        <TouchableOpacity style={styles.menuItem} onPress={() => {
-            onPress();
-            handleClose();
-        }}>
+        <TouchableHighlight
+            underlayColor={theme.color(highlightColor, theme.isLight ? 300 : 600)}
+            style={styles.menuItem}
+            onPress={() => {
+                onPress();
+                handleClose();
+            }}
+        >
             <Text style={styles.menuText}>
                 {children}
             </Text>
-        </TouchableOpacity>
+        </TouchableHighlight>
     );
 };

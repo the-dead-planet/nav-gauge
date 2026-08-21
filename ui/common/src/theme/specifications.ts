@@ -24,6 +24,10 @@ export const defaultComponentColors: { [key in ThemeMode]: ThemeSpecification['c
             name: 'neutral',
             shade: 200
         },
+        "menu-border": {
+            name: 'neutral',
+            shade: 400
+        },
         border: {
             name: 'neutral',
             shade: 200
@@ -73,6 +77,10 @@ export const defaultComponentColors: { [key in ThemeMode]: ThemeSpecification['c
         "menu-background": {
             name: 'neutral',
             shade: 700
+        },
+        "menu-border": {
+            name: 'neutral',
+            shade: 500
         },
         border: {
             name: 'neutral',
@@ -175,12 +183,15 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
                 warning: {
                     name: 'luminous-yellow',
                     shade: 500,
+                },
+                "box-shadow": {
+                    name: "luminous-yellow",
                 }
             },
             colors: {
                 primary: Theme.palette.greyblue,
                 secondary: Theme.palette.greyblue,
-                tertiary: Theme.palette.navy,
+                tertiary: Theme.palette.greyblue,
                 neutral: Theme.palette.greyblue,
             }
         },

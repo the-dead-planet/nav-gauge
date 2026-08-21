@@ -74,7 +74,7 @@ const sizeStyles = StyleSheet.create({
 });
 
 export const Chip: FC<ChipProps & Props> = ({
-    color = 'warning',
+    color = 'neutral',
     icon,
     size = 'sm',
     variant = 'fill',
@@ -95,11 +95,12 @@ export const Chip: FC<ChipProps & Props> = ({
     const chipColor = theme.color(resolved.name, shade);
     const translucent = (opacity: number) => theme.color(resolved.name, shade, opacity);
     const background = theme.componentColor('background');
-    const iconColor = variant === 'fill' ? background : chipColor;
+    const textColor = theme.componentColor('text');
+    const iconColor = variant === 'fill' ? (theme.isLight ? textColor : background) : chipColor;
 
     const container: ViewStyle = {};
     let backgroundColor = chipColor;
-    let labelColor =  theme.componentColor('text');
+    let labelColor = textColor;
     let borderWidth = 0;
     let borderColor = chipColor;
 
