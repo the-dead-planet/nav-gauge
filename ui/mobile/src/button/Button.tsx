@@ -1,5 +1,5 @@
-import { ComponentType, FC, Ref, useEffect, useRef, useState } from "react";
-import { Animated, Pressable, PressableProps, Text as RNText, View, type ViewStyle, type ViewInstance } from "react-native";
+import { ComponentType, FC, Ref, useState } from "react";
+import { Pressable, PressableProps, Text as RNText, View, type ViewStyle, type ViewInstance } from "react-native";
 import { ButtonProps, useTheme } from "@ui";
 import { Icon } from "../icons";
 import { SvgProps } from "react-native-svg";
@@ -11,8 +11,6 @@ export interface MobileButtonProps {
     forwardRef?: Ref<ViewInstance>;
     icon?: ComponentType<SvgProps>;
     title?: string;
-    /** Loops the web `.blinking` animation: 1s pulse fading to invisible and back */
-    blinking?: boolean;
 }
 
 export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
@@ -29,7 +27,6 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     icon,
     iconRotateX = 0,
     iconRotateZ = 0,
-    blinking = false,
     children,
     style,
     disabled,
@@ -45,23 +42,6 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     const theme = useTheme();
     const [pressed, setPressed] = useState(false);
     const [glowDrawn, setGlowDrawn] = useState(false);
-    const opacity = useRef(new Animated.Value(1)).current;
-
-    useEffect(() => {
-        if (!blinking) {
-            opacity.setValue(1);
-            return;
-        }
-        const blinkAnimation = Animated.loop(
-            Animated.sequence([
-                Animated.timing(opacity, { toValue: 1, duration: 450, useNativeDriver: true }),
-                Animated.timing(opacity, { toValue: 0, duration: 100, useNativeDriver: true }),
-                Animated.timing(opacity, { toValue: 0, duration: 450, useNativeDriver: true }),
-            ])
-        );
-        blinkAnimation.start();
-        return () => blinkAnimation.stop();
-    }, [blinking, opacity]);
 
     const hl = pressed || active;
     const effectiveTheme = themeMode || theme.mode;

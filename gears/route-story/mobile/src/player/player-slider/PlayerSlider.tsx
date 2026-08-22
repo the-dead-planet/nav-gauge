@@ -36,9 +36,6 @@ const styles = StyleSheet.create({
         flex: 1,
         gap: 4,
     },
-    sliderWrapper: {
-        justifyContent: 'center',
-    },
 });
 
 export const PlayerSlider: FC<Props> = ({
@@ -97,26 +94,24 @@ export const PlayerSlider: FC<Props> = ({
             />
             <View style={styles.sliderContainer}>
                 <PlayerSliderLabels progressMs$={progressMs$} routeTimes$={routeTimes$} />
-                <View style={styles.sliderWrapper}>
-                    <Slider
-                        value={progressMs}
-                        min={0}
-                        max={routeTimes?.duration ?? 1}
-                        step={1}
-                        onChange={handleProgressChange}
-                        color="tertiary"
-                        size="sm"
+                <Slider
+                    value={progressMs}
+                    min={0}
+                    max={routeTimes?.duration ?? 1}
+                    step={1}
+                    onChange={handleProgressChange}
+                    color="tertiary"
+                    size="sm"
+                />
+                {showImageMarkers ? (
+                    <SliderMarkers
+                        gearId={gearId}
+                        translationKey={translationKey}
+                        data$={data$}
+                        routeTimes$={routeTimes$}
+                        images$={images$}
                     />
-                    {showImageMarkers ? (
-                        <SliderMarkers
-                            gearId={gearId}
-                            translationKey={translationKey}
-                            data$={data$}
-                            routeTimes$={routeTimes$}
-                            images$={images$}
-                        />
-                    ) : null}
-                </View>
+                ) : null}
             </View>
             <Button
                 icon={Icons.NounProject.ImageMarker}

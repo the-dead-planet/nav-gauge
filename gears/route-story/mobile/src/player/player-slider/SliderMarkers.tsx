@@ -1,5 +1,5 @@
-import { FC, useMemo, useRef } from "react";
-import { PanResponder, Pressable, StyleSheet, View, type HostInstance } from "react-native";
+import { FC, useCallback, useEffect, useMemo, useRef } from "react";
+import { PanResponder, StyleSheet, View, type GestureResponderEvent, type HostInstance } from "react-native";
 import { BehaviorSubject } from "rxjs";
 import { MarkerImage, useMultipleTranslations } from "@apparatus";
 import { FeatureProperties, ParsingResultWithError, useSubjectState } from "@tinker-chest";
@@ -23,6 +23,8 @@ interface Props {
     images$: BehaviorSubject<MarkerImage<MobileMarkerImageData>[]>;
 }
 
+const GRAB_RADIUS_PX = 20;
+
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
@@ -30,14 +32,29 @@ const styles = StyleSheet.create({
         right: 8,
         top: 0,
         bottom: 0,
-        justifyContent: 'center',
     },
     marker: {
         position: 'absolute',
-        width: 10,
-        height: 10,
-        borderRadius: 5,
-        borderWidth: 1,
+        top: 0,
+        width: 16,
+        height: 44,
+        marginLeft: -8,
+        alignItems: 'center',
+    },
+    markerHead: {
+        width: 8,
+        height: 8,
+        marginBottom: -2,
+        transform: [{ rotate: '45deg' }],
+    },
+    markerLine: {
+        width: 2,
+        flex: 1,
+    },
+    markerFoot: {
+        width: 5,
+        height: 2,
+        marginTop: -1,
     },
     dragMarker: {
         opacity: 0.5,
@@ -67,8 +84,14 @@ export const SliderMarkers: FC<Props> = ({
     const isDraggingPlayerRef = useRef(false);
     isDraggingPlayerRef.current = draggingImage?.interaction === 'player';
 
+    useEffect(() => {
+        containerRef.current?.measureInWindow((x, _y, width) => {
+            containerMetricsRef.current = { pageX: x, width };
+        });
+    });
+
     const markerColor = theme.color('tertiary', 500);
-    const markerHighlightColor = theme.color('tertiary', theme.isDark ? 300 : 600);
+    const markerHighlightColor = theme.color('tertiary', theme.isDark ? 400 : 800);
 
     const getPosition = (featureId: number) => {
         const feature = geojson?.features.find((feature) => feature.properties.id === featureId);
@@ -115,9 +138,25 @@ export const SliderMarkers: FC<Props> = ({
         setDraggingImage(null);
     };
 
-    // ponytail: capture-phase steal only while a player-marker drag is active, so slider touches pass through untouched
+    const tryBeginDragAt = useCallback((evt: GestureResponderEvent): boolean => {
+        const metrics = containerMetricsRef.current;
+        if (!geojson || !routeTimes || metrics.width <= 0) {
+            return false;
+        }
+        const offsetX = evt.nativeEvent.pageX - metrics.pageX;
+        const grabbed = images.find((candidate) =>
+            candidate.featureId !== undefined &&
+            Math.abs((getPosition(candidate.featureId) / 100) * metrics.width - offsetX) <= GRAB_RADIUS_PX
+        );
+        if (grabbed === undefined) {
+            return false;
+        }
+        beginDrag(grabbed);
+        return true;
+    }, [images, geojson, routeTimes]);
+
     const containerPanResponder = useMemo(() => PanResponder.create({
-        onStartShouldSetPanResponderCapture: () => false,
+        onStartShouldSetPanResponderCapture: (evt) => tryBeginDragAt(evt),
         onMoveShouldSetPanResponderCapture: () => isDraggingPlayerRef.current,
         onPanResponderMove: (evt) => {
             const metrics = containerMetricsRef.current;
@@ -132,7 +171,7 @@ export const SliderMarkers: FC<Props> = ({
         },
         onPanResponderRelease: endDrag,
         onPanResponderTerminate: endDrag,
-    }), []);
+    }), [tryBeginDragAt, geojson, routeTimes]);
 
     const draggingFeaturePosition = draggingClosestFeature !== null
         ? getPosition(draggingClosestFeature.properties.id)
@@ -145,28 +184,29 @@ export const SliderMarkers: FC<Props> = ({
                 .map((image) => {
                     const isDragged = draggingImage?.id === image.id && draggingImage.interaction === 'player';
                     const highlighted = highlightIdsBySourceId.get(imageSourceIds.thumbnails)?.has(String(image.id)) ?? false;
+                    const color = highlighted || isDragged ? markerHighlightColor : markerColor;
 
                     return (
-                        <Pressable
+                        <View
                             key={image.id}
+                            accessible
                             accessibilityLabel={`${imageLabel} ${image.id}`}
-                            onPress={() => beginDrag(image)}
-                            style={[styles.marker, {
-                                left: `${getPosition(image.featureId!).toFixed(0)}%`,
-                                backgroundColor: highlighted || isDragged ? markerHighlightColor : markerColor,
-                                borderColor: theme.componentColor('text'),
-                            }]}
-                        />
+                            style={[styles.marker, isDragged ? styles.dragMarker : undefined, { left: `${getPosition(image.featureId!).toFixed(0)}%` }]}
+                        >
+                            <View style={[styles.markerHead, { backgroundColor: color }]} />
+                            <View style={[styles.markerLine, { backgroundColor: color }]} />
+                            <View style={[styles.markerFoot, { backgroundColor: color }]} />
+                        </View>
                     );
                 })}
             {draggingFeaturePosition !== null ? (
                 <View
-                    style={[styles.marker, styles.dragMarker, {
-                        left: `${draggingFeaturePosition.toFixed(0)}%`,
-                        backgroundColor: markerHighlightColor,
-                        borderColor: theme.componentColor('text'),
-                    }]}
-                />
+                    style={[styles.marker, styles.dragMarker, { left: `${draggingFeaturePosition.toFixed(0)}%` }]}
+                >
+                    <View style={[styles.markerHead, { backgroundColor: markerHighlightColor }]} />
+                    <View style={[styles.markerLine, { backgroundColor: markerHighlightColor }]} />
+                    <View style={[styles.markerFoot, { backgroundColor: markerHighlightColor }]} />
+                </View>
             ) : null}
         </View>
     );

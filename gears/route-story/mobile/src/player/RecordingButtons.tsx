@@ -1,4 +1,5 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useRef } from "react";
+import { Animated } from "react-native";
 import { DocumentPickerResponse } from "@react-native-documents/picker";
 import { SurveillanceState, useMachineWard, useMultipleTranslations } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
@@ -48,6 +49,20 @@ export const RecordingButtons: FC<Props> = ({
         { n: gearId, t: translationKey.ResumeRecording },
     ]);
 
+    const opacity = useRef(new Animated.Value(1)).current;
+
+    useEffect(() => {
+        const blinkAnimation = Animated.loop(
+            Animated.sequence([
+                Animated.timing(opacity, { toValue: 1, duration: 450, useNativeDriver: true }),
+                Animated.timing(opacity, { toValue: 0, duration: 100, useNativeDriver: true }),
+                Animated.timing(opacity, { toValue: 0, duration: 450, useNativeDriver: true }),
+            ])
+        );
+        blinkAnimation.start();
+        return () => blinkAnimation.stop();
+    }, [opacity]);
+
     return (
         <>
             <Button
@@ -73,17 +88,18 @@ export const RecordingButtons: FC<Props> = ({
                     onClick={() => playerOperator.onRecord()}
                 />
             ) : (
-                <Button
-                    icon={Icons.NounProject.Recording}
-                    size="md"
-                    variant="ghost"
-                    corners="circle"
-                    aria-label={stopRecordingLabel}
-                    tooltip={stopRecordingLabel}
-                    tooltipPlacement="top"
-                    onClick={() => playerOperator.onRecord()}
-                    blinking
-                />
+                <Animated.View style={{ opacity }}>
+                    <Button
+                        icon={Icons.NounProject.Recording}
+                        size="md"
+                        variant="ghost"
+                        corners="circle"
+                        aria-label={stopRecordingLabel}
+                        tooltip={stopRecordingLabel}
+                        tooltipPlacement="top"
+                        onClick={() => playerOperator.onRecord()}
+                    />
+                </Animated.View>
             )}
             {surveillanceState === SurveillanceState.Paused ? (
                 <Button
