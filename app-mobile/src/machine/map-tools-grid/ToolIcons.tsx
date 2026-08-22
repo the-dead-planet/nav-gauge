@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { useToolIcons, LAYOUT_DEFAULTS } from "@apparatus";
 import { ToolIconRight } from "./tool-icons/ToolIconRight";
 import { ToolIconLeft } from "./tool-icons/ToolIconLeft";
-import { MobileMap } from "@mobile-ui";
+import { MobileMap } from "@mobile-apparatus";
 
 const styles = StyleSheet.create({
     icons: {

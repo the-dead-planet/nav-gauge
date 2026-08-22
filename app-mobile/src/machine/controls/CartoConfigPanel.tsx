@@ -2,7 +2,8 @@ import { FC } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Cartomancer, MapLayout, ToolPanelProps, useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
-import { MobileMap, Text } from "@mobile-ui";
+import { Text } from "@mobile-ui";
+import { MobileMap } from "@mobile-apparatus";
 import { Dropdown, Fieldset, FlexBox, NumberInput, TextArea, TextInput, ToggleSwitch } from "@mobile-ui";
 import { useTheme } from "@ui";
 

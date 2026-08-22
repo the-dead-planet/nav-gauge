@@ -50,7 +50,7 @@ export const GearsTopToolbar: FC = () => {
             gap="md"
             alignItems="center"
         >
-            <View style={[styles.heading, { borderRightColor: theme.componentColor('border') }]}>
+            <View style={[styles.heading, { borderRightColor: theme.componentColor('divider') }]}>
                 <Icon icon={Icons.NounProject.Gear} color={theme.color('secondary')} width={20} height={20} />
                 {media.isMoreThanXs ? (
                     <Text color="secondary" style={[styles.headingText, { lineHeight: 40 }]}>

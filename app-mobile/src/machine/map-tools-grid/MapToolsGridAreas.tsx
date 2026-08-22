@@ -7,7 +7,7 @@ import { ToolIcons } from "../map-tools-grid/ToolIcons";
 import { TopToolsGridArea } from "../map-tools-grid/TopToolsGridArea";
 import { SecondaryBottomToolPanel } from "../tool-panels/bottom-panels/secondary-bottom-panel/SecondaryBottomToolPanel";
 import { BottomToolPanel } from "../tool-panels/bottom-panels/primary-bottom-panel/BottomToolPanel";
-import { MobileMap } from "@mobile-ui";
+import { MobileMap } from "@mobile-apparatus";
 import { Attributions } from "../../attributions/Attributions";
 
 const styles = StyleSheet.create({

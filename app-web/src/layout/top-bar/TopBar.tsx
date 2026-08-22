@@ -40,7 +40,6 @@ export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
                     variant="inset"
                     size="md"
                     color={theme.isDark ? "secondary" : 'neutral'}
-                    highlightColor={theme.isDark ? "neutral" : 'secondary'}
                 />
                 <LayoutMenu />
             </div>

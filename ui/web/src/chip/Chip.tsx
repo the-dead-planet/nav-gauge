@@ -19,7 +19,7 @@ const iconSizes: Record<SizeVariant, number> = {
 };
 
 export const Chip: FC<ChipProps & Props> = ({
-    color = 'warning',
+    color = 'neutral',
     icon,
     size = 'sm',
     variant = 'fill',

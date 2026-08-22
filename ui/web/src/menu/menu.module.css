@@ -4,12 +4,68 @@
     z-index: 1000;
 }
 
+.color-neutral {
+    --menu-color: var(--color-neutral);
+    --menu-color-light: var(--color-neutral-100);
+    --menu-color-dark: var(--color-neutral-800);
+}
+
+.color-primary {
+    --menu-color: var(--color-primary);
+    --menu-color-light: var(--color-primary-100);
+    --menu-color-dark: var(--color-primary-900);
+}
+
+.color-secondary {
+    --menu-color: var(--color-secondary);
+    --menu-color-light: var(--color-secondary-100);
+    --menu-color-dark: var(--color-secondary-900);
+}
+
+.color-tertiary {
+    --menu-color: var(--color-tertiary);
+    --menu-color-light: var(--color-tertiary-100);
+    --menu-color-dark: var(--color-tertiary-900);
+}
+
+.highlight-neutral {
+    --menu-highlight-accent-lighter: var(--color-neutral-300);
+    --menu-highlight-accent-darker: var(--color-neutral-600);
+}
+
+.highlight-primary {
+    --menu-highlight-accent-lighter: var(--color-primary-300);
+    --menu-highlight-accent-darker: var(--color-primary-600);
+}
+
+.highlight-secondary {
+    --menu-highlight-accent-lighter: var(--color-secondary-300);
+    --menu-highlight-accent-darker: var(--color-secondary-600);
+}
+
+.highlight-tertiary {
+    --menu-highlight-accent-lighter: var(--color-tertiary-300);
+    --menu-highlight-accent-darker: var(--color-tertiary-600);
+}
+
+.mode-light {
+    --menu-bg: var(--menu-color-light);
+    --menu-highlight-accent: var(--menu-highlight-accent-lighter);
+}
+
+.mode-dark {
+    --menu-bg: var(--menu-color-dark);
+    --menu-highlight-accent: var(--menu-highlight-accent-darker);
+}
+
 .menu-list {
     position: absolute;
     padding: 8px 0;
     overflow: hidden;
     transition: opacity .2s ease-in;
     z-index: 2;
+    background-color: var(--menu-bg);
+    border: 2px solid var(--menu-color);
 }
 
 .menu-item {
@@ -25,12 +81,12 @@
 }
 
 .menu-item:focus-visible {
-    outline: 2px solid var(--color-primary);
+    outline: 2px solid var(--menu-highlight-accent);
     outline-offset: -2px;
 }
 
 .menu-item:hover {
-    background: var(--color-menu-background);
+    background: var(--menu-highlight-accent);
 }
 
 @starting-style {

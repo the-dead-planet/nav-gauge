@@ -1,7 +1,7 @@
 import type * as maplibregl from "maplibre-gl";
 import { MachineGear, MachineWard, MachineWardComponents } from "@apparatus";
 import { ErrorFallbackPage } from "./pages";
-import { Footer, Layout, TopBar } from "./layout";
+import { Layout, TopBar } from "./layout";
 import { Machine } from "./machine/Machine";
 import { Notices } from "./notices/Notices";
 import { WebChronoLens } from "@web-apparatus";
@@ -46,7 +46,6 @@ export class WebMachineWard extends MachineWard<maplibregl.Map> {
         layoutComponent: Layout,
         topBarComponent: TopBar,
         machineComponent: Machine,
-        footerComponent: Footer,
         noticesComponent: Notices,
     };
 

@@ -1,21 +1,28 @@
 import { FC } from "react";
-import { View, Button } from "react-native";
+import { View } from "react-native";
 import { DocumentPickerResponse } from "@react-native-documents/picker";
-import { OverlayComponentProps, SurveillanceState, useMachineWard } from "@apparatus";
+import { OverlayComponentProps, useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
-import { formatCurrentTimestamp, getProgressPercentage, RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { Slider, Text, Divider } from "@mobile-ui";
-import { MobileMap } from "@mobile-ui";
-import { useTheme } from "@ui";
+import { getProgressPercentage, RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { Divider } from "@mobile-ui";
 import { currentPointRef$, linesRef$ } from "../layers/RouteLayer";
 import { MobileMarkerImageData } from "../images/image-parser";
+import { MobileMap } from "@mobile-apparatus";
+import { RecordingButtons } from "./RecordingButtons";
+import { PlayerSlider } from "./player-slider/PlayerSlider";
+import { ConfigurationButtons } from "./ConfigurationButtons";
 
 export const Player: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({
+    gearId,
+    translationKey,
+    map,
+    data$,
+    images$,
+    state$,
     routeTimes$,
     progressMs$,
     playerOperator,
 }) => {
-    const theme = useTheme();
     const [routeTimes] = useSubjectState(routeTimes$);
     const [progressMs] = useSubjectState(progressMs$);
     const { chronoLens, individuator } = useMachineWard();
@@ -40,36 +47,29 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<Mobil
             paddingHorizontal: 10,
             gap: 10,
         }}>
-            <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
-                <Text style={{ fontSize: 12 }}>
-                    {formatCurrentTimestamp(progressMs, progressPercentage)}
-                </Text>
-                <Button
-                    title={isPlaying ? 'Pause' : 'Play'}
-                    color={theme.componentColor('button')}
-                    onPress={playerOperator.onPlay}
-                />
-                <Button
-                    title={`${surveillanceState === SurveillanceState.Stopped ? 'Start' : 'Stop'} recording`}
-                    color={theme.componentColor('button')}
-                    onPress={playerOperator.onRecord}
-                />
-            </View>
-            <Divider orientation="vertical" mh="sm" />
-            <Slider
-                min={0}
-                max={routeTimes?.duration ?? 1}
-                step={1}
-                value={progressMs}
-                onChange={handleProgressChange}
-                color="tertiary"
-                size="sm"
-                style={{ flex: 1 }}
+            <RecordingButtons
+                gearId={gearId}
+                translationKey={translationKey}
+                map={map}
+                playerOperator={playerOperator}
             />
-            <Divider orientation="vertical" mh="sm" />
-            <Text style={{ fontSize: 12 }}>
-                {!routeTimes ? "" : individuator.formatTimestamp(progressMs + routeTimes.startTimeEpoch, settings)}
-            </Text>
+            <Divider color="neutral" orientation="vertical" mh="xs" />
+            <PlayerSlider
+                gearId={gearId}
+                translationKey={translationKey}
+                map={map}
+                data$={data$}
+                routeTimes$={routeTimes$}
+                images$={images$}
+                progressMs$={progressMs$}
+                playerOperator={playerOperator}
+            />
+            <Divider color="neutral" orientation="vertical" mh="sm" />
+            <ConfigurationButtons
+                gearId={gearId}
+                translationKey={translationKey}
+                state$={state$}
+            />
         </View>
     );
 };

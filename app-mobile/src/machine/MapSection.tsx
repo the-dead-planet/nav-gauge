@@ -4,7 +4,7 @@ import { BehaviorSubject } from "rxjs";
 import { CameraRef, MapRef } from "@maplibre/maplibre-react-native";
 import { useMachineWard, useMapSection } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
-import { MobileMap } from "@mobile-ui";
+import { MobileMap } from "@mobile-apparatus";
 import { MapToolsGridAreas } from "./map-tools-grid/MapToolsGridAreas";
 import { GearsTopToolbar } from "./GearsTopToolbar";
 import {

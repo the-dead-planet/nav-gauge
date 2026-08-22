@@ -28,7 +28,6 @@ export interface MachineWardComponents<TNavigationPath extends string = string> 
     layoutComponent: ComponentType<MachineWardLayoutProps>;
     topBarComponent: ComponentType<MachineWardTopBarProps<TNavigationPath>>;
     machineComponent: ComponentType<MachineWardMachineProps<TNavigationPath>>;
-    footerComponent: ComponentType;
     noticesComponent: ComponentType<MachineWardNoticesProps>;
 }
 

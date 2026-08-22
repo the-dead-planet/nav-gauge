@@ -3,7 +3,7 @@ import { ObservedToolIcon, useMachineWard, useTranslation } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { useTheme } from "@ui";
 import { Button } from "@mobile-ui";
-import { MobileMap } from "@mobile-ui";
+import { MobileMap } from "@mobile-apparatus";
 
 interface Props {
     map: MobileMap;

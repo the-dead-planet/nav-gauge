@@ -17,7 +17,6 @@ export const LayoutMenu: FC = () => {
                 tooltip={tooltip}
                 tooltipPlacement="bottom"
                 placement="bottom-right"
-                iconActiveColor="secondary"
                 menuListClassName={styles['menu']}
             >
                 <MenuItem

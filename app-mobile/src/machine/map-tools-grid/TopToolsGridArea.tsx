@@ -2,7 +2,7 @@ import { FC } from "react";
 import { StyleSheet, View } from "react-native";
 import { useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
-import { MobileMap } from "@mobile-ui";
+import { MobileMap } from "@mobile-apparatus";
 
 const styles = StyleSheet.create({
     topTools: {

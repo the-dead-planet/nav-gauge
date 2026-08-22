@@ -5,7 +5,7 @@ import { textCssNames } from "./cssUtil";
 import styles from './typography.module.css';
 
 export const H3: FC<ComponentProps<'h3'> & TypographyProps> = ({
-    color = defaultTypographyProps.color,
+    color,
     fontType = defaultTypographyProps.fontType,
     align,
     nowrap,

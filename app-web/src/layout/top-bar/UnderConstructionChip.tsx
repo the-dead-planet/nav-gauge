@@ -22,6 +22,7 @@ export const UnderConstructionChip: FC = () => {
             tooltip={showLabel ? undefined : underConstructionLabel}
             tooltipPlacement="bottom"
             tooltipVariant="fill-inverse"
+            color="warning"
         >
             {showLabel ? underConstructionLabel : null}
         </Chip>

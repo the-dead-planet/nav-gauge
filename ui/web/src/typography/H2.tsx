@@ -5,7 +5,7 @@ import { textCssNames } from "./cssUtil";
 import styles from './typography.module.css';
 
 export const H2: FC<ComponentProps<'h2'> & TypographyProps> = ({
-    color = defaultTypographyProps.color,
+    color,
     fontType = defaultTypographyProps.fontType,
     align,
     nowrap,

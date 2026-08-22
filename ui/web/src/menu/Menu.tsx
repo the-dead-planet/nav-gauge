@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, FC, CSSProperties, ComponentProps } from 'react';
 import { createPortal } from 'react-dom';
+import classNames from 'classnames';
 import {
     MenuPosition,
     getIconAndMenuAnchors,
@@ -8,12 +9,11 @@ import {
     getMenuPosition,
     MenuProps,
     Icons,
+    useTheme,
 } from '@ui';
 import { Button } from '../button';
-import styles from './menu.module.css';
-import { Panel } from '../hud';
 import { Transition } from '../transition';
-import classNames from 'classnames';
+import styles from './menu.module.css';
 
 interface Props extends MenuProps {
     menuListClassName?: string;
@@ -26,12 +26,13 @@ export const Menu: FC<Props & ComponentProps<'button'>> = ({
     placement = 'bottom-right',
     tooltip,
     tooltipPlacement,
-    color,
+    color = 'neutral',
     menuListClassName,
     children,
     ...props
 }) => {
     const { icon: iconAnchor, menu: menuAnchor } = getIconAndMenuAnchors(placement);
+    const theme = useTheme();
     const [visible, setVisible] = useState<boolean>(false);
     const [menuPosition, setMenuPosition] = useState<MenuPosition>({});
     const triggerRef = useRef<HTMLButtonElement>(null);
@@ -138,10 +139,15 @@ export const Menu: FC<Props & ComponentProps<'button'>> = ({
                 {...props}
             />
             {visible && createPortal(
-                <Panel
-                    forwardRef={containerRef}
-                    variant='fill-inverse'
-                    className={classNames(styles['menu-list'], menuListClassName)}
+                <div
+                    ref={containerRef}
+                    className={classNames(
+                        styles['menu-list'],
+                        styles[`mode-${theme.mode}`],
+                        styles[`color-${color}`],
+                        styles[`highlight-${iconActiveColor || color}`],
+                        menuListClassName,
+                    )}
                     style={positionStyle}
                     role="menu"
                     aria-orientation="vertical"
@@ -152,7 +158,7 @@ export const Menu: FC<Props & ComponentProps<'button'>> = ({
                             {children}
                         </Transition>
                     </MenuContext.Provider>
-                </Panel>,
+                </div>,
                 document.body,
             )}
         </>

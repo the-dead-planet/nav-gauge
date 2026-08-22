@@ -21,6 +21,7 @@ The workspace root is `/` (package.json and yarn commands live there, not at rep
 | `yarn start:mobile` | Start Metro server |
 | `yarn typecheck:web` | TypeScript check for web packages (exits) |
 | `yarn typecheck:mobile` | TypeScript check for mobile packages (watch mode — never exits; 0 errors means it passed, just Ctrl-C) |
+| `yarn typecheck:mobile:once` | One-shot mobile TypeScript check (exits; silent = passed) — prefer this for non-interactive runs |
 | `yarn lint` (in workspace) | ESLint check (zero warnings policy) |
 | `yarn ui:web` | Start Storybook for web UI |
 | `yarn generate:gear <name>` | Scaffold a new gear from `.templates/` |
@@ -49,7 +50,7 @@ See `.opencode/rules/testing.mdc`.
 
 ## After changes
 
-Always run `yarn typecheck:web` (or `yarn typecheck:mobile` for mobile changes), `yarn lint`, and relevant tests after every code edit.
+Always run `yarn typecheck:web` (or `yarn typecheck:mobile:once` for mobile changes), `yarn lint`, and relevant tests after every code edit.
 
 ## Other
 

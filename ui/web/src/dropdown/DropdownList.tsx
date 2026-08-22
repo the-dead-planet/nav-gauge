@@ -12,7 +12,7 @@ interface Props {
 
 export function DropdownList<T = string>({
     onClose,
-    color = 'neutral',
+    color,
     iconSize,
     value,
     options,

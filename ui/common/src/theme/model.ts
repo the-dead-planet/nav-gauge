@@ -49,11 +49,9 @@ export type DesignSystemColor =
 
 export type ThemeComponentColor =
     'background' |
-    'menu-background' |
     'border' |
     'box-shadow' |
     'divider' |
-    'button' |
     'text' |
     'text-active' |
     'error' |

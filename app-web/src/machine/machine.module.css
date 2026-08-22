@@ -286,7 +286,7 @@
     gap: 10px;
     padding: 0 15px;
     text-transform: uppercase;
-    border-right: 1px solid var(--color-border);
+    border-right: 1px solid var(--color-divider);
 }
 
 .spacer-line {

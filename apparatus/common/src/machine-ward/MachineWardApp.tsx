@@ -86,7 +86,6 @@ export function MachineWardApp<TMap, TNavigationPath extends string>({
                         <components.layoutComponent>
                             <components.topBarComponent title={title} onNavigate={onNavigate} onNavigateBack={onNavigateBack} />
                             <components.machineComponent onNavigate={onNavigate} onNavigateBack={onNavigateBack} />
-                            <components.footerComponent />
                             <MachineWardNotices noticesComponent={components.noticesComponent} />
                         </components.layoutComponent>
                     </MachineWardContext.Provider>

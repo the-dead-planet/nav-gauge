@@ -22,7 +22,8 @@
         "test:e2e": "jest",
         "test:e2e:dev": "jest",
         "test:e2e:prod": "jest",
-        "typecheck": "tsc --noEmit --watch"
+        "typecheck": "tsc --noEmit --watch",
+        "typecheck:once": "tsc --noEmit"
     },
     "dependencies": {
         "@bam.tech/react-native-image-resizer": "^3.0.11",

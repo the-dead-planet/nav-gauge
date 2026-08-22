@@ -5,7 +5,7 @@ import { textCssNames } from "./cssUtil";
 import styles from './typography.module.css';
 
 export const Span: FC<ComponentProps<'span'> & TypographyProps> = ({
-    color = defaultTypographyProps.color,
+    color,
     fontType = defaultTypographyProps.fontType,
     align,
     nowrap,

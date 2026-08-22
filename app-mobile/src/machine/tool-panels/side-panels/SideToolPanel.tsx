@@ -5,7 +5,7 @@ import { assignSideToolPanelRef, swapSideToolPanelPlacement, useMachineWard, use
 import { useTheme } from "@ui";
 import { ToolPanelHeader } from "../panel-header/ToolPanelHeader";
 import { SideToolPanelResizeHandle } from "./SideToolPanelResizeHandle";
-import { MobileMap } from "@mobile-ui";
+import { MobileMap } from "@mobile-apparatus";
 import { useAnimatedSize } from "../useAnimatedSize";
 
 const styles = StyleSheet.create({

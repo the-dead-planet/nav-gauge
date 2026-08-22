@@ -5,7 +5,7 @@ import { textCssNames } from "./cssUtil";
 import styles from './typography.module.css';
 
 export const Label: FC<ComponentProps<'label'> & TypographyProps> = ({
-    color = defaultTypographyProps.color,
+    color,
     fontType = defaultTypographyProps.fontType,
     align,
     nowrap,

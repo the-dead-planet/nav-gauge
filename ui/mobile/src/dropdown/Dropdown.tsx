@@ -1,12 +1,12 @@
-import { ComponentType, useCallback, useRef, useState } from "react";
+import { ComponentType, useRef, useState } from "react";
 import {
-    LayoutChangeEvent,
     Modal,
     Pressable,
     ScrollView,
     View,
     type ViewStyle,
-    type ViewInstance,
+    type HostInstance,
+    TouchableHighlight,
 } from "react-native";
 import { DropdownProps, Icons, useTheme } from "@ui";
 import { Icon } from "../icons";
@@ -44,13 +44,17 @@ export function Dropdown<T>({
     const [menuTop, setMenuTop] = useState(0);
     const [menuLeft, setMenuLeft] = useState(0);
     const [menuWidth, setMenuWidth] = useState(0);
-    const triggerRef = useRef<ViewInstance>(null);
-    const triggerLayoutRef = useRef({ x: 0, y: 0, width: 0, height: 0 });
+    const triggerRef = useRef<HostInstance>(null);
 
     const selectedOption = options.find(o => o.value === value);
     const s = SIZE_MAP[size];
     const iconSize = ICON_SIZE_MAP[size];
     const baseColor = theme.color(color, 500);
+    const textColor = theme.componentColor('text');
+    // matches web --dropdown-color-text: readable end of the color scale (900 light / 100 dark)
+    const chromeContentColor = theme.isLight
+        ? theme.color(color, color === 'neutral' ? 800 : 900)
+        : theme.color(color, 100);
 
     const getTriggerStyle = (pressed: boolean): MutableViewStyle => {
         const style: MutableViewStyle = {
@@ -66,7 +70,7 @@ export function Dropdown<T>({
         switch (variant) {
             case 'fill':
                 style.backgroundColor = pressed
-                    ? theme.color(highlightColor, 300)
+                    ? theme.color(highlightColor, theme.isLight ? 600 : 300)
                     : baseColor;
                 style.borderWidth = 0;
                 break;
@@ -92,31 +96,31 @@ export function Dropdown<T>({
         return style;
     };
 
-    const getTextColor = (pressed: boolean): string => {
+    const getContentColors = (pressed: boolean) => {
         if (variant === 'fill') {
-            return theme.color(color, 100);
+            return { content: textColor, chevron: textColor };
         }
-        return pressed
-            ? theme.color(highlightColor, theme.isLight ? 600 : 300)
-            : baseColor;
+        return {
+            content: chromeContentColor,
+            chevron: pressed
+                ? theme.color(color, theme.isLight ? 600 : 400)
+                : baseColor,
+        };
     };
 
-    const handleTriggerLayout = useCallback((e: LayoutChangeEvent) => {
-        const { x, y, width, height } = e.nativeEvent.layout;
-        triggerLayoutRef.current = { x, y, width, height };
-    }, []);
-
     const handleOpen = () => {
-        const { x, y, width, height } = triggerLayoutRef.current;
-        setMenuTop(y + height);
-        setMenuLeft(x);
-        setMenuWidth(width);
-        setIsOpen(true);
+        // ponytail: measureInWindow because Modal overlay is full-screen; onLayout coords are parent-relative
+        triggerRef.current?.measureInWindow((x, y, width, height) => {
+            setMenuTop(y + height);
+            setMenuLeft(x);
+            setMenuWidth(width);
+            setIsOpen(true);
+        });
     };
 
     return (
         <View>
-            <View ref={triggerRef} onLayout={handleTriggerLayout} collapsable={false}>
+            <View ref={triggerRef} collapsable={false}>
                 <Pressable
                     disabled={disabled}
                     onPress={handleOpen}
@@ -125,34 +129,37 @@ export function Dropdown<T>({
                         disabled && { opacity: 0.4 },
                     ]}
                 >
-                    {({ pressed }) => (
-                        <>
-                            {selectedOption?.icon ? (
+                    {({ pressed }) => {
+                        const { content, chevron } = getContentColors(pressed);
+                        return (
+                            <>
+                                {selectedOption?.icon ? (
+                                    <Icon
+                                        icon={selectedOption.icon}
+                                        width={iconSize}
+                                        height={iconSize}
+                                        color={content}
+                                    />
+                                ) : null}
+                                <Text
+                                    style={{
+                                        color: content,
+                                        fontSize: s.fontSize,
+                                        lineHeight: s.fontSize * 1.1,
+                                        flex: 1,
+                                    }}
+                                >
+                                    {selectedOption ? selectedOption.label : placeholder}
+                                </Text>
                                 <Icon
-                                    icon={selectedOption.icon}
+                                    icon={Icons.NounProject.ChevronDownDoubleSquareFill}
                                     width={iconSize}
                                     height={iconSize}
-                                    color={getTextColor(pressed)}
+                                    color={chevron}
                                 />
-                            ) : null}
-                            <Text
-                                style={{
-                                    color: getTextColor(pressed),
-                                    fontSize: s.fontSize,
-                                    lineHeight: s.fontSize * 1.1,
-                                    flex: 1,
-                                }}
-                            >
-                                {selectedOption ? selectedOption.label : placeholder}
-                            </Text>
-                            <Icon
-                                icon={Icons.NounProject.ChevronDownDoubleSquareFill}
-                                width={iconSize}
-                                height={iconSize}
-                                color={getTextColor(pressed)}
-                            />
-                        </>
-                    )}
+                            </>
+                        );
+                    }}
                 </Pressable>
             </View>
 
@@ -169,7 +176,10 @@ export function Dropdown<T>({
                             width: menuWidth,
                             marginTop: 4,
                             borderRadius: 4,
-                            backgroundColor: theme.componentColor('menu-background'),
+                            backgroundColor: theme.color(
+                                color,
+                                theme.isLight ? 100 : (color === 'neutral' ? 800 : 900)
+                            ),
                             borderWidth: 1,
                             borderColor: baseColor,
                             paddingVertical: 4,
@@ -185,8 +195,9 @@ export function Dropdown<T>({
                             {options.map((option) => {
                                 const selected = option.value === value;
                                 return (
-                                    <Pressable
+                                    <TouchableHighlight
                                         key={String(option.value)}
+                                        underlayColor={theme.color(highlightColor, 500, 0.14)}
                                         onPress={() => {
                                             onChange?.(option.value);
                                             setIsOpen(false);
@@ -209,17 +220,12 @@ export function Dropdown<T>({
                                                     icon={option.icon}
                                                     width={iconSize}
                                                     height={iconSize}
-                                                    color={selected
-                                                        ? theme.color(highlightColor, 500)
-                                                        : baseColor
-                                                    }
+                                                    color={selected ? theme.color(highlightColor, 500) : baseColor}
                                                 />
                                             ) : null}
                                             <Text
                                                 style={{
-                                                    color: selected
-                                                        ? theme.color(highlightColor, 500)
-                                                        : baseColor,
+                                                    color: baseColor,
                                                     fontSize: s.fontSize,
                                                     lineHeight: s.fontSize * 1.1,
                                                 }}
@@ -227,7 +233,7 @@ export function Dropdown<T>({
                                                 {option.label}
                                             </Text>
                                         </View>
-                                    </Pressable>
+                                    </TouchableHighlight>
                                 );
                             })}
                         </ScrollView>

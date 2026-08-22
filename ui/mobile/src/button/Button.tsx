@@ -42,6 +42,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     const theme = useTheme();
     const [pressed, setPressed] = useState(false);
     const [glowDrawn, setGlowDrawn] = useState(false);
+
     const hl = pressed || active;
     const effectiveTheme = themeMode || theme.mode;
     const isLight = effectiveTheme === 'light';
@@ -169,6 +170,12 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
                     : `4px 4px 8px rgba(0,0,0,0.80) inset, -2px -2px 4px rgba(255,255,255,0.08) inset`;
             }
             break;
+    }
+
+    if (corners === 'rounded') {
+        container.borderRadius = 4;
+    } else if (corners === 'circle') {
+        container.borderRadius = (container.height as number) / 2;
     }
 
     if (showGlow && corners !== 'hexagon') {

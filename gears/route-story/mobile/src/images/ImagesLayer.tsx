@@ -11,12 +11,13 @@ import {
     imageLayerIds,
     imageSourceIds,
     draggingImage$,
+    draggingClosestFeature$,
     DRAGGED_IMAGE_ID,
     IMAGE_PROPERTY,
     IMAGE_THUMBNAIL_PROPERTY,
     updateImageFeatureId,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { MobileMap } from "@mobile-ui";
+import { MobileMap } from "@mobile-apparatus";
 import { DocumentPickerResponse } from "@react-native-documents/picker";
 import { MobileMarkerImageData } from "./image-parser";
 import { useLoadedMobileImages } from "./useLoadedMobileImages";
@@ -34,13 +35,40 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
     const [{ geojson }] = useSubjectState(data$);
     const [images] = useSubjectState(images$);
+    const [draggingClosestFeature] = useSubjectState(draggingClosestFeature$);
     const loadedImages = useLoadedMobileImages(images);
 
     const [sourceDataGeojson, setSourceDataGeojson] = useState(getImageSource(loadedImages, geojson));
 
     useEffect(() => {
-        setSourceDataGeojson(getImageSource(loadedImages, geojson));
-    }, [loadedImages, geojson]);
+        const draggingImage = draggingImage$.value;
+        const draggedImage = draggingImage !== null && draggingImage.interaction === 'player'
+            ? loadedImages.find((candidate) => candidate.id === draggingImage.id)
+            : undefined;
+
+        if (!draggedImage || !geojson || !draggingClosestFeature) {
+            setSourceDataGeojson(getImageSource(loadedImages, geojson));
+            return;
+        }
+
+        const updated: typeof sourceDataGeojson = getImageSource(loadedImages, geojson);
+        for (const feature of updated.features) {
+            if (feature.id === draggedImage.id) {
+                feature.properties[FeatureStateProps.Dragging] = true;
+            }
+        }
+        updated.features.push({
+            type: 'Feature',
+            id: -1,
+            geometry: draggingClosestFeature.geometry,
+            properties: {
+                imageId: DRAGGED_IMAGE_ID,
+                [IMAGE_PROPERTY]: getIconImageId(draggedImage),
+                [IMAGE_THUMBNAIL_PROPERTY]: getIconImageId(draggedImage, { thumbnail: true }),
+            },
+        });
+        setSourceDataGeojson(updated);
+    }, [loadedImages, geojson, draggingClosestFeature]);
 
     const imageSources: { [key in string]: ImageEntry } = Object.fromEntries(
         loadedImages.flatMap((loadedImage) => {
