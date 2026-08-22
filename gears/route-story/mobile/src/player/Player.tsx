@@ -1,14 +1,14 @@
 import { FC } from "react";
-import { View, Button } from "react-native";
+import { View } from "react-native";
 import { DocumentPickerResponse } from "@react-native-documents/picker";
 import { OverlayComponentProps, SurveillanceState, useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { formatCurrentTimestamp, getProgressPercentage, RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { Slider, Text, Divider } from "@mobile-ui";
-import { MobileMap } from "@mobile-ui";
+import { Slider, Text, Divider, Button } from "@mobile-ui";
 import { useTheme } from "@ui";
 import { currentPointRef$, linesRef$ } from "../layers/RouteLayer";
 import { MobileMarkerImageData } from "../images/image-parser";
+import { MobileMap } from "@mobile-apparatus";
 
 export const Player: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({
     routeTimes$,
@@ -46,12 +46,16 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<Mobil
                 </Text>
                 <Button
                     title={isPlaying ? 'Pause' : 'Play'}
-                    color={theme.componentColor('button')}
+                    variant="outline"
+                    color="secondary"
+                    corners="circle"
                     onPress={playerOperator.onPlay}
                 />
                 <Button
                     title={`${surveillanceState === SurveillanceState.Stopped ? 'Start' : 'Stop'} recording`}
-                    color={theme.componentColor('button')}
+                    variant="outline"
+                    color="secondary"
+                    corners="circle"
                     onPress={playerOperator.onRecord}
                 />
             </View>

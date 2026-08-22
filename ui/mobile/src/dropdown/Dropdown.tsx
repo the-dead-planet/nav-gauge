@@ -50,6 +50,7 @@ export function Dropdown<T>({
     const s = SIZE_MAP[size];
     const iconSize = ICON_SIZE_MAP[size];
     const baseColor = theme.color(color, 500);
+    const textColor = theme.componentColor('text');
 
     const getTriggerStyle = (pressed: boolean): MutableViewStyle => {
         const style: MutableViewStyle = {
@@ -65,7 +66,7 @@ export function Dropdown<T>({
         switch (variant) {
             case 'fill':
                 style.backgroundColor = pressed
-                    ? theme.color(highlightColor, 300)
+                    ? theme.color(highlightColor, theme.isLight ? 600 : 300)
                     : baseColor;
                 style.borderWidth = 0;
                 break;
@@ -89,15 +90,6 @@ export function Dropdown<T>({
         }
 
         return style;
-    };
-
-    const getTextColor = (pressed: boolean): string => {
-        if (variant === 'fill') {
-            return theme.color(color, 100);
-        }
-        return pressed
-            ? theme.color(highlightColor, theme.isLight ? 600 : 300)
-            : baseColor;
     };
 
     const handleOpen = () => {
@@ -128,12 +120,12 @@ export function Dropdown<T>({
                                     icon={selectedOption.icon}
                                     width={iconSize}
                                     height={iconSize}
-                                    color={getTextColor(pressed)}
+                                    color={textColor}
                                 />
                             ) : null}
                             <Text
                                 style={{
-                                    color: getTextColor(pressed),
+                                    color: textColor,
                                     fontSize: s.fontSize,
                                     lineHeight: s.fontSize * 1.1,
                                     flex: 1,
@@ -145,7 +137,7 @@ export function Dropdown<T>({
                                 icon={Icons.NounProject.ChevronDownDoubleSquareFill}
                                 width={iconSize}
                                 height={iconSize}
-                                color={getTextColor(pressed)}
+                                color={textColor}
                             />
                         </>
                     )}
@@ -165,7 +157,10 @@ export function Dropdown<T>({
                             width: menuWidth,
                             marginTop: 4,
                             borderRadius: 4,
-                            backgroundColor: theme.componentColor('menu-background'),
+                            backgroundColor: theme.color(
+                                color,
+                                theme.isLight ? 100 : (color === 'neutral' ? 800 : 900)
+                            ),
                             borderWidth: 1,
                             borderColor: baseColor,
                             paddingVertical: 4,
@@ -206,17 +201,12 @@ export function Dropdown<T>({
                                                     icon={option.icon}
                                                     width={iconSize}
                                                     height={iconSize}
-                                                    color={selected
-                                                        ? theme.color(highlightColor, 500)
-                                                        : baseColor
-                                                    }
+                                                    color={textColor}
                                                 />
                                             ) : null}
                                             <Text
                                                 style={{
-                                                    color: selected
-                                                        ? theme.color(highlightColor, 500)
-                                                        : baseColor,
+                                                    color: textColor,
                                                     fontSize: s.fontSize,
                                                     lineHeight: s.fontSize * 1.1,
                                                 }}

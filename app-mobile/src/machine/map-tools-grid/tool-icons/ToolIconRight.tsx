@@ -3,8 +3,7 @@ import { ObservedToolIcon, useTranslation } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { useTheme } from "@ui";
 import { Button } from "@mobile-ui";
-import { MobileMap } from "@mobile-ui";
-import { T } from "@mobile-apparatus";
+import { T, MobileMap } from "@mobile-apparatus";
 import { SvgProps } from "react-native-svg";
 
 interface Props {

@@ -3,7 +3,7 @@ import { defaultTypographyProps, TypographyProps } from "@ui";
 import styles from './typography.module.css';
 
 export const textCssNames = ({
-    color = defaultTypographyProps.color,
+    color,
     fontType = defaultTypographyProps.fontType,
     align,
     nowrap,

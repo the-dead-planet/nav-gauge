@@ -5,8 +5,7 @@ import { RecordingView, useViewRecorder } from "react-native-view-recorder";
 import { Camera, Map as MaplibreMap, LogManager } from "@maplibre/maplibre-react-native";
 import { Cartomancer, updateCompassIcon, updateCurrentZoomIcon, useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
-import { MobileMap } from "@mobile-ui";
-import { MobileChronoLens } from "@mobile-apparatus";
+import { MobileMap, MobileChronoLens } from "@mobile-apparatus";
 import { useMapTools } from "./useMapTools";
 
 const styles = StyleSheet.create({

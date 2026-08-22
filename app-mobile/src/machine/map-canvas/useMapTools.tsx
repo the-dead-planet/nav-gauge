@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { addCompassToolIcon, addMapLayoutToolPanel, addZoomToolIcons, useMachineWard } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
-import { MobileMap } from "@mobile-ui";
+import { MobileMap } from "@mobile-apparatus";
 import { CartoConfigPanel } from "../controls/CartoConfigPanel";
 
 export const useMapTools = (map: MobileMap) => {

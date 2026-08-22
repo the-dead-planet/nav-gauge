@@ -52,6 +52,7 @@ export const Menu: FC<MenuProps> = ({
     iconActiveColor,
     iconSize,
     placement = 'bottom-right',
+    color = 'neutral',
     children,
 }) => {
     const { icon: iconAnchor, menu: menuAnchor } = getIconAndMenuAnchors(placement);
@@ -64,7 +65,6 @@ export const Menu: FC<MenuProps> = ({
     const anchorRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
     const toggleMenu = (): void => {
-        // ponytail: measureInWindow because Modal overlay is full-screen; onLayout coords are parent-relative
         iconWrapperRef.current?.measureInWindow((x, y, width, height) => {
             anchorRef.current = getIconAnchorPoint(iconAnchor, x, y, width, height);
             setMenuPosition({});
@@ -83,6 +83,7 @@ export const Menu: FC<MenuProps> = ({
             <View ref={iconWrapperRef}>
                 <Button
                     icon={icon as ComponentProps<typeof Button>['icon']}
+                    color={color}
                     highlightColor={iconActiveColor}
                     size={iconSize}
                     active={visible}
@@ -103,8 +104,8 @@ export const Menu: FC<MenuProps> = ({
                             styles.menuList,
                             {
                                 ...menuPosition,
-                                backgroundColor: theme.componentColor('menu-background'),
-                                borderColor: theme.componentColor('menu-border'),
+                                backgroundColor:theme.color(color, theme.isDark ? 700 : 200),
+                                borderColor: theme.color(color, theme.isDark ? 500 : 400),
                                 shadowColor: theme.componentColor('box-shadow'),
                             }
                         ]}

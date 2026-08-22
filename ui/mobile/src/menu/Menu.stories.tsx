@@ -9,6 +9,24 @@ const styles = StyleSheet.create({
     },
 });
 
+const colors = ['primary', 'secondary', 'tertiary', 'neutral'] as const;
+
+export const MenuColors = () => (
+    <View>
+        {colors.map((color) => (
+            <View key={color}>
+                <Text>color="{color}"</Text>
+                <View style={styles.wrapper}>
+                    <Menu color={color}>
+                        <MenuItem key={1} onPress={() => console.info("Option 1")}>Option 1</MenuItem>
+                        <MenuItem key={2} onPress={() => console.info("Option 2")}>Option 2</MenuItem>
+                    </Menu>
+                </View>
+            </View>
+        ))}
+    </View>
+);
+
 export const MenuPlacements = () => (
     <View>
         <View>

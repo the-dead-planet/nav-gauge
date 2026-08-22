@@ -9,6 +9,5 @@ export const fontTypeToFamily: { [key in FontType]: FontFamilyName } = {
 }
 
 export const defaultTypographyProps: TypographyProps = {
-    color: undefined,
     fontType: FontType.Default,
 }

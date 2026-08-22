@@ -20,14 +20,6 @@ export const defaultComponentColors: { [key in ThemeMode]: ThemeSpecification['c
             name: 'neutral',
             shade: 100
         },
-        "menu-background": {
-            name: 'neutral',
-            shade: 200
-        },
-        "menu-border": {
-            name: 'neutral',
-            shade: 400
-        },
         border: {
             name: 'neutral',
             shade: 200
@@ -39,10 +31,6 @@ export const defaultComponentColors: { [key in ThemeMode]: ThemeSpecification['c
         divider: {
             name: 'neutral',
             shade: 800
-        },
-        button: {
-            name: 'neutral',
-            shade: 200
         },
         text: {
             name: 'neutral',
@@ -74,14 +62,6 @@ export const defaultComponentColors: { [key in ThemeMode]: ThemeSpecification['c
             name: 'neutral',
             shade: 900
         },
-        "menu-background": {
-            name: 'neutral',
-            shade: 700
-        },
-        "menu-border": {
-            name: 'neutral',
-            shade: 500
-        },
         border: {
             name: 'neutral',
             shade: 800
@@ -91,10 +71,6 @@ export const defaultComponentColors: { [key in ThemeMode]: ThemeSpecification['c
             shade: 800
         },
         divider: {
-            name: 'neutral',
-            shade: 800
-        },
-        button: {
             name: 'neutral',
             shade: 800
         },
@@ -132,7 +108,7 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
             themeName: ThemeName.Default,
             componentColors: defaultComponentColors.light,
             colors: {
-                primary: Theme.palette.green,
+                primary: Theme.palette.teal,
                 secondary: Theme.palette['copper-dark'],
                 tertiary: Theme.palette.magenta,
                 neutral: Theme.palette.grey,
@@ -183,6 +159,12 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
                 warning: {
                     name: 'luminous-yellow',
                     shade: 500,
+                },
+                "border": {
+                    name: "luminous-yellow",
+                },
+                "divider": {
+                    name: "luminous-yellow",
                 },
                 "box-shadow": {
                     name: "luminous-yellow",

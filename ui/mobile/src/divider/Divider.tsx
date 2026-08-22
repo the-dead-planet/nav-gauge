@@ -20,7 +20,7 @@ export const Divider: FC<DividerProps & { style?: ViewStyle }> = ({
     const theme = useTheme();
     const dividerColor = color
         ? theme.color(color)
-        : theme.componentColor("border");
+        : theme.componentColor('divider');
 
     const marginStyle: MutableViewStyle = {};
     if (m) {

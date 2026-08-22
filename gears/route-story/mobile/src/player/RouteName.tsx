@@ -6,7 +6,7 @@ import { BevelPanel, Button, FileInput } from "@mobile-ui";
 import { MobileMarkerImageData } from "../images/image-parser";
 import { useSubjectState } from "@tinker-chest";
 import { Icons } from "@ui";
-import { MobileMap } from "@mobile-ui";
+import { MobileMap } from "@mobile-apparatus";
 import { DocumentPickerResponse } from "@react-native-documents/picker";
 
 const styles = StyleSheet.create({

@@ -4,7 +4,7 @@ import { useMachineWard, useSecondaryBottomToolPanel } from "@apparatus";
 import { useTheme } from "@ui";
 import { ToolPanelHeader } from "../../panel-header/ToolPanelHeader";
 import { BottomSecondaryToolPanelResizeHandle } from "./SecondaryBottomToolPanelResizeHandle";
-import { MobileMap } from "@mobile-ui";
+import { MobileMap } from "@mobile-apparatus";
 import { useAnimatedSize } from "../../useAnimatedSize";
 
 const styles = StyleSheet.create({

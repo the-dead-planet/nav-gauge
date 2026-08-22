@@ -2,7 +2,7 @@ import { FC, ReactNode, useMemo } from "react";
 import { PanResponder, StyleSheet, View } from "react-native";
 import { useMachineWard } from "@apparatus";
 import { useObservableState, useSubjectState } from "@tinker-chest";
-import { MobileMap } from "@mobile-ui";
+import { MobileMap } from "@mobile-apparatus";
 
 const styles = StyleSheet.create({
     container: {

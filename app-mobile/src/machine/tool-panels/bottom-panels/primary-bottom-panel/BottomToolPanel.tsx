@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { Animated, StyleSheet, View } from "react-native";
 import { assignBottomToolPanelRef, useBottomToolPanel, useMachineWard } from "@apparatus";
 import { BottomToolPanelHeader } from "./BottomToolPanelHeader";
-import { MobileMap } from "@mobile-ui";
+import { MobileMap } from "@mobile-apparatus";
 import { useTheme } from "@ui";
 import { useAnimatedSize } from "../../useAnimatedSize";
 

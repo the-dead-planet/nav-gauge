@@ -171,6 +171,12 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
             break;
     }
 
+    if (corners === 'rounded') {
+        container.borderRadius = 4;
+    } else if (corners === 'circle') {
+        container.borderRadius = (container.height as number) / 2;
+    }
+
     if (showGlow && corners !== 'hexagon') {
         const glowBoxShadow = `0px 0px 4px ${theme.color(highlightColor, 500, 0.3)}, 0px 0px 20px ${theme.color(highlightColor, 500, 0.6)}`;
         if (container.boxShadow) {

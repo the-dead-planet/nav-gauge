@@ -2,7 +2,8 @@ import { FC } from "react";
 import { DocumentPickerResponse } from "@react-native-documents/picker";
 import { ToolPanelProps, useMultipleTranslations } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
-import { MobileMap, TextInput } from "@mobile-ui";
+import { MobileMap } from "@mobile-apparatus";
+import { TextInput } from "@mobile-ui";
 import { RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMarkerImageData } from "../images/image-parser";
 

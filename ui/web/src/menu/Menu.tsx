@@ -9,6 +9,7 @@ import {
     getMenuPosition,
     MenuProps,
     Icons,
+    useTheme,
 } from '@ui';
 import { Button } from '../button';
 import { Transition } from '../transition';
@@ -25,12 +26,13 @@ export const Menu: FC<Props & ComponentProps<'button'>> = ({
     placement = 'bottom-right',
     tooltip,
     tooltipPlacement,
-    color,
+    color = 'neutral',
     menuListClassName,
     children,
     ...props
 }) => {
     const { icon: iconAnchor, menu: menuAnchor } = getIconAndMenuAnchors(placement);
+    const theme = useTheme();
     const [visible, setVisible] = useState<boolean>(false);
     const [menuPosition, setMenuPosition] = useState<MenuPosition>({});
     const triggerRef = useRef<HTMLButtonElement>(null);
@@ -139,7 +141,13 @@ export const Menu: FC<Props & ComponentProps<'button'>> = ({
             {visible && createPortal(
                 <div
                     ref={containerRef}
-                    className={classNames(styles['menu-list'], menuListClassName)}
+                    className={classNames(
+                        styles['menu-list'],
+                        styles[`mode-${theme.mode}`],
+                        styles[`color-${color}`],
+                        styles[`highlight-${iconActiveColor || color}`],
+                        menuListClassName,
+                    )}
                     style={positionStyle}
                     role="menu"
                     aria-orientation="vertical"

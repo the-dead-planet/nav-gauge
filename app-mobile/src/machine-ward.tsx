@@ -1,11 +1,11 @@
 import { Appearance, Dimensions, ScaledSize } from "react-native";
 import { createAsyncStorage } from "@react-native-async-storage/async-storage";
 import { MachineGear, MachineWard, MachineWardComponents } from "@apparatus";
-import { Footer, Layout, TopBar } from "./layout";
+import { Layout, TopBar } from "./layout";
 import { Machine } from "./machine/Machine";
 import { ErrorFallback } from "./ErrorFallback";
 import { NoticesList } from "./notices/NoticesList";
-import { MobileMap } from "@mobile-ui";
+import { MobileMap } from "@mobile-apparatus";
 import { MobileChronoLens } from "@mobile-apparatus";
 import { navigationRef, RootStackParamList } from "./navigation";
 import { Media, MediaSubscriptionDefinition, Orientation } from "@ui";
@@ -57,7 +57,6 @@ export class MobileMachineWard extends MachineWard<MobileMap, keyof RootStackPar
         layoutComponent: Layout,
         topBarComponent: TopBar,
         machineComponent: Machine,
-        footerComponent: Footer,
         noticesComponent: NoticesList,
     };
 

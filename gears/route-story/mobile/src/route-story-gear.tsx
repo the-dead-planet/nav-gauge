@@ -4,7 +4,7 @@ import { RouteStoryGear } from '@the-dead-planet/nav-gauge-gears-route-story-com
 import { RouteLayer } from './layers/RouteLayer';
 import { ImagesLayer } from './images/ImagesLayer';
 import { Player } from './player/Player';
-import { MobileMap } from '@mobile-ui';
+import { MobileMap } from '@mobile-apparatus';
 import { GeoJson, getExifError, getExifLngLat, ParsingResultWithError } from '@tinker-chest';
 import { Cartomancer, MarkerImage, GearApparatus, parsers } from '@apparatus';
 import bbox from "@turf/bbox";

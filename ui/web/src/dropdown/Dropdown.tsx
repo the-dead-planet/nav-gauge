@@ -131,7 +131,6 @@ export function Dropdown<T = string>({
                 <DropdownList
                     onClose={handleClose}
                     iconSize={iconSize}
-                    color={color}
                     value={value}
                     options={options}
                     onChange={onChange}

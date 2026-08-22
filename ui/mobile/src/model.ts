@@ -9,16 +9,4 @@ export interface PressFeatureProperties {
 
 export type PressEventFeature = GeoJSON.Feature<GeoJSON.Point, PressFeatureProperties>;
 
-export interface MobileMap {
-    map$: BehaviorSubject<MapRef | null>;
-    camera$: BehaviorSubject<CameraRef | null>;
-    mapSize$: BehaviorSubject<{ width: number; height: number; }>,
-    dragPan$: BehaviorSubject<boolean>
-    onPressHandlers$: BehaviorSubject<Map<string, (event: PressEvent | PressEventWithFeatures) => Promise<void>>>
-    onLongPressHandlers$: BehaviorSubject<Map<string, (event: PressEvent) => Promise<void>>>
-    onPanResponderStartHandlers$: BehaviorSubject<Map<string, (lngLat: number[], event: GestureResponderEvent) => Promise<void>>>
-    onPanResponderMoveHandlers$: BehaviorSubject<Map<string, (lngLat: number[], event: GestureResponderEvent) => Promise<void>>>
-    onPanResponderEndHandlers$: BehaviorSubject<Map<string, (lngLat: number[], event: GestureResponderEvent) => Promise<void>>>
-}
-
 export type MutableViewStyle = { -readonly [K in keyof ViewStyle]: ViewStyle[K] };

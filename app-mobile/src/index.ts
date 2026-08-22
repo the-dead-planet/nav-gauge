@@ -1,5 +1,5 @@
 import { MachineGear } from "@apparatus";
-import { MobileMap } from "@mobile-ui";
+import { MobileMap } from "@mobile-apparatus";
 import { MobileMachineWard } from "./machine-ward";
 import NavigateGear from '@the-dead-planet/nav-gauge-gears-navigate-mobile'
 import RecordRouteGear from '@the-dead-planet/nav-gauge-gears-record-route-mobile'

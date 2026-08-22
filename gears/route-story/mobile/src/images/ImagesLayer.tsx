@@ -16,7 +16,7 @@ import {
     IMAGE_THUMBNAIL_PROPERTY,
     updateImageFeatureId,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { MobileMap } from "@mobile-ui";
+import { MobileMap } from "@mobile-apparatus";
 import { DocumentPickerResponse } from "@react-native-documents/picker";
 import { MobileMarkerImageData } from "./image-parser";
 import { useLoadedMobileImages } from "./useLoadedMobileImages";
