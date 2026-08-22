@@ -12,11 +12,12 @@ interface Props {
 
 export function DropdownList<T = string>({
     onClose,
+    color,
     iconSize,
     value,
     options,
     onChange,
-}: Props & Pick<DropdownProps<T>, 'value' | 'options' | 'onChange'>) {
+}: Props & Pick<DropdownProps<T>, 'value' | 'options' | 'color' | 'onChange'>) {
     const listRef = useRef<HTMLUListElement>(null);
     const [highlightedIndex, setHighlightedIndex] = useState(() => {
         const idx = options.findIndex((o) => o.value === value);
@@ -100,7 +101,7 @@ export function DropdownList<T = string>({
                             className={styles['icon']}
                         />
                     ) : null}
-                    <Span>
+                    <Span color={color}>
                         {option.label}
                     </Span>
                 </li>

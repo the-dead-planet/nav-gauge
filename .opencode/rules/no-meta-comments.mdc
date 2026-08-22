@@ -1,0 +1,9 @@
+---
+description: No meta-commentary or simplification-marker comments in code
+globs: "**/*.{ts,tsx,js,jsx}"
+alwaysApply: true
+---
+
+Do not add meta-commentary comments such as `// ponytail: ...` markers, AI-assistant annotations, or notes narrating deliberate shortcuts and simplifications.
+
+Code comments may only describe what the code does for its readers, per the TypeScript conventions (prefer self-documenting code). If a shortcut or trade-off genuinely needs recording, put it in the commit message instead.
