@@ -7,12 +7,12 @@ import { Divider } from "@web-ui";
 import { WebMarkerImageData } from "../images/image-parser";
 import { RecordingButtons } from "./RecordingButtons";
 import { ConfigurationButtons } from "./ConfigurationButtons";
-import styles from './player.module.css';
 import { useTheme } from "@ui";
 import { useSubjectState } from "@tinker-chest";
 import { PlayButton } from "./player-slider/PlayButton";
 import { SliderWithMarkers } from "./player-slider/SliderWithMarkers";
 import { MarkerButton } from "./player-slider/MarkerButton";
+import styles from './player.module.css';
 
 export const Player: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibregl.Map, File, WebMarkerImageData>> = ({
     gearId,
