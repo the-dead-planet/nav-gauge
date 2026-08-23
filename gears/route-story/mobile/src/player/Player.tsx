@@ -92,7 +92,7 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<Mobil
     const markerButton = <MarkerButton gearId={gearId} translationKey={translationKey} playerOperator={playerOperator} />;
     const configurationButtons = <ConfigurationButtons gearId={gearId} translationKey={translationKey} state$={state$} />;
 
-    if (media.isLessThanSm) {
+    if (media.isLessThanMd) {
         return (
             <View style={[styles.player, styles.sm]}>
                 <View style={styles.buttons}>

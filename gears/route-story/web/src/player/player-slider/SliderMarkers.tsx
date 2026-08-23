@@ -97,24 +97,17 @@ export const SliderMarkers: FC<Props> = ({
             setDraggingImage(null);
         };
 
-        const mouseMoveHandler = (e: MouseEvent) => handleMove(e.clientX);
-        const mouseUpHandler = () => handleEnd();
-        const touchMoveHandler = (e: TouchEvent) => {
-            e.preventDefault();
-            handleMove(e.touches[0].clientX);
-        };
-        const touchEndHandler = () => handleEnd();
+        const pointerMoveHandler = (e: PointerEvent) => handleMove(e.clientX);
+        const pointerUpHandler = () => handleEnd();
 
-        window.addEventListener('mousemove', mouseMoveHandler);
-        window.addEventListener('mouseup', mouseUpHandler);
-        window.addEventListener('touchmove', touchMoveHandler, { passive: false });
-        window.addEventListener('touchend', touchEndHandler);
+        window.addEventListener('pointermove', pointerMoveHandler);
+        window.addEventListener('pointerup', pointerUpHandler);
+        window.addEventListener('pointercancel', pointerUpHandler);
 
         return () => {
-            window.removeEventListener('mousemove', mouseMoveHandler);
-            window.removeEventListener('mouseup', mouseUpHandler);
-            window.removeEventListener('touchmove', touchMoveHandler);
-            window.removeEventListener('touchend', touchEndHandler);
+            window.removeEventListener('pointermove', pointerMoveHandler);
+            window.removeEventListener('pointerup', pointerUpHandler);
+            window.removeEventListener('pointercancel', pointerUpHandler);
         };
     }, [draggingImage, images$, getClosestFeatureFromPosition]);
 
@@ -140,7 +133,7 @@ export const SliderMarkers: FC<Props> = ({
                         onMouseLeave={() => {
                             setHighlightIdsBySourceId(new Map());
                         }}
-                        onMouseDown={(e) => {
+                        onPointerDown={(e) => {
                             e.preventDefault();
                             setDraggingImage({ id: image.id, interaction: 'player' });
                         }}

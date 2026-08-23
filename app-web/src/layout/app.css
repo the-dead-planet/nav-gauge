@@ -1,3 +1,8 @@
+html,
+body {
+    overscroll-behavior: none;
+}
+
 :root {
     --app-top-bar-height: 50px;
 }

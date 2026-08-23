@@ -4,6 +4,7 @@
     column-gap: 10px;
     padding: 0 15px 10px 15px;
     box-sizing: border-box;
+    touch-action: none;
 }
 
 .player.sm {
