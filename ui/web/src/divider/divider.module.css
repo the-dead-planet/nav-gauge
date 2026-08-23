@@ -11,7 +11,7 @@
 
 .vertical {
     width: 1px;
-    height: 100%;
+    align-self: stretch;
 }
 
 .color-primary {

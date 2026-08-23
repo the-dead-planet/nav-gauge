@@ -9,4 +9,6 @@
     flex: 1;
     display: grid;
     position: relative;
+    padding-top: 16px;
+    margin-top: 16px;
 }

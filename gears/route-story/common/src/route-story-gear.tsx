@@ -123,9 +123,11 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
         this.presetSubscription = this.subscribePreset();
         this.presetActiveSubscription = this.subscribePresetActive();
         this.engageRouteStory?.();
-        if (this.apparatus.cartomancer.map) {
-            this.fitBoundsHandler(this.apparatus.cartomancer.map, this.data$.value.boundingBox);
-        }
+        setTimeout(() => {
+            if (this.apparatus.cartomancer.map) {
+                this.fitBoundsHandler(this.apparatus.cartomancer.map, this.data$.value.boundingBox);
+            }
+        }, 1000);
         this.dataSubscription = this.subscribeToDataUpdates();
 
         this.apparatus.toolsStation.addTopTool(
@@ -180,6 +182,7 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
     };
 
     public fitBoundsHandler = (map: TMap, boundingBox?: GeoJSON.BBox) => {
+        console.log({ boundingBox })
         if (!boundingBox) {
             return;
         }

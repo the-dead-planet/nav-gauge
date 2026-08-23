@@ -17,7 +17,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Primary = {
+export const IconsWithCreators = {
     render: () => {
         const theme = useTheme();
 
@@ -44,7 +44,15 @@ export const Primary = {
                                 <img src={src} width={20} />
                                 <Icon src={src} style={{ marginLeft: "40px" }} color={theme.componentColor('text')} />
                                 <p style={{ margin: 0 }}>{iconName}</p>
-                                {data ? <p style={{ margin: 0 }}>{data.creator} from <a href={data.href} target='_blank'>{data.source}</a></p> : <p>N/A</p>}
+                                {data ? (
+                                    <p style={{ margin: 0 }}>
+                                        {data.creator} from <a href={data.href} target='_blank'>{data.source}</a>
+                                    </p>
+                                ) : (
+                                    <p>
+                                        <a href="https://boxicons.com/icons?free=true" target='_blank'>Boxicons</a> or <a href="https://lucide.dev/icons" target='_blank'>Lucide</a>
+                                    </p>
+                                )}
                             </Fragment>
                         );
                     })}

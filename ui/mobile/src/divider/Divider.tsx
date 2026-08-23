@@ -41,7 +41,7 @@ export const Divider: FC<DividerProps & { style?: ViewStyle }> = ({
 
     const dividerStyle: ViewStyle =
         orientation === "vertical"
-            ? { width: 1, height: "100%", backgroundColor: dividerColor }
+            ? { width: 1, alignSelf: "stretch", backgroundColor: dividerColor }
             : { height: 1, width: "100%", backgroundColor: dividerColor };
 
     return <View style={[dividerStyle, marginStyle, style]} />;

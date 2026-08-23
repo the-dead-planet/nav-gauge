@@ -92,9 +92,9 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPick
       // resetTempSubfolder();
    };
 
-   public fitBounds = (map: MobileMap, sw: [number, number], ne: [number, number]) => {
-      map.camera$.value?.fitBounds([...sw, ...ne], { padding: { bottom: 20, left: 20, right: 20, top: 20 } });
-   }
+    public fitBounds = async (map: MobileMap, sw: [number, number], ne: [number, number]) => {
+        map.camera$.value?.fitBounds([...sw, ...ne], { padding: { bottom: 20, left: 20, right: 20, top: 20 } });
+    }
 
    public fileToText = async (file: DocumentPickerResponse) => RNFS.readFile(file.uri, 'utf8');
 

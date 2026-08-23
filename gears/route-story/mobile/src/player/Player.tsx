@@ -1,16 +1,58 @@
 import { FC } from "react";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { DocumentPickerResponse } from "@react-native-documents/picker";
-import { OverlayComponentProps, useMachineWard } from "@apparatus";
+import { OverlayComponentProps } from "@apparatus";
+import { RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { useTheme } from "@ui";
 import { useSubjectState } from "@tinker-chest";
-import { getProgressPercentage, RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Divider } from "@mobile-ui";
-import { currentPointRef$, linesRef$ } from "../layers/RouteLayer";
 import { MobileMarkerImageData } from "../images/image-parser";
 import { MobileMap } from "@mobile-apparatus";
 import { RecordingButtons } from "./RecordingButtons";
-import { PlayerSlider } from "./player-slider/PlayerSlider";
 import { ConfigurationButtons } from "./ConfigurationButtons";
+import { PlayButton } from "./player-slider/PlayButton";
+import { SliderWithMarkers } from "./player-slider/SliderWithMarkers";
+import { MarkerButton } from "./player-slider/MarkerButton";
+
+const styles = StyleSheet.create({
+    player: {
+        flexDirection: "row",
+        alignItems: "center",
+        columnGap: 10,
+        paddingHorizontal: 15,
+    },
+    sm: {
+        flexDirection: "column",
+        alignItems: "stretch",
+        marginBottom: 10,
+        rowGap: 10,
+    },
+    slider: {
+        flex: 1,
+        flexDirection: "row",
+        alignItems: "center",
+        columnGap: 18,
+    },
+    sliderBlock: {
+        flex: 1,
+        marginTop: 24,
+    },
+    buttons: {
+        flexDirection: "row",
+        alignItems: "center",
+        columnGap: 10,
+        paddingTop: 10,
+    },
+    buttonGroup: {
+        flex: 1,
+        flexDirection: "row",
+        alignItems: "center",
+        columnGap: 10,
+    },
+    buttonGroupEnd: {
+        justifyContent: "flex-end",
+    },
+});
 
 export const Player: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({
     gearId,
@@ -23,53 +65,66 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<Mobil
     progressMs$,
     playerOperator,
 }) => {
-    const [routeTimes] = useSubjectState(routeTimes$);
-    const [progressMs] = useSubjectState(progressMs$);
-    const { chronoLens, individuator } = useMachineWard();
-    const [settings] = useSubjectState(individuator.settings$);
-    const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
-    const [surveillanceState] = useSubjectState(chronoLens.surveillanceState$);
+    const theme = useTheme();
+    const [media] = useSubjectState(theme.media$);
 
-    const handleProgressChange = (value: number) => {
-        playerOperator.updateProgress(value, (line, currentPoint) => {
-            linesRef$.next(line);
-            currentPointRef$.next(currentPoint);
-        });
-    };
+    const recordingButtons = (
+        <RecordingButtons
+            gearId={gearId}
+            translationKey={translationKey}
+            map={map}
+            playerOperator={playerOperator}
+        />
+    );
+    const playButton = <PlayButton gearId={gearId} translationKey={translationKey} playerOperator={playerOperator} />;
+    const sliderWithMarkers = (
+        <SliderWithMarkers
+            gearId={gearId}
+            translationKey={translationKey}
+            map={map}
+            data$={data$}
+            routeTimes$={routeTimes$}
+            images$={images$}
+            progressMs$={progressMs$}
+            playerOperator={playerOperator}
+        />
+    );
+    const markerButton = <MarkerButton gearId={gearId} translationKey={translationKey} playerOperator={playerOperator} />;
+    const configurationButtons = <ConfigurationButtons gearId={gearId} translationKey={translationKey} state$={state$} />;
 
-    const progressPercentage = getProgressPercentage(progressMs, routeTimes);
+    if (media.isLessThanMd) {
+        return (
+            <View style={[styles.player, styles.sm]}>
+                <View style={styles.buttons}>
+                    <View style={styles.buttonGroup}>
+                        {recordingButtons}
+                    </View>
+                    {playButton}
+                    <View style={[styles.buttonGroup, styles.buttonGroupEnd]}>
+                        {markerButton}
+                        {configurationButtons}
+                    </View>
+                </View>
+                <View style={styles.slider}>
+                    {sliderWithMarkers}
+                </View>
+            </View>
+        );
+    }
 
     return (
-        <View style={{
-            height: 70,
-            flexDirection: "row",
-            alignItems: "center",
-            paddingHorizontal: 10,
-            gap: 10,
-        }}>
-            <RecordingButtons
-                gearId={gearId}
-                translationKey={translationKey}
-                map={map}
-                playerOperator={playerOperator}
-            />
-            <Divider color="neutral" orientation="vertical" mh="xs" />
-            <PlayerSlider
-                gearId={gearId}
-                translationKey={translationKey}
-                map={map}
-                data$={data$}
-                routeTimes$={routeTimes$}
-                images$={images$}
-                progressMs$={progressMs$}
-                playerOperator={playerOperator}
-            />
-            <Divider color="neutral" orientation="vertical" mh="sm" />
-            <ConfigurationButtons
-                gearId={gearId}
-                translationKey={translationKey}
-                state$={state$}
-            />
+        <View style={styles.player}>
+            {recordingButtons}
+            <Divider color="neutral" orientation="vertical" mh="xs" mv="lg" />
+            <View style={styles.slider}>
+                {playButton}
+                <View style={styles.sliderBlock}>
+                    {sliderWithMarkers}
+                </View>
+                {markerButton}
+            </View>
+            <Divider color="neutral" orientation="vertical" mh="sm" mv="lg" />
+            {configurationButtons}
         </View>
     );
 };

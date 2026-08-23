@@ -15,7 +15,10 @@ interface Props {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        gap: 10,
+    },
+    end: {
+        marginLeft: 'auto',
     },
 });
 
@@ -39,7 +42,12 @@ export const PlayerSliderLabels: FC<Props> = ({
             <Text variant="caption" fontType={FontType.Numeric} color="tertiary">
                 {progressPercentage.toFixed(0)}%
             </Text>
-            <Text variant="caption" fontType={FontType.Numeric} color="tertiary">
+            <Text
+                variant="caption"
+                fontType={FontType.Numeric}
+                color="tertiary"
+                style={styles.end}
+            >
                 {!routeTimes ? "" : individuator.formatTimestamp(progressMs + routeTimes.startTimeEpoch, settings, { short: media.isLessThanMd })}
             </Text>
         </View>

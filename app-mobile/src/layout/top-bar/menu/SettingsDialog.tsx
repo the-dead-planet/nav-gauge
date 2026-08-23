@@ -63,7 +63,6 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                     value={pendingSettings.dateFormat.value}
                     options={Individuator.dateFormatOptions.map(({ value, _example }) => ({
                         value,
-                        // ponytail: reuse pre-rendered example; web renders locale-aware via luxon
                         label: _example.toUpperCase(),
                     }))}
                     onChange={(dateFormat) => setPendingSettings((prev): IndividuatorSettings => {
