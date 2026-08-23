@@ -1,8 +1,14 @@
 .slider-markers {
     height: 0;
+    position: absolute;
+    top: 0;
+    left: 10px;
+    right: 10px;
+    margin: 0 auto;
 }
 
 .image-marker {
+    --marker-thumb-size: 8px;
     --marker-width: 2px;
     --marker-border-width: 2px;
     --marker-border-color: var(--color-tertiary-400);
@@ -10,8 +16,8 @@
     --marker-highlight-color: var(--color-tertiary-800);
 
     position: absolute;
-    height: 52px;
-    bottom: -8px;
+    height: 46px;
+    top: 5px;
     width: var(--marker-width);
     background-color: var(--marker-color);
     cursor: grab;
@@ -51,8 +57,8 @@
 .image-marker::after {
     top: 0;
     transform: translate(-50%, -50%) rotate(45deg);
-    width: 6px;
-    height: 6px;
+    width: var(--marker-thumb-size);
+    height: var(--marker-thumb-size);
 }
 
 .image-marker::before {
