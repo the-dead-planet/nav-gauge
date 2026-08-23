@@ -94,9 +94,7 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPick
    };
 
     public fitBounds = async (map: MobileMap, sw: [number, number], ne: [number, number]) => {
-        // ponytail: at startup the camera ref may not be mounted yet; wait for it instead of dropping the pan
-        const camera = await firstValueFrom(map.camera$.pipe(filter((camera) => !!camera)));
-        camera.fitBounds([...sw, ...ne], { padding: { bottom: 20, left: 20, right: 20, top: 20 } });
+        map.camera$.value?.fitBounds([...sw, ...ne], { padding: { bottom: 20, left: 20, right: 20, top: 20 } });
     }
 
    public fileToText = async (file: DocumentPickerResponse) => RNFS.readFile(file.uri, 'utf8');

@@ -109,7 +109,6 @@ export function Dropdown<T>({
     };
 
     const handleOpen = () => {
-        // ponytail: measureInWindow because Modal overlay is full-screen; onLayout coords are parent-relative
         triggerRef.current?.measureInWindow((x, y, width, height) => {
             setMenuTop(y + height);
             setMenuLeft(x);
