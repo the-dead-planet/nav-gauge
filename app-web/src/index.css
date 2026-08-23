@@ -97,6 +97,7 @@ body {
   margin: 0;
   background-color: black;
   color: var(--color-text);
+  touch-action: none;
 }
 
 code {
@@ -111,7 +112,7 @@ a:-webkit-any-link {
 }
 
 #app {
-  height: 100dvh;
+  height: 100svh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
