@@ -54,7 +54,7 @@ export const getRouteSourceData = (
                             status: 'after',
                         }
                     },
-                ]
+                ].filter((feature) => feature.geometry.coordinates.length > 1) as GeoJSON.Feature<GeoJSON.LineString>[]
             }
     };
 };

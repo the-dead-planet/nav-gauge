@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     },
     sm: {
         flexDirection: "column",
+        alignItems: "stretch",
         marginBottom: 10,
         rowGap: 10,
     },
@@ -97,11 +98,9 @@ export const Player: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<Mobil
                 <View style={styles.buttons}>
                     <View style={styles.buttonGroup}>
                         {recordingButtons}
-                        <Divider color="neutral" orientation="vertical" mh="xs" />
                     </View>
                     {playButton}
                     <View style={[styles.buttonGroup, styles.buttonGroupEnd]}>
-                        <Divider color="neutral" orientation="vertical" mh="xs" />
                         {markerButton}
                         {configurationButtons}
                     </View>

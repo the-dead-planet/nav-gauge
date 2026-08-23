@@ -1,5 +1,6 @@
 import RNFS from 'react-native-fs';
 import * as Exify from '@lodev09/react-native-exify';
+import { filter, firstValueFrom } from 'rxjs';
 import { RouteStoryGear } from '@the-dead-planet/nav-gauge-gears-route-story-common';
 import { RouteLayer } from './layers/RouteLayer';
 import { ImagesLayer } from './images/ImagesLayer';
@@ -92,9 +93,11 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPick
       // resetTempSubfolder();
    };
 
-   public fitBounds = (map: MobileMap, sw: [number, number], ne: [number, number]) => {
-      map.camera$.value?.fitBounds([...sw, ...ne], { padding: { bottom: 20, left: 20, right: 20, top: 20 } });
-   }
+    public fitBounds = async (map: MobileMap, sw: [number, number], ne: [number, number]) => {
+        // ponytail: at startup the camera ref may not be mounted yet; wait for it instead of dropping the pan
+        const camera = await firstValueFrom(map.camera$.pipe(filter((camera) => !!camera)));
+        camera.fitBounds([...sw, ...ne], { padding: { bottom: 20, left: 20, right: 20, top: 20 } });
+    }
 
    public fileToText = async (file: DocumentPickerResponse) => RNFS.readFile(file.uri, 'utf8');
 

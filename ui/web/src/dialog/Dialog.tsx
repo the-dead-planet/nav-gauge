@@ -27,39 +27,41 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
     }
 
     return createPortal(
-        <Transition render={render} slide={slide[placement]} fade onUnmount={onClose}>
-            <div className={classNames(styles['container'], styles[placement], className)} {...props}>
-                <Panel
-                    variant={variant}
-                    color="primary"
-                    className={classNames(styles['dialog'])}
-                >
-                    <H3 fontType={FontType.NeonText} color="primary" className={styles['header']}>
-                        {header.toUpperCase()}
-                    </H3>
-                    <div className={styles['content']}>
-                        {children}
-                    </div>
-                    <div className={styles['footer']}>
-                        <Button variant="fill-translucent" color="primary" onClick={() => setRender(false)}>
-                            {closeText}
-                        </Button>
-                        {save ? (
-                            <Button
-                                variant="fill"
-                                color="primary"
-                                onClick={() => {
-                                    save.onSave();
-                                    setRender(false);
-                                }}
-                            >
-                                {save.saveText}
+        <div className={styles['overlay']}>
+            <Transition render={render} slide={slide[placement]} fade onUnmount={onClose}>
+                <div className={classNames(styles['container'], styles[placement], className)} {...props}>
+                    <Panel
+                        variant={variant}
+                        color="primary"
+                        className={classNames(styles['dialog'])}
+                    >
+                        <H3 fontType={FontType.NeonText} color="primary" className={styles['header']}>
+                            {header.toUpperCase()}
+                        </H3>
+                        <div className={styles['content']}>
+                            {children}
+                        </div>
+                        <div className={styles['footer']}>
+                            <Button variant="fill-translucent" color="primary" onClick={() => setRender(false)}>
+                                {closeText}
                             </Button>
-                        ) : null}
-                    </div>
-                </Panel>
-            </div>
-        </Transition>,
+                            {save ? (
+                                <Button
+                                    variant="fill"
+                                    color="primary"
+                                    onClick={() => {
+                                        save.onSave();
+                                        setRender(false);
+                                    }}
+                                >
+                                    {save.saveText}
+                                </Button>
+                            ) : null}
+                        </div>
+                    </Panel>
+                </div>
+            </Transition>
+        </div>,
         document.body,
     );
 };

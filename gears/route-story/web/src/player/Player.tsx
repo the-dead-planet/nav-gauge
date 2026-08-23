@@ -58,11 +58,9 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibr
                 <div className={styles.buttons}>
                     <div>
                         {recordingButtons}
-                        <Divider color="neutral" orientation="vertical" mh="xs" />
                     </div>
                     {playButton}
                     <div>
-                        <Divider color="neutral" orientation="vertical" mh="xs" />
                         {markerButton}
                         {configurationButtons}
                     </div>
