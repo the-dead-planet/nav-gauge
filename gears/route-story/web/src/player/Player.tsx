@@ -52,7 +52,7 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibr
     const markerButton = <MarkerButton gearId={gearId} translationKey={translationKey} playerOperator={playerOperator} />;
     const configurationButtons = <ConfigurationButtons gearId={gearId} translationKey={translationKey} state$={state$} />;
 
-    if (media.isLessThanMd) {
+    if (media.isLessThanSm) {
         return (
             <div className={classNames(styles.player, styles.sm)}>
                 <div className={styles.buttons}>
