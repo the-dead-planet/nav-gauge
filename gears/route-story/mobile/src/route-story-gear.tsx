@@ -1,6 +1,5 @@
 import RNFS from 'react-native-fs';
 import * as Exify from '@lodev09/react-native-exify';
-import { filter, firstValueFrom } from 'rxjs';
 import { RouteStoryGear } from '@the-dead-planet/nav-gauge-gears-route-story-common';
 import { RouteLayer } from './layers/RouteLayer';
 import { ImagesLayer } from './images/ImagesLayer';
