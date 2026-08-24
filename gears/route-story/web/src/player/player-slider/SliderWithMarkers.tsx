@@ -21,6 +21,7 @@ interface Props {
     images$: BehaviorSubject<MarkerImage<WebMarkerImageData>[]>;
     progressMs$: BehaviorSubject<number>;
     playerOperator: PlayerOperator<maplibregl.Map, File, WebMarkerImageData>;
+    fitBoundsHandler: (map: maplibregl.Map, boundingBox?: GeoJSON.BBox) => void;
 }
 
 export const SliderWithMarkers: FC<Props> = ({
@@ -32,6 +33,7 @@ export const SliderWithMarkers: FC<Props> = ({
     images$,
     progressMs$,
     playerOperator,
+    fitBoundsHandler,
 }) => {
     const [routeTimes] = useSubjectState(routeTimes$);
     const [progressMs] = useSubjectState(progressMs$);
@@ -57,9 +59,11 @@ export const SliderWithMarkers: FC<Props> = ({
                 <SliderMarkers
                     gearId={gearId}
                     translationKey={translationKey}
+                    map={map}
                     data$={data$}
                     routeTimes$={routeTimes$}
                     images$={images$}
+                    fitBoundsHandler={fitBoundsHandler}
                 />
             ) : null}
             <Slider

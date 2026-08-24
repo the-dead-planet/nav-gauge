@@ -24,6 +24,7 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibr
     images$,
     progressMs$,
     playerOperator,
+    fitBoundsHandler,
 }) => {
     const theme = useTheme();
     const [media] = useSubjectState(theme.media$);
@@ -47,6 +48,7 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibr
             images$={images$}
             progressMs$={progressMs$}
             playerOperator={playerOperator}
+            fitBoundsHandler={fitBoundsHandler}
         />
     );
     const markerButton = <MarkerButton gearId={gearId} translationKey={translationKey} playerOperator={playerOperator} />;

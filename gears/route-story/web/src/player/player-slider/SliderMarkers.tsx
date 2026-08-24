@@ -1,8 +1,9 @@
+import type * as maplibregl from "maplibre-gl";
 import { FC, useEffect, useRef } from "react";
 import { BehaviorSubject } from "rxjs";
 import classNames from "classnames";
 import { MarkerImage, useMultipleTranslations } from "@apparatus";
-import { FeatureProperties, ParsingResultWithError, useSubjectState } from "@tinker-chest";
+import { ParsingResultWithError, useSubjectState } from "@tinker-chest";
 import {
     draggingImage$,
     draggingClosestFeature$,
@@ -10,25 +11,34 @@ import {
     imageSourceIds,
     RouteStoryTranslationKey,
     RouteTimes,
-    updateImageFeatureId
+    updateImageFeatureId,
+    getPosition,
+    getClosestFeatureFromPosition
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { WebMarkerImageData } from "../../images/image-parser";
+import { Button } from "@web-ui";
+import { Icons } from "@ui";
 import styles from './slider-markers.module.css';
+import bbox from "@turf/bbox";
 
 interface Props {
     gearId: string;
     translationKey: typeof RouteStoryTranslationKey;
+    map: maplibregl.Map,
     data$: BehaviorSubject<ParsingResultWithError>;
     routeTimes$: BehaviorSubject<RouteTimes | null>;
     images$: BehaviorSubject<MarkerImage<WebMarkerImageData>[]>;
+    fitBoundsHandler: (map: maplibregl.Map, boundingBox?: GeoJSON.BBox) => void;
 }
 
 export const SliderMarkers: FC<Props> = ({
     gearId,
     translationKey,
+    map,
     data$,
     routeTimes$,
     images$,
+    fitBoundsHandler
 }) => {
     const [{ geojson }] = useSubjectState(data$);
     const [routeTimes] = useSubjectState(routeTimes$);
@@ -41,32 +51,6 @@ export const SliderMarkers: FC<Props> = ({
     ] = useMultipleTranslations([
         { n: gearId, t: translationKey.Image },
     ]);
-
-    const getPosition = (featureId: number) => {
-        const feature = geojson?.features.find((feature) => feature.properties.id === featureId);
-        if (!feature || !routeTimes) {
-            return 0;
-        }
-        return (new Date(feature.properties.time).valueOf() - new Date(routeTimes.startTime).valueOf()) / routeTimes.duration * 100;
-    };
-
-    const getClosestFeatureFromPosition = (positionPercent: number): GeoJSON.Feature<GeoJSON.Point, FeatureProperties> | null => {
-        if (!geojson || !routeTimes) {
-            return null;
-        }
-        let closestFeature: GeoJSON.Feature<GeoJSON.Point, FeatureProperties> | null = null;
-        let closestDistance = Infinity;
-        for (const feature of geojson.features) {
-            const featureTime = new Date(feature.properties.time).valueOf();
-            const featurePercent = (featureTime - new Date(routeTimes.startTime).valueOf()) / routeTimes.duration * 100;
-            const distance = Math.abs(featurePercent - positionPercent);
-            if (distance < closestDistance) {
-                closestDistance = distance;
-                closestFeature = feature;
-            }
-        }
-        return closestFeature;
-    };
 
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -82,7 +66,7 @@ export const SliderMarkers: FC<Props> = ({
             }
             const rect = container.getBoundingClientRect();
             const positionPercent = ((clientX - rect.left) / rect.width) * 100;
-            const closestFeature = getClosestFeatureFromPosition(positionPercent);
+            const closestFeature = getClosestFeatureFromPosition(positionPercent, geojson, routeTimes);
             if (closestFeature !== null) {
                 draggingClosestFeature$.next(closestFeature);
             }
@@ -112,7 +96,7 @@ export const SliderMarkers: FC<Props> = ({
     }, [draggingImage, images$, getClosestFeatureFromPosition]);
 
     const draggingFeaturePosition = draggingClosestFeature !== null
-        ? getPosition(draggingClosestFeature.properties.id)
+        ? getPosition(draggingClosestFeature.properties.id, geojson, routeTimes)
         : null;
 
     return (
@@ -120,37 +104,55 @@ export const SliderMarkers: FC<Props> = ({
             {images
                 .filter((image) => image.featureId !== undefined)
                 .map((image) => (
-                    <span
+                    <div
                         key={image.id}
-                        role="button"
-                        tabIndex={0}
-                        draggable={false}
-                        aria-label={`${imageLabel} ${image.id}`}
-                        title={`${imageLabel} ${image.id}`}
-                        onMouseEnter={() => {
-                            setHighlightIdsBySourceId(new Map([[imageSourceIds.thumbnails, new Set([image.id.toString()])]]));
-                        }}
-                        onMouseLeave={() => {
-                            setHighlightIdsBySourceId(new Map());
-                        }}
-                        onPointerDown={(e) => {
-                            e.preventDefault();
-                            setDraggingImage({ id: image.id, interaction: 'player' });
-                        }}
-                        className={classNames(styles['image-marker'], {
-                            [styles['dragging']]: draggingImage?.id === image.id,
-                            [styles['highlight']]: draggingImage?.id !== image.id && highlightIdsBySourceId.get(imageSourceIds.thumbnails)?.has(image.id.toString())
-                        })}
+                        className={styles['image-marker-container']}
                         style={{
-                            left: `${getPosition(image.featureId!).toFixed(0)}%`
+                            left: `${getPosition(image.featureId, geojson, routeTimes).toFixed(0)}%`
                         }}
-                    />
+                    >
+                        <span
+                            role="button"
+                            tabIndex={0}
+                            draggable={false}
+                            aria-label={`${imageLabel} ${image.id}`}
+                            title={`${imageLabel} ${image.id}`}
+                            onMouseEnter={() => {
+                                setHighlightIdsBySourceId(new Map([[imageSourceIds.thumbnails, new Set([image.id.toString()])]]));
+                            }}
+                            onMouseLeave={() => {
+                                setHighlightIdsBySourceId(new Map());
+                            }}
+                            onPointerDown={(e) => {
+                                e.preventDefault();
+                                setDraggingImage({ id: image.id, interaction: 'player' });
+                            }}
+                            className={classNames(styles['image-marker'], {
+                                [styles['dragging']]: draggingImage?.id === image.id,
+                                [styles['highlight']]: draggingImage?.id !== image.id && highlightIdsBySourceId.get(imageSourceIds.thumbnails)?.has(image.id.toString())
+                            })}
+                        />
+                        <Button
+                            icon={Icons.NounProject.Target}
+                            size="xs"
+                            onClick={(event) => {
+                                console.log("AAA")
+                                event.stopPropagation();
+                                const feature = geojson?.features.find((f) => f.id === image.featureId);
+                                console.log(feature)
+                                if (feature) {
+                                    fitBoundsHandler(map, bbox(feature));
+                                }
+                            }}
+                            className={styles['pan-to-icon']}
+                        />
+                    </div>
                 ))}
             {draggingFeaturePosition !== null && (
                 <span
                     className={classNames(styles['image-marker'], styles['drag-marker'], styles['highlight'])}
                     style={{
-                        left: `${draggingFeaturePosition.toFixed(0)}%`
+                        left: `${draggingFeaturePosition.toFixed(4)}%`
                     }}
                 />
             )}

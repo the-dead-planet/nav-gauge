@@ -52,19 +52,6 @@ export const SliderWithMarkers: FC<Props> = ({
         });
     };
 
-    const slider = (
-        <Slider
-            value={progressMs}
-            min={0}
-            max={routeTimes?.duration ?? 1}
-            step={1}
-            onChange={handleProgressChange}
-            color="tertiary"
-            size="sm"
-        />
-    );
-    const labels = <PlayerSliderLabels progressMs$={progressMs$} routeTimes$={routeTimes$} />;
-
     return (
         <View style={styles.sliderContainer}>
             {showImageMarkers ? (
@@ -76,8 +63,16 @@ export const SliderWithMarkers: FC<Props> = ({
                     images$={images$}
                 />
             ) : null}
-            {slider}
-            {labels}
+            <Slider
+                value={progressMs}
+                min={0}
+                max={routeTimes?.duration ?? 1}
+                step={1}
+                onChange={handleProgressChange}
+                color="tertiary"
+                size="sm"
+            />
+            <PlayerSliderLabels progressMs$={progressMs$} routeTimes$={routeTimes$} />
         </View>
     );
 };
