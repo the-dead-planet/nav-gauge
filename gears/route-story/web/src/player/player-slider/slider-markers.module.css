@@ -7,6 +7,11 @@
     margin: 0 auto;
 }
 
+.image-marker-container {
+    position: absolute;
+    top: 0;
+}
+
 .image-marker {
     --marker-thumb-size: 8px;
     --marker-width: 2px;
@@ -16,8 +21,9 @@
     --marker-highlight-color: var(--color-tertiary-800);
 
     position: absolute;
-    height: 46px;
     top: 5px;
+    height: 46px;
+    display: block;
     width: var(--marker-width);
     background-color: var(--marker-color);
     cursor: grab;
@@ -75,4 +81,16 @@
 
 .drag-marker {
     pointer-events: none;
+}
+
+.pan-to-icon {
+    opacity: 0;
+    position: absolute;
+    top: -18px;
+    left: -8px;
+    z-index: 10;
+}
+
+.image-marker-container:hover .pan-to-icon {
+    opacity: 1;
 }

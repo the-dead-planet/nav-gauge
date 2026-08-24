@@ -31,7 +31,6 @@ export const RouteName: FC<TopToolsProps<maplibregl.Map> & RouteStoryProps<mapli
         { n: gearId, t: translationKey.Cancel },
         { n: gearId, t: translationKey.NoName },
         { n: gearId, t: translationKey.FitBounds },
-        { n: gearId, t: translationKey.FitBounds },
         { n: gearId, t: translationKey.PurgeStoryText },
     ]);
 

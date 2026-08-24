@@ -5,7 +5,7 @@ import turfDistance from "@turf/distance";
 import { point as turfPoint, lineString as turfLine } from "@turf/helpers";
 import turfLength from "@turf/length";
 import { CurrentPointData, LoadedImageData, MarkerImage } from "@apparatus";
-import { emptyCollection, GeoJson } from "@tinker-chest";
+import { emptyCollection, FeatureProperties, GeoJson } from "@tinker-chest";
 import { RouteStoryState, RouteTimes } from "./model";
 import { BehaviorSubject } from "rxjs";
 import { formatTimeMsAsStandard } from "@ui";
@@ -166,3 +166,39 @@ export function updateImageFeatureId<TImageData>(
 ) {
     images$.next(images$.value.map((im) => im.id === imageId ? { ...im, featureId } : im))
 }
+
+export const getPosition = (
+    featureId: number | undefined,
+    geojson: GeoJson | undefined,
+    routeTimes: RouteTimes | null,
+) => {
+    const feature = geojson?.features.find((feature) => feature.properties.id === featureId);
+    if (!feature || !routeTimes) {
+        return 0;
+    }
+    return (new Date(feature.properties.time).valueOf() - new Date(routeTimes.startTime).valueOf()) / routeTimes.duration * 100;
+};
+
+export const getClosestFeatureFromPosition = (
+    positionPercent: number,
+    geojson: GeoJson | undefined,
+    routeTimes: RouteTimes | null,
+): GeoJSON.Feature<GeoJSON.Point, FeatureProperties> | null => {
+    if (!geojson || !routeTimes) {
+        return null;
+    }
+    let closestFeature: GeoJSON.Feature<GeoJSON.Point, FeatureProperties> | null = null;
+    let closestDistance = Infinity;
+
+    for (const feature of geojson.features) {
+        const featureTime = new Date(feature.properties.time).valueOf();
+        const featurePercent = (featureTime - new Date(routeTimes.startTime).valueOf()) / routeTimes.duration * 100;
+        const distance = Math.abs(featurePercent - positionPercent);
+        if (distance < closestDistance) {
+            closestDistance = distance;
+            closestFeature = feature;
+        }
+    }
+
+    return closestFeature;
+};

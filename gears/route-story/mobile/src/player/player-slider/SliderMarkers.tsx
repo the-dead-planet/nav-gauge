@@ -10,7 +10,9 @@ import {
     imageSourceIds,
     RouteStoryTranslationKey,
     RouteTimes,
-    updateImageFeatureId
+    updateImageFeatureId,
+    getPosition,
+    getClosestFeatureFromPosition
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { useTheme } from "@ui";
 import { MobileMarkerImageData } from "../../images/image-parser";
@@ -75,7 +77,9 @@ export const SliderMarkers: FC<Props> = ({
     const [highlightIdsBySourceId, setHighlightIdsBySourceId] = useSubjectState(highlightIdsBySourceId$);
     const [draggingImage, setDraggingImage] = useSubjectState(draggingImage$);
     const [draggingClosestFeature] = useSubjectState(draggingClosestFeature$);
-    const [imageLabel] = useMultipleTranslations([
+    const [
+        imageLabel,
+    ] = useMultipleTranslations([
         { n: gearId, t: translationKey.Image },
     ]);
 
@@ -92,32 +96,6 @@ export const SliderMarkers: FC<Props> = ({
 
     const markerColor = theme.color('tertiary', 500);
     const markerHighlightColor = theme.color('tertiary', theme.isDark ? 400 : 800);
-
-    const getPosition = (featureId: number) => {
-        const feature = geojson?.features.find((feature) => feature.properties.id === featureId);
-        if (!feature || !routeTimes) {
-            return 0;
-        }
-        return (new Date(feature.properties.time).valueOf() - new Date(routeTimes.startTime).valueOf()) / routeTimes.duration * 100;
-    };
-
-    const getClosestFeatureFromPosition = (positionPercent: number): GeoJSON.Feature<GeoJSON.Point, FeatureProperties> | null => {
-        if (!geojson || !routeTimes) {
-            return null;
-        }
-        let closestFeature: GeoJSON.Feature<GeoJSON.Point, FeatureProperties> | null = null;
-        let closestDistance = Infinity;
-        for (const feature of geojson.features) {
-            const featureTime = new Date(feature.properties.time).valueOf();
-            const featurePercent = (featureTime - new Date(routeTimes.startTime).valueOf()) / routeTimes.duration * 100;
-            const distance = Math.abs(featurePercent - positionPercent);
-            if (distance < closestDistance) {
-                closestDistance = distance;
-                closestFeature = feature;
-            }
-        }
-        return closestFeature;
-    };
 
     const beginDrag = (image: MarkerImage<MobileMarkerImageData>) => {
         setDraggingImage({ id: image.id, interaction: 'player' });
@@ -138,33 +116,34 @@ export const SliderMarkers: FC<Props> = ({
         setDraggingImage(null);
     };
 
-    const tryBeginDragAt = useCallback((evt: GestureResponderEvent): boolean => {
+    const tryBeginDragAt = useCallback((event: GestureResponderEvent): boolean => {
         const metrics = containerMetricsRef.current;
         if (!geojson || !routeTimes || metrics.width <= 0) {
             return false;
         }
-        const offsetX = evt.nativeEvent.pageX - metrics.pageX;
+        const offsetX = event.nativeEvent.pageX - metrics.pageX;
         const grabbed = images.find((candidate) =>
             candidate.featureId !== undefined &&
-            Math.abs((getPosition(candidate.featureId) / 100) * metrics.width - offsetX) <= GRAB_RADIUS_PX
+            Math.abs((getPosition(candidate.featureId, geojson, routeTimes) / 100) * metrics.width - offsetX) <= GRAB_RADIUS_PX
         );
         if (grabbed === undefined) {
             return false;
         }
         beginDrag(grabbed);
+
         return true;
     }, [images, geojson, routeTimes]);
 
     const containerPanResponder = useMemo(() => PanResponder.create({
-        onStartShouldSetPanResponderCapture: (evt) => tryBeginDragAt(evt),
+        onStartShouldSetPanResponderCapture: (event) => tryBeginDragAt(event),
         onMoveShouldSetPanResponderCapture: () => isDraggingPlayerRef.current,
-        onPanResponderMove: (evt) => {
+        onPanResponderMove: (event) => {
             const metrics = containerMetricsRef.current;
             if (metrics.width <= 0) {
                 return;
             }
-            const positionPercent = ((evt.nativeEvent.pageX - metrics.pageX) / metrics.width) * 100;
-            const closestFeature = getClosestFeatureFromPosition(positionPercent);
+            const positionPercent = ((event.nativeEvent.pageX - metrics.pageX) / metrics.width) * 100;
+            const closestFeature = getClosestFeatureFromPosition(positionPercent, geojson, routeTimes);
             if (closestFeature !== null) {
                 draggingClosestFeature$.next(closestFeature);
             }
@@ -174,7 +153,7 @@ export const SliderMarkers: FC<Props> = ({
     }), [tryBeginDragAt, geojson, routeTimes]);
 
     const draggingFeaturePosition = draggingClosestFeature !== null
-        ? getPosition(draggingClosestFeature.properties.id)
+        ? getPosition(draggingClosestFeature.properties.id, geojson, routeTimes)
         : null;
 
     return (
@@ -191,7 +170,13 @@ export const SliderMarkers: FC<Props> = ({
                             key={image.id}
                             accessible
                             accessibilityLabel={`${imageLabel} ${image.id}`}
-                            style={[styles.marker, isDragged ? styles.dragMarker : undefined, { left: `${getPosition(image.featureId!).toFixed(0)}%` }]}
+                            style={[
+                                styles.marker,
+                                isDragged ? styles.dragMarker : undefined,
+                                {
+                                    left: `${getPosition(image.featureId, geojson, routeTimes).toFixed(0)}%`,
+                                },
+                            ]}
                         >
                             <View style={[styles.markerHead, { backgroundColor: color }]} />
                             <View style={[styles.markerLine, { backgroundColor: color }]} />
@@ -201,7 +186,9 @@ export const SliderMarkers: FC<Props> = ({
                 })}
             {draggingFeaturePosition !== null ? (
                 <View
-                    style={[styles.marker, styles.dragMarker, { left: `${draggingFeaturePosition.toFixed(0)}%` }]}
+                    style={[styles.marker, styles.dragMarker, {
+                        left: `${draggingFeaturePosition.toFixed(0)}%`,
+                    }]}
                 >
                     <View style={[styles.markerHead, { backgroundColor: markerHighlightColor }]} />
                     <View style={[styles.markerLine, { backgroundColor: markerHighlightColor }]} />
