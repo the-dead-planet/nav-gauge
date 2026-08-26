@@ -88,8 +88,20 @@ export class WebChronoLens extends ChronoLens {
         signaliumBureau: SignaliumBureau,
         onError?: (stage: string, error: Error) => void
     ): MediaRecorder => {
+        const candidates = [
+            "video/webm;codecs=vp9,opus",
+            "video/webm;codecs=vp9",
+            "video/webm"
+        ];
+
+        const mimeType = candidates.find((type) => MediaRecorder.isTypeSupported(type));
+
+        if (!mimeType) {
+            throw new Error("No mime type supported");
+        }
+        
         const recorder = new MediaRecorder(stream, {
-            mimeType: "video/webm",
+            mimeType,
             videoBitsPerSecond: 8_000_000
         });
 
