@@ -62,7 +62,7 @@ export const RecordingButtons: FC<Props> = ({
                 tooltip={destroyLabel}
                 tooltipPlacement="top"
                 onClick={() => chronoLens.destroyRecording()}
-                disabled // TODO:
+                disabled={!chronoLens.hasRecordingData()}
             />
             {surveillanceState === SurveillanceState.Stopped ? (
                 <Button
@@ -94,8 +94,8 @@ export const RecordingButtons: FC<Props> = ({
                     size="md"
                     variant="ghost"
                     corners="circle"
-                    aria-label={pauseRecordingLabel}
-                    tooltip={pauseRecordingLabel}
+                    aria-label={resumeRecordingLabel}
+                    tooltip={resumeRecordingLabel}
                     tooltipPlacement="top"
                     onClick={() => playerOperator.onRecordPause()}
                 />
@@ -105,8 +105,8 @@ export const RecordingButtons: FC<Props> = ({
                     size="md"
                     variant="ghost"
                     corners="circle"
-                    aria-label={resumeRecordingLabel}
-                    tooltip={resumeRecordingLabel}
+                    aria-label={pauseRecordingLabel}
+                    tooltip={pauseRecordingLabel}
                     tooltipPlacement="top"
                     onClick={() => playerOperator.onRecordPause()}
                     disabled={surveillanceState === SurveillanceState.Stopped}

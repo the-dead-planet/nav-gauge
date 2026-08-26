@@ -11,11 +11,12 @@ export class WebChronoLens extends ChronoLens {
     public fileType = "webm";
 
     public startRecording = async (
+        signaliumBureau: SignaliumBureau,
         onError?: (stage: string, error: Error) => void
     ) => {
         this.isPlaying$.next(true);
         if (!this.recorder) {
-            await this.setup(onError);
+            await this.setup(signaliumBureau, onError);
         }
         this.recorder?.start();
     };
@@ -35,11 +36,12 @@ export class WebChronoLens extends ChronoLens {
     };
 
     private setup = async (
+        signaliumBureau: SignaliumBureau,
         onError?: (stage: string, error: Error) => void
     ) => {
         try {
             this.stream = await this.createStream();
-            this.recorder = this.createRecorder(this.stream, onError);
+            this.recorder = this.createRecorder(this.stream, signaliumBureau, onError);
         } catch (error) {
             this.isPlaying$.next(false);
             this.surveillanceState$.next(SurveillanceState.Stopped);
@@ -48,10 +50,22 @@ export class WebChronoLens extends ChronoLens {
         }
     }
 
+    /**
+     * Captures stream of the canvas element, if available - does not require user consent.
+     * Fallback to whole page recording with consent.
+     */
     private createStream = async (): Promise<MediaStream> => {
         if (this.canvas) {
             return this.canvas.captureStream(this.fps$.value);
         }
+
+        return this.createViewportStream();
+    };
+
+    /**
+     * Requires user consent to record the whole page.
+     */
+    private createViewportStream = async (): Promise<MediaStream> => {
         const stream = await navigator.mediaDevices.getDisplayMedia({
             video: {
                 frameRate: this.fps$.value
@@ -71,15 +85,19 @@ export class WebChronoLens extends ChronoLens {
 
     private createRecorder = (
         stream: MediaStream,
+        signaliumBureau: SignaliumBureau,
         onError?: (stage: string, error: Error) => void
     ): MediaRecorder => {
         const recorder = new MediaRecorder(stream, {
-            mimeType: "video/webm; codecs=vp9",
+            mimeType: "video/webm",
             videoBitsPerSecond: 8_000_000
         });
 
         recorder.ondataavailable = (event) => {
             this.chunks.push(event.data);
+            this.download(signaliumBureau).then(() => {
+                this.destroyRecording();
+            });
         }
 
         recorder.onpause = () => { }
@@ -98,7 +116,16 @@ export class WebChronoLens extends ChronoLens {
         return recorder;
     }
 
-    public download = async (_signaliumBureau: SignaliumBureau) => {
+    public download = async (signaliumBureau: SignaliumBureau) => {
+        if (this.chunks.length === 0) {
+            signaliumBureau.addNotice({
+                type: 'warning',
+                id: 'no-recording-chunks',
+                text: 'No data recorded',
+            });
+
+            return;
+        }
         const blob = new Blob(this.chunks, {
             type: "video/webm",
         });
@@ -115,9 +142,6 @@ export class WebChronoLens extends ChronoLens {
         document.body.removeChild(a);
     };
 
-    /**
-     * Resets the recorder and stream completely.
-     */
     public destroyRecording = () => {
         this.recorder?.stop();
 
@@ -128,5 +152,11 @@ export class WebChronoLens extends ChronoLens {
         this.stream = undefined;
         this.recorder = undefined;
         this.chunks = [];
+    };
+
+    public hasRecordingData = (): boolean => {
+        const hasStream = !!this.recorder && this.recorder.state !== 'inactive';
+
+        return hasStream || !!this.stream || !!this.recorder || this.chunks.length > 0;
     };
 }

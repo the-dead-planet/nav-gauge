@@ -13,7 +13,6 @@ export abstract class ChronoLens {
      * Frames per second. Defaults to 30.
      */
     public fps$ = new BehaviorSubject<FrameRate>(30);
-    // TODO: Combine isPlaying and state?
     public surveillanceState$ = new BehaviorSubject<SurveillanceState>(SurveillanceState.Stopped);
     public isPlaying$ = new BehaviorSubject(false);
     public downloadName$ = new BehaviorSubject('Voyage Log');
@@ -45,7 +44,7 @@ export abstract class ChronoLens {
                         if (prev === SurveillanceState.Paused) {
                             this.resumeRecording?.();
                         } else {
-                            this.startRecording((stage, error) => {
+                            this.startRecording(signaliumBureau, (stage, error) => {
                                 signaliumBureau.addNotice({
                                     id: this.noticeId,
                                     type: 'error',
@@ -66,8 +65,7 @@ export abstract class ChronoLens {
 
     private stop = (signaliumBureau: SignaliumBureau) => {
         this.isPlaying$.next(false);
-        this.stopRecording();
-        this.download(signaliumBureau).then(this.destroyRecording);
+        this.stopRecording(signaliumBureau);
     }
 
     /**
@@ -90,6 +88,7 @@ export abstract class ChronoLens {
      * Callback to trigger when user starts the screen recording
      */
     public abstract startRecording: (
+        signaliumBureau: SignaliumBureau,
         onError: (stage: string, error: Error) => void,
         abortSignal: AbortSignal,
     ) => Promise<void>;
@@ -107,7 +106,7 @@ export abstract class ChronoLens {
     /**
      * Callback to stop the recorder.
      */
-    public abstract stopRecording: () => Promise<void>;
+    public abstract stopRecording: (signaliumBureau: SignaliumBureau) => Promise<void>;
 
     /**
      * Creates a video file with the data recorded by the screen recorder.
@@ -118,4 +117,9 @@ export abstract class ChronoLens {
      * Resets the recorder and any files created on the way completely.
      */
     public abstract destroyRecording: () => void;
+
+    /**
+     * Whether there is any recording data stored.
+     */
+    public abstract hasRecordingData: () => boolean;
 }

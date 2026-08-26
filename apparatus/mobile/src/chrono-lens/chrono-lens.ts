@@ -13,6 +13,7 @@ export class MobileChronoLens extends ChronoLens {
     }
 
     public startRecording = async (
+        _signaliumBureau: SignaliumBureau,
         onError: (stage: string, error: Error) => void,
         abortSignal: AbortSignal,
     ) => {
@@ -31,12 +32,16 @@ export class MobileChronoLens extends ChronoLens {
         }).catch((err) => onError("recording", err as Error));
     };
 
-    public stopRecording = async () => {
+    public stopRecording = async (signaliumBureau: SignaliumBureau) => {
         this.viewRecorder?.stop();
+
+        this.download(signaliumBureau).then(() => {
+            this.destroyRecording();
+        });
     };
 
     public download = async (signaliumBureau: SignaliumBureau) => {
-        viewDocument({
+        await viewDocument({
             uri: "file://" + this.getWorkingFilePath(),
             mimeType: 'video/mp4',
         }).catch((err) => {
@@ -49,11 +54,12 @@ export class MobileChronoLens extends ChronoLens {
         });
     };
 
-    /**
-     * Resets the recorder and stream completely.
-     */
     public destroyRecording = () => {
         // Done by useViewRecorder on component unmount
+    };
+
+    public hasRecordingData = (): boolean => {
+        return false;
     };
 
     private setUpFolder = async (): Promise<void> => {

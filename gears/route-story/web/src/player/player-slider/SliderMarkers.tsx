@@ -136,10 +136,8 @@ export const SliderMarkers: FC<Props> = ({
                             icon={Icons.NounProject.Target}
                             size="xs"
                             onClick={(event) => {
-                                console.log("AAA")
                                 event.stopPropagation();
                                 const feature = geojson?.features.find((f) => f.id === image.featureId);
-                                console.log(feature)
                                 if (feature) {
                                     fitBoundsHandler(map, bbox(feature));
                                 }
