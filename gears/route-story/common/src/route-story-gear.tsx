@@ -182,7 +182,6 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
     };
 
     public fitBoundsHandler = (map: TMap, boundingBox?: GeoJSON.BBox) => {
-        console.log({ boundingBox })
         if (!boundingBox) {
             return;
         }
