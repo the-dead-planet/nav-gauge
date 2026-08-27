@@ -36,6 +36,11 @@ Strict import direction — see `.opencode/rules/import-constraints.mdc` for all
 ### Gears (features)
 Each feature is a pluggable **Gear** with 1-3 packages: `common/` (abstract class), `web/`, `mobile/`. Gears implement the `Gear` interface from `@the-dead-planet/nav-gauge-apparatus-common`. Generate with `yarn generate:gear <name>` from `/`.
 
+### Machine Ward hooks
+- **Web** (`app-web`, `gears/*/web`): use `useWebMachineWard()` from `@web-apparatus`
+- **Mobile** (`app-mobile`, `gears/*/mobile`): use `useMobileMachineWard()` from `@mobile-apparatus`
+- **Common** (`apparatus/common`): use generic `useMachineWard()` — cannot import platform hooks
+
 ## Code Style
 
 See `.opencode/rules/code-style.mdc`.
