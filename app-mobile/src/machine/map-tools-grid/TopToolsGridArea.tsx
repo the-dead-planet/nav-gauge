@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import { useMachineWard } from "@apparatus";
+import { useMobileMachineWard } from "@mobile-apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { MobileMap } from "@mobile-apparatus";
 
@@ -19,7 +19,7 @@ interface Props {
 export const TopToolsGridArea: FC<Props> = ({
     map,
 }) => {
-    const { toolsStation } = useMachineWard();
+    const { toolsStation } = useMobileMachineWard();
     const [topTools] = useSubjectState(toolsStation.topTools$);
 
     return (

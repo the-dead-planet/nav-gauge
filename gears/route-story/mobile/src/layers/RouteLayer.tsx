@@ -1,6 +1,7 @@
 import { FC, useEffect } from "react";
 import { BehaviorSubject } from "rxjs";
-import { OverlayComponentProps, useMachineWard } from "@apparatus";
+import { OverlayComponentProps } from "@apparatus";
+import { useMobileMachineWard } from "@mobile-apparatus";
 import { getRouteSourceData } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMap } from "@mobile-apparatus";
 import { emptyCollection, useSubjectState } from "@tinker-chest";
@@ -26,7 +27,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [progressMs] = useSubjectState(progressMs$);
-    const { chronoLens } = useMachineWard();
+    const { chronoLens } = useMobileMachineWard();
     const [state] = useSubjectState(state$);
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [animationControls] = useSubjectState(animatrix.controls$);

@@ -1,5 +1,6 @@
 import { FC } from "react";
-import { useMachineWard, useMultipleTranslations } from "@apparatus";
+import { useMultipleTranslations } from "@apparatus";
+import { useWebMachineWard } from "@web-apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { RouteStoryTranslationKey } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Button } from "@web-ui";
@@ -17,7 +18,7 @@ export const PlayButton: FC<Props> = ({
     translationKey,
     playerOperator,
 }) => {
-    const { chronoLens } = useMachineWard();
+    const { chronoLens } = useWebMachineWard();
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [
         playLabel,

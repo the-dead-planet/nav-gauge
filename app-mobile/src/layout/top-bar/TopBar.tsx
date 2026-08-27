@@ -2,7 +2,8 @@ import { FC } from "react";
 import { StyleSheet, View } from "react-native";
 import { useTheme, FontType, Icons } from "@ui";
 import { Button, Text } from '@mobile-ui';
-import { MachineWardTopBarProps, useMachineWard, useMultipleTranslations } from "@apparatus";
+import { MachineWardTopBarProps, useMultipleTranslations } from "@apparatus";
+import { useMobileMachineWard } from "@mobile-apparatus";
 import { RootStackParamList } from "../../navigation";
 import { UnderConstructionChip } from "./UnderConstructionChip";
 import { TOP_BAR_HEIGHT } from "../../machine-sizes";
@@ -40,7 +41,7 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
     onNavigate,
 }) => {
     const theme = useTheme();
-    const { individuator, namespace, translationKey } = useMachineWard();
+    const { individuator, namespace, translationKey } = useMobileMachineWard();
     const [modeTooltip] = useMultipleTranslations([
         { n: namespace, t: translationKey.ToggleMode },
     ]);

@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { Menu, MenuItem } from '@mobile-ui';
-import { useMachineWard } from "@apparatus";
+import { useMobileMachineWard } from "@mobile-apparatus";
 import { T } from "@mobile-apparatus";
 import { RootStackParamList } from "../../../navigation";
 import { SettingsDialog } from "./SettingsDialog";
@@ -12,7 +12,7 @@ interface Props {
 export const LayoutMenu: FC<Props> = ({
     onNavigate,
 }) => {
-    const { individuator } = useMachineWard();
+    const { individuator } = useMobileMachineWard();
     const [showIndividuatorDialog, setShowIndividuatorDialog] = useState(false);
 
     const menuItems = [

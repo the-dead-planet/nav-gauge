@@ -1,7 +1,8 @@
 import { FC, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Checkbox, Dialog, Dropdown, Text } from "@mobile-ui";
-import { Individuator, IndividuatorSettings, Language, Translatron, useMachineWard } from "@apparatus";
+import { Individuator, IndividuatorSettings, Language, Translatron } from "@apparatus";
+import { useMobileMachineWard } from "@mobile-apparatus";
 import { T } from "@mobile-apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { DateFormat, ThemeName, themeNameOptions, TimeFormat } from "@ui";
@@ -17,7 +18,7 @@ interface Props {
 }
 
 export const SettingsDialog: FC<Props> = ({ onClose }) => {
-    const { namespace, translationKey, individuator, translatron } = useMachineWard();
+    const { namespace, translationKey, individuator, translatron } = useMobileMachineWard();
     const [registry] = useSubjectState(translatron.registry$);
     const [settings, setSettings] = useSubjectState(individuator.settings$);
     const [pendingSettings, setPendingSettings] = useState(individuator.settings$.value);

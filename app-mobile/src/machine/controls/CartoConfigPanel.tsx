@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { Cartomancer, MapLayout, ToolPanelProps, useMachineWard } from "@apparatus";
+import { Cartomancer, MapLayout, ToolPanelProps } from "@apparatus";
+import { useMobileMachineWard } from "@mobile-apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { Text } from "@mobile-ui";
 import { MobileMap } from "@mobile-apparatus";
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
 });
 
 export const CartoConfigPanel: FC<ToolPanelProps<MobileMap>> = () => {
-    const { cartomancer, translatron, individuator } = useMachineWard();
+    const { cartomancer, translatron, individuator } = useMobileMachineWard();
     const [registry] = useSubjectState(translatron.registry$);
     const [settings] = useSubjectState(individuator.settings$);
     const t = (key: string) => translatron.translate(settings.language, registry, { n: cartomancer.namespace, t: key });

@@ -1,5 +1,6 @@
 import { FC } from "react";
-import { LAYOUT_DEFAULTS, useMachineWard } from "@apparatus";
+import { LAYOUT_DEFAULTS } from "@apparatus";
+import { useWebMachineWard } from "@web-apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { Icon, Span } from "@web-ui";
 import { Icons, useTheme } from "@ui";
@@ -7,7 +8,7 @@ import styles from './attributions.module.css';
 
 export const Attributions: FC = () => {
     const theme = useTheme();
-    const { attributionVault, cartomancer } = useMachineWard();
+    const { attributionVault, cartomancer } = useWebMachineWard();
     const [selectedStyle] = useSubjectState(cartomancer.selectedStyle$);
     const [attributions] = useSubjectState(attributionVault.attributions$);
     const entries = attributions.get(selectedStyle.id);

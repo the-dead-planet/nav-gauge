@@ -1,5 +1,6 @@
 import { FC } from "react";
-import { useMachineWard, useMultipleTranslations } from "@apparatus";
+import { useMultipleTranslations } from "@apparatus";
+import { useMobileMachineWard } from "@mobile-apparatus";
 import { Icons, useTheme } from "@ui";
 import { Chip } from "@mobile-ui";
 import { useSubjectState } from "@tinker-chest";
@@ -7,7 +8,7 @@ import { useSubjectState } from "@tinker-chest";
 export const UnderConstructionChip: FC = () => {
     const theme = useTheme();
     const [media] = useSubjectState(theme.media$);
-    const { namespace, translationKey } = useMachineWard();
+    const { namespace, translationKey } = useMobileMachineWard();
     const [
         underConstructionLabel,
     ] = useMultipleTranslations([

@@ -1,12 +1,13 @@
 import type * as maplibregl from "maplibre-gl";
 import { FC } from "react";
 import { Checkbox, ColorInput, Dropdown, Fieldset, Label, NumberInput, TextArea, TextInput } from "@web-ui";
-import { Cartomancer, MapLayout, ToolPanelProps, useMachineWard } from "@apparatus";
+import { Cartomancer, MapLayout, ToolPanelProps } from "@apparatus";
+import { useWebMachineWard } from "@web-apparatus";
 import { useSubjectState } from "@tinker-chest";
 import styles from './controls.module.css';
 
 export const CartoConfigPanel: FC<ToolPanelProps<maplibregl.Map>> = () => {
-    const { cartomancer, translatron, individuator } = useMachineWard();
+    const { cartomancer, translatron, individuator } = useWebMachineWard();
     const [registry] = useSubjectState(translatron.registry$);
     const [settings] = useSubjectState(individuator.settings$);
     const t = (key: string) => translatron.translate(settings.language, registry, { n: cartomancer.namespace, t: key });

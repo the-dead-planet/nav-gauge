@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import { useMachineWard, useMultipleTranslations } from "@apparatus";
+import { useMultipleTranslations } from "@apparatus";
+import { useMobileMachineWard } from "@mobile-apparatus";
 import { useObservableState, useSubjectState } from "@tinker-chest";
 import { Button, FlexBox, Icon, Text } from "@mobile-ui";
 import { Icons, useTheme } from "@ui";
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
 export const GearsTopToolbar: FC = () => {
     const theme = useTheme();
     const [media] = useSubjectState(theme.media$);
-    const { namespace, translationKey, engine, toolsStation, translatron, individuator } = useMachineWard();
+    const { namespace, translationKey, engine, toolsStation, translatron, individuator } = useMobileMachineWard();
     const gears = useObservableState(engine.gearsWithEngaged$, []);
     const [settings] = useSubjectState(individuator.settings$);
     const [registry] = useSubjectState(translatron.registry$);

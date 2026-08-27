@@ -2,7 +2,8 @@ import { CSSProperties, FC, useEffect, useState } from "react";
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import * as maplibregl from "maplibre-gl";
-import { Cartomancer, useMachineWard, FeatureStateProps } from "@apparatus";
+import { Cartomancer, FeatureStateProps } from "@apparatus";
+import { useWebMachineWard } from "@web-apparatus";
 import { GeoJson, useSubjectState } from "@tinker-chest";
 import { Animatrix, routeSourceIds } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import styles from './images.module.css';
@@ -31,7 +32,7 @@ export const ImageMarker: FC<Props> = ({
     geojson,
     onUpdateImageFeatureId,
 }) => {
-    const { cartomancer } = useMachineWard();
+    const { cartomancer } = useWebMachineWard();
     const [closestFeatureId, setClosestFeatureId] = useState<number | null>(null);
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
     const [mapLayout] = useSubjectState(cartomancer.mapLayout$);

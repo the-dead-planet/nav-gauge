@@ -1,6 +1,7 @@
 import { FC, useState } from "react";
 import { Animated, StyleSheet, View } from "react-native";
-import { assignBottomToolPanelRef, useBottomToolPanel, useMachineWard } from "@apparatus";
+import { assignBottomToolPanelRef, useBottomToolPanel } from "@apparatus";
+import { useMobileMachineWard } from "@mobile-apparatus";
 import { BottomToolPanelHeader } from "./BottomToolPanelHeader";
 import { MobileMap } from "@mobile-apparatus";
 import { useTheme } from "@ui";
@@ -33,7 +34,7 @@ export const BottomToolPanel: FC<Props> = ({
     joinHeaderButtons,
 }) => {
     const theme = useTheme();
-    const { toolsStation } = useMachineWard();
+    const { toolsStation } = useMobileMachineWard();
     const { show, toolPanel } = useBottomToolPanel(activeId);
 
     const [naturalHeight, setNaturalHeight] = useState(0);

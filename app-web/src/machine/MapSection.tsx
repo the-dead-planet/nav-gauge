@@ -1,6 +1,7 @@
 import type * as maplibregl from "maplibre-gl";
 import { FC, useEffect, useState } from "react";
-import { useMachineWard, useMapSection } from "@apparatus";
+import { useMapSection } from "@apparatus";
+import { useWebMachineWard } from "@web-apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { MapCanvas } from "./map-canvas/MapCanvas";
 import { MapToolsGridAreas } from "./map-tools-grid/MapToolsGridAreas";
@@ -11,7 +12,7 @@ import styles from './machine.module.css';
 
 export const MapSection: FC = () => {
     const [map, setMap] = useState<maplibregl.Map>();
-    const { cartomancer } = useMachineWard();
+    const { cartomancer } = useWebMachineWard();
     const [overlays] = useSubjectState(cartomancer.overlays$);
     const { handleError } = useMapSection();
 

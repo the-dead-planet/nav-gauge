@@ -1,7 +1,8 @@
 import type * as maplibregl from "maplibre-gl";
 import { FC } from "react";
 import classNames from "classnames";
-import { ToolPanelProps, useMachineWard, useMultipleTranslations } from "@apparatus";
+import { ToolPanelProps, useMultipleTranslations } from "@apparatus";
+import { useWebMachineWard } from "@web-apparatus";
 import { clamp, useSubjectState } from "@tinker-chest";
 import { ClockInput, Checkbox, Fieldset, ClockSliceInput, IconRotateInput, Slider, ToggleSwitch, Label, Span } from "@web-ui";
 import { Animatrix } from "@the-dead-planet/nav-gauge-gears-route-story-common";
@@ -14,7 +15,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
     animatrix,
     placement,
 }) => {
-    const { chronoLens } = useMachineWard();
+    const { chronoLens } = useWebMachineWard();
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [animationControls, setAnimationControls] = useSubjectState(animatrix.controls$);
     const [searchQuery] = useSubjectState(animatrix.searchQuery$);

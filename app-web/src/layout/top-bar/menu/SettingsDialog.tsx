@@ -2,7 +2,8 @@ import { FC, useState } from "react";
 import { createPortal } from "react-dom";
 import { DateTime } from "luxon";
 import { Checkbox, Dialog, Dropdown, P } from "@web-ui";
-import { Individuator, IndividuatorSettings, Language, Translatron, useMachineWard } from "@apparatus";
+import { Individuator, IndividuatorSettings, Language, Translatron } from "@apparatus";
+import { useWebMachineWard } from "@web-apparatus";
 import { T } from "@web-apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { DateFormat, ThemeName, themeNameOptions, TimeFormat } from "@ui";
@@ -13,7 +14,7 @@ interface Props {
 }
 
 export const SettingsDialog: FC<Props> = ({ onClose }) => {
-    const { namespace, translationKey, individuator, translatron } = useMachineWard();
+    const { namespace, translationKey, individuator, translatron } = useWebMachineWard();
     const [registry] = useSubjectState(translatron.registry$);
     const [settings, setSettings] = useSubjectState(individuator.settings$);
     const [pendingSettings, setPendingSettings] = useState(individuator.settings$.value);

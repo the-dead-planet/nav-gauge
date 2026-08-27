@@ -1,6 +1,7 @@
 import type * as maplibregl from "maplibre-gl";
 import { FC } from "react";
-import { useMachineWard, useToolPanelSizeClamp } from "@apparatus";
+import { useToolPanelSizeClamp } from "@apparatus";
+import { useWebMachineWard } from "@web-apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { SideToolPanel } from "../tool-panels/side-panels/SideToolPanel";
 import { ToolIcons } from "./tool-icons/ToolIcons";
@@ -14,7 +15,7 @@ interface Props {
 }
 
 export const MapToolsGridAreas: FC<Props> = ({ map }) => {
-    const { toolsStation } = useMachineWard();
+    const { toolsStation } = useWebMachineWard();
     const [activeLeftPanelToolId, setActiveLeftPanelToolId] = useSubjectState(toolsStation.activeLeftPanelToolId$);
     const [activeRightPanelToolId, setActiveRightPanelToolId] = useSubjectState(toolsStation.activeRightPanelToolId$);
     const [activeBottomPanelToolId, setActiveBottomPanelToolId] = useSubjectState(toolsStation.activeBottomPanelToolId$);

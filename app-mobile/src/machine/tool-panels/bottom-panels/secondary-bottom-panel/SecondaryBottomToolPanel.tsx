@@ -1,6 +1,7 @@
 import { FC, useState } from "react";
 import { Animated, StyleSheet, View } from "react-native";
-import { useMachineWard, useSecondaryBottomToolPanel } from "@apparatus";
+import { useSecondaryBottomToolPanel } from "@apparatus";
+import { useMobileMachineWard } from "@mobile-apparatus";
 import { useTheme } from "@ui";
 import { ToolPanelHeader } from "../../panel-header/ToolPanelHeader";
 import { BottomSecondaryToolPanelResizeHandle } from "./SecondaryBottomToolPanelResizeHandle";
@@ -31,7 +32,7 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
     onActiveIdChange,
 }) => {
     const theme = useTheme();
-    const { toolsStation } = useMachineWard();
+    const { toolsStation } = useMobileMachineWard();
     const [isDragging, setIsDragging] = useState(false);
 
     const {

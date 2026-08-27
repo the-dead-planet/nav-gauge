@@ -1,7 +1,8 @@
 import { FC, useEffect, useState } from "react";
 import { PixelRatio } from "react-native";
 import { Layer, Images, GeoJSONSource, ImageEntry } from "@maplibre/maplibre-react-native";
-import { Cartomancer, OverlayComponentProps, useMachineWard, FeatureStateProps } from "@apparatus";
+import { Cartomancer, OverlayComponentProps, FeatureStateProps } from "@apparatus";
+import { useMobileMachineWard } from "@mobile-apparatus";
 import { useSubjectState } from "@tinker-chest";
 import {
     getIconImageId,
@@ -29,7 +30,7 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStory
     images$,
     playerOperator
 }) => {
-    const { cartomancer } = useMachineWard();
+    const { cartomancer } = useMobileMachineWard();
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
     const [{ geojson }] = useSubjectState(data$);
     const [images] = useSubjectState(images$);

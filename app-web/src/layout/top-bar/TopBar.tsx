@@ -1,6 +1,7 @@
 import { FC } from "react";
 import classNames from "classnames";
-import { MachineWardTopBarProps, useMachineWard, useMultipleTranslations } from "@apparatus";
+import { MachineWardTopBarProps, useMultipleTranslations } from "@apparatus";
+import { useWebMachineWard } from "@web-apparatus";
 import { FontType, Icons, useTheme } from "@ui";
 import { Button, H1 } from "@web-ui";
 import { LayoutMenu } from "./menu/LayoutMenu";
@@ -9,7 +10,7 @@ import styles from './top-bar.module.css';
 
 export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
     const theme = useTheme();
-    const { namespace, translationKey, individuator, toolsStation } = useMachineWard();
+    const { namespace, translationKey, individuator, toolsStation } = useWebMachineWard();
     const [
         modeTooltip,
     ] = useMultipleTranslations([

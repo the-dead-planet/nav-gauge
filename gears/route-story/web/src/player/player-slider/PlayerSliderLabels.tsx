@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { BehaviorSubject } from "rxjs";
 import classNames from "classnames";
-import { useMachineWard } from "@apparatus";
+import { useWebMachineWard } from "@web-apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { getProgressPercentage, RouteTimes } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { P } from "@web-ui";
@@ -21,7 +21,7 @@ export const PlayerSliderLabels: FC<Props> = ({
     const [media] = useSubjectState(theme.media$);
     const [routeTimes] = useSubjectState(routeTimes$);
     const [progressMs] = useSubjectState(progressMs$);
-    const { individuator } = useMachineWard();
+    const { individuator } = useWebMachineWard();
     const [settings] = useSubjectState(individuator.settings$);
     const progressPercentage = getProgressPercentage(progressMs, routeTimes);
 

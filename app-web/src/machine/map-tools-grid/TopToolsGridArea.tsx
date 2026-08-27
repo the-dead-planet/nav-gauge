@@ -1,6 +1,6 @@
 import type * as maplibregl from "maplibre-gl";
 import { FC } from "react";
-import { useMachineWard } from "@apparatus";
+import { useWebMachineWard } from "@web-apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { Attributions } from "../../attributions/Attributions";
 import styles from '../machine.module.css';
@@ -12,7 +12,7 @@ interface Props {
 export const TopToolsGridArea: FC<Props> = ({
     map,
 }) => {
-    const { toolsStation } = useMachineWard();
+    const { toolsStation } = useWebMachineWard();
     const [topTools] = useSubjectState(toolsStation.topTools$);
 
     return (

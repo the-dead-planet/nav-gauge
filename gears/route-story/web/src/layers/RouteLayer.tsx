@@ -1,6 +1,7 @@
 import { FC, useEffect, useMemo } from "react";
 import * as maplibregl from "maplibre-gl";
-import { OverlayComponentProps, useMachineWard } from "@apparatus";
+import { OverlayComponentProps } from "@apparatus";
+import { useWebMachineWard } from "@web-apparatus";
 import { getRouteSourceData } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { emptyCollection, useSubjectState } from "@tinker-chest";
 import { updateRouteLayer } from "../tinkers";
@@ -23,7 +24,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [progressMs] = useSubjectState(progressMs$);
-    const { chronoLens } = useMachineWard();
+    const { chronoLens } = useWebMachineWard();
     const [state] = useSubjectState(state$);
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [animationControls] = useSubjectState(animatrix.controls$);
