@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import { useMachineWard, useToolPanelSizeClamp } from "@apparatus";
+import { useToolPanelSizeClamp } from "@apparatus";
+import { useMobileMachineWard } from "@mobile-apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { SideToolPanel } from "../tool-panels/side-panels/SideToolPanel";
 import { ToolIcons } from "../map-tools-grid/ToolIcons";
@@ -22,7 +23,7 @@ interface Props {
 }
 
 export const MapToolsGridAreas: FC<Props> = ({ map }) => {
-    const { toolsStation } = useMachineWard();
+    const { toolsStation } = useMobileMachineWard();
     const [activeLeftPanelToolId, setActiveLeftPanelToolId] = useSubjectState(toolsStation.activeLeftPanelToolId$);
     const [activeRightPanelToolId, setActiveRightPanelToolId] = useSubjectState(toolsStation.activeRightPanelToolId$);
     const [activeBottomPanelToolId, setActiveBottomPanelToolId] = useSubjectState(toolsStation.activeBottomPanelToolId$);

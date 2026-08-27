@@ -1,18 +1,16 @@
 import { FC } from "react";
-import { DocumentPickerResponse } from "@react-native-documents/picker";
-import { useMachineWard, useMultipleTranslations } from "@apparatus";
+import { useMultipleTranslations } from "@apparatus";
+import { useMobileMachineWard } from "@mobile-apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { RouteStoryTranslationKey } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Button } from "@mobile-ui";
 import { Icons } from "@ui";
-import { PlayerOperator } from "@the-dead-planet/nav-gauge-gears-route-story-common/src/player-operator";
-import { MobileMarkerImageData } from "../../images/image-parser";
-import { MobileMap } from "@mobile-apparatus";
+import { MobilePlayerOperator } from "../../model";
 
 interface Props {
     gearId: string;
     translationKey: typeof RouteStoryTranslationKey;
-    playerOperator: PlayerOperator<MobileMap, DocumentPickerResponse, MobileMarkerImageData>;
+    playerOperator: MobilePlayerOperator;
 }
 
 export const PlayButton: FC<Props> = ({
@@ -20,7 +18,7 @@ export const PlayButton: FC<Props> = ({
     translationKey,
     playerOperator,
 }) => {
-    const { chronoLens } = useMachineWard();
+    const { chronoLens } = useMobileMachineWard();
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [
         playLabel,

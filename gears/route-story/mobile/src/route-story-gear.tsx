@@ -4,7 +4,7 @@ import { RouteStoryGear } from '@the-dead-planet/nav-gauge-gears-route-story-com
 import { RouteLayer } from './layers/RouteLayer';
 import { ImagesLayer } from './images/ImagesLayer';
 import { Player } from './player/Player';
-import { MobileMap } from '@mobile-apparatus';
+import { MobileChronoLens, MobileMap } from '@mobile-apparatus';
 import { GeoJson, getExifError, getExifLngLat, ParsingResultWithError } from '@tinker-chest';
 import { Cartomancer, MarkerImage, GearApparatus, parsers } from '@apparatus';
 import bbox from "@turf/bbox";
@@ -40,7 +40,7 @@ const toDocumentPickerResponse = (uri: string, name: string, type: string): Docu
    hasRequestedType: true,
 });
 
-export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPickerResponse, MobileMarkerImageData> {
+export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, MobileChronoLens, DocumentPickerResponse, MobileMarkerImageData> {
    public playerComponent = Player;
    public routeUploadComponent = RouteName;
    public animatrixHeaderComponent = AnimationControlsSearch;
@@ -48,7 +48,7 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, DocumentPick
    public routeLayerComponent = RouteLayer;
    public imagesLayerComponent = ImagesLayer;
 
-   public constructor(apparatus: GearApparatus<MobileMap>) {
+   public constructor(apparatus: GearApparatus<MobileMap, MobileChronoLens>) {
       super(apparatus);
 
       this.loadSampleRoute()

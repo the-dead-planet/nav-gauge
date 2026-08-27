@@ -1,7 +1,8 @@
 import { FC, useState } from "react";
 import { Animated, StyleSheet, View } from "react-native";
 import { Menu, MenuItem } from "@mobile-ui";
-import { assignSideToolPanelRef, swapSideToolPanelPlacement, useMachineWard, useSideToolPanel } from "@apparatus";
+import { assignSideToolPanelRef, swapSideToolPanelPlacement, useSideToolPanel } from "@apparatus";
+import { useMobileMachineWard } from "@mobile-apparatus";
 import { useTheme } from "@ui";
 import { ToolPanelHeader } from "../panel-header/ToolPanelHeader";
 import { SideToolPanelResizeHandle } from "./SideToolPanelResizeHandle";
@@ -39,7 +40,7 @@ export const SideToolPanel: FC<Props> = ({
     activeId,
     onActiveIdChange,
 }) => {
-    const { toolsStation } = useMachineWard();
+    const { toolsStation } = useMobileMachineWard();
     const theme = useTheme();
     const [isDragging, setIsDragging] = useState(false);
 

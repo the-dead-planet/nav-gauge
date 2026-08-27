@@ -1,12 +1,13 @@
 import { FC, useState } from "react";
 import { Menu, MenuItem } from "@web-ui";
-import { useMachineWard, useTranslation } from "@apparatus";
+import { useTranslation } from "@apparatus";
+import { useWebMachineWard } from "@web-apparatus";
 import { T } from "@web-apparatus";
 import { SettingsDialog } from "./SettingsDialog";
 import styles from './layout-menu.module.css';
 
 export const LayoutMenu: FC = () => {
-    const { namespace, translationKey, individuator } = useMachineWard();
+    const { namespace, translationKey, individuator } = useWebMachineWard();
     const [showIndividuatorDialog, setShowIndividuatorDialog] = useState(false);
     const tooltip = useTranslation({ n: namespace, t: translationKey.Menu })
 

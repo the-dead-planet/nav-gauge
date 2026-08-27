@@ -4,11 +4,11 @@ import { MachineWardNotices } from "./MachineWardNotices";
 import { AttributionVault, Cartomancer, ChronoLens, Engine, SignaliumBureau, ToolsStation, Translatron } from "..";
 import { Individuator } from "./individuator";
 import { StorageKeeper } from "./storage-keeper";
-import { MachineWardContext, MachineWardContextValue } from "./MachineWardContext";
+import { MachineWardContext } from "./MachineWardContext";
 import { useSubjectState } from "@tinker-chest";
 import { MachineTranslationKey, MachineWardComponents } from "./model";
 
-interface MachineWardProps<TMap, TNavigationPath extends string> {
+interface MachineWardProps<TMap, TChronoLens extends ChronoLens, TNavigationPath extends string> {
     namespace: string;
     title: string;
     media: MediaSubscriptionDefinition;
@@ -17,10 +17,10 @@ interface MachineWardProps<TMap, TNavigationPath extends string> {
     signaliumBureau: SignaliumBureau;
     attributionVault: AttributionVault;
     cartomancer: Cartomancer<TMap>;
-    chronoLens: ChronoLens;
+    chronoLens: TChronoLens;
     toolsStation: ToolsStation<TMap>;
     translatron: Translatron;
-    engine: Engine<TMap>
+    engine: Engine<TMap, TChronoLens>
     components: MachineWardComponents<TNavigationPath>;
     onMount: () => void;
     onUnmount: () => void;
@@ -28,7 +28,7 @@ interface MachineWardProps<TMap, TNavigationPath extends string> {
     onNavigateBack: () => void;
 }
 
-export function MachineWardApp<TMap, TNavigationPath extends string>({
+export function MachineWardApp<TMap, TChronoLens extends ChronoLens, TNavigationPath extends string>({
     namespace,
     title,
     media,
@@ -46,7 +46,7 @@ export function MachineWardApp<TMap, TNavigationPath extends string>({
     onUnmount,
     onNavigate,
     onNavigateBack,
-}: MachineWardProps<TMap, TNavigationPath>) {
+}: MachineWardProps<TMap, TChronoLens, TNavigationPath>) {
     const [settings] = useSubjectState(individuator.settings$);
 
     useEffect(() => {
@@ -76,13 +76,13 @@ export function MachineWardApp<TMap, TNavigationPath extends string>({
                         individuator,
                         storageKeeper,
                         attributionVault,
-                        cartomancer,
+                        cartomancer: cartomancer as Cartomancer<unknown>,
                         chronoLens,
-                        toolsStation,
+                        toolsStation: toolsStation as ToolsStation<unknown>,
                         signaliumBureau,
                         translatron,
-                        engine,
-                    } as MachineWardContextValue}>
+                        engine: engine as unknown as Engine<unknown, ChronoLens>,
+                    }}>
                         <components.layoutComponent>
                             <components.topBarComponent title={title} onNavigate={onNavigate} onNavigateBack={onNavigateBack} />
                             <components.machineComponent onNavigate={onNavigate} onNavigateBack={onNavigateBack} />

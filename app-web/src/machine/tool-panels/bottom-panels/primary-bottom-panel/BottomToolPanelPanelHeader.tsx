@@ -1,7 +1,8 @@
 import { FC } from "react";
 import { Button } from "@web-ui";
 import { useSubjectState } from "@tinker-chest";
-import { useBottomToolPanelHeader, useMachineWard } from "@apparatus";
+import { useBottomToolPanelHeader } from "@apparatus";
+import { useWebMachineWard } from "@web-apparatus";
 import { BottomToolPanelHeaderContainer } from "./BottomToolPanelHeaderContainer";
 
 interface Props {
@@ -15,7 +16,7 @@ export const BottomToolPanelHeader: FC<Props> = ({
     onActiveIdChange,
     joinHeaderButtons,
 }) => {
-    const { translatron, individuator } = useMachineWard();
+    const { translatron, individuator } = useWebMachineWard();
     const [registry] = useSubjectState(translatron.registry$);
     const [settings] = useSubjectState(individuator.settings$);
 

@@ -1,7 +1,8 @@
 import { BehaviorSubject, Subscription } from "rxjs";
 import { GearApparatus, GearTranslationKey, GearTranslationTable } from "./model";
+import { ChronoLens } from "../chrono-lens";
 
-export abstract class Gear<TMap> {
+export abstract class Gear<TMap, TChronoLens extends ChronoLens> {
     public abstract id: string;
     public icon?: string;
     public abstract translations: GearTranslationTable;
@@ -9,12 +10,12 @@ export abstract class Gear<TMap> {
 
     public isEngaged$ = new BehaviorSubject(false);
 
-    public apparatus: GearApparatus<TMap>;
+    public apparatus: GearApparatus<TMap, TChronoLens>;
 
     public abstract engage: () => void;
     public abstract disengage: () => void;
 
-    public constructor(apparatus: GearApparatus<TMap>) {
+    public constructor(apparatus: GearApparatus<TMap, TChronoLens>) {
         this.apparatus = apparatus;
     }
 

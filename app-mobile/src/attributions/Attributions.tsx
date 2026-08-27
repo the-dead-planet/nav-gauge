@@ -1,9 +1,10 @@
 import { FC } from "react";
-import { AttributionEntry, useMachineWard } from "@apparatus";
+import { AttributionEntry } from "@apparatus";
 import { StyleSheet, View } from "react-native";
 import { Text } from "@mobile-ui";
 import { useSubjectState } from "@tinker-chest";
 import { useTheme } from "@ui";
+import { useMobileMachineWard } from "@mobile-apparatus";
 
 const styles = StyleSheet.create({
     container: {
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
 
 export const Attributions: FC = () => {
     const theme = useTheme();
-    const { attributionVault } = useMachineWard();
+    const { attributionVault } = useMobileMachineWard();
     const [attributions] = useSubjectState(attributionVault.attributions$);
     const entries = ([...Object.values(attributions)] as AttributionEntry[][]).flatMap((el) => el);
 

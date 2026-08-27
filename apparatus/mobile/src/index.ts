@@ -1,3 +1,4 @@
 export * from './chrono-lens';
-export * from './translatron';
+export * from './machine-ward';
 export * from './model';
+export * from './translatron';

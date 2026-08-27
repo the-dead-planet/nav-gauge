@@ -1,6 +1,6 @@
 import { FC } from "react";
 import classNames from "classnames";
-import { useMachineWard } from "@apparatus";
+import { useWebMachineWard } from "@web-apparatus";
 import { T } from "@web-apparatus";
 import { useObservableState, useSubjectState } from "@tinker-chest";
 import { Button, FlexBox, H2, Icon } from "@web-ui";
@@ -10,7 +10,7 @@ import styles from './machine.module.css';
 export const GearsTopToolbar: FC = () => {
     const theme = useTheme();
     const [media] = useSubjectState(theme.media$);
-    const { namespace, translationKey, engine, toolsStation } = useMachineWard();
+    const { namespace, translationKey, engine, toolsStation } = useWebMachineWard();
     const gears = useObservableState(engine.gearsWithEngaged$, []);
 
     return (

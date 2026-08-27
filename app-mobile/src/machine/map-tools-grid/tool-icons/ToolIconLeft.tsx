@@ -1,5 +1,6 @@
 import { FC } from "react";
-import { ObservedToolIcon, useMachineWard, useTranslation } from "@apparatus";
+import { ObservedToolIcon, useTranslation } from "@apparatus";
+import { useMobileMachineWard } from "@mobile-apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { useTheme } from "@ui";
 import { Button } from "@mobile-ui";
@@ -19,7 +20,7 @@ export const ToolIconLeft: FC<ObservedToolIcon<MobileMap> & Props> = ({
     tooltip,
     onClick,
 }) => {
-    const { translatron, individuator } = useMachineWard();
+    const { translatron, individuator } = useMobileMachineWard();
     const theme = useTheme();
     const [value] = useSubjectState(value$);
     const [disabled] = useSubjectState(disabled$);

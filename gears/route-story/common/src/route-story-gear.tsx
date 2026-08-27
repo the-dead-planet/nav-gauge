@@ -1,6 +1,6 @@
 import { ComponentType, FC } from "react";
 import { BehaviorSubject, combineLatest, Subscription } from "rxjs";
-import { ToolPanelProps, MarkerImage, OverlayComponentProps, Gear, TranslationTable, GearTranslationKey, Cartomancer, MapLayout, GaugeControlsType, GearApparatus, TopToolsProps } from "@apparatus";
+import { ToolPanelProps, MarkerImage, OverlayComponentProps, Gear, TranslationTable, GearTranslationKey, Cartomancer, MapLayout, GaugeControlsType, GearApparatus, TopToolsProps, ChronoLens } from "@apparatus";
 import { GeoJson, ParsingResultWithError } from "@tinker-chest";
 import { RouteStoryProps, RouteTimes, RouteStoryFile, RouteStoryTranslationKey, RouteStoryState, PresetOption, Preset } from "./model";
 import { FileOperator } from "./file-operator";
@@ -10,7 +10,7 @@ import * as Translations from "./translations";
 import { AnimationControlsType, Animatrix } from "./animatrix";
 
 
-export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageData> extends Gear<TMap> {
+export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile extends RouteStoryFile, TImageData> extends Gear<TMap, TChronoLens> {
     public readonly id = 'route-story';
     public translations: TranslationTable<GearTranslationKey | RouteStoryTranslationKey> = Translations;
     public internalTranslationKey = RouteStoryTranslationKey;
@@ -30,7 +30,7 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
      */
     public preset$: BehaviorSubject<Preset>;
 
-    public constructor(apparatus: GearApparatus<TMap>) {
+    public constructor(apparatus: GearApparatus<TMap, TChronoLens>) {
         super(apparatus);
 
         const initialPreset = RouteStoryGear.detectPreset(
@@ -77,20 +77,20 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
     };
 
     private routeNameToolId = 'route-upload';
-    public abstract routeUploadComponent: ComponentType<TopToolsProps<TMap> & RouteStoryProps<TMap, TFile, TImageData>>;
+    public abstract routeUploadComponent: ComponentType<TopToolsProps<TMap> & RouteStoryProps<TMap, TChronoLens, TFile, TImageData>>;
 
     private playerToolId = 'player';
-    public abstract playerComponent: ComponentType<ToolPanelProps<TMap> & RouteStoryProps<TMap, TFile, TImageData>>;
+    public abstract playerComponent: ComponentType<ToolPanelProps<TMap> & RouteStoryProps<TMap, TChronoLens, TFile, TImageData>>;
 
     private animatrixToolId = 'animatrix';
-    public abstract animatrixHeaderComponent: ComponentType<ToolPanelProps<TMap> & RouteStoryProps<TMap, TFile, TImageData>>;
-    public abstract animatrixContentComponent: ComponentType<ToolPanelProps<TMap> & RouteStoryProps<TMap, TFile, TImageData>>;
+    public abstract animatrixHeaderComponent: ComponentType<ToolPanelProps<TMap> & RouteStoryProps<TMap, TChronoLens, TFile, TImageData>>;
+    public abstract animatrixContentComponent: ComponentType<ToolPanelProps<TMap> & RouteStoryProps<TMap, TChronoLens, TFile, TImageData>>;
 
     private routeOverlayId = 'route';
-    public abstract routeLayerComponent: ComponentType<OverlayComponentProps<TMap> & RouteStoryProps<TMap, TFile, TImageData>>;
+    public abstract routeLayerComponent: ComponentType<OverlayComponentProps<TMap> & RouteStoryProps<TMap, TChronoLens, TFile, TImageData>>;
 
     private imagesOverlayId = 'images';
-    public abstract imagesLayerComponent: ComponentType<OverlayComponentProps<TMap> & RouteStoryProps<TMap, TFile, TImageData>>;
+    public abstract imagesLayerComponent: ComponentType<OverlayComponentProps<TMap> & RouteStoryProps<TMap, TChronoLens, TFile, TImageData>>;
 
     /**
      * Wrapper to avoid binding issues in react native if components are wrapped in arg list.
@@ -104,7 +104,7 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
         );
     }
 
-    private getProps = (): RouteStoryProps<TMap, TFile, TImageData> => ({
+    private getProps = (): RouteStoryProps<TMap, TChronoLens, TFile, TImageData> => ({
         gearId: this.id,
         translationKey: this.internalTranslationKey,
         animatrix: this.animatrix,
@@ -132,7 +132,7 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
 
         this.apparatus.toolsStation.addTopTool(
             this.routeNameToolId,
-            this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, TopToolsProps<TMap>>(this.routeUploadComponent, this.getProps())
+            this.wrapProps<RouteStoryProps<TMap, TChronoLens, TFile, TImageData>, TopToolsProps<TMap>>(this.routeUploadComponent, this.getProps())
         );
 
         this.apparatus.toolsStation.addToolPanel(
@@ -141,7 +141,7 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
                 title: { n: this.id, t: this.internalTranslationKey.Player },
                 placement: 'bottom',
                 icon: Icons.NounProject.PlayerConfiguration as unknown as string,
-                contentComponent: this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, ToolPanelProps<TMap>>(this.playerComponent, this.getProps())
+                contentComponent: this.wrapProps<RouteStoryProps<TMap, TChronoLens, TFile, TImageData>, ToolPanelProps<TMap>>(this.playerComponent, this.getProps())
             }
         );
 
@@ -153,18 +153,18 @@ export abstract class RouteStoryGear<TMap, TFile extends RouteStoryFile, TImageD
                 title: { n: this.animatrix.namespace, t: this.animatrix.translationKey.AnimatrixControls },
                 placement: 'left',
                 icon: Icons.NounProject.Animation as unknown as string,
-                headerComponent: this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, ToolPanelProps<TMap>>(this.animatrixHeaderComponent, this.getProps()),
-                contentComponent: this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, ToolPanelProps<TMap>>(this.animatrixContentComponent, this.getProps())
+                headerComponent: this.wrapProps<RouteStoryProps<TMap, TChronoLens, TFile, TImageData>, ToolPanelProps<TMap>>(this.animatrixHeaderComponent, this.getProps()),
+                contentComponent: this.wrapProps<RouteStoryProps<TMap, TChronoLens, TFile, TImageData>, ToolPanelProps<TMap>>(this.animatrixContentComponent, this.getProps())
             }
         );
 
         this.apparatus.cartomancer.addOverlay(
             this.routeOverlayId,
-            this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, OverlayComponentProps<TMap>>(this.routeLayerComponent, this.getProps())
+            this.wrapProps<RouteStoryProps<TMap, TChronoLens, TFile, TImageData>, OverlayComponentProps<TMap>>(this.routeLayerComponent, this.getProps())
         );
         this.apparatus.cartomancer.addOverlay(
             this.imagesOverlayId,
-            this.wrapProps<RouteStoryProps<TMap, TFile, TImageData>, OverlayComponentProps<TMap>>(this.imagesLayerComponent, this.getProps())
+            this.wrapProps<RouteStoryProps<TMap, TChronoLens, TFile, TImageData>, OverlayComponentProps<TMap>>(this.imagesLayerComponent, this.getProps())
         );
     };
 

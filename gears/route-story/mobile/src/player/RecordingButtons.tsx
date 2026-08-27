@@ -1,20 +1,18 @@
 import { FC, useEffect, useRef } from "react";
 import { Animated } from "react-native";
-import { DocumentPickerResponse } from "@react-native-documents/picker";
-import { SurveillanceState, useMachineWard, useMultipleTranslations } from "@apparatus";
+import { SurveillanceState, useMultipleTranslations } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { RouteStoryTranslationKey } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Button } from "@mobile-ui";
-import { MobileMarkerImageData } from "../images/image-parser";
-import { MobileMap } from "@mobile-apparatus";
-import { PlayerOperator } from "@the-dead-planet/nav-gauge-gears-route-story-common/src/player-operator";
+import { MobileMap, useMobileMachineWard } from "@mobile-apparatus";
 import { Icons } from "@ui";
+import { MobilePlayerOperator } from "../model";
 
 interface Props {
     gearId: string;
     translationKey: typeof RouteStoryTranslationKey;
     map: MobileMap;
-    playerOperator: PlayerOperator<MobileMap, DocumentPickerResponse, MobileMarkerImageData>
+    playerOperator: MobilePlayerOperator;
 }
 
 export const RecordingButtons: FC<Props> = ({
@@ -22,7 +20,7 @@ export const RecordingButtons: FC<Props> = ({
     translationKey,
     playerOperator,
 }) => {
-    const { chronoLens, signaliumBureau } = useMachineWard();
+    const { chronoLens, signaliumBureau } = useMobileMachineWard();
     const [surveillanceState] = useSubjectState(chronoLens.surveillanceState$);
 
     useEffect(() => {

@@ -11,6 +11,7 @@ import { parseImage, WebMarkerImageData } from './images/image-parser';
 import { AnimationControls } from './animation-controls/AnimationControls';
 import { RouteName } from './file-input/RouteName';
 import { AnimationControlsSearch } from './animation-controls/AnimationControlsSearch';
+import { WebChronoLens } from '@web-apparatus';
 
 const SAMPLE_IMAGE_NAMES = [
    'IMG20260403173904.jpg',
@@ -22,7 +23,7 @@ const SAMPLE_IMAGE_NAMES = [
    'IMG20260403141115.jpg',
 ];
 
-export class WebRouteStoryGear extends RouteStoryGear<maplibregl.Map, File, WebMarkerImageData> {
+export class WebRouteStoryGear extends RouteStoryGear<maplibregl.Map, WebChronoLens, File, WebMarkerImageData> {
    public routeUploadComponent = RouteName;
    public playerComponent = Player;
    public animatrixHeaderComponent = AnimationControlsSearch;
@@ -30,7 +31,7 @@ export class WebRouteStoryGear extends RouteStoryGear<maplibregl.Map, File, WebM
    public routeLayerComponent = RouteLayer;
    public imagesLayerComponent = ImagesLayer;
 
-   public constructor(apparatus: GearApparatus<maplibregl.Map>) {
+   public constructor(apparatus: GearApparatus<maplibregl.Map, WebChronoLens>) {
       super(apparatus);
 
       fetch('/Lisboa walk.kml')

@@ -1,19 +1,19 @@
 import { FC, useEffect } from "react";
 import { BehaviorSubject } from "rxjs";
-import { DocumentPickerResponse } from "@react-native-documents/picker";
-import { OverlayComponentProps, useMachineWard } from "@apparatus";
-import { getRouteSourceData, RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { OverlayComponentProps } from "@apparatus";
+import { useMobileMachineWard } from "@mobile-apparatus";
+import { getRouteSourceData } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMap } from "@mobile-apparatus";
 import { emptyCollection, useSubjectState } from "@tinker-chest";
-import { MobileMarkerImageData } from "../images/image-parser";
 import { useLoadedMobileImages } from "../images/useLoadedMobileImages";
 import { RouteLineLayer } from "./RouteLineLayer";
 import { RouteCurrentPointLayer } from "./RouteCurrentPointLayer";
+import { MobileRouteStoryProps } from "../model";
 
 export const currentPointRef$ = new BehaviorSubject<GeoJSON.GeoJSON>(emptyCollection);
 export const linesRef$ = new BehaviorSubject<GeoJSON.GeoJSON>(emptyCollection);
 
-export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({
+export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryProps> = ({
     map,
     animatrix,
     data$,
@@ -27,7 +27,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<M
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [progressMs] = useSubjectState(progressMs$);
-    const { chronoLens } = useMachineWard();
+    const { chronoLens } = useMobileMachineWard();
     const [state] = useSubjectState(state$);
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [animationControls] = useSubjectState(animatrix.controls$);

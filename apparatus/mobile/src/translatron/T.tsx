@@ -1,4 +1,4 @@
-import { useMachineWard } from "@the-dead-planet/nav-gauge-apparatus-common/src/machine-ward/useMachineWard";
+import { useMobileMachineWard } from "@the-dead-planet/nav-gauge-apparatus-mobile";
 import { useSubjectState } from "@tinker-chest";
 import { ErrorBoundary } from "@ui";
 import { TranslatronError } from "./TranslatronError";
@@ -13,7 +13,7 @@ export function T<T extends string = string>(props: TranslationId<T>) {
 };
 
 function InternalT<T extends string = string>({ n, t, p }: TranslationId<T>) {
-    const { individuator, translatron } = useMachineWard();
+    const { individuator, translatron } = useMobileMachineWard();
     const [settings] = useSubjectState(individuator.settings$);
     const [registry] = useSubjectState(translatron.registry$);
 

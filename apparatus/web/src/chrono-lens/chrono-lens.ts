@@ -99,7 +99,7 @@ export class WebChronoLens extends ChronoLens {
         if (!mimeType) {
             throw new Error("No mime type supported");
         }
-        
+
         const recorder = new MediaRecorder(stream, {
             mimeType,
             videoBitsPerSecond: 8_000_000
@@ -107,13 +107,14 @@ export class WebChronoLens extends ChronoLens {
 
         recorder.ondataavailable = (event) => {
             this.chunks.push(event.data);
-            this.download(signaliumBureau).then(() => {
-                this.destroyRecording();
-            });
-        }
+            if (this.surveillanceState$.value === SurveillanceState.Stopped) {
+                this.download(signaliumBureau)
+                    .then(() => this.destroyRecording());
+            }
+        };
 
-        recorder.onpause = () => { }
-        recorder.onresume = () => { }
+        recorder.onpause = () => { };
+        recorder.onresume = () => { };
 
         recorder.onstop = () => {
             // Handled by surveillance state subscription

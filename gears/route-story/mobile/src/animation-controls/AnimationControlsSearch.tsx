@@ -1,13 +1,11 @@
 import { FC } from "react";
-import { DocumentPickerResponse } from "@react-native-documents/picker";
 import { ToolPanelProps, useMultipleTranslations } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { MobileMap } from "@mobile-apparatus";
 import { TextInput } from "@mobile-ui";
-import { RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { MobileMarkerImageData } from "../images/image-parser";
+import { MobileRouteStoryProps } from "../model";
 
-export const AnimationControlsSearch: FC<ToolPanelProps<MobileMap> & RouteStoryProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({
+export const AnimationControlsSearch: FC<ToolPanelProps<MobileMap> & MobileRouteStoryProps> = ({
     animatrix,
 }) => {
     const [searchQuery, setSearchQuery] = useSubjectState(animatrix.searchQuery$);

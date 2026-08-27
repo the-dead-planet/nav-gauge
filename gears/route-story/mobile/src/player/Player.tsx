@@ -1,18 +1,16 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import { DocumentPickerResponse } from "@react-native-documents/picker";
 import { OverlayComponentProps } from "@apparatus";
-import { RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { useTheme } from "@ui";
 import { useSubjectState } from "@tinker-chest";
 import { Divider } from "@mobile-ui";
-import { MobileMarkerImageData } from "../images/image-parser";
 import { MobileMap } from "@mobile-apparatus";
 import { RecordingButtons } from "./RecordingButtons";
 import { ConfigurationButtons } from "./ConfigurationButtons";
 import { PlayButton } from "./player-slider/PlayButton";
 import { SliderWithMarkers } from "./player-slider/SliderWithMarkers";
 import { MarkerButton } from "./player-slider/MarkerButton";
+import { MobileRouteStoryProps } from "../model";
 
 const styles = StyleSheet.create({
     player: {
@@ -54,7 +52,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export const Player: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({
+export const Player: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryProps> = ({
     gearId,
     translationKey,
     map,

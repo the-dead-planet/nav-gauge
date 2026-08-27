@@ -32,7 +32,7 @@ Read the `n:` namespace value. The namespace identifies the translation owner.
 
 | Namespace source | Owner | Key enum | Translation tables |
 |---|---|---|---|
-| `namespace` from `useMachineWard()` | MachineWard | `MachineTranslationKey` (`apparatus/common/src/machine-ward/model.ts`) | `apparatus/common/src/machine-ward/translations/` |
+| `namespace` from `useWebMachineWard()` / `useMobileMachineWard()` / `useMachineWard()` | MachineWard | `MachineTranslationKey` (`apparatus/common/src/machine-ward/model.ts`) | `apparatus/common/src/machine-ward/translations/` |
 | `individuator.namespace` | Individuator | `IndividuatorTranslationKey` (`machine-ward/individuator/model.ts`) | `machine-ward/individuator/translations/` |
 | `cartomancer.namespace` | Cartomancer | `CartomancerTranslationKey` (`machine-ward/cartomancer/model.ts`) | `machine-ward/cartomancer/translations/` |
 | `animatrix.namespace` | Animatrix | `AnimatrixTranslationKey` (`gears/route-story/common/src/animatrix/model.ts`) | `gears/route-story/common/src/animatrix/translations/` |

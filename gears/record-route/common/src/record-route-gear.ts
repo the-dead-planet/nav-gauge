@@ -1,8 +1,8 @@
-import { Gear, GearTranslationTable } from "@apparatus";
+import { ChronoLens, Gear, GearTranslationTable } from "@apparatus";
 import * as Translations from "./translations";
 import { Icons } from "@ui";
 
-export abstract class RecordRouteGear<TMap> extends Gear<TMap> {
+export abstract class RecordRouteGear<TMap, TChronoLens extends ChronoLens> extends Gear<TMap, TChronoLens> {
     public readonly id = 'record-route';
     public translations: GearTranslationTable = Translations;
 

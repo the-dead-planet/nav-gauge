@@ -4,6 +4,7 @@ import { MachineGear } from '@apparatus';
 import { WebMachineWard } from './machine-ward';
 import { ErrorFallbackPage, LoadingPage } from './pages';
 import "./index.css";
+import { WebChronoLens } from "@web-apparatus";
 
 declare const __GEAR_REGISTRY__: string[];
 
@@ -16,7 +17,7 @@ async function initializeApp() {
     try {
         const modules = await Promise.allSettled(__GEAR_REGISTRY__.map((gearName) => import(`../../gears/${gearName}/web/src`)));
         const [gears, rejected] = modules
-            .reduce<[MachineGear<maplibregl.Map>[], string[]]>(
+            .reduce<[MachineGear<maplibregl.Map, WebChronoLens>[], string[]]>(
                 (acc, module, i) => {
                     const gearName = __GEAR_REGISTRY__[i];
                     if (module.status === 'fulfilled') {

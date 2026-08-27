@@ -1,12 +1,12 @@
 import { FC, useEffect, useState } from "react";
 import { PixelRatio } from "react-native";
 import { Layer, Images, GeoJSONSource, ImageEntry } from "@maplibre/maplibre-react-native";
-import { Cartomancer, OverlayComponentProps, useMachineWard, FeatureStateProps } from "@apparatus";
+import { Cartomancer, OverlayComponentProps, FeatureStateProps } from "@apparatus";
+import { useMobileMachineWard } from "@mobile-apparatus";
 import { useSubjectState } from "@tinker-chest";
 import {
     getIconImageId,
     getImageSource,
-    RouteStoryProps,
     ImagesLayers,
     imageLayerIds,
     imageSourceIds,
@@ -18,20 +18,19 @@ import {
     updateImageFeatureId,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMap } from "@mobile-apparatus";
-import { DocumentPickerResponse } from "@react-native-documents/picker";
-import { MobileMarkerImageData } from "./image-parser";
 import { useLoadedMobileImages } from "./useLoadedMobileImages";
 import { useImageInDisplay } from "./useImageInDisplay";
 import { findThumbnailsWithinBuffer } from "../tinkers";
+import { MobileRouteStoryProps } from "../model";
 
-export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({
+export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryProps> = ({
     map,
     animatrix,
     data$,
     images$,
     playerOperator
 }) => {
-    const { cartomancer } = useMachineWard();
+    const { cartomancer } = useMobileMachineWard();
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
     const [{ geojson }] = useSubjectState(data$);
     const [images] = useSubjectState(images$);
@@ -92,7 +91,7 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<
             const imageFeature = findThumbnailsWithinBuffer(lngLat, cartomancer.zoom$.value, loadedImages, geojson, { devicePixelRatio: PixelRatio.get() })[0];
             if (imageFeature) {
                 map.dragPan$.next(false);
-                draggingImage$.next({ id: imageFeature.properties.imageId, interaction: 'map'});
+                draggingImage$.next({ id: imageFeature.properties.imageId, interaction: 'map' });
             }
         });
         map.onPanResponderStartHandlers$.next(nextPanResponderStartHandlers);

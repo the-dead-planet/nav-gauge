@@ -1,5 +1,5 @@
 import { CSSProperties } from "react";
-import { useMachineWard } from "@the-dead-planet/nav-gauge-apparatus-common/src/machine-ward/useMachineWard";
+import { useWebMachineWard } from "@the-dead-planet/nav-gauge-apparatus-web";
 import { useSubjectState } from "@tinker-chest";
 import { ErrorBoundary } from "@ui";
 import { TranslatronError } from "./TranslatronError";
@@ -23,7 +23,7 @@ function InternalT<T extends string = string>({
     className,
     style,
 }: TranslationId<T> & { className?: string; style?: CSSProperties }) {
-    const { individuator, translatron } = useMachineWard();
+    const { individuator, translatron } = useWebMachineWard();
     const [settings] = useSubjectState(individuator.settings$);
     const [registry] = useSubjectState(translatron.registry$);
 

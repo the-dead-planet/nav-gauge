@@ -2,13 +2,12 @@ import type * as maplibregl from "maplibre-gl";
 import { useEffect } from "react";
 import { useSubjectState } from "@tinker-chest";
 import { Animatrix, imageLayerIds, ImagesLayers } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { PlayerOperator } from "@the-dead-planet/nav-gauge-gears-route-story-common/src/player-operator";
-import { WebMarkerImageData } from "./image-parser";
+import { WebPlayerOperator } from "../model";
 
 export const useImageInDisplay = (
     map: maplibregl.Map,
     animatrix: Animatrix,
-    playerOperator: PlayerOperator<maplibregl.Map, File, WebMarkerImageData>,
+    playerOperator: WebPlayerOperator,
 ) => {
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
     const isInDisplay = displayImageId !== null;

@@ -5,10 +5,10 @@ import {
     GaugeControlsType,
     glitchmitter,
     MapLayout,
-    useMachineWard,
     validateGaugeControls,
     validateMapLayout
 } from "@apparatus";
+import { useWebMachineWard } from "@web-apparatus";
 import { useSubjectState } from "@tinker-chest";
 import RouteStoryGear, { Animatrix, Preset } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import styles from './controls.module.css';
@@ -20,7 +20,7 @@ interface Props {
 }
 
 export const Presets: FC<Props> = ({ animatrix, preset$, isPresetActive$ }) => {
-    const { cartomancer } = useMachineWard();
+    const { cartomancer } = useWebMachineWard();
     const [animationControls] = useSubjectState(animatrix.controls$);
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const [mapLayout] = useSubjectState(cartomancer.mapLayout$);

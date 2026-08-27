@@ -2,9 +2,10 @@ import { FC, ReactNode, useState, useEffect } from "react";
 import * as maplibregl from "maplibre-gl";
 import { Protocol } from "pmtiles";
 import { Icons } from "@ui";
-import { Cartomancer, useMachineWard, glitchmitter } from "@apparatus";
+import { Cartomancer, glitchmitter } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { useMapTools } from "./useMapTools";
+import { useWebMachineWard } from "@web-apparatus";
 import styles from './map-canvas.module.css';
 import './map.css';
 
@@ -17,7 +18,7 @@ interface Props {
 }
 
 export const MapCanvas: FC<Props> = ({ map, children }) => {
-    const { cartomancer } = useMachineWard<maplibregl.Map>();
+    const { cartomancer } = useWebMachineWard();
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const [containerRef, setContainerRef] = useState<HTMLElement | null>(null);
     const [cssLoaded, setCssLoaded] = useState(false);

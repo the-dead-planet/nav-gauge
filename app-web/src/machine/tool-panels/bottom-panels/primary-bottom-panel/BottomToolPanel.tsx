@@ -1,7 +1,8 @@
 import type * as maplibregl from "maplibre-gl";
 import { FC, useEffect, useState } from "react";
 import classNames from "classnames";
-import { assignBottomToolPanelRef, useBottomToolPanel, useMachineWard } from "@apparatus";
+import { assignBottomToolPanelRef, useBottomToolPanel } from "@apparatus";
+import { useWebMachineWard } from "@web-apparatus";
 import { BottomToolPanelHeader } from "./BottomToolPanelPanelHeader";
 import styles from '../../../machine.module.css';
 
@@ -18,7 +19,7 @@ export const BottomToolPanel: FC<Props> = ({
     onActiveIdChange,
     joinHeaderButtons,
 }) => {
-    const { toolsStation } = useMachineWard();
+    const { toolsStation } = useWebMachineWard();
     const { show: showHeader, toolPanel } = useBottomToolPanel(activeId);
     const [lastVisibleToolPanel, setLastVisibleToolPanel] = useState(toolPanel);
 

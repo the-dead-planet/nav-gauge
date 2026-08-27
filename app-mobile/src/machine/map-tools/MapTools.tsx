@@ -1,6 +1,6 @@
 import { FC, ReactNode, useMemo } from "react";
 import { PanResponder, StyleSheet, View } from "react-native";
-import { useMachineWard } from "@apparatus";
+import { useMobileMachineWard } from "@mobile-apparatus";
 import { useObservableState, useSubjectState } from "@tinker-chest";
 import { MobileMap } from "@mobile-apparatus";
 
@@ -29,7 +29,7 @@ interface Props {
 }
 
 export const MapTools: FC<Props> = ({ children, ...props }) => {
-    const { toolsStation } = useMachineWard();
+    const { toolsStation } = useMobileMachineWard();
     const toolPanels = useObservableState(toolsStation.toolPanelsByPlacement$, []);
     const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
     const [onPanResponderStartHandlers] = useSubjectState(props.map.onPanResponderStartHandlers$);
@@ -79,20 +79,20 @@ export const MapTools: FC<Props> = ({ children, ...props }) => {
 
                 <View style={styles.left}>
                     {toolPanelsByPlacement.left.map(({ id, placement, contentComponent: ToolComponent }) => (
-                        <ToolComponent key={id} map={map} placement={placement} />
+                        <ToolComponent key={id} map={props.map} placement={placement} />
                     ))}
                 </View>
 
                 <View style={styles.right}>
                     {toolPanelsByPlacement.right.map(({ id, placement, contentComponent: ToolComponent }) => (
-                        <ToolComponent key={id} map={map} placement={placement} />
+                        <ToolComponent key={id} map={props.map} placement={placement} />
                     ))}
                 </View>
             </View>
 
             <View style={styles.bottom}>
                 {toolPanelsByPlacement.bottom.map(({ id, placement, contentComponent: ToolComponent }) => (
-                    <ToolComponent key={id} map={map} placement={placement} />
+                    <ToolComponent key={id} map={props.map} placement={placement} />
                 ))}
             </View>
         </View>

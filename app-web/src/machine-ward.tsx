@@ -7,8 +7,8 @@ import { Notices } from "./notices/Notices";
 import { WebChronoLens } from "@web-apparatus";
 import { Media, MediaSubscriptionDefinition, Orientation } from "@ui";
 
-export class WebMachineWard extends MachineWard<maplibregl.Map> {
-    public constructor(gears: MachineGear<maplibregl.Map>[]) {
+export class WebMachineWard extends MachineWard<maplibregl.Map, WebChronoLens> {
+    public constructor(gears: MachineGear<maplibregl.Map, WebChronoLens>[]) {
         const getMedia = (): Media => {
             return {
                 windowWidth: window.innerWidth,

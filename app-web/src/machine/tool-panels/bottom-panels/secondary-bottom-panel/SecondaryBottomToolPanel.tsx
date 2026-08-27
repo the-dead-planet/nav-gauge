@@ -1,7 +1,8 @@
 import type * as maplibregl from "maplibre-gl";
 import { FC, useState } from "react";
 import classNames from "classnames";
-import { useMachineWard, useSecondaryBottomToolPanel } from "@apparatus";
+import { useSecondaryBottomToolPanel } from "@apparatus";
+import { useWebMachineWard } from "@web-apparatus";
 import { BottomSecondaryToolPanelResizeHandle } from "./SecondaryBottomToolPanelResizeHandle";
 import { ToolPanelHeader } from "../../panel-header/ToolPanelHeader";
 import styles from '../../../machine.module.css';
@@ -17,7 +18,7 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
     activeId,
     onActiveIdChange,
 }) => {
-    const { toolsStation } = useMachineWard();
+    const { toolsStation } = useWebMachineWard();
     const [isDragging, setIsDragging] = useState(false);
 
     const {

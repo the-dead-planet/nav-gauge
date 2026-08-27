@@ -17,7 +17,7 @@ import * as Translations from "./translations";
  * 
  * Describes the expected content of the applications and renders complete app.
  */
-export abstract class MachineWard<TMap = unknown, TNavigationPath extends string = string> {
+export abstract class MachineWard<TMap = unknown, TChronoLens extends ChronoLens = ChronoLens, TNavigationPath extends string = string> {
     public title = 'nav gauge';
 
     public readonly namespace = 'machine-ward';
@@ -26,32 +26,32 @@ export abstract class MachineWard<TMap = unknown, TNavigationPath extends string
 
     public readonly individuator: Individuator;
     public readonly storageKeeper: StorageKeeper;
-    public readonly engine = new Engine<TMap>();
+    public readonly engine = new Engine<TMap, TChronoLens>();
     public readonly attributionVault = new AttributionVault();
     public readonly signaliumBureau = new SignaliumBureau();
     public readonly translatron = new Translatron();
     public readonly cartomancer: Cartomancer<TMap>;
-    public readonly chronoLens: ChronoLens;
+    public readonly chronoLens: TChronoLens;
     public readonly toolsStation = new ToolsStation<TMap>()
 
     private attributionVaultSubscription: Subscription | null = null;
 
     public constructor(
-        gears: MachineGear<TMap>[],
-        chronoLens: new (individuator: Individuator) => ChronoLens,
+        gears: MachineGear<TMap, TChronoLens>[],
+        chronoLens: new (individuator: Individuator) => TChronoLens,
         storage: StorageLike,
         prefersLightColorScheme: boolean,
         protected media: MediaSubscriptionDefinition
     ) {
         this.translatron.register(this.namespace, this.translations);
-        
+
         this.storageKeeper = new StorageKeeper(storage);
-        this.individuator = new Individuator(prefersLightColorScheme);      
+        this.individuator = new Individuator(prefersLightColorScheme);
         this.cartomancer = new Cartomancer(prefersLightColorScheme);
         this.chronoLens = new chronoLens(this.individuator);
 
         this.engine.addGears(
-            gears.reduce<Gear<TMap>[]>((acc, Gear) => {
+            gears.reduce<Gear<TMap, TChronoLens>[]>((acc, Gear) => {
                 if (Gear) {
                     acc.push(new Gear({
                         individuator: this.individuator,

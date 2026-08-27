@@ -1,11 +1,11 @@
 import { useEffect, useRef } from "react";
-import { addCompassToolIcon, addMapLayoutToolPanel, addZoomToolIcons, useMachineWard } from "@apparatus";
+import { addCompassToolIcon, addMapLayoutToolPanel, addZoomToolIcons } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
-import { MobileMap } from "@mobile-apparatus";
+import { MobileMap, useMobileMachineWard } from "@mobile-apparatus";
 import { CartoConfigPanel } from "../controls/CartoConfigPanel";
 
 export const useMapTools = (map: MobileMap) => {
-    const { cartomancer, toolsStation } = useMachineWard<MobileMap>();
+    const { cartomancer, toolsStation } = useMobileMachineWard();
     const [isInitialised] = useSubjectState(cartomancer.isInitialised$);
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const clickedZoom = useRef<number>(null);

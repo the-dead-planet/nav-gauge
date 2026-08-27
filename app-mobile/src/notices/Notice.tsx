@@ -1,7 +1,8 @@
 import { FC, useEffect, useRef } from "react";
 import { Animated, Button, StyleSheet } from "react-native";
 import { Text } from '@mobile-ui';
-import { SignaliumNotice, useMachineWard } from "@apparatus";
+import { SignaliumNotice } from "@apparatus";
+import { useMobileMachineWard } from "@mobile-apparatus";
 import { useTheme } from "@ui";
 import { useSubjectState } from "@tinker-chest";
 
@@ -29,7 +30,7 @@ export const Notice: FC<Props> = ({
     const theme = useTheme();
     const translateY = useRef(new Animated.Value(-80)).current;
     const opacity = useRef(new Animated.Value(0)).current;
-    const { namespace, translationKey, individuator, translatron } = useMachineWard();
+    const { namespace, translationKey, individuator, translatron } = useMobileMachineWard();
     const [registry] = useSubjectState(translatron.registry$);
     const [settings] = useSubjectState(individuator.settings$);
 

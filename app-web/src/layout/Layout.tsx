@@ -1,5 +1,6 @@
 import { FC, useEffect } from "react";
-import { MachineWardLayoutProps, Translatron, useMachineWard } from "@apparatus";
+import { MachineWardLayoutProps, Translatron } from "@apparatus";
+import { useWebMachineWard } from "@web-apparatus";
 import { useThemeVariables } from "@web-ui";
 import { useTheme } from "@ui";
 import { useSubjectState } from "@tinker-chest";
@@ -8,7 +9,7 @@ import './app.css';
 
 export const Layout: FC<MachineWardLayoutProps> = ({ children }) => {
     const theme = useTheme();
-    const { individuator } = useMachineWard();
+    const { individuator } = useWebMachineWard();
     const [settings] = useSubjectState(individuator.settings$);
 
     useEffect(() => {

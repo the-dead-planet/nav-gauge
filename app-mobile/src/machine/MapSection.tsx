@@ -2,7 +2,8 @@ import { FC, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import { BehaviorSubject } from "rxjs";
 import { CameraRef, MapRef } from "@maplibre/maplibre-react-native";
-import { useMachineWard, useMapSection } from "@apparatus";
+import { useMapSection } from "@apparatus";
+import { useMobileMachineWard } from "@mobile-apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { MobileMap } from "@mobile-apparatus";
 import { MapToolsGridAreas } from "./map-tools-grid/MapToolsGridAreas";
@@ -43,7 +44,7 @@ const map: MobileMap = {
 };
 
 export const MapSection: FC = () => {
-    const { cartomancer } = useMachineWard();
+    const { cartomancer } = useMobileMachineWard();
     const [overlays] = useSubjectState(cartomancer.overlays$);
     const { handleError } = useMapSection();
 

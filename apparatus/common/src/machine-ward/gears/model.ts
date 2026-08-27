@@ -7,12 +7,12 @@ import { StorageKeeper } from "../storage-keeper";
 import { ToolsStation } from "../tools-station";
 import { Translatron, TranslationTable } from "../translatron";
 
-export interface GearApparatus<TMap> {
+export interface GearApparatus<TMap, TChronoLens extends ChronoLens> {
     individuator: Individuator;
     storageKeeper: StorageKeeper;
     signaliumBureau: SignaliumBureau;
     attributionVault: AttributionVault;
-    chronoLens: ChronoLens;
+    chronoLens: TChronoLens;
     cartomancer: Cartomancer<TMap>;
     toolsStation: ToolsStation<TMap>;
     translatron: Translatron;
