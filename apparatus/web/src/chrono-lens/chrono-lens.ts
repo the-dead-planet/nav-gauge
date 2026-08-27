@@ -165,12 +165,10 @@ export class WebChronoLens extends ChronoLens {
         this.stream = undefined;
         this.recorder = undefined;
         this.chunks = [];
-        console.log("finished destroying")
     };
 
     public hasRecordingData = (): boolean => {
         const hasStream = !!this.recorder && this.recorder.state !== 'inactive';
-        console.log({hasStream, stream: this.stream, recorder: this.recorder, chunks: this.chunks})
 
         return hasStream || !!this.stream || !!this.recorder || this.chunks.length > 0;
     };
