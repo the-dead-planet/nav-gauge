@@ -3,11 +3,10 @@ import { FC } from "react";
 import { ToolPanelProps, useMultipleTranslations } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { TextInput } from "@web-ui";
-import { RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { WebMarkerImageData } from "../images/image-parser";
+import { WebRouteStoryProps } from "../model";
 import styles from './animation-controls.module.css';
 
-export const AnimationControlsSearch: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibregl.Map, File, WebMarkerImageData>> = ({
+export const AnimationControlsSearch: FC<ToolPanelProps<maplibregl.Map> & WebRouteStoryProps> = ({
     animatrix,
 }) => {
     const [searchQuery, setSearchQuery] = useSubjectState(animatrix.searchQuery$);

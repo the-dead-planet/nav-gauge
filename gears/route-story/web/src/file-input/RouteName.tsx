@@ -1,14 +1,13 @@
 import type * as maplibregl from "maplibre-gl";
 import { FC } from "react";
 import { parsers, TopToolsProps, useMultipleTranslations } from "@apparatus";
-import { RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { BevelPanel, Button, FileInput } from "@web-ui";
-import { WebMarkerImageData } from "../images/image-parser";
 import { useSubjectState } from "@tinker-chest";
 import { Icons } from "@ui";
+import { WebRouteStoryProps } from "../model";
 import styles from './file-input.module.css';
 
-export const RouteName: FC<TopToolsProps<maplibregl.Map> & RouteStoryProps<maplibregl.Map, File, WebMarkerImageData>> = ({
+export const RouteName: FC<TopToolsProps<maplibregl.Map> & WebRouteStoryProps> = ({
     gearId,
     translationKey,
     map,

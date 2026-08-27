@@ -1,13 +1,11 @@
 import { FC } from "react";
 import { StyleSheet } from "react-native";
 import { parsers, TopToolsProps, useMultipleTranslations } from "@apparatus";
-import { RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { BevelPanel, Button, FileInput } from "@mobile-ui";
-import { MobileMarkerImageData } from "../images/image-parser";
 import { useSubjectState } from "@tinker-chest";
 import { Icons } from "@ui";
 import { MobileMap } from "@mobile-apparatus";
-import { DocumentPickerResponse } from "@react-native-documents/picker";
+import { MobileRouteStoryProps } from "../model";
 
 const styles = StyleSheet.create({
     panel: {
@@ -16,7 +14,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export const RouteName: FC<TopToolsProps<MobileMap> & RouteStoryProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({
+export const RouteName: FC<TopToolsProps<MobileMap> & MobileRouteStoryProps> = ({
     gearId,
     translationKey,
     map,

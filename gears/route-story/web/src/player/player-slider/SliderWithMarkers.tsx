@@ -7,9 +7,9 @@ import { RouteStoryTranslationKey, RouteTimes } from "@the-dead-planet/nav-gauge
 import { updateRouteLayer } from "../../tinkers";
 import { Slider } from "@web-ui";
 import { WebMarkerImageData } from "../../images/image-parser";
-import { PlayerOperator } from "@the-dead-planet/nav-gauge-gears-route-story-common/src/player-operator";
 import { SliderMarkers } from "./SliderMarkers";
 import { PlayerSliderLabels } from "./PlayerSliderLabels";
+import { WebPlayerOperator } from "../../model";
 import styles from './player-slider.module.css';
 
 interface Props {
@@ -20,7 +20,7 @@ interface Props {
     routeTimes$: BehaviorSubject<RouteTimes | null>;
     images$: BehaviorSubject<MarkerImage<WebMarkerImageData>[]>;
     progressMs$: BehaviorSubject<number>;
-    playerOperator: PlayerOperator<maplibregl.Map, File, WebMarkerImageData>;
+    playerOperator: WebPlayerOperator;
     fitBoundsHandler: (map: maplibregl.Map, boundingBox?: GeoJSON.BBox) => void;
 }
 

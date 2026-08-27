@@ -2,9 +2,7 @@ import type * as maplibregl from "maplibre-gl";
 import { FC } from "react";
 import classNames from "classnames";
 import { ToolPanelProps } from "@apparatus";
-import { RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Divider } from "@web-ui";
-import { WebMarkerImageData } from "../images/image-parser";
 import { RecordingButtons } from "./RecordingButtons";
 import { ConfigurationButtons } from "./ConfigurationButtons";
 import { useTheme } from "@ui";
@@ -12,9 +10,10 @@ import { useSubjectState } from "@tinker-chest";
 import { PlayButton } from "./player-slider/PlayButton";
 import { SliderWithMarkers } from "./player-slider/SliderWithMarkers";
 import { MarkerButton } from "./player-slider/MarkerButton";
+import { WebRouteStoryProps } from "../model";
 import styles from './player.module.css';
 
-export const Player: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibregl.Map, File, WebMarkerImageData>> = ({
+export const Player: FC<ToolPanelProps<maplibregl.Map> & WebRouteStoryProps> = ({
     gearId,
     translationKey,
     map,

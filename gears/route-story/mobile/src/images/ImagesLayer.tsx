@@ -6,7 +6,6 @@ import { useSubjectState } from "@tinker-chest";
 import {
     getIconImageId,
     getImageSource,
-    RouteStoryProps,
     ImagesLayers,
     imageLayerIds,
     imageSourceIds,
@@ -18,13 +17,12 @@ import {
     updateImageFeatureId,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMap } from "@mobile-apparatus";
-import { DocumentPickerResponse } from "@react-native-documents/picker";
-import { MobileMarkerImageData } from "./image-parser";
 import { useLoadedMobileImages } from "./useLoadedMobileImages";
 import { useImageInDisplay } from "./useImageInDisplay";
 import { findThumbnailsWithinBuffer } from "../tinkers";
+import { MobileRouteStoryProps } from "../model";
 
-export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<MobileMap, DocumentPickerResponse, MobileMarkerImageData>> = ({
+export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryProps> = ({
     map,
     animatrix,
     data$,
@@ -92,7 +90,7 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & RouteStoryProps<
             const imageFeature = findThumbnailsWithinBuffer(lngLat, cartomancer.zoom$.value, loadedImages, geojson, { devicePixelRatio: PixelRatio.get() })[0];
             if (imageFeature) {
                 map.dragPan$.next(false);
-                draggingImage$.next({ id: imageFeature.properties.imageId, interaction: 'map'});
+                draggingImage$.next({ id: imageFeature.properties.imageId, interaction: 'map' });
             }
         });
         map.onPanResponderStartHandlers$.next(nextPanResponderStartHandlers);

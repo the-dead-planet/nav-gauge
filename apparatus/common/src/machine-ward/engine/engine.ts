@@ -1,10 +1,11 @@
 import { BehaviorSubject, combineLatest, of, switchMap, map } from "rxjs";
 import { Gear } from "../gears";
+import { ChronoLens } from "../chrono-lens";
 
-export class Engine<TMap> {
+export class Engine<TMap, TChronoLens extends ChronoLens> {
     public constructor() { }
 
-    public gears$ = new BehaviorSubject<Gear<TMap>[]>([]);
+    public gears$ = new BehaviorSubject<Gear<TMap, TChronoLens>[]>([]);
 
     public gearsWithEngaged$ = this.gears$.pipe(switchMap((gears) => {
         if (gears.length === 0) {
@@ -16,7 +17,7 @@ export class Engine<TMap> {
         )));
     }));
 
-    public addGears = (gear: Gear<TMap> | Gear<TMap>[]) => {
+    public addGears = (gear: Gear<TMap, TChronoLens> | Gear<TMap, TChronoLens>[]) => {
         const gears = Array.isArray(gear) ? gear : [gear];
         const existingIds = this.gears$.value.filter((g) => gears.some((gear) => gear.id === g.id)).map((g) => g.id);
         if (existingIds.length > 0) {
@@ -30,23 +31,23 @@ export class Engine<TMap> {
         this.gears$.next(this.gears$.value.filter((g) => !ids.has(g.id)));
     };
 
-    public openValves = (gears: Gear<TMap>[]) => {
+    public openValves = (gears: Gear<TMap, TChronoLens>[]) => {
         for (const gear of gears) {
             gear.setup();
         }
     };
 
-    public closeValves = (gears: Gear<TMap>[] = this.gears$.value) => {
+    public closeValves = (gears: Gear<TMap, TChronoLens>[] = this.gears$.value) => {
         for (const gear of gears) {
             gear.cleanup();
         }
     };
 
-    public engageGear = (gear: Gear<TMap>) => {
+    public engageGear = (gear: Gear<TMap, TChronoLens>) => {
         gear.isEngaged$.next(true);
     };
 
-    public disengageGear = (gear: Gear<TMap>) => {
+    public disengageGear = (gear: Gear<TMap, TChronoLens>) => {
         gear.isEngaged$.next(false);
     };
 }

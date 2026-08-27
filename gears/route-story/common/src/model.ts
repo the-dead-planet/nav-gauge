@@ -1,4 +1,4 @@
-import { GaugeControlsType, MapLayout, MarkerImage } from "@apparatus";
+import { ChronoLens, GaugeControlsType, MapLayout, MarkerImage } from "@apparatus";
 import { ParsingResultWithError } from "@tinker-chest";
 import { BehaviorSubject } from "rxjs";
 import { FileOperator } from "./file-operator";
@@ -18,7 +18,7 @@ export interface RouteStoryState {
     showRoutePoints: boolean;
 }
 
-export interface RouteStoryProps<TMap, TFile extends RouteStoryFile, TImageData> {
+export interface RouteStoryProps<TMap, TChronoLens extends ChronoLens, TFile extends RouteStoryFile, TImageData> {
     gearId: string;
     translationKey: typeof RouteStoryTranslationKey;
     animatrix: Animatrix;
@@ -27,8 +27,8 @@ export interface RouteStoryProps<TMap, TFile extends RouteStoryFile, TImageData>
     routeTimes$: BehaviorSubject<RouteTimes | null>;
     images$: BehaviorSubject<MarkerImage<TImageData>[]>;
     progressMs$: BehaviorSubject<number>;
-    fileOperator: FileOperator<TMap, TFile, TImageData>;
-    playerOperator: PlayerOperator<TMap, TFile, TImageData>;
+    fileOperator: FileOperator<TMap, TChronoLens, TFile, TImageData>;
+    playerOperator: PlayerOperator<TMap, TChronoLens, TFile, TImageData>;
     fitBoundsHandler: (map: TMap, boundingBox?: GeoJSON.BBox) => void;
 }
 

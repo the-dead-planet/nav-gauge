@@ -7,7 +7,6 @@ import { useLoadedWebImages } from "../hooks/useLoadedWebImages";
 import { useImageInDisplay } from "./useImageInDisplay";
 import { MapImageData, useRouteLayerImages } from "../hooks";
 import {
-    RouteStoryProps,
     getIconImageId,
     getImageSource,
     IMAGE_PROPERTY,
@@ -20,10 +19,10 @@ import {
     updateImageFeatureId,
     highlightIdsBySourceId$,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { WebMarkerImageData } from "./image-parser";
 import { getImagesLayers } from "./images-layers";
+import { WebRouteStoryProps } from "../model";
 
-export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteStoryProps<maplibregl.Map, File, WebMarkerImageData>> = ({
+export const ImagesLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStoryProps> = ({
     map,
     animatrix,
     data$,

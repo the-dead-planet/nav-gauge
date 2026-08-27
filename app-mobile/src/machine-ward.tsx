@@ -12,8 +12,8 @@ import { Media, MediaSubscriptionDefinition, Orientation } from "@ui";
 
 const AsyncStorage = createAsyncStorage('nav-gauge');
 
-export class MobileMachineWard extends MachineWard<MobileMap, keyof RootStackParamList> {
-    public constructor(gears: MachineGear<MobileMap>[]) {
+export class MobileMachineWard extends MachineWard<MobileMap, MobileChronoLens, keyof RootStackParamList> {
+    public constructor(gears: MachineGear<MobileMap, MobileChronoLens>[]) {
         const getMedia = (window: ScaledSize): Media => {
             const { width, height } = Dimensions.get('window');
 

@@ -1,6 +1,6 @@
 import { ComponentType, ReactNode } from "react";
 import { ErrorBoundaryProps } from "@ui";
-import { SignaliumNotice } from "..";
+import { ChronoLens, SignaliumNotice } from "..";
 import { Gear, GearApparatus } from "./gears";
 
 export interface MachineWardLayoutProps {
@@ -31,7 +31,7 @@ export interface MachineWardComponents<TNavigationPath extends string = string> 
     noticesComponent: ComponentType<MachineWardNoticesProps>;
 }
 
-export type MachineGear<TMap> = new (apparatus: GearApparatus<TMap>) => Gear<TMap>;
+export type MachineGear<TMap, MobileChronoLens extends ChronoLens> = new (apparatus: GearApparatus<TMap, MobileChronoLens>) => Gear<TMap, MobileChronoLens>;
 
 export enum MachineTranslationKey {
     Legal = 'legal',

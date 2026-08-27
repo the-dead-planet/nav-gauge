@@ -4,12 +4,12 @@ import classNames from "classnames";
 import { ToolPanelProps, useMachineWard, useMultipleTranslations } from "@apparatus";
 import { clamp, useSubjectState } from "@tinker-chest";
 import { ClockInput, Checkbox, Fieldset, ClockSliceInput, IconRotateInput, Slider, ToggleSwitch, Label, Span } from "@web-ui";
-import { Animatrix, RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { WebMarkerImageData } from "../images/image-parser";
+import { Animatrix } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Icons } from "@ui";
+import { WebRouteStoryProps } from "../model";
 import styles from './animation-controls.module.css';
 
-export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & RouteStoryProps<maplibregl.Map, File, WebMarkerImageData>> = ({
+export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStoryProps> = ({
     map,
     animatrix,
     placement,

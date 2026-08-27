@@ -1,17 +1,16 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import { DocumentPickerResponse } from "@react-native-documents/picker";
 import { BehaviorSubject } from "rxjs";
 import { MarkerImage } from "@apparatus";
 import { ParsingResultWithError, useSubjectState } from "@tinker-chest";
 import { RouteStoryTranslationKey, RouteTimes } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Slider } from "@mobile-ui";
-import { PlayerOperator } from "@the-dead-planet/nav-gauge-gears-route-story-common/src/player-operator";
 import { currentPointRef$, linesRef$ } from "../../layers/RouteLayer";
 import { SliderMarkers } from "./SliderMarkers";
 import { PlayerSliderLabels } from "./PlayerSliderLabels";
 import { MobileMarkerImageData } from "../../images/image-parser";
 import { MobileMap } from "@mobile-apparatus";
+import { MobilePlayerOperator } from "../../model";
 
 interface Props {
     gearId: string;
@@ -21,7 +20,7 @@ interface Props {
     routeTimes$: BehaviorSubject<RouteTimes | null>;
     images$: BehaviorSubject<MarkerImage<MobileMarkerImageData>[]>;
     progressMs$: BehaviorSubject<number>;
-    playerOperator: PlayerOperator<MobileMap, DocumentPickerResponse, MobileMarkerImageData>;
+    playerOperator: MobilePlayerOperator;
 }
 
 const styles = StyleSheet.create({

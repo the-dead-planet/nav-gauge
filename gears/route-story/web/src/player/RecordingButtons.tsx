@@ -1,20 +1,19 @@
 import type * as maplibregl from "maplibre-gl";
 import { FC, useEffect } from "react";
-import { SurveillanceState, useMachineWard, useMultipleTranslations } from "@apparatus";
+import { SurveillanceState, useMultipleTranslations } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { RouteStoryTranslationKey } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { WebChronoLens } from "@web-apparatus";
-import { WebMarkerImageData } from "../images/image-parser";
-import { PlayerOperator } from "@the-dead-planet/nav-gauge-gears-route-story-common/src/player-operator";
+import { useWebMachineWard } from "@web-apparatus";
 import { Button } from "@web-ui";
 import { Icons } from "@ui";
+import { WebPlayerOperator } from "../model";
 import styles from './recording-buttons.module.css';
 
 interface Props {
     gearId: string;
     translationKey: typeof RouteStoryTranslationKey;
     map: maplibregl.Map;
-    playerOperator: PlayerOperator<maplibregl.Map, File, WebMarkerImageData>
+    playerOperator: WebPlayerOperator;
 }
 
 export const RecordingButtons: FC<Props> = ({
@@ -23,16 +22,17 @@ export const RecordingButtons: FC<Props> = ({
     map,
     playerOperator,
 }) => {
-    const { chronoLens, signaliumBureau } = useMachineWard();
+    const { chronoLens, signaliumBureau } = useWebMachineWard();
     const [surveillanceState] = useSubjectState(chronoLens.surveillanceState$);
 
     useEffect(() => {
         const abortController = new AbortController();
-        (chronoLens as WebChronoLens).canvas = map.getCanvas();
+        chronoLens.canvas = map.getCanvas();
         chronoLens.setUpSurveillance(signaliumBureau, abortController.signal);
 
         return () => {
             abortController.abort();
+            chronoLens.canvas = null;
             chronoLens.clearSurveillance();
         };
     }, []);
@@ -53,17 +53,18 @@ export const RecordingButtons: FC<Props> = ({
 
     return (
         <>
-            <Button
-                icon={Icons.NounProject.Destroy}
-                size="md"
-                variant="ghost"
-                corners="circle"
-                aria-label={destroyLabel}
-                tooltip={destroyLabel}
-                tooltipPlacement="top"
-                onClick={() => chronoLens.destroyRecording()}
-                disabled={!chronoLens.hasRecordingData()}
-            />
+            {chronoLens.hasRecordingData() ? (
+                <Button
+                    icon={Icons.NounProject.Destroy}
+                    size="md"
+                    variant="ghost"
+                    corners="circle"
+                    aria-label={destroyLabel}
+                    tooltip={destroyLabel}
+                    tooltipPlacement="top"
+                    onClick={() => chronoLens.destroyRecording()}
+                />
+            ) : null}
             {surveillanceState === SurveillanceState.Stopped ? (
                 <Button
                     icon={Icons.RecordCapture}

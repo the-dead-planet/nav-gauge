@@ -1,19 +1,19 @@
 import { BehaviorSubject } from "rxjs";
-import { SurveillanceState, LoadedImageData } from "@apparatus";
+import { SurveillanceState, LoadedImageData, ChronoLens } from "@apparatus";
 import { getRouteSourceData } from "./tinkers";
 import { getImageIconSize, FULL_SIZE_IMAGE_SIZE, THUMBNAIL_IMAGE_SIZE } from "./images";
 import { RouteStoryGear } from "./route-story-gear";
 import { IMAGE_ANIMATION_DURATION } from "./layer-specification";
 import { RouteStoryFile } from "./model";
 
-export class PlayerOperator<TMap, TFile extends RouteStoryFile, TImageData> {
-    private gear: RouteStoryGear<TMap, TFile, TImageData>;
+export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends RouteStoryFile, TImageData> {
+    private gear: RouteStoryGear<TMap, TChronoLens, TFile, TImageData>;
 
     public isLoading$ = new BehaviorSubject(false);
     public showImageMarkers$ = new BehaviorSubject(true);
 
     public constructor(
-        gear: RouteStoryGear<TMap, TFile, TImageData>,
+        gear: RouteStoryGear<TMap, TChronoLens, TFile, TImageData>,
     ) {
         this.gear = gear;
     }

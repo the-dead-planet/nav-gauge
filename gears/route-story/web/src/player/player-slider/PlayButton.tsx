@@ -1,17 +1,15 @@
-import type * as maplibregl from "maplibre-gl";
 import { FC } from "react";
 import { useMachineWard, useMultipleTranslations } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { RouteStoryTranslationKey } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Button } from "@web-ui";
 import { Icons } from "@ui";
-import { WebMarkerImageData } from "../../images/image-parser";
-import { PlayerOperator } from "@the-dead-planet/nav-gauge-gears-route-story-common/src/player-operator";
+import { WebPlayerOperator } from "../../model";
 
 interface Props {
     gearId: string;
     translationKey: typeof RouteStoryTranslationKey;
-    playerOperator: PlayerOperator<maplibregl.Map, File, WebMarkerImageData>;
+    playerOperator: WebPlayerOperator;
 }
 
 export const PlayButton: FC<Props> = ({

@@ -3,9 +3,9 @@ import { BehaviorSubject } from "rxjs";
 import { LayoutChangeEvent, StyleSheet } from "react-native";
 import { RecordingView, useViewRecorder } from "react-native-view-recorder";
 import { Camera, Map as MaplibreMap, LogManager } from "@maplibre/maplibre-react-native";
-import { Cartomancer, updateCompassIcon, updateCurrentZoomIcon, useMachineWard } from "@apparatus";
+import { Cartomancer, updateCompassIcon, updateCurrentZoomIcon } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
-import { MobileMap, MobileChronoLens } from "@mobile-apparatus";
+import { MobileMap, useMobileMachineWard } from "@mobile-apparatus";
 import { useMapTools } from "./useMapTools";
 
 const styles = StyleSheet.create({
@@ -41,8 +41,7 @@ export const MapCanvas: FC<Props> = ({
 }) => {
     const viewRecorderRef = useRef(null);
     const recorder = useViewRecorder();
-    const { cartomancer, chronoLens, signaliumBureau, toolsStation } = useMachineWard<MobileMap>();
-    const lens = chronoLens as MobileChronoLens;
+    const { cartomancer, chronoLens, signaliumBureau, toolsStation } = useMobileMachineWard();
     const [dragPan] = useSubjectState(map.dragPan$);
     const [isInitialised, setIsInitialised] = useSubjectState(cartomancer.isInitialised$);
     const [isStyleLoaded, setIsStyleLoaded] = useSubjectState(cartomancer.isStyleLoaded$);
@@ -53,12 +52,12 @@ export const MapCanvas: FC<Props> = ({
 
     useEffect(() => {
         const abortController = new AbortController();
-        lens.viewRecorder = recorder;
+        chronoLens.viewRecorder = recorder;
         chronoLens.setUpSurveillance(signaliumBureau, abortController.signal);
 
         return () => {
             abortController.abort();
-            lens.viewRecorder = null;
+            chronoLens.viewRecorder = null;
             chronoLens.clearSurveillance();
         };
     }, [recorder]);

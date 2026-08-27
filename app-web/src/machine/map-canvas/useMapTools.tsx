@@ -6,13 +6,13 @@ import {
     addZoomToolIcons,
     updateCompassIcon,
     updateCurrentZoomIcon,
-    useMachineWard,
 } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { CartoConfigPanel } from "../controls/CartoConfigPanel";
+import { useWebMachineWard } from "@web-apparatus";
 
 export const useMapTools = (map: maplibregl.Map) => {
-    const { cartomancer, toolsStation } = useMachineWard<maplibregl.Map>();
+    const { cartomancer, toolsStation } = useWebMachineWard();
     const [isInitialised] = useSubjectState(cartomancer.isInitialised$);
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const clickedZoom = useRef(map.getZoom());

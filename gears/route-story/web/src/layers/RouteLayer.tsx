@@ -1,15 +1,15 @@
 import { FC, useEffect, useMemo } from "react";
 import * as maplibregl from "maplibre-gl";
 import { OverlayComponentProps, useMachineWard } from "@apparatus";
-import { getRouteSourceData, RouteStoryProps } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { getRouteSourceData } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { emptyCollection, useSubjectState } from "@tinker-chest";
 import { updateRouteLayer } from "../tinkers";
 import { useLoadedWebImages } from "../hooks";
-import { WebMarkerImageData } from "../images/image-parser";
 import { RouteLineLayer } from "./RouteLineLayer";
 import { RouteCurrentPointLayer } from "./RouteCurrentPointLayer";
+import { WebRouteStoryProps } from "../model";
 
-export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & RouteStoryProps<maplibregl.Map, File, WebMarkerImageData>> = ({
+export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStoryProps> = ({
     map,
     animatrix,
     data$,
