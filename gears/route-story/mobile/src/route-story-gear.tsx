@@ -13,6 +13,7 @@ import { DocumentPickerResponse } from '@react-native-documents/picker';
 import { RouteName } from './player/RouteName';
 import { AnimationControlsSearch } from './animation-controls/AnimationControlsSearch';
 import { AnimationControls } from './animation-controls/AnimationControls';
+import { Chip } from '@mobile-ui';
 
 const SAMPLE_ROUTE = {
    name: 'Lisboa walk.kml',
@@ -47,6 +48,11 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, MobileChrono
    public animatrixContentComponent = AnimationControls;
    public routeLayerComponent = RouteLayer;
    public imagesLayerComponent = ImagesLayer;
+      public topBarChipComponent = () => <Chip color="error"
+      //  className={styles["blinking"]}
+      >
+         REC
+      </Chip>;
 
    public constructor(apparatus: GearApparatus<MobileMap, MobileChronoLens>) {
       super(apparatus);

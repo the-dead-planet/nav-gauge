@@ -15,6 +15,7 @@ export abstract class ChronoLens {
     public fps$ = new BehaviorSubject<FrameRate>(30);
     public surveillanceState$ = new BehaviorSubject<SurveillanceState>(SurveillanceState.Stopped);
     public isPlaying$ = new BehaviorSubject(false);
+    public hasRecordingData$ = new BehaviorSubject(false);
     public downloadName$ = new BehaviorSubject('Voyage Log');
 
     /**
@@ -117,9 +118,4 @@ export abstract class ChronoLens {
      * Resets the recorder and any files created on the way completely.
      */
     public abstract destroyRecording: () => void;
-
-    /**
-     * Whether there is any recording data stored.
-     */
-    public abstract hasRecordingData: () => boolean;
 }

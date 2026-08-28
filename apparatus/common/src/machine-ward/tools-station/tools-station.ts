@@ -90,6 +90,11 @@ export class ToolsStation<TMap> {
     public topTools$ = new BehaviorSubject<Map<string, ComponentType<TopToolsProps<TMap>>>>(new Map());
 
     /**
+     * Custom tools to display in the application top bar
+     */
+    public topBarTools$ = new BehaviorSubject<Map<string, ComponentType>>(new Map());
+
+    /**
      * Subscribe to changes of tool icon placements.
      */
     public toolIconsByPlacement$: Observable<ObservedToolIcon<TMap>[]> = this.toolIcons$.pipe(
@@ -255,5 +260,23 @@ export class ToolsStation<TMap> {
         const nextTopTools = new Map(this.topTools$.value);
         nextTopTools.delete(id);
         this.topTools$.next(nextTopTools);
+    };
+
+    /**
+     * Adds a new top bar tool to display in the application top bar.
+     */
+    public addTopBarTool = (id: string, component: ComponentType) => {
+        const nextTopBarTools = new Map(this.topBarTools$.value);
+        nextTopBarTools.set(id, component);
+        this.topBarTools$.next(nextTopBarTools);
+    };
+
+    /**
+     * Removes the top bar tool with a given `id`.
+     */
+    public removeTopBarTool = (id: string) => {
+        const nextTopBarTools = new Map(this.topBarTools$.value);
+        nextTopBarTools.delete(id);
+        this.topBarTools$.next(nextTopBarTools);
     };
 }

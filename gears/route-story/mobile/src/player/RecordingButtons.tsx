@@ -22,6 +22,7 @@ export const RecordingButtons: FC<Props> = ({
 }) => {
     const { chronoLens, signaliumBureau } = useMobileMachineWard();
     const [surveillanceState] = useSubjectState(chronoLens.surveillanceState$);
+    const [hasRecordingData] = useSubjectState(chronoLens.hasRecordingData$);
 
     useEffect(() => {
         const abortController = new AbortController();
@@ -63,17 +64,6 @@ export const RecordingButtons: FC<Props> = ({
 
     return (
         <>
-            <Button
-                icon={Icons.NounProject.Destroy}
-                size="md"
-                variant="ghost"
-                corners="circle"
-                aria-label={destroyLabel}
-                tooltip={destroyLabel}
-                tooltipPlacement="top"
-                onClick={() => chronoLens.destroyRecording()}
-                disabled={!chronoLens.hasRecordingData()}
-            />
             {surveillanceState === SurveillanceState.Stopped ? (
                 <Button
                     icon={Icons.RecordCapture}
@@ -123,6 +113,17 @@ export const RecordingButtons: FC<Props> = ({
                     disabled={surveillanceState === SurveillanceState.Stopped}
                 />
             )}
+            <Button
+                icon={Icons.NounProject.Destroy}
+                size="md"
+                variant="ghost"
+                corners="circle"
+                aria-label={destroyLabel}
+                tooltip={destroyLabel}
+                tooltipPlacement="top"
+                onClick={() => playerOperator.onDestroy()}
+                disabled={!hasRecordingData}
+            />
         </>
     );
 };

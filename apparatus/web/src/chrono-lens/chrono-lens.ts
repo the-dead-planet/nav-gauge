@@ -42,6 +42,7 @@ export class WebChronoLens extends ChronoLens {
         try {
             this.stream = await this.createStream();
             this.recorder = this.createRecorder(this.stream, signaliumBureau, onError);
+            this.hasRecordingData$.next(true);
         } catch (error) {
             this.isPlaying$.next(false);
             this.surveillanceState$.next(SurveillanceState.Stopped);
@@ -106,6 +107,9 @@ export class WebChronoLens extends ChronoLens {
         });
 
         recorder.ondataavailable = (event) => {
+            if (!this.hasRecordingData$.value) {
+                return;
+            }
             this.chunks.push(event.data);
             if (this.surveillanceState$.value === SurveillanceState.Stopped) {
                 this.download(signaliumBureau)
@@ -156,6 +160,7 @@ export class WebChronoLens extends ChronoLens {
     };
 
     public destroyRecording = () => {
+        this.hasRecordingData$.next(false);
         this.recorder?.stop();
 
         for (const track of this.stream?.getTracks() ?? []) {
@@ -165,11 +170,5 @@ export class WebChronoLens extends ChronoLens {
         this.stream = undefined;
         this.recorder = undefined;
         this.chunks = [];
-    };
-
-    public hasRecordingData = (): boolean => {
-        const hasStream = !!this.recorder && this.recorder.state !== 'inactive';
-
-        return hasStream || !!this.stream || !!this.recorder || this.chunks.length > 0;
     };
 }

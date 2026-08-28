@@ -1,8 +1,9 @@
 import { ReactNode } from "react";
 import { ColorVariant, SizeVariant, SurfaceVariant } from "../model";
 import { TooltipProps } from "../tooltip";
+import { DesignSystemColor, ThemeComponentColor } from "../theme";
 
-export type ChipColor = ColorVariant | 'warning' | 'success' | 'error' | 'info';
+export type ChipColor = DesignSystemColor | ThemeComponentColor;
 
 export interface ChipProps {
     /**

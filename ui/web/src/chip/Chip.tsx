@@ -10,6 +10,7 @@ interface Props {
      * Icon source path, e.g. `Icons.NounProject.UnderConstruction`
      */
     icon?: string;
+    className?: string;
 }
 
 const iconSizes: Record<SizeVariant, number> = {
@@ -27,6 +28,7 @@ export const Chip: FC<ChipProps & Props> = ({
     tooltipPlacement,
     tooltipVariant = 'fill-inverse',
     showTooltipConnection,
+    className,
     children,
 }) => {
     const theme = useTheme();
@@ -38,6 +40,7 @@ export const Chip: FC<ChipProps & Props> = ({
             styles[`color-${color}`],
             styles[`size-${size}`],
             styles[`variant-${variant}`],
+            className,
         )}>
             {icon ? <Icon src={icon} width={iconSizes[size]} height={iconSizes[size]} /> : null}
             {children !== undefined && children !== null ? <span>{children}</span> : null}

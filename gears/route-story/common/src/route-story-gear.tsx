@@ -82,6 +82,8 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
     private playerToolId = 'player';
     public abstract playerComponent: ComponentType<ToolPanelProps<TMap> & RouteStoryProps<TMap, TChronoLens, TFile, TImageData>>;
 
+    public abstract topBarChipComponent: ComponentType;
+
     private animatrixToolId = 'animatrix';
     public abstract animatrixHeaderComponent: ComponentType<ToolPanelProps<TMap> & RouteStoryProps<TMap, TChronoLens, TFile, TImageData>>;
     public abstract animatrixContentComponent: ComponentType<ToolPanelProps<TMap> & RouteStoryProps<TMap, TChronoLens, TFile, TImageData>>;

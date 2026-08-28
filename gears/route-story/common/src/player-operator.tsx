@@ -18,20 +18,51 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
         this.gear = gear;
     }
 
+    public onDestroy = () => {
+        this.gear.apparatus.chronoLens.destroyRecording();
+        this.onStop();
+    };
+
     public onPlay = () => {
         this.gear.apparatus.chronoLens.isPlaying$.next(!this.gear.apparatus.chronoLens.isPlaying$.value);
     };
 
+    public onStart = () => {
+        this.gear.apparatus.chronoLens.surveillanceState$.next(SurveillanceState.InProgress);
+        this.gear.apparatus.cartomancer.blinkingState$.next({ color: "error" });
+        this.gear.apparatus.toolsStation.addTopBarTool('rec', this.gear.topBarChipComponent)
+    };
+
+    public onStop = () => {
+        this.gear.apparatus.chronoLens.surveillanceState$.next(SurveillanceState.Stopped);
+        this.gear.apparatus.cartomancer.blinkingState$.next(null);
+        this.gear.apparatus.toolsStation.removeTopBarTool('rec');
+    };
+
+    public onPause = () => {
+        this.gear.apparatus.chronoLens.surveillanceState$.next(SurveillanceState.Paused);
+        this.gear.apparatus.cartomancer.blinkingState$.next({ color: "neutral" });
+    };
+
+    public onResume = () => {
+        this.gear.apparatus.chronoLens.surveillanceState$.next(SurveillanceState.InProgress);
+        this.gear.apparatus.cartomancer.blinkingState$.next({ color: "error" });
+    };
+
     public onRecord = () => {
-        this.gear.apparatus.chronoLens.surveillanceState$.next(this.gear.apparatus.chronoLens.surveillanceState$.value === SurveillanceState.Stopped
-            ? SurveillanceState.InProgress
-            : SurveillanceState.Stopped)
+        if (this.gear.apparatus.chronoLens.surveillanceState$.value === SurveillanceState.Stopped) {
+            this.onStart();
+        } else {
+            this.onStop();
+        }
     };
 
     public onRecordPause = () => {
-        this.gear.apparatus.chronoLens.surveillanceState$.next(this.gear.apparatus.chronoLens.surveillanceState$.value === SurveillanceState.Paused
-            ? SurveillanceState.InProgress
-            : SurveillanceState.Paused)
+        if (this.gear.apparatus.chronoLens.surveillanceState$.value === SurveillanceState.Paused) {
+            this.onResume();
+        } else {
+            this.onPause();
+        }
     };
 
     public updateProgress = (

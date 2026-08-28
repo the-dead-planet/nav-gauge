@@ -58,10 +58,6 @@ export class MobileChronoLens extends ChronoLens {
         // Done by useViewRecorder on component unmount
     };
 
-    public hasRecordingData = (): boolean => {
-        return false;
-    };
-
     private setUpFolder = async (): Promise<void> => {
         const appFolder = this.getAppFolderPath();
         const exists = await RNFS.exists(appFolder);

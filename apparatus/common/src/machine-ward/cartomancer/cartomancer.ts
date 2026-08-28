@@ -18,6 +18,7 @@ import { CartomancerTranslationKey, GaugeControlsType, MapLayout, OverlayCompone
 import { ToolsStation } from "../tools-station";
 import { TranslationTable, Translatron } from "../translatron";
 import * as Translations from "./translations";
+import { DesignSystemColor, ThemeComponentColor } from "@ui";
 
 interface SelectedStyle {
     id: keyof typeof Cartomancer.styles;
@@ -86,6 +87,7 @@ export class Cartomancer<TMap> {
     private mapLayoutStorageId = 'cartomancer:map-layout';
     private mapLayoutStorageSubscription: Subscription | null = null;
     public mapLayout$: BehaviorSubject<MapLayout>;
+    public blinkingState$ = new BehaviorSubject<{ color: ThemeComponentColor | DesignSystemColor; } | null>(null);
 
     public constructor(
         _prefersLightColorScheme: boolean,
