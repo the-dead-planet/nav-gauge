@@ -61,7 +61,7 @@ export class MobileMachineWard extends MachineWard<MobileMap, MobileChronoLens, 
     };
 
     public navigate = (path: keyof RootStackParamList) => {
-        const routeExists = navigationRef.getRootState().routeNames.includes(path);
+        const routeExists = navigationRef.getRootState()?.routeNames.includes(path);
 
         if (routeExists) {
             navigationRef.navigate(path);

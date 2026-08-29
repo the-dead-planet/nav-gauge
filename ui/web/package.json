@@ -17,7 +17,7 @@
         "react-svg": "^19.1.4"
     },
     "devDependencies": {
-        "@rsbuild/core": "^2.2.0",
+        "@rsbuild/core": "^2.2.1",
         "@rsbuild/plugin-react": "^2.1.0",
         "@types/react-dom": "19.2.5",
         "css-loader": "^7.1.4",

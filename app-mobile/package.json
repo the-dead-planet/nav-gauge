@@ -41,7 +41,7 @@
         "@the-dead-planet/nav-gauge-ui-mobile": "*",
         "fast-text-encoding": "^1.0.6",
         "pmtiles": "^4.5.0",
-        "react-native": "0.87.0",
+        "react-native": "0.87.1",
         "react-native-fs": "^2.20.0",
         "react-native-safe-area-context": "^5.9.1",
         "react-native-screens": "^4.27.0",

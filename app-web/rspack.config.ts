@@ -140,6 +140,12 @@ export const baseConfig = (_env: Env, argv: Argv): Configuration => ({
             ],
         }),
     ],
+    ignoreWarnings: [
+        {
+            module: /maplibre-gl/,
+            message: /Critical dependency/,
+        },
+    ],
     output: {
         uniqueName: 'app',
         filename: '[name].bundle.js',

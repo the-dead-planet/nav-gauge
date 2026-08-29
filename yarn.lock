@@ -4716,10 +4716,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native/asset-utils@npm:0.87.0":
-  version: 0.87.0
-  resolution: "@react-native/asset-utils@npm:0.87.0"
-  checksum: 10/f3448ebf8b2d46855558df5a40cc8714ec83cb9d3fd8d22d2edb4aeb9bff80a31e10d554ca6f7ee0b6890213940f57f07d1a416e902de722fa0c854804f2a4b9
+"@react-native/asset-utils@npm:0.87.1":
+  version: 0.87.1
+  resolution: "@react-native/asset-utils@npm:0.87.1"
+  checksum: 10/886ce84e957f3ff6c1cd5a9729b8afc45baa3758f303a05c0d0bb20211ad7a18c60259cd75225c22f47698dfdb544b1ba6d02f2c460c1ae48c741b1b5a4a89f4
   languageName: node
   linkType: hard
 
@@ -4793,53 +4793,70 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native/community-cli-plugin@npm:0.87.0":
-  version: 0.87.0
-  resolution: "@react-native/community-cli-plugin@npm:0.87.0"
+"@react-native/codegen@npm:0.87.1":
+  version: 0.87.1
+  resolution: "@react-native/codegen@npm:0.87.1"
   dependencies:
-    "@react-native/asset-utils": "npm:0.87.0"
-    "@react-native/dev-middleware": "npm:0.87.0"
+    "@babel/core": "npm:^7.25.2"
+    "@babel/parser": "npm:^7.29.0"
+    hermes-parser: "npm:0.36.1"
+    invariant: "npm:^2.2.4"
+    nullthrows: "npm:^1.1.1"
+    tinyglobby: "npm:^0.2.15"
+    yargs: "npm:^17.6.2"
+  peerDependencies:
+    "@babel/core": "*"
+  checksum: 10/31f5bece759b48645157b1c3fa3618202ffc8d814f7f1677a3f0b54213bbae96a9816813dc258d8b2751e587dede82733ea0d7c542b766ed3bfdd9491ca3cc1c
+  languageName: node
+  linkType: hard
+
+"@react-native/community-cli-plugin@npm:0.87.1":
+  version: 0.87.1
+  resolution: "@react-native/community-cli-plugin@npm:0.87.1"
+  dependencies:
+    "@react-native/asset-utils": "npm:0.87.1"
+    "@react-native/dev-middleware": "npm:0.87.1"
     debug: "npm:^4.4.0"
     invariant: "npm:^2.2.4"
     metro: "npm:^0.87.0"
     semver: "npm:^7.1.3"
   peerDependencies:
     "@react-native-community/cli": "*"
-    "@react-native/metro-config": 0.87.0
+    "@react-native/metro-config": 0.87.1
   peerDependenciesMeta:
     "@react-native-community/cli":
       optional: true
     "@react-native/metro-config":
       optional: true
-  checksum: 10/76ab9586da37349bfabb8db4b33e808e700263b5a04d1bbd94180d62b7728557d2a2fcc890a0906175f91851ad75535268c17f5d00cf3a58f81ac7a30070c8f1
+  checksum: 10/6a3a3334f8079168f317859c24334e1fd5c7b71bd55abbd063b7678bf7a0eac5cdd7075365c798166a6f3c89496f766166e1b3ce681624e7c7059091b77b065c
   languageName: node
   linkType: hard
 
-"@react-native/debugger-frontend@npm:0.87.0":
-  version: 0.87.0
-  resolution: "@react-native/debugger-frontend@npm:0.87.0"
-  checksum: 10/ec2f0f05b09b3a6312136dc83166c92edf2286ba23e0dfcf3f6b3f89c1aeb7608ae494699228d6f506b5a92c0f6084f7193407b7411f282962ec3648089f1c6f
+"@react-native/debugger-frontend@npm:0.87.1":
+  version: 0.87.1
+  resolution: "@react-native/debugger-frontend@npm:0.87.1"
+  checksum: 10/9fb88c4d5478a0ef9eadb537ce7fcda840a3b5de511a0502d49d4f089b49e3f1f4fdb9977dad87d270aaf8c90ee00e7c5f06378e07159d815f3b717e7fed1c98
   languageName: node
   linkType: hard
 
-"@react-native/debugger-shell@npm:0.87.0":
-  version: 0.87.0
-  resolution: "@react-native/debugger-shell@npm:0.87.0"
+"@react-native/debugger-shell@npm:0.87.1":
+  version: 0.87.1
+  resolution: "@react-native/debugger-shell@npm:0.87.1"
   dependencies:
     cross-spawn: "npm:^7.0.6"
     debug: "npm:^4.4.0"
     fb-dotslash: "npm:0.5.8"
-  checksum: 10/569b2092e412b77e54d9c3b75eb047f3069a883f798432151e463191e82ea1c6ffe340a2894cbc1c3faf2ae873c488f132bdb7ac511eeeb66d375ab317416286
+  checksum: 10/ccb059263a8353562c75f97d27aa4e30e3f59b99eb3e9d31db0a45c64158ab42fd73de89ec36c7101149b3f7920d80851057021afd47069c8effb7db0dfc671a
   languageName: node
   linkType: hard
 
-"@react-native/dev-middleware@npm:0.87.0":
-  version: 0.87.0
-  resolution: "@react-native/dev-middleware@npm:0.87.0"
+"@react-native/dev-middleware@npm:0.87.1":
+  version: 0.87.1
+  resolution: "@react-native/dev-middleware@npm:0.87.1"
   dependencies:
     "@isaacs/ttlcache": "npm:^1.4.1"
-    "@react-native/debugger-frontend": "npm:0.87.0"
-    "@react-native/debugger-shell": "npm:0.87.0"
+    "@react-native/debugger-frontend": "npm:0.87.1"
+    "@react-native/debugger-shell": "npm:0.87.1"
     chrome-launcher: "npm:^0.15.2"
     chromium-edge-launcher: "npm:^0.3.0"
     connect: "npm:^3.6.5"
@@ -4849,7 +4866,7 @@ __metadata:
     open: "npm:^7.0.3"
     serve-static: "npm:^1.16.2"
     ws: "npm:^7.5.10"
-  checksum: 10/00e725e08a68bf51e8893b0345ebd3d77376efa7c4d199c6c53af467e18d55ca9d82edcfc5da34f274ac693438757fd09141a46ed82b9a63d992f2e4c3799cb8
+  checksum: 10/e64f283b1c6807bb4bfb89f1450c7b8a445ab78e2b54ee4f8248a034f5ba5997b0767b026278355ccbbcf5e6df384af09c00a0cebd49ae80a79b16a1af358c8e
   languageName: node
   linkType: hard
 
@@ -4883,10 +4900,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native/gradle-plugin@npm:0.87.0":
-  version: 0.87.0
-  resolution: "@react-native/gradle-plugin@npm:0.87.0"
-  checksum: 10/b74ae9edee1e1769cc23612438cf2e64ffb266e394e0e8a722516f1f06760123d690d7ff32ed2d74983dff3f0fdbeb8867d1cb25cb17ea712b014813ba8243e7
+"@react-native/gradle-plugin@npm:0.87.1":
+  version: 0.87.1
+  resolution: "@react-native/gradle-plugin@npm:0.87.1"
+  checksum: 10/fde4806143599f27c6d959d1aabdd431b0e7c6f2bcd36bd36d548b9ee139634d1d2d50e848f454fb056c25b5352facbfcfe575a43209d865bbef8bad6b68ada2
   languageName: node
   linkType: hard
 
@@ -4938,10 +4955,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native/normalize-colors@npm:0.87.0":
-  version: 0.87.0
-  resolution: "@react-native/normalize-colors@npm:0.87.0"
-  checksum: 10/76f5c732f932d67f0edf0a45dfba15e39f5b54397224b5bdd23d32202148d32dd1150040d14ac90afb485a1ae4f76fc3bc1caa742cb58a4cc02d5a3d7609bdaf
+"@react-native/normalize-colors@npm:0.87.1":
+  version: 0.87.1
+  resolution: "@react-native/normalize-colors@npm:0.87.1"
+  checksum: 10/c84d3fa05f3d246b48274050a05f64624f880caca088a99312c8a50a385dd9b5b3308aa0d12ce3c947ba920affaf9d92cd13a95b70ce3473ae360bf857f95058
   languageName: node
   linkType: hard
 
@@ -4952,20 +4969,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native/virtualized-lists@npm:0.87.0":
-  version: 0.87.0
-  resolution: "@react-native/virtualized-lists@npm:0.87.0"
+"@react-native/virtualized-lists@npm:0.87.1":
+  version: 0.87.1
+  resolution: "@react-native/virtualized-lists@npm:0.87.1"
   dependencies:
     invariant: "npm:^2.2.4"
     nullthrows: "npm:^1.1.1"
   peerDependencies:
     "@types/react": ^19.2.0
     react: "*"
-    react-native: 0.87.0
+    react-native: 0.87.1
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 10/70bb1111f3d7462d797f78795afedf2d7ed19ec491179ad3fba52478c01e8cd0ac9158882cf0b770a674d6bd984793912d50f983363481bc4de6d8b4ebcda1d0
+  checksum: 10/7660c41173648b4bf79c691e9522eaf470453ca69cb45b83b1b33a9d35aa301aad83bb52ea68f53d2e5f7b08a561ab9213df52be932063350a0fbd2ef8f796ab
   languageName: node
   linkType: hard
 
@@ -4987,7 +5004,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/elements@npm:^2.9.39":
+"@react-navigation/elements@npm:^2.9.40":
   version: 2.9.40
   resolution: "@react-navigation/elements@npm:2.9.40"
   dependencies:
@@ -5008,26 +5025,26 @@ __metadata:
   linkType: hard
 
 "@react-navigation/native-stack@npm:^7.18.9":
-  version: 7.18.9
-  resolution: "@react-navigation/native-stack@npm:7.18.9"
+  version: 7.18.10
+  resolution: "@react-navigation/native-stack@npm:7.18.10"
   dependencies:
-    "@react-navigation/elements": "npm:^2.9.39"
+    "@react-navigation/elements": "npm:^2.9.40"
     color: "npm:^4.2.3"
     sf-symbols-typescript: "npm:^2.1.0"
     warn-once: "npm:^0.1.1"
   peerDependencies:
-    "@react-navigation/native": ^7.3.17
+    "@react-navigation/native": ^7.3.18
     react: ">= 18.2.0"
     react-native: "*"
     react-native-safe-area-context: ">= 4.0.0"
     react-native-screens: ">= 4.0.0"
-  checksum: 10/a40be2ed2239549c873dcd20f69577602eeae7d9d3dffb888d0c3b556d25a6459658f6a6405c7c22737cd9b5d7180030694424d9a548c432cb82c3f1a93ace54
+  checksum: 10/38e65b56f6b3cf7fabe863ace0efb0145579fc2849af8b0729703383ad0f357c1ff8643f33d3ac1b4615e8ddadfc43330a961d0894e81df4123a8ca8f49f6525
   languageName: node
   linkType: hard
 
 "@react-navigation/native@npm:^7.3.17":
-  version: 7.3.17
-  resolution: "@react-navigation/native@npm:7.3.17"
+  version: 7.3.18
+  resolution: "@react-navigation/native@npm:7.3.18"
   dependencies:
     "@react-navigation/core": "npm:^7.21.13"
     escape-string-regexp: "npm:^4.0.0"
@@ -5038,7 +5055,7 @@ __metadata:
   peerDependencies:
     react: ">= 18.2.0"
     react-native: "*"
-  checksum: 10/85432e4f59c66368b4531df80eb4818f6d7dce5be1ce8fe115422800d00faa644c4b0f588e80e8472158e7d7674f8fab2e809c60e15438162067dcfa1f7d4fd2
+  checksum: 10/04c9ae8444dad4cc7b0aa7d8de68c7c50499bd67c87375162890ba792fffc5e7a2c19de8754fc77d0c6f0f2fc440c6b8b644636903d157169a16952ccb59fda6
   languageName: node
   linkType: hard
 
@@ -5196,11 +5213,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rsbuild/core@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "@rsbuild/core@npm:2.2.0"
+"@rsbuild/core@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "@rsbuild/core@npm:2.2.1"
   dependencies:
-    "@rspack/core": "npm:2.2.0"
+    "@rspack/core": "npm:~2.2.1"
     "@swc/helpers": "npm:^0.5.23"
   peerDependencies:
     core-js: ">= 3.0.0"
@@ -5209,7 +5226,7 @@ __metadata:
       optional: true
   bin:
     rsbuild: ./bin/rsbuild.js
-  checksum: 10/8507380ec7265f1c82b8d28c41fc9a9e369edd9b0bd4d4ac8a112ebb74bf134895070af02526de247efd150a953ae4e840d2920138323904cfebe0253c965ee0
+  checksum: 10/14c6c77d0bd8c34559f80c645d8e26cf43d7a7028daf87a0c37ffba537e0e299e25f73ef4e05b43b611ec6423ae2ff4e59c759422859989d3abbcea0d9ef840c
   languageName: node
   linkType: hard
 
@@ -5248,79 +5265,79 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rspack/binding-darwin-arm64@npm:2.2.0":
-  version: 2.2.0
-  resolution: "@rspack/binding-darwin-arm64@npm:2.2.0"
+"@rspack/binding-darwin-arm64@npm:2.2.1":
+  version: 2.2.1
+  resolution: "@rspack/binding-darwin-arm64@npm:2.2.1"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@rspack/binding-darwin-x64@npm:2.2.0":
-  version: 2.2.0
-  resolution: "@rspack/binding-darwin-x64@npm:2.2.0"
+"@rspack/binding-darwin-x64@npm:2.2.1":
+  version: 2.2.1
+  resolution: "@rspack/binding-darwin-x64@npm:2.2.1"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@rspack/binding-linux-arm64-gnu@npm:2.2.0":
-  version: 2.2.0
-  resolution: "@rspack/binding-linux-arm64-gnu@npm:2.2.0"
+"@rspack/binding-linux-arm64-gnu@npm:2.2.1":
+  version: 2.2.1
+  resolution: "@rspack/binding-linux-arm64-gnu@npm:2.2.1"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rspack/binding-linux-arm64-musl@npm:2.2.0":
-  version: 2.2.0
-  resolution: "@rspack/binding-linux-arm64-musl@npm:2.2.0"
+"@rspack/binding-linux-arm64-musl@npm:2.2.1":
+  version: 2.2.1
+  resolution: "@rspack/binding-linux-arm64-musl@npm:2.2.1"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@rspack/binding-linux-ppc64-gnu@npm:2.2.0":
-  version: 2.2.0
-  resolution: "@rspack/binding-linux-ppc64-gnu@npm:2.2.0"
+"@rspack/binding-linux-ppc64-gnu@npm:2.2.1":
+  version: 2.2.1
+  resolution: "@rspack/binding-linux-ppc64-gnu@npm:2.2.1"
   conditions: os=linux & cpu=ppc64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rspack/binding-linux-riscv64-gnu@npm:2.2.0":
-  version: 2.2.0
-  resolution: "@rspack/binding-linux-riscv64-gnu@npm:2.2.0"
+"@rspack/binding-linux-riscv64-gnu@npm:2.2.1":
+  version: 2.2.1
+  resolution: "@rspack/binding-linux-riscv64-gnu@npm:2.2.1"
   conditions: os=linux & cpu=riscv64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rspack/binding-linux-riscv64-musl@npm:2.2.0":
-  version: 2.2.0
-  resolution: "@rspack/binding-linux-riscv64-musl@npm:2.2.0"
+"@rspack/binding-linux-riscv64-musl@npm:2.2.1":
+  version: 2.2.1
+  resolution: "@rspack/binding-linux-riscv64-musl@npm:2.2.1"
   conditions: os=linux & cpu=riscv64 & libc=musl
   languageName: node
   linkType: hard
 
-"@rspack/binding-linux-s390x-gnu@npm:2.2.0":
-  version: 2.2.0
-  resolution: "@rspack/binding-linux-s390x-gnu@npm:2.2.0"
+"@rspack/binding-linux-s390x-gnu@npm:2.2.1":
+  version: 2.2.1
+  resolution: "@rspack/binding-linux-s390x-gnu@npm:2.2.1"
   conditions: os=linux & cpu=s390x & libc=glibc
   languageName: node
   linkType: hard
 
-"@rspack/binding-linux-x64-gnu@npm:2.2.0":
-  version: 2.2.0
-  resolution: "@rspack/binding-linux-x64-gnu@npm:2.2.0"
+"@rspack/binding-linux-x64-gnu@npm:2.2.1":
+  version: 2.2.1
+  resolution: "@rspack/binding-linux-x64-gnu@npm:2.2.1"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rspack/binding-linux-x64-musl@npm:2.2.0":
-  version: 2.2.0
-  resolution: "@rspack/binding-linux-x64-musl@npm:2.2.0"
+"@rspack/binding-linux-x64-musl@npm:2.2.1":
+  version: 2.2.1
+  resolution: "@rspack/binding-linux-x64-musl@npm:2.2.1"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@rspack/binding-wasm32-wasi@npm:2.2.0":
-  version: 2.2.0
-  resolution: "@rspack/binding-wasm32-wasi@npm:2.2.0"
+"@rspack/binding-wasm32-wasi@npm:2.2.1":
+  version: 2.2.1
+  resolution: "@rspack/binding-wasm32-wasi@npm:2.2.1"
   dependencies:
     "@emnapi/core": "npm:1.11.3"
     "@emnapi/runtime": "npm:1.11.3"
@@ -5329,45 +5346,45 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rspack/binding-win32-arm64-msvc@npm:2.2.0":
-  version: 2.2.0
-  resolution: "@rspack/binding-win32-arm64-msvc@npm:2.2.0"
+"@rspack/binding-win32-arm64-msvc@npm:2.2.1":
+  version: 2.2.1
+  resolution: "@rspack/binding-win32-arm64-msvc@npm:2.2.1"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@rspack/binding-win32-ia32-msvc@npm:2.2.0":
-  version: 2.2.0
-  resolution: "@rspack/binding-win32-ia32-msvc@npm:2.2.0"
+"@rspack/binding-win32-ia32-msvc@npm:2.2.1":
+  version: 2.2.1
+  resolution: "@rspack/binding-win32-ia32-msvc@npm:2.2.1"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@rspack/binding-win32-x64-msvc@npm:2.2.0":
-  version: 2.2.0
-  resolution: "@rspack/binding-win32-x64-msvc@npm:2.2.0"
+"@rspack/binding-win32-x64-msvc@npm:2.2.1":
+  version: 2.2.1
+  resolution: "@rspack/binding-win32-x64-msvc@npm:2.2.1"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"@rspack/binding@npm:2.2.0":
-  version: 2.2.0
-  resolution: "@rspack/binding@npm:2.2.0"
+"@rspack/binding@npm:2.2.1":
+  version: 2.2.1
+  resolution: "@rspack/binding@npm:2.2.1"
   dependencies:
-    "@rspack/binding-darwin-arm64": "npm:2.2.0"
-    "@rspack/binding-darwin-x64": "npm:2.2.0"
-    "@rspack/binding-linux-arm64-gnu": "npm:2.2.0"
-    "@rspack/binding-linux-arm64-musl": "npm:2.2.0"
-    "@rspack/binding-linux-ppc64-gnu": "npm:2.2.0"
-    "@rspack/binding-linux-riscv64-gnu": "npm:2.2.0"
-    "@rspack/binding-linux-riscv64-musl": "npm:2.2.0"
-    "@rspack/binding-linux-s390x-gnu": "npm:2.2.0"
-    "@rspack/binding-linux-x64-gnu": "npm:2.2.0"
-    "@rspack/binding-linux-x64-musl": "npm:2.2.0"
-    "@rspack/binding-wasm32-wasi": "npm:2.2.0"
-    "@rspack/binding-win32-arm64-msvc": "npm:2.2.0"
-    "@rspack/binding-win32-ia32-msvc": "npm:2.2.0"
-    "@rspack/binding-win32-x64-msvc": "npm:2.2.0"
+    "@rspack/binding-darwin-arm64": "npm:2.2.1"
+    "@rspack/binding-darwin-x64": "npm:2.2.1"
+    "@rspack/binding-linux-arm64-gnu": "npm:2.2.1"
+    "@rspack/binding-linux-arm64-musl": "npm:2.2.1"
+    "@rspack/binding-linux-ppc64-gnu": "npm:2.2.1"
+    "@rspack/binding-linux-riscv64-gnu": "npm:2.2.1"
+    "@rspack/binding-linux-riscv64-musl": "npm:2.2.1"
+    "@rspack/binding-linux-s390x-gnu": "npm:2.2.1"
+    "@rspack/binding-linux-x64-gnu": "npm:2.2.1"
+    "@rspack/binding-linux-x64-musl": "npm:2.2.1"
+    "@rspack/binding-wasm32-wasi": "npm:2.2.1"
+    "@rspack/binding-win32-arm64-msvc": "npm:2.2.1"
+    "@rspack/binding-win32-ia32-msvc": "npm:2.2.1"
+    "@rspack/binding-win32-x64-msvc": "npm:2.2.1"
   dependenciesMeta:
     "@rspack/binding-darwin-arm64":
       optional: true
@@ -5397,13 +5414,13 @@ __metadata:
       optional: true
     "@rspack/binding-win32-x64-msvc":
       optional: true
-  checksum: 10/8afe7b6a8c38276e2ddc39d876dba08ebc427c8c4cc9b629acf5fb64f6dcb92999c7c1607d1277db2e899aaf5aa25b8fce40ebbbabb9ce4e15897dda1f20a52d
+  checksum: 10/fc2d173a3df7bcd1cdfadb5a8e17905b3cf6eda47de49e4b18cc5c8bcaba85f50e6b799865e8dbef2867a3d71478dad38b79af1cb3df889a8cb66f9a96270fe3
   languageName: node
   linkType: hard
 
-"@rspack/cli@npm:2.2.0":
-  version: 2.2.0
-  resolution: "@rspack/cli@npm:2.2.0"
+"@rspack/cli@npm:2.2.1":
+  version: 2.2.1
+  resolution: "@rspack/cli@npm:2.2.1"
   peerDependencies:
     "@rspack/core": ^2.0.0-0
     "@rspack/dev-server": ^2.0.0-0
@@ -5412,15 +5429,15 @@ __metadata:
       optional: true
   bin:
     rspack: ./bin/rspack.js
-  checksum: 10/a25acd164268dcaba6185e108fde07ecf0bbadabeb230531f314c822a44e9dff57b2dd6b5e6d0dbf984c73e6eb69e0b4ec724bcf8ae6803827a42fdbf896c49c
+  checksum: 10/831e90ce8af8211ed70f6a712f44631a03a458bfb1d2bbc942f7a92fbb6e45c6d579b15e1eb24bc78b42088974c31932c28494885eeb9f937a7d6fe9a712c8d6
   languageName: node
   linkType: hard
 
-"@rspack/core@npm:2.2.0":
-  version: 2.2.0
-  resolution: "@rspack/core@npm:2.2.0"
+"@rspack/core@npm:2.2.1, @rspack/core@npm:~2.2.1":
+  version: 2.2.1
+  resolution: "@rspack/core@npm:2.2.1"
   dependencies:
-    "@rspack/binding": "npm:2.2.0"
+    "@rspack/binding": "npm:2.2.1"
   peerDependencies:
     "@module-federation/runtime-tools": ^0.24.1 || ^2.0.0
     "@swc/helpers": ^0.5.23
@@ -5429,7 +5446,7 @@ __metadata:
       optional: true
     "@swc/helpers":
       optional: true
-  checksum: 10/69c1857d666e4a380fee61b72f3f9dad8a722ff081af32f0b489ad5399497ad5802a133c37b3fe3c7e26a53e68ef8284ebf561d318669b3ae0931f1333b038f3
+  checksum: 10/df3121e9d234450d4e6ac9176f6b4474d4a76e80c6c2c4d4310015753679370abab476a5752450e1d44be8ef520bd3b73b80d7bd52f9fc1907264661d27870bc
   languageName: node
   linkType: hard
 
@@ -5844,9 +5861,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/react@npm:^16.3.2":
-  version: 16.3.2
-  resolution: "@testing-library/react@npm:16.3.2"
+"@testing-library/react@npm:^16.3.3":
+  version: 16.3.3
+  resolution: "@testing-library/react@npm:16.3.3"
   dependencies:
     "@babel/runtime": "npm:^7.12.5"
   peerDependencies:
@@ -5860,7 +5877,7 @@ __metadata:
       optional: true
     "@types/react-dom":
       optional: true
-  checksum: 10/0ca88c6f672d00c2afd1bdedeff9b5382dd8157038efeb9762dc016731030075624be7106b92d2b5e5c52812faea85263e69272c14b6f8700eb48a4a8af6feef
+  checksum: 10/c330e2d8158fd0f4b059cb1cd30f74265c6e80b204cf7245c9b2c4117582d6deb985d51edb62bd1b94e79ef48a2eaba4d002278d06caf725830a8b0f475e0118
   languageName: node
   linkType: hard
 
@@ -5914,7 +5931,7 @@ __metadata:
     pmtiles: "npm:^4.5.0"
     prettier: "npm:^3.9.6"
     react: "npm:19.2.8"
-    react-native: "npm:0.87.0"
+    react-native: "npm:0.87.1"
     react-native-fs: "npm:^2.20.0"
     react-native-safe-area-context: "npm:^5.9.1"
     react-native-screens: "npm:^4.27.0"
@@ -5937,13 +5954,13 @@ __metadata:
     "@babel/preset-env": "npm:^8.0.2"
     "@babel/preset-react": "npm:^8.0.1"
     "@babel/preset-typescript": "npm:^8.0.1"
-    "@rspack/cli": "npm:2.2.0"
-    "@rspack/core": "npm:2.2.0"
+    "@rspack/cli": "npm:2.2.1"
+    "@rspack/core": "npm:2.2.1"
     "@rspack/dev-server": "npm:2.2.1"
     "@rspack/plugin-react-refresh": "npm:^2.0.2"
     "@svgr/webpack": "npm:^8.1.0"
     "@testing-library/dom": "npm:^10.4.1"
-    "@testing-library/react": "npm:^16.3.2"
+    "@testing-library/react": "npm:^16.3.3"
     "@the-dead-planet/nav-gauge-apparatus-common": "npm:*"
     "@the-dead-planet/nav-gauge-apparatus-web": "npm:*"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
@@ -5999,13 +6016,13 @@ __metadata:
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
     react: "npm:19.2.8"
-    react-native: "npm:0.87.0"
+    react-native: "npm:0.87.1"
     react-native-fs: "npm:^2.20.0"
     react-native-view-recorder: "patch:react-native-view-recorder@npm%3A0.4.1#~/.yarn/patches/react-native-view-recorder-npm-0.4.1-f65f857d14.patch"
   peerDependencies:
     "@maplibre/maplibre-react-native": 11.3.7
     react: 19.2.8
-    react-native: 0.87.0
+    react-native: 0.87.1
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -6054,11 +6071,11 @@ __metadata:
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
     react: "npm:19.2.8"
-    react-native: "npm:0.87.0"
+    react-native: "npm:0.87.1"
   peerDependencies:
     "@maplibre/maplibre-react-native": 11.3.7
     react: 19.2.8
-    react-native: 0.87.0
+    react-native: 0.87.1
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -6108,11 +6125,11 @@ __metadata:
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
     react: "npm:19.2.8"
-    react-native: "npm:0.87.0"
+    react-native: "npm:0.87.1"
   peerDependencies:
     "@maplibre/maplibre-react-native": 11.3.7
     react: 19.2.8
-    react-native: 0.87.0
+    react-native: 0.87.1
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -6165,7 +6182,7 @@ __metadata:
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
     react: "npm:19.2.8"
-    react-native: "npm:0.87.0"
+    react-native: "npm:0.87.1"
     react-native-fs: "npm:^2.20.0"
   peerDependencies:
     "@bam.tech/react-native-image-resizer": ^3.0.11
@@ -6173,7 +6190,7 @@ __metadata:
     "@maplibre/maplibre-react-native": 11.3.7
     "@react-native-documents/picker": ^12.0.2
     react: 19.2.8
-    react-native: 0.87.0
+    react-native: 0.87.1
     react-native-fs: ^2.20.0
     rxjs: ^7.8.2
   languageName: unknown
@@ -6226,11 +6243,11 @@ __metadata:
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
     react: "npm:19.2.8"
-    react-native: "npm:0.87.0"
+    react-native: "npm:0.87.1"
   peerDependencies:
     "@maplibre/maplibre-react-native": 11.3.7
     react: 19.2.8
-    react-native: 0.87.0
+    react-native: 0.87.1
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -6272,7 +6289,7 @@ __metadata:
   dependencies:
     "@resvg/resvg-js": "npm:2.6.2"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
-    "@types/node": "npm:^26.3.0"
+    "@types/node": "npm:^26.4.0"
     react: "npm:19.2.8"
     svgson: "npm:^5.3.1"
   peerDependencies:
@@ -6290,15 +6307,13 @@ __metadata:
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
     react: "npm:19.2.8"
-    react-native: "npm:0.87.0"
-    react-native-fs: "npm:^2.20.0"
+    react-native: "npm:0.87.1"
     react-native-svg: "npm:^15.15.5"
   peerDependencies:
     "@maplibre/maplibre-react-native": 11.3.7
     "@react-native-documents/picker": ^12.0.2
     react: 19.2.8
-    react-native: 0.87.0
-    react-native-fs: ^2.20.0
+    react-native: 0.87.1
     rxjs: ^7.8.2
   languageName: unknown
   linkType: soft
@@ -6307,7 +6322,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@the-dead-planet/nav-gauge-ui-web@workspace:ui/web"
   dependencies:
-    "@rsbuild/core": "npm:^2.2.0"
+    "@rsbuild/core": "npm:^2.2.1"
     "@rsbuild/plugin-react": "npm:^2.1.0"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
@@ -6773,12 +6788,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^26.3.0":
-  version: 26.3.0
-  resolution: "@types/node@npm:26.3.0"
+"@types/node@npm:^26.4.0":
+  version: 26.4.0
+  resolution: "@types/node@npm:26.4.0"
   dependencies:
     undici-types: "npm:~8.3.0"
-  checksum: 10/77a9587a3c8ce2e4bf1547d70706f262ba6dca2a39012091df36f1729132c06485833fe6f74ffbd5271d12966d6b729f6343d5af95681b7a08d437115b125015
+  checksum: 10/90e2a82f8c17200c74515753ed48f6e13987b657d4c93e9b9922860a0abef0627b66037eb77d2a315d0255e9cd0115d71e791d13446ec02d93f85d8ab02dec69
   languageName: node
   linkType: hard
 
@@ -11540,10 +11555,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hermes-compiler@npm:250829098.0.16":
-  version: 250829098.0.16
-  resolution: "hermes-compiler@npm:250829098.0.16"
-  checksum: 10/49cd9558ed26ad2f11c897058f995fab113cf95b1ece9fda512045cebf60b75387aa0d2e7fdf3201b4d0102ea0d63963f7e7e4c3500c9dad2daa95e0c9f57146
+"hermes-compiler@npm:250829098.0.17":
+  version: 250829098.0.17
+  resolution: "hermes-compiler@npm:250829098.0.17"
+  checksum: 10/b654323fda4dc38b8b69050e2384ad7125d281c081c96d3f2b0165f451b371c38244f70e3985c32d764b2b678bc6a504ee6adb3067ec0de814e84862cd51d47e
   languageName: node
   linkType: hard
 
@@ -15488,23 +15503,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native@npm:0.87.0":
-  version: 0.87.0
-  resolution: "react-native@npm:0.87.0"
+"react-native@npm:0.87.1":
+  version: 0.87.1
+  resolution: "react-native@npm:0.87.1"
   dependencies:
-    "@react-native/asset-utils": "npm:0.87.0"
-    "@react-native/codegen": "npm:0.87.0"
-    "@react-native/community-cli-plugin": "npm:0.87.0"
-    "@react-native/gradle-plugin": "npm:0.87.0"
-    "@react-native/normalize-colors": "npm:0.87.0"
-    "@react-native/virtualized-lists": "npm:0.87.0"
+    "@react-native/asset-utils": "npm:0.87.1"
+    "@react-native/codegen": "npm:0.87.1"
+    "@react-native/community-cli-plugin": "npm:0.87.1"
+    "@react-native/gradle-plugin": "npm:0.87.1"
+    "@react-native/normalize-colors": "npm:0.87.1"
+    "@react-native/virtualized-lists": "npm:0.87.1"
     anser: "npm:^1.4.9"
     ansi-regex: "npm:^5.0.0"
     babel-plugin-syntax-hermes-parser: "npm:0.36.1"
     base64-js: "npm:^1.5.1"
     commander: "npm:^12.0.0"
     flow-enums-runtime: "npm:^0.0.6"
-    hermes-compiler: "npm:250829098.0.16"
+    hermes-compiler: "npm:250829098.0.17"
     invariant: "npm:^2.2.4"
     memoize-one: "npm:^5.0.0"
     metro-runtime: "npm:^0.87.0"
@@ -15530,7 +15545,7 @@ __metadata:
       optional: true
   bin:
     react-native: cli.js
-  checksum: 10/b3746c15508abb47058c9351f32f40213de874f38eb19d9ffeb9faf348c4769c5f98e30623744dd436b8d74f4c5828ae03bec1dd0b5bdda56f5d3f3a4d6aa122
+  checksum: 10/162725dd618671111421d1a6f5b1d0f53116efbfb3022c45a3d7ecea724299da4754be4af3e8833a1c5952f8b2ad2575bfe7c3c2ba1bffdef164c3ebcc91cb21
   languageName: node
   linkType: hard
 
