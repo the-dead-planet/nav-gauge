@@ -1,13 +1,13 @@
 import { FC } from "react";
 import classNames from "classnames";
-import { MachineWardTopBarProps, SurveillanceState, useMultipleTranslations } from "@apparatus";
+import { MachineWardTopBarProps, useMultipleTranslations } from "@apparatus";
 import { useWebMachineWard } from "@web-apparatus";
 import { FontType, Icons, useTheme } from "@ui";
-import { Button, Chip, H1 } from "@web-ui";
+import { Button, H1 } from "@web-ui";
 import { LayoutMenu } from "./menu/LayoutMenu";
 import { UnderConstructionChip } from "./UnderConstructionChip";
-import styles from './top-bar.module.css';
 import { useSubjectState } from "@tinker-chest";
+import styles from './top-bar.module.css';
 
 export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
     const theme = useTheme();
