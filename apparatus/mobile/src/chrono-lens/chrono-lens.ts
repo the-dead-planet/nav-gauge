@@ -49,7 +49,7 @@ export class MobileChronoLens extends ChronoLens {
                 id: this.noticeId,
                 type: 'error',
                 error: err as Error,
-                text: `Cannot view the recording video. ${(err as Error).message || 'Unknown reason.'}`
+                text: `Cannot view the recording video.`
             });
         });
     };

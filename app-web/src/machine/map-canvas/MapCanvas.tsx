@@ -19,7 +19,7 @@ interface Props {
 }
 
 export const MapCanvas: FC<Props> = ({ map, children }) => {
-    const { cartomancer } = useWebMachineWard();
+    const { cartomancer, chronoLens, signaliumBureau } = useWebMachineWard();
     const [blinkingState] = useSubjectState(cartomancer.blinkingState$);
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const [containerRef, setContainerRef] = useState<HTMLElement | null>(null);
@@ -201,6 +201,18 @@ export const MapCanvas: FC<Props> = ({ map, children }) => {
     }, [isInitialised]);
 
     useMapTools(map);
+
+    useEffect(() => {
+        const abortController = new AbortController();
+        chronoLens.canvas = map.getCanvas();
+        chronoLens.setUpSurveillance(signaliumBureau, abortController.signal);
+
+        return () => {
+            abortController.abort();
+            chronoLens.canvas = null;
+            chronoLens.clearSurveillance();
+        };
+    }, [map, chronoLens, signaliumBureau]);
 
     return (
         <div

@@ -53,7 +53,7 @@
         "lint": "npx eslint . --no-warn-ignored"
     },
     "dependencies": {
-        "@maplibre/maplibre-gl-style-spec": "^26.2.1",
+        "@maplibre/maplibre-gl-style-spec": "^26.4.1",
         "@turf/along": "^7.4.0",
         "@turf/bbox": "^7.4.0",
         "@turf/bearing": "^7.4.0",

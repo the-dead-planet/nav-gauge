@@ -55,22 +55,6 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
         this.gear.apparatus.cartomancer.blinkingState$.next({ color: "error" });
     };
 
-    public onRecord = () => {
-        if (this.gear.apparatus.chronoLens.surveillanceState$.value === SurveillanceState.Stopped) {
-            this.onStart();
-        } else {
-            this.onStop();
-        }
-    };
-
-    public onRecordPause = () => {
-        if (this.gear.apparatus.chronoLens.surveillanceState$.value === SurveillanceState.Paused) {
-            this.onResume();
-        } else {
-            this.onPause();
-        }
-    };
-
     public updateProgress = (
         value: number,
         updateLayer?: (

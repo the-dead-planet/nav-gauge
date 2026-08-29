@@ -3,6 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { useTheme, FontType, Icons } from "@ui";
 import { Button, Text } from '@mobile-ui';
 import { MachineWardTopBarProps, useMultipleTranslations } from "@apparatus";
+import { useSubjectState } from "@tinker-chest";
 import { useMobileMachineWard } from "@mobile-apparatus";
 import { RootStackParamList } from "../../navigation";
 import { UnderConstructionChip } from "./UnderConstructionChip";
@@ -41,7 +42,8 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
     onNavigate,
 }) => {
     const theme = useTheme();
-    const { individuator, namespace, translationKey } = useMobileMachineWard();
+    const { individuator, namespace, translationKey, toolsStation } = useMobileMachineWard();
+    const [topBarTools] = useSubjectState(toolsStation.topBarTools$);
     const [modeTooltip] = useMultipleTranslations([
         { n: namespace, t: translationKey.ToggleMode },
     ]);
@@ -59,6 +61,7 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
                 {title}
             </Text>
             <View style={styles.rightSection}>
+                {Array.from(topBarTools).map(([id, Component]) => <Component key={id} />)}
                 <Button
                     aria-label={modeTooltip}
                     tooltip={modeTooltip}

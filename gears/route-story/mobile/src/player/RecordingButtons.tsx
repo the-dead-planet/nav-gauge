@@ -20,19 +20,9 @@ export const RecordingButtons: FC<Props> = ({
     translationKey,
     playerOperator,
 }) => {
-    const { chronoLens, signaliumBureau } = useMobileMachineWard();
+    const { chronoLens } = useMobileMachineWard();
     const [surveillanceState] = useSubjectState(chronoLens.surveillanceState$);
     const [hasRecordingData] = useSubjectState(chronoLens.hasRecordingData$);
-
-    useEffect(() => {
-        const abortController = new AbortController();
-        chronoLens.setUpSurveillance(signaliumBureau, abortController.signal);
-
-        return () => {
-            abortController.abort();
-            chronoLens.clearSurveillance();
-        };
-    }, []);
 
     const [
         destroyLabel,
@@ -59,6 +49,7 @@ export const RecordingButtons: FC<Props> = ({
             ])
         );
         blinkAnimation.start();
+
         return () => blinkAnimation.stop();
     }, [opacity]);
 
@@ -73,7 +64,7 @@ export const RecordingButtons: FC<Props> = ({
                     aria-label={startRecordingLabel}
                     tooltip={startRecordingLabel}
                     tooltipPlacement="top"
-                    onClick={() => playerOperator.onRecord()}
+                    onPress={() => playerOperator.onStart()}
                 />
             ) : (
                 <Animated.View style={{ opacity }}>
@@ -81,35 +72,37 @@ export const RecordingButtons: FC<Props> = ({
                         icon={Icons.NounProject.Recording}
                         size="md"
                         variant="ghost"
+                        color={surveillanceState === SurveillanceState.InProgress ? "secondary" : "neutral"}
                         corners="circle"
                         aria-label={stopRecordingLabel}
                         tooltip={stopRecordingLabel}
                         tooltipPlacement="top"
-                        onClick={() => playerOperator.onRecord()}
+                        onPress={() => playerOperator.onStop()}
                     />
                 </Animated.View>
             )}
             {surveillanceState === SurveillanceState.Paused ? (
                 <Button
-                    icon={Icons.NounProject.PauseRecording}
+                    icon={Icons.NounProject.ResumeRecording}
                     size="md"
                     variant="ghost"
+                    color="secondary"
                     corners="circle"
                     aria-label={resumeRecordingLabel}
                     tooltip={resumeRecordingLabel}
                     tooltipPlacement="top"
-                    onClick={() => playerOperator.onRecordPause()}
+                    onPress={() => playerOperator.onResume()}
                 />
             ) : (
                 <Button
-                    icon={Icons.NounProject.ResumeRecording}
+                    icon={Icons.NounProject.PauseRecording}
                     size="md"
                     variant="ghost"
                     corners="circle"
                     aria-label={pauseRecordingLabel}
                     tooltip={pauseRecordingLabel}
                     tooltipPlacement="top"
-                    onClick={() => playerOperator.onRecordPause()}
+                    onPress={() => playerOperator.onPause()}
                     disabled={surveillanceState === SurveillanceState.Stopped}
                 />
             )}
@@ -117,11 +110,12 @@ export const RecordingButtons: FC<Props> = ({
                 icon={Icons.NounProject.Destroy}
                 size="md"
                 variant="ghost"
+                color={hasRecordingData ? "secondary" : "neutral"}
                 corners="circle"
                 aria-label={destroyLabel}
                 tooltip={destroyLabel}
                 tooltipPlacement="top"
-                onClick={() => playerOperator.onDestroy()}
+                onPress={() => playerOperator.onDestroy()}
                 disabled={!hasRecordingData}
             />
         </>
