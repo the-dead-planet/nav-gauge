@@ -16,7 +16,7 @@ Work in progress.
 
 #### Web frontend
 
-[React](https://react.dev) with strict [TypeScript](https://www.typescriptlang.org), state management by [RxJS](https://rxjs.dev), bundled with [Rspack](https://rspack.dev/guide/tech/react), containerized by [docker](https://docs.docker.com) and served using [nginx](https://nginx.org).
+[React](https://react.dev) with strict [TypeScript](https://www.typescriptlang.org), state management by [RxJS](https://rxjs.dev), bundled with [Rspack](https://rspack.dev/guide/tech/react), containerized by [Docker](https://docs.docker.com) and served using [NGINX](https://nginx.org).
 
 [Svelte](https://svelte.dev) can also be used for static server rendered public pages, for example for an SEO optimized home page or blog articles.
 
@@ -82,7 +82,7 @@ Default TypeScript formatter.
 
 #### Time formatting
 
-Use [luxon](https://github.com/moment/luxon#readme).
+Use [Luxon](https://github.com/moment/luxon#readme).
 
 #### Documentation
 
