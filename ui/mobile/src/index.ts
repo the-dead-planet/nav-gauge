@@ -1,4 +1,5 @@
 export * from './button';
+export * from './blink';
 export * from './chip';
 export * from './dialog';
 export * from './divider';

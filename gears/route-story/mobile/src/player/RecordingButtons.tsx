@@ -1,9 +1,9 @@
-import { FC, useEffect, useRef } from "react";
+import { FC } from "react";
 import { Animated } from "react-native";
 import { SurveillanceState, useMultipleTranslations } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { RouteStoryTranslationKey } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { Button } from "@mobile-ui";
+import { Button, useBlinkingPulse } from "@mobile-ui";
 import { MobileMap, useMobileMachineWard } from "@mobile-apparatus";
 import { Icons } from "@ui";
 import { MobilePlayerOperator } from "../model";
@@ -38,20 +38,7 @@ export const RecordingButtons: FC<Props> = ({
         { n: gearId, t: translationKey.ResumeRecording },
     ]);
 
-    const opacity = useRef(new Animated.Value(1)).current;
-
-    useEffect(() => {
-        const blinkAnimation = Animated.loop(
-            Animated.sequence([
-                Animated.timing(opacity, { toValue: 1, duration: 450, useNativeDriver: true }),
-                Animated.timing(opacity, { toValue: 0, duration: 100, useNativeDriver: true }),
-                Animated.timing(opacity, { toValue: 0, duration: 450, useNativeDriver: true }),
-            ])
-        );
-        blinkAnimation.start();
-
-        return () => blinkAnimation.stop();
-    }, [opacity]);
+    const opacity = useBlinkingPulse();
 
     return (
         <>
