@@ -1,5 +1,5 @@
 import { ComponentType, FC, useState } from "react";
-import { LayoutChangeEvent, StyleSheet, Text as RNText, View, ViewStyle } from "react-native";
+import { LayoutChangeEvent, Pressable, PressableProps, StyleSheet, Text as RNText, View, ViewStyle } from "react-native";
 import { Path, Svg, SvgProps } from "react-native-svg";
 import {
     ChipProps,
@@ -28,7 +28,10 @@ interface Props {
      * Icon component, e.g. an icon from `@ui/icons`
      */
     icon?: ComponentType<SvgProps>;
+    ariaLabel?: string;
 }
+
+type MobileChipProps = Props & Pick<PressableProps, 'onPress' | 'onLongPress' | 'onPressIn' | 'onPressOut'>;
 
 const bevelSizes: Record<SizeVariant, number> = {
     xs: 2,
@@ -73,7 +76,7 @@ const sizeStyles = StyleSheet.create({
     },
 });
 
-export const Chip: FC<ChipProps & Props> = ({
+export const Chip: FC<ChipProps & MobileChipProps> = ({
     color = 'neutral',
     icon,
     size = 'sm',
@@ -82,6 +85,11 @@ export const Chip: FC<ChipProps & Props> = ({
     tooltipPlacement,
     tooltipVariant = 'fill-inverse',
     showTooltipConnection,
+    ariaLabel,
+    onPress,
+    onLongPress,
+    onPressIn,
+    onPressOut,
     children,
 }) => {
     const theme = useTheme();
@@ -143,11 +151,20 @@ export const Chip: FC<ChipProps & Props> = ({
     };
 
     const chip = (
-        <View
-            collapsable={false}
-            onLayout={onLayout}
-            style={[styles.chip, container, sizeStyles[size]]}
+        <Pressable
+            accessibilityLabel={ariaLabel}
+            accessibilityRole={onPress ? "button" : undefined}
+            disabled={!onPress}
+            onPress={onPress}
+            onLongPress={onLongPress}
+            onPressIn={onPressIn}
+            onPressOut={onPressOut}
         >
+            <View
+                collapsable={false}
+                onLayout={onLayout}
+                style={[styles.chip, container, sizeStyles[size]]}
+            >
             {layout.width > 0 && layout.height > 0 ? (
                 <Svg style={StyleSheet.absoluteFill} width={layout.width} height={layout.height}>
                     <Path
@@ -173,6 +190,7 @@ export const Chip: FC<ChipProps & Props> = ({
                 </RNText>
             ) : null}
         </View>
+        </Pressable>
     );
 
     if (tooltip) {

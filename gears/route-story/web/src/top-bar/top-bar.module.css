@@ -1,0 +1,3 @@
+.blinking {
+    animation: global(blink) 1.6s infinite;
+}

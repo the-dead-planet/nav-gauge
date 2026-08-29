@@ -30,7 +30,10 @@ export abstract class ChronoLens {
         this.individuator = individuator;
     }
 
-    public setUpSurveillance = (signaliumBureau: SignaliumBureau, abortSignal: AbortSignal) => {
+    public setUpSurveillance = (
+        signaliumBureau: SignaliumBureau,
+        abortSignal: AbortSignal,
+    ) => {
         this.subscription = this.surveillanceState$
             .pipe(pairwise())
             .subscribe(([prev, next]) => {

@@ -12,8 +12,7 @@ import { AnimationControls } from './animation-controls/AnimationControls';
 import { RouteName } from './file-input/RouteName';
 import { AnimationControlsSearch } from './animation-controls/AnimationControlsSearch';
 import { WebChronoLens } from '@web-apparatus';
-import { ComponentType } from 'react';
-import { Chip } from '@web-ui';
+import { RecChip } from './top-bar/RecChip';
 
 const SAMPLE_IMAGE_NAMES = [
    'IMG20260403173904.jpg',
@@ -32,11 +31,7 @@ export class WebRouteStoryGear extends RouteStoryGear<maplibregl.Map, WebChronoL
    public animatrixContentComponent = AnimationControls;
    public routeLayerComponent = RouteLayer;
    public imagesLayerComponent = ImagesLayer;
-   public topBarChipComponent = () => <Chip color="error"
-   //  className={styles["blinking"]}
-   >
-      REC
-   </Chip>;
+   public topBarChipComponent = RecChip;
 
    public constructor(apparatus: GearApparatus<maplibregl.Map, WebChronoLens>) {
       super(apparatus);

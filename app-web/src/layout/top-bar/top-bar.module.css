@@ -29,7 +29,3 @@
 .header {
     font-size: clamp(12px, 2.5vw, 16px);
 }
-
-.blinking {
-    animation: global(blink) 1.6s infinite;
-}

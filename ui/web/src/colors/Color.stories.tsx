@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { Color } from './Color';
 import { Theme, useTheme } from '@ui';
 import { Text } from '../typography';
+import { CSSProperties } from 'react';
 
 const meta = {
     title: 'Colors',
@@ -43,8 +44,10 @@ export const ComponentColors = {
                             width: '40px',
                             height: '40px',
                             display: 'block',
+                            borderRadius: '6px',
+                            cornerShape: 'bevel',
                             backgroundColor: theme.color(color.name, color.shade),
-                        }} />
+                        } as CSSProperties} />
                     </>
                 ))}
             </div>

@@ -31,7 +31,7 @@ export type PaletteColor =
     'magenta' |
     'pink' |
     'blue' |
-    'greyblue' |
+    'grey-blue' |
     'navy' |
     'burnt-orange' |
     'red' |
@@ -53,7 +53,6 @@ export type ThemeComponentColor =
     'box-shadow' |
     'divider' |
     'text' |
-    'text-active' |
     'error' |
     'warning' |
     'success' |

@@ -1,10 +1,11 @@
 import { BehaviorSubject } from "rxjs";
-import { SurveillanceState, LoadedImageData, ChronoLens } from "@apparatus";
+import { SurveillanceState, LoadedImageData, ChronoLens, ToolPanelProps } from "@apparatus";
 import { getRouteSourceData } from "./tinkers";
 import { getImageIconSize, FULL_SIZE_IMAGE_SIZE, THUMBNAIL_IMAGE_SIZE } from "./images";
 import { RouteStoryGear } from "./route-story-gear";
 import { IMAGE_ANIMATION_DURATION } from "./layer-specification";
-import { RouteStoryFile } from "./model";
+import { RouteStoryFile, RouteStoryProps } from "./model";
+import { DesignSystemColor, PaletteColor, ThemeComponentColor } from "@ui";
 
 export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends RouteStoryFile, TImageData> {
     private gear: RouteStoryGear<TMap, TChronoLens, TFile, TImageData>;
@@ -18,6 +19,10 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
         this.gear = gear;
     }
 
+    public getBlinkingColor = (surveillanceState: SurveillanceState): DesignSystemColor | ThemeComponentColor => {
+        return surveillanceState === SurveillanceState.InProgress ? 'error' : 'neutral';
+    }
+
     public onDestroy = () => {
         this.gear.apparatus.chronoLens.destroyRecording();
         this.onStop();
@@ -28,15 +33,16 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
     };
 
     public onStart = () => {
-        this.gear.apparatus.chronoLens.surveillanceState$.next(SurveillanceState.InProgress);
-        this.gear.apparatus.cartomancer.blinkingState$.next({ color: "error" });
-        this.gear.apparatus.toolsStation.addTopBarTool('rec', this.gear.topBarChipComponent)
+        const nextState = SurveillanceState.InProgress;
+        this.gear.apparatus.chronoLens.surveillanceState$.next(nextState);
+        this.gear.apparatus.cartomancer.blinkingState$.next({ color: this.getBlinkingColor(nextState) });
+        this.gear.apparatus.toolsStation.addTopBarTool(this.gear.recTopBarToolId, this.gear.wrapProps<RouteStoryProps<TMap, TChronoLens, TFile, TImageData>, {}>(this.gear.topBarChipComponent, this.gear.getProps()));
     };
 
     public onStop = () => {
         this.gear.apparatus.chronoLens.surveillanceState$.next(SurveillanceState.Stopped);
         this.gear.apparatus.cartomancer.blinkingState$.next(null);
-        this.gear.apparatus.toolsStation.removeTopBarTool('rec');
+        this.gear.apparatus.toolsStation.removeTopBarTool(this.gear.recTopBarToolId);
     };
 
     public onPause = () => {

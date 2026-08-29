@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
-import { ColorShade, RGBColor, ThemeColor, Theme } from "@ui";
+import { ColorShade, RGBColor, ThemeColor, Theme, useTheme } from "@ui";
 import { Text } from "../typography";
 
 const styles = StyleSheet.create({
@@ -69,6 +69,30 @@ export const ColorPalette: FC = () => {
                     </View>
                 );
             })}
+        </View>
+    );
+};
+
+export const ComponentColors = () => {
+    const theme = useTheme();
+
+    return (
+        <View style={{
+            alignItems: 'flex-start',
+            justifyContent: 'center',
+            gap: 20,
+        }}>
+            {Object.entries(theme.componentColors).map(([name, color]) => (
+                <View key={name} style={{ flexDirection: 'row', gap: 20 }}>
+                    <Text style={{ minWidth: 100 }}>{name}</Text>
+                    <View style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 6,
+                        backgroundColor: theme.color(color.name, color.shade),
+                    }} />
+                </View>
+            ))}
         </View>
     );
 };
