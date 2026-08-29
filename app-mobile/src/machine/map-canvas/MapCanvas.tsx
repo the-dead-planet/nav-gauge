@@ -3,7 +3,7 @@ import { BehaviorSubject } from "rxjs";
 import { Animated, LayoutChangeEvent, StyleSheet } from "react-native";
 import { RecordingView, useViewRecorder } from "react-native-view-recorder";
 import { Camera, Map as MaplibreMap, LogManager, StyleSpecification } from "@maplibre/maplibre-react-native";
-import { Cartomancer, updateCompassIcon, updateCurrentZoomIcon } from "@apparatus";
+import { Cartomancer, SurveillanceState, updateCompassIcon, updateCurrentZoomIcon } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { MobileMap, useMobileMachineWard } from "@mobile-apparatus";
 import { DesignSystemColor, ThemeComponentColor, useTheme } from "@ui";
@@ -12,6 +12,9 @@ import { useMapTools } from "./useMapTools";
 const styles = StyleSheet.create({
     mapView: {
         flex: 1,
+    },
+    onTop: {
+        zIndex: 2,
     },
     blinkBorder: {
         ...StyleSheet.absoluteFill,
@@ -44,6 +47,7 @@ export const MapCanvas: FC<Props> = ({
     const theme = useTheme();
     const { cartomancer, chronoLens, signaliumBureau, toolsStation } = useMobileMachineWard();
     const [dragPan] = useSubjectState(map.dragPan$);
+    const [surveillanceState] = useSubjectState(chronoLens.surveillanceState$);
     const [isInitialised, setIsInitialised] = useSubjectState(cartomancer.isInitialised$);
     const [isStyleLoaded, setIsStyleLoaded] = useSubjectState(cartomancer.isStyleLoaded$);
     const [selectedStyle] = useSubjectState(cartomancer.selectedStyle$);
@@ -71,7 +75,7 @@ export const MapCanvas: FC<Props> = ({
             ])
         );
         blinkAnimation.start();
-        
+
         return () => blinkAnimation.stop();
     }, [blinkOpacity]);
 
@@ -120,7 +124,10 @@ export const MapCanvas: FC<Props> = ({
             <RecordingView
                 ref={viewRecorderRef}
                 sessionId={recorder.sessionId}
-                style={StyleSheet.absoluteFill}
+                style={[
+                    StyleSheet.absoluteFill,
+                    surveillanceState === SurveillanceState.InProgress ? styles.onTop : undefined,
+                ]}
                 onLayout={handleLayoutChange}
             >
                 <MaplibreMap

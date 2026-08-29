@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     icons: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        zIndex: 60,
+        zIndex: 1,
         overflow: 'hidden',
         width: '100%',
         height: '100%',
