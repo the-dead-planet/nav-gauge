@@ -71,6 +71,7 @@ export const MapCanvas: FC<Props> = ({
             ])
         );
         blinkAnimation.start();
+        
         return () => blinkAnimation.stop();
     }, [blinkOpacity]);
 
