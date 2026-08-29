@@ -70,6 +70,7 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, MobileChrono
    };
 
    private loadSampleImages = async (): Promise<void> => {
+      await resetTempSubfolder();
       const files = await Promise.all(
          SAMPLE_IMAGES.map(async (name) => {
             const destination = `${RNFS.TemporaryDirectoryPath}/images/${name}`;
