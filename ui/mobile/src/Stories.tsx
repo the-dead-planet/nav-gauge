@@ -65,7 +65,6 @@ function discoverStories(): StoryEntry[] {
                 Component: mod[exportName] as ComponentType,
             })),
         });
-        ;
     });
 
     return entries;
