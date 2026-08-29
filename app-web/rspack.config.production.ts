@@ -37,14 +37,9 @@ const config = (env: Env, argv: Argv): Configuration => {
                             loader: 'css-loader',
                             options: {
                                 esModule: false,
-                                modules: process.env.NODE_ENV === "production" ? {
+                                modules: {
                                     mode: "local",
                                     localIdentName: "[hash:base64:5]",
-                                    namedExport: false,
-                                    exportLocalsConvention: "camelCase",
-                                } : {
-                                    mode: "local",
-                                    localIdentName: "[name]---[local]---[hash:base64:5]",
                                     namedExport: false,
                                     exportLocalsConvention: "camelCase",
                                 },
@@ -141,10 +136,6 @@ const config = (env: Env, argv: Argv): Configuration => {
                     },
                 },
             },
-        },
-        devServer: {
-            port: Number(process.env.PORT) || 3000,
-            historyApiFallback: true,
         },
         plugins: [
             new rspack.CssExtractRspackPlugin({ filename: "[name].[contenthash].css" }),
