@@ -13,6 +13,7 @@ import { DocumentPickerResponse } from '@react-native-documents/picker';
 import { RouteName } from './player/RouteName';
 import { AnimationControlsSearch } from './animation-controls/AnimationControlsSearch';
 import { AnimationControls } from './animation-controls/AnimationControls';
+import { RecChip } from './top-bar/RecChip';
 
 const SAMPLE_ROUTE = {
    name: 'Lisboa walk.kml',
@@ -47,6 +48,7 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, MobileChrono
    public animatrixContentComponent = AnimationControls;
    public routeLayerComponent = RouteLayer;
    public imagesLayerComponent = ImagesLayer;
+      public topBarChipComponent = RecChip;
 
    public constructor(apparatus: GearApparatus<MobileMap, MobileChronoLens>) {
       super(apparatus);
@@ -68,6 +70,7 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, MobileChrono
    };
 
    private loadSampleImages = async (): Promise<void> => {
+      await resetTempSubfolder();
       const files = await Promise.all(
          SAMPLE_IMAGES.map(async (name) => {
             const destination = `${RNFS.TemporaryDirectoryPath}/images/${name}`;

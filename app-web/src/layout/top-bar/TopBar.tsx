@@ -6,11 +6,13 @@ import { FontType, Icons, useTheme } from "@ui";
 import { Button, H1 } from "@web-ui";
 import { LayoutMenu } from "./menu/LayoutMenu";
 import { UnderConstructionChip } from "./UnderConstructionChip";
+import { useSubjectState } from "@tinker-chest";
 import styles from './top-bar.module.css';
 
 export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
     const theme = useTheme();
     const { namespace, translationKey, individuator, toolsStation } = useWebMachineWard();
+    const [topBarTools] = useSubjectState(toolsStation.topBarTools$);
     const [
         modeTooltip,
     ] = useMultipleTranslations([
@@ -32,6 +34,7 @@ export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
                 {title}
             </H1>
             <div className={classNames(styles["section"], styles["right"])}>
+                {Array.from(topBarTools).map(([id, Component]) => <Component key={id} />)}
                 <Button
                     aria-label={modeTooltip}
                     tooltip={modeTooltip}

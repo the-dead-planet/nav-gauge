@@ -15,6 +15,7 @@ export abstract class ChronoLens {
     public fps$ = new BehaviorSubject<FrameRate>(30);
     public surveillanceState$ = new BehaviorSubject<SurveillanceState>(SurveillanceState.Stopped);
     public isPlaying$ = new BehaviorSubject(false);
+    public hasRecordingData$ = new BehaviorSubject(false);
     public downloadName$ = new BehaviorSubject('Voyage Log');
 
     /**
@@ -29,7 +30,11 @@ export abstract class ChronoLens {
         this.individuator = individuator;
     }
 
-    public setUpSurveillance = (signaliumBureau: SignaliumBureau, abortSignal: AbortSignal) => {
+    public setUpSurveillance = (
+        signaliumBureau: SignaliumBureau,
+        abortSignal: AbortSignal,
+    ) => {
+        this.clearSurveillance();
         this.subscription = this.surveillanceState$
             .pipe(pairwise())
             .subscribe(([prev, next]) => {
@@ -61,6 +66,7 @@ export abstract class ChronoLens {
 
     public clearSurveillance = () => {
         this.subscription?.unsubscribe();
+        this.subscription = null;
     };
 
     private stop = (signaliumBureau: SignaliumBureau) => {
@@ -69,10 +75,10 @@ export abstract class ChronoLens {
     }
 
     /**
-     * Removes spaces and underscores.
+     * Removes characters that are unsafe in file names and paths.
      */
     public static sanitiseName(value: string): string {
-        return value.replaceAll(/[.:_\s]/g, "");
+        return value.replaceAll(/[.:_\s\\/]/g, "");
     }
 
     /**
@@ -117,9 +123,4 @@ export abstract class ChronoLens {
      * Resets the recorder and any files created on the way completely.
      */
     public abstract destroyRecording: () => void;
-
-    /**
-     * Whether there is any recording data stored.
-     */
-    public abstract hasRecordingData: () => boolean;
 }

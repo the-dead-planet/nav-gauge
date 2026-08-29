@@ -15,3 +15,9 @@ Extract a sub-component when a section has its own:
 Apply this recursively. Compound components should also be composed of focused sub-components.
 
 Parent components should primarily orchestrate data flow and composition. Leaf components should own rendering details.
+
+### One component per file
+
+Each component should live in its **own file**, named after the component. Few exceptions:
+- Tiny, tightly-coupled helper components used by a single parent (for example a small icon or internal sub-element) may stay in the parent's file if they have no standalone reuse or meaning.
+- Module-scope constants and helpers that only one component needs belong in that component's file.

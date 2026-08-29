@@ -4071,27 +4071,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@maplibre/maplibre-gl-style-spec@npm:^24.8.1":
-  version: 24.10.0
-  resolution: "@maplibre/maplibre-gl-style-spec@npm:24.10.0"
-  dependencies:
-    "@mapbox/jsonlint-lines-primitives": "npm:~2.0.2"
-    "@mapbox/unitbezier": "npm:^1.0.0"
-    json-stringify-pretty-compact: "npm:^4.0.0"
-    minimist: "npm:^1.2.8"
-    quickselect: "npm:^3.0.0"
-    tinyqueue: "npm:^3.0.0"
-  bin:
-    gl-style-format: dist/gl-style-format.mjs
-    gl-style-migrate: dist/gl-style-migrate.mjs
-    gl-style-validate: dist/gl-style-validate.mjs
-  checksum: 10/7d580c71a7978ffd6c93a95a9178eb55fa0777eb63f1954afec58934e940a7d1432ecd51e98b725e01ae97298b7a60d6a2a19a863952fad45f97ae609ad0d886
-  languageName: node
-  linkType: hard
-
-"@maplibre/maplibre-gl-style-spec@npm:^26.2.1":
-  version: 26.2.1
-  resolution: "@maplibre/maplibre-gl-style-spec@npm:26.2.1"
+"@maplibre/maplibre-gl-style-spec@npm:^26.1.1, @maplibre/maplibre-gl-style-spec@npm:^26.3.0, @maplibre/maplibre-gl-style-spec@npm:^26.4.1":
+  version: 26.4.1
+  resolution: "@maplibre/maplibre-gl-style-spec@npm:26.4.1"
   dependencies:
     "@mapbox/jsonlint-lines-primitives": "npm:^2.0.3"
     "@mapbox/unitbezier": "npm:^1.0.0"
@@ -4103,13 +4085,13 @@ __metadata:
     gl-style-format: dist/gl-style-format.mjs
     gl-style-migrate: dist/gl-style-migrate.mjs
     gl-style-validate: dist/gl-style-validate.mjs
-  checksum: 10/c8b3e3d7af63b3ff8e303d559a7ff5f59a7d9c1ab02b0d87a1efbdd4cf3bbf39bfbeddae9c0499c0b91c3e49f6787a9b691f6a35f597e66f310241239fb7b957
+  checksum: 10/22ecb955dc50ad4844f76e722e127c9ce60904d1221e49a81292c23174a5265a48b977c18897038b90d7adfc16a4acd353f57de3e095827b7af792854b67cc19
   languageName: node
   linkType: hard
 
-"@maplibre/maplibre-react-native@npm:11.3.6":
-  version: 11.3.6
-  resolution: "@maplibre/maplibre-react-native@npm:11.3.6"
+"@maplibre/maplibre-react-native@npm:11.3.7":
+  version: 11.3.7
+  resolution: "@maplibre/maplibre-react-native@npm:11.3.7"
   dependencies:
     "@maplibre/maplibre-gl-style-spec": "npm:24.8.5"
     "@turf/distance": "npm:^7.3.5"
@@ -4129,16 +4111,16 @@ __metadata:
       optional: true
     expo:
       optional: true
-  checksum: 10/0cfe2df1ad654854808dc7749040e751a2bdd6aebab8313e3252338ab96e41e58425c64846dd7ad0a4cb5e9533ade6d4e3dae6412e235815502743f95dc10228
+  checksum: 10/d9daf677bd57ae14fc4d9f43f642fdc55f6cde88abb494a760cc964fc6f9ed1d72188a705602c34ed56bbe2a0a947e2ab71756f70f667a563ea65db9115b1c80
   languageName: node
   linkType: hard
 
-"@maplibre/mlt@npm:^1.1.12":
-  version: 1.1.12
-  resolution: "@maplibre/mlt@npm:1.1.12"
+"@maplibre/mlt@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "@maplibre/mlt@npm:1.2.0"
   dependencies:
     "@mapbox/point-geometry": "npm:^1.1.0"
-  checksum: 10/85b298b845a3b622faf6200042efb1069d46e8fc5ecea7a35de584d695089f26582f91b1a36d72cfa97a820a9190456e660186732345c37fc29af2e905c75627
+  checksum: 10/9bc3d30f78dc2090ac80634e08848bf454daed888fcbcace7e1c1c9b8d1db6c5421376f681dffe90bb4274488753775f36e76a1568ba724e64a0ca59207c04c4
   languageName: node
   linkType: hard
 
@@ -5900,7 +5882,7 @@ __metadata:
     "@babel/runtime": "npm:^8.0.0"
     "@bam.tech/react-native-image-resizer": "npm:^3.0.11"
     "@lodev09/react-native-exify": "npm:^1.0.3"
-    "@maplibre/maplibre-react-native": "npm:11.3.6"
+    "@maplibre/maplibre-react-native": "npm:11.3.7"
     "@react-native-async-storage/async-storage": "npm:^3.1.1"
     "@react-native-community/cli": "npm:^20.2.0"
     "@react-native-community/cli-platform-android": "npm:^20.2.0"
@@ -5975,7 +5957,7 @@ __metadata:
     classnames: "npm:^2.5.1"
     css-loader: "npm:^7.1.4"
     cypress: "npm:^15.20.1"
-    maplibre-gl: "npm:6.4.0"
+    maplibre-gl: "npm:6.6.0"
     pmtiles: "npm:^4.5.0"
     react: "npm:19.2.8"
     react-dom: "npm:19.2.8"
@@ -5995,7 +5977,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@the-dead-planet/nav-gauge-apparatus-common@workspace:apparatus/common"
   dependencies:
-    "@maplibre/maplibre-gl-style-spec": "npm:^24.8.1"
+    "@maplibre/maplibre-gl-style-spec": "npm:^26.4.1"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
     fast-xml-parser: "npm:^5.11.0"
@@ -6010,8 +5992,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@the-dead-planet/nav-gauge-apparatus-mobile@workspace:apparatus/mobile"
   dependencies:
-    "@maplibre/maplibre-gl-style-spec": "npm:^24.8.1"
-    "@maplibre/maplibre-react-native": "npm:11.3.6"
+    "@maplibre/maplibre-gl-style-spec": "npm:^26.1.1"
+    "@maplibre/maplibre-react-native": "npm:11.3.7"
     "@react-native-documents/viewer": "npm:^4.0.1"
     "@the-dead-planet/nav-gauge-apparatus-common": "npm:*"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
@@ -6021,7 +6003,7 @@ __metadata:
     react-native-fs: "npm:^2.20.0"
     react-native-view-recorder: "patch:react-native-view-recorder@npm%3A0.4.1#~/.yarn/patches/react-native-view-recorder-npm-0.4.1-f65f857d14.patch"
   peerDependencies:
-    "@maplibre/maplibre-react-native": 11.3.6
+    "@maplibre/maplibre-react-native": 11.3.7
     react: 19.2.8
     react-native: 0.87.0
     rxjs: ^7.8.2
@@ -6032,15 +6014,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@the-dead-planet/nav-gauge-apparatus-web@workspace:apparatus/web"
   dependencies:
-    "@maplibre/maplibre-gl-style-spec": "npm:^24.8.1"
+    "@maplibre/maplibre-gl-style-spec": "npm:^26.4.1"
     "@the-dead-planet/nav-gauge-apparatus-common": "npm:*"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
-    maplibre-gl: "npm:6.4.0"
+    maplibre-gl: "npm:6.6.0"
     react: "npm:19.2.8"
     react-dom: "npm:19.2.8"
   peerDependencies:
-    maplibre-gl: 6.4.0
+    maplibre-gl: 6.6.0
     react: 19.2.8
     react-dom: 19.2.8
     rxjs: ^7.8.2
@@ -6065,7 +6047,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@the-dead-planet/nav-gauge-gears-navigate-mobile@workspace:gears/navigate/mobile"
   dependencies:
-    "@maplibre/maplibre-react-native": "npm:11.3.6"
+    "@maplibre/maplibre-react-native": "npm:11.3.7"
     "@the-dead-planet/nav-gauge-apparatus-common": "npm:*"
     "@the-dead-planet/nav-gauge-apparatus-mobile": "npm:*"
     "@the-dead-planet/nav-gauge-gears-navigate-common": "npm:*"
@@ -6074,7 +6056,7 @@ __metadata:
     react: "npm:19.2.8"
     react-native: "npm:0.87.0"
   peerDependencies:
-    "@maplibre/maplibre-react-native": 11.3.6
+    "@maplibre/maplibre-react-native": 11.3.7
     react: 19.2.8
     react-native: 0.87.0
     rxjs: ^7.8.2
@@ -6090,11 +6072,11 @@ __metadata:
     "@the-dead-planet/nav-gauge-gears-navigate-common": "npm:*"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
-    maplibre-gl: "npm:6.4.0"
+    maplibre-gl: "npm:6.6.0"
     react: "npm:19.2.8"
     react-dom: "npm:19.2.8"
   peerDependencies:
-    maplibre-gl: 6.4.0
+    maplibre-gl: 6.6.0
     react: 19.2.8
     react-dom: 19.2.8
     rxjs: ^7.8.2
@@ -6119,7 +6101,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@the-dead-planet/nav-gauge-gears-record-route-mobile@workspace:gears/record-route/mobile"
   dependencies:
-    "@maplibre/maplibre-react-native": "npm:11.3.6"
+    "@maplibre/maplibre-react-native": "npm:11.3.7"
     "@the-dead-planet/nav-gauge-apparatus-common": "npm:*"
     "@the-dead-planet/nav-gauge-apparatus-mobile": "npm:*"
     "@the-dead-planet/nav-gauge-gears-record-route-common": "npm:*"
@@ -6128,7 +6110,7 @@ __metadata:
     react: "npm:19.2.8"
     react-native: "npm:0.87.0"
   peerDependencies:
-    "@maplibre/maplibre-react-native": 11.3.6
+    "@maplibre/maplibre-react-native": 11.3.7
     react: 19.2.8
     react-native: 0.87.0
     rxjs: ^7.8.2
@@ -6144,11 +6126,11 @@ __metadata:
     "@the-dead-planet/nav-gauge-gears-record-route-common": "npm:*"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
-    maplibre-gl: "npm:6.4.0"
+    maplibre-gl: "npm:6.6.0"
     react: "npm:19.2.8"
     react-dom: "npm:19.2.8"
   peerDependencies:
-    maplibre-gl: 6.4.0
+    maplibre-gl: 6.6.0
     react: 19.2.8
     react-dom: 19.2.8
     rxjs: ^7.8.2
@@ -6175,7 +6157,7 @@ __metadata:
   dependencies:
     "@bam.tech/react-native-image-resizer": "npm:^3.0.11"
     "@lodev09/react-native-exify": "npm:^1.0.3"
-    "@maplibre/maplibre-react-native": "npm:11.3.6"
+    "@maplibre/maplibre-react-native": "npm:11.3.7"
     "@react-native-documents/picker": "npm:^12.0.2"
     "@the-dead-planet/nav-gauge-apparatus-common": "npm:*"
     "@the-dead-planet/nav-gauge-apparatus-mobile": "npm:*"
@@ -6188,7 +6170,7 @@ __metadata:
   peerDependencies:
     "@bam.tech/react-native-image-resizer": ^3.0.11
     "@lodev09/react-native-exify": ^1.0.3
-    "@maplibre/maplibre-react-native": 11.3.6
+    "@maplibre/maplibre-react-native": 11.3.7
     "@react-native-documents/picker": ^12.0.2
     react: 19.2.8
     react-native: 0.87.0
@@ -6208,11 +6190,11 @@ __metadata:
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
     "@types/exif-js": "npm:^2.3.1"
     exif-js: "npm:^2.3.0"
-    maplibre-gl: "npm:6.4.0"
+    maplibre-gl: "npm:6.6.0"
     react: "npm:19.2.8"
     react-dom: "npm:19.2.8"
   peerDependencies:
-    maplibre-gl: 6.4.0
+    maplibre-gl: 6.6.0
     react: 19.2.8
     react-dom: 19.2.8
     rxjs: ^7.8.2
@@ -6237,7 +6219,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@the-dead-planet/nav-gauge-gears-submit-data-mobile@workspace:gears/submit-data/mobile"
   dependencies:
-    "@maplibre/maplibre-react-native": "npm:11.3.6"
+    "@maplibre/maplibre-react-native": "npm:11.3.7"
     "@the-dead-planet/nav-gauge-apparatus-common": "npm:*"
     "@the-dead-planet/nav-gauge-apparatus-mobile": "npm:*"
     "@the-dead-planet/nav-gauge-gears-submit-data-common": "npm:*"
@@ -6246,7 +6228,7 @@ __metadata:
     react: "npm:19.2.8"
     react-native: "npm:0.87.0"
   peerDependencies:
-    "@maplibre/maplibre-react-native": 11.3.6
+    "@maplibre/maplibre-react-native": 11.3.7
     react: 19.2.8
     react-native: 0.87.0
     rxjs: ^7.8.2
@@ -6262,11 +6244,11 @@ __metadata:
     "@the-dead-planet/nav-gauge-gears-submit-data-common": "npm:*"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
-    maplibre-gl: "npm:6.4.0"
+    maplibre-gl: "npm:6.6.0"
     react: "npm:19.2.8"
     react-dom: "npm:19.2.8"
   peerDependencies:
-    maplibre-gl: 6.4.0
+    maplibre-gl: 6.6.0
     react: 19.2.8
     react-dom: 19.2.8
     rxjs: ^7.8.2
@@ -6303,7 +6285,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@the-dead-planet/nav-gauge-ui-mobile@workspace:ui/mobile"
   dependencies:
-    "@maplibre/maplibre-react-native": "npm:11.3.6"
+    "@maplibre/maplibre-react-native": "npm:11.3.7"
     "@react-native-documents/picker": "npm:^12.0.2"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
@@ -6312,7 +6294,7 @@ __metadata:
     react-native-fs: "npm:^2.20.0"
     react-native-svg: "npm:^15.15.5"
   peerDependencies:
-    "@maplibre/maplibre-react-native": 11.3.6
+    "@maplibre/maplibre-react-native": 11.3.7
     "@react-native-documents/picker": ^12.0.2
     react: 19.2.8
     react-native: 0.87.0
@@ -6332,14 +6314,14 @@ __metadata:
     "@types/react-dom": "npm:19.2.4"
     classnames: "npm:^2.5.1"
     css-loader: "npm:^7.1.4"
-    maplibre-gl: "npm:6.4.0"
+    maplibre-gl: "npm:6.6.0"
     react: "npm:19.2.8"
     react-dom: "npm:19.2.8"
     react-svg: "npm:^19.1.4"
     storybook: "npm:^10.5.8"
     storybook-react-rsbuild: "npm:^3.4.2"
   peerDependencies:
-    maplibre-gl: 6.4.0
+    maplibre-gl: 6.6.0
     react: 19.2.8
     react-dom: 19.2.8
     rxjs: ^7.8.2
@@ -6351,7 +6333,7 @@ __metadata:
   resolution: "@the-dead-planet/nav-gauge@workspace:."
   dependencies:
     "@eslint/eslintrc": "npm:^3.3.6"
-    "@maplibre/maplibre-gl-style-spec": "npm:^26.2.1"
+    "@maplibre/maplibre-gl-style-spec": "npm:^26.4.1"
     "@turf/along": "npm:^7.4.0"
     "@turf/bbox": "npm:^7.4.0"
     "@turf/bearing": "npm:^7.4.0"
@@ -13402,17 +13384,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"maplibre-gl@npm:6.4.0":
-  version: 6.4.0
-  resolution: "maplibre-gl@npm:6.4.0"
+"maplibre-gl@npm:6.6.0":
+  version: 6.6.0
+  resolution: "maplibre-gl@npm:6.6.0"
   dependencies:
     "@mapbox/point-geometry": "npm:^1.1.0"
     "@mapbox/tiny-sdf": "npm:^2.2.0"
     "@mapbox/unitbezier": "npm:^1.0.0"
     "@mapbox/vector-tile": "npm:^3.0.0"
     "@maplibre/geojson-vt": "npm:^6.1.1"
-    "@maplibre/maplibre-gl-style-spec": "npm:^26.2.1"
-    "@maplibre/mlt": "npm:^1.1.12"
+    "@maplibre/maplibre-gl-style-spec": "npm:^26.3.0"
+    "@maplibre/mlt": "npm:^1.2.0"
     "@maplibre/vt-pbf": "npm:^4.3.2"
     "@types/geojson": "npm:^7946.0.16"
     earcut: "npm:^3.2.3"
@@ -13423,7 +13405,7 @@ __metadata:
     potpack: "npm:^2.1.0"
     quickselect: "npm:^3.0.0"
     tinyqueue: "npm:^3.0.0"
-  checksum: 10/1a8166c4fdaa71ecdbaba092e1d5163e66ff85124bd72be84a95d0b54cbaf75fd80cc5511226d6821a8636bfbc844a72d76483b23d21577b4b6feabfe8ee540a
+  checksum: 10/4515d4257be0e5efdc8610cc413eefcf9651dac2d561cfe5f8d571373975fb0a39b11b416f19aa4af83370795f84af32fc466977e093bcac505ab86ee0b8ccb0
   languageName: node
   linkType: hard
 

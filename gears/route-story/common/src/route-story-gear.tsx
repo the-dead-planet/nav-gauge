@@ -76,6 +76,9 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
         });
     };
 
+    public recTopBarToolId = 'rec';
+    public abstract topBarChipComponent: ComponentType<RouteStoryProps<TMap, TChronoLens, TFile, TImageData>>;
+    
     private routeNameToolId = 'route-upload';
     public abstract routeUploadComponent: ComponentType<TopToolsProps<TMap> & RouteStoryProps<TMap, TChronoLens, TFile, TImageData>>;
 
@@ -95,7 +98,7 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
     /**
      * Wrapper to avoid binding issues in react native if components are wrapped in arg list.
      */
-    private wrapProps<TProps extends {}, TToolProps extends {}>(
+    public wrapProps<TProps extends {}, TToolProps extends {}>(
         Component: ComponentType<TToolProps & TProps>,
         props: TProps
     ): FC<TToolProps> {
@@ -104,7 +107,7 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
         );
     }
 
-    private getProps = (): RouteStoryProps<TMap, TChronoLens, TFile, TImageData> => ({
+    public getProps = (): RouteStoryProps<TMap, TChronoLens, TFile, TImageData> => ({
         gearId: this.id,
         translationKey: this.internalTranslationKey,
         animatrix: this.animatrix,

@@ -49,17 +49,13 @@ export class MobileChronoLens extends ChronoLens {
                 id: this.noticeId,
                 type: 'error',
                 error: err as Error,
-                text: `Cannot view the recording video. ${(err as Error).message || 'Unknown reason.'}`
+                text: `Cannot view the recording video.`
             });
         });
     };
 
     public destroyRecording = () => {
         // Done by useViewRecorder on component unmount
-    };
-
-    public hasRecordingData = (): boolean => {
-        return false;
     };
 
     private setUpFolder = async (): Promise<void> => {

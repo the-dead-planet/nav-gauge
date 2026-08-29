@@ -1,9 +1,9 @@
-import { FC, useEffect, useRef } from "react";
+import { FC } from "react";
 import { Animated } from "react-native";
 import { SurveillanceState, useMultipleTranslations } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { RouteStoryTranslationKey } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { Button } from "@mobile-ui";
+import { Button, useBlinkingPulse } from "@mobile-ui";
 import { MobileMap, useMobileMachineWard } from "@mobile-apparatus";
 import { Icons } from "@ui";
 import { MobilePlayerOperator } from "../model";
@@ -20,18 +20,9 @@ export const RecordingButtons: FC<Props> = ({
     translationKey,
     playerOperator,
 }) => {
-    const { chronoLens, signaliumBureau } = useMobileMachineWard();
+    const { chronoLens } = useMobileMachineWard();
     const [surveillanceState] = useSubjectState(chronoLens.surveillanceState$);
-
-    useEffect(() => {
-        const abortController = new AbortController();
-        chronoLens.setUpSurveillance(signaliumBureau, abortController.signal);
-
-        return () => {
-            abortController.abort();
-            chronoLens.clearSurveillance();
-        };
-    }, []);
+    const [hasRecordingData] = useSubjectState(chronoLens.hasRecordingData$);
 
     const [
         destroyLabel,
@@ -47,33 +38,10 @@ export const RecordingButtons: FC<Props> = ({
         { n: gearId, t: translationKey.ResumeRecording },
     ]);
 
-    const opacity = useRef(new Animated.Value(1)).current;
-
-    useEffect(() => {
-        const blinkAnimation = Animated.loop(
-            Animated.sequence([
-                Animated.timing(opacity, { toValue: 1, duration: 450, useNativeDriver: true }),
-                Animated.timing(opacity, { toValue: 0, duration: 100, useNativeDriver: true }),
-                Animated.timing(opacity, { toValue: 0, duration: 450, useNativeDriver: true }),
-            ])
-        );
-        blinkAnimation.start();
-        return () => blinkAnimation.stop();
-    }, [opacity]);
+    const opacity = useBlinkingPulse();
 
     return (
         <>
-            <Button
-                icon={Icons.NounProject.Destroy}
-                size="md"
-                variant="ghost"
-                corners="circle"
-                aria-label={destroyLabel}
-                tooltip={destroyLabel}
-                tooltipPlacement="top"
-                onClick={() => chronoLens.destroyRecording()}
-                disabled={!chronoLens.hasRecordingData()}
-            />
             {surveillanceState === SurveillanceState.Stopped ? (
                 <Button
                     icon={Icons.RecordCapture}
@@ -83,7 +51,7 @@ export const RecordingButtons: FC<Props> = ({
                     aria-label={startRecordingLabel}
                     tooltip={startRecordingLabel}
                     tooltipPlacement="top"
-                    onClick={() => playerOperator.onRecord()}
+                    onPress={() => playerOperator.onStart()}
                 />
             ) : (
                 <Animated.View style={{ opacity }}>
@@ -91,38 +59,52 @@ export const RecordingButtons: FC<Props> = ({
                         icon={Icons.NounProject.Recording}
                         size="md"
                         variant="ghost"
+                        color={surveillanceState === SurveillanceState.InProgress ? "secondary" : "neutral"}
                         corners="circle"
                         aria-label={stopRecordingLabel}
                         tooltip={stopRecordingLabel}
                         tooltipPlacement="top"
-                        onClick={() => playerOperator.onRecord()}
+                        onPress={() => playerOperator.onStop()}
                     />
                 </Animated.View>
             )}
             {surveillanceState === SurveillanceState.Paused ? (
                 <Button
-                    icon={Icons.NounProject.PauseRecording}
+                    icon={Icons.NounProject.ResumeRecording}
                     size="md"
                     variant="ghost"
+                    color="secondary"
                     corners="circle"
                     aria-label={resumeRecordingLabel}
                     tooltip={resumeRecordingLabel}
                     tooltipPlacement="top"
-                    onClick={() => playerOperator.onRecordPause()}
+                    onPress={() => playerOperator.onResume()}
                 />
             ) : (
                 <Button
-                    icon={Icons.NounProject.ResumeRecording}
+                    icon={Icons.NounProject.PauseRecording}
                     size="md"
                     variant="ghost"
                     corners="circle"
                     aria-label={pauseRecordingLabel}
                     tooltip={pauseRecordingLabel}
                     tooltipPlacement="top"
-                    onClick={() => playerOperator.onRecordPause()}
+                    onPress={() => playerOperator.onPause()}
                     disabled={surveillanceState === SurveillanceState.Stopped}
                 />
             )}
+            <Button
+                icon={Icons.NounProject.Destroy}
+                size="md"
+                variant="ghost"
+                color={hasRecordingData ? "secondary" : "neutral"}
+                corners="circle"
+                aria-label={destroyLabel}
+                tooltip={destroyLabel}
+                tooltipPlacement="top"
+                onPress={() => playerOperator.onDestroy()}
+                disabled={!hasRecordingData}
+            />
         </>
     );
 };

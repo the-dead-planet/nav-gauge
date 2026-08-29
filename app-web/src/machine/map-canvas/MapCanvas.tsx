@@ -1,4 +1,5 @@
-import { FC, ReactNode, useState, useEffect } from "react";
+import { FC, ReactNode, useState, useEffect, CSSProperties } from "react";
+import classNames from "classnames";
 import * as maplibregl from "maplibre-gl";
 import { Protocol } from "pmtiles";
 import { Icons } from "@ui";
@@ -18,7 +19,8 @@ interface Props {
 }
 
 export const MapCanvas: FC<Props> = ({ map, children }) => {
-    const { cartomancer } = useWebMachineWard();
+    const { cartomancer, chronoLens, signaliumBureau } = useWebMachineWard();
+    const [blinkingState] = useSubjectState(cartomancer.blinkingState$);
     const [gaugeControls] = useSubjectState(cartomancer.gaugeControls$);
     const [containerRef, setContainerRef] = useState<HTMLElement | null>(null);
     const [cssLoaded, setCssLoaded] = useState(false);
@@ -89,6 +91,7 @@ export const MapCanvas: FC<Props> = ({ map, children }) => {
             return;
         }
         const mapContainer = map.getContainer();
+        mapContainer.classList.add('test-map')
         containerRef.appendChild(mapContainer);
         const protocolId = 'pmtiles';
         const protocol = new Protocol();
@@ -199,8 +202,28 @@ export const MapCanvas: FC<Props> = ({ map, children }) => {
 
     useMapTools(map);
 
+    useEffect(() => {
+        const abortController = new AbortController();
+        chronoLens.canvas = map.getCanvas();
+        chronoLens.setUpSurveillance(signaliumBureau, abortController.signal);
+
+        return () => {
+            abortController.abort();
+            chronoLens.canvas = null;
+            chronoLens.clearSurveillance();
+        };
+    }, [map, chronoLens, signaliumBureau]);
+
     return (
-        <div ref={setContainerRef} className={styles["container"]}>
+        <div
+            ref={setContainerRef}
+            className={classNames(styles["container"], {
+                [styles["blinking"]]: blinkingState!!,
+            })}
+            style={{
+                '--blink-border-color': `var(--color-${blinkingState?.color || 'error'})`
+            } as CSSProperties}
+        >
             {isInitialised && isStyleLoaded ? children : null}
         </div>
     );

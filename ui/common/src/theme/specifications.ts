@@ -36,10 +36,6 @@ export const defaultComponentColors: { [key in ThemeMode]: ThemeSpecification['c
             name: 'neutral',
             shade: 900
         },
-        'text-active': {
-            name: 'teal',
-            shade: 500
-        },
         error: {
             name: 'red',
             shade: 600
@@ -77,10 +73,6 @@ export const defaultComponentColors: { [key in ThemeMode]: ThemeSpecification['c
         text: {
             name: 'neutral',
             shade: 100
-        },
-        'text-active': {
-            name: 'teal',
-            shade: 500
         },
         error: {
             name: 'red',
@@ -171,10 +163,10 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
                 }
             },
             colors: {
-                primary: Theme.palette.greyblue,
-                secondary: Theme.palette.greyblue,
-                tertiary: Theme.palette.greyblue,
-                neutral: Theme.palette.greyblue,
+                primary: Theme.palette['grey-blue'],
+                secondary: Theme.palette['grey-blue'],
+                tertiary: Theme.palette['grey-blue'],
+                neutral: Theme.palette['grey-blue'],
             }
         },
         dark: {
@@ -188,10 +180,10 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
                 }
             },
             colors: {
-                primary: Theme.palette.greyblue,
-                secondary: Theme.palette.greyblue,
+                primary: Theme.palette['grey-blue'],
+                secondary: Theme.palette['grey-blue'],
                 tertiary: Theme.palette['luminous-yellow'],
-                neutral: Theme.palette.greyblue,
+                neutral: Theme.palette['grey-blue'],
             },
         }
     },

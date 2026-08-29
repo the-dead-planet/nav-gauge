@@ -19,7 +19,6 @@ export const UnderConstructionChip: FC = () => {
     return (
         <Chip
             icon={Icons.NounProject.UnderConstruction}
-            size="md"
             tooltip={showLabel ? undefined : underConstructionLabel}
             tooltipPlacement="bottom"
             tooltipVariant="fill-inverse"

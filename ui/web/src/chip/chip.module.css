@@ -99,3 +99,7 @@
     border: 1px inset rgb(from var(--chip-color) r g b / .3);
     color: var(--chip-color);
 }
+
+.interactive {
+    cursor: pointer;
+}

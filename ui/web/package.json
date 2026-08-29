@@ -21,14 +21,14 @@
         "@rsbuild/plugin-react": "^2.1.0",
         "@types/react-dom": "19.2.4",
         "css-loader": "^7.1.4",
-        "maplibre-gl": "6.4.0",
+        "maplibre-gl": "6.6.0",
         "react": "19.2.8",
         "react-dom": "19.2.8",
         "storybook": "^10.5.8",
         "storybook-react-rsbuild": "^3.4.2"
     },
     "peerDependencies": {
-        "maplibre-gl": "6.4.0",
+        "maplibre-gl": "6.6.0",
         "react": "19.2.8",
         "react-dom": "19.2.8",
         "rxjs": "^7.8.2"

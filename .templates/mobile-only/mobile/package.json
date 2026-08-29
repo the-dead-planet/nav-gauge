@@ -15,12 +15,12 @@
         "@the-dead-planet/nav-gauge-ui-common": "*"
     },
     "devDependencies": {
-        "@maplibre/maplibre-react-native": "11.3.6",
+        "@maplibre/maplibre-react-native": "11.3.7",
         "react": "19.2.8",
         "react-native": "0.87.0"
     },
     "peerDependencies": {
-        "@maplibre/maplibre-react-native": "11.3.6",
+        "@maplibre/maplibre-react-native": "11.3.7",
         "react": "19.2.8",
         "react-native": "0.87.0",
         "rxjs": "^7.8.2"

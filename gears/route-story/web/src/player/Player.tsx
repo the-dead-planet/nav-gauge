@@ -32,7 +32,6 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & WebRouteStoryProps> = (
         <RecordingButtons
             gearId={gearId}
             translationKey={translationKey}
-            map={map}
             playerOperator={playerOperator}
         />
     );

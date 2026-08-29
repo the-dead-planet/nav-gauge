@@ -4,7 +4,8 @@ import { getRouteSourceData } from "./tinkers";
 import { getImageIconSize, FULL_SIZE_IMAGE_SIZE, THUMBNAIL_IMAGE_SIZE } from "./images";
 import { RouteStoryGear } from "./route-story-gear";
 import { IMAGE_ANIMATION_DURATION } from "./layer-specification";
-import { RouteStoryFile } from "./model";
+import { RouteStoryFile, RouteStoryProps } from "./model";
+import { DesignSystemColor, ThemeComponentColor } from "@ui";
 
 export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends RouteStoryFile, TImageData> {
     private gear: RouteStoryGear<TMap, TChronoLens, TFile, TImageData>;
@@ -18,20 +19,40 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
         this.gear = gear;
     }
 
+    public getBlinkingColor = (surveillanceState: SurveillanceState): DesignSystemColor | ThemeComponentColor => {
+        return surveillanceState === SurveillanceState.InProgress ? 'error' : 'neutral';
+    }
+
+    public onDestroy = () => {
+        this.gear.apparatus.chronoLens.destroyRecording();
+        this.onStop();
+    };
+
     public onPlay = () => {
         this.gear.apparatus.chronoLens.isPlaying$.next(!this.gear.apparatus.chronoLens.isPlaying$.value);
     };
 
-    public onRecord = () => {
-        this.gear.apparatus.chronoLens.surveillanceState$.next(this.gear.apparatus.chronoLens.surveillanceState$.value === SurveillanceState.Stopped
-            ? SurveillanceState.InProgress
-            : SurveillanceState.Stopped)
+    public onStart = () => {
+        const nextState = SurveillanceState.InProgress;
+        this.gear.apparatus.chronoLens.surveillanceState$.next(nextState);
+        this.gear.apparatus.cartomancer.blinkingState$.next({ color: this.getBlinkingColor(nextState) });
+        this.gear.apparatus.toolsStation.addTopBarTool(this.gear.recTopBarToolId, this.gear.wrapProps<RouteStoryProps<TMap, TChronoLens, TFile, TImageData>, {}>(this.gear.topBarChipComponent, this.gear.getProps()));
     };
 
-    public onRecordPause = () => {
-        this.gear.apparatus.chronoLens.surveillanceState$.next(this.gear.apparatus.chronoLens.surveillanceState$.value === SurveillanceState.Paused
-            ? SurveillanceState.InProgress
-            : SurveillanceState.Paused)
+    public onStop = () => {
+        this.gear.apparatus.chronoLens.surveillanceState$.next(SurveillanceState.Stopped);
+        this.gear.apparatus.cartomancer.blinkingState$.next(null);
+        this.gear.apparatus.toolsStation.removeTopBarTool(this.gear.recTopBarToolId);
+    };
+
+    public onPause = () => {
+        this.gear.apparatus.chronoLens.surveillanceState$.next(SurveillanceState.Paused);
+        this.gear.apparatus.cartomancer.blinkingState$.next({ color: "neutral" });
+    };
+
+    public onResume = () => {
+        this.gear.apparatus.chronoLens.surveillanceState$.next(SurveillanceState.InProgress);
+        this.gear.apparatus.cartomancer.blinkingState$.next({ color: "error" });
     };
 
     public updateProgress = (
