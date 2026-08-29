@@ -4,6 +4,9 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
     groups:
       minor-patch:
         update-types:
@@ -16,6 +19,9 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
     groups:
       minor-patch:
         update-types:
