@@ -74,13 +74,13 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
         autoRotate,
         cameraAngle,
         cameraRoll,
-        bearingLineLengthInMeters,
-        maxBearingDiffPerFrame,
-        pitch,
-        zoom,
+        cameraTilt,
+        cameraZoom,
+        easeDuration,
         displayImageDuration,
         speedMultiplier,
-        easeDuration
+        bearingLineLengthInMeters,
+        maxBearingDiffPerFrame,
     } = animationControls;
 
     return (
@@ -141,7 +141,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                             </Label>
                             <Slider
                                 id="animation-controls-zoom"
-                                value={zoom}
+                                value={cameraZoom}
                                 step={0.1}
                                 min={Animatrix.zoomRange[0]}
                                 max={Animatrix.zoomRange[1]}
@@ -156,7 +156,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                                 size="xs"
                                 disabled={!followCurrentPoint}
                             />
-                            <Span tabular>{zoom.toFixed(1)}</Span>
+                            <Span tabular>{cameraZoom.toFixed(1)}</Span>
                         </>
                     )}
                     {matchesSearch(easeDurationLabel) && (
@@ -224,12 +224,12 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                                 id="animation-controls-pitch"
                                 thumbIcon={Icons.NounProject.CameraVideoSide}
                                 size='xs'
-                                value={pitch}
-                                min={Animatrix.pitchRange[0]}
-                                max={Animatrix.pitchRange[1]}
+                                value={cameraTilt}
+                                min={Animatrix.cameraTiltRange[0]}
+                                max={Animatrix.cameraTiltRange[1]}
                                 onChange={(value) => {
                                     setAnimationControls((prev) => ({
-                                        ...prev, pitch: clamp(value, Animatrix.pitchRange)
+                                        ...prev, pitch: clamp(value, Animatrix.cameraTiltRange)
                                     }));
                                     if (!isPlaying) {
                                         map.setPitch(value);
@@ -237,7 +237,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                                 }}
                                 disabled={!followCurrentPoint}
                             />
-                            <Span tabular>{pitch}°</Span>
+                            <Span tabular>{cameraTilt}°</Span>
                         </>
                     )}
                     {matchesSearch(cameraRollLabel) && (

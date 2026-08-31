@@ -19,7 +19,7 @@ export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
         { n: namespace, t: translationKey.ToggleMode },
     ]);
 
-    // TODO: Icons: light/dark mode, sound, geolocation on/off, recording on/off?, menu
+    // TODO: Icons: sound, geolocation on/off
     return (
         <nav
             ref={(instance) => {

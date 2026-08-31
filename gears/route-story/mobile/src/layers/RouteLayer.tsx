@@ -32,8 +32,8 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [animationControls] = useSubjectState(animatrix.controls$);
     const {
-        pitch,
-        zoom,
+        cameraTilt,
+        cameraZoom,
         easeDuration,
         bearingLineLengthInMeters,
     } = animationControls;
@@ -91,8 +91,8 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
                 map.camera$.value?.easeTo({
                     center: [position[0], position[1]],
                     duration: easeDuration,
-                    zoom,
-                    pitch,
+                    zoom: cameraZoom,
+                    pitch: cameraTilt,
                     bearing,
                 });
             },
@@ -101,7 +101,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
         return () => {
             playerOperator.cleanupAnimateRoute();
         };
-    }, [isPlaying, loadedImages, easeDuration, zoom, pitch]);
+    }, [isPlaying, loadedImages, easeDuration, cameraZoom, cameraTilt]);
 
     return (
         <>

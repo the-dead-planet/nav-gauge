@@ -29,8 +29,8 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [animationControls] = useSubjectState(animatrix.controls$);
     const {
-        pitch,
-        zoom,
+        cameraTilt,
+        cameraZoom,
         cameraRoll,
         easeDuration,
         bearingLineLengthInMeters,
@@ -66,10 +66,10 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
                     center: new maplibregl.LngLat(position[0], position[1]),
                     essential: true,
                     duration: easeDuration,
-                    zoom,
-                    pitch,
+                    zoom: cameraZoom,
+                    pitch: cameraTilt,
                     bearing,
-                    roll: pitch !== 0 ? cameraRoll : 0,
+                    roll: cameraTilt !== 0 ? cameraRoll : 0,
                 });
             },
         );
@@ -77,7 +77,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
         return () => {
             playerOperator.cleanupAnimateRoute();
         };
-    }, [isPlaying, loadedImages, easeDuration, zoom, pitch, cameraRoll]);
+    }, [isPlaying, loadedImages, easeDuration, cameraZoom, cameraTilt, cameraRoll]);
 
     return (
         <>

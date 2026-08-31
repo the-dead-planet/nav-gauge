@@ -36,15 +36,15 @@ describe("Route story gear", () => {
                 expect(() => Animatrix.validateAnimationControls({ cameraRoll: 2000000 } as unknown as AnimationControlsType)).to.throw("Camera roll should be within range [0, 360]");
                 expect(() => Animatrix.validateAnimationControls({ cameraRoll: "" } as unknown as AnimationControlsType)).to.throw("Camera roll should be of type number");
             });
-            it("should throw if pitch incorrect", () => {
-                expect(() => Animatrix.validateAnimationControls({ pitch: 20 })).to.not.throw();
-                expect(() => Animatrix.validateAnimationControls({ pitch: 200 } as unknown as AnimationControlsType)).to.throw("Pitch should be within range [0, 85]");
-                expect(() => Animatrix.validateAnimationControls({ pitch: "" } as unknown as AnimationControlsType)).to.throw("Pitch should be of type number");
+            it("should throw if camera tilt incorrect", () => {
+                expect(() => Animatrix.validateAnimationControls({ cameraTilt: 20 })).to.not.throw();
+                expect(() => Animatrix.validateAnimationControls({ cameraTilt: 200 } as unknown as AnimationControlsType)).to.throw("Pitch should be within range [0, 85]");
+                expect(() => Animatrix.validateAnimationControls({ cameraTilt: "" } as unknown as AnimationControlsType)).to.throw("Pitch should be of type number");
             });
-            it("should throw if showZoom incorrect", () => {
-                expect(() => Animatrix.validateAnimationControls({ zoom: 13 })).to.not.throw();
-                expect(() => Animatrix.validateAnimationControls({ zoom: 200 } as unknown as AnimationControlsType)).to.throw("Zoom should be within range [0, 20]");
-                expect(() => Animatrix.validateAnimationControls({ zoom: "" } as unknown as AnimationControlsType)).to.throw("Zoom should be of type number");
+            it("should throw if camera zoom incorrect", () => {
+                expect(() => Animatrix.validateAnimationControls({ cameraZoom: 13 })).to.not.throw();
+                expect(() => Animatrix.validateAnimationControls({ cameraZoom: 200 } as unknown as AnimationControlsType)).to.throw("Zoom should be within range [0, 20]");
+                expect(() => Animatrix.validateAnimationControls({ cameraZoom: "" } as unknown as AnimationControlsType)).to.throw("Zoom should be of type number");
             });
             it("should throw if displayImageDuration incorrect", () => {
                 expect(() => Animatrix.validateAnimationControls({ displayImageDuration: 4500 })).to.not.throw();
