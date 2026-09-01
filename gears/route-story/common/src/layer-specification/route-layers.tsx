@@ -3,6 +3,7 @@ import { EqualBooleanFeatureState, ComparisonProperty, GetPropertyCaseCondition,
 
 export const routeSourceIds = {
     line: 'route-story-line',
+    simplifiedLine: 'route-story-line-simplified',
     currentPoint: 'route-story-current-point',
 }
 

@@ -35,7 +35,6 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
         cameraTilt,
         cameraZoom,
         easeDuration,
-        bearingLineLengthInMeters,
     } = animationControls;
     const [currentPointSourceData, setCurrentPointSourceData] = useSubjectState(currentPointRef$);
     const [lineSourceData, setLineSourceData] = useSubjectState(linesRef$);
@@ -43,13 +42,6 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
     useEffect(() => {
         // lineRef$.next();
         // currentPointRef$.next();
-        // fetch('/example.gpx')
-        //     .then((file) => file.text())
-        //     .then((text) => parsers.get('.gpx')?.parseTextToGeoJson(text))
-        //     .then((result) => setData(result ? {
-        //         ...result,
-        //         boundingBox: bbox(result.geojson)
-        //     } : {}));
 
         return () => {
             setLineSourceData(emptyCollection);
@@ -71,12 +63,11 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
             geojson,
             routeTimes.startTimeEpoch,
             progressMs, // Not a dependency of this memo, data is updated later in the animateRoute hook
-            bearingLineLengthInMeters
         );
 
         setLineSourceData(line);
         setCurrentPointSourceData(currentPoint);
-    }, [geojson, routeTimes?.startTimeEpoch, bearingLineLengthInMeters, state]);
+    }, [geojson, routeTimes?.startTimeEpoch, state]);
 
     useEffect(() => {
         if (!isPlaying || !geojson || !routeTimes) {

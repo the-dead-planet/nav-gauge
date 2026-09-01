@@ -1,13 +1,14 @@
 export interface AnimationControlsType {
     /**
-     * Value in seconds by which to move current point on the route (relates to timestamp).
-     */
-    speedMultiplier: number;
-    /**
      * How long to view the image for (in milliseconds).
      * Defaults to `3000` (3 seconds).
      */
     displayImageDuration: number;
+    /**
+     * How long it takes for the current point to travel from the start to the end of the route (in milliseconds).
+     * Does not include the time the camera pauses on displayed images; `total recording duration` = this + number of displayed images * `displayImageDuration`.
+     */
+    routeAnimationDuration: number;
 
     /**
      * Whether the camera should move to keep current point in the center of the map.
@@ -41,15 +42,6 @@ export interface AnimationControlsType {
      * If set to `true`, will apply rotation according to the direction where current point is heading to.
      */
     autoRotate: boolean;
-    /**
-     * Used to detect the first points before/after current point which are at least half of that value away from current point.
-     * Bearing for current point used to auto rotate the map will be calculated using this line.
-     */
-    bearingLineLengthInMeters: number;
-    /**
-     * Maximum amount of degrees to allow updating the map bearing each frame (when `autoRotate` is enabled).
-     */
-    maxBearingDiffPerFrame: number;
 }
 
 export enum AnimatrixTranslationKey {
@@ -59,12 +51,11 @@ export enum AnimatrixTranslationKey {
     AutoRotate = 'auto-rotate',
     CameraAngle = 'camera-angle',
     CameraRoll = 'camera-roll',
-    BearingLineLengthInMeters = 'bearing-line-length-in-meters',
-    MaxBearingDiffPerFrame = 'max-bearing-diff-per-frame',
     Pitch = 'pitch',
     Zoom = 'zoom',
     ImagePauseDuration = 'image-pause-duration',
-    SpeedMultiplier = 'speed-multiplier',
+    RouteAnimationDuration = 'route-animation-duration',
+    TotalRecordingDuration = 'total-recording-duration',
     EaseDuration = 'ease-duration',
     Search = 'search',
 }

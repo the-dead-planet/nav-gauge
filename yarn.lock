@@ -6352,6 +6352,7 @@ __metadata:
     "@turf/along": "npm:^7.4.0"
     "@turf/bbox": "npm:^7.4.0"
     "@turf/bearing": "npm:^7.4.0"
+    "@turf/bezier-spline": "npm:^7.4.0"
     "@turf/distance": "npm:^7.4.0"
     "@turf/helpers": "npm:^7.4.0"
     "@turf/length": "npm:^7.4.0"
@@ -6411,6 +6412,18 @@ __metadata:
     "@types/geojson": "npm:^7946.0.10"
     tslib: "npm:^2.8.1"
   checksum: 10/b23dcc5bdeb6a4d3590db67bc91f23a5027aaf0bd89ffd7cff150e4fc618364479201f7737cb3ec45d28def7cf6d3da1c571240ffe09b08f4bfdbbbc54e27cc9
+  languageName: node
+  linkType: hard
+
+"@turf/bezier-spline@npm:^7.4.0":
+  version: 7.4.0
+  resolution: "@turf/bezier-spline@npm:7.4.0"
+  dependencies:
+    "@turf/helpers": "npm:7.4.0"
+    "@turf/invariant": "npm:7.4.0"
+    "@types/geojson": "npm:^7946.0.10"
+    tslib: "npm:^2.8.1"
+  checksum: 10/61649f39f652fb5b5bc1b548a166e2a4823e148d8231dfc55341681a4345cd075c2b0de0ef68c3152f35db12f3cedb0600da3c0181bdb3144d94096e2ee6877a
   languageName: node
   linkType: hard
 

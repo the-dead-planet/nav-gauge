@@ -16,16 +16,6 @@ describe("Route story gear", () => {
                 expect(() => Animatrix.validateAnimationControls({ autoRotate: false })).to.not.throw();
                 expect(() => Animatrix.validateAnimationControls({ autoRotate: "" } as unknown as AnimationControlsType)).to.throw("Auto rotate should be of type boolean");
             });
-            it("should throw if bearingLineLengthInMeters incorrect", () => {
-                expect(() => Animatrix.validateAnimationControls({ bearingLineLengthInMeters: 1000 })).to.not.throw();
-                expect(() => Animatrix.validateAnimationControls({ bearingLineLengthInMeters: 100001 } as unknown as AnimationControlsType)).to.throw("Bearing line length in meters should be within range [0, 100000]");
-                expect(() => Animatrix.validateAnimationControls({ bearingLineLengthInMeters: "" } as unknown as AnimationControlsType)).to.throw("Bearing line length in meters should be of type number");
-            });
-            it("should throw if maxBearingDiffPerFrame incorrect", () => {
-                expect(() => Animatrix.validateAnimationControls({ maxBearingDiffPerFrame: 1 })).to.not.throw();
-                expect(() => Animatrix.validateAnimationControls({ maxBearingDiffPerFrame: 370 } as unknown as AnimationControlsType)).to.throw("Max bearing diff per frame should be within range [0, 360]");
-                expect(() => Animatrix.validateAnimationControls({ maxBearingDiffPerFrame: "" } as unknown as AnimationControlsType)).to.throw("Max bearing diff per frame should be of type number");
-            });
             it("should throw if cameraAngle incorrect", () => {
                 expect(() => Animatrix.validateAnimationControls({ cameraAngle: 90 })).to.not.throw();
                 expect(() => Animatrix.validateAnimationControls({ cameraAngle: 2000000 } as unknown as AnimationControlsType)).to.throw("Camera angle should be within range [0, 360]");
@@ -52,10 +42,11 @@ describe("Route story gear", () => {
                 expect(() => Animatrix.validateAnimationControls({ displayImageDuration: -1000 } as unknown as AnimationControlsType)).to.throw("Image pause duration should be within range [0, 10000]");
                 expect(() => Animatrix.validateAnimationControls({ displayImageDuration: "" } as unknown as AnimationControlsType)).to.throw("Image pause duration should be of type number");
             });
-            it("should throw if speed incorrect", () => {
-                expect(() => Animatrix.validateAnimationControls({ speedMultiplier: 120 })).to.not.throw();
-                expect(() => Animatrix.validateAnimationControls({ speedMultiplier: 2000000 } as unknown as AnimationControlsType)).to.throw("Speed in seconds per frame should be within range [0, 250000]");
-                expect(() => Animatrix.validateAnimationControls({ speedMultiplier: "" } as unknown as AnimationControlsType)).to.throw("Speed in seconds per frame should be of type number");
+            it("should throw if routeAnimationDuration incorrect", () => {
+                expect(() => Animatrix.validateAnimationControls({ routeAnimationDuration: 15000 })).to.not.throw();
+                expect(() => Animatrix.validateAnimationControls({ routeAnimationDuration: 0 })).to.throw("Route animation duration should be within range [1000, 120000]");
+                expect(() => Animatrix.validateAnimationControls({ routeAnimationDuration: 2000000 } as unknown as AnimationControlsType)).to.throw("Route animation duration should be within range [1000, 120000]");
+                expect(() => Animatrix.validateAnimationControls({ routeAnimationDuration: "" } as unknown as AnimationControlsType)).to.throw("Route animation duration should be of type number");
             });
             it("should throw if easeDuration incorrect", () => {
                 expect(() => Animatrix.validateAnimationControls({ easeDuration: 200 })).to.not.throw();

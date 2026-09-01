@@ -19,23 +19,19 @@ export class Animatrix {
         cameraAngle: 0,
         cameraTilt: 45,
         cameraRoll: 0,
-        speedMultiplier: 5000,
         easeDuration: 100,
         displayImageDuration: 3000,
+        routeAnimationDuration: 10000,
 
         autoRotate: true,
-        bearingLineLengthInMeters: 500,
-        maxBearingDiffPerFrame: 5,
     };
 
     public static displayImageDurationRange: [number, number] = [0, 10000];
     public static zoomRange: [number, number] = [0, 20];
-    public static bearingLineLengthInMetersRange: [number, number] = [0, 100000];
-    public static maxBearingDiffPerFrameRange: [number, number] = [CLOCK_INPUT_RANGE[0], CLOCK_INPUT_RANGE[1]];
     public static cameraTiltRange: [number, number] = [0, 85];
     public static cameraAngleRange: [number, number] = [CLOCK_INPUT_RANGE[0], CLOCK_INPUT_RANGE[1]];
     public static cameraRollRange: [number, number] = [CLOCK_INPUT_RANGE[0], CLOCK_INPUT_RANGE[1]];
-    public static speedMultiplierRange: [number, number] = [0, 250000];
+    public static routeAnimationDurationRange: [number, number] = [1000, 120000];
     public static easeDurationRange: [number, number] = [0, 1000];
 
     private controlsStorageId = 'animatrix:controls';
@@ -78,14 +74,12 @@ export class Animatrix {
     public static validateAnimationControls = (animationControls: Partial<AnimationControlsType>) => {
         validateBoolean(animationControls.followCurrentPoint, 'Follow current point');
         validateBoolean(animationControls.autoRotate, "Auto rotate");
-        validateNumber(animationControls.bearingLineLengthInMeters, "Bearing line length in meters", Animatrix.bearingLineLengthInMetersRange);
-        validateNumber(animationControls.maxBearingDiffPerFrame, "Max bearing diff per frame", Animatrix.maxBearingDiffPerFrameRange);
         validateNumber(animationControls.cameraAngle, 'Camera angle', Animatrix.cameraAngleRange);
         validateNumber(animationControls.cameraRoll, 'Camera roll', Animatrix.cameraRollRange);
         validateNumber(animationControls.cameraTilt, 'Pitch', Animatrix.cameraTiltRange);
         validateNumber(animationControls.cameraZoom, 'Zoom', Animatrix.zoomRange);
         validateNumber(animationControls.displayImageDuration, 'Image pause duration', Animatrix.displayImageDurationRange);
-        validateNumber(animationControls.speedMultiplier, 'Speed in seconds per frame', Animatrix.speedMultiplierRange);
+        validateNumber(animationControls.routeAnimationDuration, 'Route animation duration', Animatrix.routeAnimationDurationRange);
         validateNumber(animationControls.easeDuration, 'Ease duration', Animatrix.easeDurationRange);
     }
 }

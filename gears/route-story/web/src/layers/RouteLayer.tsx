@@ -2,7 +2,7 @@ import { FC, useEffect, useMemo } from "react";
 import * as maplibregl from "maplibre-gl";
 import { OverlayComponentProps } from "@apparatus";
 import { useWebMachineWard } from "@web-apparatus";
-import { getRouteSourceData } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { getBearingPath, getRouteSourceData, routeSourceIds } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { emptyCollection, useSubjectState } from "@tinker-chest";
 import { updateRouteLayer } from "../tinkers";
 import { useLoadedWebImages } from "../hooks";
@@ -33,23 +33,21 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
         cameraZoom,
         cameraRoll,
         easeDuration,
-        bearingLineLengthInMeters,
     } = animationControls;
 
     const loadedImages = useLoadedWebImages(images);
 
-    const sources = useMemo((): { [key in 'line' | 'currentPoint']: GeoJSON.GeoJSON } => {
+    const sources = useMemo((): { [key in 'line' | 'currentPoint' | 'simplifiedLine']: GeoJSON.GeoJSON } => {
         if (!geojson || !routeTimes) {
-            return { currentPoint: emptyCollection, line: emptyCollection }
+            return { currentPoint: emptyCollection, line: emptyCollection, simplifiedLine: emptyCollection }
         }
         return getRouteSourceData(
             state,
             geojson,
             routeTimes.startTimeEpoch,
             progressMs, // Not a dependency of this memo, data is updated later in the animateRoute hook
-            bearingLineLengthInMeters
         );
-    }, [geojson, routeTimes, bearingLineLengthInMeters, state]);
+    }, [geojson, routeTimes, state]);
 
     useEffect(() => {
         if (!isPlaying || !geojson || !routeTimes) {
@@ -81,8 +79,9 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
 
     return (
         <>
-            <RouteLineLayer map={map} source={sources.line} state={state} />
+            <RouteLineLayer map={map} sourceId={routeSourceIds.line} source={sources.line} state={state} />
             <RouteCurrentPointLayer map={map} source={sources.currentPoint} />
+            <RouteLineLayer map={map} sourceId={routeSourceIds.simplifiedLine} source={sources.simplifiedLine} state={state} />
         </>
     );
 };
