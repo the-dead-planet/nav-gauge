@@ -3,6 +3,7 @@ import turfAlong from "@turf/along";
 import turfBearing from "@turf/bearing";
 import turfDistance from "@turf/distance";
 import { point as turfPoint, lineString as turfLine } from "@turf/helpers";
+import { bezierSpline } from "@turf/bezier-spline";
 import turfLength from "@turf/length";
 import { CurrentPointData, LoadedImageData, MarkerImage } from "@apparatus";
 import { emptyCollection, FeatureProperties, GeoJson } from "@tinker-chest";
@@ -15,20 +16,19 @@ export const getRouteSourceData = (
     geojson: GeoJson,
     startTimeEpoch: number,
     progressMs: number,
-    bearingLineLengthInMeters: number,
-    nextImageFeatureId?: number,
 ): CurrentPointData => {
     const currentTime = startTimeEpoch + progressMs;
     const splitIndex = geojson.features.findIndex((f) =>
-        new Date(f.properties.time).valueOf() > new Date(currentTime).valueOf() ||
-        (nextImageFeatureId !== undefined && f.properties.id === nextImageFeatureId)
+        new Date(f.properties.time).valueOf() > new Date(currentTime).valueOf()
     );
-    const { currentPoint, currentPointBearing, currentPointSpeed } = getCurrentPoint(geojson, splitIndex, currentTime, bearingLineLengthInMeters);
+    const { currentPoint, fraction } = getCurrentPoint(geojson, splitIndex, currentTime);
+    const splineData = getSplineData(geojson);
+    const simplified = splineData.spline;
 
     return {
+        splitIndex,
+        fraction,
         currentPoint,
-        currentPointBearing,
-        currentPointSpeed,
         line: !showRouteLine && !showRoutePoints
             ? emptyCollection
             : {
@@ -55,22 +55,24 @@ export const getRouteSourceData = (
                         }
                     },
                 ].filter((feature) => feature.geometry.coordinates.length > 1) as GeoJSON.Feature<GeoJSON.LineString>[]
-            }
+            },
+        simplifiedLine: {
+            ...geojson,
+            features: [simplified]
+        },
     };
 };
 
 /**
- * @returns current point feature with its bearing and speed calculated out of a line where start/end point are the first points before//after the current point at least 10 meter distance away.
+ * @returns current point feature interpolated between the first features before/after it, plus the fractional position between them.
  */
 const getCurrentPoint = (
     geojson: GeoJson,
     splitIndex: number,
     currentTime: number,
-    bearingLineLengthInMeters: number,
 ): {
     currentPoint: GeoJSON.Feature<GeoJSON.Point>;
-    currentPointBearing: number;
-    currentPointSpeed: number;
+    fraction: number;
 } => {
     const indexes = [Math.max(0, splitIndex - 1), Math.max(1, splitIndex)];
     const currentLineStart = geojson.features[indexes[0]];
@@ -83,58 +85,105 @@ const getCurrentPoint = (
     const currentLineEndPos = currentLineEnd.geometry.coordinates;
     const line = turfLine([currentLineStartPos, currentLineEndPos]);
     const totalDistanceMeters = turfLength(line, { units: 'meters' });
-    const totalTimeMs = (new Date(currentLineEnd.properties.time).valueOf() - new Date(currentLineStart.properties.time).valueOf());
     const currentPoint = { ...currentLineEnd };
 
     if (!('featureId' in currentPoint.properties)) {
         currentPoint.geometry = turfAlong(line, totalDistanceMeters * fraction, { units: 'meters' }).geometry;
     };
 
-    const currentPointSpeed = (totalDistanceMeters) / (totalTimeMs / 3600);
-
     return {
         currentPoint,
-        currentPointBearing: getCurrentPointBearing(currentPoint, geojson, splitIndex, bearingLineLengthInMeters),
-        currentPointSpeed
+        fraction,
     };
 };
 
-/**
- * Gets bearing of a line created by the first points before/after current point at least `minDistanceInMeters` away. Defaults to 10m.
- */
-const getCurrentPointBearing = (
-    currentPoint: GeoJSON.Feature<GeoJSON.Point>,
-    geojson: GeoJson,
-    splitIndex: number,
-    bearingLineLengthInMeters: number
-): number => {
-    const before = geojson.features.slice(0, splitIndex);
-    const after = geojson.features.slice(splitIndex);
-    const p1 = getFirstPointInDistance(currentPoint, after.concat(before).toReversed(), bearingLineLengthInMeters);
-    const p2 = getFirstPointInDistance(currentPoint, after.concat(before), bearingLineLengthInMeters);
+export interface SplineData {
+    spline: GeoJSON.Feature<GeoJSON.LineString>;
+    lookup: Array<{ t: number }>;
+    splinePoints: GeoJSON.Position[];
+}
 
-    if (!p1 || !p2) {
-        return 0;
+const splineDataCache = new WeakMap<GeoJson, SplineData>();
+
+export const getSplineData = (geojson: GeoJson): SplineData => {
+    const cached = splineDataCache.get(geojson);
+    if (cached) {
+        return cached;
     }
 
-    return turfBearing(turfPoint(p1), turfPoint(p2));
+    const features = geojson.features;
+    const spline = bezierSpline({
+        type: 'Feature',
+        geometry: {
+            type: 'LineString',
+            coordinates: features.map((f) => f.geometry.coordinates)
+        },
+        properties: {}
+    }, {
+        resolution: 500,
+    });
+    const splinePoints = spline.geometry.coordinates;
+
+    const lookup = buildSplineLookup(features, splinePoints);
+
+    const data: SplineData = { spline, lookup, splinePoints };
+    splineDataCache.set(geojson, data);
+
+    return data;
 };
 
-const getFirstPointInDistance = (
-    currentPoint: GeoJSON.Feature<GeoJSON.Point>,
-    features: GeoJSON.Feature<GeoJSON.Point>[],
-    bearingLineLengthInMeters: number
-): GeoJSON.Position | undefined => {
-    let p: GeoJSON.Position | undefined;
-    let distance = 0;
-    for (const { geometry } of features) {
-        distance += turfDistance(currentPoint, geometry.coordinates, { units: 'meters' });
-        if (distance > (bearingLineLengthInMeters / 2)) {
-            p = geometry.coordinates
-            break;
-        }
+const buildSplineLookup = (
+    features: GeoJson['features'],
+    splinePoints: GeoJSON.Position[],
+): Array<{ t: number }> => {
+    const origCumulative = [0];
+    for (let i = 1; i < features.length; i++) {
+        origCumulative.push(
+            origCumulative[i - 1] + turfDistance(
+                features[i - 1].geometry.coordinates,
+                features[i].geometry.coordinates,
+                { units: 'meters' },
+            )
+        );
     }
-    return p;
+    const origTotal = origCumulative[origCumulative.length - 1];
+
+    const splineCumulative = [0];
+    for (let i = 1; i < splinePoints.length; i++) {
+        splineCumulative.push(
+            splineCumulative[i - 1] + turfDistance(splinePoints[i - 1], splinePoints[i], { units: 'meters' })
+        );
+    }
+    const splineTotal = splineCumulative[splineCumulative.length - 1];
+
+    return features.map((_feature, i) => {
+        const fraction = origTotal > 0 ? origCumulative[i] / origTotal : 0;
+        const targetDistance = fraction * splineTotal;
+        let bestIdx = 0;
+
+        for (let j = 1; j < splineCumulative.length; j++) {
+            if (splineCumulative[j] >= targetDistance) {
+                bestIdx = j;
+                break;
+            }
+            bestIdx = j;
+        }
+
+        return { t: bestIdx / (splinePoints.length - 1) };
+    });
+};
+
+export const getSplineHeading = (splineData: SplineData, splitIndex: number, fraction: number): number => {
+    const { lookup, splinePoints } = splineData;
+    const t1 = lookup[Math.max(0, splitIndex - 1)].t;
+    const t2 = lookup[Math.min(lookup.length - 1, splitIndex)].t;
+    const t = t1 + (t2 - t1) * fraction;
+    const splineIdx = Math.min(splinePoints.length - 2, Math.max(1, Math.round(t * (splinePoints.length - 1))));
+
+    return turfBearing(
+        turfPoint(splinePoints[splineIdx - 1]),
+        turfPoint(splinePoints[splineIdx]),
+    );
 };
 
 /**

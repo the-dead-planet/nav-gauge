@@ -2,7 +2,7 @@ import { FC, useEffect, useMemo } from "react";
 import * as maplibregl from "maplibre-gl";
 import { OverlayComponentProps } from "@apparatus";
 import { useWebMachineWard } from "@web-apparatus";
-import { getBearingPath, getRouteSourceData, routeSourceIds } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { getRouteSourceData, routeSourceIds } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { emptyCollection, useSubjectState } from "@tinker-chest";
 import { updateRouteLayer } from "../tinkers";
 import { useLoadedWebImages } from "../hooks";

@@ -1,6 +1,6 @@
 import { BehaviorSubject } from "rxjs";
 import { SurveillanceState, LoadedImageData, ChronoLens } from "@apparatus";
-import { getRouteSourceData } from "./tinkers";
+import { getSplineData, getSplineHeading, getRouteSourceData } from "./tinkers";
 import { getImageIconSize, FULL_SIZE_IMAGE_SIZE, THUMBNAIL_IMAGE_SIZE } from "./images";
 import { RouteStoryGear } from "./route-story-gear";
 import { IMAGE_ANIMATION_DURATION } from "./layer-specification";
@@ -76,7 +76,6 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
                 this.gear.data$.value.geojson,
                 this.gear.routeTimes$.value.startTimeEpoch,
                 value,
-                this.gear.animatrix.controls$.value.bearingLineLengthInMeters
             );
             updateLayer?.(line, currentPoint);
         }
@@ -95,7 +94,6 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
         onUpdateMapCamera: (position: GeoJSON.Position, bearing: number) => void,
     ) => {
         const isPlaying = this.gear.apparatus.chronoLens.isPlaying$.value;
-        const progressMs = this.gear.progressMs$.value;
         const geojson = this.gear.data$.value.geojson;
         const routeTimes = this.gear.routeTimes$.value;
 
@@ -104,42 +102,45 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
         }
 
         const { startTimeEpoch, endTimeEpoch } = routeTimes;
+        const routeDuration = routeTimes.duration;
+        const splineData = getSplineData(geojson);
         const sortedImageFeatures = [...loadedImages].sort((a, b) => a.featureId - b.featureId);
+        const nextImageTimes = sortedImageFeatures.map((imageFeature) => {
+            const f = geojson.features.find((feature) => feature.properties.id === imageFeature.featureId);
+            return f ? new Date(f.properties.time).valueOf() : null;
+        });
         let last = performance.now();
         let currentProgressMs = this.gear.progressMs$.value;
-        let nextImageIndex = sortedImageFeatures.findIndex((imageFeature): boolean => {
-            const f = geojson.features.find((feature) => feature.properties.id === imageFeature.featureId);
-            return !!f && new Date(f.properties.time).valueOf() >= new Date(startTimeEpoch + progressMs).valueOf();
-        });
+        let nextImageIndex = nextImageTimes.findIndex((time) => time !== null && time >= startTimeEpoch + currentProgressMs);
 
         const animate = () => {
             const {
-                speedMultiplier,
-                bearingLineLengthInMeters,
+                routeAnimationDuration,
                 displayImageDuration,
                 followCurrentPoint,
                 cameraAngle,
                 autoRotate,
-                maxBearingDiffPerFrame,
             } = this.gear.animatrix.controls$.value;
 
             const now = performance.now();
             const dt = now - last;
             last = now;
-            currentProgressMs += dt + speedMultiplier;
+            currentProgressMs += dt * (routeDuration / routeAnimationDuration);
             if (startTimeEpoch + currentProgressMs >= endTimeEpoch) {
                 currentProgressMs = 0;
                 nextImageIndex = 0;
             }
             const nextImage: LoadedImageData<TImageData> | undefined = sortedImageFeatures[nextImageIndex];
-            const { currentPoint, line, currentPointBearing } = getRouteSourceData(this.gear.state$.value, geojson, startTimeEpoch, currentProgressMs, bearingLineLengthInMeters, nextImage?.featureId);
+            const nextImageTime = nextImageIndex >= 0 ? nextImageTimes[nextImageIndex] : null;
+            const { currentPoint, line, splitIndex, fraction } = getRouteSourceData(this.gear.state$.value, geojson, startTimeEpoch, currentProgressMs);
             onUpdateLayer(currentPoint, line);
 
-            if (this.animation !== undefined && nextImage && nextImage.featureId <= Number(currentPoint.id)) {
+            if (this.animation !== undefined && nextImage && nextImageTime !== null && nextImageTime <= startTimeEpoch + currentProgressMs) {
                 this.gear.animatrix.displayImageId$.next(nextImage.id);
                 nextImageIndex = nextImageIndex + 1;
                 cancelAnimationFrame(this.animation);
                 this.displayImageTimeout = setTimeout(() => {
+                    last = performance.now();
                     this.gear.animatrix.displayImageId$.next(null);
                     this.animation = requestAnimationFrame(animate);
                 }, displayImageDuration);
@@ -149,11 +150,8 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
 
             if (followCurrentPoint) {
                 const lngLat: GeoJSON.Position = [currentPoint.geometry.coordinates[0], currentPoint.geometry.coordinates[1]];
-                const currentBearing = this.gear.apparatus.cartomancer.bearing$.value; const nextBearing = (cameraAngle + (autoRotate ? currentPointBearing : 0));
-                const bearingDiff = ((nextBearing - currentBearing + 540) % 360) - 180;
-                const bearing = currentBearing + Math.max(-maxBearingDiffPerFrame, Math.min(maxBearingDiffPerFrame, bearingDiff));
-
-                onUpdateMapCamera(lngLat, bearing);
+                const currentPointHeading = autoRotate ? getSplineHeading(splineData, splitIndex, fraction) : 0;
+                onUpdateMapCamera(lngLat, cameraAngle + currentPointHeading);
             }
 
             // TODO: Calculate % of geometry done based on current progressMs and update paint property line gradient instead of all data.
