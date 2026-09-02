@@ -8,7 +8,7 @@ export interface AnimationControlsType {
      * How long it takes for the current point to travel from the start to the end of the route (in milliseconds).
      * Does not include the time the camera pauses on displayed images; `total recording duration` = this + number of displayed images * `displayImageDuration`.
      */
-    routeAnimationDuration: number;
+    routePlaybackDuration: number;
 
     /**
      * Whether the camera should move to keep current point in the center of the map.

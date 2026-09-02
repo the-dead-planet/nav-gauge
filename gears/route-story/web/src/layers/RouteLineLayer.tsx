@@ -1,19 +1,17 @@
 import { FC, useMemo } from "react";
 import * as maplibregl from "maplibre-gl";
 import { MapLayerData, MapSourceAndLayers, } from "@web-apparatus";
-import { layerOrder, routeLayerIds, routeSourceIds, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { layerOrder, routeSourceIds, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { routeLineLayers, routePointsLayer } from "./route-layers";
 
 interface Props {
     map: maplibregl.Map;
-    sourceId: string;
     source: GeoJSON.GeoJSON;
     state: RouteStoryState;
 }
 
 export const RouteLineLayer: FC<Props> = ({
     map,
-    sourceId,
     source,
     state: { showRouteLine, showRoutePoints },
 }) => {
@@ -28,34 +26,13 @@ export const RouteLineLayer: FC<Props> = ({
         }
 
         return {
-            sourceId,
+            sourceId: routeSourceIds.line,
             source: {
                 type: 'geojson',
                 data: source,
                 promoteId: 'id'
             },
-            layers: sourceId === routeSourceIds.simplifiedLine ? [
-                {
-                    id: routeLayerIds.line + 'simplified',
-                    type: 'line',
-                    source: sourceId,
-                    layout: {},
-                    paint: {
-                        "line-width": 4,
-                        "line-color": 'green'
-                    },
-                },
-                {
-                    id: routeLayerIds.points + 'simplified',
-                    type: 'circle',
-                    source: sourceId,
-                    layout: {},
-                    paint: {
-                        "circle-radius": 7,
-                        "circle-color": 'green'
-                    },
-                },
-            ] : routeLayers,
+            layers: routeLayers,
         };
     }, [source, showRouteLine, showRoutePoints]);
 

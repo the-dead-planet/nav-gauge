@@ -2,13 +2,14 @@ import { FC, useEffect, useMemo } from "react";
 import * as maplibregl from "maplibre-gl";
 import { OverlayComponentProps } from "@apparatus";
 import { useWebMachineWard } from "@web-apparatus";
-import { getRouteSourceData, routeSourceIds } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { getRouteSourceData } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { emptyCollection, useSubjectState } from "@tinker-chest";
 import { updateRouteLayer } from "../tinkers";
 import { useLoadedWebImages } from "../hooks";
 import { RouteLineLayer } from "./RouteLineLayer";
 import { RouteCurrentPointLayer } from "./RouteCurrentPointLayer";
 import { WebRouteStoryProps } from "../model";
+import { DebugRouteCameraLineLayer } from "./DebugRouteCameraLineLayer";
 
 export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStoryProps> = ({
     map,
@@ -28,19 +29,15 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
     const [state] = useSubjectState(state$);
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [animationControls] = useSubjectState(animatrix.controls$);
-    const {
-        cameraTilt,
-        cameraZoom,
-        cameraRoll,
-        easeDuration,
-    } = animationControls;
+    const { cameraTilt, cameraZoom, cameraRoll, easeDuration } = animationControls;
 
     const loadedImages = useLoadedWebImages(images);
 
-    const sources = useMemo((): { [key in 'line' | 'currentPoint' | 'simplifiedLine']: GeoJSON.GeoJSON } => {
+    const sources = useMemo((): { [key in 'line' | 'currentPoint']: GeoJSON.GeoJSON } => {
         if (!geojson || !routeTimes) {
-            return { currentPoint: emptyCollection, line: emptyCollection, simplifiedLine: emptyCollection }
+            return { currentPoint: emptyCollection, line: emptyCollection };
         }
+
         return getRouteSourceData(
             state,
             geojson,
@@ -67,7 +64,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
                     zoom: cameraZoom,
                     pitch: cameraTilt,
                     bearing,
-                    roll: cameraTilt !== 0 ? cameraRoll : 0,
+                    roll: cameraRoll,
                 });
             },
         );
@@ -79,9 +76,11 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
 
     return (
         <>
-            <RouteLineLayer map={map} sourceId={routeSourceIds.line} source={sources.line} state={state} />
+            {process.env.NODE_ENV === 'development' && geojson ? (
+                <DebugRouteCameraLineLayer map={map} geojson={geojson} />
+            ) : null}
+            <RouteLineLayer map={map} source={sources.line} state={state} />
             <RouteCurrentPointLayer map={map} source={sources.currentPoint} />
-            <RouteLineLayer map={map} sourceId={routeSourceIds.simplifiedLine} source={sources.simplifiedLine} state={state} />
         </>
     );
 };

@@ -115,7 +115,7 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
 
         const animate = () => {
             const {
-                routeAnimationDuration,
+                routePlaybackDuration,
                 displayImageDuration,
                 followCurrentPoint,
                 cameraAngle,
@@ -125,7 +125,7 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
             const now = performance.now();
             const dt = now - last;
             last = now;
-            currentProgressMs += dt * (routeDuration / routeAnimationDuration);
+            currentProgressMs += dt * (routeDuration / routePlaybackDuration);
             if (startTimeEpoch + currentProgressMs >= endTimeEpoch) {
                 currentProgressMs = 0;
                 nextImageIndex = 0;

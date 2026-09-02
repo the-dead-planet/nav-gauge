@@ -1,4 +1,4 @@
-import { CircleLayerSpecification, LineLayerSpecification } from "maplibre-gl";
+import { CircleLayerSpecification, LayerSpecification, LineLayerSpecification } from "maplibre-gl";
 import { routeLayerIds, RouteLayers, routeSourceIds } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 
 export const routeLineLayers: LineLayerSpecification[] = [
@@ -59,6 +59,29 @@ export const currentPointLayers: CircleLayerSpecification[] = [
         paint: {
             'circle-color': RouteLayers.currentPoint.circleColor,
             'circle-radius': RouteLayers.currentPoint.circleRadius,
+        }
+    }
+];
+
+export const cameraLineLayers: LayerSpecification[] = [
+    {
+        id: routeLayerIds.line + 'simplified',
+        source: routeSourceIds.cameraLine,
+        type: 'line',
+        layout: {},
+        paint: {
+            'line-width': RouteLayers.cameraLine.lineWidth,
+            'line-color': RouteLayers.cameraLine.lineColor,
+        }
+    },
+    {
+        id: routeLayerIds.points + 'simplified',
+        source: routeSourceIds.cameraLine,
+        type: 'circle',
+        layout: {},
+        paint: {
+            'circle-radius': RouteLayers.cameraLine.pipeCircleRadius,
+            'circle-color': RouteLayers.cameraLine.pipeCircleColor,
         }
     }
 ];

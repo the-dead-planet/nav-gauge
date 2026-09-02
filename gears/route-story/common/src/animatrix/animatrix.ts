@@ -19,10 +19,9 @@ export class Animatrix {
         cameraAngle: 0,
         cameraTilt: 45,
         cameraRoll: 0,
-        easeDuration: 100,
+        easeDuration: 200,
         displayImageDuration: 3000,
-        routeAnimationDuration: 10000,
-
+        routePlaybackDuration: 30000,
         autoRotate: true,
     };
 
@@ -31,7 +30,7 @@ export class Animatrix {
     public static cameraTiltRange: [number, number] = [0, 85];
     public static cameraAngleRange: [number, number] = [CLOCK_INPUT_RANGE[0], CLOCK_INPUT_RANGE[1]];
     public static cameraRollRange: [number, number] = [CLOCK_INPUT_RANGE[0], CLOCK_INPUT_RANGE[1]];
-    public static routeAnimationDurationRange: [number, number] = [1000, 120000];
+    public static routePlaybackDurationRange: [number, number] = [1000, 120000];
     public static easeDurationRange: [number, number] = [0, 1000];
 
     private controlsStorageId = 'animatrix:controls';
@@ -79,7 +78,7 @@ export class Animatrix {
         validateNumber(animationControls.cameraTilt, 'Pitch', Animatrix.cameraTiltRange);
         validateNumber(animationControls.cameraZoom, 'Zoom', Animatrix.zoomRange);
         validateNumber(animationControls.displayImageDuration, 'Image pause duration', Animatrix.displayImageDurationRange);
-        validateNumber(animationControls.routeAnimationDuration, 'Route animation duration', Animatrix.routeAnimationDurationRange);
+        validateNumber(animationControls.routePlaybackDuration, 'Route animation duration', Animatrix.routePlaybackDurationRange);
         validateNumber(animationControls.easeDuration, 'Ease duration', Animatrix.easeDurationRange);
     }
 }

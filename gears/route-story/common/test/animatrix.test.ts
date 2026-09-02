@@ -42,11 +42,11 @@ describe("Route story gear", () => {
                 expect(() => Animatrix.validateAnimationControls({ displayImageDuration: -1000 } as unknown as AnimationControlsType)).to.throw("Image pause duration should be within range [0, 10000]");
                 expect(() => Animatrix.validateAnimationControls({ displayImageDuration: "" } as unknown as AnimationControlsType)).to.throw("Image pause duration should be of type number");
             });
-            it("should throw if routeAnimationDuration incorrect", () => {
-                expect(() => Animatrix.validateAnimationControls({ routeAnimationDuration: 15000 })).to.not.throw();
-                expect(() => Animatrix.validateAnimationControls({ routeAnimationDuration: 0 })).to.throw("Route animation duration should be within range [1000, 120000]");
-                expect(() => Animatrix.validateAnimationControls({ routeAnimationDuration: 2000000 } as unknown as AnimationControlsType)).to.throw("Route animation duration should be within range [1000, 120000]");
-                expect(() => Animatrix.validateAnimationControls({ routeAnimationDuration: "" } as unknown as AnimationControlsType)).to.throw("Route animation duration should be of type number");
+            it("should throw if routePlaybackDuration incorrect", () => {
+                expect(() => Animatrix.validateAnimationControls({ routePlaybackDuration: 15000 })).to.not.throw();
+                expect(() => Animatrix.validateAnimationControls({ routePlaybackDuration: 0 })).to.throw("Route playback duration should be within range [1000, 120000]");
+                expect(() => Animatrix.validateAnimationControls({ routePlaybackDuration: 2000000 } as unknown as AnimationControlsType)).to.throw("Route playback duration should be within range [1000, 120000]");
+                expect(() => Animatrix.validateAnimationControls({ routePlaybackDuration: "" } as unknown as AnimationControlsType)).to.throw("Route playback duration should be of type number");
             });
             it("should throw if easeDuration incorrect", () => {
                 expect(() => Animatrix.validateAnimationControls({ easeDuration: 200 })).to.not.throw();

@@ -5,7 +5,7 @@ import { ToolPanelProps, useMultipleTranslations } from "@apparatus";
 import { useWebMachineWard } from "@web-apparatus";
 import { clamp, useSubjectState } from "@tinker-chest";
 import { ClockInput, Checkbox, Fieldset, ClockSliceInput, IconRotateInput, Slider, ToggleSwitch, Label, Span } from "@web-ui";
-import { Animatrix } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { AnimationControlsType, Animatrix } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Icons } from "@ui";
 import { WebRouteStoryProps } from "../model";
 import styles from './animation-controls.module.css';
@@ -31,7 +31,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
         pitchLabel,
         zoomLabel,
         imagePauseDurationLabel,
-        routeAnimationDurationLabel,
+        routePlaybackDurationLabel,
         totalRecordingDurationLabel,
         easeDurationLabel,
     ] = useMultipleTranslations([
@@ -57,7 +57,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
 
     const showGeneral = matchesSearch(generalLabel)
         || matchesSearch(imagePauseDurationLabel)
-        || matchesSearch(routeAnimationDurationLabel)
+        || matchesSearch(routePlaybackDurationLabel)
         || matchesSearch(totalRecordingDurationLabel);
 
     const showFollowCurrentPoint = matchesSearch(followCurrentPointLabel)
@@ -77,11 +77,11 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
         cameraZoom,
         easeDuration,
         displayImageDuration,
-        routeAnimationDuration,
+        routePlaybackDuration,
     } = animationControls;
 
     const displayedImageCount = images.filter((image) => image.featureId !== undefined).length;
-    const totalRecordingDuration = routeAnimationDuration + displayedImageCount * displayImageDuration;
+    const totalRecordingDuration = routePlaybackDuration + displayedImageCount * displayImageDuration;
 
     return (
         <div className={classNames(styles['container'], styles[placement])}>
@@ -103,20 +103,20 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                     />
                     <Span tabular>{Math.round(displayImageDuration / 1000)}s</Span>
                     <Label htmlFor="animation-controls-route-animation-duration" align="right">
-                        {routeAnimationDurationLabel}
+                        {routePlaybackDurationLabel}
                     </Label>
                     <Slider
                         id="animation-controls-route-animation-duration"
-                        value={routeAnimationDuration}
-                        min={Animatrix.routeAnimationDurationRange[0]}
-                        max={Animatrix.routeAnimationDurationRange[1]}
+                        value={routePlaybackDuration}
+                        min={Animatrix.routePlaybackDurationRange[0]}
+                        max={Animatrix.routePlaybackDurationRange[1]}
                         step={1000}
                         onChange={(value) => setAnimationControls((prev) => ({
-                            ...prev, routeAnimationDuration: clamp(value, Animatrix.routeAnimationDurationRange)
+                            ...prev, routePlaybackDuration: clamp(value, Animatrix.routePlaybackDurationRange)
                         }))}
                         size="xs"
                     />
-                    <Span tabular>{Math.round(routeAnimationDuration / 1000)}s</Span>
+                    <Span tabular>{Math.round(routePlaybackDuration / 1000)}s</Span>
                     <Label htmlFor="animation-controls-total-recording-duration" align="right">
                         {totalRecordingDurationLabel}
                     </Label>
@@ -233,8 +233,8 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                                 min={Animatrix.cameraTiltRange[0]}
                                 max={Animatrix.cameraTiltRange[1]}
                                 onChange={(value) => {
-                                    setAnimationControls((prev) => ({
-                                        ...prev, pitch: clamp(value, Animatrix.cameraTiltRange)
+                                    setAnimationControls((prev): AnimationControlsType => ({
+                                        ...prev, cameraTilt: clamp(value, Animatrix.cameraTiltRange)
                                     }));
                                     if (!isPlaying) {
                                         map.setPitch(value);

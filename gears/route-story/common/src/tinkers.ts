@@ -22,8 +22,6 @@ export const getRouteSourceData = (
         new Date(f.properties.time).valueOf() > new Date(currentTime).valueOf()
     );
     const { currentPoint, fraction } = getCurrentPoint(geojson, splitIndex, currentTime);
-    const splineData = getSplineData(geojson);
-    const simplified = splineData.spline;
 
     return {
         splitIndex,
@@ -56,10 +54,18 @@ export const getRouteSourceData = (
                     },
                 ].filter((feature) => feature.geometry.coordinates.length > 1) as GeoJSON.Feature<GeoJSON.LineString>[]
             },
-        simplifiedLine: {
-            ...geojson,
-            features: [simplified]
-        },
+    };
+};
+
+export const getDebugCameraSourceData = (
+    geojson: GeoJson,
+): GeoJSON.GeoJSON<GeoJSON.LineString> => {
+    const splineData = getSplineData(geojson);
+    const simplified = splineData.spline;
+
+    return {
+        ...geojson,
+        features: [simplified]
     };
 };
 
@@ -102,15 +108,7 @@ export interface SplineData {
     lookup: Array<{ t: number }>;
     splinePoints: GeoJSON.Position[];
 }
-
-const splineDataCache = new WeakMap<GeoJson, SplineData>();
-
 export const getSplineData = (geojson: GeoJson): SplineData => {
-    const cached = splineDataCache.get(geojson);
-    if (cached) {
-        return cached;
-    }
-
     const features = geojson.features;
     const spline = bezierSpline({
         type: 'Feature',
@@ -119,17 +117,12 @@ export const getSplineData = (geojson: GeoJson): SplineData => {
             coordinates: features.map((f) => f.geometry.coordinates)
         },
         properties: {}
-    }, {
-        resolution: 500,
-    });
+    }, { resolution: 500 });
     const splinePoints = spline.geometry.coordinates;
 
     const lookup = buildSplineLookup(features, splinePoints);
 
-    const data: SplineData = { spline, lookup, splinePoints };
-    splineDataCache.set(geojson, data);
-
-    return data;
+    return { spline, lookup, splinePoints };
 };
 
 const buildSplineLookup = (

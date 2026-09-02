@@ -8,6 +8,7 @@ import { emptyCollection, useSubjectState } from "@tinker-chest";
 import { useLoadedMobileImages } from "../images/useLoadedMobileImages";
 import { RouteLineLayer } from "./RouteLineLayer";
 import { RouteCurrentPointLayer } from "./RouteCurrentPointLayer";
+import { DebugRouteCameraLineLayer } from "./DebugRouteCameraLineLayer";
 import { MobileRouteStoryProps } from "../model";
 
 export const currentPointRef$ = new BehaviorSubject<GeoJSON.GeoJSON>(emptyCollection);
@@ -96,6 +97,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
 
     return (
         <>
+            {__DEV__ && geojson ? <DebugRouteCameraLineLayer geojson={geojson} /> : null}
             <RouteLineLayer source={lineSourceData} state={state} />
             <RouteCurrentPointLayer source={currentPointSourceData} />
         </>
