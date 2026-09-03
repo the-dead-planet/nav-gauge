@@ -1,18 +1,17 @@
 import { FC, useMemo } from "react";
 import * as maplibregl from "maplibre-gl";
 import { MapLayerData, MapSourceAndLayers } from "@web-apparatus";
-import { getSplineData, layerOrder, routeSourceIds } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { GeoJson } from "@tinker-chest";
+import { layerOrder, routeSourceIds, SplineData } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { cameraLineLayers } from "./route-layers";
 
 interface Props {
     map: maplibregl.Map;
-    geojson: GeoJson;
+    spline: SplineData;
 }
 
 export const DebugRouteCameraLineLayer: FC<Props> = ({
     map,
-    geojson,
+    spline,
 }) => {
     const mapLayerData = useMemo((): MapLayerData => {
         return {
@@ -20,14 +19,14 @@ export const DebugRouteCameraLineLayer: FC<Props> = ({
             source: {
                 type: 'geojson',
                 data: {
-                    ...geojson,
-                    features: [getSplineData(geojson).spline]
+                    type: 'FeatureCollection',
+                    features: [spline.spline]
                 },
                 promoteId: 'id'
             },
             layers: cameraLineLayers,
         };
-    }, [geojson]);
+    }, [spline]);
 
     return (
         <MapSourceAndLayers

@@ -15,6 +15,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
     map,
     animatrix,
     data$,
+    splineData$,
     state$,
     routeTimes$,
     images$,
@@ -22,10 +23,12 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
     playerOperator,
 }) => {
     const [{ geojson }] = useSubjectState(data$);
+    const [splineData] = useSubjectState(splineData$);
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [progressMs] = useSubjectState(progressMs$);
-    const { chronoLens } = useWebMachineWard();
+    const { chronoLens, individuator } = useWebMachineWard();
+    const [settings] = useSubjectState(individuator.settings$);
     const [state] = useSubjectState(state$);
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [animationControls] = useSubjectState(animatrix.controls$);
@@ -76,11 +79,11 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
 
     return (
         <>
-            {process.env.NODE_ENV === 'development' && geojson ? (
-                <DebugRouteCameraLineLayer map={map} geojson={geojson} />
+            {settings.debugMode && splineData ? (
+                <DebugRouteCameraLineLayer map={map} spline={splineData} />
             ) : null}
             <RouteLineLayer map={map} source={sources.line} state={state} />
             <RouteCurrentPointLayer map={map} source={sources.currentPoint} />
         </>
-    );
+    );settings
 };

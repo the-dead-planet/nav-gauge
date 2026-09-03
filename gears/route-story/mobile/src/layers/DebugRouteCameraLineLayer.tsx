@@ -1,22 +1,24 @@
 import { FC, useMemo } from "react";
 import { Layer, GeoJSONSource } from "@maplibre/maplibre-react-native";
-import { getSplineData, routeSourceIds, routeLayerIds, RouteLayers } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { GeoJson } from "@tinker-chest";
+import { routeSourceIds, routeLayerIds, RouteLayers, SplineData } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 
 interface Props {
-    geojson: GeoJson;
+    spline: SplineData;
 }
 
-export const DebugRouteCameraLineLayer: FC<Props> = ({ geojson }) => {
-    const spline = useMemo(() => getSplineData(geojson).spline, [geojson]);
+export const DebugRouteCameraLineLayer: FC<Props> = ({ spline }) => {
+    const data = useMemo(
+        () => ({
+            type: 'FeatureCollection' as const,
+            features: [spline.spline],
+        }),
+        [spline],
+    );
 
     return (
         <GeoJSONSource
             id={routeSourceIds.cameraLine}
-            data={{
-                ...geojson,
-                features: [spline],
-            }}
+            data={data}
         >
             <Layer
                 type="line"

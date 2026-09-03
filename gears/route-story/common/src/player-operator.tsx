@@ -1,6 +1,6 @@
 import { BehaviorSubject } from "rxjs";
 import { SurveillanceState, LoadedImageData, ChronoLens } from "@apparatus";
-import { getSplineData, getSplineHeading, getRouteSourceData } from "./tinkers";
+import { getSplineHeading, getRouteSourceData } from "./tinkers";
 import { getImageIconSize, FULL_SIZE_IMAGE_SIZE, THUMBNAIL_IMAGE_SIZE } from "./images";
 import { RouteStoryGear } from "./route-story-gear";
 import { IMAGE_ANIMATION_DURATION } from "./layer-specification";
@@ -100,10 +100,13 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
         if (!isPlaying || !geojson || !routeTimes) {
             return;
         }
+        const splineData = this.gear.splineData$.value;
+        if (!splineData) {
+            return;
+        }
 
         const { startTimeEpoch, endTimeEpoch } = routeTimes;
         const routeDuration = routeTimes.duration;
-        const splineData = getSplineData(geojson);
         const sortedImageFeatures = [...loadedImages].sort((a, b) => a.featureId - b.featureId);
         const nextImageTimes = sortedImageFeatures.map((imageFeature) => {
             const f = geojson.features.find((feature) => feature.properties.id === imageFeature.featureId);

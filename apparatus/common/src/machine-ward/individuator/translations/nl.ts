@@ -8,6 +8,7 @@ const nl: TranslationTable<IndividuatorTranslationKey>['nl'] = {
     "time-format": 'Tijdnotatie',
     theme: 'Thema',
     "confirm-before-leave": 'Bevestigen voor vertrek',
+    "debug-mode": 'Debugmodus',
 };
 
 export default nl;

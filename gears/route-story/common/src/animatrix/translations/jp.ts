@@ -11,8 +11,8 @@ const jp: TranslationTable<AnimatrixTranslationKey>['jp'] = {
     "pitch": 'ピッチ',
     "zoom": 'ズーム',
     "image-pause-duration": '画像の一時停止時間',
-    "route-animation-duration": 'ルート再生時間',
-    "total-recording-duration": '録画合計時間',
+    "route-animation-duration": 'ルートアニメーション時間',
+    "total-recording-duration": '録画時間の合計',
     "ease-duration": 'イーズ時間',
     "search": 'コントロールを検索',
 };

@@ -57,18 +57,6 @@ export const getRouteSourceData = (
     };
 };
 
-export const getDebugCameraSourceData = (
-    geojson: GeoJson,
-): GeoJSON.GeoJSON<GeoJSON.LineString> => {
-    const splineData = getSplineData(geojson);
-    const simplified = splineData.spline;
-
-    return {
-        ...geojson,
-        features: [simplified]
-    };
-};
-
 /**
  * @returns current point feature interpolated between the first features before/after it, plus the fractional position between them.
  */

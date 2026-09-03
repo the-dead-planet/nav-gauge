@@ -18,6 +18,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
     map,
     animatrix,
     data$,
+    splineData$,
     state$,
     routeTimes$,
     images$,
@@ -25,10 +26,12 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
     playerOperator
 }) => {
     const [{ geojson }] = useSubjectState(data$);
+    const [splineData] = useSubjectState(splineData$);
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [progressMs] = useSubjectState(progressMs$);
-    const { chronoLens } = useMobileMachineWard();
+    const { chronoLens, individuator } = useMobileMachineWard();
+    const [settings] = useSubjectState(individuator.settings$);
     const [state] = useSubjectState(state$);
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [animationControls] = useSubjectState(animatrix.controls$);
@@ -97,7 +100,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
 
     return (
         <>
-            {__DEV__ && geojson ? <DebugRouteCameraLineLayer geojson={geojson} /> : null}
+            {settings.debugMode && splineData ? <DebugRouteCameraLineLayer spline={splineData} /> : null}
             <RouteLineLayer source={lineSourceData} state={state} />
             <RouteCurrentPointLayer source={currentPointSourceData} />
         </>

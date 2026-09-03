@@ -121,6 +121,20 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                     checked={pendingSettings.confirmBeforeLeave}
                     onChange={(checked) => setPendingSettings((prev): IndividuatorSettings => ({ ...prev, confirmBeforeLeave: checked }))}
                 />
+                {process.env.NODE_ENV === "development" ? (
+                    <>
+                        <P id="individuator-debug-mode-label" shadow color="primary">
+                            <T n={individuator.namespace} t={individuator.translationKey.DebugMode} />
+                        </P>
+                        <Checkbox
+                            labelledBy="individuator-debug-mode-label"
+                            size="xs"
+                            color="primary"
+                            checked={pendingSettings.debugMode}
+                            onChange={(checked) => setPendingSettings((prev): IndividuatorSettings => ({ ...prev, debugMode: checked }))}
+                        />
+                    </>
+                ) : null}
             </div>
         </Dialog>,
         document.body,

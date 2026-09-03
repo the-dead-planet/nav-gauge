@@ -59,6 +59,7 @@ export class Individuator {
          * When set to true, user will be shown a confirmation popup on page close or reload.
          */
         confirmBeforeLeave: false,
+        debugMode: false,
         dateFormat: {
             value: this.defaultDateFormat,
             short: this.defaultShortDateFormat,
