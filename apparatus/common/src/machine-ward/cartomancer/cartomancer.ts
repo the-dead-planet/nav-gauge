@@ -89,9 +89,7 @@ export class Cartomancer<TMap> {
     public mapLayout$: BehaviorSubject<MapLayout>;
     public blinkingState$ = new BehaviorSubject<{ color: ThemeComponentColor | DesignSystemColor; } | null>(null);
 
-    public constructor(
-        _prefersLightColorScheme: boolean,
-    ) {
+    public constructor() {
         this.defaultStyleId = 'open-free-map-dark';
         this.selectedStyle$ = new BehaviorSubject<SelectedStyle>({ id: this.defaultStyleId });
         this.gaugeControls$ = new BehaviorSubject(Cartomancer.defaultGaugeControls);

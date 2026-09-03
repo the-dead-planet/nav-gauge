@@ -36,7 +36,7 @@ export class WebMachineWard extends MachineWard<maplibregl.Map, WebChronoLens> {
             gears,
             WebChronoLens,
             localStorage,
-            window.matchMedia("(prefers-color-scheme: light)").matches,
+            process.env.NODE_ENV === 'development',
             mediaSubscription
         );
     }

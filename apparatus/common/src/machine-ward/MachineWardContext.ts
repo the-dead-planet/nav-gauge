@@ -4,6 +4,7 @@ import { Individuator } from "./individuator";
 import { AttributionVault, Cartomancer, ChronoLens, Engine, MachineTranslationKey, SignaliumBureau, ToolsStation, Translatron } from "..";
 
 export interface MachineWardContextValue<TMap = unknown, TChronoLens extends ChronoLens = ChronoLens> {
+    isDev: boolean;
     namespace: string;
     translationKey: typeof MachineTranslationKey;
     individuator: Individuator;

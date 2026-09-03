@@ -12,11 +12,11 @@ interface Props {
 export const LayoutMenu: FC<Props> = ({
     onNavigate,
 }) => {
-    const { individuator } = useMobileMachineWard();
+    const { isDev, individuator } = useMobileMachineWard();
     const [showIndividuatorDialog, setShowIndividuatorDialog] = useState(false);
 
     const menuItems = [
-        __DEV__
+        isDev
             ? <MenuItem key="stories" onPress={() => onNavigate('Stories')}>Stories</MenuItem>
             : null,
         <MenuItem key="individuator" onPress={() => setShowIndividuatorDialog(true)}>

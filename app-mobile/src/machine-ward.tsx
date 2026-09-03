@@ -1,4 +1,4 @@
-import { Appearance, Dimensions, ScaledSize } from "react-native";
+import { Dimensions, ScaledSize } from "react-native";
 import { createAsyncStorage } from "@react-native-async-storage/async-storage";
 import { MachineGear, MachineWard, MachineWardComponents } from "@apparatus";
 import { Layout, TopBar } from "./layout";
@@ -47,7 +47,7 @@ export class MobileMachineWard extends MachineWard<MobileMap, MobileChronoLens, 
             gears,
             MobileChronoLens,
             AsyncStorage,
-            Appearance.getColorScheme() === 'light',
+            __DEV__,
             mediaSubscription
         );
     }

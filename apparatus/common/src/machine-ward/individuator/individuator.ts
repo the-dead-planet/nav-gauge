@@ -52,7 +52,9 @@ export class Individuator {
      * @param defaultTheme Defaults to dark theme.
      * @returns 
      */
-    private static getDefaultApplicationSettings = (defaultThemeMode: ThemeMode = 'dark'): IndividuatorSettings => ({
+    private static getDefaultApplicationSettings = (
+        defaultThemeMode: ThemeMode = 'dark',
+    ): IndividuatorSettings => ({
         themeMode: defaultThemeMode,
         themeName: ThemeName.Default,
         /**
@@ -68,9 +70,7 @@ export class Individuator {
         language: Translatron.defaultLanguage,
     });
 
-    public constructor(
-        _prefersLightColorScheme: boolean
-    ) {
+    public constructor(private readonly isDev: boolean) {
         const initialSettings = Individuator.getDefaultApplicationSettings('dark');
         this.settings$ = new BehaviorSubject<IndividuatorSettings>(initialSettings);
     }
@@ -86,6 +86,7 @@ export class Individuator {
 
             return {
                 ...maybeSettings,
+                debugMode: this.isDev ? maybeSettings.debugMode : false,
                 themeMode: themeModeOptions.some(({ value }) => value === maybeSettings.themeMode) ? maybeSettings.themeMode : themeModeOptions[0].value,
                 themeName: themeNameOptions.some(({ value }) => value === maybeSettings.themeName) ? maybeSettings.themeName : themeNameOptions[0].value,
             }
