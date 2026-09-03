@@ -122,6 +122,7 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
                 displayImageDuration,
                 followCurrentPoint,
                 cameraAngle,
+                easeDuration,
                 autoRotate,
             } = this.gear.animatrix.controls$.value;
 
@@ -139,14 +140,31 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
             onUpdateLayer(currentPoint, line);
 
             if (this.animation !== undefined && nextImage && nextImageTime !== null && nextImageTime <= startTimeEpoch + currentProgressMs) {
-                this.gear.animatrix.displayImageId$.next(nextImage.id);
                 nextImageIndex = nextImageIndex + 1;
                 cancelAnimationFrame(this.animation);
-                this.displayImageTimeout = setTimeout(() => {
-                    last = performance.now();
-                    this.gear.animatrix.displayImageId$.next(null);
-                    this.animation = requestAnimationFrame(animate);
-                }, displayImageDuration);
+
+                let settleDelay = 0;
+                if (followCurrentPoint) {
+                    const lngLat: GeoJSON.Position = [currentPoint.geometry.coordinates[0], currentPoint.geometry.coordinates[1]];
+                    const currentPointHeading = autoRotate ? getSplineHeading(splineData, splitIndex, fraction) : 0;
+                    onUpdateMapCamera(lngLat, cameraAngle + currentPointHeading);
+                    settleDelay = easeDuration;
+                }
+
+                const showImage = () => {
+                    this.gear.animatrix.displayImageId$.next(nextImage.id);
+                    this.displayImageTimeout = setTimeout(() => {
+                        last = performance.now();
+                        this.gear.animatrix.displayImageId$.next(null);
+                        this.animation = requestAnimationFrame(animate);
+                    }, displayImageDuration);
+                };
+
+                if (settleDelay > 0) {
+                    this.displayImageTimeout = setTimeout(showImage, settleDelay);
+                } else {
+                    showImage();
+                }
 
                 return;
             }
