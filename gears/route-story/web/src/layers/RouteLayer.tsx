@@ -85,5 +85,5 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
             <RouteLineLayer map={map} source={sources.line} state={state} />
             <RouteCurrentPointLayer map={map} source={sources.currentPoint} />
         </>
-    );settings
+    );
 };
