@@ -2,7 +2,7 @@ import { FC, useCallback, useEffect, useMemo, useRef } from "react";
 import { PanResponder, StyleSheet, View, type GestureResponderEvent, type HostInstance } from "react-native";
 import { BehaviorSubject } from "rxjs";
 import { MarkerImage, useMultipleTranslations } from "@apparatus";
-import { FeatureProperties, ParsingResultWithError, useSubjectState } from "@tinker-chest";
+import { ParsingResultWithError, useSubjectState } from "@tinker-chest";
 import {
     draggingImage$,
     draggingClosestFeature$,
