@@ -14,6 +14,7 @@ const jp: TranslationTable<AnimatrixTranslationKey>['jp'] = {
     "route-animation-duration": 'ルートアニメーション時間',
     "total-recording-duration": '録画時間の合計',
     "ease-duration": 'イーズ時間',
+    "pan-to-whole-route-at-end": '最後にルート全体へパン',
     "search": 'コントロールを検索',
 };
 

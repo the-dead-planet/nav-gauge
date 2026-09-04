@@ -14,6 +14,7 @@ const de: TranslationTable<AnimatrixTranslationKey>['de'] = {
     "route-animation-duration": 'Dauer der Routenwiedergabe',
     "total-recording-duration": 'Gesamte Aufnahmedauer',
     "ease-duration": 'Übergangsdauer',
+    "pan-to-whole-route-at-end": 'Am Ende zur gesamten Route schwenken',
     "search": 'Steuerungen durchsuchen',
 };
 

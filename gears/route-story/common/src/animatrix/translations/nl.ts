@@ -14,6 +14,7 @@ const nl: TranslationTable<AnimatrixTranslationKey>['nl'] = {
     "route-animation-duration": 'Duur van routeafspelen',
     "total-recording-duration": 'Totale opnameduur',
     "ease-duration": 'Overgangsduur',
+    "pan-to-whole-route-at-end": 'Aan het einde naar de hele route pannen',
     "search": 'Bedieningen zoeken',
 };
 

@@ -14,6 +14,7 @@ const fr: TranslationTable<AnimatrixTranslationKey>['fr'] = {
     "route-animation-duration": 'Durée de lecture de l\'itinéraire',
     "total-recording-duration": 'Durée totale d\'enregistrement',
     "ease-duration": 'Durée de transition',
+    "pan-to-whole-route-at-end": 'Pivoter vers toute la route à la fin',
     "search": 'Rechercher des commandes',
 };
 

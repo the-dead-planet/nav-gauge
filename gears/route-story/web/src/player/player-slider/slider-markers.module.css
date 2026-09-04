@@ -94,3 +94,21 @@
 .image-marker-container:hover .pan-to-icon {
     opacity: 1;
 }
+
+.route-end-marker-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.route-end-marker {
+    position: absolute;
+    top: 5px;
+    height: 46px;
+    width: 2px;
+    background-color: var(--color-neutral);
+}
+
+.route-end-marker-container:hover .pan-to-icon {
+    opacity: 1;
+}

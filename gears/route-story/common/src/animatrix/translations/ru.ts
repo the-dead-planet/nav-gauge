@@ -14,6 +14,7 @@ const ru: TranslationTable<AnimatrixTranslationKey>['ru'] = {
     "route-animation-duration": 'Длительность воспроизведения маршрута',
     "total-recording-duration": 'Общая длительность записи',
     "ease-duration": 'Длительность перехода',
+    "pan-to-whole-route-at-end": 'Переместить ко всему маршруту в конце',
     "search": 'Поиск управления',
 };
 

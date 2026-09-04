@@ -213,9 +213,11 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
         }
         this.gear.animatrix.displayImageId$.next(null);
 
-        const map = this.gear.apparatus.cartomancer.map;
-        if (map) {
-            this.gear.fitBoundsHandler(map, this.gear.data$.value.boundingBox);
+        if (this.gear.animatrix.controls$.value.panToWholeRouteAtEnd) {
+            const map = this.gear.apparatus.cartomancer.map;
+            if (map) {
+                this.gear.fitBoundsHandler(map, this.gear.data$.value.boundingBox);
+            }
         }
 
         const { displayImageDuration } = this.gear.animatrix.controls$.value;

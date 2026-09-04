@@ -73,7 +73,7 @@ export function MachineWardApp<TMap, TChronoLens extends ChronoLens, TNavigation
             <ThemeContext.Provider value={theme}>
                 <ErrorBoundary fallbackComponent={components.errorFallbackComponent}>
                     <MachineWardContext.Provider value={{
-                        isDev: isDev,
+                        isDev,
                         namespace,
                         translationKey: MachineTranslationKey,
                         individuator,

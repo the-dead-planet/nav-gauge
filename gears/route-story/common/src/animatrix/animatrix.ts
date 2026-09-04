@@ -23,6 +23,7 @@ export class Animatrix {
         displayImageDuration: 3000,
         routePlaybackDuration: 30000,
         autoRotate: true,
+        panToWholeRouteAtEnd: true,
     };
 
     public static displayImageDurationRange: [number, number] = [0, 10000];
@@ -73,6 +74,7 @@ export class Animatrix {
     public static validateAnimationControls = (animationControls: Partial<AnimationControlsType>) => {
         validateBoolean(animationControls.followCurrentPoint, 'Follow current point');
         validateBoolean(animationControls.autoRotate, "Auto rotate");
+        validateBoolean(animationControls.panToWholeRouteAtEnd, 'Pan to whole route at end');
         validateNumber(animationControls.cameraAngle, 'Camera angle', Animatrix.cameraAngleRange);
         validateNumber(animationControls.cameraRoll, 'Camera roll', Animatrix.cameraRollRange);
         validateNumber(animationControls.cameraTilt, 'Pitch', Animatrix.cameraTiltRange);

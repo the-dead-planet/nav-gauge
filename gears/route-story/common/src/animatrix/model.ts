@@ -42,6 +42,12 @@ export interface AnimationControlsType {
      * If set to `true`, will apply rotation according to the direction where current point is heading to.
      */
     autoRotate: boolean;
+
+    /**
+     * If set to `true`, when the route animation runs to the end it will pan the camera to fit the
+     * whole route bounding box (and mark the route end on the player timeline).
+     */
+    panToWholeRouteAtEnd: boolean;
 }
 
 export enum AnimatrixTranslationKey {
@@ -57,5 +63,6 @@ export enum AnimatrixTranslationKey {
     RouteAnimationDuration = 'route-animation-duration',
     TotalRecordingDuration = 'total-recording-duration',
     EaseDuration = 'ease-duration',
+    PanToWholeRouteAtEnd = 'pan-to-whole-route-at-end',
     Search = 'search',
 }

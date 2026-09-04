@@ -11,6 +11,7 @@ import {
     imageSourceIds,
     RouteStoryTranslationKey,
     RouteTimes,
+    Animatrix,
     updateImageFeatureId,
     getPosition,
     getClosestFeatureFromPosition
@@ -29,6 +30,7 @@ interface Props {
     routeTimes$: BehaviorSubject<RouteTimes | null>;
     images$: BehaviorSubject<MarkerImage<WebMarkerImageData>[]>;
     fitBoundsHandler: (map: maplibregl.Map, boundingBox?: GeoJSON.BBox) => void;
+    animatrix: Animatrix;
 }
 
 export const SliderMarkers: FC<Props> = ({
@@ -38,11 +40,13 @@ export const SliderMarkers: FC<Props> = ({
     data$,
     routeTimes$,
     images$,
-    fitBoundsHandler
+    fitBoundsHandler,
+    animatrix,
 }) => {
     const [{ geojson }] = useSubjectState(data$);
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
+    const [animationControls] = useSubjectState(animatrix.controls$);
     const [highlightIdsBySourceId, setHighlightIdsBySourceId] = useSubjectState(highlightIdsBySourceId$);
     const [draggingImage, setDraggingImage] = useSubjectState(draggingImage$);
     const [draggingClosestFeature] = useSubjectState(draggingClosestFeature$);
@@ -146,6 +150,21 @@ export const SliderMarkers: FC<Props> = ({
                         />
                     </div>
                 ))}
+            {animationControls.panToWholeRouteAtEnd && (
+                <div className={styles['route-end-marker-container']}>
+                    <span role="presentation" className={styles['route-end-marker']} />
+                    <Button
+                        icon={Icons.NounProject.Target}
+                        size="xs"
+                        aria-label="Fit route bounds"
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            fitBoundsHandler(map, data$.value.boundingBox);
+                        }}
+                        className={styles['pan-to-icon']}
+                    />
+                </div>
+            )}
             {draggingFeaturePosition !== null && (
                 <span
                     className={classNames(styles['image-marker'], styles['drag-marker'], styles['highlight'])}

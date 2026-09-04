@@ -49,6 +49,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
         routePlaybackDurationLabel,
         totalRecordingDurationLabel,
         easeDurationLabel,
+        panToWholeRouteAtEndLabel,
     ] = useMultipleTranslations([
         { n: animatrix.namespace, t: animatrix.translationKey.General },
         { n: animatrix.namespace, t: animatrix.translationKey.FollowCurrentPoint },
@@ -61,6 +62,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
         { n: animatrix.namespace, t: animatrix.translationKey.RouteAnimationDuration },
         { n: animatrix.namespace, t: animatrix.translationKey.TotalRecordingDuration },
         { n: animatrix.namespace, t: animatrix.translationKey.EaseDuration },
+        { n: animatrix.namespace, t: animatrix.translationKey.PanToWholeRouteAtEnd },
     ]);
 
     const matchesSearch = (label: string): boolean => {
@@ -73,7 +75,8 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
     const showGeneral = matchesSearch(generalLabel)
         || matchesSearch(imagePauseDurationLabel)
         || matchesSearch(routePlaybackDurationLabel)
-        || matchesSearch(totalRecordingDurationLabel);
+        || matchesSearch(totalRecordingDurationLabel)
+        || matchesSearch(panToWholeRouteAtEndLabel);
 
     const showFollowCurrentPoint = matchesSearch(followCurrentPointLabel)
         || matchesSearch(zoomLabel)
@@ -93,6 +96,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
         easeDuration,
         displayImageDuration,
         routePlaybackDuration,
+        panToWholeRouteAtEnd,
     } = animationControls;
 
     const displayedImageCount = images.filter((image) => image.featureId !== undefined).length;
@@ -143,6 +147,16 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                         <Span tabular>{`${displayedImageCount} × ${formatDuration(displayImageDuration)}`}</Span>
                         <span className={styles['recording-formula-equals']}>= {formatDuration(totalRecordingDuration)}</span>
                     </div>
+                    <span />
+                    <Checkbox
+                        id="animation-controls-pan-to-whole-route-at-end"
+                        checked={panToWholeRouteAtEnd}
+                        size="sm"
+                        onChange={() => setAnimationControls((prev) => ({ ...prev, panToWholeRouteAtEnd: !prev.panToWholeRouteAtEnd }))}
+                    >
+                        {panToWholeRouteAtEndLabel}
+                    </Checkbox>
+                    <span />
                 </Fieldset>
             )}
             {showFollowCurrentPoint && (
