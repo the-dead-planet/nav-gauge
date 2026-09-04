@@ -29,14 +29,27 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
     };
 
     public onPlay = () => {
-        this.gear.apparatus.chronoLens.isPlaying$.next(!this.gear.apparatus.chronoLens.isPlaying$.value);
+        const isPlaying = this.gear.apparatus.chronoLens.isPlaying$.value;
+        if (!isPlaying) {
+            this.resetIfAtEnd();
+        }
+        this.gear.apparatus.chronoLens.isPlaying$.next(!isPlaying);
     };
 
     public onStart = () => {
+        this.resetIfAtEnd();
         const nextState = SurveillanceState.InProgress;
         this.gear.apparatus.chronoLens.surveillanceState$.next(nextState);
+        this.gear.apparatus.chronoLens.isPlaying$.next(true);
         this.gear.apparatus.cartomancer.blinkingState$.next({ color: this.getBlinkingColor(nextState) });
         this.gear.apparatus.toolsStation.addTopBarTool(this.gear.recTopBarToolId, this.gear.wrapProps<RouteStoryProps<TMap, TChronoLens, TFile, TImageData>, {}>(this.gear.topBarChipComponent, this.gear.getProps()));
+    };
+
+    private resetIfAtEnd = () => {
+        const routeTimes = this.gear.routeTimes$.value;
+        if (routeTimes && this.gear.progressMs$.value >= routeTimes.duration) {
+            this.gear.progressMs$.next(0);
+        }
     };
 
     public onStop = () => {
@@ -65,7 +78,6 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
         if (!this.gear.routeTimes$.value || isNaN(value)) {
             return;
         }
-        // Halt playing animations to allow manual update.
         if (this.gear.apparatus.chronoLens.isPlaying$.value) {
             this.gear.apparatus.chronoLens.isPlaying$.next(false);
         }
@@ -79,7 +91,6 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
             );
             updateLayer?.(line, currentPoint);
         }
-        // Resume playing animations
         if (this.gear.apparatus.chronoLens.isPlaying$.value) {
             setTimeout(() => this.gear.apparatus.chronoLens.isPlaying$.next(true), 0);
         }
@@ -87,6 +98,7 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
 
     private animation: number | undefined;
     private displayImageTimeout: Timer | undefined;
+    private endOfRouteTimeout: Timer | undefined;
 
     public animateRoute = (
         loadedImages: LoadedImageData<TImageData>[],
@@ -131,8 +143,9 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
             last = now;
             currentProgressMs += dt * (routeDuration / routePlaybackDuration);
             if (startTimeEpoch + currentProgressMs >= endTimeEpoch) {
-                currentProgressMs = 0;
-                nextImageIndex = 0;
+                this.handleRouteEnd();
+                
+                return;
             }
             const nextImage: LoadedImageData<TImageData> | undefined = sortedImageFeatures[nextImageIndex];
             const nextImageTime = nextImageIndex >= 0 ? nextImageTimes[nextImageIndex] : null;
@@ -185,11 +198,30 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
 
     public cleanupAnimateRoute = () => {
         clearTimeout(this.displayImageTimeout);
+        clearTimeout(this.endOfRouteTimeout);
         this.gear.animatrix.displayImageId$.next(null);
 
         if (this.animation !== undefined) {
             cancelAnimationFrame(this.animation);
         }
+    };
+
+    private handleRouteEnd = () => {
+        if (this.animation !== undefined) {
+            cancelAnimationFrame(this.animation);
+            this.animation = undefined;
+        }
+        this.gear.animatrix.displayImageId$.next(null);
+
+        const map = this.gear.apparatus.cartomancer.map;
+        if (map) {
+            this.gear.fitBoundsHandler(map, this.gear.data$.value.boundingBox);
+        }
+
+        const { displayImageDuration } = this.gear.animatrix.controls$.value;
+        this.endOfRouteTimeout = setTimeout(() => {
+            this.onStop();
+        }, displayImageDuration);
     };
 
     private easeInOut(t: number) {

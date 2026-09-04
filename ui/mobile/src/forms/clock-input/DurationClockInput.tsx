@@ -1,5 +1,5 @@
 import { FC, useMemo, useRef, useState } from "react";
-import { PanResponder, StyleSheet, View, ViewStyle } from "react-native";
+import { PanResponder, StyleSheet, View, ViewStyle, type ViewInstance } from "react-native";
 import Svg from "react-native-svg";
 import {
     DurationClockInputProps,
@@ -51,6 +51,8 @@ export const DurationClockInput: FC<DurationClockInputProps & { style?: ViewStyl
     const activeHandRef = useRef<Hand | null>(null);
     const disabledRef = useRef(disabled);
     disabledRef.current = disabled;
+    const viewRef = useRef<ViewInstance>(null);
+    const centerRef = useRef({ x: 0, y: 0 });
 
     const refs = useRef({
         minutes,
@@ -64,12 +66,18 @@ export const DurationClockInput: FC<DurationClockInputProps & { style?: ViewStyl
         refs.current.onChange?.(Math.max((nextMinutes * 60 + nextSeconds) * 1000, refs.current.min));
     };
 
-    const handleInteraction = (locationX: number, locationY: number) => {
+    const measureCenter = () => {
+        viewRef.current?.measure((_x, _y, width, height, pageX, pageY) => {
+            centerRef.current = { x: pageX + width / 2, y: pageY + height / 2 };
+        });
+    };
+
+    const handleInteraction = (pageX: number, pageY: number) => {
         if (disabledRef.current || activeHandRef.current === null) {
             return;
         }
-        const dx = locationX - center;
-        const dy = locationY - center;
+        const dx = pageX - centerRef.current.x;
+        const dy = pageY - centerRef.current.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < 4) {
             return;
@@ -90,23 +98,24 @@ export const DurationClockInput: FC<DurationClockInputProps & { style?: ViewStyl
             if (disabledRef.current) {
                 return;
             }
-            const { locationX, locationY } = evt.nativeEvent;
-            const dx = locationX - center;
-            const dy = locationY - center;
+            measureCenter();
+            const { pageX, pageY } = evt.nativeEvent;
+            const dx = pageX - centerRef.current.x;
+            const dy = pageY - centerRef.current.y;
             const dist = Math.sqrt(dx * dx + dy * dy);
             activeHandRef.current =
                 Math.abs(dist - secondsRadius) <= Math.abs(dist - minutesRadius) ? 'seconds' : 'minutes';
             setActiveHand(activeHandRef.current);
-            handleInteraction(locationX, locationY);
+            handleInteraction(pageX, pageY);
         },
-        onPanResponderMove: (evt) => handleInteraction(evt.nativeEvent.locationX, evt.nativeEvent.locationY),
+        onPanResponderMove: (evt) => handleInteraction(evt.nativeEvent.pageX, evt.nativeEvent.pageY),
         onPanResponderRelease: () => { activeHandRef.current = null; setActiveHand(null); },
         onPanResponderTerminate: () => { activeHandRef.current = null; setActiveHand(null); },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }), [secondsRadius, minutesRadius]);
 
     return (
         <View
+            ref={viewRef}
             style={[styles.container, style]}
             collapsable={false}
             {...panResponder.panHandlers}
