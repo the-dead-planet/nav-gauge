@@ -22,7 +22,7 @@ export const ToolPanelHeaderButton: FC<Props> = ({
     isActive,
     onClick,
 }) => {
-    const [tooltip] = useTranslation(title);
+    const tooltip = useTranslation(title);
 
     return (
         <Button

@@ -8,13 +8,13 @@ const nl: TranslationTable<AnimatrixTranslationKey>['nl'] = {
     "auto-rotate": 'Automatisch draaien',
     "camera-angle": 'Camerahoek',
     "camera-roll": 'Camerarol',
-    "bearing-line-length-in-meters": 'Koerslijnlengte in meters',
-    "max-bearing-diff-per-frame": 'Max koersverschil per frame',
     "pitch": 'Helling',
     "zoom": 'Zoom',
     "image-pause-duration": 'Beeldpauzeduur',
-    "speed-multiplier": 'Snelheidsvermenigvuldiger',
+    "route-animation-duration": 'Duur van routeafspelen',
+    "total-recording-duration": 'Totale opnameduur',
     "ease-duration": 'Overgangsduur',
+    "pan-to-whole-route-at-end": 'Aan het einde naar de hele route pannen',
     "search": 'Bedieningen zoeken',
 };
 

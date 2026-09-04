@@ -9,6 +9,7 @@ import { useSubjectState } from "@tinker-chest";
 import { MachineTranslationKey, MachineWardComponents } from "./model";
 
 interface MachineWardProps<TMap, TChronoLens extends ChronoLens, TNavigationPath extends string> {
+    isDev: boolean;
     namespace: string;
     title: string;
     media: MediaSubscriptionDefinition;
@@ -29,6 +30,7 @@ interface MachineWardProps<TMap, TChronoLens extends ChronoLens, TNavigationPath
 }
 
 export function MachineWardApp<TMap, TChronoLens extends ChronoLens, TNavigationPath extends string>({
+    isDev,
     namespace,
     title,
     media,
@@ -71,6 +73,7 @@ export function MachineWardApp<TMap, TChronoLens extends ChronoLens, TNavigation
             <ThemeContext.Provider value={theme}>
                 <ErrorBoundary fallbackComponent={components.errorFallbackComponent}>
                     <MachineWardContext.Provider value={{
+                        isDev,
                         namespace,
                         translationKey: MachineTranslationKey,
                         individuator,

@@ -8,13 +8,13 @@ const ru: TranslationTable<AnimatrixTranslationKey>['ru'] = {
     "auto-rotate": 'Автоповорот',
     "camera-angle": 'Угол камеры',
     "camera-roll": 'Крен камеры',
-    "bearing-line-length-in-meters": 'Длина линии пеленга в метрах',
-    "max-bearing-diff-per-frame": 'Макс. изменение пеленга за кадр',
     "pitch": 'Наклон',
     "zoom": 'Зум',
     "image-pause-duration": 'Длительность паузы изображения',
-    "speed-multiplier": 'Множитель скорости',
+    "route-animation-duration": 'Длительность воспроизведения маршрута',
+    "total-recording-duration": 'Общая длительность записи',
     "ease-duration": 'Длительность перехода',
+    "pan-to-whole-route-at-end": 'Переместить ко всему маршруту в конце',
     "search": 'Поиск управления',
 };
 

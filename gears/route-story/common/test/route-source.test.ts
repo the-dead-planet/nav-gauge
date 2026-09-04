@@ -1,6 +1,6 @@
 import { describe } from "mocha";
 import { expect } from "chai";
-import { getRouteSourceData } from "../src/tinkers";
+import { getRouteSourceData, getSplineData, getSplineHeading } from "../src/tinkers";
 import { GeoJson } from "@tinker-chest";
 const route: GeoJson = {
     type: "FeatureCollection",
@@ -17,7 +17,7 @@ const startTimeEpoch = Date.parse("2026-01-01T00:00:00Z");
 describe("Route story gear", () => {
     describe("Route source data", () => {
         const expectValidLines = (progressMs: number) => {
-            const { line } = getRouteSourceData(state, route, startTimeEpoch, progressMs, 10);
+            const { line } = getRouteSourceData(state, route, startTimeEpoch, progressMs);
             expect(line.type).to.equal("FeatureCollection");
             for (const feature of (line as GeoJSON.FeatureCollection).features) {
                 if (feature.geometry.type === "LineString") {
@@ -31,12 +31,25 @@ describe("Route story gear", () => {
         });
 
         it("should produce two valid lines mid-route", () => {
-            const { line } = getRouteSourceData(state, route, startTimeEpoch, 90_000, 10);
+            const { line } = getRouteSourceData(state, route, startTimeEpoch, 90_000);
             const lineStrings = (line as GeoJSON.FeatureCollection).features
                 .filter((f): f is GeoJSON.Feature<GeoJSON.LineString> => f.geometry.type === "LineString");
             expect(lineStrings).to.have.lengthOf(2);
             expect(lineStrings[0].geometry.coordinates.length).to.be.greaterThan(1);
             expect(lineStrings[1].geometry.coordinates.length).to.be.greaterThan(1);
+        });
+
+        it("should report the index of the segment that follows the current time", () => {
+            const { splitIndex } = getRouteSourceData(state, route, startTimeEpoch, 90_000);
+            expect(splitIndex).to.equal(2);
+        });
+    });
+
+    describe("Spline heading", () => {
+        it("should follow the route direction for a straight north-east route", () => {
+            const splineData = getSplineData(route);
+            const heading = getSplineHeading(splineData, 2, 0.5);
+            expect(heading).to.be.closeTo(45, 1);
         });
     });
 });

@@ -4,21 +4,38 @@ import classNames from "classnames";
 import { ToolPanelProps, useMultipleTranslations } from "@apparatus";
 import { useWebMachineWard } from "@web-apparatus";
 import { clamp, useSubjectState } from "@tinker-chest";
-import { ClockInput, Checkbox, Fieldset, ClockSliceInput, IconRotateInput, Slider, ToggleSwitch, Label, Span } from "@web-ui";
-import { Animatrix } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { Icons } from "@ui";
+import { ClockInput, Checkbox, Fieldset, ClockSliceInput, DurationClockInput, IconRotateInput, Slider, ToggleSwitch, Label, Span, Icon } from "@web-ui";
+import { AnimationControlsType, Animatrix } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { Icons, millisecondsToDurationParts } from "@ui";
 import { WebRouteStoryProps } from "../model";
 import styles from './animation-controls.module.css';
+
+const pad2 = (value: number): string => String(value).padStart(2, '0');
+
+const formatDuration = (milliseconds: number): string => {
+    const { minutes, seconds } = millisecondsToDurationParts(milliseconds);
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    if (hours > 0) {
+        return `${pad2(hours)}:${pad2(remainingMinutes)}:${pad2(seconds)}`;
+    }
+    if (remainingMinutes > 0) {
+        return `${pad2(remainingMinutes)}:${pad2(seconds)}`;
+    }
+    return String(seconds);
+};
 
 export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStoryProps> = ({
     map,
     animatrix,
     placement,
+    images$,
 }) => {
     const { chronoLens } = useWebMachineWard();
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [animationControls, setAnimationControls] = useSubjectState(animatrix.controls$);
     const [searchQuery] = useSubjectState(animatrix.searchQuery$);
+    const [images] = useSubjectState(images$);
 
     const [
         generalLabel,
@@ -26,26 +43,26 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
         autoRotateLabel,
         cameraAngleLabel,
         cameraRollLabel,
-        bearingLineLengthInMetersLabel,
-        maxBearingDiffPerFrameLabel,
         pitchLabel,
         zoomLabel,
         imagePauseDurationLabel,
-        speedMultiplierLabel,
+        routePlaybackDurationLabel,
+        totalRecordingDurationLabel,
         easeDurationLabel,
+        panToWholeRouteAtEndLabel,
     ] = useMultipleTranslations([
         { n: animatrix.namespace, t: animatrix.translationKey.General },
         { n: animatrix.namespace, t: animatrix.translationKey.FollowCurrentPoint },
         { n: animatrix.namespace, t: animatrix.translationKey.AutoRotate },
         { n: animatrix.namespace, t: animatrix.translationKey.CameraAngle },
         { n: animatrix.namespace, t: animatrix.translationKey.CameraRoll },
-        { n: animatrix.namespace, t: animatrix.translationKey.BearingLineLengthInMeters },
-        { n: animatrix.namespace, t: animatrix.translationKey.MaxBearingDiffPerFrame },
         { n: animatrix.namespace, t: animatrix.translationKey.Pitch },
         { n: animatrix.namespace, t: animatrix.translationKey.Zoom },
         { n: animatrix.namespace, t: animatrix.translationKey.ImagePauseDuration },
-        { n: animatrix.namespace, t: animatrix.translationKey.SpeedMultiplier },
+        { n: animatrix.namespace, t: animatrix.translationKey.RouteAnimationDuration },
+        { n: animatrix.namespace, t: animatrix.translationKey.TotalRecordingDuration },
         { n: animatrix.namespace, t: animatrix.translationKey.EaseDuration },
+        { n: animatrix.namespace, t: animatrix.translationKey.PanToWholeRouteAtEnd },
     ]);
 
     const matchesSearch = (label: string): boolean => {
@@ -57,7 +74,9 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
 
     const showGeneral = matchesSearch(generalLabel)
         || matchesSearch(imagePauseDurationLabel)
-        || matchesSearch(speedMultiplierLabel);
+        || matchesSearch(routePlaybackDurationLabel)
+        || matchesSearch(totalRecordingDurationLabel)
+        || matchesSearch(panToWholeRouteAtEndLabel);
 
     const showFollowCurrentPoint = matchesSearch(followCurrentPointLabel)
         || matchesSearch(zoomLabel)
@@ -65,23 +84,23 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
         || matchesSearch(cameraAngleLabel)
         || matchesSearch(cameraRollLabel)
         || matchesSearch(pitchLabel)
-        || matchesSearch(autoRotateLabel)
-        || matchesSearch(bearingLineLengthInMetersLabel)
-        || matchesSearch(maxBearingDiffPerFrameLabel);
+        || matchesSearch(autoRotateLabel);
 
     const {
         followCurrentPoint,
         autoRotate,
         cameraAngle,
         cameraRoll,
-        bearingLineLengthInMeters,
-        maxBearingDiffPerFrame,
-        pitch,
-        zoom,
+        cameraTilt,
+        cameraZoom,
+        easeDuration,
         displayImageDuration,
-        speedMultiplier,
-        easeDuration
+        routePlaybackDuration,
+        panToWholeRouteAtEnd,
     } = animationControls;
+
+    const displayedImageCount = images.filter((image) => image.featureId !== undefined).length;
+    const totalRecordingDuration = routePlaybackDuration + displayedImageCount * displayImageDuration;
 
     return (
         <div className={classNames(styles['container'], styles[placement])}>
@@ -102,21 +121,42 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                         }))}
                     />
                     <Span tabular>{Math.round(displayImageDuration / 1000)}s</Span>
-                    <Label htmlFor="animation-controls-speed-multiplier" align="right">
-                        {speedMultiplierLabel}
+                    <Label htmlFor="animation-controls-route-animation-duration" align="right">
+                        {routePlaybackDurationLabel}
                     </Label>
-                    <Slider
-                        id="animation-controls-speed-multiplier"
-                        value={speedMultiplier}
-                        min={Animatrix.speedMultiplierRange[0]}
-                        max={Animatrix.speedMultiplierRange[1]}
-                        step={1000}
+                    <DurationClockInput
+                        id="animation-controls-route-animation-duration"
+                        value={routePlaybackDuration}
+                        min={Animatrix.routePlaybackDurationRange[0]}
                         onChange={(value) => setAnimationControls((prev) => ({
-                            ...prev, speedMultiplier: clamp(value, Animatrix.speedMultiplierRange)
+                            ...prev, routePlaybackDuration: value
                         }))}
-                        size="xs"
                     />
-                    <Span tabular>{speedMultiplier}</Span>
+                    <Span tabular>
+                        {String(millisecondsToDurationParts(routePlaybackDuration).minutes).padStart(2, '0')}
+                        :
+                        {String(millisecondsToDurationParts(routePlaybackDuration).seconds).padStart(2, '0')}
+                    </Span>
+                    <Label htmlFor="animation-controls-total-recording-duration" align="right">
+                        {totalRecordingDurationLabel}
+                    </Label>
+                    <div className={styles['recording-formula']}>
+                        <Span tabular>{formatDuration(routePlaybackDuration)}</Span>
+                        <span className={styles['recording-formula-operator']}>+</span>
+                        <Icon src={Icons.NounProject.ImageMarker} width={13} height={13} />
+                        <Span tabular>{`${displayedImageCount} × ${formatDuration(displayImageDuration)}`}</Span>
+                        <span className={styles['recording-formula-equals']}>= {formatDuration(totalRecordingDuration)}</span>
+                    </div>
+                    <span />
+                    <Checkbox
+                        id="animation-controls-pan-to-whole-route-at-end"
+                        checked={panToWholeRouteAtEnd}
+                        size="sm"
+                        onChange={() => setAnimationControls((prev) => ({ ...prev, panToWholeRouteAtEnd: !prev.panToWholeRouteAtEnd }))}
+                    >
+                        {panToWholeRouteAtEndLabel}
+                    </Checkbox>
+                    <span />
                 </Fieldset>
             )}
             {showFollowCurrentPoint && (
@@ -141,13 +181,13 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                             </Label>
                             <Slider
                                 id="animation-controls-zoom"
-                                value={zoom}
+                                value={cameraZoom}
                                 step={0.1}
                                 min={Animatrix.zoomRange[0]}
                                 max={Animatrix.zoomRange[1]}
                                 onChange={(value) => {
                                     setAnimationControls((prev) => ({
-                                        ...prev, zoom: clamp(value, Animatrix.zoomRange)
+                                        ...prev, cameraZoom: clamp(value, Animatrix.zoomRange)
                                     }));
                                     if (!isPlaying) {
                                         map.setZoom(value);
@@ -156,7 +196,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                                 size="xs"
                                 disabled={!followCurrentPoint}
                             />
-                            <Span tabular>{zoom.toFixed(1)}</Span>
+                            <Span tabular>{cameraZoom.toFixed(1)}</Span>
                         </>
                     )}
                     {matchesSearch(easeDurationLabel) && (
@@ -224,12 +264,12 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                                 id="animation-controls-pitch"
                                 thumbIcon={Icons.NounProject.CameraVideoSide}
                                 size='xs'
-                                value={pitch}
-                                min={Animatrix.pitchRange[0]}
-                                max={Animatrix.pitchRange[1]}
+                                value={cameraTilt}
+                                min={Animatrix.cameraTiltRange[0]}
+                                max={Animatrix.cameraTiltRange[1]}
                                 onChange={(value) => {
-                                    setAnimationControls((prev) => ({
-                                        ...prev, pitch: clamp(value, Animatrix.pitchRange)
+                                    setAnimationControls((prev): AnimationControlsType => ({
+                                        ...prev, cameraTilt: clamp(value, Animatrix.cameraTiltRange)
                                     }));
                                     if (!isPlaying) {
                                         map.setPitch(value);
@@ -237,7 +277,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                                 }}
                                 disabled={!followCurrentPoint}
                             />
-                            <Span tabular>{pitch}°</Span>
+                            <Span tabular>{cameraTilt}°</Span>
                         </>
                     )}
                     {matchesSearch(cameraRollLabel) && (
@@ -263,45 +303,6 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                                 disabled={!followCurrentPoint}
                             />
                             <Span tabular>{cameraRoll}°</Span>
-                        </>
-                    )}
-                    {matchesSearch(bearingLineLengthInMetersLabel) && (
-                        <>
-                            <Label htmlFor="animation-controls-bearing-line-length-in-meters" align="right">
-                                {bearingLineLengthInMetersLabel}
-                            </Label>
-                            <Slider
-                                id="animation-controls-bearing-line-length-in-meters"
-                                value={bearingLineLengthInMeters}
-                                step={100}
-                                min={Animatrix.bearingLineLengthInMetersRange[0]}
-                                max={Animatrix.bearingLineLengthInMetersRange[1]}
-                                onChange={(value) => setAnimationControls((prev) => ({
-                                    ...prev, bearingLineLengthInMeters: clamp(value, Animatrix.bearingLineLengthInMetersRange)
-                                }))}
-                                size="xs"
-                                disabled={!followCurrentPoint || !autoRotate}
-                            />
-                            <Span tabular>{bearingLineLengthInMeters}m</Span>
-                        </>
-                    )}
-                    {matchesSearch(maxBearingDiffPerFrameLabel) && (
-                        <>
-                            <Label htmlFor="animation-controls-max-bearing-diff-per-frame" align="right">
-                                {maxBearingDiffPerFrameLabel}
-                            </Label>
-                            <ClockInput
-                                id="animation-controls-max-bearing-diff-per-frame"
-                                size='xs'
-                                value={maxBearingDiffPerFrame}
-                                min={Animatrix.maxBearingDiffPerFrameRange[0]}
-                                max={Animatrix.maxBearingDiffPerFrameRange[1]}
-                                onChange={(value) => setAnimationControls((prev) => ({
-                                    ...prev, maxBearingDiffPerFrame: clamp(value, Animatrix.maxBearingDiffPerFrameRange)
-                                }))}
-                                disabled={!followCurrentPoint}
-                            />
-                            <Span tabular>{maxBearingDiffPerFrame}°</Span>
                         </>
                     )}
                 </Fieldset>

@@ -1,7 +1,7 @@
 import { FC, useMemo } from "react";
 import * as maplibregl from "maplibre-gl";
 import { MapLayerData, MapSourceAndLayers, } from "@web-apparatus";
-import { routeSourceIds, layerOrder, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { layerOrder, routeSourceIds, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { routeLineLayers, routePointsLayer } from "./route-layers";
 
 interface Props {

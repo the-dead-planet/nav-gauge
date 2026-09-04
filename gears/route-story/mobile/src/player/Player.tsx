@@ -62,6 +62,7 @@ export const Player: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryProps
     routeTimes$,
     progressMs$,
     playerOperator,
+    animatrix,
 }) => {
     const theme = useTheme();
     const [media] = useSubjectState(theme.media$);
@@ -85,6 +86,7 @@ export const Player: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryProps
             images$={images$}
             progressMs$={progressMs$}
             playerOperator={playerOperator}
+            animatrix={animatrix}
         />
     );
     const markerButton = <MarkerButton gearId={gearId} translationKey={translationKey} playerOperator={playerOperator} />;

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { ColorVariant, SizeVariant, SurfaceFillVariant, CLOCK_INPUT_RANGE } from '@ui';
 import { ClockSliceInput } from './ClockSliceInput';
 import { ClockInput } from './ClockInput';
+import { DurationClockInput } from './DurationClockInput';
 import { Text } from '../../typography';
 import { useState } from 'react';
 
@@ -239,6 +240,102 @@ export const SliceVariants = {
                             disabled={disabled}
                             label="full"
                         />
+                    </div>
+                </div>
+            </div>
+        );
+    },
+} satisfies Story;
+
+export const DurationVariants = {
+    args: {
+        value: 15000,
+    },
+    render: () => {
+        const [value, setValue] = useState(15000);
+        const [size, setSize] = useState<SizeVariant>('sm');
+        const [disabled, setDisabled] = useState(false);
+
+        const minutes = Math.floor(value / 60000);
+        const seconds = Math.round((value % 60000) / 1000);
+
+        return (
+            <div style={{ padding: 24, maxWidth: 800 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
+                    {allSizes.map((s) => (
+                        <button
+                            key={s}
+                            onClick={() => setSize(s)}
+                            style={{
+                                padding: '4px 12px',
+                                cursor: 'pointer',
+                                background: size === s ? '#666' : '#333',
+                                color: '#fff',
+                                border: '1px solid #555',
+                                borderRadius: 4,
+                                fontSize: 12,
+                            }}
+                        >
+                            {s}
+                        </button>
+                    ))}
+                    <button
+                        onClick={() => setDisabled((d) => !d)}
+                        style={{
+                            padding: '4px 12px',
+                            cursor: 'pointer',
+                            background: disabled ? '#c44' : '#333',
+                            color: '#fff',
+                            border: '1px solid #555',
+                            borderRadius: 4,
+                            fontSize: 12,
+                        }}
+                    >
+                        disabled: {String(disabled)}
+                    </button>
+                </div>
+
+                <div style={{ display: 'grid', gap: 24 }}>
+                    <div>
+                        <Text style={{ marginBottom: 8, display: 'block' }}>
+                            size: {size} | value: {value}ms ({minutes}m {seconds}s)
+                        </Text>
+                        <div
+                            style={{
+                                display: 'grid',
+                                gridTemplateColumns: `repeat(${allVariants.length}, 1fr)`,
+                                gap: 16,
+                            }}
+                        >
+                            {allVariants.map((variant) => (
+                                <Text key={variant} style={{ textAlign: 'center', fontSize: 11 }}>
+                                    {variant}
+                                </Text>
+                            ))}
+                        </div>
+                        {allColors.map((color) => (
+                            <div
+                                key={color}
+                                style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: `repeat(${allVariants.length}, 1fr)`,
+                                    gap: 16,
+                                    marginTop: 8,
+                                }}
+                            >
+                                {allVariants.map((variant) => (
+                                    <DurationClockInput
+                                        key={variant}
+                                        value={value}
+                                        onChange={setValue}
+                                        color={color}
+                                        variant={variant}
+                                        size={size}
+                                        disabled={disabled}
+                                    />
+                                ))}
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>

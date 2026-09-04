@@ -5,8 +5,6 @@ import { Icons, } from "@ui";
 import { ToolPanelHeaderButton } from "./ToolPanelHeaderButton";
 import styles from '../../machine.module.css';
 
-// TODO: Test decrease tool icon size if isLessThanMd
-
 interface Props {
     placement: ToolPanelPlacement;
     activeId: string | null;

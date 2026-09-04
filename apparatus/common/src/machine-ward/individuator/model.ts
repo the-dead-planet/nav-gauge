@@ -11,6 +11,10 @@ export interface IndividuatorSettings {
     dateFormat: { value: DateFormat; short: DateFormat; };
     timeFormat: TimeFormat;
     language: Language;
+    /**
+     * Will show additional debug layers and components when in dev mode
+     */
+    debugMode: boolean;
 }
 
 export enum IndividuatorTranslationKey {
@@ -20,4 +24,5 @@ export enum IndividuatorTranslationKey {
     TimeFormat = "time-format",
     Theme = 'theme',
     ConfirmBeforeLeave = 'confirm-before-leave',
+    DebugMode = 'debug-mode',
 };

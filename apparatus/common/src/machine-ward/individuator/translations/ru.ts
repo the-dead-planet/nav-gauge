@@ -8,6 +8,7 @@ const ru: TranslationTable<IndividuatorTranslationKey>['ru'] = {
     "time-format": 'Формат времени',
     theme: 'Тема',
     "confirm-before-leave": 'Подтверждение перед выходом',
+    "debug-mode": 'Режим отладки',
 };
 
 export default ru;

@@ -5,6 +5,7 @@ import { GeoJson, ParsingResultWithError } from "@tinker-chest";
 import { RouteStoryProps, RouteTimes, RouteStoryFile, RouteStoryTranslationKey, RouteStoryState, PresetOption, Preset } from "./model";
 import { FileOperator } from "./file-operator";
 import { PlayerOperator } from "./player-operator";
+import { getSplineData, SplineData } from "./tinkers";
 import { Icons } from "@ui";
 import * as Translations from "./translations";
 import { AnimationControlsType, Animatrix } from "./animatrix";
@@ -20,6 +21,7 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
     public animatrix = new Animatrix();
     private dataSubscription: Subscription | null = null;
     public readonly data$ = new BehaviorSubject<ParsingResultWithError>({});
+    public readonly splineData$ = new BehaviorSubject<SplineData | null>(null);
     public readonly state$ = new BehaviorSubject<RouteStoryState>({ showRouteLine: true, showRoutePoints: false });
     public readonly routeTimes$ = new BehaviorSubject<RouteTimes | null>(null);
     public readonly images$ = new BehaviorSubject<MarkerImage<TImageData>[]>([]);
@@ -54,6 +56,7 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
     private subscribeToDataUpdates = (): Subscription => {
         return this.data$.subscribe(({ geojson }) => {
             this.progressMs$.next(0);
+            this.splineData$.next(geojson ? getSplineData(geojson) : null);
 
             if (!geojson?.features[0]) {
                 this.routeTimes$.next(null);
@@ -112,6 +115,7 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
         translationKey: this.internalTranslationKey,
         animatrix: this.animatrix,
         data$: this.data$,
+        splineData$: this.splineData$,
         state$: this.state$,
         routeTimes$: this.routeTimes$,
         images$: this.images$,

@@ -3,7 +3,7 @@ import { FC } from "react";
 import { BehaviorSubject } from "rxjs";
 import { MarkerImage, useMultipleTranslations } from "@apparatus";
 import { ParsingResultWithError, useSubjectState } from "@tinker-chest";
-import { RouteStoryTranslationKey, RouteTimes } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { RouteStoryTranslationKey, RouteTimes, Animatrix } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { updateRouteLayer } from "../../tinkers";
 import { Slider } from "@web-ui";
 import { WebMarkerImageData } from "../../images/image-parser";
@@ -22,6 +22,7 @@ interface Props {
     progressMs$: BehaviorSubject<number>;
     playerOperator: WebPlayerOperator;
     fitBoundsHandler: (map: maplibregl.Map, boundingBox?: GeoJSON.BBox) => void;
+    animatrix: Animatrix;
 }
 
 export const SliderWithMarkers: FC<Props> = ({
@@ -34,6 +35,7 @@ export const SliderWithMarkers: FC<Props> = ({
     progressMs$,
     playerOperator,
     fitBoundsHandler,
+    animatrix,
 }) => {
     const [routeTimes] = useSubjectState(routeTimes$);
     const [progressMs] = useSubjectState(progressMs$);
@@ -64,6 +66,7 @@ export const SliderWithMarkers: FC<Props> = ({
                     routeTimes$={routeTimes$}
                     images$={images$}
                     fitBoundsHandler={fitBoundsHandler}
+                    animatrix={animatrix}
                 />
             ) : null}
             <Slider

@@ -8,13 +8,13 @@ const en: TranslationTable<AnimatrixTranslationKey>['en'] = {
     "auto-rotate": 'Auto rotate',
     "camera-angle": 'Camera angle',
     "camera-roll": 'Camera roll',
-    "bearing-line-length-in-meters": 'Bearing line length in meters',
-    "max-bearing-diff-per-frame": 'Max bearing diff per frame',
     "pitch": 'Pitch',
     "zoom": 'Zoom',
     "image-pause-duration": 'Image pause duration',
-    "speed-multiplier": 'Speed multiplier',
+    "route-animation-duration": 'Route playback duration',
+    "total-recording-duration": 'Total recording duration',
     "ease-duration": 'Ease duration',
+    "pan-to-whole-route-at-end": 'Pan to whole route at end',
     "search": 'Search controls',
 };
 

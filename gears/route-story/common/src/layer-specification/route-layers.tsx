@@ -3,6 +3,7 @@ import { EqualBooleanFeatureState, ComparisonProperty, GetPropertyCaseCondition,
 
 export const routeSourceIds = {
     line: 'route-story-line',
+    cameraLine: 'route-story-camera-line',
     currentPoint: 'route-story-current-point',
 }
 
@@ -35,6 +36,8 @@ const routeOpacity: GetPropertyCaseCondition = [
 ];
 
 const routeLineCap: LineCap = 'round';
+
+const cameraLineColor = 'green';
 
 const pointsCircleColor: [
     'case',
@@ -73,5 +76,11 @@ export default {
     currentPoint: {
         circleColor: colorActive,
         circleRadius: 5,
+    },
+    cameraLine: {
+        lineColor: cameraLineColor,
+        lineWidth: 4,
+        pipeCircleColor: cameraLineColor,
+        pipeCircleRadius: 7,
     }
 }

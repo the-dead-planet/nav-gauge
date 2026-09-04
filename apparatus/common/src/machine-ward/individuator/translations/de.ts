@@ -8,6 +8,7 @@ const de: TranslationTable<IndividuatorTranslationKey>['de'] = {
     "time-format": 'Zeitformat',
     theme: 'Thema',
     "confirm-before-leave": 'Bestätigen vor Verlassen',
+    "debug-mode": 'Debug-Modus',
 };
 
 export default de;

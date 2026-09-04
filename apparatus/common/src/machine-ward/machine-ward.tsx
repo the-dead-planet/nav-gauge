@@ -20,6 +20,7 @@ import * as Translations from "./translations";
 export abstract class MachineWard<TMap = unknown, TChronoLens extends ChronoLens = ChronoLens, TNavigationPath extends string = string> {
     public title = 'nav gauge';
 
+    private readonly isDev: boolean;
     public readonly namespace = 'machine-ward';
     public readonly translations: TranslationTable<MachineTranslationKey> = Translations;
     public readonly translationKey = MachineTranslationKey;
@@ -40,14 +41,15 @@ export abstract class MachineWard<TMap = unknown, TChronoLens extends ChronoLens
         gears: MachineGear<TMap, TChronoLens>[],
         chronoLens: new (individuator: Individuator) => TChronoLens,
         storage: StorageLike,
-        prefersLightColorScheme: boolean,
+        isDev: boolean,
         protected media: MediaSubscriptionDefinition
     ) {
+        this.isDev = isDev;
         this.translatron.register(this.namespace, this.translations);
 
         this.storageKeeper = new StorageKeeper(storage);
-        this.individuator = new Individuator(prefersLightColorScheme);
-        this.cartomancer = new Cartomancer(prefersLightColorScheme);
+        this.individuator = new Individuator(isDev);
+        this.cartomancer = new Cartomancer();
         this.chronoLens = new chronoLens(this.individuator);
 
         this.engine.addGears(
@@ -130,6 +132,7 @@ export abstract class MachineWard<TMap = unknown, TChronoLens extends ChronoLens
     public render = (): ReactElement => {
         return (
             <MachineWardApp
+                isDev={this.isDev}
                 namespace={this.namespace}
                 title={this.title}
                 media={this.media}

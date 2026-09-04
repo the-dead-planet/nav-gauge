@@ -8,6 +8,7 @@ import { emptyCollection, useSubjectState } from "@tinker-chest";
 import { useLoadedMobileImages } from "../images/useLoadedMobileImages";
 import { RouteLineLayer } from "./RouteLineLayer";
 import { RouteCurrentPointLayer } from "./RouteCurrentPointLayer";
+import { DebugRouteCameraLineLayer } from "./DebugRouteCameraLineLayer";
 import { MobileRouteStoryProps } from "../model";
 
 export const currentPointRef$ = new BehaviorSubject<GeoJSON.GeoJSON>(emptyCollection);
@@ -17,6 +18,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
     map,
     animatrix,
     data$,
+    splineData$,
     state$,
     routeTimes$,
     images$,
@@ -24,18 +26,19 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
     playerOperator
 }) => {
     const [{ geojson }] = useSubjectState(data$);
+    const [splineData] = useSubjectState(splineData$);
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [progressMs] = useSubjectState(progressMs$);
-    const { chronoLens } = useMobileMachineWard();
+    const { chronoLens, individuator } = useMobileMachineWard();
+    const [settings] = useSubjectState(individuator.settings$);
     const [state] = useSubjectState(state$);
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [animationControls] = useSubjectState(animatrix.controls$);
     const {
-        pitch,
-        zoom,
+        cameraTilt,
+        cameraZoom,
         easeDuration,
-        bearingLineLengthInMeters,
     } = animationControls;
     const [currentPointSourceData, setCurrentPointSourceData] = useSubjectState(currentPointRef$);
     const [lineSourceData, setLineSourceData] = useSubjectState(linesRef$);
@@ -43,13 +46,6 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
     useEffect(() => {
         // lineRef$.next();
         // currentPointRef$.next();
-        // fetch('/example.gpx')
-        //     .then((file) => file.text())
-        //     .then((text) => parsers.get('.gpx')?.parseTextToGeoJson(text))
-        //     .then((result) => setData(result ? {
-        //         ...result,
-        //         boundingBox: bbox(result.geojson)
-        //     } : {}));
 
         return () => {
             setLineSourceData(emptyCollection);
@@ -71,12 +67,11 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
             geojson,
             routeTimes.startTimeEpoch,
             progressMs, // Not a dependency of this memo, data is updated later in the animateRoute hook
-            bearingLineLengthInMeters
         );
 
         setLineSourceData(line);
         setCurrentPointSourceData(currentPoint);
-    }, [geojson, routeTimes?.startTimeEpoch, bearingLineLengthInMeters, state]);
+    }, [geojson, routeTimes?.startTimeEpoch, state]);
 
     useEffect(() => {
         if (!isPlaying || !geojson || !routeTimes) {
@@ -91,8 +86,8 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
                 map.camera$.value?.easeTo({
                     center: [position[0], position[1]],
                     duration: easeDuration,
-                    zoom,
-                    pitch,
+                    zoom: cameraZoom,
+                    pitch: cameraTilt,
                     bearing,
                 });
             },
@@ -101,10 +96,11 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
         return () => {
             playerOperator.cleanupAnimateRoute();
         };
-    }, [isPlaying, loadedImages, easeDuration, zoom, pitch]);
+    }, [isPlaying, loadedImages, easeDuration, cameraZoom, cameraTilt]);
 
     return (
         <>
+            {settings.debugMode && splineData ? <DebugRouteCameraLineLayer spline={splineData} /> : null}
             <RouteLineLayer source={lineSourceData} state={state} />
             <RouteCurrentPointLayer source={currentPointSourceData} />
         </>

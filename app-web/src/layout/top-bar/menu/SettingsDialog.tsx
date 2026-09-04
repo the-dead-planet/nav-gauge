@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const SettingsDialog: FC<Props> = ({ onClose }) => {
-    const { namespace, translationKey, individuator, translatron } = useWebMachineWard();
+    const { isDev, namespace, translationKey, individuator, translatron } = useWebMachineWard();
     const [registry] = useSubjectState(translatron.registry$);
     const [settings, setSettings] = useSubjectState(individuator.settings$);
     const [pendingSettings, setPendingSettings] = useState(individuator.settings$.value);
@@ -121,6 +121,20 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                     checked={pendingSettings.confirmBeforeLeave}
                     onChange={(checked) => setPendingSettings((prev): IndividuatorSettings => ({ ...prev, confirmBeforeLeave: checked }))}
                 />
+                {isDev ? (
+                    <>
+                        <P id="individuator-debug-mode-label" shadow color="primary">
+                            <T n={individuator.namespace} t={individuator.translationKey.DebugMode} />
+                        </P>
+                        <Checkbox
+                            labelledBy="individuator-debug-mode-label"
+                            size="xs"
+                            color="primary"
+                            checked={pendingSettings.debugMode}
+                            onChange={(checked) => setPendingSettings((prev): IndividuatorSettings => ({ ...prev, debugMode: checked }))}
+                        />
+                    </>
+                ) : null}
             </div>
         </Dialog>,
         document.body,

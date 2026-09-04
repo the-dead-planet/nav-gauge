@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { BehaviorSubject } from "rxjs";
 import { MarkerImage } from "@apparatus";
 import { ParsingResultWithError, useSubjectState } from "@tinker-chest";
-import { RouteStoryTranslationKey, RouteTimes } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { RouteStoryTranslationKey, RouteTimes, Animatrix } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Slider } from "@mobile-ui";
 import { currentPointRef$, linesRef$ } from "../../layers/RouteLayer";
 import { SliderMarkers } from "./SliderMarkers";
@@ -21,6 +21,7 @@ interface Props {
     images$: BehaviorSubject<MarkerImage<MobileMarkerImageData>[]>;
     progressMs$: BehaviorSubject<number>;
     playerOperator: MobilePlayerOperator;
+    animatrix: Animatrix;
 }
 
 const styles = StyleSheet.create({
@@ -39,6 +40,7 @@ export const SliderWithMarkers: FC<Props> = ({
     images$,
     progressMs$,
     playerOperator,
+    animatrix,
 }) => {
     const [routeTimes] = useSubjectState(routeTimes$);
     const [progressMs] = useSubjectState(progressMs$);
@@ -60,6 +62,7 @@ export const SliderWithMarkers: FC<Props> = ({
                     data$={data$}
                     routeTimes$={routeTimes$}
                     images$={images$}
+                    animatrix={animatrix}
                 />
             ) : null}
             <Slider

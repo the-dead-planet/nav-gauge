@@ -9,11 +9,13 @@ import { useLoadedWebImages } from "../hooks";
 import { RouteLineLayer } from "./RouteLineLayer";
 import { RouteCurrentPointLayer } from "./RouteCurrentPointLayer";
 import { WebRouteStoryProps } from "../model";
+import { DebugRouteCameraLineLayer } from "./DebugRouteCameraLineLayer";
 
 export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStoryProps> = ({
     map,
     animatrix,
     data$,
+    splineData$,
     state$,
     routeTimes$,
     images$,
@@ -21,35 +23,31 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
     playerOperator,
 }) => {
     const [{ geojson }] = useSubjectState(data$);
+    const [splineData] = useSubjectState(splineData$);
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [progressMs] = useSubjectState(progressMs$);
-    const { chronoLens } = useWebMachineWard();
+    const { chronoLens, individuator } = useWebMachineWard();
+    const [settings] = useSubjectState(individuator.settings$);
     const [state] = useSubjectState(state$);
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [animationControls] = useSubjectState(animatrix.controls$);
-    const {
-        pitch,
-        zoom,
-        cameraRoll,
-        easeDuration,
-        bearingLineLengthInMeters,
-    } = animationControls;
+    const { cameraTilt, cameraZoom, cameraRoll, easeDuration } = animationControls;
 
     const loadedImages = useLoadedWebImages(images);
 
     const sources = useMemo((): { [key in 'line' | 'currentPoint']: GeoJSON.GeoJSON } => {
         if (!geojson || !routeTimes) {
-            return { currentPoint: emptyCollection, line: emptyCollection }
+            return { currentPoint: emptyCollection, line: emptyCollection };
         }
+
         return getRouteSourceData(
             state,
             geojson,
             routeTimes.startTimeEpoch,
             progressMs, // Not a dependency of this memo, data is updated later in the animateRoute hook
-            bearingLineLengthInMeters
         );
-    }, [geojson, routeTimes, bearingLineLengthInMeters, state]);
+    }, [geojson, routeTimes, state]);
 
     useEffect(() => {
         if (!isPlaying || !geojson || !routeTimes) {
@@ -66,10 +64,10 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
                     center: new maplibregl.LngLat(position[0], position[1]),
                     essential: true,
                     duration: easeDuration,
-                    zoom,
-                    pitch,
+                    zoom: cameraZoom,
+                    pitch: cameraTilt,
                     bearing,
-                    roll: pitch !== 0 ? cameraRoll : 0,
+                    roll: cameraRoll,
                 });
             },
         );
@@ -77,10 +75,13 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
         return () => {
             playerOperator.cleanupAnimateRoute();
         };
-    }, [isPlaying, loadedImages, easeDuration, zoom, pitch, cameraRoll]);
+    }, [isPlaying, loadedImages, easeDuration, cameraZoom, cameraTilt, cameraRoll]);
 
     return (
         <>
+            {settings.debugMode && splineData ? (
+                <DebugRouteCameraLineLayer map={map} spline={splineData} />
+            ) : null}
             <RouteLineLayer map={map} source={sources.line} state={state} />
             <RouteCurrentPointLayer map={map} source={sources.currentPoint} />
         </>

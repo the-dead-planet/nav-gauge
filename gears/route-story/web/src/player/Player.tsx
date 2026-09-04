@@ -24,6 +24,7 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & WebRouteStoryProps> = (
     progressMs$,
     playerOperator,
     fitBoundsHandler,
+    animatrix,
 }) => {
     const theme = useTheme();
     const [media] = useSubjectState(theme.media$);
@@ -47,6 +48,7 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & WebRouteStoryProps> = (
             progressMs$={progressMs$}
             playerOperator={playerOperator}
             fitBoundsHandler={fitBoundsHandler}
+            animatrix={animatrix}
         />
     );
     const markerButton = <MarkerButton gearId={gearId} translationKey={translationKey} playerOperator={playerOperator} />;

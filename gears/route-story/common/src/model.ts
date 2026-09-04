@@ -4,6 +4,7 @@ import { BehaviorSubject } from "rxjs";
 import { FileOperator } from "./file-operator";
 import { PlayerOperator } from "./player-operator";
 import { Animatrix } from "./animatrix";
+import { SplineData } from "./tinkers";
 
 export interface RouteTimes {
     startTime: string;
@@ -23,6 +24,7 @@ export interface RouteStoryProps<TMap, TChronoLens extends ChronoLens, TFile ext
     translationKey: typeof RouteStoryTranslationKey;
     animatrix: Animatrix;
     data$: BehaviorSubject<ParsingResultWithError>;
+    splineData$: BehaviorSubject<SplineData | null>;
     state$: BehaviorSubject<RouteStoryState>;
     routeTimes$: BehaviorSubject<RouteTimes | null>;
     images$: BehaviorSubject<MarkerImage<TImageData>[]>;

@@ -6,10 +6,13 @@ import { Stories } from "@mobile-ui";
 import { navigationRef, RootStackParamList } from "../navigation";
 import { NotFoundScreen } from "./NotFoundScreen";
 import { MachineWardMachineProps } from "@apparatus";
+import { useMobileMachineWard } from "@mobile-apparatus";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const Machine: FC<MachineWardMachineProps<keyof RootStackParamList>> = ({ onNavigateBack }) => {
+    const { isDev } = useMobileMachineWard();
+
     return (
         <NavigationContainer ref={navigationRef}>
             <Stack.Navigator
@@ -25,7 +28,7 @@ export const Machine: FC<MachineWardMachineProps<keyof RootStackParamList>> = ({
                     name="Home"
                     component={MapSection}
                 />
-                {__DEV__ ? (
+                {isDev ? (
                     <Stack.Screen
                         name="Stories"
                         component={Stories}

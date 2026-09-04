@@ -2,6 +2,7 @@ import { FC, useState } from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 import { ClockInput } from "./ClockInput";
 import { ClockSliceInput } from "./ClockSliceInput";
+import { DurationClockInput } from "./DurationClockInput";
 import { Button } from "../../button";
 import { Text } from "../../typography";
 import { ColorVariant, SizeVariant, SurfaceFillVariant, CLOCK_INPUT_RANGE } from "@ui";
@@ -261,6 +262,74 @@ export const SliceVariants: FC = () => {
                         </View>
                     ))}
                 </View>
+            </View>
+        </ScrollView>
+    );
+};
+
+export const DurationVariants: FC = () => {
+    const [value, setValue] = useState(15000);
+    const [size, setSize] = useState<SizeVariant>('sm');
+    const [disabled, setDisabled] = useState(false);
+
+    const minutes = Math.floor(value / 60000);
+    const seconds = Math.round((value % 60000) / 1000);
+
+    return (
+        <ScrollView contentContainerStyle={styles.container}>
+            <View style={[styles.row, { marginBottom: 12 }]}>
+                {allSizes.map((s) => (
+                    <Button
+                        key={s}
+                        variant={size === s ? 'fill' : 'ghost'}
+                        color="primary"
+                        size="xs"
+                        corners="rounded"
+                        active={size === s}
+                        onPress={() => setSize(s)}
+                    >
+                        {s}
+                    </Button>
+                ))}
+                <Button
+                    variant={disabled ? 'fill' : 'ghost'}
+                    color="primary"
+                    size="xs"
+                    corners="rounded"
+                    active={disabled}
+                    onPress={() => setDisabled((d) => !d)}
+                >
+                    disabled: {String(disabled)}
+                </Button>
+            </View>
+
+            <View style={styles.section}>
+                <Text style={{ marginBottom: 8 }}>
+                    size: {size} | value: {value}ms ({minutes}m {seconds}s)
+                </Text>
+                <View style={styles.row}>
+                    {allVariants.map((variant) => (
+                        <View key={variant} style={styles.cell}>
+                            <Text style={styles.headerLabel}>{variant}</Text>
+                        </View>
+                    ))}
+                </View>
+                {allColors.map((color) => (
+                    <View key={color} style={styles.row}>
+                        {allVariants.map((variant) => (
+                            <View key={variant} style={styles.cell}>
+                                <DurationClockInput
+                                    value={value}
+                                    onChange={setValue}
+                                    color={color}
+                                    variant={variant}
+                                    size={size}
+                                    disabled={disabled}
+                                />
+                            </View>
+                        ))}
+                    </View>
+                ))}
             </View>
         </ScrollView>
     );

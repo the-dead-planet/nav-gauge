@@ -10,6 +10,12 @@ Reusable UI components must not contain business logic.
 
 Theme variables live in `@ui/common/src/theme/specifications.ts`.
 
+Shared/reusable UI components must be added to **both** web (`@web-ui`) and mobile (`@mobile-ui`) platforms, not just one.
+Put the shared API and value math in `@ui/common` and provide a thin platform renderer in each platform package.
+
+Every UI component (new or changed) requires a **Storybook story** for the platform(s) it targets — verify the story exists and update it alongside the component.
+Do not consider an edit done until the matching story is present.
+
 ### Web
 - Use CSS modules.
 - Class names use kebab-case.

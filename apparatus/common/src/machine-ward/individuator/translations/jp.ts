@@ -7,7 +7,8 @@ const jp: TranslationTable<IndividuatorTranslationKey>['jp'] = {
     "date-format": '日付形式',
     "time-format": '時間形式',
     theme: 'テーマ',
-    "confirm-before-leave": '退出前に確認',
+    "confirm-before-leave": 'ページを離れる前に確認',
+    "debug-mode": 'デバッグモード',
 };
 
 export default jp;

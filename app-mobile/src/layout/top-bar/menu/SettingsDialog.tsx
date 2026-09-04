@@ -18,7 +18,7 @@ interface Props {
 }
 
 export const SettingsDialog: FC<Props> = ({ onClose }) => {
-    const { namespace, translationKey, individuator, translatron } = useMobileMachineWard();
+    const { isDev, namespace, translationKey, individuator, translatron } = useMobileMachineWard();
     const [registry] = useSubjectState(translatron.registry$);
     const [settings, setSettings] = useSubjectState(individuator.settings$);
     const [pendingSettings, setPendingSettings] = useState(individuator.settings$.value);
@@ -27,7 +27,7 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
         <Dialog
             placement="right-drawer"
             style={{
-                transform:  [{ skewX: "-12deg" }],
+                transform: [{ skewX: "-12deg" }],
             }}
             header={translatron.translate(settings.language, registry, { n: individuator.namespace, t: individuator.translationKey.IndividuatorName })}
             closeText={translatron.translate(settings.language, registry, { n: namespace, t: translationKey.Close })}
@@ -120,6 +120,19 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                     checked={pendingSettings.confirmBeforeLeave}
                     onChange={(checked) => setPendingSettings((prev): IndividuatorSettings => ({ ...prev, confirmBeforeLeave: checked }))}
                 />
+                {isDev ? (
+                    <>
+                        <Text color="primary" shadow>
+                            <T n={individuator.namespace} t={individuator.translationKey.DebugMode} />
+                        </Text>
+                        <Checkbox
+                            size="xs"
+                            color="primary"
+                            checked={pendingSettings.debugMode}
+                            onChange={(checked) => setPendingSettings((prev): IndividuatorSettings => ({ ...prev, debugMode: checked }))}
+                        />
+                    </>
+                ) : null}
             </View>
         </Dialog>
     );

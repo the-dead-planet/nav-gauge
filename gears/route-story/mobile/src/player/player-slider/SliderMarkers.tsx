@@ -2,7 +2,7 @@ import { FC, useCallback, useEffect, useMemo, useRef } from "react";
 import { PanResponder, StyleSheet, View, type GestureResponderEvent, type HostInstance } from "react-native";
 import { BehaviorSubject } from "rxjs";
 import { MarkerImage, useMultipleTranslations } from "@apparatus";
-import { FeatureProperties, ParsingResultWithError, useSubjectState } from "@tinker-chest";
+import { ParsingResultWithError, useSubjectState } from "@tinker-chest";
 import {
     draggingImage$,
     draggingClosestFeature$,
@@ -10,6 +10,7 @@ import {
     imageSourceIds,
     RouteStoryTranslationKey,
     RouteTimes,
+    Animatrix,
     updateImageFeatureId,
     getPosition,
     getClosestFeatureFromPosition
@@ -23,6 +24,7 @@ interface Props {
     data$: BehaviorSubject<ParsingResultWithError>;
     routeTimes$: BehaviorSubject<RouteTimes | null>;
     images$: BehaviorSubject<MarkerImage<MobileMarkerImageData>[]>;
+    animatrix: Animatrix;
 }
 
 const GRAB_RADIUS_PX = 20;
@@ -61,6 +63,15 @@ const styles = StyleSheet.create({
     dragMarker: {
         opacity: 0.5,
     },
+    routeEndMarker: {
+        position: 'absolute',
+        right: 0,
+        top: 0,
+        width: 16,
+        height: 44,
+        marginRight: -8,
+        alignItems: 'center',
+    },
 });
 
 export const SliderMarkers: FC<Props> = ({
@@ -69,11 +80,13 @@ export const SliderMarkers: FC<Props> = ({
     data$,
     routeTimes$,
     images$,
+    animatrix,
 }) => {
     const theme = useTheme();
     const [{ geojson }] = useSubjectState(data$);
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
+    const [animationControls] = useSubjectState(animatrix.controls$);
     const [highlightIdsBySourceId, setHighlightIdsBySourceId] = useSubjectState(highlightIdsBySourceId$);
     const [draggingImage, setDraggingImage] = useSubjectState(draggingImage$);
     const [draggingClosestFeature] = useSubjectState(draggingClosestFeature$);
@@ -96,6 +109,7 @@ export const SliderMarkers: FC<Props> = ({
 
     const markerColor = theme.color('tertiary', 500);
     const markerHighlightColor = theme.color('tertiary', theme.isDark ? 400 : 800);
+    const routeEndMarkerColor = theme.color('neutral', 500);
 
     const beginDrag = (image: MarkerImage<MobileMarkerImageData>) => {
         setDraggingImage({ id: image.id, interaction: 'player' });
@@ -184,6 +198,13 @@ export const SliderMarkers: FC<Props> = ({
                         </View>
                     );
                 })}
+            {animationControls.panToWholeRouteAtEnd && (
+                <View pointerEvents="none" style={styles.routeEndMarker}>
+                    <View style={[styles.markerHead, { backgroundColor: routeEndMarkerColor }]} />
+                    <View style={[styles.markerLine, { backgroundColor: routeEndMarkerColor }]} />
+                    <View style={[styles.markerFoot, { backgroundColor: routeEndMarkerColor }]} />
+                </View>
+            )}
             {draggingFeaturePosition !== null ? (
                 <View
                     style={[styles.marker, styles.dragMarker, {

@@ -1,6 +1,6 @@
 import { BehaviorSubject } from "rxjs";
 import { SurveillanceState, LoadedImageData, ChronoLens } from "@apparatus";
-import { getRouteSourceData } from "./tinkers";
+import { getSplineHeading, getRouteSourceData } from "./tinkers";
 import { getImageIconSize, FULL_SIZE_IMAGE_SIZE, THUMBNAIL_IMAGE_SIZE } from "./images";
 import { RouteStoryGear } from "./route-story-gear";
 import { IMAGE_ANIMATION_DURATION } from "./layer-specification";
@@ -29,14 +29,27 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
     };
 
     public onPlay = () => {
-        this.gear.apparatus.chronoLens.isPlaying$.next(!this.gear.apparatus.chronoLens.isPlaying$.value);
+        const isPlaying = this.gear.apparatus.chronoLens.isPlaying$.value;
+        if (!isPlaying) {
+            this.resetIfAtEnd();
+        }
+        this.gear.apparatus.chronoLens.isPlaying$.next(!isPlaying);
     };
 
     public onStart = () => {
+        this.resetIfAtEnd();
         const nextState = SurveillanceState.InProgress;
         this.gear.apparatus.chronoLens.surveillanceState$.next(nextState);
+        this.gear.apparatus.chronoLens.isPlaying$.next(true);
         this.gear.apparatus.cartomancer.blinkingState$.next({ color: this.getBlinkingColor(nextState) });
         this.gear.apparatus.toolsStation.addTopBarTool(this.gear.recTopBarToolId, this.gear.wrapProps<RouteStoryProps<TMap, TChronoLens, TFile, TImageData>, {}>(this.gear.topBarChipComponent, this.gear.getProps()));
+    };
+
+    private resetIfAtEnd = () => {
+        const routeTimes = this.gear.routeTimes$.value;
+        if (routeTimes && this.gear.progressMs$.value >= routeTimes.duration) {
+            this.gear.progressMs$.next(0);
+        }
     };
 
     public onStop = () => {
@@ -65,7 +78,6 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
         if (!this.gear.routeTimes$.value || isNaN(value)) {
             return;
         }
-        // Halt playing animations to allow manual update.
         if (this.gear.apparatus.chronoLens.isPlaying$.value) {
             this.gear.apparatus.chronoLens.isPlaying$.next(false);
         }
@@ -76,11 +88,9 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
                 this.gear.data$.value.geojson,
                 this.gear.routeTimes$.value.startTimeEpoch,
                 value,
-                this.gear.animatrix.controls$.value.bearingLineLengthInMeters
             );
             updateLayer?.(line, currentPoint);
         }
-        // Resume playing animations
         if (this.gear.apparatus.chronoLens.isPlaying$.value) {
             setTimeout(() => this.gear.apparatus.chronoLens.isPlaying$.next(true), 0);
         }
@@ -88,6 +98,7 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
 
     private animation: number | undefined;
     private displayImageTimeout: Timer | undefined;
+    private endOfRouteTimeout: Timer | undefined;
 
     public animateRoute = (
         loadedImages: LoadedImageData<TImageData>[],
@@ -95,65 +106,86 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
         onUpdateMapCamera: (position: GeoJSON.Position, bearing: number) => void,
     ) => {
         const isPlaying = this.gear.apparatus.chronoLens.isPlaying$.value;
-        const progressMs = this.gear.progressMs$.value;
         const geojson = this.gear.data$.value.geojson;
         const routeTimes = this.gear.routeTimes$.value;
 
         if (!isPlaying || !geojson || !routeTimes) {
             return;
         }
+        const splineData = this.gear.splineData$.value;
+        if (!splineData) {
+            return;
+        }
 
         const { startTimeEpoch, endTimeEpoch } = routeTimes;
+        const routeDuration = routeTimes.duration;
         const sortedImageFeatures = [...loadedImages].sort((a, b) => a.featureId - b.featureId);
+        const nextImageTimes = sortedImageFeatures.map((imageFeature) => {
+            const f = geojson.features.find((feature) => feature.properties.id === imageFeature.featureId);
+            return f ? new Date(f.properties.time).valueOf() : null;
+        });
         let last = performance.now();
         let currentProgressMs = this.gear.progressMs$.value;
-        let nextImageIndex = sortedImageFeatures.findIndex((imageFeature): boolean => {
-            const f = geojson.features.find((feature) => feature.properties.id === imageFeature.featureId);
-            return !!f && new Date(f.properties.time).valueOf() >= new Date(startTimeEpoch + progressMs).valueOf();
-        });
+        let nextImageIndex = nextImageTimes.findIndex((time) => time !== null && time >= startTimeEpoch + currentProgressMs);
 
         const animate = () => {
             const {
-                speedMultiplier,
-                bearingLineLengthInMeters,
+                routePlaybackDuration,
                 displayImageDuration,
                 followCurrentPoint,
                 cameraAngle,
+                easeDuration,
                 autoRotate,
-                maxBearingDiffPerFrame,
             } = this.gear.animatrix.controls$.value;
 
             const now = performance.now();
             const dt = now - last;
             last = now;
-            currentProgressMs += dt + speedMultiplier;
+            currentProgressMs += dt * (routeDuration / routePlaybackDuration);
             if (startTimeEpoch + currentProgressMs >= endTimeEpoch) {
-                currentProgressMs = 0;
-                nextImageIndex = 0;
+                this.handleRouteEnd();
+                
+                return;
             }
             const nextImage: LoadedImageData<TImageData> | undefined = sortedImageFeatures[nextImageIndex];
-            const { currentPoint, line, currentPointBearing } = getRouteSourceData(this.gear.state$.value, geojson, startTimeEpoch, currentProgressMs, bearingLineLengthInMeters, nextImage?.featureId);
+            const nextImageTime = nextImageIndex >= 0 ? nextImageTimes[nextImageIndex] : null;
+            const { currentPoint, line, splitIndex, fraction } = getRouteSourceData(this.gear.state$.value, geojson, startTimeEpoch, currentProgressMs);
             onUpdateLayer(currentPoint, line);
 
-            if (this.animation !== undefined && nextImage && nextImage.featureId <= Number(currentPoint.id)) {
-                this.gear.animatrix.displayImageId$.next(nextImage.id);
+            if (this.animation !== undefined && nextImage && nextImageTime !== null && nextImageTime <= startTimeEpoch + currentProgressMs) {
                 nextImageIndex = nextImageIndex + 1;
                 cancelAnimationFrame(this.animation);
-                this.displayImageTimeout = setTimeout(() => {
-                    this.gear.animatrix.displayImageId$.next(null);
-                    this.animation = requestAnimationFrame(animate);
-                }, displayImageDuration);
+
+                let settleDelay = 0;
+                if (followCurrentPoint) {
+                    const lngLat: GeoJSON.Position = [currentPoint.geometry.coordinates[0], currentPoint.geometry.coordinates[1]];
+                    const currentPointHeading = autoRotate ? getSplineHeading(splineData, splitIndex, fraction) : 0;
+                    onUpdateMapCamera(lngLat, cameraAngle + currentPointHeading);
+                    settleDelay = easeDuration;
+                }
+
+                const showImage = () => {
+                    this.gear.animatrix.displayImageId$.next(nextImage.id);
+                    this.displayImageTimeout = setTimeout(() => {
+                        last = performance.now();
+                        this.gear.animatrix.displayImageId$.next(null);
+                        this.animation = requestAnimationFrame(animate);
+                    }, displayImageDuration);
+                };
+
+                if (settleDelay > 0) {
+                    this.displayImageTimeout = setTimeout(showImage, settleDelay);
+                } else {
+                    showImage();
+                }
 
                 return;
             }
 
             if (followCurrentPoint) {
                 const lngLat: GeoJSON.Position = [currentPoint.geometry.coordinates[0], currentPoint.geometry.coordinates[1]];
-                const currentBearing = this.gear.apparatus.cartomancer.bearing$.value; const nextBearing = (cameraAngle + (autoRotate ? currentPointBearing : 0));
-                const bearingDiff = ((nextBearing - currentBearing + 540) % 360) - 180;
-                const bearing = currentBearing + Math.max(-maxBearingDiffPerFrame, Math.min(maxBearingDiffPerFrame, bearingDiff));
-
-                onUpdateMapCamera(lngLat, bearing);
+                const currentPointHeading = autoRotate ? getSplineHeading(splineData, splitIndex, fraction) : 0;
+                onUpdateMapCamera(lngLat, cameraAngle + currentPointHeading);
             }
 
             // TODO: Calculate % of geometry done based on current progressMs and update paint property line gradient instead of all data.
@@ -166,11 +198,32 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
 
     public cleanupAnimateRoute = () => {
         clearTimeout(this.displayImageTimeout);
+        clearTimeout(this.endOfRouteTimeout);
         this.gear.animatrix.displayImageId$.next(null);
 
         if (this.animation !== undefined) {
             cancelAnimationFrame(this.animation);
         }
+    };
+
+    private handleRouteEnd = () => {
+        if (this.animation !== undefined) {
+            cancelAnimationFrame(this.animation);
+            this.animation = undefined;
+        }
+        this.gear.animatrix.displayImageId$.next(null);
+
+        if (this.gear.animatrix.controls$.value.panToWholeRouteAtEnd) {
+            const map = this.gear.apparatus.cartomancer.map;
+            if (map) {
+                this.gear.fitBoundsHandler(map, this.gear.data$.value.boundingBox);
+            }
+        }
+
+        const { displayImageDuration } = this.gear.animatrix.controls$.value;
+        this.endOfRouteTimeout = setTimeout(() => {
+            this.onStop();
+        }, displayImageDuration);
     };
 
     private easeInOut(t: number) {
