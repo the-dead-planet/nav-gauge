@@ -2,6 +2,8 @@ export const CLOCK_INPUT_RANGE: [number, number] = [0, 360];
 export const TICK_COUNT = 60;
 export const STEP_DEG = 360 / TICK_COUNT;
 export const MAJOR_TICK_INTERVAL = 5;
+export const SECONDS_PER_MINUTE = 60;
+export const SECONDS_PER_TICK = STEP_DEG;
 
 export function snap(v: number, min: number, max: number, step: number): number {
     const stepped = Math.round((v - min) / step) * step + min;
@@ -12,19 +14,23 @@ export function snap(v: number, min: number, max: number, step: number): number 
 
 function circularDistance(a: number, b: number): number {
     const diff = Math.abs(a - b);
+
     return Math.min(diff, 360 - diff);
 }
 
 export function snapSlice(v: number, min: number, max: number, step: number): number {
     if (max - min >= 360) {
         const stepped = Math.round((v - min) / step) * step + min;
+
         return ((stepped % 360) + 360) % 360;
     }
+
     v = ((v % 360) + 360) % 360;
     if (v >= min && v <= max) {
         const stepped = Math.round((v - min) / step) * step + min;
         return Math.min(max, Math.max(min, stepped));
     }
+
     return circularDistance(v, min) <= circularDistance(v, max) ? min : max;
 }
 
@@ -117,3 +123,28 @@ export function describeArc(
     const largeArc = diff > 180 ? 1 : 0;
     return `M ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2}`;
 }
+
+export interface DurationParts {
+    minutes: number;
+    seconds: number;
+}
+
+export const millisecondsToDurationParts = (milliseconds: number): DurationParts => {
+    const totalSeconds = Math.round(milliseconds / 1000);
+    return {
+        minutes: Math.floor(totalSeconds / SECONDS_PER_MINUTE),
+        seconds: totalSeconds % SECONDS_PER_MINUTE,
+    };
+};
+
+export const durationPartsToMilliseconds = (parts: DurationParts): number => {
+    return (parts.minutes * SECONDS_PER_MINUTE + parts.seconds) * 1000;
+};
+
+export const ticksToClockDegrees = (ticks: number): number => {
+    return (ticks * SECONDS_PER_TICK) % CLOCK_INPUT_RANGE[1];
+};
+
+export const clockDegreesToTicks = (degrees: number): number => {
+    return Math.round(degrees / SECONDS_PER_TICK) % TICK_COUNT;
+};

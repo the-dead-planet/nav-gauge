@@ -21,3 +21,21 @@ export interface ClockInputProps {
     id?: string;
     label?: string;
 }
+
+export interface DurationClockInputProps {
+    color?: ColorVariant;
+    highlightColor?: ColorVariant;
+    size?: SizeVariant;
+    variant?: SurfaceFillVariant;
+    /**
+     * Total duration in milliseconds.
+     */
+    value: number;
+    /**
+     * Minimum total duration in milliseconds.
+     */
+    min?: number;
+    onChange?: (milliseconds: number) => void;
+    disabled?: boolean;
+    id?: string;
+}

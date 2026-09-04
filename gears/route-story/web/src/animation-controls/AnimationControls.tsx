@@ -4,11 +4,26 @@ import classNames from "classnames";
 import { ToolPanelProps, useMultipleTranslations } from "@apparatus";
 import { useWebMachineWard } from "@web-apparatus";
 import { clamp, useSubjectState } from "@tinker-chest";
-import { ClockInput, Checkbox, Fieldset, ClockSliceInput, IconRotateInput, Slider, ToggleSwitch, Label, Span } from "@web-ui";
+import { ClockInput, Checkbox, Fieldset, ClockSliceInput, DurationClockInput, IconRotateInput, Slider, ToggleSwitch, Label, Span, Icon } from "@web-ui";
 import { AnimationControlsType, Animatrix } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { Icons } from "@ui";
+import { Icons, millisecondsToDurationParts } from "@ui";
 import { WebRouteStoryProps } from "../model";
 import styles from './animation-controls.module.css';
+
+const pad2 = (value: number): string => String(value).padStart(2, '0');
+
+const formatDuration = (milliseconds: number): string => {
+    const { minutes, seconds } = millisecondsToDurationParts(milliseconds);
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    if (hours > 0) {
+        return `${pad2(hours)}:${pad2(remainingMinutes)}:${pad2(seconds)}`;
+    }
+    if (remainingMinutes > 0) {
+        return `${pad2(remainingMinutes)}:${pad2(seconds)}`;
+    }
+    return String(seconds);
+};
 
 export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStoryProps> = ({
     map,
@@ -105,23 +120,29 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                     <Label htmlFor="animation-controls-route-animation-duration" align="right">
                         {routePlaybackDurationLabel}
                     </Label>
-                    <Slider
+                    <DurationClockInput
                         id="animation-controls-route-animation-duration"
                         value={routePlaybackDuration}
                         min={Animatrix.routePlaybackDurationRange[0]}
-                        max={Animatrix.routePlaybackDurationRange[1]}
-                        step={1000}
                         onChange={(value) => setAnimationControls((prev) => ({
-                            ...prev, routePlaybackDuration: clamp(value, Animatrix.routePlaybackDurationRange)
+                            ...prev, routePlaybackDuration: value
                         }))}
-                        size="xs"
                     />
-                    <Span tabular>{Math.round(routePlaybackDuration / 1000)}s</Span>
+                    <Span tabular>
+                        {String(millisecondsToDurationParts(routePlaybackDuration).minutes).padStart(2, '0')}
+                        :
+                        {String(millisecondsToDurationParts(routePlaybackDuration).seconds).padStart(2, '0')}
+                    </Span>
                     <Label htmlFor="animation-controls-total-recording-duration" align="right">
                         {totalRecordingDurationLabel}
                     </Label>
-                    <span />
-                    <Span tabular>≈ {Math.round(totalRecordingDuration / 1000)}s</Span>
+                    <div className={styles['recording-formula']}>
+                        <Span tabular>{formatDuration(routePlaybackDuration)}</Span>
+                        <span className={styles['recording-formula-operator']}>+</span>
+                        <Icon src={Icons.NounProject.ImageMarker} width={13} height={13} />
+                        <Span tabular>{`${displayedImageCount} × ${formatDuration(displayImageDuration)}`}</Span>
+                        <span className={styles['recording-formula-equals']}>= {formatDuration(totalRecordingDuration)}</span>
+                    </div>
                 </Fieldset>
             )}
             {showFollowCurrentPoint && (

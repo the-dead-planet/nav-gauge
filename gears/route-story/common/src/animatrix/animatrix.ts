@@ -30,7 +30,7 @@ export class Animatrix {
     public static cameraTiltRange: [number, number] = [0, 85];
     public static cameraAngleRange: [number, number] = [CLOCK_INPUT_RANGE[0], CLOCK_INPUT_RANGE[1]];
     public static cameraRollRange: [number, number] = [CLOCK_INPUT_RANGE[0], CLOCK_INPUT_RANGE[1]];
-    public static routePlaybackDurationRange: [number, number] = [1000, 120000];
+    public static routePlaybackDurationRange: [number, number] = [1000, Number.POSITIVE_INFINITY];
     public static easeDurationRange: [number, number] = [0, 1000];
 
     private controlsStorageId = 'animatrix:controls';

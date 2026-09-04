@@ -1,9 +1,7 @@
 import { FC, ReactNode, useMemo, useRef, useState } from "react";
 import {
-    LayoutChangeEvent,
     PanResponder,
     View,
-    type ViewInstance,
 } from "react-native";
 import Svg, { G } from "react-native-svg";
 import { snapSlice, svgAtan2ToClockAngle, ColorVariant, SurfaceFillVariant } from "@ui";
@@ -60,9 +58,6 @@ export const ClockSvg: FC<Props> = ({
     value,
 }) => {
     const [isDragging, setIsDragging] = useState(false);
-    const svgPageCenterRef = useRef({ x: 0, y: 0 });
-    const svgRef = useRef<ViewInstance>(null);
-    const svgLayoutRef = useRef({ x: 0, y: 0, width: 0, height: 0 });
 
     const valueRef = useRef(value);
     valueRef.current = value;
@@ -71,22 +66,12 @@ export const ClockSvg: FC<Props> = ({
     const disabledRef = useRef(disabled);
     disabledRef.current = disabled;
 
-    const handleLayout = (e: LayoutChangeEvent) => {
-        const { x, y, width, height } = e.nativeEvent.layout;
-        svgLayoutRef.current = { x, y, width, height };
-        svgPageCenterRef.current = {
-            x: x + width / 2,
-            y: y + height / 2,
-        };
-    };
-
-    const handleInteraction = (pageX: number, pageY: number) => {
+    const handleInteraction = (locationX: number, locationY: number) => {
         if (disabledRef.current) {
             return;
         }
-        const { x: cx, y: cy } = svgPageCenterRef.current;
-        const dx = pageX - cx;
-        const dy = pageY - cy;
+        const dx = locationX - center;
+        const dy = locationY - center;
         const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < 4) {
             return;
@@ -110,13 +95,13 @@ export const ClockSvg: FC<Props> = ({
                 return;
             }
             setIsDragging(true);
-            contextRef.current.handleInteraction(evt.nativeEvent.pageX, evt.nativeEvent.pageY);
+            contextRef.current.handleInteraction(evt.nativeEvent.locationX, evt.nativeEvent.locationY);
         },
         onPanResponderMove: (evt) => {
             if (disabledRef.current) {
                 return;
             }
-            contextRef.current.handleInteraction(evt.nativeEvent.pageX, evt.nativeEvent.pageY);
+            contextRef.current.handleInteraction(evt.nativeEvent.locationX, evt.nativeEvent.locationY);
         },
         onPanResponderRelease: () => {
             setIsDragging(false);
@@ -128,8 +113,6 @@ export const ClockSvg: FC<Props> = ({
 
     return (
         <View
-            ref={svgRef}
-            onLayout={handleLayout}
             collapsable={false}
             {...panResponder.panHandlers}
         >
