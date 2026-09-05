@@ -4,6 +4,7 @@ import * as maplibregl from "maplibre-gl";
 import { OverlayComponentProps, useMultipleTranslations } from "@apparatus";
 import { getDefaultRouteStoryState, CurrentPointStyle, LayerStylingPopupProps, RouteStoryLineStyle, RouteStoryState, RouteStoryTranslationKey } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { getIconAnchorPoint, getMenuPosition, MenuPosition, useTheme } from "@ui";
+import { Popup } from "@web-ui";
 import { Button } from "@web-ui";
 import { useSubjectState } from "@tinker-chest";
 import { WebRouteStoryProps } from "../model";
@@ -123,20 +124,6 @@ export const LayerStylingOverlay: FC<OverlayComponentProps<maplibregl.Map> & Lay
 
     const toggleCurrentPointMenu = (x: number, y: number) => setCurrentPointMenuAnchor((previous) => (previous ? null : { x, y }));
 
-    useEffect(() => {
-        if (!currentPointMenuAnchor) {
-            return;
-        }
-        const onKeyDown = (event: KeyboardEvent) => {
-            if (event.key === 'Escape') {
-                setCurrentPointMenuAnchor(null);
-            }
-        };
-        window.addEventListener('keydown', onKeyDown);
-
-        return () => window.removeEventListener('keydown', onKeyDown);
-    }, [currentPointMenuAnchor]);
-
     const anchorRect = anchorRef?.current?.getBoundingClientRect();
     const menuPosition = useMemo<MenuPosition>(() => {
         if (!anchorRect || !active) {
@@ -160,16 +147,6 @@ export const LayerStylingOverlay: FC<OverlayComponentProps<maplibregl.Map> & Lay
     if (menuPosition.bottom !== undefined) positionStyle.bottom = menuPosition.bottom;
     if (menuPosition.right !== undefined) positionStyle.right = menuPosition.right;
 
-    let currentPointMenuPositionStyle: { top?: number; left?: number; bottom?: number; right?: number } = {};
-    if (currentPointMenuAnchor) {
-        const point = getIconAnchorPoint('top-right', currentPointMenuAnchor.x, currentPointMenuAnchor.y, 0, 0);
-        const position = getMenuPosition('top-left', point, window.innerWidth, window.innerHeight);
-        if (position.top !== undefined) currentPointMenuPositionStyle.top = position.top;
-        if (position.left !== undefined) currentPointMenuPositionStyle.left = position.left;
-        if (position.bottom !== undefined) currentPointMenuPositionStyle.bottom = position.bottom;
-        if (position.right !== undefined) currentPointMenuPositionStyle.right = position.right;
-    }
-
     return (
         <>
             {createPortal(
@@ -183,41 +160,36 @@ export const LayerStylingOverlay: FC<OverlayComponentProps<maplibregl.Map> & Lay
                     role="dialog"
                     aria-label={dialogLabel}
                 >
-                    <LineStyleDemo state={state} onCurrentPointClick={toggleCurrentPointMenu} currentPointMenuLabel={currentPointLabel} />
-                    <div className={styles['style-row']}>
-                        <LineStyleGroup label={activeLabel} style={state.routeStyleActive}
-                            linesLabel={linesLabel} pointsLabel={pointsLabel}
-                            colorLabel={colorLabel} widthLabel={widthLabel} outlineColorLabel={outlineColorLabel} outlineWidthLabel={outlineWidthLabel}
-                            lineStyleLabel={lineStyleLabel} lineLabel={lineLabel} outlineLabel={outlineLabel} solidLabel={solidLabel} dashedLabel={dashedLabel}
-                            onChange={setActiveLine}
-                        />
-                        <LineStyleGroup label={inactiveLabel} style={state.routeStyleInactive}
-                            linesLabel={linesLabel} pointsLabel={pointsLabel}
-                            colorLabel={colorLabel} widthLabel={widthLabel} outlineColorLabel={outlineColorLabel} outlineWidthLabel={outlineWidthLabel}
-                            lineStyleLabel={lineStyleLabel} lineLabel={lineLabel} outlineLabel={outlineLabel} solidLabel={solidLabel} dashedLabel={dashedLabel}
-                            onChange={setInactiveLine}
-                        />
-                    </div>
-                    <div className={styles['footer']}>
-                        {isDirty && (
-                            <Button size="xs" onClick={() => setState(defaults)}>
-                                {restoreDefaultsLabel}
-                            </Button>
-                        )}
-                        <Button size="xs" onClick={onClose}>
-                            {closeLabel}
-                        </Button>
-                    </div>
-                </div>,
-                document.body,
-            )}
-            {currentPointMenuAnchor && createPortal(
-                <>
-                    <div className={styles['menu-backdrop']} onClick={() => setCurrentPointMenuAnchor(null)} />
+            <LineStyleDemo state={state} onCurrentPointClick={toggleCurrentPointMenu} currentPointMenuLabel={currentPointLabel} />
+            <div className={styles['style-row']}>
+                <LineStyleGroup label={activeLabel} style={state.routeStyleActive}
+                    linesLabel={linesLabel} pointsLabel={pointsLabel}
+                    colorLabel={colorLabel} widthLabel={widthLabel} outlineColorLabel={outlineColorLabel} outlineWidthLabel={outlineWidthLabel}
+                    lineStyleLabel={lineStyleLabel} lineLabel={lineLabel} outlineLabel={outlineLabel} solidLabel={solidLabel} dashedLabel={dashedLabel}
+                    onChange={setActiveLine}
+                />
+                <LineStyleGroup label={inactiveLabel} style={state.routeStyleInactive}
+                    linesLabel={linesLabel} pointsLabel={pointsLabel}
+                    colorLabel={colorLabel} widthLabel={widthLabel} outlineColorLabel={outlineColorLabel} outlineWidthLabel={outlineWidthLabel}
+                    lineStyleLabel={lineStyleLabel} lineLabel={lineLabel} outlineLabel={outlineLabel} solidLabel={solidLabel} dashedLabel={dashedLabel}
+                    onChange={setInactiveLine}
+                />
+            </div>
+            <div className={styles['footer']}>
+                {isDirty && (
+                    <Button size="xs" onClick={() => setState(defaults)}>
+                        {restoreDefaultsLabel}
+                    </Button>
+                )}
+                <Button size="xs" onClick={onClose}>
+                    {closeLabel}
+                </Button>
+            </div>
+            {currentPointMenuAnchor && (
+                <Popup visible onClose={() => setCurrentPointMenuAnchor(null)} position={currentPointMenuAnchor} placement="top-right" overlayClassName={styles['current-point-menu']}>
                     <div
-                        className={`${styles['popup']} ${styles['current-point-menu']}`}
+                        className={styles['popup']}
                         style={{
-                            ...currentPointMenuPositionStyle,
                             backgroundColor: theme.color('neutral', theme.isDark ? 800 : 200),
                             borderColor: theme.color('neutral', theme.isDark ? 500 : 400),
                         }}
@@ -229,7 +201,9 @@ export const LayerStylingOverlay: FC<OverlayComponentProps<maplibregl.Map> & Lay
                             {closeLabel}
                         </Button>
                     </div>
-                </>,
+                </Popup>
+            )}
+                </div>,
                 document.body,
             )}
         </>

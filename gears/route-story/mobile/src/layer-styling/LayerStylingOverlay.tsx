@@ -2,7 +2,7 @@ import { FC, useMemo, useState } from "react";
 import { Dimensions, Modal, Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { OverlayComponentProps, useMultipleTranslations } from "@apparatus";
 import { getIconAnchorPoint, getMenuPosition, MenuPosition, useTheme } from "@ui";
-import { getDefaultRouteStoryState, CurrentPointStyle, LayerStylingPopupProps, RouteStoryLineStyle, RouteStoryState, RouteStoryTranslationKey } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { getDefaultRouteStoryState, CurrentPointStyle, LayerStylingPopupProps, RouteStoryLineStyle, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { useSubjectState } from "@tinker-chest";
 import { MobileMap } from "@mobile-apparatus";
 import { MobileRouteStoryProps } from "../model";
@@ -95,10 +95,6 @@ export const LayerStylingOverlay: FC<OverlayComponentProps<MobileMap> & LayerSty
         inactiveLabel,
         linesLabel,
         pointsLabel,
-        colorLabel,
-        widthLabel,
-        outlineColorLabel,
-        outlineWidthLabel,
         lineStyleLabel,
         solidLabel,
         dashedLabel,
@@ -112,10 +108,6 @@ export const LayerStylingOverlay: FC<OverlayComponentProps<MobileMap> & LayerSty
         { n: gearId, t: translationKey.Inactive },
         { n: gearId, t: translationKey.Lines },
         { n: gearId, t: translationKey.Points },
-        { n: gearId, t: translationKey.Color },
-        { n: gearId, t: translationKey.Width },
-        { n: gearId, t: translationKey.OutlineColor },
-        { n: gearId, t: translationKey.OutlineWidth },
         { n: gearId, t: translationKey.LineStyle },
         { n: gearId, t: translationKey.Solid },
         { n: gearId, t: translationKey.Dashed },

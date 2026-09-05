@@ -1,5 +1,5 @@
 import type * as maplibregl from "maplibre-gl";
-import { FC, useRef } from "react";
+import { FC } from "react";
 import { ObservedToolIcon, useTranslation } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { useTheme } from "@ui";

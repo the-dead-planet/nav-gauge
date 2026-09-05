@@ -1,5 +1,4 @@
-import { ComponentType, FC, useRef } from "react";
-import { type ViewInstance } from "react-native";
+import { ComponentType, FC } from "react";
 import { ObservedToolIcon, useTranslation } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { useTheme } from "@ui";

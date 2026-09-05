@@ -1,5 +1,4 @@
-import { FC, useRef } from "react";
-import { type ViewInstance } from "react-native";
+import { FC } from "react";
 import { ObservedToolIcon, useTranslation } from "@apparatus";
 import { useMobileMachineWard } from "@mobile-apparatus";
 import { useSubjectState } from "@tinker-chest";

@@ -18,15 +18,11 @@
     font-size: var(--font-size, 12px);
 }
 
-.backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 1099;
+.color-popup {
+    z-index: 1100;
 }
 
-.popup {
-    position: fixed;
-    z-index: 1100;
+.color-popup > div {
     min-width: 180px;
     max-width: 260px;
     padding: 8px;
