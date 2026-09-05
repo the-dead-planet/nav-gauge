@@ -15,6 +15,7 @@ interface Props {
 export const ToolIconLeft: FC<ObservedToolIcon<MobileMap> & Props> = ({
     map,
     icon,
+    anchorRef$,
     value$,
     disabled$,
     active$,
@@ -23,7 +24,6 @@ export const ToolIconLeft: FC<ObservedToolIcon<MobileMap> & Props> = ({
 }) => {
     const { translatron, individuator } = useMobileMachineWard();
     const theme = useTheme();
-    const anchorRef = useRef<ViewInstance>(null);
     const [value] = useSubjectState(value$);
     const [disabled] = useSubjectState(disabled$);
     const [active] = useSubjectState(active$);
@@ -37,7 +37,9 @@ export const ToolIconLeft: FC<ObservedToolIcon<MobileMap> & Props> = ({
 
     return (
         <Button
-            forwardRef={anchorRef}
+            forwardRef={(r) => {
+                anchorRef$.next({ current: r });
+            }}
             accessibilityLabel={ariaLabel}
             icon={icon as never}
             tooltip={resolvedTooltip}
@@ -49,7 +51,7 @@ export const ToolIconLeft: FC<ObservedToolIcon<MobileMap> & Props> = ({
             glowStyle={theme.isDark ? "animate-borders-glow" : 'none'}
             highlightColor="secondary"
             active={active}
-            onPress={() => onClick?.(map, anchorRef)}
+            onPress={() => onClick?.(map)}
             disabled={disabled}
         />
     );

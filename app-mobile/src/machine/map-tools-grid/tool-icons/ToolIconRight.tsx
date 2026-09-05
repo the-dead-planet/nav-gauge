@@ -15,6 +15,7 @@ interface Props {
 export const ToolIconRight: FC<ObservedToolIcon<MobileMap> & Props> = ({
     map,
     icon,
+    anchorRef$,
     value$,
     disabled$,
     active$,
@@ -24,7 +25,6 @@ export const ToolIconRight: FC<ObservedToolIcon<MobileMap> & Props> = ({
     onClick,
 }) => {
     const theme = useTheme();
-    const anchorRef = useRef<ViewInstance>(null);
     const [value] = useSubjectState(value$);
     const [disabled] = useSubjectState(disabled$);
     const [active] = useSubjectState(active$);
@@ -35,7 +35,9 @@ export const ToolIconRight: FC<ObservedToolIcon<MobileMap> & Props> = ({
 
     return (
         <Button
-            forwardRef={anchorRef}
+            forwardRef={(r) => {
+                anchorRef$.next({ current: r });
+            }}
             accessibilityLabel={ariaLabel}
             icon={icon as unknown as ComponentType<SvgProps>}
             iconRotateX={pitch}
@@ -49,7 +51,7 @@ export const ToolIconRight: FC<ObservedToolIcon<MobileMap> & Props> = ({
             glowStyle={theme.isDark ? "animate-borders-glow" : 'none'}
             color="primary"
             active={active}
-            onPress={() => onClick?.(map, anchorRef)}
+            onPress={() => onClick?.(map)}
             disabled={disabled}
         >
             {value}

@@ -212,13 +212,14 @@ export class ToolsStation<TMap> {
             active?: boolean;
             rotate?: number;
             pitch?: number;
-            onClick?: (map: TMap, ref: ToolIconAnchorRef) => void;
+            onClick?: (map: TMap) => void;
         },
     ): ToolIcon<TMap> => {
         const nextToolIcons = new Map(this.toolIcons$.value);
         const toolIcon: ToolIcon<TMap> = {
             tooltip,
             icon,
+            anchorRef$: new BehaviorSubject<ToolIconAnchorRef>({ current: null }),
             value$: new BehaviorSubject(value),
             placement$: new BehaviorSubject(placement),
             disabled$: new BehaviorSubject(disabled),

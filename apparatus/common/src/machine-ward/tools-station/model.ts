@@ -28,12 +28,13 @@ export interface ObservedToolPanel<TMap> {
 }
 
 export interface ToolIcon<TMap> {
+    anchorRef$: BehaviorSubject<ToolIconAnchorRef>;
     icon?: string;
     value$: BehaviorSubject<string | null>;
     placement$: BehaviorSubject<ToolIconPlacement>;
     disabled$: BehaviorSubject<boolean>;
     tooltip: TranslationId | ((value: string | null) => TranslationId);
-    onClick?: (map: TMap, ref: ToolIconAnchorRef) => void;
+    onClick?: (map: TMap) => void;
     active$: BehaviorSubject<boolean>;
     rotate$: BehaviorSubject<number>;
     pitch$: BehaviorSubject<number>;
@@ -41,6 +42,7 @@ export interface ToolIcon<TMap> {
 
 export interface ObservedToolIcon<TMap> {
     id: string;
+    anchorRef$: BehaviorSubject<ToolIconAnchorRef>;
     icon?: string;
     tooltip: TranslationId | ((value: string | null) => TranslationId);
     placement: ToolIconPlacement;
@@ -49,7 +51,7 @@ export interface ObservedToolIcon<TMap> {
     active$: BehaviorSubject<boolean>;
     rotate$: BehaviorSubject<number>;
     pitch$: BehaviorSubject<number>;
-    onClick?: (map: TMap, ref: ToolIconAnchorRef) => void;
+    onClick?: (map: TMap) => void;
 }
 
 export interface TopToolsProps<TMap> {
@@ -69,7 +71,16 @@ export interface ToolbarSizeRef {
  * without platform casts.
  */
 export interface ToolIconAnchor {
-    getBoundingClientRect(): DOMRect;
+    getBoundingClientRect(): {
+        height: number;
+        width: number;
+        left: number;
+        right: number;
+        top: number;
+        bottom: number;
+        x: number;
+        y: number;
+    };
 }
 
 export type ToolIconAnchorRef = RefObject<ToolIconAnchor | null>;
