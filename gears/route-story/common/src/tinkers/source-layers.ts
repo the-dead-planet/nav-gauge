@@ -10,7 +10,7 @@ import { emptyCollection, FeatureProperties, GeoJson } from "@tinker-chest";
 import { RouteStoryState, RouteTimes } from "../model";
 
 export const getRouteSourceData = (
-    { showRouteLine, showRoutePoints }: RouteStoryState,
+    { routeStyleActive, routeStyleInactive }: RouteStoryState,
     geojson: GeoJson,
     startTimeEpoch: number,
     progressMs: number,
@@ -21,13 +21,16 @@ export const getRouteSourceData = (
     );
     const { currentPoint, fraction } = getCurrentPoint(geojson, splitIndex, currentTime);
 
+    const anyVisible =
+        routeStyleActive.showRouteLine || routeStyleActive.showRoutePoints ||
+        routeStyleInactive.showRouteLine || routeStyleInactive.showRoutePoints;
+
     return {
         splitIndex,
         fraction,
         currentPoint,
-        line: !showRouteLine && !showRoutePoints
-            ? emptyCollection
-            : {
+        line: anyVisible
+            ? {
                 ...geojson,
                 features: [
                     {
@@ -51,7 +54,8 @@ export const getRouteSourceData = (
                         }
                     },
                 ].filter((feature) => feature.geometry.coordinates.length > 1) as GeoJSON.Feature<GeoJSON.LineString>[]
-            },
+            }
+            : emptyCollection,
     };
 };
 

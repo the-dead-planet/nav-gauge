@@ -26,7 +26,7 @@ export const ColorPicker: FC<ColorPickerProps> = ({ label, value, onChange }) =>
     return (
         <div className={styles.container}>
             <div className={styles['header']}>
-                <span className={styles['label']}>{label}</span>
+                {label ? <span className={styles['label']}>{label}</span> : null}
                 <span className={styles['value']}>{value}</span>
                 <span
                     className={styles['preview']}
@@ -57,7 +57,7 @@ export const ColorPicker: FC<ColorPickerProps> = ({ label, value, onChange }) =>
                     className={styles['native-picker']}
                     value={toHexColor(parsed)}
                     onChange={(event) => handleNativePick(event.target.value)}
-                    aria-label={`${label} color ramp`}
+                    aria-label={label ? `${label} color ramp` : 'Color ramp'}
                 />
                 <Slider
                     min={0}
@@ -65,7 +65,7 @@ export const ColorPicker: FC<ColorPickerProps> = ({ label, value, onChange }) =>
                     step={0.05}
                     value={parsed.a}
                     onChange={handleAlpha}
-                    aria-label={`${label} opacity`}
+                    aria-label={label ? `${label} opacity` : 'Opacity'}
                 />
             </div>
         </div>

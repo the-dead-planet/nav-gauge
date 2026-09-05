@@ -22,6 +22,7 @@ const en: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['en'] 
     "points": 'Points',
     "line": 'Line',
     "outline": 'Outline',
+    "line-style": 'Line style',
     "current-point": 'Current point',
     "active": 'Active',
     "inactive": 'Inactive',

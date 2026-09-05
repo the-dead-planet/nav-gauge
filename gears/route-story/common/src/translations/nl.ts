@@ -22,6 +22,7 @@ const nl: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['nl'] 
     "points": 'Punten',
     "line": 'Lijn',
     "outline": 'Omtrek',
+    "line-style": 'Lijnstijl',
     "current-point": 'Huidig punt',
     "active": 'Actief',
     "inactive": 'Inactief',

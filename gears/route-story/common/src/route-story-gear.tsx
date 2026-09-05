@@ -1,8 +1,21 @@
 import { ComponentType, FC } from "react";
 import { BehaviorSubject, combineLatest, Subscription } from "rxjs";
-import { ToolPanelProps, MarkerImage, OverlayComponentProps, Gear, TranslationTable, GearTranslationKey, Cartomancer, MapLayout, GaugeControlsType, GearApparatus, TopToolsProps, ChronoLens } from "@apparatus";
+import {
+    ToolPanelProps,
+    MarkerImage,
+    OverlayComponentProps,
+    Gear,
+    TranslationTable,
+    GearTranslationKey,
+    Cartomancer,
+    MapLayout,
+    GaugeControlsType,
+    GearApparatus,
+    TopToolsProps,
+    ChronoLens,
+} from "@apparatus";
 import { GeoJson, ParsingResultWithError } from "@tinker-chest";
-import { RouteStoryProps, RouteTimes, RouteStoryFile, RouteStoryTranslationKey, RouteStoryState, PresetOption, Preset } from "./model";
+import { RouteStoryProps, RouteTimes, RouteStoryFile, RouteStoryTranslationKey, RouteStoryState, PresetOption, Preset, LayerStylingPopupProps } from "./model";
 import { FileOperator } from "./file-operator";
 import { PlayerOperator } from "./player-operator";
 import { getSplineData, SplineData } from "./tinkers";
@@ -86,7 +99,8 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
     public abstract routeUploadComponent: ComponentType<TopToolsProps<TMap> & RouteStoryProps<TMap, TChronoLens, TFile, TImageData>>;
 
     private layerStylingToolIconId = 'layer-styling';
-    // public abstract layerStylingComponent: ComponentType<ToolIconPr<TMap> & RouteStoryProps<TMap, TChronoLens, TFile, TImageData>>;
+    private layerStylingOverlayId = 'layer-styling-popup';
+    public abstract layerStylingComponent: ComponentType<OverlayComponentProps<TMap> & LayerStylingPopupProps<TMap> & RouteStoryProps<TMap, TChronoLens, TFile, TImageData>>;
 
     private playerToolId = 'player';
     public abstract playerComponent: ComponentType<ToolPanelProps<TMap> & RouteStoryProps<TMap, TChronoLens, TFile, TImageData>>;
@@ -140,14 +154,26 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
         }, 1000);
         this.dataSubscription = this.subscribeToDataUpdates();
 
-        this.apparatus.toolsStation.addToolIcon(
+        const layerStylingIcon = this.apparatus.toolsStation.addToolIcon(
             this.layerStylingToolIconId,
             {
                 placement: 'left',
-                icon: Icons.NounProject.Paint,
-                tooltip: { n: this.id, t: this.internalTranslationKey.OpenLayerStylingOptions },
-                onClick: (map, anchorRef) => {
-                    console.log('layer styling');
+                icon: Icons.NounProject.Paint as unknown as string,
+                tooltip: { n: this.id, t: this.internalTranslationKey.OpenLayerAestheticOptions },
+                onClick: (_map) => {
+                    layerStylingIcon.active$.next(true);
+
+                    this.apparatus.cartomancer.addOverlay(
+                        this.layerStylingOverlayId,
+                        this.wrapProps<LayerStylingPopupProps<TMap> & RouteStoryProps<TMap, TChronoLens, TFile, TImageData>, OverlayComponentProps<TMap>>(this.layerStylingComponent, {
+                            ...this.getProps(),
+                            icon: layerStylingIcon,
+                            onClose: () => {
+                                layerStylingIcon.active$.next(false);
+                                this.apparatus.cartomancer.removeOverlay(this.layerStylingOverlayId);
+                            },
+                        })
+                    );
                 },
             }
         );
@@ -197,6 +223,7 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
         this.apparatus.toolsStation.removeToolPanel(this.playerToolId);
         this.apparatus.toolsStation.removeTopTool(this.routeNameToolId);
         this.apparatus.toolsStation.removeToolIcon(this.layerStylingToolIconId);
+        this.apparatus.cartomancer.removeOverlay(this.layerStylingOverlayId);
         this.dataSubscription?.unsubscribe();
         this.disengageRouteStory?.();
         this.presetActiveSubscription?.unsubscribe();

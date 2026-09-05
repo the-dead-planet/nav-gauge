@@ -13,16 +13,18 @@ const route: GeoJson = {
 };
 
 const state: RouteStoryState = {
-    showRouteLine: true,
-    showRoutePoints: false,
-    lineStyleActive: {
+    routeStyleActive: {
+        showRouteLine: true,
+        showRoutePoints: false,
         color: 'red',
         width: 2,
         outlineColor: 'black',
         outlineWidth: 0,
         variant: 'solid',
     },
-    lineStyleInactive: {
+    routeStyleInactive: {
+        showRouteLine: true,
+        showRoutePoints: false,
         color: 'red',
         width: 1,
         outlineColor: 'black',
@@ -32,7 +34,7 @@ const state: RouteStoryState = {
     currentPoint: {
         fillColor: 'blue',
         outlineColor: 'black',
-        size: 'md',
+        size: 5,
         shape: {
             type: 'simple',
             shape: 'circle',

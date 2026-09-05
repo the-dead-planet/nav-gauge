@@ -26,7 +26,7 @@ export const ColorPicker: FC<ColorPickerProps> = ({ label, value, onChange }) =>
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.label}>{label}</Text>
+                {label ? <Text style={styles.label}>{label}</Text> : null}
                 <Text style={styles.value}>{value}</Text>
                 <View style={[styles.preview, { backgroundColor: value, borderColor }]} />
             </View>

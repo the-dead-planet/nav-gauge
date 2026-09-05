@@ -22,6 +22,7 @@ const jp: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['jp'] 
     "points": '点',
     "line": 'ライン',
     "outline": '枠線',
+    "line-style": 'ラインスタイル',
     "current-point": '現在のポイント',
     "active": '通過済み',
     "inactive": '未通過',

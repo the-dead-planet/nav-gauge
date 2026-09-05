@@ -1,0 +1,11 @@
+.control-label {
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+.size-row {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 2px;
+}

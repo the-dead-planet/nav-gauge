@@ -109,6 +109,7 @@ export enum RouteStoryTranslationKey {
     Points = 'points',
     Line = 'line',
     Outline = 'outline',
+    LineStyle = 'line-style',
     CurrentPoint = 'current-point',
     Active = 'active',
     Inactive = 'inactive',
