@@ -81,9 +81,12 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
 
     public recTopBarToolId = 'rec';
     public abstract topBarChipComponent: ComponentType<RouteStoryProps<TMap, TChronoLens, TFile, TImageData>>;
-    
+
     private routeNameToolId = 'route-upload';
     public abstract routeUploadComponent: ComponentType<TopToolsProps<TMap> & RouteStoryProps<TMap, TChronoLens, TFile, TImageData>>;
+
+    private layerStylingToolIconId = 'layer-styling';
+    // public abstract layerStylingComponent: ComponentType<ToolIconPr<TMap> & RouteStoryProps<TMap, TChronoLens, TFile, TImageData>>;
 
     private playerToolId = 'player';
     public abstract playerComponent: ComponentType<ToolPanelProps<TMap> & RouteStoryProps<TMap, TChronoLens, TFile, TImageData>>;
@@ -137,6 +140,18 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
         }, 1000);
         this.dataSubscription = this.subscribeToDataUpdates();
 
+        this.apparatus.toolsStation.addToolIcon(
+            this.layerStylingToolIconId,
+            {
+                placement: 'left',
+                icon: Icons.NounProject.Paint,
+                tooltip: { n: this.id, t: this.internalTranslationKey.OpenLayerStylingOptions },
+                onClick: () => {
+                    console.log('layer styling');
+                },
+            }
+        );
+
         this.apparatus.toolsStation.addTopTool(
             this.routeNameToolId,
             this.wrapProps<RouteStoryProps<TMap, TChronoLens, TFile, TImageData>, TopToolsProps<TMap>>(this.routeUploadComponent, this.getProps())
@@ -181,6 +196,7 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
         this.apparatus.toolsStation.removeToolPanel(this.animatrixToolId);
         this.apparatus.toolsStation.removeToolPanel(this.playerToolId);
         this.apparatus.toolsStation.removeTopTool(this.routeNameToolId);
+        this.apparatus.toolsStation.removeToolIcon(this.layerStylingToolIconId);
         this.dataSubscription?.unsubscribe();
         this.disengageRouteStory?.();
         this.presetActiveSubscription?.unsubscribe();

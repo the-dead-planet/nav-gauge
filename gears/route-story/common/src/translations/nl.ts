@@ -18,6 +18,7 @@ const nl: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['nl'] 
     "pause-recording": 'Surveillance pauzeren',
     "resume-recording": 'Surveillance hervatten',
     "layer-configuration": 'Laagesthetiek',
+    "open-layer-styling-options": 'Open laagstijlopties',
     "lines": 'Lijnen',
     "points": 'Punten',
     "slider": 'Schuif',

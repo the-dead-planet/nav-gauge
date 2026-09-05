@@ -18,6 +18,7 @@ const en: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['en'] 
     "pause-recording": 'Pause surveilling',
     "resume-recording": 'Resume surveilling',
     "layer-configuration": 'Layer aesthetics',
+    "open-layer-styling-options": 'Open layer styling options',
     "lines": 'Lines',
     "points": 'Points',
     "slider": 'Slider',

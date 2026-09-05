@@ -18,6 +18,7 @@ const es: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['es'] 
     "pause-recording": 'Pausar vigilancia',
     "resume-recording": 'Reanudar vigilancia',
     "layer-configuration": 'Estética de capas',
+    "open-layer-styling-options": 'Abrir opciones de estilo de capas',
     "lines": 'Líneas',
     "points": 'Puntos',
     "slider": 'Deslizador',

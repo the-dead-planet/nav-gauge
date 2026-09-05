@@ -5,11 +5,9 @@ import turfDistance from "@turf/distance";
 import { point as turfPoint, lineString as turfLine } from "@turf/helpers";
 import { bezierSpline } from "@turf/bezier-spline";
 import turfLength from "@turf/length";
-import { CurrentPointData, LoadedImageData, MarkerImage } from "@apparatus";
+import { CurrentPointData, LoadedImageData } from "@apparatus";
 import { emptyCollection, FeatureProperties, GeoJson } from "@tinker-chest";
-import { RouteStoryState, RouteTimes } from "./model";
-import { BehaviorSubject } from "rxjs";
-import { formatTimeMsAsStandard } from "@ui";
+import { RouteStoryState, RouteTimes } from "../model";
 
 export const getRouteSourceData = (
     { showRouteLine, showRoutePoints }: RouteStoryState,
@@ -96,6 +94,7 @@ export interface SplineData {
     lookup: Array<{ t: number }>;
     splinePoints: GeoJSON.Position[];
 }
+
 export const getSplineData = (geojson: GeoJson): SplineData => {
     const features = geojson.features;
     const spline = bezierSpline({
@@ -167,34 +166,11 @@ export const getSplineHeading = (splineData: SplineData, splitIndex: number, fra
     );
 };
 
-/**
- * Current progress as percentage of total duration.
- * @returns Value between 0 and 100.
- */
-export const getProgressPercentage = (progressMs: number, routeTimes?: RouteTimes | null): number => {
-    if (!routeTimes) {
-        return 0;
-    }
-    return (progressMs / routeTimes.duration * 100);
-};
-
-export const formatCurrentTimestamp = (progressMs: number, progressPercentage: number): string => {
-    return `${formatTimeMsAsStandard(progressMs)} (${progressPercentage.toFixed(0)}%)`;
-};
-
 export function getIconImageId<TImageData>(
     imageData: LoadedImageData<TImageData>,
     { thumbnail }: { thumbnail?: boolean } = {}
 ): string {
     return `image-${imageData.id}${thumbnail ? '-thumbnail' : ''}`;
-}
-
-export function updateImageFeatureId<TImageData>(
-    images$: BehaviorSubject<MarkerImage<TImageData>[]>,
-    imageId: number,
-    featureId: number
-) {
-    images$.next(images$.value.map((im) => im.id === imageId ? { ...im, featureId } : im))
 }
 
 export const getPosition = (

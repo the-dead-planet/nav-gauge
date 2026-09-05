@@ -18,6 +18,7 @@ const jp: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['jp'] 
     "pause-recording": '監視を一時停止',
     "resume-recording": '監視を再開',
     "layer-configuration": 'レイヤーの美学',
+    "open-layer-styling-options": 'レイヤーのスタイル設定を開く',
     "lines": '線',
     "points": '点',
     "slider": 'スライダー',

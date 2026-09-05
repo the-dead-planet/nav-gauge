@@ -58,6 +58,7 @@ export enum RouteStoryTranslationKey {
     PauseRecording = 'pause-recording',
     ResumeRecording = 'resume-recording',
     LayerConfiguration = 'layer-configuration',
+    OpenLayerStylingOptions = 'open-layer-styling-options',
     Lines = 'lines',
     Points = 'points',
     Slider = 'slider',

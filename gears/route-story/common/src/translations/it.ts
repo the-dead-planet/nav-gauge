@@ -18,6 +18,7 @@ const it: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['it'] 
     "pause-recording": 'Mettere in pausa sorveglianza',
     "resume-recording": 'Riprendere sorveglianza',
     "layer-configuration": 'Estetica dei livelli',
+    "open-layer-styling-options": 'Apri opzioni di stile dei livelli',
     "lines": 'Linee',
     "points": 'Punti',
     "slider": 'Dispositivo di scorrimento',
