@@ -1,4 +1,5 @@
-import { FC } from "react";
+import { FC, useRef } from "react";
+import { type ViewInstance } from "react-native";
 import { ObservedToolIcon, useTranslation } from "@apparatus";
 import { useMobileMachineWard } from "@mobile-apparatus";
 import { useSubjectState } from "@tinker-chest";
@@ -22,6 +23,7 @@ export const ToolIconLeft: FC<ObservedToolIcon<MobileMap> & Props> = ({
 }) => {
     const { translatron, individuator } = useMobileMachineWard();
     const theme = useTheme();
+    const anchorRef = useRef<ViewInstance>(null);
     const [value] = useSubjectState(value$);
     const [disabled] = useSubjectState(disabled$);
     const [active] = useSubjectState(active$);
@@ -35,6 +37,7 @@ export const ToolIconLeft: FC<ObservedToolIcon<MobileMap> & Props> = ({
 
     return (
         <Button
+            forwardRef={anchorRef}
             accessibilityLabel={ariaLabel}
             icon={icon as never}
             tooltip={resolvedTooltip}
@@ -46,7 +49,7 @@ export const ToolIconLeft: FC<ObservedToolIcon<MobileMap> & Props> = ({
             glowStyle={theme.isDark ? "animate-borders-glow" : 'none'}
             highlightColor="secondary"
             active={active}
-            onPress={() => onClick?.(map)}
+            onPress={() => onClick?.(map, anchorRef)}
             disabled={disabled}
         />
     );

@@ -1,4 +1,5 @@
-import { ComponentType, FC } from "react";
+import { ComponentType, FC, useRef } from "react";
+import { type ViewInstance } from "react-native";
 import { ObservedToolIcon, useTranslation } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { useTheme } from "@ui";
@@ -23,6 +24,7 @@ export const ToolIconRight: FC<ObservedToolIcon<MobileMap> & Props> = ({
     onClick,
 }) => {
     const theme = useTheme();
+    const anchorRef = useRef<ViewInstance>(null);
     const [value] = useSubjectState(value$);
     const [disabled] = useSubjectState(disabled$);
     const [active] = useSubjectState(active$);
@@ -33,6 +35,7 @@ export const ToolIconRight: FC<ObservedToolIcon<MobileMap> & Props> = ({
 
     return (
         <Button
+            forwardRef={anchorRef}
             accessibilityLabel={ariaLabel}
             icon={icon as unknown as ComponentType<SvgProps>}
             iconRotateX={pitch}
@@ -46,7 +49,7 @@ export const ToolIconRight: FC<ObservedToolIcon<MobileMap> & Props> = ({
             glowStyle={theme.isDark ? "animate-borders-glow" : 'none'}
             color="primary"
             active={active}
-            onPress={() => onClick?.(map)}
+            onPress={() => onClick?.(map, anchorRef)}
             disabled={disabled}
         >
             {value}

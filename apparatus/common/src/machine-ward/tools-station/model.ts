@@ -1,4 +1,4 @@
-import { ComponentType } from "react";
+import { ComponentType, RefObject } from "react";
 import { BehaviorSubject } from "rxjs";
 import { TranslationId } from "../translatron";
 
@@ -33,7 +33,7 @@ export interface ToolIcon<TMap> {
     placement$: BehaviorSubject<ToolIconPlacement>;
     disabled$: BehaviorSubject<boolean>;
     tooltip: TranslationId | ((value: string | null) => TranslationId);
-    onClick?: (map: TMap) => void;
+    onClick?: (map: TMap, ref: ToolIconAnchorRef) => void;
     active$: BehaviorSubject<boolean>;
     rotate$: BehaviorSubject<number>;
     pitch$: BehaviorSubject<number>;
@@ -49,7 +49,7 @@ export interface ObservedToolIcon<TMap> {
     active$: BehaviorSubject<boolean>;
     rotate$: BehaviorSubject<number>;
     pitch$: BehaviorSubject<number>;
-    onClick?: (map: TMap) => void;
+    onClick?: (map: TMap, ref: ToolIconAnchorRef) => void;
 }
 
 export interface TopToolsProps<TMap> {
@@ -62,3 +62,14 @@ export interface ToolbarSizeRef {
         clientWidth: number;
     } | null;
 }
+
+/**
+ * The tool icon button element. Both web (HTMLElement) and mobile (RN HostInstance)
+ * expose `getBoundingClientRect(): DOMRect`, so consumers can position anchored popovers
+ * without platform casts.
+ */
+export interface ToolIconAnchor {
+    getBoundingClientRect(): DOMRect;
+}
+
+export type ToolIconAnchorRef = RefObject<ToolIconAnchor | null>;

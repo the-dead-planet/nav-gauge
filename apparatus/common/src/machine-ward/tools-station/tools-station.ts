@@ -10,6 +10,7 @@ import {
     ToolIconPlacement,
     TopToolsProps,
     ToolbarSizeRef,
+    ToolIconAnchorRef,
 } from "./model";
 import { type TranslationId } from "../translatron";
 import { type PanelLayout } from "../machine-layout";
@@ -211,7 +212,7 @@ export class ToolsStation<TMap> {
             active?: boolean;
             rotate?: number;
             pitch?: number;
-            onClick?: (map: TMap) => void;
+            onClick?: (map: TMap, ref: ToolIconAnchorRef) => void;
         },
     ): ToolIcon<TMap> => {
         const nextToolIcons = new Map(this.toolIcons$.value);

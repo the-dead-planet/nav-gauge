@@ -2,6 +2,7 @@ import { describe } from "mocha";
 import { expect } from "chai";
 import { getRouteSourceData, getSplineData, getSplineHeading } from "../src/tinkers";
 import { GeoJson } from "@tinker-chest";
+import { RouteStoryState } from "../src";
 const route: GeoJson = {
     type: "FeatureCollection",
     features: [
@@ -11,7 +12,29 @@ const route: GeoJson = {
     ],
 };
 
-const state = { showRouteLine: true, showRoutePoints: false };
+const state: RouteStoryState = {
+    showRouteLine: true,
+    showRoutePoints: false,
+    lineStyleActive: {
+        color: 'red',
+        thickness: 2,
+        variant: 'solid',
+    },
+    lineStyleInactive: {
+        color: 'red',
+        thickness: 1,
+        variant: 'dashed',
+    },
+    currentPoint: {
+        fillColor: 'blue',
+        outlineColor: 'black',
+        size: 'md',
+        shape: {
+            type: 'simple',
+            shape: 'circle',
+        }
+    }
+};
 const startTimeEpoch = Date.parse("2026-01-01T00:00:00Z");
 
 describe("Route story gear", () => {

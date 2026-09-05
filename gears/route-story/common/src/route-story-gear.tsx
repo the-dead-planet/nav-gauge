@@ -9,7 +9,7 @@ import { getSplineData, SplineData } from "./tinkers";
 import { Icons } from "@ui";
 import * as Translations from "./translations";
 import { AnimationControlsType, Animatrix } from "./animatrix";
-
+import { defaultRouteStoryState } from "./layer-specification";
 
 export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile extends RouteStoryFile, TImageData> extends Gear<TMap, TChronoLens> {
     public readonly id = 'route-story';
@@ -22,7 +22,7 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
     private dataSubscription: Subscription | null = null;
     public readonly data$ = new BehaviorSubject<ParsingResultWithError>({});
     public readonly splineData$ = new BehaviorSubject<SplineData | null>(null);
-    public readonly state$ = new BehaviorSubject<RouteStoryState>({ showRouteLine: true, showRoutePoints: false });
+    public readonly state$ = new BehaviorSubject<RouteStoryState>(defaultRouteStoryState);
     public readonly routeTimes$ = new BehaviorSubject<RouteTimes | null>(null);
     public readonly images$ = new BehaviorSubject<MarkerImage<TImageData>[]>([]);
     public readonly progressMs$ = new BehaviorSubject(0);
@@ -146,7 +146,7 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
                 placement: 'left',
                 icon: Icons.NounProject.Paint,
                 tooltip: { n: this.id, t: this.internalTranslationKey.OpenLayerStylingOptions },
-                onClick: () => {
+                onClick: (map, anchorRef) => {
                     console.log('layer styling');
                 },
             }

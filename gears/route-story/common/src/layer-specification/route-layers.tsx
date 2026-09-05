@@ -1,5 +1,30 @@
 import { FeatureStateProps } from "@apparatus";
 import { EqualBooleanFeatureState, ComparisonProperty, GetPropertyCaseCondition, LineCap } from "./model";
+import { RouteStoryState } from "../model";
+
+export const defaultRouteStoryState: RouteStoryState = {
+    showRouteLine: true,
+    showRoutePoints: false,
+    lineStyleActive: {
+        color: 'rgb(160, 48, 160)',
+        thickness: 2,
+        variant: 'solid',
+    },
+    lineStyleInactive: {
+        color: 'rgb(221, 160, 221)',
+        thickness: 1,
+        variant: 'dashed',
+    },
+    currentPoint: {
+        fillColor: 'rgb(160, 48, 160)',
+        outlineColor: 'rgb(221, 160, 221)',
+        size: 'md',
+        shape: {
+            type: 'simple',
+            shape: 'circle',
+        },
+    },
+};
 
 export const routeSourceIds = {
     line: 'route-story-line',

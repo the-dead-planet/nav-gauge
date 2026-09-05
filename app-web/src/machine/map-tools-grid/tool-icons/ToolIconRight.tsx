@@ -1,5 +1,5 @@
 import type * as maplibregl from "maplibre-gl";
-import { FC } from "react";
+import { FC, useRef } from "react";
 import { ObservedToolIcon, useTranslation } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { useTheme } from "@ui";
@@ -24,6 +24,7 @@ export const ToolIconRight: FC<ObservedToolIcon<maplibregl.Map> & Props> = ({
     className,
 }) => {
     const theme = useTheme();
+    const anchorRef = useRef<HTMLButtonElement>(null);
     const [value] = useSubjectState(value$);
     const [disabled] = useSubjectState(disabled$);
     const [active] = useSubjectState(active$);
@@ -35,6 +36,7 @@ export const ToolIconRight: FC<ObservedToolIcon<maplibregl.Map> & Props> = ({
     return (
         <Transition fade render>
             <Button
+                ref={anchorRef}
                 aria-label={ariaLabel}
                 icon={icon}
                 iconRotateZ={pitch}
@@ -48,7 +50,7 @@ export const ToolIconRight: FC<ObservedToolIcon<maplibregl.Map> & Props> = ({
                 glowStyle={theme.isDark ? "animate-borders-glow" : 'none'}
                 color="primary"
                 active={active}
-                onClick={() => onClick?.(map)}
+                onClick={() => onClick?.(map, anchorRef)}
                 disabled={disabled}
                 className={className}
             >

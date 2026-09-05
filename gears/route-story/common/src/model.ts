@@ -5,6 +5,7 @@ import { FileOperator } from "./file-operator";
 import { PlayerOperator } from "./player-operator";
 import { Animatrix } from "./animatrix";
 import { SplineData } from "./tinkers";
+import { Icons } from "@ui";
 
 export interface RouteTimes {
     startTime: string;
@@ -17,6 +18,42 @@ export interface RouteTimes {
 export interface RouteStoryState {
     showRouteLine: boolean;
     showRoutePoints: boolean;
+    /**
+     * Applied to the route line part after current point.
+     */
+    lineStyleInactive: RouteStoryLineStyle;
+    /**
+     * Applied to the route line part before current point.
+     */
+    lineStyleActive: RouteStoryLineStyle;
+    currentPoint: CurrentPointStyle;
+}
+
+export interface RouteStoryLineStyle {
+    color: string;
+    thickness: number;
+    variant: 'solid' | 'dashed';
+}
+
+export interface CurrentPointStyle {
+    fillColor: string;
+    outlineColor: string;
+    size: "xs" | "sm" | "md" | "lg" | "xl";
+    shape: CurrentPointStyleShape | CurrentPointStyleIcon;
+}
+
+export interface CurrentPointStyleShape {
+    type: 'simple';
+    shape: 'circle' | 'triangle';
+}
+
+export interface CurrentPointStyleIcon {
+    type: 'icon';
+    icon: typeof Icons.NounProject.AlienGun;
+    /**
+     * When `true` will rotate according to the current point heading.
+     */
+    rotate: boolean;
 }
 
 export interface RouteStoryProps<TMap, TChronoLens extends ChronoLens, TFile extends RouteStoryFile, TImageData> {
