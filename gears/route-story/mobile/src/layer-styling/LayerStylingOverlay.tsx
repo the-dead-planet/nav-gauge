@@ -15,7 +15,7 @@ const hasCustomStyling = (current: RouteStoryState, defaults: RouteStoryState): 
     JSON.stringify(current.routeStyleInactive) !== JSON.stringify(defaults.routeStyleInactive) ||
     JSON.stringify(current.currentPoint) !== JSON.stringify(defaults.currentPoint);
 
-const DemoLineSegment: FC<{ color: string; outlineColor: string; width: number; outlineWidth: number; variant: 'solid' | 'dashed' }> = ({ color, outlineColor, width, outlineWidth, variant }) => {
+const DemoLineSegment: FC<RouteStoryLineStyle> = ({ color, outlineColor, width, outlineWidth, variant }) => {
     const lineWidth = Math.max(2, Math.min(width, 10));
     const outlineSize = lineWidth + outlineWidth * 2;
 
@@ -39,20 +39,8 @@ const LineStyleDemo: FC<{ state: RouteStoryState; onCurrentPointClick: () => voi
 
     return (
         <View style={styles['demo-line']} pointerEvents="none">
-            <DemoLineSegment
-                color={state.routeStyleActive.color}
-                outlineColor={state.routeStyleActive.outlineColor}
-                width={state.routeStyleActive.width}
-                outlineWidth={state.routeStyleActive.outlineWidth}
-                variant={state.routeStyleActive.variant}
-            />
-            <DemoLineSegment
-                color={state.routeStyleInactive.color}
-                outlineColor={state.routeStyleInactive.outlineColor}
-                width={state.routeStyleInactive.width}
-                outlineWidth={state.routeStyleInactive.outlineWidth}
-                variant={state.routeStyleInactive.variant}
-            />
+            <DemoLineSegment {...state.routeStyleActive} />
+            <DemoLineSegment {...state.routeStyleInactive} />
             <Pressable
                 style={styles['demo-point']}
                 pointerEvents="auto"
