@@ -31,7 +31,9 @@ export interface RouteStoryState {
 
 export interface RouteStoryLineStyle {
     color: string;
-    thickness: number;
+    width: number;
+    outlineColor: string;
+    outlineWidth: number;
     variant: 'solid' | 'dashed';
 }
 

@@ -17,12 +17,16 @@ const state: RouteStoryState = {
     showRoutePoints: false,
     lineStyleActive: {
         color: 'red',
-        thickness: 2,
+        width: 2,
+        outlineColor: 'black',
+        outlineWidth: 0,
         variant: 'solid',
     },
     lineStyleInactive: {
         color: 'red',
-        thickness: 1,
+        width: 1,
+        outlineColor: 'black',
+        outlineWidth: 0,
         variant: 'dashed',
     },
     currentPoint: {

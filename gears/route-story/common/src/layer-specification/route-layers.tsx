@@ -7,12 +7,16 @@ export const defaultRouteStoryState: RouteStoryState = {
     showRoutePoints: false,
     lineStyleActive: {
         color: 'rgb(160, 48, 160)',
-        thickness: 2,
+        width: 2,
+        outlineColor: 'rgb(255, 255, 255)',
+        outlineWidth: 1,
         variant: 'solid',
     },
     lineStyleInactive: {
         color: 'rgb(221, 160, 221)',
-        thickness: 1,
+        width: 1,
+        outlineColor: 'rgb(255, 255, 255)',
+        outlineWidth: 0,
         variant: 'dashed',
     },
     currentPoint: {
