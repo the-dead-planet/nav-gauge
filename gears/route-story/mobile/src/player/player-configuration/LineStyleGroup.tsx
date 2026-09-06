@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { RouteStoryLineStyle } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { RouteStoryLineStyle, RouteStoryTranslationKey } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Checkbox, Dropdown, Fieldset, NumberInput } from "@mobile-ui";
 import { ColorSelectField } from "./ColorSelectField";
 import { View, Text, StyleSheet } from "react-native";
@@ -7,6 +7,8 @@ import { View, Text, StyleSheet } from "react-native";
 interface Props {
     label: string;
     style: RouteStoryLineStyle;
+    gearId: string;
+    translationKey: typeof RouteStoryTranslationKey;
     linesLabel: string;
     pointsLabel: string;
     solidLabel: string;
@@ -14,12 +16,16 @@ interface Props {
     lineStyleLabel: string;
     lineLabel: string;
     outlineLabel: string;
+    expanded?: boolean;
+    onExpandedChange?: (expanded: boolean) => void;
     onChange: (patch: Partial<RouteStoryLineStyle>) => void;
 }
 
 export const LineStyleGroup: FC<Props> = ({
     label,
     style,
+    gearId,
+    translationKey,
     linesLabel,
     pointsLabel,
     lineStyleLabel,
@@ -27,7 +33,9 @@ export const LineStyleGroup: FC<Props> = ({
     outlineLabel,
     solidLabel,
     dashedLabel,
-    onChange
+    onChange,
+    expanded,
+    onExpandedChange,
 }) => {
     const variantOptions = [
         { label: solidLabel, value: 'solid' as const },
@@ -35,7 +43,7 @@ export const LineStyleGroup: FC<Props> = ({
     ];
 
     return (
-        <Fieldset size="xs" label={label}>
+        <Fieldset size="xs" label={label} expanded={expanded} onExpandedChange={onExpandedChange}>
             <View style={styles['top-controls']}>
                 <Checkbox size="xs" checked={style.showRouteLine} onChange={(checked) => onChange({ showRouteLine: checked })}>
                     {linesLabel}
@@ -48,13 +56,17 @@ export const LineStyleGroup: FC<Props> = ({
             <Dropdown size="xs" value={style.variant} options={variantOptions} onChange={(variant) => onChange({ variant })} />
             <Text style={styles['section-label']}>{lineLabel}</Text>
             <View style={styles['grid']}>
-                <ColorSelectField value={style.color} onChange={(color) => onChange({ color })} />
-                <NumberInput size="xs" min={1} max={8} step={1} value={style.width} onChange={(width) => onChange({ width })} unit="px" />
+                <ColorSelectField value={style.color} gearId={gearId} translationKey={translationKey} onChange={(color) => onChange({ color })} />
+                <View style={styles['grid-fill']}>
+                    <NumberInput size="xs" min={1} max={8} step={1} value={style.width} onChange={(width) => onChange({ width })} unit="px" />
+                </View>
             </View>
             <Text style={styles['section-label']}>{outlineLabel}</Text>
             <View style={styles['grid']}>
-                <ColorSelectField value={style.outlineColor} onChange={(outlineColor) => onChange({ outlineColor })} />
-                <NumberInput size="xs" min={0} max={4} step={1} value={style.outlineWidth} onChange={(outlineWidth) => onChange({ outlineWidth })} unit="px" />
+                <ColorSelectField value={style.outlineColor} gearId={gearId} translationKey={translationKey} onChange={(outlineColor) => onChange({ outlineColor })} />
+                <View style={styles['grid-fill']}>
+                    <NumberInput size="xs" min={0} max={4} step={1} value={style.outlineWidth} onChange={(outlineWidth) => onChange({ outlineWidth })} unit="px" />
+                </View>
             </View>
         </Fieldset>
     );
@@ -83,5 +95,8 @@ const styles = StyleSheet.create({
         gap: 8,
         marginBottom: 12,
         alignItems: 'center',
+    },
+    'grid-fill': {
+        flex: 1,
     },
 });

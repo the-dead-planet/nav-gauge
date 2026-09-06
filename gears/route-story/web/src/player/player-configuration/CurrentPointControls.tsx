@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useMultipleTranslations } from "@apparatus";
 import { currentPointSizeOptions, CurrentPointStyle, RouteStoryTranslationKey } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { Button, Fieldset, Radio } from "@web-ui";
+import { Button, Label, Radio } from "@web-ui";
 import { ColorSelectField } from "./ColorSelectField";
 import styles from './current-point-controls.module.css';
 
@@ -13,8 +13,14 @@ interface Props {
 }
 
 export const CurrentPointControls: FC<Props> = ({ gearId, translationKey, value, onChange }) => {
-    const [currentPointLabel, colorLabel, outlineColorLabel, sizeLabel, shapeLabel, circleLabel, triangleLabel] = useMultipleTranslations([
-        { n: gearId, t: translationKey.CurrentPoint },
+    const [
+        colorLabel,
+        outlineColorLabel,
+        sizeLabel,
+        shapeLabel,
+        circleLabel,
+        triangleLabel,
+    ] = useMultipleTranslations([
         { n: gearId, t: translationKey.Color },
         { n: gearId, t: translationKey.OutlineColor },
         { n: gearId, t: translationKey.Size },
@@ -23,33 +29,50 @@ export const CurrentPointControls: FC<Props> = ({ gearId, translationKey, value,
         { n: gearId, t: translationKey.Triangle },
     ]);
 
+    const simpleShapesOptions: { shape: 'circle' | 'triangle', label: string }[] = [
+        { shape: "circle", label: circleLabel },
+        { shape: "triangle", label: triangleLabel }
+    ];
+
     return (
-        <Fieldset size="xs" label={currentPointLabel}>
-            <ColorSelectField label={colorLabel} value={value.fillColor} onChange={(fillColor) => onChange({ fillColor })} />
-            <ColorSelectField label={outlineColorLabel} value={value.outlineColor} onChange={(outlineColor) => onChange({ outlineColor })} />
-            <span className={styles['control-label']}>{sizeLabel}</span>
-            <div className={styles['size-row']}>
-                {currentPointSizeOptions.map((option) => (
-                    <Button key={option.label} size="xs" active={value.size === option.radius} onClick={() => onChange({ size: option.radius })}>
-                        {option.label}
-                    </Button>
+        <div className={styles['container']}>
+            <div className={styles['section']}>
+                <ColorSelectField label={colorLabel} value={value.fillColor} gearId={gearId} translationKey={translationKey} onChange={(fillColor) => onChange({ fillColor })} />
+                <ColorSelectField label={outlineColorLabel} value={value.outlineColor} gearId={gearId} translationKey={translationKey} onChange={(outlineColor) => onChange({ outlineColor })} />
+            </div>
+            <div className={styles['section']}>
+                <Label>{sizeLabel}</Label>
+                <div className={styles['size-row']}>
+                    {currentPointSizeOptions.map((option) => (
+                        <Button
+                            key={option.label}
+                            variant={value.size === option.radius ? "fill" : "outline"}
+                            size="xs"
+                            onClick={() => onChange({ size: option.radius })}
+                        >
+                            {option.label}
+                        </Button>
+                    ))}
+                </div>
+            </div>
+            <div className={styles['section']}>
+                <Label>
+                    {shapeLabel}
+                </Label>
+                {simpleShapesOptions.map(({ shape, label }) => (
+                    <Radio
+                        size="xs"
+                        checked={value.shape.type === 'simple' && value.shape.shape === shape}
+                        onChange={(checked) => {
+                            if (checked) {
+                                onChange({ shape: { type: 'simple', shape } });
+                            }
+                        }}
+                    >
+                        {label}
+                    </Radio>
                 ))}
             </div>
-            <span className={styles['control-label']}>{shapeLabel}</span>
-            <Radio size="xs" checked={value.shape.type === 'simple' && value.shape.shape === 'circle'} onChange={(checked) => {
-                if (checked) {
-                    onChange({ shape: { type: 'simple', shape: 'circle' } });
-                }
-            }}>
-                {circleLabel}
-            </Radio>
-            <Radio size="xs" checked={value.shape.type === 'simple' && value.shape.shape === 'triangle'} onChange={(checked) => {
-                if (checked) {
-                    onChange({ shape: { type: 'simple', shape: 'triangle' } });
-                }
-            }}>
-                {triangleLabel}
-            </Radio>
-        </Fieldset>
+        </div>
     );
 };

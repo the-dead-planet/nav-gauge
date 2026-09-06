@@ -6,7 +6,7 @@ import { getDefaultRouteStoryState, CurrentPointStyle, LayerStylingPopupProps, R
 import { useSubjectState } from "@tinker-chest";
 import { MobileMap } from "@mobile-apparatus";
 import { MobileRouteStoryProps } from "../model";
-import { Button } from "@mobile-ui";
+import { Button, Fieldset } from "@mobile-ui";
 import { CurrentPointControls } from "../player/player-configuration/CurrentPointControls";
 import { LineStyleGroup } from "../player/player-configuration/LineStyleGroup";
 
@@ -38,12 +38,11 @@ const LineStyleDemo: FC<{ state: RouteStoryState; onCurrentPointClick: () => voi
     const radius = state.currentPoint.size;
 
     return (
-        <View style={styles['demo-line']} pointerEvents="none">
+        <View style={styles['demo-line']} pointerEvents="box-none">
             <DemoLineSegment {...state.routeStyleActive} />
             <DemoLineSegment {...state.routeStyleInactive} />
             <Pressable
                 style={styles['demo-point']}
-                pointerEvents="auto"
                 accessibilityRole="button"
                 accessibilityLabel={currentPointMenuLabel}
                 onPress={onCurrentPointClick}
@@ -53,13 +52,13 @@ const LineStyleDemo: FC<{ state: RouteStoryState; onCurrentPointClick: () => voi
                     height: (radius + 2) * 2,
                     borderRadius: radius + 2,
                     backgroundColor: state.currentPoint.outlineColor,
-                }]} />
+                }]} pointerEvents="none" />
                 <View style={[styles['demo-point-fill'], {
                     width: radius * 2,
                     height: radius * 2,
                     borderRadius: radius,
                     backgroundColor: state.currentPoint.fillColor,
-                }]} />
+                }]} pointerEvents="none" />
             </Pressable>
         </View>
     );
@@ -76,7 +75,8 @@ export const LayerStylingOverlay: FC<OverlayComponentProps<MobileMap> & LayerSty
     const [active] = useSubjectState(icon.active$);
     const [anchorRef] = useSubjectState(icon.anchorRef$);
     const [state, setState] = useSubjectState(state$);
-    const [currentPointMenuOpen, setCurrentPointMenuOpen] = useState(false);
+    const [currentPointExpanded, setCurrentPointExpanded] = useState(false);
+    const [stylesExpanded, setStylesExpanded] = useState(true);
     const [
         currentPointLabel,
         activeLabel,
@@ -108,6 +108,8 @@ export const LayerStylingOverlay: FC<OverlayComponentProps<MobileMap> & LayerSty
     const setActiveLine = (patch: Partial<RouteStoryLineStyle>) => setState((prev) => ({ ...prev, routeStyleActive: { ...prev.routeStyleActive, ...patch } }));
     const setInactiveLine = (patch: Partial<RouteStoryLineStyle>) => setState((prev) => ({ ...prev, routeStyleInactive: { ...prev.routeStyleInactive, ...patch } }));
     const setCurrentPoint = (patch: Partial<CurrentPointStyle>) => setState((prev) => ({ ...prev, currentPoint: { ...prev.currentPoint, ...patch } }));
+
+    const toggleCurrentPointExpanded = () => setCurrentPointExpanded((prev) => !prev);
 
     const menuPosition = useMemo<MenuPosition>(() => {
         if (!active) {
@@ -141,19 +143,28 @@ export const LayerStylingOverlay: FC<OverlayComponentProps<MobileMap> & LayerSty
                             },
                         ]}
                     >
-                        <LineStyleDemo state={state} onCurrentPointClick={() => setCurrentPointMenuOpen(true)} currentPointMenuLabel={currentPointLabel} />
+                        <LineStyleDemo state={state} onCurrentPointClick={toggleCurrentPointExpanded} currentPointMenuLabel={currentPointLabel} />
                         <ScrollView contentContainerStyle={styles.content}>
+                            <Fieldset size="xs" label={currentPointLabel} expanded={currentPointExpanded} onExpandedChange={setCurrentPointExpanded}>
+                                <CurrentPointControls gearId={gearId} translationKey={translationKey} value={state.currentPoint} onChange={setCurrentPoint} />
+                            </Fieldset>
                             <View style={styles['style-row']}>
                                 <View style={styles['style-col']}>
                                     <LineStyleGroup label={activeLabel} style={state.routeStyleActive}
+                                        gearId={gearId} translationKey={translationKey}
                                         linesLabel={linesLabel} pointsLabel={pointsLabel}
                                         lineStyleLabel={lineStyleLabel} lineLabel={lineLabel} outlineLabel={outlineLabel} solidLabel={solidLabel} dashedLabel={dashedLabel}
+                                        expanded={stylesExpanded}
+                                        onExpandedChange={setStylesExpanded}
                                         onChange={setActiveLine} />
                                 </View>
                                 <View style={styles['style-col']}>
                                     <LineStyleGroup label={inactiveLabel} style={state.routeStyleInactive}
+                                        gearId={gearId} translationKey={translationKey}
                                         linesLabel={linesLabel} pointsLabel={pointsLabel}
                                         lineStyleLabel={lineStyleLabel} lineLabel={lineLabel} outlineLabel={outlineLabel} solidLabel={solidLabel} dashedLabel={dashedLabel}
+                                        expanded={stylesExpanded}
+                                        onExpandedChange={setStylesExpanded}
                                         onChange={setInactiveLine} />
                                 </View>
                             </View>
@@ -169,28 +180,6 @@ export const LayerStylingOverlay: FC<OverlayComponentProps<MobileMap> & LayerSty
                             </Button>
                         </View>
                     </View>
-                </Pressable>
-            </Modal>
-            <Modal visible={currentPointMenuOpen} transparent animationType="fade" onRequestClose={() => setCurrentPointMenuOpen(false)}>
-                <Pressable style={styles.overlay} onPress={() => setCurrentPointMenuOpen(false)}>
-                    <Pressable
-                        style={[
-                            styles.popup,
-                            styles['current-point-panel'],
-                            {
-                                backgroundColor: theme.color('neutral', theme.isDark ? 800 : 200),
-                                borderColor: theme.color('neutral', theme.isDark ? 500 : 400),
-                            },
-                        ]}
-                        onPress={() => { }}
-                    >
-                        <CurrentPointControls gearId={gearId} translationKey={translationKey} value={state.currentPoint} onChange={setCurrentPoint} />
-                        <View style={styles.footer}>
-                            <Button size="xs" onPress={() => setCurrentPointMenuOpen(false)}>
-                                {closeLabel}
-                            </Button>
-                        </View>
-                    </Pressable>
                 </Pressable>
             </Modal>
         </>

@@ -2,7 +2,7 @@ import { FC } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { useMultipleTranslations } from "@apparatus";
 import { currentPointSizeOptions, CurrentPointStyle, RouteStoryTranslationKey } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { Button, Fieldset, Radio } from "@mobile-ui";
+import { Button, Radio } from "@mobile-ui";
 import { ColorSelectField } from "./ColorSelectField";
 
 interface Props {
@@ -13,8 +13,7 @@ interface Props {
 }
 
 export const CurrentPointControls: FC<Props> = ({ gearId, translationKey, value, onChange }) => {
-    const [currentPointLabel, colorLabel, outlineColorLabel, sizeLabel, shapeLabel, circleLabel, triangleLabel] = useMultipleTranslations([
-        { n: gearId, t: translationKey.CurrentPoint },
+    const [colorLabel, outlineColorLabel, sizeLabel, shapeLabel, circleLabel, triangleLabel] = useMultipleTranslations([
         { n: gearId, t: translationKey.Color },
         { n: gearId, t: translationKey.OutlineColor },
         { n: gearId, t: translationKey.Size },
@@ -26,9 +25,9 @@ export const CurrentPointControls: FC<Props> = ({ gearId, translationKey, value,
     const currentPointOption = currentPointSizeOptions.find((option) => option.radius === value.size);
 
     return (
-        <Fieldset size="xs" label={currentPointLabel}>
-            <ColorSelectField label={colorLabel} value={value.fillColor} onChange={(fillColor) => onChange({ fillColor })} />
-            <ColorSelectField label={outlineColorLabel} value={value.outlineColor} onChange={(outlineColor) => onChange({ outlineColor })} />
+        <>
+            <ColorSelectField label={colorLabel} value={value.fillColor} gearId={gearId} translationKey={translationKey} onChange={(fillColor) => onChange({ fillColor })} />
+            <ColorSelectField label={outlineColorLabel} value={value.outlineColor} gearId={gearId} translationKey={translationKey} onChange={(outlineColor) => onChange({ outlineColor })} />
             <Text style={styles.controlLabel}>{sizeLabel}</Text>
             <View style={styles.sizeRow}>
                 {currentPointSizeOptions.map((option) => (
@@ -52,7 +51,7 @@ export const CurrentPointControls: FC<Props> = ({ gearId, translationKey, value,
             }}>
                 {triangleLabel}
             </Radio>
-        </Fieldset>
+        </>
     );
 };
 

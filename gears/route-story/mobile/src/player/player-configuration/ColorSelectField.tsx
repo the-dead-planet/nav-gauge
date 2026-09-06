@@ -1,17 +1,22 @@
 import { FC, useState } from "react";
 import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
+import { useTranslation } from "@apparatus";
 import { useTheme } from "@ui";
 import { ColorPicker } from "@mobile-ui";
+import { RouteStoryTranslationKey } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 
 interface Props {
     label?: string;
     value: string;
+    gearId: string;
+    translationKey: typeof RouteStoryTranslationKey;
     onChange: (color: string) => void;
 }
 
-export const ColorSelectField: FC<Props> = ({ label, value, onChange }) => {
+export const ColorSelectField: FC<Props> = ({ label, value, gearId, translationKey, onChange }) => {
     const theme = useTheme();
     const [open, setOpen] = useState(false);
+    const opacityLabel = useTranslation({ n: gearId, t: translationKey.Opacity });
 
     return (
         <>
@@ -34,7 +39,7 @@ export const ColorSelectField: FC<Props> = ({ label, value, onChange }) => {
                         backgroundColor: theme.color('neutral', theme.isDark ? 800 : 200),
                         borderColor: theme.color('neutral', theme.isDark ? 500 : 400),
                     }]} onPress={() => {}}>
-                        <ColorPicker label={label} value={value} onChange={onChange} />
+                        <ColorPicker label={label} value={value} opacityLabel={opacityLabel} onChange={onChange} />
                     </Pressable>
                 </Pressable>
             </Modal>

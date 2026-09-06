@@ -11,6 +11,7 @@ export const Popup: FC<Props> = ({
     anchor,
     position,
     placement = 'top-left',
+    dismissOnClickAway = true,
     visible,
     onClose,
     overlayStyle,
@@ -100,7 +101,7 @@ export const Popup: FC<Props> = ({
         >
             <Pressable
                 style={[styles.overlay, overlayStyle]}
-                onPress={onClose}
+                onPress={dismissOnClickAway ? onClose : undefined}
             >
                 <Animated.View
                     style={[styles.popup, positionStyle, animatedStyle, popupStyle]}

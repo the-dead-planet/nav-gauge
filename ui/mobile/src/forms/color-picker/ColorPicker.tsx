@@ -4,7 +4,7 @@ import { ColorPickerProps, getThemeColorSwatches, hslToRgb, rgbToHsl, toCssColor
 import { Slider } from "../slider";
 import { Text } from "../../typography";
 
-export const ColorPicker: FC<ColorPickerProps> = ({ label, value, onChange }) => {
+export const ColorPicker: FC<ColorPickerProps> = ({ label, value, onChange, opacityLabel }) => {
     const theme = useTheme();
     const parsed = useMemo(() => parseColor(value), [value]);
     const { h, s, l } = useMemo(() => rgbToHsl(parsed), [parsed]);
@@ -26,9 +26,8 @@ export const ColorPicker: FC<ColorPickerProps> = ({ label, value, onChange }) =>
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                {label ? <Text style={styles.label}>{label}</Text> : null}
-                <Text style={styles.value}>{value}</Text>
                 <View style={[styles.preview, { backgroundColor: value, borderColor }]} />
+                <Text style={styles.value}>{value}</Text>
             </View>
 
             <View style={styles['swatch-grid']}>
@@ -45,7 +44,7 @@ export const ColorPicker: FC<ColorPickerProps> = ({ label, value, onChange }) =>
             <Slider min={0} max={360} step={1} value={h} onChange={(nextH) => handleHsl(nextH, s, l)} label="Hue" />
             <Slider min={0} max={100} step={1} value={s} onChange={(nextS) => handleHsl(h, nextS, l)} label="Saturation" />
             <Slider min={0} max={100} step={1} value={l} onChange={(nextL) => handleHsl(h, s, nextL)} label="Lightness" />
-            <Slider min={0} max={1} step={0.05} value={parsed.a} onChange={handleAlpha} label="Opacity" />
+            <Slider min={0} max={1} step={0.05} value={parsed.a} onChange={handleAlpha} label={opacityLabel} />
         </View>
     );
 };

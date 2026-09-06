@@ -4,7 +4,7 @@ import { ColorPickerProps, getThemeColorSwatches, parseColor, toCssColor, toHexC
 import { Slider } from "../slider";
 import styles from './color-picker.module.css';
 
-export const ColorPicker: FC<ColorPickerProps> = ({ label, value, onChange }) => {
+export const ColorPicker: FC<ColorPickerProps> = ({ label, value, onChange, opacityLabel }) => {
     const theme = useTheme();
     const parsed = useMemo(() => parseColor(value), [value]);
     const swatches = useMemo(() => getThemeColorSwatches(theme), [theme]);
@@ -26,13 +26,12 @@ export const ColorPicker: FC<ColorPickerProps> = ({ label, value, onChange }) =>
     return (
         <div className={styles.container}>
             <div className={styles['header']}>
-                {label ? <span className={styles['label']}>{label}</span> : null}
-                <span className={styles['value']}>{value}</span>
                 <span
                     className={styles['preview']}
                     style={{ backgroundColor: value, borderColor }}
                     aria-hidden="true"
                 />
+                <span className={styles['value']}>{value}</span>
             </div>
 
             <div className={styles['swatch-grid']}>
@@ -59,6 +58,7 @@ export const ColorPicker: FC<ColorPickerProps> = ({ label, value, onChange }) =>
                     onChange={(event) => handleNativePick(event.target.value)}
                     aria-label={label ? `${label} color ramp` : 'Color ramp'}
                 />
+                {opacityLabel ? <span className={styles['opacity-label']}>{opacityLabel}</span> : null}
                 <Slider
                     min={0}
                     max={1}

@@ -1,6 +1,4 @@
 .popup {
-    position: fixed;
-    z-index: 1000;
     width: 360px;
     max-height: min(75vh, 640px);
     overflow-y: auto;
@@ -14,14 +12,12 @@
     width: 100%;
     height: 20px;
     flex-shrink: 0;
+    position: sticky;
+    top: 0;
 }
 
 .demo-point {
     cursor: pointer;
-}
-
-.current-point-menu {
-    z-index: 1002;
 }
 
 .style-row {

@@ -1,7 +1,8 @@
 import type { Meta } from 'storybook-react-rsbuild';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Popup } from './Popup';
 import { Button } from '../button';
+import type { MenuAnchor } from '@ui';
 
 const meta = {
     title: 'Popup',
@@ -10,22 +11,44 @@ const meta = {
 
 export default meta;
 
+const placements: MenuAnchor[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
+
 export const Overview = {
     render: () => {
-        const [visible, setVisible] = useState(false);
-        const anchorRef = useState<HTMLButtonElement | null>(null)[1];
+        const [visible, setVisible] = useState<MenuAnchor | null>(null);
+        const anchorRefs = useRef<Record<MenuAnchor, HTMLButtonElement | null>>({
+            'top-left': null,
+            'top-right': null,
+            'bottom-left': null,
+            'bottom-right': null,
+        });
 
         return (
-            <div style={{ padding: 100 }}>
-                <button ref={anchorRef} onClick={() => setVisible((v) => !v)} style={{ padding: '8px 16px' }}>
-                    Toggle Popup
-                </button>
-                <Popup visible={visible} onClose={() => setVisible(false)} anchor={anchorRef as unknown as React.RefObject<HTMLElement | null>}>
-                    <div style={{ padding: 16, border: '1px solid var(--color-neutral-500)', background: 'var(--color-neutral-200)', borderRadius: 6 }}>
-                        <p>Popup content</p>
-                        <Button size="xs" onClick={() => setVisible(false)}>Close</Button>
-                    </div>
-                </Popup>
+            <div style={{ padding: 100, display: 'grid', gridTemplateColumns: 'repeat(2, max-content)', gap: 32 }}>
+                {placements.map((placement) => (
+                    <button
+                        key={placement}
+                        ref={(element) => { anchorRefs.current[placement] = element; return; }}
+                        onClick={() => setVisible((current) => (current === placement ? null : placement))}
+                        style={{ padding: '8px 16px' }}
+                    >
+                        {placement}
+                    </button>
+                ))}
+                {visible && (
+                    <Popup
+                        visible
+                        variant="fill"
+                        onClose={() => setVisible(null)}
+                        anchor={{ current: anchorRefs.current[visible] }}
+                        placement={visible}
+                    >
+                        <div>
+                            <p>Popup content</p>
+                            <Button size="xs" onClick={() => setVisible(null)}>Close</Button>
+                        </div>
+                    </Popup>
+                )}
             </div>
         );
     },

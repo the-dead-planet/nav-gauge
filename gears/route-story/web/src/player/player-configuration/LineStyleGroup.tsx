@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { DropdownOption } from "@ui";
-import { RouteStoryLineStyle } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { RouteStoryLineStyle, RouteStoryTranslationKey } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Checkbox, Dropdown, Fieldset, Label, NumberInput } from "@web-ui";
 import { ColorSelectField } from "./ColorSelectField";
 import styles from './line-style-group.module.css';
@@ -8,6 +8,8 @@ import styles from './line-style-group.module.css';
 interface Props {
     label: string;
     style: RouteStoryLineStyle;
+    gearId: string;
+    translationKey: typeof RouteStoryTranslationKey;
     linesLabel: string;
     pointsLabel: string;
     colorLabel: string;
@@ -19,12 +21,16 @@ interface Props {
     lineStyleLabel: string;
     lineLabel: string;
     outlineLabel: string;
+    expanded?: boolean;
+    onExpandedChange?: (expanded: boolean) => void;
     onChange: (patch: Partial<RouteStoryLineStyle>) => void;
 }
 
 export const LineStyleGroup: FC<Props> = ({
     label,
     style,
+    gearId,
+    translationKey,
     linesLabel,
     pointsLabel,
     lineStyleLabel,
@@ -32,7 +38,9 @@ export const LineStyleGroup: FC<Props> = ({
     outlineLabel,
     solidLabel,
     dashedLabel,
-    onChange
+    onChange,
+    expanded,
+    onExpandedChange,
 }) => {
     const variantOptions: DropdownOption<'solid' | 'dashed'>[] = [
         { label: solidLabel, value: 'solid' as const },
@@ -40,7 +48,7 @@ export const LineStyleGroup: FC<Props> = ({
     ].filter((option) => option.label != null);
 
     return (
-        <Fieldset size="xs" label={label}>
+        <Fieldset size="xs" label={label} expanded={expanded} onExpandedChange={onExpandedChange}>
             <div className={styles['top-controls']}>
                 <Checkbox size="xs" checked={style.showRouteLine} onChange={(checked) => onChange({ showRouteLine: checked })}>
                     {linesLabel}
@@ -53,12 +61,12 @@ export const LineStyleGroup: FC<Props> = ({
             </div>
             <Label>{lineLabel}</Label>
             <div className={styles['grid']}>
-                <ColorSelectField value={style.color} onChange={(color) => onChange({ color })} />
+                <ColorSelectField value={style.color} gearId={gearId} translationKey={translationKey} onChange={(color) => onChange({ color })} />
                 <NumberInput size="xs" min={1} max={8} step={1} value={style.width} onChange={(width) => onChange({ width })} unit="px" />
             </div>
             <Label>{outlineLabel}</Label>
             <div className={styles['grid']}>
-                <ColorSelectField value={style.outlineColor} onChange={(outlineColor) => onChange({ outlineColor })} />
+                <ColorSelectField value={style.outlineColor} gearId={gearId} translationKey={translationKey} onChange={(outlineColor) => onChange({ outlineColor })} />
                 <NumberInput size="xs" min={0} max={4} step={1} value={style.outlineWidth} onChange={(outlineWidth) => onChange({ outlineWidth })} unit="px" />
             </div>
         </Fieldset>

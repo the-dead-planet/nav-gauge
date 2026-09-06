@@ -5,6 +5,10 @@ import { getMenuPosition, MenuPosition, MenuAnchor, getIconAnchorPoint, PopupPro
 import { Transition } from '../transition';
 import type { TransitionProps } from '@ui';
 import styles from './popup.module.css';
+import { Panel } from '../hud';
+
+let popupCounter = 0;
+const openPopups: number[] = [];
 
 interface Props extends PopupProps {
     overlayClassName?: string;
@@ -15,6 +19,9 @@ export const Popup: FC<Props> = ({
     anchor,
     position,
     placement = 'top-left',
+    dismissOnClickAway = true,
+    variant,
+    shape,
     visible,
     onClose,
     overlayClassName,
@@ -22,8 +29,23 @@ export const Popup: FC<Props> = ({
     children,
     ...props
 }) => {
+    const [popupOrder] = useState(() => ++popupCounter);
     const containerRef = useRef<HTMLDivElement>(null);
     const [menuPosition, setMenuPosition] = useState<MenuPosition>({});
+
+    useEffect(() => {
+        if (!visible) {
+            return;
+        }
+        openPopups.push(popupOrder);
+
+        return () => {
+            const index = openPopups.indexOf(popupOrder);
+            if (index !== -1) {
+                openPopups.splice(index, 1);
+            }
+        };
+    }, [visible, popupOrder]);
 
     useEffect(() => {
         if (!visible) {
@@ -52,15 +74,31 @@ export const Popup: FC<Props> = ({
 
         computePosition();
         window.addEventListener('scroll', computePosition, true);
+        window.addEventListener('resize', computePosition);
 
-        return () => window.removeEventListener('scroll', computePosition, true);
+        let resizeObserver: ResizeObserver | null = null;
+        if (anchor?.current) {
+            const observedElement = anchor.current.parentElement ?? anchor.current;
+            resizeObserver = new ResizeObserver(() => computePosition());
+            resizeObserver.observe(observedElement);
+        }
+
+        return () => {
+            window.removeEventListener('scroll', computePosition, true);
+            window.removeEventListener('resize', computePosition);
+            resizeObserver?.disconnect();
+        };
     }, [visible, anchor, position, placement]);
 
     useEffect(() => {
         if (!visible) {
             return;
         }
+        const isTopmost = () => openPopups.length > 0 && Math.max(...openPopups) === popupOrder;
         const mousedownHandler = (e: MouseEvent) => {
+            if (!isTopmost() || !dismissOnClickAway) {
+                return;
+            }
             if (
                 !containerRef.current?.contains(e.target as Node) &&
                 !(anchor && anchor.current?.contains(e.target as Node))
@@ -69,7 +107,7 @@ export const Popup: FC<Props> = ({
             }
         };
         const keydownHandler = (e: KeyboardEvent) => {
-            if (e.key === 'Escape') {
+            if (isTopmost() && e.key === 'Escape') {
                 onClose();
             }
         };
@@ -80,7 +118,7 @@ export const Popup: FC<Props> = ({
             document.removeEventListener('mousedown', mousedownHandler);
             document.removeEventListener('keydown', keydownHandler);
         };
-    }, [visible, onClose, anchor]);
+    }, [visible, onClose, anchor, dismissOnClickAway]);
 
     if (!visible) {
         return null;
@@ -92,20 +130,22 @@ export const Popup: FC<Props> = ({
     if (menuPosition.right !== undefined) positionStyle.right = menuPosition.right;
     if (menuPosition.bottom !== undefined) positionStyle.bottom = menuPosition.bottom;
 
-    const slide: TransitionProps['slide'] = menuPosition.bottom ? 'to-top' : 'to-bottom';
+    const slide: TransitionProps['slide'] = placement.includes('top') ? 'to-top' : 'to-bottom';
 
     return createPortal(
         <div className={classNames(styles.overlay, overlayClassName)}>
-            <div
-                ref={containerRef}
-                className={classNames(styles.popup, popupClassName)}
-                style={positionStyle}
-                {...props}
-            >
-                <Transition slide={slide} render={visible} onUnmount={onClose}>
+            <Transition slide={slide} render={visible} onUnmount={onClose}>
+                <Panel
+                    forwardRef={containerRef}
+                    variant={variant}
+                    shape={shape}
+                    className={classNames(styles.popup, popupClassName)}
+                    style={positionStyle}
+                    {...props}
+                >
                     {children}
-                </Transition>
-            </div>
+                </Panel>
+            </Transition>
         </div>,
         document.body,
     );
