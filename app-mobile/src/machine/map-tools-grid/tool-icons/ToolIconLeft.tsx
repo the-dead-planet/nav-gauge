@@ -14,6 +14,7 @@ interface Props {
 export const ToolIconLeft: FC<ObservedToolIcon<MobileMap> & Props> = ({
     map,
     icon,
+    anchorRef$,
     value$,
     disabled$,
     active$,
@@ -35,6 +36,9 @@ export const ToolIconLeft: FC<ObservedToolIcon<MobileMap> & Props> = ({
 
     return (
         <Button
+            forwardRef={(r) => {
+                anchorRef$.next({ current: r });
+            }}
             accessibilityLabel={ariaLabel}
             icon={icon as never}
             tooltip={resolvedTooltip}

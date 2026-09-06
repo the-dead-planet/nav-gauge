@@ -10,6 +10,7 @@ import {
     ToolIconPlacement,
     TopToolsProps,
     ToolbarSizeRef,
+    ToolIconAnchorRef,
 } from "./model";
 import { type TranslationId } from "../translatron";
 import { type PanelLayout } from "../machine-layout";
@@ -218,6 +219,7 @@ export class ToolsStation<TMap> {
         const toolIcon: ToolIcon<TMap> = {
             tooltip,
             icon,
+            anchorRef$: new BehaviorSubject<ToolIconAnchorRef>({ current: null }),
             value$: new BehaviorSubject(value),
             placement$: new BehaviorSubject(placement),
             disabled$: new BehaviorSubject(disabled),
