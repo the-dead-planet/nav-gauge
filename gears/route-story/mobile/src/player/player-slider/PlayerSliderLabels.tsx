@@ -3,13 +3,13 @@ import { StyleSheet, View } from "react-native";
 import { BehaviorSubject } from "rxjs";
 import { useMobileMachineWard } from "@mobile-apparatus";
 import { useSubjectState } from "@tinker-chest";
-import { getProgressPercentage, RouteTimes } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { getRouteTimelinePercentage, RouteTimes } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Text } from "@mobile-ui";
 import { FontType, formatTimeMsAsStandard, useTheme } from "@ui";
 
 interface Props {
     routeTimes$: BehaviorSubject<RouteTimes | null>;
-    progressMs$: BehaviorSubject<number>;
+    routeTimelinePositionMs$: BehaviorSubject<number>;
 }
 
 const styles = StyleSheet.create({
@@ -24,23 +24,23 @@ const styles = StyleSheet.create({
 
 export const PlayerSliderLabels: FC<Props> = ({
     routeTimes$,
-    progressMs$,
+    routeTimelinePositionMs$,
 }) => {
     const theme = useTheme();
     const [media] = useSubjectState(theme.media$);
     const [routeTimes] = useSubjectState(routeTimes$);
-    const [progressMs] = useSubjectState(progressMs$);
+    const [routeTimelinePositionMs] = useSubjectState(routeTimelinePositionMs$);
     const { individuator } = useMobileMachineWard();
     const [settings] = useSubjectState(individuator.settings$);
-    const progressPercentage = getProgressPercentage(progressMs, routeTimes);
+    const routeTimelinePercentage = getRouteTimelinePercentage(routeTimelinePositionMs, routeTimes);
 
     return (
         <View style={styles.container}>
             <Text variant="caption" fontType={FontType.Numeric} color="tertiary">
-                {formatTimeMsAsStandard(progressMs)}
+                {formatTimeMsAsStandard(routeTimelinePositionMs)}
             </Text>
             <Text variant="caption" fontType={FontType.Numeric} color="tertiary">
-                {progressPercentage.toFixed(0)}%
+                {routeTimelinePercentage.toFixed(0)}%
             </Text>
             <Text
                 variant="caption"
@@ -48,7 +48,7 @@ export const PlayerSliderLabels: FC<Props> = ({
                 color="tertiary"
                 style={styles.end}
             >
-                {!routeTimes ? "" : individuator.formatTimestamp(progressMs + routeTimes.startTimeEpoch, settings, { short: media.isLessThanMd })}
+                {!routeTimes ? "" : individuator.formatTimestamp(routeTimelinePositionMs + routeTimes.startTimeEpoch, settings, { short: media.isLessThanMd })}
             </Text>
         </View>
     );

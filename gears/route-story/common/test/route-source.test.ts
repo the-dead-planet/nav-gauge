@@ -1,6 +1,6 @@
 import { describe } from "mocha";
 import { expect } from "chai";
-import { getRouteSourceData, getSplineData, getSplineHeading } from "../src/tinkers";
+import { getRouteSourceData, getSplineData, getSplineHeading, getStaticRouteSourceData } from "../src/tinkers";
 import { GeoJson } from "@tinker-chest";
 import { RouteStoryState } from "../src";
 const route: GeoJson = {
@@ -42,15 +42,27 @@ const state: RouteStoryState = {
         autoRotate: true,
         rotation: 0,
         rotationAlignment: 'map',
+        colorTransitionLengthPercent: 0,
     }
 };
 const startTimeEpoch = Date.parse("2026-01-01T00:00:00Z");
+const getRouteFrame = (
+    routeTimelinePositionMs: number,
+    { createSplitLineGeometry = true }: { createSplitLineGeometry?: boolean } = {},
+) => getRouteSourceData({
+    state,
+    geojson: route,
+    startTimeEpoch,
+    routeTimelinePositionMs,
+    splineData: getSplineData(route),
+    createSplitLineGeometry,
+});
 
 describe("Route story gear", () => {
     describe("Route source data", () => {
         const splineData = getSplineData(route);
-        const expectValidLines = (progressMs: number) => {
-            const { line } = getRouteSourceData(state, route, startTimeEpoch, progressMs, splineData);
+        const expectValidLines = (routeTimelinePositionMs: number) => {
+            const { line } = getRouteFrame(routeTimelinePositionMs);
             expect(line.type).to.equal("FeatureCollection");
             for (const feature of (line as GeoJSON.FeatureCollection).features) {
                 if (feature.geometry.type === "LineString") {
@@ -64,22 +76,40 @@ describe("Route story gear", () => {
         });
 
         it("should produce two valid lines mid-route", () => {
-            const { line } = getRouteSourceData(state, route, startTimeEpoch, 90_000, splineData);
-            const lineStrings = (line as GeoJSON.FeatureCollection).features
+            const { line } = getRouteFrame(90_000);
+            const features = (line as GeoJSON.FeatureCollection).features;
+            const lineStrings = features
                 .filter((f): f is GeoJSON.Feature<GeoJSON.LineString> => f.geometry.type === "LineString");
             expect(lineStrings).to.have.lengthOf(2);
             expect(lineStrings[0].geometry.coordinates.length).to.be.greaterThan(1);
             expect(lineStrings[1].geometry.coordinates.length).to.be.greaterThan(1);
+            expect(features.filter((feature) => feature.geometry.type === 'Point').map((feature) => feature.properties?.status)).to.deep.equal(['before', 'before', 'after']);
         });
 
         it("should report the index of the segment that follows the current time", () => {
-            const { splitIndex } = getRouteSourceData(state, route, startTimeEpoch, 90_000, splineData);
+            const { splitIndex } = getRouteFrame(90_000);
             expect(splitIndex).to.equal(2);
         });
 
+        it("reports the fraction of route distance travelled", () => {
+            const { routeDistanceFraction } = getRouteFrame(90_000, { createSplitLineGeometry: false });
+
+            expect(routeDistanceFraction).to.be.closeTo(0.75, 0.001);
+        });
+
+        it("creates static line and point features from the route", () => {
+            const source = getStaticRouteSourceData(route, splineData);
+
+            expect((source.features[0].geometry as GeoJSON.LineString).coordinates).to.deep.equal([[0, 0], [1, 1], [2, 2]]);
+            const pointFractions = source.features.slice(1).map((feature) => feature.properties?.routeDistanceFraction as number);
+            expect(pointFractions[0]).to.equal(0);
+            expect(pointFractions[1]).to.be.closeTo(0.5, 0.001);
+            expect(pointFractions[2]).to.equal(1);
+        });
+
         it("provides finite headings at both route ends", () => {
-            expect(getRouteSourceData(state, route, startTimeEpoch, 0, splineData).heading).to.be.finite;
-            expect(getRouteSourceData(state, route, startTimeEpoch, 120_000, splineData).heading).to.be.finite;
+            expect(getRouteFrame(0).heading).to.be.finite;
+            expect(getRouteFrame(120_000).heading).to.be.finite;
         });
     });
 

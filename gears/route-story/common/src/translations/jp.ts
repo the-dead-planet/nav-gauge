@@ -43,6 +43,7 @@ const jp: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['jp'] 
     "viewport": 'ビューポート',
     "circle": '円',
     "opacity": '不透明度',
+    "color-transition-length": '色の遷移の長さ',
     "restore-defaults": 'デフォルトに戻す',
     "close": '閉じる',
     "slider": 'スライダー',

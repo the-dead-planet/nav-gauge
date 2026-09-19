@@ -49,8 +49,8 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
 
     private resetIfAtEnd = () => {
         const routeTimes = this.gear.routeTimes$.value;
-        if (routeTimes && this.gear.progressMs$.value >= routeTimes.duration) {
-            this.gear.progressMs$.next(0);
+        if (routeTimes && this.gear.routeTimelinePositionMs$.value >= routeTimes.duration) {
+            this.gear.routeTimelinePositionMs$.next(0);
             this.heading = undefined;
         }
     };
@@ -71,11 +71,12 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
         this.gear.apparatus.cartomancer.blinkingState$.next({ color: "error" });
     };
 
-    public updateProgress = (
+    public updateRouteTimelinePosition = (
         value: number,
         updateLayer?: (
             line: GeoJSON.GeoJSON,
             currentPoint: GeoJSON.Feature<GeoJSON.Point>,
+            routeDistanceFraction: number,
         ) => void,
     ) => {
         if (!this.gear.routeTimes$.value || isNaN(value)) {
@@ -84,26 +85,26 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
         if (this.gear.apparatus.chronoLens.isPlaying$.value) {
             this.gear.apparatus.chronoLens.isPlaying$.next(false);
         }
-        this.gear.progressMs$.next(value);
+        this.gear.routeTimelinePositionMs$.next(value);
         const splineData = this.gear.splineData$.value;
         if (this.gear.data$.value.geojson && splineData) {
             if (this.headingSplineData !== splineData) {
                 this.heading = undefined;
                 this.headingSplineData = splineData;
             }
-            const { currentPoint, line } = getRouteSourceData(
-                this.gear.state$.value,
-                this.gear.data$.value.geojson,
-                this.gear.routeTimes$.value.startTimeEpoch,
-                value,
+            const { currentPoint, line, routeDistanceFraction } = getRouteSourceData({
+                state: this.gear.state$.value,
+                geojson: this.gear.data$.value.geojson,
+                startTimeEpoch: this.gear.routeTimes$.value.startTimeEpoch,
+                routeTimelinePositionMs: value,
                 splineData,
-            );
+            });
             const rawHeading = currentPoint.properties?.heading;
             if (typeof rawHeading === 'number') {
                 this.heading = unwrapHeading(this.heading, rawHeading);
                 currentPoint.properties = { ...currentPoint.properties, heading: this.heading };
             }
-            updateLayer?.(line, currentPoint);
+            updateLayer?.(line, currentPoint, routeDistanceFraction);
         }
         if (this.gear.apparatus.chronoLens.isPlaying$.value) {
             setTimeout(() => this.gear.apparatus.chronoLens.isPlaying$.next(true), 0);
@@ -116,8 +117,9 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
 
     public animateRoute = (
         loadedImages: LoadedImageData<TImageData>[],
-        onUpdateLayer: (currentPoint: GeoJSON.Feature<GeoJSON.Point>, lines: GeoJSON.GeoJSON) => void,
+        onUpdateLayer: (currentPoint: GeoJSON.Feature<GeoJSON.Point>, lines: GeoJSON.GeoJSON, routeDistanceFraction: number) => void,
         onUpdateMapCamera: (position: GeoJSON.Position, bearing: number) => void,
+        { createSplitLineGeometry = true }: { createSplitLineGeometry?: boolean } = {},
     ) => {
         const isPlaying = this.gear.apparatus.chronoLens.isPlaying$.value;
         const geojson = this.gear.data$.value.geojson;
@@ -143,8 +145,8 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
             return f ? new Date(f.properties.time).valueOf() : null;
         });
         let last = performance.now();
-        let currentProgressMs = this.gear.progressMs$.value;
-        let nextImageIndex = nextImageTimes.findIndex((time) => time !== null && time >= startTimeEpoch + currentProgressMs);
+        let routeTimelinePositionMs = this.gear.routeTimelinePositionMs$.value;
+        let nextImageIndex = nextImageTimes.findIndex((time) => time !== null && time >= startTimeEpoch + routeTimelinePositionMs);
 
         const animate = () => {
             const {
@@ -159,20 +161,27 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
             const now = performance.now();
             const dt = now - last;
             last = now;
-            currentProgressMs += dt * (routeDuration / routePlaybackDuration);
-            if (startTimeEpoch + currentProgressMs >= endTimeEpoch) {
+            routeTimelinePositionMs += dt * (routeDuration / routePlaybackDuration);
+            if (startTimeEpoch + routeTimelinePositionMs >= endTimeEpoch) {
                 this.handleRouteEnd();
                 
                 return;
             }
             const nextImage: LoadedImageData<TImageData> | undefined = sortedImageFeatures[nextImageIndex];
             const nextImageTime = nextImageIndex >= 0 ? nextImageTimes[nextImageIndex] : null;
-            const { currentPoint, line, heading: rawHeading } = getRouteSourceData(this.gear.state$.value, geojson, startTimeEpoch, currentProgressMs, splineData);
+            const { currentPoint, line, heading: rawHeading, routeDistanceFraction } = getRouteSourceData({
+                state: this.gear.state$.value,
+                geojson,
+                startTimeEpoch,
+                routeTimelinePositionMs,
+                splineData,
+                createSplitLineGeometry,
+            });
             this.heading = easeHeading(this.heading, rawHeading, dt, easeDuration);
             currentPoint.properties = { ...currentPoint.properties, heading: this.heading };
-            onUpdateLayer(currentPoint, line);
+            onUpdateLayer(currentPoint, line, routeDistanceFraction);
 
-            if (this.animation !== undefined && nextImage && nextImageTime !== null && nextImageTime <= startTimeEpoch + currentProgressMs) {
+            if (this.animation !== undefined && nextImage && nextImageTime !== null && nextImageTime <= startTimeEpoch + routeTimelinePositionMs) {
                 nextImageIndex = nextImageIndex + 1;
                 cancelAnimationFrame(this.animation);
 
@@ -208,8 +217,7 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
                 onUpdateMapCamera(lngLat, cameraAngle + currentPointHeading);
             }
 
-            // TODO: Calculate % of geometry done based on current progressMs and update paint property line gradient instead of all data.
-            this.gear.progressMs$.next(currentProgressMs);
+            this.gear.routeTimelinePositionMs$.next(routeTimelinePositionMs);
             this.animation = requestAnimationFrame(animate);
         };
 

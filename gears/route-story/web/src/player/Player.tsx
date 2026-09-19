@@ -19,10 +19,11 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & WebRouteStoryProps> = (
     data$,
     routeTimes$,
     images$,
-    progressMs$,
+    routeTimelinePositionMs$,
     playerOperator,
     fitBoundsHandler,
     animatrix,
+    state$,
 }) => {
     const theme = useTheme();
     const [media] = useSubjectState(theme.media$);
@@ -43,10 +44,11 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & WebRouteStoryProps> = (
             data$={data$}
             routeTimes$={routeTimes$}
             images$={images$}
-            progressMs$={progressMs$}
+            routeTimelinePositionMs$={routeTimelinePositionMs$}
             playerOperator={playerOperator}
             fitBoundsHandler={fitBoundsHandler}
             animatrix={animatrix}
+            state$={state$}
             className={!media.isLessThanMd ? styles['padding-top'] : undefined}
         />
     );

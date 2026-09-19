@@ -15,6 +15,15 @@ export interface RouteTimes {
     duration: number;
 }
 
+export interface RouteSourceData {
+    line: GeoJSON.GeoJSON;
+    currentPoint: GeoJSON.Feature<GeoJSON.Point>;
+    splitIndex: number;
+    fraction: number;
+    heading: number;
+    routeDistanceFraction: number;
+}
+
 export interface RouteStoryState {
     /**
      * Applied to the route line part after current point.
@@ -46,6 +55,7 @@ export interface CurrentPointStyle {
     autoRotate: boolean;
     rotation: number;
     rotationAlignment: 'map' | 'viewport';
+    colorTransitionLengthPercent: number;
 }
 
 export const currentPointIconNames = [
@@ -100,7 +110,7 @@ export interface RouteStoryProps<TMap, TChronoLens extends ChronoLens, TFile ext
     state$: BehaviorSubject<RouteStoryState>;
     routeTimes$: BehaviorSubject<RouteTimes | null>;
     images$: BehaviorSubject<MarkerImage<TImageData>[]>;
-    progressMs$: BehaviorSubject<number>;
+    routeTimelinePositionMs$: BehaviorSubject<number>;
     fileOperator: FileOperator<TMap, TChronoLens, TFile, TImageData>;
     playerOperator: PlayerOperator<TMap, TChronoLens, TFile, TImageData>;
     fitBoundsHandler: (map: TMap, boundingBox?: GeoJSON.BBox) => void;
@@ -155,6 +165,7 @@ export enum RouteStoryTranslationKey {
     Viewport = 'viewport',
     Circle = 'circle',
     Opacity = 'opacity',
+    ColorTransitionLength = 'color-transition-length',
     RestoreDefaults = 'restore-defaults',
     Close = 'close',
     Slider = 'slider',

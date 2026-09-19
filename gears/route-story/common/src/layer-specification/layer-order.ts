@@ -2,6 +2,12 @@ import { imageLayerIds } from "./images-layers";
 import { routeLayerIds } from "./route-layers";
 
 export const layerOrder: string[] = [
-    ...Object.values(routeLayerIds),
+    routeLayerIds.lineInactiveOutline,
+    routeLayerIds.lineActiveOutline,
+    routeLayerIds.lineInactive,
+    routeLayerIds.lineActive,
+    routeLayerIds.pointsInactive,
+    routeLayerIds.pointsActive,
+    routeLayerIds.currentPoint,
     ...Object.values(imageLayerIds)
 ];

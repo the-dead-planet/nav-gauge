@@ -41,7 +41,7 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
     public readonly state$ = new BehaviorSubject<RouteStoryState>(defaultRouteStoryState);
     public readonly routeTimes$ = new BehaviorSubject<RouteTimes | null>(null);
     public readonly images$ = new BehaviorSubject<MarkerImage<TImageData>[]>([]);
-    public readonly progressMs$ = new BehaviorSubject(0);
+    public readonly routeTimelinePositionMs$ = new BehaviorSubject(0);
 
     /**
      * Update of a preset will trigger control state update to predefined values which user can later further configure.
@@ -71,7 +71,7 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
 
     private subscribeToDataUpdates = (): Subscription => {
         return this.data$.subscribe(({ geojson }) => {
-            this.progressMs$.next(0);
+            this.routeTimelinePositionMs$.next(0);
             this.splineData$.next(geojson ? getSplineData(geojson) : null);
 
             if (!geojson?.features[0]) {
@@ -139,7 +139,7 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
         state$: this.state$,
         routeTimes$: this.routeTimes$,
         images$: this.images$,
-        progressMs$: this.progressMs$,
+        routeTimelinePositionMs$: this.routeTimelinePositionMs$,
         fileOperator: this.fileOperator,
         playerOperator: this.playerOperator,
         fitBoundsHandler: this.fitBoundsHandler,

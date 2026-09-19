@@ -33,6 +33,7 @@ export const defaultRouteStoryState: RouteStoryState = {
         autoRotate: true,
         rotation: 0,
         rotationAlignment: 'map',
+        colorTransitionLengthPercent: 0,
     },
 };
 
@@ -76,6 +77,7 @@ export const getDefaultRouteStoryState = (theme: Theme): RouteStoryState => {
             autoRotate: true,
             rotation: 0,
             rotationAlignment: 'map',
+            colorTransitionLengthPercent: 0,
         },
     };
 };
@@ -105,6 +107,10 @@ export const routeCameraLayerIds = {
 }
 
 type RouteStatus = 'before' | 'after';
+type RouteLineColorInterpolation = ['interpolate', ['linear'], ['line-progress'], number, string, number, string];
+type RouteLineGradient =
+    | ['step', ['line-progress'], string, number, string]
+    | ['case', ['<=' | '>', ['line-progress'], number], RouteLineColorInterpolation, string];
 type RouteStatusFilter = ['==', GetProperty, RouteStatus];
 type HighlightOrStatusColor = [
     'case',
@@ -112,6 +118,7 @@ type HighlightOrStatusColor = [
     ['==', GetProperty, RouteStatus], string,
     string
 ];
+type HighlightColor = ['case', EqualBooleanFeatureState, string, string];
 
 export interface RouteLineLayerSpec {
     id: string;
@@ -123,7 +130,8 @@ export interface RouteLineLayerSpec {
         'line-join': LineCap;
     };
     paint: {
-        'line-color': string;
+        'line-color'?: string;
+        'line-gradient'?: RouteLineGradient;
         'line-width': number;
         'line-opacity': number;
         'line-dasharray'?: number[];
@@ -134,9 +142,9 @@ export interface RouteCircleLayerSpec {
     id: string;
     type: 'circle';
     source: string;
-    filter?: RouteStatusFilter;
+    filter?: RouteStatusFilter | ['<=', GetProperty, number] | ['>', GetProperty, number];
     paint: {
-        'circle-color': string | HighlightOrStatusColor;
+        'circle-color': string | HighlightOrStatusColor | HighlightColor;
         'circle-radius': number;
     };
 }
@@ -203,8 +211,76 @@ export const getRouteLineLayers = (state: RouteStoryState): (RouteLineLayerSpec 
         layers.push(getLinePart('after', state.routeStyleInactive, false));
     }
 
-    return layers;
+    const order = [
+        routeLayerIds.lineInactiveOutline,
+        routeLayerIds.lineActiveOutline,
+        routeLayerIds.lineInactive,
+        routeLayerIds.lineActive,
+    ];
+
+    return layers.sort((left, right) => order.indexOf(left.id) - order.indexOf(right.id));
 };
+
+export const getProgressRouteLineLayers = (
+    state: RouteStoryState,
+    routeDistanceFraction: number,
+): RouteLineLayerSpec[] => {
+    const layers = getRouteLineLayers(state).filter((layer): layer is RouteLineLayerSpec => layer.type === 'line');
+    const order = [
+        routeLayerIds.lineInactiveOutline,
+        routeLayerIds.lineActiveOutline,
+        routeLayerIds.lineInactive,
+        routeLayerIds.lineActive,
+    ];
+    const orderedLayers = layers.sort((left, right) => order.indexOf(left.id) - order.indexOf(right.id));
+
+    return orderedLayers.map((layer) => {
+        const status: RouteStatus = layer.id === routeLayerIds.lineActive || layer.id === routeLayerIds.lineActiveOutline
+            ? 'before'
+            : 'after';
+        const isOutline = layer.id === routeLayerIds.lineActiveOutline || layer.id === routeLayerIds.lineInactiveOutline;
+        const activeColor = isOutline ? state.routeStyleActive.outlineColor : state.routeStyleActive.color;
+        const inactiveColor = isOutline ? state.routeStyleInactive.outlineColor : state.routeStyleInactive.color;
+        const { filter: _filter, ...layerWithoutFilter } = layer;
+        const { 'line-color': _lineColor, ...paint } = layer.paint;
+
+        return {
+            ...layerWithoutFilter,
+            paint: {
+                ...paint,
+                'line-gradient': getRouteLineGradient(
+                    status,
+                    activeColor,
+                    inactiveColor,
+                    routeDistanceFraction,
+                    state.currentPoint.colorTransitionLengthPercent / 100,
+                ),
+            },
+        };
+    });
+};
+
+export const getRouteLineGradient = (
+    status: RouteStatus,
+    activeColor: string,
+    inactiveColor: string,
+    routeDistanceFraction: number,
+    transitionLength: number,
+): RouteLineGradient => {
+    const transparent = 'rgba(0, 0, 0, 0)';
+    if (transitionLength <= 0) {
+        return ['step', ['line-progress'], status === 'before' ? activeColor : transparent, routeDistanceFraction, status === 'before' ? transparent : inactiveColor];
+    }
+    const halfTransition = transitionLength / 2;
+    const start = Math.max(0, routeDistanceFraction - halfTransition);
+    const end = Math.min(1, routeDistanceFraction + halfTransition);
+    const colorTransition: RouteLineColorInterpolation = ['interpolate', ['linear'], ['line-progress'], start, activeColor, end, inactiveColor];
+
+    return ['case', [status === 'before' ? '<=' : '>', ['line-progress'], routeDistanceFraction], colorTransition, transparent];
+};
+
+export const requiresSplitLineGeometry = (state: RouteStoryState): boolean =>
+    state.routeStyleActive.variant === 'dashed' || state.routeStyleInactive.variant === 'dashed';
 
 export const getRoutePointsLayers = (state: RouteStoryState): RouteCircleLayerSpec[] => {
     const layers: RouteCircleLayerSpec[] = [];
@@ -250,6 +326,28 @@ export const getRoutePointsLayers = (state: RouteStoryState): RouteCircleLayerSp
 
     return layers;
 };
+
+export const getProgressRoutePointsLayers = (
+    state: RouteStoryState,
+    routeDistanceFraction: number,
+): RouteCircleLayerSpec[] => getRoutePointsLayers(state).map((layer) => {
+    const active = layer.id === routeLayerIds.pointsActive;
+    const style = active ? state.routeStyleActive : state.routeStyleInactive;
+
+    return {
+        ...layer,
+        filter: [active ? '<=' : '>', ['get', 'routeDistanceFraction'], routeDistanceFraction],
+        paint: {
+            ...layer.paint,
+            'circle-color': [
+                'case',
+                ['==', ['feature-state', FeatureStateProps.Highlight], true],
+                'red',
+                style.pointColor,
+            ],
+        },
+    };
+});
 
 export const getCurrentPointImageName = (icon: string): string => `route-current-point-${icon}`;
 

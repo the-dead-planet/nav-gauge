@@ -38,6 +38,7 @@ describe("Current point layer", () => {
                 autoRotate: false,
                 rotation: 25,
                 rotationAlignment: 'viewport',
+                colorTransitionLengthPercent: 0,
             },
         });
 

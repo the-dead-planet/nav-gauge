@@ -43,6 +43,7 @@ const nl: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['nl'] 
     "viewport": 'Weergavevenster',
     "circle": 'Cirkel',
     "opacity": 'Transparantie',
+    "color-transition-length": 'Lengte van kleurovergang',
     "restore-defaults": 'Standaardwaarden herstellen',
     "close": 'Sluiten',
     "slider": 'Schuif',

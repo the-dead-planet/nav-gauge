@@ -14,6 +14,9 @@ const styles = StyleSheet.create({
     section: {
         gap: 4,
     },
+    'third-width': {
+        width: '33.333%',
+    },
     'appearance-grid': {
         flexDirection: 'row',
         gap: 12,
@@ -47,6 +50,7 @@ interface Props {
     translationKey: typeof RouteStoryTranslationKey;
     value: CurrentPointStyle;
     onChange: (patch: Partial<CurrentPointStyle>) => void;
+    colorTransitionDisabled: boolean;
 }
 
 const iconOptions = currentPointIconNames.map((icon: CurrentPointIconName) => ({
@@ -60,9 +64,9 @@ const rotationAlignmentOptions = (mapLabel: string, viewportLabel: string): { va
     { value: 'viewport', label: viewportLabel },
 ];
 
-export const CurrentPointControls: FC<Props> = ({ gearId, translationKey, value, onChange }) => {
+export const CurrentPointControls: FC<Props> = ({ gearId, translationKey, value, onChange, colorTransitionDisabled }) => {
     const { namespace, translationKey: machineTranslationKey } = useMobileMachineWard();
-    const [colorLabel, sizeLabel, iconLabel, autoRotateLabel, onLabel, offLabel, rotationLabel, rotationAlignmentLabel, mapLabel, viewportLabel] = useMultipleTranslations([
+    const [colorLabel, sizeLabel, iconLabel, autoRotateLabel, onLabel, offLabel, rotationLabel, rotationAlignmentLabel, mapLabel, viewportLabel, colorTransitionLengthLabel] = useMultipleTranslations([
         { n: gearId, t: translationKey.Color },
         { n: gearId, t: translationKey.Size },
         { n: gearId, t: translationKey.Icon },
@@ -73,6 +77,7 @@ export const CurrentPointControls: FC<Props> = ({ gearId, translationKey, value,
         { n: gearId, t: translationKey.RotationAlignment },
         { n: gearId, t: translationKey.Map },
         { n: gearId, t: translationKey.Viewport },
+        { n: gearId, t: translationKey.ColorTransitionLength },
     ]);
 
     return (
@@ -102,6 +107,10 @@ export const CurrentPointControls: FC<Props> = ({ gearId, translationKey, value,
                     <Label>{`${autoRotateLabel}\n${value.autoRotate ? onLabel : offLabel}`}</Label>
                     <ToggleSwitch size="xs" checked={value.autoRotate} onChange={(autoRotate) => onChange({ autoRotate })} />
                 </View>
+            </View>
+            <View style={[styles.section, styles['third-width']]}>
+                <Label disabled={colorTransitionDisabled}>{colorTransitionLengthLabel}</Label>
+                <NumberInput ariaLabel={colorTransitionLengthLabel} disabled={colorTransitionDisabled} size="xs" min={0} max={100} step={1} value={value.colorTransitionLengthPercent} onChange={(colorTransitionLengthPercent) => onChange({ colorTransitionLengthPercent })} unit="%" />
             </View>
         </View>
     );

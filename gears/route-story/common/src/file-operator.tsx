@@ -17,7 +17,7 @@ export class FileOperator<TMap, TChronoLens extends ChronoLens, TFile extends Ro
     public resetStory = async (): Promise<void> => {
         this.isLoading$.next(true);
         await this.gear.onCleanupStory(this.gear.data$.value, this.gear.images$.value);
-        this.gear.progressMs$.next(0);
+        this.gear.routeTimelinePositionMs$.next(0);
         this.gear.data$.next({});
         this.gear.images$.next([]);
         this.gear.routeTimes$.next(null);

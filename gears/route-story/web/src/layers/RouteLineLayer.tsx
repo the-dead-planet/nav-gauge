@@ -1,28 +1,32 @@
 import { FC, useMemo } from "react";
 import * as maplibregl from "maplibre-gl";
 import { MapLayerData, MapSourceAndLayers, } from "@web-apparatus";
-import { layerOrder, routeSourceIds, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { getWebRouteLineLayers, getWebRoutePointsLayers } from "./route-layers";
+import { getRouteLineLayers, layerOrder, routeSourceIds, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { getWebProgressRoutePointsLayers, getWebRouteLineLayers, getWebRoutePointsLayers } from "./route-layers";
 
 interface Props {
     map: maplibregl.Map;
     source: GeoJSON.GeoJSON;
     state: RouteStoryState;
+    routeDistanceFraction?: number;
 }
 
 export const RouteLineLayer: FC<Props> = ({
     map,
     source,
     state,
+    routeDistanceFraction,
 }) => {
     const mapLayerData = useMemo((): MapLayerData => {
         const routeLayers: MapLayerData['layers'] = [];
 
         if (state.routeStyleActive.showRouteLine || state.routeStyleInactive.showRouteLine) {
-            routeLayers.push(...getWebRouteLineLayers(state));
+            routeLayers.push(...routeDistanceFraction === undefined ? getRouteLineLayers(state) : getWebRouteLineLayers(state, routeDistanceFraction));
         }
         if (state.routeStyleActive.showRoutePoints || state.routeStyleInactive.showRoutePoints) {
-            routeLayers.push(...getWebRoutePointsLayers(state));
+            routeLayers.push(...routeDistanceFraction === undefined
+                ? getWebRoutePointsLayers(state)
+                : getWebProgressRoutePointsLayers(state, routeDistanceFraction));
         }
 
         return {
@@ -30,7 +34,8 @@ export const RouteLineLayer: FC<Props> = ({
             source: {
                 type: 'geojson',
                 data: source,
-                promoteId: 'id'
+                promoteId: 'id',
+                lineMetrics: routeDistanceFraction !== undefined,
             },
             layers: routeLayers,
         };

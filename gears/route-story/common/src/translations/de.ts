@@ -43,6 +43,7 @@ const de: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['de'] 
     "viewport": 'Ansichtsfenster',
     "circle": 'Kreis',
     "opacity": 'Deckkraft',
+    "color-transition-length": 'Länge des Farbübergangs',
     "restore-defaults": 'Standardwerte wiederherstellen',
     "close": 'Schließen',
     "slider": 'Schieberegler',

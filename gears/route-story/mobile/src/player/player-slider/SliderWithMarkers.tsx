@@ -3,9 +3,9 @@ import { StyleSheet, View } from "react-native";
 import { BehaviorSubject } from "rxjs";
 import { MarkerImage } from "@apparatus";
 import { ParsingResultWithError, useSubjectState } from "@tinker-chest";
-import { RouteStoryTranslationKey, RouteTimes, Animatrix } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { RouteStoryTranslationKey, RouteTimes, Animatrix, RouteStoryState, requiresSplitLineGeometry } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Slider } from "@mobile-ui";
-import { currentPointRef$, linesRef$ } from "../../layers/RouteLayer";
+import { currentPointRef$, linesRef$, routeDistanceFractionRef$ } from "../../layers/RouteLayer";
 import { SliderMarkers } from "./SliderMarkers";
 import { PlayerSliderLabels } from "./PlayerSliderLabels";
 import { MobileMarkerImageData } from "../../images/image-parser";
@@ -19,9 +19,10 @@ interface Props {
     data$: BehaviorSubject<ParsingResultWithError>;
     routeTimes$: BehaviorSubject<RouteTimes | null>;
     images$: BehaviorSubject<MarkerImage<MobileMarkerImageData>[]>;
-    progressMs$: BehaviorSubject<number>;
+    routeTimelinePositionMs$: BehaviorSubject<number>;
     playerOperator: MobilePlayerOperator;
     animatrix: Animatrix;
+    state$: BehaviorSubject<RouteStoryState>;
 }
 
 const styles = StyleSheet.create({
@@ -38,17 +39,21 @@ export const SliderWithMarkers: FC<Props> = ({
     data$,
     routeTimes$,
     images$,
-    progressMs$,
+    routeTimelinePositionMs$,
     playerOperator,
     animatrix,
+    state$,
 }) => {
     const [routeTimes] = useSubjectState(routeTimes$);
-    const [progressMs] = useSubjectState(progressMs$);
+    const [routeTimelinePositionMs] = useSubjectState(routeTimelinePositionMs$);
     const [showImageMarkers] = useSubjectState(playerOperator.showImageMarkers$);
 
-    const handleProgressChange = (value: number) => {
-        playerOperator.updateProgress(value, (line, currentPoint) => {
-            linesRef$.next(line);
+    const handleRouteTimelinePositionChange = (value: number) => {
+        playerOperator.updateRouteTimelinePosition(value, (line, currentPoint, routeDistanceFraction) => {
+            if (requiresSplitLineGeometry(state$.value)) {
+                linesRef$.next(line);
+            }
+            routeDistanceFractionRef$.next(routeDistanceFraction);
             currentPointRef$.next(currentPoint);
         });
     };
@@ -66,15 +71,15 @@ export const SliderWithMarkers: FC<Props> = ({
                 />
             ) : null}
             <Slider
-                value={progressMs}
+                value={routeTimelinePositionMs}
                 min={0}
                 max={routeTimes?.duration ?? 1}
                 step={1}
-                onChange={handleProgressChange}
+                onChange={handleRouteTimelinePositionChange}
                 color="tertiary"
                 size="sm"
             />
-            <PlayerSliderLabels progressMs$={progressMs$} routeTimes$={routeTimes$} />
+            <PlayerSliderLabels routeTimelinePositionMs$={routeTimelinePositionMs$} routeTimes$={routeTimes$} />
         </View>
     );
 };

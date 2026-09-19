@@ -43,6 +43,7 @@ const ru: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['ru'] 
     "viewport": 'Экран',
     "circle": 'Круг',
     "opacity": 'Непрозрачность',
+    "color-transition-length": 'Длина цветового перехода',
     "restore-defaults": 'Восстановить по умолчанию',
     "close": 'Закрыть',
     "slider": 'Ползунок',
