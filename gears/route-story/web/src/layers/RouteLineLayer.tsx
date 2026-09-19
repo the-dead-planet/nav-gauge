@@ -1,8 +1,7 @@
 import { FC, useMemo } from "react";
 import * as maplibregl from "maplibre-gl";
 import { MapLayerData, MapSourceAndLayers, } from "@web-apparatus";
-import { getRouteLineLayers, layerOrder, routeSourceIds, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { getWebProgressRoutePointsLayers, getWebRouteLineLayers, getWebRoutePointsLayers } from "./route-layers";
+import { getProgressRouteLineLayers, getProgressRoutePointsLayers, getRouteLineLayers, getRoutePointsLayers, layerOrder, routeSourceIds, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 
 interface Props {
     map: maplibregl.Map;
@@ -21,12 +20,12 @@ export const RouteLineLayer: FC<Props> = ({
         const routeLayers: MapLayerData['layers'] = [];
 
         if (state.routeStyleActive.showRouteLine || state.routeStyleInactive.showRouteLine) {
-            routeLayers.push(...routeDistanceFraction === undefined ? getRouteLineLayers(state) : getWebRouteLineLayers(state, routeDistanceFraction));
+            routeLayers.push(...routeDistanceFraction === undefined ? getRouteLineLayers(state) : getProgressRouteLineLayers(state, routeDistanceFraction));
         }
         if (state.routeStyleActive.showRoutePoints || state.routeStyleInactive.showRoutePoints) {
             routeLayers.push(...routeDistanceFraction === undefined
-                ? getWebRoutePointsLayers(state)
-                : getWebProgressRoutePointsLayers(state, routeDistanceFraction));
+                ? getRoutePointsLayers(state)
+                : getProgressRoutePointsLayers(state, routeDistanceFraction));
         }
 
         return {

@@ -1,4 +1,3 @@
-import { formatTimeMsAsStandard } from "@ui";
 import { RouteTimes } from "../model";
 
 /**
@@ -10,8 +9,4 @@ export const getRouteTimelinePercentage = (routeTimelinePositionMs: number, rout
         return 0;
     }
     return (routeTimelinePositionMs / routeTimes.duration * 100);
-};
-
-export const formatRouteTimelinePosition = (routeTimelinePositionMs: number, routeTimelinePercentage: number): string => {
-    return `${formatTimeMsAsStandard(routeTimelinePositionMs)} (${routeTimelinePercentage.toFixed(0)}%)`;
 };

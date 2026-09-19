@@ -195,8 +195,8 @@ const getLineDashArray = (style: RouteStoryLineStyle, isOutline: boolean): numbe
     return [2 * (style.width / dashWidth), 2 * (style.width / dashWidth)];
 };
 
-export const getRouteLineLayers = (state: RouteStoryState): (RouteLineLayerSpec | RouteCircleLayerSpec)[] => {
-    const layers: (RouteLineLayerSpec | RouteCircleLayerSpec)[] = [];
+export const getRouteLineLayers = (state: RouteStoryState): RouteLineLayerSpec[] => {
+    const layers: RouteLineLayerSpec[] = [];
 
     if (state.routeStyleActive.showRouteLine) {
         if (state.routeStyleActive.outlineWidth > 0) {
@@ -225,16 +225,7 @@ export const getProgressRouteLineLayers = (
     state: RouteStoryState,
     routeDistanceFraction: number,
 ): RouteLineLayerSpec[] => {
-    const layers = getRouteLineLayers(state).filter((layer): layer is RouteLineLayerSpec => layer.type === 'line');
-    const order = [
-        routeLayerIds.lineInactiveOutline,
-        routeLayerIds.lineActiveOutline,
-        routeLayerIds.lineInactive,
-        routeLayerIds.lineActive,
-    ];
-    const orderedLayers = layers.sort((left, right) => order.indexOf(left.id) - order.indexOf(right.id));
-
-    return orderedLayers.map((layer) => {
+    return getRouteLineLayers(state).map((layer) => {
         const status: RouteStatus = layer.id === routeLayerIds.lineActive || layer.id === routeLayerIds.lineActiveOutline
             ? 'before'
             : 'after';

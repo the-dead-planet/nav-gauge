@@ -1,9 +1,8 @@
 import { FC, useEffect, useMemo, useState } from "react";
 import * as maplibregl from "maplibre-gl";
 import { MapLayerData, MapSourceAndLayers, } from "@web-apparatus";
-import { getCurrentPointImageName, routeSourceIds, layerOrder, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { getCurrentPointImageName, getCurrentPointLayers, routeSourceIds, layerOrder, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Icons } from "@ui";
-import { getWebCurrentPointLayers } from "./route-layers";
 
 interface Props {
     map: maplibregl.Map;
@@ -44,7 +43,7 @@ export const RouteCurrentPointLayer: FC<Props> = ({
             type: 'geojson',
             data: source,
         },
-        layers: imageLoaded ? getWebCurrentPointLayers(state) : [],
+        layers: imageLoaded ? getCurrentPointLayers(state) : [],
     }), [imageLoaded, source, state]);
 
     return (

@@ -1,7 +1,6 @@
 import { expect } from "chai";
 import { describe, it } from "mocha";
-import { defaultRouteStoryState, getProgressRoutePointsLayers, getRouteLineGradient, requiresSplitLineGeometry } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { getWebRouteLineLayers } from "../src/layers/route-layers";
+import { defaultRouteStoryState, getProgressRouteLineLayers, getProgressRoutePointsLayers, getRouteLineGradient, requiresSplitLineGeometry } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 
 describe("Web route line layers", () => {
     it("creates complementary active and inactive distance masks", () => {
@@ -14,7 +13,7 @@ describe("Web route line layers", () => {
     });
 
     it("omits feature filters from the static route layers", () => {
-        for (const layer of getWebRouteLineLayers(defaultRouteStoryState, 0.4)) {
+        for (const layer of getProgressRouteLineLayers(defaultRouteStoryState, 0.4)) {
             expect(layer).not.to.have.property('filter');
         }
     });

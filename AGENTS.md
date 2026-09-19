@@ -57,8 +57,6 @@ See `.opencode/rules/testing.mdc`.
 
 Always run `yarn typecheck:web` (or `yarn typecheck:mobile:once` for mobile changes), `yarn lint`, and relevant tests after every code edit.
 
-Before completing a task, assess whether discoveries or decisions would improve `AGENTS.md`, a relevant README, or `docs/`. Offer specific documentation or agent-instruction updates when they would preserve useful project knowledge; do not propose documentation churn for details already clear from the code.
-
 ## Other
 
 - Do not commit secrets or `.env` files

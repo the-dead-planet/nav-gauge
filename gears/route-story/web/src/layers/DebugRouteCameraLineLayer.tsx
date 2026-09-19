@@ -1,8 +1,7 @@
 import { FC, useMemo } from "react";
 import * as maplibregl from "maplibre-gl";
 import { MapLayerData, MapSourceAndLayers } from "@web-apparatus";
-import { layerOrder, routeSourceIds, SplineData } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { cameraLineLayers } from "./route-layers";
+import { getCameraLineLayers, layerOrder, routeSourceIds, SplineData } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 
 interface Props {
     map: maplibregl.Map;
@@ -24,7 +23,7 @@ export const DebugRouteCameraLineLayer: FC<Props> = ({
                 },
                 promoteId: 'id'
             },
-            layers: cameraLineLayers,
+            layers: getCameraLineLayers(),
         };
     }, [spline]);
 
