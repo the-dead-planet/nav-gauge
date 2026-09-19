@@ -43,7 +43,6 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
         }
 
         const frame = getRouteSourceData({
-            state,
             geojson,
             startTimeEpoch: routeTimes.startTimeEpoch,
             routeTimelinePositionMs, // Not a dependency of this memo, data is updated later in the animateRoute hook
@@ -51,7 +50,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
             createSplitLineGeometry,
         });
         return { ...frame, line: createSplitLineGeometry ? frame.line : getStaticRouteSourceData(geojson, splineData) };
-    }, [geojson, routeTimes, splineData, state]);
+    }, [geojson, routeTimes, splineData, createSplitLineGeometry]);
 
     useEffect(() => {
         if (!isPlaying || !geojson || !routeTimes) {
@@ -87,7 +86,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
             {settings.debugMode && splineData ? (
                 <DebugRouteCameraLineLayer map={map} spline={splineData} />
             ) : null}
-            <RouteLineLayer map={map} source={sources.line} state={state} routeDistanceFraction={createSplitLineGeometry ? undefined : sources.routeDistanceFraction} />
+            <RouteLineLayer key={createSplitLineGeometry ? 'split' : 'static'} map={map} source={sources.line} state={state} routeDistanceFraction={createSplitLineGeometry ? undefined : sources.routeDistanceFraction} createSplitLineGeometry={createSplitLineGeometry} />
             <RouteCurrentPointLayer map={map} source={sources.currentPoint} state={state} />
         </>
     );

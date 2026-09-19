@@ -7,10 +7,9 @@ import { bezierSpline } from "@turf/bezier-spline";
 import turfLength from "@turf/length";
 import { LoadedImageData } from "@apparatus";
 import { emptyCollection, FeatureProperties, GeoJson } from "@tinker-chest";
-import { RouteSourceData, RouteStoryState, RouteTimes } from "../model";
+import { RouteSourceData, RouteTimes } from "../model";
 
 interface RouteSourceDataParameters {
-    state: RouteStoryState;
     geojson: GeoJson;
     startTimeEpoch: number;
     routeTimelinePositionMs: number;
@@ -19,7 +18,6 @@ interface RouteSourceDataParameters {
 }
 
 export const getRouteSourceData = ({
-    state: { routeStyleActive, routeStyleInactive, currentPoint: currentPointStyle },
     geojson,
     startTimeEpoch,
     routeTimelinePositionMs,
@@ -34,11 +32,7 @@ export const getRouteSourceData = ({
     const { currentPoint, fraction } = getCurrentPoint(geojson, splitIndex, currentTime);
     const heading = getSplineHeading(splineData, splitIndex, fraction);
     const routeDistanceFraction = getRouteDistanceFraction(splineData, splitIndex, fraction);
-    currentPoint.properties = { ...currentPoint.properties, heading, autoRotate: currentPointStyle.autoRotate };
-
-    const anyVisible =
-        routeStyleActive.showRouteLine || routeStyleActive.showRoutePoints ||
-        routeStyleInactive.showRouteLine || routeStyleInactive.showRoutePoints;
+    currentPoint.properties = { ...currentPoint.properties, heading };
 
     return {
         splitIndex,
@@ -46,7 +40,7 @@ export const getRouteSourceData = ({
         heading,
         routeDistanceFraction,
         currentPoint,
-        line: createSplitLineGeometry && anyVisible
+        line: createSplitLineGeometry
             ? {
                 ...geojson,
                 features: [

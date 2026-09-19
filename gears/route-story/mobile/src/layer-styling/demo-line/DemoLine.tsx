@@ -84,22 +84,24 @@ export const DemoLine: FC<Props> = ({
     const inactive = state.routeStyleInactive;
     const activeWidth = Math.min(active.width, 10);
     const inactiveWidth = Math.min(inactive.width, 10);
+    const activeOutlineWidth = activeWidth + active.outlineWidth * 2;
+    const inactiveOutlineWidth = inactiveWidth + inactive.outlineWidth * 2;
 
     return (
         <View style={styles['demo-line']} pointerEvents="box-none">
             <Pressable ref={activeRef} style={styles.segment} accessibilityRole="button" accessibilityLabel={activeMenuLabel} onPress={onActiveClick}><DemoLineSegment {...state.routeStyleActive} /></Pressable>
             <Pressable ref={inactiveRef} style={styles.segment} accessibilityRole="button" accessibilityLabel={inactiveMenuLabel} onPress={onInactiveClick}><DemoLineSegment {...state.routeStyleInactive} /></Pressable>
             {transitionLengthPercent > 0 && active.showRouteLine && inactive.showRouteLine ? (
-                <View pointerEvents="none" style={[styles.transition, { left: `${50 - transitionLengthPercent / 2}%`, width: `${transitionLengthPercent}%` }]}>
+                <View pointerEvents="none" style={[styles.transition, { left: `${50 - transitionLengthPercent}%`, width: `${transitionLengthPercent}%` }]}>
                     <View style={styles['transition-line']}>
                         {transitionStrips.map((fraction, index) => <View key={index} style={[styles['transition-strip'], {
-                            height: fraction <= 0.5 ? activeWidth + active.outlineWidth * 2 : inactiveWidth + inactive.outlineWidth * 2,
+                            height: activeOutlineWidth + (inactiveOutlineWidth - activeOutlineWidth) * fraction,
                             backgroundColor: interpolateColor(active.outlineColor, inactive.outlineColor, fraction),
                         }]} />)}
                     </View>
                     <View style={styles['transition-line']}>
                         {transitionStrips.map((fraction, index) => <View key={index} style={[styles['transition-strip'], {
-                            height: fraction <= 0.5 ? activeWidth : inactiveWidth,
+                            height: activeWidth + (inactiveWidth - activeWidth) * fraction,
                             backgroundColor: interpolateColor(active.color, inactive.color, fraction),
                         }]} />)}
                     </View>

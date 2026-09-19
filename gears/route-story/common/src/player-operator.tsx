@@ -93,7 +93,6 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
                 this.headingSplineData = splineData;
             }
             const { currentPoint, line, routeDistanceFraction } = getRouteSourceData({
-                state: this.gear.state$.value,
                 geojson: this.gear.data$.value.geojson,
                 startTimeEpoch: this.gear.routeTimes$.value.startTimeEpoch,
                 routeTimelinePositionMs: value,
@@ -170,7 +169,6 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
             const nextImage: LoadedImageData<TImageData> | undefined = sortedImageFeatures[nextImageIndex];
             const nextImageTime = nextImageIndex >= 0 ? nextImageTimes[nextImageIndex] : null;
             const { currentPoint, line, heading: rawHeading, routeDistanceFraction } = getRouteSourceData({
-                state: this.gear.state$.value,
                 geojson,
                 startTimeEpoch,
                 routeTimelinePositionMs,
