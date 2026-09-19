@@ -32,7 +32,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
     const [state] = useSubjectState(state$);
     const [isPlaying] = useSubjectState(chronoLens.isPlaying$);
     const [animationControls] = useSubjectState(animatrix.controls$);
-    const { cameraTilt, cameraZoom, cameraRoll, easeDuration } = animationControls;
+    const { cameraTilt, cameraZoom, cameraRoll, easeDuration, playbackPacing } = animationControls;
 
     const loadedImages = useLoadedWebImages(images);
     const createSplitLineGeometry = requiresSplitLineGeometry(state);
@@ -79,7 +79,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
         return () => {
             playerOperator.cleanupAnimateRoute();
         };
-    }, [isPlaying, loadedImages, easeDuration, cameraZoom, cameraTilt, cameraRoll, createSplitLineGeometry]);
+    }, [isPlaying, loadedImages, easeDuration, cameraZoom, cameraTilt, cameraRoll, playbackPacing, createSplitLineGeometry]);
 
     return (
         <>

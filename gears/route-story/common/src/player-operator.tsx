@@ -1,6 +1,6 @@
 import { BehaviorSubject } from "rxjs";
 import { SurveillanceState, LoadedImageData, ChronoLens } from "@apparatus";
-import { getRouteSourceData } from "./tinkers";
+import { getRouteSourceData, getRouteTimelinePositionForDistanceFraction } from "./tinkers";
 import { getImageIconSize, FULL_SIZE_IMAGE_SIZE, THUMBNAIL_IMAGE_SIZE } from "./images";
 import { RouteStoryGear } from "./route-story-gear";
 import { IMAGE_ANIMATION_DURATION } from "./layer-specification";
@@ -136,7 +136,7 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
             this.headingSplineData = splineData;
         }
 
-        const { startTimeEpoch, endTimeEpoch } = routeTimes;
+        const { startTimeEpoch } = routeTimes;
         const routeDuration = routeTimes.duration;
         const sortedImageFeatures = [...loadedImages].sort((a, b) => a.featureId - b.featureId);
         const nextImageTimes = sortedImageFeatures.map((imageFeature) => {
@@ -145,11 +145,22 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
         });
         let last = performance.now();
         let routeTimelinePositionMs = this.gear.routeTimelinePositionMs$.value;
+        const initialRouteDistanceFraction = getRouteSourceData({
+            geojson,
+            startTimeEpoch,
+            routeTimelinePositionMs,
+            splineData,
+            createSplitLineGeometry: false,
+        }).routeDistanceFraction;
+        let routePlaybackFraction = this.gear.animatrix.controls$.value.playbackPacing === 'distance'
+            ? initialRouteDistanceFraction
+            : routeTimelinePositionMs / routeDuration;
         let nextImageIndex = nextImageTimes.findIndex((time) => time !== null && time >= startTimeEpoch + routeTimelinePositionMs);
 
         const animate = () => {
             const {
                 routePlaybackDuration,
+                playbackPacing,
                 displayImageDuration,
                 followCurrentPoint,
                 cameraAngle,
@@ -160,12 +171,15 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
             const now = performance.now();
             const dt = now - last;
             last = now;
-            routeTimelinePositionMs += dt * (routeDuration / routePlaybackDuration);
-            if (startTimeEpoch + routeTimelinePositionMs >= endTimeEpoch) {
+            routePlaybackFraction += dt / routePlaybackDuration;
+            if (routePlaybackFraction >= 1) {
                 this.handleRouteEnd();
                 
                 return;
             }
+            routeTimelinePositionMs = playbackPacing === 'distance'
+                ? getRouteTimelinePositionForDistanceFraction(geojson, splineData, startTimeEpoch, routePlaybackFraction)
+                : routePlaybackFraction * routeDuration;
             const nextImage: LoadedImageData<TImageData> | undefined = sortedImageFeatures[nextImageIndex];
             const nextImageTime = nextImageIndex >= 0 ? nextImageTimes[nextImageIndex] : null;
             const { currentPoint, line, heading: rawHeading, routeDistanceFraction } = getRouteSourceData({

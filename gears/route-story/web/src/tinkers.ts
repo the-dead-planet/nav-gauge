@@ -2,6 +2,20 @@ import * as maplibregl from "maplibre-gl";
 import { getProgressRouteLineLayers, getProgressRoutePointsLayers, getRouteLineGradient, getRouteLineLayers, getRoutePointsLayers, routeLayerIds, routeSourceIds, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 
 const routeDistanceFractions = new WeakMap<maplibregl.Map, number>();
+interface RouteFrame {
+    currentPoint: GeoJSON.Feature<GeoJSON.Point>;
+    line: GeoJSON.GeoJSON;
+    routeDistanceFraction: number;
+    state: RouteStoryState;
+    createSplitLineGeometry: boolean;
+}
+
+interface RouteFrameUpdateState {
+    processing: boolean;
+    pending?: RouteFrame;
+}
+
+const routeFrameUpdates = new WeakMap<maplibregl.Map, RouteFrameUpdateState>();
 
 export const setRouteDistanceFraction = (map: maplibregl.Map, routeDistanceFraction: number): void => {
     routeDistanceFractions.set(map, routeDistanceFraction);
@@ -40,30 +54,8 @@ export const updateRouteLayerStyle = (
     }
 };
 
-export const updateRouteLayer = (
-    {
-        map,
-        currentPoint,
-        line,
-        routeDistanceFraction,
-        createSplitLineGeometry,
-        state,
-    }: {
-        map: maplibregl.Map;
-        currentPoint: GeoJSON.Feature<GeoJSON.Point>;
-        line: GeoJSON.GeoJSON;
-        routeDistanceFraction: number;
-        createSplitLineGeometry: boolean;
-        state: RouteStoryState;
-    },
-): void => {
+const applyRouteProgress = (map: maplibregl.Map, routeDistanceFraction: number, state: RouteStoryState): void => {
     setRouteDistanceFraction(map, routeDistanceFraction);
-    map.getSource<maplibregl.GeoJSONSource>(routeSourceIds.currentPoint)?.setData(currentPoint);
-    if (createSplitLineGeometry) {
-        map.getSource<maplibregl.GeoJSONSource>(routeSourceIds.line)?.setData(line);
-        return;
-    }
-
     const layers: Array<[string, 'before' | 'after', string, string]> = [
         [routeLayerIds.lineActiveOutline, 'before', state.routeStyleActive.outlineColor, state.routeStyleInactive.outlineColor],
         [routeLayerIds.lineActive, 'before', state.routeStyleActive.color, state.routeStyleInactive.color],
@@ -86,5 +78,69 @@ export const updateRouteLayer = (
     }
     if (map.getLayer(routeLayerIds.pointsInactive)) {
         map.setFilter(routeLayerIds.pointsInactive, ['>', ['get', 'routeDistanceFraction'], routeDistanceFraction]);
+    }
+};
+
+const processRouteFrameUpdate = (map: maplibregl.Map, updateState: RouteFrameUpdateState): void => {
+    const frame = updateState.pending;
+    const currentPointSource = map.getSource<maplibregl.GeoJSONSource>(routeSourceIds.currentPoint);
+    const lineSource = map.getSource<maplibregl.GeoJSONSource>(routeSourceIds.line);
+    if (!frame || !currentPointSource || (frame.createSplitLineGeometry && !lineSource)) {
+        return;
+    }
+
+    updateState.pending = undefined;
+    updateState.processing = true;
+    const pendingSourceIds = new Set(frame.createSplitLineGeometry
+        ? [routeSourceIds.currentPoint, routeSourceIds.line]
+        : [routeSourceIds.currentPoint]);
+    const onSourceData = (event: maplibregl.MapSourceDataEvent) => {
+        if (!event.sourceId || !pendingSourceIds.has(event.sourceId) || !event.isSourceLoaded) {
+            return;
+        }
+        pendingSourceIds.delete(event.sourceId);
+        if (pendingSourceIds.size > 0) {
+            return;
+        }
+        map.off('sourcedata', onSourceData);
+        if (frame.createSplitLineGeometry) {
+            setRouteDistanceFraction(map, frame.routeDistanceFraction);
+        } else {
+            applyRouteProgress(map, frame.routeDistanceFraction, frame.state);
+        }
+        map.once('render', () => {
+            updateState.processing = false;
+            processRouteFrameUpdate(map, updateState);
+        });
+    };
+    map.on('sourcedata', onSourceData);
+    currentPointSource.setData(frame.currentPoint);
+    if (frame.createSplitLineGeometry) {
+        lineSource?.setData(frame.line);
+    }
+};
+
+export const updateRouteLayer = (
+    {
+        map,
+        currentPoint,
+        line,
+        routeDistanceFraction,
+        createSplitLineGeometry,
+        state,
+    }: {
+        map: maplibregl.Map;
+        currentPoint: GeoJSON.Feature<GeoJSON.Point>;
+        line: GeoJSON.GeoJSON;
+        routeDistanceFraction: number;
+        createSplitLineGeometry: boolean;
+        state: RouteStoryState;
+    },
+): void => {
+    const updateState = routeFrameUpdates.get(map) ?? { processing: false };
+    updateState.pending = { currentPoint, line, routeDistanceFraction, state, createSplitLineGeometry };
+    routeFrameUpdates.set(map, updateState);
+    if (!updateState.processing) {
+        processRouteFrameUpdate(map, updateState);
     }
 };

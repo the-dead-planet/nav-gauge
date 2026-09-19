@@ -4,7 +4,7 @@ import classNames from "classnames";
 import { ToolPanelProps, useMultipleTranslations } from "@apparatus";
 import { useWebMachineWard } from "@web-apparatus";
 import { clamp, useSubjectState } from "@tinker-chest";
-import { ClockInput, Checkbox, Fieldset, ClockSliceInput, DurationClockInput, IconRotateInput, Slider, ToggleSwitch, Label, Span, Icon } from "@web-ui";
+import { ClockInput, Checkbox, Dropdown, Fieldset, ClockSliceInput, DurationClockInput, IconRotateInput, Slider, ToggleSwitch, Label, Span, Icon } from "@web-ui";
 import { AnimationControlsType, Animatrix } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Icons, millisecondsToDurationParts } from "@ui";
 import { WebRouteStoryProps } from "../model";
@@ -47,6 +47,9 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
         zoomLabel,
         imagePauseDurationLabel,
         routePlaybackDurationLabel,
+        playbackPacingLabel,
+        timelinePacingLabel,
+        distancePacingLabel,
         totalRecordingDurationLabel,
         easeDurationLabel,
         panToWholeRouteAtEndLabel,
@@ -60,6 +63,9 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
         { n: animatrix.namespace, t: animatrix.translationKey.Zoom },
         { n: animatrix.namespace, t: animatrix.translationKey.ImagePauseDuration },
         { n: animatrix.namespace, t: animatrix.translationKey.RoutePlaybackDuration },
+        { n: animatrix.namespace, t: animatrix.translationKey.PlaybackPacing },
+        { n: animatrix.namespace, t: animatrix.translationKey.TimelinePacing },
+        { n: animatrix.namespace, t: animatrix.translationKey.DistancePacing },
         { n: animatrix.namespace, t: animatrix.translationKey.TotalRecordingDuration },
         { n: animatrix.namespace, t: animatrix.translationKey.EaseDuration },
         { n: animatrix.namespace, t: animatrix.translationKey.PanToWholeRouteAtEnd },
@@ -75,6 +81,9 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
     const showGeneral = matchesSearch(generalLabel)
         || matchesSearch(imagePauseDurationLabel)
         || matchesSearch(routePlaybackDurationLabel)
+        || matchesSearch(playbackPacingLabel)
+        || matchesSearch(timelinePacingLabel)
+        || matchesSearch(distancePacingLabel)
         || matchesSearch(totalRecordingDurationLabel)
         || matchesSearch(panToWholeRouteAtEndLabel);
 
@@ -96,6 +105,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
         easeDuration,
         displayImageDuration,
         routePlaybackDuration,
+        playbackPacing,
         panToWholeRouteAtEnd,
     } = animationControls;
 
@@ -137,6 +147,21 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                         :
                         {String(millisecondsToDurationParts(routePlaybackDuration).seconds).padStart(2, '0')}
                     </Span>
+                    <Label htmlFor="animation-controls-playback-pacing" align="right">
+                        {playbackPacingLabel}
+                    </Label>
+                    <Dropdown
+                        id="animation-controls-playback-pacing"
+                        ariaLabel={playbackPacingLabel}
+                        size="xs"
+                        value={playbackPacing}
+                        options={[
+                            { value: 'timeline' as const, label: timelinePacingLabel },
+                            { value: 'distance' as const, label: distancePacingLabel },
+                        ]}
+                        onChange={(value) => setAnimationControls((previous) => ({ ...previous, playbackPacing: value }))}
+                    />
+                    <span />
                     <Label htmlFor="animation-controls-total-recording-duration" align="right">
                         {totalRecordingDurationLabel}
                     </Label>

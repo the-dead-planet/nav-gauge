@@ -196,6 +196,31 @@ const buildSplineLookup = (
     });
 };
 
+export const getRouteTimelinePositionForDistanceFraction = (
+    geojson: GeoJson,
+    splineData: SplineData,
+    startTimeEpoch: number,
+    routeDistanceFraction: number,
+): number => {
+    const clampedDistanceFraction = Math.max(0, Math.min(1, routeDistanceFraction));
+    const endIndex = splineData.lookup.findIndex(({ lineProgress }) => lineProgress > clampedDistanceFraction);
+    if (endIndex < 0) {
+        return new Date(geojson.features[geojson.features.length - 1].properties.time).valueOf() - startTimeEpoch;
+    }
+    if (endIndex === 0) {
+        return 0;
+    }
+
+    const startIndex = endIndex - 1;
+    const startDistance = splineData.lookup[startIndex].lineProgress;
+    const endDistance = splineData.lookup[endIndex].lineProgress;
+    const fraction = (clampedDistanceFraction - startDistance) / (endDistance - startDistance);
+    const startTime = new Date(geojson.features[startIndex].properties.time).valueOf();
+    const endTime = new Date(geojson.features[endIndex].properties.time).valueOf();
+
+    return startTime + (endTime - startTime) * fraction - startTimeEpoch;
+};
+
 const getRouteDistanceFraction = (splineData: SplineData, splitIndex: number, fraction: number): number => {
     const start = splineData.lookup[Math.max(0, splitIndex - 1)].lineProgress;
     const end = splineData.lookup[Math.min(splineData.lookup.length - 1, splitIndex)].lineProgress;

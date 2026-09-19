@@ -1,6 +1,6 @@
 import { describe } from "mocha";
 import { expect } from "chai";
-import { getRouteSourceData, getSplineData, getSplineHeading, getStaticRouteSourceData } from "../src/tinkers";
+import { getRouteSourceData, getRouteTimelinePositionForDistanceFraction, getSplineData, getSplineHeading, getStaticRouteSourceData } from "../src/tinkers";
 import { GeoJson } from "@tinker-chest";
 const route: GeoJson = {
     type: "FeatureCollection",
@@ -60,6 +60,19 @@ describe("Route story gear", () => {
             const { routeDistanceFraction } = getRouteFrame(90_000, { createSplitLineGeometry: false });
 
             expect(routeDistanceFraction).to.be.closeTo(0.75, 0.001);
+        });
+
+        it("converts distance progress back to route timeline progress", () => {
+            const splineData = {
+                ...getSplineData(route),
+                lookup: [
+                    { t: 0, lineProgress: 0 },
+                    { t: 0.5, lineProgress: 0.25 },
+                    { t: 1, lineProgress: 1 },
+                ],
+            };
+
+            expect(getRouteTimelinePositionForDistanceFraction(route, splineData, startTimeEpoch, 0.625)).to.equal(90_000);
         });
 
         it("creates static line and point features from the route", () => {

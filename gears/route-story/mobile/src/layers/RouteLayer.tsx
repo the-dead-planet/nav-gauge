@@ -40,6 +40,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
         cameraTilt,
         cameraZoom,
         easeDuration,
+        playbackPacing,
     } = animationControls;
     const [currentPointSourceData, setCurrentPointSourceData] = useSubjectState(currentPointRef$);
     const [lineSourceData, setLineSourceData] = useSubjectState(linesRef$);
@@ -103,7 +104,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
         return () => {
             playerOperator.cleanupAnimateRoute();
         };
-    }, [isPlaying, loadedImages, easeDuration, cameraZoom, cameraTilt, createSplitLineGeometry]);
+    }, [isPlaying, loadedImages, easeDuration, cameraZoom, cameraTilt, playbackPacing, createSplitLineGeometry]);
 
     return (
         <>

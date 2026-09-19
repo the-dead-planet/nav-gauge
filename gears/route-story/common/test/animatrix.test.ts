@@ -12,6 +12,10 @@ describe("Route story gear", () => {
                 expect(() => Animatrix.validateAnimationControls({ followCurrentPoint: false })).to.not.throw();
                 expect(() => Animatrix.validateAnimationControls({ followCurrentPoint: "" } as unknown as AnimationControlsType)).to.throw("Follow current point should be of type boolean");
             });
+            it("should throw if playbackPacing incorrect", () => {
+                expect(() => Animatrix.validateAnimationControls({ playbackPacing: 'distance' })).to.not.throw();
+                expect(() => Animatrix.validateAnimationControls({ playbackPacing: 'invalid' as 'timeline' })).to.throw("Playback pacing should be timeline or distance");
+            });
             it("should throw if autoRotate incorrect", () => {
                 expect(() => Animatrix.validateAnimationControls({ autoRotate: false })).to.not.throw();
                 expect(() => Animatrix.validateAnimationControls({ autoRotate: "" } as unknown as AnimationControlsType)).to.throw("Auto rotate should be of type boolean");
@@ -54,6 +58,12 @@ describe("Route story gear", () => {
                 expect(() => Animatrix.validateAnimationControls({ easeDuration: -10 } as unknown as AnimationControlsType)).to.throw("Ease duration should be within range [0, 1000]");
                 expect(() => Animatrix.validateAnimationControls({ easeDuration: "" } as unknown as AnimationControlsType)).to.throw("Ease duration should be of type number");
             });
+        });
+        it("defaults stored playback pacing to timeline", () => {
+            const animatrix = new Animatrix();
+
+            expect(animatrix.cleanUpAnimationControls({}).playbackPacing).to.equal('timeline');
+            expect(animatrix.cleanUpAnimationControls({ playbackPacing: 'distance' }).playbackPacing).to.equal('distance');
         });
     });
 });
