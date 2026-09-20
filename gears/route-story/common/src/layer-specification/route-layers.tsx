@@ -14,6 +14,7 @@ export const defaultRouteStoryState: RouteStoryState = {
         outlineColor: 'rgb(255, 255, 255)',
         outlineWidth: 1,
         variant: 'solid',
+        colorTransitionLengthPercent: 0,
     },
     routeStyleInactive: {
         showRouteLine: true,
@@ -25,6 +26,7 @@ export const defaultRouteStoryState: RouteStoryState = {
         outlineColor: 'rgb(255, 255, 255)',
         outlineWidth: 0,
         variant: 'dashed',
+        colorTransitionLengthPercent: 0,
     },
     currentPoint: {
         fillColor: 'rgb(160, 48, 160)',
@@ -33,7 +35,6 @@ export const defaultRouteStoryState: RouteStoryState = {
         autoRotate: true,
         rotation: 0,
         rotationAlignment: 'map',
-        colorTransitionLengthPercent: 0,
     },
 };
 
@@ -58,6 +59,7 @@ export const getDefaultRouteStoryState = (theme: Theme): RouteStoryState => {
             outlineColor: 'rgb(255, 255, 255)',
             outlineWidth: 1,
             variant: 'solid',
+            colorTransitionLengthPercent: 0,
         },
         routeStyleInactive: {
             showRouteLine: true,
@@ -69,6 +71,7 @@ export const getDefaultRouteStoryState = (theme: Theme): RouteStoryState => {
             outlineColor: 'rgb(255, 255, 255)',
             outlineWidth: 0,
             variant: 'dashed',
+            colorTransitionLengthPercent: 0,
         },
         currentPoint: {
             fillColor: activeColor,
@@ -77,7 +80,6 @@ export const getDefaultRouteStoryState = (theme: Theme): RouteStoryState => {
             autoRotate: true,
             rotation: 0,
             rotationAlignment: 'map',
-            colorTransitionLengthPercent: 0,
         },
     };
 };
@@ -202,9 +204,6 @@ export const getRouteLineLayers = (state: RouteStoryState): RouteLineLayerSpec[]
         getLinePart('before', state.routeStyleActive, false),
     ];
 };
-
-export const requiresSplitLineGeometry = (state: RouteStoryState): boolean =>
-    state.routeStyleActive.variant === 'dashed' || state.routeStyleInactive.variant === 'dashed';
 
 export const getRoutePointsLayers = (state: RouteStoryState): RouteCircleLayerSpec[] => [
     {

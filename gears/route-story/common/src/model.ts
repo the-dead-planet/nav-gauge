@@ -37,6 +37,7 @@ export interface RouteStoryLineStyle {
     outlineColor: string;
     outlineWidth: number;
     variant: 'solid' | 'dashed';
+    colorTransitionLengthPercent: number;
 }
 
 export interface CurrentPointStyle {
@@ -46,7 +47,6 @@ export interface CurrentPointStyle {
     autoRotate: boolean;
     rotation: number;
     rotationAlignment: 'map' | 'viewport';
-    colorTransitionLengthPercent: number;
 }
 
 export const currentPointIconNames = [

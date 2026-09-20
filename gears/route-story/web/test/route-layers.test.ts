@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { describe, it } from "mocha";
 import type * as maplibregl from "maplibre-gl";
-import { defaultRouteStoryState, requiresSplitLineGeometry } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { defaultRouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { updateRouteLayerStyle } from "../src/tinkers";
 
 describe("Web route line layers", () => {
@@ -22,13 +22,5 @@ describe("Web route line layers", () => {
         updateRouteLayerStyle(map, state);
 
         expect(updates).to.include.members(['visibility', 'line-color', 'line-width', 'line-dasharray', 'circle-color', 'circle-radius']);
-    });
-
-    it("requires split geometry when either line is dashed", () => {
-        expect(requiresSplitLineGeometry(defaultRouteStoryState)).to.equal(true);
-        expect(requiresSplitLineGeometry({
-            ...defaultRouteStoryState,
-            routeStyleInactive: { ...defaultRouteStoryState.routeStyleInactive, variant: 'solid' },
-        })).to.equal(false);
     });
 });

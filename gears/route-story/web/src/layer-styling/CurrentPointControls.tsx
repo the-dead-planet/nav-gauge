@@ -12,7 +12,6 @@ interface Props {
     translationKey: typeof RouteStoryTranslationKey;
     value: CurrentPointStyle;
     onChange: (patch: Partial<CurrentPointStyle>) => void;
-    colorTransitionDisabled: boolean;
 }
 
 const iconOptions: DropdownOption<CurrentPointIconName>[] = currentPointIconNames.map((icon) => ({
@@ -26,11 +25,11 @@ const rotationAlignmentOptions = (mapLabel: string, viewportLabel: string): Drop
     { value: 'viewport', label: viewportLabel },
 ];
 
-export const CurrentPointControls: FC<Props> = ({ gearId, translationKey, value, onChange, colorTransitionDisabled }) => {
+export const CurrentPointControls: FC<Props> = ({ gearId, translationKey, value, onChange }) => {
     const { namespace, translationKey: machineTranslationKey } = useWebMachineWard();
     const autoRotateLabelId = useId();
     const rotationInputId = useId();
-    const [colorLabel, sizeLabel, iconLabel, autoRotateLabel, onLabel, offLabel, rotationLabel, rotationAlignmentLabel, mapLabel, viewportLabel, colorTransitionLengthLabel] = useMultipleTranslations([
+    const [colorLabel, sizeLabel, iconLabel, autoRotateLabel, onLabel, offLabel, rotationLabel, rotationAlignmentLabel, mapLabel, viewportLabel] = useMultipleTranslations([
         { n: gearId, t: translationKey.Color },
         { n: gearId, t: translationKey.Size },
         { n: gearId, t: translationKey.Icon },
@@ -41,7 +40,6 @@ export const CurrentPointControls: FC<Props> = ({ gearId, translationKey, value,
         { n: gearId, t: translationKey.RotationAlignment },
         { n: gearId, t: translationKey.Map },
         { n: gearId, t: translationKey.Viewport },
-        { n: gearId, t: translationKey.ColorTransitionLength },
     ]);
 
     return (
@@ -69,10 +67,6 @@ export const CurrentPointControls: FC<Props> = ({ gearId, translationKey, value,
                     <Label id={autoRotateLabelId}>{autoRotateLabel}<br />{value.autoRotate ? onLabel : offLabel}</Label>
                     <ToggleSwitch labelledBy={autoRotateLabelId} size="xs" checked={value.autoRotate} onChange={(autoRotate) => onChange({ autoRotate })} />
                 </div>
-            </div>
-            <div className={`${styles['section']} ${styles['third-width']}`}>
-                <Label disabled={colorTransitionDisabled}>{colorTransitionLengthLabel}</Label>
-                <NumberInput ariaLabel={colorTransitionLengthLabel} disabled={colorTransitionDisabled} size="xs" min={0} max={100} step={1} value={value.colorTransitionLengthPercent} onChange={(colorTransitionLengthPercent) => onChange({ colorTransitionLengthPercent })} unit="%" />
             </div>
         </div>
     );

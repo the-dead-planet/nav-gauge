@@ -1,5 +1,5 @@
 import { FC, RefObject, useId } from "react";
-import { requiresSplitLineGeometry, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Icons } from "@ui";
 import { Icon } from "@web-ui";
 import styles from './demo-line.module.css';
@@ -39,7 +39,8 @@ export const DemoLine: FC<Props> = ({
     const markerSize = 16 * state.currentPoint.size;
     const markerRotation = state.currentPoint.rotation + (state.currentPoint.autoRotate ? 90 : 0);
     const icon = state.currentPoint.icon === 'Circle' ? Icons.Circle : Icons.NounProject[state.currentPoint.icon];
-    const transitionWidth = requiresSplitLineGeometry(state) ? 0 : state.currentPoint.colorTransitionLengthPercent * 3;
+    const transitionLengthPercent = active.variant === 'dashed' ? 0 : active.colorTransitionLengthPercent;
+    const transitionWidth = transitionLengthPercent * 1.48;
     const transitionStart = 150 - transitionWidth;
     const gradientIdSuffix = useId().replace(/[^a-zA-Z0-9_-]/g, '');
     const activeGradientId = `route-line-gradient-${gradientIdSuffix}`;

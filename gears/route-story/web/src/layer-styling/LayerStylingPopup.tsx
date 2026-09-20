@@ -1,7 +1,7 @@
 import { FC, useRef, useState } from "react";
 import * as maplibregl from "maplibre-gl";
 import { ToolPopupProps, useMultipleTranslations } from "@apparatus";
-import { getDefaultRouteStoryState, CurrentPointStyle, requiresSplitLineGeometry, RouteStoryLayerStylingPopupProps, RouteStoryLineStyle, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { getDefaultRouteStoryState, CurrentPointStyle, RouteStoryLayerStylingPopupProps, RouteStoryLineStyle, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { useTheme } from "@ui";
 import { Button, HudConnector, Panel, Popup, Tabstrip } from "@web-ui";
 import { useSubjectState } from "@tinker-chest";
@@ -112,10 +112,10 @@ export const LayerStylingPopup: FC<ToolPopupProps<maplibregl.Map> & RouteStoryLa
                                         translationKey={translationKey}
                                         value={state.currentPoint}
                                         onChange={setCurrentPoint}
-                                        colorTransitionDisabled={requiresSplitLineGeometry(state)}
                                     />
                                 ) : selectedStyle === 'active' ? (
                                     <LineStyleGroup
+                                        showColorTransition
                                         style={state.routeStyleActive}
                                         gearId={gearId}
                                         translationKey={translationKey}

@@ -1,6 +1,6 @@
 import { FC, RefObject } from "react";
 import { HostInstance, Pressable, StyleSheet, View } from "react-native";
-import { requiresSplitLineGeometry, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Icons, parseColor, toCssColor } from "@ui";
 import { Icon } from "@mobile-ui";
 import { DemoLineSegment } from "./DemoLineSegment";
@@ -75,13 +75,14 @@ export const DemoLine: FC<Props> = ({
     currentPointRef,
     inactiveRef,
 }) => {
+    const active = state.routeStyleActive;
+    const inactive = state.routeStyleInactive;
     const markerSize = 16 * state.currentPoint.size;
     const markerRotation = state.currentPoint.rotation + (state.currentPoint.autoRotate ? 90 : 0);
     const icon = state.currentPoint.icon === 'Circle' ? Icons.Circle : Icons.NounProject[state.currentPoint.icon];
-    const transitionLengthPercent = requiresSplitLineGeometry(state) ? 0 : state.currentPoint.colorTransitionLengthPercent;
+    const transitionLengthPercent = active.variant === 'dashed' ? 0 : active.colorTransitionLengthPercent;
+    const transitionWidthPercent = transitionLengthPercent / 2;
     const transitionStrips = Array.from({ length: 24 }, (_, index) => index / 23);
-    const active = state.routeStyleActive;
-    const inactive = state.routeStyleInactive;
     const activeWidth = Math.min(active.width, 10);
     const inactiveWidth = Math.min(inactive.width, 10);
     const activeOutlineWidth = activeWidth + active.outlineWidth * 2;
@@ -91,8 +92,8 @@ export const DemoLine: FC<Props> = ({
         <View style={styles['demo-line']} pointerEvents="box-none">
             <Pressable ref={activeRef} style={styles.segment} accessibilityRole="button" accessibilityLabel={activeMenuLabel} onPress={onActiveClick}><DemoLineSegment {...state.routeStyleActive} /></Pressable>
             <Pressable ref={inactiveRef} style={styles.segment} accessibilityRole="button" accessibilityLabel={inactiveMenuLabel} onPress={onInactiveClick}><DemoLineSegment {...state.routeStyleInactive} /></Pressable>
-            {transitionLengthPercent > 0 && active.showRouteLine && inactive.showRouteLine ? (
-                <View pointerEvents="none" style={[styles.transition, { left: `${50 - transitionLengthPercent}%`, width: `${transitionLengthPercent}%` }]}>
+            {transitionWidthPercent > 0 && active.showRouteLine ? (
+                <View pointerEvents="none" style={[styles.transition, { left: `${50 - transitionWidthPercent}%`, width: `${transitionWidthPercent}%` }]}>
                     <View style={styles['transition-line']}>
                         {transitionStrips.map((fraction, index) => <View key={index} style={[styles['transition-strip'], {
                             height: activeOutlineWidth + (inactiveOutlineWidth - activeOutlineWidth) * fraction,

@@ -23,6 +23,7 @@ const state: RouteStoryState = {
         outlineColor: 'black',
         outlineWidth: 0,
         variant: 'solid',
+        colorTransitionLengthPercent: 0,
     },
     routeStyleInactive: {
         showRouteLine: true,
@@ -34,6 +35,7 @@ const state: RouteStoryState = {
         outlineColor: 'black',
         outlineWidth: 0,
         variant: 'dashed',
+        colorTransitionLengthPercent: 0,
     },
     currentPoint: {
         fillColor: 'blue',
@@ -42,7 +44,6 @@ const state: RouteStoryState = {
         autoRotate: true,
         rotation: 0,
         rotationAlignment: 'map',
-        colorTransitionLengthPercent: 0,
     }
 };
 const startTimeEpoch = Date.parse("2026-01-01T00:00:00Z");

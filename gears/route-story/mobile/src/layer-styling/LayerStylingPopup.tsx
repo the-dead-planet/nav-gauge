@@ -2,7 +2,7 @@ import { FC, useEffect, useRef, useState } from "react";
 import { BackHandler, HostInstance, ScrollView, StyleSheet, View } from "react-native";
 import { ToolPopupProps, useMultipleTranslations } from "@apparatus";
 import { useTheme } from "@ui";
-import { getDefaultRouteStoryState, CurrentPointStyle, requiresSplitLineGeometry, RouteStoryLayerStylingPopupProps, RouteStoryLineStyle, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { getDefaultRouteStoryState, CurrentPointStyle, RouteStoryLayerStylingPopupProps, RouteStoryLineStyle, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { useSubjectState } from "@tinker-chest";
 import { MobileMap } from "@mobile-apparatus";
 import { MobileRouteStoryProps } from "../model";
@@ -133,10 +133,10 @@ export const LayerStylingPopup: FC<ToolPopupProps<MobileMap> & RouteStoryLayerSt
                                         translationKey={translationKey}
                                         value={state.currentPoint}
                                         onChange={setCurrentPoint}
-                                        colorTransitionDisabled={requiresSplitLineGeometry(state)}
                                     />
                                 ) : selectedStyle === 'active' ? (
                                     <LineStyleGroup
+                                        showColorTransition
                                         style={state.routeStyleActive}
                                         gearId={gearId}
                                         translationKey={translationKey}

@@ -11,6 +11,7 @@ interface Props {
     gearId: string;
     translationKey: typeof RouteStoryTranslationKey;
     onChange: (patch: Partial<RouteStoryLineStyle>) => void;
+    showColorTransition?: boolean;
 }
 
 export const LineStyleGroup: FC<Props> = ({
@@ -18,6 +19,7 @@ export const LineStyleGroup: FC<Props> = ({
     gearId,
     translationKey,
     onChange,
+    showColorTransition = false,
 }) => {
     const [
         linesLabel,
@@ -29,6 +31,7 @@ export const LineStyleGroup: FC<Props> = ({
         outlineLabel,
         colorLabel,
         sizeLabel,
+        colorTransitionLengthLabel,
     ] = useMultipleTranslations([
         { n: gearId, t: translationKey.Lines },
         { n: gearId, t: translationKey.Points },
@@ -39,12 +42,15 @@ export const LineStyleGroup: FC<Props> = ({
         { n: gearId, t: translationKey.Outline },
         { n: gearId, t: translationKey.Color },
         { n: gearId, t: translationKey.Size },
+        { n: gearId, t: translationKey.ColorTransitionLength },
     ]);
 
     const variantOptions: DropdownOption<'solid' | 'dashed'>[] = [
         { label: solidLabel, value: 'solid' as const },
         { label: dashedLabel, value: 'dashed' as const },
     ].filter((option) => option.label != null);
+
+    const colorTransitionDisabled = showColorTransition && (!style.showRouteLine || style.variant === 'dashed');
 
     return (
         <div className={styles['controls']}>
@@ -73,6 +79,12 @@ export const LineStyleGroup: FC<Props> = ({
                             <NumberInput ariaLabel={sizeLabel} disabled={!style.showRouteLine} size="xs" min={0} max={4} step={1} value={style.outlineWidth} onChange={(outlineWidth) => onChange({ outlineWidth })} unit="px" />
                         </div>
                     </div>
+                    {showColorTransition ? (
+                        <div className={styles['control-group']}>
+                            <Label disabled={colorTransitionDisabled}>{colorTransitionLengthLabel}</Label>
+                            <NumberInput ariaLabel={colorTransitionLengthLabel} disabled={colorTransitionDisabled} size="xs" min={0} max={100} step={1} value={style.colorTransitionLengthPercent} onChange={(colorTransitionLengthPercent) => onChange({ colorTransitionLengthPercent })} unit="%" />
+                        </div>
+                    ) : null}
                 </div>
             </div>
             <div className={styles['control-group']}>
