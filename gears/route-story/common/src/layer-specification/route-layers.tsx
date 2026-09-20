@@ -204,7 +204,7 @@ const getLineGradient = (
     style: RouteStoryLineStyle,
     isOutline: boolean,
     fadeTargetColor?: string,
-    transitionLengthPercent = style.colorTransitionLengthPixels,
+    transitionLengthPercent = 0,
 ): Partial<RouteLineLayerSpec['paint']> => {
     if (status !== 'before' || style.variant !== 'solid' || transitionLengthPercent <= 0 || !fadeTargetColor) {
         return {};
@@ -231,7 +231,7 @@ const getLineDashArray = (style: RouteStoryLineStyle, isOutline: boolean): numbe
 
 export const getRouteLineLayers = (
     state: RouteStoryState,
-    transitionLengthPercent = state.routeStyleActive.colorTransitionLengthPixels,
+    transitionLengthPercent = 0,
 ): RouteLineLayerSpec[] => {
     return [
         getLinePart('after', state.routeStyleInactive, true),

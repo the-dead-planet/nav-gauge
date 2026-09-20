@@ -52,7 +52,10 @@ describe("Route line gradient", () => {
         },
         routeStyleInactive: { ...defaultRouteStoryState.routeStyleInactive, variant: 'solid' as const },
     };
-    const activeParts = (state: RouteStoryState) => getRouteLineLayers(state).filter((layer) =>
+    const activeParts = (state: RouteStoryState) => getRouteLineLayers(
+        state,
+        state.routeStyleActive.colorTransitionLengthPixels,
+    ).filter((layer) =>
         layer.id === routeLayerIds.lineActive || layer.id === routeLayerIds.lineActiveOutline);
 
     it("fades the active line and outline to the inactive colors at the current point end", () => {
