@@ -10,7 +10,7 @@ import { emptyCollection, FeatureProperties, GeoJson } from "@tinker-chest";
 import { RouteStoryState, RouteTimes } from "../model";
 
 export const getRouteSourceData = (
-    { routeStyleActive, routeStyleInactive, currentPoint: currentPointStyle }: RouteStoryState,
+    { routeStyleActive, routeStyleInactive }: RouteStoryState,
     geojson: GeoJson,
     startTimeEpoch: number,
     progressMs: number,
@@ -23,7 +23,7 @@ export const getRouteSourceData = (
     const splitIndex = followingIndex < 0 ? geojson.features.length : followingIndex;
     const { currentPoint, fraction } = getCurrentPoint(geojson, splitIndex, currentTime);
     const heading = getSplineHeading(splineData, splitIndex, fraction);
-    currentPoint.properties = { ...currentPoint.properties, heading, autoRotate: currentPointStyle.autoRotate };
+    currentPoint.properties = { ...currentPoint.properties, heading };
 
     const anyVisible =
         routeStyleActive.showRouteLine || routeStyleActive.showRoutePoints ||

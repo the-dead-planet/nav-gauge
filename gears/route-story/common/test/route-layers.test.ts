@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { describe, it } from "mocha";
-import { defaultRouteStoryState, getCurrentPointLayers, getRoutePointsLayers, routeLayerIds } from "../src";
+import { defaultRouteStoryState, getCurrentPointLayers, getRouteLineLayers, getRoutePointsLayers, routeLayerIds } from "../src";
 
 describe("Route point layers", () => {
     it("uses each route part's point color and radius", () => {
@@ -27,6 +27,20 @@ describe("Route point layers", () => {
     });
 });
 
+describe("Route line layers", () => {
+    it("keeps hidden lines installed for style-only updates", () => {
+        const layers = getRouteLineLayers({
+            ...defaultRouteStoryState,
+            routeStyleActive: { ...defaultRouteStoryState.routeStyleActive, showRouteLine: false },
+            routeStyleInactive: { ...defaultRouteStoryState.routeStyleInactive, outlineWidth: 0 },
+        });
+
+        expect(layers).to.have.length(4);
+        expect(layers.find((layer) => layer.id === routeLayerIds.lineActive)?.layout.visibility).to.equal('none');
+        expect(layers.find((layer) => layer.id === routeLayerIds.lineInactiveOutline)?.layout.visibility).to.equal('none');
+    });
+});
+
 describe("Current point layer", () => {
     it("uses one SDF symbol layer", () => {
         const [layer] = getCurrentPointLayers({
@@ -38,6 +52,7 @@ describe("Current point layer", () => {
                 autoRotate: false,
                 rotation: 25,
                 rotationAlignment: 'viewport',
+                colorTransitionLengthPercent: 0,
             },
         });
 
@@ -51,7 +66,7 @@ describe("Current point layer", () => {
                 'icon-allow-overlap': true,
                 'icon-ignore-placement': true,
                 'icon-rotation-alignment': 'viewport',
-                'icon-rotate': ['+', 25, ['case', ['==', ['get', 'autoRotate'], true], ['get', 'heading'], 0]],
+                'icon-rotate': 25,
             },
             paint: {
                 'icon-color': 'red',

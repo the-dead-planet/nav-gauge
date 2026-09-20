@@ -46,6 +46,7 @@ export interface CurrentPointStyle {
     autoRotate: boolean;
     rotation: number;
     rotationAlignment: 'map' | 'viewport';
+    colorTransitionLengthPercent: number;
 }
 
 export const currentPointIconNames = [
@@ -155,6 +156,7 @@ export enum RouteStoryTranslationKey {
     Viewport = 'viewport',
     Circle = 'circle',
     Opacity = 'opacity',
+    ColorTransitionLength = 'color-transition-length',
     RestoreDefaults = 'restore-defaults',
     Close = 'close',
     Slider = 'slider',

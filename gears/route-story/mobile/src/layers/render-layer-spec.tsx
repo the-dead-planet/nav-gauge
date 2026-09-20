@@ -21,6 +21,7 @@ export const renderLayerSpec = (spec: RouteLineLayerSpec | RouteCircleLayerSpec)
             type="circle"
             id={spec.id}
             filter={spec.filter}
+            layout={spec.layout}
             paint={spec.paint}
         />
     );

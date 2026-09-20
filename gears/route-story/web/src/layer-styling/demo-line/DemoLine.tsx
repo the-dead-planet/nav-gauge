@@ -1,5 +1,5 @@
-import { FC, RefObject } from "react";
-import { RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { FC, RefObject, useId } from "react";
+import { requiresSplitLineGeometry, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Icons } from "@ui";
 import { Icon } from "@web-ui";
 import styles from './demo-line.module.css';
@@ -39,16 +39,28 @@ export const DemoLine: FC<Props> = ({
     const markerSize = 16 * state.currentPoint.size;
     const markerRotation = state.currentPoint.rotation + (state.currentPoint.autoRotate ? 90 : 0);
     const icon = state.currentPoint.icon === 'Circle' ? Icons.Circle : Icons.NounProject[state.currentPoint.icon];
+    const transitionWidth = requiresSplitLineGeometry(state) ? 0 : state.currentPoint.colorTransitionLengthPercent * 3;
+    const transitionStart = 150 - transitionWidth;
+    const gradientIdSuffix = useId().replace(/[^a-zA-Z0-9_-]/g, '');
+    const activeGradientId = `route-line-gradient-${gradientIdSuffix}`;
+    const activeOutlineGradientId = `route-outline-gradient-${gradientIdSuffix}`;
+    
     return (
         <svg
             className={styles['demo-line']}
             viewBox="0 0 300 20"
             preserveAspectRatio="none"
         >
-            {active.showRouteLine && <line x1="2" y1="10" x2="150" y2="10" stroke={active.outlineColor} strokeWidth={activeOutlineWidth} strokeDasharray={activeDash} strokeLinecap="round" />}
-            {active.showRouteLine && <line x1="2" y1="10" x2="150" y2="10" stroke={active.color} strokeWidth={activeWidth} strokeDasharray={activeDash} strokeLinecap="round" />}
+            <defs>
+                <linearGradient id={activeGradientId} gradientUnits="userSpaceOnUse" x1={transitionStart} y1="10" x2="150" y2="10"><stop offset="0%" stopColor={active.color} /><stop offset="100%" stopColor={inactive.color} /></linearGradient>
+                <linearGradient id={activeOutlineGradientId} gradientUnits="userSpaceOnUse" x1={transitionStart} y1="10" x2="150" y2="10"><stop offset="0%" stopColor={active.outlineColor} /><stop offset="100%" stopColor={inactive.outlineColor} /></linearGradient>
+            </defs>
             {inactive.showRouteLine && <line x1="150" y1="10" x2="298" y2="10" stroke={inactive.outlineColor} strokeWidth={inactiveOutlineWidth} strokeDasharray={inactiveDash} strokeLinecap="round" />}
+            {active.showRouteLine && <line x1="2" y1="10" x2={transitionWidth > 0 ? transitionStart : 150} y2="10" stroke={active.outlineColor} strokeWidth={activeOutlineWidth} strokeDasharray={activeDash} strokeLinecap="round" />}
+            {transitionWidth > 0 && active.showRouteLine && <line x1={transitionStart} y1="10" x2="150" y2="10" stroke={`url(#${activeOutlineGradientId})`} strokeWidth={activeOutlineWidth} strokeLinecap="round" />}
             {inactive.showRouteLine && <line x1="150" y1="10" x2="298" y2="10" stroke={inactive.color} strokeWidth={inactiveWidth} strokeDasharray={inactiveDash} strokeLinecap="round" />}
+            {active.showRouteLine && <line x1="2" y1="10" x2={transitionWidth > 0 ? transitionStart : 150} y2="10" stroke={active.color} strokeWidth={activeWidth} strokeDasharray={activeDash} strokeLinecap="round" />}
+            {transitionWidth > 0 && active.showRouteLine && <line x1={transitionStart} y1="10" x2="150" y2="10" stroke={`url(#${activeGradientId})`} strokeWidth={activeWidth} strokeLinecap="round" />}
             {active.showRoutePoints && [25, 75, 125].map((x) => <circle key={x} cx={x} cy="10" r={active.pointRadius} fill={active.pointColor} />)}
             {inactive.showRoutePoints && [175, 225, 275].map((x) => <circle key={x} cx={x} cy="10" r={inactive.pointRadius} fill={inactive.pointColor} />)}
             <g
