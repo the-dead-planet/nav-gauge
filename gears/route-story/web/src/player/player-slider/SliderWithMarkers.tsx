@@ -52,8 +52,8 @@ export const SliderWithMarkers: FC<Props> = ({
     const handleProgressChange = (value: number) => {
         playerOperator.updateProgress(
             value,
-            (line, currentPoint) => {
-                updateRouteLayer(map, line, currentPoint);
+            (line, currentPoint, state) => {
+                updateRouteLayer(map, line, currentPoint, state);
             }
         )
     };

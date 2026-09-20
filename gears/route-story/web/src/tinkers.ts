@@ -8,9 +8,11 @@ export const updateRouteLayer = (
     map: maplibregl.Map,
     line: GeoJSON.GeoJSON,
     currentPoint: GeoJSON.Feature<GeoJSON.Point>,
+    state: RouteStoryState,
 ): void => {
     map.getSource<maplibregl.GeoJSONSource>(routeSourceIds.line)?.setData(line);
     map.getSource<maplibregl.GeoJSONSource>(routeSourceIds.currentPoint)?.setData(currentPoint);
+    updateRouteLineGradient(map, state, line);
 };
 
 /**

@@ -4,7 +4,7 @@ import { OverlayComponentProps } from "@apparatus";
 import { useWebMachineWard } from "@web-apparatus";
 import { getRouteSourceData } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { emptyCollection, useSubjectState } from "@tinker-chest";
-import { updateRouteLayer, updateRouteLineGradient } from "../tinkers";
+import { updateRouteLayer } from "../tinkers";
 import { useLoadedWebImages } from "../hooks";
 import { RouteLineLayer } from "./RouteLineLayer";
 import { RouteCurrentPointLayer } from "./RouteCurrentPointLayer";
@@ -56,8 +56,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
         }
         playerOperator.animateRoute(loadedImages,
             (currentPoint, lines) => {
-                updateRouteLayer(map, lines, currentPoint);
-                updateRouteLineGradient(map, state, lines);
+                updateRouteLayer(map, lines, currentPoint, state);
             },
             (position, bearing) => {
                 map.easeTo({
