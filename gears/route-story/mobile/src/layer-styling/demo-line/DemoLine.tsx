@@ -80,8 +80,7 @@ export const DemoLine: FC<Props> = ({
     const markerSize = 16 * state.currentPoint.size;
     const markerRotation = state.currentPoint.rotation + (state.currentPoint.autoRotate ? 90 : 0);
     const icon = state.currentPoint.icon === 'Circle' ? Icons.Circle : Icons.NounProject[state.currentPoint.icon];
-    const transitionLengthPercent = active.variant === 'dashed' ? 0 : active.colorTransitionLengthPercent;
-    const transitionWidthPercent = transitionLengthPercent / 2;
+    const transitionWidth = active.variant === 'dashed' ? 0 : active.colorTransitionLengthPixels;
     const transitionStrips = Array.from({ length: 24 }, (_, index) => index / 23);
     const activeWidth = Math.min(active.width, 10);
     const inactiveWidth = Math.min(inactive.width, 10);
@@ -92,8 +91,8 @@ export const DemoLine: FC<Props> = ({
         <View style={styles['demo-line']} pointerEvents="box-none">
             <Pressable ref={activeRef} style={styles.segment} accessibilityRole="button" accessibilityLabel={activeMenuLabel} onPress={onActiveClick}><DemoLineSegment {...state.routeStyleActive} /></Pressable>
             <Pressable ref={inactiveRef} style={styles.segment} accessibilityRole="button" accessibilityLabel={inactiveMenuLabel} onPress={onInactiveClick}><DemoLineSegment {...state.routeStyleInactive} /></Pressable>
-            {transitionWidthPercent > 0 && active.showRouteLine ? (
-                <View pointerEvents="none" style={[styles.transition, { left: `${50 - transitionWidthPercent}%`, width: `${transitionWidthPercent}%` }]}>
+            {transitionWidth > 0 && active.showRouteLine ? (
+                <View pointerEvents="none" style={[styles.transition, { right: '50%', width: transitionWidth }]}>
                     <View style={styles['transition-line']}>
                         {transitionStrips.map((fraction, index) => <View key={index} style={[styles['transition-strip'], {
                             height: activeOutlineWidth + (inactiveOutlineWidth - activeOutlineWidth) * fraction,

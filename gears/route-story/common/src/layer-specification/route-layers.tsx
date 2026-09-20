@@ -1,6 +1,7 @@
 import { FeatureStateProps } from "@apparatus";
+import turfLength from "@turf/length";
 import { RGBColor, Theme } from "@ui";
-import { EqualBooleanFeatureState, GetProperty, LineCap } from "./model";
+import { EqualBooleanFeatureState, GetProperty, LineCap, LineGradientExpression } from "./model";
 import { RouteStoryLineStyle, RouteStoryState } from "../model";
 
 export const defaultRouteStoryState: RouteStoryState = {
@@ -14,7 +15,7 @@ export const defaultRouteStoryState: RouteStoryState = {
         outlineColor: 'rgb(255, 255, 255)',
         outlineWidth: 1,
         variant: 'solid',
-        colorTransitionLengthPercent: 0,
+        colorTransitionLengthPixels: 0,
     },
     routeStyleInactive: {
         showRouteLine: true,
@@ -26,7 +27,7 @@ export const defaultRouteStoryState: RouteStoryState = {
         outlineColor: 'rgb(255, 255, 255)',
         outlineWidth: 0,
         variant: 'dashed',
-        colorTransitionLengthPercent: 0,
+        colorTransitionLengthPixels: 0,
     },
     currentPoint: {
         fillColor: 'rgb(160, 48, 160)',
@@ -59,7 +60,7 @@ export const getDefaultRouteStoryState = (theme: Theme): RouteStoryState => {
             outlineColor: 'rgb(255, 255, 255)',
             outlineWidth: 1,
             variant: 'solid',
-            colorTransitionLengthPercent: 0,
+            colorTransitionLengthPixels: 0,
         },
         routeStyleInactive: {
             showRouteLine: true,
@@ -71,7 +72,7 @@ export const getDefaultRouteStoryState = (theme: Theme): RouteStoryState => {
             outlineColor: 'rgb(255, 255, 255)',
             outlineWidth: 0,
             variant: 'dashed',
-            colorTransitionLengthPercent: 0,
+            colorTransitionLengthPixels: 0,
         },
         currentPoint: {
             fillColor: activeColor,
@@ -132,6 +133,7 @@ export interface RouteLineLayerSpec {
         'line-width': number;
         'line-opacity': number;
         'line-dasharray'?: number[];
+        'line-gradient'?: LineGradientExpression;
     };
 }
 
@@ -168,7 +170,13 @@ export interface RouteSymbolLayerSpec {
 
 const statusFilter = (status: RouteStatus): RouteStatusFilter => ['==', ['get', 'status'], status];
 
-const getLinePart = (status: RouteStatus, style: RouteStoryLineStyle, isOutline: boolean): RouteLineLayerSpec => ({
+const getLinePart = (
+    status: RouteStatus,
+    style: RouteStoryLineStyle,
+    isOutline: boolean,
+    fadeTargetColor?: string,
+    transitionLengthPercent?: number,
+): RouteLineLayerSpec => ({
     id: routeLayerIds[
         isOutline
             ? status === 'before' ? 'lineActiveOutline' : 'lineInactiveOutline'
@@ -187,8 +195,33 @@ const getLinePart = (status: RouteStatus, style: RouteStoryLineStyle, isOutline:
         'line-width': isOutline ? style.width + style.outlineWidth * 2 : style.width,
         'line-opacity': 1,
         ...(style.variant === 'dashed' ? { 'line-dasharray': getLineDashArray(style, isOutline) } : {}),
+        ...getLineGradient(status, style, isOutline, fadeTargetColor, transitionLengthPercent),
     },
 });
+
+const getLineGradient = (
+    status: RouteStatus,
+    style: RouteStoryLineStyle,
+    isOutline: boolean,
+    fadeTargetColor?: string,
+    transitionLengthPercent = style.colorTransitionLengthPixels,
+): Partial<RouteLineLayerSpec['paint']> => {
+    if (status !== 'before' || style.variant !== 'solid' || transitionLengthPercent <= 0 || !fadeTargetColor) {
+        return {};
+    }
+    const lineColor = isOutline ? style.outlineColor : style.color;
+
+    return {
+        'line-gradient': [
+            'interpolate',
+            ['linear'],
+            ['line-progress'],
+            0, lineColor,
+            Math.max(1 - transitionLengthPercent / 100, 0.001), lineColor,
+            1, fadeTargetColor,
+        ],
+    };
+};
 
 const getLineDashArray = (style: RouteStoryLineStyle, isOutline: boolean): number[] => {
     const dashWidth = isOutline ? style.width + style.outlineWidth * 2 : style.width;
@@ -196,13 +229,40 @@ const getLineDashArray = (style: RouteStoryLineStyle, isOutline: boolean): numbe
     return [2 * (style.width / dashWidth), 2 * (style.width / dashWidth)];
 };
 
-export const getRouteLineLayers = (state: RouteStoryState): RouteLineLayerSpec[] => {
+export const getRouteLineLayers = (
+    state: RouteStoryState,
+    transitionLengthPercent = state.routeStyleActive.colorTransitionLengthPixels,
+): RouteLineLayerSpec[] => {
     return [
         getLinePart('after', state.routeStyleInactive, true),
-        getLinePart('before', state.routeStyleActive, true),
+        getLinePart('before', state.routeStyleActive, true, state.routeStyleInactive.outlineColor, transitionLengthPercent),
         getLinePart('after', state.routeStyleInactive, false),
-        getLinePart('before', state.routeStyleActive, false),
+        getLinePart('before', state.routeStyleActive, false, state.routeStyleInactive.color, transitionLengthPercent),
     ];
+};
+
+export const getColorTransitionLengthPercent = (
+    source: GeoJSON.GeoJSON,
+    zoom: number,
+    lengthPixels: number,
+): number => {
+    if (source.type !== 'FeatureCollection') {
+        return 0;
+    }
+    const activeLine = source.features.find((feature): feature is GeoJSON.Feature<GeoJSON.LineString> =>
+        feature.geometry.type === 'LineString' && feature.properties?.status === 'before');
+    const lastCoordinate = activeLine?.geometry.coordinates.at(-1);
+    if (!activeLine || !lastCoordinate) {
+        return 0;
+    }
+    const activeLengthMeters = turfLength(activeLine, { units: 'meters' });
+    if (activeLengthMeters === 0) {
+        return 0;
+    }
+    const latitudeRadians = lastCoordinate[1] * Math.PI / 180;
+    const metersPerPixel = 40_075_016.686 * Math.cos(latitudeRadians) / (512 * 2 ** zoom);
+
+    return Math.min(lengthPixels * metersPerPixel / activeLengthMeters * 100, 100);
 };
 
 export const getRoutePointsLayers = (state: RouteStoryState): RouteCircleLayerSpec[] => [

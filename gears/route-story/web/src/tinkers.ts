@@ -1,5 +1,5 @@
 import * as maplibregl from "maplibre-gl";
-import { getRouteLineLayers, getRoutePointsLayers, routeSourceIds, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { getColorTransitionLengthPercent, getRouteLineLayers, getRoutePointsLayers, routeLayerIds, routeSourceIds, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 
 /**
  * Gets current point data, updates map sources, and returns it.
@@ -36,9 +36,28 @@ export const updateRouteLayerStyle = (
             map.setPaintProperty(layer.id, 'line-width', layer.paint['line-width']);
             map.setPaintProperty(layer.id, 'line-opacity', layer.paint['line-opacity']);
             map.setPaintProperty(layer.id, 'line-dasharray', (layer.paint['line-dasharray'] ?? null) as maplibregl.DataDrivenPropertyValueSpecification<number[]>);
+            map.setPaintProperty(layer.id, 'line-gradient', (layer.paint['line-gradient'] ?? null) as unknown as maplibregl.ExpressionSpecification);
         } else {
             map.setPaintProperty(layer.id, 'circle-color', layer.paint['circle-color']);
             map.setPaintProperty(layer.id, 'circle-radius', layer.paint['circle-radius']);
         }
+    }
+};
+
+export const updateRouteLineGradient = (
+    map: maplibregl.Map,
+    state: RouteStoryState,
+    source: GeoJSON.GeoJSON,
+): void => {
+    const transitionLengthPercent = getColorTransitionLengthPercent(
+        source,
+        map.getZoom(),
+        state.routeStyleActive.colorTransitionLengthPixels,
+    );
+    const layers = getRouteLineLayers(state, transitionLengthPercent).filter((layer) =>
+        layer.id === routeLayerIds.lineActive || layer.id === routeLayerIds.lineActiveOutline);
+
+    for (const layer of layers) {
+        map.setPaintProperty(layer.id, 'line-gradient', (layer.paint['line-gradient'] ?? null) as unknown as maplibregl.ExpressionSpecification);
     }
 };

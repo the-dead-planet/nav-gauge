@@ -2,7 +2,7 @@ import { FC, useEffect, useMemo, useState } from "react";
 import * as maplibregl from "maplibre-gl";
 import { MapLayerData, MapSourceAndLayers, } from "@web-apparatus";
 import { defaultRouteStoryState, getRouteLineLayers, getRoutePointsLayers, layerOrder, routeSourceIds, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { updateRouteLayerStyle } from "../tinkers";
+import { updateRouteLayerStyle, updateRouteLineGradient } from "../tinkers";
 
 interface Props {
     map: maplibregl.Map;
@@ -20,7 +20,8 @@ export const RouteLineLayer: FC<Props> = ({
         source: {
             type: 'geojson',
             data: source,
-            promoteId: 'id'
+            promoteId: 'id',
+            lineMetrics: true,
         },
         layers: [
             ...getRouteLineLayers(defaultRouteStoryState),
@@ -31,7 +32,8 @@ export const RouteLineLayer: FC<Props> = ({
 
     useEffect(() => {
         updateRouteLayerStyle(map, state);
-    }, [map, state]);
+        updateRouteLineGradient(map, state, source);
+    }, [map, source, state]);
 
     return (
         <MapSourceAndLayers

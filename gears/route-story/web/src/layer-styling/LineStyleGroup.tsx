@@ -82,7 +82,7 @@ export const LineStyleGroup: FC<Props> = ({
                     {showColorTransition ? (
                         <div className={styles['control-group']}>
                             <Label disabled={colorTransitionDisabled}>{colorTransitionLengthLabel}</Label>
-                            <NumberInput ariaLabel={colorTransitionLengthLabel} disabled={colorTransitionDisabled} size="xs" min={0} max={100} step={1} value={style.colorTransitionLengthPercent} onChange={(colorTransitionLengthPercent) => onChange({ colorTransitionLengthPercent })} unit="%" />
+                            <NumberInput ariaLabel={colorTransitionLengthLabel} disabled={colorTransitionDisabled} size="xs" min={0} max={100} step={1} value={style.colorTransitionLengthPixels} onChange={(colorTransitionLengthPixels) => onChange({ colorTransitionLengthPixels })} unit="px" />
                         </div>
                     ) : null}
                 </div>

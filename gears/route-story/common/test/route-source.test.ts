@@ -23,7 +23,7 @@ const state: RouteStoryState = {
         outlineColor: 'black',
         outlineWidth: 0,
         variant: 'solid',
-        colorTransitionLengthPercent: 0,
+        colorTransitionLengthPixels: 0,
     },
     routeStyleInactive: {
         showRouteLine: true,
@@ -35,7 +35,7 @@ const state: RouteStoryState = {
         outlineColor: 'black',
         outlineWidth: 0,
         variant: 'dashed',
-        colorTransitionLengthPercent: 0,
+        colorTransitionLengthPixels: 0,
     },
     currentPoint: {
         fillColor: 'blue',

@@ -5,7 +5,7 @@ import { cleanUpRouteStoryState, defaultRouteStoryState } from "../src";
 describe("cleanUpRouteStoryState", () => {
     it("merges nested defaults, preserves saved fields, and rejects invalid icons", () => {
         const state = cleanUpRouteStoryState({
-            routeStyleActive: { color: 'saved', pointColor: 'saved-point', obsolete: true },
+            routeStyleActive: { color: 'saved', pointColor: 'saved-point', colorTransitionLengthPercent: 40, obsolete: true },
             currentPoint: { fillColor: 'saved-fill', icon: 'Missing', rotationAlignment: 'viewport', outlineColor: 'obsolete', outlineWidth: 9, shape: 'obsolete' },
             obsolete: true,
         });
@@ -16,6 +16,7 @@ describe("cleanUpRouteStoryState", () => {
                 ...defaultRouteStoryState.routeStyleActive,
                 color: 'saved',
                 pointColor: 'saved-point',
+                colorTransitionLengthPixels: 40,
             },
             currentPoint: {
                 ...defaultRouteStoryState.currentPoint,

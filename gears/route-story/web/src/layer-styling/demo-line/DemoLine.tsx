@@ -39,8 +39,7 @@ export const DemoLine: FC<Props> = ({
     const markerSize = 16 * state.currentPoint.size;
     const markerRotation = state.currentPoint.rotation + (state.currentPoint.autoRotate ? 90 : 0);
     const icon = state.currentPoint.icon === 'Circle' ? Icons.Circle : Icons.NounProject[state.currentPoint.icon];
-    const transitionLengthPercent = active.variant === 'dashed' ? 0 : active.colorTransitionLengthPercent;
-    const transitionWidth = transitionLengthPercent * 1.48;
+    const transitionWidth = active.variant === 'dashed' ? 0 : Math.min(active.colorTransitionLengthPixels, 148);
     const transitionStart = 150 - transitionWidth;
     const gradientIdSuffix = useId().replace(/[^a-zA-Z0-9_-]/g, '');
     const activeGradientId = `route-line-gradient-${gradientIdSuffix}`;

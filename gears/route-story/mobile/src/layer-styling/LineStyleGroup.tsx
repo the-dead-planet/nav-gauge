@@ -115,7 +115,7 @@ export const LineStyleGroup: FC<Props> = ({
                     {showColorTransition ? (
                         <View style={styles['line-control']}>
                             <Label disabled={colorTransitionDisabled}>{colorTransitionLengthLabel}</Label>
-                            <NumberInput ariaLabel={colorTransitionLengthLabel} disabled={colorTransitionDisabled} size="xs" min={0} max={100} step={1} value={style.colorTransitionLengthPercent} onChange={(colorTransitionLengthPercent) => onChange({ colorTransitionLengthPercent })} unit="%" />
+                            <NumberInput ariaLabel={colorTransitionLengthLabel} disabled={colorTransitionDisabled} size="xs" min={0} max={100} step={1} value={style.colorTransitionLengthPixels} onChange={(colorTransitionLengthPixels) => onChange({ colorTransitionLengthPixels })} unit="px" />
                         </View>
                     ) : null}
                 </View>

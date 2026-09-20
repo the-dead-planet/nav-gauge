@@ -37,7 +37,7 @@ export interface RouteStoryLineStyle {
     outlineColor: string;
     outlineWidth: number;
     variant: 'solid' | 'dashed';
-    colorTransitionLengthPercent: number;
+    colorTransitionLengthPixels: number;
 }
 
 export interface CurrentPointStyle {

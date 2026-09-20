@@ -1,6 +1,6 @@
 import { FC } from "react";
 import classNames from "classnames";
-import { TICK_COUNT, STEP_DEG, MAJOR_TICK_INTERVAL, clockAngleToRadians } from "@ui";
+import { TICK_COUNT, STEP_DEG, MAJOR_TICK_INTERVAL, radialLineCoords } from "@ui";
 import styles from './clock-input.module.css';
 
 const tickMajorLengths: Record<string, number> = { xs: 4, sm: 5, md: 6 };
@@ -34,12 +34,12 @@ export const ClockTicks: FC<Props> = ({
                 ? tickMajorLengths[size]
                 : tickMinorLengths[size];
             const tickWidth = isMajor ? strokeWidth : strokeWidth * 0.6;
-            const rad = clockAngleToRadians(angleDeg);
-            const innerR = outerRadius - tickLen;
-            const x1 = center + Math.cos(rad) * innerR;
-            const y1 = center + Math.sin(rad) * innerR;
-            const x2 = center + Math.cos(rad) * outerRadius;
-            const y2 = center + Math.sin(rad) * outerRadius;
+            const { x1, y1, x2, y2 } = radialLineCoords(
+                angleDeg,
+                center,
+                outerRadius - tickLen,
+                outerRadius,
+            );
 
             return (
                 <line
