@@ -1,18 +1,15 @@
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useEffect } from "react";
 import * as maplibregl from "maplibre-gl";
-import { MapLayerData, MapSourceAndLayers, } from "@web-apparatus";
-import { defaultRouteStoryState, getCurrentPointImageName, getCurrentPointLayers, routeLayerIds, routeSourceIds, layerOrder, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { getCurrentPointImageName, getCurrentPointLayers, routeLayerIds, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Icons } from "@ui";
 
 interface Props {
     map: maplibregl.Map;
-    source: GeoJSON.GeoJSON;
     state: RouteStoryState;
 }
 
 export const RouteCurrentPointLayer: FC<Props> = ({
     map,
-    source,
     state,
 }) => {
     const imageName = getCurrentPointImageName(state.currentPoint.icon);
@@ -40,16 +37,6 @@ export const RouteCurrentPointLayer: FC<Props> = ({
         };
     }, [imageName, imageSource, map]);
 
-    const [mapLayerData] = useState((): MapLayerData => ({
-        sourceId: routeSourceIds.currentPoint,
-        source: {
-            type: 'geojson',
-            data: source,
-        },
-        layers: getCurrentPointLayers(defaultRouteStoryState),
-    }));
-    const updatedData = useMemo(() => ({ sourceId: routeSourceIds.currentPoint, data: source }), [source]);
-
     useEffect(() => {
         const [layer] = getCurrentPointLayers(state);
         if (!map.getLayer(layer.id)) {
@@ -61,12 +48,5 @@ export const RouteCurrentPointLayer: FC<Props> = ({
         map.setLayoutProperty(layer.id, 'icon-rotate', layer.layout['icon-rotate']);
     }, [map, state]);
 
-    return (
-        <MapSourceAndLayers
-            map={map}
-            mapLayerData={mapLayerData}
-            updatedData={updatedData}
-            layerOrder={layerOrder}
-        />
-    );
+    return null;
 };

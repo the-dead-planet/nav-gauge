@@ -1,28 +1,25 @@
 import { FC } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, unstable_batchedUpdates, View } from "react-native";
 import { BehaviorSubject } from "rxjs";
 import { MarkerImage } from "@apparatus";
 import { ParsingResultWithError, useSubjectState } from "@tinker-chest";
-import { RouteStoryTranslationKey, RouteTimes, Animatrix, RouteStoryState, requiresSplitLineGeometry } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { RouteStoryTranslationKey, RouteTimes, Animatrix } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Slider } from "@mobile-ui";
 import { currentPointRef$, linesRef$, routeDistanceFractionRef$ } from "../../layers/RouteLayer";
 import { SliderMarkers } from "./SliderMarkers";
 import { PlayerSliderLabels } from "./PlayerSliderLabels";
 import { MobileMarkerImageData } from "../../images/image-parser";
-import { MobileMap } from "@mobile-apparatus";
 import { MobilePlayerOperator } from "../../model";
 
 interface Props {
     gearId: string;
     translationKey: typeof RouteStoryTranslationKey;
-    map: MobileMap;
     data$: BehaviorSubject<ParsingResultWithError>;
     routeTimes$: BehaviorSubject<RouteTimes | null>;
     images$: BehaviorSubject<MarkerImage<MobileMarkerImageData>[]>;
     routeTimelinePositionMs$: BehaviorSubject<number>;
     playerOperator: MobilePlayerOperator;
     animatrix: Animatrix;
-    state$: BehaviorSubject<RouteStoryState>;
 }
 
 const styles = StyleSheet.create({
@@ -42,7 +39,6 @@ export const SliderWithMarkers: FC<Props> = ({
     routeTimelinePositionMs$,
     playerOperator,
     animatrix,
-    state$,
 }) => {
     const [routeTimes] = useSubjectState(routeTimes$);
     const [routeTimelinePositionMs] = useSubjectState(routeTimelinePositionMs$);
@@ -50,11 +46,11 @@ export const SliderWithMarkers: FC<Props> = ({
 
     const handleRouteTimelinePositionChange = (value: number) => {
         playerOperator.updateRouteTimelinePosition(value, (line, currentPoint, routeDistanceFraction) => {
-            if (requiresSplitLineGeometry(state$.value)) {
+            unstable_batchedUpdates(() => {
                 linesRef$.next(line);
-            }
-            routeDistanceFractionRef$.next(routeDistanceFraction);
-            currentPointRef$.next(currentPoint);
+                routeDistanceFractionRef$.next(routeDistanceFraction);
+                currentPointRef$.next(currentPoint);
+            }, undefined);
         });
     };
 

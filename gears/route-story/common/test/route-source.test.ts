@@ -1,6 +1,6 @@
 import { describe } from "mocha";
 import { expect } from "chai";
-import { getRouteSourceData, getRouteTimelinePositionForDistanceFraction, getSplineData, getSplineHeading, getStaticRouteSourceData } from "../src/tinkers";
+import { getRouteSourceData, getRouteTimelinePositionForDistanceFraction, getSplineData, getSplineHeading } from "../src/tinkers";
 import { GeoJson } from "@tinker-chest";
 const route: GeoJson = {
     type: "FeatureCollection",
@@ -12,20 +12,15 @@ const route: GeoJson = {
 };
 
 const startTimeEpoch = Date.parse("2026-01-01T00:00:00Z");
-const getRouteFrame = (
-    routeTimelinePositionMs: number,
-    { createSplitLineGeometry = true }: { createSplitLineGeometry?: boolean } = {},
-) => getRouteSourceData({
+const getRouteFrame = (routeTimelinePositionMs: number) => getRouteSourceData({
     geojson: route,
     startTimeEpoch,
     routeTimelinePositionMs,
     splineData: getSplineData(route),
-    createSplitLineGeometry,
 });
 
 describe("Route story gear", () => {
     describe("Route source data", () => {
-        const splineData = getSplineData(route);
         const expectValidLines = (routeTimelinePositionMs: number) => {
             const { line } = getRouteFrame(routeTimelinePositionMs);
             expect(line.type).to.equal("FeatureCollection");
@@ -48,16 +43,14 @@ describe("Route story gear", () => {
             expect(lineStrings).to.have.lengthOf(2);
             expect(lineStrings[0].geometry.coordinates.length).to.be.greaterThan(1);
             expect(lineStrings[1].geometry.coordinates.length).to.be.greaterThan(1);
-            expect(features.filter((feature) => feature.geometry.type === 'Point').map((feature) => feature.properties?.status)).to.deep.equal(['before', 'before', 'after']);
-        });
-
-        it("should report the index of the segment that follows the current time", () => {
-            const { splitIndex } = getRouteFrame(90_000);
-            expect(splitIndex).to.equal(2);
+            expect(features.filter((feature) => feature.geometry.type === 'Point' && feature.properties?.status).map((feature) => feature.properties?.status)).to.deep.equal(['before', 'before', 'after']);
+            const currentPoint = features.find((feature) => feature.properties?.routeCurrentPoint) as GeoJSON.Feature<GeoJSON.Point>;
+            expect(currentPoint.geometry.coordinates).to.deep.equal(lineStrings[0].geometry.coordinates.at(-1));
+            expect(currentPoint.geometry.coordinates).to.deep.equal(lineStrings[1].geometry.coordinates[0]);
         });
 
         it("reports the fraction of route distance travelled", () => {
-            const { routeDistanceFraction } = getRouteFrame(90_000, { createSplitLineGeometry: false });
+            const { routeDistanceFraction } = getRouteFrame(90_000);
 
             expect(routeDistanceFraction).to.be.closeTo(0.75, 0.001);
         });
@@ -73,16 +66,6 @@ describe("Route story gear", () => {
             };
 
             expect(getRouteTimelinePositionForDistanceFraction(route, splineData, startTimeEpoch, 0.625)).to.equal(90_000);
-        });
-
-        it("creates static line and point features from the route", () => {
-            const source = getStaticRouteSourceData(route, splineData);
-
-            expect((source.features[0].geometry as GeoJSON.LineString).coordinates).to.deep.equal([[0, 0], [1, 1], [2, 2]]);
-            const pointFractions = source.features.slice(1).map((feature) => feature.properties?.routeDistanceFraction as number);
-            expect(pointFractions[0]).to.equal(0);
-            expect(pointFractions[1]).to.be.closeTo(0.5, 0.001);
-            expect(pointFractions[2]).to.equal(1);
         });
 
         it("provides finite headings at both route ends", () => {

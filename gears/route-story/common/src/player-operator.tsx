@@ -118,7 +118,6 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
         loadedImages: LoadedImageData<TImageData>[],
         onUpdateLayer: (currentPoint: GeoJSON.Feature<GeoJSON.Point>, lines: GeoJSON.GeoJSON, routeDistanceFraction: number) => void,
         onUpdateMapCamera: (position: GeoJSON.Position, bearing: number) => void,
-        { createSplitLineGeometry = true }: { createSplitLineGeometry?: boolean } = {},
     ) => {
         const isPlaying = this.gear.apparatus.chronoLens.isPlaying$.value;
         const geojson = this.gear.data$.value.geojson;
@@ -150,7 +149,6 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
             startTimeEpoch,
             routeTimelinePositionMs,
             splineData,
-            createSplitLineGeometry: false,
         }).routeDistanceFraction;
         let routePlaybackFraction = this.gear.animatrix.controls$.value.playbackPacing === 'distance'
             ? initialRouteDistanceFraction
@@ -187,7 +185,6 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
                 startTimeEpoch,
                 routeTimelinePositionMs,
                 splineData,
-                createSplitLineGeometry,
             });
             this.heading = easeHeading(this.heading, rawHeading, dt, easeDuration);
             currentPoint.properties = { ...currentPoint.properties, heading: this.heading };

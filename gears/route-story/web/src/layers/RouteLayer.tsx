@@ -2,7 +2,7 @@ import { FC, useEffect, useMemo } from "react";
 import * as maplibregl from "maplibre-gl";
 import { OverlayComponentProps } from "@apparatus";
 import { useWebMachineWard } from "@web-apparatus";
-import { getRouteSourceData, getStaticRouteSourceData, requiresSplitLineGeometry } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { getRouteSourceData } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { emptyCollection, useSubjectState } from "@tinker-chest";
 import { updateRouteLayer } from "../tinkers";
 import { useLoadedWebImages } from "../hooks";
@@ -35,30 +35,26 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
     const { cameraTilt, cameraZoom, cameraRoll, easeDuration, playbackPacing } = animationControls;
 
     const loadedImages = useLoadedWebImages(images);
-    const createSplitLineGeometry = requiresSplitLineGeometry(state);
-
-    const sources = useMemo(() => {
+    const source = useMemo(() => {
         if (!geojson || !routeTimes || !splineData) {
-            return { currentPoint: emptyCollection, line: emptyCollection, routeDistanceFraction: 0 };
+            return emptyCollection;
         }
 
-        const frame = getRouteSourceData({
+        return getRouteSourceData({
             geojson,
             startTimeEpoch: routeTimes.startTimeEpoch,
             routeTimelinePositionMs, // Not a dependency of this memo, data is updated later in the animateRoute hook
             splineData,
-            createSplitLineGeometry,
-        });
-        return { ...frame, line: createSplitLineGeometry ? frame.line : getStaticRouteSourceData(geojson, splineData) };
-    }, [geojson, routeTimes, splineData, createSplitLineGeometry]);
+        }).line;
+    }, [geojson, routeTimes, splineData]);
 
     useEffect(() => {
         if (!isPlaying || !geojson || !routeTimes) {
             return;
         }
         playerOperator.animateRoute(loadedImages,
-            (currentPoint, line, routeDistanceFraction) => {
-                updateRouteLayer({ map, currentPoint, line, routeDistanceFraction, createSplitLineGeometry, state: state$.value });
+            (_currentPoint, line, routeDistanceFraction) => {
+                updateRouteLayer({ map, line, routeDistanceFraction, state: state$.value });
             },
             (position, bearing) => {
                 map.easeTo({
@@ -73,21 +69,20 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
                     roll: cameraRoll,
                 });
             },
-            { createSplitLineGeometry },
         );
 
         return () => {
             playerOperator.cleanupAnimateRoute();
         };
-    }, [isPlaying, loadedImages, easeDuration, cameraZoom, cameraTilt, cameraRoll, playbackPacing, createSplitLineGeometry]);
+    }, [isPlaying, loadedImages, easeDuration, cameraZoom, cameraTilt, cameraRoll, playbackPacing]);
 
     return (
         <>
             {settings.debugMode && splineData ? (
                 <DebugRouteCameraLineLayer map={map} spline={splineData} />
             ) : null}
-            <RouteLineLayer key={createSplitLineGeometry ? 'split' : 'static'} map={map} source={sources.line} state={state} routeDistanceFraction={createSplitLineGeometry ? undefined : sources.routeDistanceFraction} createSplitLineGeometry={createSplitLineGeometry} />
-            <RouteCurrentPointLayer map={map} source={sources.currentPoint} state={state} />
+            <RouteLineLayer map={map} source={source} state={state} />
+            <RouteCurrentPointLayer map={map} state={state} />
         </>
     );
 };

@@ -4,7 +4,7 @@ import { BehaviorSubject } from "rxjs";
 import classNames from "classnames";
 import { MarkerImage, useMultipleTranslations } from "@apparatus";
 import { ParsingResultWithError, useSubjectState } from "@tinker-chest";
-import { RouteStoryTranslationKey, RouteTimes, Animatrix, RouteStoryState, requiresSplitLineGeometry } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { RouteStoryTranslationKey, RouteTimes, Animatrix, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { updateRouteLayer } from "../../tinkers";
 import { Slider } from "@web-ui";
 import { WebMarkerImageData } from "../../images/image-parser";
@@ -54,9 +54,8 @@ export const SliderWithMarkers: FC<Props> = ({
     const handleRouteTimelinePositionChange = (value: number) => {
         playerOperator.updateRouteTimelinePosition(
             value,
-            (line, currentPoint, routeDistanceFraction) => {
-                const createSplitLineGeometry = requiresSplitLineGeometry(state$.value);
-                updateRouteLayer({ map, currentPoint, line, routeDistanceFraction, createSplitLineGeometry, state: state$.value });
+            (line, _currentPoint, routeDistanceFraction) => {
+                updateRouteLayer({ map, line, routeDistanceFraction, state: state$.value });
             }
         )
     };

@@ -2,9 +2,10 @@ import { FC, useEffect } from "react";
 import { BehaviorSubject } from "rxjs";
 import { OverlayComponentProps } from "@apparatus";
 import { useMobileMachineWard } from "@mobile-apparatus";
-import { getRouteSourceData, getStaticRouteSourceData, requiresSplitLineGeometry } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { getRouteSourceData } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMap } from "@mobile-apparatus";
 import { emptyCollection, useSubjectState } from "@tinker-chest";
+import { unstable_batchedUpdates } from "react-native";
 import { useLoadedMobileImages } from "../images/useLoadedMobileImages";
 import { RouteLineLayer } from "./RouteLineLayer";
 import { RouteCurrentPointLayer } from "./RouteCurrentPointLayer";
@@ -45,7 +46,6 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
     const [currentPointSourceData, setCurrentPointSourceData] = useSubjectState(currentPointRef$);
     const [lineSourceData, setLineSourceData] = useSubjectState(linesRef$);
     const [routeDistanceFraction, setRouteDistanceFraction] = useSubjectState(routeDistanceFractionRef$);
-    const createSplitLineGeometry = requiresSplitLineGeometry(state);
 
     useEffect(() => {
         // lineRef$.next();
@@ -73,9 +73,9 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
             splineData,
         });
 
-        setLineSourceData(createSplitLineGeometry ? line : getStaticRouteSourceData(geojson, splineData));
+        setLineSourceData(line);
         setCurrentPointSourceData(currentPoint);
-    }, [geojson, routeTimes?.startTimeEpoch, splineData, createSplitLineGeometry]);
+    }, [geojson, routeTimes?.startTimeEpoch, splineData]);
 
     useEffect(() => {
         if (!isPlaying || !geojson || !routeTimes) {
@@ -83,11 +83,11 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
         }
         playerOperator.animateRoute(loadedImages,
             (currentPoint, lines, nextRouteDistanceFraction) => {
-                if (createSplitLineGeometry) {
+                unstable_batchedUpdates(() => {
                     setLineSourceData(lines);
-                }
-                setRouteDistanceFraction(nextRouteDistanceFraction);
-                setCurrentPointSourceData(currentPoint);
+                    setRouteDistanceFraction(nextRouteDistanceFraction);
+                    setCurrentPointSourceData(currentPoint);
+                }, undefined);
             },
             (position, bearing) => {
                 map.camera$.value?.easeTo({
@@ -98,18 +98,17 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
                     bearing,
                 });
             },
-            { createSplitLineGeometry },
         );
 
         return () => {
             playerOperator.cleanupAnimateRoute();
         };
-    }, [isPlaying, loadedImages, easeDuration, cameraZoom, cameraTilt, playbackPacing, createSplitLineGeometry]);
+    }, [isPlaying, loadedImages, easeDuration, cameraZoom, cameraTilt, playbackPacing]);
 
     return (
         <>
             {settings.debugMode && splineData ? <DebugRouteCameraLineLayer spline={splineData} /> : null}
-            <RouteLineLayer source={lineSourceData} state={state} routeDistanceFraction={createSplitLineGeometry ? undefined : routeDistanceFraction} />
+            <RouteLineLayer source={lineSourceData} state={state} routeDistanceFraction={routeDistanceFraction} />
             <RouteCurrentPointLayer source={currentPointSourceData} state={state} />
         </>
     );

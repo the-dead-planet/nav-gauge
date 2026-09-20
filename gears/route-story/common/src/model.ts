@@ -18,8 +18,6 @@ export interface RouteTimes {
 export interface RouteSourceData {
     line: GeoJSON.GeoJSON;
     currentPoint: GeoJSON.Feature<GeoJSON.Point>;
-    splitIndex: number;
-    fraction: number;
     heading: number;
     routeDistanceFraction: number;
 }

@@ -108,9 +108,6 @@ export const routeCameraLayerIds = {
 
 type RouteStatus = 'before' | 'after';
 type RouteLineColorInterpolation = ['interpolate', ['linear'], ['line-progress'], number, string, number, string];
-type RouteLineGradient =
-    | ['step', ['line-progress'], string, number, string]
-    | ['case', ['<=' | '>', ['line-progress'], number], RouteLineColorInterpolation, string];
 type RouteStatusFilter = ['==', GetProperty, RouteStatus];
 type HighlightOrStatusColor = [
     'case',
@@ -132,7 +129,7 @@ export interface RouteLineLayerSpec {
     };
     paint: {
         'line-color'?: string;
-        'line-gradient'?: RouteLineGradient;
+        'line-gradient'?: RouteLineColorInterpolation;
         'line-width': number;
         'line-opacity': number;
         'line-dasharray'?: number[];
@@ -143,7 +140,7 @@ export interface RouteCircleLayerSpec {
     id: string;
     type: 'circle';
     source: string;
-    filter?: RouteStatusFilter | ['<=', GetProperty, number] | ['>', GetProperty, number];
+    filter?: RouteStatusFilter;
     layout: {
         visibility: 'visible' | 'none';
     };
@@ -157,6 +154,7 @@ export interface RouteSymbolLayerSpec {
     id: string;
     type: 'symbol';
     source: string;
+    filter?: ['==', GetProperty, true];
     layout: {
         'icon-image': string;
         'icon-size': number;
@@ -209,52 +207,31 @@ export const getRouteLineLayers = (state: RouteStoryState): RouteLineLayerSpec[]
     ];
 };
 
-export const getProgressRouteLineLayers = (
-    state: RouteStoryState,
-    routeDistanceFraction: number,
-): RouteLineLayerSpec[] => {
+export const getAnimatedRouteLineLayers = (state: RouteStoryState, routeDistanceFraction: number): RouteLineLayerSpec[] => {
+    const transitionLength = state.currentPoint.colorTransitionLengthPercent / 100;
+    if (transitionLength <= 0 || requiresSplitLineGeometry(state)) {
+        return getRouteLineLayers(state);
+    }
+    const start = 1 - Math.min(1, transitionLength / Math.max(routeDistanceFraction, transitionLength));
+
     return getRouteLineLayers(state).map((layer) => {
-        const status: RouteStatus = layer.id === routeLayerIds.lineActive || layer.id === routeLayerIds.lineActiveOutline
-            ? 'before'
-            : 'after';
-        const isOutline = layer.id === routeLayerIds.lineActiveOutline || layer.id === routeLayerIds.lineInactiveOutline;
+        const isActive = layer.id === routeLayerIds.lineActive || layer.id === routeLayerIds.lineActiveOutline;
+        if (!isActive) {
+            return layer;
+        }
+        const isOutline = layer.id === routeLayerIds.lineActiveOutline;
         const activeColor = isOutline ? state.routeStyleActive.outlineColor : state.routeStyleActive.color;
         const inactiveColor = isOutline ? state.routeStyleInactive.outlineColor : state.routeStyleInactive.color;
-        const { filter: _filter, ...layerWithoutFilter } = layer;
         const { 'line-color': _lineColor, ...paint } = layer.paint;
 
         return {
-            ...layerWithoutFilter,
+            ...layer,
             paint: {
                 ...paint,
-                'line-gradient': getRouteLineGradient(
-                    status,
-                    activeColor,
-                    inactiveColor,
-                    routeDistanceFraction,
-                    state.currentPoint.colorTransitionLengthPercent / 100,
-                ),
+                'line-gradient': ['interpolate', ['linear'], ['line-progress'], start, activeColor, 1, inactiveColor],
             },
         };
     });
-};
-
-export const getRouteLineGradient = (
-    status: RouteStatus,
-    activeColor: string,
-    inactiveColor: string,
-    routeDistanceFraction: number,
-    transitionLength: number,
-): RouteLineGradient => {
-    const transparent = 'rgba(0, 0, 0, 0)';
-    if (transitionLength <= 0 || routeDistanceFraction <= 0) {
-        return ['step', ['line-progress'], status === 'before' ? activeColor : transparent, routeDistanceFraction, status === 'before' ? transparent : inactiveColor];
-    }
-    const start = Math.max(0, routeDistanceFraction - transitionLength);
-    const end = routeDistanceFraction;
-    const colorTransition: RouteLineColorInterpolation = ['interpolate', ['linear'], ['line-progress'], start, activeColor, end, inactiveColor];
-
-    return ['case', [status === 'before' ? '<=' : '>', ['line-progress'], routeDistanceFraction], colorTransition, transparent];
 };
 
 export const requiresSplitLineGeometry = (state: RouteStoryState): boolean =>
@@ -299,28 +276,6 @@ export const getRoutePointsLayers = (state: RouteStoryState): RouteCircleLayerSp
     },
 ];
 
-export const getProgressRoutePointsLayers = (
-    state: RouteStoryState,
-    routeDistanceFraction: number,
-): RouteCircleLayerSpec[] => getRoutePointsLayers(state).map((layer) => {
-    const active = layer.id === routeLayerIds.pointsActive;
-    const style = active ? state.routeStyleActive : state.routeStyleInactive;
-
-    return {
-        ...layer,
-        filter: [active ? '<=' : '>', ['get', 'routeDistanceFraction'], routeDistanceFraction],
-        paint: {
-            ...layer.paint,
-            'circle-color': [
-                'case',
-                ['==', ['feature-state', FeatureStateProps.Highlight], true],
-                'red',
-                style.pointColor,
-            ],
-        },
-    };
-});
-
 export const getCurrentPointImageName = (icon: string): string => `route-current-point-${icon}`;
 
 export const getCurrentPointLayers = (state: RouteStoryState): RouteSymbolLayerSpec[] => [{
@@ -340,6 +295,12 @@ export const getCurrentPointLayers = (state: RouteStoryState): RouteSymbolLayerS
     paint: {
         'icon-color': state.currentPoint.fillColor,
     },
+}];
+
+export const getRouteSourceCurrentPointLayers = (state: RouteStoryState): RouteSymbolLayerSpec[] => [{
+    ...getCurrentPointLayers(state)[0],
+    source: routeSourceIds.line,
+    filter: ['==', ['get', 'routeCurrentPoint'], true],
 }];
 
 export const getCameraLineLayers = (): (RouteLineLayerSpec | RouteCircleLayerSpec)[] => {

@@ -55,7 +55,10 @@ See `.opencode/rules/testing.mdc`.
 
 ## After changes
 
-Always run `yarn typecheck:web` (or `yarn typecheck:mobile:once` for mobile changes), `yarn lint`, and relevant tests after every code edit.
+- During development, run targeted typechecks and tests after a coherent batch of edits, not after every individual edit.
+- Before completing a task, run `yarn typecheck:web` for web/common changes, `yarn typecheck:mobile:once` for mobile/common changes, `yarn lint`, and the relevant tests. Run broader builds or test suites once at the end when warranted.
+- Minimize context usage from verification commands: redirect routine output to a temporary log and print only a short success message. If a command fails, print the relevant failure output from the log for diagnosis.
+- Do not skip required verification to save output; suppress successful noise instead.
 
 ## Other
 

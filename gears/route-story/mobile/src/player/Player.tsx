@@ -61,7 +61,6 @@ export const Player: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryProps
     routeTimelinePositionMs$,
     playerOperator,
     animatrix,
-    state$,
 }) => {
     const theme = useTheme();
     const [media] = useSubjectState(theme.media$);
@@ -79,14 +78,12 @@ export const Player: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryProps
         <SliderWithMarkers
             gearId={gearId}
             translationKey={translationKey}
-            map={map}
             data$={data$}
             routeTimes$={routeTimes$}
             images$={images$}
             routeTimelinePositionMs$={routeTimelinePositionMs$}
             playerOperator={playerOperator}
             animatrix={animatrix}
-            state$={state$}
         />
     );
     const markerButton = <MarkerButton gearId={gearId} translationKey={translationKey} playerOperator={playerOperator} />;

@@ -1,9 +1,7 @@
 import { FC } from "react";
 import { GeoJSONSource } from "@maplibre/maplibre-react-native";
 import {
-    getRouteLineLayers,
-    getProgressRouteLineLayers,
-    getProgressRoutePointsLayers,
+    getAnimatedRouteLineLayers,
     getRoutePointsLayers,
     RouteStoryState,
     routeSourceIds,
@@ -22,11 +20,7 @@ export const RouteLineLayer: FC<Props> = ({ source, state, routeDistanceFraction
         data={source}
         lineMetrics={routeDistanceFraction !== undefined}
     >
-        {(routeDistanceFraction === undefined
-            ? getRouteLineLayers(state)
-            : getProgressRouteLineLayers(state, routeDistanceFraction)).map(renderLayerSpec)}
-        {(routeDistanceFraction === undefined
-            ? getRoutePointsLayers(state)
-            : getProgressRoutePointsLayers(state, routeDistanceFraction)).map(renderLayerSpec)}
+        {getAnimatedRouteLineLayers(state, routeDistanceFraction ?? 0).map(renderLayerSpec)}
+        {getRoutePointsLayers(state).map(renderLayerSpec)}
     </GeoJSONSource>
 );

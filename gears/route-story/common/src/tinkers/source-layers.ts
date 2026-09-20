@@ -6,7 +6,7 @@ import { point as turfPoint, lineString as turfLine } from "@turf/helpers";
 import { bezierSpline } from "@turf/bezier-spline";
 import turfLength from "@turf/length";
 import { LoadedImageData } from "@apparatus";
-import { emptyCollection, FeatureProperties, GeoJson } from "@tinker-chest";
+import { FeatureProperties, GeoJson } from "@tinker-chest";
 import { RouteSourceData, RouteTimes } from "../model";
 
 interface RouteSourceDataParameters {
@@ -14,7 +14,6 @@ interface RouteSourceDataParameters {
     startTimeEpoch: number;
     routeTimelinePositionMs: number;
     splineData: SplineData;
-    createSplitLineGeometry?: boolean;
 }
 
 export const getRouteSourceData = ({
@@ -22,12 +21,9 @@ export const getRouteSourceData = ({
     startTimeEpoch,
     routeTimelinePositionMs,
     splineData,
-    createSplitLineGeometry = true,
 }: RouteSourceDataParameters): RouteSourceData => {
     const currentTime = startTimeEpoch + routeTimelinePositionMs;
-    const followingIndex = geojson.features.findIndex((f) =>
-        new Date(f.properties.time).valueOf() > new Date(currentTime).valueOf()
-    );
+    const followingIndex = getFollowingIndex(geojson, currentTime);
     const splitIndex = followingIndex < 0 ? geojson.features.length : followingIndex;
     const { currentPoint, fraction } = getCurrentPoint(geojson, splitIndex, currentTime);
     const heading = getSplineHeading(splineData, splitIndex, fraction);
@@ -35,65 +31,70 @@ export const getRouteSourceData = ({
     currentPoint.properties = { ...currentPoint.properties, heading };
 
     return {
-        splitIndex,
-        fraction,
         heading,
         routeDistanceFraction,
         currentPoint,
-        line: createSplitLineGeometry
-            ? {
-                ...geojson,
-                features: [
-                    {
-                        type: 'Feature',
-                        geometry: {
-                            type: 'LineString',
-                            coordinates: geojson.features.slice(0, splitIndex).map((f) => f.geometry.coordinates).concat([currentPoint.geometry.coordinates])
-                        },
-                        properties: {
-                            status: 'before',
-                        }
+        line: {
+            ...geojson,
+            features: [
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'LineString',
+                        coordinates: geojson.features.slice(0, splitIndex).map((f) => f.geometry.coordinates).concat([currentPoint.geometry.coordinates])
                     },
-                    {
-                        type: 'Feature',
-                        geometry: {
-                            type: 'LineString',
-                            coordinates: [currentPoint.geometry.coordinates].concat(geojson.features.slice(splitIndex).map((f) => f.geometry.coordinates))
-                        },
-                        properties: {
-                            status: 'after',
-                        }
+                    properties: {
+                        status: 'before',
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'LineString',
+                        coordinates: [currentPoint.geometry.coordinates].concat(geojson.features.slice(splitIndex).map((f) => f.geometry.coordinates))
                     },
-                    ...geojson.features.map((feature, index) => ({
-                        ...feature,
-                        properties: {
-                            ...feature.properties,
-                            status: index < splitIndex ? 'before' : 'after',
-                        },
-                    })),
-                ].filter((feature) => feature.geometry.type !== 'LineString' || feature.geometry.coordinates.length > 1) as GeoJSON.Feature[]
-            }
-            : emptyCollection,
+                    properties: {
+                        status: 'after',
+                    }
+                },
+                ...geojson.features.map((feature, index) => ({
+                    ...feature,
+                    properties: {
+                        ...feature.properties,
+                        status: index < splitIndex ? 'before' : 'after',
+                    },
+                })),
+                {
+                    type: 'Feature',
+                    geometry: currentPoint.geometry,
+                    properties: {
+                        heading,
+                        routeCurrentPoint: true,
+                    },
+                },
+            ].filter((feature) => feature.geometry.type !== 'LineString' || feature.geometry.coordinates.length > 1) as GeoJSON.Feature[]
+        },
     };
 };
 
-export const getStaticRouteSourceData = (geojson: GeoJson, splineData: SplineData): GeoJSON.FeatureCollection => ({
-    type: 'FeatureCollection',
-    features: [{
-        type: 'Feature',
-        geometry: {
-            type: 'LineString',
-            coordinates: geojson.features.map((feature) => feature.geometry.coordinates),
-        },
-        properties: {},
-    }, ...geojson.features.map((feature, index) => ({
-        ...feature,
-        properties: {
-            ...feature.properties,
-            routeDistanceFraction: splineData.lookup[index].lineProgress,
-        },
-    }))],
-});
+const getFollowingIndex = (
+    geojson: RouteSourceDataParameters['geojson'],
+    currentTime: number,
+) => {
+    let low = 0;
+    let high = geojson.features.length;
+
+    while (low < high) {
+        const middle = Math.floor((low + high) / 2);
+        if (new Date(geojson.features[middle].properties.time).valueOf() <= currentTime) {
+            low = middle + 1;
+        } else {
+            high = middle;
+        }
+    }
+
+    return low === geojson.features.length ? -1 : low;
+};
 
 /**
  * @returns current point feature interpolated between the first features before/after it, plus the fractional position between them.
@@ -203,8 +204,18 @@ export const getRouteTimelinePositionForDistanceFraction = (
     routeDistanceFraction: number,
 ): number => {
     const clampedDistanceFraction = Math.max(0, Math.min(1, routeDistanceFraction));
-    const endIndex = splineData.lookup.findIndex(({ lineProgress }) => lineProgress > clampedDistanceFraction);
-    if (endIndex < 0) {
+    let low = 0;
+    let high = splineData.lookup.length;
+    while (low < high) {
+        const middle = Math.floor((low + high) / 2);
+        if (splineData.lookup[middle].lineProgress <= clampedDistanceFraction) {
+            low = middle + 1;
+        } else {
+            high = middle;
+        }
+    }
+    const endIndex = low;
+    if (endIndex === splineData.lookup.length) {
         return new Date(geojson.features[geojson.features.length - 1].properties.time).valueOf() - startTimeEpoch;
     }
     if (endIndex === 0) {

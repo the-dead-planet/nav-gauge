@@ -10,9 +10,9 @@ export abstract class ChronoLens {
     protected individuator: Individuator;
 
     /**
-     * Frames per second. Defaults to 30.
+     * Frames per second. Defaults to 60.
      */
-    public fps$ = new BehaviorSubject<FrameRate>(30);
+    public fps$ = new BehaviorSubject<FrameRate>(60);
     public surveillanceState$ = new BehaviorSubject<SurveillanceState>(SurveillanceState.Stopped);
     public isPlaying$ = new BehaviorSubject(false);
     public hasRecordingData$ = new BehaviorSubject(false);
