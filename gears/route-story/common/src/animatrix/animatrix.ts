@@ -14,6 +14,7 @@ export class Animatrix {
     public translationKey = AnimatrixTranslationKey;
 
     public static defaultControls: AnimationControlsType = {
+        playbackPacing: 'distance',
         followCurrentPoint: true,
         cameraZoom: 15,
         cameraAngle: 0,
@@ -63,15 +64,19 @@ export class Animatrix {
      */
     public displayImageId$ = new BehaviorSubject<number | null>(null);
 
-    private cleanUpAnimationControls = (state: unknown): Partial<AnimationControlsType> => {
-        const { cameraAngle, ...controls } = state as AnimationControlsType;
+    public cleanUpAnimationControls = (state: unknown): Partial<AnimationControlsType> => {
+        const { cameraAngle, playbackPacing, ...controls } = state as AnimationControlsType;
         return {
             cameraAngle: typeof cameraAngle === 'number' ? cameraAngle : Animatrix.defaultControls.cameraAngle,
+            playbackPacing: playbackPacing === 'timeline' ? 'timeline' : 'distance',
             ...controls
         };
     };
 
     public static validateAnimationControls = (animationControls: Partial<AnimationControlsType>) => {
+        if (animationControls.playbackPacing !== undefined && animationControls.playbackPacing !== 'timeline' && animationControls.playbackPacing !== 'distance') {
+            throw new Error('Playback pacing should be timeline or distance');
+        }
         validateBoolean(animationControls.followCurrentPoint, 'Follow current point');
         validateBoolean(animationControls.autoRotate, "Auto rotate");
         validateBoolean(animationControls.panToWholeRouteAtEnd, 'Pan to whole route at end');

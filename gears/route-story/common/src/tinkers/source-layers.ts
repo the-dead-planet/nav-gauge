@@ -15,7 +15,7 @@ export const getRouteSourceData = (
     startTimeEpoch: number,
     progressMs: number,
     splineData: SplineData,
-): CurrentPointData => {
+): CurrentPointData & { routeDistanceFraction: number } => {
     const currentTime = startTimeEpoch + progressMs;
     const followingIndex = geojson.features.findIndex((f) =>
         new Date(f.properties.time).valueOf() > new Date(currentTime).valueOf()
@@ -23,6 +23,7 @@ export const getRouteSourceData = (
     const splitIndex = followingIndex < 0 ? geojson.features.length : followingIndex;
     const { currentPoint, fraction } = getCurrentPoint(geojson, splitIndex, currentTime);
     const heading = getSplineHeading(splineData, splitIndex, fraction);
+    const routeDistanceFraction = getRouteDistanceFraction(splineData, splitIndex, fraction);
     currentPoint.properties = { ...currentPoint.properties, heading };
 
     const anyVisible =
@@ -33,6 +34,7 @@ export const getRouteSourceData = (
         splitIndex,
         fraction,
         heading,
+        routeDistanceFraction,
         currentPoint,
         line: anyVisible
             ? {
@@ -100,7 +102,7 @@ const getCurrentPoint = (
 
 export interface SplineData {
     spline: GeoJSON.Feature<GeoJSON.LineString>;
-    lookup: Array<{ t: number }>;
+    lookup: Array<{ t: number; lineProgress: number }>;
     splinePoints: GeoJSON.Position[];
 }
 
@@ -124,7 +126,7 @@ export const getSplineData = (geojson: GeoJson): SplineData => {
 const buildSplineLookup = (
     features: GeoJson['features'],
     splinePoints: GeoJSON.Position[],
-): Array<{ t: number }> => {
+): Array<{ t: number; lineProgress: number }> => {
     const origCumulative = [0];
     for (let i = 1; i < features.length; i++) {
         origCumulative.push(
@@ -158,8 +160,42 @@ const buildSplineLookup = (
             bestIdx = j;
         }
 
-        return { t: bestIdx / (splinePoints.length - 1) };
+        return {
+            t: bestIdx / (splinePoints.length - 1),
+            lineProgress: fraction,
+        };
     });
+};
+
+export const getRouteTimelinePositionForDistanceFraction = (
+    geojson: GeoJson,
+    splineData: SplineData,
+    startTimeEpoch: number,
+    routeDistanceFraction: number,
+): number => {
+    const clampedDistanceFraction = Math.max(0, Math.min(1, routeDistanceFraction));
+    const endIndex = splineData.lookup.findIndex(({ lineProgress }) => lineProgress > clampedDistanceFraction);
+    if (endIndex < 0) {
+        return new Date(geojson.features.at(-1)!.properties.time).valueOf() - startTimeEpoch;
+    }
+    if (endIndex === 0) {
+        return 0;
+    }
+    const startIndex = endIndex - 1;
+    const startDistance = splineData.lookup[startIndex].lineProgress;
+    const endDistance = splineData.lookup[endIndex].lineProgress;
+    const fraction = (clampedDistanceFraction - startDistance) / (endDistance - startDistance);
+    const startTime = new Date(geojson.features[startIndex].properties.time).valueOf();
+    const endTime = new Date(geojson.features[endIndex].properties.time).valueOf();
+
+    return startTime + (endTime - startTime) * fraction - startTimeEpoch;
+};
+
+const getRouteDistanceFraction = (splineData: SplineData, splitIndex: number, fraction: number): number => {
+    const start = splineData.lookup[Math.max(0, splitIndex - 1)].lineProgress;
+    const end = splineData.lookup[Math.min(splineData.lookup.length - 1, splitIndex)].lineProgress;
+
+    return start + (end - start) * fraction;
 };
 
 export const getSplineHeading = (splineData: SplineData, splitIndex: number, fraction: number): number => {
