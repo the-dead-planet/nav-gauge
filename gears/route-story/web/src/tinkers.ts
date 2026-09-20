@@ -28,20 +28,15 @@ export const updateRouteLayerStyle = (
         if (!map.getLayer(layer.id)) {
             continue;
         }
-        map.setLayoutProperty(layer.id, 'visibility', layer.layout.visibility);
         map.setFilter(layer.id, layer.filter as maplibregl.FilterSpecification | null);
-
-        if (layer.type === 'line') {
-            map.setLayoutProperty(layer.id, 'line-cap', layer.layout['line-cap']);
-            map.setLayoutProperty(layer.id, 'line-join', layer.layout['line-join']);
-            map.setPaintProperty(layer.id, 'line-color', layer.paint['line-color']);
-            map.setPaintProperty(layer.id, 'line-width', layer.paint['line-width']);
-            map.setPaintProperty(layer.id, 'line-opacity', layer.paint['line-opacity']);
-            map.setPaintProperty(layer.id, 'line-dasharray', (layer.paint['line-dasharray'] ?? null) as maplibregl.DataDrivenPropertyValueSpecification<number[]>);
-            map.setPaintProperty(layer.id, 'line-gradient', (layer.paint['line-gradient'] ?? null) as unknown as maplibregl.ExpressionSpecification);
-        } else {
-            map.setPaintProperty(layer.id, 'circle-color', layer.paint['circle-color']);
-            map.setPaintProperty(layer.id, 'circle-radius', layer.paint['circle-radius']);
+        for (const [property, value] of Object.entries(layer.layout)) {
+            map.setLayoutProperty(layer.id, property as keyof maplibregl.AllLayoutProperties, value);
+        }
+        const paint = layer.type === 'line'
+            ? { 'line-dasharray': null, 'line-gradient': null, ...layer.paint }
+            : layer.paint;
+        for (const [property, value] of Object.entries(paint)) {
+            map.setPaintProperty(layer.id, property as keyof maplibregl.AllPaintProperties, value);
         }
     }
 };

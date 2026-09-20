@@ -12,26 +12,13 @@ const mergeKnownFields = <T extends object>(defaults: T, value: unknown): T => {
     ])) as T;
 };
 
-const mergeRouteLineStyle = (
-    defaults: RouteStoryState['routeStyleActive'],
-    value: unknown,
-): RouteStoryState['routeStyleActive'] => {
-    const stored = isRecord(value) ? value : {};
-    const merged = mergeKnownFields(defaults, stored);
-
-    return !Object.prototype.hasOwnProperty.call(stored, 'colorTransitionLengthPixels')
-        && typeof stored.colorTransitionLengthPercent === 'number'
-        ? { ...merged, colorTransitionLengthPixels: stored.colorTransitionLengthPercent }
-        : merged;
-};
-
 export const cleanUpRouteStoryState = (value: unknown): RouteStoryState => {
     const stored = isRecord(value) ? value : {};
     const currentPoint = mergeKnownFields(defaultRouteStoryState.currentPoint, stored.currentPoint);
 
     return {
-        routeStyleActive: mergeRouteLineStyle(defaultRouteStoryState.routeStyleActive, stored.routeStyleActive),
-        routeStyleInactive: mergeRouteLineStyle(defaultRouteStoryState.routeStyleInactive, stored.routeStyleInactive),
+        routeStyleActive: mergeKnownFields(defaultRouteStoryState.routeStyleActive, stored.routeStyleActive),
+        routeStyleInactive: mergeKnownFields(defaultRouteStoryState.routeStyleInactive, stored.routeStyleInactive),
         currentPoint: {
             ...currentPoint,
             icon: currentPointIconNames.includes(currentPoint.icon as CurrentPointIconName) ? currentPoint.icon : 'Circle',

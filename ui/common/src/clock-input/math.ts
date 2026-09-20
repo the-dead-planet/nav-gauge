@@ -109,19 +109,12 @@ export function pointerCoords(value: number, outerRadius: number): PointerCoords
     };
 }
 
-export interface RadialLineCoords {
-    x1: number;
-    y1: number;
-    x2: number;
-    y2: number;
-}
-
 export function radialLineCoords(
     angle: number,
     center: number,
     innerRadius: number,
     outerRadius: number,
-): RadialLineCoords {
+) {
     const radians = clockAngleToRadians(angle);
 
     return {
