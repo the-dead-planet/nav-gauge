@@ -42,11 +42,12 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
 
         return getRouteSourceData({
             geojson,
+            includeRoutePoints: state.routeStyleActive.showRoutePoints || state.routeStyleInactive.showRoutePoints,
             startTimeEpoch: routeTimes.startTimeEpoch,
             routeTimelinePositionMs, // Not a dependency of this memo, data is updated later in the animateRoute hook
             splineData,
         }).line;
-    }, [geojson, routeTimes, splineData]);
+    }, [geojson, routeTimes, splineData, state.routeStyleActive.showRoutePoints, state.routeStyleInactive.showRoutePoints]);
 
     useEffect(() => {
         if (!isPlaying || !geojson || !routeTimes) {

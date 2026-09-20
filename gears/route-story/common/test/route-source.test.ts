@@ -12,8 +12,9 @@ const route: GeoJson = {
 };
 
 const startTimeEpoch = Date.parse("2026-01-01T00:00:00Z");
-const getRouteFrame = (routeTimelinePositionMs: number) => getRouteSourceData({
+const getRouteFrame = (routeTimelinePositionMs: number, includeRoutePoints = true) => getRouteSourceData({
     geojson: route,
+    includeRoutePoints,
     startTimeEpoch,
     routeTimelinePositionMs,
     splineData: getSplineData(route),
@@ -36,7 +37,7 @@ describe("Route story gear", () => {
         });
 
         it("should produce two valid lines mid-route", () => {
-            const { line } = getRouteFrame(90_000);
+            const { currentPoint, line } = getRouteFrame(90_000);
             const features = (line as GeoJSON.FeatureCollection).features;
             const lineStrings = features
                 .filter((f): f is GeoJSON.Feature<GeoJSON.LineString> => f.geometry.type === "LineString");
@@ -44,7 +45,7 @@ describe("Route story gear", () => {
             expect(lineStrings[0].geometry.coordinates.length).to.be.greaterThan(1);
             expect(lineStrings[1].geometry.coordinates.length).to.be.greaterThan(1);
             expect(features.filter((feature) => feature.geometry.type === 'Point' && feature.properties?.status).map((feature) => feature.properties?.status)).to.deep.equal(['before', 'before', 'after']);
-            const currentPoint = features.find((feature) => feature.properties?.routeCurrentPoint) as GeoJSON.Feature<GeoJSON.Point>;
+            expect(features.find((feature) => feature.properties?.routeCurrentPoint)).to.equal(currentPoint);
             expect(currentPoint.geometry.coordinates).to.deep.equal(lineStrings[0].geometry.coordinates.at(-1));
             expect(currentPoint.geometry.coordinates).to.deep.equal(lineStrings[1].geometry.coordinates[0]);
         });
@@ -53,6 +54,12 @@ describe("Route story gear", () => {
             const { routeDistanceFraction } = getRouteFrame(90_000);
 
             expect(routeDistanceFraction).to.be.closeTo(0.75, 0.001);
+        });
+
+        it("omits hidden route points from animation frames", () => {
+            const features = (getRouteFrame(90_000, false).line as GeoJSON.FeatureCollection).features;
+
+            expect(features.filter((feature) => feature.geometry.type === 'Point')).to.have.lengthOf(1);
         });
 
         it("converts distance progress back to route timeline progress", () => {

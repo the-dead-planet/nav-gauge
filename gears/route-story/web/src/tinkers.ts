@@ -3,6 +3,19 @@ import { getAnimatedRouteLineLayers, getRoutePointsLayers, routeLayerIds, routeS
 
 const routeDistanceFractions = new WeakMap<maplibregl.Map, number>();
 
+interface RouteFrame {
+    line: GeoJSON.GeoJSON;
+    routeDistanceFraction: number;
+    state: RouteStoryState;
+}
+
+interface RouteFrameUpdateState {
+    processing: boolean;
+    pending?: RouteFrame;
+}
+
+const routeFrameUpdates = new WeakMap<maplibregl.Map, RouteFrameUpdateState>();
+
 export const setRouteDistanceFraction = (map: maplibregl.Map, routeDistanceFraction: number): void => {
     routeDistanceFractions.set(map, routeDistanceFraction);
 };
@@ -40,10 +53,35 @@ export const updateRouteLayerStyle = (
 const applyRouteProgress = (map: maplibregl.Map, routeDistanceFraction: number, state: RouteStoryState): void => {
     setRouteDistanceFraction(map, routeDistanceFraction);
     for (const layer of getAnimatedRouteLineLayers(state, routeDistanceFraction)) {
-        if ((layer.id === routeLayerIds.lineActive || layer.id === routeLayerIds.lineActiveOutline) && map.getLayer(layer.id)) {
-            map.setPaintProperty(layer.id, 'line-gradient', layer.paint['line-gradient'] as maplibregl.ExpressionSpecification | undefined);
+        const gradient = layer.paint['line-gradient'];
+        if (gradient && (layer.id === routeLayerIds.lineActive || layer.id === routeLayerIds.lineActiveOutline) && map.getLayer(layer.id)) {
+            map.setPaintProperty(layer.id, 'line-gradient', gradient as maplibregl.ExpressionSpecification);
         }
     }
+};
+
+const processRouteFrameUpdate = (map: maplibregl.Map, updateState: RouteFrameUpdateState): void => {
+    const frame = updateState.pending;
+    const source = map.getSource<maplibregl.GeoJSONSource>(routeSourceIds.line);
+    if (!frame || !source) {
+        return;
+    }
+
+    updateState.pending = undefined;
+    updateState.processing = true;
+    const onSourceData = (event: maplibregl.MapSourceDataEvent) => {
+        if (event.sourceId !== routeSourceIds.line || !event.isSourceLoaded) {
+            return;
+        }
+        map.off('sourcedata', onSourceData);
+        applyRouteProgress(map, frame.routeDistanceFraction, frame.state);
+        map.once('render', () => {
+            updateState.processing = false;
+            processRouteFrameUpdate(map, updateState);
+        });
+    };
+    map.on('sourcedata', onSourceData);
+    source.setData(frame.line);
 };
 
 export const updateRouteLayer = (
@@ -59,7 +97,10 @@ export const updateRouteLayer = (
         state: RouteStoryState;
     },
 ): void => {
-    setRouteDistanceFraction(map, routeDistanceFraction);
-    map.getSource<maplibregl.GeoJSONSource>(routeSourceIds.line)?.setData(line);
-    applyRouteProgress(map, routeDistanceFraction, state);
+    const updateState = routeFrameUpdates.get(map) ?? { processing: false };
+    updateState.pending = { line, routeDistanceFraction, state };
+    routeFrameUpdates.set(map, updateState);
+    if (!updateState.processing) {
+        processRouteFrameUpdate(map, updateState);
+    }
 };

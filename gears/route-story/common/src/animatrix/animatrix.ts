@@ -14,7 +14,7 @@ export class Animatrix {
     public translationKey = AnimatrixTranslationKey;
 
     public static defaultControls: AnimationControlsType = {
-        playbackPacing: 'timeline',
+        playbackPacing: 'distance',
         followCurrentPoint: true,
         cameraZoom: 15,
         cameraAngle: 0,

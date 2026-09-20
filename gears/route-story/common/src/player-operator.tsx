@@ -94,6 +94,7 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
             }
             const { currentPoint, line, routeDistanceFraction } = getRouteSourceData({
                 geojson: this.gear.data$.value.geojson,
+                includeRoutePoints: this.gear.state$.value.routeStyleActive.showRoutePoints || this.gear.state$.value.routeStyleInactive.showRoutePoints,
                 startTimeEpoch: this.gear.routeTimes$.value.startTimeEpoch,
                 routeTimelinePositionMs: value,
                 splineData,
@@ -146,6 +147,7 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
         let routeTimelinePositionMs = this.gear.routeTimelinePositionMs$.value;
         const initialRouteDistanceFraction = getRouteSourceData({
             geojson,
+            includeRoutePoints: false,
             startTimeEpoch,
             routeTimelinePositionMs,
             splineData,
@@ -182,6 +184,7 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
             const nextImageTime = nextImageIndex >= 0 ? nextImageTimes[nextImageIndex] : null;
             const { currentPoint, line, heading: rawHeading, routeDistanceFraction } = getRouteSourceData({
                 geojson,
+                includeRoutePoints: this.gear.state$.value.routeStyleActive.showRoutePoints || this.gear.state$.value.routeStyleInactive.showRoutePoints,
                 startTimeEpoch,
                 routeTimelinePositionMs,
                 splineData,

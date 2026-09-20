@@ -11,6 +11,7 @@ import { RouteSourceData, RouteTimes } from "../model";
 
 interface RouteSourceDataParameters {
     geojson: GeoJson;
+    includeRoutePoints: boolean;
     startTimeEpoch: number;
     routeTimelinePositionMs: number;
     splineData: SplineData;
@@ -18,6 +19,7 @@ interface RouteSourceDataParameters {
 
 export const getRouteSourceData = ({
     geojson,
+    includeRoutePoints,
     startTimeEpoch,
     routeTimelinePositionMs,
     splineData,
@@ -28,7 +30,7 @@ export const getRouteSourceData = ({
     const { currentPoint, fraction } = getCurrentPoint(geojson, splitIndex, currentTime);
     const heading = getSplineHeading(splineData, splitIndex, fraction);
     const routeDistanceFraction = getRouteDistanceFraction(splineData, splitIndex, fraction);
-    currentPoint.properties = { ...currentPoint.properties, heading };
+    currentPoint.properties = { ...currentPoint.properties, heading, routeCurrentPoint: true };
 
     return {
         heading,
@@ -57,21 +59,14 @@ export const getRouteSourceData = ({
                         status: 'after',
                     }
                 },
-                ...geojson.features.map((feature, index) => ({
+                ...(includeRoutePoints ? geojson.features.map((feature, index) => ({
                     ...feature,
                     properties: {
                         ...feature.properties,
                         status: index < splitIndex ? 'before' : 'after',
                     },
-                })),
-                {
-                    type: 'Feature',
-                    geometry: currentPoint.geometry,
-                    properties: {
-                        heading,
-                        routeCurrentPoint: true,
-                    },
-                },
+                })) : []),
+                currentPoint,
             ].filter((feature) => feature.geometry.type !== 'LineString' || feature.geometry.coordinates.length > 1) as GeoJSON.Feature[]
         },
     };

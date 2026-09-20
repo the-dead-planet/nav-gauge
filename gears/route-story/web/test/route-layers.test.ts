@@ -45,24 +45,40 @@ describe("Web route line layers", () => {
         expect(updates).to.include.members(['visibility', 'line-gradient', 'line-width', 'circle-color', 'circle-radius']);
     });
 
-    it("updates route geometry through one source per frame", () => {
+    it("keeps only the latest frame while the route source is processing", () => {
         const sourceUpdates: GeoJSON.GeoJSON[] = [];
+        const handlers = new Map<string, (...arguments_: unknown[]) => void>();
         const source = { setData: (data: GeoJSON.GeoJSON) => { sourceUpdates.push(data); } };
         const map = {
             getLayer: () => undefined,
             getSource: (sourceId: string) => sourceId === routeSourceIds.line ? source : undefined,
+            on: (event: string, handler: (...arguments_: unknown[]) => void) => handlers.set(event, handler),
+            off: (event: string) => handlers.delete(event),
+            once: (event: string, handler: (...arguments_: unknown[]) => void) => handlers.set(event, handler),
             setFilter: () => undefined,
         } as unknown as maplibregl.Map;
-        const update = (routeDistanceFraction: number) => updateRouteLayer({
-            map,
-            line: { type: 'FeatureCollection', features: [] },
-            routeDistanceFraction,
-            state: defaultRouteStoryState,
-        });
+        const update = (routeDistanceFraction: number) => {
+            const line: GeoJSON.FeatureCollection = {
+                type: 'FeatureCollection',
+                features: [{ type: 'Feature', geometry: { type: 'Point', coordinates: [routeDistanceFraction, 0] }, properties: {} }],
+            };
+            updateRouteLayer({
+                map,
+                line,
+                routeDistanceFraction,
+                state: defaultRouteStoryState,
+            });
+        };
 
         update(0.2);
+        update(0.4);
         update(0.8);
 
+        expect(sourceUpdates).to.have.length(1);
+        handlers.get('sourcedata')?.({ sourceId: routeSourceIds.line, isSourceLoaded: true });
+        handlers.get('render')?.();
+
         expect(sourceUpdates).to.have.length(2);
+        expect((sourceUpdates[1] as GeoJSON.FeatureCollection).features[0].geometry).to.deep.equal({ type: 'Point', coordinates: [0.8, 0] });
     });
 });

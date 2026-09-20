@@ -68,6 +68,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
 
         const { line, currentPoint } = getRouteSourceData({
             geojson,
+            includeRoutePoints: state.routeStyleActive.showRoutePoints || state.routeStyleInactive.showRoutePoints,
             startTimeEpoch: routeTimes.startTimeEpoch,
             routeTimelinePositionMs, // Not a dependency of this memo, data is updated later in the animateRoute hook
             splineData,
@@ -75,7 +76,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
 
         setLineSourceData(line);
         setCurrentPointSourceData(currentPoint);
-    }, [geojson, routeTimes?.startTimeEpoch, splineData]);
+    }, [geojson, routeTimes?.startTimeEpoch, splineData, state.routeStyleActive.showRoutePoints, state.routeStyleInactive.showRoutePoints]);
 
     useEffect(() => {
         if (!isPlaying || !geojson || !routeTimes) {
