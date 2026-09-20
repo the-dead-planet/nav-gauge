@@ -42,6 +42,7 @@ interface Props {
     gearId: string;
     translationKey: typeof RouteStoryTranslationKey;
     onChange: (patch: Partial<RouteStoryLineStyle>) => void;
+    showColorTransition?: boolean;
 }
 
 export const LineStyleGroup: FC<Props> = ({
@@ -49,6 +50,7 @@ export const LineStyleGroup: FC<Props> = ({
     gearId,
     translationKey,
     onChange,
+    showColorTransition = false,
 }) => {
     const [
         linesLabel,
@@ -60,6 +62,7 @@ export const LineStyleGroup: FC<Props> = ({
         outlineLabel,
         colorLabel,
         sizeLabel,
+        colorTransitionLengthLabel,
     ] = useMultipleTranslations([
         { n: gearId, t: translationKey.Lines },
         { n: gearId, t: translationKey.Points },
@@ -70,12 +73,15 @@ export const LineStyleGroup: FC<Props> = ({
         { n: gearId, t: translationKey.Outline },
         { n: gearId, t: translationKey.Color },
         { n: gearId, t: translationKey.Size },
+        { n: gearId, t: translationKey.ColorTransitionLength },
     ]);
 
     const variantOptions = [
         { label: solidLabel, value: 'solid' as const },
         { label: dashedLabel, value: 'dashed' as const },
     ];
+
+    const colorTransitionDisabled = showColorTransition && (!style.showRouteLine || style.variant === 'dashed');
 
     return (
         <View style={styles.controls}>
@@ -106,6 +112,12 @@ export const LineStyleGroup: FC<Props> = ({
                             </View>
                         </View>
                     </View>
+                    {showColorTransition ? (
+                        <View style={styles['line-control']}>
+                            <Label disabled={colorTransitionDisabled}>{colorTransitionLengthLabel}</Label>
+                            <NumberInput ariaLabel={colorTransitionLengthLabel} disabled={colorTransitionDisabled} size="xs" min={0} max={100} step={1} value={style.colorTransitionLengthPixels} onChange={(colorTransitionLengthPixels) => onChange({ colorTransitionLengthPixels })} unit="px" />
+                        </View>
+                    ) : null}
                 </View>
             </View>
             <View style={styles['control-group']}>

@@ -89,20 +89,20 @@ export const CurrentPointControls: FC<Props> = ({ gearId, translationKey, value,
                     </View>
                 </View>
             </View>
-            <View style={styles['rotation-grid']}>
-                <View style={styles['rotation-control']}>
-                    <Label>{rotationAlignmentLabel}</Label>
-                    <Dropdown value={value.rotationAlignment} options={rotationAlignmentOptions(mapLabel, viewportLabel)} size="xs" onChange={(rotationAlignment) => onChange({ rotationAlignment })} />
+<View style={styles['rotation-grid']}>
+                    <View style={styles['rotation-control']}>
+                        <Label>{rotationAlignmentLabel}</Label>
+                        <Dropdown value={value.rotationAlignment} options={rotationAlignmentOptions(mapLabel, viewportLabel)} size="xs" onChange={(rotationAlignment) => onChange({ rotationAlignment })} />
+                    </View>
+                    <View style={styles['rotation-control']}>
+                        <Label tabular>{`${rotationLabel}\n${value.rotation}°`}</Label>
+                        <IconRotateInput icon={iconOptions.find((option) => option.value === value.icon)?.icon} value={value.rotation} onChange={(rotation) => onChange({ rotation })} size="xs" />
+                    </View>
+                    <View style={styles['rotation-control']}>
+                        <Label>{`${autoRotateLabel}\n${value.autoRotate ? onLabel : offLabel}`}</Label>
+                        <ToggleSwitch size="xs" checked={value.autoRotate} onChange={(autoRotate) => onChange({ autoRotate })} />
+                    </View>
                 </View>
-                <View style={styles['rotation-control']}>
-                    <Label tabular>{`${rotationLabel}\n${value.rotation}°`}</Label>
-                    <IconRotateInput icon={iconOptions.find((option) => option.value === value.icon)?.icon} value={value.rotation} onChange={(rotation) => onChange({ rotation })} size="xs" />
-                </View>
-                <View style={styles['rotation-control']}>
-                    <Label>{`${autoRotateLabel}\n${value.autoRotate ? onLabel : offLabel}`}</Label>
-                    <ToggleSwitch size="xs" checked={value.autoRotate} onChange={(autoRotate) => onChange({ autoRotate })} />
-                </View>
-            </View>
         </View>
     );
 };

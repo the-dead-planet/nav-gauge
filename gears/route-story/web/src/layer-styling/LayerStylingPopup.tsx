@@ -115,6 +115,7 @@ export const LayerStylingPopup: FC<ToolPopupProps<maplibregl.Map> & RouteStoryLa
                                     />
                                 ) : selectedStyle === 'active' ? (
                                     <LineStyleGroup
+                                        showColorTransition
                                         style={state.routeStyleActive}
                                         gearId={gearId}
                                         translationKey={translationKey}

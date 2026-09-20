@@ -4,7 +4,7 @@ import { getRouteSourceData } from "./tinkers";
 import { getImageIconSize, FULL_SIZE_IMAGE_SIZE, THUMBNAIL_IMAGE_SIZE } from "./images";
 import { RouteStoryGear } from "./route-story-gear";
 import { IMAGE_ANIMATION_DURATION } from "./layer-specification";
-import { RouteStoryFile, RouteStoryProps } from "./model";
+import { RouteStoryFile, RouteStoryProps, RouteStoryState } from "./model";
 import { DesignSystemColor, ThemeComponentColor } from "@ui";
 
 export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends RouteStoryFile, TImageData> {
@@ -76,6 +76,7 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
         updateLayer?: (
             line: GeoJSON.GeoJSON,
             currentPoint: GeoJSON.Feature<GeoJSON.Point>,
+            state: RouteStoryState,
         ) => void,
     ) => {
         if (!this.gear.routeTimes$.value || isNaN(value)) {
@@ -103,7 +104,7 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
                 this.heading = unwrapHeading(this.heading, rawHeading);
                 currentPoint.properties = { ...currentPoint.properties, heading: this.heading };
             }
-            updateLayer?.(line, currentPoint);
+            updateLayer?.(line, currentPoint, this.gear.state$.value);
         }
         if (this.gear.apparatus.chronoLens.isPlaying$.value) {
             setTimeout(() => this.gear.apparatus.chronoLens.isPlaying$.next(true), 0);

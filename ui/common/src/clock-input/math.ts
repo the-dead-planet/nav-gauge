@@ -109,6 +109,22 @@ export function pointerCoords(value: number, outerRadius: number): PointerCoords
     };
 }
 
+export function radialLineCoords(
+    angle: number,
+    center: number,
+    innerRadius: number,
+    outerRadius: number,
+) {
+    const radians = clockAngleToRadians(angle);
+
+    return {
+        x1: center + Math.cos(radians) * innerRadius,
+        y1: center + Math.sin(radians) * innerRadius,
+        x2: center + Math.cos(radians) * outerRadius,
+        y2: center + Math.sin(radians) * outerRadius,
+    };
+}
+
 export function describeArc(
     cx: number, cy: number, r: number,
     clockStart: number, clockEnd: number,

@@ -102,7 +102,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
     return (
         <>
             {settings.debugMode && splineData ? <DebugRouteCameraLineLayer spline={splineData} /> : null}
-            <RouteLineLayer source={lineSourceData} state={state} />
+            <RouteLineLayer source={lineSourceData} state={state} zoom={cameraZoom} />
             <RouteCurrentPointLayer source={currentPointSourceData} state={state} />
         </>
     );

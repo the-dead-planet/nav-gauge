@@ -48,7 +48,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
             progressMs, // Not a dependency of this memo, data is updated later in the animateRoute hook
             splineData,
         );
-    }, [geojson, routeTimes, splineData, state]);
+    }, [geojson, routeTimes, splineData, state.routeStyleActive.showRouteLine, state.routeStyleActive.showRoutePoints, state.routeStyleInactive.showRouteLine, state.routeStyleInactive.showRoutePoints]);
 
     useEffect(() => {
         if (!isPlaying || !geojson || !routeTimes) {
@@ -56,7 +56,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
         }
         playerOperator.animateRoute(loadedImages,
             (currentPoint, lines) => {
-                updateRouteLayer(map, lines, currentPoint);
+                updateRouteLayer(map, lines, currentPoint, state);
             },
             (position, bearing) => {
                 map.easeTo({
@@ -76,7 +76,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
         return () => {
             playerOperator.cleanupAnimateRoute();
         };
-    }, [isPlaying, loadedImages, easeDuration, cameraZoom, cameraTilt, cameraRoll]);
+    }, [isPlaying, loadedImages, easeDuration, cameraZoom, cameraTilt, cameraRoll, state]);
 
     return (
         <>

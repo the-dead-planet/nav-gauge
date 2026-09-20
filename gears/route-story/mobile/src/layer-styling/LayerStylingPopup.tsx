@@ -128,9 +128,15 @@ export const LayerStylingPopup: FC<ToolPopupProps<MobileMap> & RouteStoryLayerSt
                                 ]}
                             >
                                 {selectedStyle === 'current-point' ? (
-                                    <CurrentPointControls gearId={gearId} translationKey={translationKey} value={state.currentPoint} onChange={setCurrentPoint} />
+                                    <CurrentPointControls
+                                        gearId={gearId}
+                                        translationKey={translationKey}
+                                        value={state.currentPoint}
+                                        onChange={setCurrentPoint}
+                                    />
                                 ) : selectedStyle === 'active' ? (
                                     <LineStyleGroup
+                                        showColorTransition
                                         style={state.routeStyleActive}
                                         gearId={gearId}
                                         translationKey={translationKey}

@@ -37,6 +37,7 @@ export interface RouteStoryLineStyle {
     outlineColor: string;
     outlineWidth: number;
     variant: 'solid' | 'dashed';
+    colorTransitionLengthPixels: number;
 }
 
 export interface CurrentPointStyle {
@@ -155,6 +156,7 @@ export enum RouteStoryTranslationKey {
     Viewport = 'viewport',
     Circle = 'circle',
     Opacity = 'opacity',
+    ColorTransitionLength = 'color-transition-length',
     RestoreDefaults = 'restore-defaults',
     Close = 'close',
     Slider = 'slider',

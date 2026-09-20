@@ -35,6 +35,15 @@ export type GetPropertyCaseCondition = [
     string | number,
 ];
 
+export type LineGradientExpression = [
+    'interpolate',
+    ['linear'],
+    ['line-progress'],
+    number, string,
+    number, string,
+    number, string,
+];
+
 export type LineCap = "round";
 
 export type CaseFeatureStateCondition = CaseFeatureStateSingleCondition | CaseFeatureStateDoubleCondition;
