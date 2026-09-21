@@ -23,6 +23,7 @@ Missing any of these causes `yarn typecheck:web` to fail.
 First locate the translation usage:
 
 Search for:
+- `useTranslate`
 - `useTranslation`
 - `useMultipleTranslations`
 - `<T ... />`
@@ -57,6 +58,18 @@ Examples from the codebase:
 - **ONLY add the new key. NEVER modify existing translation strings** — existing entries may be deliberately untranslated or use `{{placeholders}}`.
 - Match each file's existing style (quoting, ordering, accents).
 - Gears share the base `GearTranslationKey` (`gear-name`, `gear-description`) plus their own enum.
+
+## Which API do I use?
+
+React components should not call `translatron.translate(settings.language, registry, ...)` directly — use the translatron hooks or the `<T>` component instead, so the component re-renders when the language changes (`useSubjectState` subscriptions). From `@apparatus`:
+
+- `<T n={...} t={...} p={...} />` → `ReactNode`. Use for a label rendered inline in JSX.
+- `useTranslate()` → `(translationId) => string`. For a small map of dynamic
+  labels (e.g. dropdown options), map with it.
+- `useTranslation(translationId)` → `string`. For one label.
+- `useMultipleTranslations([...])` → `string[]`. For a fixed list of labels.
+
+The only acceptable direct `translatron.translate(settings.language, registry, ...)` call is one whose target language is NOT the current app language (e.g. translating into a pending language preview) — grep for existing usages before writing a new one.
 
 ## Validation
 

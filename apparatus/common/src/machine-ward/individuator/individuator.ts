@@ -56,6 +56,11 @@ export class Individuator {
         { value: TimeFormat.hmmssa, label: '2:30:00 pm (12h, H)' },
     ];
 
+    public static distanceUnitOptions: { value: DistanceUnit; translationKey: IndividuatorTranslationKey.Metric | IndividuatorTranslationKey.Imperial }[] = [
+        { value: 'metric', translationKey: IndividuatorTranslationKey.Metric },
+        { value: 'imperial', translationKey: IndividuatorTranslationKey.Imperial },
+    ];
+
     /**
      * Provides default settings which can be later changed by user.
      * @param defaultTheme Defaults to dark theme.

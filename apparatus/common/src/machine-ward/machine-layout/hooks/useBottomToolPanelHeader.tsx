@@ -2,15 +2,15 @@ import { useObservableState, useSubjectState } from "@tinker-chest";
 import { useMachineWard } from "../../useMachineWard";
 import { ButtonProps, ColorVariant, Icons, TooltipPlacement } from "@ui";
 import { ObservedToolPanel } from "../../tools-station";
+import { useTranslate } from "../../translatron";
 
 export const useBottomToolPanelHeader = (
     activeId: string | null,
     onActiveIdChange: (activeId: string | null) => void,
     { joinHeaderButtons = false }: { joinHeaderButtons?: boolean } = {}
 ) => {
-    const { toolsStation, namespace, translationKey, translatron, individuator } = useMachineWard();
-    const [registry] = useSubjectState(translatron.registry$);
-    const [settings] = useSubjectState(individuator.settings$);
+    const { toolsStation, namespace, translationKey } = useMachineWard();
+    const translate = useTranslate();
     const [activeLeftPanelToolId] = useSubjectState(toolsStation.activeLeftPanelToolId$);
     const [activeRightPanelToolId] = useSubjectState(toolsStation.activeRightPanelToolId$);
     const bothSidePanels = activeLeftPanelToolId !== null && activeRightPanelToolId !== null;
@@ -27,7 +27,7 @@ export const useBottomToolPanelHeader = (
         tooltipPlacement,
         showTooltipConnection: true,
     };
-    const collapseExpandLabel = translatron.translate(settings.language, registry, { n: namespace, t: activeId === null ? translationKey.Expand : translationKey.Collapse });
+    const collapseExpandLabel = translate({ n: namespace, t: activeId === null ? translationKey.Expand : translationKey.Collapse });
     const collapseExpandButtonProps: Partial<ButtonProps & { icon: typeof Icons.NounProject.ChevronDownDouble; accessibilityLabel: string; }> = {
         icon: Icons.NounProject.ChevronDownDouble,
         iconRotateZ: activeId === null ? 180 : 0,
