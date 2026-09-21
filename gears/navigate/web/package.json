@@ -16,12 +16,12 @@
         "@the-dead-planet/nav-gauge-ui-common": "*"
     },
     "devDependencies": {
-        "maplibre-gl": "6.9.0",
+        "maplibre-gl": "6.10.0",
         "react": "19.3.0",
         "react-dom": "19.3.0"
     },
     "peerDependencies": {
-        "maplibre-gl": "6.9.0",
+        "maplibre-gl": "6.10.0",
         "react": "19.3.0",
         "react-dom": "19.3.0",
         "rxjs": "^7.8.2"
