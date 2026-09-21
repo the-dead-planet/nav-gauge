@@ -1,5 +1,5 @@
 export interface AnimationControlsType {
-    playbackPacing: 'timeline' | 'distance';
+    playbackPacing: PlaybackPacing;
     /**
      * How long to view the image for (in milliseconds).
      * Defaults to `3000` (3 seconds).
@@ -50,6 +50,8 @@ export interface AnimationControlsType {
      */
     panToWholeRouteAtEnd: boolean;
 }
+
+export type PlaybackPacing = 'timeline' | 'distance';
 
 export enum AnimatrixTranslationKey {
     AnimatrixControls = 'animatrix-controls',

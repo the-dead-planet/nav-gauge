@@ -1,6 +1,6 @@
 import { BehaviorSubject, Subscription } from "rxjs";
 import { validateBoolean, validateNumber } from "@tinker-chest";
-import { AnimationControlsType, AnimatrixTranslationKey } from "./model";
+import { AnimationControlsType, AnimatrixTranslationKey, PlaybackPacing } from "./model";
 import { StorageKeeper, TranslationTable, Translatron } from "@apparatus";
 import * as Translations from "./translations";
 import { CLOCK_INPUT_RANGE } from "@ui";
@@ -34,6 +34,10 @@ export class Animatrix {
     public static cameraRollRange: [number, number] = [CLOCK_INPUT_RANGE[0], CLOCK_INPUT_RANGE[1]];
     public static routePlaybackDurationRange: [number, number] = [1000, Number.POSITIVE_INFINITY];
     public static easeDurationRange: [number, number] = [0, 1000];
+    public static playbackPacingOptions: { value: PlaybackPacing; translationKey: AnimatrixTranslationKey }[] = [
+        { value: 'timeline', translationKey: AnimatrixTranslationKey.TimelinePacing },
+        { value: 'distance', translationKey: AnimatrixTranslationKey.DistancePacing },
+    ];
 
     private controlsStorageId = 'animatrix:controls';
     private controlsStorageSubscription: Subscription | null = null;

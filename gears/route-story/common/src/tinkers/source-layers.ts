@@ -8,6 +8,7 @@ import turfLength from "@turf/length";
 import { CurrentPointData, LoadedImageData } from "@apparatus";
 import { emptyCollection, FeatureProperties, GeoJson } from "@tinker-chest";
 import { RouteStoryState, RouteTimes } from "../model";
+import { PlaybackPacing } from "../animatrix";
 
 export const getRouteSourceData = (
     { routeStyleActive, routeStyleInactive }: RouteStoryState,
@@ -224,7 +225,7 @@ export const getPosition = (
     featureId: number | undefined,
     geojson: GeoJson | undefined,
     routeTimes: RouteTimes | null,
-    playbackPacing: 'timeline' | 'distance' = 'timeline',
+    playbackPacing: PlaybackPacing = 'timeline',
     routeGeometryData?: RouteGeometryData | null,
 ) => {
     const featureIndex = geojson?.features.findIndex((feature) => feature.properties.id === featureId) ?? -1;
@@ -242,7 +243,7 @@ export const getClosestFeatureFromPosition = (
     positionPercent: number,
     geojson: GeoJson | undefined,
     routeTimes: RouteTimes | null,
-    playbackPacing: 'timeline' | 'distance' = 'timeline',
+    playbackPacing: PlaybackPacing = 'timeline',
     routeGeometryData?: RouteGeometryData | null,
 ): GeoJSON.Feature<GeoJSON.Point, FeatureProperties> | null => {
     if (!geojson || !routeTimes) {

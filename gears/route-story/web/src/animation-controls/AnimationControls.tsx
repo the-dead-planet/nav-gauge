@@ -1,7 +1,7 @@
 import type * as maplibregl from "maplibre-gl";
 import { FC } from "react";
 import classNames from "classnames";
-import { ToolPanelProps, useMultipleTranslations } from "@apparatus";
+import { ToolPanelProps, useMultipleTranslations, useTranslate } from "@apparatus";
 import { useWebMachineWard } from "@web-apparatus";
 import { clamp, useSubjectState } from "@tinker-chest";
 import { ClockInput, Checkbox, Dropdown, Fieldset, ClockSliceInput, DurationClockInput, IconRotateInput, Slider, ToggleSwitch, Label, Span, Icon } from "@web-ui";
@@ -36,6 +36,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
     const [animationControls, setAnimationControls] = useSubjectState(animatrix.controls$);
     const [searchQuery] = useSubjectState(animatrix.searchQuery$);
     const [images] = useSubjectState(images$);
+    const translate = useTranslate();
 
     const [
         generalLabel,
@@ -48,8 +49,6 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
         imagePauseDurationLabel,
         routePlaybackDurationLabel,
         playbackPacingLabel,
-        timelinePacingLabel,
-        distancePacingLabel,
         totalRecordingDurationLabel,
         easeDurationLabel,
         panToWholeRouteAtEndLabel,
@@ -64,12 +63,14 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
         { n: animatrix.namespace, t: animatrix.translationKey.ImagePauseDuration },
         { n: animatrix.namespace, t: animatrix.translationKey.RoutePlaybackDuration },
         { n: animatrix.namespace, t: animatrix.translationKey.PlaybackPacing },
-        { n: animatrix.namespace, t: animatrix.translationKey.TimelinePacing },
-        { n: animatrix.namespace, t: animatrix.translationKey.DistancePacing },
         { n: animatrix.namespace, t: animatrix.translationKey.TotalRecordingDuration },
         { n: animatrix.namespace, t: animatrix.translationKey.EaseDuration },
         { n: animatrix.namespace, t: animatrix.translationKey.PanToWholeRouteAtEnd },
     ]);
+    const playbackPacingOptionLabels = Animatrix.playbackPacingOptions.map(({ translationKey }) => translate({
+        n: animatrix.namespace,
+        t: translationKey,
+    }));
 
     const matchesSearch = (label: string): boolean => {
         if (!searchQuery) {
@@ -82,8 +83,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
         || matchesSearch(imagePauseDurationLabel)
         || matchesSearch(routePlaybackDurationLabel)
         || matchesSearch(playbackPacingLabel)
-        || matchesSearch(timelinePacingLabel)
-        || matchesSearch(distancePacingLabel)
+        || playbackPacingOptionLabels.some(matchesSearch)
         || matchesSearch(totalRecordingDurationLabel)
         || matchesSearch(panToWholeRouteAtEndLabel);
 
@@ -155,10 +155,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                         ariaLabel={playbackPacingLabel}
                         size="xs"
                         value={playbackPacing}
-                        options={[
-                            { value: 'timeline' as const, label: timelinePacingLabel },
-                            { value: 'distance' as const, label: distancePacingLabel },
-                        ]}
+                        options={Animatrix.playbackPacingOptions.map(({ value }, index) => ({ value, label: playbackPacingOptionLabels[index] }))}
                         onChange={(value) => setAnimationControls((previous) => ({ ...previous, playbackPacing: value }))}
                     />
                     <span />
