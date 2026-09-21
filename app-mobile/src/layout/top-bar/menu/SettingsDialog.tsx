@@ -4,8 +4,8 @@ import { Checkbox, Dialog, Dropdown, Text } from "@mobile-ui";
 import { Individuator, IndividuatorSettings, Language, Translatron } from "@apparatus";
 import { useMobileMachineWard } from "@mobile-apparatus";
 import { T } from "@mobile-apparatus";
-import { useSubjectState } from "@tinker-chest";
-import { DateFormat, ThemeName, themeNameOptions, TimeFormat } from "@ui";
+import { DateFormat, DistanceUnit, TimeFormat, useSubjectState } from "@tinker-chest";
+import { ThemeName, themeNameOptions } from "@ui";
 
 const styles = StyleSheet.create({
     container: {
@@ -94,6 +94,24 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                         label: String(label),
                     }))}
                     onChange={(timeFormat) => setPendingSettings((prev): IndividuatorSettings => ({ ...prev, timeFormat }))}
+                />
+
+                <Text color="primary" shadow>
+                    <T n={individuator.namespace} t={individuator.translationKey.DistanceUnit} />
+                </Text>
+                <Dropdown<DistanceUnit>
+                    size="xs"
+                    color="primary"
+                    variant="fill"
+                    value={pendingSettings.distanceUnit}
+                    options={(['metric', 'imperial'] as const).map((distanceUnit) => ({
+                        value: distanceUnit,
+                        label: translatron.translate(settings.language, registry, {
+                            n: individuator.namespace,
+                            t: distanceUnit === 'metric' ? individuator.translationKey.Metric : individuator.translationKey.Imperial,
+                        }),
+                    }))}
+                    onChange={(distanceUnit) => setPendingSettings((prev): IndividuatorSettings => ({ ...prev, distanceUnit }))}
                 />
 
                 <Text color="primary" shadow>

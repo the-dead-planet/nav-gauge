@@ -1,7 +1,27 @@
 import { expect } from "chai";
 import { getExifLngLat } from "../src/parsers/tinkers";
+import { DateFormat, formatDistance, formatTimeMsAsStandard, formatTimestamp, TimeFormat } from "../src";
 
 describe("Tinker chest", () => {
+    describe("formatDistance", () => {
+        it("formats metric and imperial distances", () => {
+            expect(formatDistance(1609.344, 'metric', 'en-US')).to.equal('1.61 km');
+            expect(formatDistance(1609.344, 'imperial', 'en-US')).to.equal('1.00 mi');
+        });
+    });
+
+    describe("date-time formatting", () => {
+        it("formats durations and timestamps", () => {
+            expect(formatTimeMsAsStandard(13_583_000)).to.equal('03:46:23');
+            expect(formatTimestamp(Date.UTC(2026, 5, 17, 9, 30), {
+                zone: 'UTC',
+                locale: 'en',
+                dateFormat: DateFormat.ddMMyyyy,
+                timeFormat: TimeFormat.HHmmss,
+            })).to.equal('17/06/2026 09:30:00');
+        });
+    });
+
     describe("getExifLngLat", () => {
         it("should apply W/S refs to numeric GPS values", () => {
             expect(getExifLngLat({

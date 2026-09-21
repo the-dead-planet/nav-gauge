@@ -17,6 +17,7 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & WebRouteStoryProps> = (
     translationKey,
     map,
     data$,
+    routeGeometryData$,
     routeTimes$,
     images$,
     progressMs$,
@@ -41,6 +42,7 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & WebRouteStoryProps> = (
             translationKey={translationKey}
             map={map}
             data$={data$}
+            routeGeometryData$={routeGeometryData$}
             routeTimes$={routeTimes$}
             images$={images$}
             progressMs$={progressMs$}

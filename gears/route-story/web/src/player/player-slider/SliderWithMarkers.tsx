@@ -4,7 +4,7 @@ import { BehaviorSubject } from "rxjs";
 import classNames from "classnames";
 import { MarkerImage, useMultipleTranslations } from "@apparatus";
 import { ParsingResultWithError, useSubjectState } from "@tinker-chest";
-import { RouteStoryTranslationKey, RouteTimes, Animatrix } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { RouteStoryTranslationKey, RouteTimes, Animatrix, RouteGeometryData, getRouteDistanceFraction, getRouteTimelinePositionForDistanceFraction } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { updateRouteLayer } from "../../tinkers";
 import { Slider } from "@web-ui";
 import { WebMarkerImageData } from "../../images/image-parser";
@@ -18,6 +18,7 @@ interface Props {
     translationKey: typeof RouteStoryTranslationKey;
     map: maplibregl.Map;
     data$: BehaviorSubject<ParsingResultWithError>;
+    routeGeometryData$: BehaviorSubject<RouteGeometryData | null>;
     routeTimes$: BehaviorSubject<RouteTimes | null>;
     images$: BehaviorSubject<MarkerImage<WebMarkerImageData>[]>;
     progressMs$: BehaviorSubject<number>;
@@ -32,6 +33,7 @@ export const SliderWithMarkers: FC<Props> = ({
     translationKey,
     map,
     data$,
+    routeGeometryData$,
     routeTimes$,
     images$,
     progressMs$,
@@ -42,6 +44,9 @@ export const SliderWithMarkers: FC<Props> = ({
 }) => {
     const [routeTimes] = useSubjectState(routeTimes$);
     const [progressMs] = useSubjectState(progressMs$);
+    const [{ geojson }] = useSubjectState(data$);
+    const [routeGeometryData] = useSubjectState(routeGeometryData$);
+    const [animationControls] = useSubjectState(animatrix.controls$);
     const [showImageMarkers] = useSubjectState(playerOperator.showImageMarkers$);
     const [
         sliderLabel,
@@ -50,8 +55,11 @@ export const SliderWithMarkers: FC<Props> = ({
     ]);
 
     const handleProgressChange = (value: number) => {
+        const nextProgressMs = animationControls.playbackPacing === 'distance' && geojson && routeGeometryData && routeTimes
+            ? getRouteTimelinePositionForDistanceFraction(geojson, routeGeometryData, routeTimes.startTimeEpoch, value / Math.max(routeGeometryData.totalDistanceMeters, 1))
+            : value;
         playerOperator.updateProgress(
-            value,
+            nextProgressMs,
             (line, currentPoint, state) => {
                 updateRouteLayer(map, line, currentPoint, state);
             }
@@ -67,6 +75,7 @@ export const SliderWithMarkers: FC<Props> = ({
                         translationKey={translationKey}
                         map={map}
                         data$={data$}
+                        routeGeometryData$={routeGeometryData$}
                         routeTimes$={routeTimes$}
                         images$={images$}
                         fitBoundsHandler={fitBoundsHandler}
@@ -75,16 +84,18 @@ export const SliderWithMarkers: FC<Props> = ({
                 ) : null}
                 <Slider
                     aria-label={sliderLabel}
-                    value={progressMs}
+                    value={animationControls.playbackPacing === 'distance'
+                        ? getRouteDistanceFraction(progressMs, geojson, routeTimes, routeGeometryData) * (routeGeometryData?.totalDistanceMeters ?? 1)
+                        : progressMs}
                     min={0}
-                    max={routeTimes?.duration ?? 1}
+                    max={animationControls.playbackPacing === 'distance' ? Math.max(routeGeometryData?.totalDistanceMeters ?? 0, 1) : routeTimes?.duration ?? 1}
                     step={1}
                     onChange={handleProgressChange}
                     color="tertiary"
                     size="sm"
                 />
             </div>
-            <PlayerSliderLabels progressMs$={progressMs$} routeTimes$={routeTimes$} />
+            <PlayerSliderLabels data$={data$} routeGeometryData$={routeGeometryData$} progressMs$={progressMs$} routeTimes$={routeTimes$} animatrix={animatrix} />
         </div>
     );
 };

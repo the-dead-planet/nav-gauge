@@ -15,7 +15,8 @@ import {
     Animatrix,
     updateImageFeatureId,
     getPosition,
-    getClosestFeatureFromPosition
+    getClosestFeatureFromPosition,
+    RouteGeometryData,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { WebMarkerImageData } from "../../images/image-parser";
 import { Button } from "@web-ui";
@@ -27,6 +28,7 @@ interface Props {
     translationKey: typeof RouteStoryTranslationKey;
     map: maplibregl.Map,
     data$: BehaviorSubject<ParsingResultWithError>;
+    routeGeometryData$: BehaviorSubject<RouteGeometryData | null>;
     routeTimes$: BehaviorSubject<RouteTimes | null>;
     images$: BehaviorSubject<MarkerImage<WebMarkerImageData>[]>;
     fitBoundsHandler: (map: maplibregl.Map, boundingBox?: GeoJSON.BBox) => void;
@@ -38,12 +40,14 @@ export const SliderMarkers: FC<Props> = ({
     translationKey,
     map,
     data$,
+    routeGeometryData$,
     routeTimes$,
     images$,
     fitBoundsHandler,
     animatrix,
 }) => {
     const [{ geojson }] = useSubjectState(data$);
+    const [routeGeometryData] = useSubjectState(routeGeometryData$);
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [animationControls] = useSubjectState(animatrix.controls$);
@@ -70,7 +74,7 @@ export const SliderMarkers: FC<Props> = ({
             }
             const rect = container.getBoundingClientRect();
             const positionPercent = ((clientX - rect.left) / rect.width) * 100;
-            const closestFeature = getClosestFeatureFromPosition(positionPercent, geojson, routeTimes);
+            const closestFeature = getClosestFeatureFromPosition(positionPercent, geojson, routeTimes, animationControls.playbackPacing, routeGeometryData);
             if (closestFeature !== null) {
                 draggingClosestFeature$.next(closestFeature);
             }
@@ -97,10 +101,10 @@ export const SliderMarkers: FC<Props> = ({
             window.removeEventListener('pointerup', pointerUpHandler);
             window.removeEventListener('pointercancel', pointerUpHandler);
         };
-    }, [draggingImage, images$, getClosestFeatureFromPosition]);
+    }, [draggingImage, images$, geojson, routeTimes, animationControls.playbackPacing, routeGeometryData, setDraggingImage]);
 
     const draggingFeaturePosition = draggingClosestFeature !== null
-        ? getPosition(draggingClosestFeature.properties.id, geojson, routeTimes)
+        ? getPosition(draggingClosestFeature.properties.id, geojson, routeTimes, animationControls.playbackPacing, routeGeometryData)
         : null;
 
     return (
@@ -112,7 +116,7 @@ export const SliderMarkers: FC<Props> = ({
                         key={image.id}
                         className={styles['image-marker-container']}
                         style={{
-                            left: `${getPosition(image.featureId, geojson, routeTimes).toFixed(0)}%`
+                            left: `${getPosition(image.featureId, geojson, routeTimes, animationControls.playbackPacing, routeGeometryData).toFixed(0)}%`
                         }}
                     >
                         <span
@@ -152,7 +156,7 @@ export const SliderMarkers: FC<Props> = ({
                 ))}
             {animationControls.panToWholeRouteAtEnd && (
                 <div className={styles['route-end-marker-container']}>
-                    <span role="presentation" className={styles['route-end-marker']} />
+                    <span role="presentation" className={classNames(styles['image-marker'], styles['route-end-marker'])} />
                     <Button
                         icon={Icons.NounProject.Target}
                         size="xs"

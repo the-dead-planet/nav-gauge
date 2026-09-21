@@ -14,7 +14,7 @@ export const getRouteSourceData = (
     geojson: GeoJson,
     startTimeEpoch: number,
     progressMs: number,
-    splineData: SplineData,
+    routeGeometryData: RouteGeometryData,
 ): CurrentPointData & { routeDistanceFraction: number } => {
     const currentTime = startTimeEpoch + progressMs;
     const followingIndex = geojson.features.findIndex((f) =>
@@ -22,8 +22,8 @@ export const getRouteSourceData = (
     );
     const splitIndex = followingIndex < 0 ? geojson.features.length : followingIndex;
     const { currentPoint, fraction } = getCurrentPoint(geojson, splitIndex, currentTime);
-    const heading = getSplineHeading(splineData, splitIndex, fraction);
-    const routeDistanceFraction = getRouteDistanceFraction(splineData, splitIndex, fraction);
+    const heading = getSplineHeading(routeGeometryData, splitIndex, fraction);
+    const routeDistanceFraction = getRouteDistanceFraction(routeGeometryData, splitIndex, fraction);
     currentPoint.properties = { ...currentPoint.properties, heading };
 
     const anyVisible =
@@ -100,13 +100,14 @@ const getCurrentPoint = (
     };
 };
 
-export interface SplineData {
+export interface RouteGeometryData {
     spline: GeoJSON.Feature<GeoJSON.LineString>;
     lookup: Array<{ t: number; lineProgress: number }>;
     splinePoints: GeoJSON.Position[];
+    totalDistanceMeters: number;
 }
 
-export const getSplineData = (geojson: GeoJson): SplineData => {
+export const getRouteGeometryData = (geojson: GeoJson): RouteGeometryData => {
     const features = geojson.features;
     const spline = bezierSpline({
         type: 'Feature',
@@ -117,10 +118,11 @@ export const getSplineData = (geojson: GeoJson): SplineData => {
         properties: {}
     }, { resolution: 500 });
     const splinePoints = spline.geometry.coordinates;
+    const totalDistanceMeters = turfLength(turfLine(features.map((feature) => feature.geometry.coordinates)), { units: 'meters' });
 
     const lookup = buildSplineLookup(features, splinePoints);
 
-    return { spline, lookup, splinePoints };
+    return { spline, lookup, splinePoints, totalDistanceMeters };
 };
 
 const buildSplineLookup = (
@@ -169,12 +171,12 @@ const buildSplineLookup = (
 
 export const getRouteTimelinePositionForDistanceFraction = (
     geojson: GeoJson,
-    splineData: SplineData,
+    routeGeometryData: RouteGeometryData,
     startTimeEpoch: number,
     routeDistanceFraction: number,
 ): number => {
     const clampedDistanceFraction = Math.max(0, Math.min(1, routeDistanceFraction));
-    const endIndex = splineData.lookup.findIndex(({ lineProgress }) => lineProgress > clampedDistanceFraction);
+    const endIndex = routeGeometryData.lookup.findIndex(({ lineProgress }) => lineProgress > clampedDistanceFraction);
     if (endIndex < 0) {
         return new Date(geojson.features.at(-1)!.properties.time).valueOf() - startTimeEpoch;
     }
@@ -182,8 +184,8 @@ export const getRouteTimelinePositionForDistanceFraction = (
         return 0;
     }
     const startIndex = endIndex - 1;
-    const startDistance = splineData.lookup[startIndex].lineProgress;
-    const endDistance = splineData.lookup[endIndex].lineProgress;
+    const startDistance = routeGeometryData.lookup[startIndex].lineProgress;
+    const endDistance = routeGeometryData.lookup[endIndex].lineProgress;
     const fraction = (clampedDistanceFraction - startDistance) / (endDistance - startDistance);
     const startTime = new Date(geojson.features[startIndex].properties.time).valueOf();
     const endTime = new Date(geojson.features[endIndex].properties.time).valueOf();
@@ -191,15 +193,15 @@ export const getRouteTimelinePositionForDistanceFraction = (
     return startTime + (endTime - startTime) * fraction - startTimeEpoch;
 };
 
-const getRouteDistanceFraction = (splineData: SplineData, splitIndex: number, fraction: number): number => {
-    const start = splineData.lookup[Math.max(0, splitIndex - 1)].lineProgress;
-    const end = splineData.lookup[Math.min(splineData.lookup.length - 1, splitIndex)].lineProgress;
+const getRouteDistanceFraction = (routeGeometryData: RouteGeometryData, splitIndex: number, fraction: number): number => {
+    const start = routeGeometryData.lookup[Math.max(0, splitIndex - 1)].lineProgress;
+    const end = routeGeometryData.lookup[Math.min(routeGeometryData.lookup.length - 1, splitIndex)].lineProgress;
 
     return start + (end - start) * fraction;
 };
 
-export const getSplineHeading = (splineData: SplineData, splitIndex: number, fraction: number): number => {
-    const { lookup, splinePoints } = splineData;
+export const getSplineHeading = (routeGeometryData: RouteGeometryData, splitIndex: number, fraction: number): number => {
+    const { lookup, splinePoints } = routeGeometryData;
     const t1 = lookup[Math.max(0, splitIndex - 1)].t;
     const t2 = lookup[Math.min(lookup.length - 1, splitIndex)].t;
     const t = t1 + (t2 - t1) * fraction;
@@ -222,10 +224,16 @@ export const getPosition = (
     featureId: number | undefined,
     geojson: GeoJson | undefined,
     routeTimes: RouteTimes | null,
+    playbackPacing: 'timeline' | 'distance' = 'timeline',
+    routeGeometryData?: RouteGeometryData | null,
 ) => {
-    const feature = geojson?.features.find((feature) => feature.properties.id === featureId);
+    const featureIndex = geojson?.features.findIndex((feature) => feature.properties.id === featureId) ?? -1;
+    const feature = geojson?.features[featureIndex];
     if (!feature || !routeTimes) {
         return 0;
+    }
+    if (playbackPacing === 'distance' && routeGeometryData) {
+        return routeGeometryData.lookup[featureIndex].lineProgress * 100;
     }
     return (new Date(feature.properties.time).valueOf() - new Date(routeTimes.startTime).valueOf()) / routeTimes.duration * 100;
 };
@@ -234,6 +242,8 @@ export const getClosestFeatureFromPosition = (
     positionPercent: number,
     geojson: GeoJson | undefined,
     routeTimes: RouteTimes | null,
+    playbackPacing: 'timeline' | 'distance' = 'timeline',
+    routeGeometryData?: RouteGeometryData | null,
 ): GeoJSON.Feature<GeoJSON.Point, FeatureProperties> | null => {
     if (!geojson || !routeTimes) {
         return null;
@@ -242,8 +252,7 @@ export const getClosestFeatureFromPosition = (
     let closestDistance = Infinity;
 
     for (const feature of geojson.features) {
-        const featureTime = new Date(feature.properties.time).valueOf();
-        const featurePercent = (featureTime - new Date(routeTimes.startTime).valueOf()) / routeTimes.duration * 100;
+        const featurePercent = getPosition(feature.properties.id, geojson, routeTimes, playbackPacing, routeGeometryData);
         const distance = Math.abs(featurePercent - positionPercent);
         if (distance < closestDistance) {
             closestDistance = distance;

@@ -5,8 +5,8 @@ import { Checkbox, Dialog, Dropdown, P } from "@web-ui";
 import { Individuator, IndividuatorSettings, Language, Translatron } from "@apparatus";
 import { useWebMachineWard } from "@web-apparatus";
 import { T } from "@web-apparatus";
-import { useSubjectState } from "@tinker-chest";
-import { DateFormat, ThemeName, themeNameOptions, TimeFormat } from "@ui";
+import { DateFormat, DistanceUnit, TimeFormat, useSubjectState } from "@tinker-chest";
+import { ThemeName, themeNameOptions } from "@ui";
 import styles from './settings-dialog.module.css';
 
 interface Props {
@@ -96,6 +96,25 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                     value={pendingSettings.timeFormat}
                     options={Individuator.timeFormatOptions}
                     onChange={(timeFormat) => setPendingSettings((prev): IndividuatorSettings => ({ ...prev, timeFormat }))}
+                />
+
+                <P id="individuator-distance-unit-label" shadow color="primary">
+                    <T n={individuator.namespace} t={individuator.translationKey.DistanceUnit} />
+                </P>
+                <Dropdown<DistanceUnit>
+                    labelledBy="individuator-distance-unit-label"
+                    size="xs"
+                    color="primary"
+                    variant="fill"
+                    value={pendingSettings.distanceUnit}
+                    options={(['metric', 'imperial'] as const).map((distanceUnit) => ({
+                        value: distanceUnit,
+                        label: translatron.translate(settings.language, registry, {
+                            n: individuator.namespace,
+                            t: distanceUnit === 'metric' ? individuator.translationKey.Metric : individuator.translationKey.Imperial,
+                        }),
+                    }))}
+                    onChange={(distanceUnit) => setPendingSettings((prev): IndividuatorSettings => ({ ...prev, distanceUnit }))}
                 />
 
                 <P id="individuator-theme-label" shadow color="primary">
