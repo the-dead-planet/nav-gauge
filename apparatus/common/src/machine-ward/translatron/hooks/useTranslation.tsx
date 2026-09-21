@@ -1,11 +1,8 @@
-import { useSubjectState } from "@tinker-chest";
-import { useMachineWard } from "../../useMachineWard";
 import { TranslationId } from "../model";
+import { useTranslate } from "./useTranslate";
 
 export const useTranslation = (translationId: TranslationId): string => {
-    const { individuator, translatron } = useMachineWard();
-    const [settings] = useSubjectState(individuator.settings$);
-    const [registry] = useSubjectState(translatron.registry$);
+    const translate = useTranslate();
 
-    return translatron.translate(settings.language, registry, translationId);
+    return translate(translationId);
 };

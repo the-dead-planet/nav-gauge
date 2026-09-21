@@ -2,11 +2,11 @@ import { FC, useState } from "react";
 import { createPortal } from "react-dom";
 import { DateTime } from "luxon";
 import { Checkbox, Dialog, Dropdown, P } from "@web-ui";
-import { Individuator, IndividuatorSettings, Language, Translatron } from "@apparatus";
+import { Individuator, IndividuatorSettings, Language, Translatron, useTranslate } from "@apparatus";
 import { useWebMachineWard } from "@web-apparatus";
 import { T } from "@web-apparatus";
-import { useSubjectState } from "@tinker-chest";
-import { DateFormat, ThemeName, themeNameOptions, TimeFormat } from "@ui";
+import { DateFormat, DistanceUnit, TimeFormat, useSubjectState } from "@tinker-chest";
+import { ThemeName, themeNameOptions } from "@ui";
 import styles from './settings-dialog.module.css';
 
 interface Props {
@@ -14,19 +14,19 @@ interface Props {
 }
 
 export const SettingsDialog: FC<Props> = ({ onClose }) => {
-    const { isDev, namespace, translationKey, individuator, translatron } = useWebMachineWard();
-    const [registry] = useSubjectState(translatron.registry$);
+    const { isDev, namespace, translationKey, individuator } = useWebMachineWard();
     const [settings, setSettings] = useSubjectState(individuator.settings$);
     const [pendingSettings, setPendingSettings] = useState(individuator.settings$.value);
+    const translate = useTranslate();
 
     return createPortal(
         <Dialog
             placement="right-drawer"
-            header={translatron.translate(settings.language, registry, { n: individuator.namespace, t: individuator.translationKey.IndividuatorName })}
-            closeText={translatron.translate(settings.language, registry, { n: namespace, t: translationKey.Close })}
+            header={translate({ n: individuator.namespace, t: individuator.translationKey.IndividuatorName })}
+            closeText={translate({ n: namespace, t: translationKey.Close })}
             onClose={onClose}
             save={{
-                saveText: translatron.translate(settings.language, registry, { n: namespace, t: translationKey.Save }),
+                saveText: translate({ n: namespace, t: translationKey.Save }),
                 onSave: () => setSettings(pendingSettings),
             }}
         >
@@ -96,6 +96,22 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                     value={pendingSettings.timeFormat}
                     options={Individuator.timeFormatOptions}
                     onChange={(timeFormat) => setPendingSettings((prev): IndividuatorSettings => ({ ...prev, timeFormat }))}
+                />
+
+                <P id="individuator-distance-unit-label" shadow color="primary">
+                    <T n={individuator.namespace} t={individuator.translationKey.DistanceUnit} />
+                </P>
+                <Dropdown<DistanceUnit>
+                    labelledBy="individuator-distance-unit-label"
+                    size="xs"
+                    color="primary"
+                    variant="fill"
+                    value={pendingSettings.distanceUnit}
+options={Individuator.distanceUnitOptions.map(({ value, translationKey }) => ({
+                        value,
+                        label: translate({ n: individuator.namespace, t: translationKey }),
+                    }))}
+                    onChange={(distanceUnit) => setPendingSettings((prev): IndividuatorSettings => ({ ...prev, distanceUnit }))}
                 />
 
                 <P id="individuator-theme-label" shadow color="primary">

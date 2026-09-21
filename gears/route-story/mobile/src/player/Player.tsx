@@ -56,8 +56,8 @@ export const Player: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryProps
     translationKey,
     map,
     data$,
+    routeGeometryData$,
     images$,
-    state$,
     routeTimes$,
     progressMs$,
     playerOperator,
@@ -81,6 +81,7 @@ export const Player: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryProps
             translationKey={translationKey}
             map={map}
             data$={data$}
+            routeGeometryData$={routeGeometryData$}
             routeTimes$={routeTimes$}
             images$={images$}
             progressMs$={progressMs$}

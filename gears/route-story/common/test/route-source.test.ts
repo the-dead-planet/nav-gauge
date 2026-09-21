@@ -1,6 +1,6 @@
 import { describe } from "mocha";
 import { expect } from "chai";
-import { getRouteSourceData, getRouteTimelinePositionForDistanceFraction, getSplineData, getSplineHeading } from "../src/tinkers";
+import { getPosition, getRouteDistanceFraction, getRouteGeometryData, getRouteSourceData, getRouteTimelinePositionForDistanceFraction, getSplineHeading } from "../src/tinkers";
 import { GeoJson } from "@tinker-chest";
 import { RouteStoryState } from "../src";
 const route: GeoJson = {
@@ -47,12 +47,19 @@ const state: RouteStoryState = {
     }
 };
 const startTimeEpoch = Date.parse("2026-01-01T00:00:00Z");
+const routeTimes = {
+    startTime: "2026-01-01T00:00:00Z",
+    endTime: "2026-01-01T00:02:00Z",
+    startTimeEpoch,
+    endTimeEpoch: startTimeEpoch + 120_000,
+    duration: 120_000,
+};
 
 describe("Route story gear", () => {
     describe("Route source data", () => {
-        const splineData = getSplineData(route);
+        const routeGeometryData = getRouteGeometryData(route);
         const expectValidLines = (progressMs: number) => {
-            const { line } = getRouteSourceData(state, route, startTimeEpoch, progressMs, splineData);
+            const { line } = getRouteSourceData(state, route, startTimeEpoch, progressMs, routeGeometryData);
             expect(line.type).to.equal("FeatureCollection");
             for (const feature of (line as GeoJSON.FeatureCollection).features) {
                 if (feature.geometry.type === "LineString") {
@@ -66,7 +73,7 @@ describe("Route story gear", () => {
         });
 
         it("should produce two valid lines mid-route", () => {
-            const { line } = getRouteSourceData(state, route, startTimeEpoch, 90_000, splineData);
+            const { line } = getRouteSourceData(state, route, startTimeEpoch, 90_000, routeGeometryData);
             const lineStrings = (line as GeoJSON.FeatureCollection).features
                 .filter((f): f is GeoJSON.Feature<GeoJSON.LineString> => f.geometry.type === "LineString");
             expect(lineStrings).to.have.lengthOf(2);
@@ -75,33 +82,37 @@ describe("Route story gear", () => {
         });
 
         it("should report the index of the segment that follows the current time", () => {
-            const { splitIndex } = getRouteSourceData(state, route, startTimeEpoch, 90_000, splineData);
+            const { splitIndex } = getRouteSourceData(state, route, startTimeEpoch, 90_000, routeGeometryData);
             expect(splitIndex).to.equal(2);
         });
 
         it("converts route distance progress to timeline progress", () => {
-            const splineData = {
-                ...getSplineData(route),
+            const routeGeometryData = {
+                ...getRouteGeometryData(route),
                 lookup: [
                     { t: 0, lineProgress: 0 },
                     { t: 0.5, lineProgress: 0.25 },
                     { t: 1, lineProgress: 1 },
                 ],
+                totalDistanceMeters: 100,
             };
 
-            expect(getRouteTimelinePositionForDistanceFraction(route, splineData, startTimeEpoch, 0.625)).to.equal(90_000);
+            expect(getRouteTimelinePositionForDistanceFraction(route, routeGeometryData, startTimeEpoch, 0.625)).to.equal(90_000);
+            expect(getRouteDistanceFraction(90_000, route, routeTimes, routeGeometryData)).to.equal(0.625);
+            expect(getPosition(2, route, routeTimes, 'distance', routeGeometryData)).to.equal(25);
+            expect(getPosition(2, route, routeTimes, 'timeline', routeGeometryData)).to.equal(50);
         });
 
         it("provides finite headings at both route ends", () => {
-            expect(getRouteSourceData(state, route, startTimeEpoch, 0, splineData).heading).to.be.finite;
-            expect(getRouteSourceData(state, route, startTimeEpoch, 120_000, splineData).heading).to.be.finite;
+            expect(getRouteSourceData(state, route, startTimeEpoch, 0, routeGeometryData).heading).to.be.finite;
+            expect(getRouteSourceData(state, route, startTimeEpoch, 120_000, routeGeometryData).heading).to.be.finite;
         });
     });
 
     describe("Spline heading", () => {
         it("should follow the route direction for a straight north-east route", () => {
-            const splineData = getSplineData(route);
-            const heading = getSplineHeading(splineData, 2, 0.5);
+            const routeGeometryData = getRouteGeometryData(route);
+            const heading = getSplineHeading(routeGeometryData, 2, 0.5);
             expect(heading).to.be.closeTo(45, 1);
         });
     });

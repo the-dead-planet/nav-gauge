@@ -13,7 +13,8 @@ import {
     Animatrix,
     updateImageFeatureId,
     getPosition,
-    getClosestFeatureFromPosition
+    getClosestFeatureFromPosition,
+    RouteGeometryData,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { useTheme } from "@ui";
 import { MobileMarkerImageData } from "../../images/image-parser";
@@ -22,6 +23,7 @@ interface Props {
     gearId: string;
     translationKey: typeof RouteStoryTranslationKey;
     data$: BehaviorSubject<ParsingResultWithError>;
+    routeGeometryData$: BehaviorSubject<RouteGeometryData | null>;
     routeTimes$: BehaviorSubject<RouteTimes | null>;
     images$: BehaviorSubject<MarkerImage<MobileMarkerImageData>[]>;
     animatrix: Animatrix;
@@ -78,12 +80,14 @@ export const SliderMarkers: FC<Props> = ({
     gearId,
     translationKey,
     data$,
+    routeGeometryData$,
     routeTimes$,
     images$,
     animatrix,
 }) => {
     const theme = useTheme();
     const [{ geojson }] = useSubjectState(data$);
+    const [routeGeometryData] = useSubjectState(routeGeometryData$);
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [animationControls] = useSubjectState(animatrix.controls$);
@@ -138,7 +142,7 @@ export const SliderMarkers: FC<Props> = ({
         const offsetX = event.nativeEvent.pageX - metrics.pageX;
         const grabbed = images.find((candidate) =>
             candidate.featureId !== undefined &&
-            Math.abs((getPosition(candidate.featureId, geojson, routeTimes) / 100) * metrics.width - offsetX) <= GRAB_RADIUS_PX
+            Math.abs((getPosition(candidate.featureId, geojson, routeTimes, animationControls.playbackPacing, routeGeometryData) / 100) * metrics.width - offsetX) <= GRAB_RADIUS_PX
         );
         if (grabbed === undefined) {
             return false;
@@ -146,7 +150,7 @@ export const SliderMarkers: FC<Props> = ({
         beginDrag(grabbed);
 
         return true;
-    }, [images, geojson, routeTimes]);
+    }, [images, geojson, routeTimes, animationControls.playbackPacing, routeGeometryData]);
 
     const containerPanResponder = useMemo(() => PanResponder.create({
         onStartShouldSetPanResponderCapture: (event) => tryBeginDragAt(event),
@@ -157,17 +161,17 @@ export const SliderMarkers: FC<Props> = ({
                 return;
             }
             const positionPercent = ((event.nativeEvent.pageX - metrics.pageX) / metrics.width) * 100;
-            const closestFeature = getClosestFeatureFromPosition(positionPercent, geojson, routeTimes);
+            const closestFeature = getClosestFeatureFromPosition(positionPercent, geojson, routeTimes, animationControls.playbackPacing, routeGeometryData);
             if (closestFeature !== null) {
                 draggingClosestFeature$.next(closestFeature);
             }
         },
         onPanResponderRelease: endDrag,
         onPanResponderTerminate: endDrag,
-    }), [tryBeginDragAt, geojson, routeTimes]);
+    }), [tryBeginDragAt, geojson, routeTimes, animationControls.playbackPacing, routeGeometryData]);
 
     const draggingFeaturePosition = draggingClosestFeature !== null
-        ? getPosition(draggingClosestFeature.properties.id, geojson, routeTimes)
+        ? getPosition(draggingClosestFeature.properties.id, geojson, routeTimes, animationControls.playbackPacing, routeGeometryData)
         : null;
 
     return (
@@ -188,7 +192,7 @@ export const SliderMarkers: FC<Props> = ({
                                 styles.marker,
                                 isDragged ? styles.dragMarker : undefined,
                                 {
-                                    left: `${getPosition(image.featureId, geojson, routeTimes).toFixed(0)}%`,
+                                    left: `${getPosition(image.featureId, geojson, routeTimes, animationControls.playbackPacing, routeGeometryData).toFixed(0)}%`,
                                 },
                             ]}
                         >

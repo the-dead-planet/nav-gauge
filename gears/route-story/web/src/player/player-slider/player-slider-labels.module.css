@@ -3,11 +3,17 @@
     column-gap: 10px;
 }
 
+.metrics {
+    display: flex;
+    column-gap: 10px;
+}
+
 .text {
     padding: 0;
     margin: 0;
     font-size: 12px;
     font-variant-numeric: tabular-nums;
+    white-space: nowrap;
 }
 
 .align-flex-right {

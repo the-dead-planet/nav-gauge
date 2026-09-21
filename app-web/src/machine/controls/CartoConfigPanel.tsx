@@ -1,16 +1,15 @@
 import type * as maplibregl from "maplibre-gl";
 import { FC } from "react";
 import { Checkbox, ColorInput, Dropdown, Fieldset, Label, NumberInput, TextArea, TextInput } from "@web-ui";
-import { Cartomancer, MapLayout, ToolPanelProps } from "@apparatus";
+import { Cartomancer, MapLayout, ToolPanelProps, useTranslate } from "@apparatus";
 import { useWebMachineWard } from "@web-apparatus";
 import { useSubjectState } from "@tinker-chest";
 import styles from './controls.module.css';
 
 export const CartoConfigPanel: FC<ToolPanelProps<maplibregl.Map>> = () => {
-    const { cartomancer, translatron, individuator } = useWebMachineWard();
-    const [registry] = useSubjectState(translatron.registry$);
-    const [settings] = useSubjectState(individuator.settings$);
-    const t = (key: string) => translatron.translate(settings.language, registry, { n: cartomancer.namespace, t: key });
+    const { cartomancer } = useWebMachineWard();
+    const translate = useTranslate();
+    const t = (key: string) => translate({ n: cartomancer.namespace, t: key });
     const [selectedStyle, setSelectedStyle] = useSubjectState(cartomancer.selectedStyle$)
     const [mapLayout, setMapLayout] = useSubjectState(cartomancer.mapLayout$);
     const [gaugeControls, setGaugeControls] = useSubjectState(cartomancer.gaugeControls$);

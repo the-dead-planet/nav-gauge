@@ -15,7 +15,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
     map,
     animatrix,
     data$,
-    splineData$,
+    routeGeometryData$,
     state$,
     routeTimes$,
     images$,
@@ -23,7 +23,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
     playerOperator,
 }) => {
     const [{ geojson }] = useSubjectState(data$);
-    const [splineData] = useSubjectState(splineData$);
+    const [routeGeometryData] = useSubjectState(routeGeometryData$);
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [progressMs] = useSubjectState(progressMs$);
@@ -37,7 +37,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
     const loadedImages = useLoadedWebImages(images);
 
     const sources = useMemo((): { [key in 'line' | 'currentPoint']: GeoJSON.GeoJSON } => {
-        if (!geojson || !routeTimes || !splineData) {
+        if (!geojson || !routeTimes || !routeGeometryData) {
             return { currentPoint: emptyCollection, line: emptyCollection };
         }
 
@@ -46,9 +46,9 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
             geojson,
             routeTimes.startTimeEpoch,
             progressMs, // Not a dependency of this memo, data is updated later in the animateRoute hook
-            splineData,
+            routeGeometryData,
         );
-    }, [geojson, routeTimes, splineData, state.routeStyleActive.showRouteLine, state.routeStyleActive.showRoutePoints, state.routeStyleInactive.showRouteLine, state.routeStyleInactive.showRoutePoints]);
+    }, [geojson, routeTimes, routeGeometryData, state.routeStyleActive.showRouteLine, state.routeStyleActive.showRoutePoints, state.routeStyleInactive.showRouteLine, state.routeStyleInactive.showRoutePoints]);
 
     useEffect(() => {
         if (!isPlaying || !geojson || !routeTimes) {
@@ -80,8 +80,8 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
 
     return (
         <>
-            {settings.debugMode && splineData ? (
-                <DebugRouteCameraLineLayer map={map} spline={splineData} />
+            {settings.debugMode && routeGeometryData ? (
+                <DebugRouteCameraLineLayer map={map} routeGeometryData={routeGeometryData} />
             ) : null}
             <RouteLineLayer map={map} source={sources.line} state={state} />
             <RouteCurrentPointLayer map={map} source={sources.currentPoint} state={state} />

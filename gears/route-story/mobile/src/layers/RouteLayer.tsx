@@ -18,7 +18,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
     map,
     animatrix,
     data$,
-    splineData$,
+    routeGeometryData$,
     state$,
     routeTimes$,
     images$,
@@ -26,7 +26,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
     playerOperator
 }) => {
     const [{ geojson }] = useSubjectState(data$);
-    const [splineData] = useSubjectState(splineData$);
+    const [routeGeometryData] = useSubjectState(routeGeometryData$);
     const [routeTimes] = useSubjectState(routeTimes$);
     const [images] = useSubjectState(images$);
     const [progressMs] = useSubjectState(progressMs$);
@@ -56,7 +56,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
     const loadedImages = useLoadedMobileImages(images);
 
     useEffect(() => {
-        if (!geojson || !routeTimes || !splineData) {
+        if (!geojson || !routeTimes || !routeGeometryData) {
             setLineSourceData(emptyCollection);
             setCurrentPointSourceData(emptyCollection);
             return;
@@ -67,12 +67,12 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
             geojson,
             routeTimes.startTimeEpoch,
             progressMs, // Not a dependency of this memo, data is updated later in the animateRoute hook
-            splineData,
+            routeGeometryData,
         );
 
         setLineSourceData(line);
         setCurrentPointSourceData(currentPoint);
-    }, [geojson, routeTimes?.startTimeEpoch, splineData, state]);
+    }, [geojson, routeTimes?.startTimeEpoch, routeGeometryData, state]);
 
     useEffect(() => {
         if (!isPlaying || !geojson || !routeTimes) {
@@ -101,7 +101,7 @@ export const RouteLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryP
 
     return (
         <>
-            {settings.debugMode && splineData ? <DebugRouteCameraLineLayer spline={splineData} /> : null}
+            {settings.debugMode && routeGeometryData ? <DebugRouteCameraLineLayer routeGeometryData={routeGeometryData} /> : null}
             <RouteLineLayer source={lineSourceData} state={state} zoom={cameraZoom} />
             <RouteCurrentPointLayer source={currentPointSourceData} state={state} />
         </>

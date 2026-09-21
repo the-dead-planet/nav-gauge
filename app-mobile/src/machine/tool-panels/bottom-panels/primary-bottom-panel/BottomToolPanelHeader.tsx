@@ -1,8 +1,6 @@
 import { FC } from "react";
 import { Button, MobileButtonProps } from "@mobile-ui";
-import { useSubjectState } from "@tinker-chest";
-import { useBottomToolPanelHeader } from "@apparatus";
-import { useMobileMachineWard } from "@mobile-apparatus";
+import { useBottomToolPanelHeader, useTranslate } from "@apparatus";
 import { BottomToolPanelHeaderContainer } from "./BottomToolPanelHeaderContainer";
 
 interface Props {
@@ -16,9 +14,7 @@ export const BottomToolPanelHeader: FC<Props> = ({
     onActiveIdChange,
     joinHeaderButtons,
 }) => {
-    const { translatron, individuator } = useMobileMachineWard();
-    const [registry] = useSubjectState(translatron.registry$);
-    const [settings] = useSubjectState(individuator.settings$);
+    const translate = useTranslate();
 
     const {
         effectivePanels,
@@ -42,7 +38,7 @@ export const BottomToolPanelHeader: FC<Props> = ({
             {...header}
         >
             {effectivePanels.map((toolPanel) => {
-                const tooltip = translatron.translate(settings.language, registry, toolPanel.title);
+                const tooltip = translate(toolPanel.title);
                 const isActive = activeId === toolPanel.id;
 
                 return (

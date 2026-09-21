@@ -1,5 +1,6 @@
 import { BehaviorSubject, Subscription } from "rxjs";
-import { DateFormat, Option, ThemeMode, ThemeName, TimeFormat, formatTimestamp, themeModeOptions, themeNameOptions } from "@ui";
+import { Option, ThemeMode, ThemeName, themeModeOptions, themeNameOptions } from "@ui";
+import { DateFormat, DistanceUnit, formatTimestamp, TimeFormat } from "@tinker-chest";
 import { StorageKeeper } from "../storage-keeper";
 import { IndividuatorSettings, IndividuatorTranslationKey } from "./model";
 import { TranslationTable, Translatron } from "../translatron";
@@ -17,6 +18,14 @@ export class Individuator {
     public static defaultDateFormat: DateFormat = DateFormat.EEEddMMyyyy;
     public static defaultShortDateFormat: DateFormat = DateFormat.ddMMyyyy;
     public static defaultTimeFormat: TimeFormat = TimeFormat.HHmmss;
+
+    public static getPreferredLocale = (): string => Intl.DateTimeFormat().resolvedOptions().locale;
+
+    public static getPreferredDistanceUnit = (locale = this.getPreferredLocale()): DistanceUnit => {
+        const region = locale.match(/[-_]([a-z]{2}|\d{3})(?:-|$)/i)?.[1].toUpperCase();
+
+        return region === 'US' || region === 'GB' || region === 'LR' || region === 'MM' ? 'imperial' : 'metric';
+    };
 
     public static dateFormatOptions: { value: DateFormat; short: DateFormat; _example: string }[] = [
         { value: DateFormat.ddMMyyyy, short: DateFormat.ddMMyyyy, _example: '17/06/2026' },
@@ -47,6 +56,11 @@ export class Individuator {
         { value: TimeFormat.hmmssa, label: '2:30:00 pm (12h, H)' },
     ];
 
+    public static distanceUnitOptions: { value: DistanceUnit; translationKey: IndividuatorTranslationKey.Metric | IndividuatorTranslationKey.Imperial }[] = [
+        { value: 'metric', translationKey: IndividuatorTranslationKey.Metric },
+        { value: 'imperial', translationKey: IndividuatorTranslationKey.Imperial },
+    ];
+
     /**
      * Provides default settings which can be later changed by user.
      * @param defaultTheme Defaults to dark theme.
@@ -67,6 +81,8 @@ export class Individuator {
             short: this.defaultShortDateFormat,
         },
         timeFormat: this.defaultTimeFormat,
+        locale: this.getPreferredLocale(),
+        distanceUnit: this.getPreferredDistanceUnit(),
         language: Translatron.defaultLanguage,
     });
 
@@ -81,11 +97,17 @@ export class Individuator {
     ) => {
         translatron.register(this.namespace, this.translations);
 
-        storageKeeper.synchronizeSubjectWithStorage(this.settings$, this.settingsStorageId, (state) => {
+        storageKeeper.synchronizeSubjectWithStorage(this.settings$, this.settingsStorageId, (state): Partial<IndividuatorSettings> => {
             const maybeSettings = state as IndividuatorSettings;
 
             return {
                 ...maybeSettings,
+                locale: typeof maybeSettings.locale === 'string' && maybeSettings.locale.length > 0
+                    ? maybeSettings.locale
+                    : Individuator.getPreferredLocale(),
+                distanceUnit: maybeSettings.distanceUnit === 'metric' || maybeSettings.distanceUnit === 'imperial'
+                    ? maybeSettings.distanceUnit
+                    : Individuator.getPreferredDistanceUnit(),
                 debugMode: this.isDev ? maybeSettings.debugMode : false,
                 themeMode: themeModeOptions.some(({ value }) => value === maybeSettings.themeMode) ? maybeSettings.themeMode : themeModeOptions[0].value,
                 themeName: themeNameOptions.some(({ value }) => value === maybeSettings.themeName) ? maybeSettings.themeName : themeNameOptions[0].value,
@@ -107,7 +129,7 @@ export class Individuator {
         { short = false }: { short?: boolean; } = {}
     ): string => {
         return formatTimestamp(epochMs, {
-            locale: settings.language,
+            locale: settings.locale,
             dateFormat: short ? settings.dateFormat.short : settings.dateFormat.value,
             timeFormat: settings.timeFormat,
         });

@@ -10,7 +10,7 @@ import { DesignSystemColor, ThemeComponentColor } from "@ui";
 export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends RouteStoryFile, TImageData> {
     private gear: RouteStoryGear<TMap, TChronoLens, TFile, TImageData>;
     private heading: number | undefined;
-    private headingSplineData: object | undefined;
+    private headingRouteGeometryData: object | undefined;
 
     public isLoading$ = new BehaviorSubject(false);
     public showImageMarkers$ = new BehaviorSubject(true);
@@ -56,7 +56,11 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
     };
 
     public onStop = () => {
-        this.gear.apparatus.chronoLens.surveillanceState$.next(SurveillanceState.Stopped);
+        const chronoLens = this.gear.apparatus.chronoLens;
+        chronoLens.isPlaying$.next(false);
+        if (chronoLens.surveillanceState$.value !== SurveillanceState.Stopped) {
+            chronoLens.surveillanceState$.next(SurveillanceState.Stopped);
+        }
         this.gear.apparatus.cartomancer.blinkingState$.next(null);
         this.gear.apparatus.toolsStation.removeTopBarTool(this.gear.recTopBarToolId);
     };
@@ -86,18 +90,18 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
             this.gear.apparatus.chronoLens.isPlaying$.next(false);
         }
         this.gear.progressMs$.next(value);
-        const splineData = this.gear.splineData$.value;
-        if (this.gear.data$.value.geojson && splineData) {
-            if (this.headingSplineData !== splineData) {
+        const routeGeometryData = this.gear.routeGeometryData$.value;
+        if (this.gear.data$.value.geojson && routeGeometryData) {
+            if (this.headingRouteGeometryData !== routeGeometryData) {
                 this.heading = undefined;
-                this.headingSplineData = splineData;
+                this.headingRouteGeometryData = routeGeometryData;
             }
             const { currentPoint, line } = getRouteSourceData(
                 this.gear.state$.value,
                 this.gear.data$.value.geojson,
                 this.gear.routeTimes$.value.startTimeEpoch,
                 value,
-                splineData,
+                routeGeometryData,
             );
             const rawHeading = currentPoint.properties?.heading;
             if (typeof rawHeading === 'number') {
@@ -127,13 +131,13 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
         if (!isPlaying || !geojson || !routeTimes) {
             return;
         }
-        const splineData = this.gear.splineData$.value;
-        if (!splineData) {
+        const routeGeometryData = this.gear.routeGeometryData$.value;
+        if (!routeGeometryData) {
             return;
         }
-        if (this.headingSplineData !== splineData) {
+        if (this.headingRouteGeometryData !== routeGeometryData) {
             this.heading = undefined;
-            this.headingSplineData = splineData;
+            this.headingRouteGeometryData = routeGeometryData;
         }
 
         const { startTimeEpoch } = routeTimes;
@@ -150,7 +154,7 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
             geojson,
             startTimeEpoch,
             currentProgressMs,
-            splineData,
+            routeGeometryData,
         ).routeDistanceFraction;
         let routePlaybackFraction = this.gear.animatrix.controls$.value.playbackPacing === 'distance'
             ? initialRouteDistanceFraction
@@ -179,11 +183,11 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
                 return;
             }
             currentProgressMs = playbackPacing === 'distance'
-                ? getRouteTimelinePositionForDistanceFraction(geojson, splineData, startTimeEpoch, routePlaybackFraction)
+                ? getRouteTimelinePositionForDistanceFraction(geojson, routeGeometryData, startTimeEpoch, routePlaybackFraction)
                 : routePlaybackFraction * routeDuration;
             const nextImage: LoadedImageData<TImageData> | undefined = sortedImageFeatures[nextImageIndex];
             const nextImageTime = nextImageIndex >= 0 ? nextImageTimes[nextImageIndex] : null;
-            const { currentPoint, line, heading: rawHeading } = getRouteSourceData(this.gear.state$.value, geojson, startTimeEpoch, currentProgressMs, splineData);
+            const { currentPoint, line, heading: rawHeading } = getRouteSourceData(this.gear.state$.value, geojson, startTimeEpoch, currentProgressMs, routeGeometryData);
             this.heading = easeHeading(this.heading, rawHeading, dt, easeDuration);
             currentPoint.properties = { ...currentPoint.properties, heading: this.heading };
             onUpdateLayer(currentPoint, line);

@@ -6647,6 +6647,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@the-dead-planet/nav-gauge-tinker-chest@workspace:tinker-chest"
   dependencies:
+    luxon: "npm:^3.7.2"
     react: "npm:19.3.0"
   peerDependencies:
     react: 19.3.0

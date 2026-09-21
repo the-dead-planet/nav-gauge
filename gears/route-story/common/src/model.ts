@@ -5,7 +5,7 @@ import { Icons } from "@ui";
 import { FileOperator } from "./file-operator";
 import { PlayerOperator } from "./player-operator";
 import { Animatrix } from "./animatrix";
-import { SplineData } from "./tinkers";
+import { RouteGeometryData } from "./tinkers";
 
 export interface RouteTimes {
     startTime: string;
@@ -97,7 +97,7 @@ export interface RouteStoryProps<TMap, TChronoLens extends ChronoLens, TFile ext
     translationKey: typeof RouteStoryTranslationKey;
     animatrix: Animatrix;
     data$: BehaviorSubject<ParsingResultWithError>;
-    splineData$: BehaviorSubject<SplineData | null>;
+    routeGeometryData$: BehaviorSubject<RouteGeometryData | null>;
     state$: BehaviorSubject<RouteStoryState>;
     routeTimes$: BehaviorSubject<RouteTimes | null>;
     images$: BehaviorSubject<MarkerImage<TImageData>[]>;

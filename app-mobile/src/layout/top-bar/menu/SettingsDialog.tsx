@@ -1,11 +1,11 @@
 import { FC, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Checkbox, Dialog, Dropdown, Text } from "@mobile-ui";
-import { Individuator, IndividuatorSettings, Language, Translatron } from "@apparatus";
+import { Individuator, IndividuatorSettings, Language, Translatron, useTranslate } from "@apparatus";
 import { useMobileMachineWard } from "@mobile-apparatus";
 import { T } from "@mobile-apparatus";
-import { useSubjectState } from "@tinker-chest";
-import { DateFormat, ThemeName, themeNameOptions, TimeFormat } from "@ui";
+import { DateFormat, DistanceUnit, TimeFormat, useSubjectState } from "@tinker-chest";
+import { ThemeName, themeNameOptions } from "@ui";
 
 const styles = StyleSheet.create({
     container: {
@@ -18,10 +18,10 @@ interface Props {
 }
 
 export const SettingsDialog: FC<Props> = ({ onClose }) => {
-    const { isDev, namespace, translationKey, individuator, translatron } = useMobileMachineWard();
-    const [registry] = useSubjectState(translatron.registry$);
-    const [settings, setSettings] = useSubjectState(individuator.settings$);
+    const { isDev, namespace, translationKey, individuator } = useMobileMachineWard();
+    const [_settings, setSettings] = useSubjectState(individuator.settings$);
     const [pendingSettings, setPendingSettings] = useState(individuator.settings$.value);
+    const translate = useTranslate();
 
     return (
         <Dialog
@@ -29,11 +29,11 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
             style={{
                 transform: [{ skewX: "-12deg" }],
             }}
-            header={translatron.translate(settings.language, registry, { n: individuator.namespace, t: individuator.translationKey.IndividuatorName })}
-            closeText={translatron.translate(settings.language, registry, { n: namespace, t: translationKey.Close })}
+            header={translate({ n: individuator.namespace, t: individuator.translationKey.IndividuatorName })}
+            closeText={translate({ n: namespace, t: translationKey.Close })}
             onClose={onClose}
             save={{
-                saveText: translatron.translate(settings.language, registry, { n: namespace, t: translationKey.Save }),
+                saveText: translate({ n: namespace, t: translationKey.Save }),
                 onSave: () => setSettings(pendingSettings),
             }}
         >
@@ -94,6 +94,21 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                         label: String(label),
                     }))}
                     onChange={(timeFormat) => setPendingSettings((prev): IndividuatorSettings => ({ ...prev, timeFormat }))}
+                />
+
+                <Text color="primary" shadow>
+                    <T n={individuator.namespace} t={individuator.translationKey.DistanceUnit} />
+                </Text>
+                <Dropdown<DistanceUnit>
+                    size="xs"
+                    color="primary"
+                    variant="fill"
+                    value={pendingSettings.distanceUnit}
+options={Individuator.distanceUnitOptions.map(({ value, translationKey }) => ({
+                        value,
+                        label: translate({ n: individuator.namespace, t: translationKey }),
+                    }))}
+                    onChange={(distanceUnit) => setPendingSettings((prev): IndividuatorSettings => ({ ...prev, distanceUnit }))}
                 />
 
                 <Text color="primary" shadow>

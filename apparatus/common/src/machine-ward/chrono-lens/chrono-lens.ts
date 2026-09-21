@@ -1,4 +1,4 @@
-import { BehaviorSubject, pairwise, Subscription } from "rxjs";
+import { BehaviorSubject, distinctUntilChanged, pairwise, Subscription } from "rxjs";
 import { FrameRate, SurveillanceState } from "./model";
 import { SignaliumBureau } from "../signalium-bureau";
 import { Individuator } from "../individuator";
@@ -36,7 +36,7 @@ export abstract class ChronoLens {
     ) => {
         this.clearSurveillance();
         this.subscription = this.surveillanceState$
-            .pipe(pairwise())
+            .pipe(distinctUntilChanged(), pairwise())
             .subscribe(([prev, next]) => {
                 switch (next) {
                     case SurveillanceState.Stopped:

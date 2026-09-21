@@ -1,10 +1,9 @@
 import { FC, useEffect, useRef } from "react";
 import { Animated, Button, StyleSheet } from "react-native";
 import { Text } from '@mobile-ui';
-import { SignaliumNotice } from "@apparatus";
+import { SignaliumNotice, useTranslate } from "@apparatus";
 import { useMobileMachineWard } from "@mobile-apparatus";
 import { useTheme } from "@ui";
-import { useSubjectState } from "@tinker-chest";
 
 const styles = StyleSheet.create({
     container: {
@@ -30,9 +29,8 @@ export const Notice: FC<Props> = ({
     const theme = useTheme();
     const translateY = useRef(new Animated.Value(-80)).current;
     const opacity = useRef(new Animated.Value(0)).current;
-    const { namespace, translationKey, individuator, translatron } = useMobileMachineWard();
-    const [registry] = useSubjectState(translatron.registry$);
-    const [settings] = useSubjectState(individuator.settings$);
+    const { namespace, translationKey } = useMobileMachineWard();
+    const translate = useTranslate();
 
     useEffect(() => {
         Animated.parallel([
@@ -59,7 +57,7 @@ export const Notice: FC<Props> = ({
         }]}>
             <Text>{notice.text} {notice.type === 'error' ? notice.error.message || '' : ''}</Text>
             <Button
-                title={translatron.translate(settings.language, registry, { n: namespace, t: translationKey.Close })}
+                title={translate({ n: namespace, t: translationKey.Close })}
                 onPress={() => onRemove(notice.id)}
             />
         </Animated.View>
