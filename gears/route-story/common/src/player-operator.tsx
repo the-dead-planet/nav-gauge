@@ -173,6 +173,10 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
             last = now;
             routePlaybackFraction += dt / routePlaybackDuration;
             if (routePlaybackFraction >= 1) {
+<<<<<<< HEAD
+=======
+                this.gear.progressMs$.next(routeDuration);
+>>>>>>> feature/204-playback-type
                 this.handleRouteEnd();
                 
                 return;

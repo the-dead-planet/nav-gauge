@@ -8,6 +8,7 @@ import {
     getIconImageId,
     getImageSource,
     ImagesLayers,
+    routeLayerIds,
     imageLayerIds,
     imageSourceIds,
     draggingImage$,
@@ -173,6 +174,7 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStory
                 <Layer
                     type="circle"
                     id={imageLayerIds.thumbnailsOutline}
+                    afterId={routeLayerIds.currentPoint}
                     paint={ImagesLayers.thumbnailsOutline.paint}
                 />
                 <Layer
