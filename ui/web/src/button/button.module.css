@@ -14,6 +14,7 @@
 .color-neutral {
     --button-color-fill: var(--color-neutral);
     --button-color-dark: var(--color-neutral-800);
+    --button-color-text-dark: var(--color-neutral-900);
     --button-color-light: var(--color-neutral-100);
     --button-color-shadow: var(--color-neutral-700);
 }
@@ -30,6 +31,7 @@
     --button-color: var(--color-primary);
     --button-color-fill: var(--color-primary);
     --button-color-dark: var(--color-primary-900);
+    --button-color-text-dark: var(--color-primary-900);
     --button-color-light: var(--color-primary-100);
     --button-color-shadow: var(--color-primary-700);
 }
@@ -38,6 +40,7 @@
     --button-color: var(--color-secondary);
     --button-color-fill: var(--color-secondary);
     --button-color-dark: var(--color-secondary-900);
+    --button-color-text-dark: var(--color-secondary-900);
     --button-color-light: var(--color-secondary-100);
     --button-color-shadow: var(--color-secondary-700);
 }
@@ -46,6 +49,7 @@
     --button-color: var(--color-tertiary);
     --button-color-fill: var(--color-tertiary);
     --button-color-dark: var(--color-tertiary-900);
+    --button-color-text-dark: var(--color-tertiary-900);
     --button-color-light: var(--color-tertiary-100);
     --button-color-shadow: var(--color-tertiary-700);
 }
@@ -88,6 +92,7 @@
 
 .mode-light {
     --button-color-inverse: var(--button-color-light);
+    --button-color-text: var(--button-color-text-dark);
     --button-highlight-color-inverse: var(--button-highlight-color-light);
     --button-highlight-color-accent: var(--button-highlight-color-accent-darker);
     --button-highlight-color-bg-opacity: .08;
@@ -95,6 +100,7 @@
 
 .mode-dark {
     --button-color-inverse: var(--button-color-dark);
+    --button-color-text: var(--button-color-light);
     --button-highlight-color-inverse: var(--button-highlight-color-dark);
     --button-highlight-color-accent: var(--button-highlight-color-accent-lighter);
     --button-highlight-color-bg-opacity: .04;
@@ -215,14 +221,14 @@
 
 .variant-fill-inverse {
     border: 1px solid var(--button-color);
-    color: var(--button-color);
+    color: var(--button-color-text);
     background-color: var(--button-color-inverse);
 }
 
 .variant-fill-inverse .icon {
-    color: var(--button-color);
-    stroke: var(--button-color);
-    fill: var(--button-color);
+    color: var(--button-color-text);
+    stroke: var(--button-color-text);
+    fill: var(--button-color-text);
 }
 
 .variant-fill-inverse:hover,

@@ -16,6 +16,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         gap: 8,
     },
+    content: {
+        rowGap: 8,
+    },
 });
 
 export const Overview: FC = () => {
@@ -38,7 +41,7 @@ export const Overview: FC = () => {
                     closeText='Close'
                     onClose={() => setOpen(null)}
                 >
-                    <View style={{ rowGap: 8 }}>
+                    <View style={styles.content}>
                         <Text>Dialog content for {open} placement.</Text>
                         <Text>Click Close or Save to dismiss.</Text>
                     </View>
@@ -46,4 +49,23 @@ export const Overview: FC = () => {
             )}
         </View>
     );
+};
+
+export const TallContent: FC = () => {
+    const [open, setOpen] = useState(true);
+
+    return open ? (
+        <Dialog
+            header="tall content"
+            placement="middle"
+            closeText='Close'
+            onClose={() => setOpen(false)}
+        >
+            <View style={styles.content}>
+                {Array.from({ length: 40 }, (_, i) => (
+                    <Text key={i}>Long dialog content line {i + 1}.</Text>
+                ))}
+            </View>
+        </Dialog>
+    ) : null;
 };

@@ -27,7 +27,7 @@ const mobileFontFamily: Record<FontType, string | undefined> = {
     [FontType.Numeric]: 'UbuntuMono-Regular',
     [FontType.SpecialMessaging]: 'SyneMono-Regular',
     [FontType.NeonHeader]: 'Sixtyfour-Regular-VariableFont_BLED,SCAN',
-    [FontType.NeonText]: 'BitcountSingle-VariableFont_CRSV,ELSH,ELXP,slnt,wght',
+    [FontType.NeonText]: 'BitcountSingle-Bold',
 };
 
 export interface TextProps extends RNTextProps, TypographyProps {

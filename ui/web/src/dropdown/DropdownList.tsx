@@ -3,10 +3,10 @@ import { CSSProperties, RefObject, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { DropdownOption, DropdownProps, getIconAnchorPoint, menuPositionsMatch, MenuPosition, placePopup, useTheme } from "@ui";
 import { Icon } from "../icons";
-import { Span } from "../typography";
 import styles from './dropdown.module.css';
 
 interface Props {
+    className?: string;
     id: string;
     iconSize: number;
     onClose: (restoreFocus?: boolean) => void;
@@ -14,6 +14,7 @@ interface Props {
 }
 
 export function DropdownList<T = string>({
+    className,
     onClose,
     id,
     triggerRef,
@@ -120,7 +121,7 @@ export function DropdownList<T = string>({
             ref={listRef}
             role="listbox"
             tabIndex={-1}
-            className={classNames(styles['menu'], styles[`mode-${theme.mode}`], styles[`color-${color ?? 'neutral'}`], styles[`highlight-${highlightColor ?? color ?? 'neutral'}`], styles[`size-${size}`], styles[`variant-${variant}`])}
+            className={classNames(styles['menu'], styles[`mode-${theme.mode}`], styles[`color-${color ?? 'neutral'}`], styles[`highlight-${highlightColor ?? color ?? 'neutral'}`], styles[`size-${size}`], styles[`variant-${variant}`], className)}
             style={positionStyle}
             data-popup-trigger-id={triggerRef.current?.id || undefined}
             onKeyDown={handleKeyDown}
@@ -149,9 +150,9 @@ export function DropdownList<T = string>({
                             className={styles['icon']}
                         />
                     ) : null}
-                    <Span color={color}>
+                    <span>
                         {option.label}
-                    </Span>
+                    </span>
                 </li>
             ))}
         </ul>,

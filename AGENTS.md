@@ -52,6 +52,7 @@ See `.opencode/rules/testing.mdc`.
 ## UI
 
 - Own UI library in `/ui/` — see `.opencode/rules/ui-conventions.mdc`
+- Build responsive UI mobile-first: use the smallest layout as the default and add wider-screen overrides.
 
 ## After changes
 

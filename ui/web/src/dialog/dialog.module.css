@@ -2,18 +2,36 @@
     position: fixed;
     inset: 0;
     overflow: hidden;
-    pointer-events: none;
+    background: rgba(0, 0, 0, .6);
+    animation: overlay-in 200ms ease-out;
+    transition: background-color 200ms ease-in;
+    z-index: var(--z-index-dialog);
+}
+
+.overlay-out {
+    background-color: transparent;
+}
+
+@keyframes overlay-in {
+    from {
+        background-color: transparent;
+    }
 }
 
 .container {
     position: absolute;
     pointer-events: auto;
+    max-height: 100%;
 }
 
 .dialog {
+    box-sizing: border-box;
     display: grid;
     grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr) auto;
     row-gap: 10px;
+    max-height: 100%;
+    overflow: hidden;
 }
 
 .middle {
@@ -23,11 +41,13 @@
 
 .middle .dialog {
     transform: translate(-50%, -50%);
+    max-height: 100vh;
 }
 
 .right-drawer {
     right: 0;
-    top: 100px;
+    top: min(6vh, 64px);
+    bottom: 0;
 }
 
 .right-drawer .dialog {
@@ -36,19 +56,57 @@
 
 .left-drawer {
     left: 0;
-    top: 100px;
+    top: min(6vh, 64px);
+    bottom: 0;
+}
+
+@media (max-height: 500px) {
+    .right-drawer,
+    .left-drawer {
+        top: 0;
+    }
 }
 
 .left-drawer .dialog {
     transform: skew(8deg) translate(25px, 0);
 }
 
+.full-width {
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.full-width .dialog {
+    transform: none;
+    width: 100%;
+}
+
 .header {
     margin: 15px 20px 5px 20px;
+    color: var(--color-primary-100);
 }
 
 .content {
+    box-sizing: border-box;
     padding: 0 20px;
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(from var(--color-primary-700) r g b / .7) rgb(from var(--scrollbar-track-color) r g b / .7);
+}
+
+.full-width .content {
+    width: 100%;
+}
+
+.content::-webkit-scrollbar-thumb {
+    background: rgb(from var(--color-primary-700) r g b / .7);
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary);
 }
 
 .footer {

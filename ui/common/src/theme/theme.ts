@@ -305,6 +305,8 @@ export class Theme {
         hudConnector: 2,
         popup: 1000,
         floating: 1100,
+        dialog: 5000,
+        dropdown: 6000,
         tooltipConnector: 9998,
         tooltip: 10000,
     } as const;
