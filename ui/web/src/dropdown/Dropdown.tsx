@@ -15,6 +15,7 @@ const ICON_SIZES: Record<string, number> = {
 interface Props {
     ariaLabel?: string;
     labelledBy?: string;
+    popoverClassName?: string;
 }
 
 export function Dropdown<T = string>({
@@ -29,6 +30,7 @@ export function Dropdown<T = string>({
     disabled = false,
     ariaLabel,
     labelledBy,
+    popoverClassName,
     className,
     style,
     ...props
@@ -139,6 +141,7 @@ export function Dropdown<T = string>({
                     id={listId}
                     triggerRef={triggerRef}
                     onClose={handleClose}
+                    className={popoverClassName}
                     iconSize={iconSize}
                     color={color}
                     highlightColor={highlightColor}

@@ -50,7 +50,7 @@ export function Dropdown<T>({
     const s = SIZE_MAP[size];
     const iconSize = ICON_SIZE_MAP[size];
     const baseColor = theme.color(color, 500);
-    const textColor = theme.componentColor('text');
+    const optionTextColor = theme.color(color, theme.isLight ? 900 : 100);
     // matches web --dropdown-color-text: readable end of the color scale (900 light / 100 dark)
     const chromeContentColor = theme.isLight
         ? theme.color(color, color === 'neutral' ? 800 : 900)
@@ -98,7 +98,8 @@ export function Dropdown<T>({
 
     const getContentColors = (pressed: boolean) => {
         if (variant === 'fill') {
-            return { content: textColor, chevron: textColor };
+            const fillContentColor = theme.color(color, 100);
+            return { content: fillContentColor, chevron: fillContentColor };
         }
         return {
             content: chromeContentColor,
@@ -224,7 +225,7 @@ export function Dropdown<T>({
                                             ) : null}
                                             <Text
                                                 style={{
-                                                    color: baseColor,
+                                                    color: optionTextColor,
                                                     fontSize: s.fontSize,
                                                     lineHeight: s.fontSize * 1.1,
                                                 }}

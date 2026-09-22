@@ -3,7 +3,7 @@ import { Menu, MenuItem } from "@web-ui";
 import { useTranslation } from "@apparatus";
 import { useWebMachineWard } from "@web-apparatus";
 import { T } from "@web-apparatus";
-import { SettingsDialog } from "./SettingsDialog";
+import { SettingsDialog } from "./settings/SettingsDialog";
 import styles from './layout-menu.module.css';
 
 export const LayoutMenu: FC = () => {

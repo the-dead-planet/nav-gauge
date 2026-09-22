@@ -44,3 +44,24 @@ export const Overview = {
         );
     },
 };
+
+export const TallContent = {
+    render: () => {
+        const [open, setOpen] = useState(true);
+
+        return open ? (
+            <Dialog
+                header="tall content"
+                placement="middle"
+                closeText="Close"
+                onClose={() => setOpen(false)}
+            >
+                <div>
+                    {Array.from({ length: 40 }, (_, i) => (
+                        <p key={i}>Long dialog content line {i + 1}.</p>
+                    ))}
+                </div>
+            </Dialog>
+        ) : null;
+    },
+};

@@ -1,6 +1,7 @@
-import { FC, useState } from "react";
-import { View, StyleSheet, Modal, StyleProp, ViewStyle } from "react-native";
-import { DialogProps, TransitionProps } from "@ui";
+import { FC, useEffect, useRef, useState } from "react";
+import { Animated, ScrollView, StyleSheet, Modal, StyleProp, View, ViewStyle } from "react-native";
+import { DialogProps, FontType, TransitionProps, useTheme } from "@ui";
+import { useSubjectState } from "@tinker-chest";
 import { Panel } from "../hud";
 import { Button } from "../button";
 import { Text } from "../typography";
@@ -12,31 +13,55 @@ const slideMap: Record<string, TransitionProps['slide']> = {
     'right-drawer': 'to-left',
 };
 
-const styles = StyleSheet.create({
+const placementStyles: Record<string, ViewStyle> = {
     middle: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
-    drawerLeft: {
+    'left-drawer': {
         position: 'absolute',
         left: 0,
-        top: 80,
+        top: 0,
+        bottom: 0,
     },
-    drawerRight: {
+    'right-drawer': {
         position: 'absolute',
         right: 0,
-        top: 80,
+        top: 0,
+        bottom: 0,
+    },
+};
+
+const styles = StyleSheet.create({
+    overlay: {
+        flex: 1,
+    },
+    fullWidth: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
     },
     panel: {
         rowGap: 10,
+        maxHeight: '100%',
+    },
+    panelFullWidth: {
+        width: '100%',
     },
     header: {
         paddingTop: 15,
         paddingHorizontal: 20,
     },
+    headerText: {
+        fontSize: 19,
+        lineHeight: 22,
+    },
     content: {
         paddingHorizontal: 20,
+        flexShrink: 1,
     },
     footer: {
         flexDirection: 'row',
@@ -61,54 +86,73 @@ export const Dialog: FC<Props> = ({
     children,
 }) => {
     const [render, setRender] = useState(true);
+    const overlayOpacity = useRef(new Animated.Value(0)).current;
+    const theme = useTheme();
+    const [media] = useSubjectState(theme.media$);
+    const isWide = !media.isLessThanSm;
+    const drawerTop = media.windowHeight <= 500 ? 0 : Math.min(media.windowHeight * 0.06, 64);
     const handleClose = () => setRender(false);
     const addShadow = variant === 'fill-translucent';
 
+    useEffect(() => {
+        Animated.timing(overlayOpacity, {
+            toValue: render ? 1 : 0,
+            duration: 200,
+            useNativeDriver: false,
+        }).start();
+    }, [overlayOpacity, render]);
+
     return (
         <Modal visible transparent animationType="none" onRequestClose={handleClose}>
-            <Transition
-                render={render}
-                slide={slideMap[placement]}
-                fade
-                onUnmount={onClose}
-                style={{
-                    'middle': styles.middle,
-                    'left-drawer': styles.drawerLeft,
-                    'right-drawer': styles.drawerRight
-                }[placement]}
-            >
-                <Panel variant={variant} color="primary" style={[styles.panel, style]}>
-                    <View style={styles.header}>
-                        <Text color="primary" shadow={addShadow}>
-                            {header.toUpperCase()}
-                        </Text>
-                    </View>
-                    <View style={styles.content}>
-                        {children}
-                    </View>
-                    <View style={styles.footer}>
-                        <View style={styles.buttonCell}>
-                            <Button variant="fill-translucent" color="primary" onPress={handleClose}>
-                                {closeText}
-                            </Button>
+            <Animated.View style={[styles.overlay, { backgroundColor: overlayOpacity.interpolate({
+                inputRange: [0, 1],
+                outputRange: ['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, .6)'],
+            }) }]}>
+                <Transition
+                    render={render}
+                    slide={slideMap[placement]}
+                    fade
+                    onUnmount={onClose}
+                    style={isWide ? [placementStyles[placement], placement !== 'middle' && { top: drawerTop }] : styles.fullWidth}
+                >
+                    <Panel variant={variant} color="primary" style={[styles.panel, !isWide && styles.panelFullWidth, style]}>
+                        <View style={styles.header}>
+                            <Text
+                                color="primary"
+                                fontType={FontType.NeonText}
+                                shadow={addShadow}
+                                style={[styles.headerText, { color: theme.color('primary', 100) }]}
+                            >
+                                {header.toUpperCase()}
+                            </Text>
                         </View>
-                        {save ? (
+                        <ScrollView style={styles.content}>
+                            {children}
+                        </ScrollView>
+                        <View style={styles.footer}>
                             <View style={styles.buttonCell}>
-                                <Button
-                                    variant="fill"
-                                    color="primary"
-                                    onPress={() => {
-                                        save.onSave();
-                                        handleClose();
-                                    }}
-                                >
-                                    {save.saveText}
+                                <Button variant="fill-inverse" color="primary" onPress={handleClose}>
+                                    {closeText}
                                 </Button>
                             </View>
-                        ) : null}
-                    </View>
-                </Panel>
-            </Transition>
+                            {save ? (
+                                <View style={styles.buttonCell}>
+                                    <Button
+                                        variant="fill"
+                                        color="primary"
+                                        onPress={() => {
+                                            save.onSave();
+                                            handleClose();
+                                        }}
+                                    >
+                                        {save.saveText}
+                                    </Button>
+                                </View>
+                            ) : null}
+                        </View>
+                    </Panel>
+                </Transition>
+            </Animated.View>
         </Modal>
     );
 };

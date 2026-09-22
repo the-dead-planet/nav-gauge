@@ -7,7 +7,7 @@
 
 .color-neutral {
     --dropdown-color: var(--color-neutral);
-    --dropdown-color-dark: var(--color-neutral-800);
+    --dropdown-color-dark: var(--color-neutral-900);
     --dropdown-color-light: var(--color-neutral-100);
     --dropdown-color-shadow: var(--color-neutral-700);
     --dropdown-color-accent-lighter: var(--color-neutral-400);
@@ -262,7 +262,7 @@
 
 .menu {
     position: fixed;
-    z-index: var(--z-index-floating);
+    z-index: var(--z-index-dropdown);
     list-style: none;
     margin: 4px 0 0;
     padding: 4px 0;
@@ -280,7 +280,7 @@
     padding: 4px 10px;
     cursor: pointer;
     white-space: nowrap;
-    color: var(--dropdown-color);
+    color: var(--dropdown-color-text);
     transition: background-color .1s ease, color .1s ease;
 }
 
@@ -295,7 +295,6 @@
 
 .option-selected {
     background-color: rgb(from var(--dropdown-highlight-color) r g b / .1);
-    color: var(--dropdown-highlight-color);
 }
 
 .option-selected .icon {

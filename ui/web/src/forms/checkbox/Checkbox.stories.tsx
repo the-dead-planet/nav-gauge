@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Checkbox } from './Checkbox';
 import { Text } from '../../typography';
 import { ColorVariant, SizeVariant } from '@ui';
+import styles from './checkbox.stories.module.css';
 
 const meta = {
     title: 'Forms/Checkbox',
@@ -29,6 +30,15 @@ export const CheckboxVariants = {
                     onChange={setChecked}
                 >
                     {checked ? 'Checked' : 'Unchecked'}
+                </Checkbox>
+
+                <Checkbox
+                    className={styles['custom-label-color']}
+                    color="primary"
+                    checked={checked}
+                    onChange={setChecked}
+                >
+                    Custom label color
                 </Checkbox>
 
                 <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>

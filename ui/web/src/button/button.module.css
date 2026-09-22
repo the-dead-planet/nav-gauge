@@ -20,6 +20,7 @@
 
 .mode-light.color-neutral {
     --button-color: var(--color-neutral-600);
+    --button-color-text: var(--color-neutral-900);
 }
 
 .mode-dark.color-neutral {
@@ -88,6 +89,7 @@
 
 .mode-light {
     --button-color-inverse: var(--button-color-light);
+    --button-color-text: var(--button-color-dark);
     --button-highlight-color-inverse: var(--button-highlight-color-light);
     --button-highlight-color-accent: var(--button-highlight-color-accent-darker);
     --button-highlight-color-bg-opacity: .08;
@@ -95,6 +97,7 @@
 
 .mode-dark {
     --button-color-inverse: var(--button-color-dark);
+    --button-color-text: var(--button-color-light);
     --button-highlight-color-inverse: var(--button-highlight-color-dark);
     --button-highlight-color-accent: var(--button-highlight-color-accent-lighter);
     --button-highlight-color-bg-opacity: .04;
@@ -215,14 +218,14 @@
 
 .variant-fill-inverse {
     border: 1px solid var(--button-color);
-    color: var(--button-color);
+    color: var(--button-color-text);
     background-color: var(--button-color-inverse);
 }
 
 .variant-fill-inverse .icon {
-    color: var(--button-color);
-    stroke: var(--button-color);
-    fill: var(--button-color);
+    color: var(--button-color-text);
+    stroke: var(--button-color-text);
+    fill: var(--button-color-text);
 }
 
 .variant-fill-inverse:hover,

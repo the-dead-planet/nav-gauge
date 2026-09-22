@@ -1,7 +1,8 @@
 import { ComponentProps, FC, useState } from "react";
 import { createPortal } from "react-dom";
 import classNames from "classnames";
-import { DialogPlacement, DialogProps, FontType, TransitionProps } from "@ui";
+import { DialogPlacement, DialogProps, FontType, TransitionProps, useTheme } from "@ui";
+import { useSubjectState } from "@tinker-chest";
 import { Panel } from "../hud";
 import { Button } from "../button";
 import { H3 } from "../typography";
@@ -20,16 +21,19 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
     ...props
 }) => {
     const [render, setRender] = useState(true);
+    const theme = useTheme();
+    const [media] = useSubjectState(theme.media$);
     const slide: { [key in DialogPlacement]: TransitionProps['slide'] } = {
         ['middle']: 'to-bottom',
         ['left-drawer']: 'to-right',
         ['right-drawer']: 'to-left',
     }
+    const isWide = !media.isLessThanSm;
 
     return createPortal(
-        <div className={styles['overlay']}>
+        <div className={classNames(styles['overlay'], { [styles['overlay-out']]: !render })}>
             <Transition render={render} slide={slide[placement]} fade onUnmount={onClose}>
-                <div className={classNames(styles['container'], styles[placement], className)} {...props}>
+                <div className={classNames(styles['container'], isWide ? styles[placement] : styles['full-width'], className)} {...props}>
                     <Panel
                         variant={variant}
                         color="primary"
@@ -42,7 +46,7 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
                             {children}
                         </div>
                         <div className={styles['footer']}>
-                            <Button variant="fill-translucent" color="primary" onClick={() => setRender(false)}>
+                            <Button variant="fill-inverse" color="primary" onClick={() => setRender(false)}>
                                 {closeText}
                             </Button>
                             {save ? (

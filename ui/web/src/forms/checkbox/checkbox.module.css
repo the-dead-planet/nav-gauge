@@ -43,13 +43,14 @@
 
 .label {
     flex: 1;
+    color: inherit;
 }
 
-.mode-light .label {
+.mode-light {
     color: var(--checkbox-color-dark);
 }
 
-.mode-dark .label {
+.mode-dark {
     color: var(--checkbox-color-light);
 }
 
