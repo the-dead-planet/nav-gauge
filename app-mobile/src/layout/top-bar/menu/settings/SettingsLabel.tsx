@@ -24,7 +24,5 @@ export const SettingsLabel: FC<Props> = ({ wide, children }) => {
     const theme = useTheme();
     const color = theme.color('primary', 100);
 
-    return wide
-        ? <Label color="primary" shadow style={[styles.wide, { color }]}>{children}</Label>
-        : <Label color="primary" style={[styles.label, { color }]}>{children}</Label>;
+    return <Label color="primary" shadow={wide} style={[wide ? styles.wide : styles.label, { color }]}>{children}</Label>;
 };

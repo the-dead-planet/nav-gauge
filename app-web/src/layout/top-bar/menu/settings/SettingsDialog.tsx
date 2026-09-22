@@ -1,5 +1,4 @@
 import { FC, useState } from "react";
-import { createPortal } from "react-dom";
 import classNames from "classnames";
 import { DateTime } from "luxon";
 import { Dialog, Dropdown } from "@web-ui";
@@ -18,14 +17,15 @@ interface Props {
 
 export const SettingsDialog: FC<Props> = ({ onClose }) => {
     const { isDev, namespace, translationKey, individuator } = useWebMachineWard();
-    const [settings, setSettings] = useSubjectState(individuator.settings$);
+    const [, setSettings] = useSubjectState(individuator.settings$);
     const [pendingSettings, setPendingSettings] = useState(individuator.settings$.value);
     const translate = useTranslate();
     const theme = useTheme();
     const [media] = useSubjectState(theme.media$);
     const isWide = !media.isLessThanSm;
+    const popoverClassName = isWide ? styles['skewed-popover'] : undefined;
 
-    return createPortal(
+    return (
         <Dialog
             placement="right-drawer"
             header={translate({ n: individuator.namespace, t: individuator.translationKey.IndividuatorName })}
@@ -42,7 +42,7 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                         <T n={individuator.namespace} t={individuator.translationKey.Language} />
                     </SettingsLabel>
                     <Dropdown<Language>
-                        popoverClassName={isWide ? styles['skewed-popover'] : undefined}
+                        popoverClassName={popoverClassName}
                         labelledBy="individuator-language-label"
                         size="xs"
                         color="primary"
@@ -67,7 +67,7 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                         <T n={individuator.namespace} t={individuator.translationKey.DateFormat} />
                     </SettingsLabel>
                     <Dropdown<DateFormat>
-                    popoverClassName={isWide ? styles['skewed-popover'] : undefined}
+                    popoverClassName={popoverClassName}
                     labelledBy="individuator-date-format-label"
                     size="xs"
                     color="primary"
@@ -102,7 +102,7 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                         <T n={individuator.namespace} t={individuator.translationKey.TimeFormat} />
                     </SettingsLabel>
                     <Dropdown<TimeFormat>
-                    popoverClassName={isWide ? styles['skewed-popover'] : undefined}
+                    popoverClassName={popoverClassName}
                     labelledBy="individuator-time-format-label"
                     size="xs"
                     color="primary"
@@ -118,7 +118,7 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                         <T n={individuator.namespace} t={individuator.translationKey.DistanceUnit} />
                     </SettingsLabel>
                     <Dropdown<DistanceUnit>
-                    popoverClassName={isWide ? styles['skewed-popover'] : undefined}
+                    popoverClassName={popoverClassName}
                     labelledBy="individuator-distance-unit-label"
                     size="xs"
                     color="primary"
@@ -137,7 +137,7 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                         <T n={individuator.namespace} t={individuator.translationKey.Theme} />
                     </SettingsLabel>
                     <Dropdown<ThemeName>
-                    popoverClassName={isWide ? styles['skewed-popover'] : undefined}
+                    popoverClassName={popoverClassName}
                     labelledBy="individuator-theme-label"
                     size="xs"
                     color="primary"
@@ -167,7 +167,6 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                     </SettingsCheckbox>
                 ) : null}
             </div>
-        </Dialog>,
-        document.body,
+        </Dialog>
     );
 }

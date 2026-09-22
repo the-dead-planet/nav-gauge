@@ -36,7 +36,6 @@ const placementStyles: Record<string, ViewStyle> = {
 const styles = StyleSheet.create({
     overlay: {
         flex: 1,
-        backgroundColor: 'rgba(0, 0, 0, .6)',
     },
     fullWidth: {
         position: 'absolute',
