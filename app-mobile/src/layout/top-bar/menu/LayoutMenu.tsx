@@ -3,7 +3,7 @@ import { Menu, MenuItem } from '@mobile-ui';
 import { useMobileMachineWard } from "@mobile-apparatus";
 import { T } from "@mobile-apparatus";
 import { RootStackParamList } from "../../../navigation";
-import { SettingsDialog } from "./SettingsDialog";
+import { SettingsDialog } from "./settings/SettingsDialog";
 
 interface Props {
     onNavigate: (path: keyof RootStackParamList) => void
