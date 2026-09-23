@@ -9,3 +9,11 @@ export interface ResizeHandleProps {
     onDragEnd?: () => void;
     disabled?: boolean;
 }
+
+export interface ResizeHandleGripProps {
+    position: number;
+    isDragging: boolean;
+    direction: ResizeHandleProps['direction'];
+    side?: ResizeHandleProps['side'];
+    color?: ResizeHandleProps['color'];
+}

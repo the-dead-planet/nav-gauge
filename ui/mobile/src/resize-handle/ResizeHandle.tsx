@@ -1,7 +1,7 @@
 import { FC, useCallback, useRef, useState } from "react";
 import { GestureResponderEvent, LayoutChangeEvent, PanResponder, StyleSheet, View } from "react-native";
-import Svg, { Polygon } from "react-native-svg";
-import { getResizeHandleGripPoints, ResizeHandleProps, useTheme } from "@ui";
+import { ResizeHandleProps, useTheme } from "@ui";
+import { ResizeHandleGrip } from "./ResizeHandleGrip";
 
 const styles = StyleSheet.create({
     horizontalHandle: {
@@ -53,7 +53,6 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
     disabled = false,
 }) => {
     const theme = useTheme();
-    const gripSide = side ?? (direction === 'horizontal' ? 'right' : 'top');
     const lastPositionRef = useRef<{ x: number; y: number } | null>(null);
     const propsRef = useRef({ direction, disabled, onDrag, onDragStart, onDragEnd });
     propsRef.current = { direction, disabled, onDrag, onDragStart, onDragEnd };
@@ -99,12 +98,6 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
         },
     })).current;
 
-    const gripFill = isDragging
-        ? theme.color('secondary', theme.isLight ? 200 : 900, 0.8)
-        : theme.color(color, theme.isLight ? 200 : 900, 0.8);
-    const gripColor = isDragging
-        ? theme.color('secondary')
-        : theme.color(color, theme.isLight ? 500 : 600, 0.5);
     const handleColor = theme.color(color, 500, color === 'neutral' ? 0.4 : 1);
     const isHorizontal = direction === 'horizontal';
 
@@ -122,25 +115,14 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
                 ]}
             />
             {(handleLength >= 500 ? [25, 75] : [50]).map((position) => (
-                <Svg
+                <ResizeHandleGrip
                     key={position}
-                    style={[
-                        styles.grip,
-                        isHorizontal ? styles.horizontalGrip : styles.verticalGrip,
-                        isHorizontal ? { top: `${position}%` } : { left: `${position}%` },
-                    ]}
-                    width={isHorizontal ? 12 : 24}
-                    height={isHorizontal ? 24 : 12}
-                    viewBox={isHorizontal ? '0 0 8 24' : '0 0 24 8'}
-                >
-                    <Polygon
-                        points={getResizeHandleGripPoints(direction, gripSide)}
-                        fill={gripFill}
-                        stroke={gripColor}
-                        strokeWidth={2}
-                        strokeLinejoin="miter"
-                    />
-                </Svg>
+                    isDragging={isDragging}
+                    position={position}
+                    color={color}
+                    direction={direction}
+                    side={side}
+                />
             ))}
         </View>
     );
