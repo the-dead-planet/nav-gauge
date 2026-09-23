@@ -6,15 +6,16 @@ import { useSideToolPanelResizeHandle } from "@apparatus";
 const styles = StyleSheet.create({
     resizeHandleContainer: {
         position: 'absolute',
+        width: 24,
         zIndex: 100,
     },
     resizeHandleLeft: {
-        right: -4,
+        right: -12,
         top: 0,
         bottom: 0,
     },
     resizeHandleRight: {
-        left: -4,
+        left: -12,
         top: 0,
         bottom: 0,
     },
@@ -44,6 +45,7 @@ export const SideToolPanelResizeHandle: FC<Props> = ({
         ]}>
             <ResizeHandle
                 direction="horizontal"
+                side={placement === 'left' ? 'right' : 'left'}
                 onDrag={handleDrag}
                 onDragStart={handleDragStart}
                 onDragEnd={handleDragEnd}

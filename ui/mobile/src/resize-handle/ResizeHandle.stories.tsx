@@ -50,15 +50,15 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 0,
         bottom: 0,
-        right: 0,
-        width: 8,
+        right: -12,
+        width: 24,
     },
     handleTop: {
         position: "absolute",
         left: 0,
         right: 0,
-        top: 0,
-        height: 8,
+        top: -12,
+        height: 24,
     },
 });
 
@@ -77,6 +77,7 @@ export const HorizontalHandle: FC = () => {
                     <View style={styles.handleRight}>
                         <ResizeHandle
                             direction="horizontal"
+                            side="right"
                             onDrag={(delta) => setWidth((prev) => Math.max(80, Math.min(350, prev + delta)))}
                         />
                     </View>
@@ -107,6 +108,8 @@ export const VerticalHandle: FC = () => {
                     <View style={styles.handleTop}>
                         <ResizeHandle
                             direction="vertical"
+                            side="top"
+                            color="primary"
                             onDrag={(delta) => setHeight((prev) => Math.max(80, Math.min(300, prev - delta)))}
                         />
                     </View>

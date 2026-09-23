@@ -23,6 +23,7 @@ export const SideToolPanelResizeHandle: FC<Props> = ({
         <div className={classNames(styles['resize-handle'], styles[`resize-handle-${placement}`])}>
             <ResizeHandle
                 direction="horizontal"
+                side={placement === 'left' ? 'right' : 'left'}
                 onDrag={handleDrag}
                 onDragStart={handleDragStart}
                 onDragEnd={handleDragEnd}

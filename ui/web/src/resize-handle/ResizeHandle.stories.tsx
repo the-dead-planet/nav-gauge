@@ -28,6 +28,7 @@ export const Horizontal = {
                         <div className={styles['handle-container']}>
                             <ResizeHandle
                                 direction="horizontal"
+                                side="right"
                                 onDrag={(delta) => setWidth((prev) => Math.max(100, Math.min(600, prev + delta)))}
                             />
                         </div>
@@ -60,6 +61,8 @@ export const Vertical = {
                         <div className={styles['handle-container-vertical']}>
                             <ResizeHandle
                                 direction="vertical"
+                                side="top"
+                                color="primary"
                                 onDrag={(delta) => setHeight((prev) => Math.max(80, Math.min(400, prev - delta)))}
                             />
                         </div>
@@ -88,6 +91,7 @@ export const WithCallbacks = {
                         <div className={styles['handle-container']}>
                             <ResizeHandle
                                 direction="horizontal"
+                                side="right"
                                 onDrag={(delta) => setWidth((prev) => Math.max(100, Math.min(600, prev + delta)))}
                                 onDragStart={(_clientX: number) => log("dragStart")}
 
