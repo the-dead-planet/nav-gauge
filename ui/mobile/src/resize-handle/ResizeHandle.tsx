@@ -106,51 +106,33 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
         ? theme.color('secondary')
         : theme.color(color, theme.isLight ? 500 : 600, 0.5);
     const handleColor = theme.color(color, 500, color === 'neutral' ? 0.4 : 1);
-
-    if (direction === 'horizontal') {
-        return (
-            <View
-                {...panResponder.panHandlers}
-                onLayout={handleLayout}
-                style={styles.horizontalHandle}
-            >
-                <View
-                    style={[
-                        styles.horizontalBorder,
-                        { backgroundColor: handleColor },
-                        isDragging && { backgroundColor: theme.color('secondary') },
-                    ]}
-                />
-                {(handleLength >= 500 ? [25, 75] : [50]).map((position) => (
-                    <Svg key={position} style={[styles.grip, styles.horizontalGrip, { top: `${position}%` }]} width={12} height={24} viewBox="0 0 8 24">
-                        <Polygon
-                            points={getResizeHandleGripPoints(direction, gripSide)}
-                            fill={gripFill}
-                            stroke={gripColor}
-                            strokeWidth={2}
-                            strokeLinejoin="miter"
-                        />
-                    </Svg>
-                ))}
-            </View>
-        );
-    }
+    const isHorizontal = direction === 'horizontal';
 
     return (
         <View
             {...panResponder.panHandlers}
             onLayout={handleLayout}
-            style={styles.verticalHandle}
+            style={isHorizontal ? styles.horizontalHandle : styles.verticalHandle}
         >
             <View
                 style={[
-                    styles.verticalBorder,
+                    isHorizontal ? styles.horizontalBorder : styles.verticalBorder,
                     { backgroundColor: handleColor },
                     isDragging && { backgroundColor: theme.color('secondary') },
                 ]}
             />
             {(handleLength >= 500 ? [25, 75] : [50]).map((position) => (
-                <Svg key={position} style={[styles.grip, styles.verticalGrip, { left: `${position}%` }]} width={24} height={12} viewBox="0 0 24 8">
+                <Svg
+                    key={position}
+                    style={[
+                        styles.grip,
+                        isHorizontal ? styles.horizontalGrip : styles.verticalGrip,
+                        isHorizontal ? { top: `${position}%` } : { left: `${position}%` },
+                    ]}
+                    width={isHorizontal ? 12 : 24}
+                    height={isHorizontal ? 24 : 12}
+                    viewBox={isHorizontal ? '0 0 8 24' : '0 0 24 8'}
+                >
                     <Polygon
                         points={getResizeHandleGripPoints(direction, gripSide)}
                         fill={gripFill}

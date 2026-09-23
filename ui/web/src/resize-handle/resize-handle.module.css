@@ -97,12 +97,9 @@
     color: var(--color-secondary);
 }
 
-.handle:hover .grip polygon {
-    fill: var(--grip-hover-fill);
-}
-
+.handle:hover .grip polygon,
 .handle.dragging .grip polygon {
-    fill: var(--grip-active-fill);
+    fill: var(--grip-highlight-fill);
 }
 
 .disabled {

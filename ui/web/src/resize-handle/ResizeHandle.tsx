@@ -76,8 +76,7 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
                         '--grip-position': `${position}%`,
                         '--grip-color': theme.color(color, theme.isLight ? 500 : 600, 0.5),
                         '--grip-fill': theme.color(color, theme.isLight ? 200 : 900, 0.8),
-                        '--grip-hover-fill': theme.color('secondary', theme.isLight ? 200 : 900, 0.8),
-                        '--grip-active-fill': theme.color('secondary', theme.isLight ? 200 : 900, 0.8),
+                        '--grip-highlight-fill': theme.color('secondary', theme.isLight ? 200 : 900, 0.8),
                     } as React.CSSProperties}
                     viewBox={direction === 'horizontal' ? '0 0 8 24' : '0 0 24 8'}
                     aria-hidden="true"
