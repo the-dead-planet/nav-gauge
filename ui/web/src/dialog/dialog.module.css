@@ -34,6 +34,30 @@
     overflow: hidden;
 }
 
+.color-neutral {
+    --dialog-color: var(--color-neutral);
+    --dialog-color-light: var(--color-neutral-100);
+    --dialog-scrollbar-color: var(--color-neutral-700);
+}
+
+.color-primary {
+    --dialog-color: var(--color-primary);
+    --dialog-color-light: var(--color-primary-100);
+    --dialog-scrollbar-color: var(--color-primary-700);
+}
+
+.color-secondary {
+    --dialog-color: var(--color-secondary);
+    --dialog-color-light: var(--color-secondary-100);
+    --dialog-scrollbar-color: var(--color-secondary-700);
+}
+
+.color-tertiary {
+    --dialog-color: var(--color-tertiary);
+    --dialog-color-light: var(--color-tertiary-100);
+    --dialog-scrollbar-color: var(--color-tertiary-700);
+}
+
 .middle {
     top: 50%;
     left: 50%;
@@ -85,7 +109,7 @@
 
 .header {
     margin: 15px 20px 5px 20px;
-    color: var(--color-primary-100);
+    color: var(--dialog-color-light);
 }
 
 .content {
@@ -94,7 +118,7 @@
     min-height: 0;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: rgb(from var(--color-primary-700) r g b / .7) rgb(from var(--scrollbar-track-color) r g b / .7);
+    scrollbar-color: rgb(from var(--dialog-scrollbar-color) r g b / .7) rgb(from var(--scrollbar-track-color) r g b / .7);
 }
 
 .full-width .content {
@@ -102,11 +126,11 @@
 }
 
 .content::-webkit-scrollbar-thumb {
-    background: rgb(from var(--color-primary-700) r g b / .7);
+    background: rgb(from var(--dialog-scrollbar-color) r g b / .7);
 }
 
 .content::-webkit-scrollbar-thumb:hover {
-    background: var(--color-primary);
+    background: var(--dialog-color);
 }
 
 .footer {

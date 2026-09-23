@@ -33,6 +33,7 @@ const allVariants: SurfaceFillVariant[] = ['fill', 'fill-inverse', 'fill-translu
 export const DropdownVariants: FC = () => {
     const [size, setSize] = useState<SizeVariant>('md');
     const [color, setColor] = useState<ColorVariant>('neutral');
+    const [highlightColor, setHighlightColor] = useState<ColorVariant>('primary');
     const [variant, setVariant] = useState<SurfaceFillVariant>('fill-inverse');
     const [value, setValue] = useState('brass');
 
@@ -41,6 +42,7 @@ export const DropdownVariants: FC = () => {
             <Dropdown
                 size={size}
                 color={color}
+                highlightColor={highlightColor}
                 variant={variant}
                 value={value}
                 options={options}
@@ -77,6 +79,16 @@ export const DropdownVariants: FC = () => {
                         />
                     ))}
                 </View>
+            </View>
+
+            <View style={styles.section}>
+                <Text>Highlight color (background only in the list)</Text>
+                <Dropdown<ColorVariant>
+                    size="xs"
+                    value={highlightColor}
+                    options={allColors.map(option => ({ value: option, label: option }))}
+                    onChange={setHighlightColor}
+                />
             </View>
 
             <View style={styles.section}>

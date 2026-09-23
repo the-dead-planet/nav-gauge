@@ -122,14 +122,7 @@
     flex-shrink: 0;
 }
 
-.label {
-    flex: 1;
-    text-align: left;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
+.label,
 .placeholder {
     flex: 1;
     text-align: left;
@@ -203,6 +196,11 @@
 
 .variant-fill .trigger:not(:disabled):hover {
     background-color: var(--dropdown-highlight-color-accent);
+}
+
+.mode-dark.variant-fill .trigger:not(:disabled):hover,
+.mode-dark.variant-fill .trigger:not(:disabled):active {
+    background-color: var(--dropdown-highlight-color-accent-darker);
 }
 
 .variant-fill-inverse .trigger {
@@ -295,10 +293,4 @@
 
 .option-selected {
     background-color: rgb(from var(--dropdown-highlight-color) r g b / .1);
-}
-
-.option-selected .icon {
-    color: var(--dropdown-highlight-color);
-    stroke: var(--dropdown-highlight-color);
-    fill: var(--dropdown-highlight-color);
 }

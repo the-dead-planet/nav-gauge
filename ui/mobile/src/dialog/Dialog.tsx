@@ -77,6 +77,7 @@ interface Props extends DialogProps {
 
 export const Dialog: FC<Props> = ({
     header,
+    color = 'neutral',
     variant = 'fill-translucent',
     placement = 'middle',
     closeText,
@@ -115,13 +116,13 @@ export const Dialog: FC<Props> = ({
                     onUnmount={onClose}
                     style={isWide ? [placementStyles[placement], placement !== 'middle' && { top: drawerTop }] : styles.fullWidth}
                 >
-                    <Panel variant={variant} color="primary" style={[styles.panel, !isWide && styles.panelFullWidth, style]}>
+                    <Panel variant={variant} color={color} style={[styles.panel, !isWide && styles.panelFullWidth, style]}>
                         <View style={styles.header}>
                             <Text
-                                color="primary"
+                                color={color}
                                 fontType={FontType.NeonText}
                                 shadow={addShadow}
-                                style={[styles.headerText, { color: theme.color('primary', 100) }]}
+                                style={[styles.headerText, { color: theme.color(color, 100) }]}
                             >
                                 {header.toUpperCase()}
                             </Text>
@@ -131,7 +132,7 @@ export const Dialog: FC<Props> = ({
                         </ScrollView>
                         <View style={styles.footer}>
                             <View style={styles.buttonCell}>
-                                <Button variant="fill-inverse" color="primary" onPress={handleClose}>
+                                <Button variant="fill-inverse" color={color} onPress={handleClose}>
                                     {closeText}
                                 </Button>
                             </View>
@@ -139,7 +140,7 @@ export const Dialog: FC<Props> = ({
                                 <View style={styles.buttonCell}>
                                     <Button
                                         variant="fill"
-                                        color="primary"
+                                        color={color}
                                         onPress={() => {
                                             save.onSave();
                                             handleClose();

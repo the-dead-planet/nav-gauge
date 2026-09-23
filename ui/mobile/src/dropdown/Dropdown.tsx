@@ -46,8 +46,8 @@ export function Dropdown<T>({
     const [menuWidth, setMenuWidth] = useState(0);
     const triggerRef = useRef<HostInstance>(null);
 
-    const selectedOption = options.find(o => o.value === value);
-    const s = SIZE_MAP[size];
+    const selectedOption = options.find(option => option.value === value);
+    const sizeStyles = SIZE_MAP[size];
     const iconSize = ICON_SIZE_MAP[size];
     const baseColor = theme.color(color, 500);
     const optionTextColor = theme.color(color, theme.isLight ? 900 : 100);
@@ -60,17 +60,17 @@ export function Dropdown<T>({
         const style: MutableViewStyle = {
             flexDirection: 'row',
             alignItems: 'center',
-            height: s.height,
-            paddingHorizontal: s.paddingH,
-            paddingVertical: s.paddingV,
-            gap: s.gap,
+            height: sizeStyles.height,
+            paddingHorizontal: sizeStyles.paddingH,
+            paddingVertical: sizeStyles.paddingV,
+            gap: sizeStyles.gap,
             borderRadius: 4,
         };
 
         switch (variant) {
             case 'fill':
                 style.backgroundColor = pressed
-                    ? theme.color(highlightColor, theme.isLight ? 600 : 300)
+                    ? theme.color(highlightColor, 600)
                     : baseColor;
                 style.borderWidth = 0;
                 break;
@@ -144,8 +144,8 @@ export function Dropdown<T>({
                                 <Text
                                     style={{
                                         color: content,
-                                        fontSize: s.fontSize,
-                                        lineHeight: s.fontSize * 1.1,
+                                        fontSize: sizeStyles.fontSize,
+                                        lineHeight: sizeStyles.fontSize * 1.1,
                                         flex: 1,
                                     }}
                                 >
@@ -207,7 +207,7 @@ export function Dropdown<T>({
                                             style={{
                                                 flexDirection: 'row',
                                                 alignItems: 'center',
-                                                gap: s.gap,
+                                                gap: sizeStyles.gap,
                                                 paddingVertical: 4,
                                                 paddingHorizontal: 10,
                                                 backgroundColor: selected
@@ -220,14 +220,14 @@ export function Dropdown<T>({
                                                     icon={option.icon}
                                                     width={iconSize}
                                                     height={iconSize}
-                                                    color={selected ? theme.color(highlightColor, 500) : baseColor}
+                                                    color={optionTextColor}
                                                 />
                                             ) : null}
                                             <Text
                                                 style={{
                                                     color: optionTextColor,
-                                                    fontSize: s.fontSize,
-                                                    lineHeight: s.fontSize * 1.1,
+                                                    fontSize: sizeStyles.fontSize,
+                                                    lineHeight: sizeStyles.fontSize * 1.1,
                                                 }}
                                             >
                                                 {option.label}

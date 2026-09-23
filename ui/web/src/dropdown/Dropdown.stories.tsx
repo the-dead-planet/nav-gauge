@@ -26,6 +26,7 @@ export const SelectVariants = {
     render: () => {
         const [size, setSize] = useState<SizeVariant>('md');
         const [color, setColor] = useState<ColorVariant>('neutral');
+        const [highlightColor, setHighlightColor] = useState<ColorVariant>('primary');
         const [variant, setVariant] = useState<SurfaceFillVariant>('fill-inverse');
         const [value, setValue] = useState('brass');
 
@@ -35,6 +36,7 @@ export const SelectVariants = {
                     ariaLabel="Select material"
                     size={size}
                     color={color}
+                    highlightColor={highlightColor}
                     variant={variant}
                     value={value}
                     options={options}
@@ -57,6 +59,15 @@ export const SelectVariants = {
                             <label key={c} style={{ marginRight: 8 }}>
                                 <input type="radio" name="color" checked={color === c} onChange={() => setColor(c)} />
                                 {c}
+                            </label>
+                        ))}
+                    </fieldset>
+                    <fieldset>
+                        <legend>Highlight color (background only in the list)</legend>
+                        {allColors.map(option => (
+                            <label key={option}>
+                                <input type="radio" name="highlight-color" checked={highlightColor === option} onChange={() => setHighlightColor(option)} />
+                                {option}
                             </label>
                         ))}
                     </fieldset>

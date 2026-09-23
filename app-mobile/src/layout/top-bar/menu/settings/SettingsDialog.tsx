@@ -47,6 +47,7 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
 
     return (
         <Dialog
+            color="primary"
             placement="right-drawer"
             style={isWide ? styles.wideDialog : undefined}
             header={translate({ n: individuator.namespace, t: individuator.translationKey.IndividuatorName })}

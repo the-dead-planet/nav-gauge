@@ -27,6 +27,7 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
 
     return (
         <Dialog
+            color="primary"
             placement="right-drawer"
             header={translate({ n: individuator.namespace, t: individuator.translationKey.IndividuatorName })}
             closeText={translate({ n: namespace, t: translationKey.Close })}
