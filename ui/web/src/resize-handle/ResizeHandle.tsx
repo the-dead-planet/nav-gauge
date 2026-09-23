@@ -1,15 +1,19 @@
 import { FC, useCallback, useRef, useState } from "react";
 import classNames from "classnames";
-import { ResizeHandleProps } from "@ui";
+import { ResizeHandleGrip } from "./ResizeHandleGrip";
+import { ResizeHandleProps, useTheme } from "@ui";
 import styles from './resize-handle.module.css';
 
 export const ResizeHandle: FC<ResizeHandleProps> = ({
     direction = 'horizontal',
+    side,
+    color = 'neutral',
     onDrag,
     onDragStart,
     onDragEnd,
     disabled = false,
 }) => {
+    const theme = useTheme();
     const [isDragging, setIsDragging] = useState(false);
     const lastPositionRef = useRef<{ x: number; y: number } | null>(null);
 
@@ -56,11 +60,24 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
                 { [styles['dragging']]: isDragging },
                 { [styles['disabled']]: disabled },
             )}
+            style={{
+                '--handle-color': theme.color(color, 500, color === 'neutral' ? 0.4 : 1),
+            } as React.CSSProperties}
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
         >
             <div className={styles['border']} />
+            {[25, 75].map((position) => (
+                <ResizeHandleGrip
+                    key={position}
+                    position={position}
+                    isDragging={isDragging}
+                    color={color}
+                    direction={direction}
+                    side={side}
+                />
+            ))}
         </div>
     );
 };

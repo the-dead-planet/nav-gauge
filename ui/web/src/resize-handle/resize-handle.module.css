@@ -10,6 +10,7 @@
     top: 0;
     bottom: 0;
     width: 8px;
+    container-type: size;
 }
 
 .handle-vertical {
@@ -25,9 +26,31 @@
 .border {
     width: 2px;
     height: 100%;
-    background: transparent;
+    background: var(--handle-color);
     transition: background 0.15s ease;
     border-radius: 1px;
+}
+
+.grip {
+    position: absolute;
+    top: 50%;
+    width: 8px;
+    height: 24px;
+    color: var(--grip-color);
+    overflow: visible;
+    transform: translateY(-50%);
+    transition: color 0.15s ease;
+}
+
+.grip:last-child {
+    display: none;
+}
+
+.grip polygon {
+    fill: var(--grip-fill);
+    stroke: currentColor;
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
 }
 
 .handle-vertical .border {
@@ -35,9 +58,48 @@
     height: 2px;
 }
 
+.handle-vertical .grip {
+    top: auto;
+    left: 50%;
+    width: 24px;
+    height: 8px;
+    transform: translateX(-50%);
+}
+
+@container (min-height: 500px) {
+    .grip {
+        top: var(--grip-position);
+    }
+
+    .grip:last-child {
+        display: block;
+    }
+}
+
+@container (min-width: 500px) {
+    .handle-vertical .grip {
+        top: auto;
+        left: var(--grip-position);
+    }
+
+    .handle-vertical .grip:last-child {
+        display: block;
+    }
+}
+
 .handle:hover .border,
 .handle.dragging .border {
     background: var(--color-secondary);
+}
+
+.handle:hover .grip,
+.handle.dragging .grip {
+    color: var(--color-secondary);
+}
+
+.handle:hover .grip polygon,
+.handle.dragging .grip polygon {
+    fill: var(--grip-highlight-fill);
 }
 
 .disabled {

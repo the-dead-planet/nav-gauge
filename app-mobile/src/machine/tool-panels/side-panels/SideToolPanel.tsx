@@ -73,12 +73,12 @@ export const SideToolPanel: FC<Props> = ({
                 placement === 'right'
                     ? {
                         borderLeftWidth: 1,
-                        borderLeftColor: theme.color('neutral'),
+                        borderLeftColor: theme.color('neutral', 500, 0.4),
                         shadowOffset: { width: -2, height: 0 },
                     }
                     : {
                         borderRightWidth: 1,
-                        borderRightColor: theme.color('neutral'),
+                        borderRightColor: theme.color('neutral', 500, 0.4),
                         shadowOffset: { width: 2, height: 0 },
                     },
             ]}

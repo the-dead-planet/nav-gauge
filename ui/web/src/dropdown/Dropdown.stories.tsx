@@ -26,6 +26,7 @@ export const SelectVariants = {
     render: () => {
         const [size, setSize] = useState<SizeVariant>('md');
         const [color, setColor] = useState<ColorVariant>('neutral');
+        const [highlightColor, setHighlightColor] = useState<ColorVariant>();
         const [variant, setVariant] = useState<SurfaceFillVariant>('fill-inverse');
         const [value, setValue] = useState('brass');
 
@@ -35,6 +36,7 @@ export const SelectVariants = {
                     ariaLabel="Select material"
                     size={size}
                     color={color}
+                    highlightColor={highlightColor}
                     variant={variant}
                     value={value}
                     options={options}
@@ -61,6 +63,19 @@ export const SelectVariants = {
                         ))}
                     </fieldset>
                     <fieldset>
+                        <legend>Highlight color (background only in the list)</legend>
+                        <label>
+                            <input type="radio" name="highlight-color" checked={highlightColor === undefined} onChange={() => setHighlightColor(undefined)} />
+                            Default
+                        </label>
+                        {allColors.map(option => (
+                            <label key={option}>
+                                <input type="radio" name="highlight-color" checked={highlightColor === option} onChange={() => setHighlightColor(option)} />
+                                {option}
+                            </label>
+                        ))}
+                    </fieldset>
+                    <fieldset>
                         <legend>Variant</legend>
                         {allVariants.map(v => (
                             <label key={v} style={{ marginRight: 8 }}>
@@ -79,9 +94,9 @@ export const InClippedPopup = {
     render: () => {
         const [value, setValue] = useState('brass');
         return (
-            <Popup visible position={{ x: 24, y: 24 }} onClose={() => undefined}>
-                <div style={{ width: 240, height: 80, overflow: 'hidden' }}>
-                    <Dropdown ariaLabel="Select material" color="primary" highlightColor="tertiary" variant="fill-translucent" value={value} options={options} onChange={setValue} />
+            <Popup visible position={{ x: 20, y: 200 }} onClose={() => undefined}>
+                <div style={{ padding: 20, overflow: 'hidden' }}>
+                    <Dropdown ariaLabel="Select material" color="primary" variant="fill-translucent" value={value} options={options} onChange={setValue} />
                 </div>
             </Popup>
         );

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { Meta } from "storybook-react-rsbuild";
 import { Text } from "../typography";
 import { ResizeHandle } from "./ResizeHandle";
@@ -14,6 +14,7 @@ export default meta;
 export const Horizontal = {
     render: () => {
         const [width, setWidth] = useState(300);
+        const requestedWidth = useRef(width);
 
         return (
             <div style={{ display: "flex", flexDirection: "column", gap: 16, padding: 24 }}>
@@ -28,7 +29,12 @@ export const Horizontal = {
                         <div className={styles['handle-container']}>
                             <ResizeHandle
                                 direction="horizontal"
-                                onDrag={(delta) => setWidth((prev) => Math.max(100, Math.min(600, prev + delta)))}
+                                side="right"
+                                onDrag={(delta) => {
+                                    requestedWidth.current += delta;
+                                    setWidth(Math.max(100, Math.min(600, requestedWidth.current)));
+                                }}
+                                onDragStart={() => { requestedWidth.current = width; }}
                             />
                         </div>
                     </div>
@@ -44,6 +50,7 @@ export const Horizontal = {
 export const Vertical = {
     render: () => {
         const [height, setHeight] = useState(200);
+        const requestedHeight = useRef(height);
 
         return (
             <div style={{ display: "flex", flexDirection: "column", gap: 16, padding: 24 }}>
@@ -60,7 +67,13 @@ export const Vertical = {
                         <div className={styles['handle-container-vertical']}>
                             <ResizeHandle
                                 direction="vertical"
-                                onDrag={(delta) => setHeight((prev) => Math.max(80, Math.min(400, prev - delta)))}
+                                side="top"
+                                color="primary"
+                                onDrag={(delta) => {
+                                    requestedHeight.current -= delta;
+                                    setHeight(Math.max(80, Math.min(400, requestedHeight.current)));
+                                }}
+                                onDragStart={() => { requestedHeight.current = height; }}
                             />
                         </div>
                     </div>
@@ -73,6 +86,7 @@ export const Vertical = {
 export const WithCallbacks = {
     render: () => {
         const [width, setWidth] = useState(300);
+        const requestedWidth = useRef(width);
         const [events, setEvents] = useState<string[]>([]);
 
         const log = (msg: string) => setEvents((prev) => [...prev.slice(-8), msg]);
@@ -88,8 +102,15 @@ export const WithCallbacks = {
                         <div className={styles['handle-container']}>
                             <ResizeHandle
                                 direction="horizontal"
-                                onDrag={(delta) => setWidth((prev) => Math.max(100, Math.min(600, prev + delta)))}
-                                onDragStart={(_clientX: number) => log("dragStart")}
+                                side="right"
+                                onDrag={(delta) => {
+                                    requestedWidth.current += delta;
+                                    setWidth(Math.max(100, Math.min(600, requestedWidth.current)));
+                                }}
+                                onDragStart={() => {
+                                    requestedWidth.current = width;
+                                    log("dragStart");
+                                }}
 
                                 onDragEnd={() => log("dragEnd")}
                             />

@@ -37,8 +37,10 @@ const styles = StyleSheet.create({
     },
     menuList: {
         position: 'absolute',
-        paddingVertical: 8,
+        paddingVertical: 4,
         minWidth: 160,
+        maxHeight: 240,
+        borderWidth: 1,
         elevation: 10,
         shadowOffset: {
             width: 5,
@@ -46,7 +48,6 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.6,
         shadowRadius: 1,
-        borderWidth: 2,
     }
 });
 
@@ -122,13 +123,16 @@ export const Menu: FC<MobileMenuProps> = ({
                             styles.menuList,
                             {
                                 ...menuPosition,
-                                backgroundColor:theme.color(color, theme.isDark ? 700 : 200),
-                                borderColor: theme.color(color, theme.isDark ? 500 : 400),
+                                backgroundColor: theme.color(
+                                    color,
+                                    theme.isLight ? 100 : (color === 'neutral' ? 800 : 900)
+                                ),
+                                borderColor: theme.color(color, 500),
                                 shadowColor: theme.componentColor('box-shadow'),
                             }
                         ]}
                     >
-                        <MenuContext.Provider value={{ onClose: () => setVisible(false) }}>
+                        <MenuContext.Provider value={{ color, onClose: () => setVisible(false) }}>
                             {children}
                         </MenuContext.Provider>
                     </View>

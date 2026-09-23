@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { StyleSheet, TouchableHighlight } from 'react-native';
 import { Text } from '../typography';
-import { MenuItemProps, useMenuClose, useTheme } from '@ui';
+import { MenuItemProps, useMenuContext, useTheme } from '@ui';
 
 const styles = StyleSheet.create({
     menuItem: {
@@ -14,27 +14,28 @@ const styles = StyleSheet.create({
 });
 
 export const MenuItem: FC<{ onPress: () => void; } & MenuItemProps> = ({
-    highlightColor = 'neutral',
+    highlightColor,
     onPress,
     disabled,
     children,
 }) => {
     const theme = useTheme();
-    const handleClose = useMenuClose();
+    const { color, onClose } = useMenuContext();
+    const textColor = theme.color(color, theme.isLight ? 900 : 100);
 
     return (
         <TouchableHighlight
-            underlayColor={theme.color(highlightColor, theme.isLight ? 300 : 600)}
+            underlayColor={theme.color(highlightColor ?? color, 500, 0.14)}
             style={styles.menuItem}
             onPress={() => {
                 onPress();
-                handleClose();
+                onClose();
             }}
             disabled={disabled}
             accessibilityRole="button"
             accessibilityState={{ disabled }}
         >
-            <Text style={styles.menuText}>
+            <Text style={[styles.menuText, { color: textColor }]}>
                 {children}
             </Text>
         </TouchableHighlight>

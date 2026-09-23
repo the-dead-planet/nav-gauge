@@ -21,6 +21,8 @@ export const BottomSecondaryToolPanelResizeHandle: FC<Props> = ({
         <div className={classNames(styles['resize-handle'], styles['resize-handle-bottom-secondary'])}>
             <ResizeHandle
                 direction="vertical"
+                side="top"
+                color="primary"
                 onDrag={handleVerticalDrag}
                 onDragStart={handleVerticalDragStart}
                 onDragEnd={handleVerticalDragEnd}

@@ -7,12 +7,13 @@ const styles = StyleSheet.create({
     resizeHandleContainer: {
         position: 'absolute',
         zIndex: 100,
+        elevation: 6,
     },
     resizeHandle: {
-        top: -4,
+        top: -12,
         left: 0,
         right: 0,
-        height: 8,
+        height: 24,
     },
 });
 
@@ -33,6 +34,8 @@ export const BottomSecondaryToolPanelResizeHandle: FC<Props> = ({
         <View style={[styles.resizeHandleContainer, styles.resizeHandle]}>
             <ResizeHandle
                 direction="vertical"
+                side="top"
+                color="primary"
                 onDrag={handleVerticalDrag}
                 onDragStart={handleVerticalDragStart}
                 onDragEnd={handleVerticalDragEnd}

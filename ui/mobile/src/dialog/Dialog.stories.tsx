@@ -3,9 +3,10 @@ import { View, StyleSheet } from "react-native";
 import { Dialog } from "./Dialog";
 import { Button } from "../button";
 import { Text } from "../typography";
-import { DialogPlacement } from "@ui";
+import { ColorVariant, DialogPlacement } from "@ui";
 
 const placements: DialogPlacement[] = ['middle', 'left-drawer', 'right-drawer'];
+const colors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
 
 const styles = StyleSheet.create({
     container: {
@@ -14,6 +15,7 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
+        flexWrap: 'wrap',
         gap: 8,
     },
     content: {
@@ -53,15 +55,24 @@ export const Overview: FC = () => {
 
 export const TallContent: FC = () => {
     const [open, setOpen] = useState(true);
+    const [color, setColor] = useState<ColorVariant>('neutral');
 
     return open ? (
         <Dialog
+            color={color}
             header="tall content"
             placement="middle"
             closeText='Close'
             onClose={() => setOpen(false)}
         >
             <View style={styles.content}>
+                <View style={styles.row}>
+                    {colors.map((option) => (
+                        <Button key={option} color={option} variant="fill" onPress={() => setColor(option)}>
+                            {option}
+                        </Button>
+                    ))}
+                </View>
                 {Array.from({ length: 40 }, (_, i) => (
                     <Text key={i}>Long dialog content line {i + 1}.</Text>
                 ))}

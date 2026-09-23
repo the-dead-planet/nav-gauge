@@ -2,11 +2,15 @@ import type { Meta } from 'storybook-react-rsbuild';
 import { useState } from 'react';
 import { Dialog } from './Dialog';
 import { Button } from '../button';
-import { DialogPlacement } from '@ui';
+import { DialogPlacement, DialogProps } from '@ui';
 
 const meta = {
     title: 'Dialog',
     component: Dialog,
+    args: { color: 'neutral' },
+    argTypes: {
+        color: { control: 'select', options: ['neutral', 'primary', 'secondary', 'tertiary'] },
+    },
 } satisfies Meta<typeof Dialog>;
 
 export default meta;
@@ -14,7 +18,7 @@ export default meta;
 const placements: DialogPlacement[] = ['middle', 'left-drawer', 'right-drawer'];
 
 export const Overview = {
-    render: () => {
+    render: ({ color }: Pick<DialogProps, 'color'>) => {
         const [open, setOpen] = useState<DialogPlacement | null>(null);
 
         return (
@@ -29,6 +33,7 @@ export const Overview = {
 
                 {open && (
                     <Dialog
+                        color={color}
                         header={open.replace('-', ' ')}
                         placement={open}
                         closeText="Close"
@@ -46,11 +51,12 @@ export const Overview = {
 };
 
 export const TallContent = {
-    render: () => {
+    render: ({ color }: Pick<DialogProps, 'color'>) => {
         const [open, setOpen] = useState(true);
 
         return open ? (
             <Dialog
+                color={color}
                 header="tall content"
                 placement="middle"
                 closeText="Close"

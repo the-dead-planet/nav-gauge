@@ -11,6 +11,7 @@ import styles from './dialog.module.css';
 
 export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
     header,
+    color = 'neutral',
     variant = 'fill-translucent',
     placement = 'middle',
     closeText,
@@ -36,23 +37,23 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
                 <div className={classNames(styles['container'], isWide ? styles[placement] : styles['full-width'], className)} {...props}>
                     <Panel
                         variant={variant}
-                        color="primary"
-                        className={classNames(styles['dialog'])}
+                        color={color}
+                        className={classNames(styles['dialog'], styles[`color-${color}`])}
                     >
-                        <H3 fontType={FontType.NeonText} color="primary" className={styles['header']}>
+                        <H3 fontType={FontType.NeonText} color={color} className={styles['header']}>
                             {header.toUpperCase()}
                         </H3>
                         <div className={styles['content']}>
                             {children}
                         </div>
                         <div className={styles['footer']}>
-                            <Button variant="fill-inverse" color="primary" onClick={() => setRender(false)}>
+                            <Button variant="fill-inverse" color={color} onClick={() => setRender(false)}>
                                 {closeText}
                             </Button>
                             {save ? (
                                 <Button
                                     variant="fill"
-                                    color="primary"
+                                    color={color}
                                     onClick={() => {
                                         save.onSave();
                                         setRender(false);
