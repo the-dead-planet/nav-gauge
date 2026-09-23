@@ -64,7 +64,6 @@ export function Dropdown<T>({
             paddingHorizontal: sizeStyles.paddingH,
             paddingVertical: sizeStyles.paddingV,
             gap: sizeStyles.gap,
-            borderRadius: 4,
         };
 
         switch (variant) {
@@ -175,7 +174,6 @@ export function Dropdown<T>({
                             left: menuLeft,
                             width: menuWidth,
                             marginTop: 4,
-                            borderRadius: 4,
                             backgroundColor: theme.color(
                                 color,
                                 theme.isLight ? 100 : (color === 'neutral' ? 800 : 900)

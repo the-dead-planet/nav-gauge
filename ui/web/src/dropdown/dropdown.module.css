@@ -270,7 +270,6 @@
     margin: 4px 0 0;
     padding: 4px 0;
     border: 1px solid var(--dropdown-color);
-    border-radius: 4px;
     background-color: var(--dropdown-menu-bg);
     box-shadow: 0 4px 12px rgba(0, 0, 0, .3);
     max-height: 240px;

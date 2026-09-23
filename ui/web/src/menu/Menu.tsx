@@ -188,7 +188,7 @@ export const Menu: FC<Props & ComponentProps<'button'>> = ({
                     aria-orientation="vertical"
                     onKeyDown={handleKeyDown}
                 >
-                    <MenuContext.Provider value={{ onClose: handleClose, triggerRef }}>
+                    <MenuContext.Provider value={{ color, onClose: handleClose, triggerRef }}>
                         <Transition slide={menuPosition.bottom ? "to-top" : "to-bottom"} render>
                             {children}
                         </Transition>

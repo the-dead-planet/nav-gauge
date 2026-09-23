@@ -7,7 +7,7 @@
 .color-neutral {
     --menu-color: var(--color-neutral);
     --menu-color-light: var(--color-neutral-100);
-    --menu-color-dark: var(--color-neutral-800);
+    --menu-color-dark: var(--color-neutral-900);
 }
 
 .color-primary {
@@ -29,43 +29,51 @@
 }
 
 .highlight-neutral {
+    --menu-highlight-color: var(--color-neutral);
     --menu-highlight-accent-lighter: var(--color-neutral-300);
     --menu-highlight-accent-darker: var(--color-neutral-600);
 }
 
 .highlight-primary {
+    --menu-highlight-color: var(--color-primary);
     --menu-highlight-accent-lighter: var(--color-primary-300);
     --menu-highlight-accent-darker: var(--color-primary-600);
 }
 
 .highlight-secondary {
+    --menu-highlight-color: var(--color-secondary);
     --menu-highlight-accent-lighter: var(--color-secondary-300);
     --menu-highlight-accent-darker: var(--color-secondary-600);
 }
 
 .highlight-tertiary {
+    --menu-highlight-color: var(--color-tertiary);
     --menu-highlight-accent-lighter: var(--color-tertiary-300);
     --menu-highlight-accent-darker: var(--color-tertiary-600);
 }
 
 .mode-light {
     --menu-bg: var(--menu-color-light);
+    --menu-color-text: var(--menu-color-dark);
     --menu-highlight-accent: var(--menu-highlight-accent-lighter);
 }
 
 .mode-dark {
     --menu-bg: var(--menu-color-dark);
+    --menu-color-text: var(--menu-color-light);
     --menu-highlight-accent: var(--menu-highlight-accent-darker);
 }
 
 .menu-list {
     position: absolute;
-    padding: 8px 0;
-    overflow: hidden;
+    padding: 4px 0;
+    max-height: 240px;
+    overflow-y: auto;
     transition: opacity .2s ease-in;
-    z-index: var(--z-index-floating);
+    z-index: var(--z-index-dropdown);
     background-color: var(--menu-bg);
-    border: 2px solid var(--menu-color);
+    border: 1px solid var(--menu-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .3);
 }
 
 .menu-item {
@@ -77,7 +85,7 @@
     cursor: pointer;
     font-size: 16px;
     text-align: left;
-    color: var(--color-text);
+    color: var(--menu-color-text);
 }
 
 .menu-item:focus-visible {
@@ -86,7 +94,7 @@
 }
 
 .menu-item:hover {
-    background: var(--menu-highlight-accent);
+    background: rgb(from var(--menu-highlight-color) r g b / .14);
 }
 
 @starting-style {
