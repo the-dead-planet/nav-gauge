@@ -70,7 +70,7 @@ export function Dropdown<T>({
         switch (variant) {
             case 'fill':
                 style.backgroundColor = pressed
-                    ? theme.color(highlightColor, 600)
+                    ? theme.color(highlightColor, theme.isLight ? 600 : 300)
                     : baseColor;
                 style.borderWidth = 0;
                 break;
@@ -98,7 +98,7 @@ export function Dropdown<T>({
 
     const getContentColors = (pressed: boolean) => {
         if (variant === 'fill') {
-            const fillContentColor = theme.color(color, 100);
+            const fillContentColor = theme.color(color, theme.isLight ? 100 : 900);
             return { content: fillContentColor, chevron: fillContentColor };
         }
         return {

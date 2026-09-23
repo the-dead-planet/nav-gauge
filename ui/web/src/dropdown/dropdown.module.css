@@ -194,13 +194,18 @@
     fill: var(--dropdown-color-light);
 }
 
-.variant-fill .trigger:not(:disabled):hover {
-    background-color: var(--dropdown-highlight-color-accent);
+.mode-dark.variant-fill .trigger {
+    color: var(--dropdown-color-dark);
 }
 
-.mode-dark.variant-fill .trigger:not(:disabled):hover,
-.mode-dark.variant-fill .trigger:not(:disabled):active {
-    background-color: var(--dropdown-highlight-color-accent-darker);
+.mode-dark.variant-fill .trigger .icon {
+    color: var(--dropdown-color-dark);
+    stroke: var(--dropdown-color-dark);
+    fill: var(--dropdown-color-dark);
+}
+
+.variant-fill .trigger:not(:disabled):hover {
+    background-color: var(--dropdown-highlight-color-accent);
 }
 
 .variant-fill-inverse .trigger {
