@@ -14,6 +14,7 @@ interface ChildProps {
     onBlur?: (event: FocusEvent) => void;
     onPointerDown?: (event: PointerEvent) => void;
     onPointerMove?: (event: PointerEvent) => void;
+    onPointerLeave?: (event: PointerEvent) => void;
     onPointerUp?: (event: PointerEvent) => void;
     onPointerCancel?: (event: PointerEvent) => void;
 }
@@ -143,49 +144,15 @@ const InternalTooltip: FC<TooltipProps> = ({
     const [connectionLine, setConnectionLine] = useState<{ top: number; left: number; width: number; height: number } | null>(null);
     const hoveredRef = useRef(false);
     const focusedRef = useRef(false);
-    const suppressedRef = useRef(false);
     const longPressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const pointerOriginRef = useRef<{ x: number; y: number } | null>(null);
+    const longPressRecognizedRef = useRef(false);
+    const pointerPressedRef = useRef(false);
 
     const getViewportSize = () => ({
         width: window.visualViewport?.width ?? window.innerWidth,
         height: window.visualViewport?.height ?? window.innerHeight,
     });
-
-    const recalculatePosition = () => {
-        if (!childRef.current || !visible) {
-            return;
-        };
-
-        const triggerRect = childRef.current.getBoundingClientRect();
-        const tooltipRect = tooltipRef.current?.getBoundingClientRect();
-        const viewport = getViewportSize();
-        const effective = placement === 'auto'
-            ? getAutoTooltipPlacement(
-                { x: triggerRect.left, y: triggerRect.top, width: triggerRect.width, height: triggerRect.height },
-                { width: tooltipRect?.width ?? 0, height: tooltipRect?.height ?? 0 },
-                viewport.width,
-                viewport.height,
-            )
-            : placement;
-        setEffectivePlacement(effective);
-
-        const pos = getPosition(triggerRect, effective);
-        const clamped = clampPosition(pos, tooltipRect, viewport.width, viewport.height, effective);
-        setPosition(clamped);
-
-        if (showConnection && tooltipRect) {
-            setConnectionLine(getConnectionLineGeom(triggerRect, clamped, effective));
-        } else {
-            setConnectionLine(null);
-        }
-    };
-
-    useEffect(() => {
-        if (visible) {
-            recalculatePosition();
-        }
-    }, [visible, recalculatePosition]);
 
     const clearLongPress = () => {
         if (longPressTimerRef.current) {
@@ -199,13 +166,42 @@ const InternalTooltip: FC<TooltipProps> = ({
             return;
         };
 
+        const recalculatePosition = () => {
+            if (!childRef.current) {
+                return;
+            }
+            const triggerRect = childRef.current.getBoundingClientRect();
+            const tooltipRect = tooltipRef.current?.getBoundingClientRect();
+            const viewport = getViewportSize();
+            const effective = placement === 'auto'
+                ? getAutoTooltipPlacement(
+                    { x: triggerRect.left, y: triggerRect.top, width: triggerRect.width, height: triggerRect.height },
+                    { width: tooltipRect?.width ?? 0, height: tooltipRect?.height ?? 0 },
+                    viewport.width,
+                    viewport.height,
+                )
+                : placement;
+            const nextPosition = clampPosition(
+                getPosition(triggerRect, effective),
+                tooltipRect,
+                viewport.width,
+                viewport.height,
+                effective,
+            );
+            setEffectivePlacement(effective);
+            setPosition(nextPosition);
+            setConnectionLine(showConnection && tooltipRect
+                ? getConnectionLineGeom(triggerRect, nextPosition, effective)
+                : null);
+        };
+
         const hideOnEscape = (event: KeyboardEvent) => {
             if (event.key === 'Escape') {
-                suppressedRef.current = true;
                 setVisible(false);
             }
         };
         const visualViewport = window.visualViewport;
+        recalculatePosition();
         window.addEventListener('scroll', recalculatePosition, true);
         window.addEventListener('resize', recalculatePosition);
         window.addEventListener('keydown', hideOnEscape);
@@ -219,7 +215,7 @@ const InternalTooltip: FC<TooltipProps> = ({
             visualViewport?.removeEventListener('scroll', recalculatePosition);
             visualViewport?.removeEventListener('resize', recalculatePosition);
         };
-    }, [visible, recalculatePosition]);
+    }, [visible, placement, showConnection]);
 
     useEffect(() => clearLongPress, []);
 
@@ -236,19 +232,27 @@ const InternalTooltip: FC<TooltipProps> = ({
                 childRef.current = node;
                 const originalRef = childProps.ref;
                 if (typeof originalRef === 'function') {
-                    originalRef(node);
+                    const cleanup = originalRef(node);
+                    return () => {
+                        childRef.current = null;
+                        if (typeof cleanup === 'function') {
+                            cleanup();
+                        }
+                    };
                 } else if (hasCurrent(originalRef)) {
                     originalRef.current = node;
                 }
             },
             onClick: (event: MouseEvent) => {
-                suppressedRef.current = true;
                 setVisible(false);
+                if (longPressRecognizedRef.current) {
+                    longPressRecognizedRef.current = false;
+                    return;
+                }
                 childProps.onClick?.(event);
             },
             onMouseEnter: (event: MouseEvent) => {
                 hoveredRef.current = true;
-                suppressedRef.current = false;
                 if (window.matchMedia('(hover: hover)').matches) {
                     setVisible(true);
                 }
@@ -256,7 +260,6 @@ const InternalTooltip: FC<TooltipProps> = ({
             },
             onMouseLeave: (event: MouseEvent) => {
                 hoveredRef.current = false;
-                suppressedRef.current = false;
                 if (!focusedRef.current) {
                     setVisible(false);
                 }
@@ -264,27 +267,25 @@ const InternalTooltip: FC<TooltipProps> = ({
             },
             onFocus: (event: FocusEvent) => {
                 focusedRef.current = true;
-                suppressedRef.current = false;
                 setVisible(true);
                 childProps.onFocus?.(event);
             },
             onBlur: (event: FocusEvent) => {
                 focusedRef.current = false;
-                suppressedRef.current = false;
                 if (!hoveredRef.current) {
                     setVisible(false);
                 }
                 childProps.onBlur?.(event);
             },
             onPointerDown: (event: PointerEvent) => {
-                if (event.pointerType !== 'mouse') {
-                    clearLongPress();
-                    pointerOriginRef.current = { x: event.clientX, y: event.clientY };
-                    longPressTimerRef.current = setTimeout(() => {
-                        suppressedRef.current = false;
-                        setVisible(true);
-                    }, LONG_PRESS_DELAY);
-                }
+                pointerPressedRef.current = true;
+                clearLongPress();
+                longPressRecognizedRef.current = false;
+                pointerOriginRef.current = { x: event.clientX, y: event.clientY };
+                longPressTimerRef.current = setTimeout(() => {
+                    longPressRecognizedRef.current = true;
+                    setVisible(true);
+                }, LONG_PRESS_DELAY);
                 childProps.onPointerDown?.(event);
             },
             onPointerMove: (event: PointerEvent) => {
@@ -295,9 +296,20 @@ const InternalTooltip: FC<TooltipProps> = ({
                 }
                 childProps.onPointerMove?.(event);
             },
+            onPointerLeave: (event: PointerEvent) => {
+                if (pointerPressedRef.current || event.pointerType !== 'mouse') {
+                    clearLongPress();
+                    pointerOriginRef.current = null;
+                    longPressRecognizedRef.current = false;
+                    pointerPressedRef.current = false;
+                    setVisible(false);
+                }
+                childProps.onPointerLeave?.(event);
+            },
             onPointerUp: (event: PointerEvent) => {
                 clearLongPress();
                 pointerOriginRef.current = null;
+                pointerPressedRef.current = false;
                 if (event.pointerType !== 'mouse') {
                     setVisible(false);
                 }
@@ -306,6 +318,8 @@ const InternalTooltip: FC<TooltipProps> = ({
             onPointerCancel: (event: PointerEvent) => {
                 clearLongPress();
                 pointerOriginRef.current = null;
+                longPressRecognizedRef.current = false;
+                pointerPressedRef.current = false;
                 setVisible(false);
                 childProps.onPointerCancel?.(event);
             },

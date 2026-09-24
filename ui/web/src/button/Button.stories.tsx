@@ -112,3 +112,13 @@ export const ButtonVariants = {
         );
     },
 } satisfies Story;
+
+export const NativeBehavior = {
+    render: () => (
+        <div style={{ display: 'flex', gap: 8 }}>
+            <Button tooltip="Regular button">Regular</Button>
+            <Button corners="hexagon" tooltip="Hexagon button" aria-label="Hexagon button" />
+            <Button disabled onClick={() => { throw new Error('Disabled button activated'); }}>Disabled</Button>
+        </div>
+    ),
+} satisfies Story;

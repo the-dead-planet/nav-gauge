@@ -40,7 +40,7 @@ export const LayoutMenu: FC = () => {
                 </MenuItem>
                 {/* TODO: Move to legal */}
                 <MenuItem
-                    key="legal"
+                    key="icon-creators"
                     type="link"
                     href="/storybook/?path=/story/icons"
                     target="_blank"

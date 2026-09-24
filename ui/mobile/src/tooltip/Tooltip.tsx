@@ -109,6 +109,7 @@ const getConnectionLineGeom = (
 
 interface ChildProps {
     ref?: unknown;
+    onPress?: (event: GestureResponderEvent) => void;
     onTouchStart?: (event: GestureResponderEvent) => void;
     onTouchMove?: (event: GestureResponderEvent) => void;
     onTouchEnd?: (event: GestureResponderEvent) => void;
@@ -165,6 +166,7 @@ const InternalTooltip: FC<TooltipProps> = ({
     const dismissTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const longPressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const touchOriginRef = useRef<{ x: number; y: number } | null>(null);
+    const longPressRecognizedRef = useRef(false);
 
     const clearLongPress = () => {
         if (longPressTimerRef.current) {
@@ -182,6 +184,7 @@ const InternalTooltip: FC<TooltipProps> = ({
     };
 
     const show = () => {
+        longPressRecognizedRef.current = true;
         setVisible(true);
         if (dismissTimerRef.current) {
             clearTimeout(dismissTimerRef.current);
@@ -246,6 +249,7 @@ const InternalTooltip: FC<TooltipProps> = ({
             },
             onTouchStart: (event: GestureResponderEvent) => {
                 clearLongPress();
+                longPressRecognizedRef.current = false;
                 touchOriginRef.current = {
                     x: event.nativeEvent.pageX,
                     y: event.nativeEvent.pageY,
@@ -273,8 +277,16 @@ const InternalTooltip: FC<TooltipProps> = ({
             onTouchCancel: (event: GestureResponderEvent) => {
                 clearLongPress();
                 touchOriginRef.current = null;
+                longPressRecognizedRef.current = false;
                 dismiss();
                 childProps.onTouchCancel?.(event);
+            },
+            onPress: (event: GestureResponderEvent) => {
+                if (longPressRecognizedRef.current) {
+                    longPressRecognizedRef.current = false;
+                    return;
+                }
+                childProps.onPress?.(event);
             },
         }
     );
