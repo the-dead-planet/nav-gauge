@@ -133,3 +133,26 @@ export const AllVariants: FC = () => {
         </ScrollView>
     );
 };
+
+export const TooltipPressBehavior: FC = () => {
+    const [pressCount, setPressCount] = useState(0);
+
+    return (
+        <View style={styles.container}>
+            <Text style={styles.label}>Tap increments. Long press shows the tooltip without incrementing.</Text>
+            <Text style={styles.label}>Presses: {pressCount}</Text>
+            <View style={styles.row}>
+                {(['rounded', 'hexagon'] as ButtonCorners[]).map((corners) => (
+                    <Button
+                        key={corners}
+                        corners={corners}
+                        tooltip="Long-press tooltip"
+                        onPress={() => setPressCount((count) => count + 1)}
+                    >
+                        {corners === 'hexagon' ? null : corners}
+                    </Button>
+                ))}
+            </View>
+        </View>
+    );
+};

@@ -1,7 +1,8 @@
-import { FC, useCallback, useRef, useState } from "react";
+import { FC, useRef, useState } from "react";
 import { GestureResponderEvent, LayoutChangeEvent, PanResponder, StyleSheet, View } from "react-native";
 import { ResizeHandleProps, useTheme } from "@ui";
 import { ResizeHandleGrip } from "./ResizeHandleGrip";
+import { Tooltip } from "../tooltip";
 
 const styles = StyleSheet.create({
     horizontalHandle: {
@@ -51,6 +52,7 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
     onDragStart,
     onDragEnd,
     disabled = false,
+    tooltip,
 }) => {
     const theme = useTheme();
     const lastPositionRef = useRef<{ x: number; y: number } | null>(null);
@@ -59,12 +61,12 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
     const [isDragging, setIsDragging] = useState(false);
     const [handleLength, setHandleLength] = useState(0);
 
-    const handleLayout = useCallback((event: LayoutChangeEvent) => {
+    const handleLayout = (event: LayoutChangeEvent) => {
         const { width, height } = event.nativeEvent.layout;
         setHandleLength(direction === 'horizontal' ? height : width);
-    }, [direction]);
+    };
 
-    const handleMove = useCallback((event: GestureResponderEvent) => {
+    const handleMove = (event: GestureResponderEvent) => {
         const lastPosition = lastPositionRef.current;
         if (!lastPosition) {
             return;
@@ -75,7 +77,7 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
         if (delta !== 0) {
             propsRef.current.onDrag(delta);
         }
-    }, []);
+    };
 
     const panResponder = useRef(PanResponder.create({
         onStartShouldSetPanResponder: () => !propsRef.current.disabled,
@@ -100,12 +102,24 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
 
     const handleColor = theme.color(color, 500, color === 'neutral' ? 0.4 : 1);
     const isHorizontal = direction === 'horizontal';
+    const gripSide = side ?? (direction === 'horizontal' ? 'right' : 'top');
 
-    return (
+    const handle = (
         <View
             {...panResponder.panHandlers}
             onLayout={handleLayout}
             style={isHorizontal ? styles.horizontalHandle : styles.verticalHandle}
+            accessible
+            accessibilityRole="adjustable"
+            accessibilityLabel={typeof tooltip === 'string' ? tooltip : undefined}
+            accessibilityActions={[{ name: 'increment' }, { name: 'decrement' }]}
+            onAccessibilityAction={(event) => {
+                if (!disabled) {
+                    onDragStart?.(0);
+                    onDrag(event.nativeEvent.actionName === 'increment' ? 10 : -10);
+                    onDragEnd?.();
+                }
+            }}
         >
             <View
                 style={[
@@ -126,4 +140,6 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
             ))}
         </View>
     );
+
+    return <Tooltip content={tooltip} color="secondary" placement={gripSide}>{handle}</Tooltip>;
 };

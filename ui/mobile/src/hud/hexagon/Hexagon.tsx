@@ -1,5 +1,5 @@
-import { FC, Ref, useId, useState } from "react";
-import { View, ViewStyle, StyleProp, StyleSheet, Pressable, GestureResponderEvent, type ViewInstance } from "react-native";
+import { FC, forwardRef, Ref, useId, useState } from "react";
+import { View, StyleSheet, Pressable, PressableProps, type ViewInstance, type ViewProps } from "react-native";
 import Svg, { Polygon, Defs, ClipPath, G, LinearGradient, Stop } from "react-native-svg";
 import { HexagonProps, SizeVariant, useTheme } from "@ui";
 
@@ -55,17 +55,9 @@ const GlowPolygons: FC<{ points: string; glowColor: string; strokeWidth: number 
     </>
 );
 
-interface Props {
-    forwardRef?: Ref<ViewInstance>;
-    onPress?: (e: GestureResponderEvent) => void;
-    onLongPress?: (e: GestureResponderEvent) => void;
-    onPressIn?: (e: GestureResponderEvent) => void;
-    onPressOut?: (e: GestureResponderEvent) => void;
-    style?: StyleProp<ViewStyle>
-}
+type Props = Omit<PressableProps, 'children'>;
 
-export const Hexagon: FC<HexagonProps & Props> = ({
-    forwardRef,
+export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(({
     shape = "pointy-top",
     strokeWidth = 2,
     color = "neutral",
@@ -81,8 +73,9 @@ export const Hexagon: FC<HexagonProps & Props> = ({
     onPressIn: onParentPressIn,
     onPressOut: onParentPressOut,
     style,
-    children
-}) => {
+    children,
+    ...pressableProps
+}, ref) => {
     const theme = useTheme();
     const [pressed, setPressed] = useState(false);
     const [glowDrawn, setGlowDrawn] = useState(false);
@@ -263,14 +256,15 @@ export const Hexagon: FC<HexagonProps & Props> = ({
         }
     };
 
-    const container = (
+    const container = (containerStyle?: PressableProps['style'], containerRef?: Ref<ViewInstance>, includeProps = false) => (
         <View
-            ref={forwardRef}
+            ref={containerRef}
+            {...(includeProps ? pressableProps as ViewProps : {})}
             style={[
                 styles.container,
                 { aspectRatio },
                 size ? { width: sizeWidth[size] } : undefined,
-                style
+                typeof containerStyle === 'function' ? undefined : containerStyle,
             ]}
         >
             <Svg
@@ -288,6 +282,8 @@ export const Hexagon: FC<HexagonProps & Props> = ({
     if (interactive) {
         return (
             <Pressable
+                ref={ref}
+                {...pressableProps}
                 onPress={onPress}
                 onLongPress={onLongPress}
                 onPressIn={(e) => {
@@ -299,11 +295,12 @@ export const Hexagon: FC<HexagonProps & Props> = ({
                     setPressed(false);
                     onParentPressOut?.(e);
                 }}
+                style={style}
             >
-                {container}
+                {container()}
             </Pressable>
         );
     }
 
-    return container;
-};
+    return container(style, ref, true);
+});

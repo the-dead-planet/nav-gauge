@@ -15,6 +15,7 @@ const en: TranslationTable<MachineTranslationKey>['en'] = {
     expand: 'Expand',
     'panel-menu': 'Panel options',
     'swap-placement': 'Place panel on the {{placement}}',
+    'drag-to-resize': 'Drag to resize',
     'under-construction': 'Under construction',
 };
 

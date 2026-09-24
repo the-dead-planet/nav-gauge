@@ -1,4 +1,4 @@
-import { ComponentProps, CSSProperties, FC, MouseEvent, useState } from "react";
+import { ComponentProps, CSSProperties, FC } from "react";
 import classNames from "classnames";
 import { ButtonProps, useTheme } from "@ui";
 import { Icon } from "../icons";
@@ -23,6 +23,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     active = false,
     themeMode,
     disabled,
+    type = 'button',
     icon,
     iconRotateX = 0,
     iconRotateZ = 0,
@@ -30,6 +31,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     tooltipPlacement,
     showTooltipConnection,
     onClick,
+    'aria-label': ariaLabel,
     children,
     className,
     style,
@@ -48,9 +50,12 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     }
     const iconSize = corners === 'hexagon' ? hexagonIconSizes[size] : iconSizes[size];
 
-    const renderButton = (isHovered?: boolean) => (
+    const button = (
         <button
-            onClick={corners !== 'hexagon' ? onClick : undefined}
+            type={type}
+            disabled={disabled}
+            onClick={onClick}
+            aria-label={ariaLabel ?? (!children && typeof tooltip === 'string' ? tooltip : undefined)}
             className={classNames(
                 styles['button'],
                 styles[`mode-${themeMode || theme.mode}`],
@@ -62,7 +67,6 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
                 styles[`corners-${corners}`],
                 {
                     [styles['interactive']]: !!onClick && !disabled,
-                    [styles['hovered']]: isHovered,
                     [styles['active']]: active,
                     [styles[`only-icon-${size}`]]: !children,
                     [styles['disabled']]: disabled,
@@ -91,9 +95,25 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
         </button>
     );
 
-    const [isHoveringHud, setIsHoveringHud] = useState(false);
+    const hasTooltip = tooltip !== null && tooltip !== undefined && tooltip !== false && tooltip !== '';
+    const buttonWithTooltip = hasTooltip ? (
+        <Tooltip
+            placement={tooltipPlacement}
+            content={tooltip}
+            color={highlightColor || color}
+            variant={variant === 'fill'
+                ? 'fill'
+                : variant === 'fill-translucent'
+                    ? 'fill-translucent'
+                    : 'fill-inverse'}
+            showConnection={showTooltipConnection}
+        >
+            {button}
+        </Tooltip>
+    ) : button;
 
-    const button = corners === 'hexagon' ? (
+    if (corners === 'hexagon') {
+        return (
         <Hexagon
             shape="flat-top"
             size={size}
@@ -104,38 +124,13 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
             highlightColor={highlightColor}
             active={active}
             interactive={!disabled}
-            role="button"
-            onClick={!disabled ? (e) => {
-                try {
-                    onClick?.(e as unknown as MouseEvent<HTMLButtonElement>);
-                } catch { }
-            } : undefined}
-            onMouseEnter={() => setIsHoveringHud(true)}
-            onMouseLeave={() => setIsHoveringHud(false)}
             style={disabled ? { ...style, opacity: 0.45, cursor: 'not-allowed' } : style}
             className={className}
         >
-            {renderButton(isHoveringHud)}
+            {buttonWithTooltip}
         </Hexagon>
-    ) : renderButton();
-
-    if (tooltip) {
-        return (
-            <Tooltip
-                placement={tooltipPlacement}
-                content={tooltip}
-                color={highlightColor || color}
-                variant={variant === 'fill'
-                    ? 'fill'
-                    : variant === 'fill-translucent'
-                        ? 'fill-translucent'
-                        : 'fill-inverse'}
-                showConnection={showTooltipConnection}
-            >
-                {button}
-            </Tooltip>
         );
-    };
+    }
 
-    return button;
+    return buttonWithTooltip;
 };

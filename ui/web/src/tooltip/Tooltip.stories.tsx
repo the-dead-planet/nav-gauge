@@ -18,7 +18,7 @@ const allVariants: SurfaceFillVariant[] = ['fill', 'fill-inverse', 'fill-translu
 export const Placements = {
     render: () => (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 32, padding: 48 }}>
-            <Text>Hover or focus the buttons to see tooltips.</Text>
+            <Text>Hover or focus with a keyboard. On touch screens, long press.</Text>
             <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>
                 {allPlacements.map((placement) => (
                     <Tooltip key={placement} content={`${placement} tooltip`} placement={placement}>

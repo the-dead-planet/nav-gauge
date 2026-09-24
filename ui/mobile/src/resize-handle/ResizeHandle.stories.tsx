@@ -78,6 +78,7 @@ export const HorizontalHandle: FC = () => {
                         <ResizeHandle
                             direction="horizontal"
                             side="right"
+                            tooltip="Drag to resize"
                             onDrag={(delta) => setWidth((prev) => Math.max(80, Math.min(350, prev + delta)))}
                         />
                     </View>
@@ -110,6 +111,7 @@ export const VerticalHandle: FC = () => {
                             direction="vertical"
                             side="top"
                             color="primary"
+                            tooltip="Drag to resize"
                             onDrag={(delta) => setHeight((prev) => Math.max(80, Math.min(300, prev - delta)))}
                         />
                     </View>

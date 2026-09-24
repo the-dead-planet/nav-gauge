@@ -15,6 +15,7 @@ const nl: TranslationTable<MachineTranslationKey>['nl'] = {
     expand: 'Uitklappen',
     'panel-menu': 'Panel options',
     'swap-placement': 'Place panel on the {{placement}}',
+    'drag-to-resize': 'Sleep om het formaat te wijzigen',
     'under-construction': 'In aanbouw',
 };
 

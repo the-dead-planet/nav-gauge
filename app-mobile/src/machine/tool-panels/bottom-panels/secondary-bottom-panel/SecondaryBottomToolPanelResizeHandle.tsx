@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import { ResizeHandle } from "@mobile-ui";
 import { useBottomSecondaryToolPanelResizeHandle } from "@apparatus";
+import { MachineResizeHandle } from "../../MachineResizeHandle";
 
 const styles = StyleSheet.create({
     resizeHandleContainer: {
@@ -32,7 +32,7 @@ export const BottomSecondaryToolPanelResizeHandle: FC<Props> = ({
 
     return (
         <View style={[styles.resizeHandleContainer, styles.resizeHandle]}>
-            <ResizeHandle
+            <MachineResizeHandle
                 direction="vertical"
                 side="top"
                 color="primary"

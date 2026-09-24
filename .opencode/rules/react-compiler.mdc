@@ -1,0 +1,10 @@
+---
+description: React Compiler conventions
+globs: "**/*.{ts,tsx}"
+---
+
+React Compiler is enabled. Do not add `useMemo` or `useCallback` for routine render optimization or stable JSX props; let the compiler memoize them.
+
+Only use explicit memoization when changing the reference without changing its captured values would change behavior, such as an external identity-based registry or a documented stable callback contract.
+
+JSX props and paired effect setup/cleanup do not qualify. Define effect-only functions inside the effect.

@@ -46,6 +46,7 @@ export const ResizeHandleGrip: FC<ResizeHandleGripProps> = ({
             width={isHorizontal ? 12 : 24}
             height={isHorizontal ? 24 : 12}
             viewBox={isHorizontal ? '0 0 8 24' : '0 0 24 8'}
+            pointerEvents="none"
         >
             <Polygon
                 points={getResizeHandleGripPoints(direction, gripSide)}

@@ -1,7 +1,7 @@
 import { FC } from "react";
 import classNames from "classnames";
-import { ResizeHandle } from "@web-ui";
 import { useBottomSecondaryToolPanelResizeHandle } from "@apparatus";
+import { MachineResizeHandle } from "../../MachineResizeHandle";
 import styles from '../../../machine.module.css';
 
 interface Props {
@@ -19,7 +19,7 @@ export const BottomSecondaryToolPanelResizeHandle: FC<Props> = ({
 
     return (
         <div className={classNames(styles['resize-handle'], styles['resize-handle-bottom-secondary'])}>
-            <ResizeHandle
+            <MachineResizeHandle
                 direction="vertical"
                 side="top"
                 color="primary"

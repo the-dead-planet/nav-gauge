@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { ColorVariant } from '../model';
 
 export interface ResizeHandleProps {
@@ -8,6 +9,7 @@ export interface ResizeHandleProps {
     onDragStart?: (clientX: number) => void;
     onDragEnd?: () => void;
     disabled?: boolean;
+    tooltip: ReactNode;
 }
 
 export interface ResizeHandleGripProps {

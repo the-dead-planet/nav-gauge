@@ -1,5 +1,5 @@
 import { ComponentType, FC, Ref, useState } from "react";
-import { Pressable, PressableProps, Text as RNText, View, type ViewStyle, type ViewInstance } from "react-native";
+import { Pressable, PressableProps, Text as RNText, View, type ViewInstance } from "react-native";
 import { ButtonProps, useTheme } from "@ui";
 import { Icon } from "../icons";
 import { SvgProps } from "react-native-svg";
@@ -37,6 +37,8 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     onLongPress,
     onPressIn,
     onPressOut,
+    accessibilityRole,
+    accessibilityState,
     ...props
 }) => {
     const theme = useTheme();
@@ -83,7 +85,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
             container.gap = 6;
             break;
         case 'xs':
-            container.height = 18;
+            container.height = 24;
             container.paddingHorizontal = !children ? 2 : 16;
             container.paddingVertical = 0;
             container.gap = 4;
@@ -257,16 +259,17 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         </View>
     ) : null;
 
-    const textElement = children || title ? (
+    const label = children ?? title;
+    const textElement = typeof label === 'string' || typeof label === 'number' ? (
         <RNText
             style={[
                 { color: textColor, fontSize, lineHeight: fontSize * 1.1 },
                 textShadowStyle,
             ]}
         >
-            {children ?? title}
+            {label}
         </RNText>
-    ) : null;
+    ) : label ?? null;
 
     const content = (
         <>
@@ -277,7 +280,8 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
 
     const buttonElement = corners === 'hexagon' ? (
         <Hexagon
-            forwardRef={forwardRef}
+            ref={forwardRef}
+            {...props}
             shape="flat-top"
             size={size}
             variant={variant}
@@ -286,7 +290,14 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
             color={color}
             highlightColor={highlightColor}
             active={active}
-            interactive={!disabled}
+            interactive
+            disabled={disabled}
+            accessibilityRole={accessibilityRole ?? 'button'}
+            accessibilityState={{
+                ...accessibilityState,
+                disabled,
+                selected: active || accessibilityState?.selected,
+            }}
             onPress={onPress ?? undefined}
             onLongPress={onLongPress ?? undefined}
             onPressIn={(e) => {
@@ -301,14 +312,24 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
                 setGlowDrawn(false);
                 onPressOut?.(e);
             }}
-            style={typeof style === 'function' ? undefined : (disabled ? { ...(style as ViewStyle || {}), opacity: 0.45 } as ViewStyle : style as ViewStyle)}
+            style={(state) => [
+                typeof style === 'function' ? style(state) : style,
+                disabled ? { opacity: 0.45 } : undefined,
+            ]}
         >
             {content}
         </Hexagon>
     ) : (
         <Pressable
             ref={forwardRef}
+            {...props}
             disabled={disabled}
+            accessibilityRole={accessibilityRole ?? 'button'}
+            accessibilityState={{
+                ...accessibilityState,
+                disabled,
+                selected: active || accessibilityState?.selected,
+            }}
             onPress={onPress ?? undefined}
             onLongPress={onLongPress ?? undefined}
             onPressIn={(e) => {
@@ -323,14 +344,16 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
                 setGlowDrawn(false);
                 onPressOut?.(e);
             }}
-            style={[container, style as ViewStyle]}
-            {...props}
+            style={(state) => [
+                container,
+                typeof style === 'function' ? style(state) : style,
+            ]}
         >
             {content}
         </Pressable>
     );
 
-    if (tooltip) {
+    if (tooltip !== null && tooltip !== undefined && tooltip !== false && tooltip !== '') {
         return (
             <Tooltip
                 placement={tooltipPlacement}
