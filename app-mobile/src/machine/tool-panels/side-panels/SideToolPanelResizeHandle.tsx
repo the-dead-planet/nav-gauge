@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import { ResizeHandle } from "@mobile-ui";
 import { useSideToolPanelResizeHandle } from "@apparatus";
+import { MachineResizeHandle } from "../MachineResizeHandle";
 
 const styles = StyleSheet.create({
     resizeHandleContainer: {
@@ -43,7 +43,7 @@ export const SideToolPanelResizeHandle: FC<Props> = ({
             styles.resizeHandleContainer,
             isLeft ? styles.resizeHandleLeft : styles.resizeHandleRight,
         ]}>
-            <ResizeHandle
+            <MachineResizeHandle
                 direction="horizontal"
                 side={placement === 'left' ? 'right' : 'left'}
                 onDrag={handleDrag}

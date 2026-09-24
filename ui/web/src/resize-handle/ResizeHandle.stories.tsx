@@ -30,6 +30,7 @@ export const Horizontal = {
                             <ResizeHandle
                                 direction="horizontal"
                                 side="right"
+                                tooltip="Drag to resize"
                                 onDrag={(delta) => {
                                     requestedWidth.current += delta;
                                     setWidth(Math.max(100, Math.min(600, requestedWidth.current)));
@@ -69,6 +70,7 @@ export const Vertical = {
                                 direction="vertical"
                                 side="top"
                                 color="primary"
+                                tooltip="Drag to resize"
                                 onDrag={(delta) => {
                                     requestedHeight.current -= delta;
                                     setHeight(Math.max(80, Math.min(400, requestedHeight.current)));
@@ -103,6 +105,7 @@ export const WithCallbacks = {
                             <ResizeHandle
                                 direction="horizontal"
                                 side="right"
+                                tooltip="Drag to resize"
                                 onDrag={(delta) => {
                                     requestedWidth.current += delta;
                                     setWidth(Math.max(100, Math.min(600, requestedWidth.current)));

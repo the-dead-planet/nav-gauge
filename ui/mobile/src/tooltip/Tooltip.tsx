@@ -1,8 +1,30 @@
-import { Children, cloneElement, FC, ReactElement, useCallback, useEffect, useRef, useState } from "react";
-import { View, Text, Modal, Pressable, useWindowDimensions, GestureResponderEvent, LayoutChangeEvent } from "react-native";
-import { ColorVariant, ErrorBoundary, TooltipPlacement, TooltipProps, useTheme } from "@ui";
+import { Children, cloneElement, FC, ReactElement, useEffect, useRef, useState } from "react";
+import { View, Text, Modal, useWindowDimensions, GestureResponderEvent, LayoutChangeEvent, StyleSheet } from "react-native";
+import { ColorVariant, ErrorBoundary, getAutoTooltipPlacement, TooltipPlacement, TooltipProps, useTheme } from "@ui";
 
 const OFFSET = 8;
+const LONG_PRESS_DELAY = 500;
+const LONG_PRESS_MOVE_TOLERANCE = 8;
+const AUTO_DISMISS_DELAY = 1500;
+
+const styles = StyleSheet.create({
+    overlay: {
+        flex: 1,
+    },
+    tooltip: {
+        position: 'absolute',
+        paddingHorizontal: 10,
+        paddingVertical: 4,
+        borderRadius: 0,
+    },
+    tooltipText: {
+        fontSize: 12,
+        lineHeight: 16.8,
+    },
+    connectionLine: {
+        position: 'absolute',
+    },
+});
 
 const getPosition = (
     rect: { x: number; y: number; width: number; height: number },
@@ -23,22 +45,6 @@ const getPosition = (
         default:
             return { top: 0, left: 0 };
     }
-};
-
-const getAutoPlacement = (rect: { x: number; y: number; width: number; height: number }, windowWidth: number, windowHeight: number): TooltipPlacement => {
-    const space = {
-        top: rect.y,
-        bottom: windowHeight - (rect.y + rect.height),
-        left: rect.x,
-        right: windowWidth - (rect.x + rect.width),
-    };
-
-    const max = Math.max(space.top, space.bottom, space.left, space.right);
-
-    if (max === space.top) return 'top';
-    if (max === space.bottom) return 'bottom';
-    if (max === space.left) return 'left';
-    return 'right';
 };
 
 const clampPosition = (
@@ -103,8 +109,10 @@ const getConnectionLineGeom = (
 
 interface ChildProps {
     ref?: unknown;
-    onPressIn?: (e: GestureResponderEvent) => void;
-    onPressOut?: (e: GestureResponderEvent) => void;
+    onTouchStart?: (event: GestureResponderEvent) => void;
+    onTouchMove?: (event: GestureResponderEvent) => void;
+    onTouchEnd?: (event: GestureResponderEvent) => void;
+    onTouchCancel?: (event: GestureResponderEvent) => void;
 }
 
 const hasCurrent = (ref: unknown): ref is { current: unknown } => (
@@ -154,45 +162,72 @@ const InternalTooltip: FC<TooltipProps> = ({
     const [connectionLine, setConnectionLine] = useState<{ top: number; left: number; width: number; height: number } | null>(null);
     const [triggerLayout, setTriggerLayout] = useState<{ x: number; y: number; width: number; height: number }>({ x: 0, y: 0, width: 0, height: 0 });
     const [tooltipSize, setTooltipSize] = useState<{ width: number; height: number }>({ width: 0, height: 0 });
+    const dismissTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const longPressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const touchOriginRef = useRef<{ x: number; y: number } | null>(null);
 
-    const recalculatePosition = () => {
-        const effective = placement === 'auto'
-            ? getAutoPlacement(triggerLayout, windowWidth, windowHeight)
-            : placement;
-        const pos = getPosition(triggerLayout, tooltipSize, effective);
-        const clamped = clampPosition(pos, tooltipSize, windowWidth, windowHeight);
-        setPosition(clamped);
-
-        if (showConnection) {
-            setConnectionLine(getConnectionLineGeom(triggerLayout, clamped, tooltipSize, effective));
-        } else {
-            setConnectionLine(null);
+    const clearLongPress = () => {
+        if (longPressTimerRef.current) {
+            clearTimeout(longPressTimerRef.current);
+            longPressTimerRef.current = null;
         }
     };
 
-    const show = () => setVisible(true);
-    const dismiss = () => setVisible(false);
+    const dismiss = () => {
+        if (dismissTimerRef.current) {
+            clearTimeout(dismissTimerRef.current);
+            dismissTimerRef.current = null;
+        }
+        setVisible(false);
+    };
 
-    const measureTrigger = useCallback(() => {
-        (triggerRef as unknown as { current?: { measureInWindow?: (cb: (x: number, y: number, w: number, h: number) => void) => void } }).current?.measureInWindow?.((x, y, width, height) => {
-            setTriggerLayout({ x, y, width, height });
-        });
-    }, []);
+    const show = () => {
+        setVisible(true);
+        if (dismissTimerRef.current) {
+            clearTimeout(dismissTimerRef.current);
+        }
+        dismissTimerRef.current = setTimeout(dismiss, AUTO_DISMISS_DELAY);
+    };
 
     const triggerRef = useRef<View>(null);
     const triggerRefCallback = (node: View | null) => {
         (triggerRef as { current: View | null }).current = node;
     };
 
-    const recalculateRef = useRef(recalculatePosition);
-    recalculateRef.current = recalculatePosition;
+    useEffect(() => {
+        if (!visible) {
+            return;
+        }
+        (triggerRef as unknown as { current?: { measureInWindow?: (callback: (x: number, y: number, width: number, height: number) => void) => void } }).current?.measureInWindow?.((x, y, width, height) => {
+            setTriggerLayout({ x, y, width, height });
+        });
+    }, [visible, windowWidth, windowHeight]);
 
     useEffect(() => {
-        if (!visible) return;
-        measureTrigger();
-        const timerId = setTimeout(() => recalculateRef.current(), 0);
-        return () => clearTimeout(timerId);
-    }, [visible, measureTrigger]);
+        if (!visible || triggerLayout.width === 0 || triggerLayout.height === 0 || tooltipSize.width === 0 || tooltipSize.height === 0) {
+            return;
+        }
+        const effectivePlacement = placement === 'auto'
+            ? getAutoTooltipPlacement(triggerLayout, tooltipSize, windowWidth, windowHeight)
+            : placement;
+        const nextPosition = clampPosition(
+            getPosition(triggerLayout, tooltipSize, effectivePlacement),
+            tooltipSize,
+            windowWidth,
+            windowHeight,
+        );
+        setPosition(nextPosition);
+        setConnectionLine(showConnection
+            ? getConnectionLineGeom(triggerLayout, nextPosition, tooltipSize, effectivePlacement)
+            : null);
+    }, [visible, triggerLayout, tooltipSize, placement, showConnection, windowWidth, windowHeight]);
+
+    useEffect(() => () => {
+        clearLongPress();
+        if (dismissTimerRef.current) {
+            clearTimeout(dismissTimerRef.current);
+        }
+    }, []);
 
     const child = Children.only(children) as ReactElement<ChildProps>;
     const childProps = child.props;
@@ -209,13 +244,37 @@ const InternalTooltip: FC<TooltipProps> = ({
                     originalRef.current = node;
                 }
             },
-            onPressIn: (e: GestureResponderEvent) => {
-                show();
-                childProps.onPressIn?.(e);
+            onTouchStart: (event: GestureResponderEvent) => {
+                clearLongPress();
+                touchOriginRef.current = {
+                    x: event.nativeEvent.pageX,
+                    y: event.nativeEvent.pageY,
+                };
+                longPressTimerRef.current = setTimeout(show, LONG_PRESS_DELAY);
+                childProps.onTouchStart?.(event);
             },
-            onPressOut: (e: GestureResponderEvent) => {
-                // cancelShow();
-                childProps.onPressOut?.(e);
+            onTouchMove: (event: GestureResponderEvent) => {
+                const origin = touchOriginRef.current;
+                if (origin && Math.hypot(
+                    event.nativeEvent.pageX - origin.x,
+                    event.nativeEvent.pageY - origin.y,
+                ) > LONG_PRESS_MOVE_TOLERANCE) {
+                    clearLongPress();
+                    dismiss();
+                }
+                childProps.onTouchMove?.(event);
+            },
+            onTouchEnd: (event: GestureResponderEvent) => {
+                clearLongPress();
+                touchOriginRef.current = null;
+                dismiss();
+                childProps.onTouchEnd?.(event);
+            },
+            onTouchCancel: (event: GestureResponderEvent) => {
+                clearLongPress();
+                touchOriginRef.current = null;
+                dismiss();
+                childProps.onTouchCancel?.(event);
             },
         }
     );
@@ -228,53 +287,48 @@ const InternalTooltip: FC<TooltipProps> = ({
     const onTooltipLayout = (e: LayoutChangeEvent) => {
         const { width, height } = e.nativeEvent.layout;
         setTooltipSize({ width, height });
-        recalculateRef.current();
     };
 
     return (
         <>
             {trigger}
-            {visible && content ? (
-                <Modal transparent animationType="fade" visible={visible} onRequestClose={dismiss}>
-                    <Pressable style={{ flex: 1 }} onPress={dismiss} />
+            {visible && content !== null && content !== undefined && content !== false && content !== '' ? (
+                <Modal transparent animationType="fade" visible={visible} onRequestClose={dismiss} statusBarTranslucent>
+                    <View pointerEvents="none" style={styles.overlay} accessible={false}>
                     <View
                         onLayout={onTooltipLayout}
-                        pointerEvents="none"
-                        style={{
-                            position: 'absolute',
-                            top: position.top,
-                            left: position.left,
-                            maxWidth,
-                            paddingHorizontal: 10,
-                            paddingVertical: 4,
-                            borderRadius: 0,
-                            backgroundColor: variantColors.backgroundColor,
-                            ...borderStyle,
-                        }}
+                        style={[
+                            styles.tooltip,
+                            {
+                                top: position.top,
+                                left: position.left,
+                                maxWidth,
+                                backgroundColor: variantColors.backgroundColor,
+                                ...borderStyle,
+                            },
+                        ]}
                     >
                         <Text
-                            style={{
-                                color: variantColors.color,
-                                fontSize: 12,
-                                lineHeight: 16.8,
-                            }}
+                            style={[styles.tooltipText, { color: variantColors.color }]}
                         >
                             {content}
                         </Text>
                     </View>
                     {showConnection && connectionLine ? (
                         <View
-                            pointerEvents="none"
-                            style={{
-                                position: 'absolute',
-                                top: connectionLine.top,
-                                left: connectionLine.left,
-                                width: connectionLine.width,
-                                height: connectionLine.height,
-                                backgroundColor: variantColors.color,
-                            }}
+                            style={[
+                                styles.connectionLine,
+                                {
+                                    top: connectionLine.top,
+                                    left: connectionLine.left,
+                                    width: Math.max(0, connectionLine.width),
+                                    height: Math.max(0, connectionLine.height),
+                                    backgroundColor: variantColors.color,
+                                },
+                            ]}
                         />
                     ) : null}
+                    </View>
                 </Modal>
             ) : null}
         </>

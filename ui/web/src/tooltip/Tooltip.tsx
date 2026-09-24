@@ -1,17 +1,21 @@
-import { Children, cloneElement, FC, ReactElement, useCallback, useEffect, useId, useRef, useState } from "react";
+import { Children, cloneElement, FC, FocusEvent, MouseEvent, PointerEvent, ReactElement, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import classNames from "classnames";
-import { ErrorBoundary, TooltipPlacement, TooltipProps, useTheme } from "@ui";
+import { ErrorBoundary, getAutoTooltipPlacement, TooltipPlacement, TooltipProps, useTheme } from "@ui";
 import style from './tooltip.module.css';
 
 interface ChildProps {
     "aria-describedby"?: string;
     ref?: unknown;
-    onClick?: (e: MouseEvent) => void;
-    onMouseEnter?: (e: MouseEvent) => void;
-    onMouseLeave?: (e: MouseEvent) => void;
-    onFocus?: (e: FocusEvent) => void;
-    onBlur?: (e: FocusEvent) => void;
+    onClick?: (event: MouseEvent) => void;
+    onMouseEnter?: (event: MouseEvent) => void;
+    onMouseLeave?: (event: MouseEvent) => void;
+    onFocus?: (event: FocusEvent) => void;
+    onBlur?: (event: FocusEvent) => void;
+    onPointerDown?: (event: PointerEvent) => void;
+    onPointerMove?: (event: PointerEvent) => void;
+    onPointerUp?: (event: PointerEvent) => void;
+    onPointerCancel?: (event: PointerEvent) => void;
 }
 
 const hasCurrent = (ref: unknown): ref is { current: unknown } => (
@@ -19,6 +23,8 @@ const hasCurrent = (ref: unknown): ref is { current: unknown } => (
 );
 
 const OFFSET = 8;
+const LONG_PRESS_DELAY = 500;
+const LONG_PRESS_MOVE_TOLERANCE = 8;
 
 const getPosition = (rect: DOMRect, placement: TooltipPlacement) => {
     switch (placement) {
@@ -33,22 +39,6 @@ const getPosition = (rect: DOMRect, placement: TooltipPlacement) => {
         default:
             return { top: 0, left: 0 };
     }
-};
-
-const getAutoPlacement = (rect: DOMRect, windowWidth: number, windowHeight: number): TooltipPlacement => {
-    const space = {
-        top: rect.top,
-        bottom: windowHeight - rect.bottom,
-        left: rect.left,
-        right: windowWidth - rect.right,
-    };
-
-    const max = Math.max(space.top, space.bottom, space.left, space.right);
-
-    if (max === space.top) return 'top';
-    if (max === space.bottom) return 'bottom';
-    if (max === space.left) return 'left';
-    return 'right';
 };
 
 const clampPosition = (
@@ -143,7 +133,7 @@ const InternalTooltip: FC<TooltipProps> = ({
 }) => {
     const theme = useTheme();
     const tooltipId = useId();
-    const childRef = useRef<HTMLElement>(null);
+    const childRef = useRef<Element>(null);
     const tooltipRef = useRef<HTMLDivElement>(null);
     const [visible, setVisible] = useState(false);
     const [position, setPosition] = useState({ top: -9999, left: -9999 });
@@ -151,21 +141,37 @@ const InternalTooltip: FC<TooltipProps> = ({
         placement === 'auto' ? 'bottom' : placement
     );
     const [connectionLine, setConnectionLine] = useState<{ top: number; left: number; width: number; height: number } | null>(null);
+    const hoveredRef = useRef(false);
+    const focusedRef = useRef(false);
+    const suppressedRef = useRef(false);
+    const longPressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const pointerOriginRef = useRef<{ x: number; y: number } | null>(null);
 
-    const recalculatePosition = useCallback(() => {
+    const getViewportSize = () => ({
+        width: window.visualViewport?.width ?? window.innerWidth,
+        height: window.visualViewport?.height ?? window.innerHeight,
+    });
+
+    const recalculatePosition = () => {
         if (!childRef.current || !visible) {
             return;
         };
 
         const triggerRect = childRef.current.getBoundingClientRect();
+        const tooltipRect = tooltipRef.current?.getBoundingClientRect();
+        const viewport = getViewportSize();
         const effective = placement === 'auto'
-            ? getAutoPlacement(triggerRect, theme.media$.value.windowWidth, theme.media$.value.windowHeight)
+            ? getAutoTooltipPlacement(
+                { x: triggerRect.left, y: triggerRect.top, width: triggerRect.width, height: triggerRect.height },
+                { width: tooltipRect?.width ?? 0, height: tooltipRect?.height ?? 0 },
+                viewport.width,
+                viewport.height,
+            )
             : placement;
         setEffectivePlacement(effective);
 
         const pos = getPosition(triggerRect, effective);
-        const tooltipRect = tooltipRef.current?.getBoundingClientRect();
-        const clamped = clampPosition(pos, tooltipRect, theme.media$.value.windowWidth, theme.media$.value.windowHeight, effective);
+        const clamped = clampPosition(pos, tooltipRect, viewport.width, viewport.height, effective);
         setPosition(clamped);
 
         if (showConnection && tooltipRect) {
@@ -173,7 +179,7 @@ const InternalTooltip: FC<TooltipProps> = ({
         } else {
             setConnectionLine(null);
         }
-    }, [visible, placement, showConnection, theme]);
+    };
 
     useEffect(() => {
         if (visible) {
@@ -181,12 +187,11 @@ const InternalTooltip: FC<TooltipProps> = ({
         }
     }, [visible, recalculatePosition]);
 
-    const show = () => {
-        setVisible(true)
-    };
-
-    const hide = () => {
-        setVisible(false);
+    const clearLongPress = () => {
+        if (longPressTimerRef.current) {
+            clearTimeout(longPressTimerRef.current);
+            longPressTimerRef.current = null;
+        }
     };
 
     useEffect(() => {
@@ -194,14 +199,29 @@ const InternalTooltip: FC<TooltipProps> = ({
             return;
         };
 
+        const hideOnEscape = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                suppressedRef.current = true;
+                setVisible(false);
+            }
+        };
+        const visualViewport = window.visualViewport;
         window.addEventListener('scroll', recalculatePosition, true);
         window.addEventListener('resize', recalculatePosition);
+        window.addEventListener('keydown', hideOnEscape);
+        visualViewport?.addEventListener('scroll', recalculatePosition);
+        visualViewport?.addEventListener('resize', recalculatePosition);
 
         return () => {
             window.removeEventListener('scroll', recalculatePosition, true);
             window.removeEventListener('resize', recalculatePosition);
+            window.removeEventListener('keydown', hideOnEscape);
+            visualViewport?.removeEventListener('scroll', recalculatePosition);
+            visualViewport?.removeEventListener('resize', recalculatePosition);
         };
     }, [visible, recalculatePosition]);
+
+    useEffect(() => clearLongPress, []);
 
     const child = Children.only(children) as ReactElement<ChildProps>;
     const childProps = child.props;
@@ -209,8 +229,10 @@ const InternalTooltip: FC<TooltipProps> = ({
     const trigger = cloneElement(
         child,
         {
-            "aria-describedby": visible ? tooltipId : undefined,
-            ref: (node: HTMLElement | null) => {
+            "aria-describedby": visible
+                ? [childProps['aria-describedby'], tooltipId].filter(Boolean).join(' ')
+                : childProps['aria-describedby'],
+            ref: (node: Element | null) => {
                 childRef.current = node;
                 const originalRef = childProps.ref;
                 if (typeof originalRef === 'function') {
@@ -219,25 +241,73 @@ const InternalTooltip: FC<TooltipProps> = ({
                     originalRef.current = node;
                 }
             },
-            onClick: (e: MouseEvent) => {
-                hide();
-                childProps.onClick?.(e);
+            onClick: (event: MouseEvent) => {
+                suppressedRef.current = true;
+                setVisible(false);
+                childProps.onClick?.(event);
             },
-            onMouseEnter: (e: MouseEvent) => {
-                show();
-                childProps.onMouseEnter?.(e);
+            onMouseEnter: (event: MouseEvent) => {
+                hoveredRef.current = true;
+                suppressedRef.current = false;
+                if (window.matchMedia('(hover: hover)').matches) {
+                    setVisible(true);
+                }
+                childProps.onMouseEnter?.(event);
             },
-            onMouseLeave: (e: MouseEvent) => {
-                hide();
-                childProps.onMouseLeave?.(e);
+            onMouseLeave: (event: MouseEvent) => {
+                hoveredRef.current = false;
+                suppressedRef.current = false;
+                if (!focusedRef.current) {
+                    setVisible(false);
+                }
+                childProps.onMouseLeave?.(event);
             },
-            onFocus: (e: FocusEvent) => {
-                show();
-                childProps.onFocus?.(e);
+            onFocus: (event: FocusEvent) => {
+                focusedRef.current = true;
+                suppressedRef.current = false;
+                setVisible(true);
+                childProps.onFocus?.(event);
             },
-            onBlur: (e: FocusEvent) => {
-                hide();
-                childProps.onBlur?.(e);
+            onBlur: (event: FocusEvent) => {
+                focusedRef.current = false;
+                suppressedRef.current = false;
+                if (!hoveredRef.current) {
+                    setVisible(false);
+                }
+                childProps.onBlur?.(event);
+            },
+            onPointerDown: (event: PointerEvent) => {
+                if (event.pointerType !== 'mouse') {
+                    clearLongPress();
+                    pointerOriginRef.current = { x: event.clientX, y: event.clientY };
+                    longPressTimerRef.current = setTimeout(() => {
+                        suppressedRef.current = false;
+                        setVisible(true);
+                    }, LONG_PRESS_DELAY);
+                }
+                childProps.onPointerDown?.(event);
+            },
+            onPointerMove: (event: PointerEvent) => {
+                const origin = pointerOriginRef.current;
+                if (origin && Math.hypot(event.clientX - origin.x, event.clientY - origin.y) > LONG_PRESS_MOVE_TOLERANCE) {
+                    clearLongPress();
+                    setVisible(false);
+                }
+                childProps.onPointerMove?.(event);
+            },
+            onPointerUp: (event: PointerEvent) => {
+                clearLongPress();
+                pointerOriginRef.current = null;
+                if (event.pointerType !== 'mouse') {
+                    setVisible(false);
+                }
+                childProps.onPointerUp?.(event);
+            },
+            onPointerCancel: (event: PointerEvent) => {
+                clearLongPress();
+                pointerOriginRef.current = null;
+                setVisible(false);
+                childProps.onPointerCancel?.(event);
             },
         }
     );
@@ -245,7 +315,7 @@ const InternalTooltip: FC<TooltipProps> = ({
     return (
         <>
             {trigger}
-            {visible && content ? createPortal(
+            {visible && content !== null && content !== undefined && content !== false && content !== '' ? createPortal(
                 <>
                     <div
                         ref={tooltipRef}

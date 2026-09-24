@@ -27,6 +27,7 @@ const allPlacements: TooltipPlacement[] = ['top', 'bottom', 'left', 'right', 'au
 
 export const Placements: FC = () => (
     <ScrollView contentContainerStyle={styles.container}>
+        <Text style={styles.label}>Long press a button to show its tooltip.</Text>
         <Text style={styles.label}>Placements</Text>
         <View style={styles.row}>
             {allPlacements.map((placement) => (
