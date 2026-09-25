@@ -10,7 +10,7 @@ attribution typography and positioning.
    - Put accessibility label, hint, and disabled state on the Pressable.
    - Prevent rejected external-link promises from becoming unhandled.
    - Remove the redundant role from web native anchors.
-2. Mobile settings cleanup
+2. Mobile settings cleanup (completed)
    - Replace raw Text and manual uppercase, alignment, shade, and theme colors.
 3. Web label semantics
    - Use Label only for associated controls; use Text or Span for descriptions.
