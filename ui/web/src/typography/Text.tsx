@@ -1,8 +1,10 @@
 import { ComponentProps, FC } from "react";
-import { TypographyProps } from "@ui";
+import classNames from "classnames";
+import { TextVariant, TypographyProps } from "@ui";
 import { P, Span, H1, H2, H3, H4, H5, H6 } from './';
+import styles from './typography.module.css';
 
-export type TextVariant = 'header' | 'body' | 'caption';
+export type { TextVariant } from '@ui';
 
 const variantDefaultElement: Record<TextVariant, 'p' | 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'> = {
     header: 'h2',
@@ -29,6 +31,7 @@ export interface TextProps extends TypographyProps {
 export const Text: FC<ComponentProps<'p'> & TextProps> = ({
     variant = 'body',
     as,
+    className,
     children,
     ...props
 }) => {
@@ -36,7 +39,7 @@ export const Text: FC<ComponentProps<'p'> & TextProps> = ({
     const Component = elementMap[tag];
 
     return (
-        <Component {...props}>
+        <Component {...props} className={classNames(styles[`variant-${variant}`], className)}>
             {children}
         </Component>
     );

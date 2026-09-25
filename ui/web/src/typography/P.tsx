@@ -1,62 +1,8 @@
 import { ComponentProps, FC } from "react";
-import classNames from "classnames";
-import { defaultTypographyProps, TypographyProps } from "@ui";
-import { textCssNames } from "./cssUtil";
+import { TypographyProps } from "@ui";
+import { TypographyElement } from "./TypographyElement";
 import styles from './typography.module.css';
 
-export const P: FC<ComponentProps<'p'> & TypographyProps> = ({
-    color,
-    fontType = defaultTypographyProps.fontType,
-    align,
-    nowrap,
-    bold,
-    shadow,
-    tabular,
-    m,
-    mv,
-    mh,
-    mt,
-    mr,
-    mb,
-    ml,
-    p,
-    pv,
-    ph,
-    pt,
-    pr,
-    pb,
-    pl,
-    className,
-    children,
-    ...props
-}) => {
-    const cssNames = textCssNames({
-        color,
-        fontType,
-        align,
-        nowrap,
-        bold,
-        shadow,
-        tabular,
-        m,
-        mv,
-        mh,
-        mt,
-        mr,
-        mb,
-        ml,
-        p,
-        pv,
-        ph,
-        pt,
-        pr,
-        pb,
-        pl,
-        className,
-    });
-    return (
-        <p className={classNames(styles.p, ...cssNames)} {...props}>
-            {children}
-        </p>
-    );
-};
+export const P: FC<ComponentProps<'p'> & TypographyProps> = (props) => (
+    <TypographyElement as="p" baseClassName={styles.p} {...props} />
+);

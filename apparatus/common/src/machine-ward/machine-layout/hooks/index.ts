@@ -1,5 +1,6 @@
 export * from './useToolPanelSizeClamp';
 export * from './useToolIcons';
+export * from './useEffectiveRightPanelWidth';
 export * from './useToolPanelHeader';
 export * from './useSideToolPanel';
 export * from './useSideToolPanelResizeHandle';

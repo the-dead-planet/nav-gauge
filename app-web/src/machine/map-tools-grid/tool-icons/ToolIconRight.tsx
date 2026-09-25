@@ -3,7 +3,7 @@ import { FC } from "react";
 import { ObservedToolIcon, useTranslation } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { useTheme } from "@ui";
-import { Button, Transition } from "@web-ui";
+import { Button, Span, Transition } from "@web-ui";
 import { T } from "@web-apparatus";
 
 interface Props {
@@ -56,7 +56,7 @@ export const ToolIconRight: FC<ObservedToolIcon<maplibregl.Map> & Props> = ({
                 disabled={disabled}
                 className={className}
             >
-                {value}
+                {value ? <Span color="primary" shade={500}>{value}</Span> : null}
             </Button>
         </Transition>
     );

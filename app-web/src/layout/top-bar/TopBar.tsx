@@ -30,7 +30,7 @@ export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
             <div className={classNames(styles["section"], styles["left"])}>
                 <UnderConstructionChip />
             </div>
-            <H1 color="primary" fontType={FontType.NeonHeader} className={styles['header']}>
+            <H1 color="primary" shade={500} fontType={FontType.NeonHeader} className={styles['header']}>
                 {title}
             </H1>
             <div className={classNames(styles["section"], styles["right"])}>

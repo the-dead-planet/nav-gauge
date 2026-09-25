@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { FontType, ColorVariant } from '@ui';
-import { H1, H2, H3, H4, H5, H6, Label, P, Span, Text } from './';
+import { H1, H2, H3, H4, H5, H6, Label, LinkText, P, Span, Text } from './';
 
 const colors: (ColorVariant | undefined)[] = [undefined, 'primary', 'secondary', 'tertiary', 'neutral'];
 const variantLabels = ['Default', 'Primary', 'Secondary', 'Tertiary', 'Neutral'];
@@ -18,6 +18,9 @@ export const TextStory = {
     args: {
         variant: 'body' as const,
         fontType: FontType.Default,
+        shade: undefined,
+        bold: false,
+        uppercase: false,
         children: 'The management of the dead planet wishes you a very fine day.',
     },
     argTypes: {
@@ -39,6 +42,11 @@ export const TextStory = {
             control: 'select',
             options: Object.values(FontType),
         },
+        shade: {
+            control: 'select',
+            options: ['(auto)', 100, 500, 900],
+            mapping: { '(auto)': undefined },
+        },
     },
     render: (args: Record<string, unknown>) => (
         <Text
@@ -46,6 +54,9 @@ export const TextStory = {
             as={args.as as 'p' | 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | undefined}
             color={args.color as 'primary' | 'secondary' | 'tertiary' | 'neutral' | undefined}
             fontType={args.fontType as FontType}
+            shade={args.shade as 100 | 500 | 900 | undefined}
+            bold={args.bold as boolean}
+            uppercase={args.uppercase as boolean}
         >
             {args.children as string}
         </Text>
@@ -53,17 +64,57 @@ export const TextStory = {
 } satisfies StoryObj;
 
 export const Labels: Story = {
+    render: () => {
+        const [disabled, setDisabled] = useState(false);
+
+        return (
+            <div style={{ display: 'grid', gap: 8 }}>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={disabled}
+                        onChange={(event) => setDisabled(event.target.checked)}
+                    /> Disabled
+                </label>
+                <Label color="primary" disabled={disabled}>Label</Label>
+            </div>
+        );
+    },
+};
+
+export const Spacing: Story = {
     render: () => (
-        <div style={{ display: 'grid', gap: 8 }}>
-            <Label>Enabled label</Label>
-            <Label disabled>Disabled label</Label>
-        </div>
+        <Text color="primary" bold uppercase m="sm" p="md">
+            Bold uppercase text with margin and padding
+        </Text>
     ),
+};
+
+export const ExternalLink: Story = {
+    render: () => {
+        const [disabled, setDisabled] = useState(false);
+
+        return (
+            <div style={{ display: 'grid', gap: 8 }}>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={disabled}
+                        onChange={(event) => setDisabled(event.target.checked)}
+                    /> Disabled
+                </label>
+                <LinkText href="https://openstreetmap.org/copyright" disabled={disabled}>
+                    OpenStreetMap copyright
+                </LinkText>
+            </div>
+        );
+    },
 };
 
 export const All = {
     render: () => {
         const [fontType, setFontType] = useState<FontType>(FontType.Default);
+        const [disabled, setDisabled] = useState(false);
 
         return (
             <div>
@@ -81,6 +132,13 @@ export const All = {
                             </option>
                         ))}
                     </select>
+                    <label>
+                        <input
+                            type="checkbox"
+                            checked={disabled}
+                            onChange={(event) => setDisabled(event.target.checked)}
+                        /> Disabled
+                    </label>
                 </div>
                 <div style={{
                     display: 'grid',
@@ -91,12 +149,17 @@ export const All = {
                     {colors.map((color, i) => (
                         <h5 key={color} style={{ margin: 0 }}>{variantLabels[i]}</h5>
                     ))}
-                    {(['P', 'Span', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'] as const).map((Tag) => (
+                    {(['P', 'Span', 'Label', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'] as const).map((Tag) => (
                         colors.map((color) => {
-                            const Component = { P, Span, H1, H2, H3, H4, H5, H6 }[Tag];
+                            const Component = { P, Span, Label, H1, H2, H3, H4, H5, H6 }[Tag];
 
                             return (
-                                <Component key={`${Tag}-${color}`} color={color} fontType={fontType}>
+                                <Component
+                                    key={`${Tag}-${color}`}
+                                    color={color}
+                                    fontType={fontType}
+                                    disabled={disabled}
+                                >
                                     {Tag}{color ? ` (${color})` : ''}
                                 </Component>
                             );

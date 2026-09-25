@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     content: {
         flex: 1,
         flexDirection: 'row',
+        zIndex: 4,
     },
     component: {
         flex: 1,

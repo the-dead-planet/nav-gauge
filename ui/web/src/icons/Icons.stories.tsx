@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { Icons, useTheme } from '@ui';
 import iconRegistry from '../../../common/src/icons/svg/noun-project/icon-registry.json';
 import { Icon } from './Icon';
+import { LinkText } from '../typography';
 
 const { NounProject, ...rest } = Icons;
 const IconData = {
@@ -46,11 +47,13 @@ export const IconsWithCreators = {
                                 <p style={{ margin: 0 }}>{iconName}</p>
                                 {data ? (
                                     <p style={{ margin: 0 }}>
-                                        {data.creator} from <a href={data.href} target='_blank'>{data.source}</a>
+                                        {data.creator} from <LinkText href={data.href}>{data.source}</LinkText>
                                     </p>
                                 ) : (
                                     <p>
-                                        <a href="https://boxicons.com/icons?free=true" target='_blank'>Boxicons</a> or <a href="https://lucide.dev/icons" target='_blank'>Lucide</a>
+                                        <LinkText href="https://boxicons.com/icons?free=true">Boxicons</LinkText>
+                                        {' or '}
+                                        <LinkText href="https://lucide.dev/icons">Lucide</LinkText>
                                     </p>
                                 )}
                             </Fragment>

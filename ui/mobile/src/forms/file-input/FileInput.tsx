@@ -83,7 +83,7 @@ export const FileInput: FC<Props & ViewProps> = ({
                 tooltip={fileLabel}
                 onPress={handleUpload}
             />
-            <Text color={color} style={styles.routeName}>
+            <Text color={color} shade={500} style={styles.routeName}>
                 {fileName || noNameLabel}
             </Text>
             {actionButtons?.map(({ id, element }) => <Fragment key={id}>{element}</Fragment>)}

@@ -1,8 +1,8 @@
 import { FC } from "react";
-import { Text as RNText, TextProps as RNTextProps, StyleSheet } from "react-native";
-import { defaultTypographyProps, FontType, ColorVariant, TypographyProps, useTheme } from "@ui";
+import { Text as RNText, TextProps as RNTextProps, StyleSheet, TextStyle } from "react-native";
+import { defaultTypographyProps, FontType, TextVariant, TypographyProps, Theme, useTheme } from "@ui";
 
-export type TextVariant = 'header' | 'body' | 'caption';
+export type { TextVariant } from '@ui';
 
 const variantStyles = StyleSheet.create({
     header: {
@@ -30,7 +30,15 @@ const mobileFontFamily: Record<FontType, string | undefined> = {
     [FontType.NeonText]: 'BitcountSingle-Bold',
 };
 
-export interface TextProps extends RNTextProps, TypographyProps {
+const mobileBoldFontFamily: Partial<Record<FontType, string>> = {
+    [FontType.Default]: 'SpaceGrotesk-Bold',
+    [FontType.Numeric]: 'UbuntuMono-Bold',
+};
+
+const spacing = (value: TypographyProps['m']): number | undefined =>
+    value ? Number.parseInt(Theme.spacing[value], 10) : undefined;
+
+export interface TextProps extends Omit<RNTextProps, 'disabled'>, TypographyProps {
     variant?: TextVariant;
     /** Accepted for API compatibility with web. On mobile only `<Text>` is rendered. */
     as?: string;
@@ -39,15 +47,35 @@ export interface TextProps extends RNTextProps, TypographyProps {
 export const Text: FC<TextProps> = ({
     variant = 'body',
     color,
+    shade,
     align,
     nowrap,
+    bold,
+    disabled,
+    uppercase,
     tabular,
     shadow,
-    fontType = defaultTypographyProps.fontType,
+    m,
+    mv,
+    mh,
+    mt,
+    mr,
+    mb,
+    ml,
+    p,
+    pv,
+    ph,
+    pt,
+    pr,
+    pb,
+    pl,
+    as: _as,
+    fontType = defaultTypographyProps.fontType ?? FontType.Default,
     style,
     ...props
 }) => {
     const theme = useTheme();
+    const isBold = bold || variant === 'header';
 
     return (
         <RNText
@@ -55,20 +83,33 @@ export const Text: FC<TextProps> = ({
             style={[
                 variantStyles[variant],
                 {
-                    fontFamily: fontType ? mobileFontFamily[fontType] : undefined,
+                    fontFamily: isBold
+                        ? mobileBoldFontFamily[fontType] ?? mobileFontFamily[fontType]
+                        : mobileFontFamily[fontType],
                     color: color
-                        ? theme.color(color as ColorVariant)
+                        ? theme.color(color, shade ?? (theme.isDark ? 100 : 900))
                         : theme.componentColor('text'),
+                    fontWeight: isBold ? '700' : undefined,
                     fontVariant: tabular ? ['tabular-nums'] : undefined,
                     textAlign: align,
+                    textTransform: uppercase ? 'uppercase' : undefined,
                     flexShrink: nowrap ? 1 : undefined,
+                    marginTop: spacing(mt ?? mv ?? m),
+                    marginRight: spacing(mr ?? mh ?? m),
+                    marginBottom: spacing(mb ?? mv ?? m),
+                    marginLeft: spacing(ml ?? mh ?? m),
+                    paddingTop: spacing(pt ?? pv ?? p),
+                    paddingRight: spacing(pr ?? ph ?? p),
+                    paddingBottom: spacing(pb ?? pv ?? p),
+                    paddingLeft: spacing(pl ?? ph ?? p),
                     textShadowColor: shadow
                         ? theme.color(color ?? 'neutral', color === 'neutral' ? 800 : 900, 0.5)
                         : undefined,
                     textShadowOffset: shadow ? { width: -1, height: 0 } : undefined,
                     textShadowRadius: shadow ? 1 : undefined,
-                },
+                } satisfies TextStyle,
                 style,
+                disabled && { color: theme.color(color ?? 'neutral', theme.isDark ? 700 : 300) },
             ]}
             {...props}
         />

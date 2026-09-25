@@ -1,34 +1,67 @@
 import { FC } from "react";
-import { AttributionEntry } from "@apparatus";
-import { StyleSheet, View } from "react-native";
-import { Text } from "@mobile-ui";
+import { useEffectiveRightPanelWidth } from "@apparatus";
+import { StyleSheet, useWindowDimensions, View } from "react-native";
+import { Icon, LinkText } from "@mobile-ui";
 import { useSubjectState } from "@tinker-chest";
-import { useTheme } from "@ui";
+import { Icons, useTheme } from "@ui";
 import { useMobileMachineWard } from "@mobile-apparatus";
 
 const styles = StyleSheet.create({
+    anchor: {
+        position: 'absolute',
+        top: 6,
+        zIndex: 3,
+    },
     container: {
         position: 'absolute',
-        right: 0,
-        top: 200,
+        top: 0,
+        left: 0,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 6,
+        paddingHorizontal: 8,
+        borderWidth: 1,
         borderRadius: 4,
+        transform: [{ rotate: '90deg' }],
+        transformOrigin: [0, 0, 0],
+    },
+    link: {
+        fontSize: 10,
+        lineHeight: 12,
     },
 });
 
 export const Attributions: FC = () => {
     const theme = useTheme();
-    const { attributionVault } = useMobileMachineWard();
+    const { height } = useWindowDimensions();
+    const rightPanelWidth = useEffectiveRightPanelWidth();
+    const { attributionVault, cartomancer } = useMobileMachineWard();
+    const [selectedStyle] = useSubjectState(cartomancer.selectedStyle$);
     const [attributions] = useSubjectState(attributionVault.attributions$);
-    const entries = ([...Object.values(attributions)] as AttributionEntry[][]).flatMap((el) => el);
+    const entries = attributions.get(selectedStyle.id);
+
+    if (!entries || entries.length === 0) {
+        return null;
+    }
 
     return (
-        <View style={[styles.container, {
-            backgroundColor: theme.componentColor('background', .6)
-        }]}>
-            {entries.map(({ text }) => (
-                // TODO: Link
-                <Text key={text}>{text}</Text>
-            ))}
+        <View pointerEvents="box-none" style={[styles.anchor, { right: rightPanelWidth + 6 }]}>
+            <View style={[styles.container, {
+                backgroundColor: theme.componentColor('background', .87),
+                borderColor: theme.color('neutral'),
+            }]}>
+                <Icon
+                    icon={Icons.NounProject.Attribution}
+                    color={theme.color('neutral', 500)}
+                    width={16}
+                    height={16}
+                />
+                {entries.map(({ text, shortText, href }) => (
+                    <LinkText key={text} href={href} color="neutral" shade={500} style={styles.link} accessibilityLabel={text}>
+                        {height < 500 ? shortText ?? text : text}
+                    </LinkText>
+                ))}
+            </View>
         </View>
     );
 };

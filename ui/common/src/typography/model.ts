@@ -1,4 +1,5 @@
 import { ColorVariant, SpacingVariant } from "../model";
+import { ColorShade } from "../theme";
 
 /**
  * Fonts available for typography components. Usage and role:
@@ -24,13 +25,18 @@ export enum FontType {
     NeonText = 'neon-text',
 }
 
+export type TextVariant = 'header' | 'body' | 'caption';
+
 export interface TypographyProps {
     color?: ColorVariant;
+    shade?: ColorShade;
     fontType?: FontType;
     align?: 'left' | 'right';
     nowrap?: boolean;
     shadow?: boolean;
     bold?: boolean;
+    disabled?: boolean;
+    uppercase?: boolean;
     tabular?: boolean;
     /**
      * Margin (all sides)
@@ -88,8 +94,4 @@ export interface TypographyProps {
      * Padding left
      */
     pl?: SpacingVariant;
-}
-
-export interface LabelProps {
-    disabled?: boolean;
 }
