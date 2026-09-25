@@ -1,8 +1,8 @@
 import { FC } from "react";
 import { Text as RNText, TextProps as RNTextProps, StyleSheet, TextStyle } from "react-native";
-import { defaultTypographyProps, FontType, TypographyProps, Theme, useTheme } from "@ui";
+import { defaultTypographyProps, FontType, TextVariant, TypographyProps, Theme, useTheme } from "@ui";
 
-export type TextVariant = 'header' | 'body' | 'caption';
+export type { TextVariant } from '@ui';
 
 const variantStyles = StyleSheet.create({
     header: {

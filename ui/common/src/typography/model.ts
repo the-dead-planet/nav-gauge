@@ -24,6 +24,8 @@ export enum FontType {
     NeonText = 'neon-text',
 }
 
+export type TextVariant = 'header' | 'body' | 'caption';
+
 export interface TypographyProps {
     color?: ColorVariant;
     fontType?: FontType;

@@ -60,9 +60,9 @@ export const TextStyling: FC = () => (
 export const TextCustomElement: FC = () => (
     <DisabledPreview>{(disabled) => (
         <View style={{ rowGap: 12 }}>
-            <Text as="h1" variant="header" disabled={disabled}>as="h1" — renders as h2 per variant</Text>
-            <Text as="span" variant="body" disabled={disabled}>as="span" — renders as body text</Text>
-            <Text as="p" variant="caption" disabled={disabled}>as="p" — renders as caption</Text>
+            <Text as="h1" variant="header" disabled={disabled}>as="h1" renders as native header text</Text>
+            <Text as="span" variant="body" disabled={disabled}>as="span" renders as native body text</Text>
+            <Text as="p" variant="caption" disabled={disabled}>as="p" renders as native caption</Text>
         </View>
     )}</DisabledPreview>
 );
