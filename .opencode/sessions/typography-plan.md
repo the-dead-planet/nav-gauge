@@ -24,7 +24,7 @@ attribution typography and positioning.
    - Consolidate repeated form-control sizes; leave Button and Chip separate.
 8. Native input fonts (completed)
    - Apply configured default and numeric fonts to native mobile inputs.
-9. Residual production text
+9. Residual production text (completed)
    - Migrate status, slider, fallback-page, dialog, and preset text where useful.
 10. Typography correctness
     - Fix default web shadow, center alignment, mobile nowrap, shade docs, and mobile as.

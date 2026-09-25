@@ -11,6 +11,7 @@ import {
 import { useWebMachineWard } from "@web-apparatus";
 import { useSubjectState } from "@tinker-chest";
 import RouteStoryGear, { Animatrix, Preset } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { Label } from "@web-ui";
 import styles from './controls.module.css';
 
 interface Props {
@@ -84,7 +85,7 @@ export const Presets: FC<Props> = ({ animatrix, preset$, isPresetActive$ }) => {
         <div className={styles['presets']}>
             {/* TODO: Move to reusable component */}
             <div>
-                <label htmlFor="presets" style={{ fontSize: "12px" }}>Preset</label>
+                <Label htmlFor="presets">Preset</Label>
                 <select name="presets" id="presets" value={isPresetActive ? preset : ""} onChange={handleChange}>
                     <option value="" disabled defaultValue="">Custom</option>
                     {RouteStoryGear.presetOptions.map((option) => (
