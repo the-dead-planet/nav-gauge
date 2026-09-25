@@ -32,6 +32,8 @@ export const Checkbox: FC<CheckboxProps> = ({
 
     return (
         <Pressable
+            accessibilityRole="checkbox"
+            accessibilityState={{ checked, disabled }}
             disabled={disabled}
             onPress={() => onChange(!checked)}
             style={containerStyle}

@@ -121,6 +121,9 @@ export function Dropdown<T>({
         <View>
             <View ref={triggerRef} collapsable={false}>
                 <Pressable
+                    accessibilityRole="combobox"
+                    accessibilityState={{ disabled, expanded: isOpen }}
+                    accessibilityValue={{ text: selectedOption?.label ?? placeholder }}
                     disabled={disabled}
                     onPress={handleOpen}
                     style={({ pressed }) => [
@@ -164,6 +167,7 @@ export function Dropdown<T>({
 
             <Modal visible={isOpen} transparent animationType="fade">
                 <Pressable
+                    accessible={false}
                     style={{ flex: 1 }}
                     onPress={() => setIsOpen(false)}
                 >
@@ -195,6 +199,8 @@ export function Dropdown<T>({
                                 return (
                                     <TouchableHighlight
                                         key={String(option.value)}
+                                        accessibilityRole="menuitem"
+                                        accessibilityState={{ selected }}
                                         underlayColor={theme.color(highlightColor, 500, 0.14)}
                                         onPress={() => {
                                             onChange?.(option.value);

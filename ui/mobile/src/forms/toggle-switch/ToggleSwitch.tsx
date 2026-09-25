@@ -287,6 +287,8 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
 
     return (
         <Pressable
+            accessibilityRole="switch"
+            accessibilityState={{ checked, disabled }}
             disabled={disabled}
             onPress={() => onChange(!checked)}
             style={containerStyle}

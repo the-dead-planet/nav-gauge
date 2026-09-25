@@ -28,7 +28,7 @@ attribution typography and positioning.
    - Migrate status, slider, fallback-page, dialog, and preset text where useful.
 10. Typography correctness (completed)
     - Fix default web shadow, center alignment, mobile nowrap, shade docs, and mobile as.
-11. Control accessibility
+11. Control accessibility (completed)
     - Add roles and state to mobile Checkbox, ToggleSwitch, and Dropdown.
 12. Web implementation reduction
     - Simplify class generation and internal imports without speculative APIs.

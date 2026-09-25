@@ -41,6 +41,7 @@ export const CheckboxVariants: FC = () => {
             >
                 {checked ? 'Checked' : 'Unchecked'}
             </Checkbox>
+            <Checkbox checked={false} onChange={() => {}} disabled>Disabled</Checkbox>
 
             <View style={styles.section}>
                 <Text style={styles.label}>Size</Text>
