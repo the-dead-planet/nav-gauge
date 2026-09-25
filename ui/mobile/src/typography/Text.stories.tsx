@@ -38,6 +38,14 @@ export const TextColors: FC = () => (
     )}</DisabledPreview>
 );
 
+export const TextShades: FC = () => (
+    <View style={{ rowGap: 12 }}>
+        <Text color="primary" shade={100}>Primary 100</Text>
+        <Text color="primary" shade={500}>Primary 500</Text>
+        <Text color="primary" shade={900}>Primary 900</Text>
+    </View>
+);
+
 export const TextFonts: FC = () => (
     <DisabledPreview>{(disabled) => (
         <View style={{ rowGap: 12 }}>

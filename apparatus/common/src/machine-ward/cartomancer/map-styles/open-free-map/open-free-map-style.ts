@@ -4,14 +4,17 @@ import { MapStyle } from "../model";
 const attribution: AttributionEntry[] = [
     {
         text: "OpenFreeMap",
+        shortText: "OFM",
         href: "https://openfreemap.org"
     },
     {
         text: "OpenMapTiles",
+        shortText: "OMT",
         href: "https://www.openmaptiles.org"
     },
     {
         text: "OpenStreetMap",
+        shortText: "OSM",
         href: "https://www.openstreetmap.org/copyright"
     }
 ];

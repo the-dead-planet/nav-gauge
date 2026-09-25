@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, createElement, ElementType, ReactElement } from "react";
+import { ComponentPropsWithoutRef, createElement, CSSProperties, ElementType, ReactElement } from "react";
 import classNames from "classnames";
 import { TypographyProps } from "@ui";
 import { useTextCssNames } from "./cssUtil";
@@ -8,10 +8,13 @@ type TypographyElementProps<Element extends ElementType> = TypographyProps & {
     baseClassName: string;
 } & Omit<ComponentPropsWithoutRef<Element>, keyof TypographyProps | 'as'>;
 
+type TypographyStyle = CSSProperties & { '--typography-color'?: string };
+
 export const TypographyElement = <Element extends ElementType>({
     as: Component,
     baseClassName,
     color,
+    shade,
     fontType,
     align,
     nowrap,
@@ -35,6 +38,7 @@ export const TypographyElement = <Element extends ElementType>({
     pb,
     pl,
     className,
+    style,
     ...props
 }: TypographyElementProps<Element>): ReactElement => {
     const cssNames = useTextCssNames({
@@ -67,5 +71,8 @@ export const TypographyElement = <Element extends ElementType>({
     return createElement(Component, {
         ...props,
         className: classNames(baseClassName, ...cssNames),
+        style: color && shade
+            ? { ...style, '--typography-color': `var(--color-${color}-${shade})` } as TypographyStyle
+            : style,
     });
 };

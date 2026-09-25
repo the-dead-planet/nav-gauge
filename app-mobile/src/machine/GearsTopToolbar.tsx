@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
         paddingRight: 16,
     },
     headingText: {
-        textTransform: 'uppercase',
         lineHeight: 40,
         marginLeft: 8,
     },
@@ -53,7 +52,12 @@ export const GearsTopToolbar: FC = () => {
             <View style={[styles.heading, { borderRightColor: theme.componentColor('divider') }]}>
                 <Icon icon={Icons.NounProject.Gear} color={theme.color('secondary')} width={20} height={20} />
                 {media.isMoreThanXs ? (
-                    <Text color="secondary" style={[styles.headingText, { lineHeight: 40 }]}>
+                    <Text
+                        color="secondary"
+                        shade={500}
+                        uppercase
+                        style={styles.headingText}
+                    >
                         {gearLabel}
                     </Text>
                 ) : null}

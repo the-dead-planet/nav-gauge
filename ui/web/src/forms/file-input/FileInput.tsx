@@ -70,6 +70,7 @@ export const FileInput: FC<Props & ComponentProps<'div'>> = ({
             />
             <FileNameComponent
                 color={color}
+                shade={500}
                 title={fileName ?? undefined}
                 className={styles['route-name']}
             >

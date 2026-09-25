@@ -7,6 +7,7 @@ export const osmMapStyle: MapStyle = {
     style: osmStyle as unknown as StyleSpecification,
     attribution: {
         text: "OpenStreetMap",
+        shortText: "OSM",
         href: "https://openstreetmap.org/copyright"
     }
 };

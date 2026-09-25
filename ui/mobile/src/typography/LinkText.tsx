@@ -1,26 +1,20 @@
 import { FC } from "react";
-import { Linking, Pressable, TextProps } from "react-native";
-import { useTheme } from "@ui";
-import { Text } from "./Text";
+import { Linking, Pressable } from "react-native";
+import { Text, TextProps } from "./Text";
 
-export interface LinkTextProps extends TextProps {
-    href: string
+export interface LinkTextProps extends Omit<TextProps, 'onPress'> {
+    href: string;
 }
 
-export const LinkText: FC<LinkTextProps> = ({ href, children, ...props }) => {
-    const theme = useTheme();
-
-    return (
-        <Pressable
-            onPressOut={() => Linking.openURL(href)}
-            style={({ pressed }) => ({
-                borderBottomWidth: 1,
-                borderBottomColor: pressed ? theme.componentColor('text') : 'transparent'
-            })}
-        >
-            <Text {...props}>
-                {children}
-            </Text>
-        </Pressable>
-    );
-};
+export const LinkText: FC<LinkTextProps> = ({ href, children, color = 'primary', disabled, style, ...props }) => (
+    <Pressable
+        accessibilityRole="link"
+        accessibilityState={{ disabled }}
+        disabled={disabled}
+        onPress={() => Linking.openURL(href)}
+    >
+        <Text {...props} color={color} disabled={disabled} style={[{ textDecorationLine: 'underline' }, style]}>
+            {children}
+        </Text>
+    </Pressable>
+);

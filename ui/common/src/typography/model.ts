@@ -1,4 +1,5 @@
 import { ColorVariant, SpacingVariant } from "../model";
+import { ColorShade } from "../theme";
 
 /**
  * Fonts available for typography components. Usage and role:
@@ -28,6 +29,7 @@ export type TextVariant = 'header' | 'body' | 'caption';
 
 export interface TypographyProps {
     color?: ColorVariant;
+    shade?: ColorShade;
     fontType?: FontType;
     align?: 'left' | 'right';
     nowrap?: boolean;

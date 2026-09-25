@@ -1,6 +1,7 @@
 .p,
 .span,
 .label,
+.link,
 .h1,
 .h2,
 .h3,
@@ -67,6 +68,23 @@
     font-size: 12px;
     font-weight: 400;
     line-height: 16px;
+}
+
+.link:link,
+.link:visited {
+    text-decoration: underline;
+}
+
+.link.disabled,
+.link.disabled:hover {
+    color: var(--typography-color-disabled);
+    cursor: not-allowed;
+    text-decoration: underline;
+}
+
+.link:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
 }
 
 .bold {

@@ -21,7 +21,7 @@ export const GearsTopToolbar: FC = () => {
             className={classNames(styles['toolbar'], styles['top'])}
         >
             <FlexBox gap="md" alignItems="center" className={styles['content']}>
-                <H2 color="secondary" className={styles['gears-heading']}>
+                <H2 color="secondary" shade={500} uppercase className={styles['gears-heading']}>
                     <Icon src={Icons.NounProject.Gear} color={theme.color('secondary')} width={20} height={20} />
                     {media.isMoreThanXs ? <T n={namespace} t={translationKey.Gears} /> : null}
                 </H2>

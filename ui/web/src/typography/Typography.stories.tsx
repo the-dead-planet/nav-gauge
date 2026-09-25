@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { FontType, ColorVariant } from '@ui';
-import { H1, H2, H3, H4, H5, H6, Label, P, Span, Text } from './';
+import { H1, H2, H3, H4, H5, H6, Label, LinkText, P, Span, Text } from './';
 
 const colors: (ColorVariant | undefined)[] = [undefined, 'primary', 'secondary', 'tertiary', 'neutral'];
 const variantLabels = ['Default', 'Primary', 'Secondary', 'Tertiary', 'Neutral'];
@@ -18,6 +18,7 @@ export const TextStory = {
     args: {
         variant: 'body' as const,
         fontType: FontType.Default,
+        shade: undefined,
         bold: false,
         uppercase: false,
         children: 'The management of the dead planet wishes you a very fine day.',
@@ -41,6 +42,11 @@ export const TextStory = {
             control: 'select',
             options: Object.values(FontType),
         },
+        shade: {
+            control: 'select',
+            options: ['(auto)', 100, 500, 900],
+            mapping: { '(auto)': undefined },
+        },
     },
     render: (args: Record<string, unknown>) => (
         <Text
@@ -48,6 +54,7 @@ export const TextStory = {
             as={args.as as 'p' | 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | undefined}
             color={args.color as 'primary' | 'secondary' | 'tertiary' | 'neutral' | undefined}
             fontType={args.fontType as FontType}
+            shade={args.shade as 100 | 500 | 900 | undefined}
             bold={args.bold as boolean}
             uppercase={args.uppercase as boolean}
         >
@@ -81,6 +88,27 @@ export const Spacing: Story = {
             Bold uppercase text with margin and padding
         </Text>
     ),
+};
+
+export const ExternalLink: Story = {
+    render: () => {
+        const [disabled, setDisabled] = useState(false);
+
+        return (
+            <div style={{ display: 'grid', gap: 8 }}>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={disabled}
+                        onChange={(event) => setDisabled(event.target.checked)}
+                    /> Disabled
+                </label>
+                <LinkText href="https://openstreetmap.org/copyright" disabled={disabled}>
+                    OpenStreetMap copyright
+                </LinkText>
+            </div>
+        );
+    },
 };
 
 export const All = {

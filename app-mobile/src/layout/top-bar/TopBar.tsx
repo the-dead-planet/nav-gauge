@@ -57,7 +57,13 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
             <View style={styles.leftSection}>
                 <UnderConstructionChip />
             </View>
-            <Text fontType={FontType.NeonHeader} color="primary" nowrap style={styles.header}>
+            <Text
+                fontType={FontType.NeonHeader}
+                color="primary"
+                shade={500}
+                nowrap
+                style={styles.header}
+            >
                 {title}
             </Text>
             <View style={styles.rightSection}>
