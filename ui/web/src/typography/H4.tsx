@@ -1,66 +1,8 @@
 import { ComponentProps, FC } from "react";
-import classNames from "classnames";
-import { defaultTypographyProps, TypographyProps } from "@ui";
-import { useTextCssNames } from "./cssUtil";
+import { TypographyProps } from "@ui";
+import { TypographyElement } from "./TypographyElement";
 import styles from './typography.module.css';
 
-export const H4: FC<ComponentProps<'h4'> & TypographyProps> = ({
-    color,
-    fontType = defaultTypographyProps.fontType,
-    align,
-    nowrap,
-    bold,
-    disabled,
-    uppercase,
-    shadow,
-    tabular,
-    m,
-    mv,
-    mh,
-    mt,
-    mr,
-    mb,
-    ml,
-    p,
-    pv,
-    ph,
-    pt,
-    pr,
-    pb,
-    pl,
-    className,
-    children,
-    ...props
-}) => {
-    const cssNames = useTextCssNames({
-        color,
-        fontType,
-        align,
-        nowrap,
-        bold,
-        disabled,
-        uppercase,
-        shadow,
-        tabular,
-        m,
-        mv,
-        mh,
-        mt,
-        mr,
-        mb,
-        ml,
-        p,
-        pv,
-        ph,
-        pt,
-        pr,
-        pb,
-        pl,
-        className,
-    });
-    return (
-        <h4 className={classNames(styles.h4, ...cssNames)} {...props}>
-            {children}
-        </h4>
-    );
-};
+export const H4: FC<ComponentProps<'h4'> & TypographyProps> = (props) => (
+    <TypographyElement as="h4" baseClassName={styles.h4} {...props} />
+);
