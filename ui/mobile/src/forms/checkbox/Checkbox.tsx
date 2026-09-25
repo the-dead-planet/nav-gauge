@@ -66,12 +66,7 @@ export const Checkbox: FC<CheckboxProps> = ({
                             ) : null}
                         </View>
                         {children ? (
-                            <Text
-                                style={{
-                                    color: baseColor,
-                                    ...textStyle,
-                                }}
-                            >
+                            <Text color={color} style={textStyle}>
                                 {children}
                             </Text>
                         ) : null}

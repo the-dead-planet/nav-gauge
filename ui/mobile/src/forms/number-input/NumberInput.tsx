@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { View, TextInput, StyleSheet } from "react-native";
-import { controlTextSpecifications, NumberInputProps, useTheme } from "@ui";
-import { Text } from "../../typography";
+import { controlTextSpecifications, FontType, NumberInputProps, useTheme } from "@ui";
+import { getMobileFontFamily, Text } from "../../typography";
 
 const sizes = {
     md: { height: 32, paddingHorizontal: 12, fontSize: controlTextSpecifications.md.fontSize },
@@ -76,6 +76,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 4,
         fontSize: 14,
+        fontFamily: getMobileFontFamily(FontType.Numeric),
+        fontVariant: ['tabular-nums'],
     },
     'input-with-unit': {
         flex: 1,

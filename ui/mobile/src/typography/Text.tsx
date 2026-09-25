@@ -1,25 +1,13 @@
 import { FC } from "react";
 import { Text as RNText, TextProps as RNTextProps, StyleSheet, TextStyle } from "react-native";
 import { defaultTypographyProps, FontType, resolveTypographySpacing, TextVariant, typographyVariantSpecifications, TypographyProps, Theme, useTheme } from "@ui";
+import { getMobileFontFamily } from "./fontFamily";
 
 export type { TextVariant } from '@ui';
 
 const variantStyles = StyleSheet.create({
     ...typographyVariantSpecifications,
 });
-
-const mobileFontFamily: Record<FontType, string | undefined> = {
-    [FontType.Default]: 'SpaceGrotesk-Regular',
-    [FontType.Numeric]: 'UbuntuMono-Regular',
-    [FontType.SpecialMessaging]: 'SyneMono-Regular',
-    [FontType.NeonHeader]: 'Sixtyfour-Regular-VariableFont_BLED,SCAN',
-    [FontType.NeonText]: 'BitcountSingle-Bold',
-};
-
-const mobileBoldFontFamily: Partial<Record<FontType, string>> = {
-    [FontType.Default]: 'SpaceGrotesk-Bold',
-    [FontType.Numeric]: 'UbuntuMono-Bold',
-};
 
 const spacing = (value: TypographyProps['m']): number | undefined =>
     value ? Number.parseInt(Theme.spacing[value], 10) : undefined;
@@ -70,9 +58,7 @@ export const Text: FC<TextProps> = ({
             style={[
                 variantStyles[variant],
                 {
-                    fontFamily: isBold
-                        ? mobileBoldFontFamily[fontType] ?? mobileFontFamily[fontType]
-                        : mobileFontFamily[fontType],
+                    fontFamily: getMobileFontFamily(fontType, isBold),
                     color: color
                         ? theme.color(color, shade ?? (theme.isDark ? 100 : 900))
                         : theme.componentColor('text'),
