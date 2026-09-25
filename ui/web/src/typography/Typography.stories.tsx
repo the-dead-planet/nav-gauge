@@ -19,6 +19,9 @@ export const TextStory = {
         variant: 'body' as const,
         fontType: FontType.Default,
         shade: undefined,
+        align: undefined,
+        nowrap: false,
+        shadow: false,
         bold: false,
         uppercase: false,
         children: 'The management of the dead planet wishes you a very fine day.',
@@ -47,6 +50,11 @@ export const TextStory = {
             options: ['(auto)', 100, 500, 900],
             mapping: { '(auto)': undefined },
         },
+        align: {
+            control: 'select',
+            options: ['(default)', 'left', 'center', 'right'],
+            mapping: { '(default)': undefined },
+        },
     },
     render: (args: Record<string, unknown>) => (
         <Text
@@ -55,6 +63,9 @@ export const TextStory = {
             color={args.color as 'primary' | 'secondary' | 'tertiary' | 'neutral' | undefined}
             fontType={args.fontType as FontType}
             shade={args.shade as 100 | 500 | 900 | undefined}
+            align={args.align as 'left' | 'center' | 'right' | undefined}
+            nowrap={args.nowrap as boolean}
+            shadow={args.shadow as boolean}
             bold={args.bold as boolean}
             uppercase={args.uppercase as boolean}
         >

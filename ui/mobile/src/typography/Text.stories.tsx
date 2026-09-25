@@ -58,19 +58,11 @@ export const TextFonts: FC = () => (
 
 export const TextStyling: FC = () => (
     <DisabledPreview>{(disabled) => (
-        <View style={{ rowGap: 12 }}>
+        <View style={{ rowGap: 12, width: 240 }}>
             <Text color="primary" bold uppercase disabled={disabled}>Bold uppercase text</Text>
+            <Text align="center" shadow disabled={disabled}>Centered text with default shadow</Text>
+            <Text nowrap disabled={disabled}>Long text constrained to one truncated line</Text>
             <Text color="secondary" m="sm" p="md" disabled={disabled}>Text with margin and padding</Text>
-        </View>
-    )}</DisabledPreview>
-);
-
-export const TextCustomElement: FC = () => (
-    <DisabledPreview>{(disabled) => (
-        <View style={{ rowGap: 12 }}>
-            <Text as="h1" variant="header" disabled={disabled}>as="h1" renders as native header text</Text>
-            <Text as="span" variant="body" disabled={disabled}>as="span" renders as native body text</Text>
-            <Text as="p" variant="caption" disabled={disabled}>as="p" renders as native caption</Text>
         </View>
     )}</DisabledPreview>
 );

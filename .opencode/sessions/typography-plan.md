@@ -26,7 +26,7 @@ attribution typography and positioning.
    - Apply configured default and numeric fonts to native mobile inputs.
 9. Residual production text (completed)
    - Migrate status, slider, fallback-page, dialog, and preset text where useful.
-10. Typography correctness
+10. Typography correctness (completed)
     - Fix default web shadow, center alignment, mobile nowrap, shade docs, and mobile as.
 11. Control accessibility
     - Add roles and state to mobile Checkbox, ToggleSwitch, and Dropdown.

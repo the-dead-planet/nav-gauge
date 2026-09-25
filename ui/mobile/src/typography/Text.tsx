@@ -14,8 +14,6 @@ const spacing = (value: TypographyProps['m']): number | undefined =>
 
 export interface TextProps extends Omit<RNTextProps, 'disabled'>, TypographyProps {
     variant?: TextVariant;
-    /** Accepted for API compatibility with web. On mobile only `<Text>` is rendered. */
-    as?: string;
 }
 
 export const Text: FC<TextProps> = ({
@@ -43,8 +41,8 @@ export const Text: FC<TextProps> = ({
     pr,
     pb,
     pl,
-    as: _as,
     fontType = defaultTypographyProps.fontType ?? FontType.Default,
+    numberOfLines,
     style,
     ...props
 }) => {
@@ -54,7 +52,7 @@ export const Text: FC<TextProps> = ({
 
     return (
         <RNText
-            numberOfLines={nowrap ? 1 : undefined}
+            numberOfLines={nowrap ? 1 : numberOfLines}
             style={[
                 variantStyles[variant],
                 {
