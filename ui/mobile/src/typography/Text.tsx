@@ -1,25 +1,11 @@
 import { FC } from "react";
 import { Text as RNText, TextProps as RNTextProps, StyleSheet, TextStyle } from "react-native";
-import { defaultTypographyProps, FontType, TextVariant, TypographyProps, Theme, useTheme } from "@ui";
+import { defaultTypographyProps, FontType, resolveTypographySpacing, TextVariant, typographyVariantSpecifications, TypographyProps, Theme, useTheme } from "@ui";
 
 export type { TextVariant } from '@ui';
 
 const variantStyles = StyleSheet.create({
-    header: {
-        fontSize: 24,
-        fontWeight: '700',
-        lineHeight: 32,
-    },
-    body: {
-        fontSize: 16,
-        fontWeight: '400',
-        lineHeight: 24,
-    },
-    caption: {
-        fontSize: 12,
-        fontWeight: '400',
-        lineHeight: 16,
-    },
+    ...typographyVariantSpecifications,
 });
 
 const mobileFontFamily: Record<FontType, string | undefined> = {
@@ -76,6 +62,7 @@ export const Text: FC<TextProps> = ({
 }) => {
     const theme = useTheme();
     const isBold = bold || variant === 'header';
+    const spacingValues = resolveTypographySpacing({ m, mv, mh, mt, mr, mb, ml, p, pv, ph, pt, pr, pb, pl });
 
     return (
         <RNText
@@ -94,14 +81,14 @@ export const Text: FC<TextProps> = ({
                     textAlign: align,
                     textTransform: uppercase ? 'uppercase' : undefined,
                     flexShrink: nowrap ? 1 : undefined,
-                    marginTop: spacing(mt ?? mv ?? m),
-                    marginRight: spacing(mr ?? mh ?? m),
-                    marginBottom: spacing(mb ?? mv ?? m),
-                    marginLeft: spacing(ml ?? mh ?? m),
-                    paddingTop: spacing(pt ?? pv ?? p),
-                    paddingRight: spacing(pr ?? ph ?? p),
-                    paddingBottom: spacing(pb ?? pv ?? p),
-                    paddingLeft: spacing(pl ?? ph ?? p),
+                    marginTop: spacing(spacingValues.marginTop),
+                    marginRight: spacing(spacingValues.marginRight),
+                    marginBottom: spacing(spacingValues.marginBottom),
+                    marginLeft: spacing(spacingValues.marginLeft),
+                    paddingTop: spacing(spacingValues.paddingTop),
+                    paddingRight: spacing(spacingValues.paddingRight),
+                    paddingBottom: spacing(spacingValues.paddingBottom),
+                    paddingLeft: spacing(spacingValues.paddingLeft),
                     textShadowColor: shadow
                         ? theme.color(color ?? 'neutral', color === 'neutral' ? 800 : 900, 0.5)
                         : undefined,

@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { defaultTypographyProps, TypographyProps, useTheme } from "@ui";
+import { defaultTypographyProps, resolveTypographySpacing, TypographyProps, useTheme } from "@ui";
 import styles from './typography.module.css';
 
 export const useTextCssNames = ({
@@ -29,16 +29,7 @@ export const useTextCssNames = ({
     className,
 }: TypographyProps & { className?: string; }): classNames.ArgumentArray => {
     const theme = useTheme();
-    const spacing = {
-        marginLeft: ml ?? mh ?? m,
-        marginRight: mr ?? mh ?? m,
-        marginTop: mt ?? mv ?? m,
-        marginBottom: mb ?? mv ?? m,
-        paddingLeft: pl ?? ph ?? p,
-        paddingRight: pr ?? ph ?? p,
-        paddingTop: pt ?? pv ?? p,
-        paddingBottom: pb ?? pv ?? p,
-    };
+    const spacing = resolveTypographySpacing({ m, mv, mh, mt, mr, mb, ml, p, pv, ph, pt, pr, pb, pl });
 
     return [
         styles[`font-${fontType}`],

@@ -18,7 +18,7 @@ attribution typography and positioning.
    - Reuse Label in Input, TextInput, TextArea, ColorInput, and NumberInput.
 5. Mobile raw text migration (completed)
    - Migrate Tooltip, Button, Chip, NumberInput, Tabstrip, and ClockLabel.
-6. Shared typography specifications
+6. Shared typography specifications (completed)
    - Share variant metrics and spacing precedence through ui/common.
 7. Shared control text scale
    - Consolidate repeated form-control sizes; leave Button and Chip separate.
