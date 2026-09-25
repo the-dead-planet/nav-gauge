@@ -19,7 +19,6 @@ export const LinkText: FC<LinkTextProps> = ({
         baseClassName={styles.link}
         {...props}
         href={disabled ? undefined : href}
-        role="link"
         aria-disabled={disabled || undefined}
         tabIndex={disabled ? -1 : props.tabIndex}
         target={target}

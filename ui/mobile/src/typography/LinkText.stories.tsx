@@ -12,7 +12,12 @@ export const ExternalLink: FC = () => {
                 <Switch value={disabled} onValueChange={setDisabled} accessibilityLabel="Disabled" />
                 <Text>Disabled</Text>
             </View>
-            <LinkText href="https://openstreetmap.org/copyright" disabled={disabled}>
+            <LinkText
+                href="https://openstreetmap.org/copyright"
+                accessibilityLabel="OpenStreetMap copyright"
+                accessibilityHint="Opens in the browser"
+                disabled={disabled}
+            >
                 OpenStreetMap copyright
             </LinkText>
         </View>
