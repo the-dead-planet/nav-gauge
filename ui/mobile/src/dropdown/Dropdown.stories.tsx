@@ -49,6 +49,7 @@ export const DropdownVariants: FC = () => {
                 options={options}
                 onChange={setValue}
             />
+            <Dropdown value={value} options={options} disabled />
 
             <View style={styles.section}>
                 <Text>Size</Text>

@@ -17,7 +17,9 @@
 }
 
 .shadow {
-    text-shadow: -1px 0px 1px rgb(from var(--typography-color-dark) r g b / .5);
+    text-shadow:
+        -1px 0 1px var(--typography-color-dark, var(--color-neutral-900)),
+        1px 0 1px var(--typography-color-dark, var(--color-neutral-900));
 }
 
 .tabular {
@@ -30,6 +32,10 @@
 
 .align-right {
     text-align: right;
+}
+
+.align-center {
+    text-align: center;
 }
 
 .nowrap {
@@ -52,22 +58,12 @@
     font-size: 14px;
 }
 
-.variant-header {
-    font-size: 24px;
-    font-weight: 700;
-    line-height: 32px;
-}
-
-.variant-body {
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 24px;
-}
-
+.variant-header,
+.variant-body,
 .variant-caption {
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 16px;
+    font-size: var(--typography-font-size);
+    font-weight: var(--typography-font-weight);
+    line-height: var(--typography-line-height);
 }
 
 .link:link,

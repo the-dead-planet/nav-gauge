@@ -1,10 +1,9 @@
 import { FC } from "react";
 import { BehaviorSubject } from "rxjs";
-import classNames from "classnames";
 import { useWebMachineWard } from "@web-apparatus";
 import { formatDistance, formatTimeMsAsStandard, ParsingResultWithError, useSubjectState } from "@tinker-chest";
 import { Animatrix, getProgressPercentage, getRouteDistanceFraction, RouteTimes, RouteGeometryData } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { P } from "@web-ui";
+import { Text } from "@web-ui";
 import { FontType, useTheme } from "@ui";
 import styles from './player-slider-labels.module.css';
 
@@ -47,16 +46,16 @@ export const PlayerSliderLabels: FC<Props> = ({
     return (
         <div className={styles['container']}>
             <div className={styles.metrics}>
-                <P fontType={FontType.Numeric} color="tertiary" className={styles.text} style={{ width: '4ch' }}>
+                <Text variant="caption" fontType={FontType.Numeric} color="tertiary" tabular nowrap style={{ width: '4ch' }}>
                     {progressPercentage.toFixed(0)}%
-                </P>
+                </Text>
                 {values.map(({ value, maximum }) => (
-                    <P key={maximum} fontType={FontType.Numeric} color="tertiary" className={styles.text} style={{ width: `${maximum.length}ch` }}>{value}</P>
+                    <Text key={maximum} variant="caption" fontType={FontType.Numeric} color="tertiary" tabular nowrap style={{ width: `${maximum.length}ch` }}>{value}</Text>
                 ))}
             </div>
-            <P fontType={FontType.Numeric} color="tertiary" className={classNames(styles.text, styles['align-flex-right'])}>
+            <Text variant="caption" fontType={FontType.Numeric} color="tertiary" tabular nowrap className={styles['align-flex-right']}>
                 {!routeTimes ? "" : individuator.formatTimestamp(progressMs + routeTimes.startTimeEpoch, settings, { short: media.isLessThanMd })}
-            </P>
+            </Text>
         </div>
     );
 };

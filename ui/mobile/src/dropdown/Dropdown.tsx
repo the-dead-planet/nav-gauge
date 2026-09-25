@@ -8,7 +8,7 @@ import {
     type HostInstance,
     TouchableHighlight,
 } from "react-native";
-import { DropdownProps, Icons, useTheme } from "@ui";
+import { controlTextSpecifications, DropdownProps, Icons, useTheme } from "@ui";
 import { Icon } from "../icons";
 import { Text } from "../typography";
 import { SvgProps } from "react-native-svg";
@@ -21,9 +21,9 @@ interface MobileOption<T> {
 }
 
 const SIZE_MAP = {
-    md: { height: 32, paddingV: 6, paddingH: 12, gap: 10, fontSize: 14 },
-    sm: { height: 24, paddingV: 2, paddingH: 10, gap: 6, fontSize: 12 },
-    xs: { height: 18, paddingV: 0, paddingH: 8, gap: 4, fontSize: 11 },
+    md: { height: 32, paddingV: 6, paddingH: 12, gap: 10, ...controlTextSpecifications.md },
+    sm: { height: 24, paddingV: 2, paddingH: 10, gap: 6, ...controlTextSpecifications.sm },
+    xs: { height: 18, paddingV: 0, paddingH: 8, gap: 4, ...controlTextSpecifications.xs },
 } as const;
 
 const ICON_SIZE_MAP = { xs: 12, sm: 16, md: 20 } as const;
@@ -121,6 +121,9 @@ export function Dropdown<T>({
         <View>
             <View ref={triggerRef} collapsable={false}>
                 <Pressable
+                    accessibilityRole="combobox"
+                    accessibilityState={{ disabled, expanded: isOpen }}
+                    accessibilityValue={{ text: selectedOption?.label ?? placeholder }}
                     disabled={disabled}
                     onPress={handleOpen}
                     style={({ pressed }) => [
@@ -144,7 +147,7 @@ export function Dropdown<T>({
                                     style={{
                                         color: content,
                                         fontSize: sizeStyles.fontSize,
-                                        lineHeight: sizeStyles.fontSize * 1.1,
+                                        lineHeight: sizeStyles.lineHeight,
                                         flex: 1,
                                     }}
                                 >
@@ -164,6 +167,7 @@ export function Dropdown<T>({
 
             <Modal visible={isOpen} transparent animationType="fade">
                 <Pressable
+                    accessible={false}
                     style={{ flex: 1 }}
                     onPress={() => setIsOpen(false)}
                 >
@@ -195,6 +199,8 @@ export function Dropdown<T>({
                                 return (
                                     <TouchableHighlight
                                         key={String(option.value)}
+                                        accessibilityRole="menuitem"
+                                        accessibilityState={{ selected }}
                                         underlayColor={theme.color(highlightColor, 500, 0.14)}
                                         onPress={() => {
                                             onChange?.(option.value);
@@ -225,7 +231,7 @@ export function Dropdown<T>({
                                                 style={{
                                                     color: optionTextColor,
                                                     fontSize: sizeStyles.fontSize,
-                                                    lineHeight: sizeStyles.fontSize * 1.1,
+                                                    lineHeight: sizeStyles.lineHeight,
                                                 }}
                                             >
                                                 {option.label}

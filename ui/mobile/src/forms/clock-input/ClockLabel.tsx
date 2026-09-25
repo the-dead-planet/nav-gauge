@@ -1,6 +1,7 @@
 import { FC } from "react";
-import { View, Text } from "react-native";
-import { useTheme } from "@ui";
+import { View } from "react-native";
+import { FontType } from "@ui";
+import { Text } from "../../typography";
 
 interface Props {
     label?: string;
@@ -13,30 +14,23 @@ export const ClockLabel: FC<Props> = ({
     value,
     isLight,
 }) => {
-    const theme = useTheme();
-
     if (!label) {
         return null;
     }
 
-    const labelColor = theme.color('neutral', isLight ? 800 : 200);
-
     return (
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-            <Text style={{
+            <Text color="neutral" shade={isLight ? 800 : 200} style={{
                 fontSize: 11,
                 fontWeight: '500',
                 letterSpacing: 0.4,
-                color: labelColor,
                 marginBottom: 2,
             }}>
                 {label}
             </Text>
             <View style={{ minWidth: 40, alignItems: 'flex-end' }}>
-                <Text style={{
+                <Text color="neutral" shade={isLight ? 800 : 200} fontType={FontType.Numeric} tabular style={{
                     fontSize: 10,
-                    fontVariant: ['tabular-nums'],
-                    color: labelColor,
                     opacity: 0.7,
                 }}>
                     {value}°

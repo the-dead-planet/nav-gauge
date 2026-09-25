@@ -244,7 +244,11 @@ const InternalTooltip: FC<TooltipProps> = ({
                 }
             },
             onClick: (event: MouseEvent) => {
+                focusedRef.current = false;
                 setVisible(false);
+                if (event.currentTarget instanceof HTMLElement) {
+                    event.currentTarget.blur();
+                }
                 if (longPressRecognizedRef.current) {
                     longPressRecognizedRef.current = false;
                     return;

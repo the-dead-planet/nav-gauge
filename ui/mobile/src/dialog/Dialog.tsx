@@ -122,9 +122,11 @@ export const Dialog: FC<Props> = ({
                                 color={color}
                                 fontType={FontType.NeonText}
                                 shadow={addShadow}
-                                style={[styles.headerText, { color: theme.color(color, 100) }]}
+                                shade={100}
+                                uppercase
+                                style={styles.headerText}
                             >
-                                {header.toUpperCase()}
+                                {header}
                             </Text>
                         </View>
                         <ScrollView style={styles.content}>

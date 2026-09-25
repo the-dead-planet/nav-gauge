@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { FontType, ColorVariant } from '@ui';
 import { H1, H2, H3, H4, H5, H6, Label, LinkText, P, Span, Text } from './';
+import { TypographyPreview } from './TypographyPreview';
 
 const colors: (ColorVariant | undefined)[] = [undefined, 'primary', 'secondary', 'tertiary', 'neutral'];
 const variantLabels = ['Default', 'Primary', 'Secondary', 'Tertiary', 'Neutral'];
@@ -19,7 +20,12 @@ export const TextStory = {
         variant: 'body' as const,
         fontType: FontType.Default,
         shade: undefined,
+        align: undefined,
+        nowrap: false,
+        shadow: false,
+        tabular: false,
         bold: false,
+        disabled: false,
         uppercase: false,
         children: 'The management of the dead planet wishes you a very fine day.',
     },
@@ -47,6 +53,17 @@ export const TextStory = {
             options: ['(auto)', 100, 500, 900],
             mapping: { '(auto)': undefined },
         },
+        align: {
+            control: 'select',
+            options: ['(default)', 'left', 'center', 'right'],
+            mapping: { '(default)': undefined },
+        },
+        nowrap: { control: 'boolean' },
+        shadow: { control: 'boolean' },
+        tabular: { control: 'boolean' },
+        bold: { control: 'boolean' },
+        uppercase: { control: 'boolean' },
+        disabled: { control: 'boolean' },
     },
     render: (args: Record<string, unknown>) => (
         <Text
@@ -55,8 +72,14 @@ export const TextStory = {
             color={args.color as 'primary' | 'secondary' | 'tertiary' | 'neutral' | undefined}
             fontType={args.fontType as FontType}
             shade={args.shade as 100 | 500 | 900 | undefined}
+            align={args.align as 'left' | 'center' | 'right' | undefined}
+            nowrap={args.nowrap as boolean}
+            shadow={args.shadow as boolean}
+            tabular={args.tabular as boolean}
             bold={args.bold as boolean}
             uppercase={args.uppercase as boolean}
+            disabled={args.disabled as boolean}
+            style={{ maxWidth: 240 }}
         >
             {args.children as string}
         </Text>
@@ -64,22 +87,9 @@ export const TextStory = {
 } satisfies StoryObj;
 
 export const Labels: Story = {
-    render: () => {
-        const [disabled, setDisabled] = useState(false);
-
-        return (
-            <div style={{ display: 'grid', gap: 8 }}>
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={disabled}
-                        onChange={(event) => setDisabled(event.target.checked)}
-                    /> Disabled
-                </label>
-                <Label color="primary" disabled={disabled}>Label</Label>
-            </div>
-        );
-    },
+    render: () => (
+        <TypographyPreview>{(props) => <Label color="primary" {...props}>Label</Label>}</TypographyPreview>
+    ),
 };
 
 export const Spacing: Story = {
@@ -91,33 +101,19 @@ export const Spacing: Story = {
 };
 
 export const ExternalLink: Story = {
-    render: () => {
-        const [disabled, setDisabled] = useState(false);
-
-        return (
-            <div style={{ display: 'grid', gap: 8 }}>
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={disabled}
-                        onChange={(event) => setDisabled(event.target.checked)}
-                    /> Disabled
-                </label>
-                <LinkText href="https://openstreetmap.org/copyright" disabled={disabled}>
-                    OpenStreetMap copyright
-                </LinkText>
-            </div>
-        );
-    },
+    render: () => (
+        <TypographyPreview>{(props) => (
+            <LinkText href="https://openstreetmap.org/copyright" {...props}>OpenStreetMap copyright</LinkText>
+        )}</TypographyPreview>
+    ),
 };
 
 export const All = {
     render: () => {
         const [fontType, setFontType] = useState<FontType>(FontType.Default);
-        const [disabled, setDisabled] = useState(false);
 
         return (
-            <div>
+            <TypographyPreview>{(typographyProps) => <div>
                 <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
                     <label htmlFor="font-select" style={{ fontWeight: 700 }}>Font Type:</label>
                     <select
@@ -132,13 +128,6 @@ export const All = {
                             </option>
                         ))}
                     </select>
-                    <label>
-                        <input
-                            type="checkbox"
-                            checked={disabled}
-                            onChange={(event) => setDisabled(event.target.checked)}
-                        /> Disabled
-                    </label>
                 </div>
                 <div style={{
                     display: 'grid',
@@ -158,7 +147,7 @@ export const All = {
                                     key={`${Tag}-${color}`}
                                     color={color}
                                     fontType={fontType}
-                                    disabled={disabled}
+                                    {...typographyProps}
                                 >
                                     {Tag}{color ? ` (${color})` : ''}
                                 </Component>
@@ -166,7 +155,7 @@ export const All = {
                         })
                     ))}
                 </div>
-            </div>
+            </div>}</TypographyPreview>
         );
     },
 } satisfies Story;

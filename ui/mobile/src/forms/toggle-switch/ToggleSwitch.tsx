@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef } from "react";
 import { Animated, Pressable, View, ViewStyle } from "react-native";
-import { ToggleSwitchProps, useTheme } from "@ui";
+import { controlTextSpecifications, ToggleSwitchProps, useTheme } from "@ui";
 import { Text } from "../../typography";
 import { Lamp } from "./Lamp";
 import { ThumbBody } from "./ThumbBody";
@@ -42,7 +42,7 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
     const thumbPivotSize = size === 'md' ? 8 : size === 'sm' ? 7 : 6;
     const thumbKnobSize = size === 'md' ? 10 : size === 'sm' ? 9 : 8;
     const lampSize = size === 'md' ? 10 : size === 'sm' ? 8 : 6;
-    const fontSize = size === 'xs' ? 11 : size === 'sm' ? 12 : 14;
+    const textStyle = controlTextSpecifications[size];
     const gap = size === 'md' ? 10 : size === 'sm' ? 8 : 6;
 
     const errorColor = theme.componentColor('error');
@@ -287,12 +287,14 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
 
     return (
         <Pressable
+            accessibilityRole="switch"
+            accessibilityState={{ checked, disabled }}
             disabled={disabled}
             onPress={() => onChange(!checked)}
             style={containerStyle}
         >
             {children ? (
-                <Text style={{ color: baseColor, fontSize, lineHeight: fontSize * 1.1 }}>
+                <Text style={{ color: baseColor, ...textStyle }}>
                     {children}
                 </Text>
             ) : null}

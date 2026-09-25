@@ -1,6 +1,7 @@
 import { ChangeEvent, ComponentProps, FC, useRef } from "react";
 import classNames from "classnames";
 import { ColorInputProps, useTheme } from "@ui";
+import { Label } from "../../typography";
 import styles from './color-input.module.css';
 
 export const ColorInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' | 'type' | 'size'> & ColorInputProps> = ({
@@ -38,7 +39,7 @@ export const ColorInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' |
             styles[`size-${size}`],
             styles[`variant-${variant}`],
         )}>
-            <label htmlFor={id} className={styles.label}>{label}</label>
+            <Label htmlFor={id} className={styles.label}>{label}</Label>
             <div className={styles['input-wrapper']}>
                 <button
                     type="button"

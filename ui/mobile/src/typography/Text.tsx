@@ -1,47 +1,19 @@
 import { FC } from "react";
 import { Text as RNText, TextProps as RNTextProps, StyleSheet, TextStyle } from "react-native";
-import { defaultTypographyProps, FontType, TextVariant, TypographyProps, Theme, useTheme } from "@ui";
+import { defaultTypographyProps, FontType, resolveTypographySpacing, TextVariant, typographyVariantSpecifications, TypographyProps, Theme, useTheme } from "@ui";
+import { getMobileFontFamily } from "./fontFamily";
 
 export type { TextVariant } from '@ui';
 
 const variantStyles = StyleSheet.create({
-    header: {
-        fontSize: 24,
-        fontWeight: '700',
-        lineHeight: 32,
-    },
-    body: {
-        fontSize: 16,
-        fontWeight: '400',
-        lineHeight: 24,
-    },
-    caption: {
-        fontSize: 12,
-        fontWeight: '400',
-        lineHeight: 16,
-    },
+    ...typographyVariantSpecifications,
 });
-
-const mobileFontFamily: Record<FontType, string | undefined> = {
-    [FontType.Default]: 'SpaceGrotesk-Regular',
-    [FontType.Numeric]: 'UbuntuMono-Regular',
-    [FontType.SpecialMessaging]: 'SyneMono-Regular',
-    [FontType.NeonHeader]: 'Sixtyfour-Regular-VariableFont_BLED,SCAN',
-    [FontType.NeonText]: 'BitcountSingle-Bold',
-};
-
-const mobileBoldFontFamily: Partial<Record<FontType, string>> = {
-    [FontType.Default]: 'SpaceGrotesk-Bold',
-    [FontType.Numeric]: 'UbuntuMono-Bold',
-};
 
 const spacing = (value: TypographyProps['m']): number | undefined =>
     value ? Number.parseInt(Theme.spacing[value], 10) : undefined;
 
 export interface TextProps extends Omit<RNTextProps, 'disabled'>, TypographyProps {
     variant?: TextVariant;
-    /** Accepted for API compatibility with web. On mobile only `<Text>` is rendered. */
-    as?: string;
 }
 
 export const Text: FC<TextProps> = ({
@@ -69,23 +41,22 @@ export const Text: FC<TextProps> = ({
     pr,
     pb,
     pl,
-    as: _as,
     fontType = defaultTypographyProps.fontType ?? FontType.Default,
+    numberOfLines,
     style,
     ...props
 }) => {
     const theme = useTheme();
     const isBold = bold || variant === 'header';
+    const spacingValues = resolveTypographySpacing({ m, mv, mh, mt, mr, mb, ml, p, pv, ph, pt, pr, pb, pl });
 
     return (
         <RNText
-            numberOfLines={nowrap ? 1 : undefined}
+            numberOfLines={nowrap ? 1 : numberOfLines}
             style={[
                 variantStyles[variant],
                 {
-                    fontFamily: isBold
-                        ? mobileBoldFontFamily[fontType] ?? mobileFontFamily[fontType]
-                        : mobileFontFamily[fontType],
+                    fontFamily: getMobileFontFamily(fontType, isBold),
                     color: color
                         ? theme.color(color, shade ?? (theme.isDark ? 100 : 900))
                         : theme.componentColor('text'),
@@ -94,14 +65,14 @@ export const Text: FC<TextProps> = ({
                     textAlign: align,
                     textTransform: uppercase ? 'uppercase' : undefined,
                     flexShrink: nowrap ? 1 : undefined,
-                    marginTop: spacing(mt ?? mv ?? m),
-                    marginRight: spacing(mr ?? mh ?? m),
-                    marginBottom: spacing(mb ?? mv ?? m),
-                    marginLeft: spacing(ml ?? mh ?? m),
-                    paddingTop: spacing(pt ?? pv ?? p),
-                    paddingRight: spacing(pr ?? ph ?? p),
-                    paddingBottom: spacing(pb ?? pv ?? p),
-                    paddingLeft: spacing(pl ?? ph ?? p),
+                    marginTop: spacing(spacingValues.marginTop),
+                    marginRight: spacing(spacingValues.marginRight),
+                    marginBottom: spacing(spacingValues.marginBottom),
+                    marginLeft: spacing(spacingValues.marginLeft),
+                    paddingTop: spacing(spacingValues.paddingTop),
+                    paddingRight: spacing(spacingValues.paddingRight),
+                    paddingBottom: spacing(spacingValues.paddingBottom),
+                    paddingLeft: spacing(spacingValues.paddingLeft),
                     textShadowColor: shadow
                         ? theme.color(color ?? 'neutral', color === 'neutral' ? 800 : 900, 0.5)
                         : undefined,

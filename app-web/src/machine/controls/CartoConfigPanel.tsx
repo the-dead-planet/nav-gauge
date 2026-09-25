@@ -1,6 +1,6 @@
 import type * as maplibregl from "maplibre-gl";
 import { FC } from "react";
-import { Checkbox, ColorInput, Dropdown, Fieldset, Label, NumberInput, TextArea, TextInput } from "@web-ui";
+import { Checkbox, ColorInput, Dropdown, Fieldset, NumberInput, Text, TextArea, TextInput } from "@web-ui";
 import { Cartomancer, MapLayout, ToolPanelProps, useTranslate } from "@apparatus";
 import { useWebMachineWard } from "@web-apparatus";
 import { useSubjectState } from "@tinker-chest";
@@ -31,11 +31,13 @@ export const CartoConfigPanel: FC<ToolPanelProps<maplibregl.Map>> = () => {
     return (
         <div className={styles['container']}>
             <div className={styles['map-style-selection']}>
-                <Label
+                <Text
+                    as="span"
+                    variant="caption"
                     id="map-style-label"
                 >
                     {t(cartomancer.translationKey.Style)}
-                </Label>
+                </Text>
                 <Dropdown
                     value={selectedStyle.id}
                     labelledBy="map-style-label"
