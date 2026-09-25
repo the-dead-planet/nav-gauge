@@ -17,7 +17,9 @@
 }
 
 .shadow {
-    text-shadow: -1px 0px 1px rgb(from var(--typography-color-dark, var(--color-neutral-900)) r g b / .5);
+    text-shadow:
+        -1px 0 1px var(--typography-color-dark, var(--color-neutral-900)),
+        1px 0 1px var(--typography-color-dark, var(--color-neutral-900));
 }
 
 .tabular {

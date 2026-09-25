@@ -32,7 +32,7 @@ attribution typography and positioning.
     - Add roles and state to mobile Checkbox, ToggleSwitch, and Dropdown.
 12. Web implementation reduction (completed)
     - Simplify class generation and internal imports without speculative APIs.
-13. Focused story coverage
+13. Focused story coverage (completed)
     - Cover only changed typography and accessibility behavior.
 
 ## Constraints
