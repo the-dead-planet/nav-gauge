@@ -1,12 +1,17 @@
-import { FC } from "react";
-import { View } from "react-native";
+import { FC, useState } from "react";
+import { Switch, View } from "react-native";
 import { Label } from "./Label";
 
-export const LabelVariants: FC = () => (
-    <View style={{ rowGap: 12 }}>
-        <Label>Default label</Label>
-        <Label color="primary">Primary label</Label>
-        <Label color="secondary">Secondary label</Label>
-        <Label disabled>Disabled label</Label>
-    </View>
-);
+export const LabelVariants: FC = () => {
+    const [disabled, setDisabled] = useState(false);
+
+    return (
+        <View style={{ rowGap: 12 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', columnGap: 8 }}>
+                <Switch value={disabled} onValueChange={setDisabled} accessibilityLabel="Disabled" />
+                <Label>Disabled</Label>
+            </View>
+            <Label color="primary" disabled={disabled}>Label</Label>
+        </View>
+    );
+};

@@ -31,6 +31,8 @@ export interface TypographyProps {
     nowrap?: boolean;
     shadow?: boolean;
     bold?: boolean;
+    disabled?: boolean;
+    uppercase?: boolean;
     tabular?: boolean;
     /**
      * Margin (all sides)
@@ -88,8 +90,4 @@ export interface TypographyProps {
      * Padding left
      */
     pl?: SpacingVariant;
-}
-
-export interface LabelProps {
-    disabled?: boolean;
 }

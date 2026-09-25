@@ -1,15 +1,16 @@
 import { ComponentProps, FC } from "react";
 import classNames from "classnames";
-import { defaultTypographyProps, LabelProps, TypographyProps } from "@ui";
-import { textCssNames } from "./cssUtil";
+import { defaultTypographyProps, TypographyProps } from "@ui";
+import { useTextCssNames } from "./cssUtil";
 import styles from './typography.module.css';
 
-export const Label: FC<ComponentProps<'label'> & TypographyProps & LabelProps> = ({
+export const Label: FC<ComponentProps<'label'> & TypographyProps> = ({
     color,
     fontType = defaultTypographyProps.fontType,
     align,
     nowrap,
     bold,
+    uppercase,
     shadow,
     tabular,
     m,
@@ -27,16 +28,18 @@ export const Label: FC<ComponentProps<'label'> & TypographyProps & LabelProps> =
     pb,
     pl,
     className,
-    disabled = false,
+    disabled,
     children,
     ...props
 }) => {
-    const cssNames = textCssNames({
+    const cssNames = useTextCssNames({
         color,
         fontType,
         align,
         nowrap,
         bold,
+        disabled,
+        uppercase,
         shadow,
         tabular,
         m,
@@ -56,7 +59,7 @@ export const Label: FC<ComponentProps<'label'> & TypographyProps & LabelProps> =
         className,
     });
     return (
-        <label className={classNames(styles.label, ...cssNames, { [styles.disabled]: disabled })} {...props}>
+        <label className={classNames(styles.label, ...cssNames)} {...props}>
             {children}
         </label>
     );

@@ -1,13 +1,15 @@
 import classNames from "classnames";
-import { defaultTypographyProps, TypographyProps } from "@ui";
+import { defaultTypographyProps, TypographyProps, useTheme } from "@ui";
 import styles from './typography.module.css';
 
-export const textCssNames = ({
+export const useTextCssNames = ({
     color,
     fontType = defaultTypographyProps.fontType,
     align,
     nowrap,
     bold,
+    disabled,
+    uppercase,
     shadow,
     tabular,
     m,
@@ -26,26 +28,41 @@ export const textCssNames = ({
     pl,
     className,
 }: TypographyProps & { className?: string; }): classNames.ArgumentArray => {
+    const theme = useTheme();
+    const spacing = {
+        marginLeft: ml ?? mh ?? m,
+        marginRight: mr ?? mh ?? m,
+        marginTop: mt ?? mv ?? m,
+        marginBottom: mb ?? mv ?? m,
+        paddingLeft: pl ?? ph ?? p,
+        paddingRight: pr ?? ph ?? p,
+        paddingTop: pt ?? pv ?? p,
+        paddingBottom: pb ?? pv ?? p,
+    };
+
     return [
         styles[`font-${fontType}`],
+        styles[`mode-${theme.mode}`],
         {
             [styles[`color-${color}`]]: !!color,
             [styles[`align-${align}`]]: !!align,
             [styles['nowrap']]: !!nowrap,
             [styles['bold']]: !!bold,
+            [styles['disabled']]: !!disabled,
+            [styles['uppercase']]: !!uppercase,
             [styles['shadow']]: !!shadow,
             [styles['tabular']]: !!tabular,
             ...(
                 Object.fromEntries(['xs', 'sm', 'md', 'lg', 'xl']
                     .flatMap((size): [string, boolean][] => [
-                        [styles[`margin-left-${size}`], m === size || mh === size || ml === size],
-                        [styles[`margin-right-${size}`], m === size || mh === size || mr === size],
-                        [styles[`margin-top-${size}`], m === size || mv === size || mt === size],
-                        [styles[`margin-bottom-${size}`], m === size || mv === size || mb === size],
-                        [styles[`padding-left-${size}`], p === size || ph === size || pl === size],
-                        [styles[`padding-right-${size}`], p === size || ph === size || pr === size],
-                        [styles[`padding-top-${size}`], p === size || pv === size || pt === size],
-                        [styles[`padding-bottom-${size}`], p === size || pv === size || pb === size],
+                        [styles[`margin-left-${size}`], spacing.marginLeft === size],
+                        [styles[`margin-right-${size}`], spacing.marginRight === size],
+                        [styles[`margin-top-${size}`], spacing.marginTop === size],
+                        [styles[`margin-bottom-${size}`], spacing.marginBottom === size],
+                        [styles[`padding-left-${size}`], spacing.paddingLeft === size],
+                        [styles[`padding-right-${size}`], spacing.paddingRight === size],
+                        [styles[`padding-top-${size}`], spacing.paddingTop === size],
+                        [styles[`padding-bottom-${size}`], spacing.paddingBottom === size],
                     ]))
             ),
         },

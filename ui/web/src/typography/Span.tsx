@@ -1,7 +1,7 @@
 import { ComponentProps, FC } from "react";
 import classNames from "classnames";
 import { defaultTypographyProps, TypographyProps } from "@ui";
-import { textCssNames } from "./cssUtil";
+import { useTextCssNames } from "./cssUtil";
 import styles from './typography.module.css';
 
 export const Span: FC<ComponentProps<'span'> & TypographyProps> = ({
@@ -10,6 +10,8 @@ export const Span: FC<ComponentProps<'span'> & TypographyProps> = ({
     align,
     nowrap,
     bold,
+    disabled,
+    uppercase,
     shadow,
     tabular,
     m,
@@ -30,12 +32,14 @@ export const Span: FC<ComponentProps<'span'> & TypographyProps> = ({
     children,
     ...props
 }) => {
-    const cssNames = textCssNames({
+    const cssNames = useTextCssNames({
         color,
         fontType,
         align,
         nowrap,
         bold,
+        disabled,
+        uppercase,
         shadow,
         tabular,
         m,
