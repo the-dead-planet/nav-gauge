@@ -1,6 +1,7 @@
 import { FC } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, TextInput, StyleSheet } from "react-native";
 import { NumberInputProps, useTheme } from "@ui";
+import { Text } from "../../typography";
 
 const sizes = {
     md: { height: 32, paddingHorizontal: 12, fontSize: 14 },

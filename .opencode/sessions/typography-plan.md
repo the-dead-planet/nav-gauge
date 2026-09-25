@@ -16,7 +16,7 @@ attribution typography and positioning.
    - Use Label only for associated controls; use Text or Span for descriptions.
 4. Web form labels (completed)
    - Reuse Label in Input, TextInput, TextArea, ColorInput, and NumberInput.
-5. Mobile raw text migration
+5. Mobile raw text migration (completed)
    - Migrate Tooltip, Button, Chip, NumberInput, Tabstrip, and ClockLabel.
 6. Shared typography specifications
    - Share variant metrics and spacing precedence through ui/common.
