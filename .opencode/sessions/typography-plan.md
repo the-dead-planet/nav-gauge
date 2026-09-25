@@ -30,7 +30,7 @@ attribution typography and positioning.
     - Fix default web shadow, center alignment, mobile nowrap, shade docs, and mobile as.
 11. Control accessibility (completed)
     - Add roles and state to mobile Checkbox, ToggleSwitch, and Dropdown.
-12. Web implementation reduction
+12. Web implementation reduction (completed)
     - Simplify class generation and internal imports without speculative APIs.
 13. Focused story coverage
     - Cover only changed typography and accessibility behavior.
