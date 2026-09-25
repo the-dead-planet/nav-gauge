@@ -20,7 +20,7 @@ attribution typography and positioning.
    - Migrate Tooltip, Button, Chip, NumberInput, Tabstrip, and ClockLabel.
 6. Shared typography specifications (completed)
    - Share variant metrics and spacing precedence through ui/common.
-7. Shared control text scale
+7. Shared control text scale (completed)
    - Consolidate repeated form-control sizes; leave Button and Chip separate.
 8. Native input fonts
    - Apply configured default and numeric fonts to native mobile inputs.

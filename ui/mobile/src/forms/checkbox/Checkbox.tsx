@@ -1,10 +1,10 @@
 import { FC } from "react";
 import { Pressable, View, ViewStyle } from "react-native";
-import { CheckboxProps, useTheme } from "@ui";
+import { CheckboxProps, controlTextSpecifications, useTheme } from "@ui";
 import { Text } from "../../typography";
 
 export const Checkbox: FC<CheckboxProps> = ({
-    color = 'primary',
+    color = 'neutral',
     highlightColor = color,
     size = 'sm',
     checked,
@@ -20,7 +20,7 @@ export const Checkbox: FC<CheckboxProps> = ({
     const baseColor = theme.color(color);
 
     const boxWidthHeight = size === 'md' ? 16 : size === 'sm' ? 14 : 12;
-    const fontSize = size === 'xs' ? 11 : size === 'sm' ? 12 : 14;
+    const textStyle = controlTextSpecifications[size];
     const borderRadius = size === 'md' ? 3 : 2;
 
     const containerStyle: ViewStyle = {
@@ -69,8 +69,7 @@ export const Checkbox: FC<CheckboxProps> = ({
                             <Text
                                 style={{
                                     color: baseColor,
-                                    fontSize,
-                                    lineHeight: fontSize * 1.1,
+                                    ...textStyle,
                                 }}
                             >
                                 {children}

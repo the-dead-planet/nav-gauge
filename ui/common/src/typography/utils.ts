@@ -1,4 +1,5 @@
 import { FontFamilyName, FontType, TextVariant, TypographyProps } from "./model";
+import { SizeVariant } from "../model";
 
 export const fontTypeToFamily: { [key in FontType]: FontFamilyName } = {
     [FontType.Default]: 'Space Grotesk',
@@ -20,6 +21,12 @@ export const typographyVariantSpecifications: Record<TextVariant, {
     header: { fontSize: 24, fontWeight: '700', lineHeight: 32 },
     body: { fontSize: 16, fontWeight: '400', lineHeight: 24 },
     caption: { fontSize: 12, fontWeight: '400', lineHeight: 16 },
+};
+
+export const controlTextSpecifications: Record<SizeVariant, { fontSize: number; lineHeight: number }> = {
+    xs: { fontSize: 11, lineHeight: 12.1 },
+    sm: { fontSize: 12, lineHeight: 13.2 },
+    md: { fontSize: 14, lineHeight: 15.4 },
 };
 
 export const resolveTypographySpacing = ({

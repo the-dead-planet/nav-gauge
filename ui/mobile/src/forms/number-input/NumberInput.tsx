@@ -1,12 +1,12 @@
 import { FC } from "react";
 import { View, TextInput, StyleSheet } from "react-native";
-import { NumberInputProps, useTheme } from "@ui";
+import { controlTextSpecifications, NumberInputProps, useTheme } from "@ui";
 import { Text } from "../../typography";
 
 const sizes = {
-    md: { height: 32, paddingHorizontal: 12, fontSize: 14 },
-    sm: { height: 24, paddingHorizontal: 10, fontSize: 12 },
-    xs: { height: 18, paddingHorizontal: 8, fontSize: 11 },
+    md: { height: 32, paddingHorizontal: 12, fontSize: controlTextSpecifications.md.fontSize },
+    sm: { height: 24, paddingHorizontal: 10, fontSize: controlTextSpecifications.sm.fontSize },
+    xs: { height: 18, paddingHorizontal: 8, fontSize: controlTextSpecifications.xs.fontSize },
 } as const;
 
 export const NumberInput: FC<NumberInputProps> = ({

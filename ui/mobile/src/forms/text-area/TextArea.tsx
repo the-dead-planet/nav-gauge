@@ -1,6 +1,6 @@
 import { ComponentProps, FC, useState } from "react";
 import { TextInput as RNTextInput, View, StyleSheet } from "react-native";
-import { TextAreaProps, useTheme } from "@ui";
+import { controlTextSpecifications, TextAreaProps, useTheme } from "@ui";
 import { Text } from "../../typography";
 
 export const TextArea: FC<TextAreaProps & ComponentProps<typeof RNTextInput>> = ({
@@ -16,7 +16,7 @@ export const TextArea: FC<TextAreaProps & ComponentProps<typeof RNTextInput>> = 
     const borderColor = isFocused
         ? theme.color(highlightColor, theme.isLight ? 600 : 300)
         : theme.color(color, 500);
-    const fontSize = size === 'xs' ? 11 : size === 'sm' ? 12 : 14;
+    const fontSize = controlTextSpecifications[size].fontSize;
     const paddingV = size === 'xs' ? 0 : size === 'sm' ? 2 : 6;
 
     return (
