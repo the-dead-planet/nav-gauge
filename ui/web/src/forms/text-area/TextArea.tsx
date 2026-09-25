@@ -1,6 +1,7 @@
 import { ComponentProps, FC, MouseEvent } from "react";
 import classNames from "classnames";
 import { TextAreaProps, useTheme } from "@ui";
+import { Label } from "../../typography";
 import styles from './text-area.module.css';
 
 export const TextArea: FC<Omit<ComponentProps<'textarea'>, 'size'> & TextAreaProps> = ({
@@ -32,7 +33,7 @@ export const TextArea: FC<Omit<ComponentProps<'textarea'>, 'size'> & TextAreaPro
             styles[`size-${size}`],
             styles[`variant-${variant}`],
         )}>
-            <label htmlFor={props.id} className={styles.label}>{label}</label>
+            <Label htmlFor={props.id} className={styles.label}>{label}</Label>
             <textarea
                 onClick={handleClick}
                 className={classNames(styles.textarea, className)}

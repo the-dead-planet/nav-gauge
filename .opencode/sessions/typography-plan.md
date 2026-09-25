@@ -14,7 +14,7 @@ attribution typography and positioning.
    - Replace raw Text and manual uppercase, alignment, shade, and theme colors.
 3. Web label semantics (completed)
    - Use Label only for associated controls; use Text or Span for descriptions.
-4. Web form labels
+4. Web form labels (completed)
    - Reuse Label in Input, TextInput, TextArea, ColorInput, and NumberInput.
 5. Mobile raw text migration
    - Migrate Tooltip, Button, Chip, NumberInput, Tabstrip, and ClockLabel.

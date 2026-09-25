@@ -1,7 +1,7 @@
 import { FC } from "react";
-import { useEffectiveRightPanelWidth } from "@apparatus";
+import { useEffectiveRightPanelWidth, useTranslation } from "@apparatus";
 import { StyleSheet, useWindowDimensions, View } from "react-native";
-import { Icon, LinkText } from "@mobile-ui";
+import { Icon, LinkText, Tooltip } from "@mobile-ui";
 import { useSubjectState } from "@tinker-chest";
 import { Icons, useTheme } from "@ui";
 import { useMobileMachineWard } from "@mobile-apparatus";
@@ -35,7 +35,8 @@ export const Attributions: FC = () => {
     const theme = useTheme();
     const { height } = useWindowDimensions();
     const rightPanelWidth = useEffectiveRightPanelWidth();
-    const { attributionVault, cartomancer } = useMobileMachineWard();
+    const { attributionVault, cartomancer, namespace, translationKey } = useMobileMachineWard();
+    const tooltip = useTranslation({ n: namespace, t: translationKey.Attributions });
     const [selectedStyle] = useSubjectState(cartomancer.selectedStyle$);
     const [attributions] = useSubjectState(attributionVault.attributions$);
     const entries = attributions.get(selectedStyle.id);
@@ -50,12 +51,16 @@ export const Attributions: FC = () => {
                 backgroundColor: theme.componentColor('background', .87),
                 borderColor: theme.color('neutral'),
             }]}>
-                <Icon
-                    icon={Icons.NounProject.Attribution}
-                    color={theme.color('neutral', 500)}
-                    width={16}
-                    height={16}
-                />
+                <Tooltip content={tooltip} placement="left">
+                    <View>
+                        <Icon
+                            icon={Icons.NounProject.Attribution}
+                            color={theme.color('neutral', 500)}
+                            width={16}
+                            height={16}
+                        />
+                    </View>
+                </Tooltip>
                 {entries.map(({ text, shortText, href }) => (
                     <LinkText key={text} href={href} color="neutral" shade={500} style={styles.link} accessibilityLabel={text}>
                         {height < 500 ? shortText ?? text : text}
