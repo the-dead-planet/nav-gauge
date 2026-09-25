@@ -12,7 +12,7 @@ attribution typography and positioning.
    - Remove the redundant role from web native anchors.
 2. Mobile settings cleanup (completed)
    - Replace raw Text and manual uppercase, alignment, shade, and theme colors.
-3. Web label semantics
+3. Web label semantics (completed)
    - Use Label only for associated controls; use Text or Span for descriptions.
 4. Web form labels
    - Reuse Label in Input, TextInput, TextArea, ColorInput, and NumberInput.
