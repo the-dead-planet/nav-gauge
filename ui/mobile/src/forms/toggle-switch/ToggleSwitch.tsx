@@ -4,6 +4,7 @@ import { controlTextSpecifications, ToggleSwitchProps, useTheme } from "@ui";
 import { Text } from "../../typography";
 import { Lamp } from "./Lamp";
 import { ThumbBody } from "./ThumbBody";
+import { TRANSLUCENT_OPACITY } from "../../tinkers";
 
 const clipPaths = {
     xs: { pivotStart: 0.125, pivotEnd: 0.875, knobStart: 0, knobEnd: 1 },
@@ -89,7 +90,7 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
             case 'fill-inverse':
                 return theme.color(color, 100);
             case 'fill-translucent':
-                return theme.color(color, 500, 0.15);
+                return theme.color(color, 500, TRANSLUCENT_OPACITY);
             case 'outline':
                 return 'transparent';
             case 'inset':

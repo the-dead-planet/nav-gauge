@@ -7,6 +7,7 @@ import { Hexagon } from "../hud";
 import { Tooltip } from "../tooltip";
 import { MutableViewStyle } from "../model";
 import { Text } from "../typography";
+import { TRANSLUCENT_OPACITY } from "../tinkers";
 
 export interface MobileButtonProps {
     forwardRef?: Ref<ViewInstance>;
@@ -132,7 +133,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
                 container.backgroundColor = theme.color(highlightColor, 500, 0.36);
                 container.borderColor = theme.color(highlightColor, isLight ? 600 : 300);
             } else {
-                container.backgroundColor = theme.color(color, 500, 0.24);
+                container.backgroundColor = theme.color(color, 500, TRANSLUCENT_OPACITY);
                 container.borderColor = theme.color(color, 500, 0.3);
             }
             break;

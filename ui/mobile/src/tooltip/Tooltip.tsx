@@ -2,6 +2,7 @@ import { Children, cloneElement, FC, ReactElement, useEffect, useRef, useState }
 import { View, Modal, useWindowDimensions, GestureResponderEvent, LayoutChangeEvent, StyleSheet } from "react-native";
 import { ColorVariant, ErrorBoundary, getAutoTooltipPlacement, TooltipPlacement, TooltipProps, useTheme } from "@ui";
 import { Text } from "../typography";
+import { TRANSLUCENT_OPACITY } from "../tinkers";
 
 const OFFSET = 8;
 const LONG_PRESS_DELAY = 500;
@@ -132,8 +133,7 @@ const getVariantColors = (theme: ReturnType<typeof useTheme>, colorName: ColorVa
         case 'fill-inverse':
             return { backgroundColor: inverseBg, color: accent, borderColor: accent };
         case 'fill-translucent': {
-            const opacity = theme.isLight ? 0.85 : 0.78;
-            return { backgroundColor: theme.color(colorName, 500, opacity), color: accent };
+            return { backgroundColor: theme.color(colorName, 500, TRANSLUCENT_OPACITY), color: accent };
         }
         default:
             return { backgroundColor: inverseBg, color: accent };

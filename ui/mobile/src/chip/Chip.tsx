@@ -12,6 +12,7 @@ import {
 import { Icon } from "../icons";
 import { Tooltip } from "../tooltip";
 import { Text } from "../typography";
+import { TRANSLUCENT_OPACITY } from "../tinkers";
 
 const styles = StyleSheet.create({
     chip: {
@@ -125,7 +126,7 @@ export const Chip: FC<ChipProps & MobileChipProps> = ({
             labelColor = chipColor;
             break;
         case 'fill-translucent':
-            backgroundColor = translucent(0.24);
+            backgroundColor = translucent(TRANSLUCENT_OPACITY);
             borderWidth = 1;
             borderColor = translucent(0.3);
             labelColor = chipColor;

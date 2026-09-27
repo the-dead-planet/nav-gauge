@@ -4,7 +4,6 @@ import {
     Pressable,
     ScrollView,
     View,
-    type ViewStyle,
     type HostInstance,
     TouchableHighlight,
 } from "react-native";
@@ -13,6 +12,7 @@ import { Icon } from "../icons";
 import { Text } from "../typography";
 import { SvgProps } from "react-native-svg";
 import { MutableViewStyle } from "../model";
+import { TRANSLUCENT_OPACITY } from "../tinkers";
 
 interface MobileOption<T> {
     value: T;
@@ -85,7 +85,7 @@ export function Dropdown<T>({
                 break;
             case 'fill-translucent':
                 style.borderWidth = 1;
-                style.backgroundColor = theme.color(color, 500, 0.24);
+                style.backgroundColor = theme.color(color, 500, TRANSLUCENT_OPACITY);
                 style.borderColor = pressed
                     ? theme.color(highlightColor, theme.isLight ? 600 : 300)
                     : theme.color(color, 500, 0.3);

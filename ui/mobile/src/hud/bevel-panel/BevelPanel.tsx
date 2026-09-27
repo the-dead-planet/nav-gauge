@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import Svg, { Polygon } from "react-native-svg";
 import { BevelPanelProps, ColorVariant, SizeVariant, useTheme } from "@ui";
+import { TRANSLUCENT_OPACITY } from "../../tinkers";
 
 const paddingMap: Record<SizeVariant, number> = {
     xs: 6,
@@ -185,7 +186,7 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
             case 'fill-translucent': {
                 const fill = highlight
                     ? theme.color(highlightColor, 500, active ? 0.48 : 0.36)
-                    : theme.color(color, 500, 0.24);
+                    : theme.color(color, 500, TRANSLUCENT_OPACITY);
                 const border = highlight ? (active ? highlight500 : highlightAccent) : baseColor;
                 return (
                     <>

@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { Circle, Path } from "react-native-svg";
 import { describeArc, useTheme, ColorVariant, SurfaceFillVariant } from "@ui";
+import { TRANSLUCENT_OPACITY } from "../../tinkers";
 
 interface Props {
     center: number;
@@ -36,7 +37,7 @@ export const ClockDial: FC<Props> = ({
         ? theme.color(color, 500)
         : variant === 'fill-inverse'
             ? theme.color(color, isLight ? 100 : 800)
-            : theme.color(color, 500, 0.24);
+            : theme.color(color, 500, TRANSLUCENT_OPACITY);
 
     return (
         <>

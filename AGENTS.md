@@ -18,7 +18,6 @@ The workspace root is `/` (package.json and yarn commands live there, not at rep
 | `yarn test:gear` | Test a specific gear (pass name) |
 | `yarn test:e2e:web:dev` | Cypress E2E against localhost |
 | `yarn dev:mobile` | Start mobile dev (Android) |
-| `yarn start:mobile` | Start Metro server |
 | `yarn typecheck:web` | TypeScript check for web packages (exits) |
 | `yarn typecheck:mobile` | TypeScript check for mobile packages (watch mode — never exits; 0 errors means it passed, just Ctrl-C) |
 | `yarn typecheck:mobile:once` | One-shot mobile TypeScript check (exits; silent = passed) — prefer this for non-interactive runs |
@@ -63,4 +62,6 @@ Always run `yarn typecheck:web` (or `yarn typecheck:mobile:once` for mobile chan
 - Do not commit secrets or `.env` files
 - No account required by default; persistence via device storage
 - Use `@react-native` preset for mobile tests
+- Native mobile dependencies used by another workspace must be runtime dependencies of `app-mobile` for autolinking, and peer plus dev dependencies of each workspace that imports them.
+- Do not run long Android builds in the agent session. Ask the user to run `yarn build:mobile` and provide the first error block if it fails.
 - Refer to `docs/CONTRIBUTING.md` and `docs/ARCHITECTURES.md` for details

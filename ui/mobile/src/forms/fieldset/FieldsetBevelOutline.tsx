@@ -2,6 +2,7 @@ import { FC } from "react";
 import { StyleSheet } from "react-native";
 import Svg, { Polygon } from "react-native-svg";
 import { ColorVariant, SurfaceFillVariant, useTheme } from "@ui";
+import { TRANSLUCENT_OPACITY } from "../../tinkers";
 
 const styles = StyleSheet.create({
     bevelOutline: {
@@ -42,7 +43,7 @@ export const FieldsetBevelOutline: FC<Props> = ({
         : variant === 'fill-inverse'
             ? theme.color(effectiveColor, theme.isLight ? 100 : effectiveColor === 'neutral' ? 800 : 900)
             : variant === 'fill-translucent'
-                ? theme.color(effectiveColor, 500, 0.24)
+                ? theme.color(effectiveColor, 500, TRANSLUCENT_OPACITY)
                 : 'none';
 
     if (containerWidth === 0 || containerHeight === 0) {
