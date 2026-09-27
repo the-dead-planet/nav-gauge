@@ -1,6 +1,7 @@
 import { FC, useState } from "react";
 import { View, ViewStyle, StyleProp, Pressable } from "react-native";
 import { PanelProps, SizeVariant, useTheme } from "@ui";
+import { TRANSLUCENT_OPACITY } from "../../tinkers";
 
 interface Props {
     style?: StyleProp<ViewStyle>;
@@ -85,7 +86,7 @@ export const Panel: FC<PanelProps & Props> = ({
             case 'fill-translucent': {
                 const fill = hl
                     ? theme.color(highlightColor, 500, active ? 0.48 : 0.36)
-                    : theme.color(color, 500, 0.24);
+                    : theme.color(color, 500, TRANSLUCENT_OPACITY);
                 const border = hl ? (active ? highlight500 : highlightAccent) : baseColor;
                 return {
                     backgroundColor: fill,

@@ -154,8 +154,8 @@ Set up android environment following https://reactnative.dev/docs/set-up-your-en
 To start metro service or start with clear cache:
 
 ```
-yarn start:mobile
-yarn start:mobile:r 
+yarn dev:mobile
+yarn dev:mobile:r 
 ```
 
 To run on the development device (emulator or connected real device):

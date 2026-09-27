@@ -5,6 +5,7 @@ import { getVisibleTabIndexes, TabstripProps, useTheme } from '@ui';
 import { Button } from '../../button';
 import { Menu, MenuItem } from '../../menu';
 import { Text } from '../../typography';
+import { TRANSLUCENT_OPACITY } from '../../tinkers';
 
 const styles = StyleSheet.create({
     root: { alignSelf: 'stretch', width: '100%' },
@@ -60,7 +61,7 @@ export const Tabstrip: FC<TabstripProps> = ({
     const contentStyle = {
         backgroundColor: variant === 'fill-inverse'
             ? theme.color(color, theme.isLight ? 100 : (color === 'neutral' ? 800 : 900))
-            : variant === 'fill-translucent' ? theme.color(color, 500, 0.24) : 'transparent',
+            : variant === 'fill-translucent' ? theme.color(color, 500, TRANSLUCENT_OPACITY) : 'transparent',
         borderColor: baseColor,
         borderWidth: variant === 'outline' ? 1 : 0,
         padding: size === 'md' ? 14 : size === 'sm' ? 10 : 6,
@@ -79,7 +80,7 @@ export const Tabstrip: FC<TabstripProps> = ({
                     const isLast = spread && isTrailing;
                     const inactiveFill = variant === 'fill-inverse'
                         ? theme.color(color, theme.isLight ? 100 : (color === 'neutral' ? 800 : 900))
-                        : variant === 'fill-translucent' ? theme.color(color, 500, 0.24) : 'transparent';
+                        : variant === 'fill-translucent' ? theme.color(color, 500, TRANSLUCENT_OPACITY) : 'transparent';
                     const button = <Button
                         key={option.value}
                         {...buttonProps}

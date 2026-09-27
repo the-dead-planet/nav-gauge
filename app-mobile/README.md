@@ -43,7 +43,7 @@ yarn dev:mobile
 To restart metro server and clear cache
 
 ```
-yarn start:mobile:r
+yarn dev:mobile:r
 ```
 
 To run type check in watch mode:

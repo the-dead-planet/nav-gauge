@@ -10,10 +10,13 @@ export * from './grid';
 export * from './hud';
 export * from './icons';
 export * from './menu';
-export * from './model';
 export * from './tooltip';
 export * from './popup';
 export * from './resize-handle';
 export * from './transition';
 export * from './typography';
+
+export * from './model';
+export * from './tinkers';
+
 export * from './Stories';

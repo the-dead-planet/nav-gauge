@@ -2,6 +2,7 @@ import { FC, forwardRef, Ref, useId, useState } from "react";
 import { View, StyleSheet, Pressable, PressableProps, type ViewInstance, type ViewProps } from "react-native";
 import Svg, { Polygon, Defs, ClipPath, G, LinearGradient, Stop } from "react-native-svg";
 import { HexagonProps, SizeVariant, useTheme } from "@ui";
+import { TRANSLUCENT_OPACITY } from "../../tinkers";
 
 const POINTY_TOP = "50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25";
 const FLAT_TOP = "100,50 75,93.3 25,93.3 0,50 25,6.7 75,6.7";
@@ -149,7 +150,7 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(({
             case 'fill-translucent': {
                 const fill = hl
                     ? theme.color(highlightColor, 500, active ? 0.48 : 0.36)
-                    : theme.color(color, 500, 0.24);
+                    : theme.color(color, 500, TRANSLUCENT_OPACITY);
                 const border = hl ? (active ? highlight500 : highlightAccent) : baseColor;
                 return (
                     <>

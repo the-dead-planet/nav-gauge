@@ -2,6 +2,7 @@ import { FC, useState } from 'react';
 import { LayoutChangeEvent, StyleProp, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
 import Svg, { Polygon, Polyline } from 'react-native-svg';
 import { ColorVariant, NotchedPanelProps, SizeVariant, useTheme } from '@ui';
+import { TRANSLUCENT_OPACITY } from '../../tinkers';
 
 const paddingMap: Record<SizeVariant, number> = { xs: 6, sm: 10, md: 16 };
 
@@ -40,7 +41,7 @@ export const NotchedPanel: FC<NotchedPanelProps & Props> = ({
     const fill = variant === 'fill'
         ? baseColor
         : variant === 'fill-translucent'
-            ? theme.color(color, 500, 0.24)
+            ? theme.color(color, 500, TRANSLUCENT_OPACITY)
             : theme.color(color, inverseShade);
     const { width, height, headerHeight } = dimensions;
     const notch = Math.min(18, width / 5, height / 4);
