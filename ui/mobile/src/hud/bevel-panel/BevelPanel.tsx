@@ -106,8 +106,7 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
         setContainerHeight(height);
     };
 
-    const hasBorder = variant !== 'fill';
-    const strokeWidth = hasBorder ? 1 : 0;
+    const strokeWidth = variant === 'fill' ? 0 : 1;
     const strokeInset = strokeWidth / 2;
 
     const effectiveBevel = containerWidth > 0

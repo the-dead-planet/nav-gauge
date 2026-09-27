@@ -14,7 +14,6 @@
 }
 
 .rail {
-    display: inline-block;
     width: max-content;
     pointer-events: auto;
 }
@@ -29,18 +28,6 @@
 .content a {
     font-size: 10px;
     line-height: 12px;
-}
-
-.link.mode-dark {
-    --link-hover-color: var(--color-neutral-200)
-}
-
-.link.mode-light {
-    --link-hover-color: var(--color-neutral-800)
-}
-
-.content a.link:hover span {
-    color: var(--link-hover-color);
 }
 
 .short-text {

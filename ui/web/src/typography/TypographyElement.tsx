@@ -69,7 +69,7 @@ export const TypographyElement = <Element extends ElementType>({
         style: color && shade !== undefined
             ? {
                 ...style,
-                color: theme.color(color, disabled ? (theme.isDark ? 700 : 300) : shade),
+                '--typography-color-shade': theme.color(color, disabled ? (theme.isDark ? 700 : 300) : shade),
             } as CSSProperties
             : style,
     });

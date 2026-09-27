@@ -1,5 +1,4 @@
 import { FC } from "react";
-import classNames from "classnames";
 import { useWebMachineWard } from "@web-apparatus";
 import { useEffectiveRightPanelWidth, useTranslation } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
@@ -42,7 +41,7 @@ export const Attributions: FC = () => {
                         </span>
                     </Tooltip>
                     {entries.map(({ text, shortText, href }) => (
-                        <LinkText key={text} href={href} color="neutral" shade={500} aria-label={text} className={classNames(styles['link'], styles[`mode-${theme.mode}`])}>
+                        <LinkText key={text} href={href} color="neutral" shade={500} aria-label={text}>
                             <span className={styles['full-text']}>{text}</span>
                             <span className={styles['short-text']}>{shortText ?? text}</span>
                         </LinkText>
