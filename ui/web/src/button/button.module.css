@@ -185,29 +185,19 @@
 
 .variant-fill {
     border: none;
-    color: var(--button-color-light);
+    color: var(--button-color-inverse);
     background-color: var(--button-color-fill);
 }
 
 .variant-fill:hover,
 .variant-fill.hovered {
     background-color: var(--button-highlight-color-accent);
-    color: var(--button-highlight-color-light);
-}
-
-.variant-fill:hover .icon,
-.variant-fill.hovered .icon,
-.variant-fill:active .icon,
-.variant-fill.active .icon {
-    color: var(--button-highlight-color-light);
-    stroke: var(--button-highlight-color-light);
-    fill: var(--button-highlight-color-light);
 }
 
 .variant-fill .icon {
-    color: var(--button-color-light);
-    stroke: var(--button-color-light);
-    fill: var(--button-color-light);
+    color: var(--button-color-inverse);
+    stroke: var(--button-color-inverse);
+    fill: var(--button-color-inverse);
 }
 
 .variant-fill:active,

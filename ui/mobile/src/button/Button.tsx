@@ -201,12 +201,8 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         container.opacity = 0.45;
     }
 
-    const fillTextColor = color === 'neutral'
-        ? theme.color('neutral', 100)
-        : theme.color(color, 100);
-    const hlFillTextColor = highlightColor === 'neutral'
-        ? theme.color('neutral', 100)
-        : theme.color(highlightColor, 100);
+    const fillTextColor = theme.color(color, theme.isDark ? 900 : 100);
+    const hlFillTextColor = theme.color(highlightColor, theme.isDark ? 900 : 100);
     const textColor = effectiveVariant === 'fill'
         ? (hl ? hlFillTextColor : fillTextColor)
         : effectiveVariant === 'fill-inverse' && !hl
@@ -253,7 +249,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
                 color={theme.color(
                     pressed || active ? highlightColor : color,
                     effectiveVariant === 'fill'
-                        ? 100
+                        ? (theme.isDark ? 900 : 100)
                         : (pressed || active ? (theme.isDark ? 300 : 600) : 500)
                 )}
                 filter={showTextShadow ? `drop-shadow(0px 0px 12px ${hlInset})` : undefined}
