@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { describe, it } from "mocha";
-import { radialLineCoords } from "../src/clock-input";
+import { radialLineCoords } from "../../src/clock-input";
 
 describe("radialLineCoords", () => {
     it("returns line endpoints for a clock angle", () => {

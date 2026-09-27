@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Theme } from "../src";
+import { Theme } from "../../src";
 
 describe("Theme", () => {
     it("orders global layers semantically", () => {
