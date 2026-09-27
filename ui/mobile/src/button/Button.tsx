@@ -201,7 +201,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         container.opacity = 0.45;
     }
 
-    const fillTextShade: ColorShade = theme.isDark ? 900 : 100
+    const fillTextShade: ColorShade = theme.isDark ? 900 : 100;
     const fillTextColor = theme.color(color, fillTextShade);
     const hlFillTextColor = theme.color(highlightColor, fillTextShade);
     const textColor = effectiveVariant === 'fill'
