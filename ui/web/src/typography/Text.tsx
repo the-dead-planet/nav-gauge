@@ -1,5 +1,4 @@
-import { ComponentProps, CSSProperties, FC } from "react";
-import classNames from "classnames";
+import { ComponentProps, FC } from "react";
 import { TextVariant, typographyVariantSpecifications, TypographyProps } from "@ui";
 import { H1 } from './H1';
 import { H2 } from './H2';
@@ -9,7 +8,6 @@ import { H5 } from './H5';
 import { H6 } from './H6';
 import { P } from './P';
 import { Span } from './Span';
-import styles from './typography.module.css';
 
 export type { TextVariant } from '@ui';
 
@@ -35,12 +33,6 @@ export interface TextProps extends TypographyProps {
     as?: 'p' | 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 }
 
-type TextStyle = CSSProperties & {
-    '--typography-font-size': string;
-    '--typography-font-weight': string;
-    '--typography-line-height': string;
-};
-
 export const Text: FC<ComponentProps<'p'> & TextProps> = ({
     variant = 'body',
     as,
@@ -56,13 +48,13 @@ export const Text: FC<ComponentProps<'p'> & TextProps> = ({
     return (
         <Component
             {...props}
-            className={classNames(styles[`variant-${variant}`], className)}
+            className={className}
             style={{
-                '--typography-font-size': `${specification.fontSize}px`,
-                '--typography-font-weight': specification.fontWeight,
-                '--typography-line-height': `${specification.lineHeight}px`,
+                fontSize: specification.fontSize,
+                fontWeight: specification.fontWeight,
+                lineHeight: `${specification.lineHeight}px`,
                 ...style,
-            } as TextStyle}
+            }}
         >
             {children}
         </Component>

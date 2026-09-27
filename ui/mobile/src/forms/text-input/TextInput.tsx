@@ -1,7 +1,22 @@
 import { FC, useState } from "react";
 import { TextInput as RNTextInput, View, StyleSheet } from "react-native";
 import { controlTextSpecifications, FontType, TextInputProps, useTheme } from "@ui";
-import { getMobileFontFamily, Text } from "../../typography";
+import { Text } from "../../typography";
+import { getMobileFontFamily } from "../../typography/fontFamily";
+
+const styles = StyleSheet.create({
+    container: {
+        rowGap: 4,
+    },
+    label: {
+    },
+    input: {
+        borderWidth: 1,
+        borderRadius: 4,
+        boxSizing: 'border-box',
+        fontFamily: getMobileFontFamily(FontType.Default),
+    },
+});
 
 export const TextInput: FC<TextInputProps> = ({
     color = 'neutral',
@@ -47,17 +62,3 @@ export const TextInput: FC<TextInputProps> = ({
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        rowGap: 4,
-    },
-    label: {
-    },
-    input: {
-        borderWidth: 1,
-        borderRadius: 4,
-        boxSizing: 'border-box',
-        fontFamily: getMobileFontFamily(FontType.Default),
-    },
-});

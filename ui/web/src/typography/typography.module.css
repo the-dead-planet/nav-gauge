@@ -58,14 +58,6 @@
     font-size: 14px;
 }
 
-.variant-header,
-.variant-body,
-.variant-caption {
-    font-size: var(--typography-font-size);
-    font-weight: var(--typography-font-weight);
-    line-height: var(--typography-line-height);
-}
-
 .link:link,
 .link:visited {
     text-decoration: underline;
