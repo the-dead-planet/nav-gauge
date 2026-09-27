@@ -294,6 +294,7 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(({
                 }}
                 onPressOut={(e) => {
                     setPressed(false);
+                    setGlowDrawn(false);
                     onParentPressOut?.(e);
                 }}
                 style={style}

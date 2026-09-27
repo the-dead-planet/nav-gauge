@@ -5,10 +5,11 @@
 
 .box {
     width: 55px;
-    height: 60px;
+    padding: 5px 0;
     display: grid;
     align-items: center;
     justify-content: center;
+    row-gap: 4px;
 }
 
 .rgb-text {
