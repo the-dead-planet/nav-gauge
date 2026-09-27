@@ -16,6 +16,7 @@ const jp: TranslationTable<MachineTranslationKey>['jp'] = {
     'panel-menu': 'Panel options',
     'swap-placement': 'Place panel on the {{placement}}',
     'drag-to-resize': 'ドラッグしてサイズを変更',
+    attributions: '帰属表示',
     'under-construction': '建設中',
 };
 

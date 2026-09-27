@@ -29,9 +29,10 @@ export type TextVariant = 'header' | 'body' | 'caption';
 
 export interface TypographyProps {
     color?: ColorVariant;
+    /** Applies a palette shade when `color` is set. */
     shade?: ColorShade;
     fontType?: FontType;
-    align?: 'left' | 'right';
+    align?: 'left' | 'center' | 'right';
     nowrap?: boolean;
     shadow?: boolean;
     bold?: boolean;

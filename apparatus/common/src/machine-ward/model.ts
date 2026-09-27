@@ -48,5 +48,6 @@ export enum MachineTranslationKey {
     PanelMenu = 'panel-menu',
     SwapPlacement = 'swap-placement',
     DragToResize = 'drag-to-resize',
+    Attributions = 'attributions',
     UnderConstruction = 'under-construction',
 }

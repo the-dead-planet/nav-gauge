@@ -1,6 +1,6 @@
 import { describe, it } from "mocha";
 import { expect } from "chai";
-import { placePopup } from "../src/menu/utils";
+import { placePopup } from "../../src/menu/tinkers";
 
 describe("placePopup", () => {
     it("keeps the desired anchor when the popup fits", () => {

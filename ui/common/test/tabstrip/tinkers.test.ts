@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { describe, it } from 'mocha';
-import { getVisibleTabCount, getVisibleTabIndexes } from '../src/hud/tabstrip';
+import { getVisibleTabCount, getVisibleTabIndexes } from '../../src/hud/tabstrip';
 
 describe('getVisibleTabCount', () => {
     it('shows all tabs when they fit without overflow', () => {

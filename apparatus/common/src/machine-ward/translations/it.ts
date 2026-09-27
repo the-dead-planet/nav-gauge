@@ -16,6 +16,7 @@ const it: TranslationTable<MachineTranslationKey>['it'] = {
     'panel-menu': 'Panel options',
     'swap-placement': 'Place panel on the {{placement}}',
     'drag-to-resize': 'Trascina per ridimensionare',
+    attributions: 'Attribuzioni',
     'under-construction': 'In costruzione',
 };
 

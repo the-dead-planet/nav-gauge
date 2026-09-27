@@ -1,6 +1,7 @@
 import { Children, cloneElement, FC, ReactElement, useEffect, useRef, useState } from "react";
-import { View, Text, Modal, useWindowDimensions, GestureResponderEvent, LayoutChangeEvent, StyleSheet } from "react-native";
+import { View, Modal, useWindowDimensions, GestureResponderEvent, LayoutChangeEvent, StyleSheet } from "react-native";
 import { ColorVariant, ErrorBoundary, getAutoTooltipPlacement, TooltipPlacement, TooltipProps, useTheme } from "@ui";
+import { Text } from "../typography";
 
 const OFFSET = 8;
 const LONG_PRESS_DELAY = 500;

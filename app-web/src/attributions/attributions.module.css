@@ -1,7 +1,7 @@
 .anchor {
     position: absolute;
     top: 46px;
-    z-index: 1;
+    z-index: 3;
     pointer-events: none;
 }
 
@@ -9,21 +9,23 @@
     position: absolute;
     top: 0;
     left: 0;
-    pointer-events: auto;
-    background-color: rgb(from var(--color-background) r g b / .87);
-    padding: 0;
-    corner-shape: bevel;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    border: 1px solid var(--color-neutral);
-    width: max-content;
     transform: rotate(90deg);
     transform-origin: 0 0;
 }
 
-.container a {
+.rail {
+    width: max-content;
+    pointer-events: auto;
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 16px;
+}
+
+.content a {
     font-size: 10px;
     line-height: 12px;
 }

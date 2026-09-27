@@ -1,6 +1,7 @@
 import { ChangeEvent, ComponentProps, FC, MouseEvent } from "react";
 import classNames from "classnames";
 import { TextInputProps, useTheme } from "@ui";
+import { Label } from "../../typography";
 import styles from './text-input.module.css';
 
 export const TextInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' | 'type' | 'size'> & TextInputProps> = ({
@@ -39,7 +40,7 @@ export const TextInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' | 
             styles[`variant-${variant}`],
             className
         )}>
-            {label ? <label htmlFor={id} className={styles.label}>{label}</label> : null}
+            {label ? <Label htmlFor={id} className={styles.label}>{label}</Label> : null}
             <input
                 id={id}
                 type="text"

@@ -9,7 +9,7 @@
 .h5,
 .h6 {
     margin: 0;
-    color: var(--typography-color, var(--color-text));
+    color: var(--typography-color-shade, var(--typography-color, var(--color-text)));
 }
 
 .uppercase {
@@ -17,7 +17,9 @@
 }
 
 .shadow {
-    text-shadow: -1px 0px 1px rgb(from var(--typography-color-dark) r g b / .5);
+    text-shadow:
+        -1px 0 1px var(--typography-color-dark, var(--color-neutral-900)),
+        1px 0 1px var(--typography-color-dark, var(--color-neutral-900));
 }
 
 .tabular {
@@ -30,6 +32,10 @@
 
 .align-right {
     text-align: right;
+}
+
+.align-center {
+    text-align: center;
 }
 
 .nowrap {
@@ -52,27 +58,14 @@
     font-size: 14px;
 }
 
-.variant-header {
-    font-size: 24px;
-    font-weight: 700;
-    line-height: 32px;
-}
-
-.variant-body {
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 24px;
-}
-
-.variant-caption {
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 16px;
-}
-
 .link:link,
 .link:visited {
+    color: var(--typography-color-shade, var(--typography-color, var(--color-text)));
     text-decoration: underline;
+}
+
+.link:hover {
+    color: var(--typography-color-hover);
 }
 
 .link.disabled,
@@ -95,24 +88,28 @@
     --typography-color-dark: var(--color-primary-900);
     --typography-color: var(--color-primary-900);
     --typography-color-disabled: var(--color-primary-300);
+    --typography-color-hover: var(--color-primary-800);
 }
 
 .mode-light.color-secondary {
     --typography-color-dark: var(--color-secondary-900);
     --typography-color: var(--color-secondary-900);
     --typography-color-disabled: var(--color-secondary-300);
+    --typography-color-hover: var(--color-secondary-800);
 }
 
 .mode-light.color-tertiary {
     --typography-color-dark: var(--color-tertiary-900);
     --typography-color: var(--color-tertiary-900);
     --typography-color-disabled: var(--color-tertiary-300);
+    --typography-color-hover: var(--color-tertiary-800);
 }
 
 .mode-light.color-neutral {
     --typography-color-dark: var(--color-neutral-900);
     --typography-color: var(--color-neutral-900);
     --typography-color-disabled: var(--color-neutral-300);
+    --typography-color-hover: var(--color-neutral-800);
 }
 
 .mode-light {
@@ -123,24 +120,28 @@
     --typography-color-dark: var(--color-primary-900);
     --typography-color: var(--color-primary-100);
     --typography-color-disabled: var(--color-primary-700);
+    --typography-color-hover: var(--color-primary-200);
 }
 
 .mode-dark.color-secondary {
     --typography-color-dark: var(--color-secondary-900);
     --typography-color: var(--color-secondary-100);
     --typography-color-disabled: var(--color-secondary-700);
+    --typography-color-hover: var(--color-secondary-200);
 }
 
 .mode-dark.color-tertiary {
     --typography-color-dark: var(--color-tertiary-900);
     --typography-color: var(--color-tertiary-100);
     --typography-color-disabled: var(--color-tertiary-700);
+    --typography-color-hover: var(--color-tertiary-200);
 }
 
 .mode-dark.color-neutral {
     --typography-color-dark: var(--color-neutral-900);
     --typography-color: var(--color-neutral-100);
     --typography-color-disabled: var(--color-neutral-700);
+    --typography-color-hover: var(--color-neutral-200);
 }
 
 .mode-dark {

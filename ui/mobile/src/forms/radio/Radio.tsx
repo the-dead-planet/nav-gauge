@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Pressable, View, ViewStyle } from "react-native";
-import { RadioProps, useTheme } from "@ui";
+import { controlTextSpecifications, RadioProps, useTheme } from "@ui";
 import { Text } from "../../typography";
 
 export const Radio: FC<RadioProps> = ({
@@ -21,7 +21,7 @@ export const Radio: FC<RadioProps> = ({
 
     const boxWidthHeight = size === 'md' ? 16 : size === 'sm' ? 14 : 12;
     const dotSize = boxWidthHeight / 2;
-    const fontSize = size === 'xs' ? 11 : size === 'sm' ? 12 : 14;
+    const textStyle = controlTextSpecifications[size];
 
     const containerStyle: ViewStyle = {
         flexDirection: 'row',
@@ -67,8 +67,7 @@ export const Radio: FC<RadioProps> = ({
                             <Text
                                 style={{
                                     color: baseColor,
-                                    fontSize,
-                                    lineHeight: fontSize * 1.1,
+                                    ...textStyle,
                                 }}
                             >
                                 {children}

@@ -1,11 +1,12 @@
 import { ComponentType, FC, Ref, useState } from "react";
-import { Pressable, PressableProps, Text as RNText, View, type ViewInstance } from "react-native";
+import { Pressable, PressableProps, View, type ViewInstance } from "react-native";
 import { ButtonProps, useTheme } from "@ui";
 import { Icon } from "../icons";
 import { SvgProps } from "react-native-svg";
 import { Hexagon } from "../hud";
 import { Tooltip } from "../tooltip";
 import { MutableViewStyle } from "../model";
+import { Text } from "../typography";
 
 export interface MobileButtonProps {
     forwardRef?: Ref<ViewInstance>;
@@ -261,14 +262,14 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
 
     const label = children ?? title;
     const textElement = typeof label === 'string' || typeof label === 'number' ? (
-        <RNText
+        <Text
             style={[
                 { color: textColor, fontSize, lineHeight: fontSize * 1.1 },
                 textShadowStyle,
             ]}
         >
             {label}
-        </RNText>
+        </Text>
     ) : label ?? null;
 
     const content = (

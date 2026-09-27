@@ -1,9 +1,10 @@
 import { FC, useState } from 'react';
-import { LayoutAnimation, LayoutChangeEvent, StyleSheet, Text, View } from 'react-native';
+import { LayoutAnimation, LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import Svg, { Polygon } from 'react-native-svg';
 import { getVisibleTabIndexes, TabstripProps, useTheme } from '@ui';
 import { Button } from '../../button';
 import { Menu, MenuItem } from '../../menu';
+import { Text } from '../../typography';
 
 const styles = StyleSheet.create({
     root: { alignSelf: 'stretch', width: '100%' },
@@ -89,7 +90,7 @@ export const Tabstrip: FC<TabstripProps> = ({
                         disabled={option.disabled}
                         onPress={() => selectTab(option.value)}
                     >
-                        {selected ? <Text style={{ color: theme.color(highlightColor, theme.isDark ? 900 : 100) }}>{option.label}</Text> : option.label}
+                        {selected ? <Text style={{ color: theme.color(highlightColor, theme.isDark ? 900 : 100), fontSize: 14 }}>{option.label}</Text> : option.label}
                     </Button>;
                     return selected ? (
                         <View key={option.value} style={[styles.selected, spread ? [styles.spreadItem, { minWidth: width }] : undefined, { backgroundColor: isTrailing && !spread ? 'transparent' : inactiveFill }, visibleIndex ? styles.joined : undefined]}>

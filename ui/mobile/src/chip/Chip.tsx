@@ -1,5 +1,5 @@
 import { ComponentType, FC, useState } from "react";
-import { LayoutChangeEvent, Pressable, PressableProps, StyleSheet, Text as RNText, View, ViewStyle } from "react-native";
+import { LayoutChangeEvent, Pressable, PressableProps, StyleSheet, View, ViewStyle } from "react-native";
 import { Path, Svg, SvgProps } from "react-native-svg";
 import {
     ChipProps,
@@ -11,6 +11,7 @@ import {
 } from "@ui";
 import { Icon } from "../icons";
 import { Tooltip } from "../tooltip";
+import { Text } from "../typography";
 
 const styles = StyleSheet.create({
     chip: {
@@ -185,9 +186,9 @@ export const Chip: FC<ChipProps & MobileChipProps> = ({
                 />
             ) : null}
             {children !== undefined && children !== null ? (
-                <RNText style={[styles.label, { color: labelColor, fontSize: sizeStyles[size].fontSize }]}>
+                <Text style={[styles.label, { color: labelColor, fontSize: sizeStyles[size].fontSize }]}>
                     {children}
-                </RNText>
+                </Text>
             ) : null}
         </View>
         </Pressable>

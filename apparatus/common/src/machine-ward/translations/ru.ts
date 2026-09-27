@@ -16,6 +16,7 @@ const ru: TranslationTable<MachineTranslationKey>['ru'] = {
     'panel-menu': 'Panel options',
     'swap-placement': 'Place panel on the {{placement}}',
     'drag-to-resize': 'Перетащите, чтобы изменить размер',
+    attributions: 'Атрибуция',
     'under-construction': 'В разработке',
 };
 

@@ -1,6 +1,6 @@
 import { FC, useRef, useState } from "react";
 import { Animated, LayoutChangeEvent, StyleSheet, View } from "react-native";
-import { FieldsetProps } from "@ui";
+import { controlTextSpecifications, FieldsetProps } from "@ui";
 import { FieldsetHeaderContent } from "./FieldsetHeaderContent";
 import { FieldsetBevelOutline } from "./FieldsetBevelOutline";
 import { FieldsetHeader } from "./FieldsetHeader";
@@ -20,9 +20,9 @@ const ANIMATION_DURATION = 250;
 const bevelBySize = { xs: 6, sm: 10, md: 20 } as const;
 
 const sizeMap = {
-    xs: { fontSize: 11, padding: 6 },
-    sm: { fontSize: 12, padding: 10 },
-    md: { fontSize: 14, padding: 10 },
+    xs: { fontSize: controlTextSpecifications.xs.fontSize, padding: 6 },
+    sm: { fontSize: controlTextSpecifications.sm.fontSize, padding: 10 },
+    md: { fontSize: controlTextSpecifications.md.fontSize, padding: 10 },
 } as const;
 
 interface Props extends FieldsetProps {

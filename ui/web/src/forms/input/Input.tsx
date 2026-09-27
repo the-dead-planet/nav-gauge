@@ -1,5 +1,6 @@
 import { DetailedHTMLProps, FC, InputHTMLAttributes, MouseEvent } from "react";
 import classNames from "classnames";
+import { Label } from "../../typography";
 import styles from './input.module.css';
 
 interface Props {
@@ -36,9 +37,9 @@ export const Input: FC<Props & Omit<DetailedHTMLProps<InputHTMLAttributes<HTMLIn
     };
 
     const labelComponent = (
-        <label htmlFor={id} onClick={(e) => e.stopPropagation()} className={styles.label}>
+        <Label htmlFor={id} onClick={(e) => e.stopPropagation()} className={styles.label}>
             {label}
-        </label>
+        </Label>
     );
 
     return (

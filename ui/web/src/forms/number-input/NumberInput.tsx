@@ -2,6 +2,7 @@ import { ChangeEvent, ComponentProps, FC, MouseEvent } from "react";
 import classNames from "classnames";
 import { addDecimalStep, Icons, NumberInputProps, SizeVariant, useTheme } from "@ui";
 import { Button } from "../../button";
+import { Label } from "../../typography";
 import styles from './number-input.module.css';
 
 export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' | 'type' | 'size'> & NumberInputProps> = ({
@@ -68,9 +69,9 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
             styles[`variant-${variant}`],
         )}>
             {typeof label === 'string' ? (
-                <label htmlFor={id} className={styles.label}>
+                <Label htmlFor={id} className={styles.label}>
                     {label}
-                </label>
+                </Label>
             ) : label}
             <div className={styles['input-wrapper']}>
                 <div className={styles['input-with-unit']}>

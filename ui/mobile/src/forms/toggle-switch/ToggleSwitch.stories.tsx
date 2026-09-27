@@ -43,6 +43,7 @@ export const ToggleSwitchVariants: FC = () => {
             >
                 {checked ? 'On' : 'Off'}
             </ToggleSwitch>
+            <ToggleSwitch checked={false} onChange={() => {}} disabled>Disabled</ToggleSwitch>
 
             <View style={styles.section}>
                 <Text style={styles.label}>Size</Text>

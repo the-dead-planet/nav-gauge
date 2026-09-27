@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { DropdownOption } from "@ui";
 import { RouteStoryLineStyle, RouteStoryTranslationKey } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { Checkbox, Dropdown, Label, NumberInput } from "@web-ui";
+import { Checkbox, Dropdown, NumberInput, Text } from "@web-ui";
 import { ColorSelectField } from "./ColorSelectField";
 import { useMultipleTranslations } from "@apparatus";
 import styles from './line-style-group.module.css';
@@ -62,18 +62,18 @@ export const LineStyleGroup: FC<Props> = ({
                 </div>
                 <div className={styles['line-grid']}>
                     <div className={styles['control-group']}>
-                        <Label disabled={!style.showRouteLine} className={styles['variant-label']}>{lineStyleLabel}</Label>
+                        <Text as="span" variant="caption" disabled={!style.showRouteLine} className={styles['variant-label']}>{lineStyleLabel}</Text>
                         <Dropdown className={styles['variant-dropdown']} ariaLabel={lineStyleLabel} disabled={!style.showRouteLine} size="xs" value={style.variant} options={variantOptions} onChange={(variant) => onChange({ variant })} />
                     </div>
                     <div className={styles['control-group']}>
-                        <Label disabled={!style.showRouteLine}>{lineLabel}</Label>
+                        <Text as="span" variant="caption" disabled={!style.showRouteLine}>{lineLabel}</Text>
                         <div className={styles['grid']}>
                             <ColorSelectField label={colorLabel} disabled={!style.showRouteLine} value={style.color} gearId={gearId} translationKey={translationKey} onChange={(color) => onChange({ color })} />
                             <NumberInput ariaLabel={sizeLabel} disabled={!style.showRouteLine} size="xs" min={1} max={8} step={1} value={style.width} onChange={(width) => onChange({ width })} unit="px" />
                         </div>
                     </div>
                     <div className={styles['control-group']}>
-                        <Label disabled={!style.showRouteLine}>{outlineLabel}</Label>
+                        <Text as="span" variant="caption" disabled={!style.showRouteLine}>{outlineLabel}</Text>
                         <div className={styles['grid']}>
                             <ColorSelectField label={colorLabel} disabled={!style.showRouteLine} value={style.outlineColor} gearId={gearId} translationKey={translationKey} onChange={(outlineColor) => onChange({ outlineColor })} />
                             <NumberInput ariaLabel={sizeLabel} disabled={!style.showRouteLine} size="xs" min={0} max={4} step={1} value={style.outlineWidth} onChange={(outlineWidth) => onChange({ outlineWidth })} unit="px" />
@@ -81,7 +81,7 @@ export const LineStyleGroup: FC<Props> = ({
                     </div>
                     {showColorTransition ? (
                         <div className={styles['control-group']}>
-                            <Label disabled={colorTransitionDisabled}>{colorTransitionLengthLabel}</Label>
+                            <Text as="span" variant="caption" disabled={colorTransitionDisabled}>{colorTransitionLengthLabel}</Text>
                             <NumberInput ariaLabel={colorTransitionLengthLabel} disabled={colorTransitionDisabled} size="xs" min={0} max={100} step={1} value={style.colorTransitionLengthPixels} onChange={(colorTransitionLengthPixels) => onChange({ colorTransitionLengthPixels })} unit="px" />
                         </div>
                     ) : null}

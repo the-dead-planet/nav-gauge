@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { describe, it } from "mocha";
-import { addDecimalStep } from "../src/number-input";
+import { addDecimalStep } from "../../src/number-input";
 
 describe("addDecimalStep", () => {
     it("normalizes fractional steps", () => {

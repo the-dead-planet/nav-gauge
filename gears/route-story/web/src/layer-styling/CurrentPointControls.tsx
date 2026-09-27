@@ -2,7 +2,7 @@ import { FC, useId } from "react";
 import { useMultipleTranslations } from "@apparatus";
 import { currentPointIconNames, CurrentPointIconName, CurrentPointStyle, RouteStoryTranslationKey } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { DropdownOption, Icons } from "@ui";
-import { Dropdown, IconRotateInput, Label, NumberInput, ToggleSwitch } from "@web-ui";
+import { Dropdown, IconRotateInput, Label, NumberInput, Text, ToggleSwitch } from "@web-ui";
 import { useWebMachineWard } from "@web-apparatus";
 import { ColorSelectField } from "./ColorSelectField";
 import styles from './current-point-controls.module.css';
@@ -46,7 +46,7 @@ export const CurrentPointControls: FC<Props> = ({ gearId, translationKey, value,
         <div className={styles['container']}>
             <div className={styles['appearance-grid']}>
                 <div className={styles['section']}>
-                    <Label>{iconLabel}</Label>
+                    <Text as="span" variant="caption">{iconLabel}</Text>
                     <Dropdown className={styles['icon-dropdown']} ariaLabel={iconLabel} size="xs" value={value.icon} options={iconOptions} onChange={(icon) => onChange({ icon })} />
                 </div>
                 <div className={styles['grid']}>
@@ -56,7 +56,7 @@ export const CurrentPointControls: FC<Props> = ({ gearId, translationKey, value,
             </div>
             <div className={styles['rotation-grid']}>
                 <div className={styles['section']}>
-                    <Label>{rotationAlignmentLabel}</Label>
+                    <Text as="span" variant="caption">{rotationAlignmentLabel}</Text>
                     <Dropdown ariaLabel={rotationAlignmentLabel} size="xs" value={value.rotationAlignment} options={rotationAlignmentOptions(mapLabel, viewportLabel)} onChange={(rotationAlignment) => onChange({ rotationAlignment })} />
                 </div>
                 <div className={styles['section']}>
@@ -64,7 +64,7 @@ export const CurrentPointControls: FC<Props> = ({ gearId, translationKey, value,
                     <IconRotateInput id={rotationInputId} icon={iconOptions.find((option) => option.value === value.icon)?.icon} value={value.rotation} onChange={(rotation) => onChange({ rotation })} size="xs" />
                 </div>
                 <div className={styles['section']}>
-                    <Label id={autoRotateLabelId}>{autoRotateLabel}<br />{value.autoRotate ? onLabel : offLabel}</Label>
+                    <Text as="span" variant="caption" id={autoRotateLabelId}>{autoRotateLabel}<br />{value.autoRotate ? onLabel : offLabel}</Text>
                     <ToggleSwitch labelledBy={autoRotateLabelId} size="xs" checked={value.autoRotate} onChange={(autoRotate) => onChange({ autoRotate })} />
                 </div>
             </div>

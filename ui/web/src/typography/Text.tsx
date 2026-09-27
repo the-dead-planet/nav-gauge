@@ -1,8 +1,13 @@
 import { ComponentProps, FC } from "react";
-import classNames from "classnames";
-import { TextVariant, TypographyProps } from "@ui";
-import { P, Span, H1, H2, H3, H4, H5, H6 } from './';
-import styles from './typography.module.css';
+import { TextVariant, typographyVariantSpecifications, TypographyProps } from "@ui";
+import { H1 } from './H1';
+import { H2 } from './H2';
+import { H3 } from './H3';
+import { H4 } from './H4';
+import { H5 } from './H5';
+import { H6 } from './H6';
+import { P } from './P';
+import { Span } from './Span';
 
 export type { TextVariant } from '@ui';
 
@@ -33,13 +38,24 @@ export const Text: FC<ComponentProps<'p'> & TextProps> = ({
     as,
     className,
     children,
+    style,
     ...props
 }) => {
     const tag = as ?? variantDefaultElement[variant];
     const Component = elementMap[tag];
+    const specification = typographyVariantSpecifications[variant];
 
     return (
-        <Component {...props} className={classNames(styles[`variant-${variant}`], className)}>
+        <Component
+            {...props}
+            className={className}
+            style={{
+                fontSize: specification.fontSize,
+                fontWeight: specification.fontWeight,
+                lineHeight: `${specification.lineHeight}px`,
+                ...style,
+            }}
+        >
             {children}
         </Component>
     );
