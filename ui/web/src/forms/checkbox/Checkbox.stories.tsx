@@ -2,7 +2,7 @@ import type { Meta } from 'storybook-react-rsbuild';
 import { useState } from 'react';
 import { Checkbox } from './Checkbox';
 import { Text } from '../../typography';
-import { ColorVariant, SizeVariant } from '@ui';
+import { CheckboxProps, ColorVariant, SizeVariant } from '@ui';
 import styles from './checkbox.stories.module.css';
 
 const meta = {
@@ -14,6 +14,7 @@ export default meta;
 
 const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
+const allVariants: CheckboxProps['variant'][] = ['fill', 'fill-inverse'];
 
 export const CheckboxVariants = {
     render: () => {
@@ -63,16 +64,16 @@ export const CheckboxVariants = {
                 </div>
 
                 <Text style={{ fontWeight: 700, marginTop: 16 }}>All combinations (checked)</Text>
-                {allSizes.map(s => (
-                    <div key={s} style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
-                        <Text style={{ width: 40 }}>{s}</Text>
+                {allVariants.map(variant => allSizes.map(s => (
+                    <div key={`${variant}-${s}`} style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+                        <Text style={{ width: 100 }}>{variant} {s}</Text>
                         {allColors.map(c => (
-                            <Checkbox key={c} size={s} color={c} checked onChange={() => { }}>
+                            <Checkbox key={c} variant={variant} size={s} color={c} checked onChange={() => { }}>
                                 {c}
                             </Checkbox>
                         ))}
                     </div>
-                ))}
+                )))}
 
                 <Text style={{ fontWeight: 700, marginTop: 16 }}>All combinations (unchecked)</Text>
                 {allSizes.map(s => (

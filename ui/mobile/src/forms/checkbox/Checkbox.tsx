@@ -6,6 +6,7 @@ import { Text } from "../../typography";
 export const Checkbox: FC<CheckboxProps> = ({
     color = 'neutral',
     highlightColor = color,
+    variant = 'fill',
     size = 'sm',
     checked,
     onChange,
@@ -39,7 +40,13 @@ export const Checkbox: FC<CheckboxProps> = ({
             style={containerStyle}
         >
             {({ pressed }) => {
-                const boxColor = pressed ? accentColor : baseColor;
+                const activeColor = pressed ? highlightColor : color;
+                const boxColor = checked && variant === 'fill-inverse'
+                    ? theme.color(activeColor, theme.isLight ? 100 : (activeColor === 'neutral' ? 800 : 900))
+                    : pressed ? accentColor : baseColor;
+                const checkmarkColor = variant === 'fill-inverse'
+                    ? theme.color(activeColor, theme.isLight ? (activeColor === 'neutral' ? 800 : 900) : 100)
+                    : theme.color(activeColor, theme.isDark ? 900 : 100);
 
                 const boxStyle: ViewStyle = {
                     width: boxWidthHeight,
@@ -58,7 +65,7 @@ export const Checkbox: FC<CheckboxProps> = ({
                             {checked ? (
                                 <Text
                                     style={{
-                                        color: theme.color(highlightColor, 100),
+                                        color: checkmarkColor,
                                         fontSize: boxWidthHeight * 0.7,
                                         lineHeight: boxWidthHeight,
                                     }}

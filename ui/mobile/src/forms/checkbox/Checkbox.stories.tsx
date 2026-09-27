@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 import { Checkbox } from "./Checkbox";
 import { Text } from "../../typography";
-import { ColorVariant, SizeVariant } from "@ui";
+import { CheckboxProps, ColorVariant, SizeVariant } from "@ui";
 
 const styles = StyleSheet.create({
     container: {
@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
 
 const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
+const allVariants: CheckboxProps['variant'][] = ['fill', 'fill-inverse'];
 
 export const CheckboxVariants: FC = () => {
     const [checked, setChecked] = useState(false);
@@ -79,16 +80,16 @@ export const CheckboxVariants: FC = () => {
 
             <View style={styles.section}>
                 <Text>All combinations (checked)</Text>
-                {allSizes.map(s => (
-                    <View key={s} style={styles.row}>
-                        <Text style={styles.label}>{s}</Text>
+                {allVariants.map(variant => allSizes.map(s => (
+                    <View key={`${variant}-${s}`} style={styles.row}>
+                        <Text>{variant} {s}</Text>
                         {allColors.map(c => (
-                            <Checkbox key={c} size={s} color={c} checked onChange={() => { }}>
+                            <Checkbox key={c} variant={variant} size={s} color={c} checked onChange={() => { }}>
                                 {c}
                             </Checkbox>
                         ))}
                     </View>
-                ))}
+                )))}
             </View>
 
             <View style={styles.section}>
