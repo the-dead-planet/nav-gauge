@@ -7,11 +7,9 @@ interface Props {
     pointerX: number;
     pointerY: number;
     thumbRadius: number;
-    isDragging: boolean;
     strokeWidth: number;
     color: ColorVariant;
     variant: SurfaceFillVariant;
-    isLight: boolean;
 }
 
 export const ClockThumb: FC<Props> = ({
@@ -22,11 +20,10 @@ export const ClockThumb: FC<Props> = ({
     strokeWidth,
     color,
     variant,
-    isLight,
 }) => {
     const theme = useTheme();
     const useDark = variant === 'fill';
-    const fillContentColor = theme.color(color, isLight ? 100 : (color === 'neutral' ? 800 : 900));
+    const fillContentColor = theme.color(color, theme.isLight ? 100 : (color === 'neutral' ? 800 : 900));
     const thumbFill = useDark ? theme.color(color, 500) : fillContentColor;
     const thumbStroke = useDark ? fillContentColor : theme.color(color, 500);
 

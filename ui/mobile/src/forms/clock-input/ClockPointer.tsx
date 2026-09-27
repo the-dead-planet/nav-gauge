@@ -12,7 +12,6 @@ interface Props {
     color: ColorVariant;
     activeHighlight: ColorVariant;
     variant: SurfaceFillVariant;
-    isLight: boolean;
 }
 
 export const ClockPointer: FC<Props> = ({
@@ -25,19 +24,15 @@ export const ClockPointer: FC<Props> = ({
     color,
     activeHighlight,
     variant,
-    isLight,
 }) => {
     const theme = useTheme();
 
     const useDark = variant === 'fill';
-    const useRegular = variant === 'fill-inverse';
 
-    const fillContentColor = theme.color(color, isLight ? 100 : (color === 'neutral' ? 800 : 900));
+    const fillContentColor = theme.color(color, theme.isLight ? 100 : (color === 'neutral' ? 800 : 900));
     const pointerColor = useDark ? fillContentColor : theme.color(activeHighlight, 500);
     const pointerActiveColor = useDark ? fillContentColor : theme.color(activeHighlight, 300);
-    const centerDotFill = (useDark || useRegular)
-        ? (useDark ? fillContentColor : theme.color(color, 500))
-        : theme.color(color, 500);
+    const centerDotFill = useDark ? fillContentColor : theme.color(color, 500);
 
     return (
         <>

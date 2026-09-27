@@ -81,7 +81,6 @@ export const ClockSliceInput = forwardRef<ViewInstance, ClockInputProps & { styl
                 color={color}
                 activeHighlight={activeHighlight}
                 variant={variant}
-                isLight={theme.isLight}
                 disabled={disabled}
                 onChange={onChange}
                 step={step}

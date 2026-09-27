@@ -14,7 +14,6 @@ interface Props {
     max: number;
     color: ColorVariant;
     variant: SurfaceFillVariant;
-    isLight: boolean;
 }
 
 export const ClockTicks: FC<Props> = ({
@@ -26,9 +25,9 @@ export const ClockTicks: FC<Props> = ({
     max,
     color,
     variant,
-    isLight,
 }) => {
     const theme = useTheme();
+    const isLight = theme.isLight;
 
     const useDark = variant === 'fill';
     const useRegular = variant === 'fill-inverse';
