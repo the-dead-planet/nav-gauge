@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useEffectiveRightPanelWidth, useTranslation } from "@apparatus";
 import { StyleSheet, useWindowDimensions, View } from "react-native";
-import { Icon, LinkText, Tooltip } from "@mobile-ui";
+import { BevelPanel, Icon, LinkText, Tooltip } from "@mobile-ui";
 import { useSubjectState } from "@tinker-chest";
 import { Icons, useTheme } from "@ui";
 import { useMobileMachineWard } from "@mobile-apparatus";
@@ -16,14 +16,13 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         left: 0,
+        transform: [{ rotate: '90deg' }],
+        transformOrigin: [0, 0, 0],
+    },
+    content: {
         flexDirection: 'row',
         alignItems: 'center',
         gap: 6,
-        paddingHorizontal: 8,
-        borderWidth: 1,
-        borderRadius: 4,
-        transform: [{ rotate: '90deg' }],
-        transformOrigin: [0, 0, 0],
     },
     link: {
         fontSize: 10,
@@ -47,26 +46,25 @@ export const Attributions: FC = () => {
 
     return (
         <View pointerEvents="box-none" style={[styles.anchor, { right: rightPanelWidth + 6 }]}>
-            <View style={[styles.container, {
-                backgroundColor: theme.componentColor('background', .87),
-                borderColor: theme.color('neutral'),
-            }]}>
-                <Tooltip content={tooltip} placement="left">
-                    <View>
-                        <Icon
-                            icon={Icons.NounProject.Attribution}
-                            color={theme.color('neutral', 500)}
-                            width={16}
-                            height={16}
-                        />
-                    </View>
-                </Tooltip>
-                {entries.map(({ text, shortText, href }) => (
-                    <LinkText key={text} href={href} color="neutral" shade={500} style={styles.link} accessibilityLabel={text}>
-                        {height < 500 ? shortText ?? text : text}
-                    </LinkText>
-                ))}
-            </View>
+            <BevelPanel bevel={6} color="neutral" variant="fill-inverse" style={styles.container}>
+                <View style={styles.content}>
+                    <Tooltip content={tooltip} placement="left">
+                        <View>
+                            <Icon
+                                icon={Icons.NounProject.Attribution}
+                                color={theme.color('neutral', 500)}
+                                width={14}
+                                height={14}
+                            />
+                        </View>
+                    </Tooltip>
+                    {entries.map(({ text, shortText, href }) => (
+                        <LinkText key={text} href={href} color="neutral" shade={500} style={styles.link} accessibilityLabel={text}>
+                            {height < 500 ? shortText ?? text : text}
+                        </LinkText>
+                    ))}
+                </View>
+            </BevelPanel>
         </View>
     );
 };

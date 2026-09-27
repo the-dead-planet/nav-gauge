@@ -1,4 +1,4 @@
-import { ComponentProps, CSSProperties, FC, useId, useEffect, useRef, useState } from "react";
+import { ComponentProps, CSSProperties, FC, useEffect, useId, useRef, useState } from "react";
 import { BevelPanelProps, SizeVariant, useTheme } from "@ui";
 import classNames from "classnames";
 import styles from "./bevel-panel.module.css";
@@ -8,6 +8,7 @@ interface Props {
     style?: CSSProperties;
     contentClassName?: string;
     contentStyle?: CSSProperties;
+    clipContent?: boolean;
 }
 
 const paddingVertical: Record<SizeVariant, number> = {
@@ -31,6 +32,7 @@ export const BevelPanel: FC<BevelPanelProps & Props & ComponentProps<'div'>> = (
     style,
     contentClassName,
     contentStyle,
+    clipContent = true,
     children,
     ...props
 }) => {
@@ -42,35 +44,25 @@ export const BevelPanel: FC<BevelPanelProps & Props & ComponentProps<'div'>> = (
     const clipPathId = useId();
 
     useEffect(() => {
-        const el = containerRef.current;
-        if (!el) {
+        const element = containerRef.current;
+        if (!element) {
             return;
         }
 
         const updateSize = () => {
-            const rect = el.getBoundingClientRect();
-            setSize({ width: rect.width, height: rect.height });
+            setSize({ width: element.offsetWidth, height: element.offsetHeight });
         };
 
         updateSize();
-
         const resizeObserver = new ResizeObserver(updateSize);
-        resizeObserver.observe(el);
-
+        resizeObserver.observe(element);
         return () => resizeObserver.disconnect();
     }, []);
 
-    const hasBorder = variant !== 'fill';
-
-    const effectiveBevel = size.width > 0
-        ? Math.min(bevel, size.width / 2 - 1)
-        : bevel;
-
+    const effectiveBevel = size.width > 0 ? Math.min(bevel, size.width / 2 - 1) : bevel;
     const points = size.width > 0 && size.height > 0
         ? `${effectiveBevel},0 ${size.width - effectiveBevel},0 ${size.width},${size.height / 2} ${size.width - effectiveBevel},${size.height} ${effectiveBevel},${size.height} 0,${size.height / 2}`
-        : "";
-
-    const viewBox = `0 0 ${size.width} ${size.height}`;
+        : '';
 
     return (
         <div
@@ -79,48 +71,26 @@ export const BevelPanel: FC<BevelPanelProps & Props & ComponentProps<'div'>> = (
             className={classNames(
                 styles['bevel-panel'],
                 variant && styles[`variant-${variant}`],
-                color && styles[`color-${color}`],
+                styles[`color-${color}`],
                 styles[`highlight-color-${highlightColor || color}`],
                 styles[`mode-${effectiveMode}`],
                 {
-                    [styles['active']]: active,
-                    [styles['interactive']]: interactive || onClick,
+                    [styles.active]: active,
+                    [styles.interactive]: interactive || onClick,
                     [styles[`glow-style-${glowStyle}`]]: interactive,
                 },
-                className
+                className,
             )}
-            style={{
-                ...style,
-                "--bevel-filter": `url(#${filterId})`,
-            } as CSSProperties}
+            style={{ ...style, '--bevel-filter': `url(#${filterId})` } as CSSProperties}
             {...props}
         >
-            {size.width > 0 && size.height > 0 && (
-                <svg
-                    viewBox={viewBox}
-                    className={styles.svg}
-                >
+            {points ? (
+                <svg viewBox={`0 0 ${size.width} ${size.height}`} className={styles.svg}>
                     <defs>
-                        <clipPath id={clipPathId}>
-                            <polygon points={points} />
-                        </clipPath>
-                        <filter
-                            id={filterId}
-                            x="-50%"
-                            y="-50%"
-                            width="200%"
-                            height="200%"
-                        >
-                            <feGaussianBlur
-                                in="SourceGraphic"
-                                stdDeviation="2"
-                                result="blur1"
-                            />
-                            <feGaussianBlur
-                                in="SourceGraphic"
-                                stdDeviation="6"
-                                result="blur2"
-                            />
+                        <clipPath id={clipPathId}><polygon points={points} /></clipPath>
+                        <filter id={filterId} x="-50%" y="-50%" width="200%" height="200%">
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur1" />
+                            <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur2" />
                             <feMerge>
                                 <feMergeNode in="blur2" />
                                 <feMergeNode in="blur1" />
@@ -128,25 +98,15 @@ export const BevelPanel: FC<BevelPanelProps & Props & ComponentProps<'div'>> = (
                             </feMerge>
                         </filter>
                     </defs>
-                    <polygon
-                        points={points}
-                        fill="none"
-                        strokeWidth={hasBorder ? 2 : 0}
-                        className={styles['polygon-base']}
-                    />
-                    <polygon
-                        points={points}
-                        fill="none"
-                        strokeWidth={2}
-                        className={styles['polygon-glow']}
-                    />
+                    <polygon points={points} fill="none" strokeWidth={variant === 'fill' ? 0 : 2} className={styles['polygon-base']} />
+                    <polygon points={points} fill="none" strokeWidth={2} className={styles['polygon-glow']} />
                 </svg>
-            )}
+            ) : null}
             <div
                 className={classNames(styles.content, contentClassName)}
                 style={{
                     ...contentStyle,
-                    clipPath: size.width > 0 ? `url(#${clipPathId})` : undefined,
+                    clipPath: clipContent && points ? `url(#${clipPathId})` : undefined,
                     paddingTop: padding ? paddingVertical[padding] : 0,
                     paddingBottom: padding ? paddingVertical[padding] : 0,
                     paddingLeft: effectiveBevel,
