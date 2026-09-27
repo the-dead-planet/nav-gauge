@@ -27,7 +27,6 @@ interface Props {
     color: ColorVariant;
     activeHighlight: ColorVariant;
     variant: SurfaceFillVariant;
-    isLight: boolean;
     isFullCircle?: boolean;
     disabled: boolean;
     onChange?: (value: number) => void;
@@ -51,7 +50,6 @@ export const ClockSvg: FC<Props> = ({
     color,
     activeHighlight,
     variant,
-    isLight,
     isFullCircle,
     disabled,
     onChange,
@@ -139,7 +137,6 @@ export const ClockSvg: FC<Props> = ({
                         max={max}
                         color={color}
                         variant={variant}
-                        isLight={isLight}
                         isFullCircle={isFullCircle}
                     />
                     <ClockTicks
@@ -150,9 +147,7 @@ export const ClockSvg: FC<Props> = ({
                         min={min}
                         max={max}
                         color={color}
-                        activeHighlight={activeHighlight}
                         variant={variant}
-                        isLight={isLight}
                     />
                     <ClockPointer
                         center={center}
@@ -164,19 +159,15 @@ export const ClockSvg: FC<Props> = ({
                         color={color}
                         activeHighlight={activeHighlight}
                         variant={variant}
-                        isLight={isLight}
                     />
                     <ClockThumb
                         center={center}
                         pointerX={pointerX}
                         pointerY={pointerY}
                         thumbRadius={thumbRadius}
-                        isDragging={isDragging}
                         strokeWidth={strokeWidth}
                         color={color}
-                        activeHighlight={activeHighlight}
                         variant={variant}
-                        isLight={isLight}
                     />
                 </G>
             </Svg>

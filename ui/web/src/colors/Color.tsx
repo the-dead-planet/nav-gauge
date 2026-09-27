@@ -15,19 +15,23 @@ export const Color: FC<ColorProps> = ({ name, color }) => {
             <h3>{name}</h3>
             <div className={styles.palette}>
                 {data.map(([shade, c]) => {
-                    const textColor = shade >= 500 ? data[0][1] : data[9][1];
+                    const textColor1 = data[0][1];
+                    const textColor2 = data[9][1];
+                    const textColor = shade >= 500 ? textColor1 : textColor2;
 
                     return (
                         <p
                             key={shade}
                             className={styles.box}
-                            style={{
-                                color: `rgb(${textColor.r}, ${textColor.g}, ${textColor.b})`,
-                                backgroundColor: `rgb(${c.r}, ${c.g}, ${c.b})`
-                            }}
+                            style={{ backgroundColor: `rgb(${c.r}, ${c.g}, ${c.b})` }}
                         >
-                            {shade}
-                            <span className={styles['rgb-text']}>
+                            <span style={{ color: `rgb(${textColor1.r}, ${textColor1.g}, ${textColor1.b})` }}>
+                                {shade}
+                            </span>
+                            <span style={{ color: `rgb(${textColor2.r}, ${textColor2.g}, ${textColor2.b})` }}>
+                                {shade}
+                            </span>
+                            <span style={{ color: `rgb(${textColor.r}, ${textColor.g}, ${textColor.b})` }} className={styles['rgb-text']}>
                                 {c.r}, {c.g}, {c.b}
                             </span>
                         </p>

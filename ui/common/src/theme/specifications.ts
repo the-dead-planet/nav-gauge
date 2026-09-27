@@ -109,7 +109,7 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
             componentColors: defaultComponentColors.light,
             colors: {
                 primary: Theme.palette.teal,
-                secondary: Theme.palette['copper-dark'],
+                secondary: Theme.palette['copper'],
                 tertiary: Theme.palette.magenta,
                 neutral: Theme.palette.grey,
             }
@@ -132,8 +132,8 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
             themeName: ThemeName.NeonBlue,
             componentColors: defaultComponentColors.light,
             colors: {
-                primary: Theme.palette.blue,
-                secondary: Theme.palette.blue,
+                primary: Theme.palette.navy,
+                secondary: Theme.palette.navy,
                 tertiary: Theme.palette.copper,
                 neutral: Theme.palette.grey,
             }

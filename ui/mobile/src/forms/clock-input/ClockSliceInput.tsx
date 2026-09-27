@@ -47,7 +47,11 @@ export const ClockSliceInput = forwardRef<ViewInstance, ClockInputProps & { styl
     const arcSweep = ((arcEndAngle - arcStartAngle) % 360 + 360) % 360;
     const wedgePath = `M ${center} ${center} L ${arcStartX} ${arcStartY} A ${outerRadius} ${outerRadius} 0 ${arcSweep > 180 ? 1 : 0} 1 ${arcEndX} ${arcEndY} Z`;
 
-    const wedgeFill = theme.color(color, 500, 0.12);
+    const wedgeFill = variant === 'fill'
+        ? theme.color(color, 500)
+        : variant === 'fill-inverse'
+            ? theme.color(color, theme.isLight ? 100 : (color === 'neutral' ? 800 : 900))
+            : theme.color(color, 500, 0.12);
 
     const containerStyle: ViewStyle = {
         alignItems: 'center',
@@ -77,7 +81,6 @@ export const ClockSliceInput = forwardRef<ViewInstance, ClockInputProps & { styl
                 color={color}
                 activeHighlight={activeHighlight}
                 variant={variant}
-                isLight={theme.isLight}
                 disabled={disabled}
                 onChange={onChange}
                 step={step}

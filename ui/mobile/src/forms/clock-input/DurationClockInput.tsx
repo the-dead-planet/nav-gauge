@@ -3,7 +3,6 @@ import { PanResponder, StyleSheet, View, ViewStyle, type ViewInstance } from "re
 import Svg from "react-native-svg";
 import {
     DurationClockInputProps,
-    useTheme,
     millisecondsToDurationParts,
     ticksToClockDegrees,
     clockDegreesToTicks,
@@ -34,7 +33,6 @@ export const DurationClockInput: FC<DurationClockInputProps & { style?: ViewStyl
     disabled = false,
     style,
 }) => {
-    const theme = useTheme();
     const activeHighlight = highlightColor || color;
     const svgSize = sizeMap[size];
     const center = svgSize / 2;
@@ -129,7 +127,6 @@ export const DurationClockInput: FC<DurationClockInputProps & { style?: ViewStyl
                     max={360}
                     color={color}
                     variant={variant}
-                    isLight={theme.isLight}
                     isFullCircle
                 />
                 <ClockTicks
@@ -140,9 +137,7 @@ export const DurationClockInput: FC<DurationClockInputProps & { style?: ViewStyl
                     min={0}
                     max={360}
                     color={color}
-                    activeHighlight={activeHighlight}
                     variant={variant}
-                    isLight={theme.isLight}
                 />
                 <ClockPointer
                     center={center}
@@ -154,19 +149,15 @@ export const DurationClockInput: FC<DurationClockInputProps & { style?: ViewStyl
                     color={color}
                     activeHighlight={activeHighlight}
                     variant={variant}
-                    isLight={theme.isLight}
                 />
                 <ClockThumb
                     center={center}
                     pointerX={minutesPointer.x}
                     pointerY={minutesPointer.y}
                     thumbRadius={thumbRadii[size]}
-                    isDragging={activeHand === 'minutes'}
                     strokeWidth={strokeWidth}
                     color={color}
-                    activeHighlight={activeHighlight}
                     variant={variant}
-                    isLight={theme.isLight}
                 />
                 <ClockPointer
                     center={center}
@@ -178,19 +169,15 @@ export const DurationClockInput: FC<DurationClockInputProps & { style?: ViewStyl
                     color={color}
                     activeHighlight={activeHighlight}
                     variant={variant}
-                    isLight={theme.isLight}
                 />
                 <ClockThumb
                     center={center}
                     pointerX={secondsPointer.x}
                     pointerY={secondsPointer.y}
                     thumbRadius={thumbRadii[size]}
-                    isDragging={activeHand === 'seconds'}
                     strokeWidth={strokeWidth}
                     color={color}
-                    activeHighlight={activeHighlight}
                     variant={variant}
-                    isLight={theme.isLight}
                 />
             </Svg>
         </View>

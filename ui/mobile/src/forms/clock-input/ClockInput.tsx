@@ -64,7 +64,6 @@ export const ClockInput = forwardRef<ViewInstance, ClockInputProps & { style?: V
                 color={color}
                 activeHighlight={activeHighlight}
                 variant={variant}
-                isLight={theme.isLight}
                 isFullCircle={isFullCircle}
                 disabled={disabled}
                 onChange={onChange}

@@ -23,22 +23,43 @@ export type ThemeColor = {
 
 export type PaletteColor =
     'grey' |
+    'grey-blue' |
+    'grey-brown' |
+    'grey-khaki' |
+    'grey-green' |
+    'grey-olive' |
+    'grey-teal' |
+    'grey-cyan' |
+    'grey-pink' |
+    'grey-violet' |
+    'grey-red' |
     'yellow' |
+    'coral' |
+    'chartreuse' |
     'luminous-yellow' |
     'copper' |
-    'copper-dark' |
+    'peach' |
+    'warm-brown' |
+    'dark-gold' |
+    'mahogany' |
     'teal' |
+    'cyan' |
+    'aqua' |
     'magenta' |
     'pink' |
+    'rose' |
     'blue' |
-    'grey-blue' |
     'navy' |
     'burnt-orange' |
+    'orange' |
     'red' |
     'purple' |
     'violet' |
+    'plum' |
+    'indigo' |
     'deep-violet' |
     'lime' |
+    'mint' |
     'green';
 
 export type DesignSystemColor =

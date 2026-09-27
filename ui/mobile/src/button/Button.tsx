@@ -1,4 +1,4 @@
-import { ComponentType, FC, Ref, useState } from "react";
+import { Children, ComponentType, FC, Ref, useState } from "react";
 import { Pressable, PressableProps, View, type ViewInstance } from "react-native";
 import { ButtonProps, ColorShade, useTheme } from "@ui";
 import { Icon } from "../icons";
@@ -259,14 +259,17 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     ) : null;
 
     const label = children ?? title;
-    const textElement = typeof label === 'string' || typeof label === 'number' ? (
+    const labelChildren = Children.toArray(label);
+    const textElement = labelChildren.length > 0 && labelChildren.every(child => (
+        typeof child === 'string' || typeof child === 'number'
+    )) ? (
         <Text
             style={[
                 { color: textColor, fontSize, lineHeight: fontSize * 1.1 },
                 textShadowStyle,
             ]}
         >
-            {label}
+            {labelChildren}
         </Text>
     ) : label ?? null;
 
