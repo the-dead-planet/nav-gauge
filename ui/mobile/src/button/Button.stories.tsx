@@ -48,7 +48,7 @@ export const AllVariants: FC = () => {
                         active={disabled}
                         onPress={() => setDisabled((d) => !d)}
                     >
-                        disabled: {String(disabled)}
+                        {`disabled: ${String(disabled)}`}
                     </Button>
                 </View>
             </View>

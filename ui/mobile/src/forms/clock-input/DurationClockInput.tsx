@@ -129,7 +129,6 @@ export const DurationClockInput: FC<DurationClockInputProps & { style?: ViewStyl
                     max={360}
                     color={color}
                     variant={variant}
-                    isLight={theme.isLight}
                     isFullCircle
                 />
                 <ClockTicks
@@ -140,7 +139,6 @@ export const DurationClockInput: FC<DurationClockInputProps & { style?: ViewStyl
                     min={0}
                     max={360}
                     color={color}
-                    activeHighlight={activeHighlight}
                     variant={variant}
                     isLight={theme.isLight}
                 />
@@ -164,7 +162,6 @@ export const DurationClockInput: FC<DurationClockInputProps & { style?: ViewStyl
                     isDragging={activeHand === 'minutes'}
                     strokeWidth={strokeWidth}
                     color={color}
-                    activeHighlight={activeHighlight}
                     variant={variant}
                     isLight={theme.isLight}
                 />
@@ -188,7 +185,6 @@ export const DurationClockInput: FC<DurationClockInputProps & { style?: ViewStyl
                     isDragging={activeHand === 'seconds'}
                     strokeWidth={strokeWidth}
                     color={color}
-                    activeHighlight={activeHighlight}
                     variant={variant}
                     isLight={theme.isLight}
                 />

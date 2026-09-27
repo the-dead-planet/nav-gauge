@@ -139,7 +139,6 @@ export const ClockSvg: FC<Props> = ({
                         max={max}
                         color={color}
                         variant={variant}
-                        isLight={isLight}
                         isFullCircle={isFullCircle}
                     />
                     <ClockTicks
@@ -150,7 +149,6 @@ export const ClockSvg: FC<Props> = ({
                         min={min}
                         max={max}
                         color={color}
-                        activeHighlight={activeHighlight}
                         variant={variant}
                         isLight={isLight}
                     />
@@ -174,7 +172,6 @@ export const ClockSvg: FC<Props> = ({
                         isDragging={isDragging}
                         strokeWidth={strokeWidth}
                         color={color}
-                        activeHighlight={activeHighlight}
                         variant={variant}
                         isLight={isLight}
                     />

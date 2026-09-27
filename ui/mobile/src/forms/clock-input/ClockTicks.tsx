@@ -13,7 +13,6 @@ interface Props {
     min: number;
     max: number;
     color: ColorVariant;
-    activeHighlight: ColorVariant;
     variant: SurfaceFillVariant;
     isLight: boolean;
 }
@@ -26,7 +25,6 @@ export const ClockTicks: FC<Props> = ({
     min,
     max,
     color,
-    activeHighlight,
     variant,
     isLight,
 }) => {
@@ -36,8 +34,11 @@ export const ClockTicks: FC<Props> = ({
     const useRegular = variant === 'fill-inverse';
 
     const defaultTickColor = theme.color(color, 500, isLight ? 0.35 : 0.5);
-    const tickColor = useDark ? theme.color(color, 800) : defaultTickColor;
-    const tickMajorColor = useDark ? theme.color(color, 800) : theme.color(activeHighlight, isLight ? 500 : 300);
+    const fillContentColor = theme.color(color, isLight ? 100 : (color === 'neutral' ? 800 : 900));
+    const tickColor = useDark
+        ? fillContentColor
+        : useRegular ? theme.color(color, 500) : defaultTickColor;
+    const tickMajorColor = useDark ? fillContentColor : theme.color(color, 500);
     const tickMinorOpacity = (useDark || useRegular) ? 0.5 : (isLight ? 0.3 : 0.5);
 
     const ticks = Array.from({ length: TICK_COUNT }, (_, i) => {

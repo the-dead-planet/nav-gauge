@@ -68,6 +68,7 @@
     --angle-tick-opacity: .35;
     --angle-tick-minor-opacity: .3;
     --angle-color-inverse: var(--angle-color-light);
+    --angle-fill-content: var(--angle-color-light);
 }
 
 .mode-dark {
@@ -75,6 +76,7 @@
     --angle-tick-opacity: .5;
     --angle-tick-minor-opacity: .5;
     --angle-color-inverse: var(--angle-color-dark);
+    --angle-fill-content: var(--angle-color-dark);
 }
 
 /* ── Color ── */
@@ -180,11 +182,11 @@
 }
 
 .variant-fill .tick {
-    stroke: var(--angle-color-dark);
+    stroke: var(--angle-fill-content);
 }
 
 .variant-fill .tick-major {
-    stroke: var(--angle-color-dark);
+    stroke: var(--angle-fill-content);
 }
 
 .variant-fill .tick-minor {
@@ -192,11 +194,11 @@
 }
 
 .variant-fill .dial {
-    stroke: var(--angle-color-dark);
+    stroke: var(--angle-fill-content);
 }
 
 .variant-fill .pointer {
-    stroke: var(--angle-color-dark);
+    stroke: var(--angle-fill-content);
 }
 
 .variant-fill .wedge {
@@ -204,17 +206,21 @@
 }
 
 .variant-fill .pointer-active {
-    stroke: var(--angle-color-dark);
+    stroke: var(--angle-fill-content);
+}
+
+.variant-fill .center-dot {
+    fill: var(--angle-fill-content);
 }
 
 .variant-fill .thumb {
     fill: var(--angle-color);
-    stroke: var(--angle-color-dark);
+    stroke: var(--angle-fill-content);
 }
 
 .variant-fill .thumb-active {
-    fill: var(--angle-color-light);
-    stroke: var(--angle-color-dark);
+    fill: var(--angle-color);
+    stroke: var(--angle-fill-content);
 }
 
 .variant-fill-inverse .bg-circle {
@@ -242,6 +248,14 @@
 }
 
 .variant-fill-inverse .dial {
+    stroke: var(--angle-color);
+}
+
+.variant-fill-inverse .thumb,
+.variant-fill-inverse .thumb-active,
+.variant-fill-translucent .thumb,
+.variant-fill-translucent .thumb-active {
+    fill: var(--angle-color-inverse);
     stroke: var(--angle-color);
 }
 

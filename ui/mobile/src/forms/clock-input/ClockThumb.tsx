@@ -10,7 +10,6 @@ interface Props {
     isDragging: boolean;
     strokeWidth: number;
     color: ColorVariant;
-    activeHighlight: ColorVariant;
     variant: SurfaceFillVariant;
     isLight: boolean;
 }
@@ -20,27 +19,24 @@ export const ClockThumb: FC<Props> = ({
     pointerX,
     pointerY,
     thumbRadius,
-    isDragging,
     strokeWidth,
     color,
-    activeHighlight,
     variant,
     isLight,
 }) => {
     const theme = useTheme();
     const useDark = variant === 'fill';
-    const thumbFill = useDark ? theme.color(color, 500) : theme.color(color, 800);
-    const thumbStroke = useDark ? theme.color(color, 800) : theme.color(color, 500);
-    const thumbFillActive = useDark ? theme.color(color, 100) : theme.color(activeHighlight, 900);
-    const thumbStrokeActive = useDark ? theme.color(color, 800) : theme.color(activeHighlight, isLight ? 600 : 300);
+    const fillContentColor = theme.color(color, isLight ? 100 : (color === 'neutral' ? 800 : 900));
+    const thumbFill = useDark ? theme.color(color, 500) : fillContentColor;
+    const thumbStroke = useDark ? fillContentColor : theme.color(color, 500);
 
     return (
         <Circle
             cx={center + pointerX}
             cy={center + pointerY}
             r={thumbRadius}
-            fill={isDragging ? thumbFillActive : thumbFill}
-            stroke={isDragging ? thumbStrokeActive : thumbStroke}
+            fill={thumbFill}
+            stroke={thumbStroke}
             strokeWidth={strokeWidth}
         />
     );

@@ -11,7 +11,6 @@ interface Props {
     max: number;
     color: ColorVariant;
     variant: SurfaceFillVariant;
-    isLight: boolean;
     isFullCircle?: boolean;
 }
 
@@ -23,20 +22,21 @@ export const ClockDial: FC<Props> = ({
     max,
     color,
     variant,
-    isLight,
     isFullCircle = false,
 }) => {
     const theme = useTheme();
 
     const useDark = variant === 'fill';
 
-    const defaultDialColor = theme.color(color, 500, isLight ? 0.25 : 0.35);
-    const dialColor = useDark ? theme.color(color, 800) : defaultDialColor;
+    const defaultDialColor = theme.color(color, 500, theme.isLight ? 0.25 : 0.35);
+    const dialColor = useDark
+        ? theme.color(color, theme.isLight ? 100 : (color === 'neutral' ? 800 : 900))
+        : variant === 'fill-inverse' ? theme.color(color, 500) : defaultDialColor;
 
     const bgCircleFill = variant === 'fill'
         ? theme.color(color, 500)
         : variant === 'fill-inverse'
-            ? theme.color(color, isLight ? 100 : 800)
+            ? theme.color(color, theme.isLight ? 100 : (color === 'neutral' ? 800 : 900))
             : theme.color(color, 500, TRANSLUCENT_OPACITY);
 
     return (

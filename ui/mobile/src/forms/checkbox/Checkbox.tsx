@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { Pressable, View, ViewStyle } from "react-native";
+import Svg, { Path } from "react-native-svg";
 import { CheckboxProps, controlTextSpecifications, useTheme } from "@ui";
 import { Text } from "../../typography";
 
@@ -63,15 +64,16 @@ export const Checkbox: FC<CheckboxProps> = ({
                     <>
                         <View style={boxStyle}>
                             {checked ? (
-                                <Text
-                                    style={{
-                                        color: checkmarkColor,
-                                        fontSize: boxWidthHeight * 0.7,
-                                        lineHeight: boxWidthHeight,
-                                    }}
-                                >
-                                    {'\u2713'}
-                                </Text>
+                                <Svg width={boxWidthHeight * 0.7} height={boxWidthHeight * 0.7} viewBox="0 0 12 12">
+                                    <Path
+                                        d="M2 6l3 3 5-5"
+                                        fill="none"
+                                        stroke={checkmarkColor}
+                                        strokeWidth={2}
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </Svg>
                             ) : null}
                         </View>
                         {children ? (
