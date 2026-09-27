@@ -1,6 +1,6 @@
 import { ComponentType, FC, Ref, useState } from "react";
 import { Pressable, PressableProps, View, type ViewInstance } from "react-native";
-import { ButtonProps, useTheme } from "@ui";
+import { ButtonProps, ColorShade, useTheme } from "@ui";
 import { Icon } from "../icons";
 import { SvgProps } from "react-native-svg";
 import { Hexagon } from "../hud";
@@ -201,8 +201,9 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         container.opacity = 0.45;
     }
 
-    const fillTextColor = theme.color(color, theme.isDark ? 900 : 100);
-    const hlFillTextColor = theme.color(highlightColor, theme.isDark ? 900 : 100);
+    const fillTextShade: ColorShade = theme.isDark ? 900 : 100
+    const fillTextColor = theme.color(color, fillTextShade);
+    const hlFillTextColor = theme.color(highlightColor, fillTextShade);
     const textColor = effectiveVariant === 'fill'
         ? (hl ? hlFillTextColor : fillTextColor)
         : effectiveVariant === 'fill-inverse' && !hl
@@ -249,7 +250,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
                 color={theme.color(
                     pressed || active ? highlightColor : color,
                     effectiveVariant === 'fill'
-                        ? (theme.isDark ? 900 : 100)
+                        ? (fillTextShade)
                         : (pressed || active ? (theme.isDark ? 300 : 600) : 500)
                 )}
                 filter={showTextShadow ? `drop-shadow(0px 0px 12px ${hlInset})` : undefined}

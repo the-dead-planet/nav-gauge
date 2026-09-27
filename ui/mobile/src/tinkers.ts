@@ -1,1 +1,2 @@
-export const TRANSLUCENT_OPACITY = 0.4;
+export const TRANSLUCENT_OPACITY = 0.24;
+export const TRANSLUCENT_OPACITY_BACKGROUND = 0.4;

@@ -106,8 +106,7 @@ export const Chip: FC<ChipProps & MobileChipProps> = ({
     const translucent = (opacity: number) => theme.color(resolved.name, shade, opacity);
     const background = theme.componentColor('background');
     const textColor = theme.componentColor('text');
-    const chipText = theme.isLight ? textColor : background;
-    const iconColor = variant === 'fill' ? chipText : chipColor;
+    let iconColor = chipColor;
 
     const container: ViewStyle = {};
     let backgroundColor = chipColor;
@@ -116,9 +115,13 @@ export const Chip: FC<ChipProps & MobileChipProps> = ({
     let borderColor = chipColor;
 
     switch (variant) {
-        case 'fill':
-            labelColor = chipText;
+        case 'fill': {
+            const shade = theme.isDark ? 900 : 100;
+            const color = theme.color(resolved.name, shade);
+            labelColor = color;
+            iconColor = color;
             break;
+        }
         case 'fill-inverse':
             backgroundColor = background;
             borderWidth = 1;
@@ -167,31 +170,31 @@ export const Chip: FC<ChipProps & MobileChipProps> = ({
                 onLayout={onLayout}
                 style={[styles.chip, container, sizeStyles[size]]}
             >
-            {layout.width > 0 && layout.height > 0 ? (
-                <Svg style={StyleSheet.absoluteFill} width={layout.width} height={layout.height}>
-                    <Path
-                        d={bevelPath(bevelSizes[size], layout.width, layout.height, borderWidth / 2)}
-                        fill={backgroundColor}
-                        stroke={borderWidth ? borderColor : undefined}
-                        strokeWidth={borderWidth}
-                        vectorEffect="non-scaling-stroke"
+                {layout.width > 0 && layout.height > 0 ? (
+                    <Svg style={StyleSheet.absoluteFill} width={layout.width} height={layout.height}>
+                        <Path
+                            d={bevelPath(bevelSizes[size], layout.width, layout.height, borderWidth / 2)}
+                            fill={backgroundColor}
+                            stroke={borderWidth ? borderColor : undefined}
+                            strokeWidth={borderWidth}
+                            vectorEffect="non-scaling-stroke"
+                        />
+                    </Svg>
+                ) : null}
+                {icon ? (
+                    <Icon
+                        icon={icon}
+                        width={iconSizes[size]}
+                        height={iconSizes[size]}
+                        color={iconColor}
                     />
-                </Svg>
-            ) : null}
-            {icon ? (
-                <Icon
-                    icon={icon}
-                    width={iconSizes[size]}
-                    height={iconSizes[size]}
-                    color={iconColor}
-                />
-            ) : null}
-            {children !== undefined && children !== null ? (
-                <Text style={[styles.label, { color: labelColor, fontSize: sizeStyles[size].fontSize }]}>
-                    {children}
-                </Text>
-            ) : null}
-        </View>
+                ) : null}
+                {children !== undefined && children !== null ? (
+                    <Text style={[styles.label, { color: labelColor, fontSize: sizeStyles[size].fontSize }]}>
+                        {children}
+                    </Text>
+                ) : null}
+            </View>
         </Pressable>
     );
 

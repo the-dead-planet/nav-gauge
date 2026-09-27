@@ -53,6 +53,7 @@ export type ThemeComponentColor =
     'box-shadow' |
     'divider' |
     'text' |
+    'text-inverse' |
     'error' |
     'warning' |
     'success' |

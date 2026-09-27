@@ -28,42 +28,58 @@
 
 .color-primary {
     --chip-color: var(--color-primary);
+    --chip-color-light: var(--color-primary-100);
+    --chip-color-dark: var(--color-primary-900);
 }
 
 .color-secondary {
     --chip-color: var(--color-secondary);
+    --chip-color-light: var(--color-secondary-100);
+    --chip-color-dark: var(--color-secondary-900);
 }
 
 .color-tertiary {
     --chip-color: var(--color-tertiary);
+    --chip-color-light: var(--color-tertiary-100);
+    --chip-color-dark: var(--color-tertiary-900);
 }
 
 .color-neutral {
     --chip-color: var(--color-neutral);
+    --chip-color-light: var(--color-neutral-100);
+    --chip-color-dark: var(--color-neutral-900);
 }
 
 .color-warning {
     --chip-color: var(--color-warning);
+    --chip-color-light: var(--color-text-inverse);
+    --chip-color-dark: var(--color-text-inverse);
 }
 
 .color-success {
     --chip-color: var(--color-success);
+    --chip-color-light: var(--color-text-inverse);
+    --chip-color-dark: var(--color-text-inverse);
 }
 
 .color-error {
     --chip-color: var(--color-error);
+    --chip-color-light: var(--color-text-inverse);
+    --chip-color-dark: var(--color-text-inverse);
 }
 
 .color-info {
     --chip-color: var(--color-info);
+    --chip-color-light: var(--color-text-inverse);
+    --chip-color-dark: var(--color-text-inverse);
 }
 
 .mode-light {
-    --chip-text: var(--color-text);
+    --chip-text: var(--chip-color-light);
 }
 
 .mode-dark {
-    --chip-text: var(--color-background);
+    --chip-text: var(--chip-color-dark);
 }
 
 .variant-fill {
