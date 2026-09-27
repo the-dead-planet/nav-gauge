@@ -36,12 +36,16 @@ export const defaultComponentColors: { [key in ThemeMode]: ThemeSpecification['c
             name: 'neutral',
             shade: 900
         },
+        'text-inverse': {
+            name: 'neutral',
+            shade: 50
+        },
         error: {
             name: 'red',
             shade: 600
         },
         warning: {
-            name: 'yellow',
+            name: 'copper',
             shade: 500
         },
         success: {
@@ -73,6 +77,10 @@ export const defaultComponentColors: { [key in ThemeMode]: ThemeSpecification['c
         text: {
             name: 'neutral',
             shade: 100
+        },
+        'text-inverse': {
+            name: 'neutral',
+            shade: 900
         },
         error: {
             name: 'red',
