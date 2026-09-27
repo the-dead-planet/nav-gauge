@@ -59,9 +59,11 @@ export const BevelPanel: FC<BevelPanelProps & Props & ComponentProps<'div'>> = (
         return () => resizeObserver.disconnect();
     }, []);
 
+    const strokeWidth = variant === 'fill' ? 0 : 1;
+    const strokeInset = strokeWidth / 2;
     const effectiveBevel = size.width > 0 ? Math.min(bevel, size.width / 2 - 1) : bevel;
     const points = size.width > 0 && size.height > 0
-        ? `${effectiveBevel},0 ${size.width - effectiveBevel},0 ${size.width},${size.height / 2} ${size.width - effectiveBevel},${size.height} ${effectiveBevel},${size.height} 0,${size.height / 2}`
+        ? `${effectiveBevel},${strokeInset} ${size.width - effectiveBevel},${strokeInset} ${size.width - strokeInset},${size.height / 2} ${size.width - effectiveBevel},${size.height - strokeInset} ${effectiveBevel},${size.height - strokeInset} ${strokeInset},${size.height / 2}`
         : '';
 
     return (
@@ -84,6 +86,12 @@ export const BevelPanel: FC<BevelPanelProps & Props & ComponentProps<'div'>> = (
             style={{ ...style, '--bevel-filter': `url(#${filterId})` } as CSSProperties}
             {...props}
         >
+            {variant === 'fill-translucent' && points ? (
+                <div
+                    className={styles.backdrop}
+                    style={{ clipPath: `url(#${clipPathId})` }}
+                />
+            ) : null}
             {points ? (
                 <svg viewBox={`0 0 ${size.width} ${size.height}`} className={styles.svg}>
                     <defs>
@@ -98,7 +106,7 @@ export const BevelPanel: FC<BevelPanelProps & Props & ComponentProps<'div'>> = (
                             </feMerge>
                         </filter>
                     </defs>
-                    <polygon points={points} fill="none" strokeWidth={variant === 'fill' ? 0 : 2} className={styles['polygon-base']} />
+                    <polygon points={points} fill="none" strokeWidth={strokeWidth} className={styles['polygon-base']} />
                     <polygon points={points} fill="none" strokeWidth={2} className={styles['polygon-glow']} />
                 </svg>
             ) : null}

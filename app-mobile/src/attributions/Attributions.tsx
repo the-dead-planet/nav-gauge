@@ -18,6 +18,8 @@ const styles = StyleSheet.create({
         left: 0,
         transform: [{ rotate: '90deg' }],
         transformOrigin: [0, 0, 0],
+        height: 16,
+        justifyContent: 'center',
     },
     content: {
         flexDirection: 'row',
@@ -53,8 +55,8 @@ export const Attributions: FC = () => {
                             <Icon
                                 icon={Icons.NounProject.Attribution}
                                 color={theme.color('neutral', 500)}
-                                width={14}
-                                height={14}
+                                width={12}
+                                height={12}
                             />
                         </View>
                     </Tooltip>

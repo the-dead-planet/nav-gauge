@@ -107,13 +107,15 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
     };
 
     const hasBorder = variant !== 'fill';
+    const strokeWidth = hasBorder ? 1 : 0;
+    const strokeInset = strokeWidth / 2;
 
     const effectiveBevel = containerWidth > 0
         ? Math.min(bevel, containerWidth / 2 - 1)
         : bevel;
 
     const points = containerWidth > 0 && containerHeight > 0
-        ? `${effectiveBevel},0 ${containerWidth - effectiveBevel},0 ${containerWidth},${containerHeight / 2} ${containerWidth - effectiveBevel},${containerHeight} ${effectiveBevel},${containerHeight} 0,${containerHeight / 2}`
+        ? `${effectiveBevel},${strokeInset} ${containerWidth - effectiveBevel},${strokeInset} ${containerWidth - strokeInset},${containerHeight / 2} ${containerWidth - effectiveBevel},${containerHeight - strokeInset} ${effectiveBevel},${containerHeight - strokeInset} ${strokeInset},${containerHeight / 2}`
         : "";
 
     const renderGlow = () => {
@@ -144,7 +146,7 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
                             points={points}
                             fill={fillColor}
                             stroke={borderColor}
-                            strokeWidth={hasBorder ? 2 : 0}
+                            strokeWidth={strokeWidth}
                         />
                         {renderGlow()}
                     </>
@@ -174,7 +176,7 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
                             points={points}
                             fill={fillColor}
                             stroke={borderColor}
-                            strokeWidth={hasBorder ? 2 : 0}
+                            strokeWidth={strokeWidth}
                         />
                         {renderGlow()}
                     </>
@@ -192,7 +194,7 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
                             points={points}
                             fill={fill}
                             stroke={border}
-                            strokeWidth={hasBorder ? 2 : 0}
+                            strokeWidth={strokeWidth}
                         />
                         {renderGlow()}
                     </>
@@ -225,7 +227,7 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
                             fill={bgFill}
                             fillOpacity={fillOpacity}
                             stroke={bColor}
-                            strokeWidth={hasBorder ? 2 : 0}
+                            strokeWidth={strokeWidth}
                         />
                         {renderGlow()}
                     </>

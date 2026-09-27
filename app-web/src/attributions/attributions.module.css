@@ -19,10 +19,6 @@
     pointer-events: auto;
 }
 
-.rail svg polygon {
-    stroke-width: 1px;
-}
-
 .content {
     display: flex;
     align-items: center;

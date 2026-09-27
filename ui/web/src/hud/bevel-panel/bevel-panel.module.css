@@ -98,7 +98,9 @@
     opacity: 0;
 }
 
-.variant-fill-translucent .content {
+.backdrop {
+    position: absolute;
+    inset: 0;
     background: rgb(from var(--bevel-color) r g b / .24);
     backdrop-filter: blur(8px);
 }
@@ -146,12 +148,12 @@
     stroke: var(--bevel-highlight-color);
 }
 
-.variant-fill-translucent.interactive:hover .content {
+.variant-fill-translucent.interactive:hover .backdrop {
     background: rgb(from var(--bevel-highlight-color-accent) r g b / .36);
 }
 
-.variant-fill-translucent.interactive:active .content,
-.variant-fill-translucent.interactive.active .content {
+.variant-fill-translucent.interactive:active .backdrop,
+.variant-fill-translucent.interactive.active .backdrop {
     background: rgb(from var(--bevel-highlight-color) r g b / .48);
 }
 
