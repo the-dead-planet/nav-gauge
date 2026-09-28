@@ -65,7 +65,7 @@
 }
 
 .menu-list {
-    position: absolute;
+    position: fixed;
     padding: 4px 0;
     max-height: 240px;
     overflow-y: auto;
@@ -85,6 +85,8 @@
     font-size: 16px;
     text-align: left;
     color: var(--menu-color-text);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .menu-item:focus-visible {

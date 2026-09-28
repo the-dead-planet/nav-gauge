@@ -36,9 +36,7 @@
 
 .icons.left {
     grid-area: left-icons;
-    margin-left: 6px;
-    padding-top: 6px;
-    padding-bottom: 6px;
+    margin: 6px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     row-gap: 6px;
@@ -47,9 +45,7 @@
 
 .icons.right {
     grid-area: right-icons;
-    margin-right: 4px;
-    padding-bottom: 8px;
-    padding-top: 4px;
+    padding: 4px 4px 8px 4px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     row-gap: 4px;
@@ -60,12 +56,6 @@
     filter:
         drop-shadow(0 2px 3px rgb(from var(--color-box-shadow) r g b / .14))
         drop-shadow(0 6px 6px rgb(from var(--color-box-shadow) r g b / .08));
-}
-
-:global(body[data-theme="dark"]) .icon-button {
-    filter:
-        drop-shadow(0 2px 4px rgb(from var(--color-box-shadow) r g b / .45))
-        drop-shadow(0 7px 8px rgb(from var(--color-box-shadow) r g b / .28));
 }
 
 .icons.left .icon-button:nth-child(even) {

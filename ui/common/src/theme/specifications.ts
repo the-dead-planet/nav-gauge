@@ -158,22 +158,21 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
                 ...defaultComponentColors.light,
                 warning: {
                     name: 'luminous-yellow',
-                    shade: 500,
+                    shade: 600,
                 },
                 "border": {
                     name: "luminous-yellow",
+                    shade: 400,
                 },
                 "divider": {
                     name: "luminous-yellow",
+                    shade: 400,
                 },
-                "box-shadow": {
-                    name: "luminous-yellow",
-                }
             },
             colors: {
                 primary: Theme.palette['grey-blue'],
                 secondary: Theme.palette['grey-blue'],
-                tertiary: Theme.palette['grey-blue'],
+                tertiary: Theme.palette['dark-gold'],
                 neutral: Theme.palette['grey-blue'],
             }
         },
@@ -185,7 +184,7 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
                 warning: {
                     name: 'luminous-yellow',
                     shade: 500,
-                }
+                },
             },
             colors: {
                 primary: Theme.palette['grey-blue'],
@@ -199,7 +198,13 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
         light: {
             mode: 'light',
             themeName: ThemeName.Joker,
-            componentColors: defaultComponentColors.light,
+            componentColors: {
+                ...defaultComponentColors.light,
+                warning: {
+                    name: 'chartreuse',
+                    shade: 500,
+                }
+            },
             colors: {
                 primary: Theme.palette.violet,
                 secondary: Theme.palette.lime,
@@ -212,9 +217,9 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
             themeName: ThemeName.Joker,
             componentColors: {
                 ...defaultComponentColors.dark,
-                text: {
-                    name: 'neutral',
-                    shade: 200
+                warning: {
+                    name: 'chartreuse',
+                    shade: 500,
                 }
             },
             colors: {

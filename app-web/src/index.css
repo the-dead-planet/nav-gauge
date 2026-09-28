@@ -64,7 +64,6 @@
 
 @supports (font-variation-settings: normal) {
   body {
-    font-family: "Space Grotesk";
     font-weight: 200;
   }
 }
@@ -91,7 +90,7 @@ body[data-theme="light"] {
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Space Grotesk", "Ubuntu Mono", sans-serif;
+  font-family: var(--font-default, "Space Grotesk", sans-serif);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
@@ -100,13 +99,19 @@ body {
   touch-action: none;
 }
 
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
 
-a,
-a:-webkit-any-link {
+a {
   text-decoration: none;
   color: inherit;
 }
