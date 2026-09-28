@@ -77,11 +77,12 @@ export const FileInput: FC<Props & ViewProps> = ({
             <Button
                 icon={fileIcon as unknown as ComponentType<SvgProps>}
                 color={color}
-                variant="fill"
+                variant="fill-inverse"
                 corners="circle"
-                size="sm"
+                size="xs"
                 tooltip={fileLabel}
                 onPress={handleUpload}
+                style={{ width: 24 }}
             />
             <Text color={color} shade={500} style={styles.routeName}>
                 {fileName || noNameLabel}

@@ -9,7 +9,7 @@ import { useMobileMachineWard } from "@mobile-apparatus";
 const styles = StyleSheet.create({
     anchor: {
         position: 'absolute',
-        top: 6,
+        top: 4,
         zIndex: 3,
     },
     container: {
@@ -47,7 +47,7 @@ export const Attributions: FC = () => {
     }
 
     return (
-        <View pointerEvents="box-none" style={[styles.anchor, { right: rightPanelWidth + 6 }]}>
+        <View pointerEvents="box-none" style={[styles.anchor, { right: rightPanelWidth + 4 }]}>
             <BevelPanel bevel={6} color="neutral" variant="fill-inverse" style={styles.container}>
                 <View style={styles.content}>
                     <Tooltip content={tooltip} placement="left">

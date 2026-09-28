@@ -58,9 +58,9 @@ export const FileInput: FC<Props & ComponentProps<'div'>> = ({
             />
             <Button
                 aria-label={fileLabel}
-                variant="fill"
+                variant="fill-inverse"
                 color={color}
-                size="sm"
+                size="xs"
                 corners="circle"
                 icon={fileIcon}
                 tooltip={fileLabel}

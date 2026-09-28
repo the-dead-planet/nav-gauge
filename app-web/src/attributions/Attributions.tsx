@@ -20,7 +20,7 @@ export const Attributions: FC = () => {
     }
 
     return (
-        <div className={styles['anchor']} style={{ right: rightPanelWidth + 6 }}>
+        <div className={styles['anchor']} style={{ right: rightPanelWidth + 4 }}>
             <div className={styles['container']}>
                 <BevelPanel
                     bevel={6}
