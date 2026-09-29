@@ -50,6 +50,7 @@ const jp: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['jp'] 
     "play": '再生',
     "pause": '一時停止',
     "image": '画像',
+    "pan-to-image": '画像に移動',
     "show-image-markers": '画像マーカーを表示',
     "hide-image-markers": '画像マーカーを非表示',
 };

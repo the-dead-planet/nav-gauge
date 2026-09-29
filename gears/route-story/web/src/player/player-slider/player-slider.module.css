@@ -2,7 +2,7 @@
     flex: 1;
     display: grid;
     position: relative;
-    row-gap: 10px;
+    row-gap: 15px;
 }
 
 .slider-container {

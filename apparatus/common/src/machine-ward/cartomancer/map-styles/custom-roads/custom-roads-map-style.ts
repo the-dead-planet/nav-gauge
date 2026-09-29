@@ -4,6 +4,7 @@ import customRoadsStyle from "./custom-roads.json";
 
 export const customRoadsMapStyle: MapStyle = {
     label: 'Custom Paris roads (sample test)',
+    mode: 'light',
     style: customRoadsStyle as unknown as StyleSpecification,
     attribution: {
         text: "Overture Maps",

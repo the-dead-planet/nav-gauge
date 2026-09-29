@@ -50,6 +50,7 @@ const de: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['de'] 
     "play": 'Abspielen',
     "pause": 'Pause',
     "image": 'Bild',
+    "pan-to-image": 'Zum Bild schwenken',
     "show-image-markers": 'Bildmarkierungen anzeigen',
     "hide-image-markers": 'Bildmarkierungen ausblenden',
 };

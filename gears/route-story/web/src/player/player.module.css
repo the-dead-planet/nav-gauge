@@ -3,7 +3,7 @@
     align-items: center;
     column-gap: 10px;
     row-gap: 5px;
-    padding: 10px 15px;
+    padding: 10px 15px 5px 15px;
     box-sizing: border-box;
     touch-action: none;
 }
@@ -40,5 +40,5 @@
 }
 
 .padding-top {
-    padding-top: 18px;
+    padding-top: 28px;
 }

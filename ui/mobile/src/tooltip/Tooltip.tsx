@@ -1,6 +1,6 @@
 import { Children, cloneElement, FC, ReactElement, useEffect, useRef, useState } from "react";
 import { View, Modal, useWindowDimensions, GestureResponderEvent, LayoutChangeEvent, StyleSheet } from "react-native";
-import { ColorVariant, ErrorBoundary, getAutoTooltipPlacement, TooltipPlacement, TooltipProps, useTheme } from "@ui";
+import { ColorVariant, ErrorBoundary, getAutoTooltipPlacement, SizeVariant, TooltipPlacement, TooltipProps, useTheme } from "@ui";
 import { Text } from "../typography";
 import { TRANSLUCENT_OPACITY } from "../tinkers";
 
@@ -15,18 +15,24 @@ const styles = StyleSheet.create({
     },
     tooltip: {
         position: 'absolute',
-        paddingHorizontal: 10,
-        paddingVertical: 4,
         borderRadius: 0,
-    },
-    tooltipText: {
-        fontSize: 12,
-        lineHeight: 16.8,
     },
     connectionLine: {
         position: 'absolute',
     },
 });
+
+const tooltipStyles: Record<SizeVariant, { paddingHorizontal: number; paddingVertical: number }> = {
+    xs: { paddingHorizontal: 6, paddingVertical: 2 },
+    sm: { paddingHorizontal: 10, paddingVertical: 4 },
+    md: { paddingHorizontal: 12, paddingVertical: 6 },
+};
+
+const tooltipTextStyles: Record<SizeVariant, { fontSize: number; lineHeight: number }> = {
+    xs: { fontSize: 11, lineHeight: 12.1 },
+    sm: { fontSize: 12, lineHeight: 16.8 },
+    md: { fontSize: 14, lineHeight: 19.6 },
+};
 
 const getPosition = (
     rect: { x: number; y: number; width: number; height: number },
@@ -154,6 +160,7 @@ const InternalTooltip: FC<TooltipProps> = ({
     placement = 'auto',
     color = 'neutral',
     variant = 'fill-inverse',
+    size = 'sm',
     maxWidth = 220,
     showConnection = false,
 }) => {
@@ -312,6 +319,7 @@ const InternalTooltip: FC<TooltipProps> = ({
                         onLayout={onTooltipLayout}
                         style={[
                             styles.tooltip,
+                            tooltipStyles[size],
                             {
                                 top: position.top,
                                 left: position.left,
@@ -322,7 +330,7 @@ const InternalTooltip: FC<TooltipProps> = ({
                         ]}
                     >
                         <Text
-                            style={[styles.tooltipText, { color: variantColors.color }]}
+                            style={[tooltipTextStyles[size], { color: variantColors.color }]}
                         >
                             {content}
                         </Text>

@@ -129,6 +129,7 @@ const InternalTooltip: FC<TooltipProps> = ({
     placement = 'auto',
     color = 'neutral',
     variant = 'fill-inverse',
+    size = 'sm',
     maxWidth = 220,
     showConnection = false,
 }) => {
@@ -344,6 +345,7 @@ const InternalTooltip: FC<TooltipProps> = ({
                             style[`placement-${effectivePlacement}`],
                             style[`color-${color}`],
                             style[`variant-${variant}`],
+                            style[`size-${size}`],
                             style[`mode-${theme.mode}`],
                             style['visible']
                         )}

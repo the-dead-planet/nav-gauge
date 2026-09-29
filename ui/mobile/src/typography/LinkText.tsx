@@ -10,6 +10,8 @@ export const LinkText: FC<LinkTextProps> = ({
     href,
     children,
     color = 'primary',
+    shade,
+    highlightShade,
     disabled,
     style,
     accessibilityLabel,
@@ -25,8 +27,16 @@ export const LinkText: FC<LinkTextProps> = ({
         disabled={disabled}
         onPress={() => void Linking.openURL(href).catch(() => undefined)}
     >
-        <Text {...props} color={color} disabled={disabled} style={[{ textDecorationLine: 'underline' }, style]}>
-            {children}
-        </Text>
+        {({ pressed }) => (
+            <Text
+                {...props}
+                color={color}
+                shade={pressed ? highlightShade ?? shade : shade}
+                disabled={disabled}
+                style={[{ textDecorationLine: 'underline' }, style]}
+            >
+                {children}
+            </Text>
+        )}
     </Pressable>
 );

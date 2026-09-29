@@ -1,5 +1,5 @@
 .slider-markers {
-    height: 100%;
+    height: calc(100% - 2px);
     pointer-events: none;
     position: absolute;
     top: 0;
@@ -87,12 +87,16 @@
 }
 
 .pan-to-icon {
-    opacity: 0;
+    opacity: 0.4;
     pointer-events: auto;
     position: absolute;
-    top: -18px;
-    left: -8px;
+    bottom: -14px;
+    left: -5px;
     z-index: 10;
+    width: 12px;
+    height: 12px;
+    max-width: 12px;
+    min-width: 12px;
 }
 
 .image-marker-container:hover .pan-to-icon {
