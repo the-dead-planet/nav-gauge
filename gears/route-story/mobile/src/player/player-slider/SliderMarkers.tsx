@@ -1,5 +1,5 @@
 import { FC, useCallback, useEffect, useMemo, useRef } from "react";
-import { PanResponder, StyleSheet, View, type GestureResponderEvent, type HostInstance } from "react-native";
+import { Animated, PanResponder, StyleSheet, View, type GestureResponderEvent, type HostInstance } from "react-native";
 import { BehaviorSubject } from "rxjs";
 import { MarkerImage, useMultipleTranslations } from "@apparatus";
 import { ParsingResultWithError, useSubjectState } from "@tinker-chest";
@@ -106,7 +106,6 @@ export const SliderMarkers: FC<Props> = ({
     const [animationControls] = useSubjectState(animatrix.controls$);
     const [highlightIdsBySourceId, setHighlightIdsBySourceId] = useSubjectState(highlightIdsBySourceId$);
     const [draggingImage, setDraggingImage] = useSubjectState(draggingImage$);
-    const [draggingClosestFeature] = useSubjectState(draggingClosestFeature$);
     const [
         imageLabel,
         panToImageLabel,
@@ -117,6 +116,7 @@ export const SliderMarkers: FC<Props> = ({
 
     const containerRef = useRef<HostInstance>(null);
     const containerMetricsRef = useRef({ pageX: 0, pageY: 0, width: 0 });
+    const draggingPositionRef = useRef(new Animated.Value(0));
     const isDraggingPlayerRef = useRef(false);
     isDraggingPlayerRef.current = draggingImage?.interaction === 'player';
 
@@ -144,6 +144,7 @@ export const SliderMarkers: FC<Props> = ({
             return;
         }
         const positionPercent = ((pageX - metrics.pageX) / metrics.width) * 100;
+        draggingPositionRef.current.setValue(positionPercent);
         const closestFeature = getClosestFeatureFromPosition(positionPercent, geojson, routeTimes, animationControls.playbackPacing, routeGeometryData);
         if (closestFeature !== null) {
             draggingClosestFeature$.next(closestFeature);
@@ -167,7 +168,7 @@ export const SliderMarkers: FC<Props> = ({
             return false;
         }
         const offsetX = event.nativeEvent.pageX - metrics.pageX;
-        const grabbed = images.find((candidate) =>
+        const grabbed = images$.value.find((candidate) =>
             candidate.featureId !== undefined &&
             Math.abs((getPosition(candidate.featureId, geojson, routeTimes, animationControls.playbackPacing, routeGeometryData) / 100) * metrics.width - offsetX) <= GRAB_RADIUS_PX
         );
@@ -178,7 +179,7 @@ export const SliderMarkers: FC<Props> = ({
         updateDraggingFeature(event.nativeEvent.pageX);
 
         return true;
-    }, [images, geojson, routeTimes, animationControls.playbackPacing, routeGeometryData]);
+    }, [images$, geojson, routeTimes, animationControls.playbackPacing, routeGeometryData]);
 
     const containerPanResponder = useMemo(() => PanResponder.create({
         onStartShouldSetPanResponderCapture: (event) => tryBeginDragAt(event),
@@ -187,10 +188,6 @@ export const SliderMarkers: FC<Props> = ({
         onPanResponderRelease: endDrag,
         onPanResponderTerminate: endDrag,
     }), [tryBeginDragAt, geojson, routeTimes, animationControls.playbackPacing, routeGeometryData]);
-
-    const draggingFeaturePosition = draggingClosestFeature !== null
-        ? getPosition(draggingClosestFeature.properties.id, geojson, routeTimes, animationControls.playbackPacing, routeGeometryData)
-        : null;
 
     return (
         <View ref={containerRef} style={styles.container} {...containerPanResponder.panHandlers}>
@@ -245,16 +242,19 @@ export const SliderMarkers: FC<Props> = ({
                     <View style={[styles.markerFoot, { backgroundColor: routeEndMarkerColor }]} />
                 </View>
             )}
-            {draggingFeaturePosition !== null ? (
-                <View
+            {draggingImage?.interaction === 'player' ? (
+                <Animated.View
                     style={[styles.marker, styles.dragMarker, {
-                        left: `${draggingFeaturePosition.toFixed(0)}%`,
+                        left: draggingPositionRef.current.interpolate({
+                            inputRange: [0, 100],
+                            outputRange: ['0%', '100%'],
+                        }),
                     }]}
                 >
                     <View style={[styles.markerHead, { backgroundColor: markerHighlightColor }]} />
                     <View style={[styles.markerLine, { backgroundColor: markerHighlightColor }]} />
                     <View style={[styles.markerFoot, { backgroundColor: markerHighlightColor }]} />
-                </View>
+                </Animated.View>
             ) : null}
         </View>
     );

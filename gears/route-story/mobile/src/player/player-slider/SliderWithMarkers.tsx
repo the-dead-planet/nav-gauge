@@ -28,7 +28,7 @@ interface Props {
 const styles = StyleSheet.create({
     sliderContainer: {
         flex: 1,
-        gap: 18,
+        gap: 23,
         paddingTop: 11,
     },
 });

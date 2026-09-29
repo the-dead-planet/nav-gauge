@@ -41,23 +41,22 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStory
     const [sourceDataGeojson, setSourceDataGeojson] = useState(getImageSource(loadedImages, geojson));
 
     useEffect(() => {
-        const draggingImage = draggingImage$.value;
-        const draggedImage = draggingImage !== null && draggingImage.interaction === 'player'
-            ? loadedImages.find((candidate) => candidate.id === draggingImage.id)
-            : undefined;
+        setSourceDataGeojson(getImageSource(loadedImages, geojson));
+    }, [loadedImages, geojson]);
 
-        if (!draggedImage || !geojson || !draggingClosestFeature) {
-            setSourceDataGeojson(getImageSource(loadedImages, geojson));
-            return;
-        }
-
-        const updated: typeof sourceDataGeojson = getImageSource(loadedImages, geojson);
-        for (const feature of updated.features) {
+    const draggingImage = draggingImage$.value;
+    const draggedImage = draggingImage?.interaction === 'player'
+        ? loadedImages.find((candidate) => candidate.id === draggingImage.id)
+        : undefined;
+    let renderedSourceDataGeojson = sourceDataGeojson;
+    if (draggedImage && draggingClosestFeature) {
+        renderedSourceDataGeojson = getImageSource(loadedImages, geojson);
+        for (const feature of renderedSourceDataGeojson.features) {
             if (feature.id === draggedImage.id) {
                 feature.properties[FeatureStateProps.Dragging] = true;
             }
         }
-        updated.features.push({
+        renderedSourceDataGeojson.features.push({
             type: 'Feature',
             id: -1,
             geometry: draggingClosestFeature.geometry,
@@ -67,8 +66,7 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStory
                 [IMAGE_THUMBNAIL_PROPERTY]: getIconImageId(draggedImage, { thumbnail: true }),
             },
         });
-        setSourceDataGeojson(updated);
-    }, [loadedImages, geojson, draggingClosestFeature]);
+    }
 
     const imageSources: { [key in string]: ImageEntry } = Object.fromEntries(
         loadedImages.flatMap((loadedImage) => {
@@ -170,7 +168,7 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStory
     return (
         <>
             <Images images={imageSources} />
-            <GeoJSONSource id={imageSourceIds.thumbnails} data={sourceDataGeojson}>
+            <GeoJSONSource id={imageSourceIds.thumbnails} data={renderedSourceDataGeojson}>
                 <Layer
                     type="circle"
                     id={imageLayerIds.thumbnailsOutline}
