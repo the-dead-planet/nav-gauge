@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
 export const SliderWithMarkers: FC<Props> = ({
     gearId,
     translationKey,
+    map,
     data$,
     routeGeometryData$,
     routeTimes$,
@@ -67,6 +68,7 @@ export const SliderWithMarkers: FC<Props> = ({
                 <SliderMarkers
                     gearId={gearId}
                     translationKey={translationKey}
+                    map={map}
                     data$={data$}
                     routeGeometryData$={routeGeometryData$}
                     routeTimes$={routeTimes$}

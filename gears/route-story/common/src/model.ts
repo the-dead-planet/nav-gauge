@@ -163,6 +163,7 @@ export enum RouteStoryTranslationKey {
     Play = 'play',
     Pause = 'pause',
     Image = 'image',
+    PanToImage = 'pan-to-image',
     ShowImageMarkers = 'show-image-markers',
     HideImageMarkers = 'hide-image-markers',
     PurgeStoryText = 'purge-story-text',

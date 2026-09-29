@@ -1,6 +1,6 @@
 .anchor {
     position: absolute;
-    top: 44px;
+    top: 40px;
     z-index: 3;
     pointer-events: none;
 }
@@ -26,15 +26,15 @@
 }
 
 .content a {
-    font-size: 10px;
-    line-height: 12px;
+    font-size: 8px;
+    line-height: 10px;
 }
 
 .short-text {
     display: none;
 }
 
-@media (max-height: 499px) {
+@media (max-height: 599px) {
     .full-text {
         display: none;
     }
@@ -42,4 +42,12 @@
     .short-text {
         display: inline;
     }
+}
+
+.compact .full-text {
+    display: none;
+}
+
+.compact .short-text {
+    display: inline;
 }

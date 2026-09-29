@@ -19,7 +19,7 @@ import {
     RouteGeometryData,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { WebMarkerImageData } from "../../images/image-parser";
-import { Button } from "@web-ui";
+import { Button, Tooltip } from "@web-ui";
 import { Icons } from "@ui";
 import styles from './slider-markers.module.css';
 
@@ -56,8 +56,12 @@ export const SliderMarkers: FC<Props> = ({
     const [draggingClosestFeature] = useSubjectState(draggingClosestFeature$);
     const [
         imageLabel,
+        panToImageLabel,
+        panToWholeRouteAtEndLabel,
     ] = useMultipleTranslations([
         { n: gearId, t: translationKey.Image },
+        { n: gearId, t: translationKey.PanToImage },
+        { n: animatrix.namespace, t: animatrix.translationKey.PanToWholeRouteAtEnd },
     ]);
 
     const containerRef = useRef<HTMLDivElement>(null);
@@ -119,6 +123,22 @@ export const SliderMarkers: FC<Props> = ({
                             left: `${getPosition(image.featureId, geojson, routeTimes, animationControls.playbackPacing, routeGeometryData).toFixed(0)}%`
                         }}
                     >
+                        <Tooltip color="tertiary" content={panToImageLabel} placement="bottom" size="xs">
+                            <Button
+                                icon={Icons.NounProject.Target}
+                                size="xs"
+                                color="tertiary"
+                                aria-label={panToImageLabel}
+                                onClick={(event) => {
+                                    event.stopPropagation();
+                                    const feature = geojson?.features.find((f) => f.id === image.featureId);
+                                    if (feature) {
+                                        fitBoundsHandler(map, bbox(feature));
+                                    }
+                                }}
+                                className={styles['pan-to-icon']}
+                            />
+                        </Tooltip>
                         <span
                             role="button"
                             tabIndex={0}
@@ -140,33 +160,23 @@ export const SliderMarkers: FC<Props> = ({
                                 [styles['highlight']]: draggingImage?.id !== image.id && highlightIdsBySourceId.get(imageSourceIds.thumbnails)?.has(image.id.toString())
                             })}
                         />
-                        <Button
-                            icon={Icons.NounProject.Target}
-                            size="xs"
-                            onClick={(event) => {
-                                event.stopPropagation();
-                                const feature = geojson?.features.find((f) => f.id === image.featureId);
-                                if (feature) {
-                                    fitBoundsHandler(map, bbox(feature));
-                                }
-                            }}
-                            className={styles['pan-to-icon']}
-                        />
                     </div>
                 ))}
             {animationControls.panToWholeRouteAtEnd && (
                 <div className={styles['route-end-marker-container']}>
                     <span role="presentation" className={classNames(styles['image-marker'], styles['route-end-marker'])} />
-                    <Button
-                        icon={Icons.NounProject.Target}
-                        size="xs"
-                        aria-label="Fit route bounds"
-                        onClick={(event) => {
-                            event.stopPropagation();
-                            fitBoundsHandler(map, data$.value.boundingBox);
-                        }}
-                        className={styles['pan-to-icon']}
-                    />
+                    <Tooltip color="neutral" content={panToWholeRouteAtEndLabel} placement="bottom" size="xs">
+                        <Button
+                            icon={Icons.NounProject.Target}
+                            size="xs"
+                            aria-label={panToWholeRouteAtEndLabel}
+                            onClick={(event) => {
+                                event.stopPropagation();
+                                fitBoundsHandler(map, data$.value.boundingBox);
+                            }}
+                            className={styles['pan-to-icon']}
+                        />
+                    </Tooltip>
                 </div>
             )}
             {draggingFeaturePosition !== null && (

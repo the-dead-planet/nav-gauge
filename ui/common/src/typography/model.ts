@@ -31,6 +31,8 @@ export interface TypographyProps {
     color?: ColorVariant;
     /** Applies a palette shade when `color` is set. */
     shade?: ColorShade;
+    /** Applies a palette shade to interactive typography while highlighted. */
+    highlightShade?: ColorShade;
     fontType?: FontType;
     align?: 'left' | 'center' | 'right';
     nowrap?: boolean;
