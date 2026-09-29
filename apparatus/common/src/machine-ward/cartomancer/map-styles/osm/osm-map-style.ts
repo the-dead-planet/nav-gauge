@@ -4,6 +4,7 @@ import osmStyle from "./osm.json";
 
 export const osmMapStyle: MapStyle = {
     label: 'OpenStreetMap',
+    mode: 'light',
     style: osmStyle as unknown as StyleSpecification,
     attribution: {
         text: "OpenStreetMap",

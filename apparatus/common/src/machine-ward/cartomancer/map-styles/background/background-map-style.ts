@@ -4,5 +4,6 @@ import backgroundStyle from "./background.json";
 
 export const backgroundMapStyle: MapStyle = {
     label: 'Background',
+    mode: 'light',
     style: backgroundStyle as unknown as StyleSpecification
 };

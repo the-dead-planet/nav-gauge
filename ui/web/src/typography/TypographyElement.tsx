@@ -13,6 +13,7 @@ export const TypographyElement = <Element extends ElementType>({
     baseClassName,
     color,
     shade,
+    highlightShade,
     fontType,
     align,
     nowrap,
@@ -66,10 +67,15 @@ export const TypographyElement = <Element extends ElementType>({
             styles[`padding-bottom-${spacing.paddingBottom}`],
             className,
         ),
-        style: color && shade !== undefined
+        style: color && (shade !== undefined || highlightShade !== undefined)
             ? {
                 ...style,
-                '--typography-color-shade': theme.color(color, disabled ? (theme.isDark ? 700 : 300) : shade),
+                ...(shade !== undefined ? {
+                    '--typography-color-shade': theme.color(color, disabled ? (theme.isDark ? 700 : 300) : shade),
+                } : {}),
+                ...(highlightShade !== undefined ? {
+                    '--typography-color-highlight-shade': theme.color(color, highlightShade),
+                } : {}),
             } as CSSProperties
             : style,
     });

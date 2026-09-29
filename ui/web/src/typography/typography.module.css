@@ -64,8 +64,10 @@
     text-decoration: underline;
 }
 
-.link:hover {
-    color: var(--typography-color-hover);
+.link:hover,
+.link:focus-visible,
+.link:active {
+    color: var(--typography-color-highlight-shade, var(--typography-color-hover));
 }
 
 .link.disabled,

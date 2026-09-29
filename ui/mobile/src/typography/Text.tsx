@@ -20,6 +20,7 @@ export const Text: FC<TextProps> = ({
     variant = 'body',
     color,
     shade,
+    highlightShade: _highlightShade,
     align,
     nowrap,
     bold,

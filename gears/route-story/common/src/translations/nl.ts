@@ -50,6 +50,7 @@ const nl: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['nl'] 
     "play": 'Afspelen',
     "pause": 'Pauze',
     "image": 'Afbeelding',
+    "pan-to-image": 'Naar afbeelding verschuiven',
     "show-image-markers": 'Afbeeldingsmarkeringen tonen',
     "hide-image-markers": 'Afbeeldingsmarkeringen verbergen',
 };

@@ -103,7 +103,7 @@ export const Spacing: Story = {
 export const ExternalLink: Story = {
     render: () => (
         <TypographyPreview>{(props) => (
-            <LinkText href="https://openstreetmap.org/copyright" {...props}>OpenStreetMap copyright</LinkText>
+            <LinkText href="https://openstreetmap.org/copyright" highlightShade={800} {...props}>OpenStreetMap copyright</LinkText>
         )}</TypographyPreview>
     ),
 };

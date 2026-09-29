@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     sm: {
         flexDirection: "column",
         alignItems: "stretch",
-        marginBottom: 10,
+        marginBottom: 5,
         rowGap: 10,
     },
     slider: {
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     },
     sliderBlock: {
         flex: 1,
-        marginTop: 24,
+        marginTop: 29,
     },
     buttons: {
         flexDirection: "row",

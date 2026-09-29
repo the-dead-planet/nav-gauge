@@ -1,5 +1,5 @@
 import type { Meta } from 'storybook-react-rsbuild';
-import { ColorVariant, Icons, SurfaceFillVariant, TooltipPlacement } from '@ui';
+import { ColorVariant, Icons, SizeVariant, SurfaceFillVariant, TooltipPlacement } from '@ui';
 import { Tooltip } from './Tooltip';
 import { Button } from '../button';
 import { Text } from '../typography';
@@ -14,6 +14,7 @@ export default meta;
 const allPlacements: TooltipPlacement[] = ['top', 'bottom', 'left', 'right', 'auto'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
 const allVariants: SurfaceFillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
+const allSizes: SizeVariant[] = ['xs', 'sm', 'md'];
 
 export const Placements = {
     render: () => (
@@ -45,6 +46,20 @@ export const Colors = {
                     </Tooltip>
                 ))}
             </div>
+        </div>
+    ),
+};
+
+export const Sizes = {
+    render: () => (
+        <div style={{ display: 'flex', gap: 16, alignItems: 'center', padding: 48 }}>
+            {allSizes.map((size) => (
+                <Tooltip key={size} content={`${size} tooltip`} size={size} placement="top">
+                    <Button icon={Icons.Beaker} variant="ghost" color="primary" corners="circle">
+                        {size}
+                    </Button>
+                </Tooltip>
+            ))}
         </div>
     ),
 };
