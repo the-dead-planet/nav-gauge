@@ -15,6 +15,7 @@ interface Props {
 
 export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     color = 'neutral',
+    shade = 500,
     highlightColor,
     variant = 'ghost',
     glowStyle = 'none',
@@ -73,7 +74,10 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
                 },
                 corners !== 'hexagon' ? className : null
             )}
-            style={corners !== 'hexagon' ? style : undefined}
+            style={{
+                ...(corners !== 'hexagon' ? style : undefined),
+                '--button-color-text': theme.color(color, shade),
+            } as CSSProperties}
             {...props}
         >
             {icon ? (

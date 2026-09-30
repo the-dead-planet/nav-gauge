@@ -47,7 +47,7 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
                             {children}
                         </div>
                         <div className={styles['footer']}>
-                            <Button variant="fill-inverse" color={color} onClick={() => setRender(false)}>
+                            <Button variant="fill-inverse" color={color} shade={theme.isDark ? 100 : 900} onClick={() => setRender(false)}>
                                 {closeText}
                             </Button>
                             {save ? (

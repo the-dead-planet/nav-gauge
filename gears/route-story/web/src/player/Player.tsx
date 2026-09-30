@@ -49,14 +49,13 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & WebRouteStoryProps> = (
             playerOperator={playerOperator}
             fitBoundsHandler={fitBoundsHandler}
             animatrix={animatrix}
-            className={!media.isLessThanMd ? styles['padding-top'] : undefined}
         />
     );
     const markerButton = <MarkerButton gearId={gearId} translationKey={translationKey} playerOperator={playerOperator} />;
 
     if (media.isLessThanMd) {
         return (
-            <div className={classNames(styles.player, styles.sm)}>
+            <div className={styles.player}>
                 <div className={styles.buttons}>
                     <div>
                         {recordingButtons}
@@ -74,9 +73,9 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & WebRouteStoryProps> = (
     }
 
     return (
-        <div className={styles.player}>
+        <div className={classNames(styles.player, styles.lg)}>
             {recordingButtons}
-            <Divider color="neutral" orientation="vertical" mh="xs" mv="lg" />
+            <Divider color="neutral" orientation="vertical" mh="xs" mb="xl" />
             <div className={styles['slider']}>
                 {playButton}
                 {sliderWithMarkers}

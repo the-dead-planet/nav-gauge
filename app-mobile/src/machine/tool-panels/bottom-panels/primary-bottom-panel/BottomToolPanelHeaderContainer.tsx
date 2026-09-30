@@ -40,9 +40,13 @@ export const BottomToolPanelHeaderContainer: FC<Props> = ({
     return (
         <View style={styles.container} pointerEvents="box-none">
             <CurveSpacer
-                style={joinHeaderButtons || bothSidePanels || onlyLeftPanel
+                style={bothSidePanels || onlyLeftPanel
                     ? { flex: 1 }
-                    : { width: PANEL_HEADER_CURVE_SIZES.leftSpacer }}
+                    : {
+                        width: joinHeaderButtons
+                            ? PANEL_HEADER_CURVE_SIZES.bottomSecondaryLeftSpacer
+                            : PANEL_HEADER_CURVE_SIZES.leftSpacer
+                    }}
             />
 
             <CurvesContainer>

@@ -440,6 +440,10 @@
     color: var(--button-color);
 }
 
+.corners-hexagon.variant-fill-inverse {
+    color: var(--button-color-text);
+}
+
 .corners-hexagon.variant-fill {
     color: var(--button-color-light);
 }
@@ -452,6 +456,12 @@
     color: var(--button-color);
     stroke: var(--button-color);
     fill: var(--button-color);
+}
+
+.corners-hexagon.variant-fill-inverse .icon {
+    color: var(--button-color-text);
+    stroke: var(--button-color-text);
+    fill: var(--button-color-text);
 }
 
 .corners-hexagon.variant-fill .icon {

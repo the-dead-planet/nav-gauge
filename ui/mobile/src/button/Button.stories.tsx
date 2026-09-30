@@ -156,3 +156,9 @@ export const TooltipPressBehavior: FC = () => {
         </View>
     );
 };
+
+export const ShadeOverride: FC = () => (
+    <View style={styles.container}>
+        <Button color="primary" variant="fill-inverse" shade={100}>High contrast</Button>
+    </View>
+);

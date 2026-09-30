@@ -3,6 +3,7 @@ import { StyleSheet, View } from "react-native";
 import { BehaviorSubject } from "rxjs";
 import { MarkerImage } from "@apparatus";
 import { ParsingResultWithError, useSubjectState } from "@tinker-chest";
+import { useTheme } from "@ui";
 import { RouteStoryTranslationKey, RouteTimes, Animatrix, RouteGeometryData, getRouteDistanceFraction, getRouteTimelinePositionForDistanceFraction } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Slider } from "@mobile-ui";
 import { currentPointRef$, linesRef$ } from "../../layers/RouteLayer";
@@ -30,6 +31,10 @@ const styles = StyleSheet.create({
         flex: 1,
         gap: 23,
         paddingTop: 11,
+        marginTop: 10,
+    },
+    lg: {
+        marginTop: -5,
     },
 });
 
@@ -45,6 +50,8 @@ export const SliderWithMarkers: FC<Props> = ({
     playerOperator,
     animatrix,
 }) => {
+    const theme = useTheme();
+    const [media] = useSubjectState(theme.media$);
     const [routeTimes] = useSubjectState(routeTimes$);
     const [progressMs] = useSubjectState(progressMs$);
     const [{ geojson }] = useSubjectState(data$);
@@ -63,7 +70,7 @@ export const SliderWithMarkers: FC<Props> = ({
     };
 
     return (
-        <View style={styles.sliderContainer}>
+        <View style={[styles.sliderContainer, !media.isLessThanMd && styles.lg]}>
             {showImageMarkers ? (
                 <SliderMarkers
                     gearId={gearId}

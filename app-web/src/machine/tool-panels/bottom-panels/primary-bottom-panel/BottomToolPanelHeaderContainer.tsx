@@ -27,11 +27,13 @@ export const BottomToolPanelHeaderContainer: FC<Props> = ({
         <div
             className={styles['container']}
             style={{
-                gridTemplateColumns: joinHeaderButtons || bothSidePanels
+                gridTemplateColumns: bothSidePanels
                     ? '1fr max-content 1fr'
                     : onlyLeftPanel
                         ? `1fr max-content ${PANEL_HEADER_CURVE_SIZES.onlyLeftPanelRightSpacer}px`
-                        : onlyRightPanel
+                        : joinHeaderButtons
+                            ? `${PANEL_HEADER_CURVE_SIZES.bottomSecondaryLeftSpacer}px max-content 1fr`
+                            : onlyRightPanel
                             ? `${PANEL_HEADER_CURVE_SIZES.leftSpacer}px max-content 1fr`
                             : `${PANEL_HEADER_CURVE_SIZES.leftSpacer}px max-content 1fr max-content ${PANEL_HEADER_CURVE_SIZES.bothOrNoPanelsRightSpacer}px`
             }}>

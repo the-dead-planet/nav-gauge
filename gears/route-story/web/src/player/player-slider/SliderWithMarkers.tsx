@@ -12,6 +12,7 @@ import { SliderMarkers } from "./SliderMarkers";
 import { PlayerSliderLabels } from "./PlayerSliderLabels";
 import { WebPlayerOperator } from "../../model";
 import styles from './player-slider.module.css';
+import { useTheme } from "@ui";
 
 interface Props {
     gearId: string;
@@ -25,7 +26,6 @@ interface Props {
     playerOperator: WebPlayerOperator;
     fitBoundsHandler: (map: maplibregl.Map, boundingBox?: GeoJSON.BBox) => void;
     animatrix: Animatrix;
-    className?: string;
 }
 
 export const SliderWithMarkers: FC<Props> = ({
@@ -40,8 +40,9 @@ export const SliderWithMarkers: FC<Props> = ({
     playerOperator,
     fitBoundsHandler,
     animatrix,
-    className,
 }) => {
+    const theme = useTheme();
+    const [media] = useSubjectState(theme.media$);
     const [routeTimes] = useSubjectState(routeTimes$);
     const [progressMs] = useSubjectState(progressMs$);
     const [{ geojson }] = useSubjectState(data$);
@@ -67,7 +68,7 @@ export const SliderWithMarkers: FC<Props> = ({
     };
 
     return (
-        <div className={classNames(styles['container'], className)}>
+        <div className={classNames(styles['container'], !media.isLessThanMd ? styles.lg : undefined)}>
             <div className={styles['slider-container']}>
                 {showImageMarkers ? (
                     <SliderMarkers

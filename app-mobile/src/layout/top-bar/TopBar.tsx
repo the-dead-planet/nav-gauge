@@ -44,9 +44,11 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
     const theme = useTheme();
     const { individuator, namespace, translationKey, toolsStation } = useMobileMachineWard();
     const [topBarTools] = useSubjectState(toolsStation.topBarTools$);
-    const [modeTooltip] = useMultipleTranslations([
-        { n: namespace, t: translationKey.ToggleMode },
+    const [lightModeTooltip, darkModeTooltip] = useMultipleTranslations([
+        { n: namespace, t: translationKey.SwitchToLightMode },
+        { n: namespace, t: translationKey.SwitchToDarkMode },
     ]);
+    const modeTooltip = theme.isDark ? lightModeTooltip : darkModeTooltip;
 
     return (
         <View style={[styles.container, {
