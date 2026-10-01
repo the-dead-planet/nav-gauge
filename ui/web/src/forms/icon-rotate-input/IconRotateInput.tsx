@@ -53,10 +53,13 @@ export const IconRotateInput: FC<IconRotateInputProps & Omit<ComponentProps<'div
     const displayAngleRef = useRef(value);
     displayAngleRef.current = displayAngle;
 
-    if (!isDragging && value !== angleRef.current) {
-        setDisplayAngle(value);
-        setDisplayWrapped(value);
-    }
+    useEffect(() => {
+        if (!isDragging) {
+            displayAngleRef.current = value;
+            setDisplayAngle(value);
+            setDisplayWrapped(value);
+        }
+    }, [isDragging, value]);
 
     const snapAngle = (raw: number): number => {
         if (max - min >= 360) {
@@ -179,7 +182,7 @@ export const IconRotateInput: FC<IconRotateInputProps & Omit<ComponentProps<'div
         <RotationArrows svgSize={svgSize} center={center} outerRadius={outerRadius} />
         <RotateIconWrapper icon={icon} iconSize={iconSize} displayAngle={displayAngle + valueAdjustment} iconColor={iconColor} />
     </div>;
-    const steppedRotateControl = showStepControls ? <StepControls color={color} size={size} value={displayWrapped} onChange={onChange} min={min} max={max} step={step} disabled={disabled}>{rotateControl}</StepControls> : rotateControl;
+    const steppedRotateControl = showStepControls ? <StepControls color={color} size={size} value={value} onChange={onChange} min={min} max={max} step={step} disabled={disabled}>{rotateControl}</StepControls> : rotateControl;
 
     return (
         <div
@@ -216,7 +219,7 @@ export const IconRotateInput: FC<IconRotateInputProps & Omit<ComponentProps<'div
                 {steppedRotateControl}
                 {showNumberInput ? (
                     <NumberInput
-                        value={displayWrapped}
+                        value={value}
                         onChange={(newValue) => onChange?.(newValue)}
                         min={min}
                         max={max}

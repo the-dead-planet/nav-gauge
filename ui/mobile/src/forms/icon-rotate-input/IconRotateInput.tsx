@@ -1,4 +1,4 @@
-import { ComponentType, FC, useMemo, useRef, useState } from "react";
+import { ComponentType, FC, useEffect, useMemo, useRef, useState } from "react";
 import {
     LayoutChangeEvent,
     PanResponder,
@@ -62,10 +62,13 @@ export const IconRotateInput: FC<Props> = ({
     const displayAngleRef = useRef(value);
     displayAngleRef.current = displayAngle;
 
-    if (!isDragging && value !== angleRef.current) {
-        setDisplayAngle(value);
-        setDisplayWrapped(value);
-    }
+    useEffect(() => {
+        if (!isDragging) {
+            displayAngleRef.current = value;
+            setDisplayAngle(value);
+            setDisplayWrapped(value);
+        }
+    }, [isDragging, value]);
 
     const snapAngle = (raw: number): number => {
         if (max - min >= 360) {
@@ -179,13 +182,13 @@ export const IconRotateInput: FC<Props> = ({
             iconColor={iconColor}
         />
     </View>;
-    const steppedRotateControl = showStepControls ? <StepControls color={color} size={size} value={displayWrapped} onChange={onChange} min={min} max={max} step={step} disabled={disabled}>{visualControl}</StepControls> : visualControl;
+    const steppedRotateControl = showStepControls ? <StepControls color={color} size={size} value={value} onChange={onChange} min={min} max={max} step={step} disabled={disabled}>{visualControl}</StepControls> : visualControl;
     const control = <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
         {steppedRotateControl}
         {showNumberInput ? (
             <View style={{ width: 80 }}>
                 <NumberInput
-                    value={displayWrapped}
+                    value={value}
                     onChange={(newValue) => onChange?.(newValue)}
                     min={min}
                     max={max}

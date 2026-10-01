@@ -34,7 +34,7 @@
 
 /* ── Focus ring ── */
 
-.container:focus-within:not(.disabled) .svg {
+.container:has(.a11y-slider:focus-visible):not(.disabled) .svg {
     outline: 2px solid var(--angle-highlight);
     outline-offset: 0px;
     border-radius: 50%;

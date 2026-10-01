@@ -28,7 +28,7 @@
     cursor: grab;
 }
 
-.container:focus-within:not(.disabled) .visual-container {
+.container:has(.a11y-slider:focus-visible):not(.disabled) .visual-container {
     box-shadow: 0 0 0 2px var(--rotate-highlight), 0 0 8px var(--rotate-highlight-light);
 }
 
@@ -144,11 +144,11 @@
     transition: opacity .2s;
 }
 
-.container:hover .overlay-svg {
+.visual-container:hover .overlay-svg {
     opacity: 1;
 }
 
-.container:focus-within .overlay-svg {
+.container:has(.a11y-slider:focus-visible) .overlay-svg {
     opacity: 1;
 }
 
@@ -177,8 +177,8 @@
 
 /* ── Hover highlight ── */
 
-.container:hover .overlay-ring,
-.container:hover .overlay-arrows {
+.visual-container:hover .overlay-ring,
+.visual-container:hover .overlay-arrows {
     stroke: var(--rotate-highlight-light);
 }
 
