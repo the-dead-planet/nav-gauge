@@ -5,7 +5,7 @@ import { ClockSliceInput } from "./ClockSliceInput";
 import { DurationClockInput } from "./DurationClockInput";
 import { Button } from "../../button";
 import { Text } from "../../typography";
-import { ColorVariant, SizeVariant, SurfaceFillVariant, CLOCK_INPUT_RANGE } from "@ui";
+import { ColorVariant, SizeVariant, SurfaceFillVariant, CLOCK_INPUT_RANGE, NumberInputPlacement } from "@ui";
 
 const styles = StyleSheet.create({
     container: {
@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
 const allSizes: SizeVariant[] = ['sm', 'md'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
 const allVariants: SurfaceFillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
+const numberInputPlacements: NumberInputPlacement[] = ['start', 'end', 'above', 'below'];
 
 export const PitchConstrained: FC = () => {
     const pitchRange: [number, number] = [0, 85];
@@ -40,10 +41,12 @@ export const PitchConstrained: FC = () => {
     const [disabled, setDisabled] = useState(false);
     const [showStepControls, setShowStepControls] = useState(false);
     const [showNumberInput, setShowNumberInput] = useState(false);
+    const [numberInputPlacement, setNumberInputPlacement] = useState<NumberInputPlacement>('end');
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <View style={[styles.row, { marginBottom: 12 }]}>
+                <Text>Size</Text>
                 {allSizes.map((s) => (
                     <Button
                         key={s}
@@ -69,10 +72,19 @@ export const PitchConstrained: FC = () => {
                 </Button>
             </View>
             <View style={styles.row}>
+                <Text>Options</Text>
                 <Text>Show plus/minus</Text>
                 <Switch value={showStepControls} onValueChange={setShowStepControls} />
                 <Text>Show number input</Text>
                 <Switch value={showNumberInput} onValueChange={setShowNumberInput} />
+            </View>
+            <View style={styles.row}>
+                <Text>Number input placement</Text>
+                {numberInputPlacements.map((placement) => (
+                    <Button key={placement} size="xs" active={numberInputPlacement === placement} onPress={() => setNumberInputPlacement(placement)}>
+                        {placement}
+                    </Button>
+                ))}
             </View>
 
             <View style={[styles.section, { marginTop: 8 }]}>
@@ -100,6 +112,7 @@ export const PitchConstrained: FC = () => {
                                     disabled={disabled}
                                     showNumberInput={showNumberInput}
                                     showStepControls={showStepControls}
+                                    numberInputPlacement={numberInputPlacement}
                                     min={pitchRange[0]}
                                     max={pitchRange[1]}
                                 />
@@ -119,6 +132,7 @@ export const PitchConstrained: FC = () => {
                         label="full"
                         showNumberInput={showNumberInput}
                         showStepControls={showStepControls}
+                        numberInputPlacement={numberInputPlacement}
                     />
                 </View>
             </View>
@@ -132,10 +146,12 @@ export const AllVariants: FC = () => {
     const [disabled, setDisabled] = useState(false);
     const [showStepControls, setShowStepControls] = useState(false);
     const [showNumberInput, setShowNumberInput] = useState(false);
+    const [numberInputPlacement, setNumberInputPlacement] = useState<NumberInputPlacement>('end');
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <View style={[styles.row, { marginBottom: 12 }]}>
+                <Text>Size</Text>
                 {allSizes.map((s) => (
                     <Button
                         key={s}
@@ -161,10 +177,19 @@ export const AllVariants: FC = () => {
                 </Button>
             </View>
             <View style={styles.row}>
+                <Text>Options</Text>
                 <Text>Show plus/minus</Text>
                 <Switch value={showStepControls} onValueChange={setShowStepControls} />
                 <Text>Show number input</Text>
                 <Switch value={showNumberInput} onValueChange={setShowNumberInput} />
+            </View>
+            <View style={styles.row}>
+                <Text>Number input placement</Text>
+                {numberInputPlacements.map((placement) => (
+                    <Button key={placement} size="xs" active={numberInputPlacement === placement} onPress={() => setNumberInputPlacement(placement)}>
+                        {placement}
+                    </Button>
+                ))}
             </View>
 
             <View style={[styles.section, { marginTop: 8 }]}>
@@ -190,6 +215,7 @@ export const AllVariants: FC = () => {
                                     disabled={disabled}
                                     showNumberInput={showNumberInput}
                                     showStepControls={showStepControls}
+                                    numberInputPlacement={numberInputPlacement}
                                 />
                             </View>
                         ))}

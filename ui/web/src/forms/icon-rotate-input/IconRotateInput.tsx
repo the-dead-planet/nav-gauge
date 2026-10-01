@@ -27,6 +27,8 @@ export const IconRotateInput: FC<IconRotateInputProps & Omit<ComponentProps<'div
     label,
     showNumberInput = false,
     showStepControls = false,
+    numberInputPlacement = 'end',
+    ariaLabel,
     className,
     ...props
 }) => {
@@ -182,7 +184,21 @@ export const IconRotateInput: FC<IconRotateInputProps & Omit<ComponentProps<'div
         <RotationArrows svgSize={svgSize} center={center} outerRadius={outerRadius} />
         <RotateIconWrapper icon={icon} iconSize={iconSize} displayAngle={displayAngle + valueAdjustment} iconColor={iconColor} />
     </div>;
-    const steppedRotateControl = showStepControls ? <StepControls color={color} size={size} value={value} onChange={onChange} min={min} max={max} step={step} disabled={disabled}>{rotateControl}</StepControls> : rotateControl;
+    const steppedRotateControl = showStepControls ? (
+        <StepControls
+            color={color}
+            size={size}
+            value={value}
+            onChange={onChange}
+            min={min}
+            max={max}
+            step={step}
+            disabled={disabled}
+            ariaLabel={ariaLabel ?? label}
+        >
+            {rotateControl}
+        </StepControls>
+    ) : rotateControl;
 
     return (
         <div
@@ -213,9 +229,13 @@ export const IconRotateInput: FC<IconRotateInputProps & Omit<ComponentProps<'div
                 disabled={disabled}
                 label={label}
                 showValue={!showNumberInput}
+                ariaLabel={ariaLabel}
             />
 
-            <div className={styles['control-row']}>
+            <div className={classNames(
+                styles['control-row'],
+                showNumberInput && styles[`number-input-${numberInputPlacement}`]
+            )}>
                 {steppedRotateControl}
                 {showNumberInput ? (
                     <NumberInput
@@ -229,7 +249,7 @@ export const IconRotateInput: FC<IconRotateInputProps & Omit<ComponentProps<'div
                         size={size}
                         disabled={disabled || !onChange}
                         showStepControls={true}
-                        ariaLabel={label ?? 'Rotation value'}
+                        ariaLabel={`${ariaLabel ?? label ?? 'Angle'} (#)`}
                     />
                 ) : null}
             </div>

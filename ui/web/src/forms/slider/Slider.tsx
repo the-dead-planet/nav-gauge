@@ -10,6 +10,7 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
     color = 'neutral',
     highlightColor = color,
     size = 'md',
+    variant = 'fill-inverse',
     min = 0,
     max = 100,
     step = 1,
@@ -21,11 +22,13 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
     label,
     showNumberInput = false,
     showStepControls = false,
+    ariaLabel,
     className,
     style,
     ...props
 }) => {
     const theme = useTheme();
+    const accessibleLabel = ariaLabel ?? props['aria-label'] ?? (typeof label === 'string' ? label : undefined);
     const range = max - min;
     const progress = range > 0 ? ((value - min) / range) * 100 : 0;
 
@@ -33,21 +36,54 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
         onChange?.(Number(e.target.value));
     };
 
-    const slider = <input
-        type="range"
-        id={id}
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        disabled={disabled}
-        onChange={handleChange}
-        aria-label={props['aria-label'] || (typeof label === 'string' ? label : '') || 'Slider'}
-        className={classNames(styles.slider, styles[`mode-${theme.mode}`], styles[`color-${color}`], styles[`highlight-${highlightColor}`], styles[`size-${size}`], { [styles.active]: active }, className)}
-        style={{ '--track-complete': `${progress}%`, ...style } as CSSProperties}
-        {...props}
-    />;
-    const steppedSlider = showStepControls ? <StepControls color={color} size={size} value={value} onChange={onChange} min={min} max={max} step={step} disabled={disabled}>{slider}</StepControls> : slider;
+    const slider = (
+        <div
+            className={classNames(
+                styles['slider-wrapper'],
+                styles[`mode-${theme.mode}`],
+                styles[`color-${color}`],
+                styles[`highlight-${highlightColor}`],
+                styles[`size-${size}`]
+            )}
+            style={{ '--track-complete': `${progress}%` } as CSSProperties}
+        >
+            <input
+                type="range"
+                id={id}
+                min={min}
+                max={max}
+                step={step}
+                value={value}
+                disabled={disabled}
+                onChange={handleChange}
+                aria-label={accessibleLabel ?? 'Slider'}
+                className={classNames(
+                    styles.slider,
+                    styles[`size-${size}`],
+                    styles[`variant-${variant}`],
+                    { [styles.active]: active },
+                    className
+                )}
+                style={style}
+                {...props}
+            />
+        </div>
+    );
+    const steppedSlider = showStepControls ? (
+        <StepControls
+            color={color}
+            size={size}
+            value={value}
+            onChange={onChange}
+            min={min}
+            max={max}
+            step={step}
+            disabled={disabled}
+            ariaLabel={accessibleLabel}
+        >
+            {slider}
+        </StepControls>
+    ) : slider;
 
     return (
         <div className={classNames(styles['container'], {
@@ -58,7 +94,12 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
                     {label} {!showNumberInput ? <Span tabular>{value}</Span> : null}
                 </Label>
             ) : label}
-            <div className={styles['control-row']}>
+            <div
+                className={classNames(
+                    styles['control-row'],
+                    styles[`control-size-${size}`]
+                )}
+            >
                 {steppedSlider}
                 {showNumberInput ? (
                     <NumberInput
@@ -70,9 +111,10 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
                         color={color}
                         highlightColor={highlightColor}
                         size={size}
+                        variant={variant}
                         disabled={disabled || !onChange}
                         showStepControls={true}
-                        ariaLabel={typeof label === 'string' ? label : 'Slider value'}
+                        ariaLabel={`${accessibleLabel ?? 'Slider'} (#)`}
                     />
                 ) : null}
             </div>

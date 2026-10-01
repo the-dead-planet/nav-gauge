@@ -105,6 +105,7 @@ export const NumberInput: FC<NumberInputProps> = ({
                     max={max}
                     step={step}
                     disabled={disabled}
+                    ariaLabel={ariaLabel || (typeof label === 'string' ? label : undefined)}
                 >
                     {input}
                 </StepControls>

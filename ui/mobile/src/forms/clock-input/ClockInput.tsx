@@ -25,6 +25,8 @@ export const ClockInput = forwardRef<ViewInstance, ClockInputProps & { style?: V
     disabled = false,
     showNumberInput = false,
     showStepControls = false,
+    numberInputPlacement = 'end',
+    ariaLabel,
     style,
 }, ref) => {
     const theme = useTheme();
@@ -67,11 +69,38 @@ export const ClockInput = forwardRef<ViewInstance, ClockInputProps & { style?: V
         step={step}
         value={value}
     />;
-    const steppedClock = showStepControls ? <StepControls color={color} size={size} value={value} onChange={onChange} min={min} max={max} step={step} disabled={disabled}>{clock}</StepControls> : clock;
-    const control = <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+    const steppedClock = showStepControls ? (
+        <StepControls
+            color={color}
+            size={size}
+            value={value}
+            onChange={onChange}
+            min={min}
+            max={max}
+            step={step}
+            disabled={disabled}
+            ariaLabel={ariaLabel ?? label}
+        >
+            {clock}
+        </StepControls>
+    ) : clock;
+    const isVerticalNumberInput = numberInputPlacement === 'above' || numberInputPlacement === 'below';
+    const control = <View style={{
+        flexDirection: !showNumberInput
+            ? 'row'
+            : numberInputPlacement === 'start'
+                ? 'row-reverse'
+                : numberInputPlacement === 'above'
+                    ? 'column-reverse'
+                    : numberInputPlacement === 'below'
+                        ? 'column'
+                        : 'row',
+        alignItems: 'center',
+        gap: 8,
+    }}>
         {steppedClock}
         {showNumberInput ? (
-            <View style={{ width: 80 }}>
+            <View style={{ width: isVerticalNumberInput ? '100%' : 80 }}>
                 <NumberInput
                     value={value}
                     onChange={(newValue) => onChange?.(newValue)}
@@ -81,9 +110,10 @@ export const ClockInput = forwardRef<ViewInstance, ClockInputProps & { style?: V
                     color={color}
                     highlightColor={highlightColor}
                     size={size}
+                    variant={variant}
                     disabled={disabled || !onChange}
                     showStepControls={true}
-                    ariaLabel={label ?? 'Clock value'}
+                    ariaLabel={`${ariaLabel ?? label ?? 'Angle'} (#)`}
                 />
             </View>
         ) : null}

@@ -1,4 +1,5 @@
 import { ColorVariant, SizeVariant } from "../model";
+import { NumberInputPlacement } from "../number-input";
 
 export interface IconRotateInputProps {
     icon?: string;
@@ -16,4 +17,6 @@ export interface IconRotateInputProps {
     label?: string;
     showNumberInput?: boolean;
     showStepControls?: boolean;
+    numberInputPlacement?: NumberInputPlacement;
+    ariaLabel?: string;
 }

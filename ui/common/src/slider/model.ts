@@ -1,10 +1,11 @@
 import { ReactNode } from "react";
-import { ColorVariant, SizeVariant } from "../model";
+import { ColorVariant, SizeVariant, SurfaceFillVariant } from "../model";
 
 export interface SliderProps {
     color?: ColorVariant;
     highlightColor?: ColorVariant;
     size?: SizeVariant;
+    variant?: SurfaceFillVariant;
     min?: number;
     max?: number;
     step?: number;
@@ -16,4 +17,5 @@ export interface SliderProps {
     label?: ReactNode;
     showNumberInput?: boolean;
     showStepControls?: boolean;
+    ariaLabel?: string;
 }

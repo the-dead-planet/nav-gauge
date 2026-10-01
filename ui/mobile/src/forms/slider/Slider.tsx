@@ -14,6 +14,7 @@ import { StepControls } from "../step-controls";
 const heights: Record<string, number> = { xs: 16, sm: 22, md: 28 };
 const thumbSizes: Record<string, number> = { xs: 12, sm: 14, md: 17 };
 const trackThicknesses: Record<string, number> = { xs: 3, sm: 6, md: 8 };
+const controlHeights: Record<string, number> = { xs: 18, sm: 24, md: 32 };
 
 function snap(v: number, min: number, max: number, step: number): number {
     const stepped = Math.round((v - min) / step) * step + min;
@@ -25,6 +26,7 @@ export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle
     color = 'neutral',
     highlightColor = color,
     size = 'md',
+    variant = 'fill-inverse',
     min = 0,
     max = 100,
     step = 1,
@@ -35,6 +37,7 @@ export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle
     label,
     showNumberInput = false,
     showStepControls = false,
+    ariaLabel,
     style,
 }, ref) => {
     const theme = useTheme();
@@ -53,7 +56,13 @@ export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle
     const strokeColor = theme.color(color, 500);
     const isActive = active || isDragging;
     const highlightTrackColor = isActive ? highlightAccent : theme.color(highlightColor, 500);
-    const thumbBackground = isActive ? theme.color(highlightColor, 900) : fillColor;
+    const thumbBackground = isActive
+        ? theme.color(highlightColor, 900)
+        : variant === 'fill'
+            ? theme.color(color, 500)
+            : variant === 'fill-translucent'
+                ? theme.color(color, 500, 0.24)
+                : fillColor;
     const thumbBorderColor = isActive ? highlightAccent : strokeColor;
     const hitAreaPageXRef = useRef(0);
     const valueRef = useRef(value);
@@ -113,7 +122,7 @@ export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle
     const fillWidth = trackWidth * ratio;
 
     const containerStyle: ViewStyle = {
-        minHeight: height,
+        minHeight: controlHeights[size],
         justifyContent: "center",
         opacity: disabled ? 0.4 : 1,
         ...style,
@@ -173,7 +182,21 @@ export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle
         </View>
     );
 
-    const steppedSlider = showStepControls ? <StepControls color={color} size={size} value={value} onChange={onChange} min={min} max={max} step={step} disabled={disabled}>{slider}</StepControls> : slider;
+    const steppedSlider = showStepControls ? (
+        <StepControls
+            color={color}
+            size={size}
+            value={value}
+            onChange={onChange}
+            min={min}
+            max={max}
+            step={step}
+            disabled={disabled}
+            ariaLabel={ariaLabel ?? (typeof label === 'string' ? label : undefined)}
+        >
+            {slider}
+        </StepControls>
+    ) : slider;
     const control = (
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
             {steppedSlider}
@@ -187,9 +210,10 @@ export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle
                         step={step}
                         color={color}
                         size={size}
+                        variant={variant}
                         disabled={disabled || !onChange}
                         showStepControls={true}
-                        ariaLabel={typeof label === 'string' ? label : 'Slider value'}
+                        ariaLabel={`${ariaLabel ?? (typeof label === 'string' ? label : 'Slider')} (#)`}
                     />
                 </View>
             ) : null}

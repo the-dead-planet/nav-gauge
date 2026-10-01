@@ -1,4 +1,5 @@
 import { ComponentProps, FC, useEffect, useRef, useState } from "react";
+import classNames from "classnames";
 import { ClockInputProps, useTheme, STEP_DEG, snapSlice, pointerCoords, svgAtan2ToClockAngle, CLOCK_INPUT_RANGE } from "@ui";
 import { ClockSvg } from "./ClockSvg";
 import { ClockA11yInput } from "./ClockA11yInput";
@@ -28,6 +29,8 @@ export const ClockInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, 'onCha
     label,
     showNumberInput = false,
     showStepControls = false,
+    numberInputPlacement = 'end',
+    ariaLabel,
     disabled = false,
     className,
     ...props
@@ -141,25 +144,30 @@ export const ClockInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, 'onCha
     }, [handleInteraction]);
 
     const { x: pointerX, y: pointerY } = pointerCoords(value, outerRadius);
-    const clock = <ClockSvg
-        svgSize={svgSize}
-        viewBox={`0 0 ${svgSize} ${svgSize}`}
-        svgRef={svgRef}
-        onMouseDown={handleMouseDown}
-        onTouchStart={handleTouchStart}
-        isDragging={isDragging}
-        center={center}
-        outerRadius={outerRadius}
-        strokeWidth={strokeWidth}
-        pointerX={pointerX}
-        pointerY={pointerY}
-        centerDotRadius={centerDotRadius}
-        thumbRadius={thumbRadii[size]}
-        min={min}
-        max={max}
-        size={size}
-        isFullCircle={isFullCircle}
-    ><circle cx={center} cy={center} r={outerRadius + strokeWidth} className={styles['bg-circle']} /></ClockSvg>;
+    const clock = (
+        <ClockSvg
+            svgSize={svgSize}
+            viewBox={`0 0 ${svgSize} ${svgSize}`}
+            svgRef={svgRef}
+            onMouseDown={handleMouseDown}
+            onTouchStart={handleTouchStart}
+            isDragging={isDragging}
+            center={center}
+            outerRadius={outerRadius}
+            strokeWidth={strokeWidth}
+            pointerX={pointerX}
+            pointerY={pointerY}
+            centerDotRadius={centerDotRadius}
+            thumbRadius={thumbRadii[size]}
+            min={min}
+            max={max}
+            size={size}
+            isFullCircle={isFullCircle}
+        >
+            <circle cx={center} cy={center} r={outerRadius + strokeWidth} className={styles['bg-circle']} />
+        </ClockSvg>
+    );
+
     const steppedClock = showStepControls ? (
         <StepControls
             color={color}
@@ -169,7 +177,9 @@ export const ClockInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, 'onCha
             min={min}
             max={max}
             step={step}
-            disabled={disabled}>
+            disabled={disabled}
+            ariaLabel={ariaLabel ?? label}
+        >
             {clock}
         </StepControls>
     ) : clock;
@@ -197,8 +207,12 @@ export const ClockInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, 'onCha
                 disabled={disabled}
                 label={label}
                 showValue={!showNumberInput}
+                ariaLabel={ariaLabel}
             />
-            <div className={styles['control-row']}>
+            <div className={classNames(
+                styles['control-row'],
+                showNumberInput && styles[`number-input-${numberInputPlacement}`]
+            )}>
                 {steppedClock}
                 {showNumberInput ? (
                     <NumberInput
@@ -210,9 +224,10 @@ export const ClockInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, 'onCha
                         color={color}
                         highlightColor={highlightColor}
                         size={size}
+                        variant={variant}
                         disabled={disabled || !onChange}
                         showStepControls={true}
-                        ariaLabel={label ?? 'Clock value'}
+                        ariaLabel={`${ariaLabel ?? label ?? 'Angle'} (#)`}
                     />
                 ) : null}
             </div>

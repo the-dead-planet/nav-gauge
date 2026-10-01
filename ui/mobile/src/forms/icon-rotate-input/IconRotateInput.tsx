@@ -37,6 +37,8 @@ export const IconRotateInput: FC<Props> = ({
     label,
     showNumberInput = false,
     showStepControls = false,
+    numberInputPlacement = 'end',
+    ariaLabel,
     style,
 }) => {
     const theme = useTheme();
@@ -182,11 +184,38 @@ export const IconRotateInput: FC<Props> = ({
             iconColor={iconColor}
         />
     </View>;
-    const steppedRotateControl = showStepControls ? <StepControls color={color} size={size} value={value} onChange={onChange} min={min} max={max} step={step} disabled={disabled}>{visualControl}</StepControls> : visualControl;
-    const control = <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+    const steppedRotateControl = showStepControls ? (
+        <StepControls
+            color={color}
+            size={size}
+            value={value}
+            onChange={onChange}
+            min={min}
+            max={max}
+            step={step}
+            disabled={disabled}
+            ariaLabel={ariaLabel ?? label}
+        >
+            {visualControl}
+        </StepControls>
+    ) : visualControl;
+    const isVerticalNumberInput = numberInputPlacement === 'above' || numberInputPlacement === 'below';
+    const control = <View style={{
+        flexDirection: !showNumberInput
+            ? 'row'
+            : numberInputPlacement === 'start'
+            ? 'row-reverse'
+            : numberInputPlacement === 'above'
+                ? 'column-reverse'
+                : numberInputPlacement === 'below'
+                    ? 'column'
+                    : 'row',
+        alignItems: 'center',
+        gap: 8,
+    }}>
         {steppedRotateControl}
         {showNumberInput ? (
-            <View style={{ width: 80 }}>
+            <View style={{ width: isVerticalNumberInput ? '100%' : 80 }}>
                 <NumberInput
                     value={value}
                     onChange={(newValue) => onChange?.(newValue)}
@@ -198,7 +227,7 @@ export const IconRotateInput: FC<Props> = ({
                     size={size}
                     disabled={disabled || !onChange}
                     showStepControls={true}
-                    ariaLabel={label ?? 'Rotation value'}
+                    ariaLabel={`${ariaLabel ?? label ?? 'Angle'} (#)`}
                 />
             </View>
         ) : null}

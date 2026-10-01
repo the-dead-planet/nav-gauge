@@ -1,6 +1,8 @@
 import { ReactNode } from "react";
 import { ColorVariant, SizeVariant, SurfaceFillVariant } from "../model";
 
+export type NumberInputPlacement = 'start' | 'end' | 'above' | 'below';
+
 export interface NumberInputProps {
     color?: ColorVariant;
     highlightColor?: ColorVariant;

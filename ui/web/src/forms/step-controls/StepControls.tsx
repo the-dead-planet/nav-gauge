@@ -1,4 +1,5 @@
 import { FC } from "react";
+import classNames from "classnames";
 import { addDecimalStep, Icons, StepControlsProps } from "@ui";
 import { Button } from "../../button";
 import styles from './step-controls.module.css';
@@ -13,19 +14,20 @@ export const StepControls: FC<StepControlsProps> = ({
     max,
     step = 1,
     disabled = false,
+    ariaLabel,
 }) => {
     const decrement = addDecimalStep(value, -step);
     const increment = addDecimalStep(value, step);
 
     return (
-        <div className={styles.container}>
+        <div className={classNames(styles.container, styles[`size-${size}`])}>
             <Button
                 icon={Icons.NounProject.Minus}
                 color={color}
                 size={size}
                 disabled={disabled || !onChange || (min !== undefined && decrement < min)}
                 onClick={() => onChange?.(decrement)}
-                aria-label="Decrease"
+                aria-label={ariaLabel ? `${ariaLabel} (−)` : '−'}
             />
             <div className={styles.control}>{children}</div>
             <Button
@@ -34,7 +36,7 @@ export const StepControls: FC<StepControlsProps> = ({
                 size={size}
                 disabled={disabled || !onChange || (max !== undefined && increment > max)}
                 onClick={() => onChange?.(increment)}
-                aria-label="Increase"
+                aria-label={ariaLabel ? `${ariaLabel} (+)` : '+'}
             />
         </div>
     );

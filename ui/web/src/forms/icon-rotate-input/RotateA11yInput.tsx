@@ -13,6 +13,7 @@ interface Props {
     disabled: boolean;
     label?: string;
     showValue?: boolean;
+    ariaLabel?: string;
 }
 
 export const RotateA11yInput: FC<Props> = ({
@@ -26,6 +27,7 @@ export const RotateA11yInput: FC<Props> = ({
     disabled,
     label,
     showValue = true,
+    ariaLabel,
 }) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const valueRef = useRef(value);
@@ -85,7 +87,7 @@ export const RotateA11yInput: FC<Props> = ({
                 onKeyDown={handleKeyDown}
                 disabled={disabled}
                 className={styles['a11y-slider']}
-                aria-label={label || 'Angle'}
+                aria-label={ariaLabel ?? label ?? 'Angle'}
                 tabIndex={0}
             />
             {label && (

@@ -15,6 +15,8 @@ const styles = StyleSheet.create({
     },
 });
 
+const controlHeights = { xs: 18, sm: 24, md: 32 } as const;
+
 export const StepControls: FC<StepControlsProps> = ({
     children,
     color = 'neutral',
@@ -25,6 +27,7 @@ export const StepControls: FC<StepControlsProps> = ({
     max,
     step = 1,
     disabled = false,
+    ariaLabel,
 }) => {
     const decrement = addDecimalStep(value, -step);
     const increment = addDecimalStep(value, step);
@@ -37,7 +40,8 @@ export const StepControls: FC<StepControlsProps> = ({
                 size={size}
                 disabled={disabled || !onChange || (min !== undefined && decrement < min)}
                 onPress={() => onChange?.(decrement)}
-                accessibilityLabel="Decrease"
+                accessibilityLabel={ariaLabel ? `${ariaLabel} (−)` : '−'}
+                style={{ height: controlHeights[size] }}
             />
             <View style={styles.control}>{children}</View>
             <Button
@@ -46,7 +50,8 @@ export const StepControls: FC<StepControlsProps> = ({
                 size={size}
                 disabled={disabled || !onChange || (max !== undefined && increment > max)}
                 onPress={() => onChange?.(increment)}
-                accessibilityLabel="Increase"
+                accessibilityLabel={ariaLabel ? `${ariaLabel} (+)` : '+'}
+                style={{ height: controlHeights[size] }}
             />
         </View>
     );

@@ -11,4 +11,5 @@ export interface StepControlsProps {
     max?: number;
     step?: number;
     disabled?: boolean;
+    ariaLabel?: string;
 }
