@@ -44,6 +44,34 @@ Each feature is a pluggable **Gear** with 1-3 packages: `common/` (abstract clas
 
 See `.opencode/rules/code-style.mdc`.
 
+### JSX formatting
+
+- Do not write nested JSX or JSX with several props as a single line.
+- Use multiline formatting when an element has children or more than five props.
+- Put nested elements on their own indented lines.
+- After editing TypeScript, TSX, JavaScript, JSX, CSS, or JSON files, format the changed files consistently with VS Code's `Shift+Alt+F` formatting behavior.
+- Do not manually preserve formatting that the configured formatter would rewrite.
+
+Prefer:
+
+```tsx
+return (
+    <StepControls value={value} onChange={setValue} min={0} max={10}>
+        <NumberInput
+            value={value}
+            onChange={setValue}
+            showStepControls={false}
+        />
+    </StepControls>
+);
+```
+
+Avoid:
+
+```tsx
+return <StepControls value={value} onChange={setValue}><NumberInput /></StepControls>;
+```
+
 ## Testing
 
 See `.opencode/rules/testing.mdc`.
