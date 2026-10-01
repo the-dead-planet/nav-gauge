@@ -1,9 +1,9 @@
 import { FC, useState } from "react";
-import { ScrollView, View, StyleSheet } from "react-native";
+import { ScrollView, View, StyleSheet, Switch } from "react-native";
 import { IconRotateInput } from "./IconRotateInput";
 import { Button } from "../../button";
 import { Text } from "../../typography";
-import { ColorVariant, SizeVariant } from "@ui";
+import { ColorVariant, NumberInputPlacement, SizeVariant } from "@ui";
 import { Icons } from "@ui";
 
 const styles = StyleSheet.create({
@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
+        flexWrap: 'wrap',
         gap: 12,
         paddingVertical: 4,
     },
@@ -23,15 +24,20 @@ const styles = StyleSheet.create({
 
 const allSizes: SizeVariant[] = ['sm', 'md'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
+const numberInputPlacements: NumberInputPlacement[] = ['start', 'end', 'above', 'below'];
 
 export const AllColors: FC = () => {
     const [angle, setAngle] = useState(45);
     const [size, setSize] = useState<SizeVariant>('md');
     const [disabled, setDisabled] = useState(false);
+    const [showStepControls, setShowStepControls] = useState(false);
+    const [showNumberInput, setShowNumberInput] = useState(false);
+    const [numberInputPlacement, setNumberInputPlacement] = useState<NumberInputPlacement>('end');
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <View style={[styles.row, { marginBottom: 12 }]}>
+                <Text>Size</Text>
                 {allSizes.map((s) => (
                     <Button
                         key={s}
@@ -45,6 +51,9 @@ export const AllColors: FC = () => {
                         {s}
                     </Button>
                 ))}
+            </View>
+            <View style={styles.row}>
+                <Text>Disabled</Text>
                 <Button
                     variant={disabled ? 'fill' : 'ghost'}
                     color="primary"
@@ -53,8 +62,23 @@ export const AllColors: FC = () => {
                     active={disabled}
                     onPress={() => setDisabled((d) => !d)}
                 >
-                    disabled: {String(disabled)}
+                    {String(disabled)}
                 </Button>
+            </View>
+            <View style={styles.row}>
+                <Text>Options</Text>
+                <Text>Show plus/minus</Text>
+                <Switch value={showStepControls} onValueChange={setShowStepControls} />
+                <Text>Show number input</Text>
+                <Switch value={showNumberInput} onValueChange={setShowNumberInput} />
+            </View>
+            <View style={styles.row}>
+                <Text>Number input placement</Text>
+                {numberInputPlacements.map((placement) => (
+                    <Button key={placement} size="xs" active={numberInputPlacement === placement} onPress={() => setNumberInputPlacement(placement)}>
+                        {placement}
+                    </Button>
+                ))}
             </View>
 
             <View style={{ marginTop: 8 }}>
@@ -69,6 +93,9 @@ export const AllColors: FC = () => {
                                 color={color}
                                 size={size}
                                 disabled={disabled}
+                                showNumberInput={showNumberInput}
+                                showStepControls={showStepControls}
+                                numberInputPlacement={numberInputPlacement}
                             />
                         </View>
                     </View>

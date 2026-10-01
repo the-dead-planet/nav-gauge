@@ -13,6 +13,8 @@ interface Props {
     onSync?: (value: number) => void;
     disabled: boolean;
     label?: string;
+    showValue?: boolean;
+    ariaLabel?: string;
 }
 
 export const ClockA11yInput: FC<Props> = ({
@@ -26,6 +28,8 @@ export const ClockA11yInput: FC<Props> = ({
     onSync,
     disabled,
     label,
+    showValue = true,
+    ariaLabel,
 }) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const onChangeRef = useRef(onChange);
@@ -83,13 +87,13 @@ export const ClockA11yInput: FC<Props> = ({
                 onKeyDown={handleKeyDown}
                 disabled={disabled}
                 className={styles['a11y-slider']}
-                aria-label={label || 'Angle'}
+                aria-label={ariaLabel ?? label ?? 'Angle'}
                 tabIndex={0}
             />
             {label && (
                 <Label htmlFor={id} className={styles['label']}>
                     {label}
-                    <Span tabular>{formatValue?.(value) || `${value}°`}</Span>
+                    {showValue ? <Span tabular>{formatValue?.(value) || `${value}°`}</Span> : null}
                 </Label>
             )}
         </>

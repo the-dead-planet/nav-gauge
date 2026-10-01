@@ -215,6 +215,7 @@
 .secondary-bottom-toolbar {
     grid-area: bottom-secondary-toolbar;
     position: relative;
+    z-index: 3;
 }
 
 .toolbar.bottom-secondary {

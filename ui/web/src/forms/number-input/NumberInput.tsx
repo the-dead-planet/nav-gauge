@@ -21,6 +21,7 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
     autoSelect = false,
     ariaLabel,
     unit,
+    showStepControls = true,
     className,
     ...props
 }) => {
@@ -91,7 +92,7 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
                     />
                     {unit ? <span className={styles['unit']}>{unit}</span> : null}
                 </div>
-                <div className={styles.steppers}>
+                {showStepControls ? <div className={styles.steppers}>
                     <Button
                         icon={Icons.NounProject.ChevronDownSingle}
                         iconRotateZ={180}
@@ -101,7 +102,7 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
                         size={buttonSizes[size]}
                         tabIndex={-1}
                         className={styles['stepper-btn']}
-                        aria-label="Increment"
+                        aria-label={ariaLabel ? `${ariaLabel} (+)` : '+'}
                     />
                     <Button
                         icon={Icons.NounProject.ChevronDownSingle}
@@ -111,9 +112,9 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
                         tabIndex={-1}
                         size={buttonSizes[size]}
                         className={styles['stepper-btn']}
-                        aria-label="Decrement"
+                        aria-label={ariaLabel ? `${ariaLabel} (−)` : '−'}
                     />
-                </div>
+                </div> : null}
             </div>
         </div>
     );

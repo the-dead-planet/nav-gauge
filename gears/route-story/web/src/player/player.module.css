@@ -1,23 +1,25 @@
 .player {
     display: flex;
-    align-items: center;
     column-gap: 10px;
     row-gap: 5px;
-    padding: 10px 15px 5px 15px;
+    padding: 5px 15px 5px 15px;
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 10px;
     box-sizing: border-box;
     touch-action: none;
 }
 
-.player.sm {
-    flex-direction: column;
-    align-items: stretch;
+.player.lg {
+    flex-direction: row;
+    align-items: flex-start;
+    margin-top: 15px;
 }
 
 .slider {
     flex: 1;
     display: flex;
     column-gap: 18px;
-    align-items: center;
     width: 100%;
 }
 
@@ -29,16 +31,16 @@
     box-sizing: border-box;
 }
 
-.buttons > div {
+.buttons>div {
     display: flex;
     align-items: center;
     column-gap: 10px;
 }
 
-.buttons > div:last-child {
+.buttons>div:last-child {
     justify-content: flex-end;
 }
 
-.padding-top {
-    padding-top: 28px;
+.slider-desktop {
+    margin-top: -5px;
 }

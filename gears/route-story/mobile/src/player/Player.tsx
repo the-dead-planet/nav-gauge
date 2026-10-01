@@ -13,26 +13,27 @@ import { MobileRouteStoryProps } from "../model";
 
 const styles = StyleSheet.create({
     player: {
-        flexDirection: "row",
-        alignItems: "center",
-        columnGap: 10,
-        paddingHorizontal: 15,
-    },
-    sm: {
         flexDirection: "column",
         alignItems: "stretch",
-        marginBottom: 5,
+        columnGap: 10,
         rowGap: 10,
+        paddingHorizontal: 15,
+        paddingVertical: 5,
+        marginTop: 5,
+    },
+    lg: {
+        flexDirection: "row",
+        alignItems: "flex-start",
+        marginTop: 15,
     },
     slider: {
         flex: 1,
         flexDirection: "row",
-        alignItems: "center",
         columnGap: 18,
+        width: "100%",
     },
-    sliderBlock: {
-        flex: 1,
-        marginTop: 29,
+    sliderDesktop: {
+        marginTop: -5,
     },
     buttons: {
         flexDirection: "row",
@@ -87,13 +88,14 @@ export const Player: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryProps
             progressMs$={progressMs$}
             playerOperator={playerOperator}
             animatrix={animatrix}
+            style={!media.isLessThanMd ? styles.sliderDesktop : undefined}
         />
     );
     const markerButton = <MarkerButton gearId={gearId} translationKey={translationKey} playerOperator={playerOperator} />;
 
     if (media.isLessThanMd) {
         return (
-            <View style={[styles.player, styles.sm]}>
+            <View style={styles.player}>
                 <View style={styles.buttons}>
                     <View style={styles.buttonGroup}>
                         {recordingButtons}
@@ -111,14 +113,12 @@ export const Player: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryProps
     }
 
     return (
-        <View style={styles.player}>
+        <View style={[styles.player, styles.lg]}>
             {recordingButtons}
-            <Divider color="neutral" orientation="vertical" mh="xs" mv="lg" />
+            <Divider color="neutral" orientation="vertical" mh="xs" mb="xl" />
             <View style={styles.slider}>
                 {playButton}
-                <View style={styles.sliderBlock}>
-                    {sliderWithMarkers}
-                </View>
+                {sliderWithMarkers}
                 {markerButton}
             </View>
         </View>

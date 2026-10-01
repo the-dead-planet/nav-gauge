@@ -13,11 +13,11 @@ export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
     const theme = useTheme();
     const { namespace, translationKey, individuator, toolsStation } = useWebMachineWard();
     const [topBarTools] = useSubjectState(toolsStation.topBarTools$);
-    const [
-        modeTooltip,
-    ] = useMultipleTranslations([
-        { n: namespace, t: translationKey.ToggleMode },
+    const [lightModeTooltip, darkModeTooltip] = useMultipleTranslations([
+        { n: namespace, t: translationKey.SwitchToLightMode },
+        { n: namespace, t: translationKey.SwitchToDarkMode },
     ]);
+    const modeTooltip = theme.isDark ? lightModeTooltip : darkModeTooltip;
 
     // TODO: Icons: sound, geolocation on/off
     return (

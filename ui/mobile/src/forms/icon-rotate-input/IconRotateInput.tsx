@@ -1,4 +1,4 @@
-import { ComponentType, FC, useMemo, useRef, useState } from "react";
+import { ComponentType, FC, useEffect, useMemo, useRef, useState } from "react";
 import {
     LayoutChangeEvent,
     PanResponder,
@@ -11,6 +11,8 @@ import { SvgProps } from "react-native-svg";
 import { RotationArrows } from "./RotationArrows";
 import { RotateIconWrapper } from "./RotateIconWrapper";
 import { RotateLabel } from "./RotateLabel";
+import { NumberInput } from "../number-input";
+import { StepControls } from "../step-controls";
 
 interface Props extends Omit<IconRotateInputProps, 'icon'> {
     icon?: ComponentType<SvgProps>;
@@ -19,6 +21,7 @@ interface Props extends Omit<IconRotateInputProps, 'icon'> {
 
 const sizeMap: Record<string, number> = { xs: 36, sm: 48, md: 60 };
 const iconSizes: Record<string, number> = { xs: 12, sm: 20, md: 32 };
+const controlHeights = { xs: 18, sm: 24, md: 32 } as const;
 
 export const IconRotateInput: FC<Props> = ({
     icon,
@@ -33,6 +36,10 @@ export const IconRotateInput: FC<Props> = ({
     step = 1,
     disabled = false,
     label,
+    showNumberInput = false,
+    showStepControls = false,
+    numberInputPlacement = 'end',
+    ariaLabel,
     style,
 }) => {
     const theme = useTheme();
@@ -41,6 +48,7 @@ export const IconRotateInput: FC<Props> = ({
     const center = svgSize / 2;
     const outerRadius = center - 4;
     const iconSize = iconSizes[size];
+    const stepControlsWidth = svgSize + controlHeights[size] * 2 + 8;
 
     const [isDragging, setIsDragging] = useState(false);
     const [displayAngle, setDisplayAngle] = useState(value);
@@ -58,10 +66,13 @@ export const IconRotateInput: FC<Props> = ({
     const displayAngleRef = useRef(value);
     displayAngleRef.current = displayAngle;
 
-    if (!isDragging && value !== angleRef.current) {
-        setDisplayAngle(value);
-        setDisplayWrapped(value);
-    }
+    useEffect(() => {
+        if (!isDragging) {
+            displayAngleRef.current = value;
+            setDisplayAngle(value);
+            setDisplayWrapped(value);
+        }
+    }, [isDragging, value]);
 
     const snapAngle = (raw: number): number => {
         if (max - min >= 360) {
@@ -152,41 +163,92 @@ export const IconRotateInput: FC<Props> = ({
 
     const iconColor = colorBase;
 
-    return (
-        <View
-            style={[{
-                alignItems: 'center',
-                opacity: disabled ? 0.4 : 1,
-            }, style]}
-        >
-            <View
-                ref={svgRef}
-                onLayout={handleLayout}
-                collapsable={false}
-                style={{ width: svgSize, height: svgSize }}
-                {...panResponder.panHandlers}
-            >
-                <RotationArrows
-                    svgSize={svgSize}
-                    center={center}
-                    outerRadius={outerRadius}
-                    ringStroke={ringStroke}
-                    arrowStroke={arrowStroke}
-                />
+    const visualControl = <View
+        ref={svgRef}
+        onLayout={handleLayout}
+        collapsable={false}
+        style={{ width: svgSize, height: svgSize }}
+        {...panResponder.panHandlers}
+    >
+        <RotationArrows
+            svgSize={svgSize}
+            center={center}
+            outerRadius={outerRadius}
+            ringStroke={ringStroke}
+            arrowStroke={arrowStroke}
+        />
 
-                <RotateIconWrapper
-                    icon={icon}
-                    iconSize={iconSize}
-                    svgSize={svgSize}
-                    displayAngle={displayAngle + valueAdjustment}
-                    iconColor={iconColor}
+        <RotateIconWrapper
+            icon={icon}
+            iconSize={iconSize}
+            svgSize={svgSize}
+            displayAngle={displayAngle + valueAdjustment}
+            iconColor={iconColor}
+        />
+    </View>;
+    const steppedRotateControl = showStepControls ? (
+        <View style={{ width: stepControlsWidth }}>
+            <StepControls
+                color={color}
+                size={size}
+                value={value}
+                onChange={onChange}
+                min={min}
+                max={max}
+                step={step}
+                disabled={disabled}
+                ariaLabel={ariaLabel ?? label}
+            >
+                {visualControl}
+            </StepControls>
+        </View>
+    ) : visualControl;
+    const isVerticalNumberInput = numberInputPlacement === 'above' || numberInputPlacement === 'below';
+    const control = <View style={{
+        flexDirection: !showNumberInput
+            ? 'row'
+            : numberInputPlacement === 'start'
+            ? 'row-reverse'
+            : numberInputPlacement === 'above'
+                ? 'column-reverse'
+                : numberInputPlacement === 'below'
+                    ? 'column'
+                    : 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexWrap: 'wrap',
+        width: '100%',
+        gap: 8,
+    }}>
+        {steppedRotateControl}
+        {showNumberInput ? (
+            <View style={{ width: isVerticalNumberInput ? '100%' : 80 }}>
+                <NumberInput
+                    value={value}
+                    onChange={(newValue) => onChange?.(newValue)}
+                    min={min}
+                    max={max}
+                    step={step}
+                    color={color}
+                    highlightColor={highlightColor}
+                    size={size}
+                    disabled={disabled || !onChange}
+                    showStepControls={true}
+                    ariaLabel={`${ariaLabel ?? label ?? 'Angle'} (#)`}
                 />
             </View>
+        ) : null}
+    </View>;
+
+    return (
+        <View style={[{ alignItems: 'center', width: '100%', opacity: disabled ? 0.4 : 1 }, style]}>
+            {control}
 
             <RotateLabel
                 label={label}
                 displayWrapped={displayWrapped}
                 icon={icon}
+                showValue={!showNumberInput}
             />
         </View>
     );

@@ -134,7 +134,7 @@ export const Dialog: FC<Props> = ({
                         </ScrollView>
                         <View style={styles.footer}>
                             <View style={styles.buttonCell}>
-                                <Button variant="fill-inverse" color={color} onPress={handleClose}>
+                                <Button variant="fill-inverse" color={color} shade={theme.isDark ? 100 : 900} onPress={handleClose}>
                                     {closeText}
                                 </Button>
                             </View>

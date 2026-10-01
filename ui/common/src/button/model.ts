@@ -1,12 +1,13 @@
 import { ReactNode } from "react";
 import { ColorVariant, GlowStyle, SizeVariant, SurfaceVariant } from "../model";
 import { TooltipProps } from "../tooltip";
-import { ThemeMode } from "../theme";
+import { ColorShade, ThemeMode } from "../theme";
 
 export type ButtonCorners = 'square' | 'rounded' | 'circle' | 'hexagon';
 
 export interface ButtonProps {
     color?: ColorVariant;
+    shade?: ColorShade;
     highlightColor?: ColorVariant;
     /**
      * Defaults to `ghost`

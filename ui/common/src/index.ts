@@ -5,6 +5,7 @@ export * from './checkbox';
 export * from './radio';
 export * from './chip';
 export * from './slider';
+export * from './step-controls';
 export * from './color-input';
 export * from './dialog';
 export * from './divider';

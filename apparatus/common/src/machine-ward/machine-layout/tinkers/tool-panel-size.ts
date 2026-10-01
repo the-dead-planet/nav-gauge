@@ -30,6 +30,7 @@ export const LAYOUT_DEFAULTS = {
 
 export const PANEL_HEADER_CURVE_SIZES = {
     size: 28,
+    bottomSecondaryLeftSpacer: 40,
     onlyLeftPanelRightSpacer: 110,
     bothOrNoPanelsRightSpacer: 100,
     leftSpacer: 140,

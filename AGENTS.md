@@ -40,19 +40,6 @@ Each feature is a pluggable **Gear** with 1-3 packages: `common/` (abstract clas
 - **Mobile** (`app-mobile`, `gears/*/mobile`): use `useMobileMachineWard()` from `@mobile-apparatus`
 - **Common** (`apparatus/common`): use generic `useMachineWard()` — cannot import platform hooks
 
-## Code Style
-
-See `.opencode/rules/code-style.mdc`.
-
-## Testing
-
-See `.opencode/rules/testing.mdc`.
-
-## UI
-
-- Own UI library in `/ui/` — see `.opencode/rules/ui-conventions.mdc`
-- Build responsive UI mobile-first: use the smallest layout as the default and add wider-screen overrides.
-
 ## After changes
 
 Always run `yarn typecheck:web` (or `yarn typecheck:mobile:once` for mobile changes), `yarn lint`, and relevant tests after every code edit.

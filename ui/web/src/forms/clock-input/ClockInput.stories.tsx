@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { ColorVariant, SizeVariant, SurfaceFillVariant, CLOCK_INPUT_RANGE } from '@ui';
+import { ColorVariant, SizeVariant, SurfaceFillVariant, CLOCK_INPUT_RANGE, NumberInputPlacement } from '@ui';
 import { ClockSliceInput } from './ClockSliceInput';
 import { ClockInput } from './ClockInput';
 import { DurationClockInput } from './DurationClockInput';
@@ -17,6 +17,7 @@ type Story = StoryObj<typeof meta>;
 const allSizes: SizeVariant[] = ['xs', 'sm', 'md'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
 const allVariants: SurfaceFillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
+const numberInputPlacements: NumberInputPlacement[] = ['start', 'end', 'above', 'below'];
 
 export const ClockInputVariants = {
     args: {
@@ -26,41 +27,76 @@ export const ClockInputVariants = {
         const [value, setValue] = useState(45);
         const [size, setSize] = useState<SizeVariant>('sm');
         const [disabled, setDisabled] = useState(false);
+        const [showStepControls, setShowStepControls] = useState(false);
+        const [showNumberInput, setShowNumberInput] = useState(false);
+        const [numberInputPlacement, setNumberInputPlacement] = useState<NumberInputPlacement>('end');
 
         return (
             <div style={{ padding: 24, maxWidth: 800 }}>
-                <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-                    {allSizes.map((s) => (
+                <div style={{ marginBottom: 16, display: 'grid', rowGap: 12 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+                        <Text>Size</Text>
+                        {allSizes.map((s) => (
+                            <button
+                                key={s}
+                                onClick={() => setSize(s)}
+                                style={{
+                                    padding: '4px 12px',
+                                    cursor: 'pointer',
+                                    background: size === s ? '#666' : '#333',
+                                    color: '#fff',
+                                    border: '1px solid #555',
+                                    borderRadius: 4,
+                                    fontSize: 12,
+                                }}
+                            >
+                                {s}
+                            </button>
+                        ))}
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+                        <Text>Disabled</Text>
                         <button
-                            key={s}
-                            onClick={() => setSize(s)}
+                            onClick={() => setDisabled((d) => !d)}
                             style={{
                                 padding: '4px 12px',
                                 cursor: 'pointer',
-                                background: size === s ? '#666' : '#333',
+                                background: disabled ? '#c44' : '#333',
                                 color: '#fff',
                                 border: '1px solid #555',
                                 borderRadius: 4,
                                 fontSize: 12,
                             }}
                         >
-                            {s}
+                            {String(disabled)}
                         </button>
-                    ))}
-                    <button
-                        onClick={() => setDisabled((d) => !d)}
-                        style={{
-                            padding: '4px 12px',
-                            cursor: 'pointer',
-                            background: disabled ? '#c44' : '#333',
-                            color: '#fff',
-                            border: '1px solid #555',
-                            borderRadius: 4,
-                            fontSize: 12,
-                        }}
-                    >
-                        disabled: {String(disabled)}
-                    </button>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+                        <Text>Options</Text>
+                        <label><input type="checkbox" checked={showStepControls} onChange={(event) => setShowStepControls(event.target.checked)} /> Show plus/minus</label>
+                        <label><input type="checkbox" checked={showNumberInput} onChange={(event) => setShowNumberInput(event.target.checked)} /> Show number input</label>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+                        <Text>Number input placement</Text>
+                        {numberInputPlacements.map((placement) => (
+                            <button
+                                key={placement}
+                                onClick={() => setNumberInputPlacement(placement)}
+                                style={{
+                                    padding: '4px 12px',
+                                    cursor: 'pointer',
+                                    background: numberInputPlacement === placement ? '#666' : '#333',
+                                    color: '#fff',
+                                    border: '1px solid #555',
+                                    borderRadius: 4,
+                                    fontSize: 12,
+                                }}
+                            >
+                                {placement}
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
                 <div style={{ display: 'grid', gap: 24 }}>
@@ -98,6 +134,9 @@ export const ClockInputVariants = {
                                         variant={variant}
                                         size={size}
                                         label={color}
+                                        showNumberInput={showNumberInput}
+                                        showStepControls={showStepControls}
+                                        numberInputPlacement={numberInputPlacement}
                                         disabled={disabled}
                                     />
                                 ))}

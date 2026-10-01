@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ViewStyle } from "react-native";
 import { BehaviorSubject } from "rxjs";
 import { MarkerImage } from "@apparatus";
 import { ParsingResultWithError, useSubjectState } from "@tinker-chest";
@@ -23,6 +23,7 @@ interface Props {
     progressMs$: BehaviorSubject<number>;
     playerOperator: MobilePlayerOperator;
     animatrix: Animatrix;
+    style?: ViewStyle;
 }
 
 const styles = StyleSheet.create({
@@ -30,6 +31,7 @@ const styles = StyleSheet.create({
         flex: 1,
         gap: 23,
         paddingTop: 11,
+        marginTop: 10,
     },
 });
 
@@ -44,6 +46,7 @@ export const SliderWithMarkers: FC<Props> = ({
     progressMs$,
     playerOperator,
     animatrix,
+    style,
 }) => {
     const [routeTimes] = useSubjectState(routeTimes$);
     const [progressMs] = useSubjectState(progressMs$);
@@ -63,7 +66,7 @@ export const SliderWithMarkers: FC<Props> = ({
     };
 
     return (
-        <View style={styles.sliderContainer}>
+        <View style={[styles.sliderContainer, style]}>
             {showImageMarkers ? (
                 <SliderMarkers
                     gearId={gearId}

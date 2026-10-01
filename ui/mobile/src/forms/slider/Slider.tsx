@@ -8,10 +8,12 @@ import {
 } from "react-native";
 import { SliderProps, useTheme } from "@ui";
 import { Text } from "../../typography";
+import { NumberInput } from "../number-input";
+import { StepControls } from "../step-controls";
 
-const heights: Record<string, number> = { xs: 16, sm: 22, md: 28 };
 const thumbSizes: Record<string, number> = { xs: 12, sm: 14, md: 17 };
 const trackThicknesses: Record<string, number> = { xs: 3, sm: 6, md: 8 };
+const controlHeights: Record<string, number> = { xs: 18, sm: 24, md: 32 };
 
 function snap(v: number, min: number, max: number, step: number): number {
     const stepped = Math.round((v - min) / step) * step + min;
@@ -23,6 +25,7 @@ export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle
     color = 'neutral',
     highlightColor = color,
     size = 'md',
+    variant = 'fill-inverse',
     min = 0,
     max = 100,
     step = 1,
@@ -31,17 +34,20 @@ export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle
     active,
     disabled = false,
     label,
+    showNumberInput = false,
+    showStepControls = false,
+    ariaLabel,
     style,
 }, ref) => {
     const theme = useTheme();
     const isLight = theme.mode === 'light';
-    const height = heights[size];
     const thumbSize = thumbSizes[size];
     const trackThickness = trackThicknesses[size];
 
     const [trackWidth, setTrackWidth] = useState(0);
     const [isDragging, setIsDragging] = useState(false);
     const hitAreaRef = useRef<ViewInstance>(null);
+    const hitAreaPageXRef = useRef(0);
 
     const trackBackground = theme.color(color, 500, isLight ? 0.15 : 0.3);
     const highlightAccent = theme.color(highlightColor, isLight ? 600 : 300);
@@ -49,9 +55,14 @@ export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle
     const strokeColor = theme.color(color, 500);
     const isActive = active || isDragging;
     const highlightTrackColor = isActive ? highlightAccent : theme.color(highlightColor, 500);
-    const thumbBackground = isActive ? theme.color(highlightColor, 900) : fillColor;
+    const thumbBackground = isActive
+        ? theme.color(highlightColor, 900)
+        : variant === 'fill'
+            ? theme.color(color, 500)
+            : variant === 'fill-translucent'
+                ? theme.color(color, 500, 0.24)
+                : fillColor;
     const thumbBorderColor = isActive ? highlightAccent : strokeColor;
-    const hitAreaPageXRef = useRef(0);
     const valueRef = useRef(value);
     const startValueRef = useRef(value);
     valueRef.current = value;
@@ -61,10 +72,9 @@ export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle
 
     const handleLayout = (e: LayoutChangeEvent) => {
         setTrackWidth(e.nativeEvent.layout.width);
-    };
-
-    const handleHitAreaLayout = (e: LayoutChangeEvent) => {
-        hitAreaPageXRef.current = e.nativeEvent.layout.x;
+        hitAreaRef.current?.measureInWindow((x) => {
+            hitAreaPageXRef.current = x;
+        });
     };
 
     const panResponder = useMemo(() => PanResponder.create({
@@ -77,7 +87,7 @@ export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle
             }
             setIsDragging(true);
             startValueRef.current = valueRef.current;
-            
+
             if (ctx.trackWidth > 0) {
                 const touchX = evt.nativeEvent.pageX - hitAreaPageXRef.current;
                 const ratio = Math.max(0, Math.min(1, touchX / ctx.trackWidth));
@@ -109,8 +119,6 @@ export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle
     const fillWidth = trackWidth * ratio;
 
     const containerStyle: ViewStyle = {
-        height,
-        justifyContent: "center",
         opacity: disabled ? 0.4 : 1,
         ...style,
     };
@@ -138,6 +146,17 @@ export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle
         borderRadius: trackThickness / 2,
     };
 
+    const trackCapSize = trackThickness / Math.SQRT2;
+    const trackCapStyle: ViewStyle = {
+        position: 'absolute',
+        left: fillWidth - trackCapSize / 2 - trackThickness / 4,
+        top: (trackThickness - trackCapSize) / 2,
+        width: trackCapSize,
+        height: trackCapSize,
+        backgroundColor: highlightTrackColor,
+        transform: [{ rotate: '45deg' }],
+    };
+
     const thumbStyle: ViewStyle = {
         position: "absolute",
         left: fillWidth - thumbSize / 2,
@@ -153,22 +172,86 @@ export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle
         } : {}),
     };
 
-    return (
-        <View ref={ref} style={containerStyle}>
+    const slider = (
+        <View style={{ flex: 1 }}>
             <View
                 ref={hitAreaRef}
-                onLayout={(e) => { handleLayout(e); handleHitAreaLayout(e); }}
+                onLayout={handleLayout}
                 style={hitAreaStyle}
                 {...panResponder.panHandlers}
             >
                 <View style={trackStyle}>
                     <View style={fillStyle} />
+                    <View style={trackCapStyle} />
                     <View style={thumbStyle} />
                 </View>
             </View>
+        </View>
+    );
+
+    const steppedSlider = (
+        <View
+            style={{
+                flex: 1,
+                minWidth: 120,
+                height: controlHeights[size],
+                justifyContent: 'center',
+            }}
+        >
+            {showStepControls ? (
+                <StepControls
+                    color={color}
+                    size={size}
+                    value={value}
+                    onChange={onChange}
+                    min={min}
+                    max={max}
+                    step={step}
+                    disabled={disabled}
+                    ariaLabel={ariaLabel ?? (typeof label === 'string' ? label : undefined)}
+                >
+                    {slider}
+                </StepControls>
+            ) : slider}
+        </View>
+    );
+    const control = (
+        <View
+            style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                minHeight: controlHeights[size],
+                gap: 8,
+            }}
+        >
+            {steppedSlider}
+            {showNumberInput ? (
+                <View style={{ width: 80 }}>
+                    <NumberInput
+                        value={value}
+                        onChange={(newValue) => onChange?.(newValue)}
+                        min={min}
+                        max={max}
+                        step={step}
+                        color={color}
+                        size={size}
+                        variant={variant}
+                        disabled={disabled || !onChange}
+                        showStepControls={true}
+                        ariaLabel={`${ariaLabel ?? (typeof label === 'string' ? label : 'Slider')} (#)`}
+                    />
+                </View>
+            ) : null}
+        </View>
+    );
+
+    return (
+        <View ref={ref} style={containerStyle}>
+            {control}
             {label && (
                 <Text style={{ fontSize: 11, color: theme.componentColor('text'), marginTop: 4 }}>
-                    {label} {value}
+                    {label} {!showNumberInput ? value : null}
                 </Text>
             )}
         </View>

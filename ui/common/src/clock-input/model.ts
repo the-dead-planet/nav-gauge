@@ -1,4 +1,5 @@
 import { ColorVariant, SizeVariant, SurfaceFillVariant } from "../model";
+import { NumberInputPlacement } from "../number-input";
 
 export interface ClockInputProps {
     color?: ColorVariant;
@@ -20,6 +21,10 @@ export interface ClockInputProps {
     disabled?: boolean;
     id?: string;
     label?: string;
+    showNumberInput?: boolean;
+    showStepControls?: boolean;
+    numberInputPlacement?: NumberInputPlacement;
+    ariaLabel?: string;
 }
 
 export interface DurationClockInputProps {

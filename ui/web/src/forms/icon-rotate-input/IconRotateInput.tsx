@@ -4,6 +4,8 @@ import { IconRotateInputProps, useTheme } from "@ui";
 import { RotationArrows } from "./RotationArrows";
 import { RotateIconWrapper } from "./RotateIconWrapper";
 import { RotateA11yInput } from "./RotateA11yInput";
+import { NumberInput } from "../number-input";
+import { StepControls } from "../step-controls";
 import styles from './icon-rotate-input.module.css';
 
 const sizeMap: Record<string, number> = { xs: 36, sm: 48, md: 60 };
@@ -23,6 +25,10 @@ export const IconRotateInput: FC<IconRotateInputProps & Omit<ComponentProps<'div
     disabled = false,
     id,
     label,
+    showNumberInput = false,
+    showStepControls = false,
+    numberInputPlacement = 'end',
+    ariaLabel,
     className,
     ...props
 }) => {
@@ -49,10 +55,13 @@ export const IconRotateInput: FC<IconRotateInputProps & Omit<ComponentProps<'div
     const displayAngleRef = useRef(value);
     displayAngleRef.current = displayAngle;
 
-    if (!isDragging && value !== angleRef.current) {
-        setDisplayAngle(value);
-        setDisplayWrapped(value);
-    }
+    useEffect(() => {
+        if (!isDragging) {
+            displayAngleRef.current = value;
+            setDisplayAngle(value);
+            setDisplayWrapped(value);
+        }
+    }, [isDragging, value]);
 
     const snapAngle = (raw: number): number => {
         if (max - min >= 360) {
@@ -140,7 +149,7 @@ export const IconRotateInput: FC<IconRotateInputProps & Omit<ComponentProps<'div
             isDraggingRef.current = false;
             setIsDragging(false);
         };
-        
+
         window.addEventListener('mousemove', handleGlobalMouseMove);
         window.addEventListener('mouseup', handleGlobalMouseUp);
         window.addEventListener('touchmove', handleGlobalTouchMove, { passive: false });
@@ -163,6 +172,33 @@ export const IconRotateInput: FC<IconRotateInputProps & Omit<ComponentProps<'div
         }
         return theme.color(color, 500);
     })();
+    const rotateControl = <div
+        ref={containerRef}
+        className={styles['visual-container']}
+        onMouseDown={handleMouseDown}
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
+        onTouchStart={handleTouchStart}
+        {...props}
+    >
+        <RotationArrows svgSize={svgSize} center={center} outerRadius={outerRadius} />
+        <RotateIconWrapper icon={icon} iconSize={iconSize} displayAngle={displayAngle + valueAdjustment} iconColor={iconColor} />
+    </div>;
+    const steppedRotateControl = showStepControls ? (
+        <StepControls
+            color={color}
+            size={size}
+            value={value}
+            onChange={onChange}
+            min={min}
+            max={max}
+            step={step}
+            disabled={disabled}
+            ariaLabel={ariaLabel ?? label}
+        >
+            {rotateControl}
+        </StepControls>
+    ) : rotateControl;
 
     return (
         <div
@@ -192,29 +228,30 @@ export const IconRotateInput: FC<IconRotateInputProps & Omit<ComponentProps<'div
                 }}
                 disabled={disabled}
                 label={label}
+                showValue={!showNumberInput}
+                ariaLabel={ariaLabel}
             />
 
-            <div
-                ref={containerRef}
-                className={styles['visual-container']}
-                onMouseDown={handleMouseDown}
-                onMouseEnter={() => setIsHovering(true)}
-                onMouseLeave={() => setIsHovering(false)}
-                onTouchStart={handleTouchStart}
-                {...props}
-            >
-                <RotationArrows
-                    svgSize={svgSize}
-                    center={center}
-                    outerRadius={outerRadius}
-                />
-
-                <RotateIconWrapper
-                    icon={icon}
-                    iconSize={iconSize}
-                    displayAngle={displayAngle + valueAdjustment}
-                    iconColor={iconColor}
-                />
+            <div className={classNames(
+                styles['control-row'],
+                showNumberInput && styles[`number-input-${numberInputPlacement}`]
+            )}>
+                {steppedRotateControl}
+                {showNumberInput ? (
+                    <NumberInput
+                        value={value}
+                        onChange={(newValue) => onChange?.(newValue)}
+                        min={min}
+                        max={max}
+                        step={step}
+                        color={color}
+                        highlightColor={highlightColor}
+                        size={size}
+                        disabled={disabled || !onChange}
+                        showStepControls={true}
+                        ariaLabel={`${ariaLabel ?? label ?? 'Angle'} (#)`}
+                    />
+                ) : null}
             </div>
         </div>
     );

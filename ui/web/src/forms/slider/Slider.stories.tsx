@@ -1,5 +1,5 @@
 import type { Meta } from 'storybook-react-rsbuild';
-import { ColorVariant, SizeVariant } from '@ui';
+import { ColorVariant, SizeVariant, SurfaceFillVariant } from '@ui';
 import { Slider } from './Slider';
 import { Text } from '../../typography';
 import { useState } from 'react';
@@ -13,15 +13,20 @@ export default meta;
 
 const allSizes: SizeVariant[] = ['xs', 'sm', 'md'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
+const allVariants: SurfaceFillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
 
 export const SliderVariants = {
     render: () => {
         const [value, setValue] = useState(50);
         const [size, setSize] = useState<SizeVariant>('sm');
+        const [variant, setVariant] = useState<SurfaceFillVariant>('fill-inverse');
+        const [showStepControls, setShowStepControls] = useState(false);
+        const [showNumberInput, setShowNumberInput] = useState(false);
 
         return (
             <div style={{ display: 'grid', gap: 32, padding: 24, maxWidth: 600 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                    <Text>Size</Text>
                     {allSizes.map((s) => (
                         <button
                             key={s}
@@ -40,9 +45,34 @@ export const SliderVariants = {
                         </button>
                     ))}
                 </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                    <Text>Variant</Text>
+                    {allVariants.map((item) => (
+                        <button
+                            key={item}
+                            onClick={() => setVariant(item)}
+                            style={{
+                                padding: '4px 12px',
+                                cursor: 'pointer',
+                                background: variant === item ? '#666' : '#333',
+                                color: '#fff',
+                                border: '1px solid #555',
+                                borderRadius: 4,
+                                fontSize: 12,
+                            }}
+                        >
+                            {item}
+                        </button>
+                    ))}
+                </div>
+                <div style={{ display: 'flex', gap: 12 }}>
+                    <Text>Options</Text>
+                    <label><input type="checkbox" checked={showStepControls} onChange={(event) => setShowStepControls(event.target.checked)} /> Show plus/minus</label>
+                    <label><input type="checkbox" checked={showNumberInput} onChange={(event) => setShowNumberInput(event.target.checked)} /> Show number input</label>
+                </div>
                 <div style={{ display: 'grid', gap: 8 }}>
                     <Text>size: {size}</Text>
-                    <Slider value={value} onChange={setValue} min={0} max={100} size={size} />
+                    <Slider value={value} onChange={setValue} min={0} max={100} size={size} variant={variant} showNumberInput={showNumberInput} showStepControls={showStepControls} />
                 </div>
                 <div style={{ display: 'grid', gap: 12 }}>
                     {allColors.map((color) => (
@@ -52,6 +82,9 @@ export const SliderVariants = {
                             onChange={setValue}
                             color={color}
                             size={size}
+                            variant={variant}
+                            showNumberInput={showNumberInput}
+                            showStepControls={showStepControls}
                         />
                     ))}
                 </div>
@@ -63,7 +96,10 @@ export const SliderVariants = {
                             value={30}
                             color={color}
                             size={size}
+                            variant={variant}
                             disabled
+                            showNumberInput={showNumberInput}
+                            showStepControls={showStepControls}
                         />
                     ))}
                 </div>

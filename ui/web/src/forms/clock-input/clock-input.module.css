@@ -8,6 +8,33 @@
     width: fit-content;
 }
 
+.control-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.number-input-start {
+    flex-direction: row-reverse;
+}
+
+.number-input-above {
+    flex-direction: column-reverse;
+}
+
+.number-input-below {
+    flex-direction: column;
+}
+
+.control-row > :last-child:not(:first-child) {
+    width: 80px;
+}
+
+.number-input-above > :last-child:not(:first-child),
+.number-input-below > :last-child:not(:first-child) {
+    width: 100%;
+}
+
 /* ── A11y hidden slider ── */
 
 .a11y-slider {
@@ -24,7 +51,7 @@
 
 /* ── Focus ring ── */
 
-.container:focus-within:not(.disabled) .svg {
+.container:has(.a11y-slider:focus-visible):not(.disabled) .svg {
     outline: 2px solid var(--angle-highlight);
     outline-offset: 0px;
     border-radius: 50%;

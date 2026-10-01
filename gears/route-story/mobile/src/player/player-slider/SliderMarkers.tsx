@@ -33,7 +33,7 @@ interface Props {
 }
 
 const GRAB_RADIUS_PX = 20;
-const MARKER_HEIGHT = 42;
+const MARKER_HEIGHT = 40;
 
 const styles = StyleSheet.create({
     container: {

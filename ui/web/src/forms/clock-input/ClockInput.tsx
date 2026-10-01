@@ -1,9 +1,12 @@
 import { ComponentProps, FC, useEffect, useRef, useState } from "react";
+import classNames from "classnames";
 import { ClockInputProps, useTheme, STEP_DEG, snapSlice, pointerCoords, svgAtan2ToClockAngle, CLOCK_INPUT_RANGE } from "@ui";
-import styles from './clock-input.module.css';
 import { ClockSvg } from "./ClockSvg";
 import { ClockA11yInput } from "./ClockA11yInput";
 import { ClockContainer } from "./ClockContainer";
+import { NumberInput } from "../number-input";
+import { StepControls } from "../step-controls";
+import styles from './clock-input.module.css';
 
 const sizeMap: Record<string, number> = { xs: 45, sm: 60, md: 75 };
 const thumbRadii: Record<string, number> = { xs: 1.5, sm: 2, md: 2.5 };
@@ -24,6 +27,10 @@ export const ClockInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, 'onCha
     step = STEP_DEG,
     onChange,
     label,
+    showNumberInput = false,
+    showStepControls = false,
+    numberInputPlacement = 'end',
+    ariaLabel,
     disabled = false,
     className,
     ...props
@@ -137,6 +144,45 @@ export const ClockInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, 'onCha
     }, [handleInteraction]);
 
     const { x: pointerX, y: pointerY } = pointerCoords(value, outerRadius);
+    const clock = (
+        <ClockSvg
+            svgSize={svgSize}
+            viewBox={`0 0 ${svgSize} ${svgSize}`}
+            svgRef={svgRef}
+            onMouseDown={handleMouseDown}
+            onTouchStart={handleTouchStart}
+            isDragging={isDragging}
+            center={center}
+            outerRadius={outerRadius}
+            strokeWidth={strokeWidth}
+            pointerX={pointerX}
+            pointerY={pointerY}
+            centerDotRadius={centerDotRadius}
+            thumbRadius={thumbRadii[size]}
+            min={min}
+            max={max}
+            size={size}
+            isFullCircle={isFullCircle}
+        >
+            <circle cx={center} cy={center} r={outerRadius + strokeWidth} className={styles['bg-circle']} />
+        </ClockSvg>
+    );
+
+    const steppedClock = showStepControls ? (
+        <StepControls
+            color={color}
+            size={size}
+            value={value}
+            onChange={onChange}
+            min={min}
+            max={max}
+            step={step}
+            disabled={disabled}
+            ariaLabel={ariaLabel ?? label}
+        >
+            {clock}
+        </StepControls>
+    ) : clock;
 
     return (
         <ClockContainer
@@ -160,33 +206,31 @@ export const ClockInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, 'onCha
                 onSync={onChange}
                 disabled={disabled}
                 label={label}
+                showValue={!showNumberInput}
+                ariaLabel={ariaLabel}
             />
-            <ClockSvg
-                svgSize={svgSize}
-                viewBox={`0 0 ${svgSize} ${svgSize}`}
-                svgRef={svgRef}
-                onMouseDown={handleMouseDown}
-                onTouchStart={handleTouchStart}
-                isDragging={isDragging}
-                center={center}
-                outerRadius={outerRadius}
-                strokeWidth={strokeWidth}
-                pointerX={pointerX}
-                pointerY={pointerY}
-                centerDotRadius={centerDotRadius}
-                thumbRadius={thumbRadii[size]}
-                min={min}
-                max={max}
-                size={size}
-                isFullCircle={isFullCircle}
-            >
-                <circle
-                    cx={center}
-                    cy={center}
-                    r={outerRadius + strokeWidth}
-                    className={styles['bg-circle']}
-                />
-            </ClockSvg>
+            <div className={classNames(
+                styles['control-row'],
+                showNumberInput && styles[`number-input-${numberInputPlacement}`]
+            )}>
+                {steppedClock}
+                {showNumberInput ? (
+                    <NumberInput
+                        value={value}
+                        onChange={(newValue) => onChange?.(newValue)}
+                        min={min}
+                        max={max}
+                        step={step}
+                        color={color}
+                        highlightColor={highlightColor}
+                        size={size}
+                        variant={variant}
+                        disabled={disabled || !onChange}
+                        showStepControls={true}
+                        ariaLabel={`${ariaLabel ?? label ?? 'Angle'} (#)`}
+                    />
+                ) : null}
+            </div>
         </ClockContainer>
     );
 };

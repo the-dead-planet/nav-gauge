@@ -122,3 +122,12 @@ export const NativeBehavior = {
         </div>
     ),
 } satisfies Story;
+
+export const ShadeOverride = {
+    args: {
+        children: 'High contrast',
+        color: 'primary',
+        variant: 'fill-inverse',
+        shade: 100,
+    },
+} satisfies Story;

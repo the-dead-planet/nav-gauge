@@ -3,6 +3,7 @@
     display: grid;
     position: relative;
     row-gap: 15px;
+    margin-top: 10px;
 }
 
 .slider-container {
