@@ -1,0 +1,14 @@
+---
+description: Code style
+globs: "**/*.{ts,tsx}"
+alwaysApply: true
+---
+
+
+### JSX formatting
+
+- Do not write nested JSX or JSX with several props as a single line.
+- Use multiline formatting when an element has children or more than five props.
+- Put nested elements on their own indented lines.
+- After editing TypeScript, TSX, JavaScript, JSX, CSS, or JSON files, format the changed files consistently with VS Code's `Shift+Alt+F` formatting behavior.
+- Do not manually preserve formatting that the configured formatter would rewrite.

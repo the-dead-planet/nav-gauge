@@ -40,28 +40,6 @@ Each feature is a pluggable **Gear** with 1-3 packages: `common/` (abstract clas
 - **Mobile** (`app-mobile`, `gears/*/mobile`): use `useMobileMachineWard()` from `@mobile-apparatus`
 - **Common** (`apparatus/common`): use generic `useMachineWard()` — cannot import platform hooks
 
-## Code Style
-
-See `.opencode/rules/code-style.mdc`.
-
-### JSX formatting
-
-- Do not write nested JSX or JSX with several props as a single line.
-- Use multiline formatting when an element has children or more than five props.
-- Put nested elements on their own indented lines.
-- After editing TypeScript, TSX, JavaScript, JSX, CSS, or JSON files, format the changed files consistently with VS Code's `Shift+Alt+F` formatting behavior.
-- Do not manually preserve formatting that the configured formatter would rewrite.
-
-## Testing
-
-See `.opencode/rules/testing.mdc`.
-
-## UI
-
-- Own UI library in `/ui/` — see `.opencode/rules/ui-conventions.mdc`
-- Build responsive UI mobile-first: use the smallest layout as the default and add wider-screen overrides.
-- Reserve final layout dimensions before optional or asynchronous content appears; toggling content must not move surrounding UI.
-
 ## After changes
 
 Always run `yarn typecheck:web` (or `yarn typecheck:mobile:once` for mobile changes), `yarn lint`, and relevant tests after every code edit.
