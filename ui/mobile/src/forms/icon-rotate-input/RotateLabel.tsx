@@ -9,12 +9,14 @@ interface Props {
     label?: string;
     displayWrapped: number;
     icon?: ComponentType<SvgProps>;
+    showValue?: boolean;
 }
 
 export const RotateLabel: FC<Props> = ({
     label,
     displayWrapped,
     icon,
+    showValue = true,
 }) => {
     const theme = useTheme();
 
@@ -29,7 +31,7 @@ export const RotateLabel: FC<Props> = ({
                 />
             ) : null}
             <Text style={{ fontSize: 11, color: theme.componentColor('text') }}>
-                {label} {displayWrapped}°
+                {label} {showValue ? `${displayWrapped}°` : null}
             </Text>
         </View>
     ) : null;

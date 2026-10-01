@@ -45,6 +45,7 @@ export const NumberInputInteractive: FC = () => {
                 disabled={disabled}
                 step={0.1}
             />
+            <NumberInput label="Without step controls" value={value} onChange={setValue} showStepControls={false} />
 
             <View style={styles.section}>
                 <Text style={styles.label}>Current value: {value}</Text>

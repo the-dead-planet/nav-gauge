@@ -39,6 +39,7 @@ export const NumberInputInteractive = {
                     unit="px"
                 />
                 <NumberInput label="Fractional step" value={value} step={0.1} onChange={setValue} />
+                <NumberInput label="Without step controls" value={value} onChange={setValue} showStepControls={false} />
 
                 <Fieldset label="Color">
                     <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>

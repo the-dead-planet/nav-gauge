@@ -20,6 +20,8 @@ export interface ClockInputProps {
     disabled?: boolean;
     id?: string;
     label?: string;
+    showNumberInput?: boolean;
+    showStepControls?: boolean;
 }
 
 export interface DurationClockInputProps {

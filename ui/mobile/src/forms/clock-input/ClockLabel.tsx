@@ -7,12 +7,14 @@ interface Props {
     label?: string;
     value: number;
     isLight: boolean;
+    showValue?: boolean;
 }
 
 export const ClockLabel: FC<Props> = ({
     label,
     value,
     isLight,
+    showValue = true,
 }) => {
     if (!label) {
         return null;
@@ -28,14 +30,16 @@ export const ClockLabel: FC<Props> = ({
             }}>
                 {label}
             </Text>
-            <View style={{ minWidth: 40, alignItems: 'flex-end' }}>
-                <Text color="neutral" shade={isLight ? 800 : 200} fontType={FontType.Numeric} tabular style={{
-                    fontSize: 10,
-                    opacity: 0.7,
-                }}>
-                    {value}°
-                </Text>
-            </View>
+            {showValue ? (
+                <View style={{ minWidth: 40, alignItems: 'flex-end' }}>
+                    <Text color="neutral" shade={isLight ? 800 : 200} fontType={FontType.Numeric} tabular style={{
+                        fontSize: 10,
+                        opacity: 0.7,
+                    }}>
+                        {value}°
+                    </Text>
+                </View>
+            ) : null}
         </View>
     );
 };

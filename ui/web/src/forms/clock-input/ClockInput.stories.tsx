@@ -26,6 +26,8 @@ export const ClockInputVariants = {
         const [value, setValue] = useState(45);
         const [size, setSize] = useState<SizeVariant>('sm');
         const [disabled, setDisabled] = useState(false);
+        const [showStepControls, setShowStepControls] = useState(false);
+        const [showNumberInput, setShowNumberInput] = useState(false);
 
         return (
             <div style={{ padding: 24, maxWidth: 800 }}>
@@ -61,6 +63,8 @@ export const ClockInputVariants = {
                     >
                         disabled: {String(disabled)}
                     </button>
+                    <label><input type="checkbox" checked={showStepControls} onChange={(event) => setShowStepControls(event.target.checked)} /> Show plus/minus</label>
+                    <label><input type="checkbox" checked={showNumberInput} onChange={(event) => setShowNumberInput(event.target.checked)} /> Show number input</label>
                 </div>
 
                 <div style={{ display: 'grid', gap: 24 }}>
@@ -98,6 +102,8 @@ export const ClockInputVariants = {
                                         variant={variant}
                                         size={size}
                                         label={color}
+                                        showNumberInput={showNumberInput}
+                                        showStepControls={showStepControls}
                                         disabled={disabled}
                                     />
                                 ))}

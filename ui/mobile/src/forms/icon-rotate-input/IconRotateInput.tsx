@@ -11,6 +11,8 @@ import { SvgProps } from "react-native-svg";
 import { RotationArrows } from "./RotationArrows";
 import { RotateIconWrapper } from "./RotateIconWrapper";
 import { RotateLabel } from "./RotateLabel";
+import { NumberInput } from "../number-input";
+import { StepControls } from "../step-controls";
 
 interface Props extends Omit<IconRotateInputProps, 'icon'> {
     icon?: ComponentType<SvgProps>;
@@ -33,6 +35,8 @@ export const IconRotateInput: FC<Props> = ({
     step = 1,
     disabled = false,
     label,
+    showNumberInput = false,
+    showStepControls = false,
     style,
 }) => {
     const theme = useTheme();
@@ -152,41 +156,60 @@ export const IconRotateInput: FC<Props> = ({
 
     const iconColor = colorBase;
 
-    return (
-        <View
-            style={[{
-                alignItems: 'center',
-                opacity: disabled ? 0.4 : 1,
-            }, style]}
-        >
-            <View
-                ref={svgRef}
-                onLayout={handleLayout}
-                collapsable={false}
-                style={{ width: svgSize, height: svgSize }}
-                {...panResponder.panHandlers}
-            >
-                <RotationArrows
-                    svgSize={svgSize}
-                    center={center}
-                    outerRadius={outerRadius}
-                    ringStroke={ringStroke}
-                    arrowStroke={arrowStroke}
-                />
+    const visualControl = <View
+        ref={svgRef}
+        onLayout={handleLayout}
+        collapsable={false}
+        style={{ width: svgSize, height: svgSize }}
+        {...panResponder.panHandlers}
+    >
+        <RotationArrows
+            svgSize={svgSize}
+            center={center}
+            outerRadius={outerRadius}
+            ringStroke={ringStroke}
+            arrowStroke={arrowStroke}
+        />
 
-                <RotateIconWrapper
-                    icon={icon}
-                    iconSize={iconSize}
-                    svgSize={svgSize}
-                    displayAngle={displayAngle + valueAdjustment}
-                    iconColor={iconColor}
+        <RotateIconWrapper
+            icon={icon}
+            iconSize={iconSize}
+            svgSize={svgSize}
+            displayAngle={displayAngle + valueAdjustment}
+            iconColor={iconColor}
+        />
+    </View>;
+    const steppedRotateControl = showStepControls ? <StepControls color={color} size={size} value={displayWrapped} onChange={onChange} min={min} max={max} step={step} disabled={disabled}>{visualControl}</StepControls> : visualControl;
+    const control = <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+        {steppedRotateControl}
+        {showNumberInput ? (
+            <View style={{ width: 80 }}>
+                <NumberInput
+                    value={displayWrapped}
+                    onChange={(newValue) => onChange?.(newValue)}
+                    min={min}
+                    max={max}
+                    step={step}
+                    color={color}
+                    highlightColor={highlightColor}
+                    size={size}
+                    disabled={disabled || !onChange}
+                    showStepControls={true}
+                    ariaLabel={label ?? 'Rotation value'}
                 />
             </View>
+        ) : null}
+    </View>;
+
+    return (
+        <View style={[{ alignItems: 'center', opacity: disabled ? 0.4 : 1 }, style]}>
+            {control}
 
             <RotateLabel
                 label={label}
                 displayWrapped={displayWrapped}
                 icon={icon}
+                showValue={!showNumberInput}
             />
         </View>
     );

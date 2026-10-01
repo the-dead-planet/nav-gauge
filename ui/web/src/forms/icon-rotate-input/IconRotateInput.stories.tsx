@@ -24,6 +24,8 @@ export const Default = {
         const [size, setSize] = useState<SizeVariant>('sm');
         const [color, setColor] = useState<ColorVariant>('primary');
         const [disabled, setDisabled] = useState(false);
+        const [showStepControls, setShowStepControls] = useState(false);
+        const [showNumberInput, setShowNumberInput] = useState(false);
 
         return (
             <div style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 400 }}>
@@ -76,6 +78,8 @@ export const Default = {
                     >
                         disabled: {String(disabled)}
                     </button>
+                    <label><input type="checkbox" checked={showStepControls} onChange={(event) => setShowStepControls(event.target.checked)} /> Show plus/minus</label>
+                    <label><input type="checkbox" checked={showNumberInput} onChange={(event) => setShowNumberInput(event.target.checked)} /> Show number input</label>
                 </div>
 
                 <div style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
@@ -86,6 +90,8 @@ export const Default = {
                         color={color}
                         size={size}
                         disabled={disabled}
+                        showNumberInput={showNumberInput}
+                        showStepControls={showStepControls}
                     />
                     <Text>{angle}°</Text>
                 </div>

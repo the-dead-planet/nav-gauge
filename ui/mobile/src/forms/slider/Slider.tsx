@@ -8,6 +8,8 @@ import {
 } from "react-native";
 import { SliderProps, useTheme } from "@ui";
 import { Text } from "../../typography";
+import { NumberInput } from "../number-input";
+import { StepControls } from "../step-controls";
 
 const heights: Record<string, number> = { xs: 16, sm: 22, md: 28 };
 const thumbSizes: Record<string, number> = { xs: 12, sm: 14, md: 17 };
@@ -31,6 +33,8 @@ export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle
     active,
     disabled = false,
     label,
+    showNumberInput = false,
+    showStepControls = false,
     style,
 }, ref) => {
     const theme = useTheme();
@@ -77,7 +81,7 @@ export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle
             }
             setIsDragging(true);
             startValueRef.current = valueRef.current;
-            
+
             if (ctx.trackWidth > 0) {
                 const touchX = evt.nativeEvent.pageX - hitAreaPageXRef.current;
                 const ratio = Math.max(0, Math.min(1, touchX / ctx.trackWidth));
@@ -109,7 +113,7 @@ export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle
     const fillWidth = trackWidth * ratio;
 
     const containerStyle: ViewStyle = {
-        height,
+        minHeight: height,
         justifyContent: "center",
         opacity: disabled ? 0.4 : 1,
         ...style,
@@ -153,8 +157,8 @@ export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle
         } : {}),
     };
 
-    return (
-        <View ref={ref} style={containerStyle}>
+    const slider = (
+        <View style={{ flex: 1 }}>
             <View
                 ref={hitAreaRef}
                 onLayout={(e) => { handleLayout(e); handleHitAreaLayout(e); }}
@@ -166,9 +170,38 @@ export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle
                     <View style={thumbStyle} />
                 </View>
             </View>
+        </View>
+    );
+
+    const steppedSlider = showStepControls ? <StepControls color={color} size={size} value={value} onChange={onChange} min={min} max={max} step={step} disabled={disabled}>{slider}</StepControls> : slider;
+    const control = (
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            {steppedSlider}
+            {showNumberInput ? (
+                <View style={{ width: 80 }}>
+                    <NumberInput
+                        value={value}
+                        onChange={(newValue) => onChange?.(newValue)}
+                        min={min}
+                        max={max}
+                        step={step}
+                        color={color}
+                        size={size}
+                        disabled={disabled || !onChange}
+                        showStepControls={true}
+                        ariaLabel={typeof label === 'string' ? label : 'Slider value'}
+                    />
+                </View>
+            ) : null}
+        </View>
+    );
+
+    return (
+        <View ref={ref} style={containerStyle}>
+            {control}
             {label && (
                 <Text style={{ fontSize: 11, color: theme.componentColor('text'), marginTop: 4 }}>
-                    {label} {value}
+                    {label} {!showNumberInput ? value : null}
                 </Text>
             )}
         </View>

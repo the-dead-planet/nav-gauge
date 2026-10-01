@@ -14,4 +14,6 @@ export interface SliderProps {
     disabled?: boolean;
     id?: string;
     label?: ReactNode;
+    showNumberInput?: boolean;
+    showStepControls?: boolean;
 }

@@ -8,6 +8,17 @@
     column-gap: 6px;
 }
 
+.control-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.control-row > :last-child:not(:first-child) {
+    width: 80px;
+    flex: none;
+}
+
 /* ── Base ── */
 
 .slider {

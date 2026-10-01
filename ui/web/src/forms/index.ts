@@ -9,6 +9,7 @@ export * from './input';
 export * from './number-input';
 export * from './radio';
 export * from './slider';
+export * from './step-controls';
 export * from './text-area';
 export * from './text-input';
 export * from './toggle-switch';

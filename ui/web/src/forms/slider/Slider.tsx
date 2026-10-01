@@ -2,6 +2,8 @@ import { ChangeEvent, ComponentProps, CSSProperties, FC } from "react";
 import classNames from "classnames";
 import { SliderProps, useTheme } from "@ui";
 import { Label, Span } from "../../typography";
+import { NumberInput } from "../number-input";
+import { StepControls } from "../step-controls";
 import styles from './slider.module.css';
 
 export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' | 'size'>> = ({
@@ -17,6 +19,8 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
     disabled = false,
     id,
     label,
+    showNumberInput = false,
+    showStepControls = false,
     className,
     style,
     ...props
@@ -29,42 +33,49 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
         onChange?.(Number(e.target.value));
     };
 
+    const slider = <input
+        type="range"
+        id={id}
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        disabled={disabled}
+        onChange={handleChange}
+        aria-label={props['aria-label'] || (typeof label === 'string' ? label : '') || 'Slider'}
+        className={classNames(styles.slider, styles[`mode-${theme.mode}`], styles[`color-${color}`], styles[`highlight-${highlightColor}`], styles[`size-${size}`], { [styles.active]: active }, className)}
+        style={{ '--track-complete': `${progress}%`, ...style } as CSSProperties}
+        {...props}
+    />;
+    const steppedSlider = showStepControls ? <StepControls color={color} size={size} value={value} onChange={onChange} min={min} max={max} step={step} disabled={disabled}>{slider}</StepControls> : slider;
+
     return (
         <div className={classNames(styles['container'], {
             [styles['disabled']]: disabled,
         })}>
             {typeof label === 'string' ? (
                 <Label htmlFor={id} className={styles['label']}>
-                    {label} <Span tabular>{value}</Span>
+                    {label} {!showNumberInput ? <Span tabular>{value}</Span> : null}
                 </Label>
             ) : label}
-            <input
-                type="range"
-                id={id}
-                min={min}
-                max={max}
-                step={step}
-                value={value}
-                disabled={disabled}
-                onChange={handleChange}
-                aria-label={props['aria-label'] || (typeof label === 'string' ? label : '') || 'Slider'}
-                className={classNames(
-                    styles['slider'],
-                    styles[`mode-${theme.mode}`],
-                    styles[`color-${color}`],
-                    styles[`highlight-${highlightColor}`],
-                    styles[`size-${size}`],
-                    {
-                        [styles['active']]: active,
-                    },
-                    className
-                )}
-                style={{
-                    '--track-complete': `${progress}%`,
-                    ...style,
-                } as CSSProperties}
-                {...props}
-            />
+            <div className={styles['control-row']}>
+                {steppedSlider}
+                {showNumberInput ? (
+                    <NumberInput
+                        value={value}
+                        onChange={(newValue) => onChange?.(newValue)}
+                        min={min}
+                        max={max}
+                        step={step}
+                        color={color}
+                        highlightColor={highlightColor}
+                        size={size}
+                        disabled={disabled || !onChange}
+                        showStepControls={true}
+                        ariaLabel={typeof label === 'string' ? label : 'Slider value'}
+                    />
+                ) : null}
+            </div>
         </div>
     );
 };

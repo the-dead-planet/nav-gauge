@@ -14,4 +14,6 @@ export interface IconRotateInputProps {
     disabled?: boolean;
     id?: string;
     label?: string;
+    showNumberInput?: boolean;
+    showStepControls?: boolean;
 }

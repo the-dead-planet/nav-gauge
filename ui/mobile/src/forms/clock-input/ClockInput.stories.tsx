@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { ScrollView, View, StyleSheet } from "react-native";
+import { ScrollView, View, StyleSheet, Switch } from "react-native";
 import { ClockInput } from "./ClockInput";
 import { ClockSliceInput } from "./ClockSliceInput";
 import { DurationClockInput } from "./DurationClockInput";
@@ -38,6 +38,8 @@ export const PitchConstrained: FC = () => {
     const [value, setValue] = useState(30);
     const [size, setSize] = useState<SizeVariant>('sm');
     const [disabled, setDisabled] = useState(false);
+    const [showStepControls, setShowStepControls] = useState(false);
+    const [showNumberInput, setShowNumberInput] = useState(false);
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
@@ -65,6 +67,12 @@ export const PitchConstrained: FC = () => {
                 >
                     disabled: {String(disabled)}
                 </Button>
+            </View>
+            <View style={styles.row}>
+                <Text>Show plus/minus</Text>
+                <Switch value={showStepControls} onValueChange={setShowStepControls} />
+                <Text>Show number input</Text>
+                <Switch value={showNumberInput} onValueChange={setShowNumberInput} />
             </View>
 
             <View style={[styles.section, { marginTop: 8 }]}>
@@ -90,6 +98,8 @@ export const PitchConstrained: FC = () => {
                                     size={size}
                                     label={color}
                                     disabled={disabled}
+                                    showNumberInput={showNumberInput}
+                                    showStepControls={showStepControls}
                                     min={pitchRange[0]}
                                     max={pitchRange[1]}
                                 />
@@ -107,6 +117,8 @@ export const PitchConstrained: FC = () => {
                         size={size}
                         disabled={disabled}
                         label="full"
+                        showNumberInput={showNumberInput}
+                        showStepControls={showStepControls}
                     />
                 </View>
             </View>
@@ -118,6 +130,8 @@ export const AllVariants: FC = () => {
     const [value, setValue] = useState(45);
     const [size, setSize] = useState<SizeVariant>('sm');
     const [disabled, setDisabled] = useState(false);
+    const [showStepControls, setShowStepControls] = useState(false);
+    const [showNumberInput, setShowNumberInput] = useState(false);
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
@@ -146,6 +160,12 @@ export const AllVariants: FC = () => {
                     disabled: {String(disabled)}
                 </Button>
             </View>
+            <View style={styles.row}>
+                <Text>Show plus/minus</Text>
+                <Switch value={showStepControls} onValueChange={setShowStepControls} />
+                <Text>Show number input</Text>
+                <Switch value={showNumberInput} onValueChange={setShowNumberInput} />
+            </View>
 
             <View style={[styles.section, { marginTop: 8 }]}>
                 <Text style={{ marginBottom: 8 }}>size: {size} | value: {value}°</Text>
@@ -168,6 +188,8 @@ export const AllVariants: FC = () => {
                                     size={size}
                                     label={color}
                                     disabled={disabled}
+                                    showNumberInput={showNumberInput}
+                                    showStepControls={showStepControls}
                                 />
                             </View>
                         ))}

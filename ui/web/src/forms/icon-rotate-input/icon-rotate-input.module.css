@@ -5,6 +5,16 @@
     font-family: var(--font-default, 'Space Grotesk', sans-serif);
 }
 
+.control-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.control-row > :last-child:not(:first-child) {
+    width: 80px;
+}
+
 /* ── Visual container (drag target) ── */
 
 .visual-container {

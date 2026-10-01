@@ -21,6 +21,7 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
     autoSelect = false,
     ariaLabel,
     unit,
+    showStepControls = true,
     className,
     ...props
 }) => {
@@ -91,7 +92,7 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
                     />
                     {unit ? <span className={styles['unit']}>{unit}</span> : null}
                 </div>
-                <div className={styles.steppers}>
+                {showStepControls ? <div className={styles.steppers}>
                     <Button
                         icon={Icons.NounProject.ChevronDownSingle}
                         iconRotateZ={180}
@@ -113,7 +114,7 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
                         className={styles['stepper-btn']}
                         aria-label="Decrement"
                     />
-                </div>
+                </div> : null}
             </div>
         </div>
     );

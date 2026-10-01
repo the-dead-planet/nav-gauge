@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { ScrollView, View, StyleSheet } from "react-native";
+import { ScrollView, View, StyleSheet, Switch } from "react-native";
 import { Slider } from "./Slider";
 import { Button } from "../../button";
 import { Text } from "../../typography";
@@ -25,6 +25,8 @@ const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'
 export const AllVariants: FC = () => {
     const [value, setValue] = useState(50);
     const [size, setSize] = useState<SizeVariant>('sm');
+    const [showStepControls, setShowStepControls] = useState(false);
+    const [showNumberInput, setShowNumberInput] = useState(false);
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
@@ -43,9 +45,15 @@ export const AllVariants: FC = () => {
                     </Button>
                 ))}
             </View>
+            <View style={styles.sizeRow}>
+                <Text>Show plus/minus</Text>
+                <Switch value={showStepControls} onValueChange={setShowStepControls} />
+                <Text>Show number input</Text>
+                <Switch value={showNumberInput} onValueChange={setShowNumberInput} />
+            </View>
             <View style={styles.section}>
                 <Text style={{ marginBottom: 4 }}>size: {size}</Text>
-                <Slider value={value} onChange={setValue} min={0} max={100} size={size} />
+                <Slider value={value} onChange={setValue} min={0} max={100} size={size} showNumberInput={showNumberInput} showStepControls={showStepControls} />
             </View>
             <View style={styles.section}>
                 {allColors.map((color) => (
@@ -56,6 +64,8 @@ export const AllVariants: FC = () => {
                         color={color}
                         size={size}
                         style={{ marginVertical: 4 }}
+                        showNumberInput={showNumberInput}
+                        showStepControls={showStepControls}
                     />
                 ))}
             </View>
@@ -69,6 +79,8 @@ export const AllVariants: FC = () => {
                         size={size}
                         disabled
                         style={{ marginVertical: 4 }}
+                        showNumberInput={showNumberInput}
+                        showStepControls={showStepControls}
                     />
                 ))}
             </View>

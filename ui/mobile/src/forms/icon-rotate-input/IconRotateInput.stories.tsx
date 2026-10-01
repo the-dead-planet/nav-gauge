@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { ScrollView, View, StyleSheet } from "react-native";
+import { ScrollView, View, StyleSheet, Switch } from "react-native";
 import { IconRotateInput } from "./IconRotateInput";
 import { Button } from "../../button";
 import { Text } from "../../typography";
@@ -28,6 +28,8 @@ export const AllColors: FC = () => {
     const [angle, setAngle] = useState(45);
     const [size, setSize] = useState<SizeVariant>('md');
     const [disabled, setDisabled] = useState(false);
+    const [showStepControls, setShowStepControls] = useState(false);
+    const [showNumberInput, setShowNumberInput] = useState(false);
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
@@ -56,6 +58,12 @@ export const AllColors: FC = () => {
                     disabled: {String(disabled)}
                 </Button>
             </View>
+            <View style={styles.row}>
+                <Text>Show plus/minus</Text>
+                <Switch value={showStepControls} onValueChange={setShowStepControls} />
+                <Text>Show number input</Text>
+                <Switch value={showNumberInput} onValueChange={setShowNumberInput} />
+            </View>
 
             <View style={{ marginTop: 8 }}>
                 <Text style={{ marginBottom: 8 }}>size: {size} | angle: {angle}°</Text>
@@ -69,6 +77,8 @@ export const AllColors: FC = () => {
                                 color={color}
                                 size={size}
                                 disabled={disabled}
+                                showNumberInput={showNumberInput}
+                                showStepControls={showStepControls}
                             />
                         </View>
                     </View>

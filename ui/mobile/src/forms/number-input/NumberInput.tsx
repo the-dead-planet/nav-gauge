@@ -3,6 +3,7 @@ import { View, TextInput, StyleSheet } from "react-native";
 import { controlTextSpecifications, FontType, NumberInputProps, useTheme } from "@ui";
 import { Text } from "../../typography";
 import { getMobileFontFamily } from "../../typography/fontFamily";
+import { StepControls } from "../step-controls";
 
 const styles = StyleSheet.create({
     container: {
@@ -49,6 +50,10 @@ export const NumberInput: FC<NumberInputProps> = ({
     disabled = false,
     ariaLabel,
     unit,
+    min,
+    max,
+    step,
+    showStepControls = true,
 }) => {
     const theme = useTheme();
 
@@ -62,6 +67,26 @@ export const NumberInput: FC<NumberInputProps> = ({
     const baseColor = theme.color(color, 500);
     const labelFontSize = size === 'xs' ? 11 : size === 'sm' ? 12 : 13;
     const inputSize = sizes[size];
+    const input = <View style={styles['input-wrapper']}>
+        <TextInput
+            style={[
+                styles.input,
+                unit && styles['input-with-unit'],
+                {
+                    color: baseColor,
+                    borderColor: baseColor,
+                    ...inputSize,
+                    paddingVertical: 0,
+                },
+            ]}
+            value={String(value)}
+            onChangeText={handleChange}
+            keyboardType="decimal-pad"
+            accessibilityLabel={ariaLabel || (typeof label === 'string' ? label : undefined)}
+            editable={!disabled}
+        />
+        {unit ? <Text style={[styles.unit, { color: baseColor, fontSize: inputSize.fontSize }]}>{unit}</Text> : null}
+    </View>;
 
     return (
         <View style={styles.container}>
@@ -70,30 +95,20 @@ export const NumberInput: FC<NumberInputProps> = ({
                     {label}
                 </Text>
             ) : null}
-            <View style={styles['input-wrapper']}>
-                <TextInput
-                    style={[
-                        styles.input,
-                        unit && styles['input-with-unit'],
-                        {
-                            color: baseColor,
-                            borderColor: baseColor,
-                            ...inputSize,
-                            paddingVertical: 0,
-                        },
-                    ]}
-                    value={String(value)}
-                    onChangeText={handleChange}
-                    keyboardType="decimal-pad"
-                    accessibilityLabel={ariaLabel || (typeof label === 'string' ? label : undefined)}
-                    editable={!disabled}
-                />
-                {unit ? (
-                    <Text style={[styles.unit, { color: baseColor, fontSize: inputSize.fontSize }]}>
-                        {unit}
-                    </Text>
-                ) : null}
-            </View>
+            {showStepControls ? (
+                <StepControls
+                    color={color}
+                    size={size}
+                    value={value}
+                    onChange={onChange}
+                    min={min}
+                    max={max}
+                    step={step}
+                    disabled={disabled}
+                >
+                    {input}
+                </StepControls>
+            ) : input}
         </View>
     );
 };

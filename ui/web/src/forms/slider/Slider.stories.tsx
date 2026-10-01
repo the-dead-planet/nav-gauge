@@ -18,6 +18,8 @@ export const SliderVariants = {
     render: () => {
         const [value, setValue] = useState(50);
         const [size, setSize] = useState<SizeVariant>('sm');
+        const [showStepControls, setShowStepControls] = useState(false);
+        const [showNumberInput, setShowNumberInput] = useState(false);
 
         return (
             <div style={{ display: 'grid', gap: 32, padding: 24, maxWidth: 600 }}>
@@ -40,9 +42,13 @@ export const SliderVariants = {
                         </button>
                     ))}
                 </div>
+                <div style={{ display: 'flex', gap: 12 }}>
+                    <label><input type="checkbox" checked={showStepControls} onChange={(event) => setShowStepControls(event.target.checked)} /> Show plus/minus</label>
+                    <label><input type="checkbox" checked={showNumberInput} onChange={(event) => setShowNumberInput(event.target.checked)} /> Show number input</label>
+                </div>
                 <div style={{ display: 'grid', gap: 8 }}>
                     <Text>size: {size}</Text>
-                    <Slider value={value} onChange={setValue} min={0} max={100} size={size} />
+                    <Slider value={value} onChange={setValue} min={0} max={100} size={size} showNumberInput={showNumberInput} showStepControls={showStepControls} />
                 </div>
                 <div style={{ display: 'grid', gap: 12 }}>
                     {allColors.map((color) => (
@@ -52,6 +58,8 @@ export const SliderVariants = {
                             onChange={setValue}
                             color={color}
                             size={size}
+                            showNumberInput={showNumberInput}
+                            showStepControls={showStepControls}
                         />
                     ))}
                 </div>
@@ -64,6 +72,8 @@ export const SliderVariants = {
                             color={color}
                             size={size}
                             disabled
+                            showNumberInput={showNumberInput}
+                            showStepControls={showStepControls}
                         />
                     ))}
                 </div>

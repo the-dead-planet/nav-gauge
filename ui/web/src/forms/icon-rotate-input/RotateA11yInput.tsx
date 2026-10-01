@@ -12,6 +12,7 @@ interface Props {
     onSync?: (value: number) => void;
     disabled: boolean;
     label?: string;
+    showValue?: boolean;
 }
 
 export const RotateA11yInput: FC<Props> = ({
@@ -24,6 +25,7 @@ export const RotateA11yInput: FC<Props> = ({
     onSync,
     disabled,
     label,
+    showValue = true,
 }) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const valueRef = useRef(value);
@@ -88,7 +90,7 @@ export const RotateA11yInput: FC<Props> = ({
             />
             {label && (
                 <Label htmlFor={id} className={styles.label}>
-                    {label} <Span tabular>{value}°</Span>
+                    {label} {showValue ? <Span tabular>{value}°</Span> : null}
                 </Label>
             )}
         </>
