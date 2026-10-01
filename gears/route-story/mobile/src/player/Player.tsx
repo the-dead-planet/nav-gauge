@@ -32,6 +32,9 @@ const styles = StyleSheet.create({
         columnGap: 18,
         width: "100%",
     },
+    sliderDesktop: {
+        marginTop: -5,
+    },
     buttons: {
         flexDirection: "row",
         alignItems: "center",
@@ -85,6 +88,7 @@ export const Player: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryProps
             progressMs$={progressMs$}
             playerOperator={playerOperator}
             animatrix={animatrix}
+            style={!media.isLessThanMd ? styles.sliderDesktop : undefined}
         />
     );
     const markerButton = <MarkerButton gearId={gearId} translationKey={translationKey} playerOperator={playerOperator} />;

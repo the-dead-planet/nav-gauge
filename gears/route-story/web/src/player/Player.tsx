@@ -49,6 +49,7 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & WebRouteStoryProps> = (
             playerOperator={playerOperator}
             fitBoundsHandler={fitBoundsHandler}
             animatrix={animatrix}
+            className={!media.isLessThanMd ? styles['slider-desktop'] : undefined}
         />
     );
     const markerButton = <MarkerButton gearId={gearId} translationKey={translationKey} playerOperator={playerOperator} />;

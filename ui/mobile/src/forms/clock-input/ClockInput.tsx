@@ -11,6 +11,8 @@ import { sizeMap, thumbRadii, centerDotRadii, strokeWidths } from "./constants";
 import { NumberInput } from "../number-input";
 import { StepControls } from "../step-controls";
 
+const controlHeights = { xs: 18, sm: 24, md: 32 } as const;
+
 export const ClockInput = forwardRef<ViewInstance, ClockInputProps & { style?: ViewStyle }>(({
     color = 'neutral',
     highlightColor,
@@ -39,11 +41,13 @@ export const ClockInput = forwardRef<ViewInstance, ClockInputProps & { style?: V
     const centerDotRadius = centerDotRadii[size];
     const strokeWidth = strokeWidths[size];
     const isFullCircle = max - min >= 360;
+    const stepControlsWidth = svgSize + controlHeights[size] * 2 + 8;
 
     const { x: pointerX, y: pointerY } = pointerCoords(value, outerRadius);
 
     const containerStyle: ViewStyle = {
         alignItems: 'center',
+        width: '100%',
         opacity: disabled ? 0.4 : 1,
         ...style,
     };
@@ -70,19 +74,21 @@ export const ClockInput = forwardRef<ViewInstance, ClockInputProps & { style?: V
         value={value}
     />;
     const steppedClock = showStepControls ? (
-        <StepControls
-            color={color}
-            size={size}
-            value={value}
-            onChange={onChange}
-            min={min}
-            max={max}
-            step={step}
-            disabled={disabled}
-            ariaLabel={ariaLabel ?? label}
-        >
-            {clock}
-        </StepControls>
+        <View style={{ width: stepControlsWidth }}>
+            <StepControls
+                color={color}
+                size={size}
+                value={value}
+                onChange={onChange}
+                min={min}
+                max={max}
+                step={step}
+                disabled={disabled}
+                ariaLabel={ariaLabel ?? label}
+            >
+                {clock}
+            </StepControls>
+        </View>
     ) : clock;
     const isVerticalNumberInput = numberInputPlacement === 'above' || numberInputPlacement === 'below';
     const control = <View style={{
@@ -96,6 +102,9 @@ export const ClockInput = forwardRef<ViewInstance, ClockInputProps & { style?: V
                         ? 'column'
                         : 'row',
         alignItems: 'center',
+        justifyContent: 'center',
+        flexWrap: 'wrap',
+        width: '100%',
         gap: 8,
     }}>
         {steppedClock}

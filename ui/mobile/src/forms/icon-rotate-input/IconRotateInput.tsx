@@ -21,6 +21,7 @@ interface Props extends Omit<IconRotateInputProps, 'icon'> {
 
 const sizeMap: Record<string, number> = { xs: 36, sm: 48, md: 60 };
 const iconSizes: Record<string, number> = { xs: 12, sm: 20, md: 32 };
+const controlHeights = { xs: 18, sm: 24, md: 32 } as const;
 
 export const IconRotateInput: FC<Props> = ({
     icon,
@@ -47,6 +48,7 @@ export const IconRotateInput: FC<Props> = ({
     const center = svgSize / 2;
     const outerRadius = center - 4;
     const iconSize = iconSizes[size];
+    const stepControlsWidth = svgSize + controlHeights[size] * 2 + 8;
 
     const [isDragging, setIsDragging] = useState(false);
     const [displayAngle, setDisplayAngle] = useState(value);
@@ -185,19 +187,21 @@ export const IconRotateInput: FC<Props> = ({
         />
     </View>;
     const steppedRotateControl = showStepControls ? (
-        <StepControls
-            color={color}
-            size={size}
-            value={value}
-            onChange={onChange}
-            min={min}
-            max={max}
-            step={step}
-            disabled={disabled}
-            ariaLabel={ariaLabel ?? label}
-        >
-            {visualControl}
-        </StepControls>
+        <View style={{ width: stepControlsWidth }}>
+            <StepControls
+                color={color}
+                size={size}
+                value={value}
+                onChange={onChange}
+                min={min}
+                max={max}
+                step={step}
+                disabled={disabled}
+                ariaLabel={ariaLabel ?? label}
+            >
+                {visualControl}
+            </StepControls>
+        </View>
     ) : visualControl;
     const isVerticalNumberInput = numberInputPlacement === 'above' || numberInputPlacement === 'below';
     const control = <View style={{
@@ -211,6 +215,9 @@ export const IconRotateInput: FC<Props> = ({
                     ? 'column'
                     : 'row',
         alignItems: 'center',
+        justifyContent: 'center',
+        flexWrap: 'wrap',
+        width: '100%',
         gap: 8,
     }}>
         {steppedRotateControl}
@@ -234,7 +241,7 @@ export const IconRotateInput: FC<Props> = ({
     </View>;
 
     return (
-        <View style={[{ alignItems: 'center', opacity: disabled ? 0.4 : 1 }, style]}>
+        <View style={[{ alignItems: 'center', width: '100%', opacity: disabled ? 0.4 : 1 }, style]}>
             {control}
 
             <RotateLabel

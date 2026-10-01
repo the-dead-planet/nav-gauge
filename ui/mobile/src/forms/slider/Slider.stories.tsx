@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     },
     sizeRow: {
         flexDirection: 'row',
+        flexWrap: 'wrap',
         gap: 8,
         marginBottom: 12,
     },

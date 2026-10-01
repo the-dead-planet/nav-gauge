@@ -40,3 +40,7 @@
 .buttons>div:last-child {
     justify-content: flex-end;
 }
+
+.slider-desktop {
+    margin-top: -5px;
+}

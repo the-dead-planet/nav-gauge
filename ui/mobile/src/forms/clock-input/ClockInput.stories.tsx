@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
+        flexWrap: 'wrap',
         gap: 12,
         paddingVertical: 4,
     },
