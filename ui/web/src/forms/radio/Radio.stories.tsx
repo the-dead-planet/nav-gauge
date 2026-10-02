@@ -2,7 +2,7 @@ import type { Meta } from 'storybook-react-rsbuild';
 import { useState } from 'react';
 import { Radio } from './Radio';
 import { Text } from '../../typography';
-import { ColorVariant, SizeVariant } from '@ui';
+import { ColorVariant, RadioProps, SizeVariant } from '@ui';
 
 const meta = {
     title: 'Forms/Radio',
@@ -13,6 +13,7 @@ export default meta;
 
 const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
+const allVariants: RadioProps['variant'][] = ['fill', 'fill-inverse', 'fill-translucent'];
 
 export const RadioVariants = {
     render: () => {
@@ -63,16 +64,16 @@ export const RadioVariants = {
                 </div>
 
                 <Text style={{ fontWeight: 700, marginTop: 16 }}>All combinations (checked)</Text>
-                {allSizes.map(s => (
-                    <div key={s} style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
-                        <Text style={{ width: 40 }}>{s}</Text>
+                {allVariants.map(variant => allSizes.map(s => (
+                    <div key={`${variant}-${s}`} style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+                        <Text style={{ width: 100 }}>{variant} {s}</Text>
                         {allColors.map(c => (
-                            <Radio key={c} size={s} color={c} checked onChange={() => { }}>
+                            <Radio key={c} variant={variant} size={s} color={c} checked onChange={() => { }}>
                                 {c}
                             </Radio>
                         ))}
                     </div>
-                ))}
+                )))}
 
                 <Text style={{ fontWeight: 700, marginTop: 16 }}>All combinations (unchecked)</Text>
                 {allSizes.map(s => (

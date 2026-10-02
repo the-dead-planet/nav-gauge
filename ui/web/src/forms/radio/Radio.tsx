@@ -12,6 +12,7 @@ export const Radio: FC<Omit<ComponentProps<'label'>, 'onChange'> & RadioProps & 
     labelledBy,
     color = 'neutral',
     highlightColor = color,
+    variant = 'fill',
     size = 'sm',
     checked,
     onChange,
@@ -46,6 +47,7 @@ export const Radio: FC<Omit<ComponentProps<'label'>, 'onChange'> & RadioProps & 
                 styles[`mode-${theme.mode}`],
                 styles[`color-${color}`],
                 styles[`highlight-${highlightColor}`],
+                styles[`variant-${variant}`],
                 styles[`size-${size}`],
                 {
                     [styles['disabled']]: disabled,

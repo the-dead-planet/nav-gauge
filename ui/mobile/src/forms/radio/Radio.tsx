@@ -6,6 +6,7 @@ import { Text } from "../../typography";
 export const Radio: FC<RadioProps> = ({
     color = 'primary',
     highlightColor = color,
+    variant = 'fill',
     size = 'sm',
     checked,
     onChange,
@@ -32,19 +33,34 @@ export const Radio: FC<RadioProps> = ({
 
     return (
         <Pressable
+            accessibilityRole="radio"
+            accessibilityState={{ checked, disabled }}
             disabled={disabled}
             onPress={() => onChange(!checked)}
             style={containerStyle}
         >
             {({ pressed }) => {
-                const ringColor = pressed ? accentColor : baseColor;
+                const activeColor = pressed ? highlightColor : color;
+                const boxColor = checked && variant === 'fill-inverse'
+                    ? theme.color(activeColor, theme.isLight ? 100 : (activeColor === 'neutral' ? 800 : 900))
+                    : pressed ? accentColor : baseColor;
+                const dotColor = variant === 'fill-inverse'
+                    ? theme.color(activeColor, theme.isLight ? (activeColor === 'neutral' ? 800 : 900) : 100)
+                    : variant === 'fill-translucent' ? boxColor
+                    : theme.color(activeColor, theme.isDark ? 900 : 100);
+                const backgroundColor = checked
+                    ? variant === 'fill-translucent'
+                        ? theme.color(activeColor, pressed ? (theme.isLight ? 600 : 300) : 500, 0.24)
+                        : boxColor
+                    : 'transparent';
 
                 const boxStyle: ViewStyle = {
                     width: boxWidthHeight,
                     height: boxWidthHeight,
                     borderRadius: boxWidthHeight / 2,
                     borderWidth: 1,
-                    borderColor: checked ? accentColor : ringColor,
+                    borderColor: boxColor,
+                    backgroundColor,
                     alignItems: 'center',
                     justifyContent: 'center',
                 };
@@ -58,7 +74,7 @@ export const Radio: FC<RadioProps> = ({
                                         width: dotSize,
                                         height: dotSize,
                                         borderRadius: dotSize / 2,
-                                        backgroundColor: theme.color(highlightColor, 600),
+                                        backgroundColor: dotColor,
                                     }}
                                 />
                             ) : null}
