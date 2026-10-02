@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { ColorVariant, SurfaceFillVariant } from '@ui';
+import { ColorVariant, FillVariant } from '@ui';
 import { Text } from '../../typography';
 import { BevelPanel } from './BevelPanel';
 
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     heading: { fontWeight: '700' },
 });
 const colors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const variants: SurfaceFillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
+const variants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
 
 export const Default: FC = () => <BevelPanel color="primary" variant="fill-translucent" padding="md"><Text>Preview</Text></BevelPanel>;
 export const Variants: FC = () => <ScrollView contentContainerStyle={styles.container}>{variants.map((variant) => <View key={variant} style={styles.section}><Text style={styles.heading}>{variant}</Text><View style={styles.grid}>{colors.map((color) => <View key={color} style={styles.cell}><Text>{color}</Text><BevelPanel color={color} variant={variant} padding="md"><Text>Preview</Text></BevelPanel></View>)}</View></View>)}</ScrollView>;

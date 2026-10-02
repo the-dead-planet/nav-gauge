@@ -1,7 +1,6 @@
 import { FC } from "react";
 import { RouteStoryLineStyle, RouteStoryTranslationKey } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { Checkbox, Dropdown, Label, NumberInput } from "@mobile-ui";
-import { ColorSelectField } from "./ColorSelectField";
+import { Checkbox, ColorSelectField, Dropdown, Label, NumberInput } from "@mobile-ui";
 import { View, StyleSheet } from "react-native";
 import { useMultipleTranslations } from "@apparatus";
 
@@ -63,6 +62,7 @@ export const LineStyleGroup: FC<Props> = ({
         colorLabel,
         sizeLabel,
         colorTransitionLengthLabel,
+        opacityLabel,
     ] = useMultipleTranslations([
         { n: gearId, t: translationKey.Lines },
         { n: gearId, t: translationKey.Points },
@@ -74,6 +74,7 @@ export const LineStyleGroup: FC<Props> = ({
         { n: gearId, t: translationKey.Color },
         { n: gearId, t: translationKey.Size },
         { n: gearId, t: translationKey.ColorTransitionLength },
+        { n: gearId, t: translationKey.Opacity },
     ]);
 
     const variantOptions = [
@@ -97,7 +98,7 @@ export const LineStyleGroup: FC<Props> = ({
                     <View style={styles['line-control']}>
                         <Label disabled={!style.showRouteLine}>{lineLabel}</Label>
                         <View style={styles['grid']}>
-                            <ColorSelectField label={colorLabel} disabled={!style.showRouteLine} value={style.color} gearId={gearId} translationKey={translationKey} onChange={(color) => onChange({ color })} />
+                            <ColorSelectField label={colorLabel} opacityLabel={opacityLabel} disabled={!style.showRouteLine} value={style.color} size="xs" onChange={(color) => onChange({ color })} />
                             <View style={styles['grid-fill']}>
                                 <NumberInput ariaLabel={sizeLabel} disabled={!style.showRouteLine} size="xs" min={1} max={8} step={1} value={style.width} onChange={(width) => onChange({ width })} unit="px" />
                             </View>
@@ -106,7 +107,7 @@ export const LineStyleGroup: FC<Props> = ({
                     <View style={styles['line-control']}>
                         <Label disabled={!style.showRouteLine}>{outlineLabel}</Label>
                         <View style={styles['grid']}>
-                            <ColorSelectField label={colorLabel} disabled={!style.showRouteLine} value={style.outlineColor} gearId={gearId} translationKey={translationKey} onChange={(outlineColor) => onChange({ outlineColor })} />
+                            <ColorSelectField label={colorLabel} opacityLabel={opacityLabel} disabled={!style.showRouteLine} value={style.outlineColor} size="xs" onChange={(outlineColor) => onChange({ outlineColor })} />
                             <View style={styles['grid-fill']}>
                                 <NumberInput ariaLabel={sizeLabel} disabled={!style.showRouteLine} size="xs" min={0} max={4} step={1} value={style.outlineWidth} onChange={(outlineWidth) => onChange({ outlineWidth })} unit="px" />
                             </View>
@@ -126,7 +127,7 @@ export const LineStyleGroup: FC<Props> = ({
                 </Checkbox>
                 <View style={styles['points-control']}>
                     <View style={styles['grid']}>
-                        <ColorSelectField label={colorLabel} disabled={!style.showRoutePoints} value={style.pointColor} gearId={gearId} translationKey={translationKey} onChange={(pointColor) => onChange({ pointColor })} />
+                        <ColorSelectField label={colorLabel} opacityLabel={opacityLabel} disabled={!style.showRoutePoints} value={style.pointColor} size="xs" onChange={(pointColor) => onChange({ pointColor })} />
                         <View style={styles['grid-fill']}>
                             <NumberInput ariaLabel={sizeLabel} disabled={!style.showRoutePoints} size="xs" min={1} max={8} step={1} value={style.pointRadius} onChange={(pointRadius) => onChange({ pointRadius })} unit="px" />
                         </View>

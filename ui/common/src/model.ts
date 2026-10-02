@@ -7,8 +7,8 @@ export interface Option<T> {
 }
 
 export type GlowStyle = 'none' | 'glow' | 'animate-borders-glow';
-export type SurfaceFillVariant = 'fill' | 'fill-inverse' | 'fill-translucent';
-export type SurfaceVariant = SurfaceFillVariant | 'ghost' | 'outline' | 'inset';
+export type FillVariant = 'fill' | 'fill-inverse' | 'fill-translucent';
+export type SurfaceVariant = FillVariant | 'ghost' | 'outline' | 'inset';
 export type ColorVariant = DesignSystemColor;
 export type SizeVariant = 'xs' | 'sm' | 'md';
 export type SpacingVariant = 'xs' | 'sm' | 'md' | 'lg' | 'xl';

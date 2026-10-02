@@ -2,9 +2,8 @@ import { FC, useId } from "react";
 import { useMultipleTranslations } from "@apparatus";
 import { currentPointIconNames, CurrentPointIconName, CurrentPointStyle, RouteStoryTranslationKey } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { DropdownOption, Icons } from "@ui";
-import { Dropdown, IconRotateInput, Label, NumberInput, Text, ToggleSwitch } from "@web-ui";
+import { ColorSelectField, Dropdown, IconRotateInput, Label, NumberInput, Text, ToggleSwitch } from "@web-ui";
 import { useWebMachineWard } from "@web-apparatus";
-import { ColorSelectField } from "./ColorSelectField";
 import styles from './current-point-controls.module.css';
 
 interface Props {
@@ -29,7 +28,7 @@ export const CurrentPointControls: FC<Props> = ({ gearId, translationKey, value,
     const { namespace, translationKey: machineTranslationKey } = useWebMachineWard();
     const autoRotateLabelId = useId();
     const rotationInputId = useId();
-    const [colorLabel, sizeLabel, iconLabel, autoRotateLabel, onLabel, offLabel, rotationLabel, rotationAlignmentLabel, mapLabel, viewportLabel] = useMultipleTranslations([
+    const [colorLabel, sizeLabel, iconLabel, autoRotateLabel, onLabel, offLabel, rotationLabel, rotationAlignmentLabel, mapLabel, viewportLabel, opacityLabel] = useMultipleTranslations([
         { n: gearId, t: translationKey.Color },
         { n: gearId, t: translationKey.Size },
         { n: gearId, t: translationKey.Icon },
@@ -40,6 +39,7 @@ export const CurrentPointControls: FC<Props> = ({ gearId, translationKey, value,
         { n: gearId, t: translationKey.RotationAlignment },
         { n: gearId, t: translationKey.Map },
         { n: gearId, t: translationKey.Viewport },
+        { n: gearId, t: translationKey.Opacity },
     ]);
 
     return (
@@ -50,7 +50,7 @@ export const CurrentPointControls: FC<Props> = ({ gearId, translationKey, value,
                     <Dropdown className={styles['icon-dropdown']} ariaLabel={iconLabel} size="xs" value={value.icon} options={iconOptions} onChange={(icon) => onChange({ icon })} />
                 </div>
                 <div className={styles['grid']}>
-                    <ColorSelectField label={colorLabel} value={value.fillColor} gearId={gearId} translationKey={translationKey} onChange={(fillColor) => onChange({ fillColor })} />
+                    <ColorSelectField label={colorLabel} opacityLabel={opacityLabel} value={value.fillColor} size="xs" onChange={(fillColor) => onChange({ fillColor })} />
                     <NumberInput ariaLabel={sizeLabel} size="xs" min={0.1} max={4} step={0.1} value={value.size} onChange={(size) => onChange({ size })} />
                 </div>
             </div>

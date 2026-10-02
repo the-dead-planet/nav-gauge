@@ -1,20 +1,28 @@
 import { FC } from "react";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
-import { ColorInputProps, useTheme } from "@ui";
+import { View, StyleSheet } from "react-native";
+import { ColorInputProps, parseColor, toCssColor, useTheme } from "@ui";
 import { Text } from "../../typography";
+import { ColorButton } from "../color-button";
 
 export const ColorInput: FC<ColorInputProps> = ({
     color = 'neutral',
-    highlightColor = color,
     size = 'sm',
+    variant = 'fill-inverse',
     label,
     value,
-    onChange,
     disabled = false,
 }) => {
     const theme = useTheme();
     const borderColor = theme.color(color, 500);
-    const swatchSize = size === 'xs' ? 18 : size === 'sm' ? 22 : 26;
+    const inverseBackgroundColor = theme.color(color, theme.isLight ? 100 : 900);
+    const backgroundColor = variant === 'fill'
+        ? borderColor
+        : variant === 'fill-translucent'
+            ? toCssColor({ ...parseColor(borderColor), a: .24 })
+            : inverseBackgroundColor;
+    const textColor = variant === 'fill'
+        ? inverseBackgroundColor
+        : borderColor;
 
     return (
         <View style={styles.container}>
@@ -23,19 +31,19 @@ export const ColorInput: FC<ColorInputProps> = ({
                 style={[
                     styles.wrapper,
                     {
-                        backgroundColor: theme.color(color, theme.isLight ? 100 : 900),
+                        backgroundColor,
                         borderColor,
                         opacity: disabled ? .4 : 1,
                     },
                 ]}
             >
-                <TouchableOpacity
-                    style={[styles.swatch, { width: swatchSize, height: swatchSize, backgroundColor: value }]}
-                    onPress={() => onChange(value)}
+                <ColorButton
+                    value={value}
+                    label={label}
+                    size={size}
                     disabled={disabled}
-                    activeOpacity={.7}
                 />
-                <Text style={[styles.hexValue, { color: theme.color(highlightColor, theme.isLight ? 600 : 300) }]}>{value}</Text>
+                <Text style={[styles.hexValue, { color: textColor }]}>{value}</Text>
             </View>
         </View>
     );
@@ -51,12 +59,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         borderWidth: 1,
-        borderRadius: 4,
+        borderRadius: 0,
         gap: 8,
         padding: 4,
-    },
-    swatch: {
-        borderRadius: 2,
     },
     hexValue: {
         fontFamily: 'monospace',

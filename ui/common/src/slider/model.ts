@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
-import { ColorVariant, SizeVariant, SurfaceFillVariant } from "../model";
+import { ColorVariant, SizeVariant, FillVariant } from "../model";
 
 export interface SliderProps {
     color?: ColorVariant;
     highlightColor?: ColorVariant;
     size?: SizeVariant;
-    variant?: SurfaceFillVariant;
+    variant?: FillVariant;
     min?: number;
     max?: number;
     step?: number;

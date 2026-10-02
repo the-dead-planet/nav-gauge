@@ -3,7 +3,7 @@ import { ScrollView, View, StyleSheet, Switch } from "react-native";
 import { Slider } from "./Slider";
 import { Button } from "../../button";
 import { Text } from "../../typography";
-import { ColorVariant, SizeVariant, SurfaceFillVariant } from "@ui";
+import { ColorVariant, SizeVariant, FillVariant } from "@ui";
 
 const styles = StyleSheet.create({
     container: {
@@ -22,12 +22,12 @@ const styles = StyleSheet.create({
 
 const allSizes: SizeVariant[] = ['xs', 'sm', 'md'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: SurfaceFillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
+const allVariants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
 
 export const AllVariants: FC = () => {
     const [value, setValue] = useState(50);
     const [size, setSize] = useState<SizeVariant>('sm');
-    const [variant, setVariant] = useState<SurfaceFillVariant>('fill-inverse');
+    const [variant, setVariant] = useState<FillVariant>('fill-inverse');
     const [showStepControls, setShowStepControls] = useState(false);
     const [showNumberInput, setShowNumberInput] = useState(false);
 

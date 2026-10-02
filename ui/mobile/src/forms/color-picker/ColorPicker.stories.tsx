@@ -13,7 +13,8 @@ export const ColorPickerInteractive: FC = () => {
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
-            <ColorPicker label="Line color" value={value} onChange={setValue} />
+            <ColorPicker label="Line color" opacityLabel="Opacity" value={value} size="xs" onChange={setValue} />
+            <ColorPicker label="Disabled" opacityLabel="Opacity" value="#888888" disabled onChange={setValue} />
 
             <View style={styles.section}>
                 <Text style={styles.label}>Current value: {value}</Text>

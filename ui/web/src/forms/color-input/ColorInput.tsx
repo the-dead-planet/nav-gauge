@@ -1,7 +1,8 @@
 import { ChangeEvent, ComponentProps, FC, useRef } from "react";
 import classNames from "classnames";
-import { ColorInputProps, useTheme } from "@ui";
+import { ColorInputProps, parseColor, toHexColor, useTheme } from "@ui";
 import { Label } from "../../typography";
+import { ColorButton } from "../color-button";
 import styles from './color-input.module.css';
 
 export const ColorInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' | 'type' | 'size'> & ColorInputProps> = ({
@@ -24,12 +25,6 @@ export const ColorInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' |
         onChange(e.target.value);
     };
 
-    const handleSwatchClick = () => {
-        if (!disabled) {
-            inputRef.current?.click();
-        }
-    };
-
     return (
         <div className={classNames(
             styles.container,
@@ -41,20 +36,20 @@ export const ColorInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' |
         )}>
             <Label htmlFor={id} className={styles.label}>{label}</Label>
             <div className={styles['input-wrapper']}>
-                <button
-                    type="button"
+                <ColorButton
+                    value={value}
+                    label={label}
+                    size={size}
                     className={styles.swatch}
-                    style={{ backgroundColor: value }}
-                    onClick={handleSwatchClick}
+                    onClick={() => inputRef.current?.click()}
                     disabled={disabled}
-                    aria-label="Pick color"
                 />
                 <span className={styles['hex-value']}>{value}</span>
                 <input
                     ref={inputRef}
                     id={id}
                     type="color"
-                    value={value}
+                    value={toHexColor(parseColor(value))}
                     onChange={handleChange}
                     disabled={disabled}
                     className={classNames(styles['native-picker'], className)}

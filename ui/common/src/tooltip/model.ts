@@ -1,5 +1,5 @@
 import { ReactElement, ReactNode } from "react";
-import { ColorVariant, SizeVariant, SurfaceFillVariant } from "../model";
+import { ColorVariant, SizeVariant, FillVariant } from "../model";
 
 export type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right' | 'auto';
 
@@ -8,7 +8,7 @@ export interface TooltipProps {
     children: ReactElement;
     placement?: TooltipPlacement;
     color?: ColorVariant;
-    variant?: SurfaceFillVariant;
+    variant?: FillVariant;
     size?: SizeVariant;
     maxWidth?: number;
     showConnection?: boolean;

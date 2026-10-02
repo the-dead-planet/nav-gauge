@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { StyleSheet } from "react-native";
 import Svg, { Polygon } from "react-native-svg";
-import { ColorVariant, SurfaceFillVariant, useTheme } from "@ui";
+import { ColorVariant, FillVariant, useTheme } from "@ui";
 import { TRANSLUCENT_OPACITY } from "../../tinkers";
 
 const styles = StyleSheet.create({
@@ -20,7 +20,7 @@ interface Props {
     containerHeight: number;
     bevel: number;
     color?: ColorVariant;
-    variant?: SurfaceFillVariant;
+    variant?: FillVariant;
 }
 
 export const FieldsetBevelOutline: FC<Props> = ({

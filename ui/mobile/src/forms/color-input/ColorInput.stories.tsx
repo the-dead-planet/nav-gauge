@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { ScrollView, View, Switch, Text, StyleSheet } from "react-native";
 import { ColorInput } from "./ColorInput";
-import { ColorVariant, SizeVariant } from "@ui";
+import { ColorVariant, FillVariant, SizeVariant } from "@ui";
 
 const styles = StyleSheet.create({
     container: { padding: 16, gap: 16 },
@@ -14,10 +14,12 @@ export const ColorInputInteractive: FC = () => {
     const [value, setValue] = useState('#ff6600');
     const [color, setColor] = useState<ColorVariant>('neutral');
     const [size, setSize] = useState<SizeVariant>('sm');
+    const [variant, setVariant] = useState<FillVariant>('fill-inverse');
     const [disabled, setDisabled] = useState(false);
 
     const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
     const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
+    const allVariants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
@@ -27,6 +29,7 @@ export const ColorInputInteractive: FC = () => {
                 onChange={setValue}
                 color={color}
                 size={size}
+                variant={variant}
                 disabled={disabled}
             />
 
@@ -42,6 +45,16 @@ export const ColorInputInteractive: FC = () => {
                     ))}
                 </View>
                 <Text>{color}</Text>
+            </View>
+
+            <View style={styles.section}>
+                <Text style={styles.label}>Variant</Text>
+                <View style={styles.row}>
+                    {allVariants.map(currentVariant => (
+                        <Switch key={currentVariant} value={variant === currentVariant} onValueChange={() => setVariant(currentVariant)} />
+                    ))}
+                </View>
+                <Text>{variant}</Text>
             </View>
 
             <View style={styles.section}>

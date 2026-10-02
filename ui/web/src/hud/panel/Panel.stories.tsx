@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { ColorVariant, SurfaceFillVariant } from '@ui';
+import { ColorVariant, FillVariant } from '@ui';
 import { Text } from '../../typography';
 import { Panel } from './Panel';
 
@@ -7,7 +7,7 @@ const meta = { title: 'Hud/Panel', component: Panel } satisfies Meta<typeof Pane
 export default meta;
 type Story = StoryObj<typeof meta>;
 const colors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const variants: SurfaceFillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
+const variants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
 const gridStyle = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 16 } as const;
 
 export const Default: Story = { args: { color: 'primary', variant: 'fill-translucent', padding: 'md', children: <Text>Preview</Text> } };

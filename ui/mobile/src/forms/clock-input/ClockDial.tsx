@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Circle, Path } from "react-native-svg";
-import { describeArc, useTheme, ColorVariant, SurfaceFillVariant } from "@ui";
+import { describeArc, useTheme, ColorVariant, FillVariant } from "@ui";
 import { TRANSLUCENT_OPACITY } from "../../tinkers";
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
     min: number;
     max: number;
     color: ColorVariant;
-    variant: SurfaceFillVariant;
+    variant: FillVariant;
     isFullCircle?: boolean;
 }
 

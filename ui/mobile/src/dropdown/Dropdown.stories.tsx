@@ -3,7 +3,7 @@ import { ScrollView, View, StyleSheet } from "react-native";
 import { Dropdown } from "./Dropdown";
 import { Radio } from "../forms";
 import { Text } from "../typography";
-import { ColorVariant, Icons, SizeVariant, SurfaceFillVariant } from "@ui";
+import { ColorVariant, Icons, SizeVariant, FillVariant } from "@ui";
 
 const styles = StyleSheet.create({
     container: {
@@ -29,13 +29,13 @@ const options = [
 
 const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: SurfaceFillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
+const allVariants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
 
 export const DropdownVariants: FC = () => {
     const [size, setSize] = useState<SizeVariant>('md');
     const [color, setColor] = useState<ColorVariant>('neutral');
     const [highlightColor, setHighlightColor] = useState<ColorVariant>();
-    const [variant, setVariant] = useState<SurfaceFillVariant>('fill-inverse');
+    const [variant, setVariant] = useState<FillVariant>('fill-inverse');
     const [value, setValue] = useState('brass');
 
     return (

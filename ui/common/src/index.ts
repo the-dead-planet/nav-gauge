@@ -1,5 +1,7 @@
 export * from './clock-input';
 export * from './color-picker';
+export * from './color-button';
+export * from './color-select-field';
 export * from './button';
 export * from './checkbox';
 export * from './radio';

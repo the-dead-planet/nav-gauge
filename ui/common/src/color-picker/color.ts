@@ -14,6 +14,11 @@ export const toCssColor = ({ r, g, b, a }: RgbaColor): string =>
 export const toHexColor = ({ r, g, b }: RgbaColor): string =>
     '#' + [r, g, b].map((channel) => channel.toString(16).padStart(2, '0')).join('');
 
+export const formatColorDescription = (label: string, value: string): string => {
+    const color = parseColor(value);
+    return `${label}: ${toHexColor(color)}; ${toCssColor(color)}`;
+};
+
 export const parseColor = (value: string): RgbaColor => {
     const rgbMatch = value.replace(/\s/g, '').match(/^rgba?\((\d+),(\d+),(\d+)(?:,([\d.]+))?\)$/);
     if (rgbMatch) {

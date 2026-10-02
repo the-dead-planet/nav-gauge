@@ -5,7 +5,7 @@ import { ClockSliceInput } from "./ClockSliceInput";
 import { DurationClockInput } from "./DurationClockInput";
 import { Button } from "../../button";
 import { Text } from "../../typography";
-import { ColorVariant, SizeVariant, SurfaceFillVariant, CLOCK_INPUT_RANGE, NumberInputPlacement } from "@ui";
+import { ColorVariant, SizeVariant, FillVariant, CLOCK_INPUT_RANGE, NumberInputPlacement } from "@ui";
 
 const styles = StyleSheet.create({
     container: {
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 
 const allSizes: SizeVariant[] = ['sm', 'md'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: SurfaceFillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
+const allVariants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
 const numberInputPlacements: NumberInputPlacement[] = ['start', 'end', 'above', 'below'];
 
 export const PitchConstrained: FC = () => {

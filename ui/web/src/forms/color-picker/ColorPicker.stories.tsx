@@ -17,10 +17,11 @@ export const ColorPickerInteractive = {
 
         return (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 24, padding: 24, maxWidth: 320 }}>
-                <ColorPicker label="Line color" value={value} onChange={setValue} />
+                <ColorPicker label="Line color" opacityLabel="Opacity" value={value} onChange={setValue} />
                 <Fieldset label="Theme colors">
-                    <ColorPicker label="Primary" value="rgb(67, 105, 255)" onChange={setValue} />
+                    <ColorPicker label="Primary" opacityLabel="Opacity" value="rgb(67, 105, 255)" size="md" onChange={setValue} />
                 </Fieldset>
+                <ColorPicker label="Disabled" opacityLabel="Opacity" value="#888888" disabled onChange={setValue} />
                 <Text>Current value: {value}</Text>
             </div>
         );

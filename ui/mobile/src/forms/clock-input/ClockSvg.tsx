@@ -5,7 +5,7 @@ import {
     type ViewInstance,
 } from "react-native";
 import Svg, { G } from "react-native-svg";
-import { snapSlice, svgAtan2ToClockAngle, ColorVariant, SurfaceFillVariant } from "@ui";
+import { snapSlice, svgAtan2ToClockAngle, ColorVariant, FillVariant } from "@ui";
 import { ClockDial } from "./ClockDial";
 import { ClockTicks } from "./ClockTicks";
 import { ClockPointer } from "./ClockPointer";
@@ -26,7 +26,7 @@ interface Props {
     max: number;
     color: ColorVariant;
     activeHighlight: ColorVariant;
-    variant: SurfaceFillVariant;
+    variant: FillVariant;
     isFullCircle?: boolean;
     disabled: boolean;
     onChange?: (value: number) => void;

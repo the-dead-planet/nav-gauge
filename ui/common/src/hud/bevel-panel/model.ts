@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { ColorVariant, GlowStyle, SizeVariant, SurfaceFillVariant } from "../../model";
+import { ColorVariant, GlowStyle, SizeVariant, FillVariant } from "../../model";
 import { ThemeMode } from "../../theme";
 
 export interface BevelPanelProps {
@@ -9,7 +9,7 @@ export interface BevelPanelProps {
     color?: ColorVariant;
     padding?: SizeVariant;
     highlightColor?: ColorVariant;
-    variant?: SurfaceFillVariant;
+    variant?: FillVariant;
     themeMode?: ThemeMode;
     active?: boolean;
     children?: ReactNode;

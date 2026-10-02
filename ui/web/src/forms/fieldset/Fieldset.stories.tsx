@@ -2,7 +2,7 @@ import type { Meta } from 'storybook-react-rsbuild';
 import { useState } from 'react';
 import { Fieldset } from './Fieldset';
 import { Text } from '../../typography';
-import { ColorVariant, SizeVariant, SurfaceFillVariant } from '@ui';
+import { ColorVariant, SizeVariant, FillVariant } from '@ui';
 
 const meta = {
     title: 'Forms/Fieldset',
@@ -13,7 +13,7 @@ export default meta;
 
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
 const allSizes: SizeVariant[] = ['xs', 'sm', 'md'];
-const allVariants: SurfaceFillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
+const allVariants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
 
 export const Default = {
     render: () => (

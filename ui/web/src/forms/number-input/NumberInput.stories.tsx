@@ -4,7 +4,7 @@ import { NumberInput } from './NumberInput';
 import { Fieldset } from '../fieldset';
 import { Text } from '../../typography';
 import { Dropdown } from '../../dropdown';
-import { ColorVariant, SizeVariant, SurfaceFillVariant } from '@ui';
+import { ColorVariant, SizeVariant, FillVariant } from '@ui';
 
 const meta = {
     title: 'Forms/NumberInput',
@@ -15,14 +15,14 @@ export default meta;
 
 const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: SurfaceFillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
+const allVariants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
 
 export const NumberInputInteractive = {
     render: () => {
         const [value, setValue] = useState(50);
         const [color, setColor] = useState<ColorVariant>('neutral');
         const [size, setSize] = useState<SizeVariant>('sm');
-        const [variant, setVariant] = useState<SurfaceFillVariant>('fill-inverse');
+        const [variant, setVariant] = useState<FillVariant>('fill-inverse');
         const [disabled, setDisabled] = useState(false);
 
         return (

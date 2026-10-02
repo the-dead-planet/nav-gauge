@@ -24,19 +24,7 @@
 }
 
 .swatch {
-    width: 24px;
-    height: 24px;
-    border: none;
-    border-radius: 2px;
-    flex-shrink: 0;
-    cursor: pointer;
     margin: 4px;
-    padding: 0;
-}
-
-.swatch:disabled {
-    cursor: not-allowed;
-    opacity: .4;
 }
 
 .hex-value {
@@ -106,8 +94,6 @@
 }
 
 .size-xs .swatch {
-    width: 18px;
-    height: 18px;
     margin: 2px;
 }
 
@@ -120,8 +106,6 @@
 }
 
 .size-sm .swatch {
-    width: 22px;
-    height: 22px;
     margin: 3px;
 }
 
@@ -134,8 +118,6 @@
 }
 
 .size-md .swatch {
-    width: 26px;
-    height: 26px;
     margin: 4px;
 }
 

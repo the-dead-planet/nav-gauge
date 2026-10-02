@@ -1,5 +1,5 @@
 import type { Meta } from 'storybook-react-rsbuild';
-import { ColorVariant, SizeVariant, SurfaceFillVariant } from '@ui';
+import { ColorVariant, SizeVariant, FillVariant } from '@ui';
 import { Slider } from './Slider';
 import { Text } from '../../typography';
 import { useState } from 'react';
@@ -13,13 +13,13 @@ export default meta;
 
 const allSizes: SizeVariant[] = ['xs', 'sm', 'md'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: SurfaceFillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
+const allVariants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
 
 export const SliderVariants = {
     render: () => {
         const [value, setValue] = useState(50);
         const [size, setSize] = useState<SizeVariant>('sm');
-        const [variant, setVariant] = useState<SurfaceFillVariant>('fill-inverse');
+        const [variant, setVariant] = useState<FillVariant>('fill-inverse');
         const [showStepControls, setShowStepControls] = useState(false);
         const [showNumberInput, setShowNumberInput] = useState(false);
 

@@ -2,10 +2,9 @@ import { FC } from "react";
 import { useMultipleTranslations } from "@apparatus";
 import { currentPointIconNames, CurrentPointIconName, CurrentPointStyle, RouteStoryTranslationKey } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Icons } from "@ui";
-import { Dropdown, IconRotateInput, Label, NumberInput, ToggleSwitch } from "@mobile-ui";
+import { ColorSelectField, Dropdown, IconRotateInput, Label, NumberInput, ToggleSwitch } from "@mobile-ui";
 import { useMobileMachineWard } from "@mobile-apparatus";
 import { StyleSheet, View } from "react-native";
-import { ColorSelectField } from "./ColorSelectField";
 
 const styles = StyleSheet.create({
     container: {
@@ -62,7 +61,7 @@ const rotationAlignmentOptions = (mapLabel: string, viewportLabel: string): { va
 
 export const CurrentPointControls: FC<Props> = ({ gearId, translationKey, value, onChange }) => {
     const { namespace, translationKey: machineTranslationKey } = useMobileMachineWard();
-    const [colorLabel, sizeLabel, iconLabel, autoRotateLabel, onLabel, offLabel, rotationLabel, rotationAlignmentLabel, mapLabel, viewportLabel] = useMultipleTranslations([
+    const [colorLabel, sizeLabel, iconLabel, autoRotateLabel, onLabel, offLabel, rotationLabel, rotationAlignmentLabel, mapLabel, viewportLabel, opacityLabel] = useMultipleTranslations([
         { n: gearId, t: translationKey.Color },
         { n: gearId, t: translationKey.Size },
         { n: gearId, t: translationKey.Icon },
@@ -73,6 +72,7 @@ export const CurrentPointControls: FC<Props> = ({ gearId, translationKey, value,
         { n: gearId, t: translationKey.RotationAlignment },
         { n: gearId, t: translationKey.Map },
         { n: gearId, t: translationKey.Viewport },
+        { n: gearId, t: translationKey.Opacity },
     ]);
 
     return (
@@ -83,7 +83,7 @@ export const CurrentPointControls: FC<Props> = ({ gearId, translationKey, value,
                     <Dropdown value={value.icon} options={iconOptions} size="xs" onChange={(icon) => onChange({ icon })} />
                 </View>
                 <View style={styles.grid}>
-                    <ColorSelectField label={colorLabel} value={value.fillColor} gearId={gearId} translationKey={translationKey} onChange={(fillColor) => onChange({ fillColor })} />
+                    <ColorSelectField label={colorLabel} opacityLabel={opacityLabel} value={value.fillColor} size="xs" onChange={(fillColor) => onChange({ fillColor })} />
                     <View style={styles['grid-fill']}>
                         <NumberInput ariaLabel={sizeLabel} size="xs" min={0.1} max={4} step={0.1} value={value.size} onChange={(size) => onChange({ size })} />
                     </View>
