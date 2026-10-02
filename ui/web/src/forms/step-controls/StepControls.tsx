@@ -20,7 +20,7 @@ export const StepControls: FC<StepControlsProps> = ({
     const increment = addDecimalStep(value, step);
 
     return (
-        <div className={classNames(styles.container, styles[`size-${size}`])}>
+        <div className={styles.container}>
             <Button
                 icon={Icons.NounProject.Minus}
                 color={color}
