@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 
 const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: CheckboxProps['variant'][] = ['fill', 'fill-inverse'];
+const allVariants: CheckboxProps['variant'][] = ['fill', 'fill-inverse', 'fill-translucent'];
 
 export const CheckboxVariants: FC = () => {
     const [checked, setChecked] = useState(false);

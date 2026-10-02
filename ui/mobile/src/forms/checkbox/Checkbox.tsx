@@ -47,7 +47,13 @@ export const Checkbox: FC<CheckboxProps> = ({
                     : pressed ? accentColor : baseColor;
                 const checkmarkColor = variant === 'fill-inverse'
                     ? theme.color(activeColor, theme.isLight ? (activeColor === 'neutral' ? 800 : 900) : 100)
+                    : variant === 'fill-translucent' ? boxColor
                     : theme.color(activeColor, theme.isDark ? 900 : 100);
+                const backgroundColor = checked
+                    ? variant === 'fill-translucent'
+                        ? theme.color(activeColor, pressed ? (theme.isLight ? 600 : 300) : 500, 0.24)
+                        : boxColor
+                    : 'transparent';
 
                 const boxStyle: ViewStyle = {
                     width: boxWidthHeight,
@@ -55,7 +61,7 @@ export const Checkbox: FC<CheckboxProps> = ({
                     borderRadius,
                     borderWidth: 1,
                     borderColor: boxColor,
-                    backgroundColor: checked ? boxColor : 'transparent',
+                    backgroundColor,
                     alignItems: 'center',
                     justifyContent: 'center',
                 };

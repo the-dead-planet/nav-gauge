@@ -1,10 +1,10 @@
 import { ReactNode } from "react";
-import { ColorVariant, SizeVariant } from "../model";
+import { ColorVariant, SizeVariant, SurfaceFillVariant } from "../model";
 
 export interface CheckboxProps {
     color?: ColorVariant;
     highlightColor?: ColorVariant;
-    variant?: 'fill' | 'fill-inverse';
+    variant?: SurfaceFillVariant;
     size?: SizeVariant;
     disabled?: boolean;
     checked: boolean;
