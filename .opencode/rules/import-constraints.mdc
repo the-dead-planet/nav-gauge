@@ -7,6 +7,7 @@ alwaysApply: true
 - Import sequence: `tinker-chest` → `ui/{common,web,mobile}` → `apparatus/{common,web,mobile}` → `gears/*/{common,web,mobile}` → `app-{web,mobile}`
 - Never import reverse (e.g. apparatus importing from gears)
 - Always use `@package-name` aliases, never relative paths across workspaces
+- Within a workspace, use relative imports instead of importing through that workspace's package alias.
 
 ### Allowed importers
 
