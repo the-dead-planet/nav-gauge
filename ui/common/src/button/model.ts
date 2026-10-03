@@ -9,6 +9,7 @@ export interface ButtonProps {
     color?: ColorVariant;
     shade?: ColorShade;
     highlightColor?: ColorVariant;
+    highlightShade?: ColorShade;
     /**
      * Defaults to `ghost`
      */

@@ -16,8 +16,11 @@ import { ClockTicks } from "./ClockTicks";
 import { ClockPointer } from "./ClockPointer";
 import { ClockThumb } from "./ClockThumb";
 import { sizeMap, thumbRadii, centerDotRadii, strokeWidths } from "./constants";
+import { NumberInput } from "../number-input";
+import { StepControls } from "../step-controls";
 
 const paddings: Record<string, number> = { xs: 7, sm: 8, md: 9 };
+const controlHeights = { xs: 18, sm: 24, md: 32 } as const;
 const MINUTES_HAND_FRACTION = 0.55;
 
 type Hand = 'minutes' | 'seconds';
@@ -29,8 +32,13 @@ export const DurationClockInput: FC<DurationClockInputProps & { style?: ViewStyl
     variant = 'fill-translucent',
     value,
     min = 0,
+    step = 1000,
     onChange,
     disabled = false,
+    showNumberInput = false,
+    showStepControls = false,
+    numberInputPlacement = 'end',
+    ariaLabel,
     style,
 }) => {
     const activeHighlight = highlightColor || color;
@@ -40,6 +48,7 @@ export const DurationClockInput: FC<DurationClockInputProps & { style?: ViewStyl
     const strokeWidth = strokeWidths[size];
     const secondsRadius = outerRadius;
     const minutesRadius = outerRadius * MINUTES_HAND_FRACTION;
+    const stepControlsWidth = svgSize + controlHeights[size] * 2 + 8;
 
     const { minutes, seconds } = millisecondsToDurationParts(value);
     const secondsPointer = pointerCoords(ticksToClockDegrees(seconds), secondsRadius);
@@ -111,10 +120,10 @@ export const DurationClockInput: FC<DurationClockInputProps & { style?: ViewStyl
         onPanResponderTerminate: () => { activeHandRef.current = null; setActiveHand(null); },
     }), [secondsRadius, minutesRadius]);
 
-    return (
+    const clock = (
         <View
             ref={viewRef}
-            style={[styles.container, style]}
+            style={styles.container}
             collapsable={false}
             {...panResponder.panHandlers}
         >
@@ -182,10 +191,57 @@ export const DurationClockInput: FC<DurationClockInputProps & { style?: ViewStyl
             </Svg>
         </View>
     );
+    const steppedClock = showStepControls ? (
+        <View style={{ width: stepControlsWidth }}>
+            <StepControls color={color} size={size} value={value} onChange={onChange} min={min} step={step} disabled={disabled} ariaLabel={ariaLabel}>
+                {clock}
+            </StepControls>
+        </View>
+    ) : clock;
+    const isVerticalNumberInput = numberInputPlacement === 'above' || numberInputPlacement === 'below';
+
+    return (
+        <View style={[styles.control, {
+            flexDirection: !showNumberInput ? 'row' : numberInputPlacement === 'start' ? 'row-reverse' : numberInputPlacement === 'above' ? 'column-reverse' : numberInputPlacement === 'below' ? 'column' : 'row',
+        }, style]}>
+            {steppedClock}
+            {showNumberInput ? (
+                <View style={[styles.numberInputs, isVerticalNumberInput ? styles.verticalNumberInputs : styles.horizontalNumberInputs]}>
+                    <View style={styles.numberInput}>
+                        <NumberInput value={minutes} onChange={(newMinutes) => emit(newMinutes, seconds)} min={0} step={1} color={color} highlightColor={highlightColor} size={size} variant={variant} disabled={disabled || !onChange} showStepControls ariaLabel={`${ariaLabel ?? 'Duration'} (minutes)`} unit="min" />
+                    </View>
+                    <View style={styles.numberInput}>
+                        <NumberInput value={seconds} onChange={(newSeconds) => emit(minutes, newSeconds)} min={0} max={59} step={1} color={color} highlightColor={highlightColor} size={size} variant={variant} disabled={disabled || !onChange} showStepControls ariaLabel={`${ariaLabel ?? 'Duration'} (seconds)`} unit="s" />
+                    </View>
+                </View>
+            ) : null}
+        </View>
+    );
 };
 
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
+    },
+    control: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexWrap: 'wrap',
+        width: '100%',
+        gap: 8,
+    },
+    numberInputs: {
+        flexDirection: 'row',
+        gap: 8,
+    },
+    horizontalNumberInputs: {
+        flex: 1,
+    },
+    verticalNumberInputs: {
+        width: '100%',
+    },
+    numberInput: {
+        flex: 1,
+        minWidth: 0,
     },
 });

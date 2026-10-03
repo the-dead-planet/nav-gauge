@@ -35,6 +35,22 @@
     width: 100%;
 }
 
+.control-row > .duration-number-inputs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    flex: 1;
+    width: 100%;
+}
+
+.duration-container {
+    width: 100%;
+}
+
+.duration-container .control-row > :first-child {
+    flex: 0 0 max-content;
+}
+
 /* ── A11y hidden slider ── */
 
 .a11y-slider {

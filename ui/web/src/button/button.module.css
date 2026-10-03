@@ -150,13 +150,13 @@
 .variant-ghost {
     background-color: transparent;
     border: none;
-    color: var(--button-color);
+    color: var(--button-content-color, var(--button-color));
 }
 
 .variant-ghost .icon {
-    color: var(--button-color);
-    stroke: var(--button-color);
-    fill: var(--button-color);
+    color: var(--button-content-color, var(--button-color));
+    stroke: var(--button-content-color, var(--button-color));
+    fill: var(--button-content-color, var(--button-color));
 }
 
 .variant-ghost:hover,
@@ -185,7 +185,7 @@
 
 .variant-fill {
     border: none;
-    color: var(--button-color-inverse);
+    color: var(--button-content-color, var(--button-color-inverse));
     background-color: var(--button-color-fill);
 }
 
@@ -195,9 +195,9 @@
 }
 
 .variant-fill .icon {
-    color: var(--button-color-inverse);
-    stroke: var(--button-color-inverse);
-    fill: var(--button-color-inverse);
+    color: var(--button-content-color, var(--button-color-inverse));
+    stroke: var(--button-content-color, var(--button-color-inverse));
+    fill: var(--button-content-color, var(--button-color-inverse));
 }
 
 .variant-fill:active,
@@ -208,14 +208,14 @@
 
 .variant-fill-inverse {
     border: 1px solid var(--button-color);
-    color: var(--button-color-text);
+    color: var(--button-content-color, var(--button-color-text));
     background-color: var(--button-color-inverse);
 }
 
 .variant-fill-inverse .icon {
-    color: var(--button-color-text);
-    stroke: var(--button-color-text);
-    fill: var(--button-color-text);
+    color: var(--button-content-color, var(--button-color-text));
+    stroke: var(--button-content-color, var(--button-color-text));
+    fill: var(--button-content-color, var(--button-color-text));
 }
 
 .variant-fill-inverse:hover,
@@ -248,14 +248,14 @@
 
 .variant-fill-translucent {
     border: 1px solid rgb(from var(--button-color) r g b / .3);
-    color: var(--button-color);
+    color: var(--button-content-color, var(--button-color));
     background-color: rgb(from var(--button-color) r g b / .24);
 }
 
 .variant-fill-translucent .icon {
-    color: var(--button-color);
-    stroke: var(--button-color);
-    fill: var(--button-color);
+    color: var(--button-content-color, var(--button-color));
+    stroke: var(--button-content-color, var(--button-color));
+    fill: var(--button-content-color, var(--button-color));
 }
 
 .variant-fill-translucent:hover,
@@ -292,14 +292,14 @@
     background-color: transparent;
     border-style: solid;
     border-width: 1px;
-    color: var(--button-color);
+    color: var(--button-content-color, var(--button-color));
     border-color: var(--button-color);
 }
 
 .variant-outline .icon {
-    color: var(--button-color);
-    stroke: var(--button-color);
-    fill: var(--button-color);
+    color: var(--button-content-color, var(--button-color));
+    stroke: var(--button-content-color, var(--button-color));
+    fill: var(--button-content-color, var(--button-color));
 }
 
 .variant-outline:hover,
@@ -328,13 +328,13 @@
 .variant-inset {
     border: 1px inset rgb(from var(--button-color) r g b / .3);
     background-color: transparent;
-    color: var(--button-color);
+    color: var(--button-content-color, var(--button-color));
 }
 
 .variant-inset .icon {
-    color: var(--button-color);
-    stroke: var(--button-color);
-    fill: var(--button-color);
+    color: var(--button-content-color, var(--button-color));
+    stroke: var(--button-content-color, var(--button-color));
+    fill: var(--button-content-color, var(--button-color));
 }
 
 .variant-inset.mode-light {
@@ -437,15 +437,15 @@
 .corners-hexagon.variant-inset,
 .corners-hexagon.variant-outline,
 .corners-hexagon.variant-ghost {
-    color: var(--button-color);
+    color: var(--button-content-color, var(--button-color));
 }
 
 .corners-hexagon.variant-fill-inverse {
-    color: var(--button-color-text);
+    color: var(--button-content-color, var(--button-color-text));
 }
 
 .corners-hexagon.variant-fill {
-    color: var(--button-color-light);
+    color: var(--button-content-color, var(--button-color-light));
 }
 
 .corners-hexagon.variant-fill-inverse .icon,
@@ -453,21 +453,21 @@
 .corners-hexagon.variant-inset .icon,
 .corners-hexagon.variant-outline .icon,
 .corners-hexagon.variant-ghost .icon {
-    color: var(--button-color);
-    stroke: var(--button-color);
-    fill: var(--button-color);
+    color: var(--button-content-color, var(--button-color));
+    stroke: var(--button-content-color, var(--button-color));
+    fill: var(--button-content-color, var(--button-color));
 }
 
 .corners-hexagon.variant-fill-inverse .icon {
-    color: var(--button-color-text);
-    stroke: var(--button-color-text);
-    fill: var(--button-color-text);
+    color: var(--button-content-color, var(--button-color-text));
+    stroke: var(--button-content-color, var(--button-color-text));
+    fill: var(--button-content-color, var(--button-color-text));
 }
 
 .corners-hexagon.variant-fill .icon {
-    color: var(--button-color-light);
-    stroke: var(--button-color-light);
-    fill: var(--button-color-light);
+    color: var(--button-content-color, var(--button-color-light));
+    stroke: var(--button-content-color, var(--button-color-light));
+    fill: var(--button-content-color, var(--button-color-light));
 }
 
 .corners-hexagon.variant-fill:hover,
@@ -527,6 +527,22 @@
     color: var(--button-highlight-color-accent-lighter);
     stroke: var(--button-highlight-color-accent-lighter);
     fill: var(--button-highlight-color-accent-lighter);
+}
+
+.button.has-highlight-shade:hover,
+.button.has-highlight-shade.hovered,
+.button.has-highlight-shade:active,
+.button.has-highlight-shade.active {
+    color: var(--button-highlight-content-color);
+}
+
+.button.has-highlight-shade:hover .icon,
+.button.has-highlight-shade.hovered .icon,
+.button.has-highlight-shade:active .icon,
+.button.has-highlight-shade.active .icon {
+    color: var(--button-highlight-content-color);
+    stroke: var(--button-highlight-content-color);
+    fill: var(--button-highlight-content-color);
 }
 
 /* ── Conditional glow effects (glowStyle prop) ── */

@@ -40,7 +40,12 @@ export interface DurationClockInputProps {
      * Minimum total duration in milliseconds.
      */
     min?: number;
+    step?: number;
     onChange?: (milliseconds: number) => void;
     disabled?: boolean;
     id?: string;
+    showNumberInput?: boolean;
+    showStepControls?: boolean;
+    numberInputPlacement?: NumberInputPlacement;
+    ariaLabel?: string;
 }
