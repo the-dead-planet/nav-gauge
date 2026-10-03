@@ -1,6 +1,6 @@
 import { ComponentProps, CSSProperties, forwardRef } from "react";
 import classNames from "classnames";
-import { ColorButtonProps, formatColorDescription } from "@ui";
+import { ColorButtonProps, formatColorDescription, useTheme } from "@ui";
 import { Tooltip } from "../../tooltip";
 import styles from './color-button.module.css';
 
@@ -14,6 +14,7 @@ export const ColorButton = forwardRef<HTMLButtonElement, ColorButtonProps & Omit
     style,
     ...props
 }, ref) => {
+    const theme = useTheme();
     const description = formatColorDescription(label, value);
     const button = (
         <button
@@ -21,8 +22,10 @@ export const ColorButton = forwardRef<HTMLButtonElement, ColorButtonProps & Omit
             type="button"
             disabled={disabled}
             aria-label={description}
+            aria-pressed={selected}
             className={classNames(
                 styles.button,
+                styles[`mode-${theme.mode}`],
                 styles[`size-${size}`],
                 {
                     [styles.selected]: selected,

@@ -24,6 +24,7 @@ export const ColorSelectField: FC<ColorSelectFieldProps> = ({
                 value={value}
                 label={label}
                 size={size}
+                selected={open}
                 disabled={disabled}
                 aria-haspopup="dialog"
                 aria-expanded={open}

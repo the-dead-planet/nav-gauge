@@ -35,6 +35,7 @@ export const ColorInputInteractive = {
                     size={size}
                     variant={variant}
                     disabled={disabled}
+                    showFormatSelect
                 />
 
                 <Fieldset label="Color">
@@ -85,6 +86,16 @@ export const ColorInputInteractive = {
                     {allSizes.map(s => (
                         <ColorInput key={s} id={`size-${s}`} label={s} value="#ff6600" onChange={() => { }} size={s} />
                     ))}
+                </Fieldset>
+
+                <Fieldset label="Button only">
+                    <ColorInput
+                        id="button-only"
+                        label="Button only"
+                        value={value}
+                        onChange={setValue}
+                        showValueInput={false}
+                    />
                 </Fieldset>
 
                 <Text>Current value: {value}</Text>

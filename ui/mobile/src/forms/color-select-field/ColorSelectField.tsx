@@ -38,6 +38,7 @@ export const ColorSelectField: FC<ColorSelectFieldProps> = ({
                 value={value}
                 label={label}
                 size={size}
+                selected={open}
                 disabled={disabled}
                 onPress={() => setOpen((current) => !current)}
             />

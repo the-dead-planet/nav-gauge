@@ -2,7 +2,7 @@ import { FC } from "react";
 import { ColorPickerProps, getThemeColorSwatches, parseColor, toCssColor, useTheme } from "@ui";
 import { ColorButton } from "../color-button";
 import { ColorInput } from "../color-input";
-import { Slider } from "../slider";
+import { ColorRamp } from "./ColorRamp";
 import styles from './color-picker.module.css';
 
 export const ColorPicker: FC<ColorPickerProps> = ({
@@ -26,12 +26,16 @@ export const ColorPicker: FC<ColorPickerProps> = ({
         onChange(toCssColor({ ...parseColor(color), a: parsed.a }));
     };
 
-    const handleAlpha = (nextAlpha: number) => {
-        onChange(toCssColor({ ...parsed, a: nextAlpha }));
-    };
-
     return (
         <div className={styles.container}>
+            <ColorRamp
+                value={value}
+                label={label}
+                opacityLabel={opacityLabel}
+                size={size}
+                disabled={disabled}
+                onChange={onChange}
+            />
             <ColorInput
                 label={label}
                 value={value}
@@ -39,6 +43,8 @@ export const ColorPicker: FC<ColorPickerProps> = ({
                 size={size}
                 variant={variant}
                 disabled={disabled}
+                showColorButton={false}
+                showFormatSelect
             />
 
             <div className={styles['swatch-grid']}>
@@ -53,23 +59,6 @@ export const ColorPicker: FC<ColorPickerProps> = ({
                         onClick={() => handleSwatch(swatch.color)}
                     />
                 ))}
-            </div>
-
-            <div className={styles['ramp']}>
-                <Slider
-                    min={0}
-                    max={1}
-                    step={0.05}
-                    value={parsed.a}
-                    onChange={handleAlpha}
-                    label={opacityLabel}
-                    size={size}
-                    variant={variant}
-                    disabled={disabled}
-                    showStepControls
-                    showNumberInput
-                    aria-label={label ? `${label} opacity` : 'Opacity'}
-                />
             </div>
         </div>
     );

@@ -1,5 +1,6 @@
 export * from './clock-input';
 export * from './color-picker';
+export * from './color-ramp';
 export * from './color-button';
 export * from './color-select-field';
 export * from './button';

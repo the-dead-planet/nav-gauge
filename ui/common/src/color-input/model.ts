@@ -9,4 +9,7 @@ export interface ColorInputProps {
     value: string;
     onChange: (value: string) => void;
     disabled?: boolean;
+    showColorButton?: boolean;
+    showValueInput?: boolean;
+    showFormatSelect?: boolean;
 }

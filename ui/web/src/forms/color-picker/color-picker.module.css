@@ -8,8 +8,3 @@
     flex-wrap: wrap;
     gap: 5px;
 }
-
-.ramp {
-    display: grid;
-    row-gap: 6px;
-}

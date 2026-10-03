@@ -1,5 +1,6 @@
 import { FC, useState } from "react";
-import { ScrollView, View, Switch, Text, StyleSheet } from "react-native";
+import { Text } from "../../typography";
+import { ScrollView, View, Switch, StyleSheet } from "react-native";
 import { ColorInput } from "./ColorInput";
 import { ColorVariant, FillVariant, SizeVariant } from "@ui";
 
@@ -31,6 +32,7 @@ export const ColorInputInteractive: FC = () => {
                 size={size}
                 variant={variant}
                 disabled={disabled}
+                showFormatSelect
             />
 
             <View style={styles.section}>
@@ -84,6 +86,11 @@ export const ColorInputInteractive: FC = () => {
                 {allSizes.map(s => (
                     <ColorInput key={s} label={s} value="#ff6600" onChange={() => { }} size={s} />
                 ))}
+            </View>
+
+            <View style={styles.section}>
+                <Text style={styles.label}>Button only</Text>
+                <ColorInput label="Button only" value={value} onChange={setValue} showValueInput={false} />
             </View>
         </ScrollView>
     );

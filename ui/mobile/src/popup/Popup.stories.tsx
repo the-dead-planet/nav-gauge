@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { View, Text } from 'react-native';
+import { Text } from '../typography';
+import { View } from 'react-native';
 import { Popup } from './Popup';
 import { Button } from '../button';
 

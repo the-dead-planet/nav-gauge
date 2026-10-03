@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import { HostInstance, Pressable, PressableProps, StyleSheet } from "react-native";
+import { HostInstance, Pressable, PressableProps, StyleSheet, View } from "react-native";
 import { ColorButtonProps, formatColorDescription, useTheme } from "@ui";
 
 const styles = StyleSheet.create({
@@ -9,11 +9,16 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 0,
     },
-    selected: {
-        borderWidth: 3,
-    },
     disabled: {
-        opacity: .5,
+        overflow: 'hidden',
+    },
+    stripe: {
+        position: 'absolute',
+        left: '-25%',
+        width: '150%',
+        height: 2,
+        transform: [{ rotate: '-45deg' }],
+        pointerEvents: 'none',
     },
 });
 
@@ -27,7 +32,7 @@ export const ColorButton = forwardRef<HostInstance, ColorButtonProps & Omit<Pres
     ...props
 }, ref) => {
     const theme = useTheme();
-    const buttonSize = size === 'xs' ? 18 : size === 'sm' ? 22 : 26;
+    const buttonSize = size === 'xs' ? 18 : size === 'sm' ? 24 : 32;
     const description = formatColorDescription(label, value);
 
     return (
@@ -38,10 +43,14 @@ export const ColorButton = forwardRef<HostInstance, ColorButtonProps & Omit<Pres
                 {
                     width: buttonSize,
                     height: buttonSize,
+                    borderWidth: selected ? 2 : 1,
                     backgroundColor: value,
-                    borderColor: selected ? theme.color('primary', 500) : theme.componentColor('border'),
+                    borderColor: disabled
+                        ? theme.color('neutral', 500)
+                        : selected
+                            ? theme.color('neutral', theme.isDark ? 300 : 700)
+                            : theme.color('neutral', 500),
                 },
-                selected && styles.selected,
                 disabled && styles.disabled,
             ]}
             accessibilityRole="button"
@@ -50,7 +59,20 @@ export const ColorButton = forwardRef<HostInstance, ColorButtonProps & Omit<Pres
             disabled={disabled}
             onPress={onPress}
             {...props}
-        />
+        >
+            {disabled ? [20, 50, 80].map((top) => (
+                <View
+                    key={top}
+                    style={[
+                        styles.stripe,
+                        {
+                            top: `${top}%`,
+                            backgroundColor: theme.color('neutral', theme.isDark ? 300 : 700),
+                        },
+                    ]}
+                />
+            )) : null}
+        </Pressable>
     );
 });
 

@@ -1,5 +1,6 @@
 import { FC, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Text } from "../../typography";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { ColorPicker } from "./ColorPicker";
 
 const styles = StyleSheet.create({

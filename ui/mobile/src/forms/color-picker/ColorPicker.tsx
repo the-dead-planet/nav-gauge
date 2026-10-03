@@ -1,9 +1,9 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import { ColorPickerProps, getThemeColorSwatches, hslToRgb, rgbToHsl, toCssColor, parseColor, useTheme } from "@ui";
-import { Slider } from "../slider";
+import { ColorPickerProps, getThemeColorSwatches, toCssColor, parseColor, useTheme } from "@ui";
 import { ColorButton } from "../color-button";
 import { ColorInput } from "../color-input";
+import { ColorRamp } from "../color-ramp";
 
 export const ColorPicker: FC<ColorPickerProps> = ({
     label = 'Color',
@@ -16,23 +16,22 @@ export const ColorPicker: FC<ColorPickerProps> = ({
 }) => {
     const theme = useTheme();
     const parsed = parseColor(value);
-    const { h, s, l } = rgbToHsl(parsed);
     const swatches = getThemeColorSwatches(theme);
-
-    const handleHsl = (nextH: number, nextS: number, nextL: number) => {
-        onChange(toCssColor({ ...hslToRgb({ h: nextH, s: nextS, l: nextL }), a: parsed.a }));
-    };
 
     const handleSwatch = (swatchColor: string) => {
         onChange(toCssColor({ ...parseColor(swatchColor), a: parsed.a }));
     };
 
-    const handleAlpha = (nextAlpha: number) => {
-        onChange(toCssColor({ ...parsed, a: nextAlpha }));
-    };
-
     return (
         <View style={styles.container}>
+            <ColorRamp
+                value={value}
+                label={label}
+                opacityLabel={opacityLabel}
+                size={size}
+                disabled={disabled}
+                onChange={onChange}
+            />
             <ColorInput
                 label={label}
                 value={value}
@@ -40,6 +39,8 @@ export const ColorPicker: FC<ColorPickerProps> = ({
                 size={size}
                 variant={variant}
                 disabled={disabled}
+                showColorButton={false}
+                showFormatSelect
             />
 
             <View style={styles['swatch-grid']}>
@@ -56,58 +57,6 @@ export const ColorPicker: FC<ColorPickerProps> = ({
                 ))}
             </View>
 
-            <Slider
-                min={0}
-                max={360}
-                step={1}
-                value={h}
-                onChange={(nextH) => handleHsl(nextH, s, l)}
-                label="Hue"
-                size={size}
-                variant={variant}
-                disabled={disabled}
-                showStepControls
-                showNumberInput
-            />
-            <Slider
-                min={0}
-                max={100}
-                step={1}
-                value={s}
-                onChange={(nextS) => handleHsl(h, nextS, l)}
-                label="Saturation"
-                size={size}
-                variant={variant}
-                disabled={disabled}
-                showStepControls
-                showNumberInput
-            />
-            <Slider
-                min={0}
-                max={100}
-                step={1}
-                value={l}
-                onChange={(nextL) => handleHsl(h, s, nextL)}
-                label="Lightness"
-                size={size}
-                variant={variant}
-                disabled={disabled}
-                showStepControls
-                showNumberInput
-            />
-            <Slider
-                min={0}
-                max={1}
-                step={0.05}
-                value={parsed.a}
-                onChange={handleAlpha}
-                label={opacityLabel}
-                size={size}
-                variant={variant}
-                disabled={disabled}
-                showStepControls
-                showNumberInput
-            />
         </View>
     );
 };
