@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { ColorVariant, GlowStyle, SizeVariant, SurfaceFillVariant } from "../../model";
+import { ColorVariant, GlowStyle, SizeVariant, FillVariant } from "../../model";
 import { ThemeMode } from "../../theme";
 
 export type PanelShape = 'default';
@@ -11,7 +11,7 @@ export interface PanelProps {
     color?: ColorVariant;
     padding?: SizeVariant;
     highlightColor?: ColorVariant;
-    variant?: SurfaceFillVariant;
+    variant?: FillVariant;
     /**
      * Defaults to 2
      */

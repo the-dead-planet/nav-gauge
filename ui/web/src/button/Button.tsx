@@ -15,8 +15,9 @@ interface Props {
 
 export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     color = 'neutral',
-    shade = 500,
+    shade,
     highlightColor,
+    highlightShade,
     variant = 'ghost',
     glowStyle = 'none',
     size = 'sm',
@@ -69,6 +70,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
                 {
                     [styles['interactive']]: !!onClick && !disabled,
                     [styles['active']]: active,
+                    [styles['has-highlight-shade']]: highlightShade !== undefined,
                     [styles[`only-icon-${size}`]]: !children,
                     [styles['disabled']]: disabled,
                 },
@@ -76,7 +78,12 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
             )}
             style={{
                 ...(corners !== 'hexagon' ? style : undefined),
-                '--button-color-text': theme.color(color, shade),
+                ...(shade === undefined ? undefined : {
+                    '--button-content-color': theme.color(color, shade),
+                }),
+                ...(highlightShade === undefined ? undefined : {
+                    '--button-highlight-content-color': theme.color(highlightColor || color, highlightShade),
+                }),
             } as CSSProperties}
             {...props}
         >

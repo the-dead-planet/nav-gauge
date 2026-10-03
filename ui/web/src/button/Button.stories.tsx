@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { ColorVariant, SizeVariant, ButtonCorners, SurfaceVariant, Icons, GlowStyle } from '@ui';
+import { ColorVariant, SizeVariant, ButtonCorners, SurfaceVariant, Icons, GlowStyle, ColorShade, allColorShades } from '@ui';
 import { Button } from './Button';
 import { Text } from '../typography';
 import { useState } from 'react';
@@ -22,11 +22,45 @@ export const ButtonVariants = {
     render: () => {
         const [highlightColor, setHighlightColor] = useState<ColorVariant | undefined>(undefined);
         const [glowStyle, setGlowStyle] = useState<GlowStyle>();
+        const [shade, setShade] = useState<ColorShade>();
+        const [highlightShade, setHighlightShade] = useState<ColorShade>();
         const [disabled, setDisabled] = useState(false);
 
         return (
             <>
                 <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                    <label>
+                        Shade:{' '}
+                        <select
+                            value={shade ?? ''}
+                            onChange={(event) => setShade(
+                                event.target.value ? Number(event.target.value) as ColorShade : undefined
+                            )}
+                        >
+                            <option value="">Default</option>
+                            {allColorShades.filter((option) => option >= 100).map((option) => (
+                                <option key={option} value={option}>
+                                    {option}
+                                </option>
+                            ))}
+                        </select>
+                    </label>
+                    <label>
+                        Highlight shade:{' '}
+                        <select
+                            value={highlightShade ?? ''}
+                            onChange={(event) => setHighlightShade(
+                                event.target.value ? Number(event.target.value) as ColorShade : undefined
+                            )}
+                        >
+                            <option value="">Default</option>
+                            {allColorShades.filter((option) => option >= 100).map((option) => (
+                                <option key={option} value={option}>
+                                    {option}
+                                </option>
+                            ))}
+                        </select>
+                    </label>
                     <Button
                         variant={disabled ? 'fill' : 'ghost'}
                         size="xs"
@@ -93,7 +127,9 @@ export const ButtonVariants = {
                                                         color={color}
                                                         corners={corners}
                                                         size={size}
+                                                        shade={shade}
                                                         highlightColor={highlightColor}
+                                                        highlightShade={highlightShade}
                                                         glowStyle={glowStyle}
                                                         disabled={disabled}
                                                     >
@@ -124,10 +160,13 @@ export const NativeBehavior = {
 } satisfies Story;
 
 export const ShadeOverride = {
-    args: {
-        children: 'High contrast',
-        color: 'primary',
-        variant: 'fill-inverse',
-        shade: 100,
-    },
+    render: () => (
+        <div style={{ display: 'flex', gap: 8 }}>
+            {allVariants.map((variant) => (
+                <Button key={variant} color="primary" variant={variant} shade={100} icon={Icons.Beaker}>
+                    {variant}
+                </Button>
+            ))}
+        </div>
+    ),
 } satisfies Story;

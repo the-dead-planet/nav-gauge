@@ -1,0 +1,52 @@
+.button {
+    box-sizing: border-box;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    padding: 0;
+    border: 1px solid var(--color-neutral-500);
+    border-radius: 0;
+    background-color: var(--color-button-value);
+    cursor: pointer;
+}
+
+.button:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
+}
+
+.button:disabled {
+    cursor: not-allowed;
+    border-color: var(--color-neutral-500);
+    background-image: repeating-linear-gradient(
+        -45deg,
+        transparent 0,
+        transparent 4px,
+        rgb(from var(--color-neutral-500) r g b / .7) 4px,
+        rgb(from var(--color-neutral-500) r g b / .7) 6px
+    );
+}
+
+.selected {
+    border-width: 2px;
+    border-color: var(--color-neutral-700);
+}
+
+.mode-dark.selected {
+    border-color: var(--color-neutral-300);
+}
+
+.size-xs {
+    width: 18px;
+    height: 18px;
+}
+
+.size-sm {
+    width: 24px;
+    height: 24px;
+}
+
+.size-md {
+    width: 32px;
+    height: 32px;
+}

@@ -1,72 +1,60 @@
-import { FC, useMemo } from "react";
-import classNames from "classnames";
-import { ColorPickerProps, getThemeColorSwatches, parseColor, toCssColor, toHexColor, useTheme } from "@ui";
-import { Slider } from "../slider";
+import { FC } from "react";
+import { ColorPickerProps, getThemeColorSwatches, parseColor, toCssColor, useTheme } from "@ui";
+import { ColorButton } from "../color-button";
+import { ColorInput } from "../color-input";
+import { ColorRamp } from "../color-ramp";
 import styles from './color-picker.module.css';
 
-export const ColorPicker: FC<ColorPickerProps> = ({ label, value, onChange, opacityLabel }) => {
+export const ColorPicker: FC<ColorPickerProps> = ({
+    label = 'Color',
+    value,
+    onChange,
+    opacityLabel,
+    size = 'sm',
+    variant = 'fill-inverse',
+    disabled = false,
+}) => {
     const theme = useTheme();
-    const parsed = useMemo(() => parseColor(value), [value]);
-    const swatches = useMemo(() => getThemeColorSwatches(theme), [theme]);
+    const parsed = parseColor(value);
+    const swatches = getThemeColorSwatches(theme);
 
-    const handleNativePick = (nextHex: string) => {
-        onChange(toCssColor({ ...parseColor(nextHex), a: parsed.a }));
+    const handleSwatchChange = (color: string) => {
+        onChange(toCssColor({ ...parseColor(color), a: parsed.a }));
     };
-
-    const handleSwatch = (swatchColor: string) => {
-        onChange(toCssColor({ ...parseColor(swatchColor), a: parsed.a }));
-    };
-
-    const handleAlpha = (nextAlpha: number) => {
-        onChange(toCssColor({ ...parsed, a: nextAlpha }));
-    };
-
-    const borderColor = theme.componentColor('border');
 
     return (
         <div className={styles.container}>
-            <div className={styles['header']}>
-                <span
-                    className={styles['preview']}
-                    style={{ backgroundColor: value, borderColor }}
-                    aria-hidden="true"
-                />
-                <span className={styles['value']}>{value}</span>
-            </div>
+            <ColorRamp
+                value={value}
+                label={label}
+                opacityLabel={opacityLabel}
+                size={size}
+                disabled={disabled}
+                onChange={onChange}
+            />
+            <ColorInput
+                label={label}
+                value={value}
+                onChange={onChange}
+                size={size}
+                variant={variant}
+                disabled={disabled}
+                showColorButton={false}
+                showFormatSelect
+            />
 
             <div className={styles['swatch-grid']}>
                 {swatches.map((swatch) => (
-                    <button
+                    <ColorButton
                         key={swatch.label}
-                        type="button"
-                        title={swatch.label}
-                        aria-label={swatch.label}
-                        className={classNames(styles['swatch-button'], {
-                            [styles['selected']]: value === swatch.color,
-                        })}
-                        style={{ backgroundColor: swatch.color, borderColor }}
-                        onClick={() => handleSwatch(swatch.color)}
+                        value={swatch.color}
+                        label={swatch.label}
+                        size={size}
+                        selected={value === swatch.color}
+                        disabled={disabled}
+                        onClick={() => handleSwatchChange(swatch.color)}
                     />
                 ))}
-            </div>
-
-            <div className={styles['ramp']}>
-                <input
-                    type="color"
-                    className={styles['native-picker']}
-                    value={toHexColor(parsed)}
-                    onChange={(event) => handleNativePick(event.target.value)}
-                    aria-label={label ? `${label} color ramp` : 'Color ramp'}
-                />
-                {opacityLabel ? <span className={styles['opacity-label']}>{opacityLabel}</span> : null}
-                <Slider
-                    min={0}
-                    max={1}
-                    step={0.05}
-                    value={parsed.a}
-                    onChange={handleAlpha}
-                    aria-label={label ? `${label} opacity` : 'Opacity'}
-                />
             </div>
         </div>
     );

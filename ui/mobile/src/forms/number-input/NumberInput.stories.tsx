@@ -1,5 +1,6 @@
 import { FC, useState } from "react";
-import { ScrollView, View, Switch, Text, StyleSheet } from "react-native";
+import { Text } from "../../typography";
+import { ScrollView, View, Switch, StyleSheet } from "react-native";
 import { NumberInput } from "./NumberInput";
 import { Dropdown } from "../../dropdown";
 import { ColorVariant, SizeVariant } from "@ui";

@@ -1,0 +1,6 @@
+---
+description: Noun Project icon generation
+globs: "ui/common/src/icons/svg/noun-project/**"
+---
+
+- Read `ui/common/src/icons/svg/noun-project/README.md` before changing these icons.

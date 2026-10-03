@@ -1,11 +1,11 @@
-import { FC, useState } from "react";
-import { ScrollView, View, StyleSheet, Switch } from "react-native";
-import { ClockInput } from "./ClockInput";
-import { ClockSliceInput } from "./ClockSliceInput";
-import { DurationClockInput } from "./DurationClockInput";
-import { Button } from "../../button";
-import { Text } from "../../typography";
-import { ColorVariant, SizeVariant, SurfaceFillVariant, CLOCK_INPUT_RANGE, NumberInputPlacement } from "@ui";
+import { FC, useState } from 'react';
+import { ScrollView, View, StyleSheet, Switch } from 'react-native';
+import { ClockInput } from './ClockInput';
+import { ClockSliceInput } from './ClockSliceInput';
+import { DurationClockInput } from './DurationClockInput';
+import { Button } from '../../button';
+import { Text } from '../../typography';
+import { ColorVariant, SizeVariant, FillVariant, CLOCK_INPUT_RANGE, NumberInputPlacement } from '@ui';
 
 const styles = StyleSheet.create({
     container: {
@@ -32,8 +32,35 @@ const styles = StyleSheet.create({
 
 const allSizes: SizeVariant[] = ['sm', 'md'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: SurfaceFillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
+const allVariants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
 const numberInputPlacements: NumberInputPlacement[] = ['start', 'end', 'above', 'below'];
+
+const ClockInputStoryOptions: FC<{
+    showStepControls: boolean;
+    setShowStepControls: (value: boolean) => void;
+    showNumberInput: boolean;
+    setShowNumberInput: (value: boolean) => void;
+    numberInputPlacement: NumberInputPlacement;
+    setNumberInputPlacement: (value: NumberInputPlacement) => void;
+}> = ({ showStepControls, setShowStepControls, showNumberInput, setShowNumberInput, numberInputPlacement, setNumberInputPlacement }) => (
+    <>
+        <View style={styles.row}>
+            <Text>Options</Text>
+            <Text>Show plus/minus</Text>
+            <Switch value={showStepControls} onValueChange={setShowStepControls} />
+            <Text>Show number input</Text>
+            <Switch value={showNumberInput} onValueChange={setShowNumberInput} />
+        </View>
+        <View style={styles.row}>
+            <Text>Number input placement</Text>
+            {numberInputPlacements.map((placement) => (
+                <Button key={placement} size="xs" active={numberInputPlacement === placement} onPress={() => setNumberInputPlacement(placement)}>
+                    {placement}
+                </Button>
+            ))}
+        </View>
+    </>
+);
 
 export const PitchConstrained: FC = () => {
     const pitchRange: [number, number] = [0, 85];
@@ -43,7 +70,6 @@ export const PitchConstrained: FC = () => {
     const [showStepControls, setShowStepControls] = useState(false);
     const [showNumberInput, setShowNumberInput] = useState(false);
     const [numberInputPlacement, setNumberInputPlacement] = useState<NumberInputPlacement>('end');
-
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <View style={[styles.row, { marginBottom: 12 }]}>
@@ -72,21 +98,7 @@ export const PitchConstrained: FC = () => {
                     disabled: {String(disabled)}
                 </Button>
             </View>
-            <View style={styles.row}>
-                <Text>Options</Text>
-                <Text>Show plus/minus</Text>
-                <Switch value={showStepControls} onValueChange={setShowStepControls} />
-                <Text>Show number input</Text>
-                <Switch value={showNumberInput} onValueChange={setShowNumberInput} />
-            </View>
-            <View style={styles.row}>
-                <Text>Number input placement</Text>
-                {numberInputPlacements.map((placement) => (
-                    <Button key={placement} size="xs" active={numberInputPlacement === placement} onPress={() => setNumberInputPlacement(placement)}>
-                        {placement}
-                    </Button>
-                ))}
-            </View>
+            <ClockInputStoryOptions {...{ showStepControls, setShowStepControls, showNumberInput, setShowNumberInput, numberInputPlacement, setNumberInputPlacement }} />
 
             <View style={[styles.section, { marginTop: 8 }]}>
                 <Text style={{ marginBottom: 8 }}>
@@ -177,24 +189,12 @@ export const AllVariants: FC = () => {
                     disabled: {String(disabled)}
                 </Button>
             </View>
-            <View style={styles.row}>
-                <Text>Options</Text>
-                <Text>Show plus/minus</Text>
-                <Switch value={showStepControls} onValueChange={setShowStepControls} />
-                <Text>Show number input</Text>
-                <Switch value={showNumberInput} onValueChange={setShowNumberInput} />
-            </View>
-            <View style={styles.row}>
-                <Text>Number input placement</Text>
-                {numberInputPlacements.map((placement) => (
-                    <Button key={placement} size="xs" active={numberInputPlacement === placement} onPress={() => setNumberInputPlacement(placement)}>
-                        {placement}
-                    </Button>
-                ))}
-            </View>
+            <ClockInputStoryOptions {...{ showStepControls, setShowStepControls, showNumberInput, setShowNumberInput, numberInputPlacement, setNumberInputPlacement }} />
 
             <View style={[styles.section, { marginTop: 8 }]}>
-                <Text style={{ marginBottom: 8 }}>size: {size} | value: {value}°</Text>
+                <Text style={{ marginBottom: 8 }}>
+                    size: {size} | value: {value}°
+                </Text>
                 <View style={styles.row}>
                     {allVariants.map((variant) => (
                         <View key={variant} style={styles.cell}>
@@ -232,10 +232,14 @@ export const SliceVariants: FC = () => {
     const [value, setValue] = useState(30);
     const [size, setSize] = useState<SizeVariant>('sm');
     const [disabled, setDisabled] = useState(false);
+    const [showStepControls, setShowStepControls] = useState(false);
+    const [showNumberInput, setShowNumberInput] = useState(false);
+    const [numberInputPlacement, setNumberInputPlacement] = useState<NumberInputPlacement>('end');
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <View style={[styles.row, { marginBottom: 12 }]}>
+                <Text>Size</Text>
                 {allSizes.map((s) => (
                     <Button
                         key={s}
@@ -249,6 +253,9 @@ export const SliceVariants: FC = () => {
                         {s}
                     </Button>
                 ))}
+            </View>
+            <View style={styles.row}>
+                <Text>Disabled</Text>
                 <Button
                     variant={disabled ? 'fill' : 'ghost'}
                     color="primary"
@@ -260,6 +267,7 @@ export const SliceVariants: FC = () => {
                     disabled: {String(disabled)}
                 </Button>
             </View>
+            <ClockInputStoryOptions {...{ showStepControls, setShowStepControls, showNumberInput, setShowNumberInput, numberInputPlacement, setNumberInputPlacement }} />
 
             <View style={[styles.section, { marginTop: 8 }]}>
                 <Text style={{ marginBottom: 8 }}>
@@ -286,6 +294,9 @@ export const SliceVariants: FC = () => {
                                     disabled={disabled}
                                     min={pitchRange[0]}
                                     max={pitchRange[1]}
+                                    showNumberInput={showNumberInput}
+                                    showStepControls={showStepControls}
+                                    numberInputPlacement={numberInputPlacement}
                                 />
                             </View>
                         ))}
@@ -296,7 +307,13 @@ export const SliceVariants: FC = () => {
             <View style={styles.section}>
                 <Text style={{ marginBottom: 8 }}>varying ranges</Text>
                 <View style={styles.row}>
-                    {([[0, 30], [0, 60], [0, 85]] as [number, number][]).map(([lo, hi]) => (
+                    {(
+                        [
+                            [0, 30],
+                            [0, 60],
+                            [0, 85],
+                        ] as [number, number][]
+                    ).map(([lo, hi]) => (
                         <View key={`${lo}-${hi}`} style={styles.cell}>
                             <ClockSliceInput
                                 value={Math.min(value, hi)}
@@ -307,6 +324,9 @@ export const SliceVariants: FC = () => {
                                 disabled={disabled}
                                 min={lo}
                                 max={hi}
+                                showNumberInput={showNumberInput}
+                                showStepControls={showStepControls}
+                                numberInputPlacement={numberInputPlacement}
                             />
                         </View>
                     ))}
@@ -320,6 +340,9 @@ export const DurationVariants: FC = () => {
     const [value, setValue] = useState(15000);
     const [size, setSize] = useState<SizeVariant>('sm');
     const [disabled, setDisabled] = useState(false);
+    const [showStepControls, setShowStepControls] = useState(false);
+    const [showNumberInput, setShowNumberInput] = useState(false);
+    const [numberInputPlacement, setNumberInputPlacement] = useState<NumberInputPlacement>('end');
 
     const minutes = Math.floor(value / 60000);
     const seconds = Math.round((value % 60000) / 1000);
@@ -327,6 +350,7 @@ export const DurationVariants: FC = () => {
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <View style={[styles.row, { marginBottom: 12 }]}>
+                <Text>Size</Text>
                 {allSizes.map((s) => (
                     <Button
                         key={s}
@@ -340,6 +364,9 @@ export const DurationVariants: FC = () => {
                         {s}
                     </Button>
                 ))}
+            </View>
+            <View style={styles.row}>
+                <Text>Disabled</Text>
                 <Button
                     variant={disabled ? 'fill' : 'ghost'}
                     color="primary"
@@ -354,7 +381,7 @@ export const DurationVariants: FC = () => {
 
             <View style={styles.section}>
                 <Text style={{ marginBottom: 8 }}>
-                    size: {size} | value: {value}ms ({minutes}m {seconds}s)
+                    size: {size} | value: {value / 1000}s ({minutes}m {seconds}s)
                 </Text>
                 <View style={styles.row}>
                     {allVariants.map((variant) => (
@@ -363,10 +390,12 @@ export const DurationVariants: FC = () => {
                         </View>
                     ))}
                 </View>
+                <ClockInputStoryOptions {...{ showStepControls, setShowStepControls, showNumberInput, setShowNumberInput, numberInputPlacement, setNumberInputPlacement }} />
+
                 {allColors.map((color) => (
                     <View key={color} style={styles.row}>
                         {allVariants.map((variant) => (
-                            <View key={variant} style={styles.cell}>
+                            <View key={variant} style={[styles.cell, showNumberInput && { minWidth: 300 }]}>
                                 <DurationClockInput
                                     value={value}
                                     onChange={setValue}
@@ -374,6 +403,9 @@ export const DurationVariants: FC = () => {
                                     variant={variant}
                                     size={size}
                                     disabled={disabled}
+                                    showNumberInput={showNumberInput}
+                                    showStepControls={showStepControls}
+                                    numberInputPlacement={numberInputPlacement}
                                 />
                             </View>
                         ))}

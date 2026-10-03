@@ -92,7 +92,6 @@ export const AllVariants: FC = () => {
                     ))}
                 </View>
             </View>
-
             {allSizes.map((size) => (
                 <View key={size} style={styles.section}>
                     <Text style={styles.label}>{size}</Text>
@@ -156,9 +155,3 @@ export const TooltipPressBehavior: FC = () => {
         </View>
     );
 };
-
-export const ShadeOverride: FC = () => (
-    <View style={styles.container}>
-        <Button color="primary" variant="fill-inverse" shade={100}>High contrast</Button>
-    </View>
-);

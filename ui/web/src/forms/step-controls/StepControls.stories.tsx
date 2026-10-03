@@ -14,7 +14,13 @@ export const Default = {
     render: () => {
         const [value, setValue] = useState(5);
         return (
-            <StepControls value={value} onChange={setValue} min={0} max={10}>
+            <StepControls
+                variant="fill-translucent"
+                value={value}
+                onChange={setValue}
+                min={0}
+                max={10}
+            >
                 <NumberInput value={value} onChange={setValue} showStepControls={false} />
             </StepControls>
         );

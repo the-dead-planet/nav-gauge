@@ -12,6 +12,8 @@ SVG icons from the free tier include `<text>` elements with `Created by <name>` 
 The width, height and viewbox are not set to standard `24x24px`. 
 After adding new icons in the [raw folder](/ui/common/src/icons/svg/noun-project/raw/) run the [process-icons](/ui/common/src/icons/svg/noun-project/process-icons.ts) script to generate processed icons and the registry with creator names to use on the storybook page. Icons to use in the app will end up in the [output folder](/ui/common/src/icons/svg/noun-project/output/)
 
+Never manually edit `output/` or `icon-registry.json`. Edit `raw/` or `process-icons.ts`, then regenerate them.
+
 From the [root](/) folder run:
 
 ```bash

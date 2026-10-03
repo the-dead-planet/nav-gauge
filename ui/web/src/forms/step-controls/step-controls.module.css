@@ -9,19 +9,3 @@
     flex: 1;
     min-width: 0;
 }
-
-.size-xs {
-    height: 18px;
-}
-
-.size-sm {
-    height: 24px;
-}
-
-.size-md {
-    height: 32px;
-}
-
-.container > button {
-    height: 100%;
-}

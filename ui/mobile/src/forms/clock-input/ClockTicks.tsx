@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Line } from "react-native-svg";
-import { TICK_COUNT, STEP_DEG, MAJOR_TICK_INTERVAL, radialLineCoords, useTheme, ColorVariant, SurfaceFillVariant } from "@ui";
+import { TICK_COUNT, STEP_DEG, MAJOR_TICK_INTERVAL, radialLineCoords, useTheme, ColorVariant, FillVariant } from "@ui";
 
 const tickMajorLengths: Record<string, number> = { xs: 3.5, sm: 6, md: 7 };
 const tickMinorLengths: Record<string, number> = { xs: 2, sm: 3.5, md: 4 };
@@ -13,7 +13,7 @@ interface Props {
     min: number;
     max: number;
     color: ColorVariant;
-    variant: SurfaceFillVariant;
+    variant: FillVariant;
 }
 
 export const ClockTicks: FC<Props> = ({

@@ -18,8 +18,9 @@ export interface MobileButtonProps {
 export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     forwardRef,
     color = 'neutral',
-    shade = 500,
+    shade,
     highlightColor = color,
+    highlightShade,
     variant = 'ghost',
     glowStyle = 'none',
     size = 'sm',
@@ -205,11 +206,13 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     const fillTextShade: ColorShade = theme.isDark ? 900 : 100;
     const fillTextColor = theme.color(color, fillTextShade);
     const hlFillTextColor = theme.color(highlightColor, fillTextShade);
-    const textColor = effectiveVariant === 'fill'
+    const textColor = highlightShade !== undefined && hl
+        ? theme.color(highlightColor, highlightShade)
+        : shade !== undefined && !hl
+        ? theme.color(color, shade)
+        : effectiveVariant === 'fill'
         ? (hl ? hlFillTextColor : fillTextColor)
-        : effectiveVariant === 'fill-inverse' && !hl
-            ? theme.color(color, shade)
-            : (hl ? hlInset : baseColor);
+        : (hl ? hlInset : baseColor);
     let fontSize = 14;
     if (size === 'xs') fontSize = 12;
 

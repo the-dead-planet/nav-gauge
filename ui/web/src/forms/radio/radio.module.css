@@ -40,7 +40,7 @@
 
 .dot {
     border-radius: 50%;
-    background-color: var(--radio-color-light);
+    background-color: var(--radio-dot-color);
 }
 
 .label {
@@ -81,34 +81,52 @@
 
 .highlight-primary {
     --radio-highlight-color: var(--color-primary);
+    --radio-highlight-color-dark: var(--color-primary-900);
+    --radio-highlight-color-light: var(--color-primary-100);
     --radio-highlight-color-accent-lighter: var(--color-primary-300);
     --radio-highlight-color-accent-darker: var(--color-primary-600);
 }
 
 .highlight-secondary {
     --radio-highlight-color: var(--color-secondary);
+    --radio-highlight-color-dark: var(--color-secondary-900);
+    --radio-highlight-color-light: var(--color-secondary-100);
     --radio-highlight-color-accent-lighter: var(--color-secondary-300);
     --radio-highlight-color-accent-darker: var(--color-secondary-600);
 }
 
 .highlight-tertiary {
     --radio-highlight-color: var(--color-tertiary);
+    --radio-highlight-color-dark: var(--color-tertiary-900);
+    --radio-highlight-color-light: var(--color-tertiary-100);
     --radio-highlight-color-accent-lighter: var(--color-tertiary-300);
     --radio-highlight-color-accent-darker: var(--color-tertiary-600);
 }
 
 .highlight-neutral {
     --radio-highlight-color: var(--color-neutral);
+    --radio-highlight-color-dark: var(--color-neutral-800);
+    --radio-highlight-color-light: var(--color-neutral-100);
     --radio-highlight-color-accent-lighter: var(--color-neutral-300);
     --radio-highlight-color-accent-darker: var(--color-neutral-600);
 }
 
 .mode-light {
     --radio-highlight-color-accent: var(--radio-highlight-color-accent-darker);
+    --radio-dot-color: var(--radio-color-light);
+    --radio-inverse-background: var(--radio-color-light);
+    --radio-inverse-dot: var(--radio-color-dark);
+    --radio-highlight-inverse-background: var(--radio-highlight-color-light);
+    --radio-highlight-inverse-dot: var(--radio-highlight-color-dark);
 }
 
 .mode-dark {
     --radio-highlight-color-accent: var(--radio-highlight-color-accent-lighter);
+    --radio-dot-color: var(--radio-color-dark);
+    --radio-inverse-background: var(--radio-color-dark);
+    --radio-inverse-dot: var(--radio-color-light);
+    --radio-highlight-inverse-background: var(--radio-highlight-color-dark);
+    --radio-highlight-inverse-dot: var(--radio-highlight-color-light);
 }
 
 .color-primary .box {
@@ -125,6 +143,26 @@
 
 .color-neutral .box {
     border-color: var(--color-neutral);
+}
+
+.variant-fill .box-checked {
+    background-color: var(--radio-color);
+}
+
+.variant-fill-inverse .box-checked {
+    background-color: var(--radio-inverse-background);
+}
+
+.variant-fill-inverse .dot {
+    background-color: var(--radio-inverse-dot);
+}
+
+.variant-fill-translucent .dot {
+    background-color: var(--radio-color);
+}
+
+.variant-fill-translucent .box-checked {
+    background-color: rgb(from var(--radio-color) r g b / .24);
 }
 
 .size-md .box {
@@ -171,6 +209,26 @@
 
 .radio:hover .box {
     border-color: var(--radio-highlight-color-accent);
+}
+
+.radio.variant-fill:hover .box-checked {
+    background-color: var(--radio-highlight-color-accent);
+}
+
+.radio.variant-fill-inverse:hover .box-checked {
+    background-color: var(--radio-highlight-inverse-background);
+}
+
+.radio.variant-fill-inverse:hover .dot {
+    background-color: var(--radio-highlight-inverse-dot);
+}
+
+.radio.variant-fill-translucent:hover .box-checked {
+    background-color: rgb(from var(--radio-highlight-color-accent) r g b / .24);
+}
+
+.radio.variant-fill-translucent:hover .dot {
+    background-color: var(--radio-highlight-color-accent);
 }
 
 .radio:has(:focus-visible) .box {

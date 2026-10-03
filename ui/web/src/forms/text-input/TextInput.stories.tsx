@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { TextInput } from './TextInput';
 import { Fieldset } from '../fieldset';
 import { Text } from '../../typography';
-import { ColorVariant, SizeVariant, SurfaceFillVariant } from '@ui';
+import { ColorVariant, SizeVariant, FillVariant } from '@ui';
 
 const meta = {
     title: 'Forms/TextInput',
@@ -14,14 +14,14 @@ export default meta;
 
 const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: SurfaceFillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
+const allVariants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
 
 export const TextInputInteractive = {
     render: () => {
         const [value, setValue] = useState('Hello');
         const [color, setColor] = useState<ColorVariant>('neutral');
         const [size, setSize] = useState<SizeVariant>('sm');
-        const [variant, setVariant] = useState<SurfaceFillVariant>('fill-inverse');
+        const [variant, setVariant] = useState<FillVariant>('fill-inverse');
         const [disabled, setDisabled] = useState(false);
 
         return (

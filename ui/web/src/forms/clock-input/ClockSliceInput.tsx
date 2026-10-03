@@ -1,8 +1,11 @@
-import { ComponentProps, FC, useEffect, useRef, useState } from "react";
-import { ClockInputProps, useTheme, snapSlice, clockAngleToRadians, pointerCoords, svgAtan2ToClockAngle, arcViewBox } from "@ui";
-import { ClockSvg } from "./ClockSvg";
-import { ClockA11yInput } from "./ClockA11yInput";
-import { ClockContainer } from "./ClockContainer";
+import { ComponentProps, FC, useEffect, useRef, useState } from 'react';
+import classNames from 'classnames';
+import { ClockInputProps, useTheme, snapSlice, clockAngleToRadians, pointerCoords, svgAtan2ToClockAngle, arcViewBox } from '@ui';
+import { ClockSvg } from './ClockSvg';
+import { ClockA11yInput } from './ClockA11yInput';
+import { ClockContainer } from './ClockContainer';
+import { NumberInput } from '../number-input';
+import { StepControls } from '../step-controls';
 import styles from './clock-input.module.css';
 
 const sizeMap: Record<string, number> = { xs: 45, sm: 60, md: 75 };
@@ -25,6 +28,10 @@ export const ClockSliceInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, '
     onChange,
     label,
     disabled = false,
+    showNumberInput = false,
+    showStepControls = false,
+    numberInputPlacement = 'end',
+    ariaLabel,
     className,
     ...props
 }) => {
@@ -49,7 +56,7 @@ export const ClockSliceInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, '
     const arcStartY = center + outerRadius * Math.sin(startRad);
     const arcEndX = center + outerRadius * Math.cos(endRad);
     const arcEndY = center + outerRadius * Math.sin(endRad);
-    const arcSweep = ((arcEndAngle - arcStartAngle) % 360 + 360) % 360;
+    const arcSweep = (((arcEndAngle - arcStartAngle) % 360) + 360) % 360;
     const wedgePath = `M ${center} ${center} L ${arcStartX} ${arcStartY} A ${outerRadius} ${outerRadius} 0 ${arcSweep > 180 ? 1 : 0} 1 ${arcEndX} ${arcEndY} Z`;
 
     const [isDragging, setIsDragging] = useState(false);
@@ -142,7 +149,9 @@ export const ClockSliceInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, '
         };
         window.addEventListener('mousemove', handleGlobalMouseMove);
         window.addEventListener('mouseup', handleGlobalMouseUp);
-        window.addEventListener('touchmove', handleGlobalTouchMove, { passive: false });
+        window.addEventListener('touchmove', handleGlobalTouchMove, {
+            passive: false,
+        });
         window.addEventListener('touchend', handleGlobalTouchEnd);
 
         return () => {
@@ -152,6 +161,48 @@ export const ClockSliceInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, '
             window.removeEventListener('touchend', handleGlobalTouchEnd);
         };
     }, [handleInteraction]);
+
+    const clock = (
+        <ClockSvg
+            svgSize={svgSize}
+            viewBox={`${vb.x} ${vb.y} ${vb.width} ${vb.height}`}
+            svgRef={svgRef}
+            onMouseDown={handleMouseDown}
+            onTouchStart={handleTouchStart}
+            isDragging={isDragging}
+            center={center}
+            outerRadius={outerRadius}
+            strokeWidth={strokeWidth}
+            pointerX={pointerX}
+            pointerY={pointerY}
+            centerDotRadius={centerDotRadius}
+            thumbRadius={thumbRadius}
+            min={arcStartAngle}
+            max={arcEndAngle}
+            size={size}
+            thumbIcon={thumbIcon}
+        >
+            <path d={wedgePath} className={styles['wedge']} />
+        </ClockSvg>
+    );
+    const steppedClock = showStepControls ? (
+        <StepControls
+            color={color}
+            variant={variant}
+            size={size}
+            value={value}
+            onChange={onChange}
+            min={min}
+            max={max}
+            step={step}
+            disabled={disabled}
+            ariaLabel={ariaLabel ?? label}
+        >
+            {clock}
+        </StepControls>
+    ) : (
+        clock
+    );
 
     return (
         <ClockContainer
@@ -175,31 +226,28 @@ export const ClockSliceInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, '
                 onSync={onChange}
                 disabled={disabled}
                 label={label}
+                showValue={!showNumberInput}
+                ariaLabel={ariaLabel}
             />
-            <ClockSvg
-                svgSize={svgSize}
-                viewBox={`${vb.x} ${vb.y} ${vb.width} ${vb.height}`}
-                svgRef={svgRef}
-                onMouseDown={handleMouseDown}
-                onTouchStart={handleTouchStart}
-                isDragging={isDragging}
-                center={center}
-                outerRadius={outerRadius}
-                strokeWidth={strokeWidth}
-                pointerX={pointerX}
-                pointerY={pointerY}
-                centerDotRadius={centerDotRadius}
-                thumbRadius={thumbRadius}
-                min={arcStartAngle}
-                max={arcEndAngle}
-                size={size}
-                thumbIcon={thumbIcon}
-            >
-                <path
-                    d={wedgePath}
-                    className={styles['wedge']}
-                />
-            </ClockSvg>
+            <div className={classNames(styles['control-row'], showNumberInput && styles[`number-input-${numberInputPlacement}`])}>
+                {steppedClock}
+                {showNumberInput ? (
+                    <NumberInput
+                        value={value}
+                        onChange={(newValue) => onChange?.(newValue)}
+                        min={min}
+                        max={max}
+                        step={step}
+                        color={color}
+                        highlightColor={highlightColor}
+                        size={size}
+                        variant={variant}
+                        disabled={disabled || !onChange}
+                        showStepControls={true}
+                        ariaLabel={`${ariaLabel ?? label ?? 'Angle'} (#)`}
+                    />
+                ) : null}
+            </div>
         </ClockContainer>
     );
 };

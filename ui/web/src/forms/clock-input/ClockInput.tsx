@@ -171,6 +171,7 @@ export const ClockInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, 'onCha
     const steppedClock = showStepControls ? (
         <StepControls
             color={color}
+            variant={variant}
             size={size}
             value={value}
             onChange={onChange}

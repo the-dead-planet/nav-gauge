@@ -168,6 +168,14 @@
     color: var(--checkbox-inverse-checkmark);
 }
 
+.variant-fill-translucent .box-checked {
+    background-color: rgb(from var(--checkbox-color) r g b / .24);
+}
+
+.variant-fill-translucent .checkmark {
+    color: var(--checkbox-color);
+}
+
 .size-md .box {
     width: 16px;
     height: 16px;
@@ -228,6 +236,14 @@
 
 .checkbox.variant-fill-inverse:hover .checkmark {
     color: var(--checkbox-highlight-inverse-checkmark);
+}
+
+.checkbox.variant-fill-translucent:hover .box-checked {
+    background-color: rgb(from var(--checkbox-highlight-color-accent) r g b / .24);
+}
+
+.checkbox.variant-fill-translucent:hover .checkmark {
+    color: var(--checkbox-highlight-color-accent);
 }
 
 .checkbox:has(:focus-visible) .box {

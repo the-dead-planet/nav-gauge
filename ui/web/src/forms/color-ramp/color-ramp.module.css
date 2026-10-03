@@ -1,0 +1,136 @@
+.container {
+    display: grid;
+    gap: 8px;
+    width: 100%;
+}
+
+.ramp {
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    height: var(--ramp-height);
+    overflow: hidden;
+    border: 1px solid var(--color-neutral-500);
+    border-radius: 0;
+    background:
+        linear-gradient(to bottom, transparent, #000),
+        linear-gradient(to right, #fff, transparent),
+        var(--ramp-hue);
+    cursor: crosshair;
+    touch-action: none;
+}
+
+.ramp.disabled {
+    background:
+        repeating-linear-gradient(-45deg, transparent 0, transparent 4px, rgb(from var(--color-neutral-500) r g b / .7) 4px, rgb(from var(--color-neutral-500) r g b / .7) 6px),
+        linear-gradient(to bottom, transparent, #000),
+        linear-gradient(to right, #fff, transparent),
+        var(--ramp-hue);
+    cursor: not-allowed;
+}
+
+.ramp:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.thumb {
+    position: absolute;
+    box-sizing: border-box;
+    width: var(--thumb-size);
+    height: var(--thumb-size);
+    border: 2px solid #fff;
+    border-radius: 0;
+    box-shadow: 0 0 0 1px #000;
+    transform: translate(-50%, -50%) rotate(45deg);
+    pointer-events: none;
+}
+
+.linear-ramp {
+    width: 100%;
+    box-sizing: border-box;
+    height: 14px;
+    margin: 0;
+    appearance: none;
+    border: 1px solid var(--color-neutral-500);
+    border-radius: 0;
+    cursor: pointer;
+}
+
+.hue {
+    background: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+}
+
+.hue:disabled {
+    background:
+        repeating-linear-gradient(-45deg, transparent 0, transparent 4px, rgb(from var(--color-neutral-500) r g b / .7) 4px, rgb(from var(--color-neutral-500) r g b / .7) 6px),
+        linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+}
+
+.opacity {
+    background-color: #fff;
+    background-image:
+        linear-gradient(to right, transparent, var(--opacity-color)),
+        conic-gradient(from 45deg, #bbb 25%, #fff 0 50%, #bbb 0 75%, #fff 0);
+    background-size: 100% 100%, 8px 8px;
+}
+
+.opacity:disabled {
+    background-image:
+        repeating-linear-gradient(-45deg, transparent 0, transparent 4px, rgb(from var(--color-neutral-500) r g b / .7) 4px, rgb(from var(--color-neutral-500) r g b / .7) 6px),
+        linear-gradient(to right, transparent, var(--opacity-color)),
+        conic-gradient(from 45deg, #bbb 25%, #fff 0 50%, #bbb 0 75%, #fff 0);
+    background-size: auto, 100% 100%, 8px 8px;
+}
+
+.linear-ramp::-webkit-slider-thumb {
+    box-sizing: border-box;
+    width: var(--thumb-size);
+    height: var(--thumb-size);
+    appearance: none;
+    border: 2px solid #fff;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: 0 0 0 1px #000;
+    transform: rotate(45deg);
+}
+
+.linear-ramp::-moz-range-thumb {
+    box-sizing: border-box;
+    width: var(--thumb-size);
+    height: var(--thumb-size);
+    border: 2px solid #fff;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: 0 0 0 1px #000;
+    transform: rotate(45deg);
+}
+
+.size-xs {
+    --ramp-height: 100px;
+}
+
+.size-sm {
+    --ramp-height: 140px;
+}
+
+.size-md {
+    --ramp-height: 180px;
+}
+
+.linear-size-xs {
+    height: 12px;
+}
+
+.linear-size-sm {
+    height: 16px;
+}
+
+.linear-size-md {
+    height: 20px;
+}
+
+.linear-ramp:disabled {
+    opacity: 1;
+    cursor: not-allowed;
+}

@@ -1,4 +1,5 @@
 import { FC, useEffect, useRef, useState } from "react";
+import classNames from "classnames";
 import {
     DurationClockInputProps,
     millisecondsToDurationParts,
@@ -15,6 +16,8 @@ import { ClockDial } from "./ClockDial";
 import { ClockTicks } from "./ClockTicks";
 import { ClockPointer } from "./ClockPointer";
 import { ClockThumb } from "./ClockThumb";
+import { NumberInput } from "../number-input";
+import { StepControls } from "../step-controls";
 import styles from './clock-input.module.css';
 
 const sizeMap: Record<string, number> = { xs: 45, sm: 60, md: 75 };
@@ -33,8 +36,13 @@ export const DurationClockInput: FC<DurationClockInputProps & { id?: string; cla
     variant = 'fill-inverse',
     value,
     min = 0,
+    step = 1000,
     onChange,
     disabled = false,
+    showNumberInput = false,
+    showStepControls = false,
+    numberInputPlacement = 'end',
+    ariaLabel,
     className,
 }) => {
     const theme = useTheme();
@@ -111,6 +119,42 @@ export const DurationClockInput: FC<DurationClockInputProps & { id?: string; cla
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [disabled, minutes, seconds, activeHand]);
 
+    const clock = (
+        <svg
+            ref={svgRef}
+            width={svgSize}
+            height={svgSize}
+            viewBox={`0 0 ${svgSize} ${svgSize}`}
+            className={styles.svg}
+            aria-hidden="true"
+            onMouseDown={(event) => { event.preventDefault(); beginHand(event.clientX, event.clientY); }}
+            onTouchStart={(event) => { const touch = event.touches[0]; beginHand(touch.clientX, touch.clientY); }}
+        >
+            <circle cx={center} cy={center} r={outerRadius + strokeWidth} className={styles['bg-circle']} />
+            <ClockDial center={center} outerRadius={outerRadius} strokeWidth={strokeWidth} min={0} max={360} isFullCircle />
+            <ClockTicks center={center} outerRadius={outerRadius} size={size} strokeWidth={strokeWidth} min={0} max={360} />
+            <ClockPointer center={center} pointerX={minutesPointer.x} pointerY={minutesPointer.y} strokeWidth={strokeWidth * 0.8} isDragging={activeHand === 'minutes'} centerDotRadius={centerDotRadii[size]} />
+            <ClockThumb center={center} pointerX={minutesPointer.x} pointerY={minutesPointer.y} thumbRadius={thumbRadii[size]} isDragging={activeHand === 'minutes'} strokeWidth={strokeWidth} />
+            <ClockPointer center={center} pointerX={secondsPointer.x} pointerY={secondsPointer.y} strokeWidth={strokeWidth} isDragging={activeHand === 'seconds'} centerDotRadius={centerDotRadii[size]} />
+            <ClockThumb center={center} pointerX={secondsPointer.x} pointerY={secondsPointer.y} thumbRadius={thumbRadii[size]} isDragging={activeHand === 'seconds'} strokeWidth={strokeWidth} />
+        </svg>
+    );
+    const steppedClock = showStepControls ? (
+        <StepControls
+            color={color}
+            variant={variant}
+            size={size}
+            value={value}
+            onChange={onChange}
+            min={min}
+            step={step}
+            disabled={disabled}
+            ariaLabel={ariaLabel}
+        >
+            {clock}
+        </StepControls>
+    ) : clock;
+
     return (
         <ClockContainer
             mode={theme.mode}
@@ -119,56 +163,17 @@ export const DurationClockInput: FC<DurationClockInputProps & { id?: string; cla
             size={size}
             variant={variant}
             disabled={disabled}
-            className={className}
+            className={classNames(styles['duration-container'], className)}
         >
-            <svg
-                ref={svgRef}
-                width={svgSize}
-                height={svgSize}
-                viewBox={`0 0 ${svgSize} ${svgSize}`}
-                className={styles.svg}
-                aria-hidden="true"
-                onMouseDown={(e) => { e.preventDefault(); beginHand(e.clientX, e.clientY); }}
-                onTouchStart={(e) => { const t = e.touches[0]; beginHand(t.clientX, t.clientY); }}
-            >
-                <circle cx={center} cy={center} r={outerRadius + strokeWidth} className={styles['bg-circle']} />
-                <ClockDial center={center} outerRadius={outerRadius} strokeWidth={strokeWidth} min={0} max={360} isFullCircle />
-                <ClockTicks center={center} outerRadius={outerRadius} size={size} strokeWidth={strokeWidth} min={0} max={360} />
-
-                <ClockPointer
-                    center={center}
-                    pointerX={minutesPointer.x}
-                    pointerY={minutesPointer.y}
-                    strokeWidth={strokeWidth * 0.8}
-                    isDragging={activeHand === 'minutes'}
-                    centerDotRadius={centerDotRadii[size]}
-                />
-                <ClockThumb
-                    center={center}
-                    pointerX={minutesPointer.x}
-                    pointerY={minutesPointer.y}
-                    thumbRadius={thumbRadii[size]}
-                    isDragging={activeHand === 'minutes'}
-                    strokeWidth={strokeWidth}
-                />
-
-                <ClockPointer
-                    center={center}
-                    pointerX={secondsPointer.x}
-                    pointerY={secondsPointer.y}
-                    strokeWidth={strokeWidth}
-                    isDragging={activeHand === 'seconds'}
-                    centerDotRadius={centerDotRadii[size]}
-                />
-                <ClockThumb
-                    center={center}
-                    pointerX={secondsPointer.x}
-                    pointerY={secondsPointer.y}
-                    thumbRadius={thumbRadii[size]}
-                    isDragging={activeHand === 'seconds'}
-                    strokeWidth={strokeWidth}
-                />
-            </svg>
+            <div className={classNames(styles['control-row'], showNumberInput && styles[`number-input-${numberInputPlacement}`])}>
+                {steppedClock}
+                {showNumberInput ? (
+                    <div className={styles['duration-number-inputs']}>
+                        <NumberInput value={minutes} onChange={(newMinutes) => emit(newMinutes, seconds)} min={0} step={1} color={color} highlightColor={highlightColor} size={size} variant={variant} disabled={disabled || !onChange} showStepControls ariaLabel={`${ariaLabel ?? 'Duration'} (minutes)`} unit="min" />
+                        <NumberInput value={seconds} onChange={(newSeconds) => emit(minutes, newSeconds)} min={0} max={59} step={1} color={color} highlightColor={highlightColor} size={size} variant={variant} disabled={disabled || !onChange} showStepControls ariaLabel={`${ariaLabel ?? 'Duration'} (seconds)`} unit="s" />
+                    </div>
+                ) : null}
+            </div>
         </ClockContainer>
     );
 };

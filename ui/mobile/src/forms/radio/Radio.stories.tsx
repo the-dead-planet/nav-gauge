@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 import { Radio } from "./Radio";
 import { Text } from "../../typography";
-import { ColorVariant, SizeVariant } from "@ui";
+import { ColorVariant, RadioProps, SizeVariant } from "@ui";
 
 const styles = StyleSheet.create({
     container: {
@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
 
 const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
+const allVariants: RadioProps['variant'][] = ['fill', 'fill-inverse', 'fill-translucent'];
 
 export const RadioVariants: FC = () => {
     const [option, setOption] = useState('first');
@@ -88,16 +89,16 @@ export const RadioVariants: FC = () => {
 
             <View style={styles.section}>
                 <Text>All combinations (checked)</Text>
-                {allSizes.map(s => (
-                    <View key={s} style={styles.row}>
-                        <Text style={styles.label}>{s}</Text>
+                {allVariants.map(variant => allSizes.map(s => (
+                    <View key={`${variant}-${s}`} style={styles.row}>
+                        <Text>{variant} {s}</Text>
                         {allColors.map(c => (
-                            <Radio key={c} size={s} color={c} checked onChange={() => { }}>
+                            <Radio key={c} variant={variant} size={s} color={c} checked onChange={() => { }}>
                                 {c}
                             </Radio>
                         ))}
                     </View>
-                ))}
+                )))}
             </View>
 
             <View style={styles.section}>

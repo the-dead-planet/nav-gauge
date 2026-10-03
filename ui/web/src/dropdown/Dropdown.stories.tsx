@@ -1,5 +1,5 @@
 import type { Meta } from 'storybook-react-rsbuild';
-import { ColorVariant, Icons, SizeVariant, SurfaceFillVariant } from '@ui';
+import { ColorVariant, Icons, SizeVariant, FillVariant } from '@ui';
 import { Dropdown } from './Dropdown';
 import { useState } from 'react';
 import { Popup } from '../popup';
@@ -20,14 +20,14 @@ const options = [
 
 const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: SurfaceFillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
+const allVariants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
 
 export const SelectVariants = {
     render: () => {
         const [size, setSize] = useState<SizeVariant>('md');
         const [color, setColor] = useState<ColorVariant>('neutral');
         const [highlightColor, setHighlightColor] = useState<ColorVariant>();
-        const [variant, setVariant] = useState<SurfaceFillVariant>('fill-inverse');
+        const [variant, setVariant] = useState<FillVariant>('fill-inverse');
         const [value, setValue] = useState('brass');
 
         return (

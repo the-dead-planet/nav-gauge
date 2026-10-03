@@ -1,12 +1,12 @@
 import { ReactNode } from "react";
-import { ColorVariant, SurfaceFillVariant } from "../model";
+import { ColorVariant, FillVariant } from "../model";
 
 export type DialogPlacement = 'middle' | 'right-drawer' | 'left-drawer';
 
 export interface DialogProps {
     header: string;
     color?: ColorVariant;
-    variant?: SurfaceFillVariant;
+    variant?: FillVariant;
     placement?: DialogPlacement;
     closeText: ReactNode;
     onClose: () => void;

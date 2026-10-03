@@ -77,7 +77,7 @@ export const FileInput: FC<Props & ViewProps> = ({
             <Button
                 icon={fileIcon as unknown as ComponentType<SvgProps>}
                 color={color}
-                variant="fill-inverse"
+                variant="fill"
                 corners="circle"
                 size="xs"
                 tooltip={fileLabel}

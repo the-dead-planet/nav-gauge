@@ -77,6 +77,7 @@ export const ClockInput = forwardRef<ViewInstance, ClockInputProps & { style?: V
         <View style={{ width: stepControlsWidth }}>
             <StepControls
                 color={color}
+                variant={variant}
                 size={size}
                 value={value}
                 onChange={onChange}
