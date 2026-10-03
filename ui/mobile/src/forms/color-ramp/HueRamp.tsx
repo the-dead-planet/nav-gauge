@@ -1,4 +1,4 @@
-import { colorRampThumbSizes, HueRampProps, SizeVariant, sliderRampHeights } from "@ui";
+import { colorRampThumbSizes, HueRampProps, sliderRampHeights } from "@ui";
 import { FC } from "react";
 import {
     AccessibilityActionEvent,
