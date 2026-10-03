@@ -193,7 +193,17 @@ export const DurationClockInput: FC<DurationClockInputProps & { style?: ViewStyl
     );
     const steppedClock = showStepControls ? (
         <View style={{ width: stepControlsWidth }}>
-            <StepControls color={color} size={size} value={value} onChange={onChange} min={min} step={step} disabled={disabled} ariaLabel={ariaLabel}>
+            <StepControls
+                color={color}
+                variant={variant}
+                size={size}
+                value={value}
+                onChange={onChange}
+                min={min}
+                step={step}
+                disabled={disabled}
+                ariaLabel={ariaLabel}
+            >
                 {clock}
             </StepControls>
         </View>

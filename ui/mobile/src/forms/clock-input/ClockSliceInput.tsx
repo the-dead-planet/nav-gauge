@@ -97,6 +97,7 @@ export const ClockSliceInput = forwardRef<ViewInstance, ClockInputProps & { styl
             <View style={{ width: stepControlsWidth }}>
                 <StepControls
                     color={color}
+                    variant={variant}
                     size={size}
                     value={value}
                     onChange={onChange}

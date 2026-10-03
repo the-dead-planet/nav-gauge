@@ -85,8 +85,15 @@ function stripText(node: INode): INode {
 
 function stripColors(node: INode): INode {
   if (node.attributes) {
+    const isOutline = node.attributes.fill === "none" && Boolean(node.attributes.stroke);
+
     delete node.attributes.fill;
     delete node.attributes.stroke;
+
+    if (isOutline) {
+      node.attributes.fill = "none";
+      node.attributes.stroke = "currentColor";
+    }
   }
 
   node.children?.forEach(stripColors);

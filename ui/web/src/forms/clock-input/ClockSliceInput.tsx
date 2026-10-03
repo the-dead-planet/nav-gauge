@@ -188,6 +188,7 @@ export const ClockSliceInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, '
     const steppedClock = showStepControls ? (
         <StepControls
             color={color}
+            variant={variant}
             size={size}
             value={value}
             onChange={onChange}

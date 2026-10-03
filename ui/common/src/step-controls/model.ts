@@ -1,9 +1,10 @@
 import { ReactNode } from "react";
-import { ColorVariant, SizeVariant } from "../model";
+import { ColorVariant, FillVariant, SizeVariant } from "../model";
 
 export interface StepControlsProps {
     children: ReactNode;
     color?: ColorVariant;
+    variant?: FillVariant;
     size?: SizeVariant;
     value: number;
     onChange?: (value: number) => void;

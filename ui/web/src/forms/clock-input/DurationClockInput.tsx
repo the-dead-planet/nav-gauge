@@ -140,7 +140,17 @@ export const DurationClockInput: FC<DurationClockInputProps & { id?: string; cla
         </svg>
     );
     const steppedClock = showStepControls ? (
-        <StepControls color={color} size={size} value={value} onChange={onChange} min={min} step={step} disabled={disabled} ariaLabel={ariaLabel}>
+        <StepControls
+            color={color}
+            variant={variant}
+            size={size}
+            value={value}
+            onChange={onChange}
+            min={min}
+            step={step}
+            disabled={disabled}
+            ariaLabel={ariaLabel}
+        >
             {clock}
         </StepControls>
     ) : clock;

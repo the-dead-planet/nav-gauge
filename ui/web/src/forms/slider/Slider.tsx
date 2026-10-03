@@ -72,6 +72,7 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
     const steppedSlider = showStepControls ? (
         <StepControls
             color={color}
+            variant={variant}
             size={size}
             value={value}
             onChange={onChange}
