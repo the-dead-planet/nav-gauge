@@ -1,7 +1,6 @@
 import { useMemo, useRef, useState } from "react";
 import { LayoutChangeEvent, PanResponder } from "react-native";
-
-const clamp = (value: number): number => Math.max(0, Math.min(1, value));
+import { clampZeroOne } from "@tinker-chest";
 
 export const useRampResponder = (
     disabled: boolean,
@@ -22,7 +21,7 @@ export const useRampResponder = (
                     const context = contextReference.current;
                     if (context.width > 0) {
                         context.onPositionChange(
-                            clamp(event.nativeEvent.locationX / context.width),
+                            clampZeroOne(event.nativeEvent.locationX / context.width),
                             event.nativeEvent.locationY,
                         );
                     }
@@ -31,7 +30,7 @@ export const useRampResponder = (
                     const context = contextReference.current;
                     if (context.width > 0) {
                         context.onPositionChange(
-                            clamp(event.nativeEvent.locationX / context.width),
+                            clampZeroOne(event.nativeEvent.locationX / context.width),
                             event.nativeEvent.locationY,
                         );
                     }

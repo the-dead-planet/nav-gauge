@@ -114,9 +114,9 @@ export const AllVariants: FC = () => {
                                                 variant={variant}
                                                 glowStyle={glowStyle}
                                                 color={color}
-                                                 corners={corners}
-                                                 size={size}
-                                                 highlightColor={highlightColor}
+                                                corners={corners}
+                                                size={size}
+                                                highlightColor={highlightColor}
                                                 disabled={disabled}
                                             >
                                                 {corners !== 'hexagon' ? color : null}

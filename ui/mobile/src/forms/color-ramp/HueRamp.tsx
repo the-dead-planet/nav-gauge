@@ -1,4 +1,4 @@
-import { colorRampThumbSizes, HueRampProps } from "@ui";
+import { colorRampThumbSizes, HueRampProps, SizeVariant, sliderRampHeights } from "@ui";
 import { FC } from "react";
 import {
     AccessibilityActionEvent,
@@ -28,9 +28,6 @@ const styles = StyleSheet.create({
     },
 });
 
-const heights = { xs: 12, sm: 16, md: 20 } as const;
-const clamp = (value: number): number => Math.max(0, Math.min(1, value));
-
 export const HueRamp: FC<HueRampProps> = ({
     value,
     label = "Color",
@@ -38,7 +35,7 @@ export const HueRamp: FC<HueRampProps> = ({
     disabled = false,
     onChange,
 }) => {
-    const height = heights[size];
+    const height = sliderRampHeights[size];
     const thumbSize = colorRampThumbSizes[size];
     const { width, onLayout, panHandlers } = useRampResponder(
         disabled,

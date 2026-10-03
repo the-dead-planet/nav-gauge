@@ -1,4 +1,4 @@
-import { colorRampThumbSizes, OpacityRampProps } from "@ui";
+import { colorRampThumbSizes, OpacityRampProps, sliderRampHeights } from "@ui";
 import { FC } from "react";
 import {
     AccessibilityActionEvent,
@@ -14,6 +14,7 @@ import Svg, {
 } from "react-native-svg";
 import { DisabledRampPattern } from "./DisabledRampPattern";
 import { useRampResponder } from "./useRampResponder";
+import { clampZeroOne } from "@tinker-chest";
 
 const styles = StyleSheet.create({
     ramp: {
@@ -34,9 +35,6 @@ const styles = StyleSheet.create({
     },
 });
 
-const heights = { xs: 12, sm: 16, md: 20 } as const;
-const clamp = (value: number): number => Math.max(0, Math.min(1, value));
-
 export const OpacityRamp: FC<OpacityRampProps> = ({
     color,
     value,
@@ -45,7 +43,7 @@ export const OpacityRamp: FC<OpacityRampProps> = ({
     disabled = false,
     onChange,
 }) => {
-    const height = heights[size];
+    const height = sliderRampHeights[size];
     const thumbSize = colorRampThumbSizes[size];
     const { width, onLayout, panHandlers } = useRampResponder(
         disabled,
@@ -57,7 +55,7 @@ export const OpacityRamp: FC<OpacityRampProps> = ({
         }
         const change =
             event.nativeEvent.actionName === "increment" ? 0.05 : -0.05;
-        onChange(clamp(value + change));
+        onChange(clampZeroOne(value + change));
     };
 
     return (
@@ -110,7 +108,7 @@ export const OpacityRamp: FC<OpacityRampProps> = ({
                         width: thumbSize,
                         height: thumbSize,
                         marginLeft: -thumbSize / 2,
-                        left: clamp(value) * width,
+                        left: clampZeroOne(value) * width,
                     },
                 ]}
             />

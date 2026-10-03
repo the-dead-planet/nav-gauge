@@ -1,4 +1,4 @@
-import { colorRampThumbSizes, SaturationValueRampProps } from "@ui";
+import { colorRampThumbSizes, SaturationValueRampProps, SizeVariant } from "@ui";
 import { FC } from "react";
 import {
     AccessibilityActionEvent,
@@ -8,6 +8,7 @@ import {
 import Svg, { Defs, LinearGradient, Rect, Stop } from "react-native-svg";
 import { DisabledRampPattern } from "./DisabledRampPattern";
 import { useRampResponder } from "./useRampResponder";
+import { clampZeroOne } from "@tinker-chest";
 
 const styles = StyleSheet.create({
     ramp: {
@@ -28,8 +29,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const heights = { xs: 100, sm: 140, md: 180 } as const;
-const clamp = (value: number): number => Math.max(0, Math.min(1, value));
+const heights: { [key in SizeVariant]: number } = { xs: 100, sm: 140, md: 180 };
 
 export const SaturationValueRamp: FC<SaturationValueRampProps> = ({
     hue,
@@ -45,7 +45,7 @@ export const SaturationValueRamp: FC<SaturationValueRampProps> = ({
     const { width, onLayout, panHandlers } = useRampResponder(
         disabled,
         (horizontalPosition, verticalPosition) => {
-            onChange(horizontalPosition, clamp(1 - verticalPosition / height));
+            onChange(horizontalPosition, clampZeroOne(1 - verticalPosition / height));
         },
     );
     const handleAccessibility = (event: AccessibilityActionEvent) => {
@@ -54,7 +54,7 @@ export const SaturationValueRamp: FC<SaturationValueRampProps> = ({
         }
         const change =
             event.nativeEvent.actionName === "increment" ? 0.05 : -0.05;
-        onChange(clamp(saturation + change), brightness);
+        onChange(clampZeroOne(saturation + change), brightness);
     };
 
     return (

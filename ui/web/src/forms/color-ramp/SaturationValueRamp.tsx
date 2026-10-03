@@ -1,8 +1,7 @@
 import { CSSProperties, FC, KeyboardEvent, PointerEvent, useRef } from "react";
 import { colorRampThumbSizes, SaturationValueRampProps } from "@ui";
+import { clampZeroOne } from "@tinker-chest";
 import styles from './color-ramp.module.css';
-
-const clamp = (value: number): number => Math.max(0, Math.min(1, value));
 
 export const SaturationValueRamp: FC<SaturationValueRampProps> = ({
     hue,
@@ -21,24 +20,24 @@ export const SaturationValueRamp: FC<SaturationValueRampProps> = ({
         }
         const bounds = boundsRef.current;
         onChange(
-            clamp((event.clientX - bounds.left) / bounds.width),
-            clamp(1 - (event.clientY - bounds.top) / bounds.height),
+            clampZeroOne((event.clientX - bounds.left) / bounds.width),
+            clampZeroOne(1 - (event.clientY - bounds.top) / bounds.height),
         );
     };
     const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
         const step = event.shiftKey ? .1 : .01;
         switch (event.key) {
             case 'ArrowLeft':
-                onChange(clamp(saturation - step), brightness);
+                onChange(clampZeroOne(saturation - step), brightness);
                 break;
             case 'ArrowRight':
-                onChange(clamp(saturation + step), brightness);
+                onChange(clampZeroOne(saturation + step), brightness);
                 break;
             case 'ArrowDown':
-                onChange(saturation, clamp(brightness - step));
+                onChange(saturation, clampZeroOne(brightness - step));
                 break;
             case 'ArrowUp':
-                onChange(saturation, clamp(brightness + step));
+                onChange(saturation, clampZeroOne(brightness + step));
                 break;
             default:
                 return;
