@@ -1,11 +1,11 @@
-import { ChangeEvent, ComponentProps, FC, useEffect, useRef, useState } from "react";
+import { ChangeEvent, ComponentProps, FC, useRef, useState } from "react";
 import classNames from "classnames";
-import { ColorFormat, ColorInputProps, DropdownOption, formatColor, parseColor, toHexColor, tryParseColor, useTheme } from "@ui";
+import { ColorFormat, ColorInputProps, DropdownOption, parseColor, toHexColor, useColorInputState, useTheme } from "@ui";
 import { Label } from "../../typography";
 import { Popup } from "../../popup";
 import { Dropdown } from "../../dropdown";
 import { ColorButton } from "../color-button";
-import { ColorRamp } from "../color-picker/ColorRamp";
+import { ColorRamp } from "../color-ramp";
 import styles from './color-input.module.css';
 
 const formatOptions: DropdownOption<ColorFormat>[] = [
@@ -35,48 +35,14 @@ export const ColorInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' |
     const theme = useTheme();
     const anchorRef = useRef<HTMLButtonElement>(null);
     const [open, setOpen] = useState(false);
-    const parsedValue = tryParseColor(value);
-    const [format, setFormat] = useState<ColorFormat>(parsedValue?.format ?? 'hex');
-    const [draft, setDraft] = useState(value);
-    const [invalid, setInvalid] = useState(false);
-
-    useEffect(() => {
-        const nextParsedValue = tryParseColor(value);
-        setDraft(value);
-        setInvalid(false);
-        if (nextParsedValue) setFormat(nextParsedValue.format);
-    }, [value]);
+    const { draft, format, invalid, changeDraft, changeFormat, changeColor } = useColorInputState(value, onChange);
 
     const handleNativeChange = (event: ChangeEvent<HTMLInputElement>) => {
-        onChange(formatColor(parseColor(event.target.value), format));
+        changeColor(event.target.value);
     };
 
     const handleDraftChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const nextDraft = event.target.value;
-        const nextParsedValue = tryParseColor(nextDraft);
-        setDraft(nextDraft);
-        setInvalid(!nextParsedValue);
-        if (nextParsedValue) {
-            setFormat(nextParsedValue.format);
-            onChange(nextDraft);
-        }
-    };
-
-    const handleFormatChange = (nextFormat: ColorFormat) => {
-        const color = tryParseColor(draft)?.color ?? parseColor(value);
-        const nextValue = formatColor(color, nextFormat);
-        setFormat(nextFormat);
-        setDraft(nextValue);
-        setInvalid(false);
-        onChange(nextValue);
-    };
-
-    const handleRampChange = (nextValue: string) => {
-        const nextColor = parseColor(nextValue);
-        const nextFormat = nextColor.a < 1
-            ? format === 'hsl' || format === 'hsla' ? 'hsla' : 'rgba'
-            : format;
-        onChange(formatColor(nextColor, nextFormat));
+        changeDraft(event.target.value);
     };
 
     return (
@@ -116,7 +82,7 @@ export const ColorInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' |
                             disabled={disabled}
                             ariaLabel={`${label} format`}
                             className={styles['format-select']}
-                            onChange={handleFormatChange}
+                            onChange={changeFormat}
                         />
                     ) : null}
                     {showValueInput ? (
@@ -157,7 +123,7 @@ export const ColorInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' |
                             label={label}
                             size={size}
                             disabled={disabled}
-                            onChange={handleRampChange}
+                            onChange={changeColor}
                         />
                     </div>
                 </Popup>

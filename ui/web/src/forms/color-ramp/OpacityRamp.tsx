@@ -1,5 +1,5 @@
 import { CSSProperties, FC } from "react";
-import { OpacityRampProps } from "@ui";
+import { colorRampThumbSizes, OpacityRampProps } from "@ui";
 import styles from './color-ramp.module.css';
 
 export const OpacityRamp: FC<OpacityRampProps> = ({ color, value, label = 'Opacity', size = 'sm', disabled = false, onChange }) => (
@@ -12,7 +12,10 @@ export const OpacityRamp: FC<OpacityRampProps> = ({ color, value, label = 'Opaci
         disabled={disabled}
         aria-label={label}
         className={`${styles['linear-ramp']} ${styles.opacity} ${styles[`linear-size-${size}`]}`}
-        style={{ '--opacity-color': color } as CSSProperties}
+        style={{
+            '--opacity-color': color,
+            '--thumb-size': `${colorRampThumbSizes[size]}px`,
+        } as CSSProperties}
         onChange={(event) => onChange(Number(event.target.value))}
     />
 );

@@ -1,7 +1,7 @@
 import { useTheme } from "@ui";
 import { FC } from "react";
 import { StyleSheet } from "react-native";
-import Svg, { Defs, Line, Pattern, Rect } from "react-native-svg";
+import Svg, { Defs, Path, Pattern, Rect } from "react-native-svg";
 
 const styles = StyleSheet.create({
     pattern: {
@@ -29,27 +29,8 @@ export const DisabledRampPattern: FC = () => {
                     height="12"
                     patternUnits="userSpaceOnUse"
                 >
-                    <Line
-                        x1="-3"
-                        y1="3"
-                        x2="3"
-                        y2="-3"
-                        stroke={color}
-                        strokeWidth="2"
-                    />
-                    <Line
-                        x1="0"
-                        y1="12"
-                        x2="12"
-                        y2="0"
-                        stroke={color}
-                        strokeWidth="2"
-                    />
-                    <Line
-                        x1="9"
-                        y1="15"
-                        x2="15"
-                        y2="9"
+                    <Path
+                        d="M-3 3 3-3M0 12 12 0M9 15 15 9"
                         stroke={color}
                         strokeWidth="2"
                     />

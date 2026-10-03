@@ -1,29 +1,27 @@
 import { useEffect, useState } from 'react';
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { ColorPicker } from './ColorPicker';
+import { ColorRamp } from './ColorRamp';
 
 const meta = {
-    title: 'Forms/ColorPicker',
-    component: ColorPicker,
+    title: 'Forms/ColorRamp',
+    component: ColorRamp,
     args: {
-        label: 'Line color',
+        value: 'rgb(67, 105, 255)',
+        label: 'Color',
         opacityLabel: 'Opacity',
-        value: 'rgba(255, 102, 0, 0.8)',
         size: 'sm',
-        variant: 'fill-inverse',
         disabled: false,
         onChange: () => {},
     },
     argTypes: {
+        value: { control: 'color' },
         label: { control: 'text' },
         opacityLabel: { control: 'text' },
-        value: { control: 'color' },
         size: { control: 'select', options: ['xs', 'sm', 'md'] },
-        variant: { control: 'select', options: ['fill', 'fill-inverse', 'fill-translucent'] },
         disabled: { control: 'boolean' },
         onChange: { control: false },
     },
-} satisfies Meta<typeof ColorPicker>;
+} satisfies Meta<typeof ColorRamp>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -34,6 +32,6 @@ export const Playground: Story = {
 
         useEffect(() => setValue(args.value), [args.value]);
 
-        return <ColorPicker {...args} value={value} onChange={setValue} />;
+        return <ColorRamp {...args} value={value} onChange={setValue} />;
     },
 };

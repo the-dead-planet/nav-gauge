@@ -1,6 +1,6 @@
-import { FC, RefObject, useEffect, useRef, useState } from "react";
+import { FC, RefObject, useRef, useState } from "react";
 import { HostInstance, TextInput as NativeTextInput, View, StyleSheet } from "react-native";
-import { ColorFormat, ColorInputProps, formatColor, parseColor, toCssColor, tryParseColor, useTheme } from "@ui";
+import { ColorFormat, ColorInputProps, parseColor, toCssColor, useColorInputState, useTheme } from "@ui";
 import { Text } from "../../typography";
 import { Dropdown } from "../../dropdown";
 import { Popup } from "../../popup";
@@ -73,10 +73,7 @@ export const ColorInput: FC<ColorInputProps> = ({
     const theme = useTheme();
     const [open, setOpen] = useState(false);
     const anchorRef = useRef<HostInstance>(null);
-    const parsedValue = tryParseColor(value);
-    const [format, setFormat] = useState<ColorFormat>(parsedValue?.format ?? 'hex');
-    const [draft, setDraft] = useState(value);
-    const [invalid, setInvalid] = useState(false);
+    const { draft, format, invalid, changeDraft, changeFormat, changeColor } = useColorInputState(value, onChange);
     const borderColor = theme.color(color, 500);
     const inverseBackgroundColor = theme.color(color, theme.isLight ? 100 : 900);
     const backgroundColor = variant === 'fill'
@@ -91,39 +88,6 @@ export const ColorInput: FC<ColorInputProps> = ({
     const textColor = variant === 'fill'
         ? inverseBackgroundColor
         : theme.color(color, theme.isLight ? 900 : 100);
-
-    useEffect(() => {
-        const nextParsedValue = tryParseColor(value);
-        setDraft(value);
-        setInvalid(false);
-        if (nextParsedValue) setFormat(nextParsedValue.format);
-    }, [value]);
-
-    const handleDraftChange = (nextDraft: string) => {
-        const nextParsedValue = tryParseColor(nextDraft);
-        setDraft(nextDraft);
-        setInvalid(!nextParsedValue);
-        if (nextParsedValue) {
-            setFormat(nextParsedValue.format);
-            onChange(nextDraft);
-        }
-    };
-
-    const handleFormatChange = (nextFormat: ColorFormat) => {
-        const nextValue = formatColor(tryParseColor(draft)?.color ?? parseColor(value), nextFormat);
-        setFormat(nextFormat);
-        setDraft(nextValue);
-        setInvalid(false);
-        onChange(nextValue);
-    };
-
-    const handleRampChange = (nextValue: string) => {
-        const nextColor = parseColor(nextValue);
-        const nextFormat = nextColor.a < 1
-            ? format === 'hsl' || format === 'hsla' ? 'hsla' : 'rgba'
-            : format;
-        onChange(formatColor(nextColor, nextFormat));
-    };
 
     return (
         <>
@@ -162,7 +126,7 @@ export const ColorInput: FC<ColorInputProps> = ({
                                 color={color}
                                 highlightColor={highlightColor}
                                 disabled={disabled}
-                                onChange={handleFormatChange}
+                                onChange={changeFormat}
                             />
                         </View>
                     ) : null}
@@ -180,7 +144,7 @@ export const ColorInput: FC<ColorInputProps> = ({
                                     fontSize: size === 'xs' ? 10 : size === 'sm' ? 11 : 12,
                                 },
                             ]}
-                            onChangeText={handleDraftChange}
+                            onChangeText={changeDraft}
                         />
                     ) : null}
                 </View>
@@ -201,13 +165,15 @@ export const ColorInput: FC<ColorInputProps> = ({
                         },
                     ]}
                 >
-                    <ColorRamp
-                        value={value}
-                        label={label}
-                        size={size}
-                        disabled={disabled}
-                        onChange={handleRampChange}
-                    />
+                    {open ? (
+                        <ColorRamp
+                            value={value}
+                            label={label}
+                            size={size}
+                            disabled={disabled}
+                            onChange={changeColor}
+                        />
+                    ) : null}
                 </Popup>
             ) : null}
         </>

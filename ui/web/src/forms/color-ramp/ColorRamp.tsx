@@ -1,28 +1,22 @@
-import { ColorRampProps, useColorRampState } from "@ui";
 import { FC } from "react";
-import { StyleSheet, View } from "react-native";
+import { ColorRampProps, useColorRampState } from "@ui";
 import { HueRamp } from "./HueRamp";
 import { OpacityRamp } from "./OpacityRamp";
 import { SaturationValueRamp } from "./SaturationValueRamp";
-
-const styles = StyleSheet.create({
-    container: {
-        gap: 8,
-    },
-});
+import styles from './color-ramp.module.css';
 
 export const ColorRamp: FC<ColorRampProps> = ({
     value,
-    label = "Color",
+    label = 'Color',
     opacityLabel,
-    size = "sm",
+    size = 'sm',
     disabled = false,
     onChange,
 }) => {
     const ramp = useColorRampState(value, onChange);
 
     return (
-        <View style={styles.container}>
+        <div className={`${styles.container} ${styles[`size-${size}`]} ${disabled ? styles.disabled : ''}`}>
             <SaturationValueRamp
                 hue={ramp.hue}
                 saturation={ramp.saturation}
@@ -32,13 +26,7 @@ export const ColorRamp: FC<ColorRampProps> = ({
                 disabled={disabled}
                 onChange={ramp.changeSaturationValue}
             />
-            <HueRamp
-                value={ramp.hue}
-                label={label}
-                size={size}
-                disabled={disabled}
-                onChange={ramp.changeHue}
-            />
+            <HueRamp value={ramp.hue} label={label} size={size} disabled={disabled} onChange={ramp.changeHue} />
             <OpacityRamp
                 color={ramp.opaqueColor}
                 value={ramp.opacity}
@@ -47,6 +35,6 @@ export const ColorRamp: FC<ColorRampProps> = ({
                 disabled={disabled}
                 onChange={ramp.changeOpacity}
             />
-        </View>
+        </div>
     );
 };

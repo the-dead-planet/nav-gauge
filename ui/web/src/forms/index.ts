@@ -3,6 +3,7 @@ export * from './clock-input';
 export * from './color-input';
 export * from './color-button';
 export * from './color-picker';
+export * from './color-ramp';
 export * from './color-select-field';
 export * from './fieldset';
 export * from './file-input';

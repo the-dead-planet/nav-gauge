@@ -2,7 +2,7 @@ import { FC } from "react";
 import { ColorPickerProps, getThemeColorSwatches, parseColor, toCssColor, useTheme } from "@ui";
 import { ColorButton } from "../color-button";
 import { ColorInput } from "../color-input";
-import { ColorRamp } from "./ColorRamp";
+import { ColorRamp } from "../color-ramp";
 import styles from './color-picker.module.css';
 
 export const ColorPicker: FC<ColorPickerProps> = ({
@@ -18,11 +18,7 @@ export const ColorPicker: FC<ColorPickerProps> = ({
     const parsed = parseColor(value);
     const swatches = getThemeColorSwatches(theme);
 
-    const handleSwatch = (swatchColor: string) => {
-        onChange(toCssColor({ ...parseColor(swatchColor), a: parsed.a }));
-    };
-
-    const handleColorInput = (color: string) => {
+    const handleSwatchChange = (color: string) => {
         onChange(toCssColor({ ...parseColor(color), a: parsed.a }));
     };
 
@@ -39,7 +35,7 @@ export const ColorPicker: FC<ColorPickerProps> = ({
             <ColorInput
                 label={label}
                 value={value}
-                onChange={handleColorInput}
+                onChange={onChange}
                 size={size}
                 variant={variant}
                 disabled={disabled}
@@ -56,7 +52,7 @@ export const ColorPicker: FC<ColorPickerProps> = ({
                         size={size}
                         selected={value === swatch.color}
                         disabled={disabled}
-                        onClick={() => handleSwatch(swatch.color)}
+                        onClick={() => handleSwatchChange(swatch.color)}
                     />
                 ))}
             </div>

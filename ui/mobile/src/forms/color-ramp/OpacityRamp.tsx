@@ -1,10 +1,7 @@
-import { OpacityRampProps } from "@ui";
-import { FC, useMemo, useRef, useState } from "react";
+import { colorRampThumbSizes, OpacityRampProps } from "@ui";
+import { FC } from "react";
 import {
     AccessibilityActionEvent,
-    HostInstance,
-    LayoutChangeEvent,
-    PanResponder,
     StyleSheet,
     View,
 } from "react-native";
@@ -16,6 +13,7 @@ import Svg, {
     Stop,
 } from "react-native-svg";
 import { DisabledRampPattern } from "./DisabledRampPattern";
+import { useRampResponder } from "./useRampResponder";
 
 const styles = StyleSheet.create({
     ramp: {
@@ -47,38 +45,12 @@ export const OpacityRamp: FC<OpacityRampProps> = ({
     disabled = false,
     onChange,
 }) => {
-    const rampReference = useRef<HostInstance>(null);
     const height = heights[size];
-    const thumbSize = height + 4;
-    const [layout, setLayout] = useState({ x: 0, width: 0 });
-    const contextReference = useRef({ disabled, onChange, layout });
-    contextReference.current = { disabled, onChange, layout };
-
-    const update = (pageX: number) => {
-        const context = contextReference.current;
-        if (context.disabled || context.layout.width === 0) {
-            return;
-        }
-        context.onChange(
-            clamp((pageX - context.layout.x) / context.layout.width),
-        );
-    };
-    const panResponder = useMemo(
-        () =>
-            PanResponder.create({
-                onStartShouldSetPanResponder: () =>
-                    !contextReference.current.disabled,
-                onMoveShouldSetPanResponder: () =>
-                    !contextReference.current.disabled,
-                onPanResponderGrant: (event) => update(event.nativeEvent.pageX),
-                onPanResponderMove: (event) => update(event.nativeEvent.pageX),
-            }),
-        [],
+    const thumbSize = colorRampThumbSizes[size];
+    const { width, onLayout, panHandlers } = useRampResponder(
+        disabled,
+        (horizontalPosition) => onChange(horizontalPosition),
     );
-    const handleLayout = (event: LayoutChangeEvent) => {
-        const width = event.nativeEvent.layout.width;
-        rampReference.current?.measureInWindow((x) => setLayout({ x, width }));
-    };
     const handleAccessibility = (event: AccessibilityActionEvent) => {
         if (disabled) {
             return;
@@ -90,9 +62,9 @@ export const OpacityRamp: FC<OpacityRampProps> = ({
 
     return (
         <View
-            ref={rampReference}
             style={[styles.ramp, { height }]}
-            onLayout={handleLayout}
+            hitSlop={8}
+            onLayout={onLayout}
             accessibilityRole="adjustable"
             accessibilityLabel={label}
             accessibilityValue={{
@@ -107,7 +79,7 @@ export const OpacityRamp: FC<OpacityRampProps> = ({
                 { name: "decrement" },
             ]}
             onAccessibilityAction={handleAccessibility}
-            {...panResponder.panHandlers}
+            {...panHandlers}
         >
             <Svg width="100%" height="100%">
                 <Defs>
@@ -138,7 +110,7 @@ export const OpacityRamp: FC<OpacityRampProps> = ({
                         width: thumbSize,
                         height: thumbSize,
                         marginLeft: -thumbSize / 2,
-                        left: clamp(value) * layout.width,
+                        left: clamp(value) * width,
                     },
                 ]}
             />

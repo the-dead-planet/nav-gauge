@@ -36,8 +36,9 @@
 
 .thumb {
     position: absolute;
-    width: 14px;
-    height: 14px;
+    box-sizing: border-box;
+    width: var(--thumb-size);
+    height: var(--thumb-size);
     border: 2px solid #fff;
     border-radius: 0;
     box-shadow: 0 0 0 1px #000;
@@ -83,8 +84,9 @@
 }
 
 .linear-ramp::-webkit-slider-thumb {
-    width: var(--linear-thumb-size);
-    height: var(--linear-thumb-size);
+    box-sizing: border-box;
+    width: var(--thumb-size);
+    height: var(--thumb-size);
     appearance: none;
     border: 2px solid #fff;
     border-radius: 0;
@@ -94,8 +96,9 @@
 }
 
 .linear-ramp::-moz-range-thumb {
-    width: var(--linear-thumb-size);
-    height: var(--linear-thumb-size);
+    box-sizing: border-box;
+    width: var(--thumb-size);
+    height: var(--thumb-size);
     border: 2px solid #fff;
     border-radius: 0;
     background: transparent;
@@ -117,17 +120,14 @@
 
 .linear-size-xs {
     height: 12px;
-    --linear-thumb-size: 16px;
 }
 
 .linear-size-sm {
     height: 16px;
-    --linear-thumb-size: 20px;
 }
 
 .linear-size-md {
     height: 20px;
-    --linear-thumb-size: 24px;
 }
 
 .linear-ramp:disabled {

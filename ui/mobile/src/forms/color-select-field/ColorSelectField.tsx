@@ -57,15 +57,17 @@ export const ColorSelectField: FC<ColorSelectFieldProps> = ({
                     },
                 ]}
             >
-                <ColorPicker
-                    label={label}
-                    value={value}
-                    opacityLabel={opacityLabel}
-                    size={size}
-                    variant={variant}
-                    disabled={disabled}
-                    onChange={onChange}
-                />
+                {open ? (
+                    <ColorPicker
+                        label={label}
+                        value={value}
+                        opacityLabel={opacityLabel}
+                        size={size}
+                        variant={variant}
+                        disabled={disabled}
+                        onChange={onChange}
+                    />
+                ) : null}
             </Popup>
         </>
     );

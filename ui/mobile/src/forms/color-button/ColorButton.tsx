@@ -1,6 +1,7 @@
 import { forwardRef } from "react";
-import { HostInstance, Pressable, PressableProps, StyleSheet, View } from "react-native";
+import { HostInstance, Pressable, PressableProps, StyleSheet } from "react-native";
 import { ColorButtonProps, formatColorDescription, useTheme } from "@ui";
+import { DisabledRampPattern } from "../color-ramp/DisabledRampPattern";
 
 const styles = StyleSheet.create({
     button: {
@@ -11,14 +12,6 @@ const styles = StyleSheet.create({
     },
     disabled: {
         overflow: 'hidden',
-    },
-    stripe: {
-        position: 'absolute',
-        left: '-25%',
-        width: '150%',
-        height: 2,
-        transform: [{ rotate: '-45deg' }],
-        pointerEvents: 'none',
     },
 });
 
@@ -60,18 +53,7 @@ export const ColorButton = forwardRef<HostInstance, ColorButtonProps & Omit<Pres
             onPress={onPress}
             {...props}
         >
-            {disabled ? [20, 50, 80].map((top) => (
-                <View
-                    key={top}
-                    style={[
-                        styles.stripe,
-                        {
-                            top: `${top}%`,
-                            backgroundColor: theme.color('neutral', theme.isDark ? 300 : 700),
-                        },
-                    ]}
-                />
-            )) : null}
+            {disabled ? <DisabledRampPattern /> : null}
         </Pressable>
     );
 });

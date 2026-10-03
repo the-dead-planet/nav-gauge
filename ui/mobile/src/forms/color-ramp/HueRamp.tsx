@@ -1,15 +1,13 @@
-import { HueRampProps } from "@ui";
-import { FC, useMemo, useRef, useState } from "react";
+import { colorRampThumbSizes, HueRampProps } from "@ui";
+import { FC } from "react";
 import {
     AccessibilityActionEvent,
-    HostInstance,
-    LayoutChangeEvent,
-    PanResponder,
     StyleSheet,
     View,
 } from "react-native";
 import Svg, { Defs, LinearGradient, Rect, Stop } from "react-native-svg";
 import { DisabledRampPattern } from "./DisabledRampPattern";
+import { useRampResponder } from "./useRampResponder";
 
 const styles = StyleSheet.create({
     ramp: {
@@ -40,38 +38,12 @@ export const HueRamp: FC<HueRampProps> = ({
     disabled = false,
     onChange,
 }) => {
-    const rampReference = useRef<HostInstance>(null);
     const height = heights[size];
-    const thumbSize = height + 4;
-    const [layout, setLayout] = useState({ x: 0, width: 0 });
-    const contextReference = useRef({ disabled, onChange, layout });
-    contextReference.current = { disabled, onChange, layout };
-
-    const update = (pageX: number) => {
-        const context = contextReference.current;
-        if (context.disabled || context.layout.width === 0) {
-            return;
-        }
-        context.onChange(
-            clamp((pageX - context.layout.x) / context.layout.width) * 360,
-        );
-    };
-    const panResponder = useMemo(
-        () =>
-            PanResponder.create({
-                onStartShouldSetPanResponder: () =>
-                    !contextReference.current.disabled,
-                onMoveShouldSetPanResponder: () =>
-                    !contextReference.current.disabled,
-                onPanResponderGrant: (event) => update(event.nativeEvent.pageX),
-                onPanResponderMove: (event) => update(event.nativeEvent.pageX),
-            }),
-        [],
+    const thumbSize = colorRampThumbSizes[size];
+    const { width, onLayout, panHandlers } = useRampResponder(
+        disabled,
+        (horizontalPosition) => onChange(horizontalPosition * 360),
     );
-    const handleLayout = (event: LayoutChangeEvent) => {
-        const width = event.nativeEvent.layout.width;
-        rampReference.current?.measureInWindow((x) => setLayout({ x, width }));
-    };
     const handleAccessibility = (event: AccessibilityActionEvent) => {
         if (disabled) {
             return;
@@ -82,9 +54,9 @@ export const HueRamp: FC<HueRampProps> = ({
 
     return (
         <View
-            ref={rampReference}
             style={[styles.ramp, { height }]}
-            onLayout={handleLayout}
+            hitSlop={8}
+            onLayout={onLayout}
             accessibilityRole="adjustable"
             accessibilityLabel={`${label} hue`}
             accessibilityValue={{ min: 0, max: 360, now: Math.round(value) }}
@@ -94,7 +66,7 @@ export const HueRamp: FC<HueRampProps> = ({
                 { name: "decrement" },
             ]}
             onAccessibilityAction={handleAccessibility}
-            {...panResponder.panHandlers}
+            {...panHandlers}
         >
             <Svg width="100%" height="100%">
                 <Defs>
@@ -118,7 +90,7 @@ export const HueRamp: FC<HueRampProps> = ({
                         width: thumbSize,
                         height: thumbSize,
                         marginLeft: -thumbSize / 2,
-                        left: (value / 360) * layout.width,
+                        left: (value / 360) * width,
                     },
                 ]}
             />

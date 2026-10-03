@@ -1,5 +1,5 @@
 import { CSSProperties, FC, KeyboardEvent, PointerEvent, useRef } from "react";
-import { SaturationValueRampProps } from "@ui";
+import { colorRampThumbSizes, SaturationValueRampProps } from "@ui";
 import styles from './color-ramp.module.css';
 
 const clamp = (value: number): number => Math.max(0, Math.min(1, value));
@@ -14,11 +14,12 @@ export const SaturationValueRamp: FC<SaturationValueRampProps> = ({
     onChange,
 }) => {
     const rampRef = useRef<HTMLDivElement>(null);
+    const boundsRef = useRef<DOMRect | null>(null);
     const updateFromPointer = (event: PointerEvent<HTMLDivElement>) => {
-        if (disabled || !rampRef.current) {
+        if (disabled || !boundsRef.current) {
             return;
         }
-        const bounds = rampRef.current.getBoundingClientRect();
+        const bounds = boundsRef.current;
         onChange(
             clamp((event.clientX - bounds.left) / bounds.width),
             clamp(1 - (event.clientY - bounds.top) / bounds.height),
@@ -54,8 +55,12 @@ export const SaturationValueRamp: FC<SaturationValueRampProps> = ({
             aria-valuetext={`${Math.round(saturation * 100)}% saturation, ${Math.round(brightness * 100)}% brightness`}
             aria-disabled={disabled}
             className={`${styles.ramp} ${styles[`size-${size}`]} ${disabled ? styles.disabled : ''}`}
-            style={{ '--ramp-hue': `hsl(${hue}, 100%, 50%)` } as CSSProperties}
+            style={{
+                '--ramp-hue': `hsl(${hue}, 100%, 50%)`,
+                '--thumb-size': `${colorRampThumbSizes[size]}px`,
+            } as CSSProperties}
             onPointerDown={(event) => {
+                boundsRef.current = event.currentTarget.getBoundingClientRect();
                 event.currentTarget.setPointerCapture(event.pointerId);
                 updateFromPointer(event);
             }}
@@ -63,6 +68,12 @@ export const SaturationValueRamp: FC<SaturationValueRampProps> = ({
                 if (event.currentTarget.hasPointerCapture(event.pointerId)) {
                     updateFromPointer(event);
                 }
+            }}
+            onPointerUp={() => {
+                boundsRef.current = null;
+            }}
+            onPointerCancel={() => {
+                boundsRef.current = null;
             }}
             onKeyDown={handleKeyDown}
         >

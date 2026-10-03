@@ -1,97 +1,63 @@
 import { FC, useState } from "react";
-import { Text } from "../../typography";
-import { ScrollView, View, Switch, StyleSheet } from "react-native";
-import { ColorInput } from "./ColorInput";
+import { ScrollView, StyleSheet, Switch, TextInput, View } from "react-native";
 import { ColorVariant, FillVariant, SizeVariant } from "@ui";
+import { Button } from "../../button";
+import { Text } from "../../typography";
+import { ColorInput } from "./ColorInput";
 
 const styles = StyleSheet.create({
-    container: { padding: 16, gap: 16 },
-    section: { paddingVertical: 12, gap: 8 },
-    row: { flexDirection: 'row', gap: 8, flexWrap: 'wrap', alignItems: 'center' },
-    label: { fontSize: 14, fontWeight: '600' },
+    container: { gap: 16, padding: 16 },
+    row: { alignItems: "center", flexDirection: "row", flexWrap: "wrap", gap: 8 },
+    input: { borderColor: "#888", borderWidth: 1, color: "#fff", padding: 8 },
 });
 
-export const ColorInputInteractive: FC = () => {
-    const [value, setValue] = useState('#ff6600');
-    const [color, setColor] = useState<ColorVariant>('neutral');
-    const [size, setSize] = useState<SizeVariant>('sm');
-    const [variant, setVariant] = useState<FillVariant>('fill-inverse');
+export const Playground: FC = () => {
+    const [value, setValue] = useState("#ff6600");
+    const [label, setLabel] = useState("Border color");
+    const [color, setColor] = useState<ColorVariant>("neutral");
+    const [highlightColor, setHighlightColor] = useState<ColorVariant>("neutral");
+    const [size, setSize] = useState<SizeVariant>("sm");
+    const [variant, setVariant] = useState<FillVariant>("fill-inverse");
     const [disabled, setDisabled] = useState(false);
-
-    const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
-    const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-    const allVariants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
+    const [showColorButton, setShowColorButton] = useState(true);
+    const [showValueInput, setShowValueInput] = useState(true);
+    const [showFormatSelect, setShowFormatSelect] = useState(false);
+    const colors: ColorVariant[] = ["neutral", "primary", "secondary", "tertiary"];
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
             <ColorInput
-                label="Border Color"
+                label={label}
                 value={value}
-                onChange={setValue}
                 color={color}
+                highlightColor={highlightColor}
                 size={size}
                 variant={variant}
                 disabled={disabled}
-                showFormatSelect
+                showColorButton={showColorButton}
+                showValueInput={showValueInput}
+                showFormatSelect={showFormatSelect}
+                onChange={setValue}
             />
-
-            <View style={styles.section}>
-                <Text style={styles.label}>Current value: {value}</Text>
-            </View>
-
-            <View style={styles.section}>
-                <Text style={styles.label}>Color</Text>
-                <View style={styles.row}>
-                    {allColors.map(c => (
-                        <Switch key={c} value={color === c} onValueChange={() => setColor(c)} />
-                    ))}
-                </View>
-                <Text>{color}</Text>
-            </View>
-
-            <View style={styles.section}>
-                <Text style={styles.label}>Variant</Text>
-                <View style={styles.row}>
-                    {allVariants.map(currentVariant => (
-                        <Switch key={currentVariant} value={variant === currentVariant} onValueChange={() => setVariant(currentVariant)} />
-                    ))}
-                </View>
-                <Text>{variant}</Text>
-            </View>
-
-            <View style={styles.section}>
-                <Text style={styles.label}>Size</Text>
-                <View style={styles.row}>
-                    {allSizes.map(s => (
-                        <Switch key={s} value={size === s} onValueChange={() => setSize(s)} />
-                    ))}
-                </View>
-                <Text>{size}</Text>
-            </View>
-
+            <Text>{value}</Text>
+            <TextInput style={styles.input} value={label} onChangeText={setLabel} />
             <View style={styles.row}>
-                <Text>Disabled:</Text>
-                <Switch value={disabled} onValueChange={setDisabled} />
+                {colors.map((item) => <Button key={`color-${item}`} size="xs" onPress={() => setColor(item)}>{item}</Button>)}
+                {colors.map((item) => <Button key={`highlight-${item}`} size="xs" onPress={() => setHighlightColor(item)}>H {item}</Button>)}
+                {(["xs", "sm", "md"] as const).map((item) => <Button key={item} size="xs" onPress={() => setSize(item)}>{item}</Button>)}
+                {(["fill", "fill-inverse", "fill-translucent"] as const).map((item) => <Button key={item} size="xs" onPress={() => setVariant(item)}>{item}</Button>)}
             </View>
-
-            <View style={styles.section}>
-                <Text style={styles.label}>All colors</Text>
-                {allColors.map(c => (
-                    <ColorInput key={c} label={c} value="#336699" onChange={() => { }} color={c} />
-                ))}
-            </View>
-
-            <View style={styles.section}>
-                <Text style={styles.label}>All sizes</Text>
-                {allSizes.map(s => (
-                    <ColorInput key={s} label={s} value="#ff6600" onChange={() => { }} size={s} />
-                ))}
-            </View>
-
-            <View style={styles.section}>
-                <Text style={styles.label}>Button only</Text>
-                <ColorInput label="Button only" value={value} onChange={setValue} showValueInput={false} />
-            </View>
+            {[
+                ["Disabled", disabled, setDisabled],
+                ["Color button", showColorButton, setShowColorButton],
+                ["Value input", showValueInput, setShowValueInput],
+                ["Format select", showFormatSelect, setShowFormatSelect],
+            ].map(([text, enabled, setEnabled]) => (
+                <View key={text as string} style={styles.row}>
+                    <Text>{text as string}</Text>
+                    <Switch value={enabled as boolean} onValueChange={setEnabled as (value: boolean) => void} />
+                </View>
+            ))}
         </ScrollView>
     );
 };

@@ -1,15 +1,13 @@
-import { SaturationValueRampProps } from "@ui";
-import { FC, useMemo, useRef, useState } from "react";
+import { colorRampThumbSizes, SaturationValueRampProps } from "@ui";
+import { FC } from "react";
 import {
     AccessibilityActionEvent,
-    HostInstance,
-    LayoutChangeEvent,
-    PanResponder,
     StyleSheet,
     View,
 } from "react-native";
 import Svg, { Defs, LinearGradient, Rect, Stop } from "react-native-svg";
 import { DisabledRampPattern } from "./DisabledRampPattern";
+import { useRampResponder } from "./useRampResponder";
 
 const styles = StyleSheet.create({
     ramp: {
@@ -31,7 +29,6 @@ const styles = StyleSheet.create({
 });
 
 const heights = { xs: 100, sm: 140, md: 180 } as const;
-const thumbSizes = { xs: 12, sm: 14, md: 16 } as const;
 const clamp = (value: number): number => Math.max(0, Math.min(1, value));
 
 export const SaturationValueRamp: FC<SaturationValueRampProps> = ({
@@ -43,43 +40,14 @@ export const SaturationValueRamp: FC<SaturationValueRampProps> = ({
     disabled = false,
     onChange,
 }) => {
-    const rampReference = useRef<HostInstance>(null);
     const height = heights[size];
-    const thumbSize = thumbSizes[size];
-    const [layout, setLayout] = useState({ x: 0, y: 0, width: 0 });
-    const contextReference = useRef({ disabled, onChange, layout, height });
-    contextReference.current = { disabled, onChange, layout, height };
-
-    const update = (pageX: number, pageY: number) => {
-        const context = contextReference.current;
-        if (context.disabled || context.layout.width === 0) {
-            return;
-        }
-        context.onChange(
-            clamp((pageX - context.layout.x) / context.layout.width),
-            clamp(1 - (pageY - context.layout.y) / context.height),
-        );
-    };
-    const panResponder = useMemo(
-        () =>
-            PanResponder.create({
-                onStartShouldSetPanResponder: () =>
-                    !contextReference.current.disabled,
-                onMoveShouldSetPanResponder: () =>
-                    !contextReference.current.disabled,
-                onPanResponderGrant: (event) =>
-                    update(event.nativeEvent.pageX, event.nativeEvent.pageY),
-                onPanResponderMove: (event) =>
-                    update(event.nativeEvent.pageX, event.nativeEvent.pageY),
-            }),
-        [],
+    const thumbSize = colorRampThumbSizes[size];
+    const { width, onLayout, panHandlers } = useRampResponder(
+        disabled,
+        (horizontalPosition, verticalPosition) => {
+            onChange(horizontalPosition, clamp(1 - verticalPosition / height));
+        },
     );
-    const handleLayout = (event: LayoutChangeEvent) => {
-        const width = event.nativeEvent.layout.width;
-        rampReference.current?.measureInWindow((x, y) =>
-            setLayout({ x, y, width }),
-        );
-    };
     const handleAccessibility = (event: AccessibilityActionEvent) => {
         if (disabled) {
             return;
@@ -91,9 +59,8 @@ export const SaturationValueRamp: FC<SaturationValueRampProps> = ({
 
     return (
         <View
-            ref={rampReference}
             style={[styles.ramp, { height }]}
-            onLayout={handleLayout}
+            onLayout={onLayout}
             accessibilityRole="adjustable"
             accessibilityLabel={`${label} saturation and brightness`}
             accessibilityValue={{
@@ -105,7 +72,7 @@ export const SaturationValueRamp: FC<SaturationValueRampProps> = ({
                 { name: "decrement" },
             ]}
             onAccessibilityAction={handleAccessibility}
-            {...panResponder.panHandlers}
+            {...panHandlers}
         >
             <Svg width="100%" height="100%">
                 <Defs>
@@ -135,7 +102,7 @@ export const SaturationValueRamp: FC<SaturationValueRampProps> = ({
                         marginLeft: -thumbSize / 2,
                         marginTop: -thumbSize / 2,
                         borderRadius: 0,
-                        left: saturation * layout.width,
+                        left: saturation * width,
                         top: (1 - brightness) * height,
                     },
                 ]}

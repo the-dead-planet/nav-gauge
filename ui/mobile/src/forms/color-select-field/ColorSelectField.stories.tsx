@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
 
 export const Interactive: FC = () => {
     const [value, setValue] = useState('rgba(67, 105, 255, 0.75)');
-    
+
     return (
         <View style={styles.container}>
             <ColorSelectField
