@@ -4,7 +4,7 @@ import { ThemeMode } from '@ui';
 import { ThemeModeToggle } from './ThemeModeToggle';
 
 const meta = {
-    title: 'Colors & Theme/Theme Mode Toggle',
+    title: 'Design System/Theme Mode Toggle',
     component: ThemeModeToggle,
     args: {
         mode: 'dark',

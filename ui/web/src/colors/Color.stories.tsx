@@ -6,7 +6,7 @@ import { Fragment } from 'react';
 import { ColorBox } from './ColorBox';
 
 const meta = {
-    title: 'Colors & Theme/Colors',
+    title: 'Design System/Colors',
 } satisfies Meta<typeof Color>;
 
 export default meta;

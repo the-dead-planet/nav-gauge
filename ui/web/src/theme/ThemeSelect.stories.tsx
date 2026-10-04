@@ -3,9 +3,10 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { makeLiveEditStory } from 'storybook-addon-code-editor';
 import { ThemeName } from '@ui';
 import { ThemeSelect } from './ThemeSelect';
+import { Label } from '../typography';
 
 const meta = {
-    title: 'Colors & Theme/Theme Select',
+    title: 'Design System/Theme Select',
     component: ThemeSelect,
     args: {
         mode: 'dark',
@@ -45,10 +46,18 @@ export default () => {
 });
 
 export const Gallery: Story = {
-    render: (args) => (
-        <div style={{ display: 'flex', gap: 16 }}>
-            <ThemeSelect {...args} mode="light" />
-            <ThemeSelect {...args} mode="dark" />
-        </div>
-    ),
+    render: (args) => {
+        return (
+            <div style={{ display: 'flex', gap: 16 }}>
+                <div>
+                    <Label style={{ display: 'block' }}>Light Mode</Label>
+                    <ThemeSelect {...args} mode="light" />
+                </div>
+                <div>
+                    <Label style={{ display: 'block' }}>Dark Mode</Label>
+                    <ThemeSelect {...args} mode="dark" />
+                </div>
+            </div>
+        );
+    },
 };

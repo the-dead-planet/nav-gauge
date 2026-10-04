@@ -4,7 +4,7 @@ import { allColorShades, Theme } from '@ui';
 import { ColorBox } from './ColorBox';
 
 const meta = {
-    title: 'Colors & Theme/Color Box',
+    title: 'Design System/Color Box',
     component: ColorBox,
     args: {
         name: 'Copper',
