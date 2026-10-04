@@ -212,6 +212,8 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         ? theme.color(color, shade)
         : effectiveVariant === 'fill'
         ? (hl ? hlFillTextColor : fillTextColor)
+        : effectiveVariant === 'fill-inverse' && !hl
+        ? theme.color(color, 500)
         : (hl ? hlInset : baseColor);
     let fontSize = 14;
     if (size === 'xs') fontSize = 12;
