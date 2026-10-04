@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { describe, it } from "mocha";
-import { formatColor, hsvToRgb, rgbToHsv, tryParseColor } from "../../src/color-picker";
+import { formatColor, hsvToRgb, rgbToHsv, tryParseColor } from "../../src/colors";
 
 describe("HSV color conversion", () => {
     it("round trips RGB colors", () => {
