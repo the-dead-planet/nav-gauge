@@ -1,3 +1,5 @@
+import type { ColorVariant, FillVariant, SizeVariant } from '../model';
+
 export enum ThemeName {
     Default = 'Default',
     NeonBlue = 'Neon Blue',
@@ -6,79 +8,67 @@ export enum ThemeName {
 }
 
 export type ColorShade =
-    50 |
-    100 |
-    200 |
-    300 |
-    400 |
-    500 |
-    600 |
-    700 |
-    800 |
-    900;
+    50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
 
 export type ThemeColor = {
     [key in ColorShade]: RGBColor;
-}
+};
 
 export type PaletteColor =
-    'grey' |
-    'grey-blue' |
-    'grey-brown' |
-    'grey-khaki' |
-    'grey-green' |
-    'grey-olive' |
-    'grey-teal' |
-    'grey-cyan' |
-    'grey-pink' |
-    'grey-violet' |
-    'grey-red' |
-    'yellow' |
-    'coral' |
-    'chartreuse' |
-    'luminous-yellow' |
-    'copper' |
-    'peach' |
-    'warm-brown' |
-    'dark-gold' |
-    'mahogany' |
-    'teal' |
-    'cyan' |
-    'aqua' |
-    'magenta' |
-    'pink' |
-    'rose' |
-    'blue' |
-    'navy' |
-    'burnt-orange' |
-    'orange' |
-    'red' |
-    'purple' |
-    'violet' |
-    'plum' |
-    'indigo' |
-    'deep-violet' |
-    'lime' |
-    'mint' |
-    'green';
+    | 'grey'
+    | 'grey-blue'
+    | 'grey-brown'
+    | 'grey-khaki'
+    | 'grey-green'
+    | 'grey-olive'
+    | 'grey-teal'
+    | 'grey-cyan'
+    | 'grey-pink'
+    | 'grey-violet'
+    | 'grey-red'
+    | 'yellow'
+    | 'coral'
+    | 'chartreuse'
+    | 'luminous-yellow'
+    | 'copper'
+    | 'peach'
+    | 'warm-brown'
+    | 'dark-gold'
+    | 'mahogany'
+    | 'teal'
+    | 'cyan'
+    | 'aqua'
+    | 'magenta'
+    | 'pink'
+    | 'rose'
+    | 'blue'
+    | 'navy'
+    | 'burnt-orange'
+    | 'orange'
+    | 'red'
+    | 'purple'
+    | 'violet'
+    | 'plum'
+    | 'indigo'
+    | 'deep-violet'
+    | 'lime'
+    | 'mint'
+    | 'green';
 
 export type DesignSystemColor =
-    'primary' |
-    'secondary' |
-    'tertiary' |
-    'neutral';
+    'primary' | 'secondary' | 'tertiary' | 'neutral';
 
 export type ThemeComponentColor =
-    'background' |
-    'border' |
-    'box-shadow' |
-    'divider' |
-    'text' |
-    'text-inverse' |
-    'error' |
-    'warning' |
-    'success' |
-    'info';
+    | 'background'
+    | 'border'
+    | 'box-shadow'
+    | 'divider'
+    | 'text'
+    | 'text-inverse'
+    | 'error'
+    | 'warning'
+    | 'success'
+    | 'info';
 
 export interface RGBColor {
     r: number;
@@ -96,7 +86,7 @@ export interface SelectedColor {
 
 export type ThemeComponentColors = {
     [key in ThemeComponentColor]: SelectedColor;
-}
+};
 
 export interface ThemeSpecification {
     mode: ThemeMode;
@@ -120,9 +110,13 @@ export interface ThemeSelectProps {
     mode: ThemeMode;
     value: ThemeName;
     onChange: (value: ThemeName) => void;
+    color?: ColorVariant;
+    size?: SizeVariant;
+    variant?: FillVariant;
 }
 
-export type Breakpoint = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl';
+export type Breakpoint =
+    'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl';
 
 export enum Orientation {
     Portrait,
@@ -158,6 +152,8 @@ export interface MediaWithBreakpoints extends Media {
 }
 
 export interface MediaSubscriptionDefinition {
-    initial: () => Media,
-    subscribe: (onChange: (media: Media) => void) => ({ unsubscribe: () => void }),
+    initial: () => Media;
+    subscribe: (onChange: (media: Media) => void) => {
+        unsubscribe: () => void;
+    };
 }

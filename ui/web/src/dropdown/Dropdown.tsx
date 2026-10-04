@@ -1,9 +1,9 @@
-import { ComponentProps, useEffect, useId, useRef, useState } from "react";
-import classNames from "classnames";
-import { DropdownList } from "./DropdownList";
-import { DropdownProps, useTheme } from "@ui";
-import { Icon } from "../icons";
-import { Icons } from "@ui";
+import { ComponentProps, useEffect, useId, useRef, useState } from 'react';
+import classNames from 'classnames';
+import { DropdownList } from './DropdownList';
+import { DropdownProps, useTheme } from '@ui';
+import { Icon } from '../icons';
+import { Icons } from '@ui';
 import styles from './dropdown.module.css';
 
 const ICON_SIZES: Record<string, number> = {
@@ -48,7 +48,12 @@ export function Dropdown<T = string>({
 
     const handleTriggerKeyDown = (e: React.KeyboardEvent) => {
         if (disabled) return;
-        if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        if (
+            e.key === 'Enter' ||
+            e.key === ' ' ||
+            e.key === 'ArrowDown' ||
+            e.key === 'ArrowUp'
+        ) {
             e.preventDefault();
             setIsOpen(true);
         }
@@ -67,14 +72,19 @@ export function Dropdown<T = string>({
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
             const list = document.getElementById(listId);
-            if (containerRef.current && !containerRef.current.contains(e.target as Node) && !list?.contains(e.target as Node)) {
+            if (
+                containerRef.current &&
+                !containerRef.current.contains(e.target as Node) &&
+                !list?.contains(e.target as Node)
+            ) {
                 setIsOpen(false);
             }
         };
         if (isOpen) {
             document.addEventListener('mousedown', handleClickOutside);
         }
-        return () => document.removeEventListener('mousedown', handleClickOutside);
+        return () =>
+            document.removeEventListener('mousedown', handleClickOutside);
     }, [isOpen, listId]);
 
     return (
@@ -91,7 +101,7 @@ export function Dropdown<T = string>({
                     [styles['disabled']]: disabled,
                     [styles['open']]: isOpen,
                 },
-                className
+                className,
             )}
             style={style}
             onKeyDown={handleContainerKeyDown}
@@ -108,11 +118,13 @@ export function Dropdown<T = string>({
                 aria-label={ariaLabel}
                 aria-labelledby={labelledBy}
                 disabled={disabled}
-                onClick={disabled ? undefined : (() => setIsOpen(!isOpen))}
+                onClick={disabled ? undefined : () => setIsOpen(!isOpen)}
                 onKeyDown={handleTriggerKeyDown}
             >
                 {selectedOption ? (
                     <>
+                        {selectedOption.selectedPrepend ??
+                            selectedOption.prepend}
                         {selectedOption.icon ? (
                             <Icon
                                 src={selectedOption.icon}
@@ -121,7 +133,9 @@ export function Dropdown<T = string>({
                                 className={styles['icon']}
                             />
                         ) : null}
-                        <span className={styles['label']}>{selectedOption.label}</span>
+                        <span className={styles['label']}>
+                            {selectedOption.label}
+                        </span>
                     </>
                 ) : (
                     <span className={styles['placeholder']}>{placeholder}</span>
@@ -131,7 +145,7 @@ export function Dropdown<T = string>({
                     width={iconSize}
                     height={iconSize}
                     className={classNames(styles['icon'], styles['arrow'], {
-                        [styles['arrow-open']]: isOpen
+                        [styles['arrow-open']]: isOpen,
                     })}
                 />
             </button>

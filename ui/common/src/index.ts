@@ -3,6 +3,7 @@ export * from './color-picker';
 export * from './color-ramp';
 export * from './color-button';
 export * from './color-select-field';
+export * from './colors';
 export * from './button';
 export * from './checkbox';
 export * from './radio';

@@ -1,9 +1,10 @@
-import { FC, useState } from "react";
-import { ScrollView, View, StyleSheet } from "react-native";
-import { Dropdown } from "./Dropdown";
-import { Radio } from "../forms";
-import { Text } from "../typography";
-import { ColorVariant, Icons, SizeVariant, FillVariant } from "@ui";
+import { FC, useState } from 'react';
+import { ScrollView, View, StyleSheet } from 'react-native';
+import { Dropdown } from './Dropdown';
+import { Radio } from '../forms';
+import { Text } from '../typography';
+import { ColorVariant, Icons, SizeVariant, FillVariant, Theme } from '@ui';
+import { ColorBox } from '../colors';
 
 const styles = StyleSheet.create({
     container: {
@@ -21,14 +22,24 @@ const styles = StyleSheet.create({
 });
 
 const options = [
-    { value: 'brass', label: 'Brass Cog', icon: Icons.Beaker },
+    {
+        value: 'brass',
+        label: 'Brass Cog',
+        prepend: <ColorBox color={Theme.palette.copper} />,
+        icon: Icons.Beaker,
+    },
     { value: 'copper', label: 'Copper Valve', icon: Icons.Beaker },
     { value: 'steam', label: 'Steam Pipe', icon: Icons.Beaker },
     { value: 'gear', label: 'Gear Assembly', icon: Icons.Beaker },
 ];
 
 const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
-const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
+const allColors: ColorVariant[] = [
+    'neutral',
+    'primary',
+    'secondary',
+    'tertiary',
+];
 const allVariants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
 
 export const DropdownVariants: FC = () => {
@@ -54,8 +65,13 @@ export const DropdownVariants: FC = () => {
             <View style={styles.section}>
                 <Text>Size</Text>
                 <View style={styles.row}>
-                    {allSizes.map(option => (
-                        <Radio key={option} size="xs" checked={size === option} onChange={() => setSize(option)}>
+                    {allSizes.map((option) => (
+                        <Radio
+                            key={option}
+                            size="xs"
+                            checked={size === option}
+                            onChange={() => setSize(option)}
+                        >
                             {option}
                         </Radio>
                     ))}
@@ -65,8 +81,14 @@ export const DropdownVariants: FC = () => {
             <View style={styles.section}>
                 <Text>Color</Text>
                 <View style={styles.row}>
-                    {allColors.map(option => (
-                        <Radio key={option} size="xs" color={option} checked={color === option} onChange={() => setColor(option)}>
+                    {allColors.map((option) => (
+                        <Radio
+                            key={option}
+                            size="xs"
+                            color={option}
+                            checked={color === option}
+                            onChange={() => setColor(option)}
+                        >
                             {option}
                         </Radio>
                     ))}
@@ -76,11 +98,21 @@ export const DropdownVariants: FC = () => {
             <View style={styles.section}>
                 <Text>Highlight color (background only in the list)</Text>
                 <View style={styles.row}>
-                    <Radio size="xs" checked={highlightColor === undefined} onChange={() => setHighlightColor(undefined)}>
+                    <Radio
+                        size="xs"
+                        checked={highlightColor === undefined}
+                        onChange={() => setHighlightColor(undefined)}
+                    >
                         Default
                     </Radio>
-                    {allColors.map(option => (
-                        <Radio key={option} size="xs" color={option} checked={highlightColor === option} onChange={() => setHighlightColor(option)}>
+                    {allColors.map((option) => (
+                        <Radio
+                            key={option}
+                            size="xs"
+                            color={option}
+                            checked={highlightColor === option}
+                            onChange={() => setHighlightColor(option)}
+                        >
                             {option}
                         </Radio>
                     ))}
@@ -90,8 +122,13 @@ export const DropdownVariants: FC = () => {
             <View style={styles.section}>
                 <Text>Variant</Text>
                 <View style={styles.row}>
-                    {allVariants.map(option => (
-                        <Radio key={option} size="xs" checked={variant === option} onChange={() => setVariant(option)}>
+                    {allVariants.map((option) => (
+                        <Radio
+                            key={option}
+                            size="xs"
+                            checked={variant === option}
+                            onChange={() => setVariant(option)}
+                        >
                             {option}
                         </Radio>
                     ))}

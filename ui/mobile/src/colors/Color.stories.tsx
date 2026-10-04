@@ -1,19 +1,20 @@
-import { FC } from "react";
-import { ScrollView, View, StyleSheet } from "react-native";
-import { ColorShade, RGBColor, ThemeColor, Theme, useTheme } from "@ui";
-import { Text } from "../typography";
+import { FC } from 'react';
+import { ScrollView, View, StyleSheet } from 'react-native';
+import { ColorShade, RGBColor, ThemeColor, Theme, useTheme } from '@ui';
+import { Text } from '../typography';
+import { ColorBox } from './ColorBox';
 
 const styles = StyleSheet.create({
     row: {
-        flexDirection: "row",
-        alignItems: "center",
+        flexDirection: 'row',
+        alignItems: 'center',
         marginBottom: 12,
     },
     box: {
         width: 32,
         height: 44,
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: 'center',
+        alignItems: 'center',
         marginRight: 2,
     },
     name: {
@@ -32,13 +33,19 @@ export const ColorPalette: FC = () => {
     return (
         <View style={{ padding: 8 }}>
             {entries.map(([name, color]) => {
-                const data = Object.entries(color) as unknown as [ColorShade, RGBColor][];
+                const data = Object.entries(color) as unknown as [
+                    ColorShade,
+                    RGBColor,
+                ][];
                 const reversed = [...data].reverse();
 
                 return (
                     <View key={name} style={styles.row}>
                         <Text style={styles.name}>{name}</Text>
-                        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                        <ScrollView
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                        >
                             {data.map(([shade, c], i) => {
                                 const textColor = reversed[i][1];
 
@@ -77,20 +84,21 @@ export const ComponentColors = () => {
     const theme = useTheme();
 
     return (
-        <View style={{
-            alignItems: 'flex-start',
-            justifyContent: 'center',
-            gap: 20,
-        }}>
+        <View
+            style={{
+                alignItems: 'flex-start',
+                justifyContent: 'center',
+                gap: 20,
+            }}
+        >
             {Object.entries(theme.componentColors).map(([name, color]) => (
                 <View key={name} style={{ flexDirection: 'row', gap: 20 }}>
                     <Text style={{ minWidth: 100 }}>{name}</Text>
-                    <View style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 6,
-                        backgroundColor: theme.color(color.name, color.shade),
-                    }} />
+                    <ColorBox
+                        color={theme.colors[color.name]}
+                        shade={color.shade}
+                        size={40}
+                    />
                 </View>
             ))}
         </View>

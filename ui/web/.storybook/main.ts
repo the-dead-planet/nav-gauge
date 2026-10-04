@@ -1,15 +1,17 @@
 import type { StorybookConfig } from 'storybook-react-rsbuild';
 import { mergeRsbuildConfig } from '@rsbuild/core';
+import { getCodeEditorStaticDirs } from 'storybook-addon-code-editor/getStaticDirs';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(filename);
 
 const config: StorybookConfig = {
     framework: 'storybook-react-rsbuild',
-    stories: ['../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
-    staticDirs: [path.resolve(__dirname, '../../common/public')],
-    addons: [],
+    stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
+    staticDirs: [path.resolve(__dirname, '../../common/public'), ...getCodeEditorStaticDirs(filename)],
+    addons: ['@storybook/addon-docs', 'storybook-addon-code-editor'],
     async rsbuildFinal(config) {
         return mergeRsbuildConfig(config, {
             resolve: {

@@ -1,56 +1,84 @@
-import { FC, ReactNode } from 'react';
+import { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { DesignSystemColor, ThemeName, ThemeSelectProps, themeNameOptions, themeSpecifications, useTheme } from '@ui';
+import {
+    DesignSystemColor,
+    ThemeSelectProps,
+    themeNameOptions,
+    themeSpecifications,
+} from '@ui';
+import { ColorBox } from '../colors';
 import { Dropdown } from '../dropdown';
-import { Text } from '../typography';
 
 const styles = StyleSheet.create({
-    optionContent: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 8,
-    },
     colorRow: {
         flexDirection: 'row',
         gap: 2,
     },
-    colorBox: {
-        width: 12,
-        height: 12,
-        borderWidth: 1,
-        borderColor: 'rgba(255, 255, 255, 0.2)',
+    selectedColorRow: {
+        flexDirection: 'row',
+        gap: 4,
     },
 });
 
-const previewColors: DesignSystemColor[] = ['neutral', 'primary', 'secondary', 'tertiary'];
+const previewColors: DesignSystemColor[] = [
+    'neutral',
+    'primary',
+    'secondary',
+    'tertiary',
+];
 
-export const ThemeSelect: FC<ThemeSelectProps> = ({ mode, value, onChange }) => {
-    const theme = useTheme();
-    const renderOption = (themeName: ThemeName, label: ReactNode) => (
-        <View style={styles.optionContent}>
+const colorBoxSizes = { xs: 12, sm: 16, md: 20 } as const;
+
+export const ThemeSelect: FC<ThemeSelectProps> = ({
+    mode,
+    value,
+    onChange,
+    color = 'neutral',
+    size = 'md',
+    variant = 'fill-inverse',
+}) => {
+    const options = themeNameOptions.map((option) => ({
+        ...option,
+        label: String(option.label),
+        prepend: (
             <View style={styles.colorRow} accessibilityElementsHidden>
-                {previewColors.map((color) => {
-                    const { r, g, b } = themeSpecifications[themeName][mode].colors[color][500];
-                    return (
-                        <View
-                            key={color}
-                            style={[styles.colorBox, { backgroundColor: `rgb(${r}, ${g}, ${b})` }]}
-                        />
-                    );
-                })}
+                {previewColors.map((color) => (
+                    <ColorBox
+                        key={color}
+                        color={
+                            themeSpecifications[option.value][mode].colors[
+                                color
+                            ]
+                        }
+                    />
+                ))}
             </View>
-            <Text style={{ color: theme.componentColor('text'), flex: 1 }}>{label}</Text>
-        </View>
-    );
+        ),
+        selectedPrepend: (
+            <View style={styles.selectedColorRow} accessibilityElementsHidden>
+                {previewColors.map((color) => (
+                    <ColorBox
+                        key={color}
+                        color={
+                            themeSpecifications[option.value][mode].colors[
+                                color
+                            ]
+                        }
+                        size={colorBoxSizes[size]}
+                    />
+                ))}
+            </View>
+        ),
+    }));
 
     return (
         <Dropdown
-            size="md"
+            color={color}
+            size={size}
+            variant={variant}
             value={value}
-            options={themeNameOptions}
+            options={options}
             onChange={onChange}
-            renderOption={renderOption}
         />
     );
 };

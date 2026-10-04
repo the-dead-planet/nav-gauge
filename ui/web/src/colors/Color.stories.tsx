@@ -2,10 +2,11 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { Color } from './Color';
 import { Theme, useTheme } from '@ui';
 import { Text } from '../typography';
-import { CSSProperties } from 'react';
+import { Fragment } from 'react';
+import { ColorBox } from './ColorBox';
 
 const meta = {
-    title: 'Colors',
+    title: 'Colors & Theme/Colors',
 } satisfies Meta<typeof Color>;
 
 export default meta;
@@ -13,12 +14,14 @@ type Story = StoryObj<typeof meta>;
 
 export const ColorPalette = {
     render: () => (
-        <div style={{
-            display: 'grid',
-            gridTemplateColumns: ' max-content max-content',
-            alignItems: 'center',
-            columnGap: '20px',
-        }}>
+        <div
+            style={{
+                display: 'grid',
+                gridTemplateColumns: ' max-content max-content',
+                alignItems: 'center',
+                columnGap: '20px',
+            }}
+        >
             {Object.entries(Theme.palette).map(([name, color]) => (
                 <Color key={name} name={name} color={color} />
             ))}
@@ -31,24 +34,25 @@ export const ComponentColors = {
         const theme = useTheme();
 
         return (
-            <div style={{
-                display: 'grid',
-                gridTemplateColumns: ' max-content max-content',
-                alignItems: 'center',
-                gap: '20px',
-            }}>
+            <div
+                style={{
+                    display: 'grid',
+                    gridTemplateColumns: ' max-content max-content',
+                    alignItems: 'center',
+                    gap: '20px',
+                }}
+            >
                 {Object.entries(theme.componentColors).map(([name, color]) => (
-                    <>
+                    <Fragment key={name}>
                         <Text>{name}</Text>
-                        <span style={{
-                            width: '40px',
-                            height: '40px',
-                            display: 'block',
-                            borderRadius: '6px',
-                            cornerShape: 'bevel',
-                            backgroundColor: theme.color(color.name, color.shade),
-                        } as CSSProperties} />
-                    </>
+                        <ColorBox
+                            name={color.name}
+                            color={theme.colors[color.name]}
+                            shade={color.shade}
+                            size={40}
+                            showPaletteOnHover
+                        />
+                    </Fragment>
                 ))}
             </div>
         );

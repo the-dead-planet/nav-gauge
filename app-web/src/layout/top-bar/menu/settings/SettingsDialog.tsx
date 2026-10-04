@@ -1,12 +1,12 @@
 import { FC, useState } from "react";
 import classNames from "classnames";
 import { DateTime } from "luxon";
-import { Dialog, Dropdown } from "@web-ui";
+import { Dialog, Dropdown, ThemeSelect } from "@web-ui";
 import { Individuator, IndividuatorSettings, Language, Translatron, useTranslate } from "@apparatus";
 import { useWebMachineWard } from "@web-apparatus";
 import { T } from "@web-apparatus";
 import { DateFormat, DistanceUnit, TimeFormat, useSubjectState } from "@tinker-chest";
-import { ThemeName, themeNameOptions, useTheme } from "@ui";
+import { useTheme } from "@ui";
 import { SettingsCheckbox } from "./SettingsCheckbox";
 import { SettingsLabel } from "./SettingsLabel";
 import styles from './settings-dialog.module.css';
@@ -137,15 +137,15 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                     <SettingsLabel wide={isWide} id="individuator-theme-label">
                         <T n={individuator.namespace} t={individuator.translationKey.Theme} />
                     </SettingsLabel>
-                    <Dropdown<ThemeName>
-                    popoverClassName={popoverClassName}
-                    labelledBy="individuator-theme-label"
-                    size="xs"
-                    color="primary"
-                    variant="fill"
-                    value={pendingSettings.themeName}
-                    options={themeNameOptions}
-                    onChange={(themeName) => setPendingSettings((prev): IndividuatorSettings => ({ ...prev, themeName }))}
+                    <ThemeSelect
+                        mode={theme.mode}
+                        popoverClassName={popoverClassName}
+                        labelledBy="individuator-theme-label"
+                        size="xs"
+                        color="primary"
+                        variant="fill"
+                        value={pendingSettings.themeName}
+                        onChange={(themeName) => setPendingSettings((prev): IndividuatorSettings => ({ ...prev, themeName }))}
                     />
                 </div>
 

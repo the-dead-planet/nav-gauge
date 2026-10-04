@@ -1,6 +1,7 @@
 export * from './button';
 export * from './blink';
 export * from './chip';
+export * from './colors';
 export * from './dialog';
 export * from './divider';
 export * from './dropdown';

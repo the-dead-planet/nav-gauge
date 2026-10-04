@@ -1,8 +1,16 @@
-import classNames from "classnames";
-import { CSSProperties, RefObject, useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
-import { DropdownOption, DropdownProps, getIconAnchorPoint, menuPositionsMatch, MenuPosition, placePopup, useTheme } from "@ui";
-import { Icon } from "../icons";
+import classNames from 'classnames';
+import { CSSProperties, RefObject, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import {
+    DropdownOption,
+    DropdownProps,
+    getIconAnchorPoint,
+    menuPositionsMatch,
+    MenuPosition,
+    placePopup,
+    useTheme,
+} from '@ui';
+import { Icon } from '../icons';
 import styles from './dropdown.module.css';
 
 interface Props {
@@ -26,7 +34,17 @@ export function DropdownList<T = string>({
     size = 'sm',
     variant = 'fill-inverse',
     highlightColor,
-}: Props & Pick<DropdownProps<T>, 'value' | 'options' | 'color' | 'highlightColor' | 'size' | 'variant' | 'onChange'>) {
+}: Props &
+    Pick<
+        DropdownProps<T>,
+        | 'value'
+        | 'options'
+        | 'color'
+        | 'highlightColor'
+        | 'size'
+        | 'variant'
+        | 'onChange'
+    >) {
     const theme = useTheme();
     const listRef = useRef<HTMLUListElement>(null);
     const hasFocusedRef = useRef(false);
@@ -45,13 +63,25 @@ export function DropdownList<T = string>({
             const listBounds = listRef.current?.getBoundingClientRect();
             const nextPosition = placePopup(
                 'top-left',
-                getIconAnchorPoint('bottom-left', triggerBounds.left, triggerBounds.top, triggerBounds.width, triggerBounds.height),
-                listBounds ? { width: triggerBounds.width, height: listBounds.height } : null,
+                getIconAnchorPoint(
+                    'bottom-left',
+                    triggerBounds.left,
+                    triggerBounds.top,
+                    triggerBounds.width,
+                    triggerBounds.height,
+                ),
+                listBounds
+                    ? { width: triggerBounds.width, height: listBounds.height }
+                    : null,
                 window.innerWidth,
                 window.innerHeight,
             ).position;
             setWidth(triggerBounds.width);
-            setPosition((current) => menuPositionsMatch(current, nextPosition) ? current : nextPosition);
+            setPosition((current) =>
+                menuPositionsMatch(current, nextPosition)
+                    ? current
+                    : nextPosition,
+            );
         };
 
         computePosition();
@@ -78,7 +108,9 @@ export function DropdownList<T = string>({
         switch (e.key) {
             case 'ArrowDown':
                 e.preventDefault();
-                setHighlightedIndex((prev) => Math.min(prev + 1, options.length - 1));
+                setHighlightedIndex((prev) =>
+                    Math.min(prev + 1, options.length - 1),
+                );
                 break;
             case 'ArrowUp':
                 e.preventDefault();
@@ -109,7 +141,10 @@ export function DropdownList<T = string>({
         }
     };
 
-    const positionStyle: CSSProperties = { width, visibility: width ? 'visible' : 'hidden' };
+    const positionStyle: CSSProperties = {
+        width,
+        visibility: width ? 'visible' : 'hidden',
+    };
     if (position.top !== undefined) positionStyle.top = position.top;
     if (position.left !== undefined) positionStyle.left = position.left;
     if (position.right !== undefined) positionStyle.right = position.right;
@@ -121,7 +156,15 @@ export function DropdownList<T = string>({
             ref={listRef}
             role="listbox"
             tabIndex={-1}
-            className={classNames(styles['menu'], styles[`mode-${theme.mode}`], styles[`color-${color ?? 'neutral'}`], styles[`highlight-${highlightColor ?? color ?? 'neutral'}`], styles[`size-${size}`], styles[`variant-${variant}`], className)}
+            className={classNames(
+                styles['menu'],
+                styles[`mode-${theme.mode}`],
+                styles[`color-${color ?? 'neutral'}`],
+                styles[`highlight-${highlightColor ?? color ?? 'neutral'}`],
+                styles[`size-${size}`],
+                styles[`variant-${variant}`],
+                className,
+            )}
             style={positionStyle}
             data-popup-trigger-id={triggerRef.current?.id || undefined}
             onKeyDown={handleKeyDown}
@@ -133,15 +176,16 @@ export function DropdownList<T = string>({
                     id={`${id}-option-${index}`}
                     role="option"
                     aria-selected={option.value === value}
-                    className={classNames(
-                        styles['option'],
-                        {
-                            [styles['option-selected']]: option.value === value,
-                            [styles['option-highlighted']]: index === highlightedIndex,
-                        }
-                    )}
-                    onClick={() => { handleSelect(option); }}
+                    className={classNames(styles['option'], {
+                        [styles['option-selected']]: option.value === value,
+                        [styles['option-highlighted']]:
+                            index === highlightedIndex,
+                    })}
+                    onClick={() => {
+                        handleSelect(option);
+                    }}
                 >
+                    {option.prepend}
                     {option.icon ? (
                         <Icon
                             src={option.icon}
@@ -150,9 +194,7 @@ export function DropdownList<T = string>({
                             className={styles['icon']}
                         />
                     ) : null}
-                    <span>
-                        {option.label}
-                    </span>
+                    <span>{option.label}</span>
                 </li>
             ))}
         </ul>,

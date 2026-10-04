@@ -2841,6 +2841,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/standalone@npm:^7.27.0":
+  version: 7.29.9
+  resolution: "@babel/standalone@npm:7.29.9"
+  checksum: 10/584c2be745b74bd143463e8c14dd2bc975dcb698b33ae6464853373c28f45cecb4dd843dc77ae2fd4717da316343cce6bcd3acd571a773486e6b7551b03cbee0
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:^7.28.6, @babel/template@npm:^7.29.7, @babel/template@npm:^7.3.3":
   version: 7.29.7
   resolution: "@babel/template@npm:7.29.7"
@@ -4483,6 +4490,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mdx-js/react@npm:^3.0.0":
+  version: 3.1.1
+  resolution: "@mdx-js/react@npm:3.1.1"
+  dependencies:
+    "@types/mdx": "npm:^2.0.0"
+  peerDependencies:
+    "@types/react": ">=16"
+    react: ">=16"
+  checksum: 10/52a740e2f37761694fa94d4704b7825084b4055616a95c8b8f4c1676190d399ddc5cdbb399ffc45b550beecd30497a7224c2e5b05bf43ecb668c7473641037d1
+  languageName: node
+  linkType: hard
+
 "@napi-rs/wasm-runtime@npm:1.1.6, @napi-rs/wasm-runtime@npm:^1.1.4, @napi-rs/wasm-runtime@npm:^1.1.5":
   version: 1.1.6
   resolution: "@napi-rs/wasm-runtime@npm:1.1.6"
@@ -6025,6 +6044,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@storybook/addon-docs@npm:10.6.0":
+  version: 10.6.0
+  resolution: "@storybook/addon-docs@npm:10.6.0"
+  dependencies:
+    "@mdx-js/react": "npm:^3.0.0"
+    "@storybook/icons": "npm:^2.0.2"
+    "@storybook/react-dom-shim": "npm:10.6.0"
+    react: "npm:^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
+    react-dom: "npm:^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
+    ts-dedent: "npm:^2.0.0"
+    unplugin: "npm:^2.3.5"
+  peerDependencies:
+    "@types/react": ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    storybook: ^10.6.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10/ca7e6032d91acbb898c1fc74db2ab21e1f19e6d7f649375d81f00d61101b2d8670524dbef138bcad4565e0f4c0023ece99b0f473512dc686a3daa233bc9c8474
+  languageName: node
+  linkType: hard
+
 "@storybook/global@npm:^5.0.0":
   version: 5.0.0
   resolution: "@storybook/global@npm:5.0.0"
@@ -6805,6 +6845,7 @@ __metadata:
   dependencies:
     "@rsbuild/core": "npm:^2.2.9"
     "@rsbuild/plugin-react": "npm:^2.1.0"
+    "@storybook/addon-docs": "npm:10.6.0"
     "@the-dead-planet/nav-gauge-tinker-chest": "npm:*"
     "@the-dead-planet/nav-gauge-ui-common": "npm:*"
     "@types/react-dom": "npm:19.3.0"
@@ -6815,6 +6856,7 @@ __metadata:
     react-dom: "npm:19.3.0"
     react-svg: "npm:^19.1.5"
     storybook: "npm:^10.6.0"
+    storybook-addon-code-editor: "npm:^6.2.0"
     storybook-react-rsbuild: "npm:^3.6.0"
   peerDependencies:
     maplibre-gl: 6.11.2
@@ -7206,6 +7248,13 @@ __metadata:
   version: 3.7.5
   resolution: "@types/luxon@npm:3.7.5"
   checksum: 10/656e6e5c057f5e9769d2f2c0d84795de3d68d461557dca432dbdf6b98d1e57b15f273d99781c1e8d786f1fd15dcc29eeb48496685aa77fc3f14e186b6230ab0e
+  languageName: node
+  linkType: hard
+
+"@types/mdx@npm:^2.0.0":
+  version: 2.0.14
+  resolution: "@types/mdx@npm:2.0.14"
+  checksum: 10/bb485c22c6f57b1f17437c889671859ce99160d97da9f72036fd57a8db22127088dde783bf19df975858fde69c2fc92349f6f39a803e51e823549967db282ae8
   languageName: node
   linkType: hard
 
@@ -14697,6 +14746,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"monaco-editor@npm:0.52.2":
+  version: 0.52.2
+  resolution: "monaco-editor@npm:0.52.2"
+  checksum: 10/0d4962d69ffa0a8df040faa9c582cef1893fa3fb617feca8f1425c5e670e74c2856104b9a2b01cbda0103a5e5f92f58843206bc9a0e070471c0c1270d7f52a96
+  languageName: node
+  linkType: hard
+
 "mrmime@npm:^2.0.0":
   version: 2.0.1
   resolution: "mrmime@npm:2.0.1"
@@ -15955,7 +16011,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:19.3.0":
+"react-dom@npm:19.3.0, react-dom@npm:^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0":
   version: 19.3.0
   resolution: "react-dom@npm:19.3.0"
   dependencies:
@@ -16189,7 +16245,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:19.3.0":
+"react@npm:19.3.0, react@npm:^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0":
   version: 19.3.0
   resolution: "react@npm:19.3.0"
   checksum: 10/e98669f09750c41abb1bf020af67cc847e018c91a8c5413d3f40ddd737e3daef6e419bcd1521b113fda73fd667ae82d5f0e9d9e3ff462faeb82059c09e7f04b1
@@ -17114,6 +17170,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"storybook-addon-code-editor@npm:^6.2.0":
+  version: 6.2.0
+  resolution: "storybook-addon-code-editor@npm:6.2.0"
+  dependencies:
+    "@babel/standalone": "npm:^7.27.0"
+    monaco-editor: "npm:0.52.2"
+  peerDependencies:
+    "@types/react": 17.x.x || 18.x.x || 19.x.x
+    react: 17.x.x || 18.x.x || 19.x.x
+    storybook: 10.x.x
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10/e0f01225204ee4963a6009af874262938d207c01a71003c98100b743d922c1c59777c12f99432eeb682dee3297a1ac054672bbfd4381057cd7e99346b2a4ac00
+  languageName: node
+  linkType: hard
+
 "storybook-builder-rsbuild@npm:3.6.0":
   version: 3.6.0
   resolution: "storybook-builder-rsbuild@npm:3.6.0"
@@ -17811,7 +17884,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-dedent@npm:^2.3.0":
+"ts-dedent@npm:^2.0.0, ts-dedent@npm:^2.3.0":
   version: 2.3.0
   resolution: "ts-dedent@npm:2.3.0"
   checksum: 10/fc56bfac5daf2a3d2197eda2c804125756ecfbbc830ad3ce28cf775cca0027fe848abf827a913be67d33fb0f57dfbdd536f9c908e9979fa65968443b514561b2
@@ -18195,6 +18268,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"unplugin@npm:^2.3.5":
+  version: 2.3.11
+  resolution: "unplugin@npm:2.3.11"
+  dependencies:
+    "@jridgewell/remapping": "npm:^2.3.5"
+    acorn: "npm:^8.15.0"
+    picomatch: "npm:^4.0.3"
+    webpack-virtual-modules: "npm:^0.6.2"
+  checksum: 10/7b4adbfaac8894e8491c452c0b67c612b57e103761e842d9013ebea89a4ae92a78df4ec0aa30e5e3eaaefd47dd287973d5a662271624b7346a15d9236d257f9d
+  languageName: node
+  linkType: hard
+
 "unrs-resolver@npm:^1.12.1":
   version: 1.12.2
   resolution: "unrs-resolver@npm:1.12.2"
@@ -18500,6 +18585,13 @@ __metadata:
   version: 3.5.0
   resolution: "webpack-sources@npm:3.5.0"
   checksum: 10/e5af4245dbe52bb1520c7c373d73042fe091e273ff94269b877725a7873481e544ba4e71722df13e278f88069de900052764d98b99f9910be634826ec2f6e67d
+  languageName: node
+  linkType: hard
+
+"webpack-virtual-modules@npm:^0.6.2":
+  version: 0.6.2
+  resolution: "webpack-virtual-modules@npm:0.6.2"
+  checksum: 10/d9a0d035f7ec0c7f1055aaf88bfe48b7f96458043916a1b2926d9012fd61de3810a6b768e31a8cd4b3c84a9b6d55824361a9dd20aaf9f5ccfb6f017af216a178
   languageName: node
   linkType: hard
 

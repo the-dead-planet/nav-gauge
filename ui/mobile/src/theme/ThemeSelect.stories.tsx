@@ -16,7 +16,15 @@ export const Playground: FC = () => {
 
 export const Gallery: FC = () => (
     <View style={styles.gallery}>
-        <ThemeSelect mode="light" value={ThemeName.Default} onChange={() => undefined} />
-        <ThemeSelect mode="dark" value={ThemeName.Default} onChange={() => undefined} />
+        <ThemeSelect
+            mode="light"
+            value={ThemeName.Default}
+            onChange={() => undefined}
+        />
+        <ThemeSelect
+            mode="dark"
+            value={ThemeName.Default}
+            onChange={() => undefined}
+        />
     </View>
 );
