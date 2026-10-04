@@ -1,7 +1,8 @@
 import { useState, type ReactNode } from 'react';
 import type { Preview } from 'storybook-react-rsbuild';
-import { Orientation, Theme, ThemeContext, ThemeMode, ThemeName, themeNameOptions, themeModeOptions, themeSpecifications } from '@ui';
-import { P, useThemeVariables } from '../src';
+import { themes } from 'storybook/theming';
+import { Orientation, Theme, ThemeContext, ThemeMode, ThemeName, themeNameOptions, themeSpecifications } from '@ui';
+import { Dropdown, Label, ThemeModeToggle, useThemeVariables } from '../src';
 import './preview.css';
 
 const getMedia = () => {
@@ -36,37 +37,25 @@ const ThemeDecorator = ({ children }: { children: ReactNode }) => {
     return (
         <ThemeContext.Provider value={theme}>
             <div>
-                <div className="theme-mode-selection">
-                    <label htmlFor="theme-mode-select" className="theme-mode-selection-label">
-                        <P>Mode:</P>
-                    </label>
-                    <select
-                        id="theme-mode-select"
-                        value={themeMode}
-                        onChange={(e) => setThemeMode(e.target.value as ThemeMode)}
-                        className="select"
-                    >
-                        {themeModeOptions.map((option) => (
-                            <option key={option.value} value={option.value}>
-                                {option.label}
-                            </option>
-                        ))}
-                    </select>
-                    <label htmlFor="theme-name-select" className="theme-name-selection-label">
-                        <P>Theme:</P>
-                    </label>
-                    <select
-                        id="theme-name-select"
-                        value={themeName}
-                        onChange={(e) => setThemeName(e.target.value as ThemeName)}
-                        className="select"
-                    >
-                        {themeNameOptions.map((option) => (
-                            <option key={option.value} value={option.value}>
-                                {option.label}
-                            </option>
-                        ))}
-                    </select>
+                <div className="theme-selection">
+                    <div className="theme-mode-toggle">
+                        <ThemeModeToggle
+                            mode={themeMode}
+                            lightModeTooltip="Switch to light mode"
+                            darkModeTooltip="Switch to dark mode"
+                            onToggle={() => setThemeMode((currentMode) => currentMode === 'dark' ? 'light' : 'dark')}
+                        />
+                    </div>
+                    <div className="theme-selection-field">
+                        <Label id="theme-name-label">Theme</Label>
+                        <Dropdown
+                            labelledBy="theme-name-label"
+                            size="md"
+                            value={themeName}
+                            options={themeNameOptions}
+                            onChange={setThemeName}
+                        />
+                    </div>
                 </div>
                 <div className="story">
                     {children}
@@ -78,6 +67,11 @@ const ThemeDecorator = ({ children }: { children: ReactNode }) => {
 
 const preview: Preview = {
     tags: ['autodocs'],
+    parameters: {
+        docs: {
+            theme: themes.dark,
+        },
+    },
     decorators: [
         (Story) => (
             <ThemeDecorator>

@@ -17,7 +17,8 @@ Put the shared API and value math in `@ui/common` and provide a thin platform re
 
 Every UI component (new or changed) requires a **Storybook story** for the platform(s) it targets — verify the story exists and update it alongside the component.
 Do not consider an edit done until the matching story is present.
-Reusable public components require a `Playground` story covering all public props and a `Gallery` story covering supported sizes and important states.
+Reusable public components require a `Playground with Live code editor` story covering all public props and a `Gallery` story covering supported sizes and important states.
+Playground stories should rely on Storybook's inferred `argTypes`. Define explicit `argTypes` only for custom mappings, ranges, non-inferable controls, or hidden props. Do not repeat inferred text, boolean, enum, or native-element controls.
 
 Reserve final layout dimensions before optional or asynchronous content appears; toggling content must not move surrounding UI.
 

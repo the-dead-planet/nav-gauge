@@ -109,6 +109,19 @@ export interface ThemeSpecification {
 
 export type ThemeMode = 'light' | 'dark';
 
+export interface ThemeModeToggleProps {
+    mode: ThemeMode;
+    lightModeTooltip: string;
+    darkModeTooltip: string;
+    onToggle: () => void;
+}
+
+export interface ThemeSelectProps {
+    mode: ThemeMode;
+    value: ThemeName;
+    onChange: (value: ThemeName) => void;
+}
+
 export type Breakpoint = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl';
 
 export enum Orientation {

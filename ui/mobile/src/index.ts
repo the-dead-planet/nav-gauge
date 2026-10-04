@@ -11,6 +11,7 @@ export * from './hud';
 export * from './icons';
 export * from './menu';
 export * from './tooltip';
+export * from './theme';
 export * from './popup';
 export * from './resize-handle';
 export * from './transition';

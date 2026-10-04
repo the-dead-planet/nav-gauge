@@ -1,0 +1,17 @@
+.option-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.color-row {
+    display: flex;
+    gap: 2px;
+}
+
+.color-box {
+    width: 12px;
+    height: 12px;
+    border: 1px solid rgb(255 255 255 / 0.2);
+    box-sizing: border-box;
+}
