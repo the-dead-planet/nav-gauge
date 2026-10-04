@@ -1,11 +1,11 @@
 import { FC, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Dialog, Dropdown } from "@mobile-ui";
+import { Dialog, Dropdown, ThemeSelect } from "@mobile-ui";
 import { Individuator, IndividuatorSettings, Language, Translatron, useTranslate } from "@apparatus";
 import { useMobileMachineWard } from "@mobile-apparatus";
 import { T } from "@mobile-apparatus";
 import { DateFormat, DistanceUnit, TimeFormat, useSubjectState } from "@tinker-chest";
-import { ThemeName, themeNameOptions, useTheme } from "@ui";
+import { useTheme } from "@ui";
 import { SettingsCheckbox } from "./SettingsCheckbox";
 import { SettingsLabel } from "./SettingsLabel";
 
@@ -153,15 +153,12 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                         <T n={individuator.namespace} t={individuator.translationKey.Theme} />
                     </SettingsLabel>
                     <View style={isWide ? styles.wideControl : styles.control}>
-                        <Dropdown<ThemeName>
+                        <ThemeSelect
+                            mode={theme.mode}
                             size="xs"
                             color="primary"
                             variant="fill"
                             value={pendingSettings.themeName}
-                            options={themeNameOptions.map(({ value, label }) => ({
-                                value,
-                                label: String(label),
-                            }))}
                             onChange={(themeName) => setPendingSettings((prev): IndividuatorSettings => ({ ...prev, themeName }))}
                         />
                     </View>

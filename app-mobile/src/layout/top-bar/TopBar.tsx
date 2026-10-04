@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import { useTheme, FontType, Icons } from "@ui";
-import { Button, Text } from '@mobile-ui';
+import { useTheme, FontType } from "@ui";
+import { Text, ThemeModeToggle } from '@mobile-ui';
 import { MachineWardTopBarProps, useMultipleTranslations } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { useMobileMachineWard } from "@mobile-apparatus";
@@ -48,7 +48,6 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
         { n: namespace, t: translationKey.SwitchToLightMode },
         { n: namespace, t: translationKey.SwitchToDarkMode },
     ]);
-    const modeTooltip = theme.isDark ? lightModeTooltip : darkModeTooltip;
 
     return (
         <View style={[styles.container, {
@@ -70,16 +69,11 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
             </Text>
             <View style={styles.rightSection}>
                 {Array.from(topBarTools).map(([id, Component]) => <Component key={id} />)}
-                <Button
-                    aria-label={modeTooltip}
-                    tooltip={modeTooltip}
-                    tooltipPlacement="bottom"
-                    icon={Icons.NounProject.LightBulbCogWheel}
-                    onPress={individuator.toggleMode}
-                    variant="inset"
-                    size="md"
-                    color={theme.isDark ? "secondary" : 'neutral'}
-                    highlightColor={theme.isDark ? "neutral" : 'secondary'}
+                <ThemeModeToggle
+                    mode={theme.mode}
+                    lightModeTooltip={lightModeTooltip}
+                    darkModeTooltip={darkModeTooltip}
+                    onToggle={individuator.toggleMode}
                 />
                 <LayoutMenu onNavigate={onNavigate} />
             </View>

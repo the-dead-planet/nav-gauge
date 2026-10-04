@@ -8,7 +8,7 @@ const colors: (ColorVariant | undefined)[] = [undefined, 'primary', 'secondary',
 const variantLabels = ['Default', 'Primary', 'Secondary', 'Tertiary', 'Neutral'];
 
 const meta = {
-    title: 'Typography',
+    title: 'Design System/Typography',
 } satisfies Meta;
 
 export default meta;

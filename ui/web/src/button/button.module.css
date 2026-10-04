@@ -208,14 +208,14 @@
 
 .variant-fill-inverse {
     border: 1px solid var(--button-color);
-    color: var(--button-content-color, var(--button-color-text));
+    color: var(--button-content-color, var(--button-color-fill));
     background-color: var(--button-color-inverse);
 }
 
 .variant-fill-inverse .icon {
-    color: var(--button-content-color, var(--button-color-text));
-    stroke: var(--button-content-color, var(--button-color-text));
-    fill: var(--button-content-color, var(--button-color-text));
+    color: var(--button-content-color, var(--button-color-fill));
+    stroke: var(--button-content-color, var(--button-color-fill));
+    fill: var(--button-content-color, var(--button-color-fill));
 }
 
 .variant-fill-inverse:hover,
@@ -441,7 +441,7 @@
 }
 
 .corners-hexagon.variant-fill-inverse {
-    color: var(--button-content-color, var(--button-color-text));
+    color: var(--button-content-color, var(--button-color-fill));
 }
 
 .corners-hexagon.variant-fill {
@@ -459,9 +459,9 @@
 }
 
 .corners-hexagon.variant-fill-inverse .icon {
-    color: var(--button-content-color, var(--button-color-text));
-    stroke: var(--button-content-color, var(--button-color-text));
-    fill: var(--button-content-color, var(--button-color-text));
+    color: var(--button-content-color, var(--button-color-fill));
+    stroke: var(--button-content-color, var(--button-color-fill));
+    fill: var(--button-content-color, var(--button-color-fill));
 }
 
 .corners-hexagon.variant-fill .icon {
@@ -752,9 +752,9 @@
 .button.disabled.variant-fill-inverse.active .icon {
     background-color: var(--button-color-inverse);
     border-color: var(--button-color);
-    color: var(--button-color);
-    stroke: var(--button-color);
-    fill: var(--button-color);
+    color: var(--button-color-fill);
+    stroke: var(--button-color-fill);
+    fill: var(--button-color-fill);
 }
 
 .button.disabled.variant-fill-translucent:hover,
@@ -836,6 +836,17 @@
 .button.disabled.corners-hexagon.variant-fill:active,
 .button.disabled.corners-hexagon.variant-fill.active {
     color: var(--button-color-light);
+}
+
+.button.disabled.corners-hexagon.variant-fill-inverse,
+.button.disabled.corners-hexagon.variant-fill-inverse .icon,
+.button.disabled.corners-hexagon.variant-fill-inverse:hover,
+.button.disabled.corners-hexagon.variant-fill-inverse.hovered,
+.button.disabled.corners-hexagon.variant-fill-inverse:active,
+.button.disabled.corners-hexagon.variant-fill-inverse.active {
+    color: var(--button-color-fill);
+    stroke: var(--button-color-fill);
+    fill: var(--button-color-fill);
 }
 
 /* Prevent double‑dimming: hexagon wrapper handles opacity */

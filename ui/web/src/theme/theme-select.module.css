@@ -1,0 +1,9 @@
+.color-row {
+    display: flex;
+    gap: 2px;
+}
+
+.selected-color-row {
+    display: flex;
+    gap: 4px;
+}

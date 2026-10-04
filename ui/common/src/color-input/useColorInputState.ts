@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ColorFormat, formatColor, parseColor, tryParseColor } from "../color-picker";
+import { ColorFormat, formatColor, parseColor, tryParseColor } from "../colors";
 
 interface ColorInputState {
     draft: string;

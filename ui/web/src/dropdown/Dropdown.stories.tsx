@@ -1,6 +1,7 @@
 import type { Meta } from 'storybook-react-rsbuild';
-import { ColorVariant, Icons, SizeVariant, FillVariant } from '@ui';
+import { ColorVariant, Icons, SizeVariant, FillVariant, Theme } from '@ui';
 import { Dropdown } from './Dropdown';
+import { ColorBox } from '../colors';
 import { useState } from 'react';
 import { Popup } from '../popup';
 
@@ -12,14 +13,24 @@ const meta = {
 export default meta;
 
 const options = [
-    { value: 'brass', label: 'Brass Cog', icon: Icons.Beaker },
+    {
+        value: 'brass',
+        label: 'Brass Cog',
+        prepend: <ColorBox color={Theme.palette.copper} />,
+        icon: Icons.Beaker,
+    },
     { value: 'copper', label: 'Copper Valve', icon: Icons.Beaker },
     { value: 'steam', label: 'Steam Pipe', icon: Icons.Beaker },
     { value: 'gear', label: 'Gear Assembly', icon: Icons.Beaker },
 ];
 
 const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
-const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
+const allColors: ColorVariant[] = [
+    'neutral',
+    'primary',
+    'secondary',
+    'tertiary',
+];
 const allVariants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
 
 export const SelectVariants = {
@@ -31,7 +42,14 @@ export const SelectVariants = {
         const [value, setValue] = useState('brass');
 
         return (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 24, padding: 24 }}>
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 24,
+                    padding: 24,
+                }}
+            >
                 <Dropdown<string>
                     ariaLabel="Select material"
                     size={size}
@@ -46,40 +64,67 @@ export const SelectVariants = {
                 <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
                     <fieldset>
                         <legend>Size</legend>
-                        {allSizes.map(s => (
+                        {allSizes.map((s) => (
                             <label key={s} style={{ marginRight: 8 }}>
-                                <input type="radio" name="size" checked={size === s} onChange={() => setSize(s)} />
+                                <input
+                                    type="radio"
+                                    name="size"
+                                    checked={size === s}
+                                    onChange={() => setSize(s)}
+                                />
                                 {s}
                             </label>
                         ))}
                     </fieldset>
                     <fieldset>
                         <legend>Color</legend>
-                        {allColors.map(c => (
+                        {allColors.map((c) => (
                             <label key={c} style={{ marginRight: 8 }}>
-                                <input type="radio" name="color" checked={color === c} onChange={() => setColor(c)} />
+                                <input
+                                    type="radio"
+                                    name="color"
+                                    checked={color === c}
+                                    onChange={() => setColor(c)}
+                                />
                                 {c}
                             </label>
                         ))}
                     </fieldset>
                     <fieldset>
-                        <legend>Highlight color (background only in the list)</legend>
+                        <legend>
+                            Highlight color (background only in the list)
+                        </legend>
                         <label>
-                            <input type="radio" name="highlight-color" checked={highlightColor === undefined} onChange={() => setHighlightColor(undefined)} />
+                            <input
+                                type="radio"
+                                name="highlight-color"
+                                checked={highlightColor === undefined}
+                                onChange={() => setHighlightColor(undefined)}
+                            />
                             Default
                         </label>
-                        {allColors.map(option => (
+                        {allColors.map((option) => (
                             <label key={option}>
-                                <input type="radio" name="highlight-color" checked={highlightColor === option} onChange={() => setHighlightColor(option)} />
+                                <input
+                                    type="radio"
+                                    name="highlight-color"
+                                    checked={highlightColor === option}
+                                    onChange={() => setHighlightColor(option)}
+                                />
                                 {option}
                             </label>
                         ))}
                     </fieldset>
                     <fieldset>
                         <legend>Variant</legend>
-                        {allVariants.map(v => (
+                        {allVariants.map((v) => (
                             <label key={v} style={{ marginRight: 8 }}>
-                                <input type="radio" name="variant" checked={variant === v} onChange={() => setVariant(v)} />
+                                <input
+                                    type="radio"
+                                    name="variant"
+                                    checked={variant === v}
+                                    onChange={() => setVariant(v)}
+                                />
                                 {v}
                             </label>
                         ))}
@@ -94,9 +139,20 @@ export const InClippedPopup = {
     render: () => {
         const [value, setValue] = useState('brass');
         return (
-            <Popup visible position={{ x: 20, y: 200 }} onClose={() => undefined}>
+            <Popup
+                visible
+                position={{ x: 20, y: 200 }}
+                onClose={() => undefined}
+            >
                 <div style={{ padding: 20, overflow: 'hidden' }}>
-                    <Dropdown ariaLabel="Select material" color="primary" variant="fill-translucent" value={value} options={options} onChange={setValue} />
+                    <Dropdown
+                        ariaLabel="Select material"
+                        color="primary"
+                        variant="fill-translucent"
+                        value={value}
+                        options={options}
+                        onChange={setValue}
+                    />
                 </div>
             </Popup>
         );

@@ -1,0 +1,28 @@
+.color-box {
+    display: inline-block;
+    flex: 0 0 auto;
+    width: var(--color-box-size);
+    height: var(--color-box-size);
+    border: 1px solid rgb(255 255 255 / 0.2);
+    box-sizing: border-box;
+}
+
+.palette-tooltip {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-bottom: 6px;
+}
+
+.palette-label {
+    text-transform: capitalize;
+}
+
+.palette {
+    display: flex;
+}
+
+.palette-color {
+    width: 20px;
+    height: 28px;
+}

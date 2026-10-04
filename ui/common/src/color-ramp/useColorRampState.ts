@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { hsvToRgb, parseColor, rgbToHsv, toCssColor } from "../color-picker";
+import { hsvToRgb, parseColor, rgbToHsv, toCssColor } from "../colors";
 
 interface ColorRampState {
     hue: number;

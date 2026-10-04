@@ -2,8 +2,8 @@ import { FC } from "react";
 import classNames from "classnames";
 import { MachineWardTopBarProps, useMultipleTranslations } from "@apparatus";
 import { useWebMachineWard } from "@web-apparatus";
-import { FontType, Icons, useTheme } from "@ui";
-import { Button, H1 } from "@web-ui";
+import { FontType, useTheme } from "@ui";
+import { H1, ThemeModeToggle } from "@web-ui";
 import { LayoutMenu } from "./menu/LayoutMenu";
 import { UnderConstructionChip } from "./UnderConstructionChip";
 import { useSubjectState } from "@tinker-chest";
@@ -17,7 +17,6 @@ export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
         { n: namespace, t: translationKey.SwitchToLightMode },
         { n: namespace, t: translationKey.SwitchToDarkMode },
     ]);
-    const modeTooltip = theme.isDark ? lightModeTooltip : darkModeTooltip;
 
     // TODO: Icons: sound, geolocation on/off
     return (
@@ -35,15 +34,11 @@ export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
             </H1>
             <div className={classNames(styles["section"], styles["right"])}>
                 {Array.from(topBarTools).map(([id, Component]) => <Component key={id} />)}
-                <Button
-                    aria-label={modeTooltip}
-                    tooltip={modeTooltip}
-                    tooltipPlacement="bottom"
-                    icon={Icons.NounProject.LightBulbCogWheel}
-                    onClick={individuator.toggleMode}
-                    variant="inset"
-                    size="md"
-                    color={theme.isDark ? "secondary" : 'neutral'}
+                <ThemeModeToggle
+                    mode={theme.mode}
+                    lightModeTooltip={lightModeTooltip}
+                    darkModeTooltip={darkModeTooltip}
+                    onToggle={individuator.toggleMode}
                 />
                 <LayoutMenu />
             </div>

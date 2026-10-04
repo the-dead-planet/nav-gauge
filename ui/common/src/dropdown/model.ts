@@ -1,6 +1,9 @@
-import { ColorVariant, Option, SizeVariant, FillVariant } from "../model";
+import { ReactNode } from 'react';
+import { ColorVariant, Option, SizeVariant, FillVariant } from '../model';
 
 export interface DropdownOption<T> extends Option<T> {
+    prepend?: ReactNode;
+    selectedPrepend?: ReactNode;
     icon?: string;
 }
 

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
+import { makeLiveEditStory } from 'storybook-addon-code-editor';
 import { ColorVariant, SizeVariant, ButtonCorners, SurfaceVariant, Icons, GlowStyle, ColorShade, allColorShades } from '@ui';
 import { Button } from './Button';
 import { Text } from '../typography';
@@ -7,10 +8,82 @@ import { useState } from 'react';
 const meta = {
     title: 'Button',
     component: Button,
+    tags: ['!autodocs'],
+    args: {
+        children: 'Button',
+        icon: Icons.Beaker,
+        active: false,
+        disabled: false,
+        showTooltipConnection: false,
+    },
+    argTypes: {
+        children: { control: 'text' },
+        icon: {
+            control: 'select',
+            options: ['None', 'Beaker', 'Light bulb'],
+            mapping: {
+                None: undefined,
+                Beaker: Icons.Beaker,
+                'Light bulb': Icons.NounProject.LightBulbCogWheel,
+            },
+        },
+        color: {
+            control: 'select',
+            options: ['neutral', 'primary', 'secondary', 'tertiary'],
+        },
+        shade: { control: 'select', options: ['Default', ...allColorShades], mapping: { Default: undefined } },
+        highlightColor: {
+            control: 'select',
+            options: ['Default', 'neutral', 'primary', 'secondary', 'tertiary'],
+            mapping: { Default: undefined },
+        },
+        highlightShade: { control: 'select', options: ['Default', ...allColorShades], mapping: { Default: undefined } },
+        variant: {
+            control: 'select',
+            options: ['ghost', 'fill', 'fill-inverse', 'fill-translucent', 'outline', 'inset'],
+        },
+        corners: {
+            control: 'select',
+            options: ['square', 'rounded', 'circle', 'hexagon'],
+        },
+        size: {
+            control: 'select',
+            options: ['md', 'sm', 'xs'],
+        },
+        glowStyle: {
+            control: 'select',
+            options: ['none', 'glow', 'animate-borders-glow'],
+        },
+        active: { control: 'boolean' },
+        disabled: { control: 'boolean' },
+        tooltip: { control: 'text' },
+        tooltipPlacement: {
+            control: 'select',
+            options: ['Default', 'auto', 'top', 'right', 'bottom', 'left'],
+            mapping: { Default: undefined },
+        },
+        showTooltipConnection: { control: 'boolean' },
+        themeMode: { control: 'select', options: ['Theme', 'light', 'dark'], mapping: { Theme: undefined } },
+        iconRotateX: { control: { type: 'range', min: 0, max: 360, step: 1 } },
+        iconRotateZ: { control: { type: 'range', min: 0, max: 360, step: 1 } },
+        onClick: { control: false },
+    },
 } satisfies Meta<typeof Button>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+export const Playground: Story = {
+    name: 'Playground with Live code editor',
+};
+
+makeLiveEditStory(Playground, {
+    availableImports: { '@web-ui': { Button } },
+    code: `import { Button } from '@web-ui';
+
+export default Button;`,
+    modifyEditor: (monaco) => monaco.editor.setTheme('vs-dark'),
+});
 
 const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
 const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
