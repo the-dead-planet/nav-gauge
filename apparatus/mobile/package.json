@@ -19,12 +19,12 @@
     },
     "devDependencies": {
         "@maplibre/maplibre-gl-style-spec": "^26.4.4",
-        "@maplibre/maplibre-react-native": "11.4.0",
+        "@maplibre/maplibre-react-native": "11.4.1",
         "react": "19.3.0",
         "react-native": "0.87.1"
     },
     "peerDependencies": {
-        "@maplibre/maplibre-react-native": "11.4.0",
+        "@maplibre/maplibre-react-native": "11.4.1",
         "react": "19.3.0",
         "react-native": "0.87.1",
         "rxjs": "^7.8.2"

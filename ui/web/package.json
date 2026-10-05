@@ -14,18 +14,18 @@
         "@the-dead-planet/nav-gauge-tinker-chest": "*",
         "@the-dead-planet/nav-gauge-ui-common": "*",
         "classnames": "^2.5.1",
-        "react-svg": "^19.1.5"
+        "react-svg": "^19.1.6"
     },
     "devDependencies": {
-        "@rsbuild/core": "^2.2.9",
-        "@rsbuild/plugin-react": "^2.1.0",
-        "@storybook/addon-docs": "10.6.0",
+        "@rsbuild/core": "^2.2.11",
+        "@rsbuild/plugin-react": "^2.1.1",
+        "@storybook/addon-docs": "10.6.1",
         "@types/react-dom": "19.3.0",
         "css-loader": "^7.1.5",
         "maplibre-gl": "6.11.2",
         "react": "19.3.0",
         "react-dom": "19.3.0",
-        "storybook": "^10.6.0",
+        "storybook": "^10.6.1",
         "storybook-addon-code-editor": "^6.2.0",
         "storybook-react-rsbuild": "^3.6.0"
     },
