@@ -1,16 +1,10 @@
-import type { Meta } from 'storybook-react-rsbuild';
-import { ColorVariant, Icons, SizeVariant, FillVariant, Theme } from '@ui';
-import { Dropdown } from './Dropdown';
+import { useEffect, useState } from 'react';
+import type { Meta, StoryObj } from 'storybook-react-rsbuild';
+import { ColorVariant, FillVariant, Icons, SizeVariant, Theme } from '@ui';
 import { ColorBox } from '../colors';
-import { useState } from 'react';
 import { Popup } from '../popup';
-
-const meta = {
-    title: 'Dropdown',
-    component: Dropdown,
-} satisfies Meta<typeof Dropdown>;
-
-export default meta;
+import { VariantGallery } from '../storybook/VariantGallery';
+import { Dropdown } from './Dropdown';
 
 const options = [
     {
@@ -24,118 +18,88 @@ const options = [
     { value: 'gear', label: 'Gear Assembly', icon: Icons.Beaker },
 ];
 
-const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
-const allColors: ColorVariant[] = [
-    'neutral',
-    'primary',
-    'secondary',
-    'tertiary',
-];
-const allVariants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
+const colors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
+const sizes: SizeVariant[] = ['xs', 'sm', 'md'];
+const variants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
 
-export const SelectVariants = {
-    render: () => {
-        const [size, setSize] = useState<SizeVariant>('md');
-        const [color, setColor] = useState<ColorVariant>('neutral');
-        const [highlightColor, setHighlightColor] = useState<ColorVariant>();
-        const [variant, setVariant] = useState<FillVariant>('fill-inverse');
-        const [value, setValue] = useState('brass');
+const GalleryDropdown = ({
+    color,
+    variant,
+    size,
+}: {
+    color: ColorVariant;
+    variant: FillVariant;
+    size: SizeVariant;
+}) => {
+    const [value, setValue] = useState('brass');
+
+    return (
+        <Dropdown<string>
+            ariaLabel={`${color} ${variant} ${size}`}
+            value={value}
+            options={options}
+            onChange={setValue}
+            color={color}
+            highlightColor={color}
+            variant={variant}
+            size={size}
+        />
+    );
+};
+
+const meta = {
+    title: 'Dropdown',
+    component: Dropdown,
+    args: {
+        ariaLabel: 'Select material',
+        value: 'brass',
+        options,
+        color: 'neutral',
+        highlightColor: 'neutral',
+        size: 'sm',
+        variant: 'fill-inverse',
+        disabled: false,
+        placeholder: 'Select material...',
+        onChange: () => {},
+    },
+    argTypes: {
+        color: { control: 'select', options: colors },
+        highlightColor: { control: 'select', options: colors },
+        size: { control: 'select', options: sizes },
+        variant: { control: 'select', options: variants },
+        onChange: { control: false },
+    },
+} satisfies Meta<typeof Dropdown>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Playground: Story = {
+    render: (args) => {
+        const [value, setValue] = useState(args.value);
+
+        useEffect(() => setValue(args.value), [args.value]);
 
         return (
-            <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 24,
-                    padding: 24,
-                }}
-            >
-                <Dropdown<string>
-                    ariaLabel="Select material"
-                    size={size}
-                    color={color}
-                    highlightColor={highlightColor}
-                    variant={variant}
-                    value={value}
-                    options={options}
-                    onChange={setValue}
-                />
-
-                <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-                    <fieldset>
-                        <legend>Size</legend>
-                        {allSizes.map((s) => (
-                            <label key={s} style={{ marginRight: 8 }}>
-                                <input
-                                    type="radio"
-                                    name="size"
-                                    checked={size === s}
-                                    onChange={() => setSize(s)}
-                                />
-                                {s}
-                            </label>
-                        ))}
-                    </fieldset>
-                    <fieldset>
-                        <legend>Color</legend>
-                        {allColors.map((c) => (
-                            <label key={c} style={{ marginRight: 8 }}>
-                                <input
-                                    type="radio"
-                                    name="color"
-                                    checked={color === c}
-                                    onChange={() => setColor(c)}
-                                />
-                                {c}
-                            </label>
-                        ))}
-                    </fieldset>
-                    <fieldset>
-                        <legend>
-                            Highlight color (background only in the list)
-                        </legend>
-                        <label>
-                            <input
-                                type="radio"
-                                name="highlight-color"
-                                checked={highlightColor === undefined}
-                                onChange={() => setHighlightColor(undefined)}
-                            />
-                            Default
-                        </label>
-                        {allColors.map((option) => (
-                            <label key={option}>
-                                <input
-                                    type="radio"
-                                    name="highlight-color"
-                                    checked={highlightColor === option}
-                                    onChange={() => setHighlightColor(option)}
-                                />
-                                {option}
-                            </label>
-                        ))}
-                    </fieldset>
-                    <fieldset>
-                        <legend>Variant</legend>
-                        {allVariants.map((v) => (
-                            <label key={v} style={{ marginRight: 8 }}>
-                                <input
-                                    type="radio"
-                                    name="variant"
-                                    checked={variant === v}
-                                    onChange={() => setVariant(v)}
-                                />
-                                {v}
-                            </label>
-                        ))}
-                    </fieldset>
-                </div>
+            <div style={{ width: 240 }}>
+                <Dropdown {...args} value={value} onChange={setValue} />
             </div>
         );
     },
 };
 
-export const InClippedPopup = {
+export const Gallery: Story = {
+    render: () => (
+        <VariantGallery
+            sizes={sizes}
+            colors={colors}
+            variants={variants}
+            render={(options) => <GalleryDropdown {...options} />}
+        />
+    ),
+};
+
+export const InClippedPopup: Story = {
     render: () => {
         const [value, setValue] = useState('brass');
         return (

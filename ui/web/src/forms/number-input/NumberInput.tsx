@@ -1,8 +1,9 @@
 import { ChangeEvent, ComponentProps, FC, MouseEvent } from "react";
 import classNames from "classnames";
-import { addDecimalStep, Icons, NumberInputProps, SizeVariant, useTheme } from "@ui";
+import { ColorShade, Icons, NumberInputProps, SizeVariant, useTheme } from "@ui";
 import { Button } from "../../button";
 import { Label } from "../../typography";
+import { useStepRepeatButton } from '../step-controls/useStepRepeatButton';
 import styles from './number-input.module.css';
 
 export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' | 'type' | 'size'> & NumberInputProps> = ({
@@ -26,6 +27,7 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
     ...props
 }) => {
     const theme = useTheme();
+    const getStepButtonProps = useStepRepeatButton({ value, onChange, step, min, max, disabled });
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const parsed = Number(e.target.value);
@@ -40,19 +42,14 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
         }
     };
 
-    const handleIncrement = () => {
-        if (disabled) return;
-        const newValue = addDecimalStep(value, step ?? 1);
-        if (max !== undefined && newValue > max) return;
-        onChange(newValue);
-    };
-
-    const handleDecrement = () => {
-        if (disabled) return;
-        const newValue = addDecimalStep(value, -(step ?? 1));
-        if (min !== undefined && newValue < min) return;
-        onChange(newValue);
-    };
+    const contentShade: ColorShade = variant === 'fill-translucent'
+        ? 500
+        : variant === 'fill'
+            ? theme.isLight ? 100 : 900
+            : theme.isLight ? 900 : 100;
+    const disabledShade: ColorShade = theme.isLight ? 300 : 700;
+    const incrementDisabled = disabled || (max !== undefined && value >= max);
+    const decrementDisabled = disabled || (min !== undefined && value <= min);
 
     const buttonSizes: { [key in SizeVariant]: SizeVariant } = {
         xs: 'xs',
@@ -68,6 +65,7 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
             styles[`highlight-${highlightColor}`],
             styles[`size-${size}`],
             styles[`variant-${variant}`],
+            disabled && styles.disabled,
         )}>
             {typeof label === 'string' ? (
                 <Label htmlFor={id} className={styles.label}>
@@ -94,22 +92,24 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
                 </div>
                 {showStepControls ? <div className={styles.steppers}>
                     <Button
+                        {...getStepButtonProps(1)}
                         icon={Icons.NounProject.ChevronDownSingle}
                         iconRotateZ={180}
-                        onClick={handleIncrement}
-                        disabled={disabled || (max !== undefined && value >= max)}
+                        disabled={incrementDisabled}
                         color={color}
+                        highlightColor={highlightColor}
+                        shade={incrementDisabled ? disabledShade : contentShade}
                         size={buttonSizes[size]}
-                        tabIndex={-1}
                         className={styles['stepper-btn']}
                         aria-label={ariaLabel ? `${ariaLabel} (+)` : '+'}
                     />
                     <Button
+                        {...getStepButtonProps(-1)}
                         icon={Icons.NounProject.ChevronDownSingle}
-                        onClick={handleDecrement}
-                        disabled={disabled || (min !== undefined && value <= min)}
+                        disabled={decrementDisabled}
                         color={color}
-                        tabIndex={-1}
+                        highlightColor={highlightColor}
+                        shade={decrementDisabled ? disabledShade : contentShade}
                         size={buttonSizes[size]}
                         className={styles['stepper-btn']}
                         aria-label={ariaLabel ? `${ariaLabel} (−)` : '−'}

@@ -18,8 +18,8 @@
     outline: 0;
 }
 
-.spread > .tab,
-.spread > .overflow {
+.spread>.tab,
+.spread>.overflow {
     flex: 1 1 0;
     min-width: max-content;
 }
@@ -89,10 +89,15 @@
     z-index: 1;
 }
 
-.mode-light .tab[aria-selected='true'] .label { color: var(--selected-light); }
-.mode-dark .tab[aria-selected='true'] .label { color: var(--selected-dark); }
+.mode-light .tab[aria-selected='true'] .label {
+    color: var(--selected-light);
+}
 
-.tab + .tab,
+.mode-dark .tab[aria-selected='true'] .label {
+    color: var(--selected-dark);
+}
+
+.tab+.tab,
 .overflow {
     margin-left: -1px;
 }
@@ -104,16 +109,57 @@
     width: max-content;
 }
 
-.color-neutral { --content-color: var(--color-neutral-500); --content-dark: var(--color-neutral-800); --content-light: var(--color-neutral-100); }
-.color-primary { --content-color: var(--color-primary-500); --content-dark: var(--color-primary-900); --content-light: var(--color-primary-100); }
-.color-secondary { --content-color: var(--color-secondary-500); --content-dark: var(--color-secondary-900); --content-light: var(--color-secondary-100); }
-.color-tertiary { --content-color: var(--color-tertiary-500); --content-dark: var(--color-tertiary-900); --content-light: var(--color-tertiary-100); }
-.highlight-neutral { --selected-dark: var(--color-neutral-900); --selected-light: var(--color-neutral-100); }
-.highlight-primary { --selected-dark: var(--color-primary-900); --selected-light: var(--color-primary-100); }
-.highlight-secondary { --selected-dark: var(--color-secondary-900); --selected-light: var(--color-secondary-100); }
-.highlight-tertiary { --selected-dark: var(--color-tertiary-900); --selected-light: var(--color-tertiary-100); }
-.mode-light { --content-inverse: var(--content-light); }
-.mode-dark { --content-inverse: var(--content-dark); }
+.color-neutral {
+    --content-color: var(--color-neutral-500);
+    --content-dark: var(--color-neutral-800);
+    --content-light: var(--color-neutral-100);
+}
+
+.color-primary {
+    --content-color: var(--color-primary-500);
+    --content-dark: var(--color-primary-900);
+    --content-light: var(--color-primary-100);
+}
+
+.color-secondary {
+    --content-color: var(--color-secondary-500);
+    --content-dark: var(--color-secondary-900);
+    --content-light: var(--color-secondary-100);
+}
+
+.color-tertiary {
+    --content-color: var(--color-tertiary-500);
+    --content-dark: var(--color-tertiary-900);
+    --content-light: var(--color-tertiary-100);
+}
+
+.highlight-neutral {
+    --selected-dark: var(--color-neutral-900);
+    --selected-light: var(--color-neutral-100);
+}
+
+.highlight-primary {
+    --selected-dark: var(--color-primary-900);
+    --selected-light: var(--color-primary-100);
+}
+
+.highlight-secondary {
+    --selected-dark: var(--color-secondary-900);
+    --selected-light: var(--color-secondary-100);
+}
+
+.highlight-tertiary {
+    --selected-dark: var(--color-tertiary-900);
+    --selected-light: var(--color-tertiary-100);
+}
+
+.mode-light {
+    --content-inverse: var(--content-light);
+}
+
+.mode-dark {
+    --content-inverse: var(--content-dark);
+}
 
 .content {
     margin-top: -1px;
@@ -137,26 +183,59 @@
 }
 
 @keyframes content-enter {
-    from { transform: translateY(4px); }
-    to { transform: translateY(0); }
+    from {
+        transform: translateY(4px);
+    }
+
+    to {
+        transform: translateY(0);
+    }
 }
 
 @keyframes content-exit {
-    from { transform: translateY(0); }
-    to { transform: translateY(-4px); }
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-4px);
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .content { transition: none; }
-    .content-inner { animation: none; }
-    .content-outgoing { display: none; }
+    .content {
+        transition: none;
+    }
+
+    .content-inner {
+        animation: none;
+    }
+
+    .content-outgoing {
+        display: none;
+    }
 }
 
-.size-xs { padding: 6px; }
-.size-sm { padding: 10px; }
-.size-md { padding: 14px; }
-.content-fill-inverse { background-color: var(--content-inverse); }
-.content-fill-translucent { background-color: rgb(from var(--content-color) r g b / .24); }
+.size-xs {
+    padding: 6px;
+}
+
+.size-sm {
+    padding: 10px;
+}
+
+.size-md {
+    padding: 14px;
+}
+
+.content-fill-inverse {
+    background-color: var(--content-inverse);
+}
+
+.content-fill-translucent {
+    background-color: rgb(from var(--content-color) r g b / .24);
+}
+
 .content-outline {
     background-color: transparent;
     border: 1px solid var(--content-color);

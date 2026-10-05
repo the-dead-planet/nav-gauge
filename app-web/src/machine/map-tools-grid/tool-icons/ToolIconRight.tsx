@@ -48,6 +48,8 @@ export const ToolIconRight: FC<ObservedToolIcon<maplibregl.Map> & Props> = ({
                 showTooltipConnection
                 size="xs"
                 variant="fill-inverse"
+                shade={500}
+                highlightShade={theme.isDark ? 300 : 700}
                 corners="hexagon"
                 glowStyle={theme.isDark ? "animate-borders-glow" : 'none'}
                 color="primary"

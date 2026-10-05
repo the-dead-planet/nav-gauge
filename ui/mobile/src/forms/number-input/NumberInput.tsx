@@ -1,9 +1,10 @@
 import { FC } from "react";
 import { View, TextInput, StyleSheet } from "react-native";
-import { addDecimalStep, controlTextSpecifications, FontType, Icons, NumberInputProps, SizeVariant, useTheme } from "@ui";
+import { ColorShade, controlTextSpecifications, FontType, Icons, NumberInputProps, SizeVariant, useStepRepeat, useTheme } from "@ui";
 import { Button } from "../../button";
 import { Text } from "../../typography";
 import { getMobileFontFamily } from "../../typography/fontFamily";
+import { TRANSLUCENT_OPACITY } from "../../tinkers";
 
 const styles = StyleSheet.create({
     container: {
@@ -35,10 +36,11 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         fontSize: 14,
         marginLeft: 4,
-        opacity: 0.6,
+        marginRight: 4,
     },
     steppers: {
         flexShrink: 0,
+        borderLeftWidth: 1,
     },
     stepper: {
         flex: 1,
@@ -63,7 +65,9 @@ const buttonSizes: Record<SizeVariant, SizeVariant> = {
 
 export const NumberInput: FC<NumberInputProps> = ({
     color = 'neutral',
+    highlightColor = color,
     size = 'sm',
+    variant = 'fill-inverse',
     label,
     value,
     onChange,
@@ -73,6 +77,7 @@ export const NumberInput: FC<NumberInputProps> = ({
     min,
     max,
     step,
+    autoSelect = false,
     showStepControls = true,
 }) => {
     const theme = useTheme();
@@ -85,16 +90,33 @@ export const NumberInput: FC<NumberInputProps> = ({
     };
 
     const baseColor = theme.color(color, 500);
+    const contentShade: ColorShade = variant === 'fill-translucent'
+        ? 500
+        : variant === 'fill'
+            ? theme.isLight ? 100 : 900
+            : theme.isLight ? 900 : 100;
+    const contentColor = theme.color(color, contentShade);
+    const disabledShade: ColorShade = theme.isLight ? 300 : 700;
+    const disabledColor = theme.color(color, disabledShade);
+    const backgroundColor = variant === 'fill'
+        ? baseColor
+        : variant === 'fill-translucent'
+            ? theme.color(color, 500, TRANSLUCENT_OPACITY)
+            : theme.color(color, theme.isLight ? 100 : 900);
+    const borderColor = variant === 'fill-translucent'
+        ? theme.color(color, 500, 0.3)
+        : baseColor;
     const labelFontSize = size === 'xs' ? 11 : size === 'sm' ? 12 : 13;
     const inputSize = sizes[size];
-    const increment = addDecimalStep(value, step ?? 1);
-    const decrement = addDecimalStep(value, -(step ?? 1));
+    const stepRepeat = useStepRepeat({ value, onChange, step, min, max, disabled });
+    const incrementDisabled = disabled || (max !== undefined && value >= max);
+    const decrementDisabled = disabled || (min !== undefined && value <= min);
 
     const input = (
         <View
             style={[
                 styles['input-wrapper'],
-                { borderColor: baseColor, height: inputSize.height },
+                { borderColor, backgroundColor, height: inputSize.height },
             ]}
         >
             <TextInput
@@ -102,7 +124,7 @@ export const NumberInput: FC<NumberInputProps> = ({
                     styles.input,
                     unit && styles['input-with-unit'],
                     {
-                        color: baseColor,
+                        color: disabled ? disabledColor : contentColor,
                         ...inputSize,
                         height: '100%',
                         paddingVertical: 0,
@@ -111,36 +133,49 @@ export const NumberInput: FC<NumberInputProps> = ({
                 value={String(value)}
                 onChangeText={handleChange}
                 keyboardType="decimal-pad"
+                selectTextOnFocus={autoSelect}
                 accessibilityLabel={ariaLabel || (typeof label === 'string' ? label : undefined)}
                 editable={!disabled}
             />
             {unit ? (
-                <Text style={[styles.unit, { color: baseColor, fontSize: inputSize.fontSize }]}>
+                <Text
+                    style={[
+                        styles.unit,
+                        { color: disabled ? disabledColor : contentColor, fontSize: inputSize.fontSize },
+                    ]}
+                >
                     {unit}
                 </Text>
             ) : null}
             {showStepControls ? (
-                <View style={styles.steppers}>
+                <View style={[styles.steppers, { borderLeftColor: borderColor }]}>
                     <Button
                         icon={Icons.NounProject.ChevronDownSingle}
                         iconRotateZ={180}
                         color={color}
+                        highlightColor={highlightColor}
+                        shade={incrementDisabled ? disabledShade : contentShade}
                         size={buttonSizes[size]}
-                        disabled={disabled || (max !== undefined && increment > max)}
-                        onPress={() => onChange(increment)}
+                        disabled={incrementDisabled}
+                        onPressIn={() => stepRepeat.start(1)}
+                        onPressOut={stepRepeat.stop}
                         accessibilityLabel={ariaLabel ? `${ariaLabel} (+)` : '+'}
-                        style={styles.stepper}
+                        style={[styles.stepper, incrementDisabled && { opacity: 1 }]}
                     />
                     <Button
                         icon={Icons.NounProject.ChevronDownSingle}
                         color={color}
+                        highlightColor={highlightColor}
+                        shade={decrementDisabled ? disabledShade : contentShade}
                         size={buttonSizes[size]}
-                        disabled={disabled || (min !== undefined && decrement < min)}
-                        onPress={() => onChange(decrement)}
+                        disabled={decrementDisabled}
+                        onPressIn={() => stepRepeat.start(-1)}
+                        onPressOut={stepRepeat.stop}
                         accessibilityLabel={ariaLabel ? `${ariaLabel} (−)` : '−'}
                         style={[
                             styles.stepper,
-                            { borderTopWidth: 1, borderTopColor: baseColor },
+                            decrementDisabled && { opacity: 1 },
+                            { borderTopWidth: 1, borderTopColor: borderColor },
                         ]}
                     />
                 </View>
@@ -151,7 +186,12 @@ export const NumberInput: FC<NumberInputProps> = ({
     return (
         <View style={styles.container}>
             {label ? (
-                <Text style={[styles.label, { color: baseColor, fontSize: labelFontSize }]}>
+                <Text
+                    style={[
+                        styles.label,
+                        { color: disabled ? disabledColor : baseColor, fontSize: labelFontSize },
+                    ]}
+                >
                     {label}
                 </Text>
             ) : null}

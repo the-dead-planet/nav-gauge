@@ -208,28 +208,28 @@
 
 .variant-fill-inverse {
     border: 1px solid var(--button-color);
-    color: var(--button-content-color, var(--button-color-fill));
+    color: var(--button-content-color, var(--button-color-text));
     background-color: var(--button-color-inverse);
 }
 
 .variant-fill-inverse .icon {
-    color: var(--button-content-color, var(--button-color-fill));
-    stroke: var(--button-content-color, var(--button-color-fill));
-    fill: var(--button-content-color, var(--button-color-fill));
+    color: var(--button-content-color, var(--button-color-text));
+    stroke: var(--button-content-color, var(--button-color-text));
+    fill: var(--button-content-color, var(--button-color-text));
 }
 
 .variant-fill-inverse:hover,
 .variant-fill-inverse.hovered {
     background-color: var(--button-highlight-color-inverse);
     border-color: var(--button-highlight-color-accent);
-    color: var(--button-highlight-color-accent);
+    color: var(--button-content-color, var(--button-color-text));
 }
 
 .variant-fill-inverse:hover .icon,
 .variant-fill-inverse.hovered .icon {
-    color: var(--button-highlight-color-accent);
-    stroke: var(--button-highlight-color-accent);
-    fill: var(--button-highlight-color-accent);
+    color: var(--button-content-color, var(--button-color-text));
+    stroke: var(--button-content-color, var(--button-color-text));
+    fill: var(--button-content-color, var(--button-color-text));
 }
 
 .variant-fill-inverse:active,
@@ -250,6 +250,7 @@
     border: 1px solid rgb(from var(--button-color) r g b / .3);
     color: var(--button-content-color, var(--button-color));
     background-color: rgb(from var(--button-color) r g b / .24);
+    backdrop-filter: blur(6px);
 }
 
 .variant-fill-translucent .icon {
@@ -441,7 +442,7 @@
 }
 
 .corners-hexagon.variant-fill-inverse {
-    color: var(--button-content-color, var(--button-color-fill));
+    color: var(--button-content-color, var(--button-color-text));
 }
 
 .corners-hexagon.variant-fill {
@@ -459,9 +460,9 @@
 }
 
 .corners-hexagon.variant-fill-inverse .icon {
-    color: var(--button-content-color, var(--button-color-fill));
-    stroke: var(--button-content-color, var(--button-color-fill));
-    fill: var(--button-content-color, var(--button-color-fill));
+    color: var(--button-content-color, var(--button-color-text));
+    stroke: var(--button-content-color, var(--button-color-text));
+    fill: var(--button-content-color, var(--button-color-text));
 }
 
 .corners-hexagon.variant-fill .icon {
