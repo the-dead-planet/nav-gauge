@@ -1,103 +1,125 @@
-import type { Meta } from 'storybook-react-rsbuild';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import type { Meta, StoryObj } from 'storybook-react-rsbuild';
+import { ColorVariant, FillVariant, SizeVariant } from '@ui';
 import { NumberInput } from './NumberInput';
-import { Fieldset } from '../fieldset';
 import { Text } from '../../typography';
-import { Dropdown } from '../../dropdown';
-import { ColorVariant, SizeVariant, FillVariant } from '@ui';
+
+const colors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
+const sizes: SizeVariant[] = ['xs', 'sm', 'md'];
+const variants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
+
+const GalleryNumberInput = ({
+    color,
+    variant,
+    size,
+}: {
+    color: ColorVariant;
+    variant: FillVariant;
+    size: SizeVariant;
+}) => {
+    const [value, setValue] = useState(42);
+
+    return (
+        <NumberInput
+            ariaLabel={`${color} ${variant} ${size}`}
+            value={value}
+            onChange={setValue}
+            color={color}
+            highlightColor={color}
+            variant={variant}
+            size={size}
+            unit="px"
+            autoSelect
+        />
+    );
+};
 
 const meta = {
     title: 'Forms/NumberInput',
     component: NumberInput,
+    args: {
+        id: 'number-input-playground',
+        label: 'Value',
+        value: 42,
+        color: 'neutral',
+        highlightColor: 'neutral',
+        size: 'sm',
+        variant: 'fill-inverse',
+        min: 0,
+        max: 100,
+        step: 1,
+        disabled: false,
+        autoSelect: false,
+        unit: 'px',
+        showStepControls: true,
+        onChange: () => {},
+    },
+    argTypes: {
+        color: { control: 'select', options: colors },
+        highlightColor: { control: 'select', options: colors },
+        size: { control: 'select', options: sizes },
+        variant: { control: 'select', options: variants },
+        onChange: { control: false },
+    },
 } satisfies Meta<typeof NumberInput>;
 
 export default meta;
+type Story = StoryObj<typeof meta>;
 
-const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
-const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
+export const Playground: Story = {
+    render: (args) => {
+        const [value, setValue] = useState(args.value);
 
-export const NumberInputInteractive = {
-    render: () => {
-        const [value, setValue] = useState(50);
-        const [color, setColor] = useState<ColorVariant>('neutral');
-        const [size, setSize] = useState<SizeVariant>('sm');
-        const [variant, setVariant] = useState<FillVariant>('fill-inverse');
-        const [disabled, setDisabled] = useState(false);
+        useEffect(() => setValue(args.value), [args.value]);
 
         return (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 24, padding: 24, maxWidth: 320 }}>
-                <NumberInput
-                    id="interactive"
-                    label="Value"
-                    value={value}
-                    onChange={setValue}
-                    color={color}
-                    size={size}
-                    variant={variant}
-                    disabled={disabled}
-                    unit="px"
-                />
-                <NumberInput label="Fractional step" value={value} step={0.1} onChange={setValue} />
-                <NumberInput label="Without step controls" value={value} onChange={setValue} showStepControls={false} />
-
-                <Fieldset label="Color">
-                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                        {allColors.map(c => (
-                            <label key={c}>
-                                <input type="radio" name="color" checked={color === c} onChange={() => setColor(c)} />
-                                {c}
-                            </label>
-                        ))}
-                    </div>
-                </Fieldset>
-
-                <Fieldset label="Size">
-                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                        {allSizes.map(s => (
-                            <label key={s}>
-                                <input type="radio" name="size" checked={size === s} onChange={() => setSize(s)} />
-                                {s}
-                            </label>
-                        ))}
-                    </div>
-                </Fieldset>
-
-                <Fieldset label="Variant">
-                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                        {allVariants.map(v => (
-                            <label key={v}>
-                                <input type="radio" name="variant" checked={variant === v} onChange={() => setVariant(v)} />
-                                {v}
-                            </label>
-                        ))}
-                    </div>
-                </Fieldset>
-
-                <label>
-                    <input type="checkbox" checked={disabled} onChange={e => setDisabled(e.target.checked)} />
-                    Disabled
-                </label>
-
-                <Fieldset label="All colors">
-                    {allColors.map(c => (
-                        <NumberInput key={c} id={`color-${c}`} label={c} value={42} onChange={() => { }} color={c} size={size} />
-                    ))}
-                </Fieldset>
-
-                <Fieldset label="All sizes">
-                    {allSizes.map(s => (
-                        <NumberInput key={s} id={`size-${s}`} label={s} value={42} onChange={() => { }} size={s} />
-                    ))}
-                </Fieldset>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <NumberInput ariaLabel="Extra-small number" value={42} onChange={() => { }} size="xs" />
-                    <Dropdown ariaLabel="Extra-small dropdown" value="xs" options={[{ value: 'xs', label: 'Extra small' }]} onChange={() => { }} size="xs" />
-                </div>
-
-                <Text>Current value: {value}</Text>
+            <div style={{ width: 240 }}>
+                <NumberInput {...args} value={value} onChange={setValue} />
             </div>
         );
     },
+};
+
+export const Gallery: Story = {
+    render: () => (
+        <div style={{ display: 'grid', gap: 40 }}>
+            {sizes.map((size) => (
+                <div key={size}>
+                    <Text>{size}</Text>
+                    <div style={{ display: 'grid', gap: 8 }}>
+                        <div
+                            style={{
+                                display: 'grid',
+                                gridTemplateColumns: `repeat(${variants.length}, 1fr)`,
+                                gap: 8,
+                            }}
+                        >
+                            {variants.map((variant) => (
+                                <Text key={variant}>{variant}</Text>
+                            ))}
+                        </div>
+                        {colors.map((color) => (
+                            <div
+                                key={color}
+                                style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: `repeat(${variants.length}, 1fr)`,
+                                    gap: 8,
+                                }}
+                            >
+                                {variants.map((variant) => (
+                                    <GalleryNumberInput
+                                        key={`${color}-${variant}-${size}`}
+                                        color={color}
+                                        variant={variant}
+                                        size={size}
+                                    />
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            ))}
+        </div>
+    ),
 };

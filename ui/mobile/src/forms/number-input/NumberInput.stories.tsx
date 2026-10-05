@@ -1,9 +1,8 @@
-import { FC, useState } from "react";
-import { Text } from "../../typography";
-import { ScrollView, View, Switch, StyleSheet } from "react-native";
-import { NumberInput } from "./NumberInput";
-import { Dropdown } from "../../dropdown";
-import { ColorVariant, SizeVariant } from "@ui";
+import { FC, useState } from 'react';
+import { ScrollView, StyleSheet, Switch, View } from 'react-native';
+import { ColorVariant, FillVariant, SizeVariant } from '@ui';
+import { Text } from '../../typography';
+import { NumberInput } from './NumberInput';
 
 const styles = StyleSheet.create({
     container: {
@@ -17,8 +16,11 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
         gap: 8,
-        flexWrap: 'wrap',
         alignItems: 'center',
+    },
+    cell: {
+        flex: 1,
+        minWidth: 0,
     },
     label: {
         fontSize: 14,
@@ -26,14 +28,38 @@ const styles = StyleSheet.create({
     },
 });
 
+const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
+const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
+const allVariants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
+
+const GalleryNumberInput: FC<{
+    color: ColorVariant;
+    variant: FillVariant;
+    size: SizeVariant;
+}> = ({ color, variant, size }) => {
+    const [value, setValue] = useState(42);
+
+    return (
+        <NumberInput
+            ariaLabel={`${color} ${variant} ${size}`}
+            value={value}
+            onChange={setValue}
+            color={color}
+            highlightColor={color}
+            variant={variant}
+            size={size}
+            unit="px"
+            autoSelect
+        />
+    );
+};
+
 export const NumberInputInteractive: FC = () => {
     const [value, setValue] = useState(50);
     const [color, setColor] = useState<ColorVariant>('neutral');
     const [size, setSize] = useState<SizeVariant>('sm');
+    const [variant, setVariant] = useState<FillVariant>('fill-inverse');
     const [disabled, setDisabled] = useState(false);
-
-    const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
-    const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
@@ -43,58 +69,88 @@ export const NumberInputInteractive: FC = () => {
                 onChange={setValue}
                 color={color}
                 size={size}
+                variant={variant}
                 disabled={disabled}
                 step={0.1}
+                unit="px"
             />
-            <NumberInput label="Without step controls" value={value} onChange={setValue} showStepControls={false} />
-
+            <NumberInput
+                label="Without step controls"
+                value={value}
+                onChange={setValue}
+                showStepControls={false}
+            />
+            <Text style={styles.label}>Current value: {value}</Text>
             <View style={styles.section}>
-                <Text style={styles.label}>Current value: {value}</Text>
-            </View>
-
-            <View style={styles.section}>
-                <Text style={styles.label}>Color</Text>
+                <Text style={styles.label}>Color: {color}</Text>
                 <View style={styles.row}>
-                    {allColors.map(c => (
-                        <Switch key={c} value={color === c} onValueChange={() => setColor(c)} />
+                    {allColors.map((option) => (
+                        <Switch
+                            key={option}
+                            value={color === option}
+                            onValueChange={() => setColor(option)}
+                        />
                     ))}
                 </View>
-                <Text>{color}</Text>
             </View>
-
             <View style={styles.section}>
-                <Text style={styles.label}>Size</Text>
+                <Text style={styles.label}>Size: {size}</Text>
                 <View style={styles.row}>
-                    {allSizes.map(s => (
-                        <Switch key={s} value={size === s} onValueChange={() => setSize(s)} />
+                    {allSizes.map((option) => (
+                        <Switch
+                            key={option}
+                            value={size === option}
+                            onValueChange={() => setSize(option)}
+                        />
                     ))}
                 </View>
-                <Text>{size}</Text>
             </View>
-
+            <View style={styles.section}>
+                <Text style={styles.label}>Variant: {variant}</Text>
+                <View style={styles.row}>
+                    {allVariants.map((option) => (
+                        <Switch
+                            key={option}
+                            value={variant === option}
+                            onValueChange={() => setVariant(option)}
+                        />
+                    ))}
+                </View>
+            </View>
             <View style={styles.row}>
-                <Text>Disabled:</Text>
+                <Text>Disabled</Text>
                 <Switch value={disabled} onValueChange={setDisabled} />
-            </View>
-
-            <View style={styles.section}>
-                <Text style={styles.label}>All colors</Text>
-                {allColors.map(c => (
-                    <NumberInput key={c} label={c} value={42} onChange={() => { }} color={c} />
-                ))}
-            </View>
-
-            <View style={styles.section}>
-                <Text style={styles.label}>All sizes</Text>
-                {allSizes.map(s => (
-                    <NumberInput key={s} label={s} value={42} onChange={() => { }} size={s} />
-                ))}
-            </View>
-
-            <View style={styles.row}>
-                <NumberInput value={42} onChange={() => {}} size="xs" />
-                <Dropdown value="xs" options={[{ value: 'xs', label: 'Extra small' }]} onChange={() => {}} size="xs" />
             </View>
         </ScrollView>
     );
 };
+
+export const AllVariants: FC = () => (
+    <ScrollView contentContainerStyle={styles.container}>
+        {allSizes.map((size) => (
+            <View key={size} style={styles.section}>
+                <Text style={styles.label}>{size}</Text>
+                <View style={styles.row}>
+                    {allVariants.map((variant) => (
+                        <View key={variant} style={styles.cell}>
+                            <Text>{variant}</Text>
+                        </View>
+                    ))}
+                </View>
+                {allColors.map((color) => (
+                    <View key={color} style={styles.row}>
+                        {allVariants.map((variant) => (
+                            <View key={`${size}-${color}-${variant}`} style={styles.cell}>
+                                <GalleryNumberInput
+                                    color={color}
+                                    variant={variant}
+                                    size={size}
+                                />
+                            </View>
+                        ))}
+                    </View>
+                ))}
+            </View>
+        ))}
+    </ScrollView>
+);

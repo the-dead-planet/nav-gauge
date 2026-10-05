@@ -47,7 +47,6 @@
     flex-shrink: 0;
     margin-left: 4px;
     margin-right: 4px;
-    opacity: 0.6;
     pointer-events: none;
 }
 
@@ -62,8 +61,18 @@
 }
 
 .input:disabled {
-    opacity: .4;
     cursor: not-allowed;
+}
+
+.disabled .label,
+.disabled .input,
+.disabled .unit {
+    color: var(--ni-disabled-color);
+}
+
+.disabled .stepper-btn,
+.stepper-btn:disabled {
+    opacity: 1;
 }
 
 .steppers {
@@ -108,6 +117,8 @@
     --ni-color-dark: var(--color-neutral-800);
     --ni-color-light: var(--color-neutral-100);
     --ni-highlight-color: var(--color-neutral);
+    --ni-disabled-light: var(--color-neutral-300);
+    --ni-disabled-dark: var(--color-neutral-700);
 }
 
 .color-primary {
@@ -115,6 +126,8 @@
     --ni-color-dark: var(--color-primary-900);
     --ni-color-light: var(--color-primary-100);
     --ni-highlight-color: var(--color-primary);
+    --ni-disabled-light: var(--color-primary-300);
+    --ni-disabled-dark: var(--color-primary-700);
 }
 
 .color-secondary {
@@ -122,6 +135,8 @@
     --ni-color-dark: var(--color-secondary-900);
     --ni-color-light: var(--color-secondary-100);
     --ni-highlight-color: var(--color-secondary);
+    --ni-disabled-light: var(--color-secondary-300);
+    --ni-disabled-dark: var(--color-secondary-700);
 }
 
 .color-tertiary {
@@ -129,6 +144,8 @@
     --ni-color-dark: var(--color-tertiary-900);
     --ni-color-light: var(--color-tertiary-100);
     --ni-highlight-color: var(--color-tertiary);
+    --ni-disabled-light: var(--color-tertiary-300);
+    --ni-disabled-dark: var(--color-tertiary-700);
 }
 
 .highlight-neutral .input-wrapper:focus-within {
@@ -214,6 +231,10 @@
     color: var(--ni-color-dark);
 }
 
+.mode-light {
+    --ni-disabled-color: var(--ni-disabled-light);
+}
+
 .mode-light .input-wrapper {
     background-color: var(--ni-color-light);
     color: var(--ni-color-dark);
@@ -226,6 +247,10 @@
 
 .mode-dark .label {
     color: var(--ni-color-light);
+}
+
+.mode-dark {
+    --ni-disabled-color: var(--ni-disabled-dark);
 }
 
 .mode-dark .input-wrapper {
@@ -241,6 +266,10 @@
 .variant-fill .input-wrapper {
     background-color: var(--ni-color);
     color: var(--ni-color-light);
+}
+
+.mode-dark.variant-fill .input-wrapper {
+    color: var(--ni-color-dark);
 }
 
 .variant-fill-inverse .input-wrapper {
@@ -259,4 +288,13 @@
     background-color: rgb(from var(--ni-color) r g b / .24);
     color: var(--ni-color);
     border-color: rgb(from var(--ni-color) r g b / .3);
+    backdrop-filter: blur(6px);
+}
+
+.variant-fill-translucent .steppers {
+    border-left-color: rgb(from var(--ni-color) r g b / .3);
+}
+
+.variant-fill-translucent .stepper-btn + .stepper-btn {
+    border-top-color: rgb(from var(--ni-color) r g b / .3);
 }

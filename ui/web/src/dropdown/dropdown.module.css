@@ -228,6 +228,7 @@
     border: 1px solid rgb(from var(--dropdown-color) r g b / .3);
     color: var(--dropdown-color-text);
     background-color: rgb(from var(--dropdown-color) r g b / .24);
+    backdrop-filter: blur(6px);
 }
 
 .variant-fill-translucent .trigger .icon {
@@ -274,6 +275,11 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, .3);
     max-height: 240px;
     overflow-y: auto;
+}
+
+.variant-fill-translucent.menu {
+    background-color: rgb(from var(--dropdown-color) r g b / .24);
+    backdrop-filter: blur(6px);
 }
 
 .option {

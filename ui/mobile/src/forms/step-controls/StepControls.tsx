@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import { addDecimalStep, Icons, StepControlsProps } from "@ui";
+import { addDecimalStep, Icons, StepControlsProps, useStepRepeat } from "@ui";
 import { Button } from "../../button";
 
 const styles = StyleSheet.create({
@@ -32,6 +32,7 @@ export const StepControls: FC<StepControlsProps> = ({
 }) => {
     const decrement = addDecimalStep(value, -step);
     const increment = addDecimalStep(value, step);
+    const stepRepeat = useStepRepeat({ value, onChange, step, min, max, disabled: disabled || !onChange });
     const minusIcon = variant === 'fill-translucent'
         ? Icons.NounProject.MinusOutlined
         : Icons.NounProject.Minus;
@@ -46,7 +47,8 @@ export const StepControls: FC<StepControlsProps> = ({
                 color={color}
                 size={size}
                 disabled={disabled || !onChange || (min !== undefined && decrement < min)}
-                onPress={() => onChange?.(decrement)}
+                onPressIn={() => stepRepeat.start(-1)}
+                onPressOut={stepRepeat.stop}
                 accessibilityLabel={ariaLabel ? `${ariaLabel} (−)` : '−'}
                 style={{ height: controlHeights[size] }}
             />
@@ -56,7 +58,8 @@ export const StepControls: FC<StepControlsProps> = ({
                 color={color}
                 size={size}
                 disabled={disabled || !onChange || (max !== undefined && increment > max)}
-                onPress={() => onChange?.(increment)}
+                onPressIn={() => stepRepeat.start(1)}
+                onPressOut={stepRepeat.stop}
                 accessibilityLabel={ariaLabel ? `${ariaLabel} (+)` : '+'}
                 style={{ height: controlHeights[size] }}
             />

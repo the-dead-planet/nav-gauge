@@ -1,6 +1,6 @@
-import { ChangeEvent, ComponentProps, FC, MouseEvent } from "react";
+import { ChangeEvent, ComponentProps, FC, KeyboardEvent, MouseEvent, PointerEvent, useRef } from "react";
 import classNames from "classnames";
-import { addDecimalStep, Icons, NumberInputProps, SizeVariant, useTheme } from "@ui";
+import { ColorShade, Icons, NumberInputProps, SizeVariant, useStepRepeat, useTheme } from "@ui";
 import { Button } from "../../button";
 import { Label } from "../../typography";
 import styles from './number-input.module.css';
@@ -26,6 +26,8 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
     ...props
 }) => {
     const theme = useTheme();
+    const suppressKeyboardClickRef = useRef(false);
+    const stepRepeat = useStepRepeat({ value, onChange, step, min, max, disabled });
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const parsed = Number(e.target.value);
@@ -40,18 +42,39 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
         }
     };
 
-    const handleIncrement = () => {
-        if (disabled) return;
-        const newValue = addDecimalStep(value, step ?? 1);
-        if (max !== undefined && newValue > max) return;
-        onChange(newValue);
+    const contentShade: ColorShade = variant === 'fill-translucent'
+        ? 500
+        : variant === 'fill'
+            ? theme.isLight ? 100 : 900
+            : theme.isLight ? 900 : 100;
+    const disabledShade: ColorShade = theme.isLight ? 300 : 700;
+    const incrementDisabled = disabled || (max !== undefined && value >= max);
+    const decrementDisabled = disabled || (min !== undefined && value <= min);
+
+    const handleStepKeyDown = (event: KeyboardEvent<HTMLButtonElement>, direction: -1 | 1) => {
+        if ((event.key === 'Enter' || event.key === ' ') && !event.repeat) {
+            event.preventDefault();
+            suppressKeyboardClickRef.current = true;
+            stepRepeat.start(direction);
+        }
     };
 
-    const handleDecrement = () => {
-        if (disabled) return;
-        const newValue = addDecimalStep(value, -(step ?? 1));
-        if (min !== undefined && newValue < min) return;
-        onChange(newValue);
+    const handleStepKeyUp = (event: KeyboardEvent<HTMLButtonElement>) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            stepRepeat.stop();
+        }
+    };
+
+    const handleStepPointerDown = (event: PointerEvent<HTMLButtonElement>, direction: -1 | 1) => {
+        if (event.button === 0) {
+            stepRepeat.start(direction);
+        }
+    };
+
+    const handleStepBlur = () => {
+        suppressKeyboardClickRef.current = false;
+        stepRepeat.stop();
     };
 
     const buttonSizes: { [key in SizeVariant]: SizeVariant } = {
@@ -68,6 +91,7 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
             styles[`highlight-${highlightColor}`],
             styles[`size-${size}`],
             styles[`variant-${variant}`],
+            disabled && styles.disabled,
         )}>
             {typeof label === 'string' ? (
                 <Label htmlFor={id} className={styles.label}>
@@ -96,20 +120,46 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
                     <Button
                         icon={Icons.NounProject.ChevronDownSingle}
                         iconRotateZ={180}
-                        onClick={handleIncrement}
-                        disabled={disabled || (max !== undefined && value >= max)}
+                        onClick={(event) => {
+                            if (event.detail === 0 && !suppressKeyboardClickRef.current) {
+                                stepRepeat.changeBy(1);
+                            }
+                            suppressKeyboardClickRef.current = false;
+                        }}
+                        onPointerDown={(event) => handleStepPointerDown(event, 1)}
+                        onPointerUp={stepRepeat.stop}
+                        onPointerCancel={stepRepeat.stop}
+                        onPointerLeave={stepRepeat.stop}
+                        onKeyDown={(event) => handleStepKeyDown(event, 1)}
+                        onKeyUp={handleStepKeyUp}
+                        onBlur={handleStepBlur}
+                        disabled={incrementDisabled}
                         color={color}
+                        highlightColor={highlightColor}
+                        shade={incrementDisabled ? disabledShade : contentShade}
                         size={buttonSizes[size]}
-                        tabIndex={-1}
                         className={styles['stepper-btn']}
                         aria-label={ariaLabel ? `${ariaLabel} (+)` : '+'}
                     />
                     <Button
                         icon={Icons.NounProject.ChevronDownSingle}
-                        onClick={handleDecrement}
-                        disabled={disabled || (min !== undefined && value <= min)}
+                        onClick={(event) => {
+                            if (event.detail === 0 && !suppressKeyboardClickRef.current) {
+                                stepRepeat.changeBy(-1);
+                            }
+                            suppressKeyboardClickRef.current = false;
+                        }}
+                        onPointerDown={(event) => handleStepPointerDown(event, -1)}
+                        onPointerUp={stepRepeat.stop}
+                        onPointerCancel={stepRepeat.stop}
+                        onPointerLeave={stepRepeat.stop}
+                        onKeyDown={(event) => handleStepKeyDown(event, -1)}
+                        onKeyUp={handleStepKeyUp}
+                        onBlur={handleStepBlur}
+                        disabled={decrementDisabled}
                         color={color}
-                        tabIndex={-1}
+                        highlightColor={highlightColor}
+                        shade={decrementDisabled ? disabledShade : contentShade}
                         size={buttonSizes[size]}
                         className={styles['stepper-btn']}
                         aria-label={ariaLabel ? `${ariaLabel} (−)` : '−'}
