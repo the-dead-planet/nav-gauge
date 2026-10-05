@@ -1,8 +1,9 @@
-import { ChangeEvent, ComponentProps, FC, KeyboardEvent, MouseEvent, PointerEvent, useRef } from "react";
+import { ChangeEvent, ComponentProps, FC, MouseEvent } from "react";
 import classNames from "classnames";
-import { ColorShade, Icons, NumberInputProps, SizeVariant, useStepRepeat, useTheme } from "@ui";
+import { ColorShade, Icons, NumberInputProps, SizeVariant, useTheme } from "@ui";
 import { Button } from "../../button";
 import { Label } from "../../typography";
+import { useStepRepeatButton } from '../step-controls/useStepRepeatButton';
 import styles from './number-input.module.css';
 
 export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' | 'type' | 'size'> & NumberInputProps> = ({
@@ -26,8 +27,7 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
     ...props
 }) => {
     const theme = useTheme();
-    const suppressKeyboardClickRef = useRef(false);
-    const stepRepeat = useStepRepeat({ value, onChange, step, min, max, disabled });
+    const getStepButtonProps = useStepRepeatButton({ value, onChange, step, min, max, disabled });
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const parsed = Number(e.target.value);
@@ -50,32 +50,6 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
     const disabledShade: ColorShade = theme.isLight ? 300 : 700;
     const incrementDisabled = disabled || (max !== undefined && value >= max);
     const decrementDisabled = disabled || (min !== undefined && value <= min);
-
-    const handleStepKeyDown = (event: KeyboardEvent<HTMLButtonElement>, direction: -1 | 1) => {
-        if ((event.key === 'Enter' || event.key === ' ') && !event.repeat) {
-            event.preventDefault();
-            suppressKeyboardClickRef.current = true;
-            stepRepeat.start(direction);
-        }
-    };
-
-    const handleStepKeyUp = (event: KeyboardEvent<HTMLButtonElement>) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-            event.preventDefault();
-            stepRepeat.stop();
-        }
-    };
-
-    const handleStepPointerDown = (event: PointerEvent<HTMLButtonElement>, direction: -1 | 1) => {
-        if (event.button === 0) {
-            stepRepeat.start(direction);
-        }
-    };
-
-    const handleStepBlur = () => {
-        suppressKeyboardClickRef.current = false;
-        stepRepeat.stop();
-    };
 
     const buttonSizes: { [key in SizeVariant]: SizeVariant } = {
         xs: 'xs',
@@ -118,21 +92,9 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
                 </div>
                 {showStepControls ? <div className={styles.steppers}>
                     <Button
+                        {...getStepButtonProps(1)}
                         icon={Icons.NounProject.ChevronDownSingle}
                         iconRotateZ={180}
-                        onClick={(event) => {
-                            if (event.detail === 0 && !suppressKeyboardClickRef.current) {
-                                stepRepeat.changeBy(1);
-                            }
-                            suppressKeyboardClickRef.current = false;
-                        }}
-                        onPointerDown={(event) => handleStepPointerDown(event, 1)}
-                        onPointerUp={stepRepeat.stop}
-                        onPointerCancel={stepRepeat.stop}
-                        onPointerLeave={stepRepeat.stop}
-                        onKeyDown={(event) => handleStepKeyDown(event, 1)}
-                        onKeyUp={handleStepKeyUp}
-                        onBlur={handleStepBlur}
                         disabled={incrementDisabled}
                         color={color}
                         highlightColor={highlightColor}
@@ -142,20 +104,8 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
                         aria-label={ariaLabel ? `${ariaLabel} (+)` : '+'}
                     />
                     <Button
+                        {...getStepButtonProps(-1)}
                         icon={Icons.NounProject.ChevronDownSingle}
-                        onClick={(event) => {
-                            if (event.detail === 0 && !suppressKeyboardClickRef.current) {
-                                stepRepeat.changeBy(-1);
-                            }
-                            suppressKeyboardClickRef.current = false;
-                        }}
-                        onPointerDown={(event) => handleStepPointerDown(event, -1)}
-                        onPointerUp={stepRepeat.stop}
-                        onPointerCancel={stepRepeat.stop}
-                        onPointerLeave={stepRepeat.stop}
-                        onKeyDown={(event) => handleStepKeyDown(event, -1)}
-                        onKeyUp={handleStepKeyUp}
-                        onBlur={handleStepBlur}
                         disabled={decrementDisabled}
                         color={color}
                         highlightColor={highlightColor}

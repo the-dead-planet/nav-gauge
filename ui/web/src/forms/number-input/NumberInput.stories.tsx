@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { ColorVariant, FillVariant, SizeVariant } from '@ui';
+import { VariantGallery } from '../../storybook/VariantGallery';
 import { NumberInput } from './NumberInput';
-import { Text } from '../../typography';
 
 const colors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
 const sizes: SizeVariant[] = ['xs', 'sm', 'md'];
@@ -82,44 +82,11 @@ export const Playground: Story = {
 
 export const Gallery: Story = {
     render: () => (
-        <div style={{ display: 'grid', gap: 40 }}>
-            {sizes.map((size) => (
-                <div key={size}>
-                    <Text>{size}</Text>
-                    <div style={{ display: 'grid', gap: 8 }}>
-                        <div
-                            style={{
-                                display: 'grid',
-                                gridTemplateColumns: `repeat(${variants.length}, 1fr)`,
-                                gap: 8,
-                            }}
-                        >
-                            {variants.map((variant) => (
-                                <Text key={variant}>{variant}</Text>
-                            ))}
-                        </div>
-                        {colors.map((color) => (
-                            <div
-                                key={color}
-                                style={{
-                                    display: 'grid',
-                                    gridTemplateColumns: `repeat(${variants.length}, 1fr)`,
-                                    gap: 8,
-                                }}
-                            >
-                                {variants.map((variant) => (
-                                    <GalleryNumberInput
-                                        key={`${color}-${variant}-${size}`}
-                                        color={color}
-                                        variant={variant}
-                                        size={size}
-                                    />
-                                ))}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            ))}
-        </div>
+        <VariantGallery
+            sizes={sizes}
+            colors={colors}
+            variants={variants}
+            render={(options) => <GalleryNumberInput {...options} />}
+        />
     ),
 };

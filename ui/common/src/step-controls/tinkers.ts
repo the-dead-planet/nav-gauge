@@ -4,7 +4,7 @@ import { addDecimalStep } from '../number-input';
 const REPEAT_DELAY_MILLISECONDS = 400;
 const REPEAT_INTERVAL_MILLISECONDS = 80;
 
-interface StepRepeatOptions {
+export interface StepRepeatOptions {
     value: number;
     onChange?: (value: number) => void;
     step?: number;
@@ -22,46 +22,45 @@ export const useStepRepeat = ({
     disabled = false,
 }: StepRepeatOptions) => {
     const valueRef = useRef(value);
-    const delayRef = useRef<ReturnType<typeof setTimeout>>(undefined);
-    const intervalRef = useRef<ReturnType<typeof setInterval>>(undefined);
+    const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
     valueRef.current = value;
 
     const stop = () => {
-        clearTimeout(delayRef.current);
-        clearInterval(intervalRef.current);
-        delayRef.current = undefined;
-        intervalRef.current = undefined;
+        clearTimeout(timerRef.current);
+        timerRef.current = undefined;
     };
 
     const changeBy = (direction: -1 | 1) => {
         if (disabled || !onChange) {
-            return;
+            return false;
         }
 
         const nextValue = addDecimalStep(valueRef.current, direction * step);
         if ((min !== undefined && nextValue < min) || (max !== undefined && nextValue > max)) {
             stop();
-            return;
+            return false;
         }
 
         valueRef.current = nextValue;
         onChange(nextValue);
+        return true;
     };
 
     const start = (direction: -1 | 1) => {
         stop();
-        changeBy(direction);
-        delayRef.current = setTimeout(() => {
-            intervalRef.current = setInterval(
-                () => changeBy(direction),
-                REPEAT_INTERVAL_MILLISECONDS,
-            );
-        }, REPEAT_DELAY_MILLISECONDS);
+        if (!changeBy(direction)) {
+            return;
+        }
+        const repeat = () => {
+            if (changeBy(direction)) {
+                timerRef.current = setTimeout(repeat, REPEAT_INTERVAL_MILLISECONDS);
+            }
+        };
+        timerRef.current = setTimeout(repeat, REPEAT_DELAY_MILLISECONDS);
     };
 
     useEffect(() => () => {
-        clearTimeout(delayRef.current);
-        clearInterval(intervalRef.current);
+        clearTimeout(timerRef.current);
     }, []);
 
     return { changeBy, start, stop };

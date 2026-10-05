@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { ColorVariant, FillVariant, Icons, SizeVariant, Theme } from '@ui';
 import { ColorBox } from '../colors';
 import { Radio } from '../forms';
+import { VariantGallery } from '../storybook/VariantGallery';
 import { Text } from '../typography';
 import { Dropdown } from './Dropdown';
 
@@ -15,19 +16,10 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         gap: 8,
     },
-    row: {
-        flexDirection: 'row',
-        gap: 8,
-        alignItems: 'center',
-    },
     wrappingRow: {
         flexDirection: 'row',
         gap: 8,
         flexWrap: 'wrap',
-    },
-    cell: {
-        flex: 1,
-        minWidth: 0,
     },
     label: {
         fontSize: 14,
@@ -156,31 +148,10 @@ export const Playground: FC = () => {
 };
 
 export const Gallery: FC = () => (
-    <ScrollView contentContainerStyle={styles.container}>
-        {sizes.map((size) => (
-            <View key={size} style={styles.section}>
-                <Text style={styles.label}>{size}</Text>
-                <View style={styles.row}>
-                    {variants.map((variant) => (
-                        <View key={variant} style={styles.cell}>
-                            <Text>{variant}</Text>
-                        </View>
-                    ))}
-                </View>
-                {colors.map((color) => (
-                    <View key={color} style={styles.row}>
-                        {variants.map((variant) => (
-                            <View key={`${size}-${color}-${variant}`} style={styles.cell}>
-                                <GalleryDropdown
-                                    color={color}
-                                    variant={variant}
-                                    size={size}
-                                />
-                            </View>
-                        ))}
-                    </View>
-                ))}
-            </View>
-        ))}
-    </ScrollView>
+    <VariantGallery
+        sizes={sizes}
+        colors={colors}
+        variants={variants}
+        render={(options) => <GalleryDropdown {...options} />}
+    />
 );

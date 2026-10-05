@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import { ScrollView, StyleSheet, Switch, View } from 'react-native';
 import { ColorVariant, FillVariant, SizeVariant } from '@ui';
+import { VariantGallery } from '../../storybook/VariantGallery';
 import { Text } from '../../typography';
 import { NumberInput } from './NumberInput';
 
@@ -17,10 +18,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         gap: 8,
         alignItems: 'center',
-    },
-    cell: {
-        flex: 1,
-        minWidth: 0,
     },
     label: {
         fontSize: 14,
@@ -126,31 +123,10 @@ export const NumberInputInteractive: FC = () => {
 };
 
 export const AllVariants: FC = () => (
-    <ScrollView contentContainerStyle={styles.container}>
-        {allSizes.map((size) => (
-            <View key={size} style={styles.section}>
-                <Text style={styles.label}>{size}</Text>
-                <View style={styles.row}>
-                    {allVariants.map((variant) => (
-                        <View key={variant} style={styles.cell}>
-                            <Text>{variant}</Text>
-                        </View>
-                    ))}
-                </View>
-                {allColors.map((color) => (
-                    <View key={color} style={styles.row}>
-                        {allVariants.map((variant) => (
-                            <View key={`${size}-${color}-${variant}`} style={styles.cell}>
-                                <GalleryNumberInput
-                                    color={color}
-                                    variant={variant}
-                                    size={size}
-                                />
-                            </View>
-                        ))}
-                    </View>
-                ))}
-            </View>
-        ))}
-    </ScrollView>
+    <VariantGallery
+        sizes={allSizes}
+        colors={allColors}
+        variants={allVariants}
+        render={(options) => <GalleryNumberInput {...options} />}
+    />
 );
