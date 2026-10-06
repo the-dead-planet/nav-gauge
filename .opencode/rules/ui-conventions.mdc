@@ -11,6 +11,7 @@ Reusable UI components must not contain business logic.
 Build responsive UI mobile-first: use the smallest layout as the default and add wider-screen overrides.
 
 Theme variables live in `@ui/common/src/theme/specifications.ts`.
+Before changing palettes or shade semantics, read `ui/web/src/colors/Colors.mdx`.
 
 Shared/reusable UI components must be added to **both** web (`@web-ui`) and mobile (`@mobile-ui`) platforms, not just one.
 Put the shared API and value math in `@ui/common` and provide a thin platform renderer in each platform package.
