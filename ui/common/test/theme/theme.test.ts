@@ -24,12 +24,10 @@ describe("Theme", () => {
         expect(Theme.zIndex.tooltipConnector).to.be.lessThan(Theme.zIndex.tooltip);
     });
 
-    it("aligns chromatic palette endpoints with grey palette lightness", () => {
-        const chromaticPalettes = Object.entries(Theme.palette)
-            .filter(([name]) => !name.startsWith("grey"))
-            .map(([, palette]) => palette);
+    it("aligns palette endpoints with neutral palette lightness", () => {
+        const palettes = Object.values(Theme.palette);
 
-        for (const palette of chromaticPalettes) {
+        for (const palette of palettes) {
             expect(oklabLightness(palette[50])).to.be.closeTo(0.964214, 0.003);
             expect(oklabLightness(palette[100])).to.be.closeTo(0.907304, 0.003);
             expect(oklabLightness(palette[900])).to.be.closeTo(0.238684, 0.003);

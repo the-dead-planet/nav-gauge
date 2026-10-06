@@ -116,7 +116,7 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
                 primary: Theme.palette.teal,
                 secondary: Theme.palette['copper'],
                 tertiary: Theme.palette.magenta,
-                neutral: Theme.palette.grey,
+                neutral: Theme.palette['neutral-grey'],
             }
         },
         dark: {
@@ -127,7 +127,7 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
                 primary: Theme.palette.teal,
                 secondary: Theme.palette.yellow,
                 tertiary: Theme.palette.pink,
-                neutral: Theme.palette.grey,
+                neutral: Theme.palette['neutral-grey'],
             },
         }
     },
@@ -140,7 +140,7 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
                 primary: Theme.palette.navy,
                 secondary: Theme.palette.navy,
                 tertiary: Theme.palette.copper,
-                neutral: Theme.palette.grey,
+                neutral: Theme.palette['neutral-grey'],
             }
         },
         dark: {
@@ -151,7 +151,7 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
                 primary: Theme.palette.blue,
                 secondary: Theme.palette.blue,
                 tertiary: Theme.palette.copper,
-                neutral: Theme.palette.grey,
+                neutral: Theme.palette['neutral-grey'],
             },
         }
     },
@@ -175,10 +175,10 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
                 },
             },
             colors: {
-                primary: Theme.palette['grey-blue'],
-                secondary: Theme.palette['grey-blue'],
+                primary: Theme.palette['neutral-blue'],
+                secondary: Theme.palette['neutral-blue'],
                 tertiary: Theme.palette['dark-gold'],
-                neutral: Theme.palette['grey-blue'],
+                neutral: Theme.palette['neutral-blue'],
             }
         },
         dark: {
@@ -192,10 +192,10 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
                 },
             },
             colors: {
-                primary: Theme.palette['grey-blue'],
-                secondary: Theme.palette['grey-blue'],
+                primary: Theme.palette['neutral-blue'],
+                secondary: Theme.palette['neutral-blue'],
                 tertiary: Theme.palette['luminous-yellow'],
-                neutral: Theme.palette['grey-blue'],
+                neutral: Theme.palette['neutral-blue'],
             },
         }
     },
@@ -214,7 +214,7 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
                 primary: Theme.palette.violet,
                 secondary: Theme.palette.lime,
                 tertiary: Theme.palette['burnt-orange'],
-                neutral: Theme.palette.grey,
+                neutral: Theme.palette['neutral-grey'],
             }
         },
         dark: {
@@ -244,7 +244,7 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
                 primary: Theme.palette.mahogany,
                 secondary: Theme.palette.copper,
                 tertiary: Theme.palette.teal,
-                neutral: Theme.palette['grey-brown'],
+                neutral: Theme.palette['neutral-brown'],
             },
         },
         dark: {
@@ -255,7 +255,7 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
                 primary: Theme.palette.coral,
                 secondary: Theme.palette.copper,
                 tertiary: Theme.palette.aqua,
-                neutral: Theme.palette['grey-brown'],
+                neutral: Theme.palette['neutral-brown'],
             },
         },
     },
@@ -268,7 +268,7 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
                 primary: Theme.palette.indigo,
                 secondary: Theme.palette.mint,
                 tertiary: Theme.palette.rose,
-                neutral: Theme.palette['grey-violet'],
+                neutral: Theme.palette['neutral-violet'],
             },
         },
         dark: {
@@ -292,7 +292,7 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
                 primary: Theme.palette.orange,
                 secondary: Theme.palette.plum,
                 tertiary: Theme.palette.green,
-                neutral: Theme.palette['grey-khaki'],
+                neutral: Theme.palette['neutral-khaki'],
             },
         },
         dark: {
@@ -303,7 +303,7 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
                 primary: Theme.palette.peach,
                 secondary: Theme.palette.magenta,
                 tertiary: Theme.palette.mint,
-                neutral: Theme.palette['grey-olive'],
+                neutral: Theme.palette['neutral-olive'],
             },
         },
     },
@@ -316,7 +316,7 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
                 primary: Theme.palette.green,
                 secondary: Theme.palette.chartreuse,
                 tertiary: Theme.palette.plum,
-                neutral: Theme.palette['grey-green'],
+                neutral: Theme.palette['neutral-green'],
             },
         },
         dark: {
@@ -327,7 +327,7 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
                 primary: Theme.palette.mint,
                 secondary: Theme.palette.lime,
                 tertiary: Theme.palette.magenta,
-                neutral: Theme.palette['grey-green'],
+                neutral: Theme.palette['neutral-green'],
             },
         },
     },
@@ -340,7 +340,7 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
                 primary: Theme.palette['dark-gold'],
                 secondary: Theme.palette.navy,
                 tertiary: Theme.palette.mahogany,
-                neutral: Theme.palette['grey-khaki'],
+                neutral: Theme.palette['neutral-khaki'],
             },
         },
         dark: {
@@ -351,7 +351,7 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
                 primary: Theme.palette['luminous-yellow'],
                 secondary: Theme.palette.blue,
                 tertiary: Theme.palette.coral,
-                neutral: Theme.palette['grey-khaki'],
+                neutral: Theme.palette['neutral-khaki'],
             },
         },
     },
