@@ -105,10 +105,7 @@ function toSVG(ast: INode) {
     .map((c) => stringify(c))
     .join("\n");
 
-  return `
-    <svg xmlns="http://www.w3.org/2000/svg">
-    ${inner}
-    </svg>`.trim();
+  return `<svg xmlns="http://www.w3.org/2000/svg">\n${inner}\n</svg>`;
 }
 
 function computeViewBox(svg: string) {
@@ -148,10 +145,8 @@ for (const file of files) {
   const baseSvg = toSVG(ast);
   const viewBox = computeViewBox(baseSvg);
 
-  const finalSvg = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}">
-    ${baseSvg.replace(/<svg[^>]*>|<\/svg>/g, "")}
-    </svg>`.trim();
+  const content = baseSvg.replace(/<svg[^>]*>|<\/svg>/g, "").trim();
+  const finalSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}">\n${content}\n</svg>\n`;
 
   fs.writeFileSync(path.join(OUT_DIR, file), finalSvg);
 

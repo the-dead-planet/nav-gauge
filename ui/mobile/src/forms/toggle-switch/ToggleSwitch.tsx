@@ -48,7 +48,7 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
 
     const errorColor = theme.componentColor('error');
     const successColor = theme.componentColor('success');
-    const neutralColor = theme.color('grey');
+    const neutralColor = theme.color('neutral');
 
     const isHorizontal = orientation === 'horizontal';
     const clip = clipPaths[size];

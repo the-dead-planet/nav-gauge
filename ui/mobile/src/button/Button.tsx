@@ -116,13 +116,13 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         case 'fill-inverse':
             container.borderWidth = 1;
             if (active) {
-                container.backgroundColor = theme.color(highlightColor, isLight ? 100 : (highlightColor === 'neutral' ? 800 : 900));
+                container.backgroundColor = theme.color(highlightColor, isLight ? 200 : 800);
                 container.borderColor = hl500;
             } else if (pressed) {
-                container.backgroundColor = theme.color(highlightColor, isLight ? 100 : (highlightColor === 'neutral' ? 800 : 900));
+                container.backgroundColor = theme.color(highlightColor, isLight ? 200 : 800);
                 container.borderColor = theme.color(highlightColor, isLight ? 600 : 300);
             } else {
-                container.backgroundColor = theme.color(color, isLight ? 100 : (color === 'neutral' ? 800 : 900));
+                container.backgroundColor = theme.color(color, isLight ? 200 : 800);
                 container.borderColor = baseColor;
             }
             break;
@@ -203,7 +203,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         container.opacity = 0.45;
     }
 
-    const fillTextShade: ColorShade = theme.isDark ? 900 : 100;
+    const fillTextShade: ColorShade = isLight ? 100 : 900;
     const fillTextColor = theme.color(color, fillTextShade);
     const hlFillTextColor = theme.color(highlightColor, fillTextShade);
     const textColor = highlightShade !== undefined && hl
@@ -212,8 +212,8 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         ? theme.color(color, shade)
         : effectiveVariant === 'fill'
         ? (hl ? hlFillTextColor : fillTextColor)
-        : effectiveVariant === 'fill-inverse' && !hl
-        ? theme.color(color, theme.isLight ? 900 : 100)
+        : effectiveVariant === 'fill-inverse'
+        ? theme.color(hl ? highlightColor : color, isLight ? 800 : 200)
         : (hl ? hlInset : baseColor);
     let fontSize = 14;
     if (size === 'xs') fontSize = 12;

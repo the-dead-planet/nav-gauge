@@ -192,17 +192,14 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(({
             }
 
             case 'fill-inverse': {
-                const isNeutral = color === 'neutral';
-                const hlIsNeutral = highlightColor === 'neutral';
-                const bgShade = isLight ? 100 : (isNeutral ? 800 : 900);
-                const hlBgShade = isLight ? 100 : (hlIsNeutral ? 800 : 900);
+                const bgShade = isLight ? 200 : 800;
                 let fillColor: string;
                 let borderColor: string;
                 if (active) {
-                    fillColor = theme.color(highlightColor, hlBgShade);
+                    fillColor = theme.color(highlightColor, bgShade);
                     borderColor = highlight500;
                 } else if (pressed) {
-                    fillColor = theme.color(highlightColor, hlBgShade);
+                    fillColor = theme.color(highlightColor, bgShade);
                     borderColor = highlightAccent;
                 } else {
                     fillColor = theme.color(color, bgShade);

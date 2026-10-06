@@ -5,6 +5,7 @@ import { ColorBox } from '../colors';
 import { Popup } from '../popup';
 import { VariantGallery } from '../storybook/VariantGallery';
 import { Dropdown } from './Dropdown';
+import { Button } from '../button';
 
 const options = [
     {
@@ -60,7 +61,7 @@ const meta = {
         variant: 'fill-inverse',
         disabled: false,
         placeholder: 'Select material...',
-        onChange: () => {},
+        onChange: () => { },
     },
     argTypes: {
         color: { control: 'select', options: colors },
@@ -99,26 +100,33 @@ export const Gallery: Story = {
     ),
 };
 
-export const InClippedPopup: Story = {
+export const InPopup: Story = {
     render: () => {
+        const [open, setOpen] = useState(true);
         const [value, setValue] = useState('brass');
+
         return (
-            <Popup
-                visible
-                position={{ x: 20, y: 200 }}
-                onClose={() => undefined}
-            >
-                <div style={{ padding: 20, overflow: 'hidden' }}>
-                    <Dropdown
-                        ariaLabel="Select material"
-                        color="primary"
-                        variant="fill-translucent"
-                        value={value}
-                        options={options}
-                        onChange={setValue}
-                    />
-                </div>
-            </Popup>
+            <>
+                <Button variant="fill" onClick={() => setOpen((prev) => !prev)}>
+                    Toggle popup with dropdown
+                </Button>
+                <Popup
+                    visible={open}
+                    position={{ x: 20, y: 200 }}
+                    onClose={() => undefined}
+                >
+                    <div style={{ padding: 20, overflow: 'hidden', zIndex: 100 }}>
+                        <Dropdown
+                            ariaLabel="Select material"
+                            color="primary"
+                            variant="fill-translucent"
+                            value={value}
+                            options={options}
+                            onChange={setValue}
+                        />
+                    </div>
+                </Popup>
+            </>
         );
     },
 };

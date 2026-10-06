@@ -1,0 +1,52 @@
+import { Canvas, Meta, Title } from '@storybook/addon-docs/blocks';
+import * as ColorStories from './Color.stories';
+
+<Meta of={ColorStories} name="Docs" />
+
+<Title />
+
+Colors use perceptually ordered shades from `50` through `900`. Shade `500` defines each palette's identity; the surrounding shades preserve its hue while moving toward light and dark endpoints. Neutral palettes additionally limit chroma so they remain suitable for surfaces and text.
+
+## Shade roles
+
+<table>
+    <thead>
+        <tr>
+            <th>Role</th>
+            <th>Light mode</th>
+            <th>Dark mode</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Text and icons</td>
+            <td><code>900</code></td>
+            <td><code>100</code></td>
+        </tr>
+        <tr>
+            <td>Main application background</td>
+            <td><code>100</code></td>
+            <td><code>900</code></td>
+        </tr>
+        <tr>
+            <td>Inverse fills and nested surfaces</td>
+            <td><code>200</code></td>
+            <td><code>800</code></td>
+        </tr>
+        <tr>
+            <td>Mid-tone accents</td>
+            <td><code>500</code></td>
+            <td><code>500</code></td>
+        </tr>
+    </tbody>
+</table>
+
+Shade `50` is an optional brightest tint for maximum-light details and subtle fills. It is intentionally not a default semantic color; use `100` for normal dark-mode text so text and application backgrounds remain symmetric at `100` and `900`.
+
+These roles provide consistent defaults, not automatic accessibility guarantees. Verify contrast when combining chromatic foregrounds and backgrounds or rendering small text.
+
+## Palettes
+
+Use the copy button at the end of a row to copy that palette as RGB JSON.
+
+<Canvas of={ColorStories.ColorPalette} />

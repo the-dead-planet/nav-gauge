@@ -5,6 +5,11 @@ export enum ThemeName {
     NeonBlue = 'Neon Blue',
     Batman = 'Batman',
     Joker = 'Joker',
+    Foundry = 'Foundry',
+    Aurora = 'Aurora',
+    SolarFlare = 'Solar Flare',
+    Verdant = 'Verdant',
+    GoldenCircuit = 'Golden Circuit',
 }
 
 export type ColorShade =
@@ -15,17 +20,17 @@ export type ThemeColor = {
 };
 
 export type PaletteColor =
-    | 'grey'
-    | 'grey-blue'
-    | 'grey-brown'
-    | 'grey-khaki'
-    | 'grey-green'
-    | 'grey-olive'
-    | 'grey-teal'
-    | 'grey-cyan'
-    | 'grey-pink'
-    | 'grey-violet'
-    | 'grey-red'
+    | 'neutral-grey'
+    | 'neutral-blue'
+    | 'neutral-brown'
+    | 'neutral-khaki'
+    | 'neutral-green'
+    | 'neutral-olive'
+    | 'neutral-teal'
+    | 'neutral-cyan'
+    | 'neutral-pink'
+    | 'neutral-violet'
+    | 'neutral-red'
     | 'yellow'
     | 'coral'
     | 'chartreuse'
