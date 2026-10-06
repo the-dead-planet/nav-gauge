@@ -22,6 +22,7 @@ export { default as ChevronDownDoubleTriangle } from './output/chevron-down-doub
 export { default as ChevronDownDouble } from './output/chevron-down-double.svg';
 export { default as ChevronDownSingle } from './output/chevron-down-single.svg';
 export { default as Clear } from './output/clear.svg';
+export { default as Copy } from './output/copy.svg';
 export { default as Crash } from './output/crash.svg';
 export { default as Cyber } from './output/cyber.svg';
 export { default as Destroy } from './output/destroy.svg';
