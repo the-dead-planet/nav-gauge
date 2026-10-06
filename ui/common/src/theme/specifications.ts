@@ -7,6 +7,11 @@ export const themeNameOptions: Option<ThemeName>[] = [
     { value: ThemeName.NeonBlue, label: ThemeName.NeonBlue },
     { value: ThemeName.Batman, label: ThemeName.Batman },
     { value: ThemeName.Joker, label: ThemeName.Joker },
+    { value: ThemeName.Foundry, label: ThemeName.Foundry },
+    { value: ThemeName.Aurora, label: ThemeName.Aurora },
+    { value: ThemeName.SolarFlare, label: ThemeName.SolarFlare },
+    { value: ThemeName.Verdant, label: ThemeName.Verdant },
+    { value: ThemeName.GoldenCircuit, label: ThemeName.GoldenCircuit },
 ];
 
 export const themeModeOptions: Option<ThemeMode>[] = [
@@ -229,5 +234,125 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
                 neutral: Theme.palette['deep-violet'],
             },
         }
+    },
+    [ThemeName.Foundry]: {
+        light: {
+            mode: 'light',
+            themeName: ThemeName.Foundry,
+            componentColors: defaultComponentColors.light,
+            colors: {
+                primary: Theme.palette.mahogany,
+                secondary: Theme.palette.copper,
+                tertiary: Theme.palette.teal,
+                neutral: Theme.palette['grey-brown'],
+            },
+        },
+        dark: {
+            mode: 'dark',
+            themeName: ThemeName.Foundry,
+            componentColors: defaultComponentColors.dark,
+            colors: {
+                primary: Theme.palette.coral,
+                secondary: Theme.palette.copper,
+                tertiary: Theme.palette.aqua,
+                neutral: Theme.palette['grey-brown'],
+            },
+        },
+    },
+    [ThemeName.Aurora]: {
+        light: {
+            mode: 'light',
+            themeName: ThemeName.Aurora,
+            componentColors: defaultComponentColors.light,
+            colors: {
+                primary: Theme.palette.indigo,
+                secondary: Theme.palette.mint,
+                tertiary: Theme.palette.rose,
+                neutral: Theme.palette['grey-violet'],
+            },
+        },
+        dark: {
+            mode: 'dark',
+            themeName: ThemeName.Aurora,
+            componentColors: defaultComponentColors.dark,
+            colors: {
+                primary: Theme.palette.purple,
+                secondary: Theme.palette.mint,
+                tertiary: Theme.palette.rose,
+                neutral: Theme.palette['deep-violet'],
+            },
+        },
+    },
+    [ThemeName.SolarFlare]: {
+        light: {
+            mode: 'light',
+            themeName: ThemeName.SolarFlare,
+            componentColors: defaultComponentColors.light,
+            colors: {
+                primary: Theme.palette.orange,
+                secondary: Theme.palette.plum,
+                tertiary: Theme.palette.green,
+                neutral: Theme.palette['grey-khaki'],
+            },
+        },
+        dark: {
+            mode: 'dark',
+            themeName: ThemeName.SolarFlare,
+            componentColors: defaultComponentColors.dark,
+            colors: {
+                primary: Theme.palette.peach,
+                secondary: Theme.palette.magenta,
+                tertiary: Theme.palette.mint,
+                neutral: Theme.palette['grey-olive'],
+            },
+        },
+    },
+    [ThemeName.Verdant]: {
+        light: {
+            mode: 'light',
+            themeName: ThemeName.Verdant,
+            componentColors: defaultComponentColors.light,
+            colors: {
+                primary: Theme.palette.green,
+                secondary: Theme.palette.chartreuse,
+                tertiary: Theme.palette.plum,
+                neutral: Theme.palette['grey-green'],
+            },
+        },
+        dark: {
+            mode: 'dark',
+            themeName: ThemeName.Verdant,
+            componentColors: defaultComponentColors.dark,
+            colors: {
+                primary: Theme.palette.mint,
+                secondary: Theme.palette.lime,
+                tertiary: Theme.palette.magenta,
+                neutral: Theme.palette['grey-green'],
+            },
+        },
+    },
+    [ThemeName.GoldenCircuit]: {
+        light: {
+            mode: 'light',
+            themeName: ThemeName.GoldenCircuit,
+            componentColors: defaultComponentColors.light,
+            colors: {
+                primary: Theme.palette['dark-gold'],
+                secondary: Theme.palette.navy,
+                tertiary: Theme.palette.mahogany,
+                neutral: Theme.palette['grey-khaki'],
+            },
+        },
+        dark: {
+            mode: 'dark',
+            themeName: ThemeName.GoldenCircuit,
+            componentColors: defaultComponentColors.dark,
+            colors: {
+                primary: Theme.palette['luminous-yellow'],
+                secondary: Theme.palette.blue,
+                tertiary: Theme.palette.coral,
+                neutral: Theme.palette['grey-khaki'],
+            },
+        },
     },
 };

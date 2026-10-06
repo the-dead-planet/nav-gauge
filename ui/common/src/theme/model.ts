@@ -5,6 +5,11 @@ export enum ThemeName {
     NeonBlue = 'Neon Blue',
     Batman = 'Batman',
     Joker = 'Joker',
+    Foundry = 'Foundry',
+    Aurora = 'Aurora',
+    SolarFlare = 'Solar Flare',
+    Verdant = 'Verdant',
+    GoldenCircuit = 'Golden Circuit',
 }
 
 export type ColorShade =
