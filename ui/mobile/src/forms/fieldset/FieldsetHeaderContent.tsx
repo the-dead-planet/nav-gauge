@@ -2,7 +2,7 @@ import { FC, ReactNode, useEffect, useRef } from "react";
 import { Animated, StyleSheet, View } from "react-native";
 import { Icons, useTheme } from "@ui";
 import { Icon } from "../../icons";
-import { Text } from "../../typography";
+import { Label } from "../../typography";
 
 const styles = StyleSheet.create({
     header: {
@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
         gap: 8,
     },
     label: {
-        textTransform: 'uppercase',
         flex: 1,
     }
 });
@@ -44,9 +43,7 @@ export const FieldsetHeaderContent: FC<Props> = ({
         }).start();
     }, [isExpanded]);
 
-    const labelColor = theme.isLight
-        ? theme.color('grey', 800)
-        : theme.color('grey', 200);
+    const labelColor = theme.componentColor('text');
 
     return (
         <View style={styles.header}>
@@ -63,14 +60,15 @@ export const FieldsetHeaderContent: FC<Props> = ({
                 </Animated.View>
             ) : null}
             {prepend ? <View>{prepend}</View> : null}
-            <Text
+            <Label
+                uppercase
                 style={[
                     styles.label,
-                    { fontSize, color: labelColor }
+                    { fontSize }
                 ]}
             >
                 {label}
-            </Text>
+            </Label>
             {append ? <View>{append}</View> : null}
         </View>
     );
