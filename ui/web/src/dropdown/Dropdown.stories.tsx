@@ -110,24 +110,22 @@ export const InPopup: Story = {
                 <Button variant="fill" onClick={() => setOpen((prev) => !prev)}>
                     Toggle popup with dropdown
                 </Button>
-                {open ? (
-                    <Popup
-                        visible
-                        position={{ x: 20, y: 200 }}
-                        onClose={() => undefined}
-                    >
-                        <div style={{ padding: 20, overflow: 'hidden', zIndex: 100 }}>
-                            <Dropdown
-                                ariaLabel="Select material"
-                                color="primary"
-                                variant="fill-translucent"
-                                value={value}
-                                options={options}
-                                onChange={setValue}
-                            />
-                        </div>
-                    </Popup>
-                ) : null}
+                <Popup
+                    visible={open}
+                    position={{ x: 20, y: 200 }}
+                    onClose={() => undefined}
+                >
+                    <div style={{ padding: 20, overflow: 'hidden', zIndex: 100 }}>
+                        <Dropdown
+                            ariaLabel="Select material"
+                            color="primary"
+                            variant="fill-translucent"
+                            value={value}
+                            options={options}
+                            onChange={setValue}
+                        />
+                    </div>
+                </Popup>
             </>
         );
     },
