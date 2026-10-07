@@ -123,7 +123,7 @@ export function Dropdown<T>({
         if (variant === 'fill') {
             const fillContentColor = theme.color(
                 color,
-                theme.isLight ? 100 : 900,
+                theme.contrastShade(color),
             );
             return { content: fillContentColor, chevron: fillContentColor };
         }

@@ -1,6 +1,6 @@
 import { Children, ComponentType, FC, Ref, useState } from "react";
 import { Pressable, PressableProps, View, type ViewInstance } from "react-native";
-import { ButtonProps, ColorShade, useTheme } from "@ui";
+import { ButtonProps, useTheme } from "@ui";
 import { Icon } from "../icons";
 import { SvgProps } from "react-native-svg";
 import { Hexagon } from "../hud";
@@ -203,9 +203,11 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         container.opacity = 0.45;
     }
 
-    const fillTextShade: ColorShade = isLight ? 100 : 900;
-    const fillTextColor = theme.color(color, fillTextShade);
-    const hlFillTextColor = theme.color(highlightColor, fillTextShade);
+    const fillTextColor = theme.color(color, theme.contrastShade(color));
+    const hlFillTextColor = theme.color(
+        highlightColor,
+        theme.contrastShade(highlightColor),
+    );
     const textColor = highlightShade !== undefined && hl
         ? theme.color(highlightColor, highlightShade)
         : shade !== undefined && !hl

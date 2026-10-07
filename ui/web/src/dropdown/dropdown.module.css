@@ -7,6 +7,7 @@
 
 .color-neutral {
     --dropdown-color: var(--color-neutral);
+    --dropdown-color-contrast: var(--color-neutral-contrast);
     --dropdown-color-dark: var(--color-neutral-900);
     --dropdown-color-light: var(--color-neutral-100);
     --dropdown-color-shadow: var(--color-neutral-700);
@@ -16,6 +17,7 @@
 
 .color-primary {
     --dropdown-color: var(--color-primary);
+    --dropdown-color-contrast: var(--color-primary-contrast);
     --dropdown-color-dark: var(--color-primary-900);
     --dropdown-color-light: var(--color-primary-100);
     --dropdown-color-shadow: var(--color-primary-700);
@@ -25,6 +27,7 @@
 
 .color-secondary {
     --dropdown-color: var(--color-secondary);
+    --dropdown-color-contrast: var(--color-secondary-contrast);
     --dropdown-color-dark: var(--color-secondary-900);
     --dropdown-color-light: var(--color-secondary-100);
     --dropdown-color-shadow: var(--color-secondary-700);
@@ -34,6 +37,7 @@
 
 .color-tertiary {
     --dropdown-color: var(--color-tertiary);
+    --dropdown-color-contrast: var(--color-tertiary-contrast);
     --dropdown-color-dark: var(--color-tertiary-900);
     --dropdown-color-light: var(--color-tertiary-100);
     --dropdown-color-shadow: var(--color-tertiary-700);
@@ -184,24 +188,14 @@
 }
 
 .variant-fill .trigger {
-    color: var(--dropdown-color-light);
+    color: var(--dropdown-color-contrast);
     background-color: var(--dropdown-color);
 }
 
 .variant-fill .trigger .icon {
-    color: var(--dropdown-color-light);
-    stroke: var(--dropdown-color-light);
-    fill: var(--dropdown-color-light);
-}
-
-.mode-dark.variant-fill .trigger {
-    color: var(--dropdown-color-dark);
-}
-
-.mode-dark.variant-fill .trigger .icon {
-    color: var(--dropdown-color-dark);
-    stroke: var(--dropdown-color-dark);
-    fill: var(--dropdown-color-dark);
+    color: var(--dropdown-color-contrast);
+    stroke: var(--dropdown-color-contrast);
+    fill: var(--dropdown-color-contrast);
 }
 
 .variant-fill .trigger:not(:disabled):hover {

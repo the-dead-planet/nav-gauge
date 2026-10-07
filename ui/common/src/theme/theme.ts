@@ -35,6 +35,17 @@ const toLinearRgbChannel = (channel: number): number => {
         : ((normalizedChannel + 0.055) / 1.055) ** 2.4;
 };
 
+const relativeLuminance = ({ r, g, b }: RGBColor): number =>
+    0.2126 * toLinearRgbChannel(r) +
+    0.7152 * toLinearRgbChannel(g) +
+    0.0722 * toLinearRgbChannel(b);
+
+const contrastRatio = (first: RGBColor, second: RGBColor): number => {
+    const lighter = Math.max(relativeLuminance(first), relativeLuminance(second));
+    const darker = Math.min(relativeLuminance(first), relativeLuminance(second));
+    return (lighter + 0.05) / (darker + 0.05);
+};
+
 const toOklch = ({ r, g, b }: RGBColor): OklchColor => {
     const linearRed = toLinearRgbChannel(r);
     const linearGreen = toLinearRgbChannel(g);
@@ -297,6 +308,21 @@ export class Theme {
         }
 
         return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+    };
+
+    public contrastShade = (
+        name: PaletteColor | DesignSystemColor,
+        backgroundShade: ColorShade = 500,
+    ): 100 | 900 => Theme.contrastShade(this.colors[name], backgroundShade);
+
+    public static contrastShade = (
+        color: ThemeColor,
+        backgroundShade: ColorShade = 500,
+    ): 100 | 900 => {
+        return contrastRatio(color[backgroundShade], color[100]) >=
+            contrastRatio(color[backgroundShade], color[900])
+            ? 100
+            : 900;
     };
 
     /**

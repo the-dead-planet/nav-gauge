@@ -43,6 +43,10 @@ export const useThemeVariables = (theme: Theme) => {
                 `--color-${colorName}`,
                 theme.color(colorName, 500)
             );
+            document.documentElement.style.setProperty(
+                `--color-${colorName}-contrast`,
+                theme.color(colorName, theme.contrastShade(colorName)),
+            );
 
             for (const shade of allColorShades) {
                 document.documentElement.style.setProperty(

@@ -1,5 +1,14 @@
 import { expect } from "chai";
-import { Theme } from "../../src";
+import { Orientation, Theme, themeSpecifications, ThemeName } from "../../src";
+
+const theme = new Theme(themeSpecifications[ThemeName.Default].light, {
+    initial: () => ({
+        orientation: Orientation.Landscape,
+        windowWidth: 1280,
+        windowHeight: 720,
+    }),
+    subscribe: () => ({ unsubscribe: () => undefined }),
+});
 
 const oklabLightness = ({ r, g, b }: { r: number; g: number; b: number }): number => {
     const linearChannels = [r, g, b].map((channel) => {
@@ -56,5 +65,10 @@ describe("Theme", () => {
         expect(oklabLightness(palette[800]) - oklabLightness(palette[900])).to.be.lessThan(
             oklabLightness(palette[700]) - oklabLightness(palette[800])
         );
+    });
+
+    it("selects the palette endpoint with greater contrast", () => {
+        expect(theme.contrastShade("yellow")).to.equal(900);
+        expect(theme.contrastShade("navy")).to.equal(100);
     });
 });
