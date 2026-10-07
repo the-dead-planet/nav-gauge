@@ -67,8 +67,13 @@ describe("Theme", () => {
         );
     });
 
-    it("selects the palette endpoint with greater contrast", () => {
+    it("selects a readable palette endpoint for saturated fills", () => {
         expect(theme.contrastShade("yellow")).to.equal(900);
         expect(theme.contrastShade("navy")).to.equal(100);
+        expect(theme.contrastShade("blue")).to.equal(100);
+        expect(theme.contrastShade("purple")).to.equal(100);
+        expect(theme.contrastShade("coral")).to.equal(100);
+        expect(theme.contrastShade("peach")).to.equal(100);
+        expect(theme.contrastShade("mint")).to.equal(100);
     });
 });

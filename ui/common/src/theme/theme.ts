@@ -35,16 +35,7 @@ const toLinearRgbChannel = (channel: number): number => {
         : ((normalizedChannel + 0.055) / 1.055) ** 2.4;
 };
 
-const relativeLuminance = ({ r, g, b }: RGBColor): number =>
-    0.2126 * toLinearRgbChannel(r) +
-    0.7152 * toLinearRgbChannel(g) +
-    0.0722 * toLinearRgbChannel(b);
-
-const contrastRatio = (first: RGBColor, second: RGBColor): number => {
-    const lighter = Math.max(relativeLuminance(first), relativeLuminance(second));
-    const darker = Math.min(relativeLuminance(first), relativeLuminance(second));
-    return (lighter + 0.05) / (darker + 0.05);
-};
+const fillContrastLightnessThreshold = 0.7;
 
 const toOklch = ({ r, g, b }: RGBColor): OklchColor => {
     const linearRed = toLinearRgbChannel(r);
@@ -210,20 +201,20 @@ export class Theme {
         'neutral-pink': createNeutralPalette({ r: 133, g: 106, b: 116 }),
         'neutral-red': createNeutralPalette({ r: 132, g: 111, b: 112 }),
 
-        'burnt-orange': createPalette({ r: 184, g: 68, b: 65 }),
-        coral: createPalette({ r: 224, g: 99, b: 81 }),
         mahogany: createPalette({ r: 148, g: 57, b: 52 }),
-        'warm-brown': createPalette({ r: 145, g: 88, b: 52 }),
-        copper: createPalette({ r: 205, g: 127, b: 50 }),
-        peach: createPalette({ r: 214, g: 103, b: 55 }),
+        'burnt-orange': createPalette({ r: 184, g: 68, b: 65 }),
+        coral: createPalette({ r: 213, g: 94, b: 77 }),
+        peach: createPalette({ r: 203, g: 98, b: 52 }),
         orange: createPalette({ r: 240, g: 123, b: 0 }),
+        copper: createPalette({ r: 205, g: 127, b: 50 }),
+        'warm-brown': createPalette({ r: 145, g: 88, b: 52 }),
         yellow: createPalette({ r: 220, g: 166, b: 0 }),
         'luminous-yellow': createPalette({ r: 222, g: 209, b: 49 }),
         'dark-gold': createPalette({ r: 148, g: 131, b: 51 }),
         chartreuse: createPalette({ r: 168, g: 171, b: 12 }),
         lime: createPalette({ r: 108, g: 125, b: 0 }),
         green: createPalette({ r: 26, g: 104, b: 64 }),
-        mint: createPalette({ r: 20, g: 153, b: 98 }),
+        mint: createPalette({ r: 19, g: 145, b: 93 }),
         teal: createPalette({ r: 14, g: 128, b: 127 }),
         aqua: createPalette({ r: 12, g: 145, b: 143 }),
         cyan: createPalette({ r: 0, g: 153, b: 173 }),
@@ -318,12 +309,9 @@ export class Theme {
     public static contrastShade = (
         color: ThemeColor,
         backgroundShade: ColorShade = 500,
-    ): 100 | 900 => {
-        return contrastRatio(color[backgroundShade], color[100]) >=
-            contrastRatio(color[backgroundShade], color[900])
-            ? 100
-            : 900;
-    };
+    ): 100 | 900 => toOklch(color[backgroundShade]).lightness < fillContrastLightnessThreshold
+        ? 100
+        : 900;
 
     /**
      * Returns a css color string from the current theme.
