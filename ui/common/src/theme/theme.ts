@@ -116,9 +116,9 @@ const createPalette = (middle: RGBColor): ThemeColor => {
         300: colorAtLightness(color, interpolate(neutralPaletteLightness[100], color.lightness, 0.5)),
         400: colorAtLightness(color, interpolate(neutralPaletteLightness[100], color.lightness, 0.75)),
         500: middle,
-        600: colorAtLightness(color, interpolate(color.lightness, neutralPaletteLightness[900], 0.25)),
-        700: colorAtLightness(color, interpolate(color.lightness, neutralPaletteLightness[900], 0.5)),
-        800: colorAtLightness(color, interpolate(color.lightness, neutralPaletteLightness[900], 0.75)),
+        600: colorAtLightness(color, interpolate(color.lightness, neutralPaletteLightness[900], 0.28)),
+        700: colorAtLightness(color, interpolate(color.lightness, neutralPaletteLightness[900], 0.6)),
+        800: colorAtLightness(color, interpolate(color.lightness, neutralPaletteLightness[900], 0.85)),
         900: colorAtLightness(color, neutralPaletteLightness[900]),
     };
 };

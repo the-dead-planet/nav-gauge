@@ -49,4 +49,12 @@ describe("Theme", () => {
         expect(channelSpread(palette[50])).to.be.lessThan(25);
         expect(channelSpread(palette[100])).to.be.greaterThan(channelSpread(palette[50]));
     });
+
+    it("softens the transition from shade 800 to 900", () => {
+        const palette = Theme.palette.coral;
+
+        expect(oklabLightness(palette[800]) - oklabLightness(palette[900])).to.be.lessThan(
+            oklabLightness(palette[700]) - oklabLightness(palette[800])
+        );
+    });
 });
