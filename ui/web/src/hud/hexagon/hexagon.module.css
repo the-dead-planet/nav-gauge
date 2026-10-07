@@ -32,6 +32,16 @@
     height: 100%;
 }
 
+.backdrop {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-color: rgb(from var(--hexagon-color) r g b / .01);
+    backdrop-filter: blur(6px);
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+}
+
 .size-xs {
     width: 36px;
 }

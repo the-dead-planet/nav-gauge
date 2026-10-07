@@ -41,7 +41,6 @@ export const BevelPanel: FC<BevelPanelProps & Props & ComponentProps<'div'>> = (
     const containerRef = useRef<HTMLDivElement>(null);
     const [size, setSize] = useState({ width: 0, height: 0 });
     const filterId = useId();
-    const clipPathId = useId();
 
     useEffect(() => {
         const element = containerRef.current;
@@ -65,6 +64,10 @@ export const BevelPanel: FC<BevelPanelProps & Props & ComponentProps<'div'>> = (
     const points = size.width > 0 && size.height > 0
         ? `${effectiveBevel},${strokeInset} ${size.width - effectiveBevel},${strokeInset} ${size.width - strokeInset},${size.height / 2} ${size.width - effectiveBevel},${size.height - strokeInset} ${effectiveBevel},${size.height - strokeInset} ${strokeInset},${size.height / 2}`
         : '';
+    const clipPath = `polygon(${effectiveBevel}px 0, calc(100% - ${effectiveBevel}px) 0, 100% 50%, calc(100% - ${effectiveBevel}px) 100%, ${effectiveBevel}px 100%, 0 50%)`;
+    const backdropMask = points
+        ? `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size.width} ${size.height}"><polygon points="${points}" fill="white"/></svg>`)}")`
+        : undefined;
 
     return (
         <div
@@ -89,13 +92,17 @@ export const BevelPanel: FC<BevelPanelProps & Props & ComponentProps<'div'>> = (
             {variant === 'fill-translucent' && points ? (
                 <div
                     className={styles.backdrop}
-                    style={{ clipPath: `url(#${clipPathId})` }}
+                    style={{
+                        maskImage: backdropMask,
+                        WebkitMaskImage: backdropMask,
+                        maskSize: '100% 100%',
+                        WebkitMaskSize: '100% 100%',
+                    }}
                 />
             ) : null}
             {points ? (
                 <svg viewBox={`0 0 ${size.width} ${size.height}`} className={styles.svg}>
                     <defs>
-                        <clipPath id={clipPathId}><polygon points={points} /></clipPath>
                         <filter id={filterId} x="-50%" y="-50%" width="200%" height="200%">
                             <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur1" />
                             <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur2" />
@@ -114,7 +121,7 @@ export const BevelPanel: FC<BevelPanelProps & Props & ComponentProps<'div'>> = (
                 className={classNames(styles.content, contentClassName)}
                 style={{
                     ...contentStyle,
-                    clipPath: clipContent && points ? `url(#${clipPathId})` : undefined,
+                    clipPath: clipContent && points ? clipPath : undefined,
                     paddingTop: padding ? paddingVertical[padding] : 0,
                     paddingBottom: padding ? paddingVertical[padding] : 0,
                     paddingLeft: effectiveBevel,
