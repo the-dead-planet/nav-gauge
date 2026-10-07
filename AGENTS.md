@@ -43,6 +43,7 @@ Each feature is a pluggable **Gear** with 1-3 packages: `common/` (abstract clas
 ## After changes
 
 Always run `yarn typecheck:web` (or `yarn typecheck:mobile:once` for mobile changes), `yarn lint`, and relevant tests after every code edit.
+Redirect verbose verification output to temporary log files. Report only pass/fail, and inspect relevant log sections only when a command fails.
 
 ## Other
 
