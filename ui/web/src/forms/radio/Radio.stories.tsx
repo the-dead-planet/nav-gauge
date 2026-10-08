@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Radio } from './Radio';
 import { Text } from '../../typography';
 import { ColorVariant, RadioProps, SizeVariant } from '@ui';
+import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptions as allSizes } from '../../storybook/controls';
 
 const meta = {
     title: 'Forms/Radio',
@@ -10,10 +11,6 @@ const meta = {
 } satisfies Meta<typeof Radio>;
 
 export default meta;
-
-const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
-const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: RadioProps['variant'][] = ['fill', 'fill-inverse', 'fill-translucent'];
 
 export const RadioVariants = {
     render: () => {

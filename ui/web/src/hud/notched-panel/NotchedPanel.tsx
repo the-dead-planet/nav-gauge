@@ -55,6 +55,9 @@ export const NotchedPanel: FC<NotchedPanelProps & Props & ComponentProps<'div'>>
     const bodyPoints = `${notch},1 ${width - notch - step},1 ${width - 1},${notch + step} ${width - 1},${height - notch} ${width - notch},${height - 1} ${width * 0.58},${height - 1} ${width * 0.54},${height - step} ${notch + step},${height - step} ${notch},${height - 1} 1,${height - notch} 1,${notch}`;
     const headerPoints = `${notch},1 ${width - notch - step},1 ${width - 1},${notch + step} ${width - notch},${headerHeight} ${width * 0.58},${headerHeight} ${width * 0.54},${Math.max(1, headerHeight - step)} ${notch + step},${Math.max(1, headerHeight - step)} 1,${Math.max(1, headerHeight - notch)}`;
     const ready = width > 0 && height > 0;
+    const backdropMask = ready
+        ? `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}"><polygon points="${bodyPoints}" fill="white"/></svg>`)}")`
+        : undefined;
 
     return (
         <div
@@ -63,6 +66,15 @@ export const NotchedPanel: FC<NotchedPanelProps & Props & ComponentProps<'div'>>
             style={{ ...style, '--notched-filter': `url(#${filterId})` } as CSSProperties}
             {...props}
         >
+            {variant === 'fill-translucent' && ready ? (
+                <div
+                    className={styles.backdrop}
+                    style={{
+                        maskImage: backdropMask,
+                        WebkitMaskImage: backdropMask,
+                    }}
+                />
+            ) : null}
             {ready ? (
                 <svg className={styles.svg} viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none" aria-hidden="true">
                     <defs><filter id={filterId} x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="4" /></filter></defs>

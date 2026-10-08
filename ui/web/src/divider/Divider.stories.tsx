@@ -1,7 +1,7 @@
 import type { Meta } from "storybook-react-rsbuild";
 import { Divider } from "./Divider";
-import { ColorVariant } from "@ui";
 import { Text } from "../typography";
+import { colorOptions as allColors } from "../storybook/controls";
 
 const meta = {
     title: "Divider",
@@ -9,8 +9,6 @@ const meta = {
 } satisfies Meta<typeof Divider>;
 
 export default meta;
-
-const allColors: ColorVariant[] = ["neutral", "primary", "secondary", "tertiary"];
 
 export const DividerVariants = {
     render: () => (

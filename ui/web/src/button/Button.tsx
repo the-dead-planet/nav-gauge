@@ -134,8 +134,9 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
             color={color}
             highlightColor={highlightColor}
             active={active}
+            disabled={disabled}
             interactive={!disabled}
-            style={disabled ? { ...style, opacity: 0.45, cursor: 'not-allowed' } : style}
+            style={disabled ? { ...style, cursor: 'not-allowed' } : style}
             className={className}
         >
             {buttonWithTooltip}

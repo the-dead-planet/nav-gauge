@@ -5,6 +5,7 @@ import { ClockInput } from './ClockInput';
 import { DurationClockInput } from './DurationClockInput';
 import { Text } from '../../typography';
 import { useState } from 'react';
+import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptions as allSizes } from '../../storybook/controls';
 
 const meta = {
     title: 'Forms/ClockInput',
@@ -14,9 +15,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const allSizes: SizeVariant[] = ['xs', 'sm', 'md'];
-const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
 const numberInputPlacements: NumberInputPlacement[] = ['start', 'end', 'above', 'below'];
 
 const ClockInputStoryOptions = ({ showStepControls, setShowStepControls, showNumberInput, setShowNumberInput, numberInputPlacement, setNumberInputPlacement }: {

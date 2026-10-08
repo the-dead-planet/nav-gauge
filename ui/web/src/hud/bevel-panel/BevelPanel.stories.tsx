@@ -1,13 +1,11 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { ColorVariant, FillVariant } from '@ui';
 import { Text } from '../../typography';
 import { BevelPanel } from './BevelPanel';
+import { colorOptions as colors, fillVariantOptions as variants } from '../../storybook/controls';
 
 const meta = { title: 'Hud/BevelPanel', component: BevelPanel } satisfies Meta<typeof BevelPanel>;
 export default meta;
 type Story = StoryObj<typeof meta>;
-const colors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const variants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
 const gridStyle = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 16 } as const;
 
 export const Default: Story = { args: { color: 'primary', variant: 'fill-translucent', padding: 'md', children: <Text>Preview</Text> } };

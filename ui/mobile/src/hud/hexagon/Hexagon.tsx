@@ -69,6 +69,7 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(({
     size,
     interactive = false,
     active = false,
+    disabled = false,
     onPress,
     onLongPress,
     onPressIn: onParentPressIn,
@@ -80,7 +81,7 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(({
     const theme = useTheme();
     const [pressed, setPressed] = useState(false);
     const [glowDrawn, setGlowDrawn] = useState(false);
-    const hl = pressed || active;
+    const hl = !disabled && (pressed || active);
     const isPointy = shape === "pointy-top";
     const points = isPointy ? POINTY_TOP : FLAT_TOP;
     const aspectRatio = isPointy ? 86.6 / 100 : 100 / 86.6;
@@ -92,7 +93,7 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(({
     const highlight500 = theme.color(highlightColor, 500);
     const highlightAccent = theme.color(highlightColor, isLight ? 600 : 300);
 
-    const showGlow = (glowStyle !== 'none') && (hl || glowDrawn);
+    const showGlow = !disabled && glowStyle !== 'none' && (hl || glowDrawn);
 
     const markGlowDrawn = () => {
         if (glowStyle !== 'none') {
@@ -106,6 +107,20 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(({
     };
 
     const renderVariant = () => {
+        if (disabled) {
+            const backgroundColor = theme.color(color, isLight ? 200 : 800);
+            const foregroundColor = theme.color(color, isLight ? 300 : 700);
+
+            return (
+                <Polygon
+                    points={points}
+                    fill={backgroundColor}
+                    stroke={variant === 'fill' ? backgroundColor : foregroundColor}
+                    strokeWidth={strokeWidth}
+                />
+            );
+        }
+
         switch (variant) {
             case 'inset': {
                 const bgTint = theme.color(color, 500, 0.10);
@@ -192,17 +207,14 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(({
             }
 
             case 'fill-inverse': {
-                const isNeutral = color === 'neutral';
-                const hlIsNeutral = highlightColor === 'neutral';
-                const bgShade = isLight ? 100 : (isNeutral ? 800 : 900);
-                const hlBgShade = isLight ? 100 : (hlIsNeutral ? 800 : 900);
+                const bgShade = isLight ? 200 : 800;
                 let fillColor: string;
                 let borderColor: string;
                 if (active) {
-                    fillColor = theme.color(highlightColor, hlBgShade);
+                    fillColor = theme.color(highlightColor, bgShade);
                     borderColor = highlight500;
                 } else if (pressed) {
-                    fillColor = theme.color(highlightColor, hlBgShade);
+                    fillColor = theme.color(highlightColor, bgShade);
                     borderColor = highlightAccent;
                 } else {
                     fillColor = theme.color(color, bgShade);
@@ -285,6 +297,7 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(({
             <Pressable
                 ref={ref}
                 {...pressableProps}
+                disabled={disabled}
                 onPress={onPress}
                 onLongPress={onLongPress}
                 onPressIn={(e) => {

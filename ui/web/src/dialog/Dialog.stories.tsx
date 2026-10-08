@@ -3,13 +3,14 @@ import { useState } from 'react';
 import { Dialog } from './Dialog';
 import { Button } from '../button';
 import { DialogPlacement, DialogProps } from '@ui';
+import { colorControl } from '../storybook/controls';
 
 const meta = {
     title: 'Dialog',
     component: Dialog,
     args: { color: 'neutral' },
     argTypes: {
-        color: { control: 'select', options: ['neutral', 'primary', 'secondary', 'tertiary'] },
+        color: colorControl,
     },
 } satisfies Meta<typeof Dialog>;
 

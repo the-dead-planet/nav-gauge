@@ -2,12 +2,8 @@ import { Option } from "../model";
 import { ThemeMode, ThemeName, ThemeSpecification } from "./model";
 import { Theme } from "./theme";
 
-export const themeNameOptions: Option<ThemeName>[] = [
-    { value: ThemeName.Default, label: ThemeName.Default },
-    { value: ThemeName.NeonBlue, label: ThemeName.NeonBlue },
-    { value: ThemeName.Batman, label: ThemeName.Batman },
-    { value: ThemeName.Joker, label: ThemeName.Joker },
-];
+export const themeNameOptions: Option<ThemeName>[] = Object.values(ThemeName)
+    .map((value) => ({ value, label: value }));
 
 export const themeModeOptions: Option<ThemeMode>[] = [
     { value: 'dark', label: 'Dark' },
@@ -101,55 +97,56 @@ export const defaultComponentColors: { [key in ThemeMode]: ThemeSpecification['c
     },
 }
 
+const standardTheme = (
+    themeName: ThemeName,
+    lightColors: ThemeSpecification['colors'],
+    darkColors: ThemeSpecification['colors'],
+): { [key in ThemeMode]: ThemeSpecification } => ({
+    light: {
+        mode: 'light',
+        themeName,
+        componentColors: defaultComponentColors.light,
+        colors: lightColors,
+    },
+    dark: {
+        mode: 'dark',
+        themeName,
+        componentColors: defaultComponentColors.dark,
+        colors: darkColors,
+    },
+});
+
 export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: ThemeSpecification } } = {
-    [ThemeName.Default]: {
-        light: {
-            mode: 'light',
-            themeName: ThemeName.Default,
-            componentColors: defaultComponentColors.light,
-            colors: {
-                primary: Theme.palette.teal,
-                secondary: Theme.palette['copper'],
-                tertiary: Theme.palette.magenta,
-                neutral: Theme.palette.grey,
-            }
+    [ThemeName.Default]: standardTheme(
+        ThemeName.Default,
+        {
+            primary: Theme.palette.teal,
+            secondary: Theme.palette.copper,
+            tertiary: Theme.palette.magenta,
+            neutral: Theme.palette['neutral-grey'],
         },
-        dark: {
-            mode: 'dark',
-            themeName: ThemeName.Default,
-            componentColors: defaultComponentColors.dark,
-            colors: {
-                primary: Theme.palette.teal,
-                secondary: Theme.palette.yellow,
-                tertiary: Theme.palette.pink,
-                neutral: Theme.palette.grey,
-            },
-        }
-    },
-    [ThemeName.NeonBlue]: {
-        light: {
-            mode: 'light',
-            themeName: ThemeName.NeonBlue,
-            componentColors: defaultComponentColors.light,
-            colors: {
-                primary: Theme.palette.navy,
-                secondary: Theme.palette.navy,
-                tertiary: Theme.palette.copper,
-                neutral: Theme.palette.grey,
-            }
+        {
+            primary: Theme.palette.teal,
+            secondary: Theme.palette.yellow,
+            tertiary: Theme.palette.pink,
+            neutral: Theme.palette['neutral-grey'],
         },
-        dark: {
-            mode: 'dark',
-            themeName: ThemeName.NeonBlue,
-            componentColors: defaultComponentColors.dark,
-            colors: {
-                primary: Theme.palette.blue,
-                secondary: Theme.palette.blue,
-                tertiary: Theme.palette.copper,
-                neutral: Theme.palette.grey,
-            },
-        }
-    },
+    ),
+    [ThemeName.NeonBlue]: standardTheme(
+        ThemeName.NeonBlue,
+        {
+            primary: Theme.palette.navy,
+            secondary: Theme.palette.navy,
+            tertiary: Theme.palette.copper,
+            neutral: Theme.palette['neutral-grey'],
+        },
+        {
+            primary: Theme.palette.blue,
+            secondary: Theme.palette.blue,
+            tertiary: Theme.palette.copper,
+            neutral: Theme.palette['neutral-grey'],
+        },
+    ),
     [ThemeName.Batman]: {
         light: {
             mode: 'light',
@@ -170,10 +167,10 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
                 },
             },
             colors: {
-                primary: Theme.palette['grey-blue'],
-                secondary: Theme.palette['grey-blue'],
+                primary: Theme.palette['neutral-blue'],
+                secondary: Theme.palette['neutral-blue'],
                 tertiary: Theme.palette['dark-gold'],
-                neutral: Theme.palette['grey-blue'],
+                neutral: Theme.palette['neutral-blue'],
             }
         },
         dark: {
@@ -187,10 +184,10 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
                 },
             },
             colors: {
-                primary: Theme.palette['grey-blue'],
-                secondary: Theme.palette['grey-blue'],
+                primary: Theme.palette['neutral-blue'],
+                secondary: Theme.palette['neutral-blue'],
                 tertiary: Theme.palette['luminous-yellow'],
-                neutral: Theme.palette['grey-blue'],
+                neutral: Theme.palette['neutral-blue'],
             },
         }
     },
@@ -209,7 +206,7 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
                 primary: Theme.palette.violet,
                 secondary: Theme.palette.lime,
                 tertiary: Theme.palette['burnt-orange'],
-                neutral: Theme.palette.grey,
+                neutral: Theme.palette['neutral-grey'],
             }
         },
         dark: {
@@ -230,4 +227,79 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
             },
         }
     },
+    [ThemeName.Foundry]: standardTheme(
+        ThemeName.Foundry,
+        {
+            primary: Theme.palette.mahogany,
+            secondary: Theme.palette.copper,
+            tertiary: Theme.palette.teal,
+            neutral: Theme.palette['neutral-brown'],
+        },
+        {
+            primary: Theme.palette.coral,
+            secondary: Theme.palette.copper,
+            tertiary: Theme.palette.aqua,
+            neutral: Theme.palette['neutral-brown'],
+        },
+    ),
+    [ThemeName.Aurora]: standardTheme(
+        ThemeName.Aurora,
+        {
+            primary: Theme.palette.indigo,
+            secondary: Theme.palette.mint,
+            tertiary: Theme.palette.rose,
+            neutral: Theme.palette['neutral-violet'],
+        },
+        {
+            primary: Theme.palette.purple,
+            secondary: Theme.palette.mint,
+            tertiary: Theme.palette.rose,
+            neutral: Theme.palette['deep-violet'],
+        },
+    ),
+    [ThemeName.SolarFlare]: standardTheme(
+        ThemeName.SolarFlare,
+        {
+            primary: Theme.palette.orange,
+            secondary: Theme.palette.plum,
+            tertiary: Theme.palette.green,
+            neutral: Theme.palette['neutral-khaki'],
+        },
+        {
+            primary: Theme.palette.peach,
+            secondary: Theme.palette.magenta,
+            tertiary: Theme.palette.mint,
+            neutral: Theme.palette['neutral-olive'],
+        },
+    ),
+    [ThemeName.Verdant]: standardTheme(
+        ThemeName.Verdant,
+        {
+            primary: Theme.palette.green,
+            secondary: Theme.palette.chartreuse,
+            tertiary: Theme.palette.plum,
+            neutral: Theme.palette['neutral-green'],
+        },
+        {
+            primary: Theme.palette.mint,
+            secondary: Theme.palette.lime,
+            tertiary: Theme.palette.magenta,
+            neutral: Theme.palette['neutral-green'],
+        },
+    ),
+    [ThemeName.GoldenCircuit]: standardTheme(
+        ThemeName.GoldenCircuit,
+        {
+            primary: Theme.palette['dark-gold'],
+            secondary: Theme.palette.navy,
+            tertiary: Theme.palette.mahogany,
+            neutral: Theme.palette['neutral-khaki'],
+        },
+        {
+            primary: Theme.palette['luminous-yellow'],
+            secondary: Theme.palette.blue,
+            tertiary: Theme.palette.coral,
+            neutral: Theme.palette['neutral-khaki'],
+        },
+    ),
 };

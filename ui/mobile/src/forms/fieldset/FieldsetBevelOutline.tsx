@@ -36,8 +36,8 @@ export const FieldsetBevelOutline: FC<Props> = ({
     const borderColor = color
         ? theme.color(color)
         : theme.isLight
-            ? theme.color('grey', 300)
-            : theme.color('grey', 700);
+            ? theme.color('neutral', 300)
+            : theme.color('neutral', 700);
     const fillColor = variant === 'fill'
         ? theme.color(effectiveColor, 500)
         : variant === 'fill-inverse'

@@ -3,6 +3,7 @@ import { ColorVariant, SizeVariant, FillVariant } from '@ui';
 import { Slider } from './Slider';
 import { Text } from '../../typography';
 import { useState } from 'react';
+import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptions as allSizes } from '../../storybook/controls';
 
 const meta = {
     title: 'Forms/Slider',
@@ -10,10 +11,6 @@ const meta = {
 } satisfies Meta<typeof Slider>;
 
 export default meta;
-
-const allSizes: SizeVariant[] = ['xs', 'sm', 'md'];
-const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
 
 export const SliderVariants = {
     render: () => {

@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { ColorVariant, TabstripOption, TabstripVariant } from '@ui';
+import { TabstripOption, TabstripVariant } from '@ui';
 import { Tabstrip } from './Tabstrip';
+import { colorOptions } from '../../storybook/controls';
 
 const options: TabstripOption[] = [
     { value: 'route', label: 'Route' },
@@ -55,7 +56,7 @@ export const VariantsAndColors: Story = {
     render: () => {
         const [value, setValue] = useState('route');
         const variants: TabstripVariant[] = ['fill-inverse', 'fill-translucent', 'outline'];
-        const colors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
+        const colors = colorOptions;
         return (
             <div style={{ display: 'grid', gap: 20 }}>
                 {variants.flatMap((variant) => colors.map((color) => (

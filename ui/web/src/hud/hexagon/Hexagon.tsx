@@ -22,6 +22,7 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
     variant,
     themeMode,
     active = false,
+    disabled = false,
     onClick,
     className,
     style,
@@ -36,10 +37,15 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
     const clipPathId = useId();
     const shadowBlurId = useId();
     const effectiveMode = themeMode ?? theme.mode;
+    const maskPoints = isPointy
+        ? '50,0 100,25 100,75 50,100 0,75 0,25'
+        : '100,50 75,100 25,100 0,50 25,0 75,0';
+    const backdropMask = `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="${maskPoints}" fill="white"/></svg>`)}")`;
 
     return (
         <div
-            onClick={onClick}
+            onClick={disabled ? undefined : onClick}
+            aria-disabled={disabled || undefined}
             className={classNames(
                 styles.hexagon,
                 styles[shape],
@@ -50,8 +56,9 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
                 styles[`mode-${effectiveMode}`],
                 {
                     [styles['active']]: active,
-                    [styles['interactive']]: interactive || onClick,
-                    [styles[`glow-style-${glowStyle}`]]: interactive,
+                    [styles['disabled']]: disabled,
+                    [styles['interactive']]: !disabled && (interactive || onClick),
+                    [styles[`glow-style-${glowStyle}`]]: !disabled && interactive,
                 },
                 className
             )}
@@ -61,6 +68,15 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
             } as CSSProperties}
             {...props}
         >
+            {variant === 'fill-translucent' ? (
+                <div
+                    className={styles.backdrop}
+                    style={{
+                        maskImage: backdropMask,
+                        WebkitMaskImage: backdropMask,
+                    }}
+                />
+            ) : null}
             <svg
                 viewBox={viewBox}
                 className={styles.svg}
