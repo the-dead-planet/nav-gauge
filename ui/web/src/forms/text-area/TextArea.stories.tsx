@@ -1,94 +1,118 @@
-import type { Meta } from 'storybook-react-rsbuild';
-import { useState } from 'react';
-import { TextArea } from './TextArea';
-import { Fieldset } from '../fieldset';
-import { Text } from '../../typography';
-import { ColorVariant, SizeVariant, FillVariant } from '@ui';
+import type { Meta, StoryObj } from "storybook-react-rsbuild";
+import { makeLiveEditStory } from "storybook-addon-code-editor";
+import * as React from "react";
+import { ComponentProps, useState } from "react";
+import { TextArea } from "./TextArea";
+import { VariantGallery } from "../../storybook/VariantGallery";
+import {
+    booleanControl,
+    colorControl,
+    colorOptions,
+    fillVariantControl,
+    fillVariantOptions,
+    sizeControl,
+    sizeOptions,
+} from "../../storybook/controls";
+
+const GalleryTextArea = (props: ComponentProps<typeof TextArea>) => {
+    const [value, setValue] = useState(props.value);
+
+    return (
+        <TextArea
+            {...props}
+            value={value}
+            onChange={(event) => setValue(event.target.value)}
+        />
+    );
+};
 
 const meta = {
-    title: 'Forms/TextArea',
+    title: "Forms/TextArea",
     component: TextArea,
+    args: {
+        id: "text-area-playground",
+        label: "Label",
+        value: "Some text",
+        color: "neutral",
+        highlightColor: "neutral",
+        size: "sm",
+        variant: "fill-inverse",
+        disabled: false,
+        autoSelect: false,
+        onChange: () => {},
+    },
+    argTypes: {
+        color: colorControl,
+        highlightColor: colorControl,
+        size: sizeControl,
+        variant: fillVariantControl,
+        disabled: booleanControl,
+        autoSelect: booleanControl,
+        value: { control: false },
+        onChange: { control: false },
+    },
 } satisfies Meta<typeof TextArea>;
 
 export default meta;
+type Story = StoryObj<typeof meta>;
 
-const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
-const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
-
-export const TextAreaInteractive = {
-    render: () => {
-        const [value, setValue] = useState('Some text');
-        const [color, setColor] = useState<ColorVariant>('neutral');
-        const [size, setSize] = useState<SizeVariant>('sm');
-        const [variant, setVariant] = useState<FillVariant>('fill-inverse');
-        const [disabled, setDisabled] = useState(false);
+export const Playground: Story = {
+    name: "Playground with Live code editor",
+    render: (args) => {
+        const [value, setValue] = useState(args.value);
 
         return (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 24, padding: 24, maxWidth: 320 }}>
+            <div style={{ maxWidth: 320 }}>
                 <TextArea
-                    id="interactive"
-                    label="Label"
+                    {...args}
                     value={value}
-                    onChange={e => setValue(e.target.value)}
-                    color={color}
-                    size={size}
-                    variant={variant}
-                    disabled={disabled}
+                    onChange={(event) => setValue(event.target.value)}
                 />
-
-                <Fieldset label="Color">
-                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                        {allColors.map(c => (
-                            <label key={c}>
-                                <input type="radio" name="color" checked={color === c} onChange={() => setColor(c)} />
-                                {c}
-                            </label>
-                        ))}
-                    </div>
-                </Fieldset>
-
-                <Fieldset label="Size">
-                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                        {allSizes.map(s => (
-                            <label key={s}>
-                                <input type="radio" name="size" checked={size === s} onChange={() => setSize(s)} />
-                                {s}
-                            </label>
-                        ))}
-                    </div>
-                </Fieldset>
-
-                <Fieldset label="Variant">
-                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                        {allVariants.map(v => (
-                            <label key={v}>
-                                <input type="radio" name="variant" checked={variant === v} onChange={() => setVariant(v)} />
-                                {v}
-                            </label>
-                        ))}
-                    </div>
-                </Fieldset>
-
-                <label>
-                    <input type="checkbox" checked={disabled} onChange={e => setDisabled(e.target.checked)} />
-                    Disabled
-                </label>
-
-                <Fieldset label="All colors">
-                    {allColors.map(c => (
-                        <TextArea key={c} id={`color-${c}`} label={c} value="text" onChange={() => {}} color={c} size={size} />
-                    ))}
-                </Fieldset>
-
-                <Fieldset label="All sizes">
-                    {allSizes.map(s => (
-                        <TextArea key={s} id={`size-${s}`} label={s} value="text" onChange={() => {}} size={s} />
-                    ))}
-                </Fieldset>
-
-                <Text>Current value: {value}</Text>
             </div>
         );
     },
+};
+
+makeLiveEditStory(Playground, {
+    availableImports: { react: React, "@web-ui": { TextArea } },
+    code: `import { useState } from 'react';
+import { TextArea } from '@web-ui';
+
+export default function EditableTextArea(props) {
+    const [value, setValue] = useState(props.value);
+
+    return (
+        <TextArea
+            {...props}
+            value={value}
+            onChange={(event) => setValue(event.target.value)}
+        />
+    );
+}`,
+    modifyEditor: (monaco) => monaco.editor.setTheme("vs-dark"),
+});
+
+export const Gallery: Story = {
+    argTypes: {
+        id: { table: { disable: true } },
+        color: { table: { disable: true } },
+        size: { table: { disable: true } },
+        variant: { table: { disable: true } },
+    },
+    render: (args) => (
+        <VariantGallery
+            sizes={sizeOptions}
+            colors={colorOptions}
+            variants={fillVariantOptions}
+            render={({ color, size, variant }) => (
+                <GalleryTextArea
+                    {...args}
+                    id={`${color}-${size}-${variant}`}
+                    color={color}
+                    size={size}
+                    variant={variant}
+                />
+            )}
+        />
+    ),
 };

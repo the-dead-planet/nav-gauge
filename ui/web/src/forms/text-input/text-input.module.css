@@ -21,35 +21,54 @@
 }
 
 .input:disabled {
-    opacity: .4;
     cursor: not-allowed;
 }
 
 .color-neutral {
     --ni-color: var(--color-neutral);
-    --ni-color-dark: var(--color-neutral-800);
+    --ni-color-contrast: var(--color-neutral-contrast);
+    --ni-color-dark: var(--color-neutral-900);
     --ni-color-light: var(--color-neutral-100);
+    --ni-color-200: var(--color-neutral-200);
+    --ni-color-300: var(--color-neutral-300);
+    --ni-color-700: var(--color-neutral-700);
+    --ni-color-800: var(--color-neutral-800);
     --ni-highlight-color: var(--color-neutral);
 }
 
 .color-primary {
     --ni-color: var(--color-primary);
+    --ni-color-contrast: var(--color-primary-contrast);
     --ni-color-dark: var(--color-primary-900);
     --ni-color-light: var(--color-primary-100);
+    --ni-color-200: var(--color-primary-200);
+    --ni-color-300: var(--color-primary-300);
+    --ni-color-700: var(--color-primary-700);
+    --ni-color-800: var(--color-primary-800);
     --ni-highlight-color: var(--color-primary);
 }
 
 .color-secondary {
     --ni-color: var(--color-secondary);
+    --ni-color-contrast: var(--color-secondary-contrast);
     --ni-color-dark: var(--color-secondary-900);
     --ni-color-light: var(--color-secondary-100);
+    --ni-color-200: var(--color-secondary-200);
+    --ni-color-300: var(--color-secondary-300);
+    --ni-color-700: var(--color-secondary-700);
+    --ni-color-800: var(--color-secondary-800);
     --ni-highlight-color: var(--color-secondary);
 }
 
 .color-tertiary {
     --ni-color: var(--color-tertiary);
+    --ni-color-contrast: var(--color-tertiary-contrast);
     --ni-color-dark: var(--color-tertiary-900);
     --ni-color-light: var(--color-tertiary-100);
+    --ni-color-200: var(--color-tertiary-200);
+    --ni-color-300: var(--color-tertiary-300);
+    --ni-color-700: var(--color-tertiary-700);
+    --ni-color-800: var(--color-tertiary-800);
     --ni-highlight-color: var(--color-tertiary);
 }
 
@@ -128,16 +147,41 @@
 }
 
 .variant-fill .input {
+    border: none;
     background-color: var(--ni-color);
-    color: var(--ni-color-light);
+    color: var(--ni-color-contrast);
 }
 
 .variant-fill-inverse .input {
-    color: var(--ni-color);
+    color: var(--ni-color-dark);
+}
+
+.mode-dark.variant-fill-inverse .input {
+    color: var(--ni-color-light);
 }
 
 .variant-fill-translucent .input {
-    background-color: rgb(from var(--ni-color) r g b / .24);
-    color: var(--ni-color);
-    border-color: rgb(from var(--ni-color) r g b / .3);
+    background-color: rgb(from var(--ni-color) r g b / 0.24);
+    border-color: rgb(from var(--ni-color) r g b / 0.3);
+    backdrop-filter: blur(6px);
+}
+
+.mode-light .input:disabled {
+    background-color: var(--ni-color-200);
+    color: var(--ni-color-300);
+    border-color: var(--ni-color-300);
+}
+
+.mode-light:has(.input:disabled) .label {
+    color: var(--ni-color-300);
+}
+
+.mode-dark .input:disabled {
+    background-color: var(--ni-color-800);
+    color: var(--ni-color-700);
+    border-color: var(--ni-color-700);
+}
+
+.mode-dark:has(.input:disabled) .label {
+    color: var(--ni-color-700);
 }

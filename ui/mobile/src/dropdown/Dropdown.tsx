@@ -120,15 +120,24 @@ export function Dropdown<T>({
     };
 
     const getContentColors = (pressed: boolean) => {
+        if (disabled) {
+            const disabledColor = theme.color(color, theme.isLight ? 300 : 700);
+            return { content: disabledColor, chevron: disabledColor };
+        }
         if (variant === 'fill') {
-            const fillContentColor = theme.color(
-                color,
-                theme.isLight ? 100 : 900,
-            );
+            const fillContentColor = pressed
+                ? theme.color(
+                      highlightColor,
+                      theme.contrastShade(
+                          highlightColor,
+                          theme.isLight ? 600 : 300,
+                      ),
+                  )
+                : theme.color(color, theme.contrastShade(color));
             return { content: fillContentColor, chevron: fillContentColor };
         }
         return {
-            content: chromeContentColor,
+            content: variant === 'fill-translucent' ? baseColor : chromeContentColor,
             chevron: pressed
                 ? theme.color(color, theme.isLight ? 600 : 400)
                 : baseColor,
@@ -157,7 +166,17 @@ export function Dropdown<T>({
                     onPress={handleOpen}
                     style={({ pressed }) => [
                         getTriggerStyle(pressed),
-                        disabled && { opacity: 0.4 },
+                        disabled && {
+                            backgroundColor: theme.color(
+                                color,
+                                theme.isLight ? 200 : 800,
+                            ),
+                            borderColor: theme.color(
+                                color,
+                                theme.isLight ? 300 : 700,
+                            ),
+                            borderWidth: variant === 'fill' ? 0 : 1,
+                        },
                     ]}
                 >
                     {({ pressed }) => {

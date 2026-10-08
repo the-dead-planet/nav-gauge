@@ -1,5 +1,14 @@
 import { expect } from "chai";
-import { Theme } from "../../src";
+import { Orientation, Theme, themeSpecifications, ThemeName } from "../../src";
+
+const theme = new Theme(themeSpecifications[ThemeName.Default].light, {
+    initial: () => ({
+        orientation: Orientation.Landscape,
+        windowWidth: 1280,
+        windowHeight: 720,
+    }),
+    subscribe: () => ({ unsubscribe: () => undefined }),
+});
 
 const oklabLightness = ({ r, g, b }: { r: number; g: number; b: number }): number => {
     const linearChannels = [r, g, b].map((channel) => {
@@ -48,5 +57,23 @@ describe("Theme", () => {
 
         expect(channelSpread(palette[50])).to.be.lessThan(25);
         expect(channelSpread(palette[100])).to.be.greaterThan(channelSpread(palette[50]));
+    });
+
+    it("softens the transition from shade 800 to 900", () => {
+        const palette = Theme.palette.coral;
+
+        expect(oklabLightness(palette[800]) - oklabLightness(palette[900])).to.be.lessThan(
+            oklabLightness(palette[700]) - oklabLightness(palette[800])
+        );
+    });
+
+    it("selects a readable palette endpoint for saturated fills", () => {
+        expect(theme.contrastShade("yellow")).to.equal(900);
+        expect(theme.contrastShade("navy")).to.equal(100);
+        expect(theme.contrastShade("blue")).to.equal(100);
+        expect(theme.contrastShade("purple")).to.equal(100);
+        expect(theme.contrastShade("coral")).to.equal(100);
+        expect(theme.contrastShade("peach")).to.equal(100);
+        expect(theme.contrastShade("mint")).to.equal(100);
     });
 });

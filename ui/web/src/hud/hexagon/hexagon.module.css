@@ -32,6 +32,16 @@
     height: 100%;
 }
 
+.backdrop {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-color: rgb(from var(--hexagon-color) r g b / .01);
+    backdrop-filter: blur(6px);
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+}
+
 .size-xs {
     width: 36px;
 }
@@ -48,24 +58,32 @@
     --hexagon-color: var(--color-neutral);
     --hexagon-color-dark: var(--color-neutral-800);
     --hexagon-color-light: var(--color-neutral-200);
+    --hexagon-disabled-color-light: var(--color-neutral-300);
+    --hexagon-disabled-color-dark: var(--color-neutral-700);
 }
 
 .color-primary {
     --hexagon-color: var(--color-primary);
     --hexagon-color-dark: var(--color-primary-800);
     --hexagon-color-light: var(--color-primary-200);
+    --hexagon-disabled-color-light: var(--color-primary-300);
+    --hexagon-disabled-color-dark: var(--color-primary-700);
 }
 
 .color-secondary {
     --hexagon-color: var(--color-secondary);
     --hexagon-color-dark: var(--color-secondary-800);
     --hexagon-color-light: var(--color-secondary-200);
+    --hexagon-disabled-color-light: var(--color-secondary-300);
+    --hexagon-disabled-color-dark: var(--color-secondary-700);
 }
 
 .color-tertiary {
     --hexagon-color: var(--color-tertiary);
     --hexagon-color-dark: var(--color-tertiary-800);
     --hexagon-color-light: var(--color-tertiary-200);
+    --hexagon-disabled-color-light: var(--color-tertiary-300);
+    --hexagon-disabled-color-dark: var(--color-tertiary-700);
 }
 
 .highlight-color-neutral {
@@ -105,6 +123,8 @@
     --hexagon-highlight-color-inverse: var(--hexagon-highlight-color-light);
     --hexagon-highlight-color-accent: var(--hexagon-highlight-color-accent-darker);
     --hexagon-inset-active-fill-opacity: .08;
+    --hexagon-disabled-background: var(--hexagon-color-light);
+    --hexagon-disabled-color: var(--hexagon-disabled-color-light);
 }
 
 .mode-dark {
@@ -112,6 +132,8 @@
     --hexagon-highlight-color-inverse: var(--hexagon-highlight-color-dark);
     --hexagon-highlight-color-accent: var(--hexagon-highlight-color-accent-lighter);
     --hexagon-inset-active-fill-opacity: .04;
+    --hexagon-disabled-background: var(--hexagon-color-dark);
+    --hexagon-disabled-color: var(--hexagon-disabled-color-dark);
 }
 
 .polygon-base,
@@ -125,6 +147,20 @@
 
 .interactive {
     cursor: pointer;
+}
+
+.hexagon.disabled .polygon-base {
+    fill: var(--hexagon-disabled-background);
+    fill-opacity: 1;
+    stroke: var(--hexagon-disabled-color);
+}
+
+.hexagon.disabled.variant-fill .polygon-base {
+    stroke: var(--hexagon-disabled-background);
+}
+
+.hexagon.disabled .content {
+    color: var(--hexagon-disabled-color);
 }
 
 /* Ghost */

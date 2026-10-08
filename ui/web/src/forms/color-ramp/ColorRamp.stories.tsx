@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { ColorRamp } from './ColorRamp';
+import { sizeControl } from '../../storybook/controls';
 
 const meta = {
     title: 'Forms/ColorRamp',
@@ -17,8 +18,7 @@ const meta = {
         value: { control: 'color' },
         label: { control: 'text' },
         opacityLabel: { control: 'text' },
-        size: { control: 'select', options: ['xs', 'sm', 'md'] },
-        disabled: { control: 'boolean' },
+        size: sizeControl,
         onChange: { control: false },
     },
 } satisfies Meta<typeof ColorRamp>;

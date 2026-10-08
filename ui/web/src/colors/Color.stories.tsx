@@ -26,20 +26,22 @@ export const ColorPalette = {
         <div
             style={{
                 display: 'grid',
-                gridTemplateColumns: 'max-content max-content max-content',
-                alignItems: 'center',
-                columnGap: '20px',
+                rowGap: '12px',
             }}
         >
             {Object.entries(Theme.palette).map(([name, color]) => (
-                <Fragment key={name}>
-                    <Color name={name} color={color} />
-                    <Button
-                        icon={Icons.NounProject.Copy}
-                        tooltip={`Copy ${name} palette as RGB JSON`}
-                        onClick={() => copyPalette(color)}
-                    />
-                </Fragment>
+                <Color
+                    key={name}
+                    name={name}
+                    color={color}
+                    action={(
+                        <Button
+                            icon={Icons.NounProject.Copy}
+                            tooltip={`Copy ${name} palette as RGB JSON`}
+                            onClick={() => copyPalette(color)}
+                        />
+                    )}
+                />
             ))}
         </div>
     ),

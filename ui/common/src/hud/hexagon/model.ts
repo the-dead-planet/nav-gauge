@@ -15,5 +15,6 @@ export interface HexagonProps {
     variant?: SurfaceVariant;
     themeMode?: ThemeMode;
     active?: boolean;
+    disabled?: boolean;
     children?: ReactNode;
 }

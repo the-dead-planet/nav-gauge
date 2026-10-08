@@ -234,6 +234,7 @@
 
 .content-fill-translucent {
     background-color: rgb(from var(--content-color) r g b / .24);
+    backdrop-filter: blur(6px);
 }
 
 .content-outline {

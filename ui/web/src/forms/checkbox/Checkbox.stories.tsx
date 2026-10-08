@@ -4,6 +4,7 @@ import { Checkbox } from './Checkbox';
 import { Text } from '../../typography';
 import { CheckboxProps, ColorVariant, SizeVariant } from '@ui';
 import styles from './checkbox.stories.module.css';
+import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptions as allSizes } from '../../storybook/controls';
 
 const meta = {
     title: 'Forms/Checkbox',
@@ -11,10 +12,6 @@ const meta = {
 } satisfies Meta<typeof Checkbox>;
 
 export default meta;
-
-const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
-const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: CheckboxProps['variant'][] = ['fill', 'fill-inverse', 'fill-translucent'];
 
 export const CheckboxVariants = {
     render: () => {

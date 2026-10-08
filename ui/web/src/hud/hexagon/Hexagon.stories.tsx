@@ -1,17 +1,18 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { ColorVariant, SizeVariant, SurfaceVariant } from '@ui';
+import { SizeVariant } from '@ui';
 import { Text } from '../../typography';
 import { Hexagon } from './Hexagon';
+import { colorOptions as colors, surfaceVariantOptions as variants } from '../../storybook/controls';
 
 const meta = { title: 'Hud/Hexagon', component: Hexagon } satisfies Meta<typeof Hexagon>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const colors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const variants: SurfaceVariant[] = ['ghost', 'fill', 'fill-inverse', 'fill-translucent', 'outline', 'inset'];
 const gridStyle = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: 16 } as const;
 
-export const Default: Story = { args: { color: 'primary', variant: 'fill-translucent', size: 'md', children: <Text>Preview</Text> } };
+export const Default: Story = { args: { color: 'primary', variant: 'fill-translucent', size: 'md', disabled: false, children: <Text>Preview</Text> } };
+
+export const Disabled: Story = { args: { color: 'primary', variant: 'fill', size: 'md', disabled: true, children: <Text color="primary" disabled>Disabled</Text> } };
 
 export const Variants: Story = {
     render: () => (

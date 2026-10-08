@@ -13,11 +13,16 @@
 
 .color-neutral {
     --button-color-fill: var(--color-neutral);
+    --button-color-fill-contrast: var(--color-neutral-contrast);
     --button-color-dark: var(--color-neutral-900);
     --button-color-light: var(--color-neutral-100);
     --button-color-inverse-dark: var(--color-neutral-800);
     --button-color-inverse-light: var(--color-neutral-200);
     --button-color-shadow: var(--color-neutral-700);
+    --button-disabled-bg-light: var(--color-neutral-200);
+    --button-disabled-fg-light: var(--color-neutral-300);
+    --button-disabled-bg-dark: var(--color-neutral-800);
+    --button-disabled-fg-dark: var(--color-neutral-700);
 }
 
 .mode-light.color-neutral {
@@ -32,37 +37,55 @@
 .color-primary {
     --button-color: var(--color-primary);
     --button-color-fill: var(--color-primary);
+    --button-color-fill-contrast: var(--color-primary-contrast);
     --button-color-dark: var(--color-primary-900);
     --button-color-light: var(--color-primary-100);
     --button-color-inverse-dark: var(--color-primary-800);
     --button-color-inverse-light: var(--color-primary-200);
     --button-color-shadow: var(--color-primary-700);
+    --button-disabled-bg-light: var(--color-primary-200);
+    --button-disabled-fg-light: var(--color-primary-300);
+    --button-disabled-bg-dark: var(--color-primary-800);
+    --button-disabled-fg-dark: var(--color-primary-700);
 }
 
 .color-secondary {
     --button-color: var(--color-secondary);
     --button-color-fill: var(--color-secondary);
+    --button-color-fill-contrast: var(--color-secondary-contrast);
     --button-color-dark: var(--color-secondary-900);
     --button-color-light: var(--color-secondary-100);
     --button-color-inverse-dark: var(--color-secondary-800);
     --button-color-inverse-light: var(--color-secondary-200);
     --button-color-shadow: var(--color-secondary-700);
+    --button-disabled-bg-light: var(--color-secondary-200);
+    --button-disabled-fg-light: var(--color-secondary-300);
+    --button-disabled-bg-dark: var(--color-secondary-800);
+    --button-disabled-fg-dark: var(--color-secondary-700);
 }
 
 .color-tertiary {
     --button-color: var(--color-tertiary);
     --button-color-fill: var(--color-tertiary);
+    --button-color-fill-contrast: var(--color-tertiary-contrast);
     --button-color-dark: var(--color-tertiary-900);
     --button-color-light: var(--color-tertiary-100);
     --button-color-inverse-dark: var(--color-tertiary-800);
     --button-color-inverse-light: var(--color-tertiary-200);
     --button-color-shadow: var(--color-tertiary-700);
+    --button-disabled-bg-light: var(--color-tertiary-200);
+    --button-disabled-fg-light: var(--color-tertiary-300);
+    --button-disabled-bg-dark: var(--color-tertiary-800);
+    --button-disabled-fg-dark: var(--color-tertiary-700);
 }
 
 .highlight-neutral {
     --button-highlight-color: var(--color-neutral);
+    --button-highlight-color-fill-contrast: var(--color-neutral-contrast);
     --button-highlight-color-accent-lighter: var(--color-neutral-300);
     --button-highlight-color-accent-darker: var(--color-neutral-700);
+    --button-highlight-color-accent-lighter-contrast: var(--color-neutral-300-contrast);
+    --button-highlight-color-accent-darker-contrast: var(--color-neutral-700-contrast);
     --button-highlight-color-dark: var(--color-neutral-900);
     --button-highlight-color-light: var(--color-neutral-100);
     --button-highlight-color-inverse-dark: var(--color-neutral-800);
@@ -72,8 +95,11 @@
 
 .highlight-primary {
     --button-highlight-color: var(--color-primary);
+    --button-highlight-color-fill-contrast: var(--color-primary-contrast);
     --button-highlight-color-accent-lighter: var(--color-primary-300);
     --button-highlight-color-accent-darker: var(--color-primary-600);
+    --button-highlight-color-accent-lighter-contrast: var(--color-primary-300-contrast);
+    --button-highlight-color-accent-darker-contrast: var(--color-primary-600-contrast);
     --button-highlight-color-dark: var(--color-primary-900);
     --button-highlight-color-light: var(--color-primary-100);
     --button-highlight-color-inverse-dark: var(--color-primary-800);
@@ -83,8 +109,11 @@
 
 .highlight-secondary {
     --button-highlight-color: var(--color-secondary);
+    --button-highlight-color-fill-contrast: var(--color-secondary-contrast);
     --button-highlight-color-accent-lighter: var(--color-secondary-300);
     --button-highlight-color-accent-darker: var(--color-secondary-600);
+    --button-highlight-color-accent-lighter-contrast: var(--color-secondary-300-contrast);
+    --button-highlight-color-accent-darker-contrast: var(--color-secondary-600-contrast);
     --button-highlight-color-dark: var(--color-secondary-900);
     --button-highlight-color-light: var(--color-secondary-100);
     --button-highlight-color-inverse-dark: var(--color-secondary-800);
@@ -94,8 +123,11 @@
 
 .highlight-tertiary {
     --button-highlight-color: var(--color-tertiary);
+    --button-highlight-color-fill-contrast: var(--color-tertiary-contrast);
     --button-highlight-color-accent-lighter: var(--color-tertiary-300);
     --button-highlight-color-accent-darker: var(--color-tertiary-600);
+    --button-highlight-color-accent-lighter-contrast: var(--color-tertiary-300-contrast);
+    --button-highlight-color-accent-darker-contrast: var(--color-tertiary-600-contrast);
     --button-highlight-color-dark: var(--color-tertiary-900);
     --button-highlight-color-light: var(--color-tertiary-100);
     --button-highlight-color-inverse-dark: var(--color-tertiary-800);
@@ -111,7 +143,10 @@
     --button-highlight-color-inverse: var(--button-highlight-color-inverse-light);
     --button-highlight-color-fill-text: var(--button-highlight-color-light);
     --button-highlight-color-accent: var(--button-highlight-color-accent-darker);
+    --button-highlight-color-accent-contrast: var(--button-highlight-color-accent-darker-contrast);
     --button-highlight-color-bg-opacity: .08;
+    --button-disabled-bg: var(--button-disabled-bg-light);
+    --button-disabled-fg: var(--button-disabled-fg-light);
 }
 
 .mode-dark {
@@ -122,7 +157,10 @@
     --button-highlight-color-inverse: var(--button-highlight-color-inverse-dark);
     --button-highlight-color-fill-text: var(--button-highlight-color-dark);
     --button-highlight-color-accent: var(--button-highlight-color-accent-lighter);
+    --button-highlight-color-accent-contrast: var(--button-highlight-color-accent-lighter-contrast);
     --button-highlight-color-bg-opacity: .04;
+    --button-disabled-bg: var(--button-disabled-bg-dark);
+    --button-disabled-fg: var(--button-disabled-fg-dark);
 }
 
 .size-md {
@@ -207,32 +245,40 @@
 
 .variant-fill {
     border: none;
-    color: var(--button-content-color, var(--button-color-fill-text));
+    color: var(--button-content-color, var(--button-color-fill-contrast));
     background-color: var(--button-color-fill);
 }
 
 .variant-fill:hover,
 .variant-fill.hovered {
     background-color: var(--button-highlight-color-accent);
+    color: var(--button-highlight-color-accent-contrast);
+}
+
+.variant-fill:hover .icon,
+.variant-fill.hovered .icon {
+    color: var(--button-highlight-color-accent-contrast);
+    stroke: var(--button-highlight-color-accent-contrast);
+    fill: var(--button-highlight-color-accent-contrast);
 }
 
 .variant-fill .icon {
-    color: var(--button-content-color, var(--button-color-fill-text));
-    stroke: var(--button-content-color, var(--button-color-fill-text));
-    fill: var(--button-content-color, var(--button-color-fill-text));
+    color: var(--button-content-color, var(--button-color-fill-contrast));
+    stroke: var(--button-content-color, var(--button-color-fill-contrast));
+    fill: var(--button-content-color, var(--button-color-fill-contrast));
 }
 
 .variant-fill:active,
 .variant-fill.active {
     background-color: var(--button-highlight-color);
-    color: var(--button-highlight-color-fill-text);
+    color: var(--button-highlight-color-fill-contrast);
 }
 
 .variant-fill:active .icon,
 .variant-fill.active .icon {
-    color: var(--button-highlight-color-fill-text);
-    stroke: var(--button-highlight-color-fill-text);
-    fill: var(--button-highlight-color-fill-text);
+    color: var(--button-highlight-color-fill-contrast);
+    stroke: var(--button-highlight-color-fill-contrast);
+    fill: var(--button-highlight-color-fill-contrast);
 }
 
 .variant-fill-inverse {
@@ -307,12 +353,6 @@
 .variant-fill-translucent:active,
 .variant-fill-translucent.active {
     border-color: var(--button-highlight-color);
-    color: var(--button-highlight-color);
-    background-color: rgb(from var(--button-highlight-color) r g b / .48);
-}
-
-.variant-fill-translucent:active,
-.variant-fill-translucent.active {
     color: var(--button-highlight-color-accent);
     background-color: rgb(from var(--button-highlight-color) r g b / .48);
 }
@@ -462,6 +502,10 @@
     box-shadow: none;
 }
 
+.corners-hexagon.variant-fill-translucent {
+    backdrop-filter: none;
+}
+
 .corners-hexagon.variant-fill-inverse,
 .corners-hexagon.variant-fill-translucent,
 .corners-hexagon.variant-inset,
@@ -475,7 +519,7 @@
 }
 
 .corners-hexagon.variant-fill {
-    color: var(--button-content-color, var(--button-color-light));
+    color: var(--button-content-color, var(--button-color-fill-contrast));
 }
 
 .corners-hexagon.variant-fill-inverse .icon,
@@ -495,25 +539,25 @@
 }
 
 .corners-hexagon.variant-fill .icon {
-    color: var(--button-content-color, var(--button-color-light));
-    stroke: var(--button-content-color, var(--button-color-light));
-    fill: var(--button-content-color, var(--button-color-light));
+    color: var(--button-content-color, var(--button-color-fill-contrast));
+    stroke: var(--button-content-color, var(--button-color-fill-contrast));
+    fill: var(--button-content-color, var(--button-color-fill-contrast));
 }
 
 .corners-hexagon.variant-fill:hover,
 .corners-hexagon.variant-fill.hovered,
 .corners-hexagon.variant-fill:active,
 .corners-hexagon.variant-fill.active {
-    color: var(--button-color-light);
+    color: var(--button-highlight-color-fill-contrast);
 }
 
 .corners-hexagon.variant-fill:hover .icon,
 .corners-hexagon.variant-fill.hovered .icon,
 .corners-hexagon.variant-fill:active .icon,
 .corners-hexagon.variant-fill.active .icon {
-    color: var(--button-color-light);
-    stroke: var(--button-color-light);
-    fill: var(--button-color-light);
+    color: var(--button-highlight-color-fill-contrast);
+    stroke: var(--button-highlight-color-fill-contrast);
+    fill: var(--button-highlight-color-fill-contrast);
 }
 
 .corners-hexagon.variant-fill-inverse:hover,
@@ -726,162 +770,36 @@
 /* ── Disabled state ── */
 
 .button.disabled {
-    opacity: 0.45;
     cursor: not-allowed;
 }
 
-.button.disabled.interactive {
-    cursor: not-allowed;
-}
-
+.button.disabled:is(.variant-ghost, .variant-fill, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset),
 .button.disabled:is(.variant-ghost, .variant-fill, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset):hover,
-.button.disabled:is(.variant-ghost, .variant-fill, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset).hovered,
 .button.disabled:is(.variant-ghost, .variant-fill, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset):active,
 .button.disabled:is(.variant-ghost, .variant-fill, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset).active {
-    cursor: not-allowed;
+    background-color: var(--button-disabled-bg);
+    border-color: var(--button-disabled-fg);
+    color: var(--button-disabled-fg);
     box-shadow: none;
     text-shadow: none;
     filter: none;
     animation: none;
 }
 
-.button.disabled:is(.variant-ghost, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset):hover,
-.button.disabled:is(.variant-ghost, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset).hovered,
-.button.disabled:is(.variant-ghost, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset):active,
-.button.disabled:is(.variant-ghost, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset).active,
-.button.disabled:is(.variant-ghost, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset):hover .icon,
-.button.disabled:is(.variant-ghost, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset).hovered .icon,
-.button.disabled:is(.variant-ghost, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset):active .icon,
-.button.disabled:is(.variant-ghost, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset).active .icon {
-    color: var(--button-color);
-    stroke: var(--button-color);
-    fill: var(--button-color);
+.button.disabled:is(.variant-ghost, .variant-fill, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset) .icon,
+.button.disabled:is(.variant-ghost, .variant-fill, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset):hover .icon,
+.button.disabled:is(.variant-ghost, .variant-fill, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset):active .icon,
+.button.disabled:is(.variant-ghost, .variant-fill, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset).active .icon {
+    color: var(--button-disabled-fg);
+    stroke: var(--button-disabled-fg);
+    fill: var(--button-disabled-fg);
 }
 
-.button.disabled.variant-fill:hover,
-.button.disabled.variant-fill.hovered,
-.button.disabled.variant-fill:active,
-.button.disabled.variant-fill.active,
-.button.disabled.variant-fill:hover .icon,
-.button.disabled.variant-fill.hovered .icon,
-.button.disabled.variant-fill:active .icon,
-.button.disabled.variant-fill.active .icon {
-    background-color: var(--button-color);
-    color: var(--button-color-light);
-    stroke: var(--button-color-light);
-    fill: var(--button-color-light);
-}
-
-.button.disabled.variant-fill-inverse:hover,
-.button.disabled.variant-fill-inverse.hovered,
-.button.disabled.variant-fill-inverse:active,
-.button.disabled.variant-fill-inverse.active,
-.button.disabled.variant-fill-inverse:hover .icon,
-.button.disabled.variant-fill-inverse.hovered .icon,
-.button.disabled.variant-fill-inverse:active .icon,
-.button.disabled.variant-fill-inverse.active .icon {
-    background-color: var(--button-color-inverse);
-    border-color: var(--button-color);
-    color: var(--button-color-fill);
-    stroke: var(--button-color-fill);
-    fill: var(--button-color-fill);
-}
-
-.button.disabled.variant-fill-translucent:hover,
-.button.disabled.variant-fill-translucent.hovered,
-.button.disabled.variant-fill-translucent:active,
-.button.disabled.variant-fill-translucent.active,
-.button.disabled.variant-fill-translucent:hover .icon,
-.button.disabled.variant-fill-translucent.hovered .icon,
-.button.disabled.variant-fill-translucent:active .icon,
-.button.disabled.variant-fill-translucent.active .icon {
-    border-color: rgb(from var(--button-color) r g b / .3);
-    color: var(--button-color);
-    background-color: rgb(from var(--button-color) r g b / .24);
-    stroke: var(--button-color);
-    fill: var(--button-color);
-}
-
-.button.disabled.variant-outline:hover,
-.button.disabled.variant-outline.hovered,
-.button.disabled.variant-outline:active,
-.button.disabled.variant-outline.active,
-.button.disabled.variant-outline:hover .icon,
-.button.disabled.variant-outline.hovered .icon,
-.button.disabled.variant-outline:active .icon,
-.button.disabled.variant-outline.active .icon {
-    background-color: transparent;
-    border-color: var(--button-color);
-    color: var(--button-color);
-    stroke: var(--button-color);
-    fill: var(--button-color);
-}
-
-.button.disabled.variant-inset:hover,
-.button.disabled.variant-inset.hovered,
-.button.disabled.variant-inset:active,
-.button.disabled.variant-inset.active,
-.button.disabled.variant-inset:hover .icon,
-.button.disabled.variant-inset.hovered .icon,
-.button.disabled.variant-inset:active .icon,
-.button.disabled.variant-inset.active .icon {
-    color: var(--button-color);
-    stroke: var(--button-color);
-    fill: var(--button-color);
-}
-
-.button.disabled.variant-inset.mode-light:hover,
-.button.disabled.variant-inset.mode-light.hovered,
-.button.disabled.variant-inset.mode-light:active,
-.button.disabled.variant-inset.mode-light.active {
-    box-shadow:
-        rgb(from var(--button-color-shadow) r g b / .18) 4px 4px 8px inset,
-        rgb(from var(--button-color-shadow) r g b / .04) -2px -2px 6px inset,
-        rgba(255, 255, 255, .35) -2px -2px 4px inset;
-}
-
-.button.disabled.variant-inset.mode-dark:hover,
-.button.disabled.variant-inset.mode-dark.hovered,
-.button.disabled.variant-inset.mode-dark:active,
-.button.disabled.variant-inset.mode-dark.active {
-    box-shadow:
-        rgba(0, 0, 0, .80) 4px 4px 8px inset,
-        rgba(255, 255, 255, .08) -2px -2px 4px inset;
-}
-
-/* Hexagon disabled: keep base color, dim via opacity only */
 .button.disabled.corners-hexagon,
-.button.disabled.corners-hexagon .icon,
 .button.disabled.corners-hexagon:hover,
-.button.disabled.corners-hexagon.hovered,
 .button.disabled.corners-hexagon:active,
 .button.disabled.corners-hexagon.active {
-    color: var(--button-color);
-}
-
-.button.disabled.corners-hexagon.variant-fill,
-.button.disabled.corners-hexagon.variant-fill .icon,
-.button.disabled.corners-hexagon.variant-fill:hover,
-.button.disabled.corners-hexagon.variant-fill.hovered,
-.button.disabled.corners-hexagon.variant-fill:active,
-.button.disabled.corners-hexagon.variant-fill.active {
-    color: var(--button-color-light);
-}
-
-.button.disabled.corners-hexagon.variant-fill-inverse,
-.button.disabled.corners-hexagon.variant-fill-inverse .icon,
-.button.disabled.corners-hexagon.variant-fill-inverse:hover,
-.button.disabled.corners-hexagon.variant-fill-inverse.hovered,
-.button.disabled.corners-hexagon.variant-fill-inverse:active,
-.button.disabled.corners-hexagon.variant-fill-inverse.active {
-    color: var(--button-color-fill);
-    stroke: var(--button-color-fill);
-    fill: var(--button-color-fill);
-}
-
-/* Prevent double‑dimming: hexagon wrapper handles opacity */
-.button.disabled.corners-hexagon {
-    opacity: 1;
+    background-color: transparent;
 }
 
 @keyframes glow-sweep {

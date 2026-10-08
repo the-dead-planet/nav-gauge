@@ -3,6 +3,7 @@ import { ColorVariant, Icons, SizeVariant, FillVariant, TooltipPlacement } from 
 import { Tooltip } from './Tooltip';
 import { Button } from '../button';
 import { Text } from '../typography';
+import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptions as allSizes } from '../storybook/controls';
 
 const meta = {
     title: 'Tooltip',
@@ -12,10 +13,6 @@ const meta = {
 export default meta;
 
 const allPlacements: TooltipPlacement[] = ['top', 'bottom', 'left', 'right', 'auto'];
-const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
-const allSizes: SizeVariant[] = ['xs', 'sm', 'md'];
-
 export const Placements = {
     render: () => (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 32, padding: 48 }}>

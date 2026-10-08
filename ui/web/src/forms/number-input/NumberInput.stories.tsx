@@ -3,10 +3,7 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { ColorVariant, FillVariant, SizeVariant } from '@ui';
 import { VariantGallery } from '../../storybook/VariantGallery';
 import { NumberInput } from './NumberInput';
-
-const colors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const sizes: SizeVariant[] = ['xs', 'sm', 'md'];
-const variants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
+import { colorControl, colorOptions, fillVariantControl, fillVariantOptions, sizeControl, sizeOptions } from '../../storybook/controls';
 
 const GalleryNumberInput = ({
     color,
@@ -55,10 +52,10 @@ const meta = {
         onChange: () => {},
     },
     argTypes: {
-        color: { control: 'select', options: colors },
-        highlightColor: { control: 'select', options: colors },
-        size: { control: 'select', options: sizes },
-        variant: { control: 'select', options: variants },
+        color: colorControl,
+        highlightColor: colorControl,
+        size: sizeControl,
+        variant: fillVariantControl,
         onChange: { control: false },
     },
 } satisfies Meta<typeof NumberInput>;
@@ -83,9 +80,9 @@ export const Playground: Story = {
 export const Gallery: Story = {
     render: () => (
         <VariantGallery
-            sizes={sizes}
-            colors={colors}
-            variants={variants}
+            sizes={sizeOptions}
+            colors={colorOptions}
+            variants={fillVariantOptions}
             render={(options) => <GalleryNumberInput {...options} />}
         />
     ),
