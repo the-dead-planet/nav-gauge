@@ -1,18 +1,18 @@
 import type { Meta, StoryObj } from "storybook-react-rsbuild";
 import { makeLiveEditStory } from "storybook-addon-code-editor";
+import * as React from "react";
 import { ComponentProps, useState } from "react";
 import { TextArea } from "./TextArea";
-import { ColorVariant, SizeVariant, FillVariant } from "@ui";
 import { VariantGallery } from "../../storybook/VariantGallery";
-
-const allSizes: SizeVariant[] = ["md", "sm", "xs"];
-const allColors: ColorVariant[] = [
-    "neutral",
-    "primary",
-    "secondary",
-    "tertiary",
-];
-const allVariants: FillVariant[] = ["fill", "fill-inverse", "fill-translucent"];
+import {
+    booleanControl,
+    colorControl,
+    colorOptions,
+    fillVariantControl,
+    fillVariantOptions,
+    sizeControl,
+    sizeOptions,
+} from "../../storybook/controls";
 
 const GalleryTextArea = (props: ComponentProps<typeof TextArea>) => {
     const [value, setValue] = useState(props.value);
@@ -42,12 +42,13 @@ const meta = {
         onChange: () => {},
     },
     argTypes: {
-        color: { control: "select", options: allColors },
-        highlightColor: { control: "select", options: allColors },
-        size: { control: "select", options: allSizes },
-        variant: { control: "select", options: allVariants },
-        disabled: { control: "boolean" },
-        autoSelect: { control: "boolean" },
+        color: colorControl,
+        highlightColor: colorControl,
+        size: sizeControl,
+        variant: fillVariantControl,
+        disabled: booleanControl,
+        autoSelect: booleanControl,
+        value: { control: false },
         onChange: { control: false },
     },
 } satisfies Meta<typeof TextArea>;
@@ -73,7 +74,7 @@ export const Playground: Story = {
 };
 
 makeLiveEditStory(Playground, {
-    availableImports: { react: { useState }, "@web-ui": { TextArea } },
+    availableImports: { react: React, "@web-ui": { TextArea } },
     code: `import { useState } from 'react';
 import { TextArea } from '@web-ui';
 
@@ -100,9 +101,9 @@ export const Gallery: Story = {
     },
     render: (args) => (
         <VariantGallery
-            sizes={allSizes}
-            colors={allColors}
-            variants={allVariants}
+            sizes={sizeOptions}
+            colors={colorOptions}
+            variants={fillVariantOptions}
             render={({ color, size, variant }) => (
                 <GalleryTextArea
                     {...args}

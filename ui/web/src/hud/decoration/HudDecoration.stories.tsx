@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { ColorVariant, GlowStyle, HudDecorationCorner, SizeVariant, TabstripOption } from '@ui';
+import { GlowStyle, HudDecorationCorner, TabstripOption } from '@ui';
 import { HudDecoration } from './HudDecoration';
 import { Panel } from '../panel';
 import { Tabstrip } from '../tabstrip';
+import { colorOptions, sizeOptions } from '../../storybook/controls';
 
 const options: TabstripOption[] = [
     { value: 'route', label: 'Route' },
@@ -37,8 +38,8 @@ export const Brackets: Story = {
 export const AllDecorations: Story = {
     render: () => {
         const corners: HudDecorationCorner[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
-        const sizes: SizeVariant[] = ['xs', 'sm', 'md'];
-        const colors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
+        const sizes = sizeOptions;
+        const colors = colorOptions;
         const glowStyles: GlowStyle[] = ['none', 'glow', 'animate-borders-glow'];
 
         return (

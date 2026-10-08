@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { FileInput } from './FileInput';
 import { Text } from '../../typography';
 import { ColorVariant } from '@ui';
+import { colorOptions as allColors } from '../../storybook/controls';
 
 const meta = {
     title: 'Forms/FileInput',
@@ -10,8 +11,6 @@ const meta = {
 } satisfies Meta<typeof FileInput>;
 
 export default meta;
-
-const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
 
 export const Default = {
     render: () => (

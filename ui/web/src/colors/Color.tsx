@@ -24,8 +24,8 @@ export const Color: FC<ColorProps> = ({ name, color, action }) => {
                 </div>
                 <div className={styles.palette}>
                     {data.map(([shade, c]) => {
-                        const textColor1 = data[0][1];
-                        const textColor2 = data[9][1];
+                        const textColor1 = color[100];
+                        const textColor2 = color[900];
                         const contrastShade = Theme.contrastShade(color, shade);
                         const contrastColor = color[contrastShade];
 

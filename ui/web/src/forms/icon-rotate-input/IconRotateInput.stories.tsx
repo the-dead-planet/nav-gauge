@@ -3,6 +3,7 @@ import { ColorVariant, SizeVariant, Icons, NumberInputPlacement } from '@ui';
 import { IconRotateInput } from './IconRotateInput';
 import { Text } from '../../typography';
 import { useState } from 'react';
+import { colorOptions as allColors, sizeOptions as allSizes } from '../../storybook/controls';
 
 const meta = {
     title: 'Forms/IconRotateInput',
@@ -12,8 +13,6 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const allSizes: SizeVariant[] = ['xs', 'sm', 'md'];
-const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
 const numberInputPlacements: NumberInputPlacement[] = ['start', 'end', 'above', 'below'];
 
 export const Default = {

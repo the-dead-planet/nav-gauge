@@ -53,6 +53,10 @@ export const useThemeVariables = (theme: Theme) => {
                     `--color-${colorName}-${shade}`,
                     theme.color(colorName, shade)
                 );
+                document.documentElement.style.setProperty(
+                    `--color-${colorName}-${shade}-contrast`,
+                    theme.color(colorName, theme.contrastShade(colorName, shade)),
+                );
             }
         }
         document.body.setAttribute("data-theme", theme.mode);

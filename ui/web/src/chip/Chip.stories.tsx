@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { ChipColor, Icons, SizeVariant, SurfaceVariant } from '@ui';
+import { ChipColor, Icons } from '@ui';
 import { Chip } from './Chip';
+import { sizeOptions as allSizes, surfaceVariantOptions as allVariants } from '../storybook/controls';
 
 const meta = {
     title: 'Chip',
@@ -11,8 +12,6 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const allColors: ChipColor[] = ['warning', 'success', 'error', 'info', 'neutral', 'primary', 'secondary', 'tertiary'];
-const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
-const allVariants: SurfaceVariant[] = ['fill', 'fill-inverse', 'fill-translucent', 'ghost', 'outline', 'inset'];
 
 export const ChipVariants = {
     render: () => (

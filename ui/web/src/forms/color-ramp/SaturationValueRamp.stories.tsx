@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { SaturationValueRamp } from './SaturationValueRamp';
+import { sizeControl, sizeOptions } from '../../storybook/controls';
 
 const meta = {
     title: 'Forms/ColorRampSaturation',
@@ -11,8 +12,7 @@ const meta = {
         saturation: { control: { type: 'range', min: 0, max: 1, step: 0.01 } },
         brightness: { control: { type: 'range', min: 0, max: 1, step: 0.01 } },
         label: { control: 'text' },
-        size: { control: 'select', options: ['xs', 'sm', 'md'] },
-        disabled: { control: 'boolean' },
+        size: sizeControl,
         onChange: { control: false },
     },
 } satisfies Meta<typeof SaturationValueRamp>;
@@ -43,7 +43,7 @@ export const Playground: Story = {
 export const Gallery: Story = {
     render: (args) => (
         <div style={{ display: 'grid', gap: 16, padding: 24 }}>
-            {(['xs', 'sm', 'md'] as const).map((size) => (
+            {sizeOptions.map((size) => (
                 <SaturationValueRamp key={size} {...args} size={size} onChange={() => {}} />
             ))}
             <SaturationValueRamp {...args} disabled onChange={() => {}} />

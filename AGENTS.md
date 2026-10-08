@@ -45,6 +45,20 @@ Each feature is a pluggable **Gear** with 1-3 packages: `common/` (abstract clas
 Always run `yarn typecheck:web` (or `yarn typecheck:mobile:once` for mobile changes), `yarn lint`, and relevant tests after every code edit.
 Redirect verbose verification output to temporary log files. Report only pass/fail, and inspect relevant log sections only when a command fails.
 
+## Single-Pass Workflow
+
+For every task:
+
+1. Read each relevant file once and maintain a compact working-state summary.
+2. Resolve requirements before editing; ask only when behavior is genuinely ambiguous.
+3. Batch related changes into one focused patch.
+4. Review the final diff once. Use subagents only for high-risk or explicitly requested reviews.
+5. Run one verification pass: relevant typecheck, tests, lint, and `git diff --check`.
+6. Send progress updates only for discoveries, blockers, or major phase changes.
+7. Stop once requirements and checks pass. Do not investigate speculative improvements.
+
+Avoid repeating file reads, context summaries, verification commands, or already-settled reasoning.
+
 ## Other
 
 - Do not commit secrets or `.env` files

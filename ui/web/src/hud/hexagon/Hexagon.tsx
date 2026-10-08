@@ -22,6 +22,7 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
     variant,
     themeMode,
     active = false,
+    disabled = false,
     onClick,
     className,
     style,
@@ -43,7 +44,8 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
 
     return (
         <div
-            onClick={onClick}
+            onClick={disabled ? undefined : onClick}
+            aria-disabled={disabled || undefined}
             className={classNames(
                 styles.hexagon,
                 styles[shape],
@@ -54,8 +56,9 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
                 styles[`mode-${effectiveMode}`],
                 {
                     [styles['active']]: active,
-                    [styles['interactive']]: interactive || onClick,
-                    [styles[`glow-style-${glowStyle}`]]: interactive,
+                    [styles['disabled']]: disabled,
+                    [styles['interactive']]: !disabled && (interactive || onClick),
+                    [styles[`glow-style-${glowStyle}`]]: !disabled && interactive,
                 },
                 className
             )}

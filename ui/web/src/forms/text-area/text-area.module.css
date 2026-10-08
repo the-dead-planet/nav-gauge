@@ -21,7 +21,6 @@
     resize: vertical;
     border-width: 1px;
     border-style: solid;
-    border-radius: 4px;
     transition:
         border-color 0.15s ease,
         background-color 0.15s ease;
@@ -101,6 +100,7 @@
 }
 
 .size-xs .textarea {
+    height: 18px;
     font-size: 11px;
     padding: 0 6px;
 }
@@ -110,6 +110,7 @@
 }
 
 .size-sm .textarea {
+    height: 24px;
     font-size: 12px;
     padding: 2px 8px;
 }
@@ -119,6 +120,7 @@
 }
 
 .size-md .textarea {
+    height: 32px;
     font-size: 14px;
     padding: 6px 10px;
 }
@@ -148,6 +150,7 @@
 }
 
 .variant-fill .textarea {
+    border: none;
     background-color: var(--ni-color);
     color: var(--ni-color-contrast);
 }

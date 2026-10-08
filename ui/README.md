@@ -16,7 +16,7 @@ Variant names describe the same visual treatment across components and platforms
 | --- | --- | --- | --- |
 | `fill` | Palette contrast shade | Shade `500` | None |
 | `fill-inverse` | `900` in light mode, `100` in dark mode | `100` in light mode, `900` in dark mode | Shade `500` |
-| `fill-translucent` | `900` in light mode, `100` in dark mode | Shade `500` at 24% | Shade `500` at 30% |
+| `fill-translucent` | Shade `500` | Shade `500` at 24% | Shade `500` at 30% |
 | `ghost` | Shade `500` | Transparent | None |
 | `outline` | Shade `500` | Transparent | Shade `500` |
 | `inset` | Shade `500` | Transparent or a subtle shade `500` tint | Inset border and shadow |

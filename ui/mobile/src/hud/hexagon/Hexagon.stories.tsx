@@ -17,6 +17,8 @@ const variants: SurfaceVariant[] = ['ghost', 'fill', 'fill-inverse', 'fill-trans
 
 export const Default: FC = () => <Hexagon color="primary" variant="fill-translucent" size="md"><Text>Preview</Text></Hexagon>;
 
+export const Disabled: FC = () => <Hexagon color="primary" variant="fill" size="md" disabled><Text color="primary" disabled>Disabled</Text></Hexagon>;
+
 export const Variants: FC = () => (
     <ScrollView contentContainerStyle={styles.container}>
         {variants.map((variant) => <View key={variant} style={styles.section}><Text style={styles.heading}>{variant}</Text><View style={styles.grid}>{colors.map((color) => <View key={color} style={styles.cell}><Text>{color}</Text><Hexagon color={color} variant={variant}><Text>Preview</Text></Hexagon></View>)}</View></View>)}

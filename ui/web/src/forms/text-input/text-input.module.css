@@ -147,6 +147,7 @@
 }
 
 .variant-fill .input {
+    border: none;
     background-color: var(--ni-color);
     color: var(--ni-color-contrast);
 }

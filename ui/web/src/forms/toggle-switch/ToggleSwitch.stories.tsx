@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { ToggleSwitch } from './ToggleSwitch';
 import { Text } from '../../typography';
 import { ColorVariant, LayoutOrientation, SizeVariant, SurfaceVariant } from '@ui';
+import { colorOptions as allColors, sizeOptions as allSizes, surfaceVariantOptions as allVariants } from '../../storybook/controls';
 
 const meta = {
     title: 'Forms/ToggleSwitch',
@@ -11,10 +12,7 @@ const meta = {
 
 export default meta;
 
-const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
-const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
 const allOrientations: LayoutOrientation[] = ['horizontal', 'vertical'];
-const allVariants: SurfaceVariant[] = ['ghost', 'fill', 'fill-inverse', 'fill-translucent', 'outline', 'inset'];
 
 export const ToggleSwitchVariants = {
     render: () => {

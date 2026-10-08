@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { ColorPicker } from './ColorPicker';
+import { fillVariantControl, sizeControl } from '../../storybook/controls';
 
 const meta = {
     title: 'Forms/ColorPicker',
@@ -18,9 +19,8 @@ const meta = {
         label: { control: 'text' },
         opacityLabel: { control: 'text' },
         value: { control: 'color' },
-        size: { control: 'select', options: ['xs', 'sm', 'md'] },
-        variant: { control: 'select', options: ['fill', 'fill-inverse', 'fill-translucent'] },
-        disabled: { control: 'boolean' },
+        size: sizeControl,
+        variant: fillVariantControl,
         onChange: { control: false },
     },
 } satisfies Meta<typeof ColorPicker>;

@@ -63,7 +63,6 @@ export const TextStory = {
         tabular: { control: 'boolean' },
         bold: { control: 'boolean' },
         uppercase: { control: 'boolean' },
-        disabled: { control: 'boolean' },
     },
     render: (args: Record<string, unknown>) => (
         <Text
