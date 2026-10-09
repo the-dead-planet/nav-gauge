@@ -23,6 +23,14 @@ interface MobileOption<T> {
 }
 
 const SIZE_MAP = {
+    lg: {
+        height: 40,
+        paddingV: 8,
+        paddingH: 14,
+        gap: 12,
+        fontSize: 16,
+        lineHeight: 17.6,
+    },
     md: {
         height: 32,
         paddingV: 6,
@@ -46,7 +54,7 @@ const SIZE_MAP = {
     },
 } as const;
 
-const ICON_SIZE_MAP = { xs: 12, sm: 16, md: 20 } as const;
+const ICON_SIZE_MAP = { xs: 12, sm: 16, md: 20, lg: 24 } as const;
 
 export function Dropdown<T>({
     color = 'neutral',

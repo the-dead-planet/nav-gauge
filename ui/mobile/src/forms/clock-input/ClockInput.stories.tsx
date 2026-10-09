@@ -5,7 +5,8 @@ import { ClockSliceInput } from './ClockSliceInput';
 import { DurationClockInput } from './DurationClockInput';
 import { Button } from '../../button';
 import { Text } from '../../typography';
-import { ColorVariant, SizeVariant, FillVariant, CLOCK_INPUT_RANGE, NumberInputPlacement } from '@ui';
+import { SizeVariant, CLOCK_INPUT_RANGE, NumberInputPlacement, colorOptions, fillVariantOptions, sizeOptions } from '@ui';
+import { VariantGallery } from '../../storybook/VariantGallery';
 
 const styles = StyleSheet.create({
     container: {
@@ -30,9 +31,9 @@ const styles = StyleSheet.create({
     },
 });
 
-const allSizes: SizeVariant[] = ['sm', 'md'];
-const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
+const allSizes = sizeOptions.filter((size) => size !== 'xs');
+const allColors = colorOptions;
+const allVariants = fillVariantOptions;
 const numberInputPlacements: NumberInputPlacement[] = ['start', 'end', 'above', 'below'];
 
 const ClockInputStoryOptions: FC<{
@@ -80,7 +81,6 @@ export const PitchConstrained: FC = () => {
                         variant={size === s ? 'fill' : 'ghost'}
                         color="primary"
                         size="xs"
-                        corners="rounded"
                         active={size === s}
                         onPress={() => setSize(s)}
                     >
@@ -91,7 +91,6 @@ export const PitchConstrained: FC = () => {
                     variant={disabled ? 'fill' : 'ghost'}
                     color="primary"
                     size="xs"
-                    corners="rounded"
                     active={disabled}
                     onPress={() => setDisabled((d) => !d)}
                 >
@@ -153,7 +152,7 @@ export const PitchConstrained: FC = () => {
     );
 };
 
-export const AllVariants: FC = () => {
+export const InteractiveGallery: FC = () => {
     const [value, setValue] = useState(45);
     const [size, setSize] = useState<SizeVariant>('sm');
     const [disabled, setDisabled] = useState(false);
@@ -171,7 +170,6 @@ export const AllVariants: FC = () => {
                         variant={size === s ? 'fill' : 'ghost'}
                         color="primary"
                         size="xs"
-                        corners="rounded"
                         active={size === s}
                         onPress={() => setSize(s)}
                     >
@@ -182,7 +180,6 @@ export const AllVariants: FC = () => {
                     variant={disabled ? 'fill' : 'ghost'}
                     color="primary"
                     size="xs"
-                    corners="rounded"
                     active={disabled}
                     onPress={() => setDisabled((d) => !d)}
                 >
@@ -227,6 +224,30 @@ export const AllVariants: FC = () => {
     );
 };
 
+export const Gallery: FC = () => (
+    <VariantGallery
+        sizes={allSizes}
+        colors={colorOptions}
+        variants={fillVariantOptions}
+        render={({ color, size, variant }) => (
+            <ClockInput
+                value={45}
+                onChange={() => {}}
+                color={color}
+                size={size}
+                variant={variant}
+                label={color}
+            />
+        )}
+    />
+);
+
+export const Playground: FC = () => {
+    const [value, setValue] = useState(45);
+
+    return <ClockInput value={value} onChange={setValue} />;
+};
+
 export const SliceVariants: FC = () => {
     const pitchRange: [number, number] = [0, 85];
     const [value, setValue] = useState(30);
@@ -246,7 +267,6 @@ export const SliceVariants: FC = () => {
                         variant={size === s ? 'fill' : 'ghost'}
                         color="primary"
                         size="xs"
-                        corners="rounded"
                         active={size === s}
                         onPress={() => setSize(s)}
                     >
@@ -260,7 +280,6 @@ export const SliceVariants: FC = () => {
                     variant={disabled ? 'fill' : 'ghost'}
                     color="primary"
                     size="xs"
-                    corners="rounded"
                     active={disabled}
                     onPress={() => setDisabled((d) => !d)}
                 >
@@ -357,7 +376,6 @@ export const DurationVariants: FC = () => {
                         variant={size === s ? 'fill' : 'ghost'}
                         color="primary"
                         size="xs"
-                        corners="rounded"
                         active={size === s}
                         onPress={() => setSize(s)}
                     >
@@ -371,7 +389,6 @@ export const DurationVariants: FC = () => {
                     variant={disabled ? 'fill' : 'ghost'}
                     color="primary"
                     size="xs"
-                    corners="rounded"
                     active={disabled}
                     onPress={() => setDisabled((d) => !d)}
                 >

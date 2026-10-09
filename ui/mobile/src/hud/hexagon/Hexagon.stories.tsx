@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { ColorVariant, SizeVariant, SurfaceVariant } from '@ui';
+import { colorOptions, sizeOptions, surfaceVariantOptions } from '@ui';
 import { Text } from '../../typography';
 import { Hexagon } from './Hexagon';
 
@@ -12,22 +12,19 @@ const styles = StyleSheet.create({
     heading: { fontWeight: '700' },
     fixedWidth: { width: 100 },
 });
-const colors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const variants: SurfaceVariant[] = ['ghost', 'fill', 'fill-inverse', 'fill-translucent', 'outline', 'inset'];
-
-export const Default: FC = () => <Hexagon color="primary" variant="fill-translucent" size="md"><Text>Preview</Text></Hexagon>;
+export const Playground: FC = () => <Hexagon color="primary" variant="fill-translucent" size="md"><Text>Preview</Text></Hexagon>;
 
 export const Disabled: FC = () => <Hexagon color="primary" variant="fill" size="md" disabled><Text color="primary" disabled>Disabled</Text></Hexagon>;
 
-export const Variants: FC = () => (
+export const Gallery: FC = () => (
     <ScrollView contentContainerStyle={styles.container}>
-        {variants.map((variant) => <View key={variant} style={styles.section}><Text style={styles.heading}>{variant}</Text><View style={styles.grid}>{colors.map((color) => <View key={color} style={styles.cell}><Text>{color}</Text><Hexagon color={color} variant={variant}><Text>Preview</Text></Hexagon></View>)}</View></View>)}
+        {surfaceVariantOptions.map((variant) => <View key={variant} style={styles.section}><Text style={styles.heading}>{variant}</Text><View style={styles.grid}>{colorOptions.map((color) => <View key={color} style={styles.cell}><Text>{color}</Text><Hexagon color={color} variant={variant}><Text>Preview</Text></Hexagon></View>)}</View></View>)}
     </ScrollView>
 );
 
 export const SizesAndShapes: FC = () => (
     <ScrollView contentContainerStyle={styles.container}>
-        {(['pointy-top', 'flat-top'] as const).map((shape) => <View key={shape} style={styles.section}><Text style={styles.heading}>{shape}</Text><View style={styles.grid}>{(['xs', 'sm', 'md'] as SizeVariant[]).map((size) => <View key={size} style={styles.cell}><Text>{size}</Text><Hexagon shape={shape} size={size} color="tertiary" /></View>)}</View></View>)}
+        {(['pointy-top', 'flat-top'] as const).map((shape) => <View key={shape} style={styles.section}><Text style={styles.heading}>{shape}</Text><View style={styles.grid}>{sizeOptions.map((size) => <View key={size} style={styles.cell}><Text>{size}</Text><Hexagon shape={shape} size={size} color="tertiary" /></View>)}</View></View>)}
         <View style={styles.section}><Text style={styles.heading}>Stroke width</Text><View style={styles.grid}>{[1, 3, 5].map((strokeWidth) => <View key={strokeWidth} style={styles.cell}><Text>{strokeWidth}px</Text><Hexagon strokeWidth={strokeWidth} color="primary" style={styles.fixedWidth} /></View>)}</View></View>
     </ScrollView>
 );

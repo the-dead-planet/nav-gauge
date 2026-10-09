@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { ColorPicker } from './ColorPicker';
-import { fillVariantControl, sizeControl } from '../../storybook/controls';
+import { fillVariantControl, fillVariantOptions, sizeControl, sizeOptions } from '../../storybook/controls';
 
 const meta = {
     title: 'Forms/ColorPicker',
@@ -36,4 +36,14 @@ export const Playground: Story = {
 
         return <ColorPicker {...args} value={value} onChange={setValue} />;
     },
+};
+
+export const Gallery: Story = {
+    render: (args) => (
+        <div style={{ display: 'grid', gap: 16 }}>
+            {sizeOptions.flatMap((size) => fillVariantOptions.map((variant) => (
+                <ColorPicker key={`${size}-${variant}`} {...args} size={size} variant={variant} onChange={() => {}} />
+            )))}
+        </div>
+    ),
 };

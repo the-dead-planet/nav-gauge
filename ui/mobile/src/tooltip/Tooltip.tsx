@@ -26,12 +26,14 @@ const tooltipStyles: Record<SizeVariant, { paddingHorizontal: number; paddingVer
     xs: { paddingHorizontal: 6, paddingVertical: 2 },
     sm: { paddingHorizontal: 10, paddingVertical: 4 },
     md: { paddingHorizontal: 12, paddingVertical: 6 },
+    lg: { paddingHorizontal: 14, paddingVertical: 8 },
 };
 
 const tooltipTextStyles: Record<SizeVariant, { fontSize: number; lineHeight: number }> = {
     xs: { fontSize: 11, lineHeight: 12.1 },
     sm: { fontSize: 12, lineHeight: 16.8 },
     md: { fontSize: 14, lineHeight: 19.6 },
+    lg: { fontSize: 16, lineHeight: 22.4 },
 };
 
 const getPosition = (

@@ -2,7 +2,8 @@ import { FC, useState } from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 import { ToggleSwitch } from "./ToggleSwitch";
 import { Text } from "../../typography";
-import { ColorVariant, LayoutOrientation, SizeVariant } from "@ui";
+import { ColorVariant, LayoutOrientation, SizeVariant, colorOptions, sizeOptions, surfaceVariantOptions } from "@ui";
+import { VariantGallery } from "../../storybook/VariantGallery";
 
 const styles = StyleSheet.create({
     container: {
@@ -23,8 +24,8 @@ const styles = StyleSheet.create({
     },
 });
 
-const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
-const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
+const allSizes = [...sizeOptions].reverse();
+const allColors = colorOptions;
 
 export const ToggleSwitchVariants: FC = () => {
     const [checked, setChecked] = useState(false);
@@ -139,4 +140,23 @@ export const ToggleSwitchVariants: FC = () => {
             </View>
         </ScrollView>
     );
+};
+
+export const Gallery: FC = () => (
+    <VariantGallery
+        sizes={sizeOptions}
+        colors={colorOptions}
+        variants={surfaceVariantOptions}
+        render={({ color, size, variant }) => (
+            <ToggleSwitch variant={variant} size={size} color={color} checked onChange={() => {}}>
+                {color}
+            </ToggleSwitch>
+        )}
+    />
+);
+
+export const Playground: FC = () => {
+    const [checked, setChecked] = useState(false);
+
+    return <ToggleSwitch checked={checked} onChange={setChecked}>Toggle switch</ToggleSwitch>;
 };

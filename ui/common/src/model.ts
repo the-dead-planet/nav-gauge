@@ -10,7 +10,7 @@ export type GlowStyle = 'none' | 'glow' | 'animate-borders-glow';
 export type FillVariant = 'fill' | 'fill-inverse' | 'fill-translucent';
 export type SurfaceVariant = FillVariant | 'ghost' | 'outline' | 'inset';
 export type ColorVariant = DesignSystemColor;
-export type SizeVariant = 'xs' | 'sm' | 'md';
+export type SizeVariant = 'xs' | 'sm' | 'md' | 'lg';
 export type SpacingVariant = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 export type LayoutOrientation = 'horizontal' | 'vertical';
 

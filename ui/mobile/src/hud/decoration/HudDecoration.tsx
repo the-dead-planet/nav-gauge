@@ -9,8 +9,8 @@ const paths: Record<HudDecorationCorner, string> = {
     'bottom-left': 'M 1 76 V 92 H 8 V 99 H 24',
     'bottom-right': 'M 76 99 H 92 V 92 H 99 V 76',
 };
-const strokeWidths: Record<SizeVariant, number> = { xs: 1, sm: 1.5, md: 2 };
-const offsets: Record<SizeVariant, number> = { xs: 3, sm: 5, md: 7 };
+const strokeWidths: Record<SizeVariant, number> = { xs: 1, sm: 1.5, md: 2, lg: 2.5 };
+const offsets: Record<SizeVariant, number> = { xs: 3, sm: 5, md: 7, lg: 9 };
 const styles = StyleSheet.create({
     wrapper: { alignSelf: 'flex-start', position: 'relative' },
     decoration: { position: 'absolute', top: 0, right: 0, bottom: 0, left: 0 },

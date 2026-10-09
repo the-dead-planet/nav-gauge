@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { ColorButton } from "./ColorButton";
-import { SizeVariant } from "@ui";
+import { sizeOptions } from "@ui";
 import { Text } from "../../typography";
 
 const styles = StyleSheet.create({
@@ -16,14 +16,12 @@ const styles = StyleSheet.create({
     },
 });
 
-const sizes: SizeVariant[] = ['xs', 'sm', 'md'];
-
-export const ColorButtons: FC = () => {
+export const Gallery: FC = () => {
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
     return (
         <View style={styles.container}>
-            {sizes.map((size, i) => (
+            {sizeOptions.map((size, i) => (
                 <View key={size} style={styles.row}>
                     <ColorButton label={size} size={size} value='rgb(255, 102, 0)' selected={selectedIndex === i} onPress={() => setSelectedIndex(i)} />
                     <Text>{size}</Text>
@@ -31,4 +29,10 @@ export const ColorButtons: FC = () => {
             ))}
         </View>
     );
+};
+
+export const Playground: FC = () => {
+    const [selected, setSelected] = useState(false);
+
+    return <ColorButton label="Color" value="rgb(255, 102, 0)" selected={selected} onPress={() => setSelected(!selected)} />;
 };

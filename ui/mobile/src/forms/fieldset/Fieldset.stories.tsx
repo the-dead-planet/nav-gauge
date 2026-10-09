@@ -3,7 +3,8 @@ import { ScrollView, View, StyleSheet } from "react-native";
 import { Fieldset } from "./Fieldset";
 import { Checkbox } from "../checkbox";
 import { Text } from "../../typography";
-import { ColorVariant, SizeVariant, FillVariant } from "@ui";
+import { ColorVariant, SizeVariant, colorOptions, fillVariantOptions, sizeOptions } from "@ui";
+import { VariantGallery } from "../../storybook/VariantGallery";
 
 const styles = StyleSheet.create({
     container: {
@@ -22,9 +23,9 @@ const styles = StyleSheet.create({
     },
 });
 
-const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allSizes: SizeVariant[] = ['xs', 'sm', 'md'];
-const allVariants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
+const allColors = colorOptions;
+const allSizes = sizeOptions;
+const allVariants = fillVariantOptions;
 
 export const FieldsetVariants: FC = () => {
     const [color, setColor] = useState<ColorVariant>('neutral');
@@ -91,3 +92,18 @@ export const FieldsetVariants: FC = () => {
         </ScrollView>
     );
 };
+
+export const Gallery: FC = () => (
+    <VariantGallery
+        sizes={sizeOptions}
+        colors={colorOptions}
+        variants={fillVariantOptions}
+        render={({ color, size, variant }) => (
+            <Fieldset label={color} color={color} size={size} variant={variant}>
+                <Text>Content</Text>
+            </Fieldset>
+        )}
+    />
+);
+
+export const Playground: FC = () => <Fieldset label="Fieldset"><Text>Content</Text></Fieldset>;

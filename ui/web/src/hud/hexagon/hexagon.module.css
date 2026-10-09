@@ -8,10 +8,12 @@
 
 .pointy-top {
     aspect-ratio: 86.6 / 100;
+    width: calc(var(--hexagon-height) * .866);
 }
 
 .flat-top {
     aspect-ratio: 100 / 86.6;
+    width: calc(var(--hexagon-height) / .866);
 }
 
 .svg {
@@ -43,15 +45,23 @@
 }
 
 .size-xs {
-    width: 36px;
+    --hexagon-height: 24px;
+    height: 24px;
 }
 
 .size-sm {
-    width: 48px;
+    --hexagon-height: 24px;
+    height: 24px;
 }
 
 .size-md {
-    width: 64px;
+    --hexagon-height: 32px;
+    height: 32px;
+}
+
+.size-lg {
+    --hexagon-height: 40px;
+    height: 40px;
 }
 
 .color-neutral {

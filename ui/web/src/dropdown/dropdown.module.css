@@ -171,6 +171,20 @@
     transform: rotate(180deg);
 }
 
+.size-lg {
+    font-size: 16px;
+}
+
+.size-lg .trigger {
+    height: 40px;
+    padding: 8px 14px;
+    gap: 12px;
+}
+
+.size-lg .option {
+    gap: 12px;
+}
+
 .size-md {
     font-size: 14px;
 }

@@ -8,7 +8,7 @@ import { sizeMap, thumbRadii, centerDotRadii, strokeWidths } from './constants';
 import { NumberInput } from '../number-input';
 import { StepControls } from '../step-controls';
 
-const controlHeights = { xs: 18, sm: 24, md: 32 } as const;
+const controlHeights = { xs: 18, sm: 24, md: 32, lg: 40 } as const;
 
 export const ClockSliceInput = forwardRef<ViewInstance, ClockInputProps & { style?: ViewStyle }>(
     (

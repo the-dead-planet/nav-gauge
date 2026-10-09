@@ -5,6 +5,13 @@
     align-items: center;
 }
 
+.size-lg {
+    font-size: 16px;
+    padding: 6px 10px;
+    gap: 10px;
+    border-radius: 8px;
+}
+
 .size-md {
     font-size: 14px;
     padding: 4px 8px;

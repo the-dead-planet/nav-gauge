@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { ColorInput } from './ColorInput';
-import { colorControl, fillVariantControl, sizeControl } from '../../storybook/controls';
+import { colorControl, colorOptions, fillVariantControl, fillVariantOptions, sizeControl, sizeOptions } from '../../storybook/controls';
+import { VariantGallery } from '../../storybook/VariantGallery';
 
 const meta = {
     title: 'Forms/ColorInput',
@@ -41,4 +42,17 @@ export const Playground: Story = {
 
         return <ColorInput {...args} value={value} onChange={setValue} />;
     },
+};
+
+export const Gallery: Story = {
+    render: (args) => (
+        <VariantGallery
+            sizes={sizeOptions}
+            colors={colorOptions}
+            variants={fillVariantOptions}
+            render={({ color, size, variant }) => (
+                <ColorInput {...args} id={`${color}-${size}-${variant}`} color={color} size={size} variant={variant} onChange={() => {}} />
+            )}
+        />
+    ),
 };

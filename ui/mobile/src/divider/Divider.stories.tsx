@@ -2,7 +2,7 @@ import { FC } from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 import { Divider } from "./Divider";
 import { Text } from "../typography";
-import { ColorVariant } from "@ui";
+import { colorOptions } from "@ui";
 
 const styles = StyleSheet.create({
     container: {
@@ -33,9 +33,9 @@ const styles = StyleSheet.create({
     },
 });
 
-const allColors: ColorVariant[] = ["neutral", "primary", "secondary", "tertiary"];
+export const Playground: FC = () => <Divider />;
 
-export const DividerVariants: FC = () => (
+export const Gallery: FC = () => (
     <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.section}>
             <Text style={styles.heading}>Horizontal (default)</Text>
@@ -44,7 +44,7 @@ export const DividerVariants: FC = () => (
 
         <View style={styles.section}>
             <Text style={styles.heading}>Horizontal with colors</Text>
-            {allColors.map((c) => (
+            {colorOptions.map((c) => (
                 <View key={c} style={{ gap: 4 }}>
                     <Text>{c}</Text>
                     <Divider color={c} />
@@ -66,7 +66,7 @@ export const DividerVariants: FC = () => (
         <View style={styles.section}>
             <Text style={styles.heading}>Vertical with all colors</Text>
             <View style={styles.colorRow}>
-                {allColors.map((c) => (
+                {colorOptions.map((c) => (
                     <View key={c} style={styles.colorItem}>
                         <Divider orientation="vertical" color={c} />
                         <Text>{c}</Text>

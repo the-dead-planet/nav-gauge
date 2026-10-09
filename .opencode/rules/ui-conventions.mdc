@@ -23,6 +23,8 @@ Playground stories should rely on Storybook's inferred `argTypes`. Define explic
 
 Reserve final layout dimensions before optional or asynchronous content appears; toggling content must not move surrounding UI.
 
+Buttons use square corners by default. Circle and hexagon buttons are icon-only and require an accessible label.
+
 ### Web
 - Use CSS modules.
 - Class names use kebab-case.

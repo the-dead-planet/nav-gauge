@@ -39,6 +39,7 @@ const bevelSizes: Record<SizeVariant, number> = {
     xs: 2,
     sm: 4,
     md: 6,
+    lg: 8,
 };
 
 const bevelPath = (bevel: number, width: number, height: number, inset: number): string => {
@@ -55,9 +56,16 @@ const iconSizes: Record<SizeVariant, number> = {
     xs: 12,
     sm: 16,
     md: 20,
+    lg: 24,
 };
 
 const sizeStyles = StyleSheet.create({
+    lg: {
+        fontSize: 16,
+        paddingVertical: 6,
+        paddingHorizontal: 10,
+        gap: 10,
+    },
     md: {
         fontSize: 14,
         paddingVertical: 4,

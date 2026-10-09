@@ -46,7 +46,7 @@ export const ToolIconRight: FC<ObservedToolIcon<MobileMap> & Props> = ({
             tooltip={<T {...effectiveTooltip} />}
             tooltipPlacement="left"
             showTooltipConnection
-            size="xs"
+            size="md"
             variant="fill-inverse"
             shade={500}
             highlightShade={theme.isDark ? 300 : 700}

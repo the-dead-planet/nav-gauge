@@ -42,15 +42,11 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     const theme = useTheme();
     const iconSizes = {
         xs: 12,
-        sm: 16,
-        md: 20,
+        sm: 14,
+        md: 16,
+        lg: 20,
     }
-    const hexagonIconSizes = {
-        xs: 16,
-        sm: 20,
-        md: 28,
-    }
-    const iconSize = corners === 'hexagon' ? hexagonIconSizes[size] : iconSizes[size];
+    const iconSize = iconSizes[size];
 
     const button = (
         <button

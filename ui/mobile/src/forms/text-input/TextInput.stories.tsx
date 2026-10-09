@@ -2,7 +2,7 @@ import { ComponentProps, FC, useState } from "react";
 import { Text } from "../../typography";
 import { ScrollView, View, Switch, StyleSheet } from "react-native";
 import { TextInput } from "./TextInput";
-import { ColorVariant, FillVariant, SizeVariant } from "@ui";
+import { ColorVariant, SizeVariant, colorOptions, fillVariantOptions, sizeOptions } from "@ui";
 import { VariantGallery } from "../../storybook/VariantGallery";
 
 const styles = StyleSheet.create({
@@ -23,13 +23,8 @@ export const Playground: FC = () => {
     const [size, setSize] = useState<SizeVariant>("sm");
     const [disabled, setDisabled] = useState(false);
 
-    const allSizes: SizeVariant[] = ["md", "sm", "xs"];
-    const allColors: ColorVariant[] = [
-        "neutral",
-        "primary",
-        "secondary",
-        "tertiary",
-    ];
+    const allSizes = [...sizeOptions].reverse();
+    const allColors = colorOptions;
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
@@ -108,10 +103,6 @@ export const Playground: FC = () => {
     );
 };
 
-const colors: ColorVariant[] = ["neutral", "primary", "secondary", "tertiary"];
-const sizes: SizeVariant[] = ["xs", "sm", "md"];
-const variants: FillVariant[] = ["fill", "fill-inverse", "fill-translucent"];
-
 const GalleryTextInput: FC<ComponentProps<typeof TextInput>> = (props) => {
     const [value, setValue] = useState(props.value);
 
@@ -120,9 +111,9 @@ const GalleryTextInput: FC<ComponentProps<typeof TextInput>> = (props) => {
 
 export const Gallery: FC = () => (
     <VariantGallery
-        sizes={sizes}
-        colors={colors}
-        variants={variants}
+        sizes={sizeOptions}
+        colors={colorOptions}
+        variants={fillVariantOptions}
         render={({ color, size, variant }) => (
             <GalleryTextInput
                 label="Label"

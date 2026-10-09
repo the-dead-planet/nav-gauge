@@ -27,6 +27,11 @@
     stroke-width: 2;
 }
 
+.size-lg .decoration {
+    --decoration-offset: 9px;
+    stroke-width: 2.5;
+}
+
 .glow-style-glow .decoration {
     filter:
         drop-shadow(0 0 3px rgb(from var(--decoration-color) r g b / .7))

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { NotchedPanelProps, SizeVariant, useTheme } from '@ui';
 import styles from './notched-panel.module.css';
 
-const paddingMap: Record<SizeVariant, number> = { xs: 6, sm: 10, md: 16 };
+const paddingMap: Record<SizeVariant, number> = { xs: 6, sm: 10, md: 16, lg: 24 };
 
 interface Props {
     contentClassName?: string;

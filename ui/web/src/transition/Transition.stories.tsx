@@ -45,7 +45,6 @@ export const Slide = {
                             variant={direction === d ? 'fill' : 'ghost'}
                             color="primary"
                             size="xs"
-                            corners="rounded"
                             onClick={() => setDirection(d)}
                         >
                             {d}
@@ -55,7 +54,6 @@ export const Slide = {
                         variant={fade ? 'fill' : 'ghost'}
                         color="tertiary"
                         size="xs"
-                        corners="rounded"
                         onClick={() => setFade((v) => !v)}
                     >
                         {fade ? 'fade: on' : 'fade: off'}

@@ -3,7 +3,8 @@ import { ScrollView, View, StyleSheet, Switch } from "react-native";
 import { Slider } from "./Slider";
 import { Button } from "../../button";
 import { Text } from "../../typography";
-import { ColorVariant, SizeVariant, FillVariant } from "@ui";
+import { SizeVariant, FillVariant, colorOptions, fillVariantOptions, sizeOptions } from "@ui";
+import { VariantGallery } from "../../storybook/VariantGallery";
 
 const styles = StyleSheet.create({
     container: {
@@ -20,11 +21,11 @@ const styles = StyleSheet.create({
     },
 });
 
-const allSizes: SizeVariant[] = ['xs', 'sm', 'md'];
-const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
+const allSizes = sizeOptions;
+const allColors = colorOptions;
+const allVariants = fillVariantOptions;
 
-export const AllVariants: FC = () => {
+export const SliderVariants: FC = () => {
     const [value, setValue] = useState(50);
     const [size, setSize] = useState<SizeVariant>('sm');
     const [variant, setVariant] = useState<FillVariant>('fill-inverse');
@@ -41,7 +42,6 @@ export const AllVariants: FC = () => {
                         variant={size === s ? 'fill' : 'ghost'}
                         color="primary"
                         size="xs"
-                        corners="rounded"
                         active={size === s}
                         onPress={() => setSize(s)}
                     >
@@ -108,4 +108,21 @@ export const AllVariants: FC = () => {
             </View>
         </ScrollView>
     );
+};
+
+export const Gallery: FC = () => (
+    <VariantGallery
+        sizes={sizeOptions}
+        colors={colorOptions}
+        variants={fillVariantOptions}
+        render={({ color, size, variant }) => (
+            <Slider value={50} onChange={() => {}} color={color} size={size} variant={variant} />
+        )}
+    />
+);
+
+export const Playground: FC = () => {
+    const [value, setValue] = useState(50);
+
+    return <Slider value={value} onChange={setValue} />;
 };

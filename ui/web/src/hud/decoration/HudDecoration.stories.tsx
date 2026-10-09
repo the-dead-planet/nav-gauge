@@ -13,7 +13,11 @@ const options: TabstripOption[] = [
 
 const meta = { title: 'Hud/HudDecoration' } satisfies Meta;
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof HudDecoration>;
+
+export const Playground: Story = {
+    args: { color: 'secondary', size: 'md', glowStyle: 'glow', children: <Panel padding="md">Decorated panel</Panel> },
+};
 
 export const Brackets: Story = {
     render: () => {
@@ -35,7 +39,7 @@ export const Brackets: Story = {
     },
 };
 
-export const AllDecorations: Story = {
+export const Gallery: Story = {
     render: () => {
         const corners: HudDecorationCorner[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
         const sizes = sizeOptions;

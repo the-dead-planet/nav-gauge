@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { ScrollView, StyleSheet, Switch, View } from 'react-native';
-import { ColorVariant, FillVariant, SizeVariant } from '@ui';
+import { ColorVariant, FillVariant, SizeVariant, colorOptions, fillVariantOptions, sizeOptions } from '@ui';
 import { VariantGallery } from '../../storybook/VariantGallery';
 import { Text } from '../../typography';
 import { NumberInput } from './NumberInput';
@@ -25,9 +25,9 @@ const styles = StyleSheet.create({
     },
 });
 
-const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
-const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
+const allSizes = [...sizeOptions].reverse();
+const allColors = colorOptions;
+const allVariants = fillVariantOptions;
 
 const GalleryNumberInput: FC<{
     color: ColorVariant;
@@ -51,7 +51,7 @@ const GalleryNumberInput: FC<{
     );
 };
 
-export const NumberInputInteractive: FC = () => {
+export const Playground: FC = () => {
     const [value, setValue] = useState(50);
     const [color, setColor] = useState<ColorVariant>('neutral');
     const [size, setSize] = useState<SizeVariant>('sm');
@@ -122,7 +122,7 @@ export const NumberInputInteractive: FC = () => {
     );
 };
 
-export const AllVariants: FC = () => (
+export const Gallery: FC = () => (
     <VariantGallery
         sizes={allSizes}
         colors={allColors}

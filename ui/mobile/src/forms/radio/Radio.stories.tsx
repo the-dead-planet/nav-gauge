@@ -2,7 +2,8 @@ import { FC, useState } from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 import { Radio } from "./Radio";
 import { Text } from "../../typography";
-import { ColorVariant, RadioProps, SizeVariant } from "@ui";
+import { ColorVariant, SizeVariant, colorOptions, fillVariantOptions, sizeOptions } from "@ui";
+import { VariantGallery } from "../../storybook/VariantGallery";
 
 const styles = StyleSheet.create({
     container: {
@@ -23,9 +24,9 @@ const styles = StyleSheet.create({
     },
 });
 
-const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
-const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: RadioProps['variant'][] = ['fill', 'fill-inverse', 'fill-translucent'];
+const allSizes = [...sizeOptions].reverse();
+const allColors = colorOptions;
+const allVariants = fillVariantOptions;
 
 export const RadioVariants: FC = () => {
     const [option, setOption] = useState('first');
@@ -117,3 +118,16 @@ export const RadioVariants: FC = () => {
         </ScrollView>
     );
 };
+
+export const Gallery: FC = () => (
+    <VariantGallery
+        sizes={sizeOptions}
+        colors={colorOptions}
+        variants={fillVariantOptions}
+        render={({ color, size, variant }) => (
+            <Radio variant={variant} size={size} color={color} checked onChange={() => {}}>
+                {color}
+            </Radio>
+        )}
+    />
+);

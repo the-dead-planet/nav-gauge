@@ -15,6 +15,7 @@ const paddingVertical: Record<SizeVariant, number> = {
     xs: 5,
     sm: 10,
     md: 15,
+    lg: 20,
 };
 
 export const BevelPanel: FC<BevelPanelProps & Props & ComponentProps<'div'>> = ({

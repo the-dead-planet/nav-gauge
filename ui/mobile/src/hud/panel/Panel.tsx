@@ -11,6 +11,7 @@ const paddingMap: Record<SizeVariant, number> = {
     xs: 6,
     sm: 10,
     md: 14,
+    lg: 18,
 };
 
 export const Panel: FC<PanelProps & Props> = ({

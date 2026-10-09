@@ -118,6 +118,10 @@
     --ramp-height: 180px;
 }
 
+.size-lg {
+    --ramp-height: 220px;
+}
+
 .linear-size-xs {
     height: 12px;
 }
@@ -128,6 +132,10 @@
 
 .linear-size-md {
     height: 20px;
+}
+
+.linear-size-lg {
+    height: 24px;
 }
 
 .linear-ramp:disabled {

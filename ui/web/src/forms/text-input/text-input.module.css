@@ -116,6 +116,16 @@
     font-size: 13px;
 }
 
+.size-lg .input {
+    height: 40px;
+    font-size: 16px;
+    padding: 8px 12px;
+}
+
+.size-lg .label {
+    font-size: 16px;
+}
+
 .mode-light .label {
     color: var(--ni-color-dark);
 }

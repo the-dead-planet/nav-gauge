@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const inputHeights = { xs: 18, sm: 24, md: 32 } as const;
+const inputHeights = { xs: 18, sm: 24, md: 32, lg: 40 } as const;
 const formatOptions: { value: ColorFormat; label: string }[] = [
     { value: 'hex', label: 'HEX' },
     { value: 'rgb', label: 'RGB' },

@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { ColorVariant, FillVariant, Icons, SizeVariant, Theme } from '@ui';
+import { ColorVariant, FillVariant, Icons, SizeVariant, Theme, colorOptions, fillVariantOptions, sizeOptions } from '@ui';
 import { ColorBox } from '../colors';
 import { Radio } from '../forms';
 import { VariantGallery } from '../storybook/VariantGallery';
@@ -38,10 +38,6 @@ const options = [
     { value: 'steam', label: 'Steam Pipe', icon: Icons.Beaker },
     { value: 'gear', label: 'Gear Assembly', icon: Icons.Beaker },
 ];
-
-const colors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const sizes: SizeVariant[] = ['xs', 'sm', 'md'];
-const variants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
 
 const GalleryDropdown: FC<{
     color: ColorVariant;
@@ -84,7 +80,7 @@ export const Playground: FC = () => {
             <View style={styles.section}>
                 <Text style={styles.label}>Size: {size}</Text>
                 <View style={styles.wrappingRow}>
-                    {sizes.map((option) => (
+                    {sizeOptions.map((option) => (
                         <Radio
                             key={option}
                             size="xs"
@@ -99,7 +95,7 @@ export const Playground: FC = () => {
             <View style={styles.section}>
                 <Text style={styles.label}>Color: {color}</Text>
                 <View style={styles.wrappingRow}>
-                    {colors.map((option) => (
+                    {colorOptions.map((option) => (
                         <Radio
                             key={option}
                             size="xs"
@@ -115,7 +111,7 @@ export const Playground: FC = () => {
             <View style={styles.section}>
                 <Text style={styles.label}>Highlight: {highlightColor}</Text>
                 <View style={styles.wrappingRow}>
-                    {colors.map((option) => (
+                    {colorOptions.map((option) => (
                         <Radio
                             key={option}
                             size="xs"
@@ -131,7 +127,7 @@ export const Playground: FC = () => {
             <View style={styles.section}>
                 <Text style={styles.label}>Variant: {variant}</Text>
                 <View style={styles.wrappingRow}>
-                    {variants.map((option) => (
+                    {fillVariantOptions.map((option) => (
                         <Radio
                             key={option}
                             size="xs"
@@ -149,9 +145,9 @@ export const Playground: FC = () => {
 
 export const Gallery: FC = () => (
     <VariantGallery
-        sizes={sizes}
-        colors={colors}
-        variants={variants}
+        sizes={sizeOptions}
+        colors={colorOptions}
+        variants={fillVariantOptions}
         render={(options) => <GalleryDropdown {...options} />}
     />
 );

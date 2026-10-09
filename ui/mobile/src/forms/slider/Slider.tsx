@@ -11,9 +11,9 @@ import { Text } from "../../typography";
 import { NumberInput } from "../number-input";
 import { StepControls } from "../step-controls";
 
-const thumbSizes: Record<string, number> = { xs: 12, sm: 14, md: 17 };
-const trackThicknesses: Record<string, number> = { xs: 3, sm: 6, md: 8 };
-const controlHeights: Record<string, number> = { xs: 18, sm: 24, md: 32 };
+const thumbSizes: Record<string, number> = { xs: 12, sm: 14, md: 17, lg: 20 };
+const trackThicknesses: Record<string, number> = { xs: 3, sm: 6, md: 8, lg: 10 };
+const controlHeights: Record<string, number> = { xs: 18, sm: 24, md: 32, lg: 40 };
 
 function snap(v: number, min: number, max: number, step: number): number {
     const stepped = Math.round((v - min) / step) * step + min;

@@ -112,6 +112,10 @@
     padding: 0 2px;
 }
 
+.size-lg .stepper-btn {
+    padding: 0 2px;
+}
+
 .color-neutral {
     --ni-color: var(--color-neutral);
     --ni-color-dark: var(--color-neutral-800);
@@ -225,6 +229,24 @@
 
 .size-md .steppers {
     min-width: 24px;
+}
+
+.size-lg .input {
+    font-size: 16px;
+    padding: 8px 12px;
+}
+
+.size-lg .input-wrapper {
+    height: 40px;
+}
+
+.size-lg .label,
+.size-lg .unit {
+    font-size: 16px;
+}
+
+.size-lg .steppers {
+    min-width: 28px;
 }
 
 .mode-light .label {

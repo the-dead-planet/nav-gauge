@@ -19,8 +19,8 @@ import { sizeMap, thumbRadii, centerDotRadii, strokeWidths } from "./constants";
 import { NumberInput } from "../number-input";
 import { StepControls } from "../step-controls";
 
-const paddings: Record<string, number> = { xs: 7, sm: 8, md: 9 };
-const controlHeights = { xs: 18, sm: 24, md: 32 } as const;
+const paddings: Record<string, number> = { xs: 7, sm: 8, md: 9, lg: 10 };
+const controlHeights = { xs: 18, sm: 24, md: 32, lg: 40 } as const;
 const MINUTES_HAND_FRACTION = 0.55;
 
 type Hand = 'minutes' | 'seconds';

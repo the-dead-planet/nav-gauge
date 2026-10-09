@@ -11,7 +11,7 @@ import { sizeMap, thumbRadii, centerDotRadii, strokeWidths } from "./constants";
 import { NumberInput } from "../number-input";
 import { StepControls } from "../step-controls";
 
-const controlHeights = { xs: 18, sm: 24, md: 32 } as const;
+const controlHeights = { xs: 18, sm: 24, md: 32, lg: 40 } as const;
 
 export const ClockInput = forwardRef<ViewInstance, ClockInputProps & { style?: ViewStyle }>(({
     color = 'neutral',
@@ -35,7 +35,7 @@ export const ClockInput = forwardRef<ViewInstance, ClockInputProps & { style?: V
     const activeHighlight = highlightColor || color;
     const svgSize = sizeMap[size];
     const center = svgSize / 2;
-    const paddings: Record<string, number> = { xs: 7, sm: 8, md: 9 };
+    const paddings: Record<string, number> = { xs: 7, sm: 8, md: 9, lg: 10 };
     const outerRadius = center - paddings[size];
     const thumbRadius = thumbRadii[size];
     const centerDotRadius = centerDotRadii[size];

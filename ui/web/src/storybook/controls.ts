@@ -1,16 +1,6 @@
-import { allColorShades, ColorVariant, FillVariant, SizeVariant, SurfaceVariant } from '@ui';
+import { allColorShades, colorOptions, fillVariantOptions, sizeOptions, surfaceVariantOptions } from '@ui';
 
-export const colorOptions: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-export const sizeOptions: SizeVariant[] = ['xs', 'sm', 'md'];
-export const fillVariantOptions: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
-export const surfaceVariantOptions: SurfaceVariant[] = [
-    'ghost',
-    'fill',
-    'fill-inverse',
-    'fill-translucent',
-    'outline',
-    'inset',
-];
+export { colorOptions, fillVariantOptions, sizeOptions, surfaceVariantOptions };
 
 export const colorControl = { control: 'select', options: colorOptions } as const;
 export const booleanControl = { control: 'boolean' } as const;

@@ -3,8 +3,7 @@ import { ScrollView, View, StyleSheet, Switch } from "react-native";
 import { IconRotateInput } from "./IconRotateInput";
 import { Button } from "../../button";
 import { Text } from "../../typography";
-import { ColorVariant, NumberInputPlacement, SizeVariant } from "@ui";
-import { Icons } from "@ui";
+import { Icons, NumberInputPlacement, SizeVariant, colorOptions, sizeOptions } from "@ui";
 
 const styles = StyleSheet.create({
     container: {
@@ -22,11 +21,11 @@ const styles = StyleSheet.create({
     },
 });
 
-const allSizes: SizeVariant[] = ['sm', 'md'];
-const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
+const allSizes = sizeOptions.filter((size) => size !== 'xs');
+const allColors = colorOptions;
 const numberInputPlacements: NumberInputPlacement[] = ['start', 'end', 'above', 'below'];
 
-export const AllColors: FC = () => {
+export const Gallery: FC = () => {
     const [angle, setAngle] = useState(45);
     const [size, setSize] = useState<SizeVariant>('md');
     const [disabled, setDisabled] = useState(false);
@@ -44,7 +43,6 @@ export const AllColors: FC = () => {
                         variant={size === s ? 'fill' : 'ghost'}
                         color="primary"
                         size="xs"
-                        corners="rounded"
                         active={size === s}
                         onPress={() => setSize(s)}
                     >
@@ -58,7 +56,6 @@ export const AllColors: FC = () => {
                     variant={disabled ? 'fill' : 'ghost'}
                     color="primary"
                     size="xs"
-                    corners="rounded"
                     active={disabled}
                     onPress={() => setDisabled((d) => !d)}
                 >
@@ -103,4 +100,10 @@ export const AllColors: FC = () => {
             </View>
         </ScrollView>
     );
+};
+
+export const Playground: FC = () => {
+    const [value, setValue] = useState(45);
+
+    return <IconRotateInput icon={Icons.NounProject.CameraVideoFront} value={value} onChange={setValue} />;
 };

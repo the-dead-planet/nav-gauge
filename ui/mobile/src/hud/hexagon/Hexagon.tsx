@@ -7,10 +7,11 @@ import { TRANSLUCENT_OPACITY } from "../../tinkers";
 const POINTY_TOP = "50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25";
 const FLAT_TOP = "100,50 75,93.3 25,93.3 0,50 25,6.7 75,6.7";
 
-const sizeWidth: Record<SizeVariant, number> = {
-    xs: 36,
-    sm: 48,
-    md: 64,
+const sizeHeight: Record<SizeVariant, number> = {
+    xs: 24,
+    sm: 24,
+    md: 32,
+    lg: 40,
 };
 
 const styles = StyleSheet.create({
@@ -276,7 +277,7 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(({
             style={[
                 styles.container,
                 { aspectRatio },
-                size ? { width: sizeWidth[size] } : undefined,
+                size ? { height: sizeHeight[size] } : undefined,
                 typeof containerStyle === 'function' ? undefined : containerStyle,
             ]}
         >

@@ -78,6 +78,13 @@
     border-radius: 20px;
 }
 
+.size-lg {
+    --fieldset-padding: 14px;
+    --fieldset-row-gap: 12px;
+    padding: var(--fieldset-padding);
+    border-radius: 24px;
+}
+
 .size-xs.collapsed {
     min-height: 24px;
     padding: 0 var(--fieldset-padding);
@@ -92,6 +99,12 @@
 
 .size-md.collapsed {
     min-height: 32px;
+    padding: 0 var(--fieldset-padding);
+    row-gap: 0;
+}
+
+.size-lg.collapsed {
+    min-height: 40px;
     padding: 0 var(--fieldset-padding);
     row-gap: 0;
 }
@@ -124,6 +137,10 @@
 
 .size-md .legend {
     font-size: 14px;
+}
+
+.size-lg .legend {
+    font-size: 16px;
 }
 
 .legend-expandable {

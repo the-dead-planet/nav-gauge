@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { ColorVariant, GlowStyle, HudDecorationCorner, SizeVariant, TabstripOption } from '@ui';
+import { GlowStyle, HudDecorationCorner, TabstripOption, colorOptions, sizeOptions } from '@ui';
 import { HudDecoration } from './HudDecoration';
 import { Panel } from '../panel';
 import { Tabstrip } from '../tabstrip';
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     heading: { fontSize: 18, fontWeight: '700' },
 });
 
-export const Brackets: FC = () => {
+export const Playground: FC = () => {
     const [value, setValue] = useState('route');
     return (
         <View style={styles.container}>
@@ -39,10 +39,8 @@ export const Brackets: FC = () => {
     );
 };
 
-export const AllDecorations: FC = () => {
+export const Gallery: FC = () => {
     const corners: HudDecorationCorner[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
-    const sizes: SizeVariant[] = ['xs', 'sm', 'md'];
-    const colors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
     const glowStyles: GlowStyle[] = ['none', 'glow', 'animate-borders-glow'];
 
     return (
@@ -63,7 +61,7 @@ export const AllDecorations: FC = () => {
                 <View key={glowStyle} style={styles.catalogItem}>
                     <Text style={styles.heading}>{glowStyle}</Text>
                     <View style={styles.catalogGrid}>
-                        {sizes.flatMap((size) => colors.map((color) => (
+                        {sizeOptions.flatMap((size) => colorOptions.map((color) => (
                             <View key={`${size}-${color}`} style={styles.catalogItem}>
                                 <Text style={styles.catalogLabel}>{size} / {color}</Text>
                                 <HudDecoration size={size} color={color} glowStyle={glowStyle} corners={corners}>

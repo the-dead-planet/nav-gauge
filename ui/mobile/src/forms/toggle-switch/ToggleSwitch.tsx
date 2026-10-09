@@ -10,6 +10,7 @@ const clipPaths = {
     xs: { pivotStart: 0.125, pivotEnd: 0.875, knobStart: 0, knobEnd: 1 },
     sm: { pivotStart: 0.15, pivotEnd: 0.85, knobStart: 0.05, knobEnd: 0.95 },
     md: { pivotStart: 0.1667, pivotEnd: 0.8333, knobStart: 0.0833, knobEnd: 0.9167 },
+    lg: { pivotStart: 0.175, pivotEnd: 0.825, knobStart: 0.1, knobEnd: 0.9 },
 } as const;
 
 function buildHorizontalPoints(width: number, height: number, clip: { pivotStart: number; pivotEnd: number; knobStart: number; knobEnd: number }): string {

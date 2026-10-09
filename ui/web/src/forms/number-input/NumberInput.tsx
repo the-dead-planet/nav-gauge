@@ -55,6 +55,7 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
         xs: 'xs',
         sm: 'xs',
         md: 'sm',
+        lg: 'md',
     };
 
     return (

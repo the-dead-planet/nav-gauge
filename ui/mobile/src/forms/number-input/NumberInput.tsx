@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
 });
 
 const sizes = {
+    lg: { height: 40, paddingHorizontal: 14, fontSize: 16 },
     md: { height: 32, paddingHorizontal: 12, fontSize: controlTextSpecifications.md.fontSize },
     sm: { height: 24, paddingHorizontal: 10, fontSize: controlTextSpecifications.sm.fontSize },
     xs: { height: 18, paddingHorizontal: 8, fontSize: controlTextSpecifications.xs.fontSize },
@@ -61,6 +62,7 @@ const buttonSizes: Record<SizeVariant, SizeVariant> = {
     xs: 'xs',
     sm: 'xs',
     md: 'sm',
+    lg: 'md',
 };
 
 export const NumberInput: FC<NumberInputProps> = ({
