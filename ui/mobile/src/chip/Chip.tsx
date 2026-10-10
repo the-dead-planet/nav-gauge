@@ -20,9 +20,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'flex-start',
     },
-    label: {
-        lineHeight: 18,
-    },
 });
 
 interface Props {
@@ -57,6 +54,13 @@ const iconSizes: Record<SizeVariant, number> = {
     sm: 16,
     md: 20,
     lg: 24,
+};
+
+const lineHeights: Record<SizeVariant, number> = {
+    xs: 12,
+    sm: 16,
+    md: 18,
+    lg: 20,
 };
 
 const sizeStyles = StyleSheet.create({
@@ -198,7 +202,7 @@ export const Chip: FC<ChipProps & MobileChipProps> = ({
                     />
                 ) : null}
                 {children !== undefined && children !== null ? (
-                    <Text style={[styles.label, { color: labelColor, fontSize: sizeStyles[size].fontSize }]}>
+                    <Text style={{ color: labelColor, fontSize: sizeStyles[size].fontSize, lineHeight: lineHeights[size] }}>
                         {children}
                     </Text>
                 ) : null}

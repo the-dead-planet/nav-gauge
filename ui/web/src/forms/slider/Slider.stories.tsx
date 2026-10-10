@@ -8,7 +8,7 @@ import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptio
 const meta = {
     title: 'Forms/Slider',
     component: Slider,
-    args: { value: 50, min: 0, max: 100, color: 'primary', size: 'sm', variant: 'fill-inverse', onChange: () => {} },
+    args: { value: 50, min: 0, max: 100, color: 'primary', contentShade: 700, highlightContentShade: 200, size: 'sm', variant: 'fill-inverse', onChange: () => {} },
 } satisfies Meta<typeof Slider>;
 
 export default meta;

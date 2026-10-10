@@ -10,7 +10,7 @@ type Story = StoryObj<typeof meta>;
 
 const gridStyle = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: 16 } as const;
 
-export const Playground: Story = { args: { color: 'primary', variant: 'fill-translucent', size: 'md', disabled: false, children: <Text>Preview</Text> } };
+export const Playground: Story = { args: { color: 'primary', variant: 'fill-translucent', size: 'md', active: false, disabled: false, children: <Text>Preview</Text> } };
 
 export const Disabled: Story = { args: { color: 'primary', variant: 'fill', size: 'md', disabled: true, children: <Text color="primary" disabled>Disabled</Text> } };
 

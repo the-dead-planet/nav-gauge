@@ -8,8 +8,8 @@ import { NumberInput } from "../number-input";
 import { StepControls } from "../step-controls";
 import styles from './icon-rotate-input.module.css';
 
-const sizeMap: Record<string, number> = { xs: 36, sm: 48, md: 60 };
-const iconSizes: Record<string, number> = { xs: 12, sm: 20, md: 32 };
+const sizeMap: Record<string, number> = { xs: 36, sm: 48, md: 60, lg: 72 };
+const iconSizes: Record<string, number> = { xs: 12, sm: 20, md: 32, lg: 40 };
 
 export const IconRotateInput: FC<IconRotateInputProps & Omit<ComponentProps<'div'>, 'onChange' | 'value'>> = ({
     icon,

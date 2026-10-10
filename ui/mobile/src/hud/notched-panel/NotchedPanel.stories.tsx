@@ -9,24 +9,26 @@ const styles = StyleSheet.create({
     showcase: { gap: 16 },
 });
 
-export const NoHeader: FC = () => (
-    <NotchedPanel color="primary" variant="fill-translucent" padding="md"><Text>Responsive navigation telemetry surface.</Text></NotchedPanel>
+export const Playground: FC = () => (
+    <NotchedPanel color="primary" variant="fill-translucent"><Text>Responsive navigation telemetry surface.</Text></NotchedPanel>
 );
 
 export const Header: FC = () => (
-    <NotchedPanel color="neutral" highlightColor="secondary" header={<Text>WARNING</Text>} padding="md"><Text>Route data contains unresolved segments.</Text></NotchedPanel>
+    <NotchedPanel color="neutral" highlightColor="secondary" header={<Text>WARNING</Text>}><Text>Route data contains unresolved segments.</Text></NotchedPanel>
 );
 
-export const Variants: FC = () => (
+export const Gallery: FC = () => (
     <View style={styles.showcase}>
-        <NotchedPanel color="primary" variant="fill" header={<Text>FILL</Text>} padding="sm"><Text>Primary</Text></NotchedPanel>
-        <NotchedPanel color="secondary" variant="fill-inverse" header={<Text>INVERSE</Text>} padding="sm" glowStyle="glow"><Text>Secondary</Text></NotchedPanel>
-        <NotchedPanel color="tertiary" variant="fill-translucent" header={<Text>TRANSLUCENT</Text>} padding="sm" glowStyle="animate-borders-glow"><Text>Tertiary</Text></NotchedPanel>
+        <NotchedPanel color="primary" variant="fill" header={<Text>FILL</Text>}><Text>Primary</Text></NotchedPanel>
+        <NotchedPanel color="secondary" variant="fill-inverse" header={<Text>INVERSE</Text>} glowStyle="glow"><Text>Secondary</Text></NotchedPanel>
+        <NotchedPanel color="tertiary" variant="fill-translucent" header={<Text>TRANSLUCENT</Text>} glowStyle="animate-borders-glow"><Text>Tertiary</Text></NotchedPanel>
     </View>
 );
 
+export const States: FC = () => <View style={styles.showcase}><NotchedPanel active color="primary" header={<Text>ACTIVE</Text>}><Text>Highlighted panel</Text></NotchedPanel><NotchedPanel disabled color="primary" header={<Text>DISABLED</Text>}><Text>Disabled panel</Text></NotchedPanel></View>;
+
 export const Confirmation: FC = () => (
-    <NotchedPanel accessibilityRole="alert" color="neutral" highlightColor="primary" header={<Text>CONFIRM ROUTE DELETION</Text>} padding="md">
+    <NotchedPanel accessibilityRole="alert" color="neutral" highlightColor="primary" header={<Text>CONFIRM ROUTE DELETION</Text>}>
         <Text>This removes the selected route from local storage.</Text>
         <View style={styles.actions}>
             <Button variant="ghost">Cancel</Button>

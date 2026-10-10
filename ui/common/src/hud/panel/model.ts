@@ -1,22 +1,15 @@
 import { ReactNode } from "react";
-import { ColorVariant, GlowStyle, SizeVariant, FillVariant } from "../../model";
-import { ThemeMode } from "../../theme";
+import { AppearancePropsBase, GlowStyle, FillVariant } from "../../model";
 
 export type PanelShape = 'default';
 
-export interface PanelProps {
+export interface PanelProps extends AppearancePropsBase<FillVariant> {
     shape?: PanelShape;
     interactive?: boolean;
     glowStyle?: GlowStyle;
-    color?: ColorVariant;
-    padding?: SizeVariant;
-    highlightColor?: ColorVariant;
-    variant?: FillVariant;
     /**
      * Defaults to 2
      */
     borderWidth?: number;
-    themeMode?: ThemeMode;
-    active?: boolean;
     children?: ReactNode;
 }

@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import { ColorVariant, FillVariant, SizeVariant, colorOptions, fillVariantOptions, sizeOptions } from '@ui';
 import { Text } from '../typography';
 
 const styles = StyleSheet.create({
@@ -26,27 +27,23 @@ const styles = StyleSheet.create({
     },
 });
 
-interface VariantGalleryProps<Size extends string, Color extends string, Variant extends string> {
-    sizes: readonly Size[];
-    colors: readonly Color[];
-    variants: readonly Variant[];
-    render: (options: { size: Size; color: Color; variant: Variant }) => ReactNode;
+interface VariantGalleryProps<Variant extends string = FillVariant> {
+    variants?: readonly Variant[];
+    render: (options: { size: SizeVariant; color: ColorVariant; variant: Variant }) => ReactNode;
     children?: ReactNode;
     scrollEnabled?: boolean;
 }
 
-export const VariantGallery = <Size extends string, Color extends string, Variant extends string>({
-    sizes,
-    colors,
-    variants,
+export const VariantGallery = <Variant extends string = FillVariant>({
+    variants = fillVariantOptions as unknown as readonly Variant[],
     render,
     children,
     scrollEnabled,
-}: VariantGalleryProps<Size, Color, Variant>) => {
+}: VariantGalleryProps<Variant>) => {
     const content = (
         <>
             {children}
-            {sizes.map((size) => (
+            {sizeOptions.map((size) => (
                 <View key={size} style={styles.section}>
                     <Text style={styles.label}>{size}</Text>
                     <View style={styles.row}>
@@ -56,7 +53,7 @@ export const VariantGallery = <Size extends string, Color extends string, Varian
                             </View>
                         ))}
                     </View>
-                    {colors.map((color) => (
+                    {colorOptions.map((color) => (
                         <View key={color} style={styles.row}>
                             {variants.map((variant) => (
                                 <View key={`${size}-${color}-${variant}`} style={styles.cell}>

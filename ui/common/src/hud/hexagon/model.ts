@@ -1,20 +1,13 @@
 import { ReactNode } from "react";
-import { ColorVariant, GlowStyle, SizeVariant, SurfaceVariant } from "../../model";
-import { ThemeMode } from "../../theme";
+import { AppearancePropsBase, GlowStyle, SizeVariant, SurfaceVariant } from "../../model";
 
 export type HexagonShape = 'pointy-top' | 'flat-top';
 
-export interface HexagonProps {
+export interface HexagonProps extends AppearancePropsBase<SurfaceVariant> {
     shape?: HexagonShape;
     strokeWidth?: number;
     interactive?: boolean;
     glowStyle?: GlowStyle;
-    color?: ColorVariant;
-    highlightColor?: ColorVariant;
     size?: SizeVariant;
-    variant?: SurfaceVariant;
-    themeMode?: ThemeMode;
-    active?: boolean;
-    disabled?: boolean;
     children?: ReactNode;
 }

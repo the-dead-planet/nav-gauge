@@ -185,8 +185,8 @@
 }
 
 .variant-ghost.interactive:active .polygon-base,
-.variant-ghost.interactive.active .polygon-base {
-    fill: var(--hexagon-highlight-color);
+.variant-ghost.active .polygon-base {
+    fill: var(--hexagon-highlight-color-accent);
     fill-opacity: 0.14;
 }
 
@@ -202,9 +202,9 @@
 }
 
 .variant-fill.interactive:active .polygon-base,
-.variant-fill.interactive.active .polygon-base {
-    fill: var(--hexagon-highlight-color);
-    stroke: var(--hexagon-highlight-color);
+.variant-fill.active .polygon-base {
+    fill: var(--hexagon-highlight-color-accent);
+    stroke: none;
 }
 
 /* Fill inverse */
@@ -219,8 +219,7 @@
 }
 
 .variant-fill-inverse.interactive:active .polygon-base,
-.variant-fill-inverse.interactive.active .polygon-base {
-    fill: var(--hexagon-highlight-color-inverse);
+.variant-fill-inverse.active .polygon-base {
     stroke: var(--hexagon-highlight-color-accent);
 }
 
@@ -237,9 +236,9 @@
 }
 
 .variant-fill-translucent.interactive:active .polygon-base,
-.variant-fill-translucent.interactive.active .polygon-base {
-    stroke: var(--hexagon-highlight-color);
-    fill: var(--hexagon-highlight-color);
+.variant-fill-translucent.active .polygon-base {
+    stroke: var(--hexagon-highlight-color-accent);
+    fill: var(--hexagon-highlight-color-accent);
     fill-opacity: 0.48;
 }
 
@@ -251,9 +250,9 @@
 }
 
 .variant-outline.interactive:active .polygon-base,
-.variant-outline.interactive.active .polygon-base {
-    stroke: var(--hexagon-highlight-color);
-    fill: var(--hexagon-highlight-color);
+.variant-outline.active .polygon-base {
+    stroke: var(--hexagon-highlight-color-accent);
+    fill: var(--hexagon-highlight-color-accent);
     fill-opacity: 0.24;
 }
 
@@ -265,9 +264,9 @@
 }
 
 .variant-inset.interactive:active .polygon-base,
-.variant-inset.interactive.active .polygon-base {
-    stroke: var(--hexagon-highlight-color);
-    fill: var(--hexagon-highlight-color);
+.variant-inset.active .polygon-base {
+    stroke: var(--hexagon-highlight-color-accent);
+    fill: var(--hexagon-highlight-color-accent);
     fill-opacity: 0.24;
 }
 

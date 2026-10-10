@@ -19,13 +19,16 @@ const formatOptions: DropdownOption<ColorFormat>[] = [
 export const ColorInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' | 'type' | 'size'> & ColorInputProps> = ({
     id,
     color = 'neutral',
+    contentShade,
     highlightColor = color,
+    highlightContentShade,
     size = 'sm',
     variant = 'fill-inverse',
     label,
     value,
     onChange,
     disabled = false,
+    active = false,
     showColorButton = true,
     showValueInput = true,
     showFormatSelect = false,
@@ -54,8 +57,9 @@ export const ColorInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' |
                 styles[`highlight-${highlightColor}`],
                 styles[`size-${size}`],
                 styles[`variant-${variant}`],
+                active && !disabled && styles.active,
             )}>
-                <Label htmlFor={id} className={styles.label}>{label}</Label>
+                <Label htmlFor={id} color={color} shade={contentShade} className={styles.label}>{label}</Label>
                 <div className={classNames(styles['input-wrapper'], { [styles.invalid]: invalid })}>
                     {showColorButton ? (
                         <ColorButton
@@ -63,7 +67,7 @@ export const ColorInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' |
                             value={value}
                             label={label}
                             size={size}
-                            selected={open}
+                            selected={open || active}
                             className={styles.swatch}
                             aria-haspopup="dialog"
                             aria-expanded={open}
@@ -79,6 +83,8 @@ export const ColorInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' |
                             variant={variant}
                             color={color}
                             highlightColor={highlightColor}
+                            contentShade={contentShade}
+                            highlightContentShade={highlightContentShade}
                             disabled={disabled}
                             ariaLabel={`${label} format`}
                             className={styles['format-select']}
@@ -93,6 +99,7 @@ export const ColorInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' |
                             disabled={disabled}
                             aria-invalid={invalid}
                             className={classNames(styles['value-input'], className)}
+                            style={contentShade === undefined ? undefined : { color: theme.color(color, contentShade) }}
                             onChange={handleDraftChange}
                             {...props}
                         />

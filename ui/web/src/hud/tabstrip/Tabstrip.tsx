@@ -11,8 +11,12 @@ export const Tabstrip: FC<TabstripProps> = ({
     onChange,
     size = 'sm',
     color = 'neutral',
+    contentShade,
     highlightColor = color,
+    highlightContentShade,
     variant = 'fill-inverse',
+    active = false,
+    disabled = false,
     spread = false,
     overflowAccessibilityLabel,
     children,
@@ -71,7 +75,7 @@ export const Tabstrip: FC<TabstripProps> = ({
     const visibleOptions = visibleIndexes.map((index) => options[index]);
     const visibleIndexSet = new Set(visibleIndexes);
     const overflowOptions = options.filter((_, index) => !visibleIndexSet.has(index));
-    const buttonProps = { color, highlightColor, size, variant };
+    const buttonProps = { color, contentShade, highlightColor, highlightContentShade, size, variant };
 
     return (
         <div className={classNames(styles['root'], styles[`color-${color}`], styles[`highlight-${highlightColor}`], styles[`mode-${theme.mode}`])}>
@@ -87,8 +91,8 @@ export const Tabstrip: FC<TabstripProps> = ({
                         })}
                         role="tab"
                         aria-selected={option.value === value}
-                        active={option.value === value}
-                        disabled={option.disabled}
+                        active={active || option.value === value}
+                        disabled={disabled || option.disabled}
                         onClick={() => onChange(option.value)}
                     >
                         <span className={styles['label']}>{option.label}</span>
@@ -101,10 +105,11 @@ export const Tabstrip: FC<TabstripProps> = ({
                         iconActiveColor={highlightColor}
                         triggerAccessibilityLabel={overflowAccessibilityLabel}
                         triggerActive={overflowOptions.some((option) => option.value === value)}
+                        disabled={disabled}
                         className={styles['overflow']}
                     >
                         {overflowOptions.map((option) => (
-                            <MenuItem key={option.value} type="button" disabled={option.disabled} closeOnPress onClick={() => onChange(option.value)}>
+                            <MenuItem key={option.value} type="button" disabled={disabled || option.disabled} closeOnPress onClick={() => onChange(option.value)}>
                                 {option.value === value ? '* ' : null}{option.label}
                             </MenuItem>
                         ))}

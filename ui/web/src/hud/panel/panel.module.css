@@ -2,40 +2,44 @@
     box-sizing: border-box;
 }
 
-.padding-xs {
-    padding: 5px 10px;
-}
-
-.padding-sm {
-    padding: 10px 15px;
-}
-
-.padding-md {
-    padding: 15px 20px;
-}
-
 .color-neutral {
     --panel-color: var(--color-neutral);
     --panel-color-dark: var(--color-neutral-800);
     --panel-color-light: var(--color-neutral-100);
+    --panel-disabled-surface-light: var(--color-neutral-200);
+    --panel-disabled-foreground-light: var(--color-neutral-300);
+    --panel-disabled-surface-dark: var(--color-neutral-800);
+    --panel-disabled-foreground-dark: var(--color-neutral-700);
 }
 
 .color-primary {
     --panel-color: var(--color-primary);
     --panel-color-dark: var(--color-primary-900);
     --panel-color-light: var(--color-primary-100);
+    --panel-disabled-surface-light: var(--color-primary-200);
+    --panel-disabled-foreground-light: var(--color-primary-300);
+    --panel-disabled-surface-dark: var(--color-primary-800);
+    --panel-disabled-foreground-dark: var(--color-primary-700);
 }
 
 .color-secondary {
     --panel-color: var(--color-secondary);
     --panel-color-dark: var(--color-secondary-900);
     --panel-color-light: var(--color-secondary-100);
+    --panel-disabled-surface-light: var(--color-secondary-200);
+    --panel-disabled-foreground-light: var(--color-secondary-300);
+    --panel-disabled-surface-dark: var(--color-secondary-800);
+    --panel-disabled-foreground-dark: var(--color-secondary-700);
 }
 
 .color-tertiary {
     --panel-color: var(--color-tertiary);
     --panel-color-dark: var(--color-tertiary-900);
     --panel-color-light: var(--color-tertiary-100);
+    --panel-disabled-surface-light: var(--color-tertiary-200);
+    --panel-disabled-foreground-light: var(--color-tertiary-300);
+    --panel-disabled-surface-dark: var(--color-tertiary-800);
+    --panel-disabled-foreground-dark: var(--color-tertiary-700);
 }
 
 .highlight-color-neutral {
@@ -74,12 +78,16 @@
     --panel-color-inverse: var(--panel-color-light);
     --panel-highlight-color-inverse: var(--panel-highlight-color-light);
     --panel-highlight-color-accent: var(--panel-highlight-color-accent-darker);
+    --panel-disabled-surface: var(--panel-disabled-surface-light);
+    --panel-disabled-foreground: var(--panel-disabled-foreground-light);
 }
 
 .mode-dark {
     --panel-color-inverse: var(--panel-color-dark);
     --panel-highlight-color-inverse: var(--panel-highlight-color-dark);
     --panel-highlight-color-accent: var(--panel-highlight-color-accent-lighter);
+    --panel-disabled-surface: var(--panel-disabled-surface-dark);
+    --panel-disabled-foreground: var(--panel-disabled-foreground-dark);
 }
 
 .polygon-base,
@@ -105,8 +113,8 @@
 }
 
 .variant-fill.interactive:active,
-.variant-fill.interactive.active {
-    background-color: var(--panel-highlight-color);
+.variant-fill.active {
+    background-color: var(--panel-highlight-color-accent);
 }
 
 /* Fill inverse */
@@ -121,8 +129,8 @@
 }
 
 .variant-fill-inverse.interactive:active,
-.variant-fill-inverse.interactive.active {
-    background-color: var(--panel-highlight-color-inverse);
+.variant-fill-inverse.active {
+    border-color: var(--panel-highlight-color-accent);
 }
 
 /* Fill translucent */
@@ -138,9 +146,18 @@
 }
 
 .variant-fill-translucent.interactive:active,
-.variant-fill-translucent.interactive.active {
-    background-color: rgb(from var(--panel-highlight-color) r g b / .48);
-    border-color: var(--panel-highlight-color);
+.variant-fill-translucent.active {
+    background-color: rgb(from var(--panel-highlight-color-accent) r g b / .48);
+    border-color: var(--panel-highlight-color-accent);
+}
+
+.panel.disabled {
+    background-color: var(--panel-disabled-surface);
+    border-color: var(--panel-disabled-foreground);
+}
+
+.panel.disabled.variant-fill {
+    border: none;
 }
 
 /* Glow styles */

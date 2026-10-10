@@ -59,13 +59,16 @@ const formatOptions: { value: ColorFormat; label: string }[] = [
 
 export const ColorInput: FC<ColorInputProps> = ({
     color = 'neutral',
+    contentShade,
     highlightColor = color,
+    highlightContentShade,
     size = 'sm',
     variant = 'fill-inverse',
     label,
     value,
     onChange,
     disabled = false,
+    active = false,
     showColorButton = true,
     showValueInput = true,
     showFormatSelect = false,
@@ -81,26 +84,28 @@ export const ColorInput: FC<ColorInputProps> = ({
         : variant === 'fill-translucent'
             ? toCssColor({ ...parseColor(borderColor), a: .24 })
             : inverseBackgroundColor;
-    const inputBorderColor = variant === 'fill-translucent'
+    const activeAccent = theme.color(highlightColor, theme.isLight ? 600 : 300);
+    const inputBorderColor = active && !disabled
+        ? activeAccent
+        : variant === 'fill-translucent'
         ? toCssColor({ ...parseColor(borderColor), a: .3 })
         : borderColor;
     const wrapperBackgroundColor = variant === 'fill-translucent' ? 'transparent' : backgroundColor;
-    const textColor = variant === 'fill'
+    const textColor = active && highlightContentShade !== undefined ? theme.color(highlightColor, highlightContentShade) : contentShade !== undefined ? theme.color(color, contentShade) : variant === 'fill'
         ? inverseBackgroundColor
         : theme.color(color, theme.isLight ? 900 : 100);
 
     return (
         <>
             <View style={styles.container}>
-                <Text style={[styles.label, { fontSize: size === 'xs' ? 11 : 12 }]}>{label}</Text>
+                <Text color={color} shade={contentShade} style={[styles.label, { fontSize: size === 'xs' ? 11 : 12 }]}>{label}</Text>
                 <View
                     style={[
                         styles.wrapper,
                         {
-                            backgroundColor: wrapperBackgroundColor,
-                            borderColor: invalid ? theme.componentColor('error') : inputBorderColor,
                             height: inputHeights[size],
-                            opacity: disabled ? .4 : 1,
+                            backgroundColor: disabled ? theme.color(color, theme.isLight ? 200 : 800) : wrapperBackgroundColor,
+                            borderColor: disabled ? theme.color(color, theme.isLight ? 300 : 700) : invalid ? theme.componentColor('error') : inputBorderColor,
                         },
                     ]}
                 >
@@ -110,7 +115,7 @@ export const ColorInput: FC<ColorInputProps> = ({
                             value={value}
                             label={label}
                             size={size}
-                            selected={open}
+                            selected={open || active}
                             disabled={disabled}
                             accessibilityState={{ disabled, expanded: open }}
                             onPress={() => setOpen((current) => !current)}
@@ -125,7 +130,10 @@ export const ColorInput: FC<ColorInputProps> = ({
                                 variant={variant}
                                 color={color}
                                 highlightColor={highlightColor}
+                                contentShade={contentShade}
+                                highlightContentShade={highlightContentShade}
                                 disabled={disabled}
+                                active={active}
                                 onChange={changeFormat}
                             />
                         </View>

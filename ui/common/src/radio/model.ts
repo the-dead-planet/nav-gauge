@@ -1,12 +1,7 @@
 import { ReactNode } from "react";
-import { ColorVariant, SizeVariant, FillVariant } from "../model";
+import { AppearanceProps, FillVariant } from "../model";
 
-export interface RadioProps {
-    color?: ColorVariant;
-    highlightColor?: ColorVariant;
-    variant?: FillVariant;
-    size?: SizeVariant;
-    disabled?: boolean;
+export interface RadioProps extends AppearanceProps<FillVariant> {
     checked: boolean;
     onChange: (checked: boolean) => void;
     children?: ReactNode;

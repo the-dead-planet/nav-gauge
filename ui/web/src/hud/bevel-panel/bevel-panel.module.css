@@ -21,24 +21,40 @@
     --bevel-color: var(--color-neutral);
     --bevel-color-dark: var(--color-neutral-800);
     --bevel-color-light: var(--color-neutral-100);
+    --bevel-disabled-surface-light: var(--color-neutral-200);
+    --bevel-disabled-foreground-light: var(--color-neutral-300);
+    --bevel-disabled-surface-dark: var(--color-neutral-800);
+    --bevel-disabled-foreground-dark: var(--color-neutral-700);
 }
 
 .color-primary {
     --bevel-color: var(--color-primary);
     --bevel-color-dark: var(--color-primary-900);
     --bevel-color-light: var(--color-primary-100);
+    --bevel-disabled-surface-light: var(--color-primary-200);
+    --bevel-disabled-foreground-light: var(--color-primary-300);
+    --bevel-disabled-surface-dark: var(--color-primary-800);
+    --bevel-disabled-foreground-dark: var(--color-primary-700);
 }
 
 .color-secondary {
     --bevel-color: var(--color-secondary);
     --bevel-color-dark: var(--color-secondary-900);
     --bevel-color-light: var(--color-secondary-100);
+    --bevel-disabled-surface-light: var(--color-secondary-200);
+    --bevel-disabled-foreground-light: var(--color-secondary-300);
+    --bevel-disabled-surface-dark: var(--color-secondary-800);
+    --bevel-disabled-foreground-dark: var(--color-secondary-700);
 }
 
 .color-tertiary {
     --bevel-color: var(--color-tertiary);
     --bevel-color-dark: var(--color-tertiary-900);
     --bevel-color-light: var(--color-tertiary-100);
+    --bevel-disabled-surface-light: var(--color-tertiary-200);
+    --bevel-disabled-foreground-light: var(--color-tertiary-300);
+    --bevel-disabled-surface-dark: var(--color-tertiary-800);
+    --bevel-disabled-foreground-dark: var(--color-tertiary-700);
 }
 
 .highlight-color-neutral {
@@ -77,12 +93,16 @@
     --bevel-color-inverse: var(--bevel-color-light);
     --bevel-highlight-color-inverse: var(--bevel-highlight-color-light);
     --bevel-highlight-color-accent: var(--bevel-highlight-color-accent-darker);
+    --bevel-disabled-surface: var(--bevel-disabled-surface-light);
+    --bevel-disabled-foreground: var(--bevel-disabled-foreground-light);
 }
 
 .mode-dark {
     --bevel-color-inverse: var(--bevel-color-dark);
     --bevel-highlight-color-inverse: var(--bevel-highlight-color-dark);
     --bevel-highlight-color-accent: var(--bevel-highlight-color-accent-lighter);
+    --bevel-disabled-surface: var(--bevel-disabled-surface-dark);
+    --bevel-disabled-foreground: var(--bevel-disabled-foreground-dark);
 }
 
 .interactive {
@@ -114,8 +134,8 @@
 }
 
 .variant-fill.interactive:active .polygon-base,
-.variant-fill.interactive.active .polygon-base {
-    fill: var(--bevel-highlight-color);
+.variant-fill.active .polygon-base {
+    fill: var(--bevel-highlight-color-accent);
 }
 
 .variant-fill-inverse .polygon-base {
@@ -129,9 +149,8 @@
 }
 
 .variant-fill-inverse.interactive:active .polygon-base,
-.variant-fill-inverse.interactive.active .polygon-base {
-    fill: var(--bevel-highlight-color-inverse);
-    stroke: var(--bevel-highlight-color);
+.variant-fill-inverse.active .polygon-base {
+    stroke: var(--bevel-highlight-color-accent);
 }
 
 .variant-fill-translucent .polygon-base {
@@ -144,8 +163,8 @@
 }
 
 .variant-fill-translucent.interactive:active .polygon-base,
-.variant-fill-translucent.interactive.active .polygon-base {
-    stroke: var(--bevel-highlight-color);
+.variant-fill-translucent.active .polygon-base {
+    stroke: var(--bevel-highlight-color-accent);
 }
 
 .variant-fill-translucent.interactive:hover .backdrop {
@@ -153,8 +172,21 @@
 }
 
 .variant-fill-translucent.interactive:active .backdrop,
-.variant-fill-translucent.interactive.active .backdrop {
-    background: rgb(from var(--bevel-highlight-color) r g b / .48);
+.variant-fill-translucent.active .backdrop {
+    background: rgb(from var(--bevel-highlight-color-accent) r g b / .48);
+}
+
+.disabled .polygon-base {
+    fill: var(--bevel-disabled-surface);
+    stroke: var(--bevel-disabled-foreground);
+}
+
+.disabled.variant-fill .polygon-base {
+    stroke: none;
+}
+
+.disabled .backdrop {
+    background: var(--bevel-disabled-surface);
 }
 
 .glow-style-glow:hover .polygon-glow {

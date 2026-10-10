@@ -27,6 +27,7 @@ export function DropdownList<T = string>({
     id,
     triggerRef,
     color,
+    contentShade,
     iconSize,
     value,
     options,
@@ -34,6 +35,7 @@ export function DropdownList<T = string>({
     size = 'sm',
     variant = 'fill-inverse',
     highlightColor,
+    highlightContentShade,
 }: Props &
     Pick<
         DropdownProps<T>,
@@ -41,6 +43,8 @@ export function DropdownList<T = string>({
         | 'options'
         | 'color'
         | 'highlightColor'
+        | 'contentShade'
+        | 'highlightContentShade'
         | 'size'
         | 'variant'
         | 'onChange'
@@ -194,7 +198,7 @@ export function DropdownList<T = string>({
                             className={styles['icon']}
                         />
                     ) : null}
-                    <span>{option.label}</span>
+                    <span style={(index === highlightedIndex ? highlightContentShade : contentShade) === undefined ? undefined : { color: theme.color(index === highlightedIndex ? highlightColor ?? color ?? 'neutral' : color ?? 'neutral', index === highlightedIndex ? highlightContentShade : contentShade) }}>{option.label}</span>
                 </li>
             ))}
         </ul>,

@@ -1,19 +1,38 @@
 import { FC } from "react";
-import { ChipColor, chipColorOptions, Icons, sizeOptions, surfaceVariantOptions } from "@ui";
+import { ChipColor, Icons, surfaceVariantOptions } from "@ui";
+import { StyleSheet, View } from "react-native";
 import { Chip } from "./Chip";
 import { VariantGallery } from "../storybook/VariantGallery";
 
+const semanticColors: ChipColor[] = ['warning', 'success', 'error', 'info'];
+
+const styles = StyleSheet.create({
+    semanticColors: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 8,
+    },
+});
+
 export const Gallery: FC = () => (
     <VariantGallery
-        sizes={sizeOptions}
-        colors={chipColorOptions}
         variants={surfaceVariantOptions}
-        render={({ color, size, variant }: { color: ChipColor; size: typeof sizeOptions[number]; variant: typeof surfaceVariantOptions[number] }) => (
+        render={({ color, size, variant }) => (
             <Chip variant={variant} size={size} color={color} icon={Icons.NounProject.UnderConstruction}>
                 {color}
             </Chip>
         )}
     />
+);
+
+export const SemanticColors: FC = () => (
+    <View style={styles.semanticColors}>
+        {semanticColors.map((color) => (
+            <Chip key={color} color={color} icon={Icons.NounProject.UnderConstruction}>
+                {color}
+            </Chip>
+        ))}
+    </View>
 );
 
 export const Playground: FC = () => <Chip icon={Icons.NounProject.UnderConstruction}>Chip</Chip>;

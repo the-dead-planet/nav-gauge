@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { colorOptions, sizeOptions, surfaceVariantOptions } from '@ui';
+import { sizeOptions, surfaceVariantOptions } from '@ui';
+import { VariantGallery } from '../../storybook/VariantGallery';
 import { Text } from '../../typography';
 import { Hexagon } from './Hexagon';
 
@@ -15,11 +16,17 @@ const styles = StyleSheet.create({
 export const Playground: FC = () => <Hexagon color="primary" variant="fill-translucent" size="md"><Text>Preview</Text></Hexagon>;
 
 export const Disabled: FC = () => <Hexagon color="primary" variant="fill" size="md" disabled><Text color="primary" disabled>Disabled</Text></Hexagon>;
+export const Active: FC = () => <Hexagon color="primary" highlightColor="secondary" variant="fill-inverse" size="md" active><Text>Active</Text></Hexagon>;
 
 export const Gallery: FC = () => (
-    <ScrollView contentContainerStyle={styles.container}>
-        {surfaceVariantOptions.map((variant) => <View key={variant} style={styles.section}><Text style={styles.heading}>{variant}</Text><View style={styles.grid}>{colorOptions.map((color) => <View key={color} style={styles.cell}><Text>{color}</Text><Hexagon color={color} variant={variant}><Text>Preview</Text></Hexagon></View>)}</View></View>)}
-    </ScrollView>
+    <VariantGallery
+        variants={surfaceVariantOptions}
+        render={({ color, size, variant }) => (
+            <Hexagon color={color} size={size} variant={variant}>
+                <Text>Preview</Text>
+            </Hexagon>
+        )}
+    />
 );
 
 export const SizesAndShapes: FC = () => (

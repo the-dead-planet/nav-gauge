@@ -1,9 +1,7 @@
 import { ComponentProps, CSSProperties, FC, useEffect, useId, useRef, useState } from 'react';
 import classNames from 'classnames';
-import { NotchedPanelProps, SizeVariant, useTheme } from '@ui';
+import { NotchedPanelProps, useTheme } from '@ui';
 import styles from './notched-panel.module.css';
-
-const paddingMap: Record<SizeVariant, number> = { xs: 6, sm: 10, md: 16, lg: 24 };
 
 interface Props {
     contentClassName?: string;
@@ -14,9 +12,9 @@ export const NotchedPanel: FC<NotchedPanelProps & Props & ComponentProps<'div'>>
     color = 'neutral',
     highlightColor = color,
     variant = 'fill-inverse',
-    padding,
     glowStyle = 'none',
-    themeMode,
+    active = false,
+    disabled = false,
     header,
     children,
     className,
@@ -62,7 +60,11 @@ export const NotchedPanel: FC<NotchedPanelProps & Props & ComponentProps<'div'>>
     return (
         <div
             ref={containerRef}
-            className={classNames(styles.panel, styles[`color-${color}`], styles[`highlight-color-${highlightColor}`], styles[`variant-${variant}`], styles[`mode-${themeMode ?? theme.mode}`], styles[`glow-style-${glowStyle}`], className)}
+            className={classNames(styles.panel, styles[`color-${color}`], styles[`highlight-color-${highlightColor}`], styles[`variant-${variant}`], styles[`mode-${theme.mode}`], {
+                [styles.active]: active && !disabled,
+                [styles.disabled]: disabled,
+                [styles[`glow-style-${glowStyle}`]]: !disabled,
+            }, className)}
             style={{ ...style, '--notched-filter': `url(#${filterId})` } as CSSProperties}
             {...props}
         >
@@ -85,7 +87,7 @@ export const NotchedPanel: FC<NotchedPanelProps & Props & ComponentProps<'div'>>
                 </svg>
             ) : null}
             {header ? <div ref={headerRef} className={styles['header-content']}>{header}</div> : null}
-            <div className={classNames(styles.content, contentClassName)} style={{ ...contentStyle, padding: padding ? paddingMap[padding] : 0 }}>{children}</div>
+            <div className={classNames(styles.content, contentClassName)} style={contentStyle}>{children}</div>
         </div>
     );
 };

@@ -8,7 +8,7 @@ import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptio
 const meta = {
     title: 'Forms/Radio',
     component: Radio,
-    args: { children: 'Radio', checked: false, color: 'primary', size: 'sm', variant: 'fill', onChange: () => {} },
+    args: { children: 'Radio', checked: false, color: 'primary', contentShade: 700, highlightContentShade: 200, size: 'sm', variant: 'fill', onChange: () => {} },
 } satisfies Meta<typeof Radio>;
 
 export default meta;
@@ -28,6 +28,8 @@ export const Gallery = {
                     <Radio
                         size={size}
                         color={color}
+                        contentShade={700}
+                        highlightContentShade={200}
                         checked={option === 'first'}
                         onChange={() => setOption('first')}
                     >

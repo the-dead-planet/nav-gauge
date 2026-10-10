@@ -118,6 +118,19 @@ All controls use the same foreground and surface rules:
 
 Disabled controls use palette shades instead of opacity: shade `300` text and borders on a `200` surface in light mode, and shade `700` text and borders on an `800` surface in dark mode.
 
+## Interaction states
+
+State priority is disabled, persistent active, transient pressed/hover/focus/open/dragging, then default. Active and transient states use `highlightColor ?? color`; the active accent is shade `600` in light mode and `300` in dark mode. Disabled always uses the base `color`, with a `200` surface and `300` foreground/border in light mode or an `800` surface and `700` foreground/border in dark mode.
+
+| Variant | Active channels |
+| --- | --- |
+| `fill` | Accent background, no border |
+| `fill-inverse` | Base inverse surface with accent border/content |
+| `fill-translucent` | Accent translucent background and border |
+| `ghost`, `outline`, `inset` | Existing Button/Hexagon highlight channels |
+
+Owned active content uses `highlightContentShade` when supplied, otherwise the variant's existing contrast rule. Components must not recolor arbitrary children or apply whole-control opacity when they own surface and content channels.
+
 ## Palettes
 
 Use the copy button at the end of a row to copy that palette as RGB JSON.

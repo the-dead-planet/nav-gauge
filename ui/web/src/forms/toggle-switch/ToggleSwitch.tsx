@@ -14,13 +14,16 @@ export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & Props>
     label,
     labelledBy,
     color = 'neutral',
+    contentShade,
     highlightColor = color,
+    highlightContentShade,
     size = 'sm',
     variant = 'ghost',
     orientation = 'horizontal',
     checked,
     onChange,
     disabled = false,
+    active = false,
     className,
     style,
     ...props
@@ -55,6 +58,7 @@ export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & Props>
                 {
                     [styles['disabled']]: disabled,
                     [styles['checked']]: checked,
+                    [styles['active']]: active && !disabled,
                 },
                 className
             )}
@@ -70,7 +74,7 @@ export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & Props>
                 disabled={disabled}
             />
             {typeof label === 'string' ? (
-                <Span className={styles['label']}>
+                <Span color={checked || active ? highlightColor : color} shade={checked || active ? highlightContentShade : contentShade} className={styles['label']}>
                     {label}
                 </Span>
             ) : label}

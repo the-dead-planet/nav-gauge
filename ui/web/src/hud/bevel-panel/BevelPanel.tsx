@@ -11,23 +11,22 @@ interface Props {
     clipContent?: boolean;
 }
 
-const paddingVertical: Record<SizeVariant, number> = {
-    xs: 5,
+const bevelMap: Record<SizeVariant, number> = {
+    xs: 6,
     sm: 10,
-    md: 15,
+    md: 14,
     lg: 20,
 };
 
 export const BevelPanel: FC<BevelPanelProps & Props & ComponentProps<'div'>> = ({
-    bevel = 20,
     interactive = false,
     glowStyle = "none",
     color = 'neutral',
     highlightColor,
     variant,
-    padding,
-    themeMode,
+    size = 'lg',
     active = false,
+    disabled = false,
     onClick,
     className,
     style,
@@ -38,9 +37,8 @@ export const BevelPanel: FC<BevelPanelProps & Props & ComponentProps<'div'>> = (
     ...props
 }) => {
     const theme = useTheme();
-    const effectiveMode = themeMode ?? theme.mode;
     const containerRef = useRef<HTMLDivElement>(null);
-    const [size, setSize] = useState({ width: 0, height: 0 });
+    const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
     const filterId = useId();
 
     useEffect(() => {
@@ -50,7 +48,7 @@ export const BevelPanel: FC<BevelPanelProps & Props & ComponentProps<'div'>> = (
         }
 
         const updateSize = () => {
-            setSize({ width: element.offsetWidth, height: element.offsetHeight });
+            setDimensions({ width: element.offsetWidth, height: element.offsetHeight });
         };
 
         updateSize();
@@ -61,29 +59,32 @@ export const BevelPanel: FC<BevelPanelProps & Props & ComponentProps<'div'>> = (
 
     const strokeWidth = variant === 'fill' ? 0 : 1;
     const strokeInset = strokeWidth / 2;
-    const effectiveBevel = size.width > 0 ? Math.min(bevel, size.width / 2 - 1) : bevel;
-    const points = size.width > 0 && size.height > 0
-        ? `${effectiveBevel},${strokeInset} ${size.width - effectiveBevel},${strokeInset} ${size.width - strokeInset},${size.height / 2} ${size.width - effectiveBevel},${size.height - strokeInset} ${effectiveBevel},${size.height - strokeInset} ${strokeInset},${size.height / 2}`
+    const bevel = bevelMap[size];
+    const effectiveBevel = dimensions.width > 0 ? Math.min(bevel, dimensions.width / 2 - 1) : bevel;
+    const points = dimensions.width > 0 && dimensions.height > 0
+        ? `${effectiveBevel},${strokeInset} ${dimensions.width - effectiveBevel},${strokeInset} ${dimensions.width - strokeInset},${dimensions.height / 2} ${dimensions.width - effectiveBevel},${dimensions.height - strokeInset} ${effectiveBevel},${dimensions.height - strokeInset} ${strokeInset},${dimensions.height / 2}`
         : '';
     const clipPath = `polygon(${effectiveBevel}px 0, calc(100% - ${effectiveBevel}px) 0, 100% 50%, calc(100% - ${effectiveBevel}px) 100%, ${effectiveBevel}px 100%, 0 50%)`;
     const backdropMask = points
-        ? `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size.width} ${size.height}"><polygon points="${points}" fill="white"/></svg>`)}")`
+        ? `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${dimensions.width} ${dimensions.height}"><polygon points="${points}" fill="white"/></svg>`)}")`
         : undefined;
 
     return (
         <div
             ref={containerRef}
-            onClick={onClick}
+            onClick={disabled ? undefined : onClick}
+            aria-disabled={!disabled || !(interactive || onClick) ? undefined : true}
             className={classNames(
                 styles['bevel-panel'],
                 variant && styles[`variant-${variant}`],
                 styles[`color-${color}`],
                 styles[`highlight-color-${highlightColor || color}`],
-                styles[`mode-${effectiveMode}`],
+                styles[`mode-${theme.mode}`],
                 {
-                    [styles.active]: active,
-                    [styles.interactive]: interactive || onClick,
-                    [styles[`glow-style-${glowStyle}`]]: interactive,
+                    [styles.active]: active && !disabled,
+                    [styles.disabled]: disabled,
+                    [styles.interactive]: !disabled && (interactive || onClick),
+                    [styles[`glow-style-${glowStyle}`]]: !disabled && interactive,
                 },
                 className,
             )}
@@ -102,7 +103,7 @@ export const BevelPanel: FC<BevelPanelProps & Props & ComponentProps<'div'>> = (
                 />
             ) : null}
             {points ? (
-                <svg viewBox={`0 0 ${size.width} ${size.height}`} className={styles.svg}>
+                <svg viewBox={`0 0 ${dimensions.width} ${dimensions.height}`} className={styles.svg}>
                     <defs>
                         <filter id={filterId} x="-50%" y="-50%" width="200%" height="200%">
                             <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur1" />
@@ -123,10 +124,6 @@ export const BevelPanel: FC<BevelPanelProps & Props & ComponentProps<'div'>> = (
                 style={{
                     ...contentStyle,
                     clipPath: clipContent && points ? clipPath : undefined,
-                    paddingTop: padding ? paddingVertical[padding] : 0,
-                    paddingBottom: padding ? paddingVertical[padding] : 0,
-                    paddingLeft: effectiveBevel,
-                    paddingRight: effectiveBevel,
                 } as CSSProperties}
             >
                 {children}

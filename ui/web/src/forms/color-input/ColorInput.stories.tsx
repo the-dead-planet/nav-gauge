@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { ColorInput } from './ColorInput';
-import { colorControl, colorOptions, fillVariantControl, fillVariantOptions, sizeControl, sizeOptions } from '../../storybook/controls';
+import { colorControl, colorOptions, fillVariantControl, fillVariantOptions, optionalShadeControl, sizeControl, sizeOptions } from '../../storybook/controls';
 import { VariantGallery } from '../../storybook/VariantGallery';
 
 const meta = {
@@ -13,6 +13,8 @@ const meta = {
         value: '#ff6600',
         color: 'neutral',
         highlightColor: 'neutral',
+        contentShade: 700,
+        highlightContentShade: 200,
         size: 'sm',
         variant: 'fill-inverse',
         disabled: false,
@@ -25,6 +27,8 @@ const meta = {
         value: { control: 'color' },
         color: colorControl,
         highlightColor: colorControl,
+        contentShade: optionalShadeControl,
+        highlightContentShade: optionalShadeControl,
         size: sizeControl,
         variant: fillVariantControl,
         onChange: { control: false },

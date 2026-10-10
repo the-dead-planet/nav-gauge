@@ -25,7 +25,7 @@ export const ColorButton = forwardRef<HostInstance, ColorButtonProps & Omit<Pres
     ...props
 }, ref) => {
     const theme = useTheme();
-    const buttonSize = size === 'xs' ? 18 : size === 'sm' ? 24 : 32;
+    const buttonSize = { xs: 18, sm: 24, md: 32, lg: 40 }[size];
     const description = formatColorDescription(label, value);
 
     return (

@@ -37,8 +37,9 @@ export const RouteName: FC<TopToolsProps<maplibregl.Map> & WebRouteStoryProps> =
         <BevelPanel
             variant="fill-translucent"
             color="primary"
-            padding="sm"
+            size="sm"
             className={styles['panel']}
+            contentClassName={styles['content']}
         >
             <FileInput
                 mutiple

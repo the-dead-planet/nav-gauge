@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 import { Button } from "./Button";
 import { Text } from "../typography";
-import { ButtonCorners, ColorVariant, GlowStyle, Icons, colorOptions, sizeOptions, surfaceVariantOptions } from "@ui";
+import { ButtonCorners, ColorVariant, GlowStyle, Icons, colorOptions, surfaceVariantOptions } from "@ui";
 import { VariantGallery } from '../storybook/VariantGallery';
 
 const styles = StyleSheet.create({
@@ -89,8 +89,6 @@ export const Gallery: FC = () => {
                 <View key={corners} style={styles.section}>
                     <Text style={styles.label}>{corners}</Text>
                     <VariantGallery
-                        sizes={sizeOptions}
-                        colors={colorOptions}
                         variants={surfaceVariantOptions}
                         scrollEnabled={false}
                         render={({ color, size, variant }) => (

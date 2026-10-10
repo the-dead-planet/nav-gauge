@@ -23,7 +23,9 @@ function snap(v: number, min: number, max: number, step: number): number {
 
 export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle }>(({
     color = 'neutral',
+    contentShade,
     highlightColor = color,
+    highlightContentShade,
     size = 'md',
     variant = 'fill-inverse',
     min = 0,
@@ -236,6 +238,9 @@ export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle
                         max={max}
                         step={step}
                         color={color}
+                        contentShade={contentShade}
+                        highlightColor={highlightColor}
+                        highlightContentShade={highlightContentShade}
                         size={size}
                         variant={variant}
                         disabled={disabled || !onChange}
@@ -251,7 +256,7 @@ export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle
         <View ref={ref} style={containerStyle}>
             {control}
             {label && (
-                <Text style={{ fontSize: 11, color: theme.componentColor('text'), marginTop: 4 }}>
+                <Text color={color} shade={isActive ? highlightContentShade : contentShade} style={{ fontSize: 11, marginTop: 4 }}>
                     {label} {!showNumberInput ? value : null}
                 </Text>
             )}

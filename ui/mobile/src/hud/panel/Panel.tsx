@@ -1,50 +1,50 @@
 import { FC, useState } from "react";
 import { View, ViewStyle, StyleProp, Pressable } from "react-native";
-import { PanelProps, SizeVariant, useTheme } from "@ui";
+import { PanelProps, useTheme } from "@ui";
 import { TRANSLUCENT_OPACITY_BACKGROUND } from "../../tinkers";
 
 interface Props {
     style?: StyleProp<ViewStyle>;
 }
 
-const paddingMap: Record<SizeVariant, number> = {
-    xs: 6,
-    sm: 10,
-    md: 14,
-    lg: 18,
-};
-
 export const Panel: FC<PanelProps & Props> = ({
     color = "neutral",
     highlightColor = color,
     variant,
     glowStyle: _glowStyle,
-    themeMode,
-    padding,
     borderWidth = 2,
     interactive = false,
     active = false,
+    disabled = false,
     style,
     children,
 }) => {
     const theme = useTheme();
     const [pressed, setPressed] = useState(false);
-    const hl = pressed || active;
-    const effectiveTheme = themeMode || theme.mode;
-    const isLight = effectiveTheme === 'light';
+    const hl = !disabled && (pressed || active);
+    const isLight = theme.mode === 'light';
 
     const baseColor = theme.color(color, 500);
     const highlight500 = theme.color(highlightColor, 500);
     const highlightAccent = theme.color(highlightColor, isLight ? 600 : 300);
 
     const containerStyle: ViewStyle = (() => {
+        if (disabled) {
+            const foregroundColor = theme.color(color, isLight ? 300 : 700);
+            return {
+                backgroundColor: theme.color(color, isLight ? 200 : 800),
+                borderColor: foregroundColor,
+                borderWidth: variant === 'fill' ? 0 : borderWidth,
+            };
+        }
+
         switch (variant) {
             case 'fill': {
                 let fillColor: string;
                 let borderColor: string;
                 if (active) {
-                    fillColor = theme.color(highlightColor, 500);
-                    borderColor = highlight500;
+                    fillColor = highlightAccent;
+                    borderColor = highlightAccent;
                 } else if (pressed) {
                     fillColor = highlightAccent;
                     borderColor = highlightAccent;
@@ -56,7 +56,6 @@ export const Panel: FC<PanelProps & Props> = ({
                     backgroundColor: fillColor,
                     borderColor: borderColor,
                     borderWidth,
-                    padding: padding ? paddingMap[padding] : undefined,
                 };
             }
 
@@ -67,8 +66,8 @@ export const Panel: FC<PanelProps & Props> = ({
                 let fillColor: string;
                 let borderColor: string;
                 if (active) {
-                    fillColor = theme.color(highlightColor, hlBgShade);
-                    borderColor = highlight500;
+                    fillColor = theme.color(color, bgShade);
+                    borderColor = highlightAccent;
                 } else if (pressed) {
                     fillColor = theme.color(highlightColor, hlBgShade);
                     borderColor = highlightAccent;
@@ -80,20 +79,18 @@ export const Panel: FC<PanelProps & Props> = ({
                     backgroundColor: fillColor,
                     borderColor: borderColor,
                     borderWidth,
-                    padding: padding ? paddingMap[padding] : undefined,
                 };
             }
 
             case 'fill-translucent': {
                 const fill = hl
-                    ? theme.color(highlightColor, 500, active ? 0.48 : 0.36)
+                    ? theme.color(highlightColor, active ? (isLight ? 600 : 300) : 500, active ? 0.48 : 0.36)
                     : theme.color(color, 500, TRANSLUCENT_OPACITY_BACKGROUND);
-                const border = hl ? (active ? highlight500 : highlightAccent) : baseColor;
+                const border = hl ? highlightAccent : baseColor;
                 return {
                     backgroundColor: fill,
                     borderColor: border,
                     borderWidth,
-                    padding: padding ? paddingMap[padding] : undefined,
                 };
             }
 
@@ -103,8 +100,8 @@ export const Panel: FC<PanelProps & Props> = ({
                 let bgFill: string | undefined;
                 let bColor: string;
                 if (active) {
-                    bgFill = theme.color(highlightColor, 500, isOutline ? 0.24 : 0.14);
-                    bColor = isOutline ? highlight500 : 'transparent';
+                    bgFill = theme.color(highlightColor, isLight ? 600 : 300, isOutline ? 0.24 : 0.14);
+                    bColor = isOutline ? highlightAccent : 'transparent';
                 } else if (pressed) {
                     bgFill = theme.color(highlightColor, 500, isOutline ? 0.12 : 0.10);
                     bColor = isOutline ? highlightAccent : 'transparent';
@@ -116,7 +113,6 @@ export const Panel: FC<PanelProps & Props> = ({
                     backgroundColor: bgFill,
                     borderColor: bColor,
                     borderWidth: isOutline ? borderWidth : 0,
-                    padding: padding ? paddingMap[padding] : undefined,
                 };
             }
         }
@@ -131,6 +127,8 @@ export const Panel: FC<PanelProps & Props> = ({
     if (interactive) {
         return (
             <Pressable
+                disabled={disabled}
+                accessibilityState={{ disabled }}
                 onPress={() => { /* external click handling via parent */ }}
                 onPressIn={() => setPressed(true)}
                 onPressOut={() => setPressed(false)}

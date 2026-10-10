@@ -67,13 +67,16 @@ const buttonSizes: Record<SizeVariant, SizeVariant> = {
 
 export const NumberInput: FC<NumberInputProps> = ({
     color = 'neutral',
+    contentShade,
     highlightColor = color,
+    highlightContentShade,
     size = 'sm',
     variant = 'fill-inverse',
     label,
     value,
     onChange,
     disabled = false,
+    active = false,
     ariaLabel,
     unit,
     min,
@@ -92,20 +95,25 @@ export const NumberInput: FC<NumberInputProps> = ({
     };
 
     const baseColor = theme.color(color, 500);
-    const contentShade: ColorShade = variant === 'fill-translucent'
+    const resolvedContentShade: ColorShade = contentShade ?? (variant === 'fill-translucent'
         ? 500
         : variant === 'fill'
             ? theme.isLight ? 100 : 900
-            : theme.isLight ? 900 : 100;
-    const contentColor = theme.color(color, contentShade);
+            : theme.isLight ? 900 : 100);
+    const contentColor = theme.color(active ? highlightColor : color, active ? highlightContentShade ?? resolvedContentShade : resolvedContentShade);
     const disabledShade: ColorShade = theme.isLight ? 300 : 700;
     const disabledColor = theme.color(color, disabledShade);
-    const backgroundColor = variant === 'fill'
+    const activeAccent = theme.color(highlightColor, theme.isLight ? 600 : 300);
+    const backgroundColor = active && !disabled && variant === 'fill'
+        ? activeAccent
+        : variant === 'fill'
         ? baseColor
         : variant === 'fill-translucent'
             ? theme.color(color, 500, TRANSLUCENT_OPACITY)
             : theme.color(color, theme.isLight ? 100 : 900);
-    const borderColor = variant === 'fill-translucent'
+    const borderColor = active && !disabled
+        ? activeAccent
+        : variant === 'fill-translucent'
         ? theme.color(color, 500, 0.3)
         : baseColor;
     const labelFontSize = size === 'xs' ? 11 : size === 'sm' ? 12 : 13;
@@ -156,9 +164,11 @@ export const NumberInput: FC<NumberInputProps> = ({
                         iconRotateZ={180}
                         color={color}
                         highlightColor={highlightColor}
-                        shade={incrementDisabled ? disabledShade : contentShade}
+                        highlightContentShade={highlightContentShade}
+                        contentShade={incrementDisabled ? disabledShade : contentShade}
                         size={buttonSizes[size]}
                         disabled={incrementDisabled}
+                        active={active}
                         onPressIn={() => stepRepeat.start(1)}
                         onPressOut={stepRepeat.stop}
                         accessibilityLabel={ariaLabel ? `${ariaLabel} (+)` : '+'}
@@ -168,9 +178,11 @@ export const NumberInput: FC<NumberInputProps> = ({
                         icon={Icons.NounProject.ChevronDownSingle}
                         color={color}
                         highlightColor={highlightColor}
-                        shade={decrementDisabled ? disabledShade : contentShade}
+                        highlightContentShade={highlightContentShade}
+                        contentShade={decrementDisabled ? disabledShade : contentShade}
                         size={buttonSizes[size]}
                         disabled={decrementDisabled}
+                        active={active}
                         onPressIn={() => stepRepeat.start(-1)}
                         onPressOut={stepRepeat.stop}
                         accessibilityLabel={ariaLabel ? `${ariaLabel} (−)` : '−'}

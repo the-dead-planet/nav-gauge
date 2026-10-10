@@ -3,8 +3,8 @@ import classNames from "classnames";
 import { TICK_COUNT, STEP_DEG, MAJOR_TICK_INTERVAL, radialLineCoords } from "@ui";
 import styles from './clock-input.module.css';
 
-const tickMajorLengths: Record<string, number> = { xs: 4, sm: 5, md: 6 };
-const tickMinorLengths: Record<string, number> = { xs: 2, sm: 2.5, md: 3 };
+const tickMajorLengths: Record<string, number> = { xs: 4, sm: 5, md: 6, lg: 7 };
+const tickMinorLengths: Record<string, number> = { xs: 2, sm: 2.5, md: 3, lg: 3.5 };
 
 interface Props {
     center: number;

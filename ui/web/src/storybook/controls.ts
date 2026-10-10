@@ -17,8 +17,3 @@ export const optionalShadeControl = {
     options: ['Default', ...allColorShades],
     mapping: { Default: undefined },
 } as const;
-export const themeModeControl = {
-    control: 'select',
-    options: ['Theme', 'light', 'dark'],
-    mapping: { Theme: undefined },
-} as const;

@@ -18,15 +18,14 @@ export interface MobileButtonProps {
 export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     forwardRef,
     color = 'neutral',
-    shade,
+    contentShade,
     highlightColor = color,
-    highlightShade,
+    highlightContentShade,
     variant = 'ghost',
     glowStyle = 'none',
     size = 'sm',
     corners = 'square',
     active = false,
-    themeMode,
     title,
     icon,
     iconRotateX = 0,
@@ -50,8 +49,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     const [glowDrawn, setGlowDrawn] = useState(false);
 
     const hl = pressed || active;
-    const effectiveTheme = themeMode || theme.mode;
-    const isLight = effectiveTheme === 'light';
+    const isLight = theme.mode === 'light';
 
     const hlInset = theme.color(highlightColor, isLight ? 600 : 300);
     const baseColor = theme.color(color);
@@ -211,10 +209,10 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         highlightColor,
         theme.contrastShade(highlightColor, fillHighlightShade),
     );
-    let textColor = highlightShade !== undefined && hl
-        ? theme.color(highlightColor, highlightShade)
-        : shade !== undefined && !hl
-        ? theme.color(color, shade)
+    let textColor = highlightContentShade !== undefined && hl
+        ? theme.color(highlightColor, highlightContentShade)
+        : contentShade !== undefined && !hl
+        ? theme.color(color, contentShade)
         : effectiveVariant === 'fill'
         ? (hl ? hlFillTextColor : fillTextColor)
         : effectiveVariant === 'fill-inverse'
@@ -306,7 +304,6 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
             size={size}
             variant={variant}
             glowStyle={glowStyle}
-            themeMode={themeMode}
             color={color}
             highlightColor={highlightColor}
             active={active}

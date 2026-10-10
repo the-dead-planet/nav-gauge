@@ -359,7 +359,8 @@
 
 /* ── Hover ── */
 
-.toggle-switch:hover .track {
+.toggle-switch:hover .track,
+.toggle-switch.active .track {
     box-shadow: 0 0 0 2px rgb(from var(--ts-highlight-color-accent) r g b / .3);
 }
 

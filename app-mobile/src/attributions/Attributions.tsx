@@ -51,7 +51,7 @@ export const Attributions: FC = () => {
 
     return (
         <View pointerEvents="box-none" style={[styles.anchor, { right: rightPanelWidth }]}>
-            <BevelPanel bevel={6} color="neutral" variant="fill-translucent" style={styles.container}>
+            <BevelPanel size="xs" color="neutral" variant="fill-translucent" style={styles.container}>
                 <View style={styles.content}>
                     <Tooltip content={tooltip} placement="left">
                         <View>

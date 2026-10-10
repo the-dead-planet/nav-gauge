@@ -8,10 +8,10 @@ import { NumberInput } from '../number-input';
 import { StepControls } from '../step-controls';
 import styles from './clock-input.module.css';
 
-const sizeMap: Record<string, number> = { xs: 45, sm: 60, md: 75 };
-const thumbRadii: Record<string, number> = { xs: 1.5, sm: 2, md: 2.5 };
-const centerDotRadii: Record<string, number> = { xs: 0.75, sm: 1, md: 1.25 };
-const strokeWidths: Record<string, number> = { xs: 0.75, sm: 1, md: 1.25 };
+const sizeMap: Record<string, number> = { xs: 45, sm: 60, md: 75, lg: 90 };
+const thumbRadii: Record<string, number> = { xs: 1.5, sm: 2, md: 2.5, lg: 3 };
+const centerDotRadii: Record<string, number> = { xs: 0.75, sm: 1, md: 1.25, lg: 1.5 };
+const strokeWidths: Record<string, number> = { xs: 0.75, sm: 1, md: 1.25, lg: 1.5 };
 
 export const ClockSliceInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, 'onChange' | 'value'>> = ({
     id,

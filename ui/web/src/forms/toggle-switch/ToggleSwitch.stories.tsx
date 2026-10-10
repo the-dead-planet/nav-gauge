@@ -8,7 +8,7 @@ import { colorOptions as allColors, sizeOptions as allSizes, surfaceVariantOptio
 const meta = {
     title: 'Forms/ToggleSwitch',
     component: ToggleSwitch,
-    args: { children: 'Toggle', checked: false, color: 'primary', size: 'sm', variant: 'ghost', onChange: () => {} },
+    args: { children: 'Toggle', checked: false, color: 'primary', contentShade: 700, highlightContentShade: 200, size: 'sm', variant: 'ghost', onChange: () => {} },
 } satisfies Meta<typeof ToggleSwitch>;
 
 export default meta;
@@ -32,6 +32,8 @@ export const Gallery = {
                 <ToggleSwitch
                     size={size}
                     color={color}
+                    contentShade={700}
+                    highlightContentShade={200}
                     variant={variant}
                     orientation={orientation}
                     checked={checked}

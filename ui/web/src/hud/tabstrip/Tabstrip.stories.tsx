@@ -26,12 +26,12 @@ const meta = { title: 'Hud/Tabstrip' } satisfies Meta;
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Responsive: Story = {
+export const Playground: Story = {
     render: () => {
         const [value, setValue] = useState('export');
         return (
             <div style={{ width: 260 }}>
-                <Tabstrip options={options} value={value} onChange={setValue} highlightColor="primary" overflowAccessibilityLabel="More tabs">
+                <Tabstrip options={options} value={value} onChange={setValue} contentShade={700} highlightColor="primary" highlightContentShade={200} overflowAccessibilityLabel="More tabs">
                     <div style={{ whiteSpace: 'pre-line' }}>{content[value]}</div>
                 </Tabstrip>
             </div>
@@ -44,7 +44,7 @@ export const Spread: Story = {
         const [value, setValue] = useState('route');
         return (
             <div style={{ width: 420 }}>
-                <Tabstrip spread options={[{ value: 'route', label: 'Active' }, { value: 'waypoints', label: 'Current point' }, { value: 'terrain', label: 'Inactive' }]} value={value} onChange={setValue} highlightColor="primary" overflowAccessibilityLabel="More tabs">
+                <Tabstrip spread options={[{ value: 'route', label: 'Active' }, { value: 'waypoints', label: 'Current point' }, { value: 'terrain', label: 'Inactive' }]} value={value} onChange={setValue} contentShade={700} highlightColor="primary" highlightContentShade={200} overflowAccessibilityLabel="More tabs">
                     {content[value]}
                 </Tabstrip>
             </div>
@@ -52,7 +52,7 @@ export const Spread: Story = {
     },
 };
 
-export const VariantsAndColors: Story = {
+export const Gallery: Story = {
     render: () => {
         const [value, setValue] = useState('route');
         const variants: TabstripVariant[] = ['fill-inverse', 'fill-translucent', 'outline'];

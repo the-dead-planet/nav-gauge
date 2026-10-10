@@ -26,7 +26,7 @@ export const Playground: FC = () => {
     return (
         <View style={styles.container}>
             <HudDecoration color="secondary" size="md" glowStyle="glow">
-                <Panel variant="fill-inverse" padding="md"><Text>Decorated panel</Text></Panel>
+                <Panel variant="fill-inverse"><Text>Decorated panel</Text></Panel>
             </HudDecoration>
             <HudDecoration corners={['top-right', 'bottom-left']}>
                 <View style={styles.tabContent}>
@@ -51,7 +51,7 @@ export const Gallery: FC = () => {
                     <View key={corner} style={styles.cornerItem}>
                         <Text style={styles.catalogLabel}>{corner}</Text>
                         <HudDecoration corners={[corner]}>
-                            <Panel variant="fill-inverse" padding="sm"><Text>Preview</Text></Panel>
+                            <Panel variant="fill-inverse"><Text>Preview</Text></Panel>
                         </HudDecoration>
                     </View>
                 ))}
@@ -65,7 +65,7 @@ export const Gallery: FC = () => {
                             <View key={`${size}-${color}`} style={styles.catalogItem}>
                                 <Text style={styles.catalogLabel}>{size} / {color}</Text>
                                 <HudDecoration size={size} color={color} glowStyle={glowStyle} corners={corners}>
-                                    <Panel variant="fill-inverse" color={color} padding="sm"><Text>Preview</Text></Panel>
+                                    <Panel variant="fill-inverse" color={color}><Text>Preview</Text></Panel>
                                 </HudDecoration>
                             </View>
                         )))}

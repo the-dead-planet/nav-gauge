@@ -13,7 +13,6 @@ import {
     sizeOptions,
     surfaceVariantControl,
     surfaceVariantOptions,
-    themeModeControl,
 } from '../storybook/controls';
 
 const allCorners: ButtonCorners[] = ['square', 'circle', 'hexagon'];
@@ -40,9 +39,9 @@ const meta = {
             },
         },
         color: colorControl,
-        shade: optionalShadeControl,
+        contentShade: optionalShadeControl,
         highlightColor: optionalColorControl,
-        highlightShade: optionalShadeControl,
+        highlightContentShade: optionalShadeControl,
         variant: surfaceVariantControl,
         glowStyle: { control: 'select', options: ['none', 'glow', 'animate-borders-glow'] },
         size: sizeControl,
@@ -56,7 +55,6 @@ const meta = {
         },
         tooltip: { control: 'text' },
         showTooltipConnection: { control: 'boolean' },
-        themeMode: themeModeControl,
         iconRotateX: { control: { type: 'range', min: 0, max: 360, step: 1 } },
         iconRotateZ: { control: { type: 'range', min: 0, max: 360, step: 1 } },
         onClick: { control: false },

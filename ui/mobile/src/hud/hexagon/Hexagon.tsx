@@ -66,7 +66,6 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(({
     highlightColor = color,
     variant,
     glowStyle = "none",
-    themeMode,
     size,
     interactive = false,
     active = false,
@@ -86,8 +85,7 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(({
     const isPointy = shape === "pointy-top";
     const points = isPointy ? POINTY_TOP : FLAT_TOP;
     const aspectRatio = isPointy ? 86.6 / 100 : 100 / 86.6;
-    const effectiveTheme = themeMode || theme.mode;
-    const isLight = effectiveTheme === 'light';
+    const isLight = theme.mode === 'light';
     const clipPathId = useId();
 
     const baseColor = theme.color(color, 500);
@@ -185,8 +183,8 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(({
                 let fillColor: string;
                 let borderColor: string;
                 if (active) {
-                    fillColor = theme.color(highlightColor, 500);
-                    borderColor = highlight500;
+                    fillColor = highlightAccent;
+                    borderColor = highlightAccent;
                 } else if (pressed) {
                     fillColor = highlightAccent;
                     borderColor = highlightAccent;
@@ -212,8 +210,8 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(({
                 let fillColor: string;
                 let borderColor: string;
                 if (active) {
-                    fillColor = theme.color(highlightColor, bgShade);
-                    borderColor = highlight500;
+                    fillColor = theme.color(color, bgShade);
+                    borderColor = highlightAccent;
                 } else if (pressed) {
                     fillColor = theme.color(highlightColor, bgShade);
                     borderColor = highlightAccent;
@@ -242,9 +240,9 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(({
                 let fillOpacity: number | undefined;
                 let bColor: string;
                 if (active) {
-                    bgFill = highlight500;
+                    bgFill = highlightAccent;
                     fillOpacity = isGhost ? 0.14 : 0.24;
-                    bColor = isGhost ? 'transparent' : highlight500;
+                    bColor = isGhost ? 'transparent' : highlightAccent;
                 } else if (pressed) {
                     bgFill = highlightAccent;
                     fillOpacity = isGhost ? 0.10 : 0.12;

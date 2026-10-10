@@ -10,6 +10,7 @@ import {
     colorOptions,
     fillVariantControl,
     fillVariantOptions,
+    optionalShadeControl,
     sizeControl,
     sizeOptions,
 } from "../../storybook/controls";
@@ -35,6 +36,8 @@ const meta = {
         value: "Some text",
         color: "neutral",
         highlightColor: "neutral",
+        contentShade: 700,
+        highlightContentShade: 200,
         size: "sm",
         variant: "fill-inverse",
         disabled: false,
@@ -44,6 +47,8 @@ const meta = {
     argTypes: {
         color: colorControl,
         highlightColor: colorControl,
+        contentShade: optionalShadeControl,
+        highlightContentShade: optionalShadeControl,
         size: sizeControl,
         variant: fillVariantControl,
         disabled: booleanControl,

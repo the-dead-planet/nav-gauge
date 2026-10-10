@@ -15,8 +15,8 @@ export const Anchors: Story = {
         return (
             <HudConnector fromRef={fromRef} toRef={toRef} fromAnchor="right" toAnchor="left" color="secondary" glowStyle="glow">
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', minWidth: 420, padding: 32 }}>
-                    <div ref={fromRef}><HudDecoration><Panel variant="fill-inverse" padding="md">Navigation</Panel></HudDecoration></div>
-                    <div ref={toRef}><HudDecoration corners={['top-right', 'bottom-left']}><Panel variant="fill-inverse" padding="md">Telemetry</Panel></HudDecoration></div>
+                    <div ref={fromRef}><HudDecoration><Panel variant="fill-inverse">Navigation</Panel></HudDecoration></div>
+                    <div ref={toRef}><HudDecoration corners={['top-right', 'bottom-left']}><Panel variant="fill-inverse">Telemetry</Panel></HudDecoration></div>
                 </div>
             </HudConnector>
         );

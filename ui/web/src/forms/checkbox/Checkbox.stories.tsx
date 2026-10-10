@@ -9,7 +9,7 @@ import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptio
 const meta = {
     title: 'Forms/Checkbox',
     component: Checkbox,
-    args: { children: 'Checkbox', checked: false, color: 'primary', size: 'sm', variant: 'fill', onChange: () => {} },
+    args: { children: 'Checkbox', checked: false, color: 'primary', contentShade: 700, highlightContentShade: 200, size: 'sm', variant: 'fill', onChange: () => {} },
 } satisfies Meta<typeof Checkbox>;
 
 export default meta;
@@ -28,6 +28,8 @@ export const Gallery = {
                 <Checkbox
                     size={size}
                     color={color}
+                    contentShade={700}
+                    highlightContentShade={200}
                     checked={checked}
                     onChange={setChecked}
                 >
