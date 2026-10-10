@@ -12,7 +12,7 @@ const IconData = {
 }
 
 const meta = {
-    title: 'Design System/Icons'
+    title: 'Design System/Icon Gallery'
 } satisfies Meta;
 
 export default meta;

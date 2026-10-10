@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { ColorRamp } from './ColorRamp';
-import { sizeControl } from '../../storybook/controls';
+import { sizeControl, sizeOptions } from '../../storybook/controls';
 
 const meta = {
     title: 'Forms/ColorRamp',
@@ -34,4 +34,13 @@ export const Playground: Story = {
 
         return <ColorRamp {...args} value={value} onChange={setValue} />;
     },
+};
+
+export const Gallery: Story = {
+    render: (args) => (
+        <div style={{ display: 'grid', gap: 16 }}>
+            {sizeOptions.map((size) => <ColorRamp key={size} {...args} size={size} onChange={() => {}} />)}
+            <ColorRamp {...args} disabled onChange={() => {}} />
+        </div>
+    ),
 };

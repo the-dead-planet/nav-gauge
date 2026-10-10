@@ -11,7 +11,8 @@ Reusable UI components must not contain business logic.
 Build responsive UI mobile-first: use the smallest layout as the default and add wider-screen overrides.
 
 Theme variables live in `@ui/common/src/theme/specifications.ts`.
-Before changing palettes or shade semantics, read `ui/web/src/colors/Colors.mdx`.
+Before changing reusable UI, read `ui/web/src/design-system/Overview.mdx` and the relevant linked design-system page.
+Before implementing or changing palettes, shades, appearance, or interaction states, read and follow `ui/web/src/colors/Colors.mdx`.
 
 Shared/reusable UI components must be added to **both** web (`@web-ui`) and mobile (`@mobile-ui`) platforms, not just one.
 Put the shared API and value math in `@ui/common` and provide a thin platform renderer in each platform package.
@@ -22,6 +23,8 @@ Reusable public components require a `Playground with Live code editor` story co
 Playground stories should rely on Storybook's inferred `argTypes`. Define explicit `argTypes` only for custom mappings, ranges, non-inferable controls, or hidden props. Do not repeat inferred text, boolean, enum, or native-element controls.
 
 Reserve final layout dimensions before optional or asynchronous content appears; toggling content must not move surrounding UI.
+
+Buttons use square corners by default. Circle and hexagon buttons are icon-only and require an accessible label.
 
 ### Web
 - Use CSS modules.

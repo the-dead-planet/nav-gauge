@@ -228,6 +228,10 @@
     padding: 14px;
 }
 
+.size-lg {
+    padding: 18px;
+}
+
 .content-fill-inverse {
     background-color: var(--content-inverse);
 }

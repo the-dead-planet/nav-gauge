@@ -10,6 +10,7 @@ const clipPaths = {
     xs: { pivotStart: 0.125, pivotEnd: 0.875, knobStart: 0, knobEnd: 1 },
     sm: { pivotStart: 0.15, pivotEnd: 0.85, knobStart: 0.05, knobEnd: 0.95 },
     md: { pivotStart: 0.1667, pivotEnd: 0.8333, knobStart: 0.0833, knobEnd: 0.9167 },
+    lg: { pivotStart: 0.175, pivotEnd: 0.825, knobStart: 0.1, knobEnd: 0.9 },
 } as const;
 
 function buildHorizontalPoints(width: number, height: number, clip: { pivotStart: number; pivotEnd: number; knobStart: number; knobEnd: number }): string {
@@ -24,18 +25,24 @@ function buildVerticalPoints(width: number, height: number, clip: { pivotStart: 
 
 export const ToggleSwitch: FC<ToggleSwitchProps> = ({
     color = 'neutral',
-    // highlightColor = color, // TODO
+    contentShade,
+    highlightColor = color,
+    highlightContentShade,
     size = 'sm',
     variant = 'ghost',
     orientation = 'horizontal',
     checked,
     onChange,
     disabled = false,
+    active = false,
     children,
 }) => {
     const theme = useTheme();
 
     const baseColor = theme.color(color);
+    const activeAccent = theme.color(highlightColor, theme.isLight ? 600 : 300);
+    const disabledColor = theme.color(color, theme.isLight ? 300 : 700);
+    const disabledSurface = theme.color(color, theme.isLight ? 200 : 800);
 
     const trackSize = size === 'md' ? 40 : size === 'sm' ? 34 : 28;
     const stickLength = size === 'md' ? 16 : size === 'sm' ? 14 : 12;
@@ -146,7 +153,6 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
         flexDirection: 'column',
         alignItems: 'flex-start',
         gap,
-        opacity: disabled ? 0.4 : 1,
     };
 
     const toggleRowStyle: ViewStyle = {
@@ -160,8 +166,8 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
         height: trackSize,
         borderRadius: trackSize / 2,
         borderWidth: 1,
-        borderColor: trackBorderColor,
-        backgroundColor: trackBackgroundColor,
+        borderColor: disabled ? disabledColor : active ? activeAccent : trackBorderColor,
+        backgroundColor: disabled ? disabledSurface : trackBackgroundColor,
         alignItems: 'center',
         justifyContent: 'center',
     };
@@ -295,7 +301,11 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
             style={containerStyle}
         >
             {children ? (
-                <Text style={{ color: baseColor, ...textStyle }}>
+                <Text
+                    color={checked || active ? highlightColor : color}
+                    shade={disabled ? (theme.isLight ? 300 : 700) : checked || active ? highlightContentShade : contentShade}
+                    style={textStyle}
+                >
                     {children}
                 </Text>
             ) : null}

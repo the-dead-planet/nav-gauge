@@ -15,15 +15,14 @@ interface Props {
 
 export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     color = 'neutral',
-    shade,
+    contentShade,
     highlightColor,
-    highlightShade,
+    highlightContentShade,
     variant = 'ghost',
     glowStyle = 'none',
     size = 'sm',
     corners = 'square',
     active = false,
-    themeMode,
     disabled,
     type = 'button',
     icon,
@@ -42,15 +41,11 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     const theme = useTheme();
     const iconSizes = {
         xs: 12,
-        sm: 16,
-        md: 20,
+        sm: 14,
+        md: 16,
+        lg: 20,
     }
-    const hexagonIconSizes = {
-        xs: 16,
-        sm: 20,
-        md: 28,
-    }
-    const iconSize = corners === 'hexagon' ? hexagonIconSizes[size] : iconSizes[size];
+    const iconSize = iconSizes[size];
 
     const button = (
         <button
@@ -60,7 +55,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
             aria-label={ariaLabel ?? (!children && typeof tooltip === 'string' ? tooltip : undefined)}
             className={classNames(
                 styles['button'],
-                styles[`mode-${themeMode || theme.mode}`],
+                styles[`mode-${theme.mode}`],
                 styles[`color-${color}`],
                 styles[`highlight-${highlightColor || color}`],
                 styles[`variant-${variant}`],
@@ -70,7 +65,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
                 {
                     [styles['interactive']]: !!onClick && !disabled,
                     [styles['active']]: active,
-                    [styles['has-highlight-shade']]: highlightShade !== undefined,
+                    [styles['has-highlight-shade']]: highlightContentShade !== undefined,
                     [styles[`only-icon-${size}`]]: !children,
                     [styles['disabled']]: disabled,
                 },
@@ -78,11 +73,11 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
             )}
             style={{
                 ...(corners !== 'hexagon' ? style : undefined),
-                ...(shade === undefined ? undefined : {
-                    '--button-content-color': theme.color(color, shade),
+                ...(contentShade === undefined ? undefined : {
+                    '--button-content-color': theme.color(color, contentShade),
                 }),
-                ...(highlightShade === undefined ? undefined : {
-                    '--button-highlight-content-color': theme.color(highlightColor || color, highlightShade),
+                ...(highlightContentShade === undefined ? undefined : {
+                    '--button-highlight-content-color': theme.color(highlightColor || color, highlightContentShade),
                 }),
             } as CSSProperties}
             {...props}
@@ -130,7 +125,6 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
             size={size}
             variant={variant}
             glowStyle={glowStyle}
-            themeMode={themeMode}
             color={color}
             highlightColor={highlightColor}
             active={active}

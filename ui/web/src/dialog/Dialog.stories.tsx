@@ -6,7 +6,7 @@ import { DialogPlacement, DialogProps } from '@ui';
 import { colorControl } from '../storybook/controls';
 
 const meta = {
-    title: 'Dialog',
+    title: 'Overlays/Dialog',
     component: Dialog,
     args: { color: 'neutral' },
     argTypes: {

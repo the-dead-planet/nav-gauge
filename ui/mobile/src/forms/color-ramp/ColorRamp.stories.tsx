@@ -3,6 +3,7 @@ import { StyleSheet, Switch, TextInput, View } from "react-native";
 import { Button } from "../../button";
 import { Text } from "../../typography";
 import { ColorRamp } from "./ColorRamp";
+import { sizeOptions } from "@ui";
 
 const styles = StyleSheet.create({
     container: { gap: 16, padding: 24 },
@@ -14,7 +15,7 @@ export const Playground: FC = () => {
     const [value, setValue] = useState("rgb(67, 105, 255)");
     const [label, setLabel] = useState("Color");
     const [opacityLabel, setOpacityLabel] = useState("Opacity");
-    const [size, setSize] = useState<"xs" | "sm" | "md">("sm");
+    const [size, setSize] = useState<"xs" | "sm" | "md" | "lg">("sm");
     const [disabled, setDisabled] = useState(false);
 
     return (
@@ -31,7 +32,7 @@ export const Playground: FC = () => {
             <TextInput style={styles.input} value={label} onChangeText={setLabel} />
             <TextInput style={styles.input} value={opacityLabel} onChangeText={setOpacityLabel} />
             <View style={styles.row}>
-                {(["xs", "sm", "md"] as const).map((nextSize) => (
+                {sizeOptions.map((nextSize) => (
                     <Button key={nextSize} size="xs" onPress={() => setSize(nextSize)}>{nextSize}</Button>
                 ))}
                 <Text>Disabled</Text>
@@ -40,3 +41,9 @@ export const Playground: FC = () => {
         </View>
     );
 };
+
+export const Gallery: FC = () => (
+    <View style={styles.container}>
+        {sizeOptions.map((size) => <ColorRamp key={size} value="#4369ff" size={size} onChange={() => {}} />)}
+    </View>
+);

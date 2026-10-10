@@ -1,4 +1,5 @@
 import { FC, useEffect, useRef } from "react";
+import { ColorShade, ColorVariant } from "@ui";
 import { Label, Span } from "../../typography";
 import styles from './clock-input.module.css';
 
@@ -15,6 +16,8 @@ interface Props {
     label?: string;
     showValue?: boolean;
     ariaLabel?: string;
+    color?: ColorVariant;
+    contentShade?: ColorShade;
 }
 
 export const ClockA11yInput: FC<Props> = ({
@@ -30,6 +33,8 @@ export const ClockA11yInput: FC<Props> = ({
     label,
     showValue = true,
     ariaLabel,
+    color = 'neutral',
+    contentShade,
 }) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const onChangeRef = useRef(onChange);
@@ -91,7 +96,7 @@ export const ClockA11yInput: FC<Props> = ({
                 tabIndex={0}
             />
             {label && (
-                <Label htmlFor={id} className={styles['label']}>
+                <Label htmlFor={id} color={color} shade={contentShade} className={styles['label']}>
                     {label}
                     {showValue ? <Span tabular>{formatValue?.(value) || `${value}°`}</Span> : null}
                 </Label>

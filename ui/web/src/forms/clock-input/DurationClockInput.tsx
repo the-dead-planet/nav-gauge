@@ -20,18 +20,20 @@ import { NumberInput } from "../number-input";
 import { StepControls } from "../step-controls";
 import styles from './clock-input.module.css';
 
-const sizeMap: Record<string, number> = { xs: 45, sm: 60, md: 75 };
-const thumbRadii: Record<string, number> = { xs: 1.5, sm: 2, md: 2.5 };
-const centerDotRadii: Record<string, number> = { xs: 0.75, sm: 1, md: 1.25 };
-const paddings: Record<string, number> = { xs: 6, sm: 6, md: 7 };
-const strokeWidths: Record<string, number> = { xs: 0.75, sm: 1, md: 1.25 };
+const sizeMap: Record<string, number> = { xs: 45, sm: 60, md: 75, lg: 90 };
+const thumbRadii: Record<string, number> = { xs: 1.5, sm: 2, md: 2.5, lg: 3 };
+const centerDotRadii: Record<string, number> = { xs: 0.75, sm: 1, md: 1.25, lg: 1.5 };
+const paddings: Record<string, number> = { xs: 6, sm: 6, md: 7, lg: 8 };
+const strokeWidths: Record<string, number> = { xs: 0.75, sm: 1, md: 1.25, lg: 1.5 };
 const MINUTES_HAND_FRACTION = 0.55;
 
 type Hand = 'minutes' | 'seconds';
 
 export const DurationClockInput: FC<DurationClockInputProps & { id?: string; className?: string }> = ({
     color = 'neutral',
+    contentShade,
     highlightColor,
+    highlightContentShade,
     size = 'sm',
     variant = 'fill-inverse',
     value,
@@ -169,8 +171,8 @@ export const DurationClockInput: FC<DurationClockInputProps & { id?: string; cla
                 {steppedClock}
                 {showNumberInput ? (
                     <div className={styles['duration-number-inputs']}>
-                        <NumberInput value={minutes} onChange={(newMinutes) => emit(newMinutes, seconds)} min={0} step={1} color={color} highlightColor={highlightColor} size={size} variant={variant} disabled={disabled || !onChange} showStepControls ariaLabel={`${ariaLabel ?? 'Duration'} (minutes)`} unit="min" />
-                        <NumberInput value={seconds} onChange={(newSeconds) => emit(minutes, newSeconds)} min={0} max={59} step={1} color={color} highlightColor={highlightColor} size={size} variant={variant} disabled={disabled || !onChange} showStepControls ariaLabel={`${ariaLabel ?? 'Duration'} (seconds)`} unit="s" />
+                        <NumberInput value={minutes} onChange={(newMinutes) => emit(newMinutes, seconds)} min={0} step={1} color={color} contentShade={contentShade} highlightColor={highlightColor} highlightContentShade={highlightContentShade} size={size} variant={variant} disabled={disabled || !onChange} showStepControls ariaLabel={`${ariaLabel ?? 'Duration'} (minutes)`} unit="min" />
+                        <NumberInput value={seconds} onChange={(newSeconds) => emit(minutes, newSeconds)} min={0} max={59} step={1} color={color} contentShade={contentShade} highlightColor={highlightColor} highlightContentShade={highlightContentShade} size={size} variant={variant} disabled={disabled || !onChange} showStepControls ariaLabel={`${ariaLabel ?? 'Duration'} (seconds)`} unit="s" />
                     </div>
                 ) : null}
             </div>

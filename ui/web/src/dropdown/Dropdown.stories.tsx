@@ -6,7 +6,7 @@ import { Popup } from '../popup';
 import { VariantGallery } from '../storybook/VariantGallery';
 import { Dropdown } from './Dropdown';
 import { Button } from '../button';
-import { booleanControl, colorControl, colorOptions, fillVariantControl, fillVariantOptions, sizeControl, sizeOptions } from '../storybook/controls';
+import { booleanControl, colorControl, colorOptions, fillVariantControl, fillVariantOptions, optionalShadeControl, sizeControl, sizeOptions } from '../storybook/controls';
 
 const options = [
     {
@@ -46,7 +46,7 @@ const GalleryDropdown = ({
 };
 
 const meta = {
-    title: 'Dropdown',
+    title: 'Forms/Dropdown',
     component: Dropdown,
     args: {
         ariaLabel: 'Select material',
@@ -54,6 +54,8 @@ const meta = {
         options,
         color: 'neutral',
         highlightColor: 'neutral',
+        contentShade: 700,
+        highlightContentShade: 200,
         size: 'sm',
         variant: 'fill-inverse',
         disabled: false,
@@ -63,6 +65,8 @@ const meta = {
     argTypes: {
         color: colorControl,
         highlightColor: colorControl,
+        contentShade: optionalShadeControl,
+        highlightContentShade: optionalShadeControl,
         size: sizeControl,
         variant: fillVariantControl,
         disabled: booleanControl,

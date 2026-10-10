@@ -1,4 +1,6 @@
-import type { ColorVariant, FillVariant, SizeVariant } from '../model';
+import type { ColorShade, ColorVariant, FillVariant, SizeVariant } from '../model';
+
+export type { ColorShade } from '../model';
 
 export enum ThemeName {
     Default = 'Default',
@@ -11,9 +13,6 @@ export enum ThemeName {
     Verdant = 'Verdant',
     GoldenCircuit = 'Golden Circuit',
 }
-
-export type ColorShade =
-    50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
 
 export type ThemeColor = {
     [key in ColorShade]: RGBColor;
@@ -105,7 +104,6 @@ export interface ThemeSpecification {
 export type ThemeMode = 'light' | 'dark';
 
 export interface ThemeModeToggleProps {
-    mode: ThemeMode;
     lightModeTooltip: string;
     darkModeTooltip: string;
     onToggle: () => void;

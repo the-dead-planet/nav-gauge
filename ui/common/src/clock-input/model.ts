@@ -1,11 +1,7 @@
-import { ColorVariant, SizeVariant, FillVariant } from "../model";
+import { AppearanceProps, FillVariant } from "../model";
 import { NumberInputPlacement } from "../number-input";
 
-export interface ClockInputProps {
-    color?: ColorVariant;
-    highlightColor?: ColorVariant;
-    size?: SizeVariant;
-    variant?: FillVariant;
+export interface ClockInputProps extends AppearanceProps<FillVariant> {
     thumbIcon?: string;
     value: number;
     /**
@@ -18,7 +14,6 @@ export interface ClockInputProps {
     max?: number;
     step?: number;
     onChange?: (value: number) => void;
-    disabled?: boolean;
     id?: string;
     label?: string;
     showNumberInput?: boolean;
@@ -27,11 +22,7 @@ export interface ClockInputProps {
     ariaLabel?: string;
 }
 
-export interface DurationClockInputProps {
-    color?: ColorVariant;
-    highlightColor?: ColorVariant;
-    size?: SizeVariant;
-    variant?: FillVariant;
+export interface DurationClockInputProps extends AppearanceProps<FillVariant> {
     /**
      * Total duration in milliseconds.
      */
@@ -42,7 +33,6 @@ export interface DurationClockInputProps {
     min?: number;
     step?: number;
     onChange?: (milliseconds: number) => void;
-    disabled?: boolean;
     id?: string;
     showNumberInput?: boolean;
     showStepControls?: boolean;

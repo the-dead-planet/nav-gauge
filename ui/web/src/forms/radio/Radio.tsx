@@ -11,10 +11,13 @@ export const Radio: FC<Omit<ComponentProps<'label'>, 'onChange'> & RadioProps & 
     id,
     labelledBy,
     color = 'neutral',
+    contentShade,
     highlightColor = color,
+    highlightContentShade,
     variant = 'fill',
     size = 'sm',
     checked,
+    active = false,
     onChange,
     disabled = false,
     children,
@@ -51,7 +54,7 @@ export const Radio: FC<Omit<ComponentProps<'label'>, 'onChange'> & RadioProps & 
                 styles[`size-${size}`],
                 {
                     [styles['disabled']]: disabled,
-                    [styles['checked']]: checked,
+                    [styles['checked']]: checked || (active && !disabled),
                 },
                 className
             )}
@@ -66,11 +69,11 @@ export const Radio: FC<Omit<ComponentProps<'label'>, 'onChange'> & RadioProps & 
                 onChange={handleChange}
                 disabled={disabled}
             />
-            <span className={classNames(styles['box'], { [styles['box-checked']]: checked })}>
+            <span className={classNames(styles['box'], { [styles['box-checked']]: checked || (active && !disabled) })}>
                 {checked ? <span className={styles['dot']} /> : null}
             </span>
             {children ? (
-                <span className={styles['label']}>
+                <span className={styles['label']} style={(checked || active ? highlightContentShade : contentShade) === undefined ? undefined : { color: theme.color(checked || active ? highlightColor : color, checked || active ? highlightContentShade : contentShade) }}>
                     {children}
                 </span>
             ) : null}

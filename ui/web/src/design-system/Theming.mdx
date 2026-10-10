@@ -1,0 +1,21 @@
+import { Meta, Title } from '@storybook/addon-docs/blocks';
+
+<Meta title="Design System/Theming" />
+
+<Title />
+
+Themes change the palette while preserving component meaning. A component's color role, variant, hierarchy, and interaction behavior must remain recognizable in every theme and in both light and dark modes.
+
+## Modes
+
+Light and dark modes reverse the primary surface and content ranges. Components use theme roles and documented shade rules rather than assuming a fixed light or dark foreground.
+
+## Named Themes
+
+Named themes provide different visual identities through shared palette roles. They must not require component-specific branches or change what a state means.
+
+## Semantic Colors
+
+Background, border, text, inverse text, error, warning, success, and information colors are semantic roles. Use them by meaning; do not copy their current palette values into components.
+
+Theme controls change the active theme but follow the same component and accessibility rules as other controls.

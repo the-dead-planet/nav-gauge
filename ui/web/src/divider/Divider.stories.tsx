@@ -4,7 +4,7 @@ import { Text } from "../typography";
 import { colorOptions as allColors } from "../storybook/controls";
 
 const meta = {
-    title: "Divider",
+    title: "Layout/Divider",
     component: Divider,
 } satisfies Meta<typeof Divider>;
 

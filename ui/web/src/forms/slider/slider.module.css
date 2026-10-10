@@ -386,6 +386,30 @@
     border-radius: 0;
 }
 
+.size-lg {
+    --track-thickness: 10px;
+    height: 34px;
+}
+
+.size-lg::-webkit-slider-runnable-track,
+.size-lg::-moz-range-track,
+.size-lg::-moz-range-progress {
+    height: 10px;
+    border-radius: 5px;
+}
+
+.size-lg::-webkit-slider-thumb {
+    width: 20px;
+    height: 20px;
+    margin-top: -5px;
+}
+
+.size-lg::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 0;
+}
+
 /* ── Disabled ── */
 
 .disabled {

@@ -3,7 +3,7 @@ import { FlexBox } from './FlexBox';
 import { FlexBoxProps, SpacingVariant } from '@ui';
 
 const meta = {
-    title: 'FlexBox',
+    title: 'Layout/FlexBox',
 } satisfies Meta;
 
 export default meta;

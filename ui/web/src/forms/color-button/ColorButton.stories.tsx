@@ -28,7 +28,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {};
 
-export const Colors: Story = {
+export const Gallery: Story = {
     render: () => {
         const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 

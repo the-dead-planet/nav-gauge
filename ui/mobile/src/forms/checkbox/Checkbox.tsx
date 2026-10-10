@@ -6,12 +6,15 @@ import { Text } from "../../typography";
 
 export const Checkbox: FC<CheckboxProps> = ({
     color = 'neutral',
+    contentShade,
     highlightColor = color,
+    highlightContentShade,
     variant = 'fill',
     size = 'sm',
     checked,
     onChange,
     disabled = false,
+    active = false,
     children,
 }) => {
     const theme = useTheme();
@@ -29,7 +32,6 @@ export const Checkbox: FC<CheckboxProps> = ({
         flexDirection: 'row',
         alignItems: 'center',
         gap: 8,
-        opacity: disabled ? 0.4 : 1,
     };
 
     return (
@@ -41,15 +43,18 @@ export const Checkbox: FC<CheckboxProps> = ({
             style={containerStyle}
         >
             {({ pressed }) => {
-                const activeColor = pressed ? highlightColor : color;
+                const highlighted = !disabled && (active || pressed);
+                const activeColor = highlighted ? highlightColor : color;
                 const boxColor = checked && variant === 'fill-inverse'
                     ? theme.color(activeColor, theme.isLight ? 100 : (activeColor === 'neutral' ? 800 : 900))
-                    : pressed ? accentColor : baseColor;
+                    : disabled ? theme.color(color, theme.isLight ? 300 : 700) : highlighted ? accentColor : baseColor;
                 const checkmarkColor = variant === 'fill-inverse'
                     ? theme.color(activeColor, theme.isLight ? (activeColor === 'neutral' ? 800 : 900) : 100)
                     : variant === 'fill-translucent' ? boxColor
                     : theme.color(activeColor, theme.isDark ? 900 : 100);
-                const backgroundColor = checked
+                const backgroundColor = disabled
+                    ? theme.color(color, theme.isLight ? 200 : 800)
+                    : checked
                     ? variant === 'fill-translucent'
                         ? theme.color(activeColor, pressed ? (theme.isLight ? 600 : 300) : 500, 0.24)
                         : boxColor
@@ -83,7 +88,11 @@ export const Checkbox: FC<CheckboxProps> = ({
                             ) : null}
                         </View>
                         {children ? (
-                            <Text color={color} style={textStyle}>
+                            <Text
+                                color={highlighted ? highlightColor : color}
+                                shade={disabled ? (theme.isLight ? 300 : 700) : highlighted ? highlightContentShade : contentShade}
+                                style={textStyle}
+                            >
                                 {children}
                             </Text>
                         ) : null}

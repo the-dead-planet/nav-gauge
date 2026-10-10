@@ -3,6 +3,7 @@ import { StyleSheet, Switch, TextInput, View } from "react-native";
 import { Button } from "../../button";
 import { Text } from "../../typography";
 import { SaturationValueRamp } from "./SaturationValueRamp";
+import { sizeOptions } from "@ui";
 
 const styles = StyleSheet.create({
     container: { gap: 16, padding: 24 },
@@ -15,7 +16,7 @@ export const Playground: FC = () => {
     const [saturation, setSaturation] = useState(0.7);
     const [brightness, setBrightness] = useState(0.8);
     const [label, setLabel] = useState("Color");
-    const [size, setSize] = useState<"xs" | "sm" | "md">("sm");
+    const [size, setSize] = useState<"xs" | "sm" | "md" | "lg">("sm");
     const [disabled, setDisabled] = useState(false);
 
     return (
@@ -36,7 +37,7 @@ export const Playground: FC = () => {
             <TextInput style={styles.input} value={String(hue)} keyboardType="numeric" onChangeText={(value) => setHue(Number(value) || 0)} />
             <TextInput style={styles.input} value={label} onChangeText={setLabel} />
             <View style={styles.row}>
-                {(["xs", "sm", "md"] as const).map((item) => (
+                {sizeOptions.map((item) => (
                     <Button key={item} size="xs" onPress={() => setSize(item)}>{item}</Button>
                 ))}
                 <Switch value={disabled} onValueChange={setDisabled} />
@@ -47,7 +48,7 @@ export const Playground: FC = () => {
 
 export const Gallery: FC = () => (
     <View style={styles.container}>
-        {(["xs", "sm", "md"] as const).map((size) => (
+        {sizeOptions.map((size) => (
             <SaturationValueRamp key={size} hue={210} saturation={0.7} brightness={0.8} size={size} onChange={() => {}} />
         ))}
         <SaturationValueRamp hue={210} saturation={0.7} brightness={0.8} disabled onChange={() => {}} />

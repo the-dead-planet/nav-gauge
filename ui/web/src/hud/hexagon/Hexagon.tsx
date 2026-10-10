@@ -20,7 +20,6 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
     highlightColor,
     size,
     variant,
-    themeMode,
     active = false,
     disabled = false,
     onClick,
@@ -36,7 +35,6 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
     const filterId = useId();
     const clipPathId = useId();
     const shadowBlurId = useId();
-    const effectiveMode = themeMode ?? theme.mode;
     const maskPoints = isPointy
         ? '50,0 100,25 100,75 50,100 0,75 0,25'
         : '100,50 75,100 25,100 0,50 25,0 75,0';
@@ -45,7 +43,7 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
     return (
         <div
             onClick={disabled ? undefined : onClick}
-            aria-disabled={disabled || undefined}
+            aria-disabled={!disabled || !(interactive || onClick) ? undefined : true}
             className={classNames(
                 styles.hexagon,
                 styles[shape],
@@ -53,9 +51,9 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
                 color && styles[`color-${color}`],
                 styles[`highlight-color-${highlightColor || color}`],
                 size && styles[`size-${size}`],
-                styles[`mode-${effectiveMode}`],
+                styles[`mode-${theme.mode}`],
                 {
-                    [styles['active']]: active,
+                    [styles['active']]: active && !disabled,
                     [styles['disabled']]: disabled,
                     [styles['interactive']]: !disabled && (interactive || onClick),
                     [styles[`glow-style-${glowStyle}`]]: !disabled && interactive,

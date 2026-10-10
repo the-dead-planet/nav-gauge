@@ -46,10 +46,10 @@ export const ToolIconLeft: FC<ObservedToolIcon<maplibregl.Map> & Props> = ({
                 tooltip={<T {...effectiveTooltip} />}
                 tooltipPlacement="right"
                 showTooltipConnection
-                size="sm"
+                size="lg"
                 variant="fill-inverse"
-                shade={500}
-                highlightShade={theme.isDark ? 300 : 700}
+                contentShade={500}
+                highlightContentShade={theme.isDark ? 300 : 700}
                 corners="hexagon"
                 glowStyle={theme.isDark ? "animate-borders-glow" : 'none'}
                 highlightColor="secondary"

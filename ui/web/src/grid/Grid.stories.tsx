@@ -3,7 +3,7 @@ import { Grid } from './Grid';
 import { FlexBox } from '../flex-box/FlexBox';
 
 const meta = {
-    title: 'Grid',
+    title: 'Layout/Grid',
 } satisfies Meta;
 
 export default meta;

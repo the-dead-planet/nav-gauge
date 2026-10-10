@@ -3,7 +3,7 @@ import { Menu } from './Menu';
 import { MenuItem } from './MenuItem';
 
 const meta = {
-    title: 'Menu',
+    title: 'Controls/Menu',
     component: Menu,
 } satisfies Meta<typeof Menu>;
 

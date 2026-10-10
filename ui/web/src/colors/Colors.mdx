@@ -1,7 +1,7 @@
 import { Canvas, Meta, Title } from "@storybook/addon-docs/blocks";
 import * as ColorStories from "./Color.stories";
 
-<Meta of={ColorStories} name="Docs" />
+<Meta title="Design System/Colors" />
 
 <Title />
 
@@ -117,6 +117,39 @@ All controls use the same foreground and surface rules:
 </table>
 
 Disabled controls use palette shades instead of opacity: shade `300` text and borders on a `200` surface in light mode, and shade `700` text and borders on an `800` surface in dark mode.
+
+## Interaction states
+
+State priority is disabled, persistent active, transient pressed/hover/focus/open/dragging, then default. Active and transient states use `highlightColor ?? color`; the active accent is shade `600` in light mode and `300` in dark mode. Disabled always uses the base `color`, with a `200` surface and `300` foreground/border in light mode or an `800` surface and `700` foreground/border in dark mode.
+
+<table>
+    <thead>
+        <tr>
+            <th>Variant</th>
+            <th>Active channels</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>fill</code></td>
+            <td>Accent background, no border</td>
+        </tr>
+        <tr>
+            <td><code>fill-inverse</code></td>
+            <td>Base inverse surface with accent border/content</td>
+        </tr>
+        <tr>
+            <td><code>fill-translucent</code></td>
+            <td>Accent translucent background and border</td>
+        </tr>
+        <tr>
+            <td><code>ghost</code>, <code>outline</code>, <code>inset</code></td>
+            <td>Existing Button/Hexagon highlight channels</td>
+        </tr>
+    </tbody>
+</table>
+
+Owned active content uses `highlightContentShade` when supplied, otherwise the variant's existing contrast rule. Components must not recolor arbitrary children or apply whole-control opacity when they own surface and content channels.
 
 ## Palettes
 

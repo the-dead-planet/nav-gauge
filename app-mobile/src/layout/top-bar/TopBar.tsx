@@ -70,7 +70,6 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
             <View style={styles.rightSection}>
                 {Array.from(topBarTools).map(([id, Component]) => <Component key={id} />)}
                 <ThemeModeToggle
-                    mode={theme.mode}
                     lightModeTooltip={lightModeTooltip}
                     darkModeTooltip={darkModeTooltip}
                     onToggle={individuator.toggleMode}

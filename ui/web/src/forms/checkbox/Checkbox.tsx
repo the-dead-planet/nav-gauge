@@ -11,10 +11,13 @@ export const Checkbox: FC<Omit<ComponentProps<'label'>, 'onChange'> & CheckboxPr
     id,
     labelledBy,
     color = 'neutral',
+    contentShade,
     highlightColor = color,
+    highlightContentShade,
     variant = 'fill',
     size = 'sm',
     checked,
+    active = false,
     onChange,
     disabled = false,
     children,
@@ -51,7 +54,7 @@ export const Checkbox: FC<Omit<ComponentProps<'label'>, 'onChange'> & CheckboxPr
                 styles[`size-${size}`],
                 {
                     [styles['disabled']]: disabled,
-                    [styles['checked']]: checked,
+                    [styles['checked']]: checked || (active && !disabled),
                 },
                 className
             )}
@@ -66,14 +69,14 @@ export const Checkbox: FC<Omit<ComponentProps<'label'>, 'onChange'> & CheckboxPr
                 onChange={handleChange}
                 disabled={disabled}
             />
-            <span className={classNames(styles['box'], { [styles['box-checked']]: checked })}>
+            <span className={classNames(styles['box'], { [styles['box-checked']]: checked || (active && !disabled) })}>
                 {checked ? (
                     <svg className={styles['checkmark']} viewBox="0 0 12 12" width="12" height="12" aria-hidden>
                         <path d="M2 6l3 3 5-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                 ) : null}
             </span>
-            {children ? <span className={styles['label']}>{children}</span> : null}
+            {children ? <span className={styles['label']} style={(checked || active ? highlightContentShade : contentShade) === undefined ? undefined : { color: theme.color(checked || active ? highlightColor : color, checked || active ? highlightContentShade : contentShade) }}>{children}</span> : null}
         </label>
     );
 };

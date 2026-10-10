@@ -1,4 +1,4 @@
-import type { Meta } from 'storybook-react-rsbuild';
+import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { useState } from 'react';
 import { Fieldset } from './Fieldset';
 import { Text } from '../../typography';
@@ -8,11 +8,13 @@ import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptio
 const meta = {
     title: 'Forms/Fieldset',
     component: Fieldset,
+    args: { label: 'Fieldset', color: 'neutral', size: 'sm', variant: 'fill-inverse', children: <Text>Fieldset content</Text> },
 } satisfies Meta<typeof Fieldset>;
 
 export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Default = {
+export const Playground: Story = {
     render: () => (
         <Fieldset label="Default Fieldset">
             <Text>This is a basic fieldset with no color prop.</Text>
@@ -20,7 +22,7 @@ export const Default = {
     ),
 };
 
-export const Colors = {
+export const Gallery = {
     render: () => (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16, padding: 24 }}>
             {allColors.map(color => (

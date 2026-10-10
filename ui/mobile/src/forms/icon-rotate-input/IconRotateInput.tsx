@@ -19,9 +19,9 @@ interface Props extends Omit<IconRotateInputProps, 'icon'> {
     style?: ViewStyle;
 }
 
-const sizeMap: Record<string, number> = { xs: 36, sm: 48, md: 60 };
-const iconSizes: Record<string, number> = { xs: 12, sm: 20, md: 32 };
-const controlHeights = { xs: 18, sm: 24, md: 32 } as const;
+const sizeMap: Record<string, number> = { xs: 36, sm: 48, md: 60, lg: 72 };
+const iconSizes: Record<string, number> = { xs: 12, sm: 20, md: 32, lg: 40 };
+const controlHeights = { xs: 18, sm: 24, md: 32, lg: 40 } as const;
 
 export const IconRotateInput: FC<Props> = ({
     icon,

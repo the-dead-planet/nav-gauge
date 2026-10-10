@@ -1,4 +1,4 @@
-import type { Meta } from 'storybook-react-rsbuild';
+import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { useState } from 'react';
 import { ToggleSwitch } from './ToggleSwitch';
 import { Text } from '../../typography';
@@ -8,13 +8,17 @@ import { colorOptions as allColors, sizeOptions as allSizes, surfaceVariantOptio
 const meta = {
     title: 'Forms/ToggleSwitch',
     component: ToggleSwitch,
+    args: { children: 'Toggle', checked: false, color: 'primary', contentShade: 700, highlightContentShade: 200, size: 'sm', variant: 'ghost', onChange: () => {} },
 } satisfies Meta<typeof ToggleSwitch>;
 
 export default meta;
+type Story = StoryObj<typeof meta>;
 
 const allOrientations: LayoutOrientation[] = ['horizontal', 'vertical'];
 
-export const ToggleSwitchVariants = {
+export const Playground: Story = {};
+
+export const Gallery = {
     render: () => {
         const [checked, setChecked] = useState(false);
         const [size, setSize] = useState<SizeVariant>('sm');
@@ -28,6 +32,8 @@ export const ToggleSwitchVariants = {
                 <ToggleSwitch
                     size={size}
                     color={color}
+                    contentShade={700}
+                    highlightContentShade={200}
                     variant={variant}
                     orientation={orientation}
                     checked={checked}

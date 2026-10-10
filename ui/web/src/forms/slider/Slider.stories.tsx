@@ -1,4 +1,4 @@
-import type { Meta } from 'storybook-react-rsbuild';
+import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { ColorVariant, SizeVariant, FillVariant } from '@ui';
 import { Slider } from './Slider';
 import { Text } from '../../typography';
@@ -8,11 +8,15 @@ import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptio
 const meta = {
     title: 'Forms/Slider',
     component: Slider,
+    args: { value: 50, min: 0, max: 100, color: 'primary', contentShade: 700, highlightContentShade: 200, size: 'sm', variant: 'fill-inverse', onChange: () => {} },
 } satisfies Meta<typeof Slider>;
 
 export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const SliderVariants = {
+export const Playground: Story = {};
+
+export const Gallery = {
     render: () => {
         const [value, setValue] = useState(50);
         const [size, setSize] = useState<SizeVariant>('sm');

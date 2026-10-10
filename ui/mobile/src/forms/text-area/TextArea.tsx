@@ -28,27 +28,37 @@ export const TextArea: FC<
     TextAreaProps & ComponentProps<typeof RNTextInput>
 > = ({
     color = "neutral",
+    contentShade,
     highlightColor = color,
+    highlightContentShade,
     size = "sm",
     variant = "fill-inverse",
     label,
     autoSelect = false,
     editable = true,
+    active = false,
+    disabled = false,
     ...props
 }) => {
     const theme = useTheme();
     const [isFocused, setIsFocused] = useState(false);
-    const borderColor = isFocused
+    const isDisabled = disabled || !editable;
+    const highlighted = !isDisabled && (active || isFocused);
+    const borderColor = highlighted
         ? theme.color(highlightColor, theme.isLight ? 600 : 300)
         : theme.color(color, 500, variant === "fill-translucent" ? 0.3 : 1);
     const fontSize = controlTextSpecifications[size].fontSize;
     const paddingV = size === "xs" ? 0 : size === "sm" ? 2 : 6;
     const disabledColor = theme.color(color, theme.isLight ? 300 : 700);
-    const textColor =
+    const textColor = highlighted && highlightContentShade !== undefined
+        ? theme.color(highlightColor, highlightContentShade)
+        : contentShade !== undefined
+          ? theme.color(color, contentShade)
+          :
         variant === "fill"
             ? theme.color(color, theme.contrastShade(color))
             : theme.color(color, theme.isLight ? 900 : 100);
-    const backgroundColor = !editable
+    const backgroundColor = isDisabled
         ? theme.color(color, theme.isLight ? 200 : 800)
         : variant === "fill"
           ? theme.color(color, 500)
@@ -60,7 +70,8 @@ export const TextArea: FC<
         <View style={styles.container}>
             <Label
                 color={color}
-                disabled={!editable}
+                shade={contentShade}
+                disabled={isDisabled}
                 style={[styles.label, { fontSize: size === "xs" ? 11 : 12 }]}
             >
                 {label}
@@ -70,20 +81,21 @@ export const TextArea: FC<
                     styles.textarea,
                     {
                         backgroundColor,
-                        color: !editable ? disabledColor : textColor,
-                        borderColor: !editable
+                        color: isDisabled ? disabledColor : textColor,
+                        borderColor: isDisabled
                             ? disabledColor
                             : variant === "fill"
                               ? backgroundColor
                               : borderColor,
-                        borderWidth: !editable || variant !== "fill" ? 1 : 0,
+                        borderWidth: isDisabled || variant !== "fill" ? 1 : 0,
                         fontSize,
                         paddingVertical: paddingV + 4,
                         paddingHorizontal: 8,
                     },
                 ]}
                 multiline
-                editable={editable}
+                editable={!isDisabled}
+                accessibilityState={{ ...props.accessibilityState, disabled: isDisabled }}
                 selectTextOnFocus={autoSelect}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}

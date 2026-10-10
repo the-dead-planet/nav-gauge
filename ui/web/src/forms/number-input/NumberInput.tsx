@@ -9,7 +9,9 @@ import styles from './number-input.module.css';
 export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' | 'type' | 'size'> & NumberInputProps> = ({
     id,
     color = 'neutral',
+    contentShade,
     highlightColor = color,
+    highlightContentShade,
     size = 'sm',
     variant = 'fill-inverse',
     label,
@@ -19,6 +21,7 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
     max,
     step,
     disabled = false,
+    active = false,
     autoSelect = false,
     ariaLabel,
     unit,
@@ -42,11 +45,11 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
         }
     };
 
-    const contentShade: ColorShade = variant === 'fill-translucent'
+    const resolvedContentShade: ColorShade = contentShade ?? (variant === 'fill-translucent'
         ? 500
         : variant === 'fill'
             ? theme.isLight ? 100 : 900
-            : theme.isLight ? 900 : 100;
+            : theme.isLight ? 900 : 100);
     const disabledShade: ColorShade = theme.isLight ? 300 : 700;
     const incrementDisabled = disabled || (max !== undefined && value >= max);
     const decrementDisabled = disabled || (min !== undefined && value <= min);
@@ -55,6 +58,7 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
         xs: 'xs',
         sm: 'xs',
         md: 'sm',
+        lg: 'md',
     };
 
     return (
@@ -66,9 +70,10 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
             styles[`size-${size}`],
             styles[`variant-${variant}`],
             disabled && styles.disabled,
+            active && !disabled && styles.active,
         )}>
             {typeof label === 'string' ? (
-                <Label htmlFor={id} className={styles.label}>
+                <Label htmlFor={id} color={color} shade={resolvedContentShade} className={styles.label}>
                     {label}
                 </Label>
             ) : label}
@@ -86,9 +91,10 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
                         disabled={disabled}
                         aria-label={ariaLabel || (typeof label === 'string' ? label : undefined)}
                         className={classNames(styles.input, className)}
+                        style={{ color: theme.color(active ? highlightColor : color, active ? highlightContentShade : contentShade) }}
                         {...props}
                     />
-                    {unit ? <span className={styles['unit']}>{unit}</span> : null}
+                    {unit ? <span className={styles['unit']} style={{ color: theme.color(active ? highlightColor : color, active ? highlightContentShade : contentShade) }}>{unit}</span> : null}
                 </div>
                 {showStepControls ? <div className={styles.steppers}>
                     <Button
@@ -98,7 +104,9 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
                         disabled={incrementDisabled}
                         color={color}
                         highlightColor={highlightColor}
-                        shade={incrementDisabled ? disabledShade : contentShade}
+                        contentShade={incrementDisabled ? disabledShade : contentShade}
+                        highlightContentShade={highlightContentShade}
+                        active={active}
                         size={buttonSizes[size]}
                         className={styles['stepper-btn']}
                         aria-label={ariaLabel ? `${ariaLabel} (+)` : '+'}
@@ -109,7 +117,9 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
                         disabled={decrementDisabled}
                         color={color}
                         highlightColor={highlightColor}
-                        shade={decrementDisabled ? disabledShade : contentShade}
+                        contentShade={decrementDisabled ? disabledShade : contentShade}
+                        highlightContentShade={highlightContentShade}
+                        active={active}
                         size={buttonSizes[size]}
                         className={styles['stepper-btn']}
                         aria-label={ariaLabel ? `${ariaLabel} (−)` : '−'}

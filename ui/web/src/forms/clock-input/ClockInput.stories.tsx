@@ -10,12 +10,15 @@ import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptio
 const meta = {
     title: 'Forms/ClockInput',
     component: ClockInput,
+    args: { value: 45, color: 'primary', contentShade: 700, highlightContentShade: 200, size: 'sm', variant: 'fill-inverse', onChange: () => {} },
 } satisfies Meta<typeof ClockInput>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 const numberInputPlacements: NumberInputPlacement[] = ['start', 'end', 'above', 'below'];
+
+export const Playground: Story = {};
 
 const ClockInputStoryOptions = ({ showStepControls, setShowStepControls, showNumberInput, setShowNumberInput, numberInputPlacement, setNumberInputPlacement }: {
     showStepControls: boolean;
@@ -40,7 +43,7 @@ const ClockInputStoryOptions = ({ showStepControls, setShowStepControls, showNum
     </>
 );
 
-export const ClockInputVariants = {
+export const Gallery = {
     args: {
         value: 0,
     },
@@ -161,7 +164,7 @@ export const ClockInputVariants = {
     },
 } satisfies Story;
 
-export const SliceVariants = {
+export const SliceGallery = {
     args: {
         value: 30,
     },
@@ -318,7 +321,7 @@ export const SliceVariants = {
     },
 } satisfies Story;
 
-export const DurationVariants = {
+export const DurationGallery = {
     args: {
         value: 15000,
     },

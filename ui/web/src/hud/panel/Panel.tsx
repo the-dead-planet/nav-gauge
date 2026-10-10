@@ -16,10 +16,9 @@ export const Panel: FC<PanelProps & Props & ComponentProps<'div'>> = ({
     color = 'neutral',
     highlightColor,
     variant,
-    padding,
     borderWidth = 2,
-    themeMode,
     active = false,
+    disabled = false,
     onClick,
     forwardRef,
     className,
@@ -28,24 +27,24 @@ export const Panel: FC<PanelProps & Props & ComponentProps<'div'>> = ({
     ...props
 }) => {
     const theme = useTheme();
-    const effectiveMode = themeMode ?? theme.mode;
 
     return (
         <div
             ref={forwardRef}
-            onClick={onClick}
+            onClick={disabled ? undefined : onClick}
+            aria-disabled={!disabled || !(interactive || onClick) ? undefined : true}
             className={classNames(
                 styles.panel,
                 variant && styles[`variant-${variant}`],
                 color && styles[`color-${color}`],
                 styles[`highlight-color-${highlightColor || color}`],
-                styles[`mode-${effectiveMode}`],
+                styles[`mode-${theme.mode}`],
                 {
                     [styles[shape ?? '']]: !!shape,
-                    [styles[`padding-${padding}`]]: !!padding,
-                    [styles['active']]: active,
-                    [styles['interactive']]: interactive || onClick,
-                    [styles[`glow-style-${glowStyle}`]]: interactive,
+                    [styles['active']]: active && !disabled,
+                    [styles['disabled']]: disabled,
+                    [styles['interactive']]: !disabled && (interactive || onClick),
+                    [styles[`glow-style-${glowStyle}`]]: !disabled && interactive,
                 },
                 className
             )}

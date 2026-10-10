@@ -1,13 +1,8 @@
-import { ColorVariant, SizeVariant, FillVariant } from "../model";
+import { AppearanceProps, FillVariant } from "../model";
 
-export interface TextInputProps {
-    color?: ColorVariant;
-    highlightColor?: ColorVariant;
-    size?: SizeVariant;
-    variant?: FillVariant;
+export interface TextInputProps extends AppearanceProps<FillVariant> {
     label?: string;
     value: string;
     onChange: (value: string) => void;
-    disabled?: boolean;
     autoSelect?: boolean;
 }

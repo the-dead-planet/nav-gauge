@@ -1,19 +1,23 @@
-import type { Meta } from 'storybook-react-rsbuild';
+import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { useState } from 'react';
 import { Checkbox } from './Checkbox';
 import { Text } from '../../typography';
-import { CheckboxProps, ColorVariant, SizeVariant } from '@ui';
+import { ColorVariant, SizeVariant } from '@ui';
 import styles from './checkbox.stories.module.css';
 import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptions as allSizes } from '../../storybook/controls';
 
 const meta = {
     title: 'Forms/Checkbox',
     component: Checkbox,
+    args: { children: 'Checkbox', checked: false, color: 'primary', contentShade: 700, highlightContentShade: 200, size: 'sm', variant: 'fill', onChange: () => {} },
 } satisfies Meta<typeof Checkbox>;
 
 export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const CheckboxVariants = {
+export const Playground: Story = {};
+
+export const Gallery = {
     render: () => {
         const [checked, setChecked] = useState(false);
         const [size, setSize] = useState<SizeVariant>('sm');
@@ -24,6 +28,8 @@ export const CheckboxVariants = {
                 <Checkbox
                     size={size}
                     color={color}
+                    contentShade={700}
+                    highlightContentShade={200}
                     checked={checked}
                     onChange={setChecked}
                 >

@@ -40,7 +40,6 @@ export const SlideDemo: FC = () => {
                         variant={direction === d ? 'fill' : 'ghost'}
                         color="primary"
                         size="xs"
-                        corners="rounded"
                         onPress={() => setDirection(d)}
                     >
                         {d}
@@ -50,7 +49,6 @@ export const SlideDemo: FC = () => {
                     variant={fade ? 'fill' : 'ghost'}
                     color="tertiary"
                     size="xs"
-                    corners="rounded"
                     onPress={() => setFade((v) => !v)}
                 >
                     {fade ? 'fade: on' : 'fade: off'}

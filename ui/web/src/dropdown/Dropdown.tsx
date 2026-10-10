@@ -20,7 +20,9 @@ interface Props {
 
 export function Dropdown<T = string>({
     color = 'neutral',
+    contentShade,
     highlightColor,
+    highlightContentShade,
     size = 'sm',
     variant = 'fill-inverse',
     value,
@@ -28,6 +30,7 @@ export function Dropdown<T = string>({
     onChange,
     placeholder = 'Select...',
     disabled = false,
+    active = false,
     ariaLabel,
     labelledBy,
     popoverClassName,
@@ -99,7 +102,7 @@ export function Dropdown<T = string>({
                 styles[`variant-${variant}`],
                 {
                     [styles['disabled']]: disabled,
-                    [styles['open']]: isOpen,
+                    [styles['open']]: isOpen || (active && !disabled),
                 },
                 className,
             )}
@@ -133,12 +136,12 @@ export function Dropdown<T = string>({
                                 className={styles['icon']}
                             />
                         ) : null}
-                        <span className={styles['label']}>
+                        <span className={styles['label']} style={(isOpen || active ? highlightContentShade : contentShade) === undefined ? undefined : { color: theme.color(isOpen || active ? highlightColor || color : color, isOpen || active ? highlightContentShade : contentShade) }}>
                             {selectedOption.label}
                         </span>
                     </>
                 ) : (
-                    <span className={styles['placeholder']}>{placeholder}</span>
+                    <span className={styles['placeholder']} style={(isOpen || active ? highlightContentShade : contentShade) === undefined ? undefined : { color: theme.color(isOpen || active ? highlightColor || color : color, isOpen || active ? highlightContentShade : contentShade) }}>{placeholder}</span>
                 )}
                 <Icon
                     src={Icons.NounProject.ChevronDownDoubleSquareFill}
@@ -159,6 +162,8 @@ export function Dropdown<T = string>({
                     iconSize={iconSize}
                     color={color}
                     highlightColor={highlightColor}
+                    contentShade={contentShade}
+                    highlightContentShade={highlightContentShade}
                     size={size}
                     variant={variant}
                     value={value}

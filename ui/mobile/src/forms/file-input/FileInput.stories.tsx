@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { ScrollView, View, StyleSheet, TextInput } from "react-native";
 import { FileInput } from "./FileInput";
 import { Text } from "../../typography";
-import { ColorVariant } from "@ui";
+import { ColorVariant, colorOptions } from "@ui";
 
 const styles = StyleSheet.create({
     container: {
@@ -21,9 +21,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-
-export const FileInputVariants: FC = () => {
+export const Gallery: FC = () => {
     const [fileName, setFileName] = useState<string | null>(null);
     const [color] = useState<ColorVariant>('primary');
 
@@ -61,7 +59,7 @@ export const FileInputVariants: FC = () => {
 
             <View style={styles.section}>
                 <Text>Colors</Text>
-                {allColors.map(c => (
+                {colorOptions.map(c => (
                     <View key={c} style={{ paddingVertical: 4 }}>
                         <FileInput
                             type={['public.item']}
@@ -107,3 +105,17 @@ export const FileInputVariants: FC = () => {
         </ScrollView>
     );
 };
+
+export const Playground: FC = () => (
+    <FileInput
+        type={['public.item']}
+        fileName={null}
+        fileLabel="Upload"
+        purgeLabel="Purge"
+        cancelLabel="Cancel"
+        noNameLabel="No file selected"
+        onUpload={() => {}}
+        onPurge={() => {}}
+        purgeText="Are you sure?"
+    />
+);
