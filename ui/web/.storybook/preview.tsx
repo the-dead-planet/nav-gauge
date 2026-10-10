@@ -79,6 +79,35 @@ const preview: Preview = {
         docs: {
             theme: themes.dark,
         },
+        options: {
+            storySort: {
+                order: [
+                    'Design System',
+                    [
+                        'Overview',
+                        'Typography',
+                        'Colors',
+                        'Theming',
+                        'Icons',
+                        'Sizing',
+                        'Motion',
+                        'Color Box',
+                        'Color Palette',
+                        'Icon Gallery',
+                        'Text',
+                        'Theme Mode Toggle',
+                        'Theme Select',
+                    ],
+                    'Controls',
+                    'Forms',
+                    'HUD',
+                    'Layout',
+                    'Overlays',
+                    'Motion',
+                    '*',
+                ],
+            },
+        },
     },
     decorators: [
         (Story) => (

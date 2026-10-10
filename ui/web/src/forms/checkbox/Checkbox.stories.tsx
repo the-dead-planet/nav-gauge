@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { useState } from 'react';
 import { Checkbox } from './Checkbox';
 import { Text } from '../../typography';
-import { CheckboxProps, ColorVariant, SizeVariant } from '@ui';
+import { ColorVariant, SizeVariant } from '@ui';
 import styles from './checkbox.stories.module.css';
 import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptions as allSizes } from '../../storybook/controls';
 

@@ -46,7 +46,7 @@ const GalleryDropdown = ({
 };
 
 const meta = {
-    title: 'Dropdown',
+    title: 'Forms/Dropdown',
     component: Dropdown,
     args: {
         ariaLabel: 'Select material',

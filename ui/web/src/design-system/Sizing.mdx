@@ -1,0 +1,28 @@
+import { Meta, Title } from '@storybook/addon-docs/blocks';
+
+<Meta title="Design System/Sizing" />
+
+<Title />
+
+The shared component size scale is `xs`, `sm`, `md`, and `lg`. Components that expose `size` must support the complete scale on both platforms.
+
+## Meaning
+
+| Size | Intended use |
+| --- | --- |
+| `xs` | Dense secondary controls and compact overlays |
+| `sm` | Compact controls and the common default where space is limited |
+| `md` | Standard controls and primary application chrome |
+| `lg` | Prominent controls and touch-focused actions |
+
+`size` controls geometry owned by the component, such as control height, typography, icon dimensions, gaps, stroke widths, or shape depth. It must not silently add layout spacing around arbitrary child content.
+
+## Layout Boundary
+
+- Callers own external margin, positioning, and composition spacing.
+- Containers do not impose content padding unless padding is part of their documented contract.
+- `Panel` and `NotchedPanel` shape and color their surface but leave content spacing to their children.
+- `BevelPanel.size` selects bevel depth only; it does not add content padding.
+- Full-width content such as selectable rows may extend to a shaped container's clipped edge.
+
+Use spacing tokens for layout spacing. Do not overload component `size` as a general-purpose padding prop.

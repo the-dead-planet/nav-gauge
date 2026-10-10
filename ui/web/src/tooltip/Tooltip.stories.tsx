@@ -6,7 +6,7 @@ import { Text } from '../typography';
 import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptions as allSizes } from '../storybook/controls';
 
 const meta = {
-    title: 'Tooltip',
+    title: 'Overlays/Tooltip',
     component: Tooltip,
     args: { children: <Button>Hover or focus</Button>, content: 'Tooltip', placement: 'top', color: 'neutral', size: 'sm', variant: 'fill-inverse' },
 } satisfies Meta<typeof Tooltip>;

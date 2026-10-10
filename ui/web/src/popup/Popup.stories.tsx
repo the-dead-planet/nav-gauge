@@ -5,7 +5,7 @@ import { Button } from '../button';
 import type { MenuAnchor } from '@ui';
 
 const meta = {
-    title: 'Popup',
+    title: 'Overlays/Popup',
     component: Popup,
 } satisfies Meta<typeof Popup>;
 

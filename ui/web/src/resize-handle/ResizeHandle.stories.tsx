@@ -5,7 +5,7 @@ import { ResizeHandle } from "./ResizeHandle";
 import styles from './resize-handle.stories.module.css';
 
 const meta = {
-    title: "ResizeHandle",
+    title: "Controls/Resize Handle",
     component: ResizeHandle,
 } satisfies Meta<typeof ResizeHandle>;
 

@@ -5,7 +5,7 @@ import { Button } from '../button';
 import { Text } from '../typography';
 
 const meta = {
-    title: 'Transition',
+    title: 'Motion/Transition',
     component: Transition,
 } satisfies Meta<typeof Transition>;
 

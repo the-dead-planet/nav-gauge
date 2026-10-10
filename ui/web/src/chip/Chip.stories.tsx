@@ -4,7 +4,7 @@ import { Chip } from './Chip';
 import { sizeOptions as allSizes, surfaceVariantOptions as allVariants } from '../storybook/controls';
 
 const meta = {
-    title: 'Chip',
+    title: 'Controls/Chip',
     component: Chip,
     args: { children: 'Chip', color: 'primary', size: 'sm', variant: 'fill', icon: Icons.NounProject.UnderConstruction },
 } satisfies Meta<typeof Chip>;

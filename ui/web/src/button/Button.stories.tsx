@@ -18,7 +18,7 @@ import {
 const allCorners: ButtonCorners[] = ['square', 'circle', 'hexagon'];
 
 const meta = {
-    title: 'Button',
+    title: 'Controls/Button',
     component: Button,
     args: {
         children: 'Button',
