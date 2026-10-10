@@ -13,13 +13,12 @@ import {
     sizeOptions,
     surfaceVariantControl,
     surfaceVariantOptions,
-    themeModeControl,
 } from '../storybook/controls';
 
-const allCorners: ButtonCorners[] = ['square', 'rounded', 'circle', 'hexagon'];
+const allCorners: ButtonCorners[] = ['square', 'circle', 'hexagon'];
 
 const meta = {
-    title: 'Button',
+    title: 'Controls/Button',
     component: Button,
     args: {
         children: 'Button',
@@ -40,9 +39,9 @@ const meta = {
             },
         },
         color: colorControl,
-        shade: optionalShadeControl,
+        contentShade: optionalShadeControl,
         highlightColor: optionalColorControl,
-        highlightShade: optionalShadeControl,
+        highlightContentShade: optionalShadeControl,
         variant: surfaceVariantControl,
         glowStyle: { control: 'select', options: ['none', 'glow', 'animate-borders-glow'] },
         size: sizeControl,
@@ -56,7 +55,6 @@ const meta = {
         },
         tooltip: { control: 'text' },
         showTooltipConnection: { control: 'boolean' },
-        themeMode: themeModeControl,
         iconRotateX: { control: { type: 'range', min: 0, max: 360, step: 1 } },
         iconRotateZ: { control: { type: 'range', min: 0, max: 360, step: 1 } },
         onClick: { control: false },
@@ -86,26 +84,29 @@ export const Gallery: Story = {
         corners: { table: { disable: true } },
     },
     render: (args) => (
-        <VariantGallery
-            sizes={sizeOptions}
-            colors={colorOptions}
-            variants={surfaceVariantOptions}
-            render={({ color, size, variant }) => (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                    {allCorners.map((corners) => (
+        <div style={{ display: 'grid', gap: 40 }}>
+            {allCorners.map((corners) => (
+                <section key={corners}>
+                    <h2>{corners}</h2>
+                    <VariantGallery
+                        sizes={sizeOptions}
+                        colors={colorOptions}
+                        variants={surfaceVariantOptions}
+                        render={({ color, size, variant }) => (
                         <Button
                             {...args}
-                            key={corners}
                             color={color}
                             size={size}
                             variant={variant}
                             corners={corners}
+                            aria-label={corners === 'square' ? undefined : `${corners} button`}
                         >
-                            {corners === 'hexagon' ? null : args.children}
+                            {corners === 'square' ? args.children : null}
                         </Button>
-                    ))}
-                </div>
-            )}
-        />
+                        )}
+                    />
+                </section>
+            ))}
+        </div>
     ),
 };

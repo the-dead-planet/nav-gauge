@@ -165,6 +165,20 @@
     background-color: rgb(from var(--radio-color) r g b / .24);
 }
 
+.size-lg .box {
+    width: 20px;
+    height: 20px;
+}
+
+.size-lg .dot {
+    width: 10px;
+    height: 10px;
+}
+
+.size-lg .label {
+    font-size: 16px;
+}
+
 .size-md .box {
     width: 16px;
     height: 16px;

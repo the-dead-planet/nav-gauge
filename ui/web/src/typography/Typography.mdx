@@ -1,0 +1,48 @@
+import { Meta, Title } from '@storybook/addon-docs/blocks';
+
+<Meta title="Design System/Typography" />
+
+<Title />
+
+Typography carries both hierarchy and product voice. Font choice must follow the role of the text rather than personal preference.
+
+<table>
+    <thead>
+        <tr>
+            <th>Font type</th>
+            <th>Family</th>
+            <th>Intended use</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>default</code></td>
+            <td><span style={{ fontFamily: '"Space Grotesk", sans-serif' }}>Space Grotesk</span></td>
+            <td>General interface text, controls, labels, notices, and explanations</td>
+        </tr>
+        <tr>
+            <td><code>numeric</code></td>
+            <td><span style={{ fontFamily: '"Ubuntu Mono", monospace' }}>Ubuntu Mono</span></td>
+            <td>Telemetry, measurements, timestamps, coordinates, charts, tables, and values that benefit from fixed-width alignment</td>
+        </tr>
+        <tr>
+            <td><code>special-messaging</code></td>
+            <td><span style={{ fontFamily: '"Syne Mono", monospace' }}>Syne Mono</span></td>
+            <td>Rare system messaging with a psychological, institutional, or propaganda-like tone</td>
+        </tr>
+        <tr>
+            <td><code>neon-header</code></td>
+            <td><span style={{ fontFamily: '"Sixtyfour", sans-serif' }}>Sixtyfour</span></td>
+            <td>Rare display headings and graphic moments where the illuminated signage style is intentional</td>
+        </tr>
+        <tr>
+            <td><code>neon-text</code></td>
+            <td><span style={{ fontFamily: '"Bitcount Single", sans-serif' }}>Bitcount Single</span></td>
+            <td>Short neon-styled text, not paragraphs or routine controls</td>
+        </tr>
+    </tbody>
+</table>
+
+Use the default font unless the content clearly matches another role. Special messaging and neon fonts lose their effect when used frequently and reduce readability in long text.
+
+Use tabular numerals for changing values when stable character widths prevent the surrounding layout from shifting.

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { ColorVariant, FillVariant, SizeVariant } from '@ui';
 import { VariantGallery } from '../../storybook/VariantGallery';
 import { NumberInput } from './NumberInput';
-import { colorControl, colorOptions, fillVariantControl, fillVariantOptions, sizeControl, sizeOptions } from '../../storybook/controls';
+import { colorControl, colorOptions, fillVariantControl, fillVariantOptions, optionalShadeControl, sizeControl, sizeOptions } from '../../storybook/controls';
 
 const GalleryNumberInput = ({
     color,
@@ -40,6 +40,8 @@ const meta = {
         value: 42,
         color: 'neutral',
         highlightColor: 'neutral',
+        contentShade: 700,
+        highlightContentShade: 200,
         size: 'sm',
         variant: 'fill-inverse',
         min: 0,
@@ -54,6 +56,8 @@ const meta = {
     argTypes: {
         color: colorControl,
         highlightColor: colorControl,
+        contentShade: optionalShadeControl,
+        highlightContentShade: optionalShadeControl,
         size: sizeControl,
         variant: fillVariantControl,
         onChange: { control: false },

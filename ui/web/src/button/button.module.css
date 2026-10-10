@@ -163,6 +163,18 @@
     --button-disabled-fg: var(--button-disabled-fg-dark);
 }
 
+.size-lg {
+    font-size: 16px;
+    height: 40px;
+    min-width: 40px;
+    padding: 8px 20px;
+    gap: 12px;
+}
+
+.only-icon-lg {
+    padding: 8px;
+}
+
 .size-md {
     font-size: 14px;
     height: 32px;
@@ -176,7 +188,7 @@
 }
 
 .size-sm {
-    font-size: 14px;
+    font-size: 12px;
     height: 24px;
     min-width: 24px;
     padding: 2px 16px;
@@ -469,25 +481,28 @@
     border-radius: 0;
 }
 
-.corners-rounded.size-md {
-    border-radius: 6px;
-}
-
-.corners-rounded.size-sm,
-.corners-rounded.size-xs {
-    border-radius: 4px;
+.corners-circle.size-lg {
+    border-radius: 20px;
+    width: 40px;
+    padding-inline: 0;
 }
 
 .corners-circle.size-md {
     border-radius: 16px;
+    width: 32px;
+    padding-inline: 0;
 }
 
 .corners-circle.size-sm {
     border-radius: 12px;
+    width: 24px;
+    padding-inline: 0;
 }
 
 .corners-circle.size-xs {
     border-radius: 12px;
+    width: 24px;
+    padding-inline: 0;
 }
 
 /* ── Hexagon button overrides ── */

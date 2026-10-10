@@ -27,8 +27,12 @@ export const Tabstrip: FC<TabstripProps> = ({
     onChange,
     size = 'sm',
     color = 'neutral',
+    contentShade,
     highlightColor = color,
+    highlightContentShade,
     variant = 'fill-inverse',
+    active = false,
+    disabled = false,
     spread = false,
     overflowAccessibilityLabel,
     children,
@@ -47,7 +51,7 @@ export const Tabstrip: FC<TabstripProps> = ({
             ? current
             : Object.assign([...current], { [index]: width }));
     };
-    const buttonProps = { color, highlightColor, size, variant };
+    const buttonProps = { color, contentShade, highlightColor, highlightContentShade, size, variant };
     const selectTab = (selectedValue: string) => {
         LayoutAnimation.configureNext({
             duration: 200,
@@ -86,12 +90,12 @@ export const Tabstrip: FC<TabstripProps> = ({
                         {...buttonProps}
                         style={[styles.headerButton, spread ? styles.spreadButton : undefined, selected ? styles.selectedButton : undefined]}
                         accessibilityRole="tab"
-                        accessibilityState={{ selected, disabled: option.disabled }}
-                        active={selected}
-                        disabled={option.disabled}
+                        accessibilityState={{ selected, disabled: disabled || option.disabled }}
+                        active={active || selected}
+                        disabled={disabled || option.disabled}
                         onPress={() => selectTab(option.value)}
                     >
-                        {selected ? <Text style={{ color: theme.color(highlightColor, theme.isDark ? 900 : 100), fontSize: 14 }}>{option.label}</Text> : option.label}
+                        {selected ? <Text color={highlightColor} shade={highlightContentShade ?? (theme.isDark ? 900 : 100)} style={{ fontSize: 14 }}>{option.label}</Text> : option.label}
                     </Button>;
                     return selected ? (
                         <View key={option.value} style={[styles.selected, spread ? [styles.spreadItem, { minWidth: width }] : undefined, { backgroundColor: isTrailing && !spread ? 'transparent' : inactiveFill }, visibleIndex ? styles.joined : undefined]}>
@@ -110,10 +114,11 @@ export const Tabstrip: FC<TabstripProps> = ({
                             iconSize={size}
                             triggerAccessibilityLabel={overflowAccessibilityLabel}
                             triggerActive={overflowOptions.some((option) => option.value === value)}
+                            disabled={disabled}
                             triggerStyle={[styles.headerButton, spread ? styles.spreadButton : undefined]}
                         >
                             {overflowOptions.map((option) => (
-                                <MenuItem key={option.value} onPress={() => selectTab(option.value)} highlightColor={highlightColor} disabled={option.disabled}>
+                                <MenuItem key={option.value} onPress={() => selectTab(option.value)} highlightColor={highlightColor} disabled={disabled || option.disabled}>
                                     {option.value === value ? '* ' : null}{option.label}
                                 </MenuItem>
                             ))}

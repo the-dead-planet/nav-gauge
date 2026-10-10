@@ -27,7 +27,7 @@ const previewColors: DesignSystemColor[] = [
     'tertiary',
 ];
 
-const colorBoxSizes = { xs: 12, sm: 16, md: 20 } as const;
+const colorBoxSizes = { xs: 12, sm: 16, md: 20, lg: 24 } as const;
 
 export const ThemeSelect: FC<ThemeSelectProps> = ({
     mode,

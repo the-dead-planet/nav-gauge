@@ -148,6 +148,12 @@
     font-size: 12px;
 }
 
+.size-lg {
+    --rotate-size: 84px;
+    --rotate-icon-size: 48px;
+    font-size: 14px;
+}
+
 /* ── Overlay SVGs (ring + arrows) ── */
 
 .overlay-svg {

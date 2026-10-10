@@ -1,4 +1,4 @@
-import type { Meta } from 'storybook-react-rsbuild';
+import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { useState } from 'react';
 import { Radio } from './Radio';
 import { Text } from '../../typography';
@@ -8,11 +8,15 @@ import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptio
 const meta = {
     title: 'Forms/Radio',
     component: Radio,
+    args: { children: 'Radio', checked: false, color: 'primary', contentShade: 700, highlightContentShade: 200, size: 'sm', variant: 'fill', onChange: () => {} },
 } satisfies Meta<typeof Radio>;
 
 export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const RadioVariants = {
+export const Playground: Story = {};
+
+export const Gallery = {
     render: () => {
         const [option, setOption] = useState('first');
         const [size, setSize] = useState<SizeVariant>('sm');
@@ -24,6 +28,8 @@ export const RadioVariants = {
                     <Radio
                         size={size}
                         color={color}
+                        contentShade={700}
+                        highlightContentShade={200}
                         checked={option === 'first'}
                         onChange={() => setOption('first')}
                     >

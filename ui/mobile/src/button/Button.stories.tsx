@@ -2,7 +2,8 @@ import { FC, useState } from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 import { Button } from "./Button";
 import { Text } from "../typography";
-import { ColorVariant, GlowStyle, SurfaceVariant, ButtonCorners, SizeVariant, Icons } from "@ui";
+import { ButtonCorners, ColorVariant, GlowStyle, Icons, colorOptions, surfaceVariantOptions } from "@ui";
+import { VariantGallery } from '../storybook/VariantGallery';
 
 const styles = StyleSheet.create({
     container: {
@@ -10,59 +11,51 @@ const styles = StyleSheet.create({
     },
     section: {
         paddingVertical: 12,
+        gap: 8,
     },
     row: {
         flexDirection: 'row',
         gap: 8,
         paddingVertical: 4,
     },
-    cell: {
-        flex: 1,
-    },
     label: {
         marginBottom: 4,
     },
 });
 
-const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
-const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: SurfaceVariant[] = ['ghost', 'fill', 'fill-inverse', 'fill-translucent', 'outline', 'inset'];
-const allCorners: ButtonCorners[] = ['square', 'rounded', 'circle', 'hexagon'];
+const allCorners: ButtonCorners[] = ['square', 'circle', 'hexagon'];
 
 const allGlowStyles: GlowStyle[] = ['none', 'glow', 'animate-borders-glow'];
 
-export const AllVariants: FC = () => {
+export const Gallery: FC = () => {
     const [highlightColor, setHighlightColor] = useState<ColorVariant | undefined>(undefined);
     const [glowStyle, setGlowStyle] = useState<GlowStyle>('none');
     const [disabled, setDisabled] = useState(false);
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
-            <View style={styles.section}>
+            <View>
                 <View style={styles.row}>
                     <Button
                         variant={disabled ? 'fill' : 'ghost'}
                         color="primary"
                         size="xs"
-                        corners="rounded"
                         active={disabled}
                         onPress={() => setDisabled((d) => !d)}
                     >
                         {`disabled: ${String(disabled)}`}
                     </Button>
                 </View>
-            </View>
             <View style={styles.section}>
                 <Text style={styles.label}>highlightColor: {highlightColor ?? 'default'}</Text>
                 <View style={styles.row}>
-                    {[undefined, ...allColors].map((c) => (
+                    {[undefined, ...colorOptions].map((c) => (
                         <Button
                             key={c ?? 'default'}
                             icon={Icons.Beaker}
                             variant="ghost"
                             color={c}
                             size="xs"
-                            corners="rounded"
                             active={highlightColor === c}
                             disabled={disabled}
                             onPress={() => setHighlightColor(c)}
@@ -82,7 +75,6 @@ export const AllVariants: FC = () => {
                             variant={glowStyle === g ? 'fill' : 'ghost'}
                             color="primary"
                             size="xs"
-                            corners="rounded"
                             active={glowStyle === g}
                             disabled={disabled}
                             onPress={() => setGlowStyle(g)}
@@ -92,45 +84,39 @@ export const AllVariants: FC = () => {
                     ))}
                 </View>
             </View>
-            {allSizes.map((size) => (
-                <View key={size} style={styles.section}>
-                    <Text style={styles.label}>{size}</Text>
-                    {allCorners.map((corners) => (
-                        <View key={corners} style={styles.section}>
-                            <Text style={styles.label}>{corners}</Text>
-                            <View style={styles.row}>
-                                {allVariants.map((variant) => (
-                                    <View key={variant} style={styles.cell}>
-                                        <Text style={styles.label}>{variant}</Text>
-                                    </View>
-                                ))}
-                            </View>
-                            {allColors.map((color) => (
-                                <View key={color} style={styles.row}>
-                                    {allVariants.map((variant, i) => (
-                                        <View key={`${size}-${corners}-${color}-${variant}`} style={styles.cell}>
-                                            <Button
-                                                icon={i % 2 === 0 ? Icons.NounProject.LightBulbCogWheel : Icons.Beaker}
-                                                variant={variant}
-                                                glowStyle={glowStyle}
-                                                color={color}
-                                                corners={corners}
-                                                size={size}
-                                                highlightColor={highlightColor}
-                                                disabled={disabled}
-                                            >
-                                                {corners !== 'hexagon' ? color : null}
-                                            </Button>
-                                        </View>
-                                    ))}
-                                </View>
-                            ))}
-                        </View>
-                    ))}
+            </View>
+            {allCorners.map((corners) => (
+                <View key={corners} style={styles.section}>
+                    <Text style={styles.label}>{corners}</Text>
+                    <VariantGallery
+                        variants={surfaceVariantOptions}
+                        scrollEnabled={false}
+                        render={({ color, size, variant }) => (
+                            <Button
+                                icon={Icons.Beaker}
+                                variant={variant}
+                                glowStyle={glowStyle}
+                                color={color}
+                                corners={corners}
+                                size={size}
+                                highlightColor={highlightColor}
+                                disabled={disabled}
+                                accessibilityLabel={corners === 'square' ? undefined : `${corners} button`}
+                            >
+                                {corners === 'square' ? color : null}
+                            </Button>
+                        )}
+                    />
                 </View>
             ))}
         </ScrollView>
     );
+};
+
+export const Playground: FC = () => {
+    const [active, setActive] = useState(false);
+
+    return <Button onPress={() => setActive(!active)} active={active}>Button</Button>;
 };
 
 export const TooltipPressBehavior: FC = () => {
@@ -141,7 +127,7 @@ export const TooltipPressBehavior: FC = () => {
             <Text style={styles.label}>Tap increments. Long press shows the tooltip without incrementing.</Text>
             <Text style={styles.label}>Presses: {pressCount}</Text>
             <View style={styles.row}>
-                {(['rounded', 'hexagon'] as ButtonCorners[]).map((corners) => (
+                {(['square', 'hexagon'] as ButtonCorners[]).map((corners) => (
                     <Button
                         key={corners}
                         corners={corners}

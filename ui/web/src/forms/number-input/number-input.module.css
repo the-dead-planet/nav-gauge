@@ -112,6 +112,10 @@
     padding: 0 2px;
 }
 
+.size-lg .stepper-btn {
+    padding: 0 2px;
+}
+
 .color-neutral {
     --ni-color: var(--color-neutral);
     --ni-color-dark: var(--color-neutral-800);
@@ -148,19 +152,23 @@
     --ni-disabled-dark: var(--color-tertiary-700);
 }
 
-.highlight-neutral .input-wrapper:focus-within {
+.highlight-neutral .input-wrapper:focus-within,
+.highlight-neutral.active {
     --ni-highlight-color: var(--color-neutral);
 }
 
-.highlight-primary .input-wrapper:focus-within {
+.highlight-primary .input-wrapper:focus-within,
+.highlight-primary.active {
     --ni-highlight-color: var(--color-primary);
 }
 
-.highlight-secondary .input-wrapper:focus-within {
+.highlight-secondary .input-wrapper:focus-within,
+.highlight-secondary.active {
     --ni-highlight-color: var(--color-secondary);
 }
 
-.highlight-tertiary .input-wrapper:focus-within {
+.highlight-tertiary .input-wrapper:focus-within,
+.highlight-tertiary.active {
     --ni-highlight-color: var(--color-tertiary);
 }
 
@@ -225,6 +233,24 @@
 
 .size-md .steppers {
     min-width: 24px;
+}
+
+.size-lg .input {
+    font-size: 16px;
+    padding: 8px 12px;
+}
+
+.size-lg .input-wrapper {
+    height: 40px;
+}
+
+.size-lg .label,
+.size-lg .unit {
+    font-size: 16px;
+}
+
+.size-lg .steppers {
+    min-width: 28px;
 }
 
 .mode-light .label {

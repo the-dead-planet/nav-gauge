@@ -1,15 +1,10 @@
 import { ReactNode } from "react";
-import { ColorVariant, LayoutOrientation, SizeVariant, SurfaceVariant } from "../model";
+import { AppearanceProps, LayoutOrientation, SurfaceVariant } from "../model";
 
-export interface ToggleSwitchProps {
+export interface ToggleSwitchProps extends AppearanceProps<SurfaceVariant> {
     label?: ReactNode;
-    color?: ColorVariant;
-    highlightColor?: ColorVariant;
-    size?: SizeVariant;
-    variant?: SurfaceVariant;
     orientation?: LayoutOrientation;
     checked: boolean;
     onChange: (checked: boolean) => void;
-    disabled?: boolean;
     children?: ReactNode;
 }

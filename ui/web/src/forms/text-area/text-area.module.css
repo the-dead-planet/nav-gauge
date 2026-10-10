@@ -26,7 +26,8 @@
         background-color 0.15s ease;
 }
 
-.textarea:focus {
+.textarea:focus,
+.active .textarea {
     border-color: var(--ni-highlight-color);
     box-shadow: 0 0 0 1px var(--ni-highlight-color);
 }
@@ -83,19 +84,23 @@
     --ni-highlight-color: var(--color-tertiary);
 }
 
-.highlight-neutral .textarea:focus {
+.highlight-neutral .textarea:focus,
+.highlight-neutral.active {
     --ni-highlight-color: var(--color-neutral);
 }
 
-.highlight-primary .textarea:focus {
+.highlight-primary .textarea:focus,
+.highlight-primary.active {
     --ni-highlight-color: var(--color-primary);
 }
 
-.highlight-secondary .textarea:focus {
+.highlight-secondary .textarea:focus,
+.highlight-secondary.active {
     --ni-highlight-color: var(--color-secondary);
 }
 
-.highlight-tertiary .textarea:focus {
+.highlight-tertiary .textarea:focus,
+.highlight-tertiary.active {
     --ni-highlight-color: var(--color-tertiary);
 }
 
@@ -127,6 +132,16 @@
 
 .size-md .label {
     font-size: 13px;
+}
+
+.size-lg .textarea {
+    height: 40px;
+    font-size: 16px;
+    padding: 8px 12px;
+}
+
+.size-lg .label {
+    font-size: 16px;
 }
 
 .mode-light .label {

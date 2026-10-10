@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const controlHeights = { xs: 18, sm: 24, md: 32 } as const;
+const controlHeights = { xs: 18, sm: 24, md: 32, lg: 40 } as const;
 
 export const StepControls: FC<StepControlsProps> = ({
     children,

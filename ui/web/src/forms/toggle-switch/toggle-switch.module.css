@@ -359,7 +359,8 @@
 
 /* ── Hover ── */
 
-.toggle-switch:hover .track {
+.toggle-switch:hover .track,
+.toggle-switch.active .track {
     box-shadow: 0 0 0 2px rgb(from var(--ts-highlight-color-accent) r g b / .3);
 }
 
@@ -487,6 +488,41 @@
 .size-md .orientation-horizontal,
 .size-md .orientation-vertical {
     gap: 10px;
+}
+
+/* lg */
+.size-lg .track {
+    width: 46px;
+    height: 46px;
+}
+
+.size-lg .thumb {
+    --thumb-length: 18px;
+    --thumb-thickness: 14px;
+    --ts-clip-pivot-start: 18.75%;
+    --ts-clip-pivot-end: 81.25%;
+    --ts-clip-knob-start: 12.5%;
+    --ts-clip-knob-end: 87.5%;
+}
+
+.size-lg .thumb-pivot {
+    width: 9px;
+    height: 9px;
+}
+
+.size-lg .thumb-knob,
+.size-lg .lamp {
+    width: 12px;
+    height: 12px;
+}
+
+.size-lg .label {
+    font-size: 16px;
+}
+
+.size-lg .orientation-horizontal,
+.size-lg .orientation-vertical {
+    gap: 12px;
 }
 
 /* ── Knob pulse animation ── */

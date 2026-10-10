@@ -1,10 +1,6 @@
-import { ColorVariant, SizeVariant, FillVariant } from "../model";
+import { AppearanceProps, FillVariant } from "../model";
 
-export interface TextAreaProps {
-    color?: ColorVariant;
-    highlightColor?: ColorVariant;
-    size?: SizeVariant;
-    variant?: FillVariant;
+export interface TextAreaProps extends AppearanceProps<FillVariant> {
     label: string;
     autoSelect?: boolean;
 }

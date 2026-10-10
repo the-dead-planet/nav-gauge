@@ -1,14 +1,8 @@
 import { ReactNode } from 'react';
-import { ColorVariant, GlowStyle, SizeVariant, FillVariant } from '../../model';
-import { ThemeMode } from '../../theme';
+import { AppearancePropsBase, GlowStyle, FillVariant } from '../../model';
 
-export interface NotchedPanelProps {
-    color?: ColorVariant;
-    highlightColor?: ColorVariant;
-    variant?: FillVariant;
-    padding?: SizeVariant;
+export interface NotchedPanelProps extends AppearancePropsBase<FillVariant> {
     glowStyle?: GlowStyle;
-    themeMode?: ThemeMode;
     header?: ReactNode;
     children?: ReactNode;
 }

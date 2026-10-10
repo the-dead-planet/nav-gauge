@@ -16,7 +16,7 @@ interface Props extends ThemeSelectProps {
     popoverClassName?: string;
 }
 
-const colorBoxSizes = { xs: 12, sm: 16, md: 20 } as const;
+const colorBoxSizes = { xs: 12, sm: 16, md: 20, lg: 24 } as const;
 
 const previewColors: DesignSystemColor[] = [
     'neutral',

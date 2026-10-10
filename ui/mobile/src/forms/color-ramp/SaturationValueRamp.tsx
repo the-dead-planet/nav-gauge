@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const heights: { [key in SizeVariant]: number } = { xs: 100, sm: 140, md: 180 };
+const heights: { [key in SizeVariant]: number } = { xs: 100, sm: 140, md: 180, lg: 220 };
 
 export const SaturationValueRamp: FC<SaturationValueRampProps> = ({
     hue,

@@ -1,16 +1,10 @@
 import { ReactNode } from "react";
-import { ColorVariant, GlowStyle, SizeVariant, FillVariant } from "../../model";
-import { ThemeMode } from "../../theme";
+import { AppearancePropsBase, GlowStyle, SizeVariant, FillVariant } from "../../model";
 
-export interface BevelPanelProps {
-    bevel?: number;
+export interface BevelPanelProps extends AppearancePropsBase<FillVariant> {
     interactive?: boolean;
     glowStyle?: GlowStyle;
-    color?: ColorVariant;
-    padding?: SizeVariant;
-    highlightColor?: ColorVariant;
-    variant?: FillVariant;
-    themeMode?: ThemeMode;
-    active?: boolean;
+    /** Selects a predefined bevel depth. Does not add content padding. Defaults to `lg`. */
+    size?: SizeVariant;
     children?: ReactNode;
 }

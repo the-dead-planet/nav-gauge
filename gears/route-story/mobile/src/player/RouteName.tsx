@@ -11,6 +11,8 @@ const styles = StyleSheet.create({
     panel: {
         marginTop: 6,
         height: 40,
+        paddingHorizontal: 16,
+        paddingVertical: 8,
     },
 });
 
@@ -45,7 +47,7 @@ export const RouteName: FC<TopToolsProps<MobileMap> & MobileRouteStoryProps> = (
         <BevelPanel
             variant="fill-translucent"
             color="primary"
-            padding="sm"
+            size="sm"
             style={styles.panel}
         >
             <FileInput

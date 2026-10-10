@@ -11,11 +11,13 @@ import { sizeMap, thumbRadii, centerDotRadii, strokeWidths } from "./constants";
 import { NumberInput } from "../number-input";
 import { StepControls } from "../step-controls";
 
-const controlHeights = { xs: 18, sm: 24, md: 32 } as const;
+const controlHeights = { xs: 18, sm: 24, md: 32, lg: 40 } as const;
 
 export const ClockInput = forwardRef<ViewInstance, ClockInputProps & { style?: ViewStyle }>(({
     color = 'neutral',
+    contentShade,
     highlightColor,
+    highlightContentShade,
     size = 'md',
     variant = 'fill-translucent',
     value = CLOCK_INPUT_RANGE[0],
@@ -35,7 +37,7 @@ export const ClockInput = forwardRef<ViewInstance, ClockInputProps & { style?: V
     const activeHighlight = highlightColor || color;
     const svgSize = sizeMap[size];
     const center = svgSize / 2;
-    const paddings: Record<string, number> = { xs: 7, sm: 8, md: 9 };
+    const paddings: Record<string, number> = { xs: 7, sm: 8, md: 9, lg: 10 };
     const outerRadius = center - paddings[size];
     const thumbRadius = thumbRadii[size];
     const centerDotRadius = centerDotRadii[size];
@@ -118,7 +120,9 @@ export const ClockInput = forwardRef<ViewInstance, ClockInputProps & { style?: V
                     max={max}
                     step={step}
                     color={color}
+                    contentShade={contentShade}
                     highlightColor={highlightColor}
+                    highlightContentShade={highlightContentShade}
                     size={size}
                     variant={variant}
                     disabled={disabled || !onChange}
@@ -131,7 +135,7 @@ export const ClockInput = forwardRef<ViewInstance, ClockInputProps & { style?: V
 
     return (
         <View ref={ref} style={containerStyle}>
-            <ClockLabel label={label} value={value} isLight={theme.isLight} showValue={!showNumberInput} />
+            <ClockLabel label={label} value={value} isLight={theme.isLight} showValue={!showNumberInput} color={color} contentShade={contentShade} />
             {control}
         </View>
     );

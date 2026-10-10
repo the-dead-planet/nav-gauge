@@ -1,33 +1,7 @@
 import { FC, useState } from 'react';
-import { ScrollView, StyleSheet, Switch, View } from 'react-native';
 import { ColorVariant, FillVariant, SizeVariant } from '@ui';
 import { VariantGallery } from '../../storybook/VariantGallery';
-import { Text } from '../../typography';
 import { NumberInput } from './NumberInput';
-
-const styles = StyleSheet.create({
-    container: {
-        padding: 16,
-        gap: 16,
-    },
-    section: {
-        paddingVertical: 12,
-        gap: 8,
-    },
-    row: {
-        flexDirection: 'row',
-        gap: 8,
-        alignItems: 'center',
-    },
-    label: {
-        fontSize: 14,
-        fontWeight: '600',
-    },
-});
-
-const allSizes: SizeVariant[] = ['md', 'sm', 'xs'];
-const allColors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
-const allVariants: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
 
 const GalleryNumberInput: FC<{
     color: ColorVariant;
@@ -51,82 +25,24 @@ const GalleryNumberInput: FC<{
     );
 };
 
-export const NumberInputInteractive: FC = () => {
+export const Playground: FC = () => {
     const [value, setValue] = useState(50);
-    const [color, setColor] = useState<ColorVariant>('neutral');
-    const [size, setSize] = useState<SizeVariant>('sm');
-    const [variant, setVariant] = useState<FillVariant>('fill-inverse');
-    const [disabled, setDisabled] = useState(false);
 
     return (
-        <ScrollView contentContainerStyle={styles.container}>
-            <NumberInput
-                label="Value"
-                value={value}
-                onChange={setValue}
-                color={color}
-                size={size}
-                variant={variant}
-                disabled={disabled}
-                step={0.1}
-                unit="px"
-            />
-            <NumberInput
-                label="Without step controls"
-                value={value}
-                onChange={setValue}
-                showStepControls={false}
-            />
-            <Text style={styles.label}>Current value: {value}</Text>
-            <View style={styles.section}>
-                <Text style={styles.label}>Color: {color}</Text>
-                <View style={styles.row}>
-                    {allColors.map((option) => (
-                        <Switch
-                            key={option}
-                            value={color === option}
-                            onValueChange={() => setColor(option)}
-                        />
-                    ))}
-                </View>
-            </View>
-            <View style={styles.section}>
-                <Text style={styles.label}>Size: {size}</Text>
-                <View style={styles.row}>
-                    {allSizes.map((option) => (
-                        <Switch
-                            key={option}
-                            value={size === option}
-                            onValueChange={() => setSize(option)}
-                        />
-                    ))}
-                </View>
-            </View>
-            <View style={styles.section}>
-                <Text style={styles.label}>Variant: {variant}</Text>
-                <View style={styles.row}>
-                    {allVariants.map((option) => (
-                        <Switch
-                            key={option}
-                            value={variant === option}
-                            onValueChange={() => setVariant(option)}
-                        />
-                    ))}
-                </View>
-            </View>
-            <View style={styles.row}>
-                <Text>Disabled</Text>
-                <Switch value={disabled} onValueChange={setDisabled} />
-            </View>
-        </ScrollView>
+        <NumberInput
+            label="Value"
+            value={value}
+            onChange={setValue}
+            contentShade={700}
+            highlightContentShade={200}
+            step={0.1}
+            unit="px"
+        />
     );
 };
 
-export const AllVariants: FC = () => (
+export const Gallery: FC = () => (
     <VariantGallery
-        sizes={allSizes}
-        colors={allColors}
-        variants={allVariants}
         render={(options) => <GalleryNumberInput {...options} />}
     />
 );

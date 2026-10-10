@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
 
 interface MobileMenuProps extends MenuProps {
     triggerStyle?: StyleProp<ViewStyle>;
+    disabled?: boolean;
 }
 
 export const Menu: FC<MobileMenuProps> = ({
@@ -63,6 +64,7 @@ export const Menu: FC<MobileMenuProps> = ({
     color = 'neutral',
     triggerAccessibilityLabel,
     triggerActive = false,
+    disabled = false,
     triggerStyle,
     children,
 }) => {
@@ -76,6 +78,9 @@ export const Menu: FC<MobileMenuProps> = ({
     const iconWrapperRef = useRef<HostInstance>(null);
 
     const toggleMenu = (): void => {
+        if (disabled) {
+            return;
+        }
         if (visible) {
             setVisible(false);
             return;
@@ -103,9 +108,10 @@ export const Menu: FC<MobileMenuProps> = ({
                     highlightColor={iconActiveColor}
                     size={iconSize}
                     active={visible || triggerActive}
+                    disabled={disabled}
                     accessibilityLabel={triggerAccessibilityLabel}
                     accessibilityRole="button"
-                    accessibilityState={{ expanded: visible }}
+                    accessibilityState={{ disabled, expanded: visible }}
                     onPress={toggleMenu}
                     style={[styles.iconButton, triggerStyle]}
                 />

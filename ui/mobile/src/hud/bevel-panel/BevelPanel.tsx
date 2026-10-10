@@ -13,10 +13,11 @@ import Svg, { Polygon } from "react-native-svg";
 import { BevelPanelProps, ColorVariant, SizeVariant, useTheme } from "@ui";
 import { TRANSLUCENT_OPACITY_BACKGROUND } from "../../tinkers";
 
-const paddingMap: Record<SizeVariant, number> = {
+const bevelMap: Record<SizeVariant, number> = {
     xs: 6,
     sm: 10,
     md: 14,
+    lg: 20,
 };
 
 interface Props {
@@ -69,15 +70,14 @@ const GlowPolygons: FC<{ points: string; glowColor: string; strokeWidth: number 
 
 export const BevelPanel: FC<BevelPanelProps & Props> = ({
     forwardRef,
-    bevel = 20,
     color: colorProp,
     highlightColor: highlightColorProp,
     variant,
     glowStyle = "none",
-    themeMode,
-    padding,
+    size = 'lg',
     interactive = false,
     active = false,
+    disabled = false,
     onPress,
     onLongPress,
     onPressIn: onParentPressIn,
@@ -90,16 +90,15 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
     const [pressed, setPressed] = useState(false);
     const [containerWidth, setContainerWidth] = useState(0);
     const [containerHeight, setContainerHeight] = useState(0);
-    const highlight = pressed || active;
-    const effectiveTheme = themeMode || theme.mode;
-    const isLight = effectiveTheme === 'light';
+    const highlight = !disabled && (pressed || active);
+    const isLight = theme.mode === 'light';
 
     const color = (colorProp || 'neutral') as ColorVariant;
     const baseColor = theme.color(color, 500);
     const highlight500 = theme.color(highlightColor, 500);
     const highlightAccent = theme.color(highlightColor, isLight ? 600 : 300);
 
-    const showGlow = (glowStyle !== 'none') && (pressed || active);
+    const showGlow = !disabled && (glowStyle !== 'none') && (pressed || active);
 
     const onLayout = (e: LayoutChangeEvent) => {
         const { width, height } = e.nativeEvent.layout;
@@ -110,6 +109,7 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
     const strokeWidth = variant === 'fill' ? 0 : 1;
     const strokeInset = strokeWidth / 2;
 
+    const bevel = bevelMap[size];
     const effectiveBevel = containerWidth > 0
         ? Math.min(bevel, containerWidth / 2 - 1)
         : bevel;
@@ -126,13 +126,24 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
     const renderVariant = () => {
         if (!points) return null;
 
+        if (disabled) {
+            return (
+                <Polygon
+                    points={points}
+                    fill={theme.color(color, isLight ? 200 : 800)}
+                    stroke={theme.color(color, isLight ? 300 : 700)}
+                    strokeWidth={variant === 'fill' ? 0 : strokeWidth}
+                />
+            );
+        }
+
         switch (variant) {
             case 'fill': {
                 let fillColor: string;
                 let borderColor: string;
                 if (active) {
-                    fillColor = theme.color(highlightColor, 500);
-                    borderColor = highlight500;
+                    fillColor = highlightAccent;
+                    borderColor = highlightAccent;
                 } else if (pressed) {
                     fillColor = highlightAccent;
                     borderColor = highlightAccent;
@@ -161,8 +172,8 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
                 let fillColor: string;
                 let borderColor: string;
                 if (active) {
-                    fillColor = theme.color(highlightColor, hlBgShade);
-                    borderColor = highlight500;
+                    fillColor = theme.color(color, bgShade);
+                    borderColor = highlightAccent;
                 } else if (pressed) {
                     fillColor = theme.color(highlightColor, hlBgShade);
                     borderColor = highlightAccent;
@@ -185,9 +196,9 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
 
             case 'fill-translucent': {
                 const fill = highlight
-                    ? theme.color(highlightColor, 500, active ? 0.48 : 0.36)
+                    ? theme.color(highlightColor, active ? (isLight ? 600 : 300) : 500, active ? 0.48 : 0.36)
                     : theme.color(color, 500, TRANSLUCENT_OPACITY_BACKGROUND);
-                const border = highlight ? (active ? highlight500 : highlightAccent) : baseColor;
+                const border = highlight ? highlightAccent : baseColor;
                 return (
                     <>
                         <Polygon
@@ -208,9 +219,9 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
                 let fillOpacity: number | undefined;
                 let bColor: string;
                 if (active) {
-                    bgFill = highlight500;
+                    bgFill = highlightAccent;
                     fillOpacity = isGhost ? 0.14 : 0.24;
-                    bColor = isGhost ? 'transparent' : highlight500;
+                    bColor = isGhost ? 'transparent' : highlightAccent;
                 } else if (pressed) {
                     bgFill = highlightAccent;
                     fillOpacity = isGhost ? 0.10 : 0.12;
@@ -256,12 +267,6 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
             <View
                 style={[
                     styles.content,
-                    {
-                        paddingTop: padding ? paddingMap[padding] : 0,
-                        paddingBottom: padding ? paddingMap[padding] : 0,
-                        paddingLeft: effectiveBevel,
-                        paddingRight: effectiveBevel,
-                    },
                 ]}
             >
                 {children}
@@ -272,11 +277,15 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
     if (interactive) {
         return (
             <Pressable
+                disabled={disabled}
+                accessibilityState={{ disabled }}
                 onPress={onPress}
                 onLongPress={onLongPress}
                 onPressIn={(e) => {
-                    setPressed(true);
-                    onParentPressIn?.(e);
+                    if (!disabled) {
+                        setPressed(true);
+                        onParentPressIn?.(e);
+                    }
                 }}
                 onPressOut={(e) => {
                     setPressed(false);

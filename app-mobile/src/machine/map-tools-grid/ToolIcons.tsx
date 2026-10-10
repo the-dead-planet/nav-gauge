@@ -38,13 +38,13 @@ const styles = StyleSheet.create({
     },
     cellStaggeredLeftWithSpacer: {
         transform: [
-            { translateX: -8 },
+            { translateX: -10 },
             { translateY: 18 - 18 },
         ],
     },
     cellStaggeredLeft: {
         transform: [
-            { translateX: -8 },
+            { translateX: -11 },
             { translateY: 18 },
         ],
     },
@@ -95,7 +95,7 @@ export const ToolIcons: FC<Props> = ({
                     pointerEvents="none"
                     style={{
                         width: "50%",
-                        height: placement === 'left' ? 41 : 32,
+                        height: placement === 'left' ? 40 : 32,
                     }}
                 />
             ) : null}

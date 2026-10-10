@@ -3,6 +3,7 @@ import { StyleSheet, Switch, TextInput, View } from "react-native";
 import { Button } from "../../button";
 import { Text } from "../../typography";
 import { HueRamp } from "./HueRamp";
+import { sizeOptions } from "@ui";
 
 const styles = StyleSheet.create({
     container: { gap: 16, padding: 24 },
@@ -13,7 +14,7 @@ const styles = StyleSheet.create({
 export const Playground: FC = () => {
     const [value, setValue] = useState(210);
     const [label, setLabel] = useState("Color");
-    const [size, setSize] = useState<"xs" | "sm" | "md">("sm");
+    const [size, setSize] = useState<"xs" | "sm" | "md" | "lg">("sm");
     const [disabled, setDisabled] = useState(false);
 
     return (
@@ -22,7 +23,7 @@ export const Playground: FC = () => {
             <Text>{value}</Text>
             <TextInput style={styles.input} value={label} onChangeText={setLabel} />
             <View style={styles.row}>
-                {(["xs", "sm", "md"] as const).map((item) => (
+                {sizeOptions.map((item) => (
                     <Button key={item} size="xs" onPress={() => setSize(item)}>{item}</Button>
                 ))}
                 <Switch value={disabled} onValueChange={setDisabled} />
@@ -33,7 +34,7 @@ export const Playground: FC = () => {
 
 export const Gallery: FC = () => (
     <View style={styles.container}>
-        {(["xs", "sm", "md"] as const).map((size) => (
+        {sizeOptions.map((size) => (
             <HueRamp key={size} value={210} size={size} onChange={() => {}} />
         ))}
         <HueRamp value={210} disabled onChange={() => {}} />

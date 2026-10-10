@@ -18,15 +18,14 @@ export interface MobileButtonProps {
 export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     forwardRef,
     color = 'neutral',
-    shade,
+    contentShade,
     highlightColor = color,
-    highlightShade,
+    highlightContentShade,
     variant = 'ghost',
     glowStyle = 'none',
     size = 'sm',
     corners = 'square',
     active = false,
-    themeMode,
     title,
     icon,
     iconRotateX = 0,
@@ -50,8 +49,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     const [glowDrawn, setGlowDrawn] = useState(false);
 
     const hl = pressed || active;
-    const effectiveTheme = themeMode || theme.mode;
-    const isLight = effectiveTheme === 'light';
+    const isLight = theme.mode === 'light';
 
     const hlInset = theme.color(highlightColor, isLight ? 600 : 300);
     const baseColor = theme.color(color);
@@ -76,6 +74,12 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     };
 
     switch (size) {
+        case 'lg':
+            container.height = 40;
+            container.paddingHorizontal = !children ? 8 : 20;
+            container.paddingVertical = 8;
+            container.gap = 12;
+            break;
         case 'md':
             container.height = 32;
             container.paddingHorizontal = !children ? 5 : 16;
@@ -178,10 +182,10 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
             break;
     }
 
-    if (corners === 'rounded') {
-        container.borderRadius = 4;
-    } else if (corners === 'circle') {
+    if (corners === 'circle') {
         container.borderRadius = (container.height as number) / 2;
+        container.width = container.height;
+        container.paddingHorizontal = 0;
     }
 
     if (showGlow && corners !== 'hexagon') {
@@ -205,10 +209,10 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         highlightColor,
         theme.contrastShade(highlightColor, fillHighlightShade),
     );
-    let textColor = highlightShade !== undefined && hl
-        ? theme.color(highlightColor, highlightShade)
-        : shade !== undefined && !hl
-        ? theme.color(color, shade)
+    let textColor = highlightContentShade !== undefined && hl
+        ? theme.color(highlightColor, highlightContentShade)
+        : contentShade !== undefined && !hl
+        ? theme.color(color, contentShade)
         : effectiveVariant === 'fill'
         ? (hl ? hlFillTextColor : fillTextColor)
         : effectiveVariant === 'fill-inverse'
@@ -220,8 +224,13 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         container.borderColor = disabledColor;
         textColor = disabledColor;
     }
-    let fontSize = 14;
-    if (size === 'xs') fontSize = 12;
+    const fontSizes = {
+        xs: 12,
+        sm: 12,
+        md: 14,
+        lg: 16,
+    };
+    const fontSize = fontSizes[size];
 
     const showTextShadow = showTextGlow || (hl && (variant === 'inset' || variant === 'ghost'));
 
@@ -241,9 +250,10 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
 
     const iconSizes = {
         xs: 12,
-        sm: 16,
-        md: 20,
-    }
+        sm: 14,
+        md: 16,
+        lg: 20,
+    };
 
     const iconSize = iconSizes[size];
 
@@ -294,7 +304,6 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
             size={size}
             variant={variant}
             glowStyle={glowStyle}
-            themeMode={themeMode}
             color={color}
             highlightColor={highlightColor}
             active={active}

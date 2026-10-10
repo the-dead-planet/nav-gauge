@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { ColorVariant, Option, SizeVariant, FillVariant } from '../model';
+import { AppearanceProps, Option, FillVariant } from '../model';
 
 export interface DropdownOption<T> extends Option<T> {
     prepend?: ReactNode;
@@ -7,14 +7,9 @@ export interface DropdownOption<T> extends Option<T> {
     icon?: string;
 }
 
-export interface DropdownProps<T> {
-    color?: ColorVariant;
-    highlightColor?: ColorVariant;
-    size?: SizeVariant;
-    variant?: FillVariant;
+export interface DropdownProps<T> extends AppearanceProps<FillVariant> {
     value: T;
     options: DropdownOption<T>[];
     onChange?: (value: T) => void;
     placeholder?: string;
-    disabled?: boolean;
 }

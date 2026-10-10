@@ -49,7 +49,6 @@ const ThemeDecorator = ({ children }: { children: ReactNode }) => {
                 <div className="theme-selection">
                     <div className="theme-mode-toggle">
                         <ThemeModeToggle
-                            mode={themeMode}
                             lightModeTooltip="Switch to light mode"
                             darkModeTooltip="Switch to dark mode"
                             onToggle={() =>
@@ -79,6 +78,35 @@ const preview: Preview = {
     parameters: {
         docs: {
             theme: themes.dark,
+        },
+        options: {
+            storySort: {
+                order: [
+                    'Design System',
+                    [
+                        'Overview',
+                        'Typography',
+                        'Colors',
+                        'Theming',
+                        'Icons',
+                        'Sizing',
+                        'Motion',
+                        'Color Box',
+                        'Color Palette',
+                        'Icon Gallery',
+                        'Text',
+                        'Theme Mode Toggle',
+                        'Theme Select',
+                    ],
+                    'Controls',
+                    'Forms',
+                    'HUD',
+                    'Layout',
+                    'Overlays',
+                    'Motion',
+                    '*',
+                ],
+            },
         },
     },
     decorators: [

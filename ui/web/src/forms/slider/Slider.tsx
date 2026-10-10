@@ -8,7 +8,9 @@ import styles from './slider.module.css';
 
 export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' | 'size'>> = ({
     color = 'neutral',
+    contentShade,
     highlightColor = color,
+    highlightContentShade,
     size = 'md',
     variant = 'fill-inverse',
     min = 0,
@@ -91,7 +93,7 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
             [styles['disabled']]: disabled,
         })}>
             {typeof label === 'string' ? (
-                <Label htmlFor={id} className={styles['label']}>
+                <Label htmlFor={id} color={active ? highlightColor : color} shade={active ? highlightContentShade : contentShade} className={styles['label']}>
                     {label} {!showNumberInput ? <Span tabular>{value}</Span> : null}
                 </Label>
             ) : label}
@@ -110,7 +112,9 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
                         max={max}
                         step={step}
                         color={color}
+                        contentShade={contentShade}
                         highlightColor={highlightColor}
+                        highlightContentShade={highlightContentShade}
                         size={size}
                         variant={variant}
                         disabled={disabled || !onChange}

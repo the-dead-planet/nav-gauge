@@ -13,7 +13,11 @@ const options: TabstripOption[] = [
 
 const meta = { title: 'Hud/HudDecoration' } satisfies Meta;
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof HudDecoration>;
+
+export const Playground: Story = {
+    args: { color: 'secondary', size: 'md', glowStyle: 'glow', children: <Panel>Decorated panel</Panel> },
+};
 
 export const Brackets: Story = {
     render: () => {
@@ -21,7 +25,7 @@ export const Brackets: Story = {
         return (
             <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start' }}>
                 <HudDecoration color="secondary" size="md" glowStyle="glow">
-                    <Panel variant="fill-inverse" padding="md">Decorated panel</Panel>
+                    <Panel variant="fill-inverse">Decorated panel</Panel>
                 </HudDecoration>
                 <HudDecoration corners={['top-right', 'bottom-left']}>
                     <div style={{ width: 220 }}>
@@ -35,7 +39,7 @@ export const Brackets: Story = {
     },
 };
 
-export const AllDecorations: Story = {
+export const Gallery: Story = {
     render: () => {
         const corners: HudDecorationCorner[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
         const sizes = sizeOptions;
@@ -50,7 +54,7 @@ export const AllDecorations: Story = {
                         <div key={corner} style={{ display: 'grid', gap: 10 }}>
                             <strong>{corner}</strong>
                             <HudDecoration corners={[corner]}>
-                                <Panel variant="fill-inverse" padding="sm">Preview</Panel>
+                                <Panel variant="fill-inverse">Preview</Panel>
                             </HudDecoration>
                         </div>
                     ))}
@@ -64,7 +68,7 @@ export const AllDecorations: Story = {
                                 <div key={`${size}-${color}`} style={{ display: 'grid', gap: 10 }}>
                                     <strong>{size} / {color}</strong>
                                     <HudDecoration size={size} color={color} glowStyle={glowStyle} corners={corners}>
-                                        <Panel variant="fill-inverse" color={color} padding="sm">Preview</Panel>
+                                        <Panel variant="fill-inverse" color={color}>Preview</Panel>
                                     </HudDecoration>
                                 </div>
                             )))}

@@ -17,9 +17,10 @@ const styles = StyleSheet.create({
 
 const ANIMATION_DURATION = 250;
 
-const bevelBySize = { xs: 6, sm: 10, md: 20 } as const;
+const bevelBySize = { xs: 6, sm: 10, md: 20, lg: 26 } as const;
 
 const sizeMap = {
+    lg: { fontSize: 16, padding: 12 },
     xs: { fontSize: controlTextSpecifications.xs.fontSize, padding: 6 },
     sm: { fontSize: controlTextSpecifications.sm.fontSize, padding: 10 },
     md: { fontSize: controlTextSpecifications.md.fontSize, padding: 10 },

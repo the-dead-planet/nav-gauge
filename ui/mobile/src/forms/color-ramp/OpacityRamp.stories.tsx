@@ -3,6 +3,7 @@ import { StyleSheet, Switch, TextInput, View } from "react-native";
 import { Button } from "../../button";
 import { Text } from "../../typography";
 import { OpacityRamp } from "./OpacityRamp";
+import { sizeOptions } from "@ui";
 
 const styles = StyleSheet.create({
     container: { gap: 16, padding: 24 },
@@ -14,7 +15,7 @@ export const Playground: FC = () => {
     const [color, setColor] = useState("rgb(67, 105, 255)");
     const [value, setValue] = useState(0.6);
     const [label, setLabel] = useState("Opacity");
-    const [size, setSize] = useState<"xs" | "sm" | "md">("sm");
+    const [size, setSize] = useState<"xs" | "sm" | "md" | "lg">("sm");
     const [disabled, setDisabled] = useState(false);
 
     return (
@@ -24,7 +25,7 @@ export const Playground: FC = () => {
             <TextInput style={styles.input} value={color} onChangeText={setColor} />
             <TextInput style={styles.input} value={label} onChangeText={setLabel} />
             <View style={styles.row}>
-                {(["xs", "sm", "md"] as const).map((item) => (
+                {sizeOptions.map((item) => (
                     <Button key={item} size="xs" onPress={() => setSize(item)}>{item}</Button>
                 ))}
                 <Switch value={disabled} onValueChange={setDisabled} />
@@ -35,7 +36,7 @@ export const Playground: FC = () => {
 
 export const Gallery: FC = () => (
     <View style={styles.container}>
-        {(["xs", "sm", "md"] as const).map((size) => (
+        {sizeOptions.map((size) => (
             <OpacityRamp key={size} color="#4369ff" value={0.6} size={size} onChange={() => {}} />
         ))}
         <OpacityRamp color="#4369ff" value={0.6} disabled onChange={() => {}} />

@@ -8,7 +8,7 @@
 .container {
     position: absolute;
     top: 0;
-    left: 0;
+    left: -1px;
     transform: rotate(90deg);
     transform-origin: 0 0;
 }
@@ -23,6 +23,7 @@
     align-items: center;
     gap: 6px;
     height: 16px;
+    padding: 0 8px;
 }
 
 .content a {

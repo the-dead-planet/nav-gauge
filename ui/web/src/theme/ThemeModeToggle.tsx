@@ -1,14 +1,14 @@
 import { FC } from 'react';
-import { Icons, ThemeModeToggleProps } from '@ui';
+import { Icons, ThemeModeToggleProps, useTheme } from '@ui';
 import { Button } from '../button';
 
 export const ThemeModeToggle: FC<ThemeModeToggleProps> = ({
-    mode,
     lightModeTooltip,
     darkModeTooltip,
     onToggle,
 }) => {
-    const isDark = mode === 'dark';
+    const theme = useTheme();
+    const isDark = theme.mode === 'dark';
     const tooltip = isDark ? lightModeTooltip : darkModeTooltip;
 
     return (
@@ -21,7 +21,6 @@ export const ThemeModeToggle: FC<ThemeModeToggleProps> = ({
             variant="inset"
             size="md"
             color={isDark ? 'secondary' : 'neutral'}
-            themeMode={mode}
         />
     );
 };

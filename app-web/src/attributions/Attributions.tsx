@@ -27,7 +27,7 @@ export const Attributions: FC = () => {
         <div className={styles['anchor']} style={{ right: rightPanelWidth }}>
             <div className={styles['container']}>
                 <BevelPanel
-                    bevel={6}
+                    size="xs"
                     color="neutral"
                     variant="fill-translucent"
                     className={classNames(styles['rail'], { [styles['compact']]: media.isLessThanMd })}

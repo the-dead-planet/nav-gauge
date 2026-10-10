@@ -73,50 +73,80 @@
     --notched-color: var(--color-neutral-500);
     --notched-dark: var(--color-neutral-800);
     --notched-light: var(--color-neutral-100);
+    --notched-disabled-surface-light: var(--color-neutral-200);
+    --notched-disabled-foreground-light: var(--color-neutral-300);
+    --notched-disabled-surface-dark: var(--color-neutral-800);
+    --notched-disabled-foreground-dark: var(--color-neutral-700);
 }
 
 .color-primary {
     --notched-color: var(--color-primary-500);
     --notched-dark: var(--color-primary-900);
     --notched-light: var(--color-primary-100);
+    --notched-disabled-surface-light: var(--color-primary-200);
+    --notched-disabled-foreground-light: var(--color-primary-300);
+    --notched-disabled-surface-dark: var(--color-primary-800);
+    --notched-disabled-foreground-dark: var(--color-primary-700);
 }
 
 .color-secondary {
     --notched-color: var(--color-secondary-500);
     --notched-dark: var(--color-secondary-900);
     --notched-light: var(--color-secondary-100);
+    --notched-disabled-surface-light: var(--color-secondary-200);
+    --notched-disabled-foreground-light: var(--color-secondary-300);
+    --notched-disabled-surface-dark: var(--color-secondary-800);
+    --notched-disabled-foreground-dark: var(--color-secondary-700);
 }
 
 .color-tertiary {
     --notched-color: var(--color-tertiary-500);
     --notched-dark: var(--color-tertiary-900);
     --notched-light: var(--color-tertiary-100);
+    --notched-disabled-surface-light: var(--color-tertiary-200);
+    --notched-disabled-foreground-light: var(--color-tertiary-300);
+    --notched-disabled-surface-dark: var(--color-tertiary-800);
+    --notched-disabled-foreground-dark: var(--color-tertiary-700);
 }
 
 .highlight-color-neutral {
     --notched-highlight: var(--color-neutral-500);
+    --notched-highlight-accent-light: var(--color-neutral-600);
+    --notched-highlight-accent-dark: var(--color-neutral-300);
 }
 
 .highlight-color-primary {
     --notched-highlight: var(--color-primary-500);
+    --notched-highlight-accent-light: var(--color-primary-600);
+    --notched-highlight-accent-dark: var(--color-primary-300);
 }
 
 .highlight-color-secondary {
     --notched-highlight: var(--color-secondary-500);
+    --notched-highlight-accent-light: var(--color-secondary-600);
+    --notched-highlight-accent-dark: var(--color-secondary-300);
 }
 
 .highlight-color-tertiary {
     --notched-highlight: var(--color-tertiary-500);
+    --notched-highlight-accent-light: var(--color-tertiary-600);
+    --notched-highlight-accent-dark: var(--color-tertiary-300);
 }
 
 .mode-light {
     --notched-inverse: var(--notched-light);
     --notched-header-text: var(--color-neutral-900);
+    --notched-highlight-accent: var(--notched-highlight-accent-light);
+    --notched-disabled-surface: var(--notched-disabled-surface-light);
+    --notched-disabled-foreground: var(--notched-disabled-foreground-light);
 }
 
 .mode-dark {
     --notched-inverse: var(--notched-dark);
     --notched-header-text: var(--color-neutral-900);
+    --notched-highlight-accent: var(--notched-highlight-accent-dark);
+    --notched-disabled-surface: var(--notched-disabled-surface-dark);
+    --notched-disabled-foreground: var(--notched-disabled-foreground-dark);
 }
 
 .variant-fill .body {
@@ -142,4 +172,37 @@
     .glow-style-animate-borders-glow .glow {
         animation: none;
     }
+}
+
+.active.variant-fill .body,
+.active .header {
+    fill: var(--notched-highlight-accent);
+    stroke: var(--notched-highlight-accent);
+}
+
+.active.variant-fill-inverse .body {
+    stroke: var(--notched-highlight-accent);
+}
+
+.active.variant-fill-translucent .body {
+    fill: rgb(from var(--notched-highlight-accent) r g b / .48);
+    stroke: var(--notched-highlight-accent);
+}
+
+.active .step {
+    stroke: var(--notched-highlight-accent);
+}
+
+.disabled .body,
+.disabled .header {
+    fill: var(--notched-disabled-surface);
+    stroke: var(--notched-disabled-foreground);
+}
+
+.disabled.variant-fill .body {
+    stroke-width: 0;
+}
+
+.disabled .step {
+    stroke: var(--notched-disabled-foreground);
 }

@@ -25,24 +25,32 @@ const styles = StyleSheet.create({
 
 export const TextInput: FC<TextInputProps> = ({
     color = "neutral",
+    contentShade,
     highlightColor = color,
+    highlightContentShade,
     size = "sm",
     variant = "fill-inverse",
     label,
     value,
     onChange,
     disabled = false,
+    active = false,
     autoSelect = false,
 }) => {
     const theme = useTheme();
     const [isFocused, setIsFocused] = useState(false);
-    const borderColor = isFocused
+    const highlighted = !disabled && (active || isFocused);
+    const borderColor = highlighted
         ? theme.color(highlightColor, theme.isLight ? 600 : 300)
         : theme.color(color, 500, variant === "fill-translucent" ? 0.3 : 1);
     const fontSize = controlTextSpecifications[size].fontSize;
     const paddingV = size === "xs" ? 0 : size === "sm" ? 2 : 6;
     const disabledColor = theme.color(color, theme.isLight ? 300 : 700);
-    const textColor =
+    const textColor = highlighted && highlightContentShade !== undefined
+          ? theme.color(highlightColor, highlightContentShade)
+          : contentShade !== undefined
+            ? theme.color(color, contentShade)
+          :
         variant === "fill"
             ? theme.color(color, theme.contrastShade(color))
             : theme.color(color, theme.isLight ? 900 : 100);
@@ -59,6 +67,7 @@ export const TextInput: FC<TextInputProps> = ({
             {label ? (
                 <Label
                     color={color}
+                    shade={contentShade}
                     disabled={disabled}
                     style={[
                         styles.label,

@@ -7,10 +7,11 @@ import { TRANSLUCENT_OPACITY } from "../../tinkers";
 const POINTY_TOP = "50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25";
 const FLAT_TOP = "100,50 75,93.3 25,93.3 0,50 25,6.7 75,6.7";
 
-const sizeWidth: Record<SizeVariant, number> = {
-    xs: 36,
-    sm: 48,
-    md: 64,
+const sizeHeight: Record<SizeVariant, number> = {
+    xs: 24,
+    sm: 24,
+    md: 32,
+    lg: 40,
 };
 
 const styles = StyleSheet.create({
@@ -65,7 +66,6 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(({
     highlightColor = color,
     variant,
     glowStyle = "none",
-    themeMode,
     size,
     interactive = false,
     active = false,
@@ -85,8 +85,7 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(({
     const isPointy = shape === "pointy-top";
     const points = isPointy ? POINTY_TOP : FLAT_TOP;
     const aspectRatio = isPointy ? 86.6 / 100 : 100 / 86.6;
-    const effectiveTheme = themeMode || theme.mode;
-    const isLight = effectiveTheme === 'light';
+    const isLight = theme.mode === 'light';
     const clipPathId = useId();
 
     const baseColor = theme.color(color, 500);
@@ -184,8 +183,8 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(({
                 let fillColor: string;
                 let borderColor: string;
                 if (active) {
-                    fillColor = theme.color(highlightColor, 500);
-                    borderColor = highlight500;
+                    fillColor = highlightAccent;
+                    borderColor = highlightAccent;
                 } else if (pressed) {
                     fillColor = highlightAccent;
                     borderColor = highlightAccent;
@@ -211,8 +210,8 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(({
                 let fillColor: string;
                 let borderColor: string;
                 if (active) {
-                    fillColor = theme.color(highlightColor, bgShade);
-                    borderColor = highlight500;
+                    fillColor = theme.color(color, bgShade);
+                    borderColor = highlightAccent;
                 } else if (pressed) {
                     fillColor = theme.color(highlightColor, bgShade);
                     borderColor = highlightAccent;
@@ -241,9 +240,9 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(({
                 let fillOpacity: number | undefined;
                 let bColor: string;
                 if (active) {
-                    bgFill = highlight500;
+                    bgFill = highlightAccent;
                     fillOpacity = isGhost ? 0.14 : 0.24;
-                    bColor = isGhost ? 'transparent' : highlight500;
+                    bColor = isGhost ? 'transparent' : highlightAccent;
                 } else if (pressed) {
                     bgFill = highlightAccent;
                     fillOpacity = isGhost ? 0.10 : 0.12;
@@ -276,7 +275,7 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(({
             style={[
                 styles.container,
                 { aspectRatio },
-                size ? { width: sizeWidth[size] } : undefined,
+                size ? { height: sizeHeight[size] } : undefined,
                 typeof containerStyle === 'function' ? undefined : containerStyle,
             ]}
         >

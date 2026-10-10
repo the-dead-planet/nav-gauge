@@ -27,6 +27,7 @@ export const controlTextSpecifications: Record<SizeVariant, { fontSize: number; 
     xs: { fontSize: 11, lineHeight: 12.1 },
     sm: { fontSize: 12, lineHeight: 13.2 },
     md: { fontSize: 14, lineHeight: 15.4 },
+    lg: { fontSize: 16, lineHeight: 17.6 },
 };
 
 export const resolveTypographySpacing = ({

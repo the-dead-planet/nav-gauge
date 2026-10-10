@@ -8,6 +8,7 @@ import { colorOptions as allColors, sizeOptions as allSizes } from '../../storyb
 const meta = {
     title: 'Forms/IconRotateInput',
     component: IconRotateInput,
+    args: { icon: Icons.NounProject.CameraVideoFront, value: 0, color: 'primary', size: 'sm', onChange: () => {} },
 } satisfies Meta<typeof IconRotateInput>;
 
 export default meta;
@@ -15,7 +16,9 @@ type Story = StoryObj<typeof meta>;
 
 const numberInputPlacements: NumberInputPlacement[] = ['start', 'end', 'above', 'below'];
 
-export const Default = {
+export const Playground: Story = {};
+
+export const Gallery = {
     args: {
         value: 0,
     },

@@ -1,4 +1,4 @@
-import type { Meta } from 'storybook-react-rsbuild';
+import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { ColorVariant, Icons, SizeVariant, FillVariant, TooltipPlacement } from '@ui';
 import { Tooltip } from './Tooltip';
 import { Button } from '../button';
@@ -6,11 +6,17 @@ import { Text } from '../typography';
 import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptions as allSizes } from '../storybook/controls';
 
 const meta = {
-    title: 'Tooltip',
+    title: 'Overlays/Tooltip',
     component: Tooltip,
+    args: { children: <Button>Hover or focus</Button>, content: 'Tooltip', placement: 'top', color: 'neutral', size: 'sm', variant: 'fill-inverse' },
 } satisfies Meta<typeof Tooltip>;
 
 export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Playground: Story = {
+    render: (args) => <Tooltip {...args} />,
+};
 
 const allPlacements: TooltipPlacement[] = ['top', 'bottom', 'left', 'right', 'auto'];
 export const Placements = {
@@ -30,7 +36,7 @@ export const Placements = {
     ),
 };
 
-export const Colors = {
+export const Gallery = {
     render: () => (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 24, padding: 48 }}>
             <Text>Color variants</Text>

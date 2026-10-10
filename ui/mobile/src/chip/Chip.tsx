@@ -20,9 +20,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'flex-start',
     },
-    label: {
-        lineHeight: 18,
-    },
 });
 
 interface Props {
@@ -39,6 +36,7 @@ const bevelSizes: Record<SizeVariant, number> = {
     xs: 2,
     sm: 4,
     md: 6,
+    lg: 8,
 };
 
 const bevelPath = (bevel: number, width: number, height: number, inset: number): string => {
@@ -55,9 +53,23 @@ const iconSizes: Record<SizeVariant, number> = {
     xs: 12,
     sm: 16,
     md: 20,
+    lg: 24,
+};
+
+const lineHeights: Record<SizeVariant, number> = {
+    xs: 12,
+    sm: 16,
+    md: 18,
+    lg: 20,
 };
 
 const sizeStyles = StyleSheet.create({
+    lg: {
+        fontSize: 16,
+        paddingVertical: 6,
+        paddingHorizontal: 10,
+        gap: 10,
+    },
     md: {
         fontSize: 14,
         paddingVertical: 4,
@@ -190,7 +202,7 @@ export const Chip: FC<ChipProps & MobileChipProps> = ({
                     />
                 ) : null}
                 {children !== undefined && children !== null ? (
-                    <Text style={[styles.label, { color: labelColor, fontSize: sizeStyles[size].fontSize }]}>
+                    <Text style={{ color: labelColor, fontSize: sizeStyles[size].fontSize, lineHeight: lineHeights[size] }}>
                         {children}
                     </Text>
                 ) : null}

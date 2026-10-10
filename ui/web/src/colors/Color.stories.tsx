@@ -15,7 +15,7 @@ const copyPalette = (color: ThemeColor): void => {
 };
 
 const meta = {
-    title: 'Design System/Colors',
+    title: 'Design System/Color Palette',
 } satisfies Meta<typeof Color>;
 
 export default meta;

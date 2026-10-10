@@ -2,7 +2,7 @@ import { ComponentType, FC } from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
 import { Button } from "../button";
 import { Text } from "../typography";
-import { TooltipPlacement, Icons, SizeVariant } from "@ui";
+import { TooltipPlacement, Icons, sizeOptions } from "@ui";
 import { Tooltip } from "./Tooltip";
 import { SvgProps } from "react-native-svg";
 
@@ -25,9 +25,7 @@ const styles = StyleSheet.create({
 });
 
 const allPlacements: TooltipPlacement[] = ['top', 'bottom', 'left', 'right', 'auto'];
-const allSizes: SizeVariant[] = ['xs', 'sm', 'md'];
-
-export const Placements: FC = () => (
+export const Playground: FC = () => (
     <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.label}>Long press a button to show its tooltip.</Text>
         <Text style={styles.label}>Placements</Text>
@@ -49,10 +47,10 @@ export const Placements: FC = () => (
     </ScrollView>
 );
 
-export const Sizes: FC = () => (
+export const Gallery: FC = () => (
     <View style={styles.container}>
         <View style={styles.row}>
-            {allSizes.map((size) => (
+            {sizeOptions.map((size) => (
                 <Tooltip key={size} content={`${size} tooltip`} size={size} placement="top">
                     <Button icon={Icons.Beaker as ComponentType<SvgProps>} variant="ghost" color="primary">
                         {size}

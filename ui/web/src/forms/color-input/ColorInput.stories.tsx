@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { ColorInput } from './ColorInput';
-import { colorControl, fillVariantControl, sizeControl } from '../../storybook/controls';
+import { colorControl, colorOptions, fillVariantControl, fillVariantOptions, optionalShadeControl, sizeControl, sizeOptions } from '../../storybook/controls';
+import { VariantGallery } from '../../storybook/VariantGallery';
 
 const meta = {
     title: 'Forms/ColorInput',
@@ -12,6 +13,8 @@ const meta = {
         value: '#ff6600',
         color: 'neutral',
         highlightColor: 'neutral',
+        contentShade: 700,
+        highlightContentShade: 200,
         size: 'sm',
         variant: 'fill-inverse',
         disabled: false,
@@ -24,6 +27,8 @@ const meta = {
         value: { control: 'color' },
         color: colorControl,
         highlightColor: colorControl,
+        contentShade: optionalShadeControl,
+        highlightContentShade: optionalShadeControl,
         size: sizeControl,
         variant: fillVariantControl,
         onChange: { control: false },
@@ -41,4 +46,17 @@ export const Playground: Story = {
 
         return <ColorInput {...args} value={value} onChange={setValue} />;
     },
+};
+
+export const Gallery: Story = {
+    render: (args) => (
+        <VariantGallery
+            sizes={sizeOptions}
+            colors={colorOptions}
+            variants={fillVariantOptions}
+            render={({ color, size, variant }) => (
+                <ColorInput {...args} id={`${color}-${size}-${variant}`} color={color} size={size} variant={variant} onChange={() => {}} />
+            )}
+        />
+    ),
 };

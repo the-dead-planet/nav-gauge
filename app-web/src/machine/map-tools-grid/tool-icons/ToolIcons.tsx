@@ -18,9 +18,12 @@ export const ToolIcons: FC<Props> = ({
     const { hasSpacer, toolIconsByPlacement } = useToolIcons(placement);
     const Component = placement === 'left' ? ToolIconLeft : ToolIconRight;
 
-    {/* TODO: Add option to swap left/right */ }
     return (
-        <div className={classNames(styles['icons'], styles[placement])}>
+        <div
+            className={classNames(styles['icons'], styles[placement], {
+                [styles['has-spacer']]: hasSpacer,
+            })}
+        >
             {hasSpacer ? <div /> : null}
             {!map
                 ? null
