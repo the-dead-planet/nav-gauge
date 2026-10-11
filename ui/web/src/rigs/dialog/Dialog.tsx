@@ -4,7 +4,7 @@ import classNames from "classnames";
 import { DialogPlacement, DialogProps, FontType, TransitionProps, useTheme } from "@ui";
 import { useSubjectState } from "@tinker-chest";
 import { Panel } from "../../hud";
-import { Button } from "../../controls/button";
+import { Button } from "../../gizmos/button";
 import { H3 } from "../../design-system/typography";
 import { Transition } from "../../motion/transition";
 import styles from './dialog.module.css';

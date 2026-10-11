@@ -1,5 +1,5 @@
 export * from './assemblies';
-export * from './controls';
+export * from './gizmos';
 export * from './design-system';
 export * from './forms';
 export * from './hud';

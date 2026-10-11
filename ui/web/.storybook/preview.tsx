@@ -98,7 +98,7 @@ const preview: Preview = {
                     'Chassis',
                     'Motion',
                     'Hud',
-                    'Controls',
+                    'Gizmos',
                     'Rigs',
                     'Forms',
                     'Assemblies',

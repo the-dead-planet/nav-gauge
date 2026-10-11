@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { ColorVariant, FillVariant, Icons, SizeVariant, Theme } from '@ui';
-import { ColorBox } from '../../hud/color-box';
+import { ColorBox } from '../../gizmos/color-box';
 import { VariantGallery } from '../../storybook/VariantGallery';
 import { Dropdown } from './Dropdown';
 

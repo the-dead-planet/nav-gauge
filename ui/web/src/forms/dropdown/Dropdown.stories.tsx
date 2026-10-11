@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { ColorVariant, FillVariant, Icons, SizeVariant, Theme } from '@ui';
-import { ColorBox } from '../../hud/color-box';
+import { ColorBox } from '../../gizmos/color-box';
 import { Popup } from '../../rigs/popup';
 import { VariantGallery } from '../../storybook/VariantGallery';
 import { Dropdown } from './Dropdown';
-import { Button } from '../../controls/button';
+import { Button } from '../../gizmos/button';
 import { booleanControl, colorControl, colorOptions, fillVariantControl, fillVariantOptions, optionalShadeControl, sizeControl, sizeOptions } from '../../storybook/controls';
 
 const options = [

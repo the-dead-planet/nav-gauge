@@ -11,7 +11,7 @@ const options: TabstripOption[] = [
     { value: 'terrain', label: 'Terrain' },
 ];
 
-const meta = { title: 'Hud/HudDecoration' } satisfies Meta;
+const meta = { title: 'Hud/HudDecoration', component: HudDecoration } satisfies Meta<typeof HudDecoration>;
 export default meta;
 type Story = StoryObj<typeof HudDecoration>;
 

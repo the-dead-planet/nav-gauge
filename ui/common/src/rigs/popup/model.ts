@@ -1,5 +1,5 @@
 import { PanelProps } from '../../hud';
-import { MenuAnchor } from '../../controls/menu';
+import { MenuAnchor } from '../menu';
 import { ReactNode } from 'react';
 
 export interface PopupProps {

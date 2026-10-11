@@ -1,7 +1,7 @@
 import type { Meta } from 'storybook-react-rsbuild';
 import { useRef, useState } from 'react';
 import { Popup } from './Popup';
-import { Button } from '../../controls/button';
+import { Button } from '../../gizmos/button';
 import type { MenuAnchor } from '@ui';
 
 const meta = {

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button } from '../../controls/button';
+import { Button } from '../../gizmos/button';
 import { Text } from '../../design-system/typography';
 import { NotchedPanel } from './NotchedPanel';
 

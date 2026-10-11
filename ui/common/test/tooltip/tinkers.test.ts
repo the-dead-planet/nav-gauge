@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { getAutoTooltipPlacement } from '../../src/hud/tooltip';
+import { getAutoTooltipPlacement } from '../../src/gizmos/tooltip';
 
 describe('getAutoTooltipPlacement', () => {
     it('prefers the first side where the tooltip fits', () => {

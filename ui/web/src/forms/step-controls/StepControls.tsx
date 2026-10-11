@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { addDecimalStep, Icons, StepControlsProps } from "@ui";
-import { Button } from "../../controls/button";
+import { Button } from "../../gizmos/button";
 import { useStepRepeatButton } from './useStepRepeatButton';
 import styles from './step-controls.module.css';
 

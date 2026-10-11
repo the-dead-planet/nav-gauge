@@ -1,7 +1,7 @@
 import type { Meta } from 'storybook-react-rsbuild';
 import { CSSProperties, useState } from 'react';
 import { Transition } from './Transition';
-import { Button } from '../../controls/button';
+import { Button } from '../../gizmos/button';
 import { Text } from '../../design-system/typography';
 
 const meta = {

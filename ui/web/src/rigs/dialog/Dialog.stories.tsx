@@ -1,7 +1,7 @@
 import type { Meta } from 'storybook-react-rsbuild';
 import { useState } from 'react';
 import { Dialog } from './Dialog';
-import { Button } from '../../controls/button';
+import { Button } from '../../gizmos/button';
 import { DialogPlacement, DialogProps } from '@ui';
 import { colorControl } from '../../storybook/controls';
 

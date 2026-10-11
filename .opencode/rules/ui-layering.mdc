@@ -12,11 +12,11 @@ Layers, lowest to highest:
 
 1. `design-system` — tokens and `Option` only
 2. `chassis`, `motion`
-3. `hud` — shape primitives, `color-box`, and `tooltip`
-4. `controls`
-5. `rigs` — `popup`, `dialog`, `tabstrip`
+3. `hud` — shape primitives
+4. `gizmos` — interactive controls, `color-box`, and `tooltip`
+5. `rigs` — `popup`, `dialog`, `tabstrip`, `menu`
 6. `forms`
-7. `assemblies` — higher-order composites that compose controls/forms
+7. `assemblies` — higher-order composites that compose gizmos/forms
    (`theme-mode-toggle`, `theme-select`)
 
 Rules:

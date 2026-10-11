@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { View, TextInput, StyleSheet } from "react-native";
 import { ColorShade, controlTextSpecifications, FontType, Icons, NumberInputProps, SizeVariant, useStepRepeat, useTheme } from "@ui";
-import { Button } from "../../controls/button";
+import { Button } from "../../gizmos/button";
 import { Text } from "../../design-system/typography";
 import { getMobileFontFamily } from "../../design-system/typography/fontFamily";
 import { TRANSLUCENT_OPACITY } from "../../tinkers";

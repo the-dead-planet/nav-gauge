@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { Button } from '../../controls/button';
+import { Button } from '../../gizmos/button';
 import { Text } from '../../design-system/typography';
 import { NotchedPanel } from './NotchedPanel';
 

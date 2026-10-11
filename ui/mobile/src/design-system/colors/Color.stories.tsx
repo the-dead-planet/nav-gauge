@@ -2,7 +2,7 @@ import { FC } from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 import { ColorShade, RGBColor, ThemeColor, Theme, useTheme } from "@ui";
 import { Label, Text } from "../typography";
-import { ColorBox } from "../../hud/color-box";
+import { ColorBox } from "../../gizmos/color-box";
 
 const styles = StyleSheet.create({
   color: {

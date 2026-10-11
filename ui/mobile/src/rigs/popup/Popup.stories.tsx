@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Text } from '../../design-system/typography';
 import { View } from 'react-native';
 import { Popup } from './Popup';
-import { Button } from '../../controls/button';
+import { Button } from '../../gizmos/button';
 
 export const Overview = () => {
     const [visible, setVisible] = useState(false);

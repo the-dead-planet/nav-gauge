@@ -4,8 +4,8 @@ import { Icons, Theme, useTheme } from '@ui';
 import type { ButtonCorners, SurfaceVariant, ThemeColor } from '@ui';
 import { Text } from '../typography';
 import { Fragment, useEffect, useState } from 'react';
-import { ColorBox } from '../../hud/color-box';
-import { Button } from '../../controls/button';
+import { ColorBox } from '../../gizmos/color-box';
+import { Button } from '../../gizmos/button';
 
 const copyPalette = (color: ThemeColor): void => {
     const rgbByShade = Object.fromEntries(

@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { ScrollView, StyleSheet, Switch, TextInput, View } from "react-native";
-import { Button } from "../../controls/button";
+import { Button } from "../../gizmos/button";
 import { Text } from "../../design-system/typography";
 import { ColorPicker } from "./ColorPicker";
 import { fillVariantOptions, sizeOptions } from "@ui";

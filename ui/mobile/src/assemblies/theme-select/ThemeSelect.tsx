@@ -6,7 +6,7 @@ import {
     themeNameOptions,
     themeSpecifications,
 } from '@ui';
-import { ColorBox } from '../../hud/color-box';
+import { ColorBox } from '../../gizmos/color-box';
 import { Dropdown } from '../../forms/dropdown';
 
 const styles = StyleSheet.create({

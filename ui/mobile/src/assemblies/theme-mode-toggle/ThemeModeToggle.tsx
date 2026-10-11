@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Icons, ThemeModeToggleProps, useTheme } from '@ui';
-import { Button } from '../../controls/button';
+import { Button } from '../../gizmos/button';
 
 export const ThemeModeToggle: FC<ThemeModeToggleProps> = ({
     lightModeTooltip,

@@ -2,8 +2,8 @@ import { FC, useState } from 'react';
 import { LayoutAnimation, LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import Svg, { Polygon } from 'react-native-svg';
 import { getVisibleTabIndexes, TabstripProps, useTheme } from '@ui';
-import { Button } from '../../controls/button';
-import { Menu, MenuItem } from '../../controls/menu';
+import { Button } from '../../gizmos/button';
+import { Menu, MenuItem } from '../menu';
 import { Text } from '../../design-system/typography';
 import { TRANSLUCENT_OPACITY_BACKGROUND } from '../../tinkers';
 
