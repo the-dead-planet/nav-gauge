@@ -22,7 +22,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     highlightColor = color,
     highlightContentShade,
     variant = 'ghost',
-    interactionGlow = 'none',
+    activeGlow = 'none',
     size = 'sm',
     corners = 'square',
     active = false,
@@ -56,10 +56,10 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     const interactionShade = active || pressed ? (isLight ? 700 : 200) : 500;
     const interactionColor = theme.color(highlightColor, interactionShade);
 
-    const showGlow = interactionGlow !== 'none' && (hl || glowDrawn);
+    const showGlow = activeGlow !== 'none' && (hl || glowDrawn);
 
     const markGlowDrawn = () => {
-        if (interactionGlow !== 'none') {
+        if (activeGlow !== 'none') {
             setGlowDrawn(true);
         }
     };
@@ -302,7 +302,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
             shape="flat-top"
             size={size}
             variant={variant}
-            interactionGlow={interactionGlow}
+            activeGlow={activeGlow}
             color={color}
             highlightColor={highlightColor}
             active={active}

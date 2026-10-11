@@ -130,9 +130,9 @@ Disabled state always wins. Hover and focus temporarily use their interaction sh
 
 Owned active content uses `highlightContentShade` when supplied, otherwise the variant's existing contrast rule. Components must not recolor arbitrary children or apply whole-control opacity when they own surface and content channels.
 
-## Interaction glow
+## Active glow
 
-`interactionGlow` is an optional enhancement to the existing color, border, and content state cues. It uses `highlightColor`, never replaces the required state treatment, and is removed when a component is disabled.
+`activeGlow` is an optional enhancement to the existing color, border, and content state cues. It uses `highlightColor`, never replaces the required state treatment, and is removed when a component is disabled.
 
 <table>
     <thead>
@@ -145,7 +145,7 @@ Owned active content uses `highlightContentShade` when supplied, otherwise the v
     </tbody>
 </table>
 
-<Canvas of={ColorStories.InteractionGlow} />
+<Canvas of={ColorStories.ActiveGlow} />
 
 Animation timing and reduced-motion behavior follow the <a href="./?path=/docs/design-system-motion--docs" target="_top" style={{ textDecoration: 'underline' }}>Motion</a> principles.
 

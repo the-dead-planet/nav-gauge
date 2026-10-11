@@ -49,7 +49,7 @@ export const ToolIconLeft: FC<ObservedToolIcon<MobileMap> & Props> = ({
             contentShade={500}
             highlightContentShade={theme.isDark ? 300 : 700}
             corners="hexagon"
-            interactionGlow={theme.isDark ? "animate-borders-glow" : 'none'}
+            activeGlow={theme.isDark ? "animate-borders-glow" : 'none'}
             highlightColor="secondary"
             active={active}
             onPress={() => onClick?.(map)}

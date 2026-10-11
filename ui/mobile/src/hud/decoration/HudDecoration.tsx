@@ -20,7 +20,7 @@ export const HudDecoration: FC<HudDecorationProps> = ({
     children,
     color = 'primary',
     size = 'sm',
-    interactionGlow = 'none',
+    activeGlow = 'none',
     corners = ['top-left', 'bottom-right'],
 }) => {
     const theme = useTheme();
@@ -30,7 +30,7 @@ export const HudDecoration: FC<HudDecorationProps> = ({
         <View style={styles.wrapper}>
             {children}
             <Svg style={[styles.decoration, { top: -offset, right: -offset, bottom: -offset, left: -offset }]} viewBox="0 0 100 100" preserveAspectRatio="none" pointerEvents="none" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-                {interactionGlow !== 'none' ? corners.map((corner) => <Path key={`glow-${corner}`} d={paths[corner]} fill="none" stroke={decorationColor} strokeWidth={strokeWidths[size] + 6} strokeOpacity={0.18} vectorEffect="non-scaling-stroke" />) : null}
+                {activeGlow !== 'none' ? corners.map((corner) => <Path key={`glow-${corner}`} d={paths[corner]} fill="none" stroke={decorationColor} strokeWidth={strokeWidths[size] + 6} strokeOpacity={0.18} vectorEffect="non-scaling-stroke" />) : null}
                 {corners.map((corner) => <Path key={corner} d={paths[corner]} fill="none" stroke={decorationColor} strokeWidth={strokeWidths[size]} vectorEffect="non-scaling-stroke" />)}
             </Svg>
         </View>

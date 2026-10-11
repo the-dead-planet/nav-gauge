@@ -12,7 +12,7 @@ interface Props {
 export const Panel: FC<PanelProps & Props & ComponentProps<'div'>> = ({
     shape,
     interactive = false,
-    interactionGlow = "none",
+    activeGlow = "none",
     color = 'neutral',
     highlightColor,
     variant,
@@ -44,7 +44,7 @@ export const Panel: FC<PanelProps & Props & ComponentProps<'div'>> = ({
                     [styles['active']]: active && !disabled,
                     [styles['disabled']]: disabled,
                     [styles['interactive']]: !disabled && (interactive || onClick),
-                    [styles[`glow-style-${interactionGlow}`]]: !disabled && interactive,
+                    [styles[`glow-style-${activeGlow}`]]: !disabled && interactive,
                 },
                 className
             )}

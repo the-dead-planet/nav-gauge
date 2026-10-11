@@ -109,7 +109,7 @@ export const LayerStylingPopup: FC<ToolPopupProps<MobileMap> & RouteStoryLayerSt
             popupStyle={styles.popup}
         >
             <Panel variant="fill-translucent" style={styles.panel}>
-                <HudConnector fromRef={tabstripRef} toRef={targetRef} fromAnchor={fromAnchor} toAnchor="bottom" color="secondary" interactionGlow="glow">
+                <HudConnector fromRef={tabstripRef} toRef={targetRef} fromAnchor={fromAnchor} toAnchor="bottom" color="secondary" activeGlow="glow">
                     <View style={styles['demo-section']} accessibilityLabel={dialogLabel}>
                         <DemoLine state={state} onActiveClick={() => setSelectedStyle('active')} onCurrentPointClick={() => setSelectedStyle('current-point')} onInactiveClick={() => setSelectedStyle('inactive')} activeMenuLabel={activeLabel} currentPointMenuLabel={currentPointLabel} inactiveMenuLabel={inactiveLabel} activeRef={activeRef} currentPointRef={currentPointRef} inactiveRef={inactiveRef} />
                     </View>

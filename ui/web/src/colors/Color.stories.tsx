@@ -59,7 +59,7 @@ const AnimatedGlowButton = ({ corners = 'square' }: { corners?: ButtonCorners })
             variant="outline"
             color="primary"
             highlightColor="secondary"
-            interactionGlow="animate-borders-glow"
+            activeGlow="animate-borders-glow"
             icon={Icons.Beaker}
             corners={corners}
             size="lg"
@@ -149,7 +149,7 @@ export const InsetStates = {
     render: () => <VariantStates variant="inset" />,
 } satisfies Story;
 
-export const InteractionGlow = {
+export const ActiveGlow = {
     render: () => (
         <div style={{ display: 'grid', gap: 20 }}>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
@@ -157,7 +157,7 @@ export const InteractionGlow = {
                     variant="outline"
                     color="primary"
                     highlightColor="secondary"
-                    interactionGlow="glow"
+                    activeGlow="glow"
                     icon={Icons.Beaker}
                     size="lg"
                     active
@@ -170,7 +170,7 @@ export const InteractionGlow = {
                     variant="outline"
                     color="primary"
                     highlightColor="secondary"
-                    interactionGlow="glow"
+                    activeGlow="glow"
                     icon={Icons.Beaker}
                     corners="hexagon"
                     size="lg"

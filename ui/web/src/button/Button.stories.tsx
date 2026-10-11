@@ -43,7 +43,7 @@ const meta = {
         highlightColor: optionalColorControl,
         highlightContentShade: optionalShadeControl,
         variant: surfaceVariantControl,
-        interactionGlow: { control: 'select', options: ['none', 'glow', 'animate-borders-glow'] },
+        activeGlow: { control: 'select', options: ['none', 'glow', 'animate-borders-glow'] },
         size: sizeControl,
         corners: { control: 'select', options: allCorners },
         active: booleanControl,

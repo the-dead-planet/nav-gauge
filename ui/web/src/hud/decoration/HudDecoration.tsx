@@ -14,10 +14,10 @@ export const HudDecoration: FC<HudDecorationProps> = ({
     children,
     color = 'primary',
     size = 'sm',
-    interactionGlow = 'none',
+    activeGlow = 'none',
     corners = ['top-left', 'bottom-right'],
 }) => (
-    <div className={classNames(styles.wrapper, styles[`color-${color}`], styles[`size-${size}`], styles[`glow-style-${interactionGlow}`])}>
+    <div className={classNames(styles.wrapper, styles[`color-${color}`], styles[`size-${size}`], styles[`glow-style-${activeGlow}`])}>
         {children}
         <svg className={styles.decoration} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
             {corners.map((corner) => <path key={corner} d={paths[corner]} vectorEffect="non-scaling-stroke" />)}

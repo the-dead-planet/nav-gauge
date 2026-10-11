@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
-import { AppearancePropsBase, InteractionGlow, FillVariant } from '../../model';
+import { AppearancePropsBase, ActiveGlow, FillVariant } from '../../model';
 
 export interface NotchedPanelProps extends AppearancePropsBase<FillVariant> {
-    interactionGlow?: InteractionGlow;
+    activeGlow?: ActiveGlow;
     header?: ReactNode;
     children?: ReactNode;
 }

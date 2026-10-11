@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
-import { AppearanceProps, InteractionGlow, SurfaceVariant } from "../model";
+import { AppearanceProps, ActiveGlow, SurfaceVariant } from "../model";
 import { TooltipProps } from "../tooltip";
 
 export type ButtonCorners = 'square' | 'circle' | 'hexagon';
 
 export interface ButtonProps extends AppearanceProps<SurfaceVariant> {
-    interactionGlow?: InteractionGlow;
+    activeGlow?: ActiveGlow;
     /**
      * Defaults to `sm`
      */

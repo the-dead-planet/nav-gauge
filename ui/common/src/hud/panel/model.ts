@@ -1,12 +1,12 @@
 import { ReactNode } from "react";
-import { AppearancePropsBase, InteractionGlow, FillVariant } from "../../model";
+import { AppearancePropsBase, ActiveGlow, FillVariant } from "../../model";
 
 export type PanelShape = 'default';
 
 export interface PanelProps extends AppearancePropsBase<FillVariant> {
     shape?: PanelShape;
     interactive?: boolean;
-    interactionGlow?: InteractionGlow;
+    activeGlow?: ActiveGlow;
     /**
      * Defaults to 2
      */

@@ -821,7 +821,7 @@
     fill: var(--button-highlight-content-color);
 }
 
-/* ── Conditional glow effects (interactionGlow prop) ── */
+/* ── Conditional glow effects (activeGlow prop) ── */
 
 /* box-shadow on hover/active for all non-hexagon variants */
 .glow-style-glow.variant-ghost:hover,
