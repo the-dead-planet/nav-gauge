@@ -79,7 +79,7 @@ export const LayerStylingPopup: FC<ToolPopupProps<maplibregl.Map> & RouteStoryLa
                 role="dialog"
                 aria-label={dialogLabel}
             >
-                <HudConnector fromRef={selectedTabRef} toRef={targetRef} fromAnchor="top" toAnchor="bottom" color="secondary" glowStyle="glow">
+                <HudConnector fromRef={selectedTabRef} toRef={targetRef} fromAnchor="top" toAnchor="bottom" color="secondary" activeGlow="glow">
                     <DemoLine
                         state={state}
                         onActiveClick={() => setSelectedStyle('active')}

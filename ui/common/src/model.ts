@@ -6,7 +6,7 @@ export interface Option<T> {
     label: ReactNode;
 }
 
-export type GlowStyle = 'none' | 'glow' | 'animate-borders-glow';
+export type ActiveGlow = 'none' | 'glow' | 'animate-borders-glow';
 export type FillVariant = 'fill' | 'fill-inverse' | 'fill-translucent';
 export type SurfaceVariant = FillVariant | 'ghost' | 'outline' | 'inset';
 export type ColorVariant = DesignSystemColor;

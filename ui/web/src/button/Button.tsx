@@ -19,7 +19,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     highlightColor,
     highlightContentShade,
     variant = 'ghost',
-    glowStyle = 'none',
+    activeGlow = 'none',
     size = 'sm',
     corners = 'square',
     active = false,
@@ -59,7 +59,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
                 styles[`color-${color}`],
                 styles[`highlight-${highlightColor || color}`],
                 styles[`variant-${variant}`],
-                styles[`glow-style-${glowStyle}`],
+                styles[`glow-style-${activeGlow}`],
                 styles[`size-${size}`],
                 styles[`corners-${corners}`],
                 {
@@ -124,7 +124,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
             shape="flat-top"
             size={size}
             variant={variant}
-            glowStyle={glowStyle}
+            activeGlow={activeGlow}
             color={color}
             highlightColor={highlightColor}
             active={active}

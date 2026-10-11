@@ -20,8 +20,8 @@ export const Header: FC = () => (
 export const Gallery: FC = () => (
     <View style={styles.showcase}>
         <NotchedPanel color="primary" variant="fill" header={<Text>FILL</Text>}><Text>Primary</Text></NotchedPanel>
-        <NotchedPanel color="secondary" variant="fill-inverse" header={<Text>INVERSE</Text>} glowStyle="glow"><Text>Secondary</Text></NotchedPanel>
-        <NotchedPanel color="tertiary" variant="fill-translucent" header={<Text>TRANSLUCENT</Text>} glowStyle="animate-borders-glow"><Text>Tertiary</Text></NotchedPanel>
+        <NotchedPanel color="secondary" variant="fill-inverse" header={<Text>INVERSE</Text>} activeGlow="glow"><Text>Secondary</Text></NotchedPanel>
+        <NotchedPanel color="tertiary" variant="fill-translucent" header={<Text>TRANSLUCENT</Text>} activeGlow="animate-borders-glow"><Text>Tertiary</Text></NotchedPanel>
     </View>
 );
 

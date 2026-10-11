@@ -15,7 +15,7 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
     shape = "pointy-top",
     strokeWidth = 2,
     interactive = false,
-    glowStyle = "none",
+    activeGlow = "none",
     color = 'neutral',
     highlightColor,
     size,
@@ -56,7 +56,7 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
                     [styles['active']]: active && !disabled,
                     [styles['disabled']]: disabled,
                     [styles['interactive']]: !disabled && (interactive || onClick),
-                    [styles[`glow-style-${glowStyle}`]]: !disabled && interactive,
+                    [styles[`glow-style-${activeGlow}`]]: !disabled && interactive,
                 },
                 className
             )}

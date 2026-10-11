@@ -13,7 +13,7 @@ export const Anchors: FC = () => {
     const fromRef = useRef<HostInstance>(null);
     const toRef = useRef<HostInstance>(null);
     return (
-        <HudConnector fromRef={fromRef} toRef={toRef} fromAnchor="right" toAnchor="left" color="secondary" glowStyle="glow">
+        <HudConnector fromRef={fromRef} toRef={toRef} fromAnchor="right" toAnchor="left" color="secondary" activeGlow="glow">
             <View style={styles.row}>
                 <View ref={fromRef}><HudDecoration><Panel variant="fill-inverse"><Text>Navigation</Text></Panel></HudDecoration></View>
                 <View ref={toRef}><HudDecoration corners={['top-right', 'bottom-left']}><Panel variant="fill-inverse"><Text>Telemetry</Text></Panel></HudDecoration></View>

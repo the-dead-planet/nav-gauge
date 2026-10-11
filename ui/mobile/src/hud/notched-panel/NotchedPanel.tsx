@@ -19,7 +19,7 @@ export const NotchedPanel: FC<NotchedPanelProps & Props> = ({
     color: colorProp = 'neutral',
     highlightColor: highlightColorProp,
     variant = 'fill-inverse',
-    glowStyle = 'none',
+    activeGlow = 'none',
     active = false,
     disabled = false,
     header,
@@ -64,7 +64,7 @@ export const NotchedPanel: FC<NotchedPanelProps & Props> = ({
         <View {...props} onLayout={onLayout} style={[styles.panel, style]}>
             {ready ? (
                 <Svg viewBox={`0 0 ${width} ${height}`} style={StyleSheet.absoluteFill} pointerEvents="none" accessibilityElementsHidden>
-                    {!disabled && glowStyle !== 'none' ? <Polygon points={bodyPoints} fill="none" stroke={accent} strokeWidth={glowStyle === 'glow' ? 10 : 6} strokeOpacity={0.18} /> : null}
+                    {!disabled && activeGlow !== 'none' ? <Polygon points={bodyPoints} fill="none" stroke={accent} strokeWidth={activeGlow === 'glow' ? 10 : 6} strokeOpacity={0.18} /> : null}
                     <Polygon points={bodyPoints} fill={fill} stroke={disabled || active ? accent : baseColor} strokeWidth={variant === 'fill' ? 0 : 2} />
                     <Polyline points={`${notch + 7},${height - 6} ${width * 0.38},${height - 6} ${width * 0.42},${height - 2}`} fill="none" stroke={accent} strokeWidth={2} />
                     {header ? <Polygon points={headerPoints} fill={disabled ? disabledSurface : accent} stroke={accent} strokeWidth={2} /> : null}

@@ -22,7 +22,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     highlightColor = color,
     highlightContentShade,
     variant = 'ghost',
-    glowStyle = 'none',
+    activeGlow = 'none',
     size = 'sm',
     corners = 'square',
     active = false,
@@ -53,12 +53,13 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
 
     const hlInset = theme.color(highlightColor, isLight ? 600 : 300);
     const baseColor = theme.color(color);
-    const hl500 = theme.color(highlightColor, 500);
+    const interactionShade = active || pressed ? (isLight ? 700 : 200) : 500;
+    const interactionColor = theme.color(highlightColor, interactionShade);
 
-    const showGlow = glowStyle !== 'none' && (hl || glowDrawn);
+    const showGlow = activeGlow !== 'none' && (hl || glowDrawn);
 
     const markGlowDrawn = () => {
-        if (glowStyle !== 'none') {
+        if (activeGlow !== 'none') {
             setGlowDrawn(true);
         }
     };
@@ -109,22 +110,17 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
             break;
         case 'fill':
             container.borderWidth = 0;
-            if (active) {
-                container.backgroundColor = theme.color(highlightColor, 500);
-            } else if (pressed) {
-                container.backgroundColor = theme.color(highlightColor, isLight ? 600 : 300);
+            if (hl) {
+                container.backgroundColor = interactionColor;
             } else {
                 container.backgroundColor = theme.color(color, 500);
             }
             break;
         case 'fill-inverse':
             container.borderWidth = 1;
-            if (active) {
+            if (hl) {
                 container.backgroundColor = theme.color(highlightColor, isLight ? 200 : 800);
-                container.borderColor = hl500;
-            } else if (pressed) {
-                container.backgroundColor = theme.color(highlightColor, isLight ? 200 : 800);
-                container.borderColor = theme.color(highlightColor, isLight ? 600 : 300);
+                container.borderColor = interactionColor;
             } else {
                 container.backgroundColor = theme.color(color, isLight ? 200 : 800);
                 container.borderColor = baseColor;
@@ -132,12 +128,9 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
             break;
         case 'fill-translucent':
             container.borderWidth = 1;
-            if (active) {
-                container.backgroundColor = theme.color(highlightColor, 500, 0.48);
-                container.borderColor = hl500;
-            } else if (pressed) {
-                container.backgroundColor = theme.color(highlightColor, 500, 0.36);
-                container.borderColor = theme.color(highlightColor, isLight ? 600 : 300);
+            if (hl) {
+                container.backgroundColor = theme.color(color, 500, TRANSLUCENT_OPACITY);
+                container.borderColor = interactionColor;
             } else {
                 container.backgroundColor = theme.color(color, 500, TRANSLUCENT_OPACITY);
                 container.borderColor = theme.color(color, 500, 0.3);
@@ -146,38 +139,34 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         case 'outline':
             container.borderWidth = 1;
             if (hl) {
-                container.backgroundColor = theme.color(highlightColor, 500, 0.24);
-                container.borderColor = hlInset;
+                container.backgroundColor = theme.color(highlightColor, 500, active ? 0.24 : 0.12);
+                container.borderColor = interactionColor;
             } else {
                 container.backgroundColor = 'transparent';
                 container.borderColor = baseColor;
             }
             break;
         case 'inset':
-            container.backgroundColor = isLight
-                ? theme.color(color, 500, 0.04)
-                : 'transparent';
+            container.backgroundColor = theme.color(color, isLight ? 100 : 900);
             container.borderWidth = 0;
             container.borderTopWidth = 1;
             container.borderLeftWidth = 1;
             container.borderBottomWidth = 1;
             container.borderRightWidth = 1;
             if (isLight) {
-                container.borderTopColor = theme.color(color, 700, 0.18);
-                container.borderLeftColor = theme.color(color, 700, 0.18);
-                container.borderBottomColor = 'rgba(255,255,255,0.35)';
-                container.borderRightColor = 'rgba(255,255,255,0.35)';
+                container.borderTopColor = theme.color(color, 900, 0.2);
+                container.borderLeftColor = theme.color(color, 900, 0.2);
+                container.borderBottomColor = theme.color(color, 50, 0.7);
+                container.borderRightColor = theme.color(color, 50, 0.7);
                 container.boxShadow = active || pressed
-                    ? `4px 4px 8px ${theme.color(color, 700, 0.18)} inset, -2px -2px 4px ${theme.color(color, 700, 0.04)} inset, -2px -2px 3px rgba(255, 255, 255, .25) inset`
-                    : `4px 4px 8px ${theme.color(color, 700, 0.18)} inset, -2px -2px 4px ${theme.color(color, 700, 0.04)} inset, -2px -2px 4px rgba(255, 255, 255, .35) inset`;
+                    ? `3px 3px 4px ${theme.color(highlightColor, 900, 0.2)} inset, 4px 4px 8px ${theme.color(highlightColor, 700, 0.18)} inset, -2px -2px 3px rgba(255, 255, 255, .7) inset`
+                    : `3px 3px 4px ${theme.color(color, 900, 0.2)} inset, 4px 4px 8px ${theme.color(color, 700, 0.18)} inset, -2px -2px 3px rgba(255, 255, 255, .7) inset`;
             } else {
                 container.borderTopColor = 'rgba(0,0,0,0.80)';
                 container.borderLeftColor = 'rgba(0,0,0,0.80)';
                 container.borderBottomColor = 'rgba(255,255,255,0.08)';
                 container.borderRightColor = 'rgba(255,255,255,0.08)';
-                container.boxShadow = active || pressed
-                    ? `4px 4px 8px rgba(0,0,0,0.80) inset, -2px -2px 4px rgba(0, 0, 0, .24) inset`
-                    : `4px 4px 8px rgba(0,0,0,0.80) inset, -2px -2px 4px rgba(255,255,255,0.08) inset`;
+                container.boxShadow = '4px 4px 8px rgba(0,0,0,0.80) inset, -2px -2px 4px rgba(255,255,255,0.08) inset';
             }
             break;
     }
@@ -204,10 +193,9 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     }
 
     const fillTextColor = theme.color(color, theme.contrastShade(color));
-    const fillHighlightShade = active ? 500 : isLight ? 600 : 300;
     const hlFillTextColor = theme.color(
         highlightColor,
-        theme.contrastShade(highlightColor, fillHighlightShade),
+        theme.contrastShade(highlightColor, interactionShade),
     );
     let textColor = highlightContentShade !== undefined && hl
         ? theme.color(highlightColor, highlightContentShade)
@@ -216,12 +204,23 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         : effectiveVariant === 'fill'
         ? (hl ? hlFillTextColor : fillTextColor)
         : effectiveVariant === 'fill-inverse'
-        ? theme.color(hl ? highlightColor : color, isLight ? 800 : 200)
-        : (hl ? hlInset : baseColor);
+        ? theme.color(hl ? highlightColor : color, isLight ? 900 : 100)
+        : (hl ? interactionColor : baseColor);
     if (disabled) {
         const disabledColor = theme.color(color, isLight ? 300 : 700);
-        container.backgroundColor = theme.color(color, isLight ? 200 : 800);
-        container.borderColor = disabledColor;
+        container.backgroundColor = theme.color(
+            color,
+            isLight ? 200 : 800,
+            effectiveVariant === 'fill-translucent' ? TRANSLUCENT_OPACITY : undefined,
+        );
+        if (effectiveVariant === 'ghost' || effectiveVariant === 'outline') {
+            container.backgroundColor = 'transparent';
+        }
+        if (effectiveVariant === 'inset') {
+            container.backgroundColor = theme.color(color, isLight ? 100 : 900);
+        } else {
+            container.borderColor = disabledColor;
+        }
         textColor = disabledColor;
     }
     const fontSizes = {
@@ -303,7 +302,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
             shape="flat-top"
             size={size}
             variant={variant}
-            glowStyle={glowStyle}
+            activeGlow={activeGlow}
             color={color}
             highlightColor={highlightColor}
             active={active}

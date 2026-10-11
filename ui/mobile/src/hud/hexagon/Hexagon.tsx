@@ -65,7 +65,7 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(({
     color = "neutral",
     highlightColor = color,
     variant,
-    glowStyle = "none",
+    activeGlow = "none",
     size,
     interactive = false,
     active = false,
@@ -92,10 +92,10 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(({
     const highlight500 = theme.color(highlightColor, 500);
     const highlightAccent = theme.color(highlightColor, isLight ? 600 : 300);
 
-    const showGlow = !disabled && glowStyle !== 'none' && (hl || glowDrawn);
+    const showGlow = !disabled && activeGlow !== 'none' && (hl || glowDrawn);
 
     const markGlowDrawn = () => {
-        if (glowStyle !== 'none') {
+        if (activeGlow !== 'none') {
             setGlowDrawn(true);
         }
     };

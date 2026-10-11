@@ -24,7 +24,7 @@ export const Lamp: FC<LampProps> = ({ color, size, opacity, glowColor }) => {
 
     const glowSize = size + 6;
 
-    const glowStyle: ViewStyle = {
+    const activeGlow: ViewStyle = {
         position: 'absolute',
         width: glowSize,
         height: glowSize,
@@ -40,7 +40,7 @@ export const Lamp: FC<LampProps> = ({ color, size, opacity, glowColor }) => {
 
     return (
         <View style={baseStyle}>
-            {glowColor ? <View style={glowStyle} /> : null}
+            {glowColor ? <View style={activeGlow} /> : null}
         </View>
     );
 };

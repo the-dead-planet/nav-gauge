@@ -4,18 +4,65 @@ import { Meta, Title } from '@storybook/addon-docs/blocks';
 
 <Title />
 
-The shared component size scale is `xs`, `sm`, `md`, and `lg`. Components that expose `size` must support the complete scale on both platforms.
+# Sizing
+
+The shared component size scale is `xs`, `sm`, `md`, and `lg`. Components that expose `size` must support the complete scale on both platforms. The standard default is `sm` unless a component documents a reason to use another size.
 
 ## Meaning
 
-| Size | Intended use |
-| --- | --- |
-| `xs` | Dense secondary controls and compact overlays |
-| `sm` | Compact controls and the common default where space is limited |
-| `md` | Standard controls and primary application chrome |
-| `lg` | Prominent controls and touch-focused actions |
+<table>
+    <thead>
+        <tr>
+            <th>Size</th>
+            <th>Control text</th>
+            <th>Input height</th>
+            <th>Input padding (vertical / horizontal)</th>
+            <th>Typical icon</th>
+            <th>External margin</th>
+            <th>Intended use</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>xs</code></td>
+            <td><code>11px</code></td>
+            <td><code>18px</code></td>
+            <td><code>0 / 8px</code></td>
+            <td><code>12px</code></td>
+            <td>None</td>
+            <td>Dense secondary controls and compact overlays</td>
+        </tr>
+        <tr>
+            <td><code>sm</code></td>
+            <td><code>12px</code></td>
+            <td><code>24px</code></td>
+            <td><code>2 / 10px</code></td>
+            <td><code>14px</code></td>
+            <td>None</td>
+            <td>Standard application controls and the default for most components</td>
+        </tr>
+        <tr>
+            <td><code>md</code></td>
+            <td><code>14px</code></td>
+            <td><code>32px</code></td>
+            <td><code>6 / 12px</code></td>
+            <td><code>16px</code></td>
+            <td>None</td>
+            <td>Roomier or emphasized controls and primary application chrome</td>
+        </tr>
+        <tr>
+            <td><code>lg</code></td>
+            <td><code>16px</code></td>
+            <td><code>40px</code></td>
+            <td><code>8 / 14px</code></td>
+            <td><code>20px</code></td>
+            <td>None</td>
+            <td>Prominent controls and touch-focused actions</td>
+        </tr>
+    </tbody>
+</table>
 
-`size` controls geometry owned by the component, such as control height, typography, icon dimensions, gaps, stroke widths, or shape depth. It must not silently add layout spacing around arbitrary child content.
+The height and padding columns are baselines for input-like controls. Components with distinct geometry, such as buttons, chips, toggles, and shaped panels, document their own internal padding, gaps, stroke widths, and shape depth while following the same progression. `size` must not add external margin or layout spacing around arbitrary child content.
 
 ## Layout Boundary
 

@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { ColorVariant, GlowStyle } from '../../model';
+import { ColorVariant, ActiveGlow } from '../../model';
 
 export type HudConnectorAnchor =
     | 'top-left'
@@ -15,7 +15,7 @@ export type HudConnectorAnchor =
 export interface HudConnectorProps {
     children: ReactNode;
     color?: ColorVariant;
-    glowStyle?: GlowStyle;
+    activeGlow?: ActiveGlow;
     fromAnchor?: HudConnectorAnchor;
     toAnchor?: HudConnectorAnchor;
 }

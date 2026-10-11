@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { GlowStyle, HudDecorationCorner, TabstripOption } from '@ui';
+import { ActiveGlow, HudDecorationCorner, TabstripOption } from '@ui';
 import { HudDecoration } from './HudDecoration';
 import { Panel } from '../panel';
 import { Tabstrip } from '../tabstrip';
@@ -16,7 +16,7 @@ export default meta;
 type Story = StoryObj<typeof HudDecoration>;
 
 export const Playground: Story = {
-    args: { color: 'secondary', size: 'md', glowStyle: 'glow', children: <Panel>Decorated panel</Panel> },
+    args: { color: 'secondary', size: 'md', activeGlow: 'glow', children: <Panel>Decorated panel</Panel> },
 };
 
 export const Brackets: Story = {
@@ -24,7 +24,7 @@ export const Brackets: Story = {
         const [value, setValue] = useState('route');
         return (
             <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start' }}>
-                <HudDecoration color="secondary" size="md" glowStyle="glow">
+                <HudDecoration color="secondary" size="md" activeGlow="glow">
                     <Panel variant="fill-inverse">Decorated panel</Panel>
                 </HudDecoration>
                 <HudDecoration corners={['top-right', 'bottom-left']}>
@@ -44,7 +44,7 @@ export const Gallery: Story = {
         const corners: HudDecorationCorner[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
         const sizes = sizeOptions;
         const colors = colorOptions;
-        const glowStyles: GlowStyle[] = ['none', 'glow', 'animate-borders-glow'];
+        const activeGlows: ActiveGlow[] = ['none', 'glow', 'animate-borders-glow'];
 
         return (
             <div style={{ display: 'grid', gap: 24 }}>
@@ -60,14 +60,14 @@ export const Gallery: Story = {
                     ))}
                 </div>
                 <h2 style={{ margin: 0 }}>Sizes and colors by glow mode</h2>
-                {glowStyles.map((glowStyle) => (
-                    <section key={glowStyle} style={{ display: 'grid', gap: 16 }}>
-                        <h3 style={{ margin: 0 }}>{glowStyle}</h3>
+                {activeGlows.map((activeGlow) => (
+                    <section key={activeGlow} style={{ display: 'grid', gap: 16 }}>
+                        <h3 style={{ margin: 0 }}>{activeGlow}</h3>
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 20 }}>
                             {sizes.flatMap((size) => colors.map((color) => (
                                 <div key={`${size}-${color}`} style={{ display: 'grid', gap: 10 }}>
                                     <strong>{size} / {color}</strong>
-                                    <HudDecoration size={size} color={color} glowStyle={glowStyle} corners={corners}>
+                                    <HudDecoration size={size} color={color} activeGlow={activeGlow} corners={corners}>
                                         <Panel variant="fill-inverse" color={color}>Preview</Panel>
                                     </HudDecoration>
                                 </div>

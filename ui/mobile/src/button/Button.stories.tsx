@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 import { Button } from "./Button";
 import { Text } from "../typography";
-import { ButtonCorners, ColorVariant, GlowStyle, Icons, colorOptions, surfaceVariantOptions } from "@ui";
+import { ButtonCorners, ColorVariant, ActiveGlow, Icons, colorOptions, surfaceVariantOptions } from "@ui";
 import { VariantGallery } from '../storybook/VariantGallery';
 
 const styles = StyleSheet.create({
@@ -25,11 +25,11 @@ const styles = StyleSheet.create({
 
 const allCorners: ButtonCorners[] = ['square', 'circle', 'hexagon'];
 
-const allGlowStyles: GlowStyle[] = ['none', 'glow', 'animate-borders-glow'];
+const allActiveGlows: ActiveGlow[] = ['none', 'glow', 'animate-borders-glow'];
 
 export const Gallery: FC = () => {
     const [highlightColor, setHighlightColor] = useState<ColorVariant | undefined>(undefined);
-    const [glowStyle, setGlowStyle] = useState<GlowStyle>('none');
+    const [activeGlow, setActiveGlow] = useState<ActiveGlow>('none');
     const [disabled, setDisabled] = useState(false);
 
     return (
@@ -67,17 +67,17 @@ export const Gallery: FC = () => {
             </View>
 
             <View style={styles.section}>
-                <Text style={styles.label}>glowStyle: {glowStyle}</Text>
+                <Text style={styles.label}>activeGlow: {activeGlow}</Text>
                 <View style={styles.row}>
-                    {allGlowStyles.map((g) => (
+                    {allActiveGlows.map((g) => (
                         <Button
                             key={g}
-                            variant={glowStyle === g ? 'fill' : 'ghost'}
+                            variant={activeGlow === g ? 'fill' : 'ghost'}
                             color="primary"
                             size="xs"
-                            active={glowStyle === g}
+                            active={activeGlow === g}
                             disabled={disabled}
-                            onPress={() => setGlowStyle(g)}
+                            onPress={() => setActiveGlow(g)}
                         >
                             {g}
                         </Button>
@@ -95,7 +95,7 @@ export const Gallery: FC = () => {
                             <Button
                                 icon={Icons.Beaker}
                                 variant={variant}
-                                glowStyle={glowStyle}
+                                activeGlow={activeGlow}
                                 color={color}
                                 corners={corners}
                                 size={size}

@@ -271,13 +271,17 @@
 }
 
 /* Glow styles */
-.glow-style-glow:hover .polygon-glow {
+.glow-style-glow:hover .polygon-glow,
+.glow-style-glow:active .polygon-glow,
+.glow-style-glow.active .polygon-glow {
     opacity: 1;
     filter: var(--hex-filter);
     stroke: var(--hexagon-highlight-color-accent);
 }
 
-.glow-style-animate-borders-glow:hover .polygon-glow {
+.glow-style-animate-borders-glow:hover .polygon-glow,
+.glow-style-animate-borders-glow:active .polygon-glow,
+.glow-style-animate-borders-glow.active .polygon-glow {
     opacity: 1;
     filter: var(--hex-filter);
     stroke: var(--hexagon-highlight-color-accent);

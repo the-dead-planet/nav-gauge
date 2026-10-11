@@ -109,49 +109,44 @@ export const ExternalLink: Story = {
 
 export const All = {
     render: () => {
-        const [fontType, setFontType] = useState<FontType>(FontType.Default);
+        const allFontTypes: FontType[] = [
+            FontType.Default,
+            FontType.Numeric,
+            FontType.SpecialMessaging,
+            FontType.NeonHeader,
+            FontType.NeonText,
+        ];
 
         return (
             <TypographyPreview>{(typographyProps) => <div>
-                <div style={{ marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <label htmlFor="font-select" style={{ fontWeight: 700 }}>Font Type:</label>
-                    <select
-                        id="font-select"
-                        value={fontType}
-                        onChange={(e) => setFontType(e.target.value as FontType)}
-                        style={{ padding: '4px 8px', borderRadius: 4, border: '1px solid var(--color-border)', fontSize: 14 }}
-                    >
-                        {Object.values(FontType).map((ft) => (
-                            <option key={ft} value={ft}>
-                                {ft}
-                            </option>
-                        ))}
-                    </select>
-                </div>
                 <div style={{
                     display: 'grid',
                     gridTemplateColumns: `repeat(${colors.length}, max-content)`,
                     gap: '16px 32px',
                     alignItems: 'center',
                 }}>
-                    {colors.map((color, i) => (
-                        <h5 key={color} style={{ margin: 0 }}>{variantLabels[i]}</h5>
-                    ))}
-                    {(['P', 'Span', 'Label', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'] as const).map((Tag) => (
-                        colors.map((color) => {
-                            const Component = { P, Span, Label, H1, H2, H3, H4, H5, H6 }[Tag];
+                    {allFontTypes.map((fontType) => (
+                        <>
+                            {colors.map((color, i) => (
+                                <h5 key={color} style={{ margin: 0 }}>{variantLabels[i]}</h5>
+                            ))}
+                            {(['P', 'Span', 'Label', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'] as const).map((Tag) => (
+                                colors.map((color) => {
+                                    const Component = { P, Span, Label, H1, H2, H3, H4, H5, H6 }[Tag];
 
-                            return (
-                                <Component
-                                    key={`${Tag}-${color}`}
-                                    color={color}
-                                    fontType={fontType}
-                                    {...typographyProps}
-                                >
-                                    {Tag}{color ? ` (${color})` : ''}
-                                </Component>
-                            );
-                        })
+                                    return (
+                                        <Component
+                                            key={`${Tag}-${color}`}
+                                            color={color}
+                                            fontType={fontType}
+                                            {...typographyProps}
+                                        >
+                                            {Tag}{color ? ` (${fontType})` : ''}
+                                        </Component>
+                                    );
+                                })
+                            ))}
+                        </>
                     ))}
                 </div>
             </div>}</TypographyPreview>

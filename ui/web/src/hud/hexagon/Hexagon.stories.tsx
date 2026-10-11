@@ -42,5 +42,5 @@ export const SizesAndShapes: Story = {
 };
 
 export const InteractiveGlow: Story = {
-    render: () => <div style={gridStyle}><Hexagon interactive color="primary" style={{ width: 100 }}><Text>Default glow</Text></Hexagon><Hexagon interactive glowStyle="glow" color="secondary" style={{ width: 100 }}><Text>Glow</Text></Hexagon><Hexagon interactive glowStyle="animate-borders-glow" color="tertiary" style={{ width: 100 }}><Text>Borders</Text></Hexagon></div>,
+    render: () => <div style={gridStyle}><Hexagon interactive color="primary" style={{ width: 100 }}><Text>Default glow</Text></Hexagon><Hexagon interactive activeGlow="glow" color="secondary" style={{ width: 100 }}><Text>Glow</Text></Hexagon><Hexagon interactive activeGlow="animate-borders-glow" color="tertiary" style={{ width: 100 }}><Text>Borders</Text></Hexagon></div>,
 };

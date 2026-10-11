@@ -12,7 +12,7 @@ export const NotchedPanel: FC<NotchedPanelProps & Props & ComponentProps<'div'>>
     color = 'neutral',
     highlightColor = color,
     variant = 'fill-inverse',
-    glowStyle = 'none',
+    activeGlow = 'none',
     active = false,
     disabled = false,
     header,
@@ -63,7 +63,7 @@ export const NotchedPanel: FC<NotchedPanelProps & Props & ComponentProps<'div'>>
             className={classNames(styles.panel, styles[`color-${color}`], styles[`highlight-color-${highlightColor}`], styles[`variant-${variant}`], styles[`mode-${theme.mode}`], {
                 [styles.active]: active && !disabled,
                 [styles.disabled]: disabled,
-                [styles[`glow-style-${glowStyle}`]]: !disabled,
+                [styles[`glow-style-${activeGlow}`]]: !disabled,
             }, className)}
             style={{ ...style, '--notched-filter': `url(#${filterId})` } as CSSProperties}
             {...props}
@@ -83,7 +83,7 @@ export const NotchedPanel: FC<NotchedPanelProps & Props & ComponentProps<'div'>>
                     <polygon className={styles.body} points={bodyPoints} vectorEffect="non-scaling-stroke" />
                     <polyline className={styles.step} points={`${notch + 7},${height - 6} ${width * 0.38},${height - 6} ${width * 0.42},${height - 2}`} vectorEffect="non-scaling-stroke" />
                     {header ? <polygon className={styles.header} points={headerPoints} vectorEffect="non-scaling-stroke" /> : null}
-                    {glowStyle !== 'none' ? <polygon className={styles.glow} points={bodyPoints} vectorEffect="non-scaling-stroke" /> : null}
+                    {activeGlow !== 'none' ? <polygon className={styles.glow} points={bodyPoints} vectorEffect="non-scaling-stroke" /> : null}
                 </svg>
             ) : null}
             {header ? <div ref={headerRef} className={styles['header-content']}>{header}</div> : null}
