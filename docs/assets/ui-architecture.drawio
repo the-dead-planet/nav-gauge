@@ -31,10 +31,10 @@
         <mxCell id="e-ds-layout" edge="1" parent="1" source="design-system" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#6c8ebf;">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e-ds-motion" edge="1" parent="1" source="design-system" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#6c8ebf;" target="motion">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="e-ds-motion" edge="1" parent="1" source="design-system" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#6c8ebf;exitX=0.75;exitY=0;exitDx=0;exitDy=0;" target="motion">
+          <mxGeometry relative="1" x="-0.5448" as="geometry" />
         </mxCell>
-        <mxCell id="e-ds-hud" edge="1" parent="1" source="design-system" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#6c8ebf;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="hud">
+        <mxCell id="e-ds-hud" edge="1" parent="1" source="design-system" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#6c8ebf;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="chassis">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="e-layout-hud" edge="1" parent="1" source="chassis" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#6c8ebf;" target="hud">
