@@ -11,7 +11,7 @@ export const Panel: FC<PanelProps & Props> = ({
     color = "neutral",
     highlightColor = color,
     variant,
-    glowStyle: _glowStyle,
+    interactionGlow: _interactionGlow,
     borderWidth = 2,
     interactive = false,
     active = false,

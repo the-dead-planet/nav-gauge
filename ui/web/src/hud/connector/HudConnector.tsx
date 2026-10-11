@@ -24,7 +24,7 @@ export const HudConnector: FC<Props> = ({
     fromRef,
     toRef,
     color = 'primary',
-    glowStyle = 'none',
+    interactionGlow = 'none',
     fromAnchor = 'center',
     toAnchor = 'center',
 }) => {
@@ -68,7 +68,7 @@ export const HudConnector: FC<Props> = ({
         : '';
 
     return (
-        <div ref={wrapperRef} className={classNames(styles.wrapper, styles[`color-${color}`], styles[`glow-style-${glowStyle}`])}>
+        <div ref={wrapperRef} className={classNames(styles.wrapper, styles[`color-${color}`], styles[`glow-style-${interactionGlow}`])}>
             {children}
             {points ? (
                 <svg className={styles.connector} aria-hidden="true">

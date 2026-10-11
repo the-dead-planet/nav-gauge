@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { GlowStyle, HudDecorationCorner, TabstripOption, colorOptions, sizeOptions } from '@ui';
+import { InteractionGlow, HudDecorationCorner, TabstripOption, colorOptions, sizeOptions } from '@ui';
 import { HudDecoration } from './HudDecoration';
 import { Panel } from '../panel';
 import { Tabstrip } from '../tabstrip';
@@ -25,7 +25,7 @@ export const Playground: FC = () => {
     const [value, setValue] = useState('route');
     return (
         <View style={styles.container}>
-            <HudDecoration color="secondary" size="md" glowStyle="glow">
+            <HudDecoration color="secondary" size="md" interactionGlow="glow">
                 <Panel variant="fill-inverse"><Text>Decorated panel</Text></Panel>
             </HudDecoration>
             <HudDecoration corners={['top-right', 'bottom-left']}>
@@ -41,7 +41,7 @@ export const Playground: FC = () => {
 
 export const Gallery: FC = () => {
     const corners: HudDecorationCorner[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
-    const glowStyles: GlowStyle[] = ['none', 'glow', 'animate-borders-glow'];
+    const interactionGlows: InteractionGlow[] = ['none', 'glow', 'animate-borders-glow'];
 
     return (
         <ScrollView contentContainerStyle={styles.catalog}>
@@ -57,14 +57,14 @@ export const Gallery: FC = () => {
                 ))}
             </View>
             <Text style={styles.heading}>Sizes and colors by glow mode</Text>
-            {glowStyles.map((glowStyle) => (
-                <View key={glowStyle} style={styles.catalogItem}>
-                    <Text style={styles.heading}>{glowStyle}</Text>
+            {interactionGlows.map((interactionGlow) => (
+                <View key={interactionGlow} style={styles.catalogItem}>
+                    <Text style={styles.heading}>{interactionGlow}</Text>
                     <View style={styles.catalogGrid}>
                         {sizeOptions.flatMap((size) => colorOptions.map((color) => (
                             <View key={`${size}-${color}`} style={styles.catalogItem}>
                                 <Text style={styles.catalogLabel}>{size} / {color}</Text>
-                                <HudDecoration size={size} color={color} glowStyle={glowStyle} corners={corners}>
+                                <HudDecoration size={size} color={color} interactionGlow={interactionGlow} corners={corners}>
                                     <Panel variant="fill-inverse" color={color}><Text>Preview</Text></Panel>
                                 </HudDecoration>
                             </View>

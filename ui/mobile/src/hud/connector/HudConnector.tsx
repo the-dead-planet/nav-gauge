@@ -49,7 +49,7 @@ export const HudConnector: FC<Props> = ({
     fromRef,
     toRef,
     color = 'primary',
-    glowStyle = 'none',
+    interactionGlow = 'none',
     fromAnchor = 'center',
     toAnchor = 'center',
 }) => {
@@ -78,7 +78,7 @@ export const HudConnector: FC<Props> = ({
             {children}
             {points ? (
                 <Svg style={styles.connector} pointerEvents="none" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-                    {glowStyle !== 'none' ? <Polyline points={path} fill="none" stroke={connectorColor} strokeWidth={7} strokeOpacity={0.16} /> : null}
+                    {interactionGlow !== 'none' ? <Polyline points={path} fill="none" stroke={connectorColor} strokeWidth={7} strokeOpacity={0.16} /> : null}
                     <Polyline points={path} fill="none" stroke={connectorColor} strokeWidth={1} />
                     <Polygon points={`${points[1].x - 4},${points[1].y} ${points[1].x - 2},${points[1].y - 3.5} ${points[1].x + 2},${points[1].y - 3.5} ${points[1].x + 4},${points[1].y} ${points[1].x + 2},${points[1].y + 3.5} ${points[1].x - 2},${points[1].y + 3.5}`} fill={connectorColor} />
                 </Svg>

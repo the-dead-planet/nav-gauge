@@ -13,7 +13,7 @@ export const Anchors: Story = {
         const fromRef = useRef<HTMLDivElement>(null);
         const toRef = useRef<HTMLDivElement>(null);
         return (
-            <HudConnector fromRef={fromRef} toRef={toRef} fromAnchor="right" toAnchor="left" color="secondary" glowStyle="glow">
+            <HudConnector fromRef={fromRef} toRef={toRef} fromAnchor="right" toAnchor="left" color="secondary" interactionGlow="glow">
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', minWidth: 420, padding: 32 }}>
                     <div ref={fromRef}><HudDecoration><Panel variant="fill-inverse">Navigation</Panel></HudDecoration></div>
                     <div ref={toRef}><HudDecoration corners={['top-right', 'bottom-left']}><Panel variant="fill-inverse">Telemetry</Panel></HudDecoration></div>

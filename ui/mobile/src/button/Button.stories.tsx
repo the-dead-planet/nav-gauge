@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
 import { Button } from "./Button";
 import { Text } from "../typography";
-import { ButtonCorners, ColorVariant, GlowStyle, Icons, colorOptions, surfaceVariantOptions } from "@ui";
+import { ButtonCorners, ColorVariant, InteractionGlow, Icons, colorOptions, surfaceVariantOptions } from "@ui";
 import { VariantGallery } from '../storybook/VariantGallery';
 
 const styles = StyleSheet.create({
@@ -25,11 +25,11 @@ const styles = StyleSheet.create({
 
 const allCorners: ButtonCorners[] = ['square', 'circle', 'hexagon'];
 
-const allGlowStyles: GlowStyle[] = ['none', 'glow', 'animate-borders-glow'];
+const allInteractionGlows: InteractionGlow[] = ['none', 'glow', 'animate-borders-glow'];
 
 export const Gallery: FC = () => {
     const [highlightColor, setHighlightColor] = useState<ColorVariant | undefined>(undefined);
-    const [interactionGlow, setInteractionGlow] = useState<GlowStyle>('none');
+    const [interactionGlow, setInteractionGlow] = useState<InteractionGlow>('none');
     const [disabled, setDisabled] = useState(false);
 
     return (
@@ -69,7 +69,7 @@ export const Gallery: FC = () => {
             <View style={styles.section}>
                 <Text style={styles.label}>interactionGlow: {interactionGlow}</Text>
                 <View style={styles.row}>
-                    {allGlowStyles.map((g) => (
+                    {allInteractionGlows.map((g) => (
                         <Button
                             key={g}
                             variant={interactionGlow === g ? 'fill' : 'ghost'}

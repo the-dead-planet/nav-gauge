@@ -36,4 +36,4 @@ export const SizesAndShapes: FC = () => (
     </ScrollView>
 );
 
-export const InteractiveGlow: FC = () => <View style={styles.grid}><Hexagon interactive color="primary" style={styles.fixedWidth}><Text>Default</Text></Hexagon><Hexagon interactive glowStyle="glow" color="secondary" style={styles.fixedWidth}><Text>Glow</Text></Hexagon><Hexagon interactive glowStyle="animate-borders-glow" color="tertiary" style={styles.fixedWidth}><Text>Borders</Text></Hexagon></View>;
+export const InteractiveGlow: FC = () => <View style={styles.grid}><Hexagon interactive color="primary" style={styles.fixedWidth}><Text>Default</Text></Hexagon><Hexagon interactive interactionGlow="glow" color="secondary" style={styles.fixedWidth}><Text>Glow</Text></Hexagon><Hexagon interactive interactionGlow="animate-borders-glow" color="tertiary" style={styles.fixedWidth}><Text>Borders</Text></Hexagon></View>;

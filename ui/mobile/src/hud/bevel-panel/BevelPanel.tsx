@@ -73,7 +73,7 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
     color: colorProp,
     highlightColor: highlightColorProp,
     variant,
-    glowStyle = "none",
+    interactionGlow = "none",
     size = 'lg',
     interactive = false,
     active = false,
@@ -98,7 +98,7 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
     const highlight500 = theme.color(highlightColor, 500);
     const highlightAccent = theme.color(highlightColor, isLight ? 600 : 300);
 
-    const showGlow = !disabled && (glowStyle !== 'none') && (pressed || active);
+    const showGlow = !disabled && (interactionGlow !== 'none') && (pressed || active);
 
     const onLayout = (e: LayoutChangeEvent) => {
         const { width, height } = e.nativeEvent.layout;
