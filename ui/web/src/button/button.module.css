@@ -12,6 +12,7 @@
 }
 
 .color-neutral {
+    --button-color-brightest: var(--color-neutral-50);
     --button-color-fill: var(--color-neutral);
     --button-color-fill-contrast: var(--color-neutral-contrast);
     --button-color-dark: var(--color-neutral-900);
@@ -26,15 +27,16 @@
 }
 
 .mode-light.color-neutral {
-    --button-color: var(--color-neutral-600);
+    --button-color: var(--color-neutral);
     --button-color-text: var(--color-neutral-900);
 }
 
 .mode-dark.color-neutral {
-    --button-color: var(--color-neutral-400);
+    --button-color: var(--color-neutral);
 }
 
 .color-primary {
+    --button-color-brightest: var(--color-primary-50);
     --button-color: var(--color-primary);
     --button-color-fill: var(--color-primary);
     --button-color-fill-contrast: var(--color-primary-contrast);
@@ -50,6 +52,7 @@
 }
 
 .color-secondary {
+    --button-color-brightest: var(--color-secondary-50);
     --button-color: var(--color-secondary);
     --button-color-fill: var(--color-secondary);
     --button-color-fill-contrast: var(--color-secondary-contrast);
@@ -65,6 +68,7 @@
 }
 
 .color-tertiary {
+    --button-color-brightest: var(--color-tertiary-50);
     --button-color: var(--color-tertiary);
     --button-color-fill: var(--color-tertiary);
     --button-color-fill-contrast: var(--color-tertiary-contrast);
@@ -80,10 +84,15 @@
 }
 
 .highlight-neutral {
+    --button-highlight-color-brightest: var(--color-neutral-50);
     --button-highlight-color: var(--color-neutral);
     --button-highlight-color-fill-contrast: var(--color-neutral-contrast);
     --button-highlight-color-accent-lighter: var(--color-neutral-300);
-    --button-highlight-color-accent-darker: var(--color-neutral-700);
+    --button-highlight-color-accent-darker: var(--color-neutral-600);
+    --button-highlight-color-active-lighter: var(--color-neutral-200);
+    --button-highlight-color-active-darker: var(--color-neutral-700);
+    --button-highlight-color-active-lighter-contrast: var(--color-neutral-200-contrast);
+    --button-highlight-color-active-darker-contrast: var(--color-neutral-700-contrast);
     --button-highlight-color-accent-lighter-contrast: var(--color-neutral-300-contrast);
     --button-highlight-color-accent-darker-contrast: var(--color-neutral-700-contrast);
     --button-highlight-color-dark: var(--color-neutral-900);
@@ -94,10 +103,15 @@
 }
 
 .highlight-primary {
+    --button-highlight-color-brightest: var(--color-primary-50);
     --button-highlight-color: var(--color-primary);
     --button-highlight-color-fill-contrast: var(--color-primary-contrast);
     --button-highlight-color-accent-lighter: var(--color-primary-300);
     --button-highlight-color-accent-darker: var(--color-primary-600);
+    --button-highlight-color-active-lighter: var(--color-primary-200);
+    --button-highlight-color-active-darker: var(--color-primary-700);
+    --button-highlight-color-active-lighter-contrast: var(--color-primary-200-contrast);
+    --button-highlight-color-active-darker-contrast: var(--color-primary-700-contrast);
     --button-highlight-color-accent-lighter-contrast: var(--color-primary-300-contrast);
     --button-highlight-color-accent-darker-contrast: var(--color-primary-600-contrast);
     --button-highlight-color-dark: var(--color-primary-900);
@@ -108,10 +122,15 @@
 }
 
 .highlight-secondary {
+    --button-highlight-color-brightest: var(--color-secondary-50);
     --button-highlight-color: var(--color-secondary);
     --button-highlight-color-fill-contrast: var(--color-secondary-contrast);
     --button-highlight-color-accent-lighter: var(--color-secondary-300);
     --button-highlight-color-accent-darker: var(--color-secondary-600);
+    --button-highlight-color-active-lighter: var(--color-secondary-200);
+    --button-highlight-color-active-darker: var(--color-secondary-700);
+    --button-highlight-color-active-lighter-contrast: var(--color-secondary-200-contrast);
+    --button-highlight-color-active-darker-contrast: var(--color-secondary-700-contrast);
     --button-highlight-color-accent-lighter-contrast: var(--color-secondary-300-contrast);
     --button-highlight-color-accent-darker-contrast: var(--color-secondary-600-contrast);
     --button-highlight-color-dark: var(--color-secondary-900);
@@ -122,10 +141,15 @@
 }
 
 .highlight-tertiary {
+    --button-highlight-color-brightest: var(--color-tertiary-50);
     --button-highlight-color: var(--color-tertiary);
     --button-highlight-color-fill-contrast: var(--color-tertiary-contrast);
     --button-highlight-color-accent-lighter: var(--color-tertiary-300);
     --button-highlight-color-accent-darker: var(--color-tertiary-600);
+    --button-highlight-color-active-lighter: var(--color-tertiary-200);
+    --button-highlight-color-active-darker: var(--color-tertiary-700);
+    --button-highlight-color-active-lighter-contrast: var(--color-tertiary-200-contrast);
+    --button-highlight-color-active-darker-contrast: var(--color-tertiary-700-contrast);
     --button-highlight-color-accent-lighter-contrast: var(--color-tertiary-300-contrast);
     --button-highlight-color-accent-darker-contrast: var(--color-tertiary-600-contrast);
     --button-highlight-color-dark: var(--color-tertiary-900);
@@ -137,28 +161,30 @@
 
 .mode-light {
     --button-color-inverse: var(--button-color-inverse-light);
-    --button-color-inverse-text: var(--button-color-inverse-dark);
+    --button-color-inverse-text: var(--button-color-dark);
     --button-color-fill-text: var(--button-color-light);
     --button-color-text: var(--button-color-dark);
     --button-highlight-color-inverse: var(--button-highlight-color-inverse-light);
     --button-highlight-color-fill-text: var(--button-highlight-color-light);
     --button-highlight-color-accent: var(--button-highlight-color-accent-darker);
     --button-highlight-color-accent-contrast: var(--button-highlight-color-accent-darker-contrast);
-    --button-highlight-color-bg-opacity: .08;
+    --button-highlight-color-active: var(--button-highlight-color-active-darker);
+    --button-highlight-color-active-contrast: var(--button-highlight-color-active-darker-contrast);
     --button-disabled-bg: var(--button-disabled-bg-light);
     --button-disabled-fg: var(--button-disabled-fg-light);
 }
 
 .mode-dark {
     --button-color-inverse: var(--button-color-inverse-dark);
-    --button-color-inverse-text: var(--button-color-inverse-light);
+    --button-color-inverse-text: var(--button-color-light);
     --button-color-fill-text: var(--button-color-dark);
     --button-color-text: var(--button-color-light);
     --button-highlight-color-inverse: var(--button-highlight-color-inverse-dark);
     --button-highlight-color-fill-text: var(--button-highlight-color-dark);
     --button-highlight-color-accent: var(--button-highlight-color-accent-lighter);
     --button-highlight-color-accent-contrast: var(--button-highlight-color-accent-lighter-contrast);
-    --button-highlight-color-bg-opacity: .04;
+    --button-highlight-color-active: var(--button-highlight-color-active-lighter);
+    --button-highlight-color-active-contrast: var(--button-highlight-color-active-lighter-contrast);
     --button-disabled-bg: var(--button-disabled-bg-dark);
     --button-disabled-fg: var(--button-disabled-fg-dark);
 }
@@ -350,7 +376,7 @@
 .variant-fill-translucent.hovered {
     border-color: var(--button-highlight-color-accent);
     color: var(--button-highlight-color-accent);
-    background-color: rgb(from var(--button-highlight-color) r g b / .36);
+    background-color: rgb(from var(--button-color) r g b / .24);
 }
 
 .variant-fill-translucent:hover .icon,
@@ -366,7 +392,7 @@
 .variant-fill-translucent.active {
     border-color: var(--button-highlight-color);
     color: var(--button-highlight-color-accent);
-    background-color: rgb(from var(--button-highlight-color) r g b / .48);
+    background-color: rgb(from var(--button-color) r g b / .24);
 }
 
 /*  */
@@ -420,14 +446,19 @@
 }
 
 .variant-inset.mode-light {
-    background-color: rgb(from var(--button-color) r g b / .04);
+    background-color: var(--button-color-light);
+    border-top-color: rgb(from var(--button-color-dark) r g b / .2);
+    border-left-color: rgb(from var(--button-color-dark) r g b / .2);
+    border-right-color: rgb(from var(--button-color-brightest) r g b / .7);
+    border-bottom-color: rgb(from var(--button-color-brightest) r g b / .7);
     box-shadow:
+        rgb(from var(--button-color-dark) r g b / .2) 3px 3px 4px inset,
         rgb(from var(--button-color-shadow) r g b / .18) 4px 4px 8px inset,
-        rgb(from var(--button-color-shadow) r g b / .04) -2px -2px 6px inset,
-        rgba(255, 255, 255, .35) -2px -2px 4px inset;
+        rgba(255, 255, 255, .7) -2px -2px 3px inset;
 }
 
 .variant-inset.mode-dark {
+    background-color: var(--button-color-dark);
     border-color: transparent;
     box-shadow:
         rgba(0, 0, 0, .80) 4px 4px 8px inset,
@@ -451,23 +482,179 @@
 .variant-inset:active,
 .variant-inset.active {
     color: var(--button-highlight-color-accent);
-    background-color: rgb(from var(--button-highlight-color-accent) r g b / var(--button-highlight-color-bg-opacity));
 }
 
 .variant-inset.mode-light:active,
 .variant-inset.mode-light.active {
     box-shadow:
+        rgb(from var(--button-highlight-color-dark) r g b / .2) 3px 3px 4px inset,
         rgb(from var(--button-highlight-color-shadow) r g b / .18) 4px 4px 8px inset,
-        rgb(from var(--button-highlight-color-shadow) r g b / .04) -2px -2px 4px inset,
-        rgba(255, 255, 255, .25) -2px -2px 3px inset;
-    border-color: rgb(from var(--button-highlight-color-accent) r g b / .3);
+        rgba(255, 255, 255, .7) -2px -2px 3px inset;
+    border-top-color: rgb(from var(--button-highlight-color-dark) r g b / .2);
+    border-left-color: rgb(from var(--button-highlight-color-dark) r g b / .2);
+    border-right-color: rgb(from var(--button-highlight-color-brightest) r g b / .7);
+    border-bottom-color: rgb(from var(--button-highlight-color-brightest) r g b / .7);
 }
 
 .variant-inset.mode-dark:active,
 .variant-inset.mode-dark.active {
     box-shadow:
         rgba(0, 0, 0, .80) 4px 4px 8px inset,
-        rgba(0, 0, 0, .24) -2px -2px 4px inset;
+        rgba(255, 255, 255, .08) -2px -2px 4px inset;
+}
+
+.variant-fill:focus-visible {
+    background-color: var(--button-highlight-color-accent);
+    color: var(--button-highlight-color-accent-contrast);
+}
+
+.variant-fill:active:not(.active),
+.variant-fill.active {
+    background-color: var(--button-highlight-color-active);
+    color: var(--button-highlight-color-active-contrast);
+}
+
+.variant-fill:focus-visible .icon {
+    color: var(--button-highlight-color-accent-contrast);
+    stroke: var(--button-highlight-color-accent-contrast);
+    fill: var(--button-highlight-color-accent-contrast);
+}
+
+.variant-fill:active:not(.active) .icon,
+.variant-fill.active .icon {
+    color: var(--button-highlight-color-active-contrast);
+    stroke: var(--button-highlight-color-active-contrast);
+    fill: var(--button-highlight-color-active-contrast);
+}
+
+.variant-fill.active:hover,
+.variant-fill.active:focus-visible {
+    background-color: var(--button-highlight-color-accent);
+    color: var(--button-highlight-color-accent-contrast);
+}
+
+.variant-fill.active:hover .icon,
+.variant-fill.active:focus-visible .icon {
+    color: var(--button-highlight-color-accent-contrast);
+    stroke: var(--button-highlight-color-accent-contrast);
+    fill: var(--button-highlight-color-accent-contrast);
+}
+
+.variant-fill.active:active {
+    background-color: var(--button-highlight-color-active);
+    color: var(--button-highlight-color-active-contrast);
+}
+
+.variant-fill.active:active .icon {
+    color: var(--button-highlight-color-active-contrast);
+    stroke: var(--button-highlight-color-active-contrast);
+    fill: var(--button-highlight-color-active-contrast);
+}
+
+.variant-fill-inverse:focus-visible,
+.variant-fill-translucent:focus-visible,
+.variant-outline:focus-visible {
+    border-color: var(--button-highlight-color-accent);
+}
+
+.variant-fill-inverse:active:not(.active),
+.variant-fill-inverse.active,
+.variant-fill-translucent:active:not(.active),
+.variant-fill-translucent.active,
+.variant-outline:active:not(.active),
+.variant-outline.active {
+    border-color: var(--button-highlight-color-active);
+}
+
+.variant-fill-inverse.active:hover,
+.variant-fill-inverse.active:focus-visible,
+.variant-fill-translucent.active:hover,
+.variant-fill-translucent.active:focus-visible,
+.variant-outline.active:hover,
+.variant-outline.active:focus-visible {
+    border-color: var(--button-highlight-color-accent);
+}
+
+.variant-fill-inverse.active:active,
+.variant-fill-translucent.active:active,
+.variant-outline.active:active {
+    border-color: var(--button-highlight-color-active);
+}
+
+.variant-ghost:focus-visible,
+.variant-inset:focus-visible {
+    color: var(--button-highlight-color-accent);
+}
+
+.variant-ghost:active:not(.active),
+.variant-ghost.active,
+.variant-fill-translucent:active:not(.active),
+.variant-fill-translucent.active,
+.variant-outline:active:not(.active),
+.variant-outline.active,
+.variant-inset:active:not(.active),
+.variant-inset.active {
+    color: var(--button-highlight-color-active);
+}
+
+.variant-ghost.active:hover,
+.variant-ghost.active:focus-visible,
+.variant-fill-translucent.active:hover,
+.variant-fill-translucent.active:focus-visible,
+.variant-outline.active:hover,
+.variant-outline.active:focus-visible,
+.variant-inset.active:hover,
+.variant-inset.active:focus-visible {
+    color: var(--button-highlight-color-accent);
+}
+
+.variant-ghost.active:active,
+.variant-fill-translucent.active:active,
+.variant-outline.active:active,
+.variant-inset.active:active {
+    color: var(--button-highlight-color-active);
+}
+
+.variant-ghost:focus-visible .icon,
+.variant-inset:focus-visible .icon {
+    color: var(--button-highlight-color-accent);
+    stroke: var(--button-highlight-color-accent);
+    fill: var(--button-highlight-color-accent);
+}
+
+.variant-ghost:active:not(.active) .icon,
+.variant-ghost.active .icon,
+.variant-fill-translucent:active:not(.active) .icon,
+.variant-fill-translucent.active .icon,
+.variant-outline:active:not(.active) .icon,
+.variant-outline.active .icon,
+.variant-inset:active:not(.active) .icon,
+.variant-inset.active .icon {
+    color: var(--button-highlight-color-active);
+    stroke: var(--button-highlight-color-active);
+    fill: var(--button-highlight-color-active);
+}
+
+.variant-ghost.active:hover .icon,
+.variant-ghost.active:focus-visible .icon,
+.variant-fill-translucent.active:hover .icon,
+.variant-fill-translucent.active:focus-visible .icon,
+.variant-outline.active:hover .icon,
+.variant-outline.active:focus-visible .icon,
+.variant-inset.active:hover .icon,
+.variant-inset.active:focus-visible .icon {
+    color: var(--button-highlight-color-accent);
+    stroke: var(--button-highlight-color-accent);
+    fill: var(--button-highlight-color-accent);
+}
+
+.variant-ghost.active:active .icon,
+.variant-fill-translucent.active:active .icon,
+.variant-outline.active:active .icon,
+.variant-inset.active:active .icon {
+    color: var(--button-highlight-color-active);
+    stroke: var(--button-highlight-color-active);
+    fill: var(--button-highlight-color-active);
 }
 
 .corners-hexagon {
@@ -808,6 +995,53 @@
     color: var(--button-disabled-fg);
     stroke: var(--button-disabled-fg);
     fill: var(--button-disabled-fg);
+}
+
+.button.disabled.variant-fill-translucent,
+.button.disabled.variant-fill-translucent:hover,
+.button.disabled.variant-fill-translucent:active,
+.button.disabled.variant-fill-translucent.active {
+    background-color: rgb(from var(--button-disabled-bg) r g b / .24);
+}
+
+.button.disabled.variant-ghost,
+.button.disabled.variant-ghost:hover,
+.button.disabled.variant-ghost:active,
+.button.disabled.variant-ghost.active {
+    background-color: transparent;
+}
+
+.button.disabled.variant-outline,
+.button.disabled.variant-outline:hover,
+.button.disabled.variant-outline:active,
+.button.disabled.variant-outline.active {
+    background-color: transparent;
+}
+
+.button.disabled.variant-inset.mode-light,
+.button.disabled.variant-inset.mode-light:hover,
+.button.disabled.variant-inset.mode-light:active,
+.button.disabled.variant-inset.mode-light.active {
+    background-color: var(--button-color-light);
+    border-top-color: rgb(from var(--button-color-dark) r g b / .2);
+    border-left-color: rgb(from var(--button-color-dark) r g b / .2);
+    border-right-color: rgb(from var(--button-color-brightest) r g b / .7);
+    border-bottom-color: rgb(from var(--button-color-brightest) r g b / .7);
+    box-shadow:
+        rgb(from var(--button-color-dark) r g b / .2) 3px 3px 4px inset,
+        rgb(from var(--button-color-shadow) r g b / .18) 4px 4px 8px inset,
+        rgba(255, 255, 255, .7) -2px -2px 3px inset;
+}
+
+.button.disabled.variant-inset.mode-dark,
+.button.disabled.variant-inset.mode-dark:hover,
+.button.disabled.variant-inset.mode-dark:active,
+.button.disabled.variant-inset.mode-dark.active {
+    background-color: var(--button-color-dark);
+    border-color: transparent;
+    box-shadow:
+        rgba(0, 0, 0, .80) 4px 4px 8px inset,
+        rgba(255, 255, 255, .08) -2px -2px 4px inset;
 }
 
 .button.disabled.corners-hexagon,

@@ -1,8 +1,11 @@
-import { Meta, Title } from '@storybook/addon-docs/blocks';
+import { Canvas, Meta, Title } from "@storybook/addon-docs/blocks";
+import * as TypographyStories from "./Typography.stories";
 
 <Meta title="Design System/Typography" />
 
 <Title />
+
+# Typography
 
 Typography carries both hierarchy and product voice. Font choice must follow the role of the text rather than personal preference.
 
@@ -46,3 +49,5 @@ Typography carries both hierarchy and product voice. Font choice must follow the
 Use the default font unless the content clearly matches another role. Special messaging and neon fonts lose their effect when used frequently and reduce readability in long text.
 
 Use tabular numerals for changing values when stable character widths prevent the surrounding layout from shifting.
+
+<Canvas of={TypographyStories.All} />

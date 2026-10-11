@@ -29,7 +29,7 @@ const allGlowStyles: GlowStyle[] = ['none', 'glow', 'animate-borders-glow'];
 
 export const Gallery: FC = () => {
     const [highlightColor, setHighlightColor] = useState<ColorVariant | undefined>(undefined);
-    const [glowStyle, setGlowStyle] = useState<GlowStyle>('none');
+    const [interactionGlow, setInteractionGlow] = useState<GlowStyle>('none');
     const [disabled, setDisabled] = useState(false);
 
     return (
@@ -67,17 +67,17 @@ export const Gallery: FC = () => {
             </View>
 
             <View style={styles.section}>
-                <Text style={styles.label}>glowStyle: {glowStyle}</Text>
+                <Text style={styles.label}>interactionGlow: {interactionGlow}</Text>
                 <View style={styles.row}>
                     {allGlowStyles.map((g) => (
                         <Button
                             key={g}
-                            variant={glowStyle === g ? 'fill' : 'ghost'}
+                            variant={interactionGlow === g ? 'fill' : 'ghost'}
                             color="primary"
                             size="xs"
-                            active={glowStyle === g}
+                            active={interactionGlow === g}
                             disabled={disabled}
-                            onPress={() => setGlowStyle(g)}
+                            onPress={() => setInteractionGlow(g)}
                         >
                             {g}
                         </Button>
@@ -95,7 +95,7 @@ export const Gallery: FC = () => {
                             <Button
                                 icon={Icons.Beaker}
                                 variant={variant}
-                                glowStyle={glowStyle}
+                                interactionGlow={interactionGlow}
                                 color={color}
                                 corners={corners}
                                 size={size}

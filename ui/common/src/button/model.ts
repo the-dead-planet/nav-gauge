@@ -5,7 +5,7 @@ import { TooltipProps } from "../tooltip";
 export type ButtonCorners = 'square' | 'circle' | 'hexagon';
 
 export interface ButtonProps extends AppearanceProps<SurfaceVariant> {
-    glowStyle?: GlowStyle;
+    interactionGlow?: GlowStyle;
     /**
      * Defaults to `sm`
      */
