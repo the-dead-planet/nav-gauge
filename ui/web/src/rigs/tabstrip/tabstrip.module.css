@@ -111,7 +111,7 @@
 
 .color-neutral {
     --content-color: var(--color-neutral-500);
-    --content-dark: var(--color-neutral-800);
+    --content-dark: var(--color-neutral-900);
     --content-light: var(--color-neutral-100);
 }
 
