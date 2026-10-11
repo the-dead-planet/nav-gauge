@@ -3,7 +3,7 @@ import { ColorVariant, SizeVariant, FillVariant, CLOCK_INPUT_RANGE, NumberInputP
 import { ClockSliceInput } from './ClockSliceInput';
 import { ClockInput } from './ClockInput';
 import { DurationClockInput } from './DurationClockInput';
-import { Text } from '../../typography';
+import { Text } from '../../design-system/typography';
 import { useState } from 'react';
 import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptions as allSizes } from '../../storybook/controls';
 

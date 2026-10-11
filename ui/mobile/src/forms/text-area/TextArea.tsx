@@ -6,8 +6,8 @@ import {
     TextAreaProps,
     useTheme,
 } from "@ui";
-import { Label } from "../../typography";
-import { getMobileFontFamily } from "../../typography/fontFamily";
+import { Label } from "../../design-system/typography";
+import { getMobileFontFamily } from "../../design-system/typography/fontFamily";
 import { TRANSLUCENT_OPACITY } from "../../tinkers";
 
 const styles = StyleSheet.create({

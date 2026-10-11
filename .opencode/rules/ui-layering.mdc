@@ -1,0 +1,31 @@
+---
+description: Allowed import direction between ui category folders
+globs: "ui/**/*.{ts,tsx}"
+alwaysApply: true
+---
+
+Inside `ui/common/src`, `ui/web/src`, and `ui/mobile/src`, the category folders are
+siblings, but imports between them are restricted to one direction. See
+`docs/assets/ui-architecture.drawio` for the diagram.
+
+Layers, lowest to highest:
+
+1. `design-system` — tokens and `Option` only
+2. `chassis`, `motion`
+3. `hud` — shape primitives, `color-box`, and `tooltip`
+4. `controls`
+5. `rigs` — `popup`, `dialog`, `tabstrip`
+6. `forms`
+7. `assemblies` — higher-order composites that compose controls/forms
+   (`theme-mode-toggle`, `theme-select`)
+
+Rules:
+
+- A layer may import from any layer below it. A layer must never import from a
+  layer above it.
+- `design-system` must import nothing from the other `ui` layers. It holds tokens
+  and shared primitives, not widgets.
+- Use the `@package-name` alias across workspaces; use relative imports only
+  within the current workspace.
+- A shared component lives in `@ui/common` (API and logic); platform renderers
+  live in `@ui/web` / `@ui/mobile`.

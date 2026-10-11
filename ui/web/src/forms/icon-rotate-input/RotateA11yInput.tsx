@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef } from "react";
-import { Label, Span } from "../../typography";
+import { Label, Span } from "../../design-system/typography";
 import styles from './icon-rotate-input.module.css';
 
 interface Props {

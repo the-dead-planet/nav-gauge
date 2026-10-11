@@ -1,0 +1,390 @@
+import { Children, ComponentType, FC, Ref, useState } from "react";
+import { Pressable, PressableProps, View, type ViewInstance } from "react-native";
+import { ButtonProps, useTheme } from "@ui";
+import { Icon } from "../../design-system/icons";
+import { SvgProps } from "react-native-svg";
+import { Hexagon } from "../../hud";
+import { Tooltip } from "../../hud/tooltip";
+import { MutableViewStyle } from "../../model";
+import { Text } from "../../design-system/typography";
+import { TRANSLUCENT_OPACITY } from "../../tinkers";
+
+export interface MobileButtonProps {
+    forwardRef?: Ref<ViewInstance>;
+    icon?: ComponentType<SvgProps>;
+    title?: string;
+}
+
+export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
+    forwardRef,
+    color = 'neutral',
+    contentShade,
+    highlightColor = color,
+    highlightContentShade,
+    variant = 'ghost',
+    activeGlow = 'none',
+    size = 'sm',
+    corners = 'square',
+    active = false,
+    title,
+    icon,
+    iconRotateX = 0,
+    iconRotateZ = 0,
+    children,
+    style,
+    disabled,
+    tooltip,
+    tooltipPlacement,
+    showTooltipConnection,
+    onPress,
+    onLongPress,
+    onPressIn,
+    onPressOut,
+    accessibilityRole,
+    accessibilityState,
+    ...props
+}) => {
+    const theme = useTheme();
+    const [pressed, setPressed] = useState(false);
+    const [glowDrawn, setGlowDrawn] = useState(false);
+
+    const hl = pressed || active;
+    const isLight = theme.mode === 'light';
+
+    const hlInset = theme.color(highlightColor, isLight ? 600 : 300);
+    const baseColor = theme.color(color);
+    const interactionShade = active || pressed ? (isLight ? 700 : 200) : 500;
+    const interactionColor = theme.color(highlightColor, interactionShade);
+
+    const showGlow = activeGlow !== 'none' && (hl || glowDrawn);
+
+    const markGlowDrawn = () => {
+        if (activeGlow !== 'none') {
+            setGlowDrawn(true);
+        }
+    };
+
+    const isTextGlowVariant = variant === 'ghost' || variant === 'outline' || variant === 'inset';
+    const showTextGlow = showGlow && isTextGlowVariant;
+
+    const container: MutableViewStyle = {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        boxSizing: 'border-box',
+    };
+
+    switch (size) {
+        case 'lg':
+            container.height = 40;
+            container.paddingHorizontal = !children ? 8 : 20;
+            container.paddingVertical = 8;
+            container.gap = 12;
+            break;
+        case 'md':
+            container.height = 32;
+            container.paddingHorizontal = !children ? 5 : 16;
+            container.paddingVertical = 6;
+            container.gap = 10;
+            break;
+        case 'sm':
+            container.height = 24;
+            container.paddingHorizontal = !children ? 3 : 16;
+            container.paddingVertical = 2;
+            container.gap = 6;
+            break;
+        case 'xs':
+            container.height = 24;
+            container.paddingHorizontal = !children ? 2 : 16;
+            container.paddingVertical = 0;
+            container.gap = 4;
+            break;
+    }
+
+    const effectiveVariant = variant;
+
+    switch (effectiveVariant) {
+        case 'ghost':
+            container.backgroundColor = 'transparent';
+            container.borderWidth = 0;
+            break;
+        case 'fill':
+            container.borderWidth = 0;
+            if (hl) {
+                container.backgroundColor = interactionColor;
+            } else {
+                container.backgroundColor = theme.color(color, 500);
+            }
+            break;
+        case 'fill-inverse':
+            container.borderWidth = 1;
+            if (hl) {
+                container.backgroundColor = theme.color(highlightColor, isLight ? 200 : 800);
+                container.borderColor = interactionColor;
+            } else {
+                container.backgroundColor = theme.color(color, isLight ? 200 : 800);
+                container.borderColor = baseColor;
+            }
+            break;
+        case 'fill-translucent':
+            container.borderWidth = 1;
+            if (hl) {
+                container.backgroundColor = theme.color(color, 500, TRANSLUCENT_OPACITY);
+                container.borderColor = interactionColor;
+            } else {
+                container.backgroundColor = theme.color(color, 500, TRANSLUCENT_OPACITY);
+                container.borderColor = theme.color(color, 500, 0.3);
+            }
+            break;
+        case 'outline':
+            container.borderWidth = 1;
+            if (hl) {
+                container.backgroundColor = theme.color(highlightColor, 500, active ? 0.24 : 0.12);
+                container.borderColor = interactionColor;
+            } else {
+                container.backgroundColor = 'transparent';
+                container.borderColor = baseColor;
+            }
+            break;
+        case 'inset':
+            container.backgroundColor = theme.color(color, isLight ? 100 : 900);
+            container.borderWidth = 0;
+            container.borderTopWidth = 1;
+            container.borderLeftWidth = 1;
+            container.borderBottomWidth = 1;
+            container.borderRightWidth = 1;
+            if (isLight) {
+                container.borderTopColor = theme.color(color, 900, 0.2);
+                container.borderLeftColor = theme.color(color, 900, 0.2);
+                container.borderBottomColor = theme.color(color, 50, 0.7);
+                container.borderRightColor = theme.color(color, 50, 0.7);
+                container.boxShadow = active || pressed
+                    ? `3px 3px 4px ${theme.color(highlightColor, 900, 0.2)} inset, 4px 4px 8px ${theme.color(highlightColor, 700, 0.18)} inset, -2px -2px 3px rgba(255, 255, 255, .7) inset`
+                    : `3px 3px 4px ${theme.color(color, 900, 0.2)} inset, 4px 4px 8px ${theme.color(color, 700, 0.18)} inset, -2px -2px 3px rgba(255, 255, 255, .7) inset`;
+            } else {
+                container.borderTopColor = 'rgba(0,0,0,0.80)';
+                container.borderLeftColor = 'rgba(0,0,0,0.80)';
+                container.borderBottomColor = 'rgba(255,255,255,0.08)';
+                container.borderRightColor = 'rgba(255,255,255,0.08)';
+                container.boxShadow = '4px 4px 8px rgba(0,0,0,0.80) inset, -2px -2px 4px rgba(255,255,255,0.08) inset';
+            }
+            break;
+    }
+
+    if (corners === 'circle') {
+        container.borderRadius = (container.height as number) / 2;
+        container.width = container.height;
+        container.paddingHorizontal = 0;
+    }
+
+    if (showGlow && corners !== 'hexagon') {
+        const glowBoxShadow = `0px 0px 4px ${theme.color(highlightColor, 500, 0.3)}, 0px 0px 20px ${theme.color(highlightColor, 500, 0.6)}`;
+        if (container.boxShadow) {
+            container.boxShadow = `${container.boxShadow}, ${glowBoxShadow}`;
+        } else {
+            container.boxShadow = glowBoxShadow;
+        }
+    }
+
+    if (corners === 'hexagon') {
+        container.backgroundColor = 'transparent';
+        container.borderWidth = 0;
+        container.boxShadow = undefined;
+    }
+
+    const fillTextColor = theme.color(color, theme.contrastShade(color));
+    const hlFillTextColor = theme.color(
+        highlightColor,
+        theme.contrastShade(highlightColor, interactionShade),
+    );
+    let textColor = highlightContentShade !== undefined && hl
+        ? theme.color(highlightColor, highlightContentShade)
+        : contentShade !== undefined && !hl
+        ? theme.color(color, contentShade)
+        : effectiveVariant === 'fill'
+        ? (hl ? hlFillTextColor : fillTextColor)
+        : effectiveVariant === 'fill-inverse'
+        ? theme.color(hl ? highlightColor : color, isLight ? 900 : 100)
+        : (hl ? interactionColor : baseColor);
+    if (disabled) {
+        const disabledColor = theme.color(color, isLight ? 300 : 700);
+        container.backgroundColor = theme.color(
+            color,
+            isLight ? 200 : 800,
+            effectiveVariant === 'fill-translucent' ? TRANSLUCENT_OPACITY : undefined,
+        );
+        if (effectiveVariant === 'ghost' || effectiveVariant === 'outline') {
+            container.backgroundColor = 'transparent';
+        }
+        if (effectiveVariant === 'inset') {
+            container.backgroundColor = theme.color(color, isLight ? 100 : 900);
+        } else {
+            container.borderColor = disabledColor;
+        }
+        textColor = disabledColor;
+    }
+    const fontSizes = {
+        xs: 12,
+        sm: 12,
+        md: 14,
+        lg: 16,
+    };
+    const fontSize = fontSizes[size];
+
+    const showTextShadow = showTextGlow || (hl && (variant === 'inset' || variant === 'ghost'));
+
+    const textShadowStyle = showTextShadow
+        ? {
+            textShadowColor: hlInset,
+            textShadowRadius: 12,
+            textShadowOffset: { width: 0, height: 0 },
+        }
+        : variant === 'fill-translucent'
+            ? {
+                textShadowColor: theme.color(color, color === 'neutral' ? 800 : 900, 0.5),
+                textShadowOffset: { width: -1, height: 0 },
+                textShadowRadius: 1,
+            }
+            : undefined;
+
+    const iconSizes = {
+        xs: 12,
+        sm: 14,
+        md: 16,
+        lg: 20,
+    };
+
+    const iconSize = iconSizes[size];
+
+    const iconElement = icon ? (
+        <View style={iconRotateZ ? {
+            transform: [
+                { rotateZ: `${iconRotateZ}deg` },
+                { rotateX: `${iconRotateX}deg` },
+            ]
+        } : undefined}>
+            <Icon
+                icon={icon}
+                width={iconSize}
+                height={iconSize}
+                color={textColor}
+                filter={showTextShadow ? `drop-shadow(0px 0px 12px ${hlInset})` : undefined}
+            />
+        </View>
+    ) : null;
+
+    const label = children ?? title;
+    const labelChildren = Children.toArray(label);
+    const textElement = labelChildren.length > 0 && labelChildren.every(child => (
+        typeof child === 'string' || typeof child === 'number'
+    )) ? (
+        <Text
+            style={[
+                { color: textColor, fontSize, lineHeight: fontSize * 1.1 },
+                textShadowStyle,
+            ]}
+        >
+            {labelChildren}
+        </Text>
+    ) : label ?? null;
+
+    const content = (
+        <>
+            {iconElement}
+            {textElement}
+        </>
+    );
+
+    const buttonElement = corners === 'hexagon' ? (
+        <Hexagon
+            ref={forwardRef}
+            {...props}
+            shape="flat-top"
+            size={size}
+            variant={variant}
+            activeGlow={activeGlow}
+            color={color}
+            highlightColor={highlightColor}
+            active={active}
+            interactive
+            disabled={disabled}
+            accessibilityRole={accessibilityRole ?? 'button'}
+            accessibilityState={{
+                ...accessibilityState,
+                disabled,
+                selected: active || accessibilityState?.selected,
+            }}
+            onPress={onPress ?? undefined}
+            onLongPress={onLongPress ?? undefined}
+            onPressIn={(e) => {
+                if (!disabled) {
+                    setPressed(true);
+                    markGlowDrawn();
+                }
+                onPressIn?.(e);
+            }}
+            onPressOut={(e) => {
+                setPressed(false);
+                setGlowDrawn(false);
+                onPressOut?.(e);
+            }}
+            style={(state) => [
+                typeof style === 'function' ? style(state) : style,
+            ]}
+        >
+            {content}
+        </Hexagon>
+    ) : (
+        <Pressable
+            ref={forwardRef}
+            {...props}
+            disabled={disabled}
+            accessibilityRole={accessibilityRole ?? 'button'}
+            accessibilityState={{
+                ...accessibilityState,
+                disabled,
+                selected: active || accessibilityState?.selected,
+            }}
+            onPress={onPress ?? undefined}
+            onLongPress={onLongPress ?? undefined}
+            onPressIn={(e) => {
+                if (!disabled) {
+                    setPressed(true);
+                    markGlowDrawn();
+                }
+                onPressIn?.(e);
+            }}
+            onPressOut={(e) => {
+                setPressed(false);
+                setGlowDrawn(false);
+                onPressOut?.(e);
+            }}
+            style={(state) => [
+                container,
+                typeof style === 'function' ? style(state) : style,
+            ]}
+        >
+            {content}
+        </Pressable>
+    );
+
+    if (tooltip !== null && tooltip !== undefined && tooltip !== false && tooltip !== '') {
+        return (
+            <Tooltip
+                placement={tooltipPlacement}
+                content={tooltip}
+                color={highlightColor || color}
+                variant={variant === 'fill'
+                    ? 'fill'
+                    : variant === 'fill-translucent'
+                        ? 'fill-translucent'
+                        : 'fill-inverse'}
+                showConnection={showTooltipConnection}
+            >
+                {buttonElement}
+            </Tooltip>
+        );
+    }
+
+    return buttonElement;
+};

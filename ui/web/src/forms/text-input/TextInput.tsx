@@ -1,7 +1,7 @@
 import { ChangeEvent, ComponentProps, FC, MouseEvent } from "react";
 import classNames from "classnames";
 import { TextInputProps, useTheme } from "@ui";
-import { Label } from "../../typography";
+import { Label } from "../../design-system/typography";
 import styles from './text-input.module.css';
 
 export const TextInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' | 'type' | 'size'> & TextInputProps> = ({

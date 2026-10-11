@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { ScrollView, View, StyleSheet, TextInput } from "react-native";
 import { FileInput } from "./FileInput";
-import { Text } from "../../typography";
+import { Text } from "../../design-system/typography";
 import { ColorVariant, colorOptions } from "@ui";
 
 const styles = StyleSheet.create({

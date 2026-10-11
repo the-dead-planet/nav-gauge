@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { ColorVariant, SizeVariant, Icons, NumberInputPlacement } from '@ui';
 import { IconRotateInput } from './IconRotateInput';
-import { Text } from '../../typography';
+import { Text } from '../../design-system/typography';
 import { useState } from 'react';
 import { colorOptions as allColors, sizeOptions as allSizes } from '../../storybook/controls';
 

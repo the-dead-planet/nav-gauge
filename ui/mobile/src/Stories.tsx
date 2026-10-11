@@ -1,6 +1,6 @@
 import { FC, ComponentType, useState } from "react";
 import { ScrollView, TouchableOpacity, View, StyleSheet } from "react-native";
-import { Text } from "./typography";
+import { Text } from "./design-system/typography";
 import { useTheme } from "@ui";
 import Svg, { Defs, Pattern, Rect } from "react-native-svg";
 

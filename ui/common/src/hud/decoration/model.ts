@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { ColorVariant, ActiveGlow, SizeVariant } from '../../model';
+import { ColorVariant, ActiveGlow, SizeVariant } from '../../design-system/model';
 
 export type HudDecorationCorner = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 

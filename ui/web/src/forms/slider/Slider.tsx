@@ -1,7 +1,7 @@
 import { ChangeEvent, ComponentProps, CSSProperties, FC } from "react";
 import classNames from "classnames";
 import { SliderProps, useTheme } from "@ui";
-import { Label, Span } from "../../typography";
+import { Label, Span } from "../../design-system/typography";
 import { NumberInput } from "../number-input";
 import { StepControls } from "../step-controls";
 import styles from './slider.module.css';

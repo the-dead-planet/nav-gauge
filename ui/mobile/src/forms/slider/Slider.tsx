@@ -7,7 +7,7 @@ import {
     type ViewInstance,
 } from "react-native";
 import { SliderProps, useTheme } from "@ui";
-import { Text } from "../../typography";
+import { Text } from "../../design-system/typography";
 import { NumberInput } from "../number-input";
 import { StepControls } from "../step-controls";
 

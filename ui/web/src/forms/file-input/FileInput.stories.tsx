@@ -1,7 +1,7 @@
 import type { Meta } from 'storybook-react-rsbuild';
 import { useState } from 'react';
 import { FileInput } from './FileInput';
-import { Text } from '../../typography';
+import { Text } from '../../design-system/typography';
 import { ColorVariant } from '@ui';
 import { colorOptions as allColors } from '../../storybook/controls';
 

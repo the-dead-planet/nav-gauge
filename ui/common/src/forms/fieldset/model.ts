@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { ColorVariant, SizeVariant, FillVariant } from "../../model";
+import { ColorVariant, SizeVariant, FillVariant } from "../../design-system/model";
 
 export interface FieldsetProps {
     label: string;

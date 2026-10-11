@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { useState } from 'react';
 import { ToggleSwitch } from './ToggleSwitch';
-import { Text } from '../../typography';
+import { Text } from '../../design-system/typography';
 import { ColorVariant, LayoutOrientation, SizeVariant, SurfaceVariant } from '@ui';
 import { colorOptions as allColors, sizeOptions as allSizes, surfaceVariantOptions as allVariants } from '../../storybook/controls';
 

@@ -1,9 +1,9 @@
 import { FC, RefObject, useRef, useState } from "react";
 import { HostInstance, TextInput as NativeTextInput, View, StyleSheet } from "react-native";
 import { ColorFormat, ColorInputProps, parseColor, toCssColor, useColorInputState, useTheme } from "@ui";
-import { Text } from "../../typography";
-import { Dropdown } from "../../dropdown";
-import { Popup } from "../../popup";
+import { Text } from "../../design-system/typography";
+import { Dropdown } from "../dropdown";
+import { Popup } from "../../rigs/popup";
 import { ColorButton } from "../color-button";
 import { ColorRamp } from "../color-ramp";
 

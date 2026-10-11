@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { SizeVariant } from '@ui';
-import { Text } from '../../typography';
+import { Text } from '../../design-system/typography';
 import { Hexagon } from './Hexagon';
 import { colorOptions as colors, sizeOptions, surfaceVariantOptions as variants } from '../../storybook/controls';
 

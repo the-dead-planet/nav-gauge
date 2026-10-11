@@ -2,7 +2,7 @@ import { FC } from "react";
 import { Pressable, View, ViewStyle } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import { CheckboxProps, controlTextSpecifications, useTheme } from "@ui";
-import { Text } from "../../typography";
+import { Text } from "../../design-system/typography";
 
 export const Checkbox: FC<CheckboxProps> = ({
     color = 'neutral',

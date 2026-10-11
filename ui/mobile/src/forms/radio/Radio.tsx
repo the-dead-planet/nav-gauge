@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Pressable, View, ViewStyle } from "react-native";
 import { controlTextSpecifications, RadioProps, useTheme } from "@ui";
-import { Text } from "../../typography";
+import { Text } from "../../design-system/typography";
 
 export const Radio: FC<RadioProps> = ({
     color = 'primary',

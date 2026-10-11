@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { ColorVariant, FillVariant, SizeVariant, colorOptions, fillVariantOptions, sizeOptions } from '@ui';
-import { Text } from '../typography';
+import { Text } from '../design-system/typography';
 
 const styles = StyleSheet.create({
     container: {

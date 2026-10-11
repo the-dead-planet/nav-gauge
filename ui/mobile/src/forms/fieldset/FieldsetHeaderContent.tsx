@@ -1,8 +1,8 @@
 import { FC, ReactNode, useEffect, useRef } from "react";
 import { Animated, StyleSheet, View } from "react-native";
 import { Icons, useTheme } from "@ui";
-import { Icon } from "../../icons";
-import { Label } from "../../typography";
+import { Icon } from "../../design-system/icons";
+import { Label } from "../../design-system/typography";
 
 const styles = StyleSheet.create({
     header: {

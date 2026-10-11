@@ -1,8 +1,8 @@
 import { ComponentType, FC, Fragment } from "react";
 import { Alert, StyleSheet, View, ViewProps } from "react-native";
 import { DocumentPickerOptions, DocumentPickerResponse, pick } from '@react-native-documents/picker';
-import { Button } from "../../button";
-import { Text } from "../../typography";
+import { Button } from "../../controls/button";
+import { Text } from "../../design-system/typography";
 import { FileInputProps, Icons } from "@ui";
 import { SvgProps } from "react-native-svg";
 

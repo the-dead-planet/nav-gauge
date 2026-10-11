@@ -1,7 +1,7 @@
 import { ComponentProps, FC, MouseEvent } from "react";
 import classNames from "classnames";
 import { TextAreaProps, useTheme } from "@ui";
-import { Label } from "../../typography";
+import { Label } from "../../design-system/typography";
 import styles from './text-area.module.css';
 
 export const TextArea: FC<Omit<ComponentProps<'textarea'>, 'size'> & TextAreaProps> = ({

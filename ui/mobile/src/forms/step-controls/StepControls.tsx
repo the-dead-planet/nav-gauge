@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
 import { addDecimalStep, Icons, StepControlsProps, useStepRepeat } from "@ui";
-import { Button } from "../../button";
+import { Button } from "../../controls/button";
 
 const styles = StyleSheet.create({
     container: {

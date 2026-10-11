@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-import { ColorVariant } from "../../model";
-import { TooltipPlacement } from "../../tooltip";
+import { ColorVariant } from "../../design-system/model";
+import { TooltipPlacement } from "../../hud/tooltip";
 
 export interface FileInputProps<TFile> {
     fileIcon?: string;

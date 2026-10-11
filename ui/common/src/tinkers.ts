@@ -1,5 +1,5 @@
-import { ColorVariant, FillVariant, SizeVariant, SurfaceVariant } from './model';
-import { ChipColor } from './chip';
+import { ColorVariant, FillVariant, SizeVariant, SurfaceVariant } from './design-system/model';
+import { ChipColor } from './controls/chip';
 
 export const colorOptions: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
 export const chipColorOptions: ChipColor[] = ['warning', 'success', 'error', 'info', ...colorOptions];

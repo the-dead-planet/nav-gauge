@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button } from '../../button';
-import { Text } from '../../typography';
+import { Button } from '../../controls/button';
+import { Text } from '../../design-system/typography';
 import { NotchedPanel } from './NotchedPanel';
 
 const styles = StyleSheet.create({

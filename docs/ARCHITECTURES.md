@@ -24,6 +24,14 @@ This diagram was created in [draw.io](https://app.diagrams.net).
 
 [Edit source](/docs/assets/architecture.drawio)
 
+### UI layering diagram
+
+The UI library is split into ordered layers; a layer may only import from the layers below it.
+
+![UI layering diagram](/docs/assets/ui-architecture.svg)
+
+[Edit source](/docs/assets/ui-architecture.drawio)
+
 ## Scripts
 
 This space is for scripts to run ad-hoc.

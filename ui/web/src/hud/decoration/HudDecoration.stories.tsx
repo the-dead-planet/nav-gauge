@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { ActiveGlow, HudDecorationCorner, TabstripOption } from '@ui';
 import { HudDecoration } from './HudDecoration';
 import { Panel } from '../panel';
-import { Tabstrip } from '../tabstrip';
+import { Tabstrip } from '../../rigs/tabstrip';
 import { colorOptions, sizeOptions } from '../../storybook/controls';
 
 const options: TabstripOption[] = [

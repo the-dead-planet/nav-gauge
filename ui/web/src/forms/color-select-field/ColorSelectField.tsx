@@ -1,6 +1,6 @@
 import { FC, useRef, useState } from "react";
 import { ColorSelectFieldProps } from "@ui";
-import { Popup } from "../../popup";
+import { Popup } from "../../rigs/popup";
 import { ColorButton } from "../color-button";
 import { ColorPicker } from "../color-picker";
 import styles from './color-select-field.module.css';

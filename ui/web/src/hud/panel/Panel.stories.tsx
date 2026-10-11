@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { Text } from '../../typography';
+import { Text } from '../../design-system/typography';
 import { Panel } from './Panel';
 import { colorOptions as colors, fillVariantOptions as variants } from '../../storybook/controls';
 

@@ -1,7 +1,7 @@
 import { CSSProperties, FC, useState } from "react"
 import classNames from "classnames";
 import { FieldsetProps, Icons, useTheme } from "@ui";
-import { Icon } from "../../icons";
+import { Icon } from "../../design-system/icons";
 import styles from './fieldset.module.css';
 
 interface Props {

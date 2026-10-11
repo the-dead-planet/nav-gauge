@@ -1,9 +1,9 @@
 import { ChangeEvent, ComponentProps, FC, useRef, useState } from "react";
 import classNames from "classnames";
 import { ColorFormat, ColorInputProps, DropdownOption, parseColor, toHexColor, useColorInputState, useTheme } from "@ui";
-import { Label } from "../../typography";
-import { Popup } from "../../popup";
-import { Dropdown } from "../../dropdown";
+import { Label } from "../../design-system/typography";
+import { Popup } from "../../rigs/popup";
+import { Dropdown } from "../dropdown";
 import { ColorButton } from "../color-button";
 import { ColorRamp } from "../color-ramp";
 import styles from './color-input.module.css';

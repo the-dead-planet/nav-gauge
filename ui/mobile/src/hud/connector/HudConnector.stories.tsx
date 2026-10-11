@@ -2,7 +2,7 @@ import { FC, useRef } from 'react';
 import { HostInstance, StyleSheet, View } from 'react-native';
 import { HudDecoration } from '../decoration';
 import { Panel } from '../panel';
-import { Text } from '../../typography';
+import { Text } from '../../design-system/typography';
 import { HudConnector } from './HudConnector';
 
 const styles = StyleSheet.create({
