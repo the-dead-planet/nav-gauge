@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Text } from '../typography';
+import { Text } from '../design-system/typography';
 
 interface VariantGalleryProps<Size extends string, Color extends string, Variant extends string> {
     sizes: readonly Size[];

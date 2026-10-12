@@ -22,8 +22,6 @@ export const RecChip: FC<WebRouteStoryProps> = ({
     return (
         <Chip
             color={playerOperator.getBlinkingColor(surveillanceState)}
-            onClick={() => playerOperator.onStop()}
-            ariaLabel={stopRecordingLabel}
             tooltip={stopRecordingLabel}
             className={styles["blinking"]}
         >

@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { ColorButton } from "./ColorButton";
 import { sizeOptions } from "@ui";
-import { Text } from "../../typography";
+import { Text } from "../../design-system/typography";
 
 const styles = StyleSheet.create({
     container: {

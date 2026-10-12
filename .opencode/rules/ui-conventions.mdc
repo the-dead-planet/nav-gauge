@@ -4,37 +4,39 @@ globs: "**/*.{ts,tsx,css,module.css}"
 alwaysApply: true
 ---
 
-UI components should be semantic, accessible, and minimal.
-
-Reusable UI components must not contain business logic.
-
-Build responsive UI mobile-first: use the smallest layout as the default and add wider-screen overrides.
+- Before creating UI, search for an existing component. Reuse it when it fits, extend it when extension is sufficient, and compose existing primitives before creating a new component. Create one only when none fit; do not duplicate existing behavior or styling with minor differences.
+- Keep reusable UI semantic, accessible, business-logic-free, and mobile-first.
 
 Theme variables live in `@ui/common/src/theme/specifications.ts`.
 Before changing reusable UI, read `ui/web/src/design-system/Overview.mdx` and the relevant linked design-system page.
 Before implementing or changing palettes, shades, appearance, or interaction states, read and follow `ui/web/src/colors/Colors.mdx`.
 
-Shared/reusable UI components must be added to **both** web (`@web-ui`) and mobile (`@mobile-ui`) platforms, not just one.
-Put the shared API and value math in `@ui/common` and provide a thin platform renderer in each platform package.
+Shared reusable components require a common API/value logic in `@ui/common` and thin renderers in both `@web-ui` and `@mobile-ui`.
 
-Every UI component (new or changed) requires a **Storybook story** for the platform(s) it targets — verify the story exists and update it alongside the component.
-Do not consider an edit done until the matching story is present.
-Reusable public components require a `Playground with Live code editor` story covering all public props and a `Gallery` story covering supported sizes and important states.
-Playground stories should rely on Storybook's inferred `argTypes`. Define explicit `argTypes` only for custom mappings, ranges, non-inferable controls, or hidden props. Do not repeat inferred text, boolean, enum, or native-element controls.
+### Component Structure
+
+Compose components from focused subcomponents recursively. Extract a section when it has its own visual purpose, interactions, styling, state, or meaningful name. Parent components orchestrate data and composition; leaf components own rendering details.
+
+Each component must live in a file named after it. A tiny helper component may remain with its only parent when it has no independent meaning or reuse. Module-scope constants and helpers used by only one component remain in that component's file.
+
+Every new or changed UI component needs a matching platform story. Public reusable components need `Playground with Live code editor` and `Gallery` stories. Use inferred `argTypes`; specify only non-inferable controls or mappings.
 
 Reserve final layout dimensions before optional or asynchronous content appears; toggling content must not move surrounding UI.
 
 Buttons use square corners by default. Circle and hexagon buttons are icon-only and require an accessible label.
 
 ### Web
+- Apps and gears must use components from `@web-ui` when an appropriate component exists.
+- Inside `@web-ui`, use native semantic elements (`<hr>`, `<button>`, `<nav>`, `<label>`, etc.) instead of generic `<div>` elements.
+- Interactive elements must support keyboard use and include ARIA attributes when needed.
 - Use CSS modules.
 - Class names use kebab-case.
-- Prefer `className` over inline `style`.
-- Use inline `style` only for runtime-computed values that cannot be expressed with CSS classes or CSS variables.
+- Use `className` instead of inline `style`.
+- Use inline `style` only for runtime-computed values that cannot use classes or CSS variables.
 - Use CSS variables for theming.
 - Never use `!important`.
 
 ### Mobile
 - Use `StyleSheet.create` for styles.
-- Define `StyleSheet.create` declarations before component props and component definitions.
+- Define `StyleSheet.create` before props and components.
 - Do not use CSS modules or CSS custom properties.

@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { AppearancePropsBase, ActiveGlow, SizeVariant, FillVariant } from "../../model";
+import { AppearancePropsBase, ActiveGlow, SizeVariant, FillVariant } from "../../design-system/model";
 
 export interface BevelPanelProps extends AppearancePropsBase<FillVariant> {
     interactive?: boolean;

@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { sizeOptions, surfaceVariantOptions } from '@ui';
 import { VariantGallery } from '../../storybook/VariantGallery';
-import { Text } from '../../typography';
+import { Text } from '../../design-system/typography';
 import { Hexagon } from './Hexagon';
 
 const styles = StyleSheet.create({

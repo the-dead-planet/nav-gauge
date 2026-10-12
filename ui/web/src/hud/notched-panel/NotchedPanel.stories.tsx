@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { Button } from '../../button';
-import { Text } from '../../typography';
+import { Button } from '../../gizmos/button';
+import { Text } from '../../design-system/typography';
 import { NotchedPanel } from './NotchedPanel';
 
 const meta = { title: 'Hud/NotchedPanel', component: NotchedPanel } satisfies Meta<typeof NotchedPanel>;

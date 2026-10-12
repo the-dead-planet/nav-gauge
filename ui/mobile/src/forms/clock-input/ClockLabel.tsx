@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { View } from "react-native";
 import { ColorShade, ColorVariant, FontType } from "@ui";
-import { Text } from "../../typography";
+import { Text } from "../../design-system/typography";
 
 interface Props {
     label?: string;

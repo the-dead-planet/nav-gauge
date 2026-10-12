@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { ColorButton } from './ColorButton';
-import { Span } from '../../typography';
+import { Span } from '../../design-system/typography';
 import { sizeControl, sizeOptions } from '../../storybook/controls';
 
 const meta = {

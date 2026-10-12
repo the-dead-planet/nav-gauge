@@ -1,16 +1,13 @@
 ---
-description: Code style
-globs: "**/*.{ts,tsx}"
+description: TypeScript, React, and formatting conventions
+globs: "**/*.{ts,tsx,js,jsx,css,json}"
 alwaysApply: true
 ---
 
-- Always use curly braces for `if`, `else`, and loops, including single statements.
-- Use four spaces for indentation.
-
-### JSX formatting
-
-- Do not write nested JSX or JSX with several props as a single line.
-- Use multiline formatting when an element has children or more than five props.
-- Put nested elements on their own indented lines.
-- After editing TypeScript, TSX, JavaScript, JSX, CSS, or JSON files, format the changed files consistently with VS Code's `Shift+Alt+F` formatting behavior.
-- Do not manually preserve formatting that the configured formatter would rewrite.
+- Use strict TypeScript without `any`, explicit member accessibility, full variable names without abbreviations, and no unnecessary dependencies.
+- Use four spaces and braces for all control-flow bodies.
+- Format changed files with the configured formatter. Put nested JSX and JSX with more than five props on multiple lines.
+- Write self-explanatory code. Do not add `// ponytail:` markers, AI annotations, or comments narrating shortcuts. Comments describe behavior; record genuine trade-offs in the commit message.
+- Extract a block when a meaningful name such as `canDeleteProject`, `TimelineTicks`, or `useDragSelection` makes the codebase's language clearer. Do not extract code only to shorten a file.
+- Keep top-level code focused on feature intent rather than implementation details.
+- React Compiler handles routine memoization. Add `useMemo` or `useCallback` only when reference identity changes behavior, such as an identity-based registry or documented stable callback contract. Stable JSX props and paired effect setup/cleanup are not sufficient reasons. Define effect-only functions inside the effect.

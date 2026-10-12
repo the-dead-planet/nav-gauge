@@ -66,7 +66,7 @@ The import sequence is: `tinker-chest` → `apparatus/{common,web,mobile}` → `
 
 If suddenly something is imported, for example, from `../../apparatus/common/src` instead of `@the-dead-planet/nav-gauge-apparatus-common` when importing to a file in `tinker-chest` workspace, and importing from the alias is not possible... it's a sign of a forbidden import. Consider moving stuff around or creating another package to assure correct import flow. 
 
-Remember about updating the [architectures chart](/docs/assets/architecture.drawio) and [svg](/docs/assets/architecture.svg) using [Draw.io](https://app.diagrams.net), if needed.
+Remember about updating the [architectures chart](/docs/assets/architecture.drawio) and [svg](/docs/assets/architecture.svg) using [Draw.io](https://app.diagrams.net), if needed. The [UI layering diagram](/docs/assets/ui-architecture.drawio) is maintained the same way.
 
 #### Code splitting
 

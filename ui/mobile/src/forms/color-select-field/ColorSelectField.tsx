@@ -1,7 +1,7 @@
 import { FC, RefObject, useRef, useState } from "react";
 import { HostInstance, StyleSheet } from "react-native";
 import { ColorSelectFieldProps, useTheme } from "@ui";
-import { Popup } from "../../popup";
+import { Popup } from "../../rigs/popup";
 import { ColorButton } from "../color-button";
 import { ColorPicker } from "../color-picker";
 

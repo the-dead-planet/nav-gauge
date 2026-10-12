@@ -1,0 +1,124 @@
+.chip {
+    corner-shape: bevel;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+}
+
+.size-lg {
+    font-size: 16px;
+    padding: 6px 10px;
+    gap: 10px;
+    border-radius: 8px;
+}
+
+.size-md {
+    font-size: 14px;
+    padding: 4px 8px;
+    gap: 8px;
+    border-radius: 6px;
+}
+
+.size-sm {
+    font-size: 12px;
+    padding: 2px 4px;
+    gap: 6px;
+    border-radius: 4px;
+}
+
+.size-xs {
+    font-size: 10px;
+    padding: 1px 3px;
+    gap: 4px;
+    border-radius: 2px;
+}
+
+.color-primary {
+    --chip-color: var(--color-primary);
+    --chip-color-light: var(--color-primary-100);
+    --chip-color-dark: var(--color-primary-900);
+}
+
+.color-secondary {
+    --chip-color: var(--color-secondary);
+    --chip-color-light: var(--color-secondary-100);
+    --chip-color-dark: var(--color-secondary-900);
+}
+
+.color-tertiary {
+    --chip-color: var(--color-tertiary);
+    --chip-color-light: var(--color-tertiary-100);
+    --chip-color-dark: var(--color-tertiary-900);
+}
+
+.color-neutral {
+    --chip-color: var(--color-neutral);
+    --chip-color-light: var(--color-neutral-100);
+    --chip-color-dark: var(--color-neutral-900);
+}
+
+.color-warning {
+    --chip-color: var(--color-warning);
+    --chip-color-light: var(--color-text-inverse);
+    --chip-color-dark: var(--color-text-inverse);
+}
+
+.color-success {
+    --chip-color: var(--color-success);
+    --chip-color-light: var(--color-text-inverse);
+    --chip-color-dark: var(--color-text-inverse);
+}
+
+.color-error {
+    --chip-color: var(--color-error);
+    --chip-color-light: var(--color-text-inverse);
+    --chip-color-dark: var(--color-text-inverse);
+}
+
+.color-info {
+    --chip-color: var(--color-info);
+    --chip-color-light: var(--color-text-inverse);
+    --chip-color-dark: var(--color-text-inverse);
+}
+
+.mode-light {
+    --chip-text: var(--chip-color-light);
+}
+
+.mode-dark {
+    --chip-text: var(--chip-color-dark);
+}
+
+.variant-fill {
+    background-color: var(--chip-color);
+    color: var(--chip-text);
+}
+
+.variant-fill-inverse {
+    background-color: var(--color-background);
+    border: 1px solid var(--chip-color);
+    color: var(--chip-color);
+}
+
+.variant-fill-translucent {
+    background-color: rgb(from var(--chip-color) r g b / .24);
+    border: 1px solid rgb(from var(--chip-color) r g b / .3);
+    color: var(--chip-color);
+}
+
+.variant-ghost {
+    background-color: transparent;
+    color: var(--chip-color);
+}
+
+.variant-outline {
+    background-color: transparent;
+    border: 1px solid var(--chip-color);
+    color: var(--chip-color);
+}
+
+.variant-inset {
+    background-color: rgb(from var(--chip-color) r g b / .04);
+    border: 1px inset rgb(from var(--chip-color) r g b / .3);
+    color: var(--chip-color);
+}

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { ActiveGlow, HudDecorationCorner, TabstripOption } from '@ui';
 import { HudDecoration } from './HudDecoration';
 import { Panel } from '../panel';
-import { Tabstrip } from '../tabstrip';
+import { Tabstrip } from '../../rigs/tabstrip';
 import { colorOptions, sizeOptions } from '../../storybook/controls';
 
 const options: TabstripOption[] = [
@@ -11,7 +11,7 @@ const options: TabstripOption[] = [
     { value: 'terrain', label: 'Terrain' },
 ];
 
-const meta = { title: 'Hud/HudDecoration' } satisfies Meta;
+const meta = { title: 'Hud/HudDecoration', component: HudDecoration } satisfies Meta<typeof HudDecoration>;
 export default meta;
 type Story = StoryObj<typeof HudDecoration>;
 

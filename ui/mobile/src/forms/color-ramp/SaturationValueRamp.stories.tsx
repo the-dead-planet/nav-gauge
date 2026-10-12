@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { StyleSheet, Switch, TextInput, View } from "react-native";
-import { Button } from "../../button";
-import { Text } from "../../typography";
+import { Button } from "../../gizmos/button";
+import { Text } from "../../design-system/typography";
 import { SaturationValueRamp } from "./SaturationValueRamp";
 import { sizeOptions } from "@ui";
 

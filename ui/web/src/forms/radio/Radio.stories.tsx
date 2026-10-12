@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { useState } from 'react';
 import { Radio } from './Radio';
-import { Text } from '../../typography';
+import { Text } from '../../design-system/typography';
 import { ColorVariant, RadioProps, SizeVariant } from '@ui';
 import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptions as allSizes } from '../../storybook/controls';
 

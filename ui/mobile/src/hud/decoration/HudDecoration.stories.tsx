@@ -3,8 +3,8 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { ActiveGlow, HudDecorationCorner, TabstripOption, colorOptions, sizeOptions } from '@ui';
 import { HudDecoration } from './HudDecoration';
 import { Panel } from '../panel';
-import { Tabstrip } from '../tabstrip';
-import { Text } from '../../typography';
+import { Tabstrip } from '../../rigs/tabstrip';
+import { Text } from '../../design-system/typography';
 
 const options: TabstripOption[] = [
     { value: 'route', label: 'Route' },

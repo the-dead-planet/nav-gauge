@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { colorOptions, fillVariantOptions } from '@ui';
-import { Text } from '../../typography';
+import { Text } from '../../design-system/typography';
 import { Panel } from './Panel';
 
 const styles = StyleSheet.create({

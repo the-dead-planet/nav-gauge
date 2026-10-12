@@ -1,8 +1,8 @@
 import { ChangeEvent, ComponentProps, FC, MouseEvent } from "react";
 import classNames from "classnames";
 import { ColorShade, Icons, NumberInputProps, SizeVariant, useTheme } from "@ui";
-import { Button } from "../../button";
-import { Label } from "../../typography";
+import { Button } from "../../gizmos/button";
+import { Label } from "../../design-system/typography";
 import { useStepRepeatButton } from '../step-controls/useStepRepeatButton';
 import styles from './number-input.module.css';
 

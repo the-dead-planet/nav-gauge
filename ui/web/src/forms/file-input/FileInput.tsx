@@ -1,8 +1,8 @@
 import { ChangeEvent, ComponentProps, ElementType, FC, Fragment, useRef, useState } from "react";
 import {  FileInputProps, Icons } from "@ui";
-import { Button } from "../../button";
-import { Dialog } from "../../dialog";
-import { P, Label } from "../../typography";
+import { Button } from "../../gizmos/button";
+import { Dialog } from "../../rigs/dialog";
+import { P, Label } from "../../design-system/typography";
 import classNames from "classnames";
 import styles from './file-input.module.css';
 
