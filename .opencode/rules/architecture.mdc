@@ -1,10 +1,49 @@
 ---
-description: Keep client code focused on intent, not implementation
+description: Package ownership and import direction
 alwaysApply: true
 ---
 
-Every component, hook and module should have one obvious responsibility.
+Place code in the lowest package that owns it:
 
-Prefer boundaries that make the system easier to understand.
+1. `tinker-chest`: platform-neutral utilities
+2. `ui/{common,web,mobile}`: shared and platform UI
+3. `apparatus/{common,web,mobile}`: shared and platform application logic
+4. `gears/*/{common,web,mobile}`: plugin logic
+5. `app-{web,mobile}`: composition and entry points
 
-The top-level code should describe the feature rather than implementation details.
+Higher-numbered layers may import lower-numbered layers, never the reverse. Platform packages may import only their matching platform and common packages:
+
+| Package | Can be imported by |
+|---------|-------------------|
+| Tinker Chest | UI, Apparatus, Gears, Apps |
+| UI Common | UI Web/Mobile, Apparatus, Gears, Apps |
+| UI Web | Gear Web, App Web |
+| UI Mobile | Gear Mobile, App Mobile |
+| Apparatus Common | Apparatus Web/Mobile, Gears, Apps; not UI or Tinker Chest |
+| Apparatus Web | Gear Web, App Web |
+| Apparatus Mobile | Gear Mobile, App Mobile |
+
+Use package aliases across workspaces and relative imports within a workspace.
+
+Keep reusable logic and state in the lowest package that owns them. 
+Share code only when behavior is genuinely platform-neutral; duplicate it rather than create an incorrect abstraction. 
+Keep apps focused on composition, wiring, and platform concerns.
+
+Before adding logic, search for existing helpers, hooks, services, or utilities. 
+Extend or compose them instead of creating parallel implementations. 
+Do not duplicate business logic, validation, transformations, formatting, or data fetching.
+
+## UI Layers
+
+Within each `ui/{common,web,mobile}/src` package, higher layers may import lower layers, never the reverse:
+
+1. `design-system`: tokens and `Option`
+2. `chassis`, `motion`
+3. `hud`: shape primitives
+4. `gizmos`: interactive controls, `color-box`, and `tooltip`
+5. `rigs`: `popup`, `dialog`, `tabstrip`, and `menu`
+6. `forms`
+7. `assemblies`: higher-order composites such as `theme-mode-toggle` and `theme-select`
+
+`design-system` must not import other UI layers. 
+See `docs/assets/ui-architecture.svg`; update its `.drawio` source and regenerate the SVG when this architecture changes.
