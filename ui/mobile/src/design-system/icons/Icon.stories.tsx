@@ -2,7 +2,8 @@ import { Fragment } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from '../typography';
 import { Icons } from "@ui";
-import iconRegistry from '../../../common/src/design-system/icons/svg/noun-project/icon-registry.json';
+import iconRegistry from '@the-dead-planet/nav-gauge-ui-common/src/design-system/icons/svg/noun-project/icon-registry.json';
+import { RegistryEntry } from '@the-dead-planet/nav-gauge-ui-common/src/design-system/icons/svg/noun-project/model';
 import { Icon } from './Icon';
 
 const { NounProject, ...rest } = Icons;
@@ -41,7 +42,7 @@ export const IconsOptions = () => (
             .sort((a, b) => a[0].localeCompare(b[0]))
             .map(([iconName, Component]) => {
                 const data = iconRegistry.find(
-                    (el) => el.id.replace('-', '') === iconName.toLowerCase()
+                    (el: RegistryEntry) => el.id.replace('-', '') === iconName.toLowerCase()
                 ) as { creator: string; source: string; href: string } | undefined;
 
                 return (
