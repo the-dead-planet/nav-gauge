@@ -46,16 +46,16 @@
         "@the-dead-planet/nav-gauge-ui-common": "*",
         "@the-dead-planet/nav-gauge-ui-web": "*",
         "classnames": "^2.5.1",
-        "maplibre-gl": "6.11.2",
+        "maplibre-gl": "6.13.0",
         "pmtiles": "^4.5.0",
         "react-dom": "19.3.0",
-        "react-svg": "^19.1.6"
+        "react-svg": "^19.2.0"
     },
     "devDependencies": {
-        "@babel/core": "^8.0.6",
-        "@babel/preset-env": "^8.0.6",
+        "@babel/core": "^8.0.7",
+        "@babel/preset-env": "^8.0.7",
         "@babel/preset-react": "^8.0.1",
-        "@babel/preset-typescript": "^8.0.1",
+        "@babel/preset-typescript": "^8.0.7",
         "@rspack/cli": "2.2.8",
         "@rspack/core": "2.2.8",
         "@rspack/dev-server": "2.2.1",
@@ -73,7 +73,7 @@
         "react": "19.3.0",
         "react-refresh": "^0.19.0",
         "style-loader": "^4.0.0",
-        "ts-checker-rspack-plugin": "^1.6.2",
+        "ts-checker-rspack-plugin": "^1.7.0",
         "webpack-bundle-analyzer": "^5.4.0",
         "webpack-merge": "^6.0.1"
     },
