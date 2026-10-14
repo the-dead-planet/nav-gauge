@@ -1,14 +1,15 @@
 import { expect } from "chai";
 import { Orientation, Theme, themeSpecifications, ThemeName } from "../../src";
 
-const theme = new Theme(themeSpecifications[ThemeName.Default].light, {
+const media = {
     initial: () => ({
         orientation: Orientation.Landscape,
         windowWidth: 1280,
         windowHeight: 720,
     }),
     subscribe: () => ({ unsubscribe: () => undefined }),
-});
+};
+const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
 
 const oklabLightness = ({ r, g, b }: { r: number; g: number; b: number }): number => {
     const linearChannels = [r, g, b].map((channel) => {
@@ -75,5 +76,16 @@ describe("Theme", () => {
         expect(theme.contrastShade("coral")).to.equal(100);
         expect(theme.contrastShade("peach")).to.equal(100);
         expect(theme.contrastShade("mint")).to.equal(100);
+    });
+
+    it("resolves variant shades for the current mode", () => {
+        const darkTheme = new Theme(themeSpecifications[ThemeName.Default].dark, media);
+
+        expect(theme.variants.fill.shades.interaction).to.equal(600);
+        expect(theme.variants.fill.shades.active).to.equal(700);
+        expect(theme.variants.fill.shades.disabledSurface).to.equal(200);
+        expect(darkTheme.variants.fill.shades.interaction).to.equal(300);
+        expect(darkTheme.variants.fill.shades.active).to.equal(200);
+        expect(darkTheme.variants.fill.shades.disabledSurface).to.equal(800);
     });
 });

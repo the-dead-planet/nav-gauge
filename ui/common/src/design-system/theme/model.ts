@@ -1,4 +1,4 @@
-import type { ColorShade, DesignSystemColor } from '../model';
+import type { ColorShade, DesignSystemColor, SurfaceVariant } from '../model';
 
 export enum ThemeName {
     Default = 'Default',
@@ -86,6 +86,21 @@ export interface SelectedColor {
 export type ThemeComponentColors = {
     [key in ThemeComponentColor]: SelectedColor;
 };
+
+export interface ThemeVariantShades {
+    base: ColorShade;
+    brightest: ColorShade;
+    content: ColorShade;
+    inverseSurface: ColorShade;
+    insetSurface: ColorShade;
+    interaction: ColorShade;
+    active: ColorShade;
+    disabledSurface: ColorShade;
+    disabledContent: ColorShade;
+    shadow: ColorShade;
+}
+
+export type ThemeVariants = Record<SurfaceVariant, { shades: ThemeVariantShades }>;
 
 export interface ThemeSpecification {
     mode: ThemeMode;

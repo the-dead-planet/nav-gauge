@@ -1,0 +1,212 @@
+.appearance {
+    --appearance-ghost-default-background: transparent;
+    --appearance-ghost-default-border: transparent;
+    --appearance-fill-inverse-default-background: var(--appearance-inverse-surface);
+    --appearance-fill-inverse-interaction-background: var(--appearance-highlight-inverse-surface);
+    --appearance-fill-inverse-active-background: var(--appearance-highlight-inverse-surface);
+    --appearance-fill-translucent-default-background: rgb(from var(--appearance-color) r g b / .24);
+    --appearance-fill-translucent-default-border: rgb(from var(--appearance-color) r g b / .3);
+    --appearance-fill-translucent-interaction-background: var(--appearance-fill-translucent-default-background);
+    --appearance-fill-translucent-active-background: var(--appearance-fill-translucent-default-background);
+    --appearance-outline-default-background: transparent;
+    --appearance-outline-interaction-background: rgb(from var(--appearance-highlight-color) r g b / .08);
+    --appearance-outline-active-background: rgb(from var(--appearance-highlight-color) r g b / .16);
+    --appearance-inset-default-background: var(--appearance-inset-surface);
+    --appearance-inset-interaction-background: var(--appearance-inset-surface);
+    --appearance-inset-active-background: var(--appearance-inset-surface);
+}
+
+.mode-light {
+    --appearance-inset-default-edge-start: rgb(from var(--appearance-content) r g b / .2);
+    --appearance-inset-default-edge-end: rgb(from var(--appearance-brightest) r g b / .7);
+    --appearance-inset-active-edge-start: rgb(from var(--appearance-highlight-content) r g b / .2);
+    --appearance-inset-active-edge-end: rgb(from var(--appearance-highlight-brightest) r g b / .7);
+    --appearance-inset-default-shadow: rgb(from var(--appearance-content) r g b / .2) 3px 3px 4px inset,
+        rgb(from var(--appearance-shadow) r g b / .18) 4px 4px 8px inset,
+        rgba(255, 255, 255, .7) -2px -2px 3px inset;
+    --appearance-inset-active-shadow: rgb(from var(--appearance-highlight-content) r g b / .2) 3px 3px 4px inset,
+        rgb(from var(--appearance-highlight-shadow) r g b / .18) 4px 4px 8px inset,
+        rgba(255, 255, 255, .7) -2px -2px 3px inset;
+    --appearance-inset-default-inner-start: rgb(from var(--appearance-content) r g b / .2);
+    --appearance-inset-default-inner-end: rgb(from var(--appearance-brightest) r g b / .7);
+    --appearance-inset-active-inner-start: rgb(from var(--appearance-highlight-content) r g b / .2);
+    --appearance-inset-active-inner-end: rgb(from var(--appearance-highlight-brightest) r g b / .7);
+    --appearance-inset-default-recess: rgb(from var(--appearance-content) r g b / .08);
+    --appearance-inset-active-recess: rgb(from var(--appearance-highlight-content) r g b / .08);
+}
+
+.mode-dark {
+    --appearance-inset-default-edge-start: transparent;
+    --appearance-inset-default-edge-end: transparent;
+    --appearance-inset-active-edge-start: transparent;
+    --appearance-inset-active-edge-end: transparent;
+    --appearance-inset-default-shadow: rgba(0, 0, 0, .80) 4px 4px 8px inset,
+        rgba(255, 255, 255, .08) -2px -2px 4px inset;
+    --appearance-inset-active-shadow: var(--appearance-inset-default-shadow);
+    --appearance-inset-default-inner-start: rgba(0, 0, 0, .8);
+    --appearance-inset-default-inner-end: rgba(255, 255, 255, .08);
+    --appearance-inset-active-inner-start: var(--appearance-inset-default-inner-start);
+    --appearance-inset-active-inner-end: var(--appearance-inset-default-inner-end);
+    --appearance-inset-default-recess: rgba(0, 0, 0, .18);
+    --appearance-inset-active-recess: var(--appearance-inset-default-recess);
+}
+
+.color-neutral {
+    --appearance-color: var(--color-neutral);
+    --appearance-brightest: var(--variant-fill-neutral-brightest);
+    --appearance-content: var(--variant-fill-neutral-content);
+    --appearance-inverse-surface: var(--variant-fill-neutral-inverse-surface);
+    --appearance-inset-surface: var(--variant-fill-neutral-inset-surface);
+    --appearance-shadow: var(--variant-fill-neutral-shadow);
+    --appearance-fill-default-background: var(--color-neutral);
+    --appearance-fill-default-content: var(--color-neutral-contrast);
+    --appearance-ghost-default-content: var(--color-neutral);
+    --appearance-fill-inverse-default-content: var(--variant-fill-neutral-content);
+    --appearance-fill-inverse-default-border: var(--color-neutral);
+    --appearance-fill-translucent-default-content: var(--color-neutral);
+    --appearance-outline-default-content: var(--color-neutral);
+    --appearance-outline-default-border: var(--color-neutral);
+    --appearance-inset-default-content: var(--color-neutral);
+    --appearance-disabled-background: var(--variant-fill-neutral-disabled-surface);
+    --appearance-disabled-content: var(--variant-fill-neutral-disabled-content);
+    --appearance-disabled-border: var(--variant-fill-neutral-disabled-content);
+}
+
+.color-primary {
+    --appearance-color: var(--color-primary);
+    --appearance-brightest: var(--variant-fill-primary-brightest);
+    --appearance-content: var(--variant-fill-primary-content);
+    --appearance-inverse-surface: var(--variant-fill-primary-inverse-surface);
+    --appearance-inset-surface: var(--variant-fill-primary-inset-surface);
+    --appearance-shadow: var(--variant-fill-primary-shadow);
+    --appearance-fill-default-background: var(--color-primary);
+    --appearance-fill-default-content: var(--color-primary-contrast);
+    --appearance-ghost-default-content: var(--color-primary);
+    --appearance-fill-inverse-default-content: var(--variant-fill-primary-content);
+    --appearance-fill-inverse-default-border: var(--color-primary);
+    --appearance-fill-translucent-default-content: var(--color-primary);
+    --appearance-outline-default-content: var(--color-primary);
+    --appearance-outline-default-border: var(--color-primary);
+    --appearance-inset-default-content: var(--color-primary);
+    --appearance-disabled-background: var(--variant-fill-primary-disabled-surface);
+    --appearance-disabled-content: var(--variant-fill-primary-disabled-content);
+    --appearance-disabled-border: var(--variant-fill-primary-disabled-content);
+}
+
+.color-secondary {
+    --appearance-color: var(--color-secondary);
+    --appearance-brightest: var(--variant-fill-secondary-brightest);
+    --appearance-content: var(--variant-fill-secondary-content);
+    --appearance-inverse-surface: var(--variant-fill-secondary-inverse-surface);
+    --appearance-inset-surface: var(--variant-fill-secondary-inset-surface);
+    --appearance-shadow: var(--variant-fill-secondary-shadow);
+    --appearance-fill-default-background: var(--color-secondary);
+    --appearance-fill-default-content: var(--color-secondary-contrast);
+    --appearance-ghost-default-content: var(--color-secondary);
+    --appearance-fill-inverse-default-content: var(--variant-fill-secondary-content);
+    --appearance-fill-inverse-default-border: var(--color-secondary);
+    --appearance-fill-translucent-default-content: var(--color-secondary);
+    --appearance-outline-default-content: var(--color-secondary);
+    --appearance-outline-default-border: var(--color-secondary);
+    --appearance-inset-default-content: var(--color-secondary);
+    --appearance-disabled-background: var(--variant-fill-secondary-disabled-surface);
+    --appearance-disabled-content: var(--variant-fill-secondary-disabled-content);
+    --appearance-disabled-border: var(--variant-fill-secondary-disabled-content);
+}
+
+.color-tertiary {
+    --appearance-color: var(--color-tertiary);
+    --appearance-brightest: var(--variant-fill-tertiary-brightest);
+    --appearance-content: var(--variant-fill-tertiary-content);
+    --appearance-inverse-surface: var(--variant-fill-tertiary-inverse-surface);
+    --appearance-inset-surface: var(--variant-fill-tertiary-inset-surface);
+    --appearance-shadow: var(--variant-fill-tertiary-shadow);
+    --appearance-fill-default-background: var(--color-tertiary);
+    --appearance-fill-default-content: var(--color-tertiary-contrast);
+    --appearance-ghost-default-content: var(--color-tertiary);
+    --appearance-fill-inverse-default-content: var(--variant-fill-tertiary-content);
+    --appearance-fill-inverse-default-border: var(--color-tertiary);
+    --appearance-fill-translucent-default-content: var(--color-tertiary);
+    --appearance-outline-default-content: var(--color-tertiary);
+    --appearance-outline-default-border: var(--color-tertiary);
+    --appearance-inset-default-content: var(--color-tertiary);
+    --appearance-disabled-background: var(--variant-fill-tertiary-disabled-surface);
+    --appearance-disabled-content: var(--variant-fill-tertiary-disabled-content);
+    --appearance-disabled-border: var(--variant-fill-tertiary-disabled-content);
+}
+
+.highlight-neutral {
+    --appearance-highlight-color: var(--color-neutral);
+    --appearance-highlight-brightest: var(--variant-fill-neutral-brightest);
+    --appearance-highlight-content: var(--variant-fill-neutral-content);
+    --appearance-highlight-inverse-surface: var(--variant-fill-neutral-inverse-surface);
+    --appearance-highlight-shadow: var(--variant-fill-neutral-shadow);
+    --appearance-interaction-content: var(--variant-fill-neutral-interaction);
+    --appearance-interaction-contrast: var(--variant-fill-neutral-interaction-contrast);
+    --appearance-active-content: var(--variant-fill-neutral-active);
+    --appearance-active-contrast: var(--variant-fill-neutral-active-contrast);
+}
+
+.highlight-primary {
+    --appearance-highlight-color: var(--color-primary);
+    --appearance-highlight-brightest: var(--variant-fill-primary-brightest);
+    --appearance-highlight-content: var(--variant-fill-primary-content);
+    --appearance-highlight-inverse-surface: var(--variant-fill-primary-inverse-surface);
+    --appearance-highlight-shadow: var(--variant-fill-primary-shadow);
+    --appearance-interaction-content: var(--variant-fill-primary-interaction);
+    --appearance-interaction-contrast: var(--variant-fill-primary-interaction-contrast);
+    --appearance-active-content: var(--variant-fill-primary-active);
+    --appearance-active-contrast: var(--variant-fill-primary-active-contrast);
+}
+
+.highlight-secondary {
+    --appearance-highlight-color: var(--color-secondary);
+    --appearance-highlight-brightest: var(--variant-fill-secondary-brightest);
+    --appearance-highlight-content: var(--variant-fill-secondary-content);
+    --appearance-highlight-inverse-surface: var(--variant-fill-secondary-inverse-surface);
+    --appearance-highlight-shadow: var(--variant-fill-secondary-shadow);
+    --appearance-interaction-content: var(--variant-fill-secondary-interaction);
+    --appearance-interaction-contrast: var(--variant-fill-secondary-interaction-contrast);
+    --appearance-active-content: var(--variant-fill-secondary-active);
+    --appearance-active-contrast: var(--variant-fill-secondary-active-contrast);
+}
+
+.highlight-tertiary {
+    --appearance-highlight-color: var(--color-tertiary);
+    --appearance-highlight-brightest: var(--variant-fill-tertiary-brightest);
+    --appearance-highlight-content: var(--variant-fill-tertiary-content);
+    --appearance-highlight-inverse-surface: var(--variant-fill-tertiary-inverse-surface);
+    --appearance-highlight-shadow: var(--variant-fill-tertiary-shadow);
+    --appearance-interaction-content: var(--variant-fill-tertiary-interaction);
+    --appearance-interaction-contrast: var(--variant-fill-tertiary-interaction-contrast);
+    --appearance-active-content: var(--variant-fill-tertiary-active);
+    --appearance-active-contrast: var(--variant-fill-tertiary-active-contrast);
+}
+
+.highlight-neutral,
+.highlight-primary,
+.highlight-secondary,
+.highlight-tertiary {
+    --appearance-ghost-interaction-content: var(--appearance-interaction-content);
+    --appearance-ghost-active-content: var(--appearance-active-content);
+    --appearance-fill-interaction-background: var(--appearance-interaction-content);
+    --appearance-fill-interaction-content: var(--appearance-interaction-contrast);
+    --appearance-fill-active-background: var(--appearance-active-content);
+    --appearance-fill-active-content: var(--appearance-active-contrast);
+    --appearance-fill-inverse-interaction-content: var(--appearance-highlight-content);
+    --appearance-fill-inverse-interaction-border: var(--appearance-interaction-content);
+    --appearance-fill-inverse-active-content: var(--appearance-highlight-content);
+    --appearance-fill-inverse-active-border: var(--appearance-active-content);
+    --appearance-fill-translucent-interaction-content: var(--appearance-interaction-content);
+    --appearance-fill-translucent-interaction-border: var(--appearance-interaction-content);
+    --appearance-fill-translucent-active-content: var(--appearance-active-content);
+    --appearance-fill-translucent-active-border: var(--appearance-active-content);
+    --appearance-outline-interaction-content: var(--appearance-interaction-content);
+    --appearance-outline-interaction-border: var(--appearance-interaction-content);
+    --appearance-outline-active-content: var(--appearance-active-content);
+    --appearance-outline-active-border: var(--appearance-active-content);
+    --appearance-inset-interaction-content: var(--appearance-interaction-content);
+    --appearance-inset-active-content: var(--appearance-active-content);
+    --appearance-glow-color: var(--appearance-highlight-color);
+    --appearance-glow-content: var(--appearance-interaction-content);
+}

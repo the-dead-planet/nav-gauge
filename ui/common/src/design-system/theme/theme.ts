@@ -11,8 +11,11 @@ import {
     ThemeComponentColors,
     ThemeSpecification,
     ThemeMode,
+    ThemeVariantShades,
+    ThemeVariants,
 } from "./model";
-import { ColorShade, DesignSystemColor, SpacingVariant } from '../model';
+import { ColorShade, DesignSystemColor, SpacingVariant, SurfaceVariant } from '../model';
+import { surfaceVariantOptions } from '../tinkers';
 
 interface OklchColor {
     lightness: number;
@@ -140,6 +143,8 @@ export class Theme {
 
     public readonly media$: BehaviorSubject<MediaWithBreakpoints>;
 
+    public readonly variants: ThemeVariants;
+
     /**
      * Minimum value in pixels from which a breakpoint is active
      */
@@ -264,6 +269,34 @@ export class Theme {
         this.name = specification.themeName;
         this.colors = Object.assign({}, Theme.palette, specification.colors);
         this.componentColors = specification.componentColors;
+        const shades: ThemeVariantShades = this.isLight
+            ? {
+                base: 500,
+                brightest: 50,
+                content: 900,
+                inverseSurface: 200,
+                insetSurface: 100,
+                interaction: 600,
+                active: 700,
+                disabledSurface: 200,
+                disabledContent: 300,
+                shadow: 700,
+            }
+            : {
+                base: 500,
+                brightest: 50,
+                content: 100,
+                inverseSurface: 800,
+                insetSurface: 900,
+                interaction: 300,
+                active: 200,
+                disabledSurface: 800,
+                disabledContent: 700,
+                shadow: 700,
+            };
+        this.variants = Object.fromEntries(
+            surfaceVariantOptions.map((variant) => [variant, { shades: { ...shades } }]),
+        ) as ThemeVariants;
         this.media$ = new BehaviorSubject<MediaWithBreakpoints>(Theme.calculateMedia(media.initial()));
         this.mediaSubscription = this.subscribeMedia();
     }
@@ -310,6 +343,13 @@ export class Theme {
     ): 100 | 900 => toOklch(color[backgroundShade]).lightness < fillContrastLightnessThreshold
         ? 100
         : 900;
+
+    public variantColor = (
+        variant: SurfaceVariant,
+        name: PaletteColor | DesignSystemColor,
+        role: keyof ThemeVariantShades,
+        opacity?: number,
+    ): string => this.color(name, this.variants[variant].shades[role], opacity);
 
     /**
      * Returns a css color string from the current theme.
