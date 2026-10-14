@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { allColorShades, DesignSystemColor, fontTypeToFamily, PaletteColor, Theme, ThemeComponentColor } from "@ui";
+import { allColorShades, colorOptions, DesignSystemColor, fontTypeToFamily, PaletteColor, surfaceVariantOptions, Theme, ThemeComponentColor } from "@ui";
 
 /**
  * Adds the CSS variables using theme colors in format `--color-<name>`.
@@ -57,6 +57,21 @@ export const useThemeVariables = (theme: Theme) => {
                     `--color-${colorName}-${shade}-contrast`,
                     theme.color(colorName, theme.contrastShade(colorName, shade)),
                 );
+            }
+        }
+        for (const variant of surfaceVariantOptions) {
+            for (const color of colorOptions) {
+                for (const role of Object.keys(theme.variants[variant].shades)) {
+                    const shade = theme.variants[variant].shades[role as keyof typeof theme.variants[typeof variant]['shades']];
+                    document.documentElement.style.setProperty(
+                        `--variant-${variant}-${color}-${role.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}`,
+                        theme.variantColor(variant, color, role as keyof typeof theme.variants[typeof variant]['shades']),
+                    );
+                    document.documentElement.style.setProperty(
+                        `--variant-${variant}-${color}-${role.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}-contrast`,
+                        theme.color(color, theme.contrastShade(color, shade)),
+                    );
+                }
             }
         }
         document.body.setAttribute("data-theme", theme.mode);
