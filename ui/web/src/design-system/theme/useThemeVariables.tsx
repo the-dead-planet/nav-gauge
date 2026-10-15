@@ -20,13 +20,21 @@ export const useThemeVariables = (theme: Theme) => {
                 spacingValue
             );
         }
+        for (const [size, metrics] of Object.entries(theme.sizes.control)) {
+            for (const [metric, value] of Object.entries(metrics)) {
+                document.documentElement.style.setProperty(
+                    `--size-control-${size}-${metric.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}`,
+                    `${value}px`,
+                );
+            }
+        }
         for (const [layer, zIndex] of Object.entries(Theme.zIndex)) {
             document.documentElement.style.setProperty(
                 `--z-index-${layer.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}`,
                 String(zIndex),
             );
         }
-    }, []);
+    }, [theme.sizes.control]);
 
     useEffect(() => {
         for (const [key] of Object.entries(theme.componentColors)) {

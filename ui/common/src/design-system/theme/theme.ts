@@ -10,6 +10,7 @@ import {
     ThemeComponentColor,
     ThemeComponentColors,
     ThemeSpecification,
+    ThemeSizes,
     ThemeMode,
     ThemeVariantShades,
     ThemeVariants,
@@ -37,6 +38,47 @@ const toLinearRgbChannel = (channel: number): number => {
 };
 
 const fillContrastLightnessThreshold = 0.7;
+
+const themeSizes: ThemeSizes = {
+    control: {
+        xs: {
+            height: 24,
+            fontSize: 12,
+            iconSize: 12,
+            gap: 4,
+            paddingInline: 16,
+            paddingBlock: 0,
+            iconPaddingInline: 2,
+        },
+        sm: {
+            height: 24,
+            fontSize: 12,
+            iconSize: 14,
+            gap: 6,
+            paddingInline: 16,
+            paddingBlock: 2,
+            iconPaddingInline: 3,
+        },
+        md: {
+            height: 32,
+            fontSize: 14,
+            iconSize: 16,
+            gap: 10,
+            paddingInline: 16,
+            paddingBlock: 6,
+            iconPaddingInline: 5,
+        },
+        lg: {
+            height: 40,
+            fontSize: 16,
+            iconSize: 20,
+            gap: 12,
+            paddingInline: 20,
+            paddingBlock: 8,
+            iconPaddingInline: 8,
+        },
+    },
+};
 
 const toOklch = ({ r, g, b }: RGBColor): OklchColor => {
     const linearRed = toLinearRgbChannel(r);
@@ -144,6 +186,8 @@ export class Theme {
     public readonly media$: BehaviorSubject<MediaWithBreakpoints>;
 
     public readonly variants: ThemeVariants;
+
+    public readonly sizes = themeSizes;
 
     /**
      * Minimum value in pixels from which a breakpoint is active
@@ -341,8 +385,8 @@ export class Theme {
         color: ThemeColor,
         backgroundShade: ColorShade = 500,
     ): 100 | 900 => toOklch(color[backgroundShade]).lightness < fillContrastLightnessThreshold
-        ? 100
-        : 900;
+            ? 100
+            : 900;
 
     public variantColor = (
         variant: SurfaceVariant,

@@ -8,12 +8,10 @@
 
 .pointy-top {
     aspect-ratio: 86.6 / 100;
-    width: calc(var(--hexagon-height) * .866);
 }
 
 .flat-top {
     aspect-ratio: 100 / 86.6;
-    width: calc(var(--hexagon-height) / .866);
 }
 
 .svg {
@@ -38,236 +36,280 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background-color: rgb(from var(--hexagon-color) r g b / .01);
+    background-color: rgb(from var(--appearance-color) r g b / .01);
     backdrop-filter: blur(6px);
     mask-size: 100% 100%;
     mask-repeat: no-repeat;
 }
 
 .size-xs {
-    --hexagon-height: 24px;
-    height: 24px;
+    height: var(--size-control-xs-height);
 }
 
 .size-sm {
-    --hexagon-height: 24px;
-    height: 24px;
+    height: var(--size-control-sm-height);
 }
 
 .size-md {
-    --hexagon-height: 32px;
-    height: 32px;
+    height: var(--size-control-md-height);
 }
 
 .size-lg {
-    --hexagon-height: 40px;
-    height: 40px;
-}
-
-.color-neutral {
-    --hexagon-color: var(--color-neutral);
-    --hexagon-color-dark: var(--color-neutral-800);
-    --hexagon-color-light: var(--color-neutral-200);
-    --hexagon-disabled-color-light: var(--color-neutral-300);
-    --hexagon-disabled-color-dark: var(--color-neutral-700);
-}
-
-.color-primary {
-    --hexagon-color: var(--color-primary);
-    --hexagon-color-dark: var(--color-primary-800);
-    --hexagon-color-light: var(--color-primary-200);
-    --hexagon-disabled-color-light: var(--color-primary-300);
-    --hexagon-disabled-color-dark: var(--color-primary-700);
-}
-
-.color-secondary {
-    --hexagon-color: var(--color-secondary);
-    --hexagon-color-dark: var(--color-secondary-800);
-    --hexagon-color-light: var(--color-secondary-200);
-    --hexagon-disabled-color-light: var(--color-secondary-300);
-    --hexagon-disabled-color-dark: var(--color-secondary-700);
-}
-
-.color-tertiary {
-    --hexagon-color: var(--color-tertiary);
-    --hexagon-color-dark: var(--color-tertiary-800);
-    --hexagon-color-light: var(--color-tertiary-200);
-    --hexagon-disabled-color-light: var(--color-tertiary-300);
-    --hexagon-disabled-color-dark: var(--color-tertiary-700);
-}
-
-.highlight-color-neutral {
-    --hexagon-highlight-color: var(--color-neutral-500);
-    --hexagon-highlight-color-accent-darker: var(--color-neutral-600);
-    --hexagon-highlight-color-accent-lighter: var(--color-neutral-300);
-    --hexagon-highlight-color-dark: var(--color-neutral-800);
-    --hexagon-highlight-color-light: var(--color-neutral-200);
-}
-
-.highlight-color-primary {
-    --hexagon-highlight-color: var(--color-primary-500);
-    --hexagon-highlight-color-accent-darker: var(--color-primary-600);
-    --hexagon-highlight-color-accent-lighter: var(--color-primary-300);
-    --hexagon-highlight-color-dark: var(--color-primary-800);
-    --hexagon-highlight-color-light: var(--color-primary-200);
-}
-
-.highlight-color-secondary {
-    --hexagon-highlight-color: var(--color-secondary-500);
-    --hexagon-highlight-color-accent-darker: var(--color-secondary-600);
-    --hexagon-highlight-color-accent-lighter: var(--color-secondary-300);
-    --hexagon-highlight-color-dark: var(--color-secondary-800);
-    --hexagon-highlight-color-light: var(--color-secondary-200);
-}
-
-.highlight-color-tertiary {
-    --hexagon-highlight-color: var(--color-tertiary-500);
-    --hexagon-highlight-color-accent-darker: var(--color-tertiary-600);
-    --hexagon-highlight-color-accent-lighter: var(--color-tertiary-300);
-    --hexagon-highlight-color-dark: var(--color-tertiary-800);
-    --hexagon-highlight-color-light: var(--color-tertiary-200);
-}
-
-.mode-light {
-    --hexagon-color-inverse: var(--hexagon-color-light);
-    --hexagon-highlight-color-inverse: var(--hexagon-highlight-color-light);
-    --hexagon-highlight-color-accent: var(--hexagon-highlight-color-accent-darker);
-    --hexagon-inset-active-fill-opacity: .08;
-    --hexagon-disabled-background: var(--hexagon-color-light);
-    --hexagon-disabled-color: var(--hexagon-disabled-color-light);
-}
-
-.mode-dark {
-    --hexagon-color-inverse: var(--hexagon-color-dark);
-    --hexagon-highlight-color-inverse: var(--hexagon-highlight-color-dark);
-    --hexagon-highlight-color-accent: var(--hexagon-highlight-color-accent-lighter);
-    --hexagon-inset-active-fill-opacity: .04;
-    --hexagon-disabled-background: var(--hexagon-color-dark);
-    --hexagon-disabled-color: var(--hexagon-disabled-color-dark);
-}
-
-.polygon-base,
-.polygon-glow {
-    stroke: var(--hexagon-color);
+    height: var(--size-control-lg-height);
 }
 
 .polygon-glow {
     opacity: 0;
 }
 
+.polygon-inset-shadow-edges,
+.polygon-inset-highlight-edges,
+.polygon-inset-recess {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.polygon-inset-shadow-edges {
+    stroke: var(--appearance-inset-default-inner-start);
+}
+
+.polygon-inset-highlight-edges {
+    stroke: var(--appearance-inset-default-inner-end);
+}
+
+.inset-recess-center {
+    stop-color: var(--appearance-inset-default-recess);
+}
+
+.inset-recess-edge {
+    stop-color: transparent;
+}
+
 .interactive {
     cursor: pointer;
 }
 
-.hexagon.disabled .polygon-base {
-    fill: var(--hexagon-disabled-background);
-    fill-opacity: 1;
-    stroke: var(--hexagon-disabled-color);
-}
-
-.hexagon.disabled.variant-fill .polygon-base {
-    stroke: var(--hexagon-disabled-background);
-}
-
-.hexagon.disabled .content {
-    color: var(--hexagon-disabled-color);
-}
-
 /* Ghost */
 .variant-ghost .polygon-base {
-    fill: none;
+    fill: var(--appearance-ghost-default-background);
     stroke: transparent;
-}
-
-.variant-ghost.interactive:hover .polygon-base {
-    fill: var(--hexagon-highlight-color-accent);
-    fill-opacity: 0.1;
-}
-
-.variant-ghost.interactive:active .polygon-base,
-.variant-ghost.active .polygon-base {
-    fill: var(--hexagon-highlight-color-accent);
-    fill-opacity: 0.14;
 }
 
 /* Fill */
 .variant-fill .polygon-base {
-    fill: var(--hexagon-color);
+    fill: var(--appearance-fill-default-background);
+    stroke: none;
     fill-opacity: 1;
 }
 
-.variant-fill.interactive:hover .polygon-base {
-    fill: var(--hexagon-highlight-color-accent);
-    stroke: var(--hexagon-highlight-color-accent);
+.variant-fill.interactive:hover .polygon-base,
+.variant-fill.interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
+    fill: var(--appearance-fill-interaction-background);
 }
 
 .variant-fill.interactive:active .polygon-base,
+.variant-fill.interactive:has(:active) .polygon-base,
 .variant-fill.active .polygon-base {
-    fill: var(--hexagon-highlight-color-accent);
-    stroke: none;
+    fill: var(--appearance-fill-active-background);
+}
+
+.variant-fill.active.interactive:hover .polygon-base,
+.variant-fill.active.interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
+    fill: var(--appearance-fill-interaction-background);
+}
+
+.variant-fill.active.interactive:has(:active) .polygon-base {
+    fill: var(--appearance-fill-active-background);
 }
 
 /* Fill inverse */
 .variant-fill-inverse .polygon-base {
-    fill: var(--hexagon-color-inverse);
+    fill: var(--appearance-inverse-surface);
+    stroke: var(--appearance-fill-inverse-default-border);
     fill-opacity: 1;
 }
 
-.variant-fill-inverse.interactive:hover .polygon-base {
-    fill: var(--hexagon-highlight-color-inverse);
-    stroke: var(--hexagon-highlight-color-accent);
+.variant-fill-inverse.interactive:hover .polygon-base,
+.variant-fill-inverse.interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
+    stroke: var(--appearance-fill-inverse-interaction-border);
 }
 
 .variant-fill-inverse.interactive:active .polygon-base,
+.variant-fill-inverse.interactive:has(:active) .polygon-base,
 .variant-fill-inverse.active .polygon-base {
-    stroke: var(--hexagon-highlight-color-accent);
+    stroke: var(--appearance-fill-inverse-active-border);
+}
+
+.variant-fill-inverse.active.interactive:hover .polygon-base,
+.variant-fill-inverse.active.interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
+    stroke: var(--appearance-fill-inverse-interaction-border);
+}
+
+.variant-fill-inverse.active.interactive:has(:active) .polygon-base {
+    stroke: var(--appearance-fill-inverse-active-border);
 }
 
 /* Fill translucent */
 .variant-fill-translucent .polygon-base {
-    fill: var(--hexagon-color);
-    fill-opacity: 0.24;
+    fill: var(--appearance-fill-translucent-default-background);
+    stroke: var(--appearance-fill-translucent-default-border);
 }
 
-.variant-fill-translucent.interactive:hover .polygon-base {
-    stroke: var(--hexagon-highlight-color-accent);
-    fill: var(--hexagon-highlight-color-accent);
-    fill-opacity: 0.36;
+.variant-fill-translucent.interactive:hover .polygon-base,
+.variant-fill-translucent.interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
+    stroke: var(--appearance-fill-translucent-interaction-border);
 }
 
 .variant-fill-translucent.interactive:active .polygon-base,
+.variant-fill-translucent.interactive:has(:active) .polygon-base,
 .variant-fill-translucent.active .polygon-base {
-    stroke: var(--hexagon-highlight-color-accent);
-    fill: var(--hexagon-highlight-color-accent);
-    fill-opacity: 0.48;
+    stroke: var(--appearance-fill-translucent-active-border);
+}
+
+.variant-fill-translucent.active.interactive:hover .polygon-base,
+.variant-fill-translucent.active.interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
+    stroke: var(--appearance-fill-translucent-interaction-border);
+}
+
+.variant-fill-translucent.active.interactive:has(:active) .polygon-base {
+    stroke: var(--appearance-fill-translucent-active-border);
 }
 
 /* Outline */
-.variant-outline.interactive:hover .polygon-base {
-    stroke: var(--hexagon-highlight-color-accent);
-    fill: var(--hexagon-highlight-color-accent);
-    fill-opacity: 0.12;
+.variant-outline .polygon-base {
+    fill: var(--appearance-outline-default-background);
+    stroke: var(--appearance-outline-default-border);
+}
+
+.variant-outline.interactive:hover .polygon-base,
+.variant-outline.interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
+    stroke: var(--appearance-outline-interaction-border);
+    fill: var(--appearance-outline-interaction-background);
 }
 
 .variant-outline.interactive:active .polygon-base,
+.variant-outline.interactive:has(:active) .polygon-base,
 .variant-outline.active .polygon-base {
-    stroke: var(--hexagon-highlight-color-accent);
-    fill: var(--hexagon-highlight-color-accent);
-    fill-opacity: 0.24;
+    stroke: var(--appearance-outline-active-border);
+    fill: var(--appearance-outline-active-background);
+}
+
+.variant-outline.active.interactive:hover .polygon-base,
+.variant-outline.active.interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
+    stroke: var(--appearance-outline-interaction-border);
+    fill: var(--appearance-outline-interaction-background);
+}
+
+.variant-outline.active.interactive:has(:active) .polygon-base {
+    stroke: var(--appearance-outline-active-border);
+    fill: var(--appearance-outline-active-background);
 }
 
 /* Inset */
-.variant-inset.interactive:hover .polygon-base {
-    stroke: var(--hexagon-highlight-color-accent);
-    fill: var(--hexagon-highlight-color-accent);
-    fill-opacity: 0.12;
+.variant-inset .polygon-base {
+    fill: var(--appearance-inset-default-background);
+    stroke: var(--appearance-inset-default-edge-start);
+}
+
+.variant-inset .polygon-inset-shadow-edges,
+.variant-inset .polygon-inset-highlight-edges,
+.variant-inset .polygon-inset-recess {
+    opacity: 1;
+}
+
+.variant-inset .polygon-inset-edge-fade {
+    opacity: .28;
+}
+
+.variant-inset.interactive:active .polygon-inset-shadow-edges,
+.variant-inset.interactive:has(:active) .polygon-inset-shadow-edges,
+.variant-inset.active .polygon-inset-shadow-edges {
+    stroke: var(--appearance-inset-active-inner-start);
+}
+
+.variant-inset.interactive:active .polygon-inset-highlight-edges,
+.variant-inset.interactive:has(:active) .polygon-inset-highlight-edges,
+.variant-inset.active .polygon-inset-highlight-edges {
+    stroke: var(--appearance-inset-active-inner-end);
+}
+
+.variant-inset.interactive:hover .polygon-base,
+.variant-inset.interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
+    fill: var(--appearance-inset-default-background);
 }
 
 .variant-inset.interactive:active .polygon-base,
+.variant-inset.interactive:has(:active) .polygon-base,
 .variant-inset.active .polygon-base {
-    stroke: var(--hexagon-highlight-color-accent);
-    fill: var(--hexagon-highlight-color-accent);
-    fill-opacity: 0.24;
+    fill: var(--appearance-inset-default-background);
+    stroke: var(--appearance-inset-active-edge-start);
+}
+
+.variant-inset.interactive:active .inset-recess-center,
+.variant-inset.interactive:has(:active) .inset-recess-center,
+.variant-inset.active .inset-recess-center {
+    stop-color: var(--appearance-inset-active-recess);
+}
+
+.variant-inset.active.interactive:hover .polygon-base,
+.variant-inset.active.interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
+    stroke: var(--appearance-inset-default-edge-start);
+}
+
+.variant-inset.active.interactive:is(:hover, :focus-visible, :has(:focus-visible)) .inset-recess-center {
+    stop-color: var(--appearance-inset-default-recess);
+}
+
+.variant-inset.active.interactive:is(:hover, :focus-visible, :has(:focus-visible)) .polygon-inset-shadow-edges {
+    stroke: var(--appearance-inset-default-inner-start);
+}
+
+.variant-inset.active.interactive:is(:hover, :focus-visible, :has(:focus-visible)) .polygon-inset-highlight-edges {
+    stroke: var(--appearance-inset-default-inner-end);
+}
+
+.variant-inset.active.interactive:has(:active) .polygon-base {
+    stroke: var(--appearance-inset-active-edge-start);
+}
+
+.variant-inset.active.interactive:has(:active) .inset-recess-center {
+    stop-color: var(--appearance-inset-active-recess);
+}
+
+.variant-inset.active.interactive:has(:active) .polygon-inset-shadow-edges {
+    stroke: var(--appearance-inset-active-inner-start);
+}
+
+.variant-inset.active.interactive:has(:active) .polygon-inset-highlight-edges {
+    stroke: var(--appearance-inset-active-inner-end);
+}
+
+/* Disabled */
+.hexagon.disabled .polygon-base {
+    fill: var(--appearance-disabled-background);
+    fill-opacity: 1;
+    stroke: var(--appearance-disabled-border);
+    stroke-opacity: 1;
+}
+
+.hexagon.disabled:is(.variant-ghost, .variant-outline) .polygon-base {
+    fill: transparent;
+}
+
+.hexagon.disabled.variant-fill .polygon-base {
+    stroke: none;
+}
+
+.hexagon.disabled.variant-fill-translucent .polygon-base {
+    fill-opacity: .24;
+}
+
+.hexagon.disabled.variant-inset .polygon-base {
+    fill: var(--appearance-inset-default-background);
+}
+
+.hexagon.disabled .content {
+    color: var(--appearance-disabled-content);
 }
 
 /* Glow styles */
@@ -276,7 +318,7 @@
 .glow-style-glow.active .polygon-glow {
     opacity: 1;
     filter: var(--hex-filter);
-    stroke: var(--hexagon-highlight-color-accent);
+    stroke: var(--appearance-glow-content);
 }
 
 .glow-style-animate-borders-glow:hover .polygon-glow,
@@ -284,7 +326,7 @@
 .glow-style-animate-borders-glow.active .polygon-glow {
     opacity: 1;
     filter: var(--hex-filter);
-    stroke: var(--hexagon-highlight-color-accent);
+    stroke: var(--appearance-glow-content);
     stroke-dasharray: 0 300;
     animation: border-glow 0.3s linear forwards;
 }

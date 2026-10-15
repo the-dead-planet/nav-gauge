@@ -4,6 +4,7 @@ import { ButtonProps, useTheme } from "@ui";
 import { Icon } from "../../design-system/icons";
 import { Tooltip } from "../tooltip";
 import { Hexagon } from "../../hud";
+import appearanceStyles from '../../design-system/theme/appearance.module.css';
 import styles from './button.module.css';
 
 interface Props {
@@ -39,13 +40,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     ...props
 }) => {
     const theme = useTheme();
-    const iconSizes = {
-        xs: 12,
-        sm: 14,
-        md: 16,
-        lg: 20,
-    }
-    const iconSize = iconSizes[size];
+    const iconSize = theme.sizes.control[size].iconSize;
 
     const button = (
         <button
@@ -55,9 +50,11 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
             aria-label={ariaLabel ?? (!children && typeof tooltip === 'string' ? tooltip : undefined)}
             className={classNames(
                 styles['button'],
+                appearanceStyles['appearance'],
                 styles[`mode-${theme.mode}`],
-                styles[`color-${color}`],
-                styles[`highlight-${highlightColor || color}`],
+                appearanceStyles[`mode-${theme.mode}`],
+                appearanceStyles[`color-${color}`],
+                appearanceStyles[`highlight-${highlightColor || color}`],
                 styles[`variant-${variant}`],
                 styles[`glow-style-${activeGlow}`],
                 styles[`size-${size}`],
@@ -65,7 +62,6 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
                 {
                     [styles['interactive']]: !!onClick && !disabled,
                     [styles['active']]: active,
-                    [styles['has-highlight-shade']]: highlightContentShade !== undefined,
                     [styles[`only-icon-${size}`]]: !children,
                     [styles['disabled']]: disabled,
                 },
@@ -74,10 +70,10 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
             style={{
                 ...(corners !== 'hexagon' ? style : undefined),
                 ...(contentShade === undefined ? undefined : {
-                    '--button-content-color': theme.color(color, contentShade),
+                    '--appearance-default-content-override': theme.color(color, contentShade),
                 }),
                 ...(highlightContentShade === undefined ? undefined : {
-                    '--button-highlight-content-color': theme.color(highlightColor || color, highlightContentShade),
+                    '--appearance-interaction-content-override': theme.color(highlightColor || color, highlightContentShade),
                 }),
             } as CSSProperties}
             {...props}

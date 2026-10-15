@@ -1,4 +1,4 @@
-import type { ColorShade, DesignSystemColor, SurfaceVariant } from '../model';
+import type { ColorShade, DesignSystemColor, SizeVariant, SurfaceVariant } from '../model';
 
 export enum ThemeName {
     Default = 'Default',
@@ -101,6 +101,20 @@ export interface ThemeVariantShades {
 }
 
 export type ThemeVariants = Record<SurfaceVariant, { shades: ThemeVariantShades }>;
+
+export interface ThemeControlSize {
+    height: number;
+    fontSize: number;
+    iconSize: number;
+    gap: number;
+    paddingInline: number;
+    paddingBlock: number;
+    iconPaddingInline: number;
+}
+
+export interface ThemeSizes {
+    control: Record<SizeVariant, ThemeControlSize>;
+}
 
 export interface ThemeSpecification {
     mode: ThemeMode;
