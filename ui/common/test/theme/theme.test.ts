@@ -78,14 +78,14 @@ describe("Theme", () => {
         expect(theme.contrastShade("mint")).to.equal(100);
     });
 
-    it("resolves variant shades for the current mode", () => {
-        const darkTheme = new Theme(themeSpecifications[ThemeName.Default].dark, media);
-
-        expect(theme.variants.fill.shades.interaction).to.equal(600);
-        expect(theme.variants.fill.shades.active).to.equal(700);
-        expect(theme.variants.fill.shades.disabledSurface).to.equal(200);
-        expect(darkTheme.variants.fill.shades.interaction).to.equal(300);
-        expect(darkTheme.variants.fill.shades.active).to.equal(200);
-        expect(darkTheme.variants.fill.shades.disabledSurface).to.equal(800);
+    it("resolves variant appearance policy", () => {
+        expect(theme.resolveAppearance("ghost", "primary", "secondary", "default").surface).to.equal("transparent");
+        expect(theme.resolveAppearance("fill", "primary", "secondary", "default").border.width).to.equal(0);
+        expect(theme.resolveAppearance("inset", "primary", "secondary", "default").effects.depth).to.equal("inset");
+        expect(theme.resolveAppearance("fill-translucent", "primary", "secondary", "default").surface).to.match(/, 0\.24\)$/);
+        expect(theme.resolveAppearance("ghost", "primary", "secondary", "active").effects.glowColor).to.equal(theme.color("secondary"));
+        expect(theme.resolveAppearance("fill-inverse", "primary", "secondary", "interaction").surface).to.equal(
+            theme.resolveAppearance("fill-inverse", "primary", "secondary", "default").surface,
+        );
     });
 });

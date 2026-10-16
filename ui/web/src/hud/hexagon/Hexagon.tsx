@@ -2,7 +2,6 @@ import { ComponentProps, CSSProperties, FC, useId } from "react";
 import { HexagonProps, useTheme } from "@ui";
 import classNames from "classnames";
 import styles from "./hexagon.module.css";
-import appearanceStyles from '../../design-system/theme/appearance.module.css';
 
 interface Props {
     className?: string;
@@ -20,7 +19,7 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
     color = 'neutral',
     highlightColor,
     size,
-    variant,
+    variant = 'ghost',
     active = false,
     disabled = false,
     onClick,
@@ -30,6 +29,12 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
     ...props
 }) => {
     const theme = useTheme();
+    const effects = theme.resolveAppearance(
+        variant,
+        color,
+        highlightColor || color,
+        'default',
+    ).effects;
     const isPointy = shape === "pointy-top";
     const points = isPointy ? POINTY_TOP : FLAT_TOP;
     const viewBox = isPointy ? "6.7 0 86.6 100" : "0 6.7 100 86.6";
@@ -50,22 +55,20 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
     return (
         <div
             onClick={disabled ? undefined : onClick}
+            data-appearance-variant={variant}
+            data-appearance-color={color}
+            data-appearance-highlight={highlightColor || color}
             aria-disabled={!disabled || !(interactive || onClick) ? undefined : true}
             className={classNames(
                 styles.hexagon,
-                appearanceStyles.appearance,
                 styles[shape],
-                variant && styles[`variant-${variant}`],
-                appearanceStyles[`color-${color}`],
-                appearanceStyles[`highlight-${highlightColor || color}`],
                 size && styles[`size-${size}`],
-                styles[`mode-${theme.mode}`],
-                appearanceStyles[`mode-${theme.mode}`],
                 {
                     [styles['active']]: active && !disabled,
                     [styles['disabled']]: disabled,
                     [styles['interactive']]: !disabled && (interactive || onClick),
                     [styles[`glow-style-${activeGlow}`]]: !disabled && interactive,
+                    [styles['depth-inset']]: effects.depth === 'inset',
                 },
                 className
             )}
@@ -75,12 +78,13 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
             } as CSSProperties}
             {...props}
         >
-            {variant === 'fill-translucent' ? (
+            {effects.backdropBlur > 0 ? (
                 <div
                     className={styles.backdrop}
                     style={{
                         maskImage: backdropMask,
                         WebkitMaskImage: backdropMask,
+                        backdropFilter: `blur(${effects.backdropBlur}px)`,
                     }}
                 />
             ) : null}

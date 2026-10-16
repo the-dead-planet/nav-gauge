@@ -87,6 +87,65 @@ export type ThemeComponentColors = {
     [key in ThemeComponentColor]: SelectedColor;
 };
 
+export type ThemeAppearanceState = 'default' | 'interaction' | 'active' | 'disabled';
+
+export interface ThemeAppearancePaintTransparent {
+    type: 'transparent';
+}
+
+export interface ThemeAppearancePaintShade {
+    type: 'shade';
+    colorProperty: 'color' | 'highlightColor';
+    shade: ColorShade;
+    opacity?: number;
+}
+
+export interface ThemeAppearancePaintContrast {
+    type: 'contrast';
+    colorProperty: 'color' | 'highlightColor';
+    backgroundShade: ColorShade;
+    opacity?: number;
+}
+
+export interface ThemeAppearancePaintLiteral {
+    type: 'literal';
+    value: string;
+}
+
+export type ThemeAppearancePaint =
+    | ThemeAppearancePaintTransparent
+    | ThemeAppearancePaintShade
+    | ThemeAppearancePaintContrast
+    | ThemeAppearancePaintLiteral;
+
+export type ThemeAppearanceBorder = ThemeAppearancePaint & { width: number };
+
+export interface ThemeAppearanceStatePolicy {
+    surface: ThemeAppearancePaint;
+    border: ThemeAppearanceBorder;
+    glyphs: ThemeAppearancePaint;
+}
+
+export interface ThemeAppearancePolicy {
+    states: Record<ThemeAppearanceState, ThemeAppearanceStatePolicy>;
+    effects: {
+        backdropBlur: number;
+        depth: 'none' | 'inset';
+        glyphsGlow: boolean;
+        inset?: Record<ThemeAppearanceState, ThemeAppearanceInsetEffectPolicy>;
+    };
+}
+
+export interface ThemeAppearanceInsetEffectPolicy {
+    edgeStart: ThemeAppearancePaint;
+    edgeEnd: ThemeAppearancePaint;
+    shadow: ThemeAppearancePaint;
+    highlight: ThemeAppearancePaint;
+    recess: ThemeAppearancePaint;
+    shadowOpacity: number;
+    highlightOpacity: number;
+}
+
 export interface ThemeVariantShades {
     base: ColorShade;
     brightest: ColorShade;
@@ -97,10 +156,37 @@ export interface ThemeVariantShades {
     active: ColorShade;
     disabledSurface: ColorShade;
     disabledContent: ColorShade;
-    shadow: ColorShade;
 }
 
-export type ThemeVariants = Record<SurfaceVariant, { shades: ThemeVariantShades }>;
+export interface ThemeAppearanceEffects {
+    backdropBlur: number;
+    depth: 'none' | 'inset';
+    glyphsGlow: boolean;
+    glowColor: string;
+    inset: ThemeAppearanceInsetEffect;
+}
+
+export interface ThemeAppearanceInsetEffect {
+    edgeStart: string;
+    edgeEnd: string;
+    shadow: string;
+    highlight: string;
+    recess: string;
+    shadowOpacity: number;
+    highlightOpacity: number;
+}
+
+export interface ResolvedThemeAppearanceBorder {
+    color: string;
+    width: number;
+}
+
+export interface ResolvedThemeAppearance {
+    surface: string;
+    border: ResolvedThemeAppearanceBorder;
+    glyphs: string;
+    effects: ThemeAppearanceEffects;
+}
 
 export interface ThemeControlSize {
     height: number;

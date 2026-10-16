@@ -4,7 +4,6 @@ import { ButtonProps, useTheme } from "@ui";
 import { Icon } from "../../design-system/icons";
 import { Tooltip } from "../tooltip";
 import { Hexagon } from "../../hud";
-import appearanceStyles from '../../design-system/theme/appearance.module.css';
 import styles from './button.module.css';
 
 interface Props {
@@ -41,21 +40,24 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
 }) => {
     const theme = useTheme();
     const iconSize = theme.sizes.control[size].iconSize;
+    const effects = theme.resolveAppearance(
+        variant,
+        color,
+        highlightColor || color,
+        'default',
+    ).effects;
 
     const button = (
         <button
             type={type}
             disabled={disabled}
             onClick={onClick}
+            data-appearance-variant={variant}
+            data-appearance-color={color}
+            data-appearance-highlight={highlightColor || color}
             aria-label={ariaLabel ?? (!children && typeof tooltip === 'string' ? tooltip : undefined)}
             className={classNames(
                 styles['button'],
-                appearanceStyles['appearance'],
-                styles[`mode-${theme.mode}`],
-                appearanceStyles[`mode-${theme.mode}`],
-                appearanceStyles[`color-${color}`],
-                appearanceStyles[`highlight-${highlightColor || color}`],
-                styles[`variant-${variant}`],
                 styles[`glow-style-${activeGlow}`],
                 styles[`size-${size}`],
                 styles[`corners-${corners}`],
@@ -64,16 +66,18 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
                     [styles['active']]: active,
                     [styles[`only-icon-${size}`]]: !children,
                     [styles['disabled']]: disabled,
+                    [styles['glyphs-glow']]: effects.glyphsGlow,
+                    [styles['depth-inset']]: effects.depth === 'inset',
                 },
                 corners !== 'hexagon' ? className : null
             )}
             style={{
                 ...(corners !== 'hexagon' ? style : undefined),
                 ...(contentShade === undefined ? undefined : {
-                    '--appearance-default-content-override': theme.color(color, contentShade),
+                    '--appearance-default-glyphs-override': theme.color(color, contentShade),
                 }),
                 ...(highlightContentShade === undefined ? undefined : {
-                    '--appearance-interaction-content-override': theme.color(highlightColor || color, highlightContentShade),
+                    '--appearance-interaction-glyphs-override': theme.color(highlightColor || color, highlightContentShade),
                 }),
             } as CSSProperties}
             {...props}

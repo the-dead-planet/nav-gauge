@@ -12,7 +12,6 @@ import { Hexagon } from "../../hud";
 import { Tooltip } from "../tooltip";
 import { MutableViewStyle } from "../../model";
 import { Text } from "../../design-system/typography";
-import { TRANSLUCENT_OPACITY } from "../../tinkers";
 
 export interface MobileButtonProps {
     forwardRef?: Ref<ViewInstance>;
@@ -54,13 +53,18 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     const [glowDrawn, setGlowDrawn] = useState(false);
 
     const isActiveState = !disabled && (pressed || active);
-    const isLight = theme.mode === "light";
-    const shades = theme.variants[variant].shades;
-
-    const activeInsetColor = theme.color(highlightColor, shades.active);
-    const baseColor = theme.color(color, shades.base);
-    const interactionShade = isActiveState ? shades.active : shades.base;
-    const interactionColor = theme.color(highlightColor, interactionShade);
+    const appearance = theme.resolveAppearance(
+        variant,
+        color,
+        highlightColor,
+        disabled ? "disabled" : isActiveState ? "active" : "default",
+    );
+    const activeAppearance = theme.resolveAppearance(
+        variant,
+        color,
+        highlightColor,
+        "active",
+    );
 
     const showGlow =
         !disabled && activeGlow !== "none" && (isActiveState || glowDrawn);
@@ -71,9 +75,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         }
     };
 
-    const isTextGlowVariant =
-        variant === "ghost" || variant === "outline" || variant === "inset";
-    const showTextGlow = showGlow && isTextGlowVariant;
+    const showTextGlow = showGlow && appearance.effects.glyphsGlow;
     const controlSize = theme.sizes.control[size];
 
     const container: MutableViewStyle = {
@@ -87,88 +89,17 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
             : controlSize.paddingInline,
         paddingVertical: controlSize.paddingBlock,
         gap: controlSize.gap,
+        backgroundColor: appearance.surface,
+        borderColor: appearance.border.color,
+        borderWidth: appearance.border.width,
     };
 
-    switch (variant) {
-        case "ghost":
-            container.backgroundColor = "transparent";
-            container.borderWidth = 0;
-            break;
-        case "fill":
-            container.borderWidth = 0;
-            container.backgroundColor = isActiveState
-                ? interactionColor
-                : baseColor;
-            break;
-        case "fill-inverse":
-            container.borderWidth = 1;
-            container.backgroundColor = theme.color(
-                color,
-                shades.inverseSurface,
-            );
-            container.borderColor = isActiveState
-                ? interactionColor
-                : baseColor;
-            break;
-        case "fill-translucent":
-            container.borderWidth = 1;
-            container.backgroundColor = theme.color(
-                color,
-                shades.base,
-                TRANSLUCENT_OPACITY,
-            );
-            container.borderColor = isActiveState
-                ? interactionColor
-                : theme.color(color, shades.base, 0.3);
-            break;
-        case "outline":
-            container.borderWidth = 1;
-            container.backgroundColor = isActiveState
-                ? theme.color(highlightColor, shades.base, 0.16)
-                : "transparent";
-            container.borderColor = isActiveState
-                ? interactionColor
-                : baseColor;
-            break;
-        case "inset":
-            container.backgroundColor = theme.color(color, shades.insetSurface);
-            container.borderWidth = 0;
-            container.borderTopWidth = 1;
-            container.borderLeftWidth = 1;
-            container.borderBottomWidth = 1;
-            container.borderRightWidth = 1;
-            if (isLight) {
-                const insetColor = isActiveState ? highlightColor : color;
-                container.borderTopColor = theme.color(
-                    insetColor,
-                    shades.content,
-                    0.2,
-                );
-                container.borderLeftColor = theme.color(
-                    insetColor,
-                    shades.content,
-                    0.2,
-                );
-                container.borderBottomColor = theme.color(
-                    insetColor,
-                    shades.brightest,
-                    0.7,
-                );
-                container.borderRightColor = theme.color(
-                    insetColor,
-                    shades.brightest,
-                    0.7,
-                );
-                container.boxShadow = `3px 3px 4px ${theme.color(insetColor, shades.content, 0.2)} inset, 4px 4px 8px ${theme.color(insetColor, shades.shadow, 0.18)} inset, -2px -2px 3px rgba(255, 255, 255, .7) inset`;
-            } else {
-                container.borderTopColor = "rgba(0,0,0,0.80)";
-                container.borderLeftColor = "rgba(0,0,0,0.80)";
-                container.borderBottomColor = "rgba(255,255,255,0.08)";
-                container.borderRightColor = "rgba(255,255,255,0.08)";
-                container.boxShadow =
-                    "4px 4px 8px rgba(0,0,0,0.80) inset, -2px -2px 4px rgba(255,255,255,0.08) inset";
-            }
-            break;
+    if (appearance.effects.depth === "inset") {
+        container.borderTopColor = appearance.effects.inset.edgeStart;
+        container.borderLeftColor = appearance.effects.inset.edgeStart;
+        container.borderBottomColor = appearance.effects.inset.edgeEnd;
+        container.borderRightColor = appearance.effects.inset.edgeEnd;
+        container.boxShadow = `3px 3px 4px ${appearance.effects.inset.shadow} inset, -2px -2px 4px ${appearance.effects.inset.highlight} inset`;
     }
 
     if (corners === "circle") {
@@ -178,7 +109,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     }
 
     if (showGlow && corners !== "hexagon") {
-        const glowBoxShadow = `0px 0px 4px ${theme.color(highlightColor, shades.base, 0.3)}, 0px 0px 20px ${theme.color(highlightColor, shades.base, 0.6)}`;
+        const glowBoxShadow = `0px 0px 4px ${activeAppearance.effects.glowColor}, 0px 0px 20px ${activeAppearance.effects.glowColor}`;
         if (container.boxShadow) {
             container.boxShadow = `${container.boxShadow}, ${glowBoxShadow}`;
         } else {
@@ -192,63 +123,27 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         container.boxShadow = undefined;
     }
 
-    const fillTextColor = theme.color(color, theme.contrastShade(color));
-    const hlFillTextColor = theme.color(
-        highlightColor,
-        theme.contrastShade(highlightColor, interactionShade),
-    );
-    let textColor =
+    const textColor =
         highlightContentShade !== undefined && isActiveState
             ? theme.color(highlightColor, highlightContentShade)
             : contentShade !== undefined && !isActiveState
               ? theme.color(color, contentShade)
-              : variant === "fill"
-                ? isActiveState
-                    ? hlFillTextColor
-                    : fillTextColor
-                : variant === "fill-inverse"
-                  ? theme.color(
-                        isActiveState ? highlightColor : color,
-                        shades.content,
-                    )
-                  : isActiveState
-                    ? interactionColor
-                    : baseColor;
-    if (disabled) {
-        const disabledColor = theme.color(color, shades.disabledContent);
-        container.backgroundColor = theme.color(
-            color,
-            shades.disabledSurface,
-            variant === "fill-translucent" ? TRANSLUCENT_OPACITY : undefined,
-        );
-        if (variant === "ghost" || variant === "outline") {
-            container.backgroundColor = "transparent";
-        }
-        if (variant === "inset") {
-            container.backgroundColor = theme.color(color, shades.insetSurface);
-            container.borderColor = disabledColor;
-        } else if (variant === "fill") {
-            container.borderWidth = 0;
-        } else {
-            container.borderColor = disabledColor;
-        }
-        textColor = disabledColor;
-    }
+              : appearance.glyphs;
     const fontSize = controlSize.fontSize;
 
     const showTextShadow =
         showTextGlow ||
-        (isActiveState && (variant === "inset" || variant === "ghost"));
+        (isActiveState && appearance.effects.glyphsGlow);
 
     const textShadowStyle = showTextShadow
         ? {
-              textShadowColor: activeInsetColor,
+              textShadowColor: activeAppearance.effects.glowColor,
               textShadowRadius: 12,
               textShadowOffset: { width: 0, height: 0 },
           }
-        : variant === "fill-translucent"
+        : appearance.effects.backdropBlur > 0
           ? {
-                textShadowColor: theme.color(color, shades.shadow, 0.5),
+                textShadowColor: appearance.border.color,
                 textShadowOffset: { width: -1, height: 0 },
                 textShadowRadius: 1,
             }
@@ -276,7 +171,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
                 color={textColor}
                 filter={
                     showTextShadow
-                        ? `drop-shadow(0px 0px 12px ${activeInsetColor})`
+                        ? `drop-shadow(0px 0px 12px ${activeAppearance.effects.glowColor})`
                         : undefined
                 }
             />

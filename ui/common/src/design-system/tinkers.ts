@@ -1,4 +1,5 @@
 import { ColorVariant, FillVariant, SizeVariant, SurfaceVariant } from './model';
+import type { ThemeAppearanceState } from './theme/model';
 
 export const colorOptions: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
 export const sizeOptions: SizeVariant[] = ['xs', 'sm', 'md', 'lg'];
@@ -10,4 +11,10 @@ export const surfaceVariantOptions: SurfaceVariant[] = [
     'fill-translucent',
     'outline',
     'inset',
+];
+export const themeAppearanceStateOptions: ThemeAppearanceState[] = [
+    'default',
+    'interaction',
+    'active',
+    'disabled',
 ];

@@ -37,7 +37,6 @@
     inset: 0;
     pointer-events: none;
     background-color: rgb(from var(--appearance-color) r g b / .01);
-    backdrop-filter: blur(6px);
     mask-size: 100% 100%;
     mask-repeat: no-repeat;
 }
@@ -56,6 +55,38 @@
 
 .size-lg {
     height: var(--size-control-lg-height);
+}
+
+.pointy-top.size-xs {
+    width: calc(var(--size-control-xs-height) * .866);
+}
+
+.pointy-top.size-sm {
+    width: calc(var(--size-control-sm-height) * .866);
+}
+
+.pointy-top.size-md {
+    width: calc(var(--size-control-md-height) * .866);
+}
+
+.pointy-top.size-lg {
+    width: calc(var(--size-control-lg-height) * .866);
+}
+
+.flat-top.size-xs {
+    width: calc(var(--size-control-xs-height) / .866);
+}
+
+.flat-top.size-sm {
+    width: calc(var(--size-control-sm-height) / .866);
+}
+
+.flat-top.size-md {
+    width: calc(var(--size-control-md-height) / .866);
+}
+
+.flat-top.size-lg {
+    width: calc(var(--size-control-lg-height) / .866);
 }
 
 .polygon-glow {
@@ -89,227 +120,138 @@
     cursor: pointer;
 }
 
-/* Ghost */
-.variant-ghost .polygon-base {
-    fill: var(--appearance-ghost-default-background);
-    stroke: transparent;
+.polygon-base {
+    fill: var(--appearance-default-background);
+    stroke: var(--appearance-default-border);
 }
 
-/* Fill */
-.variant-fill .polygon-base {
-    fill: var(--appearance-fill-default-background);
-    stroke: none;
-    fill-opacity: 1;
+.content {
+    color: var(--appearance-default-glyphs);
 }
 
-.variant-fill.interactive:hover .polygon-base,
-.variant-fill.interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
-    fill: var(--appearance-fill-interaction-background);
+.interactive:hover .polygon-base,
+.interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
+    fill: var(--appearance-interaction-background);
+    stroke: var(--appearance-interaction-border);
 }
 
-.variant-fill.interactive:active .polygon-base,
-.variant-fill.interactive:has(:active) .polygon-base,
-.variant-fill.active .polygon-base {
-    fill: var(--appearance-fill-active-background);
+.interactive:hover .content,
+.interactive:is(:focus-visible, :has(:focus-visible)) .content {
+    color: var(--appearance-interaction-glyphs);
 }
 
-.variant-fill.active.interactive:hover .polygon-base,
-.variant-fill.active.interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
-    fill: var(--appearance-fill-interaction-background);
+.interactive:active .polygon-base,
+.interactive:has(:active) .polygon-base,
+.active .polygon-base {
+    fill: var(--appearance-active-background);
+    stroke: var(--appearance-active-border);
 }
 
-.variant-fill.active.interactive:has(:active) .polygon-base {
-    fill: var(--appearance-fill-active-background);
+.interactive:active .content,
+.interactive:has(:active) .content,
+.active .content {
+    color: var(--appearance-active-glyphs);
 }
 
-/* Fill inverse */
-.variant-fill-inverse .polygon-base {
-    fill: var(--appearance-inverse-surface);
-    stroke: var(--appearance-fill-inverse-default-border);
-    fill-opacity: 1;
+.active.interactive:hover .polygon-base,
+.active.interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
+    fill: var(--appearance-interaction-background);
+    stroke: var(--appearance-interaction-border);
 }
 
-.variant-fill-inverse.interactive:hover .polygon-base,
-.variant-fill-inverse.interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
-    stroke: var(--appearance-fill-inverse-interaction-border);
+.active.interactive:hover .content,
+.active.interactive:is(:focus-visible, :has(:focus-visible)) .content {
+    color: var(--appearance-interaction-glyphs);
 }
 
-.variant-fill-inverse.interactive:active .polygon-base,
-.variant-fill-inverse.interactive:has(:active) .polygon-base,
-.variant-fill-inverse.active .polygon-base {
-    stroke: var(--appearance-fill-inverse-active-border);
+.active.interactive:has(:active) .polygon-base {
+    fill: var(--appearance-active-background);
+    stroke: var(--appearance-active-border);
 }
 
-.variant-fill-inverse.active.interactive:hover .polygon-base,
-.variant-fill-inverse.active.interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
-    stroke: var(--appearance-fill-inverse-interaction-border);
+.active.interactive:has(:active) .content {
+    color: var(--appearance-active-glyphs);
 }
 
-.variant-fill-inverse.active.interactive:has(:active) .polygon-base {
-    stroke: var(--appearance-fill-inverse-active-border);
-}
-
-/* Fill translucent */
-.variant-fill-translucent .polygon-base {
-    fill: var(--appearance-fill-translucent-default-background);
-    stroke: var(--appearance-fill-translucent-default-border);
-}
-
-.variant-fill-translucent.interactive:hover .polygon-base,
-.variant-fill-translucent.interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
-    stroke: var(--appearance-fill-translucent-interaction-border);
-}
-
-.variant-fill-translucent.interactive:active .polygon-base,
-.variant-fill-translucent.interactive:has(:active) .polygon-base,
-.variant-fill-translucent.active .polygon-base {
-    stroke: var(--appearance-fill-translucent-active-border);
-}
-
-.variant-fill-translucent.active.interactive:hover .polygon-base,
-.variant-fill-translucent.active.interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
-    stroke: var(--appearance-fill-translucent-interaction-border);
-}
-
-.variant-fill-translucent.active.interactive:has(:active) .polygon-base {
-    stroke: var(--appearance-fill-translucent-active-border);
-}
-
-/* Outline */
-.variant-outline .polygon-base {
-    fill: var(--appearance-outline-default-background);
-    stroke: var(--appearance-outline-default-border);
-}
-
-.variant-outline.interactive:hover .polygon-base,
-.variant-outline.interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
-    stroke: var(--appearance-outline-interaction-border);
-    fill: var(--appearance-outline-interaction-background);
-}
-
-.variant-outline.interactive:active .polygon-base,
-.variant-outline.interactive:has(:active) .polygon-base,
-.variant-outline.active .polygon-base {
-    stroke: var(--appearance-outline-active-border);
-    fill: var(--appearance-outline-active-background);
-}
-
-.variant-outline.active.interactive:hover .polygon-base,
-.variant-outline.active.interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
-    stroke: var(--appearance-outline-interaction-border);
-    fill: var(--appearance-outline-interaction-background);
-}
-
-.variant-outline.active.interactive:has(:active) .polygon-base {
-    stroke: var(--appearance-outline-active-border);
-    fill: var(--appearance-outline-active-background);
-}
-
-/* Inset */
-.variant-inset .polygon-base {
-    fill: var(--appearance-inset-default-background);
+.depth-inset .polygon-base {
     stroke: var(--appearance-inset-default-edge-start);
 }
 
-.variant-inset .polygon-inset-shadow-edges,
-.variant-inset .polygon-inset-highlight-edges,
-.variant-inset .polygon-inset-recess {
+.depth-inset .polygon-inset-shadow-edges,
+.depth-inset .polygon-inset-highlight-edges,
+.depth-inset .polygon-inset-recess {
     opacity: 1;
 }
 
-.variant-inset .polygon-inset-edge-fade {
+.depth-inset .polygon-inset-edge-fade {
     opacity: .28;
 }
 
-.variant-inset.interactive:active .polygon-inset-shadow-edges,
-.variant-inset.interactive:has(:active) .polygon-inset-shadow-edges,
-.variant-inset.active .polygon-inset-shadow-edges {
+.depth-inset.interactive:active .polygon-inset-shadow-edges,
+.depth-inset.interactive:has(:active) .polygon-inset-shadow-edges,
+.depth-inset.active .polygon-inset-shadow-edges {
     stroke: var(--appearance-inset-active-inner-start);
 }
 
-.variant-inset.interactive:active .polygon-inset-highlight-edges,
-.variant-inset.interactive:has(:active) .polygon-inset-highlight-edges,
-.variant-inset.active .polygon-inset-highlight-edges {
+.depth-inset.interactive:active .polygon-inset-highlight-edges,
+.depth-inset.interactive:has(:active) .polygon-inset-highlight-edges,
+.depth-inset.active .polygon-inset-highlight-edges {
     stroke: var(--appearance-inset-active-inner-end);
 }
 
-.variant-inset.interactive:hover .polygon-base,
-.variant-inset.interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
-    fill: var(--appearance-inset-default-background);
-}
-
-.variant-inset.interactive:active .polygon-base,
-.variant-inset.interactive:has(:active) .polygon-base,
-.variant-inset.active .polygon-base {
-    fill: var(--appearance-inset-default-background);
+.depth-inset.interactive:active .polygon-base,
+.depth-inset.interactive:has(:active) .polygon-base,
+.depth-inset.active .polygon-base {
     stroke: var(--appearance-inset-active-edge-start);
 }
 
-.variant-inset.interactive:active .inset-recess-center,
-.variant-inset.interactive:has(:active) .inset-recess-center,
-.variant-inset.active .inset-recess-center {
+.depth-inset.interactive:active .inset-recess-center,
+.depth-inset.interactive:has(:active) .inset-recess-center,
+.depth-inset.active .inset-recess-center {
     stop-color: var(--appearance-inset-active-recess);
 }
 
-.variant-inset.active.interactive:hover .polygon-base,
-.variant-inset.active.interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
+.depth-inset.active.interactive:hover .polygon-base,
+.depth-inset.active.interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
     stroke: var(--appearance-inset-default-edge-start);
 }
 
-.variant-inset.active.interactive:is(:hover, :focus-visible, :has(:focus-visible)) .inset-recess-center {
+.depth-inset.active.interactive:is(:hover, :focus-visible, :has(:focus-visible)) .inset-recess-center {
     stop-color: var(--appearance-inset-default-recess);
 }
 
-.variant-inset.active.interactive:is(:hover, :focus-visible, :has(:focus-visible)) .polygon-inset-shadow-edges {
+.depth-inset.active.interactive:is(:hover, :focus-visible, :has(:focus-visible)) .polygon-inset-shadow-edges {
     stroke: var(--appearance-inset-default-inner-start);
 }
 
-.variant-inset.active.interactive:is(:hover, :focus-visible, :has(:focus-visible)) .polygon-inset-highlight-edges {
+.depth-inset.active.interactive:is(:hover, :focus-visible, :has(:focus-visible)) .polygon-inset-highlight-edges {
     stroke: var(--appearance-inset-default-inner-end);
 }
 
-.variant-inset.active.interactive:has(:active) .polygon-base {
+.depth-inset.active.interactive:has(:active) .polygon-base {
     stroke: var(--appearance-inset-active-edge-start);
 }
 
-.variant-inset.active.interactive:has(:active) .inset-recess-center {
+.depth-inset.active.interactive:has(:active) .inset-recess-center {
     stop-color: var(--appearance-inset-active-recess);
 }
 
-.variant-inset.active.interactive:has(:active) .polygon-inset-shadow-edges {
+.depth-inset.active.interactive:has(:active) .polygon-inset-shadow-edges {
     stroke: var(--appearance-inset-active-inner-start);
 }
 
-.variant-inset.active.interactive:has(:active) .polygon-inset-highlight-edges {
+.depth-inset.active.interactive:has(:active) .polygon-inset-highlight-edges {
     stroke: var(--appearance-inset-active-inner-end);
 }
 
 /* Disabled */
 .hexagon.disabled .polygon-base {
     fill: var(--appearance-disabled-background);
-    fill-opacity: 1;
     stroke: var(--appearance-disabled-border);
-    stroke-opacity: 1;
-}
-
-.hexagon.disabled:is(.variant-ghost, .variant-outline) .polygon-base {
-    fill: transparent;
-}
-
-.hexagon.disabled.variant-fill .polygon-base {
-    stroke: none;
-}
-
-.hexagon.disabled.variant-fill-translucent .polygon-base {
-    fill-opacity: .24;
-}
-
-.hexagon.disabled.variant-inset .polygon-base {
-    fill: var(--appearance-inset-default-background);
 }
 
 .hexagon.disabled .content {
-    color: var(--appearance-disabled-content);
+    color: var(--appearance-disabled-glyphs);
 }
 
 /* Glow styles */
@@ -318,7 +260,7 @@
 .glow-style-glow.active .polygon-glow {
     opacity: 1;
     filter: var(--hex-filter);
-    stroke: var(--appearance-glow-content);
+    stroke: var(--appearance-glow-color);
 }
 
 .glow-style-animate-borders-glow:hover .polygon-glow,
@@ -326,7 +268,7 @@
 .glow-style-animate-borders-glow.active .polygon-glow {
     opacity: 1;
     filter: var(--hex-filter);
-    stroke: var(--appearance-glow-content);
+    stroke: var(--appearance-glow-color);
     stroke-dasharray: 0 300;
     animation: border-glow 0.3s linear forwards;
 }

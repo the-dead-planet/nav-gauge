@@ -15,7 +15,6 @@ import Svg, {
     Stop,
 } from "react-native-svg";
 import { HexagonProps, useTheme } from "@ui";
-import { TRANSLUCENT_OPACITY } from "../../tinkers";
 
 const POINTY_TOP = "50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25";
 const FLAT_TOP = "100,50 75,93.3 25,93.3 0,50 25,6.7 75,6.7";
@@ -72,7 +71,7 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(
             strokeWidth = 2,
             color = "neutral",
             highlightColor = color,
-            variant = "fill-inverse",
+            variant = "ghost",
             activeGlow = "none",
             size,
             interactive = false,
@@ -95,12 +94,20 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(
         const isPointy = shape === "pointy-top";
         const points = isPointy ? POINTY_TOP : FLAT_TOP;
         const aspectRatio = isPointy ? 86.6 / 100 : 100 / 86.6;
-        const isLight = theme.mode === "light";
         const clipPathId = useId();
 
-        const shades = theme.variants[variant].shades;
-        const baseColor = theme.color(color, shades.base);
-        const activeColor = theme.color(highlightColor, shades.active);
+        const appearance = theme.resolveAppearance(
+            variant,
+            color,
+            highlightColor,
+            disabled ? "disabled" : isActiveState ? "active" : "default",
+        );
+        const activeAppearance = theme.resolveAppearance(
+            variant,
+            color,
+            highlightColor,
+            "active",
+        );
 
         const showGlow =
             !disabled && activeGlow !== "none" && (isActiveState || glowDrawn);
@@ -112,66 +119,22 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(
         };
 
         const renderGlow = () => {
-            if (!showGlow) return null;
+            if (!showGlow) {
+                return null;
+            }
             return (
                 <GlowPolygons
                     points={points}
-                    glowColor={activeColor}
+                    glowColor={activeAppearance.effects.glowColor}
                     strokeWidth={strokeWidth}
                 />
             );
         };
 
         const renderVariant = () => {
-            if (disabled && variant !== "inset") {
-                const disabledSurface = theme.color(
-                    color,
-                    shades.disabledSurface,
-                );
-                const disabledContent = theme.color(
-                    color,
-                    shades.disabledContent,
-                );
-                const fill =
-                    variant === "ghost" || variant === "outline"
-                        ? "transparent"
-                        : theme.color(
-                              color,
-                              shades.disabledSurface,
-                              variant === "fill-translucent"
-                                  ? TRANSLUCENT_OPACITY
-                                  : undefined,
-                          );
-                const stroke =
-                    variant === "ghost"
-                        ? "transparent"
-                        : variant === "fill"
-                          ? disabledSurface
-                          : disabledContent;
-
+            if (appearance.effects.depth === "inset") {
                 return (
-                    <Polygon
-                        points={points}
-                        fill={fill}
-                        stroke={stroke}
-                        strokeWidth={strokeWidth}
-                    />
-                );
-            }
-
-            switch (variant) {
-                case "inset": {
-                    const insetSurface = theme.color(
-                        color,
-                        shades.insetSurface,
-                    );
-                    const shadowColor = "#000000";
-                    const shadowOpacity = isLight ? 0.35 : 0.65;
-                    const lightColor = "#ffffff";
-                    const lightOpacity = isLight ? 0.45 : 0.12;
-
-                    return (
-                        <>
+                    <>
                             <Defs>
                                 <ClipPath id={clipPathId}>
                                     <Polygon points={points} />
@@ -185,17 +148,17 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(
                                 >
                                     <Stop
                                         offset="0%"
-                                        stopColor={shadowColor}
-                                        stopOpacity={shadowOpacity}
+                                        stopColor={appearance.effects.inset.shadow}
+                                        stopOpacity={appearance.effects.inset.shadowOpacity}
                                     />
                                     <Stop
                                         offset="15%"
-                                        stopColor={shadowColor}
+                                        stopColor={appearance.effects.inset.shadow}
                                         stopOpacity={0}
                                     />
                                     <Stop
                                         offset="100%"
-                                        stopColor={shadowColor}
+                                        stopColor={appearance.effects.inset.shadow}
                                         stopOpacity={0}
                                     />
                                 </LinearGradient>
@@ -208,23 +171,23 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(
                                 >
                                     <Stop
                                         offset="0%"
-                                        stopColor={lightColor}
-                                        stopOpacity={lightOpacity}
+                                        stopColor={appearance.effects.inset.highlight}
+                                        stopOpacity={appearance.effects.inset.highlightOpacity}
                                     />
                                     <Stop
                                         offset="15%"
-                                        stopColor={lightColor}
+                                        stopColor={appearance.effects.inset.highlight}
                                         stopOpacity={0}
                                     />
                                     <Stop
                                         offset="100%"
-                                        stopColor={lightColor}
+                                        stopColor={appearance.effects.inset.highlight}
                                         stopOpacity={0}
                                     />
                                 </LinearGradient>
                             </Defs>
                             <G clipPath={`url(#${clipPathId})`}>
-                                <Polygon points={points} fill={insetSurface} />
+                                <Polygon points={points} fill={appearance.surface} />
                                 {renderGlow()}
                                 <Polygon
                                     points={points}
@@ -238,105 +201,24 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(
                             <Polygon
                                 points={points}
                                 fill="none"
-                                stroke={
-                                    disabled
-                                        ? theme.color(
-                                              color,
-                                              shades.disabledContent,
-                                          )
-                                        : isActiveState
-                                          ? activeColor
-                                          : baseColor
-                                }
-                                strokeWidth={strokeWidth}
+                                stroke={appearance.border.color}
+                                strokeWidth={appearance.border.width ? strokeWidth : 0}
                             />
-                        </>
-                    );
-                }
-
-                case "fill-translucent": {
-                    const fill = theme.color(
-                        color,
-                        shades.base,
-                        TRANSLUCENT_OPACITY,
-                    );
-                    const border = isActiveState
-                        ? activeColor
-                        : theme.color(color, shades.base, 0.3);
-                    return (
-                        <>
-                            <Polygon
-                                points={points}
-                                fill={fill}
-                                stroke={border}
-                                strokeWidth={strokeWidth}
-                            />
-                            {renderGlow()}
-                        </>
-                    );
-                }
-
-                case "fill": {
-                    const fillColor = isActiveState ? activeColor : baseColor;
-                    return (
-                        <>
-                            <Polygon
-                                points={points}
-                                fill={fillColor}
-                                stroke={fillColor}
-                                strokeWidth={strokeWidth}
-                            />
-                            {renderGlow()}
-                        </>
-                    );
-                }
-
-                case "fill-inverse": {
-                    const fillColor = theme.color(color, shades.inverseSurface);
-                    const borderColor = isActiveState ? activeColor : baseColor;
-                    return (
-                        <>
-                            <Polygon
-                                points={points}
-                                fill={fillColor}
-                                stroke={borderColor}
-                                strokeWidth={strokeWidth}
-                            />
-                            {renderGlow()}
-                        </>
-                    );
-                }
-
-                default: {
-                    const isOutline = variant === "outline";
-                    return (
-                        <>
-                            <Polygon
-                                points={points}
-                                fill={
-                                    isOutline && isActiveState
-                                        ? baseColor
-                                        : "transparent"
-                                }
-                                fillOpacity={
-                                    isOutline && isActiveState
-                                        ? 0.16
-                                        : undefined
-                                }
-                                stroke={
-                                    isOutline
-                                        ? isActiveState
-                                            ? activeColor
-                                            : baseColor
-                                        : "transparent"
-                                }
-                                strokeWidth={strokeWidth}
-                            />
-                            {renderGlow()}
-                        </>
-                    );
-                }
+                    </>
+                );
             }
+
+            return (
+                <>
+                    <Polygon
+                        points={points}
+                        fill={appearance.surface}
+                        stroke={appearance.border.color}
+                        strokeWidth={appearance.border.width ? strokeWidth : 0}
+                    />
+                    {renderGlow()}
+                </>
+            );
         };
 
         const contentElement = (

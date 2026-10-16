@@ -70,135 +70,38 @@
     transform: rotateX(var(--rotate-x)) rotateZ(var(--rotate-z));
 }
 
-.variant-ghost {
-    color: var(--appearance-default-content-override, var(--appearance-ghost-default-content));
-    background-color: var(--appearance-ghost-default-background);
-    border: none;
+.button {
+    color: var(--appearance-default-glyphs-override, var(--appearance-default-glyphs));
+    background-color: var(--appearance-default-background);
+    border: var(--appearance-default-border-width) solid var(--appearance-default-border);
+    backdrop-filter: blur(var(--appearance-backdrop-blur));
 }
 
-.variant-ghost:is(:hover, .hovered, :focus-visible),
-.variant-ghost.active:is(:hover, :focus-visible) {
-    color: var(--appearance-interaction-content-override, var(--appearance-ghost-interaction-content));
+.button:is(:hover, .hovered, :focus-visible),
+.button.active:is(:hover, :focus-visible) {
+    color: var(--appearance-interaction-glyphs-override, var(--appearance-interaction-glyphs));
+    background-color: var(--appearance-interaction-background);
+    border-width: var(--appearance-interaction-border-width);
+    border-color: var(--appearance-interaction-border);
 }
 
-.variant-ghost:is(:active, .active),
-.variant-ghost.active:active {
-    color: var(--appearance-interaction-content-override, var(--appearance-ghost-active-content));
+.button:is(:active, .active),
+.button.active:active {
+    color: var(--appearance-interaction-glyphs-override, var(--appearance-active-glyphs));
+    background-color: var(--appearance-active-background);
+    border-width: var(--appearance-active-border-width);
+    border-color: var(--appearance-active-border);
 }
 
-.variant-fill {
-    color: var(--appearance-default-content-override, var(--appearance-fill-default-content));
-    background-color: var(--appearance-fill-default-background);
-    border: none;
-}
-
-.variant-fill:is(:hover, .hovered, :focus-visible),
-.variant-fill.active:is(:hover, :focus-visible) {
-    color: var(--appearance-interaction-content-override, var(--appearance-fill-interaction-content));
-    background-color: var(--appearance-fill-interaction-background);
-}
-
-.variant-fill:is(:active, .active),
-.variant-fill.active:active {
-    color: var(--appearance-interaction-content-override, var(--appearance-fill-active-content));
-    background-color: var(--appearance-fill-active-background);
-}
-
-.variant-fill-inverse {
-    color: var(--appearance-default-content-override, var(--appearance-fill-inverse-default-content));
-    background-color: var(--appearance-fill-inverse-default-background);
-    border: 1px solid var(--appearance-fill-inverse-default-border);
-}
-
-.variant-fill-inverse:is(:hover, .hovered, :focus-visible),
-.variant-fill-inverse.active:is(:hover, :focus-visible) {
-    color: var(--appearance-interaction-content-override, var(--appearance-fill-inverse-interaction-content));
-    background-color: var(--appearance-fill-inverse-interaction-background);
-    border-color: var(--appearance-fill-inverse-interaction-border);
-}
-
-.variant-fill-inverse:is(:active, .active),
-.variant-fill-inverse.active:active {
-    color: var(--appearance-interaction-content-override, var(--appearance-fill-inverse-active-content));
-    background-color: var(--appearance-fill-inverse-active-background);
-    border-color: var(--appearance-fill-inverse-active-border);
-}
-
-.variant-fill-translucent {
-    color: var(--appearance-default-content-override, var(--appearance-fill-translucent-default-content));
-    background-color: var(--appearance-fill-translucent-default-background);
-    border: 1px solid var(--appearance-fill-translucent-default-border);
-    backdrop-filter: blur(6px);
-}
-
-.variant-fill-translucent:is(:hover, .hovered, :focus-visible),
-.variant-fill-translucent.active:is(:hover, :focus-visible) {
-    color: var(--appearance-interaction-content-override, var(--appearance-fill-translucent-interaction-content));
-    background-color: var(--appearance-fill-translucent-interaction-background);
-    border-color: var(--appearance-fill-translucent-interaction-border);
-}
-
-.variant-fill-translucent:is(:active, .active),
-.variant-fill-translucent.active:active {
-    color: var(--appearance-interaction-content-override, var(--appearance-fill-translucent-active-content));
-    background-color: var(--appearance-fill-translucent-active-background);
-    border-color: var(--appearance-fill-translucent-active-border);
-}
-
-.variant-outline {
-    color: var(--appearance-default-content-override, var(--appearance-outline-default-content));
-    background-color: var(--appearance-outline-default-background);
-    border: 1px solid var(--appearance-outline-default-border);
-}
-
-.variant-outline:is(:hover, .hovered, :focus-visible),
-.variant-outline.active:is(:hover, :focus-visible) {
-    color: var(--appearance-interaction-content-override, var(--appearance-outline-interaction-content));
-    background-color: var(--appearance-outline-interaction-background);
-    border-color: var(--appearance-outline-interaction-border);
-}
-
-.variant-outline:is(:active, .active),
-.variant-outline.active:active {
-    color: var(--appearance-interaction-content-override, var(--appearance-outline-active-content));
-    background-color: var(--appearance-outline-active-background);
-    border-color: var(--appearance-outline-active-border);
-}
-
-.variant-inset {
-    color: var(--appearance-default-content-override, var(--appearance-inset-default-content));
-    background-color: var(--appearance-inset-default-background);
-    border: 1px inset;
-}
-
-.variant-inset.mode-light {
+.depth-inset {
+    border-style: inset;
     border-color: var(--appearance-inset-default-edge-start) var(--appearance-inset-default-edge-end) var(--appearance-inset-default-edge-end) var(--appearance-inset-default-edge-start);
     box-shadow: var(--appearance-inset-default-shadow);
 }
 
-.variant-inset.mode-dark {
-    border-color: transparent;
-    box-shadow: var(--appearance-inset-default-shadow);
-}
-
-.variant-inset:is(:hover, .hovered, :focus-visible),
-.variant-inset.active:is(:hover, :focus-visible) {
-    color: var(--appearance-interaction-content-override, var(--appearance-inset-interaction-content));
-}
-
-.variant-inset:is(:active, .active),
-.variant-inset.active:active {
-    color: var(--appearance-interaction-content-override, var(--appearance-inset-active-content));
-}
-
-.variant-inset.mode-light:is(:active, .active),
-.variant-inset.mode-light.active:active {
+.depth-inset:is(:active, .active),
+.depth-inset.active:active {
     border-color: var(--appearance-inset-active-edge-start) var(--appearance-inset-active-edge-end) var(--appearance-inset-active-edge-end) var(--appearance-inset-active-edge-start);
-    box-shadow: var(--appearance-inset-active-shadow);
-}
-
-.variant-inset.mode-dark:is(:active, .active),
-.variant-inset.mode-dark.active:active {
     box-shadow: var(--appearance-inset-active-shadow);
 }
 
@@ -231,8 +134,8 @@
     border-radius: calc(var(--size-control-sm-height) / 2);
 }
 
-.corners-hexagon:is(.variant-ghost, .variant-fill, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset),
-.corners-hexagon:is(.variant-ghost, .variant-fill, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset):is(:hover, .hovered, :focus-visible, :active, .active, :disabled) {
+.corners-hexagon,
+.corners-hexagon:is(:hover, .hovered, :focus-visible, :active, .active, :disabled) {
     background-color: transparent;
     border: none;
     box-shadow: none;
@@ -241,18 +144,18 @@
 
 .glow-style-glow:is(:hover, .hovered, :active, .active),
 .glow-style-animate-borders-glow:is(:hover, .hovered, :active, .active) {
-    box-shadow: 0 0 4px rgb(from var(--appearance-highlight-color) r g b / .3),
-        0 0 20px rgb(from var(--appearance-highlight-color) r g b / .6);
+    box-shadow: 0 0 4px rgb(from var(--appearance-glow-color) r g b / .3),
+        0 0 20px rgb(from var(--appearance-glow-color) r g b / .6);
 }
 
-.glow-style-glow:is(.variant-ghost, .variant-outline, .variant-inset):is(:hover, .hovered, :active, .active),
-.glow-style-animate-borders-glow:is(.variant-ghost, .variant-outline, .variant-inset):is(:hover, .hovered, :active, .active) {
-    text-shadow: 0 0 12px rgb(from var(--appearance-interaction-content) r g b / .45);
+.glow-style-glow.glyphs-glow:is(:hover, .hovered, :active, .active),
+.glow-style-animate-borders-glow.glyphs-glow:is(:hover, .hovered, :active, .active) {
+    text-shadow: 0 0 12px rgb(from var(--appearance-glow-color) r g b / .45);
 }
 
-.glow-style-glow:is(.variant-ghost, .variant-outline, .variant-inset):is(:hover, .hovered, :active, .active) .icon,
-.glow-style-animate-borders-glow:is(.variant-ghost, .variant-outline, .variant-inset):is(:hover, .hovered, :active, .active) .icon {
-    filter: drop-shadow(0 0 12px rgb(from var(--appearance-interaction-content) r g b / .45));
+.glow-style-glow.glyphs-glow:is(:hover, .hovered, :active, .active) .icon,
+.glow-style-animate-borders-glow.glyphs-glow:is(:hover, .hovered, :active, .active) .icon {
+    filter: drop-shadow(0 0 12px rgb(from var(--appearance-glow-color) r g b / .45));
 }
 
 .glow-style-animate-borders-glow:not(.corners-hexagon):is(:hover, .hovered, :active, .active) {
@@ -265,11 +168,12 @@
 }
 
 .button.disabled,
-.button.disabled:is(.variant-ghost, .variant-fill, .variant-fill-inverse, .variant-fill-translucent, .variant-outline, .variant-inset):is(:hover, .hovered, :focus-visible, :active, .active, :disabled) {
+.button.disabled:is(:hover, .hovered, :focus-visible, :active, .active, :disabled) {
     cursor: not-allowed;
-    color: var(--appearance-disabled-content);
+    color: var(--appearance-disabled-glyphs);
     background-color: var(--appearance-disabled-background);
     border-color: var(--appearance-disabled-border);
+    border-width: var(--appearance-disabled-border-width);
     box-shadow: none;
     text-shadow: none;
     filter: none;
@@ -280,19 +184,8 @@
     filter: none;
 }
 
-.button.disabled.variant-fill-translucent,
-.button.disabled.variant-fill-translucent:is(:hover, .hovered, :focus-visible, :active, .active, :disabled) {
-    background-color: rgb(from var(--appearance-disabled-background) r g b / .24);
-}
-
-.button.disabled:is(.variant-ghost, .variant-outline),
-.button.disabled:is(.variant-ghost, .variant-outline):is(:hover, .hovered, :focus-visible, :active, .active, :disabled) {
-    background-color: transparent;
-}
-
-.button.disabled.variant-inset,
-.button.disabled.variant-inset:is(:hover, .hovered, :focus-visible, :active, .active, :disabled) {
-    background-color: var(--appearance-inset-default-background);
+.button.disabled.depth-inset,
+.button.disabled.depth-inset:is(:hover, .hovered, :focus-visible, :active, .active, :disabled) {
     border-color: var(--appearance-inset-default-edge-start) var(--appearance-inset-default-edge-end) var(--appearance-inset-default-edge-end) var(--appearance-inset-default-edge-start);
     box-shadow: var(--appearance-inset-default-shadow);
 }
@@ -307,31 +200,31 @@
 @keyframes glow-sweep {
     0% {
         box-shadow:
-            rgb(from var(--appearance-interaction-content) r g b / .6) -1px 1px 4px,
-            rgb(from var(--appearance-interaction-content) r g b / 0) 0 0 6px;
+            rgb(from var(--appearance-interaction-glyphs) r g b / .6) -1px 1px 4px,
+            rgb(from var(--appearance-interaction-glyphs) r g b / 0) 0 0 6px;
     }
 
     33% {
         box-shadow:
-            rgb(from var(--appearance-interaction-content) r g b / .6) -1px 1px 4px,
-            rgb(from var(--appearance-interaction-content) r g b / .6) -1px -1px 4px,
-            rgb(from var(--appearance-interaction-content) r g b / 0) 0 0 6px;
+            rgb(from var(--appearance-interaction-glyphs) r g b / .6) -1px 1px 4px,
+            rgb(from var(--appearance-interaction-glyphs) r g b / .6) -1px -1px 4px,
+            rgb(from var(--appearance-interaction-glyphs) r g b / 0) 0 0 6px;
     }
 
     66% {
         box-shadow:
-            rgb(from var(--appearance-interaction-content) r g b / .6) -1px 1px 4px,
-            rgb(from var(--appearance-interaction-content) r g b / .6) -1px -1px 4px,
-            rgb(from var(--appearance-interaction-content) r g b / .6) 1px -1px 4px,
-            rgb(from var(--appearance-interaction-content) r g b / 0) 0 0 6px;
+            rgb(from var(--appearance-interaction-glyphs) r g b / .6) -1px 1px 4px,
+            rgb(from var(--appearance-interaction-glyphs) r g b / .6) -1px -1px 4px,
+            rgb(from var(--appearance-interaction-glyphs) r g b / .6) 1px -1px 4px,
+            rgb(from var(--appearance-interaction-glyphs) r g b / 0) 0 0 6px;
     }
 
     100% {
         box-shadow:
-            rgb(from var(--appearance-interaction-content) r g b / .6) -1px 1px 4px,
-            rgb(from var(--appearance-interaction-content) r g b / .6) -1px -1px 4px,
-            rgb(from var(--appearance-interaction-content) r g b / .6) 1px -1px 4px,
-            rgb(from var(--appearance-interaction-content) r g b / .6) 1px 1px 4px,
-            rgb(from var(--appearance-interaction-content) r g b / 0) 0 0 6px;
+            rgb(from var(--appearance-interaction-glyphs) r g b / .6) -1px 1px 4px,
+            rgb(from var(--appearance-interaction-glyphs) r g b / .6) -1px -1px 4px,
+            rgb(from var(--appearance-interaction-glyphs) r g b / .6) 1px -1px 4px,
+            rgb(from var(--appearance-interaction-glyphs) r g b / .6) 1px 1px 4px,
+            rgb(from var(--appearance-interaction-glyphs) r g b / 0) 0 0 6px;
     }
 }
