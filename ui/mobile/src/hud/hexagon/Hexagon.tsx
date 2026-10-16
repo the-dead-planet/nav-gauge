@@ -102,13 +102,6 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(
             highlightColor,
             disabled ? "disabled" : isActiveState ? "active" : "default",
         );
-        const activeAppearance = theme.resolveAppearance(
-            variant,
-            color,
-            highlightColor,
-            "active",
-        );
-
         const showGlow =
             !disabled && activeGlow !== "none" && (isActiveState || glowDrawn);
 
@@ -125,7 +118,7 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(
             return (
                 <GlowPolygons
                     points={points}
-                    glowColor={activeAppearance.effects.glowColor}
+                    glowColor={appearance.effects.glowColor}
                     strokeWidth={strokeWidth}
                 />
             );
@@ -222,16 +215,7 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(
         };
 
         const contentElement = (
-            <View
-                style={[
-                    styles.container,
-                    { aspectRatio },
-                    size ? { height: theme.sizes.control[size].height } : undefined,
-                    interactive || typeof style === "function"
-                        ? undefined
-                        : style,
-                ]}
-            >
+            <>
                 <Svg
                     viewBox={isPointy ? "6.7 0 86.6 100" : "0 6.7 100 86.6"}
                     style={StyleSheet.absoluteFill}
@@ -239,8 +223,13 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(
                     {renderVariant()}
                 </Svg>
                 <View style={styles.content}>{children}</View>
-            </View>
+            </>
         );
+        const containerStyle = [
+            styles.container,
+            { aspectRatio },
+            size ? { height: theme.sizes.control[size].height } : undefined,
+        ];
 
         if (interactive) {
             return (
@@ -262,13 +251,20 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(
                     }}
                     style={style}
                 >
-                    {contentElement}
+                    <View style={containerStyle}>{contentElement}</View>
                 </Pressable>
             );
         }
 
         return (
-            <View ref={ref} {...pressableProps}>
+            <View
+                ref={ref}
+                {...pressableProps}
+                style={[
+                    ...containerStyle,
+                    typeof style === "function" ? undefined : style,
+                ]}
+            >
                 {contentElement}
             </View>
         );

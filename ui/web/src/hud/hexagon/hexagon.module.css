@@ -42,51 +42,34 @@
 }
 
 .size-xs {
-    height: var(--size-control-xs-height);
+    --hexagon-height: var(--size-control-xs-height);
 }
 
 .size-sm {
-    height: var(--size-control-sm-height);
+    --hexagon-height: var(--size-control-sm-height);
 }
 
 .size-md {
-    height: var(--size-control-md-height);
+    --hexagon-height: var(--size-control-md-height);
 }
 
 .size-lg {
-    height: var(--size-control-lg-height);
+    --hexagon-height: var(--size-control-lg-height);
 }
 
-.pointy-top.size-xs {
-    width: calc(var(--size-control-xs-height) * .866);
+.size-xs,
+.size-sm,
+.size-md,
+.size-lg {
+    height: var(--hexagon-height);
 }
 
-.pointy-top.size-sm {
-    width: calc(var(--size-control-sm-height) * .866);
+.pointy-top {
+    width: calc(var(--hexagon-height) * .866);
 }
 
-.pointy-top.size-md {
-    width: calc(var(--size-control-md-height) * .866);
-}
-
-.pointy-top.size-lg {
-    width: calc(var(--size-control-lg-height) * .866);
-}
-
-.flat-top.size-xs {
-    width: calc(var(--size-control-xs-height) / .866);
-}
-
-.flat-top.size-sm {
-    width: calc(var(--size-control-sm-height) / .866);
-}
-
-.flat-top.size-md {
-    width: calc(var(--size-control-md-height) / .866);
-}
-
-.flat-top.size-lg {
-    width: calc(var(--size-control-lg-height) / .866);
+.flat-top {
+    width: calc(var(--hexagon-height) / .866);
 }
 
 .polygon-glow {

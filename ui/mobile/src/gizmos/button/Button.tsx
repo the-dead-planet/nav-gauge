@@ -25,7 +25,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     contentShade,
     highlightColor = color,
     highlightContentShade,
-    variant = "fill-inverse",
+    variant = "ghost",
     activeGlow = "none",
     size = "sm",
     corners = "square",
@@ -59,13 +59,6 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         highlightColor,
         disabled ? "disabled" : isActiveState ? "active" : "default",
     );
-    const activeAppearance = theme.resolveAppearance(
-        variant,
-        color,
-        highlightColor,
-        "active",
-    );
-
     const showGlow =
         !disabled && activeGlow !== "none" && (isActiveState || glowDrawn);
 
@@ -109,7 +102,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     }
 
     if (showGlow && corners !== "hexagon") {
-        const glowBoxShadow = `0px 0px 4px ${activeAppearance.effects.glowColor}, 0px 0px 20px ${activeAppearance.effects.glowColor}`;
+        const glowBoxShadow = `0px 0px 4px ${appearance.effects.glowColor}, 0px 0px 20px ${appearance.effects.glowColor}`;
         if (container.boxShadow) {
             container.boxShadow = `${container.boxShadow}, ${glowBoxShadow}`;
         } else {
@@ -137,7 +130,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
 
     const textShadowStyle = showTextShadow
         ? {
-              textShadowColor: activeAppearance.effects.glowColor,
+              textShadowColor: appearance.effects.glowColor,
               textShadowRadius: 12,
               textShadowOffset: { width: 0, height: 0 },
           }
@@ -171,7 +164,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
                 color={textColor}
                 filter={
                     showTextShadow
-                        ? `drop-shadow(0px 0px 12px ${activeAppearance.effects.glowColor})`
+                        ? `drop-shadow(0px 0px 12px ${appearance.effects.glowColor})`
                         : undefined
                 }
             />
