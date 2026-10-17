@@ -74,6 +74,9 @@
     color: var(--appearance-default-glyphs-override, var(--appearance-default-glyphs));
     background-color: var(--appearance-default-background);
     border: var(--appearance-default-border-width) solid var(--appearance-default-border);
+}
+
+.backdrop-blur {
     backdrop-filter: blur(var(--appearance-backdrop-blur));
 }
 

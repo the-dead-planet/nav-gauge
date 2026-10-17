@@ -68,6 +68,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
                     [styles['disabled']]: disabled,
                     [styles['glyphs-glow']]: effects.glyphsGlow,
                     [styles['depth-inset']]: effects.depth === 'inset',
+                    [styles['backdrop-blur']]: effects.backdropBlur > 0,
                 },
                 corners !== 'hexagon' ? className : null
             )}
@@ -120,21 +121,21 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
 
     if (corners === 'hexagon') {
         return (
-        <Hexagon
-            shape="flat-top"
-            size={size}
-            variant={variant}
-            activeGlow={activeGlow}
-            color={color}
-            highlightColor={highlightColor}
-            active={active}
-            disabled={disabled}
-            interactive={!disabled}
-            style={disabled ? { ...style, cursor: 'not-allowed' } : style}
-            className={className}
-        >
-            {buttonWithTooltip}
-        </Hexagon>
+            <Hexagon
+                shape="flat-top"
+                size={size}
+                variant={variant}
+                activeGlow={activeGlow}
+                color={color}
+                highlightColor={highlightColor}
+                active={active}
+                disabled={disabled}
+                interactive={!disabled}
+                style={disabled ? { ...style, cursor: 'not-allowed' } : style}
+                className={className}
+            >
+                {buttonWithTooltip}
+            </Hexagon>
         );
     }
 
