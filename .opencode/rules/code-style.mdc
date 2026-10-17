@@ -5,6 +5,7 @@ alwaysApply: true
 ---
 
 - Use strict TypeScript without `any`, explicit member accessibility, full variable names without abbreviations, and no unnecessary dependencies.
+- Keep `model.ts` files limited to types, interfaces, and enums. Put runtime constants and objects in a sibling implementation or `tinkers.ts` file.
 - Use four spaces and braces for all control-flow bodies.
 - Format changed files with the configured formatter. Put nested JSX and JSX with more than five props on multiple lines.
 - Write self-explanatory code. Do not add `// ponytail:` markers, AI annotations, or comments narrating shortcuts. Comments describe behavior; record genuine trade-offs in the commit message.

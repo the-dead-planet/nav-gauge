@@ -103,6 +103,7 @@ export const Menu: FC<MobileMenuProps> = ({
         <View style={styles.container}>
             <View ref={iconWrapperRef}>
                 <Button
+                    variant="ghost"
                     icon={icon as ComponentProps<typeof Button>['icon']}
                     color={color}
                     highlightColor={iconActiveColor}

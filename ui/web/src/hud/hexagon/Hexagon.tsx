@@ -19,7 +19,7 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
     color = 'neutral',
     highlightColor,
     size,
-    variant,
+    variant = 'ghost',
     active = false,
     disabled = false,
     onClick,
@@ -29,12 +29,24 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
     ...props
 }) => {
     const theme = useTheme();
+    const effects = theme.resolveAppearance(
+        variant,
+        color,
+        highlightColor || color,
+        'default',
+    ).effects;
     const isPointy = shape === "pointy-top";
     const points = isPointy ? POINTY_TOP : FLAT_TOP;
     const viewBox = isPointy ? "6.7 0 86.6 100" : "0 6.7 100 86.6";
     const filterId = useId();
-    const clipPathId = useId();
-    const shadowBlurId = useId();
+    const insetRecessGradientId = useId();
+    const insetClipPathId = useId();
+    const insetShadowPoints = isPointy
+        ? '93.3,25 50,0 6.7,25 6.7,75'
+        : '75,6.7 25,6.7 0,50 25,93.3';
+    const insetHighlightPoints = isPointy
+        ? '93.3,25 93.3,75 50,100 6.7,75'
+        : '75,6.7 100,50 75,93.3 25,93.3';
     const maskPoints = isPointy
         ? '50,0 100,25 100,75 50,100 0,75 0,25'
         : '100,50 75,100 25,100 0,50 25,0 75,0';
@@ -43,20 +55,20 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
     return (
         <div
             onClick={disabled ? undefined : onClick}
+            data-appearance-variant={variant}
+            data-appearance-color={color}
+            data-appearance-highlight={highlightColor || color}
             aria-disabled={!disabled || !(interactive || onClick) ? undefined : true}
             className={classNames(
                 styles.hexagon,
                 styles[shape],
-                variant && styles[`variant-${variant}`],
-                color && styles[`color-${color}`],
-                styles[`highlight-color-${highlightColor || color}`],
                 size && styles[`size-${size}`],
-                styles[`mode-${theme.mode}`],
                 {
                     [styles['active']]: active && !disabled,
                     [styles['disabled']]: disabled,
                     [styles['interactive']]: !disabled && (interactive || onClick),
                     [styles[`glow-style-${activeGlow}`]]: !disabled && interactive,
+                    [styles['depth-inset']]: effects.depth === 'inset',
                 },
                 className
             )}
@@ -66,12 +78,13 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
             } as CSSProperties}
             {...props}
         >
-            {variant === 'fill-translucent' ? (
+            {effects.backdropBlur > 0 ? (
                 <div
                     className={styles.backdrop}
                     style={{
                         maskImage: backdropMask,
                         WebkitMaskImage: backdropMask,
+                        backdropFilter: `blur(${effects.backdropBlur}px)`,
                     }}
                 />
             ) : null}
@@ -80,18 +93,14 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
                 className={styles.svg}
             >
                 <defs>
-                    <clipPath id={clipPathId}>
+                    <clipPath id={insetClipPathId}>
                         <polygon points={points} />
                     </clipPath>
-                    <filter
-                        id={shadowBlurId}
-                        x="-50%"
-                        y="-50%"
-                        width="200%"
-                        height="200%"
-                    >
-                        <feGaussianBlur stdDeviation="4" />
-                    </filter>
+                    <radialGradient id={insetRecessGradientId}>
+                        <stop offset="0" className={styles['inset-recess-center']} />
+                        <stop offset=".65" className={styles['inset-recess-center']} />
+                        <stop offset="1" className={styles['inset-recess-edge']} />
+                    </radialGradient>
                     <filter
                         id={filterId}
                         x="-50%"
@@ -121,6 +130,39 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
                     fill="none"
                     strokeWidth={strokeWidth}
                     className={styles['polygon-base']}
+                />
+                <polygon
+                    points={points}
+                    fill={`url(#${insetRecessGradientId})`}
+                    className={styles['polygon-inset-recess']}
+                />
+                <polyline
+                    points={insetShadowPoints}
+                    fill="none"
+                    strokeWidth={strokeWidth * 10}
+                    clipPath={`url(#${insetClipPathId})`}
+                    className={`${styles['polygon-inset-shadow-edges']} ${styles['polygon-inset-edge-fade']}`}
+                />
+                <polyline
+                    points={insetHighlightPoints}
+                    fill="none"
+                    strokeWidth={strokeWidth * 10}
+                    clipPath={`url(#${insetClipPathId})`}
+                    className={`${styles['polygon-inset-highlight-edges']} ${styles['polygon-inset-edge-fade']}`}
+                />
+                <polyline
+                    points={insetShadowPoints}
+                    fill="none"
+                    strokeWidth={strokeWidth * 3}
+                    clipPath={`url(#${insetClipPathId})`}
+                    className={styles['polygon-inset-shadow-edges']}
+                />
+                <polyline
+                    points={insetHighlightPoints}
+                    fill="none"
+                    strokeWidth={strokeWidth * 3}
+                    clipPath={`url(#${insetClipPathId})`}
+                    className={styles['polygon-inset-highlight-edges']}
                 />
                 <polygon
                     points={points}

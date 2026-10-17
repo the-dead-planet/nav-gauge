@@ -10,9 +10,18 @@ import {
     ThemeComponentColor,
     ThemeComponentColors,
     ThemeSpecification,
+    ThemeSizes,
     ThemeMode,
+    ThemeAppearancePaint,
+    ThemeAppearancePolicy,
+    ThemeAppearanceInsetEffect,
+    ThemeAppearanceInsetEffectPolicy,
+    ThemeVariantShades,
+    ResolvedThemeAppearance,
+    ThemeAppearanceState,
+    ThemeAppearanceBorder,
 } from "./model";
-import { ColorShade, DesignSystemColor, SpacingVariant } from '../model';
+import { ColorShade, DesignSystemColor, SpacingVariant, SurfaceVariant } from '../model';
 
 interface OklchColor {
     lightness: number;
@@ -34,6 +43,47 @@ const toLinearRgbChannel = (channel: number): number => {
 };
 
 const fillContrastLightnessThreshold = 0.7;
+
+const themeSizes: ThemeSizes = {
+    control: {
+        xs: {
+            height: 24,
+            fontSize: 12,
+            iconSize: 12,
+            gap: 4,
+            paddingInline: 16,
+            paddingBlock: 0,
+            iconPaddingInline: 2,
+        },
+        sm: {
+            height: 24,
+            fontSize: 12,
+            iconSize: 14,
+            gap: 6,
+            paddingInline: 16,
+            paddingBlock: 2,
+            iconPaddingInline: 3,
+        },
+        md: {
+            height: 32,
+            fontSize: 14,
+            iconSize: 16,
+            gap: 10,
+            paddingInline: 16,
+            paddingBlock: 6,
+            iconPaddingInline: 5,
+        },
+        lg: {
+            height: 40,
+            fontSize: 16,
+            iconSize: 20,
+            gap: 12,
+            paddingInline: 20,
+            paddingBlock: 8,
+            iconPaddingInline: 8,
+        },
+    },
+};
 
 const toOklch = ({ r, g, b }: RGBColor): OklchColor => {
     const linearRed = toLinearRgbChannel(r);
@@ -139,6 +189,10 @@ export class Theme {
     private mediaSubscription: { unsubscribe: () => void } | null = null;
 
     public readonly media$: BehaviorSubject<MediaWithBreakpoints>;
+
+    public readonly sizes = themeSizes;
+
+    public readonly appearancePolicies: Record<SurfaceVariant, ThemeAppearancePolicy>;
 
     /**
      * Minimum value in pixels from which a breakpoint is active
@@ -264,6 +318,493 @@ export class Theme {
         this.name = specification.themeName;
         this.colors = Object.assign({}, Theme.palette, specification.colors);
         this.componentColors = specification.componentColors;
+        const shades: ThemeVariantShades = this.isLight
+            ? {
+                base: 500,
+                brightest: 50,
+                content: 900,
+                inverseSurface: 200,
+                insetSurface: 100,
+                interaction: 600,
+                active: 700,
+                disabledSurface: 200,
+                disabledContent: 300,
+            }
+            : {
+                base: 500,
+                brightest: 50,
+                content: 100,
+                inverseSurface: 800,
+                insetSurface: 900,
+                interaction: 300,
+                active: 200,
+                disabledSurface: 800,
+                disabledContent: 700,
+            };
+        const transparent: ThemeAppearancePaint = {
+            type: 'transparent',
+        };
+        const transparentBorder: ThemeAppearanceBorder = {
+            type: 'transparent',
+            width: 0,
+        };
+        const disabledContent: ThemeAppearancePaint = {
+            type: 'shade',
+            colorProperty: 'color',
+            shade: shades.disabledContent,
+        };
+        const disabledSurface: ThemeAppearancePaint = {
+            type: 'shade',
+            colorProperty: 'color',
+            shade: shades.disabledSurface,
+        };
+        const disabledContentBorder: ThemeAppearanceBorder = {
+            type: 'shade',
+            colorProperty: 'color',
+            shade: shades.disabledContent,
+            width: 1,
+        };
+        const insetEffect = (
+            colorProperty: 'color' | 'highlightColor',
+        ): ThemeAppearanceInsetEffectPolicy => this.isLight
+                ? {
+                    edgeStart: {
+                        type: 'shade',
+                        colorProperty,
+                        shade: shades.content,
+                        opacity: 0.2,
+                    },
+                    edgeEnd: {
+                        type: 'shade',
+                        colorProperty,
+                        shade: shades.brightest,
+                        opacity: 0.7,
+                    },
+                    shadow: {
+                        type: 'shade',
+                        colorProperty,
+                        shade: shades.content,
+                        opacity: 0.2,
+                    },
+                    highlight: {
+                        type: 'shade',
+                        colorProperty,
+                        shade: shades.brightest,
+                        opacity: 0.7,
+                    },
+                    recess: {
+                        type: 'shade',
+                        colorProperty,
+                        shade: shades.content,
+                        opacity: 0.08,
+                    },
+                    shadowOpacity: 0.35,
+                    highlightOpacity: 0.45,
+                }
+                : {
+                    edgeStart: transparent,
+                    edgeEnd: transparent,
+                    shadow: {
+                        type: 'literal',
+                        value: 'rgba(0, 0, 0, 0.8)',
+                    },
+                    highlight: {
+                        type: 'literal',
+                        value: 'rgba(255, 255, 255, 0.08)',
+                    },
+                    recess: {
+                        type: 'literal',
+                        value: 'rgba(0, 0, 0, 0.18)',
+                    },
+                    shadowOpacity: 0.65,
+                    highlightOpacity: 0.12,
+                };
+        const policies: Record<SurfaceVariant, ThemeAppearancePolicy> = {
+            ghost: {
+                states: {
+                    default: {
+                        surface: transparent,
+                        border: transparentBorder,
+                        glyphs: {
+                            type: 'shade',
+                            colorProperty: 'color',
+                            shade: shades.base,
+                        },
+                    },
+                    interaction: {
+                        surface: transparent,
+                        border: transparentBorder,
+                        glyphs: {
+                            type: 'shade',
+                            colorProperty: 'highlightColor',
+                            shade: shades.interaction,
+                        },
+                    },
+                    active: {
+                        surface: transparent,
+                        border: transparentBorder,
+                        glyphs: {
+                            type: 'shade',
+                            colorProperty: 'highlightColor',
+                            shade: shades.active,
+                        },
+                    },
+                    disabled: {
+                        surface: transparent,
+                        border: transparentBorder,
+                        glyphs: disabledContent,
+                    },
+                },
+                effects: {
+                    backdropBlur: 0,
+                    depth: 'none',
+                    glyphsGlow: true,
+                },
+            },
+            fill: {
+                states: {
+                    default: {
+                        surface: {
+                            type: 'shade',
+                            colorProperty: 'color',
+                            shade: shades.base,
+                        },
+                        border: transparentBorder,
+                        glyphs: {
+                            type: 'contrast',
+                            colorProperty: 'color',
+                            backgroundShade: shades.base,
+                        },
+                    },
+                    interaction: {
+                        surface: {
+                            type: 'shade',
+                            colorProperty: 'highlightColor',
+                            shade: shades.interaction,
+                        },
+                        border: transparentBorder,
+                        glyphs: {
+                            type: 'contrast',
+                            colorProperty: 'highlightColor',
+                            backgroundShade: shades.interaction,
+                        },
+                    },
+                    active: {
+                        surface: {
+                            type: 'shade',
+                            colorProperty: 'highlightColor',
+                            shade: shades.active,
+                        },
+                        border: transparentBorder,
+                        glyphs: {
+                            type: 'contrast',
+                            colorProperty: 'highlightColor',
+                            backgroundShade: shades.active,
+                        },
+                    },
+                    disabled: {
+                        surface: disabledSurface,
+                        border: transparentBorder,
+                        glyphs: disabledContent,
+                    },
+                },
+                effects: {
+                    backdropBlur: 0,
+                    depth: 'none',
+                    glyphsGlow: false,
+                },
+            },
+            'fill-inverse': {
+                states: {
+                    default: {
+                        surface: {
+                            type: 'shade',
+                            colorProperty: 'color',
+                            shade: shades.inverseSurface,
+                        },
+                        border: {
+                            type: 'shade',
+                            colorProperty: 'color',
+                            shade: shades.base,
+                            width: 1,
+                        },
+                        glyphs: {
+                            type: 'shade',
+                            colorProperty: 'color',
+                            shade: shades.content,
+                        },
+                    },
+                    interaction: {
+                        surface: {
+                            type: 'shade',
+                            colorProperty: 'color',
+                            shade: shades.inverseSurface,
+                        },
+                        border: {
+                            type: 'shade',
+                            colorProperty: 'highlightColor',
+                            shade: shades.interaction,
+                            width: 1,
+                        },
+                        glyphs: {
+                            type: 'shade',
+                            colorProperty: 'highlightColor',
+                            shade: shades.content,
+                        },
+                    },
+                    active: {
+                        surface: {
+                            type: 'shade',
+                            colorProperty: 'color',
+                            shade: shades.inverseSurface,
+                        },
+                        border: {
+                            type: 'shade',
+                            colorProperty: 'highlightColor',
+                            shade: shades.active,
+                            width: 1,
+                        },
+                        glyphs: {
+                            type: 'shade',
+                            colorProperty: 'highlightColor',
+                            shade: shades.content,
+                        },
+                    },
+                    disabled: {
+                        surface: disabledSurface,
+                        border: disabledContentBorder,
+                        glyphs: disabledContent,
+                    },
+                },
+                effects: {
+                    backdropBlur: 0,
+                    depth: 'none',
+                    glyphsGlow: false,
+                },
+            },
+            'fill-translucent': {
+                states: {
+                    default: {
+                        surface: {
+                            type: 'shade',
+                            colorProperty: 'color',
+                            shade: shades.base,
+                            opacity: 0.24,
+                        },
+                        border: {
+                            type: 'shade',
+                            colorProperty: 'color',
+                            shade: shades.base,
+                            opacity: 0.3,
+                            width: 1,
+                        },
+                        glyphs: {
+                            type: 'shade',
+                            colorProperty: 'color',
+                            shade: shades.base,
+                        },
+                    },
+                    interaction: {
+                        surface: {
+                            type: 'shade',
+                            colorProperty: 'color',
+                            shade: shades.base,
+                            opacity: 0.24,
+                        },
+                        border: {
+                            type: 'shade',
+                            colorProperty: 'highlightColor',
+                            shade: shades.interaction,
+                            width: 1,
+                        },
+                        glyphs: {
+                            type: 'shade',
+                            colorProperty: 'highlightColor',
+                            shade: shades.interaction,
+                        },
+                    },
+                    active: {
+                        surface: {
+                            type: 'shade',
+                            colorProperty: 'color',
+                            shade: shades.base,
+                            opacity: 0.24,
+                        },
+                        border: {
+                            type: 'shade',
+                            colorProperty: 'highlightColor',
+                            shade: shades.active,
+                            width: 1,
+                        },
+                        glyphs: {
+                            type: 'shade',
+                            colorProperty: 'highlightColor',
+                            shade: shades.active,
+                        },
+                    },
+                    disabled: {
+                        surface: {
+                            type: 'shade',
+                            colorProperty: 'color',
+                            shade: shades.disabledSurface,
+                            opacity: 0.24,
+                        },
+                        border: disabledContentBorder,
+                        glyphs: disabledContent,
+                    },
+                },
+                effects: {
+                    backdropBlur: 6,
+                    depth: 'none',
+                    glyphsGlow: false,
+                },
+            },
+            outline: {
+                states: {
+                    default: {
+                        surface: transparent,
+                        border: {
+                            type: 'shade',
+                            colorProperty: 'color',
+                            shade: shades.base,
+                            width: 1,
+                        },
+                        glyphs: {
+                            type: 'shade',
+                            colorProperty: 'color',
+                            shade: shades.base,
+                        },
+                    },
+                    interaction: {
+                        surface: {
+                            type: 'shade',
+                            colorProperty: 'highlightColor',
+                            shade: shades.base,
+                            opacity: 0.08,
+                        },
+                        border: {
+                            type: 'shade',
+                            colorProperty: 'highlightColor',
+                            shade: shades.interaction,
+                            width: 1,
+                        },
+                        glyphs: {
+                            type: 'shade',
+                            colorProperty: 'highlightColor',
+                            shade: shades.interaction,
+                        },
+                    },
+                    active: {
+                        surface: {
+                            type: 'shade',
+                            colorProperty: 'highlightColor',
+                            shade: shades.base,
+                            opacity: 0.16,
+                        },
+                        border: {
+                            type: 'shade',
+                            colorProperty: 'highlightColor',
+                            shade: shades.active,
+                            width: 1,
+                        },
+                        glyphs: {
+                            type: 'shade',
+                            colorProperty: 'highlightColor',
+                            shade: shades.active,
+                        },
+                    },
+                    disabled: {
+                        surface: transparent,
+                        border: disabledContentBorder,
+                        glyphs: disabledContent,
+                    },
+                },
+                effects: {
+                    backdropBlur: 0,
+                    depth: 'none',
+                    glyphsGlow: true,
+                },
+            },
+            inset: {
+                states: {
+                    default: {
+                        surface: {
+                            type: 'shade',
+                            colorProperty: 'color',
+                            shade: shades.insetSurface,
+                        },
+                        border: {
+                            type: 'shade',
+                            colorProperty: 'color',
+                            shade: shades.base,
+                            width: 1,
+                        },
+                        glyphs: {
+                            type: 'shade',
+                            colorProperty: 'color',
+                            shade: shades.base,
+                        },
+                    },
+                    interaction: {
+                        surface: {
+                            type: 'shade',
+                            colorProperty: 'color',
+                            shade: shades.insetSurface,
+                        },
+                        border: {
+                            type: 'shade',
+                            colorProperty: 'highlightColor',
+                            shade: shades.interaction,
+                            width: 1,
+                        },
+                        glyphs: {
+                            type: 'shade',
+                            colorProperty: 'highlightColor',
+                            shade: shades.interaction,
+                        },
+                    },
+                    active: {
+                        surface: {
+                            type: 'shade',
+                            colorProperty: 'color',
+                            shade: shades.insetSurface,
+                        },
+                        border: {
+                            type: 'shade',
+                            colorProperty: 'highlightColor',
+                            shade: shades.active,
+                            width: 1,
+                        },
+                        glyphs: {
+                            type: 'shade',
+                            colorProperty: 'highlightColor',
+                            shade: shades.active,
+                        },
+                    },
+                    disabled: {
+                        surface: {
+                            type: 'shade',
+                            colorProperty: 'color',
+                            shade: shades.insetSurface,
+                        },
+                        border: disabledContentBorder,
+                        glyphs: disabledContent,
+                    },
+                },
+                effects: {
+                    backdropBlur: 0,
+                    depth: 'inset',
+                    glyphsGlow: true,
+                    inset: {
+                        default: insetEffect('color'),
+                        interaction: insetEffect('highlightColor'),
+                        active: insetEffect('highlightColor'),
+                        disabled: insetEffect('color'),
+                    },
+                },
+            },
+        };
+        this.appearancePolicies = policies;
         this.media$ = new BehaviorSubject<MediaWithBreakpoints>(Theme.calculateMedia(media.initial()));
         this.mediaSubscription = this.subscribeMedia();
     }
@@ -308,8 +849,65 @@ export class Theme {
         color: ThemeColor,
         backgroundShade: ColorShade = 500,
     ): 100 | 900 => toOklch(color[backgroundShade]).lightness < fillContrastLightnessThreshold
-        ? 100
-        : 900;
+            ? 100
+            : 900;
+
+    public resolveAppearance = (
+        variant: SurfaceVariant,
+        baseColor: PaletteColor | DesignSystemColor,
+        highlightColor: PaletteColor | DesignSystemColor,
+        state: ThemeAppearanceState,
+    ): ResolvedThemeAppearance => {
+        const policy = this.appearancePolicies[variant];
+        const resolve = (paint: ThemeAppearancePaint): string => {
+            if (paint.type === 'transparent') {
+                return 'transparent';
+            }
+            if (paint.type === 'literal') {
+                return paint.value;
+            }
+            const name = paint.colorProperty === 'color' ? baseColor : highlightColor;
+            const shade = paint.type === 'contrast'
+                ? this.contrastShade(name, paint.backgroundShade)
+                : paint.shade;
+            return this.color(name, shade, paint.opacity);
+        };
+        const resolved = policy.states[state];
+        const insetPolicy = policy.effects.inset?.[state];
+        const inset: ThemeAppearanceInsetEffect = insetPolicy
+            ? {
+                edgeStart: resolve(insetPolicy.edgeStart),
+                edgeEnd: resolve(insetPolicy.edgeEnd),
+                shadow: resolve(insetPolicy.shadow),
+                highlight: resolve(insetPolicy.highlight),
+                recess: resolve(insetPolicy.recess),
+                shadowOpacity: insetPolicy.shadowOpacity,
+                highlightOpacity: insetPolicy.highlightOpacity,
+            }
+            : {
+                edgeStart: 'transparent',
+                edgeEnd: 'transparent',
+                shadow: 'transparent',
+                highlight: 'transparent',
+                recess: 'transparent',
+                shadowOpacity: 0,
+                highlightOpacity: 0,
+            };
+
+        return {
+            surface: resolve(resolved.surface),
+            border: {
+                color: resolve(resolved.border),
+                width: resolved.border.width,
+            },
+            glyphs: resolve(resolved.glyphs),
+            effects: {
+                ...policy.effects,
+                glowColor: this.color(highlightColor),
+                inset,
+            },
+        };
+    };
 
     /**
      * Returns a css color string from the current theme.

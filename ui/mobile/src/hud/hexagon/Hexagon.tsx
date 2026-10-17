@@ -1,18 +1,23 @@
-import { FC, forwardRef, Ref, useId, useState } from "react";
-import { View, StyleSheet, Pressable, PressableProps, type ViewInstance, type ViewProps } from "react-native";
-import Svg, { Polygon, Defs, ClipPath, G, LinearGradient, Stop } from "react-native-svg";
-import { HexagonProps, SizeVariant, useTheme } from "@ui";
-import { TRANSLUCENT_OPACITY } from "../../tinkers";
+import { FC, forwardRef, useId, useState } from "react";
+import {
+    View,
+    StyleSheet,
+    Pressable,
+    PressableProps,
+    type ViewInstance,
+} from "react-native";
+import Svg, {
+    Polygon,
+    Defs,
+    ClipPath,
+    G,
+    LinearGradient,
+    Stop,
+} from "react-native-svg";
+import { HexagonProps, useTheme } from "@ui";
 
 const POINTY_TOP = "50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25";
 const FLAT_TOP = "100,50 75,93.3 25,93.3 0,50 25,6.7 75,6.7";
-
-const sizeHeight: Record<SizeVariant, number> = {
-    xs: 24,
-    sm: 24,
-    md: 32,
-    lg: 40,
-};
 
 const styles = StyleSheet.create({
     container: {
@@ -27,11 +32,11 @@ const styles = StyleSheet.create({
     },
 });
 
-const GlowPolygons: FC<{ points: string; glowColor: string; strokeWidth: number }> = ({
-    points,
-    glowColor,
-    strokeWidth,
-}) => (
+const GlowPolygons: FC<{
+    points: string;
+    glowColor: string;
+    strokeWidth: number;
+}> = ({ points, glowColor, strokeWidth }) => (
     <>
         <Polygon
             points={points}
@@ -57,264 +62,211 @@ const GlowPolygons: FC<{ points: string; glowColor: string; strokeWidth: number 
     </>
 );
 
-type Props = Omit<PressableProps, 'children'>;
+type Props = Omit<PressableProps, "children">;
 
-export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(({
-    shape = "pointy-top",
-    strokeWidth = 2,
-    color = "neutral",
-    highlightColor = color,
-    variant,
-    activeGlow = "none",
-    size,
-    interactive = false,
-    active = false,
-    disabled = false,
-    onPress,
-    onLongPress,
-    onPressIn: onParentPressIn,
-    onPressOut: onParentPressOut,
-    style,
-    children,
-    ...pressableProps
-}, ref) => {
-    const theme = useTheme();
-    const [pressed, setPressed] = useState(false);
-    const [glowDrawn, setGlowDrawn] = useState(false);
-    const hl = !disabled && (pressed || active);
-    const isPointy = shape === "pointy-top";
-    const points = isPointy ? POINTY_TOP : FLAT_TOP;
-    const aspectRatio = isPointy ? 86.6 / 100 : 100 / 86.6;
-    const isLight = theme.mode === 'light';
-    const clipPathId = useId();
+export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(
+    (
+        {
+            shape = "pointy-top",
+            strokeWidth = 2,
+            color = "neutral",
+            highlightColor = color,
+            variant = "ghost",
+            activeGlow = "none",
+            size,
+            interactive = false,
+            active = false,
+            disabled = false,
+            onPress,
+            onLongPress,
+            onPressIn: onParentPressIn,
+            onPressOut: onParentPressOut,
+            style,
+            children,
+            ...pressableProps
+        },
+        ref,
+    ) => {
+        const theme = useTheme();
+        const [pressed, setPressed] = useState(false);
+        const [glowDrawn, setGlowDrawn] = useState(false);
+        const isActiveState = !disabled && (pressed || active);
+        const isPointy = shape === "pointy-top";
+        const points = isPointy ? POINTY_TOP : FLAT_TOP;
+        const aspectRatio = isPointy ? 86.6 / 100 : 100 / 86.6;
+        const clipPathId = useId();
 
-    const baseColor = theme.color(color, 500);
-    const highlight500 = theme.color(highlightColor, 500);
-    const highlightAccent = theme.color(highlightColor, isLight ? 600 : 300);
+        const appearance = theme.resolveAppearance(
+            variant,
+            color,
+            highlightColor,
+            disabled ? "disabled" : isActiveState ? "active" : "default",
+        );
+        const showGlow =
+            !disabled && activeGlow !== "none" && (isActiveState || glowDrawn);
 
-    const showGlow = !disabled && activeGlow !== 'none' && (hl || glowDrawn);
+        const markGlowDrawn = () => {
+            if (activeGlow !== "none") {
+                setGlowDrawn(true);
+            }
+        };
 
-    const markGlowDrawn = () => {
-        if (activeGlow !== 'none') {
-            setGlowDrawn(true);
-        }
-    };
-
-    const renderGlow = () => {
-        if (!showGlow) return null;
-        return <GlowPolygons points={points} glowColor={highlightAccent} strokeWidth={strokeWidth} />;
-    };
-
-    const renderVariant = () => {
-        if (disabled) {
-            const backgroundColor = theme.color(color, isLight ? 200 : 800);
-            const foregroundColor = theme.color(color, isLight ? 300 : 700);
-
+        const renderGlow = () => {
+            if (!showGlow) {
+                return null;
+            }
             return (
-                <Polygon
+                <GlowPolygons
                     points={points}
-                    fill={backgroundColor}
-                    stroke={variant === 'fill' ? backgroundColor : foregroundColor}
+                    glowColor={appearance.effects.glowColor}
                     strokeWidth={strokeWidth}
                 />
             );
+        };
+
+        const renderVariant = () => {
+            if (appearance.effects.depth === "inset") {
+                return (
+                    <>
+                            <Defs>
+                                <ClipPath id={clipPathId}>
+                                    <Polygon points={points} />
+                                </ClipPath>
+                                <LinearGradient
+                                    id="shadowGrad"
+                                    x1="0%"
+                                    y1="0%"
+                                    x2="100%"
+                                    y2="100%"
+                                >
+                                    <Stop
+                                        offset="0%"
+                                        stopColor={appearance.effects.inset.shadow}
+                                        stopOpacity={appearance.effects.inset.shadowOpacity}
+                                    />
+                                    <Stop
+                                        offset="15%"
+                                        stopColor={appearance.effects.inset.shadow}
+                                        stopOpacity={0}
+                                    />
+                                    <Stop
+                                        offset="100%"
+                                        stopColor={appearance.effects.inset.shadow}
+                                        stopOpacity={0}
+                                    />
+                                </LinearGradient>
+                                <LinearGradient
+                                    id="highlightGrad"
+                                    x1="100%"
+                                    y1="100%"
+                                    x2="0%"
+                                    y2="0%"
+                                >
+                                    <Stop
+                                        offset="0%"
+                                        stopColor={appearance.effects.inset.highlight}
+                                        stopOpacity={appearance.effects.inset.highlightOpacity}
+                                    />
+                                    <Stop
+                                        offset="15%"
+                                        stopColor={appearance.effects.inset.highlight}
+                                        stopOpacity={0}
+                                    />
+                                    <Stop
+                                        offset="100%"
+                                        stopColor={appearance.effects.inset.highlight}
+                                        stopOpacity={0}
+                                    />
+                                </LinearGradient>
+                            </Defs>
+                            <G clipPath={`url(#${clipPathId})`}>
+                                <Polygon points={points} fill={appearance.surface} />
+                                {renderGlow()}
+                                <Polygon
+                                    points={points}
+                                    fill="url(#shadowGrad)"
+                                />
+                                <Polygon
+                                    points={points}
+                                    fill="url(#highlightGrad)"
+                                />
+                            </G>
+                            <Polygon
+                                points={points}
+                                fill="none"
+                                stroke={appearance.border.color}
+                                strokeWidth={appearance.border.width ? strokeWidth : 0}
+                            />
+                    </>
+                );
+            }
+
+            return (
+                <>
+                    <Polygon
+                        points={points}
+                        fill={appearance.surface}
+                        stroke={appearance.border.color}
+                        strokeWidth={appearance.border.width ? strokeWidth : 0}
+                    />
+                    {renderGlow()}
+                </>
+            );
+        };
+
+        const contentElement = (
+            <>
+                <Svg
+                    viewBox={isPointy ? "6.7 0 86.6 100" : "0 6.7 100 86.6"}
+                    style={StyleSheet.absoluteFill}
+                >
+                    {renderVariant()}
+                </Svg>
+                <View style={styles.content}>{children}</View>
+            </>
+        );
+        const containerStyle = [
+            styles.container,
+            { aspectRatio },
+            size ? { height: theme.sizes.control[size].height } : undefined,
+        ];
+
+        if (interactive) {
+            return (
+                <Pressable
+                    ref={ref}
+                    {...pressableProps}
+                    disabled={disabled}
+                    onPress={onPress}
+                    onLongPress={onLongPress}
+                    onPressIn={(e) => {
+                        setPressed(true);
+                        markGlowDrawn();
+                        onParentPressIn?.(e);
+                    }}
+                    onPressOut={(e) => {
+                        setPressed(false);
+                        setGlowDrawn(false);
+                        onParentPressOut?.(e);
+                    }}
+                    style={style}
+                >
+                    <View style={containerStyle}>{contentElement}</View>
+                </Pressable>
+            );
         }
 
-        switch (variant) {
-            case 'inset': {
-                const bgTint = theme.color(color, 500, 0.10);
-                const shadowColor = "#000000";
-                const shadowOpacity = isLight ? 0.35 : 0.65;
-                const lightColor = "#ffffff";
-                const lightOpacity = isLight ? 0.45 : 0.12;
-
-                return (
-                    <>
-                        <Defs>
-                            <ClipPath id={clipPathId}>
-                                <Polygon points={points} />
-                            </ClipPath>
-                            <LinearGradient id="shadowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <Stop offset="0%" stopColor={shadowColor} stopOpacity={shadowOpacity} />
-                                <Stop offset="15%" stopColor={shadowColor} stopOpacity={0} />
-                                <Stop offset="100%" stopColor={shadowColor} stopOpacity={0} />
-                            </LinearGradient>
-                            <LinearGradient id="highlightGrad" x1="100%" y1="100%" x2="0%" y2="0%">
-                                <Stop offset="0%" stopColor={lightColor} stopOpacity={lightOpacity} />
-                                <Stop offset="15%" stopColor={lightColor} stopOpacity={0} />
-                                <Stop offset="100%" stopColor={lightColor} stopOpacity={0} />
-                            </LinearGradient>
-                        </Defs>
-                        <G clipPath={`url(#${clipPathId})`}>
-                            <Polygon points={points} fill={bgTint} />
-                            {renderGlow()}
-                            <Polygon points={points} fill="url(#shadowGrad)" />
-                            <Polygon points={points} fill="url(#highlightGrad)" />
-                        </G>
-                        <Polygon
-                            points={points}
-                            fill="none"
-                            stroke={baseColor}
-                            strokeWidth={strokeWidth}
-                        />
-                    </>
-                );
-            }
-
-            case 'fill-translucent': {
-                const fill = hl
-                    ? theme.color(highlightColor, 500, active ? 0.48 : 0.36)
-                    : theme.color(color, 500, TRANSLUCENT_OPACITY);
-                const border = hl ? (active ? highlight500 : highlightAccent) : baseColor;
-                return (
-                    <>
-                        <Polygon
-                            points={points}
-                            fill={fill}
-                            stroke={border}
-                            strokeWidth={strokeWidth}
-                        />
-                        {renderGlow()}
-                    </>
-                );
-            }
-
-            case 'fill': {
-                let fillColor: string;
-                let borderColor: string;
-                if (active) {
-                    fillColor = highlightAccent;
-                    borderColor = highlightAccent;
-                } else if (pressed) {
-                    fillColor = highlightAccent;
-                    borderColor = highlightAccent;
-                } else {
-                    fillColor = theme.color(color, 500);
-                    borderColor = baseColor;
-                }
-                return (
-                    <>
-                        <Polygon
-                            points={points}
-                            fill={fillColor}
-                            stroke={borderColor}
-                            strokeWidth={strokeWidth}
-                        />
-                        {renderGlow()}
-                    </>
-                );
-            }
-
-            case 'fill-inverse': {
-                const bgShade = isLight ? 200 : 800;
-                let fillColor: string;
-                let borderColor: string;
-                if (active) {
-                    fillColor = theme.color(color, bgShade);
-                    borderColor = highlightAccent;
-                } else if (pressed) {
-                    fillColor = theme.color(highlightColor, bgShade);
-                    borderColor = highlightAccent;
-                } else {
-                    fillColor = theme.color(color, bgShade);
-                    borderColor = baseColor;
-                }
-                return (
-                    <>
-                        <Polygon
-                            points={points}
-                            fill={fillColor}
-                            stroke={borderColor}
-                            strokeWidth={strokeWidth}
-                        />
-                        {renderGlow()}
-                    </>
-                );
-            }
-
-            default: {
-                // ghost / outline
-                const isOutline = variant === 'outline';
-                const isGhost = variant === 'ghost';
-                let bgFill: string;
-                let fillOpacity: number | undefined;
-                let bColor: string;
-                if (active) {
-                    bgFill = highlightAccent;
-                    fillOpacity = isGhost ? 0.14 : 0.24;
-                    bColor = isGhost ? 'transparent' : highlightAccent;
-                } else if (pressed) {
-                    bgFill = highlightAccent;
-                    fillOpacity = isGhost ? 0.10 : 0.12;
-                    bColor = isGhost ? 'transparent' : highlightAccent;
-                } else {
-                    bgFill = 'none';
-                    fillOpacity = undefined;
-                    bColor = isOutline ? baseColor : 'transparent';
-                }
-                return (
-                    <>
-                        <Polygon
-                            points={points}
-                            fill={bgFill}
-                            fillOpacity={fillOpacity}
-                            stroke={bColor}
-                            strokeWidth={strokeWidth}
-                        />
-                        {renderGlow()}
-                    </>
-                );
-            }
-        }
-    };
-
-    const container = (containerStyle?: PressableProps['style'], containerRef?: Ref<ViewInstance>, includeProps = false) => (
-        <View
-            ref={containerRef}
-            {...(includeProps ? pressableProps as ViewProps : {})}
-            style={[
-                styles.container,
-                { aspectRatio },
-                size ? { height: sizeHeight[size] } : undefined,
-                typeof containerStyle === 'function' ? undefined : containerStyle,
-            ]}
-        >
-            <Svg
-                viewBox={isPointy ? "6.7 0 86.6 100" : "0 6.7 100 86.6"}
-                style={StyleSheet.absoluteFill}
-            >
-                {renderVariant()}
-            </Svg>
-            <View style={styles.content}>
-                {children}
-            </View>
-        </View>
-    );
-
-    if (interactive) {
         return (
-            <Pressable
+            <View
                 ref={ref}
                 {...pressableProps}
-                disabled={disabled}
-                onPress={onPress}
-                onLongPress={onLongPress}
-                onPressIn={(e) => {
-                    setPressed(true);
-                    markGlowDrawn();
-                    onParentPressIn?.(e);
-                }}
-                onPressOut={(e) => {
-                    setPressed(false);
-                    setGlowDrawn(false);
-                    onParentPressOut?.(e);
-                }}
-                style={style}
+                style={[
+                    ...containerStyle,
+                    typeof style === "function" ? undefined : style,
+                ]}
             >
-                {container()}
-            </Pressable>
+                {contentElement}
+            </View>
         );
-    }
-
-    return container(style, ref, true);
-});
+    },
+);

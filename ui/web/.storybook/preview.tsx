@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { Preview } from 'storybook-react-rsbuild';
 import { themes } from 'storybook/theming';
 import {
@@ -26,20 +26,25 @@ const getMedia = () => {
 const ThemeDecorator = ({ children }: { children: ReactNode }) => {
     const [themeMode, setThemeMode] = useState<ThemeMode>('dark');
     const [themeName, setThemeName] = useState<ThemeName>(ThemeName.Default);
-    const theme = new Theme(themeSpecifications[themeName][themeMode], {
-        initial: () => getMedia(),
-        subscribe: (onChange) => {
-            const handler = () => {
-                onChange(getMedia());
-            };
-            window.addEventListener('resize', handler);
+    const theme = useMemo(() => new Theme(
+        themeSpecifications[themeName][themeMode],
+        {
+            initial: () => getMedia(),
+            subscribe: (onChange) => {
+                const handler = () => {
+                    onChange(getMedia());
+                };
+                window.addEventListener('resize', handler);
 
-            return {
-                unsubscribe: () =>
-                    window.removeEventListener('resize', handler),
-            };
+                return {
+                    unsubscribe: () =>
+                        window.removeEventListener('resize', handler),
+                };
+            },
         },
-    });
+    ), [themeMode, themeName]);
+
+    useEffect(() => () => theme.destroy(), [theme]);
 
     useThemeVariables(theme);
 

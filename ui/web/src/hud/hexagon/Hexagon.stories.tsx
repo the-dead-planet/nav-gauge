@@ -1,46 +1,94 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { SizeVariant } from '@ui';
-import { Text } from '../../design-system/typography';
+import { makeLiveEditStory } from 'storybook-addon-code-editor';
 import { Hexagon } from './Hexagon';
-import { colorOptions as colors, sizeOptions, surfaceVariantOptions as variants } from '../../storybook/controls';
+import { VariantGallery } from '../../storybook/VariantGallery';
+import {
+    booleanControl,
+    colorControl,
+    colorOptions,
+    optionalColorControl,
+    sizeControl,
+    sizeOptions,
+    surfaceVariantControl,
+    surfaceVariantOptions,
+} from '../../storybook/controls';
 
-const meta = { title: 'Hud/Hexagon', component: Hexagon } satisfies Meta<typeof Hexagon>;
+const shapes = ['pointy-top', 'flat-top'] as const;
+
+const meta = {
+    title: 'Hud/Hexagon',
+    component: Hexagon,
+    args: {
+        children: 'Hexagon',
+        color: 'primary',
+        variant: 'fill-translucent',
+        size: 'md',
+        shape: 'pointy-top',
+        strokeWidth: 2,
+        interactive: true,
+        active: false,
+        disabled: false,
+        activeGlow: 'none',
+    },
+    argTypes: {
+        children: { control: 'text' },
+        color: colorControl,
+        highlightColor: optionalColorControl,
+        variant: surfaceVariantControl,
+        size: sizeControl,
+        shape: { control: 'select', options: shapes },
+        strokeWidth: { control: { type: 'range', min: 1, max: 8, step: 1 } },
+        interactive: booleanControl,
+        active: booleanControl,
+        disabled: booleanControl,
+        activeGlow: { control: 'select', options: ['none', 'glow', 'animate-borders-glow'] },
+        onClick: { control: false },
+    },
+} satisfies Meta<typeof Hexagon>;
+
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const gridStyle = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: 16 } as const;
+export const Playground: Story = {
+    name: 'Playground with Live code editor',
+};
 
-export const Playground: Story = { args: { color: 'primary', variant: 'fill-translucent', size: 'md', active: false, disabled: false, children: <Text>Preview</Text> } };
+makeLiveEditStory(Playground, {
+    availableImports: { '@web-ui': { Hexagon } },
+    code: `import { Hexagon } from '@web-ui';
 
-export const Disabled: Story = { args: { color: 'primary', variant: 'fill', size: 'md', disabled: true, children: <Text color="primary" disabled>Disabled</Text> } };
+export default Hexagon;`,
+    modifyEditor: (monaco) => monaco.editor.setTheme('vs-dark'),
+});
 
 export const Gallery: Story = {
-    render: () => (
-        <div style={{ display: 'grid', gap: 24 }}>
-            {variants.map((variant) => (
-                <section key={variant} style={{ display: 'grid', gap: 10 }}>
-                    <strong>{variant}</strong>
-                    <div style={gridStyle}>{colors.map((color) => <Hexagon key={color} color={color} variant={variant}><Text>{color}</Text></Hexagon>)}</div>
+    argTypes: {
+        color: { table: { disable: true } },
+        size: { table: { disable: true } },
+        variant: { table: { disable: true } },
+        shape: { table: { disable: true } },
+    },
+    render: (args) => (
+        <div style={{ display: 'grid', gap: 40 }}>
+            {shapes.map((shape) => (
+                <section key={shape}>
+                    <h2>{shape}</h2>
+                    <VariantGallery
+                        sizes={sizeOptions}
+                        colors={colorOptions}
+                        variants={surfaceVariantOptions}
+                        render={({ color, size, variant }) => (
+                            <Hexagon
+                                {...args}
+                                color={color}
+                                size={size}
+                                variant={variant}
+                                shape={shape}
+                            />
+                        )}
+                    />
                 </section>
             ))}
         </div>
     ),
-};
-
-export const SizesAndShapes: Story = {
-    render: () => (
-        <div style={{ display: 'grid', gap: 24 }}>
-            {(['pointy-top', 'flat-top'] as const).map((shape) => (
-                <section key={shape} style={{ display: 'grid', gap: 10 }}>
-                    <strong>{shape}</strong>
-                    <div style={gridStyle}>{sizeOptions.map((size: SizeVariant) => <Hexagon key={size} shape={shape} size={size} color="tertiary"><Text>{size}</Text></Hexagon>)}</div>
-                </section>
-            ))}
-            <section style={{ display: 'grid', gap: 10 }}><strong>Stroke width</strong><div style={gridStyle}>{[1, 3, 5].map((strokeWidth) => <Hexagon key={strokeWidth} strokeWidth={strokeWidth} color="primary" style={{ width: 100 }}><Text>{strokeWidth}px</Text></Hexagon>)}</div></section>
-        </div>
-    ),
-};
-
-export const InteractiveGlow: Story = {
-    render: () => <div style={gridStyle}><Hexagon interactive color="primary" style={{ width: 100 }}><Text>Default glow</Text></Hexagon><Hexagon interactive activeGlow="glow" color="secondary" style={{ width: 100 }}><Text>Glow</Text></Hexagon><Hexagon interactive activeGlow="animate-borders-glow" color="tertiary" style={{ width: 100 }}><Text>Borders</Text></Hexagon></div>,
 };

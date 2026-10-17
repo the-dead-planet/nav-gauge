@@ -1,14 +1,15 @@
 import { expect } from "chai";
 import { Orientation, Theme, themeSpecifications, ThemeName } from "../../src";
 
-const theme = new Theme(themeSpecifications[ThemeName.Default].light, {
+const media = {
     initial: () => ({
         orientation: Orientation.Landscape,
         windowWidth: 1280,
         windowHeight: 720,
     }),
     subscribe: () => ({ unsubscribe: () => undefined }),
-});
+};
+const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
 
 const oklabLightness = ({ r, g, b }: { r: number; g: number; b: number }): number => {
     const linearChannels = [r, g, b].map((channel) => {
@@ -75,5 +76,16 @@ describe("Theme", () => {
         expect(theme.contrastShade("coral")).to.equal(100);
         expect(theme.contrastShade("peach")).to.equal(100);
         expect(theme.contrastShade("mint")).to.equal(100);
+    });
+
+    it("resolves variant appearance policy", () => {
+        expect(theme.resolveAppearance("ghost", "primary", "secondary", "default").surface).to.equal("transparent");
+        expect(theme.resolveAppearance("fill", "primary", "secondary", "default").border.width).to.equal(0);
+        expect(theme.resolveAppearance("inset", "primary", "secondary", "default").effects.depth).to.equal("inset");
+        expect(theme.resolveAppearance("fill-translucent", "primary", "secondary", "default").surface).to.match(/, 0\.24\)$/);
+        expect(theme.resolveAppearance("ghost", "primary", "secondary", "active").effects.glowColor).to.equal(theme.color("secondary"));
+        expect(theme.resolveAppearance("fill-inverse", "primary", "secondary", "interaction").surface).to.equal(
+            theme.resolveAppearance("fill-inverse", "primary", "secondary", "default").surface,
+        );
     });
 });

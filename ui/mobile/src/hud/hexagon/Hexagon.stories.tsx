@@ -1,39 +1,69 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { sizeOptions, surfaceVariantOptions } from '@ui';
+import { surfaceVariantOptions } from '@ui';
 import { VariantGallery } from '../../storybook/VariantGallery';
 import { Text } from '../../design-system/typography';
 import { Hexagon } from './Hexagon';
 
 const styles = StyleSheet.create({
-    container: { gap: 24, padding: 16 },
-    section: { gap: 10 },
-    grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 16 },
-    cell: { alignItems: 'center', gap: 8 },
-    heading: { fontWeight: '700' },
-    fixedWidth: { width: 100 },
+    container: {
+        padding: 16,
+        gap: 32,
+    },
+    section: {
+        gap: 12,
+    },
+    states: {
+        gap: 8,
+        alignItems: 'center',
+    },
+    heading: {
+        fontWeight: '700',
+    },
 });
-export const Playground: FC = () => <Hexagon color="primary" variant="fill-translucent" size="md"><Text>Preview</Text></Hexagon>;
 
-export const Disabled: FC = () => <Hexagon color="primary" variant="fill" size="md" disabled><Text color="primary" disabled>Disabled</Text></Hexagon>;
-export const Active: FC = () => <Hexagon color="primary" highlightColor="secondary" variant="fill-inverse" size="md" active><Text>Active</Text></Hexagon>;
+const shapes = ['pointy-top', 'flat-top'] as const;
+
+export const Playground: FC = () => {
+    const [active, setActive] = useState(false);
+
+    return (
+        <Hexagon
+            color="primary"
+            variant="fill-translucent"
+            size="md"
+            interactive
+            active={active}
+            onPress={() => setActive((current) => !current)}
+        >
+            <Text>Hexagon</Text>
+        </Hexagon>
+    );
+};
 
 export const Gallery: FC = () => (
-    <VariantGallery
-        variants={surfaceVariantOptions}
-        render={({ color, size, variant }) => (
-            <Hexagon color={color} size={size} variant={variant}>
-                <Text>Preview</Text>
-            </Hexagon>
-        )}
-    />
-);
-
-export const SizesAndShapes: FC = () => (
     <ScrollView contentContainerStyle={styles.container}>
-        {(['pointy-top', 'flat-top'] as const).map((shape) => <View key={shape} style={styles.section}><Text style={styles.heading}>{shape}</Text><View style={styles.grid}>{sizeOptions.map((size) => <View key={size} style={styles.cell}><Text>{size}</Text><Hexagon shape={shape} size={size} color="tertiary" /></View>)}</View></View>)}
-        <View style={styles.section}><Text style={styles.heading}>Stroke width</Text><View style={styles.grid}>{[1, 3, 5].map((strokeWidth) => <View key={strokeWidth} style={styles.cell}><Text>{strokeWidth}px</Text><Hexagon strokeWidth={strokeWidth} color="primary" style={styles.fixedWidth} /></View>)}</View></View>
+        {shapes.map((shape) => (
+            <View key={shape} style={styles.section}>
+                <Text style={styles.heading}>{shape}</Text>
+                <VariantGallery
+                    variants={surfaceVariantOptions}
+                    scrollEnabled={false}
+                    render={({ color, size, variant }) => (
+                        <View style={styles.states}>
+                            <Hexagon color={color} size={size} variant={variant} shape={shape}>
+                                <Text>D</Text>
+                            </Hexagon>
+                            <Hexagon color={color} size={size} variant={variant} shape={shape} active>
+                                <Text>A</Text>
+                            </Hexagon>
+                            <Hexagon color={color} size={size} variant={variant} shape={shape} disabled>
+                                <Text>X</Text>
+                            </Hexagon>
+                        </View>
+                    )}
+                />
+            </View>
+        ))}
     </ScrollView>
 );
-
-export const InteractiveGlow: FC = () => <View style={styles.grid}><Hexagon interactive color="primary" style={styles.fixedWidth}><Text>Default</Text></Hexagon><Hexagon interactive activeGlow="glow" color="secondary" style={styles.fixedWidth}><Text>Glow</Text></Hexagon><Hexagon interactive activeGlow="animate-borders-glow" color="tertiary" style={styles.fixedWidth}><Text>Borders</Text></Hexagon></View>;
