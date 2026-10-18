@@ -22,11 +22,15 @@ export { default as ChevronDownDoubleTriangle } from './output/chevron-down-doub
 export { default as ChevronDownDouble } from './output/chevron-down-double.svg';
 export { default as ChevronDownSingle } from './output/chevron-down-single.svg';
 export { default as Clear } from './output/clear.svg';
+export { default as CloseCross } from './output/close-cross.svg';
+export { default as CloseCrossFill } from './output/close-cross-fill.svg';
+export { default as Components } from './output/components.svg';
 export { default as Copy } from './output/copy.svg';
 export { default as Crash } from './output/crash.svg';
 export { default as Cyber } from './output/cyber.svg';
 export { default as Destroy } from './output/destroy.svg';
 export { default as EBikeSide01 } from './output/e-bike-side-01.svg';
+export { default as ElectricDevice } from './output/electric-device.svg';
 export { default as Gear } from './output/gear.svg';
 export { default as ImageMarker } from './output/image-marker.svg';
 export { default as KebabMenu } from './output/kebab-menu.svg';

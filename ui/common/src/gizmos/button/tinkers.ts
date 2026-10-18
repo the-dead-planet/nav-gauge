@@ -1,0 +1,40 @@
+import { ButtonProps } from './model';
+import { activeGlowOptions, allColorShades, colorOptions, sizeOptions, surfaceVariantOptions } from '../../design-system';
+import { StoryControls } from '../../storybook';
+
+export const buttonCorners = ['square', 'circle', 'hexagon'] as const;
+export const buttonTooltipPlacements = ['auto', 'top', 'right', 'bottom', 'left'] as const;
+
+export const buttonStoryArgs = {
+    children: 'Button',
+    color: 'neutral',
+    variant: 'ghost',
+    activeGlow: 'none',
+    size: 'sm',
+    corners: 'square',
+    active: false,
+    disabled: false,
+    tooltip: '',
+    showTooltipConnection: false,
+    iconRotateX: 0,
+    iconRotateZ: 0,
+} satisfies ButtonProps;
+
+export const buttonStoryControls: StoryControls<ButtonProps> = {
+    children: { control: 'text' },
+    color: { control: 'select', options: colorOptions },
+    contentShade: { control: 'select', options: ['Default', ...allColorShades], mapping: { Default: undefined } },
+    highlightColor: { control: 'select', options: ['Default', ...colorOptions], mapping: { Default: undefined } },
+    highlightContentShade: { control: 'select', options: ['Default', ...allColorShades], mapping: { Default: undefined } },
+    variant: { control: 'select', options: surfaceVariantOptions },
+    activeGlow: { control: 'select', options: activeGlowOptions },
+    size: { control: 'select', options: sizeOptions },
+    corners: { control: 'select', options: buttonCorners },
+    active: { control: 'boolean' },
+    disabled: { control: 'boolean' },
+    tooltipPlacement: { control: 'select', options: ['Default', ...buttonTooltipPlacements], mapping: { Default: undefined } },
+    tooltip: { control: 'text' },
+    showTooltipConnection: { control: 'boolean' },
+    iconRotateX: { control: { type: 'range', min: 0, max: 360, step: 1 } },
+    iconRotateZ: { control: { type: 'range', min: 0, max: 360, step: 1 } },
+};

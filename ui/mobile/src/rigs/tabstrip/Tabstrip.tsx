@@ -64,7 +64,7 @@ export const Tabstrip: FC<TabstripProps> = ({
     const baseColor = theme.color(color, 500);
     const contentStyle = {
         backgroundColor: variant === 'fill-inverse'
-            ? theme.color(color, theme.isLight ? 100 : 900)
+            ? theme.color(color, theme.isLight ? 200 : 800)
             : variant === 'fill-translucent' ? theme.color(color, 500, TRANSLUCENT_OPACITY_BACKGROUND) : 'transparent',
         borderColor: baseColor,
         borderWidth: variant === 'outline' ? 1 : 0,
@@ -83,7 +83,7 @@ export const Tabstrip: FC<TabstripProps> = ({
                     const isTrailing = visibleIndex === visibleIndexes.length - 1 && overflowOptions.length === 0;
                     const isLast = spread && isTrailing;
                     const inactiveFill = variant === 'fill-inverse'
-                        ? theme.color(color, theme.isLight ? 100 : 900)
+                        ? theme.color(color, theme.isLight ? 200 : 800)
                         : variant === 'fill-translucent' ? theme.color(color, 500, TRANSLUCENT_OPACITY_BACKGROUND) : 'transparent';
                     const button = <Button
                         key={option.value}

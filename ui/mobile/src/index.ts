@@ -9,4 +9,4 @@ export * from './rigs';
 export * from './model';
 export * from './tinkers';
 
-export * from './Stories';
+export * from './storybook/Stories';

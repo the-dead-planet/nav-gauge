@@ -1,34 +1,23 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { makeLiveEditStory } from 'storybook-addon-code-editor';
-import { ButtonCorners, Icons } from '@ui';
+import { buttonCorners, buttonStoryArgs, buttonStoryControls, Icons } from '@ui';
 import { Button } from './Button';
 import { VariantGallery } from '../../storybook/VariantGallery';
 import {
-    booleanControl,
-    colorControl,
     colorOptions,
-    optionalColorControl,
-    optionalShadeControl,
-    sizeControl,
     sizeOptions,
-    surfaceVariantControl,
     surfaceVariantOptions,
 } from '../../storybook/controls';
-
-const allCorners: ButtonCorners[] = ['square', 'circle', 'hexagon'];
 
 const meta = {
     title: 'Gizmos/Button',
     component: Button,
     args: {
-        children: 'Button',
+        ...buttonStoryArgs,
         icon: Icons.Beaker,
-        active: false,
-        disabled: false,
-        showTooltipConnection: false,
     },
     argTypes: {
-        children: { control: 'text' },
+        ...buttonStoryControls,
         icon: {
             control: 'select',
             options: ['None', 'Beaker', 'Light bulb'],
@@ -38,25 +27,6 @@ const meta = {
                 'Light bulb': Icons.NounProject.LightBulbCogWheel,
             },
         },
-        color: colorControl,
-        contentShade: optionalShadeControl,
-        highlightColor: optionalColorControl,
-        highlightContentShade: optionalShadeControl,
-        variant: surfaceVariantControl,
-        activeGlow: { control: 'select', options: ['none', 'glow', 'animate-borders-glow'] },
-        size: sizeControl,
-        corners: { control: 'select', options: allCorners },
-        active: booleanControl,
-        disabled: booleanControl,
-        tooltipPlacement: {
-            control: 'select',
-            options: ['Default', 'auto', 'top', 'right', 'bottom', 'left'],
-            mapping: { Default: undefined },
-        },
-        tooltip: { control: 'text' },
-        showTooltipConnection: { control: 'boolean' },
-        iconRotateX: { control: { type: 'range', min: 0, max: 360, step: 1 } },
-        iconRotateZ: { control: { type: 'range', min: 0, max: 360, step: 1 } },
         onClick: { control: false },
     },
 } satisfies Meta<typeof Button>;
@@ -85,7 +55,7 @@ export const Gallery: Story = {
     },
     render: (args) => (
         <div style={{ display: 'grid', gap: 40 }}>
-            {allCorners.map((corners) => (
+            {buttonCorners.map((corners) => (
                 <section key={corners}>
                     <h2>{corners}</h2>
                     <VariantGallery

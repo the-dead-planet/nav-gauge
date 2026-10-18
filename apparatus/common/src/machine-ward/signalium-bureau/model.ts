@@ -3,7 +3,6 @@ export type SignaliumNotice = ErrorSignaliumNotice | WarningSignaliumNotice | In
 export interface BaseSignaliumNotice {
     id: string;
     text: string;
-    expirationTimeout?: number
 }
 
 export interface ErrorSignaliumNotice extends BaseSignaliumNotice {

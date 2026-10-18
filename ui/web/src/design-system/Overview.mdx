@@ -1,4 +1,16 @@
 import { Meta, Title } from '@storybook/addon-docs/blocks';
+import { uiArchitectureGroups } from '@ui';
+
+export const architectureGroupLinks = {
+    'design-system': './?path=/docs/design-system-typography--docs',
+    chassis: './?path=/docs/chassis-flexbox--docs',
+    motion: './?path=/docs/motion-transition--docs',
+    hud: './?path=/docs/hud-hexagon--docs',
+    gizmos: './?path=/docs/gizmos-button--docs',
+    rigs: './?path=/docs/rigs-dialog--docs',
+    forms: './?path=/docs/forms-checkbox--docs',
+    assemblies: './?path=/docs/assemblies-theme-mode-toggle--docs',
+};
 
 <Meta title="Design System/Overview" />
 
@@ -28,5 +40,15 @@ The visual and verbal identity is dystopian, steampunk, cyber-inspired, and ligh
 - <a href="./?path=/docs/design-system-sizing--docs" target="_top" style={{ textDecoration: 'underline' }}><strong>Sizing</strong></a> defines the shared scale and the boundary between component geometry and content layout.
 - <a href="./?path=/docs/design-system-motion--docs" target="_top" style={{ textDecoration: 'underline' }}><strong>Motion</strong></a> defines when animation communicates useful change.
 - Component documentation records guidance that applies only to that component family.
+
+## Component Architecture
+
+<ul>
+    {uiArchitectureGroups.map(({ name, description }) => (
+        <li key={name}>
+            <a href={architectureGroupLinks[name]} target="_top" style={{ textDecoration: 'underline' }}><strong>{name}</strong></a> {description}
+        </li>
+    ))}
+</ul>
 
 The same visual principles apply to web and mobile unless a page identifies a platform-specific constraint.

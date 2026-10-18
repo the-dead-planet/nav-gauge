@@ -1,47 +1,20 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { makeLiveEditStory } from 'storybook-addon-code-editor';
+import { hexagonShapes, hexagonStoryArgs, hexagonStoryControls } from '@ui';
 import { Hexagon } from './Hexagon';
 import { VariantGallery } from '../../storybook/VariantGallery';
 import {
-    booleanControl,
-    colorControl,
     colorOptions,
-    optionalColorControl,
-    sizeControl,
     sizeOptions,
-    surfaceVariantControl,
     surfaceVariantOptions,
 } from '../../storybook/controls';
-
-const shapes = ['pointy-top', 'flat-top'] as const;
 
 const meta = {
     title: 'Hud/Hexagon',
     component: Hexagon,
-    args: {
-        children: 'Hexagon',
-        color: 'primary',
-        variant: 'fill-translucent',
-        size: 'md',
-        shape: 'pointy-top',
-        strokeWidth: 2,
-        interactive: true,
-        active: false,
-        disabled: false,
-        activeGlow: 'none',
-    },
+    args: hexagonStoryArgs,
     argTypes: {
-        children: { control: 'text' },
-        color: colorControl,
-        highlightColor: optionalColorControl,
-        variant: surfaceVariantControl,
-        size: sizeControl,
-        shape: { control: 'select', options: shapes },
-        strokeWidth: { control: { type: 'range', min: 1, max: 8, step: 1 } },
-        interactive: booleanControl,
-        active: booleanControl,
-        disabled: booleanControl,
-        activeGlow: { control: 'select', options: ['none', 'glow', 'animate-borders-glow'] },
+        ...hexagonStoryControls,
         onClick: { control: false },
     },
 } satisfies Meta<typeof Hexagon>;
@@ -70,7 +43,7 @@ export const Gallery: Story = {
     },
     render: (args) => (
         <div style={{ display: 'grid', gap: 40 }}>
-            {shapes.map((shape) => (
+            {hexagonShapes.map((shape) => (
                 <section key={shape}>
                     <h2>{shape}</h2>
                     <VariantGallery

@@ -77,6 +77,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         justifyContent: "center",
         boxSizing: "border-box",
         height: controlSize.height,
+        minWidth: icon ? controlSize.height : undefined,
         paddingHorizontal: !children
             ? controlSize.iconPaddingInline
             : controlSize.paddingInline,

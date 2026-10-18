@@ -13,10 +13,13 @@
 
 .size-lg {
     height: var(--size-control-lg-height);
-    min-width: var(--size-control-lg-height);
     padding: var(--size-control-lg-padding-block) var(--size-control-lg-padding-inline);
     gap: var(--size-control-lg-gap);
     font-size: var(--size-control-lg-font-size);
+}
+
+.has-icon-lg {
+    min-width: var(--size-control-lg-height);
 }
 
 .only-icon-lg {
@@ -25,10 +28,13 @@
 
 .size-md {
     height: var(--size-control-md-height);
-    min-width: var(--size-control-md-height);
     padding: var(--size-control-md-padding-block) var(--size-control-md-padding-inline);
     gap: var(--size-control-md-gap);
     font-size: var(--size-control-md-font-size);
+}
+
+.has-icon-md {
+    min-width: var(--size-control-md-height);
 }
 
 .only-icon-md {
@@ -37,10 +43,13 @@
 
 .size-sm {
     height: var(--size-control-sm-height);
-    min-width: var(--size-control-sm-height);
     padding: var(--size-control-sm-padding-block) var(--size-control-sm-padding-inline);
     gap: var(--size-control-sm-gap);
     font-size: var(--size-control-sm-font-size);
+}
+
+.has-icon-sm {
+    min-width: var(--size-control-sm-height);
 }
 
 .only-icon-sm {
@@ -49,10 +58,13 @@
 
 .size-xs {
     height: var(--size-control-xs-height);
-    min-width: var(--size-control-xs-height);
     padding: var(--size-control-xs-padding-block) var(--size-control-xs-padding-inline);
     gap: var(--size-control-xs-gap);
     font-size: var(--size-control-xs-font-size);
+}
+
+.has-icon-xs {
+    min-width: var(--size-control-xs-height);
 }
 
 .only-icon-xs {

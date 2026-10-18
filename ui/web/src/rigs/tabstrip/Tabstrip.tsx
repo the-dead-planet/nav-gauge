@@ -106,7 +106,7 @@ export const Tabstrip: FC<TabstripProps> = ({
                         triggerAccessibilityLabel={overflowAccessibilityLabel}
                         triggerActive={overflowOptions.some((option) => option.value === value)}
                         disabled={disabled}
-                        className={styles['overflow']}
+                        className={classNames(styles['overflow'], styles[`variant-${variant}`])}
                     >
                         {overflowOptions.map((option) => (
                             <MenuItem key={option.value} type="button" disabled={disabled || option.disabled} closeOnPress onClick={() => onChange(option.value)}>

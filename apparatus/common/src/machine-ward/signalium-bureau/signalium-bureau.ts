@@ -12,6 +12,7 @@ export class SignaliumBureau {
      */
     private defaultExpirationTime = 10000;
     public notices$ = new BehaviorSubject<SignaliumNotice[]>([]);
+    private expirationTimeouts = new Map<string, Timer>();
 
     public constructor() { }
 
@@ -31,20 +32,25 @@ export class SignaliumBureau {
             keepAlive = false,
             expirationTime = this.defaultExpirationTime
         } = options;
-        let expirationTimeout: Timer | undefined;
-
-        if (notice.type !== 'error' && !keepAlive) {
-            expirationTimeout = setTimeout(() => this.removeNotice(notice.id), expirationTime);
+        const staleTimeout = this.expirationTimeouts.get(notice.id);
+        if (staleTimeout !== undefined) {
+            clearTimeout(staleTimeout);
+            this.expirationTimeouts.delete(notice.id);
         }
 
-        const nextNotices = this.notices$.value.filter((n) => n.id !== notice.id).concat([{ ...notice, expirationTimeout }]);
+        if (notice.type !== 'error' && !keepAlive) {
+            this.expirationTimeouts.set(notice.id, setTimeout(() => this.removeNotice(notice.id), expirationTime));
+        }
+
+        const nextNotices = this.notices$.value.filter((n) => n.id !== notice.id).concat([notice]);
         this.notices$.next(nextNotices);
     }
 
     public removeNotice = (noticeId: string) => {
-        const expirationTimeout = this.notices$.value.find((notice) => notice.id === noticeId)?.expirationTimeout;
+        const expirationTimeout = this.expirationTimeouts.get(noticeId);
         if (expirationTimeout !== undefined) {
             clearTimeout(expirationTimeout);
+            this.expirationTimeouts.delete(noticeId);
         }
         this.notices$.next(this.notices$.value.filter((n) => n.id !== noticeId));
     }
