@@ -46,3 +46,6 @@ Verify:
 - existing variants/conventions are reused
 - component contains presentation logic only
 - both web and mobile implementations exist (unless the component is single-platform by design)
+- the mobile story default-exports one `MobileStoryDefinition` from `ui/mobile/src/storybook/model.ts`; do not repeat its path-derived group or component name
+- shared story defaults and Storybook-compatible controls live in the common component's `tinkers.ts`; platform component references, platform-only props and mappings, callbacks, and renderers stay in their platform stories
+- mobile controls match the web story, with `renderPlayground` and `renderGallery` as the only required views

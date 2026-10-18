@@ -1,4 +1,4 @@
-import { ColorVariant, FillVariant, SizeVariant, SurfaceVariant } from './model';
+import { ActiveGlow, ColorVariant, FillVariant, SizeVariant, SurfaceVariant } from './model';
 import type { ThemeAppearanceState } from './theme/model';
 
 export const colorOptions: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
@@ -12,6 +12,7 @@ export const surfaceVariantOptions: SurfaceVariant[] = [
     'outline',
     'inset',
 ];
+export const activeGlowOptions: ActiveGlow[] = ['none', 'glow', 'animate-borders-glow'];
 export const themeAppearanceStateOptions: ThemeAppearanceState[] = [
     'default',
     'interaction',

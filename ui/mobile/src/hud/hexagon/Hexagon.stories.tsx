@@ -1,7 +1,8 @@
-import { FC, useState } from 'react';
+import { ComponentProps } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { surfaceVariantOptions } from '@ui';
+import { hexagonShapes, hexagonStoryArgs, hexagonStoryControls, surfaceVariantOptions } from '@ui';
 import { VariantGallery } from '../../storybook/VariantGallery';
+import { MobileStoryDefinition } from '../../storybook/model';
 import { Text } from '../../design-system/typography';
 import { Hexagon } from './Hexagon';
 
@@ -22,48 +23,40 @@ const styles = StyleSheet.create({
     },
 });
 
-const shapes = ['pointy-top', 'flat-top'] as const;
+const story = {
+    args: {
+        ...hexagonStoryArgs,
+        highlightColor: undefined,
+    },
+    controls: hexagonStoryControls,
+    galleryEditableControls: ['highlightColor', 'strokeWidth', 'interactive', 'active', 'disabled', 'activeGlow'],
+    renderPlayground: (args) => <Hexagon {...args} />,
+    renderGallery: (args) => {
+        return (
+            <ScrollView contentContainerStyle={styles.container}>
+                {hexagonShapes.map((shape) => (
+                    <View key={shape} style={styles.section}>
+                        <Text style={styles.heading}>{shape}</Text>
+                        <VariantGallery
+                            variants={surfaceVariantOptions}
+                            scrollEnabled={false}
+                            render={({ color, size, variant }) => (
+                                <View style={styles.states}>
+                                    <Hexagon
+                                        {...args}
+                                        color={color}
+                                        size={size}
+                                        variant={variant}
+                                        shape={shape}
+                                    />
+                                </View>
+                            )}
+                        />
+                    </View>
+                ))}
+            </ScrollView>
+        );
+    },
+} satisfies MobileStoryDefinition<ComponentProps<typeof Hexagon>>;
 
-export const Playground: FC = () => {
-    const [active, setActive] = useState(false);
-
-    return (
-        <Hexagon
-            color="primary"
-            variant="fill-translucent"
-            size="md"
-            interactive
-            active={active}
-            onPress={() => setActive((current) => !current)}
-        >
-            <Text>Hexagon</Text>
-        </Hexagon>
-    );
-};
-
-export const Gallery: FC = () => (
-    <ScrollView contentContainerStyle={styles.container}>
-        {shapes.map((shape) => (
-            <View key={shape} style={styles.section}>
-                <Text style={styles.heading}>{shape}</Text>
-                <VariantGallery
-                    variants={surfaceVariantOptions}
-                    scrollEnabled={false}
-                    render={({ color, size, variant }) => (
-                        <View style={styles.states}>
-                            <Hexagon color={color} size={size} variant={variant} shape={shape}>
-                                <Text>D</Text>
-                            </Hexagon>
-                            <Hexagon color={color} size={size} variant={variant} shape={shape} active>
-                                <Text>A</Text>
-                            </Hexagon>
-                            <Hexagon color={color} size={size} variant={variant} shape={shape} disabled>
-                                <Text>X</Text>
-                            </Hexagon>
-                        </View>
-                    )}
-                />
-            </View>
-        ))}
-    </ScrollView>
-);
+export default story;
