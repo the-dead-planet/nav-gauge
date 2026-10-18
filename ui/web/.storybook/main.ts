@@ -12,6 +12,8 @@ const config: StorybookConfig = {
     stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
     staticDirs: [path.resolve(__dirname, '../../common/public'), ...getCodeEditorStaticDirs(filename)],
     addons: ['@storybook/addon-docs', 'storybook-addon-code-editor'],
+    managerHead: (head) =>
+        `${head}<style>div:has(> #preview-loader) { display: none; }</style>`,
     async rsbuildFinal(config) {
         return mergeRsbuildConfig(config, {
             resolve: {
