@@ -3,7 +3,9 @@ import {
     Modal,
     Pressable,
     ScrollView,
+    useWindowDimensions,
     View,
+    type LayoutChangeEvent,
     type HostInstance,
     TouchableHighlight,
 } from 'react-native';
@@ -13,6 +15,7 @@ import { Text } from '../../design-system/typography';
 import { SvgProps } from 'react-native-svg';
 import { MutableViewStyle } from '../../model';
 import { TRANSLUCENT_OPACITY } from '../../tinkers';
+import { getDropdownMenuPosition } from './tinkers';
 
 interface MobileOption<T> {
     value: T;
@@ -71,8 +74,10 @@ export function Dropdown<T>({
     active = false,
 }: Omit<DropdownProps<T>, 'options'> & { options: MobileOption<T>[] }) {
     const theme = useTheme();
+    const { height: windowHeight } = useWindowDimensions();
     const [isOpen, setIsOpen] = useState(false);
-    const [menuTop, setMenuTop] = useState(0);
+    const [triggerPosition, setTriggerPosition] = useState({ top: 0, bottom: 0 });
+    const [menuHeight, setMenuHeight] = useState<number | null>(null);
     const [menuLeft, setMenuLeft] = useState(0);
     const [menuWidth, setMenuWidth] = useState(0);
     const triggerRef = useRef<HostInstance>(null);
@@ -170,12 +175,22 @@ export function Dropdown<T>({
 
     const handleOpen = () => {
         triggerRef.current?.measureInWindow((x, y, width, height) => {
-            setMenuTop(y + height);
+            setTriggerPosition({ top: y, bottom: y + height });
+            setMenuHeight(null);
             setMenuLeft(x);
             setMenuWidth(width);
             setIsOpen(true);
         });
     };
+    const handleMenuLayout = (event: LayoutChangeEvent) => {
+        setMenuHeight(event.nativeEvent.layout.height);
+    };
+    const menuPosition = getDropdownMenuPosition(
+        triggerPosition.top,
+        triggerPosition.bottom,
+        menuHeight,
+        windowHeight,
+    );
 
     return (
         <View>
@@ -251,12 +266,12 @@ export function Dropdown<T>({
                     onPress={() => setIsOpen(false)}
                 >
                     <View
+                        onLayout={handleMenuLayout}
                         style={{
                             position: 'absolute',
-                            top: menuTop,
+                            top: menuPosition.top,
                             left: menuLeft,
                             width: menuWidth,
-                            marginTop: 4,
                             backgroundColor: theme.color(
                                 color,
                                 theme.isLight
@@ -268,7 +283,7 @@ export function Dropdown<T>({
                             borderWidth: 1,
                             borderColor: baseColor,
                             paddingVertical: 4,
-                            maxHeight: 240,
+                            maxHeight: menuPosition.maxHeight,
                             shadowColor: theme.componentColor('box-shadow'),
                             shadowOffset: { width: 5, height: 5 },
                             shadowOpacity: 0.6,

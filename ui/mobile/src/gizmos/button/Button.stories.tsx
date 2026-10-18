@@ -1,5 +1,5 @@
-import { ComponentProps } from 'react';
-import { ScrollView, View, StyleSheet } from "react-native";
+import { ComponentProps, FC } from 'react';
+import { ScrollView, View, StyleSheet, useWindowDimensions } from "react-native";
 import { Button } from "./Button";
 import { Text } from '../../design-system/typography';
 import {
@@ -24,6 +24,28 @@ const styles = StyleSheet.create({
         marginBottom: 4,
     },
 });
+
+const StoryButton: FC<ComponentProps<typeof Button>> = ({
+    accessibilityLabel,
+    children,
+    corners,
+    ...props
+}) => {
+    const { width, height } = useWindowDimensions();
+    const buttonChildren = corners === 'square'
+        ? width > height ? children : 'B'
+        : null;
+
+    return (
+        <Button
+            {...props}
+            corners={corners}
+            accessibilityLabel={accessibilityLabel ?? (buttonChildren ? undefined : 'Button')}
+        >
+            {buttonChildren}
+        </Button>
+    );
+};
 
 const story = {
     args: {
@@ -63,12 +85,10 @@ const story = {
     ],
     renderPlayground: (args) => {
         return (
-            <Button
+            <StoryButton
                 {...args}
                 accessibilityLabel={args.corners === 'square' ? undefined : 'Button'}
-            >
-                {args.corners === 'square' ? args.children : null}
-            </Button>
+            />
         );
     },
     renderGallery: (args) => {
@@ -81,16 +101,14 @@ const story = {
                             variants={surfaceVariantOptions}
                             scrollEnabled={false}
                             render={({ color, size, variant }) => (
-                                <Button
+                                <StoryButton
                                     {...args}
                                     variant={variant}
                                     color={color}
                                     corners={corners}
                                     size={size}
                                     accessibilityLabel={corners === 'square' ? undefined : `${corners} button`}
-                                >
-                                    {corners === 'square' ? args.children : null}
-                                </Button>
+                                />
                             )}
                         />
                     </View>

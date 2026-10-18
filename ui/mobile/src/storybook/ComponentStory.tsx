@@ -14,24 +14,32 @@ const styles = StyleSheet.create({
     },
     page: {
         flex: 1,
-        padding: 16,
+        paddingVertical: 16,
         gap: 16,
+    },
+    header: {
+        paddingHorizontal: 16,
     },
     list: {
         gap: 8,
     },
+    legacyList: {
+        paddingHorizontal: 16,
+    },
     title: {
         fontSize: 18,
         fontWeight: '700',
-    },
-    tabs: {
-        paddingHorizontal: 16,
     },
     preview: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
         padding: 16,
+    },
+    galleryPreview: {
+        alignItems: 'stretch',
+        justifyContent: 'flex-start',
+        paddingHorizontal: 0,
     },
     drawer: {
         position: 'absolute',
@@ -79,8 +87,10 @@ export const ComponentStory: FC<{ entry: StoryEntry; onBack: () => void }> = ({ 
     if (!definition) {
         return (
             <View style={styles.page}>
-                <StoryHeader title={entry.name} onBack={onBack} />
-                <ScrollView contentContainerStyle={styles.list}>
+                <View style={styles.header}>
+                    <StoryHeader title={entry.name} onBack={onBack} />
+                </View>
+                <ScrollView contentContainerStyle={[styles.list, styles.legacyList]}>
                     {entry.legacyStories.map(({ name, Component }) => (
                         <View key={name} style={styles.list}>
                             <Text style={styles.title}>{name}</Text>
@@ -105,17 +115,21 @@ export const ComponentStory: FC<{ entry: StoryEntry; onBack: () => void }> = ({ 
     return (
         <View style={styles.area}>
             <View style={styles.page}>
-                <StoryHeader title={entry.name} onBack={onBack} />
-                <View style={styles.tabs}>
-                    <Tabstrip
-                        options={[{ label: 'Playground', value: 'playground' }, { label: 'Gallery', value: 'gallery' }]}
-                        value={tab}
-                        onChange={setTab}
-                        spread
-                        overflowAccessibilityLabel="More story views"
-                    />
+                <View style={styles.header}>
+                    <StoryHeader title={entry.name} onBack={onBack} />
                 </View>
-                <View style={[styles.preview, landscape ? { marginRight: drawerSize } : { marginBottom: drawerSize }]}>
+                <Tabstrip
+                    options={[{ label: 'Playground', value: 'playground' }, { label: 'Gallery', value: 'gallery' }]}
+                    value={tab}
+                    onChange={setTab}
+                    spread
+                    overflowAccessibilityLabel="More story views"
+                />
+                <View style={[
+                    styles.preview,
+                    tab === 'gallery' ? styles.galleryPreview : undefined,
+                    landscape ? { marginRight: drawerSize } : { marginBottom: drawerSize },
+                ]}>
                     {tab === 'gallery' ? definition.renderGallery(args) : definition.renderPlayground(args)}
                 </View>
             </View>

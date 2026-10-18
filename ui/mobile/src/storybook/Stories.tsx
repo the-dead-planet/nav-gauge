@@ -1,5 +1,5 @@
-import { FC, useState } from 'react';
-import { ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { FC, useEffect, useState } from 'react';
+import { BackHandler, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Text } from '../design-system/typography';
 import { TextInput } from '../forms/text-input';
 import { ComponentStory } from './ComponentStory';
@@ -40,6 +40,22 @@ export const Stories: FC = () => {
     const groups = storyGroups.filter((group) => !normalizedQuery
         || group.name.includes(normalizedQuery)
         || group.entries.some((entry) => entry.name.toLowerCase().includes(normalizedQuery)));
+
+    useEffect(() => {
+        const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+            if (selectedEntry) {
+                setSelectedEntry(null);
+                return true;
+            }
+            if (selectedGroup) {
+                setSelectedGroup(null);
+                return true;
+            }
+            return false;
+        });
+
+        return () => subscription.remove();
+    }, [selectedEntry, selectedGroup]);
 
     if (selectedEntry) {
         return <StoryBackground><ComponentStory entry={selectedEntry} onBack={() => setSelectedEntry(null)} /></StoryBackground>;

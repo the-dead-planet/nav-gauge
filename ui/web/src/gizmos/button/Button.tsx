@@ -62,9 +62,10 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
                 styles[`size-${size}`],
                 styles[`corners-${corners}`],
                 {
+                    [styles[`has-icon-${size}`]]: !!icon,
                     [styles['interactive']]: !!onClick && !disabled,
                     [styles['active']]: active,
-                    [styles[`only-icon-${size}`]]: !children,
+                    [styles[`only-icon-${size}`]]: !!icon && !children,
                     [styles['disabled']]: disabled,
                     [styles['glyphs-glow']]: effects.glyphsGlow,
                     [styles['depth-inset']]: effects.depth === 'inset',

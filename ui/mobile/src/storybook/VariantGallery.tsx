@@ -5,12 +5,13 @@ import { Text } from '../design-system/typography';
 
 const styles = StyleSheet.create({
     container: {
-        padding: 16,
-        gap: 16,
+        alignSelf: 'stretch',
+        width: '100%',
+        gap: 12,
     },
     section: {
-        paddingVertical: 12,
-        gap: 8,
+        width: '100%',
+        gap: 4,
     },
     row: {
         flexDirection: 'row',
