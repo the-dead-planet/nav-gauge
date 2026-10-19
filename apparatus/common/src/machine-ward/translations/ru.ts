@@ -9,6 +9,7 @@ const ru: TranslationTable<MachineTranslationKey>['ru'] = {
     on: 'Вкл.',
     off: 'Выкл.',
     menu: 'Меню приложения',
+    'go-back': 'Назад',
     'switch-to-light-mode': 'Переключиться на светлый режим',
     'switch-to-dark-mode': 'Переключиться на темный режим',
     gears: 'Механизмы',

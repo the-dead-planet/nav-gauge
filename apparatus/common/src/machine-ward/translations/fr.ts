@@ -9,6 +9,7 @@ const fr: TranslationTable<MachineTranslationKey>['fr'] = {
     on: 'Activé',
     off: 'Désactivé',
     menu: "Menu de l'application",
+    'go-back': 'Retour',
     'switch-to-light-mode': 'Passer au mode clair',
     'switch-to-dark-mode': 'Passer au mode sombre',
     gears: 'Engrenages',

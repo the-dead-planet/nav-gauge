@@ -31,6 +31,7 @@ export const TextInput: FC<TextInputProps> = ({
     size = "sm",
     variant = "fill-inverse",
     label,
+    placeholder,
     value,
     onChange,
     disabled = false,
@@ -54,6 +55,17 @@ export const TextInput: FC<TextInputProps> = ({
         variant === "fill"
             ? theme.color(color, theme.contrastShade(color))
             : theme.color(color, theme.isLight ? 900 : 100);
+    const placeholderTextColor = disabled
+        ? disabledColor
+        : theme.color(
+              color,
+              variant === "fill"
+                  ? theme.contrastShade(color)
+                  : theme.isLight
+                    ? 900
+                    : 100,
+              0.5,
+          );
     const backgroundColor = disabled
         ? theme.color(color, theme.isLight ? 200 : 800)
         : variant === "fill"
@@ -95,6 +107,8 @@ export const TextInput: FC<TextInputProps> = ({
                     },
                 ]}
                 value={value}
+                placeholder={placeholder}
+                placeholderTextColor={placeholderTextColor}
                 onChangeText={onChange}
                 editable={!disabled}
                 onFocus={() => setIsFocused(true)}

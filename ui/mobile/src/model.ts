@@ -10,3 +10,7 @@ export interface PressFeatureProperties {
 export type PressEventFeature = GeoJSON.Feature<GeoJSON.Point, PressFeatureProperties>;
 
 export type MutableViewStyle = { -readonly [K in keyof ViewStyle]: ViewStyle[K] };
+
+export interface TopBarBackAction {
+    onBack?: () => void;
+}

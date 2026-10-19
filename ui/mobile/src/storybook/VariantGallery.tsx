@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
 });
 
 interface VariantGalleryProps<Variant extends string = FillVariant> {
+    sizes?: readonly SizeVariant[];
     variants?: readonly Variant[];
     render: (options: { size: SizeVariant; color: ColorVariant; variant: Variant }) => ReactNode;
     children?: ReactNode;
@@ -36,6 +37,7 @@ interface VariantGalleryProps<Variant extends string = FillVariant> {
 }
 
 export const VariantGallery = <Variant extends string = FillVariant>({
+    sizes = sizeOptions,
     variants = fillVariantOptions as unknown as readonly Variant[],
     render,
     children,
@@ -44,7 +46,7 @@ export const VariantGallery = <Variant extends string = FillVariant>({
     const content = (
         <>
             {children}
-            {sizeOptions.map((size) => (
+            {sizes.map((size) => (
                 <View key={size} style={styles.section}>
                     <Text style={styles.label}>{size}</Text>
                     <View style={styles.row}>

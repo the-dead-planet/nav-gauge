@@ -44,6 +44,8 @@ Generate with `yarn generate:gear <name>` from `/`.
 
 Review surrounding code for control flow, naming, duplication, concept extraction, and module boundaries. Make a small behavior-preserving adjacent refactor only when it materially improves consistency.
 
+When invoking Prettier directly, always pass `--tab-width 4` and do not reformat untouched lines.
+
 Run one verification pass after edits: relevant typecheck, tests, `yarn lint`, and `git diff --check`. Redirect verbose output to temporary logs, report only pass or fail, and inspect it only on failure.
 
 ## Single-Pass Workflow

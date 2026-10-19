@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import { useTheme, FontType } from "@ui";
-import { Text, ThemeModeToggle } from '@mobile-ui';
+import { useTheme, FontType, Icons } from "@ui";
+import { Button, Text, ThemeModeToggle, topBarBackAction$ } from '@mobile-ui';
 import { MachineWardTopBarProps, useMultipleTranslations } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { useMobileMachineWard } from "@mobile-apparatus";
@@ -24,6 +24,9 @@ const styles = StyleSheet.create({
     },
     leftSection: {
         flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 6,
     },
     header: {
         fontSize: 16,
@@ -40,11 +43,14 @@ const styles = StyleSheet.create({
 export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
     title,
     onNavigate,
+    onNavigateBack,
 }) => {
     const theme = useTheme();
     const { individuator, namespace, translationKey, toolsStation } = useMobileMachineWard();
     const [topBarTools] = useSubjectState(toolsStation.topBarTools$);
-    const [lightModeTooltip, darkModeTooltip] = useMultipleTranslations([
+    const [topBarBackAction] = useSubjectState(topBarBackAction$);
+    const [goBackTooltip, lightModeTooltip, darkModeTooltip] = useMultipleTranslations([
+        { n: namespace, t: translationKey.GoBack },
         { n: namespace, t: translationKey.SwitchToLightMode },
         { n: namespace, t: translationKey.SwitchToDarkMode },
     ]);
@@ -56,6 +62,16 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
             shadowColor: theme.componentColor('box-shadow'),
         }]}>
             <View style={styles.leftSection}>
+                {topBarBackAction ? (
+                    <Button
+                        icon={Icons.NounProject.ChevronDownDouble}
+                        iconRotateZ={90}
+                        onPress={topBarBackAction.onBack ?? onNavigateBack}
+                        tooltip={goBackTooltip}
+                        tooltipPlacement="bottom"
+                        accessibilityLabel={goBackTooltip}
+                    />
+                ) : null}
                 <UnderConstructionChip />
             </View>
             <Text

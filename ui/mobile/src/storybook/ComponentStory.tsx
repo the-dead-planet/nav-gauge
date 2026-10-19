@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     },
 });
 
-export const ComponentStory: FC<{ entry: StoryEntry; onBack: () => void }> = ({ entry, onBack }) => {
+export const ComponentStory: FC<{ entry: StoryEntry }> = ({ entry }) => {
     const theme = useTheme();
     const { width, height } = useWindowDimensions();
     const landscape = width > height;
@@ -88,7 +88,7 @@ export const ComponentStory: FC<{ entry: StoryEntry; onBack: () => void }> = ({ 
         return (
             <View style={styles.page}>
                 <View style={styles.header}>
-                    <StoryHeader title={entry.name} onBack={onBack} />
+                    <StoryHeader title={entry.name} />
                 </View>
                 <ScrollView contentContainerStyle={[styles.list, styles.legacyList]}>
                     {entry.legacyStories.map(({ name, Component }) => (
@@ -116,7 +116,7 @@ export const ComponentStory: FC<{ entry: StoryEntry; onBack: () => void }> = ({ 
         <View style={styles.area}>
             <View style={styles.page}>
                 <View style={styles.header}>
-                    <StoryHeader title={entry.name} onBack={onBack} />
+                    <StoryHeader title={entry.name} />
                 </View>
                 <Tabstrip
                     options={[{ label: 'Playground', value: 'playground' }, { label: 'Gallery', value: 'gallery' }]}
