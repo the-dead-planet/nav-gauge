@@ -11,29 +11,29 @@ import { useMobileMachineWard } from "@mobile-apparatus";
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const Machine: FC<MachineWardMachineProps<keyof RootStackParamList>> = ({
-  onNavigateBack,
+    onNavigateBack,
 }) => {
-  const { isDev } = useMobileMachineWard();
+    const { isDev } = useMobileMachineWard();
 
-  return (
-    <NavigationContainer ref={navigationRef}>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-          contentStyle: {
-            backgroundColor: "transparent",
-          },
-          animation: "slide_from_right",
-        }}
-      >
-        <Stack.Screen name="Home" component={MapSection} />
-        {isDev ? <Stack.Screen name="Stories" component={Stories} /> : null}
-        <Stack.Screen name="NotFound">
-          {(props) => (
-            <NotFoundScreen {...props} onNavigateBack={onNavigateBack} />
-          )}
-        </Stack.Screen>
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+    return (
+        <NavigationContainer ref={navigationRef}>
+            <Stack.Navigator
+                screenOptions={{
+                    headerShown: false,
+                    contentStyle: {
+                        backgroundColor: "transparent",
+                    },
+                    animation: "slide_from_right",
+                }}
+            >
+                <Stack.Screen name="Home" component={MapSection} />
+                {isDev ? <Stack.Screen name="Stories" component={Stories} /> : null}
+                <Stack.Screen name="NotFound">
+                    {(props) => (
+                        <NotFoundScreen {...props} onNavigateBack={onNavigateBack} />
+                    )}
+                </Stack.Screen>
+            </Stack.Navigator>
+        </NavigationContainer>
+    );
 };
