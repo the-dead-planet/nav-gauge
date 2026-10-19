@@ -20,8 +20,8 @@
         "@lodev09/react-native-exify": "^1.0.3",
         "@maplibre/maplibre-react-native": "11.5.0",
         "@react-native-documents/picker": "^12.0.2",
-        "react": "19.3.0",
-        "react-native": "0.87.1",
+        "react": "19.3.1",
+        "react-native": "0.88.0",
         "react-native-fs": "^2.20.0"
     },
     "peerDependencies": {
@@ -29,8 +29,8 @@
         "@lodev09/react-native-exify": "^1.0.3",
         "@maplibre/maplibre-react-native": "11.5.0",
         "@react-native-documents/picker": "^12.0.2",
-        "react": "19.3.0",
-        "react-native": "0.87.1",
+        "react": "19.3.1",
+        "react-native": "0.88.0",
         "react-native-fs": "^2.20.0",
         "rxjs": "^7.8.2"
     }
