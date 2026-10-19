@@ -1,89 +1,94 @@
 import { ReactNode } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import {
-  ColorVariant,
-  FillVariant,
-  SizeVariant,
-  colorOptions,
-  fillVariantOptions,
-  sizeOptions,
+    ColorVariant,
+    FillVariant,
+    SizeVariant,
+    colorOptions,
+    fillVariantOptions,
+    sizeOptions,
 } from "@ui";
 import { Text } from "../design-system/typography";
 
 const styles = StyleSheet.create({
-  container: {
-    alignSelf: "stretch",
-    width: "100%",
-    gap: 12,
-  },
-  section: {
-    width: "100%",
-    gap: 4,
-  },
-  row: {
-    flexDirection: "row",
-    gap: 8,
-    alignItems: "center",
-  },
-  cell: {
-    flex: 1,
-    minWidth: 0,
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: "600",
-  },
+    container: {
+        alignSelf: "stretch",
+        width: "100%",
+        gap: 12,
+    },
+    section: {
+        width: "100%",
+        gap: 4,
+    },
+    row: {
+        flexDirection: "row",
+        gap: 8,
+        alignItems: "center",
+    },
+    cell: {
+        flex: 1,
+        minWidth: 0,
+    },
+    label: {
+        fontSize: 14,
+        fontWeight: "600",
+    },
 });
 
 interface VariantGalleryProps<Variant extends string = FillVariant> {
-  sizes?: readonly SizeVariant[];
-  variants?: readonly Variant[];
-  render: (options: {
-    size: SizeVariant;
-    color: ColorVariant;
-    variant: Variant;
-  }) => ReactNode;
-  children?: ReactNode;
-  scrollEnabled?: boolean;
+    sizes?: readonly SizeVariant[];
+    variants?: readonly Variant[];
+    render: (options: {
+        size: SizeVariant;
+        color: ColorVariant;
+        variant: Variant;
+    }) => ReactNode;
+    children?: ReactNode;
+    scrollEnabled?: boolean;
 }
 
 export const VariantGallery = <Variant extends string = FillVariant>({
-  sizes = sizeOptions,
-  variants = fillVariantOptions as unknown as readonly Variant[],
-  render,
-  children,
-  scrollEnabled,
+    sizes = sizeOptions,
+    variants = fillVariantOptions as unknown as readonly Variant[],
+    render,
+    children,
+    scrollEnabled,
 }: VariantGalleryProps<Variant>) => {
-  const content = (
-    <>
-      {children}
-      {sizes.map((size) => (
-        <View key={size} style={styles.section}>
-          <Text style={styles.label}>{size}</Text>
-          <View style={styles.row}>
-            {variants.map((variant) => (
-              <View key={variant} style={styles.cell}>
-                <Text>{variant}</Text>
-              </View>
-            ))}
-          </View>
-          {colorOptions.map((color) => (
-            <View key={color} style={styles.row}>
-              {variants.map((variant) => (
-                <View key={`${size}-${color}-${variant}`} style={styles.cell}>
-                  {render({ color, variant, size })}
+    const content = (
+        <>
+            {children}
+            {sizes.map((size) => (
+                <View key={size} style={styles.section}>
+                    <Text style={styles.label}>{size}</Text>
+                    <View style={styles.row}>
+                        {variants.map((variant) => (
+                            <View key={variant} style={styles.cell}>
+                                <Text>{variant}</Text>
+                            </View>
+                        ))}
+                    </View>
+                    {colorOptions.map((color) => (
+                        <View key={color} style={styles.row}>
+                            {variants.map((variant) => (
+                                <View
+                                    key={`${size}-${color}-${variant}`}
+                                    style={styles.cell}
+                                >
+                                    {render({ color, variant, size })}
+                                </View>
+                            ))}
+                        </View>
+                    ))}
                 </View>
-              ))}
-            </View>
-          ))}
-        </View>
-      ))}
-    </>
-  );
+            ))}
+        </>
+    );
 
-  return scrollEnabled === false ? (
-    <View style={styles.container}>{content}</View>
-  ) : (
-    <ScrollView contentContainerStyle={styles.container}>{content}</ScrollView>
-  );
+    return scrollEnabled === false ? (
+        <View style={styles.container}>{content}</View>
+    ) : (
+        <ScrollView contentContainerStyle={styles.container}>
+            {content}
+        </ScrollView>
+    );
 };

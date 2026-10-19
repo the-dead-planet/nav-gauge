@@ -44,6 +44,8 @@ Generate with `yarn generate:gear <name>` from `/`.
 
 Review surrounding code for control flow, naming, duplication, concept extraction, and module boundaries. Make a small behavior-preserving adjacent refactor only when it materially improves consistency.
 
+All TypeScript, TSX, JavaScript, JSX, CSS, and JSON files use four-space indentation. When invoking Prettier directly, always pass `--tab-width 4`; do not rely on a workspace package's fallback formatting configuration.
+
 Run one verification pass after edits: relevant typecheck, tests, `yarn lint`, and `git diff --check`. Redirect verbose output to temporary logs, report only pass or fail, and inspect it only on failure.
 
 ## Single-Pass Workflow

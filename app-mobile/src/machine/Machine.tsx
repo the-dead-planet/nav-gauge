@@ -27,10 +27,15 @@ export const Machine: FC<MachineWardMachineProps<keyof RootStackParamList>> = ({
                 }}
             >
                 <Stack.Screen name="Home" component={MapSection} />
-                {isDev ? <Stack.Screen name="Stories" component={Stories} /> : null}
+                {isDev ? (
+                    <Stack.Screen name="Stories" component={Stories} />
+                ) : null}
                 <Stack.Screen name="NotFound">
                     {(props) => (
-                        <NotFoundScreen {...props} onNavigateBack={onNavigateBack} />
+                        <NotFoundScreen
+                            {...props}
+                            onNavigateBack={onNavigateBack}
+                        />
                     )}
                 </Stack.Screen>
             </Stack.Navigator>
