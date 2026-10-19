@@ -1,11 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import {
-    BackHandler,
-    ScrollView,
-    StyleSheet,
-    useWindowDimensions,
-    View,
-} from 'react-native';
+import { BackHandler, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { TextInput } from '../forms/text-input';
 import { ComponentStory } from './ComponentStory';
 import { discoverStoryGroups } from './discoverStories';
@@ -40,14 +34,9 @@ export const Stories: FC = () => {
     const [selectedGroup, setSelectedGroup] = useState<StoryGroup | null>(null);
     const [selectedEntry, setSelectedEntry] = useState<StoryEntry | null>(null);
     const normalizedQuery = query.trim().toLowerCase();
-    const groups = storyGroups.filter(
-        (group) =>
-            !normalizedQuery ||
-            group.name.includes(normalizedQuery) ||
-            group.entries.some((entry) =>
-                entry.name.toLowerCase().includes(normalizedQuery),
-            ),
-    );
+    const groups = storyGroups.filter((group) => !normalizedQuery
+        || group.name.includes(normalizedQuery)
+        || group.entries.some((entry) => entry.name.toLowerCase().includes(normalizedQuery)));
 
     useEffect(() => {
         topBarBackAction$.next({
@@ -62,39 +51,29 @@ export const Stories: FC = () => {
     }, [selectedEntry, selectedGroup]);
 
     useEffect(() => {
-        const subscription = BackHandler.addEventListener(
-            'hardwareBackPress',
-            () => {
-                if (selectedEntry) {
-                    setSelectedEntry(null);
-                    return true;
-                }
-                if (selectedGroup) {
-                    setSelectedGroup(null);
-                    return true;
-                }
-                return false;
-            },
-        );
+        const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+            if (selectedEntry) {
+                setSelectedEntry(null);
+                return true;
+            }
+            if (selectedGroup) {
+                setSelectedGroup(null);
+                return true;
+            }
+            return false;
+        });
 
         return () => subscription.remove();
     }, [selectedEntry, selectedGroup]);
 
     if (selectedEntry) {
-        return (
-            <StoryBackground>
-                <ComponentStory entry={selectedEntry} />
-            </StoryBackground>
-        );
+        return <StoryBackground><ComponentStory entry={selectedEntry} /></StoryBackground>;
     }
 
     if (selectedGroup) {
         return (
             <StoryBackground>
-                <StoryGroupList
-                    group={selectedGroup}
-                    onSelect={setSelectedEntry}
-                />
+                <StoryGroupList group={selectedGroup} onSelect={setSelectedEntry} />
             </StoryBackground>
         );
     }
@@ -115,12 +94,7 @@ export const Stories: FC = () => {
                 </View>
                 <View style={styles.tiles}>
                     {groups.map((group) => (
-                        <GroupTile
-                            key={group.name}
-                            group={group}
-                            width={tileWidth}
-                            onEnter={() => setSelectedGroup(group)}
-                        />
+                        <GroupTile key={group.name} group={group} width={tileWidth} onEnter={() => setSelectedGroup(group)} />
                     ))}
                 </View>
             </ScrollView>

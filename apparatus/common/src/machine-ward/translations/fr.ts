@@ -1,5 +1,5 @@
-import { TranslationTable } from '../translatron';
-import { MachineTranslationKey } from '../model';
+import { TranslationTable } from "../translatron";
+import { MachineTranslationKey } from "../model";
 
 const fr: TranslationTable<MachineTranslationKey>['fr'] = {
     legal: 'Mentions légales',

@@ -1,10 +1,5 @@
 import { FC, useState } from 'react';
-import {
-    ScrollView,
-    StyleSheet,
-    useWindowDimensions,
-    View,
-} from 'react-native';
+import { ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useTheme } from '@ui';
 import { Text } from '../design-system/typography';
 import { ResizeHandle } from '../gizmos/resize-handle';
@@ -86,12 +81,8 @@ export const ComponentStory: FC<{ entry: StoryEntry }> = ({ entry }) => {
     const landscape = width > height;
     const definition = entry.definition;
     const [tab, setTab] = useState('playground');
-    const [args, setArgs] = useState<MobileStoryArgs>(() => ({
-        ...definition?.args,
-    }));
-    const [storedDrawerSize, setStoredDrawerSize] = useState(
-        landscape ? 300 : 240,
-    );
+    const [args, setArgs] = useState<MobileStoryArgs>(() => ({ ...definition?.args }));
+    const [storedDrawerSize, setStoredDrawerSize] = useState(landscape ? 300 : 240);
 
     if (!definition) {
         return (
@@ -99,9 +90,7 @@ export const ComponentStory: FC<{ entry: StoryEntry }> = ({ entry }) => {
                 <View style={styles.header}>
                     <StoryHeader title={entry.name} />
                 </View>
-                <ScrollView
-                    contentContainerStyle={[styles.list, styles.legacyList]}
-                >
+                <ScrollView contentContainerStyle={[styles.list, styles.legacyList]}>
                     {entry.legacyStories.map(({ name, Component }) => (
                         <View key={name} style={styles.list}>
                             <Text style={styles.title}>{name}</Text>
@@ -113,16 +102,12 @@ export const ComponentStory: FC<{ entry: StoryEntry }> = ({ entry }) => {
         );
     }
 
-    const controlNames =
-        tab === 'gallery'
-            ? (definition.galleryEditableControls ?? [])
-            : Object.keys(definition.controls);
+    const controlNames = tab === 'gallery'
+        ? definition.galleryEditableControls ?? []
+        : Object.keys(definition.controls);
     const maximumDrawerSize = Math.max(160, (landscape ? width : height) * 0.7);
     const drawerSize = Math.min(storedDrawerSize, maximumDrawerSize);
-    const resize = (delta: number) =>
-        setStoredDrawerSize((current) =>
-            Math.max(160, Math.min(maximumDrawerSize, current - delta)),
-        );
+    const resize = (delta: number) => setStoredDrawerSize((current) => Math.max(160, Math.min(maximumDrawerSize, current - delta)));
     const drawerStyle = landscape
         ? [styles.drawer, styles.landscapeDrawer, { width: drawerSize }]
         : [styles.drawer, styles.portraitDrawer, { height: drawerSize }];
@@ -134,45 +119,22 @@ export const ComponentStory: FC<{ entry: StoryEntry }> = ({ entry }) => {
                     <StoryHeader title={entry.name} />
                 </View>
                 <Tabstrip
-                    options={[
-                        { label: 'Playground', value: 'playground' },
-                        { label: 'Gallery', value: 'gallery' },
-                    ]}
+                    options={[{ label: 'Playground', value: 'playground' }, { label: 'Gallery', value: 'gallery' }]}
                     value={tab}
                     onChange={setTab}
                     spread
                     overflowAccessibilityLabel="More story views"
                 />
-                <View
-                    style={[
-                        styles.preview,
-                        tab === 'gallery' ? styles.galleryPreview : undefined,
-                        landscape
-                            ? { marginRight: drawerSize }
-                            : { marginBottom: drawerSize },
-                    ]}
-                >
-                    {tab === 'gallery'
-                        ? definition.renderGallery(args)
-                        : definition.renderPlayground(args)}
+                <View style={[
+                    styles.preview,
+                    tab === 'gallery' ? styles.galleryPreview : undefined,
+                    landscape ? { marginRight: drawerSize } : { marginBottom: drawerSize },
+                ]}>
+                    {tab === 'gallery' ? definition.renderGallery(args) : definition.renderPlayground(args)}
                 </View>
             </View>
-            <View
-                style={[
-                    drawerStyle,
-                    {
-                        backgroundColor: theme.componentColor('background'),
-                        borderColor: theme.componentColor('border'),
-                    },
-                ]}
-            >
-                <View
-                    style={
-                        landscape
-                            ? styles.landscapeHandle
-                            : styles.portraitHandle
-                    }
-                >
+            <View style={[drawerStyle, { backgroundColor: theme.componentColor('background'), borderColor: theme.componentColor('border') }]}>
+                <View style={landscape ? styles.landscapeHandle : styles.portraitHandle}>
                     <ResizeHandle
                         direction={landscape ? 'horizontal' : 'vertical'}
                         side={landscape ? 'left' : 'top'}
@@ -188,12 +150,7 @@ export const ComponentStory: FC<{ entry: StoryEntry }> = ({ entry }) => {
                             name={name}
                             control={definition.controls[name]!}
                             value={args[name]}
-                            onChange={(value) =>
-                                setArgs((current) => ({
-                                    ...current,
-                                    [name]: value,
-                                }))
-                            }
+                            onChange={(value) => setArgs((current) => ({ ...current, [name]: value }))}
                         />
                     ))}
                 </ScrollView>

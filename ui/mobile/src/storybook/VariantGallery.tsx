@@ -1,13 +1,6 @@
 import { ReactNode } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import {
-    ColorVariant,
-    FillVariant,
-    SizeVariant,
-    colorOptions,
-    fillVariantOptions,
-    sizeOptions,
-} from '@ui';
+import { ColorVariant, FillVariant, SizeVariant, colorOptions, fillVariantOptions, sizeOptions } from '@ui';
 import { Text } from '../design-system/typography';
 
 const styles = StyleSheet.create({
@@ -38,11 +31,7 @@ const styles = StyleSheet.create({
 interface VariantGalleryProps<Variant extends string = FillVariant> {
     sizes?: readonly SizeVariant[];
     variants?: readonly Variant[];
-    render: (options: {
-        size: SizeVariant;
-        color: ColorVariant;
-        variant: Variant;
-    }) => ReactNode;
+    render: (options: { size: SizeVariant; color: ColorVariant; variant: Variant }) => ReactNode;
     children?: ReactNode;
     scrollEnabled?: boolean;
 }
@@ -70,10 +59,7 @@ export const VariantGallery = <Variant extends string = FillVariant>({
                     {colorOptions.map((color) => (
                         <View key={color} style={styles.row}>
                             {variants.map((variant) => (
-                                <View
-                                    key={`${size}-${color}-${variant}`}
-                                    style={styles.cell}
-                                >
+                                <View key={`${size}-${color}-${variant}`} style={styles.cell}>
                                     {render({ color, variant, size })}
                                 </View>
                             ))}
@@ -87,8 +73,6 @@ export const VariantGallery = <Variant extends string = FillVariant>({
     return scrollEnabled === false ? (
         <View style={styles.container}>{content}</View>
     ) : (
-        <ScrollView contentContainerStyle={styles.container}>
-            {content}
-        </ScrollView>
+        <ScrollView contentContainerStyle={styles.container}>{content}</ScrollView>
     );
 };

@@ -1,14 +1,14 @@
-import { FC } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { useTheme, FontType, Icons } from '@ui';
+import { FC } from "react";
+import { StyleSheet, View } from "react-native";
+import { useTheme, FontType, Icons } from "@ui";
 import { Button, Text, ThemeModeToggle, topBarBackAction$ } from '@mobile-ui';
-import { MachineWardTopBarProps, useMultipleTranslations } from '@apparatus';
-import { useSubjectState } from '@tinker-chest';
-import { useMobileMachineWard } from '@mobile-apparatus';
-import { RootStackParamList } from '../../navigation';
-import { UnderConstructionChip } from './UnderConstructionChip';
-import { TOP_BAR_HEIGHT } from '../../machine-sizes';
-import { LayoutMenu } from './menu/LayoutMenu';
+import { MachineWardTopBarProps, useMultipleTranslations } from "@apparatus";
+import { useSubjectState } from "@tinker-chest";
+import { useMobileMachineWard } from "@mobile-apparatus";
+import { RootStackParamList } from "../../navigation";
+import { UnderConstructionChip } from "./UnderConstructionChip";
+import { TOP_BAR_HEIGHT } from "../../machine-sizes";
+import { LayoutMenu } from "./menu/LayoutMenu";
 
 const styles = StyleSheet.create({
     container: {
@@ -46,28 +46,21 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
     onNavigateBack,
 }) => {
     const theme = useTheme();
-    const { individuator, namespace, translationKey, toolsStation } =
-        useMobileMachineWard();
+    const { individuator, namespace, translationKey, toolsStation } = useMobileMachineWard();
     const [topBarTools] = useSubjectState(toolsStation.topBarTools$);
     const [topBarBackAction] = useSubjectState(topBarBackAction$);
-    const [goBackTooltip, lightModeTooltip, darkModeTooltip] =
-        useMultipleTranslations([
-            { n: namespace, t: translationKey.GoBack },
-            { n: namespace, t: translationKey.SwitchToLightMode },
-            { n: namespace, t: translationKey.SwitchToDarkMode },
-        ]);
+    const [goBackTooltip, lightModeTooltip, darkModeTooltip] = useMultipleTranslations([
+        { n: namespace, t: translationKey.GoBack },
+        { n: namespace, t: translationKey.SwitchToLightMode },
+        { n: namespace, t: translationKey.SwitchToDarkMode },
+    ]);
 
     return (
-        <View
-            style={[
-                styles.container,
-                {
-                    backgroundColor: theme.componentColor('background'),
-                    borderBottomColor: theme.componentColor('border'),
-                    shadowColor: theme.componentColor('box-shadow'),
-                },
-            ]}
-        >
+        <View style={[styles.container, {
+            backgroundColor: theme.componentColor('background'),
+            borderBottomColor: theme.componentColor('border'),
+            shadowColor: theme.componentColor('box-shadow'),
+        }]}>
             <View style={styles.leftSection}>
                 {topBarBackAction ? (
                     <Button
@@ -91,9 +84,7 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
                 {title}
             </Text>
             <View style={styles.rightSection}>
-                {Array.from(topBarTools).map(([id, Component]) => (
-                    <Component key={id} />
-                ))}
+                {Array.from(topBarTools).map(([id, Component]) => <Component key={id} />)}
                 <ThemeModeToggle
                     lightModeTooltip={lightModeTooltip}
                     darkModeTooltip={darkModeTooltip}

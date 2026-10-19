@@ -29,11 +29,8 @@ export const StoryGroupList: FC<Props> = ({ group, onSelect }) => {
     const theme = useTheme();
     const [query, setQuery] = useState('');
     const normalizedQuery = query.trim().toLowerCase();
-    const entries = group.entries.filter(
-        (entry) =>
-            !normalizedQuery ||
-            entry.name.toLowerCase().includes(normalizedQuery),
-    );
+    const entries = group.entries.filter((entry) => !normalizedQuery
+        || entry.name.toLowerCase().includes(normalizedQuery));
 
     return (
         <View style={styles.page}>

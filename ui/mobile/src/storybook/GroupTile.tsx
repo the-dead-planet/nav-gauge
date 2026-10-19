@@ -1,10 +1,5 @@
 import { FC, useState } from 'react';
-import {
-    ScrollView,
-    StyleSheet,
-    useWindowDimensions,
-    View,
-} from 'react-native';
+import { ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Icons, useTheme } from '@ui';
 import { Text } from '../design-system/typography';
 import { Button } from '../gizmos/button';
@@ -120,9 +115,7 @@ export const GroupTile: FC<Props> = ({ group, width, onEnter }) => {
                     />
                 </View>
                 <ScrollView style={styles.popupList}>
-                    {group.entries.map((entry) => (
-                        <Text key={entry.id}>• {entry.name}</Text>
-                    ))}
+                    {group.entries.map((entry) => <Text key={entry.id}>• {entry.name}</Text>)}
                 </ScrollView>
             </Popup>
         </>

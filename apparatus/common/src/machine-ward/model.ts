@@ -1,23 +1,19 @@
-import { ComponentType, ReactNode } from 'react';
-import { ErrorBoundaryProps } from '@ui';
-import { ChronoLens, SignaliumNotice } from '..';
-import { Gear, GearApparatus } from './gears';
+import { ComponentType, ReactNode } from "react";
+import { ErrorBoundaryProps } from "@ui";
+import { ChronoLens, SignaliumNotice } from "..";
+import { Gear, GearApparatus } from "./gears";
 
 export interface MachineWardLayoutProps {
     children?: ReactNode;
 }
 
-export interface MachineWardTopBarProps<
-    TNavigationPath extends string = string,
-> {
+export interface MachineWardTopBarProps<TNavigationPath extends string = string> {
     title: string;
     onNavigate: (path: TNavigationPath) => void;
     onNavigateBack: () => void;
 }
 
-export interface MachineWardMachineProps<
-    TNavigationPath extends string = string,
-> {
+export interface MachineWardMachineProps<TNavigationPath extends string = string> {
     onNavigate: (path: TNavigationPath) => void;
     onNavigateBack: () => void;
 }
@@ -27,9 +23,7 @@ export interface MachineWardNoticesProps {
     onRemove: (id: string) => void;
 }
 
-export interface MachineWardComponents<
-    TNavigationPath extends string = string,
-> {
+export interface MachineWardComponents<TNavigationPath extends string = string> {
     errorFallbackComponent: ErrorBoundaryProps['fallbackComponent'];
     layoutComponent: ComponentType<MachineWardLayoutProps>;
     topBarComponent: ComponentType<MachineWardTopBarProps<TNavigationPath>>;
@@ -37,9 +31,7 @@ export interface MachineWardComponents<
     noticesComponent: ComponentType<MachineWardNoticesProps>;
 }
 
-export type MachineGear<TMap, MobileChronoLens extends ChronoLens> = new (
-    apparatus: GearApparatus<TMap, MobileChronoLens>,
-) => Gear<TMap, MobileChronoLens>;
+export type MachineGear<TMap, MobileChronoLens extends ChronoLens> = new (apparatus: GearApparatus<TMap, MobileChronoLens>) => Gear<TMap, MobileChronoLens>;
 
 export enum MachineTranslationKey {
     Legal = 'legal',

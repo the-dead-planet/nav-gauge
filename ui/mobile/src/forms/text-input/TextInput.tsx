@@ -1,14 +1,14 @@
-import { FC, useState } from 'react';
-import { TextInput as RNTextInput, View, StyleSheet } from 'react-native';
+import { FC, useState } from "react";
+import { TextInput as RNTextInput, View, StyleSheet } from "react-native";
 import {
     controlTextSpecifications,
     FontType,
     TextInputProps,
     useTheme,
-} from '@ui';
-import { Label } from '../../design-system/typography';
-import { getMobileFontFamily } from '../../design-system/typography/fontFamily';
-import { TRANSLUCENT_OPACITY } from '../../tinkers';
+} from "@ui";
+import { Label } from "../../design-system/typography";
+import { getMobileFontFamily } from "../../design-system/typography/fontFamily";
+import { TRANSLUCENT_OPACITY } from "../../tinkers";
 
 const styles = StyleSheet.create({
     container: {
@@ -18,18 +18,18 @@ const styles = StyleSheet.create({
     input: {
         borderWidth: 1,
         borderRadius: 4,
-        boxSizing: 'border-box',
+        boxSizing: "border-box",
         fontFamily: getMobileFontFamily(FontType.Default),
     },
 });
 
 export const TextInput: FC<TextInputProps> = ({
-    color = 'neutral',
+    color = "neutral",
     contentShade,
     highlightColor = color,
     highlightContentShade,
-    size = 'sm',
-    variant = 'fill-inverse',
+    size = "sm",
+    variant = "fill-inverse",
     label,
     placeholder,
     value,
@@ -43,23 +43,23 @@ export const TextInput: FC<TextInputProps> = ({
     const highlighted = !disabled && (active || isFocused);
     const borderColor = highlighted
         ? theme.color(highlightColor, theme.isLight ? 600 : 300)
-        : theme.color(color, 500, variant === 'fill-translucent' ? 0.3 : 1);
+        : theme.color(color, 500, variant === "fill-translucent" ? 0.3 : 1);
     const fontSize = controlTextSpecifications[size].fontSize;
-    const paddingV = size === 'xs' ? 0 : size === 'sm' ? 2 : 6;
+    const paddingV = size === "xs" ? 0 : size === "sm" ? 2 : 6;
     const disabledColor = theme.color(color, theme.isLight ? 300 : 700);
-    const textColor =
-        highlighted && highlightContentShade !== undefined
-            ? theme.color(highlightColor, highlightContentShade)
-            : contentShade !== undefined
-              ? theme.color(color, contentShade)
-              : variant === 'fill'
-                ? theme.color(color, theme.contrastShade(color))
-                : theme.color(color, theme.isLight ? 900 : 100);
+    const textColor = highlighted && highlightContentShade !== undefined
+          ? theme.color(highlightColor, highlightContentShade)
+          : contentShade !== undefined
+            ? theme.color(color, contentShade)
+          :
+        variant === "fill"
+            ? theme.color(color, theme.contrastShade(color))
+            : theme.color(color, theme.isLight ? 900 : 100);
     const placeholderTextColor = disabled
         ? disabledColor
         : theme.color(
               color,
-              variant === 'fill'
+              variant === "fill"
                   ? theme.contrastShade(color)
                   : theme.isLight
                     ? 900
@@ -68,9 +68,9 @@ export const TextInput: FC<TextInputProps> = ({
           );
     const backgroundColor = disabled
         ? theme.color(color, theme.isLight ? 200 : 800)
-        : variant === 'fill'
+        : variant === "fill"
           ? theme.color(color, 500)
-          : variant === 'fill-inverse'
+          : variant === "fill-inverse"
             ? theme.color(color, theme.isLight ? 100 : 900)
             : theme.color(color, 500, TRANSLUCENT_OPACITY);
 
@@ -83,7 +83,7 @@ export const TextInput: FC<TextInputProps> = ({
                     disabled={disabled}
                     style={[
                         styles.label,
-                        { fontSize: size === 'xs' ? 11 : 12 },
+                        { fontSize: size === "xs" ? 11 : 12 },
                     ]}
                 >
                     {label}
@@ -97,10 +97,10 @@ export const TextInput: FC<TextInputProps> = ({
                         color: disabled ? disabledColor : textColor,
                         borderColor: disabled
                             ? disabledColor
-                            : variant === 'fill'
+                            : variant === "fill"
                               ? backgroundColor
                               : borderColor,
-                        borderWidth: disabled || variant !== 'fill' ? 1 : 0,
+                        borderWidth: disabled || variant !== "fill" ? 1 : 0,
                         fontSize,
                         paddingVertical: paddingV,
                         paddingHorizontal: 8,

@@ -1,5 +1,5 @@
-import { TranslationTable } from '../translatron';
-import { MachineTranslationKey } from '../model';
+import { TranslationTable } from "../translatron";
+import { MachineTranslationKey } from "../model";
 
 const jp: TranslationTable<MachineTranslationKey>['jp'] = {
     legal: '法的情報',
