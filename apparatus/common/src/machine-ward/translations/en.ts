@@ -1,24 +1,25 @@
 import { TranslationTable } from "../translatron";
 import { MachineTranslationKey } from "../model";
 
-const en: TranslationTable<MachineTranslationKey>['en'] = {
-    legal: 'Legal',
-    privacy: 'Privacy',
-    close: 'Close',
-    save: 'Save',
-    on: 'On',
-    off: 'Off',
-    menu: 'Application menu',
-    'switch-to-light-mode': 'Switch to light mode',
-    'switch-to-dark-mode': 'Switch to dark mode',
-    gears: 'Gears',
-    collapse: 'Collapse',
-    expand: 'Expand',
-    'panel-menu': 'Panel options',
-    'swap-placement': 'Place panel on the {{placement}}',
-    'drag-to-resize': 'Drag to resize',
-    attributions: 'Attributions',
-    'under-construction': 'Under construction',
+const en: TranslationTable<MachineTranslationKey>["en"] = {
+  legal: "Legal",
+  privacy: "Privacy",
+  close: "Close",
+  save: "Save",
+  on: "On",
+  off: "Off",
+  menu: "Application menu",
+  "go-back": "Go back",
+  "switch-to-light-mode": "Switch to light mode",
+  "switch-to-dark-mode": "Switch to dark mode",
+  gears: "Gears",
+  collapse: "Collapse",
+  expand: "Expand",
+  "panel-menu": "Panel options",
+  "swap-placement": "Place panel on the {{placement}}",
+  "drag-to-resize": "Drag to resize",
+  attributions: "Attributions",
+  "under-construction": "Under construction",
 };
 
 export default en;
