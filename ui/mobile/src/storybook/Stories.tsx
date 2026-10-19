@@ -80,7 +80,7 @@ export const Stories: FC = () => {
             <ScrollView contentContainerStyle={styles.page}>
                 <Text style={styles.heading}>UI Components</Text>
                 <View style={styles.search}>
-                    <TextInput label="Search groups or components" value={query} onChange={setQuery} />
+                    <TextInput label="Search groups or components" placeholder="Popup" value={query} onChange={setQuery} />
                 </View>
                 <View style={styles.tiles}>
                     {groups.map((group) => (
