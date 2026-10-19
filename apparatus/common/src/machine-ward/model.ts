@@ -41,6 +41,7 @@ export enum MachineTranslationKey {
     On = 'on',
     Off = 'off',
     Menu = 'menu',
+    GoBack = 'go-back',
     SwitchToLightMode = 'switch-to-light-mode',
     SwitchToDarkMode = 'switch-to-dark-mode',
     Gears = 'gears',

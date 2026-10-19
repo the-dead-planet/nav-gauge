@@ -4,15 +4,10 @@ import { Icons, useTheme } from '@ui';
 import { Text } from '../design-system/typography';
 import { Button } from '../gizmos/button';
 import { Popup } from '../rigs/popup';
+import { Tile } from '../assemblies/tile';
 import { StoryGroup } from './model';
 
 const styles = StyleSheet.create({
-    tile: {
-        borderWidth: 1,
-        padding: 12,
-        gap: 10,
-        minHeight: 190,
-    },
     title: {
         fontSize: 18,
         fontWeight: '700',
@@ -25,10 +20,17 @@ const styles = StyleSheet.create({
     },
     components: {
         gap: 4,
-        flex: 1,
+        flexGrow: 1,
+        minWidth: 0,
     },
-    footer: {
-        alignItems: 'flex-end',
+    component: {
+        fontSize: 14,
+        lineHeight: 18,
+    },
+    more: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 4,
     },
     popup: {
         borderWidth: 1,
@@ -53,24 +55,41 @@ export const GroupTile: FC<Props> = ({ group, width, onEnter }) => {
     const hiddenCount = Math.max(0, group.entries.length - 3);
 
     return (
-        <View style={[styles.tile, { width, borderColor: theme.componentColor('border') }]}>
-            <View style={styles.header}>
-                <Text style={styles.title}>{group.name}</Text>
-                <Button
-                    icon={Icons.NounProject.Components}
-                    size="xs"
-                    onPress={() => setShowComponents(true)}
-                    accessibilityLabel={`Show all ${group.name} components`}
-                />
-            </View>
-            <Text>{group.description}</Text>
-            <View style={styles.components}>
-                {group.entries.slice(0, 3).map((entry) => <Text key={entry.id}>• {entry.name}</Text>)}
-                {hiddenCount > 0 ? <Text>and {hiddenCount} more</Text> : null}
-            </View>
-            <View style={styles.footer}>
-                <Button variant="fill" onPress={onEnter}>Enter</Button>
-            </View>
+        <>
+            <Tile
+                name={group.name}
+                description={group.description}
+                actions={
+                    <Button variant="fill" onPress={onEnter}>
+                        Enter
+                    </Button>
+                }
+                panelProps={{
+                    variant: 'fill-inverse',
+                    style: { width },
+                }}
+            >
+                <View style={styles.components}>
+                    {group.entries.slice(0, 3).map((entry) => (
+                        <Text key={entry.id} style={styles.component}>
+                            • {entry.name}
+                        </Text>
+                    ))}
+                    {hiddenCount > 0 ? (
+                        <View style={styles.more}>
+                            <Text style={styles.component}>
+                                and {hiddenCount} more
+                            </Text>
+                            <Button
+                                icon={Icons.NounProject.Components}
+                                size="xs"
+                                onPress={() => setShowComponents(true)}
+                                accessibilityLabel={`Show all ${group.name} components`}
+                            />
+                        </View>
+                    ) : null}
+                </View>
+            </Tile>
             <Popup
                 visible={showComponents}
                 position={{ x: 16, y: 72 }}
@@ -99,6 +118,6 @@ export const GroupTile: FC<Props> = ({ group, width, onEnter }) => {
                     {group.entries.map((entry) => <Text key={entry.id}>• {entry.name}</Text>)}
                 </ScrollView>
             </Popup>
-        </View>
+        </>
     );
 };

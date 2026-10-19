@@ -9,6 +9,7 @@ const de: TranslationTable<MachineTranslationKey>['de'] = {
     on: 'Ein',
     off: 'Aus',
     menu: 'Anwendungsmenü',
+    'go-back': 'Zurück',
     'switch-to-light-mode': 'Zum hellen Modus wechseln',
     'switch-to-dark-mode': 'Zum dunklen Modus wechseln',
     gears: 'Getriebe',

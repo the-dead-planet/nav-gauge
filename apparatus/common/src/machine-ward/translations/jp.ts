@@ -9,6 +9,7 @@ const jp: TranslationTable<MachineTranslationKey>['jp'] = {
     on: 'オン',
     off: 'オフ',
     menu: 'アプリケーションメニュー',
+    'go-back': '戻る',
     'switch-to-light-mode': 'ライトモードに切り替える',
     'switch-to-dark-mode': 'ダークモードに切り替える',
     gears: 'ギア',

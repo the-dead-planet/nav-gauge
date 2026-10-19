@@ -9,6 +9,7 @@ const nl: TranslationTable<MachineTranslationKey>['nl'] = {
     on: 'Aan',
     off: 'Uit',
     menu: 'Applicatiemenu',
+    'go-back': 'Ga terug',
     'switch-to-light-mode': 'Overschakelen naar lichte modus',
     'switch-to-dark-mode': 'Overschakelen naar donkere modus',
     gears: 'Versnellingen',
