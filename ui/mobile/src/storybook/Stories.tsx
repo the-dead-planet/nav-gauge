@@ -1,20 +1,20 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from 'react';
 import {
     BackHandler,
     ScrollView,
     StyleSheet,
     useWindowDimensions,
     View,
-} from "react-native";
-import { TextInput } from "../forms/text-input";
-import { ComponentStory } from "./ComponentStory";
-import { discoverStoryGroups } from "./discoverStories";
-import { GroupTile } from "./GroupTile";
-import { StoryEntry, StoryGroup } from "./model";
-import { StoryBackground } from "./StoryBackground";
-import { StoryGroupList } from "./StoryGroupList";
-import { StoryHeader } from "./StoryHeader";
-import { topBarBackAction$ } from "../tinkers";
+} from 'react-native';
+import { TextInput } from '../forms/text-input';
+import { ComponentStory } from './ComponentStory';
+import { discoverStoryGroups } from './discoverStories';
+import { GroupTile } from './GroupTile';
+import { StoryEntry, StoryGroup } from './model';
+import { StoryBackground } from './StoryBackground';
+import { StoryGroupList } from './StoryGroupList';
+import { StoryHeader } from './StoryHeader';
+import { topBarBackAction$ } from '../tinkers';
 
 const styles = StyleSheet.create({
     page: {
@@ -23,11 +23,11 @@ const styles = StyleSheet.create({
         gap: 16,
     },
     search: {
-        width: "100%",
+        width: '100%',
     },
     tiles: {
-        flexDirection: "row",
-        flexWrap: "wrap",
+        flexDirection: 'row',
+        flexWrap: 'wrap',
         gap: 12,
     },
 });
@@ -36,7 +36,7 @@ const storyGroups = discoverStoryGroups();
 
 export const Stories: FC = () => {
     const { width, height } = useWindowDimensions();
-    const [query, setQuery] = useState("");
+    const [query, setQuery] = useState('');
     const [selectedGroup, setSelectedGroup] = useState<StoryGroup | null>(null);
     const [selectedEntry, setSelectedEntry] = useState<StoryEntry | null>(null);
     const normalizedQuery = query.trim().toLowerCase();
@@ -63,7 +63,7 @@ export const Stories: FC = () => {
 
     useEffect(() => {
         const subscription = BackHandler.addEventListener(
-            "hardwareBackPress",
+            'hardwareBackPress',
             () => {
                 if (selectedEntry) {
                     setSelectedEntry(null);
@@ -99,7 +99,7 @@ export const Stories: FC = () => {
         );
     }
 
-    const tileWidth = width > height ? "23%" : "48%";
+    const tileWidth = width > height ? '23%' : '48%';
 
     return (
         <StoryBackground>

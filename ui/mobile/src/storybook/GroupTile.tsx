@@ -1,26 +1,26 @@
-import { FC, useState } from "react";
+import { FC, useState } from 'react';
 import {
     ScrollView,
     StyleSheet,
     useWindowDimensions,
     View,
-} from "react-native";
-import { Icons, useTheme } from "@ui";
-import { Text } from "../design-system/typography";
-import { Button } from "../gizmos/button";
-import { Popup } from "../rigs/popup";
-import { Tile } from "../assemblies/tile";
-import { StoryGroup } from "./model";
+} from 'react-native';
+import { Icons, useTheme } from '@ui';
+import { Text } from '../design-system/typography';
+import { Button } from '../gizmos/button';
+import { Popup } from '../rigs/popup';
+import { Tile } from '../assemblies/tile';
+import { StoryGroup } from './model';
 
 const styles = StyleSheet.create({
     title: {
         fontSize: 18,
-        fontWeight: "700",
+        fontWeight: '700',
         flex: 1,
     },
     header: {
-        flexDirection: "row",
-        alignItems: "center",
+        flexDirection: 'row',
+        alignItems: 'center',
         gap: 8,
     },
     components: {
@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
         lineHeight: 18,
     },
     more: {
-        flexDirection: "row",
-        alignItems: "center",
+        flexDirection: 'row',
+        alignItems: 'center',
         gap: 4,
     },
     popup: {
@@ -70,7 +70,7 @@ export const GroupTile: FC<Props> = ({ group, width, onEnter }) => {
                     </Button>
                 }
                 panelProps={{
-                    variant: "fill-inverse",
+                    variant: 'fill-inverse',
                     style: { width },
                 }}
             >
@@ -105,8 +105,8 @@ export const GroupTile: FC<Props> = ({ group, width, onEnter }) => {
                     {
                         width: Math.min(420, windowWidth - 32),
                         maxHeight: windowHeight - 96,
-                        backgroundColor: theme.componentColor("background"),
-                        borderColor: theme.componentColor("border"),
+                        backgroundColor: theme.componentColor('background'),
+                        borderColor: theme.componentColor('border'),
                     },
                 ]}
             >

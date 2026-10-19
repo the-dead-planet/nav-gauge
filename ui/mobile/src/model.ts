@@ -1,11 +1,11 @@
-import { GestureResponderEvent, ViewStyle } from "react-native";
-import { BehaviorSubject } from "rxjs";
+import { GestureResponderEvent, ViewStyle } from 'react-native';
+import { BehaviorSubject } from 'rxjs';
 import {
     CameraRef,
     MapRef,
     PressEvent,
     PressEventWithFeatures,
-} from "@maplibre/maplibre-react-native";
+} from '@maplibre/maplibre-react-native';
 
 export interface PressFeatureProperties {
     screenPointX?: number;

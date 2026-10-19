@@ -1,7 +1,7 @@
-import { ComponentType, ReactNode } from "react";
-import { ErrorBoundaryProps } from "@ui";
-import { ChronoLens, SignaliumNotice } from "..";
-import { Gear, GearApparatus } from "./gears";
+import { ComponentType, ReactNode } from 'react';
+import { ErrorBoundaryProps } from '@ui';
+import { ChronoLens, SignaliumNotice } from '..';
+import { Gear, GearApparatus } from './gears';
 
 export interface MachineWardLayoutProps {
     children?: ReactNode;
@@ -30,7 +30,7 @@ export interface MachineWardNoticesProps {
 export interface MachineWardComponents<
     TNavigationPath extends string = string,
 > {
-    errorFallbackComponent: ErrorBoundaryProps["fallbackComponent"];
+    errorFallbackComponent: ErrorBoundaryProps['fallbackComponent'];
     layoutComponent: ComponentType<MachineWardLayoutProps>;
     topBarComponent: ComponentType<MachineWardTopBarProps<TNavigationPath>>;
     machineComponent: ComponentType<MachineWardMachineProps<TNavigationPath>>;
@@ -42,22 +42,22 @@ export type MachineGear<TMap, MobileChronoLens extends ChronoLens> = new (
 ) => Gear<TMap, MobileChronoLens>;
 
 export enum MachineTranslationKey {
-    Legal = "legal",
-    Privacy = "privacy",
-    Close = "close",
-    Save = "save",
-    On = "on",
-    Off = "off",
-    Menu = "menu",
-    GoBack = "go-back",
-    SwitchToLightMode = "switch-to-light-mode",
-    SwitchToDarkMode = "switch-to-dark-mode",
-    Gears = "gears",
-    Collapse = "collapse",
-    Expand = "expand",
-    PanelMenu = "panel-menu",
-    SwapPlacement = "swap-placement",
-    DragToResize = "drag-to-resize",
-    Attributions = "attributions",
-    UnderConstruction = "under-construction",
+    Legal = 'legal',
+    Privacy = 'privacy',
+    Close = 'close',
+    Save = 'save',
+    On = 'on',
+    Off = 'off',
+    Menu = 'menu',
+    GoBack = 'go-back',
+    SwitchToLightMode = 'switch-to-light-mode',
+    SwitchToDarkMode = 'switch-to-dark-mode',
+    Gears = 'gears',
+    Collapse = 'collapse',
+    Expand = 'expand',
+    PanelMenu = 'panel-menu',
+    SwapPlacement = 'swap-placement',
+    DragToResize = 'drag-to-resize',
+    Attributions = 'attributions',
+    UnderConstruction = 'under-construction',
 }

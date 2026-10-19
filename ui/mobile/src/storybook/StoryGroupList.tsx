@@ -1,10 +1,10 @@
-import { FC, useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
-import { Icons, useTheme } from "@ui";
-import { Button } from "../gizmos/button";
-import { TextInput } from "../forms/text-input";
-import { StoryEntry, StoryGroup } from "./model";
-import { StoryHeader } from "./StoryHeader";
+import { FC, useState } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { Icons, useTheme } from '@ui';
+import { Button } from '../gizmos/button';
+import { TextInput } from '../forms/text-input';
+import { StoryEntry, StoryGroup } from './model';
+import { StoryHeader } from './StoryHeader';
 
 const styles = StyleSheet.create({
     page: {
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
         gap: 8,
     },
     item: {
-        alignSelf: "flex-start",
+        alignSelf: 'flex-start',
     },
 });
 
@@ -27,7 +27,7 @@ interface Props {
 
 export const StoryGroupList: FC<Props> = ({ group, onSelect }) => {
     const theme = useTheme();
-    const [query, setQuery] = useState("");
+    const [query, setQuery] = useState('');
     const normalizedQuery = query.trim().toLowerCase();
     const entries = group.entries.filter(
         (entry) =>

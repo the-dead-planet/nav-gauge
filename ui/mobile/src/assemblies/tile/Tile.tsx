@@ -1,8 +1,8 @@
-import { ComponentProps, FC } from "react";
-import { StyleSheet, View } from "react-native";
-import { TileProps } from "@ui";
-import { Text } from "../../design-system/typography";
-import { Panel } from "../../hud/panel";
+import { ComponentProps, FC } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { TileProps } from '@ui';
+import { Text } from '../../design-system/typography';
+import { Panel } from '../../hud/panel';
 
 const styles = StyleSheet.create({
     tile: {
@@ -17,8 +17,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12,
     },
     titleRow: {
-        flexDirection: "row",
-        alignItems: "flex-start",
+        flexDirection: 'row',
+        alignItems: 'flex-start',
         gap: 8,
     },
     title: {
@@ -37,8 +37,8 @@ const styles = StyleSheet.create({
         padding: 12,
     },
     actions: {
-        flexDirection: "row",
-        justifyContent: "flex-end",
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
         gap: 8,
         paddingTop: 12,
         paddingLeft: 12,

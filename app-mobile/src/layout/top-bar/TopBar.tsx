@@ -1,20 +1,20 @@
-import { FC } from "react";
-import { StyleSheet, View } from "react-native";
-import { useTheme, FontType, Icons } from "@ui";
-import { Button, Text, ThemeModeToggle, topBarBackAction$ } from "@mobile-ui";
-import { MachineWardTopBarProps, useMultipleTranslations } from "@apparatus";
-import { useSubjectState } from "@tinker-chest";
-import { useMobileMachineWard } from "@mobile-apparatus";
-import { RootStackParamList } from "../../navigation";
-import { UnderConstructionChip } from "./UnderConstructionChip";
-import { TOP_BAR_HEIGHT } from "../../machine-sizes";
-import { LayoutMenu } from "./menu/LayoutMenu";
+import { FC } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { useTheme, FontType, Icons } from '@ui';
+import { Button, Text, ThemeModeToggle, topBarBackAction$ } from '@mobile-ui';
+import { MachineWardTopBarProps, useMultipleTranslations } from '@apparatus';
+import { useSubjectState } from '@tinker-chest';
+import { useMobileMachineWard } from '@mobile-apparatus';
+import { RootStackParamList } from '../../navigation';
+import { UnderConstructionChip } from './UnderConstructionChip';
+import { TOP_BAR_HEIGHT } from '../../machine-sizes';
+import { LayoutMenu } from './menu/LayoutMenu';
 
 const styles = StyleSheet.create({
     container: {
         height: TOP_BAR_HEIGHT,
-        flexDirection: "row",
-        alignItems: "center",
+        flexDirection: 'row',
+        alignItems: 'center',
         paddingHorizontal: 5,
         borderBottomWidth: 1,
         shadowOffset: { width: 0, height: 0 },
@@ -24,8 +24,8 @@ const styles = StyleSheet.create({
     },
     leftSection: {
         flex: 1,
-        flexDirection: "row",
-        alignItems: "center",
+        flexDirection: 'row',
+        alignItems: 'center',
         gap: 6,
     },
     header: {
@@ -33,10 +33,10 @@ const styles = StyleSheet.create({
     },
     rightSection: {
         flex: 1,
-        flexDirection: "row",
-        alignItems: "center",
+        flexDirection: 'row',
+        alignItems: 'center',
         gap: 6,
-        justifyContent: "flex-end",
+        justifyContent: 'flex-end',
     },
 });
 
@@ -62,9 +62,9 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
             style={[
                 styles.container,
                 {
-                    backgroundColor: theme.componentColor("background"),
-                    borderBottomColor: theme.componentColor("border"),
-                    shadowColor: theme.componentColor("box-shadow"),
+                    backgroundColor: theme.componentColor('background'),
+                    borderBottomColor: theme.componentColor('border'),
+                    shadowColor: theme.componentColor('box-shadow'),
                 },
             ]}
         >

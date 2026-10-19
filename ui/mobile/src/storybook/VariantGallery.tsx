@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ReactNode } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import {
     ColorVariant,
     FillVariant,
@@ -7,23 +7,23 @@ import {
     colorOptions,
     fillVariantOptions,
     sizeOptions,
-} from "@ui";
-import { Text } from "../design-system/typography";
+} from '@ui';
+import { Text } from '../design-system/typography';
 
 const styles = StyleSheet.create({
     container: {
-        alignSelf: "stretch",
-        width: "100%",
+        alignSelf: 'stretch',
+        width: '100%',
         gap: 12,
     },
     section: {
-        width: "100%",
+        width: '100%',
         gap: 4,
     },
     row: {
-        flexDirection: "row",
+        flexDirection: 'row',
         gap: 8,
-        alignItems: "center",
+        alignItems: 'center',
     },
     cell: {
         flex: 1,
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     },
     label: {
         fontSize: 14,
-        fontWeight: "600",
+        fontWeight: '600',
     },
 });
 

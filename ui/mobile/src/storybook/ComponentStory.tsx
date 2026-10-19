@@ -1,17 +1,17 @@
-import { FC, useState } from "react";
+import { FC, useState } from 'react';
 import {
     ScrollView,
     StyleSheet,
     useWindowDimensions,
     View,
-} from "react-native";
-import { useTheme } from "@ui";
-import { Text } from "../design-system/typography";
-import { ResizeHandle } from "../gizmos/resize-handle";
-import { Tabstrip } from "../rigs/tabstrip";
-import { MobileStoryArgs, StoryEntry } from "./model";
-import { StoryControlField } from "./StoryControlField";
-import { StoryHeader } from "./StoryHeader";
+} from 'react-native';
+import { useTheme } from '@ui';
+import { Text } from '../design-system/typography';
+import { ResizeHandle } from '../gizmos/resize-handle';
+import { Tabstrip } from '../rigs/tabstrip';
+import { MobileStoryArgs, StoryEntry } from './model';
+import { StoryControlField } from './StoryControlField';
+import { StoryHeader } from './StoryHeader';
 
 const styles = StyleSheet.create({
     area: {
@@ -33,21 +33,21 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 18,
-        fontWeight: "700",
+        fontWeight: '700',
     },
     preview: {
         flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: 'center',
+        justifyContent: 'center',
         padding: 16,
     },
     galleryPreview: {
-        alignItems: "stretch",
-        justifyContent: "flex-start",
+        alignItems: 'stretch',
+        justifyContent: 'flex-start',
         paddingHorizontal: 0,
     },
     drawer: {
-        position: "absolute",
+        position: 'absolute',
         borderWidth: 1,
         padding: 16,
     },
@@ -62,14 +62,14 @@ const styles = StyleSheet.create({
         bottom: 0,
     },
     portraitHandle: {
-        position: "absolute",
+        position: 'absolute',
         left: 0,
         right: 0,
         top: -12,
         height: 24,
     },
     landscapeHandle: {
-        position: "absolute",
+        position: 'absolute',
         top: 0,
         bottom: 0,
         left: -12,
@@ -85,7 +85,7 @@ export const ComponentStory: FC<{ entry: StoryEntry }> = ({ entry }) => {
     const { width, height } = useWindowDimensions();
     const landscape = width > height;
     const definition = entry.definition;
-    const [tab, setTab] = useState("playground");
+    const [tab, setTab] = useState('playground');
     const [args, setArgs] = useState<MobileStoryArgs>(() => ({
         ...definition?.args,
     }));
@@ -114,7 +114,7 @@ export const ComponentStory: FC<{ entry: StoryEntry }> = ({ entry }) => {
     }
 
     const controlNames =
-        tab === "gallery"
+        tab === 'gallery'
             ? (definition.galleryEditableControls ?? [])
             : Object.keys(definition.controls);
     const maximumDrawerSize = Math.max(160, (landscape ? width : height) * 0.7);
@@ -135,8 +135,8 @@ export const ComponentStory: FC<{ entry: StoryEntry }> = ({ entry }) => {
                 </View>
                 <Tabstrip
                     options={[
-                        { label: "Playground", value: "playground" },
-                        { label: "Gallery", value: "gallery" },
+                        { label: 'Playground', value: 'playground' },
+                        { label: 'Gallery', value: 'gallery' },
                     ]}
                     value={tab}
                     onChange={setTab}
@@ -146,13 +146,13 @@ export const ComponentStory: FC<{ entry: StoryEntry }> = ({ entry }) => {
                 <View
                     style={[
                         styles.preview,
-                        tab === "gallery" ? styles.galleryPreview : undefined,
+                        tab === 'gallery' ? styles.galleryPreview : undefined,
                         landscape
                             ? { marginRight: drawerSize }
                             : { marginBottom: drawerSize },
                     ]}
                 >
-                    {tab === "gallery"
+                    {tab === 'gallery'
                         ? definition.renderGallery(args)
                         : definition.renderPlayground(args)}
                 </View>
@@ -161,8 +161,8 @@ export const ComponentStory: FC<{ entry: StoryEntry }> = ({ entry }) => {
                 style={[
                     drawerStyle,
                     {
-                        backgroundColor: theme.componentColor("background"),
-                        borderColor: theme.componentColor("border"),
+                        backgroundColor: theme.componentColor('background'),
+                        borderColor: theme.componentColor('border'),
                     },
                 ]}
             >
@@ -174,8 +174,8 @@ export const ComponentStory: FC<{ entry: StoryEntry }> = ({ entry }) => {
                     }
                 >
                     <ResizeHandle
-                        direction={landscape ? "horizontal" : "vertical"}
-                        side={landscape ? "left" : "top"}
+                        direction={landscape ? 'horizontal' : 'vertical'}
+                        side={landscape ? 'left' : 'top'}
                         color="primary"
                         tooltip="Resize controls"
                         onDrag={resize}

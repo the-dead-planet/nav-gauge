@@ -1,8 +1,8 @@
-import { ComponentProps, FC } from "react";
-import { TileProps } from "@ui";
-import classNames from "classnames";
-import { Panel } from "../../hud/panel";
-import styles from "./tile.module.css";
+import { ComponentProps, FC } from 'react';
+import { TileProps } from '@ui';
+import classNames from 'classnames';
+import { Panel } from '../../hud/panel';
+import styles from './tile.module.css';
 
 interface Props extends TileProps {
     panelProps?: ComponentProps<typeof Panel>;
@@ -26,7 +26,7 @@ export const Tile: FC<Props> = ({
             <article className={styles.article} aria-label={name}>
                 <div className={styles.body}>
                     <header className={styles.header}>
-                        <div className={styles["title-row"]}>
+                        <div className={styles['title-row']}>
                             <span className={styles.title}>{name}</span>
                             {append}
                         </div>

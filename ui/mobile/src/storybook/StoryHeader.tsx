@@ -1,11 +1,11 @@
-import { FC } from "react";
-import { StyleSheet } from "react-native";
-import { Text } from "../design-system/typography";
+import { FC } from 'react';
+import { StyleSheet } from 'react-native';
+import { Text } from '../design-system/typography';
 
 const styles = StyleSheet.create({
     heading: {
         fontSize: 22,
-        fontWeight: "700",
+        fontWeight: '700',
     },
 });
 

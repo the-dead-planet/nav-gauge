@@ -1,4 +1,4 @@
-import { AppearanceProps, FillVariant } from "../../design-system/model";
+import { AppearanceProps, FillVariant } from '../../design-system/model';
 
 export interface TextInputProps extends AppearanceProps<FillVariant> {
     label?: string;

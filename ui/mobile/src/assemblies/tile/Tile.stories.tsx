@@ -1,10 +1,10 @@
-import { ComponentProps } from "react";
-import { StyleSheet, View } from "react-native";
-import { fillVariantOptions, tileStoryArgs, tileStoryControls } from "@ui";
-import { Button } from "../../gizmos/button";
-import { MobileStoryDefinition } from "../../storybook/model";
-import { VariantGallery } from "../../storybook/VariantGallery";
-import { Tile } from "./Tile";
+import { ComponentProps } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { fillVariantOptions, tileStoryArgs, tileStoryControls } from '@ui';
+import { Button } from '../../gizmos/button';
+import { MobileStoryDefinition } from '../../storybook/model';
+import { VariantGallery } from '../../storybook/VariantGallery';
+import { Tile } from './Tile';
 
 const styles = StyleSheet.create({
     gallery: {
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 const story = {
     args: {
         ...tileStoryArgs,
-        panelProps: { variant: "fill-inverse" },
+        panelProps: { variant: 'fill-inverse' },
     },
     controls: tileStoryControls,
     renderPlayground: (args) => (
@@ -36,7 +36,7 @@ const story = {
     renderGallery: (args) => (
         <View style={styles.gallery}>
             <VariantGallery
-                sizes={["sm"]}
+                sizes={['sm']}
                 variants={fillVariantOptions}
                 scrollEnabled={false}
                 render={({ color, variant }) => (
