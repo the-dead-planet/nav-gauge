@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { ColorVariant, SizeVariant, FillVariant, CLOCK_INPUT_RANGE, NumberInputPlacement, DEFAULT_SIZE } from '@ui';
+import { SizeVariant, CLOCK_INPUT_RANGE, NumberInputPlacement, DEFAULT_SIZE } from '@ui';
 import { ClockSliceInput } from './ClockSliceInput';
 import { ClockInput } from './ClockInput';
 import { DurationClockInput } from './DurationClockInput';

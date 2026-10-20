@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { useState } from 'react';
 import { Radio } from './Radio';
 import { Text } from '../../design-system/typography';
-import { ColorVariant, DEFAULT_SIZE, RadioProps, SizeVariant } from '@ui';
+import { ColorVariant, DEFAULT_SIZE, SizeVariant } from '@ui';
 import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptions as allSizes } from '../../storybook/controls';
 
 const meta = {

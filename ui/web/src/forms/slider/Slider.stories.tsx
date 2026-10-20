@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { ColorVariant, SizeVariant, FillVariant, DEFAULT_FILL_VARIANT, DEFAULT_SIZE } from '@ui';
+import { SizeVariant, FillVariant, DEFAULT_FILL_VARIANT, DEFAULT_SIZE } from '@ui';
 import { Slider } from './Slider';
 import { Text } from '../../design-system/typography';
 import { useState } from 'react';

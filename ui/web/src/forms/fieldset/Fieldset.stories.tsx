@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { useState } from 'react';
 import { Fieldset } from './Fieldset';
 import { Text } from '../../design-system/typography';
-import { ColorVariant, SizeVariant, FillVariant, DEFAULT_SIZE } from '@ui';
+import { ColorVariant, SizeVariant, DEFAULT_SIZE } from '@ui';
 import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptions as allSizes } from '../../storybook/controls';
 
 const meta = {
