@@ -2,13 +2,13 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { useState } from 'react';
 import { ToggleSwitch } from './ToggleSwitch';
 import { Text } from '../../design-system/typography';
-import { ColorVariant, LayoutOrientation, SizeVariant, SurfaceVariant } from '@ui';
-import { colorOptions as allColors, sizeOptions as allSizes, surfaceVariantOptions as allVariants } from '../../storybook/controls';
+import { ColorVariant, FillVariant, LayoutOrientation, SizeVariant } from '@ui';
+import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptions as allSizes } from '../../storybook/controls';
 
 const meta = {
     title: 'Forms/ToggleSwitch',
     component: ToggleSwitch,
-    args: { children: 'Toggle', checked: false, color: 'primary', contentShade: 700, highlightContentShade: 200, size: 'sm', variant: 'ghost', onChange: () => {} },
+    args: { children: 'Toggle', checked: false, color: 'primary', contentShade: 700, highlightContentShade: 200, size: 'sm', variant: 'fill-inverse', onChange: () => {} },
 } satisfies Meta<typeof ToggleSwitch>;
 
 export default meta;
@@ -23,7 +23,7 @@ export const Gallery = {
         const [checked, setChecked] = useState(false);
         const [size, setSize] = useState<SizeVariant>('sm');
         const [color, setColor] = useState<ColorVariant>('primary');
-        const [variant, setVariant] = useState<SurfaceVariant>('ghost');
+        const [variant, setVariant] = useState<FillVariant>('fill-inverse');
         const [orientation, setOrientation] = useState<LayoutOrientation>('horizontal');
         const [disabled, setDisabled] = useState(false);
 

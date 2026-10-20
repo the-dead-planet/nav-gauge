@@ -1,11 +1,11 @@
 import { FC, useState } from "react";
 import { ToggleSwitch } from "./ToggleSwitch";
-import { surfaceVariantOptions } from "@ui";
+import { fillVariantOptions } from "@ui";
 import { VariantGallery } from "../../storybook/VariantGallery";
 
 export const Gallery: FC = () => (
     <VariantGallery
-        variants={surfaceVariantOptions}
+        variants={fillVariantOptions}
         render={({ color, size, variant }) => (
             <ToggleSwitch variant={variant} size={size} color={color} checked onChange={() => {}}>
                 {color}

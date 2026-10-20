@@ -90,59 +90,17 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
         ]).start();
     }, [checked, knobScale]);
 
-    const trackBackgroundColor = (() => {
-        switch (variant) {
-            case 'fill':
-                return baseColor;
-            case 'fill-inverse':
-                return theme.color(color, 100);
-            case 'fill-translucent':
-                return theme.color(color, 500, TRANSLUCENT_OPACITY);
-            case 'outline':
-                return 'transparent';
-            case 'inset':
-                return 'transparent';
-            case 'ghost':
-            default:
-                return 'transparent';
-        }
-    })();
-
-    const trackBorderColor = (() => {
-        switch (variant) {
-            case 'fill':
-                return baseColor;
-            case 'fill-inverse':
-                return theme.color(color, 100);
-            case 'fill-translucent':
-                return baseColor;
-            case 'outline':
-                return baseColor;
-            case 'inset':
-                return baseColor;
-            case 'ghost':
-            default:
-                return baseColor;
-        }
-    })();
-
-    const thumbColor = (() => {
-        switch (variant) {
-            case 'fill':
-                return theme.color(color, 100);
-            case 'fill-inverse':
-                return baseColor;
-            case 'fill-translucent':
-                return baseColor;
-            case 'outline':
-                return baseColor;
-            case 'inset':
-                return baseColor;
-            case 'ghost':
-            default:
-                return baseColor;
-        }
-    })();
+    const trackBackgroundColor = variant === 'fill'
+        ? baseColor
+        : variant === 'fill-inverse'
+            ? theme.color(color, 100)
+            : theme.color(color, 500, TRANSLUCENT_OPACITY);
+    const trackBorderColor = variant === 'fill-inverse'
+        ? theme.color(color, 100)
+        : baseColor;
+    const thumbColor = variant === 'fill'
+        ? theme.color(color, 100)
+        : baseColor;
 
     const lampOffColor = checked ? neutralColor : errorColor;
     const lampOnColor = checked ? successColor : neutralColor;

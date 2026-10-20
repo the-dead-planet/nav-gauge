@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
-import { AppearanceProps, SurfaceVariant } from "../../design-system/model";
+import { AppearanceProps, FillVariant } from "../../design-system/model";
 import { LayoutOrientation } from "../../chassis/model";
 
-export interface ToggleSwitchProps extends AppearanceProps<SurfaceVariant> {
+export interface ToggleSwitchProps extends AppearanceProps<FillVariant> {
     label?: ReactNode;
     orientation?: LayoutOrientation;
     checked: boolean;
