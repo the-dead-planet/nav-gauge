@@ -1,6 +1,6 @@
 import { ChangeEvent, ComponentProps, FC, MouseEvent } from "react";
 import classNames from "classnames";
-import { TextInputProps, useTheme } from "@ui";
+import { DEFAULT_FILL_VARIANT, DEFAULT_SIZE, TextInputProps, useTheme } from "@ui";
 import { Label } from "../../design-system/typography";
 import styles from './text-input.module.css';
 
@@ -10,8 +10,8 @@ export const TextInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' | 
     contentShade,
     highlightColor = color,
     highlightContentShade,
-    size = 'sm',
-    variant = 'fill-inverse',
+    size = DEFAULT_SIZE,
+    variant = DEFAULT_FILL_VARIANT,
     label,
     value,
     onChange,

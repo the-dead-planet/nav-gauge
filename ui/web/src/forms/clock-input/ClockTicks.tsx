@@ -1,15 +1,15 @@
 import { FC } from "react";
 import classNames from "classnames";
-import { TICK_COUNT, STEP_DEG, MAJOR_TICK_INTERVAL, radialLineCoords } from "@ui";
+import { TICK_COUNT, STEP_DEG, MAJOR_TICK_INTERVAL, radialLineCoords, SizeVariant, DEFAULT_SIZE } from "@ui";
 import styles from './clock-input.module.css';
 
-const tickMajorLengths: Record<string, number> = { xs: 4, sm: 5, md: 6, lg: 7 };
-const tickMinorLengths: Record<string, number> = { xs: 2, sm: 2.5, md: 3, lg: 3.5 };
+const tickMajorLengths: Record<SizeVariant, number> = { xs: 4, sm: 5, md: 6, lg: 7 };
+const tickMinorLengths: Record<SizeVariant, number> = { xs: 2, sm: 2.5, md: 3, lg: 3.5 };
 
 interface Props {
     center: number;
     outerRadius: number;
-    size: string;
+    size: SizeVariant;
     strokeWidth: number;
     min: number;
     max: number;
@@ -18,7 +18,7 @@ interface Props {
 export const ClockTicks: FC<Props> = ({
     center,
     outerRadius,
-    size,
+    size = DEFAULT_SIZE,
     strokeWidth,
     min,
     max,

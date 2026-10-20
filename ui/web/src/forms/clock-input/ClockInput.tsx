@@ -1,6 +1,6 @@
 import { ComponentProps, FC, useEffect, useRef, useState } from "react";
 import classNames from "classnames";
-import { ClockInputProps, useTheme, STEP_DEG, snapSlice, pointerCoords, svgAtan2ToClockAngle, CLOCK_INPUT_RANGE } from "@ui";
+import { ClockInputProps, useTheme, STEP_DEG, snapSlice, pointerCoords, svgAtan2ToClockAngle, CLOCK_INPUT_RANGE, DEFAULT_FILL_VARIANT, DEFAULT_SIZE } from "@ui";
 import { ClockSvg } from "./ClockSvg";
 import { ClockA11yInput } from "./ClockA11yInput";
 import { ClockContainer } from "./ClockContainer";
@@ -20,8 +20,8 @@ export const ClockInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, 'onCha
     contentShade,
     highlightColor,
     highlightContentShade,
-    size = 'sm',
-    variant = 'fill-inverse',
+    size = DEFAULT_SIZE,
+    variant = DEFAULT_FILL_VARIANT,
     value = CLOCK_INPUT_RANGE[0],
     formatValue,
     min = CLOCK_INPUT_RANGE[0],

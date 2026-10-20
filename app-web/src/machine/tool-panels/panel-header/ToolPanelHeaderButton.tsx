@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Button } from "@web-ui";
 import { ObservedToolPanel, useTranslation } from "@apparatus";
-import { ButtonProps, TooltipPlacement, } from "@ui";
+import { ButtonProps, DEFAULT_SURFACE_VARIANT, TooltipPlacement, } from "@ui";
 
 interface Props {
     toolPanel: ObservedToolPanel<unknown>;
@@ -16,7 +16,7 @@ interface Props {
 export const ToolPanelHeaderButton: FC<Props> = ({
     toolPanel: { id, title, icon },
     color,
-    variant,
+    variant = DEFAULT_SURFACE_VARIANT,
     buttonSize,
     tooltipPlacement,
     isActive,

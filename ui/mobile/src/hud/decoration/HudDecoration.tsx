@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
-import { HudDecorationCorner, HudDecorationProps, SizeVariant, useTheme } from '@ui';
+import { DEFAULT_SIZE, HudDecorationCorner, HudDecorationProps, SizeVariant, useTheme } from '@ui';
 
 const paths: Record<HudDecorationCorner, string> = {
     'top-left': 'M 1 24 V 8 H 8 V 1 H 24',
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 export const HudDecoration: FC<HudDecorationProps> = ({
     children,
     color = 'primary',
-    size = 'sm',
+    size = DEFAULT_SIZE,
     activeGlow = 'none',
     corners = ['top-left', 'bottom-right'],
 }) => {

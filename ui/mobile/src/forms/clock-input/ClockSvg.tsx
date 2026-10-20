@@ -5,7 +5,7 @@ import {
     type ViewInstance,
 } from "react-native";
 import Svg, { G } from "react-native-svg";
-import { snapSlice, svgAtan2ToClockAngle, ColorVariant, FillVariant } from "@ui";
+import { snapSlice, svgAtan2ToClockAngle, ColorVariant, FillVariant, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, SizeVariant } from "@ui";
 import { ClockDial } from "./ClockDial";
 import { ClockTicks } from "./ClockTicks";
 import { ClockPointer } from "./ClockPointer";
@@ -13,7 +13,7 @@ import { ClockThumb } from "./ClockThumb";
 
 interface Props {
     svgSize: number;
-    size: string;
+    size: SizeVariant;
     children?: ReactNode;
     center: number;
     outerRadius: number;
@@ -36,7 +36,7 @@ interface Props {
 
 export const ClockSvg: FC<Props> = ({
     svgSize,
-    size,
+    size = DEFAULT_SIZE,
     children,
     center,
     outerRadius,
@@ -49,7 +49,7 @@ export const ClockSvg: FC<Props> = ({
     max,
     color,
     activeHighlight,
-    variant,
+    variant = DEFAULT_FILL_VARIANT,
     isFullCircle,
     disabled,
     onChange,

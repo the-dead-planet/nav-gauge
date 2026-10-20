@@ -7,5 +7,4 @@ export * from './chassis';
 export * from './motion';
 export * from './rigs';
 export * from './model';
-export * from './tinkers';
 export * from './storybook';

@@ -3,7 +3,7 @@ import { StyleSheet, Switch, TextInput, View } from "react-native";
 import { Button } from "../../gizmos/button";
 import { Text } from "../../design-system/typography";
 import { HueRamp } from "./HueRamp";
-import { sizeOptions } from "@ui";
+import { DEFAULT_SIZE, sizeOptions, SizeVariant } from "@ui";
 
 const styles = StyleSheet.create({
     container: { gap: 16, padding: 24 },
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 export const Playground: FC = () => {
     const [value, setValue] = useState(210);
     const [label, setLabel] = useState("Color");
-    const [size, setSize] = useState<"xs" | "sm" | "md" | "lg">("sm");
+    const [size, setSize] = useState<SizeVariant>(DEFAULT_SIZE);
     const [disabled, setDisabled] = useState(false);
 
     return (

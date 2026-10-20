@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, Switch, TextInput, View } from "react-native";
 import { Button } from "../../gizmos/button";
 import { Text } from "../../design-system/typography";
 import { ColorPicker } from "./ColorPicker";
-import { fillVariantOptions, sizeOptions } from "@ui";
+import { DEFAULT_FILL_VARIANT, DEFAULT_SIZE, FillVariant, fillVariantOptions, sizeOptions, SizeVariant } from "@ui";
 
 const styles = StyleSheet.create({
     container: { padding: 16, gap: 16 },
@@ -17,8 +17,8 @@ export const Playground: FC = () => {
     const [value, setValue] = useState('rgba(255, 102, 0, 0.8)');
     const [label, setLabel] = useState("Color");
     const [opacityLabel, setOpacityLabel] = useState("Opacity");
-    const [size, setSize] = useState<"xs" | "sm" | "md" | "lg">("sm");
-    const [variant, setVariant] = useState<"fill" | "fill-inverse" | "fill-translucent">("fill-inverse");
+    const [size, setSize] = useState<SizeVariant>(DEFAULT_SIZE);
+    const [variant, setVariant] = useState<FillVariant>(DEFAULT_FILL_VARIANT);
     const [disabled, setDisabled] = useState(false);
 
     return (

@@ -1,11 +1,13 @@
 import { FC, useState } from 'react';
 import { ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Icons, useTheme } from '@ui';
 import { Text } from '../design-system/typography';
 import { Button } from '../gizmos/button';
 import { Popup } from '../rigs/popup';
 import { Tile } from '../assemblies/tile';
-import { StoryGroup } from './model';
+import { StoryEntry, StoryGroup } from './model';
+import { StoryEntryButtons } from './StoryEntryButtons';
 
 const styles = StyleSheet.create({
     title: {
@@ -16,7 +18,8 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 8,
+        paddingTop: 16,
+        paddingHorizontal: 16,
     },
     components: {
         gap: 4,
@@ -34,11 +37,16 @@ const styles = StyleSheet.create({
     },
     popup: {
         borderWidth: 1,
-        padding: 16,
-        gap: 12,
+        gap: 16,
     },
     popupList: {
-        maxHeight: 320,
+        flexShrink: 1,
+    },
+    popupListContent: {
+        paddingHorizontal: 16,
+    },
+    footer: {
+        alignItems: 'flex-end',
     },
 });
 
@@ -46,11 +54,13 @@ interface Props {
     group: StoryGroup;
     width: string;
     onEnter: () => void;
+    onSelect: (entry: StoryEntry) => void;
 }
 
-export const GroupTile: FC<Props> = ({ group, width, onEnter }) => {
+export const GroupTile: FC<Props> = ({ group, width, onEnter, onSelect }) => {
     const theme = useTheme();
     const { width: windowWidth, height: windowHeight } = useWindowDimensions();
+    const safeAreaInsets = useSafeAreaInsets();
     const [showComponents, setShowComponents] = useState(false);
     const hiddenCount = Math.max(0, group.entries.length - 3);
 
@@ -59,11 +69,11 @@ export const GroupTile: FC<Props> = ({ group, width, onEnter }) => {
             <Tile
                 name={group.name}
                 description={group.description}
-                actions={
-                    <Button variant="fill" onPress={onEnter}>
+                actions={(size) => (
+                    <Button size={size} variant="fill" onPress={onEnter}>
                         Enter
                     </Button>
-                }
+                )}
                 panelProps={{
                     variant: 'fill-inverse',
                     style: { width },
@@ -92,14 +102,14 @@ export const GroupTile: FC<Props> = ({ group, width, onEnter }) => {
             </Tile>
             <Popup
                 visible={showComponents}
-                position={{ x: 16, y: 72 }}
+                position={{ x: 16, y: safeAreaInsets.top + 16 }}
                 popupAnchor="top-left"
                 onClose={() => setShowComponents(false)}
                 popupStyle={[
                     styles.popup,
                     {
                         width: Math.min(420, windowWidth - 32),
-                        maxHeight: windowHeight - 96,
+                        maxHeight: windowHeight - safeAreaInsets.top - safeAreaInsets.bottom - 32,
                         backgroundColor: theme.componentColor('background'),
                         borderColor: theme.componentColor('border'),
                     },
@@ -107,16 +117,18 @@ export const GroupTile: FC<Props> = ({ group, width, onEnter }) => {
             >
                 <View style={styles.header}>
                     <Text style={styles.title}>{group.name}</Text>
-                    <Button
-                        icon={Icons.NounProject.CloseCrossFill}
-                        size="xs"
-                        onPress={() => setShowComponents(false)}
-                        accessibilityLabel="Close component list"
-                    />
                 </View>
-                <ScrollView style={styles.popupList}>
-                    {group.entries.map((entry) => <Text key={entry.id}>• {entry.name}</Text>)}
+                <ScrollView
+                    style={styles.popupList}
+                    contentContainerStyle={styles.popupListContent}
+                >
+                    <StoryEntryButtons entries={group.entries} onSelect={onSelect} />
                 </ScrollView>
+                <View style={styles.footer}>
+                    <Button variant="fill" onPress={() => setShowComponents(false)}>
+                        Close
+                    </Button>
+                </View>
             </Popup>
         </>
     );

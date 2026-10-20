@@ -1,4 +1,4 @@
-import { ColorRampProps, useColorRampState } from "@ui";
+import { ColorRampProps, DEFAULT_SIZE, useColorRampState } from "@ui";
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
 import { HueRamp } from "./HueRamp";
@@ -15,7 +15,7 @@ export const ColorRamp: FC<ColorRampProps> = ({
     value,
     label = "Color",
     opacityLabel,
-    size = "sm",
+    size = DEFAULT_SIZE,
     disabled = false,
     onChange,
 }) => {

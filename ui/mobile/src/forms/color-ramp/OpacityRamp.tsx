@@ -1,4 +1,4 @@
-import { colorRampThumbSizes, OpacityRampProps, sliderRampHeights } from "@ui";
+import { colorRampThumbSizes, DEFAULT_SIZE, OpacityRampProps, sliderRampHeights } from "@ui";
 import { FC } from "react";
 import {
     AccessibilityActionEvent,
@@ -39,7 +39,7 @@ export const OpacityRamp: FC<OpacityRampProps> = ({
     color,
     value,
     label = "Opacity",
-    size = "sm",
+    size = DEFAULT_SIZE,
     disabled = false,
     onChange,
 }) => {

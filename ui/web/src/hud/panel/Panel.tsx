@@ -1,5 +1,5 @@
 import { ComponentProps, CSSProperties, FC, RefObject } from "react";
-import { PanelProps, useTheme } from "@ui";
+import { DEFAULT_FILL_VARIANT, PanelProps, useTheme } from "@ui";
 import classNames from "classnames";
 import styles from "./panel.module.css";
 
@@ -15,7 +15,7 @@ export const Panel: FC<PanelProps & Props & ComponentProps<'div'>> = ({
     activeGlow = "none",
     color = 'neutral',
     highlightColor,
-    variant,
+    variant = DEFAULT_FILL_VARIANT,
     borderWidth = 2,
     active = false,
     disabled = false,

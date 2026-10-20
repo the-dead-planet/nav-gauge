@@ -1,6 +1,6 @@
 import { ComponentProps, CSSProperties, FC, useEffect, useId, useRef, useState } from 'react';
 import classNames from 'classnames';
-import { NotchedPanelProps, useTheme } from '@ui';
+import { DEFAULT_FILL_VARIANT, NotchedPanelProps, useTheme } from '@ui';
 import styles from './notched-panel.module.css';
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 export const NotchedPanel: FC<NotchedPanelProps & Props & ComponentProps<'div'>> = ({
     color = 'neutral',
     highlightColor = color,
-    variant = 'fill-inverse',
+    variant = DEFAULT_FILL_VARIANT,
     activeGlow = 'none',
     active = false,
     disabled = false,

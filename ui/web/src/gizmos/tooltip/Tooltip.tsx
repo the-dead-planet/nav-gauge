@@ -1,7 +1,7 @@
 import { Children, cloneElement, FC, FocusEvent, MouseEvent, PointerEvent, ReactElement, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import classNames from "classnames";
-import { ErrorBoundary, getAutoTooltipPlacement, TooltipPlacement, TooltipProps, useTheme } from "@ui";
+import { DEFAULT_FILL_VARIANT, DEFAULT_SIZE, ErrorBoundary, getAutoTooltipPlacement, TooltipPlacement, TooltipProps, useTheme } from "@ui";
 import { Panel } from '../../hud/panel';
 import style from './tooltip.module.css';
 
@@ -129,8 +129,8 @@ const InternalTooltip: FC<TooltipProps> = ({
     children,
     placement = 'auto',
     color = 'neutral',
-    variant = 'fill-inverse',
-    size = 'sm',
+    variant = DEFAULT_FILL_VARIANT,
+    size = DEFAULT_SIZE,
     maxWidth = 220,
     showConnection = false,
 }) => {

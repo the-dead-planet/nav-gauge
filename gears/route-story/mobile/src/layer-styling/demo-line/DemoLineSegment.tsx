@@ -34,7 +34,7 @@ export const DemoLineSegment: FC<RouteStoryLineStyle> = ({
     outlineColor,
     width,
     outlineWidth,
-    variant,
+    lineStyle,
     showRouteLine,
     showRoutePoints,
     pointColor,
@@ -45,14 +45,14 @@ export const DemoLineSegment: FC<RouteStoryLineStyle> = ({
 
     return (
         <View style={styles.segment}>
-            {showRouteLine && variant === 'dashed' && (
+            {showRouteLine && lineStyle === 'dashed' && (
                 outlineWidth > 0
                     ? <View style={[styles.dashedOutline, { borderTopWidth: outlineSize, borderTopColor: outlineColor }]}>
                         <View style={[styles.dashed, { borderTopWidth: lineWidth, borderTopColor: color }]} />
                     </View>
                     : <View style={[styles.dashed, { borderTopWidth: lineWidth, borderTopColor: color }]} />
             )}
-            {showRouteLine && variant === 'solid' && (
+            {showRouteLine && lineStyle === 'solid' && (
                 <View style={[styles.solidOutline, { height: outlineSize, backgroundColor: outlineColor }]}>
                     <View style={{ height: lineWidth, backgroundColor: color }} />
                 </View>

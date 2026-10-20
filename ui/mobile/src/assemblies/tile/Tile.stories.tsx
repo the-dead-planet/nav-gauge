@@ -1,6 +1,11 @@
 import { ComponentProps } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { fillVariantOptions, tileStoryArgs, tileStoryControls } from '@ui';
+import {
+    fillVariantOptions,
+    sizeOptions,
+    tileStoryArgs,
+    tileStoryControls,
+} from '@ui';
 import { Button } from '../../gizmos/button';
 import { MobileStoryDefinition } from '../../storybook/model';
 import { VariantGallery } from '../../storybook/VariantGallery';
@@ -28,7 +33,7 @@ const story = {
         <Tile
             {...args}
             append={<Button size="xs">Info</Button>}
-            actions={<Button variant="fill">Open</Button>}
+            actions={(size) => <Button size={size} variant="fill">Open</Button>}
         >
             <View style={styles.content} />
         </Tile>
@@ -36,14 +41,19 @@ const story = {
     renderGallery: (args) => (
         <View style={styles.gallery}>
             <VariantGallery
-                sizes={['sm']}
+                sizes={sizeOptions}
                 variants={fillVariantOptions}
                 scrollEnabled={false}
-                render={({ color, variant }) => (
+                render={({ color, size, variant }) => (
                     <Tile
                         {...args}
+                        size={size}
                         panelProps={{ ...args.panelProps, color, variant }}
-                        actions={<Button variant="fill">Open</Button>}
+                        actions={(actionSize) => (
+                            <Button size={actionSize} variant="fill">
+                                Open
+                            </Button>
+                        )}
                     />
                 )}
             />

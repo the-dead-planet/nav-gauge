@@ -2,6 +2,8 @@ import { ComponentProps, FC, useState } from "react";
 import { TextInput as RNTextInput, View, StyleSheet } from "react-native";
 import {
     controlTextSpecifications,
+    DEFAULT_FILL_VARIANT,
+    DEFAULT_SIZE,
     FontType,
     TextAreaProps,
     useTheme,
@@ -31,8 +33,8 @@ export const TextArea: FC<
     contentShade,
     highlightColor = color,
     highlightContentShade,
-    size = "sm",
-    variant = "fill-inverse",
+    size = DEFAULT_SIZE,
+    variant = DEFAULT_FILL_VARIANT,
     label,
     autoSelect = false,
     editable = true,

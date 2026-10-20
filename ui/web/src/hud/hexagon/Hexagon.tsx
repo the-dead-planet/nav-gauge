@@ -1,5 +1,5 @@
 import { ComponentProps, CSSProperties, FC, useId } from "react";
-import { HexagonProps, useTheme } from "@ui";
+import { DEFAULT_SIZE, DEFAULT_SURFACE_VARIANT, HexagonProps, useTheme } from "@ui";
 import classNames from "classnames";
 import styles from "./hexagon.module.css";
 
@@ -18,8 +18,8 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
     activeGlow = "none",
     color = 'neutral',
     highlightColor,
-    size,
-    variant = 'ghost',
+    size = DEFAULT_SIZE,
+    variant = DEFAULT_SURFACE_VARIANT,
     active = false,
     disabled = false,
     onClick,

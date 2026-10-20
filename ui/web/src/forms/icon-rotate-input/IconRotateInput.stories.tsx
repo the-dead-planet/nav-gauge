@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { ColorVariant, SizeVariant, Icons, NumberInputPlacement } from '@ui';
+import { ColorVariant, SizeVariant, Icons, NumberInputPlacement, DEFAULT_SIZE } from '@ui';
 import { IconRotateInput } from './IconRotateInput';
 import { Text } from '../../design-system/typography';
 import { useState } from 'react';
@@ -24,7 +24,7 @@ export const Gallery = {
     },
     render: () => {
         const [angle, setAngle] = useState(0);
-        const [size, setSize] = useState<SizeVariant>('sm');
+        const [size, setSize] = useState<SizeVariant>(DEFAULT_SIZE);
         const [color, setColor] = useState<ColorVariant>('primary');
         const [disabled, setDisabled] = useState(false);
         const [showStepControls, setShowStepControls] = useState(false);

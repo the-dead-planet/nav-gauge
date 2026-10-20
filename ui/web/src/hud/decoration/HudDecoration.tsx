@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import classNames from 'classnames';
-import { HudDecorationCorner, HudDecorationProps } from '@ui';
+import { DEFAULT_SIZE, HudDecorationCorner, HudDecorationProps } from '@ui';
 import styles from './hud-decoration.module.css';
 
 const paths: Record<HudDecorationCorner, string> = {
@@ -13,7 +13,7 @@ const paths: Record<HudDecorationCorner, string> = {
 export const HudDecoration: FC<HudDecorationProps> = ({
     children,
     color = 'primary',
-    size = 'sm',
+    size = DEFAULT_SIZE,
     activeGlow = 'none',
     corners = ['top-left', 'bottom-right'],
 }) => (

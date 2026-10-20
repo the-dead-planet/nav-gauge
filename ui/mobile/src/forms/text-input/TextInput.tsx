@@ -2,6 +2,8 @@ import { FC, useState } from "react";
 import { TextInput as RNTextInput, View, StyleSheet } from "react-native";
 import {
     controlTextSpecifications,
+    DEFAULT_FILL_VARIANT,
+    DEFAULT_SIZE,
     FontType,
     TextInputProps,
     useTheme,
@@ -28,8 +30,8 @@ export const TextInput: FC<TextInputProps> = ({
     contentShade,
     highlightColor = color,
     highlightContentShade,
-    size = "sm",
-    variant = "fill-inverse",
+    size = DEFAULT_SIZE,
+    variant = DEFAULT_FILL_VARIANT,
     label,
     placeholder,
     value,
@@ -48,31 +50,31 @@ export const TextInput: FC<TextInputProps> = ({
     const paddingV = size === "xs" ? 0 : size === "sm" ? 2 : 6;
     const disabledColor = theme.color(color, theme.isLight ? 300 : 700);
     const textColor = highlighted && highlightContentShade !== undefined
-          ? theme.color(highlightColor, highlightContentShade)
-          : contentShade !== undefined
+        ? theme.color(highlightColor, highlightContentShade)
+        : contentShade !== undefined
             ? theme.color(color, contentShade)
-          :
-        variant === "fill"
-            ? theme.color(color, theme.contrastShade(color))
-            : theme.color(color, theme.isLight ? 900 : 100);
+            :
+            variant === "fill"
+                ? theme.color(color, theme.contrastShade(color))
+                : theme.color(color, theme.isLight ? 900 : 100);
     const placeholderTextColor = disabled
         ? disabledColor
         : theme.color(
-              color,
-              variant === "fill"
-                  ? theme.contrastShade(color)
-                  : theme.isLight
+            color,
+            variant === "fill"
+                ? theme.contrastShade(color)
+                : theme.isLight
                     ? 900
                     : 100,
-              0.5,
-          );
+            0.5,
+        );
     const backgroundColor = disabled
         ? theme.color(color, theme.isLight ? 200 : 800)
         : variant === "fill"
-          ? theme.color(color, 500)
-          : variant === "fill-inverse"
-            ? theme.color(color, theme.isLight ? 100 : 900)
-            : theme.color(color, 500, TRANSLUCENT_OPACITY);
+            ? theme.color(color, 500)
+            : variant === "fill-inverse"
+                ? theme.color(color, theme.isLight ? 100 : 900)
+                : theme.color(color, 500, TRANSLUCENT_OPACITY);
 
     return (
         <View style={styles.container}>
@@ -98,8 +100,8 @@ export const TextInput: FC<TextInputProps> = ({
                         borderColor: disabled
                             ? disabledColor
                             : variant === "fill"
-                              ? backgroundColor
-                              : borderColor,
+                                ? backgroundColor
+                                : borderColor,
                         borderWidth: disabled || variant !== "fill" ? 1 : 0,
                         fontSize,
                         paddingVertical: paddingV,

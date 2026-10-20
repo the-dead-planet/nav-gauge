@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef, useState } from "react";
 import { Animated, ScrollView, StyleSheet, Modal, StyleProp, View, ViewStyle } from "react-native";
-import { DialogProps, FontType, TransitionProps, useTheme } from "@ui";
+import { DEFAULT_FILL_VARIANT, DialogProps, FontType, TransitionProps, useTheme } from "@ui";
 import { useSubjectState } from "@tinker-chest";
 import { Panel } from "../../hud";
 import { Button } from "../../gizmos/button";
@@ -78,7 +78,7 @@ interface Props extends DialogProps {
 export const Dialog: FC<Props> = ({
     header,
     color = 'neutral',
-    variant = 'fill-translucent',
+    variant = DEFAULT_FILL_VARIANT,
     placement = 'middle',
     closeText,
     onClose,

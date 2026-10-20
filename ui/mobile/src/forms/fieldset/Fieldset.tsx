@@ -1,6 +1,6 @@
 import { FC, useRef, useState } from "react";
 import { Animated, LayoutChangeEvent, StyleSheet, View } from "react-native";
-import { controlTextSpecifications, FieldsetProps } from "@ui";
+import { controlTextSpecifications, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, FieldsetProps } from "@ui";
 import { FieldsetHeaderContent } from "./FieldsetHeaderContent";
 import { FieldsetBevelOutline } from "./FieldsetBevelOutline";
 import { FieldsetHeader } from "./FieldsetHeader";
@@ -35,9 +35,9 @@ export const Fieldset: FC<Props> = ({
     label,
     prepend,
     append,
-    size = 'md',
+    size = DEFAULT_SIZE,
     color,
-    variant,
+    variant = DEFAULT_FILL_VARIANT,
     expandable = true,
     expanded: controlledExpanded,
     onExpandedChange,

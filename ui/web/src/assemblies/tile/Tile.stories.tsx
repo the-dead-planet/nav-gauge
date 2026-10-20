@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { tileStoryArgs } from '@ui';
+import { sizeOptions, tileStoryArgs } from '@ui';
 import { Button } from '../../gizmos/button';
 import { colorOptions, fillVariantOptions } from '../../storybook/controls';
 import { VariantGallery } from '../../storybook/VariantGallery';
@@ -12,7 +12,7 @@ const meta = {
         ...tileStoryArgs,
         append: <Button size="xs">Info</Button>,
         children: <div style={{ minHeight: 80 }} />,
-        actions: <Button variant="fill">Open</Button>,
+        actions: (size) => <Button size={size} variant="fill">Open</Button>,
         panelProps: { variant: 'fill-inverse' },
     },
 } satisfies Meta<typeof Tile>;
@@ -25,14 +25,19 @@ export const Playground: Story = {};
 export const Gallery: Story = {
     render: (args) => (
         <VariantGallery
-            sizes={['sm']}
+            sizes={sizeOptions}
             colors={colorOptions}
             variants={fillVariantOptions}
-            render={({ color, variant }) => (
+            render={({ color, size, variant }) => (
                 <Tile
                     {...args}
+                    size={size}
                     panelProps={{ ...args.panelProps, color, variant }}
-                    actions={<Button variant="fill">Open</Button>}
+                    actions={(actionSize) => (
+                        <Button size={actionSize} variant="fill">
+                            Open
+                        </Button>
+                    )}
                 />
             )}
         />

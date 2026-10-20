@@ -6,7 +6,7 @@ import {
     ViewStyle,
     type ViewInstance,
 } from "react-native";
-import { IconRotateInputProps, useTheme } from "@ui";
+import { DEFAULT_SIZE, IconRotateInputProps, useTheme } from "@ui";
 import { SvgProps } from "react-native-svg";
 import { RotationArrows } from "./RotationArrows";
 import { RotateIconWrapper } from "./RotateIconWrapper";
@@ -30,7 +30,7 @@ export const IconRotateInput: FC<Props> = ({
     valueAdjustment = 0,
     color = 'neutral',
     highlightColor,
-    size = 'md',
+    size = DEFAULT_SIZE,
     min = 0,
     max = 360,
     step = 1,

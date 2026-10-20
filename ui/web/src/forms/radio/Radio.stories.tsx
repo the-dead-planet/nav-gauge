@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { useState } from 'react';
 import { Radio } from './Radio';
 import { Text } from '../../design-system/typography';
-import { ColorVariant, RadioProps, SizeVariant } from '@ui';
+import { ColorVariant, DEFAULT_SIZE, SizeVariant } from '@ui';
 import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptions as allSizes } from '../../storybook/controls';
 
 const meta = {
@@ -19,7 +19,7 @@ export const Playground: Story = {};
 export const Gallery = {
     render: () => {
         const [option, setOption] = useState('first');
-        const [size, setSize] = useState<SizeVariant>('sm');
+        const [size, setSize] = useState<SizeVariant>(DEFAULT_SIZE);
         const [color, setColor] = useState<ColorVariant>('primary');
 
         return (

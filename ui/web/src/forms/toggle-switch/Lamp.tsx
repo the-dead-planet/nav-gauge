@@ -3,17 +3,20 @@ import classNames from "classnames";
 import styles from './toggle-switch.module.css';
 
 interface LampProps {
-    variant: 'off' | 'on';
+    isSwitchedOn: boolean;
     active: boolean;
 }
 
-export const Lamp: FC<LampProps> = ({ variant, active }) => {
+export const Lamp: FC<LampProps> = ({
+    isSwitchedOn,
+    active,
+}) => {
     return (
         <span
             className={classNames(
                 styles['lamp'],
-                styles[`lamp-${variant}`],
-                active ? styles[`lamp-${variant === 'off' ? 'error' : 'success'}`] : styles['lamp-inactive'],
+                styles[`lamp-${isSwitchedOn ? 'on' : 'off'}`],
+                active ? styles[`lamp-${!isSwitchedOn ? 'error' : 'success'}`] : styles['lamp-inactive'],
             )}
         />
     );

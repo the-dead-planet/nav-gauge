@@ -19,3 +19,7 @@ export const themeAppearanceStateOptions: ThemeAppearanceState[] = [
     'active',
     'disabled',
 ];
+
+export const DEFAULT_SIZE: SizeVariant = 'sm';
+export const DEFAULT_SURFACE_VARIANT: SurfaceVariant = 'ghost';
+export const DEFAULT_FILL_VARIANT: FillVariant = 'fill-inverse';

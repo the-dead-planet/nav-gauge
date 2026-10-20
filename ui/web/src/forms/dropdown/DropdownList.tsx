@@ -9,6 +9,8 @@ import {
     MenuPosition,
     placePopup,
     useTheme,
+    DEFAULT_FILL_VARIANT,
+    DEFAULT_SIZE,
 } from '@ui';
 import { Icon } from '../../design-system/icons';
 import styles from './dropdown.module.css';
@@ -32,8 +34,8 @@ export function DropdownList<T = string>({
     value,
     options,
     onChange,
-    size = 'sm',
-    variant = 'fill-inverse',
+    size = DEFAULT_SIZE,
+    variant = DEFAULT_FILL_VARIANT,
     highlightColor,
     highlightContentShade,
 }: Props &

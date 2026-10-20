@@ -82,7 +82,7 @@ export const LineStyleGroup: FC<Props> = ({
         { label: dashedLabel, value: 'dashed' as const },
     ];
 
-    const colorTransitionDisabled = showColorTransition && (!style.showRouteLine || style.variant === 'dashed');
+    const colorTransitionDisabled = showColorTransition && (!style.showRouteLine || style.lineStyle === 'dashed');
 
     return (
         <View style={styles.controls}>
@@ -93,7 +93,7 @@ export const LineStyleGroup: FC<Props> = ({
                 <View style={styles['line-grid']}>
                     <View style={styles['line-control']}>
                         <Label disabled={!style.showRouteLine}>{lineStyleLabel}</Label>
-                        <Dropdown disabled={!style.showRouteLine} size="xs" value={style.variant} options={variantOptions} onChange={(variant) => onChange({ variant })} />
+                        <Dropdown disabled={!style.showRouteLine} size="xs" value={style.lineStyle} options={variantOptions} onChange={(lineStyle) => onChange({ lineStyle })} />
                     </View>
                     <View style={styles['line-control']}>
                         <Label disabled={!style.showRouteLine}>{lineLabel}</Label>

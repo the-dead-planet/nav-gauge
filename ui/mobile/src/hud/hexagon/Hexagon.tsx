@@ -14,7 +14,7 @@ import Svg, {
     LinearGradient,
     Stop,
 } from "react-native-svg";
-import { HexagonProps, useTheme } from "@ui";
+import { DEFAULT_SIZE, DEFAULT_SURFACE_VARIANT, HexagonProps, useTheme } from "@ui";
 
 const POINTY_TOP = "50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25";
 const FLAT_TOP = "100,50 75,93.3 25,93.3 0,50 25,6.7 75,6.7";
@@ -71,9 +71,9 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(
             strokeWidth = 2,
             color = "neutral",
             highlightColor = color,
-            variant = "ghost",
+            variant = DEFAULT_SURFACE_VARIANT,
             activeGlow = "none",
-            size,
+            size = DEFAULT_SIZE,
             interactive = false,
             active = false,
             disabled = false,

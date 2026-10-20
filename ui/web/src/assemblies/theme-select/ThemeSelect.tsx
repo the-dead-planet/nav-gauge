@@ -1,5 +1,7 @@
 import { FC } from 'react';
 import {
+    DEFAULT_FILL_VARIANT,
+    DEFAULT_SIZE,
     DesignSystemColor,
     Theme,
     ThemeColor,
@@ -38,8 +40,8 @@ export const ThemeSelect: FC<Props> = ({
     value,
     onChange,
     color = 'neutral',
-    size = 'md',
-    variant = 'fill-inverse',
+    size = DEFAULT_SIZE,
+    variant = DEFAULT_FILL_VARIANT,
     labelledBy,
     popoverClassName,
 }) => {

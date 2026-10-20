@@ -1,130 +1,72 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { useState } from 'react';
+import { makeLiveEditStory } from 'storybook-addon-code-editor';
+import {
+    colorOptions,
+    fillVariantOptions,
+    sizeOptions,
+    toggleSwitchOrientations,
+    toggleSwitchStoryArgs,
+    toggleSwitchStoryControls,
+} from '@ui';
+import { VariantGallery } from '../../storybook/VariantGallery';
 import { ToggleSwitch } from './ToggleSwitch';
-import { Text } from '../../design-system/typography';
-import { ColorVariant, LayoutOrientation, SizeVariant, SurfaceVariant } from '@ui';
-import { colorOptions as allColors, sizeOptions as allSizes, surfaceVariantOptions as allVariants } from '../../storybook/controls';
 
 const meta = {
     title: 'Forms/ToggleSwitch',
     component: ToggleSwitch,
-    args: { children: 'Toggle', checked: false, color: 'primary', contentShade: 700, highlightContentShade: 200, size: 'sm', variant: 'ghost', onChange: () => {} },
+    args: {
+        ...toggleSwitchStoryArgs,
+        onChange: () => {},
+    },
+    argTypes: {
+        ...toggleSwitchStoryControls,
+        onChange: { control: false },
+    },
 } satisfies Meta<typeof ToggleSwitch>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const allOrientations: LayoutOrientation[] = ['horizontal', 'vertical'];
+export const Playground: Story = {
+    name: 'Playground with Live code editor',
+};
 
-export const Playground: Story = {};
+makeLiveEditStory(Playground, {
+    availableImports: { '@web-ui': { ToggleSwitch } },
+    code: `import { ToggleSwitch } from '@web-ui';
 
-export const Gallery = {
-    render: () => {
-        const [checked, setChecked] = useState(false);
-        const [size, setSize] = useState<SizeVariant>('sm');
-        const [color, setColor] = useState<ColorVariant>('primary');
-        const [variant, setVariant] = useState<SurfaceVariant>('ghost');
-        const [orientation, setOrientation] = useState<LayoutOrientation>('horizontal');
-        const [disabled, setDisabled] = useState(false);
+export default ToggleSwitch;`,
+    modifyEditor: (monaco) => monaco.editor.setTheme('vs-dark'),
+});
 
-        return (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 24, padding: 24 }}>
-                <ToggleSwitch
-                    size={size}
-                    color={color}
-                    contentShade={700}
-                    highlightContentShade={200}
-                    variant={variant}
-                    orientation={orientation}
-                    checked={checked}
-                    onChange={setChecked}
-                    disabled={disabled}
-                >
-                    {checked ? 'On' : 'Off'}
-                </ToggleSwitch>
-
-                <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-                    <fieldset>
-                        <legend>Size</legend>
-                        {allSizes.map(s => (
-                            <label key={s} style={{ marginRight: 8 }}>
-                                <input type="radio" name="size" checked={size === s} onChange={() => setSize(s)} />
-                                {s}
-                            </label>
-                        ))}
-                    </fieldset>
-                    <fieldset>
-                        <legend>Color</legend>
-                        {allColors.map(c => (
-                            <label key={c} style={{ marginRight: 8 }}>
-                                <input type="radio" name="color" checked={color === c} onChange={() => setColor(c)} />
-                                {c}
-                            </label>
-                        ))}
-                    </fieldset>
-                    <fieldset>
-                        <legend>Variant</legend>
-                        {allVariants.map(v => (
-                            <label key={v} style={{ marginRight: 8 }}>
-                                <input type="radio" name="variant" checked={variant === v} onChange={() => setVariant(v)} />
-                                {v}
-                            </label>
-                        ))}
-                    </fieldset>
-                    <fieldset>
-                        <legend>Orientation</legend>
-                        {allOrientations.map(o => (
-                            <label key={o} style={{ marginRight: 8 }}>
-                                <input type="radio" name="orientation" checked={orientation === o} onChange={() => setOrientation(o)} />
-                                {o}
-                            </label>
-                        ))}
-                    </fieldset>
-                    <fieldset>
-                        <legend>Options</legend>
-                        <label style={{ marginRight: 8 }}>
-                            <input type="checkbox" checked={disabled} onChange={() => setDisabled(d => !d)} />
-                            disabled
-                        </label>
-                    </fieldset>
-                </div>
-
-                <Text style={{ fontWeight: 700, marginTop: 16 }}>All combinations (checked)</Text>
-                {allSizes.map(s => (
-                    <div key={s} style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>
-                        <Text style={{ width: 40 }}>{s}</Text>
-                        {allColors.map(c => (
-                            <ToggleSwitch key={c} size={s} color={c} checked onChange={() => { }}>
-                                {c}
-                            </ToggleSwitch>
-                        ))}
-                    </div>
-                ))}
-
-                <Text style={{ fontWeight: 700, marginTop: 16 }}>All combinations (unchecked)</Text>
-                {allSizes.map(s => (
-                    <div key={s} style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>
-                        <Text style={{ width: 40 }}>{s}</Text>
-                        {allColors.map(c => (
-                            <ToggleSwitch key={c} size={s} color={c} checked={false} onChange={() => { }}>
-                                {c}
-                            </ToggleSwitch>
-                        ))}
-                    </div>
-                ))}
-
-                <Text style={{ fontWeight: 700, marginTop: 16 }}>Vertical orientation</Text>
-                <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start', flexWrap: 'wrap' }}>
-                    {allSizes.map(s => (
-                        <div key={s} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
-                            <Text>{s}</Text>
-                            {allColors.map(c => (
-                                <ToggleSwitch key={c} size={s} color={c} orientation="vertical" checked onChange={() => { }} />
-                            ))}
-                        </div>
-                    ))}
-                </div>
-            </div>
-        );
+export const Gallery: Story = {
+    argTypes: {
+        color: { table: { disable: true } },
+        orientation: { table: { disable: true } },
+        size: { table: { disable: true } },
+        variant: { table: { disable: true } },
     },
+    render: (args) => (
+        <div style={{ display: 'grid', gap: 40 }}>
+            {toggleSwitchOrientations.map((orientation) => (
+                <section key={orientation}>
+                    <h2>{orientation}</h2>
+                    <VariantGallery
+                        sizes={sizeOptions}
+                        colors={colorOptions}
+                        variants={fillVariantOptions}
+                        render={({ color, size, variant }) => (
+                            <ToggleSwitch
+                                {...args}
+                                color={color}
+                                orientation={orientation}
+                                size={size}
+                                variant={variant}
+                            />
+                        )}
+                    />
+                </section>
+            ))}
+        </div>
+    ),
 };

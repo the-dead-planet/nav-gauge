@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { ColorVariant, SizeVariant, FillVariant } from '@ui';
+import { SizeVariant, FillVariant, DEFAULT_FILL_VARIANT, DEFAULT_SIZE } from '@ui';
 import { Slider } from './Slider';
 import { Text } from '../../design-system/typography';
 import { useState } from 'react';
@@ -19,8 +19,8 @@ export const Playground: Story = {};
 export const Gallery = {
     render: () => {
         const [value, setValue] = useState(50);
-        const [size, setSize] = useState<SizeVariant>('sm');
-        const [variant, setVariant] = useState<FillVariant>('fill-inverse');
+        const [size, setSize] = useState<SizeVariant>(DEFAULT_SIZE);
+        const [variant, setVariant] = useState<FillVariant>(DEFAULT_FILL_VARIANT);
         const [showStepControls, setShowStepControls] = useState(false);
         const [showNumberInput, setShowNumberInput] = useState(false);
 

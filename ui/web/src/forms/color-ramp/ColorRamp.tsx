@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { ColorRampProps, useColorRampState } from "@ui";
+import { ColorRampProps, DEFAULT_SIZE, useColorRampState } from "@ui";
 import { HueRamp } from "./HueRamp";
 import { OpacityRamp } from "./OpacityRamp";
 import { SaturationValueRamp } from "./SaturationValueRamp";
@@ -9,7 +9,7 @@ export const ColorRamp: FC<ColorRampProps> = ({
     value,
     label = 'Color',
     opacityLabel,
-    size = 'sm',
+    size = DEFAULT_SIZE,
     disabled = false,
     onChange,
 }) => {

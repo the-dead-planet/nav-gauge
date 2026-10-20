@@ -6,7 +6,7 @@ import {
     ViewStyle,
     type ViewInstance,
 } from "react-native";
-import { SliderProps, useTheme } from "@ui";
+import { DEFAULT_FILL_VARIANT, DEFAULT_SIZE, SliderProps, useTheme } from "@ui";
 import { Text } from "../../design-system/typography";
 import { NumberInput } from "../number-input";
 import { StepControls } from "../step-controls";
@@ -26,8 +26,8 @@ export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle
     contentShade,
     highlightColor = color,
     highlightContentShade,
-    size = 'md',
-    variant = 'fill-inverse',
+    size = DEFAULT_SIZE,
+    variant = DEFAULT_FILL_VARIANT,
     min = 0,
     max = 100,
     step = 1,

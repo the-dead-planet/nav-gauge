@@ -14,7 +14,7 @@ export const defaultRouteStoryState: RouteStoryState = {
         width: 2,
         outlineColor: 'rgb(255, 255, 255)',
         outlineWidth: 1,
-        variant: 'solid',
+        lineStyle: 'solid',
         colorTransitionLengthPixels: 0,
     },
     routeStyleInactive: {
@@ -26,7 +26,7 @@ export const defaultRouteStoryState: RouteStoryState = {
         width: 1,
         outlineColor: 'rgb(255, 255, 255)',
         outlineWidth: 0,
-        variant: 'dashed',
+        lineStyle: 'dashed',
         colorTransitionLengthPixels: 0,
     },
     currentPoint: {
@@ -59,7 +59,7 @@ export const getDefaultRouteStoryState = (theme: Theme): RouteStoryState => {
             width: 2,
             outlineColor: 'rgb(255, 255, 255)',
             outlineWidth: 1,
-            variant: 'solid',
+            lineStyle: 'solid',
             colorTransitionLengthPixels: 0,
         },
         routeStyleInactive: {
@@ -71,7 +71,7 @@ export const getDefaultRouteStoryState = (theme: Theme): RouteStoryState => {
             width: 1,
             outlineColor: 'rgb(255, 255, 255)',
             outlineWidth: 0,
-            variant: 'dashed',
+            lineStyle: 'dashed',
             colorTransitionLengthPixels: 0,
         },
         currentPoint: {
@@ -194,7 +194,7 @@ const getLinePart = (
         'line-color': isOutline ? style.outlineColor : style.color,
         'line-width': isOutline ? style.width + style.outlineWidth * 2 : style.width,
         'line-opacity': 1,
-        ...(style.variant === 'dashed' ? { 'line-dasharray': getLineDashArray(style, isOutline) } : {}),
+        ...(style.lineStyle === 'dashed' ? { 'line-dasharray': getLineDashArray(style, isOutline) } : {}),
         ...getLineGradient(status, style, isOutline, fadeTargetColor, transitionLengthPercent),
     },
 });
@@ -206,7 +206,7 @@ const getLineGradient = (
     fadeTargetColor?: string,
     transitionLengthPercent = 0,
 ): Partial<RouteLineLayerSpec['paint']> => {
-    if (status !== 'before' || style.variant !== 'solid' || transitionLengthPercent <= 0 || !fadeTargetColor) {
+    if (status !== 'before' || style.lineStyle !== 'solid' || transitionLengthPercent <= 0 || !fadeTargetColor) {
         return {};
     }
     const lineColor = isOutline ? style.outlineColor : style.color;

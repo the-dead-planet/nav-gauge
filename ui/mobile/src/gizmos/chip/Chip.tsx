@@ -4,6 +4,8 @@ import { Path, Svg, SvgProps } from "react-native-svg";
 import {
     ChipProps,
     ColorShade,
+    DEFAULT_FILL_VARIANT,
+    DEFAULT_SIZE,
     DesignSystemColor,
     SizeVariant,
     ThemeComponentColor,
@@ -90,8 +92,8 @@ const sizeStyles = StyleSheet.create({
 export const Chip: FC<ChipProps & Props> = ({
     color = 'neutral',
     icon,
-    size = 'sm',
-    variant = 'fill',
+    size = DEFAULT_SIZE,
+    variant = DEFAULT_FILL_VARIANT,
     tooltip,
     tooltipPlacement,
     tooltipVariant = 'fill-inverse',

@@ -1,9 +1,8 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Icons, useTheme } from '@ui';
-import { Button } from '../gizmos/button';
 import { TextInput } from '../forms/text-input';
 import { StoryEntry, StoryGroup } from './model';
+import { StoryEntryButtons } from './StoryEntryButtons';
 import { StoryHeader } from './StoryHeader';
 
 const styles = StyleSheet.create({
@@ -12,22 +11,16 @@ const styles = StyleSheet.create({
         padding: 16,
         gap: 16,
     },
-    list: {
-        gap: 8,
-    },
-    item: {
-        alignSelf: 'flex-start',
-    },
 });
 
 interface Props {
     group: StoryGroup;
+    query: string;
+    onQueryChange: (query: string) => void;
     onSelect: (entry: StoryEntry) => void;
 }
 
-export const StoryGroupList: FC<Props> = ({ group, onSelect }) => {
-    const theme = useTheme();
-    const [query, setQuery] = useState('');
+export const StoryGroupList: FC<Props> = ({ group, query, onQueryChange, onSelect }) => {
     const normalizedQuery = query.trim().toLowerCase();
     const entries = group.entries.filter((entry) => !normalizedQuery
         || entry.name.toLowerCase().includes(normalizedQuery));
@@ -39,23 +32,10 @@ export const StoryGroupList: FC<Props> = ({ group, onSelect }) => {
                 label="Search components"
                 placeholder="Popup"
                 value={query}
-                onChange={setQuery}
+                onChange={onQueryChange}
             />
-            <ScrollView contentContainerStyle={styles.list}>
-                {entries.map((entry) => (
-                    <Button
-                        key={entry.id}
-                        icon={Icons.NounProject.ChevronDownDoubleTriangle}
-                        iconRotateZ={-90}
-                        size="md"
-                        contentShade={theme.isLight ? 900 : 100}
-                        onPress={() => onSelect(entry)}
-                        accessibilityLabel={`Open ${entry.name}`}
-                        style={styles.item}
-                    >
-                        {entry.name}
-                    </Button>
-                ))}
+            <ScrollView>
+                <StoryEntryButtons entries={entries} onSelect={onSelect} />
             </ScrollView>
         </View>
     );

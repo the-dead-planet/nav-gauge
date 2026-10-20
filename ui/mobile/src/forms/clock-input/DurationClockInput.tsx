@@ -10,6 +10,8 @@ import {
     svgAtan2ToClockAngle,
     snapSlice,
     STEP_DEG,
+    DEFAULT_FILL_VARIANT,
+    DEFAULT_SIZE,
 } from "@ui";
 import { ClockDial } from "./ClockDial";
 import { ClockTicks } from "./ClockTicks";
@@ -30,8 +32,8 @@ export const DurationClockInput: FC<DurationClockInputProps & { style?: ViewStyl
     contentShade,
     highlightColor,
     highlightContentShade,
-    size = 'md',
-    variant = 'fill-translucent',
+    size = DEFAULT_SIZE,
+    variant = DEFAULT_FILL_VARIANT,
     value,
     min = 0,
     step = 1000,

@@ -43,14 +43,14 @@ describe("Route line layers", () => {
 });
 
 describe("Route line gradient", () => {
-    const gradientState = {
+    const gradientState: RouteStoryState = {
         ...defaultRouteStoryState,
         routeStyleActive: {
             ...defaultRouteStoryState.routeStyleActive,
-            variant: 'solid' as const,
+            lineStyle: 'solid',
             colorTransitionLengthPixels: 25,
         },
-        routeStyleInactive: { ...defaultRouteStoryState.routeStyleInactive, variant: 'solid' as const },
+        routeStyleInactive: { ...defaultRouteStoryState.routeStyleInactive, lineStyle: 'solid' },
     };
     const activeParts = (state: RouteStoryState) => getRouteLineLayers(
         state,
@@ -85,7 +85,7 @@ describe("Route line gradient", () => {
     });
 
     it("skips the gradient when the active line is dashed or the value is zero", () => {
-        const dashed = activeParts({ ...gradientState, routeStyleActive: { ...gradientState.routeStyleActive, variant: 'dashed' as const } });
+        const dashed = activeParts({ ...gradientState, routeStyleActive: { ...gradientState.routeStyleActive, lineStyle: 'dashed' as const } });
         const zero = activeParts({ ...gradientState, routeStyleActive: { ...gradientState.routeStyleActive, colorTransitionLengthPixels: 0 } });
 
         for (const layer of [...dashed, ...zero]) {

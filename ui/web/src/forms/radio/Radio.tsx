@@ -1,6 +1,6 @@
 import { ChangeEvent, ComponentProps, FC, useId } from "react";
 import classNames from "classnames";
-import { RadioProps, useTheme } from "@ui";
+import { DEFAULT_FILL_VARIANT, DEFAULT_SIZE, RadioProps, useTheme } from "@ui";
 import styles from './radio.module.css';
 
 interface Props {
@@ -14,8 +14,8 @@ export const Radio: FC<Omit<ComponentProps<'label'>, 'onChange'> & RadioProps & 
     contentShade,
     highlightColor = color,
     highlightContentShade,
-    variant = 'fill',
-    size = 'sm',
+    variant = DEFAULT_FILL_VARIANT,
+    size = DEFAULT_SIZE,
     checked,
     active = false,
     onChange,

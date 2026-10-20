@@ -30,8 +30,8 @@ export const DemoLine: FC<Props> = ({
     inactiveRef,
 }) => {
     const { routeStyleActive: active, routeStyleInactive: inactive } = state;
-    const activeDash = active.variant === 'dashed' ? '5 4' : undefined;
-    const inactiveDash = inactive.variant === 'dashed' ? '5 4' : undefined;
+    const activeDash = active.lineStyle === 'dashed' ? '5 4' : undefined;
+    const inactiveDash = inactive.lineStyle === 'dashed' ? '5 4' : undefined;
     const activeWidth = Math.min(active.width, 10);
     const inactiveWidth = Math.min(inactive.width, 10);
     const activeOutlineWidth = activeWidth + active.outlineWidth * 2;
@@ -39,7 +39,7 @@ export const DemoLine: FC<Props> = ({
     const markerSize = 16 * state.currentPoint.size;
     const markerRotation = state.currentPoint.rotation + (state.currentPoint.autoRotate ? 90 : 0);
     const icon = state.currentPoint.icon === 'Circle' ? Icons.Circle : Icons.NounProject[state.currentPoint.icon];
-    const transitionWidth = active.variant === 'dashed' ? 0 : Math.min(active.colorTransitionLengthPixels, 148);
+    const transitionWidth = active.lineStyle === 'dashed' ? 0 : Math.min(active.colorTransitionLengthPixels, 148);
     const transitionStart = 150 - transitionWidth;
     const gradientIdSuffix = useId().replace(/[^a-zA-Z0-9_-]/g, '');
     const activeGradientId = `route-line-gradient-${gradientIdSuffix}`;

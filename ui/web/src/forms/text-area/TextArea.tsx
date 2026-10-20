@@ -1,6 +1,6 @@
 import { ComponentProps, FC, MouseEvent } from "react";
 import classNames from "classnames";
-import { TextAreaProps, useTheme } from "@ui";
+import { DEFAULT_FILL_VARIANT, DEFAULT_SIZE, TextAreaProps, useTheme } from "@ui";
 import { Label } from "../../design-system/typography";
 import styles from './text-area.module.css';
 
@@ -9,8 +9,8 @@ export const TextArea: FC<Omit<ComponentProps<'textarea'>, 'size'> & TextAreaPro
     contentShade,
     highlightColor = color,
     highlightContentShade,
-    size = 'sm',
-    variant = 'fill-inverse',
+    size = DEFAULT_SIZE,
+    variant = DEFAULT_FILL_VARIANT,
     label,
     autoSelect = false,
     active = false,

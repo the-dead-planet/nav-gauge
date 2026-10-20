@@ -1,14 +1,14 @@
 import { FC } from "react";
 import { Line } from "react-native-svg";
-import { TICK_COUNT, STEP_DEG, MAJOR_TICK_INTERVAL, radialLineCoords, useTheme, ColorVariant, FillVariant } from "@ui";
+import { TICK_COUNT, STEP_DEG, MAJOR_TICK_INTERVAL, radialLineCoords, useTheme, ColorVariant, FillVariant, DEFAULT_FILL_VARIANT, SizeVariant, DEFAULT_SIZE } from "@ui";
 
-const tickMajorLengths: Record<string, number> = { xs: 3.5, sm: 6, md: 7, lg: 8 };
-const tickMinorLengths: Record<string, number> = { xs: 2, sm: 3.5, md: 4, lg: 4.5 };
+const tickMajorLengths: Record<SizeVariant, number> = { xs: 3.5, sm: 6, md: 7, lg: 8 };
+const tickMinorLengths: Record<SizeVariant, number> = { xs: 2, sm: 3.5, md: 4, lg: 4.5 };
 
 interface Props {
     center: number;
     outerRadius: number;
-    size: string;
+    size: SizeVariant;
     strokeWidth: number;
     min: number;
     max: number;
@@ -19,12 +19,12 @@ interface Props {
 export const ClockTicks: FC<Props> = ({
     center,
     outerRadius,
-    size,
+    size = DEFAULT_SIZE,
     strokeWidth,
     min,
     max,
     color,
-    variant,
+    variant = DEFAULT_FILL_VARIANT,
 }) => {
     const theme = useTheme();
     const isLight = theme.isLight;

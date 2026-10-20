@@ -36,6 +36,7 @@ export const TopBar: FC<MachineWardTopBarProps> = ({ title }) => {
                 <ThemeModeToggle
                     lightModeTooltip={lightModeTooltip}
                     darkModeTooltip={darkModeTooltip}
+                    size="md"
                     onToggle={individuator.toggleMode}
                 />
                 <LayoutMenu />

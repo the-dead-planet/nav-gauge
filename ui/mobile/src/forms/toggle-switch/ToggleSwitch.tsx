@@ -1,10 +1,24 @@
 import { FC, useEffect, useRef } from "react";
-import { Animated, Pressable, View, ViewStyle } from "react-native";
-import { controlTextSpecifications, ToggleSwitchProps, useTheme } from "@ui";
+import { Animated, Pressable, StyleSheet, View, ViewStyle } from "react-native";
+import { controlTextSpecifications, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, SizeVariant, ToggleSwitchProps, useTheme } from "@ui";
 import { Text } from "../../design-system/typography";
 import { Lamp } from "./Lamp";
 import { ThumbBody } from "./ThumbBody";
-import { TRANSLUCENT_OPACITY } from "../../tinkers";
+
+const metricsBySize: Record<SizeVariant, {
+    track: number;
+    stickLength: number;
+    stickThickness: number;
+    pivot: number;
+    knob: number;
+    lamp: number;
+    gap: number;
+}> = {
+    xs: { track: 28, stickLength: 12, stickThickness: 8, pivot: 5, knob: 8, lamp: 6, gap: 6 },
+    sm: { track: 34, stickLength: 14, stickThickness: 10, pivot: 6, knob: 9, lamp: 8, gap: 8 },
+    md: { track: 40, stickLength: 16, stickThickness: 12, pivot: 7, knob: 10, lamp: 10, gap: 10 },
+    lg: { track: 46, stickLength: 18, stickThickness: 14, pivot: 8, knob: 12, lamp: 12, gap: 12 },
+};
 
 const clipPaths = {
     xs: { pivotStart: 0.125, pivotEnd: 0.875, knobStart: 0, knobEnd: 1 },
@@ -12,6 +26,54 @@ const clipPaths = {
     md: { pivotStart: 0.1667, pivotEnd: 0.8333, knobStart: 0.0833, knobEnd: 0.9167 },
     lg: { pivotStart: 0.175, pivotEnd: 0.825, knobStart: 0.1, knobEnd: 0.9 },
 } as const;
+
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+    },
+    toggleRow: {
+        alignItems: 'center',
+    },
+    track: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    thumbContainer: {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        overflow: 'visible',
+    },
+    thumbPart: {
+        position: 'absolute',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        elevation: 2,
+    },
+    thumbPivot: {
+        position: 'absolute',
+    },
+    pivotHighlight: {
+        position: 'absolute',
+        top: '15%',
+        left: '15%',
+        backgroundColor: 'white',
+        opacity: 0.14,
+    },
+    thumbKnob: {
+        shadowOpacity: 0.35,
+        shadowRadius: 2,
+        elevation: 3,
+    },
+    knobHighlight: {
+        position: 'absolute',
+        top: '15%',
+        left: '15%',
+        backgroundColor: 'white',
+        opacity: 0.45,
+    },
+});
 
 function buildHorizontalPoints(width: number, height: number, clip: { pivotStart: number; pivotEnd: number; knobStart: number; knobEnd: number }): string {
     const { pivotStart, pivotEnd, knobStart, knobEnd } = clip;
@@ -28,30 +90,29 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
     contentShade,
     highlightColor = color,
     highlightContentShade,
-    size = 'sm',
-    variant = 'ghost',
+    size = DEFAULT_SIZE,
+    variant = DEFAULT_FILL_VARIANT,
     orientation = 'horizontal',
     checked,
     onChange,
     disabled = false,
     active = false,
+    label,
     children,
 }) => {
     const theme = useTheme();
-
-    const baseColor = theme.color(color);
-    const activeAccent = theme.color(highlightColor, theme.isLight ? 600 : 300);
-    const disabledColor = theme.color(color, theme.isLight ? 300 : 700);
-    const disabledSurface = theme.color(color, theme.isLight ? 200 : 800);
-
-    const trackSize = size === 'md' ? 40 : size === 'sm' ? 34 : 28;
-    const stickLength = size === 'md' ? 16 : size === 'sm' ? 14 : 12;
-    const stickThickness = size === 'md' ? 12 : size === 'sm' ? 10 : 8;
-    const thumbPivotSize = size === 'md' ? 8 : size === 'sm' ? 7 : 6;
-    const thumbKnobSize = size === 'md' ? 10 : size === 'sm' ? 9 : 8;
-    const lampSize = size === 'md' ? 10 : size === 'sm' ? 8 : 6;
+    const metrics = metricsBySize[size];
+    const {
+        track: trackSize,
+        stickLength,
+        stickThickness,
+        pivot: thumbPivotSize,
+        knob: thumbKnobSize,
+        lamp: lampSize,
+        gap,
+    } = metrics;
     const textStyle = controlTextSpecifications[size];
-    const gap = size === 'md' ? 10 : size === 'sm' ? 8 : 6;
+    const content = label ?? children;
 
     const errorColor = theme.componentColor('error');
     const successColor = theme.componentColor('success');
@@ -90,86 +151,14 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
         ]).start();
     }, [checked, knobScale]);
 
-    const trackBackgroundColor = (() => {
-        switch (variant) {
-            case 'fill':
-                return baseColor;
-            case 'fill-inverse':
-                return theme.color(color, 100);
-            case 'fill-translucent':
-                return theme.color(color, 500, TRANSLUCENT_OPACITY);
-            case 'outline':
-                return 'transparent';
-            case 'inset':
-                return 'transparent';
-            case 'ghost':
-            default:
-                return 'transparent';
-        }
-    })();
-
-    const trackBorderColor = (() => {
-        switch (variant) {
-            case 'fill':
-                return baseColor;
-            case 'fill-inverse':
-                return theme.color(color, 100);
-            case 'fill-translucent':
-                return baseColor;
-            case 'outline':
-                return baseColor;
-            case 'inset':
-                return baseColor;
-            case 'ghost':
-            default:
-                return baseColor;
-        }
-    })();
-
-    const thumbColor = (() => {
-        switch (variant) {
-            case 'fill':
-                return theme.color(color, 100);
-            case 'fill-inverse':
-                return baseColor;
-            case 'fill-translucent':
-                return baseColor;
-            case 'outline':
-                return baseColor;
-            case 'inset':
-                return baseColor;
-            case 'ghost':
-            default:
-                return baseColor;
-        }
-    })();
-
     const lampOffColor = checked ? neutralColor : errorColor;
     const lampOnColor = checked ? successColor : neutralColor;
     const lampOffOpacity = checked ? 0.3 : 1;
     const lampOnOpacity = checked ? 1 : 0.3;
 
-    const containerStyle: ViewStyle = {
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        gap,
-    };
-
     const toggleRowStyle: ViewStyle = {
         flexDirection: isHorizontal ? 'row' : 'column',
-        alignItems: 'center',
         gap,
-    };
-
-    const trackStyle: ViewStyle = {
-        width: trackSize,
-        height: trackSize,
-        borderRadius: trackSize / 2,
-        borderWidth: 1,
-        borderColor: disabled ? disabledColor : active ? activeAccent : trackBorderColor,
-        backgroundColor: disabled ? disabledSurface : trackBackgroundColor,
-        alignItems: 'center',
-        justifyContent: 'center',
     };
 
     const thumbContainerStyle: ViewStyle = isHorizontal
@@ -177,21 +166,13 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
             width: stickLength,
             height: stickThickness,
             transformOrigin: [0, '50%', 0],
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
             marginTop: -stickThickness / 2,
-            overflow: 'visible',
         }
         : {
             width: stickThickness,
             height: stickLength,
             transformOrigin: ['50%', 0, 0],
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
             marginLeft: -stickThickness / 2,
-            overflow: 'visible',
         };
 
     const thumbAnimatedStyle = isHorizontal
@@ -200,7 +181,6 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
 
     const thumbPivotStyle: ViewStyle = isHorizontal
         ? {
-            position: 'absolute',
             left: 0,
             top: '50%',
             marginLeft: -thumbPivotSize / 2,
@@ -208,15 +188,8 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
             width: thumbPivotSize,
             height: thumbPivotSize,
             borderRadius: thumbPivotSize / 2,
-            backgroundColor: thumbColor,
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 1 },
-            shadowOpacity: 0.3,
-            shadowRadius: 1,
-            elevation: 2,
         }
         : {
-            position: 'absolute',
             top: 0,
             left: '50%',
             marginLeft: -thumbPivotSize / 2,
@@ -224,28 +197,10 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
             width: thumbPivotSize,
             height: thumbPivotSize,
             borderRadius: thumbPivotSize / 2,
-            backgroundColor: thumbColor,
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 1 },
-            shadowOpacity: 0.3,
-            shadowRadius: 1,
-            elevation: 2,
         };
-
-    const pivotHighlightStyle: ViewStyle = {
-        position: 'absolute',
-        width: thumbPivotSize * 0.6,
-        height: thumbPivotSize * 0.6,
-        borderRadius: thumbPivotSize * 0.3,
-        top: '15%',
-        left: '15%',
-        backgroundColor: 'white',
-        opacity: 0.35,
-    };
 
     const thumbKnobStyle: ViewStyle = isHorizontal
         ? {
-            position: 'absolute',
             right: 0,
             top: '50%',
             marginRight: -thumbKnobSize / 2,
@@ -253,15 +208,8 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
             width: thumbKnobSize,
             height: thumbKnobSize,
             borderRadius: thumbKnobSize / 2,
-            backgroundColor: thumbColor,
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 1 },
-            shadowOpacity: 0.35,
-            shadowRadius: 2,
-            elevation: 3,
         }
         : {
-            position: 'absolute',
             bottom: 0,
             left: '50%',
             marginLeft: -thumbKnobSize / 2,
@@ -269,23 +217,18 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
             width: thumbKnobSize,
             height: thumbKnobSize,
             borderRadius: thumbKnobSize / 2,
-            backgroundColor: thumbColor,
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 1 },
-            shadowOpacity: 0.35,
-            shadowRadius: 2,
-            elevation: 3,
         };
 
+    const pivotHighlightStyle: ViewStyle = {
+        width: thumbPivotSize * 0.6,
+        height: thumbPivotSize * 0.6,
+        borderRadius: thumbPivotSize * 0.3,
+    };
+
     const knobHighlightStyle: ViewStyle = {
-        position: 'absolute',
         width: thumbKnobSize * 0.6,
         height: thumbKnobSize * 0.6,
         borderRadius: thumbKnobSize * 0.3,
-        top: '15%',
-        left: '15%',
-        backgroundColor: 'white',
-        opacity: 0.45,
     };
 
     const knobAnimatedStyle = {
@@ -298,48 +241,93 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
             accessibilityState={{ checked, disabled }}
             disabled={disabled}
             onPress={() => onChange(!checked)}
-            style={containerStyle}
+            style={[styles.container, { gap }]}
         >
-            {children ? (
-                <Text
-                    color={checked || active ? highlightColor : color}
-                    shade={disabled ? (theme.isLight ? 300 : 700) : checked || active ? highlightContentShade : contentShade}
-                    style={textStyle}
-                >
-                    {children}
-                </Text>
-            ) : null}
-            <View style={toggleRowStyle}>
-                <Lamp
-                    color={lampOffColor}
-                    size={lampSize}
-                    opacity={lampOffOpacity}
-                    glowColor={checked ? undefined : errorColor}
-                />
-                <View style={trackStyle}>
-                    <Animated.View style={[thumbContainerStyle, thumbAnimatedStyle]}>
-                        <ThumbBody
-                            width={isHorizontal ? stickLength : stickThickness}
-                            height={isHorizontal ? stickThickness : stickLength}
-                            color={thumbColor}
-                            points={bodyPoints}
-                            orientation={orientation}
-                        />
-                        <View style={thumbPivotStyle}>
-                            <View style={pivotHighlightStyle} />
+            {({ pressed }) => {
+                const appearanceState = disabled
+                    ? 'disabled'
+                    : pressed || active
+                        ? 'active'
+                        : 'default';
+                const appearance = theme.resolveAppearance(
+                    variant,
+                    color,
+                    highlightColor,
+                    appearanceState,
+                );
+                const controlAppearance = theme.resolveAppearance(
+                    'fill',
+                    color,
+                    highlightColor,
+                    appearanceState,
+                );
+                const thumbColor = variant === 'fill'
+                    ? theme.color(color, theme.isLight ? 300 : 700)
+                    : controlAppearance.surface;
+                const lampsDisabled = appearanceState === 'disabled';
+                const labelColor = appearanceState !== 'disabled'
+                    && appearanceState !== 'default'
+                    && highlightContentShade !== undefined
+                    ? theme.color(highlightColor, highlightContentShade)
+                    : appearanceState === 'default' && contentShade !== undefined
+                        ? theme.color(color, contentShade)
+                        : theme.componentColor('text');
+                const trackStyle: ViewStyle = {
+                    width: trackSize,
+                    height: trackSize,
+                    borderRadius: trackSize / 2,
+                    borderWidth: appearance.border.width,
+                    borderColor: appearance.border.color,
+                    backgroundColor: appearance.surface,
+                };
+
+                return (
+                    <>
+                        {typeof content === 'string' || typeof content === 'number' ? (
+                            <Text style={[textStyle, { color: labelColor }]}>
+                                {content}
+                            </Text>
+                        ) : content}
+                        <View style={[styles.toggleRow, toggleRowStyle]}>
+                            <Lamp
+                                color={lampsDisabled ? appearance.glyphs : lampOffColor}
+                                size={lampSize}
+                                opacity={lampsDisabled ? 1 : lampOffOpacity}
+                                glowColor={lampsDisabled || checked ? undefined : errorColor}
+                            />
+                            <View style={[styles.track, trackStyle]}>
+                                <Animated.View style={[styles.thumbContainer, thumbContainerStyle, thumbAnimatedStyle]}>
+                                    <ThumbBody
+                                        width={isHorizontal ? stickLength : stickThickness}
+                                        height={isHorizontal ? stickThickness : stickLength}
+                                        color={thumbColor}
+                                        points={bodyPoints}
+                                        orientation={orientation}
+                                    />
+                                    <View style={[styles.thumbPivot, thumbPivotStyle, { backgroundColor: thumbColor }]}>
+                                        <View style={[styles.pivotHighlight, pivotHighlightStyle]} />
+                                    </View>
+                                    <Animated.View style={[styles.thumbPart, styles.thumbKnob, thumbKnobStyle, { backgroundColor: thumbColor }, knobAnimatedStyle]}>
+                                        <View
+                                            style={[
+                                                styles.knobHighlight,
+                                                knobHighlightStyle,
+                                                variant === 'fill' ? { opacity: 0.14 } : undefined,
+                                            ]}
+                                        />
+                                    </Animated.View>
+                                </Animated.View>
+                            </View>
+                            <Lamp
+                                color={lampsDisabled ? appearance.glyphs : lampOnColor}
+                                size={lampSize}
+                                opacity={lampsDisabled ? 1 : lampOnOpacity}
+                                glowColor={!lampsDisabled && checked ? successColor : undefined}
+                            />
                         </View>
-                        <Animated.View style={[thumbKnobStyle, knobAnimatedStyle]}>
-                            <View style={knobHighlightStyle} />
-                        </Animated.View>
-                    </Animated.View>
-                </View>
-                <Lamp
-                    color={lampOnColor}
-                    size={lampSize}
-                    opacity={lampOnOpacity}
-                    glowColor={checked ? successColor : undefined}
-                />
-            </View>
+                    </>
+                );
+            }}
         </Pressable>
     );
 };

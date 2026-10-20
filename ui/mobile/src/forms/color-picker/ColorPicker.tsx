@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import { ColorPickerProps, getThemeColorSwatches, toCssColor, parseColor, useTheme } from "@ui";
+import { ColorPickerProps, getThemeColorSwatches, toCssColor, parseColor, useTheme, DEFAULT_FILL_VARIANT, DEFAULT_SIZE } from "@ui";
 import { ColorButton } from "../color-button";
 import { ColorInput } from "../color-input";
 import { ColorRamp } from "../color-ramp";
@@ -10,8 +10,8 @@ export const ColorPicker: FC<ColorPickerProps> = ({
     value,
     onChange,
     opacityLabel,
-    size = 'sm',
-    variant = 'fill-inverse',
+    size = DEFAULT_SIZE,
+    variant = DEFAULT_FILL_VARIANT,
     disabled = false,
 }) => {
     const theme = useTheme();
