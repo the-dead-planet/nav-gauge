@@ -83,12 +83,19 @@ export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & Props>
                 disabled={disabled}
             />
             {typeof content === 'string' || typeof content === 'number' ? (
-                <span className={styles['label']}>{content}</span>
+                <span className={styles['label']}>
+                    {content}
+                </span>
             ) : content}
             <span className={classNames(styles['toggle-row'], styles[`orientation-${orientation}`])}>
                 <Lamp isSwitchedOn={false} active={!checked} />
                 <span className={styles['track']}>
-                    <span className={styles['thumb']}>
+                    <span
+                        className={styles['thumb']}
+                        data-appearance-variant="fill"
+                        data-appearance-color={color}
+                        data-appearance-highlight={highlightColor}
+                    >
                         <span className={styles['thumb-pivot']} />
                         <span className={styles['thumb-body']} />
                         <span className={styles['thumb-knob']} />

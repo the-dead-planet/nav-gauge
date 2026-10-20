@@ -12,9 +12,12 @@ import { topBarBackAction$ } from '../tinkers';
 
 const styles = StyleSheet.create({
     page: {
-        flex: 1,
+        flexGrow: 1,
         padding: 16,
         gap: 16,
+    },
+    scroll: {
+        flex: 1,
     },
     search: {
         width: '100%',
@@ -35,7 +38,7 @@ export const Stories: FC = () => {
     const [selectedEntry, setSelectedEntry] = useState<StoryEntry | null>(null);
     const normalizedQuery = query.trim().toLowerCase();
     const groups = storyGroups.filter((group) => !normalizedQuery
-        || group.name.includes(normalizedQuery)
+        || group.name.toLowerCase().includes(normalizedQuery)
         || group.entries.some((entry) => entry.name.toLowerCase().includes(normalizedQuery)));
 
     useEffect(() => {
@@ -73,7 +76,12 @@ export const Stories: FC = () => {
     if (selectedGroup) {
         return (
             <StoryBackground>
-                <StoryGroupList group={selectedGroup} onSelect={setSelectedEntry} />
+                <StoryGroupList
+                    group={selectedGroup}
+                    query={query}
+                    onQueryChange={setQuery}
+                    onSelect={setSelectedEntry}
+                />
             </StoryBackground>
         );
     }
@@ -82,7 +90,7 @@ export const Stories: FC = () => {
 
     return (
         <StoryBackground>
-            <ScrollView contentContainerStyle={styles.page}>
+            <ScrollView style={styles.scroll} contentContainerStyle={styles.page}>
                 <StoryHeader title="UI Components" />
                 <View style={styles.search}>
                     <TextInput
@@ -94,7 +102,13 @@ export const Stories: FC = () => {
                 </View>
                 <View style={styles.tiles}>
                     {groups.map((group) => (
-                        <GroupTile key={group.name} group={group} width={tileWidth} onEnter={() => setSelectedGroup(group)} />
+                        <GroupTile
+                            key={group.name}
+                            group={group}
+                            width={tileWidth}
+                            onEnter={() => setSelectedGroup(group)}
+                            onSelect={setSelectedEntry}
+                        />
                     ))}
                 </View>
             </ScrollView>

@@ -14,10 +14,10 @@ const metricsBySize: Record<SizeVariant, {
     lamp: number;
     gap: number;
 }> = {
-    xs: { track: 28, stickLength: 12, stickThickness: 8, pivot: 6, knob: 8, lamp: 6, gap: 6 },
-    sm: { track: 34, stickLength: 14, stickThickness: 10, pivot: 7, knob: 9, lamp: 8, gap: 8 },
-    md: { track: 40, stickLength: 16, stickThickness: 12, pivot: 8, knob: 10, lamp: 10, gap: 10 },
-    lg: { track: 46, stickLength: 18, stickThickness: 14, pivot: 9, knob: 12, lamp: 12, gap: 12 },
+    xs: { track: 28, stickLength: 12, stickThickness: 8, pivot: 5, knob: 8, lamp: 6, gap: 6 },
+    sm: { track: 34, stickLength: 14, stickThickness: 10, pivot: 6, knob: 9, lamp: 8, gap: 8 },
+    md: { track: 40, stickLength: 16, stickThickness: 12, pivot: 7, knob: 10, lamp: 10, gap: 10 },
+    lg: { track: 46, stickLength: 18, stickThickness: 14, pivot: 8, knob: 12, lamp: 12, gap: 12 },
 };
 
 const clipPaths = {
@@ -52,20 +52,19 @@ const styles = StyleSheet.create({
         elevation: 2,
     },
     thumbPivot: {
-        shadowOpacity: 0.3,
-        shadowRadius: 1,
-    },
-    thumbKnob: {
-        shadowOpacity: 0.35,
-        shadowRadius: 2,
-        elevation: 3,
+        position: 'absolute',
     },
     pivotHighlight: {
         position: 'absolute',
         top: '15%',
         left: '15%',
         backgroundColor: 'white',
-        opacity: 0.35,
+        opacity: 0.14,
+    },
+    thumbKnob: {
+        shadowOpacity: 0.35,
+        shadowRadius: 2,
+        elevation: 3,
     },
     knobHighlight: {
         position: 'absolute',
@@ -200,12 +199,6 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
             borderRadius: thumbPivotSize / 2,
         };
 
-    const pivotHighlightStyle: ViewStyle = {
-        width: thumbPivotSize * 0.6,
-        height: thumbPivotSize * 0.6,
-        borderRadius: thumbPivotSize * 0.3,
-    };
-
     const thumbKnobStyle: ViewStyle = isHorizontal
         ? {
             right: 0,
@@ -225,6 +218,12 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
             height: thumbKnobSize,
             borderRadius: thumbKnobSize / 2,
         };
+
+    const pivotHighlightStyle: ViewStyle = {
+        width: thumbPivotSize * 0.6,
+        height: thumbPivotSize * 0.6,
+        borderRadius: thumbPivotSize * 0.3,
+    };
 
     const knobHighlightStyle: ViewStyle = {
         width: thumbKnobSize * 0.6,
@@ -256,6 +255,15 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
                     highlightColor,
                     appearanceState,
                 );
+                const controlAppearance = theme.resolveAppearance(
+                    'fill',
+                    color,
+                    highlightColor,
+                    appearanceState,
+                );
+                const thumbColor = variant === 'fill'
+                    ? theme.color(color, theme.isLight ? 300 : 700)
+                    : controlAppearance.surface;
                 const lampsDisabled = appearanceState === 'disabled';
                 const labelColor = appearanceState !== 'disabled'
                     && appearanceState !== 'default'
@@ -263,7 +271,7 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
                     ? theme.color(highlightColor, highlightContentShade)
                     : appearanceState === 'default' && contentShade !== undefined
                         ? theme.color(color, contentShade)
-                        : appearance.glyphs;
+                        : theme.componentColor('text');
                 const trackStyle: ViewStyle = {
                     width: trackSize,
                     height: trackSize,
@@ -292,15 +300,21 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
                                     <ThumbBody
                                         width={isHorizontal ? stickLength : stickThickness}
                                         height={isHorizontal ? stickThickness : stickLength}
-                                        color={appearance.glyphs}
+                                        color={thumbColor}
                                         points={bodyPoints}
                                         orientation={orientation}
                                     />
-                                    <View style={[styles.thumbPart, styles.thumbPivot, thumbPivotStyle, { backgroundColor: appearance.glyphs }]}>
+                                    <View style={[styles.thumbPivot, thumbPivotStyle, { backgroundColor: thumbColor }]}>
                                         <View style={[styles.pivotHighlight, pivotHighlightStyle]} />
                                     </View>
-                                    <Animated.View style={[styles.thumbPart, styles.thumbKnob, thumbKnobStyle, { backgroundColor: appearance.glyphs }, knobAnimatedStyle]}>
-                                        <View style={[styles.knobHighlight, knobHighlightStyle]} />
+                                    <Animated.View style={[styles.thumbPart, styles.thumbKnob, thumbKnobStyle, { backgroundColor: thumbColor }, knobAnimatedStyle]}>
+                                        <View
+                                            style={[
+                                                styles.knobHighlight,
+                                                knobHighlightStyle,
+                                                variant === 'fill' ? { opacity: 0.14 } : undefined,
+                                            ]}
+                                        />
                                     </Animated.View>
                                 </Animated.View>
                             </View>

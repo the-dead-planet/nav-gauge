@@ -18,6 +18,10 @@ const styles = StyleSheet.create({
         shadowRadius: 12,
         elevation: 10,
     },
+    content: {
+        flexShrink: 1,
+        overflow: 'hidden',
+    },
 });
 
 interface Props extends PopupProps {
@@ -147,7 +151,12 @@ export const Popup: FC<Props> = ({
                 popupStyle,
             ]}
         >
-            <Pressable onPress={(event) => event.stopPropagation()}>{children}</Pressable>
+            <Pressable
+                style={styles.content}
+                onPress={(event) => event.stopPropagation()}
+            >
+                {children}
+            </Pressable>
         </Animated.View>
     );
 

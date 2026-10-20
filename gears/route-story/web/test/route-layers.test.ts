@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { describe, it } from "mocha";
 import type * as maplibregl from "maplibre-gl";
-import { defaultRouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { defaultRouteStoryState, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { updateRouteLayer, updateRouteLayerStyle } from "../src/tinkers";
 
 describe("Web route line layers", () => {
@@ -13,10 +13,10 @@ describe("Web route line layers", () => {
             setLayoutProperty: (_layerId: string, property: string) => updates.push(property),
             setPaintProperty: (_layerId: string, property: string) => updates.push(property),
         } as unknown as maplibregl.Map;
-        const state = {
+        const state: RouteStoryState = {
             ...defaultRouteStoryState,
-            routeStyleActive: { ...defaultRouteStoryState.routeStyleActive, variant: 'solid' as const },
-            routeStyleInactive: { ...defaultRouteStoryState.routeStyleInactive, variant: 'solid' as const },
+            routeStyleActive: { ...defaultRouteStoryState.routeStyleActive, lineStyle: 'solid' },
+            routeStyleInactive: { ...defaultRouteStoryState.routeStyleInactive, lineStyle: 'solid' },
         };
 
         updateRouteLayerStyle(map, state);
