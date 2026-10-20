@@ -1,8 +1,7 @@
-import { ChangeEvent, ComponentProps, FC, useId } from "react";
+import { ChangeEvent, ComponentProps, CSSProperties, FC, useId } from "react";
 import classNames from "classnames";
-import { DEFAULT_FILL_VARIANT, ToggleSwitchProps, useTheme } from "@ui";
+import { DEFAULT_FILL_VARIANT, DEFAULT_SIZE, ToggleSwitchProps, useTheme } from "@ui";
 import styles from './toggle-switch.module.css';
-import { Span } from "../../design-system/typography";
 import { Lamp } from "./Lamp";
 
 interface Props extends ToggleSwitchProps {
@@ -17,7 +16,7 @@ export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & Props>
     contentShade,
     highlightColor = color,
     highlightContentShade,
-    size = 'sm',
+    size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     orientation = 'horizontal',
     checked,
@@ -26,11 +25,13 @@ export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & Props>
     active = false,
     className,
     style,
+    children,
     ...props
 }) => {
     const generatedId = useId();
     const effectiveId = id || generatedId;
     const theme = useTheme();
+    const content = label ?? children;
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         onChange(e.target.checked);
@@ -50,11 +51,7 @@ export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & Props>
             htmlFor={effectiveId}
             className={classNames(
                 styles['toggle-switch'],
-                styles[`mode-${theme.mode}`],
-                styles[`color-${color}`],
-                styles[`highlight-${highlightColor}`],
                 styles[`size-${size}`],
-                styles[`variant-${variant}`],
                 {
                     [styles['disabled']]: disabled,
                     [styles['checked']]: checked,
@@ -62,7 +59,19 @@ export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & Props>
                 },
                 className
             )}
-            style={style}
+            style={{
+                ...style,
+                ...(contentShade === undefined ? undefined : {
+                    '--appearance-default-glyphs-override': theme.color(color, contentShade),
+                }),
+                ...(highlightContentShade === undefined ? undefined : {
+                    '--appearance-interaction-glyphs-override': theme.color(highlightColor, highlightContentShade),
+                    '--appearance-active-glyphs-override': theme.color(highlightColor, highlightContentShade),
+                }),
+            } as CSSProperties}
+            data-appearance-variant={variant}
+            data-appearance-color={color}
+            data-appearance-highlight={highlightColor}
             {...props}
         >
             <input
@@ -73,11 +82,9 @@ export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & Props>
                 onChange={handleChange}
                 disabled={disabled}
             />
-            {typeof label === 'string' ? (
-                <Span color={checked || active ? highlightColor : color} shade={checked || active ? highlightContentShade : contentShade} className={styles['label']}>
-                    {label}
-                </Span>
-            ) : label}
+            {typeof content === 'string' || typeof content === 'number' ? (
+                <span className={styles['label']}>{content}</span>
+            ) : content}
             <span className={classNames(styles['toggle-row'], styles[`orientation-${orientation}`])}>
                 <Lamp isSwitchedOn={false} active={!checked} />
                 <span className={styles['track']}>

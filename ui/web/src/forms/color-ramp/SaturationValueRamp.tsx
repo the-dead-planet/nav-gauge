@@ -1,5 +1,5 @@
 import { CSSProperties, FC, KeyboardEvent, PointerEvent, useRef } from "react";
-import { colorRampThumbSizes, SaturationValueRampProps } from "@ui";
+import { colorRampThumbSizes, DEFAULT_SIZE, SaturationValueRampProps } from "@ui";
 import { clampZeroOne } from "@tinker-chest";
 import styles from './color-ramp.module.css';
 
@@ -8,7 +8,7 @@ export const SaturationValueRamp: FC<SaturationValueRampProps> = ({
     saturation,
     brightness,
     label = 'Color',
-    size = 'sm',
+    size = DEFAULT_SIZE,
     disabled = false,
     onChange,
 }) => {

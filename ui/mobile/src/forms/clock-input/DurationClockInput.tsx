@@ -11,6 +11,7 @@ import {
     snapSlice,
     STEP_DEG,
     DEFAULT_FILL_VARIANT,
+    DEFAULT_SIZE,
 } from "@ui";
 import { ClockDial } from "./ClockDial";
 import { ClockTicks } from "./ClockTicks";
@@ -31,7 +32,7 @@ export const DurationClockInput: FC<DurationClockInputProps & { style?: ViewStyl
     contentShade,
     highlightColor,
     highlightContentShade,
-    size = 'md',
+    size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     value,
     min = 0,

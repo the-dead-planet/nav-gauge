@@ -9,7 +9,7 @@ import {
     type HostInstance,
     TouchableHighlight,
 } from 'react-native';
-import { controlTextSpecifications, DEFAULT_FILL_VARIANT, DropdownProps, Icons, useTheme } from '@ui';
+import { controlTextSpecifications, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, DropdownProps, Icons, useTheme } from '@ui';
 import { Icon } from '../../design-system/icons';
 import { Text } from '../../design-system/typography';
 import { SvgProps } from 'react-native-svg';
@@ -64,7 +64,7 @@ export function Dropdown<T>({
     contentShade,
     highlightColor = color,
     highlightContentShade,
-    size = 'sm',
+    size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     value,
     options,

@@ -1,6 +1,6 @@
 import { FC, RefObject, useRef, useState } from "react";
 import { HostInstance, TextInput as NativeTextInput, View, StyleSheet } from "react-native";
-import { ColorFormat, ColorInputProps, DEFAULT_FILL_VARIANT, parseColor, toCssColor, useColorInputState, useTheme } from "@ui";
+import { ColorFormat, ColorInputProps, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, parseColor, toCssColor, useColorInputState, useTheme } from "@ui";
 import { Text } from "../../design-system/typography";
 import { Dropdown } from "../dropdown";
 import { Popup } from "../../rigs/popup";
@@ -62,7 +62,7 @@ export const ColorInput: FC<ColorInputProps> = ({
     contentShade,
     highlightColor = color,
     highlightContentShade,
-    size = 'sm',
+    size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     label,
     value,

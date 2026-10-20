@@ -1,5 +1,5 @@
 import { ComponentProps, FC } from 'react';
-import { TileProps } from '@ui';
+import { DEFAULT_SIZE, TileProps } from '@ui';
 import classNames from 'classnames';
 import { Panel } from '../../hud/panel';
 import styles from './tile.module.css';
@@ -10,7 +10,7 @@ interface Props extends TileProps {
 
 export const Tile: FC<Props> = ({
     name,
-    size = 'sm',
+    size = DEFAULT_SIZE,
     append,
     description,
     actions,

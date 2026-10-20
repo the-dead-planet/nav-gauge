@@ -1,5 +1,5 @@
 import { ComponentProps, CSSProperties, FC, useEffect, useId, useRef, useState } from "react";
-import { BevelPanelProps, DEFAULT_FILL_VARIANT, SizeVariant, useTheme } from "@ui";
+import { BevelPanelProps, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, SizeVariant, useTheme } from "@ui";
 import classNames from "classnames";
 import styles from "./bevel-panel.module.css";
 
@@ -24,7 +24,7 @@ export const BevelPanel: FC<BevelPanelProps & Props & ComponentProps<'div'>> = (
     color = 'neutral',
     highlightColor,
     variant = DEFAULT_FILL_VARIANT,
-    size = 'lg',
+    size = DEFAULT_SIZE,
     active = false,
     disabled = false,
     onClick,

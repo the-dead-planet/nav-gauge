@@ -3,7 +3,7 @@ import { StyleSheet, Switch, TextInput, View } from "react-native";
 import { Button } from "../../gizmos/button";
 import { Text } from "../../design-system/typography";
 import { SaturationValueRamp } from "./SaturationValueRamp";
-import { sizeOptions } from "@ui";
+import { DEFAULT_SIZE, sizeOptions, SizeVariant } from "@ui";
 
 const styles = StyleSheet.create({
     container: { gap: 16, padding: 24 },
@@ -16,7 +16,7 @@ export const Playground: FC = () => {
     const [saturation, setSaturation] = useState(0.7);
     const [brightness, setBrightness] = useState(0.8);
     const [label, setLabel] = useState("Color");
-    const [size, setSize] = useState<"xs" | "sm" | "md" | "lg">("sm");
+    const [size, setSize] = useState<SizeVariant>(DEFAULT_SIZE);
     const [disabled, setDisabled] = useState(false);
 
     return (

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { useState } from 'react';
 import { Fieldset } from './Fieldset';
 import { Text } from '../../design-system/typography';
-import { ColorVariant, SizeVariant, FillVariant } from '@ui';
+import { ColorVariant, SizeVariant, FillVariant, DEFAULT_SIZE } from '@ui';
 import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptions as allSizes } from '../../storybook/controls';
 
 const meta = {
@@ -97,7 +97,7 @@ export const WithPrepend = {
 export const Interactive = {
     render: () => {
         const [color, setColor] = useState<ColorVariant>('neutral');
-        const [size, setSize] = useState<SizeVariant>('md');
+        const [size, setSize] = useState<SizeVariant>(DEFAULT_SIZE);
 
         return (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 24, padding: 24, maxWidth: 320 }}>

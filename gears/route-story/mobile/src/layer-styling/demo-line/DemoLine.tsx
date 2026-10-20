@@ -80,7 +80,7 @@ export const DemoLine: FC<Props> = ({
     const markerSize = 16 * state.currentPoint.size;
     const markerRotation = state.currentPoint.rotation + (state.currentPoint.autoRotate ? 90 : 0);
     const icon = state.currentPoint.icon === 'Circle' ? Icons.Circle : Icons.NounProject[state.currentPoint.icon];
-    const transitionWidth = active.variant === 'dashed' ? 0 : active.colorTransitionLengthPixels;
+    const transitionWidth = active.lineStyle === 'dashed' ? 0 : active.colorTransitionLengthPixels;
     const transitionStrips = Array.from({ length: 24 }, (_, index) => index / 23);
     const activeWidth = Math.min(active.width, 10);
     const inactiveWidth = Math.min(inactive.width, 10);

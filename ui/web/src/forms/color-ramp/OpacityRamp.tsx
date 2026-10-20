@@ -1,8 +1,15 @@
 import { CSSProperties, FC } from "react";
-import { colorRampThumbSizes, OpacityRampProps } from "@ui";
+import { colorRampThumbSizes, DEFAULT_SIZE, OpacityRampProps } from "@ui";
 import styles from './color-ramp.module.css';
 
-export const OpacityRamp: FC<OpacityRampProps> = ({ color, value, label = 'Opacity', size = 'sm', disabled = false, onChange }) => (
+export const OpacityRamp: FC<OpacityRampProps> = ({
+    color,
+    value,
+    label = 'Opacity',
+    size = DEFAULT_SIZE,
+    disabled = false,
+    onChange,
+}) => (
     <input
         type="range"
         min={0}

@@ -1,6 +1,6 @@
 import { ComponentProps, FC, useEffect, useRef, useState } from "react";
 import classNames from "classnames";
-import { IconRotateInputProps, useTheme } from "@ui";
+import { DEFAULT_SIZE, IconRotateInputProps, useTheme } from "@ui";
 import { RotationArrows } from "./RotationArrows";
 import { RotateIconWrapper } from "./RotateIconWrapper";
 import { RotateA11yInput } from "./RotateA11yInput";
@@ -18,7 +18,7 @@ export const IconRotateInput: FC<IconRotateInputProps & Omit<ComponentProps<'div
     valueAdjustment = 0,
     color = 'neutral',
     highlightColor,
-    size = 'sm',
+    size = DEFAULT_SIZE,
     min = 0,
     max = 360,
     step = 1,

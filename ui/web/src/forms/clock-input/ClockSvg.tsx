@@ -4,6 +4,7 @@ import { ClockDial } from "./ClockDial";
 import { ClockTicks } from "./ClockTicks";
 import { ClockPointer } from "./ClockPointer";
 import { ClockThumb } from "./ClockThumb";
+import { DEFAULT_SIZE, SizeVariant } from "@ui";
 import styles from './clock-input.module.css';
 
 interface Props {
@@ -23,7 +24,7 @@ interface Props {
     thumbRadius: number;
     min: number;
     max: number;
-    size: string;
+    size: SizeVariant;
     isFullCircle?: boolean;
     thumbIcon?: string;
 }
@@ -45,7 +46,7 @@ export const ClockSvg: FC<Props> = ({
     thumbRadius,
     min,
     max,
-    size,
+    size = DEFAULT_SIZE,
     isFullCircle,
     thumbIcon,
 }) => (

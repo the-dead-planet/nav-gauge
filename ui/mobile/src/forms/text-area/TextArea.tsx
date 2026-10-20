@@ -3,6 +3,7 @@ import { TextInput as RNTextInput, View, StyleSheet } from "react-native";
 import {
     controlTextSpecifications,
     DEFAULT_FILL_VARIANT,
+    DEFAULT_SIZE,
     FontType,
     TextAreaProps,
     useTheme,
@@ -32,7 +33,7 @@ export const TextArea: FC<
     contentShade,
     highlightColor = color,
     highlightContentShade,
-    size = "sm",
+    size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     label,
     autoSelect = false,

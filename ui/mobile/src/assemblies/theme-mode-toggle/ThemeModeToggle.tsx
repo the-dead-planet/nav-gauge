@@ -5,6 +5,7 @@ import { Button } from '../../gizmos/button';
 export const ThemeModeToggle: FC<ThemeModeToggleProps> = ({
     lightModeTooltip,
     darkModeTooltip,
+    size,
     onToggle,
 }) => {
     const theme = useTheme();
@@ -19,7 +20,7 @@ export const ThemeModeToggle: FC<ThemeModeToggleProps> = ({
             icon={Icons.NounProject.LightBulbCogWheel}
             onPress={onToggle}
             variant="inset"
-            size="md"
+            size={size}
             color={isDark ? 'secondary' : 'neutral'}
             highlightColor={isDark ? 'neutral' : 'secondary'}
         />

@@ -51,7 +51,7 @@ export const LineStyleGroup: FC<Props> = ({
         { label: dashedLabel, value: 'dashed' as const },
     ].filter((option) => option.label != null);
 
-    const colorTransitionDisabled = showColorTransition && (!style.showRouteLine || style.variant === 'dashed');
+    const colorTransitionDisabled = showColorTransition && (!style.showRouteLine || style.lineStyle === 'dashed');
 
     return (
         <div className={styles['controls']}>
@@ -64,7 +64,7 @@ export const LineStyleGroup: FC<Props> = ({
                 <div className={styles['line-grid']}>
                     <div className={styles['control-group']}>
                         <Text as="span" variant="caption" disabled={!style.showRouteLine} className={styles['variant-label']}>{lineStyleLabel}</Text>
-                        <Dropdown className={styles['variant-dropdown']} ariaLabel={lineStyleLabel} disabled={!style.showRouteLine} size="xs" value={style.variant} options={variantOptions} onChange={(variant) => onChange({ variant })} />
+                        <Dropdown className={styles['variant-dropdown']} ariaLabel={lineStyleLabel} disabled={!style.showRouteLine} size="xs" value={style.lineStyle} options={variantOptions} onChange={(lineStyle) => onChange({ lineStyle })} />
                     </div>
                     <div className={styles['control-group']}>
                         <Text as="span" variant="caption" disabled={!style.showRouteLine}>{lineLabel}</Text>

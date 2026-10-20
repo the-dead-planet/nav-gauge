@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import { HostInstance, Pressable, PressableProps, StyleSheet } from "react-native";
-import { ColorButtonProps, formatColorDescription, useTheme } from "@ui";
+import { ColorButtonProps, DEFAULT_SIZE, formatColorDescription, useTheme } from "@ui";
 import { DisabledRampPattern } from "../color-ramp/DisabledRampPattern";
 
 const styles = StyleSheet.create({
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 export const ColorButton = forwardRef<HostInstance, ColorButtonProps & Omit<PressableProps, 'children' | 'style'>>(({
     value,
     label = 'Color',
-    size = 'sm',
+    size = DEFAULT_SIZE,
     selected = false,
     disabled = false,
     onPress,

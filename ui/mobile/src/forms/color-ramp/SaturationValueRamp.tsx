@@ -1,4 +1,4 @@
-import { colorRampThumbSizes, SaturationValueRampProps, SizeVariant } from "@ui";
+import { colorRampThumbSizes, DEFAULT_SIZE, SaturationValueRampProps, SizeVariant } from "@ui";
 import { FC } from "react";
 import {
     AccessibilityActionEvent,
@@ -36,7 +36,7 @@ export const SaturationValueRamp: FC<SaturationValueRampProps> = ({
     saturation,
     brightness,
     label = "Color",
-    size = "sm",
+    size = DEFAULT_SIZE,
     disabled = false,
     onChange,
 }) => {

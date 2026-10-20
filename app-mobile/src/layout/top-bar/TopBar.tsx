@@ -88,6 +88,7 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
                 <ThemeModeToggle
                     lightModeTooltip={lightModeTooltip}
                     darkModeTooltip={darkModeTooltip}
+                    size="md"
                     onToggle={individuator.toggleMode}
                 />
                 <LayoutMenu onNavigate={onNavigate} />

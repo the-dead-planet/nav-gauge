@@ -5,6 +5,7 @@ import {
     ChipProps,
     ColorShade,
     DEFAULT_FILL_VARIANT,
+    DEFAULT_SIZE,
     DesignSystemColor,
     SizeVariant,
     ThemeComponentColor,
@@ -91,7 +92,7 @@ const sizeStyles = StyleSheet.create({
 export const Chip: FC<ChipProps & Props> = ({
     color = 'neutral',
     icon,
-    size = 'sm',
+    size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     tooltip,
     tooltipPlacement,

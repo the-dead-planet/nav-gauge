@@ -1,6 +1,6 @@
 import { ComponentProps, CSSProperties, FC } from "react";
 import classNames from "classnames";
-import { ButtonProps, DEFAULT_SURFACE_VARIANT, useTheme } from "@ui";
+import { ButtonProps, DEFAULT_SIZE, DEFAULT_SURFACE_VARIANT, useTheme } from "@ui";
 import { Icon } from "../../design-system/icons";
 import { Tooltip } from "../tooltip";
 import { Hexagon } from "../../hud";
@@ -20,7 +20,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     highlightContentShade,
     variant = DEFAULT_SURFACE_VARIANT,
     activeGlow = 'none',
-    size = 'sm',
+    size = DEFAULT_SIZE,
     corners = 'square',
     active = false,
     disabled,

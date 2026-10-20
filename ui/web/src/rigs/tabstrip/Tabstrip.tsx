@@ -1,6 +1,6 @@
 import { FC, ReactNode, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
-import { DEFAULT_FILL_VARIANT, getVisibleTabIndexes, Icons, TabstripProps, useTheme } from '@ui';
+import { DEFAULT_FILL_VARIANT, DEFAULT_SIZE, getVisibleTabIndexes, Icons, TabstripProps, useTheme } from '@ui';
 import { Button } from '../../gizmos/button';
 import { Menu, MenuItem } from '../menu';
 import styles from './tabstrip.module.css';
@@ -9,7 +9,7 @@ export const Tabstrip: FC<TabstripProps> = ({
     options,
     value,
     onChange,
-    size = 'sm',
+    size = DEFAULT_SIZE,
     color = 'neutral',
     contentShade,
     highlightColor = color,

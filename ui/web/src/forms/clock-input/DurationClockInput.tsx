@@ -11,6 +11,7 @@ import {
     STEP_DEG,
     useTheme,
     DEFAULT_FILL_VARIANT,
+    DEFAULT_SIZE,
 } from "@ui";
 import { ClockContainer } from "./ClockContainer";
 import { ClockDial } from "./ClockDial";
@@ -35,7 +36,7 @@ export const DurationClockInput: FC<DurationClockInputProps & { id?: string; cla
     contentShade,
     highlightColor,
     highlightContentShade,
-    size = 'sm',
+    size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     value,
     min = 0,

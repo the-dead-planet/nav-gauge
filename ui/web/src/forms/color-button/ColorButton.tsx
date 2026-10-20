@@ -1,13 +1,13 @@
 import { ComponentProps, CSSProperties, forwardRef } from "react";
 import classNames from "classnames";
-import { ColorButtonProps, formatColorDescription, useTheme } from "@ui";
+import { ColorButtonProps, DEFAULT_SIZE, formatColorDescription, useTheme } from "@ui";
 import { Tooltip } from "../../gizmos/tooltip";
 import styles from './color-button.module.css';
 
 export const ColorButton = forwardRef<HTMLButtonElement, ColorButtonProps & Omit<ComponentProps<'button'>, 'value'>>(({
     value,
     label = 'Color',
-    size = 'sm',
+    size = DEFAULT_SIZE,
     selected = false,
     disabled = false,
     className,

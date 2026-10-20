@@ -1,6 +1,6 @@
 import { CSSProperties, FC, useState } from "react"
 import classNames from "classnames";
-import { DEFAULT_FILL_VARIANT, FieldsetProps, Icons, useTheme } from "@ui";
+import { DEFAULT_FILL_VARIANT, DEFAULT_SIZE, FieldsetProps, Icons, useTheme } from "@ui";
 import { Icon } from "../../design-system/icons";
 import styles from './fieldset.module.css';
 
@@ -16,7 +16,7 @@ export const Fieldset: FC<Omit<FieldsetProps, 'expanded' | 'onExpandedChange'> &
     label,
     prepend,
     append,
-    size = 'sm',
+    size = DEFAULT_SIZE,
     color = 'neutral',
     variant = DEFAULT_FILL_VARIANT,
     expandable = true,

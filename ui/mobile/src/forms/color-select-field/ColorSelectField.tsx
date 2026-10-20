@@ -1,6 +1,6 @@
 import { FC, RefObject, useRef, useState } from "react";
 import { HostInstance, StyleSheet } from "react-native";
-import { ColorSelectFieldProps, DEFAULT_FILL_VARIANT, useTheme } from "@ui";
+import { ColorSelectFieldProps, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, useTheme } from "@ui";
 import { Popup } from "../../rigs/popup";
 import { ColorButton } from "../color-button";
 import { ColorPicker } from "../color-picker";
@@ -23,7 +23,7 @@ export const ColorSelectField: FC<ColorSelectFieldProps> = ({
     label = 'Color',
     value,
     opacityLabel,
-    size = 'sm',
+    size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     onChange,
 }) => {

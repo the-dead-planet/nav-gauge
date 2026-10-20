@@ -1,6 +1,6 @@
 import { ChangeEvent, ComponentProps, CSSProperties, FC } from "react";
 import classNames from "classnames";
-import { DEFAULT_FILL_VARIANT, SliderProps, useTheme } from "@ui";
+import { DEFAULT_FILL_VARIANT, DEFAULT_SIZE, SliderProps, useTheme } from "@ui";
 import { Label, Span } from "../../design-system/typography";
 import { NumberInput } from "../number-input";
 import { StepControls } from "../step-controls";
@@ -11,7 +11,7 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
     contentShade,
     highlightColor = color,
     highlightContentShade,
-    size = 'md',
+    size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     min = 0,
     max = 100,

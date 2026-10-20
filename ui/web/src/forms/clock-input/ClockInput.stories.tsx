@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { ColorVariant, SizeVariant, FillVariant, CLOCK_INPUT_RANGE, NumberInputPlacement } from '@ui';
+import { ColorVariant, SizeVariant, FillVariant, CLOCK_INPUT_RANGE, NumberInputPlacement, DEFAULT_SIZE } from '@ui';
 import { ClockSliceInput } from './ClockSliceInput';
 import { ClockInput } from './ClockInput';
 import { DurationClockInput } from './DurationClockInput';
@@ -49,7 +49,7 @@ export const Gallery = {
     },
     render: () => {
         const [value, setValue] = useState(45);
-        const [size, setSize] = useState<SizeVariant>('sm');
+        const [size, setSize] = useState<SizeVariant>(DEFAULT_SIZE);
         const [disabled, setDisabled] = useState(false);
         const [showStepControls, setShowStepControls] = useState(false);
         const [showNumberInput, setShowNumberInput] = useState(false);
@@ -171,7 +171,7 @@ export const SliceGallery = {
     render: () => {
         const pitchRange: [number, number] = [0, 85];
         const [value, setValue] = useState(30);
-        const [size, setSize] = useState<SizeVariant>('sm');
+        const [size, setSize] = useState<SizeVariant>(DEFAULT_SIZE);
         const [disabled, setDisabled] = useState(false);
         const [showStepControls, setShowStepControls] = useState(false);
         const [showNumberInput, setShowNumberInput] = useState(false);
@@ -327,7 +327,7 @@ export const DurationGallery = {
     },
     render: () => {
         const [value, setValue] = useState(15000);
-        const [size, setSize] = useState<SizeVariant>('sm');
+        const [size, setSize] = useState<SizeVariant>(DEFAULT_SIZE);
         const [disabled, setDisabled] = useState(false);
         const [showStepControls, setShowStepControls] = useState(false);
         const [showNumberInput, setShowNumberInput] = useState(false);

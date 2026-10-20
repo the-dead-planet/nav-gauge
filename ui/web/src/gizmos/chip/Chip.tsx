@@ -1,6 +1,6 @@
 import { FC } from "react";
 import classNames from "classnames";
-import { ChipProps, DEFAULT_FILL_VARIANT, SizeVariant, useTheme } from "@ui";
+import { ChipProps, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, SizeVariant, useTheme } from "@ui";
 import { Icon } from "../../design-system/icons";
 import { Tooltip } from "../tooltip";
 import styles from './chip.module.css';
@@ -23,7 +23,7 @@ const iconSizes: Record<SizeVariant, number> = {
 export const Chip: FC<ChipProps & Props> = ({
     color = 'neutral',
     icon,
-    size = 'sm',
+    size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     tooltip,
     tooltipPlacement,

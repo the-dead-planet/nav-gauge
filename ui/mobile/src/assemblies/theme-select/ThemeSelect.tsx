@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import {
     DEFAULT_FILL_VARIANT,
+    DEFAULT_SIZE,
     DesignSystemColor,
     ThemeSelectProps,
     themeNameOptions,
@@ -35,7 +36,7 @@ export const ThemeSelect: FC<ThemeSelectProps> = ({
     value,
     onChange,
     color = 'neutral',
-    size = 'md',
+    size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
 }) => {
     const options = themeNameOptions.map((option) => ({

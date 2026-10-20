@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import { addDecimalStep, DEFAULT_FILL_VARIANT, Icons, StepControlsProps, useStepRepeat } from "@ui";
+import { addDecimalStep, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, Icons, StepControlsProps, useStepRepeat } from "@ui";
 import { Button } from "../../gizmos/button";
 
 const styles = StyleSheet.create({
@@ -21,7 +21,7 @@ export const StepControls: FC<StepControlsProps> = ({
     children,
     color = 'neutral',
     variant = DEFAULT_FILL_VARIANT,
-    size = 'sm',
+    size = DEFAULT_SIZE,
     value,
     onChange,
     min,

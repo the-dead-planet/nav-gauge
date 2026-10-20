@@ -10,7 +10,7 @@ import {
     type ViewInstance,
 } from "react-native";
 import Svg, { Polygon } from "react-native-svg";
-import { BevelPanelProps, ColorVariant, DEFAULT_FILL_VARIANT, SizeVariant, useTheme } from "@ui";
+import { BevelPanelProps, ColorVariant, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, SizeVariant, useTheme } from "@ui";
 import { TRANSLUCENT_OPACITY_BACKGROUND } from "../../tinkers";
 
 const bevelMap: Record<SizeVariant, number> = {
@@ -74,7 +74,7 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
     highlightColor: highlightColorProp,
     variant = DEFAULT_FILL_VARIANT,
     activeGlow = "none",
-    size = 'lg',
+    size = DEFAULT_SIZE,
     interactive = false,
     active = false,
     disabled = false,

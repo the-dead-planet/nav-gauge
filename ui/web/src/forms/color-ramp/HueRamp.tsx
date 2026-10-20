@@ -1,8 +1,14 @@
 import { CSSProperties, FC } from "react";
-import { colorRampThumbSizes, HueRampProps } from "@ui";
+import { colorRampThumbSizes, DEFAULT_SIZE, HueRampProps } from "@ui";
 import styles from './color-ramp.module.css';
 
-export const HueRamp: FC<HueRampProps> = ({ value, label = 'Color', size = 'sm', disabled = false, onChange }) => (
+export const HueRamp: FC<HueRampProps> = ({
+    value,
+    label = 'Color',
+    size = DEFAULT_SIZE,
+    disabled = false,
+    onChange,
+}) => (
     <input
         type="range"
         min={0}

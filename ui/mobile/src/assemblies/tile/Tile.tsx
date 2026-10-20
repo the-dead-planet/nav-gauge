@@ -1,6 +1,6 @@
 import { ComponentProps, FC } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { SizeVariant, TileProps } from '@ui';
+import { DEFAULT_SIZE, SizeVariant, TileProps } from '@ui';
 import { Text } from '../../design-system/typography';
 import { Panel } from '../../hud/panel';
 
@@ -55,7 +55,7 @@ interface Props extends TileProps {
 
 export const Tile: FC<Props> = ({
     name,
-    size = 'sm',
+    size = DEFAULT_SIZE,
     append,
     description,
     actions,

@@ -1,6 +1,6 @@
 import { ComponentProps, FC, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
-import { ClockInputProps, useTheme, snapSlice, clockAngleToRadians, pointerCoords, svgAtan2ToClockAngle, arcViewBox, DEFAULT_FILL_VARIANT } from '@ui';
+import { ClockInputProps, useTheme, snapSlice, clockAngleToRadians, pointerCoords, svgAtan2ToClockAngle, arcViewBox, DEFAULT_FILL_VARIANT, DEFAULT_SIZE } from '@ui';
 import { ClockSvg } from './ClockSvg';
 import { ClockA11yInput } from './ClockA11yInput';
 import { ClockContainer } from './ClockContainer';
@@ -18,7 +18,7 @@ export const ClockSliceInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, '
     color = 'neutral',
     highlightColor,
     variant = DEFAULT_FILL_VARIANT,
-    size = 'sm',
+    size = DEFAULT_SIZE,
     thumbIcon,
     value = 0,
     formatValue,

@@ -1,4 +1,4 @@
-import { colorRampThumbSizes, HueRampProps, sliderRampHeights } from "@ui";
+import { colorRampThumbSizes, DEFAULT_SIZE, HueRampProps, sliderRampHeights } from "@ui";
 import { FC } from "react";
 import {
     AccessibilityActionEvent,
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 export const HueRamp: FC<HueRampProps> = ({
     value,
     label = "Color",
-    size = "sm",
+    size = DEFAULT_SIZE,
     disabled = false,
     onChange,
 }) => {

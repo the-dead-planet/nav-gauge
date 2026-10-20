@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { useState } from 'react';
 import { Checkbox } from './Checkbox';
 import { Text } from '../../design-system/typography';
-import { ColorVariant, SizeVariant } from '@ui';
+import { ColorVariant, DEFAULT_SIZE, SizeVariant } from '@ui';
 import styles from './checkbox.stories.module.css';
 import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptions as allSizes } from '../../storybook/controls';
 
@@ -20,7 +20,7 @@ export const Playground: Story = {};
 export const Gallery = {
     render: () => {
         const [checked, setChecked] = useState(false);
-        const [size, setSize] = useState<SizeVariant>('sm');
+        const [size, setSize] = useState<SizeVariant>(DEFAULT_SIZE);
         const [color, setColor] = useState<ColorVariant>('primary');
 
         return (
