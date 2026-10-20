@@ -20,7 +20,7 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    padding: 12px 12px 0;
+    padding-bottom: 0;
 }
 
 .title-row {
@@ -49,7 +49,29 @@
     flex-direction: column;
     gap: 8px;
     min-width: 0;
+}
+
+.padding-xs {
+    padding: 6px;
+}
+
+.padding-sm {
     padding: 12px;
+}
+
+.padding-md {
+    padding: 16px;
+}
+
+.padding-lg {
+    padding: 24px;
+}
+
+.header.padding-xs,
+.header.padding-sm,
+.header.padding-md,
+.header.padding-lg {
+    padding-bottom: 0;
 }
 
 .actions {

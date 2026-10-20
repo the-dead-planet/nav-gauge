@@ -5,7 +5,7 @@ import {
     type ViewInstance,
 } from "react-native";
 import { ClockSvg } from "./ClockSvg";
-import { ClockInputProps, useTheme, STEP_DEG, pointerCoords, CLOCK_INPUT_RANGE } from "@ui";
+import { ClockInputProps, useTheme, STEP_DEG, pointerCoords, CLOCK_INPUT_RANGE, DEFAULT_FILL_VARIANT } from "@ui";
 import { ClockLabel } from "./ClockLabel";
 import { sizeMap, thumbRadii, centerDotRadii, strokeWidths } from "./constants";
 import { NumberInput } from "../number-input";
@@ -19,7 +19,7 @@ export const ClockInput = forwardRef<ViewInstance, ClockInputProps & { style?: V
     highlightColor,
     highlightContentShade,
     size = 'md',
-    variant = 'fill-translucent',
+    variant = DEFAULT_FILL_VARIANT,
     value = CLOCK_INPUT_RANGE[0],
     min = CLOCK_INPUT_RANGE[0],
     max = CLOCK_INPUT_RANGE[1],

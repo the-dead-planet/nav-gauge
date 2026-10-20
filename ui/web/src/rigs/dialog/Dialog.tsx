@@ -1,7 +1,7 @@
 import { ComponentProps, FC, useState } from "react";
 import { createPortal } from "react-dom";
 import classNames from "classnames";
-import { DialogPlacement, DialogProps, FontType, TransitionProps, useTheme } from "@ui";
+import { DEFAULT_FILL_VARIANT, DialogPlacement, DialogProps, FontType, TransitionProps, useTheme } from "@ui";
 import { useSubjectState } from "@tinker-chest";
 import { Panel } from "../../hud";
 import { Button } from "../../gizmos/button";
@@ -12,7 +12,7 @@ import styles from './dialog.module.css';
 export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
     header,
     color = 'neutral',
-    variant = 'fill-translucent',
+    variant = DEFAULT_FILL_VARIANT,
     placement = 'middle',
     closeText,
     onClose,

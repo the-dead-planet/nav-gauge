@@ -1,6 +1,6 @@
 import { FC, RefObject, useRef, useState } from "react";
 import { HostInstance, TextInput as NativeTextInput, View, StyleSheet } from "react-native";
-import { ColorFormat, ColorInputProps, parseColor, toCssColor, useColorInputState, useTheme } from "@ui";
+import { ColorFormat, ColorInputProps, DEFAULT_FILL_VARIANT, parseColor, toCssColor, useColorInputState, useTheme } from "@ui";
 import { Text } from "../../design-system/typography";
 import { Dropdown } from "../dropdown";
 import { Popup } from "../../rigs/popup";
@@ -63,7 +63,7 @@ export const ColorInput: FC<ColorInputProps> = ({
     highlightColor = color,
     highlightContentShade,
     size = 'sm',
-    variant = 'fill-inverse',
+    variant = DEFAULT_FILL_VARIANT,
     label,
     value,
     onChange,
@@ -88,8 +88,8 @@ export const ColorInput: FC<ColorInputProps> = ({
     const inputBorderColor = active && !disabled
         ? activeAccent
         : variant === 'fill-translucent'
-        ? toCssColor({ ...parseColor(borderColor), a: .3 })
-        : borderColor;
+            ? toCssColor({ ...parseColor(borderColor), a: .3 })
+            : borderColor;
     const wrapperBackgroundColor = variant === 'fill-translucent' ? 'transparent' : backgroundColor;
     const textColor = active && highlightContentShade !== undefined ? theme.color(highlightColor, highlightContentShade) : contentShade !== undefined ? theme.color(color, contentShade) : variant === 'fill'
         ? inverseBackgroundColor

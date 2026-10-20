@@ -1,5 +1,5 @@
 import { FC, useRef, useState } from "react";
-import { ColorSelectFieldProps } from "@ui";
+import { ColorSelectFieldProps, DEFAULT_FILL_VARIANT } from "@ui";
 import { Popup } from "../../rigs/popup";
 import { ColorButton } from "../color-button";
 import { ColorPicker } from "../color-picker";
@@ -11,7 +11,7 @@ export const ColorSelectField: FC<ColorSelectFieldProps> = ({
     value,
     opacityLabel,
     size = 'sm',
-    variant = 'fill-inverse',
+    variant = DEFAULT_FILL_VARIANT,
     onChange,
 }) => {
     const [open, setOpen] = useState(false);

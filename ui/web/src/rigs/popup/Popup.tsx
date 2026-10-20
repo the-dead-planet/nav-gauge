@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, CSSProperties, FC } from 'react';
 import { createPortal } from 'react-dom';
 import classNames from 'classnames';
-import { MenuPosition, getIconAnchorPoint, menuPositionsMatch, placePopup, PopupProps } from '@ui';
+import { MenuPosition, getIconAnchorPoint, menuPositionsMatch, placePopup, PopupProps, DEFAULT_FILL_VARIANT } from '@ui';
 import { Transition } from '../../motion/transition';
 import type { TransitionProps } from '@ui';
 import styles from './popup.module.css';
@@ -21,7 +21,7 @@ export const Popup: FC<Props> = ({
     triggerAnchor = 'top-left',
     popupAnchor = 'bottom-left',
     dismissOnClickAway = true,
-    variant,
+    variant = DEFAULT_FILL_VARIANT,
     shape,
     visible,
     onClose,

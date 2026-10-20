@@ -1,7 +1,7 @@
 import { ComponentProps, useEffect, useId, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { DropdownList } from './DropdownList';
-import { DropdownProps, useTheme } from '@ui';
+import { DEFAULT_FILL_VARIANT, DropdownProps, useTheme } from '@ui';
 import { Icon } from '../../design-system/icons';
 import { Icons } from '@ui';
 import styles from './dropdown.module.css';
@@ -24,7 +24,7 @@ export function Dropdown<T = string>({
     highlightColor,
     highlightContentShade,
     size = 'sm',
-    variant = 'fill-inverse',
+    variant = DEFAULT_FILL_VARIANT,
     value,
     options,
     onChange,

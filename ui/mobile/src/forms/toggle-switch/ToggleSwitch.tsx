@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef } from "react";
 import { Animated, Pressable, View, ViewStyle } from "react-native";
-import { controlTextSpecifications, ToggleSwitchProps, useTheme } from "@ui";
+import { controlTextSpecifications, DEFAULT_FILL_VARIANT, ToggleSwitchProps, useTheme } from "@ui";
 import { Text } from "../../design-system/typography";
 import { Lamp } from "./Lamp";
 import { ThumbBody } from "./ThumbBody";
@@ -29,7 +29,7 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
     highlightColor = color,
     highlightContentShade,
     size = 'sm',
-    variant = 'ghost',
+    variant = DEFAULT_FILL_VARIANT,
     orientation = 'horizontal',
     checked,
     onChange,

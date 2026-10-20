@@ -5,7 +5,7 @@ import {
     type ViewInstance,
 } from "react-native";
 import Svg, { G } from "react-native-svg";
-import { snapSlice, svgAtan2ToClockAngle, ColorVariant, FillVariant } from "@ui";
+import { snapSlice, svgAtan2ToClockAngle, ColorVariant, FillVariant, DEFAULT_FILL_VARIANT } from "@ui";
 import { ClockDial } from "./ClockDial";
 import { ClockTicks } from "./ClockTicks";
 import { ClockPointer } from "./ClockPointer";
@@ -49,7 +49,7 @@ export const ClockSvg: FC<Props> = ({
     max,
     color,
     activeHighlight,
-    variant,
+    variant = DEFAULT_FILL_VARIANT,
     isFullCircle,
     disabled,
     onChange,

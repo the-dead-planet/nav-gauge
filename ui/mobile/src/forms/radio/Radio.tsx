@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Pressable, View, ViewStyle } from "react-native";
-import { controlTextSpecifications, RadioProps, useTheme } from "@ui";
+import { controlTextSpecifications, DEFAULT_FILL_VARIANT, RadioProps, useTheme } from "@ui";
 import { Text } from "../../design-system/typography";
 
 export const Radio: FC<RadioProps> = ({
@@ -8,7 +8,7 @@ export const Radio: FC<RadioProps> = ({
     contentShade,
     highlightColor = color,
     highlightContentShade,
-    variant = 'fill',
+    variant = DEFAULT_FILL_VARIANT,
     size = 'sm',
     checked,
     onChange,

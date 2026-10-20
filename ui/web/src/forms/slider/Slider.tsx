@@ -1,6 +1,6 @@
 import { ChangeEvent, ComponentProps, CSSProperties, FC } from "react";
 import classNames from "classnames";
-import { SliderProps, useTheme } from "@ui";
+import { DEFAULT_FILL_VARIANT, SliderProps, useTheme } from "@ui";
 import { Label, Span } from "../../design-system/typography";
 import { NumberInput } from "../number-input";
 import { StepControls } from "../step-controls";
@@ -12,7 +12,7 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
     highlightColor = color,
     highlightContentShade,
     size = 'md',
-    variant = 'fill-inverse',
+    variant = DEFAULT_FILL_VARIANT,
     min = 0,
     max = 100,
     step = 1,

@@ -10,6 +10,7 @@ import {
     snapSlice,
     STEP_DEG,
     useTheme,
+    DEFAULT_FILL_VARIANT,
 } from "@ui";
 import { ClockContainer } from "./ClockContainer";
 import { ClockDial } from "./ClockDial";
@@ -35,7 +36,7 @@ export const DurationClockInput: FC<DurationClockInputProps & { id?: string; cla
     highlightColor,
     highlightContentShade,
     size = 'sm',
-    variant = 'fill-inverse',
+    variant = DEFAULT_FILL_VARIANT,
     value,
     min = 0,
     step = 1000,

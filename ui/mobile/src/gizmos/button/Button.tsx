@@ -5,7 +5,7 @@ import {
     View,
     type ViewInstance,
 } from "react-native";
-import { ButtonProps, useTheme } from "@ui";
+import { ButtonProps, DEFAULT_SURFACE_VARIANT, useTheme } from "@ui";
 import { Icon } from "../../design-system/icons";
 import { SvgProps } from "react-native-svg";
 import { Hexagon } from "../../hud";
@@ -25,7 +25,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     contentShade,
     highlightColor = color,
     highlightContentShade,
-    variant = "ghost",
+    variant = DEFAULT_SURFACE_VARIANT,
     activeGlow = "none",
     size = "sm",
     corners = "square",

@@ -1,6 +1,6 @@
 import { FC } from "react";
 import classNames from "classnames";
-import { ChipProps, SizeVariant, useTheme } from "@ui";
+import { ChipProps, DEFAULT_FILL_VARIANT, SizeVariant, useTheme } from "@ui";
 import { Icon } from "../../design-system/icons";
 import { Tooltip } from "../tooltip";
 import styles from './chip.module.css';
@@ -24,7 +24,7 @@ export const Chip: FC<ChipProps & Props> = ({
     color = 'neutral',
     icon,
     size = 'sm',
-    variant = 'fill',
+    variant = DEFAULT_FILL_VARIANT,
     tooltip,
     tooltipPlacement,
     tooltipVariant = 'fill-inverse',

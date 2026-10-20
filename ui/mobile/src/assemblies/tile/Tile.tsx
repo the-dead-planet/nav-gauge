@@ -1,6 +1,6 @@
 import { ComponentProps, FC } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { TileProps } from '@ui';
+import { SizeVariant, TileProps } from '@ui';
 import { Text } from '../../design-system/typography';
 import { Panel } from '../../hud/panel';
 
@@ -13,8 +13,6 @@ const styles = StyleSheet.create({
     },
     header: {
         gap: 8,
-        paddingTop: 12,
-        paddingHorizontal: 12,
     },
     titleRow: {
         flexDirection: 'row',
@@ -34,7 +32,6 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         gap: 8,
         minWidth: 0,
-        padding: 12,
     },
     actions: {
         flexDirection: 'row',
@@ -45,12 +42,20 @@ const styles = StyleSheet.create({
     },
 });
 
+const paddingBySize: Record<SizeVariant, number> = {
+    xs: 6,
+    sm: 12,
+    md: 16,
+    lg: 24,
+};
+
 interface Props extends TileProps {
     panelProps?: ComponentProps<typeof Panel>;
 }
 
 export const Tile: FC<Props> = ({
     name,
+    size = 'sm',
     append,
     description,
     actions,
@@ -62,7 +67,15 @@ export const Tile: FC<Props> = ({
     return (
         <Panel {...restPanelProps} style={[styles.tile, style]}>
             <View style={styles.body}>
-                <View style={styles.header}>
+                <View
+                    style={[
+                        styles.header,
+                        {
+                            paddingTop: paddingBySize[size],
+                            paddingHorizontal: paddingBySize[size],
+                        },
+                    ]}
+                >
                     <View style={styles.titleRow}>
                         <Text bold style={styles.title}>
                             {name}
@@ -71,7 +84,7 @@ export const Tile: FC<Props> = ({
                     </View>
                 </View>
                 {description || children ? (
-                    <View style={styles.content}>
+                    <View style={[styles.content, { padding: paddingBySize[size] }]}>
                         {description ? (
                             <Text style={styles.description}>
                                 {description}
@@ -81,7 +94,7 @@ export const Tile: FC<Props> = ({
                     </View>
                 ) : null}
             </View>
-            {actions ? <View style={styles.actions}>{actions}</View> : null}
+            {actions ? <View style={styles.actions}>{actions(size)}</View> : null}
         </Panel>
     );
 };

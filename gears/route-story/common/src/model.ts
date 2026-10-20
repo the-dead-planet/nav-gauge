@@ -36,7 +36,7 @@ export interface RouteStoryLineStyle {
     width: number;
     outlineColor: string;
     outlineWidth: number;
-    variant: 'solid' | 'dashed';
+    lineStyle: 'solid' | 'dashed';
     colorTransitionLengthPixels: number;
 }
 

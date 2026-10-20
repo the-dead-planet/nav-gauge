@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { LayoutChangeEvent, StyleProp, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
 import Svg, { Polygon, Polyline } from 'react-native-svg';
-import { ColorVariant, NotchedPanelProps, useTheme } from '@ui';
+import { ColorVariant, DEFAULT_FILL_VARIANT, NotchedPanelProps, useTheme } from '@ui';
 import { TRANSLUCENT_OPACITY_BACKGROUND } from '../../tinkers';
 
 interface Props extends Omit<ViewProps, 'children' | 'onLayout' | 'style'> {
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 export const NotchedPanel: FC<NotchedPanelProps & Props> = ({
     color: colorProp = 'neutral',
     highlightColor: highlightColorProp,
-    variant = 'fill-inverse',
+    variant = DEFAULT_FILL_VARIANT,
     activeGlow = 'none',
     active = false,
     disabled = false,

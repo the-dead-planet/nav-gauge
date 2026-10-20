@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { View, ViewStyle, StyleProp, Pressable } from "react-native";
-import { PanelProps, useTheme } from "@ui";
+import { DEFAULT_FILL_VARIANT, PanelProps, useTheme } from "@ui";
 import { TRANSLUCENT_OPACITY_BACKGROUND } from "../../tinkers";
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 export const Panel: FC<PanelProps & Props> = ({
     color = "neutral",
     highlightColor = color,
-    variant,
+    variant = DEFAULT_FILL_VARIANT,
     activeGlow: _activeGlow,
     borderWidth = 2,
     interactive = false,
@@ -25,7 +25,6 @@ export const Panel: FC<PanelProps & Props> = ({
     const isLight = theme.mode === 'light';
 
     const baseColor = theme.color(color, 500);
-    const highlight500 = theme.color(highlightColor, 500);
     const highlightAccent = theme.color(highlightColor, isLight ? 600 : 300);
 
     const containerStyle: ViewStyle = (() => {

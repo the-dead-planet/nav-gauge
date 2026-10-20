@@ -1,13 +1,14 @@
 import { ComponentProps, FC } from "react";
 import classNames from "classnames";
 import styles from './clock-input.module.css';
+import { DEFAULT_FILL_VARIANT, FillVariant } from "@ui";
 
 interface Props extends ComponentProps<'div'> {
     mode: string;
     color: string;
     highlightColor?: string;
     size: string;
-    variant?: string;
+    variant?: FillVariant;
     disabled: boolean;
 }
 
@@ -16,7 +17,7 @@ export const ClockContainer: FC<Props> = ({
     color,
     highlightColor,
     size,
-    variant,
+    variant = DEFAULT_FILL_VARIANT,
     disabled,
     className,
     children,

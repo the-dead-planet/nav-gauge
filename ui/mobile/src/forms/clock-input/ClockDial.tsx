@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Circle, Path } from "react-native-svg";
-import { describeArc, useTheme, ColorVariant, FillVariant } from "@ui";
+import { describeArc, useTheme, ColorVariant, FillVariant, DEFAULT_FILL_VARIANT } from "@ui";
 import { TRANSLUCENT_OPACITY } from "../../tinkers";
 
 interface Props {
@@ -21,7 +21,7 @@ export const ClockDial: FC<Props> = ({
     min,
     max,
     color,
-    variant,
+    variant = DEFAULT_FILL_VARIANT,
     isFullCircle = false,
 }) => {
     const theme = useTheme();

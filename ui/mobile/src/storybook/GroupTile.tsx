@@ -59,11 +59,11 @@ export const GroupTile: FC<Props> = ({ group, width, onEnter }) => {
             <Tile
                 name={group.name}
                 description={group.description}
-                actions={
-                    <Button variant="fill" onPress={onEnter}>
+                actions={(size) => (
+                    <Button size={size} variant="fill" onPress={onEnter}>
                         Enter
                     </Button>
-                }
+                )}
                 panelProps={{
                     variant: 'fill-inverse',
                     style: { width },

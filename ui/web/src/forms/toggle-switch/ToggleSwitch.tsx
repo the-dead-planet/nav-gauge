@@ -1,6 +1,6 @@
 import { ChangeEvent, ComponentProps, FC, useId } from "react";
 import classNames from "classnames";
-import { ToggleSwitchProps, useTheme } from "@ui";
+import { DEFAULT_FILL_VARIANT, ToggleSwitchProps, useTheme } from "@ui";
 import styles from './toggle-switch.module.css';
 import { Span } from "../../design-system/typography";
 import { Lamp } from "./Lamp";
@@ -18,7 +18,7 @@ export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & Props>
     highlightColor = color,
     highlightContentShade,
     size = 'sm',
-    variant = 'ghost',
+    variant = DEFAULT_FILL_VARIANT,
     orientation = 'horizontal',
     checked,
     onChange,
@@ -79,7 +79,7 @@ export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & Props>
                 </Span>
             ) : label}
             <span className={classNames(styles['toggle-row'], styles[`orientation-${orientation}`])}>
-                <Lamp variant="off" active={!checked} />
+                <Lamp isSwitchedOn={false} active={!checked} />
                 <span className={styles['track']}>
                     <span className={styles['thumb']}>
                         <span className={styles['thumb-pivot']} />
@@ -87,7 +87,7 @@ export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & Props>
                         <span className={styles['thumb-knob']} />
                     </span>
                 </span>
-                <Lamp variant="on" active={checked} />
+                <Lamp isSwitchedOn={true} active={checked} />
             </span>
         </label>
     );

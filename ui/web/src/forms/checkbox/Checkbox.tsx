@@ -1,6 +1,6 @@
 import { ChangeEvent, ComponentProps, FC, useId } from "react";
 import classNames from "classnames";
-import { CheckboxProps, useTheme } from "@ui";
+import { CheckboxProps, DEFAULT_FILL_VARIANT, useTheme } from "@ui";
 import styles from './checkbox.module.css';
 
 interface Props {
@@ -14,7 +14,7 @@ export const Checkbox: FC<Omit<ComponentProps<'label'>, 'onChange'> & CheckboxPr
     contentShade,
     highlightColor = color,
     highlightContentShade,
-    variant = 'fill',
+    variant = DEFAULT_FILL_VARIANT,
     size = 'sm',
     checked,
     active = false,

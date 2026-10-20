@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Circle } from "react-native-svg";
-import { useTheme, ColorVariant, FillVariant } from "@ui";
+import { useTheme, ColorVariant, FillVariant, DEFAULT_FILL_VARIANT } from "@ui";
 
 interface Props {
     center: number;
@@ -19,7 +19,7 @@ export const ClockThumb: FC<Props> = ({
     thumbRadius,
     strokeWidth,
     color,
-    variant,
+    variant = DEFAULT_FILL_VARIANT,
 }) => {
     const theme = useTheme();
     const useDark = variant === 'fill';

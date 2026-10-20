@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Circle, Line } from "react-native-svg";
-import { useTheme, ColorVariant, FillVariant } from "@ui";
+import { useTheme, ColorVariant, FillVariant, DEFAULT_FILL_VARIANT } from "@ui";
 
 interface Props {
     center: number;
@@ -23,7 +23,7 @@ export const ClockPointer: FC<Props> = ({
     centerDotRadius,
     color,
     activeHighlight,
-    variant,
+    variant = DEFAULT_FILL_VARIANT,
 }) => {
     const theme = useTheme();
 

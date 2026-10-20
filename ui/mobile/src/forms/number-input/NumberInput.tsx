@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { View, TextInput, StyleSheet } from "react-native";
-import { ColorShade, controlTextSpecifications, FontType, Icons, NumberInputProps, SizeVariant, useStepRepeat, useTheme } from "@ui";
+import { ColorShade, controlTextSpecifications, DEFAULT_FILL_VARIANT, FontType, Icons, NumberInputProps, SizeVariant, useStepRepeat, useTheme } from "@ui";
 import { Button } from "../../gizmos/button";
 import { Text } from "../../design-system/typography";
 import { getMobileFontFamily } from "../../design-system/typography/fontFamily";
@@ -71,7 +71,7 @@ export const NumberInput: FC<NumberInputProps> = ({
     highlightColor = color,
     highlightContentShade,
     size = 'sm',
-    variant = 'fill-inverse',
+    variant = DEFAULT_FILL_VARIANT,
     label,
     value,
     onChange,

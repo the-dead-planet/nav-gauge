@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { ColorPickerProps, getThemeColorSwatches, parseColor, toCssColor, useTheme } from "@ui";
+import { ColorPickerProps, DEFAULT_FILL_VARIANT, getThemeColorSwatches, parseColor, toCssColor, useTheme } from "@ui";
 import { ColorButton } from "../color-button";
 import { ColorInput } from "../color-input";
 import { ColorRamp } from "../color-ramp";
@@ -11,7 +11,7 @@ export const ColorPicker: FC<ColorPickerProps> = ({
     onChange,
     opacityLabel,
     size = 'sm',
-    variant = 'fill-inverse',
+    variant = DEFAULT_FILL_VARIANT,
     disabled = false,
 }) => {
     const theme = useTheme();
