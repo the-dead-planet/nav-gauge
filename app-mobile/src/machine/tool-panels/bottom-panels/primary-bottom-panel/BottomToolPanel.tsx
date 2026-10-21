@@ -48,7 +48,7 @@ export const BottomToolPanel: FC<Props> = ({
     return (
         <View ref={assignBottomToolPanelRef(toolsStation)}>
             <View style={[{
-                backgroundColor: theme.structuralColor('background', 0.87),
+                backgroundColor: theme.surfaceColor(0.87),
                 borderTopColor: theme.color('primary'),
                 ...resolveElevationStyle(theme, 'raised', 'up'),
             }]}>

@@ -43,7 +43,7 @@ export const IconsWithCreators = {
                         return (
                             <Fragment key={iconName}>
                                 <img src={src} width={20} />
-                                <Icon src={src} style={{ marginLeft: "40px" }} color={theme.structuralColor('text')} />
+                                <Icon src={src} style={{ marginLeft: "40px" }} color={theme.color('neutral', theme.isLight ? 900 : 100)} />
                                 <p style={{ margin: 0 }}>{iconName}</p>
                                 {data ? (
                                     <p style={{ margin: 0 }}>

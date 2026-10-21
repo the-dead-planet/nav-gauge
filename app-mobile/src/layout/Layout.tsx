@@ -18,9 +18,9 @@ export const Layout: FC<MachineWardLayoutProps> = ({ children }) => {
 
     return (
         <SafeAreaProvider>
-            <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.structuralColor('background') }]}>
+            <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.surfaceColor() }]}>
                 <StatusBar barStyle={theme.isLight ? "dark-content" : "light-content"} />
-                <View style={[styles.container, { backgroundColor: theme.structuralColor('background') }]}>
+                <View style={[styles.container, { backgroundColor: theme.surfaceColor() }]}>
                     {children}
                 </View>
             </SafeAreaView>

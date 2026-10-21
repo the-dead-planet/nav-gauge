@@ -95,7 +95,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
   background-color: black;
-  color: var(--color-text);
+  color: light-dark(var(--color-neutral-900), var(--color-neutral-100));
   touch-action: none;
 }
 

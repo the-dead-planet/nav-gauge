@@ -105,12 +105,11 @@ describe("Theme", () => {
         );
     });
 
-    it("resolves status colors and neutral structural colors", () => {
+    it("resolves status colors", () => {
         expect(theme.color("glitch")).to.equal(theme.color("red", 600));
+        expect(theme.contrastShade("glitch")).to.equal(theme.contrastShade("red", 600));
         expect(theme.resolveAppearance("ghost", "glitch", "intel", "active").effects.glowColor).to.equal(
             theme.color("intel"),
         );
-        expect(theme.structuralColor("background")).to.equal(theme.color("neutral", 100));
-        expect(theme.structuralColor("text")).to.equal(theme.color("neutral", 900));
     });
 });

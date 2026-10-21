@@ -169,7 +169,7 @@ export const ColorInput: FC<ColorInputProps> = ({
                         styles.popup,
                         {
                             backgroundColor: theme.color('neutral', theme.isDark ? 800 : 200),
-                            borderColor: theme.structuralColor('border'),
+                            borderColor: theme.color('neutral', theme.isLight ? 200 : 800),
                         },
                     ]}
                 >

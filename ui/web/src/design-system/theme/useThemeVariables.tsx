@@ -14,18 +14,9 @@ import {
     ThemeAppearancePaint,
     ThemeAppearanceInsetEffectPolicy,
     themeAppearanceStateOptions,
-    StructuralColor,
 } from "@ui";
 
 const appearanceStyleId = 'theme-appearance-variables';
-const structuralColors: StructuralColor[] = [
-    'background',
-    'border',
-    'box-shadow',
-    'divider',
-    'text',
-    'text-inverse',
-];
 const elevationShadow = (theme: Theme, level: ElevationLevel, direction: ElevationDirection): string => {
     if (level === 'none') {
         return 'none';
@@ -109,9 +100,9 @@ const createAppearanceRules = (theme: Theme): string => [
 ].join('\n');
 
 /**
- * Adds the CSS variables using theme colors in format `--color-<name>`.
- * @example var(--color-background)
- * @example var(--color-yellow-500)
+ * Adds CSS variables using theme colors in format `--color-<name>`.
+ * @example var(--color-neutral-500)
+ * @example var(--color-intel-300)
  */
 export const useThemeVariables = (theme: Theme) => {
     useEffect(() => {
@@ -173,13 +164,6 @@ export const useThemeVariables = (theme: Theme) => {
         document.getElementById(appearanceStyleId)?.remove();
         document.head.appendChild(appearanceStyle);
 
-        for (const structuralColor of structuralColors) {
-            document.documentElement.style.setProperty(
-                `--color-${structuralColor}`,
-                theme.structuralColor(structuralColor)
-            );
-        }
-
         for (const [key] of Object.entries(theme.colors)) {
             const colorName = key as PaletteColor | ColorVariant;
             document.documentElement.style.setProperty(
@@ -202,6 +186,7 @@ export const useThemeVariables = (theme: Theme) => {
                 );
             }
         }
+        document.documentElement.style.colorScheme = theme.mode;
         document.body.setAttribute("data-theme", theme.mode);
 
         return () => appearanceStyle.remove();

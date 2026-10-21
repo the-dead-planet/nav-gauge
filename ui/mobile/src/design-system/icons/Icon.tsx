@@ -6,13 +6,18 @@ interface Props {
     icon: ComponentType<SvgProps>;
 }
 
-export const Icon: FC<Props & SvgProps> = ({ icon: RenderIcon, color, fill, ...props }) => {
+export const Icon: FC<Props & SvgProps> = ({
+    icon: RenderIcon,
+    color,
+    fill,
+    ...props
+}) => {
     const theme = useTheme();
 
     return (
         <RenderIcon
-            fill={fill || color || theme.structuralColor('text')}
-            color={color || theme.structuralColor('text')}
+            fill={fill || color || theme.color('neutral', theme.isLight ? 900 : 100)}
+            color={color || theme.color('neutral', theme.isLight ? 900 : 100)}
             {...props}
         />
     );

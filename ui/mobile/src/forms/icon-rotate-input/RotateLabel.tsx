@@ -27,10 +27,10 @@ export const RotateLabel: FC<Props> = ({
                     icon={icon}
                     width={10}
                     height={10}
-                    color={theme.structuralColor('text')}
+                    color={theme.color('neutral', theme.isLight ? 900 : 100)}
                 />
             ) : null}
-            <Text style={{ fontSize: 11, color: theme.structuralColor('text') }}>
+            <Text style={{ fontSize: 11, color: theme.color('neutral', theme.isLight ? 900 : 100) }}>
                 {label} {showValue ? `${displayWrapped}°` : null}
             </Text>
         </View>

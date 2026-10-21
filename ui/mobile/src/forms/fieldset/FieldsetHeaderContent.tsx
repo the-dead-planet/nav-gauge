@@ -43,7 +43,7 @@ export const FieldsetHeaderContent: FC<Props> = ({
         }).start();
     }, [isExpanded]);
 
-    const labelColor = theme.structuralColor('text');
+    const labelColor = theme.color('neutral', theme.isLight ? 900 : 100);
 
     return (
         <View style={styles.header}>

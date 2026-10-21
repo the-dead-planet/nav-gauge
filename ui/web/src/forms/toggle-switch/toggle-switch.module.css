@@ -68,7 +68,7 @@
 .label {
     margin-bottom: 8px;
     display: block;
-    color: var(--appearance-default-glyphs-override, var(--color-text));
+    color: var(--appearance-default-glyphs-override, light-dark(var(--color-neutral-900), var(--color-neutral-100)));
 }
 
 /* ── Orientation ── */
@@ -228,7 +228,7 @@
 }
 
 .toggle-switch.active .label {
-    color: var(--appearance-active-glyphs-override, var(--color-text));
+    color: var(--appearance-active-glyphs-override, light-dark(var(--color-neutral-900), var(--color-neutral-100)));
 }
 
 .toggle-switch:not(.disabled):is(:hover, :focus-within) .track {
@@ -242,7 +242,7 @@
 }
 
 .toggle-switch:not(.disabled):is(:hover, :focus-within) .label {
-    color: var(--appearance-interaction-glyphs-override, var(--color-text));
+    color: var(--appearance-interaction-glyphs-override, light-dark(var(--color-neutral-900), var(--color-neutral-100)));
 }
 
 .toggle-switch:not(.disabled):active .track {
@@ -256,7 +256,7 @@
 }
 
 .toggle-switch:not(.disabled):active .label {
-    color: var(--appearance-active-glyphs-override, var(--color-text));
+    color: var(--appearance-active-glyphs-override, light-dark(var(--color-neutral-900), var(--color-neutral-100)));
 }
 
 .toggle-switch.disabled .track {
@@ -270,7 +270,7 @@
 }
 
 .toggle-switch.disabled .label {
-    color: var(--color-text);
+    color: light-dark(var(--color-neutral-900), var(--color-neutral-100));
 }
 
 .toggle-switch.disabled .lamp {

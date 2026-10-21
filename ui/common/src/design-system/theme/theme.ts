@@ -7,7 +7,6 @@ import {
     PaletteColor,
     RGBColor,
     ThemeColor,
-    StructuralColor,
     ThemeStatusColors,
     ThemeSpecification,
     ThemeSizes,
@@ -934,10 +933,37 @@ export class Theme {
         return `rgba(${r}, ${g}, ${b}, ${opacity})`;
     };
 
+    /**
+     * Returns the mode-appropriate neutral application surface color.
+     * Uses shade `100` in light mode and `900` in dark mode.
+     *
+     * @example
+     * theme.surfaceColor()
+     * @example
+     * theme.surfaceColor(0.87)
+     */
+    public surfaceColor = (opacity?: number): string =>
+        this.color('neutral', this.isLight ? 100 : 900, opacity);
+
+    /**
+     * Returns the mode-appropriate neutral application surface border color.
+     * Uses shade `200` in light mode and `800` in dark mode.
+     *
+     * @example
+     * theme.surfaceBorderColor()
+     * @example
+     * theme.surfaceBorderColor(0.87)
+     */
+    public surfaceBorderColor = (opacity?: number): string =>
+        this.color('neutral', this.isLight ? 200 : 800, opacity);
+
     public contrastShade = (
         name: PaletteColor | ColorVariant,
-        backgroundShade: ColorShade = 500,
-    ): 100 | 900 => Theme.contrastShade(this.colors[name], backgroundShade);
+        backgroundShade?: ColorShade,
+    ): 100 | 900 => Theme.contrastShade(
+        this.colors[name],
+        backgroundShade ?? this.statusColors[name as StatusColor]?.shade ?? 500,
+    );
 
     public static contrastShade = (
         color: ThemeColor,
@@ -1006,30 +1032,6 @@ export class Theme {
     /**
      * Returns a css color string from the current theme.
      */
-    public structuralColor = (
-        name: StructuralColor,
-        opacity?: number,
-    ): string => {
-        const shades: Record<StructuralColor, ColorShade> = this.isLight
-            ? {
-                background: 100,
-                border: 200,
-                'box-shadow': 800,
-                divider: 800,
-                text: 900,
-                'text-inverse': 50,
-            }
-            : {
-                background: 900,
-                border: 800,
-                'box-shadow': 800,
-                divider: 800,
-                text: 100,
-                'text-inverse': 900,
-            };
-        return this.color('neutral', shades[name], opacity);
-    };
-
     /**
      * Resolves an elevation level to platform-neutral shadow metrics.
      * Direction describes where the shadow is cast; a bottom panel therefore uses `up`.

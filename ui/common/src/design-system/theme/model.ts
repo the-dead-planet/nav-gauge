@@ -57,14 +57,6 @@ export type PaletteColor =
     | 'mint'
     | 'green';
 
-export type StructuralColor =
-    | 'background'
-    | 'border'
-    | 'box-shadow'
-    | 'divider'
-    | 'text'
-    | 'text-inverse';
-
 export interface RGBColor {
     r: number;
     g: number;

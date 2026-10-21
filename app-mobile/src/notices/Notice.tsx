@@ -46,7 +46,7 @@ export const Notice: FC<Props> = ({
     return (
         <Animated.View style={[styles.container, {
             borderColor: theme.color(notice.type),
-            backgroundColor: theme.structuralColor('background'),
+            backgroundColor: theme.surfaceColor(),
             ...resolveElevationStyle(theme, 'floating'),
             opacity,
             transform: [{ translateY }]
