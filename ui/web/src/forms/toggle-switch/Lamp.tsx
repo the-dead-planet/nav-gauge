@@ -16,7 +16,7 @@ export const Lamp: FC<LampProps> = ({
             className={classNames(
                 styles['lamp'],
                 styles[`lamp-${isSwitchedOn ? 'on' : 'off'}`],
-                active ? styles[`lamp-${!isSwitchedOn ? 'error' : 'success'}`] : styles['lamp-inactive'],
+                active ? styles[`lamp-${!isSwitchedOn ? 'glitch' : 'secured'}`] : styles['lamp-inactive'],
             )}
         />
     );

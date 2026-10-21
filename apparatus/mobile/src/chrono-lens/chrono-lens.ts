@@ -47,7 +47,7 @@ export class MobileChronoLens extends ChronoLens {
         }).catch((err) => {
             signaliumBureau.addNotice({
                 id: this.noticeId,
-                type: 'error',
+                type: 'glitch',
                 error: err as Error,
                 text: `Cannot view the recording video.`
             });

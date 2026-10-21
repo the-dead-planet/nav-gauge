@@ -65,8 +65,8 @@ export const SideToolPanel: FC<Props> = ({
             ref={assignSideToolPanelRef(placement, toolsStation)}
             style={[
                 {
-                    backgroundColor: theme.componentColor('background', 0.87),
-                    shadowColor: theme.componentColor('box-shadow'),
+                    backgroundColor: theme.structuralColor('background', 0.87),
+                    shadowColor: theme.structuralColor('box-shadow'),
                     shadowOpacity: theme.isDark ? 0.4 : 0.14,
                     shadowRadius: theme.isDark ? 5 : 4,
                     elevation: 8,

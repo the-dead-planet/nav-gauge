@@ -18,6 +18,8 @@ Named themes provide different visual identities through shared palette roles. T
 
 ## Semantic Colors
 
-Background, border, text, inverse text, error, warning, success, and information colors are semantic roles. Use them by meaning; do not copy their current palette values into components.
+Status colors are semantic roles: `glitch`, `hazard`, `secured`, and `intel`. Components may use them through the same `color` and `highlightColor` props as primary, secondary, tertiary, and neutral colors.
+
+Structural background, border, divider, shadow, text, and inverse-text colors derive from the neutral palette and the active mode. They are not component color variants.
 
 Theme controls change the active theme but follow the same component and accessibility rules as other controls.

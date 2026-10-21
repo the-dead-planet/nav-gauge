@@ -57,9 +57,9 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
 
     return (
         <View style={[styles.container, {
-            backgroundColor: theme.componentColor('background'),
-            borderBottomColor: theme.componentColor('border'),
-            shadowColor: theme.componentColor('box-shadow'),
+            backgroundColor: theme.structuralColor('background'),
+            borderBottomColor: theme.structuralColor('border'),
+            shadowColor: theme.structuralColor('box-shadow'),
         }]}>
             <View style={styles.leftSection}>
                 {topBarBackAction ? (

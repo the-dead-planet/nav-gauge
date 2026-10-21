@@ -115,7 +115,7 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, MobileChrono
          const { fullSize, thumbnail } = await cacheReducedImage(file, (error) => {
             this.apparatus.signaliumBureau.addNotice({
                id: 'image-resize',
-               type: 'error',
+               type: 'glitch',
                error,
                text: 'Error processing images',
             });

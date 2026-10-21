@@ -69,7 +69,7 @@ export const ToolIcons: FC<Props> = ({
     const { len, hasSpacer, toolIconsByPlacement } = useToolIcons(placement);
     const Component = placement === 'left' ? ToolIconLeft : ToolIconRight;
     const iconShadow: ViewStyle = {
-        shadowColor: theme.componentColor('box-shadow'),
+        shadowColor: theme.structuralColor('box-shadow'),
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: theme.isDark ? 0.45 : 0.14,
         shadowRadius: 5,

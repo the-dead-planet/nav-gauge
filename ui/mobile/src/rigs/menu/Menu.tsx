@@ -135,7 +135,7 @@ export const Menu: FC<MobileMenuProps> = ({
                                     theme.isLight ? 100 : (color === 'neutral' ? 800 : 900)
                                 ),
                                 borderColor: theme.color(color, 500),
-                                shadowColor: theme.componentColor('box-shadow'),
+                                shadowColor: theme.structuralColor('box-shadow'),
                             }
                         ]}
                     >

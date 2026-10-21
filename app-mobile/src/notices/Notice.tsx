@@ -49,13 +49,13 @@ export const Notice: FC<Props> = ({
 
     return (
         <Animated.View style={[styles.container, {
-            borderColor: theme.componentColor(notice.type),
-            backgroundColor: theme.componentColor('background'),
-            shadowColor: theme.componentColor('box-shadow'),
+            borderColor: theme.color(notice.type),
+            backgroundColor: theme.structuralColor('background'),
+            shadowColor: theme.structuralColor('box-shadow'),
             opacity,
             transform: [{ translateY }]
         }]}>
-            <Text>{notice.text} {notice.type === 'error' ? notice.error.message || '' : ''}</Text>
+            <Text>{notice.text} {notice.type === 'glitch' ? notice.error.message || '' : ''}</Text>
             <Button
                 title={translate({ n: namespace, t: translationKey.Close })}
                 onPress={() => onRemove(notice.id)}

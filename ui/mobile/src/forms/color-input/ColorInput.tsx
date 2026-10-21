@@ -105,7 +105,7 @@ export const ColorInput: FC<ColorInputProps> = ({
                         {
                             height: inputHeights[size],
                             backgroundColor: disabled ? theme.color(color, theme.isLight ? 200 : 800) : wrapperBackgroundColor,
-                            borderColor: disabled ? theme.color(color, theme.isLight ? 300 : 700) : invalid ? theme.componentColor('error') : inputBorderColor,
+                            borderColor: disabled ? theme.color(color, theme.isLight ? 300 : 700) : invalid ? theme.color('glitch') : inputBorderColor,
                         },
                     ]}
                 >
@@ -169,7 +169,7 @@ export const ColorInput: FC<ColorInputProps> = ({
                         styles.popup,
                         {
                             backgroundColor: theme.color('neutral', theme.isDark ? 800 : 200),
-                            borderColor: theme.componentColor('border'),
+                            borderColor: theme.structuralColor('border'),
                         },
                     ]}
                 >

@@ -107,13 +107,13 @@
 
 /* ── Lamp states ── */
 
-.lamp-error {
-    background-color: var(--color-error);
+.lamp-glitch {
+    background-color: var(--color-glitch);
     background-image: radial-gradient(circle at 35% 30%, rgb(255 255 255 / .4), transparent 50%);
 }
 
-.lamp-success {
-    background-color: var(--color-success);
+.lamp-secured {
+    background-color: var(--color-secured);
     background-image: radial-gradient(circle at 35% 30%, rgb(255 255 255 / .4), transparent 50%);
 }
 
@@ -123,13 +123,13 @@
 }
 
 /* Off lamp glows when unchecked */
-:not(.checked) .lamp-off.lamp-error {
-    box-shadow: 0 0 6px 2px var(--color-error);
+:not(.checked) .lamp-off.lamp-glitch {
+    box-shadow: 0 0 6px 2px var(--color-glitch);
 }
 
 /* On lamp glows when checked */
-.checked .lamp-on.lamp-success {
-    box-shadow: 0 0 6px 2px var(--color-success);
+.checked .lamp-on.lamp-secured {
+    box-shadow: 0 0 6px 2px var(--color-secured);
 }
 
 .track {

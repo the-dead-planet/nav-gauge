@@ -19,7 +19,7 @@ export const Notice: FC<Props> = ({
             className={classNames(styles['notice'], styles[notice.type])}
             style={{ '--index': index } as CSSProperties}
         >
-            <p>{notice.text} {notice.type === 'error' ? notice.error.message || '' : ''}</p>
+            <p>{notice.text} {notice.type === 'glitch' ? notice.error.message || '' : ''}</p>
             <form method="dialog" className={styles['footer']}>
                 <button onClick={() => onRemove(notice.id)}>
                     Close

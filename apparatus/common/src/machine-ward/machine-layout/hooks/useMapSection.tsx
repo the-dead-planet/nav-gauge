@@ -8,7 +8,7 @@ export const useMapSection = () => {
 
         signaliumBureau.addNotice({
             id: 'map-section',
-            type: 'error',
+            type: 'glitch',
             error: error || new Error(msg),
             text: error?.message || msg,
         });

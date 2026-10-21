@@ -53,7 +53,7 @@ export const ColorSelectField: FC<ColorSelectFieldProps> = ({
                     styles.popup,
                     {
                         backgroundColor: theme.color('neutral', theme.isDark ? 800 : 200),
-                        borderColor: theme.componentColor('border'),
+                        borderColor: theme.structuralColor('border'),
                     },
                 ]}
             >

@@ -143,7 +143,7 @@ export const Popup: FC<Props> = ({
             style={[
                 styles.popup,
                 {
-                    shadowColor: theme.componentColor('box-shadow'),
+                    shadowColor: theme.structuralColor('box-shadow'),
                     shadowOpacity: theme.isDark ? 0.45 : 0.14,
                 },
                 positionStyle,

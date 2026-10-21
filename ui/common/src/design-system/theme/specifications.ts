@@ -10,87 +10,39 @@ export const themeModeOptions: Option<ThemeMode>[] = [
     { value: 'light', label: 'Light' },
 ];
 
-export const defaultComponentColors: { [key in ThemeMode]: ThemeSpecification['componentColors'] } = {
+export const defaultStatusColors: { [key in ThemeMode]: ThemeSpecification['statusColors'] } = {
     light: {
-        background: {
-            name: 'neutral',
-            shade: 100
-        },
-        border: {
-            name: 'neutral',
-            shade: 200
-        },
-        'box-shadow': {
-            name: 'neutral',
-            shade: 800
-        },
-        divider: {
-            name: 'neutral',
-            shade: 800
-        },
-        text: {
-            name: 'neutral',
-            shade: 900
-        },
-        'text-inverse': {
-            name: 'neutral',
-            shade: 50
-        },
-        error: {
+        glitch: {
             name: 'red',
             shade: 600
         },
-        warning: {
+        hazard: {
             name: 'copper',
             shade: 500
         },
-        success: {
+        secured: {
             name: 'lime',
             shade: 500
         },
-        info: {
+        intel: {
             name: 'blue',
             shade: 400
         },
     },
     dark: {
-        background: {
-            name: 'neutral',
-            shade: 900
-        },
-        border: {
-            name: 'neutral',
-            shade: 800
-        },
-        'box-shadow': {
-            name: 'neutral',
-            shade: 800
-        },
-        divider: {
-            name: 'neutral',
-            shade: 800
-        },
-        text: {
-            name: 'neutral',
-            shade: 100
-        },
-        'text-inverse': {
-            name: 'neutral',
-            shade: 900
-        },
-        error: {
+        glitch: {
             name: 'red',
             shade: 600
         },
-        warning: {
+        hazard: {
             name: 'yellow',
             shade: 500
         },
-        success: {
+        secured: {
             name: 'lime',
             shade: 500
         },
-        info: {
+        intel: {
             name: 'blue',
             shade: 400
         },
@@ -105,13 +57,13 @@ const standardTheme = (
     light: {
         mode: 'light',
         themeName,
-        componentColors: defaultComponentColors.light,
+        statusColors: defaultStatusColors.light,
         colors: lightColors,
     },
     dark: {
         mode: 'dark',
         themeName,
-        componentColors: defaultComponentColors.dark,
+        statusColors: defaultStatusColors.dark,
         colors: darkColors,
     },
 });
@@ -151,19 +103,11 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
         light: {
             mode: 'light',
             themeName: ThemeName.Batman,
-            componentColors: {
-                ...defaultComponentColors.light,
-                warning: {
+            statusColors: {
+                ...defaultStatusColors.light,
+                hazard: {
                     name: 'luminous-yellow',
                     shade: 600,
-                },
-                "border": {
-                    name: "luminous-yellow",
-                    shade: 400,
-                },
-                "divider": {
-                    name: "luminous-yellow",
-                    shade: 400,
                 },
             },
             colors: {
@@ -176,9 +120,9 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
         dark: {
             mode: 'dark',
             themeName: ThemeName.Batman,
-            componentColors: {
-                ...defaultComponentColors.dark,
-                warning: {
+            statusColors: {
+                ...defaultStatusColors.dark,
+                hazard: {
                     name: 'luminous-yellow',
                     shade: 500,
                 },
@@ -195,9 +139,9 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
         light: {
             mode: 'light',
             themeName: ThemeName.Joker,
-            componentColors: {
-                ...defaultComponentColors.light,
-                warning: {
+            statusColors: {
+                ...defaultStatusColors.light,
+                hazard: {
                     name: 'chartreuse',
                     shade: 500,
                 }
@@ -212,9 +156,9 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
         dark: {
             mode: 'dark',
             themeName: ThemeName.Joker,
-            componentColors: {
-                ...defaultComponentColors.dark,
-                warning: {
+            statusColors: {
+                ...defaultStatusColors.dark,
+                hazard: {
                     name: 'chartreuse',
                     shade: 500,
                 }

@@ -14,16 +14,16 @@
     }
 }
 
-.notice.error {
-    border-color: var(--color-error);
+.notice.glitch {
+    border-color: var(--color-glitch);
 }
 
-.notice.warning {
-    border-color: var(--color-warning);
+.notice.hazard {
+    border-color: var(--color-hazard);
 }
 
-.notice.info {
-    border-color: var(--color-info);
+.notice.intel {
+    border-color: var(--color-intel);
 }
 
 .notice p {

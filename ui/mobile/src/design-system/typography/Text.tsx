@@ -60,7 +60,7 @@ export const Text: FC<TextProps> = ({
                     fontFamily: getMobileFontFamily(fontType, isBold),
                     color: color
                         ? theme.color(color, shade ?? (theme.isDark ? 100 : 900))
-                        : theme.componentColor('text'),
+                        : theme.structuralColor('text'),
                     fontWeight: isBold ? '700' : undefined,
                     fontVariant: tabular ? ['tabular-nums'] : undefined,
                     textAlign: align,

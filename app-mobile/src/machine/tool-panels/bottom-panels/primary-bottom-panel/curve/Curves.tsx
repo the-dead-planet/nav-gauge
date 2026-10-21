@@ -24,9 +24,9 @@ export const Curves: FC = () => {
             styles.curves,
             {
                 filter: [{
-                    dropShadow: `0 -2px ${theme.isDark ? 4 : 3}px ${theme.componentColor('box-shadow', theme.isDark ? 0.18 : 0.08)}`,
+                    dropShadow: `0 -2px ${theme.isDark ? 4 : 3}px ${theme.structuralColor('box-shadow', theme.isDark ? 0.18 : 0.08)}`,
                 }],
-                shadowColor: theme.componentColor('box-shadow'),
+                shadowColor: theme.structuralColor('box-shadow'),
                 shadowOffset: { width: 0, height: -2 },
                 shadowOpacity: theme.isDark ? 0.18 : 0.08,
                 shadowRadius: theme.isDark ? 4 : 3,

@@ -284,7 +284,7 @@ export function Dropdown<T>({
                             borderColor: baseColor,
                             paddingVertical: 4,
                             maxHeight: menuPosition.maxHeight,
-                            shadowColor: theme.componentColor('box-shadow'),
+                            shadowColor: theme.structuralColor('box-shadow'),
                             shadowOffset: { width: 5, height: 5 },
                             shadowOpacity: 0.6,
                             shadowRadius: 1,

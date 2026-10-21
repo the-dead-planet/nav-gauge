@@ -263,7 +263,7 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
             this.fitBounds(map, sw, ne);
         } catch (err) {
             this.apparatus.signaliumBureau.addNotice({
-                type: 'error',
+                type: 'glitch',
                 id: notificationId,
                 text: (err as Error).message ?? 'Could not fit bounds to route',
                 error: err as Error,

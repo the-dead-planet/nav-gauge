@@ -7,8 +7,8 @@ import {
     PaletteColor,
     RGBColor,
     ThemeColor,
-    ThemeComponentColor,
-    ThemeComponentColors,
+    StructuralColor,
+    ThemeStatusColors,
     ThemeSpecification,
     ThemeSizes,
     ThemeMode,
@@ -21,7 +21,7 @@ import {
     ThemeAppearanceState,
     ThemeAppearanceBorder,
 } from "./model";
-import { ColorShade, DesignSystemColor, SpacingVariant, SurfaceVariant } from '../model';
+import { ColorShade, ColorVariant, DesignSystemColor, SpacingVariant, StatusColor, SurfaceVariant } from '../model';
 
 interface OklchColor {
     lightness: number;
@@ -238,7 +238,7 @@ export class Theme {
         };
     };
 
-    public componentColors: ThemeComponentColors;
+    public statusColors: ThemeStatusColors;
 
     public static palette: { [key in PaletteColor]: ThemeColor } = {
         'neutral-grey': createNeutralPalette({ r: 113, g: 118, b: 117 }),
@@ -283,7 +283,7 @@ export class Theme {
         red: createPalette({ r: 235, g: 0, b: 53 }),
     }
 
-    public colors: { [key in PaletteColor | DesignSystemColor]: ThemeColor };
+    public colors: { [key in PaletteColor | ColorVariant]: ThemeColor };
 
     public static spacing: { [key in SpacingVariant]: string } = {
         xs: '6px',
@@ -316,8 +316,15 @@ export class Theme {
         this.isDark = specification.mode === 'dark';
         this.otherMode = specification.mode === 'light' ? 'dark' : 'light';
         this.name = specification.themeName;
-        this.colors = Object.assign({}, Theme.palette, specification.colors);
-        this.componentColors = specification.componentColors;
+        this.statusColors = specification.statusColors;
+        const statusPalettes = Object.fromEntries(
+            Object.entries(this.statusColors).map(([status, selected]) => [
+                status,
+                Theme.palette[selected.name as PaletteColor]
+                    ?? specification.colors[selected.name as DesignSystemColor],
+            ]),
+        ) as Record<StatusColor, ThemeColor>;
+        this.colors = Object.assign({}, Theme.palette, specification.colors, statusPalettes);
         const shades: ThemeVariantShades = this.isLight
             ? {
                 base: 500,
@@ -822,16 +829,17 @@ export class Theme {
     /**
      * Returns an rgb or rgba color string.
      * @param name 
-     * @param shade Optional. One of `50,100,200,...,900`. Defaults to 500.
+     * @param shade Optional. One of `50,100,200,...,900`. Defaults to the configured status shade or 500.
      * @param opacity Optional value `[0,1]`. If not provided will be rgb(r, g, b), otherwise rgba(r, g, b, opacity)
      * @returns 
      */
     public color = (
-        name: PaletteColor | DesignSystemColor,
-        shade: ColorShade = 500,
+        name: PaletteColor | ColorVariant,
+        shade?: ColorShade,
         opacity?: number,
     ): string => {
-        const { r, g, b } = this.colors[name][shade];
+        const resolvedShade = shade ?? this.statusColors[name as StatusColor]?.shade ?? 500;
+        const { r, g, b } = this.colors[name][resolvedShade];
 
         if (opacity === undefined) {
             return `rgb(${r}, ${g}, ${b})`;
@@ -841,7 +849,7 @@ export class Theme {
     };
 
     public contrastShade = (
-        name: PaletteColor | DesignSystemColor,
+        name: PaletteColor | ColorVariant,
         backgroundShade: ColorShade = 500,
     ): 100 | 900 => Theme.contrastShade(this.colors[name], backgroundShade);
 
@@ -854,8 +862,8 @@ export class Theme {
 
     public resolveAppearance = (
         variant: SurfaceVariant,
-        baseColor: PaletteColor | DesignSystemColor,
-        highlightColor: PaletteColor | DesignSystemColor,
+        baseColor: PaletteColor | ColorVariant,
+        highlightColor: PaletteColor | ColorVariant,
         state: ThemeAppearanceState,
     ): ResolvedThemeAppearance => {
         const policy = this.appearancePolicies[variant];
@@ -912,12 +920,27 @@ export class Theme {
     /**
      * Returns a css color string from the current theme.
      */
-    public componentColor = (
-        componentName: ThemeComponentColor,
+    public structuralColor = (
+        name: StructuralColor,
         opacity?: number,
     ): string => {
-        const { name, shade } = this.componentColors[componentName];
-
-        return this.color(name, shade, opacity);
+        const shades: Record<StructuralColor, ColorShade> = this.isLight
+            ? {
+                background: 100,
+                border: 200,
+                'box-shadow': 800,
+                divider: 800,
+                text: 900,
+                'text-inverse': 50,
+            }
+            : {
+                background: 900,
+                border: 800,
+                'box-shadow': 800,
+                divider: 800,
+                text: 100,
+                'text-inverse': 900,
+            };
+        return this.color('neutral', shades[name], opacity);
     };
 }

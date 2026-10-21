@@ -88,4 +88,13 @@ describe("Theme", () => {
             theme.resolveAppearance("fill-inverse", "primary", "secondary", "default").surface,
         );
     });
+
+    it("resolves status colors and neutral structural colors", () => {
+        expect(theme.color("glitch")).to.equal(theme.color("red", 600));
+        expect(theme.resolveAppearance("ghost", "glitch", "intel", "active").effects.glowColor).to.equal(
+            theme.color("intel"),
+        );
+        expect(theme.structuralColor("background")).to.equal(theme.color("neutral", 100));
+        expect(theme.structuralColor("text")).to.equal(theme.color("neutral", 900));
+    });
 });

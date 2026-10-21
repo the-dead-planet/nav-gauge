@@ -221,7 +221,7 @@ export const MapCanvas: FC<Props> = ({ map, children }) => {
                 [styles["blinking"]]: blinkingState!!,
             })}
             style={{
-                '--blink-border-color': `var(--color-${blinkingState?.color || 'error'})`
+                '--blink-border-color': `var(--color-${blinkingState?.color || 'glitch'})`
             } as CSSProperties}
         >
             {isInitialised && isStyleLoaded ? children : null}

@@ -47,9 +47,9 @@ export const BottomToolPanel: FC<Props> = ({
     return (
         <View ref={assignBottomToolPanelRef(toolsStation)}>
             <View style={[{
-                backgroundColor: theme.componentColor('background', 0.87),
+                backgroundColor: theme.structuralColor('background', 0.87),
                 borderTopColor: theme.color('primary'),
-                shadowColor: theme.componentColor('box-shadow'),
+                shadowColor: theme.structuralColor('box-shadow'),
                 shadowOffset: { width: 0, height: -2 },
                 shadowOpacity: theme.isDark ? 0.2 : 0.08,
                 shadowRadius: theme.isDark ? 5 : 4,

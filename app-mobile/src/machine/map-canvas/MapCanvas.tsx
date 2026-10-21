@@ -56,7 +56,7 @@ export const MapCanvas: FC<Props> = ({
             if (event.level === 'error') {
                 signaliumBureau.addNotice({
                     id: notificationId,
-                    type: 'error',
+                    type: 'glitch',
                     text: `${event.message} (${event.tag})`,
                     error: new Error(event.message, { cause: event.tag }),
                 });
@@ -87,7 +87,7 @@ export const MapCanvas: FC<Props> = ({
                 onDidFailLoadingMap={() => {
                     signaliumBureau.addNotice({
                         id: 'map-failed',
-                        type: 'error',
+                        type: 'glitch',
                         error: new Error('Map loading failed'),
                         text: 'Something went wrong'
                     })

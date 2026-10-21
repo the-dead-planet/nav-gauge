@@ -11,8 +11,8 @@ export const Icon: FC<Props & SvgProps> = ({ icon: RenderIcon, color, fill, ...p
 
     return (
         <RenderIcon
-            fill={fill || color || theme.componentColor('text')}
-            color={color || theme.componentColor('text')}
+            fill={fill || color || theme.structuralColor('text')}
+            color={color || theme.structuralColor('text')}
             {...props}
         />
     );

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { chipColorOptions, Icons } from '@ui';
+import { appearanceColorOptions, Icons } from '@ui';
 import { Chip } from './Chip';
 import { sizeOptions as allSizes, surfaceVariantOptions as allVariants } from '../../storybook/controls';
 
@@ -20,7 +20,7 @@ export const Gallery = {
             {allVariants.map((variant) => (
                 <div key={variant} style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
                     {allSizes.map((size) => (
-                        chipColorOptions.map((color) => (
+                        appearanceColorOptions.map((color) => (
                             <Chip key={`${variant}-${size}-${color}`} variant={variant} size={size} color={color} icon={Icons.NounProject.UnderConstruction}>
                                 {color}
                             </Chip>

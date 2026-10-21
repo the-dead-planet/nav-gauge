@@ -30,7 +30,7 @@ const gapSizes: SpacingVariant[] = ['xs', 'sm', 'md', 'lg', 'xl'];
 
 export const All: FC = () => {
     const theme = useTheme();
-    const borderColor = theme.componentColor('border');
+    const borderColor = theme.structuralColor('border');
 
     return (
         <ScrollView contentContainerStyle={styles.container}>

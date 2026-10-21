@@ -1,4 +1,4 @@
-import type { ColorShade, DesignSystemColor, SizeVariant, SurfaceVariant } from '../model';
+import type { ColorShade, DesignSystemColor, SizeVariant, StatusColor, SurfaceVariant } from '../model';
 
 export enum ThemeName {
     Default = 'Default',
@@ -57,17 +57,13 @@ export type PaletteColor =
     | 'mint'
     | 'green';
 
-export type ThemeComponentColor =
+export type StructuralColor =
     | 'background'
     | 'border'
     | 'box-shadow'
     | 'divider'
     | 'text'
-    | 'text-inverse'
-    | 'error'
-    | 'warning'
-    | 'success'
-    | 'info';
+    | 'text-inverse';
 
 export interface RGBColor {
     r: number;
@@ -83,8 +79,8 @@ export interface SelectedColor {
     shade?: ColorShade;
 }
 
-export type ThemeComponentColors = {
-    [key in ThemeComponentColor]: SelectedColor;
+export type ThemeStatusColors = {
+    [key in StatusColor]: SelectedColor;
 };
 
 export type ThemeAppearanceState = 'default' | 'interaction' | 'active' | 'disabled';
@@ -208,7 +204,7 @@ export interface ThemeSpecification {
     colors: {
         [key in DesignSystemColor]: ThemeColor;
     };
-    componentColors: ThemeComponentColors;
+    statusColors: ThemeStatusColors;
 }
 
 export type ThemeMode = 'light' | 'dark';

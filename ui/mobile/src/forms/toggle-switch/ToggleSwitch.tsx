@@ -114,8 +114,8 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
     const textStyle = controlTextSpecifications[size];
     const content = label ?? children;
 
-    const errorColor = theme.componentColor('error');
-    const successColor = theme.componentColor('success');
+    const errorColor = theme.color('glitch');
+    const successColor = theme.color('secured');
     const neutralColor = theme.color('neutral');
 
     const isHorizontal = orientation === 'horizontal';
@@ -271,7 +271,7 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
                     ? theme.color(highlightColor, highlightContentShade)
                     : appearanceState === 'default' && contentShade !== undefined
                         ? theme.color(color, contentShade)
-                        : theme.componentColor('text');
+                        : theme.structuralColor('text');
                 const trackStyle: ViewStyle = {
                     width: trackSize,
                     height: trackSize,

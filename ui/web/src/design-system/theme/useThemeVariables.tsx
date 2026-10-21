@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import {
     allColorShades,
-    colorOptions,
-    DesignSystemColor,
+    appearanceColorOptions,
+    ColorVariant,
     fontTypeToFamily,
     PaletteColor,
     surfaceVariantOptions,
@@ -10,10 +10,18 @@ import {
     ThemeAppearancePaint,
     ThemeAppearanceInsetEffectPolicy,
     themeAppearanceStateOptions,
-    ThemeComponentColor,
+    StructuralColor,
 } from "@ui";
 
 const appearanceStyleId = 'theme-appearance-variables';
+const structuralColors: StructuralColor[] = [
+    'background',
+    'border',
+    'box-shadow',
+    'divider',
+    'text',
+    'text-inverse',
+];
 
 const resolveAppearancePaint = (paint: ThemeAppearancePaint): string => {
     if (paint.type === 'transparent') {
@@ -52,8 +60,8 @@ const createColorRule = (attribute: 'color' | 'highlight', color: string): strin
 };
 
 const createAppearanceRules = (theme: Theme): string => [
-    ...colorOptions.map((color) => createColorRule('color', color)),
-    ...colorOptions.map((color) => createColorRule('highlight', color)),
+    ...appearanceColorOptions.map((color) => createColorRule('color', color)),
+    ...appearanceColorOptions.map((color) => createColorRule('highlight', color)),
     ...surfaceVariantOptions.map((variant) => {
         const policy = theme.appearancePolicies[variant];
         const defaultInset = policy.effects.inset?.default ?? transparentInset;
@@ -131,19 +139,18 @@ export const useThemeVariables = (theme: Theme) => {
         document.getElementById(appearanceStyleId)?.remove();
         document.head.appendChild(appearanceStyle);
 
-        for (const [key] of Object.entries(theme.componentColors)) {
-            const componentColorName = key as ThemeComponentColor;
+        for (const structuralColor of structuralColors) {
             document.documentElement.style.setProperty(
-                `--color-${componentColorName}`,
-                theme.componentColor(componentColorName)
+                `--color-${structuralColor}`,
+                theme.structuralColor(structuralColor)
             );
         }
 
         for (const [key] of Object.entries(theme.colors)) {
-            const colorName = key as PaletteColor | DesignSystemColor;
+            const colorName = key as PaletteColor | ColorVariant;
             document.documentElement.style.setProperty(
                 `--color-${colorName}`,
-                theme.color(colorName, 500)
+                theme.color(colorName)
             );
             document.documentElement.style.setProperty(
                 `--color-${colorName}-contrast`,

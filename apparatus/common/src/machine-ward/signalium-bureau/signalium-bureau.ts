@@ -38,7 +38,7 @@ export class SignaliumBureau {
             this.expirationTimeouts.delete(notice.id);
         }
 
-        if (notice.type !== 'error' && !keepAlive) {
+        if (notice.type !== 'glitch' && !keepAlive) {
             this.expirationTimeouts.set(notice.id, setTimeout(() => this.removeNotice(notice.id), expirationTime));
         }
 

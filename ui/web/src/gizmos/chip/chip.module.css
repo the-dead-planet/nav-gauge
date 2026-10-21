@@ -57,26 +57,26 @@
     --chip-color-dark: var(--color-neutral-900);
 }
 
-.color-warning {
-    --chip-color: var(--color-warning);
+.color-hazard {
+    --chip-color: var(--color-hazard);
     --chip-color-light: var(--color-text-inverse);
     --chip-color-dark: var(--color-text-inverse);
 }
 
-.color-success {
-    --chip-color: var(--color-success);
+.color-secured {
+    --chip-color: var(--color-secured);
     --chip-color-light: var(--color-text-inverse);
     --chip-color-dark: var(--color-text-inverse);
 }
 
-.color-error {
-    --chip-color: var(--color-error);
+.color-glitch {
+    --chip-color: var(--color-glitch);
     --chip-color-light: var(--color-text-inverse);
     --chip-color-dark: var(--color-text-inverse);
 }
 
-.color-info {
-    --chip-color: var(--color-info);
+.color-intel {
+    --chip-color: var(--color-intel);
     --chip-color-light: var(--color-text-inverse);
     --chip-color-dark: var(--color-text-inverse);
 }

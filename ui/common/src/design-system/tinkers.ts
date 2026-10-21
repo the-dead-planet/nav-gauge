@@ -2,6 +2,14 @@ import { ActiveGlow, ColorVariant, FillVariant, SizeVariant, SurfaceVariant } fr
 import type { ThemeAppearanceState } from './theme/model';
 
 export const colorOptions: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
+
+export const appearanceColorOptions: ColorVariant[] = [
+    ...colorOptions,
+    'glitch',
+    'hazard',
+    'secured',
+    'intel',
+];
 export const sizeOptions: SizeVariant[] = ['xs', 'sm', 'md', 'lg'];
 export const fillVariantOptions: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
 export const surfaceVariantOptions: SurfaceVariant[] = [
