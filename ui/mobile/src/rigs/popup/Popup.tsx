@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import { Animated, HostInstance, Modal, Pressable, StyleSheet, useWindowDimensions, View, type LayoutChangeEvent, type StyleProp, type ViewStyle } from 'react-native';
-import { MenuPosition, getIconAnchorPoint, menuPositionsMatch, placePopup, PopupProps, Theme, useTheme } from '@ui';
-import { resolveElevationStyle } from '../../design-system/theme';
+import { MenuPosition, getIconAnchorPoint, menuPositionsMatch, placePopup, PopupProps, useTheme } from '@ui';
+import { resolveLayerStyle } from '../../design-system/theme';
 
 const styles = StyleSheet.create({
     overlay: {
@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
         right: 0,
         top: 0,
         bottom: 0,
-        zIndex: Theme.layers.popup.zIndex,
     },
     popup: {
         position: 'absolute',
@@ -42,6 +41,7 @@ export const Popup: FC<Props> = ({
     children,
 }) => {
     const theme = useTheme();
+    const { zIndex, ...popupElevation } = resolveLayerStyle(theme, 'popup');
     const [menuPosition, setMenuPosition] = useState<MenuPosition>({});
     const [popupSize, setPopupSize] = useState<{ width: number; height: number } | null>(null);
     const { height: windowHeight, width: windowWidth } = useWindowDimensions();
@@ -140,7 +140,7 @@ export const Popup: FC<Props> = ({
             onLayout={handleLayout}
             style={[
                 styles.popup,
-                resolveElevationStyle(theme, Theme.layers.popup.elevation),
+                popupElevation,
                 positionStyle,
                 animatedStyle,
                 popupStyle,
@@ -156,12 +156,12 @@ export const Popup: FC<Props> = ({
     );
 
     if (!modal) {
-        return <View ref={overlayRef} pointerEvents="box-none" style={[styles.overlay, overlayStyle]}>{popup}</View>;
+        return <View ref={overlayRef} pointerEvents="box-none" style={[styles.overlay, { zIndex }, overlayStyle]}>{popup}</View>;
     }
 
     return (
         <Modal visible={visible} transparent animationType="none" onRequestClose={onClose} statusBarTranslucent>
-            <Pressable style={[styles.overlay, overlayStyle]} onPress={dismissOnClickAway ? onClose : undefined}>
+            <Pressable style={[styles.overlay, { zIndex }, overlayStyle]} onPress={dismissOnClickAway ? onClose : undefined}>
                 {popup}
             </Pressable>
         </Modal>

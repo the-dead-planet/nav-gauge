@@ -1,16 +1,16 @@
 .overlay {
     position: fixed;
     inset: 0;
-    z-index: var(--z-index-popup);
+    z-index: var(--layer-popup-z-index);
     pointer-events: none;
 }
 
 .popup {
     position: absolute;
     pointer-events: auto;
-    box-shadow: var(--elevation-overlay-down-shadow);
+    box-shadow: var(--layer-popup-down-shadow);
 }
 
 :global(body[data-theme="dark"]) .popup {
-    box-shadow: var(--elevation-overlay-down-shadow);
+    box-shadow: var(--layer-popup-down-shadow);
 }

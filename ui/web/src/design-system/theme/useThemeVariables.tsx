@@ -137,9 +137,19 @@ export const useThemeVariables = (theme: Theme) => {
         }
         for (const [layer, policy] of Object.entries(Theme.layers)) {
             document.documentElement.style.setProperty(
-                `--z-index-${layer.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}`,
+                `--layer-${layer}-z-index`,
                 String(policy.zIndex),
             );
+            for (const direction of elevationDirectionOptions) {
+                document.documentElement.style.setProperty(
+                    `--layer-${layer}-${direction}-shadow`,
+                    `var(--elevation-${policy.elevation}-${direction}-shadow)`,
+                );
+                document.documentElement.style.setProperty(
+                    `--layer-${layer}-${direction}-filter`,
+                    `var(--elevation-${policy.elevation}-${direction}-filter)`,
+                );
+            }
         }
         for (const level of elevationLevelOptions) {
             for (const direction of elevationDirectionOptions) {

@@ -26,12 +26,12 @@ const oklabLightness = ({ r, g, b }: { r: number; g: number; b: number }): numbe
 
 describe("Theme", () => {
     it("orders global layers semantically", () => {
-        expect(Theme.layers.hudConnector.zIndex).to.be.lessThan(Theme.layers.popup.zIndex);
+        expect(Theme.layers['hud-connector'].zIndex).to.be.lessThan(Theme.layers.popup.zIndex);
         expect(Theme.layers.popup.zIndex).to.be.lessThan(Theme.layers.floating.zIndex);
         expect(Theme.layers.floating.zIndex).to.be.lessThan(Theme.layers.dialog.zIndex);
         expect(Theme.layers.dialog.zIndex).to.be.lessThan(Theme.layers.dropdown.zIndex);
-        expect(Theme.layers.dropdown.zIndex).to.be.lessThan(Theme.layers.tooltipConnector.zIndex);
-        expect(Theme.layers.tooltipConnector.zIndex).to.be.lessThan(Theme.layers.tooltip.zIndex);
+        expect(Theme.layers.dropdown.zIndex).to.be.lessThan(Theme.layers['tooltip-connector'].zIndex);
+        expect(Theme.layers['tooltip-connector'].zIndex).to.be.lessThan(Theme.layers.tooltip.zIndex);
     });
 
     it("resolves mode-aware directional elevation", () => {
@@ -44,6 +44,10 @@ describe("Theme", () => {
         );
         expect(theme.elevation("none").opacity).to.equal(0);
         expect(Theme.layers.popup.elevation).to.equal("overlay");
+        expect(theme.layer("popup")).to.deep.equal({
+            zIndex: Theme.layers.popup.zIndex,
+            elevation: theme.elevation("overlay"),
+        });
     });
 
     it("aligns palette endpoints with neutral palette lightness", () => {

@@ -1,7 +1,8 @@
 import { FC, RefObject, useEffect, useRef, useState } from 'react';
 import { HostInstance, LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import Svg, { Polygon, Polyline } from 'react-native-svg';
-import { HudConnectorAnchor, HudConnectorProps, Theme, useTheme } from '@ui';
+import { HudConnectorAnchor, HudConnectorProps, useTheme } from '@ui';
+import { resolveLayerStyle } from '../../design-system/theme';
 
 const styles = StyleSheet.create({
     wrapper: {
@@ -13,7 +14,6 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
         left: 0,
-        zIndex: Theme.layers.hudConnector.zIndex,
     },
 });
 
@@ -77,7 +77,7 @@ export const HudConnector: FC<Props> = ({
         <View ref={wrapperRef} style={styles.wrapper} onLayout={onLayout}>
             {children}
             {points ? (
-                <Svg style={styles.connector} pointerEvents="none" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+                <Svg style={[styles.connector, resolveLayerStyle(theme, 'hud-connector')]} pointerEvents="none" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
                     {activeGlow !== 'none' ? <Polyline points={path} fill="none" stroke={connectorColor} strokeWidth={7} strokeOpacity={0.16} /> : null}
                     <Polyline points={path} fill="none" stroke={connectorColor} strokeWidth={1} />
                     <Polygon points={`${points[1].x - 4},${points[1].y} ${points[1].x - 2},${points[1].y - 3.5} ${points[1].x + 2},${points[1].y - 3.5} ${points[1].x + 4},${points[1].y} ${points[1].x + 2},${points[1].y + 3.5} ${points[1].x - 2},${points[1].y + 3.5}`} fill={connectorColor} />

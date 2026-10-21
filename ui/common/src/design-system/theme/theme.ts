@@ -23,7 +23,10 @@ import {
     ElevationDirection,
     ElevationLevel,
     ResolvedThemeElevation,
+    ResolvedThemeLayer,
     ThemeElevation,
+    ThemeLayer,
+    ThemeLayerPolicy,
 } from "./model";
 import { ColorShade, ColorVariant, DesignSystemColor, SpacingVariant, StatusColor, SurfaceVariant } from '../model';
 
@@ -352,8 +355,8 @@ export class Theme {
         xl: '32px',
     }
 
-    public static layers = {
-        hudConnector: {
+    public static layers: Record<ThemeLayer, ThemeLayerPolicy> = {
+        'hud-connector': {
             zIndex: 2,
             elevation: 'none'
         },
@@ -373,7 +376,7 @@ export class Theme {
             zIndex: 6000,
             elevation: 'overlay'
         },
-        tooltipConnector: {
+        'tooltip-connector': {
             zIndex: 9998,
             elevation: 'none'
         },
@@ -1077,6 +1080,27 @@ export class Theme {
             blur: elevation.blur,
             opacity: elevation.opacity,
             depth: elevation.depth,
+        };
+    };
+
+    /**
+     * Resolves a global stacking layer and its assigned elevation together.
+     * Use this instead of selecting a layer z-index and elevation independently.
+     *
+     * @param name Global layer role.
+     * @param direction Direction in which the layer shadow is cast. Defaults to `down`.
+     *
+     * @example
+     * const popupLayer = theme.layer('popup');
+     */
+    public layer = (
+        name: ThemeLayer,
+        direction: ElevationDirection = 'down',
+    ): ResolvedThemeLayer => {
+        const policy = Theme.layers[name];
+        return {
+            zIndex: policy.zIndex,
+            elevation: this.elevation(policy.elevation, direction),
         };
     };
 

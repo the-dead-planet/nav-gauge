@@ -19,10 +19,9 @@ import {
     placePopup,
     MenuProps,
     Icons,
-    Theme,
 } from '@ui';
 import { Button } from '../../gizmos/button';
-import { resolveElevationStyle } from '../../design-system/theme';
+import { resolveLayerStyle } from '../../design-system/theme';
 
 const styles = StyleSheet.create({
     container: {
@@ -130,7 +129,7 @@ export const Menu: FC<MobileMenuProps> = ({
                                     theme.isLight ? 100 : (color === 'neutral' ? 800 : 900)
                                 ),
                                 borderColor: theme.color(color, 500),
-                                ...resolveElevationStyle(theme, Theme.layers.dropdown.elevation),
+                                ...resolveLayerStyle(theme, 'dropdown'),
                             }
                         ]}
                     >

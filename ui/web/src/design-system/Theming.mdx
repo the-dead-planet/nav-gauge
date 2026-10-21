@@ -30,6 +30,8 @@ Elevation describes separation between surfaces independently from component col
 
 Global layer policies explicitly pair a z-index with an elevation level. A higher z-index does not imply a stronger shadow: tooltips stack above dialogs but use the lighter floating elevation.
 
-`Theme.elevation()` returns platform-neutral metrics. Web renderers consume generated `--elevation-<level>-<direction>-shadow` or `-filter` variables; mobile renderers translate the same metrics with `resolveElevationStyle()`. Literal shadows are reserved for intrinsic effects such as focus rings, glows, and inset geometry, not surface depth.
+`Theme.elevation()` returns platform-neutral metrics for surfaces without a global stacking role. Web renderers consume generated `--elevation-<level>-<direction>-shadow` or `-filter` variables; mobile renderers translate the same metrics with `resolveElevationStyle()`.
+
+Globally stacked surfaces use their layer as one policy: web consumes `--layer-<name>-z-index` with `--layer-<name>-<direction>-shadow`, while mobile uses `resolveLayerStyle()`. Do not select a global layer's z-index and elevation independently. Literal shadows are reserved for intrinsic effects such as focus rings, glows, and inset geometry, not surface depth.
 
 Theme controls change the active theme but follow the same component and accessibility rules as other controls.

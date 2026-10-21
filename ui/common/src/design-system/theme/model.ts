@@ -220,6 +220,25 @@ export interface ResolvedThemeElevation {
     depth: number;
 }
 
+export type ThemeLayer =
+    | 'hud-connector'
+    | 'popup'
+    | 'floating'
+    | 'dialog'
+    | 'dropdown'
+    | 'tooltip-connector'
+    | 'tooltip';
+
+export interface ThemeLayerPolicy {
+    zIndex: number;
+    elevation: ElevationLevel;
+}
+
+export interface ResolvedThemeLayer {
+    zIndex: number;
+    elevation: ResolvedThemeElevation;
+}
+
 export interface ThemeSpecification {
     mode: ThemeMode;
     themeName: ThemeName;
