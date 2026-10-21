@@ -9,7 +9,7 @@
 .h5,
 .h6 {
     margin: 0;
-    color: var(--typography-color-shade, var(--typography-color, var(--color-text)));
+    color: var(--typography-color-shade, var(--typography-color, light-dark(var(--color-neutral-900), var(--color-neutral-100))));
 }
 
 .uppercase {
@@ -60,7 +60,7 @@
 
 .link:link,
 .link:visited {
-    color: var(--typography-color-shade, var(--typography-color, var(--color-text)));
+    color: var(--typography-color-shade, var(--typography-color, light-dark(var(--color-neutral-900), var(--color-neutral-100))));
     text-decoration: underline;
 }
 

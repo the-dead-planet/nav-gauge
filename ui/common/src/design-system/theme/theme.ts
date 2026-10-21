@@ -7,8 +7,7 @@ import {
     PaletteColor,
     RGBColor,
     ThemeColor,
-    ThemeComponentColor,
-    ThemeComponentColors,
+    ThemeStatusColors,
     ThemeSpecification,
     ThemeSizes,
     ThemeMode,
@@ -20,8 +19,15 @@ import {
     ResolvedThemeAppearance,
     ThemeAppearanceState,
     ThemeAppearanceBorder,
+    ElevationDirection,
+    ElevationLevel,
+    ResolvedThemeElevation,
+    ResolvedThemeLayer,
+    ThemeElevation,
+    ThemeLayer,
+    ThemeLayerPolicy,
 } from "./model";
-import { ColorShade, DesignSystemColor, SpacingVariant, SurfaceVariant } from '../model';
+import { ColorShade, ColorVariant, DesignSystemColor, SpacingVariant, StatusColor, SurfaceVariant } from '../model';
 
 interface OklchColor {
     lightness: number;
@@ -81,6 +87,61 @@ const themeSizes: ThemeSizes = {
             paddingInline: 20,
             paddingBlock: 8,
             iconPaddingInline: 8,
+        },
+    },
+};
+
+const elevations: Record<ThemeMode, Record<ElevationLevel, ThemeElevation>> = {
+    light: {
+        none: {
+            distance: 0,
+            blur: 0,
+            opacity: 0,
+            depth: 0,
+        },
+        raised: {
+            distance: 2,
+            blur: 8,
+            opacity: 0.1,
+            depth: 4,
+        },
+        floating: {
+            distance: 4,
+            blur: 12,
+            opacity: 0.18,
+            depth: 6,
+        },
+        overlay: {
+            distance: 8,
+            blur: 24,
+            opacity: 0.22,
+            depth: 8,
+        },
+    },
+    dark: {
+        none: {
+            distance: 0,
+            blur: 0,
+            opacity: 0,
+            depth: 0,
+        },
+        raised: {
+            distance: 2,
+            blur: 10,
+            opacity: 0.24,
+            depth: 4,
+        },
+        floating: {
+            distance: 4,
+            blur: 14,
+            opacity: 0.36,
+            depth: 6,
+        },
+        overlay: {
+            distance: 8,
+            blur: 30,
+            opacity: 0.5,
+            depth: 8,
         },
     },
 };
@@ -238,7 +299,7 @@ export class Theme {
         };
     };
 
-    public componentColors: ThemeComponentColors;
+    public statusColors: ThemeStatusColors;
 
     public static palette: { [key in PaletteColor]: ThemeColor } = {
         'neutral-grey': createNeutralPalette({ r: 113, g: 118, b: 117 }),
@@ -283,7 +344,7 @@ export class Theme {
         red: createPalette({ r: 235, g: 0, b: 53 }),
     }
 
-    public colors: { [key in PaletteColor | DesignSystemColor]: ThemeColor };
+    public colors: { [key in PaletteColor | ColorVariant]: ThemeColor };
 
     public static spacing: { [key in SpacingVariant]: string } = {
         xs: '6px',
@@ -293,15 +354,38 @@ export class Theme {
         xl: '32px',
     }
 
-    public static zIndex = {
-        hudConnector: 2,
-        popup: 1000,
-        floating: 1100,
-        dialog: 5000,
-        dropdown: 6000,
-        tooltipConnector: 9998,
-        tooltip: 10000,
+    public static layers: Record<ThemeLayer, ThemeLayerPolicy> = {
+        'hud-connector': {
+            zIndex: 2,
+            elevation: 'none'
+        },
+        popup: {
+            zIndex: 1000,
+            elevation: 'overlay'
+        },
+        floating: {
+            zIndex: 1100,
+            elevation: 'floating'
+        },
+        dialog: {
+            zIndex: 5000,
+            elevation: 'overlay'
+        },
+        dropdown: {
+            zIndex: 6000,
+            elevation: 'overlay'
+        },
+        'tooltip-connector': {
+            zIndex: 9998,
+            elevation: 'none'
+        },
+        tooltip: {
+            zIndex: 10000,
+            elevation: 'floating'
+        },
     } as const;
+
+    public elevations: Record<ElevationLevel, ThemeElevation>;
 
     public static properties = {
         disabledOpacity: 0.4,
@@ -316,8 +400,16 @@ export class Theme {
         this.isDark = specification.mode === 'dark';
         this.otherMode = specification.mode === 'light' ? 'dark' : 'light';
         this.name = specification.themeName;
-        this.colors = Object.assign({}, Theme.palette, specification.colors);
-        this.componentColors = specification.componentColors;
+        this.elevations = elevations[this.mode];
+        this.statusColors = specification.statusColors;
+        const statusPalettes = Object.fromEntries(
+            Object.entries(this.statusColors).map(([status, selected]) => [
+                status,
+                Theme.palette[selected.name as PaletteColor]
+                ?? specification.colors[selected.name as DesignSystemColor],
+            ]),
+        ) as Record<StatusColor, ThemeColor>;
+        this.colors = Object.assign({}, Theme.palette, specification.colors, statusPalettes);
         const shades: ThemeVariantShades = this.isLight
             ? {
                 base: 500,
@@ -822,16 +914,17 @@ export class Theme {
     /**
      * Returns an rgb or rgba color string.
      * @param name 
-     * @param shade Optional. One of `50,100,200,...,900`. Defaults to 500.
+     * @param shade Optional. One of `50,100,200,...,900`. Defaults to the configured status shade or 500.
      * @param opacity Optional value `[0,1]`. If not provided will be rgb(r, g, b), otherwise rgba(r, g, b, opacity)
      * @returns 
      */
     public color = (
-        name: PaletteColor | DesignSystemColor,
-        shade: ColorShade = 500,
+        name: PaletteColor | ColorVariant,
+        shade?: ColorShade,
         opacity?: number,
     ): string => {
-        const { r, g, b } = this.colors[name][shade];
+        const resolvedShade = shade ?? this.statusColors[name as StatusColor]?.shade ?? 500;
+        const { r, g, b } = this.colors[name][resolvedShade];
 
         if (opacity === undefined) {
             return `rgb(${r}, ${g}, ${b})`;
@@ -840,10 +933,37 @@ export class Theme {
         return `rgba(${r}, ${g}, ${b}, ${opacity})`;
     };
 
+    /**
+     * Returns the mode-appropriate neutral application surface color.
+     * Uses shade `100` in light mode and `900` in dark mode.
+     *
+     * @example
+     * theme.surfaceColor()
+     * @example
+     * theme.surfaceColor(0.87)
+     */
+    public surfaceColor = (opacity?: number): string =>
+        this.color('neutral', this.isLight ? 100 : 900, opacity);
+
+    /**
+     * Returns the mode-appropriate neutral application surface border color.
+     * Uses shade `200` in light mode and `800` in dark mode.
+     *
+     * @example
+     * theme.surfaceBorderColor()
+     * @example
+     * theme.surfaceBorderColor(0.87)
+     */
+    public surfaceBorderColor = (opacity?: number): string =>
+        this.color('neutral', this.isLight ? 200 : 800, opacity);
+
     public contrastShade = (
-        name: PaletteColor | DesignSystemColor,
-        backgroundShade: ColorShade = 500,
-    ): 100 | 900 => Theme.contrastShade(this.colors[name], backgroundShade);
+        name: PaletteColor | ColorVariant,
+        backgroundShade?: ColorShade,
+    ): 100 | 900 => Theme.contrastShade(
+        this.colors[name],
+        backgroundShade ?? this.statusColors[name as StatusColor]?.shade ?? 500,
+    );
 
     public static contrastShade = (
         color: ThemeColor,
@@ -854,8 +974,8 @@ export class Theme {
 
     public resolveAppearance = (
         variant: SurfaceVariant,
-        baseColor: PaletteColor | DesignSystemColor,
-        highlightColor: PaletteColor | DesignSystemColor,
+        baseColor: PaletteColor | ColorVariant,
+        highlightColor: PaletteColor | ColorVariant,
         state: ThemeAppearanceState,
     ): ResolvedThemeAppearance => {
         const policy = this.appearancePolicies[variant];
@@ -912,12 +1032,78 @@ export class Theme {
     /**
      * Returns a css color string from the current theme.
      */
-    public componentColor = (
-        componentName: ThemeComponentColor,
-        opacity?: number,
-    ): string => {
-        const { name, shade } = this.componentColors[componentName];
+    /**
+     * Resolves an elevation level to platform-neutral shadow metrics.
+     * Direction describes where the shadow is cast; a bottom panel therefore uses `up`.
+     *
+     * Levels:
+     * - `none`: ordinary content and connectors without surface elevation.
+     * - `raised`: persistent top bars, toolbars, and side or bottom panels.
+     * - `floating`: transient notices, tool widgets, and tooltips.
+     * - `overlay`: popups, menus, dropdowns, and dialogs.
+     *
+     * @param level Visual depth independent from z-index.
+     * @param direction Direction in which the shadow is cast. Defaults to `down`.
+     *
+     * @example
+     * const widgetElevation = theme.elevation('floating');
+     * @example
+     * const rightPanelElevation = theme.elevation('raised', 'left');
+     * @example
+     * const bottomPanelElevation = theme.elevation('raised', 'up');
+     */
+    public elevation = (
+        level: ElevationLevel,
+        direction: ElevationDirection = 'down',
+    ): ResolvedThemeElevation => {
+        const elevation = this.elevations[level];
+        const offset = {
+            up: {
+                x: 0,
+                y: -elevation.distance
+            },
+            right: {
+                x: elevation.distance,
+                y: 0
+            },
+            down: {
+                x: 0,
+                y: elevation.distance
+            },
+            left: {
+                x: -elevation.distance,
+                y: 0
+            },
+        }[direction];
 
-        return this.color(name, shade, opacity);
+        return {
+            color: 'rgb(0, 0, 0)',
+            offset,
+            blur: elevation.blur,
+            opacity: elevation.opacity,
+            depth: elevation.depth,
+        };
     };
+
+    /**
+     * Resolves a global stacking layer and its assigned elevation together.
+     * Use this instead of selecting a layer z-index and elevation independently.
+     *
+     * @param name Global layer role.
+     * @param direction Direction in which the layer shadow is cast. Defaults to `down`.
+     *
+     * @example
+     * const popupLayer = theme.layer('popup');
+     */
+    public layer = (
+        name: ThemeLayer,
+        direction: ElevationDirection = 'down',
+    ): ResolvedThemeLayer => {
+        const policy = Theme.layers[name];
+        return {
+            zIndex: policy.zIndex,
+            elevation: this.elevation(policy.elevation, direction),
+        };
+    };
+
 }

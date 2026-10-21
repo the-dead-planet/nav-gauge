@@ -3,7 +3,9 @@ export type ActiveGlow = 'none' | 'glow' | 'animate-borders-glow';
 export type DesignSystemColor =
     'primary' | 'secondary' | 'tertiary' | 'neutral';
 
-export type ColorVariant = DesignSystemColor;
+export type StatusColor = 'glitch' | 'hazard' | 'secured' | 'intel';
+
+export type ColorVariant = DesignSystemColor | StatusColor;
 
 export type ColorShade = 50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
 

@@ -1,8 +1,12 @@
 import { useEffect } from "react";
 import {
     allColorShades,
-    colorOptions,
-    DesignSystemColor,
+    appearanceColorOptions,
+    ColorVariant,
+    elevationDirectionOptions,
+    elevationLevelOptions,
+    ElevationDirection,
+    ElevationLevel,
     fontTypeToFamily,
     PaletteColor,
     surfaceVariantOptions,
@@ -10,10 +14,16 @@ import {
     ThemeAppearancePaint,
     ThemeAppearanceInsetEffectPolicy,
     themeAppearanceStateOptions,
-    ThemeComponentColor,
 } from "@ui";
 
 const appearanceStyleId = 'theme-appearance-variables';
+const elevationShadow = (theme: Theme, level: ElevationLevel, direction: ElevationDirection): string => {
+    if (level === 'none') {
+        return 'none';
+    }
+    const elevation = theme.elevation(level, direction);
+    return `${elevation.offset.x}px ${elevation.offset.y}px ${elevation.blur}px rgba(0, 0, 0, ${elevation.opacity})`;
+};
 
 const resolveAppearancePaint = (paint: ThemeAppearancePaint): string => {
     if (paint.type === 'transparent') {
@@ -52,8 +62,8 @@ const createColorRule = (attribute: 'color' | 'highlight', color: string): strin
 };
 
 const createAppearanceRules = (theme: Theme): string => [
-    ...colorOptions.map((color) => createColorRule('color', color)),
-    ...colorOptions.map((color) => createColorRule('highlight', color)),
+    ...appearanceColorOptions.map((color) => createColorRule('color', color)),
+    ...appearanceColorOptions.map((color) => createColorRule('highlight', color)),
     ...surfaceVariantOptions.map((variant) => {
         const policy = theme.appearancePolicies[variant];
         const defaultInset = policy.effects.inset?.default ?? transparentInset;
@@ -90,9 +100,9 @@ const createAppearanceRules = (theme: Theme): string => [
 ].join('\n');
 
 /**
- * Adds the CSS variables using theme colors in format `--color-<name>`.
- * @example var(--color-background)
- * @example var(--color-yellow-500)
+ * Adds CSS variables using theme colors in format `--color-<name>`.
+ * @example var(--color-neutral-500)
+ * @example var(--color-intel-300)
  */
 export const useThemeVariables = (theme: Theme) => {
     useEffect(() => {
@@ -116,13 +126,36 @@ export const useThemeVariables = (theme: Theme) => {
                 );
             }
         }
-        for (const [layer, zIndex] of Object.entries(Theme.zIndex)) {
+        for (const [layer, policy] of Object.entries(Theme.layers)) {
             document.documentElement.style.setProperty(
-                `--z-index-${layer.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}`,
-                String(zIndex),
+                `--layer-${layer}-z-index`,
+                String(policy.zIndex),
             );
+            for (const direction of elevationDirectionOptions) {
+                document.documentElement.style.setProperty(
+                    `--layer-${layer}-${direction}-shadow`,
+                    `var(--elevation-${policy.elevation}-${direction}-shadow)`,
+                );
+                document.documentElement.style.setProperty(
+                    `--layer-${layer}-${direction}-filter`,
+                    `var(--elevation-${policy.elevation}-${direction}-filter)`,
+                );
+            }
         }
-    }, [theme.sizes.control]);
+        for (const level of elevationLevelOptions) {
+            for (const direction of elevationDirectionOptions) {
+                const shadow = elevationShadow(theme, level, direction);
+                document.documentElement.style.setProperty(
+                    `--elevation-${level}-${direction}-shadow`,
+                    shadow,
+                );
+                document.documentElement.style.setProperty(
+                    `--elevation-${level}-${direction}-filter`,
+                    level === 'none' ? 'none' : `drop-shadow(${shadow})`,
+                );
+            }
+        }
+    }, [theme]);
 
     useEffect(() => {
         const appearanceStyle = document.createElement('style');
@@ -131,19 +164,11 @@ export const useThemeVariables = (theme: Theme) => {
         document.getElementById(appearanceStyleId)?.remove();
         document.head.appendChild(appearanceStyle);
 
-        for (const [key] of Object.entries(theme.componentColors)) {
-            const componentColorName = key as ThemeComponentColor;
-            document.documentElement.style.setProperty(
-                `--color-${componentColorName}`,
-                theme.componentColor(componentColorName)
-            );
-        }
-
         for (const [key] of Object.entries(theme.colors)) {
-            const colorName = key as PaletteColor | DesignSystemColor;
+            const colorName = key as PaletteColor | ColorVariant;
             document.documentElement.style.setProperty(
                 `--color-${colorName}`,
-                theme.color(colorName, 500)
+                theme.color(colorName)
             );
             document.documentElement.style.setProperty(
                 `--color-${colorName}-contrast`,
@@ -161,6 +186,7 @@ export const useThemeVariables = (theme: Theme) => {
                 );
             }
         }
+        document.documentElement.style.colorScheme = theme.mode;
         document.body.setAttribute("data-theme", theme.mode);
 
         return () => appearanceStyle.remove();

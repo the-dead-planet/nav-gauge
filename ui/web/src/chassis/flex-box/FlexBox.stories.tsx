@@ -21,9 +21,9 @@ export const All = {
                 <FlexBox key={direction} direction="column" gap="sm">
                     <span style={{ fontWeight: 700 }}>direction: {direction}</span>
                     <FlexBox direction={direction} gap="sm">
-                        <span style={{ padding: '4px 12px', border: '1px solid var(--color-border)' }}>1</span>
-                        <span style={{ padding: '4px 12px', border: '1px solid var(--color-border)' }}>2</span>
-                        <span style={{ padding: '4px 12px', border: '1px solid var(--color-border)' }}>3</span>
+                        <span style={{ padding: '4px 12px', border: '1px solid var(--color-neutral-500)' }}>1</span>
+                        <span style={{ padding: '4px 12px', border: '1px solid var(--color-neutral-500)' }}>2</span>
+                        <span style={{ padding: '4px 12px', border: '1px solid var(--color-neutral-500)' }}>3</span>
                     </FlexBox>
                 </FlexBox>
             ))}
@@ -32,9 +32,9 @@ export const All = {
                 <FlexBox key={j} direction="column" gap="xs">
                     <span style={{ fontSize: 12 }}>{j}</span>
                     <FlexBox justifyContent={j} gap="xs">
-                        <span style={{ padding: '4px 8px', border: '1px solid var(--color-border)' }}>A</span>
-                        <span style={{ padding: '4px 8px', border: '1px solid var(--color-border)' }}>B</span>
-                        <span style={{ padding: '4px 8px', border: '1px solid var(--color-border)' }}>C</span>
+                        <span style={{ padding: '4px 8px', border: '1px solid var(--color-neutral-500)' }}>A</span>
+                        <span style={{ padding: '4px 8px', border: '1px solid var(--color-neutral-500)' }}>B</span>
+                        <span style={{ padding: '4px 8px', border: '1px solid var(--color-neutral-500)' }}>C</span>
                     </FlexBox>
                 </FlexBox>
             ))}
@@ -44,9 +44,9 @@ export const All = {
                     <span style={{ fontSize: 12 }}>{a}</span>
                     <div style={{ height: 60 }}>
                         <FlexBox alignItems={a} gap="xs">
-                            <span style={{ padding: '4px 8px', border: '1px solid var(--color-border)' }}>S</span>
-                            <span style={{ padding: '12px 8px', border: '1px solid var(--color-border)' }}>M</span>
-                            <span style={{ padding: '24px 8px', border: '1px solid var(--color-border)' }}>L</span>
+                            <span style={{ padding: '4px 8px', border: '1px solid var(--color-neutral-500)' }}>S</span>
+                            <span style={{ padding: '12px 8px', border: '1px solid var(--color-neutral-500)' }}>M</span>
+                            <span style={{ padding: '24px 8px', border: '1px solid var(--color-neutral-500)' }}>L</span>
                         </FlexBox>
                     </div>
                 </FlexBox>
@@ -55,17 +55,17 @@ export const All = {
             <FlexBox direction="column" gap="md">
                 {gapSizes.map((size) => (
                     <FlexBox key={size} gap={size}>
-                        <span style={{ padding: '4px 8px', border: '1px solid var(--color-border)' }}>{`gap ${size}`}</span>
-                        <span style={{ padding: '4px 8px', border: '1px solid var(--color-border)' }}>{`gap ${size}`}</span>
+                        <span style={{ padding: '4px 8px', border: '1px solid var(--color-neutral-500)' }}>{`gap ${size}`}</span>
+                        <span style={{ padding: '4px 8px', border: '1px solid var(--color-neutral-500)' }}>{`gap ${size}`}</span>
                     </FlexBox>
                 ))}
             </FlexBox>
             <span style={{ fontWeight: 700, marginTop: 16 }}>rowGap / colGap</span>
             <FlexBox colGap="lg" rowGap="md">
-                <span style={{ padding: '4px 8px', border: '1px solid var(--color-border)' }}>col lg row md</span>
-                <span style={{ padding: '4px 8px', border: '1px solid var(--color-border)' }}>col lg row md</span>
-                <span style={{ padding: '4px 8px', border: '1px solid var(--color-border)' }}>col lg row md</span>
-                <span style={{ padding: '4px 8px', border: '1px solid var(--color-border)' }}>col lg row md</span>
+                <span style={{ padding: '4px 8px', border: '1px solid var(--color-neutral-500)' }}>col lg row md</span>
+                <span style={{ padding: '4px 8px', border: '1px solid var(--color-neutral-500)' }}>col lg row md</span>
+                <span style={{ padding: '4px 8px', border: '1px solid var(--color-neutral-500)' }}>col lg row md</span>
+                <span style={{ padding: '4px 8px', border: '1px solid var(--color-neutral-500)' }}>col lg row md</span>
             </FlexBox>
         </FlexBox>
     ),

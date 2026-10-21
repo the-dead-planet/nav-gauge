@@ -136,7 +136,7 @@ export class WebChronoLens extends ChronoLens {
     public download = async (signaliumBureau: SignaliumBureau) => {
         if (this.chunks.length === 0) {
             signaliumBureau.addNotice({
-                type: 'warning',
+                type: 'hazard',
                 id: 'no-recording-chunks',
                 text: 'No data recorded',
             });

@@ -1,4 +1,4 @@
-import { allColorShades, colorOptions, fillVariantOptions, sizeOptions } from '../../design-system';
+import { allColorShades, appearanceColorOptions, fillVariantOptions, sizeOptions } from '../../design-system';
 import { StoryControls } from '../../storybook';
 import { ToggleSwitchProps } from './model';
 
@@ -16,15 +16,46 @@ export const toggleSwitchStoryArgs = {
 } satisfies Omit<ToggleSwitchProps, 'onChange'>;
 
 export const toggleSwitchStoryControls: StoryControls<ToggleSwitchProps> = {
-    children: { control: 'text' },
-    checked: { control: 'boolean' },
-    color: { control: 'select', options: colorOptions },
-    contentShade: { control: 'select', options: ['Default', ...allColorShades], mapping: { Default: undefined } },
-    highlightColor: { control: 'select', options: ['Default', ...colorOptions], mapping: { Default: undefined } },
-    highlightContentShade: { control: 'select', options: ['Default', ...allColorShades], mapping: { Default: undefined } },
-    variant: { control: 'select', options: fillVariantOptions },
-    size: { control: 'select', options: sizeOptions },
-    orientation: { control: 'select', options: toggleSwitchOrientations },
-    active: { control: 'boolean' },
-    disabled: { control: 'boolean' },
+    children: {
+        control: 'text',
+    },
+    checked: {
+        control: 'boolean'
+    },
+    color: {
+        control: 'select',
+        options: appearanceColorOptions,
+    },
+    contentShade: {
+        control: 'select',
+        options: ['Default', ...allColorShades],
+        mapping: { Default: undefined },
+    },
+    highlightColor: {
+        control: 'select',
+        options: ['Default', ...appearanceColorOptions],
+        mapping: { Default: undefined },
+    },
+    highlightContentShade: {
+        control: 'select',
+        options: ['Default', ...allColorShades],
+        mapping: { Default: undefined },
+    },
+    variant: {
+        control: 'select',
+        options: fillVariantOptions,
+    },
+    size: {
+        control: 'select',
+        options: sizeOptions,
+    },
+    orientation: {
+        control: 'select', options: toggleSwitchOrientations,
+    },
+    active: {
+        control: 'boolean'
+    },
+    disabled: {
+        control: 'boolean'
+    },
 };

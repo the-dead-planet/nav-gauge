@@ -1,19 +1,19 @@
-export type SignaliumNotice = ErrorSignaliumNotice | WarningSignaliumNotice | InfoSignaliumNotice;
+export type SignaliumNotice = GlitchSignaliumNotice | HazardSignaliumNotice | IntelSignaliumNotice;
 
 export interface BaseSignaliumNotice {
     id: string;
     text: string;
 }
 
-export interface ErrorSignaliumNotice extends BaseSignaliumNotice {
-    type: 'error';
+export interface GlitchSignaliumNotice extends BaseSignaliumNotice {
+    type: 'glitch';
     error: Error;
 }
 
-export interface WarningSignaliumNotice extends BaseSignaliumNotice {
-    type: 'warning';
+export interface HazardSignaliumNotice extends BaseSignaliumNotice {
+    type: 'hazard';
 }
 
-export interface InfoSignaliumNotice extends BaseSignaliumNotice {
-    type: 'info';
+export interface IntelSignaliumNotice extends BaseSignaliumNotice {
+    type: 'intel';
 }

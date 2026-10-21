@@ -21,6 +21,7 @@ import {
     Icons,
 } from '@ui';
 import { Button } from '../../gizmos/button';
+import { resolveLayerStyle } from '../../design-system/theme';
 
 const styles = StyleSheet.create({
     container: {
@@ -41,13 +42,6 @@ const styles = StyleSheet.create({
         minWidth: 160,
         maxHeight: 240,
         borderWidth: 1,
-        elevation: 10,
-        shadowOffset: {
-            width: 5,
-            height: 5
-        },
-        shadowOpacity: 0.6,
-        shadowRadius: 1,
     }
 });
 
@@ -135,7 +129,7 @@ export const Menu: FC<MobileMenuProps> = ({
                                     theme.isLight ? 100 : (color === 'neutral' ? 800 : 900)
                                 ),
                                 borderColor: theme.color(color, 500),
-                                shadowColor: theme.componentColor('box-shadow'),
+                                ...resolveLayerStyle(theme, 'dropdown'),
                             }
                         ]}
                     >

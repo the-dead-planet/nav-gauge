@@ -1,10 +1,10 @@
 import { FC } from "react";
-import { ChipColor, Icons, surfaceVariantOptions } from "@ui";
+import { Icons, StatusColor, surfaceVariantOptions } from "@ui";
 import { StyleSheet, View } from "react-native";
 import { Chip } from "./Chip";
 import { VariantGallery } from "../../storybook/VariantGallery";
 
-const semanticColors: ChipColor[] = ['warning', 'success', 'error', 'info'];
+const semanticColors: StatusColor[] = ['glitch', 'hazard', 'secured', 'intel'];
 
 const styles = StyleSheet.create({
     semanticColors: {

@@ -110,8 +110,8 @@ export const GroupTile: FC<Props> = ({ group, width, onEnter, onSelect }) => {
                     {
                         width: Math.min(420, windowWidth - 32),
                         maxHeight: windowHeight - safeAreaInsets.top - safeAreaInsets.bottom - 32,
-                        backgroundColor: theme.componentColor('background'),
-                        borderColor: theme.componentColor('border'),
+                        backgroundColor: theme.surfaceColor(),
+                        borderColor: theme.color('neutral', theme.isLight ? 200 : 800),
                     },
                 ]}
             >

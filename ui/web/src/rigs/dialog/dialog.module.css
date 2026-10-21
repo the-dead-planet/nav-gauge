@@ -5,7 +5,7 @@
     background: rgba(0, 0, 0, .6);
     animation: overlay-in 200ms ease-out;
     transition: background-color 200ms ease-in;
-    z-index: var(--z-index-dialog);
+    z-index: var(--layer-dialog-z-index);
 }
 
 .overlay-out {

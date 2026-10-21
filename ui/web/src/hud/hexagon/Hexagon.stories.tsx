@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { makeLiveEditStory } from 'storybook-addon-code-editor';
-import { hexagonShapes, hexagonStoryArgs, hexagonStoryControls } from '@ui';
+import { appearanceColorOptions, hexagonShapes, hexagonStoryArgs, hexagonStoryControls } from '@ui';
 import { Hexagon } from './Hexagon';
 import { VariantGallery } from '../../storybook/VariantGallery';
 import {
-    colorOptions,
     sizeOptions,
     surfaceVariantOptions,
 } from '../../storybook/controls';
@@ -48,7 +47,7 @@ export const Gallery: Story = {
                     <h2>{shape}</h2>
                     <VariantGallery
                         sizes={sizeOptions}
-                        colors={colorOptions}
+                        colors={appearanceColorOptions}
                         variants={surfaceVariantOptions}
                         render={({ color, size, variant }) => (
                             <Hexagon

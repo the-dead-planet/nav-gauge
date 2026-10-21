@@ -1,4 +1,4 @@
-import type { ColorShade, DesignSystemColor, SizeVariant, SurfaceVariant } from '../model';
+import type { ColorShade, DesignSystemColor, SizeVariant, StatusColor, SurfaceVariant } from '../model';
 
 export enum ThemeName {
     Default = 'Default',
@@ -57,18 +57,6 @@ export type PaletteColor =
     | 'mint'
     | 'green';
 
-export type ThemeComponentColor =
-    | 'background'
-    | 'border'
-    | 'box-shadow'
-    | 'divider'
-    | 'text'
-    | 'text-inverse'
-    | 'error'
-    | 'warning'
-    | 'success'
-    | 'info';
-
 export interface RGBColor {
     r: number;
     g: number;
@@ -83,8 +71,8 @@ export interface SelectedColor {
     shade?: ColorShade;
 }
 
-export type ThemeComponentColors = {
-    [key in ThemeComponentColor]: SelectedColor;
+export type ThemeStatusColors = {
+    [key in StatusColor]: SelectedColor;
 };
 
 export type ThemeAppearanceState = 'default' | 'interaction' | 'active' | 'disabled';
@@ -202,13 +190,54 @@ export interface ThemeSizes {
     control: Record<SizeVariant, ThemeControlSize>;
 }
 
+export type ElevationLevel = 'none' | 'raised' | 'floating' | 'overlay';
+
+export type ElevationDirection = 'up' | 'right' | 'down' | 'left';
+
+export interface ThemeElevation {
+    distance: number;
+    blur: number;
+    opacity: number;
+    depth: number;
+}
+
+export interface ResolvedThemeElevation {
+    color: string;
+    offset: {
+        x: number;
+        y: number;
+    };
+    blur: number;
+    opacity: number;
+    depth: number;
+}
+
+export type ThemeLayer =
+    | 'hud-connector'
+    | 'popup'
+    | 'floating'
+    | 'dialog'
+    | 'dropdown'
+    | 'tooltip-connector'
+    | 'tooltip';
+
+export interface ThemeLayerPolicy {
+    zIndex: number;
+    elevation: ElevationLevel;
+}
+
+export interface ResolvedThemeLayer {
+    zIndex: number;
+    elevation: ResolvedThemeElevation;
+}
+
 export interface ThemeSpecification {
     mode: ThemeMode;
     themeName: ThemeName;
     colors: {
         [key in DesignSystemColor]: ThemeColor;
     };
-    componentColors: ThemeComponentColors;
+    statusColors: ThemeStatusColors;
 }
 
 export type ThemeMode = 'light' | 'dark';

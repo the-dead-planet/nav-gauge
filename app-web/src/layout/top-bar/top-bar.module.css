@@ -1,8 +1,8 @@
 .top-bar {
-    background-color: var(--color-background);
+    background-color: light-dark(var(--color-neutral-100), var(--color-neutral-900));
     height: var(--app-top-bar-height);
-    border-bottom: 1px solid var(--color-border);
-    box-shadow: 0px 0px 8px var(--color-box-shadow);
+    border-bottom: 1px solid light-dark(var(--color-neutral-200), var(--color-neutral-800));
+    box-shadow: var(--elevation-raised-down-shadow);
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;

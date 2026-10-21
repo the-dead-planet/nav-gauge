@@ -1,7 +1,7 @@
 .overlay {
     position: fixed;
     inset: 0;
-    z-index: var(--z-index-floating);
+    z-index: var(--layer-floating-z-index);
 }
 
 .color-neutral {
@@ -70,10 +70,10 @@
     max-height: 240px;
     overflow-y: auto;
     transition: opacity .2s ease-in;
-    z-index: var(--z-index-dropdown);
+    z-index: var(--layer-dropdown-z-index);
     background-color: var(--menu-bg);
     border: 1px solid var(--menu-color);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, .3);
+    box-shadow: var(--layer-dropdown-down-shadow);
 }
 
 .menu-item {

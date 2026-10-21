@@ -5,9 +5,7 @@ import { SurveillanceState } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { MobileMap, useMobileMachineWard } from "@mobile-apparatus";
 import { useBlinkingPulse } from "@mobile-ui";
-import { DesignSystemColor, ThemeComponentColor, useTheme } from "@ui";
-
-const themeComponentColors: (ThemeComponentColor | DesignSystemColor)[] = ['background', 'border', 'box-shadow', 'divider', 'text', 'error', 'warning', 'success', 'info'];
+import { useTheme } from "@ui";
 
 const styles = StyleSheet.create({
     recordingView: {
@@ -41,13 +39,8 @@ export const MapCanvasContainer: FC<Props> = ({
     const [blinkingState] = useSubjectState(cartomancer.blinkingState$);
     const pulse = useBlinkingPulse();
 
-    const isComponentColor = (color: ThemeComponentColor | DesignSystemColor): color is ThemeComponentColor =>
-        themeComponentColors.includes(color);
-
     const blinkBorderColor = blinkingState
-        ? isComponentColor(blinkingState.color)
-            ? theme.componentColor(blinkingState.color)
-            : theme.color(blinkingState.color, 500)
+        ? theme.color(blinkingState.color)
         : undefined;
 
     const borderColor = useMemo(

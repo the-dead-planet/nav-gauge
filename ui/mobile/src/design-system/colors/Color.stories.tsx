@@ -130,7 +130,7 @@ export const ColorPalette: FC = () => {
   );
 };
 
-export const ComponentColors = () => {
+export const StatusColors = () => {
   const theme = useTheme();
 
   return (
@@ -141,7 +141,7 @@ export const ComponentColors = () => {
         gap: 20,
       }}
     >
-      {Object.entries(theme.componentColors).map(([name, color]) => (
+      {Object.entries(theme.statusColors).map(([name, color]) => (
         <View key={name} style={{ flexDirection: "row", gap: 20 }}>
           <Text style={{ minWidth: 100 }}>{name}</Text>
           <ColorBox

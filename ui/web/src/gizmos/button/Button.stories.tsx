@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { makeLiveEditStory } from 'storybook-addon-code-editor';
-import { buttonCorners, buttonStoryArgs, buttonStoryControls, Icons } from '@ui';
+import { appearanceColorOptions, buttonCorners, buttonStoryArgs, buttonStoryControls, Icons } from '@ui';
 import { Button } from './Button';
 import { VariantGallery } from '../../storybook/VariantGallery';
 import {
-    colorOptions,
     sizeOptions,
     surfaceVariantOptions,
 } from '../../storybook/controls';
@@ -60,7 +59,7 @@ export const Gallery: Story = {
                     <h2>{corners}</h2>
                     <VariantGallery
                         sizes={sizeOptions}
-                        colors={colorOptions}
+                        colors={appearanceColorOptions}
                         variants={surfaceVariantOptions}
                         render={({ color, size, variant }) => (
                         <Button
@@ -69,6 +68,7 @@ export const Gallery: Story = {
                             size={size}
                             variant={variant}
                             corners={corners}
+                            title={`Color: ${color}`}
                             aria-label={corners === 'square' ? undefined : `${corners} button`}
                         >
                             {corners === 'square' ? args.children : null}

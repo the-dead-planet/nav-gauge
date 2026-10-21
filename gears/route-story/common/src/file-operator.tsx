@@ -28,7 +28,7 @@ export class FileOperator<TMap, TChronoLens extends ChronoLens, TFile extends Ro
         const id = 'file-upload';
         this.gear.apparatus.signaliumBureau.addNotice({
             id,
-            type: 'error',
+            type: 'glitch',
             text: 'File upload failed',
             error,
         });

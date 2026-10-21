@@ -5,7 +5,7 @@ import { getImageIconSize, FULL_SIZE_IMAGE_SIZE, THUMBNAIL_IMAGE_SIZE } from "./
 import { RouteStoryGear } from "./route-story-gear";
 import { IMAGE_ANIMATION_DURATION } from "./layer-specification";
 import { RouteStoryFile, RouteStoryProps, RouteStoryState } from "./model";
-import { DesignSystemColor, ThemeComponentColor } from "@ui";
+import { ColorVariant } from "@ui";
 
 export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends RouteStoryFile, TImageData> {
     private gear: RouteStoryGear<TMap, TChronoLens, TFile, TImageData>;
@@ -21,8 +21,8 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
         this.gear = gear;
     }
 
-    public getBlinkingColor = (surveillanceState: SurveillanceState): DesignSystemColor | ThemeComponentColor => {
-        return surveillanceState === SurveillanceState.InProgress ? 'error' : 'neutral';
+    public getBlinkingColor = (surveillanceState: SurveillanceState): ColorVariant => {
+        return surveillanceState === SurveillanceState.InProgress ? 'glitch' : 'neutral';
     }
 
     public onDestroy = () => {
@@ -72,7 +72,7 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
 
     public onResume = () => {
         this.gear.apparatus.chronoLens.surveillanceState$.next(SurveillanceState.InProgress);
-        this.gear.apparatus.cartomancer.blinkingState$.next({ color: "error" });
+        this.gear.apparatus.cartomancer.blinkingState$.next({ color: "glitch" });
     };
 
     public updateProgress = (

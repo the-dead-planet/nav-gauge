@@ -133,7 +133,7 @@ export const ComponentStory: FC<{ entry: StoryEntry }> = ({ entry }) => {
                     {tab === 'gallery' ? definition.renderGallery(args) : definition.renderPlayground(args)}
                 </View>
             </View>
-            <View style={[drawerStyle, { backgroundColor: theme.componentColor('background'), borderColor: theme.componentColor('border') }]}>
+            <View style={[drawerStyle, { backgroundColor: theme.surfaceColor(), borderColor: theme.color('neutral', theme.isLight ? 200 : 800) }]}>
                 <View style={landscape ? styles.landscapeHandle : styles.portraitHandle}>
                     <ResizeHandle
                         direction={landscape ? 'horizontal' : 'vertical'}

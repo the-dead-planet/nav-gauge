@@ -95,7 +95,7 @@ export const ColorPalette = {
     ),
 } satisfies Story;
 
-export const ComponentColors = {
+export const StatusColors = {
     render: () => {
         const theme = useTheme();
 
@@ -108,7 +108,7 @@ export const ComponentColors = {
                     gap: '20px',
                 }}
             >
-                {Object.entries(theme.componentColors).map(([name, color]) => (
+                {Object.entries(theme.statusColors).map(([name, color]) => (
                     <Fragment key={name}>
                         <Text>{name}</Text>
                         <ColorBox

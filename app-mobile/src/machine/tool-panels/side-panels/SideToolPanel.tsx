@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { Animated, StyleSheet, View } from "react-native";
-import { Menu, MenuItem } from "@mobile-ui";
+import { Menu, MenuItem, resolveElevationStyle } from "@mobile-ui";
 import { assignSideToolPanelRef, swapSideToolPanelPlacement, useSideToolPanel } from "@apparatus";
 import { useMobileMachineWard } from "@mobile-apparatus";
 import { useTheme } from "@ui";
@@ -65,22 +65,17 @@ export const SideToolPanel: FC<Props> = ({
             ref={assignSideToolPanelRef(placement, toolsStation)}
             style={[
                 {
-                    backgroundColor: theme.componentColor('background', 0.87),
-                    shadowColor: theme.componentColor('box-shadow'),
-                    shadowOpacity: theme.isDark ? 0.4 : 0.14,
-                    shadowRadius: theme.isDark ? 5 : 4,
-                    elevation: 8,
+                    backgroundColor: theme.surfaceColor(0.87),
+                    ...resolveElevationStyle(theme, 'raised', placement === 'right' ? 'left' : 'right'),
                 },
                 placement === 'right'
                     ? {
                         borderLeftWidth: 1,
                         borderLeftColor: theme.color('neutral', 500, 0.4),
-                        shadowOffset: { width: -2, height: 0 },
                     }
                     : {
                         borderRightWidth: 1,
                         borderRightColor: theme.color('neutral', 500, 0.4),
-                        shadowOffset: { width: 2, height: 0 },
                     },
             ]}
         >

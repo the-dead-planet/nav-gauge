@@ -1,8 +1,8 @@
 .notice {
-    box-shadow: 2px 4px 8px rgba(0, 0, 0, .4);
-    border: 2px outset var(--color-border);
-    background-color: var(--color-background);
-    color: var(--color-text);
+    box-shadow: var(--elevation-floating-down-shadow);
+    border: 2px outset light-dark(var(--color-neutral-200), var(--color-neutral-800));
+    background-color: light-dark(var(--color-neutral-100), var(--color-neutral-900));
+    color: light-dark(var(--color-neutral-900), var(--color-neutral-100));
     padding: 0;
     width: 340px;
     transition: transform 250ms ease-in;
@@ -14,16 +14,16 @@
     }
 }
 
-.notice.error {
-    border-color: var(--color-error);
+.notice.glitch {
+    border-color: var(--color-glitch);
 }
 
-.notice.warning {
-    border-color: var(--color-warning);
+.notice.hazard {
+    border-color: var(--color-hazard);
 }
 
-.notice.info {
-    border-color: var(--color-info);
+.notice.intel {
+    border-color: var(--color-intel);
 }
 
 .notice p {

@@ -5,6 +5,7 @@ import { ToolIconRight } from "./tool-icons/ToolIconRight";
 import { ToolIconLeft } from "./tool-icons/ToolIconLeft";
 import { MobileMap } from "@mobile-apparatus";
 import { useTheme } from "@ui";
+import { resolveElevationStyle } from "@mobile-ui";
 
 const styles = StyleSheet.create({
     icons: {
@@ -68,13 +69,7 @@ export const ToolIcons: FC<Props> = ({
     const theme = useTheme();
     const { len, hasSpacer, toolIconsByPlacement } = useToolIcons(placement);
     const Component = placement === 'left' ? ToolIconLeft : ToolIconRight;
-    const iconShadow: ViewStyle = {
-        shadowColor: theme.componentColor('box-shadow'),
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: theme.isDark ? 0.45 : 0.14,
-        shadowRadius: 5,
-        elevation: 6,
-    };
+    const iconShadow: ViewStyle = resolveElevationStyle(theme, 'floating');
 
     if (len === 0) {
         return null;

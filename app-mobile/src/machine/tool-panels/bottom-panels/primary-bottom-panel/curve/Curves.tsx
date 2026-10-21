@@ -4,6 +4,7 @@ import { CurveLeft } from "./CurveLeft";
 import { CurveMiddle } from "./CurveMiddle";
 import { CurveRight } from "./CurveRight";
 import { useTheme } from "@ui";
+import { resolveElevationFilter, resolveElevationStyle } from "@mobile-ui";
 
 const styles = StyleSheet.create({
     curves: {
@@ -24,12 +25,9 @@ export const Curves: FC = () => {
             styles.curves,
             {
                 filter: [{
-                    dropShadow: `0 -2px ${theme.isDark ? 4 : 3}px ${theme.componentColor('box-shadow', theme.isDark ? 0.18 : 0.08)}`,
+                    dropShadow: resolveElevationFilter(theme, 'raised', 'up'),
                 }],
-                shadowColor: theme.componentColor('box-shadow'),
-                shadowOffset: { width: 0, height: -2 },
-                shadowOpacity: theme.isDark ? 0.18 : 0.08,
-                shadowRadius: theme.isDark ? 4 : 3,
+                ...resolveElevationStyle(theme, 'raised', 'up'),
             },
         ]}>
             <CurveLeft />

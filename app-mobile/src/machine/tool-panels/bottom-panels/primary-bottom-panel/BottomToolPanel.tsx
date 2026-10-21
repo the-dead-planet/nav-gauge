@@ -6,6 +6,7 @@ import { BottomToolPanelHeader } from "./BottomToolPanelHeader";
 import { MobileMap } from "@mobile-apparatus";
 import { useTheme } from "@ui";
 import { useAnimatedSize } from "../../useAnimatedSize";
+import { resolveElevationStyle } from "@mobile-ui";
 
 const styles = StyleSheet.create({
     componentHeader: {
@@ -47,13 +48,9 @@ export const BottomToolPanel: FC<Props> = ({
     return (
         <View ref={assignBottomToolPanelRef(toolsStation)}>
             <View style={[{
-                backgroundColor: theme.componentColor('background', 0.87),
+                backgroundColor: theme.surfaceColor(0.87),
                 borderTopColor: theme.color('primary'),
-                shadowColor: theme.componentColor('box-shadow'),
-                shadowOffset: { width: 0, height: -2 },
-                shadowOpacity: theme.isDark ? 0.2 : 0.08,
-                shadowRadius: theme.isDark ? 5 : 4,
-                elevation: 4,
+                ...resolveElevationStyle(theme, 'raised', 'up'),
             }]}>
                 <BottomToolPanelHeader
                     activeId={activeId}

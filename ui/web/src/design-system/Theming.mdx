@@ -18,6 +18,20 @@ Named themes provide different visual identities through shared palette roles. T
 
 ## Semantic Colors
 
-Background, border, text, inverse text, error, warning, success, and information colors are semantic roles. Use them by meaning; do not copy their current palette values into components.
+Status colors are semantic roles: `glitch`, `hazard`, `secured`, and `intel`. Components may use them through the same `color` and `highlightColor` props as primary, secondary, tertiary, and neutral colors.
+
+Use the shared `ColorVariant` values rather than component-local semantic aliases or palette matrices. Web publishes every shade and contrast value for each color; mobile resolves the same values through `Theme.color()`.
+
+Application surfaces use neutral shade `100` in light mode and `900` in dark mode; default content uses the inverse neutral shade. Plain layout borders and dividers use neutral shade `200` in light mode and `800` in dark mode. Components with appearance props derive borders from their variant and color. Filled content uses the selected palette's calculated contrast shade. Do not introduce structural color aliases for these values.
+
+## Elevation
+
+Elevation describes separation between surfaces independently from component colors and appearance variants. `raised` is used by persistent panels and toolbars, `floating` by transient widgets and notices, and `overlay` by popups, menus, dropdowns, and dialogs. Direction is selected by the renderer so side and bottom panels cast outward shadows.
+
+Global layer policies explicitly pair a z-index with an elevation level. A higher z-index does not imply a stronger shadow: tooltips stack above dialogs but use the lighter floating elevation.
+
+`Theme.elevation()` returns platform-neutral metrics for surfaces without a global stacking role. Web renderers consume generated `--elevation-<level>-<direction>-shadow` or `-filter` variables; mobile renderers translate the same metrics with `resolveElevationStyle()`.
+
+Globally stacked surfaces use their layer as one policy: web consumes `--layer-<name>-z-index` with `--layer-<name>-<direction>-shadow`, while mobile uses `resolveLayerStyle()`. Do not select a global layer's z-index and elevation independently. Literal shadows are reserved for intrinsic effects such as focus rings, glows, and inset geometry, not surface depth.
 
 Theme controls change the active theme but follow the same component and accessibility rules as other controls.

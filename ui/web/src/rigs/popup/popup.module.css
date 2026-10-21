@@ -1,20 +1,16 @@
 .overlay {
     position: fixed;
     inset: 0;
-    z-index: var(--z-index-popup);
+    z-index: var(--layer-popup-z-index);
     pointer-events: none;
 }
 
 .popup {
     position: absolute;
     pointer-events: auto;
-    box-shadow:
-        0 8px 24px rgb(from var(--color-box-shadow) r g b / .14),
-        0 2px 6px rgb(from var(--color-box-shadow) r g b / .08);
+    box-shadow: var(--layer-popup-down-shadow);
 }
 
 :global(body[data-theme="dark"]) .popup {
-    box-shadow:
-        0 10px 30px rgb(from var(--color-box-shadow) r g b / .45),
-        0 2px 8px rgb(from var(--color-box-shadow) r g b / .28);
+    box-shadow: var(--layer-popup-down-shadow);
 }

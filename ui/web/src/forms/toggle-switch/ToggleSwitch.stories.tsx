@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { makeLiveEditStory } from 'storybook-addon-code-editor';
 import {
-    colorOptions,
+    appearanceColorOptions,
     fillVariantOptions,
     sizeOptions,
     toggleSwitchOrientations,
@@ -53,7 +53,7 @@ export const Gallery: Story = {
                     <h2>{orientation}</h2>
                     <VariantGallery
                         sizes={sizeOptions}
-                        colors={colorOptions}
+                        colors={appearanceColorOptions}
                         variants={fillVariantOptions}
                         render={({ color, size, variant }) => (
                             <ToggleSwitch
@@ -62,6 +62,7 @@ export const Gallery: Story = {
                                 orientation={orientation}
                                 size={size}
                                 variant={variant}
+                                title={`Color: ${color}`}
                             />
                         )}
                     />

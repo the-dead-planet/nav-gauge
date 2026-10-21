@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
 import { useTheme, FontType, Icons } from "@ui";
-import { Button, Text, ThemeModeToggle, topBarBackAction$ } from '@mobile-ui';
+import { Button, resolveElevationStyle, Text, ThemeModeToggle, topBarBackAction$ } from '@mobile-ui';
 import { MachineWardTopBarProps, useMultipleTranslations } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { useMobileMachineWard } from "@mobile-apparatus";
@@ -17,10 +17,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: 5,
         borderBottomWidth: 1,
-        shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 1,
-        shadowRadius: 8,
-        elevation: 4,
     },
     leftSection: {
         flex: 1,
@@ -57,9 +53,9 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
 
     return (
         <View style={[styles.container, {
-            backgroundColor: theme.componentColor('background'),
-            borderBottomColor: theme.componentColor('border'),
-            shadowColor: theme.componentColor('box-shadow'),
+            backgroundColor: theme.surfaceColor(),
+            borderBottomColor: theme.surfaceBorderColor(),
+            ...resolveElevationStyle(theme, 'raised'),
         }]}>
             <View style={styles.leftSection}>
                 {topBarBackAction ? (

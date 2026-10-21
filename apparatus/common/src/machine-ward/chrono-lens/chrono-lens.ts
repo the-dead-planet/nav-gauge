@@ -52,7 +52,7 @@ export abstract class ChronoLens {
                             this.startRecording(signaliumBureau, (stage, error) => {
                                 signaliumBureau.addNotice({
                                     id: this.noticeId,
-                                    type: 'error',
+                                    type: 'glitch',
                                     error,
                                     text: `Something went wrong during the ${stage} stage.`
                                 });

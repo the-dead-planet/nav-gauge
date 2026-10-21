@@ -3,12 +3,9 @@ import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native";
 import { Path, Svg, SvgProps } from "react-native-svg";
 import {
     ChipProps,
-    ColorShade,
     DEFAULT_FILL_VARIANT,
     DEFAULT_SIZE,
-    DesignSystemColor,
     SizeVariant,
-    ThemeComponentColor,
     useTheme,
 } from "@ui";
 import { Icon } from "../../design-system/icons";
@@ -103,15 +100,10 @@ export const Chip: FC<ChipProps & Props> = ({
     const theme = useTheme();
     const [layout, setLayout] = useState({ width: 0, height: 0 });
 
-    const isSemantic = color === 'warning' || color === 'success' || color === 'error' || color === 'info';
-    const resolved = isSemantic
-        ? theme.componentColors[color as ThemeComponentColor]
-        : { name: color as DesignSystemColor, shade: 500 as ColorShade };
-    const shade = resolved.shade ?? 500;
-    const chipColor = theme.color(resolved.name, shade);
-    const translucent = (opacity: number) => theme.color(resolved.name, shade, opacity);
-    const background = theme.componentColor('background');
-    const textColor = theme.componentColor('text');
+    const chipColor = theme.color(color);
+    const translucent = (opacity: number) => theme.color(color, undefined, opacity);
+    const background = theme.surfaceColor();
+    const textColor = theme.color('neutral', theme.isLight ? 900 : 100);
     let iconColor = chipColor;
 
     const container: ViewStyle = {};
@@ -122,10 +114,9 @@ export const Chip: FC<ChipProps & Props> = ({
 
     switch (variant) {
         case 'fill': {
-            const shade = theme.isDark ? 900 : 100;
-            const color = theme.color(resolved.name, shade);
-            labelColor = color;
-            iconColor = color;
+            const fillColor = theme.color(color, theme.contrastShade(color));
+            labelColor = fillColor;
+            iconColor = fillColor;
             break;
         }
         case 'fill-inverse':
