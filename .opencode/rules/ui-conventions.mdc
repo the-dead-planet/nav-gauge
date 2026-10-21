@@ -7,9 +7,9 @@ alwaysApply: true
 - Before creating UI, search for an existing component. Reuse it when it fits, extend it when extension is sufficient, and compose existing primitives before creating a new component. Create one only when none fit; do not duplicate existing behavior or styling with minor differences.
 - Keep reusable UI semantic, accessible, business-logic-free, and mobile-first.
 
-Theme variables live in `@ui/common/src/theme/specifications.ts`.
+Theme specifications and shared appearance, color, elevation, and layer policies live under `ui/common/src/design-system/theme/`.
 Before changing reusable UI, read `ui/web/src/design-system/Overview.mdx` and the relevant linked design-system page.
-Before implementing or changing palettes, shades, appearance, or interaction states, read and follow `ui/web/src/colors/Colors.mdx`.
+Before implementing or changing palettes, shades, appearance, or interaction states, read and follow `ui/web/src/design-system/colors/Colors.mdx` and `ui/web/src/design-system/Theming.mdx`.
 
 Shared reusable components require a common API/value logic in `@ui/common` and thin renderers in both `@web-ui` and `@mobile-ui`.
 

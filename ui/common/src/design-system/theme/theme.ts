@@ -20,6 +20,10 @@ import {
     ResolvedThemeAppearance,
     ThemeAppearanceState,
     ThemeAppearanceBorder,
+    ElevationDirection,
+    ElevationLevel,
+    ResolvedThemeElevation,
+    ThemeElevation,
 } from "./model";
 import { ColorShade, ColorVariant, DesignSystemColor, SpacingVariant, StatusColor, SurfaceVariant } from '../model';
 
@@ -81,6 +85,61 @@ const themeSizes: ThemeSizes = {
             paddingInline: 20,
             paddingBlock: 8,
             iconPaddingInline: 8,
+        },
+    },
+};
+
+const elevations: Record<ThemeMode, Record<ElevationLevel, ThemeElevation>> = {
+    light: {
+        none: {
+            distance: 0,
+            blur: 0,
+            opacity: 0,
+            depth: 0,
+        },
+        raised: {
+            distance: 2,
+            blur: 8,
+            opacity: 0.1,
+            depth: 4,
+        },
+        floating: {
+            distance: 4,
+            blur: 12,
+            opacity: 0.18,
+            depth: 6,
+        },
+        overlay: {
+            distance: 8,
+            blur: 24,
+            opacity: 0.22,
+            depth: 8,
+        },
+    },
+    dark: {
+        none: {
+            distance: 0,
+            blur: 0,
+            opacity: 0,
+            depth: 0,
+        },
+        raised: {
+            distance: 2,
+            blur: 10,
+            opacity: 0.24,
+            depth: 4,
+        },
+        floating: {
+            distance: 4,
+            blur: 14,
+            opacity: 0.36,
+            depth: 6,
+        },
+        overlay: {
+            distance: 8,
+            blur: 30,
+            opacity: 0.5,
+            depth: 8,
         },
     },
 };
@@ -293,15 +352,38 @@ export class Theme {
         xl: '32px',
     }
 
-    public static zIndex = {
-        hudConnector: 2,
-        popup: 1000,
-        floating: 1100,
-        dialog: 5000,
-        dropdown: 6000,
-        tooltipConnector: 9998,
-        tooltip: 10000,
+    public static layers = {
+        hudConnector: {
+            zIndex: 2,
+            elevation: 'none'
+        },
+        popup: {
+            zIndex: 1000,
+            elevation: 'overlay'
+        },
+        floating: {
+            zIndex: 1100,
+            elevation: 'floating'
+        },
+        dialog: {
+            zIndex: 5000,
+            elevation: 'overlay'
+        },
+        dropdown: {
+            zIndex: 6000,
+            elevation: 'overlay'
+        },
+        tooltipConnector: {
+            zIndex: 9998,
+            elevation: 'none'
+        },
+        tooltip: {
+            zIndex: 10000,
+            elevation: 'floating'
+        },
     } as const;
+
+    public elevations: Record<ElevationLevel, ThemeElevation>;
 
     public static properties = {
         disabledOpacity: 0.4,
@@ -316,12 +398,13 @@ export class Theme {
         this.isDark = specification.mode === 'dark';
         this.otherMode = specification.mode === 'light' ? 'dark' : 'light';
         this.name = specification.themeName;
+        this.elevations = elevations[this.mode];
         this.statusColors = specification.statusColors;
         const statusPalettes = Object.fromEntries(
             Object.entries(this.statusColors).map(([status, selected]) => [
                 status,
                 Theme.palette[selected.name as PaletteColor]
-                    ?? specification.colors[selected.name as DesignSystemColor],
+                ?? specification.colors[selected.name as DesignSystemColor],
             ]),
         ) as Record<StatusColor, ThemeColor>;
         this.colors = Object.assign({}, Theme.palette, specification.colors, statusPalettes);
@@ -943,4 +1026,58 @@ export class Theme {
             };
         return this.color('neutral', shades[name], opacity);
     };
+
+    /**
+     * Resolves an elevation level to platform-neutral shadow metrics.
+     * Direction describes where the shadow is cast; a bottom panel therefore uses `up`.
+     *
+     * Levels:
+     * - `none`: ordinary content and connectors without surface elevation.
+     * - `raised`: persistent top bars, toolbars, and side or bottom panels.
+     * - `floating`: transient notices, tool widgets, and tooltips.
+     * - `overlay`: popups, menus, dropdowns, and dialogs.
+     *
+     * @param level Visual depth independent from z-index.
+     * @param direction Direction in which the shadow is cast. Defaults to `down`.
+     *
+     * @example
+     * const widgetElevation = theme.elevation('floating');
+     * @example
+     * const rightPanelElevation = theme.elevation('raised', 'left');
+     * @example
+     * const bottomPanelElevation = theme.elevation('raised', 'up');
+     */
+    public elevation = (
+        level: ElevationLevel,
+        direction: ElevationDirection = 'down',
+    ): ResolvedThemeElevation => {
+        const elevation = this.elevations[level];
+        const offset = {
+            up: {
+                x: 0,
+                y: -elevation.distance
+            },
+            right: {
+                x: elevation.distance,
+                y: 0
+            },
+            down: {
+                x: 0,
+                y: elevation.distance
+            },
+            left: {
+                x: -elevation.distance,
+                y: 0
+            },
+        }[direction];
+
+        return {
+            color: 'rgb(0, 0, 0)',
+            offset,
+            blur: elevation.blur,
+            opacity: elevation.opacity,
+            depth: elevation.depth,
+        };
+    };
+
 }

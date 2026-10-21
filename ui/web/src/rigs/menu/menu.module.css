@@ -73,7 +73,7 @@
     z-index: var(--z-index-dropdown);
     background-color: var(--menu-bg);
     border: 1px solid var(--menu-color);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, .3);
+    box-shadow: var(--elevation-overlay-down-shadow);
 }
 
 .menu-item {

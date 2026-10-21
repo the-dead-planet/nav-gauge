@@ -1,5 +1,5 @@
 .notice {
-    box-shadow: 2px 4px 8px rgba(0, 0, 0, .4);
+    box-shadow: var(--elevation-floating-down-shadow);
     border: 2px outset var(--color-border);
     background-color: var(--color-background);
     color: var(--color-text);

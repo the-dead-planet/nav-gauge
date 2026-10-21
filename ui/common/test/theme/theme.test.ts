@@ -26,12 +26,24 @@ const oklabLightness = ({ r, g, b }: { r: number; g: number; b: number }): numbe
 
 describe("Theme", () => {
     it("orders global layers semantically", () => {
-        expect(Theme.zIndex.hudConnector).to.be.lessThan(Theme.zIndex.popup);
-        expect(Theme.zIndex.popup).to.be.lessThan(Theme.zIndex.floating);
-        expect(Theme.zIndex.floating).to.be.lessThan(Theme.zIndex.dialog);
-        expect(Theme.zIndex.dialog).to.be.lessThan(Theme.zIndex.dropdown);
-        expect(Theme.zIndex.dropdown).to.be.lessThan(Theme.zIndex.tooltipConnector);
-        expect(Theme.zIndex.tooltipConnector).to.be.lessThan(Theme.zIndex.tooltip);
+        expect(Theme.layers.hudConnector.zIndex).to.be.lessThan(Theme.layers.popup.zIndex);
+        expect(Theme.layers.popup.zIndex).to.be.lessThan(Theme.layers.floating.zIndex);
+        expect(Theme.layers.floating.zIndex).to.be.lessThan(Theme.layers.dialog.zIndex);
+        expect(Theme.layers.dialog.zIndex).to.be.lessThan(Theme.layers.dropdown.zIndex);
+        expect(Theme.layers.dropdown.zIndex).to.be.lessThan(Theme.layers.tooltipConnector.zIndex);
+        expect(Theme.layers.tooltipConnector.zIndex).to.be.lessThan(Theme.layers.tooltip.zIndex);
+    });
+
+    it("resolves mode-aware directional elevation", () => {
+        expect(theme.elevation("raised", "up")).to.deep.include({
+            offset: { x: 0, y: -2 },
+            depth: 4,
+        });
+        expect(theme.elevation("overlay").blur).to.be.greaterThan(
+            theme.elevation("floating").blur,
+        );
+        expect(theme.elevation("none").opacity).to.equal(0);
+        expect(Theme.layers.popup.elevation).to.equal("overlay");
     });
 
     it("aligns palette endpoints with neutral palette lightness", () => {

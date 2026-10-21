@@ -198,6 +198,28 @@ export interface ThemeSizes {
     control: Record<SizeVariant, ThemeControlSize>;
 }
 
+export type ElevationLevel = 'none' | 'raised' | 'floating' | 'overlay';
+
+export type ElevationDirection = 'up' | 'right' | 'down' | 'left';
+
+export interface ThemeElevation {
+    distance: number;
+    blur: number;
+    opacity: number;
+    depth: number;
+}
+
+export interface ResolvedThemeElevation {
+    color: string;
+    offset: {
+        x: number;
+        y: number;
+    };
+    blur: number;
+    opacity: number;
+    depth: number;
+}
+
 export interface ThemeSpecification {
     mode: ThemeMode;
     themeName: ThemeName;

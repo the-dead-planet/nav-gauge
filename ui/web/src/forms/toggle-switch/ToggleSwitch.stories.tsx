@@ -62,6 +62,7 @@ export const Gallery: Story = {
                                 orientation={orientation}
                                 size={size}
                                 variant={variant}
+                                title={`Color: ${color}`}
                             />
                         )}
                     />

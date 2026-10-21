@@ -1,3 +1,4 @@
+import type { ElevationDirection, ElevationLevel } from './theme/model';
 import { ActiveGlow, ColorVariant, FillVariant, SizeVariant, SurfaceVariant } from './model';
 import type { ThemeAppearanceState } from './theme/model';
 
@@ -10,6 +11,10 @@ export const appearanceColorOptions: ColorVariant[] = [
     'secured',
     'intel',
 ];
+
+export const elevationLevelOptions: ElevationLevel[] = ['none', 'raised', 'floating', 'overlay'];
+export const elevationDirectionOptions: ElevationDirection[] = ['up', 'right', 'down', 'left'];
+
 export const sizeOptions: SizeVariant[] = ['xs', 'sm', 'md', 'lg'];
 export const fillVariantOptions: FillVariant[] = ['fill', 'fill-inverse', 'fill-translucent'];
 export const surfaceVariantOptions: SurfaceVariant[] = [

@@ -30,6 +30,8 @@ The workspace root is `/`; `package.json` and Yarn commands live there.
 
 Yarn workspace monorepo. See `.opencode/rules/architecture.mdc` for package responsibilities and import direction.
 
+The authoritative UI design and implementation guidance lives in Storybook MDX under `ui/web/src/design-system/`; start with `Overview.mdx` and its linked foundation pages.
+
 ### Gears (features)
 Each feature is a pluggable Gear with `common/`, `web/`, and/or `mobile/` packages. Gears implement `Gear` from `@the-dead-planet/nav-gauge-apparatus-common`.
 

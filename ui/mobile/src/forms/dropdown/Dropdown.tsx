@@ -9,8 +9,9 @@ import {
     type HostInstance,
     TouchableHighlight,
 } from 'react-native';
-import { controlTextSpecifications, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, DropdownProps, Icons, useTheme } from '@ui';
+import { controlTextSpecifications, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, DropdownProps, Icons, Theme, useTheme } from '@ui';
 import { Icon } from '../../design-system/icons';
+import { resolveElevationStyle } from '../../design-system/theme';
 import { Text } from '../../design-system/typography';
 import { SvgProps } from 'react-native-svg';
 import { MutableViewStyle } from '../../model';
@@ -284,11 +285,7 @@ export function Dropdown<T>({
                             borderColor: baseColor,
                             paddingVertical: 4,
                             maxHeight: menuPosition.maxHeight,
-                            shadowColor: theme.structuralColor('box-shadow'),
-                            shadowOffset: { width: 5, height: 5 },
-                            shadowOpacity: 0.6,
-                            shadowRadius: 1,
-                            elevation: 10,
+                            ...resolveElevationStyle(theme, Theme.layers.dropdown.elevation),
                         }}
                     >
                         <ScrollView>

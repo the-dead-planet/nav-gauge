@@ -1,6 +1,7 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import { Animated, HostInstance, Modal, Pressable, StyleSheet, useWindowDimensions, View, type LayoutChangeEvent, type StyleProp, type ViewStyle } from 'react-native';
 import { MenuPosition, getIconAnchorPoint, menuPositionsMatch, placePopup, PopupProps, Theme, useTheme } from '@ui';
+import { resolveElevationStyle } from '../../design-system/theme';
 
 const styles = StyleSheet.create({
     overlay: {
@@ -10,13 +11,10 @@ const styles = StyleSheet.create({
         right: 0,
         top: 0,
         bottom: 0,
-        zIndex: Theme.zIndex.popup,
+        zIndex: Theme.layers.popup.zIndex,
     },
     popup: {
         position: 'absolute',
-        shadowOffset: { width: 0, height: 8 },
-        shadowRadius: 12,
-        elevation: 10,
     },
     content: {
         flexShrink: 1,
@@ -142,10 +140,7 @@ export const Popup: FC<Props> = ({
             onLayout={handleLayout}
             style={[
                 styles.popup,
-                {
-                    shadowColor: theme.structuralColor('box-shadow'),
-                    shadowOpacity: theme.isDark ? 0.45 : 0.14,
-                },
+                resolveElevationStyle(theme, Theme.layers.popup.elevation),
                 positionStyle,
                 animatedStyle,
                 popupStyle,

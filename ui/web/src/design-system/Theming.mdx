@@ -20,6 +20,16 @@ Named themes provide different visual identities through shared palette roles. T
 
 Status colors are semantic roles: `glitch`, `hazard`, `secured`, and `intel`. Components may use them through the same `color` and `highlightColor` props as primary, secondary, tertiary, and neutral colors.
 
+Use the shared `ColorVariant` values rather than component-local semantic aliases or palette matrices. Web publishes every shade and contrast value for each color; mobile resolves the same values through `Theme.color()`.
+
 Structural background, border, divider, shadow, text, and inverse-text colors derive from the neutral palette and the active mode. They are not component color variants.
+
+## Elevation
+
+Elevation describes separation between surfaces independently from component colors and appearance variants. `raised` is used by persistent panels and toolbars, `floating` by transient widgets and notices, and `overlay` by popups, menus, dropdowns, and dialogs. Direction is selected by the renderer so side and bottom panels cast outward shadows.
+
+Global layer policies explicitly pair a z-index with an elevation level. A higher z-index does not imply a stronger shadow: tooltips stack above dialogs but use the lighter floating elevation.
+
+`Theme.elevation()` returns platform-neutral metrics. Web renderers consume generated `--elevation-<level>-<direction>-shadow` or `-filter` variables; mobile renderers translate the same metrics with `resolveElevationStyle()`. Literal shadows are reserved for intrinsic effects such as focus rings, glows, and inset geometry, not surface depth.
 
 Theme controls change the active theme but follow the same component and accessibility rules as other controls.

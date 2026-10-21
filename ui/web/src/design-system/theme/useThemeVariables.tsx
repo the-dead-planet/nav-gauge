@@ -3,6 +3,10 @@ import {
     allColorShades,
     appearanceColorOptions,
     ColorVariant,
+    elevationDirectionOptions,
+    elevationLevelOptions,
+    ElevationDirection,
+    ElevationLevel,
     fontTypeToFamily,
     PaletteColor,
     surfaceVariantOptions,
@@ -22,6 +26,13 @@ const structuralColors: StructuralColor[] = [
     'text',
     'text-inverse',
 ];
+const elevationShadow = (theme: Theme, level: ElevationLevel, direction: ElevationDirection): string => {
+    if (level === 'none') {
+        return 'none';
+    }
+    const elevation = theme.elevation(level, direction);
+    return `${elevation.offset.x}px ${elevation.offset.y}px ${elevation.blur}px rgba(0, 0, 0, ${elevation.opacity})`;
+};
 
 const resolveAppearancePaint = (paint: ThemeAppearancePaint): string => {
     if (paint.type === 'transparent') {
@@ -124,13 +135,26 @@ export const useThemeVariables = (theme: Theme) => {
                 );
             }
         }
-        for (const [layer, zIndex] of Object.entries(Theme.zIndex)) {
+        for (const [layer, policy] of Object.entries(Theme.layers)) {
             document.documentElement.style.setProperty(
                 `--z-index-${layer.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}`,
-                String(zIndex),
+                String(policy.zIndex),
             );
         }
-    }, [theme.sizes.control]);
+        for (const level of elevationLevelOptions) {
+            for (const direction of elevationDirectionOptions) {
+                const shadow = elevationShadow(theme, level, direction);
+                document.documentElement.style.setProperty(
+                    `--elevation-${level}-${direction}-shadow`,
+                    shadow,
+                );
+                document.documentElement.style.setProperty(
+                    `--elevation-${level}-${direction}-filter`,
+                    level === 'none' ? 'none' : `drop-shadow(${shadow})`,
+                );
+            }
+        }
+    }, [theme]);
 
     useEffect(() => {
         const appearanceStyle = document.createElement('style');

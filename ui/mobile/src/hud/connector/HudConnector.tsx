@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
         left: 0,
-        zIndex: Theme.zIndex.hudConnector,
+        zIndex: Theme.layers.hudConnector.zIndex,
     },
 });
 

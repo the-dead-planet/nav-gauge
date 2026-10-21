@@ -332,7 +332,7 @@
     padding: 4px 0;
     border: 1px solid var(--dropdown-color);
     background-color: var(--dropdown-menu-bg);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, .3);
+    box-shadow: var(--elevation-overlay-down-shadow);
     max-height: 240px;
     overflow-y: auto;
 }

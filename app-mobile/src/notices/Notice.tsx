@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef } from "react";
 import { Animated, Button, StyleSheet } from "react-native";
-import { Text } from '@mobile-ui';
+import { resolveElevationStyle, Text } from '@mobile-ui';
 import { SignaliumNotice, useTranslate } from "@apparatus";
 import { useMobileMachineWard } from "@mobile-apparatus";
 import { useTheme } from "@ui";
@@ -9,10 +9,6 @@ const styles = StyleSheet.create({
     container: {
         padding: 12,
         borderWidth: 1,
-        elevation: 4,
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
         rowGap: 10
     }
 });
@@ -51,7 +47,7 @@ export const Notice: FC<Props> = ({
         <Animated.View style={[styles.container, {
             borderColor: theme.color(notice.type),
             backgroundColor: theme.structuralColor('background'),
-            shadowColor: theme.structuralColor('box-shadow'),
+            ...resolveElevationStyle(theme, 'floating'),
             opacity,
             transform: [{ translateY }]
         }]}>
