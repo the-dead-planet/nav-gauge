@@ -1,7 +1,7 @@
 .top-bar {
-    background-color: light-dark(var(--color-neutral-100), var(--color-neutral-900));
+    background-color: var(--appearance-default-surface);
     height: var(--app-top-bar-height);
-    border-bottom: 1px solid light-dark(var(--color-neutral-200), var(--color-neutral-800));
+    border-bottom: 1px solid var(--appearance-default-border);
     box-shadow: var(--elevation-raised-down-shadow);
     display: grid;
     grid-template-columns: 1fr auto 1fr;

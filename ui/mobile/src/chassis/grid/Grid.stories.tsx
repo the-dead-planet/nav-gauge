@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 
 export const All: FC = () => {
     const theme = useTheme();
-    const borderColor = theme.surfaceBorderColor();
+    const borderColor = theme.resolveAppearance().border.color;
 
     return (
         <ScrollView contentContainerStyle={styles.container}>

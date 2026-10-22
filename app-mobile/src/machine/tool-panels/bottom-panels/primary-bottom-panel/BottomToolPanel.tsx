@@ -4,7 +4,7 @@ import { assignBottomToolPanelRef, useBottomToolPanel } from "@apparatus";
 import { useMobileMachineWard } from "@mobile-apparatus";
 import { BottomToolPanelHeader } from "./BottomToolPanelHeader";
 import { MobileMap } from "@mobile-apparatus";
-import { useTheme } from "@ui";
+import { useTheme, withColorOpacity } from "@ui";
 import { useAnimatedSize } from "../../useAnimatedSize";
 import { resolveElevationStyle } from "@mobile-ui";
 
@@ -48,7 +48,7 @@ export const BottomToolPanel: FC<Props> = ({
     return (
         <View ref={assignBottomToolPanelRef(toolsStation)}>
             <View style={[{
-                backgroundColor: theme.surfaceColor(0.87),
+                backgroundColor: withColorOpacity(theme.resolveAppearance().surface, 0.87),
                 borderTopColor: theme.color('primary'),
                 ...resolveElevationStyle(theme, 'raised', 'up'),
             }]}>

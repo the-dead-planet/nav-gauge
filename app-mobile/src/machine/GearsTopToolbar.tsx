@@ -4,7 +4,7 @@ import { useMultipleTranslations, useTranslate } from "@apparatus";
 import { useMobileMachineWard } from "@mobile-apparatus";
 import { useObservableState, useSubjectState } from "@tinker-chest";
 import { Button, FlexBox, Icon, Text } from "@mobile-ui";
-import { Icons, useTheme } from "@ui";
+import { Icons, useTheme, withColorOpacity } from "@ui";
 import { GEARS_TOP_BAR_HEIGHT } from "../machine-sizes";
 
 const styles = StyleSheet.create({
@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
 
 export const GearsTopToolbar: FC = () => {
     const theme = useTheme();
+    const appearance = theme.resolveAppearance();
     const [media] = useSubjectState(theme.media$);
     const { namespace, translationKey, engine, toolsStation } = useMobileMachineWard();
     const gears = useObservableState(engine.gearsWithEngaged$, []);
@@ -42,14 +43,14 @@ export const GearsTopToolbar: FC = () => {
                 toolsStation.topToolbarSizeRef.current = instance;
             }}
             style={[styles.container, {
-                backgroundColor: theme.surfaceColor(.87),
+                backgroundColor: withColorOpacity(appearance.surface, 0.87),
                 borderBottomColor: theme.color('secondary'),
             }]}
             direction="row"
             gap="md"
             alignItems="center"
         >
-            <View style={[styles.heading, { borderRightColor: theme.surfaceBorderColor() }]}>
+            <View style={[styles.heading, { borderRightColor: appearance.border.color }]}>
                 <Icon icon={Icons.NounProject.Gear} color={theme.color('secondary')} width={20} height={20} />
                 {media.isMoreThanXs ? (
                     <Text

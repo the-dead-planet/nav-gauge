@@ -121,12 +121,14 @@ Disabled state always wins. Hover and focus temporarily use their interaction sh
     <tbody>
         <tr><td>Text and icons</td><td><code>500</code></td><td><code>600</code> light / <code>300</code> dark</td><td><code>700</code> light / <code>200</code> dark</td><td><code>300</code> light / <code>700</code> dark</td></tr>
         <tr><td>Background</td><td><code>100</code> light / <code>900</code> dark</td><td><code>100</code> light / <code>900</code> dark</td><td><code>100</code> light / <code>900</code> dark</td><td><code>100</code> light / <code>900</code> dark</td></tr>
-        <tr><td>Border</td><td>Light: <code>900</code> at 20% top/left and <code>50</code> at 70% bottom/right. Dark: transparent on web; black at 80% top/left and white at 8% bottom/right on mobile.</td><td>Same as default</td><td>Light uses the highlight palette; dark is unchanged</td><td>Same as default</td></tr>
-        <tr><td>Inner shadow</td><td>Light: palette-tinted <code>900</code> at 20% and <code>700</code> at 18% top/left, with white at 70% bottom/right. Dark: black at 80% top/left and white at 8% bottom/right.</td><td>Same as default</td><td>Light uses the highlight palette; dark is unchanged</td><td>Same as default</td></tr>
+        <tr><td>Border</td><td>None</td><td>None</td><td>None</td><td>None</td></tr>
+        <tr><td>Inner shading</td><td>Light: palette-tinted <code>900</code> at 20% and <code>700</code> at 18% top/left, with white at 70% bottom/right. Dark: black at 80% top/left and white at 8% bottom/right.</td><td>Same as default</td><td>Light uses the highlight palette; dark is unchanged</td><td>Same as default</td></tr>
     </tbody>
 </table>
 
 <Canvas of={ColorStories.InsetStates} />
+
+Inset controls use no border in any state. Their internal shading alone creates the appearance of a control dented into its surface.
 
 Owned active content uses `highlightContentShade` when supplied, otherwise the variant's existing contrast rule. Components must not recolor arbitrary children or apply whole-control opacity when they own surface and content channels.
 

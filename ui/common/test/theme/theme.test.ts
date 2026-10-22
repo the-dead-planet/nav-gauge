@@ -50,6 +50,24 @@ describe("Theme", () => {
         });
     });
 
+    it("resolves mode-aware surface colors", () => {
+        const darkTheme = new Theme(themeSpecifications[ThemeName.Default].dark, media);
+        const lightAppearance = theme.resolveAppearance();
+        const darkAppearance = darkTheme.resolveAppearance();
+
+        expect(lightAppearance).to.include({
+            surface: theme.color('neutral', 100),
+            glyphs: theme.color('neutral', 900),
+        });
+        expect(lightAppearance.border.color).to.equal(theme.color('neutral', 200));
+        expect(darkAppearance).to.include({
+            surface: darkTheme.color('neutral', 900),
+            glyphs: darkTheme.color('neutral', 100),
+        });
+        expect(darkAppearance.border.color).to.equal(darkTheme.color('neutral', 800));
+        darkTheme.destroy();
+    });
+
     it("aligns palette endpoints with neutral palette lightness", () => {
         const palettes = Object.values(Theme.palette);
 
@@ -97,6 +115,9 @@ describe("Theme", () => {
     it("resolves variant appearance policy", () => {
         expect(theme.resolveAppearance("ghost", "primary", "secondary", "default").surface).to.equal("transparent");
         expect(theme.resolveAppearance("fill", "primary", "secondary", "default").border.width).to.equal(0);
+        expect(theme.resolveAppearance("inset", "primary", "secondary", "default").border.width).to.equal(0);
+        expect(theme.resolveAppearance("inset", "primary", "secondary", "interaction").border.width).to.equal(0);
+        expect(theme.resolveAppearance("inset", "primary", "secondary", "active").border.width).to.equal(0);
         expect(theme.resolveAppearance("inset", "primary", "secondary", "default").effects.depth).to.equal("inset");
         expect(theme.resolveAppearance("fill-translucent", "primary", "secondary", "default").surface).to.match(/, 0\.24\)$/);
         expect(theme.resolveAppearance("ghost", "primary", "secondary", "active").effects.glowColor).to.equal(theme.color("secondary"));

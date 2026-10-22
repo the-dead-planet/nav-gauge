@@ -42,6 +42,7 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
     onNavigateBack,
 }) => {
     const theme = useTheme();
+    const appearance = theme.resolveAppearance();
     const { individuator, namespace, translationKey, toolsStation } = useMobileMachineWard();
     const [topBarTools] = useSubjectState(toolsStation.topBarTools$);
     const [topBarBackAction] = useSubjectState(topBarBackAction$);
@@ -53,8 +54,8 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
 
     return (
         <View style={[styles.container, {
-            backgroundColor: theme.surfaceColor(),
-            borderBottomColor: theme.surfaceBorderColor(),
+            backgroundColor: appearance.surface,
+            borderBottomColor: appearance.border.color,
             ...resolveElevationStyle(theme, 'raised'),
         }]}>
             <View style={styles.leftSection}>

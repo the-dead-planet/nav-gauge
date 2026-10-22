@@ -1,7 +1,7 @@
 import { FC, ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Svg, { Defs, Pattern, Rect } from 'react-native-svg';
-import { useTheme } from '@ui';
+import { useTheme, withColorOpacity } from '@ui';
 
 const styles = StyleSheet.create({
     background: {
@@ -18,13 +18,14 @@ const styles = StyleSheet.create({
 
 export const StoryBackground: FC<{ children: ReactNode }> = ({ children }) => {
     const theme = useTheme();
+    const appearance = theme.resolveAppearance();
 
     return (
-        <View style={[styles.background, { backgroundColor: theme.surfaceColor() }]}>
+        <View style={[styles.background, { backgroundColor: appearance.surface }]}>
             <Svg style={styles.pattern} width="100%" height="100%" pointerEvents="none" accessibilityElementsHidden>
                 <Defs>
                     <Pattern id="story-stripes" width="64" height="64" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-                        <Rect x="8" width="20" height="64" fill={theme.color('neutral', theme.isLight ? 900 : 100, 0.09)} />
+                        <Rect x="8" width="20" height="64" fill={withColorOpacity(appearance.glyphs, 0.09)} />
                     </Pattern>
                 </Defs>
                 <Rect width="100%" height="100%" fill="url(#story-stripes)" />

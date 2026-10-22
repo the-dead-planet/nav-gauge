@@ -15,12 +15,13 @@ const styles = StyleSheet.create({
 
 export const Layout: FC<MachineWardLayoutProps> = ({ children }) => {
     const theme = useTheme();
+    const appearance = theme.resolveAppearance();
 
     return (
         <SafeAreaProvider>
-            <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.surfaceColor() }]}>
+            <SafeAreaView style={[styles.safeArea, { backgroundColor: appearance.surface }]}>
                 <StatusBar barStyle={theme.isLight ? "dark-content" : "light-content"} />
-                <View style={[styles.container, { backgroundColor: theme.surfaceColor() }]}>
+                <View style={[styles.container, { backgroundColor: appearance.surface }]}>
                     {children}
                 </View>
             </SafeAreaView>

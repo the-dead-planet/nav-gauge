@@ -3,7 +3,7 @@ import { Animated, StyleSheet, View } from "react-native";
 import { Menu, MenuItem, resolveElevationStyle } from "@mobile-ui";
 import { assignSideToolPanelRef, swapSideToolPanelPlacement, useSideToolPanel } from "@apparatus";
 import { useMobileMachineWard } from "@mobile-apparatus";
-import { useTheme } from "@ui";
+import { useTheme, withColorOpacity } from "@ui";
 import { ToolPanelHeader } from "../panel-header/ToolPanelHeader";
 import { SideToolPanelResizeHandle } from "./SideToolPanelResizeHandle";
 import { MobileMap } from "@mobile-apparatus";
@@ -65,7 +65,7 @@ export const SideToolPanel: FC<Props> = ({
             ref={assignSideToolPanelRef(placement, toolsStation)}
             style={[
                 {
-                    backgroundColor: theme.surfaceColor(0.87),
+                    backgroundColor: withColorOpacity(theme.resolveAppearance().surface, 0.87),
                     ...resolveElevationStyle(theme, 'raised', placement === 'right' ? 'left' : 'right'),
                 },
                 placement === 'right'

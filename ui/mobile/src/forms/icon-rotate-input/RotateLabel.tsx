@@ -19,6 +19,7 @@ export const RotateLabel: FC<Props> = ({
     showValue = true,
 }) => {
     const theme = useTheme();
+    const appearance = theme.resolveAppearance();
 
     return label ? (
         <View style={{ flexDirection: 'row', gap: 6, marginTop: 4 }}>
@@ -27,10 +28,10 @@ export const RotateLabel: FC<Props> = ({
                     icon={icon}
                     width={10}
                     height={10}
-                    color={theme.color('neutral', theme.isLight ? 900 : 100)}
+                    color={appearance.glyphs}
                 />
             ) : null}
-            <Text style={{ fontSize: 11, color: theme.color('neutral', theme.isLight ? 900 : 100) }}>
+            <Text style={{ fontSize: 11, color: appearance.glyphs }}>
                 {label} {showValue ? `${displayWrapped}°` : null}
             </Text>
         </View>

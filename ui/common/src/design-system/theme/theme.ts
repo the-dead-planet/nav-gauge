@@ -18,6 +18,7 @@ import {
     ThemeVariantShades,
     ResolvedThemeAppearance,
     ThemeAppearanceState,
+    ThemeAppearanceStatePolicy,
     ThemeAppearanceBorder,
     ElevationDirection,
     ElevationLevel,
@@ -253,7 +254,7 @@ export class Theme {
 
     public readonly sizes = themeSizes;
 
-    public readonly appearancePolicies: Record<SurfaceVariant, ThemeAppearancePolicy>;
+    public readonly appearancePolicies: Record<SurfaceVariant | 'default', ThemeAppearancePolicy>;
 
     /**
      * Minimum value in pixels from which a breakpoint is active
@@ -414,24 +415,28 @@ export class Theme {
             ? {
                 base: 500,
                 brightest: 50,
-                content: 900,
+                surface: 100,
+                border: 200,
+                glyphs: 900,
                 inverseSurface: 200,
                 insetSurface: 100,
                 interaction: 600,
                 active: 700,
                 disabledSurface: 200,
-                disabledContent: 300,
+                disabledGlyphs: 300,
             }
             : {
                 base: 500,
                 brightest: 50,
-                content: 100,
+                surface: 900,
+                border: 800,
+                glyphs: 100,
                 inverseSurface: 800,
                 insetSurface: 900,
                 interaction: 300,
                 active: 200,
                 disabledSurface: 800,
-                disabledContent: 700,
+                disabledGlyphs: 700,
             };
         const transparent: ThemeAppearancePaint = {
             type: 'transparent',
@@ -440,20 +445,20 @@ export class Theme {
             type: 'transparent',
             width: 0,
         };
-        const disabledContent: ThemeAppearancePaint = {
+        const disabledGlyphs: ThemeAppearancePaint = {
             type: 'shade',
             colorProperty: 'color',
-            shade: shades.disabledContent,
+            shade: shades.disabledGlyphs,
         };
         const disabledSurface: ThemeAppearancePaint = {
             type: 'shade',
             colorProperty: 'color',
             shade: shades.disabledSurface,
         };
-        const disabledContentBorder: ThemeAppearanceBorder = {
+        const disabledGlyphsBorder: ThemeAppearanceBorder = {
             type: 'shade',
             colorProperty: 'color',
-            shade: shades.disabledContent,
+            shade: shades.disabledGlyphs,
             width: 1,
         };
         const insetEffect = (
@@ -463,7 +468,7 @@ export class Theme {
                     edgeStart: {
                         type: 'shade',
                         colorProperty,
-                        shade: shades.content,
+                        shade: shades.glyphs,
                         opacity: 0.2,
                     },
                     edgeEnd: {
@@ -475,7 +480,7 @@ export class Theme {
                     shadow: {
                         type: 'shade',
                         colorProperty,
-                        shade: shades.content,
+                        shade: shades.glyphs,
                         opacity: 0.2,
                     },
                     highlight: {
@@ -487,7 +492,7 @@ export class Theme {
                     recess: {
                         type: 'shade',
                         colorProperty,
-                        shade: shades.content,
+                        shade: shades.glyphs,
                         opacity: 0.08,
                     },
                     shadowOpacity: 0.35,
@@ -511,7 +516,60 @@ export class Theme {
                     shadowOpacity: 0.65,
                     highlightOpacity: 0.12,
                 };
-        const policies: Record<SurfaceVariant, ThemeAppearancePolicy> = {
+        const defaultStateSurface: ThemeAppearanceStatePolicy['surface'] = {
+            type: 'shade',
+            colorProperty: 'color',
+            shade: shades.surface,
+        };
+        const policies: Record<SurfaceVariant, ThemeAppearancePolicy> & {
+            default: ThemeAppearancePolicy;
+        } = {
+            default: {
+                states: {
+                    default: {
+                        surface: defaultStateSurface,
+                        border: {
+                            type: 'shade',
+                            colorProperty: 'color',
+                            shade: shades.border,
+                            width: 1,
+                        },
+                        glyphs: {
+                            type: 'shade',
+                            colorProperty: 'color',
+                            shade: shades.glyphs,
+                        },
+                    },
+                    interaction: {
+                        surface: defaultStateSurface,
+                        border: transparentBorder,
+                        glyphs: {
+                            type: 'shade',
+                            colorProperty: 'highlightColor',
+                            shade: shades.interaction,
+                        },
+                    },
+                    active: {
+                        surface: defaultStateSurface,
+                        border: transparentBorder,
+                        glyphs: {
+                            type: 'shade',
+                            colorProperty: 'highlightColor',
+                            shade: shades.active,
+                        },
+                    },
+                    disabled: {
+                        surface: disabledSurface,
+                        border: disabledGlyphsBorder,
+                        glyphs: disabledGlyphs,
+                    },
+                },
+                effects: {
+                    backdropBlur: 0,
+                    depth: 'none',
+                    glyphsGlow: false,
+                },
+            },
             ghost: {
                 states: {
                     default: {
@@ -544,7 +602,7 @@ export class Theme {
                     disabled: {
                         surface: transparent,
                         border: transparentBorder,
-                        glyphs: disabledContent,
+                        glyphs: disabledGlyphs,
                     },
                 },
                 effects: {
@@ -597,7 +655,7 @@ export class Theme {
                     disabled: {
                         surface: disabledSurface,
                         border: transparentBorder,
-                        glyphs: disabledContent,
+                        glyphs: disabledGlyphs,
                     },
                 },
                 effects: {
@@ -623,7 +681,7 @@ export class Theme {
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'color',
-                            shade: shades.content,
+                            shade: shades.glyphs,
                         },
                     },
                     interaction: {
@@ -641,7 +699,7 @@ export class Theme {
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.content,
+                            shade: shades.glyphs,
                         },
                     },
                     active: {
@@ -659,13 +717,13 @@ export class Theme {
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.content,
+                            shade: shades.glyphs,
                         },
                     },
                     disabled: {
                         surface: disabledSurface,
-                        border: disabledContentBorder,
-                        glyphs: disabledContent,
+                        border: disabledGlyphsBorder,
+                        glyphs: disabledGlyphs,
                     },
                 },
                 effects: {
@@ -741,8 +799,8 @@ export class Theme {
                             shade: shades.disabledSurface,
                             opacity: 0.24,
                         },
-                        border: disabledContentBorder,
-                        glyphs: disabledContent,
+                        border: disabledGlyphsBorder,
+                        glyphs: disabledGlyphs,
                     },
                 },
                 effects: {
@@ -807,8 +865,8 @@ export class Theme {
                     },
                     disabled: {
                         surface: transparent,
-                        border: disabledContentBorder,
-                        glyphs: disabledContent,
+                        border: disabledGlyphsBorder,
+                        glyphs: disabledGlyphs,
                     },
                 },
                 effects: {
@@ -825,12 +883,7 @@ export class Theme {
                             colorProperty: 'color',
                             shade: shades.insetSurface,
                         },
-                        border: {
-                            type: 'shade',
-                            colorProperty: 'color',
-                            shade: shades.base,
-                            width: 1,
-                        },
+                        border: transparentBorder,
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'color',
@@ -843,12 +896,7 @@ export class Theme {
                             colorProperty: 'color',
                             shade: shades.insetSurface,
                         },
-                        border: {
-                            type: 'shade',
-                            colorProperty: 'highlightColor',
-                            shade: shades.interaction,
-                            width: 1,
-                        },
+                        border: transparentBorder,
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
@@ -861,12 +909,7 @@ export class Theme {
                             colorProperty: 'color',
                             shade: shades.insetSurface,
                         },
-                        border: {
-                            type: 'shade',
-                            colorProperty: 'highlightColor',
-                            shade: shades.active,
-                            width: 1,
-                        },
+                        border: transparentBorder,
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
@@ -879,8 +922,8 @@ export class Theme {
                             colorProperty: 'color',
                             shade: shades.insetSurface,
                         },
-                        border: disabledContentBorder,
-                        glyphs: disabledContent,
+                        border: transparentBorder,
+                        glyphs: disabledGlyphs,
                     },
                 },
                 effects: {
@@ -933,30 +976,6 @@ export class Theme {
         return `rgba(${r}, ${g}, ${b}, ${opacity})`;
     };
 
-    /**
-     * Returns the mode-appropriate neutral application surface color.
-     * Uses shade `100` in light mode and `900` in dark mode.
-     *
-     * @example
-     * theme.surfaceColor()
-     * @example
-     * theme.surfaceColor(0.87)
-     */
-    public surfaceColor = (opacity?: number): string =>
-        this.color('neutral', this.isLight ? 100 : 900, opacity);
-
-    /**
-     * Returns the mode-appropriate neutral application surface border color.
-     * Uses shade `200` in light mode and `800` in dark mode.
-     *
-     * @example
-     * theme.surfaceBorderColor()
-     * @example
-     * theme.surfaceBorderColor(0.87)
-     */
-    public surfaceBorderColor = (opacity?: number): string =>
-        this.color('neutral', this.isLight ? 200 : 800, opacity);
-
     public contrastShade = (
         name: PaletteColor | ColorVariant,
         backgroundShade?: ColorShade,
@@ -973,12 +992,12 @@ export class Theme {
             : 900;
 
     public resolveAppearance = (
-        variant: SurfaceVariant,
-        baseColor: PaletteColor | ColorVariant,
-        highlightColor: PaletteColor | ColorVariant,
-        state: ThemeAppearanceState,
+        variant?: SurfaceVariant,
+        baseColor: PaletteColor | ColorVariant = 'neutral',
+        highlightColor: PaletteColor | ColorVariant = 'neutral',
+        state: ThemeAppearanceState = 'default',
     ): ResolvedThemeAppearance => {
-        const policy = this.appearancePolicies[variant];
+        const policy = this.appearancePolicies[variant ?? 'default'];
         const resolve = (paint: ThemeAppearancePaint): string => {
             if (paint.type === 'transparent') {
                 return 'transparent';

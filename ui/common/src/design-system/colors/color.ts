@@ -18,6 +18,9 @@ export interface ParsedColor {
 export const toCssColor = ({ r, g, b, a }: RgbaColor): string =>
     a >= 1 ? `rgb(${r}, ${g}, ${b})` : `rgba(${r}, ${g}, ${b}, ${a})`;
 
+export const withColorOpacity = (value: string, opacity: number): string =>
+    toCssColor({ ...parseColor(value), a: opacity });
+
 export const toHexColor = ({ r, g, b }: RgbaColor): string =>
     '#' + [r, g, b].map((channel) => Math.round(channel).toString(16).padStart(2, '0')).join('');
 
