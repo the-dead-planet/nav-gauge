@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import { useTheme } from "@ui";
+import { useTheme, withColorOpacity } from "@ui";
 
 const styles = StyleSheet.create({
     curve: {
@@ -14,7 +14,7 @@ export const CurveMiddle: FC = () => {
 
     return (
         <View style={[styles.curve, {
-            backgroundColor: theme.surfaceColor('background', 0.87),
+            backgroundColor: withColorOpacity(theme.resolveAppearance().surface, 0.87),
             borderTopColor: theme.color('primary'),
         }]} />
     );

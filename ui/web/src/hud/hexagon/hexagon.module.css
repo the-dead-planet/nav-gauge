@@ -104,7 +104,7 @@
 }
 
 .polygon-base {
-    fill: var(--appearance-default-background);
+    fill: var(--appearance-default-surface);
     stroke: var(--appearance-default-border);
 }
 
@@ -114,7 +114,7 @@
 
 .interactive:hover .polygon-base,
 .interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
-    fill: var(--appearance-interaction-background);
+    fill: var(--appearance-interaction-surface);
     stroke: var(--appearance-interaction-border);
 }
 
@@ -126,7 +126,7 @@
 .interactive:active .polygon-base,
 .interactive:has(:active) .polygon-base,
 .active .polygon-base {
-    fill: var(--appearance-active-background);
+    fill: var(--appearance-active-surface);
     stroke: var(--appearance-active-border);
 }
 
@@ -138,7 +138,7 @@
 
 .active.interactive:hover .polygon-base,
 .active.interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
-    fill: var(--appearance-interaction-background);
+    fill: var(--appearance-interaction-surface);
     stroke: var(--appearance-interaction-border);
 }
 
@@ -148,7 +148,7 @@
 }
 
 .active.interactive:has(:active) .polygon-base {
-    fill: var(--appearance-active-background);
+    fill: var(--appearance-active-surface);
     stroke: var(--appearance-active-border);
 }
 
@@ -229,7 +229,7 @@
 
 /* Disabled */
 .hexagon.disabled .polygon-base {
-    fill: var(--appearance-disabled-background);
+    fill: var(--appearance-disabled-surface);
     stroke: var(--appearance-disabled-border);
 }
 

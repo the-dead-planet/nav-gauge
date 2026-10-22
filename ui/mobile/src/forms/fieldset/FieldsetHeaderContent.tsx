@@ -33,6 +33,7 @@ export const FieldsetHeaderContent: FC<Props> = ({
     label,
 }) => {
     const theme = useTheme();
+    const appearance = theme.resolveAppearance();
     const chevronRotation = useRef(new Animated.Value(isExpanded ? 0 : -90)).current;
 
     useEffect(() => {
@@ -42,8 +43,6 @@ export const FieldsetHeaderContent: FC<Props> = ({
             useNativeDriver: true,
         }).start();
     }, [isExpanded]);
-
-    const labelColor = theme.surfaceColor('content');
 
     return (
         <View style={styles.header}>
@@ -56,7 +55,7 @@ export const FieldsetHeaderContent: FC<Props> = ({
                         })
                     }]
                 }}>
-                    <Icon icon={Icons.NounProject.ChevronDownDoubleTriangle} width={12} height={12} color={labelColor} />
+                    <Icon icon={Icons.NounProject.ChevronDownDoubleTriangle} width={12} height={12} color={appearance.glyphs} />
                 </Animated.View>
             ) : null}
             {prepend ? <View>{prepend}</View> : null}

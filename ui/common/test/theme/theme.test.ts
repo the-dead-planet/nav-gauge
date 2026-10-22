@@ -52,14 +52,19 @@ describe("Theme", () => {
 
     it("resolves mode-aware surface colors", () => {
         const darkTheme = new Theme(themeSpecifications[ThemeName.Default].dark, media);
+        const lightAppearance = theme.resolveAppearance();
+        const darkAppearance = darkTheme.resolveAppearance();
 
-        expect(theme.surfaceColor('background')).to.equal(theme.color('neutral', 100));
-        expect(theme.surfaceColor('border')).to.equal(theme.color('neutral', 200));
-        expect(theme.surfaceColor('content')).to.equal(theme.color('neutral', 900));
-        expect(darkTheme.surfaceColor('background')).to.equal(darkTheme.color('neutral', 900));
-        expect(darkTheme.surfaceColor('border')).to.equal(darkTheme.color('neutral', 800));
-        expect(darkTheme.surfaceColor('content')).to.equal(darkTheme.color('neutral', 100));
-        expect(darkTheme.surfaceColor('background', 0.5)).to.equal(darkTheme.color('neutral', 900, 0.5));
+        expect(lightAppearance).to.include({
+            surface: theme.color('neutral', 100),
+            glyphs: theme.color('neutral', 900),
+        });
+        expect(lightAppearance.border.color).to.equal(theme.color('neutral', 200));
+        expect(darkAppearance).to.include({
+            surface: darkTheme.color('neutral', 900),
+            glyphs: darkTheme.color('neutral', 100),
+        });
+        expect(darkAppearance.border.color).to.equal(darkTheme.color('neutral', 800));
         darkTheme.destroy();
     });
 

@@ -137,16 +137,16 @@ export interface ThemeAppearanceInsetEffectPolicy {
 export interface ThemeVariantShades {
     base: ColorShade;
     brightest: ColorShade;
-    content: ColorShade;
+    surface: ColorShade;
+    border: ColorShade;
+    glyphs: ColorShade;
     inverseSurface: ColorShade;
     insetSurface: ColorShade;
     interaction: ColorShade;
     active: ColorShade;
     disabledSurface: ColorShade;
-    disabledContent: ColorShade;
+    disabledGlyphs: ColorShade;
 }
-
-export type ThemeSurfaceColorRole = 'background' | 'border' | 'content';
 
 export interface ThemeAppearanceEffects {
     backdropBlur: number;

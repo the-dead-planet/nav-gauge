@@ -271,7 +271,7 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
                     ? theme.color(highlightColor, highlightContentShade)
                     : appearanceState === 'default' && contentShade !== undefined
                         ? theme.color(color, contentShade)
-                        : theme.surfaceColor('content');
+                        : theme.resolveAppearance().glyphs;
                 const trackStyle: ViewStyle = {
                     width: trackSize,
                     height: trackSize,

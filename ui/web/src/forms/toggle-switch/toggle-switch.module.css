@@ -44,19 +44,19 @@
 .thumb-body {
     position: absolute;
     inset: 0;
-    background-color: var(--appearance-default-background);
+    background-color: var(--appearance-default-surface);
 }
 
 .thumb-pivot {
     position: absolute;
     border-radius: 50%;
-    background-color: var(--appearance-default-background);
+    background-color: var(--appearance-default-surface);
 }
 
 .thumb-knob {
     position: absolute;
     border-radius: 50%;
-    background-color: var(--appearance-default-background);
+    background-color: var(--appearance-default-surface);
 }
 
 .lamp {
@@ -68,7 +68,7 @@
 .label {
     margin-bottom: 8px;
     display: block;
-    color: var(--appearance-default-glyphs-override, var(--color-surface-content));
+    color: var(--appearance-default-glyphs-override, var(--appearance-default-glyphs));
 }
 
 /* ── Orientation ── */
@@ -133,7 +133,7 @@
 }
 
 .track {
-    background-color: var(--appearance-default-background);
+    background-color: var(--appearance-default-surface);
     border-color: var(--appearance-default-border);
 }
 
@@ -218,59 +218,59 @@
 }
 
 .toggle-switch.active .track {
-    background-color: var(--appearance-active-background);
+    background-color: var(--appearance-active-surface);
     border-width: var(--appearance-active-border-width);
     border-color: var(--appearance-active-border);
 }
 
 .toggle-switch.active :is(.thumb-body, .thumb-pivot, .thumb-knob) {
-    background-color: var(--appearance-active-background);
+    background-color: var(--appearance-active-surface);
 }
 
 .toggle-switch.active .label {
-    color: var(--appearance-active-glyphs-override, var(--color-surface-content));
+    color: var(--appearance-active-glyphs-override, var(--appearance-active-glyphs));
 }
 
 .toggle-switch:not(.disabled):is(:hover, :focus-within) .track {
-    background-color: var(--appearance-interaction-background);
+    background-color: var(--appearance-interaction-surface);
     border-width: var(--appearance-interaction-border-width);
     border-color: var(--appearance-interaction-border);
 }
 
 .toggle-switch:not(.disabled):is(:hover, :focus-within) :is(.thumb-body, .thumb-pivot, .thumb-knob) {
-    background-color: var(--appearance-interaction-background);
+    background-color: var(--appearance-interaction-surface);
 }
 
 .toggle-switch:not(.disabled):is(:hover, :focus-within) .label {
-    color: var(--appearance-interaction-glyphs-override, var(--color-surface-content));
+    color: var(--appearance-interaction-glyphs-override, var(--appearance-interaction-glyphs));
 }
 
 .toggle-switch:not(.disabled):active .track {
-    background-color: var(--appearance-active-background);
+    background-color: var(--appearance-active-surface);
     border-width: var(--appearance-active-border-width);
     border-color: var(--appearance-active-border);
 }
 
 .toggle-switch:not(.disabled):active :is(.thumb-body, .thumb-pivot, .thumb-knob) {
-    background-color: var(--appearance-active-background);
+    background-color: var(--appearance-active-surface);
 }
 
 .toggle-switch:not(.disabled):active .label {
-    color: var(--appearance-active-glyphs-override, var(--color-surface-content));
+    color: var(--appearance-active-glyphs-override, var(--appearance-active-glyphs));
 }
 
 .toggle-switch.disabled .track {
-    background-color: var(--appearance-disabled-background);
+    background-color: var(--appearance-disabled-surface);
     border-width: var(--appearance-disabled-border-width);
     border-color: var(--appearance-disabled-border);
 }
 
 .toggle-switch.disabled :is(.thumb-body, .thumb-pivot, .thumb-knob) {
-    background-color: var(--appearance-disabled-background);
+    background-color: var(--appearance-disabled-surface);
 }
 
 .toggle-switch.disabled .label {
-    color: var(--color-surface-content);
+    color: var(--appearance-default-glyphs);
 }
 
 .toggle-switch.disabled .lamp {

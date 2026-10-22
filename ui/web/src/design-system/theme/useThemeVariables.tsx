@@ -53,50 +53,53 @@ const transparentInset: ThemeAppearanceInsetEffectPolicy = {
     highlightOpacity: 0,
 };
 
-const createColorRule = (attribute: 'color' | 'highlight', color: string): string => {
-    const declarations = allColorShades.flatMap((shade) => [
+const createColorDeclarations = (attribute: 'color' | 'highlight', color: string): string =>
+    allColorShades.flatMap((shade) => [
         `--appearance-${attribute}-${shade}:var(--color-${color}-${shade})`,
         `--appearance-${attribute}-${shade}-contrast:var(--color-${color}-${shade}-contrast)`,
-    ]);
-    return `[data-appearance-${attribute}="${color}"]{${declarations.join(';')}}`;
+    ]).join(';');
+
+const createColorRule = (attribute: 'color' | 'highlight', color: string): string =>
+    `[data-appearance-${attribute}="${color}"]{${createColorDeclarations(attribute, color)}}`;
+
+const createAppearanceDeclarations = (policy: Theme['appearancePolicies']['default']): string => {
+    const defaultInset = policy.effects.inset?.default ?? transparentInset;
+    const activeInset = policy.effects.inset?.active ?? transparentInset;
+    return [
+        ...themeAppearanceStateOptions.flatMap((state) => {
+            const statePolicy = policy.states[state];
+            return [
+                `--appearance-${state}-surface:${resolveAppearancePaint(statePolicy.surface)}`,
+                `--appearance-${state}-border:${resolveAppearancePaint(statePolicy.border)}`,
+                `--appearance-${state}-glyphs:${resolveAppearancePaint(statePolicy.glyphs)}`,
+                `--appearance-${state}-border-width:${statePolicy.border.width}px`,
+            ];
+        }),
+        '--appearance-color:var(--appearance-color-500)',
+        '--appearance-glow-color:var(--appearance-highlight-500)',
+        `--appearance-backdrop-blur:${policy.effects.backdropBlur}px`,
+        `--appearance-inset-default-edge-start:${resolveAppearancePaint(defaultInset.edgeStart)}`,
+        `--appearance-inset-default-edge-end:${resolveAppearancePaint(defaultInset.edgeEnd)}`,
+        `--appearance-inset-active-edge-start:${resolveAppearancePaint(activeInset.edgeStart)}`,
+        `--appearance-inset-active-edge-end:${resolveAppearancePaint(activeInset.edgeEnd)}`,
+        `--appearance-inset-default-inner-start:${resolveAppearancePaint(defaultInset.shadow)}`,
+        `--appearance-inset-default-inner-end:${resolveAppearancePaint(defaultInset.highlight)}`,
+        `--appearance-inset-active-inner-start:${resolveAppearancePaint(activeInset.shadow)}`,
+        `--appearance-inset-active-inner-end:${resolveAppearancePaint(activeInset.highlight)}`,
+        `--appearance-inset-default-recess:${resolveAppearancePaint(defaultInset.recess)}`,
+        `--appearance-inset-active-recess:${resolveAppearancePaint(activeInset.recess)}`,
+        `--appearance-inset-default-shadow:3px 3px 4px ${resolveAppearancePaint(defaultInset.shadow)} inset,-2px -2px 4px ${resolveAppearancePaint(defaultInset.highlight)} inset`,
+        `--appearance-inset-active-shadow:3px 3px 4px ${resolveAppearancePaint(activeInset.shadow)} inset,-2px -2px 4px ${resolveAppearancePaint(activeInset.highlight)} inset`,
+    ].join(';');
 };
 
 const createAppearanceRules = (theme: Theme): string => [
     ...appearanceColorOptions.map((color) => createColorRule('color', color)),
     ...appearanceColorOptions.map((color) => createColorRule('highlight', color)),
-    ...surfaceVariantOptions.map((variant) => {
-        const policy = theme.appearancePolicies[variant];
-        const defaultInset = policy.effects.inset?.default ?? transparentInset;
-        const activeInset = policy.effects.inset?.active ?? transparentInset;
-        const declarations = [
-            ...themeAppearanceStateOptions.flatMap((state) => {
-                const statePolicy = policy.states[state];
-                return [
-                    `--appearance-${state}-background:${resolveAppearancePaint(statePolicy.surface)}`,
-                    `--appearance-${state}-border:${resolveAppearancePaint(statePolicy.border)}`,
-                    `--appearance-${state}-glyphs:${resolveAppearancePaint(statePolicy.glyphs)}`,
-                    `--appearance-${state}-border-width:${statePolicy.border.width}px`,
-                ];
-            }),
-            '--appearance-color:var(--appearance-color-500)',
-            '--appearance-glow-color:var(--appearance-highlight-500)',
-            `--appearance-backdrop-blur:${policy.effects.backdropBlur}px`,
-            `--appearance-inset-default-edge-start:${resolveAppearancePaint(defaultInset.edgeStart)}`,
-            `--appearance-inset-default-edge-end:${resolveAppearancePaint(defaultInset.edgeEnd)}`,
-            `--appearance-inset-active-edge-start:${resolveAppearancePaint(activeInset.edgeStart)}`,
-            `--appearance-inset-active-edge-end:${resolveAppearancePaint(activeInset.edgeEnd)}`,
-            `--appearance-inset-default-inner-start:${resolveAppearancePaint(defaultInset.shadow)}`,
-            `--appearance-inset-default-inner-end:${resolveAppearancePaint(defaultInset.highlight)}`,
-            `--appearance-inset-active-inner-start:${resolveAppearancePaint(activeInset.shadow)}`,
-            `--appearance-inset-active-inner-end:${resolveAppearancePaint(activeInset.highlight)}`,
-            `--appearance-inset-default-recess:${resolveAppearancePaint(defaultInset.recess)}`,
-            `--appearance-inset-active-recess:${resolveAppearancePaint(activeInset.recess)}`,
-            `--appearance-inset-default-shadow:3px 3px 4px ${resolveAppearancePaint(defaultInset.shadow)} inset,-2px -2px 4px ${resolveAppearancePaint(defaultInset.highlight)} inset`,
-            `--appearance-inset-active-shadow:3px 3px 4px ${resolveAppearancePaint(activeInset.shadow)} inset,-2px -2px 4px ${resolveAppearancePaint(activeInset.highlight)} inset`,
-        ];
-
-        return `[data-appearance-variant="${variant}"]{${declarations.join(';')}}`;
-    }),
+    `:root{${createColorDeclarations('color', 'neutral')};${createColorDeclarations('highlight', 'neutral')};${createAppearanceDeclarations(theme.appearancePolicies.default)}}`,
+    ...surfaceVariantOptions.map((variant) =>
+        `[data-appearance-variant="${variant}"]{${createAppearanceDeclarations(theme.appearancePolicies[variant])}}`
+    ),
 ].join('\n');
 
 /**
@@ -186,9 +189,6 @@ export const useThemeVariables = (theme: Theme) => {
                 );
             }
         }
-        document.documentElement.style.setProperty('--color-surface', theme.surfaceColor('background'));
-        document.documentElement.style.setProperty('--color-surface-border', theme.surfaceColor('border'));
-        document.documentElement.style.setProperty('--color-surface-content', theme.surfaceColor('content'));
         document.documentElement.style.colorScheme = theme.mode;
         document.body.setAttribute("data-theme", theme.mode);
 

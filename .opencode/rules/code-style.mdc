@@ -5,6 +5,7 @@ alwaysApply: true
 ---
 
 - Use strict TypeScript without `any`, explicit member accessibility, full variable names without abbreviations, and no unnecessary dependencies.
+- Prefer an explicit variable type such as `const value: Foo = { ... }` over `as const` or `satisfies` when the annotation provides sufficient type checking. Use assertions only when an annotation cannot express the required inference.
 - Keep `model.ts` files limited to types, interfaces, and enums. Put runtime constants and objects in a sibling implementation or `tinkers.ts` file.
 - Use four spaces and braces for all control-flow bodies.
 - Format changed files with the configured formatter. Put nested JSX and JSX with more than five props on multiple lines.

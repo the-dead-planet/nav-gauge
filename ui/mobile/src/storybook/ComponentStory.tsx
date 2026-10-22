@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
 
 export const ComponentStory: FC<{ entry: StoryEntry }> = ({ entry }) => {
     const theme = useTheme();
+    const appearance = theme.resolveAppearance();
     const { width, height } = useWindowDimensions();
     const landscape = width > height;
     const definition = entry.definition;
@@ -133,7 +134,7 @@ export const ComponentStory: FC<{ entry: StoryEntry }> = ({ entry }) => {
                     {tab === 'gallery' ? definition.renderGallery(args) : definition.renderPlayground(args)}
                 </View>
             </View>
-            <View style={[drawerStyle, { backgroundColor: theme.surfaceColor('background'), borderColor: theme.surfaceColor('border') }]}>
+            <View style={[drawerStyle, { backgroundColor: appearance.surface, borderColor: appearance.border.color }]}>
                 <View style={landscape ? styles.landscapeHandle : styles.portraitHandle}>
                     <ResizeHandle
                         direction={landscape ? 'horizontal' : 'vertical'}

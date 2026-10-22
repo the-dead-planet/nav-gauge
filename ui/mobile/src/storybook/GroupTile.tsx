@@ -59,6 +59,7 @@ interface Props {
 
 export const GroupTile: FC<Props> = ({ group, width, onEnter, onSelect }) => {
     const theme = useTheme();
+    const appearance = theme.resolveAppearance();
     const { width: windowWidth, height: windowHeight } = useWindowDimensions();
     const safeAreaInsets = useSafeAreaInsets();
     const [showComponents, setShowComponents] = useState(false);
@@ -110,8 +111,8 @@ export const GroupTile: FC<Props> = ({ group, width, onEnter, onSelect }) => {
                     {
                         width: Math.min(420, windowWidth - 32),
                         maxHeight: windowHeight - safeAreaInsets.top - safeAreaInsets.bottom - 32,
-                        backgroundColor: theme.surfaceColor('background'),
-                        borderColor: theme.surfaceColor('border'),
+                        backgroundColor: appearance.surface,
+                        borderColor: appearance.border.color,
                     },
                 ]}
             >

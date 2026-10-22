@@ -13,11 +13,12 @@ export const Icon: FC<Props & SvgProps> = ({
     ...props
 }) => {
     const theme = useTheme();
+    const appearance = theme.resolveAppearance();
 
     return (
         <RenderIcon
-            fill={fill || color || theme.surfaceColor('content')}
-            color={color || theme.surfaceColor('content')}
+            fill={fill || color || appearance.glyphs}
+            color={color || appearance.glyphs}
             {...props}
         />
     );

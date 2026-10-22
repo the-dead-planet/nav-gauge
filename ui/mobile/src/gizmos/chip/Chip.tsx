@@ -98,12 +98,13 @@ export const Chip: FC<ChipProps & Props> = ({
     children,
 }) => {
     const theme = useTheme();
+    const appearance = theme.resolveAppearance();
     const [layout, setLayout] = useState({ width: 0, height: 0 });
 
     const chipColor = theme.color(color);
     const translucent = (opacity: number) => theme.color(color, undefined, opacity);
-    const background = theme.surfaceColor('background');
-    const textColor = theme.surfaceColor('content');
+    const background = appearance.surface;
+    const textColor = appearance.glyphs;
     let iconColor = chipColor;
 
     const container: ViewStyle = {};

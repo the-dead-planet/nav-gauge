@@ -95,7 +95,7 @@
 }
 
 .variant-fill-inverse {
-    background-color: var(--color-surface);
+    background-color: var(--appearance-default-surface);
     border: 1px solid var(--chip-color);
     color: var(--chip-color);
 }

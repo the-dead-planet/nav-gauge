@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { Animated, StyleSheet, View } from "react-native";
 import { useSecondaryBottomToolPanel } from "@apparatus";
 import { useMobileMachineWard } from "@mobile-apparatus";
-import { useTheme } from "@ui";
+import { useTheme, withColorOpacity } from "@ui";
 import { ToolPanelHeader } from "../../panel-header/ToolPanelHeader";
 import { BottomSecondaryToolPanelResizeHandle } from "./SecondaryBottomToolPanelResizeHandle";
 import { MobileMap } from "@mobile-apparatus";
@@ -58,7 +58,7 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
             <Animated.View
                 style={{
                     height: animatedHeight,
-                    backgroundColor: theme.surfaceColor('background', 0.87),
+                    backgroundColor: withColorOpacity(theme.resolveAppearance().surface, 0.87),
                     borderTopWidth: 1,
                     borderTopColor: theme.color('primary'),
                     ...resolveElevationStyle(theme, 'raised', 'up'),

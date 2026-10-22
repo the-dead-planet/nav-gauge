@@ -1,7 +1,7 @@
 .divider {
     border: none;
     margin: 0;
-    background-color: var(--color-surface-border);
+    background-color: var(--appearance-default-border);
 }
 
 .horizontal {

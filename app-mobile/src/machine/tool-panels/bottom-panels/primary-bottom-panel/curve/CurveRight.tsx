@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Svg, Path } from "react-native-svg";
 import { PANEL_HEADER_CURVE_SIZES } from "@apparatus";
-import { useTheme } from "@ui";
+import { useTheme, withColorOpacity } from "@ui";
 
 export const CurveRight: FC = () => {
     const theme = useTheme();
@@ -10,7 +10,7 @@ export const CurveRight: FC = () => {
         <Svg width={PANEL_HEADER_CURVE_SIZES.size} height={PANEL_HEADER_CURVE_SIZES.size} viewBox="0 0 100 100">
             <Path
                 d="M100,98 C40,100 60,0 0,5 L0,100 L100,100 Z"
-                fill={theme.surfaceColor('background', 0.87)}
+                fill={withColorOpacity(theme.resolveAppearance().surface, 0.87)}
             />
             <Path
                 d="M100,96 C40,100 60,0 0,4"

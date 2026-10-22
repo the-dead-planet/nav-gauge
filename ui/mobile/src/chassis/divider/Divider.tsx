@@ -13,12 +13,12 @@ const spacingMap: Record<SpacingVariant, number> = {
 
 export const Divider: FC<DividerProps & { style?: ViewStyle }> = ({
     orientation = "horizontal",
-    color = 'neutral',
+    color,
     m, mv, mh, mt, mr, mb, ml,
     style,
 }) => {
     const theme = useTheme();
-    const dividerColor = theme.color(color);
+    const dividerColor = color ? theme.color(color) : theme.resolveAppearance().border.color;
 
     const marginStyle: MutableViewStyle = {};
     if (m) {
