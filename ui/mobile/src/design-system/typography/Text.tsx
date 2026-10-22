@@ -18,7 +18,7 @@ export interface TextProps extends Omit<RNTextProps, 'disabled'>, TypographyProp
 
 export const Text: FC<TextProps> = ({
     variant = 'body',
-    color,
+    color = 'neutral',
     shade,
     highlightShade: _highlightShade,
     align,
@@ -58,9 +58,7 @@ export const Text: FC<TextProps> = ({
                 variantStyles[variant],
                 {
                     fontFamily: getMobileFontFamily(fontType, isBold),
-                    color: color
-                        ? theme.color(color, shade ?? (theme.isDark ? 100 : 900))
-                        : theme.color('neutral', theme.isLight ? 900 : 100),
+                    color: theme.color(color, shade ?? (theme.isDark ? 100 : 900)),
                     fontWeight: isBold ? '700' : undefined,
                     fontVariant: tabular ? ['tabular-nums'] : undefined,
                     textAlign: align,

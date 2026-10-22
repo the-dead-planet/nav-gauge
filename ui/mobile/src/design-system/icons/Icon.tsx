@@ -16,8 +16,8 @@ export const Icon: FC<Props & SvgProps> = ({
 
     return (
         <RenderIcon
-            fill={fill || color || theme.color('neutral', theme.isLight ? 900 : 100)}
-            color={color || theme.color('neutral', theme.isLight ? 900 : 100)}
+            fill={fill || color || theme.surfaceColor('content')}
+            color={color || theme.surfaceColor('content')}
             {...props}
         />
     );

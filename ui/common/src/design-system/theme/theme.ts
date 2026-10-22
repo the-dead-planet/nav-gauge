@@ -26,6 +26,7 @@ import {
     ThemeElevation,
     ThemeLayer,
     ThemeLayerPolicy,
+    ThemeSurfaceColorRole,
 } from "./model";
 import { ColorShade, ColorVariant, DesignSystemColor, SpacingVariant, StatusColor, SurfaceVariant } from '../model';
 
@@ -825,12 +826,7 @@ export class Theme {
                             colorProperty: 'color',
                             shade: shades.insetSurface,
                         },
-                        border: {
-                            type: 'shade',
-                            colorProperty: 'color',
-                            shade: shades.base,
-                            width: 1,
-                        },
+                        border: transparentBorder,
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'color',
@@ -843,12 +839,7 @@ export class Theme {
                             colorProperty: 'color',
                             shade: shades.insetSurface,
                         },
-                        border: {
-                            type: 'shade',
-                            colorProperty: 'highlightColor',
-                            shade: shades.interaction,
-                            width: 1,
-                        },
+                        border: transparentBorder,
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
@@ -861,12 +852,7 @@ export class Theme {
                             colorProperty: 'color',
                             shade: shades.insetSurface,
                         },
-                        border: {
-                            type: 'shade',
-                            colorProperty: 'highlightColor',
-                            shade: shades.active,
-                            width: 1,
-                        },
+                        border: transparentBorder,
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
@@ -879,7 +865,7 @@ export class Theme {
                             colorProperty: 'color',
                             shade: shades.insetSurface,
                         },
-                        border: disabledContentBorder,
+                        border: transparentBorder,
                         glyphs: disabledContent,
                     },
                 },
@@ -933,29 +919,23 @@ export class Theme {
         return `rgba(${r}, ${g}, ${b}, ${opacity})`;
     };
 
-    /**
-     * Returns the mode-appropriate neutral application surface color.
-     * Uses shade `100` in light mode and `900` in dark mode.
-     *
-     * @example
-     * theme.surfaceColor()
-     * @example
-     * theme.surfaceColor(0.87)
-     */
-    public surfaceColor = (opacity?: number): string =>
-        this.color('neutral', this.isLight ? 100 : 900, opacity);
-
-    /**
-     * Returns the mode-appropriate neutral application surface border color.
-     * Uses shade `200` in light mode and `800` in dark mode.
-     *
-     * @example
-     * theme.surfaceBorderColor()
-     * @example
-     * theme.surfaceBorderColor(0.87)
-     */
-    public surfaceBorderColor = (opacity?: number): string =>
-        this.color('neutral', this.isLight ? 200 : 800, opacity);
+    public surfaceColor = (
+        role: ThemeSurfaceColorRole,
+        opacity?: number,
+    ): string => {
+        const shades: { [key in ThemeSurfaceColorRole]: ColorShade } = this.isLight
+            ? {
+                background: 100,
+                border: 200,
+                content: 900,
+            }
+            : {
+                background: 900,
+                border: 800,
+                content: 100,
+            };
+        return this.color('neutral', shades[role], opacity);
+    };
 
     public contrastShade = (
         name: PaletteColor | ColorVariant,

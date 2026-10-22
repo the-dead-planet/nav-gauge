@@ -42,14 +42,14 @@ export const GearsTopToolbar: FC = () => {
                 toolsStation.topToolbarSizeRef.current = instance;
             }}
             style={[styles.container, {
-                backgroundColor: theme.surfaceColor(.87),
+                backgroundColor: theme.surfaceColor('background', 0.87),
                 borderBottomColor: theme.color('secondary'),
             }]}
             direction="row"
             gap="md"
             alignItems="center"
         >
-            <View style={[styles.heading, { borderRightColor: theme.surfaceBorderColor() }]}>
+            <View style={[styles.heading, { borderRightColor: theme.surfaceColor('border') }]}>
                 <Icon icon={Icons.NounProject.Gear} color={theme.color('secondary')} width={20} height={20} />
                 {media.isMoreThanXs ? (
                     <Text

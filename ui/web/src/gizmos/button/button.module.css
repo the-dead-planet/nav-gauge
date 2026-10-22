@@ -108,15 +108,17 @@
     border-color: var(--appearance-active-border);
 }
 
+.button.depth-inset,
+.button.depth-inset:is(:hover, .hovered, :focus-visible, :active, .active, :disabled) {
+    border: none;
+}
+
 .depth-inset {
-    border-style: inset;
-    border-color: var(--appearance-inset-default-edge-start) var(--appearance-inset-default-edge-end) var(--appearance-inset-default-edge-end) var(--appearance-inset-default-edge-start);
     box-shadow: var(--appearance-inset-default-shadow);
 }
 
 .depth-inset:is(:active, .active),
 .depth-inset.active:active {
-    border-color: var(--appearance-inset-active-edge-start) var(--appearance-inset-active-edge-end) var(--appearance-inset-active-edge-end) var(--appearance-inset-active-edge-start);
     box-shadow: var(--appearance-inset-active-shadow);
 }
 
@@ -201,7 +203,7 @@
 
 .button.disabled.depth-inset,
 .button.disabled.depth-inset:is(:hover, .hovered, :focus-visible, :active, .active, :disabled) {
-    border-color: var(--appearance-inset-default-edge-start) var(--appearance-inset-default-edge-end) var(--appearance-inset-default-edge-end) var(--appearance-inset-default-edge-start);
+    border: none;
     box-shadow: var(--appearance-inset-default-shadow);
 }
 

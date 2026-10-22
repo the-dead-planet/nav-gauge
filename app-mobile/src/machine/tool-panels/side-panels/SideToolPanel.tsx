@@ -65,7 +65,7 @@ export const SideToolPanel: FC<Props> = ({
             ref={assignSideToolPanelRef(placement, toolsStation)}
             style={[
                 {
-                    backgroundColor: theme.surfaceColor(0.87),
+                    backgroundColor: theme.surfaceColor('background', 0.87),
                     ...resolveElevationStyle(theme, 'raised', placement === 'right' ? 'left' : 'right'),
                 },
                 placement === 'right'

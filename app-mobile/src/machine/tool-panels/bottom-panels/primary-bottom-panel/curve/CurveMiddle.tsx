@@ -14,7 +14,7 @@ export const CurveMiddle: FC = () => {
 
     return (
         <View style={[styles.curve, {
-            backgroundColor: theme.surfaceColor(0.87),
+            backgroundColor: theme.surfaceColor('background', 0.87),
             borderTopColor: theme.color('primary'),
         }]} />
     );

@@ -146,6 +146,8 @@ export interface ThemeVariantShades {
     disabledContent: ColorShade;
 }
 
+export type ThemeSurfaceColorRole = 'background' | 'border' | 'content';
+
 export interface ThemeAppearanceEffects {
     backdropBlur: number;
     depth: 'none' | 'inset';

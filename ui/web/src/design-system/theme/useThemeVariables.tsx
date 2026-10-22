@@ -186,6 +186,9 @@ export const useThemeVariables = (theme: Theme) => {
                 );
             }
         }
+        document.documentElement.style.setProperty('--color-surface', theme.surfaceColor('background'));
+        document.documentElement.style.setProperty('--color-surface-border', theme.surfaceColor('border'));
+        document.documentElement.style.setProperty('--color-surface-content', theme.surfaceColor('content'));
         document.documentElement.style.colorScheme = theme.mode;
         document.body.setAttribute("data-theme", theme.mode);
 

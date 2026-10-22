@@ -58,7 +58,7 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
             <Animated.View
                 style={{
                     height: animatedHeight,
-                    backgroundColor: theme.surfaceColor(0.87),
+                    backgroundColor: theme.surfaceColor('background', 0.87),
                     borderTopWidth: 1,
                     borderTopColor: theme.color('primary'),
                     ...resolveElevationStyle(theme, 'raised', 'up'),

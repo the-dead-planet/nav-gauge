@@ -1,8 +1,8 @@
 .notice {
     box-shadow: var(--elevation-floating-down-shadow);
-    border: 2px outset light-dark(var(--color-neutral-200), var(--color-neutral-800));
-    background-color: light-dark(var(--color-neutral-100), var(--color-neutral-900));
-    color: light-dark(var(--color-neutral-900), var(--color-neutral-100));
+    border: 2px outset var(--color-surface-border);
+    background-color: var(--color-surface);
+    color: var(--color-surface-content);
     padding: 0;
     width: 340px;
     transition: transform 250ms ease-in;

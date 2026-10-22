@@ -102,8 +102,8 @@ export const Chip: FC<ChipProps & Props> = ({
 
     const chipColor = theme.color(color);
     const translucent = (opacity: number) => theme.color(color, undefined, opacity);
-    const background = theme.surfaceColor();
-    const textColor = theme.color('neutral', theme.isLight ? 900 : 100);
+    const background = theme.surfaceColor('background');
+    const textColor = theme.surfaceColor('content');
     let iconColor = chipColor;
 
     const container: ViewStyle = {};

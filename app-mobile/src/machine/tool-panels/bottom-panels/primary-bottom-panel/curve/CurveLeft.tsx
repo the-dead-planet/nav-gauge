@@ -10,7 +10,7 @@ export const CurveLeft: FC = () => {
         <Svg width={PANEL_HEADER_CURVE_SIZES.size} height={PANEL_HEADER_CURVE_SIZES.size} viewBox="0 0 100 100">
             <Path
                 d="M0,98 C60,100 40,0 105,5 L105,100 L0,100 Z"
-                fill={theme.surfaceColor(0.87)}
+                fill={theme.surfaceColor('background', 0.87)}
             />
             <Path
                 d="M0,96 C60,100 40,0 100,4"

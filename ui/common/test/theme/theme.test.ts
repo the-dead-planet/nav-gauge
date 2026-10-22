@@ -50,6 +50,19 @@ describe("Theme", () => {
         });
     });
 
+    it("resolves mode-aware surface colors", () => {
+        const darkTheme = new Theme(themeSpecifications[ThemeName.Default].dark, media);
+
+        expect(theme.surfaceColor('background')).to.equal(theme.color('neutral', 100));
+        expect(theme.surfaceColor('border')).to.equal(theme.color('neutral', 200));
+        expect(theme.surfaceColor('content')).to.equal(theme.color('neutral', 900));
+        expect(darkTheme.surfaceColor('background')).to.equal(darkTheme.color('neutral', 900));
+        expect(darkTheme.surfaceColor('border')).to.equal(darkTheme.color('neutral', 800));
+        expect(darkTheme.surfaceColor('content')).to.equal(darkTheme.color('neutral', 100));
+        expect(darkTheme.surfaceColor('background', 0.5)).to.equal(darkTheme.color('neutral', 900, 0.5));
+        darkTheme.destroy();
+    });
+
     it("aligns palette endpoints with neutral palette lightness", () => {
         const palettes = Object.values(Theme.palette);
 
@@ -97,6 +110,9 @@ describe("Theme", () => {
     it("resolves variant appearance policy", () => {
         expect(theme.resolveAppearance("ghost", "primary", "secondary", "default").surface).to.equal("transparent");
         expect(theme.resolveAppearance("fill", "primary", "secondary", "default").border.width).to.equal(0);
+        expect(theme.resolveAppearance("inset", "primary", "secondary", "default").border.width).to.equal(0);
+        expect(theme.resolveAppearance("inset", "primary", "secondary", "interaction").border.width).to.equal(0);
+        expect(theme.resolveAppearance("inset", "primary", "secondary", "active").border.width).to.equal(0);
         expect(theme.resolveAppearance("inset", "primary", "secondary", "default").effects.depth).to.equal("inset");
         expect(theme.resolveAppearance("fill-translucent", "primary", "secondary", "default").surface).to.match(/, 0\.24\)$/);
         expect(theme.resolveAppearance("ghost", "primary", "secondary", "active").effects.glowColor).to.equal(theme.color("secondary"));
