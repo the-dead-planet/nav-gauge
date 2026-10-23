@@ -110,6 +110,7 @@ describe("Theme", () => {
                             ghostTheme.color(color, ghostTheme.isLight ? 300 : 700),
                         ]);
                         for (const appearance of appearances) {
+                            expect(appearance.fontWeight).to.equal(500);
                             expect(appearance.surface).to.equal('transparent');
                             expect(appearance.border).to.deep.equal({
                                 color: 'transparent',
@@ -168,6 +169,7 @@ describe("Theme", () => {
     });
 
     it("resolves variant appearance policy", () => {
+        expect(theme.resolveAppearance("fill").fontWeight).to.equal(undefined);
         expect(theme.resolveAppearance("ghost", "primary", "secondary", "default").surface).to.equal("transparent");
         expect(theme.resolveAppearance("fill", "primary", "secondary", "default").border.width).to.equal(0);
         expect(theme.resolveAppearance("inset", "primary", "secondary", "default").border.width).to.equal(0);

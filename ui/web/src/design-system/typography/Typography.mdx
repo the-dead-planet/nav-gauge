@@ -50,6 +50,12 @@ Use the default font unless the content clearly matches another role. Special me
 
 Use tabular numerals for changing values when stable character widths prevent the surrounding layout from shifting.
 
+## Font weight
+
+`fontWeight` accepts numbers `100` through `900` in steps of `100`, their string equivalents (such as `"300"` and `"800"`), and `"normal"` / `"bold"`. The keywords resolve to `400` and `700` respectively on both platforms.
+
+An explicit `fontWeight` takes precedence over the existing `bold` shorthand, then the appearance policy's optional glyph weight, then the text hierarchy's default. Fonts with limited weight ranges use the available faces and platform synthesis; mobile selects bundled weight-specific faces where available.
+
 Typography's `variant` controls text hierarchy; its glyphs follow the <a href="./?path=/docs/design-system-theming--docs#appearance-defaults" target="_top" style={{ textDecoration: 'underline' }}>default appearance policy</a>. `shade` overrides default content; `highlightShade` resolves against `highlightColor ?? color`. Links own their native hover, keyboard focus, and pressed states, following the <a href="./?path=/docs/design-system-colors--docs" target="_top" style={{ textDecoration: 'underline' }}>shared color and interaction rules</a>.
 
 <Canvas of={TypographyStories.Gallery} />

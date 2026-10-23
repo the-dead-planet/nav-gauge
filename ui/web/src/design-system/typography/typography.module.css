@@ -8,12 +8,16 @@
 .h4,
 .h5,
 .h6 {
+    --typography-font-weight: initial;
+    --typography-default-font-weight: initial;
     margin: 0;
     color: var(--appearance-default-glyphs-override, var(--appearance-default-glyphs));
+    font-weight: var(--typography-font-weight, var(--appearance-default-font-weight, var(--typography-default-font-weight, inherit)));
 }
 
 :is(.p, .span, .label, .link, .h1, .h2, .h3, .h4, .h5, .h6)[data-active]:not(.disabled) {
     color: var(--appearance-interaction-glyphs-override, var(--appearance-active-glyphs));
+    font-weight: var(--typography-font-weight, var(--appearance-active-font-weight, var(--typography-default-font-weight, inherit)));
 }
 
 .uppercase {
@@ -51,7 +55,16 @@
 .p,
 .span,
 .label {
-    font-weight: 400;
+    --typography-default-font-weight: 400;
+}
+
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+    --typography-default-font-weight: 700;
 }
 
 .label {
@@ -68,10 +81,12 @@
 
 .link:not(.disabled):is(:hover, :focus-visible):not(:active) {
     color: var(--appearance-interaction-glyphs-override, var(--appearance-interaction-glyphs));
+    font-weight: var(--typography-font-weight, var(--appearance-interaction-font-weight, var(--typography-default-font-weight, inherit)));
 }
 
 .link:not(.disabled):active {
     color: var(--appearance-interaction-glyphs-override, var(--appearance-active-glyphs));
+    font-weight: var(--typography-font-weight, var(--appearance-active-font-weight, var(--typography-default-font-weight, inherit)));
 }
 
 .link.disabled {
@@ -83,19 +98,16 @@
     outline-offset: 2px;
 }
 
-.bold {
-    font-weight: bold;
-}
-
 .disabled {
     color: var(--appearance-disabled-glyphs);
+    font-weight: var(--typography-font-weight, var(--appearance-disabled-font-weight, var(--typography-default-font-weight, inherit)));
     text-shadow: none;
 }
 
 .variant-header {
+    --typography-default-font-weight: var(--typography-header-font-weight);
     font-size: var(--typography-header-font-size);
     line-height: var(--typography-header-line-height);
-    font-weight: var(--typography-header-font-weight);
 }
 
 .variant-body {
@@ -108,8 +120,44 @@
     line-height: var(--typography-caption-line-height);
 }
 
-:is(.variant-body, .variant-caption):not(.bold) {
-    font-weight: 400;
+:is(.variant-body, .variant-caption) {
+    --typography-default-font-weight: var(--typography-body-font-weight);
+}
+
+.weight-100 {
+    --typography-font-weight: 100;
+}
+
+.weight-200 {
+    --typography-font-weight: 200;
+}
+
+.weight-300 {
+    --typography-font-weight: 300;
+}
+
+.weight-400 {
+    --typography-font-weight: 400;
+}
+
+.weight-500 {
+    --typography-font-weight: 500;
+}
+
+.weight-600 {
+    --typography-font-weight: 600;
+}
+
+.weight-700 {
+    --typography-font-weight: 700;
+}
+
+.weight-800 {
+    --typography-font-weight: 800;
+}
+
+.weight-900 {
+    --typography-font-weight: 900;
 }
 
 .font-default {

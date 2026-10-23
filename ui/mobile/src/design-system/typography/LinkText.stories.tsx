@@ -21,7 +21,7 @@ const story: MobileStoryDefinition<LinkTextProps> = {
             control: 'text',
         },
     },
-    galleryEditableControls: ['children', 'href', 'fontType', 'shade', 'highlightColor', 'highlightShade', 'align', 'active', 'disabled', 'bold', 'uppercase', 'tabular', 'nowrap', 'shadow'],
+    galleryEditableControls: ['children', 'href', 'fontType', 'fontWeight', 'shade', 'highlightColor', 'highlightShade', 'align', 'active', 'disabled', 'bold', 'uppercase', 'tabular', 'nowrap', 'shadow'],
     renderPlayground: (args) => <LinkText {...args} />,
     renderGallery: (args) => (
         <ScrollView contentContainerStyle={styles.gallery}>

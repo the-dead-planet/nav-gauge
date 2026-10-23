@@ -84,6 +84,7 @@
 
 .button {
     color: var(--appearance-default-glyphs-override, var(--appearance-default-glyphs));
+    font-weight: var(--appearance-default-font-weight, 400);
     background-color: var(--appearance-default-surface);
     border: var(--appearance-default-border-width) solid var(--appearance-default-border);
 }
@@ -95,6 +96,7 @@
 .button:is(:hover, .hovered, :focus-visible),
 .button.active:is(:hover, :focus-visible) {
     color: var(--appearance-interaction-glyphs-override, var(--appearance-interaction-glyphs));
+    font-weight: var(--appearance-interaction-font-weight, 400);
     background-color: var(--appearance-interaction-surface);
     border-width: var(--appearance-interaction-border-width);
     border-color: var(--appearance-interaction-border);
@@ -103,6 +105,7 @@
 .button:is(:active, .active),
 .button.active:active {
     color: var(--appearance-interaction-glyphs-override, var(--appearance-active-glyphs));
+    font-weight: var(--appearance-active-font-weight, 400);
     background-color: var(--appearance-active-surface);
     border-width: var(--appearance-active-border-width);
     border-color: var(--appearance-active-border);
@@ -188,6 +191,7 @@
 .button.disabled:is(:hover, .hovered, :focus-visible, :active, .active, :disabled) {
     cursor: not-allowed;
     color: var(--appearance-disabled-glyphs);
+    font-weight: var(--appearance-disabled-font-weight, 400);
     background-color: var(--appearance-disabled-surface);
     border-color: var(--appearance-disabled-border);
     border-width: var(--appearance-disabled-border-width);

@@ -180,6 +180,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
             (child) => typeof child === "string" || typeof child === "number",
         ) ? (
             <Text
+                fontWeight={appearance.fontWeight}
                 style={[
                     { color: textColor, fontSize, lineHeight: fontSize * 1.1 },
                     textShadowStyle,

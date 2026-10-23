@@ -3,6 +3,7 @@ import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native";
 import { Path, Svg, SvgProps } from "react-native-svg";
 import {
     ChipProps,
+    FontWeight,
     DEFAULT_FILL_VARIANT,
     DEFAULT_SIZE,
     SizeVariant,
@@ -110,6 +111,7 @@ export const Chip: FC<ChipProps & Props> = ({
     const container: ViewStyle = {};
     let backgroundColor = chipColor;
     let labelColor = textColor;
+    let labelFontWeight: FontWeight | undefined;
     let borderWidth = 0;
     let borderColor = chipColor;
 
@@ -136,6 +138,7 @@ export const Chip: FC<ChipProps & Props> = ({
             const ghostAppearance = theme.resolveAppearance('ghost', color);
             backgroundColor = ghostAppearance.surface;
             labelColor = ghostAppearance.glyphs;
+            labelFontWeight = ghostAppearance.fontWeight;
             iconColor = ghostAppearance.glyphs;
             break;
         }
@@ -182,7 +185,14 @@ export const Chip: FC<ChipProps & Props> = ({
                 />
             ) : null}
             {children !== undefined && children !== null ? (
-                <Text style={{ color: labelColor, fontSize: sizeStyles[size].fontSize, lineHeight: lineHeights[size] }}>
+                <Text
+                    fontWeight={labelFontWeight}
+                    style={{
+                        color: labelColor,
+                        fontSize: sizeStyles[size].fontSize,
+                        lineHeight: lineHeights[size],
+                    }}
+                >
                     {children}
                 </Text>
             ) : null}

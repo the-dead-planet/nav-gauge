@@ -1,4 +1,4 @@
-import { FontFamilyName, FontType, TextVariant, TypographyProps, TypographyStoryProps } from "./model";
+import { FontFamilyName, FontType, FontWeight, NumericFontWeight, TextVariant, TypographyProps, TypographyStoryProps } from "./model";
 import { SizeVariant } from "../model";
 import { allColorShades } from '../theme/tinkers';
 import { appearanceColorOptions } from '../tinkers';
@@ -14,11 +14,14 @@ export const fontTypeToFamily: { [key in FontType]: FontFamilyName } = {
 
 export const typographyVariants: TextVariant[] = ['header', 'body', 'caption'];
 
+export const typographyFontWeights: NumericFontWeight[] = [100, 200, 300, 400, 500, 600, 700, 800, 900];
+
 export const typographyStoryArgs: TypographyStoryProps = {
     children: 'The management of the dead planet wishes you a very fine day.',
     variant: 'body',
     color: 'neutral',
     fontType: FontType.Default,
+    fontWeight: undefined,
     active: false,
     disabled: false,
     bold: false,
@@ -64,6 +67,13 @@ export const typographyStoryControls: StoryControls<TypographyStoryProps> = {
     fontType: {
         control: 'select',
         options: Object.values(FontType),
+    },
+    fontWeight: {
+        control: 'select',
+        options: ['Default', 'normal', 'bold', ...typographyFontWeights],
+        mapping: {
+            Default: undefined,
+        },
     },
     align: {
         control: 'select',
@@ -134,6 +144,21 @@ export const controlTextSpecifications: Record<SizeVariant, { fontSize: number; 
         fontSize: 16,
         lineHeight: 17.6,
     },
+};
+
+export const resolveTypographyFontWeight = (
+    fontWeight?: FontWeight,
+    bold = false,
+    fallback: FontWeight = typographyVariantSpecifications.body.fontWeight,
+): NumericFontWeight => {
+    const weight = fontWeight ?? (bold ? 'bold' : fallback);
+    if (weight === 'normal') {
+        return 400;
+    }
+    if (weight === 'bold') {
+        return 700;
+    }
+    return Number(weight) as NumericFontWeight;
 };
 
 export const resolveTypographySpacing = ({

@@ -1,4 +1,5 @@
 import type { ColorShade, DesignSystemColor, SizeVariant, StatusColor, SurfaceVariant } from '../model';
+import type { FontWeight } from '../typography/model';
 
 export enum ThemeName {
     Default = 'Default',
@@ -108,10 +109,14 @@ export type ThemeAppearancePaint =
 
 export type ThemeAppearanceBorder = ThemeAppearancePaint & { width: number };
 
+export type ThemeAppearanceGlyphs = ThemeAppearancePaint & {
+    fontWeight?: FontWeight;
+};
+
 export interface ThemeAppearanceStatePolicy {
     surface: ThemeAppearancePaint;
     border: ThemeAppearanceBorder;
-    glyphs: ThemeAppearancePaint;
+    glyphs: ThemeAppearanceGlyphs;
 }
 
 export interface ThemeAppearancePolicy {
@@ -175,6 +180,7 @@ export interface ResolvedThemeAppearance {
     surface: string;
     border: ResolvedThemeAppearanceBorder;
     glyphs: string;
+    fontWeight?: FontWeight;
     effects: ThemeAppearanceEffects;
 }
 

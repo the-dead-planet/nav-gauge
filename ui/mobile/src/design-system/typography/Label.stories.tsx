@@ -16,7 +16,7 @@ const story: MobileStoryDefinition<TypographyStoryProps> = {
         children: 'Label',
     },
     controls: typographyStoryControls,
-    galleryEditableControls: ['children', 'fontType', 'shade', 'highlightColor', 'highlightShade', 'align', 'active', 'disabled', 'bold', 'uppercase', 'tabular', 'nowrap', 'shadow'],
+    galleryEditableControls: ['children', 'fontType', 'fontWeight', 'shade', 'highlightColor', 'highlightShade', 'align', 'active', 'disabled', 'bold', 'uppercase', 'tabular', 'nowrap', 'shadow'],
     renderPlayground: (args) => <Label {...args} />,
     renderGallery: (args) => (
         <ScrollView contentContainerStyle={styles.gallery}>

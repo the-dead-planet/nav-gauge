@@ -1,6 +1,6 @@
 import { ComponentPropsWithoutRef, createElement, CSSProperties, ElementType, ReactElement } from "react";
 import classNames from "classnames";
-import { FontType, resolveTypographySpacing, TypographyProps } from "@ui";
+import { FontType, resolveTypographyFontWeight, resolveTypographySpacing, TypographyProps } from "@ui";
 import styles from './typography.module.css';
 
 type TypographyElementProps<Element extends ElementType> = TypographyProps & {
@@ -17,6 +17,7 @@ export const TypographyElement = <Element extends ElementType>({
     shade,
     highlightShade,
     fontType,
+    fontWeight,
     align,
     nowrap,
     bold,
@@ -56,7 +57,7 @@ export const TypographyElement = <Element extends ElementType>({
             styles[`font-${fontType ?? FontType.Default}`],
             align && styles[`align-${align}`],
             nowrap && styles.nowrap,
-            bold && styles.bold,
+            (fontWeight !== undefined || bold) && styles[`weight-${resolveTypographyFontWeight(fontWeight, bold)}`],
             disabled && styles.disabled,
             uppercase && styles.uppercase,
             shadow && styles.shadow,

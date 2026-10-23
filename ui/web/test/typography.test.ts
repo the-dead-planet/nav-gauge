@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { createRequire } from 'node:module';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import type { ColorVariant } from '@ui';
+import { ColorVariant, typographyFontWeights } from '@ui';
 
 const require = createRequire(__filename);
 const previousCssLoader = require.extensions['.css'];
@@ -43,6 +43,26 @@ describe('Typography', () => {
             expect(markup).to.include('--appearance-default-glyphs-override:var(--color-' + color + '-100)');
             expect(markup).to.include('--appearance-interaction-glyphs-override:var(--color-hazard-700)');
         }
+    });
+
+    it('applies weight overrides to headers without leaking typography props to the DOM', () => {
+        for (const fontWeight of typographyFontWeights) {
+            const markup = renderToStaticMarkup(createElement(Text, {
+                variant: 'header',
+                fontWeight,
+                bold: true,
+                children: 'Weighted header',
+            }));
+
+            expect(markup).to.include(`weight-${fontWeight}`);
+            expect(markup).not.to.include('fontWeight=');
+        }
+        const normalHeader = renderToStaticMarkup(createElement(Text, {
+            variant: 'header',
+            fontWeight: 'normal',
+            bold: true,
+        }));
+        expect(normalHeader).to.include('weight-400');
     });
 
     it('removes navigation and keyboard access from disabled active links', () => {

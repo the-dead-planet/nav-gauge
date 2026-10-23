@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Text as RNText, TextProps as RNTextProps, StyleSheet, TextStyle } from "react-native";
-import { FontType, resolveTypographySpacing, TextVariant, typographyVariantSpecifications, TypographyProps, Theme, ThemeAppearanceState, useTheme } from "@ui";
+import { FontType, resolveTypographyFontWeight, resolveTypographySpacing, TextVariant, typographyVariantSpecifications, TypographyProps, Theme, ThemeAppearanceState, useTheme } from "@ui";
 import { getMobileFontFamily } from "./fontFamily";
 
 export type { TextVariant } from '@ui';
@@ -29,6 +29,7 @@ export const Text: FC<TextProps> = ({
     align,
     nowrap,
     bold,
+    fontWeight,
     disabled,
     uppercase,
     tabular,
@@ -53,10 +54,14 @@ export const Text: FC<TextProps> = ({
     ...props
 }) => {
     const theme = useTheme();
-    const isBold = bold || variant === 'header';
     const spacingValues = resolveTypographySpacing({ m, mv, mh, mt, mr, mb, ml, p, pv, ph, pt, pr, pb, pl });
     const state = disabled ? 'disabled' : appearanceState;
     const appearance = theme.resolveAppearance(undefined, color, highlightColor, state);
+    const resolvedFontWeight = resolveTypographyFontWeight(
+        fontWeight,
+        bold,
+        appearance.fontWeight ?? typographyVariantSpecifications[variant].fontWeight,
+    );
     const interactive = state === 'interaction' || state === 'active';
     const overrideShade = interactive ? highlightShade : shade;
     const glyphs = state === 'disabled' || overrideShade === undefined
@@ -70,9 +75,9 @@ export const Text: FC<TextProps> = ({
             style={[
                 variantStyles[variant],
                 {
-                    fontFamily: getMobileFontFamily(fontType, isBold),
+                    fontFamily: getMobileFontFamily(fontType, resolvedFontWeight),
                     color: glyphs,
-                    fontWeight: isBold ? '700' : undefined,
+                    fontWeight: resolvedFontWeight,
                     fontVariant: tabular ? ['tabular-nums'] : undefined,
                     textAlign: align,
                     textTransform: uppercase ? 'uppercase' : undefined,

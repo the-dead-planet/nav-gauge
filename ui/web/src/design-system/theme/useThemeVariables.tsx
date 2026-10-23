@@ -72,6 +72,7 @@ const createAppearanceDeclarations = (policy: Theme['appearancePolicies']['defau
                 `--appearance-${state}-surface:${resolveAppearancePaint(statePolicy.surface)}`,
                 `--appearance-${state}-border:${resolveAppearancePaint(statePolicy.border)}`,
                 `--appearance-${state}-glyphs:${resolveAppearancePaint(statePolicy.glyphs)}`,
+                `--appearance-${state}-font-weight:${statePolicy.glyphs.fontWeight ?? 'initial'}`,
                 `--appearance-${state}-border-width:${statePolicy.border.width}px`,
             ];
         }),

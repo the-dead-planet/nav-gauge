@@ -579,6 +579,7 @@ export class Theme {
                             type: 'shade',
                             colorProperty: 'color',
                             shade: this.isLight ? 700 : 300,
+                            fontWeight: 500,
                         },
                     },
                     interaction: {
@@ -588,6 +589,7 @@ export class Theme {
                             type: 'shade',
                             colorProperty: 'highlightColor',
                             shade: this.isLight ? 800 : 200,
+                            fontWeight: 500,
                         },
                     },
                     active: {
@@ -597,12 +599,16 @@ export class Theme {
                             type: 'shade',
                             colorProperty: 'highlightColor',
                             shade: shades.glyphs,
+                            fontWeight: 500,
                         },
                     },
                     disabled: {
                         surface: transparent,
                         border: transparentBorder,
-                        glyphs: disabledGlyphs,
+                        glyphs: {
+                            ...disabledGlyphs,
+                            fontWeight: 500,
+                        },
                     },
                 },
                 effects: {
@@ -1040,6 +1046,7 @@ export class Theme {
                 width: resolved.border.width,
             },
             glyphs: resolve(resolved.glyphs),
+            fontWeight: resolved.glyphs.fontWeight,
             effects: {
                 ...policy.effects,
                 glowColor: this.color(highlightColor),

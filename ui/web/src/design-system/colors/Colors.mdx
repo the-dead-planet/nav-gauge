@@ -25,6 +25,8 @@ A contrast shade is foreground text or icon color selected from the same palette
 
 Disabled state always wins. Hover and focus temporarily use their interaction shade, while pressed and persistent active use the stronger active shade. Interactive states use `highlightColor ?? color`; default and disabled states use `color`. Focus also has a visible focus indicator. Interact with the default and active examples to inspect their transient states.
 
+Appearance policies may optionally specify `fontWeight` on each state's `glyphs`. Owned text uses that weight unless explicitly overridden; omitting it leaves the component's normal typography weight unchanged.
+
 ### `fill`
 
 <table>
@@ -90,6 +92,7 @@ Disabled state always wins. Hover and focus temporarily use their interaction sh
     </thead>
     <tbody>
         <tr><td>Text and icons</td><td><code>700</code> light / <code>300</code> dark</td><td><code>800</code> light / <code>200</code> dark</td><td><code>900</code> light / <code>100</code> dark</td><td><code>300</code> light / <code>700</code> dark</td></tr>
+        <tr><td>Font weight</td><td><code>500</code></td><td><code>500</code></td><td><code>500</code></td><td><code>500</code></td></tr>
         <tr><td>Background</td><td>Transparent</td><td>Transparent</td><td>Transparent</td><td>Transparent</td></tr>
         <tr><td>Border</td><td>None</td><td>None</td><td>None</td><td>None</td></tr>
     </tbody>
