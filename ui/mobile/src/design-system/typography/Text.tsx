@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Platform, Text as RNText, TextProps as RNTextProps, StyleSheet, TextStyle } from "react-native";
 import { FontType, resolveTypographyFontWeight, resolveTypographySpacing, TextUsage, typographyUsageSpecifications, TypographyProps, Theme, ThemeAppearanceState, useTheme } from "@ui";
-import { resolveMobileFont } from "./tinkers";
+import { resolveMobileFont } from "./fontFamily";
 
 export type { TextUsage } from '@ui';
 

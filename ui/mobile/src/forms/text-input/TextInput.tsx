@@ -9,7 +9,7 @@ import {
     useTheme,
 } from "@ui";
 import { Label } from "../../design-system/typography";
-import { resolveMobileFont } from "../../design-system/typography/tinkers";
+import { resolveMobileFont } from "../../design-system/typography/fontFamily";
 import { TRANSLUCENT_OPACITY } from "../../tinkers";
 
 const styles = StyleSheet.create({

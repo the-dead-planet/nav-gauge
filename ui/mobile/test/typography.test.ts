@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { FontType, resolveTypographyFontWeight, typographyFontWeights } from '@ui';
-import { resolveMobileFont } from '../src/design-system/typography/tinkers';
+import { resolveMobileFont } from '../src/design-system/typography/fontFamily';
 
 describe('Mobile typography fonts', () => {
     it('selects weight-specific faces and references bundled font assets', () => {

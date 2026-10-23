@@ -3,7 +3,7 @@ import { View, TextInput, StyleSheet } from "react-native";
 import { ColorShade, controlTextSpecifications, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, FontType, Icons, NumberInputProps, SizeVariant, useStepRepeat, useTheme } from "@ui";
 import { Button } from "../../gizmos/button";
 import { Text } from "../../design-system/typography";
-import { resolveMobileFont } from "../../design-system/typography/tinkers";
+import { resolveMobileFont } from "../../design-system/typography/fontFamily";
 import { TRANSLUCENT_OPACITY } from "../../tinkers";
 
 const styles = StyleSheet.create({
