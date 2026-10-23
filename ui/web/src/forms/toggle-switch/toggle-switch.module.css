@@ -69,6 +69,7 @@
     margin-bottom: 8px;
     display: block;
     color: var(--appearance-default-glyphs-override, var(--appearance-default-glyphs));
+    font-weight: var(--appearance-default-font-weight, inherit);
 }
 
 /* ── Orientation ── */
@@ -229,6 +230,7 @@
 
 .toggle-switch.active .label {
     color: var(--appearance-active-glyphs-override, var(--appearance-active-glyphs));
+    font-weight: var(--appearance-active-font-weight, inherit);
 }
 
 .toggle-switch:not(.disabled):is(:hover, :focus-within) .track {
@@ -243,6 +245,7 @@
 
 .toggle-switch:not(.disabled):is(:hover, :focus-within) .label {
     color: var(--appearance-interaction-glyphs-override, var(--appearance-interaction-glyphs));
+    font-weight: var(--appearance-interaction-font-weight, inherit);
 }
 
 .toggle-switch:not(.disabled):active .track {
@@ -257,6 +260,7 @@
 
 .toggle-switch:not(.disabled):active .label {
     color: var(--appearance-active-glyphs-override, var(--appearance-active-glyphs));
+    font-weight: var(--appearance-active-font-weight, inherit);
 }
 
 .toggle-switch.disabled .track {
@@ -271,6 +275,7 @@
 
 .toggle-switch.disabled .label {
     color: var(--appearance-default-glyphs);
+    font-weight: var(--appearance-disabled-font-weight, inherit);
 }
 
 .toggle-switch.disabled .lamp {

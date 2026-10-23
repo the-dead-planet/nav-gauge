@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Orientation, Theme, themeSpecifications, ThemeName } from "../../src";
+import { appearanceColorOptions, Orientation, Theme, themeSpecifications, ThemeName } from "../../src";
 
 const media = {
     initial: () => ({
@@ -68,6 +68,62 @@ describe("Theme", () => {
         darkTheme.destroy();
     });
 
+    it("resolves default typography glyph states for every color in both modes", () => {
+        const specifications = themeSpecifications[ThemeName.Default];
+        for (const specification of [specifications.light, specifications.dark]) {
+            const typographyTheme = new Theme(specification, media);
+            for (const color of appearanceColorOptions) {
+                expect(typographyTheme.resolveAppearance(undefined, color, 'hazard').glyphs).to.equal(
+                    typographyTheme.color(color, typographyTheme.isDark ? 100 : 900),
+                );
+                expect(typographyTheme.resolveAppearance(undefined, color, 'hazard', 'interaction').glyphs).to.equal(
+                    typographyTheme.color('hazard', typographyTheme.isDark ? 300 : 600),
+                );
+                expect(typographyTheme.resolveAppearance(undefined, color, 'hazard', 'active').glyphs).to.equal(
+                    typographyTheme.color('hazard', typographyTheme.isDark ? 200 : 700),
+                );
+                expect(typographyTheme.resolveAppearance(undefined, color, 'hazard', 'disabled').glyphs).to.equal(
+                    typographyTheme.color(color, typographyTheme.isDark ? 700 : 300),
+                );
+            }
+            typographyTheme.destroy();
+        }
+    });
+
+    it("resolves distinct ghost glyph states for every theme, mode, palette and status color", () => {
+        for (const specifications of Object.values(themeSpecifications)) {
+            for (const specification of [specifications.light, specifications.dark]) {
+                const ghostTheme = new Theme(specification, media);
+                for (const color of appearanceColorOptions) {
+                    for (const highlightColor of appearanceColorOptions) {
+                        const appearances = [
+                            ghostTheme.resolveAppearance('ghost', color, highlightColor, 'default'),
+                            ghostTheme.resolveAppearance('ghost', color, highlightColor, 'interaction'),
+                            ghostTheme.resolveAppearance('ghost', color, highlightColor, 'active'),
+                            ghostTheme.resolveAppearance('ghost', color, highlightColor, 'disabled'),
+                        ];
+
+                        expect(appearances.map(({ glyphs }) => glyphs)).to.deep.equal([
+                            ghostTheme.color(color, ghostTheme.isLight ? 700 : 300),
+                            ghostTheme.color(highlightColor, ghostTheme.isLight ? 800 : 200),
+                            ghostTheme.color(highlightColor, ghostTheme.isLight ? 900 : 100),
+                            ghostTheme.color(color, ghostTheme.isLight ? 300 : 700),
+                        ]);
+                        for (const appearance of appearances) {
+                            expect(appearance.fontWeight).to.equal(500);
+                            expect(appearance.surface).to.equal('transparent');
+                            expect(appearance.border).to.deep.equal({
+                                color: 'transparent',
+                                width: 0,
+                            });
+                        }
+                    }
+                }
+                ghostTheme.destroy();
+            }
+        }
+    });
+
     it("aligns palette endpoints with neutral palette lightness", () => {
         const palettes = Object.values(Theme.palette);
 
@@ -113,6 +169,7 @@ describe("Theme", () => {
     });
 
     it("resolves variant appearance policy", () => {
+        expect(theme.resolveAppearance("fill").fontWeight).to.equal(undefined);
         expect(theme.resolveAppearance("ghost", "primary", "secondary", "default").surface).to.equal("transparent");
         expect(theme.resolveAppearance("fill", "primary", "secondary", "default").border.width).to.equal(0);
         expect(theme.resolveAppearance("inset", "primary", "secondary", "default").border.width).to.equal(0);

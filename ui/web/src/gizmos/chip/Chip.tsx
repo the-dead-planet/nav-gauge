@@ -36,6 +36,8 @@ export const Chip: FC<ChipProps & Props> = ({
 
     const chip = (
         <span
+            data-appearance-variant={variant === 'ghost' ? variant : undefined}
+            data-appearance-color={variant === 'ghost' ? color : undefined}
             className={classNames(
                 styles['chip'],
                 styles[`mode-${theme.mode}`],

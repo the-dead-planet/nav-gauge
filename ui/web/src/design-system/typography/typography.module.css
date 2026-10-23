@@ -8,8 +8,16 @@
 .h4,
 .h5,
 .h6 {
+    --typography-font-weight: initial;
+    --typography-default-font-weight: initial;
     margin: 0;
-    color: var(--typography-color-shade, var(--typography-color, var(--appearance-default-glyphs)));
+    color: var(--appearance-default-glyphs-override, var(--appearance-default-glyphs));
+    font-weight: var(--typography-font-weight, var(--appearance-default-font-weight, var(--typography-default-font-weight, inherit)));
+}
+
+:is(.p, .span, .label, .link, .h1, .h2, .h3, .h4, .h5, .h6)[data-active]:not(.disabled) {
+    color: var(--appearance-interaction-glyphs-override, var(--appearance-active-glyphs));
+    font-weight: var(--typography-font-weight, var(--appearance-active-font-weight, var(--typography-default-font-weight, inherit)));
 }
 
 .uppercase {
@@ -18,8 +26,8 @@
 
 .shadow {
     text-shadow:
-        -1px 0 1px var(--typography-color-dark, var(--color-neutral-900)),
-        1px 0 1px var(--typography-color-dark, var(--color-neutral-900));
+        -1px 0 1px var(--appearance-color-900),
+        1px 0 1px var(--appearance-color-900);
 }
 
 .tabular {
@@ -47,7 +55,16 @@
 .p,
 .span,
 .label {
-    font-weight: 400;
+    --typography-default-font-weight: 400;
+}
+
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+    --typography-default-font-weight: 700;
 }
 
 .label {
@@ -58,23 +75,22 @@
     font-size: 14px;
 }
 
-.link:link,
-.link:visited {
-    color: var(--typography-color-shade, var(--typography-color, var(--appearance-default-glyphs)));
+.link {
     text-decoration: underline;
 }
 
-.link:hover,
-.link:focus-visible,
-.link:active {
-    color: var(--typography-color-highlight-shade, var(--typography-color-hover));
+.link:not(.disabled):is(:hover, :focus-visible):not(:active) {
+    color: var(--appearance-interaction-glyphs-override, var(--appearance-interaction-glyphs));
+    font-weight: var(--typography-font-weight, var(--appearance-interaction-font-weight, var(--typography-default-font-weight, inherit)));
 }
 
-.link.disabled,
-.link.disabled:hover {
-    color: var(--typography-color-disabled);
+.link:not(.disabled):active {
+    color: var(--appearance-interaction-glyphs-override, var(--appearance-active-glyphs));
+    font-weight: var(--typography-font-weight, var(--appearance-active-font-weight, var(--typography-default-font-weight, inherit)));
+}
+
+.link.disabled {
     cursor: not-allowed;
-    text-decoration: underline;
 }
 
 .link:focus-visible {
@@ -82,76 +98,66 @@
     outline-offset: 2px;
 }
 
-.bold {
-    font-weight: bold;
-}
-
-.mode-light.color-primary {
-    --typography-color-dark: var(--color-primary-900);
-    --typography-color: var(--color-primary-900);
-    --typography-color-disabled: var(--color-primary-300);
-    --typography-color-hover: var(--color-primary-800);
-}
-
-.mode-light.color-secondary {
-    --typography-color-dark: var(--color-secondary-900);
-    --typography-color: var(--color-secondary-900);
-    --typography-color-disabled: var(--color-secondary-300);
-    --typography-color-hover: var(--color-secondary-800);
-}
-
-.mode-light.color-tertiary {
-    --typography-color-dark: var(--color-tertiary-900);
-    --typography-color: var(--color-tertiary-900);
-    --typography-color-disabled: var(--color-tertiary-300);
-    --typography-color-hover: var(--color-tertiary-800);
-}
-
-.mode-light.color-neutral {
-    --typography-color-dark: var(--color-neutral-900);
-    --typography-color: var(--color-neutral-900);
-    --typography-color-disabled: var(--color-neutral-300);
-    --typography-color-hover: var(--color-neutral-800);
-}
-
-.mode-light {
-    --typography-color-disabled: var(--color-neutral-300);
-}
-
-.mode-dark.color-primary {
-    --typography-color-dark: var(--color-primary-900);
-    --typography-color: var(--color-primary-100);
-    --typography-color-disabled: var(--color-primary-700);
-    --typography-color-hover: var(--color-primary-200);
-}
-
-.mode-dark.color-secondary {
-    --typography-color-dark: var(--color-secondary-900);
-    --typography-color: var(--color-secondary-100);
-    --typography-color-disabled: var(--color-secondary-700);
-    --typography-color-hover: var(--color-secondary-200);
-}
-
-.mode-dark.color-tertiary {
-    --typography-color-dark: var(--color-tertiary-900);
-    --typography-color: var(--color-tertiary-100);
-    --typography-color-disabled: var(--color-tertiary-700);
-    --typography-color-hover: var(--color-tertiary-200);
-}
-
-.mode-dark.color-neutral {
-    --typography-color-dark: var(--color-neutral-900);
-    --typography-color: var(--color-neutral-100);
-    --typography-color-disabled: var(--color-neutral-700);
-    --typography-color-hover: var(--color-neutral-200);
-}
-
-.mode-dark {
-    --typography-color-disabled: var(--color-neutral-700);
-}
-
 .disabled {
-    color: var(--typography-color-disabled);
+    color: var(--appearance-disabled-glyphs);
+    font-weight: var(--typography-font-weight, var(--appearance-disabled-font-weight, var(--typography-default-font-weight, inherit)));
+    text-shadow: none;
+}
+
+.usage-header {
+    --typography-default-font-weight: var(--typography-header-font-weight);
+    font-size: var(--typography-header-font-size);
+    line-height: var(--typography-header-line-height);
+}
+
+.usage-body {
+    font-size: var(--typography-body-font-size);
+    line-height: var(--typography-body-line-height);
+}
+
+.usage-caption {
+    font-size: var(--typography-caption-font-size);
+    line-height: var(--typography-caption-line-height);
+}
+
+:is(.usage-body, .usage-caption) {
+    --typography-default-font-weight: var(--typography-body-font-weight);
+}
+
+.weight-100 {
+    --typography-font-weight: 100;
+}
+
+.weight-200 {
+    --typography-font-weight: 200;
+}
+
+.weight-300 {
+    --typography-font-weight: 300;
+}
+
+.weight-400 {
+    --typography-font-weight: 400;
+}
+
+.weight-500 {
+    --typography-font-weight: 500;
+}
+
+.weight-600 {
+    --typography-font-weight: 600;
+}
+
+.weight-700 {
+    --typography-font-weight: 700;
+}
+
+.weight-800 {
+    --typography-font-weight: 800;
+}
+
+.weight-900 {
+    --typography-font-weight: 900;
 }
 
 .font-default {

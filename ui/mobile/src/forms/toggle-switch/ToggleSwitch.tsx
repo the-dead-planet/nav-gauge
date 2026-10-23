@@ -284,7 +284,15 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
                 return (
                     <>
                         {typeof content === 'string' || typeof content === 'number' ? (
-                            <Text style={[textStyle, { color: labelColor }]}>
+                            <Text
+                                fontWeight={appearance.fontWeight}
+                                style={[
+                                    textStyle,
+                                    {
+                                        color: labelColor,
+                                    },
+                                ]}
+                            >
                                 {content}
                             </Text>
                         ) : content}

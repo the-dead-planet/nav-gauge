@@ -9,11 +9,11 @@ import {
     ElevationLevel,
     fontTypeToFamily,
     PaletteColor,
-    surfaceVariantOptions,
     Theme,
     ThemeAppearancePaint,
     ThemeAppearanceInsetEffectPolicy,
     themeAppearanceStateOptions,
+    typographyUsageSpecifications,
 } from "@ui";
 
 const appearanceStyleId = 'theme-appearance-variables';
@@ -72,6 +72,7 @@ const createAppearanceDeclarations = (policy: Theme['appearancePolicies']['defau
                 `--appearance-${state}-surface:${resolveAppearancePaint(statePolicy.surface)}`,
                 `--appearance-${state}-border:${resolveAppearancePaint(statePolicy.border)}`,
                 `--appearance-${state}-glyphs:${resolveAppearancePaint(statePolicy.glyphs)}`,
+                `--appearance-${state}-font-weight:${statePolicy.glyphs.fontWeight ?? 'initial'}`,
                 `--appearance-${state}-border-width:${statePolicy.border.width}px`,
             ];
         }),
@@ -97,8 +98,8 @@ const createAppearanceRules = (theme: Theme): string => [
     ...appearanceColorOptions.map((color) => createColorRule('color', color)),
     ...appearanceColorOptions.map((color) => createColorRule('highlight', color)),
     `:root{${createColorDeclarations('color', 'neutral')};${createColorDeclarations('highlight', 'neutral')};${createAppearanceDeclarations(theme.appearancePolicies.default)}}`,
-    ...surfaceVariantOptions.map((variant) =>
-        `[data-appearance-variant="${variant}"]{${createAppearanceDeclarations(theme.appearancePolicies[variant])}}`
+    ...Object.entries(theme.appearancePolicies).map(([variant, policy]) =>
+        `[data-appearance-variant="${variant}"]{${createAppearanceDeclarations(policy)}}`
     ),
 ].join('\n');
 
@@ -120,6 +121,11 @@ export const useThemeVariables = (theme: Theme) => {
                 `--spacing-${spacing}`,
                 spacingValue
             );
+        }
+        for (const [usage, specification] of Object.entries(typographyUsageSpecifications)) {
+            document.documentElement.style.setProperty(`--typography-${usage}-font-size`, `${specification.fontSize}px`);
+            document.documentElement.style.setProperty(`--typography-${usage}-line-height`, `${specification.lineHeight}px`);
+            document.documentElement.style.setProperty(`--typography-${usage}-font-weight`, specification.fontWeight);
         }
         for (const [size, metrics] of Object.entries(theme.sizes.control)) {
             for (const [metric, value] of Object.entries(metrics)) {

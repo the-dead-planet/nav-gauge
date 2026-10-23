@@ -1,29 +1,35 @@
 import { FC } from "react";
-import { Text as RNText, TextProps as RNTextProps, StyleSheet, TextStyle } from "react-native";
-import { defaultTypographyProps, FontType, resolveTypographySpacing, TextVariant, typographyVariantSpecifications, TypographyProps, Theme, useTheme } from "@ui";
-import { getMobileFontFamily } from "./fontFamily";
+import { Platform, Text as RNText, TextProps as RNTextProps, StyleSheet, TextStyle } from "react-native";
+import { FontType, resolveTypographyFontWeight, resolveTypographySpacing, TextUsage, typographyUsageSpecifications, TypographyProps, Theme, ThemeAppearanceState, useTheme } from "@ui";
+import { resolveMobileFont } from "./fontFamily";
 
-export type { TextVariant } from '@ui';
+export type { TextUsage } from '@ui';
 
-const variantStyles = StyleSheet.create({
-    ...typographyVariantSpecifications,
+const usageStyles = StyleSheet.create({
+    ...typographyUsageSpecifications,
 });
 
 const spacing = (value: TypographyProps['m']): number | undefined =>
     value ? Number.parseInt(Theme.spacing[value], 10) : undefined;
 
 export interface TextProps extends Omit<RNTextProps, 'disabled'>, TypographyProps {
-    variant?: TextVariant;
+    usage?: TextUsage;
+    /** Visual state supplied by the owning interactive renderer. */
+    appearanceState?: ThemeAppearanceState;
 }
 
 export const Text: FC<TextProps> = ({
-    variant = 'body',
+    usage = 'body',
     color = 'neutral',
+    highlightColor = color,
+    active,
+    appearanceState = active ? 'active' : 'default',
     shade,
-    highlightShade: _highlightShade,
+    highlightShade,
     align,
     nowrap,
     bold,
+    fontWeight,
     disabled,
     uppercase,
     tabular,
@@ -42,24 +48,37 @@ export const Text: FC<TextProps> = ({
     pr,
     pb,
     pl,
-    fontType = defaultTypographyProps.fontType ?? FontType.Default,
+    fontType = FontType.Default,
     numberOfLines,
     style,
     ...props
 }) => {
     const theme = useTheme();
-    const isBold = bold || variant === 'header';
     const spacingValues = resolveTypographySpacing({ m, mv, mh, mt, mr, mb, ml, p, pv, ph, pt, pr, pb, pl });
+    const state = disabled ? 'disabled' : appearanceState;
+    const appearance = theme.resolveAppearance(undefined, color, highlightColor, state);
+    const resolvedFontWeight = resolveTypographyFontWeight(
+        fontWeight,
+        bold,
+        appearance.fontWeight ?? typographyUsageSpecifications[usage].fontWeight,
+    );
+    const font = resolveMobileFont(fontType, resolvedFontWeight, Platform.OS);
+    const interactive = state === 'interaction' || state === 'active';
+    const overrideShade = interactive ? highlightShade : shade;
+    const glyphs = state === 'disabled' || overrideShade === undefined
+        ? appearance.glyphs
+        : theme.color(interactive ? highlightColor : color, overrideShade);
 
     return (
         <RNText
+            accessibilityRole={usage === 'header' ? 'header' : undefined}
             numberOfLines={nowrap ? 1 : numberOfLines}
             style={[
-                variantStyles[variant],
+                usageStyles[usage],
                 {
-                    fontFamily: getMobileFontFamily(fontType, isBold),
-                    color: theme.color(color, shade),
-                    fontWeight: isBold ? '700' : undefined,
+                    fontFamily: font.fontFamily,
+                    color: glyphs,
+                    fontWeight: font.fontWeight,
                     fontVariant: tabular ? ['tabular-nums'] : undefined,
                     textAlign: align,
                     textTransform: uppercase ? 'uppercase' : undefined,
@@ -72,14 +91,20 @@ export const Text: FC<TextProps> = ({
                     paddingRight: spacing(spacingValues.paddingRight),
                     paddingBottom: spacing(spacingValues.paddingBottom),
                     paddingLeft: spacing(spacingValues.paddingLeft),
-                    textShadowColor: shadow
-                        ? theme.color(color ?? 'neutral', color === 'neutral' ? 800 : 900, 0.5)
+                    textShadowColor: shadow && !disabled
+                        ? theme.color(color, 900)
                         : undefined,
-                    textShadowOffset: shadow ? { width: -1, height: 0 } : undefined,
-                    textShadowRadius: shadow ? 1 : undefined,
+                    textShadowOffset: shadow && !disabled ? {
+                        width: -1,
+                        height: 0,
+                    } : undefined,
+                    textShadowRadius: shadow && !disabled ? 1 : undefined,
                 } satisfies TextStyle,
                 style,
-                disabled && { color: theme.color(color ?? 'neutral', theme.isDark ? 700 : 300) },
+                disabled && {
+                    color: glyphs,
+                    textShadowRadius: 0,
+                },
             ]}
             {...props}
         />

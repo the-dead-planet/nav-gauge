@@ -46,7 +46,7 @@ export const CurrentPointControls: FC<Props> = ({ gearId, translationKey, value,
         <div className={styles['container']}>
             <div className={styles['appearance-grid']}>
                 <div className={styles['section']}>
-                    <Text as="span" variant="caption">{iconLabel}</Text>
+                    <Text as="span" usage="caption">{iconLabel}</Text>
                     <Dropdown className={styles['icon-dropdown']} ariaLabel={iconLabel} size="xs" value={value.icon} options={iconOptions} onChange={(icon) => onChange({ icon })} />
                 </div>
                 <div className={styles['grid']}>
@@ -56,7 +56,7 @@ export const CurrentPointControls: FC<Props> = ({ gearId, translationKey, value,
             </div>
             <div className={styles['rotation-grid']}>
                 <div className={styles['section']}>
-                    <Text as="span" variant="caption">{rotationAlignmentLabel}</Text>
+                    <Text as="span" usage="caption">{rotationAlignmentLabel}</Text>
                     <Dropdown ariaLabel={rotationAlignmentLabel} size="xs" value={value.rotationAlignment} options={rotationAlignmentOptions(mapLabel, viewportLabel)} onChange={(rotationAlignment) => onChange({ rotationAlignment })} />
                 </div>
                 <div className={styles['section']}>
@@ -64,7 +64,7 @@ export const CurrentPointControls: FC<Props> = ({ gearId, translationKey, value,
                     <IconRotateInput id={rotationInputId} icon={iconOptions.find((option) => option.value === value.icon)?.icon} value={value.rotation} onChange={(rotation) => onChange({ rotation })} size="xs" />
                 </div>
                 <div className={styles['section']}>
-                    <Text as="span" variant="caption" id={autoRotateLabelId}>{autoRotateLabel}<br />{value.autoRotate ? onLabel : offLabel}</Text>
+                    <Text as="span" usage="caption" id={autoRotateLabelId}>{autoRotateLabel}<br />{value.autoRotate ? onLabel : offLabel}</Text>
                     <ToggleSwitch labelledBy={autoRotateLabelId} size="xs" checked={value.autoRotate} onChange={(autoRotate) => onChange({ autoRotate })} />
                 </div>
             </div>

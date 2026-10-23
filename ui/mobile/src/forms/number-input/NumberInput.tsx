@@ -3,7 +3,7 @@ import { View, TextInput, StyleSheet } from "react-native";
 import { ColorShade, controlTextSpecifications, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, FontType, Icons, NumberInputProps, SizeVariant, useStepRepeat, useTheme } from "@ui";
 import { Button } from "../../gizmos/button";
 import { Text } from "../../design-system/typography";
-import { getMobileFontFamily } from "../../design-system/typography/fontFamily";
+import { resolveMobileFont } from "../../design-system/typography/fontFamily";
 import { TRANSLUCENT_OPACITY } from "../../tinkers";
 
 const styles = StyleSheet.create({
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
         borderWidth: 0,
         borderRadius: 0,
         fontSize: 14,
-        fontFamily: getMobileFontFamily(FontType.Numeric),
+        fontFamily: resolveMobileFont(FontType.Numeric).fontFamily,
         fontVariant: ['tabular-nums'],
     },
     'input-with-unit': {

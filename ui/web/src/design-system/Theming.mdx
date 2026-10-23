@@ -8,6 +8,12 @@ import { Meta, Title } from '@storybook/addon-docs/blocks';
 
 Themes change the palette while preserving component meaning. A component's color role, variant, hierarchy, and interaction behavior must remain recognizable in every theme and in both light and dark modes.
 
+<h2 id="appearance-defaults">Appearance defaults</h2>
+
+Components that expose `color` default to `neutral`.
+
+Appearance selection follows the component API: `variant` defaults to `ghost`, or `fill-inverse` when `ghost` is unsupported. Components without an appearance variant use the shared default policy.
+
 ## Modes
 
 Light and dark modes reverse the primary surface and content ranges. Components use theme roles and documented shade rules rather than assuming a fixed light or dark foreground.

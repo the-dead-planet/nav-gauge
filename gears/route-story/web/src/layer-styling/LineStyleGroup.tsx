@@ -63,18 +63,18 @@ export const LineStyleGroup: FC<Props> = ({
                 </div>
                 <div className={styles['line-grid']}>
                     <div className={styles['control-group']}>
-                        <Text as="span" variant="caption" disabled={!style.showRouteLine} className={styles['variant-label']}>{lineStyleLabel}</Text>
+                        <Text as="span" usage="caption" disabled={!style.showRouteLine} className={styles['variant-label']}>{lineStyleLabel}</Text>
                         <Dropdown className={styles['variant-dropdown']} ariaLabel={lineStyleLabel} disabled={!style.showRouteLine} size="xs" value={style.lineStyle} options={variantOptions} onChange={(lineStyle) => onChange({ lineStyle })} />
                     </div>
                     <div className={styles['control-group']}>
-                        <Text as="span" variant="caption" disabled={!style.showRouteLine}>{lineLabel}</Text>
+                        <Text as="span" usage="caption" disabled={!style.showRouteLine}>{lineLabel}</Text>
                         <div className={styles['grid']}>
                             <ColorSelectField label={colorLabel} opacityLabel={opacityLabel} disabled={!style.showRouteLine} value={style.color} size="xs" onChange={(color) => onChange({ color })} />
                             <NumberInput ariaLabel={sizeLabel} disabled={!style.showRouteLine} size="xs" min={1} max={8} step={1} value={style.width} onChange={(width) => onChange({ width })} unit="px" />
                         </div>
                     </div>
                     <div className={styles['control-group']}>
-                        <Text as="span" variant="caption" disabled={!style.showRouteLine}>{outlineLabel}</Text>
+                        <Text as="span" usage="caption" disabled={!style.showRouteLine}>{outlineLabel}</Text>
                         <div className={styles['grid']}>
                             <ColorSelectField label={colorLabel} opacityLabel={opacityLabel} disabled={!style.showRouteLine} value={style.outlineColor} size="xs" onChange={(outlineColor) => onChange({ outlineColor })} />
                             <NumberInput ariaLabel={sizeLabel} disabled={!style.showRouteLine} size="xs" min={0} max={4} step={1} value={style.outlineWidth} onChange={(outlineWidth) => onChange({ outlineWidth })} unit="px" />
@@ -82,7 +82,7 @@ export const LineStyleGroup: FC<Props> = ({
                     </div>
                     {showColorTransition ? (
                         <div className={styles['control-group']}>
-                            <Text as="span" variant="caption" disabled={colorTransitionDisabled}>{colorTransitionLengthLabel}</Text>
+                            <Text as="span" usage="caption" disabled={colorTransitionDisabled}>{colorTransitionLengthLabel}</Text>
                             <NumberInput ariaLabel={colorTransitionLengthLabel} disabled={colorTransitionDisabled} size="xs" min={0} max={100} step={1} value={style.colorTransitionLengthPixels} onChange={(colorTransitionLengthPixels) => onChange({ colorTransitionLengthPixels })} unit="px" />
                         </div>
                     ) : null}

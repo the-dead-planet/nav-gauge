@@ -1,5 +1,5 @@
 import { ComponentProps } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import {
     fillVariantOptions,
     sizeOptions,
@@ -39,7 +39,7 @@ const story = {
         </Tile>
     ),
     renderGallery: (args) => (
-        <View style={styles.gallery}>
+        <ScrollView contentContainerStyle={styles.gallery}>
             <VariantGallery
                 sizes={sizeOptions}
                 variants={fillVariantOptions}
@@ -57,7 +57,7 @@ const story = {
                     />
                 )}
             />
-        </View>
+        </ScrollView>
     ),
 } satisfies MobileStoryDefinition<ComponentProps<typeof Tile>>;
 

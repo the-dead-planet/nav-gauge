@@ -46,14 +46,14 @@ export const PlayerSliderLabels: FC<Props> = ({
     return (
         <div className={styles['container']}>
             <div className={styles.metrics}>
-                <Text variant="caption" fontType={FontType.Numeric} color="tertiary" tabular nowrap style={{ width: '4ch' }}>
+                <Text usage="caption" fontType={FontType.Numeric} color="tertiary" tabular nowrap style={{ width: '4ch' }}>
                     {progressPercentage.toFixed(0)}%
                 </Text>
                 {values.map(({ value, maximum }) => (
-                    <Text key={maximum} variant="caption" fontType={FontType.Numeric} color="tertiary" tabular nowrap style={{ width: `${maximum.length}ch` }}>{value}</Text>
+                    <Text key={maximum} usage="caption" fontType={FontType.Numeric} color="tertiary" tabular nowrap style={{ width: `${maximum.length}ch` }}>{value}</Text>
                 ))}
             </div>
-            <Text variant="caption" fontType={FontType.Numeric} color="tertiary" tabular nowrap className={styles['align-flex-right']}>
+            <Text usage="caption" fontType={FontType.Numeric} color="tertiary" tabular nowrap className={styles['align-flex-right']}>
                 {!routeTimes ? "" : individuator.formatTimestamp(progressMs + routeTimes.startTimeEpoch, settings, { short: media.isLessThanMd })}
             </Text>
         </div>
