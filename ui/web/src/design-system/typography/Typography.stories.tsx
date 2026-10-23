@@ -1,154 +1,100 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { FontType, ColorVariant } from '@ui';
-import { H1, H2, H3, H4, H5, H6, Label, LinkText, P, Span, Text } from './';
-import { TypographyPreview } from './TypographyPreview';
-
-const colors: (ColorVariant | undefined)[] = [undefined, 'primary', 'secondary', 'tertiary', 'neutral'];
-const variantLabels = ['Default', 'Primary', 'Secondary', 'Tertiary', 'Neutral'];
+import { makeLiveEditStory } from 'storybook-addon-code-editor';
+import { appearanceColorOptions, FontType, typographyStoryArgs, typographyStoryControls, typographyVariants } from '@ui';
+import { H1, H2, H3, H4, H5, H6, P, Span, Text } from './';
+import styles from './typography-gallery.module.css';
 
 const meta = {
     title: 'Design System/Text',
-} satisfies Meta;
+    component: Text,
+    args: typographyStoryArgs,
+    argTypes: {
+        ...typographyStoryControls,
+        as: {
+            control: 'select',
+            options: ['Default', 'p', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+            mapping: {
+                Default: undefined,
+            },
+        },
+    },
+} satisfies Meta<typeof Text>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const TextStory = {
-    name: 'Text',
-    args: {
-        variant: 'body' as const,
-        fontType: FontType.Default,
-        shade: undefined,
-        align: undefined,
-        nowrap: false,
-        shadow: false,
-        tabular: false,
-        bold: false,
-        disabled: false,
-        uppercase: false,
-        children: 'The management of the dead planet wishes you a very fine day.',
+export const Playground: Story = {
+    name: 'Playground with Live code editor',
+};
+
+makeLiveEditStory(Playground, {
+    availableImports: {
+        '@web-ui': {
+            Text,
+            H1,
+            H2,
+            H3,
+            H4,
+            H5,
+            H6,
+            P,
+            Span,
+        },
     },
+    code: `import { Text } from '@web-ui';
+
+export default Text;`,
+    modifyEditor: (monaco) => monaco.editor.setTheme('vs-dark'),
+});
+
+export const Gallery: Story = {
     argTypes: {
-        variant: {
-            control: 'select',
-            options: ['header', 'body', 'caption'],
-        },
-        as: {
-            control: 'select',
-            options: ['(auto)', 'p', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
-            mapping: { '(auto)': undefined },
-        },
         color: {
-            control: 'select',
-            options: ['(default)', 'primary', 'secondary', 'tertiary', 'neutral'],
-            mapping: { '(default)': undefined },
+            table: {
+                disable: true,
+            },
+        },
+        variant: {
+            table: {
+                disable: true,
+            },
         },
         fontType: {
-            control: 'select',
-            options: Object.values(FontType),
+            table: {
+                disable: true,
+            },
         },
-        shade: {
-            control: 'select',
-            options: ['(auto)', 100, 500, 900],
-            mapping: { '(auto)': undefined },
+        as: {
+            table: {
+                disable: true,
+            },
         },
-        align: {
-            control: 'select',
-            options: ['(default)', 'left', 'center', 'right'],
-            mapping: { '(default)': undefined },
-        },
-        nowrap: { control: 'boolean' },
-        shadow: { control: 'boolean' },
-        tabular: { control: 'boolean' },
-        bold: { control: 'boolean' },
-        uppercase: { control: 'boolean' },
     },
-    render: (args: Record<string, unknown>) => (
-        <Text
-            variant={args.variant as 'header' | 'body' | 'caption'}
-            as={args.as as 'p' | 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | undefined}
-            color={args.color as 'primary' | 'secondary' | 'tertiary' | 'neutral' | undefined}
-            fontType={args.fontType as FontType}
-            shade={args.shade as 100 | 500 | 900 | undefined}
-            align={args.align as 'left' | 'center' | 'right' | undefined}
-            nowrap={args.nowrap as boolean}
-            shadow={args.shadow as boolean}
-            tabular={args.tabular as boolean}
-            bold={args.bold as boolean}
-            uppercase={args.uppercase as boolean}
-            disabled={args.disabled as boolean}
-            style={{ maxWidth: 240 }}
-        >
-            {args.children as string}
-        </Text>
-    ),
-} satisfies StoryObj;
-
-export const Labels: Story = {
-    render: () => (
-        <TypographyPreview>{(props) => <Label color="primary" {...props}>Label</Label>}</TypographyPreview>
-    ),
-};
-
-export const Spacing: Story = {
-    render: () => (
-        <Text color="primary" bold uppercase m="sm" p="md">
-            Bold uppercase text with margin and padding
-        </Text>
+    render: ({ variant: _variant, as: _as, children,...args }) => (
+        <div className={styles.gallery}>
+            {Object.values(FontType).map((fontType) => (
+                <section key={fontType} className={styles.section}>
+                    <h2>{fontType}</h2>
+                    {typographyVariants.map((variant) => appearanceColorOptions.map((color) => (
+                        <Text
+                            {...args}
+                            key={`${variant}-${color}`}
+                            as={undefined}
+                            variant={variant}
+                            color={color}
+                            fontType={fontType}
+                        >
+                            {color}: {children}
+                        </Text>
+                    )))}
+                </section>
+            ))}
+            <section className={styles.section}>
+                <h2>Semantic elements</h2>
+                {[H1, H2, H3, H4, H5, H6, P, Span].map((Component, index) => (
+                    <Component {...args} key={index}>Semantic element {index + 1}</Component>
+                ))}
+            </section>
+        </div>
     ),
 };
-
-export const ExternalLink: Story = {
-    render: () => (
-        <TypographyPreview>{(props) => (
-            <LinkText href="https://openstreetmap.org/copyright" highlightShade={800} {...props}>OpenStreetMap copyright</LinkText>
-        )}</TypographyPreview>
-    ),
-};
-
-export const All = {
-    render: () => {
-        const allFontTypes: FontType[] = [
-            FontType.Default,
-            FontType.Numeric,
-            FontType.SpecialMessaging,
-            FontType.NeonHeader,
-            FontType.NeonText,
-        ];
-
-        return (
-            <TypographyPreview>{(typographyProps) => <div>
-                <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: `repeat(${colors.length}, max-content)`,
-                    gap: '16px 32px',
-                    alignItems: 'center',
-                }}>
-                    {allFontTypes.map((fontType) => (
-                        <>
-                            {colors.map((color, i) => (
-                                <h5 key={color} style={{ margin: 0 }}>{variantLabels[i]}</h5>
-                            ))}
-                            {(['P', 'Span', 'Label', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'] as const).map((Tag) => (
-                                colors.map((color) => {
-                                    const Component = { P, Span, Label, H1, H2, H3, H4, H5, H6 }[Tag];
-
-                                    return (
-                                        <Component
-                                            key={`${Tag}-${color}`}
-                                            color={color}
-                                            fontType={fontType}
-                                            {...typographyProps}
-                                        >
-                                            {Tag}{color ? ` (${fontType})` : ''}
-                                        </Component>
-                                    );
-                                })
-                            ))}
-                        </>
-                    ))}
-                </div>
-            </div>}</TypographyPreview>
-        );
-    },
-} satisfies Story;

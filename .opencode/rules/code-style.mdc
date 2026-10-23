@@ -9,6 +9,7 @@ alwaysApply: true
 - Keep `model.ts` files limited to types, interfaces, and enums. Put runtime constants and objects in a sibling implementation or `tinkers.ts` file.
 - Use four spaces and braces for all control-flow bodies.
 - Format changed files with the configured formatter. Put nested JSX and JSX with more than five props on multiple lines.
+- Keep configuration objects multiline, with one property per line, including nested controls and styles.
 - Write self-explanatory code. Do not add `// ponytail:` markers, AI annotations, or comments narrating shortcuts. Comments describe behavior; record genuine trade-offs in the commit message.
 - Extract a block when a meaningful name such as `canDeleteProject`, `TimelineTicks`, or `useDragSelection` makes the codebase's language clearer. Do not extract code only to shorten a file.
 - Keep top-level code focused on feature intent rather than implementation details.

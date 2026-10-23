@@ -9,11 +9,11 @@ import {
     ElevationLevel,
     fontTypeToFamily,
     PaletteColor,
-    surfaceVariantOptions,
     Theme,
     ThemeAppearancePaint,
     ThemeAppearanceInsetEffectPolicy,
     themeAppearanceStateOptions,
+    typographyVariantSpecifications,
 } from "@ui";
 
 const appearanceStyleId = 'theme-appearance-variables';
@@ -97,8 +97,8 @@ const createAppearanceRules = (theme: Theme): string => [
     ...appearanceColorOptions.map((color) => createColorRule('color', color)),
     ...appearanceColorOptions.map((color) => createColorRule('highlight', color)),
     `:root{${createColorDeclarations('color', 'neutral')};${createColorDeclarations('highlight', 'neutral')};${createAppearanceDeclarations(theme.appearancePolicies.default)}}`,
-    ...surfaceVariantOptions.map((variant) =>
-        `[data-appearance-variant="${variant}"]{${createAppearanceDeclarations(theme.appearancePolicies[variant])}}`
+    ...Object.entries(theme.appearancePolicies).map(([variant, policy]) =>
+        `[data-appearance-variant="${variant}"]{${createAppearanceDeclarations(policy)}}`
     ),
 ].join('\n');
 
@@ -120,6 +120,11 @@ export const useThemeVariables = (theme: Theme) => {
                 `--spacing-${spacing}`,
                 spacingValue
             );
+        }
+        for (const [variant, specification] of Object.entries(typographyVariantSpecifications)) {
+            document.documentElement.style.setProperty(`--typography-${variant}-font-size`, `${specification.fontSize}px`);
+            document.documentElement.style.setProperty(`--typography-${variant}-line-height`, `${specification.lineHeight}px`);
+            document.documentElement.style.setProperty(`--typography-${variant}-font-weight`, specification.fontWeight);
         }
         for (const [size, metrics] of Object.entries(theme.sizes.control)) {
             for (const [metric, value] of Object.entries(metrics)) {

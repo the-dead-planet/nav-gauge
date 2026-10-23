@@ -1,13 +1,8 @@
 import { ComponentProps, FC } from "react";
-import { TextVariant, typographyVariantSpecifications, TypographyProps } from "@ui";
-import { H1 } from './H1';
-import { H2 } from './H2';
-import { H3 } from './H3';
-import { H4 } from './H4';
-import { H5 } from './H5';
-import { H6 } from './H6';
-import { P } from './P';
-import { Span } from './Span';
+import { TextVariant, TypographyProps } from "@ui";
+import classNames from 'classnames';
+import { TypographyElement } from './TypographyElement';
+import styles from './typography.module.css';
 
 export type { TextVariant } from '@ui';
 
@@ -16,17 +11,6 @@ const variantDefaultElement: Record<TextVariant, 'p' | 'span' | 'h1' | 'h2' | 'h
     body: 'p',
     caption: 'span',
 };
-
-const elementMap = {
-    p: P,
-    span: Span,
-    h1: H1,
-    h2: H2,
-    h3: H3,
-    h4: H4,
-    h5: H5,
-    h6: H6,
-} as const;
 
 export interface TextProps extends TypographyProps {
     variant?: TextVariant;
@@ -38,25 +22,18 @@ export const Text: FC<ComponentProps<'p'> & TextProps> = ({
     as,
     className,
     children,
-    style,
     ...props
 }) => {
     const tag = as ?? variantDefaultElement[variant];
-    const Component = elementMap[tag];
-    const specification = typographyVariantSpecifications[variant];
 
     return (
-        <Component
+        <TypographyElement
             {...props}
+            as={tag}
+            baseClassName={classNames(styles[tag], styles[`variant-${variant}`])}
             className={className}
-            style={{
-                fontSize: specification.fontSize,
-                fontWeight: specification.fontWeight,
-                lineHeight: `${specification.lineHeight}px`,
-                ...style,
-            }}
         >
             {children}
-        </Component>
+        </TypographyElement>
     );
 };

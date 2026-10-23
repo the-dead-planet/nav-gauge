@@ -26,9 +26,16 @@ export enum FontType {
 
 export type TextVariant = 'header' | 'body' | 'caption';
 
+export interface TypographyStoryProps extends TypographyProps {
+    variant?: TextVariant;
+    children: string;
+}
+
 export interface TypographyProps {
     color?: ColorVariant;
-    /** Applies a palette shade when `color` is set. */
+    highlightColor?: ColorVariant;
+    active?: boolean;
+    /** Overrides default glyphs using the selected color. */
     shade?: ColorShade;
     /** Applies a palette shade to interactive typography while highlighted. */
     highlightShade?: ColorShade;

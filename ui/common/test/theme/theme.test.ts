@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Orientation, Theme, themeSpecifications, ThemeName } from "../../src";
+import { appearanceColorOptions, Orientation, Theme, themeSpecifications, ThemeName } from "../../src";
 
 const media = {
     initial: () => ({
@@ -66,6 +66,28 @@ describe("Theme", () => {
         });
         expect(darkAppearance.border.color).to.equal(darkTheme.color('neutral', 800));
         darkTheme.destroy();
+    });
+
+    it("resolves default typography glyph states for every color in both modes", () => {
+        const specifications = themeSpecifications[ThemeName.Default];
+        for (const specification of [specifications.light, specifications.dark]) {
+            const typographyTheme = new Theme(specification, media);
+            for (const color of appearanceColorOptions) {
+                expect(typographyTheme.resolveAppearance(undefined, color, 'hazard').glyphs).to.equal(
+                    typographyTheme.color(color, typographyTheme.isDark ? 100 : 900),
+                );
+                expect(typographyTheme.resolveAppearance(undefined, color, 'hazard', 'interaction').glyphs).to.equal(
+                    typographyTheme.color('hazard', typographyTheme.isDark ? 300 : 600),
+                );
+                expect(typographyTheme.resolveAppearance(undefined, color, 'hazard', 'active').glyphs).to.equal(
+                    typographyTheme.color('hazard', typographyTheme.isDark ? 200 : 700),
+                );
+                expect(typographyTheme.resolveAppearance(undefined, color, 'hazard', 'disabled').glyphs).to.equal(
+                    typographyTheme.color(color, typographyTheme.isDark ? 700 : 300),
+                );
+            }
+            typographyTheme.destroy();
+        }
     });
 
     it("aligns palette endpoints with neutral palette lightness", () => {

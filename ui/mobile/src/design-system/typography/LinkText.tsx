@@ -1,42 +1,70 @@
 import { FC } from "react";
-import { Linking, Pressable } from "react-native";
+import { Linking, Pressable, StyleSheet } from "react-native";
+import { useTheme } from '@ui';
 import { Text, TextProps } from "./Text";
+import { useLinkInteraction } from './useLinkInteraction';
 
-export interface LinkTextProps extends Omit<TextProps, 'onPress'> {
+const styles = StyleSheet.create({
+    link: {
+        textDecorationLine: 'underline',
+    },
+    focused: {
+        outlineStyle: 'solid',
+        outlineWidth: 2,
+        outlineOffset: 2,
+    },
+});
+
+export interface LinkTextProps extends Omit<TextProps, 'onPress' | 'appearanceState'> {
     href: string;
 }
 
 export const LinkText: FC<LinkTextProps> = ({
     href,
     children,
-    color = 'primary',
-    shade,
-    highlightShade,
+    color = 'neutral',
+    highlightColor = color,
     disabled,
     style,
     accessibilityLabel,
     accessibilityHint,
     accessibilityState,
     ...props
-}) => (
-    <Pressable
-        accessibilityRole="link"
-        accessibilityLabel={accessibilityLabel}
-        accessibilityHint={accessibilityHint}
-        accessibilityState={{ ...accessibilityState, disabled }}
-        disabled={disabled}
-        onPress={() => void Linking.openURL(href).catch(() => undefined)}
-    >
-        {({ pressed }) => (
-            <Text
-                {...props}
-                color={color}
-                shade={pressed ? highlightShade ?? shade : shade}
-                disabled={disabled}
-                style={[{ textDecorationLine: 'underline' }, style]}
-            >
-                {children}
-            </Text>
-        )}
-    </Pressable>
-);
+}) => {
+    const { focused, interacting, ...interactionHandlers } = useLinkInteraction();
+    const theme = useTheme();
+
+    return (
+        <Pressable
+            {...interactionHandlers}
+            style={focused && !disabled ? [
+                styles.focused,
+                {
+                    outlineColor: theme.color(highlightColor),
+                },
+            ] : undefined}
+            accessibilityRole="link"
+            accessibilityLabel={accessibilityLabel}
+            accessibilityHint={accessibilityHint}
+            accessibilityState={{
+                ...accessibilityState,
+                disabled,
+            }}
+            disabled={disabled}
+            onPress={() => void Linking.openURL(href).catch(() => undefined)}
+        >
+            {({ pressed }) => (
+                <Text
+                    {...props}
+                    color={color}
+                    highlightColor={highlightColor}
+                    appearanceState={pressed ? 'active' : interacting ? 'interaction' : props.active ? 'active' : 'default'}
+                    disabled={disabled}
+                    style={[styles.link, style]}
+                >
+                    {children}
+                </Text>
+            )}
+        </Pressable>
+    );
+};
