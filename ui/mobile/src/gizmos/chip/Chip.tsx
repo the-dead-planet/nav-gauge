@@ -132,10 +132,13 @@ export const Chip: FC<ChipProps & Props> = ({
             borderColor = translucent(0.3);
             labelColor = chipColor;
             break;
-        case 'ghost':
-            backgroundColor = 'transparent';
-            labelColor = chipColor;
+        case 'ghost': {
+            const ghostAppearance = theme.resolveAppearance('ghost', color);
+            backgroundColor = ghostAppearance.surface;
+            labelColor = ghostAppearance.glyphs;
+            iconColor = ghostAppearance.glyphs;
             break;
+        }
         case 'outline':
             backgroundColor = 'transparent';
             borderWidth = 1;

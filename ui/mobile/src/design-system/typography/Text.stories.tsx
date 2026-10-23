@@ -15,7 +15,7 @@ const story: MobileStoryDefinition<TypographyStoryProps> = {
     controls: typographyStoryControls,
     galleryEditableControls: ['children', 'shade', 'highlightColor', 'highlightShade', 'align', 'active', 'disabled', 'bold', 'uppercase', 'tabular', 'nowrap', 'shadow'],
     renderPlayground: (args) => <Text {...args} />,
-    renderGallery: (args) => (
+    renderGallery: ({ children, ...args }) => (
         <ScrollView contentContainerStyle={styles.section}>
             {Object.values(FontType).map((fontType) => (
                 <View key={fontType} style={styles.section}>
@@ -27,7 +27,9 @@ const story: MobileStoryDefinition<TypographyStoryProps> = {
                             variant={variant}
                             color={color}
                             fontType={fontType}
-                        />
+                        >
+                            {color}: {children}
+                        </Text>
                     )))}
                 </View>
             ))}

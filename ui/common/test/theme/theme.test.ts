@@ -90,6 +90,39 @@ describe("Theme", () => {
         }
     });
 
+    it("resolves distinct ghost glyph states for every theme, mode, palette and status color", () => {
+        for (const specifications of Object.values(themeSpecifications)) {
+            for (const specification of [specifications.light, specifications.dark]) {
+                const ghostTheme = new Theme(specification, media);
+                for (const color of appearanceColorOptions) {
+                    for (const highlightColor of appearanceColorOptions) {
+                        const appearances = [
+                            ghostTheme.resolveAppearance('ghost', color, highlightColor, 'default'),
+                            ghostTheme.resolveAppearance('ghost', color, highlightColor, 'interaction'),
+                            ghostTheme.resolveAppearance('ghost', color, highlightColor, 'active'),
+                            ghostTheme.resolveAppearance('ghost', color, highlightColor, 'disabled'),
+                        ];
+
+                        expect(appearances.map(({ glyphs }) => glyphs)).to.deep.equal([
+                            ghostTheme.color(color, ghostTheme.isLight ? 700 : 300),
+                            ghostTheme.color(highlightColor, ghostTheme.isLight ? 800 : 200),
+                            ghostTheme.color(highlightColor, ghostTheme.isLight ? 900 : 100),
+                            ghostTheme.color(color, ghostTheme.isLight ? 300 : 700),
+                        ]);
+                        for (const appearance of appearances) {
+                            expect(appearance.surface).to.equal('transparent');
+                            expect(appearance.border).to.deep.equal({
+                                color: 'transparent',
+                                width: 0,
+                            });
+                        }
+                    }
+                }
+                ghostTheme.destroy();
+            }
+        }
+    });
+
     it("aligns palette endpoints with neutral palette lightness", () => {
         const palettes = Object.values(Theme.palette);
 

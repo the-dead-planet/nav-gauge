@@ -578,7 +578,7 @@ export class Theme {
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'color',
-                            shade: shades.base,
+                            shade: this.isLight ? 700 : 300,
                         },
                     },
                     interaction: {
@@ -587,7 +587,7 @@ export class Theme {
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.interaction,
+                            shade: this.isLight ? 800 : 200,
                         },
                     },
                     active: {
@@ -596,7 +596,7 @@ export class Theme {
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.active,
+                            shade: shades.glyphs,
                         },
                     },
                     disabled: {
