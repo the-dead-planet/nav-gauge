@@ -58,7 +58,7 @@ export const ToolIconRight: FC<ObservedToolIcon<MobileMap> & Props> = ({
             disabled={disabled}
             style={style}
         >
-            {value ? <Text variant="caption" color="primary" shade={500}>{value}</Text> : null}
+            {value ? <Text usage="caption" color="primary" shade={500}>{value}</Text> : null}
         </Button>
     );
 };

@@ -63,15 +63,15 @@ export const PlayerSliderLabels: FC<Props> = ({
     return (
         <View style={styles.container}>
             <View style={styles.metrics}>
-                <Text variant="caption" fontType={FontType.Numeric} color="tertiary" tabular nowrap style={styles.percentage}>
+                <Text usage="caption" fontType={FontType.Numeric} color="tertiary" tabular nowrap style={styles.percentage}>
                     {progressPercentage.toFixed(0)}%
                 </Text>
                 {values.map(({ value, maximum }) => (
-                    <Text key={maximum} variant="caption" fontType={FontType.Numeric} color="tertiary" tabular nowrap style={{ width: maximum.length * 7 }}>{value}</Text>
+                    <Text key={maximum} usage="caption" fontType={FontType.Numeric} color="tertiary" tabular nowrap style={{ width: maximum.length * 7 }}>{value}</Text>
                 ))}
             </View>
             <Text
-                variant="caption"
+                usage="caption"
                 fontType={FontType.Numeric}
                 color="tertiary"
                 tabular

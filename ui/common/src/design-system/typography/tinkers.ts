@@ -1,4 +1,4 @@
-import { FontFamilyName, FontType, FontWeight, NumericFontWeight, TextVariant, TypographyProps, TypographyStoryProps } from "./model";
+import { FontFamilyName, FontType, FontWeight, NumericFontWeight, TextUsage, TypographyProps, TypographyStoryProps } from "./model";
 import { SizeVariant } from "../model";
 import { allColorShades } from '../theme/tinkers';
 import { appearanceColorOptions } from '../tinkers';
@@ -12,13 +12,13 @@ export const fontTypeToFamily: { [key in FontType]: FontFamilyName } = {
     [FontType.NeonText]: 'Bitcount Single',
 }
 
-export const typographyVariants: TextVariant[] = ['header', 'body', 'caption'];
+export const typographyUsages: TextUsage[] = ['header', 'body', 'caption'];
 
 export const typographyFontWeights: NumericFontWeight[] = [100, 200, 300, 400, 500, 600, 700, 800, 900];
 
 export const typographyStoryArgs: TypographyStoryProps = {
     children: 'The management of the dead planet wishes you a very fine day.',
-    variant: 'body',
+    usage: 'body',
     color: 'neutral',
     fontType: FontType.Default,
     fontWeight: undefined,
@@ -35,9 +35,9 @@ export const typographyStoryControls: StoryControls<TypographyStoryProps> = {
     children: {
         control: 'text',
     },
-    variant: {
+    usage: {
         control: 'select',
-        options: typographyVariants,
+        options: typographyUsages,
     },
     color: {
         control: 'select',
@@ -105,7 +105,7 @@ export const typographyStoryControls: StoryControls<TypographyStoryProps> = {
     },
 };
 
-export const typographyVariantSpecifications: Record<TextVariant, {
+export const typographyUsageSpecifications: Record<TextUsage, {
     fontSize: number;
     fontWeight: '400' | '700';
     lineHeight: number;
@@ -149,7 +149,7 @@ export const controlTextSpecifications: Record<SizeVariant, { fontSize: number; 
 export const resolveTypographyFontWeight = (
     fontWeight?: FontWeight,
     bold = false,
-    fallback: FontWeight = typographyVariantSpecifications.body.fontWeight,
+    fallback: FontWeight = typographyUsageSpecifications.body.fontWeight,
 ): NumericFontWeight => {
     const weight = fontWeight ?? (bold ? 'bold' : fallback);
     if (weight === 'normal') {

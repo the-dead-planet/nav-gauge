@@ -104,23 +104,23 @@
     text-shadow: none;
 }
 
-.variant-header {
+.usage-header {
     --typography-default-font-weight: var(--typography-header-font-weight);
     font-size: var(--typography-header-font-size);
     line-height: var(--typography-header-line-height);
 }
 
-.variant-body {
+.usage-body {
     font-size: var(--typography-body-font-size);
     line-height: var(--typography-body-line-height);
 }
 
-.variant-caption {
+.usage-caption {
     font-size: var(--typography-caption-font-size);
     line-height: var(--typography-caption-line-height);
 }
 
-:is(.variant-body, .variant-caption) {
+:is(.usage-body, .usage-caption) {
     --typography-default-font-weight: var(--typography-body-font-weight);
 }
 

@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet } from 'react-native';
-import { appearanceColorOptions, TypographyStoryProps, typographyStoryArgs, typographyStoryControls, typographyVariants } from '@ui';
+import { appearanceColorOptions, TypographyStoryProps, typographyStoryArgs, typographyStoryControls, typographyUsages } from '@ui';
 import { Label } from './Label';
 import { MobileStoryDefinition } from '../../storybook/model';
 
@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 const story: MobileStoryDefinition<TypographyStoryProps> = {
     args: {
         ...typographyStoryArgs,
-        variant: 'caption',
+        usage: 'caption',
         children: 'Label',
     },
     controls: typographyStoryControls,
@@ -20,8 +20,8 @@ const story: MobileStoryDefinition<TypographyStoryProps> = {
     renderPlayground: (args) => <Label {...args} />,
     renderGallery: (args) => (
         <ScrollView contentContainerStyle={styles.gallery}>
-            {typographyVariants.map((variant) => appearanceColorOptions.map((color) => (
-                <Label {...args} key={`${variant}-${color}`} variant={variant} color={color} />
+            {typographyUsages.map((usage) => appearanceColorOptions.map((color) => (
+                <Label {...args} key={`${usage}-${color}`} usage={usage} color={color} />
             )))}
         </ScrollView>
     ),

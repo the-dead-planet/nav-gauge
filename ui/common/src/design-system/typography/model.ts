@@ -24,14 +24,14 @@ export enum FontType {
     NeonText = 'neon-text',
 }
 
-export type TextVariant = 'header' | 'body' | 'caption';
+export type TextUsage = 'header' | 'body' | 'caption';
 
 export type NumericFontWeight = 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
 
 export type FontWeight = NumericFontWeight | `${NumericFontWeight}` | 'normal' | 'bold';
 
 export interface TypographyStoryProps extends TypographyProps {
-    variant?: TextVariant;
+    usage?: TextUsage;
     children: string;
 }
 
@@ -44,7 +44,7 @@ export interface TypographyProps {
     /** Applies a palette shade to interactive typography while highlighted. */
     highlightShade?: ColorShade;
     fontType?: FontType;
-    /** Overrides `bold`, appearance weight, and the text variant's default weight. */
+    /** Overrides `bold`, appearance weight, and the text usage's default weight. */
     fontWeight?: FontWeight;
     align?: 'left' | 'center' | 'right';
     nowrap?: boolean;

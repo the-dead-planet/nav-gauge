@@ -33,7 +33,7 @@ export const CartoConfigPanel: FC<ToolPanelProps<maplibregl.Map>> = () => {
             <div className={styles['map-style-selection']}>
                 <Text
                     as="span"
-                    variant="caption"
+                    usage="caption"
                     id="map-style-label"
                 >
                     {t(cartomancer.translationKey.Style)}

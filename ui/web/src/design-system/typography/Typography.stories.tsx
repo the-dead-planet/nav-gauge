@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { makeLiveEditStory } from 'storybook-addon-code-editor';
-import { appearanceColorOptions, FontType, typographyStoryArgs, typographyStoryControls, typographyVariants } from '@ui';
+import { appearanceColorOptions, FontType, typographyStoryArgs, typographyStoryControls, typographyUsages } from '@ui';
 import { H1, H2, H3, H4, H5, H6, P, Span, Text } from './';
 import styles from './typography-gallery.module.css';
 
@@ -54,7 +54,7 @@ export const Gallery: Story = {
                 disable: true,
             },
         },
-        variant: {
+        usage: {
             table: {
                 disable: true,
             },
@@ -70,17 +70,17 @@ export const Gallery: Story = {
             },
         },
     },
-    render: ({ variant: _variant, as: _as, children,...args }) => (
+    render: ({ usage: _usage, as: _as, children, ...args }) => (
         <div className={styles.gallery}>
             {Object.values(FontType).map((fontType) => (
                 <section key={fontType} className={styles.section}>
                     <h2>{fontType}</h2>
-                    {typographyVariants.map((variant) => appearanceColorOptions.map((color) => (
+                    {typographyUsages.map((usage) => appearanceColorOptions.map((color) => (
                         <Text
                             {...args}
-                            key={`${variant}-${color}`}
+                            key={`${usage}-${color}`}
                             as={undefined}
-                            variant={variant}
+                            usage={usage}
                             color={color}
                             fontType={fontType}
                         >

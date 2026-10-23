@@ -13,7 +13,7 @@ import {
     ThemeAppearancePaint,
     ThemeAppearanceInsetEffectPolicy,
     themeAppearanceStateOptions,
-    typographyVariantSpecifications,
+    typographyUsageSpecifications,
 } from "@ui";
 
 const appearanceStyleId = 'theme-appearance-variables';
@@ -122,10 +122,10 @@ export const useThemeVariables = (theme: Theme) => {
                 spacingValue
             );
         }
-        for (const [variant, specification] of Object.entries(typographyVariantSpecifications)) {
-            document.documentElement.style.setProperty(`--typography-${variant}-font-size`, `${specification.fontSize}px`);
-            document.documentElement.style.setProperty(`--typography-${variant}-line-height`, `${specification.lineHeight}px`);
-            document.documentElement.style.setProperty(`--typography-${variant}-font-weight`, specification.fontWeight);
+        for (const [usage, specification] of Object.entries(typographyUsageSpecifications)) {
+            document.documentElement.style.setProperty(`--typography-${usage}-font-size`, `${specification.fontSize}px`);
+            document.documentElement.style.setProperty(`--typography-${usage}-line-height`, `${specification.lineHeight}px`);
+            document.documentElement.style.setProperty(`--typography-${usage}-font-weight`, specification.fontWeight);
         }
         for (const [size, metrics] of Object.entries(theme.sizes.control)) {
             for (const [metric, value] of Object.entries(metrics)) {

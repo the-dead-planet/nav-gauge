@@ -29,7 +29,7 @@ describe('Typography', () => {
         for (const color of colors) {
             const markup = renderToStaticMarkup(createElement(Text, {
                 color,
-                variant: 'header',
+                usage: 'header',
                 as: 'h1',
                 shade: 100,
                 highlightColor: 'hazard',
@@ -48,7 +48,7 @@ describe('Typography', () => {
     it('applies weight overrides to headers without leaking typography props to the DOM', () => {
         for (const fontWeight of typographyFontWeights) {
             const markup = renderToStaticMarkup(createElement(Text, {
-                variant: 'header',
+                usage: 'header',
                 fontWeight,
                 bold: true,
                 children: 'Weighted header',
@@ -56,9 +56,10 @@ describe('Typography', () => {
 
             expect(markup).to.include(`weight-${fontWeight}`);
             expect(markup).not.to.include('fontWeight=');
+            expect(markup).not.to.include('usage=');
         }
         const normalHeader = renderToStaticMarkup(createElement(Text, {
-            variant: 'header',
+            usage: 'header',
             fontWeight: 'normal',
             bold: true,
         }));

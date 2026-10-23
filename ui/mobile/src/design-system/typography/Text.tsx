@@ -1,25 +1,25 @@
 import { FC } from "react";
 import { Text as RNText, TextProps as RNTextProps, StyleSheet, TextStyle } from "react-native";
-import { FontType, resolveTypographyFontWeight, resolveTypographySpacing, TextVariant, typographyVariantSpecifications, TypographyProps, Theme, ThemeAppearanceState, useTheme } from "@ui";
+import { FontType, resolveTypographyFontWeight, resolveTypographySpacing, TextUsage, typographyUsageSpecifications, TypographyProps, Theme, ThemeAppearanceState, useTheme } from "@ui";
 import { getMobileFontFamily } from "./fontFamily";
 
-export type { TextVariant } from '@ui';
+export type { TextUsage } from '@ui';
 
-const variantStyles = StyleSheet.create({
-    ...typographyVariantSpecifications,
+const usageStyles = StyleSheet.create({
+    ...typographyUsageSpecifications,
 });
 
 const spacing = (value: TypographyProps['m']): number | undefined =>
     value ? Number.parseInt(Theme.spacing[value], 10) : undefined;
 
 export interface TextProps extends Omit<RNTextProps, 'disabled'>, TypographyProps {
-    variant?: TextVariant;
+    usage?: TextUsage;
     /** Visual state supplied by the owning interactive renderer. */
     appearanceState?: ThemeAppearanceState;
 }
 
 export const Text: FC<TextProps> = ({
-    variant = 'body',
+    usage = 'body',
     color = 'neutral',
     highlightColor = color,
     active,
@@ -60,7 +60,7 @@ export const Text: FC<TextProps> = ({
     const resolvedFontWeight = resolveTypographyFontWeight(
         fontWeight,
         bold,
-        appearance.fontWeight ?? typographyVariantSpecifications[variant].fontWeight,
+        appearance.fontWeight ?? typographyUsageSpecifications[usage].fontWeight,
     );
     const interactive = state === 'interaction' || state === 'active';
     const overrideShade = interactive ? highlightShade : shade;
@@ -70,10 +70,10 @@ export const Text: FC<TextProps> = ({
 
     return (
         <RNText
-            accessibilityRole={variant === 'header' ? 'header' : undefined}
+            accessibilityRole={usage === 'header' ? 'header' : undefined}
             numberOfLines={nowrap ? 1 : numberOfLines}
             style={[
-                variantStyles[variant],
+                usageStyles[usage],
                 {
                     fontFamily: getMobileFontFamily(fontType, resolvedFontWeight),
                     color: glyphs,

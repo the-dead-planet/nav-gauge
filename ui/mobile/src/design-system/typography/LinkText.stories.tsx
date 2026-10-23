@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet } from 'react-native';
-import { appearanceColorOptions, typographyStoryArgs, typographyStoryControls, typographyVariants } from '@ui';
+import { appearanceColorOptions, typographyStoryArgs, typographyStoryControls, typographyUsages } from '@ui';
 import { LinkText, LinkTextProps } from './LinkText';
 import { MobileStoryDefinition } from '../../storybook/model';
 
@@ -25,8 +25,8 @@ const story: MobileStoryDefinition<LinkTextProps> = {
     renderPlayground: (args) => <LinkText {...args} />,
     renderGallery: (args) => (
         <ScrollView contentContainerStyle={styles.gallery}>
-            {typographyVariants.map((variant) => appearanceColorOptions.map((color) => (
-                <LinkText {...args} key={`${variant}-${color}`} variant={variant} color={color} />
+            {typographyUsages.map((usage) => appearanceColorOptions.map((color) => (
+                <LinkText {...args} key={`${usage}-${color}`} usage={usage} color={color} />
             )))}
         </ScrollView>
     ),

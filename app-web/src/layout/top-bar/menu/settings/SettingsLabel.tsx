@@ -9,5 +9,5 @@ interface Props {
 }
 
 export const SettingsLabel: FC<Props> = ({ wide, id, children }) => wide
-    ? <Text as="span" variant="caption" id={id} className={styles['wide-label']} shadow color="primary">{children}</Text>
-    : <Text as="span" variant="caption" id={id} color="primary" align="left" className={styles['label']}>{children}</Text>;
+    ? <Text as="span" usage="caption" id={id} className={styles['wide-label']} shadow color="primary">{children}</Text>
+    : <Text as="span" usage="caption" id={id} color="primary" align="left" className={styles['label']}>{children}</Text>;

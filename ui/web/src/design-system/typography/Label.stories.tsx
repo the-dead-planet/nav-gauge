@@ -4,8 +4,8 @@ import { appearanceColorOptions, typographyStoryArgs, typographyStoryControls } 
 import { Label } from './Label';
 import styles from './typography-gallery.module.css';
 
-const { variant: _variant, ...args } = typographyStoryArgs;
-const { variant: _variantControl, ...controls } = typographyStoryControls;
+const { usage: _usage, ...args } = typographyStoryArgs;
+const { usage: _usageControl, ...controls } = typographyStoryControls;
 const meta = {
     title: 'Design System/Label',
     component: Label,

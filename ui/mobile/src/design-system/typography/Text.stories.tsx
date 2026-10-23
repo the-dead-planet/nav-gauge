@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { appearanceColorOptions, FontType, TypographyStoryProps, typographyStoryArgs, typographyStoryControls, typographyVariants } from '@ui';
+import { appearanceColorOptions, FontType, TypographyStoryProps, typographyStoryArgs, typographyStoryControls, typographyUsages } from '@ui';
 import { Text } from './Text';
 import { MobileStoryDefinition } from '../../storybook/model';
 
@@ -19,12 +19,12 @@ const story: MobileStoryDefinition<TypographyStoryProps> = {
         <ScrollView contentContainerStyle={styles.section}>
             {Object.values(FontType).map((fontType) => (
                 <View key={fontType} style={styles.section}>
-                    <Text variant="header">{fontType}</Text>
-                    {typographyVariants.map((variant) => appearanceColorOptions.map((color) => (
+                    <Text usage="header">{fontType}</Text>
+                    {typographyUsages.map((usage) => appearanceColorOptions.map((color) => (
                         <Text
                             {...args}
-                            key={`${variant}-${color}`}
-                            variant={variant}
+                            key={`${usage}-${color}`}
+                            usage={usage}
                             color={color}
                             fontType={fontType}
                         >
