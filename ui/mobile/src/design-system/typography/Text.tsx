@@ -1,7 +1,7 @@
 import { FC } from "react";
-import { Text as RNText, TextProps as RNTextProps, StyleSheet, TextStyle } from "react-native";
+import { Platform, Text as RNText, TextProps as RNTextProps, StyleSheet, TextStyle } from "react-native";
 import { FontType, resolveTypographyFontWeight, resolveTypographySpacing, TextUsage, typographyUsageSpecifications, TypographyProps, Theme, ThemeAppearanceState, useTheme } from "@ui";
-import { getMobileFontFamily } from "./fontFamily";
+import { resolveMobileFont } from "./tinkers";
 
 export type { TextUsage } from '@ui';
 
@@ -62,6 +62,7 @@ export const Text: FC<TextProps> = ({
         bold,
         appearance.fontWeight ?? typographyUsageSpecifications[usage].fontWeight,
     );
+    const font = resolveMobileFont(fontType, resolvedFontWeight, Platform.OS);
     const interactive = state === 'interaction' || state === 'active';
     const overrideShade = interactive ? highlightShade : shade;
     const glyphs = state === 'disabled' || overrideShade === undefined
@@ -75,9 +76,9 @@ export const Text: FC<TextProps> = ({
             style={[
                 usageStyles[usage],
                 {
-                    fontFamily: getMobileFontFamily(fontType, resolvedFontWeight),
+                    fontFamily: font.fontFamily,
                     color: glyphs,
-                    fontWeight: resolvedFontWeight,
+                    fontWeight: font.fontWeight,
                     fontVariant: tabular ? ['tabular-nums'] : undefined,
                     textAlign: align,
                     textTransform: uppercase ? 'uppercase' : undefined,

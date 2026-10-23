@@ -9,7 +9,7 @@ import {
     useTheme,
 } from "@ui";
 import { Label } from "../../design-system/typography";
-import { getMobileFontFamily } from "../../design-system/typography/fontFamily";
+import { resolveMobileFont } from "../../design-system/typography/tinkers";
 import { TRANSLUCENT_OPACITY } from "../../tinkers";
 
 const styles = StyleSheet.create({
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 4,
         boxSizing: "border-box",
-        fontFamily: getMobileFontFamily(FontType.Default),
+        fontFamily: resolveMobileFont(FontType.Default).fontFamily,
     },
 });
 
