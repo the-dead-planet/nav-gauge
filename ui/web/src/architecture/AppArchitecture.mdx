@@ -1,0 +1,73 @@
+import { Meta, Title } from '@storybook/addon-docs/blocks';
+import { ReactSVG } from 'react-svg';
+import applicationArchitectureDiagram from '../../../../docs/assets/architecture.svg';
+
+<Meta title="Application/App Architecture" />
+
+<Title />
+
+# App Architecture
+
+nav-gauge is a cross-platform toolkit composed of pluggable Gears. The web and mobile apps assemble these features on top of shared application logic, UI, and utilities.
+
+<figure>
+    <ReactSVG
+        src={applicationArchitectureDiagram}
+        wrapper="svg"
+        role="img"
+        aria-label="Application layers: Tinker chest, UI, Apparatus, Gears, and web and mobile apps. UI, Apparatus, and Gears split shared common code from web and mobile implementations."
+        width="302"
+        height="467"
+    />
+</figure>
+
+Arrows run from building blocks to their consumers. Higher layers may depend on lower layers, subject to the platform boundaries below; the diagram shows the layer order, not every permitted import.
+
+## Package responsibilities
+
+<table>
+    <thead>
+        <tr>
+            <th scope="col">Layer</th>
+            <th scope="col">Packages</th>
+            <th scope="col">Responsibility</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Apps</td>
+            <td><code>app-web</code>, <code>app-mobile</code></td>
+            <td>Composition, wiring, and platform entry points</td>
+        </tr>
+        <tr>
+            <td>Gears</td>
+            <td><code>gears/*/&#123;common,web,mobile&#125;</code></td>
+            <td>Pluggable features and their business logic</td>
+        </tr>
+        <tr>
+            <td>Apparatus</td>
+            <td><code>apparatus/&#123;common,web,mobile&#125;</code></td>
+            <td>Shared application services and state</td>
+        </tr>
+        <tr>
+            <td>UI</td>
+            <td><code>ui/&#123;common,web,mobile&#125;</code></td>
+            <td>Reusable, business-logic-free components and design tokens</td>
+        </tr>
+        <tr>
+            <td>Tinker chest</td>
+            <td><code>tinker-chest</code></td>
+            <td>Platform-neutral utilities</td>
+        </tr>
+    </tbody>
+</table>
+
+## Platform boundaries
+
+- **Common** packages contain platform-neutral behavior and APIs.
+- **Web** packages may import matching web and common packages from lower layers, plus their own common package.
+- **Mobile** packages follow the same rule for mobile and common packages.
+- Common packages never import platform implementations. Web and mobile packages never import one another.
+- Platform UI renderers are consumed by matching Gears and Apps; Apparatus may use UI Common.
+
+For the layers inside the UI library, see <a href="./?path=/docs/design-system-overview--docs#component-architecture" target="_top">Component Architecture</a>.
