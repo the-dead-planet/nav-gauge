@@ -4,13 +4,13 @@
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="web-app" parent="1" vertex="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#042424;gradientColor=#013131;strokeColor=#0e807f;fontColor=#e0e0e0;fontFamily=Space Grotesk;" value="&lt;b&gt;Web app&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;app-web&lt;/font&gt;">
+                <mxCell id="web-app" parent="1" vertex="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#271d09;gradientColor=#3f2f07;strokeColor=#dca600;fontColor=#e0e0e0;fontFamily=Space Grotesk;" value="&lt;b&gt;Web app&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;app-web&lt;/font&gt;">
                     <mxGeometry x="1" y="1" width="140" height="44" as="geometry"/>
                 </mxCell>
                 <mxCell id="mobile-app" parent="1" vertex="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#261b26;gradientColor=#3c2a3c;strokeColor=#cd91cd;fontColor=#e0e0e0;fontFamily=Space Grotesk;" value="&lt;b&gt;Mobile app&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;app-mobile&lt;/font&gt;">
                     <mxGeometry x="161" y="1" width="140" height="44" as="geometry"/>
                 </mxCell>
-                <mxCell id="gears" parent="1" vertex="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1e1f1f;gradientColor=#292b2b;strokeColor=#585c5b;fontColor=#e0e0e0;fontFamily=Space Grotesk;" value="&lt;b&gt;Gears&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;gears/*/{common,web,mobile}&lt;br&gt;Gear 1 · Gear 2 · … · Gear N&lt;/font&gt;">
+                <mxCell id="gears" parent="1" vertex="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#042424;gradientColor=#013131;strokeColor=#0e807f;fontColor=#e0e0e0;fontFamily=Space Grotesk;" value="&lt;b&gt;Gears&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;gears/*/{common,web,mobile}&lt;br&gt;Gear 1 · Gear 2 · … · Gear N&lt;/font&gt;">
                     <mxGeometry x="1" y="65" width="300" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="apparatus" parent="1" vertex="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#042424;gradientColor=#013131;strokeColor=#0e807f;fontColor=#e0e0e0;fontFamily=Space Grotesk;" value="&lt;b&gt;Apparatus&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;apparatus/{common,web,mobile}&lt;/font&gt;">
@@ -19,7 +19,7 @@
                 <mxCell id="ui" parent="1" vertex="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#042424;gradientColor=#013131;strokeColor=#0e807f;fontColor=#e0e0e0;fontFamily=Space Grotesk;" value="&lt;b&gt;UI&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;ui/{common,web,mobile}&lt;/font&gt;">
                     <mxGeometry x="1" y="209" width="300" height="44" as="geometry"/>
                 </mxCell>
-                <mxCell id="tinker-chest" parent="1" vertex="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#271d09;gradientColor=#3f2f07;strokeColor=#dca600;fontColor=#e0e0e0;fontFamily=Space Grotesk;" value="&lt;b&gt;Tinker chest&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;tinker-chest · platform-neutral utilities&lt;/font&gt;">
+                <mxCell id="tinker-chest" parent="1" vertex="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1e1f1f;gradientColor=#292b2b;strokeColor=#585c5b;fontColor=#e0e0e0;fontFamily=Space Grotesk;" value="&lt;b&gt;Tinker chest&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;tinker-chest · platform-neutral utilities&lt;/font&gt;">
                     <mxGeometry x="1" y="273" width="300" height="44" as="geometry"/>
                 </mxCell>
                 <mxCell id="platform-heading" parent="1" vertex="1" style="text;html=1;strokeColor=none;fillColor=none;fontColor=#e0e0e0;fontFamily=Space Grotesk;fontStyle=1;" value="Platform split within UI, Apparatus, and each Gear">
@@ -28,13 +28,13 @@
                 <mxCell id="common" parent="1" vertex="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1e1f1f;gradientColor=#292b2b;strokeColor=#585c5b;fontColor=#e0e0e0;fontFamily=Space Grotesk;" value="&lt;b&gt;Common&lt;/b&gt; · shared logic / API">
                     <mxGeometry x="1" y="363" width="300" height="36" as="geometry"/>
                 </mxCell>
-                <mxCell id="web" parent="1" vertex="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#042424;gradientColor=#013131;strokeColor=#0e807f;fontColor=#e0e0e0;fontFamily=Space Grotesk;" value="&lt;b&gt;Web&lt;/b&gt;">
+                <mxCell id="web" parent="1" vertex="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#271d09;gradientColor=#3f2f07;strokeColor=#dca600;fontColor=#e0e0e0;fontFamily=Space Grotesk;" value="&lt;b&gt;Web&lt;/b&gt;">
                     <mxGeometry x="1" y="429" width="140" height="36" as="geometry"/>
                 </mxCell>
                 <mxCell id="mobile" parent="1" vertex="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#261b26;gradientColor=#3c2a3c;strokeColor=#cd91cd;fontColor=#e0e0e0;fontFamily=Space Grotesk;" value="&lt;b&gt;Mobile&lt;/b&gt;">
                     <mxGeometry x="161" y="429" width="140" height="36" as="geometry"/>
                 </mxCell>
-                <mxCell id="gears-web-app" parent="1" edge="1" source="gears" target="web-app" style="edgeStyle=none;html=1;endArrow=block;strokeColor=#0e807f;exitX=0.2333333333333333;exitY=0;entryX=0.5;entryY=1;">
+                <mxCell id="gears-web-app" parent="1" edge="1" source="gears" target="web-app" style="edgeStyle=none;html=1;endArrow=block;strokeColor=#dca600;exitX=0.2333333333333333;exitY=0;entryX=0.5;entryY=1;">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="gears-mobile-app" parent="1" edge="1" source="gears" target="mobile-app" style="edgeStyle=none;html=1;endArrow=block;strokeColor=#cd91cd;exitX=0.7666666666666667;exitY=0;entryX=0.5;entryY=1;">
@@ -49,7 +49,7 @@
                 <mxCell id="tinker-chest-ui" parent="1" edge="1" source="tinker-chest" target="ui" style="edgeStyle=none;html=1;endArrow=block;strokeColor=#0e807f;exitX=0.5;exitY=0;entryX=0.5;entryY=1;">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="common-web" parent="1" edge="1" source="common" target="web" style="edgeStyle=none;html=1;endArrow=block;strokeColor=#0e807f;exitX=0.2333333333333333;exitY=1;entryX=0.5;entryY=0;">
+                <mxCell id="common-web" parent="1" edge="1" source="common" target="web" style="edgeStyle=none;html=1;endArrow=block;strokeColor=#dca600;exitX=0.2333333333333333;exitY=1;entryX=0.5;entryY=0;">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="common-mobile" parent="1" edge="1" source="common" target="mobile" style="edgeStyle=none;html=1;endArrow=block;strokeColor=#cd91cd;exitX=0.7666666666666667;exitY=1;entryX=0.5;entryY=0;">

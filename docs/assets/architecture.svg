@@ -22,15 +22,20 @@
         <marker id="primary-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
             <path d="M 0 0 L 10 5 L 0 10 Z" fill="#0e807f"/>
         </marker>
+        <marker id="secondary-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 Z" fill="#dca600"/>
+        </marker>
         <marker id="tertiary-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
             <path d="M 0 0 L 10 5 L 0 10 Z" fill="#cd91cd"/>
         </marker>
     </defs>
     <g fill="none" stroke="#0e807f" marker-end="url(#primary-arrow)">
-        <path d="M 71 65 V 45"/>
         <path d="M 151 145 V 125"/>
         <path d="M 151 209 V 189"/>
         <path d="M 151 273 V 253"/>
+    </g>
+    <g fill="none" stroke="#dca600" marker-end="url(#secondary-arrow)">
+        <path d="M 71 65 V 45"/>
         <path d="M 71 399 V 429"/>
     </g>
     <g fill="none" stroke="#cd91cd" marker-end="url(#tertiary-arrow)">
@@ -38,9 +43,12 @@
         <path d="M 231 399 V 429"/>
     </g>
     <g fill="url(#primary)" stroke="#0e807f">
-        <rect x="1" y="1" width="140" height="44"/>
+        <rect x="1" y="65" width="300" height="60"/>
         <rect x="1" y="145" width="300" height="44"/>
         <rect x="1" y="209" width="300" height="44"/>
+    </g>
+    <g fill="url(#secondary)" stroke="#dca600">
+        <rect x="1" y="1" width="140" height="44"/>
         <rect x="1" y="429" width="140" height="36"/>
     </g>
     <g fill="url(#tertiary)" stroke="#cd91cd">
@@ -48,10 +56,9 @@
         <rect x="161" y="429" width="140" height="36"/>
     </g>
     <g fill="url(#neutral)" stroke="#585c5b">
-        <rect x="1" y="65" width="300" height="60"/>
+        <rect x="1" y="273" width="300" height="44"/>
         <rect x="1" y="363" width="300" height="36"/>
     </g>
-    <rect x="1" y="273" width="300" height="44" fill="url(#secondary)" stroke="#dca600"/>
     <g fill="#e0e0e0" font-family="Space Grotesk, Arial, sans-serif" font-size="12" text-anchor="middle">
         <text x="71" y="19" font-weight="bold">Web app</text>
         <text x="71" y="34" font-size="11">app-web</text>
