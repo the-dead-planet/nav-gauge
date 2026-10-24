@@ -9,6 +9,9 @@ COPY /ui/common ./ui/common
 COPY /ui/web ./ui/web
 
 RUN corepack enable && yarn install --network-timeout 300000
+
+COPY /docs/assets ./docs/assets
+
 RUN yarn build:ui:web
 
 FROM nginx:1.28.0-alpine
