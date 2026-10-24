@@ -64,7 +64,7 @@ const createColorRule = (attribute: 'color' | 'highlight', color: string): strin
 
 const createAppearanceDeclarations = (policy: Theme['appearancePolicies']['default']): string => {
     const defaultInset = policy.effects.inset?.default ?? transparentInset;
-    const activeInset = policy.effects.inset?.active ?? transparentInset;
+    const activePressedInset = policy.effects.inset?.['active-pressed'] ?? transparentInset;
     return [
         ...themeAppearanceStateOptions.flatMap((state) => {
             const statePolicy = policy.states[state];
@@ -81,16 +81,16 @@ const createAppearanceDeclarations = (policy: Theme['appearancePolicies']['defau
         `--appearance-backdrop-blur:${policy.effects.backdropBlur}px`,
         `--appearance-inset-default-edge-start:${resolveAppearancePaint(defaultInset.edgeStart)}`,
         `--appearance-inset-default-edge-end:${resolveAppearancePaint(defaultInset.edgeEnd)}`,
-        `--appearance-inset-active-edge-start:${resolveAppearancePaint(activeInset.edgeStart)}`,
-        `--appearance-inset-active-edge-end:${resolveAppearancePaint(activeInset.edgeEnd)}`,
+        `--appearance-inset-active-pressed-edge-start:${resolveAppearancePaint(activePressedInset.edgeStart)}`,
+        `--appearance-inset-active-pressed-edge-end:${resolveAppearancePaint(activePressedInset.edgeEnd)}`,
         `--appearance-inset-default-inner-start:${resolveAppearancePaint(defaultInset.shadow)}`,
         `--appearance-inset-default-inner-end:${resolveAppearancePaint(defaultInset.highlight)}`,
-        `--appearance-inset-active-inner-start:${resolveAppearancePaint(activeInset.shadow)}`,
-        `--appearance-inset-active-inner-end:${resolveAppearancePaint(activeInset.highlight)}`,
+        `--appearance-inset-active-pressed-inner-start:${resolveAppearancePaint(activePressedInset.shadow)}`,
+        `--appearance-inset-active-pressed-inner-end:${resolveAppearancePaint(activePressedInset.highlight)}`,
         `--appearance-inset-default-recess:${resolveAppearancePaint(defaultInset.recess)}`,
-        `--appearance-inset-active-recess:${resolveAppearancePaint(activeInset.recess)}`,
+        `--appearance-inset-active-pressed-recess:${resolveAppearancePaint(activePressedInset.recess)}`,
         `--appearance-inset-default-shadow:3px 3px 4px ${resolveAppearancePaint(defaultInset.shadow)} inset,-2px -2px 4px ${resolveAppearancePaint(defaultInset.highlight)} inset`,
-        `--appearance-inset-active-shadow:3px 3px 4px ${resolveAppearancePaint(activeInset.shadow)} inset,-2px -2px 4px ${resolveAppearancePaint(activeInset.highlight)} inset`,
+        `--appearance-inset-active-pressed-shadow:3px 3px 4px ${resolveAppearancePaint(activePressedInset.shadow)} inset,-2px -2px 4px ${resolveAppearancePaint(activePressedInset.highlight)} inset`,
     ].join(';');
 };
 

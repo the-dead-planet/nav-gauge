@@ -76,7 +76,7 @@ export const NumberInput: FC<NumberInputProps> = ({
     value,
     onChange,
     disabled = false,
-    active = false,
+    highlighted = false,
     ariaLabel,
     unit,
     min,
@@ -100,18 +100,18 @@ export const NumberInput: FC<NumberInputProps> = ({
         : variant === 'fill'
             ? theme.isLight ? 100 : 900
             : theme.isLight ? 900 : 100);
-    const contentColor = theme.color(active ? highlightColor : color, active ? highlightGlyphsShade ?? resolvedGlyphsShade : resolvedGlyphsShade);
+    const contentColor = theme.color(highlighted ? highlightColor : color, highlighted ? highlightGlyphsShade ?? resolvedGlyphsShade : resolvedGlyphsShade);
     const disabledShade: ColorShade = theme.isLight ? 300 : 700;
     const disabledColor = theme.color(color, disabledShade);
     const activeAccent = theme.color(highlightColor, theme.isLight ? 600 : 300);
-    const backgroundColor = active && !disabled && variant === 'fill'
+    const backgroundColor = highlighted && !disabled && variant === 'fill'
         ? activeAccent
         : variant === 'fill'
         ? baseColor
         : variant === 'fill-translucent'
             ? theme.color(color, 500, TRANSLUCENT_OPACITY)
             : theme.color(color, theme.isLight ? 100 : 900);
-    const borderColor = active && !disabled
+    const borderColor = highlighted && !disabled
         ? activeAccent
         : variant === 'fill-translucent'
         ? theme.color(color, 500, 0.3)
@@ -168,7 +168,7 @@ export const NumberInput: FC<NumberInputProps> = ({
                         glyphsShade={incrementDisabled ? disabledShade : glyphsShade}
                         size={buttonSizes[size]}
                         disabled={incrementDisabled}
-                        active={active}
+                        highlighted={highlighted}
                         onPressIn={() => stepRepeat.start(1)}
                         onPressOut={stepRepeat.stop}
                         accessibilityLabel={ariaLabel ? `${ariaLabel} (+)` : '+'}
@@ -182,7 +182,7 @@ export const NumberInput: FC<NumberInputProps> = ({
                         glyphsShade={decrementDisabled ? disabledShade : glyphsShade}
                         size={buttonSizes[size]}
                         disabled={decrementDisabled}
-                        active={active}
+                        highlighted={highlighted}
                         onPressIn={() => stepRepeat.start(-1)}
                         onPressOut={stepRepeat.stop}
                         accessibilityLabel={ariaLabel ? `${ariaLabel} (−)` : '−'}

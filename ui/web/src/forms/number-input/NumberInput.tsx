@@ -21,7 +21,7 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
     max,
     step,
     disabled = false,
-    active = false,
+    highlighted = false,
     autoSelect = false,
     ariaLabel,
     unit,
@@ -70,7 +70,7 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
             styles[`size-${size}`],
             styles[`variant-${variant}`],
             disabled && styles.disabled,
-            active && !disabled && styles.active,
+            highlighted && !disabled && styles.highlighted,
         )}>
             {typeof label === 'string' ? (
                 <Label htmlFor={id} color={color} shade={resolvedGlyphsShade} className={styles.label}>
@@ -91,10 +91,10 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
                         disabled={disabled}
                         aria-label={ariaLabel || (typeof label === 'string' ? label : undefined)}
                         className={classNames(styles.input, className)}
-                        style={{ color: theme.color(active ? highlightColor : color, active ? highlightGlyphsShade : glyphsShade) }}
+                        style={{ color: theme.color(highlighted ? highlightColor : color, highlighted ? highlightGlyphsShade : glyphsShade) }}
                         {...props}
                     />
-                    {unit ? <span className={styles['unit']} style={{ color: theme.color(active ? highlightColor : color, active ? highlightGlyphsShade : glyphsShade) }}>{unit}</span> : null}
+                    {unit ? <span className={styles['unit']} style={{ color: theme.color(highlighted ? highlightColor : color, highlighted ? highlightGlyphsShade : glyphsShade) }}>{unit}</span> : null}
                 </div>
                 {showStepControls ? <div className={styles.steppers}>
                     <Button
@@ -106,7 +106,7 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
                         highlightColor={highlightColor}
                         glyphsShade={incrementDisabled ? disabledShade : glyphsShade}
                         highlightGlyphsShade={highlightGlyphsShade}
-                        active={active}
+                        highlighted={highlighted}
                         size={buttonSizes[size]}
                         className={styles['stepper-btn']}
                         aria-label={ariaLabel ? `${ariaLabel} (+)` : '+'}
@@ -119,7 +119,7 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
                         highlightColor={highlightColor}
                         glyphsShade={decrementDisabled ? disabledShade : glyphsShade}
                         highlightGlyphsShade={highlightGlyphsShade}
-                        active={active}
+                        highlighted={highlighted}
                         size={buttonSizes[size]}
                         className={styles['stepper-btn']}
                         aria-label={ariaLabel ? `${ariaLabel} (−)` : '−'}

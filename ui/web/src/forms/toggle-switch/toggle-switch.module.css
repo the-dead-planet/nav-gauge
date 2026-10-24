@@ -218,49 +218,49 @@
         0 1px 2px rgb(0 0 0 / .25);
 }
 
-.toggle-switch.active .track {
-    background-color: var(--appearance-active-surface);
-    border-width: var(--appearance-active-border-width);
-    border-color: var(--appearance-active-border);
+.toggle-switch.highlighted .track {
+    background-color: var(--appearance-active-pressed-surface);
+    border-width: var(--appearance-active-pressed-border-width);
+    border-color: var(--appearance-active-pressed-border);
 }
 
-.toggle-switch.active :is(.thumb-body, .thumb-pivot, .thumb-knob) {
-    background-color: var(--appearance-active-surface);
+.toggle-switch.highlighted :is(.thumb-body, .thumb-pivot, .thumb-knob) {
+    background-color: var(--appearance-active-pressed-surface);
 }
 
-.toggle-switch.active .label {
-    color: var(--appearance-active-glyphs-override, var(--appearance-active-glyphs));
-    font-weight: var(--appearance-active-font-weight, inherit);
+.toggle-switch.highlighted .label {
+    color: var(--appearance-active-pressed-glyphs-override, var(--appearance-active-pressed-glyphs));
+    font-weight: var(--appearance-active-pressed-font-weight, inherit);
 }
 
-.toggle-switch:not(.disabled):is(:hover, :focus-within) .track {
-    background-color: var(--appearance-interaction-surface);
-    border-width: var(--appearance-interaction-border-width);
-    border-color: var(--appearance-interaction-border);
+.toggle-switch:not(.disabled, .highlighted, :active):is(:hover, :focus-within) .track {
+    background-color: var(--appearance-hover-focus-surface);
+    border-width: var(--appearance-hover-focus-border-width);
+    border-color: var(--appearance-hover-focus-border);
 }
 
-.toggle-switch:not(.disabled):is(:hover, :focus-within) :is(.thumb-body, .thumb-pivot, .thumb-knob) {
-    background-color: var(--appearance-interaction-surface);
+.toggle-switch:not(.disabled, .highlighted, :active):is(:hover, :focus-within) :is(.thumb-body, .thumb-pivot, .thumb-knob) {
+    background-color: var(--appearance-hover-focus-surface);
 }
 
-.toggle-switch:not(.disabled):is(:hover, :focus-within) .label {
-    color: var(--appearance-interaction-glyphs-override, var(--appearance-interaction-glyphs));
-    font-weight: var(--appearance-interaction-font-weight, inherit);
+.toggle-switch:not(.disabled, .highlighted, :active):is(:hover, :focus-within) .label {
+    color: var(--appearance-hover-focus-glyphs-override, var(--appearance-hover-focus-glyphs));
+    font-weight: var(--appearance-hover-focus-font-weight, inherit);
 }
 
 .toggle-switch:not(.disabled):active .track {
-    background-color: var(--appearance-active-surface);
-    border-width: var(--appearance-active-border-width);
-    border-color: var(--appearance-active-border);
+    background-color: var(--appearance-active-pressed-surface);
+    border-width: var(--appearance-active-pressed-border-width);
+    border-color: var(--appearance-active-pressed-border);
 }
 
 .toggle-switch:not(.disabled):active :is(.thumb-body, .thumb-pivot, .thumb-knob) {
-    background-color: var(--appearance-active-surface);
+    background-color: var(--appearance-active-pressed-surface);
 }
 
 .toggle-switch:not(.disabled):active .label {
-    color: var(--appearance-active-glyphs-override, var(--appearance-active-glyphs));
-    font-weight: var(--appearance-active-font-weight, inherit);
+    color: var(--appearance-active-pressed-glyphs-override, var(--appearance-active-pressed-glyphs));
+    font-weight: var(--appearance-active-pressed-font-weight, inherit);
 }
 
 .toggle-switch.disabled .track {
@@ -274,7 +274,7 @@
 }
 
 .toggle-switch.disabled .label {
-    color: var(--appearance-default-glyphs);
+    color: var(--appearance-disabled-glyphs);
     font-weight: var(--appearance-disabled-font-weight, inherit);
 }
 

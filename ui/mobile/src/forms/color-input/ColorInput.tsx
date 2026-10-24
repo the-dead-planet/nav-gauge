@@ -68,7 +68,7 @@ export const ColorInput: FC<ColorInputProps> = ({
     value,
     onChange,
     disabled = false,
-    active = false,
+    highlighted = false,
     showColorButton = true,
     showValueInput = true,
     showFormatSelect = false,
@@ -85,13 +85,13 @@ export const ColorInput: FC<ColorInputProps> = ({
             ? toCssColor({ ...parseColor(borderColor), a: .24 })
             : inverseBackgroundColor;
     const activeAccent = theme.color(highlightColor, theme.isLight ? 600 : 300);
-    const inputBorderColor = active && !disabled
+    const inputBorderColor = highlighted && !disabled
         ? activeAccent
         : variant === 'fill-translucent'
             ? toCssColor({ ...parseColor(borderColor), a: .3 })
             : borderColor;
     const wrapperBackgroundColor = variant === 'fill-translucent' ? 'transparent' : backgroundColor;
-    const textColor = active && highlightGlyphsShade !== undefined ? theme.color(highlightColor, highlightGlyphsShade) : glyphsShade !== undefined ? theme.color(color, glyphsShade) : variant === 'fill'
+    const textColor = highlighted && highlightGlyphsShade !== undefined ? theme.color(highlightColor, highlightGlyphsShade) : glyphsShade !== undefined ? theme.color(color, glyphsShade) : variant === 'fill'
         ? inverseBackgroundColor
         : theme.color(color, theme.isLight ? 900 : 100);
 
@@ -115,7 +115,7 @@ export const ColorInput: FC<ColorInputProps> = ({
                             value={value}
                             label={label}
                             size={size}
-                            selected={open || active}
+                            selected={open || highlighted}
                             disabled={disabled}
                             accessibilityState={{ disabled, expanded: open }}
                             onPress={() => setOpen((current) => !current)}
@@ -133,7 +133,7 @@ export const ColorInput: FC<ColorInputProps> = ({
                                 glyphsShade={glyphsShade}
                                 highlightGlyphsShade={highlightGlyphsShade}
                                 disabled={disabled}
-                                active={active}
+                                highlighted={highlighted}
                                 onChange={changeFormat}
                             />
                         </View>

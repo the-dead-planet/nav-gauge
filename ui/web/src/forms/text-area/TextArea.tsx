@@ -13,7 +13,7 @@ export const TextArea: FC<Omit<ComponentProps<'textarea'>, 'size'> & TextAreaPro
     variant = DEFAULT_FILL_VARIANT,
     label,
     autoSelect = false,
-    active = false,
+    highlighted = false,
     disabled = false,
     onClick,
     className,
@@ -36,14 +36,14 @@ export const TextArea: FC<Omit<ComponentProps<'textarea'>, 'size'> & TextAreaPro
             styles[`highlight-${highlightColor}`],
             styles[`size-${size}`],
             styles[`variant-${variant}`],
-            active && !disabled && styles.active,
+            highlighted && !disabled && styles.highlighted,
         )}>
             <Label htmlFor={props.id} color={color} shade={glyphsShade} disabled={disabled} className={styles.label}>{label}</Label>
             <textarea
                 onClick={handleClick}
                 className={classNames(styles.textarea, className)}
                 disabled={disabled}
-                style={(active ? highlightGlyphsShade : glyphsShade) === undefined ? undefined : { color: theme.color(active ? highlightColor : color, active ? highlightGlyphsShade : glyphsShade) }}
+                style={(highlighted ? highlightGlyphsShade : glyphsShade) === undefined ? undefined : { color: theme.color(highlighted ? highlightColor : color, highlighted ? highlightGlyphsShade : glyphsShade) }}
                 {...props}
                 onFocus={(event) => {
                     if (highlightGlyphsShade !== undefined) {

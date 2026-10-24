@@ -13,7 +13,7 @@ export const TypographyElement = <Element extends ElementType>({
     baseClassName,
     color = 'neutral',
     highlightColor = color,
-    active,
+    highlighted,
     shade,
     highlightShade,
     fontType,
@@ -50,7 +50,7 @@ export const TypographyElement = <Element extends ElementType>({
         'data-appearance-variant': 'default',
         'data-appearance-color': color,
         'data-appearance-highlight': highlightColor,
-        'data-active': active || undefined,
+        'data-highlighted': highlighted || undefined,
         'aria-disabled': disabled || undefined,
         className: classNames(
             baseClassName,
@@ -75,7 +75,8 @@ export const TypographyElement = <Element extends ElementType>({
         style: {
             ...style,
             '--appearance-default-glyphs-override': shade === undefined ? undefined : `var(--color-${color}-${shade})`,
-            '--appearance-interaction-glyphs-override': highlightShade === undefined ? undefined : `var(--color-${highlightColor}-${highlightShade})`,
+            '--appearance-hover-focus-glyphs-override': highlightShade === undefined ? undefined : `var(--color-${highlightColor}-${highlightShade})`,
+            '--appearance-active-pressed-glyphs-override': highlightShade === undefined ? undefined : `var(--color-${highlightColor}-${highlightShade})`,
         } as CSSProperties,
     });
 };

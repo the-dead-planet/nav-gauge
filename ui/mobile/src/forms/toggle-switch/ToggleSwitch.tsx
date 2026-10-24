@@ -96,7 +96,7 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
     checked,
     onChange,
     disabled = false,
-    active = false,
+    highlighted = false,
     label,
     children,
 }) => {
@@ -246,8 +246,8 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
             {({ pressed }) => {
                 const appearanceState = disabled
                     ? 'disabled'
-                    : pressed || active
-                        ? 'active'
+                    : pressed || highlighted
+                        ? 'active-pressed'
                         : 'default';
                 const appearance = theme.resolveAppearance(
                     variant,

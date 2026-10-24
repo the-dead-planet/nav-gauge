@@ -22,7 +22,7 @@ export const typographyStoryArgs: TypographyStoryProps = {
     color: 'neutral',
     fontType: FontType.Default,
     fontWeight: undefined,
-    active: false,
+    highlighted: false,
     disabled: false,
     bold: false,
     uppercase: false,
@@ -82,7 +82,7 @@ export const typographyStoryControls: StoryControls<TypographyStoryProps> = {
             Default: undefined,
         },
     },
-    active: {
+    highlighted: {
         control: 'boolean',
     },
     disabled: {

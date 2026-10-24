@@ -11,7 +11,7 @@ export const toggleSwitchStoryArgs = {
     variant: 'fill-inverse',
     size: 'sm',
     orientation: 'horizontal',
-    active: false,
+    highlighted: false,
     disabled: false,
 } satisfies Omit<ToggleSwitchProps, 'onChange'>;
 
@@ -52,7 +52,7 @@ export const toggleSwitchStoryControls: StoryControls<ToggleSwitchProps> = {
     orientation: {
         control: 'select', options: toggleSwitchOrientations,
     },
-    active: {
+    highlighted: {
         control: 'boolean'
     },
     disabled: {

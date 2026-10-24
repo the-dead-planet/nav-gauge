@@ -17,7 +17,7 @@ export const Checkbox: FC<Omit<ComponentProps<'label'>, 'onChange'> & CheckboxPr
     variant = DEFAULT_FILL_VARIANT,
     size = DEFAULT_SIZE,
     checked,
-    active = false,
+    highlighted = false,
     onChange,
     disabled = false,
     children,
@@ -54,7 +54,7 @@ export const Checkbox: FC<Omit<ComponentProps<'label'>, 'onChange'> & CheckboxPr
                 styles[`size-${size}`],
                 {
                     [styles['disabled']]: disabled,
-                    [styles['checked']]: checked || (active && !disabled),
+                    [styles['checked']]: checked || (highlighted && !disabled),
                 },
                 className
             )}
@@ -69,14 +69,14 @@ export const Checkbox: FC<Omit<ComponentProps<'label'>, 'onChange'> & CheckboxPr
                 onChange={handleChange}
                 disabled={disabled}
             />
-            <span className={classNames(styles['box'], { [styles['box-checked']]: checked || (active && !disabled) })}>
+            <span className={classNames(styles['box'], { [styles['box-checked']]: checked || (highlighted && !disabled) })}>
                 {checked ? (
                     <svg className={styles['checkmark']} viewBox="0 0 12 12" width="12" height="12" aria-hidden>
                         <path d="M2 6l3 3 5-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                 ) : null}
             </span>
-            {children ? <span className={styles['label']} style={(checked || active ? highlightGlyphsShade : glyphsShade) === undefined ? undefined : { color: theme.color(checked || active ? highlightColor : color, checked || active ? highlightGlyphsShade : glyphsShade) }}>{children}</span> : null}
+            {children ? <span className={styles['label']} style={(checked || highlighted ? highlightGlyphsShade : glyphsShade) === undefined ? undefined : { color: theme.color(checked || highlighted ? highlightColor : color, checked || highlighted ? highlightGlyphsShade : glyphsShade) }}>{children}</span> : null}
         </label>
     );
 };

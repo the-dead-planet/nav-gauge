@@ -153,22 +153,22 @@
 }
 
 .highlight-neutral .input-wrapper:focus-within,
-.highlight-neutral.active {
+.highlight-neutral.highlighted {
     --ni-highlight-color: var(--color-neutral);
 }
 
 .highlight-primary .input-wrapper:focus-within,
-.highlight-primary.active {
+.highlight-primary.highlighted {
     --ni-highlight-color: var(--color-primary);
 }
 
 .highlight-secondary .input-wrapper:focus-within,
-.highlight-secondary.active {
+.highlight-secondary.highlighted {
     --ni-highlight-color: var(--color-secondary);
 }
 
 .highlight-tertiary .input-wrapper:focus-within,
-.highlight-tertiary.active {
+.highlight-tertiary.highlighted {
     --ni-highlight-color: var(--color-tertiary);
 }
 

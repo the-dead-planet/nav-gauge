@@ -25,7 +25,7 @@ export const BevelPanel: FC<BevelPanelProps & Props & ComponentProps<'div'>> = (
     highlightColor,
     variant = DEFAULT_FILL_VARIANT,
     size = DEFAULT_SIZE,
-    active = false,
+    highlighted = false,
     disabled = false,
     onClick,
     className,
@@ -81,7 +81,7 @@ export const BevelPanel: FC<BevelPanelProps & Props & ComponentProps<'div'>> = (
                 styles[`highlight-color-${highlightColor || color}`],
                 styles[`mode-${theme.mode}`],
                 {
-                    [styles.active]: active && !disabled,
+                    [styles.highlighted]: highlighted && !disabled,
                     [styles.disabled]: disabled,
                     [styles.interactive]: !disabled && (interactive || onClick),
                     [styles[`glow-style-${activeGlow}`]]: !disabled && interactive,

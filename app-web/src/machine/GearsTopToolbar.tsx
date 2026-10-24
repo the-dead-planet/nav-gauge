@@ -30,7 +30,7 @@ export const GearsTopToolbar: FC = () => {
                         key={gear.id}
                         variant="ghost"
                         highlightColor="secondary"
-                        active={isEngaged}
+                        highlighted={isEngaged}
                         icon={gear.icon}
                         onClick={() => {
                             if (isEngaged) {

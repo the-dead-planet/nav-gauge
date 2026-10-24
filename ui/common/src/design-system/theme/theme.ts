@@ -129,8 +129,8 @@ export class Theme {
                 glyphs: 900,
                 inverseSurface: 200,
                 insetSurface: 100,
-                interaction: 600,
-                active: 700,
+                hoverFocus: 600,
+                activePressed: 700,
                 disabledSurface: 200,
                 disabledGlyphs: 300,
             }
@@ -142,8 +142,8 @@ export class Theme {
                 glyphs: 100,
                 inverseSurface: 800,
                 insetSurface: 900,
-                interaction: 300,
-                active: 200,
+                hoverFocus: 300,
+                activePressed: 200,
                 disabledSurface: 800,
                 disabledGlyphs: 700,
             };
@@ -249,22 +249,22 @@ export class Theme {
                             shade: shades.glyphs,
                         },
                     },
-                    interaction: {
+                    'hover-focus': {
                         surface: defaultStateSurface,
                         border: transparentBorder,
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.interaction,
+                            shade: shades.hoverFocus,
                         },
                     },
-                    active: {
+                    'active-pressed': {
                         surface: defaultStateSurface,
                         border: transparentBorder,
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.active,
+                            shade: shades.activePressed,
                         },
                     },
                     disabled: {
@@ -291,7 +291,7 @@ export class Theme {
                             fontWeight: 500,
                         },
                     },
-                    interaction: {
+                    'hover-focus': {
                         surface: transparent,
                         border: transparentBorder,
                         glyphs: {
@@ -301,7 +301,7 @@ export class Theme {
                             fontWeight: 500,
                         },
                     },
-                    active: {
+                    'active-pressed': {
                         surface: transparent,
                         border: transparentBorder,
                         glyphs: {
@@ -341,30 +341,30 @@ export class Theme {
                             backgroundShade: shades.base,
                         },
                     },
-                    interaction: {
+                    'hover-focus': {
                         surface: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.interaction,
+                            shade: shades.hoverFocus,
                         },
                         border: transparentBorder,
                         glyphs: {
                             type: 'contrast',
                             colorProperty: 'highlightColor',
-                            backgroundShade: shades.interaction,
+                            backgroundShade: shades.hoverFocus,
                         },
                     },
-                    active: {
+                    'active-pressed': {
                         surface: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.active,
+                            shade: shades.activePressed,
                         },
                         border: transparentBorder,
                         glyphs: {
                             type: 'contrast',
                             colorProperty: 'highlightColor',
-                            backgroundShade: shades.active,
+                            backgroundShade: shades.activePressed,
                         },
                     },
                     disabled: {
@@ -399,7 +399,7 @@ export class Theme {
                             shade: shades.glyphs,
                         },
                     },
-                    interaction: {
+                    'hover-focus': {
                         surface: {
                             type: 'shade',
                             colorProperty: 'color',
@@ -408,7 +408,7 @@ export class Theme {
                         border: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.interaction,
+                            shade: shades.hoverFocus,
                             width: 1,
                         },
                         glyphs: {
@@ -417,7 +417,7 @@ export class Theme {
                             shade: shades.glyphs,
                         },
                     },
-                    active: {
+                    'active-pressed': {
                         surface: {
                             type: 'shade',
                             colorProperty: 'color',
@@ -426,7 +426,7 @@ export class Theme {
                         border: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.active,
+                            shade: shades.activePressed,
                             width: 1,
                         },
                         glyphs: {
@@ -469,7 +469,7 @@ export class Theme {
                             shade: shades.base,
                         },
                     },
-                    interaction: {
+                    'hover-focus': {
                         surface: {
                             type: 'shade',
                             colorProperty: 'color',
@@ -479,16 +479,16 @@ export class Theme {
                         border: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.interaction,
+                            shade: shades.hoverFocus,
                             width: 1,
                         },
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.interaction,
+                            shade: shades.hoverFocus,
                         },
                     },
-                    active: {
+                    'active-pressed': {
                         surface: {
                             type: 'shade',
                             colorProperty: 'color',
@@ -498,13 +498,13 @@ export class Theme {
                         border: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.active,
+                            shade: shades.activePressed,
                             width: 1,
                         },
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.active,
+                            shade: shades.activePressed,
                         },
                     },
                     disabled: {
@@ -540,7 +540,7 @@ export class Theme {
                             shade: shades.base,
                         },
                     },
-                    interaction: {
+                    'hover-focus': {
                         surface: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
@@ -550,16 +550,16 @@ export class Theme {
                         border: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.interaction,
+                            shade: shades.hoverFocus,
                             width: 1,
                         },
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.interaction,
+                            shade: shades.hoverFocus,
                         },
                     },
-                    active: {
+                    'active-pressed': {
                         surface: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
@@ -569,13 +569,13 @@ export class Theme {
                         border: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.active,
+                            shade: shades.activePressed,
                             width: 1,
                         },
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.active,
+                            shade: shades.activePressed,
                         },
                     },
                     disabled: {
@@ -605,7 +605,7 @@ export class Theme {
                             shade: shades.base,
                         },
                     },
-                    interaction: {
+                    'hover-focus': {
                         surface: {
                             type: 'shade',
                             colorProperty: 'color',
@@ -615,10 +615,10 @@ export class Theme {
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.interaction,
+                            shade: shades.hoverFocus,
                         },
                     },
-                    active: {
+                    'active-pressed': {
                         surface: {
                             type: 'shade',
                             colorProperty: 'color',
@@ -628,7 +628,7 @@ export class Theme {
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.active,
+                            shade: shades.activePressed,
                         },
                     },
                     disabled: {
@@ -647,8 +647,8 @@ export class Theme {
                     glyphsGlow: true,
                     inset: {
                         default: insetEffect('color'),
-                        interaction: insetEffect('highlightColor'),
-                        active: insetEffect('highlightColor'),
+                        'hover-focus': insetEffect('highlightColor'),
+                        'active-pressed': insetEffect('highlightColor'),
                         disabled: insetEffect('color'),
                     },
                 },

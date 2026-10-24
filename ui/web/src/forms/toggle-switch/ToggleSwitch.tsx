@@ -22,7 +22,7 @@ export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & Props>
     checked,
     onChange,
     disabled = false,
-    active = false,
+    highlighted = false,
     className,
     style,
     children,
@@ -55,7 +55,7 @@ export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & Props>
                 {
                     [styles['disabled']]: disabled,
                     [styles['checked']]: checked,
-                    [styles['active']]: active && !disabled,
+                    [styles['highlighted']]: highlighted && !disabled,
                 },
                 className
             )}
@@ -65,8 +65,8 @@ export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & Props>
                     '--appearance-default-glyphs-override': theme.color(color, glyphsShade),
                 }),
                 ...(highlightGlyphsShade === undefined ? undefined : {
-                    '--appearance-interaction-glyphs-override': theme.color(highlightColor, highlightGlyphsShade),
-                    '--appearance-active-glyphs-override': theme.color(highlightColor, highlightGlyphsShade),
+                    '--appearance-hover-focus-glyphs-override': theme.color(highlightColor, highlightGlyphsShade),
+                    '--appearance-active-pressed-glyphs-override': theme.color(highlightColor, highlightGlyphsShade),
                 }),
             } as CSSProperties}
             data-appearance-variant={variant}
@@ -88,7 +88,7 @@ export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & Props>
                 </span>
             ) : content}
             <span className={classNames(styles['toggle-row'], styles[`orientation-${orientation}`])}>
-                <Lamp isSwitchedOn={false} active={!checked} />
+                <Lamp isSwitchedOn={false} highlighted={!checked} />
                 <span className={styles['track']}>
                     <span
                         className={styles['thumb']}
@@ -101,7 +101,7 @@ export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & Props>
                         <span className={styles['thumb-knob']} />
                     </span>
                 </span>
-                <Lamp isSwitchedOn={true} active={checked} />
+                <Lamp isSwitchedOn={true} highlighted={checked} />
             </span>
         </label>
     );

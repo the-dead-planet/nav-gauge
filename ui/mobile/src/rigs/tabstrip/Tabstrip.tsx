@@ -31,7 +31,7 @@ export const Tabstrip: FC<TabstripProps> = ({
     highlightColor = color,
     highlightGlyphsShade,
     variant = DEFAULT_FILL_VARIANT,
-    active = false,
+    highlighted = false,
     disabled = false,
     spread = false,
     overflowAccessibilityLabel,
@@ -91,7 +91,7 @@ export const Tabstrip: FC<TabstripProps> = ({
                         style={[styles.headerButton, spread ? styles.spreadButton : undefined, selected ? styles.selectedButton : undefined]}
                         accessibilityRole="tab"
                         accessibilityState={{ selected, disabled: disabled || option.disabled }}
-                        active={active || selected}
+                        highlighted={highlighted || selected}
                         disabled={disabled || option.disabled}
                         onPress={() => selectTab(option.value)}
                     >

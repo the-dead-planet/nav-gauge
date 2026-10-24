@@ -38,21 +38,21 @@ export const TextArea: FC<
     label,
     autoSelect = false,
     editable = true,
-    active = false,
+    highlighted = false,
     disabled = false,
     ...props
 }) => {
     const theme = useTheme();
     const [isFocused, setIsFocused] = useState(false);
     const isDisabled = disabled || !editable;
-    const highlighted = !isDisabled && (active || isFocused);
-    const borderColor = highlighted
+    const isHighlighted = !isDisabled && (highlighted || isFocused);
+    const borderColor = isHighlighted
         ? theme.color(highlightColor, theme.isLight ? 600 : 300)
         : theme.color(color, 500, variant === "fill-translucent" ? 0.3 : 1);
     const fontSize = controlTextSpecifications[size].fontSize;
     const paddingV = size === "xs" ? 0 : size === "sm" ? 2 : 6;
     const disabledColor = theme.color(color, theme.isLight ? 300 : 700);
-    const textColor = highlighted && highlightGlyphsShade !== undefined
+    const textColor = isHighlighted && highlightGlyphsShade !== undefined
         ? theme.color(highlightColor, highlightGlyphsShade)
         : glyphsShade !== undefined
           ? theme.color(color, glyphsShade)

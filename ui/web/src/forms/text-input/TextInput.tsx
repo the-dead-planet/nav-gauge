@@ -16,7 +16,7 @@ export const TextInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' | 
     value,
     onChange,
     disabled = false,
-    active = false,
+    highlighted = false,
     autoSelect = false,
     className,
     ...props
@@ -41,7 +41,7 @@ export const TextInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' | 
             styles[`highlight-${highlightColor}`],
             styles[`size-${size}`],
             styles[`variant-${variant}`],
-            active && !disabled && styles.active,
+            highlighted && !disabled && styles.highlighted,
             className
         )}>
             {label ? <Label htmlFor={id} color={color} shade={glyphsShade} className={styles.label}>{label}</Label> : null}
@@ -53,7 +53,7 @@ export const TextInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' | 
                 onClick={handleClick}
                 disabled={disabled}
                 className={styles.input}
-                style={(active ? highlightGlyphsShade : glyphsShade) === undefined ? undefined : { color: theme.color(active ? highlightColor : color, active ? highlightGlyphsShade : glyphsShade) }}
+                style={(highlighted ? highlightGlyphsShade : glyphsShade) === undefined ? undefined : { color: theme.color(highlighted ? highlightColor : color, highlighted ? highlightGlyphsShade : glyphsShade) }}
                 {...props}
                 onFocus={(event) => {
                     if (highlightGlyphsShade !== undefined) {

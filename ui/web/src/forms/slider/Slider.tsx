@@ -18,7 +18,7 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
     step = 1,
     value,
     onChange,
-    active = false,
+    highlighted = false,
     disabled = false,
     id,
     label,
@@ -63,7 +63,7 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
                     styles.slider,
                     styles[`size-${size}`],
                     styles[`variant-${variant}`],
-                    { [styles.active]: active },
+                    { [styles.highlighted]: highlighted },
                     className
                 )}
                 style={style}
@@ -93,7 +93,7 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
             [styles['disabled']]: disabled,
         })}>
             {typeof label === 'string' ? (
-                <Label htmlFor={id} color={active ? highlightColor : color} shade={active ? highlightGlyphsShade : glyphsShade} className={styles['label']}>
+                <Label htmlFor={id} color={highlighted ? highlightColor : color} shade={highlighted ? highlightGlyphsShade : glyphsShade} className={styles['label']}>
                     {label} {!showNumberInput ? <Span tabular>{value}</Span> : null}
                 </Label>
             ) : label}

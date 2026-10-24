@@ -44,7 +44,7 @@ export const BottomToolPanelHeader: FC<Props> = ({
                 return (
                     <Button
                         key={toolPanel.id}
-                        active={isActive}
+                        highlighted={isActive}
                         icon={toolPanel.icon as unknown as MobileButtonProps['icon']}
                         accessibilityLabel={tooltip}
                         tooltip={tooltip}

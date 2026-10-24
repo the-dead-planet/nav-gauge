@@ -33,7 +33,7 @@ export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle
     step = 1,
     value,
     onChange,
-    active,
+    highlighted,
     disabled = false,
     label,
     showNumberInput = false,
@@ -55,7 +55,7 @@ export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle
     const highlightAccent = theme.color(highlightColor, isLight ? 600 : 300);
     const fillColor = theme.color(color, 800);
     const strokeColor = theme.color(color, 500);
-    const isActive = active || isDragging;
+    const isActive = highlighted || isDragging;
     const highlightTrackColor = isActive ? highlightAccent : theme.color(highlightColor, 500);
     const thumbBackground = isActive
         ? theme.color(highlightColor, 900)

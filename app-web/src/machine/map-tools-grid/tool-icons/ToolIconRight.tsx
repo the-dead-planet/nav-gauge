@@ -53,7 +53,7 @@ export const ToolIconRight: FC<ObservedToolIcon<maplibregl.Map> & Props> = ({
                 corners="hexagon"
                 activeGlow={theme.isDark ? "animate-borders-glow" : 'none'}
                 color="primary"
-                active={active}
+                highlighted={active}
                 onClick={() => onClick?.(map)}
                 disabled={disabled}
                 className={className}

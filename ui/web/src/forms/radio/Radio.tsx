@@ -17,7 +17,7 @@ export const Radio: FC<Omit<ComponentProps<'label'>, 'onChange'> & RadioProps & 
     variant = DEFAULT_FILL_VARIANT,
     size = DEFAULT_SIZE,
     checked,
-    active = false,
+    highlighted = false,
     onChange,
     disabled = false,
     children,
@@ -54,7 +54,7 @@ export const Radio: FC<Omit<ComponentProps<'label'>, 'onChange'> & RadioProps & 
                 styles[`size-${size}`],
                 {
                     [styles['disabled']]: disabled,
-                    [styles['checked']]: checked || (active && !disabled),
+                    [styles['checked']]: checked || (highlighted && !disabled),
                 },
                 className
             )}
@@ -69,11 +69,11 @@ export const Radio: FC<Omit<ComponentProps<'label'>, 'onChange'> & RadioProps & 
                 onChange={handleChange}
                 disabled={disabled}
             />
-            <span className={classNames(styles['box'], { [styles['box-checked']]: checked || (active && !disabled) })}>
+            <span className={classNames(styles['box'], { [styles['box-checked']]: checked || (highlighted && !disabled) })}>
                 {checked ? <span className={styles['dot']} /> : null}
             </span>
             {children ? (
-                <span className={styles['label']} style={(checked || active ? highlightGlyphsShade : glyphsShade) === undefined ? undefined : { color: theme.color(checked || active ? highlightColor : color, checked || active ? highlightGlyphsShade : glyphsShade) }}>
+                <span className={styles['label']} style={(checked || highlighted ? highlightGlyphsShade : glyphsShade) === undefined ? undefined : { color: theme.color(checked || highlighted ? highlightColor : color, checked || highlighted ? highlightGlyphsShade : glyphsShade) }}>
                     {children}
                 </span>
             ) : null}

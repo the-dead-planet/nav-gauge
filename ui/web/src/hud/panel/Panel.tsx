@@ -17,7 +17,7 @@ export const Panel: FC<PanelProps & Props & ComponentProps<'div'>> = ({
     highlightColor,
     variant = DEFAULT_FILL_VARIANT,
     borderWidth = 2,
-    active = false,
+    highlighted = false,
     disabled = false,
     onClick,
     forwardRef,
@@ -41,7 +41,7 @@ export const Panel: FC<PanelProps & Props & ComponentProps<'div'>> = ({
                 styles[`mode-${theme.mode}`],
                 {
                     [styles[shape ?? '']]: !!shape,
-                    [styles['active']]: active && !disabled,
+                    [styles['highlighted']]: highlighted && !disabled,
                     [styles['disabled']]: disabled,
                     [styles['interactive']]: !disabled && (interactive || onClick),
                     [styles[`glow-style-${activeGlow}`]]: !disabled && interactive,

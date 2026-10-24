@@ -28,7 +28,7 @@ export const ColorInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' |
     value,
     onChange,
     disabled = false,
-    active = false,
+    highlighted = false,
     showColorButton = true,
     showValueInput = true,
     showFormatSelect = false,
@@ -57,7 +57,7 @@ export const ColorInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' |
                 styles[`highlight-${highlightColor}`],
                 styles[`size-${size}`],
                 styles[`variant-${variant}`],
-                active && !disabled && styles.active,
+                highlighted && !disabled && styles.highlighted,
             )}>
                 <Label htmlFor={id} color={color} shade={glyphsShade} className={styles.label}>{label}</Label>
                 <div className={classNames(styles['input-wrapper'], { [styles.invalid]: invalid })}>
@@ -67,7 +67,7 @@ export const ColorInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' |
                             value={value}
                             label={label}
                             size={size}
-                            selected={open || active}
+                            selected={open || highlighted}
                             className={styles.swatch}
                             aria-haspopup="dialog"
                             aria-expanded={open}

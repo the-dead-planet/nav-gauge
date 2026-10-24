@@ -15,7 +15,7 @@ export const Tabstrip: FC<TabstripProps> = ({
     highlightColor = color,
     highlightGlyphsShade,
     variant = DEFAULT_FILL_VARIANT,
-    active = false,
+    highlighted = false,
     disabled = false,
     spread = false,
     overflowAccessibilityLabel,
@@ -91,7 +91,7 @@ export const Tabstrip: FC<TabstripProps> = ({
                         })}
                         role="tab"
                         aria-selected={option.value === value}
-                        active={active || option.value === value}
+                        highlighted={highlighted || option.value === value}
                         disabled={disabled || option.disabled}
                         onClick={() => onChange(option.value)}
                     >

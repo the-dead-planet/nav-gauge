@@ -30,7 +30,7 @@ export function Dropdown<T = string>({
     onChange,
     placeholder = 'Select...',
     disabled = false,
-    active = false,
+    highlighted = false,
     ariaLabel,
     labelledBy,
     popoverClassName,
@@ -102,7 +102,7 @@ export function Dropdown<T = string>({
                 styles[`variant-${variant}`],
                 {
                     [styles['disabled']]: disabled,
-                    [styles['open']]: isOpen || (active && !disabled),
+                    [styles['open']]: isOpen || (highlighted && !disabled),
                 },
                 className,
             )}
@@ -136,12 +136,12 @@ export function Dropdown<T = string>({
                                 className={styles['icon']}
                             />
                         ) : null}
-                        <span className={styles['label']} style={(isOpen || active ? highlightGlyphsShade : glyphsShade) === undefined ? undefined : { color: theme.color(isOpen || active ? highlightColor || color : color, isOpen || active ? highlightGlyphsShade : glyphsShade) }}>
+                        <span className={styles['label']} style={(isOpen || highlighted ? highlightGlyphsShade : glyphsShade) === undefined ? undefined : { color: theme.color(isOpen || highlighted ? highlightColor || color : color, isOpen || highlighted ? highlightGlyphsShade : glyphsShade) }}>
                             {selectedOption.label}
                         </span>
                     </>
                 ) : (
-                    <span className={styles['placeholder']} style={(isOpen || active ? highlightGlyphsShade : glyphsShade) === undefined ? undefined : { color: theme.color(isOpen || active ? highlightColor || color : color, isOpen || active ? highlightGlyphsShade : glyphsShade) }}>{placeholder}</span>
+                    <span className={styles['placeholder']} style={(isOpen || highlighted ? highlightGlyphsShade : glyphsShade) === undefined ? undefined : { color: theme.color(isOpen || highlighted ? highlightColor || color : color, isOpen || highlighted ? highlightGlyphsShade : glyphsShade) }}>{placeholder}</span>
                 )}
                 <Icon
                     src={Icons.NounProject.ChevronDownDoubleSquareFill}

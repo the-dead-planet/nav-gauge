@@ -41,7 +41,8 @@ describe('Typography', () => {
             expect(markup).to.include('data-appearance-variant="default"');
             expect(markup).to.include(`data-appearance-color="${color}"`);
             expect(markup).to.include('--appearance-default-glyphs-override:var(--color-' + color + '-100)');
-            expect(markup).to.include('--appearance-interaction-glyphs-override:var(--color-hazard-700)');
+            expect(markup).to.include('--appearance-hover-focus-glyphs-override:var(--color-hazard-700)');
+            expect(markup).to.include('--appearance-active-pressed-glyphs-override:var(--color-hazard-700)');
         }
     });
 
@@ -66,11 +67,11 @@ describe('Typography', () => {
         expect(normalHeader).to.include('weight-400');
     });
 
-    it('removes navigation and keyboard access from disabled active links', () => {
+    it('removes navigation and keyboard access from disabled highlighted links', () => {
         const markup = renderToStaticMarkup(createElement(LinkText, {
             href: 'https://example.com',
             disabled: true,
-            active: true,
+            highlighted: true,
             children: 'Link',
         }));
 

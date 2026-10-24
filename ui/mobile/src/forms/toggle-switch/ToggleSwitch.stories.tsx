@@ -36,7 +36,7 @@ const story = {
         'glyphsShade',
         'highlightColor',
         'highlightGlyphsShade',
-        'active',
+        'highlighted',
         'disabled',
     ],
     renderPlayground: (args) => <ToggleSwitch {...args} />,

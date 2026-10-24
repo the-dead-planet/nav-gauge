@@ -51,7 +51,7 @@ export const ToolIconLeft: FC<ObservedToolIcon<MobileMap> & Props> = ({
             corners="hexagon"
             activeGlow={theme.isDark ? "animate-borders-glow" : 'none'}
             highlightColor="secondary"
-            active={active}
+            highlighted={active}
             onPress={() => onClick?.(map)}
             disabled={disabled}
             style={style}

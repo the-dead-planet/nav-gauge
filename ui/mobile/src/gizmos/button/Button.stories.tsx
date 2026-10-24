@@ -75,7 +75,7 @@ const story = {
         'highlightColor',
         'highlightGlyphsShade',
         'activeGlow',
-        'active',
+        'highlighted',
         'disabled',
         'tooltip',
         'tooltipPlacement',

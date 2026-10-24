@@ -14,7 +14,7 @@ export const Checkbox: FC<CheckboxProps> = ({
     checked,
     onChange,
     disabled = false,
-    active = false,
+    highlighted = false,
     children,
 }) => {
     const theme = useTheme();
@@ -43,11 +43,11 @@ export const Checkbox: FC<CheckboxProps> = ({
             style={containerStyle}
         >
             {({ pressed }) => {
-                const highlighted = !disabled && (active || pressed);
-                const activeColor = highlighted ? highlightColor : color;
+                const isHighlighted = !disabled && (highlighted || pressed);
+                const activeColor = isHighlighted ? highlightColor : color;
                 const boxColor = checked && variant === 'fill-inverse'
                     ? theme.color(activeColor, theme.isLight ? 100 : (activeColor === 'neutral' ? 800 : 900))
-                    : disabled ? theme.color(color, theme.isLight ? 300 : 700) : highlighted ? accentColor : baseColor;
+                    : disabled ? theme.color(color, theme.isLight ? 300 : 700) : isHighlighted ? accentColor : baseColor;
                 const checkmarkColor = variant === 'fill-inverse'
                     ? theme.color(activeColor, theme.isLight ? (activeColor === 'neutral' ? 800 : 900) : 100)
                     : variant === 'fill-translucent' ? boxColor
@@ -89,8 +89,8 @@ export const Checkbox: FC<CheckboxProps> = ({
                         </View>
                         {children ? (
                             <Text
-                                color={highlighted ? highlightColor : color}
-                                shade={disabled ? (theme.isLight ? 300 : 700) : highlighted ? highlightGlyphsShade : glyphsShade}
+                                color={isHighlighted ? highlightColor : color}
+                                shade={disabled ? (theme.isLight ? 300 : 700) : isHighlighted ? highlightGlyphsShade : glyphsShade}
                                 style={textStyle}
                             >
                                 {children}

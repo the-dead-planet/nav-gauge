@@ -22,8 +22,8 @@ export const Text: FC<TextProps> = ({
     usage = 'body',
     color = 'neutral',
     highlightColor = color,
-    active,
-    appearanceState = active ? 'active' : 'default',
+    highlighted,
+    appearanceState = highlighted ? 'active-pressed' : 'default',
     shade,
     highlightShade,
     align,
@@ -63,7 +63,7 @@ export const Text: FC<TextProps> = ({
         appearance.fontWeight ?? typographyUsageSpecifications[usage].fontWeight,
     );
     const font = resolveMobileFont(fontType, resolvedFontWeight, Platform.OS);
-    const interactive = state === 'interaction' || state === 'active';
+    const interactive = state === 'hover-focus' || state === 'active-pressed';
     const overrideShade = interactive ? highlightShade : shade;
     const glyphs = state === 'disabled' || overrideShade === undefined
         ? appearance.glyphs
