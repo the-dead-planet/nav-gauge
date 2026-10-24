@@ -42,7 +42,7 @@ export const LayoutMenu: FC = () => {
                 <MenuItem
                     key="icon-creators"
                     type="link"
-                    href="/storybook/?path=/story/icons"
+                    href="/storybook/?path=/docs/design-system-icons--docs"
                     target="_blank"
                     rel="noreferrer"
                 >
