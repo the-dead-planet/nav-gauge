@@ -54,10 +54,10 @@ Use tabular numerals for changing values when stable character widths prevent th
 
 `fontWeight` accepts numbers `100` through `900` in steps of `100`, their string equivalents (such as `"300"` and `"800"`), and `"normal"` / `"bold"`. The keywords resolve to `400` and `700` respectively on both platforms.
 
-An explicit `fontWeight` takes precedence over the existing `bold` shorthand, then the <a href="./?path=/docs/design-system-appearance--docs#glyphs" target="_top" style={{ textDecoration: 'underline' }}>appearance policy's optional glyph weight</a>, then the text hierarchy's default.
+Appearance policies may supply a font weight per state. An explicit `fontWeight` takes precedence over the existing `bold` shorthand, then the appearance policy's optional glyph weight, then the text hierarchy's default.
 
 Available weights vary by font. Web may synthesize weights; mobile selects the nearest supported face within the chosen family, clamping requests outside its range to the thinnest or boldest bundled face.
 
-Typography's `usage` selects `header`, `body`, or `caption` text hierarchy; its glyphs follow the <a href="./?path=/docs/design-system-appearance--docs#appearance-defaults" target="_top" style={{ textDecoration: 'underline' }}>default appearance policy</a>. `shade` overrides default content; `highlightShade` resolves against `highlightColor ?? color`. Links own their native hover, keyboard focus, and pressed states, following the <a href="./?path=/docs/design-system-appearance--docs#interaction-states" target="_top" style={{ textDecoration: 'underline' }}>shared interaction rules</a>.
+Typography's `usage` selects `header`, `body`, or `caption` text hierarchy; its glyphs follow the <a href="./?path=/docs/design-system-appearance--docs#appearance-defaults" target="_top" style={{ textDecoration: 'underline' }}>default appearance policy</a>. `shade` overrides default content; `highlightShade` resolves against `highlightColor ?? color`. Links own their native hover, keyboard focus, and pressed states, following the <a href="./?path=/docs/design-system-appearance--docs#appearance-states" target="_top" style={{ textDecoration: 'underline' }}>shared appearance states</a>.
 
 <Canvas of={TypographyStories.Gallery} />
