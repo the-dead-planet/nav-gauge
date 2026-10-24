@@ -6665,6 +6665,7 @@ __metadata:
     react-svg: "npm:^19.2.1"
     style-loader: "npm:^4.0.0"
     ts-checker-rspack-plugin: "npm:^1.7.1"
+    typescript: "npm:^7.0.2"
     webpack-bundle-analyzer: "npm:^5.4.0"
     webpack-merge: "npm:^6.0.1"
   peerDependencies:
