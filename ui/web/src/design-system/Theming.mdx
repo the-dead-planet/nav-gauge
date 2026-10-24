@@ -73,12 +73,12 @@ Theme colors can use any of the available <a href="./?path=/docs/design-system-c
             return (
                 <tr key={level}>
                     <td><code>{level}</code></td>
-                    <td>0, {light.distance} / {dark.distance}</td>
-                    <td>{light.blur} / {dark.blur}</td>
-                    <td>{lightOpacity}% / {darkOpacity}%</td>
-                    <td>{light.blur / 2} / {dark.blur / 2}</td>
-                    <td>{light.depth} / {dark.depth}</td>
-                    <td><code>{level === 'none' ? 'none' : `0px ${light.distance}px ${light.blur}px rgba(0, 0, 0, ${light.opacity}) (light) / 0px ${dark.distance}px ${dark.blur}px rgba(0, 0, 0, ${dark.opacity}) (dark)`}</code></td>
+                    <td>0, {light.distance} light / {dark.distance} dark</td>
+                    <td>{light.blur} light / {dark.blur} dark</td>
+                    <td>{lightOpacity}% light / {darkOpacity}% dark</td>
+                    <td>{light.blur / 2} light / {dark.blur / 2} dark</td>
+                    <td>{light.depth} light / {dark.depth} dark</td>
+                    <td><code>{level === 'none' ? 'none' : `0px ${light.distance}px ${light.blur}px rgba(0, 0, 0, ${light.opacity}) light / 0px ${dark.distance}px ${dark.blur}px rgba(0, 0, 0, ${dark.opacity}) dark`}</code></td>
                 </tr>
             );
         })}
