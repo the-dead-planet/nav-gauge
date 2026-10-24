@@ -174,22 +174,22 @@
     }
 }
 
-.active.variant-fill .body,
-.active .header {
+.highlighted.variant-fill .body,
+.highlighted .header {
     fill: var(--notched-highlight-accent);
     stroke: var(--notched-highlight-accent);
 }
 
-.active.variant-fill-inverse .body {
+.highlighted.variant-fill-inverse .body {
     stroke: var(--notched-highlight-accent);
 }
 
-.active.variant-fill-translucent .body {
+.highlighted.variant-fill-translucent .body {
     fill: rgb(from var(--notched-highlight-accent) r g b / .48);
     stroke: var(--notched-highlight-accent);
 }
 
-.active .step {
+.highlighted .step {
     stroke: var(--notched-highlight-accent);
 }
 

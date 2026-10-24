@@ -27,7 +27,7 @@
 }
 
 .textarea:focus,
-.active .textarea {
+.highlighted .textarea {
     border-color: var(--ni-highlight-color);
     box-shadow: 0 0 0 1px var(--ni-highlight-color);
 }
@@ -85,22 +85,22 @@
 }
 
 .highlight-neutral .textarea:focus,
-.highlight-neutral.active {
+.highlight-neutral.highlighted {
     --ni-highlight-color: var(--color-neutral);
 }
 
 .highlight-primary .textarea:focus,
-.highlight-primary.active {
+.highlight-primary.highlighted {
     --ni-highlight-color: var(--color-primary);
 }
 
 .highlight-secondary .textarea:focus,
-.highlight-secondary.active {
+.highlight-secondary.highlighted {
     --ni-highlight-color: var(--color-secondary);
 }
 
 .highlight-tertiary .textarea:focus,
-.highlight-tertiary.active {
+.highlight-tertiary.highlighted {
     --ni-highlight-color: var(--color-tertiary);
 }
 

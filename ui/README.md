@@ -10,4 +10,4 @@ See [ARCHITECTURES](/docs/ARCHITECTURES.md).
 
 ## Design system
 
-Storybook MDX is the authoritative source for shared UI guidance. Start with the [design-system overview](/ui/web/src/design-system/Overview.mdx), [theming](/ui/web/src/design-system/Theming.mdx), and [colors](/ui/web/src/design-system/colors/Colors.mdx).
+Storybook MDX is the authoritative source for shared UI guidance. Start with the [design-system overview](/ui/web/src/design-system/Overview.mdx), [appearance](/ui/web/src/design-system/Appearance.mdx), [theming](/ui/web/src/design-system/Theming.mdx), and [colors](/ui/web/src/design-system/colors/Colors.mdx).

@@ -46,12 +46,12 @@ export const ToolIconLeft: FC<ObservedToolIcon<MobileMap> & Props> = ({
             showTooltipConnection
             size="lg"
             variant="fill-inverse"
-            contentShade={500}
-            highlightContentShade={theme.isDark ? 300 : 700}
+            glyphsShade={500}
+            highlightGlyphsShade={theme.isDark ? 300 : 700}
             corners="hexagon"
             activeGlow={theme.isDark ? "animate-borders-glow" : 'none'}
             highlightColor="secondary"
-            active={active}
+            highlighted={active}
             onPress={() => onClick?.(map)}
             disabled={disabled}
             style={style}

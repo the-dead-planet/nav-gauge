@@ -13,7 +13,7 @@ export const NotchedPanel: FC<NotchedPanelProps & Props & ComponentProps<'div'>>
     highlightColor = color,
     variant = DEFAULT_FILL_VARIANT,
     activeGlow = 'none',
-    active = false,
+    highlighted = false,
     disabled = false,
     header,
     children,
@@ -61,7 +61,7 @@ export const NotchedPanel: FC<NotchedPanelProps & Props & ComponentProps<'div'>>
         <div
             ref={containerRef}
             className={classNames(styles.panel, styles[`color-${color}`], styles[`highlight-color-${highlightColor}`], styles[`variant-${variant}`], styles[`mode-${theme.mode}`], {
-                [styles.active]: active && !disabled,
+                [styles.highlighted]: highlighted && !disabled,
                 [styles.disabled]: disabled,
                 [styles[`glow-style-${activeGlow}`]]: !disabled,
             }, className)}

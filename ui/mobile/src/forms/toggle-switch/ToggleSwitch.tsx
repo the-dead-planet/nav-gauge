@@ -87,16 +87,16 @@ function buildVerticalPoints(width: number, height: number, clip: { pivotStart: 
 
 export const ToggleSwitch: FC<ToggleSwitchProps> = ({
     color = 'neutral',
-    contentShade,
+    glyphsShade,
     highlightColor = color,
-    highlightContentShade,
+    highlightGlyphsShade,
     size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     orientation = 'horizontal',
     checked,
     onChange,
     disabled = false,
-    active = false,
+    highlighted = false,
     label,
     children,
 }) => {
@@ -246,8 +246,8 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
             {({ pressed }) => {
                 const appearanceState = disabled
                     ? 'disabled'
-                    : pressed || active
-                        ? 'active'
+                    : pressed || highlighted
+                        ? 'active-pressed'
                         : 'default';
                 const appearance = theme.resolveAppearance(
                     variant,
@@ -267,10 +267,10 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
                 const lampsDisabled = appearanceState === 'disabled';
                 const labelColor = appearanceState !== 'disabled'
                     && appearanceState !== 'default'
-                    && highlightContentShade !== undefined
-                    ? theme.color(highlightColor, highlightContentShade)
-                    : appearanceState === 'default' && contentShade !== undefined
-                        ? theme.color(color, contentShade)
+                    && highlightGlyphsShade !== undefined
+                    ? theme.color(highlightColor, highlightGlyphsShade)
+                    : appearanceState === 'default' && glyphsShade !== undefined
+                        ? theme.color(color, glyphsShade)
                         : theme.resolveAppearance().glyphs;
                 const trackStyle: ViewStyle = {
                     width: trackSize,

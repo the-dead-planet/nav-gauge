@@ -25,8 +25,8 @@ const GalleryDropdown: FC<{
             onChange={setValue}
             color={color}
             highlightColor={color}
-            contentShade={700}
-            highlightContentShade={200}
+            glyphsShade={700}
+            highlightGlyphsShade={200}
             variant={variant}
             size={size}
         />

@@ -29,7 +29,7 @@ export function DropdownList<T = string>({
     id,
     triggerRef,
     color,
-    contentShade,
+    glyphsShade,
     iconSize,
     value,
     options,
@@ -37,7 +37,7 @@ export function DropdownList<T = string>({
     size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     highlightColor,
-    highlightContentShade,
+    highlightGlyphsShade,
 }: Props &
     Pick<
         DropdownProps<T>,
@@ -45,8 +45,8 @@ export function DropdownList<T = string>({
         | 'options'
         | 'color'
         | 'highlightColor'
-        | 'contentShade'
-        | 'highlightContentShade'
+        | 'glyphsShade'
+        | 'highlightGlyphsShade'
         | 'size'
         | 'variant'
         | 'onChange'
@@ -200,7 +200,7 @@ export function DropdownList<T = string>({
                             className={styles['icon']}
                         />
                     ) : null}
-                    <span style={(index === highlightedIndex ? highlightContentShade : contentShade) === undefined ? undefined : { color: theme.color(index === highlightedIndex ? highlightColor ?? color ?? 'neutral' : color ?? 'neutral', index === highlightedIndex ? highlightContentShade : contentShade) }}>{option.label}</span>
+                    <span style={(index === highlightedIndex ? highlightGlyphsShade : glyphsShade) === undefined ? undefined : { color: theme.color(index === highlightedIndex ? highlightColor ?? color ?? 'neutral' : color ?? 'neutral', index === highlightedIndex ? highlightGlyphsShade : glyphsShade) }}>{option.label}</span>
                 </li>
             ))}
         </ul>,

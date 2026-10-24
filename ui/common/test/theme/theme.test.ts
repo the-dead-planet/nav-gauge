@@ -76,10 +76,10 @@ describe("Theme", () => {
                 expect(typographyTheme.resolveAppearance(undefined, color, 'hazard').glyphs).to.equal(
                     typographyTheme.color(color, typographyTheme.isDark ? 100 : 900),
                 );
-                expect(typographyTheme.resolveAppearance(undefined, color, 'hazard', 'interaction').glyphs).to.equal(
+                expect(typographyTheme.resolveAppearance(undefined, color, 'hazard', 'hover-focus').glyphs).to.equal(
                     typographyTheme.color('hazard', typographyTheme.isDark ? 300 : 600),
                 );
-                expect(typographyTheme.resolveAppearance(undefined, color, 'hazard', 'active').glyphs).to.equal(
+                expect(typographyTheme.resolveAppearance(undefined, color, 'hazard', 'active-pressed').glyphs).to.equal(
                     typographyTheme.color('hazard', typographyTheme.isDark ? 200 : 700),
                 );
                 expect(typographyTheme.resolveAppearance(undefined, color, 'hazard', 'disabled').glyphs).to.equal(
@@ -98,8 +98,8 @@ describe("Theme", () => {
                     for (const highlightColor of appearanceColorOptions) {
                         const appearances = [
                             ghostTheme.resolveAppearance('ghost', color, highlightColor, 'default'),
-                            ghostTheme.resolveAppearance('ghost', color, highlightColor, 'interaction'),
-                            ghostTheme.resolveAppearance('ghost', color, highlightColor, 'active'),
+                            ghostTheme.resolveAppearance('ghost', color, highlightColor, 'hover-focus'),
+                            ghostTheme.resolveAppearance('ghost', color, highlightColor, 'active-pressed'),
                             ghostTheme.resolveAppearance('ghost', color, highlightColor, 'disabled'),
                         ];
 
@@ -173,12 +173,12 @@ describe("Theme", () => {
         expect(theme.resolveAppearance("ghost", "primary", "secondary", "default").surface).to.equal("transparent");
         expect(theme.resolveAppearance("fill", "primary", "secondary", "default").border.width).to.equal(0);
         expect(theme.resolveAppearance("inset", "primary", "secondary", "default").border.width).to.equal(0);
-        expect(theme.resolveAppearance("inset", "primary", "secondary", "interaction").border.width).to.equal(0);
-        expect(theme.resolveAppearance("inset", "primary", "secondary", "active").border.width).to.equal(0);
+        expect(theme.resolveAppearance("inset", "primary", "secondary", "hover-focus").border.width).to.equal(0);
+        expect(theme.resolveAppearance("inset", "primary", "secondary", "active-pressed").border.width).to.equal(0);
         expect(theme.resolveAppearance("inset", "primary", "secondary", "default").effects.depth).to.equal("inset");
         expect(theme.resolveAppearance("fill-translucent", "primary", "secondary", "default").surface).to.match(/, 0\.24\)$/);
-        expect(theme.resolveAppearance("ghost", "primary", "secondary", "active").effects.glowColor).to.equal(theme.color("secondary"));
-        expect(theme.resolveAppearance("fill-inverse", "primary", "secondary", "interaction").surface).to.equal(
+        expect(theme.resolveAppearance("ghost", "primary", "secondary", "active-pressed").effects.glowColor).to.equal(theme.color("secondary"));
+        expect(theme.resolveAppearance("fill-inverse", "primary", "secondary", "hover-focus").surface).to.equal(
             theme.resolveAppearance("fill-inverse", "primary", "secondary", "default").surface,
         );
     });
@@ -186,7 +186,7 @@ describe("Theme", () => {
     it("resolves status colors", () => {
         expect(theme.color("glitch")).to.equal(theme.color("red", 600));
         expect(theme.contrastShade("glitch")).to.equal(theme.contrastShade("red", 600));
-        expect(theme.resolveAppearance("ghost", "glitch", "intel", "active").effects.glowColor).to.equal(
+        expect(theme.resolveAppearance("ghost", "glitch", "intel", "active-pressed").effects.glowColor).to.equal(
             theme.color("intel"),
         );
     });

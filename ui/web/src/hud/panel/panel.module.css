@@ -113,7 +113,7 @@
 }
 
 .variant-fill.interactive:active,
-.variant-fill.active {
+.variant-fill.highlighted {
     background-color: var(--panel-highlight-color-accent);
 }
 
@@ -129,7 +129,7 @@
 }
 
 .variant-fill-inverse.interactive:active,
-.variant-fill-inverse.active {
+.variant-fill-inverse.highlighted {
     border-color: var(--panel-highlight-color-accent);
 }
 
@@ -146,7 +146,7 @@
 }
 
 .variant-fill-translucent.interactive:active,
-.variant-fill-translucent.active {
+.variant-fill-translucent.highlighted {
     background-color: rgb(from var(--panel-highlight-color-accent) r g b / .48);
     border-color: var(--panel-highlight-color-accent);
 }

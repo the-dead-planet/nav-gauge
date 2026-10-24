@@ -15,9 +15,9 @@ const controlHeights = { xs: 18, sm: 24, md: 32, lg: 40 } as const;
 
 export const ClockInput = forwardRef<ViewInstance, ClockInputProps & { style?: ViewStyle }>(({
     color = 'neutral',
-    contentShade,
+    glyphsShade,
     highlightColor,
-    highlightContentShade,
+    highlightGlyphsShade,
     size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     value = CLOCK_INPUT_RANGE[0],
@@ -120,9 +120,9 @@ export const ClockInput = forwardRef<ViewInstance, ClockInputProps & { style?: V
                     max={max}
                     step={step}
                     color={color}
-                    contentShade={contentShade}
+                    glyphsShade={glyphsShade}
                     highlightColor={highlightColor}
-                    highlightContentShade={highlightContentShade}
+                    highlightGlyphsShade={highlightGlyphsShade}
                     size={size}
                     variant={variant}
                     disabled={disabled || !onChange}
@@ -135,7 +135,7 @@ export const ClockInput = forwardRef<ViewInstance, ClockInputProps & { style?: V
 
     return (
         <View ref={ref} style={containerStyle}>
-            <ClockLabel label={label} value={value} isLight={theme.isLight} showValue={!showNumberInput} color={color} contentShade={contentShade} />
+            <ClockLabel label={label} value={value} isLight={theme.isLight} showValue={!showNumberInput} color={color} glyphsShade={glyphsShade} />
             {control}
         </View>
     );

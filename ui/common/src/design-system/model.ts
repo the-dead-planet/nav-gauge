@@ -20,9 +20,10 @@ export type SpacingVariant = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 export interface AppearancePropsBase<TVariant extends SurfaceVariant = SurfaceVariant> {
     variant?: TVariant;
     color?: ColorVariant;
-    /** Applied on hovered, focused and active states. */
+    /** Applied on hovered, focused, pressed and highlighted states. */
     highlightColor?: ColorVariant;
-    active?: boolean;
+    /** Persistent visual emphasis, distinct from a temporary press. */
+    highlighted?: boolean;
     disabled?: boolean;
 }
 
@@ -31,10 +32,10 @@ export interface AppearanceProps<TVariant extends SurfaceVariant = SurfaceVarian
     /**
      * Has impact on content such as text and icons.
      */
-    contentShade?: ColorShade;
+    glyphsShade?: ColorShade;
     /**
-     * Applied on hovered, focused and active states.
+     * Applied on hovered, focused, pressed and highlighted states.
      * Has impact on content such as text and icons.
      */
-    highlightContentShade?: ColorShade;
+    highlightGlyphsShade?: ColorShade;
 }

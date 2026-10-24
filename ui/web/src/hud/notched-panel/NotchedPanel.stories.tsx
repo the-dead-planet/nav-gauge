@@ -8,10 +8,10 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {
-    args: { color: 'primary', variant: 'fill-translucent', active: false, disabled: false, children: <Text>Responsive navigation telemetry surface.</Text> },
+    args: { color: 'primary', variant: 'fill-translucent', highlighted: false, disabled: false, children: <Text>Responsive navigation telemetry surface.</Text> },
 };
 
-export const States: Story = { render: () => <div style={{ display: 'grid', gap: 16 }}><NotchedPanel active color="primary" header={<Text>ACTIVE</Text>}><Text>Highlighted panel</Text></NotchedPanel><NotchedPanel disabled color="primary" header={<Text>DISABLED</Text>}><Text>Disabled panel</Text></NotchedPanel></div> };
+export const States: Story = { render: () => <div style={{ display: 'grid', gap: 16 }}><NotchedPanel highlighted color="primary" header={<Text>HIGHLIGHTED</Text>}><Text>Highlighted panel</Text></NotchedPanel><NotchedPanel disabled color="primary" header={<Text>DISABLED</Text>}><Text>Disabled panel</Text></NotchedPanel></div> };
 
 export const Header: Story = {
     args: { color: 'neutral', highlightColor: 'secondary', header: <Text>WARNING</Text>, children: <Text>Route data contains unresolved segments.</Text> },

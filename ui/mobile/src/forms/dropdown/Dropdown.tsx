@@ -62,9 +62,9 @@ const ICON_SIZE_MAP = { xs: 12, sm: 16, md: 20, lg: 24 } as const;
 
 export function Dropdown<T>({
     color = 'neutral',
-    contentShade,
+    glyphsShade,
     highlightColor = color,
-    highlightContentShade,
+    highlightGlyphsShade,
     size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     value,
@@ -72,7 +72,7 @@ export function Dropdown<T>({
     onChange,
     placeholder = 'Select...',
     disabled = false,
-    active = false,
+    highlighted = false,
 }: Omit<DropdownProps<T>, 'options'> & { options: MobileOption<T>[] }) {
     const theme = useTheme();
     const { height: windowHeight } = useWindowDimensions();
@@ -94,7 +94,7 @@ export function Dropdown<T>({
         : theme.color(color, 100);
 
     const getTriggerStyle = (pressed: boolean): MutableViewStyle => {
-        const highlighted = !disabled && (active || pressed);
+        const isHighlighted = !disabled && (highlighted || pressed);
         const style: MutableViewStyle = {
             flexDirection: 'row',
             alignItems: 'center',
@@ -106,7 +106,7 @@ export function Dropdown<T>({
 
         switch (variant) {
             case 'fill':
-                style.backgroundColor = highlighted
+                style.backgroundColor = isHighlighted
                     ? theme.color(highlightColor, theme.isLight ? 600 : 300)
                     : baseColor;
                 style.borderWidth = 0;
@@ -117,7 +117,7 @@ export function Dropdown<T>({
                     color,
                     theme.isLight ? 100 : color === 'neutral' ? 800 : 900,
                 );
-                style.borderColor = highlighted
+                style.borderColor = isHighlighted
                     ? theme.color(highlightColor, theme.isLight ? 600 : 300)
                     : baseColor;
                 break;
@@ -128,10 +128,10 @@ export function Dropdown<T>({
                     500,
                     TRANSLUCENT_OPACITY,
                 );
-                style.backgroundColor = highlighted
+                style.backgroundColor = isHighlighted
                     ? theme.color(highlightColor, theme.isLight ? 600 : 300, 0.48)
                     : style.backgroundColor;
-                style.borderColor = highlighted
+                style.borderColor = isHighlighted
                     ? theme.color(highlightColor, theme.isLight ? 600 : 300)
                     : theme.color(color, 500, 0.3);
                 break;
@@ -141,13 +141,13 @@ export function Dropdown<T>({
     };
 
     const getContentColors = (pressed: boolean) => {
-        const highlighted = active || pressed;
+        const isHighlighted = highlighted || pressed;
         if (disabled) {
             const disabledColor = theme.color(color, theme.isLight ? 300 : 700);
             return { content: disabledColor, chevron: disabledColor };
         }
         if (variant === 'fill') {
-            const fillContentColor = highlighted
+            const fillContentColor = isHighlighted
                 ? theme.color(
                       highlightColor,
                       theme.contrastShade(
@@ -158,17 +158,17 @@ export function Dropdown<T>({
                 : theme.color(color, theme.contrastShade(color));
             return { content: fillContentColor, chevron: fillContentColor };
         }
-        if (highlighted && highlightContentShade !== undefined) {
-            const highlightedContent = theme.color(highlightColor, highlightContentShade);
+        if (isHighlighted && highlightGlyphsShade !== undefined) {
+            const highlightedContent = theme.color(highlightColor, highlightGlyphsShade);
             return { content: highlightedContent, chevron: highlightedContent };
         }
-        if (contentShade !== undefined) {
-            const shadedContent = theme.color(color, contentShade);
+        if (glyphsShade !== undefined) {
+            const shadedContent = theme.color(color, glyphsShade);
             return { content: shadedContent, chevron: shadedContent };
         }
         return {
             content: variant === 'fill-translucent' ? baseColor : chromeContentColor,
-            chevron: highlighted
+            chevron: isHighlighted
                 ? theme.color(highlightColor, theme.isLight ? 600 : 300)
                 : baseColor,
         };
@@ -328,12 +328,12 @@ export function Dropdown<T>({
                                                     icon={option.icon}
                                                     width={iconSize}
                                                     height={iconSize}
-                                                    color={selected && highlightContentShade !== undefined ? theme.color(highlightColor, highlightContentShade) : contentShade !== undefined ? theme.color(color, contentShade) : optionTextColor}
+                                                    color={selected && highlightGlyphsShade !== undefined ? theme.color(highlightColor, highlightGlyphsShade) : glyphsShade !== undefined ? theme.color(color, glyphsShade) : optionTextColor}
                                                 />
                                             ) : null}
                                             <Text
                                                 style={{
-                                                    color: selected && highlightContentShade !== undefined ? theme.color(highlightColor, highlightContentShade) : contentShade !== undefined ? theme.color(color, contentShade) : optionTextColor,
+                                                    color: selected && highlightGlyphsShade !== undefined ? theme.color(highlightColor, highlightGlyphsShade) : glyphsShade !== undefined ? theme.color(color, glyphsShade) : optionTextColor,
                                                     fontSize:
                                                         sizeStyles.fontSize,
                                                     lineHeight:

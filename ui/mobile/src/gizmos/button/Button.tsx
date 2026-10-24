@@ -22,14 +22,14 @@ export interface MobileButtonProps {
 export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     forwardRef,
     color = "neutral",
-    contentShade,
+    glyphsShade,
     highlightColor = color,
-    highlightContentShade,
+    highlightGlyphsShade,
     variant = DEFAULT_SURFACE_VARIANT,
     activeGlow = "none",
     size = DEFAULT_SIZE,
     corners = "square",
-    active = false,
+    highlighted = false,
     title,
     icon,
     iconRotateX = 0,
@@ -52,12 +52,12 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     const [pressed, setPressed] = useState(false);
     const [glowDrawn, setGlowDrawn] = useState(false);
 
-    const isActiveState = !disabled && (pressed || active);
+    const isActiveState = !disabled && (pressed || highlighted);
     const appearance = theme.resolveAppearance(
         variant,
         color,
         highlightColor,
-        disabled ? "disabled" : isActiveState ? "active" : "default",
+        disabled ? "disabled" : isActiveState ? "active-pressed" : "default",
     );
     const showGlow =
         !disabled && activeGlow !== "none" && (isActiveState || glowDrawn);
@@ -118,10 +118,10 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     }
 
     const textColor =
-        highlightContentShade !== undefined && isActiveState
-            ? theme.color(highlightColor, highlightContentShade)
-            : contentShade !== undefined && !isActiveState
-              ? theme.color(color, contentShade)
+        highlightGlyphsShade !== undefined && isActiveState
+            ? theme.color(highlightColor, highlightGlyphsShade)
+            : glyphsShade !== undefined && !isActiveState
+              ? theme.color(color, glyphsShade)
               : appearance.glyphs;
     const fontSize = controlSize.fontSize;
 
@@ -224,7 +224,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
             accessibilityState={{
                 ...accessibilityState,
                 disabled,
-                selected: active || accessibilityState?.selected,
+                selected: highlighted || accessibilityState?.selected,
             }}
             onPress={onPress ?? undefined}
             onLongPress={onLongPress ?? undefined}
@@ -243,7 +243,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
                     activeGlow={activeGlow}
                     color={color}
                     highlightColor={highlightColor}
-                    active={isActiveState}
+                    highlighted={isActiveState}
                     disabled={disabled}
                 >
                     {content}

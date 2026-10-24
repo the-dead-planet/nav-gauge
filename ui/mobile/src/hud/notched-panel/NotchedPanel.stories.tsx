@@ -25,7 +25,7 @@ export const Gallery: FC = () => (
     </View>
 );
 
-export const States: FC = () => <View style={styles.showcase}><NotchedPanel active color="primary" header={<Text>ACTIVE</Text>}><Text>Highlighted panel</Text></NotchedPanel><NotchedPanel disabled color="primary" header={<Text>DISABLED</Text>}><Text>Disabled panel</Text></NotchedPanel></View>;
+export const States: FC = () => <View style={styles.showcase}><NotchedPanel highlighted color="primary" header={<Text>HIGHLIGHTED</Text>}><Text>Highlighted panel</Text></NotchedPanel><NotchedPanel disabled color="primary" header={<Text>DISABLED</Text>}><Text>Disabled panel</Text></NotchedPanel></View>;
 
 export const Confirmation: FC = () => (
     <NotchedPanel accessibilityRole="alert" color="neutral" highlightColor="primary" header={<Text>CONFIRM ROUTE DELETION</Text>}>

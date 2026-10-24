@@ -9,7 +9,8 @@ alwaysApply: true
 
 Theme specifications and shared appearance, color, elevation, and layer policies live under `ui/common/src/design-system/theme/`.
 Before changing reusable UI, read `ui/web/src/design-system/Overview.mdx` and the relevant linked design-system page.
-Before implementing or changing palettes, shades, appearance, or interaction states, read and follow `ui/web/src/design-system/colors/Colors.mdx` and `ui/web/src/design-system/Theming.mdx`.
+Before implementing or changing palettes or shades, read and follow `ui/web/src/design-system/colors/Colors.mdx` and `ui/web/src/design-system/Theming.mdx`.
+Before implementing or changing appearance variants or interaction states, read and follow `ui/web/src/design-system/Appearance.mdx`.
 
 Shared reusable components require a common API/value logic in `@ui/common` and thin renderers in both `@web-ui` and `@mobile-ui`.
 

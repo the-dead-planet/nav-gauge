@@ -38,7 +38,8 @@ export interface TypographyStoryProps extends TypographyProps {
 export interface TypographyProps {
     color?: ColorVariant;
     highlightColor?: ColorVariant;
-    active?: boolean;
+    /** Persistent visual emphasis, distinct from a temporary press. */
+    highlighted?: boolean;
     /** Overrides default glyphs using the selected color. */
     shade?: ColorShade;
     /** Applies a palette shade to interactive typography while highlighted. */

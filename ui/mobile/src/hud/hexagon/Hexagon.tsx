@@ -75,7 +75,7 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(
             activeGlow = "none",
             size = DEFAULT_SIZE,
             interactive = false,
-            active = false,
+            highlighted = false,
             disabled = false,
             onPress,
             onLongPress,
@@ -90,7 +90,7 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(
         const theme = useTheme();
         const [pressed, setPressed] = useState(false);
         const [glowDrawn, setGlowDrawn] = useState(false);
-        const isActiveState = !disabled && (pressed || active);
+        const isActiveState = !disabled && (pressed || highlighted);
         const isPointy = shape === "pointy-top";
         const points = isPointy ? POINTY_TOP : FLAT_TOP;
         const aspectRatio = isPointy ? 86.6 / 100 : 100 / 86.6;
@@ -100,7 +100,7 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(
             variant,
             color,
             highlightColor,
-            disabled ? "disabled" : isActiveState ? "active" : "default",
+            disabled ? "disabled" : isActiveState ? "active-pressed" : "default",
         );
         const showGlow =
             !disabled && activeGlow !== "none" && (isActiveState || glowDrawn);

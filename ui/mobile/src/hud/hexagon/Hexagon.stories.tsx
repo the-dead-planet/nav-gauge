@@ -29,7 +29,7 @@ const story = {
         highlightColor: undefined,
     },
     controls: hexagonStoryControls,
-    galleryEditableControls: ['highlightColor', 'strokeWidth', 'interactive', 'active', 'disabled', 'activeGlow'],
+    galleryEditableControls: ['highlightColor', 'strokeWidth', 'interactive', 'highlighted', 'disabled', 'activeGlow'],
     renderPlayground: (args) => <Hexagon {...args} />,
     renderGallery: (args) => {
         return (

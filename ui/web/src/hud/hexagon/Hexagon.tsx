@@ -20,7 +20,7 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
     highlightColor,
     size = DEFAULT_SIZE,
     variant = DEFAULT_SURFACE_VARIANT,
-    active = false,
+    highlighted = false,
     disabled = false,
     onClick,
     className,
@@ -64,7 +64,7 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
                 styles[shape],
                 size && styles[`size-${size}`],
                 {
-                    [styles['active']]: active && !disabled,
+                    [styles['highlighted']]: highlighted && !disabled,
                     [styles['disabled']]: disabled,
                     [styles['interactive']]: !disabled && (interactive || onClick),
                     [styles[`glow-style-${activeGlow}`]]: !disabled && interactive,

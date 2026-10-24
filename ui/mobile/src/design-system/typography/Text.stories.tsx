@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 const story: MobileStoryDefinition<TypographyStoryProps> = {
     args: typographyStoryArgs,
     controls: typographyStoryControls,
-    galleryEditableControls: ['children', 'fontWeight', 'shade', 'highlightColor', 'highlightShade', 'align', 'active', 'disabled', 'bold', 'uppercase', 'tabular', 'nowrap', 'shadow'],
+    galleryEditableControls: ['children', 'fontWeight', 'shade', 'highlightColor', 'highlightShade', 'align', 'highlighted', 'disabled', 'bold', 'uppercase', 'tabular', 'nowrap', 'shadow'],
     renderPlayground: (args) => <Text {...args} />,
     renderGallery: ({ children, ...args }) => (
         <ScrollView contentContainerStyle={styles.section}>

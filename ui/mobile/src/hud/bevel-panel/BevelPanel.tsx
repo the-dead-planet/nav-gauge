@@ -76,7 +76,7 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
     activeGlow = "none",
     size = DEFAULT_SIZE,
     interactive = false,
-    active = false,
+    highlighted = false,
     disabled = false,
     onPress,
     onLongPress,
@@ -90,7 +90,7 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
     const [pressed, setPressed] = useState(false);
     const [containerWidth, setContainerWidth] = useState(0);
     const [containerHeight, setContainerHeight] = useState(0);
-    const highlight = !disabled && (pressed || active);
+    const highlight = !disabled && (pressed || highlighted);
     const isLight = theme.mode === 'light';
 
     const color = (colorProp || 'neutral') as ColorVariant;
@@ -98,7 +98,7 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
     const highlight500 = theme.color(highlightColor, 500);
     const highlightAccent = theme.color(highlightColor, isLight ? 600 : 300);
 
-    const showGlow = !disabled && (activeGlow !== 'none') && (pressed || active);
+    const showGlow = !disabled && (activeGlow !== 'none') && (pressed || highlighted);
 
     const onLayout = (e: LayoutChangeEvent) => {
         const { width, height } = e.nativeEvent.layout;
@@ -141,7 +141,7 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
             case 'fill': {
                 let fillColor: string;
                 let borderColor: string;
-                if (active) {
+                if (highlighted) {
                     fillColor = highlightAccent;
                     borderColor = highlightAccent;
                 } else if (pressed) {
@@ -171,7 +171,7 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
                 const hlBgShade = isLight ? 100 : (hlIsNeutral ? 800 : 900);
                 let fillColor: string;
                 let borderColor: string;
-                if (active) {
+                if (highlighted) {
                     fillColor = theme.color(color, bgShade);
                     borderColor = highlightAccent;
                 } else if (pressed) {
@@ -196,7 +196,7 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
 
             case 'fill-translucent': {
                 const fill = highlight
-                    ? theme.color(highlightColor, active ? (isLight ? 600 : 300) : 500, active ? 0.48 : 0.36)
+                    ? theme.color(highlightColor, highlighted ? (isLight ? 600 : 300) : 500, highlighted ? 0.48 : 0.36)
                     : theme.color(color, 500, TRANSLUCENT_OPACITY_BACKGROUND);
                 const border = highlight ? highlightAccent : baseColor;
                 return (
@@ -218,7 +218,7 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
                 let bgFill: string;
                 let fillOpacity: number | undefined;
                 let bColor: string;
-                if (active) {
+                if (highlighted) {
                     bgFill = highlightAccent;
                     fillOpacity = isGhost ? 0.14 : 0.24;
                     bColor = isGhost ? 'transparent' : highlightAccent;

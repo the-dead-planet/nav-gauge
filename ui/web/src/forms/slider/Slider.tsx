@@ -8,9 +8,9 @@ import styles from './slider.module.css';
 
 export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' | 'size'>> = ({
     color = 'neutral',
-    contentShade,
+    glyphsShade,
     highlightColor = color,
-    highlightContentShade,
+    highlightGlyphsShade,
     size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     min = 0,
@@ -18,7 +18,7 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
     step = 1,
     value,
     onChange,
-    active = false,
+    highlighted = false,
     disabled = false,
     id,
     label,
@@ -63,7 +63,7 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
                     styles.slider,
                     styles[`size-${size}`],
                     styles[`variant-${variant}`],
-                    { [styles.active]: active },
+                    { [styles.highlighted]: highlighted },
                     className
                 )}
                 style={style}
@@ -93,7 +93,7 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
             [styles['disabled']]: disabled,
         })}>
             {typeof label === 'string' ? (
-                <Label htmlFor={id} color={active ? highlightColor : color} shade={active ? highlightContentShade : contentShade} className={styles['label']}>
+                <Label htmlFor={id} color={highlighted ? highlightColor : color} shade={highlighted ? highlightGlyphsShade : glyphsShade} className={styles['label']}>
                     {label} {!showNumberInput ? <Span tabular>{value}</Span> : null}
                 </Label>
             ) : label}
@@ -112,9 +112,9 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
                         max={max}
                         step={step}
                         color={color}
-                        contentShade={contentShade}
+                        glyphsShade={glyphsShade}
                         highlightColor={highlightColor}
-                        highlightContentShade={highlightContentShade}
+                        highlightGlyphsShade={highlightGlyphsShade}
                         size={size}
                         variant={variant}
                         disabled={disabled || !onChange}

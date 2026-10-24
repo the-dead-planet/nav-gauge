@@ -30,7 +30,7 @@ export const Playground: FC = () => {
     const [value, setValue] = useState('export');
     return (
         <View style={styles.constrained}>
-            <Tabstrip options={options} value={value} onChange={setValue} highlightColor="primary" highlightContentShade={200} overflowAccessibilityLabel="More tabs">
+            <Tabstrip options={options} value={value} onChange={setValue} highlightColor="primary" highlightGlyphsShade={200} overflowAccessibilityLabel="More tabs">
                 <Text>{content[value]}</Text>
             </Tabstrip>
         </View>
@@ -41,7 +41,7 @@ export const Spread: FC = () => {
     const [value, setValue] = useState('route');
     return (
         <View style={{ width: '100%', padding: 16 }}>
-            <Tabstrip spread options={[{ value: 'route', label: 'Active' }, { value: 'waypoints', label: 'Current point' }, { value: 'terrain', label: 'Inactive' }]} value={value} onChange={setValue} highlightColor="primary" highlightContentShade={200} overflowAccessibilityLabel="More tabs">
+            <Tabstrip spread options={[{ value: 'route', label: 'Active' }, { value: 'waypoints', label: 'Current point' }, { value: 'terrain', label: 'Inactive' }]} value={value} onChange={setValue} highlightColor="primary" highlightGlyphsShade={200} overflowAccessibilityLabel="More tabs">
                 <Text>{content[value]}</Text>
             </Tabstrip>
         </View>

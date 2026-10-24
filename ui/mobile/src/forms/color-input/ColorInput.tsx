@@ -59,16 +59,16 @@ const formatOptions: { value: ColorFormat; label: string }[] = [
 
 export const ColorInput: FC<ColorInputProps> = ({
     color = 'neutral',
-    contentShade,
+    glyphsShade,
     highlightColor = color,
-    highlightContentShade,
+    highlightGlyphsShade,
     size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     label,
     value,
     onChange,
     disabled = false,
-    active = false,
+    highlighted = false,
     showColorButton = true,
     showValueInput = true,
     showFormatSelect = false,
@@ -85,20 +85,20 @@ export const ColorInput: FC<ColorInputProps> = ({
             ? toCssColor({ ...parseColor(borderColor), a: .24 })
             : inverseBackgroundColor;
     const activeAccent = theme.color(highlightColor, theme.isLight ? 600 : 300);
-    const inputBorderColor = active && !disabled
+    const inputBorderColor = highlighted && !disabled
         ? activeAccent
         : variant === 'fill-translucent'
             ? toCssColor({ ...parseColor(borderColor), a: .3 })
             : borderColor;
     const wrapperBackgroundColor = variant === 'fill-translucent' ? 'transparent' : backgroundColor;
-    const textColor = active && highlightContentShade !== undefined ? theme.color(highlightColor, highlightContentShade) : contentShade !== undefined ? theme.color(color, contentShade) : variant === 'fill'
+    const textColor = highlighted && highlightGlyphsShade !== undefined ? theme.color(highlightColor, highlightGlyphsShade) : glyphsShade !== undefined ? theme.color(color, glyphsShade) : variant === 'fill'
         ? inverseBackgroundColor
         : theme.color(color, theme.isLight ? 900 : 100);
 
     return (
         <>
             <View style={styles.container}>
-                <Text color={color} shade={contentShade} style={[styles.label, { fontSize: size === 'xs' ? 11 : 12 }]}>{label}</Text>
+                <Text color={color} shade={glyphsShade} style={[styles.label, { fontSize: size === 'xs' ? 11 : 12 }]}>{label}</Text>
                 <View
                     style={[
                         styles.wrapper,
@@ -115,7 +115,7 @@ export const ColorInput: FC<ColorInputProps> = ({
                             value={value}
                             label={label}
                             size={size}
-                            selected={open || active}
+                            selected={open || highlighted}
                             disabled={disabled}
                             accessibilityState={{ disabled, expanded: open }}
                             onPress={() => setOpen((current) => !current)}
@@ -130,10 +130,10 @@ export const ColorInput: FC<ColorInputProps> = ({
                                 variant={variant}
                                 color={color}
                                 highlightColor={highlightColor}
-                                contentShade={contentShade}
-                                highlightContentShade={highlightContentShade}
+                                glyphsShade={glyphsShade}
+                                highlightGlyphsShade={highlightGlyphsShade}
                                 disabled={disabled}
-                                active={active}
+                                highlighted={highlighted}
                                 onChange={changeFormat}
                             />
                         </View>

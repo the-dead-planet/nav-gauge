@@ -6,6 +6,7 @@ import { Text } from '../typography';
 import { Fragment, useEffect, useState } from 'react';
 import { ColorBox } from '../../gizmos/color-box';
 import { Button } from '../../gizmos/button';
+import styles from './color-stories.module.css';
 
 const copyPalette = (color: ThemeColor): void => {
     const rgbByShade = Object.fromEntries(
@@ -32,9 +33,9 @@ const VariantStates = ({ variant }: { variant: SurfaceVariant }) => (
         <Button
             variant={variant}
             icon={Icons.Beaker}
-            active
+            highlighted
         >
-            Active
+            Highlighted
         </Button>
         <Button
             variant={variant}
@@ -47,10 +48,10 @@ const VariantStates = ({ variant }: { variant: SurfaceVariant }) => (
 );
 
 const AnimatedGlowButton = ({ corners = 'square' }: { corners?: ButtonCorners }) => {
-    const [active, setActive] = useState(true);
+    const [highlighted, setHighlighted] = useState(true);
 
     useEffect(() => {
-        const interval = window.setInterval(() => setActive((current) => !current), 1000);
+        const interval = window.setInterval(() => setHighlighted((current) => !current), 1000);
         return () => window.clearInterval(interval);
     }, []);
 
@@ -63,7 +64,7 @@ const AnimatedGlowButton = ({ corners = 'square' }: { corners?: ButtonCorners })
             icon={Icons.Beaker}
             corners={corners}
             size="lg"
-            active={active}
+            highlighted={highlighted}
             aria-label="Animated border glow"
         />
     );
@@ -125,6 +126,19 @@ export const StatusColors = {
     },
 } satisfies Story;
 
+export const DefaultAppearance = {
+    render: () => (
+        <section
+            className={styles['default-appearance']}
+            data-appearance-variant="default"
+            data-appearance-color="neutral"
+            data-appearance-highlight="neutral"
+        >
+            <Text>The management of The Dead Planet wishes you a productive day.</Text>
+        </section>
+    ),
+} satisfies Story;
+
 export const FillStates = {
     render: () => <VariantStates variant="fill" />,
 } satisfies Story;
@@ -160,7 +174,7 @@ export const ActiveGlow = {
                     activeGlow="glow"
                     icon={Icons.Beaker}
                     size="lg"
-                    active
+                    highlighted
                     aria-label="Static glow"
                 />
                 <AnimatedGlowButton />
@@ -174,7 +188,7 @@ export const ActiveGlow = {
                     icon={Icons.Beaker}
                     corners="hexagon"
                     size="lg"
-                    active
+                    highlighted
                     aria-label="Static hexagon glow"
                 />
                 <AnimatedGlowButton corners="hexagon" />

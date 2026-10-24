@@ -58,7 +58,7 @@ export const LinkText: FC<LinkTextProps> = ({
                     {...props}
                     color={color}
                     highlightColor={highlightColor}
-                    appearanceState={pressed ? 'active' : interacting ? 'interaction' : props.active ? 'active' : 'default'}
+                    appearanceState={pressed || props.highlighted ? 'active-pressed' : interacting ? 'hover-focus' : 'default'}
                     disabled={disabled}
                     style={[styles.link, style]}
                 >

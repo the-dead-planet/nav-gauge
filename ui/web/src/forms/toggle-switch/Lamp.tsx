@@ -4,19 +4,19 @@ import styles from './toggle-switch.module.css';
 
 interface LampProps {
     isSwitchedOn: boolean;
-    active: boolean;
+    highlighted: boolean;
 }
 
 export const Lamp: FC<LampProps> = ({
     isSwitchedOn,
-    active,
+    highlighted,
 }) => {
     return (
         <span
             className={classNames(
                 styles['lamp'],
                 styles[`lamp-${isSwitchedOn ? 'on' : 'off'}`],
-                active ? styles[`lamp-${!isSwitchedOn ? 'glitch' : 'secured'}`] : styles['lamp-inactive'],
+                highlighted ? styles[`lamp-${!isSwitchedOn ? 'glitch' : 'secured'}`] : styles['lamp-inactive'],
             )}
         />
     );

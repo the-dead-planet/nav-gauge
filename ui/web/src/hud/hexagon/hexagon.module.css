@@ -113,52 +113,24 @@
     font-weight: var(--appearance-default-font-weight, inherit);
 }
 
-.interactive:hover .polygon-base,
-.interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
-    fill: var(--appearance-interaction-surface);
-    stroke: var(--appearance-interaction-border);
+.interactive:not(.disabled, .highlighted, :active, :has(:active)):is(:hover, :focus-visible, :has(:focus-visible)) .polygon-base {
+    fill: var(--appearance-hover-focus-surface);
+    stroke: var(--appearance-hover-focus-border);
 }
 
-.interactive:hover .content,
-.interactive:is(:focus-visible, :has(:focus-visible)) .content {
-    color: var(--appearance-interaction-glyphs);
-    font-weight: var(--appearance-interaction-font-weight, inherit);
+.interactive:not(.disabled, .highlighted, :active, :has(:active)):is(:hover, :focus-visible, :has(:focus-visible)) .content {
+    color: var(--appearance-hover-focus-glyphs);
+    font-weight: var(--appearance-hover-focus-font-weight, inherit);
 }
 
-.interactive:active .polygon-base,
-.interactive:has(:active) .polygon-base,
-.active .polygon-base {
-    fill: var(--appearance-active-surface);
-    stroke: var(--appearance-active-border);
+.hexagon:not(.disabled):is(.highlighted, .interactive:active, .interactive:has(:active)) .polygon-base {
+    fill: var(--appearance-active-pressed-surface);
+    stroke: var(--appearance-active-pressed-border);
 }
 
-.interactive:active .content,
-.interactive:has(:active) .content,
-.active .content {
-    color: var(--appearance-active-glyphs);
-    font-weight: var(--appearance-active-font-weight, inherit);
-}
-
-.active.interactive:hover .polygon-base,
-.active.interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
-    fill: var(--appearance-interaction-surface);
-    stroke: var(--appearance-interaction-border);
-}
-
-.active.interactive:hover .content,
-.active.interactive:is(:focus-visible, :has(:focus-visible)) .content {
-    color: var(--appearance-interaction-glyphs);
-    font-weight: var(--appearance-interaction-font-weight, inherit);
-}
-
-.active.interactive:has(:active) .polygon-base {
-    fill: var(--appearance-active-surface);
-    stroke: var(--appearance-active-border);
-}
-
-.active.interactive:has(:active) .content {
-    color: var(--appearance-active-glyphs);
-    font-weight: var(--appearance-active-font-weight, inherit);
+.hexagon:not(.disabled):is(.highlighted, .interactive:active, .interactive:has(:active)) .content {
+    color: var(--appearance-active-pressed-glyphs);
+    font-weight: var(--appearance-active-pressed-font-weight, inherit);
 }
 
 .depth-inset .polygon-base {
@@ -175,61 +147,20 @@
     opacity: .28;
 }
 
-.depth-inset.interactive:active .polygon-inset-shadow-edges,
-.depth-inset.interactive:has(:active) .polygon-inset-shadow-edges,
-.depth-inset.active .polygon-inset-shadow-edges {
-    stroke: var(--appearance-inset-active-inner-start);
+.depth-inset:not(.disabled):is(.highlighted, .interactive:active, .interactive:has(:active)) .polygon-inset-shadow-edges {
+    stroke: var(--appearance-inset-active-pressed-inner-start);
 }
 
-.depth-inset.interactive:active .polygon-inset-highlight-edges,
-.depth-inset.interactive:has(:active) .polygon-inset-highlight-edges,
-.depth-inset.active .polygon-inset-highlight-edges {
-    stroke: var(--appearance-inset-active-inner-end);
+.depth-inset:not(.disabled):is(.highlighted, .interactive:active, .interactive:has(:active)) .polygon-inset-highlight-edges {
+    stroke: var(--appearance-inset-active-pressed-inner-end);
 }
 
-.depth-inset.interactive:active .polygon-base,
-.depth-inset.interactive:has(:active) .polygon-base,
-.depth-inset.active .polygon-base {
-    stroke: var(--appearance-inset-active-edge-start);
+.depth-inset:not(.disabled):is(.highlighted, .interactive:active, .interactive:has(:active)) .polygon-base {
+    stroke: var(--appearance-inset-active-pressed-edge-start);
 }
 
-.depth-inset.interactive:active .inset-recess-center,
-.depth-inset.interactive:has(:active) .inset-recess-center,
-.depth-inset.active .inset-recess-center {
-    stop-color: var(--appearance-inset-active-recess);
-}
-
-.depth-inset.active.interactive:hover .polygon-base,
-.depth-inset.active.interactive:is(:focus-visible, :has(:focus-visible)) .polygon-base {
-    stroke: var(--appearance-inset-default-edge-start);
-}
-
-.depth-inset.active.interactive:is(:hover, :focus-visible, :has(:focus-visible)) .inset-recess-center {
-    stop-color: var(--appearance-inset-default-recess);
-}
-
-.depth-inset.active.interactive:is(:hover, :focus-visible, :has(:focus-visible)) .polygon-inset-shadow-edges {
-    stroke: var(--appearance-inset-default-inner-start);
-}
-
-.depth-inset.active.interactive:is(:hover, :focus-visible, :has(:focus-visible)) .polygon-inset-highlight-edges {
-    stroke: var(--appearance-inset-default-inner-end);
-}
-
-.depth-inset.active.interactive:has(:active) .polygon-base {
-    stroke: var(--appearance-inset-active-edge-start);
-}
-
-.depth-inset.active.interactive:has(:active) .inset-recess-center {
-    stop-color: var(--appearance-inset-active-recess);
-}
-
-.depth-inset.active.interactive:has(:active) .polygon-inset-shadow-edges {
-    stroke: var(--appearance-inset-active-inner-start);
-}
-
-.depth-inset.active.interactive:has(:active) .polygon-inset-highlight-edges {
-    stroke: var(--appearance-inset-active-inner-end);
+.depth-inset:not(.disabled):is(.highlighted, .interactive:active, .interactive:has(:active)) .inset-recess-center {
+    stop-color: var(--appearance-inset-active-pressed-recess);
 }
 
 /* Disabled */
@@ -244,17 +175,13 @@
 }
 
 /* Glow styles */
-.glow-style-glow:hover .polygon-glow,
-.glow-style-glow:active .polygon-glow,
-.glow-style-glow.active .polygon-glow {
+.glow-style-glow:not(.disabled):is(:hover, :active, .highlighted) .polygon-glow {
     opacity: 1;
     filter: var(--hex-filter);
     stroke: var(--appearance-glow-color);
 }
 
-.glow-style-animate-borders-glow:hover .polygon-glow,
-.glow-style-animate-borders-glow:active .polygon-glow,
-.glow-style-animate-borders-glow.active .polygon-glow {
+.glow-style-animate-borders-glow:not(.disabled):is(:hover, :active, .highlighted) .polygon-glow {
     opacity: 1;
     filter: var(--hex-filter);
     stroke: var(--appearance-glow-color);

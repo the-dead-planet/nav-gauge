@@ -20,7 +20,7 @@ export const NotchedPanel: FC<NotchedPanelProps & Props> = ({
     highlightColor: highlightColorProp,
     variant = DEFAULT_FILL_VARIANT,
     activeGlow = 'none',
-    active = false,
+    highlighted = false,
     disabled = false,
     header,
     children,
@@ -41,13 +41,13 @@ export const NotchedPanel: FC<NotchedPanelProps & Props> = ({
     const fill = disabled
         ? disabledSurface
         : variant === 'fill'
-        ? active ? highlightAccent : baseColor
+        ? highlighted ? highlightAccent : baseColor
         : variant === 'fill-translucent'
-            ? active
+            ? highlighted
                 ? theme.color(highlightColor, theme.isLight ? 600 : 300, 0.48)
                 : theme.color(color, 500, TRANSLUCENT_OPACITY_BACKGROUND)
             : theme.color(color, inverseShade);
-    const accent = disabled ? disabledForeground : active ? highlightAccent : highlight;
+    const accent = disabled ? disabledForeground : highlighted ? highlightAccent : highlight;
     const { width, height, headerHeight } = dimensions;
     const notch = Math.min(18, width / 5, height / 4);
     const step = Math.min(10, width / 10);
@@ -65,7 +65,7 @@ export const NotchedPanel: FC<NotchedPanelProps & Props> = ({
             {ready ? (
                 <Svg viewBox={`0 0 ${width} ${height}`} style={StyleSheet.absoluteFill} pointerEvents="none" accessibilityElementsHidden>
                     {!disabled && activeGlow !== 'none' ? <Polygon points={bodyPoints} fill="none" stroke={accent} strokeWidth={activeGlow === 'glow' ? 10 : 6} strokeOpacity={0.18} /> : null}
-                    <Polygon points={bodyPoints} fill={fill} stroke={disabled || active ? accent : baseColor} strokeWidth={variant === 'fill' ? 0 : 2} />
+                    <Polygon points={bodyPoints} fill={fill} stroke={disabled || highlighted ? accent : baseColor} strokeWidth={variant === 'fill' ? 0 : 2} />
                     <Polyline points={`${notch + 7},${height - 6} ${width * 0.38},${height - 6} ${width * 0.42},${height - 2}`} fill="none" stroke={accent} strokeWidth={2} />
                     {header ? <Polygon points={headerPoints} fill={disabled ? disabledSurface : accent} stroke={accent} strokeWidth={2} /> : null}
                 </Svg>

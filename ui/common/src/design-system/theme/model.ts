@@ -76,7 +76,7 @@ export type ThemeStatusColors = {
     [key in StatusColor]: SelectedColor;
 };
 
-export type ThemeAppearanceState = 'default' | 'interaction' | 'active' | 'disabled';
+export type ThemeAppearanceState = 'default' | 'hover-focus' | 'active-pressed' | 'disabled';
 
 export interface ThemeAppearancePaintTransparent {
     type: 'transparent';
@@ -147,8 +147,8 @@ export interface ThemeVariantShades {
     glyphs: ColorShade;
     inverseSurface: ColorShade;
     insetSurface: ColorShade;
-    interaction: ColorShade;
-    active: ColorShade;
+    hoverFocus: ColorShade;
+    activePressed: ColorShade;
     disabledSurface: ColorShade;
     disabledGlyphs: ColorShade;
 }

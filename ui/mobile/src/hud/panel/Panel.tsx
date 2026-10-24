@@ -14,14 +14,14 @@ export const Panel: FC<PanelProps & Props> = ({
     activeGlow: _activeGlow,
     borderWidth = 2,
     interactive = false,
-    active = false,
+    highlighted = false,
     disabled = false,
     style,
     children,
 }) => {
     const theme = useTheme();
     const [pressed, setPressed] = useState(false);
-    const hl = !disabled && (pressed || active);
+    const hl = !disabled && (pressed || highlighted);
     const isLight = theme.mode === 'light';
 
     const baseColor = theme.color(color, 500);
@@ -41,7 +41,7 @@ export const Panel: FC<PanelProps & Props> = ({
             case 'fill': {
                 let fillColor: string;
                 let borderColor: string;
-                if (active) {
+                if (highlighted) {
                     fillColor = highlightAccent;
                     borderColor = highlightAccent;
                 } else if (pressed) {
@@ -64,7 +64,7 @@ export const Panel: FC<PanelProps & Props> = ({
                 const hlBgShade = isLight ? 100 : 900;
                 let fillColor: string;
                 let borderColor: string;
-                if (active) {
+                if (highlighted) {
                     fillColor = theme.color(color, bgShade);
                     borderColor = highlightAccent;
                 } else if (pressed) {
@@ -83,7 +83,7 @@ export const Panel: FC<PanelProps & Props> = ({
 
             case 'fill-translucent': {
                 const fill = hl
-                    ? theme.color(highlightColor, active ? (isLight ? 600 : 300) : 500, active ? 0.48 : 0.36)
+                    ? theme.color(highlightColor, highlighted ? (isLight ? 600 : 300) : 500, highlighted ? 0.48 : 0.36)
                     : theme.color(color, 500, TRANSLUCENT_OPACITY_BACKGROUND);
                 const border = hl ? highlightAccent : baseColor;
                 return {
@@ -98,7 +98,7 @@ export const Panel: FC<PanelProps & Props> = ({
                 const isGhost = variant === 'ghost';
                 let bgFill: string | undefined;
                 let bColor: string;
-                if (active) {
+                if (highlighted) {
                     bgFill = theme.color(highlightColor, isLight ? 600 : 300, isOutline ? 0.24 : 0.14);
                     bColor = isOutline ? highlightAccent : 'transparent';
                 } else if (pressed) {

@@ -15,14 +15,14 @@ interface Props {
 
 export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     color = 'neutral',
-    contentShade,
+    glyphsShade,
     highlightColor,
-    highlightContentShade,
+    highlightGlyphsShade,
     variant = DEFAULT_SURFACE_VARIANT,
     activeGlow = 'none',
     size = DEFAULT_SIZE,
     corners = 'square',
-    active = false,
+    highlighted = false,
     disabled,
     type = 'button',
     icon,
@@ -64,7 +64,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
                 {
                     [styles[`has-icon-${size}`]]: !!icon,
                     [styles['interactive']]: !!onClick && !disabled,
-                    [styles['active']]: active,
+                    [styles['highlighted']]: highlighted,
                     [styles[`only-icon-${size}`]]: !!icon && !children,
                     [styles['disabled']]: disabled,
                     [styles['glyphs-glow']]: effects.glyphsGlow,
@@ -75,11 +75,12 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
             )}
             style={{
                 ...(corners !== 'hexagon' ? style : undefined),
-                ...(contentShade === undefined ? undefined : {
-                    '--appearance-default-glyphs-override': theme.color(color, contentShade),
+                ...(glyphsShade === undefined ? undefined : {
+                    '--appearance-default-glyphs-override': theme.color(color, glyphsShade),
                 }),
-                ...(highlightContentShade === undefined ? undefined : {
-                    '--appearance-interaction-glyphs-override': theme.color(highlightColor || color, highlightContentShade),
+                ...(highlightGlyphsShade === undefined ? undefined : {
+                    '--appearance-hover-focus-glyphs-override': theme.color(highlightColor || color, highlightGlyphsShade),
+                    '--appearance-active-pressed-glyphs-override': theme.color(highlightColor || color, highlightGlyphsShade),
                 }),
             } as CSSProperties}
             {...props}
@@ -129,7 +130,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
                 activeGlow={activeGlow}
                 color={color}
                 highlightColor={highlightColor}
-                active={active}
+                highlighted={highlighted}
                 disabled={disabled}
                 interactive={!disabled}
                 style={disabled ? { ...style, cursor: 'not-allowed' } : style}

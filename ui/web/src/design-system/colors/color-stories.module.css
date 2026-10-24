@@ -1,0 +1,6 @@
+.default-appearance {
+    padding: var(--spacing-md);
+    color: var(--appearance-default-glyphs);
+    background-color: var(--appearance-default-surface);
+    border: var(--appearance-default-border-width) solid var(--appearance-default-border);
+}

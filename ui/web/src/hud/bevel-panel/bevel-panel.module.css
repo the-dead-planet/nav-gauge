@@ -134,7 +134,7 @@
 }
 
 .variant-fill.interactive:active .polygon-base,
-.variant-fill.active .polygon-base {
+.variant-fill.highlighted .polygon-base {
     fill: var(--bevel-highlight-color-accent);
 }
 
@@ -149,7 +149,7 @@
 }
 
 .variant-fill-inverse.interactive:active .polygon-base,
-.variant-fill-inverse.active .polygon-base {
+.variant-fill-inverse.highlighted .polygon-base {
     stroke: var(--bevel-highlight-color-accent);
 }
 
@@ -163,7 +163,7 @@
 }
 
 .variant-fill-translucent.interactive:active .polygon-base,
-.variant-fill-translucent.active .polygon-base {
+.variant-fill-translucent.highlighted .polygon-base {
     stroke: var(--bevel-highlight-color-accent);
 }
 
@@ -172,7 +172,7 @@
 }
 
 .variant-fill-translucent.interactive:active .backdrop,
-.variant-fill-translucent.active .backdrop {
+.variant-fill-translucent.highlighted .backdrop {
     background: rgb(from var(--bevel-highlight-color-accent) r g b / .48);
 }
 

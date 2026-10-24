@@ -28,6 +28,7 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
     return (
         <Dialog
             color="primary"
+            variant="fill-translucent"
             placement="right-drawer"
             header={translate({ n: individuator.namespace, t: individuator.translationKey.IndividuatorName })}
             closeText={translate({ n: namespace, t: translationKey.Close })}
@@ -39,7 +40,7 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
         >
             <div className={classNames(styles['container'], { [styles['wide']]: isWide })}>
                 <div className={styles['field']}>
-                    <SettingsLabel wide={isWide} id="individuator-language-label">
+                    <SettingsLabel id="individuator-language-label">
                         <T n={individuator.namespace} t={individuator.translationKey.Language} />
                     </SettingsLabel>
                     <Dropdown<Language>
@@ -64,7 +65,7 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                 </div>
 
                 <div className={styles['field']}>
-                    <SettingsLabel wide={isWide} id="individuator-date-format-label">
+                    <SettingsLabel id="individuator-date-format-label">
                         <T n={individuator.namespace} t={individuator.translationKey.DateFormat} />
                     </SettingsLabel>
                     <Dropdown<DateFormat>
@@ -99,7 +100,7 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                 </div>
 
                 <div className={styles['field']}>
-                    <SettingsLabel wide={isWide} id="individuator-time-format-label">
+                    <SettingsLabel id="individuator-time-format-label">
                         <T n={individuator.namespace} t={individuator.translationKey.TimeFormat} />
                     </SettingsLabel>
                     <Dropdown<TimeFormat>
@@ -115,7 +116,7 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                 </div>
 
                 <div className={styles['field']}>
-                    <SettingsLabel wide={isWide} id="individuator-distance-unit-label">
+                    <SettingsLabel id="individuator-distance-unit-label">
                         <T n={individuator.namespace} t={individuator.translationKey.DistanceUnit} />
                     </SettingsLabel>
                     <Dropdown<DistanceUnit>
@@ -134,7 +135,7 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
                 </div>
 
                 <div className={styles['field']}>
-                    <SettingsLabel wide={isWide} id="individuator-theme-label">
+                    <SettingsLabel id="individuator-theme-label">
                         <T n={individuator.namespace} t={individuator.translationKey.Theme} />
                     </SettingsLabel>
                     <ThemeSelect

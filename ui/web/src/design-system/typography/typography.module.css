@@ -15,9 +15,9 @@
     font-weight: var(--typography-font-weight, var(--appearance-default-font-weight, var(--typography-default-font-weight, inherit)));
 }
 
-:is(.p, .span, .label, .link, .h1, .h2, .h3, .h4, .h5, .h6)[data-active]:not(.disabled) {
-    color: var(--appearance-interaction-glyphs-override, var(--appearance-active-glyphs));
-    font-weight: var(--typography-font-weight, var(--appearance-active-font-weight, var(--typography-default-font-weight, inherit)));
+:is(.p, .span, .label, .link, .h1, .h2, .h3, .h4, .h5, .h6)[data-highlighted]:not(.disabled) {
+    color: var(--appearance-active-pressed-glyphs-override, var(--appearance-active-pressed-glyphs));
+    font-weight: var(--typography-font-weight, var(--appearance-active-pressed-font-weight, var(--typography-default-font-weight, inherit)));
 }
 
 .uppercase {
@@ -79,14 +79,14 @@
     text-decoration: underline;
 }
 
-.link:not(.disabled):is(:hover, :focus-visible):not(:active) {
-    color: var(--appearance-interaction-glyphs-override, var(--appearance-interaction-glyphs));
-    font-weight: var(--typography-font-weight, var(--appearance-interaction-font-weight, var(--typography-default-font-weight, inherit)));
+.link:not(.disabled):is(:hover, :focus-visible):not(:active):not([data-highlighted]) {
+    color: var(--appearance-hover-focus-glyphs-override, var(--appearance-hover-focus-glyphs));
+    font-weight: var(--typography-font-weight, var(--appearance-hover-focus-font-weight, var(--typography-default-font-weight, inherit)));
 }
 
 .link:not(.disabled):active {
-    color: var(--appearance-interaction-glyphs-override, var(--appearance-active-glyphs));
-    font-weight: var(--typography-font-weight, var(--appearance-active-font-weight, var(--typography-default-font-weight, inherit)));
+    color: var(--appearance-active-pressed-glyphs-override, var(--appearance-active-pressed-glyphs));
+    font-weight: var(--typography-font-weight, var(--appearance-active-pressed-font-weight, var(--typography-default-font-weight, inherit)));
 }
 
 .link.disabled {

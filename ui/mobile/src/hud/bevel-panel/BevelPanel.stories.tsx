@@ -19,4 +19,4 @@ export const Gallery: FC = () => (
     />
 );
 export const InteractiveGlow: FC = () => <View style={styles.grid}><BevelPanel interactive color="primary" size="md"><Text>Default glow</Text></BevelPanel><BevelPanel interactive activeGlow="glow" color="secondary" size="md"><Text>Glow</Text></BevelPanel><BevelPanel interactive activeGlow="animate-borders-glow" color="tertiary" size="md"><Text>Borders</Text></BevelPanel></View>;
-export const States: FC = () => <View style={styles.grid}><BevelPanel active color="primary" variant="fill-inverse" size="md"><Text>Active</Text></BevelPanel><BevelPanel disabled color="primary" variant="fill-inverse" size="md"><Text>Disabled</Text></BevelPanel></View>;
+export const States: FC = () => <View style={styles.grid}><BevelPanel highlighted color="primary" variant="fill-inverse" size="md"><Text>Highlighted</Text></BevelPanel><BevelPanel disabled color="primary" variant="fill-inverse" size="md"><Text>Disabled</Text></BevelPanel></View>;

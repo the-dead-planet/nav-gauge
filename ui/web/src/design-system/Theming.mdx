@@ -1,4 +1,7 @@
-import { Meta, Title } from '@storybook/addon-docs/blocks';
+import { Canvas, Meta, Title } from '@storybook/addon-docs/blocks';
+import { elevationLevelOptions, elevationSpecifications, Theme } from '@ui';
+import * as ThemeModeToggleStories from '../assemblies/theme-mode-toggle/ThemeModeToggle.stories';
+import * as ThemeSelectStories from '../assemblies/theme-select/ThemeSelect.stories';
 
 <Meta title="Design System/Theming" />
 
@@ -8,36 +11,101 @@ import { Meta, Title } from '@storybook/addon-docs/blocks';
 
 Themes change the palette while preserving component meaning. A component's color role, variant, hierarchy, and interaction behavior must remain recognizable in every theme and in both light and dark modes.
 
-<h2 id="appearance-defaults">Appearance defaults</h2>
-
-Components that expose `color` default to `neutral`.
-
-Appearance selection follows the component API: `variant` defaults to `ghost`, or `fill-inverse` when `ghost` is unsupported. Components without an appearance variant use the shared default policy.
+Shared component variants, defaults, glyph treatment, and interaction states are defined in <a href="./?path=/docs/design-system-appearance--docs" target="_top" style={{ textDecoration: 'underline' }}>Appearance</a>.
 
 ## Modes
 
 Light and dark modes reverse the primary surface and content ranges. Components use theme roles and documented shade rules rather than assuming a fixed light or dark foreground.
 
+Use the `ThemeModeToggle` assembly for the light/dark control. It reads the current mode from the theme context; connect `onToggle` to the application's mode state.
+
+<Canvas of={ThemeModeToggleStories.Playground} />
+
 ## Named Themes
 
 Named themes provide different visual identities through shared palette roles. They must not require component-specific branches or change what a state means.
 
-## Semantic Colors
+Use the `ThemeSelect` assembly as the theme dropdown. Pass the selected theme through `value` and apply selections through `onChange`; `mode` determines the palette previews shown in its options.
 
-Status colors are semantic roles: `glitch`, `hazard`, `secured`, and `intel`. Components may use them through the same `color` and `highlightColor` props as primary, secondary, tertiary, and neutral colors.
+<Canvas of={ThemeSelectStories.Playground} />
 
-Use the shared `ColorVariant` values rather than component-local semantic aliases or palette matrices. Web publishes every shade and contrast value for each color; mobile resolves the same values through `Theme.color()`.
+## Colors
 
-Application surfaces use neutral shade `100` in light mode and `900` in dark mode; default content uses the inverse neutral shade. Plain layout borders and dividers use neutral shade `200` in light mode and `800` in dark mode. Components with appearance props derive borders from their variant and color. Filled content uses the selected palette's calculated contrast shade. Do not introduce structural color aliases for these values.
+Theme colors can use any of the available <a href="./?path=/docs/design-system-colors--docs#palettes" target="_top" style={{ textDecoration: 'underline' }}><strong>pallettes</strong></a>.
+
+
+### Design System Color
+
+- **Neutral** — default usage.
+- **Primary** — enhanced usage, no clear guidelines.
+- **Secondary** — enhanced usage, no clear guidelines.
+- **Tertiary** — enhanced usage, no clear guidelines.
+
+### Semantic Colors
+
+- **Glitch** — status / error state
+- **Hazard** — warning / caution state
+- **Secured** — success / confirmed state
+- **Intel** — informational state
 
 ## Elevation
 
-Elevation describes separation between surfaces independently from component colors and appearance variants. `raised` is used by persistent panels and toolbars, `floating` by transient widgets and notices, and `overlay` by popups, menus, dropdowns, and dialogs. Direction is selected by the renderer so side and bottom panels cast outward shadows.
+### Elevation specifications
 
-Global layer policies explicitly pair a z-index with an elevation level. A higher z-index does not imply a stronger shadow: tooltips stack above dialogs but use the lighter floating elevation.
+<table>
+    <thead>
+        <tr>
+            <th>Elevation</th>
+            <th>Offset (x, y)</th>
+            <th>Blur</th>
+            <th>Opacity</th>
+            <th>Native shadow radius</th>
+            <th>Native depth</th>
+            <th>Box shadow (down)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {elevationLevelOptions.map((level) => {
+            const light = elevationSpecifications.light[level];
+            const dark = elevationSpecifications.dark[level];
+            const lightOpacity = light.opacity * 100;
+            const darkOpacity = dark.opacity * 100;
+            return (
+                <tr key={level}>
+                    <td><code>{level}</code></td>
+                    <td>0, {light.distance} light / {dark.distance} dark</td>
+                    <td>{light.blur} light / {dark.blur} dark</td>
+                    <td>{lightOpacity}% light / {darkOpacity}% dark</td>
+                    <td>{light.blur / 2} light / {dark.blur / 2} dark</td>
+                    <td>{light.depth} light / {dark.depth} dark</td>
+                    <td><code>{level === 'none' ? 'none' : `0px ${light.distance}px ${light.blur}px rgba(0, 0, 0, ${light.opacity}) light / 0px ${dark.distance}px ${dark.blur}px rgba(0, 0, 0, ${dark.opacity}) dark`}</code></td>
+                </tr>
+            );
+        })}
+    </tbody>
+</table>
 
-`Theme.elevation()` returns platform-neutral metrics for surfaces without a global stacking role. Web renderers consume generated `--elevation-<level>-<direction>-shadow` or `-filter` variables; mobile renderers translate the same metrics with `resolveElevationStyle()`.
+### Global layers
 
-Globally stacked surfaces use their layer as one policy: web consumes `--layer-<name>-z-index` with `--layer-<name>-<direction>-shadow`, while mobile uses `resolveLayerStyle()`. Do not select a global layer's z-index and elevation independently. Literal shadows are reserved for intrinsic effects such as focus rings, glows, and inset geometry, not surface depth.
+<table>
+    <thead>
+        <tr>
+            <th>Layer</th>
+            <th>Elevation</th>
+            <th>Z-index</th>
+        </tr>
+    </thead>
+    <tbody>
+        {Object.entries(Theme.layers)
+            .sort(([, first], [, second]) => first.zIndex - second.zIndex)
+            .map(([layer, policy]) => (
+                <tr key={layer}>
+                    <td><code>{layer}</code></td>
+                    <td><code>{policy.elevation}</code></td>
+                    <td>{policy.zIndex}</td>
+                </tr>
+            ))}
+    </tbody>
+</table>
 
 Theme controls change the active theme but follow the same component and accessibility rules as other controls.

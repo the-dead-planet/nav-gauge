@@ -27,11 +27,11 @@ export const Tabstrip: FC<TabstripProps> = ({
     onChange,
     size = DEFAULT_SIZE,
     color = 'neutral',
-    contentShade,
+    glyphsShade,
     highlightColor = color,
-    highlightContentShade,
+    highlightGlyphsShade,
     variant = DEFAULT_FILL_VARIANT,
-    active = false,
+    highlighted = false,
     disabled = false,
     spread = false,
     overflowAccessibilityLabel,
@@ -51,7 +51,7 @@ export const Tabstrip: FC<TabstripProps> = ({
             ? current
             : Object.assign([...current], { [index]: width }));
     };
-    const buttonProps = { color, contentShade, highlightColor, highlightContentShade, size, variant };
+    const buttonProps = { color, glyphsShade, highlightColor, highlightGlyphsShade, size, variant };
     const selectTab = (selectedValue: string) => {
         LayoutAnimation.configureNext({
             duration: 200,
@@ -91,11 +91,11 @@ export const Tabstrip: FC<TabstripProps> = ({
                         style={[styles.headerButton, spread ? styles.spreadButton : undefined, selected ? styles.selectedButton : undefined]}
                         accessibilityRole="tab"
                         accessibilityState={{ selected, disabled: disabled || option.disabled }}
-                        active={active || selected}
+                        highlighted={highlighted || selected}
                         disabled={disabled || option.disabled}
                         onPress={() => selectTab(option.value)}
                     >
-                        {selected ? <Text color={highlightColor} shade={highlightContentShade ?? (theme.isDark ? 900 : 100)} style={{ fontSize: 14 }}>{option.label}</Text> : option.label}
+                        {selected ? <Text color={highlightColor} shade={highlightGlyphsShade ?? (theme.isDark ? 900 : 100)} style={{ fontSize: 14 }}>{option.label}</Text> : option.label}
                     </Button>;
                     return selected ? (
                         <View key={option.value} style={[styles.selected, spread ? [styles.spreadItem, { minWidth: width }] : undefined, { backgroundColor: isTrailing && !spread ? 'transparent' : inactiveFill }, visibleIndex ? styles.joined : undefined]}>

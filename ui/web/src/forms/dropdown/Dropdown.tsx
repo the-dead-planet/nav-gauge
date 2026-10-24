@@ -20,9 +20,9 @@ interface Props {
 
 export function Dropdown<T = string>({
     color = 'neutral',
-    contentShade,
+    glyphsShade,
     highlightColor,
-    highlightContentShade,
+    highlightGlyphsShade,
     size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     value,
@@ -30,7 +30,7 @@ export function Dropdown<T = string>({
     onChange,
     placeholder = 'Select...',
     disabled = false,
-    active = false,
+    highlighted = false,
     ariaLabel,
     labelledBy,
     popoverClassName,
@@ -102,7 +102,7 @@ export function Dropdown<T = string>({
                 styles[`variant-${variant}`],
                 {
                     [styles['disabled']]: disabled,
-                    [styles['open']]: isOpen || (active && !disabled),
+                    [styles['open']]: isOpen || (highlighted && !disabled),
                 },
                 className,
             )}
@@ -136,12 +136,12 @@ export function Dropdown<T = string>({
                                 className={styles['icon']}
                             />
                         ) : null}
-                        <span className={styles['label']} style={(isOpen || active ? highlightContentShade : contentShade) === undefined ? undefined : { color: theme.color(isOpen || active ? highlightColor || color : color, isOpen || active ? highlightContentShade : contentShade) }}>
+                        <span className={styles['label']} style={(isOpen || highlighted ? highlightGlyphsShade : glyphsShade) === undefined ? undefined : { color: theme.color(isOpen || highlighted ? highlightColor || color : color, isOpen || highlighted ? highlightGlyphsShade : glyphsShade) }}>
                             {selectedOption.label}
                         </span>
                     </>
                 ) : (
-                    <span className={styles['placeholder']} style={(isOpen || active ? highlightContentShade : contentShade) === undefined ? undefined : { color: theme.color(isOpen || active ? highlightColor || color : color, isOpen || active ? highlightContentShade : contentShade) }}>{placeholder}</span>
+                    <span className={styles['placeholder']} style={(isOpen || highlighted ? highlightGlyphsShade : glyphsShade) === undefined ? undefined : { color: theme.color(isOpen || highlighted ? highlightColor || color : color, isOpen || highlighted ? highlightGlyphsShade : glyphsShade) }}>{placeholder}</span>
                 )}
                 <Icon
                     src={Icons.NounProject.ChevronDownDoubleSquareFill}
@@ -162,8 +162,8 @@ export function Dropdown<T = string>({
                     iconSize={iconSize}
                     color={color}
                     highlightColor={highlightColor}
-                    contentShade={contentShade}
-                    highlightContentShade={highlightContentShade}
+                    glyphsShade={glyphsShade}
+                    highlightGlyphsShade={highlightGlyphsShade}
                     size={size}
                     variant={variant}
                     value={value}

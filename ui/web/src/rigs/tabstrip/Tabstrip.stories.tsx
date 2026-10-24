@@ -31,7 +31,7 @@ export const Playground: Story = {
         const [value, setValue] = useState('export');
         return (
             <div style={{ width: 260 }}>
-                <Tabstrip options={options} value={value} onChange={setValue} highlightColor="primary" highlightContentShade={200} overflowAccessibilityLabel="More tabs">
+                <Tabstrip options={options} value={value} onChange={setValue} highlightColor="primary" highlightGlyphsShade={200} overflowAccessibilityLabel="More tabs">
                     <div style={{ whiteSpace: 'pre-line' }}>{content[value]}</div>
                 </Tabstrip>
             </div>
@@ -44,7 +44,7 @@ export const Spread: Story = {
         const [value, setValue] = useState('route');
         return (
             <div style={{ width: 420 }}>
-                <Tabstrip spread options={[{ value: 'route', label: 'Active' }, { value: 'waypoints', label: 'Current point' }, { value: 'terrain', label: 'Inactive' }]} value={value} onChange={setValue} highlightColor="primary" highlightContentShade={200} overflowAccessibilityLabel="More tabs">
+                <Tabstrip spread options={[{ value: 'route', label: 'Active' }, { value: 'waypoints', label: 'Current point' }, { value: 'terrain', label: 'Inactive' }]} value={value} onChange={setValue} highlightColor="primary" highlightGlyphsShade={200} overflowAccessibilityLabel="More tabs">
                     {content[value]}
                 </Tabstrip>
             </div>

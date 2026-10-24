@@ -28,8 +28,8 @@ export const surfaceVariantOptions: SurfaceVariant[] = [
 export const activeGlowOptions: ActiveGlow[] = ['none', 'glow', 'animate-borders-glow'];
 export const themeAppearanceStateOptions: ThemeAppearanceState[] = [
     'default',
-    'interaction',
-    'active',
+    'hover-focus',
+    'active-pressed',
     'disabled',
 ];
 

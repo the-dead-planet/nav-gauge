@@ -12,7 +12,7 @@ export const hexagonStoryArgs = {
     shape: 'pointy-top',
     strokeWidth: 2,
     interactive: true,
-    active: false,
+    highlighted: false,
     disabled: false,
     activeGlow: 'none',
 } satisfies HexagonProps;
@@ -53,7 +53,7 @@ export const hexagonStoryControls: StoryControls<HexagonProps> = {
     interactive: {
         control: 'boolean',
     },
-    active: {
+    highlighted: {
         control: 'boolean',
     },
     disabled: {

@@ -93,26 +93,24 @@
     backdrop-filter: blur(var(--appearance-backdrop-blur));
 }
 
-.button:is(:hover, .hovered, :focus-visible),
-.button.active:is(:hover, :focus-visible) {
-    color: var(--appearance-interaction-glyphs-override, var(--appearance-interaction-glyphs));
-    font-weight: var(--appearance-interaction-font-weight, 400);
-    background-color: var(--appearance-interaction-surface);
-    border-width: var(--appearance-interaction-border-width);
-    border-color: var(--appearance-interaction-border);
+.button:is(:hover, .hovered, :focus-visible):not(.disabled, :disabled, .highlighted, :active) {
+    color: var(--appearance-hover-focus-glyphs-override, var(--appearance-hover-focus-glyphs));
+    font-weight: var(--appearance-hover-focus-font-weight, 400);
+    background-color: var(--appearance-hover-focus-surface);
+    border-width: var(--appearance-hover-focus-border-width);
+    border-color: var(--appearance-hover-focus-border);
 }
 
-.button:is(:active, .active),
-.button.active:active {
-    color: var(--appearance-interaction-glyphs-override, var(--appearance-active-glyphs));
-    font-weight: var(--appearance-active-font-weight, 400);
-    background-color: var(--appearance-active-surface);
-    border-width: var(--appearance-active-border-width);
-    border-color: var(--appearance-active-border);
+.button:is(:active, .highlighted):not(.disabled, :disabled) {
+    color: var(--appearance-active-pressed-glyphs-override, var(--appearance-active-pressed-glyphs));
+    font-weight: var(--appearance-active-pressed-font-weight, 400);
+    background-color: var(--appearance-active-pressed-surface);
+    border-width: var(--appearance-active-pressed-border-width);
+    border-color: var(--appearance-active-pressed-border);
 }
 
 .button.depth-inset,
-.button.depth-inset:is(:hover, .hovered, :focus-visible, :active, .active, :disabled) {
+.button.depth-inset:is(:hover, .hovered, :focus-visible, :active, .highlighted, :disabled) {
     border: none;
 }
 
@@ -120,9 +118,9 @@
     box-shadow: var(--appearance-inset-default-shadow);
 }
 
-.depth-inset:is(:active, .active),
-.depth-inset.active:active {
-    box-shadow: var(--appearance-inset-active-shadow);
+.depth-inset:is(:active, .highlighted),
+.depth-inset.highlighted:active {
+    box-shadow: var(--appearance-inset-active-pressed-shadow);
 }
 
 .corners-hexagon {
@@ -155,40 +153,40 @@
 }
 
 .button.corners-hexagon,
-.button.corners-hexagon:is(:hover, .hovered, :focus-visible, :active, .active, :disabled) {
+.button.corners-hexagon:is(:hover, .hovered, :focus-visible, :active, .highlighted, :disabled) {
     background-color: transparent;
     border: none;
     box-shadow: none;
     backdrop-filter: none;
 }
 
-.glow-style-glow:is(:hover, .hovered, :active, .active),
-.glow-style-animate-borders-glow:is(:hover, .hovered, :active, .active) {
+.glow-style-glow:is(:hover, .hovered, :active, .highlighted),
+.glow-style-animate-borders-glow:is(:hover, .hovered, :active, .highlighted) {
     box-shadow: 0 0 4px rgb(from var(--appearance-glow-color) r g b / .3),
         0 0 20px rgb(from var(--appearance-glow-color) r g b / .6);
 }
 
-.glow-style-glow.glyphs-glow:is(:hover, .hovered, :active, .active),
-.glow-style-animate-borders-glow.glyphs-glow:is(:hover, .hovered, :active, .active) {
+.glow-style-glow.glyphs-glow:is(:hover, .hovered, :active, .highlighted),
+.glow-style-animate-borders-glow.glyphs-glow:is(:hover, .hovered, :active, .highlighted) {
     text-shadow: 0 0 12px rgb(from var(--appearance-glow-color) r g b / .45);
 }
 
-.glow-style-glow.glyphs-glow:is(:hover, .hovered, :active, .active) .icon,
-.glow-style-animate-borders-glow.glyphs-glow:is(:hover, .hovered, :active, .active) .icon {
+.glow-style-glow.glyphs-glow:is(:hover, .hovered, :active, .highlighted) .icon,
+.glow-style-animate-borders-glow.glyphs-glow:is(:hover, .hovered, :active, .highlighted) .icon {
     filter: drop-shadow(0 0 12px rgb(from var(--appearance-glow-color) r g b / .45));
 }
 
-.glow-style-animate-borders-glow:not(.corners-hexagon):is(:hover, .hovered, :active, .active) {
+.glow-style-animate-borders-glow:not(.corners-hexagon):is(:hover, .hovered, :active, .highlighted) {
     animation: glow-sweep 0.4s ease-in-out forwards;
 }
 
-.corners-hexagon:is(.glow-style-glow, .glow-style-animate-borders-glow):is(:hover, .hovered, :active, .active) {
+.corners-hexagon:is(.glow-style-glow, .glow-style-animate-borders-glow):is(:hover, .hovered, :active, .highlighted) {
     box-shadow: none;
     animation: none;
 }
 
 .button.disabled,
-.button.disabled:is(:hover, .hovered, :focus-visible, :active, .active, :disabled) {
+.button.disabled:is(:hover, .hovered, :focus-visible, :active, .highlighted, :disabled) {
     cursor: not-allowed;
     color: var(--appearance-disabled-glyphs);
     font-weight: var(--appearance-disabled-font-weight, 400);
@@ -206,13 +204,13 @@
 }
 
 .button.disabled.depth-inset,
-.button.disabled.depth-inset:is(:hover, .hovered, :focus-visible, :active, .active, :disabled) {
+.button.disabled.depth-inset:is(:hover, .hovered, :focus-visible, :active, .highlighted, :disabled) {
     border: none;
     box-shadow: var(--appearance-inset-default-shadow);
 }
 
 .button.disabled.corners-hexagon,
-.button.disabled.corners-hexagon:is(:hover, .hovered, :focus-visible, :active, .active, :disabled) {
+.button.disabled.corners-hexagon:is(:hover, .hovered, :focus-visible, :active, .highlighted, :disabled) {
     background-color: transparent;
     border: none;
     box-shadow: none;
@@ -221,31 +219,31 @@
 @keyframes glow-sweep {
     0% {
         box-shadow:
-            rgb(from var(--appearance-interaction-glyphs) r g b / .6) -1px 1px 4px,
-            rgb(from var(--appearance-interaction-glyphs) r g b / 0) 0 0 6px;
+            rgb(from var(--appearance-hover-focus-glyphs) r g b / .6) -1px 1px 4px,
+            rgb(from var(--appearance-hover-focus-glyphs) r g b / 0) 0 0 6px;
     }
 
     33% {
         box-shadow:
-            rgb(from var(--appearance-interaction-glyphs) r g b / .6) -1px 1px 4px,
-            rgb(from var(--appearance-interaction-glyphs) r g b / .6) -1px -1px 4px,
-            rgb(from var(--appearance-interaction-glyphs) r g b / 0) 0 0 6px;
+            rgb(from var(--appearance-hover-focus-glyphs) r g b / .6) -1px 1px 4px,
+            rgb(from var(--appearance-hover-focus-glyphs) r g b / .6) -1px -1px 4px,
+            rgb(from var(--appearance-hover-focus-glyphs) r g b / 0) 0 0 6px;
     }
 
     66% {
         box-shadow:
-            rgb(from var(--appearance-interaction-glyphs) r g b / .6) -1px 1px 4px,
-            rgb(from var(--appearance-interaction-glyphs) r g b / .6) -1px -1px 4px,
-            rgb(from var(--appearance-interaction-glyphs) r g b / .6) 1px -1px 4px,
-            rgb(from var(--appearance-interaction-glyphs) r g b / 0) 0 0 6px;
+            rgb(from var(--appearance-hover-focus-glyphs) r g b / .6) -1px 1px 4px,
+            rgb(from var(--appearance-hover-focus-glyphs) r g b / .6) -1px -1px 4px,
+            rgb(from var(--appearance-hover-focus-glyphs) r g b / .6) 1px -1px 4px,
+            rgb(from var(--appearance-hover-focus-glyphs) r g b / 0) 0 0 6px;
     }
 
     100% {
         box-shadow:
-            rgb(from var(--appearance-interaction-glyphs) r g b / .6) -1px 1px 4px,
-            rgb(from var(--appearance-interaction-glyphs) r g b / .6) -1px -1px 4px,
-            rgb(from var(--appearance-interaction-glyphs) r g b / .6) 1px -1px 4px,
-            rgb(from var(--appearance-interaction-glyphs) r g b / .6) 1px 1px 4px,
-            rgb(from var(--appearance-interaction-glyphs) r g b / 0) 0 0 6px;
+            rgb(from var(--appearance-hover-focus-glyphs) r g b / .6) -1px 1px 4px,
+            rgb(from var(--appearance-hover-focus-glyphs) r g b / .6) -1px -1px 4px,
+            rgb(from var(--appearance-hover-focus-glyphs) r g b / .6) 1px -1px 4px,
+            rgb(from var(--appearance-hover-focus-glyphs) r g b / .6) 1px 1px 4px,
+            rgb(from var(--appearance-hover-focus-glyphs) r g b / 0) 0 0 6px;
     }
 }

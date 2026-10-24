@@ -10,7 +10,7 @@ import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptio
 const meta = {
     title: 'Forms/ClockInput',
     component: ClockInput,
-    args: { value: 45, color: 'primary', contentShade: 700, highlightContentShade: 200, size: 'sm', variant: 'fill-inverse', onChange: () => {} },
+    args: { value: 45, color: 'primary', glyphsShade: 700, highlightGlyphsShade: 200, size: 'sm', variant: 'fill-inverse', onChange: () => {} },
 } satisfies Meta<typeof ClockInput>;
 
 export default meta;

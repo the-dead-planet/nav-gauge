@@ -5,11 +5,9 @@ import {
     MediaSubscriptionDefinition,
     MediaWithBreakpoints,
     PaletteColor,
-    RGBColor,
     ThemeColor,
     ThemeStatusColors,
     ThemeSpecification,
-    ThemeSizes,
     ThemeMode,
     ThemeAppearancePaint,
     ThemeAppearancePolicy,
@@ -29,217 +27,15 @@ import {
     ThemeLayerPolicy,
 } from "./model";
 import { ColorShade, ColorVariant, DesignSystemColor, SpacingVariant, StatusColor, SurfaceVariant } from '../model';
-
-interface OklchColor {
-    lightness: number;
-    chroma: number;
-    hue: number;
-}
-
-const neutralPaletteLightness = {
-    50: 0.964214,
-    100: 0.907304,
-    900: 0.238684,
-} as const;
-
-const toLinearRgbChannel = (channel: number): number => {
-    const normalizedChannel = channel / 255;
-    return normalizedChannel <= 0.04045
-        ? normalizedChannel / 12.92
-        : ((normalizedChannel + 0.055) / 1.055) ** 2.4;
-};
-
-const fillContrastLightnessThreshold = 0.7;
-
-const themeSizes: ThemeSizes = {
-    control: {
-        xs: {
-            height: 24,
-            fontSize: 12,
-            iconSize: 12,
-            gap: 4,
-            paddingInline: 16,
-            paddingBlock: 0,
-            iconPaddingInline: 2,
-        },
-        sm: {
-            height: 24,
-            fontSize: 12,
-            iconSize: 14,
-            gap: 6,
-            paddingInline: 16,
-            paddingBlock: 2,
-            iconPaddingInline: 3,
-        },
-        md: {
-            height: 32,
-            fontSize: 14,
-            iconSize: 16,
-            gap: 10,
-            paddingInline: 16,
-            paddingBlock: 6,
-            iconPaddingInline: 5,
-        },
-        lg: {
-            height: 40,
-            fontSize: 16,
-            iconSize: 20,
-            gap: 12,
-            paddingInline: 20,
-            paddingBlock: 8,
-            iconPaddingInline: 8,
-        },
-    },
-};
-
-const elevations: Record<ThemeMode, Record<ElevationLevel, ThemeElevation>> = {
-    light: {
-        none: {
-            distance: 0,
-            blur: 0,
-            opacity: 0,
-            depth: 0,
-        },
-        raised: {
-            distance: 2,
-            blur: 8,
-            opacity: 0.1,
-            depth: 4,
-        },
-        floating: {
-            distance: 4,
-            blur: 12,
-            opacity: 0.18,
-            depth: 6,
-        },
-        overlay: {
-            distance: 8,
-            blur: 24,
-            opacity: 0.22,
-            depth: 8,
-        },
-    },
-    dark: {
-        none: {
-            distance: 0,
-            blur: 0,
-            opacity: 0,
-            depth: 0,
-        },
-        raised: {
-            distance: 2,
-            blur: 10,
-            opacity: 0.24,
-            depth: 4,
-        },
-        floating: {
-            distance: 4,
-            blur: 14,
-            opacity: 0.36,
-            depth: 6,
-        },
-        overlay: {
-            distance: 8,
-            blur: 30,
-            opacity: 0.5,
-            depth: 8,
-        },
-    },
-};
-
-const toOklch = ({ r, g, b }: RGBColor): OklchColor => {
-    const linearRed = toLinearRgbChannel(r);
-    const linearGreen = toLinearRgbChannel(g);
-    const linearBlue = toLinearRgbChannel(b);
-    const long = Math.cbrt(0.4122214708 * linearRed + 0.5363325363 * linearGreen + 0.0514459929 * linearBlue);
-    const medium = Math.cbrt(0.2119034982 * linearRed + 0.6806995451 * linearGreen + 0.1073969566 * linearBlue);
-    const short = Math.cbrt(0.0883024619 * linearRed + 0.2817188376 * linearGreen + 0.6299787005 * linearBlue);
-    const lightness = 0.2104542553 * long + 0.793617785 * medium - 0.0040720468 * short;
-    const axisA = 1.9779984951 * long - 2.428592205 * medium + 0.4505937099 * short;
-    const axisB = 0.0259040371 * long + 0.7827717662 * medium - 0.808675766 * short;
-
-    return {
-        lightness,
-        chroma: Math.hypot(axisA, axisB),
-        hue: Math.atan2(axisB, axisA),
-    };
-};
-
-const toSrgbChannel = (channel: number): number => channel <= 0.0031308
-    ? 12.92 * channel
-    : 1.055 * channel ** (1 / 2.4) - 0.055;
-
-const toRgb = ({ lightness, chroma, hue }: OklchColor): RGBColor | null => {
-    const axisA = chroma * Math.cos(hue);
-    const axisB = chroma * Math.sin(hue);
-    const long = (lightness + 0.3963377774 * axisA + 0.2158037573 * axisB) ** 3;
-    const medium = (lightness - 0.1055613458 * axisA - 0.0638541728 * axisB) ** 3;
-    const short = (lightness - 0.0894841775 * axisA - 1.291485548 * axisB) ** 3;
-    const channels = [
-        4.0767416621 * long - 3.3077115913 * medium + 0.2309699292 * short,
-        -1.2684380046 * long + 2.6097574011 * medium - 0.3413193965 * short,
-        -0.0041960863 * long - 0.7034186147 * medium + 1.707614701 * short,
-    ].map(toSrgbChannel);
-
-    if (channels.some((channel) => channel < 0 || channel > 1)) {
-        return null;
-    }
-
-    return {
-        r: Math.round(channels[0] * 255),
-        g: Math.round(channels[1] * 255),
-        b: Math.round(channels[2] * 255),
-    };
-};
-
-const smoothstep = (progress: number): number => progress ** 2 * (3 - 2 * progress);
-
-const colorAtLightness = (color: OklchColor, lightness: number): RGBColor => {
-    const chromaProgress = lightness >= color.lightness
-        ? (1 - lightness) / (1 - color.lightness)
-        : lightness / color.lightness;
-    const chroma = color.chroma * smoothstep(chromaProgress);
-    let minimumChroma = 0;
-    let maximumChroma = chroma;
-    let result = toRgb({ ...color, lightness, chroma: 0 })!;
-
-    for (let iteration = 0; iteration < 12; iteration += 1) {
-        const chroma = (minimumChroma + maximumChroma) / 2;
-        const candidate = toRgb({ ...color, lightness, chroma });
-        if (candidate) {
-            minimumChroma = chroma;
-            result = candidate;
-        } else {
-            maximumChroma = chroma;
-        }
-    }
-
-    return result;
-};
-
-const interpolate = (from: number, to: number, progress: number): number => from + (to - from) * progress;
-
-const createPalette = (middle: RGBColor): ThemeColor => {
-    const color = toOklch(middle);
-    return {
-        50: colorAtLightness(color, neutralPaletteLightness[50]),
-        100: colorAtLightness(color, neutralPaletteLightness[100]),
-        200: colorAtLightness(color, interpolate(neutralPaletteLightness[100], color.lightness, 0.25)),
-        300: colorAtLightness(color, interpolate(neutralPaletteLightness[100], color.lightness, 0.5)),
-        400: colorAtLightness(color, interpolate(neutralPaletteLightness[100], color.lightness, 0.75)),
-        500: middle,
-        600: colorAtLightness(color, interpolate(color.lightness, neutralPaletteLightness[900], 0.28)),
-        700: colorAtLightness(color, interpolate(color.lightness, neutralPaletteLightness[900], 0.6)),
-        800: colorAtLightness(color, interpolate(color.lightness, neutralPaletteLightness[900], 0.85)),
-        900: colorAtLightness(color, neutralPaletteLightness[900]),
-    };
-};
-
-const createNeutralPalette = (middle: RGBColor): ThemeColor => {
-    const color = toOklch(middle);
-    const neutralMiddle = colorAtLightness({ ...color, chroma: Math.min(color.chroma, 0.04) }, color.lightness);
-    return createPalette(neutralMiddle);
-};
+import { palette, resolveContrastShade } from './palette';
+import {
+    elevationSpecifications,
+    themeBreakpointThresholds,
+    themeLayers,
+    themeProperties,
+    themeSizes,
+    themeSpacing,
+} from './tinkers';
 
 export class Theme {
     public name: string;
@@ -259,16 +55,7 @@ export class Theme {
     /**
      * Minimum value in pixels from which a breakpoint is active
      */
-    public static breakpointThresholds: { [key in Breakpoint]: number } = {
-        xxs: 0,
-        xs: 480,
-        sm: 600,
-        md: 768,
-        lg: 1024,
-        xl: 1280,
-        xxl: 1600,
-        xxxl: 1920
-    };
+    public static breakpointThresholds: { [key in Breakpoint]: number } = themeBreakpointThresholds;
 
     public static calculateMedia = ({ windowWidth, ...media }: Media): MediaWithBreakpoints => {
         const breakpoint = (Object.entries(Theme.breakpointThresholds) as [Breakpoint, number][])
@@ -302,95 +89,17 @@ export class Theme {
 
     public statusColors: ThemeStatusColors;
 
-    public static palette: { [key in PaletteColor]: ThemeColor } = {
-        'neutral-grey': createNeutralPalette({ r: 113, g: 118, b: 117 }),
-        'neutral-brown': createNeutralPalette({ r: 128, g: 108, b: 91 }),
-        'neutral-khaki': createNeutralPalette({ r: 125, g: 116, b: 82 }),
-        'neutral-olive': createNeutralPalette({ r: 122, g: 122, b: 98 }),
-        'neutral-green': createNeutralPalette({ r: 108, g: 127, b: 113 }),
-        'neutral-teal': createNeutralPalette({ r: 99, g: 128, b: 121 }),
-        'neutral-cyan': createNeutralPalette({ r: 103, g: 130, b: 136 }),
-        'neutral-blue': createNeutralPalette({ r: 100, g: 108, b: 135 }),
-        'neutral-violet': createNeutralPalette({ r: 116, g: 105, b: 137 }),
-        'neutral-pink': createNeutralPalette({ r: 133, g: 106, b: 116 }),
-        'neutral-red': createNeutralPalette({ r: 132, g: 111, b: 112 }),
-
-        mahogany: createPalette({ r: 148, g: 57, b: 52 }),
-        'burnt-orange': createPalette({ r: 184, g: 68, b: 65 }),
-        coral: createPalette({ r: 213, g: 94, b: 77 }),
-        peach: createPalette({ r: 203, g: 98, b: 52 }),
-        orange: createPalette({ r: 240, g: 123, b: 0 }),
-        copper: createPalette({ r: 205, g: 127, b: 50 }),
-        'warm-brown': createPalette({ r: 145, g: 88, b: 52 }),
-        yellow: createPalette({ r: 220, g: 166, b: 0 }),
-        'luminous-yellow': createPalette({ r: 222, g: 209, b: 49 }),
-        'dark-gold': createPalette({ r: 148, g: 131, b: 51 }),
-        chartreuse: createPalette({ r: 168, g: 171, b: 12 }),
-        lime: createPalette({ r: 108, g: 125, b: 0 }),
-        green: createPalette({ r: 26, g: 104, b: 64 }),
-        mint: createPalette({ r: 19, g: 145, b: 93 }),
-        teal: createPalette({ r: 14, g: 128, b: 127 }),
-        aqua: createPalette({ r: 12, g: 145, b: 143 }),
-        cyan: createPalette({ r: 0, g: 153, b: 173 }),
-        navy: createPalette({ r: 47, g: 91, b: 125 }),
-        blue: createPalette({ r: 75, g: 115, b: 255 }),
-        indigo: createPalette({ r: 91, g: 73, b: 190 }),
-        violet: createPalette({ r: 91, g: 63, b: 125 }),
-        'deep-violet': createPalette({ r: 82, g: 62, b: 135 }),
-        purple: createPalette({ r: 170, g: 50, b: 250 }),
-        plum: createPalette({ r: 154, g: 71, b: 151 }),
-        magenta: createPalette({ r: 187, g: 62, b: 187 }),
-        pink: createPalette({ r: 205, g: 145, b: 205 }),
-        rose: createPalette({ r: 220, g: 52, b: 94 }),
-        red: createPalette({ r: 235, g: 0, b: 53 }),
-    }
+    public static palette: { [key in PaletteColor]: ThemeColor } = palette;
 
     public colors: { [key in PaletteColor | ColorVariant]: ThemeColor };
 
-    public static spacing: { [key in SpacingVariant]: string } = {
-        xs: '6px',
-        sm: '12px',
-        md: '16px',
-        lg: '24px',
-        xl: '32px',
-    }
+    public static spacing: { [key in SpacingVariant]: string } = themeSpacing;
 
-    public static layers: Record<ThemeLayer, ThemeLayerPolicy> = {
-        'hud-connector': {
-            zIndex: 2,
-            elevation: 'none'
-        },
-        popup: {
-            zIndex: 1000,
-            elevation: 'overlay'
-        },
-        floating: {
-            zIndex: 1100,
-            elevation: 'floating'
-        },
-        dialog: {
-            zIndex: 5000,
-            elevation: 'overlay'
-        },
-        dropdown: {
-            zIndex: 6000,
-            elevation: 'overlay'
-        },
-        'tooltip-connector': {
-            zIndex: 9998,
-            elevation: 'none'
-        },
-        tooltip: {
-            zIndex: 10000,
-            elevation: 'floating'
-        },
-    } as const;
+    public static layers: Record<ThemeLayer, ThemeLayerPolicy> = themeLayers;
 
     public elevations: Record<ElevationLevel, ThemeElevation>;
 
-    public static properties = {
-        disabledOpacity: 0.4,
-    }
+    public static properties = themeProperties;
 
     public constructor(
         specification: ThemeSpecification,
@@ -401,7 +110,7 @@ export class Theme {
         this.isDark = specification.mode === 'dark';
         this.otherMode = specification.mode === 'light' ? 'dark' : 'light';
         this.name = specification.themeName;
-        this.elevations = elevations[this.mode];
+        this.elevations = elevationSpecifications[this.mode];
         this.statusColors = specification.statusColors;
         const statusPalettes = Object.fromEntries(
             Object.entries(this.statusColors).map(([status, selected]) => [
@@ -420,8 +129,8 @@ export class Theme {
                 glyphs: 900,
                 inverseSurface: 200,
                 insetSurface: 100,
-                interaction: 600,
-                active: 700,
+                hoverFocus: 600,
+                activePressed: 700,
                 disabledSurface: 200,
                 disabledGlyphs: 300,
             }
@@ -433,8 +142,8 @@ export class Theme {
                 glyphs: 100,
                 inverseSurface: 800,
                 insetSurface: 900,
-                interaction: 300,
-                active: 200,
+                hoverFocus: 300,
+                activePressed: 200,
                 disabledSurface: 800,
                 disabledGlyphs: 700,
             };
@@ -540,22 +249,22 @@ export class Theme {
                             shade: shades.glyphs,
                         },
                     },
-                    interaction: {
+                    'hover-focus': {
                         surface: defaultStateSurface,
                         border: transparentBorder,
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.interaction,
+                            shade: shades.hoverFocus,
                         },
                     },
-                    active: {
+                    'active-pressed': {
                         surface: defaultStateSurface,
                         border: transparentBorder,
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.active,
+                            shade: shades.activePressed,
                         },
                     },
                     disabled: {
@@ -582,7 +291,7 @@ export class Theme {
                             fontWeight: 500,
                         },
                     },
-                    interaction: {
+                    'hover-focus': {
                         surface: transparent,
                         border: transparentBorder,
                         glyphs: {
@@ -592,7 +301,7 @@ export class Theme {
                             fontWeight: 500,
                         },
                     },
-                    active: {
+                    'active-pressed': {
                         surface: transparent,
                         border: transparentBorder,
                         glyphs: {
@@ -632,30 +341,30 @@ export class Theme {
                             backgroundShade: shades.base,
                         },
                     },
-                    interaction: {
+                    'hover-focus': {
                         surface: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.interaction,
+                            shade: shades.hoverFocus,
                         },
                         border: transparentBorder,
                         glyphs: {
                             type: 'contrast',
                             colorProperty: 'highlightColor',
-                            backgroundShade: shades.interaction,
+                            backgroundShade: shades.hoverFocus,
                         },
                     },
-                    active: {
+                    'active-pressed': {
                         surface: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.active,
+                            shade: shades.activePressed,
                         },
                         border: transparentBorder,
                         glyphs: {
                             type: 'contrast',
                             colorProperty: 'highlightColor',
-                            backgroundShade: shades.active,
+                            backgroundShade: shades.activePressed,
                         },
                     },
                     disabled: {
@@ -690,7 +399,7 @@ export class Theme {
                             shade: shades.glyphs,
                         },
                     },
-                    interaction: {
+                    'hover-focus': {
                         surface: {
                             type: 'shade',
                             colorProperty: 'color',
@@ -699,7 +408,7 @@ export class Theme {
                         border: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.interaction,
+                            shade: shades.hoverFocus,
                             width: 1,
                         },
                         glyphs: {
@@ -708,7 +417,7 @@ export class Theme {
                             shade: shades.glyphs,
                         },
                     },
-                    active: {
+                    'active-pressed': {
                         surface: {
                             type: 'shade',
                             colorProperty: 'color',
@@ -717,7 +426,7 @@ export class Theme {
                         border: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.active,
+                            shade: shades.activePressed,
                             width: 1,
                         },
                         glyphs: {
@@ -760,7 +469,7 @@ export class Theme {
                             shade: shades.base,
                         },
                     },
-                    interaction: {
+                    'hover-focus': {
                         surface: {
                             type: 'shade',
                             colorProperty: 'color',
@@ -770,16 +479,16 @@ export class Theme {
                         border: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.interaction,
+                            shade: shades.hoverFocus,
                             width: 1,
                         },
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.interaction,
+                            shade: shades.hoverFocus,
                         },
                     },
-                    active: {
+                    'active-pressed': {
                         surface: {
                             type: 'shade',
                             colorProperty: 'color',
@@ -789,13 +498,13 @@ export class Theme {
                         border: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.active,
+                            shade: shades.activePressed,
                             width: 1,
                         },
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.active,
+                            shade: shades.activePressed,
                         },
                     },
                     disabled: {
@@ -831,7 +540,7 @@ export class Theme {
                             shade: shades.base,
                         },
                     },
-                    interaction: {
+                    'hover-focus': {
                         surface: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
@@ -841,16 +550,16 @@ export class Theme {
                         border: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.interaction,
+                            shade: shades.hoverFocus,
                             width: 1,
                         },
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.interaction,
+                            shade: shades.hoverFocus,
                         },
                     },
-                    active: {
+                    'active-pressed': {
                         surface: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
@@ -860,13 +569,13 @@ export class Theme {
                         border: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.active,
+                            shade: shades.activePressed,
                             width: 1,
                         },
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.active,
+                            shade: shades.activePressed,
                         },
                     },
                     disabled: {
@@ -896,7 +605,7 @@ export class Theme {
                             shade: shades.base,
                         },
                     },
-                    interaction: {
+                    'hover-focus': {
                         surface: {
                             type: 'shade',
                             colorProperty: 'color',
@@ -906,10 +615,10 @@ export class Theme {
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.interaction,
+                            shade: shades.hoverFocus,
                         },
                     },
-                    active: {
+                    'active-pressed': {
                         surface: {
                             type: 'shade',
                             colorProperty: 'color',
@@ -919,7 +628,7 @@ export class Theme {
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.active,
+                            shade: shades.activePressed,
                         },
                     },
                     disabled: {
@@ -938,8 +647,8 @@ export class Theme {
                     glyphsGlow: true,
                     inset: {
                         default: insetEffect('color'),
-                        interaction: insetEffect('highlightColor'),
-                        active: insetEffect('highlightColor'),
+                        'hover-focus': insetEffect('highlightColor'),
+                        'active-pressed': insetEffect('highlightColor'),
                         disabled: insetEffect('color'),
                     },
                 },
@@ -990,12 +699,7 @@ export class Theme {
         backgroundShade ?? this.statusColors[name as StatusColor]?.shade ?? 500,
     );
 
-    public static contrastShade = (
-        color: ThemeColor,
-        backgroundShade: ColorShade = 500,
-    ): 100 | 900 => toOklch(color[backgroundShade]).lightness < fillContrastLightnessThreshold
-            ? 100
-            : 900;
+    public static contrastShade = resolveContrastShade;
 
     public resolveAppearance = (
         variant?: SurfaceVariant,
