@@ -40,7 +40,7 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
                         color={color}
                         className={classNames(styles['dialog'], styles[`color-${color}`])}
                     >
-                        <H3 fontType={FontType.NeonText} color={color} className={styles['header']}>
+                        <H3 fontType={FontType.NeonText} color={color} shade={500} className={styles['header']}>
                             {header.toUpperCase()}
                         </H3>
                         <div className={styles['content']}>

@@ -46,92 +46,65 @@ Theme colors can use any of the available <a href="./?path=/docs/design-system-c
 - **Glitch** — status / error state
 - **Hazard** — warning / caution state
 - **Secured** — success / confirmed state
-- **Intel** — informational / neutral-highlight state
+- **Intel** — informational state
 
 ## Elevation
 
-Elevation describes separation between surfaces independently from component colors and appearance variants. `raised` is used by persistent panels and toolbars, `floating` by transient widgets and notices, and `overlay` by popups, menus, dropdowns, and dialogs. Direction is selected by the renderer so side and bottom panels cast outward shadows.
-
-Global layer policies explicitly pair a z-index with an elevation level. A higher z-index does not imply a stronger shadow: tooltips stack above dialogs but use the lighter floating elevation.
-
-`Theme.elevation()` returns platform-neutral metrics for surfaces without a global stacking role. Web renderers consume generated `--elevation-<level>-<direction>-shadow` or `-filter` variables; mobile renderers translate the same metrics with `resolveElevationStyle()`.
-
-Globally stacked surfaces use their layer as one policy: web consumes `--layer-<name>-z-index` with `--layer-<name>-<direction>-shadow`, while mobile uses `resolveLayerStyle()`. Do not select a global layer's z-index and elevation independently. Literal shadows are reserved for intrinsic effects such as focus rings, glows, and inset geometry, not surface depth.
-
-### Shadow specifications
-
-This table reads the same `elevationSpecifications` used by `Theme`. Offsets, blur, and native shadow radius are in pixels; the box-shadow examples cast downward with no spread. Select `up`, `right`, or `left` at the renderer to change the offset's axis or sign. Native depth is the Android elevation value.
+### Elevation specifications
 
 <table>
-    <caption>Elevation metrics in both theme modes</caption>
     <thead>
         <tr>
-            <th scope="col">Mode</th>
-            <th scope="col">Elevation</th>
-            <th scope="col">Offset (x, y)</th>
-            <th scope="col">Blur</th>
-            <th scope="col">Opacity</th>
-            <th scope="col">Native shadow radius</th>
-            <th scope="col">Native depth</th>
-            <th scope="col">Box shadow (down)</th>
+            <th>Elevation</th>
+            <th>Offset (x, y)</th>
+            <th>Blur</th>
+            <th>Opacity</th>
+            <th>Native shadow radius</th>
+            <th>Native depth</th>
+            <th>Box shadow (down)</th>
         </tr>
     </thead>
     <tbody>
-        {Object.entries(elevationSpecifications).flatMap(([mode, specifications]) => (
-            elevationLevelOptions.map((level) => {
-                const specification = specifications[level];
-                return (
-                    <tr key={`${mode}-${level}`}>
-                        <td>{mode}</td>
-                        <td><code>{level}</code></td>
-                        <td>0, {specification.distance}</td>
-                        <td>{specification.blur}</td>
-                        <td>{specification.opacity * 100}%</td>
-                        <td>{specification.blur / 2}</td>
-                        <td>{specification.depth}</td>
-                        <td><code>{level === 'none' ? 'none' : `0px ${specification.distance}px ${specification.blur}px rgba(0, 0, 0, ${specification.opacity})`}</code></td>
-                    </tr>
-                );
-            })
-        ))}
+        {elevationLevelOptions.map((level) => {
+            const light = elevationSpecifications.light[level];
+            const dark = elevationSpecifications.dark[level];
+            const lightOpacity = light.opacity * 100;
+            const darkOpacity = dark.opacity * 100;
+            return (
+                <tr key={level}>
+                    <td><code>{level}</code></td>
+                    <td>0, {light.distance} / {dark.distance}</td>
+                    <td>{light.blur} / {dark.blur}</td>
+                    <td>{lightOpacity}% / {darkOpacity}%</td>
+                    <td>{light.blur / 2} / {dark.blur / 2}</td>
+                    <td>{light.depth} / {dark.depth}</td>
+                    <td><code>{level === 'none' ? 'none' : `0px ${light.distance}px ${light.blur}px rgba(0, 0, 0, ${light.opacity}) (light) / 0px ${dark.distance}px ${dark.blur}px rgba(0, 0, 0, ${dark.opacity}) (dark)`}</code></td>
+                </tr>
+            );
+        })}
     </tbody>
 </table>
 
 ### Global layers
 
-These rows come directly from `Theme.layers`, grouped by their elevation and ordered by z-index within each group. Elevations do not have a universal z-index: `raised` surfaces use their renderer's layout stacking, and a tooltip's floating elevation can still stack above an overlay dialog.
-
 <table>
-    <caption>Combined global layer and elevation policies</caption>
     <thead>
         <tr>
-            <th scope="col">Elevation</th>
-            <th scope="col">Layer</th>
-            <th scope="col">Z-index</th>
+            <th>Layer</th>
+            <th>Elevation</th>
+            <th>Z-index</th>
         </tr>
     </thead>
     <tbody>
-        {elevationLevelOptions.flatMap((level) => {
-            const layers = Object.entries(Theme.layers)
-                .filter(([, policy]) => policy.elevation === level)
-                .sort(([, first], [, second]) => first.zIndex - second.zIndex);
-            if (layers.length === 0) {
-                return [
-                    <tr key={level}>
-                        <td><code>{level}</code></td>
-                        <td>No global layer</td>
-                        <td>Renderer-owned</td>
-                    </tr>,
-                ];
-            }
-            return layers.map(([layer, policy]) => (
+        {Object.entries(Theme.layers)
+            .sort(([, first], [, second]) => first.zIndex - second.zIndex)
+            .map(([layer, policy]) => (
                 <tr key={layer}>
-                    <td><code>{level}</code></td>
                     <td><code>{layer}</code></td>
+                    <td><code>{policy.elevation}</code></td>
                     <td>{policy.zIndex}</td>
                 </tr>
-            ));
-        })}
+            ))}
     </tbody>
 </table>
 

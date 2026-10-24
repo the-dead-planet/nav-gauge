@@ -17,13 +17,10 @@
 .label {
     display: block;
     width: 100%;
-    color: var(--color-primary-100);
-    text-transform: uppercase;
 }
 
 .settings-checkbox {
     width: 100%;
-    color: var(--color-primary-100);
     text-transform: uppercase;
 }
 
@@ -57,9 +54,4 @@
 
 .wide .field > * {
     width: auto;
-}
-
-.wide-label {
-    color: var(--color-primary-100);
-    text-transform: uppercase;
 }

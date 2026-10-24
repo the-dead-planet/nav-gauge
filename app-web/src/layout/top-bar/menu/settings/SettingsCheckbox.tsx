@@ -15,7 +15,7 @@ export const SettingsCheckbox: FC<Props> = ({ wide, id, checked, onChange, child
     <div className={styles['field']}>
         {wide ? (
             <>
-                <SettingsLabel wide id={id}>{children}</SettingsLabel>
+                <SettingsLabel id={id}>{children}</SettingsLabel>
                 <Checkbox labelledBy={id} size="xs" color="primary" checked={checked} onChange={onChange} />
             </>
         ) : (
