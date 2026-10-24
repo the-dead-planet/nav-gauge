@@ -29,7 +29,9 @@ jobs:
 
           gh api --paginate "/orgs/$OWNER/packages/container/$PACKAGE/versions?per_page=100" \
             | jq -s -r "add | sort_by(.created_at) | reverse | .[3:] | .[]
-                        | select(.created_at < \"$CUTOFF\") | .id" \
+                        | select(.created_at < \"$CUTOFF\"
+                            and ((.metadata.container.tags // []) | index(\"latest\") | not))
+                        | .id" \
             | while read -r id; do
                 echo "Deleting $PACKAGE version $id"
                 gh api -X DELETE "/orgs/$OWNER/packages/container/$PACKAGE/versions/$id"
