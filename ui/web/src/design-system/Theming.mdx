@@ -29,13 +29,24 @@ Use the `ThemeSelect` assembly as the theme dropdown. Pass the selected theme th
 
 <Canvas of={ThemeSelectStories.Playground} />
 
-## Semantic Colors
+## Colors
 
-Status colors are semantic roles: `glitch`, `hazard`, `secured`, and `intel`. Components may use them through the same `color` and `highlightColor` props as primary, secondary, tertiary, and neutral colors.
+Theme colors can use any of the available <a href="./?path=/docs/design-system-colors--docs#palettes" target="_top" style={{ textDecoration: 'underline' }}><strong>pallettes</strong></a>.
 
-Use the shared `ColorVariant` values rather than component-local semantic aliases or palette matrices. Web publishes every shade and contrast value for each color; mobile resolves the same values through `Theme.color()`.
 
-Application surfaces use neutral shade `100` in light mode and `900` in dark mode; default content uses the inverse neutral shade. Plain layout borders and dividers use neutral shade `200` in light mode and `800` in dark mode. Components with appearance props derive borders from their variant and color. Filled content uses the selected palette's calculated contrast shade. Do not introduce structural color aliases for these values.
+### Design System Color
+
+- **Neutral** — default usage.
+- **Primary** — enhanced usage, no clear guidelines.
+- **Secondary** — enhanced usage, no clear guidelines.
+- **Tertiary** — enhanced usage, no clear guidelines.
+
+### Semantic Colors
+
+- **Glitch** — status / error state
+- **Hazard** — warning / caution state
+- **Secured** — success / confirmed state
+- **Intel** — informational / neutral-highlight state
 
 ## Elevation
 
