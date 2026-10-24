@@ -4,55 +4,55 @@
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="assemblies" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;gradientColor=#b573d4;" value="&lt;b&gt;assemblies&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;theme-mode-toggle · theme-select&lt;/font&gt;" vertex="1">
-          <mxGeometry height="60" width="320" x="300" y="10" as="geometry" />
+        <mxCell id="assemblies" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#261b26;strokeColor=#cd91cd;gradientColor=#3c2a3c;fontColor=#e0e0e0;" value="&lt;b&gt;assemblies&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;theme-mode-toggle · theme-select&lt;/font&gt;" vertex="1">
+          <mxGeometry height="44" width="300" x="300" y="10" as="geometry" />
         </mxCell>
-        <mxCell id="forms" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;gradientColor=#7ea6e0;" value="&lt;b&gt;forms&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;color-input · color-select-field · file-input · …&lt;/font&gt;" vertex="1">
-          <mxGeometry height="70" width="320" x="300" y="100" as="geometry" />
+        <mxCell id="forms" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#042424;strokeColor=#0e807f;gradientColor=#013131;fontColor=#e0e0e0;" value="&lt;b&gt;forms&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;color-input · color-select-field · file-input · …&lt;/font&gt;" vertex="1">
+          <mxGeometry height="44" width="300" x="300" y="74" as="geometry" />
         </mxCell>
-        <mxCell id="rigs" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;gradientColor=#7ea6e0;" value="&lt;b&gt;rigs&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;popup · dialog · tabstrip · menu&lt;/font&gt;" vertex="1">
-          <mxGeometry height="70" width="320" x="300" y="220" as="geometry" />
+        <mxCell id="rigs" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#042424;strokeColor=#0e807f;gradientColor=#013131;fontColor=#e0e0e0;" value="&lt;b&gt;rigs&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;popup · dialog · tabstrip · menu&lt;/font&gt;" vertex="1">
+          <mxGeometry height="44" width="300" x="300" y="138" as="geometry" />
         </mxCell>
-        <mxCell id="gizmos" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;gradientColor=#7ea6e0;" value="&lt;b&gt;gizmos&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;button · chip · color-box · resize-handle · tooltip · …&lt;/font&gt;" vertex="1">
-          <mxGeometry height="70" width="320" x="300" y="340" as="geometry" />
+        <mxCell id="gizmos" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#042424;strokeColor=#0e807f;gradientColor=#013131;fontColor=#e0e0e0;" value="&lt;b&gt;gizmos&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;button · chip · color-box · resize-handle · tooltip · …&lt;/font&gt;" vertex="1">
+          <mxGeometry height="44" width="300" x="300" y="202" as="geometry" />
         </mxCell>
-        <mxCell id="hud" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;gradientColor=#7ea6e0;" value="&lt;b&gt;hud&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;hexagon · panel · bevel-panel · notched-panel&lt;br&gt;decoration · connector&lt;/font&gt;" vertex="1">
-          <mxGeometry height="90" width="320" x="300" y="460" as="geometry" />
+        <mxCell id="hud" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#042424;strokeColor=#0e807f;gradientColor=#013131;fontColor=#e0e0e0;" value="&lt;b&gt;hud&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;hexagon · panel · bevel-panel · notched-panel&lt;br&gt;decoration · connector&lt;/font&gt;" vertex="1">
+          <mxGeometry height="60" width="300" x="300" y="266" as="geometry" />
         </mxCell>
-        <mxCell id="chassis" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;gradientColor=#7ea6e0;" value="&lt;b&gt;chassis&lt;/b&gt;" vertex="1">
-          <mxGeometry height="60" width="150" x="220" y="600" as="geometry" />
+        <mxCell id="chassis" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#042424;strokeColor=#0e807f;gradientColor=#013131;fontColor=#e0e0e0;" value="&lt;b&gt;chassis&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;flex-box · grid · divider&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="140" x="300" y="346" as="geometry" />
         </mxCell>
-        <mxCell id="motion" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;gradientColor=#7ea6e0;" value="&lt;b&gt;motion&lt;/b&gt;" vertex="1">
-          <mxGeometry height="60" width="150" x="550" y="600" as="geometry" />
+        <mxCell id="motion" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#042424;strokeColor=#0e807f;gradientColor=#013131;fontColor=#e0e0e0;" value="&lt;b&gt;motion&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;transition&lt;/font&gt;" vertex="1">
+          <mxGeometry height="40" width="140" x="460" y="346" as="geometry" />
         </mxCell>
-        <mxCell id="design-system" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;gradientColor=#97d077;" value="&lt;b&gt;design-system&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;typography · colors · theme · icons · sizing&lt;/font&gt;" vertex="1">
-          <mxGeometry height="70" width="320" x="300" y="720" as="geometry" />
+        <mxCell id="design-system" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#271d09;strokeColor=#dca600;gradientColor=#3f2f07;fontColor=#e0e0e0;" value="&lt;b&gt;design-system&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;typography · colors · theme · icons · sizing&lt;/font&gt;" vertex="1">
+          <mxGeometry height="44" width="300" x="300" y="406" as="geometry" />
         </mxCell>
-        <mxCell id="e-ds-layout" edge="1" parent="1" source="design-system" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#6c8ebf;">
+        <mxCell id="e-ds-layout" edge="1" parent="1" source="design-system" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#0e807f;">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e-ds-motion" edge="1" parent="1" source="design-system" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#6c8ebf;exitX=0.75;exitY=0;exitDx=0;exitDy=0;" target="motion">
+        <mxCell id="e-ds-motion" edge="1" parent="1" source="design-system" style="edgeStyle=none;rounded=0;html=1;endArrow=block;strokeColor=#0e807f;exitX=0.7666666666666667;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="motion">
           <mxGeometry relative="1" x="-0.5448" as="geometry" />
         </mxCell>
-        <mxCell id="e-ds-hud" edge="1" parent="1" source="design-system" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#6c8ebf;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="chassis">
+        <mxCell id="e-ds-hud" edge="1" parent="1" source="design-system" style="edgeStyle=none;rounded=0;html=1;endArrow=block;strokeColor=#0e807f;exitX=0.2333333333333333;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="chassis">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e-layout-hud" edge="1" parent="1" source="chassis" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#6c8ebf;" target="hud">
+        <mxCell id="e-layout-hud" edge="1" parent="1" source="chassis" style="edgeStyle=none;rounded=0;html=1;endArrow=block;strokeColor=#0e807f;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.2333333333333333;entryY=1;entryDx=0;entryDy=0;" target="hud">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e-motion-hud" edge="1" parent="1" source="motion" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#6c8ebf;" target="hud">
+        <mxCell id="e-motion-hud" edge="1" parent="1" source="motion" style="edgeStyle=none;rounded=0;html=1;endArrow=block;strokeColor=#0e807f;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.7666666666666667;entryY=1;entryDx=0;entryDy=0;" target="hud">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e-hud-gizmos" edge="1" parent="1" source="hud" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#6c8ebf;" target="gizmos">
+        <mxCell id="e-hud-gizmos" edge="1" parent="1" source="hud" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#0e807f;" target="gizmos">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e-gizmos-rigs" edge="1" parent="1" source="gizmos" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#6c8ebf;" target="rigs">
+        <mxCell id="e-gizmos-rigs" edge="1" parent="1" source="gizmos" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#0e807f;" target="rigs">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e-rigs-forms" edge="1" parent="1" source="rigs" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#6c8ebf;" target="forms">
+        <mxCell id="e-rigs-forms" edge="1" parent="1" source="rigs" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#0e807f;" target="forms">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="e-forms-assemblies" edge="1" parent="1" source="forms" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#9673a6;" target="assemblies">
+        <mxCell id="e-forms-assemblies" edge="1" parent="1" source="forms" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;strokeColor=#cd91cd;" target="assemblies">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>
