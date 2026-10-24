@@ -6,15 +6,17 @@ To be implemented later.
 
 ## Apps
 
-All code lives under `/`. Import direction: `tinker-chest` → `apparatus` → `gears` → `app`.
+All code lives under `/`. Import direction: `tinker-chest` → `ui` → `apparatus` → `gears` → `app`.
 
 - `tinker-chest/` — foundational utilities (single package, no internal deps)
+- `ui/{common,web,mobile}/` — reusable UI and design tokens;
 - `apparatus/{common,web,mobile}/` — shared logic (common split from platform)
 - `gears/*/{common,web,mobile}/` — pluggable features
-- `ui/{common,web,mobile}/` — UI library, can import from anywhere
 - `app-{web,mobile}/` — application shells
 
-The import sequence is shown in the diagram below.
+Platform packages import only matching platform and common packages. Common packages never import platform implementations.
+
+The diagram and package responsibilities are also available in Storybook under **Application → App Architecture**.
 
 ### Import sequence diagram
 

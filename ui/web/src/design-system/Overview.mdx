@@ -1,5 +1,7 @@
 import { Meta, Title } from '@storybook/addon-docs/blocks';
+import { ReactSVG } from 'react-svg';
 import { uiArchitectureGroups } from '@ui';
+import uiArchitectureDiagram from '../../../../docs/assets/ui-architecture.svg';
 
 export const architectureGroupLinks = {
     'design-system': './?path=/docs/design-system-typography--docs',
@@ -70,12 +72,25 @@ Reveal deeper controls within the same workflow so refinement does not require s
 
 ## Component Architecture
 
+Higher layers compose lower layers. Imports may skip layers, but must never point upward; an assembly does not need to use every layer.
+
 <ul>
     {uiArchitectureGroups.map(({ name, description }) => (
         <li key={name}>
-            <a href={architectureGroupLinks[name]} target="_top" style={{ textDecoration: 'underline' }}><strong>{name}</strong></a> {description}
+            <a href={architectureGroupLinks[name]} target="_top" style={{ textDecoration: 'underline' }}><strong>{name[0].toUpperCase() + name.substring(1).replaceAll("-", " ")}</strong></a> {description}
         </li>
     ))}
 </ul>
+
+<figure>
+    <ReactSVG
+        src={uiArchitectureDiagram}
+        wrapper="svg"
+        role="img"
+        aria-label="UI dependency layers, from top to bottom: assemblies, forms, rigs, gizmos, hud, chassis and motion, and design-system. Higher layers may import lower layers."
+        width="302"
+        height="442"
+    />
+</figure>
 
 The same visual principles apply to web and mobile unless a page identifies a platform-specific constraint.
