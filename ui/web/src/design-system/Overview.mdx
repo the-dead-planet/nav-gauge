@@ -1,4 +1,5 @@
 import { Meta, Title } from '@storybook/addon-docs/blocks';
+import { ReactSVG } from 'react-svg';
 import { uiArchitectureGroups } from '@ui';
 import uiArchitectureDiagram from '../../../../docs/assets/ui-architecture.svg';
 
@@ -82,9 +83,11 @@ Higher layers compose lower layers. Imports may skip layers, but must never poin
 </ul>
 
 <figure>
-    <img
+    <ReactSVG
         src={uiArchitectureDiagram}
-        alt="UI dependency layers, from top to bottom: assemblies, forms, rigs, gizmos, hud, chassis and motion, and design-system. Higher layers may import lower layers."
+        wrapper="svg"
+        role="img"
+        aria-label="UI dependency layers, from top to bottom: assemblies, forms, rigs, gizmos, hud, chassis and motion, and design-system. Higher layers may import lower layers."
         width="302"
         height="442"
     />

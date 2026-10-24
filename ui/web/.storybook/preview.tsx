@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { Preview } from 'storybook-react-rsbuild';
-import { themes } from 'storybook/theming';
 import {
     Orientation,
     Theme,
@@ -11,6 +10,7 @@ import {
 } from '@ui';
 import { Label, ThemeModeToggle, ThemeSelect, useThemeVariables } from '../src';
 import './preview.css';
+import { storybookTheme } from './theme';
 
 const getMedia = () => {
     return {
@@ -82,7 +82,10 @@ const preview: Preview = {
     tags: ['autodocs'],
     parameters: {
         docs: {
-            theme: themes.dark,
+            theme: {
+                ...storybookTheme,
+                colorSecondary: storybookTheme.barSelectedColor,
+            },
         },
         options: {
             storySort: {
@@ -105,6 +108,7 @@ const preview: Preview = {
                     'Rigs',
                     'Forms',
                     'Assemblies',
+                    'Application',
                     '*',
                 ],
             },

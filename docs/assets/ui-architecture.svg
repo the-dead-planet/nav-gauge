@@ -42,7 +42,7 @@
     </g>
     <rect x="1" y="1" width="300" height="44" fill="url(#tertiary)" stroke="#cd91cd"/>
     <rect x="1" y="397" width="300" height="44" fill="url(#secondary)" stroke="#dca600"/>
-    <g fill="#e0e0e0" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle">
+    <g fill="#e0e0e0" font-family="Space Grotesk, Arial, sans-serif" font-size="12" text-anchor="middle">
         <text x="151" y="19" font-weight="bold">assemblies</text>
         <text x="151" y="34" font-size="11">theme-mode-toggle · theme-select</text>
         <text x="151" y="83" font-weight="bold">forms</text>
