@@ -59,9 +59,9 @@ const formatOptions: { value: ColorFormat; label: string }[] = [
 
 export const ColorInput: FC<ColorInputProps> = ({
     color = 'neutral',
-    contentShade,
+    glyphsShade,
     highlightColor = color,
-    highlightContentShade,
+    highlightGlyphsShade,
     size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     label,
@@ -91,14 +91,14 @@ export const ColorInput: FC<ColorInputProps> = ({
             ? toCssColor({ ...parseColor(borderColor), a: .3 })
             : borderColor;
     const wrapperBackgroundColor = variant === 'fill-translucent' ? 'transparent' : backgroundColor;
-    const textColor = active && highlightContentShade !== undefined ? theme.color(highlightColor, highlightContentShade) : contentShade !== undefined ? theme.color(color, contentShade) : variant === 'fill'
+    const textColor = active && highlightGlyphsShade !== undefined ? theme.color(highlightColor, highlightGlyphsShade) : glyphsShade !== undefined ? theme.color(color, glyphsShade) : variant === 'fill'
         ? inverseBackgroundColor
         : theme.color(color, theme.isLight ? 900 : 100);
 
     return (
         <>
             <View style={styles.container}>
-                <Text color={color} shade={contentShade} style={[styles.label, { fontSize: size === 'xs' ? 11 : 12 }]}>{label}</Text>
+                <Text color={color} shade={glyphsShade} style={[styles.label, { fontSize: size === 'xs' ? 11 : 12 }]}>{label}</Text>
                 <View
                     style={[
                         styles.wrapper,
@@ -130,8 +130,8 @@ export const ColorInput: FC<ColorInputProps> = ({
                                 variant={variant}
                                 color={color}
                                 highlightColor={highlightColor}
-                                contentShade={contentShade}
-                                highlightContentShade={highlightContentShade}
+                                glyphsShade={glyphsShade}
+                                highlightGlyphsShade={highlightGlyphsShade}
                                 disabled={disabled}
                                 active={active}
                                 onChange={changeFormat}

@@ -51,9 +51,9 @@ const story = {
     args: {
         ...buttonStoryArgs,
         icon: Icons.Beaker,
-        contentShade: undefined,
+        glyphsShade: undefined,
         highlightColor: undefined,
-        highlightContentShade: undefined,
+        highlightGlyphsShade: undefined,
         tooltipPlacement: undefined,
     },
     controls: {
@@ -71,9 +71,9 @@ const story = {
     galleryEditableControls: [
         'children',
         'icon',
-        'contentShade',
+        'glyphsShade',
         'highlightColor',
-        'highlightContentShade',
+        'highlightGlyphsShade',
         'activeGlow',
         'active',
         'disabled',

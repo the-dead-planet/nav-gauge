@@ -13,9 +13,9 @@ export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & Props>
     label,
     labelledBy,
     color = 'neutral',
-    contentShade,
+    glyphsShade,
     highlightColor = color,
-    highlightContentShade,
+    highlightGlyphsShade,
     size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     orientation = 'horizontal',
@@ -61,12 +61,12 @@ export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & Props>
             )}
             style={{
                 ...style,
-                ...(contentShade === undefined ? undefined : {
-                    '--appearance-default-glyphs-override': theme.color(color, contentShade),
+                ...(glyphsShade === undefined ? undefined : {
+                    '--appearance-default-glyphs-override': theme.color(color, glyphsShade),
                 }),
-                ...(highlightContentShade === undefined ? undefined : {
-                    '--appearance-interaction-glyphs-override': theme.color(highlightColor, highlightContentShade),
-                    '--appearance-active-glyphs-override': theme.color(highlightColor, highlightContentShade),
+                ...(highlightGlyphsShade === undefined ? undefined : {
+                    '--appearance-interaction-glyphs-override': theme.color(highlightColor, highlightGlyphsShade),
+                    '--appearance-active-glyphs-override': theme.color(highlightColor, highlightGlyphsShade),
                 }),
             } as CSSProperties}
             data-appearance-variant={variant}

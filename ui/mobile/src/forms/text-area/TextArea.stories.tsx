@@ -15,8 +15,8 @@ export const Playground: FC = () => {
         <TextArea
             label="Label"
             value={value}
-            contentShade={700}
-            highlightContentShade={200}
+            glyphsShade={700}
+            highlightGlyphsShade={200}
             onChangeText={setValue}
         />
     );

@@ -9,8 +9,8 @@ export const Playground: FC = () => {
         <ColorInput
             label="Border color"
             value={value}
-            contentShade={700}
-            highlightContentShade={200}
+            glyphsShade={700}
+            highlightGlyphsShade={200}
             onChange={setValue}
         />
     );

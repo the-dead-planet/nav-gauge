@@ -30,9 +30,9 @@ export const TextArea: FC<
     TextAreaProps & ComponentProps<typeof RNTextInput>
 > = ({
     color = "neutral",
-    contentShade,
+    glyphsShade,
     highlightColor = color,
-    highlightContentShade,
+    highlightGlyphsShade,
     size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     label,
@@ -52,10 +52,10 @@ export const TextArea: FC<
     const fontSize = controlTextSpecifications[size].fontSize;
     const paddingV = size === "xs" ? 0 : size === "sm" ? 2 : 6;
     const disabledColor = theme.color(color, theme.isLight ? 300 : 700);
-    const textColor = highlighted && highlightContentShade !== undefined
-        ? theme.color(highlightColor, highlightContentShade)
-        : contentShade !== undefined
-          ? theme.color(color, contentShade)
+    const textColor = highlighted && highlightGlyphsShade !== undefined
+        ? theme.color(highlightColor, highlightGlyphsShade)
+        : glyphsShade !== undefined
+          ? theme.color(color, glyphsShade)
           :
         variant === "fill"
             ? theme.color(color, theme.contrastShade(color))
@@ -72,7 +72,7 @@ export const TextArea: FC<
         <View style={styles.container}>
             <Label
                 color={color}
-                shade={contentShade}
+                shade={glyphsShade}
                 disabled={isDisabled}
                 style={[styles.label, { fontSize: size === "xs" ? 11 : 12 }]}
             >

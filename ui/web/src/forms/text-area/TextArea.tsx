@@ -6,9 +6,9 @@ import styles from './text-area.module.css';
 
 export const TextArea: FC<Omit<ComponentProps<'textarea'>, 'size'> & TextAreaProps> = ({
     color = 'neutral',
-    contentShade,
+    glyphsShade,
     highlightColor = color,
-    highlightContentShade,
+    highlightGlyphsShade,
     size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     label,
@@ -38,21 +38,21 @@ export const TextArea: FC<Omit<ComponentProps<'textarea'>, 'size'> & TextAreaPro
             styles[`variant-${variant}`],
             active && !disabled && styles.active,
         )}>
-            <Label htmlFor={props.id} color={color} shade={contentShade} disabled={disabled} className={styles.label}>{label}</Label>
+            <Label htmlFor={props.id} color={color} shade={glyphsShade} disabled={disabled} className={styles.label}>{label}</Label>
             <textarea
                 onClick={handleClick}
                 className={classNames(styles.textarea, className)}
                 disabled={disabled}
-                style={(active ? highlightContentShade : contentShade) === undefined ? undefined : { color: theme.color(active ? highlightColor : color, active ? highlightContentShade : contentShade) }}
+                style={(active ? highlightGlyphsShade : glyphsShade) === undefined ? undefined : { color: theme.color(active ? highlightColor : color, active ? highlightGlyphsShade : glyphsShade) }}
                 {...props}
                 onFocus={(event) => {
-                    if (highlightContentShade !== undefined) {
-                        event.currentTarget.style.color = theme.color(highlightColor, highlightContentShade);
+                    if (highlightGlyphsShade !== undefined) {
+                        event.currentTarget.style.color = theme.color(highlightColor, highlightGlyphsShade);
                     }
                     props.onFocus?.(event);
                 }}
                 onBlur={(event) => {
-                    event.currentTarget.style.color = contentShade === undefined ? '' : theme.color(color, contentShade);
+                    event.currentTarget.style.color = glyphsShade === undefined ? '' : theme.color(color, glyphsShade);
                     props.onBlur?.(event);
                 }}
             />

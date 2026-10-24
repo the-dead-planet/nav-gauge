@@ -33,8 +33,8 @@ export const Playground: FC = () => {
             label="Value"
             value={value}
             onChange={setValue}
-            contentShade={700}
-            highlightContentShade={200}
+            glyphsShade={700}
+            highlightGlyphsShade={200}
             step={0.1}
             unit="px"
         />

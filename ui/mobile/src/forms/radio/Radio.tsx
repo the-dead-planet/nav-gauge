@@ -5,9 +5,9 @@ import { Text } from "../../design-system/typography";
 
 export const Radio: FC<RadioProps> = ({
     color = 'primary',
-    contentShade,
+    glyphsShade,
     highlightColor = color,
-    highlightContentShade,
+    highlightGlyphsShade,
     variant = DEFAULT_FILL_VARIANT,
     size = DEFAULT_SIZE,
     checked,
@@ -87,7 +87,7 @@ export const Radio: FC<RadioProps> = ({
                         {children ? (
                             <Text
                                 color={highlighted ? highlightColor : color}
-                                shade={disabled ? (theme.isLight ? 300 : 700) : highlighted ? highlightContentShade : contentShade}
+                                shade={disabled ? (theme.isLight ? 300 : 700) : highlighted ? highlightGlyphsShade : glyphsShade}
                                 style={textStyle}
                             >
                                 {children}

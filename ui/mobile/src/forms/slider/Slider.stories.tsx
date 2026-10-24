@@ -13,5 +13,5 @@ export const Gallery: FC = () => (
 export const Playground: FC = () => {
     const [value, setValue] = useState(50);
 
-    return <Slider contentShade={700} highlightContentShade={200} value={value} onChange={setValue} />;
+    return <Slider glyphsShade={700} highlightGlyphsShade={200} value={value} onChange={setValue} />;
 };

@@ -17,7 +17,7 @@ interface Props {
     showValue?: boolean;
     ariaLabel?: string;
     color?: ColorVariant;
-    contentShade?: ColorShade;
+    glyphsShade?: ColorShade;
 }
 
 export const ClockA11yInput: FC<Props> = ({
@@ -34,7 +34,7 @@ export const ClockA11yInput: FC<Props> = ({
     showValue = true,
     ariaLabel,
     color = 'neutral',
-    contentShade,
+    glyphsShade,
 }) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const onChangeRef = useRef(onChange);
@@ -96,7 +96,7 @@ export const ClockA11yInput: FC<Props> = ({
                 tabIndex={0}
             />
             {label && (
-                <Label htmlFor={id} color={color} shade={contentShade} className={styles['label']}>
+                <Label htmlFor={id} color={color} shade={glyphsShade} className={styles['label']}>
                     {label}
                     {showValue ? <Span tabular>{formatValue?.(value) || `${value}°`}</Span> : null}
                 </Label>

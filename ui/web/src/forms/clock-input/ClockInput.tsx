@@ -17,9 +17,9 @@ const strokeWidths: Record<string, number> = { xs: 0.75, sm: 1, md: 1.25, lg: 1.
 export const ClockInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, 'onChange' | 'value'>> = ({
     id,
     color = 'neutral',
-    contentShade,
+    glyphsShade,
     highlightColor,
-    highlightContentShade,
+    highlightGlyphsShade,
     size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     value = CLOCK_INPUT_RANGE[0],
@@ -212,7 +212,7 @@ export const ClockInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, 'onCha
                 showValue={!showNumberInput}
                 ariaLabel={ariaLabel}
                 color={color}
-                contentShade={contentShade}
+                glyphsShade={glyphsShade}
             />
             <div className={classNames(
                 styles['control-row'],
@@ -227,9 +227,9 @@ export const ClockInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, 'onCha
                         max={max}
                         step={step}
                         color={color}
-                        contentShade={contentShade}
+                        glyphsShade={glyphsShade}
                         highlightColor={highlightColor}
-                        highlightContentShade={highlightContentShade}
+                        highlightGlyphsShade={highlightGlyphsShade}
                         size={size}
                         variant={variant}
                         disabled={disabled || !onChange}

@@ -24,18 +24,18 @@ const styles = StyleSheet.create({
 const story = {
     args: {
         ...toggleSwitchStoryArgs,
-        contentShade: undefined,
+        glyphsShade: undefined,
         highlightColor: undefined,
-        highlightContentShade: undefined,
+        highlightGlyphsShade: undefined,
         onChange: () => {},
     },
     controls: toggleSwitchStoryControls,
     galleryEditableControls: [
         'children',
         'checked',
-        'contentShade',
+        'glyphsShade',
         'highlightColor',
-        'highlightContentShade',
+        'highlightGlyphsShade',
         'active',
         'disabled',
     ],

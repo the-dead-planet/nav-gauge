@@ -22,9 +22,9 @@ export interface MobileButtonProps {
 export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     forwardRef,
     color = "neutral",
-    contentShade,
+    glyphsShade,
     highlightColor = color,
-    highlightContentShade,
+    highlightGlyphsShade,
     variant = DEFAULT_SURFACE_VARIANT,
     activeGlow = "none",
     size = DEFAULT_SIZE,
@@ -118,10 +118,10 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     }
 
     const textColor =
-        highlightContentShade !== undefined && isActiveState
-            ? theme.color(highlightColor, highlightContentShade)
-            : contentShade !== undefined && !isActiveState
-              ? theme.color(color, contentShade)
+        highlightGlyphsShade !== undefined && isActiveState
+            ? theme.color(highlightColor, highlightGlyphsShade)
+            : glyphsShade !== undefined && !isActiveState
+              ? theme.color(color, glyphsShade)
               : appearance.glyphs;
     const fontSize = controlSize.fontSize;
 

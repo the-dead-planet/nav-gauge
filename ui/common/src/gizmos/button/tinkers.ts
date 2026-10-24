@@ -28,7 +28,7 @@ export const buttonStoryControls: StoryControls<ButtonProps> = {
         control: 'select',
         options: appearanceColorOptions,
     },
-    contentShade: {
+    glyphsShade: {
         control: 'select',
         options: ['Default', ...allColorShades],
         mapping: { Default: undefined },
@@ -38,7 +38,7 @@ export const buttonStoryControls: StoryControls<ButtonProps> = {
         options: ['Default', ...appearanceColorOptions],
         mapping: { Default: undefined },
     },
-    highlightContentShade: {
+    highlightGlyphsShade: {
         control: 'select',
         options: ['Default', ...allColorShades],
         mapping: { Default: undefined },

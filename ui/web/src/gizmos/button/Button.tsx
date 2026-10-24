@@ -15,9 +15,9 @@ interface Props {
 
 export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     color = 'neutral',
-    contentShade,
+    glyphsShade,
     highlightColor,
-    highlightContentShade,
+    highlightGlyphsShade,
     variant = DEFAULT_SURFACE_VARIANT,
     activeGlow = 'none',
     size = DEFAULT_SIZE,
@@ -75,11 +75,11 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
             )}
             style={{
                 ...(corners !== 'hexagon' ? style : undefined),
-                ...(contentShade === undefined ? undefined : {
-                    '--appearance-default-glyphs-override': theme.color(color, contentShade),
+                ...(glyphsShade === undefined ? undefined : {
+                    '--appearance-default-glyphs-override': theme.color(color, glyphsShade),
                 }),
-                ...(highlightContentShade === undefined ? undefined : {
-                    '--appearance-interaction-glyphs-override': theme.color(highlightColor || color, highlightContentShade),
+                ...(highlightGlyphsShade === undefined ? undefined : {
+                    '--appearance-interaction-glyphs-override': theme.color(highlightColor || color, highlightGlyphsShade),
                 }),
             } as CSSProperties}
             {...props}

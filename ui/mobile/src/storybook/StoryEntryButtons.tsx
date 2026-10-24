@@ -29,7 +29,7 @@ export const StoryEntryButtons: FC<Props> = ({ entries, onSelect }) => {
                     icon={Icons.NounProject.ChevronDownDoubleTriangle}
                     iconRotateZ={-90}
                     size="md"
-                    contentShade={theme.isLight ? 900 : 100}
+                    glyphsShade={theme.isLight ? 900 : 100}
                     onPress={() => onSelect(entry)}
                     accessibilityLabel={`Open ${entry.name}`}
                     style={styles.item}

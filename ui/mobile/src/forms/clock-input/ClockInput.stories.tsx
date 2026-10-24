@@ -22,7 +22,7 @@ export const Gallery: FC = () => (
 export const Playground: FC = () => {
     const [value, setValue] = useState(45);
 
-    return <ClockInput contentShade={700} highlightContentShade={200} value={value} onChange={setValue} />;
+    return <ClockInput glyphsShade={700} highlightGlyphsShade={200} value={value} onChange={setValue} />;
 };
 
 export const SliceGallery: FC = () => (

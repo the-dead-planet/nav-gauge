@@ -19,9 +19,9 @@ const formatOptions: DropdownOption<ColorFormat>[] = [
 export const ColorInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' | 'type' | 'size'> & ColorInputProps> = ({
     id,
     color = 'neutral',
-    contentShade,
+    glyphsShade,
     highlightColor = color,
-    highlightContentShade,
+    highlightGlyphsShade,
     size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     label,
@@ -59,7 +59,7 @@ export const ColorInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' |
                 styles[`variant-${variant}`],
                 active && !disabled && styles.active,
             )}>
-                <Label htmlFor={id} color={color} shade={contentShade} className={styles.label}>{label}</Label>
+                <Label htmlFor={id} color={color} shade={glyphsShade} className={styles.label}>{label}</Label>
                 <div className={classNames(styles['input-wrapper'], { [styles.invalid]: invalid })}>
                     {showColorButton ? (
                         <ColorButton
@@ -83,8 +83,8 @@ export const ColorInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' |
                             variant={variant}
                             color={color}
                             highlightColor={highlightColor}
-                            contentShade={contentShade}
-                            highlightContentShade={highlightContentShade}
+                            glyphsShade={glyphsShade}
+                            highlightGlyphsShade={highlightGlyphsShade}
                             disabled={disabled}
                             ariaLabel={`${label} format`}
                             className={styles['format-select']}
@@ -99,7 +99,7 @@ export const ColorInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' |
                             disabled={disabled}
                             aria-invalid={invalid}
                             className={classNames(styles['value-input'], className)}
-                            style={contentShade === undefined ? undefined : { color: theme.color(color, contentShade) }}
+                            style={glyphsShade === undefined ? undefined : { color: theme.color(color, glyphsShade) }}
                             onChange={handleDraftChange}
                             {...props}
                         />

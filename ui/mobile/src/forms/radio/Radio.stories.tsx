@@ -11,7 +11,7 @@ export const Playground: FC = () => {
 export const Gallery: FC = () => (
     <VariantGallery
         render={({ color, size, variant }) => (
-            <Radio variant={variant} size={size} color={color} contentShade={700} highlightContentShade={200} checked onChange={() => {}}>
+            <Radio variant={variant} size={size} color={color} glyphsShade={700} highlightGlyphsShade={200} checked onChange={() => {}}>
                 {color}
             </Radio>
         )}

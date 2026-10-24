@@ -26,7 +26,7 @@ export const toggleSwitchStoryControls: StoryControls<ToggleSwitchProps> = {
         control: 'select',
         options: appearanceColorOptions,
     },
-    contentShade: {
+    glyphsShade: {
         control: 'select',
         options: ['Default', ...allColorShades],
         mapping: { Default: undefined },
@@ -36,7 +36,7 @@ export const toggleSwitchStoryControls: StoryControls<ToggleSwitchProps> = {
         options: ['Default', ...appearanceColorOptions],
         mapping: { Default: undefined },
     },
-    highlightContentShade: {
+    highlightGlyphsShade: {
         control: 'select',
         options: ['Default', ...allColorShades],
         mapping: { Default: undefined },

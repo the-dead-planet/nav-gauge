@@ -9,7 +9,7 @@ interface Props {
     isLight: boolean;
     showValue?: boolean;
     color?: ColorVariant;
-    contentShade?: ColorShade;
+    glyphsShade?: ColorShade;
 }
 
 export const ClockLabel: FC<Props> = ({
@@ -18,7 +18,7 @@ export const ClockLabel: FC<Props> = ({
     isLight,
     showValue = true,
     color = 'neutral',
-    contentShade,
+    glyphsShade,
 }) => {
     if (!label) {
         return null;
@@ -26,7 +26,7 @@ export const ClockLabel: FC<Props> = ({
 
     return (
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-            <Text color={color} shade={contentShade ?? (isLight ? 800 : 200)} style={{
+            <Text color={color} shade={glyphsShade ?? (isLight ? 800 : 200)} style={{
                 fontSize: 11,
                 fontWeight: '500',
                 letterSpacing: 0.4,
@@ -36,7 +36,7 @@ export const ClockLabel: FC<Props> = ({
             </Text>
             {showValue ? (
                 <View style={{ minWidth: 40, alignItems: 'flex-end' }}>
-                    <Text color={color} shade={contentShade ?? (isLight ? 800 : 200)} fontType={FontType.Numeric} tabular style={{
+                    <Text color={color} shade={glyphsShade ?? (isLight ? 800 : 200)} fontType={FontType.Numeric} tabular style={{
                         fontSize: 10,
                         opacity: 0.7,
                     }}>

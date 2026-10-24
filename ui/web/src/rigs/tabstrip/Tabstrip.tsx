@@ -11,9 +11,9 @@ export const Tabstrip: FC<TabstripProps> = ({
     onChange,
     size = DEFAULT_SIZE,
     color = 'neutral',
-    contentShade,
+    glyphsShade,
     highlightColor = color,
-    highlightContentShade,
+    highlightGlyphsShade,
     variant = DEFAULT_FILL_VARIANT,
     active = false,
     disabled = false,
@@ -75,7 +75,7 @@ export const Tabstrip: FC<TabstripProps> = ({
     const visibleOptions = visibleIndexes.map((index) => options[index]);
     const visibleIndexSet = new Set(visibleIndexes);
     const overflowOptions = options.filter((_, index) => !visibleIndexSet.has(index));
-    const buttonProps = { color, contentShade, highlightColor, highlightContentShade, size, variant };
+    const buttonProps = { color, glyphsShade, highlightColor, highlightGlyphsShade, size, variant };
 
     return (
         <div className={classNames(styles['root'], styles[`color-${color}`], styles[`highlight-${highlightColor}`], styles[`mode-${theme.mode}`])}>

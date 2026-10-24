@@ -67,9 +67,9 @@ const buttonSizes: Record<SizeVariant, SizeVariant> = {
 
 export const NumberInput: FC<NumberInputProps> = ({
     color = 'neutral',
-    contentShade,
+    glyphsShade,
     highlightColor = color,
-    highlightContentShade,
+    highlightGlyphsShade,
     size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     label,
@@ -95,12 +95,12 @@ export const NumberInput: FC<NumberInputProps> = ({
     };
 
     const baseColor = theme.color(color, 500);
-    const resolvedContentShade: ColorShade = contentShade ?? (variant === 'fill-translucent'
+    const resolvedGlyphsShade: ColorShade = glyphsShade ?? (variant === 'fill-translucent'
         ? 500
         : variant === 'fill'
             ? theme.isLight ? 100 : 900
             : theme.isLight ? 900 : 100);
-    const contentColor = theme.color(active ? highlightColor : color, active ? highlightContentShade ?? resolvedContentShade : resolvedContentShade);
+    const contentColor = theme.color(active ? highlightColor : color, active ? highlightGlyphsShade ?? resolvedGlyphsShade : resolvedGlyphsShade);
     const disabledShade: ColorShade = theme.isLight ? 300 : 700;
     const disabledColor = theme.color(color, disabledShade);
     const activeAccent = theme.color(highlightColor, theme.isLight ? 600 : 300);
@@ -164,8 +164,8 @@ export const NumberInput: FC<NumberInputProps> = ({
                         iconRotateZ={180}
                         color={color}
                         highlightColor={highlightColor}
-                        highlightContentShade={highlightContentShade}
-                        contentShade={incrementDisabled ? disabledShade : contentShade}
+                        highlightGlyphsShade={highlightGlyphsShade}
+                        glyphsShade={incrementDisabled ? disabledShade : glyphsShade}
                         size={buttonSizes[size]}
                         disabled={incrementDisabled}
                         active={active}
@@ -178,8 +178,8 @@ export const NumberInput: FC<NumberInputProps> = ({
                         icon={Icons.NounProject.ChevronDownSingle}
                         color={color}
                         highlightColor={highlightColor}
-                        highlightContentShade={highlightContentShade}
-                        contentShade={decrementDisabled ? disabledShade : contentShade}
+                        highlightGlyphsShade={highlightGlyphsShade}
+                        glyphsShade={decrementDisabled ? disabledShade : glyphsShade}
                         size={buttonSizes[size]}
                         disabled={decrementDisabled}
                         active={active}

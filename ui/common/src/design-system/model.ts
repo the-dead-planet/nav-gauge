@@ -31,10 +31,10 @@ export interface AppearanceProps<TVariant extends SurfaceVariant = SurfaceVarian
     /**
      * Has impact on content such as text and icons.
      */
-    contentShade?: ColorShade;
+    glyphsShade?: ColorShade;
     /**
      * Applied on hovered, focused and active states.
      * Has impact on content such as text and icons.
      */
-    highlightContentShade?: ColorShade;
+    highlightGlyphsShade?: ColorShade;
 }

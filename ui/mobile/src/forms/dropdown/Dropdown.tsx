@@ -62,9 +62,9 @@ const ICON_SIZE_MAP = { xs: 12, sm: 16, md: 20, lg: 24 } as const;
 
 export function Dropdown<T>({
     color = 'neutral',
-    contentShade,
+    glyphsShade,
     highlightColor = color,
-    highlightContentShade,
+    highlightGlyphsShade,
     size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     value,
@@ -158,12 +158,12 @@ export function Dropdown<T>({
                 : theme.color(color, theme.contrastShade(color));
             return { content: fillContentColor, chevron: fillContentColor };
         }
-        if (highlighted && highlightContentShade !== undefined) {
-            const highlightedContent = theme.color(highlightColor, highlightContentShade);
+        if (highlighted && highlightGlyphsShade !== undefined) {
+            const highlightedContent = theme.color(highlightColor, highlightGlyphsShade);
             return { content: highlightedContent, chevron: highlightedContent };
         }
-        if (contentShade !== undefined) {
-            const shadedContent = theme.color(color, contentShade);
+        if (glyphsShade !== undefined) {
+            const shadedContent = theme.color(color, glyphsShade);
             return { content: shadedContent, chevron: shadedContent };
         }
         return {
@@ -328,12 +328,12 @@ export function Dropdown<T>({
                                                     icon={option.icon}
                                                     width={iconSize}
                                                     height={iconSize}
-                                                    color={selected && highlightContentShade !== undefined ? theme.color(highlightColor, highlightContentShade) : contentShade !== undefined ? theme.color(color, contentShade) : optionTextColor}
+                                                    color={selected && highlightGlyphsShade !== undefined ? theme.color(highlightColor, highlightGlyphsShade) : glyphsShade !== undefined ? theme.color(color, glyphsShade) : optionTextColor}
                                                 />
                                             ) : null}
                                             <Text
                                                 style={{
-                                                    color: selected && highlightContentShade !== undefined ? theme.color(highlightColor, highlightContentShade) : contentShade !== undefined ? theme.color(color, contentShade) : optionTextColor,
+                                                    color: selected && highlightGlyphsShade !== undefined ? theme.color(highlightColor, highlightGlyphsShade) : glyphsShade !== undefined ? theme.color(color, glyphsShade) : optionTextColor,
                                                     fontSize:
                                                         sizeStyles.fontSize,
                                                     lineHeight:
