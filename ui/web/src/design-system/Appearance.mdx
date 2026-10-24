@@ -1,0 +1,153 @@
+import { Canvas, Meta, Title } from "@storybook/addon-docs/blocks";
+import * as ColorStories from "./colors/Color.stories";
+
+<Meta title="Design System/Appearance" />
+
+<Title />
+
+# Appearance
+
+Appearance coordinates a component's surface, border, glyph color, font weight, and interaction effects. Shared policies in `ui/common/src/design-system/theme/` supply the same treatment on web and mobile. Palette construction and contrast calculations are defined in <a href="./?path=/docs/design-system-colors--docs" target="_top" style={{ textDecoration: 'underline' }}>Colors</a>.
+
+<h2 id="appearance-defaults">Defaults</h2>
+
+Components that expose `color` default to `neutral`.
+
+`variant` defaults to `ghost`, or `fill-inverse` when `ghost` is unsupported. Components without an appearance variant use the shared default policy.
+
+<h2 id="interaction-states">Interaction states</h2>
+
+Disabled state always wins. Hover and focus temporarily use their interaction shade, while pressed and persistent active use the stronger active shade. Interactive states use `highlightColor ?? color`; default and disabled states use `color`. Focus also has a visible focus indicator. Interact with the default and active examples to inspect their transient states.
+
+<h2 id="glyphs">Glyphs</h2>
+
+Appearance policies may optionally set `glyphs.fontWeight` per state. Owned text uses that weight unless explicitly overridden; omitting it leaves the component's normal typography weight unchanged. Supported weight values and override precedence are defined in <a href="./?path=/docs/design-system-typography--docs#font-weight" target="_top" style={{ textDecoration: 'underline' }}>Typography</a>.
+
+Owned active content uses `highlightContentShade` when supplied, otherwise the variant's existing contrast rule. Components must not recolor arbitrary children or apply whole-control opacity when they own surface and content channels.
+
+## Variants
+
+### `ghost`
+
+<table>
+    <thead>
+        <tr><th>Element</th><th>Default</th><th>Hover / focus</th><th>Active / pressed</th><th>Disabled</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Text and icons</td><td><code>700</code> light / <code>300</code> dark</td><td><code>800</code> light / <code>200</code> dark</td><td><code>900</code> light / <code>100</code> dark</td><td><code>300</code> light / <code>700</code> dark</td></tr>
+        <tr><td>Font weight</td><td><code>500</code></td><td><code>500</code></td><td><code>500</code></td><td><code>500</code></td></tr>
+        <tr><td>Background</td><td>Transparent</td><td>Transparent</td><td>Transparent</td><td>Transparent</td></tr>
+        <tr><td>Border</td><td>None</td><td>None</td><td>None</td><td>None</td></tr>
+    </tbody>
+</table>
+
+<Canvas of={ColorStories.GhostStates} />
+
+### `outline`
+
+<table>
+    <thead>
+        <tr><th>Element</th><th>Default</th><th>Hover / focus</th><th>Active / pressed</th><th>Disabled</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Text and icons</td><td><code>500</code></td><td><code>600</code> light / <code>300</code> dark</td><td><code>700</code> light / <code>200</code> dark</td><td><code>300</code> light / <code>700</code> dark</td></tr>
+        <tr><td>Background</td><td>Transparent</td><td><code>500</code> at 8%</td><td><code>500</code> at 16%</td><td>Transparent</td></tr>
+        <tr><td>Border</td><td><code>500</code></td><td><code>600</code> light / <code>300</code> dark</td><td><code>700</code> light / <code>200</code> dark</td><td><code>300</code> light / <code>700</code> dark</td></tr>
+    </tbody>
+</table>
+
+<Canvas of={ColorStories.OutlineStates} />
+
+### `fill`
+
+<table>
+    <thead>
+        <tr>
+            <th>Element</th>
+            <th>Default</th>
+            <th>Hover / focus</th>
+            <th>Active / pressed</th>
+            <th>Disabled</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Text and icons</td><td><a href="./?path=/docs/design-system-colors--docs#contrast-shades" target="_top" style={{ textDecoration: 'underline' }}>Contrast shade</a></td><td><a href="./?path=/docs/design-system-colors--docs#contrast-shades" target="_top" style={{ textDecoration: 'underline' }}>Contrast shade</a></td><td><a href="./?path=/docs/design-system-colors--docs#contrast-shades" target="_top" style={{ textDecoration: 'underline' }}>Contrast shade</a></td><td><code>300</code> light / <code>700</code> dark</td>
+        </tr>
+        <tr>
+            <td>Background</td><td><code>500</code></td><td><code>600</code> light / <code>300</code> dark</td><td><code>700</code> light / <code>200</code> dark</td><td><code>200</code> light / <code>800</code> dark</td>
+        </tr>
+        <tr>
+            <td>Border</td><td>None</td><td>None</td><td>None</td><td>None</td>
+        </tr>
+    </tbody>
+</table>
+
+<Canvas of={ColorStories.FillStates} />
+
+### `fill-inverse`
+
+<table>
+    <thead>
+        <tr><th>Element</th><th>Default</th><th>Hover / focus</th><th>Active / pressed</th><th>Disabled</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Text and icons</td><td><code>900</code> light / <code>100</code> dark</td><td><code>900</code> light / <code>100</code> dark</td><td><code>900</code> light / <code>100</code> dark</td><td><code>300</code> light / <code>700</code> dark</td></tr>
+        <tr><td>Background</td><td><code>200</code> light / <code>800</code> dark</td><td><code>200</code> light / <code>800</code> dark</td><td><code>200</code> light / <code>800</code> dark</td><td><code>200</code> light / <code>800</code> dark</td></tr>
+        <tr><td>Border</td><td><code>500</code></td><td><code>600</code> light / <code>300</code> dark</td><td><code>700</code> light / <code>200</code> dark</td><td><code>300</code> light / <code>700</code> dark</td></tr>
+    </tbody>
+</table>
+
+<Canvas of={ColorStories.FillInverseStates} />
+
+### `fill-translucent`
+
+<table>
+    <thead>
+        <tr><th>Element</th><th>Default</th><th>Hover / focus</th><th>Active / pressed</th><th>Disabled</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Text and icons</td><td><code>500</code></td><td><code>600</code> light / <code>300</code> dark</td><td><code>700</code> light / <code>200</code> dark</td><td><code>300</code> light / <code>700</code> dark</td></tr>
+        <tr><td>Background</td><td><code>500</code> at 24%</td><td><code>500</code> at 24%</td><td><code>500</code> at 24%</td><td><code>200</code> light / <code>800</code> dark at 24%</td></tr>
+        <tr><td>Border</td><td><code>500</code> at 30%</td><td><code>600</code> light / <code>300</code> dark</td><td><code>700</code> light / <code>200</code> dark</td><td><code>300</code> light / <code>700</code> dark</td></tr>
+    </tbody>
+</table>
+
+<Canvas of={ColorStories.FillTranslucentStates} />
+
+### `inset`
+
+<table>
+    <thead>
+        <tr><th>Element</th><th>Default</th><th>Hover / focus</th><th>Active / pressed</th><th>Disabled</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Text and icons</td><td><code>500</code></td><td><code>600</code> light / <code>300</code> dark</td><td><code>700</code> light / <code>200</code> dark</td><td><code>300</code> light / <code>700</code> dark</td></tr>
+        <tr><td>Background</td><td><code>100</code> light / <code>900</code> dark</td><td><code>100</code> light / <code>900</code> dark</td><td><code>100</code> light / <code>900</code> dark</td><td><code>100</code> light / <code>900</code> dark</td></tr>
+        <tr><td>Border</td><td>None</td><td>None</td><td>None</td><td>None</td></tr>
+        <tr><td>Inner shading</td><td>Light: palette-tinted <code>900</code> at 20% and <code>700</code> at 18% top/left, with white at 70% bottom/right. Dark: black at 80% top/left and white at 8% bottom/right.</td><td>Same as default</td><td>Light uses the highlight palette; dark is unchanged</td><td>Same as default</td></tr>
+    </tbody>
+</table>
+
+<Canvas of={ColorStories.InsetStates} />
+
+Inset controls use no border in any state. Their internal shading alone creates the appearance of a control dented into its surface.
+
+## Active glow
+
+`activeGlow` is an optional enhancement to the existing color, border, and content state cues. It uses `highlightColor`, never replaces the required state treatment, and is removed when a component is disabled.
+
+<table>
+    <thead>
+        <tr><th>Value</th><th>Effect</th></tr>
+    </thead>
+    <tbody>
+        <tr><td><code>none</code></td><td>No glow</td></tr>
+        <tr><td><code>glow</code></td><td>Static interaction halo</td></tr>
+        <tr><td><code>animate-borders-glow</code></td><td>Animated glow that follows the component border</td></tr>
+    </tbody>
+</table>
+
+<Canvas of={ColorStories.ActiveGlow} />
+
+Animation timing and reduced-motion behavior follow the <a href="./?path=/docs/design-system-motion--docs" target="_top" style={{ textDecoration: 'underline' }}>Motion</a> principles.

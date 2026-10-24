@@ -16,25 +16,56 @@ export const architectureGroupLinks = {
 
 <Title />
 
-# Design Principles
+# Design System
 
-This design system defines the shared visual and interaction rules for The Dead Planet's web and mobile interfaces: color, typography, sizing, spacing, geometry, component states, motion, and accessibility.
-
-The visual and verbal identity is dystopian, steampunk, cyber-inspired, and lightly cheeky. It shapes geometry, typography, color, motion, component names, labels, tooltips, and system messages.
+This design system guides The Dead Planet's cross-platform interfaces.
 
 ## Principles
 
-- **Instrument and ornament.** Bevels, notches, connectors, glow, and mechanical details may establish atmosphere; when they imply structure or state, that meaning should be intentional and consistent.
-- **Atmosphere in voice, clarity in meaning.** User-facing text may use terse industrial or system-oriented language, but actions, errors, tooltips, and accessibility labels must remain immediately understandable.
-- **State does not rely on one cue.** Active, disabled, selected, and focused states must remain distinguishable without relying only on color or motion.
-- **Content controls layout.** Surfaces frame their content without imposing spacing that prevents full-width rows or specialized compositions.
+- **Industrial voice, clear meaning.** Use a dystopian, steampunk, cyber-inspired voice with a cheeky, playful edge—without obscuring meaning.
+- **Instrument and ornament.** Use mechanical detail for atmosphere without misleading about structure or state.
+- **Simple first, depth on demand.** Make common goals achievable in a few steps, with a clear path to advanced control.
+- **One toolkit, platform-fit workflows.** Preserve transferable work while adapting interactions and available controls to each device.
+
+## Personas and usage scenarios
+
+Personas describe user needs; scenarios describe tasks. Map personas to scenarios where useful—the same person may use either path on any platform.
+
+<table>
+    <thead>
+        <tr>
+            <th scope="col">Scenario</th>
+            <th scope="col">Goal</th>
+            <th scope="col">UX needs</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Quick creation</td>
+            <td>Create and share a useful result with minimal setup</td>
+            <td>Presets, sensible defaults, few steps</td>
+        </tr>
+        <tr>
+            <td>Detailed production</td>
+            <td>Produce a precisely controlled result for a larger project</td>
+            <td>Fine-grained editing, repeatable workflows, export control</td>
+        </tr>
+    </tbody>
+</table>
+
+Reveal deeper controls within the same workflow so refinement does not require starting over.
+
+**Platform fit.** Mobile often favors quick creation and sharing; desktop often favors longer editing sessions. These are contexts, not expertise levels. Feature availability can differ by device.
+
+**Gears.** Gears are independent tools that may optionally participate in one workflow. Each gear documents its goal, quick path, and advanced path. Reuse personas where audiences overlap; add one only for distinct needs or working conditions.
 
 ## Foundations
 
 - <a href="./?path=/docs/design-system-typography--docs" target="_top" style={{ textDecoration: 'underline' }}><strong>Typography</strong></a> defines the role and intended use of each font.
-- <a href="./?path=/docs/design-system-colors--docs" target="_top" style={{ textDecoration: 'underline' }}><strong>Colors</strong></a> defines palette roles, surface variants, content shades, and interaction states.
-- <a href="./?path=/docs/design-system-theming--docs" target="_top" style={{ textDecoration: 'underline' }}><strong>Theming</strong></a> defines appearance defaults, theme modes, named themes, and semantic color roles.
+- <a href="./?path=/docs/design-system-colors--docs" target="_top" style={{ textDecoration: 'underline' }}><strong>Colors</strong></a> defines palettes, shade roles, and contrast.
 - <a href="./?path=/docs/design-system-icons--docs" target="_top" style={{ textDecoration: 'underline' }}><strong>Icons</strong></a> defines icon meaning, sizing, and accessibility.
+- <a href="./?path=/docs/design-system-theming--docs" target="_top" style={{ textDecoration: 'underline' }}><strong>Theming</strong></a> defines theme modes, named themes, semantic color roles, elevation, and layers.
+- <a href="./?path=/docs/design-system-appearance--docs" target="_top" style={{ textDecoration: 'underline' }}><strong>Appearance</strong></a> defines shared variants, defaults, glyph treatment, and interaction states.
 - <a href="./?path=/docs/design-system-sizing--docs" target="_top" style={{ textDecoration: 'underline' }}><strong>Sizing</strong></a> defines the shared scale and the boundary between component geometry and content layout.
 - <a href="./?path=/docs/design-system-motion--docs" target="_top" style={{ textDecoration: 'underline' }}><strong>Motion</strong></a> defines when animation communicates useful change.
 - Component documentation records guidance that applies only to that component family.

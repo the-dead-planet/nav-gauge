@@ -1,4 +1,7 @@
-import { Meta, Title } from '@storybook/addon-docs/blocks';
+import { Canvas, Meta, Title } from '@storybook/addon-docs/blocks';
+import { elevationLevelOptions, elevationSpecifications, Theme } from '@ui';
+import * as ThemeModeToggleStories from '../assemblies/theme-mode-toggle/ThemeModeToggle.stories';
+import * as ThemeSelectStories from '../assemblies/theme-select/ThemeSelect.stories';
 
 <Meta title="Design System/Theming" />
 
@@ -8,19 +11,23 @@ import { Meta, Title } from '@storybook/addon-docs/blocks';
 
 Themes change the palette while preserving component meaning. A component's color role, variant, hierarchy, and interaction behavior must remain recognizable in every theme and in both light and dark modes.
 
-<h2 id="appearance-defaults">Appearance defaults</h2>
-
-Components that expose `color` default to `neutral`.
-
-Appearance selection follows the component API: `variant` defaults to `ghost`, or `fill-inverse` when `ghost` is unsupported. Components without an appearance variant use the shared default policy.
+Shared component variants, defaults, glyph treatment, and interaction states are defined in <a href="./?path=/docs/design-system-appearance--docs" target="_top" style={{ textDecoration: 'underline' }}>Appearance</a>.
 
 ## Modes
 
 Light and dark modes reverse the primary surface and content ranges. Components use theme roles and documented shade rules rather than assuming a fixed light or dark foreground.
 
+Use the `ThemeModeToggle` assembly for the light/dark control. It reads the current mode from the theme context; connect `onToggle` to the application's mode state.
+
+<Canvas of={ThemeModeToggleStories.Playground} />
+
 ## Named Themes
 
 Named themes provide different visual identities through shared palette roles. They must not require component-specific branches or change what a state means.
+
+Use the `ThemeSelect` assembly as the theme dropdown. Pass the selected theme through `value` and apply selections through `onChange`; `mode` determines the palette previews shown in its options.
+
+<Canvas of={ThemeSelectStories.Playground} />
 
 ## Semantic Colors
 
@@ -39,5 +46,82 @@ Global layer policies explicitly pair a z-index with an elevation level. A highe
 `Theme.elevation()` returns platform-neutral metrics for surfaces without a global stacking role. Web renderers consume generated `--elevation-<level>-<direction>-shadow` or `-filter` variables; mobile renderers translate the same metrics with `resolveElevationStyle()`.
 
 Globally stacked surfaces use their layer as one policy: web consumes `--layer-<name>-z-index` with `--layer-<name>-<direction>-shadow`, while mobile uses `resolveLayerStyle()`. Do not select a global layer's z-index and elevation independently. Literal shadows are reserved for intrinsic effects such as focus rings, glows, and inset geometry, not surface depth.
+
+### Shadow specifications
+
+This table reads the same `elevationSpecifications` used by `Theme`. Offsets, blur, and native shadow radius are in pixels; the box-shadow examples cast downward with no spread. Select `up`, `right`, or `left` at the renderer to change the offset's axis or sign. Native depth is the Android elevation value.
+
+<table>
+    <caption>Elevation metrics in both theme modes</caption>
+    <thead>
+        <tr>
+            <th scope="col">Mode</th>
+            <th scope="col">Elevation</th>
+            <th scope="col">Offset (x, y)</th>
+            <th scope="col">Blur</th>
+            <th scope="col">Opacity</th>
+            <th scope="col">Native shadow radius</th>
+            <th scope="col">Native depth</th>
+            <th scope="col">Box shadow (down)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {Object.entries(elevationSpecifications).flatMap(([mode, specifications]) => (
+            elevationLevelOptions.map((level) => {
+                const specification = specifications[level];
+                return (
+                    <tr key={`${mode}-${level}`}>
+                        <td>{mode}</td>
+                        <td><code>{level}</code></td>
+                        <td>0, {specification.distance}</td>
+                        <td>{specification.blur}</td>
+                        <td>{specification.opacity * 100}%</td>
+                        <td>{specification.blur / 2}</td>
+                        <td>{specification.depth}</td>
+                        <td><code>{level === 'none' ? 'none' : `0px ${specification.distance}px ${specification.blur}px rgba(0, 0, 0, ${specification.opacity})`}</code></td>
+                    </tr>
+                );
+            })
+        ))}
+    </tbody>
+</table>
+
+### Global layers
+
+These rows come directly from `Theme.layers`, grouped by their elevation and ordered by z-index within each group. Elevations do not have a universal z-index: `raised` surfaces use their renderer's layout stacking, and a tooltip's floating elevation can still stack above an overlay dialog.
+
+<table>
+    <caption>Combined global layer and elevation policies</caption>
+    <thead>
+        <tr>
+            <th scope="col">Elevation</th>
+            <th scope="col">Layer</th>
+            <th scope="col">Z-index</th>
+        </tr>
+    </thead>
+    <tbody>
+        {elevationLevelOptions.flatMap((level) => {
+            const layers = Object.entries(Theme.layers)
+                .filter(([, policy]) => policy.elevation === level)
+                .sort(([, first], [, second]) => first.zIndex - second.zIndex);
+            if (layers.length === 0) {
+                return [
+                    <tr key={level}>
+                        <td><code>{level}</code></td>
+                        <td>No global layer</td>
+                        <td>Renderer-owned</td>
+                    </tr>,
+                ];
+            }
+            return layers.map(([layer, policy]) => (
+                <tr key={layer}>
+                    <td><code>{level}</code></td>
+                    <td><code>{layer}</code></td>
+                    <td>{policy.zIndex}</td>
+                </tr>
+            ));
+        })}
+    </tbody>
+</table>
 
 Theme controls change the active theme but follow the same component and accessibility rules as other controls.
