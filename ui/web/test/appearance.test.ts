@@ -3,6 +3,7 @@ import { createRequire } from 'node:module';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import {
+    appearanceColorOptions,
     Orientation,
     Theme,
     ThemeContext,
@@ -28,6 +29,8 @@ const { Hexagon } =
     require('../src/hud/hexagon/Hexagon') as typeof import('../src/hud/hexagon/Hexagon');
 const { ThemeSelect } =
     require('../src/assemblies/theme-select/ThemeSelect') as typeof import('../src/assemblies/theme-select/ThemeSelect');
+const { Divider } =
+    require('../src/chassis/divider/Divider') as typeof import('../src/chassis/divider/Divider');
 if (previousCssLoader) {
     require.extensions['.css'] = previousCssLoader;
 } else {
@@ -46,6 +49,25 @@ const media = {
 };
 
 describe('Composed appearance rendering', () => {
+    it('keeps divider margins independent of stylesheet order and resets inherited appearance', () => {
+        for (const color of appearanceColorOptions) {
+            const markup = renderToStaticMarkup(createElement(Divider, {
+                orientation: 'vertical',
+                color,
+                m: 'xl',
+                mh: 'lg',
+                mv: 'md',
+                mt: 'xs',
+                ml: 'sm',
+            }));
+
+            expect(markup).to.include('aria-orientation="vertical"');
+            expect(markup).to.include('data-appearance-variant="default"');
+            expect(markup).to.include(`data-appearance-color="${color}"`);
+            expect(markup).to.include('class="divider vertical margin-top-xs margin-right-lg margin-bottom-md margin-left-sm"');
+        }
+    });
+
     it('paints the glow behind the hexagon surface and border without an opaque source stroke', () => {
         const theme = new Theme(
             themeSpecifications[ThemeName.Default].dark,

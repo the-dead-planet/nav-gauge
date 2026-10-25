@@ -1,33 +1,38 @@
 import { ComponentProps, FC } from "react";
 import classNames from "classnames";
-import { DividerProps, SpacingVariant } from "@ui";
+import { DividerProps, resolveTypographySpacing } from "@ui";
 import styles from "./divider.module.css";
 
-const sizes: SpacingVariant[] = ['xs', 'sm', 'md', 'lg', 'xl'];
-
-export const Divider: FC<DividerProps & ComponentProps<'hr'>> = ({
+export const Divider: FC<DividerProps & ComponentProps<"hr">> = ({
     orientation = "horizontal",
-    color,
-    m, mv, mh, mt, mr, mb, ml,
+    color = "neutral",
+    m,
+    mv,
+    mh,
+    mt,
+    mr,
+    mb,
+    ml,
     className,
     ...props
 }) => {
+    const spacing = resolveTypographySpacing({ m, mv, mh, mt, mr, mb, ml });
+
     return (
         <hr
+            aria-orientation={orientation}
+            data-appearance-variant="default"
+            data-appearance-color={color}
             className={classNames(
                 styles["divider"],
                 styles[orientation],
-                color && styles[`color-${color}`],
-                {
-                    ...(Object.fromEntries(
-                        sizes.flatMap((size): [string, boolean][] => [
-                            [styles[`margin-left-${size}`],   m === size || mh === size || ml === size],
-                            [styles[`margin-right-${size}`],  m === size || mh === size || mr === size],
-                            [styles[`margin-top-${size}`],    m === size || mv === size || mt === size],
-                            [styles[`margin-bottom-${size}`], m === size || mv === size || mb === size],
-                        ])
-                    )),
-                },
+                spacing.marginTop && styles[`margin-top-${spacing.marginTop}`],
+                spacing.marginRight &&
+                    styles[`margin-right-${spacing.marginRight}`],
+                spacing.marginBottom &&
+                    styles[`margin-bottom-${spacing.marginBottom}`],
+                spacing.marginLeft &&
+                    styles[`margin-left-${spacing.marginLeft}`],
                 className,
             )}
             {...props}

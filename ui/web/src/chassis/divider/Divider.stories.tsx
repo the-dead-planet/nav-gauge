@@ -1,47 +1,65 @@
-import type { Meta } from "storybook-react-rsbuild";
+import type { Meta, StoryObj } from "storybook-react-rsbuild";
+import { makeLiveEditStory } from "storybook-addon-code-editor";
+import {
+    appearanceColorOptions,
+    dividerStoryArgs,
+    dividerStoryControls,
+} from "@ui";
 import { Divider } from "./Divider";
 import { Text } from "../../design-system/typography";
-import { colorOptions as allColors } from "../../storybook/controls";
+import styles from "./divider.stories.module.css";
 
-const meta = {
+const meta: Meta<typeof Divider> = {
     title: "Chassis/Divider",
     component: Divider,
-} satisfies Meta<typeof Divider>;
+    args: dividerStoryArgs,
+    argTypes: dividerStoryControls,
+};
 
 export default meta;
+type Story = StoryObj<typeof Divider>;
 
-export const DividerVariants = {
-    render: () => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 24, padding: 24 }}>
-            <Text style={{ fontWeight: 700 }}>Horizontal (default)</Text>
-            <Divider />
+export const Playground: Story = {
+    name: "Playground with Live code editor",
+    render: (args) => (
+        <div className={styles.preview}>
+            <Divider {...args} />
+        </div>
+    ),
+};
 
-            <Text style={{ fontWeight: 700 }}>Horizontal with colors</Text>
-            {allColors.map((c) => (
-                <div key={c} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                    <Text>{c}</Text>
-                    <Divider color={c} />
-                </div>
-            ))}
+makeLiveEditStory(Playground, {
+    availableImports: {
+        "@web-ui": {
+            Divider,
+        },
+    },
+    code: `import { Divider } from '@web-ui';
 
-            <Text style={{ fontWeight: 700 }}>Vertical</Text>
-            <div style={{ display: "flex", gap: 16, height: 80, alignItems: "stretch" }}>
-                <Text>Left</Text>
-                <Divider orientation="vertical" />
-                <Text>Center</Text>
-                <Divider orientation="vertical" color="primary" />
-                <Text>Right</Text>
-            </div>
+export default () => <Divider />;`,
+});
 
-            <Text style={{ fontWeight: 700 }}>Vertical with all colors</Text>
-            <div style={{ display: "flex", gap: 16, height: 80, alignItems: "stretch" }}>
-                {allColors.map((c) => (
-                    <div key={c} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-                        <Divider orientation="vertical" color={c} />
-                        <Text>{c}</Text>
+export const Gallery: Story = {
+    parameters: {
+        controls: {
+            exclude: ["orientation", "color"],
+        },
+    },
+    render: (args) => (
+        <div className={styles.gallery}>
+            {appearanceColorOptions.map((color) => (
+                <section key={color} className={styles.section}>
+                    <Text usage="header">{color}</Text>
+                    <Divider {...args} color={color} orientation="horizontal" />
+                    <div className={styles.preview}>
+                        <Divider
+                            {...args}
+                            color={color}
+                            orientation="vertical"
+                        />
                     </div>
-                ))}
-            </div>
+                </section>
+            ))}
         </div>
     ),
 };

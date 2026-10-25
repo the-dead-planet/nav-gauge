@@ -1,8 +1,13 @@
-import { FC } from "react";
 import { ScrollView, View, StyleSheet } from "react-native";
+import {
+    appearanceColorOptions,
+    DividerProps,
+    dividerStoryArgs,
+    dividerStoryControls,
+} from "@ui";
 import { Divider } from "./Divider";
 import { Text } from "../../design-system/typography";
-import { colorOptions } from "@ui";
+import { MobileStoryDefinition } from "../../storybook/model";
 
 const styles = StyleSheet.create({
     container: {
@@ -10,69 +15,42 @@ const styles = StyleSheet.create({
         gap: 24,
     },
     section: {
-        gap: 8,
+        gap: 12,
     },
-    row: {
+    preview: {
         flexDirection: "row",
-        gap: 16,
-        height: 80,
-        alignItems: "stretch",
-    },
-    colorRow: {
-        flexDirection: "row",
-        gap: 16,
-        height: 80,
-        alignItems: "stretch",
-    },
-    colorItem: {
         alignItems: "center",
-        gap: 4,
-    },
-    heading: {
-        fontWeight: "700",
+        height: 80,
+        width: "100%",
     },
 });
 
-export const Playground: FC = () => <Divider />;
-
-export const Gallery: FC = () => (
-    <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.section}>
-            <Text style={styles.heading}>Horizontal (default)</Text>
-            <Divider />
+const story: MobileStoryDefinition<DividerProps> = {
+    args: dividerStoryArgs,
+    controls: dividerStoryControls,
+    galleryEditableControls: ["m", "mv", "mh", "mt", "mr", "mb", "ml"],
+    renderPlayground: (args) => (
+        <View style={styles.preview}>
+            <Divider {...args} />
         </View>
-
-        <View style={styles.section}>
-            <Text style={styles.heading}>Horizontal with colors</Text>
-            {colorOptions.map((c) => (
-                <View key={c} style={{ gap: 4 }}>
-                    <Text>{c}</Text>
-                    <Divider color={c} />
+    ),
+    renderGallery: (args) => (
+        <ScrollView contentContainerStyle={styles.container}>
+            {appearanceColorOptions.map((color) => (
+                <View key={color} style={styles.section}>
+                    <Text usage="header">{color}</Text>
+                    <Divider {...args} color={color} orientation="horizontal" />
+                    <View style={styles.preview}>
+                        <Divider
+                            {...args}
+                            color={color}
+                            orientation="vertical"
+                        />
+                    </View>
                 </View>
             ))}
-        </View>
+        </ScrollView>
+    ),
+};
 
-        <View style={styles.section}>
-            <Text style={styles.heading}>Vertical</Text>
-            <View style={styles.row}>
-                <Text>Left</Text>
-                <Divider orientation="vertical" />
-                <Text>Center</Text>
-                <Divider orientation="vertical" color="primary" />
-                <Text>Right</Text>
-            </View>
-        </View>
-
-        <View style={styles.section}>
-            <Text style={styles.heading}>Vertical with all colors</Text>
-            <View style={styles.colorRow}>
-                {colorOptions.map((c) => (
-                    <View key={c} style={styles.colorItem}>
-                        <Divider orientation="vertical" color={c} />
-                        <Text>{c}</Text>
-                    </View>
-                ))}
-            </View>
-        </View>
-    </ScrollView>
-);
+export default story;
