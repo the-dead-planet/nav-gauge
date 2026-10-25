@@ -1,5 +1,5 @@
 import { FC, Fragment } from 'react';
-import { ThemeSelectColorPreview, ThemeSelectProps } from '@ui';
+import { ThemeSelectColorPreview } from '@ui';
 import { ColorBox } from '../../gizmos/color-box';
 import { Divider } from '../../chassis/divider';
 
