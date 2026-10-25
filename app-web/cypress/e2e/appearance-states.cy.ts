@@ -30,7 +30,7 @@ describe('Appearance state priority', () => {
             document.documentElement.style.setProperty('--appearance-inset-default-inner-start', 'rgb(10, 0, 0)');
             document.documentElement.style.setProperty('--appearance-inset-active-pressed-inner-start', 'rgb(30, 0, 0)');
             document.body.innerHTML = `
-                <button id="button" class="button">Button</button>
+                <button id="button" class="surface rectangle button" data-interactive="true">Button</button>
                 <section id="hexagon" class="surface hexagon depth-inset" data-interactive="true" tabindex="0">
                     <svg class="drawing"><path class="paint polygon-base" /><path class="inset-shadow" /></svg>
                     <span class="content">Hexagon</span>
@@ -91,8 +91,8 @@ describe('Appearance state priority', () => {
             cy.get(control.surface).should('have.css', control.surfaceProperty, 'rgb(20, 0, 0)');
             cy.get(control.glyphs).should('have.css', 'color', 'rgb(20, 0, 0)');
 
-            const isHud = control.root !== '#button' && control.root !== '#toggle';
-            if (isHud) {
+            const usesSurfaceAppearance = control.root !== '#toggle';
+            if (usesSurfaceAppearance) {
                 cy.get(control.root).invoke('attr', 'data-pressed', 'true');
                 cy.get(control.surface).should('have.css', control.surfaceProperty, 'rgb(30, 0, 0)');
                 cy.get(control.root).invoke('removeAttr', 'data-pressed');
@@ -106,7 +106,7 @@ describe('Appearance state priority', () => {
                 cy.get('#hexagon .inset-shadow').should('have.css', 'stroke', 'rgb(30, 0, 0)');
             }
 
-            if (isHud) {
+            if (usesSurfaceAppearance) {
                 cy.get(control.root).invoke('attr', 'data-disabled', 'true');
             } else {
                 cy.get(control.root).invoke('addClass', 'disabled');
