@@ -14,49 +14,25 @@ env:
 jobs:
   test:
     runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-test-${{ github.event.pull_request.number || github.run_id }}
+      cancel-in-progress: true
     permissions:
-      packages: write
       contents: read
     steps:
       - uses: actions/checkout@v7
 
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v7
-        with:
-          node-version: 24
-
-      - name: Install dependencies
-        run: yarn install --immutable
+      - name: Setup dependencies
+        uses: ./.github/actions/setup-yarn
 
       - name: Run tests
         run: yarn test:web
 
-  # lint:
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     contents: read
-  #   steps:
-  #     - uses: actions/checkout@v7
-
-  #     - name: Enable Corepack
-  #       run: corepack enable
-
-  #     - name: Set up Node.js
-  #       uses: actions/setup-node@v7
-  #       with:
-  #         node-version: 24
-
-  #     - name: Install dependencies
-  #       run: yarn install --immutable
-
-  #     - name: Lint sources
-  #       run: npx eslint . --no-warn-ignored
-
   test-e2e:
     runs-on: ubuntu-24.04
+    concurrency:
+      group: ${{ github.workflow }}-test-e2e-${{ github.event.pull_request.number || github.run_id }}
+      cancel-in-progress: true
     permissions:
       contents: read
 
@@ -64,186 +40,88 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - run: corepack enable
-
-      - name: Setup Node
-        uses: actions/setup-node@v7
-        with:
-          node-version: 24
-
-      - name: Install dependencies
-        run: yarn install --immutable
-
-      - name: Restore Cypress binary cache
-        id: cache-cypress
-        uses: actions/cache@v6
-        with:
-          path: ~/.cache/Cypress
-          key: cypress-binary-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-
-      - name: Install Cypress binary
-        if: steps.cache-cypress.outputs.cache-hit != 'true'
-        working-directory: app-web
-        run: npx --yes cypress install
-
       - name: Cypress E2E tests
-        uses: cypress-io/github-action@v7
+        uses: ./.github/actions/cypress-e2e
         with:
-          working-directory: app-web
           build: yarn build
-          start: yarn start --port 3000
-          wait-on: 'http://localhost:3000'
-
-      - name: Upload Cypress screenshots
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: cypress-screenshots
-          path: app-web/cypress/screenshots/
-
-      - name: Print artifact URL
-        if: always()
-        run: |
-          echo "Screenshots: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifacts"
+          start: yarn rspack preview dist --port 3000
 
   build-and-push:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' 
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
+    outputs:
+      image-reference: ${{ steps.image.outputs.image-reference }}
     permissions:
       packages: write
       contents: read
     steps:
       - uses: actions/checkout@v7
 
-      - name: Build image
-        run: docker build . --file app-web/Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
+      - name: Build and publish image
+        id: image
+        uses: ./.github/actions/build-image
+        with:
+          dockerfile: app-web/Dockerfile
+          image: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}
+          cache-scope: web-app
+          registry-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Log in to registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-        
-      - name: Push image
-        run: |
-          IMAGE_ID=$IMAGE_REGISTRY/$IMAGE_NAME
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-          [ "$VERSION" == "main" ] && VERSION=latest
-          echo IMAGE_ID=$IMAGE_ID
-          echo VERSION=$VERSION
-          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
-          docker push $IMAGE_ID:$VERSION
-  
   deploy:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' 
-    needs: build-and-push
+    if: github.ref == 'refs/heads/main'
+    needs: [build-and-push, test, test-e2e]
     permissions:
       contents: read
     steps:
+      - uses: actions/checkout@v7
+
       - name: Deploy
-        uses: appleboy/ssh-action@v1
+        uses: ./.github/actions/deploy-image
         with:
+          image: ${{ needs.build-and-push.outputs.image-reference }}
+          port: '8084'
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          script: |
-            set -e
-
-            IMAGE="ghcr.io/the-dead-planet/nav-gauge"
-            PORT="8084"
-            PORTS="-p $PORT:8080"
-
-            echo "Pulling new image $IMAGE..."
-            docker pull $IMAGE:latest
-
-            CONTAINER_ID=$(docker ps --filter "publish=$PORT" --format "{{.ID}}")
-            echo "Current container $CONTAINER_ID"
-
-            if [ -n "$CONTAINER_ID" ]; then
-              echo "Stopping container..."
-              docker stop $CONTAINER_ID
-            fi
-
-            echo "Starting new container..."
-            docker run -d --restart=always $PORTS $IMAGE
-
-            if [ -n "$CONTAINER_ID" ]; then
-              echo "Removing previous container..."
-              docker rm $CONTAINER_ID
-            fi
-            
-            echo "Pruning images..."
-            docker image prune -f
 
   storybook-build-and-push:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' 
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
+    outputs:
+      image-reference: ${{ steps.image.outputs.image-reference }}
     permissions:
       packages: write
       contents: read
     steps:
       - uses: actions/checkout@v7
 
-      - name: Build image
-        run: docker build . --file ui/web/Dockerfile --tag $STORYBOOK_IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
+      - name: Build and publish image
+        id: image
+        uses: ./.github/actions/build-image
+        with:
+          dockerfile: ui/web/Dockerfile
+          image: ${{ env.IMAGE_REGISTRY }}/${{ env.STORYBOOK_IMAGE_NAME }}
+          cache-scope: storybook
+          registry-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Log in to registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-        
-      - name: Push image
-        run: |
-          IMAGE_ID=$IMAGE_REGISTRY/$STORYBOOK_IMAGE_NAME
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-          [ "$VERSION" == "main" ] && VERSION=latest
-          echo IMAGE_ID=$IMAGE_ID
-          echo VERSION=$VERSION
-          docker tag $STORYBOOK_IMAGE_NAME $IMAGE_ID:$VERSION
-          docker push $IMAGE_ID:$VERSION
-  
   storybook-deploy:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' 
-    needs: storybook-build-and-push
+    if: github.ref == 'refs/heads/main'
+    needs: [storybook-build-and-push, test, test-e2e]
     permissions:
       contents: read
     steps:
+      - uses: actions/checkout@v7
+
       - name: Deploy
-        uses: appleboy/ssh-action@v1
+        uses: ./.github/actions/deploy-image
         with:
+          image: ${{ needs.storybook-build-and-push.outputs.image-reference }}
+          port: '8086'
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          script: |
-            set -e
 
-            IMAGE="ghcr.io/the-dead-planet/nav-gauge-storybook"
-            PORT="8086"
-            PORTS="-p $PORT:8080"
-
-            echo "Pulling new image $IMAGE..."
-            docker pull $IMAGE:latest
-
-            CONTAINER_ID=$(docker ps --filter "publish=$PORT" --format "{{.ID}}")
-            echo "Current container $CONTAINER_ID"
-
-            if [ -n "$CONTAINER_ID" ]; then
-              echo "Stopping container..."
-              docker stop $CONTAINER_ID
-            fi
-
-            echo "Starting new container..."
-            docker run -d --restart=always $PORTS $IMAGE
-
-            if [ -n "$CONTAINER_ID" ]; then
-              echo "Removing previous container..."
-              docker rm $CONTAINER_ID
-            fi
-            
-            echo "Pruning images..."
-            docker image prune -f
- 
   test-e2e-prod:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
@@ -255,50 +133,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Setup Node
-        uses: actions/setup-node@v7
-        with:
-          node-version: 24
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Setup Node
-        uses: actions/setup-node@v7
-        with:
-          node-version: 24
-
-      - name: Install dependencies
-        run: yarn install --immutable
-
-      - name: Restore Cypress binary cache
-        id: cache-cypress
-        uses: actions/cache@v6
-        with:
-          path: ~/.cache/Cypress
-          key: cypress-binary-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-
-      - name: Install Cypress binary
-        if: steps.cache-cypress.outputs.cache-hit != 'true'
-        working-directory: app-web
-        run: npx --yes cypress install
-
       - name: Cypress E2E tests (production)
-        uses: cypress-io/github-action@v7
+        uses: ./.github/actions/cypress-e2e
         with:
-          working-directory: app-web
           browser: chrome
-          build: yarn build
-          config: baseUrl=https://gauge.spookydoodle.com
-
-      - name: Upload Cypress screenshots
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: cypress-screenshots-prod
-          path: app-web/cypress/screenshots/
-
-      - name: Print artifact URL
-        if: always()
-        run: |
-          echo "Screenshots: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifacts"
+          base-url: https://gauge.spookydoodle.com
+          artifact-name: cypress-screenshots-prod

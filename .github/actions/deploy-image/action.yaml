@@ -1,0 +1,55 @@
+name: Deploy image
+description: Replace the container on a host port with a published image.
+inputs:
+  image:
+    description: Image reference to deploy.
+    required: true
+  port:
+    description: Host port mapped to the container's HTTP port.
+    required: true
+  host:
+    description: Deployment SSH host.
+    required: true
+  username:
+    description: Deployment SSH username.
+    required: true
+  key:
+    description: Deployment SSH private key.
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Deploy
+      uses: appleboy/ssh-action@v1
+      env:
+        IMAGE: ${{ inputs.image }}
+        PORT: ${{ inputs.port }}
+      with:
+        host: ${{ inputs.host }}
+        username: ${{ inputs.username }}
+        key: ${{ inputs.key }}
+        envs: IMAGE,PORT
+        script: |
+          set -e
+
+          echo "Pulling new image $IMAGE..."
+          docker pull "$IMAGE"
+
+          CONTAINER_ID=$(docker ps --filter "publish=$PORT" --format "{{.ID}}")
+          echo "Current container $CONTAINER_ID"
+
+          if [ -n "$CONTAINER_ID" ]; then
+            echo "Stopping container..."
+            docker stop "$CONTAINER_ID"
+          fi
+
+          echo "Starting new container..."
+          docker run -d --restart=always -p "$PORT:8080" "$IMAGE"
+
+          if [ -n "$CONTAINER_ID" ]; then
+            echo "Removing previous container..."
+            docker rm "$CONTAINER_ID"
+          fi
+
+          echo "Pruning images..."
+          docker image prune -f

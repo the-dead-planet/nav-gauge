@@ -1,0 +1,13 @@
+.git
+**/node_modules
+**/dist
+**/storybook-static
+**/*.tsbuildinfo
+**/*.log
+**/cypress/screenshots
+**/cypress/videos
+.yarn/cache
+.yarn/unplugged
+.yarn/install-state.gz
+.env
+.env.*
