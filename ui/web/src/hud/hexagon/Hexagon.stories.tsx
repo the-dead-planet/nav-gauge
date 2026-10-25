@@ -1,47 +1,45 @@
-import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { makeLiveEditStory } from 'storybook-addon-code-editor';
-import { appearanceColorOptions, hexagonShapes, hexagonStoryArgs, hexagonStoryControls } from '@ui';
-import { Hexagon } from './Hexagon';
-import { VariantGallery } from '../../storybook/VariantGallery';
+import type { Meta, StoryObj } from "storybook-react-rsbuild";
+import { makeLiveEditStory } from "storybook-addon-code-editor";
 import {
+    appearanceColorOptions,
+    hexagonShapes,
+    hexagonStoryArgs,
+    hexagonStoryControls,
     sizeOptions,
     surfaceVariantOptions,
-} from '../../storybook/controls';
+} from "@ui";
+import { Hexagon } from "./Hexagon";
+import { VariantGallery } from "../../storybook/VariantGallery";
+import styles from "../hud.stories.module.css";
 
-const meta = {
-    title: 'Hud/Hexagon',
+const meta: Meta<typeof Hexagon> = {
+    title: "Hud/Hexagon",
     component: Hexagon,
     args: hexagonStoryArgs,
-    argTypes: {
-        ...hexagonStoryControls,
-        onClick: { control: false },
-    },
-} satisfies Meta<typeof Hexagon>;
-
+    argTypes: hexagonStoryControls,
+};
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof Hexagon>;
 
 export const Playground: Story = {
-    name: 'Playground with Live code editor',
+    name: "Playground with Live code editor",
+    render: (args) => (
+        <Hexagon {...args} tabIndex={args.interactive ? 0 : undefined} />
+    ),
 };
-
 makeLiveEditStory(Playground, {
-    availableImports: { '@web-ui': { Hexagon } },
+    availableImports: { "@web-ui": { Hexagon } },
     code: `import { Hexagon } from '@web-ui';
 
-export default Hexagon;`,
-    modifyEditor: (monaco) => monaco.editor.setTheme('vs-dark'),
+export default () => <Hexagon>H</Hexagon>;`,
 });
 
 export const Gallery: Story = {
-    argTypes: {
-        color: { table: { disable: true } },
-        size: { table: { disable: true } },
-        variant: { table: { disable: true } },
-        shape: { table: { disable: true } },
+    parameters: {
+        controls: { exclude: ["color", "size", "variant", "shape"] },
     },
     render: (args) => (
-        <div style={{ display: 'grid', gap: 40 }}>
+        <div className={styles.gallery}>
             {hexagonShapes.map((shape) => (
                 <section key={shape}>
                     <h2>{shape}</h2>
@@ -56,6 +54,7 @@ export const Gallery: Story = {
                                 size={size}
                                 variant={variant}
                                 shape={shape}
+                                tabIndex={args.interactive ? 0 : undefined}
                             />
                         )}
                     />

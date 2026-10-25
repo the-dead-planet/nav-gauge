@@ -1,6 +1,6 @@
 import { ChangeEvent, ComponentProps, FC, useRef, useState } from "react";
 import classNames from "classnames";
-import { ColorFormat, ColorInputProps, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, DropdownOption, parseColor, toHexColor, useColorInputState, useTheme } from "@ui";
+import { ColorFormat, ColorInputProps, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, DropdownOption, parseColor, toHexColor, useColorInputState, useTheme } from "@ui";
 import { Label } from "../../design-system/typography";
 import { Popup } from "../../rigs/popup";
 import { Dropdown } from "../dropdown";
@@ -18,7 +18,7 @@ const formatOptions: DropdownOption<ColorFormat>[] = [
 
 export const ColorInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' | 'type' | 'size'> & ColorInputProps> = ({
     id,
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
     highlightGlyphsShade,

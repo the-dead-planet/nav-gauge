@@ -1,93 +1,139 @@
-import { ComponentProps, CSSProperties, FC, useEffect, useId, useRef, useState } from 'react';
-import classNames from 'classnames';
-import { DEFAULT_FILL_VARIANT, NotchedPanelProps, useTheme } from '@ui';
-import styles from './notched-panel.module.css';
+import { ComponentProps, CSSProperties, FC } from "react";
+import classNames from "classnames";
+import {
+    DEFAULT_FILL_VARIANT,
+    DEFAULT_COLOR,
+    getNotchedPanelGeometry,
+    NotchedPanelProps,
+} from "@ui";
+import styles from "./notched-panel.module.css";
+import surface from "../surface.module.css";
+import { useHudInteraction } from "../useHudInteraction";
+import { usePanelDimensions } from "../usePanelDimensions";
 
 interface Props {
     contentClassName?: string;
     contentStyle?: CSSProperties;
 }
 
-export const NotchedPanel: FC<NotchedPanelProps & Props & ComponentProps<'div'>> = ({
-    color = 'neutral',
-    highlightColor = color,
+export const NotchedPanel: FC<
+    NotchedPanelProps & Props & ComponentProps<"div">
+> = ({
+    color = DEFAULT_COLOR,
+    highlightColor,
     variant = DEFAULT_FILL_VARIANT,
-    activeGlow = 'none',
+    activeGlow = "none",
+    interactive = false,
     highlighted = false,
     disabled = false,
+    onClick,
+    onKeyDown,
+    onKeyUp,
+    onBlur,
+    role,
+    tabIndex,
     header,
     children,
     className,
-    style,
     contentClassName,
     contentStyle,
     ...props
 }) => {
-    const theme = useTheme();
-    const containerRef = useRef<HTMLDivElement>(null);
-    const headerRef = useRef<HTMLDivElement>(null);
-    const [dimensions, setDimensions] = useState({ width: 0, height: 0, headerHeight: 0 });
-    const filterId = useId();
-
-    useEffect(() => {
-        const container = containerRef.current;
-        if (!container) return;
-        const updateDimensions = () => {
-            const rectangle = container.getBoundingClientRect();
-            setDimensions({
-                width: rectangle.width,
-                height: rectangle.height,
-                headerHeight: headerRef.current?.getBoundingClientRect().height ?? 0,
-            });
-        };
-        const observer = new ResizeObserver(updateDimensions);
-        observer.observe(container);
-        if (headerRef.current) observer.observe(headerRef.current);
-        updateDimensions();
-        return () => observer.disconnect();
-    }, [header]);
-
-    const { width, height, headerHeight } = dimensions;
-    const notch = Math.min(18, width / 5, height / 4);
-    const step = Math.min(10, width / 10);
-    const bodyPoints = `${notch},1 ${width - notch - step},1 ${width - 1},${notch + step} ${width - 1},${height - notch} ${width - notch},${height - 1} ${width * 0.58},${height - 1} ${width * 0.54},${height - step} ${notch + step},${height - step} ${notch},${height - 1} 1,${height - notch} 1,${notch}`;
-    const headerPoints = `${notch},1 ${width - notch - step},1 ${width - 1},${notch + step} ${width - notch},${headerHeight} ${width * 0.58},${headerHeight} ${width * 0.54},${Math.max(1, headerHeight - step)} ${notch + step},${Math.max(1, headerHeight - step)} 1,${Math.max(1, headerHeight - notch)}`;
+    const interaction = useHudInteraction({
+        disabled,
+        onClick,
+        onKeyDown,
+        onKeyUp,
+        onBlur,
+        role,
+        tabIndex,
+    });
+    const hasHeader =
+        header !== undefined &&
+        header !== null &&
+        header !== false &&
+        header !== "";
+    const { containerRef, headerRef, width, height, headerHeight } =
+        usePanelDimensions(hasHeader);
+    const { bodyPoints, headerPoints, stepPoints } = getNotchedPanelGeometry(
+        width,
+        height,
+        headerHeight,
+    );
     const ready = width > 0 && height > 0;
-    const backdropMask = ready
-        ? `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}"><polygon points="${bodyPoints}" fill="white"/></svg>`)}")`
-        : undefined;
+    const backdropMask = `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}"><polygon points="${bodyPoints}" fill="white"/></svg>`)}")`;
 
     return (
         <div
-            ref={containerRef}
-            className={classNames(styles.panel, styles[`color-${color}`], styles[`highlight-color-${highlightColor}`], styles[`variant-${variant}`], styles[`mode-${theme.mode}`], {
-                [styles.highlighted]: highlighted && !disabled,
-                [styles.disabled]: disabled,
-                [styles[`glow-style-${activeGlow}`]]: !disabled,
-            }, className)}
-            style={{ ...style, '--notched-filter': `url(#${filterId})` } as CSSProperties}
             {...props}
+            {...interaction}
+            ref={containerRef}
+            data-appearance-variant={variant}
+            data-appearance-color={color}
+            data-appearance-highlight={highlightColor ?? color}
+            data-interactive={interactive || !!onClick || undefined}
+            data-highlighted={highlighted || undefined}
+            data-disabled={disabled || undefined}
+            data-glow={activeGlow}
+            className={classNames(
+                surface.surface,
+                surface.raised,
+                styles.panel,
+                className,
+            )}
         >
-            {variant === 'fill-translucent' && ready ? (
-                <div
-                    className={styles.backdrop}
-                    style={{
-                        maskImage: backdropMask,
-                        WebkitMaskImage: backdropMask,
-                    }}
-                />
-            ) : null}
             {ready ? (
-                <svg className={styles.svg} viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none" aria-hidden="true">
-                    <defs><filter id={filterId} x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="4" /></filter></defs>
-                    <polygon className={styles.body} points={bodyPoints} vectorEffect="non-scaling-stroke" />
-                    <polyline className={styles.step} points={`${notch + 7},${height - 6} ${width * 0.38},${height - 6} ${width * 0.42},${height - 2}`} vectorEffect="non-scaling-stroke" />
-                    {header ? <polygon className={styles.header} points={headerPoints} vectorEffect="non-scaling-stroke" /> : null}
-                    {activeGlow !== 'none' ? <polygon className={styles.glow} points={bodyPoints} vectorEffect="non-scaling-stroke" /> : null}
-                </svg>
+                <>
+                    <div
+                        className={styles.backdrop}
+                        style={{
+                            maskImage: backdropMask,
+                            WebkitMaskImage: backdropMask,
+                        }}
+                        aria-hidden="true"
+                    />
+                    <svg
+                        className={surface.drawing}
+                        viewBox={`0 0 ${width} ${height}`}
+                        preserveAspectRatio="none"
+                        aria-hidden="true"
+                    >
+                        <polygon
+                            className={surface.glow}
+                            points={bodyPoints}
+                            strokeWidth={2}
+                        />
+                        <polygon
+                            className={surface.paint}
+                            points={bodyPoints}
+                            vectorEffect="non-scaling-stroke"
+                        />
+                        <polyline
+                            className={surface.edge}
+                            points={stepPoints}
+                            vectorEffect="non-scaling-stroke"
+                        />
+                        {hasHeader ? (
+                            <polyline
+                                className={surface.edge}
+                                points={headerPoints}
+                                vectorEffect="non-scaling-stroke"
+                            />
+                        ) : null}
+                    </svg>
+                </>
             ) : null}
-            {header ? <div ref={headerRef} className={styles['header-content']}>{header}</div> : null}
-            <div className={classNames(styles.content, contentClassName)} style={contentStyle}>{children}</div>
+            {hasHeader ? (
+                <div ref={headerRef} className={styles.header}>
+                    {header}
+                </div>
+            ) : null}
+            <div
+                className={classNames(styles.content, contentClassName)}
+                style={contentStyle}
+            >
+                {children}
+            </div>
         </div>
     );
 };

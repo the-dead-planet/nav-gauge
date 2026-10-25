@@ -36,3 +36,5 @@ export const themeAppearanceStateOptions: ThemeAppearanceState[] = [
 export const DEFAULT_SIZE: SizeVariant = 'sm';
 export const DEFAULT_SURFACE_VARIANT: SurfaceVariant = 'ghost';
 export const DEFAULT_FILL_VARIANT: FillVariant = 'fill-inverse';
+export const DEFAULT_ELEVATION: ElevationLevel = 'none';
+export const DEFAULT_COLOR: ColorVariant = 'neutral';

@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { StyleSheet } from "react-native";
 import Svg, { Polygon } from "react-native-svg";
-import { getResizeHandleGripPoints, ResizeHandleGripProps, useTheme } from "@ui";
+import { DEFAULT_COLOR, getResizeHandleGripPoints, ResizeHandleGripProps, useTheme } from "@ui";
 
 const styles = StyleSheet.create({
     grip: {
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 export const ResizeHandleGrip: FC<ResizeHandleGripProps> = ({
     direction = 'horizontal',
     side,
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     isDragging,
     position,
 }) => {

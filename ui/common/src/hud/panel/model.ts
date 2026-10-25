@@ -1,15 +1,32 @@
 import { ReactNode } from "react";
-import { AppearancePropsBase, ActiveGlow, FillVariant } from "../../design-system/model";
+import {
+    AppearancePropsBase,
+    ActiveGlow,
+    FillVariant,
+} from "../../design-system/model";
+import {
+    ElevationLevel,
+    ElevationLayer,
+} from "../../design-system/theme/model";
 
-export type PanelShape = 'default';
+export type PanelShape = "default";
 
-export interface PanelProps extends AppearancePropsBase<FillVariant> {
+export type PanelProps = AppearancePropsBase<FillVariant> & {
     shape?: PanelShape;
     interactive?: boolean;
     activeGlow?: ActiveGlow;
-    /**
-     * Defaults to 2
-     */
+    /** Overrides the width of borders present in the shared appearance policy. */
     borderWidth?: number;
     children?: ReactNode;
-}
+} & (
+        | {
+              /** Defaults to `none`; callers opt into surface elevation. */
+              elevation?: ElevationLevel;
+              elevationLayer?: never;
+          }
+        | {
+              elevation?: never;
+              /** Selects z-index and elevation together for a globally stacked surface. */
+              elevationLayer: ElevationLayer;
+          }
+    );

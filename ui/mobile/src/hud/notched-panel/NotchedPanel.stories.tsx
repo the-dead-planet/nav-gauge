@@ -1,38 +1,58 @@
-import { FC } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Button } from '../../gizmos/button';
-import { Text } from '../../design-system/typography';
-import { NotchedPanel } from './NotchedPanel';
+import { ScrollView, StyleSheet, View } from "react-native";
+import {
+    appearanceColorOptions,
+    NotchedPanelProps,
+    notchedPanelStoryArgs,
+    notchedPanelStoryControls,
+} from "@ui";
+import { NotchedPanel } from "./NotchedPanel";
+import { Text } from "../../design-system/typography";
+import { MobileStoryDefinition } from "../../storybook/model";
+import { VariantGallery } from "../../storybook/VariantGallery";
 
 const styles = StyleSheet.create({
-    actions: { flexDirection: 'row', justifyContent: 'flex-end', gap: 8, marginTop: 18 },
-    showcase: { gap: 16 },
+    gallery: { padding: 16, gap: 32 },
+    sample: { padding: 16, minHeight: 64 },
 });
 
-export const Playground: FC = () => (
-    <NotchedPanel color="primary" variant="fill-translucent"><Text>Responsive navigation telemetry surface.</Text></NotchedPanel>
-);
-
-export const Header: FC = () => (
-    <NotchedPanel color="neutral" highlightColor="secondary" header={<Text>WARNING</Text>}><Text>Route data contains unresolved segments.</Text></NotchedPanel>
-);
-
-export const Gallery: FC = () => (
-    <View style={styles.showcase}>
-        <NotchedPanel color="primary" variant="fill" header={<Text>FILL</Text>}><Text>Primary</Text></NotchedPanel>
-        <NotchedPanel color="secondary" variant="fill-inverse" header={<Text>INVERSE</Text>} activeGlow="glow"><Text>Secondary</Text></NotchedPanel>
-        <NotchedPanel color="tertiary" variant="fill-translucent" header={<Text>TRANSLUCENT</Text>} activeGlow="animate-borders-glow"><Text>Tertiary</Text></NotchedPanel>
-    </View>
-);
-
-export const States: FC = () => <View style={styles.showcase}><NotchedPanel highlighted color="primary" header={<Text>HIGHLIGHTED</Text>}><Text>Highlighted panel</Text></NotchedPanel><NotchedPanel disabled color="primary" header={<Text>DISABLED</Text>}><Text>Disabled panel</Text></NotchedPanel></View>;
-
-export const Confirmation: FC = () => (
-    <NotchedPanel accessibilityRole="alert" color="neutral" highlightColor="primary" header={<Text>CONFIRM ROUTE DELETION</Text>}>
-        <Text>This removes the selected route from local storage.</Text>
-        <View style={styles.actions}>
-            <Button variant="ghost">Cancel</Button>
-            <Button color="primary" variant="fill">Delete route</Button>
-        </View>
-    </NotchedPanel>
-);
+const story: MobileStoryDefinition<NotchedPanelProps> = {
+    args: notchedPanelStoryArgs,
+    controls: notchedPanelStoryControls,
+    galleryEditableControls: [
+        "children",
+        "highlightColor",
+        "highlighted",
+        "disabled",
+        "interactive",
+        "activeGlow",
+    ],
+    renderPlayground: (args) => (
+        <NotchedPanel {...args} contentStyle={styles.sample} />
+    ),
+    renderGallery: (args) => (
+        <ScrollView contentContainerStyle={styles.gallery}>
+            {[false, true].map((hasHeader) => (
+                <View key={String(hasHeader)}>
+                    <Text usage="header">
+                        {hasHeader ? "With header" : "Without header"}
+                    </Text>
+                    <VariantGallery
+                        sizes={["sm"]}
+                        colors={appearanceColorOptions}
+                        scrollEnabled={false}
+                        render={({ color, variant }) => (
+                            <NotchedPanel
+                                {...args}
+                                color={color}
+                                variant={variant}
+                                header={hasHeader ? "Navigation" : undefined}
+                                contentStyle={styles.sample}
+                            />
+                        )}
+                    />
+                </View>
+            ))}
+        </ScrollView>
+    ),
+};
+export default story;

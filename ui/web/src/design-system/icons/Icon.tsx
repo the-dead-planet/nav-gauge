@@ -5,6 +5,7 @@ import { IconProps } from "./model";
 import {
     appearanceColorOptions,
     DEFAULT_SIZE,
+    DEFAULT_COLOR,
     Icons,
     resolveIconState,
 } from "@ui";
@@ -51,7 +52,7 @@ export const Icon: FC<Props & IconProps> = ({
         highlighted ||
         disabled ||
         appearanceState !== undefined;
-    const selectedColor = paletteColor ?? "neutral";
+    const selectedColor = paletteColor ?? DEFAULT_COLOR;
     const selectedHighlight = highlightColor ?? selectedColor;
     const dimension = (value: typeof width): string | undefined =>
         value === undefined

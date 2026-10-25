@@ -19,6 +19,7 @@ import {
     placePopup,
     MenuProps,
     Icons,
+    DEFAULT_COLOR,
 } from '@ui';
 import { Button } from '../../gizmos/button';
 import { resolveLayerStyle } from '../../design-system/theme';
@@ -55,7 +56,7 @@ export const Menu: FC<MobileMenuProps> = ({
     iconActiveColor,
     iconSize,
     placement = 'bottom-right',
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     triggerAccessibilityLabel,
     triggerActive = false,
     disabled = false,

@@ -2,13 +2,13 @@ import type { Meta } from 'storybook-react-rsbuild';
 import { useState } from 'react';
 import { Dialog } from './Dialog';
 import { Button } from '../../gizmos/button';
-import { DialogPlacement, DialogProps } from '@ui';
+import { DEFAULT_COLOR, DialogPlacement, DialogProps } from '@ui';
 import { colorControl } from '../../storybook/controls';
 
 const meta = {
     title: 'Rigs/Dialog',
     component: Dialog,
-    args: { color: 'neutral' },
+    args: { color: DEFAULT_COLOR },
     argTypes: {
         color: colorControl,
     },

@@ -1,141 +1,121 @@
-import { FC, useState } from "react";
-import { View, ViewStyle, StyleProp, Pressable } from "react-native";
-import { DEFAULT_FILL_VARIANT, PanelProps, useTheme } from "@ui";
-import { TRANSLUCENT_OPACITY_BACKGROUND } from "../../tinkers";
+import { FC } from "react";
+import {
+    Pressable,
+    PressableProps,
+    StyleProp,
+    StyleSheet,
+    View,
+    ViewStyle,
+} from "react-native";
+import {
+    DEFAULT_COLOR,
+    DEFAULT_ELEVATION,
+    DEFAULT_FILL_VARIANT,
+    PanelProps,
+    useTheme,
+} from "@ui";
+import {
+    resolveElevationStyle,
+    resolveLayerStyle,
+} from "../../design-system/theme";
+import { HudContent } from "../HudContent";
+import { useHudInteraction } from "../useHudInteraction";
 
-interface Props {
+const styles = StyleSheet.create({
+    panel: {
+        position: "relative",
+    },
+});
+
+interface Props extends Omit<PressableProps, "children" | "style"> {
     style?: StyleProp<ViewStyle>;
 }
 
 export const Panel: FC<PanelProps & Props> = ({
-    color = "neutral",
-    highlightColor = color,
+    shape: _shape,
+    color = DEFAULT_COLOR,
+    highlightColor,
     variant = DEFAULT_FILL_VARIANT,
-    activeGlow: _activeGlow,
-    borderWidth = 2,
+    activeGlow = "none",
+    borderWidth,
+    elevation = DEFAULT_ELEVATION,
+    elevationLayer,
     interactive = false,
     highlighted = false,
     disabled = false,
+    onPress,
+    onPressIn,
+    onPressOut,
+    onHoverIn,
+    onHoverOut,
+    onFocus,
+    onBlur,
+    accessibilityState,
+    accessibilityRole,
     style,
     children,
+    ...props
 }) => {
     const theme = useTheme();
-    const [pressed, setPressed] = useState(false);
-    const hl = !disabled && (pressed || highlighted);
-    const isLight = theme.mode === 'light';
+    const { state, interaction } = useHudInteraction({
+        disabled,
+        highlighted,
+        onPressIn,
+        onPressOut,
+        onHoverIn,
+        onHoverOut,
+        onFocus,
+        onBlur,
+    });
+    const appearance = theme.resolveAppearance(
+        variant,
+        color,
+        highlightColor ?? color,
+        state,
+    );
+    const showGlow =
+        activeGlow !== "none" &&
+        (state === "active-pressed" || state === "hover-focus");
+    const panelStyle: StyleProp<ViewStyle> = [
+        styles.panel,
+        elevationLayer
+            ? resolveLayerStyle(theme, elevationLayer, "down")
+            : resolveElevationStyle(theme, elevation, "down"),
+        {
+            backgroundColor: appearance.surface,
+            borderColor: appearance.border.color,
+            borderWidth:
+                appearance.border.width * Math.max(0, borderWidth ?? 1),
+            boxShadow: showGlow
+                ? `0 0 4px ${appearance.effects.glowColor}, 0 0 20px ${appearance.effects.glowColor}`
+                : undefined,
+        },
+        style,
+    ];
+    const content = <HudContent appearance={appearance}>{children}</HudContent>;
 
-    const baseColor = theme.color(color, 500);
-    const highlightAccent = theme.color(highlightColor, isLight ? 600 : 300);
-
-    const containerStyle: ViewStyle = (() => {
-        if (disabled) {
-            const foregroundColor = theme.color(color, isLight ? 300 : 700);
-            return {
-                backgroundColor: theme.color(color, isLight ? 200 : 800),
-                borderColor: foregroundColor,
-                borderWidth: variant === 'fill' ? 0 : borderWidth,
-            };
-        }
-
-        switch (variant) {
-            case 'fill': {
-                let fillColor: string;
-                let borderColor: string;
-                if (highlighted) {
-                    fillColor = highlightAccent;
-                    borderColor = highlightAccent;
-                } else if (pressed) {
-                    fillColor = highlightAccent;
-                    borderColor = highlightAccent;
-                } else {
-                    fillColor = theme.color(color, 500);
-                    borderColor = baseColor;
-                }
-                return {
-                    backgroundColor: fillColor,
-                    borderColor: borderColor,
-                    borderWidth,
-                };
+    return interactive || onPress ? (
+        <Pressable
+            {...props}
+            {...interaction}
+            disabled={disabled}
+            onPress={onPress}
+            accessibilityRole={
+                accessibilityRole ?? (onPress ? "button" : undefined)
             }
-
-            case 'fill-inverse': {
-                const isNeutral = color === 'neutral';
-                const bgShade = isLight ? 100 : (isNeutral ? 800 : 900);
-                const hlBgShade = isLight ? 100 : 900;
-                let fillColor: string;
-                let borderColor: string;
-                if (highlighted) {
-                    fillColor = theme.color(color, bgShade);
-                    borderColor = highlightAccent;
-                } else if (pressed) {
-                    fillColor = theme.color(highlightColor, hlBgShade);
-                    borderColor = highlightAccent;
-                } else {
-                    fillColor = theme.color(color, bgShade);
-                    borderColor = baseColor;
-                }
-                return {
-                    backgroundColor: fillColor,
-                    borderColor: borderColor,
-                    borderWidth,
-                };
-            }
-
-            case 'fill-translucent': {
-                const fill = hl
-                    ? theme.color(highlightColor, highlighted ? (isLight ? 600 : 300) : 500, highlighted ? 0.48 : 0.36)
-                    : theme.color(color, 500, TRANSLUCENT_OPACITY_BACKGROUND);
-                const border = hl ? highlightAccent : baseColor;
-                return {
-                    backgroundColor: fill,
-                    borderColor: border,
-                    borderWidth,
-                };
-            }
-
-            default: {
-                const isOutline = variant === 'outline';
-                const isGhost = variant === 'ghost';
-                let bgFill: string | undefined;
-                let bColor: string;
-                if (highlighted) {
-                    bgFill = theme.color(highlightColor, isLight ? 600 : 300, isOutline ? 0.24 : 0.14);
-                    bColor = isOutline ? highlightAccent : 'transparent';
-                } else if (pressed) {
-                    bgFill = theme.color(highlightColor, 500, isOutline ? 0.12 : 0.10);
-                    bColor = isOutline ? highlightAccent : 'transparent';
-                } else {
-                    bgFill = isGhost ? 'transparent' : undefined;
-                    bColor = isOutline ? baseColor : 'transparent';
-                }
-                return {
-                    backgroundColor: bgFill,
-                    borderColor: bColor,
-                    borderWidth: isOutline ? borderWidth : 0,
-                };
-            }
-        }
-    })();
-
-    const container = (
-        <View style={[containerStyle, style]}>
-            {children}
+            accessibilityState={{ ...accessibilityState, disabled }}
+            style={panelStyle}
+        >
+            {content}
+        </Pressable>
+    ) : (
+        <View
+            {...props}
+            accessibilityRole={accessibilityRole}
+            accessibilityState={{ ...accessibilityState, disabled }}
+            style={panelStyle}
+        >
+            {content}
         </View>
     );
-
-    if (interactive) {
-        return (
-            <Pressable
-                disabled={disabled}
-                accessibilityState={{ disabled }}
-                onPress={() => { /* external click handling via parent */ }}
-                onPressIn={() => setPressed(true)}
-                onPressOut={() => setPressed(false)}
-            >
-                {container}
-            </Pressable>
-        );
-    }
-
-    return container;
 };

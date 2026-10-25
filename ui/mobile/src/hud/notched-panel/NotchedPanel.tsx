@@ -1,27 +1,63 @@
-import { FC, useState } from 'react';
-import { LayoutChangeEvent, StyleProp, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
-import Svg, { Polygon, Polyline } from 'react-native-svg';
-import { ColorVariant, DEFAULT_FILL_VARIANT, NotchedPanelProps, useTheme } from '@ui';
-import { TRANSLUCENT_OPACITY_BACKGROUND } from '../../tinkers';
+import { FC } from "react";
+import {
+    Pressable,
+    PressableProps,
+    StyleProp,
+    StyleSheet,
+    View,
+    ViewStyle,
+} from "react-native";
+import Svg, { Polygon, Polyline } from "react-native-svg";
+import {
+    DEFAULT_FILL_VARIANT,
+    DEFAULT_COLOR,
+    getNotchedPanelGeometry,
+    NotchedPanelProps,
+    useTheme,
+} from "@ui";
+import { resolveElevationStyle } from "../../design-system/theme";
+import { HudContent } from "../HudContent";
+import { HudGlow } from "../HudGlow";
+import { useHudInteraction } from "../useHudInteraction";
+import { usePanelDimensions } from "../usePanelDimensions";
 
-interface Props extends Omit<ViewProps, 'children' | 'onLayout' | 'style'> {
+const styles = StyleSheet.create({
+    panel: {
+        position: "relative",
+        minWidth: 80,
+    },
+    header: {
+        minHeight: 38,
+        paddingTop: 9,
+        paddingRight: 32,
+        paddingBottom: 11,
+        paddingLeft: 18,
+    },
+});
+
+interface Props extends Omit<PressableProps, "children" | "style"> {
     style?: StyleProp<ViewStyle>;
     contentStyle?: StyleProp<ViewStyle>;
 }
 
-const styles = StyleSheet.create({
-    panel: { position: 'relative', minWidth: 80 },
-    header: { minHeight: 38, paddingTop: 9, paddingRight: 32, paddingBottom: 11, paddingLeft: 18 },
-    content: { marginHorizontal: 18, marginBottom: 10 },
-});
-
 export const NotchedPanel: FC<NotchedPanelProps & Props> = ({
-    color: colorProp = 'neutral',
-    highlightColor: highlightColorProp,
+    color = DEFAULT_COLOR,
+    highlightColor,
     variant = DEFAULT_FILL_VARIANT,
-    activeGlow = 'none',
+    activeGlow = "none",
+    interactive = false,
     highlighted = false,
     disabled = false,
+    onPress,
+    onPressIn,
+    onPressOut,
+    onHoverIn,
+    onHoverOut,
+    onFocus,
+    onBlur,
+    onLayout,
+    accessibilityRole,
+    accessibilityState,
     header,
     children,
     style,
@@ -29,53 +65,123 @@ export const NotchedPanel: FC<NotchedPanelProps & Props> = ({
     ...props
 }) => {
     const theme = useTheme();
-    const color = colorProp as ColorVariant;
-    const highlightColor = (highlightColorProp ?? color) as ColorVariant;
-    const [dimensions, setDimensions] = useState({ width: 0, height: 0, headerHeight: 0 });
-    const baseColor = theme.color(color, 500);
-    const highlight = theme.color(highlightColor, 500);
-    const highlightAccent = theme.color(highlightColor, theme.isLight ? 600 : 300);
-    const disabledSurface = theme.color(color, theme.isLight ? 200 : 800);
-    const disabledForeground = theme.color(color, theme.isLight ? 300 : 700);
-    const inverseShade = theme.mode === 'light' ? 100 : color === 'neutral' ? 800 : 900;
-    const fill = disabled
-        ? disabledSurface
-        : variant === 'fill'
-        ? highlighted ? highlightAccent : baseColor
-        : variant === 'fill-translucent'
-            ? highlighted
-                ? theme.color(highlightColor, theme.isLight ? 600 : 300, 0.48)
-                : theme.color(color, 500, TRANSLUCENT_OPACITY_BACKGROUND)
-            : theme.color(color, inverseShade);
-    const accent = disabled ? disabledForeground : highlighted ? highlightAccent : highlight;
+    const { state, interaction } = useHudInteraction({
+        disabled,
+        highlighted,
+        onPressIn,
+        onPressOut,
+        onHoverIn,
+        onHoverOut,
+        onFocus,
+        onBlur,
+    });
+    const dimensions = usePanelDimensions();
+    const appearance = theme.resolveAppearance(
+        variant,
+        color,
+        highlightColor ?? color,
+        state,
+    );
     const { width, height, headerHeight } = dimensions;
-    const notch = Math.min(18, width / 5, height / 4);
-    const step = Math.min(10, width / 10);
-    const bodyPoints = `${notch},1 ${width - notch - step},1 ${width - 1},${notch + step} ${width - 1},${height - notch} ${width - notch},${height - 1} ${width * 0.58},${height - 1} ${width * 0.54},${height - step} ${notch + step},${height - step} ${notch},${height - 1} 1,${height - notch} 1,${notch}`;
-    const headerPoints = `${notch},1 ${width - notch - step},1 ${width - 1},${notch + step} ${width - notch},${headerHeight} ${width * 0.58},${headerHeight} ${width * 0.54},${Math.max(1, headerHeight - step)} ${notch + step},${Math.max(1, headerHeight - step)} 1,${Math.max(1, headerHeight - notch)}`;
-    const ready = width > 0 && height > 0;
-
-    const onLayout = (event: LayoutChangeEvent) => {
-        const { width: nextWidth, height: nextHeight } = event.nativeEvent.layout;
-        setDimensions((current) => ({ ...current, width: nextWidth, height: nextHeight }));
+    const { bodyPoints, headerPoints, stepPoints } = getNotchedPanelGeometry(
+        width,
+        height,
+        headerHeight,
+    );
+    const hasHeader =
+        header !== undefined &&
+        header !== null &&
+        header !== false &&
+        header !== "";
+    const showGlow =
+        activeGlow !== "none" &&
+        (state === "active-pressed" || state === "hover-focus");
+    const panelStyle = [
+        styles.panel,
+        resolveElevationStyle(theme, "raised", "down"),
+        style,
+    ];
+    const handleLayout: NonNullable<PressableProps["onLayout"]> = (event) => {
+        dimensions.onLayout(event);
+        onLayout?.(event);
     };
-
-    return (
-        <View {...props} onLayout={onLayout} style={[styles.panel, style]}>
-            {ready ? (
-                <Svg viewBox={`0 0 ${width} ${height}`} style={StyleSheet.absoluteFill} pointerEvents="none" accessibilityElementsHidden>
-                    {!disabled && activeGlow !== 'none' ? <Polygon points={bodyPoints} fill="none" stroke={accent} strokeWidth={activeGlow === 'glow' ? 10 : 6} strokeOpacity={0.18} /> : null}
-                    <Polygon points={bodyPoints} fill={fill} stroke={disabled || highlighted ? accent : baseColor} strokeWidth={variant === 'fill' ? 0 : 2} />
-                    <Polyline points={`${notch + 7},${height - 6} ${width * 0.38},${height - 6} ${width * 0.42},${height - 2}`} fill="none" stroke={accent} strokeWidth={2} />
-                    {header ? <Polygon points={headerPoints} fill={disabled ? disabledSurface : accent} stroke={accent} strokeWidth={2} /> : null}
+    const content = (
+        <>
+            {width > 0 && height > 0 ? (
+                <Svg
+                    viewBox={`0 0 ${width} ${height}`}
+                    style={StyleSheet.absoluteFill}
+                    pointerEvents="none"
+                    accessibilityElementsHidden
+                    importantForAccessibility="no-hide-descendants"
+                >
+                    {showGlow ? (
+                        <HudGlow
+                            points={bodyPoints}
+                            color={appearance.effects.glowColor}
+                            strokeWidth={2}
+                        />
+                    ) : null}
+                    <Polygon
+                        points={bodyPoints}
+                        fill={appearance.surface}
+                        stroke={appearance.border.color}
+                        strokeWidth={appearance.border.width}
+                    />
+                    <Polyline
+                        points={stepPoints}
+                        fill="none"
+                        stroke={appearance.border.color}
+                        strokeWidth={appearance.border.width}
+                    />
+                    {hasHeader ? (
+                        <Polyline
+                            points={headerPoints}
+                            fill="none"
+                            stroke={appearance.border.color}
+                            strokeWidth={appearance.border.width}
+                        />
+                    ) : null}
                 </Svg>
             ) : null}
-            {header ? (
-                <View onLayout={(event) => setDimensions((current) => ({ ...current, headerHeight: event.nativeEvent.layout.height }))} style={styles.header}>
-                    {header}
+            {hasHeader ? (
+                <View
+                    onLayout={dimensions.onHeaderLayout}
+                    style={styles.header}
+                >
+                    <HudContent appearance={appearance}>{header}</HudContent>
                 </View>
             ) : null}
-            <View style={[styles.content, contentStyle]}>{children}</View>
+            <View style={contentStyle}>
+                <HudContent appearance={appearance}>{children}</HudContent>
+            </View>
+        </>
+    );
+
+    return interactive || onPress ? (
+        <Pressable
+            {...props}
+            {...interaction}
+            disabled={disabled}
+            onPress={onPress}
+            onLayout={handleLayout}
+            accessibilityRole={
+                accessibilityRole ?? (onPress ? "button" : undefined)
+            }
+            accessibilityState={{ ...accessibilityState, disabled }}
+            style={panelStyle}
+        >
+            {content}
+        </Pressable>
+    ) : (
+        <View
+            {...props}
+            onLayout={handleLayout}
+            accessibilityRole={accessibilityRole}
+            accessibilityState={{ ...accessibilityState, disabled }}
+            style={panelStyle}
+        >
+            {content}
         </View>
     );
 };

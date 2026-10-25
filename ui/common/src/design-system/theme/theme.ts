@@ -23,10 +23,11 @@ import {
     ResolvedThemeElevation,
     ResolvedThemeLayer,
     ThemeElevation,
-    ThemeLayer,
+    ElevationLayer,
     ThemeLayerPolicy,
 } from "./model";
 import { ColorShade, ColorVariant, DesignSystemColor, SpacingVariant, StatusColor, SurfaceVariant } from '../model';
+import { DEFAULT_COLOR } from '../tinkers';
 import { palette, resolveContrastShade } from './palette';
 import {
     elevationSpecifications,
@@ -112,7 +113,7 @@ export class Theme {
 
     public static spacing: { [key in SpacingVariant]: string } = themeSpacing;
 
-    public static layers: Record<ThemeLayer, ThemeLayerPolicy> = themeLayers;
+    public static layers: Record<ElevationLayer, ThemeLayerPolicy> = themeLayers;
 
     public elevations: Record<ElevationLevel, ThemeElevation>;
 
@@ -713,8 +714,8 @@ export class Theme {
 
     public resolveAppearance = (
         variant?: SurfaceVariant,
-        baseColor: PaletteColor | ColorVariant = 'neutral',
-        highlightColor: PaletteColor | ColorVariant = 'neutral',
+        baseColor: PaletteColor | ColorVariant = DEFAULT_COLOR,
+        highlightColor: PaletteColor | ColorVariant = DEFAULT_COLOR,
         state: ThemeAppearanceState = 'default',
     ): ResolvedThemeAppearance => {
         const policy = this.appearancePolicies[variant ?? 'default'];
@@ -836,7 +837,7 @@ export class Theme {
      * const popupLayer = theme.layer('popup');
      */
     public layer = (
-        name: ThemeLayer,
+        name: ElevationLayer,
         direction: ElevationDirection = 'down',
     ): ResolvedThemeLayer => {
         const policy = Theme.layers[name];

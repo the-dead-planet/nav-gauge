@@ -1,62 +1,56 @@
-import { ComponentProps } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
-import { hexagonShapes, hexagonStoryArgs, hexagonStoryControls, surfaceVariantOptions } from '@ui';
-import { VariantGallery } from '../../storybook/VariantGallery';
-import { MobileStoryDefinition } from '../../storybook/model';
-import { Text } from '../../design-system/typography';
-import { Hexagon } from './Hexagon';
+import { ScrollView, StyleSheet, View } from "react-native";
+import {
+    appearanceColorOptions,
+    HexagonProps,
+    hexagonShapes,
+    hexagonStoryArgs,
+    hexagonStoryControls,
+    surfaceVariantOptions,
+} from "@ui";
+import { VariantGallery } from "../../storybook/VariantGallery";
+import { MobileStoryDefinition } from "../../storybook/model";
+import { Text } from "../../design-system/typography";
+import { Hexagon } from "./Hexagon";
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 16,
-        gap: 32,
-    },
-    section: {
-        gap: 12,
-    },
-    states: {
-        gap: 8,
-        alignItems: 'center',
-    },
-    heading: {
-        fontWeight: '700',
-    },
+    gallery: { padding: 16, gap: 32 },
 });
 
-const story = {
-    args: {
-        ...hexagonStoryArgs,
-        highlightColor: undefined,
-    },
+const story: MobileStoryDefinition<HexagonProps> = {
+    args: hexagonStoryArgs,
     controls: hexagonStoryControls,
-    galleryEditableControls: ['highlightColor', 'strokeWidth', 'interactive', 'highlighted', 'disabled', 'activeGlow'],
+    galleryEditableControls: [
+        "children",
+        "highlightColor",
+        "strokeWidth",
+        "interactive",
+        "highlighted",
+        "disabled",
+        "activeGlow",
+    ],
     renderPlayground: (args) => <Hexagon {...args} />,
-    renderGallery: (args) => {
-        return (
-            <ScrollView contentContainerStyle={styles.container}>
-                {hexagonShapes.map((shape) => (
-                    <View key={shape} style={styles.section}>
-                        <Text style={styles.heading}>{shape}</Text>
-                        <VariantGallery
-                            variants={surfaceVariantOptions}
-                            scrollEnabled={false}
-                            render={({ color, size, variant }) => (
-                                <View style={styles.states}>
-                                    <Hexagon
-                                        {...args}
-                                        color={color}
-                                        size={size}
-                                        variant={variant}
-                                        shape={shape}
-                                    />
-                                </View>
-                            )}
-                        />
-                    </View>
-                ))}
-            </ScrollView>
-        );
-    },
-} satisfies MobileStoryDefinition<ComponentProps<typeof Hexagon>>;
-
+    renderGallery: (args) => (
+        <ScrollView contentContainerStyle={styles.gallery}>
+            {hexagonShapes.map((shape) => (
+                <View key={shape}>
+                    <Text usage="header">{shape}</Text>
+                    <VariantGallery
+                        colors={appearanceColorOptions}
+                        variants={surfaceVariantOptions}
+                        scrollEnabled={false}
+                        render={({ color, size, variant }) => (
+                            <Hexagon
+                                {...args}
+                                color={color}
+                                size={size}
+                                variant={variant}
+                                shape={shape}
+                            />
+                        )}
+                    />
+                </View>
+            ))}
+        </ScrollView>
+    ),
+};
 export default story;

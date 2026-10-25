@@ -9,7 +9,7 @@ import {
     type HostInstance,
     TouchableHighlight,
 } from 'react-native';
-import { controlTextSpecifications, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, DropdownProps, Icons, useTheme } from '@ui';
+import { controlTextSpecifications, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, DropdownProps, Icons, useTheme } from '@ui';
 import { Icon } from '../../design-system/icons';
 import { resolveLayerStyle } from '../../design-system/theme';
 import { Text } from '../../design-system/typography';
@@ -61,7 +61,7 @@ const SIZE_MAP = {
 const ICON_SIZE_MAP = { xs: 12, sm: 16, md: 20, lg: 24 } as const;
 
 export function Dropdown<T>({
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
     highlightGlyphsShade,

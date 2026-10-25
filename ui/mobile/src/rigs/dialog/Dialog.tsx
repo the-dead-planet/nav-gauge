@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef, useState } from "react";
 import { Animated, ScrollView, StyleSheet, Modal, StyleProp, View, ViewStyle } from "react-native";
-import { DEFAULT_FILL_VARIANT, DialogProps, FontType, TransitionProps, useTheme } from "@ui";
+import { DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DialogProps, FontType, TransitionProps, useTheme } from "@ui";
 import { useSubjectState } from "@tinker-chest";
 import { Panel } from "../../hud";
 import { Button } from "../../gizmos/button";
@@ -77,7 +77,7 @@ interface Props extends DialogProps {
 
 export const Dialog: FC<Props> = ({
     header,
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     variant = DEFAULT_FILL_VARIANT,
     placement = 'middle',
     closeText,
@@ -116,7 +116,7 @@ export const Dialog: FC<Props> = ({
                     onUnmount={onClose}
                     style={isWide ? [placementStyles[placement], placement !== 'middle' && { top: drawerTop }] : styles.fullWidth}
                 >
-                    <Panel variant={variant} color={color} style={[styles.panel, !isWide && styles.panelFullWidth, style]}>
+                    <Panel elevationLayer="dialog" variant={variant} color={color} style={[styles.panel, !isWide && styles.panelFullWidth, style]}>
                         <View style={styles.header}>
                             <Text
                                 color={color}

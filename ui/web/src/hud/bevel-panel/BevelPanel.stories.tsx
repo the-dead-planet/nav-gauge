@@ -1,15 +1,58 @@
-import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { Text } from '../../design-system/typography';
-import { BevelPanel } from './BevelPanel';
-import { colorOptions as colors, fillVariantOptions as variants } from '../../storybook/controls';
+import type { Meta, StoryObj } from "storybook-react-rsbuild";
+import { makeLiveEditStory } from "storybook-addon-code-editor";
+import {
+    appearanceColorOptions,
+    bevelPanelStoryArgs,
+    bevelPanelStoryControls,
+    fillVariantOptions,
+    sizeOptions,
+} from "@ui";
+import { BevelPanel } from "./BevelPanel";
+import { VariantGallery } from "../../storybook/VariantGallery";
+import styles from "../hud.stories.module.css";
 
-const meta = { title: 'Hud/BevelPanel', component: BevelPanel } satisfies Meta<typeof BevelPanel>;
+const meta: Meta<typeof BevelPanel> = {
+    title: "Hud/BevelPanel",
+    component: BevelPanel,
+    args: bevelPanelStoryArgs,
+    argTypes: bevelPanelStoryControls,
+};
 export default meta;
-type Story = StoryObj<typeof meta>;
-const gridStyle = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 16 } as const;
+type Story = StoryObj<typeof BevelPanel>;
 
-export const Playground: Story = { args: { color: 'primary', variant: 'fill-translucent', size: 'md', children: <Text>Preview</Text> } };
-export const Gallery: Story = { render: () => <div style={{ display: 'grid', gap: 24 }}>{variants.map((variant) => <section key={variant} style={{ display: 'grid', gap: 10 }}><strong>{variant}</strong><div style={gridStyle}>{colors.map((color) => <BevelPanel key={color} color={color} variant={variant} size="md"><Text>{color}</Text></BevelPanel>)}</div></section>)}</div> };
-export const InteractiveGlow: Story = { render: () => <div style={gridStyle}><BevelPanel interactive color="primary" size="md"><Text>Default glow</Text></BevelPanel><BevelPanel interactive activeGlow="glow" color="secondary" size="md"><Text>Glow</Text></BevelPanel><BevelPanel interactive activeGlow="animate-borders-glow" color="tertiary" size="md"><Text>Borders</Text></BevelPanel></div> };
-export const States: Story = { render: () => <div style={gridStyle}><BevelPanel highlighted color="primary" variant="fill-inverse" size="md"><Text>Highlighted</Text></BevelPanel><BevelPanel disabled color="primary" variant="fill-inverse" size="md"><Text>Disabled</Text></BevelPanel></div> };
-export const TranslucentBackdrop: Story = { render: () => <div style={{ padding: 32, background: 'repeating-linear-gradient(45deg, #fff 0 12px, #111 12px 24px)' }}><BevelPanel color="primary" variant="fill-translucent" size="md"><Text>Colored blur over high contrast</Text></BevelPanel></div> };
+export const Playground: Story = {
+    name: "Playground with Live code editor",
+    render: (args) => (
+        <BevelPanel {...args} tabIndex={args.interactive ? 0 : undefined}>
+            <div className={styles.sample}>{args.children}</div>
+        </BevelPanel>
+    ),
+};
+makeLiveEditStory(Playground, {
+    availableImports: { "@web-ui": { BevelPanel } },
+    code: `import { BevelPanel } from '@web-ui';
+
+export default () => <BevelPanel>Preview</BevelPanel>;`,
+});
+
+export const Gallery: Story = {
+    parameters: { controls: { exclude: ["color", "variant", "size"] } },
+    render: (args) => (
+        <VariantGallery
+            sizes={sizeOptions}
+            colors={appearanceColorOptions}
+            variants={fillVariantOptions}
+            render={({ color, size, variant }) => (
+                <BevelPanel
+                    {...args}
+                    color={color}
+                    size={size}
+                    variant={variant}
+                    tabIndex={args.interactive ? 0 : undefined}
+                >
+                    <div className={styles.sample}>{args.children}</div>
+                </BevelPanel>
+            )}
+        />
+    ),
+};

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
+import { DEFAULT_COLOR } from '@ui';
 import { ColorInput } from './ColorInput';
 import { colorControl, colorOptions, fillVariantControl, fillVariantOptions, optionalShadeControl, sizeControl, sizeOptions } from '../../storybook/controls';
 import { VariantGallery } from '../../storybook/VariantGallery';
@@ -11,8 +12,8 @@ const meta = {
         id: 'color-input-playground',
         label: 'Border color',
         value: '#ff6600',
-        color: 'neutral',
-        highlightColor: 'neutral',
+        color: DEFAULT_COLOR,
+        highlightColor: DEFAULT_COLOR,
         glyphsShade: 700,
         highlightGlyphsShade: 200,
         size: 'sm',

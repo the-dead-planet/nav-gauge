@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { View, TextInput, StyleSheet } from "react-native";
-import { ColorShade, controlTextSpecifications, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, FontType, Icons, NumberInputProps, SizeVariant, useStepRepeat, useTheme } from "@ui";
+import { ColorShade, controlTextSpecifications, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, FontType, Icons, NumberInputProps, SizeVariant, useStepRepeat, useTheme } from "@ui";
 import { Button } from "../../gizmos/button";
 import { Text } from "../../design-system/typography";
 import { resolveMobileFont } from "../../design-system/typography/fontFamily";
@@ -66,7 +66,7 @@ const buttonSizes: Record<SizeVariant, SizeVariant> = {
 };
 
 export const NumberInput: FC<NumberInputProps> = ({
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
     highlightGlyphsShade,

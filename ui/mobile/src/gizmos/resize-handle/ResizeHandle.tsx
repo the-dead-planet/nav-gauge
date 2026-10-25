@@ -1,6 +1,6 @@
 import { FC, useRef, useState } from "react";
 import { GestureResponderEvent, LayoutChangeEvent, PanResponder, StyleSheet, View } from "react-native";
-import { ResizeHandleProps, useTheme } from "@ui";
+import { DEFAULT_COLOR, ResizeHandleProps, useTheme } from "@ui";
 import { ResizeHandleGrip } from "./ResizeHandleGrip";
 import { Tooltip } from "../tooltip";
 
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
 export const ResizeHandle: FC<ResizeHandleProps> = ({
     direction = 'horizontal',
     side,
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     onDrag,
     onDragStart,
     onDragEnd,

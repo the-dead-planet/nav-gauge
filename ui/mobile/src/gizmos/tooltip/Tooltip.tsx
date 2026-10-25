@@ -1,6 +1,6 @@
 import { Children, cloneElement, FC, ReactElement, useEffect, useRef, useState } from "react";
 import { View, Modal, useWindowDimensions, GestureResponderEvent, LayoutChangeEvent, StyleSheet } from "react-native";
-import { DEFAULT_FILL_VARIANT, DEFAULT_SIZE, ErrorBoundary, getAutoTooltipPlacement, SizeVariant, TooltipPlacement, TooltipProps, useTheme } from "@ui";
+import { DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, ErrorBoundary, getAutoTooltipPlacement, SizeVariant, TooltipPlacement, TooltipProps, useTheme } from "@ui";
 import { Text } from "../../design-system/typography";
 import { Panel } from "../../hud/panel";
 
@@ -142,7 +142,7 @@ const InternalTooltip: FC<TooltipProps> = ({
     content,
     children,
     placement = 'auto',
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     variant = DEFAULT_FILL_VARIANT,
     size = DEFAULT_SIZE,
     maxWidth = 220,
@@ -308,6 +308,7 @@ const InternalTooltip: FC<TooltipProps> = ({
                         ]}
                     >
                         <Panel
+                            elevationLayer="tooltip"
                             color={color}
                             variant={variant}
                             style={tooltipStyles[size]}

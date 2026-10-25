@@ -1,22 +1,43 @@
-import { FC } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Text } from '../../design-system/typography';
-import { VariantGallery } from '../../storybook/VariantGallery';
-import { BevelPanel } from './BevelPanel';
+import { StyleSheet } from "react-native";
+import {
+    appearanceColorOptions,
+    BevelPanelProps,
+    bevelPanelStoryArgs,
+    bevelPanelStoryControls,
+} from "@ui";
+import { BevelPanel } from "./BevelPanel";
+import { MobileStoryDefinition } from "../../storybook/model";
+import { VariantGallery } from "../../storybook/VariantGallery";
 
 const styles = StyleSheet.create({
-    grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 16 },
+    sample: { padding: 16, minHeight: 64 },
 });
 
-export const Playground: FC = () => <BevelPanel color="primary" variant="fill-translucent" size="md"><Text>Preview</Text></BevelPanel>;
-export const Gallery: FC = () => (
-    <VariantGallery
-        render={({ color, size, variant }) => (
-            <BevelPanel color={color} variant={variant} size={size}>
-                <Text>Preview</Text>
-            </BevelPanel>
-        )}
-    />
-);
-export const InteractiveGlow: FC = () => <View style={styles.grid}><BevelPanel interactive color="primary" size="md"><Text>Default glow</Text></BevelPanel><BevelPanel interactive activeGlow="glow" color="secondary" size="md"><Text>Glow</Text></BevelPanel><BevelPanel interactive activeGlow="animate-borders-glow" color="tertiary" size="md"><Text>Borders</Text></BevelPanel></View>;
-export const States: FC = () => <View style={styles.grid}><BevelPanel highlighted color="primary" variant="fill-inverse" size="md"><Text>Highlighted</Text></BevelPanel><BevelPanel disabled color="primary" variant="fill-inverse" size="md"><Text>Disabled</Text></BevelPanel></View>;
+const story: MobileStoryDefinition<BevelPanelProps> = {
+    args: bevelPanelStoryArgs,
+    controls: bevelPanelStoryControls,
+    galleryEditableControls: [
+        "children",
+        "highlightColor",
+        "highlighted",
+        "disabled",
+        "interactive",
+        "activeGlow",
+    ],
+    renderPlayground: (args) => <BevelPanel {...args} style={styles.sample} />,
+    renderGallery: (args) => (
+        <VariantGallery
+            colors={appearanceColorOptions}
+            render={({ color, size, variant }) => (
+                <BevelPanel
+                    {...args}
+                    color={color}
+                    size={size}
+                    variant={variant}
+                    style={styles.sample}
+                />
+            )}
+        />
+    ),
+};
+export default story;

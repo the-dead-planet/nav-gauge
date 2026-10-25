@@ -1,0 +1,23 @@
+.gallery {
+    display: grid;
+    gap: var(--spacing-xl);
+}
+
+.sample {
+    padding: var(--spacing-md);
+    min-height: 64px;
+    box-sizing: border-box;
+}
+
+.connector-sample {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 140px;
+    gap: var(--spacing-xl);
+    padding: var(--spacing-lg);
+}
+
+.ornament-sample {
+    padding: var(--spacing-lg);
+}

@@ -11,6 +11,7 @@ import {
     STEP_DEG,
     useTheme,
     DEFAULT_FILL_VARIANT,
+    DEFAULT_COLOR,
     DEFAULT_SIZE,
 } from "@ui";
 import { ClockContainer } from "./ClockContainer";
@@ -32,7 +33,7 @@ const MINUTES_HAND_FRACTION = 0.55;
 type Hand = 'minutes' | 'seconds';
 
 export const DurationClockInput: FC<DurationClockInputProps & { id?: string; className?: string }> = ({
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor,
     highlightGlyphsShade,

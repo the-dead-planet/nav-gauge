@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef } from "react";
-import { ColorShade, ColorVariant } from "@ui";
+import { ColorShade, ColorVariant, DEFAULT_COLOR } from "@ui";
 import { Label, Span } from "../../design-system/typography";
 import styles from './clock-input.module.css';
 
@@ -33,7 +33,7 @@ export const ClockA11yInput: FC<Props> = ({
     label,
     showValue = true,
     ariaLabel,
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     glyphsShade,
 }) => {
     const inputRef = useRef<HTMLInputElement>(null);

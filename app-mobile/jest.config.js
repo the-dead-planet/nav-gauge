@@ -1,7 +1,5 @@
-const { jestNativePreset } = require('@react-native/jest-preset');
-
 module.exports = {
-    ...jestNativePreset,
+    preset: '@react-native/jest-preset',
     testMatch: [
         '<rootDir>/__tests__/**/*.(test|spec).[jt]s?(x)',
     ],

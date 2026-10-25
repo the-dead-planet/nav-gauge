@@ -2,6 +2,7 @@ import { FC } from "react";
 import { StyleSheet, View, ViewStyle } from "react-native";
 import {
     DividerProps,
+    DEFAULT_COLOR,
     resolveTypographySpacing,
     SpacingVariant,
     Theme,
@@ -27,7 +28,7 @@ const spacing = (value?: SpacingVariant): number | undefined =>
 
 export const Divider: FC<DividerProps & { style?: ViewStyle }> = ({
     orientation = "horizontal",
-    color = "neutral",
+    color = DEFAULT_COLOR,
     m,
     mv,
     mh,

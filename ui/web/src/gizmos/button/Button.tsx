@@ -1,6 +1,6 @@
 import { ComponentProps, CSSProperties, FC } from "react";
 import classNames from "classnames";
-import { ButtonProps, DEFAULT_SIZE, DEFAULT_SURFACE_VARIANT, useTheme } from "@ui";
+import { ButtonProps, DEFAULT_COLOR, DEFAULT_SIZE, DEFAULT_SURFACE_VARIANT, useTheme } from "@ui";
 import { Icon } from "../../design-system/icons";
 import { Tooltip } from "../tooltip";
 import { Hexagon } from "../../hud";
@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor,
     highlightGlyphsShade,
@@ -46,6 +46,15 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
         highlightColor || color,
         'default',
     ).effects;
+    const appearanceOverrides: CSSProperties = {
+        ...(glyphsShade === undefined ? undefined : {
+            '--appearance-default-glyphs-override': theme.color(color, glyphsShade),
+        }),
+        ...(highlightGlyphsShade === undefined ? undefined : {
+            '--appearance-hover-focus-glyphs-override': theme.color(highlightColor ?? color, highlightGlyphsShade),
+            '--appearance-active-pressed-glyphs-override': theme.color(highlightColor ?? color, highlightGlyphsShade),
+        }),
+    } as CSSProperties;
 
     const button = (
         <button
@@ -75,13 +84,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
             )}
             style={{
                 ...(corners !== 'hexagon' ? style : undefined),
-                ...(glyphsShade === undefined ? undefined : {
-                    '--appearance-default-glyphs-override': theme.color(color, glyphsShade),
-                }),
-                ...(highlightGlyphsShade === undefined ? undefined : {
-                    '--appearance-hover-focus-glyphs-override': theme.color(highlightColor || color, highlightGlyphsShade),
-                    '--appearance-active-pressed-glyphs-override': theme.color(highlightColor || color, highlightGlyphsShade),
-                }),
+                ...(corners !== 'hexagon' ? appearanceOverrides : undefined),
             } as CSSProperties}
             {...props}
         >
@@ -133,7 +136,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
                 highlighted={highlighted}
                 disabled={disabled}
                 interactive={!disabled}
-                style={disabled ? { ...style, cursor: 'not-allowed' } : style}
+                style={{ ...style, ...appearanceOverrides, ...(disabled ? { cursor: 'not-allowed' } : undefined) }}
                 className={className}
             >
                 {buttonWithTooltip}

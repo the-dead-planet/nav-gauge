@@ -1,40 +1,66 @@
-import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { Button } from '../../gizmos/button';
-import { Text } from '../../design-system/typography';
-import { NotchedPanel } from './NotchedPanel';
+import type { Meta, StoryObj } from "storybook-react-rsbuild";
+import { makeLiveEditStory } from "storybook-addon-code-editor";
+import {
+    appearanceColorOptions,
+    fillVariantOptions,
+    notchedPanelStoryArgs,
+    notchedPanelStoryControls,
+} from "@ui";
+import { NotchedPanel } from "./NotchedPanel";
+import { VariantGallery } from "../../storybook/VariantGallery";
+import styles from "../hud.stories.module.css";
 
-const meta = { title: 'Hud/NotchedPanel', component: NotchedPanel } satisfies Meta<typeof NotchedPanel>;
+const meta: Meta<typeof NotchedPanel> = {
+    title: "Hud/NotchedPanel",
+    component: NotchedPanel,
+    args: notchedPanelStoryArgs,
+    argTypes: notchedPanelStoryControls,
+};
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof NotchedPanel>;
 
 export const Playground: Story = {
-    args: { color: 'primary', variant: 'fill-translucent', highlighted: false, disabled: false, children: <Text>Responsive navigation telemetry surface.</Text> },
-};
-
-export const States: Story = { render: () => <div style={{ display: 'grid', gap: 16 }}><NotchedPanel highlighted color="primary" header={<Text>HIGHLIGHTED</Text>}><Text>Highlighted panel</Text></NotchedPanel><NotchedPanel disabled color="primary" header={<Text>DISABLED</Text>}><Text>Disabled panel</Text></NotchedPanel></div> };
-
-export const Header: Story = {
-    args: { color: 'neutral', highlightColor: 'secondary', header: <Text>WARNING</Text>, children: <Text>Route data contains unresolved segments.</Text> },
-};
-
-export const Gallery: Story = {
-    render: () => (
-        <div style={{ display: 'grid', gap: 16, gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }}>
-            <NotchedPanel color="primary" variant="fill" header={<Text>FILL</Text>}><Text>Primary</Text></NotchedPanel>
-            <NotchedPanel color="secondary" variant="fill-inverse" header={<Text>INVERSE</Text>} activeGlow="glow"><Text>Secondary</Text></NotchedPanel>
-            <NotchedPanel color="tertiary" variant="fill-translucent" header={<Text>TRANSLUCENT</Text>} activeGlow="animate-borders-glow"><Text>Tertiary</Text></NotchedPanel>
-        </div>
+    name: "Playground with Live code editor",
+    render: (args) => (
+        <NotchedPanel {...args} tabIndex={args.interactive ? 0 : undefined}>
+            <div className={styles.sample}>{args.children}</div>
+        </NotchedPanel>
     ),
 };
+makeLiveEditStory(Playground, {
+    availableImports: { "@web-ui": { NotchedPanel } },
+    code: `import { NotchedPanel } from '@web-ui';
 
-export const Confirmation: Story = {
-    render: () => (
-        <NotchedPanel role="alertdialog" aria-labelledby="notched-confirm-title" color="neutral" highlightColor="primary" header={<Text id="notched-confirm-title">CONFIRM ROUTE DELETION</Text>} style={{ maxWidth: 440 }}>
-            <Text>This removes the selected route from local storage.</Text>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, marginTop: 18 }}>
-                <Button variant="ghost">Cancel</Button>
-                <Button color="primary" variant="fill">Delete route</Button>
-            </div>
-        </NotchedPanel>
+export default () => <NotchedPanel header="Navigation">Preview</NotchedPanel>;`,
+});
+
+export const Gallery: Story = {
+    parameters: { controls: { exclude: ["color", "variant", "header"] } },
+    render: (args) => (
+        <div className={styles.gallery}>
+            {[false, true].map((hasHeader) => (
+                <section key={String(hasHeader)}>
+                    <h2>{hasHeader ? "With header" : "Without header"}</h2>
+                    <VariantGallery
+                        sizes={["surface"]}
+                        colors={appearanceColorOptions}
+                        variants={fillVariantOptions}
+                        render={({ color, variant }) => (
+                            <NotchedPanel
+                                {...args}
+                                color={color}
+                                variant={variant}
+                                header={hasHeader ? "Navigation" : undefined}
+                                tabIndex={args.interactive ? 0 : undefined}
+                            >
+                                <div className={styles.sample}>
+                                    {args.children}
+                                </div>
+                            </NotchedPanel>
+                        )}
+                    />
+                </section>
+            ))}
+        </div>
     ),
 };

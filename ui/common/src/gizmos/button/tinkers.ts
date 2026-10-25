@@ -1,5 +1,5 @@
 import { ButtonProps } from './model';
-import { activeGlowOptions, allColorShades, appearanceColorOptions, sizeOptions, surfaceVariantOptions } from '../../design-system';
+import { activeGlowOptions, allColorShades, appearanceColorOptions, DEFAULT_COLOR, sizeOptions, surfaceVariantOptions } from '../../design-system';
 import { StoryControls } from '../../storybook';
 
 export const buttonCorners = ['square', 'circle', 'hexagon'] as const;
@@ -7,7 +7,7 @@ export const buttonTooltipPlacements = ['auto', 'top', 'right', 'bottom', 'left'
 
 export const buttonStoryArgs = {
     children: 'Button',
-    color: 'neutral',
+    color: DEFAULT_COLOR,
     variant: 'ghost',
     activeGlow: 'none',
     size: 'sm',

@@ -1,11 +1,11 @@
 import { ComponentProps, FC } from "react";
 import classNames from "classnames";
-import { DividerProps, resolveTypographySpacing } from "@ui";
+import { DEFAULT_COLOR, DividerProps, resolveTypographySpacing } from "@ui";
 import styles from "./divider.module.css";
 
 export const Divider: FC<DividerProps & ComponentProps<"hr">> = ({
     orientation = "horizontal",
-    color = "neutral",
+    color = DEFAULT_COLOR,
     m,
     mv,
     mh,

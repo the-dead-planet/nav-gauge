@@ -3,6 +3,7 @@ describe('Appearance state priority', () => {
         for (const stylesheet of [
             'gizmos/button/button.module.css',
             'hud/hexagon/hexagon.module.css',
+            'hud/surface.module.css',
             'forms/toggle-switch/toggle-switch.module.css',
         ]) {
             cy.readFile<string>(`../ui/web/src/${stylesheet}`).then((css) => {
@@ -30,9 +31,16 @@ describe('Appearance state priority', () => {
             document.documentElement.style.setProperty('--appearance-inset-active-pressed-inner-start', 'rgb(30, 0, 0)');
             document.body.innerHTML = `
                 <button id="button" class="button">Button</button>
-                <section id="hexagon" class="hexagon interactive depth-inset" tabindex="0">
-                    <svg><path class="polygon-base" /><path class="polygon-inset-shadow-edges" /></svg>
+                <section id="hexagon" class="surface hexagon depth-inset" data-interactive="true" tabindex="0">
+                    <svg class="drawing"><path class="paint polygon-base" /><path class="inset-shadow" /></svg>
                     <span class="content">Hexagon</span>
+                </section>
+                <section id="panel" class="surface rectangle" data-interactive="true" tabindex="0">Panel</section>
+                <section id="bevel" class="surface" data-interactive="true" tabindex="0">
+                    <svg class="drawing"><path class="paint" /></svg><span class="content">Bevel</span>
+                </section>
+                <section id="notched" class="surface" data-interactive="true" tabindex="0">
+                    <svg class="drawing"><path class="paint" /></svg><span class="content">Notched</span>
                 </section>
                 <label id="toggle" class="toggle-switch" tabindex="0">
                     <span class="track"></span><span class="label">Toggle</span>
@@ -54,6 +62,24 @@ describe('Appearance state priority', () => {
                 glyphs: '#hexagon .content',
             },
             {
+                root: '#panel',
+                surface: '#panel',
+                surfaceProperty: 'background-color',
+                glyphs: '#panel',
+            },
+            {
+                root: '#bevel',
+                surface: '#bevel .paint',
+                surfaceProperty: 'fill',
+                glyphs: '#bevel .content',
+            },
+            {
+                root: '#notched',
+                surface: '#notched .paint',
+                surfaceProperty: 'fill',
+                glyphs: '#notched .content',
+            },
+            {
                 root: '#toggle',
                 surface: '#toggle .track',
                 surfaceProperty: 'background-color',
@@ -65,14 +91,26 @@ describe('Appearance state priority', () => {
             cy.get(control.surface).should('have.css', control.surfaceProperty, 'rgb(20, 0, 0)');
             cy.get(control.glyphs).should('have.css', 'color', 'rgb(20, 0, 0)');
 
-            cy.get(control.root).invoke('addClass', 'highlighted');
+            const isHud = control.root !== '#button' && control.root !== '#toggle';
+            if (isHud) {
+                cy.get(control.root).invoke('attr', 'data-pressed', 'true');
+                cy.get(control.surface).should('have.css', control.surfaceProperty, 'rgb(30, 0, 0)');
+                cy.get(control.root).invoke('removeAttr', 'data-pressed');
+                cy.get(control.root).invoke('attr', 'data-highlighted', 'true');
+            } else {
+                cy.get(control.root).invoke('addClass', 'highlighted');
+            }
             cy.get(control.surface).should('have.css', control.surfaceProperty, 'rgb(30, 0, 0)');
             cy.get(control.glyphs).should('have.css', 'color', 'rgb(30, 0, 0)');
             if (control.root === '#hexagon') {
-                cy.get('#hexagon .polygon-inset-shadow-edges').should('have.css', 'stroke', 'rgb(30, 0, 0)');
+                cy.get('#hexagon .inset-shadow').should('have.css', 'stroke', 'rgb(30, 0, 0)');
             }
 
-            cy.get(control.root).invoke('addClass', 'disabled');
+            if (isHud) {
+                cy.get(control.root).invoke('attr', 'data-disabled', 'true');
+            } else {
+                cy.get(control.root).invoke('addClass', 'disabled');
+            }
             cy.get(control.surface).should('have.css', control.surfaceProperty, 'rgb(40, 0, 0)');
             cy.get(control.glyphs).should('have.css', 'color', 'rgb(40, 0, 0)');
             cy.get(control.root).blur();

@@ -1,11 +1,11 @@
 import { StoryControl, StoryControls } from "../../storybook/model";
-import { appearanceColorOptions } from "../../design-system/tinkers";
+import { appearanceColorOptions, DEFAULT_COLOR } from "../../design-system/tinkers";
 import { Theme } from "../../design-system/theme/theme";
 import { DividerProps } from "./model";
 
 export const dividerStoryArgs: DividerProps = {
     orientation: "horizontal",
-    color: "neutral",
+    color: DEFAULT_COLOR,
 };
 
 const marginControl: StoryControl = {

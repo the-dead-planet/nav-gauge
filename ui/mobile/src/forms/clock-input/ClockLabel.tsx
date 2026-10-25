@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { View } from "react-native";
-import { ColorShade, ColorVariant, FontType } from "@ui";
+import { ColorShade, ColorVariant, DEFAULT_COLOR, FontType } from "@ui";
 import { Text } from "../../design-system/typography";
 
 interface Props {
@@ -17,7 +17,7 @@ export const ClockLabel: FC<Props> = ({
     value,
     isLight,
     showValue = true,
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     glyphsShade,
 }) => {
     if (!label) {

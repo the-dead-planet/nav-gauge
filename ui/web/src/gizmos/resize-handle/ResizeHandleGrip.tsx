@@ -1,11 +1,11 @@
 import { FC } from "react";
-import { getResizeHandleGripPoints, ResizeHandleGripProps, useTheme } from "@ui";
+import { DEFAULT_COLOR, getResizeHandleGripPoints, ResizeHandleGripProps, useTheme } from "@ui";
 import styles from './resize-handle.module.css';
 
 export const ResizeHandleGrip: FC<ResizeHandleGripProps> = ({
     direction = 'horizontal',
     side,
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     position,
 }) => {
     const theme = useTheme();

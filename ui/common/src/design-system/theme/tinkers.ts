@@ -1,5 +1,5 @@
 import type { ColorShade, SpacingVariant } from '../model';
-import type { Breakpoint, ElevationLevel, ThemeElevation, ThemeLayer, ThemeLayerPolicy, ThemeMode, ThemeSizes } from './model';
+import type { Breakpoint, ElevationLevel, ThemeElevation, ElevationLayer, ThemeLayerPolicy, ThemeMode, ThemeSizes } from './model';
 
 export const allColorShades: ColorShade[] = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
 
@@ -63,7 +63,7 @@ export const themeSpacing: Record<SpacingVariant, string> = {
     xl: '32px',
 };
 
-export const themeLayers: Record<ThemeLayer, ThemeLayerPolicy> = {
+export const themeLayers: Record<ElevationLayer, ThemeLayerPolicy> = {
     'hud-connector': {
         zIndex: 2,
         elevation: 'none',

@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Linking, Pressable, StyleSheet } from "react-native";
-import { useTheme } from '@ui';
+import { DEFAULT_COLOR, useTheme } from '@ui';
 import { Text, TextProps } from "./Text";
 import { useLinkInteraction } from './useLinkInteraction';
 
@@ -22,7 +22,7 @@ export interface LinkTextProps extends Omit<TextProps, 'onPress' | 'appearanceSt
 export const LinkText: FC<LinkTextProps> = ({
     href,
     children,
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     highlightColor = color,
     disabled,
     style,

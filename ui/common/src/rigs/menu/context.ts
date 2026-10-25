@@ -1,5 +1,6 @@
 import { createContext, RefObject, useContext } from "react";
 import { ColorVariant } from "../../design-system/model";
+import { DEFAULT_COLOR } from "../../design-system/tinkers";
 
 export interface MenuContextValue {
     color: ColorVariant;
@@ -8,7 +9,7 @@ export interface MenuContextValue {
 }
 
 export const MenuContext = createContext<MenuContextValue>({
-    color: 'neutral',
+    color: DEFAULT_COLOR,
     triggerRef: undefined,
     onClose: () => { },
 });

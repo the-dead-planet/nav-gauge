@@ -4,7 +4,7 @@ import { AppearancePropsBase, ActiveGlow, SizeVariant, FillVariant } from "../..
 export interface BevelPanelProps extends AppearancePropsBase<FillVariant> {
     interactive?: boolean;
     activeGlow?: ActiveGlow;
-    /** Selects a predefined bevel depth. Does not add content padding. Defaults to `lg`. */
+    /** Selects a predefined bevel depth. Does not add content padding. Defaults to `sm`. */
     size?: SizeVariant;
     children?: ReactNode;
 }

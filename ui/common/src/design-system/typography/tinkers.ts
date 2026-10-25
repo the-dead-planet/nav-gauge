@@ -1,7 +1,7 @@
 import { FontFamilyName, FontType, FontWeight, NumericFontWeight, TextUsage, TypographyProps, TypographyStoryProps } from "./model";
 import { SizeVariant } from "../model";
 import { allColorShades } from '../theme/tinkers';
-import { appearanceColorOptions } from '../tinkers';
+import { appearanceColorOptions, DEFAULT_COLOR } from '../tinkers';
 import { StoryControls } from '../../storybook/model';
 
 export const fontTypeToFamily: { [key in FontType]: FontFamilyName } = {
@@ -19,7 +19,7 @@ export const typographyFontWeights: NumericFontWeight[] = [100, 200, 300, 400, 5
 export const typographyStoryArgs: TypographyStoryProps = {
     children: 'The management of the dead planet wishes you a very fine day.',
     usage: 'body',
-    color: 'neutral',
+    color: DEFAULT_COLOR,
     fontType: FontType.Default,
     fontWeight: undefined,
     highlighted: false,

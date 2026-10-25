@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef } from "react";
 import { Animated, Pressable, StyleSheet, View, ViewStyle } from "react-native";
-import { controlTextSpecifications, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, SizeVariant, ToggleSwitchProps, useTheme } from "@ui";
+import { controlTextSpecifications, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, SizeVariant, ToggleSwitchProps, useTheme } from "@ui";
 import { Text } from "../../design-system/typography";
 import { Lamp } from "./Lamp";
 import { ThumbBody } from "./ThumbBody";
@@ -86,7 +86,7 @@ function buildVerticalPoints(width: number, height: number, clip: { pivotStart: 
 }
 
 export const ToggleSwitch: FC<ToggleSwitchProps> = ({
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
     highlightGlyphsShade,

@@ -1,6 +1,6 @@
 import { ChangeEvent, ComponentProps, FC, useId } from "react";
 import classNames from "classnames";
-import { CheckboxProps, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, useTheme } from "@ui";
+import { CheckboxProps, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, useTheme } from "@ui";
 import styles from './checkbox.module.css';
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 export const Checkbox: FC<Omit<ComponentProps<'label'>, 'onChange'> & CheckboxProps & Props> = ({
     id,
     labelledBy,
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
     highlightGlyphsShade,

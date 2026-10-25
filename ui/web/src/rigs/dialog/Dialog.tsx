@@ -1,7 +1,7 @@
 import { ComponentProps, FC, useState } from "react";
 import { createPortal } from "react-dom";
 import classNames from "classnames";
-import { DEFAULT_FILL_VARIANT, DialogPlacement, DialogProps, FontType, TransitionProps, useTheme } from "@ui";
+import { DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DialogPlacement, DialogProps, FontType, TransitionProps, useTheme } from "@ui";
 import { useSubjectState } from "@tinker-chest";
 import { Panel } from "../../hud";
 import { Button } from "../../gizmos/button";
@@ -11,7 +11,7 @@ import styles from './dialog.module.css';
 
 export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
     header,
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     variant = DEFAULT_FILL_VARIANT,
     placement = 'middle',
     closeText,
@@ -36,6 +36,7 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
             <Transition render={render} slide={slide[placement]} fade onUnmount={onClose}>
                 <div className={classNames(styles['container'], isWide ? styles[placement] : styles['full-width'], className)} {...props}>
                     <Panel
+                        elevationLayer="dialog"
                         variant={variant}
                         color={color}
                         className={classNames(styles['dialog'], styles[`color-${color}`])}

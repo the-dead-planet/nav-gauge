@@ -1,0 +1,337 @@
+:where(.surface) {
+    --appearance-border-width-scale: 1;
+    --appearance-default-glyphs-override: initial;
+    --appearance-hover-focus-glyphs-override: initial;
+    --appearance-active-pressed-glyphs-override: initial;
+    position: relative;
+    box-sizing: border-box;
+    color: var(
+        --appearance-default-glyphs-override,
+        var(--appearance-default-glyphs)
+    );
+    font-weight: var(--appearance-default-font-weight, inherit);
+}
+
+.rectangle {
+    background-color: var(--appearance-default-surface);
+    border: calc(
+            var(--appearance-default-border-width) *
+                var(--appearance-border-width-scale, 1)
+        )
+        solid var(--appearance-default-border);
+    backdrop-filter: blur(var(--appearance-backdrop-blur));
+}
+
+.drawing {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.surface > .drawing > .paint {
+    fill: var(--appearance-default-surface);
+    stroke: var(--appearance-default-border);
+    stroke-width: calc(
+        var(--appearance-default-border-width) *
+            var(--appearance-border-width-scale, 1)
+    );
+}
+
+.surface > .drawing > .edge {
+    fill: none;
+    stroke: var(--appearance-default-border);
+    stroke-width: var(--appearance-default-border-width);
+}
+
+.surface[data-interactive="true"]:not([data-disabled="true"]) {
+    cursor: pointer;
+}
+
+.surface:not([data-disabled="true"]):focus-visible {
+    outline: 2px solid var(--appearance-glow-color);
+    outline-offset: 3px;
+}
+
+.surface[data-interactive="true"]:not(
+        [data-disabled="true"],
+        [data-highlighted="true"],
+        [data-pressed="true"],
+        :active,
+        :has(:active)
+    ):is(:hover, :focus-visible, :has(:focus-visible)) {
+    color: var(
+        --appearance-hover-focus-glyphs-override,
+        var(--appearance-hover-focus-glyphs)
+    );
+    font-weight: var(--appearance-hover-focus-font-weight, inherit);
+}
+
+.rectangle[data-interactive="true"]:not(
+        [data-disabled="true"],
+        [data-highlighted="true"],
+        [data-pressed="true"],
+        :active,
+        :has(:active)
+    ):is(:hover, :focus-visible, :has(:focus-visible)) {
+    background-color: var(--appearance-hover-focus-surface);
+    border-color: var(--appearance-hover-focus-border);
+    border-width: calc(
+        var(--appearance-hover-focus-border-width) *
+            var(--appearance-border-width-scale, 1)
+    );
+}
+
+.surface[data-interactive="true"]:not(
+        [data-disabled="true"],
+        [data-highlighted="true"],
+        [data-pressed="true"],
+        :active,
+        :has(:active)
+    ):is(:hover, :focus-visible, :has(:focus-visible))
+    > .drawing
+    > .paint {
+    fill: var(--appearance-hover-focus-surface);
+    stroke: var(--appearance-hover-focus-border);
+    stroke-width: calc(
+        var(--appearance-hover-focus-border-width) *
+            var(--appearance-border-width-scale, 1)
+    );
+}
+
+.surface[data-interactive="true"]:not(
+        [data-disabled="true"],
+        [data-highlighted="true"],
+        [data-pressed="true"],
+        :active,
+        :has(:active)
+    ):is(:hover, :focus-visible, :has(:focus-visible))
+    > .drawing
+    > .edge {
+    stroke: var(--appearance-hover-focus-border);
+    stroke-width: var(--appearance-hover-focus-border-width);
+}
+
+.surface:not([data-disabled="true"]):is(
+        [data-highlighted="true"],
+        [data-pressed="true"],
+        [data-interactive="true"]:active,
+        [data-interactive="true"]:has(:active)
+    ) {
+    color: var(
+        --appearance-active-pressed-glyphs-override,
+        var(--appearance-active-pressed-glyphs)
+    );
+    font-weight: var(--appearance-active-pressed-font-weight, inherit);
+}
+
+.rectangle:not([data-disabled="true"]):is(
+        [data-highlighted="true"],
+        [data-pressed="true"],
+        [data-interactive="true"]:active,
+        [data-interactive="true"]:has(:active)
+    ) {
+    background-color: var(--appearance-active-pressed-surface);
+    border-color: var(--appearance-active-pressed-border);
+    border-width: calc(
+        var(--appearance-active-pressed-border-width) *
+            var(--appearance-border-width-scale, 1)
+    );
+}
+
+.surface:not([data-disabled="true"]):is(
+        [data-highlighted="true"],
+        [data-pressed="true"],
+        [data-interactive="true"]:active,
+        [data-interactive="true"]:has(:active)
+    )
+    > .drawing
+    > .paint {
+    fill: var(--appearance-active-pressed-surface);
+    stroke: var(--appearance-active-pressed-border);
+    stroke-width: calc(
+        var(--appearance-active-pressed-border-width) *
+            var(--appearance-border-width-scale, 1)
+    );
+}
+
+.surface:not([data-disabled="true"]):is(
+        [data-highlighted="true"],
+        [data-pressed="true"],
+        [data-interactive="true"]:active,
+        [data-interactive="true"]:has(:active)
+    )
+    > .drawing
+    > .edge {
+    stroke: var(--appearance-active-pressed-border);
+    stroke-width: var(--appearance-active-pressed-border-width);
+}
+
+.surface[data-disabled="true"] {
+    color: var(--appearance-disabled-glyphs);
+    font-weight: var(--appearance-disabled-font-weight, inherit);
+}
+
+.rectangle[data-disabled="true"] {
+    background-color: var(--appearance-disabled-surface);
+    border-color: var(--appearance-disabled-border);
+    border-width: calc(
+        var(--appearance-disabled-border-width) *
+            var(--appearance-border-width-scale, 1)
+    );
+}
+
+.surface[data-disabled="true"] > .drawing > .paint {
+    fill: var(--appearance-disabled-surface);
+    stroke: var(--appearance-disabled-border);
+    stroke-width: calc(
+        var(--appearance-disabled-border-width) *
+            var(--appearance-border-width-scale, 1)
+    );
+}
+
+.surface[data-disabled="true"] > .drawing > .edge {
+    stroke: var(--appearance-disabled-border);
+    stroke-width: var(--appearance-disabled-border-width);
+}
+
+.glow {
+    fill: none;
+    stroke: var(--appearance-glow-color);
+    opacity: 0;
+    filter: drop-shadow(0 0 4px var(--appearance-glow-color));
+}
+
+.surface[data-glow]:not([data-glow="none"], [data-disabled="true"]):is(
+        [data-highlighted="true"],
+        [data-pressed="true"],
+        [data-interactive="true"]:is(
+            :hover,
+            :focus-visible,
+            :has(:focus-visible),
+            :active,
+            :has(:active)
+        )
+    )
+    > .drawing
+    > .glow {
+    opacity: 1;
+}
+
+.surface[data-glyphs-glow="true"][data-glow]:not(
+        [data-glow="none"],
+        [data-disabled="true"]
+    ):is(
+        [data-highlighted="true"],
+        [data-pressed="true"],
+        [data-interactive="true"]:is(
+            :hover,
+            :focus-visible,
+            :has(:focus-visible),
+            :active,
+            :has(:active)
+        )
+    ) {
+    text-shadow: 0 0 12px rgb(from var(--appearance-glow-color) r g b / 0.45);
+}
+
+.rectangle[data-glow]:not([data-glow="none"], [data-disabled="true"])::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.rectangle[data-glow]:not([data-glow="none"], [data-disabled="true"]):is(
+        [data-highlighted="true"],
+        [data-pressed="true"],
+        [data-interactive="true"]:is(
+            :hover,
+            :focus-visible,
+            :has(:focus-visible),
+            :active,
+            :has(:active)
+        )
+    )::after {
+    box-shadow:
+        0 0 4px rgb(from var(--appearance-glow-color) r g b / 0.3),
+        0 0 20px rgb(from var(--appearance-glow-color) r g b / 0.6);
+}
+
+.surface[data-glow="animate-borders-glow"] > .drawing > .glow {
+    stroke-dasharray: 18 8;
+    animation: border-glow 1.2s linear infinite;
+}
+
+.rectangle[data-glow="animate-borders-glow"]::after {
+    animation: halo-glow 1.2s ease-in-out infinite alternate;
+}
+
+.elevation-none {
+    box-shadow: none;
+}
+.elevation-raised {
+    box-shadow: var(--elevation-raised-down-shadow);
+}
+.elevation-floating {
+    box-shadow: var(--elevation-floating-down-shadow);
+}
+.elevation-overlay {
+    box-shadow: var(--elevation-overlay-down-shadow);
+}
+.raised > .drawing {
+    filter: var(--elevation-raised-down-filter);
+}
+
+.layer-hud-connector {
+    z-index: var(--layer-hud-connector-z-index);
+    box-shadow: var(--layer-hud-connector-down-shadow);
+}
+.layer-popup {
+    z-index: var(--layer-popup-z-index);
+    box-shadow: var(--layer-popup-down-shadow);
+}
+.layer-floating {
+    z-index: var(--layer-floating-z-index);
+    box-shadow: var(--layer-floating-down-shadow);
+}
+.layer-dropdown {
+    z-index: var(--layer-dropdown-z-index);
+    box-shadow: var(--layer-dropdown-down-shadow);
+}
+.layer-dialog {
+    z-index: var(--layer-dialog-z-index);
+    box-shadow: var(--layer-dialog-down-shadow);
+}
+.layer-tooltip {
+    z-index: var(--layer-tooltip-z-index);
+    box-shadow: var(--layer-tooltip-down-shadow);
+}
+.layer-tooltip-connector {
+    z-index: var(--layer-tooltip-connector-z-index);
+    box-shadow: var(--layer-tooltip-connector-down-shadow);
+}
+
+@keyframes border-glow {
+    to {
+        stroke-dashoffset: -26;
+    }
+}
+
+@keyframes halo-glow {
+    from {
+        opacity: 0.5;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .surface[data-glow="animate-borders-glow"] > .drawing > .glow,
+    .rectangle[data-glow="animate-borders-glow"]::after {
+        animation: none;
+    }
+}

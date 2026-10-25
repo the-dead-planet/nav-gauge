@@ -1,7 +1,7 @@
 import { ComponentProps, useEffect, useId, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { DropdownList } from './DropdownList';
-import { DEFAULT_FILL_VARIANT, DEFAULT_SIZE, DropdownProps, useTheme } from '@ui';
+import { DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, DropdownProps, useTheme } from '@ui';
 import { Icon } from '../../design-system/icons';
 import { Icons } from '@ui';
 import styles from './dropdown.module.css';
@@ -19,7 +19,7 @@ interface Props {
 }
 
 export function Dropdown<T = string>({
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor,
     highlightGlyphsShade,

@@ -12,6 +12,16 @@ export type HudConnectorAnchor =
     | 'left'
     | 'center';
 
+export interface HudPoint {
+    x: number;
+    y: number;
+}
+
+export interface HudRectangle extends HudPoint {
+    width: number;
+    height: number;
+}
+
 export interface HudConnectorProps {
     children: ReactNode;
     color?: ColorVariant;

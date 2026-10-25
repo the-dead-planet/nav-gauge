@@ -1,12 +1,12 @@
 import { FC } from "react";
-import { addDecimalStep, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, Icons, StepControlsProps } from "@ui";
+import { addDecimalStep, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, Icons, StepControlsProps } from "@ui";
 import { Button } from "../../gizmos/button";
 import { useStepRepeatButton } from './useStepRepeatButton';
 import styles from './step-controls.module.css';
 
 export const StepControls: FC<StepControlsProps> = ({
     children,
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     variant = DEFAULT_FILL_VARIANT,
     size = DEFAULT_SIZE,
     value,

@@ -5,7 +5,7 @@ import {
     type ViewInstance,
 } from "react-native";
 import { ClockSvg } from "./ClockSvg";
-import { ClockInputProps, useTheme, STEP_DEG, pointerCoords, CLOCK_INPUT_RANGE, DEFAULT_FILL_VARIANT, DEFAULT_SIZE } from "@ui";
+import { ClockInputProps, useTheme, STEP_DEG, pointerCoords, CLOCK_INPUT_RANGE, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE } from "@ui";
 import { ClockLabel } from "./ClockLabel";
 import { sizeMap, thumbRadii, centerDotRadii, strokeWidths } from "./constants";
 import { NumberInput } from "../number-input";
@@ -14,7 +14,7 @@ import { StepControls } from "../step-controls";
 const controlHeights = { xs: 18, sm: 24, md: 32, lg: 40 } as const;
 
 export const ClockInput = forwardRef<ViewInstance, ClockInputProps & { style?: ViewStyle }>(({
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor,
     highlightGlyphsShade,
