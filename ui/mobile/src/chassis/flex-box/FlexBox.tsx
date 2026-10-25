@@ -1,18 +1,28 @@
 import { FC } from "react";
-import { View, StyleProp, ViewStyle, type ViewInstance } from "react-native";
-import { FlexBoxProps, SpacingVariant } from "@ui";
+import {
+    View,
+    StyleSheet,
+    StyleProp,
+    ViewStyle,
+    type ViewInstance,
+} from "react-native";
+import { FlexBoxProps, resolveLayoutSpacing } from "@ui";
 
-const spacingMap: Record<SpacingVariant, number> = {
-    xs: 5,
-    sm: 10,
-    md: 15,
-    lg: 20,
-    xl: 28,
-};
+const directionStyles = StyleSheet.create({
+    row: { flexDirection: "row" },
+    column: { flexDirection: "column" },
+    "row-reverse": { flexDirection: "row-reverse" },
+    "column-reverse": { flexDirection: "column-reverse" },
+});
 
-export const FlexBox: FC<FlexBoxProps & { ref?: React.Ref<ViewInstance>; style?: StyleProp<ViewStyle> }> = ({
+export const FlexBox: FC<
+    FlexBoxProps & {
+        ref?: React.Ref<ViewInstance>;
+        style?: StyleProp<ViewStyle>;
+    }
+> = ({
     ref,
-    direction,
+    direction = "row",
     justifyContent,
     alignItems,
     gap,
@@ -25,13 +35,13 @@ export const FlexBox: FC<FlexBoxProps & { ref?: React.Ref<ViewInstance>; style?:
         <View
             ref={ref}
             style={[
+                directionStyles[direction],
                 {
-                    flexDirection: direction,
                     justifyContent,
                     alignItems,
-                    gap: gap ? spacingMap[gap] : undefined,
-                    rowGap: rowGap ? spacingMap[rowGap] : undefined,
-                    columnGap: colGap ? spacingMap[colGap] : undefined,
+                    gap: resolveLayoutSpacing(gap),
+                    rowGap: resolveLayoutSpacing(rowGap),
+                    columnGap: resolveLayoutSpacing(colGap),
                 },
                 style,
             ]}

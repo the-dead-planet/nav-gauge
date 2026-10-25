@@ -1,14 +1,10 @@
 import { FlexBoxProps } from "@ui";
-import { ComponentProps, CSSProperties, FC } from "react";
+import { ComponentProps, FC } from "react";
 import classNames from "classnames";
 import styles from "./FlexBox.module.css";
+import layout from "../layout.module.css";
 
-interface Props {
-    className?: string;
-    style?: CSSProperties;
-}
-
-export const FlexBox: FC<FlexBoxProps & Props & ComponentProps<'div'>> = ({
+export const FlexBox: FC<FlexBoxProps & ComponentProps<"div">> = ({
     direction = "row",
     justifyContent,
     alignItems,
@@ -16,28 +12,22 @@ export const FlexBox: FC<FlexBoxProps & Props & ComponentProps<'div'>> = ({
     rowGap,
     colGap,
     className,
-    style,
     children,
     ...props
-}) => {
-    return (
-        <div
-            className={classNames(
-                styles["flex-box"],
-                styles[`direction-${direction}`],
-                {
-                    [styles[`justify-${justifyContent}`]]: !!justifyContent,
-                    [styles[`align-${alignItems}`]]: !!alignItems,
-                    [styles[`gap-${gap}`]]: !!gap,
-                    [styles[`row-gap-${rowGap}`]]: !!rowGap,
-                    [styles[`col-gap-${colGap}`]]: !!colGap,
-                },
-                className,
-            )}
-            style={style}
-            {...props}
-        >
-            {children}
-        </div >
-    );
-};
+}) => (
+    <div
+        {...props}
+        className={classNames(
+            styles["flex-box"],
+            styles[`direction-${direction}`],
+            justifyContent && layout[`justify-${justifyContent}`],
+            alignItems && layout[`align-${alignItems}`],
+            gap && layout[`gap-${gap}`],
+            rowGap && layout[`row-gap-${rowGap}`],
+            colGap && layout[`col-gap-${colGap}`],
+            className,
+        )}
+    >
+        {children}
+    </div>
+);

@@ -1,72 +1,71 @@
-import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { FlexBox } from './FlexBox';
-import { FlexBoxProps, SpacingVariant } from '@ui';
+import type { Meta, StoryObj } from "storybook-react-rsbuild";
+import { makeLiveEditStory } from "storybook-addon-code-editor";
+import {
+    flexBoxGalleryCases,
+    flexBoxStoryArgs,
+    flexBoxStoryControls,
+} from "@ui";
+import { FlexBox } from "./FlexBox";
+import { Text } from "../../design-system/typography";
+import styles from "../layout.stories.module.css";
 
-const meta = {
-    title: 'Chassis/FlexBox',
-} satisfies Meta;
+const meta: Meta<typeof FlexBox> = {
+    title: "Chassis/FlexBox",
+    component: FlexBox,
+    args: flexBoxStoryArgs,
+    argTypes: flexBoxStoryControls,
+};
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof FlexBox>;
 
-const directions: Array<FlexBoxProps['direction']> = ['row', 'column', 'row-reverse', 'column-reverse'];
-const justifyOptions: Array<FlexBoxProps['justifyContent']> = ['flex-start', 'center', 'flex-end', 'space-between', 'space-around', 'space-evenly'];
-const alignOptions: Array<FlexBoxProps['alignItems']> = ['flex-start', 'center', 'flex-end', 'stretch', 'baseline'];
-const gapSizes: SpacingVariant[] = ['xs', 'sm', 'md', 'lg', 'xl'];
-
-export const All = {
-    render: () => (
-        <FlexBox direction="column" gap="xl">
-            {directions.map((direction) => (
-                <FlexBox key={direction} direction="column" gap="sm">
-                    <span style={{ fontWeight: 700 }}>direction: {direction}</span>
-                    <FlexBox direction={direction} gap="sm">
-                        <span style={{ padding: '4px 12px', border: '1px solid var(--color-neutral-500)' }}>1</span>
-                        <span style={{ padding: '4px 12px', border: '1px solid var(--color-neutral-500)' }}>2</span>
-                        <span style={{ padding: '4px 12px', border: '1px solid var(--color-neutral-500)' }}>3</span>
-                    </FlexBox>
-                </FlexBox>
-            ))}
-            <span style={{ fontWeight: 700, marginTop: 16 }}>justifyContent</span>
-            {justifyOptions.map((j) => (
-                <FlexBox key={j} direction="column" gap="xs">
-                    <span style={{ fontSize: 12 }}>{j}</span>
-                    <FlexBox justifyContent={j} gap="xs">
-                        <span style={{ padding: '4px 8px', border: '1px solid var(--color-neutral-500)' }}>A</span>
-                        <span style={{ padding: '4px 8px', border: '1px solid var(--color-neutral-500)' }}>B</span>
-                        <span style={{ padding: '4px 8px', border: '1px solid var(--color-neutral-500)' }}>C</span>
-                    </FlexBox>
-                </FlexBox>
-            ))}
-            <span style={{ fontWeight: 700, marginTop: 16 }}>alignItems</span>
-            {alignOptions.map((a) => (
-                <FlexBox key={a} direction="column" gap="xs">
-                    <span style={{ fontSize: 12 }}>{a}</span>
-                    <div style={{ height: 60 }}>
-                        <FlexBox alignItems={a} gap="xs">
-                            <span style={{ padding: '4px 8px', border: '1px solid var(--color-neutral-500)' }}>S</span>
-                            <span style={{ padding: '12px 8px', border: '1px solid var(--color-neutral-500)' }}>M</span>
-                            <span style={{ padding: '24px 8px', border: '1px solid var(--color-neutral-500)' }}>L</span>
-                        </FlexBox>
-                    </div>
-                </FlexBox>
-            ))}
-            <span style={{ fontWeight: 700, marginTop: 16 }}>gap</span>
-            <FlexBox direction="column" gap="md">
-                {gapSizes.map((size) => (
-                    <FlexBox key={size} gap={size}>
-                        <span style={{ padding: '4px 8px', border: '1px solid var(--color-neutral-500)' }}>{`gap ${size}`}</span>
-                        <span style={{ padding: '4px 8px', border: '1px solid var(--color-neutral-500)' }}>{`gap ${size}`}</span>
-                    </FlexBox>
-                ))}
-            </FlexBox>
-            <span style={{ fontWeight: 700, marginTop: 16 }}>rowGap / colGap</span>
-            <FlexBox colGap="lg" rowGap="md">
-                <span style={{ padding: '4px 8px', border: '1px solid var(--color-neutral-500)' }}>col lg row md</span>
-                <span style={{ padding: '4px 8px', border: '1px solid var(--color-neutral-500)' }}>col lg row md</span>
-                <span style={{ padding: '4px 8px', border: '1px solid var(--color-neutral-500)' }}>col lg row md</span>
-                <span style={{ padding: '4px 8px', border: '1px solid var(--color-neutral-500)' }}>col lg row md</span>
-            </FlexBox>
+export const Playground: Story = {
+    name: "Playground with Live code editor",
+    render: (args) => (
+        <FlexBox {...args} className={styles.preview}>
+            <Text p="xs">[1]</Text>
+            <Text p="sm">[Two]</Text>
+            <Text p="xs">[3]</Text>
         </FlexBox>
     ),
-} satisfies Story;
+};
+
+makeLiveEditStory(Playground, {
+    availableImports: {
+        "@web-ui": {
+            FlexBox,
+            Text,
+        },
+    },
+    code: `import { FlexBox, Text } from '@web-ui';
+
+export default () => (
+    <FlexBox gap="sm">
+        <Text>[1]</Text>
+        <Text>[Two]</Text>
+        <Text>[3]</Text>
+    </FlexBox>
+);`,
+});
+
+export const Gallery: Story = {
+    parameters: {
+        controls: {
+            exclude: Object.keys(flexBoxStoryControls),
+        },
+    },
+    render: () => (
+        <div className={styles.gallery}>
+            {flexBoxGalleryCases.map(({ label, props }) => (
+                <section key={label}>
+                    <Text usage="header">{label}</Text>
+                    <FlexBox {...props} className={styles.preview}>
+                        <Text p="xs">[1]</Text>
+                        <Text p="sm">[Two]</Text>
+                        <Text p="xs">[3]</Text>
+                    </FlexBox>
+                </section>
+            ))}
+        </div>
+    ),
+};

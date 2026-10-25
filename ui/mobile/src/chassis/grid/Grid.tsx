@@ -1,17 +1,28 @@
-import { FC, Children, useState } from "react";
-import { Dimensions, StyleProp, View, ViewStyle } from "react-native";
-import { GridProps, SpacingVariant } from "@ui";
+import { FC } from "react";
+import {
+    ScrollView,
+    StyleProp,
+    StyleSheet,
+    View,
+    ViewStyle,
+} from "react-native";
+import { GridProps } from "@ui";
+import { FlexBox } from "../flex-box/FlexBox";
+import { useGridColumns } from "./useGridColumns";
 
-const spacingMap: Record<SpacingVariant, number> = {
-    xs: 5,
-    sm: 10,
-    md: 15,
-    lg: 20,
-    xl: 28,
-};
+const styles = StyleSheet.create({
+    equalCell: {
+        flex: 1,
+        minWidth: 0,
+    },
+    intrinsicCell: {
+        flexGrow: 0,
+        flexShrink: 0,
+    },
+});
 
 export const Grid: FC<GridProps & { style?: StyleProp<ViewStyle> }> = ({
-    cols,
+    cols = "equal-1",
     justifyContent,
     alignItems,
     gap,
@@ -20,45 +31,52 @@ export const Grid: FC<GridProps & { style?: StyleProp<ViewStyle> }> = ({
     style,
     children,
 }) => {
-    const [width, setWidth] = useState(Dimensions.get('window').width);
-    const colCount = cols?.startsWith('equal-')
-        ? parseInt(cols.split('-')[1], 10)
-        : null;
+    const { rows, columnWidths, measureCell, equalColumns } = useGridColumns(
+        children,
+        cols,
+    );
+    const layoutStyle = StyleSheet.flatten(style);
 
     return (
-        <View
-            style={[
-                {
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                    justifyContent,
-                    alignItems,
-                    gap: gap ? spacingMap[gap] : undefined,
-                    rowGap: rowGap ? spacingMap[rowGap] : undefined,
-                    columnGap: colGap ? spacingMap[colGap] : undefined,
-                },
-                style,
-            ]}
-            onLayout={(e) => {
-                if (!colCount) {
-                    return;
-                }
-                setWidth(e.nativeEvent.layout.width);
-            }}
-        >
-            {colCount ? Children.toArray(children).map((child, i) => (
-                <View
-                    key={i}
+        <FlexBox direction="column" gap={rowGap ?? gap} style={style}>
+            {rows.map((row) => (
+                <FlexBox
+                    key={row.key}
+                    gap={colGap ?? gap}
+                    justifyContent={justifyContent}
+                    alignItems={alignItems}
                     style={{
-                        width: Math.round(
-                            width / colCount -
-                            ((colGap ? spacingMap[colGap] : gap ? spacingMap[gap] : 0) * (colCount - 1))
-                        ),
+                        columnGap: layoutStyle?.columnGap ?? layoutStyle?.gap,
                     }}
                 >
-                    {child}
-                </View>
-            )) : children}
-        </View>
+                    {row.cells.map((cell, column) => (
+                        <View
+                            key={cell.key}
+                            style={
+                                equalColumns
+                                    ? styles.equalCell
+                                    : { width: columnWidths[column] }
+                            }
+                        >
+                            {equalColumns ? (
+                                cell.child
+                            ) : (
+                                <ScrollView
+                                    horizontal
+                                    scrollEnabled={false}
+                                    showsHorizontalScrollIndicator={false}
+                                    style={styles.intrinsicCell}
+                                    onContentSizeChange={(width) =>
+                                        measureCell(cell.key, width)
+                                    }
+                                >
+                                    {cell.child}
+                                </ScrollView>
+                            )}
+                        </View>
+                    ))}
+                </FlexBox>
+            ))}
+        </FlexBox>
     );
 };
