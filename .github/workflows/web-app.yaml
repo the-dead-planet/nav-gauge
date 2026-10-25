@@ -79,6 +79,7 @@ jobs:
         with:
           name: cypress-screenshots
           path: app-web/cypress/screenshots/
+          retention-days: 7
 
       - name: Print artifact URL
         if: always()
@@ -246,6 +247,7 @@ jobs:
         with:
           name: cypress-screenshots-prod
           path: app-web/cypress/screenshots/
+          retention-days: 7
 
       - name: Print artifact URL
         if: always()
