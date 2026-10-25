@@ -12,7 +12,7 @@ inputs:
     default: http://localhost:3000
   browser:
     description: Browser used to run Cypress tests.
-    default: electron
+    default: chrome
 runs:
   using: composite
   steps:
