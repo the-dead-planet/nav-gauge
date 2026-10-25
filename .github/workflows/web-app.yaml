@@ -67,37 +67,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - run: corepack enable
-
-      - name: Setup Node
-        uses: actions/setup-node@v7
-        with:
-          node-version: 24
-          cache: yarn
-
-      - name: Restore Cypress binary cache
-        id: cache-cypress
-        uses: actions/cache@v6
-        with:
-          path: ~/.cache/Cypress
-          key: cypress-binary-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-
-      - name: Install dependencies
-        run: yarn install --immutable
-
-      - name: Install Cypress binary
-        if: steps.cache-cypress.outputs.cache-hit != 'true'
-        working-directory: app-web
-        run: npx --yes cypress install
-
       - name: Cypress E2E tests
-        uses: cypress-io/github-action@v7
+        uses: ./.github/actions/cypress-e2e
         with:
-          working-directory: app-web
-          install: false
           build: yarn build
           start: yarn rspack preview dist --port 3000
-          wait-on: 'http://localhost:3000'
 
       - name: Upload Cypress screenshots
         if: always()
@@ -260,41 +234,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Setup Node
-        uses: actions/setup-node@v7
-        with:
-          node-version: 24
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Setup Node
-        uses: actions/setup-node@v7
-        with:
-          node-version: 24
-
-      - name: Install dependencies
-        run: yarn install --immutable
-
-      - name: Restore Cypress binary cache
-        id: cache-cypress
-        uses: actions/cache@v6
-        with:
-          path: ~/.cache/Cypress
-          key: cypress-binary-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-
-      - name: Install Cypress binary
-        if: steps.cache-cypress.outputs.cache-hit != 'true'
-        working-directory: app-web
-        run: npx --yes cypress install
-
       - name: Cypress E2E tests (production)
-        uses: cypress-io/github-action@v7
+        uses: ./.github/actions/cypress-e2e
         with:
-          working-directory: app-web
           browser: chrome
-          build: yarn build
-          config: baseUrl=https://gauge.spookydoodle.com
+          base-url: https://gauge.spookydoodle.com
 
       - name: Upload Cypress screenshots
         if: always()
