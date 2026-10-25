@@ -1,23 +1,45 @@
-import { FC, useRef } from 'react';
-import { HostInstance, StyleSheet, View } from 'react-native';
-import { HudDecoration } from '../decoration';
-import { Panel } from '../panel';
-import { Text } from '../../design-system/typography';
-import { HudConnector } from './HudConnector';
+import { ScrollView, StyleSheet, View } from "react-native";
+import {
+    appearanceColorOptions,
+    HudConnectorProps,
+    hudConnectorAnchors,
+    hudConnectorStoryArgs,
+    hudConnectorStoryControls,
+} from "@ui";
+import { Text } from "../../design-system/typography";
+import { MobileStoryDefinition } from "../../storybook/model";
+import { HudConnectorExample } from "./HudConnectorExample";
 
 const styles = StyleSheet.create({
-    row: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 32, width: '100%' },
+    gallery: { padding: 16, gap: 24 },
 });
 
-export const Anchors: FC = () => {
-    const fromRef = useRef<HostInstance>(null);
-    const toRef = useRef<HostInstance>(null);
-    return (
-        <HudConnector fromRef={fromRef} toRef={toRef} fromAnchor="right" toAnchor="left" color="secondary" activeGlow="glow">
-            <View style={styles.row}>
-                <View ref={fromRef}><HudDecoration><Panel variant="fill-inverse"><Text>Navigation</Text></Panel></HudDecoration></View>
-                <View ref={toRef}><HudDecoration corners={['top-right', 'bottom-left']}><Panel variant="fill-inverse"><Text>Telemetry</Text></Panel></HudDecoration></View>
-            </View>
-        </HudConnector>
-    );
+const story: MobileStoryDefinition<HudConnectorProps> = {
+    args: hudConnectorStoryArgs,
+    controls: hudConnectorStoryControls,
+    galleryEditableControls: ["activeGlow"],
+    renderPlayground: (args) => <HudConnectorExample {...args} />,
+    renderGallery: (args) => (
+        <ScrollView contentContainerStyle={styles.gallery}>
+            {appearanceColorOptions.map((color) => (
+                <View key={color}>
+                    <Text usage="header">{color}</Text>
+                    {hudConnectorAnchors.map((fromAnchor, index) => (
+                        <HudConnectorExample
+                            key={fromAnchor}
+                            {...args}
+                            color={color}
+                            fromAnchor={fromAnchor}
+                            toAnchor={
+                                hudConnectorAnchors[
+                                    (index + 4) % hudConnectorAnchors.length
+                                ]
+                            }
+                        />
+                    ))}
+                </View>
+            ))}
+        </ScrollView>
+    ),
 };
+export default story;

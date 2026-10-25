@@ -220,7 +220,7 @@ export interface ResolvedThemeElevation {
     depth: number;
 }
 
-export type ThemeLayer =
+export type ElevationLayer =
     | 'hud-connector'
     | 'popup'
     | 'floating'

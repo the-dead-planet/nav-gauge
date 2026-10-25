@@ -7,6 +7,7 @@ import {
     themeSelectColorBoxSizes,
     themeNameOptions,
     themeSpecifications,
+    DEFAULT_COLOR,
 } from '@ui';
 import { Dropdown } from '../../forms/dropdown';
 import { ThemeColors } from './ThemeColors';
@@ -21,7 +22,7 @@ export const ThemeSelect: FC<Props> = ({
     mode,
     value,
     onChange,
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     labelledBy,

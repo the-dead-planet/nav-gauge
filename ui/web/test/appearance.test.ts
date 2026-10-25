@@ -3,6 +3,7 @@ import { createRequire } from 'node:module';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import {
+    appearanceColorOptions,
     Orientation,
     Theme,
     ThemeContext,
@@ -26,8 +27,14 @@ require.extensions['.css'] = (module) => {
 };
 const { Hexagon } =
     require('../src/hud/hexagon/Hexagon') as typeof import('../src/hud/hexagon/Hexagon');
+const { Panel } = require('../src/hud/panel/Panel') as typeof import('../src/hud/panel/Panel');
+const { BevelPanel } = require('../src/hud/bevel-panel/BevelPanel') as typeof import('../src/hud/bevel-panel/BevelPanel');
+const { NotchedPanel } = require('../src/hud/notched-panel/NotchedPanel') as typeof import('../src/hud/notched-panel/NotchedPanel');
+const { HudDecoration } = require('../src/hud/decoration/HudDecoration') as typeof import('../src/hud/decoration/HudDecoration');
 const { ThemeSelect } =
     require('../src/assemblies/theme-select/ThemeSelect') as typeof import('../src/assemblies/theme-select/ThemeSelect');
+const { Divider } =
+    require('../src/chassis/divider/Divider') as typeof import('../src/chassis/divider/Divider');
 if (previousCssLoader) {
     require.extensions['.css'] = previousCssLoader;
 } else {
@@ -46,6 +53,62 @@ const media = {
 };
 
 describe('Composed appearance rendering', () => {
+    it('resets HUD appearance for every color and removes disabled keyboard activation', () => {
+        for (const color of appearanceColorOptions) {
+            for (const Surface of [Panel, BevelPanel, NotchedPanel]) {
+                const markup = renderToStaticMarkup(createElement(Surface, {
+                    color,
+                    highlightColor: 'hazard',
+                    onClick: () => undefined,
+                    highlighted: true,
+                    disabled: true,
+                    children: 'Telemetry',
+                }));
+                expect(markup).to.include('data-appearance-variant="fill-inverse"');
+                expect(markup).to.include(`data-appearance-color="${color}"`);
+                expect(markup).to.include('data-appearance-highlight="hazard"');
+                expect(markup).to.include('role="button"');
+                expect(markup).to.include('tabindex="-1"');
+                expect(markup).to.include('aria-disabled="true"');
+                expect(markup).to.include('data-disabled="true"');
+                expect(markup).not.to.include('color-hazard');
+            }
+            const decoration = renderToStaticMarkup(createElement(HudDecoration, { color, children: 'Telemetry' }));
+            expect(decoration).to.include(`data-appearance-color="${color}"`);
+            expect(decoration).to.include('aria-hidden="true"');
+        }
+    });
+
+    it('keeps the policy border optional and consumes one layer policy for stacked panels', () => {
+        const markup = renderToStaticMarkup(createElement(Panel, {
+            onClick: () => undefined,
+            elevationLayer: 'dialog',
+            borderWidth: 0,
+        }));
+        expect(markup).to.include('tabindex="0"');
+        expect(markup).to.include('layer-dialog');
+        expect(markup).not.to.include('elevation-none');
+        expect(markup).to.include('--appearance-border-width-scale:0');
+    });
+    it('keeps divider margins independent of stylesheet order and resets inherited appearance', () => {
+        for (const color of appearanceColorOptions) {
+            const markup = renderToStaticMarkup(createElement(Divider, {
+                orientation: 'vertical',
+                color,
+                m: 'xl',
+                mh: 'lg',
+                mv: 'md',
+                mt: 'xs',
+                ml: 'sm',
+            }));
+
+            expect(markup).to.include('aria-orientation="vertical"');
+            expect(markup).to.include('data-appearance-variant="default"');
+            expect(markup).to.include(`data-appearance-color="${color}"`);
+            expect(markup).to.include('class="divider vertical margin-top-xs margin-right-lg margin-bottom-md margin-left-sm"');
+        }
+    });
+
     it('paints the glow behind the hexagon surface and border without an opaque source stroke', () => {
         const theme = new Theme(
             themeSpecifications[ThemeName.Default].dark,
@@ -61,10 +124,10 @@ describe('Composed appearance rendering', () => {
                 }),
             }),
         );
-        const glowIndex = markup.indexOf('class="polygon-glow"');
+        const glowIndex = markup.indexOf('class="polygon-glow glow"');
         expect(glowIndex).to.be.greaterThan(-1);
         expect(glowIndex).to.be.lessThan(
-            markup.indexOf('class="polygon-base"'),
+            markup.indexOf('class="polygon-base paint"'),
         );
         expect(markup).not.to.include('<feMergeNode in="SourceGraphic"');
         theme.destroy();

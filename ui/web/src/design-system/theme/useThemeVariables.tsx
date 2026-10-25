@@ -3,6 +3,7 @@ import {
     allColorShades,
     appearanceColorOptions,
     ColorVariant,
+    DEFAULT_COLOR,
     elevationDirectionOptions,
     elevationLevelOptions,
     ElevationDirection,
@@ -97,7 +98,7 @@ const createAppearanceDeclarations = (policy: Theme['appearancePolicies']['defau
 const createAppearanceRules = (theme: Theme): string => [
     ...appearanceColorOptions.map((color) => createColorRule('color', color)),
     ...appearanceColorOptions.map((color) => createColorRule('highlight', color)),
-    `:root{${createColorDeclarations('color', 'neutral')};${createColorDeclarations('highlight', 'neutral')};${createAppearanceDeclarations(theme.appearancePolicies.default)}}`,
+    `:root{${createColorDeclarations('color', DEFAULT_COLOR)};${createColorDeclarations('highlight', DEFAULT_COLOR)};${createAppearanceDeclarations(theme.appearancePolicies.default)}}`,
     ...Object.entries(theme.appearancePolicies).map(([variant, policy]) =>
         `[data-appearance-variant="${variant}"]{${createAppearanceDeclarations(policy)}}`
     ),

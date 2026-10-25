@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { LayoutAnimation, LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import Svg, { Polygon } from 'react-native-svg';
-import { DEFAULT_FILL_VARIANT, DEFAULT_SIZE, getVisibleTabIndexes, TabstripProps, useTheme } from '@ui';
+import { DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, getVisibleTabIndexes, TabstripProps, useTheme } from '@ui';
 import { Button } from '../../gizmos/button';
 import { Menu, MenuItem } from '../menu';
 import { Text } from '../../design-system/typography';
@@ -26,7 +26,7 @@ export const Tabstrip: FC<TabstripProps> = ({
     value,
     onChange,
     size = DEFAULT_SIZE,
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
     highlightGlyphsShade,

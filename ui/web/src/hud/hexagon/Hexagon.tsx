@@ -1,28 +1,34 @@
 import { ComponentProps, CSSProperties, FC, useId } from "react";
-import { DEFAULT_SIZE, DEFAULT_SURFACE_VARIANT, HexagonProps, useTheme } from "@ui";
+import {
+    DEFAULT_SIZE,
+    DEFAULT_COLOR,
+    DEFAULT_SURFACE_VARIANT,
+    hexagonGeometry,
+    HexagonProps,
+    useTheme,
+} from "@ui";
 import classNames from "classnames";
 import styles from "./hexagon.module.css";
+import surface from "../surface.module.css";
+import { useHudInteraction } from "../useHudInteraction";
 
-interface Props {
-    className?: string;
-    style?: CSSProperties;
-}
-
-const POINTY_TOP = "50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25";
-const FLAT_TOP = "100,50 75,93.3 25,93.3 0,50 25,6.7 75,6.7";
-
-export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
+export const Hexagon: FC<HexagonProps & ComponentProps<"div">> = ({
     shape = "pointy-top",
-    strokeWidth = 2,
+    strokeWidth,
     interactive = false,
     activeGlow = "none",
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     highlightColor,
     size = DEFAULT_SIZE,
     variant = DEFAULT_SURFACE_VARIANT,
     highlighted = false,
     disabled = false,
     onClick,
+    onKeyDown,
+    onKeyUp,
+    onBlur,
+    role,
+    tabIndex,
     className,
     style,
     children,
@@ -32,51 +38,56 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
     const effects = theme.resolveAppearance(
         variant,
         color,
-        highlightColor || color,
-        'default',
+        highlightColor ?? color,
     ).effects;
-    const isPointy = shape === "pointy-top";
-    const points = isPointy ? POINTY_TOP : FLAT_TOP;
-    const viewBox = isPointy ? "6.7 0 86.6 100" : "0 6.7 100 86.6";
-    const filterId = useId();
+    const interaction = useHudInteraction({
+        disabled,
+        onClick,
+        onKeyDown,
+        onKeyUp,
+        onBlur,
+        role,
+        tabIndex,
+    });
+    const { points, viewBox, maskPoints, shadowPoints, highlightPoints } =
+        hexagonGeometry[shape];
     const insetRecessGradientId = useId();
     const insetClipPathId = useId();
-    const insetShadowPoints = isPointy
-        ? '93.3,25 50,0 6.7,25 6.7,75'
-        : '75,6.7 25,6.7 0,50 25,93.3';
-    const insetHighlightPoints = isPointy
-        ? '93.3,25 93.3,75 50,100 6.7,75'
-        : '75,6.7 100,50 75,93.3 25,93.3';
-    const maskPoints = isPointy
-        ? '50,0 100,25 100,75 50,100 0,75 0,25'
-        : '100,50 75,100 25,100 0,50 25,0 75,0';
     const backdropMask = `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="${maskPoints}" fill="white"/></svg>`)}")`;
 
     return (
         <div
-            onClick={disabled ? undefined : onClick}
+            {...props}
+            {...interaction}
             data-appearance-variant={variant}
             data-appearance-color={color}
-            data-appearance-highlight={highlightColor || color}
-            aria-disabled={!disabled || !(interactive || onClick) ? undefined : true}
+            data-appearance-highlight={highlightColor ?? color}
+            data-interactive={interactive || !!onClick || undefined}
+            data-highlighted={highlighted || undefined}
+            data-disabled={disabled || undefined}
+            data-glow={activeGlow}
+            data-glyphs-glow={effects.glyphsGlow || undefined}
             className={classNames(
+                surface.surface,
                 styles.hexagon,
                 styles[shape],
-                size && styles[`size-${size}`],
-                {
-                    [styles['highlighted']]: highlighted && !disabled,
-                    [styles['disabled']]: disabled,
-                    [styles['interactive']]: !disabled && (interactive || onClick),
-                    [styles[`glow-style-${activeGlow}`]]: !disabled && interactive,
-                    [styles['depth-inset']]: effects.depth === 'inset',
-                },
-                className
+                styles[`size-${size}`],
+                { [styles["depth-inset"]]: effects.depth === "inset" },
+                className,
             )}
-            style={{
-                ...style,
-                "--hex-filter": `url(#${filterId})`,
-            } as CSSProperties}
-            {...props}
+            style={
+                {
+                    ...style,
+                    ...(strokeWidth === undefined
+                        ? undefined
+                        : {
+                              "--appearance-border-width-scale": Math.max(
+                                  0,
+                                  strokeWidth,
+                              ),
+                          }),
+                } as CSSProperties
+            }
         >
             {effects.backdropBlur > 0 ? (
                 <div
@@ -84,95 +95,90 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
                     style={{
                         maskImage: backdropMask,
                         WebkitMaskImage: backdropMask,
-                        backdropFilter: `blur(${effects.backdropBlur}px)`,
                     }}
+                    aria-hidden="true"
                 />
             ) : null}
             <svg
                 viewBox={viewBox}
-                className={styles.svg}
+                className={surface.drawing}
+                aria-hidden="true"
             >
                 <defs>
                     <clipPath id={insetClipPathId}>
                         <polygon points={points} />
                     </clipPath>
                     <radialGradient id={insetRecessGradientId}>
-                        <stop offset="0" className={styles['inset-recess-center']} />
-                        <stop offset=".65" className={styles['inset-recess-center']} />
-                        <stop offset="1" className={styles['inset-recess-edge']} />
+                        <stop
+                            offset="0"
+                            className={styles["inset-recess-center"]}
+                        />
+                        <stop
+                            offset=".65"
+                            className={styles["inset-recess-center"]}
+                        />
+                        <stop
+                            offset="1"
+                            className={styles["inset-recess-edge"]}
+                        />
                     </radialGradient>
-                    <filter
-                        id={filterId}
-                        x="-50%"
-                        y="-50%"
-                        width="200%"
-                        height="200%"
-                    >
-                        <feGaussianBlur
-                            in="SourceGraphic"
-                            stdDeviation="2"
-                            result="blur1"
-                        />
-                        <feGaussianBlur
-                            in="SourceGraphic"
-                            stdDeviation="6"
-                            result="blur2"
-                        />
-                        <feMerge>
-                            <feMergeNode in="blur2" />
-                            <feMergeNode in="blur1" />
-                        </feMerge>
-                    </filter>
                 </defs>
                 <polygon
                     points={points}
-                    fill="none"
-                    strokeWidth={strokeWidth}
-                    className={styles['polygon-glow']}
+                    strokeWidth={strokeWidth ?? 1}
+                    className={classNames(styles["polygon-glow"], surface.glow)}
                 />
                 <polygon
                     points={points}
-                    fill="none"
-                    strokeWidth={strokeWidth}
-                    className={styles['polygon-base']}
+                    className={classNames(
+                        styles["polygon-base"],
+                        surface.paint,
+                    )}
                 />
-                <polygon
-                    points={points}
-                    fill={`url(#${insetRecessGradientId})`}
-                    className={styles['polygon-inset-recess']}
-                />
-                <polyline
-                    points={insetShadowPoints}
-                    fill="none"
-                    strokeWidth={strokeWidth * 10}
-                    clipPath={`url(#${insetClipPathId})`}
-                    className={`${styles['polygon-inset-shadow-edges']} ${styles['polygon-inset-edge-fade']}`}
-                />
-                <polyline
-                    points={insetHighlightPoints}
-                    fill="none"
-                    strokeWidth={strokeWidth * 10}
-                    clipPath={`url(#${insetClipPathId})`}
-                    className={`${styles['polygon-inset-highlight-edges']} ${styles['polygon-inset-edge-fade']}`}
-                />
-                <polyline
-                    points={insetShadowPoints}
-                    fill="none"
-                    strokeWidth={strokeWidth * 3}
-                    clipPath={`url(#${insetClipPathId})`}
-                    className={styles['polygon-inset-shadow-edges']}
-                />
-                <polyline
-                    points={insetHighlightPoints}
-                    fill="none"
-                    strokeWidth={strokeWidth * 3}
-                    clipPath={`url(#${insetClipPathId})`}
-                    className={styles['polygon-inset-highlight-edges']}
-                />
+                {effects.depth === "inset" ? (
+                    <>
+                        <polygon
+                            points={points}
+                            fill={`url(#${insetRecessGradientId})`}
+                        />
+                        <polyline
+                            points={shadowPoints}
+                            fill="none"
+                            strokeWidth={10}
+                            clipPath={`url(#${insetClipPathId})`}
+                            className={classNames(
+                                styles["inset-shadow"],
+                                styles.fade,
+                            )}
+                        />
+                        <polyline
+                            points={highlightPoints}
+                            fill="none"
+                            strokeWidth={10}
+                            clipPath={`url(#${insetClipPathId})`}
+                            className={classNames(
+                                styles["inset-highlight"],
+                                styles.fade,
+                            )}
+                        />
+                        <polyline
+                            points={shadowPoints}
+                            fill="none"
+                            strokeWidth={3}
+                            clipPath={`url(#${insetClipPathId})`}
+                            className={styles["inset-shadow"]}
+                        />
+                        <polyline
+                            points={highlightPoints}
+                            fill="none"
+                            strokeWidth={3}
+                            clipPath={`url(#${insetClipPathId})`}
+                            className={styles["inset-highlight"]}
+                        />
+                    </>
+                ) : null}
             </svg>
-            <div className={styles.content}>
-                {children}
-            </div>
+            <div className={styles.content}>{children}</div>
         </div>
     );
 };

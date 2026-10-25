@@ -1,81 +1,70 @@
-import { useState } from 'react';
-import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { ActiveGlow, HudDecorationCorner, TabstripOption } from '@ui';
-import { HudDecoration } from './HudDecoration';
-import { Panel } from '../panel';
-import { Tabstrip } from '../../rigs/tabstrip';
-import { colorOptions, sizeOptions } from '../../storybook/controls';
+import type { Meta, StoryObj } from "storybook-react-rsbuild";
+import { makeLiveEditStory } from "storybook-addon-code-editor";
+import {
+    appearanceColorOptions,
+    hudDecorationCornerSets,
+    hudDecorationStoryArgs,
+    hudDecorationStoryControls,
+    sizeOptions,
+} from "@ui";
+import { HudDecoration } from "./HudDecoration";
+import { VariantGallery } from "../../storybook/VariantGallery";
+import styles from "../hud.stories.module.css";
 
-const options: TabstripOption[] = [
-    { value: 'route', label: 'Route' },
-    { value: 'terrain', label: 'Terrain' },
-];
-
-const meta = { title: 'Hud/HudDecoration', component: HudDecoration } satisfies Meta<typeof HudDecoration>;
+const meta: Meta<typeof HudDecoration> = {
+    title: "Hud/HudDecoration",
+    component: HudDecoration,
+    args: hudDecorationStoryArgs,
+    argTypes: hudDecorationStoryControls,
+};
 export default meta;
 type Story = StoryObj<typeof HudDecoration>;
 
 export const Playground: Story = {
-    args: { color: 'secondary', size: 'md', activeGlow: 'glow', children: <Panel>Decorated panel</Panel> },
+    name: "Playground with Live code editor",
+    render: (args) => (
+        <div className={styles["ornament-sample"]}>
+            <HudDecoration {...args}>
+                <div className={styles.sample}>{args.children}</div>
+            </HudDecoration>
+        </div>
+    ),
 };
+makeLiveEditStory(Playground, {
+    availableImports: { "@web-ui": { HudDecoration } },
+    code: `import { HudDecoration } from '@web-ui';
 
-export const Brackets: Story = {
-    render: () => {
-        const [value, setValue] = useState('route');
-        return (
-            <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start' }}>
-                <HudDecoration color="secondary" size="md" activeGlow="glow">
-                    <Panel variant="fill-inverse">Decorated panel</Panel>
-                </HudDecoration>
-                <HudDecoration corners={['top-right', 'bottom-left']}>
-                    <div style={{ width: 220 }}>
-                        <Tabstrip options={options} value={value} onChange={setValue} highlightColor="primary" overflowAccessibilityLabel="More tabs">
-                            Active: {value}
-                        </Tabstrip>
-                    </div>
-                </HudDecoration>
-            </div>
-        );
-    },
-};
+export default () => <HudDecoration>Preview</HudDecoration>;`,
+});
 
 export const Gallery: Story = {
-    render: () => {
-        const corners: HudDecorationCorner[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
-        const sizes = sizeOptions;
-        const colors = colorOptions;
-        const activeGlows: ActiveGlow[] = ['none', 'glow', 'animate-borders-glow'];
-
-        return (
-            <div style={{ display: 'grid', gap: 24 }}>
-                <h2 style={{ margin: 0 }}>Bracket corners</h2>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 24 }}>
-                    {corners.map((corner) => (
-                        <div key={corner} style={{ display: 'grid', gap: 10 }}>
-                            <strong>{corner}</strong>
-                            <HudDecoration corners={[corner]}>
-                                <Panel variant="fill-inverse">Preview</Panel>
-                            </HudDecoration>
-                        </div>
-                    ))}
-                </div>
-                <h2 style={{ margin: 0 }}>Sizes and colors by glow mode</h2>
-                {activeGlows.map((activeGlow) => (
-                    <section key={activeGlow} style={{ display: 'grid', gap: 16 }}>
-                        <h3 style={{ margin: 0 }}>{activeGlow}</h3>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 20 }}>
-                            {sizes.flatMap((size) => colors.map((color) => (
-                                <div key={`${size}-${color}`} style={{ display: 'grid', gap: 10 }}>
-                                    <strong>{size} / {color}</strong>
-                                    <HudDecoration size={size} color={color} activeGlow={activeGlow} corners={corners}>
-                                        <Panel variant="fill-inverse" color={color}>Preview</Panel>
-                                    </HudDecoration>
-                                </div>
-                            )))}
-                        </div>
-                    </section>
-                ))}
-            </div>
-        );
-    },
+    parameters: { controls: { exclude: ["color", "size", "corners"] } },
+    render: (args) => (
+        <div className={styles.gallery}>
+            {hudDecorationCornerSets.map(({ label, corners }) => (
+                <section key={label}>
+                    <h2>{label}</h2>
+                    <VariantGallery
+                        sizes={sizeOptions}
+                        colors={appearanceColorOptions}
+                        variants={["brackets"]}
+                        render={({ color, size }) => (
+                            <div className={styles["ornament-sample"]}>
+                                <HudDecoration
+                                    {...args}
+                                    color={color}
+                                    size={size}
+                                    corners={corners}
+                                >
+                                    <div className={styles.sample}>
+                                        {args.children}
+                                    </div>
+                                </HudDecoration>
+                            </div>
+                        )}
+                    />
+                </section>
+            ))}
+        </div>
+    ),
 };

@@ -10,6 +10,7 @@ import {
     placePopup,
     useTheme,
     DEFAULT_FILL_VARIANT,
+    DEFAULT_COLOR,
     DEFAULT_SIZE,
 } from '@ui';
 import { Icon } from '../../design-system/icons';
@@ -165,8 +166,8 @@ export function DropdownList<T = string>({
             className={classNames(
                 styles['menu'],
                 styles[`mode-${theme.mode}`],
-                styles[`color-${color ?? 'neutral'}`],
-                styles[`highlight-${highlightColor ?? color ?? 'neutral'}`],
+                styles[`color-${color ?? DEFAULT_COLOR}`],
+                styles[`highlight-${highlightColor ?? color ?? DEFAULT_COLOR}`],
                 styles[`size-${size}`],
                 styles[`variant-${variant}`],
                 className,
@@ -200,7 +201,7 @@ export function DropdownList<T = string>({
                             className={styles['icon']}
                         />
                     ) : null}
-                    <span style={(index === highlightedIndex ? highlightGlyphsShade : glyphsShade) === undefined ? undefined : { color: theme.color(index === highlightedIndex ? highlightColor ?? color ?? 'neutral' : color ?? 'neutral', index === highlightedIndex ? highlightGlyphsShade : glyphsShade) }}>{option.label}</span>
+                    <span style={(index === highlightedIndex ? highlightGlyphsShade : glyphsShade) === undefined ? undefined : { color: theme.color(index === highlightedIndex ? highlightColor ?? color ?? DEFAULT_COLOR : color ?? DEFAULT_COLOR, index === highlightedIndex ? highlightGlyphsShade : glyphsShade) }}>{option.label}</span>
                 </li>
             ))}
         </ul>,

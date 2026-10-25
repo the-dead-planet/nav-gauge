@@ -1,14 +1,14 @@
 import { FC, useRef, useState } from "react";
 import classNames from "classnames";
 import { ResizeHandleGrip } from "./ResizeHandleGrip";
-import { ResizeHandleProps, useTheme } from "@ui";
+import { DEFAULT_COLOR, ResizeHandleProps, useTheme } from "@ui";
 import styles from './resize-handle.module.css';
 import { Tooltip } from "../tooltip";
 
 export const ResizeHandle: FC<ResizeHandleProps> = ({
     direction = 'horizontal',
     side,
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     onDrag,
     onDragStart,
     onDragEnd,

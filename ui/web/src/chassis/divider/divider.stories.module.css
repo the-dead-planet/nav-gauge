@@ -1,0 +1,17 @@
+.gallery {
+    display: grid;
+    gap: var(--spacing-lg);
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.preview {
+    display: flex;
+    align-items: center;
+    height: 80px;
+    width: 100%;
+}

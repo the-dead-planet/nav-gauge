@@ -1,6 +1,6 @@
 import { ChangeEvent, ComponentProps, CSSProperties, FC, useId } from "react";
 import classNames from "classnames";
-import { DEFAULT_FILL_VARIANT, DEFAULT_SIZE, ToggleSwitchProps, useTheme } from "@ui";
+import { DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, ToggleSwitchProps, useTheme } from "@ui";
 import styles from './toggle-switch.module.css';
 import { Lamp } from "./Lamp";
 
@@ -12,7 +12,7 @@ export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & Props>
     id,
     label,
     labelledBy,
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
     highlightGlyphsShade,

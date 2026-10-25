@@ -6,63 +6,50 @@
 .decoration {
     fill: none;
     inset: calc(-1 * var(--decoration-offset));
+    width: calc(100% + 2 * var(--decoration-offset));
+    height: calc(100% + 2 * var(--decoration-offset));
     overflow: visible;
     pointer-events: none;
     position: absolute;
-    stroke: var(--decoration-color);
+    stroke: var(--appearance-default-glyphs);
 }
 
-.size-xs .decoration {
+.size-xs {
     --decoration-offset: 3px;
     stroke-width: 1;
 }
-
-.size-sm .decoration {
+.size-sm {
     --decoration-offset: 5px;
     stroke-width: 1.5;
 }
-
-.size-md .decoration {
+.size-md {
     --decoration-offset: 7px;
     stroke-width: 2;
 }
-
-.size-lg .decoration {
+.size-lg {
     --decoration-offset: 9px;
     stroke-width: 2.5;
 }
 
-.glow-style-glow .decoration {
-    filter:
-        drop-shadow(0 0 3px rgb(from var(--decoration-color) r g b / .7))
-        drop-shadow(0 0 8px rgb(from var(--decoration-color) r g b / .35));
+.decoration[data-glow]:not([data-glow="none"]) {
+    filter: drop-shadow(0 0 4px var(--appearance-glow-color));
 }
 
-.glow-style-animate-borders-glow .decoration {
-    filter: drop-shadow(0 0 6px rgb(from var(--decoration-color) r g b / .6));
-}
-
-.glow-style-animate-borders-glow path {
+.decoration[data-glow="animate-borders-glow"] path {
     animation: decoration-glow 1.8s ease-in-out infinite alternate;
 }
 
 @keyframes decoration-glow {
-    from { opacity: .45; }
-    to { opacity: 1; }
+    from {
+        opacity: 0.45;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
-.color-neutral {
-    --decoration-color: var(--color-neutral);
-}
-
-.color-primary {
-    --decoration-color: var(--color-primary);
-}
-
-.color-secondary {
-    --decoration-color: var(--color-secondary);
-}
-
-.color-tertiary {
-    --decoration-color: var(--color-tertiary);
+@media (prefers-reduced-motion: reduce) {
+    .decoration[data-glow="animate-borders-glow"] path {
+        animation: none;
+    }
 }

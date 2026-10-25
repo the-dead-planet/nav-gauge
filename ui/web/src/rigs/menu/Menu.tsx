@@ -11,6 +11,7 @@ import {
     MenuProps,
     Icons,
     useTheme,
+    DEFAULT_COLOR,
 } from '@ui';
 import { Button } from '../../gizmos/button';
 import { Transition } from '../../motion/transition';
@@ -27,7 +28,7 @@ export const Menu: FC<Props & ComponentProps<'button'>> = ({
     placement = 'bottom-right',
     tooltip,
     tooltipPlacement,
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     triggerAccessibilityLabel,
     triggerActive = false,
     menuListClassName,

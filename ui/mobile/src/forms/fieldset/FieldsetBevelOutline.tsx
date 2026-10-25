@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { StyleSheet } from "react-native";
 import Svg, { Polygon } from "react-native-svg";
-import { ColorVariant, DEFAULT_FILL_VARIANT, FillVariant, useTheme } from "@ui";
+import { ColorVariant, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, FillVariant, useTheme } from "@ui";
 import { TRANSLUCENT_OPACITY } from "../../tinkers";
 
 const styles = StyleSheet.create({
@@ -31,7 +31,7 @@ export const FieldsetBevelOutline: FC<Props> = ({
     variant = DEFAULT_FILL_VARIANT,
 }) => {
     const theme = useTheme();
-    const effectiveColor = color ?? 'neutral';
+    const effectiveColor = color ?? DEFAULT_COLOR;
 
     const borderColor = color
         ? theme.color(color)

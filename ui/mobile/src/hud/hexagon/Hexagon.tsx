@@ -1,23 +1,30 @@
-import { FC, forwardRef, useId, useState } from "react";
+import { forwardRef, useId } from "react";
 import {
     View,
     StyleSheet,
     Pressable,
     PressableProps,
-    type ViewInstance,
+    ViewInstance,
 } from "react-native";
 import Svg, {
     Polygon,
+    Polyline,
     Defs,
     ClipPath,
-    G,
-    LinearGradient,
+    RadialGradient,
     Stop,
 } from "react-native-svg";
-import { DEFAULT_SIZE, DEFAULT_SURFACE_VARIANT, HexagonProps, useTheme } from "@ui";
-
-const POINTY_TOP = "50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25";
-const FLAT_TOP = "100,50 75,93.3 25,93.3 0,50 25,6.7 75,6.7";
+import {
+    DEFAULT_SIZE,
+    DEFAULT_COLOR,
+    DEFAULT_SURFACE_VARIANT,
+    hexagonGeometry,
+    HexagonProps,
+    useTheme,
+} from "@ui";
+import { HudContent } from "../HudContent";
+import { HudGlow } from "../HudGlow";
+import { useHudInteraction } from "../useHudInteraction";
 
 const styles = StyleSheet.create({
     container: {
@@ -32,45 +39,15 @@ const styles = StyleSheet.create({
     },
 });
 
-const GlowPolygons: FC<{
-    points: string;
-    glowColor: string;
-    strokeWidth: number;
-}> = ({ points, glowColor, strokeWidth }) => (
-    <>
-        <Polygon
-            points={points}
-            fill="none"
-            stroke={glowColor}
-            strokeWidth={strokeWidth + 12}
-            strokeOpacity={0.08}
-        />
-        <Polygon
-            points={points}
-            fill="none"
-            stroke={glowColor}
-            strokeWidth={strokeWidth + 6}
-            strokeOpacity={0.15}
-        />
-        <Polygon
-            points={points}
-            fill="none"
-            stroke={glowColor}
-            strokeWidth={strokeWidth + 2}
-            strokeOpacity={0.3}
-        />
-    </>
-);
-
 type Props = Omit<PressableProps, "children">;
 
 export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(
     (
         {
             shape = "pointy-top",
-            strokeWidth = 2,
-            color = "neutral",
-            highlightColor = color,
+            strokeWidth,
+            color = DEFAULT_COLOR,
+            highlightColor,
             variant = DEFAULT_SURFACE_VARIANT,
             activeGlow = "none",
             size = DEFAULT_SIZE,
@@ -78,194 +55,175 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(
             highlighted = false,
             disabled = false,
             onPress,
-            onLongPress,
-            onPressIn: onParentPressIn,
-            onPressOut: onParentPressOut,
+            onPressIn,
+            onPressOut,
+            onHoverIn,
+            onHoverOut,
+            onFocus,
+            onBlur,
+            accessibilityState,
+            accessibilityRole,
             style,
             children,
-            ...pressableProps
+            ...props
         },
         ref,
     ) => {
         const theme = useTheme();
-        const [pressed, setPressed] = useState(false);
-        const [glowDrawn, setGlowDrawn] = useState(false);
-        const isActiveState = !disabled && (pressed || highlighted);
-        const isPointy = shape === "pointy-top";
-        const points = isPointy ? POINTY_TOP : FLAT_TOP;
-        const aspectRatio = isPointy ? 86.6 / 100 : 100 / 86.6;
-        const clipPathId = useId();
-
+        const { state, interaction } = useHudInteraction({
+            disabled,
+            highlighted,
+            onPressIn,
+            onPressOut,
+            onHoverIn,
+            onHoverOut,
+            onFocus,
+            onBlur,
+        });
         const appearance = theme.resolveAppearance(
             variant,
             color,
-            highlightColor,
-            disabled ? "disabled" : isActiveState ? "active-pressed" : "default",
+            highlightColor ?? color,
+            state,
         );
         const showGlow =
-            !disabled && activeGlow !== "none" && (isActiveState || glowDrawn);
-
-        const markGlowDrawn = () => {
-            if (activeGlow !== "none") {
-                setGlowDrawn(true);
-            }
-        };
-
-        const renderGlow = () => {
-            if (!showGlow) {
-                return null;
-            }
-            return (
-                <GlowPolygons
-                    points={points}
-                    glowColor={appearance.effects.glowColor}
-                    strokeWidth={strokeWidth}
-                />
-            );
-        };
-
-        const renderVariant = () => {
-            if (appearance.effects.depth === "inset") {
-                return (
-                    <>
-                            <Defs>
-                                <ClipPath id={clipPathId}>
-                                    <Polygon points={points} />
-                                </ClipPath>
-                                <LinearGradient
-                                    id="shadowGrad"
-                                    x1="0%"
-                                    y1="0%"
-                                    x2="100%"
-                                    y2="100%"
-                                >
-                                    <Stop
-                                        offset="0%"
-                                        stopColor={appearance.effects.inset.shadow}
-                                        stopOpacity={appearance.effects.inset.shadowOpacity}
-                                    />
-                                    <Stop
-                                        offset="15%"
-                                        stopColor={appearance.effects.inset.shadow}
-                                        stopOpacity={0}
-                                    />
-                                    <Stop
-                                        offset="100%"
-                                        stopColor={appearance.effects.inset.shadow}
-                                        stopOpacity={0}
-                                    />
-                                </LinearGradient>
-                                <LinearGradient
-                                    id="highlightGrad"
-                                    x1="100%"
-                                    y1="100%"
-                                    x2="0%"
-                                    y2="0%"
-                                >
-                                    <Stop
-                                        offset="0%"
-                                        stopColor={appearance.effects.inset.highlight}
-                                        stopOpacity={appearance.effects.inset.highlightOpacity}
-                                    />
-                                    <Stop
-                                        offset="15%"
-                                        stopColor={appearance.effects.inset.highlight}
-                                        stopOpacity={0}
-                                    />
-                                    <Stop
-                                        offset="100%"
-                                        stopColor={appearance.effects.inset.highlight}
-                                        stopOpacity={0}
-                                    />
-                                </LinearGradient>
-                            </Defs>
-                            <G clipPath={`url(#${clipPathId})`}>
-                                <Polygon points={points} fill={appearance.surface} />
-                                {renderGlow()}
-                                <Polygon
-                                    points={points}
-                                    fill="url(#shadowGrad)"
-                                />
-                                <Polygon
-                                    points={points}
-                                    fill="url(#highlightGrad)"
-                                />
-                            </G>
-                            <Polygon
-                                points={points}
-                                fill="none"
-                                stroke={appearance.border.color}
-                                strokeWidth={appearance.border.width ? strokeWidth : 0}
-                            />
-                    </>
-                );
-            }
-
-            return (
-                <>
-                    {renderGlow()}
+            activeGlow !== "none" &&
+            (state === "active-pressed" || state === "hover-focus");
+        const { points, viewBox, aspectRatio, shadowPoints, highlightPoints } =
+            hexagonGeometry[shape];
+        const clipPathId = useId();
+        const recessGradientId = useId();
+        const containerStyle = [
+            styles.container,
+            { aspectRatio, height: theme.sizes.control[size].height },
+        ];
+        const content = (
+            <>
+                <Svg
+                    viewBox={viewBox}
+                    style={StyleSheet.absoluteFill}
+                    pointerEvents="none"
+                    accessibilityElementsHidden
+                    importantForAccessibility="no-hide-descendants"
+                >
+                    {showGlow ? (
+                        <HudGlow
+                            points={points}
+                            color={appearance.effects.glowColor}
+                            strokeWidth={strokeWidth ?? 1}
+                        />
+                    ) : null}
                     <Polygon
                         points={points}
                         fill={appearance.surface}
                         stroke={appearance.border.color}
-                        strokeWidth={appearance.border.width ? strokeWidth : 0}
+                        strokeWidth={
+                            appearance.border.width *
+                            Math.max(0, strokeWidth ?? 1)
+                        }
+                        vectorEffect="non-scaling-stroke"
                     />
-                </>
-            );
-        };
-
-        const contentElement = (
-            <>
-                <Svg
-                    viewBox={isPointy ? "6.7 0 86.6 100" : "0 6.7 100 86.6"}
-                    style={StyleSheet.absoluteFill}
-                >
-                    {renderVariant()}
+                    {appearance.effects.depth === "inset" ? (
+                        <>
+                            <Defs>
+                                <ClipPath id={clipPathId}>
+                                    <Polygon points={points} />
+                                </ClipPath>
+                                <RadialGradient id={recessGradientId}>
+                                    <Stop
+                                        offset="0"
+                                        stopColor={
+                                            appearance.effects.inset.recess
+                                        }
+                                    />
+                                    <Stop
+                                        offset=".65"
+                                        stopColor={
+                                            appearance.effects.inset.recess
+                                        }
+                                    />
+                                    <Stop
+                                        offset="1"
+                                        stopColor={
+                                            appearance.effects.inset.recess
+                                        }
+                                        stopOpacity={0}
+                                    />
+                                </RadialGradient>
+                            </Defs>
+                            <Polygon
+                                points={points}
+                                fill={`url(#${recessGradientId})`}
+                            />
+                            <Polyline
+                                points={shadowPoints}
+                                fill="none"
+                                stroke={appearance.effects.inset.shadow}
+                                strokeWidth={10}
+                                strokeOpacity={0.28}
+                                clipPath={`url(#${clipPathId})`}
+                            />
+                            <Polyline
+                                points={highlightPoints}
+                                fill="none"
+                                stroke={appearance.effects.inset.highlight}
+                                strokeWidth={10}
+                                strokeOpacity={0.28}
+                                clipPath={`url(#${clipPathId})`}
+                            />
+                            <Polyline
+                                points={shadowPoints}
+                                fill="none"
+                                stroke={appearance.effects.inset.shadow}
+                                strokeWidth={3}
+                                clipPath={`url(#${clipPathId})`}
+                            />
+                            <Polyline
+                                points={highlightPoints}
+                                fill="none"
+                                stroke={appearance.effects.inset.highlight}
+                                strokeWidth={3}
+                                clipPath={`url(#${clipPathId})`}
+                            />
+                        </>
+                    ) : null}
                 </Svg>
-                <View style={styles.content}>{children}</View>
+                <View style={styles.content}>
+                    <HudContent appearance={appearance}>{children}</HudContent>
+                </View>
             </>
         );
-        const containerStyle = [
-            styles.container,
-            { aspectRatio },
-            size ? { height: theme.sizes.control[size].height } : undefined,
-        ];
 
-        if (interactive) {
-            return (
-                <Pressable
-                    ref={ref}
-                    {...pressableProps}
-                    disabled={disabled}
-                    onPress={onPress}
-                    onLongPress={onLongPress}
-                    onPressIn={(e) => {
-                        setPressed(true);
-                        markGlowDrawn();
-                        onParentPressIn?.(e);
-                    }}
-                    onPressOut={(e) => {
-                        setPressed(false);
-                        setGlowDrawn(false);
-                        onParentPressOut?.(e);
-                    }}
-                    style={style}
-                >
-                    <View style={containerStyle}>{contentElement}</View>
-                </Pressable>
-            );
-        }
-
-        return (
-            <View
+        return interactive || onPress ? (
+            <Pressable
+                {...props}
+                {...interaction}
                 ref={ref}
-                {...pressableProps}
+                disabled={disabled}
+                onPress={onPress}
+                accessibilityRole={
+                    accessibilityRole ?? (onPress ? "button" : undefined)
+                }
+                accessibilityState={{ ...accessibilityState, disabled }}
+                style={(pressState) => [
+                    ...containerStyle,
+                    typeof style === "function" ? style(pressState) : style,
+                ]}
+            >
+                {content}
+            </Pressable>
+        ) : (
+            <View
+                {...props}
+                ref={ref}
+                accessibilityRole={accessibilityRole}
+                accessibilityState={{ ...accessibilityState, disabled }}
                 style={[
                     ...containerStyle,
                     typeof style === "function" ? undefined : style,
                 ]}
             >
-                {contentElement}
+                {content}
             </View>
         );
     },

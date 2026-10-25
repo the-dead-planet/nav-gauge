@@ -1,10 +1,10 @@
 import { FC } from "react";
 import { Pressable, View, ViewStyle } from "react-native";
-import { controlTextSpecifications, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, RadioProps, useTheme } from "@ui";
+import { controlTextSpecifications, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, RadioProps, useTheme } from "@ui";
 import { Text } from "../../design-system/typography";
 
 export const Radio: FC<RadioProps> = ({
-    color = 'primary',
+    color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
     highlightGlyphsShade,

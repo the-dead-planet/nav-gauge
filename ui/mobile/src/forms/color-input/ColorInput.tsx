@@ -1,6 +1,6 @@
 import { FC, RefObject, useRef, useState } from "react";
 import { HostInstance, TextInput as NativeTextInput, View, StyleSheet } from "react-native";
-import { ColorFormat, ColorInputProps, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, parseColor, toCssColor, useColorInputState, useTheme } from "@ui";
+import { ColorFormat, ColorInputProps, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, parseColor, toCssColor, useColorInputState, useTheme } from "@ui";
 import { Text } from "../../design-system/typography";
 import { Dropdown } from "../dropdown";
 import { Popup } from "../../rigs/popup";
@@ -10,8 +10,6 @@ import { ColorRamp } from "../color-ramp";
 const styles = StyleSheet.create({
     container: {
         rowGap: 4,
-    },
-    label: {
     },
     wrapper: {
         flexDirection: 'row',
@@ -58,7 +56,7 @@ const formatOptions: { value: ColorFormat; label: string }[] = [
 ];
 
 export const ColorInput: FC<ColorInputProps> = ({
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
     highlightGlyphsShade,
@@ -98,7 +96,7 @@ export const ColorInput: FC<ColorInputProps> = ({
     return (
         <>
             <View style={styles.container}>
-                <Text color={color} shade={glyphsShade} style={[styles.label, { fontSize: size === 'xs' ? 11 : 12 }]}>{label}</Text>
+                <Text color={color} shade={glyphsShade} style={[{ fontSize: size === 'xs' ? 11 : 12 }]}>{label}</Text>
                 <View
                     style={[
                         styles.wrapper,

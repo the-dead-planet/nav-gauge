@@ -150,6 +150,7 @@ export const Popup: FC<Props> = ({
                     className={classNames(styles.popup, popupClassName)}
                     style={positionStyle}
                     {...props}
+                    elevationLayer="popup"
                 >
                     {children}
                 </Panel>

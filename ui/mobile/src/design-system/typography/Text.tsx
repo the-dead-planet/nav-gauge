@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Platform, Text as RNText, TextProps as RNTextProps, StyleSheet, TextStyle } from "react-native";
-import { FontType, resolveTypographyFontWeight, resolveTypographySpacing, TextUsage, typographyUsageSpecifications, TypographyProps, Theme, ThemeAppearanceState, useTheme } from "@ui";
+import { DEFAULT_COLOR, FontType, resolveTypographyFontWeight, resolveTypographySpacing, TextUsage, typographyUsageSpecifications, TypographyProps, Theme, ThemeAppearanceState, useTheme } from "@ui";
 import { resolveMobileFont } from "./fontFamily";
 
 export type { TextUsage } from '@ui';
@@ -20,7 +20,7 @@ export interface TextProps extends Omit<RNTextProps, 'disabled'>, TypographyProp
 
 export const Text: FC<TextProps> = ({
     usage = 'body',
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     highlightColor = color,
     highlighted,
     appearanceState = highlighted ? 'active-pressed' : 'default',

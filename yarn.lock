@@ -6623,6 +6623,7 @@ __metadata:
     react-native-view-recorder: "patch:react-native-view-recorder@npm%3A0.4.1#~/.yarn/patches/react-native-view-recorder-npm-0.4.1-f65f857d14.patch"
     react-test-renderer: "npm:19.3.1"
     serve-static: "npm:^2.2.1"
+    test-renderer: "npm:^1.3.1"
   peerDependencies:
     react: 19.3.1
     rxjs: ^7.8.2
@@ -7455,6 +7456,15 @@ __metadata:
   peerDependencies:
     "@types/react": ^19.3.0
   checksum: 10/e24ee9948dc3a6c81e8aa4acf120a1194d3a3b68e97205b1e5e24e087b9f0c0c2e40b128fd258663ccb5889c852aeee558c0daa3255c3d82e0fc1c5d64c4b69a
+  languageName: node
+  linkType: hard
+
+"@types/react-reconciler@npm:~0.34.0":
+  version: 0.34.1
+  resolution: "@types/react-reconciler@npm:0.34.1"
+  peerDependencies:
+    "@types/react": "*"
+  checksum: 10/c126982f887a8b9e4ccb2fc4d36b46f5526e2eb2ee1ecc15c317a825ad7e52728c0f416269c067b774f026cc09e75c29d946819c052c0420a13c5a1c5c1caf61
   languageName: node
   linkType: hard
 
@@ -16367,6 +16377,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-reconciler@npm:~0.34.0":
+  version: 0.34.0
+  resolution: "react-reconciler@npm:0.34.0"
+  dependencies:
+    scheduler: "npm:^0.28.0"
+  peerDependencies:
+    react: ^19.3.0
+  checksum: 10/abc46a957cb5ea4d0477685c2748b4a7454859d4f8a832537c3e72b105a1a91705dc7b03dea07d5b9fce56e183979f6128cd087a423552842218c84e2413b111
+  languageName: node
+  linkType: hard
+
 "react-refresh@npm:^0.14.0":
   version: 0.14.2
   resolution: "react-refresh@npm:0.14.2"
@@ -17836,6 +17857,18 @@ __metadata:
     glob: "npm:^10.4.1"
     minimatch: "npm:^10.2.2"
   checksum: 10/45920af7556a58333c75c3d5011b4087f7ac41366319fb0f6ccc4ac8d0e9d2c81442d7ebf6efd13813dcf18c135eda3c52e4ad3e00407a3ee041d8dec6bfd753
+  languageName: node
+  linkType: hard
+
+"test-renderer@npm:^1.3.1":
+  version: 1.3.1
+  resolution: "test-renderer@npm:1.3.1"
+  dependencies:
+    "@types/react-reconciler": "npm:~0.34.0"
+    react-reconciler: "npm:~0.34.0"
+  peerDependencies:
+    react: ^19.0.0
+  checksum: 10/9af4e4e371dd9eaf81707f8a454fd02accaf43eb0f4c27bce0025adc6a9ecd974722ddee607635e0ce90076bf21ca1d7a026515adabe14d9c842f21ffec49a77
   languageName: node
   linkType: hard
 

@@ -1,12 +1,12 @@
 import { ChangeEvent, ComponentProps, FC, MouseEvent } from "react";
 import classNames from "classnames";
-import { DEFAULT_FILL_VARIANT, DEFAULT_SIZE, TextInputProps, useTheme } from "@ui";
+import { DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, TextInputProps, useTheme } from "@ui";
 import { Label } from "../../design-system/typography";
 import styles from './text-input.module.css';
 
 export const TextInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' | 'type' | 'size'> & TextInputProps> = ({
     id,
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
     highlightGlyphsShade,

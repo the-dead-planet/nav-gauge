@@ -1,6 +1,6 @@
 import { ChangeEvent, ComponentProps, FC, MouseEvent } from "react";
 import classNames from "classnames";
-import { ColorShade, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, Icons, NumberInputProps, SizeVariant, useTheme } from "@ui";
+import { ColorShade, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, Icons, NumberInputProps, SizeVariant, useTheme } from "@ui";
 import { Button } from "../../gizmos/button";
 import { Label } from "../../design-system/typography";
 import { useStepRepeatButton } from '../step-controls/useStepRepeatButton';
@@ -8,7 +8,7 @@ import styles from './number-input.module.css';
 
 export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' | 'type' | 'size'> & NumberInputProps> = ({
     id,
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
     highlightGlyphsShade,

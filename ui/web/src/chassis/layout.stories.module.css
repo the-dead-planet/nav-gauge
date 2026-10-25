@@ -1,0 +1,13 @@
+.gallery {
+    display: grid;
+    gap: var(--spacing-lg);
+}
+
+.preview {
+    min-height: 96px;
+    outline: 1px dashed var(--appearance-default-border);
+}
+
+.preview > * {
+    border: 1px solid var(--appearance-default-border);
+}

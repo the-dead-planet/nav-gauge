@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { ColorVariant, FillVariant, Icons, SizeVariant, Theme } from '@ui';
+import { ColorVariant, DEFAULT_COLOR, FillVariant, Icons, SizeVariant, Theme } from '@ui';
 import { ColorBox } from '../../gizmos/color-box';
 import { Popup } from '../../rigs/popup';
 import { VariantGallery } from '../../storybook/VariantGallery';
@@ -52,8 +52,8 @@ const meta = {
         ariaLabel: 'Select material',
         value: 'brass',
         options,
-        color: 'neutral',
-        highlightColor: 'neutral',
+        color: DEFAULT_COLOR,
+        highlightColor: DEFAULT_COLOR,
         glyphsShade: 700,
         highlightGlyphsShade: 200,
         size: 'sm',

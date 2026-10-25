@@ -1,26 +1,12 @@
 .hexagon {
-    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    box-sizing: border-box;
 }
 
-.pointy-top {
-    aspect-ratio: 86.6 / 100;
-}
-
-.flat-top {
-    aspect-ratio: 100 / 86.6;
-}
-
-.svg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-    pointer-events: none;
+.polygon-base,
+.polygon-glow {
+    vector-effect: non-scaling-stroke;
 }
 
 .content {
@@ -36,7 +22,7 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background-color: rgb(from var(--appearance-color) r g b / .01);
+    backdrop-filter: blur(var(--appearance-backdrop-blur));
     mask-size: 100% 100%;
     mask-repeat: no-repeat;
 }
@@ -44,157 +30,70 @@
 .size-xs {
     --hexagon-height: var(--size-control-xs-height);
 }
-
 .size-sm {
     --hexagon-height: var(--size-control-sm-height);
 }
-
 .size-md {
     --hexagon-height: var(--size-control-md-height);
 }
-
 .size-lg {
     --hexagon-height: var(--size-control-lg-height);
 }
 
-.size-xs,
-.size-sm,
-.size-md,
-.size-lg {
+.hexagon {
     height: var(--hexagon-height);
 }
-
 .pointy-top {
-    width: calc(var(--hexagon-height) * .866);
+    aspect-ratio: 86.6 / 100;
+    width: calc(var(--hexagon-height) * 0.866);
 }
-
 .flat-top {
-    width: calc(var(--hexagon-height) / .866);
+    aspect-ratio: 100 / 86.6;
+    width: calc(var(--hexagon-height) / 0.866);
 }
 
-.polygon-glow {
-    opacity: 0;
-}
-
-.polygon-inset-shadow-edges,
-.polygon-inset-highlight-edges,
-.polygon-inset-recess {
-    opacity: 0;
-    pointer-events: none;
-}
-
-.polygon-inset-shadow-edges {
+.inset-shadow {
     stroke: var(--appearance-inset-default-inner-start);
 }
-
-.polygon-inset-highlight-edges {
+.inset-highlight {
     stroke: var(--appearance-inset-default-inner-end);
 }
-
 .inset-recess-center {
     stop-color: var(--appearance-inset-default-recess);
 }
-
 .inset-recess-edge {
     stop-color: transparent;
 }
-
-.interactive {
-    cursor: pointer;
+.fade {
+    opacity: 0.28;
 }
 
-.polygon-base {
-    fill: var(--appearance-default-surface);
-    stroke: var(--appearance-default-border);
-}
-
-.content {
-    color: var(--appearance-default-glyphs);
-    font-weight: var(--appearance-default-font-weight, inherit);
-}
-
-.interactive:not(.disabled, .highlighted, :active, :has(:active)):is(:hover, :focus-visible, :has(:focus-visible)) .polygon-base {
-    fill: var(--appearance-hover-focus-surface);
-    stroke: var(--appearance-hover-focus-border);
-}
-
-.interactive:not(.disabled, .highlighted, :active, :has(:active)):is(:hover, :focus-visible, :has(:focus-visible)) .content {
-    color: var(--appearance-hover-focus-glyphs);
-    font-weight: var(--appearance-hover-focus-font-weight, inherit);
-}
-
-.hexagon:not(.disabled):is(.highlighted, .interactive:active, .interactive:has(:active)) .polygon-base {
-    fill: var(--appearance-active-pressed-surface);
-    stroke: var(--appearance-active-pressed-border);
-}
-
-.hexagon:not(.disabled):is(.highlighted, .interactive:active, .interactive:has(:active)) .content {
-    color: var(--appearance-active-pressed-glyphs);
-    font-weight: var(--appearance-active-pressed-font-weight, inherit);
-}
-
-.depth-inset .polygon-base {
-    stroke: var(--appearance-inset-default-edge-start);
-}
-
-.depth-inset .polygon-inset-shadow-edges,
-.depth-inset .polygon-inset-highlight-edges,
-.depth-inset .polygon-inset-recess {
-    opacity: 1;
-}
-
-.depth-inset .polygon-inset-edge-fade {
-    opacity: .28;
-}
-
-.depth-inset:not(.disabled):is(.highlighted, .interactive:active, .interactive:has(:active)) .polygon-inset-shadow-edges {
+.depth-inset:not([data-disabled="true"]):is(
+        [data-highlighted="true"],
+        [data-pressed="true"],
+        [data-interactive="true"]:active,
+        [data-interactive="true"]:has(:active)
+    )
+    .inset-shadow {
     stroke: var(--appearance-inset-active-pressed-inner-start);
 }
 
-.depth-inset:not(.disabled):is(.highlighted, .interactive:active, .interactive:has(:active)) .polygon-inset-highlight-edges {
+.depth-inset:not([data-disabled="true"]):is(
+        [data-highlighted="true"],
+        [data-pressed="true"],
+        [data-interactive="true"]:active,
+        [data-interactive="true"]:has(:active)
+    )
+    .inset-highlight {
     stroke: var(--appearance-inset-active-pressed-inner-end);
 }
 
-.depth-inset:not(.disabled):is(.highlighted, .interactive:active, .interactive:has(:active)) .polygon-base {
-    stroke: var(--appearance-inset-active-pressed-edge-start);
-}
-
-.depth-inset:not(.disabled):is(.highlighted, .interactive:active, .interactive:has(:active)) .inset-recess-center {
+.depth-inset:not([data-disabled="true"]):is(
+        [data-highlighted="true"],
+        [data-pressed="true"],
+        [data-interactive="true"]:active,
+        [data-interactive="true"]:has(:active)
+    )
+    .inset-recess-center {
     stop-color: var(--appearance-inset-active-pressed-recess);
-}
-
-/* Disabled */
-.hexagon.disabled .polygon-base {
-    fill: var(--appearance-disabled-surface);
-    stroke: var(--appearance-disabled-border);
-}
-
-.hexagon.disabled .content {
-    color: var(--appearance-disabled-glyphs);
-    font-weight: var(--appearance-disabled-font-weight, inherit);
-}
-
-/* Glow styles */
-.glow-style-glow:not(.disabled):is(:hover, :active, .highlighted) .polygon-glow {
-    opacity: 1;
-    filter: var(--hex-filter);
-    stroke: var(--appearance-glow-color);
-}
-
-.glow-style-animate-borders-glow:not(.disabled):is(:hover, :active, .highlighted) .polygon-glow {
-    opacity: 1;
-    filter: var(--hex-filter);
-    stroke: var(--appearance-glow-color);
-    stroke-dasharray: 0 300;
-    animation: border-glow 0.3s linear forwards;
-}
-
-@keyframes border-glow {
-    from {
-        stroke-dasharray: 0 300;
-    }
-
-    to {
-        stroke-dasharray: 300 0;
-    }
 }

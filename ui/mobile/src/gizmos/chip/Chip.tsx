@@ -5,6 +5,7 @@ import {
     ChipProps,
     FontWeight,
     DEFAULT_FILL_VARIANT,
+    DEFAULT_COLOR,
     DEFAULT_SIZE,
     SizeVariant,
     useTheme,
@@ -88,7 +89,7 @@ const sizeStyles = StyleSheet.create({
 });
 
 export const Chip: FC<ChipProps & Props> = ({
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     icon,
     size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,

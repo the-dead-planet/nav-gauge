@@ -1,17 +1,47 @@
-import { FC } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
-import { colorOptions, fillVariantOptions } from '@ui';
-import { Text } from '../../design-system/typography';
-import { Panel } from './Panel';
+import { StyleSheet } from "react-native";
+import {
+    appearanceColorOptions,
+    PanelProps,
+    panelStoryArgs,
+    panelStoryControls,
+} from "@ui";
+import { Panel } from "./Panel";
+import { MobileStoryDefinition } from "../../storybook/model";
+import { VariantGallery } from "../../storybook/VariantGallery";
 
 const styles = StyleSheet.create({
-    container: { gap: 24, padding: 16 },
-    section: { gap: 10 },
-    grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 16 },
-    cell: { flexBasis: 140, flexGrow: 1, gap: 8 },
-    heading: { fontWeight: '700' },
+    sample: { padding: 16, minHeight: 64 },
 });
-export const Playground: FC = () => <Panel color="primary" variant="fill-translucent"><Text>Preview</Text></Panel>;
-export const Gallery: FC = () => <ScrollView contentContainerStyle={styles.container}>{fillVariantOptions.map((variant) => <View key={variant} style={styles.section}><Text style={styles.heading}>{variant}</Text><View style={styles.grid}>{colorOptions.map((color) => <View key={color} style={styles.cell}><Text>{color}</Text><Panel color={color} variant={variant}><Text>Preview</Text></Panel></View>)}</View></View>)}</ScrollView>;
-export const InteractiveGlow: FC = () => <View style={styles.grid}><Panel interactive color="primary"><Text>Default glow</Text></Panel><Panel interactive activeGlow="glow" color="secondary"><Text>Glow</Text></Panel><Panel interactive activeGlow="animate-borders-glow" color="tertiary"><Text>Borders</Text></Panel></View>;
-export const States: FC = () => <View style={styles.grid}><Panel highlighted color="primary" variant="fill-inverse"><Text>Highlighted</Text></Panel><Panel disabled color="primary" variant="fill-inverse"><Text>Disabled</Text></Panel></View>;
+
+const story: MobileStoryDefinition<PanelProps> = {
+    args: panelStoryArgs,
+    controls: panelStoryControls,
+    galleryEditableControls: [
+        "children",
+        "highlightColor",
+        "highlighted",
+        "disabled",
+        "interactive",
+        "activeGlow",
+        "borderWidth",
+        "elevation",
+        "elevationLayer",
+    ],
+    renderPlayground: (args) => <Panel {...args} style={styles.sample} />,
+    renderGallery: (args) => (
+        <VariantGallery
+            sizes={["sm"]}
+            colors={appearanceColorOptions}
+            render={({ color, variant }) => (
+                <Panel
+                    {...args}
+                    color={color}
+                    variant={variant}
+                    shape="default"
+                    style={styles.sample}
+                />
+            )}
+        />
+    ),
+};
+export default story;

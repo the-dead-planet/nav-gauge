@@ -3,6 +3,7 @@ import { TextInput as RNTextInput, View, StyleSheet } from "react-native";
 import {
     controlTextSpecifications,
     DEFAULT_FILL_VARIANT,
+    DEFAULT_COLOR,
     DEFAULT_SIZE,
     FontType,
     TextAreaProps,
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
 export const TextArea: FC<
     TextAreaProps & ComponentProps<typeof RNTextInput>
 > = ({
-    color = "neutral",
+    color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
     highlightGlyphsShade,

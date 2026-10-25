@@ -5,7 +5,7 @@ import {
     View,
     type ViewInstance,
 } from "react-native";
-import { ButtonProps, DEFAULT_SIZE, DEFAULT_SURFACE_VARIANT, useTheme } from "@ui";
+import { ButtonProps, DEFAULT_COLOR, DEFAULT_SIZE, DEFAULT_SURFACE_VARIANT, useTheme } from "@ui";
 import { Icon } from "../../design-system/icons";
 import { SvgProps } from "react-native-svg";
 import { Hexagon } from "../../hud";
@@ -21,7 +21,7 @@ export interface MobileButtonProps {
 
 export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     forwardRef,
-    color = "neutral",
+    color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
     highlightGlyphsShade,
@@ -50,7 +50,6 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
 }) => {
     const theme = useTheme();
     const [pressed, setPressed] = useState(false);
-    const [glowDrawn, setGlowDrawn] = useState(false);
 
     const isActiveState = !disabled && (pressed || highlighted);
     const appearance = theme.resolveAppearance(
@@ -60,13 +59,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         disabled ? "disabled" : isActiveState ? "active-pressed" : "default",
     );
     const showGlow =
-        !disabled && activeGlow !== "none" && (isActiveState || glowDrawn);
-
-    const markGlowDrawn = () => {
-        if (activeGlow !== "none") {
-            setGlowDrawn(true);
-        }
-    };
+        !disabled && activeGlow !== "none" && isActiveState;
 
     const showTextGlow = showGlow && appearance.effects.glyphsGlow;
     const controlSize = theme.sizes.control[size];
@@ -118,11 +111,13 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     }
 
     const textColor =
-        highlightGlyphsShade !== undefined && isActiveState
-            ? theme.color(highlightColor, highlightGlyphsShade)
-            : glyphsShade !== undefined && !isActiveState
-              ? theme.color(color, glyphsShade)
-              : appearance.glyphs;
+        disabled
+            ? appearance.glyphs
+            : highlightGlyphsShade !== undefined && isActiveState
+              ? theme.color(highlightColor, highlightGlyphsShade)
+              : glyphsShade !== undefined && !isActiveState
+                ? theme.color(color, glyphsShade)
+                : appearance.glyphs;
     const fontSize = controlSize.fontSize;
 
     const showTextShadow =
@@ -202,7 +197,6 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     const handlePressIn: NonNullable<PressableProps["onPressIn"]> = (event) => {
         if (!disabled) {
             setPressed(true);
-            markGlowDrawn();
         }
         onPressIn?.(event);
     };
@@ -211,7 +205,6 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         event,
     ) => {
         setPressed(false);
-        setGlowDrawn(false);
         onPressOut?.(event);
     };
 

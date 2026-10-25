@@ -1,77 +1,53 @@
-import { FC, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
-import { ActiveGlow, HudDecorationCorner, TabstripOption, colorOptions, sizeOptions } from '@ui';
-import { HudDecoration } from './HudDecoration';
-import { Panel } from '../panel';
-import { Tabstrip } from '../../rigs/tabstrip';
-import { Text } from '../../design-system/typography';
+import { ScrollView, StyleSheet, View } from "react-native";
+import {
+    appearanceColorOptions,
+    HudDecorationProps,
+    hudDecorationCornerSets,
+    hudDecorationStoryArgs,
+    hudDecorationStoryControls,
+} from "@ui";
+import { HudDecoration } from "./HudDecoration";
+import { Text } from "../../design-system/typography";
+import { MobileStoryDefinition } from "../../storybook/model";
+import { VariantGallery } from "../../storybook/VariantGallery";
 
-const options: TabstripOption[] = [
-    { value: 'route', label: 'Route' },
-    { value: 'terrain', label: 'Terrain' },
-];
 const styles = StyleSheet.create({
-    container: { gap: 24, padding: 16 },
-    tabContent: { width: 220 },
-    catalog: { gap: 24, padding: 16 },
-    catalogGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 20 },
-    catalogItem: { flexBasis: 140, flexGrow: 1, gap: 10 },
-    cornerItem: { flexBasis: '45%', flexGrow: 1, gap: 10 },
-    catalogLabel: { fontWeight: '700' },
-    heading: { fontSize: 18, fontWeight: '700' },
+    gallery: { padding: 16, gap: 32 },
+    sample: { padding: 24 },
 });
 
-export const Playground: FC = () => {
-    const [value, setValue] = useState('route');
-    return (
-        <View style={styles.container}>
-            <HudDecoration color="secondary" size="md" activeGlow="glow">
-                <Panel variant="fill-inverse"><Text>Decorated panel</Text></Panel>
-            </HudDecoration>
-            <HudDecoration corners={['top-right', 'bottom-left']}>
-                <View style={styles.tabContent}>
-                    <Tabstrip options={options} value={value} onChange={setValue} highlightColor="primary" overflowAccessibilityLabel="More tabs">
-                        <Text>Active: {value}</Text>
-                    </Tabstrip>
-                </View>
-            </HudDecoration>
+const story: MobileStoryDefinition<HudDecorationProps> = {
+    args: hudDecorationStoryArgs,
+    controls: hudDecorationStoryControls,
+    galleryEditableControls: ["children", "activeGlow"],
+    renderPlayground: (args) => (
+        <View style={styles.sample}>
+            <HudDecoration {...args} />
         </View>
-    );
-};
-
-export const Gallery: FC = () => {
-    const corners: HudDecorationCorner[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
-    const activeGlows: ActiveGlow[] = ['none', 'glow', 'animate-borders-glow'];
-
-    return (
-        <ScrollView contentContainerStyle={styles.catalog}>
-            <Text style={styles.heading}>Bracket corners</Text>
-            <View style={styles.catalogGrid}>
-                {corners.map((corner) => (
-                    <View key={corner} style={styles.cornerItem}>
-                        <Text style={styles.catalogLabel}>{corner}</Text>
-                        <HudDecoration corners={[corner]}>
-                            <Panel variant="fill-inverse"><Text>Preview</Text></Panel>
-                        </HudDecoration>
-                    </View>
-                ))}
-            </View>
-            <Text style={styles.heading}>Sizes and colors by glow mode</Text>
-            {activeGlows.map((activeGlow) => (
-                <View key={activeGlow} style={styles.catalogItem}>
-                    <Text style={styles.heading}>{activeGlow}</Text>
-                    <View style={styles.catalogGrid}>
-                        {sizeOptions.flatMap((size) => colorOptions.map((color) => (
-                            <View key={`${size}-${color}`} style={styles.catalogItem}>
-                                <Text style={styles.catalogLabel}>{size} / {color}</Text>
-                                <HudDecoration size={size} color={color} activeGlow={activeGlow} corners={corners}>
-                                    <Panel variant="fill-inverse" color={color}><Text>Preview</Text></Panel>
-                                </HudDecoration>
+    ),
+    renderGallery: (args) => (
+        <ScrollView contentContainerStyle={styles.gallery}>
+            {hudDecorationCornerSets.map(({ label, corners }) => (
+                <View key={label}>
+                    <Text usage="header">{label}</Text>
+                    <VariantGallery
+                        colors={appearanceColorOptions}
+                        variants={["brackets"]}
+                        scrollEnabled={false}
+                        render={({ color, size }) => (
+                            <View style={styles.sample}>
+                                <HudDecoration
+                                    {...args}
+                                    color={color}
+                                    size={size}
+                                    corners={corners}
+                                />
                             </View>
-                        )))}
-                    </View>
+                        )}
+                    />
                 </View>
             ))}
         </ScrollView>
-    );
+    ),
 };
+export default story;

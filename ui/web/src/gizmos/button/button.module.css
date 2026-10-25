@@ -82,18 +82,18 @@
     transform: rotateX(var(--rotate-x)) rotateZ(var(--rotate-z));
 }
 
-.button {
+.button:not(.corners-hexagon) {
     color: var(--appearance-default-glyphs-override, var(--appearance-default-glyphs));
     font-weight: var(--appearance-default-font-weight, 400);
     background-color: var(--appearance-default-surface);
     border: var(--appearance-default-border-width) solid var(--appearance-default-border);
 }
 
-.backdrop-blur {
+.backdrop-blur:not(.corners-hexagon) {
     backdrop-filter: blur(var(--appearance-backdrop-blur));
 }
 
-.button:is(:hover, .hovered, :focus-visible):not(.disabled, :disabled, .highlighted, :active) {
+.button:is(:hover, .hovered, :focus-visible):not(.disabled, :disabled, .highlighted, :active, .corners-hexagon) {
     color: var(--appearance-hover-focus-glyphs-override, var(--appearance-hover-focus-glyphs));
     font-weight: var(--appearance-hover-focus-font-weight, 400);
     background-color: var(--appearance-hover-focus-surface);
@@ -101,7 +101,7 @@
     border-color: var(--appearance-hover-focus-border);
 }
 
-.button:is(:active, .highlighted):not(.disabled, :disabled) {
+.button:is(:active, .highlighted):not(.disabled, :disabled, .corners-hexagon) {
     color: var(--appearance-active-pressed-glyphs-override, var(--appearance-active-pressed-glyphs));
     font-weight: var(--appearance-active-pressed-font-weight, 400);
     background-color: var(--appearance-active-pressed-surface);
@@ -128,6 +128,8 @@
     height: 100%;
     min-width: 0;
     border-radius: 0;
+    color: inherit;
+    font-weight: inherit;
 }
 
 .corners-square {
@@ -160,19 +162,19 @@
     backdrop-filter: none;
 }
 
-.glow-style-glow:is(:hover, .hovered, :active, .highlighted),
-.glow-style-animate-borders-glow:is(:hover, .hovered, :active, .highlighted) {
+.glow-style-glow:not(.corners-hexagon):is(:hover, .hovered, :active, .highlighted),
+.glow-style-animate-borders-glow:not(.corners-hexagon):is(:hover, .hovered, :active, .highlighted) {
     box-shadow: 0 0 4px rgb(from var(--appearance-glow-color) r g b / .3),
         0 0 20px rgb(from var(--appearance-glow-color) r g b / .6);
 }
 
-.glow-style-glow.glyphs-glow:is(:hover, .hovered, :active, .highlighted),
-.glow-style-animate-borders-glow.glyphs-glow:is(:hover, .hovered, :active, .highlighted) {
+.glow-style-glow.glyphs-glow:not(.corners-hexagon):is(:hover, .hovered, :active, .highlighted),
+.glow-style-animate-borders-glow.glyphs-glow:not(.corners-hexagon):is(:hover, .hovered, :active, .highlighted) {
     text-shadow: 0 0 12px rgb(from var(--appearance-glow-color) r g b / .45);
 }
 
-.glow-style-glow.glyphs-glow:is(:hover, .hovered, :active, .highlighted) .icon,
-.glow-style-animate-borders-glow.glyphs-glow:is(:hover, .hovered, :active, .highlighted) .icon {
+.glow-style-glow.glyphs-glow:not(.corners-hexagon):is(:hover, .hovered, :active, .highlighted) .icon,
+.glow-style-animate-borders-glow.glyphs-glow:not(.corners-hexagon):is(:hover, .hovered, :active, .highlighted) .icon {
     filter: drop-shadow(0 0 12px rgb(from var(--appearance-glow-color) r g b / .45));
 }
 
@@ -185,8 +187,8 @@
     animation: none;
 }
 
-.button.disabled,
-.button.disabled:is(:hover, .hovered, :focus-visible, :active, .highlighted, :disabled) {
+.button.disabled:not(.corners-hexagon),
+.button.disabled:not(.corners-hexagon):is(:hover, .hovered, :focus-visible, :active, .highlighted, :disabled) {
     cursor: not-allowed;
     color: var(--appearance-disabled-glyphs);
     font-weight: var(--appearance-disabled-font-weight, 400);

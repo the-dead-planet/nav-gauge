@@ -1,6 +1,7 @@
 .divider {
     border: none;
     margin: 0;
+    flex-shrink: 0;
     background-color: var(--appearance-default-border);
 }
 
@@ -12,22 +13,6 @@
 .vertical {
     width: 1px;
     align-self: stretch;
-}
-
-.color-primary {
-    background-color: var(--color-primary);
-}
-
-.color-secondary {
-    background-color: var(--color-secondary);
-}
-
-.color-tertiary {
-    background-color: var(--color-tertiary);
-}
-
-.color-neutral {
-    background-color: var(--color-neutral);
 }
 
 .margin-top-xs { margin-top: var(--spacing-xs); }

@@ -1,4 +1,4 @@
-import { ElevationDirection, ElevationLevel, ResolvedThemeElevation, Theme, ThemeLayer } from '@ui';
+import { ElevationDirection, ElevationLevel, ResolvedThemeElevation, Theme, ElevationLayer } from '@ui';
 import { ViewStyle } from 'react-native';
 
 /**
@@ -50,7 +50,7 @@ const elevationStyle = (elevation: ResolvedThemeElevation): ViewStyle => {
  */
 export const resolveLayerStyle = (
     theme: Theme,
-    layer: ThemeLayer,
+    layer: ElevationLayer,
     direction?: ElevationDirection,
 ): ViewStyle => {
     const resolved = theme.layer(layer, direction);

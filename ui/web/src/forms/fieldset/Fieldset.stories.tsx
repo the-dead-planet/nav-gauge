@@ -2,13 +2,13 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { useState } from 'react';
 import { Fieldset } from './Fieldset';
 import { Text } from '../../design-system/typography';
-import { ColorVariant, SizeVariant, DEFAULT_SIZE } from '@ui';
+import { ColorVariant, SizeVariant, DEFAULT_COLOR, DEFAULT_SIZE } from '@ui';
 import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptions as allSizes } from '../../storybook/controls';
 
 const meta = {
     title: 'Forms/Fieldset',
     component: Fieldset,
-    args: { label: 'Fieldset', color: 'neutral', size: 'sm', variant: 'fill-inverse', children: <Text>Fieldset content</Text> },
+    args: { label: 'Fieldset', color: DEFAULT_COLOR, size: 'sm', variant: 'fill-inverse', children: <Text>Fieldset content</Text> },
 } satisfies Meta<typeof Fieldset>;
 
 export default meta;
@@ -96,7 +96,7 @@ export const WithPrepend = {
 
 export const Interactive = {
     render: () => {
-        const [color, setColor] = useState<ColorVariant>('neutral');
+        const [color, setColor] = useState<ColorVariant>(DEFAULT_COLOR);
         const [size, setSize] = useState<SizeVariant>(DEFAULT_SIZE);
 
         return (

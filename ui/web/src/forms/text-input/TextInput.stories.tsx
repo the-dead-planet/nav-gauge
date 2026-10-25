@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "storybook-react-rsbuild";
 import { makeLiveEditStory } from "storybook-addon-code-editor";
 import * as React from "react";
 import { ComponentProps, useState } from "react";
+import { DEFAULT_COLOR } from "@ui";
 import { TextInput } from "./TextInput";
 import { VariantGallery } from "../../storybook/VariantGallery";
 import {
@@ -28,8 +29,8 @@ const meta = {
         id: "text-input-playground",
         label: "Label",
         value: "Hello",
-        color: "neutral",
-        highlightColor: "neutral",
+        color: DEFAULT_COLOR,
+        highlightColor: DEFAULT_COLOR,
         glyphsShade: 700,
         highlightGlyphsShade: 200,
         size: "sm",

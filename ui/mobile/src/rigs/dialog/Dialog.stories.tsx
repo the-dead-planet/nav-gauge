@@ -3,7 +3,7 @@ import { View, StyleSheet } from "react-native";
 import { Dialog } from "./Dialog";
 import { Button } from "../../gizmos/button";
 import { Text } from "../../design-system/typography";
-import { ColorVariant, DialogPlacement } from "@ui";
+import { ColorVariant, DEFAULT_COLOR, DialogPlacement } from "@ui";
 
 const placements: DialogPlacement[] = ['middle', 'left-drawer', 'right-drawer'];
 const colors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
@@ -55,7 +55,7 @@ export const Overview: FC = () => {
 
 export const TallContent: FC = () => {
     const [open, setOpen] = useState(true);
-    const [color, setColor] = useState<ColorVariant>('neutral');
+    const [color, setColor] = useState<ColorVariant>(DEFAULT_COLOR);
 
     return open ? (
         <Dialog

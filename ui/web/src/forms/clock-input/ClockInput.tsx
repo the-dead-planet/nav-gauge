@@ -1,6 +1,6 @@
 import { ComponentProps, FC, useEffect, useRef, useState } from "react";
 import classNames from "classnames";
-import { ClockInputProps, useTheme, STEP_DEG, snapSlice, pointerCoords, svgAtan2ToClockAngle, CLOCK_INPUT_RANGE, DEFAULT_FILL_VARIANT, DEFAULT_SIZE } from "@ui";
+import { ClockInputProps, useTheme, STEP_DEG, snapSlice, pointerCoords, svgAtan2ToClockAngle, CLOCK_INPUT_RANGE, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE } from "@ui";
 import { ClockSvg } from "./ClockSvg";
 import { ClockA11yInput } from "./ClockA11yInput";
 import { ClockContainer } from "./ClockContainer";
@@ -16,7 +16,7 @@ const strokeWidths: Record<string, number> = { xs: 0.75, sm: 1, md: 1.25, lg: 1.
 
 export const ClockInput: FC<ClockInputProps & Omit<ComponentProps<'div'>, 'onChange' | 'value'>> = ({
     id,
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor,
     highlightGlyphsShade,

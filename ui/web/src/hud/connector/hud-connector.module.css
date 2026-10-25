@@ -3,28 +3,42 @@
 }
 
 .connector {
-    fill: var(--connector-color);
+    fill: var(--appearance-default-glyphs);
     height: 100%;
     inset: 0;
     overflow: visible;
     pointer-events: none;
     position: absolute;
-    stroke: var(--connector-color);
+    stroke: var(--appearance-default-glyphs);
     stroke-width: 1;
     width: 100%;
     z-index: var(--layer-hud-connector-z-index);
+    filter: var(--layer-hud-connector-down-filter);
 }
 
 .connector polyline {
     fill: none;
 }
 
-.glow-style-glow .connector,
-.glow-style-animate-borders-glow .connector {
-    filter: drop-shadow(0 0 4px var(--connector-color));
+.glow {
+    stroke: var(--appearance-glow-color);
+    opacity: 0.4;
+    filter: drop-shadow(0 0 4px var(--appearance-glow-color));
 }
 
-.color-neutral { --connector-color: var(--color-neutral); }
-.color-primary { --connector-color: var(--color-primary); }
-.color-secondary { --connector-color: var(--color-secondary); }
-.color-tertiary { --connector-color: var(--color-tertiary); }
+.connector[data-glow="animate-borders-glow"] .glow {
+    stroke-dasharray: 18 8;
+    animation: connector-glow 1.2s linear infinite;
+}
+
+@keyframes connector-glow {
+    to {
+        stroke-dashoffset: -26;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .connector[data-glow="animate-borders-glow"] .glow {
+        animation: none;
+    }
+}

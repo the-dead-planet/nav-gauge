@@ -6,7 +6,7 @@ import {
     ViewStyle,
     type ViewInstance,
 } from "react-native";
-import { DEFAULT_FILL_VARIANT, DEFAULT_SIZE, SliderProps, useTheme } from "@ui";
+import { DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, SliderProps, useTheme } from "@ui";
 import { Text } from "../../design-system/typography";
 import { NumberInput } from "../number-input";
 import { StepControls } from "../step-controls";
@@ -22,7 +22,7 @@ function snap(v: number, min: number, max: number, step: number): number {
 }
 
 export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle }>(({
-    color = 'neutral',
+    color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
     highlightGlyphsShade,

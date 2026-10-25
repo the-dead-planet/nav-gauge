@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { ColorVariant, FillVariant, SizeVariant } from '@ui';
+import { ColorVariant, DEFAULT_COLOR, FillVariant, SizeVariant } from '@ui';
 import { VariantGallery } from '../../storybook/VariantGallery';
 import { NumberInput } from './NumberInput';
 import { colorControl, colorOptions, fillVariantControl, fillVariantOptions, optionalShadeControl, sizeControl, sizeOptions } from '../../storybook/controls';
@@ -38,8 +38,8 @@ const meta = {
         id: 'number-input-playground',
         label: 'Value',
         value: 42,
-        color: 'neutral',
-        highlightColor: 'neutral',
+        color: DEFAULT_COLOR,
+        highlightColor: DEFAULT_COLOR,
         glyphsShade: 700,
         highlightGlyphsShade: 200,
         size: 'sm',

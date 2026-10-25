@@ -1,14 +1,10 @@
-import { ComponentProps, CSSProperties, FC } from "react";
+import { ComponentProps, FC } from "react";
 import { GridProps } from "@ui";
 import classNames from "classnames";
 import styles from "./Grid.module.css";
+import layout from "../layout.module.css";
 
-interface Props {
-    className?: string;
-    style?: CSSProperties;
-}
-
-export const Grid: FC<GridProps & Props & ComponentProps<'div'>> = ({
+export const Grid: FC<GridProps & ComponentProps<"div">> = ({
     cols,
     justifyContent,
     alignItems,
@@ -16,28 +12,22 @@ export const Grid: FC<GridProps & Props & ComponentProps<'div'>> = ({
     rowGap,
     colGap,
     className,
-    style,
     children,
     ...props
-}) => {
-    return (
-        <div
-            className={classNames(
-                styles.grid,
-                {
-                    [styles[`justify-${justifyContent}`]]: !!justifyContent,
-                    [styles[`align-${alignItems}`]]: !!alignItems,
-                    [styles[`gap-${gap}`]]: !!gap,
-                    [styles[`row-gap-${rowGap}`]]: !!rowGap,
-                    [styles[`col-gap-${colGap}`]]: !!colGap,
-                    [styles[`cols-${cols}`]]: !!cols,
-                },
-                className
-            )}
-            style={style}
-            {...props}
-        >
-            {children}
-        </div>
-    );
-};
+}) => (
+    <div
+        {...props}
+        className={classNames(
+            styles.grid,
+            cols && styles[`cols-${cols}`],
+            justifyContent && layout[`justify-${justifyContent}`],
+            alignItems && layout[`align-${alignItems}`],
+            gap && layout[`gap-${gap}`],
+            rowGap && layout[`row-gap-${rowGap}`],
+            colGap && layout[`col-gap-${colGap}`],
+            className,
+        )}
+    >
+        {children}
+    </div>
+);

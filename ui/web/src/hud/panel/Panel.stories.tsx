@@ -1,14 +1,57 @@
-import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { Text } from '../../design-system/typography';
-import { Panel } from './Panel';
-import { colorOptions as colors, fillVariantOptions as variants } from '../../storybook/controls';
+import type { Meta, StoryObj } from "storybook-react-rsbuild";
+import { makeLiveEditStory } from "storybook-addon-code-editor";
+import {
+    appearanceColorOptions,
+    fillVariantOptions,
+    panelStoryArgs,
+    panelStoryControls,
+} from "@ui";
+import { Panel } from "./Panel";
+import { VariantGallery } from "../../storybook/VariantGallery";
+import styles from "../hud.stories.module.css";
 
-const meta = { title: 'Hud/Panel', component: Panel } satisfies Meta<typeof Panel>;
+const meta: Meta<typeof Panel> = {
+    title: "Hud/Panel",
+    component: Panel,
+    args: panelStoryArgs,
+    argTypes: panelStoryControls,
+};
 export default meta;
-type Story = StoryObj<typeof meta>;
-const gridStyle = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 16 } as const;
+type Story = StoryObj<typeof Panel>;
 
-export const Playground: Story = { args: { color: 'primary', variant: 'fill-translucent', highlighted: false, disabled: false, children: <Text>Preview</Text> } };
-export const Gallery: Story = { render: () => <div style={{ display: 'grid', gap: 24 }}>{variants.map((variant) => <section key={variant} style={{ display: 'grid', gap: 10 }}><strong>{variant}</strong><div style={gridStyle}>{colors.map((color) => <Panel key={color} color={color} variant={variant}><Text>{color}</Text></Panel>)}</div></section>)}</div> };
-export const InteractiveGlow: Story = { render: () => <div style={gridStyle}><Panel interactive color="primary"><Text>Default glow</Text></Panel><Panel interactive activeGlow="glow" color="secondary"><Text>Glow</Text></Panel><Panel interactive activeGlow="animate-borders-glow" color="tertiary"><Text>Borders</Text></Panel></div> };
-export const States: Story = { render: () => <div style={gridStyle}><Panel highlighted color="primary" variant="fill-inverse"><Text>Highlighted</Text></Panel><Panel disabled color="primary" variant="fill-inverse"><Text>Disabled</Text></Panel></div> };
+export const Playground: Story = {
+    name: "Playground with Live code editor",
+    render: (args) => (
+        <Panel {...args} tabIndex={args.interactive ? 0 : undefined}>
+            <div className={styles.sample}>{args.children}</div>
+        </Panel>
+    ),
+};
+makeLiveEditStory(Playground, {
+    availableImports: { "@web-ui": { Panel } },
+    code: `import { Panel } from '@web-ui';
+
+export default () => <Panel>Preview</Panel>;`,
+});
+
+export const Gallery: Story = {
+    parameters: { controls: { exclude: ["color", "variant", "shape"] } },
+    render: (args) => (
+        <VariantGallery
+            sizes={["surface"]}
+            colors={appearanceColorOptions}
+            variants={fillVariantOptions}
+            render={({ color, variant }) => (
+                <Panel
+                    {...args}
+                    color={color}
+                    variant={variant}
+                    shape="default"
+                    tabIndex={args.interactive ? 0 : undefined}
+                >
+                    <div className={styles.sample}>{args.children}</div>
+                </Panel>
+            )}
+        />
+    ),
+};

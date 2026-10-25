@@ -1,5 +1,5 @@
 import { StoryControls } from "../../storybook/model";
-import { appearanceColorOptions, sizeOptions } from "../tinkers";
+import { appearanceColorOptions, DEFAULT_COLOR, sizeOptions } from "../tinkers";
 import { allColorShades } from "../theme/tinkers";
 import { Theme } from "../theme/theme";
 import { ThemeAppearanceState } from "../theme/model";
@@ -23,7 +23,7 @@ export const resolveIconGlyphs = (
     const state = resolveIconState(props);
     const color =
         appearanceColorOptions.find((option) => option === props.color) ??
-        "neutral";
+        DEFAULT_COLOR;
     const highlightColor = props.highlightColor ?? color;
     const appearance = theme.resolveAppearance(
         undefined,
@@ -45,7 +45,7 @@ export const resolveIconGlyphs = (
 };
 
 export const iconStoryArgs: IconAppearanceProps = {
-    color: "neutral",
+    color: DEFAULT_COLOR,
     size: "sm",
     highlighted: false,
     disabled: false,

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { Icons, TooltipPlacement } from '@ui';
+import { DEFAULT_COLOR, Icons, TooltipPlacement } from '@ui';
 import { Tooltip } from './Tooltip';
 import { Button } from '../button';
 import { Text } from '../../design-system/typography';
@@ -8,7 +8,7 @@ import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptio
 const meta = {
     title: 'Gizmos/Tooltip',
     component: Tooltip,
-    args: { children: <Button>Hover or focus</Button>, content: 'Tooltip', placement: 'top', color: 'neutral', size: 'sm', variant: 'fill-inverse' },
+    args: { children: <Button>Hover or focus</Button>, content: 'Tooltip', placement: 'top', color: DEFAULT_COLOR, size: 'sm', variant: 'fill-inverse' },
 } satisfies Meta<typeof Tooltip>;
 
 export default meta;

@@ -1,4 +1,4 @@
-import { allColorShades, appearanceColorOptions, fillVariantOptions, sizeOptions } from '../../design-system';
+import { allColorShades, appearanceColorOptions, DEFAULT_COLOR, fillVariantOptions, sizeOptions } from '../../design-system';
 import { StoryControls } from '../../storybook';
 import { ToggleSwitchProps } from './model';
 
@@ -7,7 +7,7 @@ export const toggleSwitchOrientations = ['horizontal', 'vertical'] as const;
 export const toggleSwitchStoryArgs = {
     children: 'Toggle switch',
     checked: false,
-    color: 'neutral',
+    color: DEFAULT_COLOR,
     variant: 'fill-inverse',
     size: 'sm',
     orientation: 'horizontal',

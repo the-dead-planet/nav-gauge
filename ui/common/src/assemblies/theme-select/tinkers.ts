@@ -1,5 +1,6 @@
 import {
     appearanceColorOptions,
+    DEFAULT_COLOR,
     colorOptions,
     fillVariantOptions,
     sizeOptions,
@@ -24,7 +25,7 @@ export const themeSelectColorBoxSizes: Record<SizeVariant, number> = {
 export const themeSelectStoryArgs: ThemeSelectStoryProps = {
     mode: 'dark',
     value: ThemeName.Default,
-    color: 'neutral',
+    color: DEFAULT_COLOR,
     size: 'sm',
     variant: 'fill-inverse',
 };

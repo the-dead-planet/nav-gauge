@@ -8,9 +8,4 @@
 .popup {
     position: absolute;
     pointer-events: auto;
-    box-shadow: var(--layer-popup-down-shadow);
-}
-
-:global(body[data-theme="dark"]) .popup {
-    box-shadow: var(--layer-popup-down-shadow);
 }
