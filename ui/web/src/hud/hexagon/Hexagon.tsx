@@ -121,10 +121,15 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
                         <feMerge>
                             <feMergeNode in="blur2" />
                             <feMergeNode in="blur1" />
-                            <feMergeNode in="SourceGraphic" />
                         </feMerge>
                     </filter>
                 </defs>
+                <polygon
+                    points={points}
+                    fill="none"
+                    strokeWidth={strokeWidth}
+                    className={styles['polygon-glow']}
+                />
                 <polygon
                     points={points}
                     fill="none"
@@ -163,12 +168,6 @@ export const Hexagon: FC<HexagonProps & Props & ComponentProps<'div'>> = ({
                     strokeWidth={strokeWidth * 3}
                     clipPath={`url(#${insetClipPathId})`}
                     className={styles['polygon-inset-highlight-edges']}
-                />
-                <polygon
-                    points={points}
-                    fill="none"
-                    strokeWidth={strokeWidth}
-                    className={styles['polygon-glow']}
                 />
             </svg>
             <div className={styles.content}>

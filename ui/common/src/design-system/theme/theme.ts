@@ -93,6 +93,23 @@ export class Theme {
 
     public colors: { [key in PaletteColor | ColorVariant]: ThemeColor };
 
+    public static resolveColors(
+        specification: ThemeSpecification,
+    ): Record<PaletteColor | ColorVariant, ThemeColor> {
+        const statusPalettes = Object.fromEntries(
+            Object.entries(specification.statusColors).map(([status, selected]) => [
+                status,
+                Theme.palette[selected.name as PaletteColor]
+                ?? specification.colors[selected.name as DesignSystemColor],
+            ]),
+        ) as Record<StatusColor, ThemeColor>;
+        return {
+            ...Theme.palette,
+            ...specification.colors,
+            ...statusPalettes,
+        };
+    }
+
     public static spacing: { [key in SpacingVariant]: string } = themeSpacing;
 
     public static layers: Record<ThemeLayer, ThemeLayerPolicy> = themeLayers;
@@ -112,14 +129,7 @@ export class Theme {
         this.name = specification.themeName;
         this.elevations = elevationSpecifications[this.mode];
         this.statusColors = specification.statusColors;
-        const statusPalettes = Object.fromEntries(
-            Object.entries(this.statusColors).map(([status, selected]) => [
-                status,
-                Theme.palette[selected.name as PaletteColor]
-                ?? specification.colors[selected.name as DesignSystemColor],
-            ]),
-        ) as Record<StatusColor, ThemeColor>;
-        this.colors = Object.assign({}, Theme.palette, specification.colors, statusPalettes);
+        this.colors = Theme.resolveColors(specification);
         const shades: ThemeVariantShades = this.isLight
             ? {
                 base: 500,

@@ -2,38 +2,20 @@ import { FC } from 'react';
 import {
     DEFAULT_FILL_VARIANT,
     DEFAULT_SIZE,
-    DesignSystemColor,
-    Theme,
-    ThemeColor,
+    getThemeColorPreviewGroups,
     ThemeSelectProps,
+    themeSelectColorBoxSizes,
     themeNameOptions,
     themeSpecifications,
 } from '@ui';
-import { ColorBox } from '../../gizmos/color-box';
 import { Dropdown } from '../../forms/dropdown';
+import { ThemeColors } from './ThemeColors';
 import styles from './theme-select.module.css';
 
 interface Props extends ThemeSelectProps {
     labelledBy?: string;
     popoverClassName?: string;
 }
-
-const colorBoxSizes = { xs: 12, sm: 16, md: 20, lg: 24 } as const;
-
-const previewColors: DesignSystemColor[] = [
-    'neutral',
-    'primary',
-    'secondary',
-    'tertiary',
-];
-
-const getPaletteColorName = (color: ThemeColor) => {
-    const name =
-        Object.entries(Theme.palette).find(
-            ([, paletteColor]) => paletteColor === color,
-        )?.[0] ?? 'custom';
-    return name.replaceAll('-', ' ');
-};
 
 export const ThemeSelect: FC<Props> = ({
     mode,
@@ -45,42 +27,24 @@ export const ThemeSelect: FC<Props> = ({
     labelledBy,
     popoverClassName,
 }) => {
-    const options = themeNameOptions.map((option) => ({
-        ...option,
-        prepend: (
-            <span className={styles['color-row']} aria-hidden="true">
-                {previewColors.map((color) => (
-                    <ColorBox
-                        key={color}
-                        name={`${color} - ${getPaletteColorName(themeSpecifications[option.value][mode].colors[color])}`}
-                        color={
-                            themeSpecifications[option.value][mode].colors[
-                                color
-                            ]
-                        }
-                        showPaletteOnHover
-                    />
-                ))}
-            </span>
-        ),
-        selectedPrepend: (
-            <span className={styles['selected-color-row']} aria-hidden="true">
-                {previewColors.map((color) => (
-                    <ColorBox
-                        key={color}
-                        name={`${color} - ${getPaletteColorName(themeSpecifications[option.value][mode].colors[color])}`}
-                        color={
-                            themeSpecifications[option.value][mode].colors[
-                                color
-                            ]
-                        }
-                        size={colorBoxSizes[size]}
-                        showPaletteOnHover
-                    />
-                ))}
-            </span>
-        ),
-    }));
+    const options = themeNameOptions.map((option) => {
+        const groups = getThemeColorPreviewGroups(
+            themeSpecifications[option.value][mode],
+        );
+        return {
+            ...option,
+            prepend: (
+                <ThemeColors groups={groups} className={styles['color-row']} />
+            ),
+            selectedPrepend: (
+                <ThemeColors
+                    groups={groups}
+                    size={themeSelectColorBoxSizes[size]}
+                    className={styles['selected-color-row']}
+                />
+            ),
+        };
+    });
 
     return (
         <Dropdown
