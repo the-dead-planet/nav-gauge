@@ -65,19 +65,6 @@ jobs:
           build: yarn build
           start: yarn rspack preview dist --port 3000
 
-      - name: Upload Cypress screenshots
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: cypress-screenshots
-          path: app-web/cypress/screenshots/
-          retention-days: 7
-
-      - name: Print artifact URL
-        if: always()
-        run: |
-          echo "Screenshots: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifacts"
-
   build-and-push:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' 
@@ -232,16 +219,4 @@ jobs:
         with:
           browser: chrome
           base-url: https://gauge.spookydoodle.com
-
-      - name: Upload Cypress screenshots
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: cypress-screenshots-prod
-          path: app-web/cypress/screenshots/
-          retention-days: 7
-
-      - name: Print artifact URL
-        if: always()
-        run: |
-          echo "Screenshots: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifacts"
+          artifact-name: cypress-screenshots-prod
