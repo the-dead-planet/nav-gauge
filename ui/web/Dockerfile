@@ -1,14 +1,19 @@
+# syntax=docker/dockerfile:1.20
+
 FROM node:24-alpine AS builder
 
 WORKDIR /app/
 
-COPY /package.json /yarn.lock /.yarnrc.yml /tsconfig.base.json /tsconfig.packages.json /tsconfig.web.json ./
+COPY /package.json /yarn.lock /.yarnrc.yml ./
+COPY /.yarn/patches ./.yarn/patches
 
+COPY --parents /tinker-chest/package.json /ui/common/package.json /ui/web/package.json ./
+RUN corepack enable && CYPRESS_INSTALL_BINARY=0 yarn install
+
+COPY /tsconfig.base.json /tsconfig.packages.json /tsconfig.web.json ./
 COPY /tinker-chest ./tinker-chest
 COPY /ui/common ./ui/common
 COPY /ui/web ./ui/web
-
-RUN corepack enable && yarn install --network-timeout 300000
 
 COPY /docs/assets ./docs/assets
 
