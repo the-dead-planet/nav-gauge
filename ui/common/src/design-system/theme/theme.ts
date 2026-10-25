@@ -715,7 +715,7 @@ export class Theme {
     public resolveAppearance = (
         variant?: SurfaceVariant,
         baseColor: PaletteColor | ColorVariant = DEFAULT_COLOR,
-        highlightColor: PaletteColor | ColorVariant = DEFAULT_COLOR,
+        highlightColor: PaletteColor | ColorVariant = baseColor,
         state: ThemeAppearanceState = 'default',
     ): ResolvedThemeAppearance => {
         const policy = this.appearancePolicies[variant ?? 'default'];

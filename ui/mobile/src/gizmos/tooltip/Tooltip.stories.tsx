@@ -1,62 +1,38 @@
-import { ComponentType, FC } from "react";
-import { View, ScrollView, StyleSheet } from "react-native";
-import { Button } from "../button";
-import { Text } from "../../design-system/typography";
-import { TooltipPlacement, Icons, sizeOptions } from "@ui";
+import {
+    TooltipProps,
+    appearanceColorOptions,
+    fillVariantOptions,
+    tooltipStoryArgs,
+    tooltipStoryControls,
+} from "@ui";
 import { Tooltip } from "./Tooltip";
-import { SvgProps } from "react-native-svg";
+import { Button } from "../button";
+import { VariantGallery } from "../../storybook/VariantGallery";
+import { MobileStoryDefinition } from "../../storybook/model";
 
-const styles = StyleSheet.create({
-    container: {
-        padding: 48,
+const story: MobileStoryDefinition<TooltipProps> = {
+    args: {
+        ...tooltipStoryArgs,
+        children: <Button>Long press</Button>,
     },
-    row: {
-        flexDirection: 'row',
-        gap: 16,
-        flexWrap: 'wrap',
-        paddingVertical: 12,
-    },
-    section: {
-        paddingVertical: 12,
-    },
-    label: {
-        marginBottom: 4,
-    },
-});
-
-const allPlacements: TooltipPlacement[] = ['top', 'bottom', 'left', 'right', 'auto'];
-export const Playground: FC = () => (
-    <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.label}>Long press a button to show its tooltip.</Text>
-        <Text style={styles.label}>Placements</Text>
-        <View style={styles.row}>
-            {allPlacements.map((placement) => (
-                <Button
-                    key={placement}
-                    tooltip={`${placement} tooltip`}
-                    tooltipPlacement={placement}
-                    icon={Icons.Beaker as ComponentType<SvgProps>}
-                    variant="ghost"
-                    color="primary"
-                    corners="circle"
-                >
-                    {placement}
-                </Button>
-            ))}
-        </View>
-    </ScrollView>
-);
-
-export const Gallery: FC = () => (
-    <View style={styles.container}>
-        <View style={styles.row}>
-            {sizeOptions.map((size) => (
-                <Tooltip key={size} content={`${size} tooltip`} size={size} placement="top">
-                    <Button icon={Icons.Beaker as ComponentType<SvgProps>} variant="ghost" color="primary">
-                        {size}
-                    </Button>
+    controls: tooltipStoryControls,
+    galleryEditableControls: [
+        "content",
+        "placement",
+        "maxWidth",
+        "showConnection",
+    ],
+    renderPlayground: (args) => <Tooltip {...args} />,
+    renderGallery: (args) => (
+        <VariantGallery
+            colors={appearanceColorOptions}
+            variants={fillVariantOptions}
+            render={({ color, size, variant }) => (
+                <Tooltip {...args} color={color} size={size} variant={variant}>
+                    <Button color={color}>{color}</Button>
                 </Tooltip>
-            ))}
-        </View>
-    </View>
-);
+            )}
+        />
+    ),
+};
+export default story;

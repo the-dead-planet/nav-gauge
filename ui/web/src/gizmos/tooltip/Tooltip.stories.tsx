@@ -1,130 +1,57 @@
-import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { DEFAULT_COLOR, Icons, TooltipPlacement } from '@ui';
-import { Tooltip } from './Tooltip';
-import { Button } from '../button';
-import { Text } from '../../design-system/typography';
-import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptions as allSizes } from '../../storybook/controls';
+import type { Meta, StoryObj } from "storybook-react-rsbuild";
+import { makeLiveEditStory } from "storybook-addon-code-editor";
+import {
+    appearanceColorOptions,
+    fillVariantOptions,
+    sizeOptions,
+    tooltipStoryArgs,
+    tooltipStoryControls,
+} from "@ui";
+import { Tooltip } from "./Tooltip";
+import { Button } from "../button";
+import { VariantGallery } from "../../storybook/VariantGallery";
 
 const meta = {
-    title: 'Gizmos/Tooltip',
+    title: "Gizmos/Tooltip",
     component: Tooltip,
-    args: { children: <Button>Hover or focus</Button>, content: 'Tooltip', placement: 'top', color: DEFAULT_COLOR, size: 'sm', variant: 'fill-inverse' },
+    args: {
+        ...tooltipStoryArgs,
+        children: <Button>Hover, focus or long press</Button>,
+    },
+    argTypes: {
+        ...tooltipStoryControls,
+        children: { control: false },
+    },
 } satisfies Meta<typeof Tooltip>;
-
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {
-    render: (args) => <Tooltip {...args} />,
+    name: "Playground with Live code editor",
 };
+makeLiveEditStory(Playground, {
+    availableImports: { "@web-ui": { Tooltip, Button } },
+    code: `import { Tooltip, Button } from '@web-ui';
 
-const allPlacements: TooltipPlacement[] = ['top', 'bottom', 'left', 'right', 'auto'];
-export const Placements = {
-    render: () => (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 32, padding: 48 }}>
-            <Text>Hover or focus with a keyboard. On touch screens, long press.</Text>
-            <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>
-                {allPlacements.map((placement) => (
-                    <Tooltip key={placement} content={`${placement} tooltip`} placement={placement}>
-                        <Button icon={Icons.Beaker} variant="ghost" color="primary">
-                            {placement}
-                        </Button>
-                    </Tooltip>
-                ))}
-            </div>
-        </div>
-    ),
-};
+export default (props) => <Tooltip {...props}><Button>Hover, focus or long press</Button></Tooltip>;`,
+});
 
-export const Gallery = {
-    render: () => (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 24, padding: 48 }}>
-            <Text>Color variants</Text>
-            <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>
-                {allColors.map((color) => (
-                    <Tooltip key={color} content={`${color} tooltip`} color={color} placement="top">
-                        <Button icon={Icons.Beaker} variant="ghost" color={color}>
-                            {color}
-                        </Button>
-                    </Tooltip>
-                ))}
-            </div>
-        </div>
-    ),
-};
-
-export const Sizes = {
-    render: () => (
-        <div style={{ display: 'flex', gap: 16, alignItems: 'center', padding: 48 }}>
-            {allSizes.map((size) => (
-                <Tooltip key={size} content={`${size} tooltip`} size={size} placement="top">
-                    <Button icon={Icons.Beaker} variant="ghost" color="primary">
-                        {size}
-                    </Button>
+export const Gallery: Story = {
+    argTypes: {
+        color: { table: { disable: true } },
+        variant: { table: { disable: true } },
+        size: { table: { disable: true } },
+    },
+    render: (args) => (
+        <VariantGallery
+            colors={appearanceColorOptions}
+            sizes={sizeOptions}
+            variants={fillVariantOptions}
+            render={({ color, size, variant }) => (
+                <Tooltip {...args} color={color} size={size} variant={variant}>
+                    <Button color={color}>{color}</Button>
                 </Tooltip>
-            ))}
-        </div>
-    ),
-};
-
-export const Variants = {
-    render: () => (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 24, padding: 48 }}>
-            <Text>Fill variants</Text>
-            <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>
-                {allVariants.map((variant) => (
-                    <Tooltip key={variant} content={`${variant} style`} variant={variant} placement="top">
-                        <Button icon={Icons.Beaker} variant="ghost" color="primary">
-                            {variant}
-                        </Button>
-                    </Tooltip>
-                ))}
-            </div>
-        </div>
-    ),
-};
-
-export const AutoDemo = {
-    render: () => (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 32, padding: 48, height: '90vh', justifyContent: 'space-between' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Tooltip content="Auto (near left edge)" placement="auto">
-                    <Button icon={Icons.Beaker} variant="ghost" color="primary" corners="circle" />
-                </Tooltip>
-                <Tooltip content="Auto (near right edge)" placement="auto">
-                    <Button icon={Icons.Beaker} variant="ghost" color="primary" corners="circle" />
-                </Tooltip>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <Tooltip content="Auto (centered)" placement="auto">
-                    <Button icon={Icons.Beaker} variant="ghost" color="primary" corners="circle" />
-                </Tooltip>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-                <Tooltip content="Auto (near bottom-left)" placement="auto">
-                    <Button icon={Icons.Beaker} variant="ghost" color="primary" corners="circle" />
-                </Tooltip>
-                <Tooltip content="Auto (near bottom-right)" placement="auto">
-                    <Button icon={Icons.Beaker} variant="ghost" color="primary" corners="circle" />
-                </Tooltip>
-            </div>
-        </div>
-    ),
-};
-
-export const ShowConnection = {
-    render: () => (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 32, padding: 48 }}>
-            <Text>Tooltips with connection lines</Text>
-            <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>
-                {allPlacements.map((placement) => (
-                    <Tooltip key={placement} content={`${placement} with line`} placement={placement} showConnection>
-                        <Button icon={Icons.Beaker} variant="ghost" color="primary">
-                            {placement}
-                        </Button>
-                    </Tooltip>
-                ))}
-            </div>
-        </div>
+            )}
+        />
     ),
 };

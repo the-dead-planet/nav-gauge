@@ -7,7 +7,7 @@ export type ButtonCorners = 'square' | 'circle' | 'hexagon';
 export interface ButtonProps extends AppearanceProps<SurfaceVariant> {
     activeGlow?: ActiveGlow;
     /**
-     * Defaults to `sm`
+     * Defaults to `square`; circle and hexagon are icon-only.
      */
     corners?: ButtonCorners;
     iconRotateX?: number;

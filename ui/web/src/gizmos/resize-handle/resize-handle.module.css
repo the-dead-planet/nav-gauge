@@ -11,6 +11,7 @@
     bottom: 0;
     width: 8px;
     container-type: size;
+    color: var(--appearance-default-glyphs);
 }
 
 .handle-vertical {
@@ -26,7 +27,7 @@
 .border {
     width: 2px;
     height: 100%;
-    background: var(--handle-color);
+    background: currentColor;
     transition: background 0.15s ease;
     border-radius: 1px;
 }
@@ -36,7 +37,6 @@
     top: 50%;
     width: 8px;
     height: 24px;
-    color: var(--grip-color);
     overflow: visible;
     transform: translateY(-50%);
     transition: color 0.15s ease;
@@ -47,7 +47,7 @@
 }
 
 .grip polygon {
-    fill: var(--grip-fill);
+    fill: var(--appearance-default-surface);
     stroke: currentColor;
     stroke-width: 1;
     vector-effect: non-scaling-stroke;
@@ -87,22 +87,24 @@
     }
 }
 
-.handle:hover .border,
-.handle.dragging .border {
-    background: var(--color-secondary);
+.handle:not(.disabled, .dragging):is(:hover, :focus-visible) {
+    color: var(--appearance-hover-focus-glyphs);
 }
 
-.handle:hover .grip,
-.handle.dragging .grip {
-    color: var(--color-secondary);
+.handle.dragging:not(.disabled) {
+    color: var(--appearance-active-pressed-glyphs);
 }
 
-.handle:hover .grip polygon,
-.handle.dragging .grip polygon {
-    fill: var(--grip-highlight-fill);
+.handle:focus-visible {
+    outline: 2px solid var(--appearance-glow-color);
+    outline-offset: 2px;
 }
 
 .disabled {
     cursor: default;
-    pointer-events: none;
+    color: var(--appearance-disabled-glyphs);
+}
+
+.disabled .grip polygon {
+    fill: var(--appearance-disabled-surface);
 }

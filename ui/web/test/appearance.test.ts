@@ -35,6 +35,9 @@ const { ThemeSelect } =
     require('../src/assemblies/theme-select/ThemeSelect') as typeof import('../src/assemblies/theme-select/ThemeSelect');
 const { Divider } =
     require('../src/chassis/divider/Divider') as typeof import('../src/chassis/divider/Divider');
+const { Button } = require('../src/gizmos/button/Button') as typeof import('../src/gizmos/button/Button');
+const { Chip } = require('../src/gizmos/chip/Chip') as typeof import('../src/gizmos/chip/Chip');
+const { ResizeHandle } = require('../src/gizmos/resize-handle/ResizeHandle') as typeof import('../src/gizmos/resize-handle/ResizeHandle');
 if (previousCssLoader) {
     require.extensions['.css'] = previousCssLoader;
 } else {
@@ -53,6 +56,53 @@ const media = {
 };
 
 describe('Composed appearance rendering', () => {
+    it('gives every button shape one appearance owner and resolves status glyph overrides', () => {
+        const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
+        for (const color of appearanceColorOptions) {
+            for (const corners of ['square', 'circle', 'hexagon'] as const) {
+                const markup = renderToStaticMarkup(createElement(ThemeContext.Provider, {
+                    value: theme,
+                    children: createElement(Button, {
+                        color,
+                        highlightColor: 'intel',
+                        glyphsShade: 500,
+                        highlightGlyphsShade: 200,
+                        corners,
+                        highlighted: true,
+                        disabled: true,
+                        tooltip: 'Launch',
+                    }),
+                }));
+                expect([...markup.matchAll(/data-interactive="true"/g)]).to.have.length(1);
+                expect([...markup.matchAll(/<button/g)]).to.have.length(1);
+                expect(markup).to.include('aria-label="Launch"');
+                expect(markup).to.include('disabled=""');
+                expect(markup).to.include(`--appearance-default-glyphs-override:${theme.color(color, 500)}`);
+                expect(markup).to.include(`--appearance-active-pressed-glyphs-override:${theme.color('intel', 200)}`);
+            }
+        }
+        theme.destroy();
+    });
+
+    it('resets chip defaults and keeps resize grip appearance on its parent for all colors', () => {
+        const chip = renderToStaticMarkup(createElement(Chip, { children: 'Telemetry' }));
+        expect(chip).to.include('data-appearance-variant="ghost"');
+        expect(chip).to.include('data-appearance-color="neutral"');
+        for (const color of appearanceColorOptions) {
+            const handle = renderToStaticMarkup(createElement(ResizeHandle, {
+                direction: 'horizontal',
+                color,
+                disabled: true,
+                tooltip: 'Resize panel',
+                onDrag: () => undefined,
+            }));
+            expect(handle).to.include(`data-appearance-highlight="${color}"`);
+            expect(handle).to.include('aria-disabled="true"');
+            expect(handle).not.to.include('tabindex="0"');
+            expect(handle).not.to.include('--grip-color');
+        }
+    });
+
     it('resets HUD appearance for every color and removes disabled keyboard activation', () => {
         for (const color of appearanceColorOptions) {
             for (const Surface of [Panel, BevelPanel, NotchedPanel]) {

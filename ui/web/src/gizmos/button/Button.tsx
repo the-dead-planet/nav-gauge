@@ -5,6 +5,7 @@ import { Icon } from "../../design-system/icons";
 import { Tooltip } from "../tooltip";
 import { Hexagon } from "../../hud";
 import styles from './button.module.css';
+import surface from '../../hud/surface.module.css';
 
 interface Props {
     /**
@@ -43,7 +44,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
     const effects = theme.resolveAppearance(
         variant,
         color,
-        highlightColor || color,
+        highlightColor ?? color,
         'default',
     ).effects;
     const appearanceOverrides: CSSProperties = {
@@ -63,22 +64,23 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
             onClick={onClick}
             data-appearance-variant={variant}
             data-appearance-color={color}
-            data-appearance-highlight={highlightColor || color}
+            data-appearance-highlight={highlightColor ?? color}
+            data-interactive={corners !== 'hexagon' || undefined}
+            data-highlighted={corners !== 'hexagon' && highlighted || undefined}
+            data-disabled={disabled || undefined}
+            data-glow={activeGlow}
+            data-glyphs-glow={effects.glyphsGlow || undefined}
             aria-label={ariaLabel ?? (!children && typeof tooltip === 'string' ? tooltip : undefined)}
             className={classNames(
                 styles['button'],
-                styles[`glow-style-${activeGlow}`],
+                corners !== 'hexagon' && surface.surface,
+                corners !== 'hexagon' && surface.rectangle,
                 styles[`size-${size}`],
                 styles[`corners-${corners}`],
                 {
                     [styles[`has-icon-${size}`]]: !!icon,
-                    [styles['interactive']]: !!onClick && !disabled,
-                    [styles['highlighted']]: highlighted,
                     [styles[`only-icon-${size}`]]: !!icon && !children,
-                    [styles['disabled']]: disabled,
-                    [styles['glyphs-glow']]: effects.glyphsGlow,
                     [styles['depth-inset']]: effects.depth === 'inset',
-                    [styles['backdrop-blur']]: effects.backdropBlur > 0,
                 },
                 corners !== 'hexagon' ? className : null
             )}
@@ -96,9 +98,8 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
                     style={{
                         '--rotate-x': `${iconRotateX}deg`,
                         '--rotate-z': `${iconRotateZ}deg`,
-                        cursor: disabled ? 'not-allowed' : undefined
                     } as CSSProperties}
-                    className={classNames(styles['icon'], {
+                    className={classNames(styles['icon'], surface.glyph, {
                         [styles['rotate']]: iconRotateX || iconRotateZ
                     })}
                 />
@@ -112,7 +113,7 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
         <Tooltip
             placement={tooltipPlacement}
             content={tooltip}
-            color={highlightColor || color}
+            color={highlightColor ?? color}
             variant={variant === 'fill'
                 ? 'fill'
                 : variant === 'fill-translucent'
@@ -135,8 +136,8 @@ export const Button: FC<ComponentProps<'button'> & Props & ButtonProps> = ({
                 highlightColor={highlightColor}
                 highlighted={highlighted}
                 disabled={disabled}
-                interactive={!disabled}
-                style={{ ...style, ...appearanceOverrides, ...(disabled ? { cursor: 'not-allowed' } : undefined) }}
+                interactive
+                style={{ ...style, ...appearanceOverrides }}
                 className={className}
             >
                 {buttonWithTooltip}

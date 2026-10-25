@@ -1,10 +1,9 @@
-import { ComponentType, FC, useState } from "react";
-import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native";
-import { Path, Svg, SvgProps } from "react-native-svg";
+import { ComponentType, FC, useId, useState } from "react";
+import { LayoutChangeEvent, StyleSheet, View } from "react-native";
+import { ClipPath, Defs, Path, Polyline, Svg, SvgProps } from "react-native-svg";
 import {
     ChipProps,
-    FontWeight,
-    DEFAULT_FILL_VARIANT,
+    DEFAULT_SURFACE_VARIANT,
     DEFAULT_COLOR,
     DEFAULT_SIZE,
     SizeVariant,
@@ -13,7 +12,6 @@ import {
 import { Icon } from "../../design-system/icons";
 import { Tooltip } from "../tooltip";
 import { Text } from "../../design-system/typography";
-import { TRANSLUCENT_OPACITY } from "../../tinkers";
 
 const styles = StyleSheet.create({
     chip: {
@@ -92,7 +90,7 @@ export const Chip: FC<ChipProps & Props> = ({
     color = DEFAULT_COLOR,
     icon,
     size = DEFAULT_SIZE,
-    variant = DEFAULT_FILL_VARIANT,
+    variant = DEFAULT_SURFACE_VARIANT,
     tooltip,
     tooltipPlacement,
     tooltipVariant = 'fill-inverse',
@@ -100,60 +98,9 @@ export const Chip: FC<ChipProps & Props> = ({
     children,
 }) => {
     const theme = useTheme();
-    const appearance = theme.resolveAppearance();
+    const appearance = theme.resolveAppearance(variant, color);
     const [layout, setLayout] = useState({ width: 0, height: 0 });
-
-    const chipColor = theme.color(color);
-    const translucent = (opacity: number) => theme.color(color, undefined, opacity);
-    const background = appearance.surface;
-    const textColor = appearance.glyphs;
-    let iconColor = chipColor;
-
-    const container: ViewStyle = {};
-    let backgroundColor = chipColor;
-    let labelColor = textColor;
-    let labelFontWeight: FontWeight | undefined;
-    let borderWidth = 0;
-    let borderColor = chipColor;
-
-    switch (variant) {
-        case 'fill': {
-            const fillColor = theme.color(color, theme.contrastShade(color));
-            labelColor = fillColor;
-            iconColor = fillColor;
-            break;
-        }
-        case 'fill-inverse':
-            backgroundColor = background;
-            borderWidth = 1;
-            borderColor = chipColor;
-            labelColor = chipColor;
-            break;
-        case 'fill-translucent':
-            backgroundColor = translucent(TRANSLUCENT_OPACITY);
-            borderWidth = 1;
-            borderColor = translucent(0.3);
-            labelColor = chipColor;
-            break;
-        case 'ghost': {
-            const ghostAppearance = theme.resolveAppearance('ghost', color);
-            backgroundColor = ghostAppearance.surface;
-            labelColor = ghostAppearance.glyphs;
-            labelFontWeight = ghostAppearance.fontWeight;
-            iconColor = ghostAppearance.glyphs;
-            break;
-        }
-        case 'outline':
-            backgroundColor = 'transparent';
-            borderWidth = 1;
-            borderColor = chipColor;
-            labelColor = chipColor;
-            break;
-        case 'inset':
-            backgroundColor = translucent(0.04);
-            labelColor = chipColor;
-            break;
-    }
+    const insetClipId = useId();
 
     const onLayout = (e: LayoutChangeEvent) => {
         const { width, height } = e.nativeEvent.layout;
@@ -164,17 +111,40 @@ export const Chip: FC<ChipProps & Props> = ({
         <View
             collapsable={false}
             onLayout={onLayout}
-            style={[styles.chip, container, sizeStyles[size]]}
+            style={[styles.chip, sizeStyles[size]]}
         >
             {layout.width > 0 && layout.height > 0 ? (
                 <Svg style={StyleSheet.absoluteFill} width={layout.width} height={layout.height}>
                     <Path
-                        d={bevelPath(bevelSizes[size], layout.width, layout.height, borderWidth / 2)}
-                        fill={backgroundColor}
-                        stroke={borderWidth ? borderColor : undefined}
-                        strokeWidth={borderWidth}
+                        d={bevelPath(bevelSizes[size], layout.width, layout.height, appearance.border.width / 2)}
+                        fill={appearance.surface}
+                        stroke={appearance.border.color}
+                        strokeWidth={appearance.border.width}
                         vectorEffect="non-scaling-stroke"
                     />
+                    {appearance.effects.depth === 'inset' ? (
+                        <>
+                            <Defs>
+                                <ClipPath id={insetClipId}>
+                                    <Path d={bevelPath(bevelSizes[size], layout.width, layout.height, 0)} />
+                                </ClipPath>
+                            </Defs>
+                            <Polyline
+                                points={`0,${layout.height} 0,0 ${layout.width},0`}
+                                fill="none"
+                                stroke={appearance.effects.inset.shadow}
+                                strokeWidth={6}
+                                clipPath={`url(#${insetClipId})`}
+                            />
+                            <Polyline
+                                points={`0,${layout.height} ${layout.width},${layout.height} ${layout.width},0`}
+                                fill="none"
+                                stroke={appearance.effects.inset.highlight}
+                                strokeWidth={4}
+                                clipPath={`url(#${insetClipId})`}
+                            />
+                        </>
+                    ) : null}
                 </Svg>
             ) : null}
             {icon ? (
@@ -182,14 +152,14 @@ export const Chip: FC<ChipProps & Props> = ({
                     icon={icon}
                     width={iconSizes[size]}
                     height={iconSizes[size]}
-                    color={iconColor}
+                    color={appearance.glyphs}
                 />
             ) : null}
             {children !== undefined && children !== null ? (
                 <Text
-                    fontWeight={labelFontWeight}
+                    fontWeight={appearance.fontWeight}
                     style={{
-                        color: labelColor,
+                        color: appearance.glyphs,
                         fontSize: sizeStyles[size].fontSize,
                         lineHeight: lineHeights[size],
                     }}

@@ -12,7 +12,7 @@ export interface ChipProps {
      */
     size?: SizeVariant;
     /**
-     * Defaults to `fill`
+     * Defaults to `ghost`
      */
     variant?: SurfaceVariant;
     tooltip?: ReactNode;

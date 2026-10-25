@@ -1,16 +1,22 @@
-import { ComponentProps, FC } from 'react';
-import { ScrollView, View, StyleSheet, useWindowDimensions } from "react-native";
+import { ComponentProps, FC } from "react";
+import {
+    ScrollView,
+    View,
+    StyleSheet,
+    useWindowDimensions,
+} from "react-native";
 import { Button } from "./Button";
-import { Text } from '../../design-system/typography';
+import { Text } from "../../design-system/typography";
 import {
     buttonCorners,
+    appearanceColorOptions,
     buttonStoryArgs,
     buttonStoryControls,
     Icons,
     surfaceVariantOptions,
 } from "@ui";
-import { VariantGallery } from '../../storybook/VariantGallery';
-import { MobileStoryDefinition } from '../../storybook/model';
+import { VariantGallery } from "../../storybook/VariantGallery";
+import { MobileStoryDefinition } from "../../storybook/model";
 
 const styles = StyleSheet.create({
     container: {
@@ -32,15 +38,16 @@ const StoryButton: FC<ComponentProps<typeof Button>> = ({
     ...props
 }) => {
     const { width, height } = useWindowDimensions();
-    const buttonChildren = corners === 'square'
-        ? width > height ? children : 'B'
-        : null;
+    const buttonChildren =
+        corners === "square" ? (width > height ? children : "B") : null;
 
     return (
         <Button
             {...props}
             corners={corners}
-            accessibilityLabel={accessibilityLabel ?? (buttonChildren ? undefined : 'Button')}
+            accessibilityLabel={
+                accessibilityLabel ?? (buttonChildren ? undefined : "Button")
+            }
         >
             {buttonChildren}
         </Button>
@@ -59,35 +66,37 @@ const story = {
     controls: {
         ...buttonStoryControls,
         icon: {
-            control: 'select',
-            options: ['None', 'Beaker', 'Light bulb'],
+            control: "select",
+            options: ["None", "Beaker", "Light bulb"],
             mapping: {
                 None: undefined,
                 Beaker: Icons.Beaker,
-                'Light bulb': Icons.NounProject.LightBulbCogWheel,
+                "Light bulb": Icons.NounProject.LightBulbCogWheel,
             },
         },
     },
     galleryEditableControls: [
-        'children',
-        'icon',
-        'glyphsShade',
-        'highlightColor',
-        'highlightGlyphsShade',
-        'activeGlow',
-        'highlighted',
-        'disabled',
-        'tooltip',
-        'tooltipPlacement',
-        'showTooltipConnection',
-        'iconRotateX',
-        'iconRotateZ',
+        "children",
+        "icon",
+        "glyphsShade",
+        "highlightColor",
+        "highlightGlyphsShade",
+        "activeGlow",
+        "highlighted",
+        "disabled",
+        "tooltip",
+        "tooltipPlacement",
+        "showTooltipConnection",
+        "iconRotateX",
+        "iconRotateZ",
     ],
     renderPlayground: (args) => {
         return (
             <StoryButton
                 {...args}
-                accessibilityLabel={args.corners === 'square' ? undefined : 'Button'}
+                accessibilityLabel={
+                    args.corners === "square" ? undefined : "Button"
+                }
             />
         );
     },
@@ -98,6 +107,7 @@ const story = {
                     <View key={corners} style={styles.section}>
                         <Text style={styles.label}>{corners}</Text>
                         <VariantGallery
+                            colors={appearanceColorOptions}
                             variants={surfaceVariantOptions}
                             scrollEnabled={false}
                             render={({ color, size, variant }) => (
@@ -107,7 +117,11 @@ const story = {
                                     color={color}
                                     corners={corners}
                                     size={size}
-                                    accessibilityLabel={corners === 'square' ? undefined : `${corners} button`}
+                                    accessibilityLabel={
+                                        corners === "square"
+                                            ? undefined
+                                            : `${corners} button`
+                                    }
                                 />
                             )}
                         />

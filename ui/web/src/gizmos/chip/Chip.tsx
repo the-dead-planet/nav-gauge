@@ -1,6 +1,6 @@
 import { FC } from "react";
 import classNames from "classnames";
-import { ChipProps, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, SizeVariant, useTheme } from "@ui";
+import { ChipProps, DEFAULT_COLOR, DEFAULT_SURFACE_VARIANT, DEFAULT_SIZE, SizeVariant } from "@ui";
 import { Icon } from "../../design-system/icons";
 import { Tooltip } from "../tooltip";
 import styles from './chip.module.css';
@@ -24,7 +24,7 @@ export const Chip: FC<ChipProps & Props> = ({
     color = DEFAULT_COLOR,
     icon,
     size = DEFAULT_SIZE,
-    variant = DEFAULT_FILL_VARIANT,
+    variant = DEFAULT_SURFACE_VARIANT,
     tooltip,
     tooltipPlacement,
     tooltipVariant = 'fill-inverse',
@@ -32,18 +32,13 @@ export const Chip: FC<ChipProps & Props> = ({
     className,
     children,
 }) => {
-    const theme = useTheme();
-
     const chip = (
         <span
-            data-appearance-variant={variant === 'ghost' ? variant : undefined}
-            data-appearance-color={variant === 'ghost' ? color : undefined}
+            data-appearance-variant={variant}
+            data-appearance-color={color}
             className={classNames(
                 styles['chip'],
-                styles[`mode-${theme.mode}`],
-                styles[`color-${color}`],
                 styles[`size-${size}`],
-                styles[`variant-${variant}`],
                 className,
             )}>
             {icon ? <Icon src={icon} width={iconSizes[size]} height={iconSizes[size]} /> : null}
