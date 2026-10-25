@@ -4,3 +4,73 @@
     align-items: center;
     justify-content: center;
 }
+
+.icon {
+    flex: none;
+    width: var(--icon-width, var(--size-control-sm-icon-size));
+    height: var(--icon-height, var(--size-control-sm-icon-size));
+    color: inherit;
+}
+
+.size-xs {
+    width: var(--icon-width, var(--size-control-xs-icon-size));
+    height: var(--icon-height, var(--size-control-xs-icon-size));
+}
+
+.size-md {
+    width: var(--icon-width, var(--size-control-md-icon-size));
+    height: var(--icon-height, var(--size-control-md-icon-size));
+}
+
+.size-lg {
+    width: var(--icon-width, var(--size-control-lg-icon-size));
+    height: var(--icon-height, var(--size-control-lg-icon-size));
+}
+
+.icon > span,
+.icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.icon svg {
+    fill: var(--icon-fill, currentColor);
+    stroke: var(--icon-stroke, currentColor);
+    stroke-width: var(--icon-stroke-width, inherit);
+}
+
+.icon[data-appearance-variant] {
+    --appearance-default-glyphs-override: initial;
+    --appearance-hover-focus-glyphs-override: initial;
+    --appearance-active-pressed-glyphs-override: initial;
+}
+
+.icon[data-appearance-state="default"] {
+    color: var(
+        --appearance-default-glyphs-override,
+        var(--appearance-default-glyphs)
+    );
+}
+
+.icon[data-appearance-state="hover-focus"] {
+    color: var(
+        --appearance-hover-focus-glyphs-override,
+        var(--appearance-hover-focus-glyphs)
+    );
+}
+
+.icon[data-appearance-state="active-pressed"] {
+    color: var(
+        --appearance-active-pressed-glyphs-override,
+        var(--appearance-active-pressed-glyphs)
+    );
+}
+
+.icon[data-appearance-state="disabled"] {
+    color: var(--appearance-disabled-glyphs);
+}
+
+.icon[data-appearance-state="disabled"] svg {
+    fill: currentColor;
+    stroke: currentColor;
+}

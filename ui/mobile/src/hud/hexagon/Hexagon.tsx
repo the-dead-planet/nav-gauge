@@ -203,13 +203,13 @@ export const Hexagon = forwardRef<ViewInstance, HexagonProps & Props>(
 
             return (
                 <>
+                    {renderGlow()}
                     <Polygon
                         points={points}
                         fill={appearance.surface}
                         stroke={appearance.border.color}
                         strokeWidth={appearance.border.width ? strokeWidth : 0}
                     />
-                    {renderGlow()}
                 </>
             );
         };

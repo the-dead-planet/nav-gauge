@@ -1,35 +1,15 @@
 import { FC } from 'react';
-import { StyleSheet, View } from 'react-native';
 import {
     DEFAULT_FILL_VARIANT,
     DEFAULT_SIZE,
-    DesignSystemColor,
+    getThemeColorPreviewGroups,
     ThemeSelectProps,
+    themeSelectColorBoxSizes,
     themeNameOptions,
     themeSpecifications,
 } from '@ui';
-import { ColorBox } from '../../gizmos/color-box';
 import { Dropdown } from '../../forms/dropdown';
-
-const styles = StyleSheet.create({
-    colorRow: {
-        flexDirection: 'row',
-        gap: 2,
-    },
-    selectedColorRow: {
-        flexDirection: 'row',
-        gap: 4,
-    },
-});
-
-const previewColors: DesignSystemColor[] = [
-    'neutral',
-    'primary',
-    'secondary',
-    'tertiary',
-];
-
-const colorBoxSizes = { xs: 12, sm: 16, md: 20, lg: 24 } as const;
+import { ThemeColors } from './ThemeColors';
 
 export const ThemeSelect: FC<ThemeSelectProps> = ({
     mode,
@@ -39,39 +19,23 @@ export const ThemeSelect: FC<ThemeSelectProps> = ({
     size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
 }) => {
-    const options = themeNameOptions.map((option) => ({
-        ...option,
-        label: String(option.label),
-        prepend: (
-            <View style={styles.colorRow} accessibilityElementsHidden>
-                {previewColors.map((color) => (
-                    <ColorBox
-                        key={color}
-                        color={
-                            themeSpecifications[option.value][mode].colors[
-                                color
-                            ]
-                        }
-                    />
-                ))}
-            </View>
-        ),
-        selectedPrepend: (
-            <View style={styles.selectedColorRow} accessibilityElementsHidden>
-                {previewColors.map((color) => (
-                    <ColorBox
-                        key={color}
-                        color={
-                            themeSpecifications[option.value][mode].colors[
-                                color
-                            ]
-                        }
-                        size={colorBoxSizes[size]}
-                    />
-                ))}
-            </View>
-        ),
-    }));
+    const options = themeNameOptions.map((option) => {
+        const groups = getThemeColorPreviewGroups(
+            themeSpecifications[option.value][mode],
+        );
+        return {
+            ...option,
+            label: String(option.label),
+            prepend: <ThemeColors groups={groups} />,
+            selectedPrepend: (
+                <ThemeColors
+                    groups={groups}
+                    size={themeSelectColorBoxSizes[size]}
+                    selected
+                />
+            ),
+        };
+    });
 
     return (
         <Dropdown

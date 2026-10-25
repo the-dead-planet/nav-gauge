@@ -1,9 +1,14 @@
-import { FC } from "react";
-import { ReactSVG } from 'react-svg';
+import { CSSProperties, FC } from "react";
+import { ReactSVG } from "react-svg";
 import classNames from "classnames";
 import { IconProps } from "./model";
-import { Icons } from "@ui";
-import styles from './icon.module.css';
+import {
+    appearanceColorOptions,
+    DEFAULT_SIZE,
+    Icons,
+    resolveIconState,
+} from "@ui";
+import styles from "./icon.module.css";
 
 interface Props {
     src: string;
@@ -13,31 +18,52 @@ interface Props {
     ariaHidden?: boolean;
 }
 
-export const Icon: FC<Props & IconProps> = ({ src, width = 24, height = 24, strokeWidth, ariaHidden = true, className, fallback: userFallback, ...props }) => {
-    const color = props.color;
-    const fill = props.fill || color;
-    const stroke = props.stroke || color;
+export const Icon: FC<Props & IconProps> = ({
+    src,
+    width,
+    height,
+    size = DEFAULT_SIZE,
+    color,
+    highlightColor,
+    glyphsShade,
+    highlightGlyphsShade,
+    highlighted,
+    disabled,
+    appearanceState,
+    fill,
+    stroke,
+    strokeWidth,
+    ariaHidden = true,
+    className,
+    style,
+    fallback,
+    ...props
+}) => {
+    const state = resolveIconState({ disabled, highlighted, appearanceState });
+    const paletteColor = appearanceColorOptions.find(
+        (option) => option === color,
+    );
+    const ownsAppearance =
+        color !== undefined ||
+        highlightColor !== undefined ||
+        glyphsShade !== undefined ||
+        highlightGlyphsShade !== undefined ||
+        highlighted ||
+        disabled ||
+        appearanceState !== undefined;
+    const selectedColor = paletteColor ?? "neutral";
+    const selectedHighlight = highlightColor ?? selectedColor;
+    const dimension = (value: typeof width): string | undefined =>
+        value === undefined
+            ? undefined
+            : typeof value === "number" || /^\d+(\.\d+)?$/.test(value)
+                ? `${value}px`
+                : value;
 
-    const beforeInjection = (svg: SVGSVGElement) => {
-        svg.setAttribute('style', `
-            width:${width}px;
-            height:${height}px;
-            fill:${fill || 'currentColor'};
-            stroke:${stroke || 'currentColor'};
-            color:${color || 'inherit'};
-            stroke-width:${strokeWidth || 'inherit'}px
-        `);
-    };
-
-    const fallback = () => (
+    const fallbackIcon = () => (
         <Icon
-            color={color}
-            fill={fill}
-            stroke={stroke}
-            width={width}
-            height={height}
-            strokeWidth={strokeWidth}
-            ariaHidden={ariaHidden}
+            width="100%"
+            height="100%"
             src={Icons.NounProject.Crash}
             fallback={() => <span>Err!</span>}
         />
@@ -45,13 +71,47 @@ export const Icon: FC<Props & IconProps> = ({ src, width = 24, height = 24, stro
 
     return (
         <ReactSVG
-            key={[width, height, fill, stroke, color, strokeWidth].join('')}
             src={src}
-            fallback={userFallback || fallback}
+            fallback={fallback ?? fallbackIcon}
             wrapper="span"
             aria-hidden={ariaHidden}
-            beforeInjection={beforeInjection}
-            className={classNames(styles['icon'], className)}
+            role={ariaHidden ? undefined : "img"}
+            aria-disabled={state === "disabled" || undefined}
+            data-appearance-variant={ownsAppearance ? "default" : undefined}
+            data-appearance-color={ownsAppearance ? selectedColor : undefined}
+            data-appearance-highlight={
+                ownsAppearance ? selectedHighlight : undefined
+            }
+            data-appearance-state={ownsAppearance ? state : undefined}
+            className={classNames(
+                styles.icon,
+                styles[`size-${size}`],
+                className,
+            )}
+            style={
+                {
+                    ...style,
+                    "--icon-width": dimension(width),
+                    "--icon-height": dimension(height),
+                    "--icon-fill": fill,
+                    "--icon-stroke": stroke,
+                    "--icon-stroke-width": strokeWidth,
+                    "--appearance-default-glyphs-override":
+                        glyphsShade === undefined
+                            ? paletteColor
+                                ? undefined
+                                : color
+                            : `var(--color-${selectedColor}-${glyphsShade})`,
+                    "--appearance-hover-focus-glyphs-override":
+                        highlightGlyphsShade === undefined
+                            ? undefined
+                            : `var(--color-${selectedHighlight}-${highlightGlyphsShade})`,
+                    "--appearance-active-pressed-glyphs-override":
+                        highlightGlyphsShade === undefined
+                            ? undefined
+                            : `var(--color-${selectedHighlight}-${highlightGlyphsShade})`,
+                } as CSSProperties
+            }
             {...props}
         />
     );
