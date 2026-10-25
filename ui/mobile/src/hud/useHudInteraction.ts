@@ -78,5 +78,5 @@ export const useHudInteraction = ({
             onBlur?.(event);
         },
     };
-    return { state, interaction };
+    return { state, interaction, focused: focused && !disabled };
 };

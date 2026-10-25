@@ -1,32 +1,40 @@
 import { FC } from "react";
-import { DEFAULT_COLOR, getResizeHandleGripPoints, ResizeHandleGripProps, useTheme } from "@ui";
-import styles from './resize-handle.module.css';
+import {
+    FillVariant,
+    getResizeHandleGripPoints,
+    ResizeHandleGripProps,
+} from "@ui";
+import styles from "./resize-handle.module.css";
 
-export const ResizeHandleGrip: FC<ResizeHandleGripProps> = ({
-    direction = 'horizontal',
-    side,
-    color = DEFAULT_COLOR,
-    position,
-}) => {
-    const theme = useTheme();
-    const gripSide = side ?? (direction === 'horizontal' ? 'right' : 'top');
+export const ResizeHandleGrip: FC<
+    ResizeHandleGripProps & { variant: FillVariant }
+> = ({ direction = "horizontal", side, position, variant }) => {
+    const gripSide = side ?? (direction === "horizontal" ? "right" : "top");
+    const viewBox = direction === "horizontal" ? "0 0 8 24" : "0 0 24 8";
+    const points = getResizeHandleGripPoints(direction, gripSide);
+    const backdropMask = `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" preserveAspectRatio="none"><polygon points="${points}" fill="white"/></svg>`)}")`;
 
     return (
-        <svg
-            key={position}
-            className={styles['grip']}
-            style={{
-                '--grip-position': `${position}%`,
-                '--grip-color': theme.color(color, theme.isLight ? 500 : 600, 0.5),
-                '--grip-fill': theme.color(color, theme.isLight ? 200 : 900, 0.8),
-                '--grip-highlight-fill': theme.color('secondary', theme.isLight ? 200 : 900, 0.8),
-            } as React.CSSProperties}
-            viewBox={direction === 'horizontal' ? '0 0 8 24' : '0 0 24 8'}
+        <span
+            className={styles["grip"]}
+            data-appearance-variant={variant}
+            style={
+                {
+                    "--grip-position": `${position}%`,
+                } as React.CSSProperties
+            }
             aria-hidden="true"
         >
-            <polygon
-                points={getResizeHandleGripPoints(direction, gripSide)}
+            <span
+                className={styles["grip-backdrop"]}
+                style={{
+                    maskImage: backdropMask,
+                    WebkitMaskImage: backdropMask,
+                }}
             />
-        </svg>
+            <svg className={styles["grip-drawing"]} viewBox={viewBox}>
+                <polygon points={points} />
+            </svg>
+        </span>
     );
 };

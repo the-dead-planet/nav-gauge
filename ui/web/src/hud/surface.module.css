@@ -19,7 +19,7 @@
                 var(--appearance-border-width-scale, 1)
         )
         solid var(--appearance-default-border);
-    backdrop-filter: blur(var(--appearance-backdrop-blur));
+    backdrop-filter: var(--appearance-backdrop-filter);
 }
 
 .drawing {
@@ -242,6 +242,37 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
+    border-radius: inherit;
+}
+
+.rectangle[data-depth="inset"] {
+    box-shadow: var(--appearance-inset-default-shadow);
+}
+
+.rectangle[data-depth="inset"]:not([data-disabled="true"]):is(
+        [data-highlighted="true"],
+        [data-pressed="true"],
+        [data-interactive="true"]:active,
+        [data-interactive="true"]:has(:active)
+    ) {
+    box-shadow: var(--appearance-inset-active-pressed-shadow);
+}
+
+.surface[data-glyphs-glow="true"][data-glow]:not(
+        [data-glow="none"],
+        [data-disabled="true"]
+    ):is(
+        [data-highlighted="true"],
+        [data-pressed="true"],
+        [data-interactive="true"]:is(
+            :hover,
+            :focus-visible,
+            :has(:focus-visible),
+            :active,
+            :has(:active)
+        )
+    ) [data-appearance-glyph] {
+    filter: drop-shadow(0 0 12px rgb(from var(--appearance-glow-color) r g b / 0.45));
 }
 
 .rectangle[data-glow]:not([data-glow="none"], [data-disabled="true"]):is(

@@ -1,62 +1,80 @@
-import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { makeLiveEditStory } from 'storybook-addon-code-editor';
-import { allColorShades, Theme } from '@ui';
-import { ColorBox } from './ColorBox';
+import type { Meta, StoryObj } from "storybook-react-rsbuild";
+import { makeLiveEditStory } from "storybook-addon-code-editor";
+import {
+    allColorShades,
+    colorBoxStoryArgs,
+    colorBoxStoryControls,
+    sizeOptions,
+    Theme,
+} from "@ui";
+import { ColorBox } from "./ColorBox";
 
 const meta = {
-    title: 'Gizmos/Color Box',
+    title: "Gizmos/Color Box",
     component: ColorBox,
-    args: {
-        name: 'Copper',
-        color: Theme.palette.copper,
-        shade: 500,
-        size: 24,
-        showPaletteOnHover: true,
-    },
+    args: colorBoxStoryArgs,
     argTypes: {
+        ...colorBoxStoryControls,
         color: {
-            control: 'select',
+            control: "select",
             options: Object.keys(Theme.palette),
             mapping: Theme.palette,
         },
-        shade: {
-            control: 'select',
-            options: allColorShades,
-        },
-        size: {
-            control: { type: 'range', min: 8, max: 64, step: 1 },
-        },
     },
 } satisfies Meta<typeof ColorBox>;
-
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {
-    name: 'Playground with Live code editor',
+    name: "Playground with Live code editor",
 };
-
 makeLiveEditStory(Playground, {
-    availableImports: { '@web-ui': { ColorBox }, '@ui': { Theme } },
+    availableImports: { "@web-ui": { ColorBox }, "@ui": { Theme } },
     code: `import { Theme } from '@ui';
 import { ColorBox } from '@web-ui';
 
-export default () => <ColorBox color={Theme.palette.copper} size={24} showPaletteOnHover />;`,
-    modifyEditor: (monaco) => monaco.editor.setTheme('vs-dark'),
+export default () => <ColorBox color={Theme.palette.copper} size="sm" showPaletteOnHover />;`,
+    modifyEditor: (monaco) => monaco.editor.setTheme("vs-dark"),
 });
 
 export const Gallery: Story = {
-    render: () => (
-        <div style={{ display: 'flex', gap: 8 }}>
-            {Object.entries(Theme.palette).map(([name, color]) => (
-                <ColorBox
-                    key={name}
-                    name={name}
-                    color={color}
-                    size={24}
-                    showPaletteOnHover
-                />
-            ))}
-        </div>
+    argTypes: {
+        color: { table: { disable: true } },
+        size: { table: { disable: true } },
+        shade: { table: { disable: true } },
+        name: { table: { disable: true } },
+    },
+    render: (args) => (
+        <table>
+            <caption>Copper</caption>
+            <thead>
+                <tr>
+                    <th scope="col">Size</th>
+                    {allColorShades.map((shade) => (
+                        <th key={shade} scope="col">
+                            {shade}
+                        </th>
+                    ))}
+                </tr>
+            </thead>
+            <tbody>
+                {sizeOptions.map((size) => (
+                    <tr key={size}>
+                        <th scope="row">{size}</th>
+                        {allColorShades.map((shade) => (
+                            <td key={shade}>
+                                <ColorBox
+                                    {...args}
+                                    name="Copper"
+                                    color={Theme.palette.copper}
+                                    size={size}
+                                    shade={shade}
+                                />
+                            </td>
+                        ))}
+                    </tr>
+                ))}
+            </tbody>
+        </table>
     ),
 };

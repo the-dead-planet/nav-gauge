@@ -1,7 +1,7 @@
 import { FC, useRef, useState } from "react";
 import classNames from "classnames";
 import { ResizeHandleGrip } from "./ResizeHandleGrip";
-import { DEFAULT_COLOR, ResizeHandleProps, useTheme } from "@ui";
+import { DEFAULT_COLOR, DEFAULT_FILL_VARIANT, ResizeHandleProps } from "@ui";
 import styles from './resize-handle.module.css';
 import { Tooltip } from "../tooltip";
 
@@ -9,13 +9,14 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
     direction = 'horizontal',
     side,
     color = DEFAULT_COLOR,
+    highlightColor,
+    variant = DEFAULT_FILL_VARIANT,
     onDrag,
     onDragStart,
     onDragEnd,
     disabled = false,
     tooltip,
 }) => {
-    const theme = useTheme();
     const [isDragging, setIsDragging] = useState(false);
     const lastPositionRef = useRef<{ x: number; y: number } | null>(null);
     const gripSide = side ?? (direction === 'horizontal' ? 'right' : 'top');
@@ -26,14 +27,14 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
         }
         e.preventDefault();
         e.stopPropagation();
-        (e.target as HTMLElement).setPointerCapture(e.pointerId);
+        e.currentTarget.setPointerCapture(e.pointerId);
         lastPositionRef.current = { x: e.clientX, y: e.clientY };
         setIsDragging(true);
         onDragStart?.(direction === 'horizontal' ? e.clientX : e.clientY);
     };
 
     const handlePointerMove = (e: React.PointerEvent) => {
-        if (!lastPositionRef.current) {
+        if (!lastPositionRef.current || disabled) {
             return;
         }
         const delta = direction === 'horizontal'
@@ -49,7 +50,7 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
         if (!lastPositionRef.current) {
             return;
         }
-        (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+        e.currentTarget.releasePointerCapture(e.pointerId);
         lastPositionRef.current = null;
         setIsDragging(false);
         onDragEnd?.();
@@ -63,12 +64,20 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
                 { [styles['dragging']]: isDragging },
                 { [styles['disabled']]: disabled },
             )}
-            style={{
-                '--handle-color': theme.color(color, 500, color === 'neutral' ? 0.4 : 1),
-            } as React.CSSProperties}
+            data-appearance-variant="outline"
+            data-appearance-color={color}
+            data-appearance-highlight={highlightColor ?? color}
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
+            onPointerCancel={handlePointerUp}
+            onLostPointerCapture={() => {
+                if (lastPositionRef.current) {
+                    lastPositionRef.current = null;
+                    setIsDragging(false);
+                    onDragEnd?.();
+                }
+            }}
             onKeyDown={(event) => {
                 const delta = direction === 'horizontal'
                     ? event.key === 'ArrowLeft' ? -10 : event.key === 'ArrowRight' ? 10 : 0
@@ -82,6 +91,7 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
             }}
             role="separator"
             aria-orientation={direction === 'horizontal' ? 'vertical' : 'horizontal'}
+            aria-disabled={disabled || undefined}
             aria-label={typeof tooltip === 'string' ? tooltip : undefined}
             tabIndex={disabled ? undefined : 0}
         >
@@ -90,8 +100,7 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
                 <ResizeHandleGrip
                     key={position}
                     position={position}
-                    isDragging={isDragging}
-                    color={color}
+                    variant={variant}
                     direction={direction}
                     side={side}
                 />
@@ -99,5 +108,5 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
         </div>
     );
 
-    return <Tooltip content={tooltip} color="secondary" placement={gripSide}>{handle}</Tooltip>;
+    return <Tooltip content={tooltip} color={highlightColor ?? color} placement={gripSide}>{handle}</Tooltip>;
 };

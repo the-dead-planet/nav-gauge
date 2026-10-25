@@ -6,7 +6,7 @@ export const allColorShades: ColorShade[] = [50, 100, 200, 300, 400, 500, 600, 7
 export const themeSizes: ThemeSizes = {
     control: {
         xs: {
-            height: 24,
+            height: 18,
             fontSize: 12,
             iconSize: 12,
             gap: 4,

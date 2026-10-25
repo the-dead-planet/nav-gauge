@@ -1,10 +1,13 @@
 import { ReactNode } from 'react';
-import { ColorVariant } from '../../design-system/model';
+import { ColorVariant, FillVariant } from '../../design-system/model';
 
 export interface ResizeHandleProps {
     direction: 'horizontal' | 'vertical';
     side?: 'top' | 'right' | 'left';
     color?: ColorVariant;
+    highlightColor?: ColorVariant;
+    /** Appearance of the decorative grips only. Defaults to `fill-inverse`. */
+    variant?: FillVariant;
     onDrag: (delta: number) => void;
     onDragStart?: (clientX: number) => void;
     onDragEnd?: () => void;
@@ -14,8 +17,6 @@ export interface ResizeHandleProps {
 
 export interface ResizeHandleGripProps {
     position: number;
-    isDragging: boolean;
     direction: ResizeHandleProps['direction'];
     side?: ResizeHandleProps['side'];
-    color?: ResizeHandleProps['color'];
 }

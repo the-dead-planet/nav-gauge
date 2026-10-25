@@ -1,8 +1,10 @@
 import { ReactNode } from "react";
 import { ColorVariant, SizeVariant, SurfaceVariant } from "../../design-system/model";
 import { TooltipProps } from "../tooltip";
+import { FontType } from "../../design-system/typography";
 
 export interface ChipProps {
+    fontType?: FontType;
     /**
      * Defaults to `neutral`
      */
@@ -12,7 +14,7 @@ export interface ChipProps {
      */
     size?: SizeVariant;
     /**
-     * Defaults to `fill`
+     * Defaults to `ghost`
      */
     variant?: SurfaceVariant;
     tooltip?: ReactNode;

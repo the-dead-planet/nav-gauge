@@ -1,15 +1,19 @@
 import { FC, Fragment } from 'react';
-import { ThemeSelectColorPreview } from '@ui';
+import { ColorBoxProps, DEFAULT_SIZE, ThemeSelectColorPreview } from '@ui';
 import { ColorBox } from '../../gizmos/color-box';
 import { Divider } from '../../chassis/divider';
 
 interface Props {
     groups: ThemeSelectColorPreview[][];
-    size?: number;
+    size?: ColorBoxProps['size'];
     className: string;
 }
 
-export const ThemeColors: FC<Props> = ({ groups, size, className }) => (
+export const ThemeColors: FC<Props> = ({
+    groups,
+    size = DEFAULT_SIZE,
+    className,
+}) => (
     <span className={className} aria-hidden="true">
         {groups.map((group, index) => (
             <Fragment key={index}>

@@ -4,7 +4,6 @@ import {
     DEFAULT_SIZE,
     getThemeColorPreviewGroups,
     ThemeSelectProps,
-    themeSelectColorBoxSizes,
     themeNameOptions,
     themeSpecifications,
     DEFAULT_COLOR,
@@ -27,11 +26,11 @@ export const ThemeSelect: FC<ThemeSelectProps> = ({
         return {
             ...option,
             label: String(option.label),
-            prepend: <ThemeColors groups={groups} />,
+            prepend: <ThemeColors size="xs" groups={groups} />,
             selectedPrepend: (
                 <ThemeColors
                     groups={groups}
-                    size={themeSelectColorBoxSizes[size]}
+                    size="xs"
                     selected
                 />
             ),

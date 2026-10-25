@@ -1,22 +1,84 @@
-import { FC } from 'react';
-import { View } from 'react-native';
-import { ColorBoxProps } from '@ui';
+import { FC } from "react";
+import { StyleSheet, View } from "react-native";
+import {
+    allColorShades,
+    ColorBoxProps,
+    DEFAULT_SIZE,
+    toCssColor,
+    useTheme,
+} from "@ui";
+import { Tooltip } from "../tooltip";
+import { Text } from "../../design-system/typography";
+
+const styles = StyleSheet.create({
+    swatch: {
+        flexShrink: 0,
+    },
+    palette: {
+        flexDirection: "row",
+    },
+    shade: {
+        width: 16,
+        height: 28,
+    },
+});
 
 export const ColorBox: FC<ColorBoxProps> = ({
+    name = "Color",
     color,
     shade = 500,
-    size = 12,
+    size = DEFAULT_SIZE,
+    showPaletteOnHover = false,
 }) => {
-    const { r, g, b } = color[shade];
-    return (
+    const theme = useTheme();
+    const appearance = theme.resolveAppearance();
+    const sideLength =
+        typeof size === "number" ? size : theme.sizes.control[size].height;
+    const swatch = (
         <View
-            style={{
-                width: size,
-                height: size,
-                borderWidth: 1,
-                borderColor: 'rgba(255, 255, 255, 0.2)',
-                backgroundColor: `rgb(${r}, ${g}, ${b})`,
-            }}
+            accessible
+            accessibilityRole="image"
+            accessibilityLabel={`${name}, shade ${shade}`}
+            style={[
+                styles.swatch,
+                {
+                    width: sideLength,
+                    height: sideLength,
+                    borderWidth: appearance.border.width,
+                    borderColor: appearance.border.color,
+                    backgroundColor: toCssColor({ ...color[shade], a: 1 }),
+                },
+            ]}
         />
+    );
+
+    return showPaletteOnHover ? (
+        <Tooltip
+            content={
+                <View>
+                    <Text>{name}</Text>
+                    <View style={styles.palette}>
+                        {allColorShades.map((paletteShade) => (
+                            <View
+                                key={paletteShade}
+                                style={[
+                                    styles.shade,
+                                    {
+                                        backgroundColor: toCssColor({
+                                            ...color[paletteShade],
+                                            a: 1,
+                                        }),
+                                    },
+                                ]}
+                            />
+                        ))}
+                    </View>
+                </View>
+            }
+        >
+            {swatch}
+        </Tooltip>
+    ) : (
+        swatch
     );
 };

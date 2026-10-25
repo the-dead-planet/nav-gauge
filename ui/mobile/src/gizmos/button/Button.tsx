@@ -1,17 +1,28 @@
-import { Children, ComponentType, FC, Ref, useState } from "react";
+import { Children, ComponentType, FC, Ref } from "react";
 import {
     Pressable,
     PressableProps,
     View,
+    StyleSheet,
     type ViewInstance,
 } from "react-native";
-import { ButtonProps, DEFAULT_COLOR, DEFAULT_SIZE, DEFAULT_SURFACE_VARIANT, useTheme } from "@ui";
+import { ButtonProps, DEFAULT_COLOR, DEFAULT_SIZE, DEFAULT_SURFACE_VARIANT, hexagonGeometry, useTheme } from "@ui";
 import { Icon } from "../../design-system/icons";
 import { SvgProps } from "react-native-svg";
-import { Hexagon } from "../../hud";
+import { HexagonSurface } from '../../hud/hexagon/HexagonSurface';
+import { useHudInteraction } from '../../hud/useHudInteraction';
 import { Tooltip } from "../tooltip";
 import { MutableViewStyle } from "../../model";
 import { Text } from "../../design-system/typography";
+
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        boxSizing: 'border-box',
+    },
+});
 
 export interface MobileButtonProps {
     forwardRef?: Ref<ViewInstance>;
@@ -22,6 +33,7 @@ export interface MobileButtonProps {
 export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     forwardRef,
     color = DEFAULT_COLOR,
+    fontType,
     glyphsShade,
     highlightColor = color,
     highlightGlyphsShade,
@@ -44,34 +56,34 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     onLongPress,
     onPressIn,
     onPressOut,
+    onHoverIn,
+    onHoverOut,
+    onFocus,
+    onBlur,
+    accessibilityLabel,
     accessibilityRole,
     accessibilityState,
     ...props
 }) => {
     const theme = useTheme();
-    const [pressed, setPressed] = useState(false);
-
-    const isActiveState = !disabled && (pressed || highlighted);
+    const { state, interaction, focused } = useHudInteraction({ disabled, highlighted, onPressIn, onPressOut, onHoverIn, onHoverOut, onFocus, onBlur });
+    const isInteractiveState = state === 'active-pressed' || state === 'hover-focus';
     const appearance = theme.resolveAppearance(
         variant,
         color,
         highlightColor,
-        disabled ? "disabled" : isActiveState ? "active-pressed" : "default",
+        state,
     );
     const showGlow =
-        !disabled && activeGlow !== "none" && isActiveState;
+        activeGlow !== "none" && isInteractiveState;
 
     const showTextGlow = showGlow && appearance.effects.glyphsGlow;
     const controlSize = theme.sizes.control[size];
 
     const container: MutableViewStyle = {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-        boxSizing: "border-box",
         height: controlSize.height,
         minWidth: icon ? controlSize.height : undefined,
-        paddingHorizontal: !children
+        paddingHorizontal: !(children ?? title)
             ? controlSize.iconPaddingInline
             : controlSize.paddingInline,
         paddingVertical: controlSize.paddingBlock,
@@ -79,13 +91,13 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         backgroundColor: appearance.surface,
         borderColor: appearance.border.color,
         borderWidth: appearance.border.width,
+        outlineStyle: 'solid',
+        outlineWidth: focused ? 2 : 0,
+        outlineOffset: 3,
+        outlineColor: appearance.effects.glowColor,
     };
 
     if (appearance.effects.depth === "inset") {
-        container.borderTopColor = appearance.effects.inset.edgeStart;
-        container.borderLeftColor = appearance.effects.inset.edgeStart;
-        container.borderBottomColor = appearance.effects.inset.edgeEnd;
-        container.borderRightColor = appearance.effects.inset.edgeEnd;
         container.boxShadow = `3px 3px 4px ${appearance.effects.inset.shadow} inset, -2px -2px 4px ${appearance.effects.inset.highlight} inset`;
     }
 
@@ -108,42 +120,36 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         container.backgroundColor = "transparent";
         container.borderWidth = 0;
         container.boxShadow = undefined;
+        container.aspectRatio = hexagonGeometry['flat-top'].aspectRatio;
+        container.width = controlSize.height * hexagonGeometry['flat-top'].aspectRatio;
+        container.paddingHorizontal = 0;
+        container.paddingVertical = 0;
     }
 
     const textColor =
         disabled
             ? appearance.glyphs
-            : highlightGlyphsShade !== undefined && isActiveState
+            : highlightGlyphsShade !== undefined && isInteractiveState
               ? theme.color(highlightColor, highlightGlyphsShade)
-              : glyphsShade !== undefined && !isActiveState
+               : glyphsShade !== undefined && !isInteractiveState
                 ? theme.color(color, glyphsShade)
                 : appearance.glyphs;
     const fontSize = controlSize.fontSize;
 
-    const showTextShadow =
-        showTextGlow ||
-        (isActiveState && appearance.effects.glyphsGlow);
-
-    const textShadowStyle = showTextShadow
+    const textShadowStyle = showTextGlow
         ? {
               textShadowColor: appearance.effects.glowColor,
               textShadowRadius: 12,
               textShadowOffset: { width: 0, height: 0 },
           }
-        : appearance.effects.backdropBlur > 0
-          ? {
-                textShadowColor: appearance.border.color,
-                textShadowOffset: { width: -1, height: 0 },
-                textShadowRadius: 1,
-            }
-          : undefined;
+        : undefined;
 
     const iconSize = controlSize.iconSize;
 
     const iconElement = icon ? (
         <View
             style={
-                iconRotateZ
+                iconRotateZ || iconRotateX
                     ? {
                           transform: [
                               { rotateZ: `${iconRotateZ}deg` },
@@ -159,7 +165,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
                 height={iconSize}
                 color={textColor}
                 filter={
-                    showTextShadow
+                    showTextGlow
                         ? `drop-shadow(0px 0px 12px ${appearance.effects.glowColor})`
                         : undefined
                 }
@@ -175,6 +181,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
             (child) => typeof child === "string" || typeof child === "number",
         ) ? (
             <Text
+                fontType={fontType}
                 fontWeight={appearance.fontWeight}
                 style={[
                     { color: textColor, fontSize, lineHeight: fontSize * 1.1 },
@@ -194,26 +201,14 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         </>
     );
 
-    const handlePressIn: NonNullable<PressableProps["onPressIn"]> = (event) => {
-        if (!disabled) {
-            setPressed(true);
-        }
-        onPressIn?.(event);
-    };
-
-    const handlePressOut: NonNullable<PressableProps["onPressOut"]> = (
-        event,
-    ) => {
-        setPressed(false);
-        onPressOut?.(event);
-    };
-
     const buttonElement = (
         <Pressable
             ref={forwardRef}
             {...props}
+            {...interaction}
             disabled={disabled}
             accessibilityRole={accessibilityRole ?? "button"}
+            accessibilityLabel={accessibilityLabel ?? (!label && typeof tooltip === 'string' ? tooltip : undefined)}
             accessibilityState={{
                 ...accessibilityState,
                 disabled,
@@ -221,26 +216,20 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
             }}
             onPress={onPress ?? undefined}
             onLongPress={onLongPress ?? undefined}
-            onPressIn={handlePressIn}
-            onPressOut={handlePressOut}
             style={(state) => [
-                corners === "hexagon" ? undefined : container,
+                styles.container,
+                container,
                 typeof style === "function" ? style(state) : style,
             ]}
         >
             {corners === "hexagon" ? (
-                <Hexagon
+                <HexagonSurface
                     shape="flat-top"
-                    size={size}
-                    variant={variant}
-                    activeGlow={activeGlow}
-                    color={color}
-                    highlightColor={highlightColor}
-                    highlighted={isActiveState}
-                    disabled={disabled}
+                    appearance={appearance}
+                    showGlow={showGlow}
                 >
                     {content}
-                </Hexagon>
+                </HexagonSurface>
             ) : (
                 content
             )}

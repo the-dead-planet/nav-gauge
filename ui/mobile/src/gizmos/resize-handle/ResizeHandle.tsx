@@ -1,8 +1,9 @@
 import { FC, useRef, useState } from "react";
 import { GestureResponderEvent, LayoutChangeEvent, PanResponder, StyleSheet, View } from "react-native";
-import { DEFAULT_COLOR, ResizeHandleProps, useTheme } from "@ui";
+import { DEFAULT_COLOR, DEFAULT_FILL_VARIANT, ResizeHandleProps, useTheme } from "@ui";
 import { ResizeHandleGrip } from "./ResizeHandleGrip";
 import { Tooltip } from "../tooltip";
+import { useHudInteraction } from '../../hud/useHudInteraction';
 
 const styles = StyleSheet.create({
     horizontalHandle: {
@@ -31,23 +32,14 @@ const styles = StyleSheet.create({
         height: 2,
         width: '100%',
     },
-    grip: {
-        position: 'absolute',
-    },
-    horizontalGrip: {
-        left: 6,
-        transform: [{ translateY: -12 }],
-    },
-    verticalGrip: {
-        top: 6,
-        transform: [{ translateX: -12 }],
-    },
 });
 
 export const ResizeHandle: FC<ResizeHandleProps> = ({
     direction = 'horizontal',
     side,
     color = DEFAULT_COLOR,
+    highlightColor,
+    variant = DEFAULT_FILL_VARIANT,
     onDrag,
     onDragStart,
     onDragEnd,
@@ -59,6 +51,9 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
     const propsRef = useRef({ direction, disabled, onDrag, onDragStart, onDragEnd });
     propsRef.current = { direction, disabled, onDrag, onDragStart, onDragEnd };
     const [isDragging, setIsDragging] = useState(false);
+    const { state, interaction, focused } = useHudInteraction({ disabled, highlighted: isDragging });
+    const borderAppearance = theme.resolveAppearance('outline', color, highlightColor ?? color, state);
+    const gripAppearance = theme.resolveAppearance(variant, color, highlightColor ?? color, state);
     const [handleLength, setHandleLength] = useState(0);
 
     const handleLayout = (event: LayoutChangeEvent) => {
@@ -68,7 +63,7 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
 
     const handleMove = (event: GestureResponderEvent) => {
         const lastPosition = lastPositionRef.current;
-        if (!lastPosition) {
+        if (!lastPosition || propsRef.current.disabled) {
             return;
         }
         const { pageX, pageY } = event.nativeEvent;
@@ -100,17 +95,26 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
         },
     })).current;
 
-    const handleColor = theme.color(color, 500, color === 'neutral' ? 0.4 : 1);
     const isHorizontal = direction === 'horizontal';
     const gripSide = side ?? (direction === 'horizontal' ? 'right' : 'top');
 
     const handle = (
         <View
             {...panResponder.panHandlers}
+            {...interaction}
             onLayout={handleLayout}
-            style={isHorizontal ? styles.horizontalHandle : styles.verticalHandle}
+            style={[
+                isHorizontal ? styles.horizontalHandle : styles.verticalHandle,
+                focused ? {
+                    outlineStyle: 'solid',
+                    outlineWidth: 2,
+                    outlineOffset: 3,
+                    outlineColor: borderAppearance.effects.glowColor,
+                } : undefined,
+            ]}
             accessible
             accessibilityRole="adjustable"
+            accessibilityState={{ disabled }}
             accessibilityLabel={typeof tooltip === 'string' ? tooltip : undefined}
             accessibilityActions={[{ name: 'increment' }, { name: 'decrement' }]}
             onAccessibilityAction={(event) => {
@@ -124,16 +128,14 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
             <View
                 style={[
                     isHorizontal ? styles.horizontalBorder : styles.verticalBorder,
-                    { backgroundColor: handleColor },
-                    isDragging && { backgroundColor: theme.color('secondary') },
+                    { backgroundColor: borderAppearance.border.color },
                 ]}
             />
             {(handleLength >= 500 ? [25, 75] : [50]).map((position) => (
                 <ResizeHandleGrip
                     key={position}
-                    isDragging={isDragging}
                     position={position}
-                    color={color}
+                    appearance={gripAppearance}
                     direction={direction}
                     side={side}
                 />
@@ -141,5 +143,5 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
         </View>
     );
 
-    return <Tooltip content={tooltip} color="secondary" placement={gripSide}>{handle}</Tooltip>;
+    return <Tooltip content={tooltip} color={highlightColor ?? color} placement={gripSide}>{handle}</Tooltip>;
 };

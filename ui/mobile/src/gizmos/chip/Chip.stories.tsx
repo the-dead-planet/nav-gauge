@@ -1,38 +1,49 @@
-import { FC } from "react";
-import { Icons, StatusColor, surfaceVariantOptions } from "@ui";
-import { StyleSheet, View } from "react-native";
+import { ComponentProps } from "react";
+import {
+    appearanceColorOptions,
+    chipStoryArgs,
+    chipStoryControls,
+    Icons,
+    surfaceVariantOptions,
+} from "@ui";
 import { Chip } from "./Chip";
 import { VariantGallery } from "../../storybook/VariantGallery";
+import { MobileStoryDefinition } from "../../storybook/model";
 
-const semanticColors: StatusColor[] = ['glitch', 'hazard', 'secured', 'intel'];
-
-const styles = StyleSheet.create({
-    semanticColors: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        gap: 8,
+const story: MobileStoryDefinition<ComponentProps<typeof Chip>> = {
+    args: {
+        ...chipStoryArgs,
+        icon: Icons.NounProject.UnderConstruction,
     },
-});
-
-export const Gallery: FC = () => (
-    <VariantGallery
-        variants={surfaceVariantOptions}
-        render={({ color, size, variant }) => (
-            <Chip variant={variant} size={size} color={color} icon={Icons.NounProject.UnderConstruction}>
-                {color}
-            </Chip>
-        )}
-    />
-);
-
-export const SemanticColors: FC = () => (
-    <View style={styles.semanticColors}>
-        {semanticColors.map((color) => (
-            <Chip key={color} color={color} icon={Icons.NounProject.UnderConstruction}>
-                {color}
-            </Chip>
-        ))}
-    </View>
-);
-
-export const Playground: FC = () => <Chip icon={Icons.NounProject.UnderConstruction}>Chip</Chip>;
+    controls: {
+        ...chipStoryControls,
+        icon: {
+            control: "select",
+            options: ["None", "Construction"],
+            mapping: {
+                None: undefined,
+                Construction: Icons.NounProject.UnderConstruction,
+            },
+        },
+    },
+    galleryEditableControls: [
+        "children",
+        "fontType",
+        "icon",
+        "tooltip",
+        "tooltipPlacement",
+        "tooltipVariant",
+        "showTooltipConnection",
+    ],
+    renderPlayground: (args) => <Chip {...args} />,
+    renderGallery: (args) => (
+        <VariantGallery
+            colors={appearanceColorOptions}
+            variants={surfaceVariantOptions}
+            render={({ color, size, variant }) => (
+                <Chip {...args} color={color} size={size} variant={variant} />
+            )}
+        />
+    ),
+};
+export default story;

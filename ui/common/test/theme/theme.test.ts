@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { appearanceColorOptions, Orientation, Theme, themeSpecifications, ThemeName } from "../../src";
+import { appearanceColorOptions, Orientation, surfaceVariantOptions, Theme, themeAppearanceStateOptions, themeSpecifications, ThemeName } from "../../src";
 
 const media = {
     initial: () => ({
@@ -25,6 +25,24 @@ const oklabLightness = ({ r, g, b }: { r: number; g: number; b: number }): numbe
 };
 
 describe("Theme", () => {
+    it('uses the base palette for omitted highlights across all variants, states and colors', () => {
+        for (const specifications of Object.values(themeSpecifications)) {
+            for (const specification of [specifications.light, specifications.dark]) {
+                const theme = new Theme(specification, media);
+                for (const variant of surfaceVariantOptions) {
+                    for (const color of appearanceColorOptions) {
+                        for (const state of themeAppearanceStateOptions) {
+                            expect(theme.resolveAppearance(variant, color, undefined, state)).to.deep.equal(
+                                theme.resolveAppearance(variant, color, color, state),
+                            );
+                        }
+                    }
+                }
+                theme.destroy();
+            }
+        }
+    });
+
     it("orders global layers semantically", () => {
         expect(Theme.layers['hud-connector'].zIndex).to.be.lessThan(Theme.layers.popup.zIndex);
         expect(Theme.layers.popup.zIndex).to.be.lessThan(Theme.layers.floating.zIndex);
@@ -109,6 +127,9 @@ describe("Theme", () => {
                             ghostTheme.color(highlightColor, ghostTheme.isLight ? 900 : 100),
                             ghostTheme.color(color, ghostTheme.isLight ? 300 : 700),
                         ]);
+                        expect(themeAppearanceStateOptions.map((state) => (
+                            ghostTheme.resolveAppearance('fill-translucent', color, highlightColor, state).glyphs
+                        ))).to.deep.equal(appearances.map(({ glyphs }) => glyphs));
                         for (const appearance of appearances) {
                             expect(appearance.fontWeight).to.equal(500);
                             expect(appearance.surface).to.equal('transparent');

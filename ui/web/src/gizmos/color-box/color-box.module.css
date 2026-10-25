@@ -3,8 +3,13 @@
     flex: 0 0 auto;
     width: var(--color-box-size);
     height: var(--color-box-size);
-    border: 1px solid rgb(255 255 255 / 0.2);
+    border: var(--appearance-default-border-width) solid var(--appearance-default-border);
     box-sizing: border-box;
+}
+
+.color-box:focus-visible {
+    outline: 2px solid var(--appearance-default-glyphs);
+    outline-offset: 2px;
 }
 
 .palette-tooltip {

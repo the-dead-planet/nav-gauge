@@ -477,7 +477,7 @@ export class Theme {
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'color',
-                            shade: shades.base,
+                            shade: this.isLight ? 700 : 300,
                         },
                     },
                     'hover-focus': {
@@ -496,7 +496,7 @@ export class Theme {
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.hoverFocus,
+                            shade: this.isLight ? 800 : 200,
                         },
                     },
                     'active-pressed': {
@@ -515,7 +515,7 @@ export class Theme {
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.activePressed,
+                            shade: shades.glyphs,
                         },
                     },
                     disabled: {
@@ -715,7 +715,7 @@ export class Theme {
     public resolveAppearance = (
         variant?: SurfaceVariant,
         baseColor: PaletteColor | ColorVariant = DEFAULT_COLOR,
-        highlightColor: PaletteColor | ColorVariant = DEFAULT_COLOR,
+        highlightColor: PaletteColor | ColorVariant = baseColor,
         state: ThemeAppearanceState = 'default',
     ): ResolvedThemeAppearance => {
         const policy = this.appearancePolicies[variant ?? 'default'];
