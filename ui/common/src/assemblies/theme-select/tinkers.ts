@@ -5,7 +5,7 @@ import {
     fillVariantOptions,
     sizeOptions,
 } from '../../design-system/tinkers';
-import { SizeVariant, StatusColor } from '../../design-system/model';
+import { StatusColor } from '../../design-system/model';
 import { Theme } from '../../design-system/theme/theme';
 import { ThemeName, ThemeSpecification } from '../../design-system/theme/model';
 import {
@@ -14,13 +14,6 @@ import {
 } from '../../design-system/theme/specifications';
 import { StoryControls } from '../../storybook/model';
 import { ThemeSelectColorPreview, ThemeSelectStoryProps } from './model';
-
-export const themeSelectColorBoxSizes: Record<SizeVariant, number> = {
-    xs: 12,
-    sm: 16,
-    md: 20,
-    lg: 24,
-};
 
 export const themeSelectStoryArgs: ThemeSelectStoryProps = {
     mode: 'dark',

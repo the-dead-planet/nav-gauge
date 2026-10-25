@@ -7,11 +7,13 @@ import {
     fillVariantOptions,
     sizeOptions,
     surfaceVariantOptions,
+    typographyStoryControls,
 } from "../../design-system";
 import { StoryControls } from "../../storybook";
 
 export const chipStoryArgs: ChipProps = {
     children: "Chip",
+    fontType: undefined,
     color: DEFAULT_COLOR,
     size: DEFAULT_SIZE,
     variant: DEFAULT_SURFACE_VARIANT,
@@ -21,6 +23,7 @@ export const chipStoryArgs: ChipProps = {
 };
 
 export const chipStoryControls: StoryControls<ChipProps> = {
+    fontType: typographyStoryControls.fontType,
     children: { control: "text" },
     color: { control: "select", options: appearanceColorOptions },
     size: { control: "select", options: sizeOptions },

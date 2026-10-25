@@ -7,7 +7,7 @@
     font-weight: var(--appearance-default-font-weight, inherit);
     background: var(--appearance-default-surface);
     border: var(--appearance-default-border-width) solid var(--appearance-default-border);
-    backdrop-filter: blur(var(--appearance-backdrop-blur));
+    backdrop-filter: var(--appearance-backdrop-filter);
     box-shadow: var(--appearance-inset-default-shadow);
 }
 
@@ -37,4 +37,9 @@
     padding: 1px 3px;
     gap: 4px;
     border-radius: 2px;
+}
+
+.chip > .label {
+    color: inherit;
+    font-weight: inherit;
 }

@@ -39,12 +39,15 @@ export const ResizeHandleGrip: FC<ResizeHandleGripProps & { appearance: Resolved
             height={isHorizontal ? 24 : 12}
             viewBox={isHorizontal ? '0 0 8 24' : '0 0 24 8'}
             pointerEvents="none"
+            accessibilityElementsHidden
+            importantForAccessibility="no-hide-descendants"
         >
             <Polygon
                 points={getResizeHandleGripPoints(direction, gripSide)}
                 fill={appearance.surface}
-                stroke={appearance.glyphs}
-                strokeWidth={2}
+                stroke={appearance.border.color}
+                strokeWidth={appearance.border.width}
+                vectorEffect="non-scaling-stroke"
                 strokeLinejoin="miter"
             />
         </Svg>

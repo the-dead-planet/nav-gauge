@@ -3,6 +3,7 @@ import classNames from "classnames";
 import { ChipProps, DEFAULT_COLOR, DEFAULT_SURFACE_VARIANT, DEFAULT_SIZE, SizeVariant } from "@ui";
 import { Icon } from "../../design-system/icons";
 import { Tooltip } from "../tooltip";
+import { Span } from '../../design-system/typography';
 import styles from './chip.module.css';
 
 interface Props {
@@ -22,6 +23,7 @@ const iconSizes: Record<SizeVariant, number> = {
 
 export const Chip: FC<ChipProps & Props> = ({
     color = DEFAULT_COLOR,
+    fontType,
     icon,
     size = DEFAULT_SIZE,
     variant = DEFAULT_SURFACE_VARIANT,
@@ -42,7 +44,9 @@ export const Chip: FC<ChipProps & Props> = ({
                 className,
             )}>
             {icon ? <Icon src={icon} width={iconSizes[size]} height={iconSizes[size]} /> : null}
-            {children !== undefined && children !== null ? <span>{children}</span> : null}
+            {children !== undefined && children !== null ? (
+                <Span fontType={fontType} className={styles.label}>{children}</Span>
+            ) : null}
         </span>
     );
 

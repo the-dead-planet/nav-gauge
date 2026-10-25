@@ -1,5 +1,11 @@
 import { CSSProperties, FC } from "react";
-import { allColorShades, ColorBoxProps, toCssColor } from "@ui";
+import {
+    allColorShades,
+    ColorBoxProps,
+    DEFAULT_SIZE,
+    toCssColor,
+    useTheme,
+} from "@ui";
 import { Tooltip } from "../tooltip";
 import { Label } from "../../design-system/typography";
 import styles from "./color-box.module.css";
@@ -8,9 +14,10 @@ export const ColorBox: FC<ColorBoxProps> = ({
     name = "Color",
     color,
     shade = 500,
-    size = 12,
+    size = DEFAULT_SIZE,
     showPaletteOnHover = false,
 }) => {
+    const theme = useTheme();
     const box = (
         <span
             className={styles["color-box"]}
@@ -22,7 +29,7 @@ export const ColorBox: FC<ColorBoxProps> = ({
             style={
                 {
                     backgroundColor: toCssColor({ ...color[shade], a: 1 }),
-                    "--color-box-size": `${size}px`,
+                    "--color-box-size": `${typeof size === "number" ? size : theme.sizes.control[size].height}px`,
                 } as CSSProperties
             }
         />

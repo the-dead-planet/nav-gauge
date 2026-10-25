@@ -22,6 +22,8 @@ export const SideToolPanelResizeHandle: FC<Props> = ({
     return (
         <div className={classNames(styles['resize-handle'], styles[`resize-handle-${placement}`])}>
             <MachineResizeHandle
+                color="neutral"
+                highlightColor="secondary"
                 direction="horizontal"
                 side={placement === 'left' ? 'right' : 'left'}
                 onDrag={handleDrag}

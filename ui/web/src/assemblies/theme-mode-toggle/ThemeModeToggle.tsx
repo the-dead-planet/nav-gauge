@@ -21,7 +21,7 @@ export const ThemeModeToggle: FC<ThemeModeToggleProps> = ({
             onClick={onToggle}
             variant="inset"
             size={size}
-            color={isDark ? 'secondary' : 'neutral'}
+            highlightColor="secondary"
         />
     );
 };

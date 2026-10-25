@@ -3,7 +3,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: var(--font-default);
     line-height: 1.1;
 }
 
@@ -73,14 +72,9 @@
     transform: rotateX(var(--rotate-x)) rotateZ(var(--rotate-z));
 }
 
-.depth-inset:not(.corners-hexagon) {
-    box-shadow: var(--appearance-inset-default-shadow);
-}
-.depth-inset:not(.corners-hexagon, :disabled):is(
-        :active,
-        [data-highlighted="true"]
-    ) {
-    box-shadow: var(--appearance-inset-active-pressed-shadow);
+.button > .label {
+    color: inherit;
+    font-weight: inherit;
 }
 
 .corners-square {

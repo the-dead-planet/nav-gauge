@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "storybook-react-rsbuild";
 import { makeLiveEditStory } from "storybook-addon-code-editor";
 import {
     appearanceColorOptions,
+    fillVariantOptions,
     resizeHandleDirections,
     resizeHandleStoryArgs,
     resizeHandleStoryControls,
@@ -43,25 +44,34 @@ export const Gallery: Story = {
         color: { table: { disable: true } },
         direction: { table: { disable: true } },
         side: { table: { disable: true } },
+        variant: { table: { disable: true } },
     },
     render: (args) => (
-        <div className={styles.gallery}>
-            {resizeHandleDirections.flatMap((direction) =>
-                appearanceColorOptions.flatMap((color) =>
-                    (direction === "horizontal"
-                        ? (["left", "right"] as const)
-                        : (["top"] as const)
-                    ).map((side) => (
-                        <ResizeHandleDemo
-                            {...args}
-                            key={`${direction}-${color}-${side}`}
-                            direction={direction}
-                            side={side}
-                            color={color}
-                        />
-                    )),
-                ),
-            )}
+        <div>
+            {fillVariantOptions.map((variant) => (
+                <section key={variant}>
+                    <h2>{variant}</h2>
+                    <div className={styles.gallery}>
+                        {resizeHandleDirections.flatMap((direction) =>
+                            appearanceColorOptions.flatMap((color) =>
+                                (direction === "horizontal"
+                                    ? (["left", "right"] as const)
+                                    : (["top"] as const)
+                                ).map((side) => (
+                                    <ResizeHandleDemo
+                                        {...args}
+                                        key={`${direction}-${color}-${side}`}
+                                        variant={variant}
+                                        direction={direction}
+                                        side={side}
+                                        color={color}
+                                    />
+                                )),
+                            ),
+                        )}
+                    </div>
+                </section>
+            ))}
         </div>
     ),
 };

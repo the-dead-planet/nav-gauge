@@ -28,6 +28,7 @@ const story: MobileStoryDefinition<ComponentProps<typeof Chip>> = {
     },
     galleryEditableControls: [
         "children",
+        "fontType",
         "icon",
         "tooltip",
         "tooltipPlacement",

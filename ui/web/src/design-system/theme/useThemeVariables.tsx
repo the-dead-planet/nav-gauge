@@ -79,7 +79,7 @@ const createAppearanceDeclarations = (policy: Theme['appearancePolicies']['defau
         }),
         '--appearance-color:var(--appearance-color-500)',
         '--appearance-glow-color:var(--appearance-highlight-500)',
-        `--appearance-backdrop-blur:${policy.effects.backdropBlur}px`,
+        `--appearance-backdrop-filter:${policy.effects.backdropBlur > 0 ? `blur(${policy.effects.backdropBlur}px)` : 'none'}`,
         `--appearance-inset-default-edge-start:${resolveAppearancePaint(defaultInset.edgeStart)}`,
         `--appearance-inset-default-edge-end:${resolveAppearancePaint(defaultInset.edgeEnd)}`,
         `--appearance-inset-active-pressed-edge-start:${resolveAppearancePaint(activePressedInset.edgeStart)}`,

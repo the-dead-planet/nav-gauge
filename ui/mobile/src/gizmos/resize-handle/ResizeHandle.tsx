@@ -1,6 +1,6 @@
 import { FC, useRef, useState } from "react";
 import { GestureResponderEvent, LayoutChangeEvent, PanResponder, StyleSheet, View } from "react-native";
-import { DEFAULT_COLOR, ResizeHandleProps, useTheme } from "@ui";
+import { DEFAULT_COLOR, DEFAULT_FILL_VARIANT, ResizeHandleProps, useTheme } from "@ui";
 import { ResizeHandleGrip } from "./ResizeHandleGrip";
 import { Tooltip } from "../tooltip";
 import { useHudInteraction } from '../../hud/useHudInteraction';
@@ -39,6 +39,7 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
     side,
     color = DEFAULT_COLOR,
     highlightColor,
+    variant = DEFAULT_FILL_VARIANT,
     onDrag,
     onDragStart,
     onDragEnd,
@@ -51,7 +52,8 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
     propsRef.current = { direction, disabled, onDrag, onDragStart, onDragEnd };
     const [isDragging, setIsDragging] = useState(false);
     const { state, interaction, focused } = useHudInteraction({ disabled, highlighted: isDragging });
-    const appearance = theme.resolveAppearance(undefined, color, highlightColor ?? color, state);
+    const borderAppearance = theme.resolveAppearance('outline', color, highlightColor ?? color, state);
+    const gripAppearance = theme.resolveAppearance(variant, color, highlightColor ?? color, state);
     const [handleLength, setHandleLength] = useState(0);
 
     const handleLayout = (event: LayoutChangeEvent) => {
@@ -107,7 +109,7 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
                     outlineStyle: 'solid',
                     outlineWidth: 2,
                     outlineOffset: 3,
-                    outlineColor: appearance.effects.glowColor,
+                    outlineColor: borderAppearance.effects.glowColor,
                 } : undefined,
             ]}
             accessible
@@ -126,14 +128,14 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
             <View
                 style={[
                     isHorizontal ? styles.horizontalBorder : styles.verticalBorder,
-                    { backgroundColor: appearance.glyphs },
+                    { backgroundColor: borderAppearance.border.color },
                 ]}
             />
             {(handleLength >= 500 ? [25, 75] : [50]).map((position) => (
                 <ResizeHandleGrip
                     key={position}
                     position={position}
-                    appearance={appearance}
+                    appearance={gripAppearance}
                     direction={direction}
                     side={side}
                 />

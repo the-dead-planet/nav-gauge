@@ -33,6 +33,7 @@ export interface MobileButtonProps {
 export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     forwardRef,
     color = DEFAULT_COLOR,
+    fontType,
     glyphsShade,
     highlightColor = color,
     highlightGlyphsShade,
@@ -180,6 +181,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
             (child) => typeof child === "string" || typeof child === "number",
         ) ? (
             <Text
+                fontType={fontType}
                 fontWeight={appearance.fontWeight}
                 style={[
                     { color: textColor, fontSize, lineHeight: fontSize * 1.1 },

@@ -11,6 +11,7 @@ import classNames from "classnames";
 import styles from "./hexagon.module.css";
 import surface from "../surface.module.css";
 import { useHudInteraction } from "../useHudInteraction";
+import { HudSurface } from '../HudSurface';
 
 export const Hexagon: FC<HexagonProps & ComponentProps<"div">> = ({
     shape = "pointy-top",
@@ -56,19 +57,19 @@ export const Hexagon: FC<HexagonProps & ComponentProps<"div">> = ({
     const backdropMask = `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="${maskPoints}" fill="white"/></svg>`)}")`;
 
     return (
-        <div
+        <HudSurface
+            as="div"
             {...props}
             {...interaction}
-            data-appearance-variant={variant}
-            data-appearance-color={color}
-            data-appearance-highlight={highlightColor ?? color}
-            data-interactive={interactive || !!onClick || undefined}
-            data-highlighted={highlighted || undefined}
-            data-disabled={disabled || undefined}
-            data-glow={activeGlow}
+            variant={variant}
+            color={color}
+            highlightColor={highlightColor}
+            interactive={interactive || !!onClick}
+            highlighted={highlighted}
+            disabled={disabled}
+            activeGlow={activeGlow}
             data-glyphs-glow={effects.glyphsGlow || undefined}
             className={classNames(
-                surface.surface,
                 styles.hexagon,
                 styles[shape],
                 styles[`size-${size}`],
@@ -179,6 +180,6 @@ export const Hexagon: FC<HexagonProps & ComponentProps<"div">> = ({
                 ) : null}
             </svg>
             <div className={styles.content}>{children}</div>
-        </div>
+        </HudSurface>
     );
 };

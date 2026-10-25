@@ -1,7 +1,7 @@
 import { FC, useRef, useState } from "react";
 import classNames from "classnames";
 import { ResizeHandleGrip } from "./ResizeHandleGrip";
-import { DEFAULT_COLOR, ResizeHandleProps } from "@ui";
+import { DEFAULT_COLOR, DEFAULT_FILL_VARIANT, ResizeHandleProps } from "@ui";
 import styles from './resize-handle.module.css';
 import { Tooltip } from "../tooltip";
 
@@ -10,6 +10,7 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
     side,
     color = DEFAULT_COLOR,
     highlightColor,
+    variant = DEFAULT_FILL_VARIANT,
     onDrag,
     onDragStart,
     onDragEnd,
@@ -63,7 +64,7 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
                 { [styles['dragging']]: isDragging },
                 { [styles['disabled']]: disabled },
             )}
-            data-appearance-variant="default"
+            data-appearance-variant="outline"
             data-appearance-color={color}
             data-appearance-highlight={highlightColor ?? color}
             onPointerDown={handlePointerDown}
@@ -99,6 +100,7 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
                 <ResizeHandleGrip
                     key={position}
                     position={position}
+                    variant={variant}
                     direction={direction}
                     side={side}
                 />

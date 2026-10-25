@@ -77,6 +77,7 @@ const story = {
     },
     galleryEditableControls: [
         "children",
+        "fontType",
         "icon",
         "glyphsShade",
         "highlightColor",

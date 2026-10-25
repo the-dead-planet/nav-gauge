@@ -127,6 +127,9 @@ describe("Theme", () => {
                             ghostTheme.color(highlightColor, ghostTheme.isLight ? 900 : 100),
                             ghostTheme.color(color, ghostTheme.isLight ? 300 : 700),
                         ]);
+                        expect(themeAppearanceStateOptions.map((state) => (
+                            ghostTheme.resolveAppearance('fill-translucent', color, highlightColor, state).glyphs
+                        ))).to.deep.equal(appearances.map(({ glyphs }) => glyphs));
                         for (const appearance of appearances) {
                             expect(appearance.fontWeight).to.equal(500);
                             expect(appearance.surface).to.equal('transparent');

@@ -88,6 +88,7 @@ const sizeStyles = StyleSheet.create({
 
 export const Chip: FC<ChipProps & Props> = ({
     color = DEFAULT_COLOR,
+    fontType,
     icon,
     size = DEFAULT_SIZE,
     variant = DEFAULT_SURFACE_VARIANT,
@@ -157,6 +158,7 @@ export const Chip: FC<ChipProps & Props> = ({
             ) : null}
             {children !== undefined && children !== null ? (
                 <Text
+                    fontType={fontType}
                     fontWeight={appearance.fontWeight}
                     style={{
                         color: appearance.glyphs,

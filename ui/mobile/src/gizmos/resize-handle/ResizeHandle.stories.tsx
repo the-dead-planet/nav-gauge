@@ -1,6 +1,7 @@
 import { ScrollView, StyleSheet, View } from "react-native";
 import {
     appearanceColorOptions,
+    fillVariantOptions,
     ResizeHandleProps,
     resizeHandleDirections,
     resizeHandleStoryArgs,
@@ -8,6 +9,7 @@ import {
 } from "@ui";
 import { ResizeHandleDemo } from "./ResizeHandleDemo";
 import { MobileStoryDefinition } from "../../storybook/model";
+import { Text } from "../../design-system/typography";
 
 const styles = StyleSheet.create({
     gallery: { gap: 24 },
@@ -23,23 +25,29 @@ const story: MobileStoryDefinition<ResizeHandleProps> = {
     renderPlayground: (args) => <ResizeHandleDemo {...args} />,
     renderGallery: (args) => (
         <ScrollView contentContainerStyle={styles.gallery}>
-            {resizeHandleDirections.flatMap((direction) =>
-                appearanceColorOptions.flatMap((color) =>
-                    (direction === "horizontal"
-                        ? (["left", "right"] as const)
-                        : (["top"] as const)
-                    ).map((side) => (
-                        <View key={`${direction}-${color}-${side}`}>
-                            <ResizeHandleDemo
-                                {...args}
-                                direction={direction}
-                                side={side}
-                                color={color}
-                            />
-                        </View>
-                    )),
-                ),
-            )}
+            {fillVariantOptions.map((variant) => (
+                <View key={variant}>
+                    <Text>{variant}</Text>
+                    {resizeHandleDirections.flatMap((direction) =>
+                        appearanceColorOptions.flatMap((color) =>
+                            (direction === "horizontal"
+                                ? (["left", "right"] as const)
+                                : (["top"] as const)
+                            ).map((side) => (
+                                <View key={`${direction}-${color}-${side}`}>
+                                    <ResizeHandleDemo
+                                        {...args}
+                                        variant={variant}
+                                        direction={direction}
+                                        side={side}
+                                        color={color}
+                                    />
+                                </View>
+                            )),
+                        ),
+                    )}
+                </View>
+            ))}
         </ScrollView>
     ),
 };

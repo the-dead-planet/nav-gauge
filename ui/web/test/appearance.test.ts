@@ -4,6 +4,8 @@ import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import {
     appearanceColorOptions,
+    ColorBoxProps,
+    fillVariantOptions,
     Orientation,
     Theme,
     ThemeContext,
@@ -38,6 +40,7 @@ const { Divider } =
 const { Button } = require('../src/gizmos/button/Button') as typeof import('../src/gizmos/button/Button');
 const { Chip } = require('../src/gizmos/chip/Chip') as typeof import('../src/gizmos/chip/Chip');
 const { ResizeHandle } = require('../src/gizmos/resize-handle/ResizeHandle') as typeof import('../src/gizmos/resize-handle/ResizeHandle');
+const { ColorBox } = require('../src/gizmos/color-box/ColorBox') as typeof import('../src/gizmos/color-box/ColorBox');
 if (previousCssLoader) {
     require.extensions['.css'] = previousCssLoader;
 } else {
@@ -56,6 +59,29 @@ const media = {
 };
 
 describe('Composed appearance rendering', () => {
+    it('renders named, default and custom ColorBox sizes as pixel dimensions', () => {
+        const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
+        const cases: { size: ColorBoxProps['size']; sideLength: number }[] = [
+            { size: 'xs', sideLength: 18 },
+            { size: 'sm', sideLength: 24 },
+            { size: 'md', sideLength: 32 },
+            { size: 'lg', sideLength: 40 },
+            { size: undefined, sideLength: 24 },
+            { size: 40, sideLength: 40 },
+        ];
+        for (const { size, sideLength } of cases) {
+            const markup = renderToStaticMarkup(createElement(ThemeContext.Provider, {
+                value: theme,
+                children: createElement(ColorBox, {
+                    color: Theme.palette.copper,
+                    size,
+                }),
+            }));
+            expect(markup).to.include(`--color-box-size:${sideLength}px`);
+        }
+        theme.destroy();
+    });
+
     it('gives every button shape one appearance owner and resolves status glyph overrides', () => {
         const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
         for (const color of appearanceColorOptions) {
@@ -97,9 +123,31 @@ describe('Composed appearance rendering', () => {
                 onDrag: () => undefined,
             }));
             expect(handle).to.include(`data-appearance-highlight="${color}"`);
+            expect(handle).to.include('data-appearance-variant="outline"');
+            expect([...handle.matchAll(/data-appearance-variant="fill-inverse"/g)]).to.have.length(2);
             expect(handle).to.include('aria-disabled="true"');
             expect(handle).not.to.include('tabindex="0"');
             expect(handle).not.to.include('--grip-color');
+        }
+    });
+
+    it('applies resize fill variants only to passive decorative grips', () => {
+        for (const variant of fillVariantOptions) {
+            for (const color of appearanceColorOptions) {
+                const markup = renderToStaticMarkup(createElement(ResizeHandle, {
+                    direction: 'horizontal',
+                    color,
+                    highlightColor: 'secondary',
+                    variant,
+                    tooltip: 'Resize panel',
+                    onDrag: () => undefined,
+                }));
+                expect([...markup.matchAll(/data-appearance-variant="outline"/g)]).to.have.length(1);
+                expect([...markup.matchAll(new RegExp(`data-appearance-variant="${variant}"`, 'g'))]).to.have.length(2);
+                expect([...markup.matchAll(/tabindex="0"/g)]).to.have.length(1);
+                expect([...markup.matchAll(/aria-hidden="true"/g)]).to.have.length(2);
+                expect(markup).not.to.include('role="button"');
+            }
         }
     });
 

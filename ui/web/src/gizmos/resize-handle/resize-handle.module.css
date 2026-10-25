@@ -11,7 +11,7 @@
     bottom: 0;
     width: 8px;
     container-type: size;
-    color: var(--appearance-default-glyphs);
+    color: var(--appearance-default-border);
 }
 
 .handle-vertical {
@@ -39,7 +39,25 @@
     height: 24px;
     overflow: visible;
     transform: translateY(-50%);
-    transition: color 0.15s ease;
+    pointer-events: none;
+}
+
+.grip-drawing,
+.grip-backdrop {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.grip-drawing {
+    overflow: visible;
+}
+
+.grip-backdrop {
+    backdrop-filter: var(--appearance-backdrop-filter);
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
 }
 
 .grip:last-child {
@@ -48,8 +66,8 @@
 
 .grip polygon {
     fill: var(--appearance-default-surface);
-    stroke: currentColor;
-    stroke-width: 1;
+    stroke: var(--appearance-default-border);
+    stroke-width: var(--appearance-default-border-width);
     vector-effect: non-scaling-stroke;
 }
 
@@ -88,11 +106,23 @@
 }
 
 .handle:not(.disabled, .dragging):is(:hover, :focus-visible) {
-    color: var(--appearance-hover-focus-glyphs);
+    color: var(--appearance-hover-focus-border);
+}
+
+.handle:not(.disabled, .dragging):is(:hover, :focus-visible) .grip polygon {
+    fill: var(--appearance-hover-focus-surface);
+    stroke: var(--appearance-hover-focus-border);
+    stroke-width: var(--appearance-hover-focus-border-width);
 }
 
 .handle.dragging:not(.disabled) {
-    color: var(--appearance-active-pressed-glyphs);
+    color: var(--appearance-active-pressed-border);
+}
+
+.handle.dragging:not(.disabled) .grip polygon {
+    fill: var(--appearance-active-pressed-surface);
+    stroke: var(--appearance-active-pressed-border);
+    stroke-width: var(--appearance-active-pressed-border-width);
 }
 
 .handle:focus-visible {
@@ -102,9 +132,11 @@
 
 .disabled {
     cursor: default;
-    color: var(--appearance-disabled-glyphs);
+    color: var(--appearance-disabled-border);
 }
 
 .disabled .grip polygon {
     fill: var(--appearance-disabled-surface);
+    stroke: var(--appearance-disabled-border);
+    stroke-width: var(--appearance-disabled-border-width);
 }

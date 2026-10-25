@@ -139,7 +139,7 @@
 }
 
 .toggle-switch[data-appearance-variant='fill-translucent'] .track {
-    backdrop-filter: blur(var(--appearance-backdrop-blur));
+    backdrop-filter: var(--appearance-backdrop-filter);
 }
 
 /* ── Thumb: horizontal lever ── */

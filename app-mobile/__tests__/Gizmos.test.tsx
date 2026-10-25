@@ -2,14 +2,25 @@ import { fireEvent, render } from "@testing-library/react-native";
 import {
     buttonCorners,
     ButtonCorners,
+    fillVariantOptions,
     Orientation,
     Theme,
+    ThemeAppearanceState,
     ThemeContext,
     ThemeMode,
     ThemeName,
     themeSpecifications,
 } from "@ui";
 import { Button } from "@the-dead-planet/nav-gauge-ui-mobile/src/gizmos/button";
+import { ResizeHandle } from "@the-dead-planet/nav-gauge-ui-mobile/src/gizmos/resize-handle";
+import { ResizeHandleGrip } from "@the-dead-planet/nav-gauge-ui-mobile/src/gizmos/resize-handle/ResizeHandleGrip";
+
+jest.mock(
+    "@the-dead-planet/nav-gauge-ui-mobile/src/gizmos/resize-handle/ResizeHandleGrip",
+    () => ({
+        ResizeHandleGrip: jest.fn(() => null),
+    }),
+);
 
 const media = {
     initial: () => ({
@@ -25,6 +36,56 @@ const cases: { corners: ButtonCorners; mode: ThemeMode }[] = modes.flatMap(
 );
 
 describe("Gizmo interaction ownership", () => {
+    test.each(fillVariantOptions)(
+        "resize grip %s follows the handle state without owning interaction",
+        async (variant) => {
+            const theme = new Theme(
+                themeSpecifications[ThemeName.Default].dark,
+                media,
+            );
+            const onDrag = jest.fn();
+            const content = (disabled = false) => (
+                <ThemeContext.Provider value={theme}>
+                    <ResizeHandle
+                        direction="horizontal"
+                        color="neutral"
+                        highlightColor="secondary"
+                        variant={variant}
+                        tooltip="Resize panel"
+                        onDrag={onDrag}
+                        disabled={disabled}
+                    />
+                </ThemeContext.Provider>
+            );
+            const screen = await render(content());
+            const expectGrip = (state: ThemeAppearanceState) => {
+                const appearance = theme.resolveAppearance(
+                    variant,
+                    "neutral",
+                    "secondary",
+                    state,
+                );
+                expect(
+                    jest.mocked(ResizeHandleGrip).mock.lastCall?.[0].appearance,
+                ).toEqual(appearance);
+            };
+            expectGrip("default");
+            expect(screen.queryAllByRole("button")).toHaveLength(0);
+            await fireEvent(screen.getByRole("adjustable"), "focus");
+            expectGrip("hover-focus");
+            await screen.rerender(content(true));
+            expectGrip("disabled");
+            await fireEvent(
+                screen.getByRole("adjustable"),
+                "accessibilityAction",
+                { nativeEvent: { actionName: "increment" } },
+            );
+            expect(onDrag).not.toHaveBeenCalled();
+            await screen.unmount();
+            theme.destroy();
+        },
+    );
+
     test.each(cases)(
         "$corners in $mode respects focus, press, persistent highlight, overrides and disabled",
         async ({ corners, mode }) => {
@@ -59,8 +120,8 @@ describe("Gizmo interaction ownership", () => {
             expect(screen.getByText("Telemetry")).toHaveStyle({
                 color: theme.color("glitch", 500),
             });
-        await fireEvent(screen.getByRole("button"), "focus");
-        expect(screen.getByRole("button")).toHaveStyle({ outlineWidth: 2 });
+            await fireEvent(screen.getByRole("button"), "focus");
+            expect(screen.getByRole("button")).toHaveStyle({ outlineWidth: 2 });
             expect(screen.getByText("Telemetry")).toHaveStyle({
                 color: theme.color("intel", 100),
             });

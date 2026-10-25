@@ -2,21 +2,17 @@ import type { Meta, StoryObj } from "storybook-react-rsbuild";
 import { makeLiveEditStory } from "storybook-addon-code-editor";
 import {
     allColorShades,
-    appearanceColorOptions,
-    colorBoxGallerySizes,
     colorBoxStoryArgs,
     colorBoxStoryControls,
+    sizeOptions,
     Theme,
-    useTheme,
 } from "@ui";
 import { ColorBox } from "./ColorBox";
 
 const meta = {
     title: "Gizmos/Color Box",
     component: ColorBox,
-    args: {
-        ...colorBoxStoryArgs,
-    },
+    args: colorBoxStoryArgs,
     argTypes: {
         ...colorBoxStoryControls,
         color: {
@@ -26,20 +22,18 @@ const meta = {
         },
     },
 } satisfies Meta<typeof ColorBox>;
-
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {
     name: "Playground with Live code editor",
 };
-
 makeLiveEditStory(Playground, {
     availableImports: { "@web-ui": { ColorBox }, "@ui": { Theme } },
     code: `import { Theme } from '@ui';
 import { ColorBox } from '@web-ui';
 
-export default () => <ColorBox color={Theme.palette.copper} size={24} showPaletteOnHover />;`,
+export default () => <ColorBox color={Theme.palette.copper} size="sm" showPaletteOnHover />;`,
     modifyEditor: (monaco) => monaco.editor.setTheme("vs-dark"),
 });
 
@@ -50,39 +44,37 @@ export const Gallery: Story = {
         shade: { table: { disable: true } },
         name: { table: { disable: true } },
     },
-    render: (args) => {
-        const theme = useTheme();
-        const colors = {
-            ...Theme.palette,
-            ...Object.fromEntries(
-                appearanceColorOptions.map((color) => [
-                    color,
-                    theme.colors[color],
-                ]),
-            ),
-        };
-        return (
-            <div>
-                {Object.entries(colors).map(([name, color]) => (
-                    <section key={name}>
-                        <h3>{name}</h3>
-                        {colorBoxGallerySizes.map((size) => (
-                            <div key={size}>
-                                {allColorShades.map((shade) => (
-                                    <ColorBox
-                                        {...args}
-                                        key={shade}
-                                        name={name}
-                                        color={color}
-                                        size={size}
-                                        shade={shade}
-                                    />
-                                ))}
-                            </div>
+    render: (args) => (
+        <table>
+            <caption>Copper</caption>
+            <thead>
+                <tr>
+                    <th scope="col">Size</th>
+                    {allColorShades.map((shade) => (
+                        <th key={shade} scope="col">
+                            {shade}
+                        </th>
+                    ))}
+                </tr>
+            </thead>
+            <tbody>
+                {sizeOptions.map((size) => (
+                    <tr key={size}>
+                        <th scope="row">{size}</th>
+                        {allColorShades.map((shade) => (
+                            <td key={shade}>
+                                <ColorBox
+                                    {...args}
+                                    name="Copper"
+                                    color={Theme.palette.copper}
+                                    size={size}
+                                    shade={shade}
+                                />
+                            </td>
                         ))}
-                    </section>
+                    </tr>
                 ))}
-            </div>
-        );
-    },
+            </tbody>
+        </table>
+    ),
 };

@@ -1,6 +1,12 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import { allColorShades, ColorBoxProps, toCssColor, useTheme } from "@ui";
+import {
+    allColorShades,
+    ColorBoxProps,
+    DEFAULT_SIZE,
+    toCssColor,
+    useTheme,
+} from "@ui";
 import { Tooltip } from "../tooltip";
 import { Text } from "../../design-system/typography";
 
@@ -21,11 +27,13 @@ export const ColorBox: FC<ColorBoxProps> = ({
     name = "Color",
     color,
     shade = 500,
-    size = 12,
+    size = DEFAULT_SIZE,
     showPaletteOnHover = false,
 }) => {
     const theme = useTheme();
     const appearance = theme.resolveAppearance();
+    const sideLength =
+        typeof size === "number" ? size : theme.sizes.control[size].height;
     const swatch = (
         <View
             accessible
@@ -34,8 +42,8 @@ export const ColorBox: FC<ColorBoxProps> = ({
             style={[
                 styles.swatch,
                 {
-                    width: size,
-                    height: size,
+                    width: sideLength,
+                    height: sideLength,
                     borderWidth: appearance.border.width,
                     borderColor: appearance.border.color,
                     backgroundColor: toCssColor({ ...color[shade], a: 1 }),

@@ -8,6 +8,7 @@ import {
 import classNames from "classnames";
 import surface from "../surface.module.css";
 import { useHudInteraction } from "../useHudInteraction";
+import { HudSurface } from '../HudSurface';
 
 interface Props {
     forwardRef?: RefObject<HTMLDivElement | null>;
@@ -48,20 +49,20 @@ export const Panel: FC<PanelProps & Props & ComponentProps<"div">> = ({
         tabIndex,
     });
     return (
-        <div
+        <HudSurface
+            as="div"
             {...props}
             {...interaction}
             ref={forwardRef ?? ref}
-            data-appearance-variant={variant}
-            data-appearance-color={color}
-            data-appearance-highlight={highlightColor ?? color}
-            data-interactive={interactive || !!onClick || undefined}
-            data-highlighted={highlighted || undefined}
-            data-disabled={disabled || undefined}
-            data-glow={activeGlow}
+            variant={variant}
+            color={color}
+            highlightColor={highlightColor}
+            interactive={interactive || !!onClick}
+            highlighted={highlighted}
+            disabled={disabled}
+            activeGlow={activeGlow}
+            rectangle
             className={classNames(
-                surface.surface,
-                surface.rectangle,
                 surface[
                     elevationLayer
                         ? `layer-${elevationLayer}`
@@ -84,6 +85,6 @@ export const Panel: FC<PanelProps & Props & ComponentProps<"div">> = ({
             }
         >
             {children}
-        </div>
+        </HudSurface>
     );
 };

@@ -1,11 +1,10 @@
 import { ScrollView, StyleSheet, View } from "react-native";
 import {
     allColorShades,
-    appearanceColorOptions,
     ColorBoxProps,
-    colorBoxGallerySizes,
     colorBoxStoryArgs,
     colorBoxStoryControls,
+    sizeOptions,
     Theme,
     useTheme,
 } from "@ui";
@@ -14,37 +13,50 @@ import { Text } from "../../design-system/typography";
 import { MobileStoryDefinition } from "../../storybook/model";
 
 const styles = StyleSheet.create({
-    gallery: { gap: 16 },
-    row: { flexDirection: "row" },
+    gallery: {
+        gap: 16,
+    },
+    row: {
+        flexDirection: "row",
+    },
+    cell: {
+        alignItems: "center",
+    },
 });
 
 const Gallery = (args: ColorBoxProps) => {
     const theme = useTheme();
-    const colors = {
-        ...Theme.palette,
-        ...Object.fromEntries(
-            appearanceColorOptions.map((color) => [color, theme.colors[color]]),
-        ),
-    };
     return (
         <ScrollView contentContainerStyle={styles.gallery}>
-            {Object.entries(colors).map(([name, color]) => (
-                <View key={name}>
-                    <Text>{name}</Text>
-                    {colorBoxGallerySizes.map((size) => (
-                        <View key={size} style={styles.row}>
+            <Text>Copper</Text>
+            {sizeOptions.map((size) => (
+                <View key={size}>
+                    <Text>{size}</Text>
+                    <ScrollView horizontal>
+                        <View style={styles.row}>
                             {allColorShades.map((shade) => (
-                                <ColorBox
-                                    {...args}
+                                <View
                                     key={shade}
-                                    name={name}
-                                    color={color}
-                                    size={size}
-                                    shade={shade}
-                                />
+                                    style={[
+                                        styles.cell,
+                                        {
+                                            width: theme.sizes.control.lg
+                                                .height,
+                                        },
+                                    ]}
+                                >
+                                    <ColorBox
+                                        {...args}
+                                        name="Copper"
+                                        color={Theme.palette.copper}
+                                        size={size}
+                                        shade={shade}
+                                    />
+                                    <Text usage="caption">{shade}</Text>
+                                </View>
                             ))}
                         </View>
-                    ))}
+                    </ScrollView>
                 </View>
             ))}
         </ScrollView>
