@@ -14,4 +14,28 @@ Icons identify actions, tools, and status. Prefer an existing icon with the corr
 - Use the component size scale rather than arbitrary icon dimensions inside controls.
 - Do not rely on icon shape alone when an unfamiliar action needs a visible label.
 
+## Rendering and appearance
+
+Icons are glyphs, with no surface variant or container shape. Their color and state follow the <a href="./?path=/docs/design-system-appearance--docs" target="_top" style={{ textDecoration: 'underline' }}>default appearance policy</a>.
+
+<table>
+    <thead>
+        <tr><th scope="col">Control</th><th scope="col">Behavior</th></tr>
+    </thead>
+    <tbody>
+        <tr><td><code>size</code></td><td>Shared control icon scale; defaults to <code>sm</code>. Explicit <code>width</code> and <code>height</code> override it independently.</td></tr>
+        <tr><td><code>color</code></td><td>Any palette or status role; literal SVG colors remain supported. Web icons without appearance props inherit their owner's current text color; mobile owners pass their resolved glyph color.</td></tr>
+        <tr><td><code>appearanceState</code></td><td>State supplied by the owning control. Icons do not independently track hover, focus, or presses. <code>disabled</code> wins over <code>highlighted</code>, which wins over the supplied transient state.</td></tr>
+        <tr><td><code>glyphsShade</code>, <code>highlightGlyphsShade</code></td><td>Optional shade overrides for the selected base or highlight palette. Disabled ignores overrides.</td></tr>
+        <tr><td><code>fill</code>, <code>stroke</code>, <code>strokeWidth</code></td><td>SVG paint overrides. Disabled restores policy glyph color.</td></tr>
+        <tr><td>Accessibility</td><td>Decorative by default. On web, set <code>ariaHidden={'{false}'}</code> with an accessible label for meaningful icons. On mobile, use <code>accessible</code> and <code>accessibilityLabel</code>. Label interactive owners instead of their decorative icons.</td></tr>
+    </tbody>
+</table>
+
+<Canvas of={IconsStories.Playground} />
+
+<Canvas of={IconsStories.Gallery} />
+
+## Icon catalog and creators
+
 <Canvas of={IconsStories.IconsWithCreators} />

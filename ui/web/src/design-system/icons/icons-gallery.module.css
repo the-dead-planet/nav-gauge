@@ -1,0 +1,27 @@
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+}
+
+.section {
+    display: grid;
+    gap: 12px;
+}
+
+.section h3 {
+    margin: 0;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 1fr repeat(3, 32px);
+    align-items: center;
+    min-height: 32px;
+    gap: 8px;
+}
+
+.creators {
+    border-spacing: 20px;
+    text-align: left;
+}
