@@ -16,16 +16,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Enable Corepack
-      shell: bash
-      run: corepack enable
-
-    - name: Setup Node
-      uses: actions/setup-node@v7
-      with:
-        node-version: 24
-        cache: yarn
-
     - name: Restore Cypress binary cache
       id: cache-cypress
       uses: actions/cache@v6
@@ -33,9 +23,8 @@ runs:
         path: ~/.cache/Cypress
         key: cypress-binary-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
 
-    - name: Install dependencies
-      shell: bash
-      run: yarn install --immutable
+    - name: Setup dependencies
+      uses: ./.github/actions/setup-yarn
 
     - name: Install Cypress binary
       if: steps.cache-cypress.outputs.cache-hit != 'true'
