@@ -2,7 +2,7 @@
     position: fixed;
     inset: 0;
     overflow: hidden;
-    background: rgba(0, 0, 0, .6);
+    background: rgba(0, 0, 0, 0.6);
     animation: overlay-in 200ms ease-out;
     transition: background-color 200ms ease-in;
     z-index: var(--layer-dialog-z-index);
@@ -34,30 +34,6 @@
     overflow: hidden;
 }
 
-.color-neutral {
-    --dialog-color: var(--color-neutral);
-    --dialog-color-light: var(--color-neutral-100);
-    --dialog-scrollbar-color: var(--color-neutral-700);
-}
-
-.color-primary {
-    --dialog-color: var(--color-primary);
-    --dialog-color-light: var(--color-primary-100);
-    --dialog-scrollbar-color: var(--color-primary-700);
-}
-
-.color-secondary {
-    --dialog-color: var(--color-secondary);
-    --dialog-color-light: var(--color-secondary-100);
-    --dialog-scrollbar-color: var(--color-secondary-700);
-}
-
-.color-tertiary {
-    --dialog-color: var(--color-tertiary);
-    --dialog-color-light: var(--color-tertiary-100);
-    --dialog-scrollbar-color: var(--color-tertiary-700);
-}
-
 .middle {
     top: 50%;
     left: 50%;
@@ -76,6 +52,7 @@
 
 .right-drawer .dialog {
     transform: skew(-8deg) translate(-25px, 0);
+    box-shadow: var(--layer-dialog-left-shadow);
 }
 
 .left-drawer {
@@ -93,6 +70,7 @@
 
 .left-drawer .dialog {
     transform: skew(8deg) translate(25px, 0);
+    box-shadow: var(--layer-dialog-right-shadow);
 }
 
 .full-width {
@@ -109,6 +87,7 @@
 
 .header {
     margin: 15px 20px 5px 20px;
+    color: inherit;
 }
 
 .content {
@@ -117,7 +96,8 @@
     min-height: 0;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: rgb(from var(--dialog-scrollbar-color) r g b / .7) rgb(from var(--scrollbar-track-color) r g b / .7);
+    scrollbar-color: var(--appearance-default-glyphs)
+        var(--appearance-default-surface);
 }
 
 .full-width .content {
@@ -125,11 +105,11 @@
 }
 
 .content::-webkit-scrollbar-thumb {
-    background: rgb(from var(--dialog-scrollbar-color) r g b / .7);
+    background: var(--appearance-default-glyphs);
 }
 
 .content::-webkit-scrollbar-thumb:hover {
-    background: var(--dialog-color);
+    background: var(--appearance-color-500);
 }
 
 .footer {

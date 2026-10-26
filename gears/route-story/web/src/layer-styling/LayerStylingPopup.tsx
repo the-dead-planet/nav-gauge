@@ -16,7 +16,11 @@ const hasCustomStyling = (current: RouteStoryState, defaults: RouteStoryState): 
     JSON.stringify(current.routeStyleInactive) !== JSON.stringify(defaults.routeStyleInactive) ||
     JSON.stringify(current.currentPoint) !== JSON.stringify(defaults.currentPoint);
 
-export const LayerStylingPopup: FC<ToolPopupProps<maplibregl.Map> & RouteStoryLayerStylingPopupProps<maplibregl.Map> & WebRouteStoryProps> = ({
+type Props = ToolPopupProps<maplibregl.Map> &
+    RouteStoryLayerStylingPopupProps<maplibregl.Map> &
+    WebRouteStoryProps;
+
+export const LayerStylingPopup: FC<Props> = ({
     icon,
     onClose,
     gearId,
@@ -27,7 +31,7 @@ export const LayerStylingPopup: FC<ToolPopupProps<maplibregl.Map> & RouteStoryLa
     const [active] = useSubjectState(icon.active$);
     const [anchorRef] = useSubjectState(icon.anchorRef$);
     const [state, setState] = useSubjectState(state$);
-    const [selectedStyle, setSelectedStyle] = useState('active');
+    const [selectedStyle, setSelectedStyle] = useState("active");
     const tabstripRef = useRef<HTMLDivElement>(null);
     const activeRef = useRef<SVGRectElement>(null);
     const currentPointRef = useRef<SVGRectElement>(null);
@@ -48,19 +52,40 @@ export const LayerStylingPopup: FC<ToolPopupProps<maplibregl.Map> & RouteStoryLa
         { n: gearId, t: translationKey.OpenLayerAestheticOptions },
     ]);
 
-    const setActiveLine = (patch: Partial<RouteStoryLineStyle>) => setState((prev) => ({ ...prev, routeStyleActive: { ...prev.routeStyleActive, ...patch } }));
-    const setInactiveLine = (patch: Partial<RouteStoryLineStyle>) => setState((prev) => ({ ...prev, routeStyleInactive: { ...prev.routeStyleInactive, ...patch } }));
-    const setCurrentPoint = (patch: Partial<CurrentPointStyle>) => setState((prev) => ({ ...prev, currentPoint: { ...prev.currentPoint, ...patch } }));
+    const setActiveLine = (patch: Partial<RouteStoryLineStyle>) =>
+        setState((prev) => ({
+            ...prev,
+            routeStyleActive: { ...prev.routeStyleActive, ...patch },
+        }));
+    const setInactiveLine = (patch: Partial<RouteStoryLineStyle>) =>
+        setState((prev) => ({
+            ...prev,
+            routeStyleInactive: { ...prev.routeStyleInactive, ...patch },
+        }));
+    const setCurrentPoint = (patch: Partial<CurrentPointStyle>) =>
+        setState((prev) => ({
+            ...prev,
+            currentPoint: { ...prev.currentPoint, ...patch },
+        }));
 
     if (!active || !anchorRef?.current) {
         return null;
     }
 
     const defaults = getDefaultRouteStoryState(theme);
-    const targetRef = selectedStyle === 'active' ? activeRef : selectedStyle === 'current-point' ? currentPointRef : inactiveRef;
+    const targetRef =
+        selectedStyle === "active"
+            ? activeRef
+            : selectedStyle === "current-point"
+                ? currentPointRef
+                : inactiveRef;
     const selectedTabRef: React.RefObject<Element | null> = {
         get current() {
-            return tabstripRef.current?.querySelector('[role="tab"][aria-selected="true"]') ?? null;
+            return (
+                tabstripRef.current?.querySelector(
+                    '[role="tab"][aria-selected="true"]',
+                ) ?? null
+            );
         },
     };
 
@@ -72,77 +97,94 @@ export const LayerStylingPopup: FC<ToolPopupProps<maplibregl.Map> & RouteStoryLa
             popupAnchor="top-left"
             dismissOnClickAway={false}
             onClose={onClose}
+            variant="fill-translucent"
+            popupClassName={styles["popup"]}
+            role="dialog"
+            aria-label={dialogLabel}
         >
-            <Panel
-                variant="fill-translucent"
-                className={styles['popup']}
-                role="dialog"
-                aria-label={dialogLabel}
+            <HudConnector
+                fromRef={selectedTabRef}
+                toRef={targetRef}
+                fromAnchor="top"
+                toAnchor="bottom"
+                color="secondary"
+                activeGlow="glow"
             >
-                <HudConnector fromRef={selectedTabRef} toRef={targetRef} fromAnchor="top" toAnchor="bottom" color="secondary" activeGlow="glow">
-                    <DemoLine
-                        state={state}
-                        onActiveClick={() => setSelectedStyle('active')}
-                        onCurrentPointClick={() => setSelectedStyle('current-point')}
-                        onInactiveClick={() => setSelectedStyle('inactive')}
-                        activeMenuLabel={activeLabel}
-                        currentPointMenuLabel={currentPointLabel}
-                        inactiveMenuLabel={inactiveLabel}
-                        activeRef={activeRef}
-                        currentPointRef={currentPointRef}
-                        inactiveRef={inactiveRef}
-                    />
-                    <div className={styles['content']}>
-                        <div ref={tabstripRef}>
-                            <Tabstrip
-                                variant="fill-inverse"
-                                spread
-                                value={selectedStyle}
-                                onChange={setSelectedStyle}
-                                overflowAccessibilityLabel={dialogLabel}
-                                options={[
-                                    { value: 'active', label: activeLabel },
-                                    { value: 'current-point', label: currentPointLabel },
-                                    { value: 'inactive', label: inactiveLabel },
-                                ]}
-                            >
-                                {selectedStyle === 'current-point' ? (
-                                    <CurrentPointControls
-                                        gearId={gearId}
-                                        translationKey={translationKey}
-                                        value={state.currentPoint}
-                                        onChange={setCurrentPoint}
-                                    />
-                                ) : selectedStyle === 'active' ? (
-                                    <LineStyleGroup
-                                        showColorTransition
-                                        style={state.routeStyleActive}
-                                        gearId={gearId}
-                                        translationKey={translationKey}
-                                        onChange={setActiveLine}
-                                    />
-                                ) : (
-                                    <LineStyleGroup
-                                        style={state.routeStyleInactive}
-                                        gearId={gearId}
-                                        translationKey={translationKey}
-                                        onChange={setInactiveLine}
-                                    />
-                                )}
-                            </Tabstrip>
-                        </div>
+                <DemoLine
+                    state={state}
+                    onActiveClick={() => setSelectedStyle("active")}
+                    onCurrentPointClick={() =>
+                        setSelectedStyle("current-point")
+                    }
+                    onInactiveClick={() => setSelectedStyle("inactive")}
+                    activeMenuLabel={activeLabel}
+                    currentPointMenuLabel={currentPointLabel}
+                    inactiveMenuLabel={inactiveLabel}
+                    activeRef={activeRef}
+                    currentPointRef={currentPointRef}
+                    inactiveRef={inactiveRef}
+                />
+                <div className={styles["content"]}>
+                    <div ref={tabstripRef}>
+                        <Tabstrip
+                            variant="fill-inverse"
+                            spread
+                            value={selectedStyle}
+                            onChange={setSelectedStyle}
+                            overflowAccessibilityLabel={dialogLabel}
+                            options={[
+                                { value: "active", label: activeLabel },
+                                {
+                                    value: "current-point",
+                                    label: currentPointLabel,
+                                },
+                                { value: "inactive", label: inactiveLabel },
+                            ]}
+                        >
+                            {selectedStyle === "current-point" ? (
+                                <CurrentPointControls
+                                    gearId={gearId}
+                                    translationKey={translationKey}
+                                    value={state.currentPoint}
+                                    onChange={setCurrentPoint}
+                                />
+                            ) : selectedStyle === "active" ? (
+                                <LineStyleGroup
+                                    showColorTransition
+                                    style={state.routeStyleActive}
+                                    gearId={gearId}
+                                    translationKey={translationKey}
+                                    onChange={setActiveLine}
+                                />
+                            ) : (
+                                <LineStyleGroup
+                                    style={state.routeStyleInactive}
+                                    gearId={gearId}
+                                    translationKey={translationKey}
+                                    onChange={setInactiveLine}
+                                />
+                            )}
+                        </Tabstrip>
                     </div>
-                </HudConnector>
-                <Panel variant="fill-inverse" borderWidth={0} className={styles['footer']}>
-                    {hasCustomStyling(state, defaults) ? (
-                        <Button variant="ghost" size="xs" onClick={() => setState(defaults)}>
-                            {restoreDefaultsLabel}
-                        </Button>
-                    ) : null}
-                    <Button variant="fill" size="xs" onClick={onClose}>
-                        {closeLabel}
+                </div>
+            </HudConnector>
+            <Panel
+                variant="fill-inverse"
+                borderWidth={0}
+                className={styles["footer"]}
+            >
+                {hasCustomStyling(state, defaults) ? (
+                    <Button
+                        variant="ghost"
+                        size="xs"
+                        onClick={() => setState(defaults)}
+                    >
+                        {restoreDefaultsLabel}
                     </Button>
-                </Panel>
+                ) : null}
+                <Button variant="fill" size="xs" onClick={onClose}>
+                    {closeLabel}
+                </Button>
             </Panel>
         </Popup>
     );

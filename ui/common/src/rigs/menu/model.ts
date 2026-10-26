@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { ColorVariant, SizeVariant } from "../../design-system/model";
+import { AppearanceProps, ColorVariant, SizeVariant } from "../../design-system/model";
 import { TooltipProps } from "../../gizmos/tooltip";
 
 export type MenuAnchor = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
@@ -11,11 +11,11 @@ export interface MenuPosition {
     left?: number;
 }
 
-export interface MenuProps {
-    color?: ColorVariant;
+export interface MenuProps extends AppearanceProps {
     /** Where the menu opens relative to its trigger. Placement may flip to stay inside the viewport. */
     placement?: MenuAnchor;
     icon?: string;
+    /** Trigger and list size when size is not supplied. */
     iconSize?: SizeVariant;
     iconActiveColor?: ColorVariant;
     triggerActive?: boolean;
@@ -25,11 +25,9 @@ export interface MenuProps {
     children?: ReactNode;
 }
 
-export interface MenuItemProps {
+export interface MenuItemProps extends AppearanceProps {
     key: string | number;
-    highlightColor?: ColorVariant;
     isFirst?: boolean;
     closeOnPress?: boolean;
-    disabled?: boolean;
     children: ReactNode;
 }

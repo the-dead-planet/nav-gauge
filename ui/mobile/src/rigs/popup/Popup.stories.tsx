@@ -1,38 +1,29 @@
-import { useState } from 'react';
-import { Text } from '../../design-system/typography';
-import { View } from 'react-native';
+import { ComponentProps } from 'react';
+import { popupStoryArgs, popupStoryControls } from '@ui';
 import { Popup } from './Popup';
-import { Button } from '../../gizmos/button';
+import { PopupPreview } from './PopupPreview';
+import { MobileStoryDefinition } from '../../storybook/model';
 
-export const Overview = () => {
-    const [visible, setVisible] = useState(false);
-
-    return (
-        <View style={{ padding: 100 }}>
-            <Button onPress={() => setVisible((v) => !v)}>Toggle Popup</Button>
-            <Popup
-                visible={visible}
-                onClose={() => setVisible(false)}
-                position={{ x: 250, y: 350 }}
-                triggerAnchor="bottom-right"
-                popupAnchor="top-right"
-            >
-                <View style={{ padding: 16, borderWidth: 1, borderColor: '#ccc', backgroundColor: '#f0f0f0', width: 220, height: 240 }}>
-                    <Text>Popup's top-right corner is anchored here; it returns after the viewport grows.</Text>
-                    <Button onPress={() => setVisible(false)}>Close</Button>
-                </View>
-            </Popup>
-        </View>
-    );
+const story: MobileStoryDefinition<ComponentProps<typeof Popup>> = {
+    args: {
+        ...popupStoryArgs,
+        visible: false,
+        onClose: () => undefined,
+        modal: true,
+        position: { x: 100, y: 200 },
+    },
+    controls: {
+        ...popupStoryControls,
+        modal: { control: 'boolean' },
+    },
+    galleryEditableControls: [
+        'children',
+        'modal',
+        'triggerAnchor',
+        'popupAnchor',
+        'dismissOnClickAway',
+    ],
+    renderPlayground: (args) => <PopupPreview args={args} />,
+    renderGallery: (args) => <PopupPreview args={args} gallery />,
 };
-
-export const NonModal = () => (
-    <View style={{ padding: 100 }}>
-        <Button>Underlying action</Button>
-        <Popup modal={false} visible onClose={() => undefined} position={{ x: 250, y: 350 }}>
-            <View style={{ padding: 16, backgroundColor: '#f0f0f0' }}>
-                <Text>Touches outside this popup pass through.</Text>
-            </View>
-        </Popup>
-    </View>
-);
+export default story;

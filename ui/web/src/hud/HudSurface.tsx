@@ -8,7 +8,7 @@ import {
 } from "@ui";
 import surface from "./surface.module.css";
 
-type Props<Element extends "div" | "button"> =
+type Props<Element extends "div" | "button" | "a"> =
     AppearancePropsBase<SurfaceVariant> &
         Omit<
             ComponentProps<Element>,
@@ -21,7 +21,7 @@ type Props<Element extends "div" | "button"> =
             rectangle?: boolean;
         };
 
-export const HudSurface = <Element extends "div" | "button">({
+export const HudSurface = <Element extends "div" | "button" | "a">({
     as,
     variant,
     color = DEFAULT_COLOR,

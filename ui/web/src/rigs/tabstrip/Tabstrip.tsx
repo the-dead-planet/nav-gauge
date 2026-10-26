@@ -1,9 +1,17 @@
-import { FC, ReactNode, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { FC } from 'react';
 import classNames from 'classnames';
-import { DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, getVisibleTabIndexes, Icons, TabstripProps, useTheme } from '@ui';
+import {
+    DEFAULT_COLOR,
+    DEFAULT_FILL_VARIANT,
+    DEFAULT_SIZE,
+    Icons,
+    TabstripProps,
+} from '@ui';
 import { Button } from '../../gizmos/button';
 import { Menu, MenuItem } from '../menu';
+import { HudSurface } from '../../hud/HudSurface';
 import styles from './tabstrip.module.css';
+import { useTabstripLayout } from './useTabstripLayout';
 
 export const Tabstrip: FC<TabstripProps> = ({
     options,
@@ -21,74 +29,43 @@ export const Tabstrip: FC<TabstripProps> = ({
     overflowAccessibilityLabel,
     children,
 }) => {
-    const theme = useTheme();
-    const containerRef = useRef<HTMLDivElement>(null);
-    const measurementRef = useRef<HTMLDivElement>(null);
-    const contentRef = useRef<HTMLDivElement>(null);
-    const previousContentRef = useRef<{ children: ReactNode; value: string }>({ children, value });
-    const [visibleIndexes, setVisibleIndexes] = useState<number[]>([]);
-    const [contentHeight, setContentHeight] = useState<number>();
-    const [outgoingContent, setOutgoingContent] = useState<{ children: ReactNode; value: string }>();
-
-    useLayoutEffect(() => {
-        const previousContent = previousContentRef.current;
-        if (previousContent.value === value) return;
-
-        setOutgoingContent(previousContent);
-        const timeout = window.setTimeout(() => setOutgoingContent(undefined), 200);
-        return () => window.clearTimeout(timeout);
-    }, [value]);
-
-    useLayoutEffect(() => {
-        previousContentRef.current = { children, value };
-    });
-
-    useEffect(() => {
-        const container = containerRef.current;
-        const measurement = measurementRef.current;
-        if (!container || !measurement) return;
-
-        const updateVisibleCount = () => {
-            const widths = Array.from(measurement.children, (child) => child.getBoundingClientRect().width);
-            const overflowWidth = widths.pop() ?? 0;
-            const availableWidth = container.getBoundingClientRect().width;
-            setVisibleIndexes(getVisibleTabIndexes(widths, availableWidth, overflowWidth, options.findIndex((option) => option.value === value)));
-        };
-
-        const observer = new ResizeObserver(updateVisibleCount);
-        observer.observe(container);
-        observer.observe(measurement);
-        updateVisibleCount();
-        return () => observer.disconnect();
-    }, [options, size, value]);
-
-    useEffect(() => {
-        const content = contentRef.current;
-        if (!content) return;
-
-        const observer = new ResizeObserver(() => setContentHeight(content.getBoundingClientRect().height));
-        observer.observe(content);
-        setContentHeight(content.getBoundingClientRect().height);
-        return () => observer.disconnect();
-    }, [children]);
+    const {
+        containerRef,
+        measurementRef,
+        contentRef,
+        visibleIndexes,
+        contentHeight,
+        outgoingContent,
+    } = useTabstripLayout({ options, value, size, children });
 
     const visibleOptions = visibleIndexes.map((index) => options[index]);
     const visibleIndexSet = new Set(visibleIndexes);
-    const overflowOptions = options.filter((_, index) => !visibleIndexSet.has(index));
-    const buttonProps = { color, glyphsShade, highlightColor, highlightGlyphsShade, size, variant };
+    const overflowOptions = options.filter(
+        (_, index) => !visibleIndexSet.has(index),
+    );
+    const buttonProps = {
+        color,
+        glyphsShade,
+        highlightColor,
+        highlightGlyphsShade,
+        size,
+        variant,
+    };
 
     return (
-        <div className={classNames(styles['root'], styles[`color-${color}`], styles[`highlight-${highlightColor}`], styles[`mode-${theme.mode}`])}>
-            <div ref={containerRef} className={classNames(styles['header'], { [styles['spread']]: spread })} role="tablist">
-                {visibleOptions.map((option, visibleIndex) => (
+        <div className={styles['root']}>
+            <div
+                ref={containerRef}
+                className={classNames(styles['header'], {
+                    [styles['spread']]: spread,
+                })}
+                role="tablist"
+            >
+                {visibleOptions.map((option) => (
                     <Button
                         key={option.value}
                         {...buttonProps}
-                        className={classNames(styles['tab'], styles[`variant-${variant}`], {
-                            [styles['first']]: visibleIndex === 0,
-                            [styles['trailing']]: visibleIndex === visibleOptions.length - 1 && overflowOptions.length === 0,
-                            [styles['last']]: spread && visibleIndex === visibleOptions.length - 1 && overflowOptions.length === 0,
-                        })}
+                        className={styles['tab']}
                         role="tab"
                         aria-selected={option.value === value}
                         highlighted={highlighted || option.value === value}
@@ -104,32 +81,92 @@ export const Tabstrip: FC<TabstripProps> = ({
                         icon={Icons.NounProject.KebabMenu}
                         iconActiveColor={highlightColor}
                         triggerAccessibilityLabel={overflowAccessibilityLabel}
-                        triggerActive={overflowOptions.some((option) => option.value === value)}
+                        triggerActive={overflowOptions.some(
+                            (option) => option.value === value,
+                        )}
                         disabled={disabled}
-                        className={classNames(styles['overflow'], styles[`variant-${variant}`])}
+                        className={styles['overflow']}
                     >
                         {overflowOptions.map((option) => (
-                            <MenuItem key={option.value} type="button" disabled={disabled || option.disabled} closeOnPress onClick={() => onChange(option.value)}>
-                                {option.value === value ? '* ' : null}{option.label}
+                            <MenuItem
+                                key={option.value}
+                                type="button"
+                                highlighted={
+                                    highlighted || option.value === value
+                                }
+                                disabled={disabled || option.disabled}
+                                closeOnPress
+                                onClick={() => onChange(option.value)}
+                            >
+                                {option.label}
                             </MenuItem>
                         ))}
                     </Menu>
                 ) : null}
-                <div ref={measurementRef} className={styles['measurement']} aria-hidden="true">
+                <div
+                    ref={measurementRef}
+                    className={styles['measurement']}
+                    aria-hidden="true"
+                >
                     {options.map((option) => (
-                        <Button key={option.value} {...buttonProps} className={styles['tab']} tabIndex={-1}>{option.label}</Button>
+                        <Button
+                            key={option.value}
+                            {...buttonProps}
+                            className={styles['tab']}
+                            tabIndex={-1}
+                        >
+                            {option.label}
+                        </Button>
                     ))}
-                    <Button {...buttonProps} className={styles['overflow']} icon={Icons.NounProject.KebabMenu} tabIndex={-1} />
+                    <Button
+                        {...buttonProps}
+                        className={styles['overflow']}
+                        icon={Icons.NounProject.KebabMenu}
+                        tabIndex={-1}
+                    />
                 </div>
             </div>
             {children !== undefined && children !== null ? (
-                <div className={styles['content']} style={{ height: contentHeight }}>
-                    {outgoingContent?.children !== undefined && outgoingContent.children !== null ? (
-                        <div key={outgoingContent.value} className={classNames(styles['content-inner'], styles['content-outgoing'], styles[`size-${size}`], styles[`content-${variant}`])} aria-hidden="true">
+                <div
+                    className={styles['content']}
+                    style={{ height: contentHeight }}
+                >
+                    {outgoingContent?.children !== undefined &&
+                    outgoingContent.children !== null ? (
+                        <HudSurface
+                            as="div"
+                            variant={variant}
+                            color={color}
+                            disabled={disabled}
+                            rectangle
+                            key={outgoingContent.value}
+                            className={classNames(
+                                styles['content-inner'],
+                                styles['content-outgoing'],
+                                styles[`size-${size}`],
+                            )}
+                            aria-hidden="true"
+                            inert
+                        >
                             {outgoingContent.children}
-                        </div>
+                        </HudSurface>
                     ) : null}
-                    <div key={value} ref={contentRef} className={classNames(styles['content-inner'], styles[`size-${size}`], styles[`content-${variant}`])}>{children}</div>
+                    <HudSurface
+                        as="div"
+                        variant={variant}
+                        color={color}
+                        disabled={disabled}
+                        rectangle
+                        key={value}
+                        ref={contentRef}
+                        role="tabpanel"
+                        className={classNames(
+                            styles['content-inner'],
+                            styles[`size-${size}`],
+                        )}
+                    >
+                        {children}
+                    </HudSurface>
                 </div>
             ) : null}
         </div>

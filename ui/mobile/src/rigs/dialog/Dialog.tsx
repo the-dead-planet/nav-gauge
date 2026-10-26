@@ -1,11 +1,28 @@
-import { FC, useEffect, useRef, useState } from "react";
-import { Animated, ScrollView, StyleSheet, Modal, StyleProp, View, ViewStyle } from "react-native";
-import { DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DialogProps, FontType, TransitionProps, useTheme } from "@ui";
-import { useSubjectState } from "@tinker-chest";
-import { Panel } from "../../hud";
-import { Button } from "../../gizmos/button";
-import { Text } from "../../design-system/typography";
-import { Transition } from "../../motion/transition";
+import { FC } from 'react';
+import {
+    Animated,
+    ScrollView,
+    StyleSheet,
+    Modal,
+    StyleProp,
+    View,
+    ViewStyle,
+} from 'react-native';
+import {
+    DEFAULT_COLOR,
+    DEFAULT_FILL_VARIANT,
+    DialogProps,
+    FontType,
+    TransitionProps,
+    useTheme,
+} from '@ui';
+import { useSubjectState } from '@tinker-chest';
+import { Panel } from '../../hud';
+import { Button } from '../../gizmos/button';
+import { Text } from '../../design-system/typography';
+import { Transition } from '../../motion/transition';
+import { resolveLayerStyle } from '../../design-system/theme';
+import { useDialogTransition } from './useDialogTransition';
 
 const slideMap: Record<string, TransitionProps['slide']> = {
     middle: 'to-bottom',
@@ -86,45 +103,82 @@ export const Dialog: FC<Props> = ({
     style,
     children,
 }) => {
-    const [render, setRender] = useState(true);
-    const overlayOpacity = useRef(new Animated.Value(0)).current;
+    const {
+        render,
+        close: handleClose,
+        overlayOpacity,
+    } = useDialogTransition();
     const theme = useTheme();
     const [media] = useSubjectState(theme.media$);
     const isWide = !media.isLessThanSm;
-    const drawerTop = media.windowHeight <= 500 ? 0 : Math.min(media.windowHeight * 0.06, 64);
-    const handleClose = () => setRender(false);
-    const addShadow = variant === 'fill-translucent';
-
-    useEffect(() => {
-        Animated.timing(overlayOpacity, {
-            toValue: render ? 1 : 0,
-            duration: 200,
-            useNativeDriver: false,
-        }).start();
-    }, [overlayOpacity, render]);
+    const drawerTop =
+        media.windowHeight <= 500 ? 0 : Math.min(media.windowHeight * 0.06, 64);
+    const appearance = theme.resolveAppearance(variant, color);
 
     return (
-        <Modal visible transparent animationType="none" onRequestClose={handleClose}>
-            <Animated.View style={[styles.overlay, { backgroundColor: overlayOpacity.interpolate({
-                inputRange: [0, 1],
-                outputRange: ['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, .6)'],
-            }) }]}>
+        <Modal
+            visible
+            transparent
+            animationType="none"
+            onRequestClose={handleClose}
+        >
+            <Animated.View
+                style={[
+                    styles.overlay,
+                    {
+                        backgroundColor: overlayOpacity.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [
+                                'rgba(0, 0, 0, 0)',
+                                'rgba(0, 0, 0, .6)',
+                            ],
+                        }),
+                    },
+                ]}
+            >
                 <Transition
                     render={render}
                     slide={slideMap[placement]}
                     fade
                     onUnmount={onClose}
-                    style={isWide ? [placementStyles[placement], placement !== 'middle' && { top: drawerTop }] : styles.fullWidth}
+                    style={
+                        isWide
+                            ? [
+                                  placementStyles[placement],
+                                  placement !== 'middle' && { top: drawerTop },
+                              ]
+                            : styles.fullWidth
+                    }
                 >
-                    <Panel elevationLayer="dialog" variant={variant} color={color} style={[styles.panel, !isWide && styles.panelFullWidth, style]}>
+                    <Panel
+                        variant={variant}
+                        color={color}
+                        accessibilityViewIsModal
+                        accessibilityLabel={header}
+                        style={[
+                            styles.panel,
+                            resolveLayerStyle(
+                                theme,
+                                'dialog',
+                                placement === 'left-drawer' && isWide
+                                    ? 'right'
+                                    : placement === 'right-drawer' && isWide
+                                      ? 'left'
+                                      : 'down',
+                            ),
+                            !isWide && styles.panelFullWidth,
+                            style,
+                        ]}
+                    >
                         <View style={styles.header}>
                             <Text
-                                color={color}
                                 fontType={FontType.NeonText}
-                                shadow={addShadow}
-                                shade={100}
                                 uppercase
-                                style={styles.headerText}
+                                accessibilityRole="header"
+                                style={[
+                                    styles.headerText,
+                                    { color: appearance.glyphs },
+                                ]}
                             >
                                 {header}
                             </Text>
@@ -134,7 +188,11 @@ export const Dialog: FC<Props> = ({
                         </ScrollView>
                         <View style={styles.footer}>
                             <View style={styles.buttonCell}>
-                                <Button variant="fill-inverse" color={color} onPress={handleClose}>
+                                <Button
+                                    variant="fill-inverse"
+                                    color={color}
+                                    onPress={handleClose}
+                                >
                                     {closeText}
                                 </Button>
                             </View>

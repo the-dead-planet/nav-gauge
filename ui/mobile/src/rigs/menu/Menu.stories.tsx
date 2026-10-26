@@ -1,76 +1,63 @@
-import { View, StyleSheet } from 'react-native';
-import { Menu } from "./Menu";
-import { MenuItem } from "./MenuItem";
-import { Text } from "../../design-system/typography";
+import { ComponentProps } from 'react';
+import {
+    appearanceColorOptions,
+    menuStoryArgs,
+    menuStoryControls,
+    surfaceVariantOptions,
+} from '@ui';
+import { Menu } from './Menu';
+import { MenuItem } from './MenuItem';
+import { VariantGallery } from '../../storybook/VariantGallery';
+import { MobileStoryDefinition } from '../../storybook/model';
 
-const styles = StyleSheet.create({
-    wrapper: {
-        marginHorizontal: 'auto',
-    },
-});
-
-const colors = ['primary', 'secondary', 'tertiary', 'neutral'] as const;
-
-export const MenuColors = () => (
-    <View>
-        {colors.map((color) => (
-            <View key={color}>
-                <Text>color="{color}"</Text>
-                <View style={styles.wrapper}>
-                    <Menu color={color} triggerAccessibilityLabel="Open menu">
-                        <MenuItem key={1} onPress={() => console.info("Option 1")}>Option 1</MenuItem>
-                        <MenuItem key={2} onPress={() => console.info("Option 2")}>Option 2</MenuItem>
-                    </Menu>
-                </View>
-            </View>
-        ))}
-    </View>
-);
-
-export const MenuPlacements = () => (
-    <View>
-        <Text>Requested placements flip automatically when a menu would overflow the viewport.</Text>
-        <View>
-            <Text>placement="bottom-right" (default)</Text>
-            <View style={styles.wrapper}>
-                <Menu placement="bottom-right">
-                    <MenuItem key={1} onPress={() => console.info("Option 1")}>Option 1</MenuItem>
-                    <MenuItem key={2} onPress={() => console.info("Option 2")} >Option 2</MenuItem>
+const story: MobileStoryDefinition<ComponentProps<typeof Menu>> = {
+    args: menuStoryArgs,
+    controls: menuStoryControls,
+    galleryEditableControls: [
+        'placement',
+        'highlightColor',
+        'glyphsShade',
+        'highlightGlyphsShade',
+        'triggerActive',
+        'disabled',
+    ],
+    renderPlayground: (args) => (
+        <Menu {...args}>
+            <MenuItem key="default" onPress={() => undefined}>
+                Open route
+            </MenuItem>
+            <MenuItem key="selected" highlighted>
+                Selected route
+            </MenuItem>
+            <MenuItem key="disabled" highlighted disabled>
+                Unavailable
+            </MenuItem>
+        </Menu>
+    ),
+    renderGallery: (args) => (
+        <VariantGallery
+            colors={appearanceColorOptions}
+            variants={surfaceVariantOptions}
+            render={({ color, size, variant }) => (
+                <Menu
+                    {...args}
+                    color={color}
+                    iconSize={size}
+                    size={size}
+                    variant={variant}
+                >
+                    <MenuItem key="default" onPress={() => undefined}>
+                        Open route
+                    </MenuItem>
+                    <MenuItem key="selected" highlighted>
+                        Selected route
+                    </MenuItem>
+                    <MenuItem key="disabled" highlighted disabled>
+                        Unavailable
+                    </MenuItem>
                 </Menu>
-            </View>
-        </View>
-
-        <View>
-            <Text>placement="bottom-left"</Text>
-            <View style={styles.wrapper}>
-                <Menu placement="bottom-left">
-                    <MenuItem key={1} onPress={() => console.info("Option A")}>Option 1</MenuItem>
-                    <MenuItem key={2} onPress={() => console.info("Option B")} >Option 2</MenuItem>
-                </Menu>
-            </View>
-        </View>
-
-        <View>
-            <Text>placement="top-right"</Text>
-            <View style={styles.wrapper}>
-                <Menu placement="top-right">
-                    <MenuItem key={1} onPress={() => console.info("Option X")} >Option 1</MenuItem>
-                    <MenuItem key={2} onPress={() => console.info("Option Y")}>Option 2</MenuItem>
-                </Menu>
-            </View>
-        </View>
-
-        <View>
-            <Text>placement="top-left"</Text>
-            <View style={styles.wrapper}>
-                <Menu placement="top-left">
-                    <MenuItem key={1} onPress={() => console.info("Option 1")} >Option 1</MenuItem>
-                    <MenuItem key={2} onPress={() => console.info("Option 2")} >Option 2</MenuItem>
-                    <MenuItem key={3} onPress={() => console.info("Option 3")} >Option 3</MenuItem>
-                    <MenuItem key={4} onPress={() => console.info("Option 4")} >Option 4</MenuItem>
-                    <MenuItem key={5} onPress={() => console.info("Option 5")} >Option 5</MenuItem>
-                </Menu>
-            </View>
-        </View>
-    </View>
-);
+            )}
+        />
+    ),
+};
+export default story;

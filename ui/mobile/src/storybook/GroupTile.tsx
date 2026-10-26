@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Icons, useTheme } from '@ui';
+import { Icons } from '@ui';
 import { Text } from '../design-system/typography';
 import { Button } from '../gizmos/button';
 import { Popup } from '../rigs/popup';
@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
         gap: 4,
     },
     popup: {
-        borderWidth: 1,
         gap: 16,
     },
     popupList: {
@@ -58,8 +57,6 @@ interface Props {
 }
 
 export const GroupTile: FC<Props> = ({ group, width, onEnter, onSelect }) => {
-    const theme = useTheme();
-    const appearance = theme.resolveAppearance();
     const { width: windowWidth, height: windowHeight } = useWindowDimensions();
     const safeAreaInsets = useSafeAreaInsets();
     const [showComponents, setShowComponents] = useState(false);
@@ -111,8 +108,6 @@ export const GroupTile: FC<Props> = ({ group, width, onEnter, onSelect }) => {
                     {
                         width: Math.min(420, windowWidth - 32),
                         maxHeight: windowHeight - safeAreaInsets.top - safeAreaInsets.bottom - 32,
-                        backgroundColor: appearance.surface,
-                        borderColor: appearance.border.color,
                     },
                 ]}
             >

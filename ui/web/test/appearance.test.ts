@@ -6,11 +6,13 @@ import {
     appearanceColorOptions,
     ColorBoxProps,
     fillVariantOptions,
+    MenuContext,
     Orientation,
     Theme,
     ThemeContext,
     ThemeMode,
     ThemeName,
+    sizeOptions,
     themeSpecifications,
 } from '@ui';
 
@@ -41,6 +43,8 @@ const { Button } = require('../src/gizmos/button/Button') as typeof import('../s
 const { Chip } = require('../src/gizmos/chip/Chip') as typeof import('../src/gizmos/chip/Chip');
 const { ResizeHandle } = require('../src/gizmos/resize-handle/ResizeHandle') as typeof import('../src/gizmos/resize-handle/ResizeHandle');
 const { ColorBox } = require('../src/gizmos/color-box/ColorBox') as typeof import('../src/gizmos/color-box/ColorBox');
+const { Menu } = require('../src/rigs/menu/Menu') as typeof import('../src/rigs/menu/Menu');
+const { MenuItem } = require('../src/rigs/menu/MenuItem') as typeof import('../src/rigs/menu/MenuItem');
 if (previousCssLoader) {
     require.extensions['.css'] = previousCssLoader;
 } else {
@@ -59,6 +63,63 @@ const media = {
 };
 
 describe('Composed appearance rendering', () => {
+    it('inherits menu item size and highlight policy without retaining disabled link navigation', () => {
+        const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
+        for (const color of appearanceColorOptions) {
+            for (const size of sizeOptions) {
+                const markup = renderToStaticMarkup(createElement(ThemeContext.Provider, {
+                    value: theme,
+                    children: createElement(MenuContext.Provider, {
+                        value: { color, highlightColor: 'hazard', size, onClose: () => undefined },
+                        children: createElement(MenuItem, {
+                            key: 'link',
+                            type: 'link',
+                            href: '/route',
+                            highlighted: true,
+                            disabled: true,
+                            glyphsShade: 500,
+                            highlightGlyphsShade: 200,
+                            children: 'Route',
+                        }),
+                    }),
+                }));
+                expect(markup).to.include(`size-${size}`);
+                expect(markup).to.include(`data-appearance-color="${color}"`);
+                expect(markup).to.include('data-appearance-highlight="hazard"');
+                expect(markup).to.include('data-appearance-variant="ghost"');
+                expect(markup).to.include('data-disabled="true"');
+                expect(markup).to.include('aria-disabled="true"');
+                expect(markup).to.include('tabindex="-1"');
+                expect(markup).not.to.include('href=');
+                expect(markup).to.include(`--appearance-default-glyphs-override:${theme.color(color, 500)}`);
+                expect(markup).to.include(`--appearance-active-pressed-glyphs-override:${theme.color('hazard', 200)}`);
+                expect([...markup.matchAll(/data-interactive="true"/g)]).to.have.length(1);
+            }
+        }
+        theme.destroy();
+    });
+
+    it('lets menu size override the legacy icon size and keeps the trigger accessible', () => {
+        const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
+        const markup = renderToStaticMarkup(createElement(ThemeContext.Provider, {
+            value: theme,
+            children: createElement(Menu, {
+                size: 'lg',
+                iconSize: 'xs',
+                triggerAccessibilityLabel: 'Route actions',
+                disabled: true,
+                triggerActive: true,
+            }),
+        }));
+        expect(markup).to.include('only-icon-lg');
+        expect(markup).not.to.include('only-icon-xs');
+        expect(markup).to.include('aria-label="Route actions"');
+        expect(markup).to.include('aria-haspopup="menu"');
+        expect(markup).to.include('aria-expanded="false"');
+        expect(markup).to.include('disabled=""');
+        theme.destroy();
+    });
+
     it('renders named, default and custom ColorBox sizes as pixel dimensions', () => {
         const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
         const cases: { size: ColorBoxProps['size']; sideLength: number }[] = [

@@ -1,4 +1,52 @@
-import { MenuAnchor, MenuPosition } from "./model";
+import { MenuAnchor, MenuItemProps, MenuPosition, MenuProps } from "./model";
+import { StoryControls } from '../../storybook';
+import { appearanceColorOptions, DEFAULT_COLOR, DEFAULT_SIZE, DEFAULT_SURFACE_VARIANT, sizeOptions, surfaceVariantOptions } from '../../design-system';
+import { buttonStoryControls } from '../../gizmos/button/tinkers';
+
+export const menuAnchorOptions: MenuAnchor[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
+export const menuStoryArgs: MenuProps = {
+    color: DEFAULT_COLOR,
+    variant: 'ghost',
+    size: DEFAULT_SIZE,
+    placement: 'bottom-right',
+    triggerAccessibilityLabel: 'Open menu',
+    triggerActive: false,
+    disabled: false,
+};
+export const menuStoryControls: StoryControls<MenuProps> = {
+    color: { control: 'select', options: appearanceColorOptions },
+    variant: { control: 'select', options: surfaceVariantOptions },
+    size: { control: 'select', options: sizeOptions },
+    placement: { control: 'select', options: menuAnchorOptions },
+    highlightColor: buttonStoryControls.highlightColor,
+    glyphsShade: buttonStoryControls.glyphsShade,
+    highlightGlyphsShade: buttonStoryControls.highlightGlyphsShade,
+    triggerAccessibilityLabel: { control: 'text' },
+    triggerActive: { control: 'boolean' },
+    disabled: { control: 'boolean' },
+};
+export const menuItemStoryArgs: MenuItemProps = {
+    key: 'item',
+    children: 'Menu action',
+    color: DEFAULT_COLOR,
+    variant: DEFAULT_SURFACE_VARIANT,
+    size: DEFAULT_SIZE,
+    highlighted: false,
+    disabled: false,
+    closeOnPress: false,
+};
+export const menuItemStoryControls: StoryControls<MenuItemProps> = {
+    children: { control: 'text' },
+    color: menuStoryControls.color,
+    variant: menuStoryControls.variant,
+    size: { control: 'select', options: sizeOptions },
+    highlightColor: buttonStoryControls.highlightColor,
+    glyphsShade: buttonStoryControls.glyphsShade,
+    highlightGlyphsShade: buttonStoryControls.highlightGlyphsShade,
+    highlighted: { control: 'boolean' },
+    disabled: { control: 'boolean' },
+    closeOnPress: { control: 'boolean' },
+};
 
 export function getIconAndMenuAnchors(placement: MenuAnchor): { icon: MenuAnchor; menu: MenuAnchor } {
     const vertical = placement.startsWith('top') ? 'bottom' : 'top';

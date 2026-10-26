@@ -1,43 +1,48 @@
-import { FC } from 'react';
-import { StyleSheet, TouchableHighlight } from 'react-native';
-import { Text } from '../../design-system/typography';
-import { MenuItemProps, useMenuContext, useTheme } from '@ui';
+import { ComponentProps, FC } from 'react';
+import { StyleSheet } from 'react-native';
+import { MenuItemProps, useMenuContext } from '@ui';
+import { Button } from '../../gizmos/button';
 
 const styles = StyleSheet.create({
     menuItem: {
-        paddingVertical: 12,
-        paddingHorizontal: 16,
-    },
-    menuText: {
-        fontSize: 16,
+        justifyContent: 'flex-start',
     },
 });
 
-export const MenuItem: FC<{ onPress: () => void; } & MenuItemProps> = ({
+export const MenuItem: FC<
+    MenuItemProps & Pick<ComponentProps<typeof Button>, 'onPress'>
+> = ({
+    color,
     highlightColor,
+    variant = 'ghost',
+    size,
+    isFirst: _isFirst,
+    closeOnPress = true,
     onPress,
-    disabled,
-    children,
+    ...props
 }) => {
-    const theme = useTheme();
-    const { color, onClose } = useMenuContext();
-    const textColor = theme.color(color, theme.isLight ? 900 : 100);
+    const context = useMenuContext();
 
     return (
-        <TouchableHighlight
-            underlayColor={theme.color(highlightColor ?? color, 500, 0.14)}
+        <Button
+            {...props}
+            variant={variant}
+            size={size ?? context.size}
+            color={color ?? context.color}
+            highlightColor={
+                highlightColor ??
+                context.highlightColor ??
+                color ??
+                context.color
+            }
             style={styles.menuItem}
-            onPress={() => {
-                onPress();
-                onClose();
+            onPress={(event) => {
+                event.stopPropagation();
+                onPress?.(event);
+                if (closeOnPress) {
+                    context.onClose();
+                }
             }}
-            disabled={disabled}
-            accessibilityRole="button"
-            accessibilityState={{ disabled }}
-        >
-            <Text style={[styles.menuText, { color: textColor }]}>
-                {children}
-            </Text>
-        </TouchableHighlight>
+        />
     );
 };

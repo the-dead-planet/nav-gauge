@@ -2,7 +2,7 @@ import { PanelProps } from '../../hud';
 import { MenuAnchor } from '../menu';
 import { ReactNode } from 'react';
 
-export interface PopupProps {
+export interface PopupProps extends Pick<PanelProps, 'color' | 'highlightColor' | 'highlighted' | 'disabled' | 'borderWidth'> {
     anchor?: React.RefObject<HTMLElement | null>;
     position?: { x: number; y: number };
     variant?: PanelProps['variant'];

@@ -1,6 +1,6 @@
 import { FC, RefObject, useRef, useState } from "react";
 import { HostInstance, StyleSheet } from "react-native";
-import { ColorSelectFieldProps, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, useTheme } from "@ui";
+import { ColorSelectFieldProps, DEFAULT_FILL_VARIANT, DEFAULT_SIZE } from "@ui";
 import { Popup } from "../../rigs/popup";
 import { ColorButton } from "../color-button";
 import { ColorPicker } from "../color-picker";
@@ -13,7 +13,6 @@ const styles = StyleSheet.create({
         width: 320,
         maxWidth: '90%',
         padding: 8,
-        borderWidth: 1,
         borderRadius: 0,
     },
 });
@@ -27,7 +26,6 @@ export const ColorSelectField: FC<ColorSelectFieldProps> = ({
     variant = DEFAULT_FILL_VARIANT,
     onChange,
 }) => {
-    const theme = useTheme();
     const [open, setOpen] = useState(false);
     const anchorRef = useRef<HostInstance>(null);
 
@@ -49,13 +47,7 @@ export const ColorSelectField: FC<ColorSelectFieldProps> = ({
                 popupAnchor="top-left"
                 onClose={() => setOpen(false)}
                 overlayStyle={styles.overlay}
-                popupStyle={[
-                    styles.popup,
-                    {
-                        backgroundColor: theme.color('neutral', theme.isDark ? 800 : 200),
-                        borderColor: theme.color('neutral', theme.isLight ? 200 : 800),
-                    },
-                ]}
+                popupStyle={styles.popup}
             >
                 {open ? (
                     <ColorPicker
