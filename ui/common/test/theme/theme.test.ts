@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { appearanceColorOptions, Orientation, surfaceVariantOptions, Theme, themeAppearanceStateOptions, themeSpecifications, ThemeName } from "../../src";
+import { actionButtonVariants, appearanceColorOptions, Orientation, surfaceVariantOptions, Theme, themeAppearanceStateOptions, themeSpecifications, ThemeName, translucentSurfaceOpacity } from "../../src";
 
 const media = {
     initial: () => ({
@@ -25,6 +25,28 @@ const oklabLightness = ({ r, g, b }: { r: number; g: number; b: number }): numbe
 };
 
 describe("Theme", () => {
+    it('raises translucent surface opacity without blur across modes, colors and states', () => {
+        expect(translucentSurfaceOpacity.unblurred).to.be.greaterThan(translucentSurfaceOpacity.blurred);
+        for (const specification of Object.values(themeSpecifications[ThemeName.Default])) {
+            const nativeTheme = new Theme(specification, media, false);
+            for (const color of appearanceColorOptions) {
+                for (const state of themeAppearanceStateOptions) {
+                    const appearance = nativeTheme.resolveAppearance('fill-translucent', color, 'intel', state);
+                    const shade = state === 'disabled' ? (nativeTheme.isLight ? 200 : 800) : 500;
+                    expect(appearance.surface).to.equal(nativeTheme.color(color, shade, translucentSurfaceOpacity.unblurred));
+                    expect(appearance.effects.backdropBlur).to.equal(0);
+                }
+            }
+            nativeTheme.destroy();
+        }
+    });
+
+    it('shares selected and secondary action variants across filled surfaces', () => {
+        expect(actionButtonVariants.fill).to.deep.equal({ active: 'fill', inactive: 'fill-inverse' });
+        expect(actionButtonVariants['fill-inverse']).to.deep.equal({ active: 'fill', inactive: 'ghost' });
+        expect(actionButtonVariants['fill-translucent']).to.deep.equal({ active: 'fill', inactive: 'ghost' });
+    });
+
     it('uses the base palette for omitted highlights across all variants, states and colors', () => {
         for (const specifications of Object.values(themeSpecifications)) {
             for (const specification of [specifications.light, specifications.dark]) {

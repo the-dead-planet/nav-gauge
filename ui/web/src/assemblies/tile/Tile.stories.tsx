@@ -12,7 +12,7 @@ const meta = {
         ...tileStoryArgs,
         append: <Button size="xs">Info</Button>,
         children: <div style={{ minHeight: 80 }} />,
-        actions: (size) => <Button size={size} variant="fill">Open</Button>,
+        actions: (size, variants) => <Button size={size} variant={variants.active}>Open</Button>,
         panelProps: { variant: 'fill-inverse' },
     },
 } satisfies Meta<typeof Tile>;
@@ -33,8 +33,8 @@ export const Gallery: Story = {
                     {...args}
                     size={size}
                     panelProps={{ ...args.panelProps, color, variant }}
-                    actions={(actionSize) => (
-                        <Button size={actionSize} variant="fill">
+                    actions={(actionSize, variants) => (
+                        <Button size={actionSize} variant={variants.active}>
                             Open
                         </Button>
                     )}

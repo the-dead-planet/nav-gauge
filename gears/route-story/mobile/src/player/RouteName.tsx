@@ -52,6 +52,7 @@ export const RouteName: FC<TopToolsProps<MobileMap> & MobileRouteStoryProps> = (
         >
             <FileInput
                 mutiple
+                fileIcon={(routeName ? Icons.NounProject.ReplaceFile : Icons.NounProject.Upload) as unknown as string}
                 fileName={routeName}
                 fileLabel={fileLabel}
                 fileTooltipPlacement="bottom"
@@ -72,6 +73,8 @@ export const RouteName: FC<TopToolsProps<MobileMap> & MobileRouteStoryProps> = (
                                 variant="ghost"
                                 color="primary"
                                 corners="circle"
+                                glyphsShade={300}
+                                highlightGlyphsShade={400}
                                 icon={Icons.NounProject.Target}
                                 onPress={() => fitBoundsHandler(map, data$.value.boundingBox)}
                                 accessibilityLabel={fitBoundsLabel}

@@ -67,8 +67,8 @@ export const GroupTile: FC<Props> = ({ group, width, onEnter, onSelect }) => {
             <Tile
                 name={group.name}
                 description={group.description}
-                actions={(size) => (
-                    <Button size={size} variant="fill" onPress={onEnter}>
+                actions={(size, variants) => (
+                    <Button size={size} variant={variants.active} onPress={onEnter}>
                         Enter
                     </Button>
                 )}

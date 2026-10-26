@@ -33,7 +33,7 @@ const story = {
         <Tile
             {...args}
             append={<Button size="xs">Info</Button>}
-            actions={(size) => <Button size={size} variant="fill">Open</Button>}
+            actions={(size, variants) => <Button size={size} variant={variants.active}>Open</Button>}
         >
             <View style={styles.content} />
         </Tile>
@@ -49,8 +49,8 @@ const story = {
                         {...args}
                         size={size}
                         panelProps={{ ...args.panelProps, color, variant }}
-                        actions={(actionSize) => (
-                            <Button size={actionSize} variant="fill">
+                        actions={(actionSize, variants) => (
+                            <Button size={actionSize} variant={variants.active}>
                                 Open
                             </Button>
                         )}

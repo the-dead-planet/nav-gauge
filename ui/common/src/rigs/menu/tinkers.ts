@@ -26,7 +26,6 @@ export const menuStoryControls: StoryControls<MenuProps> = {
     disabled: { control: 'boolean' },
 };
 export const menuItemStoryArgs: MenuItemProps = {
-    key: 'item',
     children: 'Menu action',
     color: DEFAULT_COLOR,
     variant: DEFAULT_SURFACE_VARIANT,

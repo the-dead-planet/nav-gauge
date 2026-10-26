@@ -1,9 +1,8 @@
-import { TabstripOption, TabstripProps, TabstripVariant } from './model';
+import { TabstripOption, TabstripProps } from './model';
 import { StoryControls } from '../../storybook';
-import { DEFAULT_COLOR, DEFAULT_SIZE } from '../../design-system';
+import { DEFAULT_COLOR, DEFAULT_SIZE, fillVariantOptions } from '../../design-system';
 import { menuItemStoryControls } from '../menu/tinkers';
 
-export const tabstripVariantOptions: TabstripVariant[] = ['fill-inverse', 'fill-translucent', 'outline'];
 export const tabstripStoryOptions: TabstripOption[] = [
     { value: 'route', label: 'Route' },
     { value: 'waypoints', label: 'Waypoints' },
@@ -26,7 +25,7 @@ export const tabstripStoryArgs: Omit<TabstripProps, 'onChange'> = {
 };
 export const tabstripStoryControls: StoryControls<TabstripProps> = {
     children: { control: 'text' },
-    variant: { control: 'select', options: tabstripVariantOptions },
+    variant: { control: 'select', options: fillVariantOptions },
     color: menuItemStoryControls.color,
     size: menuItemStoryControls.size,
     highlightColor: menuItemStoryControls.highlightColor,

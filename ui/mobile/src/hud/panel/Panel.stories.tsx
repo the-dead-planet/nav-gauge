@@ -37,7 +37,6 @@ const story: MobileStoryDefinition<PanelProps> = {
                     {...args}
                     color={color}
                     variant={variant}
-                    shape="default"
                     style={styles.sample}
                 />
             )}

@@ -2,6 +2,7 @@ import { ComponentProps, FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import {
     DEFAULT_COLOR,
+    actionButtonVariants,
     DEFAULT_FILL_VARIANT,
     DEFAULT_SIZE,
     Icons,
@@ -54,7 +55,7 @@ export const Tabstrip: FC<TabstripProps> = ({
         highlightColor,
         highlightGlyphsShade,
         size,
-        variant,
+        variant: actionButtonVariants[variant].inactive,
     };
     const visibleIndexSet = new Set(visibleIndexes);
     const overflowOptions = options.filter(
@@ -91,6 +92,13 @@ export const Tabstrip: FC<TabstripProps> = ({
                         <Button
                             key={option.value}
                             {...buttonProps}
+                            variant={
+                                actionButtonVariants[variant][
+                                    highlighted || selected
+                                        ? 'active'
+                                        : 'inactive'
+                                ]
+                            }
                             style={spread ? styles.spreadButton : undefined}
                             accessibilityRole="tab"
                             accessibilityState={{
@@ -130,6 +138,16 @@ export const Tabstrip: FC<TabstripProps> = ({
                     >
                         <Menu
                             {...buttonProps}
+                            variant={
+                                actionButtonVariants[variant][
+                                    highlighted ||
+                                    overflowOptions.some(
+                                        (option) => option.value === value,
+                                    )
+                                        ? 'active'
+                                        : 'inactive'
+                                ]
+                            }
                             iconActiveColor={highlightColor}
                             iconSize={size}
                             triggerAccessibilityLabel={
@@ -169,6 +187,13 @@ export const Tabstrip: FC<TabstripProps> = ({
                         <Button
                             key={option.value}
                             {...buttonProps}
+                            variant={
+                                actionButtonVariants[variant][
+                                    highlighted || option.value === value
+                                        ? 'active'
+                                        : 'inactive'
+                                ]
+                            }
                             onLayout={(event) => setOptionWidth(index, event)}
                         >
                             {option.label}

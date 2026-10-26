@@ -6,7 +6,7 @@ import {
     sizeOptions,
     tabstripStoryArgs,
     tabstripStoryControls,
-    tabstripVariantOptions,
+    fillVariantOptions,
 } from '@ui';
 import { Tabstrip } from './Tabstrip';
 import { VariantGallery } from '../../storybook/VariantGallery';
@@ -24,7 +24,7 @@ export const Playground: Story = {
     name: 'Playground with Live code editor',
 };
 makeLiveEditStory(Playground, {
-    availableImports: { react: { useState }, '@web-ui': { Tabstrip } },
+    availableImports: { '@web-ui': { Tabstrip } },
     code: `import { useState } from 'react';
 import { Tabstrip } from '@web-ui';
 
@@ -46,7 +46,7 @@ export const Gallery: Story = {
             <VariantGallery
                 colors={appearanceColorOptions}
                 sizes={sizeOptions}
-                variants={tabstripVariantOptions}
+                variants={fillVariantOptions}
                 render={({ color, size, variant }) => (
                     <Tabstrip
                         {...args}

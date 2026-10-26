@@ -64,6 +64,8 @@ export const RouteName: FC<TopToolsProps<maplibregl.Map> & WebRouteStoryProps> =
                                 variant="ghost"
                                 color="primary"
                                 corners="circle"
+                                glyphsShade={300}
+                                highlightGlyphsShade={400}
                                 icon={Icons.NounProject.Target}
                                 onClick={() => fitBoundsHandler(map, data$.value.boundingBox)}
                                 aria-label={fitBoundsLabel}

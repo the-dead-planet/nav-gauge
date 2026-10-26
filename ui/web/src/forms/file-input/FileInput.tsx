@@ -1,5 +1,5 @@
 import { ChangeEvent, ComponentProps, ElementType, FC, Fragment, useRef, useState } from "react";
-import {  FileInputProps, Icons } from "@ui";
+import { FileInputProps, Icons } from "@ui";
 import { Button } from "../../gizmos/button";
 import { Dialog } from "../../rigs/dialog";
 import { P, Label } from "../../design-system/typography";
@@ -70,7 +70,8 @@ export const FileInput: FC<Props & ComponentProps<'div'>> = ({
             />
             <FileNameComponent
                 color={color}
-                shade={500}
+                shade={300}
+                highlightGlyphsShade={400}
                 title={fileName ?? undefined}
                 className={styles['route-name']}
             >
@@ -81,6 +82,8 @@ export const FileInput: FC<Props & ComponentProps<'div'>> = ({
                 variant="ghost"
                 color={color}
                 corners="circle"
+                glyphsShade={300}
+                highlightGlyphsShade={400}
                 icon={Icons.NounProject.Clear}
                 onClick={() => setShowPurgeDialog(true)}
                 aria-label={purgeLabel}

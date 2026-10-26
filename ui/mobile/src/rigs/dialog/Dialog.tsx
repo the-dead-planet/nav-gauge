@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import {
     DEFAULT_COLOR,
+    actionButtonVariants,
     DEFAULT_FILL_VARIANT,
     DialogProps,
     FontType,
@@ -23,6 +24,8 @@ import { Text } from '../../design-system/typography';
 import { Transition } from '../../motion/transition';
 import { resolveLayerStyle } from '../../design-system/theme';
 import { useDialogTransition } from './useDialogTransition';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { HudContent } from '../../hud/HudContent';
 
 const slideMap: Record<string, TransitionProps['slide']> = {
     middle: 'to-bottom',
@@ -55,11 +58,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     fullWidth: {
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
+        flex: 1,
     },
     panel: {
         rowGap: 10,
@@ -67,6 +66,7 @@ const styles = StyleSheet.create({
     },
     panelFullWidth: {
         width: '100%',
+        flex: 1,
     },
     header: {
         paddingTop: 15,
@@ -109,22 +109,32 @@ export const Dialog: FC<Props> = ({
         overlayOpacity,
     } = useDialogTransition();
     const theme = useTheme();
+    const insets = useSafeAreaInsets();
     const [media] = useSubjectState(theme.media$);
     const isWide = !media.isLessThanSm;
     const drawerTop =
         media.windowHeight <= 500 ? 0 : Math.min(media.windowHeight * 0.06, 64);
     const appearance = theme.resolveAppearance(variant, color);
+    const actionVariants = actionButtonVariants[variant];
 
     return (
         <Modal
             visible
             transparent
+            statusBarTranslucent
+            navigationBarTranslucent
             animationType="none"
             onRequestClose={handleClose}
         >
             <Animated.View
                 style={[
                     styles.overlay,
+                    !isWide && {
+                        paddingTop: insets.top,
+                        paddingRight: insets.right,
+                        paddingBottom: insets.bottom,
+                        paddingLeft: insets.left,
+                    },
                     {
                         backgroundColor: overlayOpacity.interpolate({
                             inputRange: [0, 1],
@@ -184,12 +194,14 @@ export const Dialog: FC<Props> = ({
                             </Text>
                         </View>
                         <ScrollView style={styles.content}>
-                            {children}
+                            <HudContent appearance={appearance}>
+                                {children}
+                            </HudContent>
                         </ScrollView>
                         <View style={styles.footer}>
                             <View style={styles.buttonCell}>
                                 <Button
-                                    variant="fill-inverse"
+                                    variant={actionVariants.inactive}
                                     color={color}
                                     onPress={handleClose}
                                 >
@@ -199,7 +211,7 @@ export const Dialog: FC<Props> = ({
                             {save ? (
                                 <View style={styles.buttonCell}>
                                     <Button
-                                        variant="fill"
+                                        variant={actionVariants.active}
                                         color={color}
                                         onPress={() => {
                                             save.onSave();

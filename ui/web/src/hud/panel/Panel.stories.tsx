@@ -35,7 +35,7 @@ export default () => <Panel>Preview</Panel>;`,
 });
 
 export const Gallery: Story = {
-    parameters: { controls: { exclude: ["color", "variant", "shape"] } },
+    parameters: { controls: { exclude: ["color", "variant"] } },
     render: (args) => (
         <VariantGallery
             sizes={["surface"]}
@@ -46,7 +46,6 @@ export const Gallery: Story = {
                     {...args}
                     color={color}
                     variant={variant}
-                    shape="default"
                     tabIndex={args.interactive ? 0 : undefined}
                 >
                     <div className={styles.sample}>{args.children}</div>

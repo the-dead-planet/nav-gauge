@@ -15,7 +15,6 @@ interface Props {
 }
 
 export const Panel: FC<PanelProps & Props & ComponentProps<"div">> = ({
-    shape: _shape,
     interactive = false,
     activeGlow = "none",
     color = DEFAULT_COLOR,

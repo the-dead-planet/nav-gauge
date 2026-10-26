@@ -1,10 +1,9 @@
 import { FC } from "react";
 import { View, TextInput, StyleSheet } from "react-native";
-import { ColorShade, controlTextSpecifications, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, FontType, Icons, NumberInputProps, SizeVariant, useStepRepeat, useTheme } from "@ui";
+import { ColorShade, controlTextSpecifications, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, FontType, Icons, NumberInputProps, SizeVariant, translucentSurfaceOpacity, useStepRepeat, useTheme } from "@ui";
 import { Button } from "../../gizmos/button";
 import { Text } from "../../design-system/typography";
 import { resolveMobileFont } from "../../design-system/typography/fontFamily";
-import { TRANSLUCENT_OPACITY } from "../../tinkers";
 
 const styles = StyleSheet.create({
     container: {
@@ -109,7 +108,7 @@ export const NumberInput: FC<NumberInputProps> = ({
         : variant === 'fill'
         ? baseColor
         : variant === 'fill-translucent'
-            ? theme.color(color, 500, TRANSLUCENT_OPACITY)
+            ? theme.color(color, 500, translucentSurfaceOpacity.unblurred)
             : theme.color(color, theme.isLight ? 100 : 900);
     const borderColor = highlighted && !disabled
         ? activeAccent

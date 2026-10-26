@@ -26,7 +26,6 @@ export interface MenuProps extends AppearanceProps {
 }
 
 export interface MenuItemProps extends AppearanceProps {
-    key: string | number;
     isFirst?: boolean;
     closeOnPress?: boolean;
     children: ReactNode;

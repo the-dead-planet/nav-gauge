@@ -1,5 +1,6 @@
 import { Canvas, Meta, Title } from "@storybook/addon-docs/blocks";
 import * as ColorStories from "./colors/Color.stories";
+import { translucentSurfaceOpacity } from '@ui';
 
 <Meta title="Design System/Appearance" />
 
@@ -156,13 +157,29 @@ Components without an appearance variant use the default policy below.
     </thead>
     <tbody>
         <tr><td>Text and icons</td><td><code>700</code> light / <code>300</code> dark</td><td><code>800</code> light / <code>200</code> dark</td><td><code>900</code> light / <code>100</code> dark</td><td><code>300</code> light / <code>700</code> dark</td></tr>
-        <tr><td>Background</td><td><code>500</code> at 24%</td><td><code>500</code> at 24%</td><td><code>500</code> at 24%</td><td><code>200</code> light / <code>800</code> dark at 24%</td></tr>
+        <tr><td>Background</td><td><code>500</code> at platform opacity</td><td><code>500</code> at platform opacity</td><td><code>500</code> at platform opacity</td><td><code>200</code> light / <code>800</code> dark at platform opacity</td></tr>
         <tr><td>Border</td><td><code>500</code> at 30%</td><td><code>600</code> light / <code>300</code> dark</td><td><code>700</code> light / <code>200</code> dark</td><td><code>300</code> light / <code>700</code> dark</td></tr>
         <tr><td>Backdrop blur</td><td colSpan={4}>Web: <code>6px</code>, clipped to the component shape. Mobile: unsupported by the current native renderer.</td></tr>
     </tbody>
 </table>
 
 <Canvas of={ColorStories.FillTranslucentStates} />
+
+<table>
+    <thead>
+        <tr>
+            <th scope="col">Renderer capability</th>
+            <th scope="col">Surface opacity</th>
+            <th scope="col">Backdrop blur</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>Web (blur supported)</td><td>{translucentSurfaceOpacity.blurred * 100}%</td><td>6 px</td></tr>
+        <tr><td>Mobile (blur unsupported)</td><td>{translucentSurfaceOpacity.unblurred * 100}%</td><td>None</td></tr>
+    </tbody>
+</table>
+
+The shared `translucentSurfaceOpacity` policy raises opacity without blur so underlying detail does not compete with foreground content. Apply the platform opacity in every state, including disabled; border opacity remains governed separately. Construct mobile themes with backdrop-blur support disabled so `Theme.resolveAppearance()` supplies this treatment to every native renderer.
 
 ### `inset`
 
@@ -181,6 +198,25 @@ Components without an appearance variant use the default policy below.
 <Canvas of={ColorStories.InsetStates} />
 
 Inset controls use no border in any state. Their internal shading alone creates the appearance of a control dented into its surface.
+
+## Actions on surfaces
+
+Use the common `actionButtonVariants[surfaceVariant]` policy for selected/unselected tabs and higher/lower-importance footer actions. `active` means selected or more important; `inactive` means unselected or less important. These roles select the button variant; interaction and disabled states still follow that variant's appearance policy.
+
+<table>
+    <thead>
+        <tr>
+            <th scope="col">Surface variant</th>
+            <th scope="col">Active / important button</th>
+            <th scope="col">Inactive / secondary button</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td><code>fill</code></td><td><code>fill</code></td><td><code>fill-inverse</code></td></tr>
+        <tr><td><code>fill-inverse</code></td><td><code>fill</code></td><td><code>ghost</code></td></tr>
+        <tr><td><code>fill-translucent</code></td><td><code>fill</code></td><td><code>ghost</code></td></tr>
+    </tbody>
+</table>
 
 ## Active glow
 

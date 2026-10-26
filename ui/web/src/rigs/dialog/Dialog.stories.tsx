@@ -26,7 +26,7 @@ export const Playground: Story = {
     name: 'Playground with Live code editor',
 };
 makeLiveEditStory(Playground, {
-    availableImports: { react: { useState }, '@web-ui': { Dialog, Button } },
+    availableImports: { '@web-ui': { Dialog, Button } },
     code: `import { useState } from 'react';
 import { Dialog, Button } from '@web-ui';
 

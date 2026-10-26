@@ -27,7 +27,7 @@ import {
     ThemeLayerPolicy,
 } from "./model";
 import { ColorShade, ColorVariant, DesignSystemColor, SpacingVariant, StatusColor, SurfaceVariant } from '../model';
-import { DEFAULT_COLOR } from '../tinkers';
+import { DEFAULT_COLOR, translucentSurfaceOpacity } from '../tinkers';
 import { palette, resolveContrastShade } from './palette';
 import {
     elevationSpecifications,
@@ -121,7 +121,8 @@ export class Theme {
 
     public constructor(
         specification: ThemeSpecification,
-        protected media: MediaSubscriptionDefinition
+        protected media: MediaSubscriptionDefinition,
+        supportsBackdropBlur = true,
     ) {
         this.mode = specification.mode;
         this.isLight = specification.mode === 'light';
@@ -131,6 +132,9 @@ export class Theme {
         this.elevations = elevationSpecifications[this.mode];
         this.statusColors = specification.statusColors;
         this.colors = Theme.resolveColors(specification);
+        const translucentOpacity = supportsBackdropBlur
+            ? translucentSurfaceOpacity.blurred
+            : translucentSurfaceOpacity.unblurred;
         const shades: ThemeVariantShades = this.isLight
             ? {
                 base: 500,
@@ -465,7 +469,7 @@ export class Theme {
                             type: 'shade',
                             colorProperty: 'color',
                             shade: shades.base,
-                            opacity: 0.24,
+                            opacity: translucentOpacity,
                         },
                         border: {
                             type: 'shade',
@@ -485,7 +489,7 @@ export class Theme {
                             type: 'shade',
                             colorProperty: 'color',
                             shade: shades.base,
-                            opacity: 0.24,
+                            opacity: translucentOpacity,
                         },
                         border: {
                             type: 'shade',
@@ -504,7 +508,7 @@ export class Theme {
                             type: 'shade',
                             colorProperty: 'color',
                             shade: shades.base,
-                            opacity: 0.24,
+                            opacity: translucentOpacity,
                         },
                         border: {
                             type: 'shade',
@@ -523,14 +527,14 @@ export class Theme {
                             type: 'shade',
                             colorProperty: 'color',
                             shade: shades.disabledSurface,
-                            opacity: 0.24,
+                            opacity: translucentOpacity,
                         },
                         border: disabledGlyphsBorder,
                         glyphs: disabledGlyphs,
                     },
                 },
                 effects: {
-                    backdropBlur: 6,
+                    backdropBlur: supportsBackdropBlur ? 6 : 0,
                     depth: 'none',
                     glyphsGlow: false,
                 },

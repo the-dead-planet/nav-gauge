@@ -21,7 +21,6 @@ export const Popup: FC<Props> = ({
     popupAnchor = 'bottom-left',
     dismissOnClickAway = true,
     variant = DEFAULT_FILL_VARIANT,
-    shape,
     visible,
     onClose,
     overlayClassName,
@@ -60,8 +59,11 @@ export const Popup: FC<Props> = ({
                     {...props}
                     forwardRef={containerRef}
                     variant={variant}
-                    shape={shape}
-                    className={classNames(styles.popup, popupClassName, className)}
+                    className={classNames(
+                        styles.popup,
+                        popupClassName,
+                        className,
+                    )}
                     style={{ ...style, ...popupPosition }}
                     elevationLayer="popup"
                 >

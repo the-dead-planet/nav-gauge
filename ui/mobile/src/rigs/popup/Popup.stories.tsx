@@ -10,7 +10,6 @@ const story: MobileStoryDefinition<ComponentProps<typeof Popup>> = {
         visible: false,
         onClose: () => undefined,
         modal: true,
-        position: { x: 100, y: 200 },
     },
     controls: {
         ...popupStoryControls,

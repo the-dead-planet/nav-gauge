@@ -50,7 +50,6 @@ export const Popup: FC<Props> = ({
     popupStyle,
     children,
     variant = DEFAULT_FILL_VARIANT,
-    shape: _shape,
     color = DEFAULT_COLOR,
     highlightColor = color,
     highlighted = false,

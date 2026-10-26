@@ -36,14 +36,17 @@ export abstract class MachineWard<TMap = unknown, TChronoLens extends ChronoLens
     public readonly toolsStation = new ToolsStation<TMap>();
 
     private attributionVaultSubscription: Subscription | null = null;
+    private readonly supportsBackdropBlur: boolean;
 
     public constructor(
         gears: MachineGear<TMap, TChronoLens>[],
         chronoLens: new (individuator: Individuator) => TChronoLens,
         storage: StorageLike,
         isDev: boolean,
-        protected media: MediaSubscriptionDefinition
+        protected media: MediaSubscriptionDefinition,
+        { supportsBackdropBlur = true }: { supportsBackdropBlur?: boolean } = {},
     ) {
+        this.supportsBackdropBlur = supportsBackdropBlur;
         this.isDev = isDev;
         this.translatron.register(this.namespace, this.translations);
 
@@ -136,6 +139,7 @@ export abstract class MachineWard<TMap = unknown, TChronoLens extends ChronoLens
                 namespace={this.namespace}
                 title={this.title}
                 media={this.media}
+                supportsBackdropBlur={this.supportsBackdropBlur}
                 individuator={this.individuator}
                 storageKeeper={this.storageKeeper}
                 signaliumBureau={this.signaliumBureau}

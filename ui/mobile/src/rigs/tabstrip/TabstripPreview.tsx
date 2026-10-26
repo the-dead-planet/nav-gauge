@@ -1,5 +1,5 @@
 import { ComponentProps, useState } from 'react';
-import { appearanceColorOptions, tabstripVariantOptions } from '@ui';
+import { appearanceColorOptions, fillVariantOptions } from '@ui';
 import { Tabstrip } from './Tabstrip';
 import { VariantGallery } from '../../storybook/VariantGallery';
 
@@ -14,7 +14,7 @@ export const TabstripPreview = ({
     return gallery ? (
         <VariantGallery
             colors={appearanceColorOptions}
-            variants={tabstripVariantOptions}
+            variants={fillVariantOptions}
             render={({ color, size, variant }) => (
                 <Tabstrip
                     {...args}

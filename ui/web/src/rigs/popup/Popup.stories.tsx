@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { makeLiveEditStory } from 'storybook-addon-code-editor';
 import {
     appearanceColorOptions,
@@ -26,7 +26,6 @@ export const Playground: Story = {
 };
 makeLiveEditStory(Playground, {
     availableImports: {
-        react: { useRef, useState },
         '@web-ui': { Popup, Button },
     },
     code: `import { useRef, useState } from 'react';
@@ -46,7 +45,6 @@ export const Gallery: Story = {
     argTypes: {
         color: { table: { disable: true } },
         variant: { table: { disable: true } },
-        shape: { table: { disable: true } },
     },
     render: (args) => {
         const [active, setActive] = useState<PopupProps | null>(null);
@@ -62,7 +60,6 @@ export const Gallery: Story = {
                             onClick={(event) =>
                                 setActive({
                                     ...args,
-                                    shape: 'default',
                                     color,
                                     variant,
                                     anchor: { current: event.currentTarget },

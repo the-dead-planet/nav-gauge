@@ -32,7 +32,6 @@ interface Props extends Omit<PressableProps, "children" | "style"> {
 }
 
 export const Panel: FC<PanelProps & Props> = ({
-    shape: _shape,
     color = DEFAULT_COLOR,
     highlightColor,
     variant = DEFAULT_FILL_VARIANT,

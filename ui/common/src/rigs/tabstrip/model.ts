@@ -1,7 +1,5 @@
 import { ReactNode } from 'react';
-import { AppearanceProps, SurfaceVariant } from '../../design-system/model';
-
-export type TabstripVariant = Extract<SurfaceVariant, 'fill-inverse' | 'fill-translucent' | 'outline'>;
+import { AppearanceProps, FillVariant } from '../../design-system/model';
 
 export interface TabstripOption {
     value: string;
@@ -9,7 +7,7 @@ export interface TabstripOption {
     disabled?: boolean;
 }
 
-export interface TabstripProps extends AppearanceProps<TabstripVariant> {
+export interface TabstripProps extends AppearanceProps<FillVariant> {
     children?: ReactNode;
     options: readonly TabstripOption[];
     value: string;

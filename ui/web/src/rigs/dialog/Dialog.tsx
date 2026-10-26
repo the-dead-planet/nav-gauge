@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import classNames from 'classnames';
 import {
     DEFAULT_COLOR,
+    actionButtonVariants,
     DEFAULT_FILL_VARIANT,
     DialogPlacement,
     DialogProps,
@@ -82,7 +83,7 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
                         <div className={styles['content']}>{children}</div>
                         <div className={styles['footer']}>
                             <Button
-                                variant="fill-inverse"
+                                variant={actionButtonVariants[variant].inactive}
                                 color={color}
                                 onClick={close}
                             >
@@ -90,7 +91,9 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
                             </Button>
                             {save ? (
                                 <Button
-                                    variant="fill"
+                                    variant={
+                                        actionButtonVariants[variant].active
+                                    }
                                     color={color}
                                     onClick={() => {
                                         save.onSave();

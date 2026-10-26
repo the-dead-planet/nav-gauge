@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
         gap: 8,
     },
     routeName: {
-        flex: 1,
+        maxWidth: 100,
         overflow: 'hidden',
     },
 });
@@ -83,16 +83,18 @@ export const FileInput: FC<Props & ViewProps> = ({
                 tooltip={fileLabel}
                 onPress={handleUpload}
             />
-            <Text color={color} shade={500} style={styles.routeName}>
+            <Text color={color} shade={300} highlightShade={400} style={styles.routeName}>
                 {fileName || noNameLabel}
             </Text>
             {actionButtons?.map(({ id, element }) => <Fragment key={id}>{element}</Fragment>)}
             <Button
                 icon={Icons.NounProject.Clear}
                 color={color}
-                variant="outline"
+                variant="ghost"
                 corners="circle"
                 size="sm"
+                glyphsShade={300}
+                highlightGlyphsShade={400}
                 tooltip={purgeLabel}
                 onPress={handlePurge}
             />

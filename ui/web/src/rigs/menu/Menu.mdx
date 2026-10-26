@@ -1,0 +1,14 @@
+import { Meta, Stories, Title } from '@storybook/addon-docs/blocks';
+import * as MenuStories from './Menu.stories';
+
+<Meta of={MenuStories} name="Docs" />
+
+<Title />
+
+## Sizing
+
+`size` controls the trigger icon and the menu items' geometry and font size. Items inherit the menu size unless explicitly overridden.
+
+The popup list uses the matching shared spacing token for top and bottom padding, with no left or right padding. Items own their label padding. See the <a href="./?path=/docs/design-system-sizing--docs" target="_top" style={{ textDecoration: 'underline' }}>shared sizing principles</a>.
+
+<Stories />

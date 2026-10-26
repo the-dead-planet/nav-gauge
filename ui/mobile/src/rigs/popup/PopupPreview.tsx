@@ -1,4 +1,5 @@
-import { ComponentProps, useState } from 'react';
+import { ComponentProps, RefObject, useRef, useState } from 'react';
+import { ViewInstance } from 'react-native';
 import { appearanceColorOptions, fillVariantOptions } from '@ui';
 import { Popup } from './Popup';
 import { Button } from '../../gizmos/button';
@@ -11,9 +12,21 @@ export const PopupPreview = ({
     args: ComponentProps<typeof Popup>;
     gallery?: boolean;
 }) => {
+    const anchors = useRef<Record<string, ViewInstance | null>>({});
     const [active, setActive] = useState<ComponentProps<typeof Popup> | null>(
         null,
     );
+    const openPopup = (key: string, props: ComponentProps<typeof Popup>) => {
+        setActive({
+            ...props,
+            position: undefined,
+            anchor: {
+                current: anchors.current[key],
+            } as unknown as RefObject<HTMLElement | null>,
+            visible: true,
+            onClose: () => setActive(null),
+        });
+    };
     return (
         <>
             {gallery ? (
@@ -23,15 +36,16 @@ export const PopupPreview = ({
                     variants={fillVariantOptions}
                     render={({ color, variant }) => (
                         <Button
+                            forwardRef={(element) => {
+                                anchors.current[`${color}-${variant}`] =
+                                    element;
+                            }}
                             color={color}
                             onPress={() =>
-                                setActive({
+                                openPopup(`${color}-${variant}`, {
                                     ...args,
                                     color,
                                     variant,
-                                    shape: 'default',
-                                    visible: true,
-                                    onClose: () => setActive(null),
                                 })
                             }
                         >
@@ -41,13 +55,10 @@ export const PopupPreview = ({
                 />
             ) : (
                 <Button
-                    onPress={() =>
-                        setActive({
-                            ...args,
-                            visible: true,
-                            onClose: () => setActive(null),
-                        })
-                    }
+                    forwardRef={(element) => {
+                        anchors.current.preview = element;
+                    }}
+                    onPress={() => openPopup('preview', args)}
                 >
                     Open popup
                 </Button>

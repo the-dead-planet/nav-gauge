@@ -15,6 +15,7 @@ import {
     Icons,
     MenuContext,
     MenuProps,
+    Theme,
     useTheme,
 } from '@ui';
 import { Button } from '../../gizmos/button';
@@ -108,8 +109,11 @@ export const Menu: FC<MobileMenuProps> = ({
                     <ScrollView
                         onLayout={onLayout}
                         contentContainerStyle={{
-                            paddingVertical:
-                                theme.sizes.control[size].paddingBlock,
+                            paddingVertical: Number.parseInt(
+                                Theme.spacing[size],
+                                10,
+                            ),
+                            paddingHorizontal: 0,
                         }}
                         style={[
                             styles.menuList,

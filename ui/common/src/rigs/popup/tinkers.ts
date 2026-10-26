@@ -12,7 +12,6 @@ export const popupStoryArgs: Omit<PopupProps, 'onClose' | 'visible'> = {
     children: 'Expedition details',
     color: DEFAULT_COLOR,
     variant: DEFAULT_FILL_VARIANT,
-    shape: 'default',
     triggerAnchor: 'bottom-left',
     popupAnchor: 'top-left',
     dismissOnClickAway: true,

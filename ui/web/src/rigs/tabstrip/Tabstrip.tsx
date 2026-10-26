@@ -2,6 +2,7 @@ import { FC } from 'react';
 import classNames from 'classnames';
 import {
     DEFAULT_COLOR,
+    actionButtonVariants,
     DEFAULT_FILL_VARIANT,
     DEFAULT_SIZE,
     Icons,
@@ -49,7 +50,7 @@ export const Tabstrip: FC<TabstripProps> = ({
         highlightColor,
         highlightGlyphsShade,
         size,
-        variant,
+        variant: actionButtonVariants[variant].inactive,
     };
 
     return (
@@ -65,6 +66,13 @@ export const Tabstrip: FC<TabstripProps> = ({
                     <Button
                         key={option.value}
                         {...buttonProps}
+                        variant={
+                            actionButtonVariants[variant][
+                                highlighted || option.value === value
+                                    ? 'active'
+                                    : 'inactive'
+                            ]
+                        }
                         className={styles['tab']}
                         role="tab"
                         aria-selected={option.value === value}
@@ -78,6 +86,16 @@ export const Tabstrip: FC<TabstripProps> = ({
                 {overflowOptions.length ? (
                     <Menu
                         {...buttonProps}
+                        variant={
+                            actionButtonVariants[variant][
+                                highlighted ||
+                                overflowOptions.some(
+                                    (option) => option.value === value,
+                                )
+                                    ? 'active'
+                                    : 'inactive'
+                            ]
+                        }
                         icon={Icons.NounProject.KebabMenu}
                         iconActiveColor={highlightColor}
                         triggerAccessibilityLabel={overflowAccessibilityLabel}
@@ -112,6 +130,13 @@ export const Tabstrip: FC<TabstripProps> = ({
                         <Button
                             key={option.value}
                             {...buttonProps}
+                            variant={
+                                actionButtonVariants[variant][
+                                    highlighted || option.value === value
+                                        ? 'active'
+                                        : 'inactive'
+                                ]
+                            }
                             className={styles['tab']}
                             tabIndex={-1}
                         >

@@ -6,7 +6,6 @@ export interface PopupProps extends Pick<PanelProps, 'color' | 'highlightColor' 
     anchor?: React.RefObject<HTMLElement | null>;
     position?: { x: number; y: number };
     variant?: PanelProps['variant'];
-    shape?: PanelProps['shape'];
     /** Which corner of the trigger supplies the popup's attachment point. */
     triggerAnchor?: MenuAnchor;
     /** Which popup corner attaches there. Placement may flip to stay inside the viewport. */

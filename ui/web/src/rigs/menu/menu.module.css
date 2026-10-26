@@ -36,6 +36,19 @@
     padding-block: var(--size-control-lg-padding-block);
 }
 
+.menu-list.size-xs {
+    padding-block: var(--spacing-xs);
+}
+.menu-list.size-sm {
+    padding-block: var(--spacing-sm);
+}
+.menu-list.size-md {
+    padding-block: var(--spacing-md);
+}
+.menu-list.size-lg {
+    padding-block: var(--spacing-lg);
+}
+
 .menu-item.size-xs {
     min-height: var(--size-control-xs-height);
     padding-inline: var(--size-control-xs-padding-inline);

@@ -176,10 +176,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     const label = children ?? title;
     const labelChildren = Children.toArray(label);
     const textElement =
-        labelChildren.length > 0 &&
-        labelChildren.every(
-            (child) => typeof child === "string" || typeof child === "number",
-        ) ? (
+        labelChildren.length > 0 ? (
             <Text
                 fontType={fontType}
                 fontWeight={appearance.fontWeight}
@@ -190,9 +187,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
             >
                 {labelChildren}
             </Text>
-        ) : (
-            (label ?? null)
-        );
+        ) : null;
 
     const content = (
         <>
