@@ -16,6 +16,7 @@ import {
     ThemeVariantShades,
     ResolvedThemeAppearance,
     ThemeAppearanceState,
+    ThemeAppearanceVariant,
     ThemeAppearanceStatePolicy,
     ThemeAppearanceBorder,
     ElevationDirection,
@@ -51,7 +52,7 @@ export class Theme {
 
     public readonly sizes = themeSizes;
 
-    public readonly appearancePolicies: Record<SurfaceVariant | 'default', ThemeAppearancePolicy>;
+    public readonly appearancePolicies: Record<ThemeAppearanceVariant, ThemeAppearancePolicy>;
 
     /**
      * Minimum value in pixels from which a breakpoint is active
@@ -617,7 +618,7 @@ export class Theme {
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'color',
-                            shade: shades.base,
+                            shade: this.isLight ? 700 : 300,
                         },
                     },
                     'hover-focus': {
@@ -630,7 +631,7 @@ export class Theme {
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.hoverFocus,
+                            shade: this.isLight ? 800 : 200,
                         },
                     },
                     'active-pressed': {
@@ -643,7 +644,7 @@ export class Theme {
                         glyphs: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: shades.activePressed,
+                            shade: shades.glyphs,
                         },
                     },
                     disabled: {
@@ -669,7 +670,76 @@ export class Theme {
                 },
             },
         };
-        this.appearancePolicies = policies;
+        const menuHoverShade: ColorShade = this.isLight ? 300 : 700;
+        const menuPressedShade: ColorShade = this.isLight ? 400 : 600;
+        const menuSelectedShade: ColorShade = this.isLight ? 400 : 600;
+        const menuItem: ThemeAppearancePolicy = {
+            states: {
+                default: {
+                    ...policies.ghost.states.default,
+                    glyphs: {
+                        type: 'shade',
+                        colorProperty: 'color',
+                        shade: this.isLight ? 800 : 200,
+                    },
+                },
+                'hover-focus': {
+                    surface: {
+                        type: 'shade',
+                        colorProperty: 'highlightColor',
+                        shade: menuHoverShade,
+                    },
+                    border: transparentBorder,
+                    glyphs: {
+                        type: 'contrast',
+                        colorProperty: 'highlightColor',
+                        backgroundShade: menuHoverShade,
+                    },
+                },
+                'active-pressed': {
+                    surface: {
+                        type: 'shade',
+                        colorProperty: 'highlightColor',
+                        shade: menuPressedShade,
+                    },
+                    border: transparentBorder,
+                    glyphs: {
+                        type: 'contrast',
+                        colorProperty: 'highlightColor',
+                        backgroundShade: menuPressedShade,
+                    },
+                },
+                disabled: {
+                    surface: transparent,
+                    border: transparentBorder,
+                    glyphs: disabledGlyphs,
+                },
+            },
+            effects: policies.fill.effects,
+        };
+        this.appearancePolicies = {
+            ...policies,
+            'menu-item': menuItem,
+            'menu-item-selected': {
+                ...menuItem,
+                states: {
+                    ...menuItem.states,
+                    default: {
+                        ...policies.fill.states.default,
+                        surface: {
+                            type: 'shade',
+                            colorProperty: 'highlightColor',
+                            shade: menuSelectedShade,
+                        },
+                        glyphs: {
+                            type: 'contrast',
+                            colorProperty: 'highlightColor',
+                            backgroundShade: menuSelectedShade,
+                        },
+                    },
+                },
+            },
+        };
         this.media$ = new BehaviorSubject<MediaWithBreakpoints>(Theme.calculateMedia(media.initial()));
         this.mediaSubscription = this.subscribeMedia();
     }
@@ -717,7 +787,7 @@ export class Theme {
     public static contrastShade = resolveContrastShade;
 
     public resolveAppearance = (
-        variant?: SurfaceVariant,
+        variant?: ThemeAppearanceVariant,
         baseColor: PaletteColor | ColorVariant = DEFAULT_COLOR,
         highlightColor: PaletteColor | ColorVariant = baseColor,
         state: ThemeAppearanceState = 'default',

@@ -61,8 +61,7 @@ export const TopBar: FC<MachineWardTopBarProps<keyof RootStackParamList>> = ({
             <View style={styles.leftSection}>
                 {topBarBackAction ? (
                     <Button
-                        icon={Icons.NounProject.ChevronDownDouble}
-                        iconRotateZ={90}
+                        icon={Icons.NounProject.NavigateBack}
                         onPress={topBarBackAction.onBack ?? onNavigateBack}
                         tooltip={goBackTooltip}
                         tooltipPlacement="bottom"

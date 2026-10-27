@@ -1,21 +1,24 @@
-import { FC, useState } from "react";
-import { Menu, MenuItem } from "@web-ui";
-import { useTranslation } from "@apparatus";
-import { useWebMachineWard } from "@web-apparatus";
-import { T } from "@web-apparatus";
-import { SettingsDialog } from "./settings/SettingsDialog";
+import { FC, useState } from 'react';
+import { Menu, MenuItem } from '@web-ui';
+import { getMachineMenuLinks, useTranslation } from '@apparatus';
+import { useWebMachineWard } from '@web-apparatus';
+import { T } from '@web-apparatus';
+import { SettingsDialog } from './settings/SettingsDialog';
 import styles from './layout-menu.module.css';
 
 export const LayoutMenu: FC = () => {
     const { namespace, translationKey, individuator } = useWebMachineWard();
     const [showIndividuatorDialog, setShowIndividuatorDialog] = useState(false);
-    const tooltip = useTranslation({ n: namespace, t: translationKey.Menu })
+    const tooltip = useTranslation({ n: namespace, t: translationKey.Menu });
+    const links = getMachineMenuLinks(window.location.hostname);
 
     return (
         <>
             <Menu
                 aria-label={tooltip}
                 tooltip={tooltip}
+                iconActiveColor="secondary"
+                size="md"
                 tooltipPlacement="bottom"
                 placement="bottom-right"
                 menuListClassName={styles['menu']}
@@ -27,40 +30,55 @@ export const LayoutMenu: FC = () => {
                     closeOnPress
                     onClick={() => setShowIndividuatorDialog(true)}
                 >
-                    <T n={individuator.namespace} t={individuator.translationKey.IndividuatorName} />
+                    <T
+                        n={individuator.namespace}
+                        t={individuator.translationKey.IndividuatorName}
+                    />
+                </MenuItem>
+                <MenuItem
+                    key="component-library"
+                    type="link"
+                    href={links.componentLibrary}
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    <T n={namespace} t={translationKey.ComponentLibrary} />
+                </MenuItem>
+                <MenuItem
+                    key="icon-creators"
+                    type="link"
+                    href={links.iconCreators}
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    <T n={namespace} t={translationKey.IconCreators} />
                 </MenuItem>
                 <MenuItem
                     key="legal"
                     type="link"
-                    href="/legal"
+                    href={links.legal}
                     target="_blank"
                     rel="noreferrer"
+                    disabled
                 >
                     <T n={namespace} t={translationKey.Legal} />
-                </MenuItem>
-                {/* TODO: Move to legal */}
-                <MenuItem
-                    key="icon-creators"
-                    type="link"
-                    href="/storybook/?path=/docs/design-system-icons--docs"
-                    target="_blank"
-                    rel="noreferrer"
-                >
-                    Icon creators
                 </MenuItem>
                 <MenuItem
                     key="privacy"
                     type="link"
-                    href="/privacy"
+                    href={links.privacy}
                     target="_blank"
                     rel="noreferrer"
+                    disabled
                 >
                     <T n={namespace} t={translationKey.Privacy} />
                 </MenuItem>
             </Menu>
             {showIndividuatorDialog ? (
-                <SettingsDialog onClose={() => setShowIndividuatorDialog(false)} />
+                <SettingsDialog
+                    onClose={() => setShowIndividuatorDialog(false)}
+                />
             ) : null}
         </>
     );
-}
+};

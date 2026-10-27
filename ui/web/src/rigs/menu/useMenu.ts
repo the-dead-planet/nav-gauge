@@ -40,7 +40,7 @@ export const useMenu = ({
         if (visible) {
             containerRef.current
                 ?.querySelector<HTMLElement>(
-                    '[role="menuitem"]:not([aria-disabled="true"])',
+                    '[role^="menuitem"]:not([aria-disabled="true"])',
                 )
                 ?.focus();
         }
@@ -59,7 +59,7 @@ export const useMenu = ({
         }
         const items = Array.from(
             containerRef.current?.querySelectorAll<HTMLElement>(
-                '[role="menuitem"]:not([aria-disabled="true"])',
+                '[role^="menuitem"]:not([aria-disabled="true"])',
             ) ?? [],
         );
         if (items.length === 0) {

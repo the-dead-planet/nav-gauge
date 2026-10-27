@@ -3,7 +3,7 @@ import {
     appearanceColorOptions,
     menuItemStoryArgs,
     menuItemStoryControls,
-    surfaceVariantOptions,
+    menuItemStoryStates,
 } from '@ui';
 import { MenuItem } from './MenuItem';
 import { VariantGallery } from '../../storybook/VariantGallery';
@@ -14,23 +14,28 @@ const story: MobileStoryDefinition<ComponentProps<typeof MenuItem>> = {
     controls: menuItemStoryControls,
     galleryEditableControls: [
         'children',
+        'linkType',
         'highlightColor',
         'glyphsShade',
         'highlightGlyphsShade',
         'highlighted',
-        'disabled',
     ],
     renderPlayground: (args) => <MenuItem {...args} />,
     renderGallery: (args) => (
         <VariantGallery
             colors={appearanceColorOptions}
-            variants={surfaceVariantOptions}
-            render={({ color, size, variant }) => (
+            variants={menuItemStoryStates}
+            render={({ color, size, variant: state }) => (
                 <MenuItem
                     {...args}
                     color={color}
                     size={size}
-                    variant={variant}
+                    selected={
+                        state === 'selected' || state === 'disabled-selected'
+                    }
+                    disabled={
+                        state === 'disabled' || state === 'disabled-selected'
+                    }
                 />
             )}
         />

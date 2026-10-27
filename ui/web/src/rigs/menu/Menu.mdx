@@ -5,10 +5,61 @@ import * as MenuStories from './Menu.stories';
 
 <Title />
 
+## Appearance and interaction
+
+`Menu.variant` styles only the trigger icon button. The popup list always uses `fill-inverse`, independently of the trigger variant. List items follow the shared menu-item appearance policy rather than exposing their own surface variant.
+
+`iconActiveColor` overrides only the trigger's highlight palette. Items inherit `highlightColor ?? color`; the trigger uses `iconActiveColor ?? highlightColor ?? color`.
+
+<table>
+    <thead>
+        <tr>
+            <th scope="col">Element</th>
+            <th scope="col">Default</th>
+            <th scope="col">Hover / focus</th>
+            <th scope="col">Active / pressed</th>
+            <th scope="col">Selected</th>
+            <th scope="col">Disabled</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Background</td>
+            <td>Transparent</td>
+            <td><code>300</code> light / <code>700</code> dark</td>
+            <td><code>400</code> light / <code>600</code> dark</td>
+            <td><code>400</code> light / <code>600</code> dark</td>
+            <td>Transparent</td>
+        </tr>
+        <tr>
+            <td>Glyphs</td>
+            <td><code>800</code> light / <code>200</code> dark</td>
+            <td colSpan={3}>Contrast shade for the current background</td>
+            <td><code>300</code> light / <code>700</code> dark</td>
+        </tr>
+        <tr><td>Border</td><td colSpan={5}>None</td></tr>
+        <tr><td>Font weight</td><td colSpan={5}>Normal / inherited text weight</td></tr>
+    </tbody>
+</table>
+
+`highlightColor ?? color` supplies the selected and interactive palette. `selected` represents persistent selection; hover/focus and pressed feedback still apply to selected items. `highlighted` represents persistent pressed emphasis. Priority is disabled, pressed/highlighted, hover/focus, selected, then default. Focus remains visible when selected or highlighted.
+
+Rows have no border in any state. Background and glyph colors provide state feedback; keyboard focus uses a separate visible outline.
+
+Selectable web items use `menuitemradio` and `aria-checked`; native items use the equivalent radio accessibility state. Disabled items cannot activate, and web items show a `not-allowed` cursor. Arbitrary glyph-shade overrides are ignored while disabled.
+
+## Navigation indicators
+
+Every menu item is an action and uses the same normal text weight. Navigation is distinguished by a trailing glyph. Web anchors infer an internal arrow for same-origin navigation, and an external/new-tab arrow for other origins or `target="_blank"`. Set `linkType` to `internal` or `external` explicitly for callback-based navigation, including mobile items. Dialog-opening actions have no navigation indicator.
+
+Indicators inherit the item's current glyph color and are decorative; the text remains the accessible name. Their dimensions are reserved before the SVG loads.
+
 ## Sizing
 
 `size` controls the trigger icon and the menu items' geometry and font size. Items inherit the menu size unless explicitly overridden.
 
-The popup list uses the matching shared spacing token for top and bottom padding, with no left or right padding. Items own their label padding. See the <a href="./?path=/docs/design-system-sizing--docs" target="_top" style={{ textDecoration: 'underline' }}>shared sizing principles</a>.
+The popup sizes to its widest row, including the label, navigation glyph, and item padding. Its width is capped by the viewport; long labels wrap only when the available width is exhausted.
+
+The popup list uses the shared `xs` spacing token for top and bottom padding at sizes `xs` and `sm`, and the `sm` token at sizes `md` and `lg`. It has no left or right padding. Items own their label padding. See the <a href="./?path=/docs/design-system-sizing--docs" target="_top" style={{ textDecoration: 'underline' }}>shared sizing principles</a>.
 
 <Stories />

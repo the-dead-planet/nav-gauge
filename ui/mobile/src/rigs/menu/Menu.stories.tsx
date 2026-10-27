@@ -16,6 +16,7 @@ const story: MobileStoryDefinition<ComponentProps<typeof Menu>> = {
     galleryEditableControls: [
         'placement',
         'highlightColor',
+        'iconActiveColor',
         'glyphsShade',
         'highlightGlyphsShade',
         'triggerActive',
@@ -26,11 +27,17 @@ const story: MobileStoryDefinition<ComponentProps<typeof Menu>> = {
             <MenuItem key="default" onPress={() => undefined}>
                 Open route
             </MenuItem>
-            <MenuItem key="selected" highlighted>
+            <MenuItem key="selected" selected>
                 Selected route
             </MenuItem>
-            <MenuItem key="disabled" highlighted disabled>
+            <MenuItem key="disabled" selected disabled>
                 Unavailable
+            </MenuItem>
+            <MenuItem key="internal" linkType="internal">
+                Route link
+            </MenuItem>
+            <MenuItem key="external" linkType="external">
+                External page
             </MenuItem>
         </Menu>
     ),
@@ -49,11 +56,17 @@ const story: MobileStoryDefinition<ComponentProps<typeof Menu>> = {
                     <MenuItem key="default" onPress={() => undefined}>
                         Open route
                     </MenuItem>
-                    <MenuItem key="selected" highlighted>
+                    <MenuItem key="selected" selected>
                         Selected route
                     </MenuItem>
-                    <MenuItem key="disabled" highlighted disabled>
+                    <MenuItem key="disabled" selected disabled>
                         Unavailable
+                    </MenuItem>
+                    <MenuItem key="internal" linkType="internal">
+                        Route link
+                    </MenuItem>
+                    <MenuItem key="external" linkType="external">
+                        External page
                     </MenuItem>
                 </Menu>
             )}

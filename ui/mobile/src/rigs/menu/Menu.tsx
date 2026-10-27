@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
     menuList: {
         position: 'absolute',
         minWidth: 160,
+        maxWidth: '100%',
         maxHeight: 240,
     },
 });
@@ -48,7 +49,7 @@ export const Menu: FC<MobileMenuProps> = ({
     color = DEFAULT_COLOR,
     size = iconSize ?? DEFAULT_SIZE,
     variant = 'ghost',
-    highlightColor = iconActiveColor ?? color,
+    highlightColor = color,
     glyphsShade,
     highlightGlyphsShade,
     highlighted = false,
@@ -81,7 +82,7 @@ export const Menu: FC<MobileMenuProps> = ({
                     variant={variant}
                     icon={icon as ComponentProps<typeof Button>['icon']}
                     color={color}
-                    highlightColor={highlightColor}
+                    highlightColor={iconActiveColor ?? highlightColor}
                     glyphsShade={glyphsShade}
                     highlightGlyphsShade={highlightGlyphsShade}
                     tooltip={tooltip}
@@ -110,7 +111,9 @@ export const Menu: FC<MobileMenuProps> = ({
                         onLayout={onLayout}
                         contentContainerStyle={{
                             paddingVertical: Number.parseInt(
-                                Theme.spacing[size],
+                                Theme.spacing[
+                                    size === 'xs' || size === 'sm' ? 'xs' : 'sm'
+                                ],
                                 10,
                             ),
                             paddingHorizontal: 0,

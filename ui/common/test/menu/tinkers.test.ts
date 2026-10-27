@@ -1,6 +1,6 @@
 import { describe, it } from "mocha";
 import { expect } from "chai";
-import { placePopup } from "../../src/rigs/menu/tinkers";
+import { placePopup, resolveMenuItemLinkType } from "../../src/rigs/menu/tinkers";
 
 describe("placePopup", () => {
     it("keeps the desired anchor when the popup fits", () => {
@@ -51,5 +51,24 @@ describe("placePopup", () => {
 
         expect(result.popupAnchor).to.equal("top-left");
         expect(result.position).to.deep.equal({ left: 100, top: 0 });
+    });
+});
+
+describe('menu navigation indicators', () => {
+    it('distinguishes same-origin navigation from external and new-tab links', () => {
+        const baseUrl = 'https://gauge.example/map';
+        expect(resolveMenuItemLinkType('/legal', undefined, baseUrl)).to.equal('internal');
+        expect(resolveMenuItemLinkType('#route', undefined, baseUrl)).to.equal('internal');
+        expect(resolveMenuItemLinkType('https://gauge.example/legal', undefined, baseUrl)).to.equal('internal');
+        expect(resolveMenuItemLinkType('https://other.example/legal', undefined, baseUrl)).to.equal('external');
+        expect(resolveMenuItemLinkType('//other.example/legal', undefined, baseUrl)).to.equal('external');
+        expect(resolveMenuItemLinkType('/legal', '_blank', baseUrl)).to.equal('external');
+        expect(resolveMenuItemLinkType('/legal', '_BLANK', baseUrl)).to.equal('external');
+        expect(resolveMenuItemLinkType('mailto:hello@example.com', undefined, baseUrl)).to.equal('external');
+        expect(resolveMenuItemLinkType('/legal')).to.equal('internal');
+        expect(resolveMenuItemLinkType('//other.example/legal')).to.equal('external');
+        expect(resolveMenuItemLinkType('https://other.example/legal')).to.equal('external');
+        expect(resolveMenuItemLinkType('http://[invalid')).to.equal('internal');
+        expect(resolveMenuItemLinkType()).to.equal('internal');
     });
 });

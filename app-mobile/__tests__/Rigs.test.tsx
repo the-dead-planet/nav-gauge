@@ -2,17 +2,42 @@ import { render, fireEvent } from '@testing-library/react-native';
 import { Animated, StyleSheet } from 'react-native';
 import {
     Orientation,
+    ColorShade,
+    Icons,
     Theme,
     ThemeContext,
     ThemeName,
+    ThemeMode,
     themeSpecifications,
 } from '@ui';
 import { Dialog } from '@the-dead-planet/nav-gauge-ui-mobile/src/rigs/dialog';
-import { MenuItem } from '@the-dead-planet/nav-gauge-ui-mobile/src/rigs/menu';
+import {
+    Menu,
+    MenuItem,
+} from '@the-dead-planet/nav-gauge-ui-mobile/src/rigs/menu';
+import { Icon } from '@the-dead-planet/nav-gauge-ui-mobile/src/design-system/icons';
+
+jest.mock(
+    '@the-dead-planet/nav-gauge-ui-mobile/src/design-system/icons',
+    () => ({
+        Icon: jest.fn(() => null),
+    }),
+);
 
 jest.mock('react-native-safe-area-context', () => ({
     useSafeAreaInsets: () => ({ top: 24, right: 0, bottom: 48, left: 0 }),
 }));
+
+jest.mock(
+    '@the-dead-planet/nav-gauge-ui-mobile/src/rigs/popup/usePopupPosition',
+    () => ({
+        usePopupPosition: () => ({
+            overlayRef: { current: null },
+            popupPosition: {},
+            onLayout: jest.fn(),
+        }),
+    }),
+);
 
 const media = {
     initial: () => ({
@@ -36,6 +61,68 @@ describe('Mobile rig content', () => {
 
     afterEach(() => jest.restoreAllMocks());
 
+    it('keeps the trigger highlight override out of menu item press colors', async () => {
+        const theme = new Theme(
+            themeSpecifications[ThemeName.Default].dark,
+            media,
+            false,
+        );
+        const content = (highlightColor?: 'primary') => (
+            <ThemeContext.Provider value={theme}>
+                <Menu
+                    iconActiveColor="secondary"
+                    highlightColor={highlightColor}
+                    triggerAccessibilityLabel="Open menu"
+                >
+                    <MenuItem onPress={() => undefined}>Row action</MenuItem>
+                </Menu>
+            </ThemeContext.Provider>
+        );
+        const screen = await render(content());
+        await fireEvent.press(
+            screen.getByRole('button', { name: 'Open menu' }),
+        );
+        expect(jest.mocked(Icon).mock.lastCall?.[0].color).toEqual(
+            theme.resolveAppearance(
+                'ghost',
+                'neutral',
+                'secondary',
+                'active-pressed',
+            ).glyphs,
+        );
+        await fireEvent(
+            screen.getByRole('button', { name: 'Row action' }),
+            'pressIn',
+        );
+        expect(screen.getByRole('button', { name: 'Row action' })).toHaveStyle({
+            backgroundColor: theme.resolveAppearance(
+                'menu-item',
+                'neutral',
+                'neutral',
+                'active-pressed',
+            ).surface,
+        });
+        await screen.rerender(content('primary'));
+        expect(screen.getByRole('button', { name: 'Row action' })).toHaveStyle({
+            backgroundColor: theme.resolveAppearance(
+                'menu-item',
+                'neutral',
+                'primary',
+                'active-pressed',
+            ).surface,
+        });
+        expect(jest.mocked(Icon).mock.lastCall?.[0].color).toEqual(
+            theme.resolveAppearance(
+                'ghost',
+                'neutral',
+                'secondary',
+                'active-pressed',
+            ).glyphs,
+        );
+        await screen.unmount();
+        theme.destroy();
+    });
+
     it('renders translated menu labels inside text and preserves disabled appearance', async () => {
         const theme = new Theme(
             themeSpecifications[ThemeName.Default].dark,
@@ -57,13 +144,13 @@ describe('Mobile rig content', () => {
         );
         const screen = await render(content());
         expect(screen.getByText('Individuator')).toHaveStyle({
-            color: theme.resolveAppearance('ghost', 'intel').glyphs,
+            color: theme.resolveAppearance('menu-item', 'intel').glyphs,
             fontSize: theme.sizes.control.lg.fontSize,
         });
         await screen.rerender(content(true));
         expect(screen.getByText('Individuator')).toHaveStyle({
             color: theme.resolveAppearance(
-                'ghost',
+                'menu-item',
                 'intel',
                 'intel',
                 'disabled',
@@ -74,6 +161,78 @@ describe('Mobile rig content', () => {
         await screen.unmount();
         theme.destroy();
     });
+
+    it.each<ThemeMode>(['light', 'dark'])(
+        'keeps selected menu rows interactive and disabled dominant in %s mode',
+        async (mode) => {
+            const theme = new Theme(
+                themeSpecifications[ThemeName.Default][mode],
+                media,
+                false,
+            );
+            const onPress = jest.fn();
+            const content = (
+                selected = false,
+                highlighted = false,
+                disabled = false,
+            ) => (
+                <ThemeContext.Provider value={theme}>
+                    <MenuItem
+                        color="glitch"
+                        highlightColor="intel"
+                        selected={selected}
+                        highlighted={highlighted}
+                        disabled={disabled}
+                        onPress={onPress}
+                    >
+                        Route
+                    </MenuItem>
+                </ThemeContext.Provider>
+            );
+            const screen = await render(content());
+            const expectFill = (shade: ColorShade) => {
+                expect(screen.getByRole('radio')).toHaveStyle({
+                    backgroundColor: theme.color('intel', shade),
+                });
+                expect(screen.getByText('Route')).toHaveStyle({
+                    color: theme.color(
+                        'intel',
+                        theme.contrastShade('intel', shade),
+                    ),
+                });
+            };
+            expect(screen.getByRole('radio')).toHaveStyle({
+                backgroundColor: 'transparent',
+            });
+            await fireEvent(screen.getByRole('radio'), 'focus');
+            expectFill(mode === 'light' ? 300 : 700);
+            await fireEvent(screen.getByRole('radio'), 'pressIn');
+            expectFill(mode === 'light' ? 400 : 600);
+            await fireEvent(screen.getByRole('radio'), 'pressOut');
+            await fireEvent(screen.getByRole('radio'), 'blur');
+            await screen.rerender(content(true));
+            expectFill(mode === 'light' ? 400 : 600);
+            expect(
+                screen.getByRole('radio').props.accessibilityState.checked,
+            ).toBe(true);
+            await fireEvent(screen.getByRole('radio'), 'focus');
+            expectFill(mode === 'light' ? 300 : 700);
+            await screen.rerender(content(true, true));
+            expectFill(mode === 'light' ? 400 : 600);
+            await screen.rerender(content(true, true, true));
+            expect(screen.getByRole('radio')).toHaveStyle({
+                backgroundColor: 'transparent',
+                outlineWidth: 0,
+            });
+            expect(screen.getByText('Route')).toHaveStyle({
+                color: theme.color('glitch', mode === 'light' ? 300 : 700),
+            });
+            await fireEvent.press(screen.getByRole('radio'));
+            expect(onPress).not.toHaveBeenCalled();
+            await screen.unmount();
+            theme.destroy();
+        },
+    );
 
     it('renders a string dialog body and reserves small-screen system insets', async () => {
         const theme = new Theme(
@@ -97,6 +256,29 @@ describe('Mobile rig content', () => {
                 color: theme.resolveAppearance('fill-inverse').glyphs,
             },
         );
+        const panel = screen.getByLabelText('Settings');
+        expect(panel).toHaveStyle({
+            maxHeight: '100%',
+            width: '100%',
+            flexShrink: 1,
+        });
+        expect(panel).not.toHaveStyle({ flex: 1 });
+        expect(screen.getByRole('header')).toBeTruthy();
+        expect(screen.getByRole('button', { name: 'Close' })).toBeTruthy();
+        let content = screen.getByText(
+            'Configure your next expedition.',
+        ).parent;
+        while (
+            content &&
+            StyleSheet.flatten(content.props.style)?.flexGrow !== 0
+        ) {
+            content = content.parent;
+        }
+        expect(content).toHaveStyle({
+            flexGrow: 0,
+            flexShrink: 1,
+            minHeight: 0,
+        });
         let parent = screen.getByText('Configure your next expedition.').parent;
         let hasSafeArea = false;
         while (parent) {
@@ -108,6 +290,50 @@ describe('Mobile rig content', () => {
             parent = parent.parent;
         }
         expect(hasSafeArea).toBe(true);
+        await screen.unmount();
+        theme.destroy();
+    });
+
+    it('gives navigation items link semantics and keeps their indicator in the owner glyph color', async () => {
+        const theme = new Theme(
+            themeSpecifications[ThemeName.Default].light,
+            media,
+            false,
+        );
+        const content = (disabled = false) => (
+            <ThemeContext.Provider value={theme}>
+                <MenuItem
+                    linkType="internal"
+                    color="glitch"
+                    highlightColor="intel"
+                    disabled={disabled}
+                >
+                    Stories
+                </MenuItem>
+            </ThemeContext.Provider>
+        );
+        const screen = await render(content());
+        expect(screen.getAllByRole('link')).toHaveLength(1);
+        expect(jest.mocked(Icon).mock.lastCall?.[0]).toMatchObject({
+            icon: Icons.NounProject.NavigateTo,
+            size: 'sm',
+            color: theme.resolveAppearance('menu-item', 'glitch', 'intel')
+                .glyphs,
+        });
+        await fireEvent(screen.getByRole('link'), 'focus');
+        expect(jest.mocked(Icon).mock.lastCall?.[0].color).toEqual(
+            theme.resolveAppearance(
+                'menu-item',
+                'glitch',
+                'intel',
+                'hover-focus',
+            ).glyphs,
+        );
+        await screen.rerender(content(true));
+        expect(jest.mocked(Icon).mock.lastCall?.[0].color).toEqual(
+            theme.resolveAppearance('menu-item', 'glitch', 'intel', 'disabled')
+                .glyphs,
+        );
         await screen.unmount();
         theme.destroy();
     });

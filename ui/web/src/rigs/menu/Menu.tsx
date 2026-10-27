@@ -28,7 +28,7 @@ export const Menu: FC<Props & ComponentProps<'button'>> = ({
     size = iconSize ?? DEFAULT_SIZE,
     variant = DEFAULT_SURFACE_VARIANT,
     glyphsShade,
-    highlightColor = iconActiveColor ?? color,
+    highlightColor = color,
     highlightGlyphsShade,
     highlighted = false,
     disabled = false,
@@ -70,7 +70,7 @@ export const Menu: FC<Props & ComponentProps<'button'>> = ({
                 highlighted={visible || triggerActive || highlighted}
                 disabled={disabled}
                 color={color}
-                highlightColor={highlightColor}
+                highlightColor={iconActiveColor ?? highlightColor}
                 onClick={(event) => {
                     onClick?.(event);
                     if (!event.defaultPrevented) {

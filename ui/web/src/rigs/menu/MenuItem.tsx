@@ -1,7 +1,15 @@
 import { ComponentProps, CSSProperties, FC } from 'react';
 import classNames from 'classnames';
-import { MenuItemProps, useMenuContext, useTheme } from '@ui';
+import {
+    MenuItemProps,
+    menuItemLinkIcons,
+    resolveMenuItemLinkType,
+    ThemeAppearanceVariant,
+    useMenuContext,
+    useTheme,
+} from '@ui';
 import { HudSurface } from '../../hud/HudSurface';
+import { Icon } from '../../design-system/icons';
 import styles from './menu.module.css';
 
 type Props =
@@ -13,7 +21,8 @@ export const MenuItem: FC<MenuItemProps & Props> = ({
     closeOnPress = false,
     color,
     highlightColor,
-    variant = 'ghost',
+    selected,
+    linkType,
     highlighted = false,
     disabled = false,
     size,
@@ -29,6 +38,34 @@ export const MenuItem: FC<MenuItemProps & Props> = ({
     const selectedColor = color ?? context.color;
     const selectedHighlightColor =
         highlightColor ?? context.highlightColor ?? selectedColor;
+    const defaultGlyphsShade = selected ? highlightGlyphsShade : glyphsShade;
+    const variant: ThemeAppearanceVariant = selected
+        ? 'menu-item-selected'
+        : 'menu-item';
+    const resolvedLinkType =
+        linkType ??
+        (props.type === 'link'
+            ? resolveMenuItemLinkType(
+                  props.href,
+                  props.target,
+                  typeof window === 'undefined'
+                      ? undefined
+                      : window.location.href,
+              )
+            : undefined);
+    const content = (
+        <>
+            <span className={styles.label}>{children}</span>
+            {resolvedLinkType ? (
+                <Icon
+                    src={menuItemLinkIcons[resolvedLinkType]}
+                    size={size ?? context.size}
+                    data-appearance-glyph
+                    data-link-type={resolvedLinkType}
+                />
+            ) : null}
+        </>
+    );
     const appearanceProps = {
         variant,
         color: selectedColor,
@@ -37,7 +74,8 @@ export const MenuItem: FC<MenuItemProps & Props> = ({
         disabled,
         interactive: true,
         rectangle: true,
-        role: 'menuitem',
+        role: selected === undefined ? 'menuitem' : 'menuitemradio',
+        'aria-checked': selected,
         'aria-disabled': disabled,
         className: classNames(
             styles['menu-item'],
@@ -46,12 +84,12 @@ export const MenuItem: FC<MenuItemProps & Props> = ({
         ),
         style: {
             ...style,
-            ...(glyphsShade === undefined
+            ...(defaultGlyphsShade === undefined
                 ? undefined
                 : {
                       '--appearance-default-glyphs-override': theme.color(
-                          selectedColor,
-                          glyphsShade,
+                          selected ? selectedHighlightColor : selectedColor,
+                          defaultGlyphsShade,
                       ),
                   }),
             ...(highlightGlyphsShade === undefined
@@ -89,7 +127,7 @@ export const MenuItem: FC<MenuItemProps & Props> = ({
                 }
             }}
         >
-            {children}
+            {content}
         </HudSurface>
     ) : (
         <HudSurface
@@ -104,7 +142,7 @@ export const MenuItem: FC<MenuItemProps & Props> = ({
                 }
             }}
         >
-            {children}
+            {content}
         </HudSurface>
     );
 };

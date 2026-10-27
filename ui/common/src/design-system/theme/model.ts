@@ -78,6 +78,8 @@ export type ThemeStatusColors = {
 
 export type ThemeAppearanceState = 'default' | 'hover-focus' | 'active-pressed' | 'disabled';
 
+export type ThemeAppearanceVariant = SurfaceVariant | 'default' | 'menu-item' | 'menu-item-selected';
+
 export interface ThemeAppearancePaintTransparent {
     type: 'transparent';
 }

@@ -30,9 +30,10 @@ makeLiveEditStory(Playground, {
 export default function Example(args) {
     return <Menu {...args}>
         <MenuItem key="open" type="button" closeOnPress>Open route</MenuItem>
-        <MenuItem key="selected" type="button" highlighted>Selected route</MenuItem>
+        <MenuItem key="selected" type="button" selected>Selected route</MenuItem>
         <MenuItem key="disabled" type="button" disabled>Unavailable</MenuItem>
-        <MenuItem key="link" type="link" href="#route">Route link</MenuItem>
+        <MenuItem key="internal" type="link" href="#route">Route link</MenuItem>
+        <MenuItem key="external" type="link" href="/legal" target="_blank" rel="noreferrer">Legal in a new tab</MenuItem>
     </Menu>;
 }`,
 });
@@ -60,11 +61,23 @@ export const Gallery: Story = {
                     <MenuItem key="default" type="button" closeOnPress>
                         Open route
                     </MenuItem>
-                    <MenuItem key="selected" type="button" highlighted>
+                    <MenuItem key="selected" type="button" selected>
                         Selected route
                     </MenuItem>
-                    <MenuItem key="disabled" type="button" highlighted disabled>
+                    <MenuItem key="disabled" type="button" selected disabled>
                         Unavailable
+                    </MenuItem>
+                    <MenuItem key="internal" type="link" href="#route">
+                        Route link
+                    </MenuItem>
+                    <MenuItem
+                        key="external"
+                        type="link"
+                        href="/legal"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        Legal in a new tab
                     </MenuItem>
                 </Menu>
             )}
