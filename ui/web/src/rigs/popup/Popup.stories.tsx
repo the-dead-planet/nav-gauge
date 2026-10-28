@@ -52,7 +52,6 @@ export const Gallery: Story = {
             <>
                 <VariantGallery
                     colors={appearanceColorOptions}
-                    sizes={['default']}
                     variants={fillVariantOptions}
                     render={({ color, variant }) => (
                         <Button

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { DEFAULT_COLOR } from '@ui';
 import { ColorInput } from './ColorInput';
-import { colorControl, colorOptions, fillVariantControl, fillVariantOptions, optionalShadeControl, sizeControl, sizeOptions } from '../../storybook/controls';
+import { colorControl, colorOptions, fillVariantControl, fillVariantOptions, optionalShadeControl, sizeControl } from '../../storybook/controls';
 import { VariantGallery } from '../../storybook/VariantGallery';
 
 const meta = {
@@ -52,7 +52,7 @@ export const Playground: Story = {
 export const Gallery: Story = {
     render: (args) => (
         <VariantGallery
-            sizes={sizeOptions}
+            size={args.size}
             colors={colorOptions}
             variants={fillVariantOptions}
             render={({ color, size, variant }) => (

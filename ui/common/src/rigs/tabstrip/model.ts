@@ -7,6 +7,11 @@ export interface TabstripOption {
     disabled?: boolean;
 }
 
+export interface TabstripAction {
+    label: ReactNode;
+    onPress: () => void;
+}
+
 export interface TabstripProps extends AppearanceProps<FillVariant> {
     children?: ReactNode;
     options: readonly TabstripOption[];
@@ -14,4 +19,8 @@ export interface TabstripProps extends AppearanceProps<FillVariant> {
     onChange: (value: string) => void;
     spread?: boolean;
     overflowAccessibilityLabel: string;
+    actions?: {
+        primary: TabstripAction;
+        secondary?: TabstripAction;
+    };
 }

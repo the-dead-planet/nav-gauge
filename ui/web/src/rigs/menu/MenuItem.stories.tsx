@@ -5,7 +5,6 @@ import {
     menuItemStoryArgs,
     menuItemStoryControls,
     menuItemStoryStates,
-    sizeOptions,
 } from '@ui';
 import { MenuItem } from './MenuItem';
 import { VariantGallery } from '../../storybook/VariantGallery';
@@ -34,12 +33,11 @@ export const Gallery: Story = {
         color: { table: { disable: true } },
         selected: { table: { disable: true } },
         disabled: { table: { disable: true } },
-        size: { table: { disable: true } },
     },
     render: (args) => (
         <VariantGallery
             colors={appearanceColorOptions}
-            sizes={sizeOptions}
+            size={args.size}
             variants={menuItemStoryStates}
             render={({ color, size, variant: state }) => (
                 <MenuItem

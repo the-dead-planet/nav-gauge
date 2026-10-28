@@ -6,6 +6,7 @@ import {
     DEFAULT_COLOR,
     SurfaceVariant,
     ThemeAppearanceVariant,
+    useTheme,
 } from "@ui";
 import surface from "./surface.module.css";
 
@@ -35,10 +36,12 @@ export const HudSurface = <Element extends "div" | "button" | "a">({
     className,
     ...props
 }: Props<Element>): ReactElement => {
+    const theme = useTheme();
     return createElement(as, {
         ...props,
         disabled: as === "button" ? disabled : undefined,
         "data-appearance-variant": variant,
+        "data-appearance-mode": theme.mode,
         "data-appearance-color": color,
         "data-appearance-highlight": highlightColor ?? color,
         "data-interactive": interactive || undefined,

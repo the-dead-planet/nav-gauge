@@ -1,11 +1,12 @@
 import type * as maplibregl from "maplibre-gl";
 import { FC } from "react";
-import { parsers, TopToolsProps, useMultipleTranslations } from "@apparatus";
+import { Cartomancer, parsers, TopToolsProps, useMultipleTranslations } from "@apparatus";
 import { BevelPanel, Button, FileInput } from "@web-ui";
 import { useSubjectState } from "@tinker-chest";
 import { Icons } from "@ui";
 import { WebRouteStoryProps } from "../model";
 import styles from './file-input.module.css';
+import { useWebMachineWard } from "@web-apparatus";
 
 export const RouteName: FC<TopToolsProps<maplibregl.Map> & WebRouteStoryProps> = ({
     gearId,
@@ -15,6 +16,9 @@ export const RouteName: FC<TopToolsProps<maplibregl.Map> & WebRouteStoryProps> =
     fileOperator,
     fitBoundsHandler,
 }) => {
+    const { cartomancer } = useWebMachineWard();
+    const [selectedStyle] = useSubjectState(cartomancer.selectedStyle$);
+    const mapThemeMode = Cartomancer.styles[selectedStyle.id].mode;
     const [{ routeName, geojson }] = useSubjectState(data$);
 
     const [
@@ -42,6 +46,7 @@ export const RouteName: FC<TopToolsProps<maplibregl.Map> & WebRouteStoryProps> =
             contentClassName={styles['content']}
         >
             <FileInput
+                themeMode={mapThemeMode}
                 mutiple
                 fileIcon={routeName ? Icons.NounProject.ReplaceFile : Icons.NounProject.Upload}
                 fileName={routeName}
@@ -61,11 +66,10 @@ export const RouteName: FC<TopToolsProps<maplibregl.Map> & WebRouteStoryProps> =
                         id: 'fit-bounds',
                         element: (
                             <Button
+                                themeMode={mapThemeMode}
                                 variant="ghost"
                                 color="primary"
                                 corners="circle"
-                                glyphsShade={300}
-                                highlightGlyphsShade={400}
                                 icon={Icons.NounProject.Target}
                                 onClick={() => fitBoundsHandler(map, data$.value.boundingBox)}
                                 aria-label={fitBoundsLabel}

@@ -3,7 +3,6 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { makeLiveEditStory } from 'storybook-addon-code-editor';
 import {
     appearanceColorOptions,
-    sizeOptions,
     tabstripStoryArgs,
     tabstripStoryControls,
     fillVariantOptions,
@@ -38,14 +37,13 @@ export const Gallery: Story = {
     argTypes: {
         color: { table: { disable: true } },
         variant: { table: { disable: true } },
-        size: { table: { disable: true } },
     },
     render: (args) => {
         const [value, setValue] = useState(args.value);
         return (
             <VariantGallery
                 colors={appearanceColorOptions}
-                sizes={sizeOptions}
+                size={args.size}
                 variants={fillVariantOptions}
                 render={({ color, size, variant }) => (
                     <Tabstrip

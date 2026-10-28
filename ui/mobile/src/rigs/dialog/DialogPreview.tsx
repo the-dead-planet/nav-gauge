@@ -30,7 +30,6 @@ export const DialogPreview = ({
             {gallery ? (
                 <VariantGallery
                     colors={appearanceColorOptions}
-                    sizes={['sm']}
                     variants={fillVariantOptions}
                     render={({ color, variant }) => (
                         <View style={styles.placements}>

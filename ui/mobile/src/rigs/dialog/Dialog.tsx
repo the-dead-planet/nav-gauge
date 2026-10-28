@@ -15,6 +15,7 @@ import {
     DialogProps,
     FontType,
     TransitionProps,
+    ThemeContext,
     useTheme,
 } from '@ui';
 import { useSubjectState } from '@tinker-chest';
@@ -113,12 +114,13 @@ export const Dialog: FC<Props> = ({
         overlayOpacity,
     } = useDialogTransition();
     const theme = useTheme();
+    const dialogTheme = theme.forMode('dark');
     const insets = useSafeAreaInsets();
     const [media] = useSubjectState(theme.media$);
     const isWide = !media.isLessThanSm;
     const drawerTop =
         media.windowHeight <= 500 ? 0 : Math.min(media.windowHeight * 0.06, 64);
-    const appearance = theme.resolveAppearance(variant, color);
+    const appearance = dialogTheme.resolveAppearance(variant, color);
     const actionVariants = actionButtonVariants[variant];
 
     return (
@@ -164,73 +166,77 @@ export const Dialog: FC<Props> = ({
                             : styles.fullWidth
                     }
                 >
-                    <Panel
-                        variant={variant}
-                        color={color}
-                        accessibilityViewIsModal
-                        accessibilityLabel={header}
-                        style={[
-                            styles.panel,
-                            resolveLayerStyle(
-                                theme,
-                                'dialog',
-                                placement === 'left-drawer' && isWide
-                                    ? 'right'
-                                    : placement === 'right-drawer' && isWide
-                                      ? 'left'
-                                      : 'down',
-                            ),
-                            !isWide && styles.panelFullWidth,
-                            style,
-                        ]}
-                    >
-                        <View style={styles.header}>
-                            <Text
-                                fontType={FontType.NeonText}
-                                uppercase
-                                accessibilityRole="header"
-                                fontWeight={500}
-                                color={color}
-                                shadow={variant === 'fill-translucent'}
-                                style={[
-                                    styles.headerText,
-                                    { color: appearance.glyphs },
-                                ]}
-                            >
-                                {header}
-                            </Text>
-                        </View>
-                        <ScrollView style={styles.content}>
-                            <HudContent appearance={appearance}>
-                                {children}
-                            </HudContent>
-                        </ScrollView>
-                        <View style={styles.footer}>
-                            <View style={styles.buttonCell}>
-                                <Button
-                                    variant={actionVariants.inactive}
+                    <ThemeContext.Provider value={dialogTheme}>
+                        <Panel
+                            variant={variant}
+                            color={color}
+                            accessibilityViewIsModal
+                            accessibilityLabel={header}
+                            style={[
+                                styles.panel,
+                                resolveLayerStyle(
+                                    theme,
+                                    'dialog',
+                                    placement === 'left-drawer' && isWide
+                                        ? 'right'
+                                        : placement === 'right-drawer' && isWide
+                                          ? 'left'
+                                          : 'down',
+                                ),
+                                !isWide && styles.panelFullWidth,
+                                style,
+                            ]}
+                        >
+                            <View style={styles.header}>
+                                <Text
+                                    fontType={FontType.NeonText}
+                                    uppercase
+                                    accessibilityRole="header"
+                                    fontWeight={500}
                                     color={color}
-                                    onPress={handleClose}
+                                    shadow={variant === 'fill-translucent'}
+                                    style={[
+                                        styles.headerText,
+                                        { color: appearance.glyphs },
+                                    ]}
                                 >
-                                    {closeText}
-                                </Button>
+                                    {header}
+                                </Text>
                             </View>
-                            {save ? (
+                            <ThemeContext.Provider value={theme}>
+                                <ScrollView style={styles.content}>
+                                    <HudContent appearance={appearance}>
+                                        {children}
+                                    </HudContent>
+                                </ScrollView>
+                            </ThemeContext.Provider>
+                            <View style={styles.footer}>
                                 <View style={styles.buttonCell}>
                                     <Button
-                                        variant={actionVariants.active}
+                                        variant={actionVariants.inactive}
                                         color={color}
-                                        onPress={() => {
-                                            save.onSave();
-                                            handleClose();
-                                        }}
+                                        onPress={handleClose}
                                     >
-                                        {save.saveText}
+                                        {closeText}
                                     </Button>
                                 </View>
-                            ) : null}
-                        </View>
-                    </Panel>
+                                {save ? (
+                                    <View style={styles.buttonCell}>
+                                        <Button
+                                            variant={actionVariants.active}
+                                            color={color}
+                                            onPress={() => {
+                                                save.onSave();
+                                                handleClose();
+                                            }}
+                                        >
+                                            {save.saveText}
+                                        </Button>
+                                    </View>
+                                ) : null}
+                            </View>
+                        </Panel>
+                    </ThemeContext.Provider>
                 </Transition>
             </Animated.View>
         </Modal>

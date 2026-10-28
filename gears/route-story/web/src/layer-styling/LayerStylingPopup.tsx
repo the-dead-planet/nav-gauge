@@ -3,7 +3,7 @@ import * as maplibregl from "maplibre-gl";
 import { ToolPopupProps, useMultipleTranslations } from "@apparatus";
 import { getDefaultRouteStoryState, CurrentPointStyle, RouteStoryLayerStylingPopupProps, RouteStoryLineStyle, RouteStoryState } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { useTheme } from "@ui";
-import { Button, HudConnector, Panel, Popup, Tabstrip } from "@web-ui";
+import { HudConnector, Popup, Tabstrip } from "@web-ui";
 import { useSubjectState } from "@tinker-chest";
 import { WebRouteStoryProps } from "../model";
 import { CurrentPointControls } from "./CurrentPointControls";
@@ -132,6 +132,16 @@ export const LayerStylingPopup: FC<Props> = ({
                             value={selectedStyle}
                             onChange={setSelectedStyle}
                             overflowAccessibilityLabel={dialogLabel}
+                            actions={{
+                                primary: {
+                                    label: closeLabel,
+                                    onPress: onClose,
+                                },
+                                secondary: hasCustomStyling(state, defaults) ? {
+                                    label: restoreDefaultsLabel,
+                                    onPress: () => setState(defaults),
+                                } : undefined,
+                            }}
                             options={[
                                 { value: "active", label: activeLabel },
                                 {
@@ -168,24 +178,6 @@ export const LayerStylingPopup: FC<Props> = ({
                     </div>
                 </div>
             </HudConnector>
-            <Panel
-                variant="fill-inverse"
-                borderWidth={0}
-                className={styles["footer"]}
-            >
-                {hasCustomStyling(state, defaults) ? (
-                    <Button
-                        variant="ghost"
-                        size="xs"
-                        onClick={() => setState(defaults)}
-                    >
-                        {restoreDefaultsLabel}
-                    </Button>
-                ) : null}
-                <Button variant="fill" size="xs" onClick={onClose}>
-                    {closeLabel}
-                </Button>
-            </Panel>
         </Popup>
     );
 };

@@ -9,6 +9,7 @@ import {
     DialogProps,
     FontType,
     TransitionProps,
+    ThemeContext,
     useTheme,
 } from '@ui';
 import { useSubjectState } from '@tinker-chest';
@@ -35,6 +36,7 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
     const { render, close, dialogRef, onKeyDown } = useDialog();
     const headerId = useId();
     const theme = useTheme();
+    const dialogTheme = theme.forMode('dark');
     const [media] = useSubjectState(theme.media$);
     const slide: { [key in DialogPlacement]: TransitionProps['slide'] } = {
         ['middle']: 'to-bottom',
@@ -68,52 +70,63 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
                     )}
                     {...props}
                 >
-                    <HudSurface
-                        as="div"
-                        rectangle
-                        variant={variant}
-                        color={color}
-                        className={classNames(
-                            surface['layer-dialog'],
-                            styles['dialog'],
-                        )}
-                    >
-                        <H3
-                            id={headerId}
-                            fontType={FontType.NeonText}
-                            uppercase
-                            fontWeight={500}
+                    <ThemeContext.Provider value={dialogTheme}>
+                        <HudSurface
+                            as="div"
+                            rectangle
+                            variant={variant}
                             color={color}
-                            shadow={variant === 'fill-translucent'}
-                            className={styles['header']}
+                            className={classNames(
+                                surface['layer-dialog'],
+                                styles['dialog'],
+                            )}
                         >
-                            {header}
-                        </H3>
-                        <div className={styles['content']}>{children}</div>
-                        <div className={styles['footer']}>
-                            <Button
-                                variant={actionButtonVariants[variant].inactive}
+                            <H3
+                                id={headerId}
+                                fontType={FontType.NeonText}
+                                uppercase
+                                fontWeight={500}
                                 color={color}
-                                onClick={close}
+                                shadow={variant === 'fill-translucent'}
+                                className={styles['header']}
                             >
-                                {closeText}
-                            </Button>
-                            {save ? (
+                                {header}
+                            </H3>
+                            <ThemeContext.Provider value={theme}>
+                                <div
+                                    className={styles['content']}
+                                    data-appearance-mode={theme.mode}
+                                >
+                                    {children}
+                                </div>
+                            </ThemeContext.Provider>
+                            <div className={styles['footer']}>
                                 <Button
                                     variant={
-                                        actionButtonVariants[variant].active
+                                        actionButtonVariants[variant].inactive
                                     }
                                     color={color}
-                                    onClick={() => {
-                                        save.onSave();
-                                        close();
-                                    }}
+                                    onClick={close}
                                 >
-                                    {save.saveText}
+                                    {closeText}
                                 </Button>
-                            ) : null}
-                        </div>
-                    </HudSurface>
+                                {save ? (
+                                    <Button
+                                        variant={
+                                            actionButtonVariants[variant].active
+                                        }
+                                        color={color}
+                                        onClick={() => {
+                                            save.onSave();
+                                            close();
+                                        }}
+                                    >
+                                        {save.saveText}
+                                    </Button>
+                                ) : null}
+                            </div>
+                        </HudSurface>
+                    </ThemeContext.Provider>
                 </div>
             </Transition>
         </div>,

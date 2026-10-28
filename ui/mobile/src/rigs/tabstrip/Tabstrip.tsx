@@ -21,6 +21,10 @@ const styles = StyleSheet.create({
     measurement: { position: 'absolute', opacity: 0, flexDirection: 'row' },
     spreadItem: { flex: 1 },
     spreadButton: { width: '100%' },
+    footer: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+    },
 });
 
 export const Tabstrip: FC<TabstripProps> = ({
@@ -37,6 +41,7 @@ export const Tabstrip: FC<TabstripProps> = ({
     disabled = false,
     spread = false,
     overflowAccessibilityLabel,
+    actions,
     children,
 }) => {
     const theme = useTheme();
@@ -71,6 +76,7 @@ export const Tabstrip: FC<TabstripProps> = ({
         backgroundColor: appearance.surface,
         borderColor: appearance.border.color,
         borderWidth: appearance.border.width,
+        borderBottomWidth: actions ? 0 : appearance.border.width,
         padding:
             size === 'lg' ? 18 : size === 'md' ? 14 : size === 'sm' ? 10 : 6,
     };
@@ -216,6 +222,35 @@ export const Tabstrip: FC<TabstripProps> = ({
             {children !== undefined && children !== null ? (
                 <View key={value} style={[styles.content, contentStyle]}>
                     <HudContent appearance={appearance}>{children}</HudContent>
+                </View>
+            ) : null}
+            {actions ? (
+                <View
+                    style={[
+                        styles.footer,
+                        {
+                            marginTop: theme.sizes.control[size].gap,
+                            gap: theme.sizes.control[size].gap,
+                        },
+                    ]}
+                >
+                    {actions.secondary ? (
+                        <Button
+                            {...buttonProps}
+                            disabled={disabled}
+                            onPress={actions.secondary.onPress}
+                        >
+                            {actions.secondary.label}
+                        </Button>
+                    ) : null}
+                    <Button
+                        {...buttonProps}
+                        variant={actionButtonVariants[variant].active}
+                        disabled={disabled}
+                        onPress={actions.primary.onPress}
+                    >
+                        {actions.primary.label}
+                    </Button>
                 </View>
             ) : null}
         </View>

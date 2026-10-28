@@ -4,6 +4,7 @@ import {
     Orientation,
     ColorShade,
     fillVariantOptions,
+    sizeOptions,
     Icons,
     Theme,
     ThemeContext,
@@ -11,8 +12,11 @@ import {
     ThemeMode,
     themeSpecifications,
     actionButtonVariants,
+    useTheme,
 } from '@ui';
 import { Dialog } from '@the-dead-planet/nav-gauge-ui-mobile/src/rigs/dialog';
+import { Button } from '@the-dead-planet/nav-gauge-ui-mobile/src/gizmos/button';
+import { Text } from '@the-dead-planet/nav-gauge-ui-mobile/src/design-system/typography';
 import { Tabstrip } from '@the-dead-planet/nav-gauge-ui-mobile/src/rigs/tabstrip';
 import * as tabstripLayout from '@the-dead-planet/nav-gauge-ui-mobile/src/rigs/tabstrip/useTabstripLayout';
 import {
@@ -53,6 +57,10 @@ const media = {
 };
 
 const TranslatedLabel = () => 'Individuator';
+const ChildThemeLabel = () => {
+    const theme = useTheme();
+    return <Text>{`Child theme: ${theme.mode}`}</Text>;
+};
 
 describe('Mobile rig content', () => {
     beforeEach(() => {
@@ -64,6 +72,97 @@ describe('Mobile rig content', () => {
     });
 
     afterEach(() => jest.restoreAllMocks());
+
+    it('lets typography override the app theme mode for interaction and disabled colors', async () => {
+        const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
+        const content = (disabled = false) => (
+            <ThemeContext.Provider value={theme}>
+                <Text themeMode="dark" color="primary" highlighted disabled={disabled}>
+                    Dark text
+                </Text>
+            </ThemeContext.Provider>
+        );
+        const screen = await render(content());
+        expect(screen.getByText('Dark text')).toHaveStyle({
+            color: theme.forMode('dark').resolveAppearance(undefined, 'primary', 'primary', 'active-pressed').glyphs,
+        });
+        await screen.rerender(content(true));
+        expect(screen.getByText('Dark text')).toHaveStyle({
+            color: theme.forMode('dark').resolveAppearance(undefined, 'primary', 'primary', 'disabled').glyphs,
+        });
+        await screen.unmount();
+        theme.destroy();
+    });
+
+    it.each(sizeOptions)('sizes %s tabstrip actions like the tab buttons', async (size) => {
+        const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
+        const close = jest.fn();
+        const reset = jest.fn();
+        const content = (disabled = false) => (
+            <ThemeContext.Provider value={theme}>
+                <Tabstrip
+                    options={[]}
+                    value="route"
+                    onChange={() => undefined}
+                    overflowAccessibilityLabel="More tabs"
+                    variant="fill-translucent"
+                    size={size}
+                    disabled={disabled}
+                    actions={{
+                        primary: {
+                            label: 'Close tabs',
+                            onPress: close,
+                        },
+                        secondary: {
+                            label: 'Reset tabs',
+                            onPress: reset,
+                        },
+                    }}
+                >
+                    Tab content
+                </Tabstrip>
+            </ThemeContext.Provider>
+        );
+        const screen = await render(content());
+        for (const name of ['Close tabs', 'Reset tabs']) {
+            expect(screen.getByRole('button', { name })).toHaveStyle({
+                height: theme.sizes.control[size].height,
+            });
+            expect(screen.getByText(name)).toHaveStyle({
+                fontSize: theme.sizes.control[size].fontSize,
+            });
+        }
+        await fireEvent.press(screen.getByRole('button', { name: 'Close tabs' }));
+        await fireEvent.press(screen.getByRole('button', { name: 'Reset tabs' }));
+        expect(close).toHaveBeenCalledTimes(1);
+        expect(reset).toHaveBeenCalledTimes(1);
+        await screen.rerender(content(true));
+        await fireEvent.press(screen.getByRole('button', { name: 'Close tabs' }));
+        expect(close).toHaveBeenCalledTimes(1);
+        await screen.unmount();
+        theme.destroy();
+    });
+
+    it('keeps translucent button icons shadow-free, including when disabled', async () => {
+        const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
+        const content = (disabled = false) => (
+            <ThemeContext.Provider value={theme}>
+                <Button
+                    variant="fill-translucent"
+                    color="primary"
+                    icon={() => null}
+                    accessibilityLabel="Icon button"
+                    disabled={disabled}
+                />
+            </ThemeContext.Provider>
+        );
+        const screen = await render(content());
+        expect(jest.mocked(Icon).mock.lastCall?.[0].filter).toBeUndefined();
+        await screen.rerender(content(true));
+        expect(jest.mocked(Icon).mock.lastCall?.[0].filter).toBeUndefined();
+        await screen.unmount();
+        theme.destroy();
+    });
 
     it.each(fillVariantOptions)(
         'uses a filled selected tab on %s without forcing pressed styling',
@@ -147,18 +246,17 @@ describe('Mobile rig content', () => {
                             onClose={() => undefined}
                         >
                             Bare dialog text
+                            <ChildThemeLabel />
                         </Dialog>
                     </ThemeContext.Provider>,
                 );
                 const shade =
                     variant === 'fill'
                         ? theme.contrastShade('primary', 500)
-                        : variant === 'fill-translucent' || mode === 'dark'
-                          ? 100
-                          : 900;
+                        : 100;
                 const glyphs = theme.color('primary', shade);
                 expect(screen.getByRole('button', { name: 'Close' })).toHaveStyle({
-                    backgroundColor: theme.resolveAppearance(
+                    backgroundColor: theme.forMode('dark').resolveAppearance(
                         actionButtonVariants[variant].inactive,
                         'primary',
                     ).surface,
@@ -169,6 +267,7 @@ describe('Mobile rig content', () => {
                 expect(screen.getByText('Bare dialog text')).toHaveStyle({
                     color: glyphs,
                 });
+                expect(screen.getByText(`Child theme: ${mode}`)).toBeTruthy();
                 if (variant === 'fill-translucent') {
                     expect(screen.getByRole('header')).toHaveStyle({
                         textShadowColor: theme.color('primary', 800),
@@ -178,7 +277,7 @@ describe('Mobile rig content', () => {
                     expect(screen.getByText('Bare dialog text')).not.toHaveStyle({
                         textShadowColor: theme.color('primary', 800),
                     });
-                    expect(screen.getByText('Close')).toHaveStyle({
+                    expect(screen.getByText('Close')).not.toHaveStyle({
                         textShadowColor: theme.color('primary', 800),
                     });
                 }

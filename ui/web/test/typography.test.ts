@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import { createRequire } from 'node:module';
-import { createElement } from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
-import { ColorVariant, typographyFontWeights } from '@ui';
+import { createElement, ReactElement } from 'react';
+import { renderToStaticMarkup as renderMarkup } from 'react-dom/server';
+import { ColorVariant, Orientation, Theme, ThemeContext, ThemeName, themeSpecifications, typographyFontWeights } from '@ui';
 
 const require = createRequire(__filename);
 const previousCssLoader = require.extensions['.css'];
@@ -23,7 +23,33 @@ if (previousCssLoader) {
     delete require.extensions['.css'];
 }
 
+const theme = new Theme(themeSpecifications[ThemeName.Default].light, {
+    initial: () => ({
+        orientation: Orientation.Landscape,
+        windowWidth: 1280,
+        windowHeight: 720,
+    }),
+    subscribe: () => ({ unsubscribe: () => undefined }),
+});
+const renderToStaticMarkup = (children: ReactElement): string => renderMarkup(
+    createElement(ThemeContext.Provider, {
+        value: theme,
+        children,
+    }),
+);
+
 describe('Typography', () => {
+    after(() => theme.destroy());
+
+    it('lets themeMode override the surrounding theme without leaking a DOM prop', () => {
+        const markup = renderToStaticMarkup(createElement(Text, {
+            themeMode: 'dark',
+            children: 'Dark text',
+        }));
+        expect(markup).to.include('data-appearance-mode="dark"');
+        expect(markup).not.to.include('themeMode=');
+    });
+
     it('inherits the owning appearance when no palette is supplied', () => {
         const markup = renderToStaticMarkup(createElement(Text, {
             children: 'Inherited label',

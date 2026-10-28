@@ -22,6 +22,16 @@ export const tabstripStoryArgs: Omit<TabstripProps, 'onChange'> = {
     spread: false,
     highlighted: false,
     disabled: false,
+    actions: {
+        primary: {
+            label: 'Close',
+            onPress: () => undefined,
+        },
+        secondary: {
+            label: 'Reset to defaults',
+            onPress: () => undefined,
+        },
+    },
 };
 export const tabstripStoryControls: StoryControls<TabstripProps> = {
     children: { control: 'text' },

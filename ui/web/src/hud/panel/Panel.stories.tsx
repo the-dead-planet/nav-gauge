@@ -38,7 +38,6 @@ export const Gallery: Story = {
     parameters: { controls: { exclude: ["color", "variant"] } },
     render: (args) => (
         <VariantGallery
-            sizes={["surface"]}
             colors={appearanceColorOptions}
             variants={fillVariantOptions}
             render={({ color, variant }) => (

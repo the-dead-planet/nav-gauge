@@ -12,6 +12,7 @@ interface Props extends FileInputProps<File> {
 }
 
 export const FileInput: FC<Props & ComponentProps<'div'>> = ({
+    themeMode,
     fileIcon = Icons.NounProject.Upload,
     fileName,
     mutiple,
@@ -58,6 +59,7 @@ export const FileInput: FC<Props & ComponentProps<'div'>> = ({
             />
             <Button
                 aria-label={fileLabel}
+                themeMode={themeMode}
                 variant="fill"
                 color={color}
                 size="xs"
@@ -69,9 +71,8 @@ export const FileInput: FC<Props & ComponentProps<'div'>> = ({
                 onClick={() => inputRef.current?.click()}
             />
             <FileNameComponent
+                themeMode={themeMode}
                 color={color}
-                shade={300}
-                highlightGlyphsShade={400}
                 title={fileName ?? undefined}
                 className={styles['route-name']}
             >
@@ -79,11 +80,10 @@ export const FileInput: FC<Props & ComponentProps<'div'>> = ({
             </FileNameComponent>
             {actionButtons?.map(({ id, element }) => <Fragment key={id}>{element}</Fragment>)}
             <Button
+                themeMode={themeMode}
                 variant="ghost"
                 color={color}
                 corners="circle"
-                glyphsShade={300}
-                highlightGlyphsShade={400}
                 icon={Icons.NounProject.Clear}
                 onClick={() => setShowPurgeDialog(true)}
                 aria-label={purgeLabel}

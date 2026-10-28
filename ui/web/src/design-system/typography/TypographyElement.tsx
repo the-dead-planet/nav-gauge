@@ -1,6 +1,6 @@
 import { ComponentPropsWithoutRef, createElement, CSSProperties, ElementType, ReactElement } from "react";
 import classNames from "classnames";
-import { FontType, resolveTypographyFontWeight, resolveTypographySpacing, TypographyProps } from "@ui";
+import { FontType, resolveTypographyFontWeight, resolveTypographySpacing, useTheme, TypographyProps } from "@ui";
 import styles from './typography.module.css';
 
 type TypographyElementProps<Element extends ElementType> = TypographyProps & {
@@ -11,6 +11,7 @@ type TypographyElementProps<Element extends ElementType> = TypographyProps & {
 export const TypographyElement = <Element extends ElementType>({
     as: Component,
     baseClassName,
+    themeMode,
     color,
     highlightColor = color,
     highlighted,
@@ -43,6 +44,7 @@ export const TypographyElement = <Element extends ElementType>({
     style,
     ...props
 }: TypographyElementProps<Element>): ReactElement => {
+    const theme = useTheme();
     const spacing = resolveTypographySpacing({ m, mv, mh, mt, mr, mb, ml, p, pv, ph, pt, pr, pb, pl });
     const colorVariable = color === undefined ? '--appearance-color' : `--color-${color}`;
     const highlightVariable = highlightColor === undefined ? '--appearance-highlight' : `--color-${highlightColor}`;
@@ -50,6 +52,7 @@ export const TypographyElement = <Element extends ElementType>({
     return createElement(Component, {
         ...props,
         'data-appearance-variant': color === undefined ? undefined : 'default',
+        'data-appearance-mode': themeMode ?? theme.mode,
         'data-appearance-color': color,
         'data-appearance-highlight': highlightColor,
         'data-highlighted': highlighted || undefined,

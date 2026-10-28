@@ -3,7 +3,6 @@ import { makeLiveEditStory } from 'storybook-addon-code-editor';
 import {
     appearanceColorOptions,
     fillVariantOptions,
-    sizeOptions,
     toggleSwitchOrientations,
     toggleSwitchStoryArgs,
     toggleSwitchStoryControls,
@@ -43,7 +42,6 @@ export const Gallery: Story = {
     argTypes: {
         color: { table: { disable: true } },
         orientation: { table: { disable: true } },
-        size: { table: { disable: true } },
         variant: { table: { disable: true } },
     },
     render: (args) => (
@@ -52,7 +50,7 @@ export const Gallery: Story = {
                 <section key={orientation}>
                     <h2>{orientation}</h2>
                     <VariantGallery
-                        sizes={sizeOptions}
+                        size={args.size}
                         colors={appearanceColorOptions}
                         variants={fillVariantOptions}
                         render={({ color, size, variant }) => (

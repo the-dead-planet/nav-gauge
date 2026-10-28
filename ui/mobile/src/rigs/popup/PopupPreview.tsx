@@ -32,7 +32,6 @@ export const PopupPreview = ({
             {gallery ? (
                 <VariantGallery
                     colors={appearanceColorOptions}
-                    sizes={['sm']}
                     variants={fillVariantOptions}
                     render={({ color, variant }) => (
                         <Button

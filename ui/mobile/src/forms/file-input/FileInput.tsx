@@ -23,6 +23,7 @@ interface Props extends FileInputProps<DocumentPickerResponse> {
 }
 
 export const FileInput: FC<Props & ViewProps> = ({
+    themeMode,
     color,
     fileIcon = Icons.NounProject.Upload,
     fileName,
@@ -75,6 +76,7 @@ export const FileInput: FC<Props & ViewProps> = ({
     return (
         <View style={[styles.container, style]} {...props}>
             <Button
+                themeMode={themeMode}
                 icon={fileIcon as unknown as ComponentType<SvgProps>}
                 color={color}
                 variant="fill"
@@ -83,18 +85,21 @@ export const FileInput: FC<Props & ViewProps> = ({
                 tooltip={fileLabel}
                 onPress={handleUpload}
             />
-            <Text color={color} shade={300} highlightShade={400} style={styles.routeName}>
+            <Text
+                themeMode={themeMode}
+                color={color}
+                style={styles.routeName}
+            >
                 {fileName || noNameLabel}
             </Text>
             {actionButtons?.map(({ id, element }) => <Fragment key={id}>{element}</Fragment>)}
             <Button
+                themeMode={themeMode}
                 icon={Icons.NounProject.Clear}
                 color={color}
                 variant="ghost"
                 corners="circle"
                 size="sm"
-                glyphsShade={300}
-                highlightGlyphsShade={400}
                 tooltip={purgeLabel}
                 onPress={handlePurge}
             />

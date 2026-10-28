@@ -37,7 +37,6 @@ const story: MobileStoryDefinition<NotchedPanelProps> = {
                         {hasHeader ? "With header" : "Without header"}
                     </Text>
                     <VariantGallery
-                        sizes={["sm"]}
                         colors={appearanceColorOptions}
                         scrollEnabled={false}
                         render={({ color, variant }) => (

@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { Text } from '../typography';
-import { appearanceColorOptions, IconAppearanceProps, Icons, iconStoryArgs, iconStoryControls, sizeOptions, themeAppearanceStateOptions } from "@ui";
+import { appearanceColorOptions, DEFAULT_SIZE, IconAppearanceProps, Icons, iconStoryArgs, iconStoryControls, themeAppearanceStateOptions } from "@ui";
 import iconRegistry from '@the-dead-planet/nav-gauge-ui-common/src/design-system/icons/svg/noun-project/icon-registry.json';
 import { Icon } from './Icon';
 import { MobileStoryDefinition } from '../../storybook/model';
@@ -48,30 +48,43 @@ const styles = StyleSheet.create({
 const story: MobileStoryDefinition<IconAppearanceProps> = {
     args: iconStoryArgs,
     controls: iconStoryControls,
-    galleryEditableControls: ['highlightColor', 'glyphsShade', 'highlightGlyphsShade', 'highlighted', 'disabled'],
-    renderPlayground: (args) => <Icon {...args} icon={Icons.NounProject.Gear} />,
+    galleryEditableControls: [
+        'highlightColor',
+        'glyphsShade',
+        'highlightGlyphsShade',
+        'highlighted',
+        'disabled',
+    ],
+    renderPlayground: (args) => (
+        <Icon {...args} icon={Icons.NounProject.Gear} />
+    ),
     renderGallery: (args) => (
         <ScrollView contentContainerStyle={styles.section}>
-            {sizeOptions.map((size) => appearanceColorOptions.map((color) => (
-                <View key={`${color}-${size}`} style={styles.section}>
-                    <Text usage="header">{color} / {size}</Text>
+            {appearanceColorOptions.map((color) => (
+                <View key={color} style={styles.section}>
+                    <Text usage="header">
+                        {color} / {args.size ?? DEFAULT_SIZE}
+                    </Text>
                     {themeAppearanceStateOptions.map((appearanceState) => (
                         <View key={appearanceState} style={styles.row}>
                             <Text style={styles.state}>{appearanceState}</Text>
-                            {[Icons.Circle, Icons.Play, Icons.NounProject.Gear].map((icon, index) => (
+                            {[
+                                Icons.Circle,
+                                Icons.Play,
+                                Icons.NounProject.Gear,
+                            ].map((icon, index) => (
                                 <Icon
                                     {...args}
                                     key={index}
                                     icon={icon}
                                     color={color}
-                                    size={size}
                                     appearanceState={appearanceState}
                                 />
                             ))}
                         </View>
                     ))}
                 </View>
-            )))}
+            ))}
         </ScrollView>
     ),
 };

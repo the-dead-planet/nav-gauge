@@ -47,7 +47,6 @@ export const Chip: FC<ChipProps & Props> = ({
             {children !== undefined && children !== null ? (
                 <Span
                     fontType={fontType}
-                    shadow={variant === 'fill-translucent'}
                     className={styles.label}
                 >
                     {children}

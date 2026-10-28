@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { makeLiveEditStory } from 'storybook-addon-code-editor';
 import {
     appearanceColorOptions,
-    dialogPlacementOptions,
     dialogStoryArgs,
     dialogStoryControls,
     DialogProps,
@@ -43,7 +42,6 @@ export const Gallery: Story = {
     argTypes: {
         color: { table: { disable: true } },
         variant: { table: { disable: true } },
-        placement: { table: { disable: true } },
     },
     render: (args) => {
         const [active, setActive] = useState<DialogProps | null>(null);
@@ -51,16 +49,15 @@ export const Gallery: Story = {
             <>
                 <VariantGallery
                     colors={appearanceColorOptions}
-                    sizes={dialogPlacementOptions}
                     variants={fillVariantOptions}
-                    render={({ color, size: placement, variant }) => (
+                    render={({ color, size, variant }) => (
                         <Button
                             color={color}
+                            size={size}
                             onClick={() =>
                                 setActive({
                                     ...args,
                                     color,
-                                    placement,
                                     variant,
                                     onClose: () => setActive(null),
                                 })

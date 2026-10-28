@@ -4,7 +4,7 @@ import {
     ColorBoxProps,
     colorBoxStoryArgs,
     colorBoxStoryControls,
-    sizeOptions,
+    DEFAULT_SIZE,
     Theme,
     useTheme,
 } from "@ui";
@@ -29,36 +29,32 @@ const Gallery = (args: ColorBoxProps) => {
     return (
         <ScrollView contentContainerStyle={styles.gallery}>
             <Text>Copper</Text>
-            {sizeOptions.map((size) => (
-                <View key={size}>
-                    <Text>{size}</Text>
-                    <ScrollView horizontal>
-                        <View style={styles.row}>
-                            {allColorShades.map((shade) => (
-                                <View
-                                    key={shade}
-                                    style={[
-                                        styles.cell,
-                                        {
-                                            width: theme.sizes.control.lg
-                                                .height,
-                                        },
-                                    ]}
-                                >
-                                    <ColorBox
-                                        {...args}
-                                        name="Copper"
-                                        color={Theme.palette.copper}
-                                        size={size}
-                                        shade={shade}
-                                    />
-                                    <Text usage="caption">{shade}</Text>
-                                </View>
-                            ))}
-                        </View>
-                    </ScrollView>
-                </View>
-            ))}
+            <View>
+                <Text>{args.size ?? DEFAULT_SIZE}</Text>
+                <ScrollView horizontal>
+                    <View style={styles.row}>
+                        {allColorShades.map((shade) => (
+                            <View
+                                key={shade}
+                                style={[
+                                    styles.cell,
+                                    {
+                                        width: theme.sizes.control.lg.height,
+                                    },
+                                ]}
+                            >
+                                <ColorBox
+                                    {...args}
+                                    name="Copper"
+                                    color={Theme.palette.copper}
+                                    shade={shade}
+                                />
+                                <Text usage="caption">{shade}</Text>
+                            </View>
+                        ))}
+                    </View>
+                </ScrollView>
+            </View>
         </ScrollView>
     );
 };

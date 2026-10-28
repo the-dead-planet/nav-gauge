@@ -28,6 +28,7 @@ export const Tabstrip: FC<TabstripProps> = ({
     disabled = false,
     spread = false,
     overflowAccessibilityLabel,
+    actions,
     children,
 }) => {
     const {
@@ -54,7 +55,7 @@ export const Tabstrip: FC<TabstripProps> = ({
     };
 
     return (
-        <div className={styles['root']}>
+        <div className={styles['root']} data-size={size}>
             <div
                 ref={containerRef}
                 className={classNames(styles['header'], {
@@ -167,6 +168,7 @@ export const Tabstrip: FC<TabstripProps> = ({
                             className={classNames(
                                 styles['content-inner'],
                                 styles['content-outgoing'],
+                                actions && styles['with-actions'],
                                 styles[`size-${size}`],
                             )}
                             aria-hidden="true"
@@ -186,12 +188,34 @@ export const Tabstrip: FC<TabstripProps> = ({
                         role="tabpanel"
                         className={classNames(
                             styles['content-inner'],
+                            actions && styles['with-actions'],
                             styles[`size-${size}`],
                         )}
                     >
                         {children}
                     </HudSurface>
                 </div>
+            ) : null}
+            {actions ? (
+                <footer className={styles['footer']}>
+                    {actions.secondary ? (
+                        <Button
+                            {...buttonProps}
+                            disabled={disabled}
+                            onClick={actions.secondary.onPress}
+                        >
+                            {actions.secondary.label}
+                        </Button>
+                    ) : null}
+                    <Button
+                        {...buttonProps}
+                        variant={actionButtonVariants[variant].active}
+                        disabled={disabled}
+                        onClick={actions.primary.onPress}
+                    >
+                        {actions.primary.label}
+                    </Button>
+                </footer>
             ) : null}
         </div>
     );

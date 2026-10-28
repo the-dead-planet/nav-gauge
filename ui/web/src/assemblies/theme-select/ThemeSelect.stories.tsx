@@ -4,7 +4,6 @@ import { makeLiveEditStory } from 'storybook-addon-code-editor';
 import {
     appearanceColorOptions,
     fillVariantOptions,
-    sizeOptions,
     ThemeName,
     themeModeOptions,
     themeSelectStoryArgs,
@@ -65,11 +64,6 @@ export const Gallery: Story = {
                 disable: true,
             },
         },
-        size: {
-            table: {
-                disable: true,
-            },
-        },
         variant: {
             table: {
                 disable: true,
@@ -82,7 +76,7 @@ export const Gallery: Story = {
                 <section key={mode}>
                     <h2>{label}</h2>
                     <VariantGallery
-                        sizes={sizeOptions}
+                        size={args.size}
                         colors={appearanceColorOptions}
                         variants={fillVariantOptions}
                         render={({ size, color, variant }) => (

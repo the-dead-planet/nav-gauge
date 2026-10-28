@@ -5,7 +5,6 @@ import {
     hudDecorationCornerSets,
     hudDecorationStoryArgs,
     hudDecorationStoryControls,
-    sizeOptions,
 } from "@ui";
 import { HudDecoration } from "./HudDecoration";
 import { VariantGallery } from "../../storybook/VariantGallery";
@@ -38,14 +37,14 @@ export default () => <HudDecoration>Preview</HudDecoration>;`,
 });
 
 export const Gallery: Story = {
-    parameters: { controls: { exclude: ["color", "size", "corners"] } },
+    parameters: { controls: { exclude: ["color", "corners"] } },
     render: (args) => (
         <div className={styles.gallery}>
             {hudDecorationCornerSets.map(({ label, corners }) => (
                 <section key={label}>
                     <h2>{label}</h2>
                     <VariantGallery
-                        sizes={sizeOptions}
+                        size={args.size}
                         colors={appearanceColorOptions}
                         variants={["brackets"]}
                         render={({ color, size }) => (

@@ -48,6 +48,7 @@ export class Theme {
     public otherMode: ThemeMode;
 
     private mediaSubscription: { unsubscribe: () => void } | null = null;
+    private modeThemes = new Map<ThemeMode, Theme>();
 
     public readonly media$: BehaviorSubject<MediaWithBreakpoints>;
 
@@ -122,11 +123,12 @@ export class Theme {
     public static properties = themeProperties;
 
     public constructor(
-        specification: ThemeSpecification,
+        private readonly specification: ThemeSpecification,
         protected media: MediaSubscriptionDefinition,
-        supportsBackdropBlur = true,
+        private readonly supportsBackdropBlur = true,
     ) {
         this.mode = specification.mode;
+        this.modeThemes.set(this.mode, this);
         this.isLight = specification.mode === 'light';
         this.isDark = specification.mode === 'dark';
         this.otherMode = specification.mode === 'light' ? 'dark' : 'light';
@@ -174,7 +176,7 @@ export class Theme {
         const translucentGlyphs: ThemeAppearanceGlyphs = {
             type: 'shade',
             colorProperty: 'color',
-            shade: 100,
+            shade: this.isLight ? 900 : 100,
         };
         const disabledGlyphs: ThemeAppearancePaint = {
             type: 'shade',
@@ -725,8 +727,32 @@ export class Theme {
         });
     }
 
+    public forMode = (mode: ThemeMode = this.mode): Theme => {
+        if (mode === this.mode) {
+            return this;
+        }
+        let theme = this.modeThemes.get(mode);
+        if (!theme) {
+            theme = new Theme(
+                {
+                    ...this.specification,
+                    mode,
+                },
+                this.media,
+                this.supportsBackdropBlur,
+            );
+            theme.modeThemes = this.modeThemes;
+            this.modeThemes.set(mode, theme);
+        }
+        return theme;
+    };
+
     public destroy = () => {
-        this.mediaSubscription?.unsubscribe();
+        this.modeThemes.forEach((theme) => {
+            theme.mediaSubscription?.unsubscribe();
+            theme.mediaSubscription = null;
+        });
+        this.modeThemes.clear();
     };
 
     /**

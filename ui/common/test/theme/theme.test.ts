@@ -25,6 +25,29 @@ const oklabLightness = ({ r, g, b }: { r: number; g: number; b: number }): numbe
 };
 
 describe("Theme", () => {
+    it('reuses mode overrides and disposes their media subscriptions with the parent', () => {
+        let subscriptions = 0;
+        const scopedTheme = new Theme(themeSpecifications[ThemeName.Default].light, {
+            initial: media.initial,
+            subscribe: () => {
+                subscriptions += 1;
+                return {
+                    unsubscribe: () => { subscriptions -= 1; },
+                };
+            },
+        }, false);
+        const darkTheme = scopedTheme.forMode('dark');
+        expect(scopedTheme.forMode('light')).to.equal(scopedTheme);
+        expect(scopedTheme.forMode('dark')).to.equal(darkTheme);
+        expect(darkTheme.forMode('light')).to.equal(scopedTheme);
+        expect(darkTheme.isDark).to.equal(true);
+        expect(darkTheme.colors).to.deep.equal(scopedTheme.colors);
+        expect(darkTheme.resolveAppearance('fill-translucent').effects.backdropBlur).to.equal(0);
+        expect(subscriptions).to.equal(2);
+        scopedTheme.destroy();
+        expect(subscriptions).to.equal(0);
+    });
+
     it('derives contrast glyphs from the current surface shade', () => {
         const contrastTheme = new Theme(themeSpecifications[ThemeName.Default].light, media);
         try {
@@ -53,7 +76,7 @@ describe("Theme", () => {
                         dialogTheme.color(color, dialogTheme.isLight ? 900 : 100),
                     );
                     const translucentDialog = dialogTheme.resolveAppearance('fill-translucent', color);
-                    expect(translucentDialog.glyphs).to.equal(dialogTheme.color(color, 100));
+                    expect(translucentDialog.glyphs).to.equal(dialogTheme.color(color, dialogTheme.isLight ? 900 : 100));
                 }
                 dialogTheme.destroy();
             }
@@ -110,7 +133,7 @@ describe("Theme", () => {
         }
     });
 
-    it('uses light translucent glyphs and preserves disabled styling', () => {
+    it('flips translucent glyphs by mode and preserves disabled styling', () => {
         for (const specifications of Object.values(themeSpecifications)) {
             for (const specification of [specifications.light, specifications.dark]) {
                 const translucentTheme = new Theme(specification, media);
@@ -120,7 +143,9 @@ describe("Theme", () => {
                         const glyphColor = state === 'default' || state === 'disabled' ? color : 'intel';
                         expect(appearance.glyphs).to.equal(translucentTheme.color(
                             glyphColor,
-                            state === 'disabled' ? (translucentTheme.isLight ? 300 : 700) : 100,
+                            state === 'disabled'
+                                ? (translucentTheme.isLight ? 300 : 700)
+                                : (translucentTheme.isLight ? 900 : 100),
                         ));
                     }
                 }

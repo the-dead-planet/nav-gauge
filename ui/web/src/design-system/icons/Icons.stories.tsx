@@ -5,7 +5,7 @@ import {
     Icons,
     iconStoryArgs,
     iconStoryControls,
-    sizeOptions,
+    DEFAULT_SIZE,
     themeAppearanceStateOptions,
 } from "@ui";
 import iconRegistry from "@the-dead-planet/nav-gauge-ui-common/src/design-system/icons/svg/noun-project/icon-registry.json";
@@ -54,11 +54,6 @@ export const Gallery: Story = {
                 disable: true,
             },
         },
-        size: {
-            table: {
-                disable: true,
-            },
-        },
         src: {
             table: {
                 disable: true,
@@ -82,39 +77,33 @@ export const Gallery: Story = {
     },
     render: (args) => (
         <div className={styles.gallery}>
-            {sizeOptions.map((size) =>
-                appearanceColorOptions.map((color) => (
-                    <section
-                        key={`${color}-${size}`}
-                        className={styles.section}
-                    >
-                        <h3>
-                            {size} / {color}
-                        </h3>
-                        {themeAppearanceStateOptions.map((appearanceState) => (
-                            <div key={appearanceState} className={styles.row}>
-                                <span>{appearanceState}</span>
-                                {[
-                                    Icons.Circle,
-                                    Icons.Play,
-                                    Icons.NounProject.Gear,
-                                ].map((src) => (
-                                    <Icon
-                                        {...args}
-                                        key={src}
-                                        src={src}
-                                        color={color}
-                                        size={size}
-                                        width={undefined}
-                                        height={undefined}
-                                        appearanceState={appearanceState}
-                                    />
-                                ))}
-                            </div>
-                        ))}
-                    </section>
-                )),
-            )}
+            {appearanceColorOptions.map((color) => (
+                <section key={color} className={styles.section}>
+                    <h3>
+                        {args.size ?? DEFAULT_SIZE} / {color}
+                    </h3>
+                    {themeAppearanceStateOptions.map((appearanceState) => (
+                        <div key={appearanceState} className={styles.row}>
+                            <span>{appearanceState}</span>
+                            {[
+                                Icons.Circle,
+                                Icons.Play,
+                                Icons.NounProject.Gear,
+                            ].map((src) => (
+                                <Icon
+                                    {...args}
+                                    key={src}
+                                    src={src}
+                                    color={color}
+                                    width={undefined}
+                                    height={undefined}
+                                    appearanceState={appearanceState}
+                                />
+                            ))}
+                        </div>
+                    ))}
+                </section>
+            ))}
         </div>
     ),
 };

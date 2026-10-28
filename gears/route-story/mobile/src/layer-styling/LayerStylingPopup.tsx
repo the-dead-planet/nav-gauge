@@ -6,7 +6,7 @@ import { getDefaultRouteStoryState, CurrentPointStyle, RouteStoryLayerStylingPop
 import { useSubjectState } from "@tinker-chest";
 import { MobileMap } from "@mobile-apparatus";
 import { MobileRouteStoryProps } from "../model";
-import { Button, HudConnector, Panel, Popup, Tabstrip } from "@mobile-ui";
+import { HudConnector, Popup, Tabstrip } from "@mobile-ui";
 import { CurrentPointControls } from "./CurrentPointControls";
 import { LineStyleGroup } from "./LineStyleGroup";
 import { DemoLine } from "./demo-line/DemoLine";
@@ -27,12 +27,6 @@ const styles = StyleSheet.create({
     },
     content: {
         paddingTop: 8,
-    },
-    footer: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        gap: 8,
-        padding: 10,
     },
 });
 
@@ -173,6 +167,16 @@ export const LayerStylingPopup: FC<Props> = ({
                             value={selectedStyle}
                             onChange={setSelectedStyle}
                             overflowAccessibilityLabel={dialogLabel}
+                            actions={{
+                                primary: {
+                                    label: closeLabel,
+                                    onPress: onClose,
+                                },
+                                secondary: isDirty ? {
+                                    label: restoreDefaultsLabel,
+                                    onPress: () => setState(defaults),
+                                } : undefined,
+                            }}
                             options={[
                                 { value: "active", label: activeLabel },
                                 {
@@ -209,20 +213,6 @@ export const LayerStylingPopup: FC<Props> = ({
                     </View>
                 </ScrollView>
             </HudConnector>
-            <Panel variant="fill-inverse" borderWidth={0} style={styles.footer}>
-                {isDirty && (
-                    <Button
-                        size="xs"
-                        variant="ghost"
-                        onPress={() => setState(defaults)}
-                    >
-                        {restoreDefaultsLabel}
-                    </Button>
-                )}
-                <Button size="xs" variant="fill" onPress={onClose}>
-                    {closeLabel}
-                </Button>
-            </Panel>
         </Popup>
     );
 };

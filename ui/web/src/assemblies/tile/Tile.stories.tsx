@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { sizeOptions, tileStoryArgs } from '@ui';
+import { tileStoryArgs } from '@ui';
 import { Button } from '../../gizmos/button';
 import { colorOptions, fillVariantOptions } from '../../storybook/controls';
 import { VariantGallery } from '../../storybook/VariantGallery';
@@ -25,7 +25,7 @@ export const Playground: Story = {};
 export const Gallery: Story = {
     render: (args) => (
         <VariantGallery
-            sizes={sizeOptions}
+            size={args.size}
             colors={colorOptions}
             variants={fillVariantOptions}
             render={({ color, size, variant }) => (

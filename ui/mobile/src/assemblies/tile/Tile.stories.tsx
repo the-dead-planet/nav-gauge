@@ -2,7 +2,6 @@ import { ComponentProps } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import {
     fillVariantOptions,
-    sizeOptions,
     tileStoryArgs,
     tileStoryControls,
 } from '@ui';
@@ -41,7 +40,7 @@ const story = {
     renderGallery: (args) => (
         <ScrollView contentContainerStyle={styles.gallery}>
             <VariantGallery
-                sizes={sizeOptions}
+                size={args.size}
                 variants={fillVariantOptions}
                 scrollEnabled={false}
                 render={({ color, size, variant }) => (

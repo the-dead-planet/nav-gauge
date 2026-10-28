@@ -1,11 +1,13 @@
 import { expect } from 'chai';
 import { createRequire } from 'node:module';
 import { ComponentProps, createElement, ReactElement } from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
+import { renderToStaticMarkup as renderMarkup } from 'react-dom/server';
 import {
     appearanceColorOptions,
     ColorBoxProps,
     fillVariantOptions,
+    DEFAULT_SIZE,
+    SizeVariant,
     MenuContext,
     Orientation,
     Theme,
@@ -45,6 +47,8 @@ const { ResizeHandle } = require('../src/gizmos/resize-handle/ResizeHandle') as 
 const { ColorBox } = require('../src/gizmos/color-box/ColorBox') as typeof import('../src/gizmos/color-box/ColorBox');
 const { Menu } = require('../src/rigs/menu/Menu') as typeof import('../src/rigs/menu/Menu');
 const { MenuItem } = require('../src/rigs/menu/MenuItem') as typeof import('../src/rigs/menu/MenuItem');
+const { Tabstrip } = require('../src/rigs/tabstrip/Tabstrip') as typeof import('../src/rigs/tabstrip/Tabstrip');
+const { VariantGallery } = require('../src/storybook/VariantGallery') as typeof import('../src/storybook/VariantGallery');
 if (previousCssLoader) {
     require.extensions['.css'] = previousCssLoader;
 } else {
@@ -62,8 +66,69 @@ const media = {
     }),
 };
 
+const renderingTheme = new Theme(themeSpecifications[ThemeName.Default].light, media);
+const renderToStaticMarkup = (children: ReactElement): string => renderMarkup(
+    createElement(ThemeContext.Provider, {
+        value: renderingTheme,
+        children,
+    }),
+);
+
 describe('Composed appearance rendering', () => {
-    it('shadows only enabled translucent button and chip labels', () => {
+    after(() => renderingTheme.destroy());
+
+    it('renders one controlled gallery size, defaulting to DEFAULT_SIZE', () => {
+        for (const size of [undefined, ...sizeOptions]) {
+            const renderedSizes: SizeVariant[] = [];
+            renderToStaticMarkup(createElement(VariantGallery, {
+                size,
+                colors: ['primary', 'secondary'],
+                variants: ['fill', 'fill-inverse'],
+                render: (options: { size: SizeVariant }) => {
+                    renderedSizes.push(options.size);
+                    return null;
+                },
+            }));
+            expect(renderedSizes).to.deep.equal(Array(4).fill(size ?? DEFAULT_SIZE));
+        }
+    });
+
+    it('renders optional tabstrip actions with inherited sizes and shared variants', () => {
+        const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
+        for (const size of sizeOptions) {
+            const markup = renderToStaticMarkup(createElement(ThemeContext.Provider, {
+                value: theme,
+                children: createElement(Tabstrip, {
+                    options: [],
+                    value: 'route',
+                    onChange: () => undefined,
+                    overflowAccessibilityLabel: 'More tabs',
+                    variant: 'fill-inverse',
+                    size,
+                    actions: {
+                        primary: {
+                            label: 'Close tabs',
+                            onPress: () => undefined,
+                        },
+                        secondary: {
+                            label: 'Reset tabs',
+                            onPress: () => undefined,
+                        },
+                    },
+                    children: 'Tab content',
+                }),
+            }));
+            const footer = markup.match(/<footer[^>]*>([\s\S]*?)<\/footer>/)?.[1];
+            expect(markup).to.include(`data-size="${size}"`);
+            expect(footer).to.include(`size-${size}`);
+            expect(footer).to.include('data-appearance-variant="fill"');
+            expect(footer).to.include('data-appearance-variant="fill-inverse"');
+            expect(footer?.match(/<button\b/g)).to.have.length(2);
+        }
+        theme.destroy();
+    });
+
+    it('keeps button and chip labels and icons free of automatic shadows', () => {
         const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
         const renderWithTheme = (children: ReactElement) => renderToStaticMarkup(
             createElement(ThemeContext.Provider, {
@@ -83,12 +148,19 @@ describe('Composed appearance rendering', () => {
                 })),
             ];
             for (const markup of markups) {
-                expect(/class="[^"]*\bshadow\b/.test(markup)).to.equal(variant === 'fill-translucent');
+                expect(markup).not.to.match(/class="[^"]*\bshadow\b/);
             }
+            const iconButton = renderWithTheme(createElement(Button, {
+                variant,
+                icon: 'gear.svg',
+                'aria-label': 'Icon button',
+            }));
+            expect(iconButton).not.to.include('icon-shadow');
         }
         const disabled = renderWithTheme(createElement(Button, {
             variant: 'fill-translucent',
             disabled: true,
+            icon: 'gear.svg',
             children: 'Disabled label',
         }));
         expect(disabled).not.to.match(/class="[^"]*\bshadow\b/);
@@ -235,13 +307,14 @@ describe('Composed appearance rendering', () => {
         theme.destroy();
     });
 
-    it('gives every button shape one appearance owner and resolves status glyph overrides', () => {
+    it('gives every button shape one overridden theme owner and resolves status glyph overrides', () => {
         const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
         for (const color of appearanceColorOptions) {
             for (const corners of ['square', 'circle', 'hexagon'] as const) {
                 const markup = renderToStaticMarkup(createElement(ThemeContext.Provider, {
                     value: theme,
                     children: createElement(Button, {
+                        themeMode: 'dark',
                         color,
                         highlightColor: 'intel',
                         glyphsShade: 500,
@@ -256,6 +329,9 @@ describe('Composed appearance rendering', () => {
                 expect([...markup.matchAll(/<button/g)]).to.have.length(1);
                 expect(markup).to.include('aria-label="Launch"');
                 expect(markup).to.include('disabled=""');
+                expect(markup).to.include('data-appearance-mode="dark"');
+                expect(markup).not.to.include('data-appearance-mode="light"');
+                expect(markup).not.to.include('themeMode=');
                 expect(markup).to.include(`--appearance-default-glyphs-override:${theme.color(color, 500)}`);
                 expect(markup).to.include(`--appearance-active-pressed-glyphs-override:${theme.color('intel', 200)}`);
             }

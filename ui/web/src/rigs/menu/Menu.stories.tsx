@@ -4,7 +4,6 @@ import {
     appearanceColorOptions,
     menuStoryArgs,
     menuStoryControls,
-    sizeOptions,
     surfaceVariantOptions,
 } from '@ui';
 import { Menu } from './Menu';
@@ -43,12 +42,11 @@ export const Gallery: Story = {
         color: { table: { disable: true } },
         variant: { table: { disable: true } },
         iconSize: { table: { disable: true } },
-        size: { table: { disable: true } },
     },
     render: (args) => (
         <VariantGallery
             colors={appearanceColorOptions}
-            sizes={sizeOptions}
+            size={args.size}
             variants={surfaceVariantOptions}
             render={({ color, size, variant }) => (
                 <Menu

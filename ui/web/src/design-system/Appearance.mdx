@@ -157,15 +157,15 @@ Components without an appearance variant use the default policy below.
         <tr><th>Element</th><th>Default</th><th>Hover / focus</th><th>Active / pressed</th><th>Disabled</th></tr>
     </thead>
     <tbody>
-        <tr><td>Text and icons</td><td><code>100</code> in both modes</td><td><code>100</code> in both modes</td><td><code>100</code> in both modes</td><td><code>300</code> light / <code>700</code> dark</td></tr>
-        <tr><td>Text shadow</td><td colSpan={3}>Palette shade <code>800</code> on Button and Chip labels; other text opts in via typography's <code>shadow</code> prop. Containers do not apply it.</td><td>None</td></tr>
+        <tr><td>Text and icons</td><td><code>900</code> light / <code>100</code> dark</td><td><code>900</code> light / <code>100</code> dark</td><td><code>900</code> light / <code>100</code> dark</td><td><code>300</code> light / <code>700</code> dark</td></tr>
+        <tr><td>Text shadow (opt-in)</td><td colSpan={3}>Palette shade <code>800</code> via typography's <code>shadow</code> prop. The variant does not apply it automatically.</td><td>None</td></tr>
         <tr><td>Background</td><td><code>500</code> at platform opacity</td><td><code>500</code> at platform opacity</td><td><code>500</code> at platform opacity</td><td><code>200</code> light / <code>800</code> dark at platform opacity</td></tr>
         <tr><td>Border</td><td><code>500</code> at 30%</td><td><code>600</code> light / <code>300</code> dark</td><td><code>700</code> light / <code>200</code> dark</td><td><code>300</code> light / <code>700</code> dark</td></tr>
         <tr><td>Backdrop blur</td><td colSpan={4}>Web: <code>6px</code>, clipped to the component shape. Mobile: unsupported by the current native renderer.</td></tr>
     </tbody>
 </table>
 
-This variant uses light glyphs rather than selecting a contrast shade from its unblended surface color.
+Glyph shades follow the theme mode rather than the unblended surface's contrast shade.
 
 <Canvas of={ColorStories.FillTranslucentStates} />
 

@@ -1,4 +1,5 @@
 import { ColorShade, ColorVariant, SpacingVariant } from "../model";
+import type { ThemeMode } from '../theme/model';
 
 /**
  * Fonts available for typography components. Usage and role:
@@ -36,6 +37,7 @@ export interface TypographyStoryProps extends TypographyProps {
 }
 
 export interface TypographyProps {
+    themeMode?: ThemeMode;
     color?: ColorVariant;
     highlightColor?: ColorVariant;
     /** Persistent visual emphasis, distinct from a temporary press. */

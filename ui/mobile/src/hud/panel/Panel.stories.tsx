@@ -30,7 +30,6 @@ const story: MobileStoryDefinition<PanelProps> = {
     renderPlayground: (args) => <Panel {...args} style={styles.sample} />,
     renderGallery: (args) => (
         <VariantGallery
-            sizes={["sm"]}
             colors={appearanceColorOptions}
             render={({ color, variant }) => (
                 <Panel

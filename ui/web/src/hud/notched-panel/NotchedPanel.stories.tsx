@@ -42,7 +42,6 @@ export const Gallery: Story = {
                 <section key={String(hasHeader)}>
                     <h2>{hasHeader ? "With header" : "Without header"}</h2>
                     <VariantGallery
-                        sizes={["surface"]}
                         colors={appearanceColorOptions}
                         variants={fillVariantOptions}
                         render={({ color, variant }) => (

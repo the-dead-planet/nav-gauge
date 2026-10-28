@@ -32,6 +32,10 @@ export const typographyStoryArgs: TypographyStoryProps = {
 };
 
 export const typographyStoryControls: StoryControls<TypographyStoryProps> = {
+    themeMode: {
+        control: 'select',
+        options: [undefined, 'light', 'dark'],
+    },
     children: {
         control: 'text',
     },

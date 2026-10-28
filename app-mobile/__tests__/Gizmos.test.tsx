@@ -39,7 +39,7 @@ const cases: { corners: ButtonCorners; mode: ThemeMode }[] = modes.flatMap(
 
 describe("Gizmo interaction ownership", () => {
     test.each(fillVariantOptions)(
-        '%s button and chip labels only add shadows for translucent fills',
+        '%s button and chip labels do not add automatic shadows',
         async (variant) => {
             const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
             const content = (disabled = false) => (
@@ -54,15 +54,9 @@ describe("Gizmo interaction ownership", () => {
             );
             const screen = await render(content());
             for (const label of ['Button label', 'Chip label']) {
-                if (variant === 'fill-translucent') {
-                    expect(screen.getByText(label)).toHaveStyle({
-                        textShadowColor: theme.color('primary', 800),
-                    });
-                } else {
-                    expect(screen.getByText(label)).not.toHaveStyle({
-                        textShadowColor: theme.color('primary', 800),
-                    });
-                }
+                expect(screen.getByText(label)).not.toHaveStyle({
+                    textShadowColor: theme.color('primary', 800),
+                });
             }
             await screen.rerender(content(true));
             expect(screen.getByText('Button label')).not.toHaveStyle({
@@ -124,20 +118,23 @@ describe("Gizmo interaction ownership", () => {
     );
 
     test.each(cases)(
-        "$corners in $mode respects focus, press, persistent highlight, overrides and disabled",
+        "$corners in $mode respects theme overrides, focus, press, highlight and disabled",
         async ({ corners, mode }) => {
             const theme = new Theme(
                 themeSpecifications[ThemeName.Default][mode],
                 media,
             );
             const onPress = jest.fn();
+            const resolvedMode = mode === 'light' ? 'dark' : 'light';
             const content = (
                 highlighted = false,
                 disabled = false,
                 overrideGlyphs = true,
+                overrideTheme = true,
             ) => (
                 <ThemeContext.Provider value={theme}>
                     <Button
+                        themeMode={overrideTheme ? resolvedMode : undefined}
                         corners={corners}
                         color="glitch"
                         highlightColor="intel"
@@ -170,18 +167,22 @@ describe("Gizmo interaction ownership", () => {
             await fireEvent(screen.getByRole("button"), "pressOut");
             await fireEvent(screen.getByRole("button"), "focus");
             expect(screen.getByText("Telemetry")).toHaveStyle({
-                color: theme.color("intel", mode === "light" ? 700 : 200),
+                color: theme.color("intel", resolvedMode === "light" ? 700 : 200),
             });
             await fireEvent(screen.getByRole("button"), "blur");
             expect(screen.getByText("Telemetry")).toHaveStyle({
-                color: theme.color("intel", mode === "light" ? 700 : 200),
+                color: theme.color("intel", resolvedMode === "light" ? 700 : 200),
             });
             await screen.rerender(content(true, true));
             expect(screen.getByText("Telemetry")).toHaveStyle({
-                color: theme.color("glitch", mode === "light" ? 300 : 700),
+                color: theme.color("glitch", resolvedMode === "light" ? 300 : 700),
             });
             await fireEvent.press(screen.getByRole("button"));
             expect(onPress).not.toHaveBeenCalled();
+            await screen.rerender(content(true, false, false, false));
+            expect(screen.getByText('Telemetry')).toHaveStyle({
+                color: theme.color('intel', mode === 'light' ? 700 : 200),
+            });
             await screen.unmount();
             theme.destroy();
         },

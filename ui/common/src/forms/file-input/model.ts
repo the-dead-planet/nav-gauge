@@ -1,8 +1,10 @@
 import { ReactNode } from "react";
 import { ColorVariant } from "../../design-system/model";
 import { TooltipPlacement } from "../../gizmos/tooltip";
+import { ThemeMode } from "../../design-system";
 
 export interface FileInputProps<TFile> {
+    themeMode?: ThemeMode;
     fileIcon?: string;
     color?: ColorVariant;
     mutiple?: boolean;
