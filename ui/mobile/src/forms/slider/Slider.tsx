@@ -6,7 +6,7 @@ import {
     ViewStyle,
     type ViewInstance,
 } from "react-native";
-import { DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, SliderProps, useTheme } from "@ui";
+import { DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, SliderProps, translucentSurfaceOpacity, useTheme } from "@ui";
 import { Text } from "../../design-system/typography";
 import { NumberInput } from "../number-input";
 import { StepControls } from "../step-controls";
@@ -62,7 +62,7 @@ export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle
         : variant === 'fill'
             ? theme.color(color, 500)
             : variant === 'fill-translucent'
-                ? theme.color(color, 500, 0.24)
+                ? theme.color(color, 500, translucentSurfaceOpacity.unblurred)
                 : fillColor;
     const thumbBorderColor = isActive ? highlightAccent : strokeColor;
     const valueRef = useRef(value);

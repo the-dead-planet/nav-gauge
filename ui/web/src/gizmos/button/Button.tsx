@@ -5,6 +5,7 @@ import {
     DEFAULT_COLOR,
     DEFAULT_SIZE,
     DEFAULT_SURFACE_VARIANT,
+    ThemeContext,
     useTheme,
 } from "@ui";
 import { Icon } from "../../design-system/icons";
@@ -20,6 +21,7 @@ interface Props {
 }
 
 export const Button: FC<ComponentProps<"button"> & Props & ButtonProps> = ({
+    themeMode,
     color = DEFAULT_COLOR,
     fontType,
     glyphsShade,
@@ -44,7 +46,7 @@ export const Button: FC<ComponentProps<"button"> & Props & ButtonProps> = ({
     style,
     ...props
 }) => {
-    const theme = useTheme();
+    const theme = useTheme().forMode(themeMode);
     const iconSize = theme.sizes.control[size].iconSize;
     const effects = theme.appearancePolicies[variant].effects;
     const appearanceOverrides: CSSProperties = {
@@ -89,7 +91,10 @@ export const Button: FC<ComponentProps<"button"> & Props & ButtonProps> = ({
                 />
             ) : null}
             {children !== undefined && children !== null ? (
-                <Span fontType={fontType} className={styles.label}>
+                <Span
+                    fontType={fontType}
+                    className={styles.label}
+                >
                     {children}
                 </Span>
             ) : null}
@@ -158,23 +163,27 @@ export const Button: FC<ComponentProps<"button"> & Props & ButtonProps> = ({
     ) : (
         button
     );
-    return corners === "hexagon" ? (
-        <Hexagon
-            shape="flat-top"
-            size={size}
-            variant={variant}
-            activeGlow={activeGlow}
-            color={color}
-            highlightColor={highlightColor}
-            highlighted={highlighted}
-            disabled={disabled}
-            interactive
-            style={{ ...style, ...appearanceOverrides }}
-            className={className}
-        >
-            {buttonWithTooltip}
-        </Hexagon>
-    ) : (
-        buttonWithTooltip
+    return (
+        <ThemeContext.Provider value={theme}>
+            {corners === "hexagon" ? (
+                <Hexagon
+                    shape="flat-top"
+                    size={size}
+                    variant={variant}
+                    activeGlow={activeGlow}
+                    color={color}
+                    highlightColor={highlightColor}
+                    highlighted={highlighted}
+                    disabled={disabled}
+                    interactive
+                    style={{ ...style, ...appearanceOverrides }}
+                    className={className}
+                >
+                    {buttonWithTooltip}
+                </Hexagon>
+            ) : (
+                buttonWithTooltip
+            )}
+        </ThemeContext.Provider>
     );
 };

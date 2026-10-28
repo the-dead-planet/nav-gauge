@@ -9,10 +9,7 @@ import {
     ElevationLayer,
 } from "../../design-system/theme/model";
 
-export type PanelShape = "default";
-
 export type PanelProps = AppearancePropsBase<FillVariant> & {
-    shape?: PanelShape;
     interactive?: boolean;
     activeGlow?: ActiveGlow;
     /** Overrides the width of borders present in the shared appearance policy. */

@@ -6,7 +6,7 @@ import {
     StyleSheet,
     type ViewInstance,
 } from "react-native";
-import { ButtonProps, DEFAULT_COLOR, DEFAULT_SIZE, DEFAULT_SURFACE_VARIANT, hexagonGeometry, useTheme } from "@ui";
+import { ButtonProps, DEFAULT_COLOR, DEFAULT_SIZE, DEFAULT_SURFACE_VARIANT, hexagonGeometry, ThemeContext, useTheme } from "@ui";
 import { Icon } from "../../design-system/icons";
 import { SvgProps } from "react-native-svg";
 import { HexagonSurface } from '../../hud/hexagon/HexagonSurface';
@@ -31,6 +31,7 @@ export interface MobileButtonProps {
 }
 
 export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
+    themeMode,
     forwardRef,
     color = DEFAULT_COLOR,
     fontType,
@@ -65,7 +66,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     accessibilityState,
     ...props
 }) => {
-    const theme = useTheme();
+    const theme = useTheme().forMode(themeMode);
     const { state, interaction, focused } = useHudInteraction({ disabled, highlighted, onPressIn, onPressOut, onHoverIn, onHoverOut, onFocus, onBlur });
     const isInteractiveState = state === 'active-pressed' || state === 'hover-focus';
     const appearance = theme.resolveAppearance(
@@ -176,10 +177,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     const label = children ?? title;
     const labelChildren = Children.toArray(label);
     const textElement =
-        labelChildren.length > 0 &&
-        labelChildren.every(
-            (child) => typeof child === "string" || typeof child === "number",
-        ) ? (
+        labelChildren.length > 0 ? (
             <Text
                 fontType={fontType}
                 fontWeight={appearance.fontWeight}
@@ -190,9 +188,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
             >
                 {labelChildren}
             </Text>
-        ) : (
-            (label ?? null)
-        );
+        ) : null;
 
     const content = (
         <>
@@ -236,30 +232,32 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         </Pressable>
     );
 
-    if (
+    const hasTooltip =
         tooltip !== null &&
         tooltip !== undefined &&
         tooltip !== false &&
-        tooltip !== ""
-    ) {
-        return (
-            <Tooltip
-                placement={tooltipPlacement}
-                content={tooltip}
-                color={highlightColor || color}
-                variant={
-                    variant === "fill"
-                        ? "fill"
-                        : variant === "fill-translucent"
-                          ? "fill-translucent"
-                          : "fill-inverse"
-                }
-                showConnection={showTooltipConnection}
-            >
-                {buttonElement}
-            </Tooltip>
-        );
-    }
-
-    return buttonElement;
+        tooltip !== "";
+    return (
+        <ThemeContext.Provider value={theme}>
+            {hasTooltip ? (
+                <Tooltip
+                    placement={tooltipPlacement}
+                    content={tooltip}
+                    color={highlightColor || color}
+                    variant={
+                        variant === "fill"
+                            ? "fill"
+                            : variant === "fill-translucent"
+                              ? "fill-translucent"
+                              : "fill-inverse"
+                    }
+                    showConnection={showTooltipConnection}
+                >
+                    {buttonElement}
+                </Tooltip>
+            ) : (
+                buttonElement
+            )}
+        </ThemeContext.Provider>
+    );
 };

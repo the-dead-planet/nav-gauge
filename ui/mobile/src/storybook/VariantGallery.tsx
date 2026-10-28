@@ -1,6 +1,13 @@
-import { ReactNode } from 'react';
+import { createContext, ReactNode, useContext } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { ColorVariant, FillVariant, SizeVariant, colorOptions, fillVariantOptions, sizeOptions } from '@ui';
+import {
+    ColorVariant,
+    DEFAULT_SIZE,
+    FillVariant,
+    SizeVariant,
+    colorOptions,
+    fillVariantOptions,
+} from '@ui';
 import { Text } from '../design-system/typography';
 
 const styles = StyleSheet.create({
@@ -28,53 +35,64 @@ const styles = StyleSheet.create({
     },
 });
 
+export const GallerySizeContext = createContext<SizeVariant>(DEFAULT_SIZE);
+
 interface VariantGalleryProps<Variant extends string = FillVariant> {
     colors?: readonly ColorVariant[];
-    sizes?: readonly SizeVariant[];
+    size?: SizeVariant;
     variants?: readonly Variant[];
-    render: (options: { size: SizeVariant; color: ColorVariant; variant: Variant }) => ReactNode;
+    render: (options: {
+        size: SizeVariant;
+        color: ColorVariant;
+        variant: Variant;
+    }) => ReactNode;
     children?: ReactNode;
     scrollEnabled?: boolean;
 }
 
 export const VariantGallery = <Variant extends string = FillVariant>({
     colors = colorOptions,
-    sizes = sizeOptions,
+    size: providedSize,
     variants = fillVariantOptions as unknown as readonly Variant[],
     render,
     children,
     scrollEnabled,
 }: VariantGalleryProps<Variant>) => {
+    const selectedSize = useContext(GallerySizeContext);
+    const size = providedSize ?? selectedSize;
     const content = (
         <>
             {children}
-            {sizes.map((size) => (
-                <View key={size} style={styles.section}>
-                    <Text style={styles.label}>{size}</Text>
-                    <View style={styles.row}>
-                        {variants.map((variant) => (
-                            <View key={variant} style={styles.cell}>
-                                <Text>{variant}</Text>
-                            </View>
-                        ))}
-                    </View>
-                    {colors.map((color) => (
-                        <View key={color} style={styles.row}>
-                            {variants.map((variant) => (
-                                <View key={`${size}-${color}-${variant}`} style={styles.cell}>
-                                    {render({ color, variant, size })}
-                                </View>
-                            ))}
+            <View style={styles.section}>
+                <Text style={styles.label}>{size}</Text>
+                <View style={styles.row}>
+                    {variants.map((variant) => (
+                        <View key={variant} style={styles.cell}>
+                            <Text>{variant}</Text>
                         </View>
                     ))}
                 </View>
-            ))}
+                {colors.map((color) => (
+                    <View key={color} style={styles.row}>
+                        {variants.map((variant) => (
+                            <View
+                                key={`${size}-${color}-${variant}`}
+                                style={styles.cell}
+                            >
+                                {render({ color, variant, size })}
+                            </View>
+                        ))}
+                    </View>
+                ))}
+            </View>
         </>
     );
 
     return scrollEnabled === false ? (
         <View style={styles.container}>{content}</View>
     ) : (
-        <ScrollView contentContainerStyle={styles.container}>{content}</ScrollView>
+        <ScrollView contentContainerStyle={styles.container}>
+            {content}
+        </ScrollView>
     );
 };

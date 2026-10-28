@@ -1,6 +1,6 @@
 import { FC, RefObject, useRef, useState } from "react";
 import { HostInstance, TextInput as NativeTextInput, View, StyleSheet } from "react-native";
-import { ColorFormat, ColorInputProps, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, parseColor, toCssColor, useColorInputState, useTheme } from "@ui";
+import { ColorFormat, ColorInputProps, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, parseColor, toCssColor, translucentSurfaceOpacity, useColorInputState, useTheme } from "@ui";
 import { Text } from "../../design-system/typography";
 import { Dropdown } from "../dropdown";
 import { Popup } from "../../rigs/popup";
@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
         width: 280,
         maxWidth: '90%',
         padding: 8,
-        borderWidth: 1,
         borderRadius: 0,
     },
 });
@@ -80,7 +79,7 @@ export const ColorInput: FC<ColorInputProps> = ({
     const backgroundColor = variant === 'fill'
         ? borderColor
         : variant === 'fill-translucent'
-            ? toCssColor({ ...parseColor(borderColor), a: .24 })
+            ? toCssColor({ ...parseColor(borderColor), a: translucentSurfaceOpacity.unblurred })
             : inverseBackgroundColor;
     const activeAccent = theme.color(highlightColor, theme.isLight ? 600 : 300);
     const inputBorderColor = highlighted && !disabled
@@ -163,13 +162,7 @@ export const ColorInput: FC<ColorInputProps> = ({
                     popupAnchor="top-left"
                     onClose={() => setOpen(false)}
                     overlayStyle={styles.overlay}
-                    popupStyle={[
-                        styles.popup,
-                        {
-                            backgroundColor: theme.color('neutral', theme.isDark ? 800 : 200),
-                            borderColor: theme.color('neutral', theme.isLight ? 200 : 800),
-                        },
-                    ]}
+                    popupStyle={styles.popup}
                 >
                     {open ? (
                         <ColorRamp

@@ -13,6 +13,11 @@ export type FillVariant = 'fill' | 'fill-inverse' | 'fill-translucent';
 
 export type SurfaceVariant = FillVariant | 'ghost' | 'outline' | 'inset';
 
+export interface ActionButtonVariants {
+    active: SurfaceVariant;
+    inactive: SurfaceVariant;
+}
+
 export type SizeVariant = 'xs' | 'sm' | 'md' | 'lg';
 
 export type SpacingVariant = 'xs' | 'sm' | 'md' | 'lg' | 'xl';

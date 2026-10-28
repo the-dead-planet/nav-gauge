@@ -1,105 +1,81 @@
-.overlay {
-    position: fixed;
-    inset: 0;
-    z-index: var(--layer-floating-z-index);
-}
-
-.color-neutral {
-    --menu-color: var(--color-neutral);
-    --menu-color-light: var(--color-neutral-100);
-    --menu-color-dark: var(--color-neutral-900);
-}
-
-.color-primary {
-    --menu-color: var(--color-primary);
-    --menu-color-light: var(--color-primary-100);
-    --menu-color-dark: var(--color-primary-900);
-}
-
-.color-secondary {
-    --menu-color: var(--color-secondary);
-    --menu-color-light: var(--color-secondary-100);
-    --menu-color-dark: var(--color-secondary-900);
-}
-
-.color-tertiary {
-    --menu-color: var(--color-tertiary);
-    --menu-color-light: var(--color-tertiary-100);
-    --menu-color-dark: var(--color-tertiary-900);
-}
-
-.highlight-neutral {
-    --menu-highlight-color: var(--color-neutral);
-    --menu-highlight-accent-lighter: var(--color-neutral-300);
-    --menu-highlight-accent-darker: var(--color-neutral-600);
-}
-
-.highlight-primary {
-    --menu-highlight-color: var(--color-primary);
-    --menu-highlight-accent-lighter: var(--color-primary-300);
-    --menu-highlight-accent-darker: var(--color-primary-600);
-}
-
-.highlight-secondary {
-    --menu-highlight-color: var(--color-secondary);
-    --menu-highlight-accent-lighter: var(--color-secondary-300);
-    --menu-highlight-accent-darker: var(--color-secondary-600);
-}
-
-.highlight-tertiary {
-    --menu-highlight-color: var(--color-tertiary);
-    --menu-highlight-accent-lighter: var(--color-tertiary-300);
-    --menu-highlight-accent-darker: var(--color-tertiary-600);
-}
-
-.mode-light {
-    --menu-bg: var(--menu-color-light);
-    --menu-color-text: var(--menu-color-dark);
-    --menu-highlight-accent: var(--menu-highlight-accent-lighter);
-}
-
-.mode-dark {
-    --menu-bg: var(--menu-color-dark);
-    --menu-color-text: var(--menu-color-light);
-    --menu-highlight-accent: var(--menu-highlight-accent-darker);
-}
-
 .menu-list {
     position: fixed;
-    padding: 4px 0;
+    padding-inline: 0;
     max-height: 240px;
     overflow-y: auto;
-    transition: opacity .2s ease-in;
-    z-index: var(--layer-dropdown-z-index);
-    background-color: var(--menu-bg);
-    border: 1px solid var(--menu-color);
-    box-shadow: var(--layer-dropdown-down-shadow);
+    width: max-content;
+    min-width: min(160px, 100vw);
+    max-width: 100vw;
 }
 
 .menu-item {
-    display: block;
-    padding: 10px 16px;
-    border: none;
-    background: transparent;
+    display: flex;
+    align-items: center;
     cursor: pointer;
-    font-size: 14px;
     text-align: left;
-    color: var(--menu-color-text);
+    text-decoration: none;
     width: 100%;
     box-sizing: border-box;
 }
 
+.label {
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
 .menu-item:focus-visible {
-    outline: 2px solid var(--menu-highlight-accent);
     outline-offset: -2px;
 }
 
-.menu-item:hover {
-    background: rgb(from var(--menu-highlight-color) r g b / .14);
+.menu-item[aria-disabled='true'] {
+    cursor: not-allowed;
 }
 
-@starting-style {
-    .menu-list {
-        opacity: 0;
-    }
+.size-xs {
+    padding-block: var(--size-control-xs-padding-block);
+}
+.size-sm {
+    padding-block: var(--size-control-sm-padding-block);
+}
+.size-md {
+    padding-block: var(--size-control-md-padding-block);
+}
+.size-lg {
+    padding-block: var(--size-control-lg-padding-block);
+}
+
+.menu-list.size-xs,
+.menu-list.size-sm {
+    padding-block: var(--spacing-xs);
+}
+.menu-list.size-md,
+.menu-list.size-lg {
+    padding-block: var(--spacing-sm);
+}
+
+.menu-item.size-xs {
+    gap: var(--size-control-xs-gap);
+    min-height: var(--size-control-xs-height);
+    padding-inline: var(--size-control-xs-padding-inline);
+    font-size: var(--size-control-xs-font-size);
+}
+.menu-item.size-sm {
+    gap: var(--size-control-sm-gap);
+    min-height: var(--size-control-sm-height);
+    padding-inline: var(--size-control-sm-padding-inline);
+    font-size: var(--size-control-sm-font-size);
+}
+.menu-item.size-md {
+    gap: var(--size-control-md-gap);
+    min-height: var(--size-control-md-height);
+    padding-inline: var(--size-control-md-padding-inline);
+    font-size: var(--size-control-md-font-size);
+}
+.menu-item.size-lg {
+    gap: var(--size-control-lg-gap);
+    min-height: var(--size-control-lg-height);
+    padding-inline: var(--size-control-lg-padding-inline);
+    font-size: var(--size-control-lg-font-size);
 }

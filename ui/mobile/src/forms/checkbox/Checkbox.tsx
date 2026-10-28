@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Pressable, View, ViewStyle } from "react-native";
 import Svg, { Path } from "react-native-svg";
-import { CheckboxProps, controlTextSpecifications, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, useTheme } from "@ui";
+import { CheckboxProps, controlTextSpecifications, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, translucentSurfaceOpacity, useTheme } from "@ui";
 import { Text } from "../../design-system/typography";
 
 export const Checkbox: FC<CheckboxProps> = ({
@@ -56,7 +56,7 @@ export const Checkbox: FC<CheckboxProps> = ({
                     ? theme.color(color, theme.isLight ? 200 : 800)
                     : checked
                     ? variant === 'fill-translucent'
-                        ? theme.color(activeColor, pressed ? (theme.isLight ? 600 : 300) : 500, 0.24)
+                        ? theme.color(activeColor, pressed ? (theme.isLight ? 600 : 300) : 500, translucentSurfaceOpacity.unblurred)
                         : boxColor
                     : 'transparent';
 

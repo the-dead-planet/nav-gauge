@@ -6,7 +6,7 @@ import { Popup } from '../../rigs/popup';
 import { VariantGallery } from '../../storybook/VariantGallery';
 import { Dropdown } from './Dropdown';
 import { Button } from '../../gizmos/button';
-import { booleanControl, colorControl, colorOptions, fillVariantControl, fillVariantOptions, optionalShadeControl, sizeControl, sizeOptions } from '../../storybook/controls';
+import { booleanControl, colorControl, colorOptions, fillVariantControl, fillVariantOptions, optionalShadeControl, sizeControl } from '../../storybook/controls';
 
 const options = [
     {
@@ -92,9 +92,9 @@ export const Playground: Story = {
 };
 
 export const Gallery: Story = {
-    render: () => (
+    render: (args) => (
         <VariantGallery
-            sizes={sizeOptions}
+            size={args.size}
             colors={colorOptions}
             variants={fillVariantOptions}
             render={(options) => <GalleryDropdown {...options} />}

@@ -2,7 +2,6 @@ import { ComponentProps } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import {
     fillVariantOptions,
-    sizeOptions,
     tileStoryArgs,
     tileStoryControls,
 } from '@ui';
@@ -33,7 +32,7 @@ const story = {
         <Tile
             {...args}
             append={<Button size="xs">Info</Button>}
-            actions={(size) => <Button size={size} variant="fill">Open</Button>}
+            actions={(size, variants) => <Button size={size} variant={variants.active}>Open</Button>}
         >
             <View style={styles.content} />
         </Tile>
@@ -41,7 +40,7 @@ const story = {
     renderGallery: (args) => (
         <ScrollView contentContainerStyle={styles.gallery}>
             <VariantGallery
-                sizes={sizeOptions}
+                size={args.size}
                 variants={fillVariantOptions}
                 scrollEnabled={false}
                 render={({ color, size, variant }) => (
@@ -49,8 +48,8 @@ const story = {
                         {...args}
                         size={size}
                         panelProps={{ ...args.panelProps, color, variant }}
-                        actions={(actionSize) => (
-                            <Button size={actionSize} variant="fill">
+                        actions={(actionSize, variants) => (
+                            <Button size={actionSize} variant={variants.active}>
                                 Open
                             </Button>
                         )}

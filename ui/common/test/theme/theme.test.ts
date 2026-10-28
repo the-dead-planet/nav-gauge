@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { appearanceColorOptions, Orientation, surfaceVariantOptions, Theme, themeAppearanceStateOptions, themeSpecifications, ThemeName } from "../../src";
+import { actionButtonVariants, appearanceColorOptions, Orientation, surfaceVariantOptions, Theme, themeAppearanceStateOptions, themeSpecifications, ThemeName, translucentSurfaceOpacity } from "../../src";
 
 const media = {
     initial: () => ({
@@ -25,6 +25,141 @@ const oklabLightness = ({ r, g, b }: { r: number; g: number; b: number }): numbe
 };
 
 describe("Theme", () => {
+    it('reuses mode overrides and disposes their media subscriptions with the parent', () => {
+        let subscriptions = 0;
+        const scopedTheme = new Theme(themeSpecifications[ThemeName.Default].light, {
+            initial: media.initial,
+            subscribe: () => {
+                subscriptions += 1;
+                return {
+                    unsubscribe: () => { subscriptions -= 1; },
+                };
+            },
+        }, false);
+        const darkTheme = scopedTheme.forMode('dark');
+        expect(scopedTheme.forMode('light')).to.equal(scopedTheme);
+        expect(scopedTheme.forMode('dark')).to.equal(darkTheme);
+        expect(darkTheme.forMode('light')).to.equal(scopedTheme);
+        expect(darkTheme.isDark).to.equal(true);
+        expect(darkTheme.colors).to.deep.equal(scopedTheme.colors);
+        expect(darkTheme.resolveAppearance('fill-translucent').effects.backdropBlur).to.equal(0);
+        expect(subscriptions).to.equal(2);
+        scopedTheme.destroy();
+        expect(subscriptions).to.equal(0);
+    });
+
+    it('derives contrast glyphs from the current surface shade', () => {
+        const contrastTheme = new Theme(themeSpecifications[ThemeName.Default].light, media);
+        try {
+            contrastTheme.appearancePolicies.fill.states.default.surface = {
+                type: 'shade',
+                colorProperty: 'color',
+                shade: 900,
+            };
+            expect(contrastTheme.resolveAppearance('fill', 'neutral').glyphs).to.equal(
+                contrastTheme.color('neutral', contrastTheme.contrastShade('neutral', 900)),
+            );
+        } finally {
+            contrastTheme.destroy();
+        }
+    });
+
+    it('uses readable dialog foregrounds for every palette and status color in both modes', () => {
+        for (const specifications of Object.values(themeSpecifications)) {
+            for (const specification of [specifications.light, specifications.dark]) {
+                const dialogTheme = new Theme(specification, media);
+                for (const color of appearanceColorOptions) {
+                    expect(dialogTheme.resolveAppearance('fill', color).glyphs).to.equal(
+                        dialogTheme.color(color, dialogTheme.contrastShade(color, 500)),
+                    );
+                    expect(dialogTheme.resolveAppearance('fill-inverse', color).glyphs).to.equal(
+                        dialogTheme.color(color, dialogTheme.isLight ? 900 : 100),
+                    );
+                    const translucentDialog = dialogTheme.resolveAppearance('fill-translucent', color);
+                    expect(translucentDialog.glyphs).to.equal(dialogTheme.color(color, dialogTheme.isLight ? 900 : 100));
+                }
+                dialogTheme.destroy();
+            }
+        }
+    });
+
+    it('resolves menu hover and pressed fills with contrast glyphs and unchanged disabled styling', () => {
+        for (const specifications of Object.values(themeSpecifications)) {
+            for (const specification of [specifications.light, specifications.dark]) {
+                const menuTheme = new Theme(specification, media);
+                for (const color of appearanceColorOptions) {
+                    for (const highlightColor of appearanceColorOptions) {
+                        const normal = menuTheme.resolveAppearance('menu-item', color, highlightColor);
+                        expect(normal.surface).to.equal('transparent');
+                        expect(normal.glyphs).to.equal(menuTheme.color(color, menuTheme.isLight ? 800 : 200));
+                        expect(normal.border).to.deep.equal({ color: 'transparent', width: 0 });
+                        const hoverShade = menuTheme.isLight ? 300 : 700;
+                        const pressedShade = menuTheme.isLight ? 400 : 600;
+                        const hover = menuTheme.resolveAppearance('menu-item', color, highlightColor, 'hover-focus');
+                        const pressed = menuTheme.resolveAppearance('menu-item', color, highlightColor, 'active-pressed');
+                        const disabled = menuTheme.resolveAppearance('menu-item', color, highlightColor, 'disabled');
+                        for (const appearance of [normal, hover, pressed, disabled]) {
+                            expect(appearance.fontWeight).to.equal(undefined);
+                        }
+                        expect(hover.surface).to.equal(menuTheme.color(highlightColor, hoverShade));
+                        expect(hover.glyphs).to.equal(menuTheme.color(highlightColor, menuTheme.contrastShade(highlightColor, hoverShade)));
+                        expect(hover.border).to.deep.equal(normal.border);
+                        expect(pressed.surface).to.equal(menuTheme.color(highlightColor, pressedShade));
+                        expect(pressed.glyphs).to.equal(menuTheme.color(highlightColor, menuTheme.contrastShade(highlightColor, pressedShade)));
+                        expect(pressed.border).to.deep.equal(normal.border);
+                        expect(disabled.surface).to.equal('transparent');
+                        expect(disabled.glyphs).to.equal(menuTheme.color(color, menuTheme.isLight ? 300 : 700));
+                        expect(disabled.border).to.deep.equal(normal.border);
+                    }
+                }
+                menuTheme.destroy();
+            }
+        }
+    });
+
+    it('raises translucent surface opacity without blur across modes, colors and states', () => {
+        expect(translucentSurfaceOpacity.unblurred).to.be.greaterThan(translucentSurfaceOpacity.blurred);
+        for (const specification of Object.values(themeSpecifications[ThemeName.Default])) {
+            const nativeTheme = new Theme(specification, media, false);
+            for (const color of appearanceColorOptions) {
+                for (const state of themeAppearanceStateOptions) {
+                    const appearance = nativeTheme.resolveAppearance('fill-translucent', color, 'intel', state);
+                    const shade = state === 'disabled' ? (nativeTheme.isLight ? 200 : 800) : 500;
+                    expect(appearance.surface).to.equal(nativeTheme.color(color, shade, translucentSurfaceOpacity.unblurred));
+                    expect(appearance.effects.backdropBlur).to.equal(0);
+                }
+            }
+            nativeTheme.destroy();
+        }
+    });
+
+    it('flips translucent glyphs by mode and preserves disabled styling', () => {
+        for (const specifications of Object.values(themeSpecifications)) {
+            for (const specification of [specifications.light, specifications.dark]) {
+                const translucentTheme = new Theme(specification, media);
+                for (const color of appearanceColorOptions) {
+                    for (const state of themeAppearanceStateOptions) {
+                        const appearance = translucentTheme.resolveAppearance('fill-translucent', color, 'intel', state);
+                        const glyphColor = state === 'default' || state === 'disabled' ? color : 'intel';
+                        expect(appearance.glyphs).to.equal(translucentTheme.color(
+                            glyphColor,
+                            state === 'disabled'
+                                ? (translucentTheme.isLight ? 300 : 700)
+                                : (translucentTheme.isLight ? 900 : 100),
+                        ));
+                    }
+                }
+                translucentTheme.destroy();
+            }
+        }
+    });
+
+    it('shares selected and secondary action variants across filled surfaces', () => {
+        expect(actionButtonVariants.fill).to.deep.equal({ active: 'fill', inactive: 'fill-inverse' });
+        expect(actionButtonVariants['fill-inverse']).to.deep.equal({ active: 'fill', inactive: 'fill-inverse' });
+        expect(actionButtonVariants['fill-translucent']).to.deep.equal({ active: 'fill', inactive: 'fill-translucent' });
+    });
+
     it('uses the base palette for omitted highlights across all variants, states and colors', () => {
         for (const specifications of Object.values(themeSpecifications)) {
             for (const specification of [specifications.light, specifications.dark]) {
@@ -128,7 +263,7 @@ describe("Theme", () => {
                             ghostTheme.color(color, ghostTheme.isLight ? 300 : 700),
                         ]);
                         expect(themeAppearanceStateOptions.map((state) => (
-                            ghostTheme.resolveAppearance('fill-translucent', color, highlightColor, state).glyphs
+                            ghostTheme.resolveAppearance('inset', color, highlightColor, state).glyphs
                         ))).to.deep.equal(appearances.map(({ glyphs }) => glyphs));
                         for (const appearance of appearances) {
                             expect(appearance.fontWeight).to.equal(500);

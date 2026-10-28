@@ -4,7 +4,7 @@ import {
     allColorShades,
     colorBoxStoryArgs,
     colorBoxStoryControls,
-    sizeOptions,
+    DEFAULT_SIZE,
     Theme,
 } from "@ui";
 import { ColorBox } from "./ColorBox";
@@ -40,7 +40,6 @@ export default () => <ColorBox color={Theme.palette.copper} size="sm" showPalett
 export const Gallery: Story = {
     argTypes: {
         color: { table: { disable: true } },
-        size: { table: { disable: true } },
         shade: { table: { disable: true } },
         name: { table: { disable: true } },
     },
@@ -58,22 +57,19 @@ export const Gallery: Story = {
                 </tr>
             </thead>
             <tbody>
-                {sizeOptions.map((size) => (
-                    <tr key={size}>
-                        <th scope="row">{size}</th>
-                        {allColorShades.map((shade) => (
-                            <td key={shade}>
-                                <ColorBox
-                                    {...args}
-                                    name="Copper"
-                                    color={Theme.palette.copper}
-                                    size={size}
-                                    shade={shade}
-                                />
-                            </td>
-                        ))}
-                    </tr>
-                ))}
+                <tr>
+                    <th scope="row">{args.size ?? DEFAULT_SIZE}</th>
+                    {allColorShades.map((shade) => (
+                        <td key={shade}>
+                            <ColorBox
+                                {...args}
+                                name="Copper"
+                                color={Theme.palette.copper}
+                                shade={shade}
+                            />
+                        </td>
+                    ))}
+                </tr>
             </tbody>
         </table>
     ),

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { ColorVariant, DEFAULT_COLOR, FillVariant, SizeVariant } from '@ui';
 import { VariantGallery } from '../../storybook/VariantGallery';
 import { NumberInput } from './NumberInput';
-import { colorControl, colorOptions, fillVariantControl, fillVariantOptions, optionalShadeControl, sizeControl, sizeOptions } from '../../storybook/controls';
+import { colorControl, colorOptions, fillVariantControl, fillVariantOptions, optionalShadeControl, sizeControl } from '../../storybook/controls';
 
 const GalleryNumberInput = ({
     color,
@@ -82,9 +82,9 @@ export const Playground: Story = {
 };
 
 export const Gallery: Story = {
-    render: () => (
+    render: (args) => (
         <VariantGallery
-            sizes={sizeOptions}
+            size={args.size}
             colors={colorOptions}
             variants={fillVariantOptions}
             render={(options) => <GalleryNumberInput {...options} />}

@@ -37,7 +37,10 @@ export class WebMachineWard extends MachineWard<maplibregl.Map, WebChronoLens> {
             WebChronoLens,
             localStorage,
             process.env.NODE_ENV === 'development',
-            mediaSubscription
+            mediaSubscription,
+            {
+                supportsBackdropBlur: true,
+            },
         );
     }
 

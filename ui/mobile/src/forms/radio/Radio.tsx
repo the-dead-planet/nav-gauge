@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Pressable, View, ViewStyle } from "react-native";
-import { controlTextSpecifications, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, RadioProps, useTheme } from "@ui";
+import { controlTextSpecifications, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, RadioProps, translucentSurfaceOpacity, useTheme } from "@ui";
 import { Text } from "../../design-system/typography";
 
 export const Radio: FC<RadioProps> = ({
@@ -55,7 +55,7 @@ export const Radio: FC<RadioProps> = ({
                     ? theme.color(color, theme.isLight ? 200 : 800)
                     : checked
                     ? variant === 'fill-translucent'
-                        ? theme.color(activeColor, pressed ? (theme.isLight ? 600 : 300) : 500, 0.24)
+                        ? theme.color(activeColor, pressed ? (theme.isLight ? 600 : 300) : 500, translucentSurfaceOpacity.unblurred)
                         : boxColor
                     : 'transparent';
 

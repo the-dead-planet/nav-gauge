@@ -13,6 +13,7 @@ interface MachineWardProps<TMap, TChronoLens extends ChronoLens, TNavigationPath
     namespace: string;
     title: string;
     media: MediaSubscriptionDefinition;
+    supportsBackdropBlur: boolean;
     individuator: Individuator;
     storageKeeper: StorageKeeper;
     signaliumBureau: SignaliumBureau;
@@ -34,6 +35,7 @@ export function MachineWardApp<TMap, TChronoLens extends ChronoLens, TNavigation
     namespace,
     title,
     media,
+    supportsBackdropBlur,
     individuator,
     storageKeeper,
     attributionVault,
@@ -60,8 +62,12 @@ export function MachineWardApp<TMap, TChronoLens extends ChronoLens, TNavigation
     }, []);
 
     const theme = useMemo(
-        () => new Theme(themeSpecifications[settings.themeName][settings.themeMode], media),
-        [settings.themeName, settings.themeMode, media],
+        () => new Theme(
+            themeSpecifications[settings.themeName][settings.themeMode],
+            media,
+            supportsBackdropBlur,
+        ),
+        [settings.themeName, settings.themeMode, media, supportsBackdropBlur],
     );
 
     useEffect(() => {

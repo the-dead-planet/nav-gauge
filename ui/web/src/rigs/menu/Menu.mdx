@@ -1,0 +1,65 @@
+import { Meta, Stories, Title } from '@storybook/addon-docs/blocks';
+import * as MenuStories from './Menu.stories';
+
+<Meta of={MenuStories} name="Docs" />
+
+<Title />
+
+## Appearance and interaction
+
+`variant` styles the trigger; the popup uses `fill-inverse`. Rows use the shared `menu-item` policy.
+
+Highlight palette: rows use `highlightColor ?? color`; the trigger uses `iconActiveColor ?? highlightColor ?? color`.
+
+### Menu item
+
+<table>
+    <thead>
+        <tr>
+            <th scope="col">Element</th>
+            <th scope="col">Default</th>
+            <th scope="col">Hover / focus</th>
+            <th scope="col">Active / pressed</th>
+            <th scope="col">Selected</th>
+            <th scope="col">Disabled</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Background</td>
+            <td>Transparent</td>
+            <td><code>300</code> light / <code>700</code> dark</td>
+            <td><code>400</code> light / <code>600</code> dark</td>
+            <td>Same as active / pressed</td>
+            <td>Transparent</td>
+        </tr>
+        <tr>
+            <td>Glyphs</td>
+            <td><code>800</code> light / <code>200</code> dark</td>
+            <td colSpan={3}>Contrast shade for the current background</td>
+            <td><code>300</code> light / <code>700</code> dark</td>
+        </tr>
+        <tr><td>Border</td><td colSpan={5}>None</td></tr>
+        <tr><td>Font weight</td><td colSpan={5}>Normal / inherited text weight</td></tr>
+    </tbody>
+</table>
+
+`selected` reuses the active/pressed appearance. See <a href="./?path=/docs/design-system-appearance--docs#appearance-states" target="_top">shared state priority</a>.
+
+Selected items use radio semantics on both platforms.
+
+## Navigation indicators
+
+Web links infer an internal arrow for same-origin navigation, or an external arrow for other origins / `target="_blank"`. Set `linkType` for callback-based navigation, including mobile. Dialog actions have no indicator.
+
+Indicators are decorative, inherit the row's glyph color, and reserve space before loading.
+
+## Sizing
+
+`size` controls trigger and row geometry, font size, and icons. Rows inherit it unless overridden.
+
+The popup fits its widest row, capped by the viewport; long labels wrap when needed.
+
+List padding is vertical only: `xs` at sizes `xs` / `sm`, and `sm` at sizes `md` / `lg`. Rows own label padding. See <a href="./?path=/docs/design-system-sizing--docs" target="_top">Sizing</a>.
+
+<Stories />

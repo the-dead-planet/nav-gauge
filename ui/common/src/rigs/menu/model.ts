@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { ColorVariant, SizeVariant } from "../../design-system/model";
+import { AppearanceProps, ColorVariant, SizeVariant } from "../../design-system/model";
 import { TooltipProps } from "../../gizmos/tooltip";
 
 export type MenuAnchor = 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
@@ -11,12 +11,17 @@ export interface MenuPosition {
     left?: number;
 }
 
-export interface MenuProps {
-    color?: ColorVariant;
+export type MenuItemLinkType = 'internal' | 'external';
+
+export interface MenuProps extends AppearanceProps {
+    /** Appearance variant of the trigger; the popup surface is always fill-inverse. */
+    variant?: AppearanceProps['variant'];
     /** Where the menu opens relative to its trigger. Placement may flip to stay inside the viewport. */
     placement?: MenuAnchor;
     icon?: string;
+    /** Trigger and list size when size is not supplied. */
     iconSize?: SizeVariant;
+    /** Overrides the trigger highlight palette without changing menu item colors. */
     iconActiveColor?: ColorVariant;
     triggerActive?: boolean;
     tooltip?: ReactNode;
@@ -25,11 +30,12 @@ export interface MenuProps {
     children?: ReactNode;
 }
 
-export interface MenuItemProps {
-    key: string | number;
-    highlightColor?: ColorVariant;
+export interface MenuItemProps extends Omit<AppearanceProps, 'variant'> {
+    /** Navigation indicator; web anchors infer it from href and target when omitted. */
+    linkType?: MenuItemLinkType;
+    /** Persistent selection using the active/pressed appearance. */
+    selected?: boolean;
     isFirst?: boolean;
     closeOnPress?: boolean;
-    disabled?: boolean;
     children: ReactNode;
 }

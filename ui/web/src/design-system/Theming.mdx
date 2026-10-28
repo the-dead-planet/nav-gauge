@@ -19,6 +19,8 @@ Light and dark modes reverse the primary surface and content ranges. Components 
 
 Use the `ThemeModeToggle` assembly for the light/dark control. It reads the current mode from the theme context; connect `onToggle` to the application's mode state.
 
+Typography and buttons accept an optional `themeMode` override. For a subtree, provide `theme.forMode(mode)` through `ThemeContext`; the two mode instances are cached and disposed together. Web appearance owners use `data-appearance-mode` to set `color-scheme`; shared variables select colors with `light-dark()` without duplicating mode-specific variables.
+
 <Canvas of={ThemeModeToggleStories.Playground} />
 
 ## Named Themes

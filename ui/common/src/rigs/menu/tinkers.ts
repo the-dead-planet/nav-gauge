@@ -1,4 +1,83 @@
-import { MenuAnchor, MenuPosition } from "./model";
+import { MenuAnchor, MenuItemLinkType, MenuItemProps, MenuPosition, MenuProps } from "./model";
+import { Icons } from '../../design-system/icons';
+import { StoryControls } from '../../storybook';
+import { appearanceColorOptions, DEFAULT_COLOR, DEFAULT_SIZE, sizeOptions, surfaceVariantOptions } from '../../design-system';
+import { buttonStoryControls } from '../../gizmos/button/tinkers';
+
+export const menuAnchorOptions: MenuAnchor[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
+export const menuItemLinkIcons: Record<MenuItemLinkType, typeof Icons.NounProject.NavigateTo> = {
+    internal: Icons.NounProject.NavigateTo,
+    external: Icons.NounProject.ExternalLink,
+};
+
+export const resolveMenuItemLinkType = (href?: string, target?: string, baseUrl?: string): MenuItemLinkType => {
+    if (target?.toLowerCase() === '_blank' || (href?.startsWith('//') && !baseUrl)) {
+        return 'external';
+    }
+    if (!href) {
+        return 'internal';
+    }
+    try {
+        const destination = new URL(href, baseUrl);
+        return baseUrl && destination.origin === new URL(baseUrl).origin ? 'internal' : 'external';
+    } catch {
+        return 'internal';
+    }
+};
+export const menuStoryArgs: MenuProps = {
+    color: DEFAULT_COLOR,
+    variant: 'ghost',
+    size: DEFAULT_SIZE,
+    placement: 'bottom-right',
+    triggerAccessibilityLabel: 'Open menu',
+    triggerActive: false,
+    disabled: false,
+};
+export const menuStoryControls: StoryControls<MenuProps> = {
+    color: { control: 'select', options: appearanceColorOptions },
+    variant: { control: 'select', options: surfaceVariantOptions },
+    size: { control: 'select', options: sizeOptions },
+    placement: { control: 'select', options: menuAnchorOptions },
+    highlightColor: buttonStoryControls.highlightColor,
+    iconActiveColor: buttonStoryControls.highlightColor,
+    glyphsShade: buttonStoryControls.glyphsShade,
+    highlightGlyphsShade: buttonStoryControls.highlightGlyphsShade,
+    triggerAccessibilityLabel: { control: 'text' },
+    triggerActive: { control: 'boolean' },
+    disabled: { control: 'boolean' },
+};
+export const menuItemStoryArgs: MenuItemProps = {
+    children: 'Menu action',
+    color: DEFAULT_COLOR,
+    size: DEFAULT_SIZE,
+    highlighted: false,
+    selected: false,
+    disabled: false,
+    closeOnPress: false,
+};
+export const menuItemStoryControls: StoryControls<MenuItemProps> = {
+    children: { control: 'text' },
+    color: menuStoryControls.color,
+    size: { control: 'select', options: sizeOptions },
+    highlightColor: buttonStoryControls.highlightColor,
+    glyphsShade: buttonStoryControls.glyphsShade,
+    highlightGlyphsShade: buttonStoryControls.highlightGlyphsShade,
+    highlighted: { control: 'boolean' },
+    selected: { control: 'boolean' },
+    linkType: {
+        control: 'select',
+        options: ['Automatic', 'Internal', 'External'],
+        mapping: {
+            Automatic: undefined,
+            Internal: 'internal',
+            External: 'external',
+        },
+    },
+    disabled: { control: 'boolean' },
+    closeOnPress: { control: 'boolean' },
+};
+
+export const menuItemStoryStates = ['default', 'selected', 'disabled', 'disabled-selected'];
 
 export function getIconAndMenuAnchors(placement: MenuAnchor): { icon: MenuAnchor; menu: MenuAnchor } {
     const vertical = placement.startsWith('top') ? 'bottom' : 'top';

@@ -9,7 +9,16 @@ interface Props {
 
 export const SettingsLabel: FC<Props> = ({ id, children }) => {
     return (
-        <Text as="span" usage="caption" id={id} color="primary" shade={100} shadow uppercase className={styles['label']}>
+        <Text
+            as="span"
+            usage="caption"
+            id={id}
+            color="primary"
+            shade={100}
+            shadow
+            uppercase
+            className={styles['label']}
+        >
             {children}
         </Text>
     );

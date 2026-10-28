@@ -7,11 +7,11 @@ import {
     DEFAULT_SIZE,
     FontType,
     TextInputProps,
+    translucentSurfaceOpacity,
     useTheme,
 } from "@ui";
 import { Label } from "../../design-system/typography";
 import { resolveMobileFont } from "../../design-system/typography/fontFamily";
-import { TRANSLUCENT_OPACITY } from "../../tinkers";
 
 const styles = StyleSheet.create({
     container: {
@@ -75,7 +75,7 @@ export const TextInput: FC<TextInputProps> = ({
             ? theme.color(color, 500)
             : variant === "fill-inverse"
                 ? theme.color(color, theme.isLight ? 100 : 900)
-                : theme.color(color, 500, TRANSLUCENT_OPACITY);
+                : theme.color(color, 500, translucentSurfaceOpacity.unblurred);
 
     return (
         <View style={styles.container}>

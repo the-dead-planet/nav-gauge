@@ -36,6 +36,7 @@ export const WithFile = {
             <FileInput
                 accept="*"
                 fileName="my-route.gpx"
+                fileNameProps={{ variant: 'ghost' }}
                 fileLabel="Upload file"
                 purgeLabel="Purge"
                 cancelLabel="Cancel"

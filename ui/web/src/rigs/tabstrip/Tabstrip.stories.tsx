@@ -1,73 +1,61 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { TabstripOption, TabstripVariant } from '@ui';
+import { makeLiveEditStory } from 'storybook-addon-code-editor';
+import {
+    appearanceColorOptions,
+    tabstripStoryArgs,
+    tabstripStoryControls,
+    fillVariantOptions,
+} from '@ui';
 import { Tabstrip } from './Tabstrip';
-import { colorOptions } from '../../storybook/controls';
+import { VariantGallery } from '../../storybook/VariantGallery';
 
-const options: TabstripOption[] = [
-    { value: 'route', label: 'Route' },
-    { value: 'waypoints', label: 'Waypoints' },
-    { value: 'terrain', label: 'Terrain' },
-    { value: 'weather', label: 'Weather' },
-    { value: 'telemetry', label: 'Telemetry' },
-    { value: 'export', label: 'Export' },
-];
-
-const content: Record<string, string> = {
-    route: 'Configure the route line, direction, and playback behavior.\nAdjust its color, width, points, and outline.\nPreview the result before exporting.',
-    waypoints: 'Review waypoint labels and marker visibility.',
-    terrain: 'Adjust terrain exaggeration and contour details.',
-    weather: 'Inspect wind, cloud, and precipitation overlays.',
-    telemetry: 'Monitor speed, elevation, and recording statistics.',
-    export: 'Export the finished route story.',
-};
-
-const meta = { title: 'Rigs/Tabstrip' } satisfies Meta;
+const meta = {
+    title: 'Rigs/Tabstrip',
+    component: Tabstrip,
+    args: { ...tabstripStoryArgs, onChange: () => undefined },
+    argTypes: tabstripStoryControls,
+} satisfies Meta<typeof Tabstrip>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {
-    render: () => {
-        const [value, setValue] = useState('export');
-        return (
-            <div style={{ width: 260 }}>
-                <Tabstrip options={options} value={value} onChange={setValue} highlightColor="primary" highlightGlyphsShade={200} overflowAccessibilityLabel="More tabs">
-                    <div style={{ whiteSpace: 'pre-line' }}>{content[value]}</div>
-                </Tabstrip>
-            </div>
-        );
-    },
+    name: 'Playground with Live code editor',
 };
+makeLiveEditStory(Playground, {
+    availableImports: { '@web-ui': { Tabstrip } },
+    code: `import { useState } from 'react';
+import { Tabstrip } from '@web-ui';
 
-export const Spread: Story = {
-    render: () => {
-        const [value, setValue] = useState('route');
-        return (
-            <div style={{ width: 420 }}>
-                <Tabstrip spread options={[{ value: 'route', label: 'Active' }, { value: 'waypoints', label: 'Current point' }, { value: 'terrain', label: 'Inactive' }]} value={value} onChange={setValue} highlightColor="primary" highlightGlyphsShade={200} overflowAccessibilityLabel="More tabs">
-                    {content[value]}
-                </Tabstrip>
-            </div>
-        );
-    },
-};
+export default function Example(args) {
+    const [value, setValue] = useState(args.value);
+    return <Tabstrip {...args} value={value} onChange={setValue} />;
+}`,
+});
 
 export const Gallery: Story = {
-    render: () => {
-        const [value, setValue] = useState('route');
-        const variants: TabstripVariant[] = ['fill-inverse', 'fill-translucent', 'outline'];
-        const colors = colorOptions;
+    argTypes: {
+        color: { table: { disable: true } },
+        variant: { table: { disable: true } },
+    },
+    render: (args) => {
+        const [value, setValue] = useState(args.value);
         return (
-            <div style={{ display: 'grid', gap: 20 }}>
-                {variants.flatMap((variant) => colors.map((color) => (
-                    <section key={`${variant}-${color}`}>
-                        <h3 style={{ margin: '0 0 6px' }}>{variant}, {color}</h3>
-                        <Tabstrip options={options.slice(0, 3)} value={value} onChange={setValue} variant={variant} color={color} highlightColor={color} overflowAccessibilityLabel="More tabs">
-                            {content[value]}
-                        </Tabstrip>
-                    </section>
-                )))}
-            </div>
+            <VariantGallery
+                colors={appearanceColorOptions}
+                size={args.size}
+                variants={fillVariantOptions}
+                render={({ color, size, variant }) => (
+                    <Tabstrip
+                        {...args}
+                        color={color}
+                        size={size}
+                        variant={variant}
+                        value={value}
+                        onChange={setValue}
+                    />
+                )}
+            />
         );
     },
 };

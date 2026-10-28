@@ -9,13 +9,12 @@ import {
     type HostInstance,
     TouchableHighlight,
 } from 'react-native';
-import { controlTextSpecifications, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, DropdownProps, Icons, useTheme } from '@ui';
+import { controlTextSpecifications, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, DropdownProps, Icons, translucentSurfaceOpacity, useTheme } from '@ui';
 import { Icon } from '../../design-system/icons';
 import { resolveLayerStyle } from '../../design-system/theme';
 import { Text } from '../../design-system/typography';
 import { SvgProps } from 'react-native-svg';
 import { MutableViewStyle } from '../../model';
-import { TRANSLUCENT_OPACITY } from '../../tinkers';
 import { getDropdownMenuPosition } from './tinkers';
 
 interface MobileOption<T> {
@@ -126,7 +125,7 @@ export function Dropdown<T>({
                 style.backgroundColor = theme.color(
                     color,
                     500,
-                    TRANSLUCENT_OPACITY,
+                    translucentSurfaceOpacity.unblurred,
                 );
                 style.backgroundColor = isHighlighted
                     ? theme.color(highlightColor, theme.isLight ? 600 : 300, 0.48)

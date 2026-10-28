@@ -1,53 +1,46 @@
 import { ReactNode } from 'react';
+import { DEFAULT_SIZE, SizeVariant } from '@ui';
 import { Text } from '../design-system/typography';
+import styles from './variant-gallery.module.css';
 
-interface VariantGalleryProps<Size extends string, Color extends string, Variant extends string> {
-    sizes: readonly Size[];
+interface VariantGalleryProps<Color extends string, Variant extends string> {
+    size?: SizeVariant;
     colors: readonly Color[];
     variants: readonly Variant[];
-    render: (options: { size: Size; color: Color; variant: Variant }) => ReactNode;
+    render: (options: {
+        size: SizeVariant;
+        color: Color;
+        variant: Variant;
+    }) => ReactNode;
 }
 
-export const VariantGallery = <Size extends string, Color extends string, Variant extends string>({
-    sizes,
+export const VariantGallery = <Color extends string, Variant extends string>({
+    size = DEFAULT_SIZE,
     colors,
     variants,
     render,
-}: VariantGalleryProps<Size, Color, Variant>) => (
-    <div style={{ display: 'grid', gap: 40 }}>
-        {sizes.map((size) => (
-            <div key={size}>
-                <Text>{size}</Text>
-                <div style={{ display: 'grid', gap: 8 }}>
-                    <div
-                        style={{
-                            display: 'grid',
-                            gridTemplateColumns: `repeat(${variants.length}, 1fr)`,
-                            gap: 8,
-                        }}
-                    >
-                        {variants.map((variant) => (
-                            <Text key={variant}>{variant}</Text>
-                        ))}
-                    </div>
-                    {colors.map((color) => (
-                        <div
-                            key={color}
-                            style={{
-                                display: 'grid',
-                                gridTemplateColumns: `repeat(${variants.length}, 1fr)`,
-                                gap: 8,
-                            }}
-                        >
-                            {variants.map((variant) => (
-                                <div key={`${color}-${variant}-${size}`}>
-                                    {render({ color, variant, size })}
-                                </div>
-                            ))}
-                        </div>
+}: VariantGalleryProps<Color, Variant>) => (
+    <table className={styles.gallery}>
+        <caption>{size}</caption>
+        <thead>
+            <tr>
+                {variants.map((variant) => (
+                    <th key={variant} scope="col">
+                        <Text>{variant}</Text>
+                    </th>
+                ))}
+            </tr>
+        </thead>
+        <tbody>
+            {colors.map((color) => (
+                <tr key={color}>
+                    {variants.map((variant) => (
+                        <td key={variant}>
+                            {render({ color, variant, size })}
+                        </td>
                     ))}
-                </div>
-            </div>
-        ))}
-    </div>
+                </tr>
+            ))}
+        </tbody>
+    </table>
 );

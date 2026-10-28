@@ -1,6 +1,6 @@
 import { ComponentProps, FC } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { DEFAULT_SIZE, SizeVariant, TileProps } from '@ui';
+import { actionButtonVariants, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, SizeVariant, TileProps } from '@ui';
 import { Text } from '../../design-system/typography';
 import { Panel } from '../../hud/panel';
 
@@ -63,6 +63,7 @@ export const Tile: FC<Props> = ({
     panelProps = {},
 }) => {
     const { style, ...restPanelProps } = panelProps;
+    const actionVariants = actionButtonVariants[panelProps.variant ?? DEFAULT_FILL_VARIANT];
 
     return (
         <Panel {...restPanelProps} style={[styles.tile, style]}>
@@ -94,7 +95,7 @@ export const Tile: FC<Props> = ({
                     </View>
                 ) : null}
             </View>
-            {actions ? <View style={styles.actions}>{actions(size)}</View> : null}
+            {actions ? <View style={styles.actions}>{actions(size, actionVariants)}</View> : null}
         </Panel>
     );
 };

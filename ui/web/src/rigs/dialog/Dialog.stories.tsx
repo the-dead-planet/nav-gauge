@@ -1,74 +1,74 @@
-import type { Meta } from 'storybook-react-rsbuild';
+import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { useState } from 'react';
+import { makeLiveEditStory } from 'storybook-addon-code-editor';
+import {
+    appearanceColorOptions,
+    dialogStoryArgs,
+    dialogStoryControls,
+    DialogProps,
+    fillVariantOptions,
+} from '@ui';
 import { Dialog } from './Dialog';
 import { Button } from '../../gizmos/button';
-import { DEFAULT_COLOR, DialogPlacement, DialogProps } from '@ui';
-import { colorControl } from '../../storybook/controls';
+import { VariantGallery } from '../../storybook/VariantGallery';
 
 const meta = {
     title: 'Rigs/Dialog',
     component: Dialog,
-    args: { color: DEFAULT_COLOR },
-    argTypes: {
-        color: colorControl,
-    },
+    args: { ...dialogStoryArgs, onClose: () => undefined },
+    argTypes: dialogStoryControls,
 } satisfies Meta<typeof Dialog>;
-
 export default meta;
+type Story = StoryObj<typeof meta>;
 
-const placements: DialogPlacement[] = ['middle', 'left-drawer', 'right-drawer'];
-
-export const Overview = {
-    render: ({ color }: Pick<DialogProps, 'color'>) => {
-        const [open, setOpen] = useState<DialogPlacement | null>(null);
-
-        return (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 16, padding: 24 }}>
-                <div style={{ display: 'flex', gap: 8 }}>
-                    {placements.map((p) => (
-                        <Button key={p} variant="fill" color="primary" onClick={() => setOpen(p)}>
-                            {p}
-                        </Button>
-                    ))}
-                </div>
-
-                {open && (
-                    <Dialog
-                        color={color}
-                        header={open.replace('-', ' ')}
-                        placement={open}
-                        closeText="Close"
-                        onClose={() => setOpen(null)}
-                    >
-                        <div>
-                            <p>Dialog content for <strong>{open}</strong> placement.</p>
-                            <p>Click Close or Save to dismiss.</p>
-                        </div>
-                    </Dialog>
-                )}
-            </div>
-        );
-    },
+export const Playground: Story = {
+    name: 'Playground with Live code editor',
 };
+makeLiveEditStory(Playground, {
+    availableImports: { '@web-ui': { Dialog, Button } },
+    code: `import { useState } from 'react';
+import { Dialog, Button } from '@web-ui';
 
-export const TallContent = {
-    render: ({ color }: Pick<DialogProps, 'color'>) => {
-        const [open, setOpen] = useState(true);
+export default function Example(args) {
+    const [open, setOpen] = useState(false);
+    return <>
+        <Button onClick={() => setOpen(true)}>Open dialog</Button>
+        {open && <Dialog {...args} onClose={() => setOpen(false)} />}
+    </>;
+}`,
+});
 
-        return open ? (
-            <Dialog
-                color={color}
-                header="tall content"
-                placement="middle"
-                closeText="Close"
-                onClose={() => setOpen(false)}
-            >
-                <div>
-                    {Array.from({ length: 40 }, (_, i) => (
-                        <p key={i}>Long dialog content line {i + 1}.</p>
-                    ))}
-                </div>
-            </Dialog>
-        ) : null;
+export const Gallery: Story = {
+    argTypes: {
+        color: { table: { disable: true } },
+        variant: { table: { disable: true } },
+    },
+    render: (args) => {
+        const [active, setActive] = useState<DialogProps | null>(null);
+        return (
+            <>
+                <VariantGallery
+                    colors={appearanceColorOptions}
+                    variants={fillVariantOptions}
+                    render={({ color, size, variant }) => (
+                        <Button
+                            color={color}
+                            size={size}
+                            onClick={() =>
+                                setActive({
+                                    ...args,
+                                    color,
+                                    variant,
+                                    onClose: () => setActive(null),
+                                })
+                            }
+                        >
+                            {color} / {variant}
+                        </Button>
+                    )}
+                />
+                {active && <Dialog {...active} />}
+            </>
+        );
     },
 };

@@ -5,23 +5,25 @@ import {
     AppearancePropsBase,
     DEFAULT_COLOR,
     SurfaceVariant,
+    ThemeAppearanceVariant,
+    useTheme,
 } from "@ui";
 import surface from "./surface.module.css";
 
-type Props<Element extends "div" | "button"> =
-    AppearancePropsBase<SurfaceVariant> &
+type Props<Element extends "div" | "button" | "a"> =
+    Omit<AppearancePropsBase<SurfaceVariant>, 'variant'> &
         Omit<
             ComponentProps<Element>,
             keyof AppearancePropsBase<SurfaceVariant>
         > & {
             as: Element;
-            variant: SurfaceVariant;
+            variant: ThemeAppearanceVariant;
             interactive?: boolean;
             activeGlow?: ActiveGlow;
             rectangle?: boolean;
         };
 
-export const HudSurface = <Element extends "div" | "button">({
+export const HudSurface = <Element extends "div" | "button" | "a">({
     as,
     variant,
     color = DEFAULT_COLOR,
@@ -34,10 +36,12 @@ export const HudSurface = <Element extends "div" | "button">({
     className,
     ...props
 }: Props<Element>): ReactElement => {
+    const theme = useTheme();
     return createElement(as, {
         ...props,
         disabled: as === "button" ? disabled : undefined,
         "data-appearance-variant": variant,
+        "data-appearance-mode": theme.mode,
         "data-appearance-color": color,
         "data-appearance-highlight": highlightColor ?? color,
         "data-interactive": interactive || undefined,

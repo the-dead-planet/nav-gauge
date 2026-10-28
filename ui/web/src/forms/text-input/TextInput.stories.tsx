@@ -13,7 +13,6 @@ import {
     fillVariantOptions,
     optionalShadeControl,
     sizeControl,
-    sizeOptions,
 } from "../../storybook/controls";
 
 const GalleryTextInput = (props: ComponentProps<typeof TextInput>) => {
@@ -86,12 +85,11 @@ export const Gallery: Story = {
     argTypes: {
         id: { table: { disable: true } },
         color: { table: { disable: true } },
-        size: { table: { disable: true } },
         variant: { table: { disable: true } },
     },
     render: (args) => (
         <VariantGallery
-            sizes={sizeOptions}
+            size={args.size}
             colors={colorOptions}
             variants={fillVariantOptions}
             render={({ color, size, variant }) => (

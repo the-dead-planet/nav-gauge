@@ -47,6 +47,7 @@ export const Gallery: FC = () => {
                 <FileInput
                     type={['public.item']}
                     fileName="my-route.gpx"
+                    fileNameProps={{ variant: 'ghost' }}
                     fileLabel="Upload"
                     purgeLabel="Purge"
                     cancelLabel="Cancel"

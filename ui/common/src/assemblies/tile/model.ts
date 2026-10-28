@@ -1,11 +1,11 @@
 import { ReactNode } from 'react';
-import { SizeVariant } from '../../design-system/model';
+import { ActionButtonVariants, SizeVariant } from '../../design-system/model';
 
 export interface TileProps {
     name: string;
     size?: SizeVariant;
     append?: ReactNode;
     description?: string;
-    actions?: (size: SizeVariant) => ReactNode;
+    actions?: (size: SizeVariant, variants: ActionButtonVariants) => ReactNode;
     children?: ReactNode;
 }
