@@ -56,11 +56,9 @@ describe('Individuator settings draft', () => {
             'data-appearance-variant',
             'fill',
         );
-        cy.get('[role="dialog"] button').each(
-            ($element) => {
-                cy.wrap($element).should('have.css', 'text-shadow', 'none');
-            },
-        );
+        cy.get('[role="dialog"] button').each(($element) => {
+            cy.wrap($element).should('have.css', 'text-shadow', 'none');
+        });
         cy.contains('[role="dialog"] button', /^Close$/)
             .find('span')
             .should('have.css', 'text-shadow')

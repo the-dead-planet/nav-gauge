@@ -66,8 +66,14 @@ describe('Composed appearance rendering', () => {
     it('shadows only enabled translucent button and chip labels', () => {
         for (const variant of fillVariantOptions) {
             const markups = [
-                renderToStaticMarkup(createElement(Button, { variant, children: 'Button label' })),
-                renderToStaticMarkup(createElement(Chip, { variant, children: 'Chip label' })),
+                renderToStaticMarkup(createElement(Button, {
+                    variant,
+                    children: 'Button label',
+                })),
+                renderToStaticMarkup(createElement(Chip, {
+                    variant,
+                    children: 'Chip label',
+                })),
             ];
             for (const markup of markups) {
                 expect(/class="[^"]*\bshadow\b/.test(markup)).to.equal(variant === 'fill-translucent');

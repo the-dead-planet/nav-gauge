@@ -47,7 +47,9 @@ describe("Gizmo interaction ownership", () => {
                     <Button variant={variant} color="primary" disabled={disabled}>
                         Button label
                     </Button>
-                    <Chip variant={variant} color="primary">Chip label</Chip>
+                    <Chip variant={variant} color="primary">
+                        Chip label
+                    </Chip>
                 </ThemeContext.Provider>
             );
             const screen = await render(content());
