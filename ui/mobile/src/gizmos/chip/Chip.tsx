@@ -160,6 +160,8 @@ export const Chip: FC<ChipProps & Props> = ({
                 <Text
                     fontType={fontType}
                     fontWeight={appearance.fontWeight}
+                    color={color}
+                    shadow={variant === 'fill-translucent'}
                     style={{
                         color: appearance.glyphs,
                         fontSize: sizeStyles[size].fontSize,

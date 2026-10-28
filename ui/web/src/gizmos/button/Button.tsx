@@ -89,7 +89,11 @@ export const Button: FC<ComponentProps<"button"> & Props & ButtonProps> = ({
                 />
             ) : null}
             {children !== undefined && children !== null ? (
-                <Span fontType={fontType} className={styles.label}>
+                <Span
+                    fontType={fontType}
+                    shadow={variant === 'fill-translucent' && !disabled}
+                    className={styles.label}
+                >
                     {children}
                 </Span>
             ) : null}

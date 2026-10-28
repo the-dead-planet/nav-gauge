@@ -10,8 +10,11 @@ import {
     ThemeName,
     ThemeMode,
     themeSpecifications,
+    actionButtonVariants,
 } from '@ui';
 import { Dialog } from '@the-dead-planet/nav-gauge-ui-mobile/src/rigs/dialog';
+import { Tabstrip } from '@the-dead-planet/nav-gauge-ui-mobile/src/rigs/tabstrip';
+import * as tabstripLayout from '@the-dead-planet/nav-gauge-ui-mobile/src/rigs/tabstrip/useTabstripLayout';
 import {
     Menu,
     MenuItem,
@@ -62,6 +65,69 @@ describe('Mobile rig content', () => {
 
     afterEach(() => jest.restoreAllMocks());
 
+    it.each(fillVariantOptions)(
+        'uses a filled selected tab on %s without forcing pressed styling',
+        async (variant) => {
+            jest.spyOn(tabstripLayout, 'useTabstripLayout').mockReturnValue({
+                setContainerWidth: jest.fn(),
+                optionWidths: [80, 80],
+                overflowWidth: 80,
+                setOverflowWidth: jest.fn(),
+                visibleIndexes: [0, 1],
+                setOptionWidth: jest.fn(),
+                selectTab: jest.fn(),
+            });
+            const theme = new Theme(
+                themeSpecifications[ThemeName.Default].light,
+                media,
+                false,
+            );
+            const options = [
+                {
+                    value: 'route',
+                    label: 'Route',
+                },
+                {
+                    value: 'terrain',
+                    label: 'Terrain',
+                },
+            ];
+            const content = (value: string) => (
+                <ThemeContext.Provider value={theme}>
+                    <Tabstrip
+                        variant={variant}
+                        color="primary"
+                        highlightColor="intel"
+                        options={options}
+                        value={value}
+                        onChange={() => undefined}
+                        overflowAccessibilityLabel="More tabs"
+                    >
+                        Tab content
+                    </Tabstrip>
+                </ThemeContext.Provider>
+            );
+            const screen = await render(content('route'));
+            const selectedFill = theme.resolveAppearance('fill', 'primary').surface;
+            const inactiveFill = theme.resolveAppearance(
+                actionButtonVariants[variant].inactive,
+                'primary',
+            ).surface;
+            expect(screen.getByRole('tab', { selected: true })).toHaveStyle({
+                backgroundColor: selectedFill,
+            });
+            expect(screen.getByRole('tab', { selected: false })).toHaveStyle({
+                backgroundColor: inactiveFill,
+            });
+            await screen.rerender(content('terrain'));
+            expect(
+                screen.getByRole('tab', { name: 'Terrain', selected: true }),
+            ).toHaveStyle({ backgroundColor: selectedFill });
+            await screen.unmount();
+            theme.destroy();
+        },
+    );
+
     it.each<ThemeMode>(['light', 'dark'])(
         'uses the dialog foreground for its heading and bare text in %s mode',
         async (mode) => {
@@ -91,6 +157,12 @@ describe('Mobile rig content', () => {
                           ? 100
                           : 900;
                 const glyphs = theme.color('primary', shade);
+                expect(screen.getByRole('button', { name: 'Close' })).toHaveStyle({
+                    backgroundColor: theme.resolveAppearance(
+                        actionButtonVariants[variant].inactive,
+                        'primary',
+                    ).surface,
+                });
                 expect(screen.getByRole('header')).toHaveStyle({
                     color: glyphs,
                 });
@@ -106,7 +178,7 @@ describe('Mobile rig content', () => {
                     expect(screen.getByText('Bare dialog text')).not.toHaveStyle({
                         textShadowColor: theme.color('primary', 800),
                     });
-                    expect(screen.getByText('Close')).not.toHaveStyle({
+                    expect(screen.getByText('Close')).toHaveStyle({
                         textShadowColor: theme.color('primary', 800),
                     });
                 }

@@ -45,7 +45,13 @@ export const Chip: FC<ChipProps & Props> = ({
             )}>
             {icon ? <Icon src={icon} width={iconSizes[size]} height={iconSizes[size]} /> : null}
             {children !== undefined && children !== null ? (
-                <Span fontType={fontType} className={styles.label}>{children}</Span>
+                <Span
+                    fontType={fontType}
+                    shadow={variant === 'fill-translucent'}
+                    className={styles.label}
+                >
+                    {children}
+                </Span>
             ) : null}
         </span>
     );

@@ -7,9 +7,11 @@ import * as MenuStories from './Menu.stories';
 
 ## Appearance and interaction
 
-`Menu.variant` styles only the trigger icon button. The popup list always uses `fill-inverse`, independently of the trigger variant. List items follow the shared menu-item appearance policy rather than exposing their own surface variant.
+`variant` styles the trigger; the popup uses `fill-inverse`. Rows use the shared `menu-item` policy.
 
-`iconActiveColor` overrides only the trigger's highlight palette. Items inherit `highlightColor ?? color`; the trigger uses `iconActiveColor ?? highlightColor ?? color`.
+Highlight palette: rows use `highlightColor ?? color`; the trigger uses `iconActiveColor ?? highlightColor ?? color`.
+
+### Menu item
 
 <table>
     <thead>
@@ -42,24 +44,22 @@ import * as MenuStories from './Menu.stories';
     </tbody>
 </table>
 
-`highlightColor ?? color` supplies the selected and interactive palette. `selected` preserves selection semantics and reuses the active/pressed appearance, as does persistent `highlighted` emphasis. Priority is disabled, selected/pressed/highlighted, hover/focus, then default. Hover does not replace selected appearance; keyboard focus still has a visible outline.
+`selected` reuses the active/pressed appearance. See <a href="./?path=/docs/design-system-appearance--docs#appearance-states" target="_top">shared state priority</a>.
 
-Rows have no border in any state. Background and glyph colors provide state feedback; keyboard focus uses a separate visible outline.
-
-Selectable web items use `menuitemradio` and `aria-checked`; native items use the equivalent radio accessibility state. Disabled items cannot activate, and web items show a `not-allowed` cursor. Arbitrary glyph-shade overrides are ignored while disabled.
+Selected items use radio semantics on both platforms.
 
 ## Navigation indicators
 
-Every menu item is an action and uses the same normal text weight. Navigation is distinguished by a trailing glyph. Web anchors infer an internal arrow for same-origin navigation, and an external/new-tab arrow for other origins or `target="_blank"`. Set `linkType` to `internal` or `external` explicitly for callback-based navigation, including mobile items. Dialog-opening actions have no navigation indicator.
+Web links infer an internal arrow for same-origin navigation, or an external arrow for other origins / `target="_blank"`. Set `linkType` for callback-based navigation, including mobile. Dialog actions have no indicator.
 
-Indicators inherit the item's current glyph color and are decorative; the text remains the accessible name. Their dimensions are reserved before the SVG loads.
+Indicators are decorative, inherit the row's glyph color, and reserve space before loading.
 
 ## Sizing
 
-`size` controls the trigger icon and the menu items' geometry and font size. Items inherit the menu size unless explicitly overridden.
+`size` controls trigger and row geometry, font size, and icons. Rows inherit it unless overridden.
 
-The popup sizes to its widest row, including the label, navigation glyph, and item padding. Its width is capped by the viewport; long labels wrap only when the available width is exhausted.
+The popup fits its widest row, capped by the viewport; long labels wrap when needed.
 
-The popup list uses the shared `xs` spacing token for top and bottom padding at sizes `xs` and `sm`, and the `sm` token at sizes `md` and `lg`. It has no left or right padding. Items own their label padding. See the <a href="./?path=/docs/design-system-sizing--docs" target="_top" style={{ textDecoration: 'underline' }}>shared sizing principles</a>.
+List padding is vertical only: `xs` at sizes `xs` / `sm`, and `sm` at sizes `md` / `lg`. Rows own label padding. See <a href="./?path=/docs/design-system-sizing--docs" target="_top">Sizing</a>.
 
 <Stories />

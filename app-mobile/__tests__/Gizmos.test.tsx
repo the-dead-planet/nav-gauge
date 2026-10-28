@@ -13,6 +13,7 @@ import {
     themeSpecifications,
 } from "@ui";
 import { Button } from "@the-dead-planet/nav-gauge-ui-mobile/src/gizmos/button";
+import { Chip } from "@the-dead-planet/nav-gauge-ui-mobile/src/gizmos/chip";
 import { ResizeHandle } from "@the-dead-planet/nav-gauge-ui-mobile/src/gizmos/resize-handle";
 import { ResizeHandleGrip } from "@the-dead-planet/nav-gauge-ui-mobile/src/gizmos/resize-handle/ResizeHandleGrip";
 
@@ -37,6 +38,39 @@ const cases: { corners: ButtonCorners; mode: ThemeMode }[] = modes.flatMap(
 );
 
 describe("Gizmo interaction ownership", () => {
+    test.each(fillVariantOptions)(
+        '%s button and chip labels only add shadows for translucent fills',
+        async (variant) => {
+            const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
+            const content = (disabled = false) => (
+                <ThemeContext.Provider value={theme}>
+                    <Button variant={variant} color="primary" disabled={disabled}>
+                        Button label
+                    </Button>
+                    <Chip variant={variant} color="primary">Chip label</Chip>
+                </ThemeContext.Provider>
+            );
+            const screen = await render(content());
+            for (const label of ['Button label', 'Chip label']) {
+                if (variant === 'fill-translucent') {
+                    expect(screen.getByText(label)).toHaveStyle({
+                        textShadowColor: theme.color('primary', 800),
+                    });
+                } else {
+                    expect(screen.getByText(label)).not.toHaveStyle({
+                        textShadowColor: theme.color('primary', 800),
+                    });
+                }
+            }
+            await screen.rerender(content(true));
+            expect(screen.getByText('Button label')).not.toHaveStyle({
+                textShadowColor: theme.color('primary', 800),
+            });
+            await screen.unmount();
+            theme.destroy();
+        },
+    );
+
     test.each(fillVariantOptions)(
         "resize grip %s follows the handle state without owning interaction",
         async (variant) => {

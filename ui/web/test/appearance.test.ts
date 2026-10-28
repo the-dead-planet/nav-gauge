@@ -63,6 +63,24 @@ const media = {
 };
 
 describe('Composed appearance rendering', () => {
+    it('shadows only enabled translucent button and chip labels', () => {
+        for (const variant of fillVariantOptions) {
+            const markups = [
+                renderToStaticMarkup(createElement(Button, { variant, children: 'Button label' })),
+                renderToStaticMarkup(createElement(Chip, { variant, children: 'Chip label' })),
+            ];
+            for (const markup of markups) {
+                expect(/class="[^"]*\bshadow\b/.test(markup)).to.equal(variant === 'fill-translucent');
+            }
+        }
+        const disabled = renderToStaticMarkup(createElement(Button, {
+            variant: 'fill-translucent',
+            disabled: true,
+            children: 'Disabled label',
+        }));
+        expect(disabled).not.to.match(/class="[^"]*\bshadow\b/);
+    });
+
     it('inherits menu item size and highlight policy without retaining disabled link navigation', () => {
         const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
         for (const color of appearanceColorOptions) {

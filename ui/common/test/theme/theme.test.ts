@@ -130,8 +130,8 @@ describe("Theme", () => {
     });
 
     it('shares selected and secondary action variants across filled surfaces', () => {
-        expect(actionButtonVariants.fill).to.deep.equal({ active: 'fill', inactive: 'fill-translucent' });
-        expect(actionButtonVariants['fill-inverse']).to.deep.equal({ active: 'fill', inactive: 'fill-translucent' });
+        expect(actionButtonVariants.fill).to.deep.equal({ active: 'fill', inactive: 'fill-inverse' });
+        expect(actionButtonVariants['fill-inverse']).to.deep.equal({ active: 'fill', inactive: 'fill-inverse' });
         expect(actionButtonVariants['fill-translucent']).to.deep.equal({ active: 'fill', inactive: 'fill-translucent' });
     });
 

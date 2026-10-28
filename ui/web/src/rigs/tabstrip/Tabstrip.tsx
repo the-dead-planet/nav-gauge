@@ -76,7 +76,7 @@ export const Tabstrip: FC<TabstripProps> = ({
                         className={styles['tab']}
                         role="tab"
                         aria-selected={option.value === value}
-                        highlighted={highlighted || option.value === value}
+                        highlighted={highlighted}
                         disabled={disabled || option.disabled}
                         onClick={() => onChange(option.value)}
                     >

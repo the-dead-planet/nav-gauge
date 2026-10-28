@@ -180,6 +180,8 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
             <Text
                 fontType={fontType}
                 fontWeight={appearance.fontWeight}
+                color={color}
+                shadow={variant === 'fill-translucent' && !disabled}
                 style={[
                     { color: textColor, fontSize, lineHeight: fontSize * 1.1 },
                     textShadowStyle,

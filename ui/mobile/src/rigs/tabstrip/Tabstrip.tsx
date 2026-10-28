@@ -105,7 +105,7 @@ export const Tabstrip: FC<TabstripProps> = ({
                                 selected,
                                 disabled: disabled || option.disabled,
                             }}
-                            highlighted={highlighted || selected}
+                            highlighted={highlighted}
                             disabled={disabled || option.disabled}
                             onPress={() => selectTab(option.value)}
                         >

@@ -43,7 +43,7 @@ Components expose the controls relevant to their visual purpose.
 
 Appearance states are listed from highest to lowest priority:
 
-- **Disabled:** overrides all other states and uses `color`.
+- **Disabled:** overrides all other states and uses `color`. Disabled action components cannot activate and use a `not-allowed` cursor on web; glyph-shade overrides do not replace disabled colors.
 - **Active / pressed:** uses `highlightColor` and `highlightGlyphsShade` (if supplied), persistently while `highlighted` is enabled or temporarily while the control is being clicked / pressed. Hover and focus do not replace this appearance.
 - **Hover / focus:** temporarily uses `highlightColor` and `highlightGlyphsShade` (if supplied) when the control is neither highlighted nor pressed. Focus also has a visible focus indicator, including when highlighted.
 - **Default:** uses `color` and `glyphsShade` (if supplied) when no higher-priority state applies.
@@ -158,13 +158,14 @@ Components without an appearance variant use the default policy below.
     </thead>
     <tbody>
         <tr><td>Text and icons</td><td><code>100</code> in both modes</td><td><code>100</code> in both modes</td><td><code>100</code> in both modes</td><td><code>300</code> light / <code>700</code> dark</td></tr>
+        <tr><td>Text shadow</td><td colSpan={3}>Palette shade <code>800</code> on Button and Chip labels; other text opts in via typography's <code>shadow</code> prop. Containers do not apply it.</td><td>None</td></tr>
         <tr><td>Background</td><td><code>500</code> at platform opacity</td><td><code>500</code> at platform opacity</td><td><code>500</code> at platform opacity</td><td><code>200</code> light / <code>800</code> dark at platform opacity</td></tr>
         <tr><td>Border</td><td><code>500</code> at 30%</td><td><code>600</code> light / <code>300</code> dark</td><td><code>700</code> light / <code>200</code> dark</td><td><code>300</code> light / <code>700</code> dark</td></tr>
         <tr><td>Backdrop blur</td><td colSpan={4}>Web: <code>6px</code>, clipped to the component shape. Mobile: unsupported by the current native renderer.</td></tr>
     </tbody>
 </table>
 
-This variant uses light glyphs rather than selecting a contrast shade from its unblended surface color. Text shadows are an explicit typography choice, not a surface effect.
+This variant uses light glyphs rather than selecting a contrast shade from its unblended surface color.
 
 <Canvas of={ColorStories.FillTranslucentStates} />
 
@@ -202,21 +203,21 @@ The shared `translucentSurfaceOpacity` policy raises opacity without blur so und
 
 Inset controls use no border in any state. Their internal shading alone creates the appearance of a control dented into its surface.
 
-## Actions on surfaces
+<h2 id="actions-on-surfaces">Actions on surfaces</h2>
 
-Use the common `actionButtonVariants[surfaceVariant]` policy for selected/unselected tabs and higher/lower-importance footer actions. `active` means selected or more important; `inactive` means unselected or less important. These roles select the button variant; interaction and disabled states still follow that variant's appearance policy.
+Use the shared `actionButtonVariants[surfaceVariant]` policy for primary/secondary actions and selected/inactive tabs on both platforms. `active` means the primary action or selected tab; `inactive` means a secondary action or inactive tab. These roles select the button variant; interaction and disabled states still follow that variant's appearance policy.
 
 <table>
     <thead>
         <tr>
             <th scope="col">Surface variant</th>
-            <th scope="col">Active / important button</th>
-            <th scope="col">Inactive / secondary button</th>
+            <th scope="col">Primary action / selected tab</th>
+            <th scope="col">Secondary action / inactive tab</th>
         </tr>
     </thead>
     <tbody>
-        <tr><td><code>fill</code></td><td><code>fill</code></td><td><code>fill-translucent</code></td></tr>
-        <tr><td><code>fill-inverse</code></td><td><code>fill</code></td><td><code>fill-translucent</code></td></tr>
+        <tr><td><code>fill</code></td><td><code>fill</code></td><td><code>fill-inverse</code></td></tr>
+        <tr><td><code>fill-inverse</code></td><td><code>fill</code></td><td><code>fill-inverse</code></td></tr>
         <tr><td><code>fill-translucent</code></td><td><code>fill</code></td><td><code>fill-translucent</code></td></tr>
     </tbody>
 </table>

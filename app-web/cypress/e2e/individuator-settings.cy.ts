@@ -56,11 +56,18 @@ describe('Individuator settings draft', () => {
             'data-appearance-variant',
             'fill',
         );
-        cy.get('[role="dialog"] button, [role="dialog"] button span').each(
+        cy.get('[role="dialog"] button').each(
             ($element) => {
                 cy.wrap($element).should('have.css', 'text-shadow', 'none');
             },
         );
+        cy.contains('[role="dialog"] button', /^Close$/)
+            .find('span')
+            .should('have.css', 'text-shadow')
+            .and('not.equal', 'none');
+        cy.contains('[role="dialog"] button', /^Save$/)
+            .find('span')
+            .should('have.css', 'text-shadow', 'none');
         chooseGerman();
         cy.get('button[aria-label="Application menu"]').should('exist');
         cy.get('[role="dialog"]')
