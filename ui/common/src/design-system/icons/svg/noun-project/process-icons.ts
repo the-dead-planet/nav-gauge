@@ -8,12 +8,6 @@ import { RegistryEntry } from "./model";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const RAW_DIR = path.join(__dirname, "raw");
-const OUT_DIR = path.join(__dirname, "output");
-const REGISTRY_FILE = path.join(__dirname, "icon-registry.json");
-
-fs.mkdirSync(OUT_DIR, { recursive: true });
-
 const PADDING_Y = 2.5;
 const PADDING_X = 2;
 
@@ -120,42 +114,67 @@ function computeViewBox(svg: string) {
     return toViewBox(padded);
 }
 
-const files = fs.readdirSync(RAW_DIR).filter(f => f.endsWith(".svg"));
+export function processIcons(directory: string, iconName?: string): void {
+    if (iconName !== undefined && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(iconName)) {
+        throw new Error('Expected an icon name such as foo-bar, without a path or .svg extension.');
+    }
 
-const registry: RegistryEntry[] = [];
+    const rawDirectory = path.join(directory, 'raw');
+    const outputDirectory = path.join(directory, 'output');
+    const registryFile = path.join(directory, 'icon-registry.json');
+    const files = iconName
+        ? [`${iconName}.svg`]
+        : fs.readdirSync(rawDirectory).filter(file => file.endsWith('.svg'));
+    if (iconName && !fs.existsSync(path.join(rawDirectory, files[0]))) {
+        throw new Error(`Icon not found: raw/${iconName}.svg`);
+    }
+    const registry: RegistryEntry[] = iconName && fs.existsSync(registryFile)
+        ? JSON.parse(fs.readFileSync(registryFile, 'utf8'))
+        : [];
 
-for (const file of files) {
-    const raw = fs.readFileSync(path.join(RAW_DIR, file), "utf8");
+    fs.mkdirSync(outputDirectory, { recursive: true });
 
-    let ast = parseSync(raw);
+    for (const file of files) {
+        const raw = fs.readFileSync(path.join(rawDirectory, file), 'utf8');
+        let ast = parseSync(raw);
+        const creator = extractCreator(ast);
 
-    const creator = extractCreator(ast);
+        ast = stripText(ast);
+        ast = stripColors(ast);
 
-    ast = stripText(ast);
-    ast = stripColors(ast);
+        const baseSvg = toSVG(ast);
+        const viewBox = computeViewBox(baseSvg);
+        const content = baseSvg.replace(/<svg[^>]*>|<\/svg>/g, '').trim();
+        const finalSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}">\n${content}\n</svg>\n`;
 
-    const baseSvg = toSVG(ast);
-    const viewBox = computeViewBox(baseSvg);
+        fs.writeFileSync(path.join(outputDirectory, file), finalSvg);
 
-    const content = baseSvg.replace(/<svg[^>]*>|<\/svg>/g, "").trim();
-    const finalSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}">\n${content}\n</svg>\n`;
+        const id = path.basename(file, '.svg');
+        const entry: RegistryEntry = {
+            id,
+            title: id.replace(/-/g, ' '),
+            creator,
+            source: 'The Noun Project',
+            href: 'https://thenounproject.com',
+            license: 'CC BY 3.0',
+        };
+        const existingIndex = registry.findIndex(existing => existing.id === id);
+        if (existingIndex === -1) {
+            registry.push(entry);
+        } else {
+            registry[existingIndex] = entry;
+        }
 
-    fs.writeFileSync(path.join(OUT_DIR, file), finalSvg);
+        console.info(`✔ ${file} (${creator})`);
+    }
 
-    const id = path.basename(file, ".svg");
-
-    registry.push({
-        id,
-        title: id.replace(/-/g, " "),
-        creator,
-        source: "The Noun Project",
-        href: "https://thenounproject.com",
-        license: "CC BY 3.0",
-    });
-
-    console.info(`✔ ${file} (${creator})`);
+    fs.writeFileSync(registryFile, JSON.stringify(registry, null, 2));
+    console.info('\nDone.');
 }
 
-fs.writeFileSync(REGISTRY_FILE, JSON.stringify(registry, null, 2));
-
-console.info("\nDone.");
+if (process.argv[1] && path.resolve(process.argv[1]) === __filename) {
+    if (process.argv.length > 3) {
+        throw new Error('Usage: yarn icons [foo-bar]');
+    }
+    processIcons(__dirname, process.argv[2]);
+}

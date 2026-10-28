@@ -19,3 +19,9 @@ From the [root](/) folder run:
 ```bash
 yarn icons
 ```
+
+To process only `raw/foo-bar.svg`, preserving other processed icons and registry entries:
+
+```bash
+yarn icons foo-bar
+```

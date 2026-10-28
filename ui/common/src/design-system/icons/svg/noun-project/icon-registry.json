@@ -274,7 +274,7 @@
   {
     "id": "external-link",
     "title": "external link",
-    "creator": "Fabrice Ducouret",
+    "creator": "shashank singh",
     "source": "The Noun Project",
     "href": "https://thenounproject.com",
     "license": "CC BY 3.0"
@@ -643,6 +643,30 @@
     "id": "zeppelin-side-02",
     "title": "zeppelin side 02",
     "creator": "karyative",
+    "source": "The Noun Project",
+    "href": "https://thenounproject.com",
+    "license": "CC BY 3.0"
+  },
+  {
+    "id": "share",
+    "title": "share",
+    "creator": "Dierys Design",
+    "source": "The Noun Project",
+    "href": "https://thenounproject.com",
+    "license": "CC BY 3.0"
+  },
+  {
+    "id": "share-link",
+    "title": "share link",
+    "creator": "Dierys Design",
+    "source": "The Noun Project",
+    "href": "https://thenounproject.com",
+    "license": "CC BY 3.0"
+  },
+  {
+    "id": "link",
+    "title": "link",
+    "creator": "Gregor Cresnar",
     "source": "The Noun Project",
     "href": "https://thenounproject.com",
     "license": "CC BY 3.0"
