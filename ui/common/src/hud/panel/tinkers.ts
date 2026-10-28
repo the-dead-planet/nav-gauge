@@ -9,7 +9,6 @@ import { PanelProps } from "./model";
 
 export const panelStoryArgs: PanelProps = {
     ...hudSurfaceStoryArgs,
-    shape: "default",
     elevation: DEFAULT_ELEVATION,
 };
 

@@ -48,7 +48,10 @@ export class MobileMachineWard extends MachineWard<MobileMap, MobileChronoLens, 
             MobileChronoLens,
             AsyncStorage,
             __DEV__,
-            mediaSubscription
+            mediaSubscription,
+            {
+                supportsBackdropBlur: false,
+            },
         );
     }
 

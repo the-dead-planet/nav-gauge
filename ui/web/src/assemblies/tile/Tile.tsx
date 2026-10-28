@@ -1,5 +1,5 @@
 import { ComponentProps, FC } from 'react';
-import { DEFAULT_SIZE, TileProps } from '@ui';
+import { actionButtonVariants, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, TileProps } from '@ui';
 import classNames from 'classnames';
 import { Panel } from '../../hud/panel';
 import styles from './tile.module.css';
@@ -18,6 +18,7 @@ export const Tile: FC<Props> = ({
     panelProps = {},
 }) => {
     const { className, ...restPanelProps } = panelProps;
+    const actionVariants = actionButtonVariants[panelProps.variant ?? DEFAULT_FILL_VARIANT];
 
     return (
         <Panel
@@ -44,7 +45,7 @@ export const Tile: FC<Props> = ({
                     ) : null}
                 </div>
                 {actions ? (
-                    <footer className={styles.actions}>{actions(size)}</footer>
+                    <footer className={styles.actions}>{actions(size, actionVariants)}</footer>
                 ) : null}
             </article>
         </Panel>

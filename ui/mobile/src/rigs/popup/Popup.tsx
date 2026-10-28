@@ -1,11 +1,22 @@
-import { FC, useEffect, useRef, useState } from 'react';
-import { Animated, HostInstance, Modal, Pressable, StyleSheet, useWindowDimensions, View, type LayoutChangeEvent, type StyleProp, type ViewStyle } from 'react-native';
-import { MenuPosition, getIconAnchorPoint, menuPositionsMatch, placePopup, PopupProps, useTheme } from '@ui';
+import { FC, RefObject } from 'react';
+import {
+    Animated,
+    HostInstance,
+    Modal,
+    Pressable,
+    StyleSheet,
+    View,
+    StyleProp,
+    ViewStyle,
+} from 'react-native';
+import { DEFAULT_COLOR, DEFAULT_FILL_VARIANT, PopupProps, useTheme } from '@ui';
+import { HudContent } from '../../hud/HudContent';
 import { resolveLayerStyle } from '../../design-system/theme';
+import { usePopupPosition } from './usePopupPosition';
+import { usePopupTransition } from './usePopupTransition';
 
 const styles = StyleSheet.create({
     overlay: {
-        flex: 1,
         position: 'absolute',
         left: 0,
         right: 0,
@@ -17,7 +28,6 @@ const styles = StyleSheet.create({
     },
     content: {
         flexShrink: 1,
-        overflow: 'hidden',
     },
 });
 
@@ -39,109 +49,47 @@ export const Popup: FC<Props> = ({
     overlayStyle,
     popupStyle,
     children,
+    variant = DEFAULT_FILL_VARIANT,
+    color = DEFAULT_COLOR,
+    highlightColor = color,
+    highlighted = false,
+    disabled = false,
+    borderWidth,
 }) => {
     const theme = useTheme();
-    const { zIndex, ...popupElevation } = resolveLayerStyle(theme, 'popup');
-    const [menuPosition, setMenuPosition] = useState<MenuPosition>({});
-    const [popupSize, setPopupSize] = useState<{ width: number; height: number } | null>(null);
-    const { height: windowHeight, width: windowWidth } = useWindowDimensions();
-    const animValue = useRef(new Animated.Value(0)).current;
-    const overlayRef = useRef<HostInstance>(null);
-
-    useEffect(() => {
-        if (!visible) {
-            return;
-        }
-
-        const computePosition = () => {
-            if (position) {
-                updatePosition(position, windowWidth, windowHeight);
-                return;
-            }
-
-            const nativeAnchor = anchor?.current as unknown as HostInstance | null;
-            if (!nativeAnchor?.measureInWindow || !overlayRef.current) return;
-
-            nativeAnchor.measureInWindow((anchorX, anchorY, anchorWidth, anchorHeight) => {
-                overlayRef.current?.measureInWindow((overlayX, overlayY, overlayWidth, overlayHeight) => {
-                    updatePosition(
-                        getIconAnchorPoint(triggerAnchor, anchorX - overlayX, anchorY - overlayY, anchorWidth, anchorHeight),
-                        overlayWidth,
-                        overlayHeight,
-                    );
-                });
-            });
-        };
-
-        const updatePosition = (iconAnchor: { x: number; y: number }, viewportWidth: number, viewportHeight: number) => {
-            const nextPosition = placePopup(
-                popupAnchor,
-                iconAnchor,
-                popupSize,
-                viewportWidth,
-                viewportHeight,
-            ).position;
-
-            setMenuPosition((current) => menuPositionsMatch(current, nextPosition) ? current : nextPosition);
-        };
-
-        computePosition();
-        const followInterval = setInterval(computePosition, 100);
-        return () => clearInterval(followInterval);
-    }, [visible, anchor, position, triggerAnchor, popupAnchor, popupSize, windowWidth, windowHeight]);
-
-    const handleLayout = (event: LayoutChangeEvent) => {
-        const { width, height } = event.nativeEvent.layout;
-        setPopupSize({ width, height });
-    };
-
-    useEffect(() => {
-        if (visible) {
-            Animated.timing(animValue, {
-                toValue: 1,
-                duration: 200,
-                useNativeDriver: true,
-            }).start();
-        } else {
-            Animated.timing(animValue, {
-                toValue: 0,
-                duration: 200,
-                useNativeDriver: true,
-            }).start(() => {
-                onClose();
-            });
-        }
-    }, [visible]);
-
-    const interpolatedY = animValue.interpolate({
-        inputRange: [0, 1],
-        outputRange: popupAnchor.startsWith('top') ? [-100, 0] : [100, 0],
+    const layer = resolveLayerStyle(theme, 'popup');
+    const appearance = theme.resolveAppearance(
+        variant,
+        color,
+        highlightColor,
+        disabled ? 'disabled' : highlighted ? 'active-pressed' : 'default',
+    );
+    const { overlayRef, popupPosition, onLayout } = usePopupPosition({
+        visible,
+        anchor: anchor as unknown as RefObject<HostInstance | null>,
+        position,
+        triggerAnchor,
+        popupAnchor,
     });
-
-    const opacity = animValue.interpolate({
-        inputRange: [0, 1],
-        outputRange: [0, 1],
-    });
-
-    const animatedStyle: StyleProp<ViewStyle> = {
-        transform: [{ translateY: interpolatedY }],
-        opacity: opacity as unknown as number,
-    };
-
-    const positionStyle: StyleProp<ViewStyle> = {
-        ...(menuPosition.top !== undefined && { top: menuPosition.top }),
-        ...(menuPosition.left !== undefined && { left: menuPosition.left }),
-        ...(menuPosition.right !== undefined && { right: menuPosition.right }),
-        ...(menuPosition.bottom !== undefined && { bottom: menuPosition.bottom }),
-    };
-
+    const animatedStyle = usePopupTransition(visible, popupAnchor);
+    const overlayStyles: StyleProp<ViewStyle> = [
+        styles.overlay,
+        { zIndex: layer.zIndex },
+        overlayStyle,
+    ];
     const popup = (
         <Animated.View
-            onLayout={handleLayout}
+            onLayout={onLayout}
             style={[
                 styles.popup,
-                popupElevation,
-                positionStyle,
+                layer,
+                {
+                    backgroundColor: appearance.surface,
+                    borderColor: appearance.border.color,
+                    borderWidth:
+                        appearance.border.width * Math.max(0, borderWidth ?? 1),
+                },
+                popupPosition,
                 animatedStyle,
                 popupStyle,
             ]}
@@ -150,18 +98,36 @@ export const Popup: FC<Props> = ({
                 style={styles.content}
                 onPress={(event) => event.stopPropagation()}
             >
-                {children}
+                <HudContent appearance={appearance}>{children}</HudContent>
             </Pressable>
         </Animated.View>
     );
 
     if (!modal) {
-        return <View ref={overlayRef} pointerEvents="box-none" style={[styles.overlay, { zIndex }, overlayStyle]}>{popup}</View>;
+        return visible ? (
+            <View
+                ref={overlayRef}
+                pointerEvents="box-none"
+                style={overlayStyles}
+            >
+                {popup}
+            </View>
+        ) : null;
     }
 
     return (
-        <Modal visible={visible} transparent animationType="none" onRequestClose={onClose} statusBarTranslucent>
-            <Pressable style={[styles.overlay, { zIndex }, overlayStyle]} onPress={dismissOnClickAway ? onClose : undefined}>
+        <Modal
+            visible={visible}
+            transparent
+            animationType="none"
+            onRequestClose={onClose}
+            statusBarTranslucent
+        >
+            <Pressable
+                ref={overlayRef}
+                style={overlayStyles}
+                onPress={dismissOnClickAway ? onClose : undefined}
+            >
                 {popup}
             </Pressable>
         </Modal>

@@ -58,6 +58,6 @@ Appearance policies may supply a font weight per state. An explicit `fontWeight`
 
 Available weights vary by font. Web may synthesize weights; mobile selects the nearest supported face within the chosen family, clamping requests outside its range to the thinnest or boldest bundled face.
 
-Typography's `usage` selects `header`, `body`, or `caption` text hierarchy; its glyphs follow the <a href="./?path=/docs/design-system-appearance--docs#appearance-defaults" target="_top" style={{ textDecoration: 'underline' }}>default appearance policy</a>. `shade` overrides default content; `highlightShade` resolves against `highlightColor ?? color`. Links own their native hover, keyboard focus, and pressed states, following the <a href="./?path=/docs/design-system-appearance--docs#appearance-states" target="_top" style={{ textDecoration: 'underline' }}>shared appearance states</a>.
+`usage` selects `header`, `body`, or `caption` hierarchy. Optional `variant` selects the <a href="./?path=/docs/design-system-appearance--docs" target="_top">appearance policy</a>'s glyph color and weight without painting a background or border; omitting it preserves the default/inherited treatment. `shade` and `highlightShade` override glyph shades. Links follow the <a href="./?path=/docs/design-system-appearance--docs#appearance-states" target="_top">shared interaction states</a>.
 
 <Canvas of={TypographyStories.Gallery} />

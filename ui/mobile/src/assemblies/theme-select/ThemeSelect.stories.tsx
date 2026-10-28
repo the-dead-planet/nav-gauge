@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import {
     appearanceColorOptions,
     fillVariantOptions,
-    sizeOptions,
+    DEFAULT_SIZE,
     themeModeOptions,
     themeSelectStoryArgs,
     themeSelectStoryControls,
@@ -38,27 +38,25 @@ const story: MobileStoryDefinition<ThemeSelectStoryProps> = {
             {themeModeOptions.map(({ value: mode, label }) => (
                 <View key={mode} style={styles.section}>
                     <Text usage="header">{label}</Text>
-                    {sizeOptions.map((size) =>
-                        appearanceColorOptions.map((color) =>
-                            fillVariantOptions.map((variant) => (
-                                <View
-                                    key={`${size}-${color}-${variant}`}
-                                    style={styles.section}
-                                >
-                                    <Text>
-                                        {size} / {color} / {variant}
-                                    </Text>
-                                    <ThemeSelect
-                                        {...args}
-                                        mode={mode}
-                                        size={size}
-                                        color={color}
-                                        variant={variant}
-                                        onChange={() => undefined}
-                                    />
-                                </View>
-                            )),
-                        ),
+                    {appearanceColorOptions.map((color) =>
+                        fillVariantOptions.map((variant) => (
+                            <View
+                                key={`${color}-${variant}`}
+                                style={styles.section}
+                            >
+                                <Text>
+                                    {args.size ?? DEFAULT_SIZE} / {color} /{' '}
+                                    {variant}
+                                </Text>
+                                <ThemeSelect
+                                    {...args}
+                                    mode={mode}
+                                    color={color}
+                                    variant={variant}
+                                    onChange={() => undefined}
+                                />
+                            </View>
+                        )),
                     )}
                 </View>
             ))}

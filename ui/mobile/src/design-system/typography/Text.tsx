@@ -19,6 +19,8 @@ export interface TextProps extends Omit<RNTextProps, 'disabled'>, TypographyProp
 }
 
 export const Text: FC<TextProps> = ({
+    variant,
+    themeMode,
     usage = 'body',
     color = DEFAULT_COLOR,
     highlightColor = color,
@@ -53,10 +55,10 @@ export const Text: FC<TextProps> = ({
     style,
     ...props
 }) => {
-    const theme = useTheme();
+    const theme = useTheme().forMode(themeMode);
     const spacingValues = resolveTypographySpacing({ m, mv, mh, mt, mr, mb, ml, p, pv, ph, pt, pr, pb, pl });
     const state = disabled ? 'disabled' : appearanceState;
-    const appearance = theme.resolveAppearance(undefined, color, highlightColor, state);
+    const appearance = theme.resolveAppearance(variant, color, highlightColor, state);
     const resolvedFontWeight = resolveTypographyFontWeight(
         fontWeight,
         bold,
@@ -92,7 +94,7 @@ export const Text: FC<TextProps> = ({
                     paddingBottom: spacing(spacingValues.paddingBottom),
                     paddingLeft: spacing(spacingValues.paddingLeft),
                     textShadowColor: shadow && !disabled
-                        ? theme.color(color, 900)
+                        ? theme.color(color, 800)
                         : undefined,
                     textShadowOffset: shadow && !disabled ? {
                         width: -1,

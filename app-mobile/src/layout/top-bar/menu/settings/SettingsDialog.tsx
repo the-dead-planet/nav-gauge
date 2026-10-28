@@ -49,6 +49,7 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
         <Dialog
             color="primary"
             placement="right-drawer"
+            variant="fill-translucent"
             style={isWide ? styles.wideDialog : undefined}
             header={translate({ n: individuator.namespace, t: individuator.translationKey.IndividuatorName })}
             closeText={translate({ n: namespace, t: translationKey.Close })}

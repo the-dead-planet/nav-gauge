@@ -1,13 +1,25 @@
-import { ComponentProps, FC, useState } from "react";
-import { createPortal } from "react-dom";
-import classNames from "classnames";
-import { DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DialogPlacement, DialogProps, FontType, TransitionProps, useTheme } from "@ui";
-import { useSubjectState } from "@tinker-chest";
-import { Panel } from "../../hud";
-import { Button } from "../../gizmos/button";
-import { H3 } from "../../design-system/typography";
-import { Transition } from "../../motion/transition";
+import { ComponentProps, FC, useId } from 'react';
+import { createPortal } from 'react-dom';
+import classNames from 'classnames';
+import {
+    DEFAULT_COLOR,
+    actionButtonVariants,
+    DEFAULT_FILL_VARIANT,
+    DialogPlacement,
+    DialogProps,
+    FontType,
+    TransitionProps,
+    ThemeContext,
+    useTheme,
+} from '@ui';
+import { useSubjectState } from '@tinker-chest';
+import { HudSurface } from '../../hud/HudSurface';
+import surface from '../../hud/surface.module.css';
+import { Button } from '../../gizmos/button';
+import { H3 } from '../../design-system/typography';
+import { Transition } from '../../motion/transition';
 import styles from './dialog.module.css';
+import { useDialog } from './useDialog';
 
 export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
     header,
@@ -21,50 +33,100 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
     children,
     ...props
 }) => {
-    const [render, setRender] = useState(true);
+    const { render, close, dialogRef, onKeyDown } = useDialog();
+    const headerId = useId();
     const theme = useTheme();
+    const dialogTheme = theme.forMode('dark');
     const [media] = useSubjectState(theme.media$);
     const slide: { [key in DialogPlacement]: TransitionProps['slide'] } = {
         ['middle']: 'to-bottom',
         ['left-drawer']: 'to-right',
         ['right-drawer']: 'to-left',
-    }
+    };
     const isWide = !media.isLessThanSm;
 
     return createPortal(
-        <div className={classNames(styles['overlay'], { [styles['overlay-out']]: !render })}>
-            <Transition render={render} slide={slide[placement]} fade onUnmount={onClose}>
-                <div className={classNames(styles['container'], isWide ? styles[placement] : styles['full-width'], className)} {...props}>
-                    <Panel
-                        elevationLayer="dialog"
-                        variant={variant}
-                        color={color}
-                        className={classNames(styles['dialog'], styles[`color-${color}`])}
-                    >
-                        <H3 fontType={FontType.NeonText} color={color} shade={500} className={styles['header']}>
-                            {header.toUpperCase()}
-                        </H3>
-                        <div className={styles['content']}>
-                            {children}
-                        </div>
-                        <div className={styles['footer']}>
-                            <Button variant="fill-inverse" color={color} onClick={() => setRender(false)}>
-                                {closeText}
-                            </Button>
-                            {save ? (
-                                <Button
-                                    variant="fill"
-                                    color={color}
-                                    onClick={() => {
-                                        save.onSave();
-                                        setRender(false);
-                                    }}
+        <div
+            ref={dialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={headerId}
+            className={classNames(styles['overlay'], {
+                [styles['overlay-out']]: !render,
+            })}
+            onKeyDown={onKeyDown}
+        >
+            <Transition
+                render={render}
+                slide={slide[placement]}
+                fade
+                onUnmount={onClose}
+            >
+                <div
+                    className={classNames(
+                        styles['container'],
+                        isWide ? styles[placement] : styles['full-width'],
+                        className,
+                    )}
+                    {...props}
+                >
+                    <ThemeContext.Provider value={dialogTheme}>
+                        <HudSurface
+                            as="div"
+                            rectangle
+                            variant={variant}
+                            color={color}
+                            className={classNames(
+                                surface['layer-dialog'],
+                                styles['dialog'],
+                            )}
+                        >
+                            <H3
+                                id={headerId}
+                                fontType={FontType.NeonText}
+                                uppercase
+                                fontWeight={500}
+                                color={color}
+                                shadow={variant === 'fill-translucent'}
+                                className={styles['header']}
+                            >
+                                {header}
+                            </H3>
+                            <ThemeContext.Provider value={theme}>
+                                <div
+                                    className={styles['content']}
+                                    data-appearance-mode={theme.mode}
                                 >
-                                    {save.saveText}
+                                    {children}
+                                </div>
+                            </ThemeContext.Provider>
+                            <div className={styles['footer']}>
+                                <Button
+                                    variant={
+                                        actionButtonVariants[variant].inactive
+                                    }
+                                    color={color}
+                                    onClick={close}
+                                >
+                                    {closeText}
                                 </Button>
-                            ) : null}
-                        </div>
-                    </Panel>
+                                {save ? (
+                                    <Button
+                                        variant={
+                                            actionButtonVariants[variant].active
+                                        }
+                                        color={color}
+                                        onClick={() => {
+                                            save.onSave();
+                                            close();
+                                        }}
+                                    >
+                                        {save.saveText}
+                                    </Button>
+                                ) : null}
+                            </div>
+                        </HudSurface>
+                    </ThemeContext.Provider>
                 </div>
             </Transition>
         </div>,

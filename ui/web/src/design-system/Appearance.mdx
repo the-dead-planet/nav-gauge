@@ -1,5 +1,6 @@
 import { Canvas, Meta, Title } from "@storybook/addon-docs/blocks";
 import * as ColorStories from "./colors/Color.stories";
+import { translucentSurfaceOpacity } from '@ui';
 
 <Meta title="Design System/Appearance" />
 
@@ -16,6 +17,7 @@ Appearance coordinates the visual parts of a component:
 - **Interaction effects:** visual feedback for hover, focus, pressed, highlighted, and disabled states, including optional glow.
 
 Shared appearance policies supply the same treatment on web and mobile.
+Contrast paints derive their background shade from the same state's surface; it is not configured separately.
 
 ## Appearance controls
 
@@ -41,7 +43,7 @@ Components expose the controls relevant to their visual purpose.
 
 Appearance states are listed from highest to lowest priority:
 
-- **Disabled:** overrides all other states and uses `color`.
+- **Disabled:** overrides all other states and uses `color`. Disabled action components cannot activate and use a `not-allowed` cursor on web; glyph-shade overrides do not replace disabled colors.
 - **Active / pressed:** uses `highlightColor` and `highlightGlyphsShade` (if supplied), persistently while `highlighted` is enabled or temporarily while the control is being clicked / pressed. Hover and focus do not replace this appearance.
 - **Hover / focus:** temporarily uses `highlightColor` and `highlightGlyphsShade` (if supplied) when the control is neither highlighted nor pressed. Focus also has a visible focus indicator, including when highlighted.
 - **Default:** uses `color` and `glyphsShade` (if supplied) when no higher-priority state applies.
@@ -155,14 +157,33 @@ Components without an appearance variant use the default policy below.
         <tr><th>Element</th><th>Default</th><th>Hover / focus</th><th>Active / pressed</th><th>Disabled</th></tr>
     </thead>
     <tbody>
-        <tr><td>Text and icons</td><td><code>700</code> light / <code>300</code> dark</td><td><code>800</code> light / <code>200</code> dark</td><td><code>900</code> light / <code>100</code> dark</td><td><code>300</code> light / <code>700</code> dark</td></tr>
-        <tr><td>Background</td><td><code>500</code> at 24%</td><td><code>500</code> at 24%</td><td><code>500</code> at 24%</td><td><code>200</code> light / <code>800</code> dark at 24%</td></tr>
+        <tr><td>Text and icons</td><td><code>900</code> light / <code>100</code> dark</td><td><code>900</code> light / <code>100</code> dark</td><td><code>900</code> light / <code>100</code> dark</td><td><code>300</code> light / <code>700</code> dark</td></tr>
+        <tr><td>Text shadow (opt-in)</td><td colSpan={3}>Palette shade <code>800</code> via typography's <code>shadow</code> prop. The variant does not apply it automatically.</td><td>None</td></tr>
+        <tr><td>Background</td><td><code>500</code> at platform opacity</td><td><code>500</code> at platform opacity</td><td><code>500</code> at platform opacity</td><td><code>200</code> light / <code>800</code> dark at platform opacity</td></tr>
         <tr><td>Border</td><td><code>500</code> at 30%</td><td><code>600</code> light / <code>300</code> dark</td><td><code>700</code> light / <code>200</code> dark</td><td><code>300</code> light / <code>700</code> dark</td></tr>
         <tr><td>Backdrop blur</td><td colSpan={4}>Web: <code>6px</code>, clipped to the component shape. Mobile: unsupported by the current native renderer.</td></tr>
     </tbody>
 </table>
 
+Glyph shades follow the theme mode rather than the unblended surface's contrast shade.
+
 <Canvas of={ColorStories.FillTranslucentStates} />
+
+<table>
+    <thead>
+        <tr>
+            <th scope="col">Renderer capability</th>
+            <th scope="col">Surface opacity</th>
+            <th scope="col">Backdrop blur</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>Web (blur supported)</td><td>{translucentSurfaceOpacity.blurred * 100}%</td><td>6 px</td></tr>
+        <tr><td>Mobile (blur unsupported)</td><td>{translucentSurfaceOpacity.unblurred * 100}%</td><td>None</td></tr>
+    </tbody>
+</table>
+
+The shared `translucentSurfaceOpacity` policy raises opacity without blur so underlying detail does not compete with foreground content. Apply the platform opacity in every state, including disabled; border opacity remains governed separately. Construct mobile themes with backdrop-blur support disabled so `Theme.resolveAppearance()` supplies this treatment to every native renderer.
 
 ### `inset`
 
@@ -171,7 +192,7 @@ Components without an appearance variant use the default policy below.
         <tr><th>Element</th><th>Default</th><th>Hover / focus</th><th>Active / pressed</th><th>Disabled</th></tr>
     </thead>
     <tbody>
-        <tr><td>Text and icons</td><td><code>500</code></td><td><code>600</code> light / <code>300</code> dark</td><td><code>700</code> light / <code>200</code> dark</td><td><code>300</code> light / <code>700</code> dark</td></tr>
+        <tr><td>Text and icons</td><td><code>700</code> light / <code>300</code> dark</td><td><code>800</code> light / <code>200</code> dark</td><td><code>900</code> light / <code>100</code> dark</td><td><code>300</code> light / <code>700</code> dark</td></tr>
         <tr><td>Background</td><td><code>100</code> light / <code>900</code> dark</td><td><code>100</code> light / <code>900</code> dark</td><td><code>100</code> light / <code>900</code> dark</td><td><code>100</code> light / <code>900</code> dark</td></tr>
         <tr><td>Border</td><td>None</td><td>None</td><td>None</td><td>None</td></tr>
         <tr><td>Inner shading</td><td>Light: palette-tinted <code>900</code> at 20% and <code>700</code> at 18% top/left, with white at 70% bottom/right. Dark: black at 80% top/left and white at 8% bottom/right.</td><td>Same as default</td><td>Light uses the highlight palette; dark is unchanged</td><td>Same as default</td></tr>
@@ -181,6 +202,25 @@ Components without an appearance variant use the default policy below.
 <Canvas of={ColorStories.InsetStates} />
 
 Inset controls use no border in any state. Their internal shading alone creates the appearance of a control dented into its surface.
+
+<h2 id="actions-on-surfaces">Actions on surfaces</h2>
+
+Use the shared `actionButtonVariants[surfaceVariant]` policy for primary/secondary actions and selected/inactive tabs on both platforms. `active` means the primary action or selected tab; `inactive` means a secondary action or inactive tab. These roles select the button variant; interaction and disabled states still follow that variant's appearance policy.
+
+<table>
+    <thead>
+        <tr>
+            <th scope="col">Surface variant</th>
+            <th scope="col">Primary action / selected tab</th>
+            <th scope="col">Secondary action / inactive tab</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td><code>fill</code></td><td><code>fill</code></td><td><code>fill-inverse</code></td></tr>
+        <tr><td><code>fill-inverse</code></td><td><code>fill</code></td><td><code>fill-inverse</code></td></tr>
+        <tr><td><code>fill-translucent</code></td><td><code>fill</code></td><td><code>fill-translucent</code></td></tr>
+    </tbody>
+</table>
 
 ## Active glow
 

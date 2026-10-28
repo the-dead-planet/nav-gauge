@@ -34,6 +34,9 @@ export interface MachineWardComponents<TNavigationPath extends string = string> 
 export type MachineGear<TMap, MobileChronoLens extends ChronoLens> = new (apparatus: GearApparatus<TMap, MobileChronoLens>) => Gear<TMap, MobileChronoLens>;
 
 export enum MachineTranslationKey {
+    ComponentLibrary = 'component-library',
+    IconCreators = 'icon-creators',
+    Stories = 'stories',
     Legal = 'legal',
     Privacy = 'privacy',
     Close = 'close',

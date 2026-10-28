@@ -68,8 +68,9 @@ The height and padding columns are baselines for input-like controls. Components
 
 - Callers own external margin, positioning, and composition spacing.
 - Containers do not impose content padding unless padding is part of their documented contract.
-- `Panel` and `NotchedPanel` shape and color their surface but leave content spacing to their children.
-- `BevelPanel.size` selects bevel depth only; it does not add content padding.
+- Surface geometry and appearance do not imply content padding.
 - Full-width content such as selectable rows may extend to a shaped container's clipped edge.
 
 Use spacing tokens for layout spacing. Do not overload component `size` as a general-purpose padding prop.
+
+Document component-specific sizing contracts in the component's own documentation.

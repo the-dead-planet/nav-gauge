@@ -1,5 +1,5 @@
 import { ChangeEvent, ComponentProps, ElementType, FC, Fragment, useRef, useState } from "react";
-import {  FileInputProps, Icons } from "@ui";
+import { FileInputProps, Icons } from "@ui";
 import { Button } from "../../gizmos/button";
 import { Dialog } from "../../rigs/dialog";
 import { P, Label } from "../../design-system/typography";
@@ -12,8 +12,10 @@ interface Props extends FileInputProps<File> {
 }
 
 export const FileInput: FC<Props & ComponentProps<'div'>> = ({
+    themeMode,
     fileIcon = Icons.NounProject.Upload,
     fileName,
+    fileNameProps,
     mutiple,
     color,
     fileLabel,
@@ -58,6 +60,7 @@ export const FileInput: FC<Props & ComponentProps<'div'>> = ({
             />
             <Button
                 aria-label={fileLabel}
+                themeMode={themeMode}
                 variant="fill"
                 color={color}
                 size="xs"
@@ -69,8 +72,9 @@ export const FileInput: FC<Props & ComponentProps<'div'>> = ({
                 onClick={() => inputRef.current?.click()}
             />
             <FileNameComponent
+                themeMode={themeMode}
                 color={color}
-                shade={500}
+                {...fileNameProps}
                 title={fileName ?? undefined}
                 className={styles['route-name']}
             >
@@ -78,6 +82,7 @@ export const FileInput: FC<Props & ComponentProps<'div'>> = ({
             </FileNameComponent>
             {actionButtons?.map(({ id, element }) => <Fragment key={id}>{element}</Fragment>)}
             <Button
+                themeMode={themeMode}
                 variant="ghost"
                 color={color}
                 corners="circle"

@@ -3,7 +3,6 @@ import { makeLiveEditStory } from "storybook-addon-code-editor";
 import {
     appearanceColorOptions,
     fillVariantOptions,
-    sizeOptions,
     tooltipStoryArgs,
     tooltipStoryControls,
 } from "@ui";
@@ -40,12 +39,11 @@ export const Gallery: Story = {
     argTypes: {
         color: { table: { disable: true } },
         variant: { table: { disable: true } },
-        size: { table: { disable: true } },
     },
     render: (args) => (
         <VariantGallery
             colors={appearanceColorOptions}
-            sizes={sizeOptions}
+            size={args.size}
             variants={fillVariantOptions}
             render={({ color, size, variant }) => (
                 <Tooltip {...args} color={color} size={size} variant={variant}>

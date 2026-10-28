@@ -272,6 +272,14 @@
     "license": "CC BY 3.0"
   },
   {
+    "id": "external-link",
+    "title": "external link",
+    "creator": "shashank singh",
+    "source": "The Noun Project",
+    "href": "https://thenounproject.com",
+    "license": "CC BY 3.0"
+  },
+  {
     "id": "gear",
     "title": "gear",
     "creator": "MUHAMAD KHOTIBUL UMAM",
@@ -339,6 +347,22 @@
     "id": "motorcycle-side-01",
     "title": "motorcycle side 01",
     "creator": "Besticons",
+    "source": "The Noun Project",
+    "href": "https://thenounproject.com",
+    "license": "CC BY 3.0"
+  },
+  {
+    "id": "navigate-back",
+    "title": "navigate back",
+    "creator": "Gulalicon",
+    "source": "The Noun Project",
+    "href": "https://thenounproject.com",
+    "license": "CC BY 3.0"
+  },
+  {
+    "id": "navigate-to",
+    "title": "navigate to",
+    "creator": "Gulalicon",
     "source": "The Noun Project",
     "href": "https://thenounproject.com",
     "license": "CC BY 3.0"
@@ -619,6 +643,30 @@
     "id": "zeppelin-side-02",
     "title": "zeppelin side 02",
     "creator": "karyative",
+    "source": "The Noun Project",
+    "href": "https://thenounproject.com",
+    "license": "CC BY 3.0"
+  },
+  {
+    "id": "share",
+    "title": "share",
+    "creator": "Dierys Design",
+    "source": "The Noun Project",
+    "href": "https://thenounproject.com",
+    "license": "CC BY 3.0"
+  },
+  {
+    "id": "share-link",
+    "title": "share link",
+    "creator": "Dierys Design",
+    "source": "The Noun Project",
+    "href": "https://thenounproject.com",
+    "license": "CC BY 3.0"
+  },
+  {
+    "id": "link",
+    "title": "link",
+    "creator": "Gregor Cresnar",
     "source": "The Noun Project",
     "href": "https://thenounproject.com",
     "license": "CC BY 3.0"

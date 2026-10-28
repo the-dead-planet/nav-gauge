@@ -1,5 +1,5 @@
 import type { ElevationDirection, ElevationLevel } from './theme/model';
-import { ActiveGlow, ColorVariant, FillVariant, SizeVariant, SurfaceVariant } from './model';
+import { ActionButtonVariants, ActiveGlow, ColorVariant, FillVariant, SizeVariant, SurfaceVariant } from './model';
 import type { ThemeAppearanceState } from './theme/model';
 
 export const colorOptions: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
@@ -38,3 +38,23 @@ export const DEFAULT_SURFACE_VARIANT: SurfaceVariant = 'ghost';
 export const DEFAULT_FILL_VARIANT: FillVariant = 'fill-inverse';
 export const DEFAULT_ELEVATION: ElevationLevel = 'none';
 export const DEFAULT_COLOR: ColorVariant = 'neutral';
+
+export const actionButtonVariants: Record<FillVariant, ActionButtonVariants> = {
+    fill: {
+        active: 'fill',
+        inactive: 'fill-inverse',
+    },
+    'fill-inverse': {
+        active: 'fill',
+        inactive: 'fill-inverse',
+    },
+    'fill-translucent': {
+        active: 'fill',
+        inactive: 'fill-translucent',
+    },
+};
+
+export const translucentSurfaceOpacity = {
+    blurred: 0.24,
+    unblurred: 0.55,
+};

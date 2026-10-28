@@ -1,16 +1,20 @@
 import { expect } from 'chai';
 import { createRequire } from 'node:module';
-import { createElement } from 'react';
-import { renderToStaticMarkup } from 'react-dom/server';
+import { ComponentProps, createElement, ReactElement } from 'react';
+import { renderToStaticMarkup as renderMarkup } from 'react-dom/server';
 import {
     appearanceColorOptions,
     ColorBoxProps,
     fillVariantOptions,
+    DEFAULT_SIZE,
+    SizeVariant,
+    MenuContext,
     Orientation,
     Theme,
     ThemeContext,
     ThemeMode,
     ThemeName,
+    sizeOptions,
     themeSpecifications,
 } from '@ui';
 
@@ -41,6 +45,11 @@ const { Button } = require('../src/gizmos/button/Button') as typeof import('../s
 const { Chip } = require('../src/gizmos/chip/Chip') as typeof import('../src/gizmos/chip/Chip');
 const { ResizeHandle } = require('../src/gizmos/resize-handle/ResizeHandle') as typeof import('../src/gizmos/resize-handle/ResizeHandle');
 const { ColorBox } = require('../src/gizmos/color-box/ColorBox') as typeof import('../src/gizmos/color-box/ColorBox');
+const { Menu } = require('../src/rigs/menu/Menu') as typeof import('../src/rigs/menu/Menu');
+const { MenuItem } = require('../src/rigs/menu/MenuItem') as typeof import('../src/rigs/menu/MenuItem');
+const { Tabstrip } = require('../src/rigs/tabstrip/Tabstrip') as typeof import('../src/rigs/tabstrip/Tabstrip');
+const { VariantGallery } = require('../src/storybook/VariantGallery') as typeof import('../src/storybook/VariantGallery');
+const { FileInput } = require('../src/forms/file-input/FileInput') as typeof import('../src/forms/file-input/FileInput');
 if (previousCssLoader) {
     require.extensions['.css'] = previousCssLoader;
 } else {
@@ -58,7 +67,253 @@ const media = {
     }),
 };
 
+const renderingTheme = new Theme(themeSpecifications[ThemeName.Default].light, media);
+const renderToStaticMarkup = (children: ReactElement): string => renderMarkup(
+    createElement(ThemeContext.Provider, {
+        value: renderingTheme,
+        children,
+    }),
+);
+
 describe('Composed appearance rendering', () => {
+    after(() => renderingTheme.destroy());
+
+    it('lets FileInput callers choose filename typography without changing its default', () => {
+        const props: ComponentProps<typeof FileInput> = {
+            accept: '*',
+            color: 'primary',
+            themeMode: 'light',
+            fileName: 'route.gpx',
+            fileLabel: 'Upload',
+            purgeLabel: 'Purge',
+            cancelLabel: 'Cancel',
+            noNameLabel: 'No file',
+            purgeText: 'Purge route?',
+            onUpload: () => undefined,
+            onPurge: () => undefined,
+        };
+        const defaultMarkup = renderToStaticMarkup(createElement(FileInput, props));
+        const ghostMarkup = renderToStaticMarkup(createElement(FileInput, {
+            ...props,
+            fileNameProps: {
+                variant: 'ghost',
+            },
+        }));
+        expect(defaultMarkup.match(/<label\b[^>]*>route\.gpx<\/label>/)?.[0])
+            .to.include('data-appearance-variant="default"');
+        const filename = ghostMarkup.match(/<label\b[^>]*>route\.gpx<\/label>/)?.[0];
+        expect(filename).to.include('data-appearance-variant="ghost"');
+        expect(filename).to.include('data-appearance-mode="light"');
+        expect(ghostMarkup).not.to.include('fileNameProps=');
+    });
+
+    it('renders one controlled gallery size, defaulting to DEFAULT_SIZE', () => {
+        for (const size of [undefined, ...sizeOptions]) {
+            const renderedSizes: SizeVariant[] = [];
+            renderToStaticMarkup(createElement(VariantGallery, {
+                size,
+                colors: ['primary', 'secondary'],
+                variants: ['fill', 'fill-inverse'],
+                render: (options: { size: SizeVariant }) => {
+                    renderedSizes.push(options.size);
+                    return null;
+                },
+            }));
+            expect(renderedSizes).to.deep.equal(Array(4).fill(size ?? DEFAULT_SIZE));
+        }
+    });
+
+    it('renders optional tabstrip actions with inherited sizes and shared variants', () => {
+        const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
+        for (const size of sizeOptions) {
+            const markup = renderToStaticMarkup(createElement(ThemeContext.Provider, {
+                value: theme,
+                children: createElement(Tabstrip, {
+                    options: [],
+                    value: 'route',
+                    onChange: () => undefined,
+                    overflowAccessibilityLabel: 'More tabs',
+                    variant: 'fill-inverse',
+                    size,
+                    actions: {
+                        primary: {
+                            label: 'Close tabs',
+                            onPress: () => undefined,
+                        },
+                        secondary: {
+                            label: 'Reset tabs',
+                            onPress: () => undefined,
+                        },
+                    },
+                    children: 'Tab content',
+                }),
+            }));
+            const footer = markup.match(/<footer[^>]*>([\s\S]*?)<\/footer>/)?.[1];
+            expect(markup).to.include(`data-size="${size}"`);
+            expect(footer).to.include(`size-${size}`);
+            expect(footer).to.include('data-appearance-variant="fill"');
+            expect(footer).to.include('data-appearance-variant="fill-inverse"');
+            expect(footer?.match(/<button\b/g)).to.have.length(2);
+        }
+        theme.destroy();
+    });
+
+    it('keeps button and chip labels and icons free of automatic shadows', () => {
+        const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
+        const renderWithTheme = (children: ReactElement) => renderToStaticMarkup(
+            createElement(ThemeContext.Provider, {
+                value: theme,
+                children,
+            }),
+        );
+        for (const variant of fillVariantOptions) {
+            const markups = [
+                renderWithTheme(createElement(Button, {
+                    variant,
+                    children: 'Button label',
+                })),
+                renderWithTheme(createElement(Chip, {
+                    variant,
+                    children: 'Chip label',
+                })),
+            ];
+            for (const markup of markups) {
+                expect(markup).not.to.match(/class="[^"]*\bshadow\b/);
+            }
+            const iconButton = renderWithTheme(createElement(Button, {
+                variant,
+                icon: 'gear.svg',
+                'aria-label': 'Icon button',
+            }));
+            expect(iconButton).not.to.include('icon-shadow');
+        }
+        const disabled = renderWithTheme(createElement(Button, {
+            variant: 'fill-translucent',
+            disabled: true,
+            icon: 'gear.svg',
+            children: 'Disabled label',
+        }));
+        expect(disabled).not.to.match(/class="[^"]*\bshadow\b/);
+        theme.destroy();
+    });
+
+    it('inherits menu item size and highlight policy without retaining disabled link navigation', () => {
+        const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
+        for (const color of appearanceColorOptions) {
+            for (const size of sizeOptions) {
+                const markup = renderToStaticMarkup(createElement(ThemeContext.Provider, {
+                    value: theme,
+                    children: createElement(MenuContext.Provider, {
+                        value: { color, highlightColor: 'hazard', size, onClose: () => undefined },
+                        children: createElement(MenuItem, {
+                            key: 'link',
+                            type: 'link',
+                            href: '/route',
+                            highlighted: true,
+                            disabled: true,
+                            glyphsShade: 500,
+                            highlightGlyphsShade: 200,
+                            children: 'Route',
+                        }),
+                    }),
+                }));
+                expect(markup).to.include(`size-${size}`);
+                expect(markup).to.include(`data-appearance-color="${color}"`);
+                expect(markup).to.include('data-appearance-highlight="hazard"');
+                expect(markup).to.include('data-appearance-variant="menu-item"');
+                expect(markup).to.include('data-disabled="true"');
+                expect(markup).to.include('aria-disabled="true"');
+                expect(markup).to.include('tabindex="-1"');
+                expect(markup).not.to.include('href=');
+                expect(markup).to.include(`--appearance-default-glyphs-override:${theme.color(color, 500)}`);
+                expect(markup).to.include(`--appearance-active-pressed-glyphs-override:${theme.color('hazard', 200)}`);
+                expect([...markup.matchAll(/data-interactive="true"/g)]).to.have.length(1);
+            }
+        }
+        theme.destroy();
+    });
+
+    it('renders selected menu rows with checked semantics and highlight-palette overrides', () => {
+        const theme = new Theme(themeSpecifications[ThemeName.Default].dark, media);
+        const markup = renderToStaticMarkup(createElement(ThemeContext.Provider, {
+            value: theme,
+            children: createElement(MenuItem, {
+                type: 'button',
+                color: 'glitch',
+                highlightColor: 'intel',
+                highlightGlyphsShade: 100,
+                selected: true,
+                children: 'Selected route',
+            }),
+        }));
+        expect(markup).to.include('data-appearance-variant="menu-item"');
+        expect(markup).to.include('data-highlighted="true"');
+        expect(markup).to.include('data-appearance-color="glitch"');
+        expect(markup).to.include('data-appearance-highlight="intel"');
+        expect(markup).to.include('role="menuitemradio"');
+        expect(markup).to.include('aria-checked="true"');
+        expect(markup).to.include(`--appearance-active-pressed-glyphs-override:${theme.color('intel', 100)}`);
+        expect([...markup.matchAll(/data-interactive="true"/g)]).to.have.length(1);
+        theme.destroy();
+    });
+
+    it('marks link menu items without giving their icons a separate appearance owner', () => {
+        const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
+        const renderItem = (item: ComponentProps<typeof MenuItem>) => renderToStaticMarkup(createElement(ThemeContext.Provider, {
+            value: theme,
+            children: createElement(MenuItem, item),
+        }));
+        const internal = renderItem({ type: 'link', href: '#route', children: 'Route' });
+        const external = renderItem({ type: 'link', href: '/legal', target: '_blank', children: 'Legal' });
+        const action = renderItem({ type: 'button', children: 'Settings' });
+        expect(internal).to.include('data-link-type="internal"');
+        expect(external).to.include('data-link-type="external"');
+        expect(action).not.to.include('data-link-type');
+        expect(internal).to.include('aria-hidden="true"');
+        expect(external).to.include('aria-hidden="true"');
+        for (const markup of [internal, external, action]) {
+            expect([...markup.matchAll(/data-appearance-variant=/g)]).to.have.length(1);
+        }
+        theme.destroy();
+    });
+
+    it('lets menu size override the legacy icon size and keeps the trigger accessible', () => {
+        const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
+        const markup = renderToStaticMarkup(createElement(ThemeContext.Provider, {
+            value: theme,
+            children: createElement(Menu, {
+                size: 'lg',
+                iconSize: 'xs',
+                triggerAccessibilityLabel: 'Route actions',
+                disabled: true,
+                triggerActive: true,
+            }),
+        }));
+        expect(markup).to.include('only-icon-lg');
+        expect(markup).not.to.include('only-icon-xs');
+        expect(markup).to.include('aria-label="Route actions"');
+        expect(markup).to.include('aria-haspopup="menu"');
+        expect(markup).to.include('aria-expanded="false"');
+        expect(markup).to.include('disabled=""');
+        theme.destroy();
+    });
+
+    it('gives the trigger-specific color priority over the shared menu highlight', () => {
+        const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
+        const markup = renderToStaticMarkup(createElement(ThemeContext.Provider, {
+            value: theme,
+            children: createElement(Menu, {
+                color: 'neutral',
+                highlightColor: 'primary',
+                iconActiveColor: 'secondary',
+                triggerAccessibilityLabel: 'Open menu',
+            }),
+        }));
+        expect(markup).to.include('data-appearance-highlight="secondary"');
+        expect(markup).not.to.include('data-appearance-highlight="primary"');
+        theme.destroy();
+    });
+
     it('renders named, default and custom ColorBox sizes as pixel dimensions', () => {
         const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
         const cases: { size: ColorBoxProps['size']; sideLength: number }[] = [
@@ -82,13 +337,14 @@ describe('Composed appearance rendering', () => {
         theme.destroy();
     });
 
-    it('gives every button shape one appearance owner and resolves status glyph overrides', () => {
+    it('gives every button shape one overridden theme owner and resolves status glyph overrides', () => {
         const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
         for (const color of appearanceColorOptions) {
             for (const corners of ['square', 'circle', 'hexagon'] as const) {
                 const markup = renderToStaticMarkup(createElement(ThemeContext.Provider, {
                     value: theme,
                     children: createElement(Button, {
+                        themeMode: 'dark',
                         color,
                         highlightColor: 'intel',
                         glyphsShade: 500,
@@ -103,6 +359,9 @@ describe('Composed appearance rendering', () => {
                 expect([...markup.matchAll(/<button/g)]).to.have.length(1);
                 expect(markup).to.include('aria-label="Launch"');
                 expect(markup).to.include('disabled=""');
+                expect(markup).to.include('data-appearance-mode="dark"');
+                expect(markup).not.to.include('data-appearance-mode="light"');
+                expect(markup).not.to.include('themeMode=');
                 expect(markup).to.include(`--appearance-default-glyphs-override:${theme.color(color, 500)}`);
                 expect(markup).to.include(`--appearance-active-pressed-glyphs-override:${theme.color('intel', 200)}`);
             }

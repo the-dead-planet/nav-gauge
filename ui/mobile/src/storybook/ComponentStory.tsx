@@ -1,12 +1,13 @@
 import { FC, useState } from 'react';
 import { ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
-import { useTheme } from '@ui';
+import { DEFAULT_SIZE, sizeOptions, useTheme } from '@ui';
 import { Text } from '../design-system/typography';
 import { ResizeHandle } from '../gizmos/resize-handle';
 import { Tabstrip } from '../rigs/tabstrip';
 import { MobileStoryArgs, StoryEntry } from './model';
 import { StoryControlField } from './StoryControlField';
 import { StoryHeader } from './StoryHeader';
+import { GallerySizeContext } from './VariantGallery';
 
 const styles = StyleSheet.create({
     area: {
@@ -103,9 +104,15 @@ export const ComponentStory: FC<{ entry: StoryEntry }> = ({ entry }) => {
         );
     }
 
-    const controlNames = tab === 'gallery'
-        ? definition.galleryEditableControls ?? []
-        : Object.keys(definition.controls);
+    const controlNames =
+        tab === 'gallery'
+            ? [
+                  ...new Set([
+                      ...(definition.controls.size ? ['size'] : []),
+                      ...(definition.galleryEditableControls ?? []),
+                  ]),
+              ]
+            : Object.keys(definition.controls);
     const maximumDrawerSize = Math.max(160, (landscape ? width : height) * 0.7);
     const drawerSize = Math.min(storedDrawerSize, maximumDrawerSize);
     const resize = (delta: number) => setStoredDrawerSize((current) => Math.max(160, Math.min(maximumDrawerSize, current - delta)));
@@ -131,7 +138,16 @@ export const ComponentStory: FC<{ entry: StoryEntry }> = ({ entry }) => {
                     tab === 'gallery' ? styles.galleryPreview : undefined,
                     landscape ? { marginRight: drawerSize } : { marginBottom: drawerSize },
                 ]}>
-                    {tab === 'gallery' ? definition.renderGallery(args) : definition.renderPlayground(args)}
+                    <GallerySizeContext.Provider
+                        value={
+                            sizeOptions.find((size) => size === args.size) ??
+                            DEFAULT_SIZE
+                        }
+                    >
+                        {tab === 'gallery'
+                            ? definition.renderGallery(args)
+                            : definition.renderPlayground(args)}
+                    </GallerySizeContext.Provider>
                 </View>
             </View>
             <View style={[drawerStyle, { backgroundColor: appearance.surface, borderColor: appearance.border.color }]}>

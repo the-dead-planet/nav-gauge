@@ -22,6 +22,7 @@ export const buttonStoryArgs = {
 } satisfies ButtonProps;
 
 export const buttonStoryControls: StoryControls<ButtonProps> = {
+    themeMode: typographyStoryControls.themeMode,
     fontType: typographyStoryControls.fontType,
     children: {
         control: 'text',

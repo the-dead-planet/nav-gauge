@@ -5,7 +5,6 @@ import {
     hexagonShapes,
     hexagonStoryArgs,
     hexagonStoryControls,
-    sizeOptions,
     surfaceVariantOptions,
 } from "@ui";
 import { Hexagon } from "./Hexagon";
@@ -36,7 +35,7 @@ export default () => <Hexagon>H</Hexagon>;`,
 
 export const Gallery: Story = {
     parameters: {
-        controls: { exclude: ["color", "size", "variant", "shape"] },
+        controls: { exclude: ["color", "variant", "shape"] },
     },
     render: (args) => (
         <div className={styles.gallery}>
@@ -44,7 +43,7 @@ export const Gallery: Story = {
                 <section key={shape}>
                     <h2>{shape}</h2>
                     <VariantGallery
-                        sizes={sizeOptions}
+                        size={args.size}
                         colors={appearanceColorOptions}
                         variants={surfaceVariantOptions}
                         render={({ color, size, variant }) => (

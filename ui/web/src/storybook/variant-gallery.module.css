@@ -1,0 +1,12 @@
+.gallery {
+    width: 100%;
+    table-layout: fixed;
+    border-spacing: 8px;
+}
+
+.gallery th,
+.gallery td {
+    padding: 0;
+    vertical-align: top;
+    text-align: left;
+}

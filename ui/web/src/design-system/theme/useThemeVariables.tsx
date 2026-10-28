@@ -3,6 +3,7 @@ import {
     allColorShades,
     appearanceColorOptions,
     ColorVariant,
+    ColorShade,
     DEFAULT_COLOR,
     elevationDirectionOptions,
     elevationLevelOptions,
@@ -14,6 +15,7 @@ import {
     ThemeAppearancePaint,
     ThemeAppearanceInsetEffectPolicy,
     themeAppearanceStateOptions,
+    ThemeAppearanceState,
     typographyUsageSpecifications,
 } from "@ui";
 
@@ -26,7 +28,7 @@ const elevationShadow = (theme: Theme, level: ElevationLevel, direction: Elevati
     return `${elevation.offset.x}px ${elevation.offset.y}px ${elevation.blur}px rgba(0, 0, 0, ${elevation.opacity})`;
 };
 
-const resolveAppearancePaint = (paint: ThemeAppearancePaint): string => {
+const resolveAppearancePaint = (paint: ThemeAppearancePaint, surfaceShade?: ColorShade): string => {
     if (paint.type === 'transparent') {
         return 'transparent';
     }
@@ -34,8 +36,11 @@ const resolveAppearancePaint = (paint: ThemeAppearancePaint): string => {
         return paint.value;
     }
 
+    if (paint.type === 'contrast' && surfaceShade === undefined) {
+        throw new Error('Contrast paint requires a shaded surface.');
+    }
     const shade = paint.type === 'contrast'
-        ? `${paint.backgroundShade}-contrast`
+        ? `${surfaceShade}-contrast`
         : paint.shade;
     const colorProperty = paint.colorProperty === 'highlightColor' ? 'highlight' : 'color';
     const color = `var(--appearance-${colorProperty}-${shade})`;
@@ -63,46 +68,77 @@ const createColorDeclarations = (attribute: 'color' | 'highlight', color: string
 const createColorRule = (attribute: 'color' | 'highlight', color: string): string =>
     `[data-appearance-${attribute}="${color}"]{${createColorDeclarations(attribute, color)}}`;
 
-const createAppearanceDeclarations = (policy: Theme['appearancePolicies']['default']): string => {
-    const defaultInset = policy.effects.inset?.default ?? transparentInset;
-    const activePressedInset = policy.effects.inset?.['active-pressed'] ?? transparentInset;
+const resolveModePaint = (
+    lightPaint: ThemeAppearancePaint,
+    darkPaint: ThemeAppearancePaint,
+    lightSurfaceShade?: ColorShade,
+    darkSurfaceShade?: ColorShade,
+): string => {
+    const lightColor = resolveAppearancePaint(lightPaint, lightSurfaceShade);
+    const darkColor = resolveAppearancePaint(darkPaint, darkSurfaceShade);
+    return lightColor === darkColor ? lightColor : `light-dark(${lightColor},${darkColor})`;
+};
+
+const createAppearanceDeclarations = (
+    lightPolicy: Theme['appearancePolicies']['default'],
+    darkPolicy: Theme['appearancePolicies']['default'],
+): string => {
+    const resolveInsetPaint = (
+        state: ThemeAppearanceState,
+        part: 'edgeStart' | 'edgeEnd' | 'shadow' | 'highlight' | 'recess',
+    ): string => resolveModePaint(
+        lightPolicy.effects.inset?.[state]?.[part] ?? transparentInset[part],
+        darkPolicy.effects.inset?.[state]?.[part] ?? transparentInset[part],
+    );
     return [
         ...themeAppearanceStateOptions.flatMap((state) => {
-            const statePolicy = policy.states[state];
+            const lightState = lightPolicy.states[state];
+            const darkState = darkPolicy.states[state];
+            const lightShade = lightState.surface.type === 'shade' ? lightState.surface.shade : undefined;
+            const darkShade = darkState.surface.type === 'shade' ? darkState.surface.shade : undefined;
             return [
-                `--appearance-${state}-surface:${resolveAppearancePaint(statePolicy.surface)}`,
-                `--appearance-${state}-border:${resolveAppearancePaint(statePolicy.border)}`,
-                `--appearance-${state}-glyphs:${resolveAppearancePaint(statePolicy.glyphs)}`,
-                `--appearance-${state}-font-weight:${statePolicy.glyphs.fontWeight ?? 'initial'}`,
-                `--appearance-${state}-border-width:${statePolicy.border.width}px`,
+                `--appearance-${state}-surface:${resolveModePaint(lightState.surface, darkState.surface, lightShade, darkShade)}`,
+                `--appearance-${state}-border:${resolveModePaint(lightState.border, darkState.border, lightShade, darkShade)}`,
+                `--appearance-${state}-glyphs:${resolveModePaint(lightState.glyphs, darkState.glyphs, lightShade, darkShade)}`,
+                `--appearance-${state}-font-weight:${lightState.glyphs.fontWeight ?? 'initial'}`,
+                `--appearance-${state}-border-width:${lightState.border.width}px`,
             ];
         }),
         '--appearance-color:var(--appearance-color-500)',
         '--appearance-glow-color:var(--appearance-highlight-500)',
-        `--appearance-backdrop-filter:${policy.effects.backdropBlur > 0 ? `blur(${policy.effects.backdropBlur}px)` : 'none'}`,
-        `--appearance-inset-default-edge-start:${resolveAppearancePaint(defaultInset.edgeStart)}`,
-        `--appearance-inset-default-edge-end:${resolveAppearancePaint(defaultInset.edgeEnd)}`,
-        `--appearance-inset-active-pressed-edge-start:${resolveAppearancePaint(activePressedInset.edgeStart)}`,
-        `--appearance-inset-active-pressed-edge-end:${resolveAppearancePaint(activePressedInset.edgeEnd)}`,
-        `--appearance-inset-default-inner-start:${resolveAppearancePaint(defaultInset.shadow)}`,
-        `--appearance-inset-default-inner-end:${resolveAppearancePaint(defaultInset.highlight)}`,
-        `--appearance-inset-active-pressed-inner-start:${resolveAppearancePaint(activePressedInset.shadow)}`,
-        `--appearance-inset-active-pressed-inner-end:${resolveAppearancePaint(activePressedInset.highlight)}`,
-        `--appearance-inset-default-recess:${resolveAppearancePaint(defaultInset.recess)}`,
-        `--appearance-inset-active-pressed-recess:${resolveAppearancePaint(activePressedInset.recess)}`,
-        `--appearance-inset-default-shadow:3px 3px 4px ${resolveAppearancePaint(defaultInset.shadow)} inset,-2px -2px 4px ${resolveAppearancePaint(defaultInset.highlight)} inset`,
-        `--appearance-inset-active-pressed-shadow:3px 3px 4px ${resolveAppearancePaint(activePressedInset.shadow)} inset,-2px -2px 4px ${resolveAppearancePaint(activePressedInset.highlight)} inset`,
+        `--appearance-backdrop-filter:${lightPolicy.effects.backdropBlur > 0 ? `blur(${lightPolicy.effects.backdropBlur}px)` : 'none'}`,
+        `--appearance-inset-default-edge-start:${resolveInsetPaint('default', 'edgeStart')}`,
+        `--appearance-inset-default-edge-end:${resolveInsetPaint('default', 'edgeEnd')}`,
+        `--appearance-inset-active-pressed-edge-start:${resolveInsetPaint('active-pressed', 'edgeStart')}`,
+        `--appearance-inset-active-pressed-edge-end:${resolveInsetPaint('active-pressed', 'edgeEnd')}`,
+        `--appearance-inset-default-inner-start:${resolveInsetPaint('default', 'shadow')}`,
+        `--appearance-inset-default-inner-end:${resolveInsetPaint('default', 'highlight')}`,
+        `--appearance-inset-active-pressed-inner-start:${resolveInsetPaint('active-pressed', 'shadow')}`,
+        `--appearance-inset-active-pressed-inner-end:${resolveInsetPaint('active-pressed', 'highlight')}`,
+        `--appearance-inset-default-recess:${resolveInsetPaint('default', 'recess')}`,
+        `--appearance-inset-active-pressed-recess:${resolveInsetPaint('active-pressed', 'recess')}`,
+        `--appearance-inset-default-shadow:3px 3px 4px ${resolveInsetPaint('default', 'shadow')} inset,-2px -2px 4px ${resolveInsetPaint('default', 'highlight')} inset`,
+        `--appearance-inset-active-pressed-shadow:3px 3px 4px ${resolveInsetPaint('active-pressed', 'shadow')} inset,-2px -2px 4px ${resolveInsetPaint('active-pressed', 'highlight')} inset`,
     ].join(';');
 };
 
-const createAppearanceRules = (theme: Theme): string => [
-    ...appearanceColorOptions.map((color) => createColorRule('color', color)),
-    ...appearanceColorOptions.map((color) => createColorRule('highlight', color)),
-    `:root{${createColorDeclarations('color', DEFAULT_COLOR)};${createColorDeclarations('highlight', DEFAULT_COLOR)};${createAppearanceDeclarations(theme.appearancePolicies.default)}}`,
-    ...Object.entries(theme.appearancePolicies).map(([variant, policy]) =>
-        `[data-appearance-variant="${variant}"]{${createAppearanceDeclarations(policy)}}`
-    ),
-].join('\n');
+const createAppearanceRules = (theme: Theme): string => {
+    const lightTheme = theme.forMode('light');
+    const darkTheme = theme.forMode('dark');
+    return [
+        '[data-appearance-mode="light"]{color-scheme:light}',
+        '[data-appearance-mode="dark"]{color-scheme:dark}',
+        ...Object.keys(theme.sizes.control).map((size) =>
+            `[data-size="${size}"]{--size-control-gap:var(--size-control-${size}-gap)}`
+        ),
+        ...appearanceColorOptions.map((color) => createColorRule('color', color)),
+        ...appearanceColorOptions.map((color) => createColorRule('highlight', color)),
+        `:root{${createColorDeclarations('color', DEFAULT_COLOR)};${createColorDeclarations('highlight', DEFAULT_COLOR)};${createAppearanceDeclarations(lightTheme.appearancePolicies.default, darkTheme.appearancePolicies.default)}}`,
+        ...Object.entries(lightTheme.appearancePolicies).map(([variant, policy]) =>
+            `[data-appearance-variant="${variant}"]{${createAppearanceDeclarations(policy, darkTheme.appearancePolicies[variant as keyof Theme['appearancePolicies']])}}`
+        ),
+    ].join('\n');
+};
 
 /**
  * Adds CSS variables using theme colors in format `--color-<name>`.

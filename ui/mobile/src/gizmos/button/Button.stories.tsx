@@ -49,7 +49,7 @@ const StoryButton: FC<ComponentProps<typeof Button>> = ({
                 accessibilityLabel ?? (buttonChildren ? undefined : "Button")
             }
         >
-            {buttonChildren}
+            {buttonChildren ? <>{buttonChildren}</> : null}
         </Button>
     );
 };
@@ -76,6 +76,7 @@ const story = {
         },
     },
     galleryEditableControls: [
+        "themeMode",
         "children",
         "fontType",
         "icon",

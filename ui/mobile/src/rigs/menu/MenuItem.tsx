@@ -1,43 +1,119 @@
 import { FC } from 'react';
-import { StyleSheet, TouchableHighlight } from 'react-native';
+import { Pressable, PressableProps, StyleSheet } from 'react-native';
+import {
+    menuItemLinkIcons,
+    MenuItemProps,
+    useMenuContext,
+    useTheme,
+} from '@ui';
+import { Icon } from '../../design-system/icons';
 import { Text } from '../../design-system/typography';
-import { MenuItemProps, useMenuContext, useTheme } from '@ui';
+import { useHudInteraction } from '../../hud/useHudInteraction';
 
 const styles = StyleSheet.create({
     menuItem: {
-        paddingVertical: 12,
-        paddingHorizontal: 16,
+        flexDirection: 'row',
+        alignItems: 'center',
     },
-    menuText: {
-        fontSize: 16,
+    label: {
+        flexGrow: 1,
+        flexShrink: 1,
     },
 });
 
-export const MenuItem: FC<{ onPress: () => void; } & MenuItemProps> = ({
+export const MenuItem: FC<MenuItemProps & Pick<PressableProps, 'onPress'>> = ({
+    color,
     highlightColor,
+    size,
+    selected,
+    linkType,
+    highlighted = false,
+    disabled = false,
+    glyphsShade,
+    highlightGlyphsShade,
+    isFirst: _isFirst,
+    closeOnPress = true,
     onPress,
-    disabled,
     children,
 }) => {
+    const context = useMenuContext();
     const theme = useTheme();
-    const { color, onClose } = useMenuContext();
-    const textColor = theme.color(color, theme.isLight ? 900 : 100);
+    const baseColor = color ?? context.color;
+    const interactiveColor =
+        highlightColor ?? context.highlightColor ?? baseColor;
+    const { state, interaction, focused } = useHudInteraction({
+        disabled,
+        highlighted: selected || highlighted,
+    });
+    const appearance = theme.resolveAppearance(
+        'menu-item',
+        baseColor,
+        interactiveColor,
+        state,
+    );
+    const controlSize = theme.sizes.control[size ?? context.size];
+    const usesHighlight = state === 'hover-focus' || state === 'active-pressed';
+    const overrideShade = usesHighlight ? highlightGlyphsShade : glyphsShade;
+    const glyphs =
+        disabled || overrideShade === undefined
+            ? appearance.glyphs
+            : theme.color(
+                  usesHighlight ? interactiveColor : baseColor,
+                  overrideShade,
+              );
 
     return (
-        <TouchableHighlight
-            underlayColor={theme.color(highlightColor ?? color, 500, 0.14)}
-            style={styles.menuItem}
-            onPress={() => {
-                onPress();
-                onClose();
-            }}
+        <Pressable
+            {...interaction}
             disabled={disabled}
-            accessibilityRole="button"
-            accessibilityState={{ disabled }}
+            accessibilityRole={
+                selected === undefined
+                    ? linkType
+                        ? 'link'
+                        : 'button'
+                    : 'radio'
+            }
+            accessibilityState={{ disabled, checked: selected }}
+            style={[
+                styles.menuItem,
+                {
+                    minHeight: controlSize.height,
+                    paddingHorizontal: controlSize.paddingInline,
+                    paddingVertical: controlSize.paddingBlock,
+                    gap: controlSize.gap,
+                    backgroundColor: appearance.surface,
+                    borderColor: appearance.border.color,
+                    borderWidth: appearance.border.width,
+                    outlineStyle: 'solid',
+                    outlineWidth: focused ? 2 : 0,
+                    outlineOffset: -2,
+                    outlineColor: appearance.effects.glowColor,
+                },
+            ]}
+            onPress={(event) => {
+                event.stopPropagation();
+                onPress?.(event);
+                if (closeOnPress) {
+                    context.onClose();
+                }
+            }}
         >
-            <Text style={[styles.menuText, { color: textColor }]}>
+            <Text
+                fontWeight={appearance.fontWeight}
+                style={[
+                    styles.label,
+                    { color: glyphs, fontSize: controlSize.fontSize },
+                ]}
+            >
                 {children}
             </Text>
-        </TouchableHighlight>
+            {linkType ? (
+                <Icon
+                    icon={menuItemLinkIcons[linkType]}
+                    size={size ?? context.size}
+                    color={glyphs}
+                />
+            ) : null}
+        </Pressable>
     );
 };

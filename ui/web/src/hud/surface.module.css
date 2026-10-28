@@ -5,6 +5,9 @@
     --appearance-active-pressed-glyphs-override: initial;
     position: relative;
     box-sizing: border-box;
+}
+
+.surface {
     color: var(
         --appearance-default-glyphs-override,
         var(--appearance-default-glyphs)

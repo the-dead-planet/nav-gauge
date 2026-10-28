@@ -4,7 +4,6 @@ import { appearanceColorOptions, buttonCorners, buttonStoryArgs, buttonStoryCont
 import { Button } from './Button';
 import { VariantGallery } from '../../storybook/VariantGallery';
 import {
-    sizeOptions,
     surfaceVariantOptions,
 } from '../../storybook/controls';
 
@@ -48,7 +47,6 @@ export default Button;`,
 export const Gallery: Story = {
     argTypes: {
         color: { table: { disable: true } },
-        size: { table: { disable: true } },
         variant: { table: { disable: true } },
         corners: { table: { disable: true } },
     },
@@ -58,7 +56,7 @@ export const Gallery: Story = {
                 <section key={corners}>
                     <h2>{corners}</h2>
                     <VariantGallery
-                        sizes={sizeOptions}
+                        size={args.size}
                         colors={appearanceColorOptions}
                         variants={surfaceVariantOptions}
                         render={({ color, size, variant }) => (

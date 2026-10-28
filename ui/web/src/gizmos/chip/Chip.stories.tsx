@@ -5,7 +5,6 @@ import {
     chipStoryArgs,
     chipStoryControls,
     Icons,
-    sizeOptions,
     surfaceVariantOptions,
 } from "@ui";
 import { Chip } from "./Chip";
@@ -46,12 +45,11 @@ export default Chip;`,
 export const Gallery: Story = {
     argTypes: {
         color: { table: { disable: true } },
-        size: { table: { disable: true } },
         variant: { table: { disable: true } },
     },
     render: (args) => (
         <VariantGallery
-            sizes={sizeOptions}
+            size={args.size}
             colors={appearanceColorOptions}
             variants={surfaceVariantOptions}
             render={({ color, size, variant }) => (

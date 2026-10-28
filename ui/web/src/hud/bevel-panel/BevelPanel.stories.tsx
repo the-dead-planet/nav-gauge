@@ -5,7 +5,6 @@ import {
     bevelPanelStoryArgs,
     bevelPanelStoryControls,
     fillVariantOptions,
-    sizeOptions,
 } from "@ui";
 import { BevelPanel } from "./BevelPanel";
 import { VariantGallery } from "../../storybook/VariantGallery";
@@ -36,10 +35,10 @@ export default () => <BevelPanel>Preview</BevelPanel>;`,
 });
 
 export const Gallery: Story = {
-    parameters: { controls: { exclude: ["color", "variant", "size"] } },
+    parameters: { controls: { exclude: ["color", "variant"] } },
     render: (args) => (
         <VariantGallery
-            sizes={sizeOptions}
+            size={args.size}
             colors={appearanceColorOptions}
             variants={fillVariantOptions}
             render={({ color, size, variant }) => (
