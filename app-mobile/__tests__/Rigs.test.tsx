@@ -18,6 +18,7 @@ import {
 import { Dialog } from '@the-dead-planet/nav-gauge-ui-mobile/src/rigs/dialog';
 import { Button } from '@the-dead-planet/nav-gauge-ui-mobile/src/gizmos/button';
 import { Text } from '@the-dead-planet/nav-gauge-ui-mobile/src/design-system/typography';
+import { FileInput } from '@the-dead-planet/nav-gauge-ui-mobile/src/forms/file-input';
 import { Tabstrip } from '@the-dead-planet/nav-gauge-ui-mobile/src/rigs/tabstrip';
 import * as tabstripLayout from '@the-dead-planet/nav-gauge-ui-mobile/src/rigs/tabstrip/useTabstripLayout';
 import {
@@ -36,6 +37,8 @@ jest.mock(
 jest.mock('react-native-safe-area-context', () => ({
     useSafeAreaInsets: () => ({ top: 24, right: 0, bottom: 48, left: 0 }),
 }));
+
+jest.mock('@react-native-documents/picker', () => ({ pick: jest.fn() }));
 
 jest.mock(
     '@the-dead-planet/nav-gauge-ui-mobile/src/rigs/popup/usePopupPosition',
@@ -73,6 +76,36 @@ describe('Mobile rig content', () => {
     });
 
     afterEach(() => jest.restoreAllMocks());
+
+    it('matches a ghost filename to its icons in the map theme and preserves default filenames', async () => {
+        const theme = new Theme(themeSpecifications[ThemeName.Default].dark, media);
+        const content = (ghost = true) => (
+            <ThemeContext.Provider value={theme}>
+                <FileInput
+                    type={['public.item']}
+                    color="primary"
+                    themeMode="light"
+                    fileName="route.gpx"
+                    fileNameProps={ghost ? { variant: 'ghost' } : undefined}
+                    fileLabel="Upload"
+                    purgeLabel="Purge"
+                    cancelLabel="Cancel"
+                    noNameLabel="No file"
+                    purgeText="Purge route?"
+                    onUpload={() => undefined}
+                    onPurge={() => undefined}
+                />
+            </ThemeContext.Provider>
+        );
+        const screen = await render(content());
+        const ghostColor = theme.color('primary', 700);
+        expect(screen.getByText('route.gpx')).toHaveStyle({ color: ghostColor });
+        expect(jest.mocked(Icon).mock.lastCall?.[0].color).toBe(ghostColor);
+        await screen.rerender(content(false));
+        expect(screen.getByText('route.gpx')).toHaveStyle({ color: theme.color('primary', 900) });
+        await screen.unmount();
+        theme.destroy();
+    });
 
     it.each<ThemeMode>(['light', 'dark'])(
         'matches ghost typography to icon glyphs in %s mode with explicit overrides',

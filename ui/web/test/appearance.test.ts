@@ -49,6 +49,7 @@ const { Menu } = require('../src/rigs/menu/Menu') as typeof import('../src/rigs/
 const { MenuItem } = require('../src/rigs/menu/MenuItem') as typeof import('../src/rigs/menu/MenuItem');
 const { Tabstrip } = require('../src/rigs/tabstrip/Tabstrip') as typeof import('../src/rigs/tabstrip/Tabstrip');
 const { VariantGallery } = require('../src/storybook/VariantGallery') as typeof import('../src/storybook/VariantGallery');
+const { FileInput } = require('../src/forms/file-input/FileInput') as typeof import('../src/forms/file-input/FileInput');
 if (previousCssLoader) {
     require.extensions['.css'] = previousCssLoader;
 } else {
@@ -76,6 +77,35 @@ const renderToStaticMarkup = (children: ReactElement): string => renderMarkup(
 
 describe('Composed appearance rendering', () => {
     after(() => renderingTheme.destroy());
+
+    it('lets FileInput callers choose filename typography without changing its default', () => {
+        const props: ComponentProps<typeof FileInput> = {
+            accept: '*',
+            color: 'primary',
+            themeMode: 'light',
+            fileName: 'route.gpx',
+            fileLabel: 'Upload',
+            purgeLabel: 'Purge',
+            cancelLabel: 'Cancel',
+            noNameLabel: 'No file',
+            purgeText: 'Purge route?',
+            onUpload: () => undefined,
+            onPurge: () => undefined,
+        };
+        const defaultMarkup = renderToStaticMarkup(createElement(FileInput, props));
+        const ghostMarkup = renderToStaticMarkup(createElement(FileInput, {
+            ...props,
+            fileNameProps: {
+                variant: 'ghost',
+            },
+        }));
+        expect(defaultMarkup.match(/<label\b[^>]*>route\.gpx<\/label>/)?.[0])
+            .to.include('data-appearance-variant="default"');
+        const filename = ghostMarkup.match(/<label\b[^>]*>route\.gpx<\/label>/)?.[0];
+        expect(filename).to.include('data-appearance-variant="ghost"');
+        expect(filename).to.include('data-appearance-mode="light"');
+        expect(ghostMarkup).not.to.include('fileNameProps=');
+    });
 
     it('renders one controlled gallery size, defaulting to DEFAULT_SIZE', () => {
         for (const size of [undefined, ...sizeOptions]) {
