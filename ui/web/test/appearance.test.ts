@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { createRequire } from 'node:module';
-import { ComponentProps, createElement } from 'react';
+import { ComponentProps, createElement, ReactElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import {
     appearanceColorOptions,
@@ -64,13 +64,20 @@ const media = {
 
 describe('Composed appearance rendering', () => {
     it('shadows only enabled translucent button and chip labels', () => {
+        const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
+        const renderWithTheme = (children: ReactElement) => renderToStaticMarkup(
+            createElement(ThemeContext.Provider, {
+                value: theme,
+                children,
+            }),
+        );
         for (const variant of fillVariantOptions) {
             const markups = [
-                renderToStaticMarkup(createElement(Button, {
+                renderWithTheme(createElement(Button, {
                     variant,
                     children: 'Button label',
                 })),
-                renderToStaticMarkup(createElement(Chip, {
+                renderWithTheme(createElement(Chip, {
                     variant,
                     children: 'Chip label',
                 })),
@@ -79,12 +86,13 @@ describe('Composed appearance rendering', () => {
                 expect(/class="[^"]*\bshadow\b/.test(markup)).to.equal(variant === 'fill-translucent');
             }
         }
-        const disabled = renderToStaticMarkup(createElement(Button, {
+        const disabled = renderWithTheme(createElement(Button, {
             variant: 'fill-translucent',
             disabled: true,
             children: 'Disabled label',
         }));
         expect(disabled).not.to.match(/class="[^"]*\bshadow\b/);
+        theme.destroy();
     });
 
     it('inherits menu item size and highlight policy without retaining disabled link navigation', () => {
