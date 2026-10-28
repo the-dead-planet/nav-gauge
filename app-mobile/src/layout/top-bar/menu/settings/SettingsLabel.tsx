@@ -16,15 +16,17 @@ interface Props {
     children: ReactNode;
 }
 
-export const SettingsLabel: FC<Props> = ({ wide, children }) => (
-    <Label
-        color="primary"
-        shade={100}
-        uppercase
-        align="left"
-        shadow={wide}
-        style={wide ? styles.wide : styles.label}
-    >
-        {children}
-    </Label>
-);
+export const SettingsLabel: FC<Props> = ({ wide, children }) => {
+    return (
+        <Label
+            color="primary"
+            shade={100}
+            shadow
+            uppercase
+            align="left"
+            style={wide ? styles.wide : styles.label}
+        >
+            {children}
+        </Label>
+    );
+};

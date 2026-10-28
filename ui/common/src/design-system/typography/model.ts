@@ -49,6 +49,7 @@ export interface TypographyProps {
     fontWeight?: FontWeight;
     align?: 'left' | 'center' | 'right';
     nowrap?: boolean;
+    /** Adds a palette shade 800 text shadow. */
     shadow?: boolean;
     bold?: boolean;
     disabled?: boolean;

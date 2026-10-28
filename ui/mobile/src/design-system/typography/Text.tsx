@@ -92,7 +92,7 @@ export const Text: FC<TextProps> = ({
                     paddingBottom: spacing(spacingValues.paddingBottom),
                     paddingLeft: spacing(spacingValues.paddingLeft),
                     textShadowColor: shadow && !disabled
-                        ? theme.color(color, 900)
+                        ? theme.color(color, 800)
                         : undefined,
                     textShadowOffset: shadow && !disabled ? {
                         width: -1,

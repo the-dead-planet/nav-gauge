@@ -165,9 +165,8 @@ export const Tabstrip: FC<TabstripProps> = ({
                                 <MenuItem
                                     key={option.value}
                                     onPress={() => selectTab(option.value)}
-                                    highlighted={
-                                        highlighted || option.value === value
-                                    }
+                                    selected={option.value === value}
+                                    highlighted={highlighted}
                                     highlightColor={highlightColor}
                                     disabled={disabled || option.disabled}
                                 >

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { actionButtonVariants, appearanceColorOptions, Orientation, SurfaceVariant, surfaceVariantOptions, Theme, ThemeAppearanceVariant, themeAppearanceStateOptions, themeSpecifications, ThemeName, translucentSurfaceOpacity } from "../../src";
+import { actionButtonVariants, appearanceColorOptions, Orientation, surfaceVariantOptions, Theme, themeAppearanceStateOptions, themeSpecifications, ThemeName, translucentSurfaceOpacity } from "../../src";
 
 const media = {
     initial: () => ({
@@ -25,41 +25,68 @@ const oklabLightness = ({ r, g, b }: { r: number; g: number; b: number }): numbe
 };
 
 describe("Theme", () => {
-    it('resolves menu selection, hover and pressed fills with contrast glyphs and unchanged disabled styling', () => {
-        const menuItemVariants: ThemeAppearanceVariant[] = ['menu-item', 'menu-item-selected'];
+    it('derives contrast glyphs from the current surface shade', () => {
+        const contrastTheme = new Theme(themeSpecifications[ThemeName.Default].light, media);
+        try {
+            contrastTheme.appearancePolicies.fill.states.default.surface = {
+                type: 'shade',
+                colorProperty: 'color',
+                shade: 900,
+            };
+            expect(contrastTheme.resolveAppearance('fill', 'neutral').glyphs).to.equal(
+                contrastTheme.color('neutral', contrastTheme.contrastShade('neutral', 900)),
+            );
+        } finally {
+            contrastTheme.destroy();
+        }
+    });
+
+    it('uses readable dialog foregrounds for every palette and status color in both modes', () => {
+        for (const specifications of Object.values(themeSpecifications)) {
+            for (const specification of [specifications.light, specifications.dark]) {
+                const dialogTheme = new Theme(specification, media);
+                for (const color of appearanceColorOptions) {
+                    expect(dialogTheme.resolveAppearance('fill', color).glyphs).to.equal(
+                        dialogTheme.color(color, dialogTheme.contrastShade(color, 500)),
+                    );
+                    expect(dialogTheme.resolveAppearance('fill-inverse', color).glyphs).to.equal(
+                        dialogTheme.color(color, dialogTheme.isLight ? 900 : 100),
+                    );
+                    const translucentDialog = dialogTheme.resolveAppearance('fill-translucent', color);
+                    expect(translucentDialog.glyphs).to.equal(dialogTheme.color(color, 100));
+                }
+                dialogTheme.destroy();
+            }
+        }
+    });
+
+    it('resolves menu hover and pressed fills with contrast glyphs and unchanged disabled styling', () => {
         for (const specifications of Object.values(themeSpecifications)) {
             for (const specification of [specifications.light, specifications.dark]) {
                 const menuTheme = new Theme(specification, media);
                 for (const color of appearanceColorOptions) {
                     for (const highlightColor of appearanceColorOptions) {
                         const normal = menuTheme.resolveAppearance('menu-item', color, highlightColor);
-                        const selected = menuTheme.resolveAppearance('menu-item-selected', color, highlightColor);
-                        const selectedShade = menuTheme.isLight ? 400 : 600;
                         expect(normal.surface).to.equal('transparent');
                         expect(normal.glyphs).to.equal(menuTheme.color(color, menuTheme.isLight ? 800 : 200));
                         expect(normal.border).to.deep.equal({ color: 'transparent', width: 0 });
-                        expect(selected.surface).to.equal(menuTheme.color(highlightColor, selectedShade));
-                        expect(selected.glyphs).to.equal(menuTheme.color(highlightColor, menuTheme.contrastShade(highlightColor, selectedShade)));
-                        expect(selected.border).to.deep.equal(normal.border);
-                        for (const variant of menuItemVariants) {
-                            const hoverShade = menuTheme.isLight ? 300 : 700;
-                            const pressedShade = menuTheme.isLight ? 400 : 600;
-                            const hover = menuTheme.resolveAppearance(variant, color, highlightColor, 'hover-focus');
-                            const pressed = menuTheme.resolveAppearance(variant, color, highlightColor, 'active-pressed');
-                            const disabled = menuTheme.resolveAppearance(variant, color, highlightColor, 'disabled');
-                            for (const appearance of [normal, selected, hover, pressed, disabled]) {
-                                expect(appearance.fontWeight).to.equal(undefined);
-                            }
-                            expect(hover.surface).to.equal(menuTheme.color(highlightColor, hoverShade));
-                            expect(hover.glyphs).to.equal(menuTheme.color(highlightColor, menuTheme.contrastShade(highlightColor, hoverShade)));
-                            expect(hover.border).to.deep.equal(normal.border);
-                            expect(pressed.surface).to.equal(menuTheme.color(highlightColor, pressedShade));
-                            expect(pressed.glyphs).to.equal(menuTheme.color(highlightColor, menuTheme.contrastShade(highlightColor, pressedShade)));
-                            expect(pressed.border).to.deep.equal(normal.border);
-                            expect(disabled.surface).to.equal('transparent');
-                            expect(disabled.glyphs).to.equal(menuTheme.color(color, menuTheme.isLight ? 300 : 700));
-                            expect(disabled.border).to.deep.equal(normal.border);
+                        const hoverShade = menuTheme.isLight ? 300 : 700;
+                        const pressedShade = menuTheme.isLight ? 400 : 600;
+                        const hover = menuTheme.resolveAppearance('menu-item', color, highlightColor, 'hover-focus');
+                        const pressed = menuTheme.resolveAppearance('menu-item', color, highlightColor, 'active-pressed');
+                        const disabled = menuTheme.resolveAppearance('menu-item', color, highlightColor, 'disabled');
+                        for (const appearance of [normal, hover, pressed, disabled]) {
+                            expect(appearance.fontWeight).to.equal(undefined);
                         }
+                        expect(hover.surface).to.equal(menuTheme.color(highlightColor, hoverShade));
+                        expect(hover.glyphs).to.equal(menuTheme.color(highlightColor, menuTheme.contrastShade(highlightColor, hoverShade)));
+                        expect(hover.border).to.deep.equal(normal.border);
+                        expect(pressed.surface).to.equal(menuTheme.color(highlightColor, pressedShade));
+                        expect(pressed.glyphs).to.equal(menuTheme.color(highlightColor, menuTheme.contrastShade(highlightColor, pressedShade)));
+                        expect(pressed.border).to.deep.equal(normal.border);
+                        expect(disabled.surface).to.equal('transparent');
+                        expect(disabled.glyphs).to.equal(menuTheme.color(color, menuTheme.isLight ? 300 : 700));
+                        expect(disabled.border).to.deep.equal(normal.border);
                     }
                 }
                 menuTheme.destroy();
@@ -83,10 +110,29 @@ describe("Theme", () => {
         }
     });
 
+    it('uses light translucent glyphs and preserves disabled styling', () => {
+        for (const specifications of Object.values(themeSpecifications)) {
+            for (const specification of [specifications.light, specifications.dark]) {
+                const translucentTheme = new Theme(specification, media);
+                for (const color of appearanceColorOptions) {
+                    for (const state of themeAppearanceStateOptions) {
+                        const appearance = translucentTheme.resolveAppearance('fill-translucent', color, 'intel', state);
+                        const glyphColor = state === 'default' || state === 'disabled' ? color : 'intel';
+                        expect(appearance.glyphs).to.equal(translucentTheme.color(
+                            glyphColor,
+                            state === 'disabled' ? (translucentTheme.isLight ? 300 : 700) : 100,
+                        ));
+                    }
+                }
+                translucentTheme.destroy();
+            }
+        }
+    });
+
     it('shares selected and secondary action variants across filled surfaces', () => {
-        expect(actionButtonVariants.fill).to.deep.equal({ active: 'fill', inactive: 'fill-inverse' });
-        expect(actionButtonVariants['fill-inverse']).to.deep.equal({ active: 'fill', inactive: 'ghost' });
-        expect(actionButtonVariants['fill-translucent']).to.deep.equal({ active: 'fill', inactive: 'ghost' });
+        expect(actionButtonVariants.fill).to.deep.equal({ active: 'fill', inactive: 'fill-translucent' });
+        expect(actionButtonVariants['fill-inverse']).to.deep.equal({ active: 'fill', inactive: 'fill-translucent' });
+        expect(actionButtonVariants['fill-translucent']).to.deep.equal({ active: 'fill', inactive: 'fill-translucent' });
     });
 
     it('uses the base palette for omitted highlights across all variants, states and colors', () => {
@@ -173,7 +219,6 @@ describe("Theme", () => {
     });
 
     it("resolves distinct ghost glyph states for every theme, mode, palette and status color", () => {
-        const matchingGlyphVariants: SurfaceVariant[] = ['fill-translucent', 'inset'];
         for (const specifications of Object.values(themeSpecifications)) {
             for (const specification of [specifications.light, specifications.dark]) {
                 const ghostTheme = new Theme(specification, media);
@@ -192,11 +237,9 @@ describe("Theme", () => {
                             ghostTheme.color(highlightColor, ghostTheme.isLight ? 900 : 100),
                             ghostTheme.color(color, ghostTheme.isLight ? 300 : 700),
                         ]);
-                        for (const variant of matchingGlyphVariants) {
-                            expect(themeAppearanceStateOptions.map((state) => (
-                                ghostTheme.resolveAppearance(variant, color, highlightColor, state).glyphs
-                            ))).to.deep.equal(appearances.map(({ glyphs }) => glyphs));
-                        }
+                        expect(themeAppearanceStateOptions.map((state) => (
+                            ghostTheme.resolveAppearance('inset', color, highlightColor, state).glyphs
+                        ))).to.deep.equal(appearances.map(({ glyphs }) => glyphs));
                         for (const appearance of appearances) {
                             expect(appearance.fontWeight).to.equal(500);
                             expect(appearance.surface).to.equal('transparent');

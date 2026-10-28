@@ -63,12 +63,13 @@ const styles = StyleSheet.create({
     panel: {
         rowGap: 10,
         maxHeight: '100%',
+        flexShrink: 1,
     },
     panelFullWidth: {
         width: '100%',
-        flex: 1,
     },
     header: {
+        flexShrink: 0,
         paddingTop: 15,
         paddingHorizontal: 20,
     },
@@ -78,10 +79,13 @@ const styles = StyleSheet.create({
     },
     content: {
         paddingHorizontal: 20,
+        minHeight: 0,
+        flexGrow: 0,
         flexShrink: 1,
     },
     footer: {
         flexDirection: 'row',
+        flexShrink: 0,
     },
     buttonCell: {
         flex: 1,
@@ -185,6 +189,9 @@ export const Dialog: FC<Props> = ({
                                 fontType={FontType.NeonText}
                                 uppercase
                                 accessibilityRole="header"
+                                fontWeight={500}
+                                color={color}
+                                shadow={variant === 'fill-translucent'}
                                 style={[
                                     styles.headerText,
                                     { color: appearance.glyphs },

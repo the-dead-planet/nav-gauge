@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { createRequire } from 'node:module';
-import { createElement } from 'react';
+import { ComponentProps, createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import {
     appearanceColorOptions,
@@ -86,7 +86,7 @@ describe('Composed appearance rendering', () => {
                 expect(markup).to.include(`size-${size}`);
                 expect(markup).to.include(`data-appearance-color="${color}"`);
                 expect(markup).to.include('data-appearance-highlight="hazard"');
-                expect(markup).to.include('data-appearance-variant="ghost"');
+                expect(markup).to.include('data-appearance-variant="menu-item"');
                 expect(markup).to.include('data-disabled="true"');
                 expect(markup).to.include('aria-disabled="true"');
                 expect(markup).to.include('tabindex="-1"');
@@ -95,6 +95,50 @@ describe('Composed appearance rendering', () => {
                 expect(markup).to.include(`--appearance-active-pressed-glyphs-override:${theme.color('hazard', 200)}`);
                 expect([...markup.matchAll(/data-interactive="true"/g)]).to.have.length(1);
             }
+        }
+        theme.destroy();
+    });
+
+    it('renders selected menu rows with checked semantics and highlight-palette overrides', () => {
+        const theme = new Theme(themeSpecifications[ThemeName.Default].dark, media);
+        const markup = renderToStaticMarkup(createElement(ThemeContext.Provider, {
+            value: theme,
+            children: createElement(MenuItem, {
+                type: 'button',
+                color: 'glitch',
+                highlightColor: 'intel',
+                highlightGlyphsShade: 100,
+                selected: true,
+                children: 'Selected route',
+            }),
+        }));
+        expect(markup).to.include('data-appearance-variant="menu-item"');
+        expect(markup).to.include('data-highlighted="true"');
+        expect(markup).to.include('data-appearance-color="glitch"');
+        expect(markup).to.include('data-appearance-highlight="intel"');
+        expect(markup).to.include('role="menuitemradio"');
+        expect(markup).to.include('aria-checked="true"');
+        expect(markup).to.include(`--appearance-active-pressed-glyphs-override:${theme.color('intel', 100)}`);
+        expect([...markup.matchAll(/data-interactive="true"/g)]).to.have.length(1);
+        theme.destroy();
+    });
+
+    it('marks link menu items without giving their icons a separate appearance owner', () => {
+        const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
+        const renderItem = (item: ComponentProps<typeof MenuItem>) => renderToStaticMarkup(createElement(ThemeContext.Provider, {
+            value: theme,
+            children: createElement(MenuItem, item),
+        }));
+        const internal = renderItem({ type: 'link', href: '#route', children: 'Route' });
+        const external = renderItem({ type: 'link', href: '/legal', target: '_blank', children: 'Legal' });
+        const action = renderItem({ type: 'button', children: 'Settings' });
+        expect(internal).to.include('data-link-type="internal"');
+        expect(external).to.include('data-link-type="external"');
+        expect(action).not.to.include('data-link-type');
+        expect(internal).to.include('aria-hidden="true"');
+        expect(external).to.include('aria-hidden="true"');
+        for (const markup of [internal, external, action]) {
+            expect([...markup.matchAll(/data-appearance-variant=/g)]).to.have.length(1);
         }
         theme.destroy();
     });
@@ -117,6 +161,22 @@ describe('Composed appearance rendering', () => {
         expect(markup).to.include('aria-haspopup="menu"');
         expect(markup).to.include('aria-expanded="false"');
         expect(markup).to.include('disabled=""');
+        theme.destroy();
+    });
+
+    it('gives the trigger-specific color priority over the shared menu highlight', () => {
+        const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
+        const markup = renderToStaticMarkup(createElement(ThemeContext.Provider, {
+            value: theme,
+            children: createElement(Menu, {
+                color: 'neutral',
+                highlightColor: 'primary',
+                iconActiveColor: 'secondary',
+                triggerAccessibilityLabel: 'Open menu',
+            }),
+        }));
+        expect(markup).to.include('data-appearance-highlight="secondary"');
+        expect(markup).not.to.include('data-appearance-highlight="primary"');
         theme.destroy();
     });
 

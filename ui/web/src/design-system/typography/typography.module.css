@@ -26,8 +26,8 @@
 
 .shadow {
     text-shadow:
-        -1px 0 1px var(--appearance-color-900),
-        1px 0 1px var(--appearance-color-900);
+        -1px 0 1px var(--appearance-color-800),
+        1px 0 1px var(--appearance-color-800);
 }
 
 .tabular {

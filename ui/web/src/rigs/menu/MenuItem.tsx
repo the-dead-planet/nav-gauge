@@ -4,7 +4,6 @@ import {
     MenuItemProps,
     menuItemLinkIcons,
     resolveMenuItemLinkType,
-    ThemeAppearanceVariant,
     useMenuContext,
     useTheme,
 } from '@ui';
@@ -38,10 +37,6 @@ export const MenuItem: FC<MenuItemProps & Props> = ({
     const selectedColor = color ?? context.color;
     const selectedHighlightColor =
         highlightColor ?? context.highlightColor ?? selectedColor;
-    const defaultGlyphsShade = selected ? highlightGlyphsShade : glyphsShade;
-    const variant: ThemeAppearanceVariant = selected
-        ? 'menu-item-selected'
-        : 'menu-item';
     const resolvedLinkType =
         linkType ??
         (props.type === 'link'
@@ -67,10 +62,9 @@ export const MenuItem: FC<MenuItemProps & Props> = ({
         </>
     );
     const appearanceProps = {
-        variant,
         color: selectedColor,
         highlightColor: selectedHighlightColor,
-        highlighted,
+        highlighted: selected || highlighted,
         disabled,
         interactive: true,
         rectangle: true,
@@ -84,12 +78,12 @@ export const MenuItem: FC<MenuItemProps & Props> = ({
         ),
         style: {
             ...style,
-            ...(defaultGlyphsShade === undefined
+            ...(glyphsShade === undefined
                 ? undefined
                 : {
                       '--appearance-default-glyphs-override': theme.color(
-                          selected ? selectedHighlightColor : selectedColor,
-                          defaultGlyphsShade,
+                          selectedColor,
+                          glyphsShade,
                       ),
                   }),
             ...(highlightGlyphsShade === undefined
@@ -111,6 +105,7 @@ export const MenuItem: FC<MenuItemProps & Props> = ({
     return props.type === 'link' ? (
         <HudSurface
             as="a"
+            variant="menu-item"
             {...props}
             {...appearanceProps}
             href={disabled ? undefined : props.href}
@@ -132,6 +127,7 @@ export const MenuItem: FC<MenuItemProps & Props> = ({
     ) : (
         <HudSurface
             as="button"
+            variant="menu-item"
             {...props}
             {...appearanceProps}
             autoFocus={!disabled && (props.autoFocus || isFirst)}

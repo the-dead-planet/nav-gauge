@@ -25,17 +25,42 @@ interface Props {
     children: ReactNode;
 }
 
-export const SettingsCheckbox: FC<Props> = ({ wide, checked, onChange, children }) => (
-    <View style={[styles.field, wide && styles.wideField]}>
-        {wide ? (
-            <>
-                <SettingsLabel wide>{children}</SettingsLabel>
-                <Checkbox size="xs" color="primary" checked={checked} onChange={onChange} />
-            </>
-        ) : (
-            <Checkbox size="xs" color="primary" checked={checked} onChange={onChange}>
-                <Text uppercase color="primary" shade={100} style={styles.label}>{children}</Text>
-            </Checkbox>
-        )}
-    </View>
-);
+export const SettingsCheckbox: FC<Props> = ({
+    wide,
+    checked,
+    onChange,
+    children,
+}) => {
+    return (
+        <View style={[styles.field, wide && styles.wideField]}>
+            {wide ? (
+                <>
+                    <SettingsLabel wide>{children}</SettingsLabel>
+                    <Checkbox
+                        size="xs"
+                        color="primary"
+                        checked={checked}
+                        onChange={onChange}
+                    />
+                </>
+            ) : (
+                <Checkbox
+                    size="xs"
+                    color="primary"
+                    checked={checked}
+                    onChange={onChange}
+                >
+                    <Text
+                        uppercase
+                        color="primary"
+                        shade={100}
+                        shadow
+                        style={styles.label}
+                    >
+                        {children}
+                    </Text>
+                </Checkbox>
+            )}
+        </View>
+    );
+};

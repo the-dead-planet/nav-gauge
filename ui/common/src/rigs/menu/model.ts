@@ -33,7 +33,7 @@ export interface MenuProps extends AppearanceProps {
 export interface MenuItemProps extends Omit<AppearanceProps, 'variant'> {
     /** Navigation indicator; web anchors infer it from href and target when omitted. */
     linkType?: MenuItemLinkType;
-    /** Persistent selection; hover and press still receive their own feedback. */
+    /** Persistent selection using the active/pressed appearance. */
     selected?: boolean;
     isFirst?: boolean;
     closeOnPress?: boolean;

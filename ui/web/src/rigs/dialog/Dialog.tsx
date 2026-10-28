@@ -12,7 +12,8 @@ import {
     useTheme,
 } from '@ui';
 import { useSubjectState } from '@tinker-chest';
-import { Panel } from '../../hud';
+import { HudSurface } from '../../hud/HudSurface';
+import surface from '../../hud/surface.module.css';
 import { Button } from '../../gizmos/button';
 import { H3 } from '../../design-system/typography';
 import { Transition } from '../../motion/transition';
@@ -67,18 +68,26 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
                     )}
                     {...props}
                 >
-                    <Panel
-                        elevationLayer="dialog"
+                    <HudSurface
+                        as="div"
+                        rectangle
                         variant={variant}
                         color={color}
-                        className={styles['dialog']}
+                        className={classNames(
+                            surface['layer-dialog'],
+                            styles['dialog'],
+                        )}
                     >
                         <H3
                             id={headerId}
                             fontType={FontType.NeonText}
+                            uppercase
+                            fontWeight={500}
+                            color={color}
+                            shadow={variant === 'fill-translucent'}
                             className={styles['header']}
                         >
-                            {header.toUpperCase()}
+                            {header}
                         </H3>
                         <div className={styles['content']}>{children}</div>
                         <div className={styles['footer']}>
@@ -104,7 +113,7 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
                                 </Button>
                             ) : null}
                         </div>
-                    </Panel>
+                    </HudSurface>
                 </div>
             </Transition>
         </div>,

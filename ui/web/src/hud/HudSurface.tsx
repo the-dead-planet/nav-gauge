@@ -5,17 +5,18 @@ import {
     AppearancePropsBase,
     DEFAULT_COLOR,
     SurfaceVariant,
+    ThemeAppearanceVariant,
 } from "@ui";
 import surface from "./surface.module.css";
 
 type Props<Element extends "div" | "button" | "a"> =
-    AppearancePropsBase<SurfaceVariant> &
+    Omit<AppearancePropsBase<SurfaceVariant>, 'variant'> &
         Omit<
             ComponentProps<Element>,
             keyof AppearancePropsBase<SurfaceVariant>
         > & {
             as: Element;
-            variant: SurfaceVariant;
+            variant: ThemeAppearanceVariant;
             interactive?: boolean;
             activeGlow?: ActiveGlow;
             rectangle?: boolean;

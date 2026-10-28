@@ -1,6 +1,6 @@
 import { ComponentPropsWithoutRef, createElement, CSSProperties, ElementType, ReactElement } from "react";
 import classNames from "classnames";
-import { DEFAULT_COLOR, FontType, resolveTypographyFontWeight, resolveTypographySpacing, TypographyProps } from "@ui";
+import { FontType, resolveTypographyFontWeight, resolveTypographySpacing, TypographyProps } from "@ui";
 import styles from './typography.module.css';
 
 type TypographyElementProps<Element extends ElementType> = TypographyProps & {
@@ -11,7 +11,7 @@ type TypographyElementProps<Element extends ElementType> = TypographyProps & {
 export const TypographyElement = <Element extends ElementType>({
     as: Component,
     baseClassName,
-    color = DEFAULT_COLOR,
+    color,
     highlightColor = color,
     highlighted,
     shade,
@@ -44,10 +44,12 @@ export const TypographyElement = <Element extends ElementType>({
     ...props
 }: TypographyElementProps<Element>): ReactElement => {
     const spacing = resolveTypographySpacing({ m, mv, mh, mt, mr, mb, ml, p, pv, ph, pt, pr, pb, pl });
+    const colorVariable = color === undefined ? '--appearance-color' : `--color-${color}`;
+    const highlightVariable = highlightColor === undefined ? '--appearance-highlight' : `--color-${highlightColor}`;
 
     return createElement(Component, {
         ...props,
-        'data-appearance-variant': 'default',
+        'data-appearance-variant': color === undefined ? undefined : 'default',
         'data-appearance-color': color,
         'data-appearance-highlight': highlightColor,
         'data-highlighted': highlighted || undefined,
@@ -74,9 +76,9 @@ export const TypographyElement = <Element extends ElementType>({
         ),
         style: {
             ...style,
-            '--appearance-default-glyphs-override': shade === undefined ? undefined : `var(--color-${color}-${shade})`,
-            '--appearance-hover-focus-glyphs-override': highlightShade === undefined ? undefined : `var(--color-${highlightColor}-${highlightShade})`,
-            '--appearance-active-pressed-glyphs-override': highlightShade === undefined ? undefined : `var(--color-${highlightColor}-${highlightShade})`,
+            '--appearance-default-glyphs-override': shade === undefined ? undefined : `var(${colorVariable}-${shade})`,
+            '--appearance-hover-focus-glyphs-override': highlightShade === undefined ? undefined : `var(${highlightVariable}-${highlightShade})`,
+            '--appearance-active-pressed-glyphs-override': highlightShade === undefined ? undefined : `var(${highlightVariable}-${highlightShade})`,
         } as CSSProperties,
     });
 };

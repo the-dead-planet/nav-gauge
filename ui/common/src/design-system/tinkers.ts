@@ -42,15 +42,15 @@ export const DEFAULT_COLOR: ColorVariant = 'neutral';
 export const actionButtonVariants: Record<FillVariant, ActionButtonVariants> = {
     fill: {
         active: 'fill',
-        inactive: 'fill-inverse',
+        inactive: 'fill-translucent',
     },
     'fill-inverse': {
         active: 'fill',
-        inactive: 'ghost',
+        inactive: 'fill-translucent',
     },
     'fill-translucent': {
         active: 'fill',
-        inactive: 'ghost',
+        inactive: 'fill-translucent',
     },
 };
 

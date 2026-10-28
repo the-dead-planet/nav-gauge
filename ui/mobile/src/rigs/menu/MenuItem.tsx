@@ -43,17 +43,16 @@ export const MenuItem: FC<MenuItemProps & Pick<PressableProps, 'onPress'>> = ({
         highlightColor ?? context.highlightColor ?? baseColor;
     const { state, interaction, focused } = useHudInteraction({
         disabled,
-        highlighted,
+        highlighted: selected || highlighted,
     });
     const appearance = theme.resolveAppearance(
-        selected ? 'menu-item-selected' : 'menu-item',
+        'menu-item',
         baseColor,
         interactiveColor,
         state,
     );
     const controlSize = theme.sizes.control[size ?? context.size];
-    const usesHighlight =
-        selected || state === 'hover-focus' || state === 'active-pressed';
+    const usesHighlight = state === 'hover-focus' || state === 'active-pressed';
     const overrideShade = usesHighlight ? highlightGlyphsShade : glyphsShade;
     const glyphs =
         disabled || overrideShade === undefined

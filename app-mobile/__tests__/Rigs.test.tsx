@@ -3,6 +3,7 @@ import { Animated, StyleSheet } from 'react-native';
 import {
     Orientation,
     ColorShade,
+    fillVariantOptions,
     Icons,
     Theme,
     ThemeContext,
@@ -60,6 +61,60 @@ describe('Mobile rig content', () => {
     });
 
     afterEach(() => jest.restoreAllMocks());
+
+    it.each<ThemeMode>(['light', 'dark'])(
+        'uses the dialog foreground for its heading and bare text in %s mode',
+        async (mode) => {
+            const theme = new Theme(
+                themeSpecifications[ThemeName.Default][mode],
+                media,
+                false,
+            );
+            for (const variant of fillVariantOptions) {
+                const screen = await render(
+                    <ThemeContext.Provider value={theme}>
+                        <Dialog
+                            variant={variant}
+                            color="primary"
+                            header="Readable heading"
+                            closeText="Close"
+                            onClose={() => undefined}
+                        >
+                            Bare dialog text
+                        </Dialog>
+                    </ThemeContext.Provider>,
+                );
+                const shade =
+                    variant === 'fill'
+                        ? theme.contrastShade('primary', 500)
+                        : variant === 'fill-translucent' || mode === 'dark'
+                          ? 100
+                          : 900;
+                const glyphs = theme.color('primary', shade);
+                expect(screen.getByRole('header')).toHaveStyle({
+                    color: glyphs,
+                });
+                expect(screen.getByText('Bare dialog text')).toHaveStyle({
+                    color: glyphs,
+                });
+                if (variant === 'fill-translucent') {
+                    expect(screen.getByRole('header')).toHaveStyle({
+                        textShadowColor: theme.color('primary', 800),
+                        textShadowRadius: 1,
+                        textShadowOffset: { width: -1, height: 0 },
+                    });
+                    expect(screen.getByText('Bare dialog text')).not.toHaveStyle({
+                        textShadowColor: theme.color('primary', 800),
+                    });
+                    expect(screen.getByText('Close')).not.toHaveStyle({
+                        textShadowColor: theme.color('primary', 800),
+                    });
+                }
+                await screen.unmount();
+            }
+            theme.destroy();
+        },
+    );
 
     it('keeps the trigger highlight override out of menu item press colors', async () => {
         const theme = new Theme(
@@ -163,7 +218,7 @@ describe('Mobile rig content', () => {
     });
 
     it.each<ThemeMode>(['light', 'dark'])(
-        'keeps selected menu rows interactive and disabled dominant in %s mode',
+        'uses pressed appearance for selection and keeps disabled dominant in %s mode',
         async (mode) => {
             const theme = new Theme(
                 themeSpecifications[ThemeName.Default][mode],
@@ -216,7 +271,7 @@ describe('Mobile rig content', () => {
                 screen.getByRole('radio').props.accessibilityState.checked,
             ).toBe(true);
             await fireEvent(screen.getByRole('radio'), 'focus');
-            expectFill(mode === 'light' ? 300 : 700);
+            expectFill(mode === 'light' ? 400 : 600);
             await screen.rerender(content(true, true));
             expectFill(mode === 'light' ? 400 : 600);
             await screen.rerender(content(true, true, true));

@@ -28,7 +28,7 @@ import * as MenuStories from './Menu.stories';
             <td>Transparent</td>
             <td><code>300</code> light / <code>700</code> dark</td>
             <td><code>400</code> light / <code>600</code> dark</td>
-            <td><code>400</code> light / <code>600</code> dark</td>
+            <td>Same as active / pressed</td>
             <td>Transparent</td>
         </tr>
         <tr>
@@ -42,7 +42,7 @@ import * as MenuStories from './Menu.stories';
     </tbody>
 </table>
 
-`highlightColor ?? color` supplies the selected and interactive palette. `selected` represents persistent selection; hover/focus and pressed feedback still apply to selected items. `highlighted` represents persistent pressed emphasis. Priority is disabled, pressed/highlighted, hover/focus, selected, then default. Focus remains visible when selected or highlighted.
+`highlightColor ?? color` supplies the selected and interactive palette. `selected` preserves selection semantics and reuses the active/pressed appearance, as does persistent `highlighted` emphasis. Priority is disabled, selected/pressed/highlighted, hover/focus, then default. Hover does not replace selected appearance; keyboard focus still has a visible outline.
 
 Rows have no border in any state. Background and glyph colors provide state feedback; keyboard focus uses a separate visible outline.
 

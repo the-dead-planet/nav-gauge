@@ -1,0 +1,20 @@
+import { Meta, Stories, Title } from '@storybook/addon-docs/blocks';
+import * as DialogStories from './Dialog.stories';
+
+<Meta of={DialogStories} name="Docs" />
+
+<Title />
+
+## Heading and body glyphs
+
+The heading and unwrapped text children follow the shared <a href="./?path=/docs/design-system-appearance--docs" target="_top">appearance variant policies</a> on both platforms. Text components with explicit appearance props and interactive controls own their own glyph treatment.
+
+The translucent dialog title opts into the typography text shadow. The dialog container does not apply a shadow to child content or actions.
+
+## Content and scrolling
+
+Dialogs use their content's natural height, capped to the available viewport. On narrow mobile screens, the available width and height respect the system safe areas.
+
+The header and footer remain outside the scrollable body. When content exceeds the available height, only the body shrinks and scrolls; the title and action buttons stay visible.
+
+<Stories />

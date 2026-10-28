@@ -17,6 +17,7 @@ Appearance coordinates the visual parts of a component:
 - **Interaction effects:** visual feedback for hover, focus, pressed, highlighted, and disabled states, including optional glow.
 
 Shared appearance policies supply the same treatment on web and mobile.
+Contrast paints derive their background shade from the same state's surface; it is not configured separately.
 
 ## Appearance controls
 
@@ -156,12 +157,14 @@ Components without an appearance variant use the default policy below.
         <tr><th>Element</th><th>Default</th><th>Hover / focus</th><th>Active / pressed</th><th>Disabled</th></tr>
     </thead>
     <tbody>
-        <tr><td>Text and icons</td><td><code>700</code> light / <code>300</code> dark</td><td><code>800</code> light / <code>200</code> dark</td><td><code>900</code> light / <code>100</code> dark</td><td><code>300</code> light / <code>700</code> dark</td></tr>
+        <tr><td>Text and icons</td><td><code>100</code> in both modes</td><td><code>100</code> in both modes</td><td><code>100</code> in both modes</td><td><code>300</code> light / <code>700</code> dark</td></tr>
         <tr><td>Background</td><td><code>500</code> at platform opacity</td><td><code>500</code> at platform opacity</td><td><code>500</code> at platform opacity</td><td><code>200</code> light / <code>800</code> dark at platform opacity</td></tr>
         <tr><td>Border</td><td><code>500</code> at 30%</td><td><code>600</code> light / <code>300</code> dark</td><td><code>700</code> light / <code>200</code> dark</td><td><code>300</code> light / <code>700</code> dark</td></tr>
         <tr><td>Backdrop blur</td><td colSpan={4}>Web: <code>6px</code>, clipped to the component shape. Mobile: unsupported by the current native renderer.</td></tr>
     </tbody>
 </table>
+
+This variant uses light glyphs rather than selecting a contrast shade from its unblended surface color. Text shadows are an explicit typography choice, not a surface effect.
 
 <Canvas of={ColorStories.FillTranslucentStates} />
 
@@ -188,7 +191,7 @@ The shared `translucentSurfaceOpacity` policy raises opacity without blur so und
         <tr><th>Element</th><th>Default</th><th>Hover / focus</th><th>Active / pressed</th><th>Disabled</th></tr>
     </thead>
     <tbody>
-        <tr><td>Text and icons</td><td><code>500</code></td><td><code>600</code> light / <code>300</code> dark</td><td><code>700</code> light / <code>200</code> dark</td><td><code>300</code> light / <code>700</code> dark</td></tr>
+        <tr><td>Text and icons</td><td><code>700</code> light / <code>300</code> dark</td><td><code>800</code> light / <code>200</code> dark</td><td><code>900</code> light / <code>100</code> dark</td><td><code>300</code> light / <code>700</code> dark</td></tr>
         <tr><td>Background</td><td><code>100</code> light / <code>900</code> dark</td><td><code>100</code> light / <code>900</code> dark</td><td><code>100</code> light / <code>900</code> dark</td><td><code>100</code> light / <code>900</code> dark</td></tr>
         <tr><td>Border</td><td>None</td><td>None</td><td>None</td><td>None</td></tr>
         <tr><td>Inner shading</td><td>Light: palette-tinted <code>900</code> at 20% and <code>700</code> at 18% top/left, with white at 70% bottom/right. Dark: black at 80% top/left and white at 8% bottom/right.</td><td>Same as default</td><td>Light uses the highlight palette; dark is unchanged</td><td>Same as default</td></tr>
@@ -212,9 +215,9 @@ Use the common `actionButtonVariants[surfaceVariant]` policy for selected/unsele
         </tr>
     </thead>
     <tbody>
-        <tr><td><code>fill</code></td><td><code>fill</code></td><td><code>fill-inverse</code></td></tr>
-        <tr><td><code>fill-inverse</code></td><td><code>fill</code></td><td><code>ghost</code></td></tr>
-        <tr><td><code>fill-translucent</code></td><td><code>fill</code></td><td><code>ghost</code></td></tr>
+        <tr><td><code>fill</code></td><td><code>fill</code></td><td><code>fill-translucent</code></td></tr>
+        <tr><td><code>fill-inverse</code></td><td><code>fill</code></td><td><code>fill-translucent</code></td></tr>
+        <tr><td><code>fill-translucent</code></td><td><code>fill</code></td><td><code>fill-translucent</code></td></tr>
     </tbody>
 </table>
 

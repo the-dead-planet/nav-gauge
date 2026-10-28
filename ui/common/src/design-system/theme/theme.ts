@@ -19,6 +19,7 @@ import {
     ThemeAppearanceVariant,
     ThemeAppearanceStatePolicy,
     ThemeAppearanceBorder,
+    ThemeAppearanceGlyphs,
     ElevationDirection,
     ElevationLevel,
     ResolvedThemeElevation,
@@ -169,6 +170,11 @@ export class Theme {
         const transparentBorder: ThemeAppearanceBorder = {
             type: 'transparent',
             width: 0,
+        };
+        const translucentGlyphs: ThemeAppearanceGlyphs = {
+            type: 'shade',
+            colorProperty: 'color',
+            shade: 100,
         };
         const disabledGlyphs: ThemeAppearancePaint = {
             type: 'shade',
@@ -354,7 +360,6 @@ export class Theme {
                         glyphs: {
                             type: 'contrast',
                             colorProperty: 'color',
-                            backgroundShade: shades.base,
                         },
                     },
                     'hover-focus': {
@@ -367,7 +372,6 @@ export class Theme {
                         glyphs: {
                             type: 'contrast',
                             colorProperty: 'highlightColor',
-                            backgroundShade: shades.hoverFocus,
                         },
                     },
                     'active-pressed': {
@@ -380,7 +384,6 @@ export class Theme {
                         glyphs: {
                             type: 'contrast',
                             colorProperty: 'highlightColor',
-                            backgroundShade: shades.activePressed,
                         },
                     },
                     disabled: {
@@ -479,11 +482,7 @@ export class Theme {
                             opacity: 0.3,
                             width: 1,
                         },
-                        glyphs: {
-                            type: 'shade',
-                            colorProperty: 'color',
-                            shade: this.isLight ? 700 : 300,
-                        },
+                        glyphs: translucentGlyphs,
                     },
                     'hover-focus': {
                         surface: {
@@ -499,9 +498,8 @@ export class Theme {
                             width: 1,
                         },
                         glyphs: {
-                            type: 'shade',
+                            ...translucentGlyphs,
                             colorProperty: 'highlightColor',
-                            shade: this.isLight ? 800 : 200,
                         },
                     },
                     'active-pressed': {
@@ -518,9 +516,8 @@ export class Theme {
                             width: 1,
                         },
                         glyphs: {
-                            type: 'shade',
+                            ...translucentGlyphs,
                             colorProperty: 'highlightColor',
-                            shade: shades.glyphs,
                         },
                     },
                     disabled: {
@@ -672,72 +669,50 @@ export class Theme {
         };
         const menuHoverShade: ColorShade = this.isLight ? 300 : 700;
         const menuPressedShade: ColorShade = this.isLight ? 400 : 600;
-        const menuSelectedShade: ColorShade = this.isLight ? 400 : 600;
-        const menuItem: ThemeAppearancePolicy = {
-            states: {
-                default: {
-                    ...policies.ghost.states.default,
-                    glyphs: {
-                        type: 'shade',
-                        colorProperty: 'color',
-                        shade: this.isLight ? 800 : 200,
-                    },
-                },
-                'hover-focus': {
-                    surface: {
-                        type: 'shade',
-                        colorProperty: 'highlightColor',
-                        shade: menuHoverShade,
-                    },
-                    border: transparentBorder,
-                    glyphs: {
-                        type: 'contrast',
-                        colorProperty: 'highlightColor',
-                        backgroundShade: menuHoverShade,
-                    },
-                },
-                'active-pressed': {
-                    surface: {
-                        type: 'shade',
-                        colorProperty: 'highlightColor',
-                        shade: menuPressedShade,
-                    },
-                    border: transparentBorder,
-                    glyphs: {
-                        type: 'contrast',
-                        colorProperty: 'highlightColor',
-                        backgroundShade: menuPressedShade,
-                    },
-                },
-                disabled: {
-                    surface: transparent,
-                    border: transparentBorder,
-                    glyphs: disabledGlyphs,
-                },
-            },
-            effects: policies.fill.effects,
-        };
+
         this.appearancePolicies = {
             ...policies,
-            'menu-item': menuItem,
-            'menu-item-selected': {
-                ...menuItem,
+            'menu-item': {
                 states: {
-                    ...menuItem.states,
                     default: {
-                        ...policies.fill.states.default,
+                        ...policies.ghost.states.default,
+                        glyphs: {
+                            type: 'shade',
+                            colorProperty: 'color',
+                            shade: this.isLight ? 800 : 200,
+                        },
+                    },
+                    'hover-focus': {
                         surface: {
                             type: 'shade',
                             colorProperty: 'highlightColor',
-                            shade: menuSelectedShade,
+                            shade: menuHoverShade,
                         },
+                        border: transparentBorder,
                         glyphs: {
                             type: 'contrast',
                             colorProperty: 'highlightColor',
-                            backgroundShade: menuSelectedShade,
                         },
                     },
+                    'active-pressed': {
+                        surface: {
+                            type: 'shade',
+                            colorProperty: 'highlightColor',
+                            shade: menuPressedShade,
+                        },
+                        border: transparentBorder,
+                        glyphs: {
+                            type: 'contrast',
+                            colorProperty: 'highlightColor',
+                        },
+                    },
+                    disabled: {
+                        surface: transparent,
+                        border: transparentBorder,
+                        glyphs: disabledGlyphs,
+                    },
                 },
+                effects: policies.fill.effects,
             },
         };
         this.media$ = new BehaviorSubject<MediaWithBreakpoints>(Theme.calculateMedia(media.initial()));
@@ -793,6 +768,7 @@ export class Theme {
         state: ThemeAppearanceState = 'default',
     ): ResolvedThemeAppearance => {
         const policy = this.appearancePolicies[variant ?? 'default'];
+        const resolved = policy.states[state];
         const resolve = (paint: ThemeAppearancePaint): string => {
             if (paint.type === 'transparent') {
                 return 'transparent';
@@ -801,12 +777,17 @@ export class Theme {
                 return paint.value;
             }
             const name = paint.colorProperty === 'color' ? baseColor : highlightColor;
-            const shade = paint.type === 'contrast'
-                ? this.contrastShade(name, paint.backgroundShade)
-                : paint.shade;
+            let shade: ColorShade;
+            if (paint.type === 'contrast') {
+                if (resolved.surface.type !== 'shade') {
+                    throw new Error('Contrast paint requires a shaded surface.');
+                }
+                shade = this.contrastShade(name, resolved.surface.shade);
+            } else {
+                shade = paint.shade;
+            }
             return this.color(name, shade, paint.opacity);
         };
-        const resolved = policy.states[state];
         const insetPolicy = policy.effects.inset?.[state];
         const inset: ThemeAppearanceInsetEffect = insetPolicy
             ? {

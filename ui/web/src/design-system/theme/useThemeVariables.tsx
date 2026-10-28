@@ -3,6 +3,7 @@ import {
     allColorShades,
     appearanceColorOptions,
     ColorVariant,
+    ColorShade,
     DEFAULT_COLOR,
     elevationDirectionOptions,
     elevationLevelOptions,
@@ -26,7 +27,7 @@ const elevationShadow = (theme: Theme, level: ElevationLevel, direction: Elevati
     return `${elevation.offset.x}px ${elevation.offset.y}px ${elevation.blur}px rgba(0, 0, 0, ${elevation.opacity})`;
 };
 
-const resolveAppearancePaint = (paint: ThemeAppearancePaint): string => {
+const resolveAppearancePaint = (paint: ThemeAppearancePaint, surfaceShade?: ColorShade): string => {
     if (paint.type === 'transparent') {
         return 'transparent';
     }
@@ -34,8 +35,11 @@ const resolveAppearancePaint = (paint: ThemeAppearancePaint): string => {
         return paint.value;
     }
 
+    if (paint.type === 'contrast' && surfaceShade === undefined) {
+        throw new Error('Contrast paint requires a shaded surface.');
+    }
     const shade = paint.type === 'contrast'
-        ? `${paint.backgroundShade}-contrast`
+        ? `${surfaceShade}-contrast`
         : paint.shade;
     const colorProperty = paint.colorProperty === 'highlightColor' ? 'highlight' : 'color';
     const color = `var(--appearance-${colorProperty}-${shade})`;
@@ -69,10 +73,11 @@ const createAppearanceDeclarations = (policy: Theme['appearancePolicies']['defau
     return [
         ...themeAppearanceStateOptions.flatMap((state) => {
             const statePolicy = policy.states[state];
+            const surfaceShade = statePolicy.surface.type === 'shade' ? statePolicy.surface.shade : undefined;
             return [
                 `--appearance-${state}-surface:${resolveAppearancePaint(statePolicy.surface)}`,
-                `--appearance-${state}-border:${resolveAppearancePaint(statePolicy.border)}`,
-                `--appearance-${state}-glyphs:${resolveAppearancePaint(statePolicy.glyphs)}`,
+                `--appearance-${state}-border:${resolveAppearancePaint(statePolicy.border, surfaceShade)}`,
+                `--appearance-${state}-glyphs:${resolveAppearancePaint(statePolicy.glyphs, surfaceShade)}`,
                 `--appearance-${state}-font-weight:${statePolicy.glyphs.fontWeight ?? 'initial'}`,
                 `--appearance-${state}-border-width:${statePolicy.border.width}px`,
             ];

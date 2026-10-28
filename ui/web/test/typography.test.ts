@@ -24,6 +24,22 @@ if (previousCssLoader) {
 }
 
 describe('Typography', () => {
+    it('inherits the owning appearance when no palette is supplied', () => {
+        const markup = renderToStaticMarkup(createElement(Text, {
+            children: 'Inherited label',
+        }));
+        expect(markup).not.to.include('data-appearance-variant=');
+        expect(markup).not.to.include('data-appearance-color=');
+        expect(markup).not.to.include('data-appearance-highlight=');
+
+        const shadedMarkup = renderToStaticMarkup(createElement(Text, {
+            shade: 100,
+            highlightShade: 200,
+        }));
+        expect(shadedMarkup).to.include('--appearance-default-glyphs-override:var(--appearance-color-100)');
+        expect(shadedMarkup).to.include('--appearance-active-pressed-glyphs-override:var(--appearance-highlight-200)');
+    });
+
     it('renders every color through default appearance regardless of text hierarchy', () => {
         const colors: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary', 'glitch', 'hazard', 'secured', 'intel'];
         for (const color of colors) {
