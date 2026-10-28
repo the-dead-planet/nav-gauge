@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { ColorVariant } from "../../design-system/model";
 import { TooltipPlacement } from "../../gizmos/tooltip";
 import { ThemeMode } from "../../design-system";
+import type { TypographyProps } from '../../design-system/typography/model';
 
 export interface FileInputProps<TFile> {
     themeMode?: ThemeMode;
@@ -9,6 +10,7 @@ export interface FileInputProps<TFile> {
     color?: ColorVariant;
     mutiple?: boolean;
     fileName: string | null | undefined;
+    fileNameProps?: TypographyProps;
     fileLabel: string;
     fileTooltipPlacement?: TooltipPlacement;
     purgeLabel: string;

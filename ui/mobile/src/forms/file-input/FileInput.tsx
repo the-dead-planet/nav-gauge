@@ -27,6 +27,7 @@ export const FileInput: FC<Props & ViewProps> = ({
     color,
     fileIcon = Icons.NounProject.Upload,
     fileName,
+    fileNameProps,
     fileLabel,
     purgeLabel,
     cancelLabel,
@@ -88,6 +89,7 @@ export const FileInput: FC<Props & ViewProps> = ({
             <Text
                 themeMode={themeMode}
                 color={color}
+                {...fileNameProps}
                 style={styles.routeName}
             >
                 {fileName || noNameLabel}

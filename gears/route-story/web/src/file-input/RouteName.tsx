@@ -50,6 +50,7 @@ export const RouteName: FC<TopToolsProps<maplibregl.Map> & WebRouteStoryProps> =
                 mutiple
                 fileIcon={routeName ? Icons.NounProject.ReplaceFile : Icons.NounProject.Upload}
                 fileName={routeName}
+                fileNameProps={{ variant: 'ghost' }}
                 fileLabel={fileLabel}
                 fileTooltipPlacement="bottom"
                 purgeLabel={purgeLabel}

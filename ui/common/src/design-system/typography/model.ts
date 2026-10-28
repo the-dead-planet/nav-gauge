@@ -1,4 +1,4 @@
-import { ColorShade, ColorVariant, SpacingVariant } from "../model";
+import { ColorShade, ColorVariant, SpacingVariant, SurfaceVariant } from "../model";
 import type { ThemeMode } from '../theme/model';
 
 /**
@@ -37,6 +37,7 @@ export interface TypographyStoryProps extends TypographyProps {
 }
 
 export interface TypographyProps {
+    variant?: SurfaceVariant;
     themeMode?: ThemeMode;
     color?: ColorVariant;
     highlightColor?: ColorVariant;

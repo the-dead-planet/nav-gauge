@@ -1,7 +1,7 @@
 import { FontFamilyName, FontType, FontWeight, NumericFontWeight, TextUsage, TypographyProps, TypographyStoryProps } from "./model";
 import { SizeVariant } from "../model";
 import { allColorShades } from '../theme/tinkers';
-import { appearanceColorOptions, DEFAULT_COLOR } from '../tinkers';
+import { appearanceColorOptions, DEFAULT_COLOR, surfaceVariantOptions } from '../tinkers';
 import { StoryControls } from '../../storybook/model';
 
 export const fontTypeToFamily: { [key in FontType]: FontFamilyName } = {
@@ -32,6 +32,11 @@ export const typographyStoryArgs: TypographyStoryProps = {
 };
 
 export const typographyStoryControls: StoryControls<TypographyStoryProps> = {
+    variant: {
+        control: 'select',
+        options: ['Default', ...surfaceVariantOptions],
+        mapping: { Default: undefined },
+    },
     themeMode: {
         control: 'select',
         options: [undefined, 'light', 'dark'],

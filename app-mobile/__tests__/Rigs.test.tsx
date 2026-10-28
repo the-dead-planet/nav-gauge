@@ -1,4 +1,5 @@
 import { render, fireEvent } from '@testing-library/react-native';
+import { it } from '@jest/globals';
 import { Animated, StyleSheet } from 'react-native';
 import {
     Orientation,
@@ -72,6 +73,48 @@ describe('Mobile rig content', () => {
     });
 
     afterEach(() => jest.restoreAllMocks());
+
+    it.each<ThemeMode>(['light', 'dark'])(
+        'matches ghost typography to icon glyphs in %s mode with explicit overrides',
+        async (mode) => {
+            const theme = new Theme(
+                themeSpecifications[ThemeName.Default][mode === 'light' ? 'dark' : 'light'],
+                media,
+            );
+            const content = (highlighted = false, disabled = false, shade?: ColorShade) => (
+                <ThemeContext.Provider value={theme}>
+                    <Text
+                        variant="ghost"
+                        themeMode={mode}
+                        color="primary"
+                        highlighted={highlighted}
+                        disabled={disabled}
+                        shade={shade}
+                    >
+                        Route name
+                    </Text>
+                </ThemeContext.Provider>
+            );
+            const screen = await render(content());
+            expect(screen.getByText('Route name')).toHaveStyle({
+                color: theme.color('primary', mode === 'light' ? 700 : 300),
+            });
+            await screen.rerender(content(false, false, 500));
+            expect(screen.getByText('Route name')).toHaveStyle({
+                color: theme.color('primary', 500),
+            });
+            await screen.rerender(content(true, false, 500));
+            expect(screen.getByText('Route name')).toHaveStyle({
+                color: theme.color('primary', mode === 'light' ? 900 : 100),
+            });
+            await screen.rerender(content(true, true, 500));
+            expect(screen.getByText('Route name')).toHaveStyle({
+                color: theme.color('primary', mode === 'light' ? 300 : 700),
+            });
+            await screen.unmount();
+            theme.destroy();
+        },
+    );
 
     it('lets typography override the app theme mode for interaction and disabled colors', async () => {
         const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);

@@ -15,6 +15,7 @@ export const FileInput: FC<Props & ComponentProps<'div'>> = ({
     themeMode,
     fileIcon = Icons.NounProject.Upload,
     fileName,
+    fileNameProps,
     mutiple,
     color,
     fileLabel,
@@ -73,6 +74,7 @@ export const FileInput: FC<Props & ComponentProps<'div'>> = ({
             <FileNameComponent
                 themeMode={themeMode}
                 color={color}
+                {...fileNameProps}
                 title={fileName ?? undefined}
                 className={styles['route-name']}
             >

@@ -41,6 +41,23 @@ const renderToStaticMarkup = (children: ReactElement): string => renderMarkup(
 describe('Typography', () => {
     after(() => theme.destroy());
 
+    it('selects an optional glyph variant while retaining mode and shade overrides', () => {
+        const markup = renderToStaticMarkup(createElement(Text, {
+            variant: 'ghost',
+            themeMode: 'dark',
+            color: 'primary',
+            shade: 500,
+            highlightShade: 200,
+            children: 'Route name',
+        }));
+        expect(markup).to.include('data-appearance-variant="ghost"');
+        expect(markup).to.include('data-appearance-mode="dark"');
+        expect(markup).to.include('--appearance-default-glyphs-override:var(--color-primary-500)');
+        expect(markup).to.include('--appearance-active-pressed-glyphs-override:var(--color-primary-200)');
+        expect(markup).not.to.include(' variant=');
+        expect(markup).not.to.include('background-color');
+    });
+
     it('lets themeMode override the surrounding theme without leaking a DOM prop', () => {
         const markup = renderToStaticMarkup(createElement(Text, {
             themeMode: 'dark',
