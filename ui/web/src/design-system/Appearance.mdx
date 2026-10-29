@@ -39,6 +39,21 @@ Components expose the controls relevant to their visual purpose.
     </tbody>
 </table>
 
+## Corners and shapes
+
+Square corners are the default. Use a different shape only when the component's purpose or an explicit shape prop calls for it.
+
+<table>
+    <thead>
+        <tr><th>Shape</th><th>Geometry</th><th>Usage</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Square / rectangle (default)</td><td><code>border-radius: 0</code></td><td>Standard controls, including checkboxes</td></tr>
+        <tr><td>Circle</td><td><code>border-radius: 50%</code> on web; half the diameter on mobile</td><td>Radio indicators and circular icon-only buttons</td></tr>
+        <tr><td>Beveled</td><td>Clipped or drawn angled corners, rather than a border radius</td><td>Chips and bevel panels</td></tr>
+    </tbody>
+</table>
+
 <h2 id="appearance-states">Appearance states</h2>
 
 Appearance states are listed from highest to lowest priority:

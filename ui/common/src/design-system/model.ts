@@ -1,3 +1,5 @@
+import type { ThemeMode } from './theme/model';
+
 export type ActiveGlow = 'none' | 'glow' | 'animate-borders-glow';
 
 export type DesignSystemColor =
@@ -23,6 +25,7 @@ export type SizeVariant = 'xs' | 'sm' | 'md' | 'lg';
 export type SpacingVariant = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 export interface AppearancePropsBase<TVariant extends SurfaceVariant = SurfaceVariant> {
+    themeMode?: ThemeMode;
     variant?: TVariant;
     color?: ColorVariant;
     /** Applied on hovered, focused, pressed and highlighted states. */

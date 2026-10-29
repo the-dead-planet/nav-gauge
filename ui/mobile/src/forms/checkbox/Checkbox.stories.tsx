@@ -1,19 +1,56 @@
-import { FC, useState } from "react";
+import {
+    appearanceColorOptions,
+    CheckboxProps,
+    checkboxStoryArgs,
+    checkboxStoryControls,
+    fillVariantOptions,
+} from "@ui";
 import { Checkbox } from "./Checkbox";
+import { MobileStoryDefinition } from "../../storybook/model";
 import { VariantGallery } from "../../storybook/VariantGallery";
+import { useState } from "react";
 
-export const Gallery: FC = () => (
-    <VariantGallery
-        render={({ color, size, variant }) => (
-            <Checkbox variant={variant} size={size} color={color} glyphsShade={700} highlightGlyphsShade={200} checked onChange={() => {}}>
-                {color}
-            </Checkbox>
-        )}
-    />
-);
-
-export const Playground: FC = () => {
-    const [checked, setChecked] = useState(false);
-
-    return <Checkbox glyphsShade={700} highlightGlyphsShade={200} checked={checked} onChange={setChecked}>Checkbox</Checkbox>;
+const StoryCheckbox = (args: CheckboxProps) => {
+    const [checked, setChecked] = useState(args.checked);
+    return <Checkbox {...args} checked={checked} onChange={setChecked} />;
 };
+
+const story: MobileStoryDefinition<CheckboxProps> = {
+    args: {
+        ...checkboxStoryArgs,
+        onChange: () => {},
+    },
+    controls: checkboxStoryControls,
+    galleryEditableControls: [
+        "themeMode",
+        "checked",
+        "glyphsShade",
+        "highlightColor",
+        "highlightGlyphsShade",
+        "highlighted",
+        "disabled",
+    ],
+    renderPlayground: (args) => (
+        <StoryCheckbox key={String(args.checked)} {...args} />
+    ),
+    renderGallery: (args) => (
+        <VariantGallery
+            size={args.size}
+            colors={appearanceColorOptions}
+            variants={fillVariantOptions}
+            render={({ color, variant, size }) => (
+                <StoryCheckbox
+                    key={String(args.checked)}
+                    {...args}
+                    color={color}
+                    variant={variant}
+                    size={size}
+                >
+                    {color}
+                </StoryCheckbox>
+            )}
+        />
+    ),
+};
+
+export default story;

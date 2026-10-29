@@ -1,13 +1,23 @@
-import { ChangeEvent, ComponentProps, FC, useId } from "react";
+import { ChangeEvent, ComponentProps, CSSProperties, FC, useId } from "react";
 import classNames from "classnames";
-import { CheckboxProps, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, useTheme } from "@ui";
-import styles from './checkbox.module.css';
+import {
+    CheckboxProps,
+    DEFAULT_COLOR,
+    DEFAULT_FILL_VARIANT,
+    DEFAULT_SIZE,
+    ThemeContext,
+    useTheme,
+} from "@ui";
+import styles from "./checkbox.module.css";
 
 interface Props {
     labelledBy?: string;
 }
 
-export const Checkbox: FC<Omit<ComponentProps<'label'>, 'onChange'> & CheckboxProps & Props> = ({
+export const Checkbox: FC<
+    Omit<ComponentProps<"label">, "onChange"> & CheckboxProps & Props
+> = ({
+    themeMode,
     id,
     labelledBy,
     color = DEFAULT_COLOR,
@@ -23,60 +33,106 @@ export const Checkbox: FC<Omit<ComponentProps<'label'>, 'onChange'> & CheckboxPr
     children,
     className,
     style,
+    onKeyDown,
+    "aria-label": ariaLabel,
+    "aria-labelledby": ariaLabelledBy,
     ...props
 }) => {
     const generatedId = useId();
     const effectiveId = id || generatedId;
-    const theme = useTheme();
+    const theme = useTheme().forMode(themeMode);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         onChange(e.target.checked);
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLLabelElement>) => {
-        if (e.key === 'Enter' && !disabled) {
+        onKeyDown?.(e);
+        if (!e.defaultPrevented && e.key === "Enter" && !disabled) {
             e.preventDefault();
             onChange(!checked);
         }
     };
 
     return (
-        <label
-            onKeyDown={handleKeyDown}
-            aria-labelledby={labelledBy}
-            htmlFor={effectiveId}
-            className={classNames(
-                styles['checkbox'],
-                styles[`mode-${theme.mode}`],
-                styles[`color-${color}`],
-                styles[`highlight-${highlightColor}`],
-                styles[`variant-${variant}`],
-                styles[`size-${size}`],
-                {
-                    [styles['disabled']]: disabled,
-                    [styles['checked']]: checked || (highlighted && !disabled),
-                },
-                className
-            )}
-            style={style}
-            {...props}
-        >
-            <input
-                id={effectiveId}
-                type="checkbox"
-                className={styles['input']}
-                checked={checked}
-                onChange={handleChange}
-                disabled={disabled}
-            />
-            <span className={classNames(styles['box'], { [styles['box-checked']]: checked || (highlighted && !disabled) })}>
-                {checked ? (
-                    <svg className={styles['checkmark']} viewBox="0 0 12 12" width="12" height="12" aria-hidden>
-                        <path d="M2 6l3 3 5-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
+        <ThemeContext.Provider value={theme}>
+            <label
+                onKeyDown={handleKeyDown}
+                htmlFor={effectiveId}
+                data-appearance-mode={theme.mode}
+                data-appearance-variant="default"
+                data-appearance-color={color}
+                data-appearance-highlight={highlightColor}
+                data-highlighted={highlighted}
+                data-disabled={disabled}
+                className={classNames(
+                    styles["checkbox"],
+                    styles[`size-${size}`],
+                    className,
+                )}
+                style={
+                    {
+                        ...style,
+                        "--appearance-default-glyphs-override":
+                            glyphsShade === undefined
+                                ? undefined
+                                : theme.color(color, glyphsShade),
+                        "--appearance-hover-focus-glyphs-override":
+                            highlightGlyphsShade === undefined
+                                ? undefined
+                                : theme.color(
+                                      highlightColor,
+                                      highlightGlyphsShade,
+                                  ),
+                        "--appearance-active-pressed-glyphs-override":
+                            highlightGlyphsShade === undefined
+                                ? undefined
+                                : theme.color(
+                                      highlightColor,
+                                      highlightGlyphsShade,
+                                  ),
+                    } as CSSProperties
+                }
+                {...props}
+            >
+                <input
+                    id={effectiveId}
+                    type="checkbox"
+                    className={styles["input"]}
+                    checked={checked}
+                    onChange={handleChange}
+                    disabled={disabled}
+                    aria-label={ariaLabel}
+                    aria-labelledby={labelledBy ?? ariaLabelledBy}
+                />
+                <span
+                    className={styles["box"]}
+                    data-appearance-variant={variant}
+                    aria-hidden="true"
+                >
+                    {checked ? (
+                        <svg
+                            className={styles["checkmark"]}
+                            viewBox="0 0 12 12"
+                            width="12"
+                            height="12"
+                            aria-hidden
+                        >
+                            <path
+                                d="M2 6l3 3 5-5"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            />
+                        </svg>
+                    ) : null}
+                </span>
+                {children ? (
+                    <span className={styles["label"]}>{children}</span>
                 ) : null}
-            </span>
-            {children ? <span className={styles['label']} style={(checked || highlighted ? highlightGlyphsShade : glyphsShade) === undefined ? undefined : { color: theme.color(checked || highlighted ? highlightColor : color, checked || highlighted ? highlightGlyphsShade : glyphsShade) }}>{children}</span> : null}
-        </label>
+            </label>
+        </ThemeContext.Provider>
     );
 };

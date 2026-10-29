@@ -5,6 +5,8 @@ describe('Appearance state priority', () => {
             'hud/hexagon/hexagon.module.css',
             'hud/surface.module.css',
             'forms/toggle-switch/toggle-switch.module.css',
+            'forms/checkbox/checkbox.module.css',
+            'forms/radio/radio.module.css',
         ]) {
             cy.readFile<string>(`../ui/web/src/${stylesheet}`).then((css) => {
                 cy.document().then((document) => {
@@ -44,6 +46,14 @@ describe('Appearance state priority', () => {
                 </section>
                 <label id="toggle" class="toggle-switch" tabindex="0">
                     <span class="track"></span><span class="label">Toggle</span>
+                </label>
+                <label id="checkbox" class="checkbox" tabindex="0">
+                    <input class="input" type="checkbox" />
+                    <span class="box"></span><span class="label">Checkbox</span>
+                </label>
+                <label id="radio" class="radio" tabindex="0">
+                    <input class="input" type="radio" />
+                    <span class="box"></span><span class="label">Radio</span>
                 </label>
             `;
         });
@@ -85,6 +95,18 @@ describe('Appearance state priority', () => {
                 surfaceProperty: 'background-color',
                 glyphs: '#toggle .label',
             },
+            {
+                root: '#checkbox',
+                surface: '#checkbox .box',
+                surfaceProperty: 'background-color',
+                glyphs: '#checkbox .label',
+            },
+            {
+                root: '#radio',
+                surface: '#radio .box',
+                surfaceProperty: 'background-color',
+                glyphs: '#radio .label',
+            },
         ]) {
             cy.get(control.surface).should('have.css', control.surfaceProperty, 'rgb(10, 0, 0)');
             cy.get(control.root).focus();
@@ -93,9 +115,11 @@ describe('Appearance state priority', () => {
 
             const usesSurfaceAppearance = control.root !== '#toggle';
             if (usesSurfaceAppearance) {
-                cy.get(control.root).invoke('attr', 'data-pressed', 'true');
-                cy.get(control.surface).should('have.css', control.surfaceProperty, 'rgb(30, 0, 0)');
-                cy.get(control.root).invoke('removeAttr', 'data-pressed');
+                if (control.root !== '#checkbox' && control.root !== '#radio') {
+                    cy.get(control.root).invoke('attr', 'data-pressed', 'true');
+                    cy.get(control.surface).should('have.css', control.surfaceProperty, 'rgb(30, 0, 0)');
+                    cy.get(control.root).invoke('removeAttr', 'data-pressed');
+                }
                 cy.get(control.root).invoke('attr', 'data-highlighted', 'true');
             } else {
                 cy.get(control.root).invoke('addClass', 'highlighted');
@@ -107,6 +131,7 @@ describe('Appearance state priority', () => {
             }
 
             if (usesSurfaceAppearance) {
+                cy.get(control.root).invoke('css', '--appearance-active-pressed-glyphs-override', 'rgb(50, 0, 0)');
                 cy.get(control.root).invoke('attr', 'data-disabled', 'true');
             } else {
                 cy.get(control.root).invoke('addClass', 'disabled');

@@ -50,6 +50,9 @@ const { MenuItem } = require('../src/rigs/menu/MenuItem') as typeof import('../s
 const { Tabstrip } = require('../src/rigs/tabstrip/Tabstrip') as typeof import('../src/rigs/tabstrip/Tabstrip');
 const { VariantGallery } = require('../src/storybook/VariantGallery') as typeof import('../src/storybook/VariantGallery');
 const { FileInput } = require('../src/forms/file-input/FileInput') as typeof import('../src/forms/file-input/FileInput');
+const { Checkbox } = require('../src/forms/checkbox/Checkbox') as typeof import('../src/forms/checkbox/Checkbox');
+const { Radio } = require('../src/forms/radio/Radio') as typeof import('../src/forms/radio/Radio');
+const { Text } = require('../src/design-system/typography') as typeof import('../src/design-system/typography');
 if (previousCssLoader) {
     require.extensions['.css'] = previousCssLoader;
 } else {
@@ -77,6 +80,58 @@ const renderToStaticMarkup = (children: ReactElement): string => renderMarkup(
 
 describe('Composed appearance rendering', () => {
     after(() => renderingTheme.destroy());
+
+    it('applies a local form choice theme mode to its appearance and nested typography', () => {
+        const modes: (ThemeMode | undefined)[] = [undefined, 'light', 'dark'];
+        for (const Control of [Checkbox, Radio]) {
+            for (const themeMode of modes) {
+                const markup = renderToStaticMarkup(createElement(Control, {
+                    themeMode,
+                    checked: true,
+                    onChange: () => undefined,
+                    children: createElement(Text, { children: 'Nested label' }),
+                }));
+                const mode = themeMode ?? renderingTheme.mode;
+                expect([...markup.matchAll(/data-appearance-mode="([^"]+)"/g)].map((match) => match[1]))
+                    .to.deep.equal([mode, mode]);
+                expect(markup).not.to.include('themeMode=');
+            }
+        }
+    });
+
+    it('keeps selection separate from appearance and labels the native form control', () => {
+        for (const Control of [Checkbox, Radio]) {
+            for (const color of appearanceColorOptions) {
+                for (const variant of fillVariantOptions) {
+                    const markup = renderToStaticMarkup(createElement(Control, {
+                        color,
+                        variant,
+                        checked: false,
+                        highlighted: true,
+                        disabled: true,
+                        glyphsShade: 500,
+                        highlightColor: 'intel',
+                        highlightGlyphsShade: 200,
+                        labelledBy: 'external-label',
+                        onChange: () => undefined,
+                        children: 'Choice',
+                    }));
+                    expect(markup).to.include('data-appearance-variant="default"');
+                    expect(markup).to.include(`data-appearance-variant="${variant}"`);
+                    expect(markup).to.include(`data-appearance-color="${color}"`);
+                    expect(markup).to.include('data-appearance-highlight="intel"');
+                    expect(markup).to.include('data-highlighted="true"');
+                    expect(markup).to.include('data-disabled="true"');
+                    expect(markup).to.match(/<input\b[^>]*disabled=""[^>]*aria-labelledby="external-label"/);
+                    expect(markup).not.to.include('checked=""');
+                    expect(markup).not.to.include('<svg');
+                    expect(markup).not.to.include('class="dot"');
+                    expect(markup).to.include(`--appearance-default-glyphs-override:${renderingTheme.color(color, 500)}`);
+                    expect(markup).to.include(`--appearance-active-pressed-glyphs-override:${renderingTheme.color('intel', 200)}`);
+                }
+            }
+        }
+    });
 
     it('lets FileInput callers choose filename typography without changing its default', () => {
         const props: ComponentProps<typeof FileInput> = {

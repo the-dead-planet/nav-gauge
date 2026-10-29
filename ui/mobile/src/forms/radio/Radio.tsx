@@ -1,9 +1,32 @@
 import { FC } from "react";
-import { Pressable, View, ViewStyle } from "react-native";
-import { controlTextSpecifications, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, RadioProps, translucentSurfaceOpacity, useTheme } from "@ui";
+import { Pressable, StyleSheet, View } from "react-native";
+import {
+    controlTextSpecifications,
+    DEFAULT_COLOR,
+    DEFAULT_FILL_VARIANT,
+    DEFAULT_SIZE,
+    RadioProps,
+    ThemeContext,
+    useTheme,
+} from "@ui";
 import { Text } from "../../design-system/typography";
+import { useHudInteraction } from "../../hud/useHudInteraction";
+
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 8,
+    },
+    box: {
+        alignItems: "center",
+        justifyContent: "center",
+        borderStyle: "solid",
+    },
+});
 
 export const Radio: FC<RadioProps> = ({
+    themeMode,
     color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
@@ -16,86 +39,76 @@ export const Radio: FC<RadioProps> = ({
     highlighted = false,
     children,
 }) => {
-    const theme = useTheme();
-
-    const accentColor = theme.isLight
-        ? theme.color(highlightColor, 600)
-        : theme.color(highlightColor, 300);
-    const baseColor = theme.color(color);
-
-    const boxWidthHeight = size === 'md' ? 16 : size === 'sm' ? 14 : 12;
-    const dotSize = boxWidthHeight / 2;
-    const textStyle = controlTextSpecifications[size];
-
-    const containerStyle: ViewStyle = {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 8,
-    };
+    const theme = useTheme().forMode(themeMode);
+    const { state, interaction, focused } = useHudInteraction({
+        disabled,
+        highlighted,
+    });
+    const appearance = theme.resolveAppearance(
+        variant,
+        color,
+        highlightColor,
+        state,
+    );
+    const interactive = state === "hover-focus" || state === "active-pressed";
+    const overrideShade = interactive ? highlightGlyphsShade : glyphsShade;
+    const glyphs =
+        disabled || overrideShade === undefined
+            ? appearance.glyphs
+            : theme.color(interactive ? highlightColor : color, overrideShade);
+    const boxSize = theme.sizes.control[size].iconSize;
 
     return (
-        <Pressable
-            accessibilityRole="radio"
-            accessibilityState={{ checked, disabled }}
-            disabled={disabled}
-            onPress={() => onChange(!checked)}
-            style={containerStyle}
-        >
-            {({ pressed }) => {
-                const isHighlighted = !disabled && (highlighted || pressed);
-                const activeColor = isHighlighted ? highlightColor : color;
-                const boxColor = checked && variant === 'fill-inverse'
-                    ? theme.color(activeColor, theme.isLight ? 100 : (activeColor === 'neutral' ? 800 : 900))
-                    : disabled ? theme.color(color, theme.isLight ? 300 : 700) : isHighlighted ? accentColor : baseColor;
-                const dotColor = variant === 'fill-inverse'
-                    ? theme.color(activeColor, theme.isLight ? (activeColor === 'neutral' ? 800 : 900) : 100)
-                    : variant === 'fill-translucent' ? boxColor
-                    : theme.color(activeColor, theme.isDark ? 900 : 100);
-                const backgroundColor = disabled
-                    ? theme.color(color, theme.isLight ? 200 : 800)
-                    : checked
-                    ? variant === 'fill-translucent'
-                        ? theme.color(activeColor, pressed ? (theme.isLight ? 600 : 300) : 500, translucentSurfaceOpacity.unblurred)
-                        : boxColor
-                    : 'transparent';
-
-                const boxStyle: ViewStyle = {
-                    width: boxWidthHeight,
-                    height: boxWidthHeight,
-                    borderRadius: boxWidthHeight / 2,
-                    borderWidth: 1,
-                    borderColor: boxColor,
-                    backgroundColor,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                };
-
-                return (
-                    <>
-                        <View style={boxStyle}>
-                            {checked ? (
-                                <View
-                                    style={{
-                                        width: dotSize,
-                                        height: dotSize,
-                                        borderRadius: dotSize / 2,
-                                        backgroundColor: dotColor,
-                                    }}
-                                />
-                            ) : null}
-                        </View>
-                        {children ? (
-                            <Text
-                                color={isHighlighted ? highlightColor : color}
-                                shade={disabled ? (theme.isLight ? 300 : 700) : isHighlighted ? highlightGlyphsShade : glyphsShade}
-                                style={textStyle}
-                            >
-                                {children}
-                            </Text>
-                        ) : null}
-                    </>
-                );
-            }}
-        </Pressable>
+        <ThemeContext.Provider value={theme}>
+            <Pressable
+                accessibilityRole="radio"
+                accessibilityState={{ checked, disabled }}
+                disabled={disabled}
+                onPress={() => onChange(true)}
+                style={styles.container}
+                {...interaction}
+            >
+                <View
+                    style={[
+                        styles.box,
+                        {
+                            width: boxSize,
+                            height: boxSize,
+                            borderRadius: boxSize / 2,
+                            backgroundColor: appearance.surface,
+                            borderColor: appearance.border.color,
+                            borderWidth: appearance.border.width,
+                            outlineStyle: "solid",
+                            outlineWidth: focused ? 2 : 0,
+                            outlineOffset: 2,
+                            outlineColor: appearance.effects.glowColor,
+                        },
+                    ]}
+                >
+                    {checked ? (
+                        <View
+                            style={{
+                                width: boxSize / 2,
+                                height: boxSize / 2,
+                                borderRadius: boxSize / 4,
+                                backgroundColor: glyphs,
+                            }}
+                        />
+                    ) : null}
+                </View>
+                {children ? (
+                    <Text
+                        color={color}
+                        highlightColor={highlightColor}
+                        shade={glyphsShade}
+                        highlightShade={highlightGlyphsShade}
+                        appearanceState={state}
+                        style={controlTextSpecifications[size]}
+                    >
+                        {children}
+                    </Text>
+                ) : null}
+            </Pressable>
+        </ThemeContext.Provider>
     );
 };

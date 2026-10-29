@@ -1,95 +1,72 @@
-import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { useState } from 'react';
-import { Radio } from './Radio';
-import { Text } from '../../design-system/typography';
-import { ColorVariant, DEFAULT_SIZE, SizeVariant } from '@ui';
-import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptions as allSizes } from '../../storybook/controls';
+import type { Meta, StoryObj } from "storybook-react-rsbuild";
+import { makeLiveEditStory } from "storybook-addon-code-editor";
+import { useArgs } from "storybook/preview-api";
+import {
+    appearanceColorOptions,
+    radioStoryArgs,
+    radioStoryControls,
+    fillVariantOptions,
+} from "@ui";
+import { VariantGallery } from "../../storybook/VariantGallery";
+import { Radio } from "./Radio";
 
 const meta = {
-    title: 'Forms/Radio',
+    title: "Forms/Radio",
     component: Radio,
-    args: { children: 'Radio', checked: false, color: 'primary', glyphsShade: 700, highlightGlyphsShade: 200, size: 'sm', variant: 'fill', onChange: () => {} },
+    decorators: [
+        (Story, context) => {
+            const [, updateArgs] = useArgs();
+            return (
+                <Story
+                    args={{
+                        ...context.args,
+                        onChange: (checked: boolean) => updateArgs({ checked }),
+                    }}
+                />
+            );
+        },
+    ],
+    args: {
+        ...radioStoryArgs,
+        onChange: () => {},
+    },
+    argTypes: {
+        ...radioStoryControls,
+        onChange: { control: false },
+    },
 } satisfies Meta<typeof Radio>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Playground: Story = {};
+export const Playground: Story = {
+    name: "Playground with Live code editor",
+};
 
-export const Gallery = {
-    render: () => {
-        const [option, setOption] = useState('first');
-        const [size, setSize] = useState<SizeVariant>(DEFAULT_SIZE);
-        const [color, setColor] = useState<ColorVariant>('primary');
+makeLiveEditStory(Playground, {
+    availableImports: { "@web-ui": { Radio } },
+    code: `import { Radio } from '@web-ui';
 
-        return (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 24, padding: 24 }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                    <Radio
-                        size={size}
-                        color={color}
-                        glyphsShade={700}
-                        highlightGlyphsShade={200}
-                        checked={option === 'first'}
-                        onChange={() => setOption('first')}
-                    >
-                        First option
-                    </Radio>
-                    <Radio
-                        size={size}
-                        color={color}
-                        checked={option === 'second'}
-                        onChange={() => setOption('second')}
-                    >
-                        Second option
-                    </Radio>
-                </div>
+export default Radio;`,
+    modifyEditor: (monaco) => monaco.editor.setTheme("vs-dark"),
+});
 
-                <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-                    <fieldset>
-                        <legend>Size</legend>
-                        {allSizes.map(s => (
-                            <label key={s} style={{ marginRight: 8 }}>
-                                <input type="radio" name="size" checked={size === s} onChange={() => setSize(s)} />
-                                {s}
-                            </label>
-                        ))}
-                    </fieldset>
-                    <fieldset>
-                        <legend>Color</legend>
-                        {allColors.map(c => (
-                            <label key={c} style={{ marginRight: 8 }}>
-                                <input type="radio" name="color" checked={color === c} onChange={() => setColor(c)} />
-                                {c}
-                            </label>
-                        ))}
-                    </fieldset>
-                </div>
-
-                <Text style={{ fontWeight: 700, marginTop: 16 }}>All combinations (checked)</Text>
-                {allVariants.map(variant => allSizes.map(s => (
-                    <div key={`${variant}-${s}`} style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
-                        <Text style={{ width: 100 }}>{variant} {s}</Text>
-                        {allColors.map(c => (
-                            <Radio key={c} variant={variant} size={s} color={c} checked onChange={() => { }}>
-                                {c}
-                            </Radio>
-                        ))}
-                    </div>
-                )))}
-
-                <Text style={{ fontWeight: 700, marginTop: 16 }}>All combinations (unchecked)</Text>
-                {allSizes.map(s => (
-                    <div key={s} style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
-                        <Text style={{ width: 40 }}>{s}</Text>
-                        {allColors.map(c => (
-                            <Radio key={c} size={s} color={c} checked={false} onChange={() => { }}>
-                                {c}
-                            </Radio>
-                        ))}
-                    </div>
-                ))}
-            </div>
-        );
+export const Gallery: Story = {
+    argTypes: {
+        color: { table: { disable: true } },
+        variant: { table: { disable: true } },
+        children: { table: { disable: true } },
     },
+    render: (args) => (
+        <VariantGallery
+            size={args.size}
+            colors={appearanceColorOptions}
+            variants={fillVariantOptions}
+            render={({ color, variant, size }) => (
+                <Radio {...args} color={color} variant={variant} size={size}>
+                    {color}
+                </Radio>
+            )}
+        />
+    ),
 };
