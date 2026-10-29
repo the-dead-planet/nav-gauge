@@ -1,16 +1,20 @@
 import { FC } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
+import Svg, { Polygon } from "react-native-svg";
 import {
     controlTextSpecifications,
     DEFAULT_COLOR,
     DEFAULT_FILL_VARIANT,
     DEFAULT_SIZE,
+    DEFAULT_GLYPH_CORNERS,
+    hexagonGeometry,
     RadioProps,
     ThemeContext,
     useTheme,
 } from "@ui";
 import { Text } from "../../design-system/typography";
 import { useHudInteraction } from "../../hud/useHudInteraction";
+import { HexagonSurface } from "../../hud/hexagon/HexagonSurface";
 
 const styles = StyleSheet.create({
     container: {
@@ -33,6 +37,7 @@ export const Radio: FC<RadioProps> = ({
     highlightGlyphsShade,
     variant = DEFAULT_FILL_VARIANT,
     size = DEFAULT_SIZE,
+    corners = DEFAULT_GLYPH_CORNERS,
     checked,
     onChange,
     disabled = false,
@@ -74,10 +79,17 @@ export const Radio: FC<RadioProps> = ({
                         {
                             width: boxSize,
                             height: boxSize,
-                            borderRadius: boxSize / 2,
-                            backgroundColor: appearance.surface,
+                            borderRadius:
+                                corners === "circle" ? boxSize / 2 : 0,
+                            backgroundColor:
+                                corners === "hexagon"
+                                    ? "transparent"
+                                    : appearance.surface,
                             borderColor: appearance.border.color,
-                            borderWidth: appearance.border.width,
+                            borderWidth:
+                                corners === "hexagon"
+                                    ? 0
+                                    : appearance.border.width,
                             outlineStyle: "solid",
                             outlineWidth: focused ? 2 : 0,
                             outlineOffset: 2,
@@ -85,15 +97,44 @@ export const Radio: FC<RadioProps> = ({
                         },
                     ]}
                 >
+                    {corners === "hexagon" ? (
+                        <HexagonSurface
+                            shape="flat-top"
+                            appearance={appearance}
+                            showGlow={false}
+                        />
+                    ) : null}
                     {checked ? (
                         <View
                             style={{
                                 width: boxSize / 2,
                                 height: boxSize / 2,
-                                borderRadius: boxSize / 4,
-                                backgroundColor: glyphs,
+                                borderRadius:
+                                    corners === "circle" ? boxSize / 4 : 0,
+                                backgroundColor:
+                                    corners === "hexagon"
+                                        ? "transparent"
+                                        : glyphs,
                             }}
-                        />
+                        >
+                            {corners === "hexagon" ? (
+                                <Svg
+                                    width="100%"
+                                    height="100%"
+                                    viewBox={
+                                        hexagonGeometry["flat-top"].viewBox
+                                    }
+                                    accessible={false}
+                                >
+                                    <Polygon
+                                        points={
+                                            hexagonGeometry["flat-top"].points
+                                        }
+                                        fill={glyphs}
+                                    />
+                                </Svg>
+                            ) : null}
+                        </View>
                     ) : null}
                 </View>
                 {children ? (

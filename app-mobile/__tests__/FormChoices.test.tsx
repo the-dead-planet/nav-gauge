@@ -2,6 +2,7 @@ import { fireEvent, render } from "@testing-library/react-native";
 import { test } from "@jest/globals";
 import {
     appearanceColorOptions,
+    buttonCorners,
     fillVariantOptions,
     Orientation,
     Theme,
@@ -14,6 +15,14 @@ import {
 import { Checkbox } from "@the-dead-planet/nav-gauge-ui-mobile/src/forms/checkbox";
 import { Radio } from "@the-dead-planet/nav-gauge-ui-mobile/src/forms/radio";
 import { Text } from "@the-dead-planet/nav-gauge-ui-mobile/src/design-system/typography";
+import { HexagonSurface } from "@the-dead-planet/nav-gauge-ui-mobile/src/hud/hexagon/HexagonSurface";
+
+jest.mock(
+    "@the-dead-planet/nav-gauge-ui-mobile/src/hud/hexagon/HexagonSurface",
+    () => ({
+        HexagonSurface: jest.fn(() => null),
+    }),
+);
 
 const media = {
     initial: () => ({
@@ -25,7 +34,9 @@ const media = {
 };
 const modes: ThemeMode[] = ["light", "dark"];
 const cases = modes.flatMap((mode) =>
-    fillVariantOptions.map((variant) => ({ mode, variant })),
+    fillVariantOptions.flatMap((variant) =>
+        buttonCorners.map((corners) => ({ mode, variant, corners })),
+    ),
 );
 
 describe("Form choice appearance ownership", () => {
@@ -101,8 +112,8 @@ describe("Form choice appearance ownership", () => {
     );
 
     test.each(cases)(
-        "$variant in $mode follows shared policy through focus, press, highlight and disabled",
-        async ({ mode, variant }) => {
+        "$corners $variant in $mode follows shared policy through focus, press, highlight and disabled",
+        async ({ mode, variant, corners }) => {
             const theme = new Theme(
                 themeSpecifications[ThemeName.Default][mode],
                 media,
@@ -112,6 +123,7 @@ describe("Form choice appearance ownership", () => {
                 [Checkbox, "checkbox"],
                 [Radio, "radio"],
             ] as const) {
+                jest.mocked(HexagonSurface).mockClear();
                 const onChange = jest.fn();
                 const content = (
                     color = appearanceColorOptions[0],
@@ -126,6 +138,7 @@ describe("Form choice appearance ownership", () => {
                             highlightColor="intel"
                             variant={variant}
                             size="lg"
+                            corners={corners}
                             checked={checked}
                             highlighted={highlighted}
                             disabled={disabled}
@@ -138,6 +151,7 @@ describe("Form choice appearance ownership", () => {
                     </ThemeContext.Provider>
                 );
                 const screen = await render(content());
+                expect(screen.getAllByRole(role)).toHaveLength(1);
                 const expectAppearance = (
                     state: ThemeAppearanceState,
                     color = appearanceColorOptions[0],
@@ -151,11 +165,26 @@ describe("Form choice appearance ownership", () => {
                     expect(screen.getByRole(role).children[0]).toHaveStyle({
                         width: 20,
                         height: 20,
-                        borderRadius: role === "checkbox" ? 0 : 10,
-                        backgroundColor: appearance.surface,
+                        borderRadius: corners === "circle" ? 10 : 0,
+                        backgroundColor:
+                            corners === "hexagon"
+                                ? "transparent"
+                                : appearance.surface,
                         borderColor: appearance.border.color,
-                        borderWidth: appearance.border.width,
+                        borderWidth:
+                            corners === "hexagon" ? 0 : appearance.border.width,
                     });
+                    if (corners === "hexagon") {
+                        expect(
+                            jest.mocked(HexagonSurface).mock.lastCall?.[0],
+                        ).toMatchObject({
+                            shape: "flat-top",
+                            appearance,
+                            showGlow: false,
+                        });
+                    } else {
+                        expect(HexagonSurface).not.toHaveBeenCalled();
+                    }
                     expect(screen.getByText("Choice")).toHaveStyle({
                         color: theme.resolveAppearance(
                             undefined,
@@ -201,6 +230,34 @@ describe("Form choice appearance ownership", () => {
                 await screen.rerender(
                     content(undefined, false, false, false, true),
                 );
+                if (role === "radio") {
+                    const markerSize = theme.sizes.control.lg.iconSize / 2;
+                    const marker = screen
+                        .getByRole(role)
+                        .queryAll(
+                            (node) =>
+                                node.props.style?.width === markerSize &&
+                                node.props.style?.height === markerSize,
+                        )[0];
+                    expect(marker).toHaveStyle({
+                        width: markerSize,
+                        height: markerSize,
+                        borderRadius: corners === "circle" ? markerSize / 2 : 0,
+                        backgroundColor:
+                            corners === "hexagon"
+                                ? "transparent"
+                                : theme.resolveAppearance(
+                                      variant,
+                                      appearanceColorOptions[0],
+                                      "intel",
+                                  ).glyphs,
+                    });
+                    expect(
+                        marker.queryAll(
+                            (node) => typeof node.props.d === "string",
+                        ),
+                    ).toHaveLength(corners === "hexagon" ? 1 : 0);
+                }
                 await fireEvent.press(screen.getByRole(role));
                 expect(onChange).toHaveBeenLastCalledWith(role === "radio");
                 await screen.unmount();

@@ -3,6 +3,7 @@ import { makeLiveEditStory } from "storybook-addon-code-editor";
 import { useArgs } from "storybook/preview-api";
 import {
     appearanceColorOptions,
+    buttonCorners,
     radioStoryArgs,
     radioStoryControls,
     fillVariantOptions,
@@ -55,18 +56,32 @@ export const Gallery: Story = {
     argTypes: {
         color: { table: { disable: true } },
         variant: { table: { disable: true } },
+        corners: { table: { disable: true } },
         children: { table: { disable: true } },
     },
     render: (args) => (
-        <VariantGallery
-            size={args.size}
-            colors={appearanceColorOptions}
-            variants={fillVariantOptions}
-            render={({ color, variant, size }) => (
-                <Radio {...args} color={color} variant={variant} size={size}>
-                    {color}
-                </Radio>
-            )}
-        />
+        <>
+            {buttonCorners.map((corners) => (
+                <section key={corners}>
+                    <h2>{corners}</h2>
+                    <VariantGallery
+                        size={args.size}
+                        colors={appearanceColorOptions}
+                        variants={fillVariantOptions}
+                        render={({ color, variant, size }) => (
+                            <Radio
+                                {...args}
+                                color={color}
+                                variant={variant}
+                                size={size}
+                                corners={corners}
+                            >
+                                {color}
+                            </Radio>
+                        )}
+                    />
+                </section>
+            ))}
+        </>
     ),
 };

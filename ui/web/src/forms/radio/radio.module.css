@@ -25,11 +25,28 @@
     flex-shrink: 0;
     box-sizing: border-box;
     border-style: solid;
+    border-radius: 0;
+}
+
+.box.corners-circle {
     border-radius: 50%;
+}
+
+.box.corners-hexagon {
+    border-width: 0;
+}
+
+.box:not(.corners-hexagon) {
     backdrop-filter: var(--appearance-backdrop-filter);
     background-color: var(--appearance-default-surface);
     border-color: var(--appearance-default-border);
     border-width: var(--appearance-default-border-width);
+}
+
+.paint {
+    fill: var(--appearance-default-surface);
+    stroke: var(--appearance-default-border);
+    stroke-width: var(--appearance-default-border-width);
 }
 
 .box,
@@ -44,10 +61,16 @@
 .radio:not([data-disabled="true"]):not([data-highlighted="true"]):not(
         :active
     ):is(:hover, :focus-within) {
-    & .box {
+    & .box:not(.corners-hexagon) {
         background-color: var(--appearance-hover-focus-surface);
         border-color: var(--appearance-hover-focus-border);
         border-width: var(--appearance-hover-focus-border-width);
+    }
+
+    & .paint {
+        fill: var(--appearance-hover-focus-surface);
+        stroke: var(--appearance-hover-focus-border);
+        stroke-width: var(--appearance-hover-focus-border-width);
     }
 
     & :is(.box, .label) {
@@ -60,10 +83,16 @@
 }
 
 .radio:not([data-disabled="true"]):is([data-highlighted="true"], :active) {
-    & .box {
+    & .box:not(.corners-hexagon) {
         background-color: var(--appearance-active-pressed-surface);
         border-color: var(--appearance-active-pressed-border);
         border-width: var(--appearance-active-pressed-border-width);
+    }
+
+    & .paint {
+        fill: var(--appearance-active-pressed-surface);
+        stroke: var(--appearance-active-pressed-border);
+        stroke-width: var(--appearance-active-pressed-border-width);
     }
 
     & :is(.box, .label) {
@@ -78,10 +107,16 @@
 .radio[data-disabled="true"] {
     cursor: not-allowed;
 
-    & .box {
+    & .box:not(.corners-hexagon) {
         background-color: var(--appearance-disabled-surface);
         border-color: var(--appearance-disabled-border);
         border-width: var(--appearance-disabled-border-width);
+    }
+
+    & .paint {
+        fill: var(--appearance-disabled-surface);
+        stroke: var(--appearance-disabled-border);
+        stroke-width: var(--appearance-disabled-border-width);
     }
 
     & :is(.box, .label) {
@@ -95,12 +130,20 @@
     outline-offset: 2px;
 }
 
-.dot {
+.marker {
     position: absolute;
     width: 50%;
     height: 50%;
-    border-radius: 50%;
+    fill: currentColor;
+}
+
+.box:not(.corners-hexagon) .marker {
+    border-radius: inherit;
     background-color: currentColor;
+}
+
+.marker > svg {
+    display: block;
 }
 
 .label {

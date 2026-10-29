@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import {
     CheckboxProps,
+    DEFAULT_CORNERS,
     controlTextSpecifications,
     DEFAULT_COLOR,
     DEFAULT_FILL_VARIANT,
@@ -12,6 +13,7 @@ import {
 } from "@ui";
 import { Text } from "../../design-system/typography";
 import { useHudInteraction } from "../../hud/useHudInteraction";
+import { HexagonSurface } from "../../hud/hexagon/HexagonSurface";
 
 const styles = StyleSheet.create({
     container: {
@@ -23,7 +25,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         borderStyle: "solid",
-        borderRadius: 0,
     },
 });
 
@@ -35,6 +36,7 @@ export const Checkbox: FC<CheckboxProps> = ({
     highlightGlyphsShade,
     variant = DEFAULT_FILL_VARIANT,
     size = DEFAULT_SIZE,
+    corners = DEFAULT_CORNERS,
     checked,
     onChange,
     disabled = false,
@@ -76,9 +78,17 @@ export const Checkbox: FC<CheckboxProps> = ({
                         {
                             width: boxSize,
                             height: boxSize,
-                            backgroundColor: appearance.surface,
+                            borderRadius:
+                                corners === "circle" ? boxSize / 2 : 0,
+                            backgroundColor:
+                                corners === "hexagon"
+                                    ? "transparent"
+                                    : appearance.surface,
                             borderColor: appearance.border.color,
-                            borderWidth: appearance.border.width,
+                            borderWidth:
+                                corners === "hexagon"
+                                    ? 0
+                                    : appearance.border.width,
                             outlineStyle: "solid",
                             outlineWidth: focused ? 2 : 0,
                             outlineOffset: 2,
@@ -86,6 +96,13 @@ export const Checkbox: FC<CheckboxProps> = ({
                         },
                     ]}
                 >
+                    {corners === "hexagon" ? (
+                        <HexagonSurface
+                            shape="flat-top"
+                            appearance={appearance}
+                            showGlow={false}
+                        />
+                    ) : null}
                     {checked ? (
                         <Svg
                             accessible={false}

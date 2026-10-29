@@ -2,6 +2,7 @@ import {
     allColorShades,
     appearanceColorOptions,
     DEFAULT_COLOR,
+    DEFAULT_CORNERS,
     DEFAULT_FILL_VARIANT,
     DEFAULT_SIZE,
     fillVariantOptions,
@@ -10,6 +11,7 @@ import {
 } from "../../design-system";
 import { StoryControls } from "../../storybook";
 import { CheckboxProps } from "./model";
+import { buttonCorners } from "../../gizmos/button/tinkers";
 
 export const checkboxStoryArgs: Omit<CheckboxProps, "onChange"> = {
     themeMode: undefined,
@@ -18,6 +20,7 @@ export const checkboxStoryArgs: Omit<CheckboxProps, "onChange"> = {
     color: DEFAULT_COLOR,
     variant: DEFAULT_FILL_VARIANT,
     size: DEFAULT_SIZE,
+    corners: DEFAULT_CORNERS,
     glyphsShade: undefined,
     highlightColor: undefined,
     highlightGlyphsShade: undefined,
@@ -26,6 +29,10 @@ export const checkboxStoryArgs: Omit<CheckboxProps, "onChange"> = {
 };
 
 export const checkboxStoryControls: StoryControls<CheckboxProps> = {
+    corners: {
+        control: "select",
+        options: buttonCorners,
+    },
     themeMode: typographyStoryControls.themeMode,
     children: {
         control: "text",

@@ -55,6 +55,16 @@ describe('Appearance state priority', () => {
                     <input class="input" type="radio" />
                     <span class="box"></span><span class="label">Radio</span>
                 </label>
+                <label id="checkbox-hexagon" class="checkbox" tabindex="0">
+                    <input class="input" type="checkbox" />
+                    <span class="box corners-hexagon"><svg class="drawing"><polygon class="paint" /></svg></span>
+                    <span class="label">Hexagon checkbox</span>
+                </label>
+                <label id="radio-hexagon" class="radio" tabindex="0">
+                    <input class="input" type="radio" />
+                    <span class="box corners-hexagon"><svg class="drawing"><polygon class="paint" /></svg></span>
+                    <span class="label">Hexagon radio</span>
+                </label>
             `;
         });
 
@@ -107,6 +117,18 @@ describe('Appearance state priority', () => {
                 surfaceProperty: 'background-color',
                 glyphs: '#radio .label',
             },
+            {
+                root: '#checkbox-hexagon',
+                surface: '#checkbox-hexagon .paint',
+                surfaceProperty: 'fill',
+                glyphs: '#checkbox-hexagon .label',
+            },
+            {
+                root: '#radio-hexagon',
+                surface: '#radio-hexagon .paint',
+                surfaceProperty: 'fill',
+                glyphs: '#radio-hexagon .label',
+            },
         ]) {
             cy.get(control.surface).should('have.css', control.surfaceProperty, 'rgb(10, 0, 0)');
             cy.get(control.root).focus();
@@ -115,7 +137,7 @@ describe('Appearance state priority', () => {
 
             const usesSurfaceAppearance = control.root !== '#toggle';
             if (usesSurfaceAppearance) {
-                if (control.root !== '#checkbox' && control.root !== '#radio') {
+                if (!control.root.startsWith('#checkbox') && !control.root.startsWith('#radio')) {
                     cy.get(control.root).invoke('attr', 'data-pressed', 'true');
                     cy.get(control.surface).should('have.css', control.surfaceProperty, 'rgb(30, 0, 0)');
                     cy.get(control.root).invoke('removeAttr', 'data-pressed');

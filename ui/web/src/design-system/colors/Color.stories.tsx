@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { Color } from './Color';
 import { Icons, Theme, useTheme } from '@ui';
-import type { ButtonCorners, SurfaceVariant, ThemeColor } from '@ui';
+import type { CornerVariant, SurfaceVariant, ThemeColor } from '@ui';
 import { Text } from '../typography';
 import { Fragment, useEffect, useState } from 'react';
 import { ColorBox } from '../../gizmos/color-box';
@@ -47,7 +47,7 @@ const VariantStates = ({ variant }: { variant: SurfaceVariant }) => (
     </div>
 );
 
-const AnimatedGlowButton = ({ corners = 'square' }: { corners?: ButtonCorners }) => {
+const AnimatedGlowButton = ({ corners = 'square' }: { corners?: CornerVariant }) => {
     const [highlighted, setHighlighted] = useState(true);
 
     useEffect(() => {

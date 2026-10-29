@@ -4,6 +4,8 @@ import { ComponentProps, createElement, ReactElement } from 'react';
 import { renderToStaticMarkup as renderMarkup } from 'react-dom/server';
 import {
     appearanceColorOptions,
+    buttonCorners,
+    hexagonGeometry,
     ColorBoxProps,
     fillVariantOptions,
     DEFAULT_SIZE,
@@ -81,6 +83,59 @@ const renderToStaticMarkup = (children: ReactElement): string => renderMarkup(
 describe('Composed appearance rendering', () => {
     after(() => renderingTheme.destroy());
 
+    it('shows a Radio selection marker matching its corners only while checked', () => {
+        for (const corners of buttonCorners) {
+            for (const checked of [false, true]) {
+                const markup = renderToStaticMarkup(createElement(Radio, {
+                    corners,
+                    checked,
+                    onChange: () => undefined,
+                }));
+                const marker = markup.match(/<span class="marker">([\s\S]*?)<\/span>/)?.[1];
+                if (!checked) {
+                    expect(marker).to.equal(undefined);
+                } else if (corners === 'hexagon') {
+                    expect(marker).to.include(`viewBox="${hexagonGeometry['flat-top'].viewBox}"`);
+                    expect(marker).to.include(`points="${hexagonGeometry['flat-top'].points}"`);
+                } else {
+                    expect(marker).to.equal('');
+                    expect(markup).to.include(`corners-${corners}`);
+                }
+            }
+        }
+    });
+
+    it('reuses a passive HUD hexagon for shaped choices while keeping one native input', () => {
+        for (const Control of [Checkbox, Radio]) {
+            for (const corners of buttonCorners) {
+                const markup = renderToStaticMarkup(createElement(Control, {
+                    corners,
+                    color: 'glitch',
+                    highlightColor: 'intel',
+                    checked: true,
+                    highlighted: true,
+                    disabled: true,
+                    onChange: () => undefined,
+                    children: 'Choice',
+                }));
+                expect([...markup.matchAll(/<input\b/g)]).to.have.length(1);
+                expect([...markup.matchAll(/data-appearance-variant=/g)]).to.have.length(2);
+                expect(markup).to.include(`corners-${corners}`);
+                expect(markup).to.include('checked=""');
+                expect(markup).to.include('disabled=""');
+                expect(markup).not.to.include('data-interactive="true"');
+                expect(markup).not.to.include('<div');
+                expect(markup).not.to.include('corners=');
+                if (corners === 'hexagon') {
+                    expect(markup).to.include(`points="${hexagonGeometry['flat-top'].points}"`);
+                    expect(markup).to.include('polygon-base');
+                } else {
+                    expect(markup).not.to.include('<polygon');
+                }
+            }
+        }
+    });
+
     it('applies a local form choice theme mode to its appearance and nested typography', () => {
         const modes: (ThemeMode | undefined)[] = [undefined, 'light', 'dark'];
         for (const Control of [Checkbox, Radio]) {
@@ -125,7 +180,7 @@ describe('Composed appearance rendering', () => {
                     expect(markup).to.match(/<input\b[^>]*disabled=""[^>]*aria-labelledby="external-label"/);
                     expect(markup).not.to.include('checked=""');
                     expect(markup).not.to.include('<svg');
-                    expect(markup).not.to.include('class="dot"');
+                    expect(markup).not.to.include('class="marker"');
                     expect(markup).to.include(`--appearance-default-glyphs-override:${renderingTheme.color(color, 500)}`);
                     expect(markup).to.include(`--appearance-active-pressed-glyphs-override:${renderingTheme.color('intel', 200)}`);
                 }

@@ -1,7 +1,5 @@
-import type { ColorShade, SpacingVariant } from '../model';
+import type { SpacingVariant } from '../model';
 import type { Breakpoint, ElevationLevel, ThemeElevation, ElevationLayer, ThemeLayerPolicy, ThemeMode, ThemeSizes } from './model';
-
-export const allColorShades: ColorShade[] = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
 
 export const themeSizes: ThemeSizes = {
     control: {

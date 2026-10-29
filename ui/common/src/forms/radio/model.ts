@@ -1,7 +1,8 @@
 import { ReactNode } from "react";
-import { AppearanceProps, FillVariant } from "../../design-system/model";
+import { AppearanceProps, FillVariant, CornerVariant } from "../../design-system/model";
 
 export interface RadioProps extends AppearanceProps<FillVariant> {
+    corners?: CornerVariant;
     checked: boolean;
     onChange: (checked: boolean) => void;
     children?: ReactNode;

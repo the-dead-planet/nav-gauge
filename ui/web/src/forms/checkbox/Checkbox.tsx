@@ -2,6 +2,7 @@ import { ChangeEvent, ComponentProps, CSSProperties, FC, useId } from "react";
 import classNames from "classnames";
 import {
     CheckboxProps,
+    DEFAULT_CORNERS,
     DEFAULT_COLOR,
     DEFAULT_FILL_VARIANT,
     DEFAULT_SIZE,
@@ -9,6 +10,7 @@ import {
     useTheme,
 } from "@ui";
 import styles from "./checkbox.module.css";
+import { HexagonSurface } from "../../hud/hexagon/HexagonSurface";
 
 interface Props {
     labelledBy?: string;
@@ -26,6 +28,7 @@ export const Checkbox: FC<
     highlightGlyphsShade,
     variant = DEFAULT_FILL_VARIANT,
     size = DEFAULT_SIZE,
+    corners = DEFAULT_CORNERS,
     checked,
     highlighted = false,
     onChange,
@@ -106,10 +109,20 @@ export const Checkbox: FC<
                     aria-labelledby={labelledBy ?? ariaLabelledBy}
                 />
                 <span
-                    className={styles["box"]}
+                    className={classNames(
+                        styles.box,
+                        styles[`corners-${corners}`],
+                    )}
                     data-appearance-variant={variant}
                     aria-hidden="true"
                 >
+                    {corners === "hexagon" ? (
+                        <HexagonSurface
+                            shape="flat-top"
+                            effects={theme.appearancePolicies[variant].effects}
+                            paintClassName={styles.paint}
+                        />
+                    ) : null}
                     {checked ? (
                         <svg
                             className={styles["checkmark"]}

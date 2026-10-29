@@ -1,6 +1,6 @@
 import { FontFamilyName, FontType, FontWeight, NumericFontWeight, TextUsage, TypographyProps, TypographyStoryProps } from "./model";
 import { SizeVariant } from "../model";
-import { allColorShades } from '../theme/tinkers';
+import { allColorShades } from '../tinkers';
 import { appearanceColorOptions, DEFAULT_COLOR, surfaceVariantOptions } from '../tinkers';
 import { StoryControls } from '../../storybook/model';
 

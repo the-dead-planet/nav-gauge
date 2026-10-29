@@ -4,11 +4,14 @@ import {
     DEFAULT_COLOR,
     DEFAULT_FILL_VARIANT,
     DEFAULT_SIZE,
+    DEFAULT_GLYPH_CORNERS,
+    hexagonGeometry,
     RadioProps,
     ThemeContext,
     useTheme,
 } from "@ui";
 import styles from "./radio.module.css";
+import { HexagonSurface } from "../../hud/hexagon/HexagonSurface";
 
 interface Props {
     labelledBy?: string;
@@ -26,6 +29,7 @@ export const Radio: FC<
     highlightGlyphsShade,
     variant = DEFAULT_FILL_VARIANT,
     size = DEFAULT_SIZE,
+    corners = DEFAULT_GLYPH_CORNERS,
     checked,
     highlighted = false,
     onChange,
@@ -106,11 +110,40 @@ export const Radio: FC<
                     aria-labelledby={labelledBy ?? ariaLabelledBy}
                 />
                 <span
-                    className={styles["box"]}
+                    className={classNames(
+                        styles.box,
+                        styles[`corners-${corners}`],
+                    )}
                     data-appearance-variant={variant}
                     aria-hidden="true"
                 >
-                    {checked ? <span className={styles["dot"]} /> : null}
+                    {corners === "hexagon" ? (
+                        <HexagonSurface
+                            shape="flat-top"
+                            effects={theme.appearancePolicies[variant].effects}
+                            paintClassName={styles.paint}
+                        />
+                    ) : null}
+                    {checked ? (
+                        <span className={styles.marker}>
+                            {corners === "hexagon" ? (
+                                <svg
+                                    viewBox={
+                                        hexagonGeometry["flat-top"].viewBox
+                                    }
+                                    width="100%"
+                                    height="100%"
+                                    aria-hidden="true"
+                                >
+                                    <polygon
+                                        points={
+                                            hexagonGeometry["flat-top"].points
+                                        }
+                                    />
+                                </svg>
+                            ) : null}
+                        </span>
+                    ) : null}
                 </span>
                 {children ? (
                     <span className={styles["label"]}>{children}</span>

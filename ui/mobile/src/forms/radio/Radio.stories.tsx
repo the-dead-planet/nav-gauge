@@ -1,5 +1,6 @@
 import {
     appearanceColorOptions,
+    buttonCorners,
     RadioProps,
     radioStoryArgs,
     radioStoryControls,
@@ -9,6 +10,8 @@ import { Radio } from "./Radio";
 import { MobileStoryDefinition } from "../../storybook/model";
 import { VariantGallery } from "../../storybook/VariantGallery";
 import { useState } from "react";
+import { ScrollView, View } from "react-native";
+import { Text } from "../../design-system/typography";
 
 const StoryRadio = (args: RadioProps) => {
     const [checked, setChecked] = useState(args.checked);
@@ -34,22 +37,31 @@ const story: MobileStoryDefinition<RadioProps> = {
         <StoryRadio key={String(args.checked)} {...args} />
     ),
     renderGallery: (args) => (
-        <VariantGallery
-            size={args.size}
-            colors={appearanceColorOptions}
-            variants={fillVariantOptions}
-            render={({ color, variant, size }) => (
-                <StoryRadio
-                    key={String(args.checked)}
-                    {...args}
-                    color={color}
-                    variant={variant}
-                    size={size}
-                >
-                    {color}
-                </StoryRadio>
-            )}
-        />
+        <ScrollView>
+            {buttonCorners.map((corners) => (
+                <View key={corners}>
+                    <Text usage="header">{corners}</Text>
+                    <VariantGallery
+                        size={args.size}
+                        colors={appearanceColorOptions}
+                        variants={fillVariantOptions}
+                        scrollEnabled={false}
+                        render={({ color, variant, size }) => (
+                            <StoryRadio
+                                key={String(args.checked)}
+                                {...args}
+                                color={color}
+                                variant={variant}
+                                size={size}
+                                corners={corners}
+                            >
+                                {color}
+                            </StoryRadio>
+                        )}
+                    />
+                </View>
+            ))}
+        </ScrollView>
     ),
 };
 
