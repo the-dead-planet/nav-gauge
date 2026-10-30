@@ -6,6 +6,8 @@ import {
     appearanceColorOptions,
     buttonCorners,
     hexagonGeometry,
+    getChipBevelPath,
+    surfaceVariantOptions,
     ColorBoxProps,
     fillVariantOptions,
     DEFAULT_SIZE,
@@ -45,6 +47,7 @@ const { Divider } =
     require('../src/chassis/divider/Divider') as typeof import('../src/chassis/divider/Divider');
 const { Button } = require('../src/gizmos/button/Button') as typeof import('../src/gizmos/button/Button');
 const { Chip } = require('../src/gizmos/chip/Chip') as typeof import('../src/gizmos/chip/Chip');
+const { ChipSurface } = require('../src/gizmos/chip/ChipSurface') as typeof import('../src/gizmos/chip/ChipSurface');
 const { ResizeHandle } = require('../src/gizmos/resize-handle/ResizeHandle') as typeof import('../src/gizmos/resize-handle/ResizeHandle');
 const { ColorBox } = require('../src/gizmos/color-box/ColorBox') as typeof import('../src/gizmos/color-box/ColorBox');
 const { Menu } = require('../src/rigs/menu/Menu') as typeof import('../src/rigs/menu/Menu');
@@ -82,6 +85,28 @@ const renderToStaticMarkup = (children: ReactElement): string => renderMarkup(
 
 describe('Composed appearance rendering', () => {
     after(() => renderingTheme.destroy());
+
+    it('draws chip borders, translucent masks, and inset shading with shared bevel geometry', () => {
+        for (const variant of surfaceVariantOptions) {
+            const appearance = renderingTheme.resolveAppearance(variant, 'hazard');
+            const markup = renderToStaticMarkup(createElement(ChipSurface, {
+                width: 80,
+                height: 24,
+                size: 'sm',
+                appearance,
+            }));
+            expect(markup).to.include(`d="${getChipBevelPath('sm', 80, 24, appearance.border.width / 2)}"`);
+            expect(markup).to.include('viewBox="0 0 80 24"');
+            expect(markup).to.include('aria-hidden="true"');
+            expect(markup).to.include('vector-effect="non-scaling-stroke"');
+            expect(markup.includes('mask-image:')).to.equal(appearance.effects.backdropBlur > 0);
+            expect(markup.includes('class="inset-shadow"')).to.equal(appearance.effects.depth === 'inset');
+            if (appearance.effects.depth === 'inset') {
+                expect(markup).to.include(`d="${getChipBevelPath('sm', 80, 24)}"`);
+                expect(markup).to.include('clip-path="url(');
+            }
+        }
+    });
 
     it('shows a Radio selection marker matching its corners only while checked', () => {
         for (const corners of buttonCorners) {

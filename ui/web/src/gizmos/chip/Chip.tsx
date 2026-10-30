@@ -1,10 +1,20 @@
 import { FC } from "react";
 import classNames from "classnames";
-import { ChipProps, DEFAULT_COLOR, DEFAULT_SURFACE_VARIANT, DEFAULT_SIZE, SizeVariant } from "@ui";
+import {
+    ChipProps,
+    DEFAULT_COLOR,
+    DEFAULT_SURFACE_VARIANT,
+    DEFAULT_SIZE,
+    DEFAULT_FILL_VARIANT,
+    SizeVariant,
+    useTheme,
+} from "@ui";
 import { Icon } from "../../design-system/icons";
 import { Tooltip } from "../tooltip";
-import { Span } from '../../design-system/typography';
-import styles from './chip.module.css';
+import { Span } from "../../design-system/typography";
+import { usePanelDimensions } from "../../hud/usePanelDimensions";
+import { ChipSurface } from "./ChipSurface";
+import styles from "./chip.module.css";
 
 interface Props {
     /**
@@ -29,29 +39,49 @@ export const Chip: FC<ChipProps & Props> = ({
     variant = DEFAULT_SURFACE_VARIANT,
     tooltip,
     tooltipPlacement,
-    tooltipVariant = 'fill-inverse',
+    tooltipVariant = DEFAULT_FILL_VARIANT,
     showTooltipConnection,
     className,
     children,
 }) => {
+    const theme = useTheme();
+    const appearance = theme.resolveAppearance(variant, color);
+    const { containerRef, width, height } =
+        usePanelDimensions<HTMLSpanElement>();
     const chip = (
         <span
+            ref={containerRef}
+            data-appearance-mode={theme.mode}
             data-appearance-variant={variant}
             data-appearance-color={color}
             className={classNames(
-                styles['chip'],
+                styles["chip"],
                 styles[`size-${size}`],
                 className,
-            )}>
-            {icon ? <Icon src={icon} width={iconSizes[size]} height={iconSizes[size]} /> : null}
-            {children !== undefined && children !== null ? (
-                <Span
-                    fontType={fontType}
-                    className={styles.label}
-                >
-                    {children}
-                </Span>
+            )}
+        >
+            {width > 0 && height > 0 ? (
+                <ChipSurface
+                    width={width}
+                    height={height}
+                    size={size}
+                    appearance={appearance}
+                />
             ) : null}
+            <span className={styles.content}>
+                {icon ? (
+                    <Icon
+                        src={icon}
+                        width={iconSizes[size]}
+                        height={iconSizes[size]}
+                    />
+                ) : null}
+                {children !== undefined && children !== null ? (
+                    <Span fontType={fontType} className={styles.label}>
+                        {children}
+                    </Span>
+                ) : null}
+            </span>
         </span>
     );
 

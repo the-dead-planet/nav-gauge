@@ -6,6 +6,8 @@ import {
     DEFAULT_SURFACE_VARIANT,
     DEFAULT_COLOR,
     DEFAULT_SIZE,
+    DEFAULT_FILL_VARIANT,
+    getChipBevelPath,
     SizeVariant,
     useTheme,
 } from "@ui";
@@ -27,23 +29,6 @@ interface Props {
      */
     icon?: ComponentType<SvgProps>;
 }
-
-const bevelSizes: Record<SizeVariant, number> = {
-    xs: 2,
-    sm: 4,
-    md: 6,
-    lg: 8,
-};
-
-const bevelPath = (bevel: number, width: number, height: number, inset: number): string => {
-    const cut = Math.min(bevel, width / 2 - inset, height / 2 - inset);
-    const x0 = inset;
-    const y0 = inset;
-    const x1 = width - inset;
-    const y1 = height - inset;
-
-    return `M ${x0 + cut} ${y0} H ${x1 - cut} L ${x1} ${y0 + cut} V ${y1 - cut} L ${x1 - cut} ${y1} H ${x0 + cut} L ${x0} ${y1 - cut} V ${y0 + cut} Z`;
-};
 
 const iconSizes: Record<SizeVariant, number> = {
     xs: 12,
@@ -94,7 +79,7 @@ export const Chip: FC<ChipProps & Props> = ({
     variant = DEFAULT_SURFACE_VARIANT,
     tooltip,
     tooltipPlacement,
-    tooltipVariant = 'fill-inverse',
+    tooltipVariant = DEFAULT_FILL_VARIANT,
     showTooltipConnection,
     children,
 }) => {
@@ -117,7 +102,12 @@ export const Chip: FC<ChipProps & Props> = ({
             {layout.width > 0 && layout.height > 0 ? (
                 <Svg style={StyleSheet.absoluteFill} width={layout.width} height={layout.height}>
                     <Path
-                        d={bevelPath(bevelSizes[size], layout.width, layout.height, appearance.border.width / 2)}
+                        d={getChipBevelPath(
+                            size,
+                            layout.width,
+                            layout.height,
+                            appearance.border.width / 2,
+                        )}
                         fill={appearance.surface}
                         stroke={appearance.border.color}
                         strokeWidth={appearance.border.width}
@@ -127,7 +117,13 @@ export const Chip: FC<ChipProps & Props> = ({
                         <>
                             <Defs>
                                 <ClipPath id={insetClipId}>
-                                    <Path d={bevelPath(bevelSizes[size], layout.width, layout.height, 0)} />
+                                    <Path
+                                        d={getChipBevelPath(
+                                            size,
+                                            layout.width,
+                                            layout.height,
+                                        )}
+                                    />
                                 </ClipPath>
                             </Defs>
                             <Polyline

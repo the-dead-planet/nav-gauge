@@ -2,6 +2,7 @@ import { ChipProps } from "./model";
 import {
     appearanceColorOptions,
     DEFAULT_COLOR,
+    DEFAULT_FILL_VARIANT,
     DEFAULT_SIZE,
     DEFAULT_SURFACE_VARIANT,
     fillVariantOptions,
@@ -18,7 +19,7 @@ export const chipStoryArgs: ChipProps = {
     size: DEFAULT_SIZE,
     variant: DEFAULT_SURFACE_VARIANT,
     tooltip: "",
-    tooltipVariant: "fill-inverse",
+    tooltipVariant: DEFAULT_FILL_VARIANT,
     showTooltipConnection: false,
 };
 
