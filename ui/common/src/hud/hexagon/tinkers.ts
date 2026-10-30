@@ -1,11 +1,13 @@
-import { HexagonProps, HexagonShape } from "./model";
+import { HexagonProps } from "./model";
 import {
     DEFAULT_SIZE,
     DEFAULT_COLOR,
     DEFAULT_SURFACE_VARIANT,
     sizeOptions,
     surfaceVariantOptions,
-} from "../../design-system/tinkers";
+    DEFAULT_HEXAGON_SHAPE,
+    HexagonShape,
+} from "../../design-system";
 import { StoryControls } from "../../storybook";
 import { hudSurfaceStoryControls } from "../tinkers";
 
@@ -45,7 +47,7 @@ export const hexagonStoryArgs: HexagonProps = {
     color: DEFAULT_COLOR,
     variant: DEFAULT_SURFACE_VARIANT,
     size: DEFAULT_SIZE,
-    shape: "pointy-top",
+    shape: DEFAULT_HEXAGON_SHAPE,
     strokeWidth: 1,
     interactive: true,
     highlighted: false,

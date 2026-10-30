@@ -1,5 +1,4 @@
-import { ColorShade, ColorVariant, SpacingVariant, SurfaceVariant } from "../model";
-import type { ThemeMode } from '../theme/model';
+import { AppearancePropsBase, ColorShade, SpacingVariant } from "../model";
 
 /**
  * Fonts available for typography components. Usage and role:
@@ -36,13 +35,7 @@ export interface TypographyStoryProps extends TypographyProps {
     children: string;
 }
 
-export interface TypographyProps {
-    variant?: SurfaceVariant;
-    themeMode?: ThemeMode;
-    color?: ColorVariant;
-    highlightColor?: ColorVariant;
-    /** Persistent visual emphasis, distinct from a temporary press. */
-    highlighted?: boolean;
+export interface TypographyProps extends AppearancePropsBase {
     /** Overrides default glyphs using the selected color. */
     shade?: ColorShade;
     /** Applies a palette shade to interactive typography while highlighted. */
@@ -55,7 +48,6 @@ export interface TypographyProps {
     /** Adds a palette shade 800 text shadow. */
     shadow?: boolean;
     bold?: boolean;
-    disabled?: boolean;
     uppercase?: boolean;
     tabular?: boolean;
     /**

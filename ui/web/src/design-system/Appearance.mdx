@@ -39,14 +39,49 @@ Components expose the controls relevant to their visual purpose.
     </tbody>
 </table>
 
+<h2 id="corners-and-shapes">Corners and shapes</h2>
+
+Square corners are the default. Use a different shape only when the component's purpose or an explicit shape prop calls for it.
+
+<table>
+    <thead>
+        <tr><th>Shape</th><th>Geometry</th><th>Intent</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Square / rectangle (default)</td><td><code>border-radius: 0</code></td><td>Space-efficient, neutral structure for presentational content and interactive controls</td></tr>
+        <tr><td>Circle</td><td><code>border-radius: 50%</code> on web; half the diameter on mobile</td><td>Compact, self-contained interactive targets</td></tr>
+        <tr><td>Hexagon</td><td>Six-sided outline using shared geometry</td><td>Distinctive geometric emphasis for interactive targets and presentational content</td></tr>
+        <tr><td>Beveled</td><td>Clipped or drawn angled corners, rather than a border radius</td><td>Mechanical, cut-edge framing for presentational content</td></tr>
+    </tbody>
+</table>
+
+Shape is a visual treatment; it must preserve meaning, interaction behavior, and alignment. Supported shapes, defaults, and restrictions belong in the component documentation:
+
+- <a href="./?path=/docs/hud-panel--docs" target="_top" style={{ textDecoration: 'underline' }}>Panel</a>
+- <a href="./?path=/docs/hud-hexagon--docs" target="_top" style={{ textDecoration: 'underline' }}>Hexagon</a>
+- <a href="./?path=/docs/hud-bevelpanel--docs" target="_top" style={{ textDecoration: 'underline' }}>BevelPanel</a>
+- <a href="./?path=/docs/gizmos-button--docs" target="_top" style={{ textDecoration: 'underline' }}>Button</a>
+- <a href="./?path=/docs/gizmos-chip--docs" target="_top" style={{ textDecoration: 'underline' }}>Chip</a>
+- <a href="./?path=/docs/forms-checkbox--docs" target="_top" style={{ textDecoration: 'underline' }}>Checkbox</a>
+- <a href="./?path=/docs/forms-radio--docs" target="_top" style={{ textDecoration: 'underline' }}>Radio</a>
+
 <h2 id="appearance-states">Appearance states</h2>
 
-Appearance states are listed from highest to lowest priority:
+The highest-priority applicable state wins. Glyph overrides are optional; otherwise the appearance policy supplies the shade.
 
-- **Disabled:** overrides all other states and uses `color`. Disabled action components cannot activate and use a `not-allowed` cursor on web; glyph-shade overrides do not replace disabled colors.
-- **Active / pressed:** uses `highlightColor` and `highlightGlyphsShade` (if supplied), persistently while `highlighted` is enabled or temporarily while the control is being clicked / pressed. Hover and focus do not replace this appearance.
-- **Hover / focus:** temporarily uses `highlightColor` and `highlightGlyphsShade` (if supplied) when the control is neither highlighted nor pressed. Focus also has a visible focus indicator, including when highlighted.
-- **Default:** uses `color` and `glyphsShade` (if supplied) when no higher-priority state applies.
+<table>
+    <thead>
+        <tr><th>Priority</th><th>State</th><th>Color</th><th>Glyph override</th><th>Behavior</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>1 (highest)</td><td>Disabled</td><td><code>color</code></td><td>Ignored; uses disabled policy colors</td><td>Overrides all other states. Disabled actions cannot activate and use a <code>not-allowed</code> cursor on web.</td></tr>
+        <tr><td>2</td><td>Active / pressed</td><td><code>highlightColor ?? color</code></td><td><code>highlightGlyphsShade</code></td><td>Persistent while <code>highlighted</code>, or temporary during a press. Hover and focus do not replace this appearance.</td></tr>
+        <tr><td>3</td><td>Hover / focus</td><td><code>highlightColor ?? color</code></td><td><code>highlightGlyphsShade</code></td><td>Temporary feedback when neither highlighted nor pressed.</td></tr>
+        <tr><td>4 (lowest)</td><td>Default</td><td><code>color</code></td><td><code>glyphsShade</code></td><td>Applies when no higher-priority state is active.</td></tr>
+    </tbody>
+</table>
+
+Focus has a visible indicator even while highlighted; disabled appearance still takes precedence.
 
 Interact with the default and highlighted examples to inspect their transient states.
 

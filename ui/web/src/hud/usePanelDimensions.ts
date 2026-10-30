@@ -1,8 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
-export const usePanelDimensions = (hasHeader = false) => {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const headerRef = useRef<HTMLDivElement>(null);
+export const usePanelDimensions = <
+    Element extends HTMLElement = HTMLDivElement,
+>(
+    hasHeader = false,
+) => {
+    const [container, containerRef] = useState<Element | null>(null);
+    const [header, headerRef] = useState<HTMLDivElement | null>(null);
     const [dimensions, setDimensions] = useState({
         width: 0,
         height: 0,
@@ -10,7 +14,6 @@ export const usePanelDimensions = (hasHeader = false) => {
     });
 
     useEffect(() => {
-        const container = containerRef.current;
         if (!container) {
             return;
         }
@@ -18,7 +21,7 @@ export const usePanelDimensions = (hasHeader = false) => {
             const next = {
                 width: container.offsetWidth,
                 height: container.offsetHeight,
-                headerHeight: headerRef.current?.offsetHeight ?? 0,
+                headerHeight: header?.offsetHeight ?? 0,
             };
             setDimensions((previous) =>
                 previous.width === next.width &&
@@ -29,13 +32,13 @@ export const usePanelDimensions = (hasHeader = false) => {
             );
         };
         const observer = new ResizeObserver(update);
-        observer.observe(container);
-        if (headerRef.current) {
-            observer.observe(headerRef.current);
+        observer.observe(container, { box: "border-box" });
+        if (header) {
+            observer.observe(header, { box: "border-box" });
         }
         update();
         return () => observer.disconnect();
-    }, [hasHeader]);
+    }, [container, header, hasHeader]);
 
     return { containerRef, headerRef, ...dimensions };
 };

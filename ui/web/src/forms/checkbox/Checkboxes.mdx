@@ -1,0 +1,14 @@
+import { Meta, Stories, Title } from "@storybook/addon-docs/blocks";
+import * as CheckboxStories from "./Checkbox.stories";
+
+<Meta of={CheckboxStories} name="Docs" />
+
+<Title />
+
+Checkboxes default to square corners. The `corners` prop also accepts `circle` and `hexagon`; the checkmark remains the selection cue.
+
+All shapes reserve the same icon-sized indicator slot so changing shape or checked state preserves row alignment.
+
+See <a href="./?path=/docs/design-system-appearance--docs#corners-and-shapes" target="_top" style={{ textDecoration: 'underline' }}>Appearance</a> for shared shape geometry and visual intent.
+
+<Stories />

@@ -2,7 +2,7 @@ import { fireEvent, render } from "@testing-library/react-native";
 import { test } from "@jest/globals";
 import {
     buttonCorners,
-    ButtonCorners,
+    CornerVariant,
     fillVariantOptions,
     Orientation,
     Theme,
@@ -33,7 +33,7 @@ const media = {
     subscribe: () => ({ unsubscribe: () => undefined }),
 };
 const modes: ThemeMode[] = ["light", "dark"];
-const cases: { corners: ButtonCorners; mode: ThemeMode }[] = modes.flatMap(
+const cases: { corners: CornerVariant; mode: ThemeMode }[] = modes.flatMap(
     (mode) => buttonCorners.map((corners) => ({ mode, corners })),
 );
 

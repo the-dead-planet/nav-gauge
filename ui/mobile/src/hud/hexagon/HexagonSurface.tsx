@@ -8,7 +8,7 @@ import Svg, {
     RadialGradient,
     Stop,
 } from "react-native-svg";
-import { hexagonGeometry, HexagonProps, ResolvedThemeAppearance } from "@ui";
+import { DEFAULT_HEXAGON_SHAPE, hexagonGeometry, HexagonProps, ResolvedThemeAppearance } from "@ui";
 import { HudContent } from "../HudContent";
 import { HudGlow } from "../HudGlow";
 
@@ -29,7 +29,7 @@ interface Props extends Pick<
 }
 
 export const HexagonSurface: FC<Props> = ({
-    shape = "pointy-top",
+    shape = DEFAULT_HEXAGON_SHAPE,
     strokeWidth,
     appearance,
     showGlow,

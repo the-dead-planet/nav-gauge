@@ -1,6 +1,6 @@
 import { StoryControls } from "../../storybook/model";
 import { appearanceColorOptions, DEFAULT_COLOR, sizeOptions } from "../tinkers";
-import { allColorShades } from "../theme/tinkers";
+import { allColorShades } from "../tinkers";
 import { Theme } from "../theme/theme";
 import { ThemeAppearanceState } from "../theme/model";
 import { IconAppearanceProps } from "./model";

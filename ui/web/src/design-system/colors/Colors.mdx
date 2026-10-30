@@ -11,17 +11,11 @@ Colors use perceptually ordered shades from `50` through `900`. Shade `500` defi
 
 ## Shade roles
 
-Default text and icons use `900` in light mode and `100` in dark mode. Main application surfaces use the inverse: `100` in light mode and `900` in dark mode.
-
-Shade `50` is an optional brightest tint for maximum-light details and subtle fills. It is intentionally not a default semantic color; use `100` for normal dark-mode text so text and application backgrounds remain symmetric at `100` and `900`.
-
-These defaults do not guarantee accessibility. Verify contrast when combining chromatic foregrounds and backgrounds or rendering small text.
+Surface, border, and glyph shades follow the <a href="./?path=/docs/design-system-appearance--docs#variants" target="_top" style={{ textDecoration: 'underline' }}>Appearance variant tables</a>. Shade `50` is reserved for optional bright details; verify contrast for the actual color pairing and text size.
 
 <h2 id="contrast-shades">Contrast shades</h2>
 
-A contrast shade is foreground text or icon color selected from the same palette for legibility against a filled background. The theme compares the background shade's OKLCH lightness with the shared contrast threshold and selects shade `100` for dark backgrounds or `900` for light backgrounds. Components recalculate it when an interaction changes the background shade; do not assume one contrast shade for an entire palette.
-
-Variant tables, glyph treatment, and interaction states are defined in <a href="./?path=/docs/design-system-appearance--docs" target="_top" style={{ textDecoration: 'underline' }}>Appearance</a>.
+A contrast shade uses the background's palette: `100` on dark shades or `900` on light shades, selected by the shared OKLCH lightness threshold. Recalculate it whenever the background shade changes.
 
 ## Palettes
 

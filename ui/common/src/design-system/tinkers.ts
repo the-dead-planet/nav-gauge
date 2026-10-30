@@ -1,7 +1,8 @@
 import type { ElevationDirection, ElevationLevel } from './theme/model';
-import { ActionButtonVariants, ActiveGlow, ColorVariant, FillVariant, SizeVariant, SurfaceVariant } from './model';
+import { ActionButtonVariants, ActiveGlow, ColorShade, ColorVariant, CornerVariant, FillVariant, HexagonShape, SizeVariant, SurfaceVariant } from './model';
 import type { ThemeAppearanceState } from './theme/model';
 
+export const allColorShades: ColorShade[] = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
 export const colorOptions: ColorVariant[] = ['neutral', 'primary', 'secondary', 'tertiary'];
 
 export const appearanceColorOptions: ColorVariant[] = [
@@ -32,12 +33,16 @@ export const themeAppearanceStateOptions: ThemeAppearanceState[] = [
     'active-pressed',
     'disabled',
 ];
+export const cornerOptions: CornerVariant[] = ['square', 'circle', 'hexagon'];
 
 export const DEFAULT_SIZE: SizeVariant = 'sm';
 export const DEFAULT_SURFACE_VARIANT: SurfaceVariant = 'ghost';
 export const DEFAULT_FILL_VARIANT: FillVariant = 'fill-inverse';
 export const DEFAULT_ELEVATION: ElevationLevel = 'none';
 export const DEFAULT_COLOR: ColorVariant = 'neutral';
+export const DEFAULT_CORNERS: CornerVariant = 'square';
+export const DEFAULT_GLYPH_CORNERS: CornerVariant = 'circle';
+export const DEFAULT_HEXAGON_SHAPE: HexagonShape = 'flat-top';
 
 export const actionButtonVariants: Record<FillVariant, ActionButtonVariants> = {
     fill: {

@@ -1,45 +1,81 @@
 .chip {
-    corner-shape: bevel;
+    position: relative;
     box-sizing: border-box;
     display: inline-flex;
     align-items: center;
     color: var(--appearance-default-glyphs);
     font-weight: var(--appearance-default-font-weight, inherit);
-    background: var(--appearance-default-surface);
-    border: var(--appearance-default-border-width) solid var(--appearance-default-border);
+    border: var(--appearance-default-border-width) solid transparent;
+}
+
+.content {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: inherit;
+}
+
+.drawing,
+.backdrop {
+    position: absolute;
+    inset: calc(0px - var(--appearance-default-border-width));
+    width: calc(100% + var(--appearance-default-border-width) * 2);
+    height: calc(100% + var(--appearance-default-border-width) * 2);
+    pointer-events: none;
+}
+
+.paint {
+    fill: var(--appearance-default-surface);
+    stroke: var(--appearance-default-border);
+    stroke-width: var(--appearance-default-border-width);
+}
+
+.backdrop {
     backdrop-filter: var(--appearance-backdrop-filter);
-    box-shadow: var(--appearance-inset-default-shadow);
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+}
+
+.inset-shadow,
+.inset-highlight {
+    fill: none;
+}
+
+.inset-shadow {
+    stroke: var(--appearance-inset-default-inner-start);
+    stroke-width: 6px;
+}
+
+.inset-highlight {
+    stroke: var(--appearance-inset-default-inner-end);
+    stroke-width: 4px;
 }
 
 .size-lg {
     font-size: 16px;
     padding: 6px 10px;
     gap: 10px;
-    border-radius: 8px;
 }
 
 .size-md {
     font-size: 14px;
     padding: 4px 8px;
     gap: 8px;
-    border-radius: 6px;
 }
 
 .size-sm {
     font-size: 12px;
     padding: 2px 4px;
     gap: 6px;
-    border-radius: 4px;
 }
 
 .size-xs {
     font-size: 10px;
     padding: 1px 3px;
     gap: 4px;
-    border-radius: 2px;
 }
 
-.chip > .label {
+.content > .label {
     color: inherit;
     font-weight: inherit;
 }

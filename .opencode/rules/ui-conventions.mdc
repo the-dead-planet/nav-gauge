@@ -14,6 +14,8 @@ Before implementing or changing appearance variants or interaction states, read 
 
 Shared reusable components require a common API/value logic in `@ui/common` and thin renderers in both `@web-ui` and `@mobile-ui`.
 
+Base appearance prop defaults must come from common constants or policies (for example, `DEFAULT_SIZE`, `DEFAULT_COLOR`, and the applicable variant default) in renderers and shared story args. Never hardcode an equivalent default such as `size = 'sm'` or `size: 'xs'`; explicit non-default examples may override it. Galleries must initialize size from the shared story default and follow the selected story size rather than treating the first size option as the default.
+
 ### Component Structure
 
 Compose components from focused subcomponents recursively. Extract a section when it has its own visual purpose, interactions, styling, state, or meaningful name. Parent components orchestrate data and composition; leaf components own rendering details.
@@ -21,6 +23,8 @@ Compose components from focused subcomponents recursively. Extract a section whe
 Each component must live in a file named after it. A tiny helper component may remain with its only parent when it has no independent meaning or reuse. Module-scope constants and helpers used by only one component remain in that component's file.
 
 Every new or changed UI component needs a matching platform story. Public reusable components need `Playground with Live code editor` and `Gallery` stories. Use inferred `argTypes`; specify only non-inferable controls or mappings.
+
+All component Gallery stories must compose the platform's shared gallery primitives for color, variant, and size coverage instead of building a parallel matrix. Show one selected size at a time; never loop over sizes. Compose separate sections only for dimensions the shared gallery does not cover, such as shape or orientation.
 
 Reserve final layout dimensions before optional or asynchronous content appears; toggling content must not move surrounding UI.
 

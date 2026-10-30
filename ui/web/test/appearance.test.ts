@@ -4,6 +4,10 @@ import { ComponentProps, createElement, ReactElement } from 'react';
 import { renderToStaticMarkup as renderMarkup } from 'react-dom/server';
 import {
     appearanceColorOptions,
+    buttonCorners,
+    hexagonGeometry,
+    getChipBevelPath,
+    surfaceVariantOptions,
     ColorBoxProps,
     fillVariantOptions,
     DEFAULT_SIZE,
@@ -43,6 +47,7 @@ const { Divider } =
     require('../src/chassis/divider/Divider') as typeof import('../src/chassis/divider/Divider');
 const { Button } = require('../src/gizmos/button/Button') as typeof import('../src/gizmos/button/Button');
 const { Chip } = require('../src/gizmos/chip/Chip') as typeof import('../src/gizmos/chip/Chip');
+const { ChipSurface } = require('../src/gizmos/chip/ChipSurface') as typeof import('../src/gizmos/chip/ChipSurface');
 const { ResizeHandle } = require('../src/gizmos/resize-handle/ResizeHandle') as typeof import('../src/gizmos/resize-handle/ResizeHandle');
 const { ColorBox } = require('../src/gizmos/color-box/ColorBox') as typeof import('../src/gizmos/color-box/ColorBox');
 const { Menu } = require('../src/rigs/menu/Menu') as typeof import('../src/rigs/menu/Menu');
@@ -50,6 +55,9 @@ const { MenuItem } = require('../src/rigs/menu/MenuItem') as typeof import('../s
 const { Tabstrip } = require('../src/rigs/tabstrip/Tabstrip') as typeof import('../src/rigs/tabstrip/Tabstrip');
 const { VariantGallery } = require('../src/storybook/VariantGallery') as typeof import('../src/storybook/VariantGallery');
 const { FileInput } = require('../src/forms/file-input/FileInput') as typeof import('../src/forms/file-input/FileInput');
+const { Checkbox } = require('../src/forms/checkbox/Checkbox') as typeof import('../src/forms/checkbox/Checkbox');
+const { Radio } = require('../src/forms/radio/Radio') as typeof import('../src/forms/radio/Radio');
+const { Text } = require('../src/design-system/typography') as typeof import('../src/design-system/typography');
 if (previousCssLoader) {
     require.extensions['.css'] = previousCssLoader;
 } else {
@@ -77,6 +85,133 @@ const renderToStaticMarkup = (children: ReactElement): string => renderMarkup(
 
 describe('Composed appearance rendering', () => {
     after(() => renderingTheme.destroy());
+
+    it('draws chip borders, translucent masks, and inset shading with shared bevel geometry', () => {
+        for (const variant of surfaceVariantOptions) {
+            const appearance = renderingTheme.resolveAppearance(variant, 'hazard');
+            const markup = renderToStaticMarkup(createElement(ChipSurface, {
+                width: 80,
+                height: 24,
+                size: 'sm',
+                appearance,
+            }));
+            expect(markup).to.include(`d="${getChipBevelPath('sm', 80, 24, appearance.border.width / 2)}"`);
+            expect(markup).to.include('viewBox="0 0 80 24"');
+            expect(markup).to.include('aria-hidden="true"');
+            expect(markup).to.include('vector-effect="non-scaling-stroke"');
+            expect(markup.includes('mask-image:')).to.equal(appearance.effects.backdropBlur > 0);
+            expect(markup.includes('class="inset-shadow"')).to.equal(appearance.effects.depth === 'inset');
+            if (appearance.effects.depth === 'inset') {
+                expect(markup).to.include(`d="${getChipBevelPath('sm', 80, 24)}"`);
+                expect(markup).to.include('clip-path="url(');
+            }
+        }
+    });
+
+    it('shows a Radio selection marker matching its corners only while checked', () => {
+        for (const corners of buttonCorners) {
+            for (const checked of [false, true]) {
+                const markup = renderToStaticMarkup(createElement(Radio, {
+                    corners,
+                    checked,
+                    onChange: () => undefined,
+                }));
+                const marker = markup.match(/<span class="marker">([\s\S]*?)<\/span>/)?.[1];
+                if (!checked) {
+                    expect(marker).to.equal(undefined);
+                } else if (corners === 'hexagon') {
+                    expect(marker).to.include(`viewBox="${hexagonGeometry['flat-top'].viewBox}"`);
+                    expect(marker).to.include(`points="${hexagonGeometry['flat-top'].points}"`);
+                } else {
+                    expect(marker).to.equal('');
+                    expect(markup).to.include(`corners-${corners}`);
+                }
+            }
+        }
+    });
+
+    it('reuses a passive HUD hexagon for shaped choices while keeping one native input', () => {
+        for (const Control of [Checkbox, Radio]) {
+            for (const corners of buttonCorners) {
+                const markup = renderToStaticMarkup(createElement(Control, {
+                    corners,
+                    color: 'glitch',
+                    highlightColor: 'intel',
+                    checked: true,
+                    highlighted: true,
+                    disabled: true,
+                    onChange: () => undefined,
+                    children: 'Choice',
+                }));
+                expect([...markup.matchAll(/<input\b/g)]).to.have.length(1);
+                expect([...markup.matchAll(/data-appearance-variant=/g)]).to.have.length(2);
+                expect(markup).to.include(`corners-${corners}`);
+                expect(markup).to.include('checked=""');
+                expect(markup).to.include('disabled=""');
+                expect(markup).not.to.include('data-interactive="true"');
+                expect(markup).not.to.include('<div');
+                expect(markup).not.to.include('corners=');
+                if (corners === 'hexagon') {
+                    expect(markup).to.include(`points="${hexagonGeometry['flat-top'].points}"`);
+                    expect(markup).to.include('polygon-base');
+                } else {
+                    expect(markup).not.to.include('<polygon');
+                }
+            }
+        }
+    });
+
+    it('applies a local form choice theme mode to its appearance and nested typography', () => {
+        const modes: (ThemeMode | undefined)[] = [undefined, 'light', 'dark'];
+        for (const Control of [Checkbox, Radio]) {
+            for (const themeMode of modes) {
+                const markup = renderToStaticMarkup(createElement(Control, {
+                    themeMode,
+                    checked: true,
+                    onChange: () => undefined,
+                    children: createElement(Text, { children: 'Nested label' }),
+                }));
+                const mode = themeMode ?? renderingTheme.mode;
+                expect([...markup.matchAll(/data-appearance-mode="([^"]+)"/g)].map((match) => match[1]))
+                    .to.deep.equal([mode, mode]);
+                expect(markup).not.to.include('themeMode=');
+            }
+        }
+    });
+
+    it('keeps selection separate from appearance and labels the native form control', () => {
+        for (const Control of [Checkbox, Radio]) {
+            for (const color of appearanceColorOptions) {
+                for (const variant of fillVariantOptions) {
+                    const markup = renderToStaticMarkup(createElement(Control, {
+                        color,
+                        variant,
+                        checked: false,
+                        highlighted: true,
+                        disabled: true,
+                        glyphsShade: 500,
+                        highlightColor: 'intel',
+                        highlightGlyphsShade: 200,
+                        labelledBy: 'external-label',
+                        onChange: () => undefined,
+                        children: 'Choice',
+                    }));
+                    expect(markup).to.include('data-appearance-variant="default"');
+                    expect(markup).to.include(`data-appearance-variant="${variant}"`);
+                    expect(markup).to.include(`data-appearance-color="${color}"`);
+                    expect(markup).to.include('data-appearance-highlight="intel"');
+                    expect(markup).to.include('data-highlighted="true"');
+                    expect(markup).to.include('data-disabled="true"');
+                    expect(markup).to.match(/<input\b[^>]*disabled=""[^>]*aria-labelledby="external-label"/);
+                    expect(markup).not.to.include('checked=""');
+                    expect(markup).not.to.include('<svg');
+                    expect(markup).not.to.include('class="marker"');
+                    expect(markup).to.include(`--appearance-default-glyphs-override:${renderingTheme.color(color, 500)}`);
+                    expect(markup).to.include(`--appearance-active-pressed-glyphs-override:${renderingTheme.color('intel', 200)}`);
+                }
+            }
+        }
+    });
 
     it('lets FileInput callers choose filename typography without changing its default', () => {
         const props: ComponentProps<typeof FileInput> = {
