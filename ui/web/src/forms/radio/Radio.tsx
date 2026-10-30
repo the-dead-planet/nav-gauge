@@ -42,113 +42,109 @@ export const Radio: FC<
     "aria-labelledby": ariaLabelledBy,
     ...props
 }) => {
-    const generatedId = useId();
-    const effectiveId = id || generatedId;
-    const theme = useTheme().forMode(themeMode);
+        const generatedId = useId();
+        const effectiveId = id || generatedId;
+        const theme = useTheme().forMode(themeMode);
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        onChange(e.target.checked);
-    };
+        const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+            onChange(e.target.checked);
+        };
 
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLLabelElement>) => {
-        onKeyDown?.(e);
-        if (!e.defaultPrevented && e.key === "Enter" && !disabled) {
-            e.preventDefault();
-            onChange(true);
-        }
-    };
+        const handleKeyDown = (e: React.KeyboardEvent<HTMLLabelElement>) => {
+            onKeyDown?.(e);
+            if (!e.defaultPrevented && e.key === "Enter" && !disabled) {
+                e.preventDefault();
+                onChange(true);
+            }
+        };
 
-    return (
-        <ThemeContext.Provider value={theme}>
-            <label
-                onKeyDown={handleKeyDown}
-                htmlFor={effectiveId}
-                data-appearance-mode={theme.mode}
-                data-appearance-variant="default"
-                data-appearance-color={color}
-                data-appearance-highlight={highlightColor}
-                data-highlighted={highlighted}
-                data-disabled={disabled}
-                className={classNames(
-                    styles["radio"],
-                    styles[`size-${size}`],
-                    className,
-                )}
-                style={
-                    {
-                        ...style,
-                        "--appearance-default-glyphs-override":
-                            glyphsShade === undefined
-                                ? undefined
-                                : theme.color(color, glyphsShade),
-                        "--appearance-hover-focus-glyphs-override":
-                            highlightGlyphsShade === undefined
-                                ? undefined
-                                : theme.color(
-                                      highlightColor,
-                                      highlightGlyphsShade,
-                                  ),
-                        "--appearance-active-pressed-glyphs-override":
-                            highlightGlyphsShade === undefined
-                                ? undefined
-                                : theme.color(
-                                      highlightColor,
-                                      highlightGlyphsShade,
-                                  ),
-                    } as CSSProperties
-                }
-                {...props}
-            >
-                <input
-                    id={effectiveId}
-                    type="radio"
-                    className={styles["input"]}
-                    checked={checked}
-                    onChange={handleChange}
-                    disabled={disabled}
-                    aria-label={ariaLabel}
-                    aria-labelledby={labelledBy ?? ariaLabelledBy}
-                />
-                <span
+        return (
+            <ThemeContext.Provider value={theme}>
+                <label
+                    onKeyDown={handleKeyDown}
+                    htmlFor={effectiveId}
+                    data-appearance-mode={theme.mode}
+                    data-appearance-variant="default"
+                    data-appearance-color={color}
+                    data-appearance-highlight={highlightColor}
+                    data-highlighted={highlighted}
+                    data-disabled={disabled}
                     className={classNames(
-                        styles.box,
-                        styles[`corners-${corners}`],
+                        styles["radio"],
+                        styles[`size-${size}`],
+                        className,
                     )}
-                    data-appearance-variant={variant}
-                    aria-hidden="true"
+                    style={
+                        {
+                            ...style,
+                            "--appearance-default-glyphs-override":
+                                glyphsShade === undefined
+                                    ? undefined
+                                    : theme.color(color, glyphsShade),
+                            "--appearance-hover-focus-glyphs-override":
+                                highlightGlyphsShade === undefined
+                                    ? undefined
+                                    : theme.color(
+                                        highlightColor,
+                                        highlightGlyphsShade,
+                                    ),
+                            "--appearance-active-pressed-glyphs-override":
+                                highlightGlyphsShade === undefined
+                                    ? undefined
+                                    : theme.color(
+                                        highlightColor,
+                                        highlightGlyphsShade,
+                                    ),
+                        } as CSSProperties
+                    }
+                    {...props}
                 >
-                    {corners === "hexagon" ? (
-                        <HexagonSurface
-                            shape="flat-top"
-                            effects={theme.appearancePolicies[variant].effects}
-                            paintClassName={styles.paint}
-                        />
-                    ) : null}
-                    {checked ? (
-                        <span className={styles.marker}>
-                            {corners === "hexagon" ? (
-                                <svg
-                                    viewBox={
-                                        hexagonGeometry["flat-top"].viewBox
-                                    }
-                                    width="100%"
-                                    height="100%"
-                                    aria-hidden="true"
-                                >
-                                    <polygon
-                                        points={
-                                            hexagonGeometry["flat-top"].points
+                    <input
+                        id={effectiveId}
+                        type="radio"
+                        className={styles["input"]}
+                        checked={checked}
+                        onChange={handleChange}
+                        disabled={disabled}
+                        aria-label={ariaLabel}
+                        aria-labelledby={labelledBy ?? ariaLabelledBy}
+                    />
+                    <span
+                        className={classNames(
+                            styles.box,
+                            styles[`corners-${corners}`],
+                        )}
+                        data-appearance-variant={variant}
+                        aria-hidden="true"
+                    >
+                        {corners === "hexagon" ? (
+                            <HexagonSurface effects={theme.appearancePolicies[variant].effects} paintClassName={styles.paint} />
+                        ) : null}
+                        {checked ? (
+                            <span className={styles.marker}>
+                                {corners === "hexagon" ? (
+                                    <svg
+                                        viewBox={
+                                            hexagonGeometry["flat-top"].viewBox
                                         }
-                                    />
-                                </svg>
-                            ) : null}
-                        </span>
+                                        width="100%"
+                                        height="100%"
+                                        aria-hidden="true"
+                                    >
+                                        <polygon
+                                            points={
+                                                hexagonGeometry["flat-top"].points
+                                            }
+                                        />
+                                    </svg>
+                                ) : null}
+                            </span>
+                        ) : null}
+                    </span>
+                    {children ? (
+                        <span className={styles["label"]}>{children}</span>
                     ) : null}
-                </span>
-                {children ? (
-                    <span className={styles["label"]}>{children}</span>
-                ) : null}
-            </label>
-        </ThemeContext.Provider>
-    );
-};
+                </label>
+            </ThemeContext.Provider>
+        );
+    };

@@ -1,6 +1,6 @@
 import { FC, useId } from "react";
 import classNames from "classnames";
-import { hexagonGeometry, HexagonProps, ResolvedThemeAppearance } from "@ui";
+import { DEFAULT_HEXAGON_SHAPE, hexagonGeometry, HexagonProps, ResolvedThemeAppearance } from "@ui";
 import styles from "./hexagon.module.css";
 import surface from "../surface.module.css";
 
@@ -13,7 +13,7 @@ interface Props extends Pick<
 }
 
 export const HexagonSurface: FC<Props> = ({
-    shape = "pointy-top",
+    shape = DEFAULT_HEXAGON_SHAPE,
     strokeWidth,
     effects,
     paintClassName,

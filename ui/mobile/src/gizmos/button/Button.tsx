@@ -131,18 +131,18 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         disabled
             ? appearance.glyphs
             : highlightGlyphsShade !== undefined && isInteractiveState
-              ? theme.color(highlightColor, highlightGlyphsShade)
-               : glyphsShade !== undefined && !isInteractiveState
-                ? theme.color(color, glyphsShade)
-                : appearance.glyphs;
+                ? theme.color(highlightColor, highlightGlyphsShade)
+                : glyphsShade !== undefined && !isInteractiveState
+                    ? theme.color(color, glyphsShade)
+                    : appearance.glyphs;
     const fontSize = controlSize.fontSize;
 
     const textShadowStyle = showTextGlow
         ? {
-              textShadowColor: appearance.effects.glowColor,
-              textShadowRadius: 12,
-              textShadowOffset: { width: 0, height: 0 },
-          }
+            textShadowColor: appearance.effects.glowColor,
+            textShadowRadius: 12,
+            textShadowOffset: { width: 0, height: 0 },
+        }
         : undefined;
 
     const iconSize = controlSize.iconSize;
@@ -152,11 +152,11 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
             style={
                 iconRotateZ || iconRotateX
                     ? {
-                          transform: [
-                              { rotateZ: `${iconRotateZ}deg` },
-                              { rotateX: `${iconRotateX}deg` },
-                          ],
-                      }
+                        transform: [
+                            { rotateZ: `${iconRotateZ}deg` },
+                            { rotateX: `${iconRotateX}deg` },
+                        ],
+                    }
                     : undefined
             }
         >
@@ -219,11 +219,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
             ]}
         >
             {corners === "hexagon" ? (
-                <HexagonSurface
-                    shape="flat-top"
-                    appearance={appearance}
-                    showGlow={showGlow}
-                >
+                <HexagonSurface appearance={appearance} showGlow={showGlow}>
                     {content}
                 </HexagonSurface>
             ) : (
@@ -248,8 +244,8 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
                         variant === "fill"
                             ? "fill"
                             : variant === "fill-translucent"
-                              ? "fill-translucent"
-                              : "fill-inverse"
+                                ? "fill-translucent"
+                                : "fill-inverse"
                     }
                     showConnection={showTooltipConnection}
                 >

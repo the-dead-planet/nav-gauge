@@ -98,11 +98,7 @@ export const Radio: FC<RadioProps> = ({
                     ]}
                 >
                     {corners === "hexagon" ? (
-                        <HexagonSurface
-                            shape="flat-top"
-                            appearance={appearance}
-                            showGlow={false}
-                        />
+                        <HexagonSurface appearance={appearance} showGlow={false} />
                     ) : null}
                     {checked ? (
                         <View
@@ -121,15 +117,11 @@ export const Radio: FC<RadioProps> = ({
                                 <Svg
                                     width="100%"
                                     height="100%"
-                                    viewBox={
-                                        hexagonGeometry["flat-top"].viewBox
-                                    }
+                                    viewBox={hexagonGeometry["flat-top"].viewBox}
                                     accessible={false}
                                 >
                                     <Polygon
-                                        points={
-                                            hexagonGeometry["flat-top"].points
-                                        }
+                                        points={hexagonGeometry["flat-top"].points}
                                         fill={glyphs}
                                     />
                                 </Svg>

@@ -1,5 +1,5 @@
 import type { ElevationDirection, ElevationLevel } from './theme/model';
-import { ActionButtonVariants, ActiveGlow, ColorShade, ColorVariant, CornerVariant, FillVariant, SizeVariant, SurfaceVariant } from './model';
+import { ActionButtonVariants, ActiveGlow, ColorShade, ColorVariant, CornerVariant, FillVariant, HexagonShape, SizeVariant, SurfaceVariant } from './model';
 import type { ThemeAppearanceState } from './theme/model';
 
 export const allColorShades: ColorShade[] = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
@@ -42,6 +42,7 @@ export const DEFAULT_ELEVATION: ElevationLevel = 'none';
 export const DEFAULT_COLOR: ColorVariant = 'neutral';
 export const DEFAULT_CORNERS: CornerVariant = 'square';
 export const DEFAULT_GLYPH_CORNERS: CornerVariant = 'circle';
+export const DEFAULT_HEXAGON_SHAPE: HexagonShape = 'flat-top';
 
 export const actionButtonVariants: Record<FillVariant, ActionButtonVariants> = {
     fill: {

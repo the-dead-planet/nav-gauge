@@ -5,6 +5,7 @@ import {
     DEFAULT_SURFACE_VARIANT,
     HexagonProps,
     useTheme,
+    DEFAULT_HEXAGON_SHAPE,
 } from "@ui";
 import classNames from "classnames";
 import styles from "./hexagon.module.css";
@@ -13,7 +14,7 @@ import { HudSurface } from "../HudSurface";
 import { HexagonSurface } from "./HexagonSurface";
 
 export const Hexagon: FC<HexagonProps & ComponentProps<"div">> = ({
-    shape = "pointy-top",
+    shape = DEFAULT_HEXAGON_SHAPE,
     strokeWidth,
     interactive = false,
     activeGlow = "none",

@@ -1,7 +1,5 @@
 import { ReactNode } from "react";
-import { AppearancePropsBase, ActiveGlow, SizeVariant, SurfaceVariant } from "../../design-system/model";
-
-export type HexagonShape = 'pointy-top' | 'flat-top';
+import { AppearancePropsBase, ActiveGlow, SizeVariant, SurfaceVariant, HexagonShape } from "../../design-system/model";
 
 export interface HexagonProps extends AppearancePropsBase<SurfaceVariant> {
     shape?: HexagonShape;

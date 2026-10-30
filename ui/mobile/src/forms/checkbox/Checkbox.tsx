@@ -97,11 +97,7 @@ export const Checkbox: FC<CheckboxProps> = ({
                     ]}
                 >
                     {corners === "hexagon" ? (
-                        <HexagonSurface
-                            shape="flat-top"
-                            appearance={appearance}
-                            showGlow={false}
-                        />
+                        <HexagonSurface appearance={appearance} showGlow={false} />
                     ) : null}
                     {checked ? (
                         <Svg

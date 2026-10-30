@@ -26,6 +26,8 @@ export type SpacingVariant = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 export type CornerVariant = 'square' | 'circle' | 'hexagon';
 
+export type HexagonShape = 'pointy-top' | 'flat-top';
+
 export interface AppearancePropsBase<TVariant extends SurfaceVariant = SurfaceVariant> {
     themeMode?: ThemeMode;
     variant?: TVariant;

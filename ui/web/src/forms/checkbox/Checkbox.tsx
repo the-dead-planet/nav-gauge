@@ -41,111 +41,107 @@ export const Checkbox: FC<
     "aria-labelledby": ariaLabelledBy,
     ...props
 }) => {
-    const generatedId = useId();
-    const effectiveId = id || generatedId;
-    const theme = useTheme().forMode(themeMode);
+        const generatedId = useId();
+        const effectiveId = id || generatedId;
+        const theme = useTheme().forMode(themeMode);
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        onChange(e.target.checked);
-    };
+        const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+            onChange(e.target.checked);
+        };
 
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLLabelElement>) => {
-        onKeyDown?.(e);
-        if (!e.defaultPrevented && e.key === "Enter" && !disabled) {
-            e.preventDefault();
-            onChange(!checked);
-        }
-    };
+        const handleKeyDown = (e: React.KeyboardEvent<HTMLLabelElement>) => {
+            onKeyDown?.(e);
+            if (!e.defaultPrevented && e.key === "Enter" && !disabled) {
+                e.preventDefault();
+                onChange(!checked);
+            }
+        };
 
-    return (
-        <ThemeContext.Provider value={theme}>
-            <label
-                onKeyDown={handleKeyDown}
-                htmlFor={effectiveId}
-                data-appearance-mode={theme.mode}
-                data-appearance-variant="default"
-                data-appearance-color={color}
-                data-appearance-highlight={highlightColor}
-                data-highlighted={highlighted}
-                data-disabled={disabled}
-                className={classNames(
-                    styles["checkbox"],
-                    styles[`size-${size}`],
-                    className,
-                )}
-                style={
-                    {
-                        ...style,
-                        "--appearance-default-glyphs-override":
-                            glyphsShade === undefined
-                                ? undefined
-                                : theme.color(color, glyphsShade),
-                        "--appearance-hover-focus-glyphs-override":
-                            highlightGlyphsShade === undefined
-                                ? undefined
-                                : theme.color(
-                                      highlightColor,
-                                      highlightGlyphsShade,
-                                  ),
-                        "--appearance-active-pressed-glyphs-override":
-                            highlightGlyphsShade === undefined
-                                ? undefined
-                                : theme.color(
-                                      highlightColor,
-                                      highlightGlyphsShade,
-                                  ),
-                    } as CSSProperties
-                }
-                {...props}
-            >
-                <input
-                    id={effectiveId}
-                    type="checkbox"
-                    className={styles["input"]}
-                    checked={checked}
-                    onChange={handleChange}
-                    disabled={disabled}
-                    aria-label={ariaLabel}
-                    aria-labelledby={labelledBy ?? ariaLabelledBy}
-                />
-                <span
+        return (
+            <ThemeContext.Provider value={theme}>
+                <label
+                    onKeyDown={handleKeyDown}
+                    htmlFor={effectiveId}
+                    data-appearance-mode={theme.mode}
+                    data-appearance-variant="default"
+                    data-appearance-color={color}
+                    data-appearance-highlight={highlightColor}
+                    data-highlighted={highlighted}
+                    data-disabled={disabled}
                     className={classNames(
-                        styles.box,
-                        styles[`corners-${corners}`],
+                        styles["checkbox"],
+                        styles[`size-${size}`],
+                        className,
                     )}
-                    data-appearance-variant={variant}
-                    aria-hidden="true"
+                    style={
+                        {
+                            ...style,
+                            "--appearance-default-glyphs-override":
+                                glyphsShade === undefined
+                                    ? undefined
+                                    : theme.color(color, glyphsShade),
+                            "--appearance-hover-focus-glyphs-override":
+                                highlightGlyphsShade === undefined
+                                    ? undefined
+                                    : theme.color(
+                                        highlightColor,
+                                        highlightGlyphsShade,
+                                    ),
+                            "--appearance-active-pressed-glyphs-override":
+                                highlightGlyphsShade === undefined
+                                    ? undefined
+                                    : theme.color(
+                                        highlightColor,
+                                        highlightGlyphsShade,
+                                    ),
+                        } as CSSProperties
+                    }
+                    {...props}
                 >
-                    {corners === "hexagon" ? (
-                        <HexagonSurface
-                            shape="flat-top"
-                            effects={theme.appearancePolicies[variant].effects}
-                            paintClassName={styles.paint}
-                        />
+                    <input
+                        id={effectiveId}
+                        type="checkbox"
+                        className={styles["input"]}
+                        checked={checked}
+                        onChange={handleChange}
+                        disabled={disabled}
+                        aria-label={ariaLabel}
+                        aria-labelledby={labelledBy ?? ariaLabelledBy}
+                    />
+                    <span
+                        className={classNames(
+                            styles.box,
+                            styles[`corners-${corners}`],
+                        )}
+                        data-appearance-variant={variant}
+                        aria-hidden="true"
+                    >
+                        {corners === "hexagon" ? (
+                            <HexagonSurface effects={theme.appearancePolicies[variant].effects} paintClassName={styles.paint} />
+                        ) : null}
+                        {checked ? (
+                            <svg
+                                className={styles["checkmark"]}
+                                viewBox="0 0 12 12"
+                                width="12"
+                                height="12"
+                                aria-hidden
+                            >
+                                <path
+                                    d="M2 6l3 3 5-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
+                        ) : null}
+                    </span>
+                    {children ? (
+                        <span className={styles["label"]}>{children}</span>
                     ) : null}
-                    {checked ? (
-                        <svg
-                            className={styles["checkmark"]}
-                            viewBox="0 0 12 12"
-                            width="12"
-                            height="12"
-                            aria-hidden
-                        >
-                            <path
-                                d="M2 6l3 3 5-5"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            />
-                        </svg>
-                    ) : null}
-                </span>
-                {children ? (
-                    <span className={styles["label"]}>{children}</span>
-                ) : null}
-            </label>
-        </ThemeContext.Provider>
-    );
-};
+                </label>
+            </ThemeContext.Provider>
+        );
+    };

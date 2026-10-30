@@ -53,23 +53,23 @@ export const Button: FC<ComponentProps<"button"> & Props & ButtonProps> = ({
         ...(glyphsShade === undefined
             ? undefined
             : {
-                  "--appearance-default-glyphs-override": theme.color(
-                      color,
-                      glyphsShade,
-                  ),
-              }),
+                "--appearance-default-glyphs-override": theme.color(
+                    color,
+                    glyphsShade,
+                ),
+            }),
         ...(highlightGlyphsShade === undefined
             ? undefined
             : {
-                  "--appearance-hover-focus-glyphs-override": theme.color(
-                      highlightColor ?? color,
-                      highlightGlyphsShade,
-                  ),
-                  "--appearance-active-pressed-glyphs-override": theme.color(
-                      highlightColor ?? color,
-                      highlightGlyphsShade,
-                  ),
-              }),
+                "--appearance-hover-focus-glyphs-override": theme.color(
+                    highlightColor ?? color,
+                    highlightGlyphsShade,
+                ),
+                "--appearance-active-pressed-glyphs-override": theme.color(
+                    highlightColor ?? color,
+                    highlightGlyphsShade,
+                ),
+            }),
     } as CSSProperties;
     const content = (
         <>
@@ -153,8 +153,8 @@ export const Button: FC<ComponentProps<"button"> & Props & ButtonProps> = ({
                 variant === "fill"
                     ? "fill"
                     : variant === "fill-translucent"
-                      ? "fill-translucent"
-                      : "fill-inverse"
+                        ? "fill-translucent"
+                        : "fill-inverse"
             }
             showConnection={showTooltipConnection}
         >
@@ -167,7 +167,6 @@ export const Button: FC<ComponentProps<"button"> & Props & ButtonProps> = ({
         <ThemeContext.Provider value={theme}>
             {corners === "hexagon" ? (
                 <Hexagon
-                    shape="flat-top"
                     size={size}
                     variant={variant}
                     activeGlow={activeGlow}
