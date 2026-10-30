@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Cartomancer, useEffectiveRightPanelWidth, useTranslation } from "@apparatus";
 import { StyleSheet, useWindowDimensions, View } from "react-native";
-import { BevelPanel, Icon, LinkText, Tooltip } from "@mobile-ui";
+import { HexagonalPanel, Icon, LinkText, Tooltip } from "@mobile-ui";
 import { useSubjectState } from "@tinker-chest";
 import { Icons, useTheme } from "@ui";
 import { useMobileMachineWard } from "@mobile-apparatus";
@@ -51,7 +51,7 @@ export const Attributions: FC = () => {
 
     return (
         <View pointerEvents="box-none" style={[styles.anchor, { right: rightPanelWidth }]}>
-            <BevelPanel size="xs" color="neutral" variant="fill-translucent" style={styles.container}>
+            <HexagonalPanel size="xs" color="neutral" variant="fill-translucent" style={styles.container}>
                 <View style={styles.content}>
                     <Tooltip content={tooltip} placement="left">
                         <View>
@@ -69,7 +69,7 @@ export const Attributions: FC = () => {
                         </LinkText>
                     ))}
                 </View>
-            </BevelPanel>
+            </HexagonalPanel>
         </View>
     );
 };

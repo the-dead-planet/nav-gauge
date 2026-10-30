@@ -10,11 +10,13 @@ import {
 } from "react-native";
 import Svg, { Polygon } from "react-native-svg";
 import {
-    BevelPanelProps,
+    HexagonalPanelProps,
     DEFAULT_FILL_VARIANT,
     DEFAULT_COLOR,
     DEFAULT_SIZE,
-    getBevelPanelGeometry,
+    DEFAULT_HEXAGONAL_PANEL_SHAPE,
+    getHexagonalPanelGeometry,
+    ThemeContext,
     useTheme,
 } from "@ui";
 import { resolveElevationStyle } from "../../design-system/theme";
@@ -37,13 +39,15 @@ interface Props extends Omit<PressableProps, "children" | "style"> {
     style?: StyleProp<ViewStyle>;
 }
 
-export const BevelPanel: FC<BevelPanelProps & Props> = ({
+export const HexagonalPanel: FC<HexagonalPanelProps & Props> = ({
+    themeMode,
     forwardRef,
     color = DEFAULT_COLOR,
     highlightColor,
     variant = DEFAULT_FILL_VARIANT,
     activeGlow = "none",
     size = DEFAULT_SIZE,
+    shape = DEFAULT_HEXAGONAL_PANEL_SHAPE,
     interactive = false,
     highlighted = false,
     disabled = false,
@@ -61,8 +65,8 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
     children,
     ...props
 }) => {
-    const theme = useTheme();
-    const { state, interaction } = useHudInteraction({
+    const theme = useTheme().forMode(themeMode);
+    const { state, interaction, focused } = useHudInteraction({
         disabled,
         highlighted,
         onPressIn,
@@ -80,13 +84,19 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
         state,
     );
     const { width, height } = dimensions;
-    const { points } = getBevelPanelGeometry(width, height, size);
+    const { points } = getHexagonalPanelGeometry(width, height, size, shape);
     const showGlow =
         activeGlow !== "none" &&
         (state === "active-pressed" || state === "hover-focus");
-    const panelStyle = [
+    const panelStyle: StyleProp<ViewStyle> = [
         styles.panel,
         resolveElevationStyle(theme, "raised", "down"),
+        {
+            outlineStyle: "solid",
+            outlineColor: appearance.effects.glowColor,
+            outlineOffset: 3,
+            outlineWidth: focused ? 2 : 0,
+        },
         style,
     ];
     const handleLayout: NonNullable<PressableProps["onLayout"]> = (event) => {
@@ -115,6 +125,7 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
                         fill={appearance.surface}
                         stroke={appearance.border.color}
                         strokeWidth={appearance.border.width}
+                        vectorEffect="non-scaling-stroke"
                     />
                 </Svg>
             ) : null}
@@ -124,32 +135,34 @@ export const BevelPanel: FC<BevelPanelProps & Props> = ({
         </>
     );
 
-    return interactive || onPress ? (
-        <Pressable
-            {...props}
-            {...interaction}
-            ref={forwardRef}
-            disabled={disabled}
-            onPress={onPress}
-            onLayout={handleLayout}
-            accessibilityRole={
-                accessibilityRole ?? (onPress ? "button" : undefined)
-            }
-            accessibilityState={{ ...accessibilityState, disabled }}
-            style={panelStyle}
-        >
-            {content}
-        </Pressable>
-    ) : (
-        <View
-            {...props}
-            ref={forwardRef}
-            onLayout={handleLayout}
-            accessibilityRole={accessibilityRole}
-            accessibilityState={{ ...accessibilityState, disabled }}
-            style={panelStyle}
-        >
-            {content}
-        </View>
-    );
+    const panel =
+        interactive || onPress ? (
+            <Pressable
+                {...props}
+                {...interaction}
+                ref={forwardRef}
+                disabled={disabled}
+                onPress={onPress}
+                onLayout={handleLayout}
+                accessibilityRole={
+                    accessibilityRole ?? (onPress ? "button" : undefined)
+                }
+                accessibilityState={{ ...accessibilityState, disabled }}
+                style={panelStyle}
+            >
+                {content}
+            </Pressable>
+        ) : (
+            <View
+                {...props}
+                ref={forwardRef}
+                onLayout={handleLayout}
+                accessibilityRole={accessibilityRole}
+                accessibilityState={{ ...accessibilityState, disabled }}
+                style={panelStyle}
+            >
+                {content}
+            </View>
+        );
+    return <ThemeContext.Provider value={theme}>{panel}</ThemeContext.Provider>;
 };

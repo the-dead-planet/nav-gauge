@@ -13,7 +13,8 @@ import { Icon } from "../../design-system/icons";
 import { Tooltip } from "../tooltip";
 import { Span } from "../../design-system/typography";
 import { usePanelDimensions } from "../../hud/usePanelDimensions";
-import { ChipSurface } from "./ChipSurface";
+import { OctagonalSurface } from "../../hud/octagonal-panel/OctagonalSurface";
+import { HudSurface } from "../../hud/HudSurface";
 import styles from "./chip.module.css";
 
 interface Props {
@@ -49,11 +50,11 @@ export const Chip: FC<ChipProps & Props> = ({
     const { containerRef, width, height } =
         usePanelDimensions<HTMLSpanElement>();
     const chip = (
-        <span
+        <HudSurface
+            as="span"
             ref={containerRef}
-            data-appearance-mode={theme.mode}
-            data-appearance-variant={variant}
-            data-appearance-color={color}
+            variant={variant}
+            color={color}
             className={classNames(
                 styles["chip"],
                 styles[`size-${size}`],
@@ -61,7 +62,7 @@ export const Chip: FC<ChipProps & Props> = ({
             )}
         >
             {width > 0 && height > 0 ? (
-                <ChipSurface
+                <OctagonalSurface
                     width={width}
                     height={height}
                     size={size}
@@ -82,7 +83,7 @@ export const Chip: FC<ChipProps & Props> = ({
                     </Span>
                 ) : null}
             </span>
-        </span>
+        </HudSurface>
     );
 
     if (tooltip) {

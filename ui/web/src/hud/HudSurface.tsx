@@ -10,20 +10,19 @@ import {
 } from "@ui";
 import surface from "./surface.module.css";
 
-type Props<Element extends "div" | "button" | "a"> =
-    Omit<AppearancePropsBase<SurfaceVariant>, 'variant'> &
-        Omit<
-            ComponentProps<Element>,
-            keyof AppearancePropsBase<SurfaceVariant>
-        > & {
-            as: Element;
-            variant: ThemeAppearanceVariant;
-            interactive?: boolean;
-            activeGlow?: ActiveGlow;
-            rectangle?: boolean;
-        };
+type Props<Element extends "div" | "button" | "a" | "span"> = Omit<
+    AppearancePropsBase<SurfaceVariant>,
+    "variant"
+> &
+    Omit<ComponentProps<Element>, keyof AppearancePropsBase<SurfaceVariant>> & {
+        as: Element;
+        variant: ThemeAppearanceVariant;
+        interactive?: boolean;
+        activeGlow?: ActiveGlow;
+        rectangle?: boolean;
+    };
 
-export const HudSurface = <Element extends "div" | "button" | "a">({
+export const HudSurface = <Element extends "div" | "button" | "a" | "span">({
     as,
     variant,
     color = DEFAULT_COLOR,

@@ -1,7 +1,7 @@
 import type * as maplibregl from "maplibre-gl";
 import { FC } from "react";
 import { Cartomancer, parsers, TopToolsProps, useMultipleTranslations } from "@apparatus";
-import { BevelPanel, Button, FileInput } from "@web-ui";
+import { HexagonalPanel, Button, FileInput } from "@web-ui";
 import { useSubjectState } from "@tinker-chest";
 import { Icons } from "@ui";
 import { WebRouteStoryProps } from "../model";
@@ -38,7 +38,7 @@ export const RouteName: FC<TopToolsProps<maplibregl.Map> & WebRouteStoryProps> =
     ]);
 
     return (
-        <BevelPanel
+        <HexagonalPanel
             variant="fill-translucent"
             color="primary"
             size="sm"
@@ -83,6 +83,6 @@ export const RouteName: FC<TopToolsProps<maplibregl.Map> & WebRouteStoryProps> =
                     },
                 ]}
             />
-        </BevelPanel>
+        </HexagonalPanel>
     );
 };

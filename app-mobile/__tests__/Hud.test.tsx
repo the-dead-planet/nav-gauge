@@ -11,7 +11,9 @@ import {
     themeSpecifications,
 } from "@ui";
 import { Panel } from "@the-dead-planet/nav-gauge-ui-mobile/src/hud/panel";
-import { BevelPanel } from "@the-dead-planet/nav-gauge-ui-mobile/src/hud/bevel-panel";
+import { HexagonalPanel } from "@the-dead-planet/nav-gauge-ui-mobile/src/hud/hexagonal-panel";
+import { OctagonalPanel } from "@the-dead-planet/nav-gauge-ui-mobile/src/hud/octagonal-panel";
+import { Octagon } from "@the-dead-planet/nav-gauge-ui-mobile/src/hud/octagon";
 import { NotchedPanel } from "@the-dead-planet/nav-gauge-ui-mobile/src/hud/notched-panel";
 import { Hexagon } from "@the-dead-planet/nav-gauge-ui-mobile/src/hud/hexagon";
 
@@ -26,9 +28,10 @@ const surfaces: {
     >;
 }[] = [
     { name: "Panel", Component: Panel },
-    { name: "BevelPanel", Component: BevelPanel },
+    { name: "HexagonalPanel", Component: HexagonalPanel },
     { name: "NotchedPanel", Component: NotchedPanel },
     { name: "Hexagon", Component: Hexagon },
+    { name: "Octagon", Component: Octagon },
 ];
 
 const media = {
@@ -41,6 +44,51 @@ const media = {
 };
 
 describe("HUD appearance ownership", () => {
+    it("keeps OctagonalPanel presentational while honoring highlighted, disabled and theme mode", async () => {
+        const theme = new Theme(
+            themeSpecifications[ThemeName.Default].light,
+            media,
+            false,
+        );
+        const content = (disabled = false) => (
+            <ThemeContext.Provider value={theme}>
+                <OctagonalPanel
+                    color="glitch"
+                    highlightColor="intel"
+                    themeMode="dark"
+                    highlighted
+                    disabled={disabled}
+                >
+                    Preview
+                </OctagonalPanel>
+            </ThemeContext.Provider>
+        );
+        const screen = await render(content());
+        expect(screen.queryAllByRole("button")).toHaveLength(0);
+        expect(screen.getByText("Preview")).toHaveStyle({
+            color: theme
+                .forMode("dark")
+                .resolveAppearance(
+                    "fill-inverse",
+                    "glitch",
+                    "intel",
+                    "active-pressed",
+                ).glyphs,
+        });
+        await screen.rerender(content(true));
+        expect(screen.getByText("Preview")).toHaveStyle({
+            color: theme
+                .forMode("dark")
+                .resolveAppearance(
+                    "fill-inverse",
+                    "glitch",
+                    "intel",
+                    "disabled",
+                ).glyphs,
+        });
+        await screen.unmount();
+        theme.destroy();
+    });
     test.each(surfaces)(
         "$name keeps disabled above highlighted, pressed and focus",
         async ({ Component }) => {

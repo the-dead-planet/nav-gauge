@@ -4,25 +4,26 @@ globs: "**/*.{ts,tsx,css,module.css}"
 alwaysApply: true
 ---
 
-- Before creating UI, search for an existing component. Reuse it when it fits, extend it when extension is sufficient, and compose existing primitives before creating a new component. Create one only when none fit; do not duplicate existing behavior or styling with minor differences.
+- Search first: reuse, extend, or compose existing components before creating new ones.
 - Keep reusable UI semantic, accessible, business-logic-free, and mobile-first.
 
-Theme specifications and shared appearance, color, elevation, and layer policies live under `ui/common/src/design-system/theme/`.
-Before changing reusable UI, read `ui/web/src/design-system/Overview.mdx` and the relevant linked design-system page.
-Before implementing or changing palettes or shades, read and follow `ui/web/src/design-system/colors/Colors.mdx` and `ui/web/src/design-system/Theming.mdx`.
-Before implementing or changing appearance variants or interaction states, read and follow `ui/web/src/design-system/Appearance.mdx`.
+Shared theme policies live in `ui/common/src/design-system/theme/`. Consult `ui/web/src/design-system/Overview.mdx` and the relevant foundations once per task; reuse already-loaded guidance:
+- Variants and interaction states: `Appearance.mdx`.
+- Palettes and shades: `colors/Colors.mdx` and `Theming.mdx`.
 
 Shared reusable components require a common API/value logic in `@ui/common` and thin renderers in both `@web-ui` and `@mobile-ui`.
 
-Base appearance prop defaults must come from common constants or policies (for example, `DEFAULT_SIZE`, `DEFAULT_COLOR`, and the applicable variant default) in renderers and shared story args. Never hardcode an equivalent default such as `size = 'sm'` or `size: 'xs'`; explicit non-default examples may override it. Galleries must initialize size from the shared story default and follow the selected story size rather than treating the first size option as the default.
+Use common constants/policies for renderer and shared story defaults (`DEFAULT_SIZE`, `DEFAULT_COLOR`, variant defaults, etc.), not equivalent literals. Explicit non-default examples may override them. Galleries start from the shared story size and follow the selected size, not the first option.
 
 ### Component Structure
 
-Compose components from focused subcomponents recursively. Extract a section when it has its own visual purpose, interactions, styling, state, or meaningful name. Parent components orchestrate data and composition; leaf components own rendering details.
+Split components by meaningful visual purpose, interaction, styling, or state. Parents compose; leaves render.
 
-Each component must live in a file named after it. A tiny helper component may remain with its only parent when it has no independent meaning or reuse. Module-scope constants and helpers used by only one component remain in that component's file.
+Name files after their components. Tiny private helpers may stay with their only parent; component-local constants and helpers stay local.
 
-Every new or changed UI component needs a matching platform story. Public reusable components need `Playground with Live code editor` and `Gallery` stories. Use inferred `argTypes`; specify only non-inferable controls or mappings.
+Keep platform stories current. Public reusable components need `Playground with Live code editor` and `Gallery`; infer `argTypes` except non-inferable controls/mappings.
+
+Use shared gallery primitives for color/variant/size coverage, showing one selected size rather than looping over sizes. Add sections only for other dimensions, such as shape or orientation.
 
 All component Gallery stories must compose the platform's shared gallery primitives for color, variant, and size coverage instead of building a parallel matrix. Show one selected size at a time; never loop over sizes. Compose separate sections only for dimensions the shared gallery does not cover, such as shape or orientation.
 

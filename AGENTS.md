@@ -22,7 +22,7 @@ The workspace root is `/`; `package.json` and Yarn commands live there.
 | `yarn typecheck:mobile` | Mobile TypeScript check in watch mode; stop after it reports zero errors |
 | `yarn typecheck:mobile:once` | One-shot mobile TypeScript check |
 | `yarn lint` | ESLint check (zero warnings) |
-| `yarn ui:web` | Start Storybook for web UI |
+| `yarn dev:ui:web` | Start Storybook for web UI |
 | `yarn generate:gear <name>` | Scaffold a new gear from `.templates/` |
 | `yarn add:gear <name> <platform> <pkg>` | Add a dependency to a gear package |
 
@@ -46,25 +46,21 @@ The authoritative UI design and implementation guidance lives in Storybook MDX u
 
 Keep documentation concise and scannable: one authoritative home per rule, links instead of repetition, and tables for specifications.
 
-## After changes
+## Workflow and verification
 
-Review surrounding code for control flow, naming, duplication, concept extraction, and module boundaries. Make a small behavior-preserving adjacent refactor only when it materially improves consistency.
+- Read relevant code and guidance; reuse context instead of rereading unchanged files or revisiting settled decisions. Ask only about genuine behavioral ambiguity.
+- Batch cohesive changes and review the final diff once. Adjacent cleanup is worthwhile only when it materially improves consistency.
+- Verify proportionally to the change:
 
-When invoking Prettier directly, always pass `--tab-width 4` and do not reformat untouched lines.
+| Change | Checks |
+|--------|--------|
+| Runtime behavior or rendering | Affected typechecks, focused tests, `yarn lint`, and `git diff --check`; browser/device checks when relevant |
+| Types or mechanical renames | Affected typechecks, `yarn lint`, and `git diff --check`; tests when runtime behavior may be affected |
+| Documentation or agent instructions | Relevant parsing/compilation and `git diff --check` |
 
-Run one verification pass after edits: relevant typecheck, tests, `yarn lint`, and `git diff --check`. Redirect verbose output to temporary logs, report only pass or fail, and inspect it only on failure.
-
-## Single-Pass Workflow
-
-1. Read each relevant file once and maintain a compact working-state summary.
-2. Resolve requirements before editing; ask only when behavior is genuinely ambiguous.
-3. Batch related changes into one focused patch.
-4. Review the final diff once. Use subagents only for high-risk or explicitly requested reviews.
-5. Run one verification pass.
-6. Send progress updates only for discoveries, blockers, or major phase changes.
-7. Stop when requirements and checks pass; do not investigate speculative improvements.
-
-Do not repeat file reads, context summaries, verification commands, or settled reasoning.
+- Run checks after the focused edits; repeat only failed checks or checks affected by subsequent changes. Log verbose output outside the repo and inspect it on failure.
+- Use subagents only for high-risk or explicitly requested reviews. Report discoveries, blockers, and major phase changes; stop when the task and checks are complete.
+- Direct Prettier invocations require `--tab-width 4`; avoid reformatting untouched lines.
 
 ## Other
 

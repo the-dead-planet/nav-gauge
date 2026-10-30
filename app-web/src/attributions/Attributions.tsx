@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { useWebMachineWard } from "@web-apparatus";
 import { Cartomancer, useEffectiveRightPanelWidth, useTranslation } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
-import { BevelPanel, Icon, LinkText, Tooltip } from "@web-ui";
+import { HexagonalPanel, Icon, LinkText, Tooltip } from "@web-ui";
 import { Icons, useTheme } from "@ui";
 import styles from './attributions.module.css';
 
@@ -26,7 +26,7 @@ export const Attributions: FC = () => {
     return (
         <div className={styles['anchor']} style={{ right: rightPanelWidth }}>
             <div className={styles['container']}>
-                <BevelPanel
+                <HexagonalPanel
                     size="xs"
                     color="neutral"
                     variant="fill-translucent"
@@ -50,7 +50,7 @@ export const Attributions: FC = () => {
                             <span className={styles['short-text']}>{shortText ?? text}</span>
                         </LinkText>
                     ))}
-                </BevelPanel>
+                </HexagonalPanel>
             </div>
         </div>
     );

@@ -1,0 +1,1 @@
+export { OctagonalPanel } from "./OctagonalPanel";

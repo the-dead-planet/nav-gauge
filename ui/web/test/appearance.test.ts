@@ -6,7 +6,7 @@ import {
     appearanceColorOptions,
     buttonCorners,
     hexagonGeometry,
-    getChipBevelPath,
+    getOctagonalGeometry,
     surfaceVariantOptions,
     ColorBoxProps,
     fillVariantOptions,
@@ -38,7 +38,9 @@ require.extensions['.css'] = (module) => {
 const { Hexagon } =
     require('../src/hud/hexagon/Hexagon') as typeof import('../src/hud/hexagon/Hexagon');
 const { Panel } = require('../src/hud/panel/Panel') as typeof import('../src/hud/panel/Panel');
-const { BevelPanel } = require('../src/hud/bevel-panel/BevelPanel') as typeof import('../src/hud/bevel-panel/BevelPanel');
+const { HexagonalPanel } = require('../src/hud/hexagonal-panel/HexagonalPanel') as typeof import('../src/hud/hexagonal-panel/HexagonalPanel');
+const { OctagonalPanel } = require('../src/hud/octagonal-panel/OctagonalPanel') as typeof import('../src/hud/octagonal-panel/OctagonalPanel');
+const { Octagon } = require('../src/hud/octagon/Octagon') as typeof import('../src/hud/octagon/Octagon');
 const { NotchedPanel } = require('../src/hud/notched-panel/NotchedPanel') as typeof import('../src/hud/notched-panel/NotchedPanel');
 const { HudDecoration } = require('../src/hud/decoration/HudDecoration') as typeof import('../src/hud/decoration/HudDecoration');
 const { ThemeSelect } =
@@ -47,7 +49,7 @@ const { Divider } =
     require('../src/chassis/divider/Divider') as typeof import('../src/chassis/divider/Divider');
 const { Button } = require('../src/gizmos/button/Button') as typeof import('../src/gizmos/button/Button');
 const { Chip } = require('../src/gizmos/chip/Chip') as typeof import('../src/gizmos/chip/Chip');
-const { ChipSurface } = require('../src/gizmos/chip/ChipSurface') as typeof import('../src/gizmos/chip/ChipSurface');
+const { OctagonalSurface } = require('../src/hud/octagonal-panel/OctagonalSurface') as typeof import('../src/hud/octagonal-panel/OctagonalSurface');
 const { ResizeHandle } = require('../src/gizmos/resize-handle/ResizeHandle') as typeof import('../src/gizmos/resize-handle/ResizeHandle');
 const { ColorBox } = require('../src/gizmos/color-box/ColorBox') as typeof import('../src/gizmos/color-box/ColorBox');
 const { Menu } = require('../src/rigs/menu/Menu') as typeof import('../src/rigs/menu/Menu');
@@ -86,26 +88,61 @@ const renderToStaticMarkup = (children: ReactElement): string => renderMarkup(
 describe('Composed appearance rendering', () => {
     after(() => renderingTheme.destroy());
 
-    it('draws chip borders, translucent masks, and inset shading with shared bevel geometry', () => {
+    it('draws shared octagonal borders, translucent masks, and inset shading', () => {
         for (const variant of surfaceVariantOptions) {
             const appearance = renderingTheme.resolveAppearance(variant, 'hazard');
-            const markup = renderToStaticMarkup(createElement(ChipSurface, {
+            const markup = renderToStaticMarkup(createElement(OctagonalSurface, {
                 width: 80,
                 height: 24,
                 size: 'sm',
                 appearance,
             }));
-            expect(markup).to.include(`d="${getChipBevelPath('sm', 80, 24, appearance.border.width / 2)}"`);
+            expect(markup).to.include(`points="${getOctagonalGeometry(80, 24, 'sm', appearance.border.width / 2).points}"`);
             expect(markup).to.include('viewBox="0 0 80 24"');
             expect(markup).to.include('aria-hidden="true"');
             expect(markup).to.include('vector-effect="non-scaling-stroke"');
             expect(markup.includes('mask-image:')).to.equal(appearance.effects.backdropBlur > 0);
             expect(markup.includes('class="inset-shadow"')).to.equal(appearance.effects.depth === 'inset');
             if (appearance.effects.depth === 'inset') {
-                expect(markup).to.include(`d="${getChipBevelPath('sm', 80, 24)}"`);
+                expect(markup).to.include(`points="${getOctagonalGeometry(80, 24).points}"`);
                 expect(markup).to.include('clip-path="url(');
             }
         }
+    });
+
+    it('renders regular Octagon geometry with a single interaction owner', () => {
+        const markup = renderToStaticMarkup(createElement(Octagon, {
+            color: 'glitch',
+            highlightColor: 'intel',
+            variant: 'outline',
+            size: 'sm',
+            strokeWidth: 2,
+            onClick: () => undefined,
+            highlighted: true,
+            disabled: true,
+            children: 'O',
+        }));
+        expect(markup).to.include(`points="${getOctagonalGeometry(24, 24, 'sm', 1, true).points}"`);
+        expect(markup).to.include('role="button"');
+        expect(markup).to.include('tabindex="-1"');
+        expect(markup).to.include('data-disabled="true"');
+        expect([...markup.matchAll(/data-interactive="true"/g)]).to.have.length(1);
+        expect(markup).to.include('--appearance-border-width-scale:2');
+    });
+
+    it('keeps OctagonalPanel passive and passes a theme override through its content', () => {
+        const markup = renderToStaticMarkup(createElement(OctagonalPanel, {
+            themeMode: 'dark',
+            color: 'hazard',
+            highlighted: true,
+            disabled: true,
+            children: createElement(Text, { children: 'Preview' }),
+        }));
+        expect([...markup.matchAll(/data-appearance-mode="dark"/g)]).to.have.length(2);
+        expect(markup).to.include('data-appearance-variant="fill-inverse"');
+        expect(markup).to.include('data-disabled="true"');
+        expect(markup).not.to.include('role="button"');
+        expect(markup).not.to.include('data-interactive="true"');
     });
 
     it('shows a Radio selection marker matching its corners only while checked', () => {
@@ -547,7 +584,7 @@ describe('Composed appearance rendering', () => {
 
     it('resets HUD appearance for every color and removes disabled keyboard activation', () => {
         for (const color of appearanceColorOptions) {
-            for (const Surface of [Panel, BevelPanel, NotchedPanel]) {
+            for (const Surface of [Panel, HexagonalPanel, NotchedPanel]) {
                 const markup = renderToStaticMarkup(createElement(Surface, {
                     color,
                     highlightColor: 'hazard',
