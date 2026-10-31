@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react-native";
+import { fireEvent, render } from "@testing-library/react-native";
 import { PanResponder, StyleSheet } from "react-native";
 import {
     Orientation,
@@ -18,17 +18,19 @@ jest.mock(
     }),
 );
 
+const media = {
+    initial: () => ({
+        orientation: Orientation.Landscape,
+        windowWidth: 800,
+        windowHeight: 600,
+    }),
+    subscribe: () => ({ unsubscribe: () => undefined }),
+};
+
 test("native clocks retain their drag responder through controlled updates and disabling", async () => {
     const theme = new Theme(
         themeSpecifications[ThemeName.Default].light,
-        {
-            initial: () => ({
-                orientation: Orientation.Landscape,
-                windowWidth: 800,
-                windowHeight: 600,
-            }),
-            subscribe: () => ({ unsubscribe: () => undefined }),
-        },
+        media,
         false,
     );
     const createResponder = jest.spyOn(PanResponder, "create");
@@ -85,14 +87,7 @@ test.each(["start", "end", "above", "below"] as const)(
     async (numberInputPlacement) => {
         const theme = new Theme(
             themeSpecifications[ThemeName.Default].light,
-            {
-                initial: () => ({
-                    orientation: Orientation.Landscape,
-                    windowWidth: 800,
-                    windowHeight: 600,
-                }),
-                subscribe: () => ({ unsubscribe: () => undefined }),
-            },
+            media,
             false,
         );
         const screen = await render(
@@ -120,3 +115,42 @@ test.each(["start", "end", "above", "below"] as const)(
         theme.destroy();
     },
 );
+
+test("duration number fields update their own unit and preserve the minimum duration", async () => {
+    const theme = new Theme(
+        themeSpecifications[ThemeName.Default].light,
+        media,
+        false,
+    );
+    const onChange = jest.fn();
+    const content = (value: number) => (
+        <ThemeContext.Provider value={theme}>
+            <ClockDurationInput
+                value={value}
+                min={2000}
+                onChange={onChange}
+                showNumberInput
+                ariaLabel="Duration"
+            />
+        </ThemeContext.Provider>
+    );
+    const screen = await render(content(75000));
+    await fireEvent.changeText(
+        screen.getByLabelText("Duration (minutes)"),
+        "2",
+    );
+    expect(onChange).toHaveBeenLastCalledWith(135000);
+    await fireEvent.changeText(
+        screen.getByLabelText("Duration (seconds)"),
+        "30",
+    );
+    expect(onChange).toHaveBeenLastCalledWith(90000);
+    await screen.rerender(content(2000));
+    await fireEvent.changeText(
+        screen.getByLabelText("Duration (seconds)"),
+        "0",
+    );
+    expect(onChange).toHaveBeenLastCalledWith(2000);
+    await screen.unmount();
+    theme.destroy();
+});

@@ -10,7 +10,14 @@ import {
 } from "../../design-system";
 import { StoryControls } from "../../storybook";
 import { ClockInputProps, ClockDurationInputProps, ClockMode } from "./model";
-import { STEP_DEG } from "./math";
+import {
+    arcViewBox,
+    describeClockWedge,
+    millisecondsToDurationParts,
+    pointerCoords,
+    STEP_DEG,
+    ticksToClockDegrees,
+} from "./math";
 
 export const MINUTES_HAND_FRACTION = 0.55;
 
@@ -26,6 +33,43 @@ export function getClockGeometry(controlHeight: number, mode: ClockMode) {
         strokeWidth,
         centerDotRadius: strokeWidth,
         thumbRadius: strokeWidth * 2,
+    };
+}
+
+export function getClockDrawing(
+    controlHeight: number,
+    mode: ClockMode,
+    value: number,
+    min: number,
+    max: number,
+) {
+    const geometry = getClockGeometry(controlHeight, mode);
+    const { svgSize, center, outerRadius, strokeWidth } = geometry;
+    const duration = mode === "duration";
+    const fullCircle = mode !== "slice" || max - min >= 360;
+    const viewBox =
+        mode === "slice" && !fullCircle
+            ? arcViewBox(center, center, outerRadius + strokeWidth, min, max)
+            : { x: 0, y: 0, width: svgSize, height: svgSize };
+    const { minutes, seconds } = millisecondsToDurationParts(value);
+    const hands = duration
+        ? [
+              pointerCoords(
+                  ticksToClockDegrees(minutes),
+                  outerRadius * MINUTES_HAND_FRACTION,
+              ),
+              pointerCoords(ticksToClockDegrees(seconds), outerRadius),
+          ]
+        : [pointerCoords(value, outerRadius)];
+
+    return {
+        ...geometry,
+        viewBox,
+        hands,
+        fullCircle,
+        wedge: describeClockWedge(center, outerRadius, min, max),
+        min: duration ? 0 : min,
+        max: duration ? 360 : max,
     };
 }
 

@@ -42,3 +42,13 @@ export interface ClockDurationInputProps extends AppearanceProps<FillVariant> {
     numberInputPlacement?: NumberInputPlacement;
     ariaLabel?: string;
 }
+
+export type ClockDurationNumberInputsProps = Omit<
+    ClockDurationInputProps,
+    | "id"
+    | "step"
+    | "showNumberInput"
+    | "showStepControls"
+    | "themeMode"
+    | "numberInputPlacement"
+>;

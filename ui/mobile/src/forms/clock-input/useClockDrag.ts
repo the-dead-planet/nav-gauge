@@ -1,5 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { PanResponder, type ViewInstance } from "react-native";
+import {
+    AccessibilityActionEvent,
+    PanResponder,
+    type ViewInstance,
+} from "react-native";
 import {
     ClockHand,
     ClockMode,
@@ -139,5 +143,24 @@ export const useClockDrag = (options: Options) => {
         viewRef,
         dragging: dragging && !options.disabled,
         panHandlers: responder.panHandlers,
+        onAccessibilityAction: (event: AccessibilityActionEvent) => {
+            const action = event.nativeEvent.actionName;
+            if (
+                !options.disabled &&
+                (action === "increment" || action === "decrement")
+            ) {
+                const next =
+                    options.value +
+                    (action === "increment" ? options.step : -options.step);
+                options.onChange?.(
+                    Math.max(
+                        options.min,
+                        options.mode === "duration"
+                            ? next
+                            : Math.min(options.max, next),
+                    ),
+                );
+            }
+        },
     };
 };

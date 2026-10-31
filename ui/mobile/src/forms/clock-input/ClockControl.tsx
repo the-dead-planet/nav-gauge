@@ -1,31 +1,19 @@
 import { forwardRef } from "react";
+import { StyleSheet, View, ViewStyle, type ViewInstance } from "react-native";
 import {
-    Pressable,
-    StyleSheet,
-    View,
-    ViewStyle,
-    type ViewInstance,
-} from "react-native";
-import {
-    arcViewBox,
     ClockInputProps,
     ClockMode,
     CLOCK_INPUT_RANGE,
-    describeClockWedge,
-    durationPartsToMilliseconds,
     DEFAULT_COLOR,
     DEFAULT_FILL_VARIANT,
     DEFAULT_SIZE,
-    getClockGeometry,
-    millisecondsToDurationParts,
-    MINUTES_HAND_FRACTION,
-    pointerCoords,
+    getClockDrawing,
     STEP_DEG,
     ThemeContext,
-    ticksToClockDegrees,
     useTheme,
 } from "@ui";
-import { ClockSvg } from "./ClockSvg";
+import { ClockDial } from "./ClockDial";
+import { ClockDurationNumberInputs } from "./ClockDurationNumberInputs";
 import { ClockLabel } from "./ClockLabel";
 import { useClockDrag } from "./useClockDrag";
 import { useHudInteraction } from "../../hud/useHudInteraction";
@@ -57,18 +45,6 @@ const styles = StyleSheet.create({
     },
     verticalInput: {
         width: "100%",
-    },
-    durationInputs: {
-        flexDirection: "row",
-        minWidth: 0,
-        gap: 8,
-    },
-    horizontalInputs: {
-        flex: 1,
-    },
-    durationInput: {
-        flex: 1,
-        minWidth: 0,
     },
 });
 
@@ -107,50 +83,28 @@ export const ClockControl = forwardRef<
     ) => {
         const theme = useTheme().forMode(themeMode);
         const duration = mode === "duration";
-        const {
-            svgSize,
-            center,
-            outerRadius,
-            strokeWidth,
-            centerDotRadius,
-            thumbRadius,
-        } = getClockGeometry(theme.sizes.control[size].height, mode);
-        const fullCircle = mode !== "slice" || max - min >= 360;
-        const viewBox =
-            mode === "slice" && !fullCircle
-                ? arcViewBox(
-                      center,
-                      center,
-                      outerRadius + strokeWidth,
-                      min,
-                      max,
-                  )
-                : { x: 0, y: 0, width: svgSize, height: svgSize };
-        const { minutes, seconds } = millisecondsToDurationParts(value);
-        const hands = duration
-            ? [
-                  pointerCoords(
-                      ticksToClockDegrees(minutes),
-                      outerRadius * MINUTES_HAND_FRACTION,
-                  ),
-                  pointerCoords(ticksToClockDegrees(seconds), outerRadius),
-              ]
-            : [pointerCoords(value, outerRadius)];
-        const { dragging, viewRef, panHandlers } = useClockDrag({
+        const drawing = getClockDrawing(
+            theme.sizes.control[size].height,
+            mode,
+            value,
+            min,
+            max,
+        );
+        const gesture = useClockDrag({
             mode,
             value,
             min,
             max,
             step,
-            center,
-            outerRadius,
-            viewBox,
+            center: drawing.center,
+            outerRadius: drawing.outerRadius,
+            viewBox: drawing.viewBox,
             disabled,
             onChange,
         });
         const { state, interaction, focused } = useHudInteraction({
             disabled,
-            highlighted: highlighted || dragging,
+            highlighted: highlighted || gesture.dragging,
         });
         const appearance = theme.resolveAppearance(
             variant,
@@ -175,89 +129,25 @@ export const ClockControl = forwardRef<
             size,
             variant,
         };
-        const emitDuration = (nextMinutes: number, nextSeconds: number) =>
-            onChange?.(
-                Math.max(
-                    min,
-                    durationPartsToMilliseconds({
-                        minutes: nextMinutes,
-                        seconds: nextSeconds,
-                    }),
-                ),
-            );
-        const wedge = describeClockWedge(center, outerRadius, min, max);
         const clock = (
-            <Pressable
-                nativeID={id}
-                accessible
-                accessibilityRole="adjustable"
-                accessibilityLabel={
-                    ariaLabel ?? label ?? (duration ? "Duration" : "Angle")
-                }
-                accessibilityState={{ disabled }}
-                accessibilityValue={{
-                    min,
-                    max: duration ? undefined : max,
-                    now: value,
-                    text: duration
-                        ? `${minutes} min ${seconds} s`
-                        : (formatValue?.(value) ?? `${value}°`),
-                }}
-                accessibilityActions={[
-                    { name: "increment" },
-                    { name: "decrement" },
-                ]}
-                onAccessibilityAction={(event) => {
-                    if (
-                        !disabled &&
-                        (event.nativeEvent.actionName === "increment" ||
-                            event.nativeEvent.actionName === "decrement")
-                    ) {
-                        const next =
-                            value +
-                            (event.nativeEvent.actionName === "increment"
-                                ? step
-                                : -step);
-                        onChange?.(
-                            Math.max(
-                                min,
-                                duration ? next : Math.min(max, next),
-                            ),
-                        );
-                    }
-                }}
+            <ClockDial
+                id={id}
+                value={value}
+                formatValue={formatValue}
+                label={label}
+                ariaLabel={ariaLabel}
                 disabled={disabled}
-                onHoverIn={interaction.onHoverIn}
-                onHoverOut={interaction.onHoverOut}
-                onFocus={interaction.onFocus}
-                onBlur={interaction.onBlur}
-                style={{
-                    outlineStyle: "solid",
-                    outlineWidth: focused ? 2 : 0,
-                    outlineColor: appearance.effects.glowColor,
-                    outlineOffset: 2,
-                }}
-            >
-                <View ref={viewRef} collapsable={false} {...panHandlers}>
-                    <ClockSvg
-                        svgSize={svgSize}
-                        viewBox={`${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`}
-                        center={center}
-                        outerRadius={outerRadius}
-                        strokeWidth={strokeWidth}
-                        hands={hands}
-                        centerDotRadius={centerDotRadius}
-                        thumbRadius={thumbRadius}
-                        min={duration ? 0 : min}
-                        max={duration ? 360 : max}
-                        fullCircle={fullCircle}
-                        wedge={wedge}
-                        appearance={appearance}
-                        glyphs={glyphs}
-                        thumbIcon={thumbIcon}
-                    />
-                </View>
-            </Pressable>
+                thumbIcon={thumbIcon}
+                mode={mode}
+                min={min}
+                max={max}
+                drawing={drawing}
+                gesture={gesture}
+                interaction={interaction}
+                focused={focused}
+                appearance={appearance}
+                glyphs={glyphs}
+            />
         );
         const vertical =
             numberInputPlacement === "above" ||
@@ -295,7 +185,7 @@ export const ClockControl = forwardRef<
                             <View
                                 style={{
                                     width:
-                                        svgSize +
+                                        drawing.svgSize +
                                         theme.sizes.control[size].height * 2 +
                                         8,
                                 }}
@@ -320,46 +210,14 @@ export const ClockControl = forwardRef<
                         )}
                         {showNumberInput ? (
                             duration ? (
-                                <View
-                                    style={[
-                                        styles.durationInputs,
-                                        vertical
-                                            ? styles.verticalInput
-                                            : styles.horizontalInputs,
-                                    ]}
-                                >
-                                    <View style={styles.durationInput}>
-                                        <NumberInput
-                                            {...appearanceProps}
-                                            value={minutes}
-                                            onChange={(next) =>
-                                                emitDuration(next, seconds)
-                                            }
-                                            min={0}
-                                            step={1}
-                                            disabled={disabled || !onChange}
-                                            showStepControls
-                                            ariaLabel={`${ariaLabel ?? "Duration"} (minutes)`}
-                                            unit="min"
-                                        />
-                                    </View>
-                                    <View style={styles.durationInput}>
-                                        <NumberInput
-                                            {...appearanceProps}
-                                            value={seconds}
-                                            onChange={(next) =>
-                                                emitDuration(minutes, next)
-                                            }
-                                            min={0}
-                                            max={59}
-                                            step={1}
-                                            disabled={disabled || !onChange}
-                                            showStepControls
-                                            ariaLabel={`${ariaLabel ?? "Duration"} (seconds)`}
-                                            unit="s"
-                                        />
-                                    </View>
-                                </View>
+                                <ClockDurationNumberInputs
+                                    {...appearanceProps}
+                                    value={value}
+                                    min={min}
+                                    onChange={onChange}
+                                    ariaLabel={ariaLabel}
+                                    numberInputPlacement={numberInputPlacement}
+                                />
                             ) : (
                                 <View
                                     style={[

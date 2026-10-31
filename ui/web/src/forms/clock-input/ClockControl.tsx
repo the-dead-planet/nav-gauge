@@ -1,26 +1,21 @@
 import { ComponentProps, CSSProperties, FC, useId } from "react";
 import classNames from "classnames";
 import {
-    arcViewBox,
     ClockInputProps,
     ClockMode,
     CLOCK_INPUT_RANGE,
-    describeClockWedge,
-    durationPartsToMilliseconds,
     DEFAULT_COLOR,
     DEFAULT_FILL_VARIANT,
     DEFAULT_SIZE,
-    getClockGeometry,
+    getClockDrawing,
     millisecondsToDurationParts,
-    MINUTES_HAND_FRACTION,
-    pointerCoords,
     STEP_DEG,
     ThemeContext,
-    ticksToClockDegrees,
     useTheme,
 } from "@ui";
 import { ClockA11yInput } from "./ClockA11yInput";
-import { ClockSvg } from "./ClockSvg";
+import { ClockDial } from "./ClockDial";
+import { ClockDurationNumberInputs } from "./ClockDurationNumberInputs";
 import { useClockDrag } from "./useClockDrag";
 import { NumberInput } from "../number-input";
 import { StepControls } from "../step-controls";
@@ -61,37 +56,22 @@ export const ClockControl: FC<
     const generatedId = useId();
     const inputId = id ?? generatedId;
     const duration = mode === "duration";
-    const {
-        svgSize,
-        center,
-        outerRadius,
-        strokeWidth,
-        centerDotRadius,
-        thumbRadius,
-    } = getClockGeometry(theme.sizes.control[size].height, mode);
-    const fullCircle = mode !== "slice" || max - min >= 360;
-    const viewBox =
-        mode === "slice" && !fullCircle
-            ? arcViewBox(center, center, outerRadius + strokeWidth, min, max)
-            : { x: 0, y: 0, width: svgSize, height: svgSize };
+    const drawing = getClockDrawing(
+        theme.sizes.control[size].height,
+        mode,
+        value,
+        min,
+        max,
+    );
     const { minutes, seconds } = millisecondsToDurationParts(value);
-    const hands = duration
-        ? [
-              pointerCoords(
-                  ticksToClockDegrees(minutes),
-                  outerRadius * MINUTES_HAND_FRACTION,
-              ),
-              pointerCoords(ticksToClockDegrees(seconds), outerRadius),
-          ]
-        : [pointerCoords(value, outerRadius)];
     const { dragging, inputRef, pointerEvents } = useClockDrag({
         mode,
         value,
         min,
         max,
         step,
-        center,
-        outerRadius,
+        center: drawing.center,
+        outerRadius: drawing.outerRadius,
         disabled,
         onChange,
     });
@@ -105,54 +85,12 @@ export const ClockControl: FC<
         size,
         variant,
     };
-    const emitDuration = (nextMinutes: number, nextSeconds: number) =>
-        onChange?.(
-            Math.max(
-                min,
-                durationPartsToMilliseconds({
-                    minutes: nextMinutes,
-                    seconds: nextSeconds,
-                }),
-            ),
-        );
-    const wedge = describeClockWedge(center, outerRadius, min, max);
-    const backdropMask = `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}" preserveAspectRatio="none">${fullCircle ? `<circle cx="${center}" cy="${center}" r="${outerRadius}" fill="white"/>` : `<path d="${wedge}" fill="white"/>`}</svg>`)}")`;
     const clock = (
-        <span className={styles.drawing}>
-            <span
-                className={styles.backdrop}
-                style={{
-                    maskImage: backdropMask,
-                    WebkitMaskImage: backdropMask,
-                }}
-                aria-hidden="true"
-            />
-            <ClockSvg
-                svgSize={svgSize}
-                viewBox={`${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`}
-                pointerEvents={pointerEvents}
-                center={center}
-                outerRadius={outerRadius}
-                strokeWidth={strokeWidth}
-                hands={hands}
-                centerDotRadius={centerDotRadius}
-                thumbRadius={thumbRadius}
-                min={duration ? 0 : min}
-                max={duration ? 360 : max}
-                thumbIcon={thumbIcon}
-            >
-                {fullCircle ? (
-                    <circle
-                        cx={center}
-                        cy={center}
-                        r={outerRadius}
-                        className={styles.surface}
-                    />
-                ) : (
-                    <path d={wedge} className={styles.surface} />
-                )}
-            </ClockSvg>
-        </span>
+        <ClockDial
+            drawing={drawing}
+            pointerEvents={pointerEvents}
+            thumbIcon={thumbIcon}
+        />
     );
 
     return (
@@ -246,37 +184,13 @@ export const ClockControl: FC<
                     )}
                     {showNumberInput ? (
                         duration ? (
-                            <div className={styles["duration-number-inputs"]}>
-                                <NumberInput
-                                    {...appearanceProps}
-                                    value={minutes}
-                                    className={styles["number-input"]}
-                                    onChange={(next) =>
-                                        emitDuration(next, seconds)
-                                    }
-                                    min={0}
-                                    step={1}
-                                    disabled={disabled || !onChange}
-                                    showStepControls
-                                    ariaLabel={`${ariaLabel ?? "Duration"} (minutes)`}
-                                    unit="min"
-                                />
-                                <NumberInput
-                                    {...appearanceProps}
-                                    value={seconds}
-                                    className={styles["number-input"]}
-                                    onChange={(next) =>
-                                        emitDuration(minutes, next)
-                                    }
-                                    min={0}
-                                    max={59}
-                                    step={1}
-                                    disabled={disabled || !onChange}
-                                    showStepControls
-                                    ariaLabel={`${ariaLabel ?? "Duration"} (seconds)`}
-                                    unit="s"
-                                />
-                            </div>
+                            <ClockDurationNumberInputs
+                                {...appearanceProps}
+                                value={value}
+                                min={min}
+                                onChange={onChange}
+                                ariaLabel={ariaLabel}
+                            />
                         ) : (
                             <NumberInput
                                 {...appearanceProps}
