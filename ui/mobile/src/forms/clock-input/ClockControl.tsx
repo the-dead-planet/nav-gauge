@@ -12,13 +12,11 @@ import {
     ThemeContext,
     useTheme,
 } from "@ui";
+import { ClockControlRow } from "./ClockControlRow";
 import { ClockDial } from "./ClockDial";
-import { ClockDurationNumberInputs } from "./ClockDurationNumberInputs";
 import { ClockLabel } from "./ClockLabel";
 import { useClockDrag } from "./useClockDrag";
 import { useHudInteraction } from "../../hud/useHudInteraction";
-import { NumberInput } from "../number-input";
-import { StepControls } from "../step-controls";
 
 const styles = StyleSheet.create({
     container: {
@@ -26,24 +24,6 @@ const styles = StyleSheet.create({
         gap: 4,
     },
     fullWidth: {
-        width: "100%",
-    },
-    row: {
-        flexDirection: "row",
-        maxWidth: "100%",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 8,
-    },
-    start: { flexDirection: "row-reverse" },
-    above: { flexDirection: "column-reverse" },
-    below: { flexDirection: "column" },
-    end: { flexDirection: "row" },
-    numberInput: {
-        width: 120,
-        minWidth: 120,
-    },
-    verticalInput: {
         width: "100%",
     },
 });
@@ -129,29 +109,6 @@ export const ClockControl = forwardRef<
             size,
             variant,
         };
-        const clock = (
-            <ClockDial
-                id={id}
-                value={value}
-                formatValue={formatValue}
-                label={label}
-                ariaLabel={ariaLabel}
-                disabled={disabled}
-                thumbIcon={thumbIcon}
-                mode={mode}
-                min={min}
-                max={max}
-                drawing={drawing}
-                gesture={gesture}
-                interaction={interaction}
-                focused={focused}
-                appearance={appearance}
-                glyphs={glyphs}
-            />
-        );
-        const vertical =
-            numberInputPlacement === "above" ||
-            numberInputPlacement === "below";
 
         return (
             <ThemeContext.Provider value={theme}>
@@ -174,72 +131,39 @@ export const ClockControl = forwardRef<
                         highlightGlyphsShade={highlightGlyphsShade}
                         state={state}
                     />
-                    <View
-                        style={[
-                            styles.row,
-                            duration && showNumberInput && styles.fullWidth,
-                            showNumberInput && styles[numberInputPlacement],
-                        ]}
+                    <ClockControlRow
+                        {...appearanceProps}
+                        mode={mode}
+                        value={value}
+                        min={min}
+                        max={max}
+                        step={step}
+                        onChange={onChange}
+                        label={label}
+                        ariaLabel={ariaLabel}
+                        showNumberInput={showNumberInput}
+                        showStepControls={showStepControls}
+                        numberInputPlacement={numberInputPlacement}
                     >
-                        {showStepControls ? (
-                            <View
-                                style={{
-                                    width:
-                                        drawing.svgSize +
-                                        theme.sizes.control[size].height * 2 +
-                                        8,
-                                }}
-                            >
-                                <StepControls
-                                    color={color}
-                                    size={size}
-                                    variant={variant}
-                                    value={value}
-                                    min={min}
-                                    max={duration ? undefined : max}
-                                    step={step}
-                                    onChange={onChange}
-                                    disabled={disabled}
-                                    ariaLabel={ariaLabel ?? label}
-                                >
-                                    {clock}
-                                </StepControls>
-                            </View>
-                        ) : (
-                            clock
-                        )}
-                        {showNumberInput ? (
-                            duration ? (
-                                <ClockDurationNumberInputs
-                                    {...appearanceProps}
-                                    value={value}
-                                    min={min}
-                                    onChange={onChange}
-                                    ariaLabel={ariaLabel}
-                                    numberInputPlacement={numberInputPlacement}
-                                />
-                            ) : (
-                                <View
-                                    style={[
-                                        styles.numberInput,
-                                        vertical && styles.verticalInput,
-                                    ]}
-                                >
-                                    <NumberInput
-                                        {...appearanceProps}
-                                        value={value}
-                                        onChange={(next) => onChange?.(next)}
-                                        min={min}
-                                        max={max}
-                                        step={step}
-                                        disabled={disabled || !onChange}
-                                        showStepControls
-                                        ariaLabel={`${ariaLabel ?? label ?? "Angle"} (#)`}
-                                    />
-                                </View>
-                            )
-                        ) : null}
-                    </View>
+                        <ClockDial
+                            id={id}
+                            value={value}
+                            formatValue={formatValue}
+                            label={label}
+                            ariaLabel={ariaLabel}
+                            disabled={disabled}
+                            thumbIcon={thumbIcon}
+                            mode={mode}
+                            min={min}
+                            max={max}
+                            drawing={drawing}
+                            gesture={gesture}
+                            interaction={interaction}
+                            focused={focused}
+                            appearance={appearance}
+                            glyphs={glyphs}
+                        />
+                    </ClockControlRow>
                 </View>
             </ThemeContext.Provider>
         );

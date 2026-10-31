@@ -14,11 +14,9 @@ import {
     useTheme,
 } from "@ui";
 import { ClockA11yInput } from "./ClockA11yInput";
+import { ClockControlRow } from "./ClockControlRow";
 import { ClockDial } from "./ClockDial";
-import { ClockDurationNumberInputs } from "./ClockDurationNumberInputs";
 import { useClockDrag } from "./useClockDrag";
-import { NumberInput } from "../number-input";
-import { StepControls } from "../step-controls";
 import styles from "./clock-input.module.css";
 
 export const ClockControl: FC<
@@ -85,13 +83,6 @@ export const ClockControl: FC<
         size,
         variant,
     };
-    const clock = (
-        <ClockDial
-            drawing={drawing}
-            pointerEvents={pointerEvents}
-            thumbIcon={thumbIcon}
-        />
-    );
 
     return (
         <ThemeContext.Provider value={theme}>
@@ -157,56 +148,26 @@ export const ClockControl: FC<
                         (duration ? "Duration (milliseconds)" : undefined)
                     }
                 />
-                <div
-                    className={classNames(
-                        styles["control-row"],
-                        showNumberInput &&
-                            styles[`number-input-${numberInputPlacement}`],
-                    )}
+                <ClockControlRow
+                    {...appearanceProps}
+                    mode={mode}
+                    value={value}
+                    min={min}
+                    max={max}
+                    step={step}
+                    onChange={onChange}
+                    label={label}
+                    ariaLabel={ariaLabel}
+                    showNumberInput={showNumberInput}
+                    showStepControls={showStepControls}
+                    numberInputPlacement={numberInputPlacement}
                 >
-                    {showStepControls ? (
-                        <StepControls
-                            color={color}
-                            size={size}
-                            variant={variant}
-                            value={value}
-                            min={min}
-                            max={duration ? undefined : max}
-                            step={step}
-                            onChange={onChange}
-                            disabled={disabled}
-                            ariaLabel={ariaLabel ?? label}
-                        >
-                            {clock}
-                        </StepControls>
-                    ) : (
-                        clock
-                    )}
-                    {showNumberInput ? (
-                        duration ? (
-                            <ClockDurationNumberInputs
-                                {...appearanceProps}
-                                value={value}
-                                min={min}
-                                onChange={onChange}
-                                ariaLabel={ariaLabel}
-                            />
-                        ) : (
-                            <NumberInput
-                                {...appearanceProps}
-                                value={value}
-                                className={styles["number-input"]}
-                                onChange={(next) => onChange?.(next)}
-                                min={min}
-                                max={max}
-                                step={step}
-                                disabled={disabled || !onChange}
-                                showStepControls
-                                ariaLabel={`${ariaLabel ?? label ?? "Angle"} (#)`}
-                            />
-                        )
-                    ) : null}
-                </div>
+                    <ClockDial
+                        drawing={drawing}
+                        pointerEvents={pointerEvents}
+                        thumbIcon={thumbIcon}
+                    />
+                </ClockControlRow>
             </div>
         </ThemeContext.Provider>
     );

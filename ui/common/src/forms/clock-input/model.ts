@@ -52,3 +52,12 @@ export type ClockDurationNumberInputsProps = Omit<
     | "themeMode"
     | "numberInputPlacement"
 >;
+
+export interface ClockControlRowProps extends Omit<
+    ClockInputProps,
+    "id" | "thumbIcon" | "formatValue" | "themeMode"
+> {
+    mode: ClockMode;
+    children: ReactNode;
+}
+import { ReactNode } from "react";
