@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { View } from "react-native";
 import {
     appearanceColorOptions,
     fillVariantOptions,
@@ -34,7 +35,9 @@ const story: MobileStoryDefinition<NumberInputProps> = {
         "unit",
     ],
     renderPlayground: (args) => (
-        <StoryNumberInput key={String(args.value)} {...args} />
+        <View style={{ width: 240 }}>
+            <StoryNumberInput key={String(args.value)} {...args} />
+        </View>
     ),
     renderGallery: (args) => (
         <VariantGallery
