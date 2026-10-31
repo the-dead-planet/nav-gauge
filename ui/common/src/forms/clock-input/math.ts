@@ -1,3 +1,5 @@
+import { ClockHand } from "./model";
+
 export const CLOCK_INPUT_RANGE: [number, number] = [0, 360];
 export const TICK_COUNT = 60;
 export const STEP_DEG = 360 / TICK_COUNT;
@@ -5,7 +7,12 @@ export const MAJOR_TICK_INTERVAL = 5;
 export const SECONDS_PER_MINUTE = 60;
 export const SECONDS_PER_TICK = STEP_DEG;
 
-export function snap(v: number, min: number, max: number, step: number): number {
+export function snap(
+    v: number,
+    min: number,
+    max: number,
+    step: number,
+): number {
     const stepped = Math.round((v - min) / step) * step + min;
     const clamped = Math.min(max, Math.max(min, stepped));
 
@@ -18,7 +25,12 @@ function circularDistance(a: number, b: number): number {
     return Math.min(diff, 360 - diff);
 }
 
-export function snapSlice(v: number, min: number, max: number, step: number): number {
+export function snapSlice(
+    v: number,
+    min: number,
+    max: number,
+    step: number,
+): number {
     if (max - min >= 360) {
         const stepped = Math.round((v - min) / step) * step + min;
 
@@ -41,7 +53,7 @@ export function clockAngleToRadians(clockAngleDeg: number): number {
 export function svgAtan2ToClockAngle(dx: number, dy: number): number {
     const svgDeg = Math.atan2(dy, dx) * (180 / Math.PI);
 
-    return ((svgDeg + 90) % 360 + 360) % 360;
+    return (((svgDeg + 90) % 360) + 360) % 360;
 }
 
 function isClockAngleInRange(deg: number, start: number, end: number): boolean {
@@ -59,8 +71,11 @@ export interface ArcViewBox {
 }
 
 export function arcViewBox(
-    cx: number, cy: number, r: number,
-    clockStart: number, clockEnd: number,
+    cx: number,
+    cy: number,
+    r: number,
+    clockStart: number,
+    clockEnd: number,
     includeCenter: boolean = true,
     padding: number = 2,
 ): ArcViewBox {
@@ -79,7 +94,10 @@ export function arcViewBox(
         }
     }
 
-    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    let minX = Infinity,
+        minY = Infinity,
+        maxX = -Infinity,
+        maxY = -Infinity;
     for (const [x, y] of points) {
         minX = Math.min(minX, x);
         minY = Math.min(minY, y);
@@ -100,7 +118,10 @@ export interface PointerCoords {
     y: number;
 }
 
-export function pointerCoords(value: number, outerRadius: number): PointerCoords {
+export function pointerCoords(
+    value: number,
+    outerRadius: number,
+): PointerCoords {
     const rad = clockAngleToRadians(value);
     const len = outerRadius - 3;
     return {
@@ -126,8 +147,11 @@ export function radialLineCoords(
 }
 
 export function describeArc(
-    cx: number, cy: number, r: number,
-    clockStart: number, clockEnd: number,
+    cx: number,
+    cy: number,
+    r: number,
+    clockStart: number,
+    clockEnd: number,
 ): string {
     const startRad = clockAngleToRadians(clockStart);
     const endRad = clockAngleToRadians(clockEnd);
@@ -135,9 +159,18 @@ export function describeArc(
     const y1 = cy + r * Math.sin(startRad);
     const x2 = cx + r * Math.cos(endRad);
     const y2 = cy + r * Math.sin(endRad);
-    const diff = ((clockEnd - clockStart) % 360 + 360) % 360;
+    const diff = (((clockEnd - clockStart) % 360) + 360) % 360;
     const largeArc = diff > 180 ? 1 : 0;
     return `M ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2}`;
+}
+
+export function describeClockWedge(
+    center: number,
+    radius: number,
+    start: number,
+    end: number,
+): string {
+    return `M ${center} ${center} ${describeArc(center, center, radius, start, end).replace("M ", "L ")} Z`;
 }
 
 export interface DurationParts {
@@ -145,7 +178,9 @@ export interface DurationParts {
     seconds: number;
 }
 
-export const millisecondsToDurationParts = (milliseconds: number): DurationParts => {
+export const millisecondsToDurationParts = (
+    milliseconds: number,
+): DurationParts => {
     const totalSeconds = Math.round(milliseconds / 1000);
     return {
         minutes: Math.floor(totalSeconds / SECONDS_PER_MINUTE),
@@ -164,3 +199,24 @@ export const ticksToClockDegrees = (ticks: number): number => {
 export const clockDegreesToTicks = (degrees: number): number => {
     return Math.round(degrees / SECONDS_PER_TICK) % TICK_COUNT;
 };
+
+export function clockValueFromAngle(
+    value: number,
+    angle: number,
+    hand: ClockHand,
+    min: number,
+    max: number,
+    step: number,
+): number {
+    if (hand === "angle") {
+        return snapSlice(angle, min, max, step);
+    }
+
+    const parts = millisecondsToDurationParts(value);
+    const ticks = clockDegreesToTicks(snapSlice(angle, 0, 360, STEP_DEG));
+    parts[hand] =
+        hand === "minutes"
+            ? Math.floor(parts.minutes / TICK_COUNT) * TICK_COUNT + ticks
+            : ticks;
+    return Math.max(min, durationPartsToMilliseconds(parts));
+}

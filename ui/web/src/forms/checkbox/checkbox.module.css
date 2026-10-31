@@ -132,8 +132,6 @@
 
 .checkmark {
     position: absolute;
-    width: 70%;
-    height: 70%;
 }
 
 .label {
@@ -145,6 +143,12 @@
     font-size: var(--size-control-lg-font-size);
     gap: var(--size-control-lg-gap);
     & .box {
+        width: calc(var(--size-control-lg-height) - var(--size-control-lg-gap));
+        height: calc(
+            var(--size-control-lg-height) - var(--size-control-lg-gap)
+        );
+    }
+    & .checkmark {
         width: var(--size-control-lg-icon-size);
         height: var(--size-control-lg-icon-size);
     }
@@ -155,6 +159,12 @@
     font-size: var(--size-control-md-font-size);
     gap: var(--size-control-md-gap);
     & .box {
+        width: calc(var(--size-control-md-height) - var(--size-control-md-gap));
+        height: calc(
+            var(--size-control-md-height) - var(--size-control-md-gap)
+        );
+    }
+    & .checkmark {
         width: var(--size-control-md-icon-size);
         height: var(--size-control-md-icon-size);
     }
@@ -165,6 +175,12 @@
     font-size: var(--size-control-sm-font-size);
     gap: var(--size-control-sm-gap);
     & .box {
+        width: calc(var(--size-control-sm-height) - var(--size-control-sm-gap));
+        height: calc(
+            var(--size-control-sm-height) - var(--size-control-sm-gap)
+        );
+    }
+    & .checkmark {
         width: var(--size-control-sm-icon-size);
         height: var(--size-control-sm-icon-size);
     }
@@ -175,6 +191,12 @@
     font-size: var(--size-control-xs-font-size);
     gap: var(--size-control-xs-gap);
     & .box {
+        width: calc(var(--size-control-xs-height) - var(--size-control-xs-gap));
+        height: calc(
+            var(--size-control-xs-height) - var(--size-control-xs-gap)
+        );
+    }
+    & .checkmark {
         width: var(--size-control-xs-icon-size);
         height: var(--size-control-xs-icon-size);
     }

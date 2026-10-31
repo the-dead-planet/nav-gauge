@@ -1,26 +1,23 @@
-import { FC, useEffect, useRef } from "react";
-import { ColorShade, ColorVariant, DEFAULT_COLOR } from "@ui";
-import { Label, Span } from "../../design-system/typography";
-import styles from './clock-input.module.css';
+import { FC, RefObject } from "react";
+import styles from "./clock-input.module.css";
 
 interface Props {
-    id?: string;
+    inputRef: RefObject<HTMLInputElement | null>;
+    id: string;
     min: number;
-    max: number;
+    max?: number;
     step: number;
     value: number;
-    formatValue?: (angle: number) => string;
+    formatValue?: (value: number) => string;
     onChange?: (value: number) => void;
-    onSync?: (value: number) => void;
     disabled: boolean;
     label?: string;
-    showValue?: boolean;
+    showValue: boolean;
     ariaLabel?: string;
-    color?: ColorVariant;
-    glyphsShade?: ColorShade;
 }
 
 export const ClockA11yInput: FC<Props> = ({
+    inputRef,
     id,
     min,
     max,
@@ -28,79 +25,54 @@ export const ClockA11yInput: FC<Props> = ({
     value,
     formatValue,
     onChange,
-    onSync,
     disabled,
     label,
-    showValue = true,
+    showValue,
     ariaLabel,
-    color = DEFAULT_COLOR,
-    glyphsShade,
-}) => {
-    const inputRef = useRef<HTMLInputElement>(null);
-    const onChangeRef = useRef(onChange);
-    const onSyncRef = useRef(onSync);
-    onChangeRef.current = onChange;
-    onSyncRef.current = onSync;
-
-    useEffect(() => {
-        const input = inputRef.current;
-        if (!input) {
-            return;
-        }
-        if (value !== Number(input.value)) {
-            input.value = String(value);
-        }
-    }, [value]);
-
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        const input = inputRef.current;
-        if (!input) {
-            return;
-        }
-        const current = Number(input.value);
-        let wrapped: number | null = null;
-
-        if (e.key === 'ArrowLeft' && current <= min) {
-            wrapped = max;
-        } else if (e.key === 'ArrowRight' && current >= max) {
-            wrapped = min;
-        }
-
-        if (wrapped !== null) {
-            e.preventDefault();
-            input.value = String(wrapped);
-            onChangeRef.current?.(wrapped);
-            onSyncRef.current?.(wrapped);
-        }
-    };
-
-    return (
-        <>
-            <input
-                ref={inputRef}
-                type="range"
-                id={id}
-                min={min}
-                max={max}
-                step={step}
-                defaultValue={String(value)}
-                onChange={(e) => {
-                    const newValue = Number(e.target.value);
-                    onChange?.(newValue);
-                    onSync?.(newValue);
-                }}
-                onKeyDown={handleKeyDown}
-                disabled={disabled}
-                className={styles['a11y-slider']}
-                aria-label={ariaLabel ?? label ?? 'Angle'}
-                tabIndex={0}
-            />
-            {label && (
-                <Label htmlFor={id} color={color} shade={glyphsShade} className={styles['label']}>
-                    {label}
-                    {showValue ? <Span tabular>{formatValue?.(value) || `${value}°`}</Span> : null}
-                </Label>
-            )}
-        </>
-    );
-};
+}) => (
+    <>
+        <input
+            ref={inputRef}
+            type={max === undefined ? "number" : "range"}
+            id={id}
+            min={min}
+            max={max}
+            step={step}
+            value={value}
+            onChange={(event) => {
+                const next = event.target.valueAsNumber;
+                if (Number.isFinite(next)) {
+                    onChange?.(Math.max(min, next));
+                }
+            }}
+            onKeyDown={(event) => {
+                if (max === undefined) {
+                    return;
+                }
+                if (event.key === "ArrowLeft" && value <= min) {
+                    event.preventDefault();
+                    onChange?.(max);
+                } else if (event.key === "ArrowRight" && value >= max) {
+                    event.preventDefault();
+                    onChange?.(min);
+                }
+            }}
+            disabled={disabled}
+            className={styles["a11y-slider"]}
+            aria-label={ariaLabel ?? label ?? "Angle"}
+            aria-valuetext={formatValue?.(value)}
+        />
+        {label ? (
+            <label
+                htmlFor={id}
+                className={styles.label}
+                data-appearance-variant="default"
+            >
+                {label}
+                {showValue ? (
+                    <span>{formatValue?.(value) ?? `${value}°`}</span>
+                ) : null}
+            </label>
+        ) : null}
+    </>
+);

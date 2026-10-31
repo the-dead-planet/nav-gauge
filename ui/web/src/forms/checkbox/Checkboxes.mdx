@@ -7,7 +7,7 @@ import * as CheckboxStories from "./Checkbox.stories";
 
 Checkboxes default to square corners. The `corners` prop also accepts `circle` and `hexagon`; the checkmark remains the selection cue.
 
-All shapes reserve the same icon-sized indicator slot so changing shape or checked state preserves row alignment.
+All shapes size the outer box as shared control height minus one shared gap and use the shared icon size for the checkmark. The row retains the full control height to align with buttons.
 
 See <a href="./?path=/docs/design-system-appearance--docs#corners-and-shapes" target="_top" style={{ textDecoration: 'underline' }}>Appearance</a> for shared shape geometry and visual intent.
 

@@ -129,10 +129,10 @@ describe("Form choice row sizing", () => {
                                     description,
                                 ).to.equal(metrics.height);
                                 expect(checked.boxHeight, description).to.equal(
-                                    metrics.iconSize,
+                                    metrics.height - metrics.gap,
                                 );
                                 expect(checked.boxWidth, description).to.equal(
-                                    metrics.iconSize,
+                                    metrics.height - metrics.gap,
                                 );
                                 expect(
                                     checked.controlTop,

@@ -9,8 +9,8 @@ import {
     themeSpecifications,
 } from '@ui';
 import { Label, ThemeModeToggle, ThemeSelect, useThemeVariables } from '../src';
-import './preview.css';
 import { storybookTheme } from './theme';
+import './preview.css';
 
 const getMedia = () => {
     return {

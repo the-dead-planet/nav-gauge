@@ -28,7 +28,7 @@
 
 .fieldset {
     display: grid;
-    grid-template-columns: 4fr 5fr 1fr;
+    grid-template-columns: 2fr 3fr;
     column-gap: 10px;
     row-gap: 5px;
     align-items: center;
@@ -40,7 +40,7 @@
 }
 
 .recording-formula {
-    grid-column: 2 / 4;
+    /* grid-column: 2 / 4; */
     display: inline-flex;
     align-items: center;
     gap: 4px;

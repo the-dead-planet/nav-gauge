@@ -1,13 +1,11 @@
 import { FC } from "react";
-import classNames from "classnames";
-import styles from './clock-input.module.css';
+import styles from "./clock-input.module.css";
 
 interface Props {
     center: number;
     pointerX: number;
     pointerY: number;
     strokeWidth: number;
-    isDragging: boolean;
     centerDotRadius: number;
 }
 
@@ -16,7 +14,6 @@ export const ClockPointer: FC<Props> = ({
     pointerX,
     pointerY,
     strokeWidth,
-    isDragging,
     centerDotRadius,
 }) => (
     <>
@@ -25,10 +22,7 @@ export const ClockPointer: FC<Props> = ({
             y1={center}
             x2={center + pointerX}
             y2={center + pointerY}
-            className={classNames(
-                styles.pointer,
-                { [styles['pointer-active']]: isDragging }
-            )}
+            className={styles.pointer}
             strokeWidth={strokeWidth}
             strokeLinecap="round"
         />
@@ -36,7 +30,7 @@ export const ClockPointer: FC<Props> = ({
             cx={center}
             cy={center}
             r={centerDotRadius}
-            className={styles['center-dot']}
+            className={styles["center-dot"]}
         />
     </>
 );

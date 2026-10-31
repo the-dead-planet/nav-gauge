@@ -1,6 +1,5 @@
 import { FC } from "react";
-import { Circle } from "react-native-svg";
-import { useTheme, ColorVariant, FillVariant, DEFAULT_FILL_VARIANT } from "@ui";
+import { Circle, G, SvgUri } from "react-native-svg";
 
 interface Props {
     center: number;
@@ -8,8 +7,8 @@ interface Props {
     pointerY: number;
     thumbRadius: number;
     strokeWidth: number;
-    color: ColorVariant;
-    variant: FillVariant;
+    icon?: string;
+    glyphs: string;
 }
 
 export const ClockThumb: FC<Props> = ({
@@ -18,23 +17,28 @@ export const ClockThumb: FC<Props> = ({
     pointerY,
     thumbRadius,
     strokeWidth,
-    color,
-    variant = DEFAULT_FILL_VARIANT,
-}) => {
-    const theme = useTheme();
-    const useDark = variant === 'fill';
-    const fillContentColor = theme.color(color, theme.isLight ? 100 : (color === 'neutral' ? 800 : 900));
-    const thumbFill = useDark ? theme.color(color, 500) : fillContentColor;
-    const thumbStroke = useDark ? fillContentColor : theme.color(color, 500);
-
-    return (
+    icon,
+    glyphs,
+}) => (
+    <G>
         <Circle
             cx={center + pointerX}
             cy={center + pointerY}
             r={thumbRadius}
-            fill={thumbFill}
-            stroke={thumbStroke}
+            fill="none"
+            stroke="currentColor"
             strokeWidth={strokeWidth}
         />
-    );
-};
+        {icon ? (
+            <SvgUri
+                uri={icon}
+                x={center + pointerX - thumbRadius * 2}
+                y={center + pointerY - thumbRadius * 2}
+                width={thumbRadius * 4}
+                height={thumbRadius * 4}
+                color={glyphs}
+                fill={glyphs}
+            />
+        ) : null}
+    </G>
+);

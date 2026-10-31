@@ -1,49 +1,58 @@
 import { FC } from "react";
-import { View } from "react-native";
-import { ColorShade, ColorVariant, DEFAULT_COLOR, FontType } from "@ui";
+import { StyleSheet, View } from "react-native";
+import { ColorShade, ColorVariant, FontType, ThemeAppearanceState } from "@ui";
 import { Text } from "../../design-system/typography";
+
+const styles = StyleSheet.create({
+    label: { flexDirection: "row", alignItems: "center", gap: 6 },
+});
 
 interface Props {
     label?: string;
     value: number;
-    isLight: boolean;
-    showValue?: boolean;
-    color?: ColorVariant;
+    formatValue?: (value: number) => string;
+    showValue: boolean;
+    color: ColorVariant;
+    highlightColor: ColorVariant;
     glyphsShade?: ColorShade;
+    highlightGlyphsShade?: ColorShade;
+    state: ThemeAppearanceState;
 }
 
 export const ClockLabel: FC<Props> = ({
     label,
     value,
-    isLight,
-    showValue = true,
-    color = DEFAULT_COLOR,
+    formatValue,
+    showValue,
+    color,
+    highlightColor,
     glyphsShade,
-}) => {
-    if (!label) {
-        return null;
-    }
-
-    return (
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-            <Text color={color} shade={glyphsShade ?? (isLight ? 800 : 200)} style={{
-                fontSize: 11,
-                fontWeight: '500',
-                letterSpacing: 0.4,
-                marginBottom: 2,
-            }}>
+    highlightGlyphsShade,
+    state,
+}) =>
+    label ? (
+        <View style={styles.label}>
+            <Text
+                color={color}
+                highlightColor={highlightColor}
+                shade={glyphsShade}
+                highlightShade={highlightGlyphsShade}
+                appearanceState={state}
+            >
                 {label}
             </Text>
             {showValue ? (
-                <View style={{ minWidth: 40, alignItems: 'flex-end' }}>
-                    <Text color={color} shade={glyphsShade ?? (isLight ? 800 : 200)} fontType={FontType.Numeric} tabular style={{
-                        fontSize: 10,
-                        opacity: 0.7,
-                    }}>
-                        {value}°
-                    </Text>
-                </View>
+                <Text
+                    color={color}
+                    highlightColor={highlightColor}
+                    shade={glyphsShade}
+                    highlightShade={highlightGlyphsShade}
+                    appearanceState={state}
+                    fontType={FontType.Numeric}
+                    tabular
+                >
+                    {formatValue?.(value) ?? `${value}°`}
+                </Text>
             ) : null}
         </View>
-    );
-};
+    ) : null;

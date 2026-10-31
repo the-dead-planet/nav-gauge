@@ -1,70 +1,106 @@
 import { FC } from "react";
-import { Circle, Path } from "react-native-svg";
-import { describeArc, useTheme, ColorVariant, FillVariant, DEFAULT_FILL_VARIANT, translucentSurfaceOpacity } from "@ui";
+import { Pressable, View } from "react-native";
+import {
+    ClockInputProps,
+    ClockMode,
+    getClockDrawing,
+    millisecondsToDurationParts,
+    ResolvedThemeAppearance,
+} from "@ui";
+import { ClockSvg } from "./ClockSvg";
+import { useClockDrag } from "./useClockDrag";
+import { useHudInteraction } from "../../hud/useHudInteraction";
 
-interface Props {
-    center: number;
-    outerRadius: number;
-    strokeWidth: number;
+interface Props extends Pick<
+    ClockInputProps,
+    | "id"
+    | "value"
+    | "formatValue"
+    | "label"
+    | "ariaLabel"
+    | "disabled"
+    | "thumbIcon"
+> {
+    mode: ClockMode;
     min: number;
     max: number;
-    color: ColorVariant;
-    variant: FillVariant;
-    isFullCircle?: boolean;
+    drawing: ReturnType<typeof getClockDrawing>;
+    gesture: ReturnType<typeof useClockDrag>;
+    interaction: ReturnType<typeof useHudInteraction>["interaction"];
+    focused: boolean;
+    appearance: ResolvedThemeAppearance;
+    glyphs: string;
 }
 
 export const ClockDial: FC<Props> = ({
-    center,
-    outerRadius,
-    strokeWidth,
+    id,
+    value,
+    formatValue,
+    label,
+    ariaLabel,
+    disabled,
+    thumbIcon,
+    mode,
     min,
     max,
-    color,
-    variant = DEFAULT_FILL_VARIANT,
-    isFullCircle = false,
+    drawing,
+    gesture,
+    interaction,
+    focused,
+    appearance,
+    glyphs,
 }) => {
-    const theme = useTheme();
-
-    const useDark = variant === 'fill';
-
-    const defaultDialColor = theme.color(color, 500, theme.isLight ? 0.25 : 0.35);
-    const dialColor = useDark
-        ? theme.color(color, theme.isLight ? 100 : (color === 'neutral' ? 800 : 900))
-        : variant === 'fill-inverse' ? theme.color(color, 500) : defaultDialColor;
-
-    const bgCircleFill = variant === 'fill'
-        ? theme.color(color, 500)
-        : variant === 'fill-inverse'
-            ? theme.color(color, theme.isLight ? 100 : (color === 'neutral' ? 800 : 900))
-            : theme.color(color, 500, translucentSurfaceOpacity.unblurred);
+    const duration = mode === "duration";
+    const { minutes, seconds } = millisecondsToDurationParts(value);
+    const { viewBox } = drawing;
 
     return (
-        <>
-            {isFullCircle && (
-                <Circle
-                    cx={center}
-                    cy={center}
-                    r={outerRadius + strokeWidth}
-                    fill={bgCircleFill}
+        <Pressable
+            nativeID={id}
+            accessible
+            accessibilityRole="adjustable"
+            accessibilityLabel={
+                ariaLabel ?? label ?? (duration ? "Duration" : "Angle")
+            }
+            accessibilityState={{ disabled }}
+            accessibilityValue={{
+                min,
+                max: duration ? undefined : max,
+                now: value,
+                text: duration
+                    ? `${minutes} min ${seconds} s`
+                    : (formatValue?.(value) ?? `${value}°`),
+            }}
+            accessibilityActions={[
+                { name: "increment" },
+                { name: "decrement" },
+            ]}
+            onAccessibilityAction={gesture.onAccessibilityAction}
+            disabled={disabled}
+            onHoverIn={interaction.onHoverIn}
+            onHoverOut={interaction.onHoverOut}
+            onFocus={interaction.onFocus}
+            onBlur={interaction.onBlur}
+            style={{
+                outlineStyle: "solid",
+                outlineWidth: focused ? 2 : 0,
+                outlineColor: appearance.effects.glowColor,
+                outlineOffset: 2,
+            }}
+        >
+            <View
+                ref={gesture.viewRef}
+                collapsable={false}
+                {...gesture.panHandlers}
+            >
+                <ClockSvg
+                    {...drawing}
+                    viewBox={`${viewBox.x} ${viewBox.y} ${viewBox.width} ${viewBox.height}`}
+                    appearance={appearance}
+                    glyphs={glyphs}
+                    thumbIcon={thumbIcon}
                 />
-            )}
-            {isFullCircle ? (
-                <Circle
-                    cx={center}
-                    cy={center}
-                    r={outerRadius}
-                    fill="none"
-                    stroke={dialColor}
-                    strokeWidth={strokeWidth}
-                />
-            ) : (
-                <Path
-                    d={describeArc(center, center, outerRadius, min, max)}
-                    fill="none"
-                    stroke={dialColor}
-                    strokeWidth={strokeWidth}
-                />
-            )}
-        </>
+            </View>
+        </Pressable>
     );
 };

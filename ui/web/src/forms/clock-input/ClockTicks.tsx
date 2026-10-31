@@ -1,15 +1,16 @@
 import { FC } from "react";
 import classNames from "classnames";
-import { TICK_COUNT, STEP_DEG, MAJOR_TICK_INTERVAL, radialLineCoords, SizeVariant, DEFAULT_SIZE } from "@ui";
-import styles from './clock-input.module.css';
-
-const tickMajorLengths: Record<SizeVariant, number> = { xs: 4, sm: 5, md: 6, lg: 7 };
-const tickMinorLengths: Record<SizeVariant, number> = { xs: 2, sm: 2.5, md: 3, lg: 3.5 };
+import {
+    TICK_COUNT,
+    STEP_DEG,
+    MAJOR_TICK_INTERVAL,
+    radialLineCoords,
+} from "@ui";
+import styles from "./clock-input.module.css";
 
 interface Props {
     center: number;
     outerRadius: number;
-    size: SizeVariant;
     strokeWidth: number;
     min: number;
     max: number;
@@ -18,7 +19,6 @@ interface Props {
 export const ClockTicks: FC<Props> = ({
     center,
     outerRadius,
-    size = DEFAULT_SIZE,
     strokeWidth,
     min,
     max,
@@ -30,9 +30,7 @@ export const ClockTicks: FC<Props> = ({
                 return null;
             }
             const isMajor = i % MAJOR_TICK_INTERVAL === 0;
-            const tickLen = isMajor
-                ? tickMajorLengths[size]
-                : tickMinorLengths[size];
+            const tickLen = strokeWidth * (isMajor ? 5 : 2.5);
             const tickWidth = isMajor ? strokeWidth : strokeWidth * 0.6;
             const { x1, y1, x2, y2 } = radialLineCoords(
                 angleDeg,
@@ -51,7 +49,7 @@ export const ClockTicks: FC<Props> = ({
                     strokeWidth={tickWidth}
                     className={classNames(
                         styles.tick,
-                        isMajor ? styles['tick-major'] : styles['tick-minor']
+                        !isMajor && styles["tick-minor"],
                     )}
                     strokeLinecap="round"
                 />

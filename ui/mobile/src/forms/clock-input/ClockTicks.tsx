@@ -1,53 +1,40 @@
 import { FC } from "react";
 import { Line } from "react-native-svg";
-import { TICK_COUNT, STEP_DEG, MAJOR_TICK_INTERVAL, radialLineCoords, useTheme, ColorVariant, FillVariant, DEFAULT_FILL_VARIANT, SizeVariant, DEFAULT_SIZE } from "@ui";
-
-const tickMajorLengths: Record<SizeVariant, number> = { xs: 3.5, sm: 6, md: 7, lg: 8 };
-const tickMinorLengths: Record<SizeVariant, number> = { xs: 2, sm: 3.5, md: 4, lg: 4.5 };
+import {
+    TICK_COUNT,
+    STEP_DEG,
+    MAJOR_TICK_INTERVAL,
+    radialLineCoords,
+} from "@ui";
 
 interface Props {
     center: number;
     outerRadius: number;
-    size: SizeVariant;
     strokeWidth: number;
     min: number;
     max: number;
-    color: ColorVariant;
-    variant: FillVariant;
 }
 
 export const ClockTicks: FC<Props> = ({
     center,
     outerRadius,
-    size = DEFAULT_SIZE,
     strokeWidth,
     min,
     max,
-    color,
-    variant = DEFAULT_FILL_VARIANT,
 }) => {
-    const theme = useTheme();
-    const isLight = theme.isLight;
-
-    const useDark = variant === 'fill';
-    const useRegular = variant === 'fill-inverse';
-
-    const defaultTickColor = theme.color(color, 500, isLight ? 0.35 : 0.5);
-    const fillContentColor = theme.color(color, isLight ? 100 : (color === 'neutral' ? 800 : 900));
-    const tickColor = useDark
-        ? fillContentColor
-        : useRegular ? theme.color(color, 500) : defaultTickColor;
-    const tickMajorColor = useDark ? fillContentColor : theme.color(color, 500);
-    const tickMinorOpacity = (useDark || useRegular) ? 0.5 : (isLight ? 0.3 : 0.5);
-
     const ticks = Array.from({ length: TICK_COUNT }, (_, i) => {
         const angleDeg = i * STEP_DEG;
         const isMajor = i % MAJOR_TICK_INTERVAL === 0;
-        const tickLen = isMajor ? tickMajorLengths[size] : tickMinorLengths[size];
+        const tickLen = strokeWidth * (isMajor ? 5 : 2.5);
         const tickWidth = isMajor ? strokeWidth : strokeWidth * 0.6;
         const innerR = outerRadius - tickLen;
 
-        const coordinates = radialLineCoords(angleDeg, center, innerR, outerRadius);
+        const coordinates = radialLineCoords(
+            angleDeg,
+            center,
+            innerR,
+            outerRadius,
+        );
 
         return {
             ...coordinates,
@@ -66,10 +53,10 @@ export const ClockTicks: FC<Props> = ({
                     y1={tick.y1}
                     x2={tick.x2}
                     y2={tick.y2}
-                    stroke={tick.isMajor ? tickMajorColor : tickColor}
+                    stroke="currentColor"
                     strokeWidth={tick.width}
                     strokeLinecap="round"
-                    opacity={tick.isMajor ? 1 : tickMinorOpacity}
+                    opacity={tick.isMajor ? 1 : 0.5}
                 />
             ))}
         </>

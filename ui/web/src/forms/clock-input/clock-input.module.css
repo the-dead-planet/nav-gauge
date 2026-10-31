@@ -1,17 +1,153 @@
-/* ── Container ── */
-
 .container {
+    position: relative;
     display: grid;
     gap: 4px;
-    user-select: none;
-    font-family: var(--font-default, 'Space Grotesk', sans-serif);
     width: fit-content;
+    user-select: none;
+    font-family: var(--font-default);
+    color: var(
+        --appearance-default-glyphs-override,
+        var(--appearance-default-glyphs)
+    );
+    font-weight: var(--appearance-default-font-weight);
+}
+
+.surface {
+    fill: var(--appearance-default-surface);
+    stroke: var(--appearance-default-border);
+    stroke-width: var(--appearance-default-border-width);
+}
+
+.with-duration-inputs {
+    width: 100%;
+}
+
+.container:not([data-disabled="true"]):not([data-highlighted="true"]):not(
+        [data-dragging="true"]
+    ):is(:has(.drawing:hover), :has(.label:hover), :has(.a11y-slider:focus)) {
+    color: var(
+        --appearance-hover-focus-glyphs-override,
+        var(--appearance-hover-focus-glyphs)
+    );
+    font-weight: var(--appearance-hover-focus-font-weight);
+
+    & .surface {
+        fill: var(--appearance-hover-focus-surface);
+        stroke: var(--appearance-hover-focus-border);
+        stroke-width: var(--appearance-hover-focus-border-width);
+    }
+
+    & .label {
+        color: var(
+            --appearance-hover-focus-glyphs-override,
+            var(--appearance-hover-focus-glyphs)
+        );
+        font-weight: var(--appearance-hover-focus-font-weight);
+    }
+}
+
+.container:not([data-disabled="true"]):is(
+        [data-highlighted="true"],
+        [data-dragging="true"]
+    ) {
+    color: var(
+        --appearance-active-pressed-glyphs-override,
+        var(--appearance-active-pressed-glyphs)
+    );
+    font-weight: var(--appearance-active-pressed-font-weight);
+
+    & .surface {
+        fill: var(--appearance-active-pressed-surface);
+        stroke: var(--appearance-active-pressed-border);
+        stroke-width: var(--appearance-active-pressed-border-width);
+    }
+
+    & .label {
+        color: var(
+            --appearance-active-pressed-glyphs-override,
+            var(--appearance-active-pressed-glyphs)
+        );
+        font-weight: var(--appearance-active-pressed-font-weight);
+    }
+}
+
+.container[data-disabled="true"] {
+    color: var(--appearance-disabled-glyphs);
+    font-weight: var(--appearance-disabled-font-weight);
+    cursor: not-allowed;
+
+    & .surface {
+        fill: var(--appearance-disabled-surface);
+        stroke: var(--appearance-disabled-border);
+        stroke-width: var(--appearance-disabled-border-width);
+    }
+
+    & .svg {
+        cursor: not-allowed;
+    }
+
+    & .label {
+        color: var(--appearance-disabled-glyphs);
+        font-weight: var(--appearance-disabled-font-weight);
+    }
+}
+
+.container:not([data-disabled="true"]):has(.a11y-slider:focus-visible)
+    .drawing {
+    outline: 2px solid var(--appearance-glow-color);
+    outline-offset: 2px;
+}
+
+.drawing {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.backdrop {
+    position: absolute;
+    inset: 0;
+    backdrop-filter: var(--appearance-backdrop-filter);
+    pointer-events: none;
+}
+
+.svg {
+    position: relative;
+    display: block;
+    cursor: pointer;
+    touch-action: none;
+}
+
+.container[data-dragging="true"]:not([data-disabled="true"]) .svg {
+    cursor: grabbing;
+}
+
+.tick,
+.pointer,
+.thumb {
+    stroke: currentColor;
+}
+
+.tick-minor {
+    opacity: 0.5;
+}
+
+.center-dot {
+    fill: currentColor;
+}
+
+.thumb {
+    fill: none;
 }
 
 .control-row {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 8px;
+}
+
+.with-duration-inputs .control-row > :first-child {
+    flex: 0 0 auto;
 }
 
 .number-input-start {
@@ -26,8 +162,14 @@
     flex-direction: column;
 }
 
-.control-row > :last-child:not(:first-child) {
-    width: 80px;
+.control-row
+    > :where(:last-child:not(:first-child)):not(.duration-number-inputs) {
+    flex-shrink: 0;
+}
+
+.number-input {
+    field-sizing: content;
+    min-width: calc(3ch + 2em);
 }
 
 .number-input-above > :last-child:not(:first-child),
@@ -38,20 +180,14 @@
 .control-row > .duration-number-inputs {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    min-width: max-content;
+    flex: 1 0 auto;
     gap: 8px;
-    flex: 1;
-    width: 100%;
 }
 
-.duration-container {
-    width: 100%;
+.duration-number-inputs > * {
+    min-width: 0;
 }
-
-.duration-container .control-row > :first-child {
-    flex: 0 0 max-content;
-}
-
-/* ── A11y hidden slider ── */
 
 .a11y-slider {
     position: absolute;
@@ -60,262 +196,36 @@
     padding: 0;
     margin: -1px;
     overflow: hidden;
-    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
     white-space: nowrap;
     border: 0;
 }
-
-/* ── Focus ring ── */
-
-.container:has(.a11y-slider:focus-visible):not(.disabled) .svg {
-    outline: 2px solid var(--angle-highlight);
-    outline-offset: 0px;
-    border-radius: 50%;
-}
-
-/* ── Label ── */
 
 .label {
     display: flex;
     align-items: center;
     gap: 6px;
+    color: var(
+        --appearance-default-glyphs-override,
+        var(--appearance-default-glyphs)
+    );
+    font-weight: var(--appearance-default-font-weight);
 }
 
-/* ── SVG ── */
-
-.svg {
-    display: block;
-    cursor: pointer;
-    touch-action: none;
+.label > span {
+    min-width: 4ch;
+    font-variant-numeric: tabular-nums;
 }
-
-.svg-dragging {
-    cursor: grabbing;
-}
-
-/* ── Disabled ── */
-
-.disabled {
-    opacity: .4;
-    cursor: not-allowed;
-}
-
-.disabled .svg {
-    cursor: not-allowed;
-}
-
-/* ── Mode ── */
-
-.mode-light {
-    --angle-dial-opacity: .25;
-    --angle-tick-opacity: .35;
-    --angle-tick-minor-opacity: .3;
-    --angle-color-inverse: var(--angle-color-light);
-    --angle-fill-content: var(--angle-color-light);
-}
-
-.mode-dark {
-    --angle-dial-opacity: .35;
-    --angle-tick-opacity: .5;
-    --angle-tick-minor-opacity: .5;
-    --angle-color-inverse: var(--angle-color-dark);
-    --angle-fill-content: var(--angle-color-dark);
-}
-
-/* ── Color ── */
-
-.color-neutral {
-    --angle-color: var(--color-neutral);
-    --angle-color-dark: var(--color-neutral-800);
-    --angle-color-light: var(--color-neutral-100);
-}
-
-.color-primary {
-    --angle-color: var(--color-primary);
-    --angle-color-dark: var(--color-primary-900);
-    --angle-color-light: var(--color-primary-100);
-}
-
-.color-secondary {
-    --angle-color: var(--color-secondary);
-    --angle-color-dark: var(--color-secondary-900);
-    --angle-color-light: var(--color-secondary-100);
-}
-
-.color-tertiary {
-    --angle-color: var(--color-tertiary);
-    --angle-color-dark: var(--color-tertiary-900);
-    --angle-color-light: var(--color-tertiary-100);
-}
-
-/* ── Highlight ── */
-
-.highlight-neutral {
-    --angle-highlight: var(--color-neutral);
-    --angle-highlight-dark: var(--color-neutral-800);
-    --angle-highlight-light: var(--color-neutral-300);
-}
-
-.highlight-primary {
-    --angle-highlight: var(--color-primary);
-    --angle-highlight-dark: var(--color-primary-900);
-    --angle-highlight-light: var(--color-primary-300);
-}
-
-.highlight-secondary {
-    --angle-highlight: var(--color-secondary);
-    --angle-highlight-dark: var(--color-secondary-900);
-    --angle-highlight-light: var(--color-secondary-300);
-}
-
-.highlight-tertiary {
-    --angle-highlight: var(--color-tertiary);
-    --angle-highlight-dark: var(--color-tertiary-900);
-    --angle-highlight-light: var(--color-tertiary-300);
-}
-
-/* ── SVG elements ── */
-
-.dial {
-    stroke: rgb(from var(--angle-color) r g b / var(--angle-dial-opacity, .25));
-}
-
-.tick {
-    stroke: rgb(from var(--angle-color) r g b / var(--angle-tick-opacity, .35));
-    transition: stroke .15s;
-}
-
-.tick-minor {
-    opacity: var(--angle-tick-minor-opacity, .35);
-}
-
-.tick-major {
-    stroke: var(--angle-color);
-}
-
-.pointer {
-    stroke: var(--angle-highlight);
-    transition: stroke .15s;
-}
-
-.pointer-active {
-    stroke: var(--angle-highlight-light);
-}
-
-.center-dot {
-    fill: var(--angle-color-dark);
-}
-
-.thumb {
-    fill: var(--angle-color-dark);
-    stroke: var(--angle-color);
-    transition: fill .15s, stroke .15s, filter .15s;
-}
-
-.thumb-active {
-    fill: var(--angle-highlight-dark);
-    stroke: var(--angle-highlight-light);
-    filter: drop-shadow(0 0 4px var(--angle-highlight-light));
-}
-
-/* ── Variant ── */
-
-.variant-fill .bg-circle {
-    fill: var(--angle-color);
-}
-
-.variant-fill .tick,
-.variant-fill .tick-major,
-.variant-fill .dial,
-.variant-fill .pointer,
-.variant-fill .pointer-active {
-    stroke: var(--angle-fill-content);
-}
-
-.variant-fill .tick-minor {
-    opacity: .5;
-}
-
-.variant-fill .wedge {
-    fill: var(--angle-color);
-}
-
-.variant-fill .center-dot {
-    fill: var(--angle-fill-content);
-}
-
-.variant-fill .thumb,
-.variant-fill .thumb-active {
-    fill: var(--angle-color);
-    stroke: var(--angle-fill-content);
-}
-
-.variant-fill-inverse .bg-circle {
-    fill: var(--angle-color-inverse);
-}
-
-.variant-fill-inverse .wedge {
-    fill: var(--angle-color-inverse);
-}
-
-.variant-fill-inverse .center-dot {
-    fill: var(--angle-color);
-}
-
-.variant-fill-inverse .tick {
-    stroke: var(--angle-color);
-}
-
-.variant-fill-inverse .tick-major {
-    stroke: var(--angle-color);
-}
-
-.variant-fill-inverse .tick-minor {
-    opacity: .5;
-}
-
-.variant-fill-inverse .dial {
-    stroke: var(--angle-color);
-}
-
-.variant-fill-inverse .thumb,
-.variant-fill-inverse .thumb-active,
-.variant-fill-translucent .thumb,
-.variant-fill-translucent .thumb-active {
-    fill: var(--angle-color-inverse);
-    stroke: var(--angle-color);
-}
-
-.variant-fill-translucent .bg-circle {
-    fill: rgb(from var(--angle-color) r g b / .24);
-}
-
-.variant-fill-translucent .wedge {
-    fill: rgb(from var(--angle-color) r g b / .12);
-}
-
-.wedge {
-    fill: rgb(from var(--angle-color) r g b / .12);
-}
-
-.variant-fill-translucent .center-dot {
-    fill: var(--angle-color);
-}
-
-/* ── Size ── */
 
 .size-xs {
-    font-size: 10px;
+    font-size: var(--size-control-xs-font-size);
 }
-
 .size-sm {
-    font-size: 11px;
+    font-size: var(--size-control-sm-font-size);
 }
-
 .size-md {
-    font-size: 12px;
+    font-size: var(--size-control-md-font-size);
 }
-
 .size-lg {
-    font-size: 14px;
+    font-size: var(--size-control-lg-font-size);
 }
