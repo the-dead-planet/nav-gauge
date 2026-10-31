@@ -1,6 +1,16 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { View, TextInput, StyleSheet } from "react-native";
-import { ColorShade, controlTextSpecifications, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, FontType, Icons, NumberInputProps, SizeVariant, translucentSurfaceOpacity, useStepRepeat, useTheme } from "@ui";
+import {
+    DEFAULT_COLOR,
+    DEFAULT_FILL_VARIANT,
+    DEFAULT_SIZE,
+    FontType,
+    Icons,
+    NumberInputProps,
+    ThemeAppearanceState,
+    useStepRepeat,
+    useTheme,
+} from "@ui";
 import { Button } from "../../gizmos/button";
 import { Text } from "../../design-system/typography";
 import { resolveMobileFont } from "../../design-system/typography/fontFamily";
@@ -9,33 +19,26 @@ const styles = StyleSheet.create({
     container: {
         rowGap: 4,
     },
-    label: {
-        fontSize: 12,
-    },
-    'input-wrapper': {
-        flexDirection: 'row',
-        alignItems: 'stretch',
-        borderWidth: 1,
+    field: {
+        flexDirection: "row",
+        alignItems: "stretch",
+        boxSizing: "border-box",
         borderRadius: 0,
-        overflow: 'hidden',
+        overflow: "hidden",
     },
     input: {
         flex: 1,
-        boxSizing: 'border-box',
+        boxSizing: "border-box",
         borderWidth: 0,
         borderRadius: 0,
-        fontSize: 14,
         fontFamily: resolveMobileFont(FontType.Numeric).fontFamily,
-        fontVariant: ['tabular-nums'],
-    },
-    'input-with-unit': {
-        flex: 1,
+        fontVariant: ["tabular-nums"],
     },
     unit: {
-        alignSelf: 'center',
-        fontSize: 14,
-        marginLeft: 4,
-        marginRight: 4,
+        alignSelf: "center",
+        marginHorizontal: 4,
+        fontFamily: resolveMobileFont(FontType.Numeric).fontFamily,
+        fontVariant: ["tabular-nums"],
     },
     steppers: {
         flexShrink: 0,
@@ -43,6 +46,8 @@ const styles = StyleSheet.create({
     },
     stepper: {
         flex: 1,
+        height: "auto",
+        minWidth: 0,
         minHeight: 0,
         paddingHorizontal: 2,
         paddingVertical: 0,
@@ -50,21 +55,8 @@ const styles = StyleSheet.create({
     },
 });
 
-const sizes = {
-    lg: { height: 40, paddingHorizontal: 14, fontSize: 16 },
-    md: { height: 32, paddingHorizontal: 12, fontSize: controlTextSpecifications.md.fontSize },
-    sm: { height: 24, paddingHorizontal: 10, fontSize: controlTextSpecifications.sm.fontSize },
-    xs: { height: 18, paddingHorizontal: 8, fontSize: controlTextSpecifications.xs.fontSize },
-} as const;
-
-const buttonSizes: Record<SizeVariant, SizeVariant> = {
-    xs: 'xs',
-    sm: 'xs',
-    md: 'sm',
-    lg: 'md',
-};
-
 export const NumberInput: FC<NumberInputProps> = ({
+    themeMode,
     color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
@@ -84,7 +76,25 @@ export const NumberInput: FC<NumberInputProps> = ({
     autoSelect = false,
     showStepControls = true,
 }) => {
-    const theme = useTheme();
+    const theme = useTheme().forMode(themeMode);
+    const [focused, setFocused] = useState(false);
+    const state: ThemeAppearanceState = disabled
+        ? "disabled"
+        : highlighted
+            ? "active-pressed"
+            : focused
+                ? "hover-focus"
+                : "default";
+    const appearance = theme.resolveAppearance(variant, color, highlightColor, state);
+    const interactive = state === "hover-focus" || state === "active-pressed";
+    const overrideShade = interactive ? highlightGlyphsShade : glyphsShade;
+    const glyphs = disabled || overrideShade === undefined
+        ? appearance.glyphs
+        : theme.color(interactive ? highlightColor : color, overrideShade);
+    const controlSize = theme.sizes.control[size];
+    const incrementDisabled = disabled || (max !== undefined && value >= max);
+    const decrementDisabled = disabled || (min !== undefined && value <= min);
+    const stepRepeat = useStepRepeat({ value, onChange, step, min, max, disabled });
 
     const handleChange = (text: string) => {
         const parsed = Number(text);
@@ -93,122 +103,115 @@ export const NumberInput: FC<NumberInputProps> = ({
         }
     };
 
-    const baseColor = theme.color(color, 500);
-    const resolvedGlyphsShade: ColorShade = glyphsShade ?? (variant === 'fill-translucent'
-        ? 500
-        : variant === 'fill'
-            ? theme.isLight ? 100 : 900
-            : theme.isLight ? 900 : 100);
-    const contentColor = theme.color(highlighted ? highlightColor : color, highlighted ? highlightGlyphsShade ?? resolvedGlyphsShade : resolvedGlyphsShade);
-    const disabledShade: ColorShade = theme.isLight ? 300 : 700;
-    const disabledColor = theme.color(color, disabledShade);
-    const activeAccent = theme.color(highlightColor, theme.isLight ? 600 : 300);
-    const backgroundColor = highlighted && !disabled && variant === 'fill'
-        ? activeAccent
-        : variant === 'fill'
-        ? baseColor
-        : variant === 'fill-translucent'
-            ? theme.color(color, 500, translucentSurfaceOpacity.unblurred)
-            : theme.color(color, theme.isLight ? 100 : 900);
-    const borderColor = highlighted && !disabled
-        ? activeAccent
-        : variant === 'fill-translucent'
-        ? theme.color(color, 500, 0.3)
-        : baseColor;
-    const labelFontSize = size === 'xs' ? 11 : size === 'sm' ? 12 : 13;
-    const inputSize = sizes[size];
-    const stepRepeat = useStepRepeat({ value, onChange, step, min, max, disabled });
-    const incrementDisabled = disabled || (max !== undefined && value >= max);
-    const decrementDisabled = disabled || (min !== undefined && value <= min);
-
-    const input = (
-        <View
-            style={[
-                styles['input-wrapper'],
-                { borderColor, backgroundColor, height: inputSize.height },
-            ]}
-        >
-            <TextInput
-                style={[
-                    styles.input,
-                    unit && styles['input-with-unit'],
-                    {
-                        color: disabled ? disabledColor : contentColor,
-                        ...inputSize,
-                        height: '100%',
-                        paddingVertical: 0,
-                    },
-                ]}
-                value={String(value)}
-                onChangeText={handleChange}
-                keyboardType="decimal-pad"
-                selectTextOnFocus={autoSelect}
-                accessibilityLabel={ariaLabel || (typeof label === 'string' ? label : undefined)}
-                editable={!disabled}
-            />
-            {unit ? (
-                <Text
-                    style={[
-                        styles.unit,
-                        { color: disabled ? disabledColor : contentColor, fontSize: inputSize.fontSize },
-                    ]}
-                >
-                    {unit}
-                </Text>
-            ) : null}
-            {showStepControls ? (
-                <View style={[styles.steppers, { borderLeftColor: borderColor }]}>
-                    <Button
-                        icon={Icons.NounProject.ChevronDownSingle}
-                        iconRotateZ={180}
-                        color={color}
-                        highlightColor={highlightColor}
-                        highlightGlyphsShade={highlightGlyphsShade}
-                        glyphsShade={incrementDisabled ? disabledShade : glyphsShade}
-                        size={buttonSizes[size]}
-                        disabled={incrementDisabled}
-                        highlighted={highlighted}
-                        onPressIn={() => stepRepeat.start(1)}
-                        onPressOut={stepRepeat.stop}
-                        accessibilityLabel={ariaLabel ? `${ariaLabel} (+)` : '+'}
-                        style={[styles.stepper, incrementDisabled && { opacity: 1 }]}
-                    />
-                    <Button
-                        icon={Icons.NounProject.ChevronDownSingle}
-                        color={color}
-                        highlightColor={highlightColor}
-                        highlightGlyphsShade={highlightGlyphsShade}
-                        glyphsShade={decrementDisabled ? disabledShade : glyphsShade}
-                        size={buttonSizes[size]}
-                        disabled={decrementDisabled}
-                        highlighted={highlighted}
-                        onPressIn={() => stepRepeat.start(-1)}
-                        onPressOut={stepRepeat.stop}
-                        accessibilityLabel={ariaLabel ? `${ariaLabel} (−)` : '−'}
-                        style={[
-                            styles.stepper,
-                            decrementDisabled && { opacity: 1 },
-                            { borderTopWidth: 1, borderTopColor: borderColor },
-                        ]}
-                    />
-                </View>
-            ) : null}
-        </View>
-    );
+    const handleFocus = () => setFocused(true);
+    const handleBlur = () => setFocused(false);
 
     return (
         <View style={styles.container}>
             {label ? (
                 <Text
-                    style={[
-                        styles.label,
-                        { color: disabled ? disabledColor : baseColor, fontSize: labelFontSize },
-                    ]}
+                    themeMode={themeMode}
+                    color={color}
+                    highlightColor={highlightColor}
+                    shade={glyphsShade}
+                    highlightShade={highlightGlyphsShade}
+                    appearanceState={state}
+                    style={{ fontSize: controlSize.fontSize }}
                 >
                     {label}
                 </Text>
             ) : null}
-            {input}
+            <View
+                style={[
+                    styles.field,
+                    {
+                        backgroundColor: appearance.surface,
+                        borderColor: appearance.border.color,
+                        borderWidth: appearance.border.width,
+                        height: controlSize.height,
+                        outlineStyle: "solid",
+                        outlineWidth: focused ? 2 : 0,
+                        outlineOffset: 2,
+                        outlineColor: appearance.effects.glowColor,
+                    },
+                ]}
+            >
+                <TextInput
+                    style={[
+                        styles.input,
+                        {
+                            color: glyphs,
+                            fontSize: controlSize.fontSize,
+                            paddingHorizontal: controlSize.paddingInline,
+                            height: "100%",
+                            paddingVertical: 0,
+                        },
+                    ]}
+                    value={String(value)}
+                    onChangeText={handleChange}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                    keyboardType="decimal-pad"
+                    selectTextOnFocus={autoSelect}
+                    accessibilityLabel={ariaLabel || (typeof label === "string" ? label : undefined)}
+                    editable={!disabled}
+                />
+                {unit ? (
+                    <Text
+                        fontType={FontType.Numeric}
+                        style={[
+                            styles.unit,
+                            {
+                                color: glyphs,
+                                fontSize: controlSize.fontSize,
+                            },
+                        ]}
+                    >
+                        {unit}
+                    </Text>
+                ) : null}
+                {showStepControls ? (
+                    <View style={[styles.steppers, { borderLeftColor: appearance.border.color }]}>
+                        <Button
+                            icon={Icons.NounProject.ChevronDownSingle}
+                            iconRotateZ={180}
+                            color={color}
+                            highlightColor={highlightColor}
+                            highlightGlyphsShade={highlightGlyphsShade}
+                            glyphsShade={glyphsShade}
+                            size={size}
+                            disabled={incrementDisabled}
+                            highlighted={highlighted}
+                            onPressIn={() => stepRepeat.start(1)}
+                            onPressOut={stepRepeat.stop}
+                            accessibilityLabel={ariaLabel ? `${ariaLabel} (+)` : "+"}
+                            style={styles.stepper}
+                            themeMode={themeMode}
+                        />
+                        <Button
+                            icon={Icons.NounProject.ChevronDownSingle}
+                            color={color}
+                            highlightColor={highlightColor}
+                            highlightGlyphsShade={highlightGlyphsShade}
+                            glyphsShade={glyphsShade}
+                            size={size}
+                            disabled={decrementDisabled}
+                            highlighted={highlighted}
+                            onPressIn={() => stepRepeat.start(-1)}
+                            onPressOut={stepRepeat.stop}
+                            accessibilityLabel={ariaLabel ? `${ariaLabel} (−)` : "−"}
+                            style={[
+                                styles.stepper,
+                                {
+                                    borderTopWidth: 1,
+                                    borderTopColor: appearance.border.color,
+                                },
+                            ]}
+                            themeMode={themeMode}
+                        />
+                    </View>
+                ) : null}
+            </View>
         </View>
     );
 };

@@ -1,13 +1,20 @@
-import { ChangeEvent, ComponentProps, FC, MouseEvent } from "react";
+import { ChangeEvent, ComponentProps, CSSProperties, FC, MouseEvent, useId } from "react";
 import classNames from "classnames";
-import { ColorShade, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, Icons, NumberInputProps, SizeVariant, useTheme } from "@ui";
-import { Button } from "../../gizmos/button";
-import { Label } from "../../design-system/typography";
-import { useStepRepeatButton } from '../step-controls/useStepRepeatButton';
-import styles from './number-input.module.css';
+import {
+    DEFAULT_COLOR,
+    DEFAULT_FILL_VARIANT,
+    DEFAULT_SIZE,
+    Icons,
+    NumberInputProps,
+    useTheme,
+} from "@ui";
+import { Icon } from "../../design-system/icons";
+import { useStepRepeatButton } from "../step-controls/useStepRepeatButton";
+import styles from "./number-input.module.css";
 
-export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' | 'type' | 'size'> & NumberInputProps> = ({
+export const NumberInput: FC<Omit<ComponentProps<"input">, "onChange" | "value" | "type" | "size"> & NumberInputProps> = ({
     id,
+    themeMode,
     color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
@@ -27,60 +34,59 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
     unit,
     showStepControls = true,
     className,
+    onClick,
     ...props
 }) => {
-    const theme = useTheme();
+    const generatedId = useId();
+    const inputId = id || generatedId;
+    const theme = useTheme().forMode(themeMode);
     const getStepButtonProps = useStepRepeatButton({ value, onChange, step, min, max, disabled });
+    const incrementDisabled = disabled || (max !== undefined && value >= max);
+    const decrementDisabled = disabled || (min !== undefined && value <= min);
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const parsed = Number(e.target.value);
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const parsed = Number(event.target.value);
         if (!isNaN(parsed)) {
             onChange(parsed);
         }
     };
 
-    const handleClick = (e: MouseEvent<HTMLInputElement>) => {
+    const handleClick = (event: MouseEvent<HTMLInputElement>) => {
         if (autoSelect) {
-            e.currentTarget.select();
+            event.currentTarget.select();
         }
-    };
-
-    const resolvedGlyphsShade: ColorShade = glyphsShade ?? (variant === 'fill-translucent'
-        ? 500
-        : variant === 'fill'
-            ? theme.isLight ? 100 : 900
-            : theme.isLight ? 900 : 100);
-    const disabledShade: ColorShade = theme.isLight ? 300 : 700;
-    const incrementDisabled = disabled || (max !== undefined && value >= max);
-    const decrementDisabled = disabled || (min !== undefined && value <= min);
-
-    const buttonSizes: { [key in SizeVariant]: SizeVariant } = {
-        xs: 'xs',
-        sm: 'xs',
-        md: 'sm',
-        lg: 'md',
+        onClick?.(event);
     };
 
     return (
-        <div className={classNames(
-            styles.container,
-            styles[`mode-${theme.mode}`],
-            styles[`color-${color}`],
-            styles[`highlight-${highlightColor}`],
-            styles[`size-${size}`],
-            styles[`variant-${variant}`],
-            disabled && styles.disabled,
-            highlighted && !disabled && styles.highlighted,
-        )}>
-            {typeof label === 'string' ? (
-                <Label htmlFor={id} color={color} shade={resolvedGlyphsShade} className={styles.label}>
-                    {label}
-                </Label>
+        <div
+            data-appearance-mode={theme.mode}
+            data-appearance-variant={variant}
+            data-appearance-color={color}
+            data-appearance-highlight={highlightColor}
+            data-highlighted={highlighted || undefined}
+            data-disabled={disabled || undefined}
+            className={classNames(styles.container, styles[`size-${size}`])}
+            style={{
+                "--appearance-default-glyphs-override": glyphsShade === undefined
+                    ? undefined
+                    : theme.color(color, glyphsShade),
+                "--appearance-hover-focus-glyphs-override": highlightGlyphsShade === undefined
+                    ? undefined
+                    : theme.color(highlightColor, highlightGlyphsShade),
+                "--appearance-active-pressed-glyphs-override": highlightGlyphsShade === undefined
+                    ? undefined
+                    : theme.color(highlightColor, highlightGlyphsShade),
+            } as CSSProperties}
+        >
+            {typeof label === "string" ? (
+                <label htmlFor={inputId} className={styles.label}>{label}</label>
             ) : label}
-            <div className={styles['input-wrapper']}>
-                <div className={styles['input-with-unit']}>
+            <div className={styles.field}>
+                <div className={styles["input-with-unit"]}>
                     <input
-                        id={id}
+                        {...props}
+                        id={inputId}
                         type="number"
                         value={value}
                         onChange={handleChange}
@@ -89,42 +95,40 @@ export const NumberInput: FC<Omit<ComponentProps<'input'>, 'onChange' | 'value' 
                         max={max}
                         step={step}
                         disabled={disabled}
-                        aria-label={ariaLabel || (typeof label === 'string' ? label : undefined)}
+                        aria-label={ariaLabel || (typeof label === "string" ? label : undefined)}
                         className={classNames(styles.input, className)}
-                        style={{ color: theme.color(highlighted ? highlightColor : color, highlighted ? highlightGlyphsShade : glyphsShade) }}
-                        {...props}
                     />
-                    {unit ? <span className={styles['unit']} style={{ color: theme.color(highlighted ? highlightColor : color, highlighted ? highlightGlyphsShade : glyphsShade) }}>{unit}</span> : null}
+                    {unit ? <span className={styles.unit}>{unit}</span> : null}
                 </div>
-                {showStepControls ? <div className={styles.steppers}>
-                    <Button
-                        {...getStepButtonProps(1)}
-                        icon={Icons.NounProject.ChevronDownSingle}
-                        iconRotateZ={180}
-                        disabled={incrementDisabled}
-                        color={color}
-                        highlightColor={highlightColor}
-                        glyphsShade={incrementDisabled ? disabledShade : glyphsShade}
-                        highlightGlyphsShade={highlightGlyphsShade}
-                        highlighted={highlighted}
-                        size={buttonSizes[size]}
-                        className={styles['stepper-btn']}
-                        aria-label={ariaLabel ? `${ariaLabel} (+)` : '+'}
-                    />
-                    <Button
-                        {...getStepButtonProps(-1)}
-                        icon={Icons.NounProject.ChevronDownSingle}
-                        disabled={decrementDisabled}
-                        color={color}
-                        highlightColor={highlightColor}
-                        glyphsShade={decrementDisabled ? disabledShade : glyphsShade}
-                        highlightGlyphsShade={highlightGlyphsShade}
-                        highlighted={highlighted}
-                        size={buttonSizes[size]}
-                        className={styles['stepper-btn']}
-                        aria-label={ariaLabel ? `${ariaLabel} (−)` : '−'}
-                    />
-                </div> : null}
+                {showStepControls ? (
+                    <div className={styles.steppers}>
+                        <button
+                            {...getStepButtonProps(1)}
+                            type="button"
+                            className={styles.stepper}
+                            disabled={incrementDisabled}
+                            aria-label={ariaLabel ? `${ariaLabel} (+)` : "+"}
+                        >
+                            <Icon
+                                src={Icons.NounProject.ChevronDownSingle}
+                                size={size}
+                                className={styles.rotate}
+                            />
+                        </button>
+                        <button
+                            {...getStepButtonProps(-1)}
+                            type="button"
+                            className={styles.stepper}
+                            disabled={decrementDisabled}
+                            aria-label={ariaLabel ? `${ariaLabel} (−)` : "−"}
+                        >
+                            <Icon
+                                src={Icons.NounProject.ChevronDownSingle}
+                                size={size}
+                            />
+                        </button>
+                    </div>
+                ) : null}
             </div>
         </div>
     );
