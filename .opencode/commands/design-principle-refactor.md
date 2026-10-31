@@ -7,8 +7,8 @@ Refactor these existing UI components: $ARGUMENTS
 
 Treat this as a deliberate redesign of their implementation, not a sequence of local patches.
 
-1. Read `ui/web/src/design-system/Overview.mdx`, `ui/web/src/design-system/Appearance.mdx`, `ui/web/src/design-system/Theming.mdx`, and `ui/web/src/design-system/colors/Colors.mdx` before editing.
-2. Locate the common API and both web and mobile implementations, stories, tests, composed primitives, and all callers. Trace state ownership end to end.
+1. Read `ui/web/src/design-system/Overview.mdx` plus the foundation page for the target component's appearance or color behavior once before editing.
+2. Locate the common API, both platform implementations, stories, and tests. Use Button as the default reference on each platform; open Checkbox or NumberInput only when the target needs a form-field pattern. Open another component only when neither covers the needed pattern, and state why. For callers, grep usage only; do not read their implementations unless the public API changes or shared behavior is affected.
 3. Compare every variant and state with the design-principle tables: default, hover/focus, pressed/persistent highlighted, and disabled. Disabled wins; highlighted or pressed appearance takes precedence over hover/focus; `highlightColor ?? color` supplies interactive states.
 4. Step back and decide how the code should look if implemented cleanly today. Remove contradictory selectors, cascade-dependent behavior, duplicated state machines, dead definitions, obsolete compatibility code, and accidental abstractions.
 5. Use the common theme/appearance model as the source of truth on both platforms. Follow the appearance-default rules in `Appearance.mdx`. Web components must consume shared `--appearance-*` variables directly. Do not introduce or retain component-specific color/variant matrices such as `--button-color-*` or repeated `.color-primary` blocks.
