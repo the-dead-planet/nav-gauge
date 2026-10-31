@@ -1,40 +1,39 @@
+import { ComponentProps } from "react";
 import { StyleSheet } from "react-native";
 import {
     appearanceColorOptions,
-    BevelPanelProps,
-    bevelPanelStoryArgs,
-    bevelPanelStoryControls,
+    octagonalPanelStoryArgs,
+    octagonalPanelStoryControls,
 } from "@ui";
-import { BevelPanel } from "./BevelPanel";
-import { MobileStoryDefinition } from "../../storybook/model";
+import { OctagonalPanel } from "./OctagonalPanel";
 import { VariantGallery } from "../../storybook/VariantGallery";
+import { MobileStoryDefinition } from "../../storybook/model";
 
 const styles = StyleSheet.create({
-    sample: { padding: 16, minHeight: 64 },
+    sample: { padding: 16 },
 });
 
-const story: MobileStoryDefinition<BevelPanelProps> = {
-    args: bevelPanelStoryArgs,
-    controls: bevelPanelStoryControls,
+const story: MobileStoryDefinition<ComponentProps<typeof OctagonalPanel>> = {
+    args: { ...octagonalPanelStoryArgs, style: styles.sample },
+    controls: octagonalPanelStoryControls,
     galleryEditableControls: [
         "children",
+        "themeMode",
         "highlightColor",
         "highlighted",
         "disabled",
-        "interactive",
-        "activeGlow",
     ],
-    renderPlayground: (args) => <BevelPanel {...args} style={styles.sample} />,
+    renderPlayground: (args) => <OctagonalPanel {...args} />,
     renderGallery: (args) => (
         <VariantGallery
+            size={args.size}
             colors={appearanceColorOptions}
             render={({ color, size, variant }) => (
-                <BevelPanel
+                <OctagonalPanel
                     {...args}
                     color={color}
                     size={size}
                     variant={variant}
-                    style={styles.sample}
                 />
             )}
         />

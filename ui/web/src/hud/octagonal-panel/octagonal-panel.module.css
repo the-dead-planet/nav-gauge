@@ -1,0 +1,49 @@
+.content {
+    position: relative;
+}
+
+.backdrop {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    backdrop-filter: var(--appearance-backdrop-filter);
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+}
+
+.inset-shadow,
+.inset-highlight {
+    fill: none;
+}
+
+.inset-shadow {
+    stroke: var(--appearance-inset-default-inner-start);
+    stroke-width: 6px;
+}
+
+.inset-highlight {
+    stroke: var(--appearance-inset-default-inner-end);
+    stroke-width: 4px;
+}
+
+.root:not([data-disabled="true"]):is(
+        [data-highlighted="true"],
+        [data-pressed="true"],
+        [data-interactive="true"]:active,
+        [data-interactive="true"]:has(:active)
+    )
+    > svg
+    > .inset-shadow {
+    stroke: var(--appearance-inset-active-pressed-inner-start);
+}
+
+.root:not([data-disabled="true"]):is(
+        [data-highlighted="true"],
+        [data-pressed="true"],
+        [data-interactive="true"]:active,
+        [data-interactive="true"]:has(:active)
+    )
+    > svg
+    > .inset-highlight {
+    stroke: var(--appearance-inset-active-pressed-inner-end);
+}

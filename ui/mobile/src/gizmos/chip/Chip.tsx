@@ -1,25 +1,26 @@
-import { ComponentType, FC, useId, useState } from "react";
-import { LayoutChangeEvent, StyleSheet, View } from "react-native";
-import { ClipPath, Defs, Path, Polyline, Svg, SvgProps } from "react-native-svg";
+import { ComponentType, FC } from "react";
+import { StyleSheet, View } from "react-native";
+import { SvgProps } from "react-native-svg";
 import {
     ChipProps,
     DEFAULT_SURFACE_VARIANT,
     DEFAULT_COLOR,
     DEFAULT_SIZE,
     DEFAULT_FILL_VARIANT,
-    getChipBevelPath,
     SizeVariant,
     useTheme,
 } from "@ui";
 import { Icon } from "../../design-system/icons";
 import { Tooltip } from "../tooltip";
 import { Text } from "../../design-system/typography";
+import { OctagonalSurface } from "../../hud/octagonal-panel/OctagonalSurface";
+import { usePanelDimensions } from "../../hud/usePanelDimensions";
 
 const styles = StyleSheet.create({
     chip: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        alignSelf: 'flex-start',
+        flexDirection: "row",
+        alignItems: "center",
+        alignSelf: "flex-start",
     },
 });
 
@@ -85,64 +86,21 @@ export const Chip: FC<ChipProps & Props> = ({
 }) => {
     const theme = useTheme();
     const appearance = theme.resolveAppearance(variant, color);
-    const [layout, setLayout] = useState({ width: 0, height: 0 });
-    const insetClipId = useId();
-
-    const onLayout = (e: LayoutChangeEvent) => {
-        const { width, height } = e.nativeEvent.layout;
-        setLayout({ width, height });
-    };
+    const layout = usePanelDimensions();
 
     const chip = (
         <View
             collapsable={false}
-            onLayout={onLayout}
+            onLayout={layout.onLayout}
             style={[styles.chip, sizeStyles[size]]}
         >
             {layout.width > 0 && layout.height > 0 ? (
-                <Svg style={StyleSheet.absoluteFill} width={layout.width} height={layout.height}>
-                    <Path
-                        d={getChipBevelPath(
-                            size,
-                            layout.width,
-                            layout.height,
-                            appearance.border.width / 2,
-                        )}
-                        fill={appearance.surface}
-                        stroke={appearance.border.color}
-                        strokeWidth={appearance.border.width}
-                        vectorEffect="non-scaling-stroke"
-                    />
-                    {appearance.effects.depth === 'inset' ? (
-                        <>
-                            <Defs>
-                                <ClipPath id={insetClipId}>
-                                    <Path
-                                        d={getChipBevelPath(
-                                            size,
-                                            layout.width,
-                                            layout.height,
-                                        )}
-                                    />
-                                </ClipPath>
-                            </Defs>
-                            <Polyline
-                                points={`0,${layout.height} 0,0 ${layout.width},0`}
-                                fill="none"
-                                stroke={appearance.effects.inset.shadow}
-                                strokeWidth={6}
-                                clipPath={`url(#${insetClipId})`}
-                            />
-                            <Polyline
-                                points={`0,${layout.height} ${layout.width},${layout.height} ${layout.width},0`}
-                                fill="none"
-                                stroke={appearance.effects.inset.highlight}
-                                strokeWidth={4}
-                                clipPath={`url(#${insetClipId})`}
-                            />
-                        </>
-                    ) : null}
-                </Svg>
+                <OctagonalSurface
+                    width={layout.width}
+                    height={layout.height}
+                    size={size}
+                    appearance={appearance}
+                />
             ) : null}
             {icon ? (
                 <Icon

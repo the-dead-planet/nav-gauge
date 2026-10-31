@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { StyleSheet } from "react-native";
 import { Cartomancer, parsers, TopToolsProps, useMultipleTranslations } from "@apparatus";
-import { BevelPanel, Button, FileInput } from "@mobile-ui";
+import { HexagonalPanel, Button, FileInput } from "@mobile-ui";
 import { useSubjectState } from "@tinker-chest";
 import { Icons } from "@ui";
 import { MobileMap, useMobileMachineWard } from "@mobile-apparatus";
@@ -47,7 +47,7 @@ export const RouteName: FC<TopToolsProps<MobileMap> & MobileRouteStoryProps> = (
     const acceptedFileTypes = [...[...parsers.values()].flatMap((el) => el.fileTypes), "image/png", "image/jpeg", "image/jpg"];
 
     return (
-        <BevelPanel
+        <HexagonalPanel
             variant="fill-translucent"
             color="primary"
             size="sm"
@@ -91,6 +91,6 @@ export const RouteName: FC<TopToolsProps<MobileMap> & MobileRouteStoryProps> = (
                     },
                 ]}
             />
-        </BevelPanel>
+        </HexagonalPanel>
     );
 };

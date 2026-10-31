@@ -1,0 +1,12 @@
+import { Meta, Stories, Title } from '@storybook/addon-docs/blocks';
+import * as PanelStories from './HexagonalPanel.stories';
+
+<Meta of={PanelStories} name="Docs" />
+
+<Title />
+
+A stretchable six-sided frame. The default `shape="flat-top"` puts the triangular ends on the left and right; `pointy-top` puts them on the top and bottom.
+
+`size` controls the triangular end depth. Callers own content padding; web callers can disable content clipping with `clipContent={false}` when content must extend beyond the outline.
+
+<Stories />

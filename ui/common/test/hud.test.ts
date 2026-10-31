@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import {
-    getBevelPanelGeometry,
+    getHexagonalPanelGeometry,
+    hexagonShapes,
     getHudAnchorPoint,
     getHudConnectorGeometry,
     getNotchedPanelGeometry,
@@ -36,20 +37,39 @@ describe("HUD geometry", () => {
         expect(geometry.marker.split(" ")).to.have.length(6);
     });
 
-    it("clamps bevel depth on narrow panels without negative coordinates", () => {
+    it("clamps triangular ends for both panel orientations", () => {
         for (const size of sizeOptions) {
-            for (const width of [1, 8, 40, 200]) {
-                const geometry = getBevelPanelGeometry(width, 40, size);
-                const points = geometry.points
-                    .split(" ")
-                    .map((point) => point.split(",").map(Number));
-                expect(points).to.have.length(6);
-                for (const [x, y] of points) {
-                    expect(x).to.be.within(0, width);
-                    expect(y).to.be.within(0, 40);
+            for (const shape of hexagonShapes) {
+                for (const [width, height] of [
+                    [1, 40],
+                    [8, 40],
+                    [40, 1],
+                    [40, 8],
+                    [200, 100],
+                ]) {
+                    const geometry = getHexagonalPanelGeometry(
+                        width,
+                        height,
+                        size,
+                        shape,
+                    );
+                    const points = geometry.points
+                        .split(" ")
+                        .map((point) => point.split(",").map(Number));
+                    expect(points).to.have.length(6);
+                    for (const [x, y] of points) {
+                        expect(x).to.be.within(0, width);
+                        expect(y).to.be.within(0, height);
+                    }
                 }
             }
         }
+        expect(getHexagonalPanelGeometry(200, 100, "sm").points).to.equal(
+            "10,0.5 190,0.5 199.5,50 190,99.5 10,99.5 0.5,50",
+        );
+        expect(
+            getHexagonalPanelGeometry(200, 100, "sm", "pointy-top").points,
+        ).to.equal("100,0.5 199.5,10 199.5,90 100,99.5 0.5,90 0.5,10");
         const geometry = getNotchedPanelGeometry(200, 100, 38);
         expect(geometry.bodyPoints.split(" ")).to.have.length(11);
         expect(geometry.headerPoints).not.to.include("NaN");
