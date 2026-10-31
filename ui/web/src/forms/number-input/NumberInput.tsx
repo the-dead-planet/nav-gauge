@@ -9,6 +9,7 @@ import {
     useTheme,
 } from "@ui";
 import { Icon } from "../../design-system/icons";
+import { Label } from "../../design-system/typography";
 import { useStepRepeatButton } from "../step-controls/useStepRepeatButton";
 import styles from "./number-input.module.css";
 
@@ -79,9 +80,21 @@ export const NumberInput: FC<Omit<ComponentProps<"input">, "onChange" | "value" 
                     : theme.color(highlightColor, highlightGlyphsShade),
             } as CSSProperties}
         >
-            {typeof label === "string" ? (
-                <label htmlFor={inputId} className={styles.label}>{label}</label>
-            ) : label}
+            {label ? (
+                <Label
+                    htmlFor={inputId}
+                    themeMode={themeMode}
+                    color={color}
+                    highlightColor={highlightColor}
+                    shade={glyphsShade}
+                    highlightShade={highlightGlyphsShade}
+                    highlighted={highlighted}
+                    disabled={disabled}
+                    className={styles.label}
+                >
+                    {label}
+                </Label>
+            ) : null}
             <div className={styles.field}>
                 <div className={styles["input-with-unit"]}>
                     <input
