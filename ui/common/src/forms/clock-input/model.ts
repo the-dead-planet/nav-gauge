@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { AppearanceProps, FillVariant } from "../../design-system/model";
 import { NumberInputPlacement } from "../number-input";
 
@@ -60,4 +61,3 @@ export interface ClockControlRowProps extends Omit<
     mode: ClockMode;
     children: ReactNode;
 }
-import { ReactNode } from "react";
