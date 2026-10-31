@@ -1,59 +1,34 @@
+import * as React from "react";
+import { useEffect, useState } from "react";
 import type { Meta, StoryObj } from "storybook-react-rsbuild";
 import { makeLiveEditStory } from "storybook-addon-code-editor";
-import * as React from "react";
-import { ComponentProps, useState } from "react";
-import { DEFAULT_COLOR } from "@ui";
-import { TextArea } from "./TextArea";
-import { VariantGallery } from "../../storybook/VariantGallery";
 import {
-    booleanControl,
-    colorControl,
-    colorOptions,
-    fillVariantControl,
+    appearanceColorOptions,
     fillVariantOptions,
-    optionalShadeControl,
-    sizeControl,
-} from "../../storybook/controls";
+    textAreaStoryArgs,
+    textAreaStoryControls,
+    TextAreaProps,
+} from "@ui";
+import { VariantGallery } from "../../storybook/VariantGallery";
+import { TextArea } from "./TextArea";
 
-const GalleryTextArea = (props: ComponentProps<typeof TextArea>) => {
+const GalleryTextArea = (props: TextAreaProps) => {
     const [value, setValue] = useState(props.value);
 
-    return (
-        <TextArea
-            {...props}
-            value={value}
-            onChange={(event) => setValue(event.target.value)}
-        />
-    );
+    useEffect(() => setValue(props.value), [props.value]);
+
+    return <TextArea {...props} value={value} onChange={setValue} />;
 };
 
 const meta = {
     title: "Forms/TextArea",
     component: TextArea,
     args: {
-        id: "text-area-playground",
-        label: "Label",
-        value: "Some text",
-        color: DEFAULT_COLOR,
-        highlightColor: DEFAULT_COLOR,
-        glyphsShade: 700,
-        highlightGlyphsShade: 200,
-        size: "sm",
-        variant: "fill-inverse",
-        disabled: false,
-        autoSelect: false,
+        ...textAreaStoryArgs,
         onChange: () => {},
     },
     argTypes: {
-        color: colorControl,
-        highlightColor: colorControl,
-        glyphsShade: optionalShadeControl,
-        highlightGlyphsShade: optionalShadeControl,
-        size: sizeControl,
-        variant: fillVariantControl,
-        disabled: booleanControl,
-        autoSelect: booleanControl,
-        value: { control: false },
+        ...textAreaStoryControls,
         onChange: { control: false },
     },
 } satisfies Meta<typeof TextArea>;
@@ -66,13 +41,11 @@ export const Playground: Story = {
     render: (args) => {
         const [value, setValue] = useState(args.value);
 
+        useEffect(() => setValue(args.value), [args.value]);
+
         return (
-            <div style={{ maxWidth: 320 }}>
-                <TextArea
-                    {...args}
-                    value={value}
-                    onChange={(event) => setValue(event.target.value)}
-                />
+            <div style={{ width: 320 }}>
+                <TextArea {...args} value={value} onChange={setValue} />
             </div>
         );
     },
@@ -80,41 +53,36 @@ export const Playground: Story = {
 
 makeLiveEditStory(Playground, {
     availableImports: { react: React, "@web-ui": { TextArea } },
-    code: `import { useState } from 'react';
+    code: `import { useEffect, useState } from 'react';
 import { TextArea } from '@web-ui';
 
 export default function EditableTextArea(props) {
     const [value, setValue] = useState(props.value);
 
-    return (
-        <TextArea
-            {...props}
-            value={value}
-            onChange={(event) => setValue(event.target.value)}
-        />
-    );
+    useEffect(() => setValue(props.value), [props.value]);
+
+    return <TextArea {...props} value={value} onChange={setValue} />;
 }`,
     modifyEditor: (monaco) => monaco.editor.setTheme("vs-dark"),
 });
 
 export const Gallery: Story = {
     argTypes: {
-        id: { table: { disable: true } },
         color: { table: { disable: true } },
         variant: { table: { disable: true } },
     },
     render: (args) => (
         <VariantGallery
             size={args.size}
-            colors={colorOptions}
+            colors={appearanceColorOptions}
             variants={fillVariantOptions}
-            render={({ color, size, variant }) => (
+            render={({ color, variant, size }) => (
                 <GalleryTextArea
                     {...args}
-                    id={`${color}-${size}-${variant}`}
                     color={color}
-                    size={size}
+                    highlightColor={args.highlightColor}
                     variant={variant}
+                    size={size}
                 />
             )}
         />

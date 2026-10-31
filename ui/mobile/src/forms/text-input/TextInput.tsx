@@ -58,13 +58,14 @@ export const TextInput: FC<TextInputProps> = ({
             : focused
                 ? "hover-focus"
                 : "default";
-    const appearance = theme.resolveAppearance(variant, color, highlightColor, state);
-    const interactive = state === "hover-focus" || state === "active-pressed";
-    const selectedColor = interactive ? highlightColor : color;
-    const overrideShade = interactive ? highlightGlyphsShade : glyphsShade;
-    const glyphs = disabled || overrideShade === undefined
-        ? appearance.glyphs
-        : theme.color(selectedColor, overrideShade);
+    const appearance = theme.resolveAppearance(
+        variant,
+        color,
+        highlightColor,
+        state,
+        glyphsShade,
+        highlightGlyphsShade,
+    );
     const controlSize = theme.sizes.control[size];
     const placeholderTextColor = appearance.glyphs;
 
@@ -102,7 +103,7 @@ export const TextInput: FC<TextInputProps> = ({
                     style={[
                         styles.input,
                         {
-                            color: glyphs,
+                            color: appearance.glyphs,
                             fontSize: controlSize.fontSize,
                             paddingHorizontal: controlSize.paddingInline,
                             height: "100%",

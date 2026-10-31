@@ -792,6 +792,8 @@ export class Theme {
         baseColor: PaletteColor | ColorVariant = DEFAULT_COLOR,
         highlightColor: PaletteColor | ColorVariant = baseColor,
         state: ThemeAppearanceState = 'default',
+        glyphsShade?: ColorShade,
+        highlightGlyphsShade?: ColorShade,
     ): ResolvedThemeAppearance => {
         const policy = this.appearancePolicies[variant ?? 'default'];
         const resolved = policy.states[state];
@@ -834,6 +836,11 @@ export class Theme {
                 shadowOpacity: 0,
                 highlightOpacity: 0,
             };
+        const interactive = state === 'hover-focus' || state === 'active-pressed';
+        const glyphsShadeOverride = interactive ? highlightGlyphsShade : glyphsShade;
+        const glyphs = state !== 'disabled' && glyphsShadeOverride !== undefined
+            ? this.color(interactive ? highlightColor : baseColor, glyphsShadeOverride)
+            : resolve(resolved.glyphs);
 
         return {
             surface: resolve(resolved.surface),
@@ -841,7 +848,7 @@ export class Theme {
                 color: resolve(resolved.border),
                 width: resolved.border.width,
             },
-            glyphs: resolve(resolved.glyphs),
+            glyphs,
             fontWeight: resolved.glyphs.fontWeight,
             effects: {
                 ...policy.effects,

@@ -1,37 +1,62 @@
-import { ComponentProps, FC, useState } from 'react';
-import { VariantGallery } from '../../storybook/VariantGallery';
-import { TextArea } from './TextArea';
+import { useState } from "react";
+import { View } from "react-native";
+import {
+    appearanceColorOptions,
+    fillVariantOptions,
+    textAreaStoryArgs,
+    textAreaStoryControls,
+    TextAreaProps,
+} from "@ui";
+import { MobileStoryDefinition } from "../../storybook/model";
+import { VariantGallery } from "../../storybook/VariantGallery";
+import { TextArea } from "./TextArea";
 
-const GalleryTextArea: FC<ComponentProps<typeof TextArea>> = (props) => {
-    const [value, setValue] = useState(String(props.value));
+const StoryTextArea = (args: TextAreaProps) => {
+    const [value, setValue] = useState(args.value);
 
-    return <TextArea {...props} value={value} onChangeText={setValue} />;
+    return <TextArea {...args} value={value} onChange={setValue} />;
 };
 
-export const Playground: FC = () => {
-    const [value, setValue] = useState('Some text');
-
-    return (
-        <TextArea
-            label="Label"
-            value={value}
-            glyphsShade={700}
-            highlightGlyphsShade={200}
-            onChangeText={setValue}
+const story: MobileStoryDefinition<TextAreaProps> = {
+    args: {
+        ...textAreaStoryArgs,
+        onChange: () => {},
+    },
+    controls: textAreaStoryControls,
+    galleryEditableControls: [
+        "themeMode",
+        "label",
+        "placeholder",
+        "glyphsShade",
+        "highlightColor",
+        "highlightGlyphsShade",
+        "highlighted",
+        "disabled",
+        "autoSelect",
+    ],
+    renderPlayground: (args) => (
+        <View style={{ width: 240 }}>
+            <StoryTextArea key={String(args.value)} {...args} />
+        </View>
+    ),
+    renderGallery: (args) => (
+        <VariantGallery
+            size={args.size}
+            colors={appearanceColorOptions}
+            variants={fillVariantOptions}
+            render={({ color, variant, size }) => (
+                <StoryTextArea
+                    key={`${String(args.value)}-${color}-${variant}-${size}`}
+                    {...args}
+                    value="Text"
+                    color={color}
+                    highlightColor={args.highlightColor}
+                    variant={variant}
+                    size={size}
+                />
+            )}
         />
-    );
+    ),
 };
 
-export const Gallery: FC = () => (
-    <VariantGallery
-        render={({ color, size, variant }) => (
-            <GalleryTextArea
-                label="Label"
-                value="Text"
-                color={color}
-                size={size}
-                variant={variant}
-            />
-        )}
-    />
-);
+export default story;
