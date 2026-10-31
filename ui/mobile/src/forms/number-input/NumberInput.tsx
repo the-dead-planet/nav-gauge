@@ -12,7 +12,7 @@ import {
     useTheme,
 } from "@ui";
 import { Button } from "../../gizmos/button";
-import { Text } from "../../design-system/typography";
+import { Label, Text } from "../../design-system/typography";
 import { resolveMobileFont } from "../../design-system/typography/fontFamily";
 
 const styles = StyleSheet.create({
@@ -109,7 +109,7 @@ export const NumberInput: FC<NumberInputProps> = ({
     return (
         <View style={styles.container}>
             {label ? (
-                <Text
+                <Label
                     themeMode={themeMode}
                     color={color}
                     highlightColor={highlightColor}
@@ -119,7 +119,7 @@ export const NumberInput: FC<NumberInputProps> = ({
                     style={{ fontSize: controlSize.fontSize }}
                 >
                     {label}
-                </Text>
+                </Label>
             ) : null}
             <View
                 style={[

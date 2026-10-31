@@ -1,22 +1,21 @@
+import * as React from "react";
+import { useEffect, useState } from "react";
 import type { Meta, StoryObj } from "storybook-react-rsbuild";
 import { makeLiveEditStory } from "storybook-addon-code-editor";
-import * as React from "react";
-import { ComponentProps, useState } from "react";
-import { DEFAULT_COLOR } from "@ui";
-import { TextInput } from "./TextInput";
-import { VariantGallery } from "../../storybook/VariantGallery";
 import {
-    booleanControl,
-    colorControl,
-    colorOptions,
-    fillVariantControl,
+    appearanceColorOptions,
     fillVariantOptions,
-    optionalShadeControl,
-    sizeControl,
-} from "../../storybook/controls";
+    textInputStoryArgs,
+    textInputStoryControls,
+    TextInputProps,
+} from "@ui";
+import { VariantGallery } from "../../storybook/VariantGallery";
+import { TextInput } from "./TextInput";
 
-const GalleryTextInput = (props: ComponentProps<typeof TextInput>) => {
+const GalleryTextInput = (props: TextInputProps) => {
     const [value, setValue] = useState(props.value);
+
+    useEffect(() => setValue(props.value), [props.value]);
 
     return <TextInput {...props} value={value} onChange={setValue} />;
 };
@@ -25,29 +24,11 @@ const meta = {
     title: "Forms/TextInput",
     component: TextInput,
     args: {
-        id: "text-input-playground",
-        label: "Label",
-        value: "Hello",
-        color: DEFAULT_COLOR,
-        highlightColor: DEFAULT_COLOR,
-        glyphsShade: 700,
-        highlightGlyphsShade: 200,
-        size: "sm",
-        variant: "fill-inverse",
-        disabled: false,
-        autoSelect: false,
+        ...textInputStoryArgs,
         onChange: () => {},
     },
     argTypes: {
-        color: colorControl,
-        highlightColor: colorControl,
-        glyphsShade: optionalShadeControl,
-        highlightGlyphsShade: optionalShadeControl,
-        size: sizeControl,
-        variant: fillVariantControl,
-        disabled: booleanControl,
-        autoSelect: booleanControl,
-        value: { control: false },
+        ...textInputStoryControls,
         onChange: { control: false },
     },
 } satisfies Meta<typeof TextInput>;
@@ -60,8 +41,10 @@ export const Playground: Story = {
     render: (args) => {
         const [value, setValue] = useState(args.value);
 
+        useEffect(() => setValue(args.value), [args.value]);
+
         return (
-            <div style={{ maxWidth: 320 }}>
+            <div style={{ width: 320 }}>
                 <TextInput {...args} value={value} onChange={setValue} />
             </div>
         );
@@ -70,11 +53,13 @@ export const Playground: Story = {
 
 makeLiveEditStory(Playground, {
     availableImports: { react: React, "@web-ui": { TextInput } },
-    code: `import { useState } from 'react';
+    code: `import { useEffect, useState } from 'react';
 import { TextInput } from '@web-ui';
 
 export default function EditableTextInput(props) {
     const [value, setValue] = useState(props.value);
+
+    useEffect(() => setValue(props.value), [props.value]);
 
     return <TextInput {...props} value={value} onChange={setValue} />;
 }`,
@@ -83,22 +68,21 @@ export default function EditableTextInput(props) {
 
 export const Gallery: Story = {
     argTypes: {
-        id: { table: { disable: true } },
         color: { table: { disable: true } },
         variant: { table: { disable: true } },
     },
     render: (args) => (
         <VariantGallery
             size={args.size}
-            colors={colorOptions}
+            colors={appearanceColorOptions}
             variants={fillVariantOptions}
-            render={({ color, size, variant }) => (
+            render={({ color, variant, size }) => (
                 <GalleryTextInput
                     {...args}
-                    id={`${color}-${size}-${variant}`}
                     color={color}
-                    size={size}
+                    highlightColor={args.highlightColor}
                     variant={variant}
+                    size={size}
                 />
             )}
         />

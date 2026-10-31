@@ -1,38 +1,62 @@
-import { ComponentProps, FC, useState } from 'react';
-import { VariantGallery } from '../../storybook/VariantGallery';
-import { TextInput } from './TextInput';
+import { useState } from "react";
+import { View } from "react-native";
+import {
+    appearanceColorOptions,
+    fillVariantOptions,
+    textInputStoryArgs,
+    textInputStoryControls,
+    TextInputProps,
+} from "@ui";
+import { MobileStoryDefinition } from "../../storybook/model";
+import { VariantGallery } from "../../storybook/VariantGallery";
+import { TextInput } from "./TextInput";
 
-const GalleryTextInput: FC<ComponentProps<typeof TextInput>> = (props) => {
-    const [value, setValue] = useState(props.value);
+const StoryTextInput = (args: TextInputProps) => {
+    const [value, setValue] = useState(args.value);
 
-    return <TextInput {...props} value={value} onChange={setValue} />;
+    return <TextInput {...args} value={value} onChange={setValue} />;
 };
 
-export const Playground: FC = () => {
-    const [value, setValue] = useState('Hello');
-
-    return (
-        <TextInput
-            label="Label"
-            value={value}
-            glyphsShade={700}
-            highlightGlyphsShade={200}
-            onChange={setValue}
+const story: MobileStoryDefinition<TextInputProps> = {
+    args: {
+        ...textInputStoryArgs,
+        onChange: () => {},
+    },
+    controls: textInputStoryControls,
+    galleryEditableControls: [
+        "themeMode",
+        "label",
+        "placeholder",
+        "glyphsShade",
+        "highlightColor",
+        "highlightGlyphsShade",
+        "highlighted",
+        "disabled",
+        "autoSelect",
+    ],
+    renderPlayground: (args) => (
+        <View style={{ width: 240 }}>
+            <StoryTextInput key={String(args.value)} {...args} />
+        </View>
+    ),
+    renderGallery: (args) => (
+        <VariantGallery
+            size={args.size}
+            colors={appearanceColorOptions}
+            variants={fillVariantOptions}
+            render={({ color, variant, size }) => (
+                <StoryTextInput
+                    key={`${String(args.value)}-${color}-${variant}-${size}`}
+                    {...args}
+                    value="Text"
+                    color={color}
+                    highlightColor={args.highlightColor}
+                    variant={variant}
+                    size={size}
+                />
+            )}
         />
-    );
+    ),
 };
 
-export const Gallery: FC = () => (
-    <VariantGallery
-        render={({ color, size, variant }) => (
-            <GalleryTextInput
-                label="Label"
-                value="Text"
-                onChange={() => {}}
-                color={color}
-                size={size}
-                variant={variant}
-            />
-        )}
-    />
-);
+export default story;
