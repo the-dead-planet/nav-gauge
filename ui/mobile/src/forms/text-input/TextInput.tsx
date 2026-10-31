@@ -71,7 +71,7 @@ export const TextInput: FC<TextInputProps> = ({
     return (
         <View style={styles.container}>
             {label ? (
-                <Text
+                <Label
                     themeMode={themeMode}
                     color={color}
                     highlightColor={highlightColor}
@@ -81,7 +81,7 @@ export const TextInput: FC<TextInputProps> = ({
                     style={{ fontSize: controlSize.fontSize }}
                 >
                     {label}
-                </Text>
+                </Label>
             ) : null}
             <View
                 style={[
