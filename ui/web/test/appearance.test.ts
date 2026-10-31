@@ -59,6 +59,7 @@ const { VariantGallery } = require('../src/storybook/VariantGallery') as typeof 
 const { FileInput } = require('../src/forms/file-input/FileInput') as typeof import('../src/forms/file-input/FileInput');
 const { Checkbox } = require('../src/forms/checkbox/Checkbox') as typeof import('../src/forms/checkbox/Checkbox');
 const { Radio } = require('../src/forms/radio/Radio') as typeof import('../src/forms/radio/Radio');
+const { ClockInput, ClockSliceInput, ClockDurationInput } = require('../src/forms/clock-input') as typeof import('../src/forms/clock-input');
 const { Text } = require('../src/design-system/typography') as typeof import('../src/design-system/typography');
 if (previousCssLoader) {
     require.extensions['.css'] = previousCssLoader;
@@ -87,6 +88,48 @@ const renderToStaticMarkup = (children: ReactElement): string => renderMarkup(
 
 describe('Composed appearance rendering', () => {
     after(() => renderingTheme.destroy());
+
+    it('renders clocks with shared appearance ownership for every color and fill variant', () => {
+        for (const color of appearanceColorOptions) {
+            for (const variant of fillVariantOptions) {
+                for (const Component of [ClockInput, ClockSliceInput, ClockDurationInput]) {
+                    const markup = renderToStaticMarkup(createElement(Component, {
+                        value: 30,
+                        color,
+                        variant,
+                        themeMode: 'dark',
+                        highlightColor: 'intel',
+                        glyphsShade: 700,
+                        highlightGlyphsShade: 200,
+                        highlighted: true,
+                        disabled: true,
+                    }));
+                    expect(markup).to.include(`data-appearance-color="${color}"`);
+                    expect(markup).to.include(`data-appearance-variant="${variant}"`);
+                    expect(markup).to.include('data-appearance-mode="dark"');
+                    expect(markup).to.include('data-appearance-highlight="intel"');
+                    expect(markup).to.include('data-highlighted="true"');
+                    expect(markup).to.include('data-disabled="true"');
+                    expect(markup).to.include('disabled=""');
+                    expect(markup).to.include(`--appearance-default-glyphs-override:${renderingTheme.color(color, 700)}`);
+                    expect(markup).to.include(`--appearance-active-pressed-glyphs-override:${renderingTheme.color('intel', 200)}`);
+                    expect([...markup.matchAll(/data-disabled=/g)]).to.have.length(1);
+                }
+            }
+        }
+    });
+
+    it('keeps a labelled keyboard input for duration without optional number fields', () => {
+        const markup = renderToStaticMarkup(createElement(ClockDurationInput, {
+            id: 'duration',
+            value: 75000,
+            min: 1000,
+        }));
+        expect(markup).to.include('type="number" id="duration" min="1000"');
+        expect(markup).to.include('aria-valuetext="1 min 15 s"');
+        expect(markup).to.include('aria-label="Duration (milliseconds)"');
+        expect(markup).not.to.include('max=');
+    });
 
     it('draws shared octagonal borders, translucent masks, and inset shading', () => {
         for (const variant of surfaceVariantOptions) {

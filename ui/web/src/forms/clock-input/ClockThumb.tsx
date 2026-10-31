@@ -1,13 +1,12 @@
 import { FC } from "react";
-import classNames from "classnames";
-import styles from './clock-input.module.css';
+import { Icon } from "../../design-system/icons";
+import styles from "./clock-input.module.css";
 
 interface Props {
     center: number;
     pointerX: number;
     pointerY: number;
     thumbRadius: number;
-    isDragging: boolean;
     strokeWidth: number;
     icon?: string;
 }
@@ -17,20 +16,32 @@ export const ClockThumb: FC<Props> = ({
     pointerX,
     pointerY,
     thumbRadius,
-    isDragging,
     strokeWidth,
-    // icon, // TODO:
+    icon,
 }) => {
     return (
-        <circle
-            cx={center + pointerX}
-            cy={center + pointerY}
-            r={thumbRadius}
-            className={classNames(
-                styles.thumb,
-                { [styles['thumb-active']]: isDragging }
-            )}
-            strokeWidth={strokeWidth}
-        />
+        <g>
+            <circle
+                cx={center + pointerX}
+                cy={center + pointerY}
+                r={thumbRadius}
+                className={styles.thumb}
+                strokeWidth={strokeWidth}
+            />
+            {icon ? (
+                <foreignObject
+                    x={center + pointerX - thumbRadius * 2}
+                    y={center + pointerY - thumbRadius * 2}
+                    width={thumbRadius * 4}
+                    height={thumbRadius * 4}
+                >
+                    <Icon
+                        src={icon}
+                        width={thumbRadius * 4}
+                        height={thumbRadius * 4}
+                    />
+                </foreignObject>
+            ) : null}
+        </g>
     );
 };

@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
         alignItems: "center",
-        gap: 8,
     },
     box: {
         alignItems: "center",
@@ -61,7 +60,9 @@ export const Radio: FC<RadioProps> = ({
         disabled || overrideShade === undefined
             ? appearance.glyphs
             : theme.color(interactive ? highlightColor : color, overrideShade);
-    const boxSize = theme.sizes.control[size].iconSize;
+    const controlSize = theme.sizes.control[size];
+    const boxSize = controlSize.height - controlSize.gap;
+    const markerSize = controlSize.iconSize / 2;
 
     return (
         <ThemeContext.Provider value={theme}>
@@ -70,7 +71,10 @@ export const Radio: FC<RadioProps> = ({
                 accessibilityState={{ checked, disabled }}
                 disabled={disabled}
                 onPress={() => onChange(true)}
-                style={styles.container}
+                style={[
+                    styles.container,
+                    { minHeight: controlSize.height, gap: controlSize.gap },
+                ]}
                 {...interaction}
             >
                 <View
@@ -98,15 +102,18 @@ export const Radio: FC<RadioProps> = ({
                     ]}
                 >
                     {corners === "hexagon" ? (
-                        <HexagonSurface appearance={appearance} showGlow={false} />
+                        <HexagonSurface
+                            appearance={appearance}
+                            showGlow={false}
+                        />
                     ) : null}
                     {checked ? (
                         <View
                             style={{
-                                width: boxSize / 2,
-                                height: boxSize / 2,
+                                width: markerSize,
+                                height: markerSize,
                                 borderRadius:
-                                    corners === "circle" ? boxSize / 4 : 0,
+                                    corners === "circle" ? markerSize / 2 : 0,
                                 backgroundColor:
                                     corners === "hexagon"
                                         ? "transparent"
@@ -117,11 +124,15 @@ export const Radio: FC<RadioProps> = ({
                                 <Svg
                                     width="100%"
                                     height="100%"
-                                    viewBox={hexagonGeometry["flat-top"].viewBox}
+                                    viewBox={
+                                        hexagonGeometry["flat-top"].viewBox
+                                    }
                                     accessible={false}
                                 >
                                     <Polygon
-                                        points={hexagonGeometry["flat-top"].points}
+                                        points={
+                                            hexagonGeometry["flat-top"].points
+                                        }
                                         fill={glyphs}
                                     />
                                 </Svg>

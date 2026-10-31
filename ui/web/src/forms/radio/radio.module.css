@@ -132,8 +132,6 @@
 
 .marker {
     position: absolute;
-    width: 50%;
-    height: 50%;
     fill: currentColor;
 }
 
@@ -155,8 +153,14 @@
     font-size: var(--size-control-lg-font-size);
     gap: var(--size-control-lg-gap);
     & .box {
-        width: var(--size-control-lg-icon-size);
-        height: var(--size-control-lg-icon-size);
+        width: calc(var(--size-control-lg-height) - var(--size-control-lg-gap));
+        height: calc(
+            var(--size-control-lg-height) - var(--size-control-lg-gap)
+        );
+    }
+    & .marker {
+        width: calc(var(--size-control-lg-icon-size) / 2);
+        height: calc(var(--size-control-lg-icon-size) / 2);
     }
 }
 
@@ -165,8 +169,14 @@
     font-size: var(--size-control-md-font-size);
     gap: var(--size-control-md-gap);
     & .box {
-        width: var(--size-control-md-icon-size);
-        height: var(--size-control-md-icon-size);
+        width: calc(var(--size-control-md-height) - var(--size-control-md-gap));
+        height: calc(
+            var(--size-control-md-height) - var(--size-control-md-gap)
+        );
+    }
+    & .marker {
+        width: calc(var(--size-control-md-icon-size) / 2);
+        height: calc(var(--size-control-md-icon-size) / 2);
     }
 }
 
@@ -175,8 +185,14 @@
     font-size: var(--size-control-sm-font-size);
     gap: var(--size-control-sm-gap);
     & .box {
-        width: var(--size-control-sm-icon-size);
-        height: var(--size-control-sm-icon-size);
+        width: calc(var(--size-control-sm-height) - var(--size-control-sm-gap));
+        height: calc(
+            var(--size-control-sm-height) - var(--size-control-sm-gap)
+        );
+    }
+    & .marker {
+        width: calc(var(--size-control-sm-icon-size) / 2);
+        height: calc(var(--size-control-sm-icon-size) / 2);
     }
 }
 
@@ -185,7 +201,13 @@
     font-size: var(--size-control-xs-font-size);
     gap: var(--size-control-xs-gap);
     & .box {
-        width: var(--size-control-xs-icon-size);
-        height: var(--size-control-xs-icon-size);
+        width: calc(var(--size-control-xs-height) - var(--size-control-xs-gap));
+        height: calc(
+            var(--size-control-xs-height) - var(--size-control-xs-gap)
+        );
+    }
+    & .marker {
+        width: calc(var(--size-control-xs-icon-size) / 2);
+        height: calc(var(--size-control-xs-icon-size) / 2);
     }
 }

@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
         alignItems: "center",
-        gap: 8,
     },
     box: {
         alignItems: "center",
@@ -60,7 +59,8 @@ export const Checkbox: FC<CheckboxProps> = ({
         disabled || overrideShade === undefined
             ? appearance.glyphs
             : theme.color(interactive ? highlightColor : color, overrideShade);
-    const boxSize = theme.sizes.control[size].iconSize;
+    const controlSize = theme.sizes.control[size];
+    const boxSize = controlSize.height - controlSize.gap;
 
     return (
         <ThemeContext.Provider value={theme}>
@@ -69,7 +69,10 @@ export const Checkbox: FC<CheckboxProps> = ({
                 accessibilityState={{ checked, disabled }}
                 disabled={disabled}
                 onPress={() => onChange(!checked)}
-                style={styles.container}
+                style={[
+                    styles.container,
+                    { minHeight: controlSize.height, gap: controlSize.gap },
+                ]}
                 {...interaction}
             >
                 <View
@@ -97,13 +100,16 @@ export const Checkbox: FC<CheckboxProps> = ({
                     ]}
                 >
                     {corners === "hexagon" ? (
-                        <HexagonSurface appearance={appearance} showGlow={false} />
+                        <HexagonSurface
+                            appearance={appearance}
+                            showGlow={false}
+                        />
                     ) : null}
                     {checked ? (
                         <Svg
                             accessible={false}
-                            width={boxSize * 0.7}
-                            height={boxSize * 0.7}
+                            width={controlSize.iconSize}
+                            height={controlSize.iconSize}
                             viewBox="0 0 12 12"
                         >
                             <Path

@@ -1,6 +1,9 @@
 import { AppearanceProps, FillVariant } from "../../design-system/model";
 import { NumberInputPlacement } from "../number-input";
 
+export type ClockMode = "angle" | "slice" | "duration";
+export type ClockHand = "angle" | "minutes" | "seconds";
+
 export interface ClockInputProps extends AppearanceProps<FillVariant> {
     thumbIcon?: string;
     value: number;
@@ -22,7 +25,7 @@ export interface ClockInputProps extends AppearanceProps<FillVariant> {
     ariaLabel?: string;
 }
 
-export interface DurationClockInputProps extends AppearanceProps<FillVariant> {
+export interface ClockDurationInputProps extends AppearanceProps<FillVariant> {
     /**
      * Total duration in milliseconds.
      */

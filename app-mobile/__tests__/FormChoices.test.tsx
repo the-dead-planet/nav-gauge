@@ -4,6 +4,7 @@ import {
     appearanceColorOptions,
     buttonCorners,
     fillVariantOptions,
+    sizeOptions,
     Orientation,
     Theme,
     ThemeAppearanceState,
@@ -40,6 +41,41 @@ const cases = modes.flatMap((mode) =>
 );
 
 describe("Form choice appearance ownership", () => {
+    test.each(sizeOptions)(
+        "%s choices reserve the control height and inset the box by one gap",
+        async (size) => {
+            const theme = new Theme(
+                themeSpecifications[ThemeName.Default].light,
+                media,
+                false,
+            );
+            const controlSize = theme.sizes.control[size];
+            for (const [Control, role] of [
+                [Checkbox, "checkbox"],
+                [Radio, "radio"],
+            ] as const) {
+                const screen = await render(
+                    <ThemeContext.Provider value={theme}>
+                        <Control checked size={size} onChange={() => {}}>
+                            Choice
+                        </Control>
+                    </ThemeContext.Provider>,
+                );
+                const control = screen.getByRole(role);
+                expect(control).toHaveStyle({
+                    minHeight: controlSize.height,
+                    gap: controlSize.gap,
+                });
+                expect(control.children[0]).toHaveStyle({
+                    width: controlSize.height - controlSize.gap,
+                    height: controlSize.height - controlSize.gap,
+                });
+                await screen.unmount();
+            }
+            theme.destroy();
+        },
+    );
+
     test.each(modes)(
         "overrides the form choice and nested label without changing its %s parent",
         async (mode) => {
@@ -163,9 +199,9 @@ describe("Form choice appearance ownership", () => {
                         state,
                     );
                     expect(screen.getByRole(role).children[0]).toHaveStyle({
-                        width: 20,
-                        height: 20,
-                        borderRadius: corners === "circle" ? 10 : 0,
+                        width: 28,
+                        height: 28,
+                        borderRadius: corners === "circle" ? 14 : 0,
                         backgroundColor:
                             corners === "hexagon"
                                 ? "transparent"
@@ -178,7 +214,6 @@ describe("Form choice appearance ownership", () => {
                         expect(
                             jest.mocked(HexagonSurface).mock.lastCall?.[0],
                         ).toMatchObject({
-                            shape: "flat-top",
                             appearance,
                             showGlow: false,
                         });
