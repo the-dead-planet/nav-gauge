@@ -1,65 +1,34 @@
-import { useEffect, useState } from 'react';
-import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { ColorVariant, DEFAULT_COLOR, FillVariant, SizeVariant } from '@ui';
-import { VariantGallery } from '../../storybook/VariantGallery';
-import { NumberInput } from './NumberInput';
-import { colorControl, colorOptions, fillVariantControl, fillVariantOptions, optionalShadeControl, sizeControl } from '../../storybook/controls';
+import * as React from "react";
+import { useEffect, useState } from "react";
+import type { Meta, StoryObj } from "storybook-react-rsbuild";
+import { makeLiveEditStory } from "storybook-addon-code-editor";
+import {
+    appearanceColorOptions,
+    fillVariantOptions,
+    numberInputStoryArgs,
+    numberInputStoryControls,
+    NumberInputProps,
+} from "@ui";
+import { VariantGallery } from "../../storybook/VariantGallery";
+import { NumberInput } from "./NumberInput";
 
-const GalleryNumberInput = ({
-    color,
-    variant,
-    size,
-}: {
-    color: ColorVariant;
-    variant: FillVariant;
-    size: SizeVariant;
-}) => {
-    const [value, setValue] = useState(42);
+const GalleryNumberInput = (props: NumberInputProps) => {
+    const [value, setValue] = useState(props.value);
 
-    return (
-        <NumberInput
-            ariaLabel={`${color} ${variant} ${size}`}
-            value={value}
-            onChange={setValue}
-            color={color}
-            highlightColor={color}
-            variant={variant}
-            size={size}
-            unit="px"
-            autoSelect
-        />
-    );
+    useEffect(() => setValue(props.value), [props.value]);
+
+    return <NumberInput {...props} value={value} onChange={setValue} />;
 };
 
 const meta = {
-    title: 'Forms/NumberInput',
+    title: "Forms/NumberInput",
     component: NumberInput,
     args: {
-        id: 'number-input-playground',
-        label: 'Value',
-        value: 42,
-        color: DEFAULT_COLOR,
-        highlightColor: DEFAULT_COLOR,
-        glyphsShade: 700,
-        highlightGlyphsShade: 200,
-        size: 'sm',
-        variant: 'fill-inverse',
-        min: 0,
-        max: 100,
-        step: 1,
-        disabled: false,
-        autoSelect: false,
-        unit: 'px',
-        showStepControls: true,
+        ...numberInputStoryArgs,
         onChange: () => {},
     },
     argTypes: {
-        color: colorControl,
-        highlightColor: colorControl,
-        glyphsShade: optionalShadeControl,
-        highlightGlyphsShade: optionalShadeControl,
-        size: sizeControl,
-        variant: fillVariantControl,
+        ...numberInputStoryControls,
         onChange: { control: false },
     },
 } satisfies Meta<typeof NumberInput>;
@@ -68,6 +37,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {
+    name: "Playground with Live code editor",
     render: (args) => {
         const [value, setValue] = useState(args.value);
 
@@ -81,13 +51,42 @@ export const Playground: Story = {
     },
 };
 
+makeLiveEditStory(Playground, {
+    availableImports: { react: React, "@web-ui": { NumberInput } },
+    code: `import { useEffect, useState } from 'react';
+import { NumberInput } from '@web-ui';
+
+export default function EditableNumberInput(props) {
+    const [value, setValue] = useState(props.value);
+
+    useEffect(() => setValue(props.value), [props.value]);
+
+    return <NumberInput {...props} value={value} onChange={setValue} />;
+}`,
+    modifyEditor: (monaco) => monaco.editor.setTheme("vs-dark"),
+});
+
 export const Gallery: Story = {
+    argTypes: {
+        color: { table: { disable: true } },
+        variant: { table: { disable: true } },
+        ariaLabel: { table: { disable: true } },
+    },
     render: (args) => (
         <VariantGallery
             size={args.size}
-            colors={colorOptions}
+            colors={appearanceColorOptions}
             variants={fillVariantOptions}
-            render={(options) => <GalleryNumberInput {...options} />}
+            render={({ color, variant, size }) => (
+                <GalleryNumberInput
+                    {...args}
+                    color={color}
+                    highlightColor={args.highlightColor}
+                    variant={variant}
+                    size={size}
+                    ariaLabel={`${color} ${variant} ${size}`}
+                />
+            )}
         />
     ),
 };
