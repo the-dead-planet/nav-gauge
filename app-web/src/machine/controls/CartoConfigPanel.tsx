@@ -139,8 +139,8 @@ export const CartoConfigPanel: FC<ToolPanelProps<maplibregl.Map>> = () => {
                         name="map-border-box-shadow"
                         label={t(cartomancer.translationKey.BoxShadow)}
                         value={mapLayout.boxShadow}
-                        onChange={(event) => {
-                            setMapLayout((prev): MapLayout => ({ ...prev, boxShadow: event.target.value }));
+                        onChange={(value) => {
+                            setMapLayout((prev): MapLayout => ({ ...prev, boxShadow: value }));
                         }}
                         autoSelect
                         className={styles["textarea"]}
@@ -150,8 +150,8 @@ export const CartoConfigPanel: FC<ToolPanelProps<maplibregl.Map>> = () => {
                         name="map-border-inner-box-shadow"
                         label={t(cartomancer.translationKey.InnerBoxShadow)}
                         value={mapLayout.innerBoxShadow}
-                        onChange={(event) => {
-                            setMapLayout((prev): MapLayout => ({ ...prev, innerBoxShadow: event.target.value }));
+                        onChange={(value) => {
+                            setMapLayout((prev): MapLayout => ({ ...prev, innerBoxShadow: value }));
                         }}
                         autoSelect
                         className={styles["textarea"]}

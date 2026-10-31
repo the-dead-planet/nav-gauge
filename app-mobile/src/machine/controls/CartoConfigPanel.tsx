@@ -152,8 +152,8 @@ export const CartoConfigPanel: FC<ToolPanelProps<MobileMap>> = () => {
 
                 <TextArea
                     value={mapLayout.boxShadow}
-                    onChange={(e) => {
-                        setMapLayout((prev): MapLayout => ({ ...prev, boxShadow: e.nativeEvent.text }));
+                    onChange={(value) => {
+                        setMapLayout((prev): MapLayout => ({ ...prev, boxShadow: value }));
                     }}
                     label={t(cartomancer.translationKey.BoxShadow)}
                     color="secondary"
@@ -161,8 +161,8 @@ export const CartoConfigPanel: FC<ToolPanelProps<MobileMap>> = () => {
 
                 <TextArea
                     value={mapLayout.innerBoxShadow}
-                    onChange={(e) => {
-                        setMapLayout((prev): MapLayout => ({ ...prev, innerBoxShadow: e.nativeEvent.text }));
+                    onChange={(value) => {
+                        setMapLayout((prev): MapLayout => ({ ...prev, innerBoxShadow: value }));
                     }}
                     label={t(cartomancer.translationKey.InnerBoxShadow)}
                     color="secondary"

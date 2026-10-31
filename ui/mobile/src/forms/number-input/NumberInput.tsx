@@ -85,12 +85,14 @@ export const NumberInput: FC<NumberInputProps> = ({
             : focused
                 ? "hover-focus"
                 : "default";
-    const appearance = theme.resolveAppearance(variant, color, highlightColor, state);
-    const interactive = state === "hover-focus" || state === "active-pressed";
-    const overrideShade = interactive ? highlightGlyphsShade : glyphsShade;
-    const glyphs = disabled || overrideShade === undefined
-        ? appearance.glyphs
-        : theme.color(interactive ? highlightColor : color, overrideShade);
+    const appearance = theme.resolveAppearance(
+        variant,
+        color,
+        highlightColor,
+        state,
+        glyphsShade,
+        highlightGlyphsShade,
+    );
     const controlSize = theme.sizes.control[size];
     const incrementDisabled = disabled || (max !== undefined && value >= max);
     const decrementDisabled = disabled || (min !== undefined && value <= min);
@@ -140,7 +142,7 @@ export const NumberInput: FC<NumberInputProps> = ({
                     style={[
                         styles.input,
                         {
-                            color: glyphs,
+                            color: appearance.glyphs,
                             fontSize: controlSize.fontSize,
                             paddingHorizontal: controlSize.paddingInline,
                             height: "100%",
@@ -162,7 +164,7 @@ export const NumberInput: FC<NumberInputProps> = ({
                         style={[
                             styles.unit,
                             {
-                                color: glyphs,
+                                color: appearance.glyphs,
                                 fontSize: controlSize.fontSize,
                             },
                         ]}

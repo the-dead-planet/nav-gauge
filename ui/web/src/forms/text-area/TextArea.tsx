@@ -1,10 +1,18 @@
-import { ComponentProps, FC, MouseEvent } from "react";
+import { ChangeEvent, ComponentProps, CSSProperties, FC, MouseEvent, useId } from "react";
 import classNames from "classnames";
-import { DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, TextAreaProps, useTheme } from "@ui";
+import {
+    DEFAULT_COLOR,
+    DEFAULT_FILL_VARIANT,
+    DEFAULT_SIZE,
+    TextAreaProps,
+    useTheme,
+} from "@ui";
 import { Label } from "../../design-system/typography";
-import styles from './text-area.module.css';
+import styles from "./text-area.module.css";
 
-export const TextArea: FC<Omit<ComponentProps<'textarea'>, 'size'> & TextAreaProps> = ({
+export const TextArea: FC<Omit<ComponentProps<"textarea">, "onChange" | "value" | "size"> & TextAreaProps> = ({
+    id,
+    themeMode,
     color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
@@ -12,14 +20,23 @@ export const TextArea: FC<Omit<ComponentProps<'textarea'>, 'size'> & TextAreaPro
     size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     label,
-    autoSelect = false,
-    highlighted = false,
+    placeholder,
+    value,
+    onChange,
     disabled = false,
-    onClick,
+    highlighted = false,
+    autoSelect = false,
     className,
+    onClick,
     ...props
 }) => {
-    const theme = useTheme();
+    const generatedId = useId();
+    const textAreaId = id || generatedId;
+    const theme = useTheme().forMode(themeMode);
+
+    const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+        onChange(event.target.value);
+    };
 
     const handleClick = (event: MouseEvent<HTMLTextAreaElement>) => {
         if (autoSelect) {
@@ -29,33 +46,57 @@ export const TextArea: FC<Omit<ComponentProps<'textarea'>, 'size'> & TextAreaPro
     };
 
     return (
-        <div className={classNames(
-            styles.container,
-            styles[`mode-${theme.mode}`],
-            styles[`color-${color}`],
-            styles[`highlight-${highlightColor}`],
-            styles[`size-${size}`],
-            styles[`variant-${variant}`],
-            highlighted && !disabled && styles.highlighted,
-        )}>
-            <Label htmlFor={props.id} color={color} shade={glyphsShade} disabled={disabled} className={styles.label}>{label}</Label>
-            <textarea
-                onClick={handleClick}
-                className={classNames(styles.textarea, className)}
-                disabled={disabled}
-                style={(highlighted ? highlightGlyphsShade : glyphsShade) === undefined ? undefined : { color: theme.color(highlighted ? highlightColor : color, highlighted ? highlightGlyphsShade : glyphsShade) }}
-                {...props}
-                onFocus={(event) => {
-                    if (highlightGlyphsShade !== undefined) {
-                        event.currentTarget.style.color = theme.color(highlightColor, highlightGlyphsShade);
-                    }
-                    props.onFocus?.(event);
-                }}
-                onBlur={(event) => {
-                    event.currentTarget.style.color = glyphsShade === undefined ? '' : theme.color(color, glyphsShade);
-                    props.onBlur?.(event);
-                }}
-            />
+        <div
+            data-appearance-mode={theme.mode}
+            data-appearance-variant={variant}
+            data-appearance-color={color}
+            data-appearance-highlight={highlightColor}
+            data-highlighted={highlighted || undefined}
+            data-disabled={disabled || undefined}
+            className={classNames(
+                styles.container,
+                styles[`size-${size}`],
+            )}
+            style={{
+                "--appearance-default-glyphs-override": glyphsShade === undefined
+                    ? undefined
+                    : theme.color(color, glyphsShade),
+                "--appearance-hover-focus-glyphs-override": highlightGlyphsShade === undefined
+                    ? undefined
+                    : theme.color(highlightColor, highlightGlyphsShade),
+                "--appearance-active-pressed-glyphs-override": highlightGlyphsShade === undefined
+                    ? undefined
+                    : theme.color(highlightColor, highlightGlyphsShade),
+            } as CSSProperties}
+        >
+            {label ? (
+                <Label
+                    htmlFor={textAreaId}
+                    themeMode={themeMode}
+                    color={color}
+                    highlightColor={highlightColor}
+                    shade={glyphsShade}
+                    highlightShade={highlightGlyphsShade}
+                    highlighted={highlighted}
+                    disabled={disabled}
+                    className={styles.label}
+                >
+                    {label}
+                </Label>
+            ) : null}
+            <div className={styles.field}>
+                <textarea
+                    {...props}
+                    id={textAreaId}
+                    rows={props.rows ?? 1}
+                    value={value}
+                    placeholder={placeholder}
+                    onChange={handleChange}
+                    onClick={handleClick}
+                    disabled={disabled}
+                    className={classNames(styles.textarea, className)}
+                />
+            </div>
         </div>
     );
 };

@@ -339,6 +339,15 @@ describe("Theme", () => {
         );
     });
 
+    it("applies glyph shade overrides", () => {
+        expect(theme.resolveAppearance("fill", "primary", "secondary", "default", 700).glyphs)
+            .to.equal(theme.color("primary", 700));
+        expect(theme.resolveAppearance("fill", "primary", "secondary", "hover-focus", undefined, 200).glyphs)
+            .to.equal(theme.color("secondary", 200));
+        expect(theme.resolveAppearance("fill", "primary", "secondary", "disabled", undefined, 200).glyphs)
+            .to.equal(theme.resolveAppearance("fill", "primary", "secondary", "disabled").glyphs);
+    });
+
     it("resolves status colors", () => {
         expect(theme.color("glitch")).to.equal(theme.color("red", 600));
         expect(theme.contrastShade("glitch")).to.equal(theme.contrastShade("red", 600));

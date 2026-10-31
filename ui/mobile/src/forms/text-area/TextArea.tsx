@@ -1,13 +1,12 @@
 import { ComponentProps, FC, useState } from "react";
 import { TextInput as RNTextInput, View, StyleSheet } from "react-native";
 import {
-    controlTextSpecifications,
-    DEFAULT_FILL_VARIANT,
     DEFAULT_COLOR,
+    DEFAULT_FILL_VARIANT,
     DEFAULT_SIZE,
     FontType,
     TextAreaProps,
-    translucentSurfaceOpacity,
+    ThemeAppearanceState,
     useTheme,
 } from "@ui";
 import { Label } from "../../design-system/typography";
@@ -15,21 +14,27 @@ import { resolveMobileFont } from "../../design-system/typography/fontFamily";
 
 const styles = StyleSheet.create({
     container: {
-        rowGap: 2,
+        rowGap: 4,
     },
-    label: {},
+    field: {
+        boxSizing: "border-box",
+        borderRadius: 0,
+        overflow: "hidden",
+    },
     textarea: {
-        borderWidth: 1,
-        borderRadius: 4,
-        minHeight: 60,
+        boxSizing: "border-box",
+        borderWidth: 0,
+        borderRadius: 0,
         textAlignVertical: "top",
         fontFamily: resolveMobileFont(FontType.Default).fontFamily,
     },
 });
 
 export const TextArea: FC<
-    TextAreaProps & ComponentProps<typeof RNTextInput>
+    TextAreaProps
+        & Omit<ComponentProps<typeof RNTextInput>, "value" | "onChange" | "onChangeText" | "multiline">
 > = ({
+    themeMode,
     color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
@@ -37,73 +42,94 @@ export const TextArea: FC<
     size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     label,
+    placeholder,
+    value,
+    onChange,
     autoSelect = false,
     editable = true,
     highlighted = false,
     disabled = false,
+    style,
     ...props
 }) => {
-    const theme = useTheme();
-    const [isFocused, setIsFocused] = useState(false);
+    const theme = useTheme().forMode(themeMode);
+    const [focused, setFocused] = useState(false);
     const isDisabled = disabled || !editable;
-    const isHighlighted = !isDisabled && (highlighted || isFocused);
-    const borderColor = isHighlighted
-        ? theme.color(highlightColor, theme.isLight ? 600 : 300)
-        : theme.color(color, 500, variant === "fill-translucent" ? 0.3 : 1);
-    const fontSize = controlTextSpecifications[size].fontSize;
-    const paddingV = size === "xs" ? 0 : size === "sm" ? 2 : 6;
-    const disabledColor = theme.color(color, theme.isLight ? 300 : 700);
-    const textColor = isHighlighted && highlightGlyphsShade !== undefined
-        ? theme.color(highlightColor, highlightGlyphsShade)
-        : glyphsShade !== undefined
-          ? theme.color(color, glyphsShade)
-          :
-        variant === "fill"
-            ? theme.color(color, theme.contrastShade(color))
-            : theme.color(color, theme.isLight ? 900 : 100);
-    const backgroundColor = isDisabled
-        ? theme.color(color, theme.isLight ? 200 : 800)
-        : variant === "fill"
-          ? theme.color(color, 500)
-          : variant === "fill-inverse"
-            ? theme.color(color, theme.isLight ? 100 : 900)
-            : theme.color(color, 500, translucentSurfaceOpacity.unblurred);
+    const state: ThemeAppearanceState = isDisabled
+        ? "disabled"
+        : highlighted
+            ? "active-pressed"
+            : focused
+                ? "hover-focus"
+                : "default";
+    const appearance = theme.resolveAppearance(
+        variant,
+        color,
+        highlightColor,
+        state,
+        glyphsShade,
+        highlightGlyphsShade,
+    );
+    const controlSize = theme.sizes.control[size];
 
     return (
         <View style={styles.container}>
-            <Label
-                color={color}
-                shade={glyphsShade}
-                disabled={isDisabled}
-                style={[styles.label, { fontSize: size === "xs" ? 11 : 12 }]}
-            >
-                {label}
-            </Label>
-            <RNTextInput
+            {label ? (
+                <Label
+                    themeMode={themeMode}
+                    color={color}
+                    highlightColor={highlightColor}
+                    shade={glyphsShade}
+                    highlightShade={highlightGlyphsShade}
+                    appearanceState={state}
+                    style={{ fontSize: controlSize.fontSize }}
+                >
+                    {label}
+                </Label>
+            ) : null}
+            <View
                 style={[
-                    styles.textarea,
+                    styles.field,
                     {
-                        backgroundColor,
-                        color: isDisabled ? disabledColor : textColor,
-                        borderColor: isDisabled
-                            ? disabledColor
-                            : variant === "fill"
-                              ? backgroundColor
-                              : borderColor,
-                        borderWidth: isDisabled || variant !== "fill" ? 1 : 0,
-                        fontSize,
-                        paddingVertical: paddingV + 4,
-                        paddingHorizontal: 8,
+                        backgroundColor: appearance.surface,
+                        borderColor: appearance.border.color,
+                        borderWidth: appearance.border.width,
+                        outlineStyle: "solid",
+                        outlineWidth: focused ? 2 : 0,
+                        outlineOffset: 2,
+                        outlineColor: appearance.effects.glowColor,
                     },
                 ]}
-                multiline
-                editable={!isDisabled}
-                accessibilityState={{ ...props.accessibilityState, disabled: isDisabled }}
-                selectTextOnFocus={autoSelect}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
-                {...props}
-            />
+            >
+                <RNTextInput
+                    {...props}
+                    style={[
+                        styles.textarea,
+                        {
+                            color: appearance.glyphs,
+                            fontSize: controlSize.fontSize,
+                            minHeight: controlSize.height,
+                            paddingHorizontal: controlSize.paddingInline,
+                            paddingVertical: controlSize.paddingBlock,
+                        },
+                        style,
+                    ]}
+                    value={value}
+                    placeholder={placeholder}
+                    placeholderTextColor={appearance.glyphs}
+                    onChangeText={onChange}
+                    onFocus={() => setFocused(true)}
+                    onBlur={() => setFocused(false)}
+                    editable={!isDisabled}
+                    selectTextOnFocus={autoSelect}
+                    accessibilityLabel={props.accessibilityLabel ?? label}
+                    accessibilityState={{
+                        ...props.accessibilityState,
+                        disabled: isDisabled,
+                    }}
+                    multiline
+                />
+            </View>
         </View>
     );
 };
