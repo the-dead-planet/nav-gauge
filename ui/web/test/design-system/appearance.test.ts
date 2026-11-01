@@ -200,6 +200,8 @@ describe('Composed appearance rendering', () => {
             expect(rule).to.include(`--size-control-gap:var(--size-control-${size}-gap)`);
             expect(rule).to.include(`--size-control-font-size:var(--size-control-${size}-font-size)`);
             expect(rule).to.include(`--size-control-icon-size:var(--size-control-${size}-icon-size)`);
+            expect(rule).to.include(`--size-control-thumb-size:var(--size-control-${size}-thumb-size)`);
+            expect(rule).to.include(`--size-control-track-thickness:var(--size-control-${size}-track-thickness)`);
         }
     });
 

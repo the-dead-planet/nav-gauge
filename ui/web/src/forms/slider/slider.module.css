@@ -6,26 +6,6 @@
     min-width: 0;
 }
 
-.container[data-size="xs"] {
-    --thumb-size: 12px;
-    --track-thickness: 3px;
-}
-
-.container[data-size="sm"] {
-    --thumb-size: 14px;
-    --track-thickness: 6px;
-}
-
-.container[data-size="md"] {
-    --thumb-size: 17px;
-    --track-thickness: 8px;
-}
-
-.container[data-size="lg"] {
-    --thumb-size: 20px;
-    --track-thickness: 10px;
-}
-
 .label {
     display: flex;
     gap: var(--size-control-gap);
@@ -57,8 +37,8 @@
 .track {
     position: absolute;
     top: 50%;
-    inset-inline: calc(var(--thumb-size) / 2);
-    height: var(--track-thickness);
+    inset-inline: calc(var(--size-control-thumb-size) / 2);
+    height: var(--size-control-track-thickness);
     transform: translateY(-50%);
     background: var(--appearance-color-300);
     pointer-events: none;
@@ -80,8 +60,8 @@
     content: "";
     position: absolute;
     top: 50%;
-    width: calc(var(--track-thickness) / sqrt(2));
-    height: calc(var(--track-thickness) / sqrt(2));
+    width: calc(var(--size-control-track-thickness) / sqrt(2));
+    height: calc(var(--size-control-track-thickness) / sqrt(2));
     background: inherit;
     transform: translate(-50%, -50%) rotate(45deg);
 }
@@ -100,8 +80,8 @@
     top: 50%;
     z-index: 1;
     box-sizing: border-box;
-    width: var(--thumb-size);
-    height: var(--thumb-size);
+    width: var(--size-control-thumb-size);
+    height: var(--size-control-thumb-size);
     transform: translate(-50%, -50%) rotate(45deg);
     background: var(--appearance-default-surface);
     border: calc(var(--appearance-default-border-width) * 2) solid
@@ -123,14 +103,14 @@
 
 .slider::-webkit-slider-thumb {
     appearance: none;
-    width: var(--thumb-size);
-    height: var(--thumb-size);
+    width: var(--size-control-thumb-size);
+    height: var(--size-control-thumb-size);
     opacity: 0;
 }
 
 .slider::-moz-range-thumb {
-    width: var(--thumb-size);
-    height: var(--thumb-size);
+    width: var(--size-control-thumb-size);
+    height: var(--size-control-thumb-size);
     border: 0;
     opacity: 0;
 }

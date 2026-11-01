@@ -189,6 +189,8 @@ describe("Slider appearance", () => {
                         "rgb(0, 0, 255)",
                     );
                     document.documentElement.style.colorScheme = "light";
+                    document.documentElement.style.setProperty('--size-control-thumb-size', '14px');
+                    document.documentElement.style.setProperty('--size-control-track-thickness', '6px');
                     for (const shade of [300, 500, 700]) {
                         document.documentElement.style.setProperty(
                             `--appearance-color-${shade}`,
@@ -304,8 +306,16 @@ describe("Slider appearance", () => {
 
     it("keeps the range and extracted number/step controls synchronized", () => {
         cy.visit(
-            "/iframe.html?id=forms-slider--playground&viewMode=story&args=showNumberInput:true;showStepControls:true",
+            "/iframe.html?id=forms-slider--gallery&viewMode=story",
         );
+        cy.get('input[type="range"]').should('have.length', 24);
+        cy.window().its('__STORYBOOK_PREVIEW__.channel').invoke('emit', 'updateStoryArgs', {
+            storyId: 'forms-slider--gallery',
+            updatedArgs: {
+                showNumberInput: true,
+                showStepControls: true,
+            },
+        });
         cy.get('input[type="range"]')
             .first()
             .closest("[data-appearance-variant]")
@@ -313,8 +323,8 @@ describe("Slider appearance", () => {
         cy.get("@slider")
             .find('input[type="number"]')
             .should("have.value", "50")
-            .clear()
-            .type("75");
+            .type("{selectall}75")
+            .should('have.value', '75');
         cy.get("@slider")
             .find('input[type="range"]')
             .should("have.value", "75");

@@ -5,7 +5,6 @@ import {
     DEFAULT_FILL_VARIANT,
     DEFAULT_SIZE,
     getSliderRatio,
-    sliderSizes,
     SliderProps,
     useTheme,
 } from "@ui";
@@ -98,16 +97,16 @@ export const SliderTrack: FC<Props> = ({
         state === "hover-focus" || state === "active-pressed",
         highlightColor,
     );
-    const { thumb, track } = sliderSizes[size];
+    const { thumbSize, trackThickness } = controlSize;
     const unfilledTrackColor = theme.color(
         color,
         theme.mode === "light" ? 300 : 700,
     );
-    const trackCapSize = track / Math.SQRT2;
+    const trackCapSize = trackThickness / Math.SQRT2;
     const trackCapGeometry: ViewStyle = {
         width: trackCapSize,
         height: trackCapSize,
-        top: (track - trackCapSize) / 2,
+        top: (trackThickness - trackCapSize) / 2,
     };
     const fillWidth = width * getSliderRatio(value, min, max);
 
@@ -136,7 +135,7 @@ export const SliderTrack: FC<Props> = ({
                     styles.hitArea,
                     {
                         height: controlSize.height,
-                        marginHorizontal: thumb / 2,
+                        marginHorizontal: thumbSize / 2,
                         outlineStyle: "solid",
                         outlineWidth: focused ? 2 : 0,
                         outlineOffset: 2,
@@ -148,7 +147,7 @@ export const SliderTrack: FC<Props> = ({
                     pointerEvents="none"
                     style={[
                         styles.track,
-                        { height: track, backgroundColor: unfilledTrackColor },
+                        { height: trackThickness, backgroundColor: unfilledTrackColor },
                     ]}
                 >
                     <View
@@ -184,10 +183,10 @@ export const SliderTrack: FC<Props> = ({
                         style={[
                             styles.thumb,
                             {
-                                left: fillWidth - thumb / 2,
-                                top: (track - thumb) / 2,
-                                width: thumb,
-                                height: thumb,
+                                left: fillWidth - thumbSize / 2,
+                                top: (trackThickness - thumbSize) / 2,
+                                width: thumbSize,
+                                height: thumbSize,
                                 backgroundColor: appearance.surface,
                                 borderColor: appearance.border.color,
                                 borderWidth: appearance.border.width * 2,

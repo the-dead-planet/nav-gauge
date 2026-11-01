@@ -8,20 +8,9 @@ import {
     DEFAULT_SIZE,
     fillVariantOptions,
     sizeOptions,
-    SizeVariant,
     typographyStoryControls,
 } from "../../design-system";
 import { StoryControls } from "../../storybook";
-
-export const sliderSizes: Record<
-    SizeVariant,
-    { thumb: number; track: number }
-> = {
-    xs: { thumb: 12, track: 3 },
-    sm: { thumb: 14, track: 6 },
-    md: { thumb: 17, track: 8 },
-    lg: { thumb: 20, track: 10 },
-};
 
 export const getSliderRatio = (
     value: number,
