@@ -17,13 +17,9 @@ import { Dropdown } from "./Dropdown";
 import { Button } from "../../gizmos/button";
 
 const options = [
-    {
-        value: "brass",
-        label: "Brass Cog",
-        icon: Icons.Beaker,
-    },
+    { value: "brass", label: "Brass Cog", icon: Icons.Beaker },
     { value: "copper", label: "Copper Valve", icon: Icons.Beaker },
-    { value: "steam", label: "Steam Pipe", prepend: <ColorBox size="xs" color={Theme.palette["neutral-grey"]} />, },
+    { value: "steam", label: "Steam Pipe", prepend: <ColorBox size="xs" color={Theme.palette["neutral-grey"]} /> },
     { value: "gear", label: "Gear Assembly", icon: Icons.Beaker },
 ];
 

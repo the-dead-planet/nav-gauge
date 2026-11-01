@@ -71,11 +71,8 @@ export const MenuItem: FC<MenuItemProps & Props> = ({
         role: selected === undefined ? 'menuitem' : 'menuitemradio',
         'aria-checked': selected,
         'aria-disabled': disabled,
-        className: classNames(
-            styles['menu-item'],
-            styles[`size-${size ?? context.size}`],
-            className,
-        ),
+        className: classNames(styles['menu-item'], className),
+        size: size ?? context.size,
         style: {
             ...style,
             ...(glyphsShade === undefined

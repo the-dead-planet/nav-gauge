@@ -61,6 +61,9 @@ const { VariantGallery } = require('../src/storybook/VariantGallery') as typeof 
 const { FileInput } = require('../src/forms/file-input/FileInput') as typeof import('../src/forms/file-input/FileInput');
 const { Checkbox } = require('../src/forms/checkbox/Checkbox') as typeof import('../src/forms/checkbox/Checkbox');
 const { Dropdown } = require('../src/forms/dropdown/Dropdown') as typeof import('../src/forms/dropdown/Dropdown');
+const { NumberInput } = require('../src/forms/number-input/NumberInput') as typeof import('../src/forms/number-input/NumberInput');
+const { TextInput } = require('../src/forms/text-input/TextInput') as typeof import('../src/forms/text-input/TextInput');
+const { TextArea } = require('../src/forms/text-area/TextArea') as typeof import('../src/forms/text-area/TextArea');
 const { Radio } = require('../src/forms/radio/Radio') as typeof import('../src/forms/radio/Radio');
 const { ClockInput, ClockSliceInput, ClockDurationInput } = require('../src/forms/clock-input') as typeof import('../src/forms/clock-input');
 const { Text } = require('../src/design-system/typography') as typeof import('../src/design-system/typography');
@@ -91,6 +94,23 @@ const renderToStaticMarkup = (children: ReactElement): string => renderMarkup(
 
 describe('Composed appearance rendering', () => {
     after(() => renderingTheme.destroy());
+
+    it('lets controls select their own size inside a differently sized container', () => {
+        for (const size of sizeOptions) {
+            const controls = [
+                createElement(NumberInput, { size, value: 1, label: 'Quantity', onChange: () => undefined }),
+                createElement(TextInput, { size, value: 'Text', label: 'Name', onChange: () => undefined }),
+                createElement(TextArea, { size, value: 'Text', label: 'Notes', onChange: () => undefined }),
+                createElement(MenuItem, { size, type: 'button', children: 'Action' }),
+                ...buttonCorners.map((corners) => createElement(Button, { size, corners, icon: 'beaker.svg', 'aria-label': 'Action' })),
+            ];
+            for (const control of controls) {
+                const containerSize = size === 'lg' ? 'xs' : 'lg';
+                const markup = renderToStaticMarkup(createElement('div', { 'data-size': containerSize }, control));
+                expect([...markup.matchAll(/data-size="([^"]+)"/g)].map((match) => match[1])).to.deep.equal([containerSize, size]);
+            }
+        }
+    });
 
     it('selects shared control metrics through data-size for the complete size scale', () => {
         const rules = createAppearanceRules(renderingTheme);
@@ -123,7 +143,7 @@ describe('Composed appearance rendering', () => {
                     expect(markup).to.include(`role="${role}"`);
                     expect(markup).to.include('data-appearance-variant="fill-inverse"');
                     expect(markup).to.include(`data-appearance-color="${color}"`);
-                    expect(markup).to.include(`menu-list size-${size}`);
+                    expect(markup).to.include('menu-list');
                     expect(markup).to.include(`data-size="${size}"`);
                     expect(markup).to.include('aria-label="Materials"');
                     expect(markup).to.include('width:200px');
@@ -446,7 +466,7 @@ describe('Composed appearance rendering', () => {
             }));
             const footer = markup.match(/<footer[^>]*>([\s\S]*?)<\/footer>/)?.[1];
             expect(markup).to.include(`data-size="${size}"`);
-            expect(footer).to.include(`size-${size}`);
+            expect(footer?.match(/data-size="([^"]+)"/g)).to.deep.equal([`data-size="${size}"`, `data-size="${size}"`]);
             expect(footer).to.include('data-appearance-variant="fill"');
             expect(footer).to.include('data-appearance-variant="fill-inverse"');
             expect(footer?.match(/<button\b/g)).to.have.length(2);
@@ -585,8 +605,9 @@ describe('Composed appearance rendering', () => {
                 triggerActive: true,
             }),
         }));
-        expect(markup).to.include('only-icon-lg');
-        expect(markup).not.to.include('only-icon-xs');
+        expect(markup).to.include('only-icon');
+        expect(markup).to.include('data-size="lg"');
+        expect(markup).not.to.include('data-size="xs"');
         expect(markup).to.include('aria-label="Route actions"');
         expect(markup).to.include('aria-haspopup="menu"');
         expect(markup).to.include('aria-expanded="false"');

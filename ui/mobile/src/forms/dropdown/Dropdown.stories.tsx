@@ -13,14 +13,9 @@ import { MobileStoryDefinition } from "../../storybook/model";
 import { Dropdown } from "./Dropdown";
 
 const options = [
-    {
-        value: "brass",
-        label: "Brass Cog",
-        prepend: <ColorBox color={Theme.palette.copper} />,
-        icon: Icons.Beaker,
-    },
+    { value: "brass", label: "Brass Cog", icon: Icons.Beaker, },
     { value: "copper", label: "Copper Valve", icon: Icons.Beaker },
-    { value: "steam", label: "Steam Pipe", icon: Icons.Beaker },
+    { value: "steam", label: "Steam Pipe", prepend: <ColorBox color={Theme.palette["neutral-grey"]} /> },
     { value: "gear", label: "Gear Assembly", icon: Icons.Beaker },
 ];
 

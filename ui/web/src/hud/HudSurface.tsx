@@ -4,6 +4,7 @@ import {
     ActiveGlow,
     AppearancePropsBase,
     DEFAULT_COLOR,
+    SizeVariant,
     SurfaceVariant,
     ThemeAppearanceVariant,
     useTheme,
@@ -18,6 +19,7 @@ type Props<Element extends "div" | "button" | "a" | "span" | "ul" | "li"> =
         > & {
             as: Element;
             variant: ThemeAppearanceVariant;
+            size?: SizeVariant;
             interactive?: boolean;
             activeGlow?: ActiveGlow;
             rectangle?: boolean;
@@ -28,6 +30,7 @@ export const HudSurface = <
 >({
     as,
     variant,
+    size,
     color = DEFAULT_COLOR,
     highlightColor,
     highlighted,
@@ -41,6 +44,7 @@ export const HudSurface = <
     const theme = useTheme();
     return createElement(as, {
         ...props,
+        ...(size === undefined ? undefined : { "data-size": size }),
         disabled: as === "button" ? disabled : undefined,
         "data-appearance-variant": variant,
         "data-appearance-mode": theme.mode,

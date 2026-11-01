@@ -53,11 +53,8 @@ export const TextInput: FC<Omit<ComponentProps<"input">, "onChange" | "value" | 
             data-appearance-highlight={highlightColor}
             data-highlighted={highlighted || undefined}
             data-disabled={disabled || undefined}
-            className={classNames(
-                styles.container,
-                styles[`size-${size}`],
-                className,
-            )}
+            className={classNames(styles.container, className)}
+            data-size={size}
             style={{
                 "--appearance-default-glyphs-override": glyphsShade === undefined
                     ? undefined

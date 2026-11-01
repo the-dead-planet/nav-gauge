@@ -3,64 +3,20 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    height: var(--size-control-height);
+    padding: var(--size-control-padding-block)
+        var(--size-control-padding-inline);
+    gap: var(--size-control-gap);
+    font-size: var(--size-control-font-size);
     line-height: 1.1;
     cursor: pointer;
 }
 
-.size-lg {
-    height: var(--size-control-lg-height);
-    padding: var(--size-control-lg-padding-block)
-        var(--size-control-lg-padding-inline);
-    gap: var(--size-control-lg-gap);
-    font-size: var(--size-control-lg-font-size);
+.has-icon {
+    min-width: var(--size-control-height);
 }
-.has-icon-lg {
-    min-width: var(--size-control-lg-height);
-}
-.only-icon-lg {
-    padding-inline: var(--size-control-lg-icon-padding-inline);
-}
-
-.size-md {
-    height: var(--size-control-md-height);
-    padding: var(--size-control-md-padding-block)
-        var(--size-control-md-padding-inline);
-    gap: var(--size-control-md-gap);
-    font-size: var(--size-control-md-font-size);
-}
-.has-icon-md {
-    min-width: var(--size-control-md-height);
-}
-.only-icon-md {
-    padding-inline: var(--size-control-md-icon-padding-inline);
-}
-
-.size-sm {
-    height: var(--size-control-sm-height);
-    padding: var(--size-control-sm-padding-block)
-        var(--size-control-sm-padding-inline);
-    gap: var(--size-control-sm-gap);
-    font-size: var(--size-control-sm-font-size);
-}
-.has-icon-sm {
-    min-width: var(--size-control-sm-height);
-}
-.only-icon-sm {
-    padding-inline: var(--size-control-sm-icon-padding-inline);
-}
-
-.size-xs {
-    height: var(--size-control-xs-height);
-    padding: var(--size-control-xs-padding-block)
-        var(--size-control-xs-padding-inline);
-    gap: var(--size-control-xs-gap);
-    font-size: var(--size-control-xs-font-size);
-}
-.has-icon-xs {
-    min-width: var(--size-control-xs-height);
-}
-.only-icon-xs {
-    padding-inline: var(--size-control-xs-icon-padding-inline);
+.only-icon {
+    padding-inline: var(--size-control-icon-padding-inline);
 }
 
 .icon {
@@ -83,20 +39,9 @@
 }
 .corners-circle {
     aspect-ratio: 1;
+    width: var(--size-control-height);
     padding-inline: 0;
     border-radius: 50%;
-}
-.corners-circle.size-xs {
-    width: var(--size-control-xs-height);
-}
-.corners-circle.size-sm {
-    width: var(--size-control-sm-height);
-}
-.corners-circle.size-md {
-    width: var(--size-control-md-height);
-}
-.corners-circle.size-lg {
-    width: var(--size-control-lg-height);
 }
 .corners-hexagon {
     width: 100%;
