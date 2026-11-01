@@ -84,11 +84,8 @@ export const Icon: FC<Props & IconProps> = ({
                 ownsAppearance ? selectedHighlight : undefined
             }
             data-appearance-state={ownsAppearance ? state : undefined}
-            className={classNames(
-                styles.icon,
-                styles[`size-${size}`],
-                className,
-            )}
+            data-size={size}
+            className={classNames(styles.icon, className)}
             style={
                 {
                     ...style,

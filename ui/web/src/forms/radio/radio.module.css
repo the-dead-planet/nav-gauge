@@ -1,4 +1,7 @@
 .radio {
+    min-height: var(--size-control-height);
+    font-size: var(--size-control-font-size);
+    gap: var(--size-control-gap);
     position: relative;
     box-sizing: border-box;
     display: inline-flex;
@@ -18,6 +21,8 @@
 }
 
 .box {
+    width: calc(var(--size-control-height) - var(--size-control-gap));
+    height: calc(var(--size-control-height) - var(--size-control-gap));
     position: relative;
     display: flex;
     align-items: center;
@@ -131,6 +136,8 @@
 }
 
 .marker {
+    width: calc(var(--size-control-icon-size) / 2);
+    height: calc(var(--size-control-icon-size) / 2);
     position: absolute;
     fill: currentColor;
 }
@@ -146,68 +153,4 @@
 
 .label {
     flex: 1;
-}
-
-.size-lg {
-    min-height: var(--size-control-lg-height);
-    font-size: var(--size-control-lg-font-size);
-    gap: var(--size-control-lg-gap);
-    & .box {
-        width: calc(var(--size-control-lg-height) - var(--size-control-lg-gap));
-        height: calc(
-            var(--size-control-lg-height) - var(--size-control-lg-gap)
-        );
-    }
-    & .marker {
-        width: calc(var(--size-control-lg-icon-size) / 2);
-        height: calc(var(--size-control-lg-icon-size) / 2);
-    }
-}
-
-.size-md {
-    min-height: var(--size-control-md-height);
-    font-size: var(--size-control-md-font-size);
-    gap: var(--size-control-md-gap);
-    & .box {
-        width: calc(var(--size-control-md-height) - var(--size-control-md-gap));
-        height: calc(
-            var(--size-control-md-height) - var(--size-control-md-gap)
-        );
-    }
-    & .marker {
-        width: calc(var(--size-control-md-icon-size) / 2);
-        height: calc(var(--size-control-md-icon-size) / 2);
-    }
-}
-
-.size-sm {
-    min-height: var(--size-control-sm-height);
-    font-size: var(--size-control-sm-font-size);
-    gap: var(--size-control-sm-gap);
-    & .box {
-        width: calc(var(--size-control-sm-height) - var(--size-control-sm-gap));
-        height: calc(
-            var(--size-control-sm-height) - var(--size-control-sm-gap)
-        );
-    }
-    & .marker {
-        width: calc(var(--size-control-sm-icon-size) / 2);
-        height: calc(var(--size-control-sm-icon-size) / 2);
-    }
-}
-
-.size-xs {
-    min-height: var(--size-control-xs-height);
-    font-size: var(--size-control-xs-font-size);
-    gap: var(--size-control-xs-gap);
-    & .box {
-        width: calc(var(--size-control-xs-height) - var(--size-control-xs-gap));
-        height: calc(
-            var(--size-control-xs-height) - var(--size-control-xs-gap)
-        );
-    }
-    & .marker {
-        width: calc(var(--size-control-xs-icon-size) / 2);
-        height: calc(var(--size-control-xs-icon-size) / 2);
-    }
 }

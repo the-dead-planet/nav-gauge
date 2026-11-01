@@ -1,11 +1,5 @@
 import { ScrollView, StyleSheet, View, ViewProps } from "react-native";
-import {
-    DEFAULT_COLOR,
-    DEFAULT_SIZE,
-    MenuListProps,
-    Theme,
-    useTheme,
-} from "@ui";
+import { DEFAULT_COLOR, DEFAULT_SIZE, MenuListProps, useTheme } from "@ui";
 import { resolveLayerStyle } from "../../design-system/theme";
 
 const styles = StyleSheet.create({
@@ -43,12 +37,7 @@ export function MenuList({
         >
             <ScrollView
                 contentContainerStyle={{
-                    paddingVertical: Number.parseInt(
-                        Theme.spacing[
-                            size === "xs" || size === "sm" ? "xs" : "sm"
-                        ],
-                        10,
-                    ),
+                    paddingVertical: theme.sizes.menuList[size].paddingBlock,
                 }}
             >
                 {children}

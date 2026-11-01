@@ -60,6 +60,7 @@ export const Octagon: FC<OctagonProps & ComponentProps<"div">> = ({
                 {...props}
                 {...interaction}
                 variant={variant}
+                size={size}
                 color={color}
                 highlightColor={highlightColor}
                 interactive={interactive || !!onClick}
@@ -69,7 +70,6 @@ export const Octagon: FC<OctagonProps & ComponentProps<"div">> = ({
                 data-glyphs-glow={appearance.effects.glyphsGlow || undefined}
                 className={classNames(
                     styles.octagon,
-                    styles[`size-${size}`],
                     octagonal.root,
                     className,
                 )}

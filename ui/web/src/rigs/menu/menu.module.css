@@ -6,6 +6,7 @@
     list-style: none;
     border-radius: 0;
     padding-inline: 0;
+    padding-block: var(--size-menu-list-padding-block);
     max-height: 240px;
     overflow-y: auto;
     width: max-content;
@@ -44,11 +45,4 @@
 
 .menu-item[aria-disabled="true"] {
     cursor: not-allowed;
-}
-
-.menu-list:is([data-size="xs"], [data-size="sm"]) {
-    padding-block: var(--spacing-xs);
-}
-.menu-list:is([data-size="md"], [data-size="lg"]) {
-    padding-block: var(--spacing-sm);
 }

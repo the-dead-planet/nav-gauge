@@ -12,6 +12,8 @@ import {
     fontTypeToFamily,
     PaletteColor,
     Theme,
+    ThemeSizes,
+    sizeOptions,
     ThemeAppearancePaint,
     ThemeAppearanceInsetEffectPolicy,
     themeAppearanceStateOptions,
@@ -128,10 +130,26 @@ export const createAppearanceRules = (theme: Theme): string => {
     return [
         '[data-appearance-mode="light"]{color-scheme:light}',
         '[data-appearance-mode="dark"]{color-scheme:dark}',
-        ...Object.entries(theme.sizes.control).map(([size, metrics]) => {
-            const declarations = Object.keys(metrics).map((metric) => {
-                const property = metric.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
-                return `--size-control-${property}:var(--size-control-${size}-${property})`;
+        `:root,[data-appearance-color]{${[
+            '--scrollbar-track-color:light-dark(rgb(from var(--appearance-color-200) r g b / 0.7),rgb(from var(--appearance-color-800) r g b / 0.7))',
+            '--scrollbar-thumb-color:var(--appearance-color-500)',
+            '--scrollbar-thumb-hover-color:light-dark(var(--appearance-color-600),var(--appearance-color-400))',
+        ].join(';')}}`,
+        ...sizeOptions.map((size) => {
+            const declarations = (
+                Object.keys(theme.sizes) as (keyof ThemeSizes)[]
+            ).flatMap((group) => {
+                const groupName = group.replace(
+                    /[A-Z]/g,
+                    (letter) => `-${letter.toLowerCase()}`,
+                );
+                return Object.keys(theme.sizes[group][size]).map((metric) => {
+                    const property = metric.replace(
+                        /[A-Z]/g,
+                        (letter) => `-${letter.toLowerCase()}`,
+                    );
+                    return `--size-${groupName}-${property}:var(--size-${groupName}-${size}-${property})`;
+                });
             }).join(';');
             return `[data-size="${size}"]{${declarations}}`;
         }),
@@ -168,12 +186,19 @@ export const useThemeVariables = (theme: Theme) => {
             document.documentElement.style.setProperty(`--typography-${usage}-line-height`, `${specification.lineHeight}px`);
             document.documentElement.style.setProperty(`--typography-${usage}-font-weight`, specification.fontWeight);
         }
-        for (const [size, metrics] of Object.entries(theme.sizes.control)) {
-            for (const [metric, value] of Object.entries(metrics)) {
-                document.documentElement.style.setProperty(
-                    `--size-control-${size}-${metric.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}`,
-                    `${value}px`,
-                );
+        for (const group of Object.keys(theme.sizes) as (keyof ThemeSizes)[]) {
+            const groupName = group.replace(
+                /[A-Z]/g,
+                (letter) => `-${letter.toLowerCase()}`,
+            );
+            for (const size of sizeOptions) {
+                const metrics = theme.sizes[group][size];
+                for (const [metric, value] of Object.entries(metrics)) {
+                    document.documentElement.style.setProperty(
+                        `--size-${groupName}-${size}-${metric.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)}`,
+                        `${value}px`,
+                    );
+                }
             }
         }
         for (const [layer, policy] of Object.entries(Theme.layers)) {

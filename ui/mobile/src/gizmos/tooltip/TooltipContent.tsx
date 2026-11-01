@@ -17,18 +17,6 @@ const styles = StyleSheet.create({
     tooltip: { position: "absolute" },
     connector: { position: "absolute" },
 });
-const sizeStyles = StyleSheet.create({
-    xs: { paddingHorizontal: 6, paddingVertical: 2 },
-    sm: { paddingHorizontal: 10, paddingVertical: 4 },
-    md: { paddingHorizontal: 12, paddingVertical: 6 },
-    lg: { paddingHorizontal: 14, paddingVertical: 8 },
-});
-const textStyles = StyleSheet.create({
-    xs: { fontSize: 11, lineHeight: 12.1 },
-    sm: { fontSize: 12, lineHeight: 16.8 },
-    md: { fontSize: 14, lineHeight: 19.6 },
-    lg: { fontSize: 16, lineHeight: 22.4 },
-});
 
 export const TooltipContent: FC<TooltipProps> = (props) => {
     const {
@@ -39,6 +27,7 @@ export const TooltipContent: FC<TooltipProps> = (props) => {
         maxWidth = 220,
     } = props;
     const theme = useTheme();
+    const metrics = theme.sizes.tooltip[size];
     const appearance = theme.resolveAppearance(variant, color);
     const connector = theme.resolveAppearance(
         variant,
@@ -81,21 +70,23 @@ export const TooltipContent: FC<TooltipProps> = (props) => {
                             variant={variant}
                             style={[
                                 styles.tooltip,
-                                sizeStyles[size],
                                 {
                                     top: position.top,
                                     left: position.left,
                                     maxWidth,
+                                    paddingHorizontal: metrics.paddingInline,
+                                    paddingVertical: metrics.paddingBlock,
                                 },
                             ]}
                         >
                             {typeof content === "string" ||
                             typeof content === "number" ? (
                                 <Text
-                                    style={[
-                                        textStyles[size],
-                                        { color: appearance.glyphs },
-                                    ]}
+                                    style={{
+                                        color: appearance.glyphs,
+                                        fontSize: metrics.fontSize,
+                                        lineHeight: metrics.lineHeight,
+                                    }}
                                 >
                                     {content}
                                 </Text>

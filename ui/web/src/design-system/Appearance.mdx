@@ -278,3 +278,20 @@ Use the shared `actionButtonVariants[surfaceVariant]` policy for primary/seconda
 <Canvas of={ColorStories.ActiveGlow} />
 
 Animation timing and reduced-motion behavior follow the <a href="./?path=/docs/design-system-motion--docs" target="_top" style={{ textDecoration: 'underline' }}>Motion</a> principles.
+
+## Scrollbars
+
+- Every horizontally or vertically scrollable surface, including menus, dialogs, panels, and text areas, uses the shared theme scrollbar styling. The nearest `data-appearance-color` selects the palette, including status colors; uncolored content inherits the neutral default. Nested appearance owners select their own palette. Do not add component-specific scrollbar rules.
+
+<table>
+    <thead>
+        <tr><th>Part</th><th>Treatment</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Thumb</td><td>Selected palette shade <code>500</code></td></tr>
+        <tr><td>Thumb hover</td><td>Shade <code>600</code> light / <code>400</code> dark; Chromium only</td></tr>
+        <tr><td>Track and corner</td><td>Shade <code>200</code> light / <code>800</code> dark at 70% opacity</td></tr>
+        <tr><td>Chromium geometry</td><td>6 px width and height; 6 px thumb radius</td></tr>
+        <tr><td>Firefox geometry</td><td>Native <code>thin</code> scrollbar using <code>scrollbar-color</code>; native thumb shape and hover behavior</td></tr>
+    </tbody>
+</table>

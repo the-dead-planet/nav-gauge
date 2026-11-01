@@ -58,7 +58,7 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
                         />
                     )}
                     {toolPanel ? (
-                        <div className={styles['component']}>
+                        <div className={styles['component']} data-appearance-color="secondary">
                             <div className={styles['component-content']}>
                                 <toolPanel.contentComponent map={map} placement={toolPanel.placement} />
                             </div>

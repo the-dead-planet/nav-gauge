@@ -1,0 +1,29 @@
+@supports not selector(::-webkit-scrollbar) {
+    :global(*) {
+        scrollbar-width: thin;
+        scrollbar-color: var(--scrollbar-thumb-color)
+            var(--scrollbar-track-color);
+    }
+}
+
+:global(::-webkit-scrollbar) {
+    width: 6px;
+    height: 6px;
+}
+
+:global(::-webkit-scrollbar-track) {
+    background: var(--scrollbar-track-color);
+}
+
+:global(::-webkit-scrollbar-corner) {
+    background: var(--scrollbar-track-color);
+}
+
+:global(::-webkit-scrollbar-thumb) {
+    background: var(--scrollbar-thumb-color);
+    border-radius: 6px;
+}
+
+:global(::-webkit-scrollbar-thumb:hover) {
+    background: var(--scrollbar-thumb-hover-color);
+}

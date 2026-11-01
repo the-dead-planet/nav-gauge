@@ -69,9 +69,9 @@ export const Radio: FC<
                     data-appearance-highlight={highlightColor}
                     data-highlighted={highlighted}
                     data-disabled={disabled}
+                    data-size={size}
                     className={classNames(
                         styles["radio"],
-                        styles[`size-${size}`],
                         className,
                     )}
                     style={

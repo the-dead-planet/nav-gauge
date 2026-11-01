@@ -1,4 +1,5 @@
 .container {
+    font-size: var(--size-control-font-size);
     position: relative;
     display: grid;
     gap: 4px;
@@ -215,17 +216,4 @@
 .label > span {
     min-width: 4ch;
     font-variant-numeric: tabular-nums;
-}
-
-.size-xs {
-    font-size: var(--size-control-xs-font-size);
-}
-.size-sm {
-    font-size: var(--size-control-sm-font-size);
-}
-.size-md {
-    font-size: var(--size-control-md-font-size);
-}
-.size-lg {
-    font-size: var(--size-control-lg-font-size);
 }

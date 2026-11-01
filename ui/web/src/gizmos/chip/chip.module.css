@@ -1,4 +1,14 @@
 .chip {
+    font-size: var(--size-chip-font-size);
+    padding: calc(
+            var(--size-chip-padding-block) +
+                var(--appearance-default-border-width)
+        )
+        calc(
+            var(--size-chip-padding-inline) +
+                var(--appearance-default-border-width)
+        );
+    gap: var(--size-chip-gap);
     position: relative;
     box-sizing: border-box;
     display: inline-flex;
@@ -10,34 +20,6 @@
     display: inline-flex;
     align-items: center;
     gap: inherit;
-}
-
-.size-lg {
-    font-size: 16px;
-    padding: calc(6px + var(--appearance-default-border-width))
-        calc(10px + var(--appearance-default-border-width));
-    gap: 10px;
-}
-
-.size-md {
-    font-size: 14px;
-    padding: calc(4px + var(--appearance-default-border-width))
-        calc(8px + var(--appearance-default-border-width));
-    gap: 8px;
-}
-
-.size-sm {
-    font-size: 12px;
-    padding: calc(2px + var(--appearance-default-border-width))
-        calc(4px + var(--appearance-default-border-width));
-    gap: 6px;
-}
-
-.size-xs {
-    font-size: 10px;
-    padding: calc(1px + var(--appearance-default-border-width))
-        calc(3px + var(--appearance-default-border-width));
-    gap: 4px;
 }
 
 .content > .label {

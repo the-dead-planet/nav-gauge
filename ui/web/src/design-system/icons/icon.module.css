@@ -7,24 +7,9 @@
 
 .icon {
     flex: none;
-    width: var(--icon-width, var(--size-control-sm-icon-size));
-    height: var(--icon-height, var(--size-control-sm-icon-size));
+    width: var(--icon-width, var(--size-control-icon-size));
+    height: var(--icon-height, var(--size-control-icon-size));
     color: inherit;
-}
-
-.size-xs {
-    width: var(--icon-width, var(--size-control-xs-icon-size));
-    height: var(--icon-height, var(--size-control-xs-icon-size));
-}
-
-.size-md {
-    width: var(--icon-width, var(--size-control-md-icon-size));
-    height: var(--icon-height, var(--size-control-md-icon-size));
-}
-
-.size-lg {
-    width: var(--icon-width, var(--size-control-lg-icon-size));
-    height: var(--icon-height, var(--size-control-lg-icon-size));
 }
 
 .icon > span,

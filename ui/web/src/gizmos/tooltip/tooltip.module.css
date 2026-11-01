@@ -1,23 +1,10 @@
 .tooltip-content {
+    padding: var(--size-tooltip-padding-block)
+        var(--size-tooltip-padding-inline);
+    font-size: var(--size-tooltip-font-size);
     position: fixed;
     pointer-events: none;
     font-family: var(--font-default);
-}
-.size-xs {
-    padding: 2px 6px;
-    font-size: 11px;
-}
-.size-sm {
-    padding: 4px 10px;
-    font-size: 12px;
-}
-.size-md {
-    padding: 6px 12px;
-    font-size: 14px;
-}
-.size-lg {
-    padding: 8px 14px;
-    font-size: 16px;
 }
 .placement-top {
     transform: translate(-50%, -100%);

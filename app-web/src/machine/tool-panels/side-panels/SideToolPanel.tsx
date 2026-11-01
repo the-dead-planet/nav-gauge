@@ -52,7 +52,7 @@ export const SideToolPanel: FC<Props> = ({
                             onActiveIdChange={handleSidePanelActiveIdChange}
                         />
                         {toolPanel ? (
-                            <div className={styles['component']}>
+                            <div className={styles['component']} data-appearance-color="secondary">
                                 {toolPanel.placement !== 'bottom' || toolPanel?.headerComponent ? (
                                     <div className={styles['component-header']}>
                                         {toolPanel.headerComponent ? <toolPanel.headerComponent map={map} placement={toolPanel.placement} /> : null}

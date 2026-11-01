@@ -57,6 +57,7 @@ export const Hexagon: FC<HexagonProps & ComponentProps<"div">> = ({
             {...props}
             {...interaction}
             variant={variant}
+            size={size}
             color={color}
             highlightColor={highlightColor}
             interactive={interactive || !!onClick}
@@ -67,7 +68,6 @@ export const Hexagon: FC<HexagonProps & ComponentProps<"div">> = ({
             className={classNames(
                 styles.hexagon,
                 styles[shape],
-                styles[`size-${size}`],
                 { [styles["depth-inset"]]: effects.depth === "inset" },
                 className,
             )}

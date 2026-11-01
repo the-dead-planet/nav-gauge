@@ -1,5 +1,4 @@
 import { FC } from "react";
-import classNames from "classnames";
 import {
     DEFAULT_SIZE,
     DEFAULT_COLOR,
@@ -19,7 +18,8 @@ export const HudDecoration: FC<HudDecorationProps> = ({
     <div className={styles.wrapper}>
         {children}
         <svg
-            className={classNames(styles.decoration, styles[`size-${size}`])}
+            className={styles.decoration}
+            data-size={size}
             data-appearance-variant="default"
             data-appearance-color={color}
             data-appearance-highlight={color}

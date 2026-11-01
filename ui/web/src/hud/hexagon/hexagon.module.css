@@ -1,4 +1,5 @@
 .hexagon {
+    height: var(--size-control-height);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -27,29 +28,13 @@
     mask-repeat: no-repeat;
 }
 
-.size-xs {
-    --hexagon-height: var(--size-control-xs-height);
-}
-.size-sm {
-    --hexagon-height: var(--size-control-sm-height);
-}
-.size-md {
-    --hexagon-height: var(--size-control-md-height);
-}
-.size-lg {
-    --hexagon-height: var(--size-control-lg-height);
-}
-
-.hexagon {
-    height: var(--hexagon-height);
-}
 .pointy-top {
     aspect-ratio: 86.6 / 100;
-    width: calc(var(--hexagon-height) * 0.866);
+    width: calc(var(--size-control-height) * 0.866);
 }
 .flat-top {
     aspect-ratio: 100 / 86.6;
-    width: calc(var(--hexagon-height) / 0.866);
+    width: calc(var(--size-control-height) / 0.866);
 }
 
 .inset-shadow {

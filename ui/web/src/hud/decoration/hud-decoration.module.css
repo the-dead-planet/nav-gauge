@@ -5,30 +5,14 @@
 
 .decoration {
     fill: none;
-    inset: calc(-1 * var(--decoration-offset));
-    width: calc(100% + 2 * var(--decoration-offset));
-    height: calc(100% + 2 * var(--decoration-offset));
+    inset: calc(-1 * var(--size-hud-decoration-offset));
+    width: calc(100% + 2 * var(--size-hud-decoration-offset));
+    height: calc(100% + 2 * var(--size-hud-decoration-offset));
+    stroke-width: var(--size-hud-decoration-stroke-width);
     overflow: visible;
     pointer-events: none;
     position: absolute;
     stroke: var(--appearance-default-glyphs);
-}
-
-.size-xs {
-    --decoration-offset: 3px;
-    stroke-width: 1;
-}
-.size-sm {
-    --decoration-offset: 5px;
-    stroke-width: 1.5;
-}
-.size-md {
-    --decoration-offset: 7px;
-    stroke-width: 2;
-}
-.size-lg {
-    --decoration-offset: 9px;
-    stroke-width: 2.5;
 }
 
 .decoration[data-glow]:not([data-glow="none"]) {

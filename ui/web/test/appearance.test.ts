@@ -61,6 +61,7 @@ const { VariantGallery } = require('../src/storybook/VariantGallery') as typeof 
 const { FileInput } = require('../src/forms/file-input/FileInput') as typeof import('../src/forms/file-input/FileInput');
 const { Checkbox } = require('../src/forms/checkbox/Checkbox') as typeof import('../src/forms/checkbox/Checkbox');
 const { Dropdown } = require('../src/forms/dropdown/Dropdown') as typeof import('../src/forms/dropdown/Dropdown');
+const { Icon } = require('../src/design-system/icons') as typeof import('../src/design-system/icons');
 const { NumberInput } = require('../src/forms/number-input/NumberInput') as typeof import('../src/forms/number-input/NumberInput');
 const { TextInput } = require('../src/forms/text-input/TextInput') as typeof import('../src/forms/text-input/TextInput');
 const { TextArea } = require('../src/forms/text-area/TextArea') as typeof import('../src/forms/text-area/TextArea');
@@ -102,12 +103,24 @@ describe('Composed appearance rendering', () => {
                 createElement(TextInput, { size, value: 'Text', label: 'Name', onChange: () => undefined }),
                 createElement(TextArea, { size, value: 'Text', label: 'Notes', onChange: () => undefined }),
                 createElement(MenuItem, { size, type: 'button', children: 'Action' }),
+                createElement(Icon, { size, src: 'beaker.svg' }),
+                createElement(Hexagon, { size }),
+                createElement(Octagon, { size }),
+                createElement(HudDecoration, { size, children: 'Decoration' }),
+                createElement(Chip, { size, children: 'Chip' }),
+                createElement(Checkbox, { size, checked: false, onChange: () => undefined }),
+                createElement(Radio, { size, checked: false, onChange: () => undefined }),
+                createElement(ClockInput, { size, value: 30 }),
+                createElement(ClockSliceInput, { size, value: 30 }),
+                createElement(ClockDurationInput, { size, value: 30 }),
+                createElement(Tabstrip, { size, options: [], value: '', onChange: () => undefined, overflowAccessibilityLabel: 'More tabs', children: 'Content' }),
                 ...buttonCorners.map((corners) => createElement(Button, { size, corners, icon: 'beaker.svg', 'aria-label': 'Action' })),
             ];
             for (const control of controls) {
                 const containerSize = size === 'lg' ? 'xs' : 'lg';
                 const markup = renderToStaticMarkup(createElement('div', { 'data-size': containerSize }, control));
-                expect([...markup.matchAll(/data-size="([^"]+)"/g)].map((match) => match[1])).to.deep.equal([containerSize, size]);
+                const selectedSizes = [...markup.matchAll(/data-size="([^"]+)"/g)].map((match) => match[1]);
+                expect(selectedSizes.slice(0, 2)).to.deep.equal([containerSize, size]);
             }
         }
     });
@@ -122,6 +135,11 @@ describe('Composed appearance rendering', () => {
             expect(rule).to.include(`--size-control-gap:var(--size-control-${size}-gap)`);
             expect(rule).to.include(`--size-control-font-size:var(--size-control-${size}-font-size)`);
             expect(rule).to.include(`--size-control-icon-size:var(--size-control-${size}-icon-size)`);
+            expect(rule).to.include(`--size-chip-padding-inline:var(--size-chip-${size}-padding-inline)`);
+            expect(rule).to.include(`--size-tooltip-padding-block:var(--size-tooltip-${size}-padding-block)`);
+            expect(rule).to.include(`--size-hud-decoration-offset:var(--size-hud-decoration-${size}-offset)`);
+            expect(rule).to.include(`--size-tabstrip-padding:var(--size-tabstrip-${size}-padding)`);
+            expect(rule).to.include(`--size-menu-list-padding-block:var(--size-menu-list-${size}-padding-block)`);
         }
     });
 
@@ -533,7 +551,7 @@ describe('Composed appearance rendering', () => {
                         }),
                     }),
                 }));
-                expect(markup).to.include(`size-${size}`);
+                expect(markup).to.include(`data-size="${size}"`);
                 expect(markup).to.include(`data-appearance-color="${color}"`);
                 expect(markup).to.include('data-appearance-highlight="hazard"');
                 expect(markup).to.include('data-appearance-variant="menu-item"');
