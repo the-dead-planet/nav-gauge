@@ -8,7 +8,7 @@ import {
     ThemeMode,
     ThemeName,
     themeSpecifications,
-} from "../src";
+} from "../../../src";
 
 describe("Icon appearance", () => {
     it("resolves all palette and status states and shade overrides in both modes", () => {

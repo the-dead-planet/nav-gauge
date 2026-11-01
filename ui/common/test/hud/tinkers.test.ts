@@ -7,7 +7,7 @@ import {
     getNotchedPanelGeometry,
     hudConnectorAnchors,
     sizeOptions,
-} from "../src";
+} from "../../src";
 
 describe("HUD geometry", () => {
     it("anchors every connector point relative to its wrapper", () => {

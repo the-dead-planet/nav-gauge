@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { getSliderRatio, snapSliderValue } from "../src/forms/slider/tinkers";
+import { getSliderRatio, snapSliderValue } from "../../src/forms/slider/tinkers";
 
 describe("Slider values", () => {
     it("clamps progress, including empty and reversed ranges", () => {

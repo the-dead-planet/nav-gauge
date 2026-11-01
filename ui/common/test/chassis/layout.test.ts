@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Theme, resolveLayoutSpacing, layoutSpacingOptions } from "../src";
+import { Theme, resolveLayoutSpacing, layoutSpacingOptions } from "../../src";
 
 describe("Layout spacing", () => {
     it("uses the theme spacing scale without inventing a default gap", () => {
