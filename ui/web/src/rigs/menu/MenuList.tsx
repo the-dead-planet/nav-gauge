@@ -22,6 +22,7 @@ export function MenuList({
             as={as}
             variant="fill-inverse"
             color={color}
+            data-size={size}
             rectangle
             className={classNames(
                 styles["menu-list"],

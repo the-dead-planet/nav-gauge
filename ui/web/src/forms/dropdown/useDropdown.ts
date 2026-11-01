@@ -12,7 +12,6 @@ import { usePopupPosition } from "../../rigs/popup/usePopupPosition";
 export function useDropdown(disabled: boolean) {
     const [open, setOpen] = useState(false);
     const listId = useId();
-    const containerRef = useRef<HTMLDivElement>(null);
     const triggerRef = useRef<HTMLButtonElement>(null);
     const isOpen = open && !disabled;
     const { containerRef: listRef, popupPosition } =
@@ -46,11 +45,9 @@ export function useDropdown(disabled: boolean) {
         return () => observer.disconnect();
     }, [isOpen]);
 
-    const close = (restoreFocus = true) => {
+    const close = () => {
         setOpen(false);
-        if (restoreFocus) {
-            triggerRef.current?.focus();
-        }
+        triggerRef.current?.focus();
     };
     useOverlayDismiss({
         visible: isOpen,
@@ -78,7 +75,6 @@ export function useDropdown(disabled: boolean) {
     return {
         isOpen,
         listId,
-        containerRef,
         triggerRef,
         listRef,
         positionStyle,

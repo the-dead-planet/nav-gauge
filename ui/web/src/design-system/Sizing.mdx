@@ -73,4 +73,6 @@ The height and padding columns are baselines for input-like controls. Components
 
 Use spacing tokens for layout spacing. Do not overload component `size` as a general-purpose padding prop.
 
+On web, put `data-size={size}` on the control or its container. `useThemeVariables` maps that size to inherited `--size-control-height`, `--size-control-padding-block`, `--size-control-padding-inline`, `--size-control-gap`, and the other control metrics. Consume those variables directly instead of repeating geometry rules for each size. Set `data-size` again at nested controls and portal roots that select their own size.
+
 Document component-specific sizing contracts in the component's own documentation.

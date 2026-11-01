@@ -21,6 +21,7 @@ import {
     sizeOptions,
     themeSpecifications,
 } from '@ui';
+import { createAppearanceRules } from '../src/design-system/theme/useThemeVariables';
 
 const require = createRequire(__filename);
 const previousCssLoader = require.extensions['.css'];
@@ -91,6 +92,19 @@ const renderToStaticMarkup = (children: ReactElement): string => renderMarkup(
 describe('Composed appearance rendering', () => {
     after(() => renderingTheme.destroy());
 
+    it('selects shared control metrics through data-size for the complete size scale', () => {
+        const rules = createAppearanceRules(renderingTheme);
+        for (const size of sizeOptions) {
+            const rule = rules.split('\n').find((value) => value.startsWith(`[data-size="${size}"]`));
+            expect(rule).to.include(`--size-control-height:var(--size-control-${size}-height)`);
+            expect(rule).to.include(`--size-control-padding-block:var(--size-control-${size}-padding-block)`);
+            expect(rule).to.include(`--size-control-padding-inline:var(--size-control-${size}-padding-inline)`);
+            expect(rule).to.include(`--size-control-gap:var(--size-control-${size}-gap)`);
+            expect(rule).to.include(`--size-control-font-size:var(--size-control-${size}-font-size)`);
+            expect(rule).to.include(`--size-control-icon-size:var(--size-control-${size}-icon-size)`);
+        }
+    });
+
     it('shares fixed inverse list surfaces while preserving menu and listbox semantics', () => {
         for (const color of appearanceColorOptions) {
             for (const size of sizeOptions) {
@@ -110,6 +124,7 @@ describe('Composed appearance rendering', () => {
                     expect(markup).to.include('data-appearance-variant="fill-inverse"');
                     expect(markup).to.include(`data-appearance-color="${color}"`);
                     expect(markup).to.include(`menu-list size-${size}`);
+                    expect(markup).to.include(`data-size="${size}"`);
                     expect(markup).to.include('aria-label="Materials"');
                     expect(markup).to.include('width:200px');
                     expect(markup).not.to.include('data-interactive=');
@@ -145,6 +160,7 @@ describe('Composed appearance rendering', () => {
                 expect(markup).to.include('disabled=""');
                 expect(markup).to.include('aria-haspopup="listbox"');
                 expect(markup).to.include('aria-expanded="false"');
+                expect(markup).to.include('data-size="lg"');
                 expect(markup).to.include(`--appearance-default-glyphs-override:${theme.color(color, 700)}`);
                 expect(markup).to.include(`--appearance-hover-focus-glyphs-override:${theme.color('hazard', 200)}`);
                 expect(markup).to.include(`--appearance-active-pressed-glyphs-override:${theme.color('hazard', 200)}`);

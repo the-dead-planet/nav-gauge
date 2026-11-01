@@ -9,6 +9,11 @@
 .option {
     display: flex;
     align-items: center;
+    height: var(--size-control-height);
+    padding: var(--size-control-padding-block)
+        var(--size-control-padding-inline);
+    gap: var(--size-control-gap);
+    font-size: var(--size-control-font-size);
     line-height: 1.1;
     border-radius: 0;
     cursor: pointer;
@@ -44,42 +49,6 @@
 
 .arrow-open {
     transform: rotate(180deg);
-}
-
-.trigger.size-lg,
-.size-lg .option {
-    height: var(--size-control-lg-height);
-    padding: var(--size-control-lg-padding-block)
-        var(--size-control-lg-padding-inline);
-    gap: var(--size-control-lg-gap);
-    font-size: var(--size-control-lg-font-size);
-}
-
-.trigger.size-md,
-.size-md .option {
-    height: var(--size-control-md-height);
-    padding: var(--size-control-md-padding-block)
-        var(--size-control-md-padding-inline);
-    gap: var(--size-control-md-gap);
-    font-size: var(--size-control-md-font-size);
-}
-
-.trigger.size-sm,
-.size-sm .option {
-    height: var(--size-control-sm-height);
-    padding: var(--size-control-sm-padding-block)
-        var(--size-control-sm-padding-inline);
-    gap: var(--size-control-sm-gap);
-    font-size: var(--size-control-sm-font-size);
-}
-
-.trigger.size-xs,
-.size-xs .option {
-    height: var(--size-control-xs-height);
-    padding: var(--size-control-xs-padding-block)
-        var(--size-control-xs-padding-inline);
-    gap: var(--size-control-xs-gap);
-    font-size: var(--size-control-xs-font-size);
 }
 
 .option {

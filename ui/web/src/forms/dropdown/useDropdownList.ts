@@ -7,7 +7,7 @@ interface Props<T> extends Pick<
 > {
     listRef: RefObject<HTMLUListElement | null>;
     visible: boolean;
-    onClose: (restoreFocus?: boolean) => void;
+    onClose: () => void;
 }
 
 export function useDropdownList<T>({

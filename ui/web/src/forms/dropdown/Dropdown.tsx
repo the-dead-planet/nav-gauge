@@ -46,7 +46,6 @@ export function Dropdown<T = string>({
     const {
         isOpen,
         listId,
-        containerRef,
         triggerRef,
         listRef,
         positionStyle,
@@ -83,7 +82,6 @@ export function Dropdown<T = string>({
         <ThemeContext.Provider value={theme}>
             <div
                 {...props}
-                ref={containerRef}
                 className={classNames(styles["dropdown-select"], className)}
                 style={style}
             >
@@ -92,10 +90,8 @@ export function Dropdown<T = string>({
                     id={`${listId}-trigger`}
                     ref={triggerRef}
                     type="button"
-                    className={classNames(
-                        styles.trigger,
-                        styles[`size-${size}`],
-                    )}
+                    className={styles.trigger}
+                    data-size={size}
                     variant={variant}
                     color={color}
                     highlightColor={highlightColor}

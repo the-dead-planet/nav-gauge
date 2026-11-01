@@ -9,11 +9,11 @@
     max-height: 240px;
     overflow-y: auto;
     width: max-content;
-    max-width: 100vw;
+    max-width: 100dvw;
 }
 
 .action-menu {
-    min-width: min(160px, 100vw);
+    min-width: min(160px, 100dvw);
 }
 
 .menu-item {

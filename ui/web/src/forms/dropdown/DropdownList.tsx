@@ -1,4 +1,3 @@
-import classNames from "classnames";
 import { CSSProperties, RefObject } from "react";
 import { createPortal } from "react-dom";
 import { DropdownProps, DEFAULT_COLOR, DEFAULT_SIZE } from "@ui";
@@ -12,7 +11,7 @@ interface Props {
     className?: string;
     id: string;
     iconSize: number;
-    onClose: (restoreFocus?: boolean) => void;
+    onClose: () => void;
     triggerRef: RefObject<HTMLButtonElement | null>;
     appearanceOverrides: CSSProperties;
     listRef: RefObject<HTMLUListElement | null>;
@@ -57,7 +56,7 @@ export function DropdownList<T = string>({
             ref={listRef}
             role="listbox"
             tabIndex={-1}
-            className={classNames(styles[`size-${size}`], className)}
+            className={className}
             style={positionStyle}
             data-popup-trigger-id={triggerRef.current?.id || undefined}
             onKeyDown={onKeyDown}
@@ -74,7 +73,6 @@ export function DropdownList<T = string>({
                     rectangle
                     style={appearanceOverrides}
                     key={String(option.value)}
-                    id={`${id}-option-${index}`}
                     role="option"
                     tabIndex={-1}
                     aria-selected={option.value === value}

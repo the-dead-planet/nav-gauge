@@ -46,7 +46,7 @@
 
 .right-drawer {
     right: 0;
-    top: min(6vh, 64px);
+    top: min(6dvh, 64px);
     bottom: 0;
 }
 
@@ -57,7 +57,7 @@
 
 .left-drawer {
     left: 0;
-    top: min(6vh, 64px);
+    top: min(6dvh, 64px);
     bottom: 0;
 }
 
