@@ -147,7 +147,10 @@ export const SliderTrack: FC<Props> = ({
                     pointerEvents="none"
                     style={[
                         styles.track,
-                        { height: trackThickness, backgroundColor: unfilledTrackColor },
+                        {
+                            height: trackThickness,
+                            backgroundColor: unfilledTrackColor,
+                        },
                     ]}
                 >
                     <View
