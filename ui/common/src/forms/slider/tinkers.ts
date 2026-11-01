@@ -1,0 +1,117 @@
+import { SliderProps } from "./model";
+import {
+    allColorShades,
+    appearanceColorOptions,
+    DEFAULT_COLOR,
+    DEFAULT_FILL_VARIANT,
+    DEFAULT_SIZE,
+    fillVariantOptions,
+    sizeOptions,
+    SizeVariant,
+    typographyStoryControls,
+} from "../../design-system";
+import { StoryControls } from "../../storybook";
+
+export const sliderSizes: Record<
+    SizeVariant,
+    { thumb: number; track: number }
+> = {
+    xs: { thumb: 12, track: 3 },
+    sm: { thumb: 14, track: 6 },
+    md: { thumb: 17, track: 8 },
+    lg: { thumb: 20, track: 10 },
+};
+
+export const getSliderRatio = (
+    value: number,
+    min: number,
+    max: number,
+): number =>
+    max > min ? Math.max(0, Math.min(1, (value - min) / (max - min))) : 0;
+
+export const snapSliderValue = (
+    value: number,
+    min: number,
+    max: number,
+    step: number,
+): number => {
+    if (max <= min) {
+        return min;
+    }
+    const interval = step > 0 ? step : 1;
+    const snapped = Number(
+        (min + Math.round((value - min) / interval) * interval).toPrecision(15),
+    );
+    return Math.max(min, Math.min(max, snapped));
+};
+
+export const sliderStoryArgs: SliderProps = {
+    value: 50,
+    min: 0,
+    max: 100,
+    step: 1,
+    label: "Slider",
+    color: DEFAULT_COLOR,
+    variant: DEFAULT_FILL_VARIANT,
+    size: DEFAULT_SIZE,
+    highlighted: false,
+    disabled: false,
+    showNumberInput: false,
+    showStepControls: false,
+};
+
+export const sliderStoryControls: StoryControls<SliderProps> = {
+    themeMode: typographyStoryControls.themeMode,
+    color: {
+        control: "select",
+        options: appearanceColorOptions,
+    },
+    highlightColor: {
+        control: "select",
+        options: ["Default", ...appearanceColorOptions],
+        mapping: { Default: undefined },
+    },
+    glyphsShade: {
+        control: "select",
+        options: ["Default", ...allColorShades],
+        mapping: { Default: undefined },
+    },
+    highlightGlyphsShade: {
+        control: "select",
+        options: ["Default", ...allColorShades],
+        mapping: { Default: undefined },
+    },
+    variant: {
+        control: "select",
+        options: fillVariantOptions,
+    },
+    size: {
+        control: "select",
+        options: sizeOptions,
+    },
+    value: {
+        control: {
+            type: "number",
+        },
+    },
+    min: {
+        control: {
+            type: "number",
+        },
+    },
+    max: {
+        control: {
+            type: "number",
+        },
+    },
+    step: {
+        control: {
+            type: "number",
+        },
+    },
+    label: { control: "text" },
+    highlighted: { control: "boolean" },
+    disabled: { control: "boolean" },
+    showNumberInput: { control: "boolean" },
+    showStepControls: { control: "boolean" },
+};

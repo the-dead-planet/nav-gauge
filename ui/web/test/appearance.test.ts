@@ -66,6 +66,7 @@ const { NumberInput } = require('../src/forms/number-input/NumberInput') as type
 const { TextInput } = require('../src/forms/text-input/TextInput') as typeof import('../src/forms/text-input/TextInput');
 const { TextArea } = require('../src/forms/text-area/TextArea') as typeof import('../src/forms/text-area/TextArea');
 const { Radio } = require('../src/forms/radio/Radio') as typeof import('../src/forms/radio/Radio');
+const { Slider } = require('../src/forms/slider/Slider') as typeof import('../src/forms/slider/Slider');
 const { ClockInput, ClockSliceInput, ClockDurationInput } = require('../src/forms/clock-input') as typeof import('../src/forms/clock-input');
 const { Text } = require('../src/design-system/typography') as typeof import('../src/design-system/typography');
 if (previousCssLoader) {
@@ -96,6 +97,40 @@ const renderToStaticMarkup = (children: ReactElement): string => renderMarkup(
 describe('Composed appearance rendering', () => {
     after(() => renderingTheme.destroy());
 
+    it('gives sliders shared appearance and a readable associated native range label', () => {
+        for (const color of appearanceColorOptions) {
+            for (const variant of fillVariantOptions) {
+                const markup = renderToStaticMarkup(createElement(Slider, {
+                    value: 150,
+                    label: 'Position',
+                    color,
+                    variant,
+                    highlightColor: 'hazard',
+                    glyphsShade: 700,
+                    highlightGlyphsShade: 200,
+                    themeMode: 'dark',
+                    highlighted: true,
+                    disabled: true,
+                }));
+                expect(markup).to.include(`data-appearance-color="${color}"`);
+                expect(markup).to.include(`data-appearance-variant="${variant}"`);
+                expect(markup).to.include('data-appearance-highlight="hazard"');
+                expect(markup).to.include('data-appearance-mode="dark"');
+                expect(markup).to.include('data-disabled="true"');
+                expect(markup).to.include('data-highlighted="true"');
+                expect(markup).to.match(/<label[^>]*data-appearance-variant="default"/);
+                expect(markup).to.include('--track-complete:100%');
+                expect(markup).to.include('type="range"');
+                expect(markup).to.include('disabled=""');
+                const inputId = markup.match(/<input[^>]*id="([^"]+)"/)?.[1];
+                expect(inputId).to.be.a('string');
+                expect(markup).to.include(`for="${inputId}"`);
+                expect(markup).to.include('--appearance-default-glyphs-override:');
+                expect(markup).to.include('--appearance-active-pressed-glyphs-override:');
+            }
+        }
+    });
+
     it('lets controls select their own size inside a differently sized container', () => {
         for (const size of sizeOptions) {
             const controls = [
@@ -113,6 +148,7 @@ describe('Composed appearance rendering', () => {
                 createElement(ClockInput, { size, value: 30 }),
                 createElement(ClockSliceInput, { size, value: 30 }),
                 createElement(ClockDurationInput, { size, value: 30 }),
+                createElement(Slider, { size, value: 30 }),
                 createElement(Tabstrip, { size, options: [], value: '', onChange: () => undefined, overflowAccessibilityLabel: 'More tabs', children: 'Content' }),
                 ...buttonCorners.map((corners) => createElement(Button, { size, corners, icon: 'beaker.svg', 'aria-label': 'Action' })),
             ];

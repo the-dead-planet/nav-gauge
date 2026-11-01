@@ -1,12 +1,23 @@
-import { ChangeEvent, ComponentProps, CSSProperties, FC } from "react";
+import { ChangeEvent, ComponentProps, CSSProperties, FC, useId } from "react";
 import classNames from "classnames";
-import { DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, SliderProps, useTheme } from "@ui";
-import { Label, Span } from "../../design-system/typography";
+import {
+    DEFAULT_COLOR,
+    DEFAULT_FILL_VARIANT,
+    DEFAULT_SIZE,
+    getSliderRatio,
+    SliderProps,
+    ThemeContext,
+    useTheme,
+} from "@ui";
+import { Span } from "../../design-system/typography";
 import { NumberInput } from "../number-input";
 import { StepControls } from "../step-controls";
-import styles from './slider.module.css';
+import styles from "./slider.module.css";
 
-export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' | 'size'>> = ({
+export const Slider: FC<
+    SliderProps & Omit<ComponentProps<"input">, "onChange" | "size">
+> = ({
+    themeMode,
     color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
@@ -29,10 +40,14 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
     style,
     ...props
 }) => {
-    const theme = useTheme();
-    const accessibleLabel = ariaLabel ?? props['aria-label'] ?? (typeof label === 'string' ? label : undefined);
-    const range = max - min;
-    const progress = range > 0 ? ((value - min) / range) * 100 : 0;
+    const theme = useTheme().forMode(themeMode);
+    const generatedId = useId();
+    const inputId = id ?? generatedId;
+    const accessibleLabel =
+        ariaLabel ??
+        props["aria-label"] ??
+        (typeof label === "string" ? label : undefined);
+    const progress = getSliderRatio(value, min, max) * 100;
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         onChange?.(Number(e.target.value));
@@ -40,34 +55,26 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
 
     const slider = (
         <div
-            className={classNames(
-                styles['slider-wrapper'],
-                styles[`mode-${theme.mode}`],
-                styles[`color-${color}`],
-                styles[`highlight-${highlightColor}`],
-                styles[`size-${size}`]
-            )}
-            style={{ '--track-complete': `${progress}%` } as CSSProperties}
+            className={styles["slider-wrapper"]}
+            style={{ "--track-complete": `${progress}%` } as CSSProperties}
         >
+            <div className={styles.track} aria-hidden="true">
+                <div className={styles.progress} />
+                <div className={styles.thumb} />
+            </div>
             <input
+                {...props}
                 type="range"
-                id={id}
+                id={inputId}
                 min={min}
                 max={max}
                 step={step}
                 value={value}
                 disabled={disabled}
                 onChange={handleChange}
-                aria-label={accessibleLabel ?? 'Slider'}
-                className={classNames(
-                    styles.slider,
-                    styles[`size-${size}`],
-                    styles[`variant-${variant}`],
-                    { [styles.highlighted]: highlighted },
-                    className
-                )}
+                aria-label={accessibleLabel ?? "Slider"}
+                className={classNames(styles.slider, className)}
                 style={style}
-                {...props}
             />
         </div>
     );
@@ -86,43 +93,82 @@ export const Slider: FC<SliderProps & Omit<ComponentProps<"input">, 'onChange' |
         >
             {slider}
         </StepControls>
-    ) : slider;
+    ) : (
+        slider
+    );
 
     return (
-        <div className={classNames(styles['container'], {
-            [styles['disabled']]: disabled,
-        })}>
-            {typeof label === 'string' ? (
-                <Label htmlFor={id} color={highlighted ? highlightColor : color} shade={highlighted ? highlightGlyphsShade : glyphsShade} className={styles['label']}>
-                    {label} {!showNumberInput ? <Span tabular>{value}</Span> : null}
-                </Label>
-            ) : label}
+        <ThemeContext.Provider value={theme}>
             <div
-                className={classNames(
-                    styles['control-row'],
-                    styles[`control-size-${size}`]
-                )}
+                className={styles.container}
+                data-size={size}
+                data-appearance-mode={theme.mode}
+                data-appearance-variant={variant}
+                data-appearance-color={color}
+                data-appearance-highlight={highlightColor}
+                data-highlighted={highlighted || undefined}
+                data-disabled={disabled || undefined}
+                style={
+                    {
+                        "--appearance-default-glyphs-override":
+                            glyphsShade === undefined
+                                ? undefined
+                                : theme.color(color, glyphsShade),
+                        "--appearance-hover-focus-glyphs-override":
+                            highlightGlyphsShade === undefined
+                                ? undefined
+                                : theme.color(
+                                      highlightColor,
+                                      highlightGlyphsShade,
+                                  ),
+                        "--appearance-active-pressed-glyphs-override":
+                            highlightGlyphsShade === undefined
+                                ? undefined
+                                : theme.color(
+                                      highlightColor,
+                                      highlightGlyphsShade,
+                                  ),
+                    } as CSSProperties
+                }
             >
-                {steppedSlider}
-                {showNumberInput ? (
-                    <NumberInput
-                        value={value}
-                        onChange={(newValue) => onChange?.(newValue)}
-                        min={min}
-                        max={max}
-                        step={step}
-                        color={color}
-                        glyphsShade={glyphsShade}
-                        highlightColor={highlightColor}
-                        highlightGlyphsShade={highlightGlyphsShade}
-                        size={size}
-                        variant={variant}
-                        disabled={disabled || !onChange}
-                        showStepControls={true}
-                        ariaLabel={`${accessibleLabel ?? 'Slider'} (#)`}
-                    />
-                ) : null}
+                {typeof label === "string" ? (
+                    <label
+                        htmlFor={inputId}
+                        data-appearance-variant="default"
+                        className={styles.label}
+                    >
+                        {label}{" "}
+                        {!showNumberInput ? <Span tabular>{value}</Span> : null}
+                    </label>
+                ) : (
+                    label
+                )}
+                <div className={styles["control-row"]}>
+                    {steppedSlider}
+                    {showNumberInput ? (
+                        <div className={styles["number-input"]}>
+                            <NumberInput
+                                themeMode={themeMode}
+                                value={value}
+                                onChange={(newValue) => onChange?.(newValue)}
+                                min={min}
+                                max={max}
+                                step={step}
+                                color={color}
+                                glyphsShade={glyphsShade}
+                                highlightColor={highlightColor}
+                                highlightGlyphsShade={highlightGlyphsShade}
+                                size={size}
+                                variant={variant}
+                                highlighted={highlighted}
+                                disabled={disabled || !onChange}
+                                showStepControls={true}
+                                ariaLabel={`${accessibleLabel ?? "Slider"} (#)`}
+                            />
+                        </div>
+                    ) : null}
+                </div>
             </div>
-        </div>
+        </ThemeContext.Provider>
     );
 };

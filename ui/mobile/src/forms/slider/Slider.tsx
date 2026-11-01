@@ -1,267 +1,259 @@
-import { forwardRef, useMemo, useRef, useState } from "react";
+import { forwardRef } from "react";
+import { StyleSheet, View, ViewStyle, type ViewInstance } from "react-native";
 import {
-    LayoutChangeEvent,
-    PanResponder,
-    View,
-    ViewStyle,
-    type ViewInstance,
-} from "react-native";
-import { DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, SliderProps, translucentSurfaceOpacity, useTheme } from "@ui";
+    DEFAULT_COLOR,
+    DEFAULT_FILL_VARIANT,
+    DEFAULT_SIZE,
+    getSliderRatio,
+    sliderSizes,
+    SliderProps,
+    ThemeContext,
+    useTheme,
+} from "@ui";
 import { Text } from "../../design-system/typography";
 import { NumberInput } from "../number-input";
 import { StepControls } from "../step-controls";
+import { useSliderInteraction } from "./useSliderInteraction";
 
-const thumbSizes: Record<string, number> = { xs: 12, sm: 14, md: 17, lg: 20 };
-const trackThicknesses: Record<string, number> = { xs: 3, sm: 6, md: 8, lg: 10 };
-const controlHeights: Record<string, number> = { xs: 18, sm: 24, md: 32, lg: 40 };
-
-function snap(v: number, min: number, max: number, step: number): number {
-    const stepped = Math.round((v - min) / step) * step + min;
-
-    return Math.min(max, Math.max(min, stepped));
-}
-
-export const Slider = forwardRef<ViewInstance, SliderProps & { style?: ViewStyle }>(({
-    color = DEFAULT_COLOR,
-    glyphsShade,
-    highlightColor = color,
-    highlightGlyphsShade,
-    size = DEFAULT_SIZE,
-    variant = DEFAULT_FILL_VARIANT,
-    min = 0,
-    max = 100,
-    step = 1,
-    value,
-    onChange,
-    highlighted,
-    disabled = false,
-    label,
-    showNumberInput = false,
-    showStepControls = false,
-    ariaLabel,
-    style,
-}, ref) => {
-    const theme = useTheme();
-    const isLight = theme.mode === 'light';
-    const thumbSize = thumbSizes[size];
-    const trackThickness = trackThicknesses[size];
-
-    const [trackWidth, setTrackWidth] = useState(0);
-    const [isDragging, setIsDragging] = useState(false);
-    const hitAreaRef = useRef<ViewInstance>(null);
-    const hitAreaPageXRef = useRef(0);
-
-    const trackBackground = theme.color(color, 500, isLight ? 0.15 : 0.3);
-    const highlightAccent = theme.color(highlightColor, isLight ? 600 : 300);
-    const fillColor = theme.color(color, 800);
-    const strokeColor = theme.color(color, 500);
-    const isActive = highlighted || isDragging;
-    const highlightTrackColor = isActive ? highlightAccent : theme.color(highlightColor, 500);
-    const thumbBackground = isActive
-        ? theme.color(highlightColor, 900)
-        : variant === 'fill'
-            ? theme.color(color, 500)
-            : variant === 'fill-translucent'
-                ? theme.color(color, 500, translucentSurfaceOpacity.unblurred)
-                : fillColor;
-    const thumbBorderColor = isActive ? highlightAccent : strokeColor;
-    const valueRef = useRef(value);
-    const startValueRef = useRef(value);
-    valueRef.current = value;
-
-    const contextReference = useRef({ disabled, trackWidth, min, max, step, onChange });
-    contextReference.current = { disabled, trackWidth, min, max, step, onChange };
-
-    const handleLayout = (e: LayoutChangeEvent) => {
-        setTrackWidth(e.nativeEvent.layout.width);
-        hitAreaRef.current?.measureInWindow((x) => {
-            hitAreaPageXRef.current = x;
-        });
-    };
-
-    const panResponder = useMemo(() => PanResponder.create({
-        onStartShouldSetPanResponder: () => !disabled,
-        onMoveShouldSetPanResponder: () => !disabled,
-        onPanResponderGrant: (evt) => {
-            const ctx = contextReference.current;
-            if (ctx.disabled) {
-                return;
-            }
-            setIsDragging(true);
-            startValueRef.current = valueRef.current;
-
-            if (ctx.trackWidth > 0) {
-                const touchX = evt.nativeEvent.pageX - hitAreaPageXRef.current;
-                const ratio = Math.max(0, Math.min(1, touchX / ctx.trackWidth));
-                const raw = ctx.min + ratio * (ctx.max - ctx.min);
-                const snapped = snap(raw, ctx.min, ctx.max, ctx.step);
-                if (snapped !== valueRef.current) {
-                    ctx.onChange?.(snapped);
-                }
-            }
-        },
-        onPanResponderMove: (_evt, gs) => {
-            const ctx = contextReference.current;
-            if (ctx.disabled || ctx.trackWidth <= 0) return;
-            const ratio = gs.dx / ctx.trackWidth;
-            const raw = startValueRef.current + ratio * (ctx.max - ctx.min);
-            const snapped = snap(raw, ctx.min, ctx.max, ctx.step);
-            if (snapped !== valueRef.current) {
-                ctx.onChange?.(snapped);
-            }
-        },
-        onPanResponderRelease: () => {
-            setIsDragging(false);
-        },
-    }), [disabled]);
-
-    const ratio = max > min
-        ? Math.max(0, Math.min(1, (value - min) / (max - min)))
-        : 0;
-    const fillWidth = trackWidth * ratio;
-
-    const containerStyle: ViewStyle = {
-        opacity: disabled ? 0.4 : 1,
-        ...style,
-    };
-
-    const hitAreaStyle: ViewStyle = {
-        height: thumbSize,
+const styles = StyleSheet.create({
+    container: {
+        gap: 4,
+    },
+    row: {
+        flexDirection: "row",
+        alignItems: "center",
+    },
+    slider: {
+        flex: 1,
+        minWidth: 0,
         justifyContent: "center",
-        marginHorizontal: thumbSize / 2,
-    };
-
-    const trackStyle: ViewStyle = {
-        height: trackThickness,
-        backgroundColor: trackBackground,
-        borderRadius: trackThickness / 2,
+    },
+    hitArea: {
+        justifyContent: "center",
+    },
+    track: {
         position: "relative",
-    };
-
-    const fillStyle: ViewStyle = {
+    },
+    remainder: {
+        ...StyleSheet.absoluteFill,
+        opacity: 0.25,
+    },
+    progress: {
+        height: "100%",
+    },
+    thumb: {
         position: "absolute",
-        left: 0,
-        top: 0,
-        bottom: 0,
-        width: fillWidth,
-        backgroundColor: highlightTrackColor,
-        borderRadius: trackThickness / 2,
-    };
-
-    const trackCapSize = trackThickness / Math.SQRT2;
-    const trackCapStyle: ViewStyle = {
-        position: 'absolute',
-        left: fillWidth - trackCapSize / 2 - trackThickness / 4,
-        top: (trackThickness - trackCapSize) / 2,
-        width: trackCapSize,
-        height: trackCapSize,
-        backgroundColor: highlightTrackColor,
-        transform: [{ rotate: '45deg' }],
-    };
-
-    const thumbStyle: ViewStyle = {
-        position: "absolute",
-        left: fillWidth - thumbSize / 2,
-        top: -(thumbSize - trackThickness) / 2,
-        width: thumbSize,
-        height: thumbSize,
-        backgroundColor: thumbBackground,
-        borderWidth: 2,
-        borderColor: thumbBorderColor,
         transform: [{ rotate: "45deg" }],
-        ...(isActive ? {
-            boxShadow: `0px 0px 4px ${highlightAccent}, 0px 0px 20px ${theme.color(highlightColor, 900)}`,
-        } : {}),
-    };
-
-    const slider = (
-        <View style={{ flex: 1 }}>
-            <View
-                ref={hitAreaRef}
-                onLayout={handleLayout}
-                style={hitAreaStyle}
-                {...panResponder.panHandlers}
-            >
-                <View style={trackStyle}>
-                    <View style={fillStyle} />
-                    <View style={trackCapStyle} />
-                    <View style={thumbStyle} />
-                </View>
-            </View>
-        </View>
-    );
-
-    const steppedSlider = (
-        <View
-            style={{
-                flex: 1,
-                minWidth: 120,
-                height: controlHeights[size],
-                justifyContent: 'center',
-            }}
-        >
-            {showStepControls ? (
-                <StepControls
-                    color={color}
-                    variant={variant}
-                    size={size}
-                    value={value}
-                    onChange={onChange}
-                    min={min}
-                    max={max}
-                    step={step}
-                    disabled={disabled}
-                    ariaLabel={ariaLabel ?? (typeof label === 'string' ? label : undefined)}
-                >
-                    {slider}
-                </StepControls>
-            ) : slider}
-        </View>
-    );
-    const control = (
-        <View
-            style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                flexWrap: 'wrap',
-                minHeight: controlHeights[size],
-                gap: 8,
-            }}
-        >
-            {steppedSlider}
-            {showNumberInput ? (
-                <View style={{ width: 80 }}>
-                    <NumberInput
-                        value={value}
-                        onChange={(newValue) => onChange?.(newValue)}
-                        min={min}
-                        max={max}
-                        step={step}
-                        color={color}
-                        glyphsShade={glyphsShade}
-                        highlightColor={highlightColor}
-                        highlightGlyphsShade={highlightGlyphsShade}
-                        size={size}
-                        variant={variant}
-                        disabled={disabled || !onChange}
-                        showStepControls={true}
-                        ariaLabel={`${ariaLabel ?? (typeof label === 'string' ? label : 'Slider')} (#)`}
-                    />
-                </View>
-            ) : null}
-        </View>
-    );
-
-    return (
-        <View ref={ref} style={containerStyle}>
-            {control}
-            {label && (
-                <Text color={color} shade={isActive ? highlightGlyphsShade : glyphsShade} style={{ fontSize: 11, marginTop: 4 }}>
-                    {label} {!showNumberInput ? value : null}
-                </Text>
-            )}
-        </View>
-    );
+    },
+    numberInput: {
+        width: 80,
+        flexShrink: 0,
+    },
 });
 
-Slider.displayName = 'Slider';
+export const Slider = forwardRef<
+    ViewInstance,
+    SliderProps & { style?: ViewStyle }
+>(
+    (
+        {
+            themeMode,
+            color = DEFAULT_COLOR,
+            glyphsShade,
+            highlightColor = color,
+            highlightGlyphsShade,
+            size = DEFAULT_SIZE,
+            variant = DEFAULT_FILL_VARIANT,
+            min = 0,
+            max = 100,
+            step = 1,
+            value,
+            onChange,
+            highlighted = false,
+            disabled = false,
+            label,
+            showNumberInput = false,
+            showStepControls = false,
+            ariaLabel,
+            style,
+        },
+        ref,
+    ) => {
+        const theme = useTheme().forMode(themeMode);
+        const { state, focused, width, interaction, adjustValue } =
+            useSliderInteraction({
+                value,
+                min,
+                max,
+                step,
+                disabled,
+                highlighted,
+                onChange,
+            });
+        const appearance = theme.resolveAppearance(
+            variant,
+            color,
+            highlightColor,
+            state,
+        );
+        const labelAppearance = theme.resolveAppearance(
+            "default",
+            color,
+            highlightColor,
+            state,
+            glyphsShade,
+            highlightGlyphsShade,
+        );
+        const controlSize = theme.sizes.control[size];
+        const { thumb, track } = sliderSizes[size];
+        const fillWidth = width * getSliderRatio(value, min, max);
+        const accessibleLabel =
+            ariaLabel ?? (typeof label === "string" ? label : "Slider");
+
+        const slider = (
+            <View style={[styles.slider, { height: controlSize.height }]}>
+                <View
+                    {...interaction}
+                    accessible
+                    accessibilityRole="adjustable"
+                    accessibilityLabel={accessibleLabel}
+                    accessibilityState={{ disabled }}
+                    accessibilityValue={{ min, max, now: value }}
+                    accessibilityActions={[
+                        { name: "increment" },
+                        { name: "decrement" },
+                    ]}
+                    onAccessibilityAction={(event) => {
+                        if (event.nativeEvent.actionName === "increment") {
+                            adjustValue(1);
+                        } else if (
+                            event.nativeEvent.actionName === "decrement"
+                        ) {
+                            adjustValue(-1);
+                        }
+                    }}
+                    focusable={!disabled}
+                    style={[
+                        styles.hitArea,
+                        {
+                            height: controlSize.height,
+                            marginHorizontal: thumb / 2,
+                            outlineStyle: "solid",
+                            outlineWidth: focused ? 2 : 0,
+                            outlineOffset: 2,
+                            outlineColor: appearance.effects.glowColor,
+                        },
+                    ]}
+                >
+                    <View
+                        pointerEvents="none"
+                        style={[styles.track, { height: track }]}
+                    >
+                        <View
+                            style={[
+                                styles.remainder,
+                                { backgroundColor: appearance.glyphs },
+                            ]}
+                        />
+                        <View
+                            style={[
+                                styles.progress,
+                                {
+                                    width: fillWidth,
+                                    backgroundColor: appearance.glyphs,
+                                },
+                            ]}
+                        />
+                        <View
+                            style={[
+                                styles.thumb,
+                                {
+                                    left: fillWidth - thumb / 2,
+                                    top: (track - thumb) / 2,
+                                    width: thumb,
+                                    height: thumb,
+                                    backgroundColor: appearance.surface,
+                                    borderColor: appearance.border.color,
+                                    borderWidth: appearance.border.width,
+                                },
+                            ]}
+                        />
+                    </View>
+                </View>
+            </View>
+        );
+
+        return (
+            <ThemeContext.Provider value={theme}>
+                <View ref={ref} style={[styles.container, style]}>
+                    {typeof label === "string" ? (
+                        <Text
+                            style={{
+                                color: labelAppearance.glyphs,
+                                fontSize: controlSize.fontSize,
+                            }}
+                        >
+                            {label} {!showNumberInput ? value : null}
+                        </Text>
+                    ) : (
+                        label
+                    )}
+                    <View
+                        style={[
+                            styles.row,
+                            {
+                                gap: controlSize.gap,
+                                minHeight: controlSize.height,
+                            },
+                        ]}
+                    >
+                        {showStepControls ? (
+                            <StepControls
+                                color={color}
+                                variant={variant}
+                                size={size}
+                                value={value}
+                                onChange={onChange}
+                                min={min}
+                                max={max}
+                                step={step}
+                                disabled={disabled}
+                                ariaLabel={accessibleLabel}
+                            >
+                                {slider}
+                            </StepControls>
+                        ) : (
+                            slider
+                        )}
+                        {showNumberInput ? (
+                            <View style={styles.numberInput}>
+                                <NumberInput
+                                    themeMode={themeMode}
+                                    value={value}
+                                    onChange={(newValue) =>
+                                        onChange?.(newValue)
+                                    }
+                                    min={min}
+                                    max={max}
+                                    step={step}
+                                    color={color}
+                                    glyphsShade={glyphsShade}
+                                    highlightColor={highlightColor}
+                                    highlightGlyphsShade={highlightGlyphsShade}
+                                    size={size}
+                                    variant={variant}
+                                    highlighted={highlighted}
+                                    disabled={disabled || !onChange}
+                                    showStepControls
+                                    ariaLabel={`${accessibleLabel} (#)`}
+                                />
+                            </View>
+                        ) : null}
+                    </View>
+                </View>
+            </ThemeContext.Provider>
+        );
+    },
+);
+
+Slider.displayName = "Slider";
