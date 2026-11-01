@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { resolveTypographyFontWeight, typographyFontWeights } from '../src';
+import { resolveTypographyFontWeight, typographyFontWeights } from '../../src';
 
 describe('Typography weights', () => {
     it('normalizes cross-platform values and preserves explicit override precedence', () => {

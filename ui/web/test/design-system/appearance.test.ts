@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import { describe, it } from 'mocha';
 import { createRequire } from 'node:module';
 import { ComponentProps, createElement, ReactElement } from 'react';
 import { renderToStaticMarkup as renderMarkup } from 'react-dom/server';
@@ -21,7 +22,7 @@ import {
     sizeOptions,
     themeSpecifications,
 } from '@ui';
-import { createAppearanceRules } from '../src/design-system/theme/useThemeVariables';
+import { createAppearanceRules } from '../../src/design-system/theme/useThemeVariables';
 
 const require = createRequire(__filename);
 const previousCssLoader = require.extensions['.css'];
@@ -37,37 +38,38 @@ require.extensions['.css'] = (module) => {
     };
 };
 const { Hexagon } =
-    require('../src/hud/hexagon/Hexagon') as typeof import('../src/hud/hexagon/Hexagon');
-const { Panel } = require('../src/hud/panel/Panel') as typeof import('../src/hud/panel/Panel');
-const { HexagonalPanel } = require('../src/hud/hexagonal-panel/HexagonalPanel') as typeof import('../src/hud/hexagonal-panel/HexagonalPanel');
-const { OctagonalPanel } = require('../src/hud/octagonal-panel/OctagonalPanel') as typeof import('../src/hud/octagonal-panel/OctagonalPanel');
-const { Octagon } = require('../src/hud/octagon/Octagon') as typeof import('../src/hud/octagon/Octagon');
-const { NotchedPanel } = require('../src/hud/notched-panel/NotchedPanel') as typeof import('../src/hud/notched-panel/NotchedPanel');
-const { HudDecoration } = require('../src/hud/decoration/HudDecoration') as typeof import('../src/hud/decoration/HudDecoration');
+    require('../../src/hud/hexagon/Hexagon') as typeof import('../../src/hud/hexagon/Hexagon');
+const { Panel } = require('../../src/hud/panel/Panel') as typeof import('../../src/hud/panel/Panel');
+const { HexagonalPanel } = require('../../src/hud/hexagonal-panel/HexagonalPanel') as typeof import('../../src/hud/hexagonal-panel/HexagonalPanel');
+const { OctagonalPanel } = require('../../src/hud/octagonal-panel/OctagonalPanel') as typeof import('../../src/hud/octagonal-panel/OctagonalPanel');
+const { Octagon } = require('../../src/hud/octagon/Octagon') as typeof import('../../src/hud/octagon/Octagon');
+const { NotchedPanel } = require('../../src/hud/notched-panel/NotchedPanel') as typeof import('../../src/hud/notched-panel/NotchedPanel');
+const { HudDecoration } = require('../../src/hud/decoration/HudDecoration') as typeof import('../../src/hud/decoration/HudDecoration');
 const { ThemeSelect } =
-    require('../src/assemblies/theme-select/ThemeSelect') as typeof import('../src/assemblies/theme-select/ThemeSelect');
+    require('../../src/assemblies/theme-select/ThemeSelect') as typeof import('../../src/assemblies/theme-select/ThemeSelect');
 const { Divider } =
-    require('../src/chassis/divider/Divider') as typeof import('../src/chassis/divider/Divider');
-const { Button } = require('../src/gizmos/button/Button') as typeof import('../src/gizmos/button/Button');
-const { Chip } = require('../src/gizmos/chip/Chip') as typeof import('../src/gizmos/chip/Chip');
-const { OctagonalSurface } = require('../src/hud/octagonal-panel/OctagonalSurface') as typeof import('../src/hud/octagonal-panel/OctagonalSurface');
-const { ResizeHandle } = require('../src/gizmos/resize-handle/ResizeHandle') as typeof import('../src/gizmos/resize-handle/ResizeHandle');
-const { ColorBox } = require('../src/gizmos/color-box/ColorBox') as typeof import('../src/gizmos/color-box/ColorBox');
-const { Menu } = require('../src/rigs/menu/Menu') as typeof import('../src/rigs/menu/Menu');
-const { MenuList } = require('../src/rigs/menu/MenuList') as typeof import('../src/rigs/menu/MenuList');
-const { MenuItem } = require('../src/rigs/menu/MenuItem') as typeof import('../src/rigs/menu/MenuItem');
-const { Tabstrip } = require('../src/rigs/tabstrip/Tabstrip') as typeof import('../src/rigs/tabstrip/Tabstrip');
-const { VariantGallery } = require('../src/storybook/VariantGallery') as typeof import('../src/storybook/VariantGallery');
-const { FileInput } = require('../src/forms/file-input/FileInput') as typeof import('../src/forms/file-input/FileInput');
-const { Checkbox } = require('../src/forms/checkbox/Checkbox') as typeof import('../src/forms/checkbox/Checkbox');
-const { Dropdown } = require('../src/forms/dropdown/Dropdown') as typeof import('../src/forms/dropdown/Dropdown');
-const { Icon } = require('../src/design-system/icons') as typeof import('../src/design-system/icons');
-const { NumberInput } = require('../src/forms/number-input/NumberInput') as typeof import('../src/forms/number-input/NumberInput');
-const { TextInput } = require('../src/forms/text-input/TextInput') as typeof import('../src/forms/text-input/TextInput');
-const { TextArea } = require('../src/forms/text-area/TextArea') as typeof import('../src/forms/text-area/TextArea');
-const { Radio } = require('../src/forms/radio/Radio') as typeof import('../src/forms/radio/Radio');
-const { ClockInput, ClockSliceInput, ClockDurationInput } = require('../src/forms/clock-input') as typeof import('../src/forms/clock-input');
-const { Text } = require('../src/design-system/typography') as typeof import('../src/design-system/typography');
+    require('../../src/chassis/divider/Divider') as typeof import('../../src/chassis/divider/Divider');
+const { Button } = require('../../src/gizmos/button/Button') as typeof import('../../src/gizmos/button/Button');
+const { Chip } = require('../../src/gizmos/chip/Chip') as typeof import('../../src/gizmos/chip/Chip');
+const { OctagonalSurface } = require('../../src/hud/octagonal-panel/OctagonalSurface') as typeof import('../../src/hud/octagonal-panel/OctagonalSurface');
+const { ResizeHandle } = require('../../src/gizmos/resize-handle/ResizeHandle') as typeof import('../../src/gizmos/resize-handle/ResizeHandle');
+const { ColorBox } = require('../../src/gizmos/color-box/ColorBox') as typeof import('../../src/gizmos/color-box/ColorBox');
+const { Menu } = require('../../src/rigs/menu/Menu') as typeof import('../../src/rigs/menu/Menu');
+const { MenuList } = require('../../src/rigs/menu/MenuList') as typeof import('../../src/rigs/menu/MenuList');
+const { MenuItem } = require('../../src/rigs/menu/MenuItem') as typeof import('../../src/rigs/menu/MenuItem');
+const { Tabstrip } = require('../../src/rigs/tabstrip/Tabstrip') as typeof import('../../src/rigs/tabstrip/Tabstrip');
+const { VariantGallery } = require('../../src/storybook/VariantGallery') as typeof import('../../src/storybook/VariantGallery');
+const { FileInput } = require('../../src/forms/file-input/FileInput') as typeof import('../../src/forms/file-input/FileInput');
+const { Checkbox } = require('../../src/forms/checkbox/Checkbox') as typeof import('../../src/forms/checkbox/Checkbox');
+const { Dropdown } = require('../../src/forms/dropdown/Dropdown') as typeof import('../../src/forms/dropdown/Dropdown');
+const { Icon } = require('../../src/design-system/icons') as typeof import('../../src/design-system/icons');
+const { NumberInput } = require('../../src/forms/number-input/NumberInput') as typeof import('../../src/forms/number-input/NumberInput');
+const { TextInput } = require('../../src/forms/text-input/TextInput') as typeof import('../../src/forms/text-input/TextInput');
+const { TextArea } = require('../../src/forms/text-area/TextArea') as typeof import('../../src/forms/text-area/TextArea');
+const { Radio } = require('../../src/forms/radio/Radio') as typeof import('../../src/forms/radio/Radio');
+const { Slider } = require('../../src/forms/slider/Slider') as typeof import('../../src/forms/slider/Slider');
+const { ClockInput, ClockSliceInput, ClockDurationInput } = require('../../src/forms/clock-input') as typeof import('../../src/forms/clock-input');
+const { Text } = require('../../src/design-system/typography') as typeof import('../../src/design-system/typography');
 if (previousCssLoader) {
     require.extensions['.css'] = previousCssLoader;
 } else {
@@ -96,6 +98,67 @@ const renderToStaticMarkup = (children: ReactElement): string => renderMarkup(
 describe('Composed appearance rendering', () => {
     after(() => renderingTheme.destroy());
 
+    it('omits empty Button labels while preserving numeric zero', () => {
+        for (const corners of buttonCorners) {
+            for (const children of [undefined, null, false, '', [], [false, '']]) {
+                const markup = renderToStaticMarkup(createElement(Button, {
+                    corners,
+                    children,
+                    icon: 'beaker.svg',
+                    tooltip: 'Action',
+                }));
+                expect(markup).to.include('only-icon');
+                expect(markup).not.to.match(/<span[^>]*class="[^"]*\blabel\b/);
+                expect(markup).to.include('aria-label="Action"');
+            }
+            const markup = renderToStaticMarkup(createElement(Button, {
+                corners,
+                children: 0,
+                icon: 'beaker.svg',
+            }));
+            expect(markup).not.to.include('only-icon');
+            expect(markup).to.match(/<span[^>]*class="[^"]*label[^"]*"[^>]*>0<\/span>/);
+        }
+    });
+
+    it('gives sliders shared appearance and a readable associated native range label', () => {
+        for (const color of appearanceColorOptions) {
+            for (const variant of fillVariantOptions) {
+                const markup = renderToStaticMarkup(createElement(Slider, {
+                    value: 150,
+                    label: 'Position',
+                    color,
+                    variant,
+                    highlightColor: 'hazard',
+                    activeGlow: 'glow',
+                    glyphsShade: 700,
+                    highlightGlyphsShade: 200,
+                    themeMode: 'dark',
+                    highlighted: true,
+                    disabled: true,
+                }));
+                expect(markup).to.include(`data-appearance-color="${color}"`);
+                expect(markup).to.include(`data-appearance-variant="${variant}"`);
+                expect(markup).to.include('data-appearance-highlight="hazard"');
+                expect(markup).to.include('data-glow="glow"');
+                expect(markup).to.include('data-appearance-mode="dark"');
+                expect(markup).to.include('data-disabled="true"');
+                expect(markup).to.include('data-highlighted="true"');
+                expect(markup).to.match(/<label[^>]*data-appearance-variant="default"/);
+                expect(markup).to.match(/<label[^>]*class="[^"]*font-default/);
+                expect(markup).to.match(/<label[^>]*aria-disabled="true"/);
+                expect(markup).to.include('--track-complete:100%');
+                expect(markup).to.include('type="range"');
+                expect(markup).to.include('disabled=""');
+                const inputId = markup.match(/<input[^>]*id="([^"]+)"/)?.[1];
+                expect(inputId).to.be.a('string');
+                expect(markup).to.include(`for="${inputId}"`);
+                expect(markup).to.include('--appearance-default-glyphs-override:');
+                expect(markup).to.include('--appearance-active-pressed-glyphs-override:');
+            }
+        }
+    });
+
     it('lets controls select their own size inside a differently sized container', () => {
         for (const size of sizeOptions) {
             const controls = [
@@ -113,6 +176,7 @@ describe('Composed appearance rendering', () => {
                 createElement(ClockInput, { size, value: 30 }),
                 createElement(ClockSliceInput, { size, value: 30 }),
                 createElement(ClockDurationInput, { size, value: 30 }),
+                createElement(Slider, { size, value: 30 }),
                 createElement(Tabstrip, { size, options: [], value: '', onChange: () => undefined, overflowAccessibilityLabel: 'More tabs', children: 'Content' }),
                 ...buttonCorners.map((corners) => createElement(Button, { size, corners, icon: 'beaker.svg', 'aria-label': 'Action' })),
             ];
@@ -136,6 +200,8 @@ describe('Composed appearance rendering', () => {
             expect(rule).to.include(`--size-control-gap:var(--size-control-${size}-gap)`);
             expect(rule).to.include(`--size-control-font-size:var(--size-control-${size}-font-size)`);
             expect(rule).to.include(`--size-control-icon-size:var(--size-control-${size}-icon-size)`);
+            expect(rule).to.include(`--size-control-thumb-size:var(--size-control-${size}-thumb-size)`);
+            expect(rule).to.include(`--size-control-track-thickness:var(--size-control-${size}-track-thickness)`);
         }
     });
 

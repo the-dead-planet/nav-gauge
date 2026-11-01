@@ -5,7 +5,7 @@ import {
     ThemeName,
     ThemeSpecification,
     themeSpecifications,
-} from '../src';
+} from '../../src';
 
 describe('Theme color previews', () => {
     it('keeps palette and status roles in separate ordered groups for every theme and mode', () => {

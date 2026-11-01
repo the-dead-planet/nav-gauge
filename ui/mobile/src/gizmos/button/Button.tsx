@@ -79,12 +79,14 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         activeGlow !== "none" && isInteractiveState;
 
     const showTextGlow = showGlow && appearance.effects.glyphsGlow;
+    const label = children ?? title;
+    const labelChildren = Children.toArray(label).filter((child) => child !== "");
     const controlSize = theme.sizes.control[size];
 
     const container: MutableViewStyle = {
         height: controlSize.height,
         minWidth: icon ? controlSize.height : undefined,
-        paddingHorizontal: !(children ?? title)
+        paddingHorizontal: labelChildren.length === 0
             ? controlSize.iconPaddingInline
             : controlSize.paddingInline,
         paddingVertical: controlSize.paddingBlock,
@@ -174,8 +176,6 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         </View>
     ) : null;
 
-    const label = children ?? title;
-    const labelChildren = Children.toArray(label);
     const textElement =
         labelChildren.length > 0 ? (
             <Text

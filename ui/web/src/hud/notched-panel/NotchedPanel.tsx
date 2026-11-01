@@ -100,6 +100,7 @@ export const NotchedPanel: FC<
                     >
                         <polygon
                             className={surface.glow}
+                            pathLength={300}
                             points={bodyPoints}
                             strokeWidth={2}
                         />

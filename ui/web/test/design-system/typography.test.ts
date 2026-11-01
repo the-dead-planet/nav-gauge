@@ -15,8 +15,8 @@ require.extensions['.css'] = (module) => {
     };
 };
 
-const { Text } = require('../src/design-system/typography/Text') as typeof import('../src/design-system/typography/Text');
-const { LinkText } = require('../src/design-system/typography/LinkText') as typeof import('../src/design-system/typography/LinkText');
+const { Text } = require('../../src/design-system/typography/Text') as typeof import('../../src/design-system/typography/Text');
+const { LinkText } = require('../../src/design-system/typography/LinkText') as typeof import('../../src/design-system/typography/LinkText');
 if (previousCssLoader) {
     require.extensions['.css'] = previousCssLoader;
 } else {

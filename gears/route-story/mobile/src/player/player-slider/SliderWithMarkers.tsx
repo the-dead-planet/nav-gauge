@@ -88,6 +88,7 @@ export const SliderWithMarkers: FC<Props> = ({
                 step={1}
                 onChange={handleProgressChange}
                 color="tertiary"
+                activeGlow="glow"
                 size="sm"
             />
             <PlayerSliderLabels data$={data$} routeGeometryData$={routeGeometryData$} progressMs$={progressMs$} routeTimes$={routeTimes$} animatrix={animatrix} />

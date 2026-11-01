@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { createElement } from "react";
-import { getGridColumns } from "../src/chassis/grid/useGridColumns";
+import { getGridColumns } from "../../src/chassis/grid/useGridColumns";
 
 describe("Mobile Grid columns", () => {
     const children = ["a", "b", "c", "d", "e"].map((key) =>

@@ -1,4 +1,4 @@
-import { ComponentProps, CSSProperties, FC } from "react";
+import { Children, ComponentProps, CSSProperties, FC } from "react";
 import classNames from "classnames";
 import {
     ButtonProps,
@@ -49,27 +49,31 @@ export const Button: FC<ComponentProps<"button"> & Props & ButtonProps> = ({
     const theme = useTheme().forMode(themeMode);
     const iconSize = theme.sizes.control[size].iconSize;
     const effects = theme.appearancePolicies[variant].effects;
+    const labelChildren = Children.toArray(children).filter(
+        (child) => child !== "",
+    );
+    const hasLabel = labelChildren.length > 0;
     const appearanceOverrides: CSSProperties = {
         ...(glyphsShade === undefined
             ? undefined
             : {
-                "--appearance-default-glyphs-override": theme.color(
-                    color,
-                    glyphsShade,
-                ),
-            }),
+                  "--appearance-default-glyphs-override": theme.color(
+                      color,
+                      glyphsShade,
+                  ),
+              }),
         ...(highlightGlyphsShade === undefined
             ? undefined
             : {
-                "--appearance-hover-focus-glyphs-override": theme.color(
-                    highlightColor ?? color,
-                    highlightGlyphsShade,
-                ),
-                "--appearance-active-pressed-glyphs-override": theme.color(
-                    highlightColor ?? color,
-                    highlightGlyphsShade,
-                ),
-            }),
+                  "--appearance-hover-focus-glyphs-override": theme.color(
+                      highlightColor ?? color,
+                      highlightGlyphsShade,
+                  ),
+                  "--appearance-active-pressed-glyphs-override": theme.color(
+                      highlightColor ?? color,
+                      highlightGlyphsShade,
+                  ),
+              }),
     } as CSSProperties;
     const content = (
         <>
@@ -90,12 +94,9 @@ export const Button: FC<ComponentProps<"button"> & Props & ButtonProps> = ({
                     })}
                 />
             ) : null}
-            {children !== undefined && children !== null ? (
-                <Span
-                    fontType={fontType}
-                    className={styles.label}
-                >
-                    {children}
+            {hasLabel ? (
+                <Span fontType={fontType} className={styles.label}>
+                    {labelChildren}
                 </Span>
             ) : null}
         </>
@@ -106,15 +107,11 @@ export const Button: FC<ComponentProps<"button"> & Props & ButtonProps> = ({
         disabled,
         "aria-label":
             ariaLabel ??
-            (!children && typeof tooltip === "string" ? tooltip : undefined),
-        className: classNames(
-            styles.button,
-            styles[`corners-${corners}`],
-            {
-                [styles["has-icon"]]: !!icon,
-                [styles["only-icon"]]: !!icon && !children,
-            },
-        ),
+            (!hasLabel && typeof tooltip === "string" ? tooltip : undefined),
+        className: classNames(styles.button, styles[`corners-${corners}`], {
+            [styles["has-icon"]]: !!icon,
+            [styles["only-icon"]]: !!icon && !hasLabel,
+        }),
     };
     const button =
         corners === "hexagon" ? (
@@ -155,8 +152,8 @@ export const Button: FC<ComponentProps<"button"> & Props & ButtonProps> = ({
                 variant === "fill"
                     ? "fill"
                     : variant === "fill-translucent"
-                        ? "fill-translucent"
-                        : "fill-inverse"
+                      ? "fill-translucent"
+                      : "fill-inverse"
             }
             showConnection={showTooltipConnection}
         >

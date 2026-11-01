@@ -18,7 +18,7 @@ require.extensions[".css"] = (module) => {
     };
 };
 const { Icon } =
-    require("../src/design-system/icons/Icon") as typeof import("../src/design-system/icons/Icon");
+    require("../../src/design-system/icons/Icon") as typeof import("../../src/design-system/icons/Icon");
 if (previousCssLoader) {
     require.extensions[".css"] = previousCssLoader;
 } else {

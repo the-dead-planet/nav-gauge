@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { FontType, resolveTypographyFontWeight, typographyFontWeights } from '@ui';
-import { resolveMobileFont } from '../src/design-system/typography/fontFamily';
+import { resolveMobileFont } from '../../src/design-system/typography/fontFamily';
 
 describe('Mobile typography fonts', () => {
     it('selects weight-specific faces and references bundled font assets', () => {
@@ -22,7 +22,7 @@ describe('Mobile typography fonts', () => {
         for (const fontType of Object.values(FontType)) {
             for (const fontWeight of typographyFontWeights) {
                 const { fontFamily } = resolveMobileFont(fontType, fontWeight);
-                const fontPath = resolve(__dirname, '../../../app-mobile/android/app/src/main/assets/fonts', `${fontFamily}.ttf`);
+                const fontPath = resolve(__dirname, '../../../../app-mobile/android/app/src/main/assets/fonts', `${fontFamily}.ttf`);
                 expect(existsSync(fontPath), fontPath).to.equal(true);
             }
         }
@@ -55,7 +55,7 @@ describe('Mobile typography fonts', () => {
             for (const fontWeight of typographyFontWeights) {
                 const font = resolveMobileFont(fontType, fontWeight, 'android');
                 const suffix = font.fontWeight >= 700 ? '_bold' : '';
-                const fontPath = resolve(__dirname, '../../../app-mobile/android/app/src/main/assets/fonts', `${font.fontFamily}${suffix}.ttf`);
+                const fontPath = resolve(__dirname, '../../../../app-mobile/android/app/src/main/assets/fonts', `${font.fontFamily}${suffix}.ttf`);
                 expect(existsSync(fontPath), fontPath).to.equal(true);
             }
         }

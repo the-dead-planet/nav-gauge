@@ -47,7 +47,11 @@ export const OctagonalSurface: FC<OctagonalSurfaceProps> = ({
                 focusable="false"
             >
                 {showGlow ? (
-                    <polygon points={points} className={surface.glow} />
+                    <polygon
+                        points={points}
+                        pathLength={300}
+                        className={surface.glow}
+                    />
                 ) : null}
                 <polygon
                     className={surface.paint}

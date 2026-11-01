@@ -189,6 +189,8 @@ export interface ThemeControlSize {
     height: number;
     fontSize: number;
     iconSize: number;
+    thumbSize: number;
+    trackThickness: number;
     gap: number;
     paddingInline: number;
     paddingBlock: number;

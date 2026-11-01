@@ -89,6 +89,8 @@ const preview: Preview = {
         },
         options: {
             storySort: {
+                method: 'alphabetical',
+                includeNames: true,
                 order: [
                     'Design System',
                     [

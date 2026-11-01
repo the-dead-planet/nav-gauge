@@ -92,6 +92,7 @@ export const SliderWithMarkers: FC<Props> = ({
                     step={1}
                     onChange={handleProgressChange}
                     color="tertiary"
+                    activeGlow="glow"
                     size="sm"
                 />
             </div>

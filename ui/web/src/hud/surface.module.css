@@ -274,8 +274,11 @@
             :active,
             :has(:active)
         )
-    ) [data-appearance-glyph] {
-    filter: drop-shadow(0 0 12px rgb(from var(--appearance-glow-color) r g b / 0.45));
+    )
+    [data-appearance-glyph] {
+    filter: drop-shadow(
+        0 0 12px rgb(from var(--appearance-glow-color) r g b / 0.45)
+    );
 }
 
 .rectangle[data-glow]:not([data-glow="none"], [data-disabled="true"]):is(
@@ -294,13 +297,36 @@
         0 0 20px rgb(from var(--appearance-glow-color) r g b / 0.6);
 }
 
-.surface[data-glow="animate-borders-glow"] > .drawing > .glow {
-    stroke-dasharray: 18 8;
-    animation: border-glow 1.2s linear infinite;
-}
+@media (prefers-reduced-motion: no-preference) {
+    .surface[data-glow="animate-borders-glow"]:not([data-disabled="true"]):is(
+            [data-highlighted="true"],
+            [data-pressed="true"],
+            [data-interactive="true"]:is(
+                :hover,
+                :focus-visible,
+                :has(:focus-visible),
+                :active,
+                :has(:active)
+            )
+        )
+        > .drawing
+        > .glow {
+        animation: border-glow 0.3s linear forwards;
+    }
 
-.rectangle[data-glow="animate-borders-glow"]::after {
-    animation: halo-glow 1.2s ease-in-out infinite alternate;
+    .rectangle[data-glow="animate-borders-glow"]:not([data-disabled="true"]):is(
+            [data-highlighted="true"],
+            [data-pressed="true"],
+            [data-interactive="true"]:is(
+                :hover,
+                :focus-visible,
+                :has(:focus-visible),
+                :active,
+                :has(:active)
+            )
+        )::after {
+        animation: glow-sweep 0.4s ease-in-out forwards;
+    }
 }
 
 .elevation-none {
@@ -349,23 +375,39 @@
 }
 
 @keyframes border-glow {
-    to {
-        stroke-dashoffset: -26;
-    }
-}
-
-@keyframes halo-glow {
     from {
-        opacity: 0.5;
+        stroke-dasharray: 0 300;
     }
     to {
-        opacity: 1;
+        stroke-dasharray: 300 0;
     }
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .surface[data-glow="animate-borders-glow"] > .drawing > .glow,
-    .rectangle[data-glow="animate-borders-glow"]::after {
-        animation: none;
+@keyframes glow-sweep {
+    0% {
+        box-shadow:
+            -1px 1px 4px rgb(from var(--appearance-glow-color) r g b / 0.6),
+            0 0 6px rgb(from var(--appearance-glow-color) r g b / 0);
+    }
+    33% {
+        box-shadow:
+            -1px 1px 4px rgb(from var(--appearance-glow-color) r g b / 0.6),
+            -1px -1px 4px rgb(from var(--appearance-glow-color) r g b / 0.6),
+            0 0 6px rgb(from var(--appearance-glow-color) r g b / 0);
+    }
+    66% {
+        box-shadow:
+            -1px 1px 4px rgb(from var(--appearance-glow-color) r g b / 0.6),
+            -1px -1px 4px rgb(from var(--appearance-glow-color) r g b / 0.6),
+            1px -1px 4px rgb(from var(--appearance-glow-color) r g b / 0.6),
+            0 0 6px rgb(from var(--appearance-glow-color) r g b / 0);
+    }
+    100% {
+        box-shadow:
+            -1px 1px 4px rgb(from var(--appearance-glow-color) r g b / 0.6),
+            -1px -1px 4px rgb(from var(--appearance-glow-color) r g b / 0.6),
+            1px -1px 4px rgb(from var(--appearance-glow-color) r g b / 0.6),
+            1px 1px 4px rgb(from var(--appearance-glow-color) r g b / 0.6),
+            0 0 6px rgb(from var(--appearance-glow-color) r g b / 0);
     }
 }

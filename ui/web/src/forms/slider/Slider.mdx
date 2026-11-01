@@ -1,0 +1,60 @@
+import { Meta, Stories, Title } from "@storybook/addon-docs/blocks";
+import * as SliderStories from "./Slider.stories";
+
+<Meta of={SliderStories} name="Docs" />
+
+<Title />
+
+The thumb follows the shared <a href="./?path=/docs/design-system-appearance--docs#variants" target={"\_top"} style={{ textDecoration: 'underline' }}>Appearance variant tables</a> and <a href="./?path=/docs/design-system-appearance--docs#active-glow" target={"\_top"} style={{ textDecoration: 'underline' }}>glow types</a>.
+
+## Track
+
+Shades are shown as light / dark. The filled segment uses `color` normally and when disabled, and `highlightColor ?? color` during interaction or persistent highlighting. The unfilled segment keeps the base `color` palette in every state.
+
+<table>
+    <thead>
+        <tr>
+            <th>Segment</th>
+            <th>Default</th>
+            <th>Hover / focus</th>
+            <th>Active / pressed / highlighted</th>
+            <th>Disabled</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Filled, before the thumb</td>
+            <td>
+                <code>500</code>
+            </td>
+            <td>
+                <code>600 / 300</code>
+            </td>
+            <td>
+                <code>700 / 200</code>
+            </td>
+            <td>
+                <code>500</code>
+            </td>
+        </tr>
+        <tr>
+            <td>Unfilled, after the thumb</td>
+            <td>
+                <code>300 / 700</code>
+            </td>
+            <td>
+                <code>300 / 700</code>
+            </td>
+            <td>
+                <code>300 / 700</code>
+            </td>
+            <td>
+                <code>300 / 700</code>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+Both endpoints use diamond caps from the shared <a href="./?path=/docs/design-system-sizing--docs" target={"\_top"} style={{ textDecoration: 'underline' }}>Sizing policy</a>. The left cap follows the filled segment's paint; the right cap follows the unfilled segment's paint.
+
+<Stories />
