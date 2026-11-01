@@ -1,20 +1,12 @@
-import classNames from 'classnames';
-import { CSSProperties, RefObject, useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
-import {
-    DropdownOption,
-    DropdownProps,
-    getIconAnchorPoint,
-    menuPositionsMatch,
-    MenuPosition,
-    placePopup,
-    useTheme,
-    DEFAULT_FILL_VARIANT,
-    DEFAULT_COLOR,
-    DEFAULT_SIZE,
-} from '@ui';
-import { Icon } from '../../design-system/icons';
-import styles from './dropdown.module.css';
+import classNames from "classnames";
+import { CSSProperties, RefObject } from "react";
+import { createPortal } from "react-dom";
+import { DropdownProps, DEFAULT_COLOR, DEFAULT_SIZE } from "@ui";
+import { Icon } from "../../design-system/icons";
+import { HudSurface } from "../../hud/HudSurface";
+import { MenuList } from "../../rigs/menu/MenuList";
+import { useDropdownList } from "./useDropdownList";
+import styles from "./dropdown.module.css";
 
 interface Props {
     className?: string;
@@ -22,6 +14,9 @@ interface Props {
     iconSize: number;
     onClose: (restoreFocus?: boolean) => void;
     triggerRef: RefObject<HTMLButtonElement | null>;
+    appearanceOverrides: CSSProperties;
+    listRef: RefObject<HTMLUListElement | null>;
+    positionStyle: CSSProperties;
 }
 
 export function DropdownList<T = string>({
@@ -29,167 +24,64 @@ export function DropdownList<T = string>({
     onClose,
     id,
     triggerRef,
-    color,
-    glyphsShade,
+    listRef,
+    positionStyle,
+    color = DEFAULT_COLOR,
+    appearanceOverrides,
     iconSize,
     value,
     options,
     onChange,
     size = DEFAULT_SIZE,
-    variant = DEFAULT_FILL_VARIANT,
     highlightColor,
-    highlightGlyphsShade,
 }: Props &
     Pick<
         DropdownProps<T>,
-        | 'value'
-        | 'options'
-        | 'color'
-        | 'highlightColor'
-        | 'glyphsShade'
-        | 'highlightGlyphsShade'
-        | 'size'
-        | 'variant'
-        | 'onChange'
+        "value" | "options" | "color" | "highlightColor" | "size" | "onChange"
     >) {
-    const theme = useTheme();
-    const listRef = useRef<HTMLUListElement>(null);
-    const hasFocusedRef = useRef(false);
-    const [position, setPosition] = useState<MenuPosition>({});
-    const [width, setWidth] = useState(0);
-    const [highlightedIndex, setHighlightedIndex] = useState(() => {
-        const idx = options.findIndex((o) => o.value === value);
-        return idx >= 0 ? idx : 0;
+    const { select, onKeyDown, setActiveIndex } = useDropdownList({
+        value,
+        options,
+        onChange,
+        listRef,
+        visible: positionStyle.visibility === "visible",
+        onClose,
     });
 
-    useEffect(() => {
-        const computePosition = () => {
-            const triggerBounds = triggerRef.current?.getBoundingClientRect();
-            if (!triggerBounds) return;
-
-            const listBounds = listRef.current?.getBoundingClientRect();
-            const nextPosition = placePopup(
-                'top-left',
-                getIconAnchorPoint(
-                    'bottom-left',
-                    triggerBounds.left,
-                    triggerBounds.top,
-                    triggerBounds.width,
-                    triggerBounds.height,
-                ),
-                listBounds
-                    ? { width: triggerBounds.width, height: listBounds.height }
-                    : null,
-                window.innerWidth,
-                window.innerHeight,
-            ).position;
-            setWidth(triggerBounds.width);
-            setPosition((current) =>
-                menuPositionsMatch(current, nextPosition)
-                    ? current
-                    : nextPosition,
-            );
-        };
-
-        computePosition();
-        let animationFrame = requestAnimationFrame(function followTrigger() {
-            computePosition();
-            animationFrame = requestAnimationFrame(followTrigger);
-        });
-        return () => cancelAnimationFrame(animationFrame);
-    }, [triggerRef]);
-
-    useEffect(() => {
-        if (!hasFocusedRef.current && Object.keys(position).length > 0) {
-            hasFocusedRef.current = true;
-            listRef.current?.focus();
-        }
-    }, [position]);
-
-    const handleSelect = (option: DropdownOption<T>) => {
-        onChange?.(option.value);
-        onClose();
-    };
-
-    const handleKeyDown = (e: React.KeyboardEvent) => {
-        switch (e.key) {
-            case 'ArrowDown':
-                e.preventDefault();
-                setHighlightedIndex((prev) =>
-                    Math.min(prev + 1, options.length - 1),
-                );
-                break;
-            case 'ArrowUp':
-                e.preventDefault();
-                setHighlightedIndex((prev) => Math.max(prev - 1, 0));
-                break;
-            case 'Home':
-                e.preventDefault();
-                setHighlightedIndex(0);
-                break;
-            case 'End':
-                e.preventDefault();
-                setHighlightedIndex(options.length - 1);
-                break;
-            case 'Enter':
-            case ' ':
-                e.preventDefault();
-                if (options[highlightedIndex]) {
-                    handleSelect(options[highlightedIndex]);
-                }
-                break;
-            case 'Escape':
-                e.preventDefault();
-                onClose();
-                break;
-            case 'Tab':
-                onClose(false);
-                break;
-        }
-    };
-
-    const positionStyle: CSSProperties = {
-        width,
-        visibility: width ? 'visible' : 'hidden',
-    };
-    if (position.top !== undefined) positionStyle.top = position.top;
-    if (position.left !== undefined) positionStyle.left = position.left;
-    if (position.right !== undefined) positionStyle.right = position.right;
-    if (position.bottom !== undefined) positionStyle.bottom = position.bottom;
-
     return createPortal(
-        <ul
+        <MenuList
+            as="ul"
+            color={color}
+            size={size}
             id={id}
             ref={listRef}
             role="listbox"
             tabIndex={-1}
-            className={classNames(
-                styles['menu'],
-                styles[`mode-${theme.mode}`],
-                styles[`color-${color ?? DEFAULT_COLOR}`],
-                styles[`highlight-${highlightColor ?? color ?? DEFAULT_COLOR}`],
-                styles[`size-${size}`],
-                styles[`variant-${variant}`],
-                className,
-            )}
+            className={classNames(styles[`size-${size}`], className)}
             style={positionStyle}
             data-popup-trigger-id={triggerRef.current?.id || undefined}
-            onKeyDown={handleKeyDown}
-            aria-activedescendant={`${id}-option-${highlightedIndex}`}
+            onKeyDown={onKeyDown}
+            aria-labelledby={triggerRef.current?.id}
         >
             {options.map((option, index) => (
-                <li
+                <HudSurface
+                    as="li"
+                    variant="menu-item"
+                    color={color}
+                    highlightColor={highlightColor}
+                    highlighted={option.value === value}
+                    interactive
+                    rectangle
+                    style={appearanceOverrides}
                     key={String(option.value)}
                     id={`${id}-option-${index}`}
                     role="option"
+                    tabIndex={-1}
                     aria-selected={option.value === value}
-                    className={classNames(styles['option'], {
-                        [styles['option-selected']]: option.value === value,
-                        [styles['option-highlighted']]:
-                            index === highlightedIndex,
-                    })}
+                    className={styles.option}
+                    onMouseMove={() => setActiveIndex(index)}
                     onClick={() => {
-                        handleSelect(option);
+                        select(index);
                     }}
                 >
                     {option.prepend}
@@ -198,13 +90,13 @@ export function DropdownList<T = string>({
                             src={option.icon}
                             width={iconSize}
                             height={iconSize}
-                            className={styles['icon']}
+                            className={styles["icon"]}
                         />
                     ) : null}
-                    <span style={(index === highlightedIndex ? highlightGlyphsShade : glyphsShade) === undefined ? undefined : { color: theme.color(index === highlightedIndex ? highlightColor ?? color ?? DEFAULT_COLOR : color ?? DEFAULT_COLOR, index === highlightedIndex ? highlightGlyphsShade : glyphsShade) }}>{option.label}</span>
-                </li>
+                    <span>{option.label}</span>
+                </HudSurface>
             ))}
-        </ul>,
+        </MenuList>,
         document.body,
     );
 }

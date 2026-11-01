@@ -1,6 +1,6 @@
-import { ReactNode } from 'react';
-import { Option } from '../../model';
-import { AppearanceProps, FillVariant } from '../../design-system/model';
+import { ReactNode } from "react";
+import { Option } from "../../model";
+import { AppearanceProps, FillVariant } from "../../design-system/model";
 
 export interface DropdownOption<T> extends Option<T> {
     prepend?: ReactNode;

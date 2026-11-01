@@ -53,11 +53,13 @@ const { OctagonalSurface } = require('../src/hud/octagonal-panel/OctagonalSurfac
 const { ResizeHandle } = require('../src/gizmos/resize-handle/ResizeHandle') as typeof import('../src/gizmos/resize-handle/ResizeHandle');
 const { ColorBox } = require('../src/gizmos/color-box/ColorBox') as typeof import('../src/gizmos/color-box/ColorBox');
 const { Menu } = require('../src/rigs/menu/Menu') as typeof import('../src/rigs/menu/Menu');
+const { MenuList } = require('../src/rigs/menu/MenuList') as typeof import('../src/rigs/menu/MenuList');
 const { MenuItem } = require('../src/rigs/menu/MenuItem') as typeof import('../src/rigs/menu/MenuItem');
 const { Tabstrip } = require('../src/rigs/tabstrip/Tabstrip') as typeof import('../src/rigs/tabstrip/Tabstrip');
 const { VariantGallery } = require('../src/storybook/VariantGallery') as typeof import('../src/storybook/VariantGallery');
 const { FileInput } = require('../src/forms/file-input/FileInput') as typeof import('../src/forms/file-input/FileInput');
 const { Checkbox } = require('../src/forms/checkbox/Checkbox') as typeof import('../src/forms/checkbox/Checkbox');
+const { Dropdown } = require('../src/forms/dropdown/Dropdown') as typeof import('../src/forms/dropdown/Dropdown');
 const { Radio } = require('../src/forms/radio/Radio') as typeof import('../src/forms/radio/Radio');
 const { ClockInput, ClockSliceInput, ClockDurationInput } = require('../src/forms/clock-input') as typeof import('../src/forms/clock-input');
 const { Text } = require('../src/design-system/typography') as typeof import('../src/design-system/typography');
@@ -88,6 +90,69 @@ const renderToStaticMarkup = (children: ReactElement): string => renderMarkup(
 
 describe('Composed appearance rendering', () => {
     after(() => renderingTheme.destroy());
+
+    it('shares fixed inverse list surfaces while preserving menu and listbox semantics', () => {
+        for (const color of appearanceColorOptions) {
+            for (const size of sizeOptions) {
+                for (const as of ['div', 'ul'] as const) {
+                    const role = as === 'ul' ? 'listbox' : 'menu';
+                    const markup = renderToStaticMarkup(createElement(MenuList, {
+                        as,
+                        role,
+                        color,
+                        size,
+                        'aria-label': 'Materials',
+                        style: { width: 200 },
+                        children: 'Material',
+                    }));
+                    expect(markup).to.include(`<${as}`);
+                    expect(markup).to.include(`role="${role}"`);
+                    expect(markup).to.include('data-appearance-variant="fill-inverse"');
+                    expect(markup).to.include(`data-appearance-color="${color}"`);
+                    expect(markup).to.include(`menu-list size-${size}`);
+                    expect(markup).to.include('aria-label="Materials"');
+                    expect(markup).to.include('width:200px');
+                    expect(markup).not.to.include('data-interactive=');
+                }
+            }
+        }
+    });
+
+    it('renders dropdown trigger appearance and glyph overrides once for every color and fill variant', () => {
+        for (const color of appearanceColorOptions) {
+            for (const variant of fillVariantOptions) {
+                const markup = renderToStaticMarkup(createElement(Dropdown<string>, {
+                    value: 'selected',
+                    options: [{ value: 'selected', label: 'Selected option' }],
+                    color,
+                    variant,
+                    themeMode: 'dark',
+                    highlightColor: 'hazard',
+                    glyphsShade: 700,
+                    highlightGlyphsShade: 200,
+                    highlighted: true,
+                    disabled: true,
+                    size: 'lg',
+                    ariaLabel: 'Material',
+                }));
+                const theme = renderingTheme.forMode('dark');
+                expect(markup).to.include(`data-appearance-color="${color}"`);
+                expect(markup).to.include(`data-appearance-variant="${variant}"`);
+                expect(markup).to.include('data-appearance-mode="dark"');
+                expect(markup).to.include('data-appearance-highlight="hazard"');
+                expect(markup).to.include('data-disabled="true"');
+                expect(markup).to.include('data-highlighted="true"');
+                expect(markup).to.include('disabled=""');
+                expect(markup).to.include('aria-haspopup="listbox"');
+                expect(markup).to.include('aria-expanded="false"');
+                expect(markup).to.include(`--appearance-default-glyphs-override:${theme.color(color, 700)}`);
+                expect(markup).to.include(`--appearance-hover-focus-glyphs-override:${theme.color('hazard', 200)}`);
+                expect(markup).to.include(`--appearance-active-pressed-glyphs-override:${theme.color('hazard', 200)}`);
+                expect([...markup.matchAll(/data-disabled=/g)]).to.have.length(1);
+                expect(markup).not.to.include('themeMode=');
+            }
+        }
+    });
 
     it('renders clocks with shared appearance ownership for every color and fill variant', () => {
         for (const color of appearanceColorOptions) {

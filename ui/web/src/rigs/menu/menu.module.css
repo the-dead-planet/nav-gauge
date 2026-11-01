@@ -1,11 +1,19 @@
 .menu-list {
     position: fixed;
+    z-index: var(--layer-dropdown-z-index);
+    box-shadow: var(--layer-dropdown-down-shadow);
+    margin: 0;
+    list-style: none;
+    border-radius: 0;
     padding-inline: 0;
     max-height: 240px;
     overflow-y: auto;
     width: max-content;
-    min-width: min(160px, 100vw);
     max-width: 100vw;
+}
+
+.action-menu {
+    min-width: min(160px, 100vw);
 }
 
 .menu-item {

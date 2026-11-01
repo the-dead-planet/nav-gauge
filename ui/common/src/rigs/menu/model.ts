@@ -30,6 +30,8 @@ export interface MenuProps extends AppearanceProps {
     children?: ReactNode;
 }
 
+export type MenuListProps = Pick<MenuProps, 'color' | 'size' | 'children'>;
+
 export interface MenuItemProps extends Omit<AppearanceProps, 'variant'> {
     /** Navigation indicator; web anchors infer it from href and target when omitted. */
     linkType?: MenuItemLinkType;
