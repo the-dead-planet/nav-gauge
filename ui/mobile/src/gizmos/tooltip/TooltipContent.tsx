@@ -27,7 +27,7 @@ export const TooltipContent: FC<TooltipProps> = (props) => {
         maxWidth = 220,
     } = props;
     const theme = useTheme();
-    const metrics = theme.sizes.tooltip[size];
+    const metrics = theme.sizes.control[size];
     const appearance = theme.resolveAppearance(variant, color);
     const connector = theme.resolveAppearance(
         variant,
@@ -85,7 +85,7 @@ export const TooltipContent: FC<TooltipProps> = (props) => {
                                     style={{
                                         color: appearance.glyphs,
                                         fontSize: metrics.fontSize,
-                                        lineHeight: metrics.lineHeight,
+                                        lineHeight: metrics.fontSize * 1.1,
                                     }}
                                 >
                                     {content}

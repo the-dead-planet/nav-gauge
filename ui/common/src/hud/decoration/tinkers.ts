@@ -1,4 +1,5 @@
 import { themeSizes } from "../../design-system/theme/tinkers";
+import { SizeVariant } from "../../design-system/model";
 import {
     activeGlowOptions,
     appearanceColorOptions,
@@ -38,7 +39,15 @@ export const hudDecorationCornerSets: {
         corners: [corner],
     })),
 ];
-export const hudDecorationSizes = themeSizes.hudDecoration;
+export const hudDecorationSizes = Object.fromEntries(
+    Object.entries(themeSizes.control).map(([size, metrics]) => [
+        size,
+        {
+            offset: metrics.gap / 2,
+            strokeWidth: metrics.height / 16,
+        },
+    ]),
+) as Record<SizeVariant, { offset: number; strokeWidth: number }>;
 
 export const hudDecorationStoryArgs: HudDecorationProps = {
     children: "Preview",

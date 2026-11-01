@@ -5,10 +5,9 @@
 
 .decoration {
     fill: none;
-    inset: calc(-1 * var(--size-hud-decoration-offset));
-    width: calc(100% + 2 * var(--size-hud-decoration-offset));
-    height: calc(100% + 2 * var(--size-hud-decoration-offset));
-    stroke-width: var(--size-hud-decoration-stroke-width);
+    inset: calc(-1 * var(--decoration-offset));
+    width: calc(100% + 2 * var(--decoration-offset));
+    height: calc(100% + 2 * var(--decoration-offset));
     overflow: visible;
     pointer-events: none;
     position: absolute;

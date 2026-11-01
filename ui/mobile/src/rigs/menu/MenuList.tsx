@@ -37,7 +37,7 @@ export function MenuList({
         >
             <ScrollView
                 contentContainerStyle={{
-                    paddingVertical: theme.sizes.menuList[size].paddingBlock,
+                    paddingVertical: theme.sizes.control[size].paddingBlock,
                 }}
             >
                 {children}

@@ -43,7 +43,7 @@ export const Chip: FC<ChipProps & Props> = ({
     children,
 }) => {
     const theme = useTheme();
-    const metrics = theme.sizes.chip[size];
+    const metrics = theme.sizes.control[size];
     const appearance = theme.resolveAppearance(variant, color);
     const layout = usePanelDimensions();
 
@@ -83,7 +83,7 @@ export const Chip: FC<ChipProps & Props> = ({
                     style={{
                         color: appearance.glyphs,
                         fontSize: metrics.fontSize,
-                        lineHeight: metrics.lineHeight,
+                        lineHeight: metrics.fontSize * 1.1,
                     }}
                 >
                     {children}

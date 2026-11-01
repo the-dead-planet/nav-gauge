@@ -197,30 +197,6 @@ export interface ThemeControlSize {
 
 export interface ThemeSizes {
     control: Record<SizeVariant, ThemeControlSize>;
-    chip: Record<SizeVariant, {
-        fontSize: number;
-        lineHeight: number;
-        iconSize: number;
-        gap: number;
-        paddingInline: number;
-        paddingBlock: number;
-    }>;
-    tooltip: Record<SizeVariant, {
-        fontSize: number;
-        lineHeight: number;
-        paddingInline: number;
-        paddingBlock: number;
-    }>;
-    hudDecoration: Record<SizeVariant, {
-        offset: number;
-        strokeWidth: number;
-    }>;
-    tabstrip: Record<SizeVariant, {
-        padding: number;
-    }>;
-    menuList: Record<SizeVariant, {
-        paddingBlock: number;
-    }>;
 }
 
 export type ElevationLevel = 'none' | 'raised' | 'floating' | 'overlay';

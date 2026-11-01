@@ -77,7 +77,8 @@ export const Tabstrip: FC<TabstripProps> = ({
         borderColor: appearance.border.color,
         borderWidth: appearance.border.width,
         borderBottomWidth: actions ? 0 : appearance.border.width,
-        padding: theme.sizes.tabstrip[size].padding,
+        paddingVertical: theme.sizes.control[size].paddingBlock,
+        paddingHorizontal: theme.sizes.control[size].paddingInline,
     };
 
     return (

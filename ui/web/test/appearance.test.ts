@@ -126,6 +126,7 @@ describe('Composed appearance rendering', () => {
     });
 
     it('selects shared control metrics through data-size for the complete size scale', () => {
+        expect(Object.keys(renderingTheme.sizes)).to.deep.equal(['control']);
         const rules = createAppearanceRules(renderingTheme);
         for (const size of sizeOptions) {
             const rule = rules.split('\n').find((value) => value.startsWith(`[data-size="${size}"]`));
@@ -135,11 +136,6 @@ describe('Composed appearance rendering', () => {
             expect(rule).to.include(`--size-control-gap:var(--size-control-${size}-gap)`);
             expect(rule).to.include(`--size-control-font-size:var(--size-control-${size}-font-size)`);
             expect(rule).to.include(`--size-control-icon-size:var(--size-control-${size}-icon-size)`);
-            expect(rule).to.include(`--size-chip-padding-inline:var(--size-chip-${size}-padding-inline)`);
-            expect(rule).to.include(`--size-tooltip-padding-block:var(--size-tooltip-${size}-padding-block)`);
-            expect(rule).to.include(`--size-hud-decoration-offset:var(--size-hud-decoration-${size}-offset)`);
-            expect(rule).to.include(`--size-tabstrip-padding:var(--size-tabstrip-${size}-padding)`);
-            expect(rule).to.include(`--size-menu-list-padding-block:var(--size-menu-list-${size}-padding-block)`);
         }
     });
 

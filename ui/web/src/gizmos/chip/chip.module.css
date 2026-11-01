@@ -1,14 +1,15 @@
 .chip {
-    font-size: var(--size-chip-font-size);
+    font-size: var(--size-control-font-size);
+    line-height: 1.1;
     padding: calc(
-            var(--size-chip-padding-block) +
+            var(--size-control-padding-block) +
                 var(--appearance-default-border-width)
         )
         calc(
-            var(--size-chip-padding-inline) +
+            var(--size-control-padding-inline) +
                 var(--appearance-default-border-width)
         );
-    gap: var(--size-chip-gap);
+    gap: var(--size-control-gap);
     position: relative;
     box-sizing: border-box;
     display: inline-flex;

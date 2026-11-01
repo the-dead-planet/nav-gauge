@@ -62,8 +62,8 @@ export const Chip: FC<ChipProps & Props> = ({
                 {icon ? (
                     <Icon
                         src={icon}
-                        width={theme.sizes.chip[size].iconSize}
-                        height={theme.sizes.chip[size].iconSize}
+                        width={theme.sizes.control[size].iconSize}
+                        height={theme.sizes.control[size].iconSize}
                     />
                 ) : null}
                 {children !== undefined && children !== null ? (

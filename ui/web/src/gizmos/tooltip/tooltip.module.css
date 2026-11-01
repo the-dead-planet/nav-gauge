@@ -1,7 +1,8 @@
 .tooltip-content {
-    padding: var(--size-tooltip-padding-block)
-        var(--size-tooltip-padding-inline);
-    font-size: var(--size-tooltip-font-size);
+    padding: var(--size-control-padding-block)
+        var(--size-control-padding-inline);
+    font-size: var(--size-control-font-size);
+    line-height: 1.1;
     position: fixed;
     pointer-events: none;
     font-family: var(--font-default);

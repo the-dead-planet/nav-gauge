@@ -6,7 +6,7 @@
     list-style: none;
     border-radius: 0;
     padding-inline: 0;
-    padding-block: var(--size-menu-list-padding-block);
+    padding-block: var(--size-control-padding-block);
     max-height: 240px;
     overflow-y: auto;
     width: max-content;
