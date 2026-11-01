@@ -122,9 +122,25 @@ Add unit, component and end-to-end tests for more complex logic but do not overc
 ##### Testing environments:
 
 - Unit tests in `/**/test/*.test.ts` using [Mocha](https://mochajs.org) and [Chai](https://www.chaijs.com).
-- Web component and end-to-end tests in [`/app-web/app/cypress/e2e/*.cy.ts`](/app-web/app/cypress/e2e) using [Cypress](https://docs.cypress.io/app/component-testing/react/overview).
+- Application browser tests in [`/app-web/cypress/e2e/*.cy.ts`](/app-web/cypress/e2e) using [Cypress](https://docs.cypress.io).
+- Shared UI browser tests in [`/ui/web/cypress/e2e/*.cy.ts`](/ui/web/cypress/e2e), using Storybook as their test target. UI tests must not depend on application routes or elements.
 - Mobile component and end-to-end tests in [`/app-mobile/app/__tests__/*.test.tsx`](/app-mobile/app/__tests__) using [Jest](https://jestjs.io/docs/tutorial-react-native).
 - Backend tests in [TBD](/api/)
+
+##### Web checks and CI parity
+
+Run commands from the workspace root. With the application on port 3000 and Storybook on port 6006, `yarn check:web` runs the same source/type checks, unit tests, application Chrome tests, and UI Chrome/Firefox tests as the web workflow. `yarn test:web` runs unit tests only.
+
+| Check | Local and CI command | Target |
+|-------|----------------------|--------|
+| Sources and both Cypress suites | `yarn typecheck:web` | Separate application/UI Cypress TypeScript projects |
+| Web unit tests | `yarn test:web` | Common, apparatus, gears, app, and UI |
+| Application browser tests | `yarn test:e2e:web:dev --browser chrome` | `http://localhost:3000` |
+| UI browser tests | `yarn test:e2e:ui:web --browser chrome` and `--browser firefox` | `http://localhost:6006` |
+
+For fast development, start `yarn dev:web` and `yarn dev:ui:web` in separate terminals. To reproduce CI's production targets, run `yarn build:web` and `yarn build:ui:web`, then serve them with `yarn preview:web` and `yarn preview:ui:web` in separate terminals before running `yarn check:web`.
+
+Both Cypress run scripts typecheck their complete suite before execution. Keep Cypress globals isolated in each workspace's `cypress/tsconfig.json`; do not add them to application or UI source TypeScript configs. CI runs every discovered spec, so use `yarn check:web` rather than a focused `--spec` run for the complete pre-PR check.
 
 #### UI library
 

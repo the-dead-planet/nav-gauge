@@ -7,7 +7,8 @@ describe('Individuator settings draft', () => {
         });
 
         cy.get('body')
-            .should('have.attr', 'data-theme')
+            .invoke('attr', 'data-theme')
+            .should('be.oneOf', ['light', 'dark'])
             .then((mode) => {
                 if (mode === 'dark') {
                     cy.get('button[aria-label*="light" i]').click();

@@ -17,6 +17,8 @@ The workspace root is `/`; `package.json` and Yarn commands live there.
 | `yarn test:mobile` | Run mobile unit tests |
 | `yarn test:gear` | Test a specific gear (pass name) |
 | `yarn test:e2e:web:dev` | Cypress E2E against localhost |
+| `yarn test:e2e:ui:web --browser chrome` | UI Cypress suite against Storybook on port 6006; also run with `--browser firefox` |
+| `yarn check:web` | CI-equivalent web checks; app on port 3000 and Storybook on port 6006 must be running |
 | `yarn dev:mobile` | Start mobile dev (Android) |
 | `yarn typecheck:web` | TypeScript check for web packages (exits) |
 | `yarn typecheck:mobile` | Mobile TypeScript check in watch mode; stop after it reports zero errors |

@@ -5,7 +5,7 @@ describe("Form choice row sizing", () => {
     for (const control of ["checkbox", "radio"]) {
         it(`keeps ${control} and its row stable when the selection mark appears`, () => {
             cy.readFile<string>(
-                `../ui/web/src/forms/${control}/${control}.module.css`,
+                `src/forms/${control}/${control}.module.css`,
             ).then((css) => {
                 cy.document().then((document) => {
                     const stylesheet = document.createElement("style");

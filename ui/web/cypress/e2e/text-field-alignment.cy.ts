@@ -3,10 +3,10 @@ import { themeSizes } from "@the-dead-planet/nav-gauge-ui-common/src/design-syst
 describe("Text field alignment", () => {
     it("aligns the first textarea row with a text input at every size, including multiline content", () => {
         cy.readFile<string>(
-            "../ui/web/src/forms/text-input/text-input.module.css",
+            "src/forms/text-input/text-input.module.css",
         ).then((inputCss) => {
             cy.readFile<string>(
-                "../ui/web/src/forms/text-area/text-area.module.css",
+                "src/forms/text-area/text-area.module.css",
             ).then((textAreaCss) => {
                 cy.document().then((document) => {
                     const stylesheet = document.createElement("style");

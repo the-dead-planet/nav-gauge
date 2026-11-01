@@ -214,8 +214,10 @@ yarn test:gear route-story
 #### Web with Cypress
 
 ```bash
-test:e2e:web
+yarn check:web
 ```
+
+This runs source checks, unit tests, application E2E tests, and UI browser tests against the running local app and Storybook. See [web checks and CI parity](docs/CONTRIBUTING.md#web-checks-and-ci-parity) for server commands and individual suites.
 
 #### Mobile with Jest
 

@@ -8,3 +8,7 @@ yarn-error.log
 .vscode
 .idea
 .DS_Store
+
+cypress/screenshots
+cypress/videos
+cypress/downloads
