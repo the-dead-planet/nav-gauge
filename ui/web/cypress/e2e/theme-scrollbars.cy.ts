@@ -9,6 +9,14 @@ describe("Themed scrollbars", () => {
     beforeEach(() => {
         cy.visit("/iframe.html?id=forms-textarea--gallery&viewMode=story");
         cy.get("textarea").should("exist");
+        cy.get("html").should(($root) => {
+            const root = $root[0];
+            const glyphs = root.ownerDocument
+                .defaultView!.getComputedStyle(root)
+                .getPropertyValue("--appearance-default-glyphs")
+                .trim();
+            expect(glyphs, "initialized theme glyphs").not.to.equal("");
+        });
     });
 
     it("uses each variant's glyph and surface paints across palettes and modes", () => {

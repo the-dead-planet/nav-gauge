@@ -142,6 +142,8 @@ For fast development, start `yarn dev:web` and `yarn dev:ui:web` in separate ter
 
 Both Cypress run scripts typecheck their complete suite before execution. Keep Cypress globals isolated in each workspace's `cypress/tsconfig.json`; do not add them to application or UI source TypeScript configs. CI runs every discovered spec, so use `yarn check:web` rather than a focused `--spec` run for the complete pre-PR check.
 
+Storybook tests that inspect theme paints must wait for a non-empty resolved appearance variable. A mounted control can appear before theme effects initialize; comparing two unresolved colors can otherwise produce a false pass.
+
 #### UI library
 
 Own UI library is created with focus on semantics, accessibility and minimalism. Reusable components should be developed without including any business logic. 
