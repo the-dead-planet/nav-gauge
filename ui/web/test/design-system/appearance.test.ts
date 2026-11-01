@@ -145,6 +145,8 @@ describe('Composed appearance rendering', () => {
                 expect(markup).to.include('data-disabled="true"');
                 expect(markup).to.include('data-highlighted="true"');
                 expect(markup).to.match(/<label[^>]*data-appearance-variant="default"/);
+                expect(markup).to.match(/<label[^>]*class="[^"]*font-default/);
+                expect(markup).to.match(/<label[^>]*aria-disabled="true"/);
                 expect(markup).to.include('--track-complete:100%');
                 expect(markup).to.include('type="range"');
                 expect(markup).to.include('disabled=""');

@@ -1,7 +1,12 @@
 import { ReactNode } from "react";
-import { AppearanceProps, FillVariant } from "../../design-system/model";
+import {
+    ActiveGlow,
+    AppearanceProps,
+    FillVariant,
+} from "../../design-system/model";
 
 export interface SliderProps extends AppearanceProps<FillVariant> {
+    activeGlow?: ActiveGlow;
     min?: number;
     max?: number;
     step?: number;
@@ -12,4 +17,11 @@ export interface SliderProps extends AppearanceProps<FillVariant> {
     showNumberInput?: boolean;
     showStepControls?: boolean;
     ariaLabel?: string;
+}
+
+export interface SliderControlRowProps extends Omit<
+    SliderProps,
+    "id" | "label" | "activeGlow"
+> {
+    children: ReactNode;
 }

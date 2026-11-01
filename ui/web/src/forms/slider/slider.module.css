@@ -1,15 +1,9 @@
+@value glow-sweep from "../../hud/surface.module.css";
+
 .container {
-    --appearance-default-glyphs-override: initial;
-    --appearance-hover-focus-glyphs-override: initial;
-    --appearance-active-pressed-glyphs-override: initial;
     display: grid;
     gap: 4px;
     min-width: 0;
-    color: var(
-        --appearance-default-glyphs-override,
-        var(--appearance-default-glyphs)
-    );
-    font-size: var(--size-control-font-size);
 }
 
 .container[data-size="xs"] {
@@ -32,14 +26,9 @@
     --track-thickness: 10px;
 }
 
-.container .label {
+.label {
     display: flex;
     gap: var(--size-control-gap);
-    color: var(
-        --appearance-default-glyphs-override,
-        var(--appearance-default-glyphs)
-    );
-    font-size: inherit;
 }
 
 .label > span {
@@ -71,30 +60,51 @@
     inset-inline: calc(var(--thumb-size) / 2);
     height: var(--track-thickness);
     transform: translateY(-50%);
-    background: color-mix(
-        in srgb,
-        var(--appearance-default-glyphs) 25%,
-        transparent
-    );
+    background: var(--appearance-color-300);
     pointer-events: none;
 }
 
+.container[data-appearance-mode="dark"] .track {
+    background: var(--appearance-color-700);
+}
+
 .progress {
+    position: relative;
     width: var(--track-complete);
     height: 100%;
-    background: var(--appearance-default-glyphs);
+    background: var(--appearance-color-500);
+}
+
+.progress::before,
+.track::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: calc(var(--track-thickness) / sqrt(2));
+    height: calc(var(--track-thickness) / sqrt(2));
+    background: inherit;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.progress::before {
+    left: 0;
+}
+
+.track::after {
+    left: 100%;
 }
 
 .thumb {
     position: absolute;
     left: var(--track-complete);
     top: 50%;
+    z-index: 1;
     box-sizing: border-box;
     width: var(--thumb-size);
     height: var(--thumb-size);
     transform: translate(-50%, -50%) rotate(45deg);
     background: var(--appearance-default-surface);
-    border: var(--appearance-default-border-width) solid
+    border: calc(var(--appearance-default-border-width) * 2) solid
         var(--appearance-default-border);
     backdrop-filter: var(--appearance-backdrop-filter);
 }
@@ -132,92 +142,42 @@
 .container:not([data-disabled]):not([data-highlighted]):not(
         :has(.slider:active)
     ):has(.slider:is(:hover, :focus-visible)) {
-    color: var(
-        --appearance-hover-focus-glyphs-override,
-        var(--appearance-hover-focus-glyphs)
-    );
-
     & .progress {
-        background: var(--appearance-hover-focus-glyphs);
+        background: var(--appearance-hover-focus-border);
     }
 
-    & .track {
-        background: color-mix(
-            in srgb,
-            var(--appearance-hover-focus-glyphs) 25%,
-            transparent
-        );
-    }
-
-    & .label {
-        color: var(
-            --appearance-hover-focus-glyphs-override,
-            var(--appearance-hover-focus-glyphs)
-        );
+    &[data-appearance-variant="fill"] .progress {
+        background: var(--appearance-hover-focus-surface);
     }
 
     & .thumb {
         background: var(--appearance-hover-focus-surface);
         border-color: var(--appearance-hover-focus-border);
-        border-width: var(--appearance-hover-focus-border-width);
+        border-width: calc(var(--appearance-hover-focus-border-width) * 2);
     }
 }
 
 .container:not([data-disabled]):is([data-highlighted], :has(.slider:active)) {
-    color: var(
-        --appearance-active-pressed-glyphs-override,
-        var(--appearance-active-pressed-glyphs)
-    );
-
     & .progress {
-        background: var(--appearance-active-pressed-glyphs);
+        background: var(--appearance-active-pressed-border);
     }
 
-    & .track {
-        background: color-mix(
-            in srgb,
-            var(--appearance-active-pressed-glyphs) 25%,
-            transparent
-        );
-    }
-
-    & .label {
-        color: var(
-            --appearance-active-pressed-glyphs-override,
-            var(--appearance-active-pressed-glyphs)
-        );
+    &[data-appearance-variant="fill"] .progress {
+        background: var(--appearance-active-pressed-surface);
     }
 
     & .thumb {
         background: var(--appearance-active-pressed-surface);
         border-color: var(--appearance-active-pressed-border);
-        border-width: var(--appearance-active-pressed-border-width);
+        border-width: calc(var(--appearance-active-pressed-border-width) * 2);
     }
 }
 
 .container[data-disabled] {
-    color: var(--appearance-disabled-glyphs);
-
-    & .label {
-        color: var(--appearance-disabled-glyphs);
-    }
-
-    & .track {
-        background: color-mix(
-            in srgb,
-            var(--appearance-disabled-glyphs) 25%,
-            transparent
-        );
-    }
-
-    & .progress {
-        background: var(--appearance-disabled-glyphs);
-    }
-
     & .thumb {
         background: var(--appearance-disabled-surface);
         border-color: var(--appearance-disabled-border);
-        border-width: var(--appearance-disabled-border-width);
+        border-width: calc(var(--appearance-disabled-border-width) * 2);
     }
 
     & .slider {
@@ -228,4 +188,21 @@
 .container:not([data-disabled]):has(.slider:focus-visible) .slider-wrapper {
     outline: 2px solid var(--appearance-glow-color);
     outline-offset: 2px;
+}
+
+.container[data-glow]:not([data-glow="none"], [data-disabled]):is(
+        [data-highlighted],
+        :has(.slider:is(:hover, :focus-visible, :active))
+    ) {
+    & .thumb {
+        box-shadow:
+            0 0 4px rgb(from var(--appearance-glow-color) r g b / 0.3),
+            0 0 20px rgb(from var(--appearance-glow-color) r g b / 0.6);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        &[data-glow="animate-borders-glow"] .thumb {
+            animation: glow-sweep 0.4s ease-in-out forwards;
+        }
+    }
 }

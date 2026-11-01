@@ -32,6 +32,7 @@ const story: MobileStoryDefinition<ComponentProps<typeof Slider>> = {
         "highlightColor",
         "glyphsShade",
         "highlightGlyphsShade",
+        "activeGlow",
         "highlighted",
         "disabled",
         "showNumberInput",

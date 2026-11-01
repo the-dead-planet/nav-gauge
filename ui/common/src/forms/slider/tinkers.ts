@@ -1,6 +1,7 @@
 import { SliderProps } from "./model";
 import {
     allColorShades,
+    activeGlowOptions,
     appearanceColorOptions,
     DEFAULT_COLOR,
     DEFAULT_FILL_VARIANT,
@@ -54,6 +55,7 @@ export const sliderStoryArgs: SliderProps = {
     color: DEFAULT_COLOR,
     variant: DEFAULT_FILL_VARIANT,
     size: DEFAULT_SIZE,
+    activeGlow: "none",
     highlighted: false,
     disabled: false,
     showNumberInput: false,
@@ -88,6 +90,10 @@ export const sliderStoryControls: StoryControls<SliderProps> = {
     size: {
         control: "select",
         options: sizeOptions,
+    },
+    activeGlow: {
+        control: "select",
+        options: activeGlowOptions,
     },
     value: {
         control: {
