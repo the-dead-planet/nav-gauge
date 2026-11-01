@@ -30,9 +30,17 @@
 }
 
 .textarea {
-    min-height: var(--size-control-height);
-    padding: var(--size-control-padding-block)
-        var(--size-control-padding-inline);
+    min-height: calc(
+        var(--size-control-height) - 2 * var(--appearance-default-border-width)
+    );
+    padding-block: max(
+        0px,
+        calc(
+            (var(--size-control-height) - 1lh) / 2 -
+                var(--appearance-default-border-width)
+        )
+    );
+    padding-inline: var(--size-control-padding-inline);
     flex: 1;
     min-width: 0;
     width: 100%;
