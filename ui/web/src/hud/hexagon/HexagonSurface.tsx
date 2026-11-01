@@ -63,6 +63,7 @@ export const HexagonSurface: FC<Props> = ({
                 </defs>
                 <polygon
                     points={points}
+                    pathLength={300}
                     strokeWidth={strokeWidth ?? 1}
                     className={classNames(styles["polygon-glow"], surface.glow)}
                 />

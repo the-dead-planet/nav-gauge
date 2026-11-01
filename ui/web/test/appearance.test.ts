@@ -97,6 +97,29 @@ const renderToStaticMarkup = (children: ReactElement): string => renderMarkup(
 describe('Composed appearance rendering', () => {
     after(() => renderingTheme.destroy());
 
+    it('omits empty Button labels while preserving numeric zero', () => {
+        for (const corners of buttonCorners) {
+            for (const children of [undefined, null, false, '', [], [false, '']]) {
+                const markup = renderToStaticMarkup(createElement(Button, {
+                    corners,
+                    children,
+                    icon: 'beaker.svg',
+                    tooltip: 'Action',
+                }));
+                expect(markup).to.include('only-icon');
+                expect(markup).not.to.match(/<span[^>]*class="[^"]*\blabel\b/);
+                expect(markup).to.include('aria-label="Action"');
+            }
+            const markup = renderToStaticMarkup(createElement(Button, {
+                corners,
+                children: 0,
+                icon: 'beaker.svg',
+            }));
+            expect(markup).not.to.include('only-icon');
+            expect(markup).to.match(/<span[^>]*class="[^"]*label[^"]*"[^>]*>0<\/span>/);
+        }
+    });
+
     it('gives sliders shared appearance and a readable associated native range label', () => {
         for (const color of appearanceColorOptions) {
             for (const variant of fillVariantOptions) {

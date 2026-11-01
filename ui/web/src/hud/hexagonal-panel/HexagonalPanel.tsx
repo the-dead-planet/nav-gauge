@@ -102,6 +102,7 @@ export const HexagonalPanel: FC<
                             <polygon
                                 points={points}
                                 className={surface.glow}
+                                pathLength={300}
                                 strokeWidth={2}
                             />
                             <polygon

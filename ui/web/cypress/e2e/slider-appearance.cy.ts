@@ -116,6 +116,6 @@ describe("Slider appearance", () => {
         );
         cy.get("#range").should("have.css", "cursor", "not-allowed");
         cy.get("#slider").should("have.css", "opacity", "1");
-        cy.get(".slider-wrapper").should("have.css", "outline-width", "0px");
+        cy.get(".slider-wrapper").should("have.css", "outline-style", "none");
     });
 });
