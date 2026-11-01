@@ -1,14 +1,28 @@
 .menu-list {
     position: fixed;
+    z-index: var(--layer-dropdown-z-index);
+    box-shadow: var(--layer-dropdown-down-shadow);
+    margin: 0;
+    list-style: none;
+    border-radius: 0;
     padding-inline: 0;
+    padding-block: var(--size-control-padding-block);
     max-height: 240px;
     overflow-y: auto;
     width: max-content;
-    min-width: min(160px, 100vw);
-    max-width: 100vw;
+    max-width: 100dvw;
+}
+
+.action-menu {
+    min-width: min(160px, 100dvw);
 }
 
 .menu-item {
+    gap: var(--size-control-gap);
+    min-height: var(--size-control-height);
+    padding: var(--size-control-padding-block)
+        var(--size-control-padding-inline);
+    font-size: var(--size-control-font-size);
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -29,53 +43,6 @@
     outline-offset: -2px;
 }
 
-.menu-item[aria-disabled='true'] {
+.menu-item[aria-disabled="true"] {
     cursor: not-allowed;
-}
-
-.size-xs {
-    padding-block: var(--size-control-xs-padding-block);
-}
-.size-sm {
-    padding-block: var(--size-control-sm-padding-block);
-}
-.size-md {
-    padding-block: var(--size-control-md-padding-block);
-}
-.size-lg {
-    padding-block: var(--size-control-lg-padding-block);
-}
-
-.menu-list.size-xs,
-.menu-list.size-sm {
-    padding-block: var(--spacing-xs);
-}
-.menu-list.size-md,
-.menu-list.size-lg {
-    padding-block: var(--spacing-sm);
-}
-
-.menu-item.size-xs {
-    gap: var(--size-control-xs-gap);
-    min-height: var(--size-control-xs-height);
-    padding-inline: var(--size-control-xs-padding-inline);
-    font-size: var(--size-control-xs-font-size);
-}
-.menu-item.size-sm {
-    gap: var(--size-control-sm-gap);
-    min-height: var(--size-control-sm-height);
-    padding-inline: var(--size-control-sm-padding-inline);
-    font-size: var(--size-control-sm-font-size);
-}
-.menu-item.size-md {
-    gap: var(--size-control-md-gap);
-    min-height: var(--size-control-md-height);
-    padding-inline: var(--size-control-md-padding-inline);
-    font-size: var(--size-control-md-font-size);
-}
-.menu-item.size-lg {
-    gap: var(--size-control-lg-gap);
-    min-height: var(--size-control-lg-height);
-    padding-inline: var(--size-control-lg-padding-inline);
-    font-size: var(--size-control-lg-font-size);
 }

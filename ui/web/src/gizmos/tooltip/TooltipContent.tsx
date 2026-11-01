@@ -45,10 +45,10 @@ export const TooltipContent: FC<TooltipProps> = (props) => {
                               elevationLayer="tooltip"
                               color={color}
                               variant={variant}
+                              data-size={size}
                               className={classNames(
                                   styles["tooltip-content"],
                                   styles[`placement-${effectivePlacement}`],
-                                  styles[`size-${size}`],
                               )}
                               style={{
                                   top: position.top,

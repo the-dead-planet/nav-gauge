@@ -21,6 +21,7 @@ import {
     sizeOptions,
     themeSpecifications,
 } from '@ui';
+import { createAppearanceRules } from '../src/design-system/theme/useThemeVariables';
 
 const require = createRequire(__filename);
 const previousCssLoader = require.extensions['.css'];
@@ -53,11 +54,17 @@ const { OctagonalSurface } = require('../src/hud/octagonal-panel/OctagonalSurfac
 const { ResizeHandle } = require('../src/gizmos/resize-handle/ResizeHandle') as typeof import('../src/gizmos/resize-handle/ResizeHandle');
 const { ColorBox } = require('../src/gizmos/color-box/ColorBox') as typeof import('../src/gizmos/color-box/ColorBox');
 const { Menu } = require('../src/rigs/menu/Menu') as typeof import('../src/rigs/menu/Menu');
+const { MenuList } = require('../src/rigs/menu/MenuList') as typeof import('../src/rigs/menu/MenuList');
 const { MenuItem } = require('../src/rigs/menu/MenuItem') as typeof import('../src/rigs/menu/MenuItem');
 const { Tabstrip } = require('../src/rigs/tabstrip/Tabstrip') as typeof import('../src/rigs/tabstrip/Tabstrip');
 const { VariantGallery } = require('../src/storybook/VariantGallery') as typeof import('../src/storybook/VariantGallery');
 const { FileInput } = require('../src/forms/file-input/FileInput') as typeof import('../src/forms/file-input/FileInput');
 const { Checkbox } = require('../src/forms/checkbox/Checkbox') as typeof import('../src/forms/checkbox/Checkbox');
+const { Dropdown } = require('../src/forms/dropdown/Dropdown') as typeof import('../src/forms/dropdown/Dropdown');
+const { Icon } = require('../src/design-system/icons') as typeof import('../src/design-system/icons');
+const { NumberInput } = require('../src/forms/number-input/NumberInput') as typeof import('../src/forms/number-input/NumberInput');
+const { TextInput } = require('../src/forms/text-input/TextInput') as typeof import('../src/forms/text-input/TextInput');
+const { TextArea } = require('../src/forms/text-area/TextArea') as typeof import('../src/forms/text-area/TextArea');
 const { Radio } = require('../src/forms/radio/Radio') as typeof import('../src/forms/radio/Radio');
 const { ClockInput, ClockSliceInput, ClockDurationInput } = require('../src/forms/clock-input') as typeof import('../src/forms/clock-input');
 const { Text } = require('../src/design-system/typography') as typeof import('../src/design-system/typography');
@@ -88,6 +95,114 @@ const renderToStaticMarkup = (children: ReactElement): string => renderMarkup(
 
 describe('Composed appearance rendering', () => {
     after(() => renderingTheme.destroy());
+
+    it('lets controls select their own size inside a differently sized container', () => {
+        for (const size of sizeOptions) {
+            const controls = [
+                createElement(NumberInput, { size, value: 1, label: 'Quantity', onChange: () => undefined }),
+                createElement(TextInput, { size, value: 'Text', label: 'Name', onChange: () => undefined }),
+                createElement(TextArea, { size, value: 'Text', label: 'Notes', onChange: () => undefined }),
+                createElement(MenuItem, { size, type: 'button', children: 'Action' }),
+                createElement(Icon, { size, src: 'beaker.svg' }),
+                createElement(Hexagon, { size }),
+                createElement(Octagon, { size }),
+                createElement(HudDecoration, { size, children: 'Decoration' }),
+                createElement(Chip, { size, children: 'Chip' }),
+                createElement(Checkbox, { size, checked: false, onChange: () => undefined }),
+                createElement(Radio, { size, checked: false, onChange: () => undefined }),
+                createElement(ClockInput, { size, value: 30 }),
+                createElement(ClockSliceInput, { size, value: 30 }),
+                createElement(ClockDurationInput, { size, value: 30 }),
+                createElement(Tabstrip, { size, options: [], value: '', onChange: () => undefined, overflowAccessibilityLabel: 'More tabs', children: 'Content' }),
+                ...buttonCorners.map((corners) => createElement(Button, { size, corners, icon: 'beaker.svg', 'aria-label': 'Action' })),
+            ];
+            for (const control of controls) {
+                const containerSize = size === 'lg' ? 'xs' : 'lg';
+                const markup = renderToStaticMarkup(createElement('div', { 'data-size': containerSize }, control));
+                const selectedSizes = [...markup.matchAll(/data-size="([^"]+)"/g)].map((match) => match[1]);
+                expect(selectedSizes.slice(0, 2)).to.deep.equal([containerSize, size]);
+            }
+        }
+    });
+
+    it('selects shared control metrics through data-size for the complete size scale', () => {
+        expect(Object.keys(renderingTheme.sizes)).to.deep.equal(['control']);
+        const rules = createAppearanceRules(renderingTheme);
+        for (const size of sizeOptions) {
+            const rule = rules.split('\n').find((value) => value.startsWith(`[data-size="${size}"]`));
+            expect(rule).to.include(`--size-control-height:var(--size-control-${size}-height)`);
+            expect(rule).to.include(`--size-control-padding-block:var(--size-control-${size}-padding-block)`);
+            expect(rule).to.include(`--size-control-padding-inline:var(--size-control-${size}-padding-inline)`);
+            expect(rule).to.include(`--size-control-gap:var(--size-control-${size}-gap)`);
+            expect(rule).to.include(`--size-control-font-size:var(--size-control-${size}-font-size)`);
+            expect(rule).to.include(`--size-control-icon-size:var(--size-control-${size}-icon-size)`);
+        }
+    });
+
+    it('shares fixed inverse list surfaces while preserving menu and listbox semantics', () => {
+        for (const color of appearanceColorOptions) {
+            for (const size of sizeOptions) {
+                for (const as of ['div', 'ul'] as const) {
+                    const role = as === 'ul' ? 'listbox' : 'menu';
+                    const markup = renderToStaticMarkup(createElement(MenuList, {
+                        as,
+                        role,
+                        color,
+                        size,
+                        'aria-label': 'Materials',
+                        style: { width: 200 },
+                        children: 'Material',
+                    }));
+                    expect(markup).to.include(`<${as}`);
+                    expect(markup).to.include(`role="${role}"`);
+                    expect(markup).to.include('data-appearance-variant="fill-inverse"');
+                    expect(markup).to.include(`data-appearance-color="${color}"`);
+                    expect(markup).to.include('menu-list');
+                    expect(markup).to.include(`data-size="${size}"`);
+                    expect(markup).to.include('aria-label="Materials"');
+                    expect(markup).to.include('width:200px');
+                    expect(markup).not.to.include('data-interactive=');
+                }
+            }
+        }
+    });
+
+    it('renders dropdown trigger appearance and glyph overrides once for every color and fill variant', () => {
+        for (const color of appearanceColorOptions) {
+            for (const variant of fillVariantOptions) {
+                const markup = renderToStaticMarkup(createElement(Dropdown<string>, {
+                    value: 'selected',
+                    options: [{ value: 'selected', label: 'Selected option' }],
+                    color,
+                    variant,
+                    themeMode: 'dark',
+                    highlightColor: 'hazard',
+                    glyphsShade: 700,
+                    highlightGlyphsShade: 200,
+                    highlighted: true,
+                    disabled: true,
+                    size: 'lg',
+                    ariaLabel: 'Material',
+                }));
+                const theme = renderingTheme.forMode('dark');
+                expect(markup).to.include(`data-appearance-color="${color}"`);
+                expect(markup).to.include(`data-appearance-variant="${variant}"`);
+                expect(markup).to.include('data-appearance-mode="dark"');
+                expect(markup).to.include('data-appearance-highlight="hazard"');
+                expect(markup).to.include('data-disabled="true"');
+                expect(markup).to.include('data-highlighted="true"');
+                expect(markup).to.include('disabled=""');
+                expect(markup).to.include('aria-haspopup="listbox"');
+                expect(markup).to.include('aria-expanded="false"');
+                expect(markup).to.include('data-size="lg"');
+                expect(markup).to.include(`--appearance-default-glyphs-override:${theme.color(color, 700)}`);
+                expect(markup).to.include(`--appearance-hover-focus-glyphs-override:${theme.color('hazard', 200)}`);
+                expect(markup).to.include(`--appearance-active-pressed-glyphs-override:${theme.color('hazard', 200)}`);
+                expect([...markup.matchAll(/data-disabled=/g)]).to.have.length(1);
+                expect(markup).not.to.include('themeMode=');
+            }
+        }
+    });
 
     it('renders clocks with shared appearance ownership for every color and fill variant', () => {
         for (const color of appearanceColorOptions) {
@@ -365,7 +480,7 @@ describe('Composed appearance rendering', () => {
             }));
             const footer = markup.match(/<footer[^>]*>([\s\S]*?)<\/footer>/)?.[1];
             expect(markup).to.include(`data-size="${size}"`);
-            expect(footer).to.include(`size-${size}`);
+            expect(footer?.match(/data-size="([^"]+)"/g)).to.deep.equal([`data-size="${size}"`, `data-size="${size}"`]);
             expect(footer).to.include('data-appearance-variant="fill"');
             expect(footer).to.include('data-appearance-variant="fill-inverse"');
             expect(footer?.match(/<button\b/g)).to.have.length(2);
@@ -432,7 +547,7 @@ describe('Composed appearance rendering', () => {
                         }),
                     }),
                 }));
-                expect(markup).to.include(`size-${size}`);
+                expect(markup).to.include(`data-size="${size}"`);
                 expect(markup).to.include(`data-appearance-color="${color}"`);
                 expect(markup).to.include('data-appearance-highlight="hazard"');
                 expect(markup).to.include('data-appearance-variant="menu-item"');
@@ -504,8 +619,9 @@ describe('Composed appearance rendering', () => {
                 triggerActive: true,
             }),
         }));
-        expect(markup).to.include('only-icon-lg');
-        expect(markup).not.to.include('only-icon-xs');
+        expect(markup).to.include('only-icon');
+        expect(markup).to.include('data-size="lg"');
+        expect(markup).not.to.include('data-size="xs"');
         expect(markup).to.include('aria-label="Route actions"');
         expect(markup).to.include('aria-haspopup="menu"');
         expect(markup).to.include('aria-expanded="false"');

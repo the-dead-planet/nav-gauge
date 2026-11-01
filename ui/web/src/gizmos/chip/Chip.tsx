@@ -6,7 +6,6 @@ import {
     DEFAULT_SURFACE_VARIANT,
     DEFAULT_SIZE,
     DEFAULT_FILL_VARIANT,
-    SizeVariant,
     useTheme,
 } from "@ui";
 import { Icon } from "../../design-system/icons";
@@ -24,13 +23,6 @@ interface Props {
     icon?: string;
     className?: string;
 }
-
-const iconSizes: Record<SizeVariant, number> = {
-    xs: 12,
-    sm: 16,
-    md: 20,
-    lg: 24,
-};
 
 export const Chip: FC<ChipProps & Props> = ({
     color = DEFAULT_COLOR,
@@ -54,12 +46,9 @@ export const Chip: FC<ChipProps & Props> = ({
             as="span"
             ref={containerRef}
             variant={variant}
+            size={size}
             color={color}
-            className={classNames(
-                styles["chip"],
-                styles[`size-${size}`],
-                className,
-            )}
+            className={classNames(styles["chip"], className)}
         >
             {width > 0 && height > 0 ? (
                 <OctagonalSurface
@@ -73,8 +62,8 @@ export const Chip: FC<ChipProps & Props> = ({
                 {icon ? (
                     <Icon
                         src={icon}
-                        width={iconSizes[size]}
-                        height={iconSizes[size]}
+                        width={theme.sizes.control[size].iconSize}
+                        height={theme.sizes.control[size].iconSize}
                     />
                 ) : null}
                 {children !== undefined && children !== null ? (

@@ -1,13 +1,12 @@
-import { ComponentProps, FC } from 'react';
+import { ComponentProps, FC } from "react";
 import {
     Modal,
     Pressable,
-    ScrollView,
     StyleProp,
     StyleSheet,
     View,
     ViewStyle,
-} from 'react-native';
+} from "react-native";
 import {
     DEFAULT_COLOR,
     DEFAULT_SIZE,
@@ -15,25 +14,20 @@ import {
     Icons,
     MenuContext,
     MenuProps,
-    Theme,
-    useTheme,
-} from '@ui';
-import { Button } from '../../gizmos/button';
-import { resolveLayerStyle } from '../../design-system/theme';
-import { useMenu } from './useMenu';
+} from "@ui";
+import { Button } from "../../gizmos/button";
+import { useMenu } from "./useMenu";
+import { MenuList } from "./MenuList";
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row',
+        flexDirection: "row",
     },
     modalOverlay: {
         flex: 1,
     },
     menuList: {
-        position: 'absolute',
         minWidth: 160,
-        maxWidth: '100%',
-        maxHeight: 240,
     },
 });
 
@@ -45,10 +39,10 @@ export const Menu: FC<MobileMenuProps> = ({
     icon = Icons.NounProject.KebabMenu,
     iconActiveColor,
     iconSize,
-    placement = 'bottom-right',
+    placement = "bottom-right",
     color = DEFAULT_COLOR,
     size = iconSize ?? DEFAULT_SIZE,
-    variant = 'ghost',
+    variant = "ghost",
     highlightColor = color,
     glyphsShade,
     highlightGlyphsShade,
@@ -72,15 +66,13 @@ export const Menu: FC<MobileMenuProps> = ({
         toggle,
         close,
     } = useMenu({ disabled, triggerAnchor, popupAnchor });
-    const theme = useTheme();
-    const appearance = theme.resolveAppearance('fill-inverse', color);
 
     return (
         <View style={styles.container}>
             <View ref={triggerRef} collapsable={false}>
                 <Button
                     variant={variant}
-                    icon={icon as ComponentProps<typeof Button>['icon']}
+                    icon={icon as ComponentProps<typeof Button>["icon"]}
                     color={color}
                     highlightColor={iconActiveColor ?? highlightColor}
                     glyphsShade={glyphsShade}
@@ -107,27 +99,11 @@ export const Menu: FC<MobileMenuProps> = ({
                     style={styles.modalOverlay}
                     onPress={close}
                 >
-                    <ScrollView
+                    <MenuList
+                        color={color}
+                        size={size}
                         onLayout={onLayout}
-                        contentContainerStyle={{
-                            paddingVertical: Number.parseInt(
-                                Theme.spacing[
-                                    size === 'xs' || size === 'sm' ? 'xs' : 'sm'
-                                ],
-                                10,
-                            ),
-                            paddingHorizontal: 0,
-                        }}
-                        style={[
-                            styles.menuList,
-                            resolveLayerStyle(theme, 'dropdown'),
-                            popupPosition,
-                            {
-                                backgroundColor: appearance.surface,
-                                borderColor: appearance.border.color,
-                                borderWidth: appearance.border.width,
-                            },
-                        ]}
+                        style={[styles.menuList, popupPosition]}
                     >
                         <MenuContext.Provider
                             value={{
@@ -139,7 +115,7 @@ export const Menu: FC<MobileMenuProps> = ({
                         >
                             {children}
                         </MenuContext.Provider>
-                    </ScrollView>
+                    </MenuList>
                 </Pressable>
             </Modal>
         </View>

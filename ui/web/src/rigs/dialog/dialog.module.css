@@ -46,7 +46,7 @@
 
 .right-drawer {
     right: 0;
-    top: min(6vh, 64px);
+    top: min(6dvh, 64px);
     bottom: 0;
 }
 
@@ -57,7 +57,7 @@
 
 .left-drawer {
     left: 0;
-    top: min(6vh, 64px);
+    top: min(6dvh, 64px);
     bottom: 0;
 }
 
@@ -95,21 +95,10 @@
     padding: 0 20px;
     min-height: 0;
     overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--appearance-default-glyphs)
-        var(--appearance-default-surface);
 }
 
 .full-width .content {
     width: 100%;
-}
-
-.content::-webkit-scrollbar-thumb {
-    background: var(--appearance-default-glyphs);
-}
-
-.content::-webkit-scrollbar-thumb:hover {
-    background: var(--appearance-color-500);
 }
 
 .footer {

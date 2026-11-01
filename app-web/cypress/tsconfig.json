@@ -1,17 +1,7 @@
 {
-    "compilerOptions": {
-        "target": "es6",
-        "lib": [
-            "es6",
-            "dom"
-        ],
-        "sourceMap": true,
-        "types": [
-            "cypress",
-            "node"
-        ]
-    },
+    "extends": "../../tsconfig.cypress.json",
     "include": [
-        "**/*.ts"
+        "**/*.ts",
+        "../cypress.config.ts"
     ]
 }

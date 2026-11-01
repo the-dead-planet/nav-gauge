@@ -161,6 +161,7 @@ export const Tabstrip: FC<TabstripProps> = ({
                         <HudSurface
                             as="div"
                             variant={variant}
+                            size={size}
                             color={color}
                             disabled={disabled}
                             rectangle
@@ -169,7 +170,6 @@ export const Tabstrip: FC<TabstripProps> = ({
                                 styles['content-inner'],
                                 styles['content-outgoing'],
                                 actions && styles['with-actions'],
-                                styles[`size-${size}`],
                             )}
                             aria-hidden="true"
                             inert
@@ -180,6 +180,7 @@ export const Tabstrip: FC<TabstripProps> = ({
                     <HudSurface
                         as="div"
                         variant={variant}
+                        size={size}
                         color={color}
                         disabled={disabled}
                         rectangle
@@ -189,7 +190,6 @@ export const Tabstrip: FC<TabstripProps> = ({
                         className={classNames(
                             styles['content-inner'],
                             actions && styles['with-actions'],
-                            styles[`size-${size}`],
                         )}
                     >
                         {children}

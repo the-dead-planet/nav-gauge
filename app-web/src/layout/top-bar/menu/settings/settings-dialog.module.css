@@ -45,7 +45,7 @@
     column-gap: 20px;
     row-gap: 10px;
     width: max-content;
-    max-width: calc(100vw - 40px);
+    max-width: calc(100dvw - 40px);
 }
 
 .wide .field {

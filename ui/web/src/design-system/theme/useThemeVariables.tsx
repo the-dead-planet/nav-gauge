@@ -12,6 +12,7 @@ import {
     fontTypeToFamily,
     PaletteColor,
     Theme,
+    sizeOptions,
     ThemeAppearancePaint,
     ThemeAppearanceInsetEffectPolicy,
     themeAppearanceStateOptions,
@@ -122,18 +123,26 @@ const createAppearanceDeclarations = (
     ].join(';');
 };
 
-const createAppearanceRules = (theme: Theme): string => {
+export const createAppearanceRules = (theme: Theme): string => {
     const lightTheme = theme.forMode('light');
     const darkTheme = theme.forMode('dark');
     return [
         '[data-appearance-mode="light"]{color-scheme:light}',
         '[data-appearance-mode="dark"]{color-scheme:dark}',
-        ...Object.keys(theme.sizes.control).map((size) =>
-            `[data-size="${size}"]{--size-control-gap:var(--size-control-${size}-gap)}`
-        ),
+        ...sizeOptions.map((size) => {
+            const declarations = Object.keys(theme.sizes.control[size]).map((metric) => {
+                const property = metric.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
+                return `--size-control-${property}:var(--size-control-${size}-${property})`;
+            }).join(';');
+            return `[data-size="${size}"]{${declarations}}`;
+        }),
         ...appearanceColorOptions.map((color) => createColorRule('color', color)),
+        ...appearanceColorOptions.map((color) =>
+            `[data-appearance-color="${color}"]:not([data-appearance-highlight]){${createColorDeclarations('highlight', color)}}`
+        ),
         ...appearanceColorOptions.map((color) => createColorRule('highlight', color)),
-        `:root{${createColorDeclarations('color', DEFAULT_COLOR)};${createColorDeclarations('highlight', DEFAULT_COLOR)};${createAppearanceDeclarations(lightTheme.appearancePolicies.default, darkTheme.appearancePolicies.default)}}`,
+        `:root{${createColorDeclarations('color', DEFAULT_COLOR)};${createColorDeclarations('highlight', DEFAULT_COLOR)}}`,
+        `:root,[data-appearance-color]:not([data-appearance-variant]){${createAppearanceDeclarations(lightTheme.appearancePolicies.default, darkTheme.appearancePolicies.default)}}`,
         ...Object.entries(lightTheme.appearancePolicies).map(([variant, policy]) =>
             `[data-appearance-variant="${variant}"]{${createAppearanceDeclarations(policy, darkTheme.appearancePolicies[variant as keyof Theme['appearancePolicies']])}}`
         ),

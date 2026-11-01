@@ -109,21 +109,23 @@ export const Button: FC<ComponentProps<"button"> & Props & ButtonProps> = ({
             (!children && typeof tooltip === "string" ? tooltip : undefined),
         className: classNames(
             styles.button,
-            styles[`size-${size}`],
             styles[`corners-${corners}`],
             {
-                [styles[`has-icon-${size}`]]: !!icon,
-                [styles[`only-icon-${size}`]]: !!icon && !children,
+                [styles["has-icon"]]: !!icon,
+                [styles["only-icon"]]: !!icon && !children,
             },
         ),
     };
     const button =
         corners === "hexagon" ? (
-            <button {...nativeProps}>{content}</button>
+            <button {...nativeProps} data-size={size}>
+                {content}
+            </button>
         ) : (
             <HudSurface
                 as="button"
                 {...nativeProps}
+                size={size}
                 variant={variant}
                 color={color}
                 highlightColor={highlightColor}

@@ -14,23 +14,6 @@
     stroke: var(--appearance-default-glyphs);
 }
 
-.size-xs {
-    --decoration-offset: 3px;
-    stroke-width: 1;
-}
-.size-sm {
-    --decoration-offset: 5px;
-    stroke-width: 1.5;
-}
-.size-md {
-    --decoration-offset: 7px;
-    stroke-width: 2;
-}
-.size-lg {
-    --decoration-offset: 9px;
-    stroke-width: 2.5;
-}
-
 .decoration[data-glow]:not([data-glow="none"]) {
     filter: drop-shadow(0 0 4px var(--appearance-glow-color));
 }

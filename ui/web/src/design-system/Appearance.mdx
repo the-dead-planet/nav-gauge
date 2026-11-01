@@ -278,3 +278,21 @@ Use the shared `actionButtonVariants[surfaceVariant]` policy for primary/seconda
 <Canvas of={ColorStories.ActiveGlow} />
 
 Animation timing and reduced-motion behavior follow the <a href="./?path=/docs/design-system-motion--docs" target="_top" style={{ textDecoration: 'underline' }}>Motion</a> principles.
+
+## Scrollbars
+
+- Every horizontally or vertically scrollable surface, including menus, dialogs, panels, and text areas, uses the shared theme scrollbar styling. The nearest appearance owner selects the variant and palette, including status colors. Color-only owners use the default appearance policy; uncolored content inherits the neutral default. Do not add component-specific scrollbar rules or shade tables.
+
+<table>
+    <thead>
+        <tr><th>Part</th><th>Treatment</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>Thumb</td><td>Variant's default glyph paint: <code>--appearance-default-glyphs</code></td></tr>
+        <tr><td>Thumb hover</td><td>Variant's hover/focus glyph paint: <code>--appearance-hover-focus-glyphs</code>; Chromium only</td></tr>
+        <tr><td>Track and corner</td><td>Variant's default surface paint: <code>--appearance-default-surface</code>, including its transparency</td></tr>
+        <tr><td>Chromium thickness</td><td>Selected size's control gap for both axes; shared <code>sm</code> gap when no size is selected</td></tr>
+        <tr><td>Chromium thumb corners</td><td>Square: <code>border-radius: 0</code></td></tr>
+        <tr><td>Firefox geometry</td><td>Native <code>auto</code> width using <code>scrollbar-color</code>; native thumb shape and hover behavior. Exact pixel thickness is not available through the standard API.</td></tr>
+    </tbody>
+</table>

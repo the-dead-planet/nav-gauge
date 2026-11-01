@@ -1,13 +1,13 @@
-import { RefObject, useEffect, useRef, useState } from 'react';
+import { RefObject, useEffect, useRef, useState } from "react";
 import {
     getIconAnchorPoint,
     MenuAnchor,
     MenuPosition,
     menuPositionsMatch,
     placePopup,
-} from '@ui';
+} from "@ui";
 
-export const usePopupPosition = ({
+export const usePopupPosition = <Element extends HTMLElement = HTMLDivElement>({
     visible,
     anchor,
     position,
@@ -20,7 +20,7 @@ export const usePopupPosition = ({
     triggerAnchor: MenuAnchor;
     popupAnchor: MenuAnchor;
 }) => {
-    const containerRef = useRef<HTMLDivElement>(null);
+    const containerRef = useRef<Element>(null);
     const [popupPosition, setPopupPosition] = useState<MenuPosition>({});
 
     useEffect(() => {

@@ -1,6 +1,6 @@
-import { ComponentProps, FC, useId } from 'react';
-import { createPortal } from 'react-dom';
-import classNames from 'classnames';
+import { ComponentProps, FC, useId } from "react";
+import { createPortal } from "react-dom";
+import classNames from "classnames";
 import {
     DEFAULT_COLOR,
     DEFAULT_SIZE,
@@ -9,18 +9,18 @@ import {
     Icons,
     MenuContext,
     MenuProps,
-} from '@ui';
-import { Button } from '../../gizmos/button';
-import { Panel } from '../../hud';
-import { Transition } from '../../motion/transition';
-import { useMenu } from './useMenu';
-import styles from './menu.module.css';
+} from "@ui";
+import { Button } from "../../gizmos/button";
+import { Transition } from "../../motion/transition";
+import { useMenu } from "./useMenu";
+import { MenuList } from "./MenuList";
+import styles from "./menu.module.css";
 
 interface Props extends MenuProps {
     menuListClassName?: string;
 }
 
-export const Menu: FC<Props & ComponentProps<'button'>> = ({
+export const Menu: FC<Props & ComponentProps<"button">> = ({
     icon = Icons.NounProject.KebabMenu,
     iconActiveColor,
     iconSize,
@@ -32,12 +32,12 @@ export const Menu: FC<Props & ComponentProps<'button'>> = ({
     highlightGlyphsShade,
     highlighted = false,
     disabled = false,
-    placement = 'bottom-right',
+    placement = "bottom-right",
     triggerAccessibilityLabel,
     triggerActive = false,
     menuListClassName,
     id,
-    'aria-label': accessibilityLabel,
+    "aria-label": accessibilityLabel,
     onClick,
     children,
     ...props
@@ -83,14 +83,13 @@ export const Menu: FC<Props & ComponentProps<'button'>> = ({
             />
             {visible &&
                 createPortal(
-                    <Panel
-                        forwardRef={containerRef}
-                        variant="fill-inverse"
+                    <MenuList
+                        as="div"
+                        ref={containerRef}
                         color={color}
-                        elevationLayer="dropdown"
+                        size={size}
                         className={classNames(
-                            styles['menu-list'],
-                            styles[`size-${size}`],
+                            styles["action-menu"],
                             menuListClassName,
                         )}
                         style={popupPosition}
@@ -111,15 +110,15 @@ export const Menu: FC<Props & ComponentProps<'button'>> = ({
                             <Transition
                                 slide={
                                     popupPosition.bottom
-                                        ? 'to-top'
-                                        : 'to-bottom'
+                                        ? "to-top"
+                                        : "to-bottom"
                                 }
                                 render
                             >
                                 {children}
                             </Transition>
                         </MenuContext.Provider>
-                    </Panel>,
+                    </MenuList>,
                     document.body,
                 )}
         </>

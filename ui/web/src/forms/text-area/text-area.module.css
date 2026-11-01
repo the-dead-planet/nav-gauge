@@ -8,7 +8,7 @@
         --appearance-default-glyphs-override,
         var(--appearance-default-glyphs)
     );
-    transition: color .15s ease;
+    transition: color 0.15s ease;
 }
 
 .label {
@@ -25,11 +25,22 @@
         var(--appearance-default-border);
     backdrop-filter: var(--appearance-backdrop-filter);
     transition:
-        background-color .15s ease,
-        border-color .15s ease;
+        background-color 0.15s ease,
+        border-color 0.15s ease;
 }
 
 .textarea {
+    min-height: calc(
+        var(--size-control-height) - 2 * var(--appearance-default-border-width)
+    );
+    padding-block: max(
+        0px,
+        calc(
+            (var(--size-control-height) - 1lh) / 2 -
+                var(--appearance-default-border-width)
+        )
+    );
+    padding-inline: var(--size-control-padding-inline);
     flex: 1;
     min-width: 0;
     width: 100%;
@@ -44,7 +55,7 @@
 
 .textarea::placeholder {
     color: inherit;
-    opacity: .5;
+    opacity: 0.5;
 }
 
 .textarea:disabled {
@@ -97,46 +108,7 @@
     outline-offset: 2px;
 }
 
-.size-xs .label,
-.size-xs .textarea {
-    font-size: var(--size-control-xs-font-size);
-}
-
-.size-xs .textarea {
-    min-height: var(--size-control-xs-height);
-    padding: var(--size-control-xs-padding-block)
-        var(--size-control-xs-padding-inline);
-}
-
-.size-sm .label,
-.size-sm .textarea {
-    font-size: var(--size-control-sm-font-size);
-}
-
-.size-sm .textarea {
-    min-height: var(--size-control-sm-height);
-    padding: var(--size-control-sm-padding-block)
-        var(--size-control-sm-padding-inline);
-}
-
-.size-md .label,
-.size-md .textarea {
-    font-size: var(--size-control-md-font-size);
-}
-
-.size-md .textarea {
-    min-height: var(--size-control-md-height);
-    padding: var(--size-control-md-padding-block)
-        var(--size-control-md-padding-inline);
-}
-
-.size-lg .label,
-.size-lg .textarea {
-    font-size: var(--size-control-lg-font-size);
-}
-
-.size-lg .textarea {
-    min-height: var(--size-control-lg-height);
-    padding: var(--size-control-lg-padding-block)
-        var(--size-control-lg-padding-inline);
+.container .label,
+.container .textarea {
+    font-size: var(--size-control-font-size);
 }

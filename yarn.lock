@@ -7018,6 +7018,7 @@ __metadata:
     "@types/react-dom": "npm:19.3.0"
     classnames: "npm:^2.5.1"
     css-loader: "npm:^7.1.5"
+    cypress: "npm:^16.2.0"
     maplibre-gl: "npm:6.15.0"
     react: "npm:19.3.1"
     react-dom: "npm:19.3.1"

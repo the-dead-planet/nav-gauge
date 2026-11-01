@@ -72,22 +72,22 @@ yarn test
 
 ### E2E tests
 
-Write E2E (component rendering) tests using cypress in folders `cypress/e2e/**/*.cy.ts`.
+Write application flow tests using Cypress in `cypress/e2e/**/*.cy.ts`. Shared UI tests belong in `ui/web/cypress/e2e`; see [web checks and CI parity](../docs/CONTRIBUTING.md#web-checks-and-ci-parity).
 
 Run: 
 
 ```
-yarn test:e2e
+yarn test:e2e --browser chrome
 ```
 
 Using localhost:
 
 ```
-yarn test:e2e:dev
+yarn test:e2e:dev --browser chrome
 ```
 
 Using current production deployment:
 
 ```
-yarn test:e2e:prod
+yarn test:e2e:prod --browser chrome
 ```

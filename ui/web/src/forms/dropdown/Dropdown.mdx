@@ -1,0 +1,14 @@
+import { Meta, Stories, Title } from '@storybook/addon-docs/blocks';
+import * as DropdownStories from './Dropdown.stories';
+
+<Meta of={DropdownStories} name="Docs" />
+
+<Title />
+
+## Appearance and interaction
+
+`variant` styles the trigger; the popup displays the `fill-inverse` <a href="./?path=/docs/rigs-menu--docs" target="_top" style={{ textDecoration: 'underline' }}>Menu</a> list items.
+
+Highlight palette: rows use `highlightColor ?? color`; the trigger uses `iconActiveColor ?? highlightColor ?? color`.
+
+<Stories />

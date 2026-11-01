@@ -8,7 +8,7 @@
         --appearance-default-glyphs-override,
         var(--appearance-default-glyphs)
     );
-    transition: color .15s ease;
+    transition: color 0.15s ease;
 }
 
 .label {
@@ -16,6 +16,7 @@
 }
 
 .field {
+    height: var(--size-control-height);
     display: flex;
     align-items: stretch;
     box-sizing: border-box;
@@ -26,8 +27,8 @@
         var(--appearance-default-border);
     backdrop-filter: var(--appearance-backdrop-filter);
     transition:
-        background-color .15s ease,
-        border-color .15s ease;
+        background-color 0.15s ease,
+        border-color 0.15s ease;
 }
 
 .input-with-unit {
@@ -39,6 +40,7 @@
 }
 
 .input {
+    padding-inline: var(--size-control-padding-inline);
     flex: 1;
     min-width: 0;
     border: none;
@@ -57,7 +59,7 @@
     margin: 0;
 }
 
-.input[type='number'] {
+.input[type="number"] {
     -moz-appearance: textfield;
 }
 
@@ -71,6 +73,7 @@
 }
 
 .steppers {
+    min-width: var(--size-control-icon-size);
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
@@ -167,74 +170,8 @@
     outline-offset: 2px;
 }
 
-.size-xs .field {
-    height: var(--size-control-xs-height);
-}
-
-.size-xs .label,
-.size-xs .input,
-.size-xs .unit {
-    font-size: var(--size-control-xs-font-size);
-}
-
-.size-xs .input {
-    padding-inline: var(--size-control-xs-padding-inline);
-}
-
-.size-xs .steppers {
-    min-width: var(--size-control-xs-icon-size);
-}
-
-.size-sm .field {
-    height: var(--size-control-sm-height);
-}
-
-.size-sm .label,
-.size-sm .input,
-.size-sm .unit {
-    font-size: var(--size-control-sm-font-size);
-}
-
-.size-sm .input {
-    padding-inline: var(--size-control-sm-padding-inline);
-}
-
-.size-sm .steppers {
-    min-width: var(--size-control-sm-icon-size);
-}
-
-.size-md .field {
-    height: var(--size-control-md-height);
-}
-
-.size-md .label,
-.size-md .input,
-.size-md .unit {
-    font-size: var(--size-control-md-font-size);
-}
-
-.size-md .input {
-    padding-inline: var(--size-control-md-padding-inline);
-}
-
-.size-md .steppers {
-    min-width: var(--size-control-md-icon-size);
-}
-
-.size-lg .field {
-    height: var(--size-control-lg-height);
-}
-
-.size-lg .label,
-.size-lg .input,
-.size-lg .unit {
-    font-size: var(--size-control-lg-font-size);
-}
-
-.size-lg .input {
-    padding-inline: var(--size-control-lg-padding-inline);
-}
-
-.size-lg .steppers {
-    min-width: var(--size-control-lg-icon-size);
+.container .label,
+.container .input,
+.container .unit {
+    font-size: var(--size-control-font-size);
 }

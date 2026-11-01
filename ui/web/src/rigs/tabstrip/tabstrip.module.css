@@ -49,6 +49,8 @@
 }
 
 .content-inner {
+    padding: var(--size-control-padding-block)
+        var(--size-control-padding-inline);
     animation: content-enter 0.2s ease;
     box-sizing: border-box;
     width: 100%;
@@ -93,17 +95,4 @@
     .content-outgoing {
         display: none;
     }
-}
-
-.size-xs {
-    padding: 6px;
-}
-.size-sm {
-    padding: 10px;
-}
-.size-md {
-    padding: 14px;
-}
-.size-lg {
-    padding: 18px;
 }

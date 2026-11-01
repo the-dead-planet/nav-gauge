@@ -1,4 +1,12 @@
 import { Meta, Title } from '@storybook/addon-docs/blocks';
+import { sizeOptions, themeSizes } from '@ui';
+
+export const sizeDescriptions = {
+    xs: 'Dense secondary controls and compact overlays',
+    sm: 'Standard application controls and the default for most components',
+    md: 'Roomier or emphasized controls and primary application chrome',
+    lg: 'Prominent controls and touch-focused actions',
+};
 
 <Meta title="Design System/Sizing" />
 
@@ -15,54 +23,32 @@ The shared component size scale is `xs`, `sm`, `md`, and `lg`. Components that e
         <tr>
             <th>Size</th>
             <th>Control text</th>
-            <th>Input height</th>
-            <th>Input padding (vertical / horizontal)</th>
+            <th>Control height</th>
+            <th>Control padding (vertical / horizontal)</th>
             <th>Typical icon</th>
             <th>External margin</th>
             <th>Intended use</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td><code>xs</code></td>
-            <td><code>11px</code></td>
-            <td><code>18px</code></td>
-            <td><code>0 / 8px</code></td>
-            <td><code>12px</code></td>
-            <td>None</td>
-            <td>Dense secondary controls and compact overlays</td>
-        </tr>
-        <tr>
-            <td><code>sm</code></td>
-            <td><code>12px</code></td>
-            <td><code>24px</code></td>
-            <td><code>2 / 10px</code></td>
-            <td><code>14px</code></td>
-            <td>None</td>
-            <td>Standard application controls and the default for most components</td>
-        </tr>
-        <tr>
-            <td><code>md</code></td>
-            <td><code>14px</code></td>
-            <td><code>32px</code></td>
-            <td><code>6 / 12px</code></td>
-            <td><code>16px</code></td>
-            <td>None</td>
-            <td>Roomier or emphasized controls and primary application chrome</td>
-        </tr>
-        <tr>
-            <td><code>lg</code></td>
-            <td><code>16px</code></td>
-            <td><code>40px</code></td>
-            <td><code>8 / 14px</code></td>
-            <td><code>20px</code></td>
-            <td>None</td>
-            <td>Prominent controls and touch-focused actions</td>
-        </tr>
+        {sizeOptions.map((size) => {
+            const metrics = themeSizes.control[size];
+            return (
+                <tr key={size}>
+                    <td><code>{size}</code></td>
+                    <td><code>{metrics.fontSize}px</code></td>
+                    <td><code>{metrics.height}px</code></td>
+                    <td><code>{metrics.paddingBlock} / {metrics.paddingInline}px</code></td>
+                    <td><code>{metrics.iconSize}px</code></td>
+                    <td>None</td>
+                    <td>{sizeDescriptions[size]}</td>
+                </tr>
+            );
+        })}
     </tbody>
 </table>
 
-The height and padding columns are baselines for input-like controls. Components with distinct geometry, such as buttons, chips, toggles, and shaped panels, document their own internal padding, gaps, stroke widths, and shape depth while following the same progression. `size` must not add external margin or layout spacing around arbitrary child content.
+These values come directly from the shared control size policy used by both platforms. Controls and their accompanying surfaces use its font, icon, gap, and padding metrics directly. Distinct shape geometry may derive measurements from this scale in the common component package; do not introduce separate component size tables in the theme. `size` must not add external margin or layout spacing around arbitrary child content.
 
 ## Layout Boundary
 
@@ -72,5 +58,7 @@ The height and padding columns are baselines for input-like controls. Components
 - Full-width content such as selectable rows may extend to a shaped container's clipped edge.
 
 Use spacing tokens for layout spacing. Do not overload component `size` as a general-purpose padding prop.
+
+On web, put `data-size={size}` on the control or its container; `HudSurface` emits it from its `size` prop. `useThemeVariables` maps that size to inherited `--size-control-*` metrics. Consume those variables directly instead of repeating geometry rules for each size. Set the size again at nested controls and portal roots that select their own size. Mobile renderers read the same metrics from `theme.sizes.control[size]`.
 
 Document component-specific sizing contracts in the component's own documentation.

@@ -1,16 +1,19 @@
-import { ComponentProps, useEffect, useId, useRef, useState } from 'react';
-import classNames from 'classnames';
-import { DropdownList } from './DropdownList';
-import { DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, DropdownProps, useTheme } from '@ui';
-import { Icon } from '../../design-system/icons';
-import { Icons } from '@ui';
-import styles from './dropdown.module.css';
-
-const ICON_SIZES: Record<string, number> = {
-    xs: 12,
-    sm: 16,
-    md: 20,
-};
+import { ComponentProps, CSSProperties } from "react";
+import classNames from "classnames";
+import {
+    DEFAULT_COLOR,
+    DEFAULT_FILL_VARIANT,
+    DEFAULT_SIZE,
+    DropdownProps,
+    Icons,
+    ThemeContext,
+    useTheme,
+} from "@ui";
+import { Icon } from "../../design-system/icons";
+import { HudSurface } from "../../hud/HudSurface";
+import { DropdownList } from "./DropdownList";
+import { useDropdown } from "./useDropdown";
+import styles from "./dropdown.module.css";
 
 interface Props {
     ariaLabel?: string;
@@ -19,6 +22,7 @@ interface Props {
 }
 
 export function Dropdown<T = string>({
+    themeMode,
     color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor,
@@ -28,7 +32,7 @@ export function Dropdown<T = string>({
     value,
     options,
     onChange,
-    placeholder = 'Select...',
+    placeholder = "Select...",
     disabled = false,
     highlighted = false,
     ariaLabel,
@@ -37,140 +41,113 @@ export function Dropdown<T = string>({
     className,
     style,
     ...props
-}: DropdownProps<T> & Props & Omit<ComponentProps<'div'>, 'onChange'>) {
-    const theme = useTheme();
-    const [isOpen, setIsOpen] = useState(false);
-    const listId = useId();
-    const containerRef = useRef<HTMLDivElement>(null);
-    const triggerRef = useRef<HTMLButtonElement>(null);
-
-    const handleClose = (restoreFocus = true) => {
-        setIsOpen(false);
-        if (restoreFocus) triggerRef.current?.focus();
-    };
-
-    const handleTriggerKeyDown = (e: React.KeyboardEvent) => {
-        if (disabled) return;
-        if (
-            e.key === 'Enter' ||
-            e.key === ' ' ||
-            e.key === 'ArrowDown' ||
-            e.key === 'ArrowUp'
-        ) {
-            e.preventDefault();
-            setIsOpen(true);
-        }
-    };
-
-    const handleContainerKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === 'Escape' && isOpen) {
-            e.preventDefault();
-            handleClose();
-        }
-    };
-
+}: DropdownProps<T> & Props & Omit<ComponentProps<"div">, "onChange">) {
+    const theme = useTheme().forMode(themeMode);
+    const {
+        isOpen,
+        listId,
+        triggerRef,
+        listRef,
+        positionStyle,
+        close,
+        onTriggerKeyDown,
+        toggle,
+    } = useDropdown(disabled);
     const selectedOption = options.find((option) => option.value === value);
-    const iconSize = ICON_SIZES[size];
-
-    useEffect(() => {
-        const handleClickOutside = (e: MouseEvent) => {
-            const list = document.getElementById(listId);
-            if (
-                containerRef.current &&
-                !containerRef.current.contains(e.target as Node) &&
-                !list?.contains(e.target as Node)
-            ) {
-                setIsOpen(false);
-            }
-        };
-        if (isOpen) {
-            document.addEventListener('mousedown', handleClickOutside);
-        }
-        return () =>
-            document.removeEventListener('mousedown', handleClickOutside);
-    }, [isOpen, listId]);
+    const iconSize = theme.sizes.control[size].iconSize;
+    const appearanceOverrides = {
+        ...(glyphsShade === undefined
+            ? undefined
+            : {
+                  "--appearance-default-glyphs-override": theme.color(
+                      color,
+                      glyphsShade,
+                  ),
+              }),
+        ...(highlightGlyphsShade === undefined
+            ? undefined
+            : {
+                  "--appearance-hover-focus-glyphs-override": theme.color(
+                      highlightColor ?? color,
+                      highlightGlyphsShade,
+                  ),
+                  "--appearance-active-pressed-glyphs-override": theme.color(
+                      highlightColor ?? color,
+                      highlightGlyphsShade,
+                  ),
+              }),
+    } as CSSProperties;
 
     return (
-        <div
-            ref={containerRef}
-            className={classNames(
-                styles['dropdown-select'],
-                styles[`mode-${theme.mode}`],
-                styles[`color-${color}`],
-                styles[`highlight-${highlightColor || color}`],
-                styles[`size-${size}`],
-                styles[`variant-${variant}`],
-                {
-                    [styles['disabled']]: disabled,
-                    [styles['open']]: isOpen || (highlighted && !disabled),
-                },
-                className,
-            )}
-            style={style}
-            onKeyDown={handleContainerKeyDown}
-            {...props}
-        >
-            <button
-                id={`${listId}-trigger`}
-                ref={triggerRef}
-                type="button"
-                className={styles['trigger']}
-                aria-haspopup="listbox"
-                aria-expanded={isOpen}
-                aria-controls={listId}
-                aria-label={ariaLabel}
-                aria-labelledby={labelledBy}
-                disabled={disabled}
-                onClick={disabled ? undefined : () => setIsOpen(!isOpen)}
-                onKeyDown={handleTriggerKeyDown}
+        <ThemeContext.Provider value={theme}>
+            <div
+                {...props}
+                className={classNames(styles["dropdown-select"], className)}
+                style={style}
             >
-                {selectedOption ? (
-                    <>
-                        {selectedOption.selectedPrepend ??
-                            selectedOption.prepend}
-                        {selectedOption.icon ? (
-                            <Icon
-                                src={selectedOption.icon}
-                                width={iconSize}
-                                height={iconSize}
-                                className={styles['icon']}
-                            />
-                        ) : null}
-                        <span className={styles['label']} style={(isOpen || highlighted ? highlightGlyphsShade : glyphsShade) === undefined ? undefined : { color: theme.color(isOpen || highlighted ? highlightColor || color : color, isOpen || highlighted ? highlightGlyphsShade : glyphsShade) }}>
-                            {selectedOption.label}
-                        </span>
-                    </>
-                ) : (
-                    <span className={styles['placeholder']} style={(isOpen || highlighted ? highlightGlyphsShade : glyphsShade) === undefined ? undefined : { color: theme.color(isOpen || highlighted ? highlightColor || color : color, isOpen || highlighted ? highlightGlyphsShade : glyphsShade) }}>{placeholder}</span>
-                )}
-                <Icon
-                    src={Icons.NounProject.ChevronDownDoubleSquareFill}
-                    width={iconSize}
-                    height={iconSize}
-                    className={classNames(styles['icon'], styles['arrow'], {
-                        [styles['arrow-open']]: isOpen,
-                    })}
-                />
-            </button>
-
-            {isOpen ? (
-                <DropdownList
-                    id={listId}
-                    triggerRef={triggerRef}
-                    onClose={handleClose}
-                    className={popoverClassName}
-                    iconSize={iconSize}
-                    color={color}
-                    highlightColor={highlightColor}
-                    glyphsShade={glyphsShade}
-                    highlightGlyphsShade={highlightGlyphsShade}
+                <HudSurface
+                    as="button"
+                    id={`${listId}-trigger`}
+                    ref={triggerRef}
+                    type="button"
+                    className={styles.trigger}
                     size={size}
                     variant={variant}
-                    value={value}
-                    options={options}
-                    onChange={onChange}
-                />
-            ) : null}
-        </div>
+                    color={color}
+                    highlightColor={highlightColor}
+                    highlighted={highlighted || isOpen}
+                    disabled={disabled}
+                    interactive
+                    rectangle
+                    style={appearanceOverrides}
+                    aria-haspopup="listbox"
+                    aria-expanded={isOpen}
+                    aria-controls={isOpen ? listId : undefined}
+                    aria-label={ariaLabel}
+                    aria-labelledby={labelledBy}
+                    onClick={toggle}
+                    onKeyDown={onTriggerKeyDown}
+                >
+                    {selectedOption?.selectedPrepend ?? selectedOption?.prepend}
+                    {selectedOption?.icon ? (
+                        <Icon
+                            src={selectedOption.icon}
+                            width={iconSize}
+                            height={iconSize}
+                            className={styles.icon}
+                        />
+                    ) : null}
+                    <span className={styles.label}>
+                        {selectedOption?.label ?? placeholder}
+                    </span>
+                    <Icon
+                        src={Icons.NounProject.ChevronDownDoubleSquareFill}
+                        width={iconSize}
+                        height={iconSize}
+                        className={classNames(styles.icon, styles.arrow, {
+                            [styles["arrow-open"]]: isOpen,
+                        })}
+                    />
+                </HudSurface>
+                {isOpen ? (
+                    <DropdownList
+                        id={listId}
+                        triggerRef={triggerRef}
+                        listRef={listRef}
+                        positionStyle={positionStyle}
+                        onClose={close}
+                        className={popoverClassName}
+                        iconSize={iconSize}
+                        color={color}
+                        highlightColor={highlightColor}
+                        appearanceOverrides={appearanceOverrides}
+                        size={size}
+                        value={value}
+                        options={options}
+                        onChange={onChange}
+                    />
+                ) : null}
+            </div>
+        </ThemeContext.Provider>
     );
 }

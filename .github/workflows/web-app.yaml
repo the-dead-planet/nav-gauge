@@ -25,7 +25,10 @@ jobs:
       - name: Setup dependencies
         uses: ./.github/actions/setup-yarn
 
-      - name: Run tests
+      - name: Typecheck sources and both Cypress suites
+        run: yarn typecheck:web
+
+      - name: Run unit tests
         run: yarn test:web
 
   test-e2e:
@@ -44,7 +47,32 @@ jobs:
         uses: ./.github/actions/cypress-e2e
         with:
           build: yarn build
-          start: yarn rspack preview dist --port 3000
+          start: yarn preview
+
+  test-e2e-ui:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chrome, firefox]
+    concurrency:
+      group: ${{ github.workflow }}-test-e2e-ui-${{ matrix.browser }}-${{ github.event.pull_request.number || github.run_id }}
+      cancel-in-progress: true
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Cypress UI tests
+        uses: ./.github/actions/cypress-e2e
+        with:
+          working-directory: ui/web
+          build: yarn build-storybook
+          start: yarn preview
+          base-url: http://localhost:6006
+          browser: ${{ matrix.browser }}
+          artifact-name: cypress-ui-${{ matrix.browser }}
 
   build-and-push:
     runs-on: ubuntu-latest
@@ -69,7 +97,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    needs: [build-and-push, test, test-e2e]
+    needs: [build-and-push, test, test-e2e, test-e2e-ui]
     permissions:
       contents: read
     steps:
@@ -107,7 +135,7 @@ jobs:
   storybook-deploy:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-    needs: [storybook-build-and-push, test, test-e2e]
+    needs: [storybook-build-and-push, test, test-e2e, test-e2e-ui]
     permissions:
       contents: read
     steps:

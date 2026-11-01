@@ -7,8 +7,11 @@
         "build": "tsc -b",
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build",
+        "preview": "rsbuild preview --dist-path storybook-static --port 6006 --strict-port",
+        "typecheck:cypress": "tsc --noEmit -p cypress/tsconfig.json",
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings -1",
-        "test": "mocha"
+        "test": "mocha",
+        "test:e2e": "yarn typecheck:cypress && cypress run"
     },
     "dependencies": {
         "@the-dead-planet/nav-gauge-tinker-chest": "*",
@@ -22,6 +25,7 @@
         "@storybook/addon-docs": "10.6.3",
         "@types/react-dom": "19.3.0",
         "css-loader": "^7.1.5",
+        "cypress": "^16.2.0",
         "maplibre-gl": "6.15.0",
         "react": "19.3.1",
         "react-dom": "19.3.1",

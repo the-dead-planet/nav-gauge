@@ -5,12 +5,16 @@ describe("Form choice row sizing", () => {
     for (const control of ["checkbox", "radio"]) {
         it(`keeps ${control} and its row stable when the selection mark appears`, () => {
             cy.readFile<string>(
-                `../ui/web/src/forms/${control}/${control}.module.css`,
+                `src/forms/${control}/${control}.module.css`,
             ).then((css) => {
                 cy.document().then((document) => {
                     const stylesheet = document.createElement("style");
                     stylesheet.textContent = css;
                     document.head.appendChild(stylesheet);
+                    document.documentElement.style.setProperty(
+                        "--appearance-default-border-width",
+                        "1px",
+                    );
                     for (const [size, metrics] of Object.entries(
                         themeSizes.control,
                     )) {
@@ -20,23 +24,15 @@ describe("Form choice row sizing", () => {
                                 (letter) => `-${letter.toLowerCase()}`,
                             );
                             document.documentElement.style.setProperty(
-                                `--size-control-${size}-${suffix}`,
+                                `--size-control-${suffix}`,
                                 `${value}px`,
                             );
                         }
-                    }
-                    document.documentElement.style.setProperty(
-                        "--appearance-default-border-width",
-                        "1px",
-                    );
-                    for (const [size, metrics] of Object.entries(
-                        themeSizes.control,
-                    )) {
                         for (const labelled of [false, true]) {
                             for (const corners of cornerOptions) {
                                 const row = document.createElement("div");
                                 row.innerHTML = `
-                                <label class="${control} size-${size}">
+                                <label class="${control}" data-size="${size}">
                                     <input class="input" type="${control}" />
                                     <span class="box corners-${corners}"></span>
                                     ${labelled ? '<span class="label">Choice</span>' : ""}

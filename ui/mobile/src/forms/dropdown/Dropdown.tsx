@@ -1,21 +1,23 @@
-import { ComponentType, ReactNode, useRef, useState } from 'react';
+import { ComponentType, ReactNode } from "react";
+import { Modal, Pressable, StyleSheet, View } from "react-native";
 import {
-    Modal,
-    Pressable,
-    ScrollView,
-    useWindowDimensions,
-    View,
-    type LayoutChangeEvent,
-    type HostInstance,
-    TouchableHighlight,
-} from 'react-native';
-import { controlTextSpecifications, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, DropdownProps, Icons, translucentSurfaceOpacity, useTheme } from '@ui';
-import { Icon } from '../../design-system/icons';
-import { resolveLayerStyle } from '../../design-system/theme';
-import { Text } from '../../design-system/typography';
-import { SvgProps } from 'react-native-svg';
-import { MutableViewStyle } from '../../model';
-import { getDropdownMenuPosition } from './tinkers';
+    DEFAULT_COLOR,
+    DEFAULT_FILL_VARIANT,
+    DEFAULT_SIZE,
+    DropdownProps,
+    ThemeContext,
+    useTheme,
+} from "@ui";
+import { SvgProps } from "react-native-svg";
+import { MenuList } from "../../rigs/menu/MenuList";
+import { DropdownControl } from "./DropdownControl";
+import { useDropdown } from "./useDropdown";
+
+const styles = StyleSheet.create({
+    backdrop: {
+        flex: 1,
+    },
+});
 
 interface MobileOption<T> {
     value: T;
@@ -25,330 +27,102 @@ interface MobileOption<T> {
     icon?: ComponentType<SvgProps>;
 }
 
-const SIZE_MAP = {
-    lg: {
-        height: 40,
-        paddingV: 8,
-        paddingH: 14,
-        gap: 12,
-        fontSize: 16,
-        lineHeight: 17.6,
-    },
-    md: {
-        height: 32,
-        paddingV: 6,
-        paddingH: 12,
-        gap: 10,
-        ...controlTextSpecifications.md,
-    },
-    sm: {
-        height: 24,
-        paddingV: 2,
-        paddingH: 10,
-        gap: 6,
-        ...controlTextSpecifications.sm,
-    },
-    xs: {
-        height: 18,
-        paddingV: 0,
-        paddingH: 8,
-        gap: 4,
-        ...controlTextSpecifications.xs,
-    },
-} as const;
-
-const ICON_SIZE_MAP = { xs: 12, sm: 16, md: 20, lg: 24 } as const;
-
 export function Dropdown<T>({
+    themeMode,
     color = DEFAULT_COLOR,
     glyphsShade,
-    highlightColor = color,
+    highlightColor,
     highlightGlyphsShade,
     size = DEFAULT_SIZE,
     variant = DEFAULT_FILL_VARIANT,
     value,
     options,
     onChange,
-    placeholder = 'Select...',
+    placeholder = "Select...",
     disabled = false,
     highlighted = false,
-}: Omit<DropdownProps<T>, 'options'> & { options: MobileOption<T>[] }) {
-    const theme = useTheme();
-    const { height: windowHeight } = useWindowDimensions();
-    const [isOpen, setIsOpen] = useState(false);
-    const [triggerPosition, setTriggerPosition] = useState({ top: 0, bottom: 0 });
-    const [menuHeight, setMenuHeight] = useState<number | null>(null);
-    const [menuLeft, setMenuLeft] = useState(0);
-    const [menuWidth, setMenuWidth] = useState(0);
-    const triggerRef = useRef<HostInstance>(null);
-
+}: Omit<DropdownProps<T>, "options"> & { options: MobileOption<T>[] }) {
+    const theme = useTheme().forMode(themeMode);
+    const {
+        visible: isOpen,
+        triggerRef,
+        overlayRef,
+        toggle,
+        close,
+        onLayout,
+        onTriggerLayout,
+        menuPosition,
+    } = useDropdown(disabled);
     const selectedOption = options.find((option) => option.value === value);
-    const sizeStyles = SIZE_MAP[size];
-    const iconSize = ICON_SIZE_MAP[size];
-    const baseColor = theme.color(color, 500);
-    const optionTextColor = theme.color(color, theme.isLight ? 900 : 100);
-    // matches web --dropdown-color-text: readable end of the color scale (900 light / 100 dark)
-    const chromeContentColor = theme.isLight
-        ? theme.color(color, color === 'neutral' ? 800 : 900)
-        : theme.color(color, 100);
-
-    const getTriggerStyle = (pressed: boolean): MutableViewStyle => {
-        const isHighlighted = !disabled && (highlighted || pressed);
-        const style: MutableViewStyle = {
-            flexDirection: 'row',
-            alignItems: 'center',
-            height: sizeStyles.height,
-            paddingHorizontal: sizeStyles.paddingH,
-            paddingVertical: sizeStyles.paddingV,
-            gap: sizeStyles.gap,
-        };
-
-        switch (variant) {
-            case 'fill':
-                style.backgroundColor = isHighlighted
-                    ? theme.color(highlightColor, theme.isLight ? 600 : 300)
-                    : baseColor;
-                style.borderWidth = 0;
-                break;
-            case 'fill-inverse':
-                style.borderWidth = 1;
-                style.backgroundColor = theme.color(
-                    color,
-                    theme.isLight ? 100 : color === 'neutral' ? 800 : 900,
-                );
-                style.borderColor = isHighlighted
-                    ? theme.color(highlightColor, theme.isLight ? 600 : 300)
-                    : baseColor;
-                break;
-            case 'fill-translucent':
-                style.borderWidth = 1;
-                style.backgroundColor = theme.color(
-                    color,
-                    500,
-                    translucentSurfaceOpacity.unblurred,
-                );
-                style.backgroundColor = isHighlighted
-                    ? theme.color(highlightColor, theme.isLight ? 600 : 300, 0.48)
-                    : style.backgroundColor;
-                style.borderColor = isHighlighted
-                    ? theme.color(highlightColor, theme.isLight ? 600 : 300)
-                    : theme.color(color, 500, 0.3);
-                break;
-        }
-
-        return style;
+    const controlProps = {
+        color,
+        highlightColor,
+        glyphsShade,
+        highlightGlyphsShade,
+        size,
+        variant,
     };
-
-    const getContentColors = (pressed: boolean) => {
-        const isHighlighted = highlighted || pressed;
-        if (disabled) {
-            const disabledColor = theme.color(color, theme.isLight ? 300 : 700);
-            return { content: disabledColor, chevron: disabledColor };
-        }
-        if (variant === 'fill') {
-            const fillContentColor = isHighlighted
-                ? theme.color(
-                      highlightColor,
-                      theme.contrastShade(
-                          highlightColor,
-                          theme.isLight ? 600 : 300,
-                      ),
-                  )
-                : theme.color(color, theme.contrastShade(color));
-            return { content: fillContentColor, chevron: fillContentColor };
-        }
-        if (isHighlighted && highlightGlyphsShade !== undefined) {
-            const highlightedContent = theme.color(highlightColor, highlightGlyphsShade);
-            return { content: highlightedContent, chevron: highlightedContent };
-        }
-        if (glyphsShade !== undefined) {
-            const shadedContent = theme.color(color, glyphsShade);
-            return { content: shadedContent, chevron: shadedContent };
-        }
-        return {
-            content: variant === 'fill-translucent' ? baseColor : chromeContentColor,
-            chevron: isHighlighted
-                ? theme.color(highlightColor, theme.isLight ? 600 : 300)
-                : baseColor,
-        };
-    };
-
-    const handleOpen = () => {
-        triggerRef.current?.measureInWindow((x, y, width, height) => {
-            setTriggerPosition({ top: y, bottom: y + height });
-            setMenuHeight(null);
-            setMenuLeft(x);
-            setMenuWidth(width);
-            setIsOpen(true);
-        });
-    };
-    const handleMenuLayout = (event: LayoutChangeEvent) => {
-        setMenuHeight(event.nativeEvent.layout.height);
-    };
-    const menuPosition = getDropdownMenuPosition(
-        triggerPosition.top,
-        triggerPosition.bottom,
-        menuHeight,
-        windowHeight,
-    );
 
     return (
-        <View>
-            <View ref={triggerRef} collapsable={false}>
-                <Pressable
-                    accessibilityRole="combobox"
-                    accessibilityState={{ disabled, expanded: isOpen }}
-                    accessibilityValue={{
-                        text: selectedOption?.label ?? placeholder,
-                    }}
-                    disabled={disabled}
-                    onPress={handleOpen}
-                    style={({ pressed }) => [
-                        getTriggerStyle(pressed),
-                        disabled && {
-                            backgroundColor: theme.color(
-                                color,
-                                theme.isLight ? 200 : 800,
-                            ),
-                            borderColor: theme.color(
-                                color,
-                                theme.isLight ? 300 : 700,
-                            ),
-                            borderWidth: variant === 'fill' ? 0 : 1,
-                        },
-                    ]}
+        <ThemeContext.Provider value={theme}>
+            <View>
+                <View
+                    ref={triggerRef}
+                    collapsable={false}
+                    onLayout={onTriggerLayout}
                 >
-                    {({ pressed }) => {
-                        const { content, chevron } = getContentColors(pressed);
-                        return (
-                            <>
-                                {selectedOption?.selectedPrepend ??
-                                    selectedOption?.prepend}
-                                {selectedOption?.icon ? (
-                                    <Icon
-                                        icon={selectedOption.icon}
-                                        width={iconSize}
-                                        height={iconSize}
-                                        color={content}
-                                    />
-                                ) : null}
-                                <Text
-                                    style={{
-                                        color: content,
-                                        fontSize: sizeStyles.fontSize,
-                                        lineHeight: sizeStyles.lineHeight,
-                                        flex: 1,
-                                    }}
-                                >
-                                    {selectedOption
-                                        ? selectedOption.label
-                                        : placeholder}
-                                </Text>
-                                <Icon
-                                    icon={
-                                        Icons.NounProject
-                                            .ChevronDownDoubleSquareFill
-                                    }
-                                    width={iconSize}
-                                    height={iconSize}
-                                    color={chevron}
-                                />
-                            </>
-                        );
-                    }}
-                </Pressable>
-            </View>
-
-            <Modal visible={isOpen} transparent animationType="fade">
-                <Pressable
-                    accessible={false}
-                    style={{ flex: 1 }}
-                    onPress={() => setIsOpen(false)}
+                    <DropdownControl
+                        {...controlProps}
+                        trigger
+                        expanded={isOpen}
+                        disabled={disabled}
+                        highlighted={highlighted || isOpen}
+                        label={selectedOption?.label ?? placeholder}
+                        icon={selectedOption?.icon}
+                        prepend={
+                            selectedOption?.selectedPrepend ??
+                            selectedOption?.prepend
+                        }
+                        onPress={toggle}
+                    />
+                </View>
+                <Modal
+                    visible={isOpen}
+                    transparent
+                    animationType="fade"
+                    onRequestClose={close}
                 >
-                    <View
-                        onLayout={handleMenuLayout}
-                        style={{
-                            position: 'absolute',
-                            top: menuPosition.top,
-                            left: menuLeft,
-                            width: menuWidth,
-                            backgroundColor: theme.color(
-                                color,
-                                theme.isLight
-                                    ? 100
-                                    : color === 'neutral'
-                                      ? 800
-                                      : 900,
-                            ),
-                            borderWidth: 1,
-                            borderColor: baseColor,
-                            paddingVertical: 4,
-                            maxHeight: menuPosition.maxHeight,
-                            ...resolveLayerStyle(theme, 'dropdown'),
-                        }}
+                    <Pressable
+                        ref={overlayRef}
+                        accessible={false}
+                        style={styles.backdrop}
+                        onPress={close}
                     >
-                        <ScrollView>
-                            {options.map((option) => {
-                                const selected = option.value === value;
-                                return (
-                                    <TouchableHighlight
-                                        key={String(option.value)}
-                                        accessibilityRole="menuitem"
-                                        accessibilityState={{ selected }}
-                                        underlayColor={theme.color(
-                                            highlightColor,
-                                            500,
-                                            0.14,
-                                        )}
-                                        onPress={() => {
-                                            onChange?.(option.value);
-                                            setIsOpen(false);
-                                        }}
-                                    >
-                                        <View
-                                            style={{
-                                                flexDirection: 'row',
-                                                alignItems: 'center',
-                                                gap: sizeStyles.gap,
-                                                paddingVertical: 4,
-                                                paddingHorizontal: 10,
-                                                backgroundColor: selected
-                                                    ? theme.color(
-                                                          highlightColor,
-                                                          500,
-                                                          0.1,
-                                                      )
-                                                    : 'transparent',
-                                            }}
-                                        >
-                                            {option.prepend}
-                                            {option.icon ? (
-                                                <Icon
-                                                    icon={option.icon}
-                                                    width={iconSize}
-                                                    height={iconSize}
-                                                    color={selected && highlightGlyphsShade !== undefined ? theme.color(highlightColor, highlightGlyphsShade) : glyphsShade !== undefined ? theme.color(color, glyphsShade) : optionTextColor}
-                                                />
-                                            ) : null}
-                                            <Text
-                                                style={{
-                                                    color: selected && highlightGlyphsShade !== undefined ? theme.color(highlightColor, highlightGlyphsShade) : glyphsShade !== undefined ? theme.color(color, glyphsShade) : optionTextColor,
-                                                    fontSize:
-                                                        sizeStyles.fontSize,
-                                                    lineHeight:
-                                                        sizeStyles.lineHeight,
-                                                }}
-                                            >
-                                                {option.label}
-                                            </Text>
-                                        </View>
-                                    </TouchableHighlight>
-                                );
-                            })}
-                        </ScrollView>
-                    </View>
-                </Pressable>
-            </Modal>
-        </View>
+                        <MenuList
+                            color={color}
+                            size={size}
+                            accessibilityViewIsModal
+                            onLayout={onLayout}
+                            style={menuPosition}
+                        >
+                            {options.map((option) => (
+                                <DropdownControl
+                                    {...controlProps}
+                                    key={String(option.value)}
+                                    highlighted={option.value === value}
+                                    label={option.label}
+                                    icon={option.icon}
+                                    prepend={option.prepend}
+                                    onPress={() => {
+                                        onChange?.(option.value);
+                                        close();
+                                    }}
+                                />
+                            ))}
+                        </MenuList>
+                    </Pressable>
+                </Modal>
+            </View>
+        </ThemeContext.Provider>
     );
 }

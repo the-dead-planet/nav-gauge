@@ -68,9 +68,9 @@ export const Checkbox: FC<
                     data-appearance-highlight={highlightColor}
                     data-highlighted={highlighted}
                     data-disabled={disabled}
+                    data-size={size}
                     className={classNames(
                         styles["checkbox"],
-                        styles[`size-${size}`],
                         className,
                     )}
                     style={

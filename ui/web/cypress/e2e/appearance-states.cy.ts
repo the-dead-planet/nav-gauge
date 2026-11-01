@@ -8,7 +8,7 @@ describe('Appearance state priority', () => {
             'forms/checkbox/checkbox.module.css',
             'forms/radio/radio.module.css',
         ]) {
-            cy.readFile<string>(`../ui/web/src/${stylesheet}`).then((css) => {
+            cy.readFile<string>(`src/${stylesheet}`).then((css) => {
                 cy.document().then((document) => {
                     const style = document.createElement('style');
                     style.textContent = css;

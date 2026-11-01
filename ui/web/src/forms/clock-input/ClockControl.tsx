@@ -95,12 +95,12 @@ export const ClockControl: FC<
                 data-highlighted={highlighted}
                 data-disabled={disabled}
                 data-dragging={dragging}
+                data-size={size}
                 className={classNames(
                     styles.container,
                     duration &&
                         showNumberInput &&
                         styles["with-duration-inputs"],
-                    styles[`size-${size}`],
                     className,
                 )}
                 style={

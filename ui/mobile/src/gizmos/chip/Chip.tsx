@@ -7,7 +7,6 @@ import {
     DEFAULT_COLOR,
     DEFAULT_SIZE,
     DEFAULT_FILL_VARIANT,
-    SizeVariant,
     useTheme,
 } from "@ui";
 import { Icon } from "../../design-system/icons";
@@ -31,47 +30,6 @@ interface Props {
     icon?: ComponentType<SvgProps>;
 }
 
-const iconSizes: Record<SizeVariant, number> = {
-    xs: 12,
-    sm: 16,
-    md: 20,
-    lg: 24,
-};
-
-const lineHeights: Record<SizeVariant, number> = {
-    xs: 12,
-    sm: 16,
-    md: 18,
-    lg: 20,
-};
-
-const sizeStyles = StyleSheet.create({
-    lg: {
-        fontSize: 16,
-        paddingVertical: 6,
-        paddingHorizontal: 10,
-        gap: 10,
-    },
-    md: {
-        fontSize: 14,
-        paddingVertical: 4,
-        paddingHorizontal: 8,
-        gap: 8,
-    },
-    sm: {
-        fontSize: 12,
-        paddingVertical: 2,
-        paddingHorizontal: 4,
-        gap: 6,
-    },
-    xs: {
-        fontSize: 10,
-        paddingVertical: 1,
-        paddingHorizontal: 3,
-        gap: 4,
-    },
-});
-
 export const Chip: FC<ChipProps & Props> = ({
     color = DEFAULT_COLOR,
     fontType,
@@ -85,6 +43,7 @@ export const Chip: FC<ChipProps & Props> = ({
     children,
 }) => {
     const theme = useTheme();
+    const metrics = theme.sizes.control[size];
     const appearance = theme.resolveAppearance(variant, color);
     const layout = usePanelDimensions();
 
@@ -92,7 +51,14 @@ export const Chip: FC<ChipProps & Props> = ({
         <View
             collapsable={false}
             onLayout={layout.onLayout}
-            style={[styles.chip, sizeStyles[size]]}
+            style={[
+                styles.chip,
+                {
+                    paddingVertical: metrics.paddingBlock,
+                    paddingHorizontal: metrics.paddingInline,
+                    gap: metrics.gap,
+                },
+            ]}
         >
             {layout.width > 0 && layout.height > 0 ? (
                 <OctagonalSurface
@@ -105,8 +71,8 @@ export const Chip: FC<ChipProps & Props> = ({
             {icon ? (
                 <Icon
                     icon={icon}
-                    width={iconSizes[size]}
-                    height={iconSizes[size]}
+                    width={metrics.iconSize}
+                    height={metrics.iconSize}
                     color={appearance.glyphs}
                 />
             ) : null}
@@ -116,8 +82,8 @@ export const Chip: FC<ChipProps & Props> = ({
                     fontWeight={appearance.fontWeight}
                     style={{
                         color: appearance.glyphs,
-                        fontSize: sizeStyles[size].fontSize,
-                        lineHeight: lineHeights[size],
+                        fontSize: metrics.fontSize,
+                        lineHeight: metrics.fontSize * 1.1,
                     }}
                 >
                     {children}

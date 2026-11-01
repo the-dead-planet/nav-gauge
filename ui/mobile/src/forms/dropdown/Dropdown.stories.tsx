@@ -1,44 +1,56 @@
-import { FC, useState } from 'react';
-import { ColorVariant, FillVariant, Icons, SizeVariant, Theme } from '@ui';
-import { ColorBox } from '../../gizmos/color-box';
-import { VariantGallery } from '../../storybook/VariantGallery';
-import { Dropdown } from './Dropdown';
+import { ComponentProps, useEffect, useState } from "react";
+import {
+    appearanceColorOptions,
+    dropdownStoryArgs,
+    dropdownStoryControls,
+    fillVariantOptions,
+    Icons,
+    Theme,
+} from "@ui";
+import { ColorBox } from "../../gizmos/color-box";
+import { VariantGallery } from "../../storybook/VariantGallery";
+import { MobileStoryDefinition } from "../../storybook/model";
+import { Dropdown } from "./Dropdown";
 
 const options = [
-    { value: 'brass', label: 'Brass Cog', prepend: <ColorBox color={Theme.palette.copper} />, icon: Icons.Beaker },
-    { value: 'copper', label: 'Copper Valve', icon: Icons.Beaker },
-    { value: 'steam', label: 'Steam Pipe', icon: Icons.Beaker },
-    { value: 'gear', label: 'Gear Assembly', icon: Icons.Beaker },
+    { value: "brass", label: "Brass Cog", icon: Icons.Beaker, },
+    { value: "copper", label: "Copper Valve", icon: Icons.Beaker },
+    { value: "steam", label: "Steam Pipe", prepend: <ColorBox color={Theme.palette["neutral-grey"]} /> },
+    { value: "gear", label: "Gear Assembly", icon: Icons.Beaker },
 ];
 
-const GalleryDropdown: FC<{
-    color: ColorVariant;
-    variant: FillVariant;
-    size: SizeVariant;
-}> = ({ color, variant, size }) => {
-    const [value, setValue] = useState('brass');
+type Props = ComponentProps<typeof Dropdown<string>>;
 
-    return (
-        <Dropdown
-            value={value}
-            options={options}
-            onChange={setValue}
-            color={color}
-            highlightColor={color}
-            glyphsShade={700}
-            highlightGlyphsShade={200}
-            variant={variant}
-            size={size}
+function StoryDropdown(args: Props) {
+    const [value, setValue] = useState(args.value);
+    useEffect(() => setValue(args.value), [args.value]);
+    return <Dropdown {...args} value={value} onChange={setValue} />;
+}
+
+const story: MobileStoryDefinition<Props> = {
+    args: {
+        ...dropdownStoryArgs,
+        options,
+    },
+    controls: dropdownStoryControls,
+    galleryEditableControls: [
+        "themeMode",
+        "highlightColor",
+        "glyphsShade",
+        "highlightGlyphsShade",
+        "highlighted",
+        "disabled",
+        "value",
+        "placeholder",
+    ],
+    renderPlayground: (args) => <StoryDropdown {...args} />,
+    renderGallery: (args) => (
+        <VariantGallery
+            colors={appearanceColorOptions}
+            variants={fillVariantOptions}
+            render={(appearance) => <StoryDropdown {...args} {...appearance} />}
         />
-    );
+    ),
 };
 
-export const Playground: FC = () => {
-    const [value, setValue] = useState('brass');
-
-    return <Dropdown value={value} options={options} onChange={setValue} />;
-};
-
-export const Gallery: FC = () => (
-    <VariantGallery render={(appearance) => <GalleryDropdown {...appearance} />} />
-);
+export default story;
