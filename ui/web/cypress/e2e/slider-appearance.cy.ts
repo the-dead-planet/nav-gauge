@@ -14,7 +14,7 @@ describe("Slider appearance", () => {
         ]) {
             cy.get(
                 `[data-appearance-color="${color}"][data-appearance-variant="fill"]`,
-            ).then(($slider) => {
+            ).should(($slider) => {
                 const label = $slider.find("label")[0];
                 const thumb = $slider.find(
                     '[aria-hidden="true"] > div:last-child',
