@@ -7,20 +7,26 @@ import { ToolPanelHeaderButton } from "./ToolPanelHeaderButton";
 
 const styles = StyleSheet.create({
     headerContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
+        flexDirection: "row",
+        alignItems: "center",
         paddingHorizontal: 8,
     },
     headerContainerSide: {
-        flexDirection: 'column',
-        alignItems: 'center',
-        padding: 5,
+        flexDirection: "column",
+        alignItems: "center",
+        paddingHorizontal: 5,
+        paddingVertical: 5,
         gap: 5,
     },
+    headerContainerRight: {
+        paddingHorizontal: 0,
+        paddingVertical: 0,
+        gap: 1,
+    },
     headerControlsContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginLeft: 'auto',
+        flexDirection: "row",
+        alignItems: "center",
+        marginLeft: "auto",
     },
     spacerLine: {
         flex: 1,
@@ -57,10 +63,15 @@ export const ToolPanelHeader: FC<Props> = ({
     const expandCollapseButton = (
         <Button
             size={buttonSize}
-            variant='ghost'
+            variant="ghost"
             color={getColor(true)}
             icon={Icons.NounProject.ChevronDownDouble}
-            iconRotateZ={((placement === 'left' ? 90 : placement === "right" ? -90 : 0) + (activeId === null ? 180 : 0) + 360) % 360}
+            iconRotateZ={
+                ((placement === "left" ? 90 : placement === "right" ? -90 : 0) +
+                    (activeId === null ? 180 : 0) +
+                    360) %
+                360
+            }
             accessibilityLabel={expandCollapseLabel}
             tooltip={expandCollapseLabel}
             tooltipPlacement={tooltipPlacement}
@@ -69,7 +80,13 @@ export const ToolPanelHeader: FC<Props> = ({
     );
 
     return (
-        <View style={[styles.headerContainer, placement !== 'bottom' && styles.headerContainerSide]}>
+        <View
+            style={[
+                styles.headerContainer,
+                placement !== "bottom" && styles.headerContainerSide,
+                placement === "right" && styles.headerContainerRight,
+            ]}
+        >
             {effectivePanels.map((toolPanel) => {
                 const isActive = toolPanel.id === activeId;
 
@@ -84,16 +101,21 @@ export const ToolPanelHeader: FC<Props> = ({
                         isActive={isActive}
                         onPress={onSelect(toolPanel)}
                     />
-                )
+                );
             })}
-            {placement === 'bottom' ? (
+            {placement === "bottom" ? (
                 <View style={styles.headerControlsContainer}>
                     {headerControls}
                     {expandCollapseButton}
                 </View>
             ) : (
                 <>
-                    <View style={[styles.spacerLine, { backgroundColor: theme.color('neutral', 700) }]} />
+                    <View
+                        style={[
+                            styles.spacerLine,
+                            { backgroundColor: theme.color("neutral", 700) },
+                        ]}
+                    />
                     {expandCollapseButton}
                 </>
             )}

@@ -1,11 +1,24 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import { Cartomancer, MapLayout, ToolPanelProps, useTranslate } from "@apparatus";
+import {
+    Cartomancer,
+    MapLayout,
+    ToolPanelProps,
+    useTranslate,
+} from "@apparatus";
 import { useMobileMachineWard } from "@mobile-apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { Text } from "@mobile-ui";
 import { MobileMap } from "@mobile-apparatus";
-import { Dropdown, Fieldset, FlexBox, NumberInput, TextArea, TextInput, ToggleSwitch } from "@mobile-ui";
+import {
+    Dropdown,
+    Fieldset,
+    FlexBox,
+    NumberInput,
+    TextArea,
+    TextInput,
+    ToggleSwitch,
+} from "@mobile-ui";
 import { useTheme } from "@ui";
 
 const styles = StyleSheet.create({
@@ -17,8 +30,8 @@ const styles = StyleSheet.create({
         gap: 8,
     },
     colorRow: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
+        flexDirection: "row",
+        alignItems: "flex-start",
         gap: 8,
     },
     colorPreview: {
@@ -26,7 +39,7 @@ const styles = StyleSheet.create({
         height: 32,
         borderRadius: 4,
         borderWidth: 1,
-        borderColor: 'rgba(255,255,255,0.2)',
+        borderColor: "rgba(255,255,255,0.2)",
         marginTop: 2,
     },
 });
@@ -36,10 +49,15 @@ export const CartoConfigPanel: FC<ToolPanelProps<MobileMap>> = () => {
     const translate = useTranslate();
     const t = (key: string) => translate({ n: cartomancer.namespace, t: key });
     const theme = useTheme();
-    const [selectedStyle, setSelectedStyle] = useSubjectState(cartomancer.selectedStyle$);
+    const [selectedStyle, setSelectedStyle] = useSubjectState(
+        cartomancer.selectedStyle$,
+    );
     const [mapLayout, setMapLayout] = useSubjectState(cartomancer.mapLayout$);
-    const [gaugeControls, setGaugeControls] = useSubjectState(cartomancer.gaugeControls$);
-    const { globeProjection, showZoomButtons, showCompass, showGreenScreen } = gaugeControls;
+    const [gaugeControls, setGaugeControls] = useSubjectState(
+        cartomancer.gaugeControls$,
+    );
+    const { globeProjection, showZoomButtons, showCompass, showGreenScreen } =
+        gaugeControls;
 
     const handleMapStyleChange = (value: string): void => {
         const id = value as keyof typeof Cartomancer.styles;
@@ -48,17 +66,17 @@ export const CartoConfigPanel: FC<ToolPanelProps<MobileMap>> = () => {
         }
     };
 
-    const styleOptions = [...Object.entries(Cartomancer.styles)].map(([id, option]) => ({
-        value: id,
-        label: option.label,
-    }));
+    const styleOptions = [...Object.entries(Cartomancer.styles)].map(
+        ([id, option]) => ({
+            value: id,
+            label: option.label,
+        }),
+    );
 
     return (
         <View style={styles.container}>
             <View>
-                <Text>
-                    {t(cartomancer.translationKey.Style)}
-                </Text>
+                <Text>{t(cartomancer.translationKey.Style)}</Text>
                 <Dropdown
                     value={selectedStyle.id}
                     options={styleOptions}
@@ -67,36 +85,51 @@ export const CartoConfigPanel: FC<ToolPanelProps<MobileMap>> = () => {
             </View>
 
             <View>
-                <Fieldset label={t(cartomancer.translationKey.CartoLayout)} variant="outline">
+                <Fieldset
+                    label={t(cartomancer.translationKey.CartoLayout)}
+                    variant="outline"
+                >
                     <ToggleSwitch
-                        checked={mapLayout.size.type === 'full-screen'}
-                        onChange={() => setMapLayout((prev): MapLayout => ({
-                            ...prev, size: {
-                                ...prev.size,
-                                type: prev.size.type === 'full-screen' ? 'manual' : 'full-screen'
-                            }
-                        }))}
+                        checked={mapLayout.size.type === "full-screen"}
+                        onChange={() =>
+                            setMapLayout((prev): MapLayout => ({
+                                ...prev,
+                                size: {
+                                    ...prev.size,
+                                    type:
+                                        prev.size.type === "full-screen"
+                                            ? "manual"
+                                            : "full-screen",
+                                },
+                            }))
+                        }
                     />
 
-                    <FlexBox direction="row" justifyContent="space-between" style={styles.inputRow}>
+                    <FlexBox
+                        direction="row"
+                        justifyContent="space-between"
+                        style={styles.inputRow}
+                    >
                         <NumberInput
                             value={mapLayout.size.width}
                             onChange={(value: number) => {
                                 setMapLayout((prev): MapLayout => ({
-                                    ...prev, size: { ...prev.size, width: value }
+                                    ...prev,
+                                    size: { ...prev.size, width: value },
                                 }));
                             }}
-                            disabled={mapLayout.size.type === 'full-screen'}
+                            disabled={mapLayout.size.type === "full-screen"}
                             label={t(cartomancer.translationKey.Width)}
                         />
                         <NumberInput
                             value={mapLayout.size.height}
                             onChange={(value: number) => {
                                 setMapLayout((prev): MapLayout => ({
-                                    ...prev, size: { ...prev.size, height: value }
+                                    ...prev,
+                                    size: { ...prev.size, height: value },
                                 }));
                             }}
-                            disabled={mapLayout.size.type === 'full-screen'}
+                            disabled={mapLayout.size.type === "full-screen"}
                             label={t(cartomancer.translationKey.Height)}
                         />
                     </FlexBox>
@@ -104,7 +137,10 @@ export const CartoConfigPanel: FC<ToolPanelProps<MobileMap>> = () => {
                     <NumberInput
                         value={mapLayout.borderWidth}
                         onChange={(value: number) => {
-                            setMapLayout((prev): MapLayout => ({ ...prev, borderWidth: value }));
+                            setMapLayout((prev): MapLayout => ({
+                                ...prev,
+                                borderWidth: value,
+                            }));
                         }}
                         label={t(cartomancer.translationKey.BorderWidth)}
                     />
@@ -112,37 +148,69 @@ export const CartoConfigPanel: FC<ToolPanelProps<MobileMap>> = () => {
                     <NumberInput
                         value={mapLayout.innerBorderWidth}
                         onChange={(value: number) => {
-                            setMapLayout((prev): MapLayout => ({ ...prev, innerBorderWidth: value }));
+                            setMapLayout((prev): MapLayout => ({
+                                ...prev,
+                                innerBorderWidth: value,
+                            }));
                         }}
                         label={t(cartomancer.translationKey.InnerBorderWidth)}
                     />
 
                     <View style={styles.colorRow}>
-                        <View style={[styles.colorPreview, { backgroundColor: mapLayout.borderColor || theme.color('secondary', 500) }]} />
+                        <View
+                            style={[
+                                styles.colorPreview,
+                                {
+                                    backgroundColor:
+                                        mapLayout.borderColor ||
+                                        theme.color("secondary", 500),
+                                },
+                            ]}
+                        />
                         <TextInput
-                            value={mapLayout.borderColor || ''}
+                            value={mapLayout.borderColor || ""}
                             onChange={(value: string) => {
-                                setMapLayout((prev): MapLayout => ({ ...prev, borderColor: value }));
+                                setMapLayout((prev): MapLayout => ({
+                                    ...prev,
+                                    borderColor: value,
+                                }));
                             }}
                             label={t(cartomancer.translationKey.BorderColor)}
                         />
                     </View>
 
                     <View style={styles.colorRow}>
-                        <View style={[styles.colorPreview, { backgroundColor: mapLayout.innerBorderColor || theme.color('secondary', 500) }]} />
+                        <View
+                            style={[
+                                styles.colorPreview,
+                                {
+                                    backgroundColor:
+                                        mapLayout.innerBorderColor ||
+                                        theme.color("secondary", 500),
+                                },
+                            ]}
+                        />
                         <TextInput
-                            value={mapLayout.innerBorderColor || ''}
+                            value={mapLayout.innerBorderColor || ""}
                             onChange={(value: string) => {
-                                setMapLayout((prev): MapLayout => ({ ...prev, innerBorderColor: value }));
+                                setMapLayout((prev): MapLayout => ({
+                                    ...prev,
+                                    innerBorderColor: value,
+                                }));
                             }}
-                            label={t(cartomancer.translationKey.InnerBorderColor)}
+                            label={t(
+                                cartomancer.translationKey.InnerBorderColor,
+                            )}
                         />
                     </View>
 
                     <TextArea
                         value={mapLayout.boxShadow}
                         onChange={(value) => {
-                            setMapLayout((prev): MapLayout => ({ ...prev, boxShadow: value }));
+                            setMapLayout((prev): MapLayout => ({
+                                ...prev,
+                                boxShadow: value,
+                            }));
                         }}
                         label={t(cartomancer.translationKey.BoxShadow)}
                     />
@@ -150,7 +218,10 @@ export const CartoConfigPanel: FC<ToolPanelProps<MobileMap>> = () => {
                     <TextArea
                         value={mapLayout.innerBoxShadow}
                         onChange={(value) => {
-                            setMapLayout((prev): MapLayout => ({ ...prev, innerBoxShadow: value }));
+                            setMapLayout((prev): MapLayout => ({
+                                ...prev,
+                                innerBoxShadow: value,
+                            }));
                         }}
                         label={t(cartomancer.translationKey.InnerBoxShadow)}
                     />
@@ -158,7 +229,10 @@ export const CartoConfigPanel: FC<ToolPanelProps<MobileMap>> = () => {
                     <TextInput
                         value={mapLayout.borderRadius}
                         onChange={(value: string) => {
-                            setMapLayout((prev): MapLayout => ({ ...prev, borderRadius: value }));
+                            setMapLayout((prev): MapLayout => ({
+                                ...prev,
+                                borderRadius: value,
+                            }));
                         }}
                         label={t(cartomancer.translationKey.Radius)}
                     />
@@ -170,28 +244,48 @@ export const CartoConfigPanel: FC<ToolPanelProps<MobileMap>> = () => {
             >
                 <ToggleSwitch
                     checked={globeProjection}
-                    onChange={() => setGaugeControls((prev) => ({ ...prev, globeProjection: !prev.globeProjection }))}
+                    onChange={() =>
+                        setGaugeControls((prev) => ({
+                            ...prev,
+                            globeProjection: !prev.globeProjection,
+                        }))
+                    }
                 >
                     {t(cartomancer.translationKey.GlobeView)}
                 </ToggleSwitch>
 
                 <ToggleSwitch
                     checked={showZoomButtons}
-                    onChange={() => setGaugeControls((prev) => ({ ...prev, showZoomButtons: !prev.showZoomButtons }))}
+                    onChange={() =>
+                        setGaugeControls((prev) => ({
+                            ...prev,
+                            showZoomButtons: !prev.showZoomButtons,
+                        }))
+                    }
                 >
                     {t(cartomancer.translationKey.ShowZoomButtons)}
                 </ToggleSwitch>
 
                 <ToggleSwitch
                     checked={showCompass}
-                    onChange={() => setGaugeControls((prev) => ({ ...prev, showCompass: !prev.showCompass }))}
+                    onChange={() =>
+                        setGaugeControls((prev) => ({
+                            ...prev,
+                            showCompass: !prev.showCompass,
+                        }))
+                    }
                 >
                     {t(cartomancer.translationKey.ShowCompassButton)}
                 </ToggleSwitch>
 
                 <ToggleSwitch
                     checked={showGreenScreen}
-                    onChange={() => setGaugeControls((prev) => ({ ...prev, showGreenScreen: !prev.showGreenScreen }))}
+                    onChange={() =>
+                        setGaugeControls((prev) => ({
+                            ...prev,
+                            showGreenScreen: !prev.showGreenScreen,
+                        }))
+                    }
                 >
                     {t(cartomancer.translationKey.ShowGreenScreen)}
                 </ToggleSwitch>

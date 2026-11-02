@@ -3,7 +3,10 @@
     position: relative;
     display: grid;
     grid-template-columns: max-content max-content 1fr max-content max-content;
-    grid-template-rows: max-content max-content minmax(0, 1fr) max-content max-content;
+    grid-template-rows: max-content max-content minmax(
+            0,
+            1fr
+        ) max-content max-content;
     grid-template-areas:
         "top-toolbar top-toolbar top-toolbar top-toolbar top-toolbar"
         "left-toolbar left-icons top-tools right-icons right-toolbar"
@@ -15,7 +18,7 @@
     box-sizing: border-box;
 }
 
-.machine>* {
+.machine > * {
     z-index: 0;
     max-width: 100dvw;
     box-sizing: border-box;
@@ -28,9 +31,9 @@
     z-index: 2;
 }
 
-.icons>*,
-.icons>*,
-.top-tools>* {
+.icons > *,
+.icons > *,
+.top-tools > * {
     pointer-events: auto;
 }
 
@@ -76,7 +79,9 @@
     box-sizing: border-box;
     z-index: 2;
 
-    --toolbar-background-color: rgb(from var(--appearance-default-surface) r g b / .87);
+    --toolbar-background-color: rgb(
+        from var(--appearance-default-surface) r g b / 0.87
+    );
 }
 
 .toolbar .content {
@@ -132,12 +137,11 @@
     height: 32px;
     padding-right: 10px;
     box-sizing: border-box;
-    background-color: rgb(from var(--appearance-default-surface) r g b / .87);
+    background-color: rgb(from var(--appearance-default-surface) r g b / 0.87);
     z-index: 1;
 }
 
 @supports not selector(::-webkit-scrollbar) {
-
     .toolbar.left .component,
     .toolbar.right .component {
         padding-right: 12px;
@@ -152,7 +156,7 @@
 
 .toolbar.left {
     grid-area: left-toolbar;
-    border-right: 1px solid rgb(from var(--color-neutral) r g b / .4);
+    border-right: 1px solid rgb(from var(--color-neutral) r g b / 0.4);
     position: relative;
     transition: width 0.25s ease;
 }
@@ -169,7 +173,7 @@
 
 .toolbar.right {
     grid-area: right-toolbar;
-    border-left: 1px solid rgb(from var(--color-neutral) r g b / .4);
+    border-left: 1px solid rgb(from var(--color-neutral) r g b / 0.4);
     position: relative;
     transition: width 0.25s ease;
 }

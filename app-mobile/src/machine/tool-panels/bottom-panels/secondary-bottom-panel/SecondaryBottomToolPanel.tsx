@@ -11,7 +11,7 @@ import { resolveElevationStyle } from "@mobile-ui";
 
 const styles = StyleSheet.create({
     container: {
-        position: 'relative',
+        position: "relative",
     },
     component: {
         flex: 1,
@@ -37,14 +37,12 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
     const { toolsStation } = useMobileMachineWard();
     const [isDragging, setIsDragging] = useState(false);
 
-    const {
-        show,
-        effectiveHeight,
-        toolPanel,
-        handleToolSelect,
-    } = useSecondaryBottomToolPanel(activeId, onActiveIdChange);
+    const { show, effectiveHeight, toolPanel, handleToolSelect } =
+        useSecondaryBottomToolPanel(activeId, onActiveIdChange);
 
-    const animatedHeight = useAnimatedSize(effectiveHeight, { animate: !isDragging });
+    const animatedHeight = useAnimatedSize(effectiveHeight, {
+        animate: !isDragging,
+    });
 
     if (!show) {
         return null;
@@ -55,31 +53,48 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
             ref={(instance) => {
                 toolsStation.bottomSecondaryToolPanelSizeRef.current = instance;
             }}
-            style={styles.container}>
+            style={styles.container}
+        >
             <Animated.View
                 style={{
                     height: animatedHeight,
-                    backgroundColor: withColorOpacity(theme.resolveAppearance().surface, 0.87),
+                    backgroundColor: withColorOpacity(
+                        theme.resolveAppearance().surface,
+                        0.87,
+                    ),
                     borderTopWidth: 1,
-                    borderTopColor: theme.color('primary'),
-                    ...resolveElevationStyle(theme, 'raised', 'up'),
+                    borderTopColor: theme.color("primary"),
+                    ...resolveElevationStyle(theme, "raised", "up"),
                 }}
             >
                 <ToolPanelHeader
                     placement="bottom"
                     activeId={activeId}
                     onActiveIdChange={handleToolSelect}
-                    headerControls={toolPanel?.headerComponent ? (
-                        <toolPanel.headerComponent map={map} placement={toolPanel.placement} />
-                    ) : undefined}
+                    headerControls={
+                        toolPanel?.headerComponent ? (
+                            <toolPanel.headerComponent
+                                map={map}
+                                placement={toolPanel.placement}
+                            />
+                        ) : undefined
+                    }
                 />
                 {toolPanel ? (
-                    <ScrollView style={styles.component} contentContainerStyle={styles.componentContent}>
-                        <toolPanel.contentComponent map={map} placement={toolPanel.placement} />
+                    <ScrollView
+                        style={styles.component}
+                        contentContainerStyle={styles.componentContent}
+                    >
+                        <toolPanel.contentComponent
+                            map={map}
+                            placement={toolPanel.placement}
+                        />
                     </ScrollView>
                 ) : null}
             </Animated.View>
-            <BottomSecondaryToolPanelResizeHandle onDraggingChange={setIsDragging} />
+            <BottomSecondaryToolPanelResizeHandle
+                onDraggingChange={setIsDragging}
+            />
         </View>
     );
 };

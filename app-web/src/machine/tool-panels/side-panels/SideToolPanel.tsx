@@ -2,11 +2,15 @@ import type * as maplibregl from "maplibre-gl";
 import { FC, useState } from "react";
 import classNames from "classnames";
 import { Menu, MenuItem } from "@web-ui";
-import { assignSideToolPanelRef, swapSideToolPanelPlacement, useSideToolPanel } from "@apparatus";
+import {
+    assignSideToolPanelRef,
+    swapSideToolPanelPlacement,
+    useSideToolPanel,
+} from "@apparatus";
 import { useWebMachineWard } from "@web-apparatus";
 import { ToolPanelHeader } from "../panel-header/ToolPanelHeader";
 import { SideToolPanelResizeHandle } from "./SideToolPanelResizeHandle";
-import styles from '../../machine.module.css';
+import styles from "../../machine.module.css";
 
 interface Props {
     placement: "left" | "right";
@@ -36,34 +40,50 @@ export const SideToolPanel: FC<Props> = ({
     return (
         <div
             ref={assignSideToolPanelRef(placement, toolsStation)}
-            className={classNames(
-                styles['toolbar'],
-                styles[placement],
-                { [styles['dragging']]: isDragging },
-            )}
+            className={classNames(styles["toolbar"], styles[placement], {
+                [styles["dragging"]]: isDragging,
+            })}
             style={{ width: currentWidth }}
         >
             {show ? (
                 <>
-                    <div className={styles['content']}>
+                    <div className={styles["content"]}>
                         <ToolPanelHeader
                             placement={placement}
                             activeId={activeId}
                             onActiveIdChange={handleSidePanelActiveIdChange}
                         />
                         {toolPanel ? (
-                            <div className={styles['component-container']} data-appearance-color="neutral">
-                                {toolPanel.placement !== 'bottom' || toolPanel?.headerComponent ? (
-                                    <div className={styles['component-header']}>
-                                        {toolPanel.headerComponent
-                                            ? <toolPanel.headerComponent map={map} placement={toolPanel.placement} />
-                                            : <div className={styles['flex-spacer']} />}
-                                        {toolPanel.placement !== 'bottom' ? (
+                            <div
+                                className={styles["component-container"]}
+                                data-appearance-color="neutral"
+                            >
+                                {toolPanel.placement !== "bottom" ||
+                                toolPanel?.headerComponent ? (
+                                    <div className={styles["component-header"]}>
+                                        {toolPanel.headerComponent ? (
+                                            <toolPanel.headerComponent
+                                                map={map}
+                                                placement={toolPanel.placement}
+                                            />
+                                        ) : (
+                                            <div
+                                                className={
+                                                    styles["flex-spacer"]
+                                                }
+                                            />
+                                        )}
+                                        {toolPanel.placement !== "bottom" ? (
                                             <Menu
                                                 aria-label={panelMenuLabel}
                                                 tooltip={panelMenuLabel}
                                                 tooltipPlacement="bottom"
-                                                placement={toolPanel.placement === "right" ? "bottom-right" : "bottom-left"}
+                                                placement={
+                                                    toolPanel.placement ===
+                                                    "right"
+                                                        ? "bottom-right"
+                                                        : "bottom-left"
+                                                }
                                                 iconActiveColor="secondary"
                                             >
                                                 <MenuItem
@@ -71,7 +91,10 @@ export const SideToolPanel: FC<Props> = ({
                                                     isFirst
                                                     type="button"
                                                     closeOnPress
-                                                    onClick={swapSideToolPanelPlacement(toolPanel, toolsStation)}
+                                                    onClick={swapSideToolPanelPlacement(
+                                                        toolPanel,
+                                                        toolsStation,
+                                                    )}
                                                 >
                                                     {swapPlacementLabel}
                                                 </MenuItem>
@@ -79,15 +102,23 @@ export const SideToolPanel: FC<Props> = ({
                                         ) : null}
                                     </div>
                                 ) : null}
-                                <div className={styles['component']}>
-                                    <div className={styles['component-content']}>
-                                        <toolPanel.contentComponent map={map} placement={toolPanel.placement} />
+                                <div className={styles["component"]}>
+                                    <div
+                                        className={styles["component-content"]}
+                                    >
+                                        <toolPanel.contentComponent
+                                            map={map}
+                                            placement={toolPanel.placement}
+                                        />
                                     </div>
                                 </div>
                             </div>
                         ) : null}
                     </div>
-                    <SideToolPanelResizeHandle placement={placement} onDraggingChange={setIsDragging} />
+                    <SideToolPanelResizeHandle
+                        placement={placement}
+                        onDraggingChange={setIsDragging}
+                    />
                 </>
             ) : null}
         </div>
