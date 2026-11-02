@@ -8,12 +8,12 @@ import {
     ThemeName,
     themeSpecifications,
 } from "@ui";
-import { ClockInput } from "@the-dead-planet/nav-gauge-ui-mobile/src/forms/clock-input/ClockInput";
-import { ClockSliceInput } from "@the-dead-planet/nav-gauge-ui-mobile/src/forms/clock-input/ClockSliceInput";
-import { ClockDurationInput } from "@the-dead-planet/nav-gauge-ui-mobile/src/forms/clock-input/ClockDurationInput";
+import { ClockInput } from "../../src/forms/clock-input/ClockInput";
+import { ClockSliceInput } from "../../src/forms/clock-input/ClockSliceInput";
+import { ClockDurationInput } from "../../src/forms/clock-input/ClockDurationInput";
 
 jest.mock(
-    "@the-dead-planet/nav-gauge-ui-mobile/src/design-system/icons",
+    "../src/design-system/icons",
     () => ({
         Icon: () => null,
     }),

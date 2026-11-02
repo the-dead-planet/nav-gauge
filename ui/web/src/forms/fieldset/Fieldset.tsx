@@ -1,87 +1,118 @@
-import { CSSProperties, FC, useState } from "react"
+import { CSSProperties, FC, useId } from "react";
 import classNames from "classnames";
-import { DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, FieldsetProps, Icons, useTheme } from "@ui";
-import { Icon } from "../../design-system/icons";
-import styles from './fieldset.module.css';
+import {
+    DEFAULT_COLOR,
+    DEFAULT_SIZE,
+    DEFAULT_SURFACE_VARIANT,
+    FieldsetProps,
+    Icons,
+    useFieldsetExpansion,
+} from "@ui";
+import { Label } from "../../design-system/typography";
+import { Button } from "../../gizmos/button";
+import { OctagonalPanel } from "../../hud/octagonal-panel";
+import styles from "./fieldset.module.css";
 
-interface Props {
-    expanded?: boolean;
-    onExpandedChange?: (expanded: boolean) => void;
+interface Props extends FieldsetProps {
     className?: string;
     style?: CSSProperties;
     contentClassName?: string;
 }
 
-export const Fieldset: FC<Omit<FieldsetProps, 'expanded' | 'onExpandedChange'> & Props> = ({
+export const Fieldset: FC<Props> = ({
     label,
     prepend,
     append,
     size = DEFAULT_SIZE,
     color = DEFAULT_COLOR,
-    variant = DEFAULT_FILL_VARIANT,
+    highlightColor,
+    themeMode,
+    variant = DEFAULT_SURFACE_VARIANT,
+    highlighted = false,
+    disabled = false,
     expandable = true,
-    expanded: controlledExpanded,
+    expanded,
     onExpandedChange,
     className,
     contentClassName,
     style,
-    children
+    children,
 }) => {
-    const theme = useTheme();
-    const [internalExpanded, setInternalExpanded] = useState(true);
-    const isExpanded = controlledExpanded ?? internalExpanded;
-
-    const handleToggle = () => {
-        onExpandedChange?.(!isExpanded);
-        setInternalExpanded(!isExpanded);
-    };
+    const identifier = useId();
+    const contentId = `${identifier}-content`;
+    const { isExpanded, toggle } = useFieldsetExpansion({
+        expandable,
+        expanded,
+        onExpandedChange,
+        disabled,
+    });
 
     return (
-        <fieldset
-            className={classNames(
-                styles.fieldset,
-                styles[`size-${size}`],
-                styles[`mode-${theme.mode}`],
-                {
-                    [styles[`color-${color}`]]: !!color,
-                    [styles[`variant-${variant}`]]: !!variant,
-                    [styles['collapsed']]: !isExpanded
-                },
-                className
-            )}
+        <OctagonalPanel
+            themeMode={themeMode}
+            size={size}
+            color={color}
+            highlightColor={highlightColor}
+            variant={variant}
+            highlighted={highlighted}
+            disabled={disabled}
+            clipContent={false}
+            data-size={size}
+            className={classNames(styles.frame, className)}
             style={style}
         >
-            <legend
-                className={classNames(
-                    styles.legend,
-                    {
-                        [styles['legend-expandable']]: expandable,
-                        [styles['with-append']]: !!append,
-                    }
-                )}
-                onClick={expandable ? handleToggle : undefined}
+            <fieldset
+                className={styles.fieldset}
+                data-size={size}
+                disabled={disabled}
             >
-                {expandable && (
-                    <span className={classNames(styles['chevron'], { [styles['chevron-expanded']]: isExpanded })}>
-                        <Icon src={Icons.NounProject.ChevronDownDoubleTriangle} width={12} height={12} color={`var(--color-${color})`} />
-                    </span>
-                )}
-                {prepend && <span className={styles['prepend']}>{prepend}</span>}
-                <span className={styles['label']}>{label}</span>
-                {append && <span className={styles['append']}>{append}</span>}
-            </legend>
-            {expandable && (
-                <div className={classNames(styles['content'], { [styles['content-collapsed']]: !isExpanded })}>
-                    <div className={classNames(styles['content-inner'], contentClassName)}>
-                        {children}
-                    </div>
-                </div>
-            )}
-            {!expandable && (
-                <div className={classNames(styles['content'], contentClassName)}>
+                <legend className={styles.legend}>
+                    {prepend}
+                    {expandable ? (
+                        <Button
+                            icon={Icons.NounProject.ChevronDownDoubleTriangle}
+                            iconRotateZ={isExpanded ? 0 : -90}
+                            color={color}
+                            highlightColor={highlightColor}
+                            highlighted={highlighted}
+                            disabled={disabled}
+                            size={size}
+                            variant="ghost"
+                            className={styles.disclosure}
+                            aria-label={label}
+                            aria-expanded={isExpanded}
+                            aria-controls={contentId}
+                            onClick={toggle}
+                        >
+                            {label}
+                        </Button>
+                    ) : (
+                        <Label
+                            color={color}
+                            highlightColor={highlightColor}
+                            variant="ghost"
+                            highlighted={highlighted}
+                            disabled={disabled}
+                            uppercase
+                            className={styles.caption}
+                        >
+                            {label}
+                        </Label>
+                    )}
+                    {append ? (
+                        <span className={styles.append} inert={disabled}>
+                            {append}
+                        </span>
+                    ) : null}
+                </legend>
+                <div
+                    id={contentId}
+                    hidden={!isExpanded}
+                    className={classNames(styles.content, contentClassName)}
+                >
                     {children}
                 </div>
-            )}
-        </fieldset>
+            </fieldset>
+        </OctagonalPanel>
     );
 };

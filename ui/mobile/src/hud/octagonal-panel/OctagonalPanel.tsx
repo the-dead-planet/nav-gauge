@@ -2,7 +2,7 @@ import { FC, Ref } from "react";
 import { StyleSheet, View, ViewProps, ViewInstance } from "react-native";
 import {
     DEFAULT_COLOR,
-    DEFAULT_FILL_VARIANT,
+    DEFAULT_SURFACE_VARIANT,
     DEFAULT_SIZE,
     OctagonalPanelProps,
     ThemeContext,
@@ -30,7 +30,7 @@ export const OctagonalPanel: FC<OctagonalPanelProps & Props> = ({
     themeMode,
     color = DEFAULT_COLOR,
     highlightColor = color,
-    variant = DEFAULT_FILL_VARIANT,
+    variant = DEFAULT_SURFACE_VARIANT,
     size = DEFAULT_SIZE,
     highlighted = false,
     disabled = false,
@@ -57,7 +57,13 @@ export const OctagonalPanel: FC<OctagonalPanelProps & Props> = ({
                 accessibilityState={{ ...accessibilityState, disabled }}
                 style={[
                     styles.panel,
-                    resolveElevationStyle(theme, "raised", "down"),
+                    resolveElevationStyle(
+                        theme,
+                        variant === "ghost" || variant === "inset"
+                            ? "none"
+                            : "raised",
+                        "down",
+                    ),
                     style,
                 ]}
                 onLayout={(event) => {

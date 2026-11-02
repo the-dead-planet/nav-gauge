@@ -1,12 +1,8 @@
 import { ReactNode } from "react";
-import {
-    AppearancePropsBase,
-    FillVariant,
-    SizeVariant,
-} from "../../design-system/model";
+import { AppearancePropsBase, SizeVariant } from "../../design-system/model";
 import { ResolvedThemeAppearance } from "../../design-system/theme/model";
 
-export interface OctagonalPanelProps extends AppearancePropsBase<FillVariant> {
+export interface OctagonalPanelProps extends AppearancePropsBase {
     /** Selects corner depth without adding content padding. */
     size?: SizeVariant;
     children?: ReactNode;

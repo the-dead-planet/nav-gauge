@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
+import { flushSync } from "react-dom";
 
 export const usePanelDimensions = <
     Element extends HTMLElement = HTMLDivElement,
@@ -13,7 +14,7 @@ export const usePanelDimensions = <
         headerHeight: 0,
     });
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (!container) {
             return;
         }
@@ -31,7 +32,7 @@ export const usePanelDimensions = <
                     : next,
             );
         };
-        const observer = new ResizeObserver(update);
+        const observer = new ResizeObserver(() => flushSync(update));
         observer.observe(container, { box: "border-box" });
         if (header) {
             observer.observe(header, { box: "border-box" });

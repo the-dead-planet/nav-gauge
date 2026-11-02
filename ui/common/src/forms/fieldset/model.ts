@@ -1,13 +1,11 @@
 import { ReactNode } from "react";
-import { ColorVariant, SizeVariant, FillVariant } from "../../design-system/model";
+import { AppearancePropsBase, SizeVariant } from "../../design-system/model";
 
-export interface FieldsetProps {
+export interface FieldsetProps extends AppearancePropsBase {
     label: string;
     prepend?: ReactNode;
     append?: ReactNode;
     size?: SizeVariant;
-    color?: ColorVariant;
-    variant?: FillVariant;
     /**
      * Defaults to true
      */

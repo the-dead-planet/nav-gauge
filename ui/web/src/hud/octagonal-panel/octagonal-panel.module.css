@@ -11,39 +11,36 @@
     mask-repeat: no-repeat;
 }
 
-.inset-shadow,
-.inset-highlight {
-    fill: none;
-}
-
 .inset-shadow {
-    stroke: var(--appearance-inset-default-inner-start);
-    stroke-width: 6px;
+    flood-color: var(--appearance-inset-default-inner-start);
 }
 
 .inset-highlight {
-    stroke: var(--appearance-inset-default-inner-end);
-    stroke-width: 4px;
+    flood-color: var(--appearance-inset-default-inner-end);
 }
 
-.root:not([data-disabled="true"]):is(
+[data-appearance-variant="inset"]:not([data-disabled="true"]):is(
         [data-highlighted="true"],
         [data-pressed="true"],
         [data-interactive="true"]:active,
         [data-interactive="true"]:has(:active)
     )
     > svg
+    > defs
+    > filter
     > .inset-shadow {
-    stroke: var(--appearance-inset-active-pressed-inner-start);
+    flood-color: var(--appearance-inset-active-pressed-inner-start);
 }
 
-.root:not([data-disabled="true"]):is(
+[data-appearance-variant="inset"]:not([data-disabled="true"]):is(
         [data-highlighted="true"],
         [data-pressed="true"],
         [data-interactive="true"]:active,
         [data-interactive="true"]:has(:active)
     )
     > svg
+    > defs
+    > filter
     > .inset-highlight {
-    stroke: var(--appearance-inset-active-pressed-inner-end);
+    flood-color: var(--appearance-inset-active-pressed-inner-end);
 }

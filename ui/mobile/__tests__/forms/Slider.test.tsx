@@ -8,10 +8,10 @@ import {
     ThemeName,
     themeSpecifications,
 } from "@ui";
-import { Slider } from "@the-dead-planet/nav-gauge-ui-mobile/src/forms/slider/Slider";
+import { Slider } from "../src/forms/slider/Slider";
 
 jest.mock(
-    "@the-dead-planet/nav-gauge-ui-mobile/src/design-system/icons",
+    "../src/design-system/icons",
     () => ({
         Icon: () => null,
     }),

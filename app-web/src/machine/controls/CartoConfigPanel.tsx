@@ -45,7 +45,7 @@ export const CartoConfigPanel: FC<ToolPanelProps<maplibregl.Map>> = () => {
                     onChange={handleMapStyleChange}
                 />
             </div>
-            <Fieldset label={t(cartomancer.translationKey.CartoLayout)}>
+            <Fieldset label={t(cartomancer.translationKey.CartoLayout)} variant="outline" size="md">
                 <div className={styles["section"]}>
                     <Checkbox
                         id="map-size"
@@ -168,7 +168,7 @@ export const CartoConfigPanel: FC<ToolPanelProps<maplibregl.Map>> = () => {
                     />
                 </div>
             </Fieldset>
-            <Fieldset label={t(cartomancer.translationKey.GaugeControls)}>
+            <Fieldset label={t(cartomancer.translationKey.GaugeControls)} variant="outline" size="md">
                 <Checkbox
                     id="controls-globe-projection"
                     checked={globeProjection}

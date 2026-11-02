@@ -12,13 +12,15 @@ export const OctagonalSurface: FC<OctagonalSurfaceProps> = ({
     strokeWidth,
     showGlow = false,
 }) => {
-    const clipPathId = useId();
+    const insetFilterId = useId();
     const borderWidth = appearance.border.width * Math.max(0, strokeWidth ?? 1);
-    const {
-        points: outline,
-        shadowPoints,
-        highlightPoints,
-    } = getOctagonalGeometry(width, height, size, 0, regular);
+    const { points: outline } = getOctagonalGeometry(
+        width,
+        height,
+        size,
+        0,
+        regular,
+    );
     const { points } = getOctagonalGeometry(
         width,
         height,
@@ -57,25 +59,79 @@ export const OctagonalSurface: FC<OctagonalSurfaceProps> = ({
                     className={surface.paint}
                     points={points}
                     vectorEffect="non-scaling-stroke"
+                    filter={
+                        appearance.effects.depth === "inset"
+                            ? `url(#${insetFilterId})`
+                            : undefined
+                    }
                 />
                 {appearance.effects.depth === "inset" ? (
-                    <>
-                        <defs>
-                            <clipPath id={clipPathId}>
-                                <polygon points={outline} />
-                            </clipPath>
-                        </defs>
-                        <polyline
-                            className={styles["inset-shadow"]}
-                            points={shadowPoints}
-                            clipPath={`url(#${clipPathId})`}
-                        />
-                        <polyline
-                            className={styles["inset-highlight"]}
-                            points={highlightPoints}
-                            clipPath={`url(#${clipPathId})`}
-                        />
-                    </>
+                    <defs>
+                        <filter
+                            id={insetFilterId}
+                            x="0"
+                            y="0"
+                            width={width}
+                            height={height}
+                            filterUnits="userSpaceOnUse"
+                            colorInterpolationFilters="sRGB"
+                        >
+                            <feGaussianBlur
+                                in="SourceAlpha"
+                                stdDeviation="2"
+                                result="blur"
+                            />
+                            <feOffset
+                                in="blur"
+                                dx="3"
+                                dy="3"
+                                result="shadow-offset"
+                            />
+                            <feComposite
+                                in="SourceAlpha"
+                                in2="shadow-offset"
+                                operator="out"
+                                result="shadow-mask"
+                            />
+                            <feFlood
+                                className={styles["inset-shadow"]}
+                                result="shadow-color"
+                            />
+                            <feComposite
+                                in="shadow-color"
+                                in2="shadow-mask"
+                                operator="in"
+                                result="shadow"
+                            />
+                            <feOffset
+                                in="blur"
+                                dx="-2"
+                                dy="-2"
+                                result="highlight-offset"
+                            />
+                            <feComposite
+                                in="SourceAlpha"
+                                in2="highlight-offset"
+                                operator="out"
+                                result="highlight-mask"
+                            />
+                            <feFlood
+                                className={styles["inset-highlight"]}
+                                result="highlight-color"
+                            />
+                            <feComposite
+                                in="highlight-color"
+                                in2="highlight-mask"
+                                operator="in"
+                                result="highlight"
+                            />
+                            <feMerge>
+                                <feMergeNode in="SourceGraphic" />
+                                <feMergeNode in="shadow" />
+                                <feMergeNode in="highlight" />
+                            </feMerge>
+                        </filter>
+                    </defs>
                 ) : null}
             </svg>
         </>
