@@ -1,6 +1,6 @@
 import { createElement } from "react";
 import { createRoot, Root } from "react-dom/client";
-import { usePanelDimensions } from "../../src/hud/usePanelDimensions";
+import { usePanelDimensions } from "../../../src/hud/usePanelDimensions";
 
 const MeasuredPanel = () => {
     const { containerRef, headerRef, width, height, headerHeight } =
