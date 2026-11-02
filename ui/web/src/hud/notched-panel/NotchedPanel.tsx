@@ -61,7 +61,7 @@ export const NotchedPanel: FC<
         headerHeight,
     );
     const ready = width > 0 && height > 0;
-    const backdropMask = `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}"><polygon points="${bodyPoints}" fill="white"/></svg>`)}")`;
+    const backdropMask = `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none"><polygon points="${bodyPoints}" fill="white"/></svg>`)}")`;
 
     return (
         <div

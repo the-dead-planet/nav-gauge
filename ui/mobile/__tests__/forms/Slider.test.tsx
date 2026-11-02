@@ -8,7 +8,7 @@ import {
     ThemeName,
     themeSpecifications,
 } from "@ui";
-import { Slider } from "../src/forms/slider/Slider";
+import { Slider } from "../../src/forms/slider/Slider";
 
 jest.mock(
     "../src/design-system/icons",

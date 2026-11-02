@@ -58,6 +58,7 @@ export const Fieldset: FC<Props> = ({
             disabled={disabled}
             clipContent={false}
             data-size={size}
+            data-expanded={isExpanded}
             className={classNames(styles.frame, className)}
             style={style}
         >
@@ -107,10 +108,20 @@ export const Fieldset: FC<Props> = ({
                 </legend>
                 <div
                     id={contentId}
-                    hidden={!isExpanded}
-                    className={classNames(styles.content, contentClassName)}
+                    aria-hidden={!isExpanded}
+                    inert={!isExpanded}
+                    className={styles.content}
                 >
-                    {children}
+                    <div className={styles["content-clip"]}>
+                        <div
+                            className={classNames(
+                                styles["content-inner"],
+                                contentClassName,
+                            )}
+                        >
+                            {children}
+                        </div>
+                    </div>
                 </div>
             </fieldset>
         </OctagonalPanel>

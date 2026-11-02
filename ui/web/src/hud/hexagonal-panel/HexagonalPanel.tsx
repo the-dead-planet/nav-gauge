@@ -66,7 +66,7 @@ export const HexagonalPanel: FC<
         shape,
     );
     const ready = width > 0 && height > 0;
-    const backdropMask = `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}"><polygon points="${points}" fill="white"/></svg>`)}")`;
+    const backdropMask = `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none"><polygon points="${points}" fill="white"/></svg>`)}")`;
 
     return (
         <ThemeContext.Provider value={theme}>
@@ -96,6 +96,7 @@ export const HexagonalPanel: FC<
                         />
                         <svg
                             viewBox={`0 0 ${width} ${height}`}
+                            preserveAspectRatio="none"
                             className={surface.drawing}
                             aria-hidden="true"
                         >

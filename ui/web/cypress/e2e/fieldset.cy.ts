@@ -44,7 +44,7 @@ describe("Fieldset", () => {
                 .querySelector("button svg")!
                 .getBoundingClientRect();
             expect(chevron.bottom).to.be.closeTo(frame.top, 1);
-            expect(button.left - frame.left).to.be.at.most(8);
+            expect(button.left).to.be.closeTo(frame.left, 1);
         });
     });
 
@@ -107,38 +107,41 @@ describe("Fieldset", () => {
             });
     });
 
-    it("updates the SVG frame in the same resize delivery as expansion and collapse", () => {
+    it("collapses the padded body and frame to zero while retaining the disclosure and content", () => {
         visitFieldset("fill-inverse");
-        cy.get("@panel").children("svg").should("exist");
-        for (const expanded of [false, true]) {
-            cy.get<JQuery<HTMLElement>>("@panel").then(
-                ($panel) =>
-                    new Cypress.Promise<void>((resolve) => {
-                        const panel = $panel[0];
-                        const window = panel.ownerDocument.defaultView!;
-                        const observer = new window.ResizeObserver(() => {
-                            observer.disconnect();
-                            const drawing =
-                                panel.querySelector<SVGSVGElement>(
-                                    ":scope > svg",
-                                )!;
-                            expect(drawing.viewBox.baseVal.height).to.equal(
-                                panel.offsetHeight,
-                            );
-                            expect(drawing.viewBox.baseVal.width).to.equal(
-                                panel.offsetWidth,
-                            );
-                            window.requestAnimationFrame(() => resolve());
-                        });
-                        observer.observe(panel);
-                        panel.querySelector("button")!.click();
-                    }),
+        cy.get("@panel")
+            .children("svg")
+            .should("have.attr", "preserveAspectRatio", "none");
+        cy.get("@panel").find("fieldset > div[aria-hidden]").as("body");
+        cy.get("@disclosure")
+            .click()
+            .should("have.attr", "aria-expanded", "false");
+        cy.get("@body")
+            .should("have.attr", "aria-hidden", "true")
+            .and("have.attr", "inert");
+        cy.get("@body").should("contain.text", "Fieldset content");
+        cy.get<JQuery<HTMLElement>>("@panel").should(($panel) => {
+            expect($panel[0].getBoundingClientRect().height).to.equal(0);
+        });
+        cy.get("@panel").children("svg").should("not.exist");
+        cy.get("@disclosure").should("be.visible");
+        cy.get("@disclosure")
+            .click()
+            .should("have.attr", "aria-expanded", "true");
+        cy.get("@body")
+            .should("have.attr", "aria-hidden", "false")
+            .and("not.have.attr", "inert");
+        cy.get<JQuery<HTMLElement>>("@panel").should(($panel) => {
+            const panel = $panel[0];
+            const body = panel.querySelector("fieldset > div[aria-hidden]")!;
+            const content = body.firstElementChild!.firstElementChild!;
+            expect(panel.getBoundingClientRect().height).to.be.closeTo(
+                content.getBoundingClientRect().height,
+                0.1,
             );
-            cy.get("@disclosure").should(
-                "have.attr",
-                "aria-expanded",
-                String(expanded),
-            );
-        }
+            const drawing = panel.querySelector<SVGSVGElement>(":scope > svg")!;
+            expect(drawing.viewBox.baseVal.height).to.equal(panel.offsetHeight);
+            expect(drawing.viewBox.baseVal.width).to.equal(panel.offsetWidth);
+        });
     });
 });

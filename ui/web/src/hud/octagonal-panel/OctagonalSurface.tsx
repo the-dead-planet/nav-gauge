@@ -28,7 +28,8 @@ export const OctagonalSurface: FC<OctagonalSurfaceProps> = ({
         borderWidth / 2,
         regular,
     );
-    const backdropMask = `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}"><polygon points="${outline}" fill="white"/></svg>`)}")`;
+    const preserveAspectRatio = regular ? "xMidYMid meet" : "none";
+    const backdropMask = `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" preserveAspectRatio="${preserveAspectRatio}"><polygon points="${outline}" fill="white"/></svg>`)}")`;
 
     return (
         <>
@@ -45,6 +46,7 @@ export const OctagonalSurface: FC<OctagonalSurfaceProps> = ({
             <svg
                 className={surface.drawing}
                 viewBox={`0 0 ${width} ${height}`}
+                preserveAspectRatio={preserveAspectRatio}
                 aria-hidden="true"
                 focusable="false"
             >

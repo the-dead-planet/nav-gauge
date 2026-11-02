@@ -324,6 +324,7 @@ describe('Composed appearance rendering', () => {
             }));
             expect(markup).to.include(`points="${getOctagonalGeometry(80, 24, 'sm', appearance.border.width / 2).points}"`);
             expect(markup).to.include('viewBox="0 0 80 24"');
+            expect(markup).to.include('preserveAspectRatio="none"');
             expect(markup).to.include('aria-hidden="true"');
             expect(markup).to.include('vector-effect="non-scaling-stroke"');
             expect(markup.includes('mask-image:')).to.equal(appearance.effects.backdropBlur > 0);
@@ -349,6 +350,7 @@ describe('Composed appearance rendering', () => {
             children: 'O',
         }));
         expect(markup).to.include(`points="${getOctagonalGeometry(24, 24, 'sm', 1, true).points}"`);
+        expect(markup).to.include('preserveAspectRatio="xMidYMid meet"');
         expect(markup).to.include('role="button"');
         expect(markup).to.include('tabindex="-1"');
         expect(markup).to.include('data-disabled="true"');
@@ -394,7 +396,7 @@ describe('Composed appearance rendering', () => {
                 expect(markup).to.include('aria-expanded="false"');
                 const contentId = /aria-controls="([^"]+)"/.exec(markup)?.[1];
                 expect(contentId).to.be.a('string');
-                expect(markup).to.include(`id="${contentId}" hidden=""`);
+                expect(markup).to.include(`id="${contentId}" aria-hidden="true" inert=""`);
                 expect(markup).to.match(/<button[^>]*aria-label="Telemetry"/);
                 expect(markup).to.include('aria-label="Reading"');
             }
@@ -407,7 +409,7 @@ describe('Composed appearance rendering', () => {
         }));
         expect(markup).to.include('data-appearance-variant="ghost"');
         expect(markup).not.to.include('<button');
-        expect(markup).not.to.include('hidden=""');
+        expect(markup).not.to.include('inert=""');
     });
 
     it('shows a Radio selection marker matching its corners only while checked', () => {

@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import { getVisibleTabIndexes, SizeVariant, TabstripOption } from '@ui';
 
 export const useTabstripLayout = ({
@@ -23,7 +23,7 @@ export const useTabstripLayout = ({
         value: string;
     }>();
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         const previousContent = previousContentRef.current;
         if (previousContent.value === value) {
             return;
@@ -36,7 +36,7 @@ export const useTabstripLayout = ({
         return () => window.clearTimeout(timeout);
     }, [value]);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         previousContentRef.current = { children, value };
     });
 
@@ -61,11 +61,18 @@ export const useTabstripLayout = ({
                 ),
             );
         };
-        const observer = new ResizeObserver(updateVisibleCount);
+        let animationFrame = 0;
+        const observer = new ResizeObserver(() => {
+            cancelAnimationFrame(animationFrame);
+            animationFrame = requestAnimationFrame(updateVisibleCount);
+        });
         observer.observe(container);
         observer.observe(measurement);
         updateVisibleCount();
-        return () => observer.disconnect();
+        return () => {
+            observer.disconnect();
+            cancelAnimationFrame(animationFrame);
+        };
     }, [options, size, value]);
 
     useEffect(() => {
@@ -73,12 +80,19 @@ export const useTabstripLayout = ({
         if (!content) {
             return;
         }
-        const observer = new ResizeObserver(() =>
-            setContentHeight(content.getBoundingClientRect().height),
-        );
+        const updateHeight = () =>
+            setContentHeight(content.getBoundingClientRect().height);
+        let animationFrame = 0;
+        const observer = new ResizeObserver(() => {
+            cancelAnimationFrame(animationFrame);
+            animationFrame = requestAnimationFrame(updateHeight);
+        });
         observer.observe(content);
-        setContentHeight(content.getBoundingClientRect().height);
-        return () => observer.disconnect();
+        updateHeight();
+        return () => {
+            observer.disconnect();
+            cancelAnimationFrame(animationFrame);
+        };
     }, [children, value]);
 
     return {
