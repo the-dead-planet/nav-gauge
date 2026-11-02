@@ -19,7 +19,7 @@ import { Text } from "../../src/design-system/typography";
 import { HexagonSurface } from "../../src/hud/hexagon/HexagonSurface";
 
 jest.mock(
-    "../src/hud/hexagon/HexagonSurface",
+    "../../src/hud/hexagon/HexagonSurface",
     () => ({
         HexagonSurface: jest.fn(() => null),
     }),

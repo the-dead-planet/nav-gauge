@@ -1,4 +1,5 @@
 import { fireEvent, render } from "@testing-library/react-native";
+import { test } from "@jest/globals";
 import {
     FieldsetProps,
     Orientation,
@@ -11,7 +12,7 @@ import {
 import { Fieldset } from "../../src/forms/fieldset";
 import { TextInput } from "react-native";
 
-jest.mock("../src/design-system/icons", () => ({
+jest.mock("../../src/design-system/icons", () => ({
     Icon: () => null,
 }));
 

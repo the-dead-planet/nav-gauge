@@ -13,7 +13,7 @@ import { ClockSliceInput } from "../../src/forms/clock-input/ClockSliceInput";
 import { ClockDurationInput } from "../../src/forms/clock-input/ClockDurationInput";
 
 jest.mock(
-    "../src/design-system/icons",
+    "../../src/design-system/icons",
     () => ({
         Icon: () => null,
     }),

@@ -18,7 +18,7 @@ import { ResizeHandle } from "../../src/gizmos/resize-handle";
 import { ResizeHandleGrip } from "../../src/gizmos/resize-handle/ResizeHandleGrip";
 
 jest.mock(
-    "../src/gizmos/resize-handle/ResizeHandleGrip",
+    "../../src/gizmos/resize-handle/ResizeHandleGrip",
     () => ({
         ResizeHandleGrip: jest.fn(() => null),
     }),

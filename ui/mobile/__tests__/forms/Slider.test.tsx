@@ -11,7 +11,7 @@ import {
 import { Slider } from "../../src/forms/slider/Slider";
 
 jest.mock(
-    "../src/design-system/icons",
+    "../../src/design-system/icons",
     () => ({
         Icon: () => null,
     }),

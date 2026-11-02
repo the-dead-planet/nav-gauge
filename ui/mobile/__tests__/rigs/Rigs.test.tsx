@@ -25,7 +25,7 @@ import { Menu, MenuItem } from '../../src/rigs/menu';
 import { Icon } from '../../src/design-system/icons';
 
 jest.mock(
-    '../src/design-system/icons',
+    '../../src/design-system/icons',
     () => ({
         Icon: jest.fn(() => null),
     }),
@@ -38,7 +38,7 @@ jest.mock('react-native-safe-area-context', () => ({
 jest.mock('@react-native-documents/picker', () => ({ pick: jest.fn() }));
 
 jest.mock(
-    '../src/rigs/popup/usePopupPosition',
+    '../../src/rigs/popup/usePopupPosition',
     () => ({
         usePopupPosition: () => ({
             overlayRef: { current: null },
