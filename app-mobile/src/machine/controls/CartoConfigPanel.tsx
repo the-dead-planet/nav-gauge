@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Cartomancer, MapLayout, ToolPanelProps, useTranslate } from "@apparatus";
 import { useMobileMachineWard } from "@mobile-apparatus";
 import { useSubjectState } from "@tinker-chest";
@@ -10,7 +10,6 @@ import { useTheme } from "@ui";
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         padding: 12,
         rowGap: 20,
     },
@@ -55,7 +54,7 @@ export const CartoConfigPanel: FC<ToolPanelProps<MobileMap>> = () => {
     }));
 
     return (
-        <ScrollView style={styles.container}>
+        <View style={styles.container}>
             <View>
                 <Text>
                     {t(cartomancer.translationKey.Style)}
@@ -68,18 +67,16 @@ export const CartoConfigPanel: FC<ToolPanelProps<MobileMap>> = () => {
             </View>
 
             <View>
-                <Fieldset label={t(cartomancer.translationKey.CartoLayout)} variant="outline" size="md">
-                    <Fieldset label={t(cartomancer.translationKey.FullScreen)} variant="outline" size="md">
-                        <ToggleSwitch
-                            checked={mapLayout.size.type === 'full-screen'}
-                            onChange={() => setMapLayout((prev): MapLayout => ({
-                                ...prev, size: {
-                                    ...prev.size,
-                                    type: prev.size.type === 'full-screen' ? 'manual' : 'full-screen'
-                                }
-                            }))}
-                        />
-                    </Fieldset>
+                <Fieldset label={t(cartomancer.translationKey.CartoLayout)} variant="outline">
+                    <ToggleSwitch
+                        checked={mapLayout.size.type === 'full-screen'}
+                        onChange={() => setMapLayout((prev): MapLayout => ({
+                            ...prev, size: {
+                                ...prev.size,
+                                type: prev.size.type === 'full-screen' ? 'manual' : 'full-screen'
+                            }
+                        }))}
+                    />
 
                     <FlexBox direction="row" justifyContent="space-between" style={styles.inputRow}>
                         <NumberInput
@@ -167,7 +164,10 @@ export const CartoConfigPanel: FC<ToolPanelProps<MobileMap>> = () => {
                     />
                 </Fieldset>
             </View>
-            <Fieldset label={t(cartomancer.translationKey.GaugeControls)} variant="outline" size="md">
+            <Fieldset
+                label={t(cartomancer.translationKey.GaugeControls)}
+                variant="outline"
+            >
                 <ToggleSwitch
                     checked={globeProjection}
                     onChange={() => setGaugeControls((prev) => ({ ...prev, globeProjection: !prev.globeProjection }))}
@@ -196,6 +196,6 @@ export const CartoConfigPanel: FC<ToolPanelProps<MobileMap>> = () => {
                     {t(cartomancer.translationKey.ShowGreenScreen)}
                 </ToggleSwitch>
             </Fieldset>
-        </ScrollView>
+        </View>
     );
 };

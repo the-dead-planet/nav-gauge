@@ -1,9 +1,15 @@
-
 .container {
-    padding: 0px 8px 10px 0px;
     box-sizing: border-box;
     display: grid;
     gap: 20px;
+}
+
+.container.left {
+    padding: 2px 8px 2px 4px;
+}
+
+.container.right {
+    padding: 2px 4px 2px 2px;
 }
 
 .section {

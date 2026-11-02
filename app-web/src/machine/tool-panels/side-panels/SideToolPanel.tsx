@@ -52,7 +52,7 @@ export const SideToolPanel: FC<Props> = ({
                             onActiveIdChange={handleSidePanelActiveIdChange}
                         />
                         {toolPanel ? (
-                            <div className={styles['component']} data-appearance-color="secondary">
+                            <div className={styles['component-container']} data-appearance-color="neutral">
                                 {toolPanel.placement !== 'bottom' || toolPanel?.headerComponent ? (
                                     <div className={styles['component-header']}>
                                         {toolPanel.headerComponent
@@ -65,7 +65,6 @@ export const SideToolPanel: FC<Props> = ({
                                                 tooltipPlacement="bottom"
                                                 placement={toolPanel.placement === "right" ? "bottom-right" : "bottom-left"}
                                                 iconActiveColor="secondary"
-                                                iconSize="xs"
                                             >
                                                 <MenuItem
                                                     key="swap-placement"
@@ -80,8 +79,10 @@ export const SideToolPanel: FC<Props> = ({
                                         ) : null}
                                     </div>
                                 ) : null}
-                                <div className={styles['component-content']}>
-                                    <toolPanel.contentComponent map={map} placement={toolPanel.placement} />
+                                <div className={styles['component']}>
+                                    <div className={styles['component-content']}>
+                                        <toolPanel.contentComponent map={map} placement={toolPanel.placement} />
+                                    </div>
                                 </div>
                             </div>
                         ) : null}

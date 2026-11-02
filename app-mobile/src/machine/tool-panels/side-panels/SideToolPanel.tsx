@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { Animated, StyleSheet, View } from "react-native";
+import { Animated, ScrollView, StyleSheet, View } from "react-native";
 import { Menu, MenuItem, resolveElevationStyle } from "@mobile-ui";
 import { assignSideToolPanelRef, swapSideToolPanelPlacement, useSideToolPanel } from "@apparatus";
 import { useMobileMachineWard } from "@mobile-apparatus";
@@ -15,16 +15,23 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         zIndex: 4,
     },
+    componentContainer: {
+        flex: 1,
+        minHeight: 0,
+        minWidth: 0,
+    },
     component: {
         flex: 1,
+        minHeight: 0,
     },
     componentHeader: {
+        flexShrink: 0,
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingHorizontal: 8,
     },
     componentContent: {
-        flex: 1,
+        flexGrow: 1,
     },
 });
 
@@ -86,8 +93,8 @@ export const SideToolPanel: FC<Props> = ({
                         activeId={activeId}
                         onActiveIdChange={handleSidePanelActiveIdChange}
                     />
-                    <View style={styles.component}>
-                        {toolPanel?.headerComponent ? (
+                    <View style={styles.componentContainer}>
+                        {toolPanel && (toolPanel.placement !== 'bottom' || toolPanel.headerComponent) ? (
                             <View style={styles.componentHeader}>
                                 {toolPanel.headerComponent ? <toolPanel.headerComponent map={map} placement={toolPanel.placement} /> : null}
                                 {toolPanel.placement !== 'bottom' ? (
@@ -105,9 +112,9 @@ export const SideToolPanel: FC<Props> = ({
                                 ) : null}
                             </View>
                         ) : null}
-                        <View style={styles.componentContent}>
+                        <ScrollView style={styles.component} contentContainerStyle={styles.componentContent}>
                             {toolPanel ? <toolPanel.contentComponent map={map} placement={toolPanel.placement} /> : null}
-                        </View>
+                        </ScrollView>
                     </View>
                 </View>
             </Animated.View>

@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { Animated, StyleSheet, View } from "react-native";
+import { Animated, ScrollView, StyleSheet, View } from "react-native";
 import { useSecondaryBottomToolPanel } from "@apparatus";
 import { useMobileMachineWard } from "@mobile-apparatus";
 import { useTheme, withColorOpacity } from "@ui";
@@ -15,9 +15,10 @@ const styles = StyleSheet.create({
     },
     component: {
         flex: 1,
+        minHeight: 0,
     },
     componentContent: {
-        flex: 1,
+        flexGrow: 1,
     },
 });
 
@@ -73,11 +74,9 @@ export const SecondaryBottomToolPanel: FC<Props> = ({
                     ) : undefined}
                 />
                 {toolPanel ? (
-                    <View style={styles.component}>
-                        <View style={styles.componentContent}>
-                            <toolPanel.contentComponent map={map} placement={toolPanel.placement} />
-                        </View>
-                    </View>
+                    <ScrollView style={styles.component} contentContainerStyle={styles.componentContent}>
+                        <toolPanel.contentComponent map={map} placement={toolPanel.placement} />
+                    </ScrollView>
                 ) : null}
             </Animated.View>
             <BottomSecondaryToolPanelResizeHandle onDraggingChange={setIsDragging} />
