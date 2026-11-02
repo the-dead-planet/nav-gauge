@@ -115,7 +115,12 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
     return (
         <div className={classNames(styles['container'], styles[placement])}>
             {showGeneral && (
-                <Fieldset label={generalLabel} expandable contentClassName={styles['fieldset']} variant="outline" size="md">
+                <Fieldset
+                    label={generalLabel}
+                    expandable
+                    contentClassName={styles['fieldset']}
+                    variant="outline"
+                >
                     <Label htmlFor="animation-controls-image-pause-duration" align="right">
                         {imagePauseDurationLabel}
                     </Label>
@@ -182,7 +187,6 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                 <Fieldset
                     label={followCurrentPointLabel}
                     variant="outline"
-                    size="md"
                     append={
                         <ToggleSwitch
                             id="animation-controls-follow-current-point"

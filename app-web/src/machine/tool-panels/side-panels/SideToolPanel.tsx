@@ -55,7 +55,9 @@ export const SideToolPanel: FC<Props> = ({
                             <div className={styles['component']} data-appearance-color="secondary">
                                 {toolPanel.placement !== 'bottom' || toolPanel?.headerComponent ? (
                                     <div className={styles['component-header']}>
-                                        {toolPanel.headerComponent ? <toolPanel.headerComponent map={map} placement={toolPanel.placement} /> : null}
+                                        {toolPanel.headerComponent
+                                            ? <toolPanel.headerComponent map={map} placement={toolPanel.placement} />
+                                            : <div className={styles['flex-spacer']} />}
                                         {toolPanel.placement !== 'bottom' ? (
                                             <Menu
                                                 aria-label={panelMenuLabel}
