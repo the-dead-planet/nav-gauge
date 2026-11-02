@@ -68,6 +68,7 @@ const { TextInput } = require('../../src/forms/text-input/TextInput') as typeof 
 const { TextArea } = require('../../src/forms/text-area/TextArea') as typeof import('../../src/forms/text-area/TextArea');
 const { Radio } = require('../../src/forms/radio/Radio') as typeof import('../../src/forms/radio/Radio');
 const { Slider } = require('../../src/forms/slider/Slider') as typeof import('../../src/forms/slider/Slider');
+const { Fieldset } = require('../../src/forms/fieldset/Fieldset') as typeof import('../../src/forms/fieldset/Fieldset');
 const { ClockInput, ClockSliceInput, ClockDurationInput } = require('../../src/forms/clock-input') as typeof import('../../src/forms/clock-input');
 const { Text } = require('../../src/design-system/typography') as typeof import('../../src/design-system/typography');
 if (previousCssLoader) {
@@ -323,13 +324,15 @@ describe('Composed appearance rendering', () => {
             }));
             expect(markup).to.include(`points="${getOctagonalGeometry(80, 24, 'sm', appearance.border.width / 2).points}"`);
             expect(markup).to.include('viewBox="0 0 80 24"');
+            expect(markup).to.include('preserveAspectRatio="none"');
             expect(markup).to.include('aria-hidden="true"');
             expect(markup).to.include('vector-effect="non-scaling-stroke"');
             expect(markup.includes('mask-image:')).to.equal(appearance.effects.backdropBlur > 0);
             expect(markup.includes('class="inset-shadow"')).to.equal(appearance.effects.depth === 'inset');
             if (appearance.effects.depth === 'inset') {
                 expect(markup).to.include(`points="${getOctagonalGeometry(80, 24).points}"`);
-                expect(markup).to.include('clip-path="url(');
+                expect(markup).to.include('filter="url(');
+                expect(markup).to.include('<feGaussianBlur in="SourceAlpha" stdDeviation="2"');
             }
         }
     });
@@ -347,6 +350,7 @@ describe('Composed appearance rendering', () => {
             children: 'O',
         }));
         expect(markup).to.include(`points="${getOctagonalGeometry(24, 24, 'sm', 1, true).points}"`);
+        expect(markup).to.include('preserveAspectRatio="xMidYMid meet"');
         expect(markup).to.include('role="button"');
         expect(markup).to.include('tabindex="-1"');
         expect(markup).to.include('data-disabled="true"');
@@ -363,10 +367,49 @@ describe('Composed appearance rendering', () => {
             children: createElement(Text, { children: 'Preview' }),
         }));
         expect([...markup.matchAll(/data-appearance-mode="dark"/g)]).to.have.length(2);
-        expect(markup).to.include('data-appearance-variant="fill-inverse"');
+        expect(markup).to.include('data-appearance-variant="ghost"');
         expect(markup).to.include('data-disabled="true"');
         expect(markup).not.to.include('role="button"');
         expect(markup).not.to.include('data-interactive="true"');
+    });
+
+    it('keeps Fieldset semantic, associates its toggle and hides collapsed content for every surface and color', () => {
+        for (const color of appearanceColorOptions) {
+            for (const variant of surfaceVariantOptions) {
+                const markup = renderToStaticMarkup(createElement(Fieldset, {
+                    label: 'Telemetry',
+                    color,
+                    variant,
+                    highlightColor: 'intel',
+                    highlighted: true,
+                    disabled: true,
+                    expanded: false,
+                    themeMode: 'dark',
+                    children: createElement('input', { 'aria-label': 'Reading' }),
+                }));
+                expect(markup).to.include('<fieldset');
+                expect(markup).to.include('<legend');
+                expect(markup).to.include(`data-appearance-color="${color}"`);
+                expect(markup).to.include(`data-appearance-variant="${variant}"`);
+                expect(markup).to.match(/<fieldset[^>]*disabled=""/);
+                expect(markup).to.match(/<button[^>]*disabled=""/);
+                expect(markup).to.include('aria-expanded="false"');
+                const contentId = /aria-controls="([^"]+)"/.exec(markup)?.[1];
+                expect(contentId).to.be.a('string');
+                expect(markup).to.include(`id="${contentId}" aria-hidden="true" inert=""`);
+                expect(markup).to.match(/<button[^>]*aria-label="Telemetry"/);
+                expect(markup).to.include('aria-label="Reading"');
+            }
+        }
+        const markup = renderToStaticMarkup(createElement(Fieldset, {
+            label: 'Always visible',
+            expandable: false,
+            expanded: false,
+            children: 'Content',
+        }));
+        expect(markup).to.include('data-appearance-variant="ghost"');
+        expect(markup).not.to.include('<button');
+        expect(markup).not.to.include('inert=""');
     });
 
     it('shows a Radio selection marker matching its corners only while checked', () => {

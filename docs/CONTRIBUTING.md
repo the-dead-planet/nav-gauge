@@ -124,8 +124,10 @@ Add unit, component and end-to-end tests for more complex logic but do not overc
 - Unit tests in `/**/test/*.test.ts` using [Mocha](https://mochajs.org) and [Chai](https://www.chaijs.com).
 - Application browser tests in [`/app-web/cypress/e2e/*.cy.ts`](/app-web/cypress/e2e) using [Cypress](https://docs.cypress.io).
 - Shared UI browser tests in [`/ui/web/cypress/e2e/*.cy.ts`](/ui/web/cypress/e2e), using Storybook as their test target. UI tests must not depend on application routes or elements.
-- Mobile component and end-to-end tests in [`/app-mobile/app/__tests__/*.test.tsx`](/app-mobile/app/__tests__) using [Jest](https://jestjs.io/docs/tutorial-react-native).
+- Mobile UI component tests in [`/ui/mobile/__tests__/*.test.tsx`](/ui/mobile/__tests__) and app-level tests in [`/app-mobile/__tests__/*.test.tsx`](/app-mobile/__tests__) use [Jest](https://jestjs.io/docs/tutorial-react-native) with the React Native preset.
 - Backend tests in [TBD](/api/)
+
+`yarn test:ui:mobile` runs the UI workspace's Mocha unit tests and native Jest component tests. For a focused native suite, use `yarn workspace @the-dead-planet/nav-gauge-ui-mobile test:native --runTestsByPath __tests__/Fieldset.test.tsx`. Both `yarn typecheck:mobile` (watch) and `yarn typecheck:mobile:once` cover the app and UI workspace, including native tests.
 
 ##### Web checks and CI parity
 

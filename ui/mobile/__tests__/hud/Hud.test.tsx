@@ -10,12 +10,12 @@ import {
     ThemeName,
     themeSpecifications,
 } from "@ui";
-import { Panel } from "@the-dead-planet/nav-gauge-ui-mobile/src/hud/panel";
-import { HexagonalPanel } from "@the-dead-planet/nav-gauge-ui-mobile/src/hud/hexagonal-panel";
-import { OctagonalPanel } from "@the-dead-planet/nav-gauge-ui-mobile/src/hud/octagonal-panel";
-import { Octagon } from "@the-dead-planet/nav-gauge-ui-mobile/src/hud/octagon";
-import { NotchedPanel } from "@the-dead-planet/nav-gauge-ui-mobile/src/hud/notched-panel";
-import { Hexagon } from "@the-dead-planet/nav-gauge-ui-mobile/src/hud/hexagon";
+import { Panel } from "../../src/hud/panel";
+import { HexagonalPanel } from "../../src/hud/hexagonal-panel";
+import { OctagonalPanel } from "../../src/hud/octagonal-panel";
+import { Octagon } from "../../src/hud/octagon";
+import { NotchedPanel } from "../../src/hud/notched-panel";
+import { Hexagon } from "../../src/hud/hexagon";
 
 const surfaces: {
     name: string;
@@ -69,7 +69,7 @@ describe("HUD appearance ownership", () => {
             color: theme
                 .forMode("dark")
                 .resolveAppearance(
-                    "fill-inverse",
+                    "ghost",
                     "glitch",
                     "intel",
                     "active-pressed",
@@ -80,7 +80,7 @@ describe("HUD appearance ownership", () => {
             color: theme
                 .forMode("dark")
                 .resolveAppearance(
-                    "fill-inverse",
+                    "ghost",
                     "glitch",
                     "intel",
                     "disabled",

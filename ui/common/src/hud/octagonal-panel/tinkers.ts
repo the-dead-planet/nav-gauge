@@ -1,8 +1,9 @@
 import {
     DEFAULT_COLOR,
-    DEFAULT_FILL_VARIANT,
+    DEFAULT_SURFACE_VARIANT,
     DEFAULT_SIZE,
     sizeOptions,
+    surfaceVariantOptions,
 } from "../../design-system/tinkers";
 import { typographyStoryControls } from "../../design-system/typography";
 import { StoryControls } from "../../storybook";
@@ -14,7 +15,7 @@ export const octagonalPanelStoryArgs: OctagonalPanelProps = {
     themeMode: undefined,
     color: DEFAULT_COLOR,
     highlightColor: undefined,
-    variant: DEFAULT_FILL_VARIANT,
+    variant: DEFAULT_SURFACE_VARIANT,
     size: DEFAULT_SIZE,
     highlighted: false,
     disabled: false,
@@ -25,7 +26,10 @@ export const octagonalPanelStoryControls: StoryControls<OctagonalPanelProps> = {
     children: hudSurfaceStoryControls.children,
     color: hudSurfaceStoryControls.color,
     highlightColor: hudSurfaceStoryControls.highlightColor,
-    variant: hudSurfaceStoryControls.variant,
+    variant: {
+        control: "select",
+        options: surfaceVariantOptions,
+    },
     highlighted: hudSurfaceStoryControls.highlighted,
     disabled: hudSurfaceStoryControls.disabled,
     size: {

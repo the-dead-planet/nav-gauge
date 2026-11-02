@@ -3,7 +3,10 @@
     position: relative;
     display: grid;
     grid-template-columns: max-content max-content 1fr max-content max-content;
-    grid-template-rows: max-content max-content 1fr max-content max-content;
+    grid-template-rows: max-content max-content minmax(
+            0,
+            1fr
+        ) max-content max-content;
     grid-template-areas:
         "top-toolbar top-toolbar top-toolbar top-toolbar top-toolbar"
         "left-toolbar left-icons top-tools right-icons right-toolbar"
@@ -15,7 +18,7 @@
     box-sizing: border-box;
 }
 
-.machine>* {
+.machine > * {
     z-index: 0;
     max-width: 100dvw;
     box-sizing: border-box;
@@ -28,9 +31,9 @@
     z-index: 2;
 }
 
-.icons>*,
-.icons>*,
-.top-tools>* {
+.icons > *,
+.icons > *,
+.top-tools > * {
     pointer-events: auto;
 }
 
@@ -76,7 +79,9 @@
     box-sizing: border-box;
     z-index: 2;
 
-    --toolbar-background-color: rgb(from var(--appearance-default-surface) r g b / .87);
+    --toolbar-background-color: rgb(
+        from var(--appearance-default-surface) r g b / 0.87
+    );
 }
 
 .toolbar .content {
@@ -97,29 +102,50 @@
 
 .toolbar.left .content,
 .toolbar.right .content {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
     position: relative;
     height: 100%;
     overflow: hidden;
 }
 
-.toolbar.left .component,
-.toolbar.right .component {
-    overflow: auto;
-    max-height: 100%;
+.toolbar.left .component-container,
+.toolbar.right .component-container {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
 }
 
-.toolbar.left .component .component-header,
-.toolbar.right .component .component-header {
+.toolbar.left .component,
+.toolbar.right .component {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    overflow: auto;
+    padding: 6px 0;
+}
+
+.toolbar.left .component-header,
+.toolbar.right .component-header {
     display: flex;
     align-items: center;
+    flex-shrink: 0;
     box-sizing: border-box;
-    position: sticky;
-    top: 0;
     height: 32px;
-    margin-bottom: 15px;
-    background-color: rgb(from var(--appearance-default-surface) r g b / .87);
-    backdrop-filter: blur(2px);
+    padding-right: 10px;
+    box-sizing: border-box;
+    background-color: rgb(from var(--appearance-default-surface) r g b / 0.87);
     z-index: 1;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+    .toolbar.left .component,
+    .toolbar.right .component {
+        padding-right: 12px;
+    }
 }
 
 /* On isLessThanSm left and right toolbars are displayed combined in a secondary bottom toolbar */
@@ -130,14 +156,12 @@
 
 .toolbar.left {
     grid-area: left-toolbar;
-    border-right: 1px solid rgb(from var(--color-neutral) r g b / .4);
+    border-right: 1px solid rgb(from var(--color-neutral) r g b / 0.4);
     position: relative;
     transition: width 0.25s ease;
 }
 
 .toolbar.left .content {
-    display: grid;
-    grid-template-columns: max-content 1fr;
     box-shadow: var(--elevation-raised-right-shadow);
 }
 
@@ -149,14 +173,12 @@
 
 .toolbar.right {
     grid-area: right-toolbar;
-    border-left: 1px solid rgb(from var(--color-neutral) r g b / .4);
+    border-left: 1px solid rgb(from var(--color-neutral) r g b / 0.4);
     position: relative;
     transition: width 0.25s ease;
 }
 
 .toolbar.right .content {
-    display: grid;
-    grid-template-columns: max-content 1fr;
     box-shadow: var(--elevation-raised-left-shadow);
 }
 
@@ -210,12 +232,6 @@
     min-height: 0;
 }
 
-.toolbar.bottom-secondary .component-content {
-    overflow: auto;
-    flex: 1;
-    min-height: 0;
-}
-
 /* On isLessThanSm left and right toolbars are displayed combined in a secondary bottom toolbar */
 .placeholder-toolbar.bottom-secondary {
     grid-area: bottom-secondary-toolbar;
@@ -226,7 +242,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-
 }
 
 .toolbar.left .content-header {
@@ -312,4 +327,8 @@
     width: 100%;
     height: 8px;
     cursor: row-resize;
+}
+
+.flex-spacer {
+    flex: 1;
 }

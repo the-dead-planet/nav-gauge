@@ -5,8 +5,11 @@ import { Cartomancer, MapLayout, ToolPanelProps, useTranslate } from "@apparatus
 import { useWebMachineWard } from "@web-apparatus";
 import { useSubjectState } from "@tinker-chest";
 import styles from './controls.module.css';
+import classNames from "classnames";
 
-export const CartoConfigPanel: FC<ToolPanelProps<maplibregl.Map>> = () => {
+export const CartoConfigPanel: FC<ToolPanelProps<maplibregl.Map>> = ({
+    placement,
+}) => {
     const { cartomancer } = useWebMachineWard();
     const translate = useTranslate();
     const t = (key: string) => translate({ n: cartomancer.namespace, t: key });
@@ -29,7 +32,7 @@ export const CartoConfigPanel: FC<ToolPanelProps<maplibregl.Map>> = () => {
     }
 
     return (
-        <div className={styles['container']}>
+        <div className={classNames(styles['container'], styles[placement])}>
             <div className={styles['map-style-selection']}>
                 <Text
                     as="span"
@@ -45,7 +48,10 @@ export const CartoConfigPanel: FC<ToolPanelProps<maplibregl.Map>> = () => {
                     onChange={handleMapStyleChange}
                 />
             </div>
-            <Fieldset label={t(cartomancer.translationKey.CartoLayout)}>
+            <Fieldset
+                label={t(cartomancer.translationKey.CartoLayout)}
+                variant="outline"
+            >
                 <div className={styles["section"]}>
                     <Checkbox
                         id="map-size"
@@ -168,7 +174,10 @@ export const CartoConfigPanel: FC<ToolPanelProps<maplibregl.Map>> = () => {
                     />
                 </div>
             </Fieldset>
-            <Fieldset label={t(cartomancer.translationKey.GaugeControls)}>
+            <Fieldset
+                label={t(cartomancer.translationKey.GaugeControls)}
+                variant="outline"
+            >
                 <Checkbox
                     id="controls-globe-projection"
                     checked={globeProjection}

@@ -31,13 +31,20 @@ export const usePanelDimensions = <
                     : next,
             );
         };
-        const observer = new ResizeObserver(update);
+        let animationFrame = 0;
+        const observer = new ResizeObserver(() => {
+            cancelAnimationFrame(animationFrame);
+            animationFrame = requestAnimationFrame(update);
+        });
         observer.observe(container, { box: "border-box" });
         if (header) {
             observer.observe(header, { box: "border-box" });
         }
         update();
-        return () => observer.disconnect();
+        return () => {
+            observer.disconnect();
+            cancelAnimationFrame(animationFrame);
+        };
     }, [container, header, hasHeader]);
 
     return { containerRef, headerRef, ...dimensions };

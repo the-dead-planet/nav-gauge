@@ -2,7 +2,7 @@ import { ComponentProps, CSSProperties, FC } from "react";
 import classNames from "classnames";
 import {
     DEFAULT_COLOR,
-    DEFAULT_FILL_VARIANT,
+    DEFAULT_SURFACE_VARIANT,
     DEFAULT_SIZE,
     getOctagonalGeometry,
     OctagonalPanelProps,
@@ -27,7 +27,7 @@ export const OctagonalPanel: FC<
     themeMode,
     color = DEFAULT_COLOR,
     highlightColor = color,
-    variant = DEFAULT_FILL_VARIANT,
+    variant = DEFAULT_SURFACE_VARIANT,
     size = DEFAULT_SIZE,
     highlighted = false,
     disabled = false,
@@ -63,7 +63,13 @@ export const OctagonalPanel: FC<
                 highlightColor={highlightColor}
                 highlighted={highlighted}
                 disabled={disabled}
-                className={classNames(styles.root, surface.raised, className)}
+                className={classNames(
+                    {
+                        [surface.raised]:
+                            variant !== "ghost" && variant !== "inset",
+                    },
+                    className,
+                )}
             >
                 {ready ? (
                     <OctagonalSurface

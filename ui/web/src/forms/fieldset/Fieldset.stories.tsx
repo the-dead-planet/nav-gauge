@@ -1,132 +1,58 @@
-import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { useState } from 'react';
-import { Fieldset } from './Fieldset';
-import { Text } from '../../design-system/typography';
-import { ColorVariant, SizeVariant, DEFAULT_COLOR, DEFAULT_SIZE } from '@ui';
-import { colorOptions as allColors, fillVariantOptions as allVariants, sizeOptions as allSizes } from '../../storybook/controls';
+import type { Meta, StoryObj } from "storybook-react-rsbuild";
+import { makeLiveEditStory } from "storybook-addon-code-editor";
+import {
+    appearanceColorOptions,
+    fieldsetStoryArgs,
+    fieldsetStoryControls,
+    surfaceVariantOptions,
+} from "@ui";
+import { Fieldset } from "./Fieldset";
+import { VariantGallery } from "../../storybook/VariantGallery";
 
 const meta = {
-    title: 'Forms/Fieldset',
+    title: "Forms/Fieldset",
     component: Fieldset,
-    args: { label: 'Fieldset', color: DEFAULT_COLOR, size: 'sm', variant: 'fill-inverse', children: <Text>Fieldset content</Text> },
+    args: fieldsetStoryArgs,
+    argTypes: {
+        ...fieldsetStoryControls,
+        prepend: { control: false },
+        append: { control: false },
+        onExpandedChange: { control: false },
+    },
 } satisfies Meta<typeof Fieldset>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {
-    render: () => (
-        <Fieldset label="Default Fieldset">
-            <Text>This is a basic fieldset with no color prop.</Text>
-        </Fieldset>
-    ),
+    name: "Playground with Live code editor",
 };
 
-export const Gallery = {
-    render: () => (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, padding: 24 }}>
-            {allColors.map(color => (
-                <Fieldset key={color} label={color} color={color}>
-                    <Text>Bordered with {color} outline</Text>
-                </Fieldset>
-            ))}
-        </div>
-    ),
-};
+makeLiveEditStory(Playground, {
+    availableImports: { "@web-ui": { Fieldset } },
+    code: `import { Fieldset } from '@web-ui';
 
-export const Variants = {
-    render: () => (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, padding: 24 }}>
-            {allVariants.map(variant => (
-                <Fieldset key={variant} label={variant} color="neutral" variant={variant}>
-                    <Text>Neutral {variant} fieldset</Text>
-                </Fieldset>
-            ))}
-        </div>
-    ),
-};
+export default Fieldset;`,
+});
 
-export const Sizes = {
-    render: () => (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, padding: 24 }}>
-            {allSizes.map(size => (
-                <Fieldset key={size} label={`Size: ${size}`} size={size}>
-                    <Text>Content inside a {size} fieldset</Text>
-                </Fieldset>
-            ))}
-        </div>
-    ),
-};
-
-export const Expandable = {
-    render: () => {
-        const [expanded, setExpanded] = useState(true);
-
-        return (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 16, padding: 24, maxWidth: 320 }}>
+export const Gallery: Story = {
+    argTypes: {
+        color: { table: { disable: true } },
+        variant: { table: { disable: true } },
+    },
+    render: (args) => (
+        <VariantGallery
+            size={args.size}
+            colors={appearanceColorOptions}
+            variants={surfaceVariantOptions}
+            render={({ color, size, variant }) => (
                 <Fieldset
-                    label="Expandable"
-                    expandable
-                    expanded={expanded}
-                    onExpandedChange={setExpanded}
-                    color="primary"
-                >
-                    <Text>Toggle the legend to expand/collapse this section.</Text>
-                </Fieldset>
-
-                <Text>Expanded: {expanded ? 'Yes' : 'No'}</Text>
-            </div>
-        );
-    },
-};
-
-export const WithPrepend = {
-    render: () => (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, padding: 24 }}>
-            <Fieldset
-                label="With Icon"
-                prepend={<span style={{ fontSize: 16 }}>&#9881;</span>}
-                color="secondary"
-            >
-                <Text>Fieldset with a prepend icon element.</Text>
-            </Fieldset>
-        </div>
+                    {...args}
+                    color={color}
+                    size={size}
+                    variant={variant}
+                />
+            )}
+        />
     ),
-};
-
-export const Interactive = {
-    render: () => {
-        const [color, setColor] = useState<ColorVariant>(DEFAULT_COLOR);
-        const [size, setSize] = useState<SizeVariant>(DEFAULT_SIZE);
-
-        return (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 24, padding: 24, maxWidth: 320 }}>
-                <Fieldset label="Preview" color={color} size={size}>
-                    <Text>Current: color={color}, size={size}</Text>
-                </Fieldset>
-
-                <Fieldset label="Color">
-                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                        {allColors.map(c => (
-                            <label key={c}>
-                                <input type="radio" name="color" checked={color === c} onChange={() => setColor(c)} />
-                                {c}
-                            </label>
-                        ))}
-                    </div>
-                </Fieldset>
-
-                <Fieldset label="Size">
-                    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                        {allSizes.map(s => (
-                            <label key={s}>
-                                <input type="radio" name="size" checked={size === s} onChange={() => setSize(s)} />
-                                {s}
-                            </label>
-                        ))}
-                    </div>
-                </Fieldset>
-            </div>
-        );
-    },
 };

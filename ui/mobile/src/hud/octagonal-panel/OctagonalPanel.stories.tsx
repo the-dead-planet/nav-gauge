@@ -2,6 +2,7 @@ import { ComponentProps } from "react";
 import { StyleSheet } from "react-native";
 import {
     appearanceColorOptions,
+    surfaceVariantOptions,
     octagonalPanelStoryArgs,
     octagonalPanelStoryControls,
 } from "@ui";
@@ -28,6 +29,7 @@ const story: MobileStoryDefinition<ComponentProps<typeof OctagonalPanel>> = {
         <VariantGallery
             size={args.size}
             colors={appearanceColorOptions}
+            variants={surfaceVariantOptions}
             render={({ color, size, variant }) => (
                 <OctagonalPanel
                     {...args}

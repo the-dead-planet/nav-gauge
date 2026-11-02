@@ -1,135 +1,93 @@
-import { FC, useRef, useState } from "react";
-import { Animated, LayoutChangeEvent, StyleSheet, View } from "react-native";
-import { controlTextSpecifications, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, FieldsetProps } from "@ui";
-import { FieldsetHeaderContent } from "./FieldsetHeaderContent";
-import { FieldsetBevelOutline } from "./FieldsetBevelOutline";
+import { FC } from "react";
+import { StyleSheet, View } from "react-native";
+import {
+    DEFAULT_COLOR,
+    DEFAULT_SIZE,
+    DEFAULT_SURFACE_VARIANT,
+    FieldsetProps,
+    ThemeContext,
+    useFieldsetExpansion,
+    useTheme,
+} from "@ui";
+import { OctagonalPanel } from "../../hud/octagonal-panel";
 import { FieldsetHeader } from "./FieldsetHeader";
 
 const styles = StyleSheet.create({
-    container: {
-        position: 'relative',
-        overflow: 'hidden',
+    collapsed: {
+        display: "none",
     },
-    content: {
-        gap: 10,
-    }
 });
 
-const ANIMATION_DURATION = 250;
-
-const bevelBySize = { xs: 6, sm: 10, md: 20, lg: 26 } as const;
-
-const sizeMap = {
-    lg: { fontSize: 16, padding: 12 },
-    xs: { fontSize: controlTextSpecifications.xs.fontSize, padding: 6 },
-    sm: { fontSize: controlTextSpecifications.sm.fontSize, padding: 10 },
-    md: { fontSize: controlTextSpecifications.md.fontSize, padding: 10 },
-} as const;
-
-interface Props extends FieldsetProps {
-    expanded?: boolean;
-    onExpandedChange?: (expanded: boolean) => void;
-}
-
-export const Fieldset: FC<Props> = ({
+export const Fieldset: FC<FieldsetProps> = ({
     label,
     prepend,
     append,
     size = DEFAULT_SIZE,
-    color,
-    variant = DEFAULT_FILL_VARIANT,
+    color = DEFAULT_COLOR,
+    highlightColor,
+    themeMode,
+    variant = DEFAULT_SURFACE_VARIANT,
+    highlighted = false,
+    disabled = false,
     expandable = true,
-    expanded: controlledExpanded,
+    expanded,
     onExpandedChange,
     children,
 }) => {
-    const [internalExpanded, setInternalExpanded] = useState(true);
-    const isExpanded = controlledExpanded ?? internalExpanded;
+    const theme = useTheme().forMode(themeMode);
+    const controlSize = theme.sizes.control[size];
+    const { isExpanded, toggle } = useFieldsetExpansion({
+        expandable,
+        expanded,
+        onExpandedChange,
+        disabled,
+    });
 
-    const contentHeight = useRef(new Animated.Value(0)).current;
-    const [containerWidth, setContainerWidth] = useState(0);
-    const [containerHeight, setContainerHeight] = useState(0);
-    const [animating, setAnimating] = useState(false);
-    const pendingExpand = useRef(false);
-
-    const handleLayout = (event: LayoutChangeEvent) => {
-        const { width, height } = event.nativeEvent.layout;
-        setContainerWidth(width);
-
-        if (pendingExpand.current) {
-            pendingExpand.current = false;
-            contentHeight.setValue(height);
-            setAnimating(true);
-            contentHeight.setValue(0);
-            Animated.timing(contentHeight, {
-                toValue: height,
-                duration: ANIMATION_DURATION,
-                useNativeDriver: false,
-            }).start(() => setAnimating(false));
-        }
-
-        setContainerHeight(height);
-    };
-
-    const handleToggle = () => {
-        if (isExpanded) {
-            contentHeight.stopAnimation();
-            setAnimating(true);
-            contentHeight.setValue(containerHeight);
-            Animated.timing(contentHeight, {
-                toValue: 0,
-                duration: ANIMATION_DURATION,
-                useNativeDriver: false,
-            }).start(() => {
-                setAnimating(false);
-                onExpandedChange?.(false);
-                setInternalExpanded(false);
-            });
-        } else {
-            contentHeight.setValue(0);
-            onExpandedChange?.(true);
-            setInternalExpanded(true);
-            pendingExpand.current = true;
-        }
-    };
-
-    const { fontSize, padding } = sizeMap[size];
-    const effectiveBevel = containerWidth > 0
-        ? Math.min(bevelBySize[size], containerWidth / 2 - 1)
-        : bevelBySize[size];
     return (
-        <View style={styles.container} onLayout={handleLayout}>
-            <FieldsetBevelOutline
-                containerWidth={containerWidth}
-                containerHeight={containerHeight}
-                bevel={effectiveBevel}
-                color={color}
-                variant={variant}
-            />
-            <Animated.View
-                style={animating
-                    ? { height: contentHeight, overflow: 'hidden' }
-                    : undefined
-                }
-            >
-                <View style={{ paddingLeft: effectiveBevel, paddingRight: effectiveBevel, padding }}>
-                    <FieldsetHeader expandable={expandable} onToggle={handleToggle}>
-                        <FieldsetHeaderContent
-                            label={label}
-                            expandable={expandable}
-                            isExpanded={isExpanded}
-                            prepend={prepend}
-                            append={append}
-                            fontSize={fontSize}
-                        />
-                    </FieldsetHeader>
-                    {(!expandable || isExpanded) ? (
-                        <View style={styles.content}>
-                            {children}
-                        </View>
-                    ) : null}
-                </View>
-            </Animated.View>
-        </View>
+        <ThemeContext.Provider value={theme}>
+            <View>
+                <FieldsetHeader
+                    label={label}
+                    prepend={prepend}
+                    append={append}
+                    expandable={expandable}
+                    expanded={isExpanded}
+                    onToggle={toggle}
+                    color={color}
+                    highlightColor={highlightColor}
+                    size={size}
+                    highlighted={highlighted}
+                    disabled={disabled}
+                />
+                <OctagonalPanel
+                    themeMode={themeMode}
+                    color={color}
+                    highlightColor={highlightColor}
+                    variant={variant}
+                    size={size}
+                    highlighted={highlighted}
+                    disabled={disabled}
+                    style={{
+                        padding: controlSize.paddingInline,
+                        marginTop:
+                            -(controlSize.height - controlSize.iconSize) / 2,
+                    }}
+                >
+                    <View
+                        pointerEvents={disabled ? "none" : "auto"}
+                        accessibilityElementsHidden={!isExpanded}
+                        importantForAccessibility={
+                            isExpanded ? "auto" : "no-hide-descendants"
+                        }
+                        style={[
+                            !isExpanded && styles.collapsed,
+                            { gap: controlSize.gap },
+                        ]}
+                    >
+                        {children}
+                    </View>
+                </OctagonalPanel>
+            </View>
+        </ThemeContext.Provider>
     );
 };

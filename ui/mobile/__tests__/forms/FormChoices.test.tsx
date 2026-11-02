@@ -13,13 +13,13 @@ import {
     ThemeName,
     themeSpecifications,
 } from "@ui";
-import { Checkbox } from "@the-dead-planet/nav-gauge-ui-mobile/src/forms/checkbox";
-import { Radio } from "@the-dead-planet/nav-gauge-ui-mobile/src/forms/radio";
-import { Text } from "@the-dead-planet/nav-gauge-ui-mobile/src/design-system/typography";
-import { HexagonSurface } from "@the-dead-planet/nav-gauge-ui-mobile/src/hud/hexagon/HexagonSurface";
+import { Checkbox } from "../../src/forms/checkbox";
+import { Radio } from "../../src/forms/radio";
+import { Text } from "../../src/design-system/typography";
+import { HexagonSurface } from "../../src/hud/hexagon/HexagonSurface";
 
 jest.mock(
-    "@the-dead-planet/nav-gauge-ui-mobile/src/hud/hexagon/HexagonSurface",
+    "../../src/hud/hexagon/HexagonSurface",
     () => ({
         HexagonSurface: jest.fn(() => null),
     }),

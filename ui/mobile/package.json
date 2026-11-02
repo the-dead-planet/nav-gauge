@@ -7,19 +7,34 @@
     "scripts": {
         "build": "tsc -b",
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings -1",
-        "test": "mocha"
+        "test": "yarn test:unit && yarn test:native",
+        "test:unit": "mocha",
+        "test:native": "jest --runInBand",
+        "typecheck": "tsc --noEmit"
     },
     "dependencies": {
         "@the-dead-planet/nav-gauge-tinker-chest": "*",
         "@the-dead-planet/nav-gauge-ui-common": "*"
     },
     "devDependencies": {
+        "@babel/core": "^8.0.7",
+        "@jest/globals": "^30.5.2",
         "@maplibre/maplibre-react-native": "11.5.0",
         "@react-native-documents/picker": "^12.0.3",
+        "@react-native/babel-preset": "0.88.0",
+        "@react-native/jest-preset": "^0.88.0",
+        "@testing-library/react-native": "^14.1.0",
+        "@types/jest": "^30.0.0",
+        "@types/node": "^26.6.5",
+        "babel-jest": "^30.5.2",
+        "jest": "^30.5.2",
+        "mocha": "^12.0.3",
         "react": "19.3.1",
         "react-native": "0.88.0",
         "react-native-safe-area-context": "^5.10.1",
-        "react-native-svg": "^15.16.0"
+        "react-native-svg": "^15.16.0",
+        "test-renderer": "^1.3.1",
+        "typescript": "^7.0.2"
     },
     "peerDependencies": {
         "@maplibre/maplibre-react-native": "11.5.0",

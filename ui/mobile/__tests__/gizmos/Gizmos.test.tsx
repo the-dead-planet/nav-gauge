@@ -12,13 +12,13 @@ import {
     ThemeName,
     themeSpecifications,
 } from "@ui";
-import { Button } from "@the-dead-planet/nav-gauge-ui-mobile/src/gizmos/button";
-import { Chip } from "@the-dead-planet/nav-gauge-ui-mobile/src/gizmos/chip";
-import { ResizeHandle } from "@the-dead-planet/nav-gauge-ui-mobile/src/gizmos/resize-handle";
-import { ResizeHandleGrip } from "@the-dead-planet/nav-gauge-ui-mobile/src/gizmos/resize-handle/ResizeHandleGrip";
+import { Button } from "../../src/gizmos/button";
+import { Chip } from "../../src/gizmos/chip";
+import { ResizeHandle } from "../../src/gizmos/resize-handle";
+import { ResizeHandleGrip } from "../../src/gizmos/resize-handle/ResizeHandleGrip";
 
 jest.mock(
-    "@the-dead-planet/nav-gauge-ui-mobile/src/gizmos/resize-handle/ResizeHandleGrip",
+    "../../src/gizmos/resize-handle/ResizeHandleGrip",
     () => ({
         ResizeHandleGrip: jest.fn(() => null),
     }),

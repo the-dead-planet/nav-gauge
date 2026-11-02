@@ -11,7 +11,7 @@ import {
 import {
     GallerySizeContext,
     VariantGallery,
-} from '@the-dead-planet/nav-gauge-ui-mobile/src/storybook/VariantGallery';
+} from '../src/storybook/VariantGallery';
 
 it('renders a single gallery size and follows the drawer size context', async () => {
     const theme = new Theme(themeSpecifications[ThemeName.Default].light, {

@@ -15,20 +15,17 @@ import {
     actionButtonVariants,
     useTheme,
 } from '@ui';
-import { Dialog } from '@the-dead-planet/nav-gauge-ui-mobile/src/rigs/dialog';
-import { Button } from '@the-dead-planet/nav-gauge-ui-mobile/src/gizmos/button';
-import { Text } from '@the-dead-planet/nav-gauge-ui-mobile/src/design-system/typography';
-import { FileInput } from '@the-dead-planet/nav-gauge-ui-mobile/src/forms/file-input';
-import { Tabstrip } from '@the-dead-planet/nav-gauge-ui-mobile/src/rigs/tabstrip';
-import * as tabstripLayout from '@the-dead-planet/nav-gauge-ui-mobile/src/rigs/tabstrip/useTabstripLayout';
-import {
-    Menu,
-    MenuItem,
-} from '@the-dead-planet/nav-gauge-ui-mobile/src/rigs/menu';
-import { Icon } from '@the-dead-planet/nav-gauge-ui-mobile/src/design-system/icons';
+import { Dialog } from '../../src/rigs/dialog';
+import { Button } from '../../src/gizmos/button';
+import { Text } from '../../src/design-system/typography';
+import { FileInput } from '../../src/forms/file-input';
+import { Tabstrip } from '../../src/rigs/tabstrip';
+import * as tabstripLayout from '../../src/rigs/tabstrip/useTabstripLayout';
+import { Menu, MenuItem } from '../../src/rigs/menu';
+import { Icon } from '../../src/design-system/icons';
 
 jest.mock(
-    '@the-dead-planet/nav-gauge-ui-mobile/src/design-system/icons',
+    '../../src/design-system/icons',
     () => ({
         Icon: jest.fn(() => null),
     }),
@@ -41,7 +38,7 @@ jest.mock('react-native-safe-area-context', () => ({
 jest.mock('@react-native-documents/picker', () => ({ pick: jest.fn() }));
 
 jest.mock(
-    '@the-dead-planet/nav-gauge-ui-mobile/src/rigs/popup/usePopupPosition',
+    '../../src/rigs/popup/usePopupPosition',
     () => ({
         usePopupPosition: () => ({
             overlayRef: { current: null },

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "storybook-react-rsbuild";
 import { makeLiveEditStory } from "storybook-addon-code-editor";
 import {
     appearanceColorOptions,
-    fillVariantOptions,
+    surfaceVariantOptions,
     octagonalPanelStoryArgs,
     octagonalPanelStoryControls,
 } from "@ui";
@@ -36,7 +36,7 @@ export const Gallery: Story = {
         <VariantGallery
             size={args.size}
             colors={appearanceColorOptions}
-            variants={fillVariantOptions}
+            variants={surfaceVariantOptions}
             render={({ color, size, variant }) => (
                 <OctagonalPanel
                     {...args}
