@@ -517,7 +517,7 @@ describe('Composed appearance rendering', () => {
         }
     });
 
-    it('lets FileInput callers choose filename typography without changing its default', () => {
+    it('lets FileInput callers choose independent button and filename appearances', () => {
         const props: ComponentProps<typeof FileInput> = {
             accept: '*',
             color: 'primary',
@@ -537,13 +537,67 @@ describe('Composed appearance rendering', () => {
             fileNameProps: {
                 variant: 'ghost',
             },
+            fileUploadButtonProps: {
+                variant: 'fill',
+                color: 'intel',
+            },
+            purgeButtonProps: {
+                variant: 'outline',
+                color: 'secured',
+            },
         }));
         expect(defaultMarkup.match(/<label\b[^>]*>route\.gpx<\/label>/)?.[0])
             .to.include('data-appearance-variant="default"');
         const filename = ghostMarkup.match(/<label\b[^>]*>route\.gpx<\/label>/)?.[0];
         expect(filename).to.include('data-appearance-variant="ghost"');
         expect(filename).to.include('data-appearance-mode="light"');
+        const defaultButtons = defaultMarkup.match(/<button\b[^>]*>/g) ?? [];
+        expect(defaultButtons).to.have.length(2);
+        for (const button of defaultButtons) {
+            expect(button).to.include('data-appearance-variant="ghost"');
+        }
+        const buttons = ghostMarkup.match(/<button\b[^>]*>/g) ?? [];
+        expect(buttons[0]).to.include('data-appearance-variant="fill"');
+        expect(buttons[0]).to.include('data-appearance-color="intel"');
+        expect(buttons[1]).to.include('data-appearance-variant="outline"');
+        expect(buttons[1]).to.include('data-appearance-color="secured"');
         expect(ghostMarkup).not.to.include('fileNameProps=');
+        expect(ghostMarkup).not.to.include('fileUploadButtonProps=');
+        expect(ghostMarkup).not.to.include('purgeButtonProps=');
+    });
+
+    it('delegates FileInput appearance to its buttons and keeps an empty purge action disabled', () => {
+        const markup = renderToStaticMarkup(createElement(FileInput, {
+            accept: '*',
+            fileName: null,
+            fileLabel: 'Upload',
+            purgeLabel: 'Purge',
+            cancelLabel: 'Cancel',
+            noNameLabel: 'No file',
+            purgeText: 'Purge file?',
+            color: 'hazard',
+            highlightColor: 'intel',
+            variant: 'outline',
+            highlighted: true,
+            disabled: true,
+            fileUploadButtonProps: { disabled: false },
+            purgeButtonProps: { disabled: false },
+            size: 'lg',
+            onUpload: () => undefined,
+            onPurge: () => undefined,
+        }));
+        const buttons = markup.match(/<button\b[^>]*>/g) ?? [];
+        expect(buttons).to.have.length(2);
+        for (const button of buttons) {
+            expect(button).to.include('disabled=""');
+            expect(button).to.include('data-appearance-variant="outline"');
+            expect(button).to.include('data-appearance-color="hazard"');
+            expect(button).to.include('data-appearance-highlight="intel"');
+            expect(button).to.include('data-size="lg"');
+        }
+        expect(markup.match(/<input\b[^>]*>/)?.[0]).to.include('disabled=""');
+        expect(markup).not.to.include('highlightColor=');
+        expect(markup).not.to.include('onIsLoadingChange=');
     });
 
     it('renders one controlled gallery size, defaulting to DEFAULT_SIZE', () => {

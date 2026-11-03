@@ -8,10 +8,10 @@ import {
     ThemeContext,
     useTheme,
 } from "@ui";
-import { resolveElevationStyle } from "../../design-system/theme";
 import { HudContent } from "../HudContent";
 import { usePanelDimensions } from "../usePanelDimensions";
 import { OctagonalSurface } from "./OctagonalSurface";
+import { resolveElevationStyle } from "../../design-system/theme";
 
 const styles = StyleSheet.create({
     panel: {

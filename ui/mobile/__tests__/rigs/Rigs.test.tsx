@@ -1,6 +1,6 @@
 import { render, fireEvent } from '@testing-library/react-native';
-import { it } from '@jest/globals';
 import { Animated, StyleSheet } from 'react-native';
+import { pick } from '@react-native-documents/picker';
 import {
     Orientation,
     ColorShade,
@@ -97,9 +97,129 @@ describe('Mobile rig content', () => {
         const screen = await render(content());
         const ghostColor = theme.color('primary', 700);
         expect(screen.getByText('route.gpx')).toHaveStyle({ color: ghostColor });
+        expect(screen.getByText('route.gpx')).toHaveProp('numberOfLines', 1);
+        expect(screen.getByText('route.gpx')).toHaveProp('ellipsizeMode', 'middle');
+        expect(screen.getByText('route.gpx')).toHaveStyle({ flexGrow: 1, flexShrink: 1 });
+        expect(screen.getByText('route.gpx')).not.toHaveStyle({ flex: 1 });
         expect(jest.mocked(Icon).mock.lastCall?.[0].color).toBe(ghostColor);
         await screen.rerender(content(false));
         expect(screen.getByText('route.gpx')).toHaveStyle({ color: theme.color('primary', 900) });
+        await screen.unmount();
+        theme.destroy();
+    });
+
+    it('keeps FileInput labels independent of button interaction and disables both actions', async () => {
+        const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
+        const onPurge = jest.fn();
+        const content = (disabled = false, fileName: string | null = 'route.gpx') => (
+            <ThemeContext.Provider value={theme}>
+                <FileInput
+                    type={['public.item']}
+                    themeMode="light"
+                    color="hazard"
+                    highlightColor="intel"
+                    variant="outline"
+                    fileUploadButtonProps={{ variant: 'fill', color: 'secured', disabled: false }}
+                    purgeButtonProps={{ variant: 'ghost', color: 'intel', disabled: false }}
+                    purgeConfirmationDialogProps={{
+                        color: 'secured',
+                        themeMode: 'dark',
+                        variant: 'fill-translucent',
+                    }}
+                    fileName={fileName}
+                    fileLabel="Upload"
+                    purgeLabel="Purge"
+                    cancelLabel="Cancel"
+                    noNameLabel="No file"
+                    purgeText="Remove this file?"
+                    disabled={disabled}
+                    onUpload={() => undefined}
+                    onPurge={onPurge}
+                />
+            </ThemeContext.Provider>
+        );
+        const screen = await render(content());
+        expect(screen.getByRole('button', { name: 'Upload' })).toHaveStyle({
+            backgroundColor: theme.resolveAppearance('fill', 'secured').surface,
+        });
+        expect(screen.getByRole('button', { name: 'Purge' })).toHaveStyle({
+            backgroundColor: 'transparent',
+        });
+        await fireEvent(screen.getByRole('button', { name: 'Upload' }), 'pressIn');
+        expect(screen.getByText('route.gpx')).toHaveStyle({ color: theme.color('hazard', 900) });
+        await fireEvent.press(screen.getByRole('button', { name: 'Purge' }));
+        expect(screen.getByText('Remove this file?')).toHaveStyle({ color: theme.color('secured', 100) });
+        expect(screen.getByRole('header')).toHaveStyle({ color: theme.color('secured', 100) });
+        const confirmationPanel = screen.getAllByLabelText('Purge').find((element) => element.props.accessibilityViewIsModal);
+        expect(confirmationPanel).toHaveStyle({
+            backgroundColor: theme.forMode('dark').resolveAppearance('fill-translucent', 'secured').surface,
+        });
+        expect(onPurge).not.toHaveBeenCalled();
+        jest.mocked(Animated.timing).mockReturnValue({
+            start: jest.fn((callback?: (result: { finished: boolean }) => void) => callback?.({ finished: true })),
+            stop: jest.fn(),
+            reset: jest.fn(),
+        });
+        await fireEvent.press(screen.getByRole('button', { name: 'Cancel' }));
+        expect(screen.queryByText('Remove this file?')).toBeNull();
+        expect(onPurge).not.toHaveBeenCalled();
+        await fireEvent.press(screen.getByRole('button', { name: 'Purge' }));
+        await fireEvent.press(screen.getAllByRole('button', { name: 'Purge' })[1]);
+        expect(onPurge).toHaveBeenCalledTimes(1);
+        expect(screen.queryByText('Remove this file?')).toBeNull();
+        await screen.rerender(content(true));
+        expect(screen.getByRole('button', { name: 'Upload' })).toBeDisabled();
+        expect(screen.getByRole('button', { name: 'Purge' })).toBeDisabled();
+        expect(screen.getByText('route.gpx')).toHaveStyle({ color: theme.color('hazard', 300) });
+        await screen.rerender(content(false, null));
+        expect(screen.getByRole('button', { name: 'Upload' })).not.toBeDisabled();
+        expect(screen.getByRole('button', { name: 'Purge' })).toBeDisabled();
+        await screen.unmount();
+        theme.destroy();
+    });
+
+    it('reports FileInput upload loading and errors, then allows retrying', async () => {
+        const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
+        const error = new Error('Cannot read file');
+        const file = {
+            uri: 'file:///route.gpx',
+            name: 'route.gpx',
+            error: null,
+            type: null,
+            nativeType: null,
+            size: null,
+            isVirtual: false,
+            convertibleToMimeTypes: null,
+            hasRequestedType: true,
+        };
+        jest.mocked(pick).mockRejectedValueOnce(error).mockResolvedValueOnce([file]);
+        const onUpload = jest.fn();
+        const onError = jest.fn();
+        const onIsLoadingChange = jest.fn();
+        const screen = await render(
+            <ThemeContext.Provider value={theme}>
+                <FileInput
+                    type={['public.item']}
+                    fileName={null}
+                    fileLabel="Upload"
+                    purgeLabel="Purge"
+                    cancelLabel="Cancel"
+                    noNameLabel="No file"
+                    purgeText="Remove this file?"
+                    onUpload={onUpload}
+                    onPurge={() => undefined}
+                    onError={onError}
+                    onIsLoadingChange={onIsLoadingChange}
+                />
+            </ThemeContext.Provider>,
+        );
+        await fireEvent.press(screen.getByRole('button', { name: 'Upload' }));
+        expect(onError).toHaveBeenCalledWith(error);
+        expect(onUpload).not.toHaveBeenCalled();
+        expect(onIsLoadingChange.mock.calls).toEqual([[true], [false]]);
+        await fireEvent.press(screen.getByRole('button', { name: 'Upload' }));
+        expect(onUpload).toHaveBeenCalledWith([file]);
+        expect(onIsLoadingChange.mock.calls).toEqual([[true], [false], [true], [false]]);
         await screen.unmount();
         theme.destroy();
     });
@@ -323,13 +443,9 @@ describe('Mobile rig content', () => {
                         </Dialog>
                     </ThemeContext.Provider>,
                 );
-                const shade =
-                    variant === 'fill'
-                        ? theme.contrastShade('primary', 500)
-                        : 100;
-                const glyphs = theme.color('primary', shade);
+                const glyphs = theme.resolveAppearance(variant, 'primary').glyphs;
                 expect(screen.getByRole('button', { name: 'Close' })).toHaveStyle({
-                    backgroundColor: theme.forMode('dark').resolveAppearance(
+                    backgroundColor: theme.resolveAppearance(
                         actionButtonVariants[variant].inactive,
                         'primary',
                     ).surface,
@@ -341,7 +457,7 @@ describe('Mobile rig content', () => {
                     color: glyphs,
                 });
                 expect(screen.getByText(`Child theme: ${mode}`)).toBeTruthy();
-                if (variant === 'fill-translucent') {
+                if (variant === 'fill-translucent' && mode === 'dark') {
                     expect(screen.getByRole('header')).toHaveStyle({
                         textShadowColor: theme.color('primary', 800),
                         textShadowRadius: 1,
@@ -356,6 +472,86 @@ describe('Mobile rig content', () => {
                 }
                 await screen.unmount();
             }
+            theme.destroy();
+        },
+    );
+
+    it.each<ThemeMode>(['light', 'dark'])(
+        'overrides the dialog frame and content with explicit %s mode',
+        async (mode) => {
+            const theme = new Theme(
+                themeSpecifications[ThemeName.Default][mode === 'light' ? 'dark' : 'light'],
+                media,
+                false,
+            );
+            const dialogTheme = theme.forMode(mode);
+            for (const variant of fillVariantOptions) {
+                const screen = await render(
+                    <ThemeContext.Provider value={theme}>
+                        <Dialog
+                            themeMode={mode}
+                            variant={variant}
+                            color="intel"
+                            header="Themed dialog"
+                            closeText="Close"
+                            onClose={() => undefined}
+                        >
+                            Bare dialog text
+                            <ChildThemeLabel />
+                        </Dialog>
+                    </ThemeContext.Provider>,
+                );
+                const appearance = dialogTheme.resolveAppearance(variant, 'intel');
+                expect(screen.getByLabelText('Themed dialog')).toHaveStyle({ backgroundColor: appearance.surface });
+                expect(screen.getByRole('header')).toHaveStyle({ color: appearance.glyphs });
+                expect(screen.getByText('Bare dialog text')).toHaveStyle({ color: appearance.glyphs });
+                expect(screen.getByText(`Child theme: ${mode}`)).toBeTruthy();
+                expect(screen.getByRole('button', { name: 'Close' })).toHaveStyle({
+                    backgroundColor: dialogTheme.resolveAppearance(actionButtonVariants[variant].inactive, 'intel').surface,
+                });
+                await screen.unmount();
+            }
+            theme.destroy();
+        },
+    );
+
+    it.each<ThemeMode>(['light', 'dark'])(
+        'can disable the neutral dialog backdrop in %s mode without removing the dialog',
+        async (mode) => {
+            const theme = new Theme(
+                themeSpecifications[ThemeName.Default][mode === 'light' ? 'dark' : 'light'],
+                media,
+                false,
+            );
+            const interpolate = jest.spyOn(Animated.Value.prototype, 'interpolate');
+            const content = (backdrop?: boolean) => (
+                <ThemeContext.Provider value={theme}>
+                    <Dialog
+                        themeMode={mode}
+                        backdrop={backdrop}
+                        variant="fill-translucent"
+                        header="Themed backdrop"
+                        closeText="Close"
+                        onClose={() => undefined}
+                    >
+                        Dialog content
+                    </Dialog>
+                </ThemeContext.Provider>
+            );
+            const shade = mode === 'light' ? 100 : 900;
+            const backdropInterpolation = {
+                inputRange: [0, 1],
+                outputRange: [theme.color('neutral', shade, 0), theme.color('neutral', shade, 0.6)],
+            };
+            const screen = await render(content());
+            expect(interpolate).toHaveBeenCalledWith(backdropInterpolation);
+            interpolate.mockClear();
+            await screen.rerender(content(false));
+            expect(interpolate).not.toHaveBeenCalledWith(backdropInterpolation);
+            expect(screen.getByLabelText('Themed backdrop')).toBeTruthy();
+            expect(screen.getByText('Dialog content')).toBeTruthy();
+            expect(screen.getByRole('button', { name: 'Close' })).toBeTruthy();
+            await screen.unmount();
             theme.destroy();
         },
     );

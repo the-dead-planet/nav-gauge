@@ -54,6 +54,8 @@ Theme colors can use any of the available <a href="./?path=/docs/design-system-c
 
 ### Elevation specifications
 
+Mobile shadows follow the rendered shape on Android 12+ using alpha-mask drop shadows. Android 9–11 uses box shadows; older Android versions and iOS use native shadow properties. Every renderer uses the shared elevation metrics rather than Android's ambient elevation shadow when supported.
+
 <table>
     <thead>
         <tr>
@@ -62,7 +64,7 @@ Theme colors can use any of the available <a href="./?path=/docs/design-system-c
             <th>Blur</th>
             <th>Opacity</th>
             <th>Native shadow radius</th>
-            <th>Native depth</th>
+            <th>Legacy Android depth</th>
             <th>Box shadow (down)</th>
         </tr>
     </thead>

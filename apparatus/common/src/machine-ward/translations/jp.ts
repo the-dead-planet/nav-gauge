@@ -8,6 +8,7 @@ const jp: TranslationTable<MachineTranslationKey>['jp'] = {
     legal: '法的情報',
     privacy: 'プライバシー',
     close: '閉じる',
+    cancel: 'キャンセル',
     save: '保存',
     on: 'オン',
     off: 'オフ',

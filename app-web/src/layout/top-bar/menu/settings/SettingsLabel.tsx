@@ -1,6 +1,7 @@
 import { FC, ReactNode } from "react";
 import { Text } from "@web-ui";
-import styles from './settings-dialog.module.css';
+import { useTheme } from "@ui";
+import styles from "./settings-dialog.module.css";
 
 interface Props {
     id: string;
@@ -8,16 +9,16 @@ interface Props {
 }
 
 export const SettingsLabel: FC<Props> = ({ id, children }) => {
+    const theme = useTheme();
     return (
         <Text
             as="span"
             usage="caption"
             id={id}
             color="primary"
-            shade={100}
-            shadow
+            shadow={theme.isDark}
             uppercase
-            className={styles['label']}
+            className={styles["label"]}
         >
             {children}
         </Text>

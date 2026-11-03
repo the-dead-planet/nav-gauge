@@ -2,14 +2,18 @@
     position: fixed;
     inset: 0;
     overflow: hidden;
-    background: rgba(0, 0, 0, 0.6);
+    background-color: transparent;
     animation: overlay-in 200ms ease-out;
     transition: background-color 200ms ease-in;
     z-index: var(--layer-dialog-z-index);
 }
 
-.overlay-out {
-    background-color: transparent;
+.overlay[data-backdrop='true'] {
+    background-color: color-mix(
+        in srgb,
+        light-dark(var(--color-neutral-100), var(--color-neutral-900)) 60%,
+        transparent
+    );
 }
 
 @keyframes overlay-in {

@@ -19,9 +19,9 @@ import {
     ThemeContext,
     useTheme,
 } from "@ui";
-import { resolveElevationStyle } from "../../design-system/theme";
 import { HudContent } from "../HudContent";
 import { HudGlow } from "../HudGlow";
+import { resolveElevationStyle } from "../../design-system/theme";
 import { useHudInteraction } from "../useHudInteraction";
 import { usePanelDimensions } from "../usePanelDimensions";
 

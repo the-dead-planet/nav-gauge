@@ -9,6 +9,8 @@ import { MobileRouteStoryProps } from "../model";
 
 const styles = StyleSheet.create({
     panel: {
+        flexShrink: 1,
+        minWidth: 0,
         marginTop: 6,
         height: 40,
         paddingHorizontal: 16,
@@ -56,16 +58,25 @@ export const RouteName: FC<TopToolsProps<MobileMap> & MobileRouteStoryProps> = (
             <FileInput
                 themeMode={mapThemeMode}
                 mutiple
-                fileIcon={(routeName ? Icons.NounProject.ReplaceFile : Icons.NounProject.Upload) as unknown as string}
+                fileIcon={routeName ? Icons.NounProject.ReplaceFile : Icons.NounProject.Upload}
                 fileName={routeName}
                 fileNameProps={{ variant: 'ghost' }}
+                fileUploadButtonProps={{
+                    variant: 'fill',
+                    corners: 'circle',
+                }}
+                purgeButtonProps={{ corners: 'circle' }}
+                purgeConfirmationDialogProps={{
+                    variant: 'fill-translucent',
+                }}
                 fileLabel={fileLabel}
-                fileTooltipPlacement="bottom"
+                fileTooltipPlacement="top"
                 purgeLabel={purgeLabel}
-                purgeTooltipPlacement="bottom"
+                purgeTooltipPlacement="top"
                 cancelLabel={cancelLabel}
                 noNameLabel={noNameLabel}
                 color="primary"
+                variant="ghost"
                 type={acceptedFileTypes}
                 purgeText={purgeStoryText}
                 onUpload={(files) => fileOperator.uploadFile(files, map)}
@@ -83,7 +94,7 @@ export const RouteName: FC<TopToolsProps<MobileMap> & MobileRouteStoryProps> = (
                                 onPress={() => fitBoundsHandler(map, data$.value.boundingBox)}
                                 accessibilityLabel={fitBoundsLabel}
                                 tooltip={fitBoundsLabel}
-                                tooltipPlacement="bottom"
+                                tooltipPlacement="top"
                                 showTooltipConnection
                                 disabled={!geojson}
                             />

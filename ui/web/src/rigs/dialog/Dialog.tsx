@@ -22,6 +22,8 @@ import styles from './dialog.module.css';
 import { useDialog } from './useDialog';
 
 export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
+    themeMode,
+    backdrop = true,
     header,
     color = DEFAULT_COLOR,
     variant = DEFAULT_FILL_VARIANT,
@@ -35,8 +37,7 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
 }) => {
     const { render, close, dialogRef, onKeyDown } = useDialog();
     const headerId = useId();
-    const theme = useTheme();
-    const dialogTheme = theme.forMode('dark');
+    const theme = useTheme().forMode(themeMode);
     const [media] = useSubjectState(theme.media$);
     const slide: { [key in DialogPlacement]: TransitionProps['slide'] } = {
         ['middle']: 'to-bottom',
@@ -51,9 +52,9 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
             role="dialog"
             aria-modal="true"
             aria-labelledby={headerId}
-            className={classNames(styles['overlay'], {
-                [styles['overlay-out']]: !render,
-            })}
+            className={styles['overlay']}
+            data-appearance-mode={theme.mode}
+            data-backdrop={(backdrop && render) || undefined}
             onKeyDown={onKeyDown}
         >
             <Transition
@@ -70,7 +71,7 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
                     )}
                     {...props}
                 >
-                    <ThemeContext.Provider value={dialogTheme}>
+                    <ThemeContext.Provider value={theme}>
                         <HudSurface
                             as="div"
                             rectangle
@@ -87,19 +88,17 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
                                 uppercase
                                 fontWeight={500}
                                 color={color}
-                                shadow={variant === 'fill-translucent'}
+                                shadow={variant === 'fill-translucent' && theme.mode === "dark"}
                                 className={styles['header']}
                             >
                                 {header}
                             </H3>
-                            <ThemeContext.Provider value={theme}>
-                                <div
-                                    className={styles['content']}
-                                    data-appearance-mode={theme.mode}
-                                >
-                                    {children}
-                                </div>
-                            </ThemeContext.Provider>
+                            <div
+                                className={styles['content']}
+                                data-appearance-mode={theme.mode}
+                            >
+                                {children}
+                            </div>
                             <div className={styles['footer']}>
                                 <Button
                                     variant={

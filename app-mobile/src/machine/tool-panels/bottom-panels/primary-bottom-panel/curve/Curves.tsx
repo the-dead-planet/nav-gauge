@@ -4,7 +4,7 @@ import { CurveLeft } from "./CurveLeft";
 import { CurveMiddle } from "./CurveMiddle";
 import { CurveRight } from "./CurveRight";
 import { useTheme } from "@ui";
-import { resolveElevationFilter, resolveElevationStyle } from "@mobile-ui";
+import { resolveElevationFilter } from "@mobile-ui";
 
 const styles = StyleSheet.create({
     curves: {
@@ -27,7 +27,6 @@ export const Curves: FC = () => {
                 filter: [{
                     dropShadow: resolveElevationFilter(theme, 'raised', 'up'),
                 }],
-                ...resolveElevationStyle(theme, 'raised', 'up'),
             },
         ]}>
             <CurveLeft />

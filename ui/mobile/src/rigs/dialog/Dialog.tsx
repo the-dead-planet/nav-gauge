@@ -98,6 +98,8 @@ interface Props extends DialogProps {
 }
 
 export const Dialog: FC<Props> = ({
+    themeMode,
+    backdrop = true,
     header,
     color = DEFAULT_COLOR,
     variant = DEFAULT_FILL_VARIANT,
@@ -113,15 +115,15 @@ export const Dialog: FC<Props> = ({
         close: handleClose,
         overlayOpacity,
     } = useDialogTransition();
-    const theme = useTheme();
-    const dialogTheme = theme.forMode('dark');
+    const theme = useTheme().forMode(themeMode);
     const insets = useSafeAreaInsets();
     const [media] = useSubjectState(theme.media$);
     const isWide = !media.isLessThanSm;
     const drawerTop =
         media.windowHeight <= 500 ? 0 : Math.min(media.windowHeight * 0.06, 64);
-    const appearance = dialogTheme.resolveAppearance(variant, color);
+    const appearance = theme.resolveAppearance(variant, color);
     const actionVariants = actionButtonVariants[variant];
+    const backdropShade = theme.mode === 'light' ? 100 : 900;
 
     return (
         <Modal
@@ -142,13 +144,19 @@ export const Dialog: FC<Props> = ({
                         paddingLeft: insets.left,
                     },
                     {
-                        backgroundColor: overlayOpacity.interpolate({
-                            inputRange: [0, 1],
-                            outputRange: [
-                                'rgba(0, 0, 0, 0)',
-                                'rgba(0, 0, 0, .6)',
-                            ],
-                        }),
+                        backgroundColor: backdrop
+                            ? overlayOpacity.interpolate({
+                                inputRange: [0, 1],
+                                outputRange: [
+                                    theme.color('neutral', backdropShade, 0),
+                                    theme.color(
+                                        'neutral',
+                                        backdropShade,
+                                        0.6,
+                                    ),
+                                ],
+                            })
+                            : 'transparent',
                     },
                 ]}
             >
@@ -160,13 +168,13 @@ export const Dialog: FC<Props> = ({
                     style={
                         isWide
                             ? [
-                                  placementStyles[placement],
-                                  placement !== 'middle' && { top: drawerTop },
-                              ]
+                                placementStyles[placement],
+                                placement !== 'middle' && { top: drawerTop },
+                            ]
                             : styles.fullWidth
                     }
                 >
-                    <ThemeContext.Provider value={dialogTheme}>
+                    <ThemeContext.Provider value={theme}>
                         <Panel
                             variant={variant}
                             color={color}
@@ -180,8 +188,8 @@ export const Dialog: FC<Props> = ({
                                     placement === 'left-drawer' && isWide
                                         ? 'right'
                                         : placement === 'right-drawer' && isWide
-                                          ? 'left'
-                                          : 'down',
+                                            ? 'left'
+                                            : 'down',
                                 ),
                                 !isWide && styles.panelFullWidth,
                                 style,
@@ -194,7 +202,7 @@ export const Dialog: FC<Props> = ({
                                     accessibilityRole="header"
                                     fontWeight={500}
                                     color={color}
-                                    shadow={variant === 'fill-translucent'}
+                                    shadow={variant === 'fill-translucent' && theme.mode === "dark"}
                                     style={[
                                         styles.headerText,
                                         { color: appearance.glyphs },
@@ -203,13 +211,11 @@ export const Dialog: FC<Props> = ({
                                     {header}
                                 </Text>
                             </View>
-                            <ThemeContext.Provider value={theme}>
-                                <ScrollView style={styles.content}>
-                                    <HudContent appearance={appearance}>
-                                        {children}
-                                    </HudContent>
-                                </ScrollView>
-                            </ThemeContext.Provider>
+                            <ScrollView style={styles.content}>
+                                <HudContent appearance={appearance}>
+                                    {children}
+                                </HudContent>
+                            </ScrollView>
                             <View style={styles.footer}>
                                 <View style={styles.buttonCell}>
                                     <Button

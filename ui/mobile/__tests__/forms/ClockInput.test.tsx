@@ -1,5 +1,4 @@
 import { fireEvent, render } from "@testing-library/react-native";
-import { test } from "@jest/globals";
 import { PanResponder, StyleSheet } from "react-native";
 import {
     Orientation,
