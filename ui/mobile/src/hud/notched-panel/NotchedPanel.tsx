@@ -17,7 +17,7 @@ import {
 } from "@ui";
 import { HudContent } from "../HudContent";
 import { HudGlow } from "../HudGlow";
-import { HudShadow } from "../HudShadow";
+import { resolveElevationStyle } from "../../design-system/theme";
 import { useHudInteraction } from "../useHudInteraction";
 import { usePanelDimensions } from "../usePanelDimensions";
 
@@ -96,7 +96,7 @@ export const NotchedPanel: FC<NotchedPanelProps & Props> = ({
     const showGlow =
         activeGlow !== "none" &&
         (state === "active-pressed" || state === "hover-focus");
-    const panelStyle = [styles.panel, style];
+    const panelStyle = [styles.panel, resolveElevationStyle(theme, "raised", "down"), style];
     const handleLayout: NonNullable<PressableProps["onLayout"]> = (event) => {
         dimensions.onLayout(event);
         onLayout?.(event);
@@ -105,12 +105,6 @@ export const NotchedPanel: FC<NotchedPanelProps & Props> = ({
         <>
             {width > 0 && height > 0 ? (
                 <>
-                    <HudShadow
-                        width={width}
-                        height={height}
-                        points={bodyPoints}
-                        elevation={theme.elevation("raised", "down")}
-                    />
                     <Svg
                         viewBox={`0 0 ${width} ${height}`}
                         style={StyleSheet.absoluteFill}

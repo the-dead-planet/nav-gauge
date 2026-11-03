@@ -15,14 +15,10 @@ import {
     DEFAULT_SIZE,
     getOctagonalGeometry,
     OctagonalSurfaceProps,
-    ResolvedThemeElevation,
 } from "@ui";
 import { HudGlow } from "../HudGlow";
-import { HudShadow } from "../HudShadow";
 
-export const OctagonalSurface: FC<
-    OctagonalSurfaceProps & { elevation?: ResolvedThemeElevation }
-> = ({
+export const OctagonalSurface: FC<OctagonalSurfaceProps> = ({
     width,
     height,
     size = DEFAULT_SIZE,
@@ -30,7 +26,6 @@ export const OctagonalSurface: FC<
     regular = false,
     strokeWidth,
     showGlow = false,
-    elevation,
 }) => {
     const insetFilterId = useId();
     const borderWidth = appearance.border.width * Math.max(0, strokeWidth ?? 1);
@@ -43,14 +38,6 @@ export const OctagonalSurface: FC<
     );
     return (
         <>
-            {elevation ? (
-                <HudShadow
-                    width={width}
-                    height={height}
-                    points={points}
-                    elevation={elevation}
-                />
-            ) : null}
             <Svg
                 viewBox={`0 0 ${width} ${height}`}
                 width={width}

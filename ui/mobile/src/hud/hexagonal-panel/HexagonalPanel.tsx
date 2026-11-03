@@ -21,7 +21,7 @@ import {
 } from "@ui";
 import { HudContent } from "../HudContent";
 import { HudGlow } from "../HudGlow";
-import { HudShadow } from "../HudShadow";
+import { resolveElevationStyle } from "../../design-system/theme";
 import { useHudInteraction } from "../useHudInteraction";
 import { usePanelDimensions } from "../usePanelDimensions";
 
@@ -90,6 +90,7 @@ export const HexagonalPanel: FC<HexagonalPanelProps & Props> = ({
         (state === "active-pressed" || state === "hover-focus");
     const panelStyle: StyleProp<ViewStyle> = [
         styles.panel,
+        resolveElevationStyle(theme, "raised", "down"),
         {
             outlineStyle: "solid",
             outlineColor: appearance.effects.glowColor,
@@ -106,12 +107,6 @@ export const HexagonalPanel: FC<HexagonalPanelProps & Props> = ({
         <>
             {width > 0 && height > 0 ? (
                 <>
-                    <HudShadow
-                        width={width}
-                        height={height}
-                        points={points}
-                        elevation={theme.elevation("raised", "down")}
-                    />
                     <Svg
                         viewBox={`0 0 ${width} ${height}`}
                         style={StyleSheet.absoluteFill}

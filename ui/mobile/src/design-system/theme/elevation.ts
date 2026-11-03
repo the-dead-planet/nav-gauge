@@ -35,14 +35,35 @@ export const resolveElevationStyle = (
 };
 
 const elevationStyle = (elevation: ResolvedThemeElevation): ViewStyle => {
-    if (Platform.OS === 'android' && Number(Platform.Version) < 28) {
+    if (elevation.opacity === 0) {
+        return {};
+    }
+    if (Platform.OS === 'android' && Number(Platform.Version) >= 31) {
         return {
-            shadowColor: elevation.color,
-            elevation: elevation.depth,
+            filter: [{
+                dropShadow: {
+                    offsetX: elevation.offset.x,
+                    offsetY: elevation.offset.y,
+                    standardDeviation: elevation.blur / 2,
+                    color: `rgba(0, 0, 0, ${elevation.opacity})`,
+                },
+            }],
+        };
+    }
+    if (Platform.OS === 'android' && Number(Platform.Version) >= 28) {
+        return {
+            boxShadow: `${elevation.offset.x}px ${elevation.offset.y}px ${elevation.blur}px rgba(0, 0, 0, ${elevation.opacity})`,
         };
     }
     return {
-        boxShadow: `${elevation.offset.x}px ${elevation.offset.y}px ${elevation.blur}px rgba(0, 0, 0, ${elevation.opacity})`,
+        shadowColor: elevation.color,
+        shadowOffset: {
+            width: elevation.offset.x,
+            height: elevation.offset.y,
+        },
+        shadowOpacity: elevation.opacity,
+        shadowRadius: elevation.blur / 2,
+        elevation: elevation.depth,
     };
 };
 
