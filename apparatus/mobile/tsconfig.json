@@ -16,5 +16,11 @@
                 "../../ui/mobile/src"
             ]
         }
-    }
+    },
+    "include": [
+        "src/**/*",
+        "__tests__/**/*",
+        "../../ui/mobile/types/**/*",
+        "../../types/**/*"
+    ]
 }
