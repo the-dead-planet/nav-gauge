@@ -1,35 +1,69 @@
 import { ComponentType, FC, Fragment } from "react";
-import { Alert, StyleSheet, View, ViewProps } from "react-native";
-import { DocumentPickerOptions, DocumentPickerResponse, pick } from '@react-native-documents/picker';
-import { Button } from "../../gizmos/button";
-import { Text } from "../../design-system/typography";
-import { FileInputProps, Icons } from "@ui";
+import { StyleSheet, View, ViewProps } from "react-native";
 import { SvgProps } from "react-native-svg";
+import {
+    DocumentPickerOptions,
+    DocumentPickerResponse,
+} from "@react-native-documents/picker";
+import { Button } from "../../gizmos/button";
+import { Label, Text } from "../../design-system/typography";
+import { Dialog } from "../../rigs/dialog";
+import {
+    ButtonProps,
+    DEFAULT_COLOR,
+    DEFAULT_SIZE,
+    DEFAULT_SURFACE_VARIANT,
+    FileInputProps,
+    Icons,
+    ThemeContext,
+    useTheme,
+} from "@ui";
+import { useFileInput } from "./useFileInput";
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 8,
+        flexDirection: "row",
+        alignItems: "center",
+        minWidth: 0,
+        maxWidth: "100%",
     },
-    routeName: {
-        maxWidth: 100,
-        overflow: 'hidden',
+    fileName: {
+        flexGrow: 1,
+        flexShrink: 1,
+        minWidth: 0,
+        overflow: "hidden",
     },
 });
 
-interface Props extends FileInputProps<DocumentPickerResponse> {
-    type: DocumentPickerOptions['type'];
+interface Props extends Omit<
+    FileInputProps<DocumentPickerResponse>,
+    "fileIcon"
+> {
+    fileIcon?: string | ComponentType<SvgProps>;
+    type: DocumentPickerOptions["type"];
 }
 
 export const FileInput: FC<Props & ViewProps> = ({
     themeMode,
-    color,
+    color = DEFAULT_COLOR,
+    variant = DEFAULT_SURFACE_VARIANT,
+    size = DEFAULT_SIZE,
+    highlightColor,
+    glyphsShade,
+    highlightGlyphsShade,
+    highlighted,
+    disabled: disabledProp,
     fileIcon = Icons.NounProject.Upload,
     fileName,
     fileNameProps,
+    fileUploadButtonProps,
+    purgeButtonProps,
+    purgeConfirmationDialogProps,
     fileLabel,
     purgeLabel,
+    purgeText,
+    fileTooltipPlacement,
+    purgeTooltipPlacement,
     cancelLabel,
     noNameLabel,
     type,
@@ -42,69 +76,106 @@ export const FileInput: FC<Props & ViewProps> = ({
     style,
     ...props
 }) => {
-    const handleUpload = async () => {
-        onIsLoadingChange?.(true);
-
-        try {
-            const files = await pick({
-                mode: 'open',
-                type,
-                allowMultiSelection: mutiple,
-            });
-            await onUpload(files);
-        } catch (err) {
-            onError?.(err as Error);
-        } finally {
-            onIsLoadingChange?.(false);
-        }
-    };
-
-    const handlePurge = () => {
-        Alert.alert(
-            purgeLabel,
-            'Are you sure you want to purge all story data? This will remove the route and images and cannot be undone.',
-            [
-                { text: cancelLabel, style: 'cancel' },
-                {
-                    text: purgeLabel,
-                    style: 'destructive',
-                    onPress: onPurge,
-                },
-            ],
-        );
+    const theme = useTheme().forMode(themeMode);
+    const {
+        disabled,
+        handleUpload,
+        showPurgeDialog,
+        setShowPurgeDialog,
+        confirmPurge,
+    } = useFileInput({
+        fileName,
+        fileLabel,
+        purgeLabel,
+        cancelLabel,
+        noNameLabel,
+        purgeText,
+        type,
+        mutiple,
+        disabled: disabledProp,
+        onUpload,
+        onPurge,
+        onError,
+        onIsLoadingChange,
+    });
+    const buttonAppearance: Partial<ButtonProps> = {
+        color,
+        variant,
+        size,
+        highlightColor,
+        glyphsShade,
+        highlightGlyphsShade,
+        highlighted,
+        disabled,
     };
 
     return (
-        <View style={[styles.container, style]} {...props}>
-            <Button
-                themeMode={themeMode}
-                icon={fileIcon as unknown as ComponentType<SvgProps>}
-                color={color}
-                variant="fill"
-                corners="circle"
-                size="xs"
-                tooltip={fileLabel}
-                onPress={handleUpload}
-            />
-            <Text
-                themeMode={themeMode}
-                color={color}
-                {...fileNameProps}
-                style={styles.routeName}
+        <ThemeContext.Provider value={theme}>
+            <View
+                style={[
+                    styles.container,
+                    { gap: theme.sizes.control[size].gap },
+                    style,
+                ]}
+                {...props}
             >
-                {fileName || noNameLabel}
-            </Text>
-            {actionButtons?.map(({ id, element }) => <Fragment key={id}>{element}</Fragment>)}
-            <Button
-                themeMode={themeMode}
-                icon={Icons.NounProject.Clear}
-                color={color}
-                variant="ghost"
-                corners="circle"
-                size="sm"
-                tooltip={purgeLabel}
-                onPress={handlePurge}
-            />
-        </View>
+                <Button
+                    {...buttonAppearance}
+                    icon={fileIcon as ComponentType<SvgProps>}
+                    accessibilityLabel={fileLabel}
+                    tooltip={fileLabel}
+                    tooltipPlacement={fileTooltipPlacement}
+                    {...fileUploadButtonProps}
+                    disabled={disabled || fileUploadButtonProps?.disabled}
+                    onPress={handleUpload}
+                />
+                <Label
+                    color={color}
+                    highlightColor={highlightColor}
+                    shade={glyphsShade}
+                    highlightShade={highlightGlyphsShade}
+                    highlighted={highlighted}
+                    {...fileNameProps}
+                    disabled={disabled || fileNameProps?.disabled}
+                    numberOfLines={1}
+                    ellipsizeMode="middle"
+                    style={styles.fileName}
+                >
+                    {fileName || noNameLabel}
+                </Label>
+                {actionButtons?.map(({ id, element }) => (
+                    <Fragment key={id}>{element}</Fragment>
+                ))}
+                <Button
+                    {...buttonAppearance}
+                    icon={Icons.NounProject.Clear}
+                    accessibilityLabel={purgeLabel}
+                    tooltip={purgeLabel}
+                    tooltipPlacement={purgeTooltipPlacement}
+                    {...purgeButtonProps}
+                    onPress={() => setShowPurgeDialog(true)}
+                    disabled={
+                        disabled || !fileName || purgeButtonProps?.disabled
+                    }
+                />
+            </View>
+            {showPurgeDialog && !disabled ? (
+                <Dialog
+                    color={color}
+                    header={purgeLabel}
+                    closeText={cancelLabel}
+                    {...purgeConfirmationDialogProps}
+                    onClose={() => setShowPurgeDialog(false)}
+                    save={{
+                        saveText: purgeLabel,
+                        onSave: confirmPurge,
+                    }}
+                >
+                    <Text color={purgeConfirmationDialogProps?.color ?? color}>
+                        {purgeText}
+                    </Text>
+                </Dialog>
+            ) : null}
+        </ThemeContext.Provider>
     );
 };

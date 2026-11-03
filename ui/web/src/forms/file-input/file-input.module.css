@@ -4,14 +4,16 @@
 
 .container {
     display: inline-flex;
-    gap: 8px;
+    gap: var(--size-control-gap);
     align-items: center;
+    min-width: 0;
+    max-width: 100%;
 }
 
-.route-name {
+.file-name {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    min-width: 50px;
-    max-width: calc(50dvw - 350px);
+    min-width: 0;
+    max-width: 20ch;
 }

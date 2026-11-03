@@ -51,13 +51,22 @@ export const RouteName: FC<TopToolsProps<maplibregl.Map> & WebRouteStoryProps> =
                 fileIcon={routeName ? Icons.NounProject.ReplaceFile : Icons.NounProject.Upload}
                 fileName={routeName}
                 fileNameProps={{ variant: 'ghost' }}
+                fileUploadButtonProps={{
+                    variant: 'fill',
+                    corners: 'circle',
+                }}
+                purgeButtonProps={{ corners: 'circle' }}
+                purgeConfirmationDialogProps={{
+                    variant: 'fill-translucent',
+                }}
                 fileLabel={fileLabel}
-                fileTooltipPlacement="bottom"
+                fileTooltipPlacement="top"
                 purgeLabel={purgeLabel}
-                purgeTooltipPlacement="bottom"
+                purgeTooltipPlacement="top"
                 cancelLabel={cancelLabel}
                 noNameLabel={noNameLabel}
                 color="primary"
+                variant="ghost"
                 accept={[...parsers.keys(), "image/png", "image/jpeg", "image/jpg"].join(', ')}
                 onUpload={(files) => fileOperator.uploadFile(files, map)}
                 onPurge={() => fileOperator.resetStory()}
@@ -75,7 +84,7 @@ export const RouteName: FC<TopToolsProps<maplibregl.Map> & WebRouteStoryProps> =
                                 onClick={() => fitBoundsHandler(map, data$.value.boundingBox)}
                                 aria-label={fitBoundsLabel}
                                 tooltip={fitBoundsLabel}
-                                tooltipPlacement="bottom"
+                                tooltipPlacement="top"
                                 showTooltipConnection
                                 disabled={!geojson}
                             />

@@ -23,6 +23,7 @@ import { useDialog } from './useDialog';
 
 export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
     themeMode,
+    backdrop = true,
     header,
     color = DEFAULT_COLOR,
     variant = DEFAULT_FILL_VARIANT,
@@ -51,9 +52,9 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
             role="dialog"
             aria-modal="true"
             aria-labelledby={headerId}
-            className={classNames(styles['overlay'], {
-                [styles['overlay-out']]: !render,
-            })}
+            className={styles['overlay']}
+            data-appearance-mode={theme.mode}
+            data-backdrop={(backdrop && render) || undefined}
             onKeyDown={onKeyDown}
         >
             <Transition
@@ -87,7 +88,7 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
                                 uppercase
                                 fontWeight={500}
                                 color={color}
-                                shadow={variant === 'fill-translucent'}
+                                shadow={variant === 'fill-translucent' && theme.mode === "dark"}
                                 className={styles['header']}
                             >
                                 {header}
