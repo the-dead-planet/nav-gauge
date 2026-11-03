@@ -31,7 +31,7 @@ export const SettingsDialog: FC<Props> = ({ onClose }) => {
             variant="fill-translucent"
             placement="right-drawer"
             header={translate({ n: individuator.namespace, t: individuator.translationKey.IndividuatorName })}
-            closeText={translate({ n: namespace, t: translationKey.Close })}
+            closeText={translate({ n: namespace, t: translationKey.Cancel })}
             onClose={onClose}
             save={{
                 saveText: translate({ n: namespace, t: translationKey.Save }),

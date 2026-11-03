@@ -8,6 +8,7 @@ const nl: TranslationTable<MachineTranslationKey>['nl'] = {
     legal: 'Juridisch',
     privacy: 'Privacy',
     close: 'Sluiten',
+    cancel: 'Annuleren',
     save: 'Opslaan',
     on: 'Aan',
     off: 'Uit',

@@ -40,6 +40,7 @@ export enum MachineTranslationKey {
     Legal = 'legal',
     Privacy = 'privacy',
     Close = 'close',
+    Cancel = 'cancel',
     Save = 'save',
     On = 'on',
     Off = 'off',
