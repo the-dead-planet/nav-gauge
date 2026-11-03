@@ -1,8 +1,14 @@
-import { ElevationDirection, ElevationLevel, ResolvedThemeElevation, Theme, ElevationLayer } from '@ui';
-import { ViewStyle } from 'react-native';
+import {
+    ElevationDirection,
+    ElevationLevel,
+    ResolvedThemeElevation,
+    Theme,
+    ElevationLayer,
+} from '@ui';
+import { Platform, ViewStyle } from 'react-native';
 
 /**
- * Translates shared elevation metrics into React Native shadow properties.
+ * Translates shared elevation metrics into React Native shadow styles.
  *
  * Levels:
  * - `none`: ordinary content and connectors without surface elevation.
@@ -29,15 +35,14 @@ export const resolveElevationStyle = (
 };
 
 const elevationStyle = (elevation: ResolvedThemeElevation): ViewStyle => {
+    if (Platform.OS === 'android' && Number(Platform.Version) < 28) {
+        return {
+            shadowColor: elevation.color,
+            elevation: elevation.depth,
+        };
+    }
     return {
-        shadowColor: elevation.color,
-        shadowOffset: {
-            width: elevation.offset.x,
-            height: elevation.offset.y,
-        },
-        shadowOpacity: elevation.opacity,
-        shadowRadius: elevation.blur / 2,
-        elevation: elevation.depth,
+        boxShadow: `${elevation.offset.x}px ${elevation.offset.y}px ${elevation.blur}px rgba(0, 0, 0, ${elevation.opacity})`,
     };
 };
 
@@ -66,5 +71,5 @@ export const resolveElevationFilter = (
     direction?: ElevationDirection,
 ): string => {
     const elevation = theme.elevation(level, direction);
-    return `${elevation.offset.x}px ${elevation.offset.y}px ${elevation.blur}px rgba(0, 0, 0, ${elevation.opacity})`;
+    return `${elevation.offset.x}px ${elevation.offset.y}px ${elevation.blur / 2}px rgba(0, 0, 0, ${elevation.opacity})`;
 };

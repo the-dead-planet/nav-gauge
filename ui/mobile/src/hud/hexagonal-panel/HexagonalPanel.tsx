@@ -19,9 +19,9 @@ import {
     ThemeContext,
     useTheme,
 } from "@ui";
-import { resolveElevationStyle } from "../../design-system/theme";
 import { HudContent } from "../HudContent";
 import { HudGlow } from "../HudGlow";
+import { HudShadow } from "../HudShadow";
 import { useHudInteraction } from "../useHudInteraction";
 import { usePanelDimensions } from "../usePanelDimensions";
 
@@ -90,7 +90,6 @@ export const HexagonalPanel: FC<HexagonalPanelProps & Props> = ({
         (state === "active-pressed" || state === "hover-focus");
     const panelStyle: StyleProp<ViewStyle> = [
         styles.panel,
-        resolveElevationStyle(theme, "raised", "down"),
         {
             outlineStyle: "solid",
             outlineColor: appearance.effects.glowColor,
@@ -106,28 +105,36 @@ export const HexagonalPanel: FC<HexagonalPanelProps & Props> = ({
     const content = (
         <>
             {width > 0 && height > 0 ? (
-                <Svg
-                    viewBox={`0 0 ${width} ${height}`}
-                    style={StyleSheet.absoluteFill}
-                    pointerEvents="none"
-                    accessibilityElementsHidden
-                    importantForAccessibility="no-hide-descendants"
-                >
-                    {showGlow ? (
-                        <HudGlow
-                            points={points}
-                            color={appearance.effects.glowColor}
-                            strokeWidth={2}
-                        />
-                    ) : null}
-                    <Polygon
+                <>
+                    <HudShadow
+                        width={width}
+                        height={height}
                         points={points}
-                        fill={appearance.surface}
-                        stroke={appearance.border.color}
-                        strokeWidth={appearance.border.width}
-                        vectorEffect="non-scaling-stroke"
+                        elevation={theme.elevation("raised", "down")}
                     />
-                </Svg>
+                    <Svg
+                        viewBox={`0 0 ${width} ${height}`}
+                        style={StyleSheet.absoluteFill}
+                        pointerEvents="none"
+                        accessibilityElementsHidden
+                        importantForAccessibility="no-hide-descendants"
+                    >
+                        {showGlow ? (
+                            <HudGlow
+                                points={points}
+                                color={appearance.effects.glowColor}
+                                strokeWidth={2}
+                            />
+                        ) : null}
+                        <Polygon
+                            points={points}
+                            fill={appearance.surface}
+                            stroke={appearance.border.color}
+                            strokeWidth={appearance.border.width}
+                            vectorEffect="non-scaling-stroke"
+                        />
+                    </Svg>
+                </>
             ) : null}
             <View style={styles.content}>
                 <HudContent appearance={appearance}>{children}</HudContent>

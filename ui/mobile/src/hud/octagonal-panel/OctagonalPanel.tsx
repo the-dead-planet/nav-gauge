@@ -8,7 +8,6 @@ import {
     ThemeContext,
     useTheme,
 } from "@ui";
-import { resolveElevationStyle } from "../../design-system/theme";
 import { HudContent } from "../HudContent";
 import { usePanelDimensions } from "../usePanelDimensions";
 import { OctagonalSurface } from "./OctagonalSurface";
@@ -55,17 +54,7 @@ export const OctagonalPanel: FC<OctagonalPanelProps & Props> = ({
                 {...props}
                 ref={forwardRef}
                 accessibilityState={{ ...accessibilityState, disabled }}
-                style={[
-                    styles.panel,
-                    resolveElevationStyle(
-                        theme,
-                        variant === "ghost" || variant === "inset"
-                            ? "none"
-                            : "raised",
-                        "down",
-                    ),
-                    style,
-                ]}
+                style={[styles.panel, style]}
                 onLayout={(event) => {
                     dimensions.onLayout(event);
                     onLayout?.(event);
@@ -77,6 +66,12 @@ export const OctagonalPanel: FC<OctagonalPanelProps & Props> = ({
                         height={dimensions.height}
                         size={size}
                         appearance={appearance}
+                        elevation={theme.elevation(
+                            variant === "ghost" || variant === "inset"
+                                ? "none"
+                                : "raised",
+                            "down",
+                        )}
                     />
                 ) : null}
                 <View style={styles.content}>

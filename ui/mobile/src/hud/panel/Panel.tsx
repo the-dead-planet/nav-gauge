@@ -75,19 +75,25 @@ export const Panel: FC<PanelProps & Props> = ({
     const showGlow =
         activeGlow !== "none" &&
         (state === "active-pressed" || state === "hover-focus");
+    const depthStyle = elevationLayer
+        ? resolveLayerStyle(theme, elevationLayer, "down")
+        : resolveElevationStyle(theme, elevation, "down");
     const panelStyle: StyleProp<ViewStyle> = [
         styles.panel,
-        elevationLayer
-            ? resolveLayerStyle(theme, elevationLayer, "down")
-            : resolveElevationStyle(theme, elevation, "down"),
+        depthStyle,
         {
             backgroundColor: appearance.surface,
             borderColor: appearance.border.color,
             borderWidth:
                 appearance.border.width * Math.max(0, borderWidth ?? 1),
             boxShadow: showGlow
-                ? `0 0 4px ${appearance.effects.glowColor}, 0 0 20px ${appearance.effects.glowColor}`
-                : undefined,
+                ? [
+                      depthStyle.boxShadow,
+                      `0 0 4px ${appearance.effects.glowColor}, 0 0 20px ${appearance.effects.glowColor}`,
+                  ]
+                      .filter(Boolean)
+                      .join(", ")
+                : depthStyle.boxShadow,
         },
         style,
     ];
