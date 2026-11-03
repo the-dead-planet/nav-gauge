@@ -40,14 +40,16 @@ const elevationStyle = (elevation: ResolvedThemeElevation): ViewStyle => {
     }
     if (Platform.OS === 'android' && Number(Platform.Version) >= 31) {
         return {
-            filter: [{
-                dropShadow: {
-                    offsetX: elevation.offset.x,
-                    offsetY: elevation.offset.y,
-                    standardDeviation: elevation.blur / 2,
-                    color: `rgba(0, 0, 0, ${elevation.opacity})`,
+            filter: [
+                {
+                    dropShadow: {
+                        offsetX: elevation.offset.x,
+                        offsetY: elevation.offset.y,
+                        standardDeviation: elevation.blur / 2,
+                        color: `rgba(0, 0, 0, ${elevation.opacity})`,
+                    },
                 },
-            }],
+            ],
         };
     }
     if (Platform.OS === 'android' && Number(Platform.Version) >= 28) {

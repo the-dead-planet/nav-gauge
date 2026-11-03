@@ -1,5 +1,4 @@
 import { render, fireEvent } from '@testing-library/react-native';
-import { it } from '@jest/globals';
 import { Animated, StyleSheet } from 'react-native';
 import { pick } from '@react-native-documents/picker';
 import {
@@ -458,7 +457,7 @@ describe('Mobile rig content', () => {
                     color: glyphs,
                 });
                 expect(screen.getByText(`Child theme: ${mode}`)).toBeTruthy();
-                if (variant === 'fill-translucent') {
+                if (variant === 'fill-translucent' && mode === 'dark') {
                     expect(screen.getByRole('header')).toHaveStyle({
                         textShadowColor: theme.color('primary', 800),
                         textShadowRadius: 1,

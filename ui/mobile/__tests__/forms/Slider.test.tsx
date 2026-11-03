@@ -1,5 +1,4 @@
 import { fireEvent, render, waitFor } from "@testing-library/react-native";
-import { test } from "@jest/globals";
 import { AccessibilityInfo, Animated, StyleSheet } from "react-native";
 import {
     Orientation,

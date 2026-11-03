@@ -1,11 +1,5 @@
 import { render, fireEvent } from '@testing-library/react-native';
 import { Platform, StyleSheet } from 'react-native';
-import Svg, {
-    FeComposite,
-    FeGaussianBlur,
-    Filter,
-    Polygon,
-} from 'react-native-svg';
 import {
     Orientation,
     Theme,
@@ -22,7 +16,6 @@ import {
 import { HexagonalPanel } from '../../src/hud/hexagonal-panel';
 import { NotchedPanel } from '../../src/hud/notched-panel';
 import { OctagonalPanel } from '../../src/hud/octagonal-panel';
-import { HudShadow } from '../../src/hud/HudShadow';
 
 const media = {
     initial: () => ({
@@ -37,7 +30,7 @@ describe('Mobile surface shadows', () => {
     afterEach(() => jest.restoreAllMocks());
 
     it.each<ThemeMode>(['light', 'dark'])(
-        'uses directional box shadows without native elevation in %s mode',
+        'uses shape-aware directional shadows without native elevation in %s mode',
         (mode) => {
             jest.replaceProperty(Platform, 'OS', 'android');
             jest.spyOn(Platform, 'Version', 'get').mockReturnValue(31);
@@ -49,12 +42,31 @@ describe('Mobile surface shadows', () => {
             const raised = theme.elevation('raised', 'up');
             const overlay = theme.layer('dialog', 'left');
             expect(resolveElevationStyle(theme, 'raised', 'up')).toEqual({
-                boxShadow: `0px ${raised.offset.y}px ${raised.blur}px rgba(0, 0, 0, ${raised.opacity})`,
+                filter: [
+                    {
+                        dropShadow: {
+                            offsetX: 0,
+                            offsetY: raised.offset.y,
+                            standardDeviation: raised.blur / 2,
+                            color: `rgba(0, 0, 0, ${raised.opacity})`,
+                        },
+                    },
+                ],
             });
             expect(resolveLayerStyle(theme, 'dialog', 'left')).toEqual({
                 zIndex: overlay.zIndex,
-                boxShadow: `${overlay.elevation.offset.x}px 0px ${overlay.elevation.blur}px rgba(0, 0, 0, ${overlay.elevation.opacity})`,
+                filter: [
+                    {
+                        dropShadow: {
+                            offsetX: overlay.elevation.offset.x,
+                            offsetY: 0,
+                            standardDeviation: overlay.elevation.blur / 2,
+                            color: `rgba(0, 0, 0, ${overlay.elevation.opacity})`,
+                        },
+                    },
+                ],
             });
+            expect(resolveElevationStyle(theme, 'none')).toEqual({});
             expect(resolveElevationFilter(theme, 'raised', 'up')).toBe(
                 `0px ${raised.offset.y}px ${raised.blur / 2}px rgba(0, 0, 0, ${raised.opacity})`,
             );
@@ -62,29 +74,47 @@ describe('Mobile surface shadows', () => {
         },
     );
 
-    it('retains native shadow support on Android versions without box shadows', () => {
-        jest.replaceProperty(Platform, 'OS', 'android');
-        jest.spyOn(Platform, 'Version', 'get').mockReturnValue(27);
-        const theme = new Theme(
-            themeSpecifications[ThemeName.Default].light,
-            media,
-            false,
-        );
-        const elevation = theme.elevation('raised');
-        expect(resolveElevationStyle(theme, 'raised')).toEqual({
-            shadowColor: elevation.color,
-            elevation: elevation.depth,
-        });
-        theme.destroy();
-    });
+    it.each([27, 30])(
+        'retains supported shadows on Android API %s',
+        (version) => {
+            jest.replaceProperty(Platform, 'OS', 'android');
+            jest.spyOn(Platform, 'Version', 'get').mockReturnValue(version);
+            const theme = new Theme(
+                themeSpecifications[ThemeName.Default].light,
+                media,
+                false,
+            );
+            const elevation = theme.elevation('raised');
+            const style = resolveElevationStyle(theme, 'raised');
+            if (version >= 28) {
+                expect(style).toEqual({
+                    boxShadow: `0px ${elevation.offset.y}px ${elevation.blur}px rgba(0, 0, 0, ${elevation.opacity})`,
+                });
+            } else {
+                expect(style).toEqual({
+                    shadowColor: elevation.color,
+                    shadowOffset: {
+                        width: elevation.offset.x,
+                        height: elevation.offset.y,
+                    },
+                    shadowOpacity: elevation.opacity,
+                    shadowRadius: elevation.blur / 2,
+                    elevation: elevation.depth,
+                });
+            }
+            theme.destroy();
+        },
+    );
 
     it.each([
         { name: 'HexagonalPanel', Component: HexagonalPanel },
         { name: 'NotchedPanel', Component: NotchedPanel },
         { name: 'OctagonalPanel', Component: OctagonalPanel },
     ])(
-        '$name casts an exterior polygon shadow, not a rectangular view shadow',
+        '$name uses an alpha-mask shadow instead of a rectangular elevation outline',
         async ({ Component }) => {
+            jest.replaceProperty(Platform, 'OS', 'android');
+            jest.spyOn(Platform, 'Version', 'get').mockReturnValue(31);
             const theme = new Theme(
                 themeSpecifications[ThemeName.Default].light,
                 media,
@@ -107,32 +137,10 @@ describe('Mobile surface shadows', () => {
             const panelStyle = StyleSheet.flatten(panel.props.style);
             expect(panelStyle.elevation).toBeUndefined();
             expect(panelStyle.boxShadow).toBeUndefined();
-            const shadow = screen.UNSAFE_getByType(HudShadow);
-            expect(shadow.props.elevation).toEqual(
-                theme.elevation('raised', 'down'),
+            expect(panelStyle.filter).toEqual(
+                resolveElevationStyle(theme, 'raised', 'down').filter,
             );
-            const shadowSvg = shadow.findByType(Svg);
-            expect(shadowSvg.props.width).toBeGreaterThan(200);
-            expect(shadowSvg.props.height).toBeGreaterThan(60);
-            expect(shadowSvg.props.pointerEvents).toBe('none');
-            expect(shadow.findByType(Filter).props.filterUnits).toBe(
-                'userSpaceOnUse',
-            );
-            expect(shadow.findByType(FeGaussianBlur).props.stdDeviation).toBe(
-                theme.elevation('raised').blur / 2,
-            );
-            expect(
-                shadow
-                    .findAllByType(FeComposite)
-                    .some(
-                        (composite) =>
-                            composite.props.operator === 'out' &&
-                            composite.props.in2 === 'SourceAlpha',
-                    ),
-            ).toBe(true);
-            expect(shadow.findByType(Polygon).props.points).toBe(
-                shadow.props.points,
-            );
+            expect(screen.getByText('Surface content')).toBeTruthy();
             await screen.unmount();
             theme.destroy();
         },

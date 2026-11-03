@@ -57,7 +57,13 @@ export const OctagonalPanel: FC<OctagonalPanelProps & Props> = ({
                 accessibilityState={{ ...accessibilityState, disabled }}
                 style={[
                     styles.panel,
-                    resolveElevationStyle(theme, variant === "ghost" || variant === "inset" ? "none" : "raised", "down"),
+                    resolveElevationStyle(
+                        theme,
+                        variant === "ghost" || variant === "inset"
+                            ? "none"
+                            : "raised",
+                        "down",
+                    ),
                     style,
                 ]}
                 onLayout={(event) => {

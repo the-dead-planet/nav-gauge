@@ -96,7 +96,11 @@ export const NotchedPanel: FC<NotchedPanelProps & Props> = ({
     const showGlow =
         activeGlow !== "none" &&
         (state === "active-pressed" || state === "hover-focus");
-    const panelStyle = [styles.panel, resolveElevationStyle(theme, "raised", "down"), style];
+    const panelStyle = [
+        styles.panel,
+        resolveElevationStyle(theme, "raised", "down"),
+        style,
+    ];
     const handleLayout: NonNullable<PressableProps["onLayout"]> = (event) => {
         dimensions.onLayout(event);
         onLayout?.(event);
@@ -104,43 +108,41 @@ export const NotchedPanel: FC<NotchedPanelProps & Props> = ({
     const content = (
         <>
             {width > 0 && height > 0 ? (
-                <>
-                    <Svg
-                        viewBox={`0 0 ${width} ${height}`}
-                        style={StyleSheet.absoluteFill}
-                        pointerEvents="none"
-                        accessibilityElementsHidden
-                        importantForAccessibility="no-hide-descendants"
-                    >
-                        {showGlow ? (
-                            <HudGlow
-                                points={bodyPoints}
-                                color={appearance.effects.glowColor}
-                                strokeWidth={2}
-                            />
-                        ) : null}
-                        <Polygon
+                <Svg
+                    viewBox={`0 0 ${width} ${height}`}
+                    style={StyleSheet.absoluteFill}
+                    pointerEvents="none"
+                    accessibilityElementsHidden
+                    importantForAccessibility="no-hide-descendants"
+                >
+                    {showGlow ? (
+                        <HudGlow
                             points={bodyPoints}
-                            fill={appearance.surface}
-                            stroke={appearance.border.color}
-                            strokeWidth={appearance.border.width}
+                            color={appearance.effects.glowColor}
+                            strokeWidth={2}
                         />
+                    ) : null}
+                    <Polygon
+                        points={bodyPoints}
+                        fill={appearance.surface}
+                        stroke={appearance.border.color}
+                        strokeWidth={appearance.border.width}
+                    />
+                    <Polyline
+                        points={stepPoints}
+                        fill="none"
+                        stroke={appearance.border.color}
+                        strokeWidth={appearance.border.width}
+                    />
+                    {hasHeader ? (
                         <Polyline
-                            points={stepPoints}
+                            points={headerPoints}
                             fill="none"
                             stroke={appearance.border.color}
                             strokeWidth={appearance.border.width}
                         />
-                        {hasHeader ? (
-                            <Polyline
-                                points={headerPoints}
-                                fill="none"
-                                stroke={appearance.border.color}
-                                strokeWidth={appearance.border.width}
-                            />
-                        ) : null}
-                    </Svg>
-                </>
+                    ) : null}
+                </Svg>
             ) : null}
             {hasHeader ? (
                 <View
