@@ -22,6 +22,7 @@ import styles from './dialog.module.css';
 import { useDialog } from './useDialog';
 
 export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
+    themeMode,
     header,
     color = DEFAULT_COLOR,
     variant = DEFAULT_FILL_VARIANT,
@@ -35,8 +36,7 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
 }) => {
     const { render, close, dialogRef, onKeyDown } = useDialog();
     const headerId = useId();
-    const theme = useTheme();
-    const dialogTheme = theme.forMode('dark');
+    const theme = useTheme().forMode(themeMode);
     const [media] = useSubjectState(theme.media$);
     const slide: { [key in DialogPlacement]: TransitionProps['slide'] } = {
         ['middle']: 'to-bottom',
@@ -70,7 +70,7 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
                     )}
                     {...props}
                 >
-                    <ThemeContext.Provider value={dialogTheme}>
+                    <ThemeContext.Provider value={theme}>
                         <HudSurface
                             as="div"
                             rectangle
@@ -92,14 +92,12 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
                             >
                                 {header}
                             </H3>
-                            <ThemeContext.Provider value={theme}>
-                                <div
-                                    className={styles['content']}
-                                    data-appearance-mode={theme.mode}
-                                >
-                                    {children}
-                                </div>
-                            </ThemeContext.Provider>
+                            <div
+                                className={styles['content']}
+                                data-appearance-mode={theme.mode}
+                            >
+                                {children}
+                            </div>
                             <div className={styles['footer']}>
                                 <Button
                                     variant={

@@ -98,6 +98,7 @@ interface Props extends DialogProps {
 }
 
 export const Dialog: FC<Props> = ({
+    themeMode,
     header,
     color = DEFAULT_COLOR,
     variant = DEFAULT_FILL_VARIANT,
@@ -113,14 +114,13 @@ export const Dialog: FC<Props> = ({
         close: handleClose,
         overlayOpacity,
     } = useDialogTransition();
-    const theme = useTheme();
-    const dialogTheme = theme.forMode('dark');
+    const theme = useTheme().forMode(themeMode);
     const insets = useSafeAreaInsets();
     const [media] = useSubjectState(theme.media$);
     const isWide = !media.isLessThanSm;
     const drawerTop =
         media.windowHeight <= 500 ? 0 : Math.min(media.windowHeight * 0.06, 64);
-    const appearance = dialogTheme.resolveAppearance(variant, color);
+    const appearance = theme.resolveAppearance(variant, color);
     const actionVariants = actionButtonVariants[variant];
 
     return (
@@ -166,7 +166,7 @@ export const Dialog: FC<Props> = ({
                             : styles.fullWidth
                     }
                 >
-                    <ThemeContext.Provider value={dialogTheme}>
+                    <ThemeContext.Provider value={theme}>
                         <Panel
                             variant={variant}
                             color={color}
@@ -203,13 +203,11 @@ export const Dialog: FC<Props> = ({
                                     {header}
                                 </Text>
                             </View>
-                            <ThemeContext.Provider value={theme}>
-                                <ScrollView style={styles.content}>
-                                    <HudContent appearance={appearance}>
-                                        {children}
-                                    </HudContent>
-                                </ScrollView>
-                            </ThemeContext.Provider>
+                            <ScrollView style={styles.content}>
+                                <HudContent appearance={appearance}>
+                                    {children}
+                                </HudContent>
+                            </ScrollView>
                             <View style={styles.footer}>
                                 <View style={styles.buttonCell}>
                                     <Button

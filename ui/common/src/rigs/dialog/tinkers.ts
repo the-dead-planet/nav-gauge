@@ -3,6 +3,7 @@ import {
     DEFAULT_COLOR,
     DEFAULT_FILL_VARIANT,
     fillVariantOptions,
+    typographyStoryControls,
 } from '../../design-system';
 import { StoryControls } from '../../storybook';
 import { DialogPlacement, DialogProps } from './model';
@@ -21,6 +22,7 @@ export const dialogStoryArgs: Omit<DialogProps, 'onClose'> = {
     placement: 'middle',
 };
 export const dialogStoryControls: StoryControls<DialogProps> = {
+    themeMode: typographyStoryControls.themeMode,
     header: { control: 'text' },
     closeText: { control: 'text' },
     children: { control: 'text' },
