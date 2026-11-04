@@ -11,12 +11,9 @@ import { ClockInput } from "../../src/forms/clock-input/ClockInput";
 import { ClockSliceInput } from "../../src/forms/clock-input/ClockSliceInput";
 import { ClockDurationInput } from "../../src/forms/clock-input/ClockDurationInput";
 
-jest.mock(
-    "../../src/design-system/icons",
-    () => ({
-        Icon: () => null,
-    }),
-);
+jest.mock("../../src/design-system/icons", () => ({
+    Icon: () => null,
+}));
 
 const media = {
     initial: () => ({
@@ -26,6 +23,91 @@ const media = {
     }),
     subscribe: () => ({ unsubscribe: () => undefined }),
 };
+
+test("all clock labels ignore transient dial state and honor explicit highlighted and disabled appearance", async () => {
+    for (const mode of ["light", "dark"] as const) {
+        const theme = new Theme(
+            themeSpecifications[ThemeName.Default][mode],
+            media,
+            false,
+        );
+        try {
+            for (const Clock of [
+                ClockInput,
+                ClockSliceInput,
+                ClockDurationInput,
+            ]) {
+                const content = (highlighted = false, disabled = false) => (
+                    <ThemeContext.Provider value={theme}>
+                        <Clock
+                            value={45}
+                            onChange={() => {}}
+                            label="Clock"
+                            formatValue={() => "Value"}
+                            color="intel"
+                            highlightColor="hazard"
+                            glyphsShade={600}
+                            highlightGlyphsShade={300}
+                            highlighted={highlighted}
+                            disabled={disabled}
+                        />
+                    </ThemeContext.Provider>
+                );
+                const screen = await render(content());
+                const defaultColor = theme.resolveAppearance(
+                    undefined,
+                    "intel",
+                    "hazard",
+                    "default",
+                    600,
+                    300,
+                ).glyphs;
+                for (const event of ["hoverIn", "focus"]) {
+                    await fireEvent(screen.getByRole("adjustable"), event);
+                    expect(screen.getByText(/^Clock/)).toHaveStyle({
+                        color: defaultColor,
+                    });
+                    expect(screen.getByText("Value")).toHaveStyle({
+                        color: defaultColor,
+                    });
+                }
+                await screen.rerender(content(true));
+                const highlightedColor = theme.resolveAppearance(
+                    undefined,
+                    "intel",
+                    "hazard",
+                    "active-pressed",
+                    600,
+                    300,
+                ).glyphs;
+                expect(screen.getByText(/^Clock/)).toHaveStyle({
+                    color: highlightedColor,
+                });
+                expect(screen.getByText("Value")).toHaveStyle({
+                    color: highlightedColor,
+                });
+                await screen.rerender(content(true, true));
+                const disabledColor = theme.resolveAppearance(
+                    undefined,
+                    "intel",
+                    "hazard",
+                    "disabled",
+                    600,
+                    300,
+                ).glyphs;
+                expect(screen.getByText(/^Clock/)).toHaveStyle({
+                    color: disabledColor,
+                });
+                expect(screen.getByText("Value")).toHaveStyle({
+                    color: disabledColor,
+                });
+                await screen.unmount();
+            }
+        } finally {
+            theme.destroy();
+        }
+    }
+});
 
 test("native clocks retain their drag responder through controlled updates and disabling", async () => {
     const theme = new Theme(

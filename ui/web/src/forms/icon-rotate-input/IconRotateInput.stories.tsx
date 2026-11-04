@@ -1,138 +1,78 @@
-import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { ColorVariant, SizeVariant, Icons, NumberInputPlacement, DEFAULT_SIZE } from '@ui';
-import { IconRotateInput } from './IconRotateInput';
-import { Text } from '../../design-system/typography';
-import { useState } from 'react';
-import { colorOptions as allColors, sizeOptions as allSizes } from '../../storybook/controls';
+import * as React from "react";
+import { ComponentProps, useEffect, useState } from "react";
+import type { Meta, StoryObj } from "storybook-react-rsbuild";
+import { makeLiveEditStory } from "storybook-addon-code-editor";
+import {
+    appearanceColorOptions,
+    Icons,
+    iconRotateInputStoryArgs,
+    iconRotateInputStoryControls,
+} from "@ui";
+import { IconRotateInput } from "./IconRotateInput";
+import { VariantGallery } from "../../storybook/VariantGallery";
+
+const StoryRotateInput = (props: ComponentProps<typeof IconRotateInput>) => {
+    const [value, setValue] = useState(props.value);
+    useEffect(() => setValue(props.value), [props.value]);
+    return <IconRotateInput {...props} value={value} onChange={setValue} />;
+};
 
 const meta = {
-    title: 'Forms/IconRotateInput',
+    title: "Forms/IconRotateInput",
     component: IconRotateInput,
-    args: { icon: Icons.NounProject.CameraVideoFront, value: 0, color: 'primary', size: 'sm', onChange: () => {} },
+    args: {
+        ...iconRotateInputStoryArgs,
+        icon: Icons.NounProject.CameraVideoFront,
+        onChange: () => {},
+    },
+    argTypes: {
+        ...iconRotateInputStoryControls,
+        icon: {
+            control: "select",
+            options: ["None", "Camera", "Beaker"],
+            mapping: {
+                None: undefined,
+                Camera: Icons.NounProject.CameraVideoFront,
+                Beaker: Icons.Beaker,
+            },
+        },
+        onChange: { control: false },
+    },
 } satisfies Meta<typeof IconRotateInput>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const numberInputPlacements: NumberInputPlacement[] = ['start', 'end', 'above', 'below'];
+export const Playground: Story = {
+    name: "Playground with Live code editor",
+    render: (args) => <StoryRotateInput {...args} />,
+};
 
-export const Playground: Story = {};
+makeLiveEditStory(Playground, {
+    availableImports: { react: React, "@web-ui": { IconRotateInput } },
+    code: `import { useEffect, useState } from 'react';
+import { IconRotateInput } from '@web-ui';
 
-export const Gallery = {
-    args: {
-        value: 0,
+export default function EditableRotation(props) {
+    const [value, setValue] = useState(props.value);
+    useEffect(() => setValue(props.value), [props.value]);
+    return <IconRotateInput {...props} value={value} onChange={setValue} />;
+}`,
+    modifyEditor: (monaco) => monaco.editor.setTheme("vs-dark"),
+});
+
+export const Gallery: Story = {
+    argTypes: {
+        color: { table: { disable: true } },
     },
-    render: () => {
-        const [angle, setAngle] = useState(0);
-        const [size, setSize] = useState<SizeVariant>(DEFAULT_SIZE);
-        const [color, setColor] = useState<ColorVariant>('primary');
-        const [disabled, setDisabled] = useState(false);
-        const [showStepControls, setShowStepControls] = useState(false);
-        const [showNumberInput, setShowNumberInput] = useState(false);
-        const [numberInputPlacement, setNumberInputPlacement] = useState<NumberInputPlacement>('end');
-
-        return (
-            <div style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 24 }}>
-                <div style={{ display: 'grid', rowGap: 12 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-                        <Text>Size</Text>
-                        {allSizes.map((s) => (
-                        <button
-                            key={s}
-                            onClick={() => setSize(s)}
-                            style={{
-                                padding: '4px 12px',
-                                cursor: 'pointer',
-                                background: size === s ? '#666' : '#333',
-                                color: '#fff',
-                                border: '1px solid #555',
-                                borderRadius: 4,
-                                fontSize: 12,
-                            }}
-                        >
-                            {s}
-                        </button>
-                        ))}
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-                        <Text>Color</Text>
-                        {allColors.map((c) => (
-                        <button
-                            key={c}
-                            onClick={() => setColor(c)}
-                            style={{
-                                padding: '4px 12px',
-                                cursor: 'pointer',
-                                background: color === c ? '#666' : '#333',
-                                color: '#fff',
-                                border: '1px solid #555',
-                                borderRadius: 4,
-                                fontSize: 12,
-                            }}
-                        >
-                            {c}
-                        </button>
-                        ))}
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-                        <Text>Disabled</Text>
-                        <button
-                        onClick={() => setDisabled((d) => !d)}
-                        style={{
-                            padding: '4px 12px',
-                            cursor: 'pointer',
-                            background: disabled ? '#c44' : '#333',
-                            color: '#fff',
-                            border: '1px solid #555',
-                            borderRadius: 4,
-                            fontSize: 12,
-                        }}
-                    >
-                            {String(disabled)}
-                        </button>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-                        <Text>Options</Text>
-                        <label><input type="checkbox" checked={showStepControls} onChange={(event) => setShowStepControls(event.target.checked)} /> Show plus/minus</label>
-                        <label><input type="checkbox" checked={showNumberInput} onChange={(event) => setShowNumberInput(event.target.checked)} /> Show number input</label>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-                        <Text>Number input placement</Text>
-                        {numberInputPlacements.map((placement) => (
-                        <button
-                            key={placement}
-                            onClick={() => setNumberInputPlacement(placement)}
-                            style={{
-                                padding: '4px 12px',
-                                cursor: 'pointer',
-                                background: numberInputPlacement === placement ? '#666' : '#333',
-                                color: '#fff',
-                                border: '1px solid #555',
-                                borderRadius: 4,
-                                fontSize: 12,
-                            }}
-                        >
-                            {placement}
-                        </button>
-                        ))}
-                    </div>
-                </div>
-
-                <div style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
-                    <IconRotateInput
-                        icon={Icons.NounProject.CameraVideoFront}
-                        value={angle}
-                        onChange={setAngle}
-                        color={color}
-                        size={size}
-                        disabled={disabled}
-                        showNumberInput={showNumberInput}
-                        showStepControls={showStepControls}
-                        numberInputPlacement={numberInputPlacement}
-                    />
-                    <Text>{angle}°</Text>
-                </div>
-            </div>
-        );
-    },
-} satisfies Story;
+    render: (args) => (
+        <VariantGallery
+            size={args.size}
+            colors={appearanceColorOptions}
+            variants={["default"]}
+            render={({ color, size }) => (
+                <StoryRotateInput {...args} color={color} size={size} />
+            )}
+        />
+    ),
+};

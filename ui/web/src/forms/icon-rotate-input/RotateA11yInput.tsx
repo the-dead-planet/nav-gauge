@@ -1,19 +1,10 @@
-import { FC, useEffect, useRef } from "react";
-import { Label, Span } from "../../design-system/typography";
-import styles from './icon-rotate-input.module.css';
+import { FC } from "react";
+import { IconRotateInputProps } from "@ui";
+import { Label } from "../../design-system/typography";
+import styles from "./icon-rotate-input.module.css";
 
-interface Props {
-    id?: string;
-    min: number;
-    max: number;
-    step: number;
-    value: number;
-    onChange?: (value: number) => void;
-    onSync?: (value: number) => void;
-    disabled: boolean;
-    label?: string;
-    showValue?: boolean;
-    ariaLabel?: string;
+interface Props extends IconRotateInputProps {
+    showValue: boolean;
 }
 
 export const RotateA11yInput: FC<Props> = ({
@@ -23,78 +14,63 @@ export const RotateA11yInput: FC<Props> = ({
     step,
     value,
     onChange,
-    onSync,
     disabled,
     label,
-    showValue = true,
+    showValue,
     ariaLabel,
-}) => {
-    const inputRef = useRef<HTMLInputElement>(null);
-    const valueRef = useRef(value);
-    const onChangeRef = useRef(onChange);
-    const onSyncRef = useRef(onSync);
-    valueRef.current = value;
-    onChangeRef.current = onChange;
-    onSyncRef.current = onSync;
-
-    useEffect(() => {
-        const input = inputRef.current;
-        if (!input) {
-            return;
-        }
-        if (value !== Number(input.value)) {
-            input.value = String(value);
-        }
-    }, [value]);
-
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        const input = inputRef.current;
-        if (!input) {
-            return;
-        }
-        const current = Number(input.value);
-        let wrapped: number | null = null;
-
-        if (e.key === 'ArrowLeft' && current <= min) {
-            wrapped = max;
-        } else if (e.key === 'ArrowRight' && current >= max) {
-            wrapped = min;
-        }
-
-        if (wrapped !== null) {
-            e.preventDefault();
-            input.value = String(wrapped);
-            onChangeRef.current?.(wrapped);
-            onSyncRef.current?.(wrapped);
-        }
-    };
-
-    return (
-        <>
-            <input
-                ref={inputRef}
-                type="range"
-                id={id}
-                min={min}
-                max={max}
-                step={step}
-                defaultValue={String(value)}
-                onChange={(e) => {
-                    const newValue = Number(e.target.value);
-                    onChange?.(newValue);
-                    onSync?.(newValue);
-                }}
-                onKeyDown={handleKeyDown}
+    themeMode,
+    color,
+    highlightColor,
+    glyphsShade,
+    highlightGlyphsShade,
+    highlighted,
+}) => (
+    <>
+        <input
+            type="range"
+            id={id}
+            min={min}
+            max={max}
+            step={step}
+            value={value}
+            onChange={(event) => onChange?.(Number(event.target.value))}
+            onKeyDown={(event) => {
+                if (min === undefined || max === undefined || max - min < 360) {
+                    return;
+                }
+                if (
+                    (event.key === "ArrowLeft" || event.key === "ArrowDown") &&
+                    value <= min
+                ) {
+                    event.preventDefault();
+                    onChange?.(max);
+                } else if (
+                    (event.key === "ArrowRight" || event.key === "ArrowUp") &&
+                    value >= max
+                ) {
+                    event.preventDefault();
+                    onChange?.(min);
+                }
+            }}
+            disabled={disabled}
+            className={styles["a11y-slider"]}
+            aria-label={ariaLabel ?? label ?? "Angle"}
+            aria-valuetext={`${value}°`}
+        />
+        {label ? (
+            <Label
+                htmlFor={id}
+                themeMode={themeMode}
+                color={color}
+                highlightColor={highlightColor}
+                shade={glyphsShade}
+                highlightShade={highlightGlyphsShade}
+                highlighted={highlighted}
                 disabled={disabled}
-                className={styles['a11y-slider']}
-                aria-label={ariaLabel ?? label ?? 'Angle'}
-                tabIndex={0}
-            />
-            {label && (
-                <Label htmlFor={id} className={styles.label}>
-                    {label} {showValue ? <Span tabular>{value}°</Span> : null}
-                </Label>
-            )}
-        </>
-    );
-};
+                className={styles.label}
+            >
+                {label} {showValue ? <span>{value}°</span> : null}
+            </Label>
+        ) : null}
+    </>
+);

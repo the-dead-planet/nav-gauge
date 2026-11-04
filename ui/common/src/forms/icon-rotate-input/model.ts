@@ -1,18 +1,14 @@
-import { ColorVariant, SizeVariant } from "../../design-system/model";
+import { AppearanceProps } from "../../design-system/model";
 import { NumberInputPlacement } from "../number-input";
 
-export interface IconRotateInputProps {
+export interface IconRotateInputProps extends Omit<AppearanceProps, "variant"> {
     icon?: string;
     value: number;
     onChange?: (value: number) => void;
     valueAdjustment?: number;
-    color?: ColorVariant;
-    highlightColor?: ColorVariant;
-    size?: SizeVariant;
     min?: number;
     max?: number;
     step?: number;
-    disabled?: boolean;
     id?: string;
     label?: string;
     showNumberInput?: boolean;
