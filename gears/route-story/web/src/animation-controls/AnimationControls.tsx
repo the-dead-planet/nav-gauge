@@ -231,6 +231,8 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                             </Label>
                             <Slider
                                 id="animation-controls-ease-duration"
+                                showNumberInput
+                                showStepControls
                                 value={easeDuration}
                                 min={Animatrix.easeDurationRange[0]}
                                 max={Animatrix.easeDurationRange[1]}
@@ -263,6 +265,8 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                             </Label>
                             <IconRotateInput
                                 id="animation-controls-camera-angle"
+                                showNumberInput
+                                showStepControls
                                 valueAdjustment={-90}
                                 icon={Icons.NounProject.CameraVideoSide}
                                 value={cameraAngle}

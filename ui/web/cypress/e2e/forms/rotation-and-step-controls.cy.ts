@@ -68,7 +68,9 @@ describe("Rotation and step controls", () => {
                 const labelColor = window.getComputedStyle(label).color;
                 input.focus();
                 expect(input.matches(":focus-visible")).to.equal(true);
-                expect(window.getComputedStyle(dial).outlineWidth).to.equal("2px");
+                expect(window.getComputedStyle(dial).outlineWidth).to.equal(
+                    "2px",
+                );
                 reference.style.color = "var(--appearance-hover-focus-glyphs)";
                 expect(window.getComputedStyle(dial).color).to.equal(
                     window.getComputedStyle(reference).color,

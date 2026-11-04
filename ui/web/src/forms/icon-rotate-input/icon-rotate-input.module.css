@@ -20,6 +20,10 @@
     cursor: grabbing;
 }
 
+.visual-container[data-disabled="true"] {
+    cursor: not-allowed;
+}
+
 .visual-container:not([data-disabled="true"]):has(.a11y-slider:focus-visible) {
     outline: 2px solid var(--appearance-glow-color);
     outline-offset: 2px;
