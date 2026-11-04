@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { StyleSheet, View } from "react-native";
+import { Animated, StyleSheet, View } from "react-native";
 import {
     DEFAULT_COLOR,
     DEFAULT_SIZE,
@@ -11,10 +11,14 @@ import {
 } from "@ui";
 import { OctagonalPanel } from "../../hud/octagonal-panel";
 import { FieldsetHeader } from "./FieldsetHeader";
+import { useFieldsetHeight } from "./useFieldsetHeight";
 
 const styles = StyleSheet.create({
-    collapsed: {
-        display: "none",
+    clip: {
+        overflow: "hidden",
+    },
+    content: {
+        flexShrink: 0,
     },
 });
 
@@ -43,6 +47,8 @@ export const Fieldset: FC<FieldsetProps> = ({
         disabled,
     });
 
+    const content = useFieldsetHeight(isExpanded);
+
     return (
         <ThemeContext.Provider value={theme}>
             <View>
@@ -68,24 +74,33 @@ export const Fieldset: FC<FieldsetProps> = ({
                     highlighted={highlighted}
                     disabled={disabled}
                     style={{
-                        padding: controlSize.paddingInline,
                         marginTop:
                             -(controlSize.height - controlSize.iconSize) / 2,
                     }}
                 >
-                    <View
-                        pointerEvents={disabled ? "none" : "auto"}
+                    <Animated.View
+                        pointerEvents={
+                            disabled || !isExpanded ? "none" : "auto"
+                        }
                         accessibilityElementsHidden={!isExpanded}
                         importantForAccessibility={
                             isExpanded ? "auto" : "no-hide-descendants"
                         }
-                        style={[
-                            !isExpanded && styles.collapsed,
-                            { gap: controlSize.gap },
-                        ]}
+                        style={[styles.clip, { height: content.height }]}
                     >
-                        {children}
-                    </View>
+                        <View
+                            onLayout={content.onLayout}
+                            style={[
+                                styles.content,
+                                {
+                                    padding: controlSize.paddingInline,
+                                    gap: controlSize.gap,
+                                },
+                            ]}
+                        >
+                            {children}
+                        </View>
+                    </Animated.View>
                 </OctagonalPanel>
             </View>
         </ThemeContext.Provider>

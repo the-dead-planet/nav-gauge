@@ -9,7 +9,7 @@ import {
     themeSpecifications,
 } from "@ui";
 import { Fieldset } from "../../src/forms/fieldset";
-import { TextInput } from "react-native";
+import { AccessibilityInfo, Animated, TextInput } from "react-native";
 
 jest.mock("../../src/design-system/icons", () => ({
     Icon: () => null,
@@ -25,6 +25,104 @@ const media = {
 };
 
 describe("Fieldset", () => {
+    beforeEach(() => {
+        jest.spyOn(
+            AccessibilityInfo,
+            "isReduceMotionEnabled",
+        ).mockResolvedValue(false);
+    });
+
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
+
+    test.each([false, true])(
+        "transitions measured content height and respects reduced motion (%s)",
+        async (reducedMotion) => {
+            const preference = jest
+                .spyOn(AccessibilityInfo, "isReduceMotionEnabled")
+                .mockResolvedValue(reducedMotion);
+            const animation = {
+                start: jest.fn(),
+                stop: jest.fn(),
+                reset: jest.fn(),
+            };
+            const timing = jest
+                .spyOn(Animated, "timing")
+                .mockReturnValue(animation);
+            const theme = new Theme(
+                themeSpecifications[ThemeName.Default].light,
+                media,
+                false,
+            );
+            try {
+                const screen = await render(
+                    <ThemeContext.Provider value={theme}>
+                        <Fieldset label="Telemetry">
+                            <TextInput
+                                accessibilityLabel="Reading"
+                                defaultValue="Retained"
+                            />
+                        </Fieldset>
+                    </ThemeContext.Provider>,
+                );
+                const reading = screen.getByLabelText("Reading");
+                const measure = (height: number) =>
+                    fireEvent(reading.parent!, "layout", {
+                        nativeEvent: {
+                            layout: { x: 0, y: 0, width: 200, height },
+                        },
+                    });
+                await measure(120);
+                timing.mockClear();
+                await fireEvent.press(screen.getByRole("button"));
+                expect(screen.queryByLabelText("Reading")).toBeNull();
+                expect(
+                    screen.getByLabelText("Reading", {
+                        includeHiddenElements: true,
+                    }),
+                ).toBe(reading);
+                if (reducedMotion) {
+                    expect(timing).not.toHaveBeenCalled();
+                } else {
+                    expect(timing).toHaveBeenLastCalledWith(
+                        expect.any(Animated.Value),
+                        expect.objectContaining({
+                            toValue: 0,
+                            duration: 200,
+                            useNativeDriver: false,
+                        }),
+                    );
+                }
+                await measure(180);
+                await fireEvent.press(screen.getByRole("button"));
+                expect(screen.getByLabelText("Reading")).toBe(reading);
+                if (reducedMotion) {
+                    expect(timing).not.toHaveBeenCalled();
+                } else {
+                    expect(animation.stop).toHaveBeenCalled();
+                    expect(timing).toHaveBeenLastCalledWith(
+                        expect.any(Animated.Value),
+                        expect.objectContaining({
+                            toValue: 180,
+                            useNativeDriver: false,
+                        }),
+                    );
+                    await measure(220);
+                    expect(timing).toHaveBeenLastCalledWith(
+                        expect.any(Animated.Value),
+                        expect.objectContaining({ toValue: 220 }),
+                    );
+                }
+                await screen.unmount();
+            } finally {
+                timing.mockRestore();
+                preference.mockRestore();
+                theme.destroy();
+            }
+        },
+    );
+
     test.each(surfaceVariantOptions)(
         "uses one ghost disclosure for the %s container",
         async (variant) => {
