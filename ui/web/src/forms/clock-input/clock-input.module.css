@@ -25,7 +25,7 @@
 
 .container:not([data-disabled="true"]):not([data-highlighted="true"]):not(
         [data-dragging="true"]
-    ):is(:has(.drawing:hover), :has(.label:hover), :has(.a11y-slider:focus)) {
+    ):is(:has(.drawing:hover), :has(.a11y-slider:focus)) {
     color: var(
         --appearance-hover-focus-glyphs-override,
         var(--appearance-hover-focus-glyphs)
@@ -36,14 +36,6 @@
         fill: var(--appearance-hover-focus-surface);
         stroke: var(--appearance-hover-focus-border);
         stroke-width: var(--appearance-hover-focus-border-width);
-    }
-
-    & .label {
-        color: var(
-            --appearance-hover-focus-glyphs-override,
-            var(--appearance-hover-focus-glyphs)
-        );
-        font-weight: var(--appearance-hover-focus-font-weight);
     }
 }
 
@@ -62,14 +54,6 @@
         stroke: var(--appearance-active-pressed-border);
         stroke-width: var(--appearance-active-pressed-border-width);
     }
-
-    & .label {
-        color: var(
-            --appearance-active-pressed-glyphs-override,
-            var(--appearance-active-pressed-glyphs)
-        );
-        font-weight: var(--appearance-active-pressed-font-weight);
-    }
 }
 
 .container[data-disabled="true"] {
@@ -85,11 +69,6 @@
 
     & .svg {
         cursor: not-allowed;
-    }
-
-    & .label {
-        color: var(--appearance-disabled-glyphs);
-        font-weight: var(--appearance-disabled-font-weight);
     }
 }
 
@@ -206,11 +185,6 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    color: var(
-        --appearance-default-glyphs-override,
-        var(--appearance-default-glyphs)
-    );
-    font-weight: var(--appearance-default-font-weight);
 }
 
 .label > span {

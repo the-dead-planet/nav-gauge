@@ -1,11 +1,6 @@
 import { FC } from "react";
-import { StyleSheet, View } from "react-native";
-import { ColorShade, ColorVariant, FontType, ThemeAppearanceState } from "@ui";
-import { Text } from "../../design-system/typography";
-
-const styles = StyleSheet.create({
-    label: { flexDirection: "row", alignItems: "center", gap: 6 },
-});
+import { ColorShade, ColorVariant, FontType } from "@ui";
+import { Label } from "../../design-system/typography";
 
 interface Props {
     label?: string;
@@ -16,7 +11,8 @@ interface Props {
     highlightColor: ColorVariant;
     glyphsShade?: ColorShade;
     highlightGlyphsShade?: ColorShade;
-    state: ThemeAppearanceState;
+    highlighted: boolean;
+    disabled: boolean;
 }
 
 export const ClockLabel: FC<Props> = ({
@@ -28,31 +24,32 @@ export const ClockLabel: FC<Props> = ({
     highlightColor,
     glyphsShade,
     highlightGlyphsShade,
-    state,
+    highlighted,
+    disabled,
 }) =>
     label ? (
-        <View style={styles.label}>
-            <Text
-                color={color}
-                highlightColor={highlightColor}
-                shade={glyphsShade}
-                highlightShade={highlightGlyphsShade}
-                appearanceState={state}
-            >
-                {label}
-            </Text>
+        <Label
+            color={color}
+            highlightColor={highlightColor}
+            shade={glyphsShade}
+            highlightShade={highlightGlyphsShade}
+            highlighted={highlighted}
+            disabled={disabled}
+        >
+            {label}{" "}
             {showValue ? (
-                <Text
+                <Label
                     color={color}
                     highlightColor={highlightColor}
                     shade={glyphsShade}
                     highlightShade={highlightGlyphsShade}
-                    appearanceState={state}
+                    highlighted={highlighted}
+                    disabled={disabled}
                     fontType={FontType.Numeric}
                     tabular
                 >
                     {formatValue?.(value) ?? `${value}°`}
-                </Text>
+                </Label>
             ) : null}
-        </View>
+        </Label>
     ) : null;

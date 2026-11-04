@@ -129,7 +129,8 @@ export const ClockControl = forwardRef<
                         highlightColor={highlightColor}
                         glyphsShade={glyphsShade}
                         highlightGlyphsShade={highlightGlyphsShade}
-                        state={state}
+                        highlighted={highlighted}
+                        disabled={disabled}
                     />
                     <ClockControlRow
                         {...appearanceProps}

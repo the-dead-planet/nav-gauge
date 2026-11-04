@@ -121,7 +121,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                     contentClassName={styles['fieldset']}
                     variant="outline"
                 >
-                    <Label htmlFor="animation-controls-image-pause-duration" align="right">
+                    <Label htmlFor="animation-controls-image-pause-duration">
                         {imagePauseDurationLabel}
                     </Label>
                     <div>
@@ -133,12 +133,13 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                             formatValue={(angle) => `${Math.round(angle / 6)}s`}
                             min={Animatrix.displayImageDurationRange[0] / 1000 * 6}
                             max={Animatrix.displayImageDurationRange[1] / 1000 * 6}
+                            step={1}
                             onChange={(value) => setAnimationControls((prev) => ({
                                 ...prev, displayImageDuration: clamp(value * 1000 / 6, Animatrix.displayImageDurationRange)
                             }))}
                         />
                     </div>
-                    <Label htmlFor="animation-controls-route-playback-duration" align="right">
+                    <Label htmlFor="animation-controls-route-playback-duration">
                         {routePlaybackDurationLabel}
                     </Label>
                     <div>
@@ -153,7 +154,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                             }))}
                         />
                     </div>
-                    <Label htmlFor="animation-controls-playback-pacing" align="right">
+                    <Label htmlFor="animation-controls-playback-pacing">
                         {playbackPacingLabel}
                     </Label>
                     <Dropdown
@@ -163,15 +164,15 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                         options={Animatrix.playbackPacingOptions.map(({ value }, index) => ({ value, label: playbackPacingOptionLabels[index] }))}
                         onChange={(value) => setAnimationControls((previous) => ({ ...previous, playbackPacing: value }))}
                     />
-                    <Label htmlFor="animation-controls-total-recording-duration" align="right">
+                    <Label htmlFor="animation-controls-total-recording-duration">
                         {totalRecordingDurationLabel}
                     </Label>
                     <div className={styles['recording-formula']}>
                         <Span tabular>{formatDuration(routePlaybackDuration)}</Span>
-                        <span className={styles['recording-formula-operator']}>+</span>
+                        <Span className={styles['recording-formula-operator']}>+</Span>
                         <Icon src={Icons.NounProject.ImageMarker} width={13} height={13} />
                         <Span tabular>{`${displayedImageCount} × ${formatDuration(displayImageDuration)}`}</Span>
-                        <span className={styles['recording-formula-equals']}>= {formatDuration(totalRecordingDuration)}</span>
+                        <Span className={styles['recording-formula-equals']}>= {formatDuration(totalRecordingDuration)}</Span>
                     </div>
                     <span />
                     <Checkbox
@@ -200,7 +201,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                 >
                     {matchesSearch(zoomLabel) && (
                         <>
-                            <Label htmlFor="animation-controls-zoom" align="right">
+                            <Label htmlFor="animation-controls-zoom">
                                 {zoomLabel}
                             </Label>
                             <Slider
@@ -225,7 +226,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                     )}
                     {matchesSearch(easeDurationLabel) && (
                         <>
-                            <Label htmlFor="animation-controls-ease-duration" align="right">
+                            <Label htmlFor="animation-controls-ease-duration">
                                 {easeDurationLabel}
                             </Label>
                             <Slider
@@ -257,7 +258,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                     )}
                     {matchesSearch(cameraAngleLabel) && (
                         <>
-                            <Label htmlFor="animation-controls-camera-angle" align="right">
+                            <Label htmlFor="animation-controls-camera-angle">
                                 {cameraAngleLabel}
                             </Label>
                             <IconRotateInput
@@ -277,7 +278,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                     )}
                     {matchesSearch(pitchLabel) && (
                         <>
-                            <Label htmlFor="animation-controls-pitch" align="right">
+                            <Label htmlFor="animation-controls-pitch">
                                 {pitchLabel}
                             </Label>
                             <ClockSliceInput
@@ -303,7 +304,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                     )}
                     {matchesSearch(cameraRollLabel) && (
                         <>
-                            <Label htmlFor="animation-controls-camera-roll" align="right">
+                            <Label htmlFor="animation-controls-camera-roll">
                                 {cameraRollLabel}
                             </Label>
                             <IconRotateInput

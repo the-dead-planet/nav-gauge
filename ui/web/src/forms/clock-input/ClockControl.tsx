@@ -128,6 +128,11 @@ export const ClockControl: FC<
                 }
             >
                 <ClockA11yInput
+                    color={color}
+                    highlightColor={highlightColor}
+                    glyphsShade={glyphsShade}
+                    highlightGlyphsShade={highlightGlyphsShade}
+                    highlighted={highlighted}
                     inputRef={inputRef}
                     id={inputId}
                     min={min}
