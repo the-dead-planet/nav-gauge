@@ -2,10 +2,11 @@ import { useEffect, useRef } from "react";
 import { addDecimalStep } from "../number-input";
 import {
     DEFAULT_COLOR,
-    DEFAULT_FILL_VARIANT,
+    DEFAULT_SURFACE_VARIANT,
     DEFAULT_SIZE,
+    surfaceVariantOptions,
 } from "../../design-system";
-import { StoryControls } from "../../storybook";
+import { StoryControl, StoryControls } from "../../storybook";
 import { numberInputStoryControls } from "../number-input";
 import { StepControlsProps } from "./model";
 
@@ -18,7 +19,7 @@ export const stepControlsStoryArgs: Omit<
     max: 10,
     step: 1,
     color: DEFAULT_COLOR,
-    variant: DEFAULT_FILL_VARIANT,
+    variant: DEFAULT_SURFACE_VARIANT,
     size: DEFAULT_SIZE,
     themeMode: undefined,
     highlightColor: undefined,
@@ -31,7 +32,10 @@ export const stepControlsStoryArgs: Omit<
 
 export const stepControlsStoryControls: StoryControls<StepControlsProps> = {
     themeMode: numberInputStoryControls.themeMode,
-    variant: numberInputStoryControls.variant,
+    variant: {
+        control: "select",
+        options: surfaceVariantOptions,
+    },
     color: numberInputStoryControls.color,
     highlightColor: numberInputStoryControls.highlightColor,
     glyphsShade: numberInputStoryControls.glyphsShade,
@@ -44,6 +48,18 @@ export const stepControlsStoryControls: StoryControls<StepControlsProps> = {
     disabled: numberInputStoryControls.disabled,
     highlighted: numberInputStoryControls.highlighted,
     ariaLabel: numberInputStoryControls.ariaLabel,
+};
+
+export const stepControlsPropsStoryControl: StoryControl = {
+    name: "Step controls variant",
+    control: "select",
+    options: ["Default", ...surfaceVariantOptions],
+    mapping: {
+        Default: undefined,
+        ...Object.fromEntries(
+            surfaceVariantOptions.map((variant) => [variant, { variant }]),
+        ),
+    },
 };
 
 const REPEAT_DELAY_MILLISECONDS = 400;

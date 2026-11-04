@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
-import { AppearanceProps, FillVariant } from "../../design-system/model";
+import { AppearanceProps } from "../../design-system/model";
 
-export interface StepControlsProps extends AppearanceProps<FillVariant> {
+export interface StepControlsProps extends AppearanceProps {
     children: ReactNode;
     value: number;
     onChange?: (value: number) => void;

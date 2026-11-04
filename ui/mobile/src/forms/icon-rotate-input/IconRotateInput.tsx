@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, View, ViewStyle } from "react-native";
 import {
     DEFAULT_COLOR,
     DEFAULT_SIZE,
+    DEFAULT_SURFACE_VARIANT,
     IconRotateInputProps,
     getClockGeometry,
     snapRotation,
@@ -14,33 +15,12 @@ import { RotateIconWrapper } from "./RotateIconWrapper";
 import { RotateLabel } from "./RotateLabel";
 import { useRotationGesture } from "./useRotationGesture";
 import { useHudInteraction } from "../../hud/useHudInteraction";
-import { NumberInput } from "../number-input";
-import { StepControls } from "../step-controls";
+import { IconRotateControlRow } from "./IconRotateControlRow";
 
 const styles = StyleSheet.create({
     container: {
         alignItems: "center",
         gap: 4,
-    },
-    row: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 8,
-    },
-    start: {
-        flexDirection: "row-reverse",
-    },
-    above: {
-        flexDirection: "column-reverse",
-    },
-    below: {
-        flexDirection: "column",
-    },
-    numberInput: {
-        width: 80,
-    },
-    verticalNumberInput: {
-        alignSelf: "stretch",
     },
     dial: {
         flexShrink: 0,
@@ -66,6 +46,7 @@ export const IconRotateInput: FC<Props> = ({
     glyphsShade,
     highlightGlyphsShade,
     highlighted = false,
+    variant = DEFAULT_SURFACE_VARIANT,
     size = DEFAULT_SIZE,
     min = 0,
     max = 360,
@@ -74,6 +55,7 @@ export const IconRotateInput: FC<Props> = ({
     label,
     showNumberInput = false,
     showStepControls = false,
+    stepControlsProps,
     numberInputPlacement = "end",
     ariaLabel,
     style,
@@ -97,7 +79,7 @@ export const IconRotateInput: FC<Props> = ({
         highlighted: highlighted || rotation.dragging,
     });
     const appearance = theme.resolveAppearance(
-        undefined,
+        variant,
         color,
         highlightColor,
         state,
@@ -150,6 +132,13 @@ export const IconRotateInput: FC<Props> = ({
                 {
                     width: svgSize,
                     height: svgSize,
+                    backgroundColor: appearance.surface,
+                    borderColor: appearance.border.color,
+                    borderWidth: appearance.border.width,
+                    boxShadow:
+                        appearance.effects.depth === "inset"
+                            ? `3px 3px 4px ${appearance.effects.inset.shadow} inset, -2px -2px 4px ${appearance.effects.inset.highlight} inset`
+                            : undefined,
                     outlineWidth: focused ? 2 : 0,
                     outlineColor: appearance.effects.glowColor,
                 },
@@ -171,8 +160,6 @@ export const IconRotateInput: FC<Props> = ({
             />
         </Pressable>
     );
-    const vertical =
-        numberInputPlacement === "above" || numberInputPlacement === "below";
 
     return (
         <View style={[styles.container, style]}>
@@ -182,53 +169,22 @@ export const IconRotateInput: FC<Props> = ({
                 displayWrapped={value}
                 showValue={!showNumberInput}
             />
-            <View
-                style={[
-                    styles.row,
-                    showNumberInput &&
-                        styles[
-                            numberInputPlacement === "end"
-                                ? "row"
-                                : numberInputPlacement
-                        ],
-                ]}
+            <IconRotateControlRow
+                {...appearanceProps}
+                value={value}
+                onChange={onChange}
+                min={min}
+                max={max}
+                step={step}
+                label={label}
+                ariaLabel={ariaLabel}
+                showNumberInput={showNumberInput}
+                showStepControls={showStepControls}
+                stepControlsProps={stepControlsProps}
+                numberInputPlacement={numberInputPlacement}
             >
-                {showStepControls ? (
-                    <StepControls
-                        {...appearanceProps}
-                        value={value}
-                        onChange={onChange}
-                        min={min}
-                        max={max}
-                        step={step}
-                        ariaLabel={ariaLabel ?? label}
-                    >
-                        {visualControl}
-                    </StepControls>
-                ) : (
-                    visualControl
-                )}
-                {showNumberInput ? (
-                    <View
-                        style={
-                            vertical
-                                ? styles.verticalNumberInput
-                                : styles.numberInput
-                        }
-                    >
-                        <NumberInput
-                            {...appearanceProps}
-                            value={value}
-                            onChange={(newValue) => onChange?.(newValue)}
-                            min={min}
-                            max={max}
-                            step={step}
-                            showStepControls
-                            ariaLabel={`${ariaLabel ?? label ?? "Angle"} (#)`}
-                        />
-                    </View>
-                ) : null}
-            </View>
+                {visualControl}
+            </IconRotateControlRow>
         </View>
     );
 };

@@ -1,7 +1,7 @@
 import { ComponentProps, useEffect, useState } from "react";
 import {
     appearanceColorOptions,
-    fillVariantOptions,
+    surfaceVariantOptions,
     stepControlsStoryArgs,
     stepControlsStoryControls,
 } from "@ui";
@@ -46,7 +46,7 @@ const story: MobileStoryDefinition<ComponentProps<typeof StepControls>> = {
     renderGallery: (args) => (
         <VariantGallery
             colors={appearanceColorOptions}
-            variants={fillVariantOptions}
+            variants={surfaceVariantOptions}
             render={({ color, size, variant }) => (
                 <StoryStepControls
                     {...args}

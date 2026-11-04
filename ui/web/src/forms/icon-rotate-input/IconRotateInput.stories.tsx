@@ -4,6 +4,7 @@ import type { Meta, StoryObj } from "storybook-react-rsbuild";
 import { makeLiveEditStory } from "storybook-addon-code-editor";
 import {
     appearanceColorOptions,
+    surfaceVariantOptions,
     Icons,
     iconRotateInputStoryArgs,
     iconRotateInputStoryControls,
@@ -64,14 +65,20 @@ export default function EditableRotation(props) {
 export const Gallery: Story = {
     argTypes: {
         color: { table: { disable: true } },
+        variant: { table: { disable: true } },
     },
     render: (args) => (
         <VariantGallery
             size={args.size}
             colors={appearanceColorOptions}
-            variants={["default"]}
-            render={({ color, size }) => (
-                <StoryRotateInput {...args} color={color} size={size} />
+            variants={surfaceVariantOptions}
+            render={({ color, size, variant }) => (
+                <StoryRotateInput
+                    {...args}
+                    color={color}
+                    size={size}
+                    variant={variant}
+                />
             )}
         />
     ),

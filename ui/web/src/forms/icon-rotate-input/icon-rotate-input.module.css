@@ -5,94 +5,39 @@
     user-select: none;
 }
 
-.control-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.number-input-start {
-    flex-direction: row-reverse;
-}
-
-.number-input-above {
-    flex-direction: column-reverse;
-}
-
-.number-input-below {
-    flex-direction: column;
-}
-
-.control-row > :last-child:not(:first-child) {
-    width: 80px;
-}
-
-.number-input-above > :last-child:not(:first-child),
-.number-input-below > :last-child:not(:first-child) {
-    width: 100%;
-}
-
 .visual-container {
     position: relative;
-    display: flex;
     flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
     border-radius: 50%;
     touch-action: none;
+}
+
+.visual-container[data-interactive="true"]:not([data-disabled="true"]) {
     cursor: grab;
-    color: var(
-        --appearance-default-glyphs-override,
-        var(--appearance-default-glyphs)
-    );
 }
 
-.container:not([data-disabled], [data-highlighted], [data-dragging]):is(
-        :has(.visual-container:hover),
-        :has(.a11y-slider:focus-visible)
-    )
-    .visual-container {
-    color: var(
-        --appearance-hover-focus-glyphs-override,
-        var(--appearance-hover-focus-glyphs)
-    );
+.visual-container[data-dragging="true"]:not([data-disabled="true"]) {
+    cursor: grabbing;
 }
 
-.container:not([data-disabled]):is([data-highlighted], [data-dragging])
-    .visual-container {
-    color: var(
-        --appearance-active-pressed-glyphs-override,
-        var(--appearance-active-pressed-glyphs)
-    );
-}
-
-.container:not([data-disabled]):has(.a11y-slider:focus-visible)
-    .visual-container {
+.visual-container:not([data-disabled="true"]):has(.a11y-slider:focus-visible) {
     outline: 2px solid var(--appearance-glow-color);
     outline-offset: 2px;
 }
 
-.container[data-dragging]:not([data-disabled]) .visual-container {
-    cursor: grabbing;
-}
-
-.container[data-disabled] .visual-container {
-    color: var(--appearance-disabled-glyphs);
-    cursor: not-allowed;
-}
-
 .overlay-svg {
-    display: block;
-    flex-shrink: 0;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
     opacity: 0;
 }
 
-.container:not([data-disabled]):is(
-        [data-highlighted],
-        [data-dragging],
-        :has(.visual-container:hover),
-        :has(.a11y-slider:focus-visible)
+.visual-container:not([data-disabled="true"]):is(
+        [data-highlighted="true"],
+        :hover,
+        :focus-within
     )
     .overlay-svg {
     opacity: 1;

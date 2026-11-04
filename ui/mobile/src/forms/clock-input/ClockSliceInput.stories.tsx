@@ -31,6 +31,7 @@ const story: MobileStoryDefinition<ClockInputProps> = {
         "disabled",
         "showNumberInput",
         "showStepControls",
+        "stepControlsProps",
         "numberInputPlacement",
     ],
     renderPlayground: (args) => <StoryClock key={args.value} {...args} />,

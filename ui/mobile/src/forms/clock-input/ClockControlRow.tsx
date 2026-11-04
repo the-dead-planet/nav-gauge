@@ -42,6 +42,8 @@ export const ClockControlRow: FC<ClockControlRowProps> = ({
     ariaLabel,
     showNumberInput = false,
     showStepControls = false,
+    stepControlsProps,
+    variant,
     numberInputPlacement = "end",
     children,
     ...appearanceProps
@@ -53,6 +55,10 @@ export const ClockControlRow: FC<ClockControlRowProps> = ({
     const controlHeight =
         theme.sizes.control[appearanceProps.size ?? DEFAULT_SIZE].height;
     const { svgSize } = getClockGeometry(controlHeight, mode);
+    const stepControlHeight =
+        theme.sizes.control[
+            stepControlsProps?.size ?? appearanceProps.size ?? DEFAULT_SIZE
+        ].height;
 
     return (
         <View
@@ -63,17 +69,19 @@ export const ClockControlRow: FC<ClockControlRowProps> = ({
             ]}
         >
             {showStepControls ? (
-                <View style={{ width: svgSize + controlHeight * 2 + 8 }}>
+                <View style={{ width: svgSize + stepControlHeight * 2 + 8 }}>
                     <StepControls
-                        color={appearanceProps.color}
-                        size={appearanceProps.size}
-                        variant={appearanceProps.variant}
+                        {...appearanceProps}
+                        {...stepControlsProps}
                         value={value}
                         min={min}
                         max={duration ? undefined : max}
                         step={step}
                         onChange={onChange}
-                        disabled={appearanceProps.disabled}
+                        disabled={
+                            appearanceProps.disabled ||
+                            stepControlsProps?.disabled
+                        }
                         ariaLabel={ariaLabel ?? label}
                     >
                         {children}
@@ -86,6 +94,7 @@ export const ClockControlRow: FC<ClockControlRowProps> = ({
                 duration ? (
                     <ClockDurationNumberInputs
                         {...appearanceProps}
+                        variant={variant}
                         value={value}
                         min={min}
                         onChange={onChange}
@@ -101,6 +110,7 @@ export const ClockControlRow: FC<ClockControlRowProps> = ({
                     >
                         <NumberInput
                             {...appearanceProps}
+                            variant={variant}
                             value={value}
                             onChange={(next) => onChange?.(next)}
                             min={min}

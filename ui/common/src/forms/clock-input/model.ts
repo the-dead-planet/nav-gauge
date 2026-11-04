@@ -22,6 +22,8 @@ export interface ClockInputProps extends AppearanceProps<FillVariant> {
     label?: string;
     showNumberInput?: boolean;
     showStepControls?: boolean;
+    /** Appearance overrides for the optional step buttons. */
+    stepControlsProps?: AppearanceProps;
     numberInputPlacement?: NumberInputPlacement;
     ariaLabel?: string;
 }
@@ -40,6 +42,8 @@ export interface ClockDurationInputProps extends AppearanceProps<FillVariant> {
     id?: string;
     showNumberInput?: boolean;
     showStepControls?: boolean;
+    /** Appearance overrides for the optional step buttons. */
+    stepControlsProps?: AppearanceProps;
     numberInputPlacement?: NumberInputPlacement;
     ariaLabel?: string;
 }
@@ -50,6 +54,7 @@ export type ClockDurationNumberInputsProps = Omit<
     | "step"
     | "showNumberInput"
     | "showStepControls"
+    | "stepControlsProps"
     | "themeMode"
     | "numberInputPlacement"
 >;

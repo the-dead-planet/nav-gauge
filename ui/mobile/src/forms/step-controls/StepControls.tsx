@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import {
     addDecimalStep,
     DEFAULT_COLOR,
-    DEFAULT_FILL_VARIANT,
+    DEFAULT_SURFACE_VARIANT,
     DEFAULT_SIZE,
     Icons,
     StepControlsProps,
@@ -31,7 +31,7 @@ export const StepControls: FC<StepControlsProps> = ({
     highlightGlyphsShade,
     highlighted,
     color = DEFAULT_COLOR,
-    variant = DEFAULT_FILL_VARIANT,
+    variant = DEFAULT_SURFACE_VARIANT,
     size = DEFAULT_SIZE,
     value,
     onChange,

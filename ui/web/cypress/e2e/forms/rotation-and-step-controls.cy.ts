@@ -4,18 +4,18 @@ describe("Rotation and step controls", () => {
             cy.visit(
                 `/iframe.html?id=forms-iconrotateinput--gallery&viewMode=story&args=size:${size}`,
             );
-            cy.get('[class*="visual-container"]').should("have.length", 8);
+            cy.get('[class*="visual-container"]').should("have.length", 48);
             cy.window()
                 .its("__STORYBOOK_PREVIEW__.channel")
                 .invoke("emit", "updateStoryArgs", {
                     storyId: "forms-iconrotateinput--gallery",
                     updatedArgs: { size },
                 });
-            cy.get('[data-size][data-appearance-variant="default"]')
+            cy.get('.story [data-size][data-appearance-variant="ghost"]')
                 .first()
                 .should("have.attr", "data-size", size);
             cy.get('[class*="visual-container"]')
-                .should("have.length", 8)
+                .should("have.length", 48)
                 .each(($dial) => {
                     const dial = $dial[0];
                     const window = dial.ownerDocument.defaultView!;
@@ -47,12 +47,14 @@ describe("Rotation and step controls", () => {
         cy.visit(
             "/iframe.html?id=forms-iconrotateinput--gallery&viewMode=story",
         );
-        cy.get('input[type="range"]').should("have.length", 8);
+        cy.get('input[type="range"]').should("have.length", 48);
         cy.get<HTMLInputElement>('input[type="range"]').each(($input) => {
             const input = $input[0];
             const owner = input.closest("[data-appearance-variant]")!;
-            const dial = owner.querySelector('[class*="visual-container"]')!;
-            const label = owner.querySelector("label")!;
+            const dial = owner;
+            const label = input.ownerDocument.querySelector(
+                `label[for="${input.id}"]`,
+            )!;
             const window = input.ownerDocument.defaultView!;
             const reference = input.ownerDocument.createElement("span");
             owner.append(reference);
@@ -66,6 +68,7 @@ describe("Rotation and step controls", () => {
                 const labelColor = window.getComputedStyle(label).color;
                 input.focus();
                 expect(input.matches(":focus-visible")).to.equal(true);
+                expect(window.getComputedStyle(dial).outlineWidth).to.equal("2px");
                 reference.style.color = "var(--appearance-hover-focus-glyphs)";
                 expect(window.getComputedStyle(dial).color).to.equal(
                     window.getComputedStyle(reference).color,
@@ -97,7 +100,7 @@ describe("Rotation and step controls", () => {
 
     it("renders the selected step button variants for every palette and status color", () => {
         cy.visit("/iframe.html?id=forms-stepcontrols--gallery&viewMode=story");
-        cy.get('button[aria-label="Value (+)"]').should("have.length", 24);
+        cy.get('button[aria-label="Value (+)"]').should("have.length", 48);
         cy.get('button[aria-label="Value (+)"]').each(($button) => {
             const button = $button[0];
             const window = button.ownerDocument.defaultView!;
@@ -121,4 +124,69 @@ describe("Rotation and step controls", () => {
             reference.remove();
         });
     });
+
+    for (const component of [
+        "slider",
+        "clockinput",
+        "clocksliceinput",
+        "clockdurationinput",
+        "iconrotateinput",
+    ]) {
+        it(`${component} keeps optional step button appearance independent from its own variant`, () => {
+            const storyId = `forms-${component}--gallery`;
+            const count = component === "iconrotateinput" ? 48 : 24;
+            cy.visit(`/iframe.html?id=${storyId}&viewMode=story`);
+            cy.get(".story table").should("exist");
+            cy.window()
+                .its("__STORYBOOK_PREVIEW__.channel")
+                .invoke("emit", "updateStoryArgs", {
+                    storyId,
+                    updatedArgs: {
+                        showStepControls: true,
+                        ariaLabel: "Value",
+                        showNumberInput: false,
+                    },
+                });
+            cy.get('.story button[aria-label="Value (+)"]')
+                .should("have.length", count)
+                .each(($button) => {
+                    expect($button.attr("data-appearance-variant")).to.equal(
+                        "ghost",
+                    );
+                });
+            for (const variant of ["outline", "inset"]) {
+                cy.window()
+                    .its("__STORYBOOK_PREVIEW__.channel")
+                    .invoke("emit", "updateStoryArgs", {
+                        storyId,
+                        updatedArgs: { stepControlsProps: { variant } },
+                    });
+                cy.get('.story button[aria-label="Value (+)"]')
+                    .first()
+                    .should("have.attr", "data-appearance-variant", variant);
+                cy.get('.story button[aria-label="Value (+)"]').each(
+                    ($button) => {
+                        expect(
+                            $button.attr("data-appearance-variant"),
+                        ).to.equal(variant);
+                    },
+                );
+            }
+            cy.window()
+                .its("__STORYBOOK_PREVIEW__.channel")
+                .invoke("emit", "updateStoryArgs", {
+                    storyId,
+                    updatedArgs: {
+                        disabled: true,
+                        stepControlsProps: {
+                            variant: "outline",
+                            disabled: false,
+                        },
+                    },
+                });
+            cy.get('.story button[aria-label="Value (+)"]').each(($button) => {
+                cy.wrap($button).should("be.disabled");
+            });
+        });
+    }
 });

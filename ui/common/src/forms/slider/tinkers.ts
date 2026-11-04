@@ -11,6 +11,7 @@ import {
     typographyStoryControls,
 } from "../../design-system";
 import { StoryControls } from "../../storybook";
+import { stepControlsPropsStoryControl } from "../step-controls";
 
 export const getSliderRatio = (
     value: number,
@@ -49,6 +50,7 @@ export const sliderStoryArgs: SliderProps = {
     disabled: false,
     showNumberInput: false,
     showStepControls: false,
+    stepControlsProps: undefined,
 };
 
 export const sliderStoryControls: StoryControls<SliderProps> = {
@@ -109,4 +111,5 @@ export const sliderStoryControls: StoryControls<SliderProps> = {
     disabled: { control: "boolean" },
     showNumberInput: { control: "boolean" },
     showStepControls: { control: "boolean" },
+    stepControlsProps: stepControlsPropsStoryControl,
 };

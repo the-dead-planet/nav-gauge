@@ -3,16 +3,19 @@ import classNames from "classnames";
 import {
     DEFAULT_COLOR,
     DEFAULT_SIZE,
+    DEFAULT_SURFACE_VARIANT,
     IconRotateInputProps,
     getClockGeometry,
+    ThemeContext,
     useTheme,
 } from "@ui";
+import { Label } from "../../design-system/typography";
+import { HudSurface } from "../../hud/HudSurface";
+import { IconRotateControlRow } from "./IconRotateControlRow";
 import { RotationArrows } from "./RotationArrows";
 import { RotateIconWrapper } from "./RotateIconWrapper";
 import { RotateA11yInput } from "./RotateA11yInput";
 import { useRotationPointer } from "./useRotationPointer";
-import { NumberInput } from "../number-input";
-import { StepControls } from "../step-controls";
 import styles from "./icon-rotate-input.module.css";
 
 export const IconRotateInput: FC<
@@ -28,6 +31,7 @@ export const IconRotateInput: FC<
     glyphsShade,
     highlightGlyphsShade,
     highlighted = false,
+    variant = DEFAULT_SURFACE_VARIANT,
     size = DEFAULT_SIZE,
     min = 0,
     max = 360,
@@ -37,6 +41,7 @@ export const IconRotateInput: FC<
     label,
     showNumberInput = false,
     showStepControls = false,
+    stepControlsProps,
     numberInputPlacement = "end",
     ariaLabel,
     className,
@@ -60,7 +65,6 @@ export const IconRotateInput: FC<
         disabled,
     });
     const appearanceProps = {
-        themeMode,
         color,
         highlightColor,
         glyphsShade,
@@ -69,101 +73,111 @@ export const IconRotateInput: FC<
         disabled: rotation.disabled,
         size,
     };
-    const rotateControl = (
-        <div
-            {...props}
-            {...rotation.pointerHandlers}
-            className={styles["visual-container"]}
-        >
-            <RotationArrows
-                svgSize={svgSize}
-                center={center}
-                outerRadius={outerRadius}
-            />
-            <RotateIconWrapper
-                icon={icon}
-                iconSize={controlSize.iconSize}
-                displayAngle={rotation.displayAngle + valueAdjustment}
-            />
-        </div>
-    );
 
     return (
-        <div
-            data-appearance-mode={theme.mode}
-            data-appearance-variant="default"
-            data-appearance-color={color}
-            data-appearance-highlight={highlightColor}
-            data-highlighted={highlighted || undefined}
-            data-dragging={rotation.dragging || undefined}
-            data-disabled={rotation.disabled || undefined}
-            data-size={size}
-            className={classNames(styles.container, className)}
-            style={
-                {
-                    ...style,
-                    "--appearance-default-glyphs-override":
-                        glyphsShade === undefined
-                            ? undefined
-                            : theme.color(color, glyphsShade),
-                    "--appearance-hover-focus-glyphs-override":
-                        highlightGlyphsShade === undefined
-                            ? undefined
-                            : theme.color(highlightColor, highlightGlyphsShade),
-                    "--appearance-active-pressed-glyphs-override":
-                        highlightGlyphsShade === undefined
-                            ? undefined
-                            : theme.color(highlightColor, highlightGlyphsShade),
-                } as CSSProperties
-            }
-        >
-            <RotateA11yInput
-                {...appearanceProps}
-                id={inputId}
-                min={min}
-                max={max}
-                step={step}
-                value={value}
-                onChange={onChange}
-                label={label}
-                showValue={!showNumberInput}
-                ariaLabel={ariaLabel}
-            />
+        <ThemeContext.Provider value={theme}>
             <div
-                className={classNames(
-                    styles["control-row"],
-                    showNumberInput &&
-                        styles[`number-input-${numberInputPlacement}`],
-                )}
+                data-size={size}
+                className={classNames(styles.container, className)}
+                style={style}
             >
-                {showStepControls ? (
-                    <StepControls
-                        {...appearanceProps}
-                        value={value}
-                        onChange={onChange}
-                        min={min}
-                        max={max}
-                        step={step}
-                        ariaLabel={ariaLabel ?? label}
+                {label ? (
+                    <Label
+                        htmlFor={inputId}
+                        color={color}
+                        highlightColor={highlightColor}
+                        shade={glyphsShade}
+                        highlightShade={highlightGlyphsShade}
+                        highlighted={highlighted}
+                        disabled={rotation.disabled}
+                        className={styles.label}
                     >
-                        {rotateControl}
-                    </StepControls>
-                ) : (
-                    rotateControl
-                )}
-                {showNumberInput ? (
-                    <NumberInput
-                        {...appearanceProps}
-                        value={value}
-                        onChange={(newValue) => onChange?.(newValue)}
-                        min={min}
-                        max={max}
-                        step={step}
-                        showStepControls
-                        ariaLabel={`${ariaLabel ?? label ?? "Angle"} (#)`}
-                    />
+                        {label}{" "}
+                        {!showNumberInput ? <span>{value}°</span> : null}
+                    </Label>
                 ) : null}
+                <IconRotateControlRow
+                    {...appearanceProps}
+                    value={value}
+                    onChange={onChange}
+                    min={min}
+                    max={max}
+                    step={step}
+                    label={label}
+                    ariaLabel={ariaLabel}
+                    showNumberInput={showNumberInput}
+                    showStepControls={showStepControls}
+                    stepControlsProps={stepControlsProps}
+                    numberInputPlacement={numberInputPlacement}
+                >
+                    <HudSurface
+                        {...props}
+                        {...rotation.pointerHandlers}
+                        as="div"
+                        variant={variant}
+                        color={color}
+                        highlightColor={highlightColor}
+                        highlighted={highlighted || rotation.dragging}
+                        disabled={rotation.disabled}
+                        size={size}
+                        data-dragging={rotation.dragging || undefined}
+                        data-depth={
+                            theme.appearancePolicies[variant].effects.depth
+                        }
+                        interactive
+                        rectangle
+                        className={styles["visual-container"]}
+                        style={
+                            {
+                                width: svgSize,
+                                height: svgSize,
+                                "--appearance-default-glyphs-override":
+                                    glyphsShade === undefined
+                                        ? undefined
+                                        : theme.color(color, glyphsShade),
+                                "--appearance-hover-focus-glyphs-override":
+                                    highlightGlyphsShade === undefined
+                                        ? undefined
+                                        : theme.color(
+                                              highlightColor,
+                                              highlightGlyphsShade,
+                                          ),
+                                "--appearance-active-pressed-glyphs-override":
+                                    highlightGlyphsShade === undefined
+                                        ? undefined
+                                        : theme.color(
+                                              highlightColor,
+                                              highlightGlyphsShade,
+                                          ),
+                            } as CSSProperties
+                        }
+                    >
+                        <RotateA11yInput
+                            id={inputId}
+                            min={min}
+                            max={max}
+                            step={step}
+                            value={value}
+                            onChange={onChange}
+                            disabled={rotation.disabled}
+                            label={label}
+                            ariaLabel={ariaLabel}
+                        />
+                        <RotationArrows
+                            svgSize={svgSize}
+                            center={center}
+                            outerRadius={outerRadius}
+                        />
+                        <RotateIconWrapper
+                            icon={icon}
+                            iconSize={controlSize.iconSize}
+                            displayAngle={
+                                rotation.displayAngle + valueAdjustment
+                            }
+                        />
+                    </HudSurface>
+                </IconRotateControlRow>
             </div>
-        </div>
+        </ThemeContext.Provider>
     );
 };

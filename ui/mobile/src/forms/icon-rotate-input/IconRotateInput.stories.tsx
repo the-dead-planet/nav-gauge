@@ -1,6 +1,7 @@
 import { ComponentProps, useEffect, useState } from "react";
 import {
     appearanceColorOptions,
+    surfaceVariantOptions,
     Icons,
     iconRotateInputStoryArgs,
     iconRotateInputStoryControls,
@@ -49,15 +50,21 @@ const story: MobileStoryDefinition<ComponentProps<typeof IconRotateInput>> = {
         "disabled",
         "showNumberInput",
         "showStepControls",
+        "stepControlsProps",
         "numberInputPlacement",
     ],
     renderPlayground: (args) => <StoryRotateInput {...args} />,
     renderGallery: (args) => (
         <VariantGallery
             colors={appearanceColorOptions}
-            variants={["default"]}
-            render={({ color, size }) => (
-                <StoryRotateInput {...args} color={color} size={size} />
+            variants={surfaceVariantOptions}
+            render={({ color, size, variant }) => (
+                <StoryRotateInput
+                    {...args}
+                    color={color}
+                    size={size}
+                    variant={variant}
+                />
             )}
         />
     ),

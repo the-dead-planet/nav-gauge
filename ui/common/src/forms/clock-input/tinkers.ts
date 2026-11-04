@@ -9,6 +9,7 @@ import {
     typographyStoryControls,
 } from "../../design-system";
 import { StoryControls } from "../../storybook";
+import { stepControlsPropsStoryControl } from "../step-controls";
 import { ClockInputProps, ClockDurationInputProps, ClockMode } from "./model";
 import {
     arcViewBox,
@@ -89,6 +90,7 @@ export const clockStoryArgs: Omit<ClockInputProps, "onChange"> = {
     disabled: false,
     showNumberInput: false,
     showStepControls: false,
+    stepControlsProps: undefined,
     numberInputPlacement: "end",
     label: "Angle",
 };
@@ -116,6 +118,7 @@ export const clockDurationStoryArgs: Omit<ClockDurationInputProps, "onChange"> =
         disabled: false,
         showNumberInput: false,
         showStepControls: false,
+        stepControlsProps: undefined,
         numberInputPlacement: "end",
         ariaLabel: "Duration",
     };
@@ -157,6 +160,7 @@ export const clockDurationStoryControls: StoryControls<ClockDurationInputProps> 
         disabled: { control: "boolean" },
         showNumberInput: { control: "boolean" },
         showStepControls: { control: "boolean" },
+        stepControlsProps: stepControlsPropsStoryControl,
         numberInputPlacement: {
             control: "select",
             options: ["start", "end", "above", "below"],

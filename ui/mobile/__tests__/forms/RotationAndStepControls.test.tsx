@@ -4,10 +4,11 @@ import {
     render,
     renderHook,
 } from "@testing-library/react-native";
-import { PanResponder, Text } from "react-native";
+import { AccessibilityInfo, PanResponder, Text } from "react-native";
 import {
     appearanceColorOptions,
-    fillVariantOptions,
+    surfaceVariantOptions,
+    SurfaceVariant,
     getClockGeometry,
     Orientation,
     Theme,
@@ -20,8 +21,22 @@ import {
 } from "@ui";
 import { StepControls } from "../../src/forms/step-controls/StepControls";
 import { IconRotateInput } from "../../src/forms/icon-rotate-input/IconRotateInput";
+import { Slider } from "../../src/forms/slider/Slider";
+import { ClockInput } from "../../src/forms/clock-input/ClockInput";
+import { ClockSliceInput } from "../../src/forms/clock-input/ClockSliceInput";
+import { ClockDurationInput } from "../../src/forms/clock-input/ClockDurationInput";
 
 jest.mock("../../src/design-system/icons", () => ({ Icon: () => null }));
+
+beforeEach(() => {
+    jest.spyOn(AccessibilityInfo, "isReduceMotionEnabled").mockResolvedValue(
+        false,
+    );
+});
+
+afterEach(() => {
+    jest.restoreAllMocks();
+});
 
 const media = {
     initial: () => ({
@@ -140,7 +155,7 @@ test("step buttons consume the selected appearance across variants, colors, and 
         );
         try {
             for (const color of appearanceColorOptions) {
-                for (const variant of fillVariantOptions) {
+                for (const variant of surfaceVariantOptions) {
                     const content = (disabled = false) => (
                         <ThemeContext.Provider value={theme}>
                             <StepControls
@@ -192,6 +207,80 @@ test("step buttons consume the selected appearance across variants, colors, and 
         }
     }
 });
+
+const stepVariants: (SurfaceVariant | undefined)[] = [
+    undefined,
+    "outline",
+    "inset",
+];
+
+test.each(stepVariants)(
+    "composed step controls use an independent variant (%s) and preserve value and disabled behavior",
+    async (stepVariant) => {
+        const theme = new Theme(
+            themeSpecifications[ThemeName.Default].light,
+            media,
+            false,
+        );
+        try {
+            for (const Control of [
+                Slider,
+                ClockInput,
+                ClockSliceInput,
+                ClockDurationInput,
+                IconRotateInput,
+            ]) {
+                const onChange = jest.fn();
+                const content = (disabled = false) => (
+                    <ThemeContext.Provider value={theme}>
+                        <Control
+                            value={50}
+                            step={2}
+                            onChange={onChange}
+                            color="intel"
+                            variant="fill"
+                            ariaLabel="Value"
+                            showStepControls
+                            stepControlsProps={{
+                                variant: stepVariant,
+                                disabled: false,
+                            }}
+                            disabled={disabled}
+                        />
+                    </ThemeContext.Provider>
+                );
+                const screen = await render(content());
+                const appearance = theme.resolveAppearance(
+                    stepVariant ?? "ghost",
+                    "intel",
+                );
+                const increment = screen.getByLabelText("Value (+)");
+                expect(increment).toHaveStyle({
+                    backgroundColor: appearance.surface,
+                    borderWidth: appearance.border.width,
+                });
+                if (Control === IconRotateInput) {
+                    expect(screen.getByRole("adjustable")).toHaveStyle({
+                        backgroundColor: theme.resolveAppearance(
+                            "fill",
+                            "intel",
+                        ).surface,
+                    });
+                }
+                await fireEvent(increment, "pressIn");
+                await fireEvent(increment, "pressOut");
+                expect(onChange).toHaveBeenLastCalledWith(52);
+                await screen.rerender(content(true));
+                expect(screen.getByLabelText("Value (+)")).toBeDisabled();
+                await fireEvent(screen.getByLabelText("Value (+)"), "pressIn");
+                expect(onChange).toHaveBeenCalledTimes(1);
+                await screen.unmount();
+            }
+        } finally {
+            theme.destroy();
+        }
+    },
+);
 
 test("native rotation keeps one responder, exposes adjustable actions, and disables all input", async () => {
     const theme = new Theme(

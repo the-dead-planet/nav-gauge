@@ -24,6 +24,8 @@ export const SliderControlRow: FC<SliderControlRowProps> = ({
     ariaLabel,
     showNumberInput = false,
     showStepControls = false,
+    stepControlsProps,
+    variant,
     children,
     ...appearanceProps
 }) => {
@@ -39,15 +41,16 @@ export const SliderControlRow: FC<SliderControlRowProps> = ({
         >
             {showStepControls ? (
                 <StepControls
-                    color={appearanceProps.color}
-                    variant={appearanceProps.variant}
-                    size={appearanceProps.size}
+                    {...appearanceProps}
+                    {...stepControlsProps}
                     value={value}
                     onChange={onChange}
                     min={min}
                     max={max}
                     step={step}
-                    disabled={appearanceProps.disabled}
+                    disabled={
+                        appearanceProps.disabled || stepControlsProps?.disabled
+                    }
                     ariaLabel={ariaLabel}
                 >
                     {children}
@@ -59,6 +62,7 @@ export const SliderControlRow: FC<SliderControlRowProps> = ({
                 <View style={styles.numberInput}>
                     <NumberInput
                         {...appearanceProps}
+                        variant={variant}
                         value={value}
                         onChange={(nextValue) => onChange?.(nextValue)}
                         min={min}

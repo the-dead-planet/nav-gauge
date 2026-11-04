@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from "storybook-react-rsbuild";
 import { makeLiveEditStory } from "storybook-addon-code-editor";
 import {
     appearanceColorOptions,
-    fillVariantOptions,
+    surfaceVariantOptions,
     stepControlsStoryArgs,
     stepControlsStoryControls,
 } from "@ui";
@@ -71,7 +71,7 @@ export const Gallery: Story = {
         <VariantGallery
             size={args.size}
             colors={appearanceColorOptions}
-            variants={fillVariantOptions}
+            variants={surfaceVariantOptions}
             render={({ color, size, variant }) => (
                 <StoryStepControls
                     {...args}

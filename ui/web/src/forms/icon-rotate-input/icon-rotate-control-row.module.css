@@ -1,0 +1,26 @@
+.row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.start {
+    flex-direction: row-reverse;
+}
+
+.above {
+    flex-direction: column-reverse;
+}
+
+.below {
+    flex-direction: column;
+}
+
+.row > :last-child:not(:first-child) {
+    width: 80px;
+}
+
+.above > :last-child:not(:first-child),
+.below > :last-child:not(:first-child) {
+    width: 100%;
+}
