@@ -7,6 +7,7 @@ import {
     FontType,
     Icons,
     NumberInputProps,
+    Theme,
     ThemeAppearanceState,
     useStepRepeat,
     useTheme,
@@ -27,6 +28,7 @@ const styles = StyleSheet.create({
         overflow: "hidden",
     },
     input: {
+        paddingHorizontal: Number.parseInt(Theme.spacing.xs, 10),
         flex: 1,
         boxSizing: "border-box",
         borderWidth: 0,
@@ -81,10 +83,10 @@ export const NumberInput: FC<NumberInputProps> = ({
     const state: ThemeAppearanceState = disabled
         ? "disabled"
         : highlighted
-            ? "active-pressed"
-            : focused
-                ? "hover-focus"
-                : "default";
+          ? "active-pressed"
+          : focused
+            ? "hover-focus"
+            : "default";
     const appearance = theme.resolveAppearance(
         variant,
         color,
@@ -96,7 +98,14 @@ export const NumberInput: FC<NumberInputProps> = ({
     const controlSize = theme.sizes.control[size];
     const incrementDisabled = disabled || (max !== undefined && value >= max);
     const decrementDisabled = disabled || (min !== undefined && value <= min);
-    const stepRepeat = useStepRepeat({ value, onChange, step, min, max, disabled });
+    const stepRepeat = useStepRepeat({
+        value,
+        onChange,
+        step,
+        min,
+        max,
+        disabled,
+    });
 
     const handleChange = (text: string) => {
         const parsed = Number(text);
@@ -144,7 +153,6 @@ export const NumberInput: FC<NumberInputProps> = ({
                         {
                             color: appearance.glyphs,
                             fontSize: controlSize.fontSize,
-                            paddingHorizontal: controlSize.paddingInline,
                             height: "100%",
                             paddingVertical: 0,
                         },
@@ -155,7 +163,10 @@ export const NumberInput: FC<NumberInputProps> = ({
                     onBlur={handleBlur}
                     keyboardType="decimal-pad"
                     selectTextOnFocus={autoSelect}
-                    accessibilityLabel={ariaLabel || (typeof label === "string" ? label : undefined)}
+                    accessibilityLabel={
+                        ariaLabel ||
+                        (typeof label === "string" ? label : undefined)
+                    }
                     editable={!disabled}
                 />
                 {unit ? (
@@ -173,7 +184,12 @@ export const NumberInput: FC<NumberInputProps> = ({
                     </Text>
                 ) : null}
                 {showStepControls ? (
-                    <View style={[styles.steppers, { borderLeftColor: appearance.border.color }]}>
+                    <View
+                        style={[
+                            styles.steppers,
+                            { borderLeftColor: appearance.border.color },
+                        ]}
+                    >
                         <Button
                             icon={Icons.NounProject.ChevronDownSingle}
                             iconRotateZ={180}
@@ -186,7 +202,9 @@ export const NumberInput: FC<NumberInputProps> = ({
                             highlighted={highlighted}
                             onPressIn={() => stepRepeat.start(1)}
                             onPressOut={stepRepeat.stop}
-                            accessibilityLabel={ariaLabel ? `${ariaLabel} (+)` : "+"}
+                            accessibilityLabel={
+                                ariaLabel ? `${ariaLabel} (+)` : "+"
+                            }
                             style={styles.stepper}
                             themeMode={themeMode}
                         />
@@ -201,7 +219,9 @@ export const NumberInput: FC<NumberInputProps> = ({
                             highlighted={highlighted}
                             onPressIn={() => stepRepeat.start(-1)}
                             onPressOut={stepRepeat.stop}
-                            accessibilityLabel={ariaLabel ? `${ariaLabel} (−)` : "−"}
+                            accessibilityLabel={
+                                ariaLabel ? `${ariaLabel} (−)` : "−"
+                            }
                             style={[
                                 styles.stepper,
                                 {

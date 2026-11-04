@@ -6,6 +6,7 @@ import {
     DEFAULT_SIZE,
     FontType,
     TextInputProps,
+    Theme,
     ThemeAppearanceState,
     useTheme,
 } from "@ui";
@@ -24,6 +25,7 @@ const styles = StyleSheet.create({
         overflow: "hidden",
     },
     input: {
+        paddingHorizontal: Number.parseInt(Theme.spacing.xs, 10),
         flex: 1,
         boxSizing: "border-box",
         borderWidth: 0,
@@ -54,10 +56,10 @@ export const TextInput: FC<TextInputProps> = ({
     const state: ThemeAppearanceState = disabled
         ? "disabled"
         : highlighted
-            ? "active-pressed"
-            : focused
-                ? "hover-focus"
-                : "default";
+          ? "active-pressed"
+          : focused
+            ? "hover-focus"
+            : "default";
     const appearance = theme.resolveAppearance(
         variant,
         color,
@@ -105,7 +107,6 @@ export const TextInput: FC<TextInputProps> = ({
                         {
                             color: appearance.glyphs,
                             fontSize: controlSize.fontSize,
-                            paddingHorizontal: controlSize.paddingInline,
                             height: "100%",
                         },
                     ]}
