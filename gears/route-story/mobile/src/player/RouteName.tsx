@@ -1,10 +1,10 @@
 import { FC } from "react";
 import { StyleSheet } from "react-native";
-import { Cartomancer, parsers, TopToolsProps, useMultipleTranslations } from "@apparatus";
+import { parsers, TopToolsProps, useMultipleTranslations } from "@apparatus";
 import { HexagonalPanel, Button, FileInput } from "@mobile-ui";
 import { useSubjectState } from "@tinker-chest";
 import { Icons } from "@ui";
-import { MobileMap, useMobileMachineWard } from "@mobile-apparatus";
+import { MobileMap } from "@mobile-apparatus";
 import { MobileRouteStoryProps } from "../model";
 
 const styles = StyleSheet.create({
@@ -27,9 +27,6 @@ export const RouteName: FC<TopToolsProps<MobileMap> & MobileRouteStoryProps> = (
     fileOperator,
     fitBoundsHandler,
 }) => {
-    const { cartomancer } = useMobileMachineWard();
-    const [selectedStyle] = useSubjectState(cartomancer.selectedStyle$);
-    const mapThemeMode = Cartomancer.styles[selectedStyle.id].mode;
     const [{ routeName, geojson }] = useSubjectState(data$);
 
     const [
@@ -57,7 +54,6 @@ export const RouteName: FC<TopToolsProps<MobileMap> & MobileRouteStoryProps> = (
             style={styles.panel}
         >
             <FileInput
-                themeMode={mapThemeMode}
                 mutiple
                 fileIcon={routeName ? Icons.NounProject.ReplaceFile : Icons.NounProject.Upload}
                 fileName={routeName}
@@ -87,7 +83,6 @@ export const RouteName: FC<TopToolsProps<MobileMap> & MobileRouteStoryProps> = (
                         id: 'fit-bounds',
                         element: (
                             <Button
-                                themeMode={mapThemeMode}
                                 variant="ghost"
                                 color="primary"
                                 corners="circle"

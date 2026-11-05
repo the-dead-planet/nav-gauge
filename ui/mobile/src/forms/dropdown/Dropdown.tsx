@@ -5,8 +5,6 @@ import {
     DEFAULT_FILL_VARIANT,
     DEFAULT_SIZE,
     DropdownProps,
-    ThemeContext,
-    useTheme,
 } from "@ui";
 import { SvgProps } from "react-native-svg";
 import { MenuList } from "../../rigs/menu/MenuList";
@@ -28,7 +26,6 @@ interface MobileOption<T> {
 }
 
 export function Dropdown<T>({
-    themeMode,
     color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor,
@@ -42,7 +39,6 @@ export function Dropdown<T>({
     disabled = false,
     highlighted = false,
 }: Omit<DropdownProps<T>, "options"> & { options: MobileOption<T>[] }) {
-    const theme = useTheme().forMode(themeMode);
     const {
         visible: isOpen,
         triggerRef,
@@ -64,65 +60,63 @@ export function Dropdown<T>({
     };
 
     return (
-        <ThemeContext.Provider value={theme}>
-            <View>
-                <View
-                    ref={triggerRef}
-                    collapsable={false}
-                    onLayout={onTriggerLayout}
-                >
-                    <DropdownControl
-                        {...controlProps}
-                        trigger
-                        expanded={isOpen}
-                        disabled={disabled}
-                        highlighted={highlighted || isOpen}
-                        label={selectedOption?.label ?? placeholder}
-                        icon={selectedOption?.icon}
-                        prepend={
-                            selectedOption?.selectedPrepend ??
-                            selectedOption?.prepend
-                        }
-                        onPress={toggle}
-                    />
-                </View>
-                <Modal
-                    visible={isOpen}
-                    transparent
-                    animationType="fade"
-                    onRequestClose={close}
-                >
-                    <Pressable
-                        ref={overlayRef}
-                        accessible={false}
-                        style={styles.backdrop}
-                        onPress={close}
-                    >
-                        <MenuList
-                            color={color}
-                            size={size}
-                            accessibilityViewIsModal
-                            onLayout={onLayout}
-                            style={menuPosition}
-                        >
-                            {options.map((option) => (
-                                <DropdownControl
-                                    {...controlProps}
-                                    key={String(option.value)}
-                                    highlighted={option.value === value}
-                                    label={option.label}
-                                    icon={option.icon}
-                                    prepend={option.prepend}
-                                    onPress={() => {
-                                        onChange?.(option.value);
-                                        close();
-                                    }}
-                                />
-                            ))}
-                        </MenuList>
-                    </Pressable>
-                </Modal>
+        <View>
+            <View
+                ref={triggerRef}
+                collapsable={false}
+                onLayout={onTriggerLayout}
+            >
+                <DropdownControl
+                    {...controlProps}
+                    trigger
+                    expanded={isOpen}
+                    disabled={disabled}
+                    highlighted={highlighted || isOpen}
+                    label={selectedOption?.label ?? placeholder}
+                    icon={selectedOption?.icon}
+                    prepend={
+                        selectedOption?.selectedPrepend ??
+                        selectedOption?.prepend
+                    }
+                    onPress={toggle}
+                />
             </View>
-        </ThemeContext.Provider>
+            <Modal
+                visible={isOpen}
+                transparent
+                animationType="fade"
+                onRequestClose={close}
+            >
+                <Pressable
+                    ref={overlayRef}
+                    accessible={false}
+                    style={styles.backdrop}
+                    onPress={close}
+                >
+                    <MenuList
+                        color={color}
+                        size={size}
+                        accessibilityViewIsModal
+                        onLayout={onLayout}
+                        style={menuPosition}
+                    >
+                        {options.map((option) => (
+                            <DropdownControl
+                                {...controlProps}
+                                key={String(option.value)}
+                                highlighted={option.value === value}
+                                label={option.label}
+                                icon={option.icon}
+                                prepend={option.prepend}
+                                onPress={() => {
+                                    onChange?.(option.value);
+                                    close();
+                                }}
+                            />
+                        ))}
+                    </MenuList>
+                </Pressable>
+            </Modal>
+        </View>
     );
 }

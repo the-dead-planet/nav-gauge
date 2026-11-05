@@ -6,21 +6,28 @@ import {
     StyleSheet,
     type ViewInstance,
 } from "react-native";
-import { ButtonProps, DEFAULT_COLOR, DEFAULT_SIZE, DEFAULT_SURFACE_VARIANT, hexagonGeometry, ThemeContext, useTheme } from "@ui";
+import {
+    ButtonProps,
+    DEFAULT_COLOR,
+    DEFAULT_SIZE,
+    DEFAULT_SURFACE_VARIANT,
+    hexagonGeometry,
+    useTheme,
+} from "@ui";
 import { Icon } from "../../design-system/icons";
 import { SvgProps } from "react-native-svg";
-import { HexagonSurface } from '../../hud/hexagon/HexagonSurface';
-import { useHudInteraction } from '../../hud/useHudInteraction';
+import { HexagonSurface } from "../../hud/hexagon/HexagonSurface";
+import { useHudInteraction } from "../../hud/useHudInteraction";
 import { Tooltip } from "../tooltip";
 import { MutableViewStyle } from "../../model";
 import { Text } from "../../design-system/typography";
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        boxSizing: 'border-box',
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        boxSizing: "border-box",
     },
 });
 
@@ -31,7 +38,6 @@ export interface MobileButtonProps {
 }
 
 export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
-    themeMode,
     forwardRef,
     color = DEFAULT_COLOR,
     fontType,
@@ -66,35 +72,47 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     accessibilityState,
     ...props
 }) => {
-    const theme = useTheme().forMode(themeMode);
-    const { state, interaction, focused } = useHudInteraction({ disabled, highlighted, onPressIn, onPressOut, onHoverIn, onHoverOut, onFocus, onBlur });
-    const isInteractiveState = state === 'active-pressed' || state === 'hover-focus';
+    const theme = useTheme();
+    const { state, interaction, focused } = useHudInteraction({
+        disabled,
+        highlighted,
+        onPressIn,
+        onPressOut,
+        onHoverIn,
+        onHoverOut,
+        onFocus,
+        onBlur,
+    });
+    const isInteractiveState =
+        state === "active-pressed" || state === "hover-focus";
     const appearance = theme.resolveAppearance(
         variant,
         color,
         highlightColor,
         state,
     );
-    const showGlow =
-        activeGlow !== "none" && isInteractiveState;
+    const showGlow = activeGlow !== "none" && isInteractiveState;
 
     const showTextGlow = showGlow && appearance.effects.glyphsGlow;
     const label = children ?? title;
-    const labelChildren = Children.toArray(label).filter((child) => child !== "");
+    const labelChildren = Children.toArray(label).filter(
+        (child) => child !== "",
+    );
     const controlSize = theme.sizes.control[size];
 
     const container: MutableViewStyle = {
         height: controlSize.height,
         minWidth: icon ? controlSize.height : undefined,
-        paddingHorizontal: labelChildren.length === 0
-            ? controlSize.iconPaddingInline
-            : controlSize.paddingInline,
+        paddingHorizontal:
+            labelChildren.length === 0
+                ? controlSize.iconPaddingInline
+                : controlSize.paddingInline,
         paddingVertical: controlSize.paddingBlock,
         gap: controlSize.gap,
         backgroundColor: appearance.surface,
         borderColor: appearance.border.color,
         borderWidth: appearance.border.width,
-        outlineStyle: 'solid',
+        outlineStyle: "solid",
         outlineWidth: focused ? 2 : 0,
         outlineOffset: 3,
         outlineColor: appearance.effects.glowColor,
@@ -123,28 +141,28 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         container.backgroundColor = "transparent";
         container.borderWidth = 0;
         container.boxShadow = undefined;
-        container.aspectRatio = hexagonGeometry['flat-top'].aspectRatio;
-        container.width = controlSize.height * hexagonGeometry['flat-top'].aspectRatio;
+        container.aspectRatio = hexagonGeometry["flat-top"].aspectRatio;
+        container.width =
+            controlSize.height * hexagonGeometry["flat-top"].aspectRatio;
         container.paddingHorizontal = 0;
         container.paddingVertical = 0;
     }
 
-    const textColor =
-        disabled
-            ? appearance.glyphs
-            : highlightGlyphsShade !== undefined && isInteractiveState
-                ? theme.color(highlightColor, highlightGlyphsShade)
-                : glyphsShade !== undefined && !isInteractiveState
-                    ? theme.color(color, glyphsShade)
-                    : appearance.glyphs;
+    const textColor = disabled
+        ? appearance.glyphs
+        : highlightGlyphsShade !== undefined && isInteractiveState
+          ? theme.color(highlightColor, highlightGlyphsShade)
+          : glyphsShade !== undefined && !isInteractiveState
+            ? theme.color(color, glyphsShade)
+            : appearance.glyphs;
     const fontSize = controlSize.fontSize;
 
     const textShadowStyle = showTextGlow
         ? {
-            textShadowColor: appearance.effects.glowColor,
-            textShadowRadius: 12,
-            textShadowOffset: { width: 0, height: 0 },
-        }
+              textShadowColor: appearance.effects.glowColor,
+              textShadowRadius: 12,
+              textShadowOffset: { width: 0, height: 0 },
+          }
         : undefined;
 
     const iconSize = controlSize.iconSize;
@@ -154,11 +172,11 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
             style={
                 iconRotateZ || iconRotateX
                     ? {
-                        transform: [
-                            { rotateZ: `${iconRotateZ}deg` },
-                            { rotateX: `${iconRotateX}deg` },
-                        ],
-                    }
+                          transform: [
+                              { rotateZ: `${iconRotateZ}deg` },
+                              { rotateX: `${iconRotateX}deg` },
+                          ],
+                      }
                     : undefined
             }
         >
@@ -204,7 +222,10 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
             {...interaction}
             disabled={disabled}
             accessibilityRole={accessibilityRole ?? "button"}
-            accessibilityLabel={accessibilityLabel ?? (!label && typeof tooltip === 'string' ? tooltip : undefined)}
+            accessibilityLabel={
+                accessibilityLabel ??
+                (!label && typeof tooltip === "string" ? tooltip : undefined)
+            }
             accessibilityState={{
                 ...accessibilityState,
                 disabled,
@@ -233,27 +254,23 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         tooltip !== undefined &&
         tooltip !== false &&
         tooltip !== "";
-    return (
-        <ThemeContext.Provider value={theme}>
-            {hasTooltip ? (
-                <Tooltip
-                    placement={tooltipPlacement}
-                    content={tooltip}
-                    color={highlightColor || color}
-                    variant={
-                        variant === "fill"
-                            ? "fill"
-                            : variant === "fill-translucent"
-                                ? "fill-translucent"
-                                : "fill-inverse"
-                    }
-                    showConnection={showTooltipConnection}
-                >
-                    {buttonElement}
-                </Tooltip>
-            ) : (
-                buttonElement
-            )}
-        </ThemeContext.Provider>
+    return hasTooltip ? (
+        <Tooltip
+            placement={tooltipPlacement}
+            content={tooltip}
+            color={highlightColor || color}
+            variant={
+                variant === "fill"
+                    ? "fill"
+                    : variant === "fill-translucent"
+                      ? "fill-translucent"
+                      : "fill-inverse"
+            }
+            showConnection={showTooltipConnection}
+        >
+            {buttonElement}
+        </Tooltip>
+    ) : (
+        buttonElement
     );
 };

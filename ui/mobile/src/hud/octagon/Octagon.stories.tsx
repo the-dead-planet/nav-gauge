@@ -14,7 +14,6 @@ const story: MobileStoryDefinition<OctagonProps> = {
     controls: octagonStoryControls,
     galleryEditableControls: [
         "children",
-        "themeMode",
         "highlightColor",
         "strokeWidth",
         "interactive",

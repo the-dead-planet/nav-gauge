@@ -6,7 +6,6 @@ import {
     DEFAULT_SIZE,
     getOctagonalGeometry,
     OctagonalPanelProps,
-    ThemeContext,
     useTheme,
 } from "@ui";
 import { HudSurface } from "../HudSurface";
@@ -24,7 +23,6 @@ interface Props {
 export const OctagonalPanel: FC<
     OctagonalPanelProps & Props & ComponentProps<"div">
 > = ({
-    themeMode,
     color = DEFAULT_COLOR,
     highlightColor = color,
     variant = DEFAULT_SURFACE_VARIANT,
@@ -38,7 +36,7 @@ export const OctagonalPanel: FC<
     children,
     ...props
 }) => {
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
     const { containerRef, width, height } = usePanelDimensions();
     const state = disabled
         ? "disabled"
@@ -53,46 +51,43 @@ export const OctagonalPanel: FC<
     );
     const ready = width > 0 && height > 0;
     return (
-        <ThemeContext.Provider value={theme}>
-            <HudSurface
-                as="div"
-                {...props}
-                ref={containerRef}
-                variant={variant}
-                color={color}
-                highlightColor={highlightColor}
-                highlighted={highlighted}
-                disabled={disabled}
-                className={classNames(
-                    {
-                        [surface.raised]:
-                            variant !== "ghost" && variant !== "inset",
-                    },
-                    className,
-                )}
+        <HudSurface
+            as="div"
+            {...props}
+            ref={containerRef}
+            variant={variant}
+            color={color}
+            highlightColor={highlightColor}
+            highlighted={highlighted}
+            disabled={disabled}
+            className={classNames(
+                {
+                    [surface.raised]:
+                        variant !== "ghost" && variant !== "inset",
+                },
+                className,
+            )}
+        >
+            {ready ? (
+                <OctagonalSurface
+                    width={width}
+                    height={height}
+                    size={size}
+                    appearance={appearance}
+                />
+            ) : null}
+            <div
+                className={classNames(styles.content, contentClassName)}
+                style={{
+                    ...contentStyle,
+                    clipPath:
+                        clipContent && ready
+                            ? getOctagonalGeometry(width, height, size).clipPath
+                            : undefined,
+                }}
             >
-                {ready ? (
-                    <OctagonalSurface
-                        width={width}
-                        height={height}
-                        size={size}
-                        appearance={appearance}
-                    />
-                ) : null}
-                <div
-                    className={classNames(styles.content, contentClassName)}
-                    style={{
-                        ...contentStyle,
-                        clipPath:
-                            clipContent && ready
-                                ? getOctagonalGeometry(width, height, size)
-                                      .clipPath
-                                : undefined,
-                    }}
-                >
-                    {children}
-                </div>
-            </HudSurface>
-        </ThemeContext.Provider>
+                {children}
+            </div>
+        </HudSurface>
     );
 };

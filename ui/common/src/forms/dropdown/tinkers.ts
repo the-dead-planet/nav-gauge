@@ -3,7 +3,6 @@ import {
     DEFAULT_FILL_VARIANT,
     DEFAULT_SIZE,
     fillVariantOptions,
-    typographyStoryControls,
 } from "../../design-system";
 import { buttonStoryControls } from "../../gizmos/button";
 import { StoryControls } from "../../storybook";
@@ -20,7 +19,6 @@ export const dropdownStoryArgs: Omit<DropdownProps<string>, "options"> = {
 };
 
 export const dropdownStoryControls: StoryControls<DropdownProps<string>> = {
-    themeMode: typographyStoryControls.themeMode,
     color: buttonStoryControls.color,
     highlightColor: buttonStoryControls.highlightColor,
     glyphsShade: buttonStoryControls.glyphsShade,

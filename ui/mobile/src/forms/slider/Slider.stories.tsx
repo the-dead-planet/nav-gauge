@@ -23,7 +23,6 @@ const story: MobileStoryDefinition<ComponentProps<typeof Slider>> = {
     args: sliderStoryArgs,
     controls: sliderStoryControls,
     galleryEditableControls: [
-        "themeMode",
         "value",
         "min",
         "max",

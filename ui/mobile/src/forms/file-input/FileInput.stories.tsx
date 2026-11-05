@@ -59,7 +59,6 @@ const story: MobileStoryDefinition<ComponentProps<typeof FileInput>> = {
         },
     },
     galleryEditableControls: [
-        "themeMode",
         "highlightColor",
         "glyphsShade",
         "highlightGlyphsShade",

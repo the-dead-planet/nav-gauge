@@ -40,7 +40,6 @@ export const IconRotateInput: FC<Props> = ({
     value = 0,
     onChange,
     valueAdjustment = 0,
-    themeMode,
     color = DEFAULT_COLOR,
     highlightColor = color,
     glyphsShade,
@@ -60,7 +59,7 @@ export const IconRotateInput: FC<Props> = ({
     ariaLabel,
     style,
 }) => {
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
     const controlSize = theme.sizes.control[size];
     const { svgSize, center, outerRadius } = getClockGeometry(
         controlSize.height,
@@ -87,7 +86,6 @@ export const IconRotateInput: FC<Props> = ({
         highlightGlyphsShade,
     );
     const appearanceProps = {
-        themeMode,
         color,
         highlightColor,
         glyphsShade,

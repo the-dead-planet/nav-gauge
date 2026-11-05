@@ -6,8 +6,6 @@ import {
     DEFAULT_SIZE,
     DEFAULT_HEXAGONAL_PANEL_SHAPE,
     getHexagonalPanelGeometry,
-    ThemeContext,
-    useTheme,
 } from "@ui";
 import classNames from "classnames";
 import styles from "./hexagonal-panel.module.css";
@@ -25,7 +23,6 @@ interface Props {
 export const HexagonalPanel: FC<
     HexagonalPanelProps & Props & ComponentProps<"div">
 > = ({
-    themeMode,
     interactive = false,
     activeGlow = "none",
     color = DEFAULT_COLOR,
@@ -48,7 +45,6 @@ export const HexagonalPanel: FC<
     children,
     ...props
 }) => {
-    const theme = useTheme().forMode(themeMode);
     const interaction = useHudInteraction({
         disabled,
         onClick,
@@ -69,60 +65,55 @@ export const HexagonalPanel: FC<
     const backdropMask = `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none"><polygon points="${points}" fill="white"/></svg>`)}")`;
 
     return (
-        <ThemeContext.Provider value={theme}>
-            <HudSurface
-                as="div"
-                {...props}
-                {...interaction}
-                ref={containerRef}
-                variant={variant}
-                color={color}
-                highlightColor={highlightColor}
-                interactive={interactive || !!onClick}
-                highlighted={highlighted}
-                disabled={disabled}
-                activeGlow={activeGlow}
-                className={classNames(surface.raised, className)}
-            >
-                {ready ? (
-                    <>
-                        <div
-                            className={styles.backdrop}
-                            style={{
-                                maskImage: backdropMask,
-                                WebkitMaskImage: backdropMask,
-                            }}
-                            aria-hidden="true"
+        <HudSurface
+            as="div"
+            {...props}
+            {...interaction}
+            ref={containerRef}
+            variant={variant}
+            color={color}
+            highlightColor={highlightColor}
+            interactive={interactive || !!onClick}
+            highlighted={highlighted}
+            disabled={disabled}
+            activeGlow={activeGlow}
+            className={classNames(surface.raised, className)}
+        >
+            {ready ? (
+                <>
+                    <div
+                        className={styles.backdrop}
+                        style={{
+                            maskImage: backdropMask,
+                            WebkitMaskImage: backdropMask,
+                        }}
+                        aria-hidden="true"
+                    />
+                    <svg
+                        viewBox={`0 0 ${width} ${height}`}
+                        preserveAspectRatio="none"
+                        className={surface.drawing}
+                        aria-hidden="true"
+                    >
+                        <polygon
+                            points={points}
+                            className={surface.glow}
+                            pathLength={300}
+                            strokeWidth={2}
                         />
-                        <svg
-                            viewBox={`0 0 ${width} ${height}`}
-                            preserveAspectRatio="none"
-                            className={surface.drawing}
-                            aria-hidden="true"
-                        >
-                            <polygon
-                                points={points}
-                                className={surface.glow}
-                                pathLength={300}
-                                strokeWidth={2}
-                            />
-                            <polygon
-                                points={points}
-                                className={surface.paint}
-                            />
-                        </svg>
-                    </>
-                ) : null}
-                <div
-                    className={classNames(styles.content, contentClassName)}
-                    style={{
-                        ...contentStyle,
-                        clipPath: clipContent && ready ? clipPath : undefined,
-                    }}
-                >
-                    {children}
-                </div>
-            </HudSurface>
-        </ThemeContext.Provider>
+                        <polygon points={points} className={surface.paint} />
+                    </svg>
+                </>
+            ) : null}
+            <div
+                className={classNames(styles.content, contentClassName)}
+                style={{
+                    ...contentStyle,
+                    clipPath: clipContent && ready ? clipPath : undefined,
+                }}
+            >
+                {children}
+            </div>
+        </HudSurface>
     );
 };

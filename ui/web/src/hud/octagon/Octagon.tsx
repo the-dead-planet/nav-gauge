@@ -5,7 +5,6 @@ import {
     DEFAULT_SIZE,
     DEFAULT_SURFACE_VARIANT,
     OctagonProps,
-    ThemeContext,
     useTheme,
 } from "@ui";
 import { HudSurface } from "../HudSurface";
@@ -15,7 +14,6 @@ import octagonal from "../octagonal-panel/octagonal-panel.module.css";
 import styles from "./octagon.module.css";
 
 export const Octagon: FC<OctagonProps & ComponentProps<"div">> = ({
-    themeMode,
     color = DEFAULT_COLOR,
     highlightColor = color,
     variant = DEFAULT_SURFACE_VARIANT,
@@ -36,7 +34,7 @@ export const Octagon: FC<OctagonProps & ComponentProps<"div">> = ({
     children,
     ...props
 }) => {
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
     const interaction = useHudInteraction({
         disabled,
         onClick,
@@ -54,50 +52,44 @@ export const Octagon: FC<OctagonProps & ComponentProps<"div">> = ({
     );
     const dimension = theme.sizes.control[size].height;
     return (
-        <ThemeContext.Provider value={theme}>
-            <HudSurface
-                as="div"
-                {...props}
-                {...interaction}
-                variant={variant}
+        <HudSurface
+            as="div"
+            {...props}
+            {...interaction}
+            variant={variant}
+            size={size}
+            color={color}
+            highlightColor={highlightColor}
+            interactive={interactive || !!onClick}
+            highlighted={highlighted}
+            disabled={disabled}
+            activeGlow={activeGlow}
+            data-glyphs-glow={appearance.effects.glyphsGlow || undefined}
+            className={classNames(styles.octagon, octagonal.root, className)}
+            style={
+                {
+                    ...style,
+                    ...(strokeWidth === undefined
+                        ? undefined
+                        : {
+                              "--appearance-border-width-scale": Math.max(
+                                  0,
+                                  strokeWidth,
+                              ),
+                          }),
+                } as CSSProperties
+            }
+        >
+            <OctagonalSurface
+                width={dimension}
+                height={dimension}
                 size={size}
-                color={color}
-                highlightColor={highlightColor}
-                interactive={interactive || !!onClick}
-                highlighted={highlighted}
-                disabled={disabled}
-                activeGlow={activeGlow}
-                data-glyphs-glow={appearance.effects.glyphsGlow || undefined}
-                className={classNames(
-                    styles.octagon,
-                    octagonal.root,
-                    className,
-                )}
-                style={
-                    {
-                        ...style,
-                        ...(strokeWidth === undefined
-                            ? undefined
-                            : {
-                                  "--appearance-border-width-scale": Math.max(
-                                      0,
-                                      strokeWidth,
-                                  ),
-                              }),
-                    } as CSSProperties
-                }
-            >
-                <OctagonalSurface
-                    width={dimension}
-                    height={dimension}
-                    size={size}
-                    appearance={appearance}
-                    strokeWidth={strokeWidth}
-                    regular
-                    showGlow={activeGlow !== "none"}
-                />
-                <div className={styles.content}>{children}</div>
-            </HudSurface>
-        </ThemeContext.Provider>
+                appearance={appearance}
+                strokeWidth={strokeWidth}
+                regular
+                showGlow={activeGlow !== "none"}
+            />
+            <div className={styles.content}>{children}</div>
+        </HudSurface>
     );
 };

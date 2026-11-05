@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
 });
 
 export const TextInput: FC<TextInputProps> = ({
-    themeMode,
     color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
@@ -51,7 +50,7 @@ export const TextInput: FC<TextInputProps> = ({
     highlighted = false,
     autoSelect = false,
 }) => {
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
     const [focused, setFocused] = useState(false);
     const state: ThemeAppearanceState = disabled
         ? "disabled"
@@ -75,7 +74,6 @@ export const TextInput: FC<TextInputProps> = ({
         <View style={styles.container}>
             {label ? (
                 <Label
-                    themeMode={themeMode}
                     color={color}
                     highlightColor={highlightColor}
                     shade={glyphsShade}

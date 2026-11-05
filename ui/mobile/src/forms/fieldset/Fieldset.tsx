@@ -5,7 +5,6 @@ import {
     DEFAULT_SIZE,
     DEFAULT_SURFACE_VARIANT,
     FieldsetProps,
-    ThemeContext,
     useFieldsetExpansion,
     useTheme,
 } from "@ui";
@@ -38,7 +37,6 @@ export const Fieldset: FC<FieldsetProps> = ({
     size = DEFAULT_SIZE,
     color = DEFAULT_COLOR,
     highlightColor,
-    themeMode,
     variant = DEFAULT_SURFACE_VARIANT,
     highlighted = false,
     disabled = false,
@@ -47,7 +45,7 @@ export const Fieldset: FC<FieldsetProps> = ({
     onExpandedChange,
     children,
 }) => {
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
     const controlSize = theme.sizes.control[size];
     const { isExpanded, toggle } = useFieldsetExpansion({
         expandable,
@@ -59,63 +57,59 @@ export const Fieldset: FC<FieldsetProps> = ({
     const transition = useFieldsetTransition(isExpanded);
 
     return (
-        <ThemeContext.Provider value={theme}>
-            <View style={styles.container}>
-                <FieldsetHeader
-                    label={label}
-                    prepend={prepend}
-                    append={append}
-                    expandable={expandable}
-                    expanded={isExpanded}
-                    onToggle={toggle}
+        <View style={styles.container}>
+            <FieldsetHeader
+                label={label}
+                prepend={prepend}
+                append={append}
+                expandable={expandable}
+                expanded={isExpanded}
+                onToggle={toggle}
+                color={color}
+                highlightColor={highlightColor}
+                size={size}
+                highlighted={highlighted}
+                disabled={disabled}
+            />
+            <Animated.View
+                collapsable={false}
+                pointerEvents={disabled || !isExpanded ? "none" : "auto"}
+                accessibilityElementsHidden={!isExpanded}
+                importantForAccessibility={
+                    isExpanded ? "auto" : "no-hide-descendants"
+                }
+                style={[
+                    styles.clip,
+                    {
+                        height: transition.height,
+                        marginTop:
+                            -(controlSize.height - controlSize.iconSize) / 2,
+                    },
+                ]}
+            >
+                <OctagonalPanel
                     color={color}
                     highlightColor={highlightColor}
+                    variant={variant}
                     size={size}
                     highlighted={highlighted}
                     disabled={disabled}
-                />
-                <Animated.View
-                    collapsable={false}
-                    pointerEvents={disabled || !isExpanded ? "none" : "auto"}
-                    accessibilityElementsHidden={!isExpanded}
-                    importantForAccessibility={
-                        isExpanded ? "auto" : "no-hide-descendants"
-                    }
-                    style={[
-                        styles.clip,
-                        {
-                            height: transition.height,
-                            marginTop:
-                                -(controlSize.height - controlSize.iconSize) /
-                                2,
-                        },
-                    ]}
+                    onLayout={transition.onLayout}
+                    style={styles.panel}
                 >
-                    <OctagonalPanel
-                        themeMode={themeMode}
-                        color={color}
-                        highlightColor={highlightColor}
-                        variant={variant}
-                        size={size}
-                        highlighted={highlighted}
-                        disabled={disabled}
-                        onLayout={transition.onLayout}
-                        style={styles.panel}
+                    <View
+                        style={[
+                            styles.content,
+                            {
+                                padding: controlSize.paddingInline,
+                                gap: controlSize.gap,
+                            },
+                        ]}
                     >
-                        <View
-                            style={[
-                                styles.content,
-                                {
-                                    padding: controlSize.paddingInline,
-                                    gap: controlSize.gap,
-                                },
-                            ]}
-                        >
-                            {children}
-                        </View>
-                    </OctagonalPanel>
-                </Animated.View>
-            </View>
-        </ThemeContext.Provider>
+                        {children}
+                    </View>
+                </OctagonalPanel>
+            </Animated.View>
+        </View>
     );
 };

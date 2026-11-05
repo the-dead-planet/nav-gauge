@@ -6,13 +6,11 @@ import {
     DEFAULT_SIZE,
     fillVariantOptions,
     sizeOptions,
-    typographyStoryControls,
 } from "../../design-system";
 import { StoryControls } from "../../storybook";
 import { TextInputProps } from "./model";
 
 export const textInputStoryArgs: Omit<TextInputProps, "onChange"> = {
-    themeMode: undefined,
     label: "Label",
     placeholder: "Placeholder",
     value: "Hello",
@@ -28,7 +26,6 @@ export const textInputStoryArgs: Omit<TextInputProps, "onChange"> = {
 };
 
 export const textInputStoryControls: StoryControls<TextInputProps> = {
-    themeMode: typographyStoryControls.themeMode,
     label: {
         control: "text",
     },

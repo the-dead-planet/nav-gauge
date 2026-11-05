@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
 });
 
 export const NumberInput: FC<NumberInputProps> = ({
-    themeMode,
     color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
@@ -78,7 +77,7 @@ export const NumberInput: FC<NumberInputProps> = ({
     autoSelect = false,
     showStepControls = true,
 }) => {
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
     const [focused, setFocused] = useState(false);
     const state: ThemeAppearanceState = disabled
         ? "disabled"
@@ -121,7 +120,6 @@ export const NumberInput: FC<NumberInputProps> = ({
         <View style={styles.container}>
             {label ? (
                 <Label
-                    themeMode={themeMode}
                     color={color}
                     highlightColor={highlightColor}
                     shade={glyphsShade}
@@ -206,7 +204,6 @@ export const NumberInput: FC<NumberInputProps> = ({
                                 ariaLabel ? `${ariaLabel} (+)` : "+"
                             }
                             style={styles.stepper}
-                            themeMode={themeMode}
                         />
                         <Button
                             icon={Icons.NounProject.ChevronDownSingle}
@@ -229,7 +226,6 @@ export const NumberInput: FC<NumberInputProps> = ({
                                     borderTopColor: appearance.border.color,
                                 },
                             ]}
-                            themeMode={themeMode}
                         />
                     </View>
                 ) : null}

@@ -28,7 +28,6 @@ export const iconRotateInputStoryArgs: Omit<IconRotateInputProps, "onChange"> =
         color: DEFAULT_COLOR,
         variant: DEFAULT_SURFACE_VARIANT,
         highlightColor: undefined,
-        themeMode: undefined,
         glyphsShade: undefined,
         highlightGlyphsShade: undefined,
         highlighted: false,
@@ -47,7 +46,6 @@ export const iconRotateInputStoryArgs: Omit<IconRotateInputProps, "onChange"> =
 
 export const iconRotateInputStoryControls: StoryControls<IconRotateInputProps> =
     {
-        themeMode: numberInputStoryControls.themeMode,
         color: numberInputStoryControls.color,
         variant: {
             control: "select",

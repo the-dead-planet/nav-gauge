@@ -17,12 +17,9 @@ import { Radio } from "../../src/forms/radio";
 import { Text } from "../../src/design-system/typography";
 import { HexagonSurface } from "../../src/hud/hexagon/HexagonSurface";
 
-jest.mock(
-    "../../src/hud/hexagon/HexagonSurface",
-    () => ({
-        HexagonSurface: jest.fn(() => null),
-    }),
-);
+jest.mock("../../src/hud/hexagon/HexagonSurface", () => ({
+    HexagonSurface: jest.fn(() => null),
+}));
 
 const media = {
     initial: () => ({
@@ -76,39 +73,36 @@ describe("Form choice appearance ownership", () => {
     );
 
     test.each(modes)(
-        "overrides the form choice and nested label without changing its %s parent",
+        "inherits the form choice and nested label theme without changing its %s sibling",
         async (mode) => {
             const theme = new Theme(
                 themeSpecifications[ThemeName.Default][mode],
                 media,
                 false,
             );
-            const overrides: (ThemeMode | undefined)[] = [
-                undefined,
-                "light",
-                "dark",
-            ];
+            const overrides: ThemeMode[] = ["light", "dark"];
             for (const [Control, role] of [
                 [Checkbox, "checkbox"],
                 [Radio, "radio"],
             ] as const) {
-                const content = (themeMode?: ThemeMode, disabled = false) => (
+                const content = (mode: ThemeMode, disabled = false) => (
                     <ThemeContext.Provider value={theme}>
-                        <Control
-                            themeMode={themeMode}
-                            checked
-                            color="glitch"
-                            highlightColor="intel"
-                            highlighted
-                            disabled={disabled}
-                            onChange={() => {}}
-                        >
-                            <Text color="glitch">Nested label</Text>
-                        </Control>
+                        <ThemeContext.Provider value={theme.forMode(mode)}>
+                            <Control
+                                checked
+                                color="glitch"
+                                highlightColor="intel"
+                                highlighted
+                                disabled={disabled}
+                                onChange={() => {}}
+                            >
+                                <Text color="glitch">Nested label</Text>
+                            </Control>
+                        </ThemeContext.Provider>
                         <Text color="glitch">Sibling</Text>
                     </ThemeContext.Provider>
                 );
-                const screen = await render(content());
+                const screen = await render(content(mode));
                 for (const themeMode of overrides) {
                     const resolvedTheme = theme.forMode(themeMode);
                     await screen.rerender(content(themeMode));
@@ -190,6 +184,7 @@ describe("Form choice appearance ownership", () => {
                 const expectAppearance = (
                     state: ThemeAppearanceState,
                     color = appearanceColorOptions[0],
+                    highlighted = false,
                 ) => {
                     const appearance = theme.resolveAppearance(
                         variant,
@@ -224,7 +219,11 @@ describe("Form choice appearance ownership", () => {
                             undefined,
                             color,
                             "intel",
-                            state,
+                            state === "disabled"
+                                ? "disabled"
+                                : highlighted
+                                  ? "active-pressed"
+                                  : "default",
                         ).glyphs,
                     });
                 };
@@ -243,10 +242,10 @@ describe("Form choice appearance ownership", () => {
                 await fireEvent(screen.getByRole(role), "pressOut");
                 expectAppearance("hover-focus");
                 await screen.rerender(content(undefined, true));
-                expectAppearance("active-pressed");
+                expectAppearance("active-pressed", undefined, true);
                 await fireEvent(screen.getByRole(role), "blur");
                 await fireEvent(screen.getByRole(role), "hoverIn");
-                expectAppearance("active-pressed");
+                expectAppearance("active-pressed", undefined, true);
                 await screen.rerender(content(undefined, true, false, true));
                 expect(screen.getByText("Choice")).toHaveStyle({
                     color: theme.color("intel", 100),
