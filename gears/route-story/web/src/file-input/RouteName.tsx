@@ -1,12 +1,12 @@
 import type * as maplibregl from "maplibre-gl";
 import { FC } from "react";
-import { Cartomancer, parsers, TopToolsProps, useMultipleTranslations } from "@apparatus";
+import { parsers, TopToolsProps, useMultipleTranslations } from "@apparatus";
 import { HexagonalPanel, Button, FileInput } from "@web-ui";
-import { useSubjectState } from "@tinker-chest";
-import { Icons } from "@ui";
+import { useObservableState, useSubjectState } from "@tinker-chest";
+import { Icons, useTheme } from "@ui";
+import { useWebMachineWard } from "@web-apparatus";
 import { WebRouteStoryProps } from "../model";
 import styles from './file-input.module.css';
-import { useWebMachineWard } from "@web-apparatus";
 
 export const RouteName: FC<TopToolsProps<maplibregl.Map> & WebRouteStoryProps> = ({
     gearId,
@@ -17,8 +17,8 @@ export const RouteName: FC<TopToolsProps<maplibregl.Map> & WebRouteStoryProps> =
     fitBoundsHandler,
 }) => {
     const { cartomancer } = useWebMachineWard();
-    const [selectedStyle] = useSubjectState(cartomancer.selectedStyle$);
-    const mapThemeMode = Cartomancer.styles[selectedStyle.id].mode;
+    const theme = useTheme();
+    const mapThemeMode = useObservableState(cartomancer.selectedStyleThemeMode$, theme.mode);
     const [{ routeName, geojson }] = useSubjectState(data$);
 
     const [
