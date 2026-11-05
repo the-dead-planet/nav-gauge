@@ -184,6 +184,7 @@ describe("Form choice appearance ownership", () => {
                 const expectAppearance = (
                     state: ThemeAppearanceState,
                     color = appearanceColorOptions[0],
+                    highlighted = false,
                 ) => {
                     const appearance = theme.resolveAppearance(
                         variant,
@@ -218,7 +219,11 @@ describe("Form choice appearance ownership", () => {
                             undefined,
                             color,
                             "intel",
-                            state,
+                            state === "disabled"
+                                ? "disabled"
+                                : highlighted
+                                  ? "active-pressed"
+                                  : "default",
                         ).glyphs,
                     });
                 };
@@ -237,10 +242,10 @@ describe("Form choice appearance ownership", () => {
                 await fireEvent(screen.getByRole(role), "pressOut");
                 expectAppearance("hover-focus");
                 await screen.rerender(content(undefined, true));
-                expectAppearance("active-pressed");
+                expectAppearance("active-pressed", undefined, true);
                 await fireEvent(screen.getByRole(role), "blur");
                 await fireEvent(screen.getByRole(role), "hoverIn");
-                expectAppearance("active-pressed");
+                expectAppearance("active-pressed", undefined, true);
                 await screen.rerender(content(undefined, true, false, true));
                 expect(screen.getByText("Choice")).toHaveStyle({
                     color: theme.color("intel", 100),
