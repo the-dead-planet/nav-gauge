@@ -58,7 +58,7 @@
         "lint": "npx eslint . --no-warn-ignored"
     },
     "dependencies": {
-        "@maplibre/maplibre-gl-style-spec": "^26.4.4",
+        "@maplibre/maplibre-gl-style-spec": "^26.5.0",
         "@turf/along": "^7.4.0",
         "@turf/bbox": "^7.4.0",
         "@turf/bearing": "^7.4.0",
@@ -77,8 +77,8 @@
         "@types/luxon": "^3.7.6",
         "@types/mocha": "^10.0.10",
         "@types/react": "^19.3.0",
-        "@typescript-eslint/eslint-plugin": "^8.72.0",
-        "@typescript-eslint/parser": "^8.72.0",
+        "@typescript-eslint/eslint-plugin": "^8.72.1",
+        "@typescript-eslint/parser": "^8.72.1",
         "chai": "^6.3.0",
         "concurrently": "^10.0.6",
         "eslint": "^10.13.0",

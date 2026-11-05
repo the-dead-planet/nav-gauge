@@ -18,15 +18,15 @@
         "react-native-view-recorder": "patch:react-native-view-recorder@npm%3A0.4.1#~/.yarn/patches/react-native-view-recorder-npm-0.4.1-f65f857d14.patch"
     },
     "devDependencies": {
-        "@maplibre/maplibre-gl-style-spec": "^26.4.4",
-        "@maplibre/maplibre-react-native": "11.5.0",
+        "@maplibre/maplibre-gl-style-spec": "^26.5.0",
+        "@maplibre/maplibre-react-native": "11.5.1",
         "react": "19.3.1",
-        "react-native": "0.88.0"
+        "react-native": "0.88.1"
     },
     "peerDependencies": {
-        "@maplibre/maplibre-react-native": "11.5.0",
+        "@maplibre/maplibre-react-native": "11.5.1",
         "react": "19.3.1",
-        "react-native": "0.88.0",
+        "react-native": "0.88.1",
         "rxjs": "^7.8.2"
     }
 }
