@@ -24,7 +24,6 @@ const story: MobileStoryDefinition<TextAreaProps> = {
     },
     controls: textAreaStoryControls,
     galleryEditableControls: [
-        "themeMode",
         "label",
         "placeholder",
         "glyphsShade",

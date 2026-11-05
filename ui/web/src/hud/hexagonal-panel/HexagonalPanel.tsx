@@ -6,8 +6,6 @@ import {
     DEFAULT_SIZE,
     DEFAULT_HEXAGONAL_PANEL_SHAPE,
     getHexagonalPanelGeometry,
-    ThemeContext,
-    useTheme,
 } from "@ui";
 import classNames from "classnames";
 import styles from "./hexagonal-panel.module.css";
@@ -25,7 +23,6 @@ interface Props {
 export const HexagonalPanel: FC<
     HexagonalPanelProps & Props & ComponentProps<"div">
 > = ({
-    themeMode,
     interactive = false,
     activeGlow = "none",
     color = DEFAULT_COLOR,
@@ -48,7 +45,6 @@ export const HexagonalPanel: FC<
     children,
     ...props
 }) => {
-    const theme = useTheme().forMode(themeMode);
     const interaction = useHudInteraction({
         disabled,
         onClick,
@@ -69,7 +65,6 @@ export const HexagonalPanel: FC<
     const backdropMask = `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none"><polygon points="${points}" fill="white"/></svg>`)}")`;
 
     return (
-        <ThemeContext.Provider value={theme}>
             <HudSurface
                 as="div"
                 {...props}
@@ -123,6 +118,5 @@ export const HexagonalPanel: FC<
                     {children}
                 </div>
             </HudSurface>
-        </ThemeContext.Provider>
     );
 };

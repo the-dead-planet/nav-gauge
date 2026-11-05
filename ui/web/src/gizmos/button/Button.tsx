@@ -5,7 +5,6 @@ import {
     DEFAULT_COLOR,
     DEFAULT_SIZE,
     DEFAULT_SURFACE_VARIANT,
-    ThemeContext,
     useTheme,
 } from "@ui";
 import { Icon } from "../../design-system/icons";
@@ -21,7 +20,6 @@ interface Props {
 }
 
 export const Button: FC<ComponentProps<"button"> & Props & ButtonProps> = ({
-    themeMode,
     color = DEFAULT_COLOR,
     fontType,
     glyphsShade,
@@ -46,7 +44,7 @@ export const Button: FC<ComponentProps<"button"> & Props & ButtonProps> = ({
     style,
     ...props
 }) => {
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
     const iconSize = theme.sizes.control[size].iconSize;
     const effects = theme.appearancePolicies[variant].effects;
     const labelChildren = Children.toArray(children).filter(
@@ -162,9 +160,7 @@ export const Button: FC<ComponentProps<"button"> & Props & ButtonProps> = ({
     ) : (
         button
     );
-    return (
-        <ThemeContext.Provider value={theme}>
-            {corners === "hexagon" ? (
+    return corners === "hexagon" ? (
                 <Hexagon
                     size={size}
                     variant={variant}
@@ -179,9 +175,7 @@ export const Button: FC<ComponentProps<"button"> & Props & ButtonProps> = ({
                 >
                     {buttonWithTooltip}
                 </Hexagon>
-            ) : (
-                buttonWithTooltip
-            )}
-        </ThemeContext.Provider>
+    ) : (
+        buttonWithTooltip
     );
 };

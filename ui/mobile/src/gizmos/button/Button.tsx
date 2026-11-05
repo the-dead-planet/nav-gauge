@@ -6,7 +6,7 @@ import {
     StyleSheet,
     type ViewInstance,
 } from "react-native";
-import { ButtonProps, DEFAULT_COLOR, DEFAULT_SIZE, DEFAULT_SURFACE_VARIANT, hexagonGeometry, ThemeContext, useTheme } from "@ui";
+import { ButtonProps, DEFAULT_COLOR, DEFAULT_SIZE, DEFAULT_SURFACE_VARIANT, hexagonGeometry, useTheme } from "@ui";
 import { Icon } from "../../design-system/icons";
 import { SvgProps } from "react-native-svg";
 import { HexagonSurface } from '../../hud/hexagon/HexagonSurface';
@@ -31,7 +31,6 @@ export interface MobileButtonProps {
 }
 
 export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
-    themeMode,
     forwardRef,
     color = DEFAULT_COLOR,
     fontType,
@@ -66,7 +65,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     accessibilityState,
     ...props
 }) => {
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
     const { state, interaction, focused } = useHudInteraction({ disabled, highlighted, onPressIn, onPressOut, onHoverIn, onHoverOut, onFocus, onBlur });
     const isInteractiveState = state === 'active-pressed' || state === 'hover-focus';
     const appearance = theme.resolveAppearance(
@@ -233,9 +232,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         tooltip !== undefined &&
         tooltip !== false &&
         tooltip !== "";
-    return (
-        <ThemeContext.Provider value={theme}>
-            {hasTooltip ? (
+    return hasTooltip ? (
                 <Tooltip
                     placement={tooltipPlacement}
                     content={tooltip}
@@ -251,9 +248,7 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
                 >
                     {buttonElement}
                 </Tooltip>
-            ) : (
-                buttonElement
-            )}
-        </ThemeContext.Provider>
+    ) : (
+        buttonElement
     );
 };

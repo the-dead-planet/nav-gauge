@@ -39,7 +39,6 @@ export const TextArea: FC<
             "value" | "onChange" | "onChangeText" | "multiline"
         >
 > = ({
-    themeMode,
     color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
@@ -57,7 +56,7 @@ export const TextArea: FC<
     style,
     ...props
 }) => {
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
     const [focused, setFocused] = useState(false);
     const isDisabled = disabled || !editable;
     const state: ThemeAppearanceState = isDisabled
@@ -81,7 +80,6 @@ export const TextArea: FC<
         <View style={styles.container}>
             {label ? (
                 <Label
-                    themeMode={themeMode}
                     color={color}
                     highlightColor={highlightColor}
                     shade={glyphsShade}

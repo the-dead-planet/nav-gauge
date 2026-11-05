@@ -5,7 +5,6 @@ import {
     DEFAULT_SIZE,
     DEFAULT_SURFACE_VARIANT,
     FieldsetProps,
-    ThemeContext,
     useFieldsetExpansion,
     useTheme,
 } from "@ui";
@@ -38,7 +37,6 @@ export const Fieldset: FC<FieldsetProps> = ({
     size = DEFAULT_SIZE,
     color = DEFAULT_COLOR,
     highlightColor,
-    themeMode,
     variant = DEFAULT_SURFACE_VARIANT,
     highlighted = false,
     disabled = false,
@@ -47,7 +45,7 @@ export const Fieldset: FC<FieldsetProps> = ({
     onExpandedChange,
     children,
 }) => {
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
     const controlSize = theme.sizes.control[size];
     const { isExpanded, toggle } = useFieldsetExpansion({
         expandable,
@@ -59,7 +57,6 @@ export const Fieldset: FC<FieldsetProps> = ({
     const transition = useFieldsetTransition(isExpanded);
 
     return (
-        <ThemeContext.Provider value={theme}>
             <View style={styles.container}>
                 <FieldsetHeader
                     label={label}
@@ -92,7 +89,6 @@ export const Fieldset: FC<FieldsetProps> = ({
                     ]}
                 >
                     <OctagonalPanel
-                        themeMode={themeMode}
                         color={color}
                         highlightColor={highlightColor}
                         variant={variant}
@@ -116,6 +112,5 @@ export const Fieldset: FC<FieldsetProps> = ({
                     </OctagonalPanel>
                 </Animated.View>
             </View>
-        </ThemeContext.Provider>
     );
 };

@@ -6,7 +6,6 @@ import {
     DEFAULT_SIZE,
     fillVariantOptions,
     sizeOptions,
-    typographyStoryControls,
 } from "../../design-system";
 import { StoryControls } from "../../storybook";
 import { NumberInputPlacement, NumberInputProps } from "./model";
@@ -17,7 +16,6 @@ export const getCompanionNumberInputWidth = (
     placement === "above" || placement === "below" ? "100%" : 80;
 
 export const numberInputStoryArgs: Omit<NumberInputProps, "onChange"> = {
-    themeMode: undefined,
     label: "Value",
     value: 42,
     min: 0,
@@ -38,7 +36,6 @@ export const numberInputStoryArgs: Omit<NumberInputProps, "onChange"> = {
 };
 
 export const numberInputStoryControls: StoryControls<NumberInputProps> = {
-    themeMode: typographyStoryControls.themeMode,
     label: {
         control: "text",
     },

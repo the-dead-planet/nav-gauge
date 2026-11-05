@@ -11,7 +11,6 @@ export const RotateLabel: FC<Props> = ({
     label,
     displayWrapped,
     showValue,
-    themeMode,
     color,
     highlightColor,
     glyphsShade,
@@ -21,7 +20,6 @@ export const RotateLabel: FC<Props> = ({
 }) =>
     label ? (
         <Label
-            themeMode={themeMode}
             color={color}
             highlightColor={highlightColor}
             shade={glyphsShade}

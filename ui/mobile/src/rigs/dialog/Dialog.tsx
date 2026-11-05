@@ -15,7 +15,6 @@ import {
     DialogProps,
     FontType,
     TransitionProps,
-    ThemeContext,
     useTheme,
 } from '@ui';
 import { useSubjectState } from '@tinker-chest';
@@ -98,7 +97,6 @@ interface Props extends DialogProps {
 }
 
 export const Dialog: FC<Props> = ({
-    themeMode,
     backdrop = true,
     header,
     color = DEFAULT_COLOR,
@@ -115,7 +113,7 @@ export const Dialog: FC<Props> = ({
         close: handleClose,
         overlayOpacity,
     } = useDialogTransition();
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
     const insets = useSafeAreaInsets();
     const [media] = useSubjectState(theme.media$);
     const isWide = !media.isLessThanSm;
@@ -174,7 +172,6 @@ export const Dialog: FC<Props> = ({
                             : styles.fullWidth
                     }
                 >
-                    <ThemeContext.Provider value={theme}>
                         <Panel
                             variant={variant}
                             color={color}
@@ -242,7 +239,6 @@ export const Dialog: FC<Props> = ({
                                 ) : null}
                             </View>
                         </Panel>
-                    </ThemeContext.Provider>
                 </Transition>
             </Animated.View>
         </Modal>

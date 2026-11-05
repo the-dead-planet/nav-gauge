@@ -1,6 +1,17 @@
 import { FC } from "react";
 import { Platform, Text as RNText, TextProps as RNTextProps, StyleSheet, TextStyle } from "react-native";
-import { DEFAULT_COLOR, FontType, resolveTypographyFontWeight, resolveTypographySpacing, TextUsage, typographyUsageSpecifications, TypographyProps, Theme, ThemeAppearanceState, useTheme } from "@ui";
+import {
+    DEFAULT_COLOR,
+    FontType,
+    resolveTypographyFontWeight,
+    resolveTypographySpacing,
+    TextUsage,
+    typographyUsageSpecifications,
+    TypographyProps,
+    Theme,
+    ThemeAppearanceState,
+    useTheme,
+} from "@ui";
 import { resolveMobileFont } from "./fontFamily";
 
 export type { TextUsage } from '@ui';
@@ -20,7 +31,6 @@ export interface TextProps extends Omit<RNTextProps, 'disabled'>, TypographyProp
 
 export const Text: FC<TextProps> = ({
     variant,
-    themeMode,
     usage = 'body',
     color = DEFAULT_COLOR,
     highlightColor = color,
@@ -55,7 +65,7 @@ export const Text: FC<TextProps> = ({
     style,
     ...props
 }) => {
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
     const spacingValues = resolveTypographySpacing({ m, mv, mh, mt, mr, mb, ml, p, pv, ph, pt, pr, pb, pl });
     const state = disabled ? 'disabled' : appearanceState;
     const appearance = theme.resolveAppearance(variant, color, highlightColor, state);

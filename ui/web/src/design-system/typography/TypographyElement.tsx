@@ -12,7 +12,6 @@ export const TypographyElement = <Element extends ElementType>({
     as: Component,
     baseClassName,
     variant,
-    themeMode,
     color = DEFAULT_COLOR,
     highlightColor = color,
     highlighted,
@@ -53,7 +52,7 @@ export const TypographyElement = <Element extends ElementType>({
     return createElement(Component, {
         ...props,
         'data-appearance-variant': variant ?? (color === undefined ? undefined : 'default'),
-        'data-appearance-mode': themeMode ?? theme.mode,
+        'data-appearance-mode': theme.mode,
         'data-appearance-color': color,
         'data-appearance-highlight': highlightColor,
         'data-highlighted': highlighted || undefined,

@@ -2,7 +2,6 @@ import { HexagonShape, SizeVariant } from "../../design-system/model";
 import { DEFAULT_SIZE, sizeOptions } from "../../design-system/tinkers";
 import { StoryControls } from "../../storybook/model";
 import { hudSurfaceStoryArgs, hudSurfaceStoryControls } from "../tinkers";
-import { typographyStoryControls } from "../../design-system/typography";
 import { hexagonShapes } from "../hexagon/tinkers";
 import { HexagonalPanelProps } from "./model";
 
@@ -44,12 +43,10 @@ export const hexagonalPanelStoryArgs: HexagonalPanelProps = {
     ...hudSurfaceStoryArgs,
     size: DEFAULT_SIZE,
     shape: DEFAULT_HEXAGONAL_PANEL_SHAPE,
-    themeMode: undefined,
 };
 
 export const hexagonalPanelStoryControls: StoryControls<HexagonalPanelProps> = {
     ...hudSurfaceStoryControls,
-    themeMode: typographyStoryControls.themeMode,
     shape: {
         control: "select",
         options: hexagonShapes,

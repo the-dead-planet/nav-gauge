@@ -7,7 +7,6 @@ import {
     DEFAULT_COLOR,
     DEFAULT_FILL_VARIANT,
     DEFAULT_SIZE,
-    ThemeContext,
     useTheme,
 } from "@ui";
 import { Label } from "../../design-system/typography";
@@ -27,7 +26,6 @@ const styles = StyleSheet.create({
 });
 
 export const Checkbox: FC<CheckboxProps> = ({
-    themeMode,
     color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
@@ -41,7 +39,7 @@ export const Checkbox: FC<CheckboxProps> = ({
     highlighted = false,
     children,
 }) => {
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
     const { state, interaction, focused } = useHudInteraction({
         disabled,
         highlighted,
@@ -62,7 +60,6 @@ export const Checkbox: FC<CheckboxProps> = ({
     const boxSize = controlSize.height - controlSize.gap;
 
     return (
-        <ThemeContext.Provider value={theme}>
             <Pressable
                 accessibilityRole="checkbox"
                 accessibilityState={{ checked, disabled }}
@@ -135,6 +132,5 @@ export const Checkbox: FC<CheckboxProps> = ({
                     </Label>
                 ) : null}
             </Pressable>
-        </ThemeContext.Provider>
     );
 };

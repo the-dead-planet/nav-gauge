@@ -12,7 +12,6 @@ import styles from "./text-area.module.css";
 
 export const TextArea: FC<Omit<ComponentProps<"textarea">, "onChange" | "value" | "size"> & TextAreaProps> = ({
     id,
-    themeMode,
     color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
@@ -32,7 +31,7 @@ export const TextArea: FC<Omit<ComponentProps<"textarea">, "onChange" | "value" 
 }) => {
     const generatedId = useId();
     const textAreaId = id || generatedId;
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
 
     const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
         onChange(event.target.value);
@@ -70,7 +69,6 @@ export const TextArea: FC<Omit<ComponentProps<"textarea">, "onChange" | "value" 
             {label ? (
                 <Label
                     htmlFor={textAreaId}
-                    themeMode={themeMode}
                     color={color}
                     highlightColor={highlightColor}
                     shade={glyphsShade}

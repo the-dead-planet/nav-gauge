@@ -4,7 +4,6 @@ import {
     DEFAULT_FILL_VARIANT,
     DEFAULT_SIZE,
     SliderProps,
-    ThemeContext,
     useTheme,
 } from "@ui";
 import { Label, Span } from "../../design-system/typography";
@@ -15,7 +14,6 @@ import styles from "./slider.module.css";
 export const Slider: FC<
     SliderProps & Omit<ComponentProps<"input">, "onChange" | "size">
 > = ({
-    themeMode,
     color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
@@ -38,7 +36,7 @@ export const Slider: FC<
     ariaLabel,
     ...props
 }) => {
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
     const generatedId = useId();
     const inputId = id ?? generatedId;
     const accessibleLabel =
@@ -57,7 +55,6 @@ export const Slider: FC<
     };
 
     return (
-        <ThemeContext.Provider value={theme}>
             <div
                 className={styles.container}
                 data-size={size}
@@ -111,6 +108,5 @@ export const Slider: FC<
                     />
                 </SliderControlRow>
             </div>
-        </ThemeContext.Provider>
     );
 };

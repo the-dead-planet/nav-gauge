@@ -8,7 +8,6 @@ import {
     DEFAULT_GLYPH_CORNERS,
     hexagonGeometry,
     RadioProps,
-    ThemeContext,
     useTheme,
 } from "@ui";
 import { Label } from "../../design-system/typography";
@@ -28,7 +27,6 @@ const styles = StyleSheet.create({
 });
 
 export const Radio: FC<RadioProps> = ({
-    themeMode,
     color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
@@ -42,7 +40,7 @@ export const Radio: FC<RadioProps> = ({
     highlighted = false,
     children,
 }) => {
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
     const { state, interaction, focused } = useHudInteraction({
         disabled,
         highlighted,
@@ -64,7 +62,6 @@ export const Radio: FC<RadioProps> = ({
     const markerSize = controlSize.iconSize / 2;
 
     return (
-        <ThemeContext.Provider value={theme}>
             <Pressable
                 accessibilityRole="radio"
                 accessibilityState={{ checked, disabled }}
@@ -152,6 +149,5 @@ export const Radio: FC<RadioProps> = ({
                     </Label>
                 ) : null}
             </Pressable>
-        </ThemeContext.Provider>
     );
 };

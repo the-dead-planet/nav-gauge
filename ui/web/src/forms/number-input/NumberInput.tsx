@@ -25,7 +25,6 @@ export const NumberInput: FC<
         NumberInputProps
 > = ({
     id,
-    themeMode,
     color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
@@ -50,7 +49,7 @@ export const NumberInput: FC<
 }) => {
     const generatedId = useId();
     const inputId = id || generatedId;
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
     const getStepButtonProps = useStepRepeatButton({
         value,
         onChange,
@@ -106,7 +105,6 @@ export const NumberInput: FC<
             {label ? (
                 <Label
                     htmlFor={inputId}
-                    themeMode={themeMode}
                     color={color}
                     highlightColor={highlightColor}
                     shade={glyphsShade}

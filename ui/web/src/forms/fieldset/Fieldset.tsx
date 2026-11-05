@@ -26,7 +26,6 @@ export const Fieldset: FC<Props> = ({
     size = DEFAULT_SIZE,
     color = DEFAULT_COLOR,
     highlightColor,
-    themeMode,
     variant = DEFAULT_SURFACE_VARIANT,
     highlighted = false,
     disabled = false,
@@ -49,7 +48,6 @@ export const Fieldset: FC<Props> = ({
 
     return (
         <OctagonalPanel
-            themeMode={themeMode}
             size={size}
             color={color}
             highlightColor={highlightColor}

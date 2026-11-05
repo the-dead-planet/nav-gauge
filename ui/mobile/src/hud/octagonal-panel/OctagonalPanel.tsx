@@ -5,7 +5,6 @@ import {
     DEFAULT_SURFACE_VARIANT,
     DEFAULT_SIZE,
     OctagonalPanelProps,
-    ThemeContext,
     useTheme,
 } from "@ui";
 import { HudContent } from "../HudContent";
@@ -27,7 +26,6 @@ interface Props extends ViewProps {
 }
 
 export const OctagonalPanel: FC<OctagonalPanelProps & Props> = ({
-    themeMode,
     color = DEFAULT_COLOR,
     highlightColor = color,
     variant = DEFAULT_SURFACE_VARIANT,
@@ -41,7 +39,7 @@ export const OctagonalPanel: FC<OctagonalPanelProps & Props> = ({
     children,
     ...props
 }) => {
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
     const dimensions = usePanelDimensions();
     const appearance = theme.resolveAppearance(
         variant,
@@ -50,7 +48,6 @@ export const OctagonalPanel: FC<OctagonalPanelProps & Props> = ({
         disabled ? "disabled" : highlighted ? "active-pressed" : "default",
     );
     return (
-        <ThemeContext.Provider value={theme}>
             <View
                 {...props}
                 ref={forwardRef}
@@ -83,6 +80,5 @@ export const OctagonalPanel: FC<OctagonalPanelProps & Props> = ({
                     <HudContent appearance={appearance}>{children}</HudContent>
                 </View>
             </View>
-        </ThemeContext.Provider>
     );
 };

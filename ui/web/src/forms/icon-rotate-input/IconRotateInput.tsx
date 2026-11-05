@@ -6,7 +6,6 @@ import {
     DEFAULT_SURFACE_VARIANT,
     IconRotateInputProps,
     getClockGeometry,
-    ThemeContext,
     useTheme,
 } from "@ui";
 import { Label } from "../../design-system/typography";
@@ -25,7 +24,6 @@ export const IconRotateInput: FC<
     value = 0,
     onChange,
     valueAdjustment = 0,
-    themeMode,
     color = DEFAULT_COLOR,
     highlightColor = color,
     glyphsShade,
@@ -48,7 +46,7 @@ export const IconRotateInput: FC<
     style,
     ...props
 }) => {
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
     const generatedId = useId();
     const inputId = id ?? generatedId;
     const controlSize = theme.sizes.control[size];
@@ -75,7 +73,6 @@ export const IconRotateInput: FC<
     };
 
     return (
-        <ThemeContext.Provider value={theme}>
             <div
                 data-size={size}
                 className={classNames(styles.container, className)}
@@ -178,6 +175,5 @@ export const IconRotateInput: FC<
                     </HudSurface>
                 </IconRotateControlRow>
             </div>
-        </ThemeContext.Provider>
     );
 };

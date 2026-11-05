@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { AppearanceProps, FillVariant } from "../../design-system/model";
+import { AppearanceProps, FillVariant } from "../../design-system";
 import { NumberInputPlacement } from "../number-input";
 
 export type ClockMode = "angle" | "slice" | "duration";
@@ -58,12 +58,11 @@ export type ClockDurationNumberInputsProps = Omit<
     | "showNumberInput"
     | "showStepControls"
     | "stepControlsProps"
-    | "themeMode"
 >;
 
 export interface ClockControlRowProps extends Omit<
     ClockInputProps,
-    "id" | "thumbIcon" | "formatValue" | "themeMode"
+    "id" | "thumbIcon" | "formatValue"
 > {
     mode: ClockMode;
     children: ReactNode;

@@ -5,8 +5,6 @@ import {
     DEFAULT_FILL_VARIANT,
     DEFAULT_SIZE,
     DropdownProps,
-    ThemeContext,
-    useTheme,
 } from "@ui";
 import { SvgProps } from "react-native-svg";
 import { MenuList } from "../../rigs/menu/MenuList";
@@ -28,7 +26,6 @@ interface MobileOption<T> {
 }
 
 export function Dropdown<T>({
-    themeMode,
     color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor,
@@ -42,7 +39,6 @@ export function Dropdown<T>({
     disabled = false,
     highlighted = false,
 }: Omit<DropdownProps<T>, "options"> & { options: MobileOption<T>[] }) {
-    const theme = useTheme().forMode(themeMode);
     const {
         visible: isOpen,
         triggerRef,
@@ -64,7 +60,6 @@ export function Dropdown<T>({
     };
 
     return (
-        <ThemeContext.Provider value={theme}>
             <View>
                 <View
                     ref={triggerRef}
@@ -123,6 +118,5 @@ export function Dropdown<T>({
                     </Pressable>
                 </Modal>
             </View>
-        </ThemeContext.Provider>
     );
 }

@@ -9,7 +9,6 @@ import {
     DialogProps,
     FontType,
     TransitionProps,
-    ThemeContext,
     useTheme,
 } from '@ui';
 import { useSubjectState } from '@tinker-chest';
@@ -22,7 +21,6 @@ import styles from './dialog.module.css';
 import { useDialog } from './useDialog';
 
 export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
-    themeMode,
     backdrop = true,
     header,
     color = DEFAULT_COLOR,
@@ -37,7 +35,7 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
 }) => {
     const { render, close, dialogRef, onKeyDown } = useDialog();
     const headerId = useId();
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
     const [media] = useSubjectState(theme.media$);
     const slide: { [key in DialogPlacement]: TransitionProps['slide'] } = {
         ['middle']: 'to-bottom',
@@ -71,7 +69,6 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
                     )}
                     {...props}
                 >
-                    <ThemeContext.Provider value={theme}>
                         <HudSurface
                             as="div"
                             rectangle
@@ -125,7 +122,6 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
                                 ) : null}
                             </div>
                         </HudSurface>
-                    </ThemeContext.Provider>
                 </div>
             </Transition>
         </div>,

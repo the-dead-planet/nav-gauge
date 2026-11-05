@@ -35,7 +35,6 @@ const story: MobileStoryDefinition<ComponentProps<typeof IconRotateInput>> = {
         },
     },
     galleryEditableControls: [
-        "themeMode",
         "value",
         "valueAdjustment",
         "min",

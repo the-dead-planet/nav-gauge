@@ -297,6 +297,26 @@ describe("Theme", () => {
         }
     });
 
+    it("keeps shade 200 close to 100 and gradually widens the steps toward 500", () => {
+        for (const palette of Object.values(Theme.palette)) {
+            const lightness = [100, 200, 300, 400, 500].map((shade) =>
+                oklabLightness(palette[shade as 100 | 200 | 300 | 400 | 500]),
+            );
+            const gaps = lightness.slice(1).map((value, index) => lightness[index] - value);
+            expect(gaps[0]).to.be.lessThan(gaps[1] * 0.8);
+            expect(gaps[1]).to.be.at.most(gaps[2] + 0.006);
+            expect(gaps[2]).to.be.closeTo(gaps[3], 0.006);
+        }
+        expect(Theme.palette.teal[100]).to.deep.equal({ r: 217, g: 226, b: 226 });
+        expect([500, 600, 700, 800, 900].map((shade) => Theme.palette.teal[shade as 500 | 600 | 700 | 800 | 900])).to.deep.equal([
+            { r: 14, g: 128, b: 127 },
+            { r: 0, g: 101, b: 100 },
+            { r: 0, g: 71, b: 71 },
+            { r: 1, g: 49, b: 49 },
+            { r: 4, g: 36, b: 36 },
+        ]);
+    });
+
     it("fades very light shades toward white", () => {
         const palette = Theme.palette["luminous-yellow"];
         const channelSpread = ({ r, g, b }: { r: number; g: number; b: number }): number =>

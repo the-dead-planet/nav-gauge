@@ -76,7 +76,6 @@ const story = {
         },
     },
     galleryEditableControls: [
-        "themeMode",
         "children",
         "fontType",
         "icon",

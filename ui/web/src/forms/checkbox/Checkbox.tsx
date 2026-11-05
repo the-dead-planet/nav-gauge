@@ -6,7 +6,6 @@ import {
     DEFAULT_COLOR,
     DEFAULT_FILL_VARIANT,
     DEFAULT_SIZE,
-    ThemeContext,
     useTheme,
 } from "@ui";
 import { HexagonSurface } from "../../hud/hexagon/HexagonSurface";
@@ -20,7 +19,6 @@ interface Props {
 export const Checkbox: FC<
     Omit<ComponentProps<"label">, "onChange"> & CheckboxProps & Props
 > = ({
-    themeMode,
     id,
     labelledBy,
     color = DEFAULT_COLOR,
@@ -44,7 +42,7 @@ export const Checkbox: FC<
 }) => {
     const generatedId = useId();
     const effectiveId = id || generatedId;
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         onChange(e.target.checked);
@@ -59,7 +57,6 @@ export const Checkbox: FC<
     };
 
     return (
-        <ThemeContext.Provider value={theme}>
             <Label
                 color={color}
                 highlightColor={highlightColor}
@@ -122,6 +119,5 @@ export const Checkbox: FC<
                     <span className={styles["label"]}>{children}</span>
                 ) : null}
             </Label>
-        </ThemeContext.Provider>
     );
 };

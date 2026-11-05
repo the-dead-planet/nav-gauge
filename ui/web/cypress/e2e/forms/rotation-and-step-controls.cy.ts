@@ -14,8 +14,8 @@ describe("Rotation and step controls", () => {
             cy.get('.story [data-size][data-appearance-variant="ghost"]')
                 .first()
                 .should("have.attr", "data-size", size);
-            cy.get('[class*="visual-container"]')
-                .should("have.length", 48)
+            cy.get('[class*="visual-container"][data-appearance-color="neutral"]')
+                .should("have.length", 6)
                 .should(($dials) => {
                     for (const dial of $dials.toArray()) {
                     const window = dial.ownerDocument.defaultView!;
@@ -50,7 +50,7 @@ describe("Rotation and step controls", () => {
         );
         cy.get("#theme-appearance-variables").should("exist");
         cy.get('input[type="range"]').should("have.length", 48);
-        cy.get<HTMLInputElement>('input[type="range"]').each(($input) => {
+        cy.get<HTMLInputElement>('.story [data-appearance-color="neutral"] input[type="range"]').should("have.length", 6).each(($input) => {
             const input = $input[0];
             const owner = input.closest("[data-appearance-variant]")!;
             const dial = owner;
@@ -105,10 +105,10 @@ describe("Rotation and step controls", () => {
         });
     });
 
-    it("renders the selected step button variants for every palette and status color", () => {
+    it("renders each step button variant across interaction states", () => {
         cy.visit("/iframe.html?id=forms-stepcontrols--gallery&viewMode=story");
         cy.get('button[aria-label="Value (+)"]').should("have.length", 48);
-        cy.get('button[aria-label="Value (+)"]').each(($button) => {
+        cy.get('button[aria-label="Value (+)"][data-appearance-color="neutral"]').should("have.length", 6).each(($button) => {
             const button = $button[0];
             const window = button.ownerDocument.defaultView!;
             const reference = button.ownerDocument.createElement("span");

@@ -106,6 +106,8 @@ describe("Form labels", () => {
                 });
             cy.get("label[for]")
                 .should("have.length", 24)
+                .filter('[data-appearance-color="neutral"]')
+                .should("have.length", 3)
                 .each(($label) => {
                     const label = $label[0];
                     const owner = label.closest("[data-size]")!;
@@ -138,8 +140,11 @@ describe("Form labels", () => {
             cy.visit(
                 `/iframe.html?id=forms-${component}--gallery&viewMode=story&args=highlightColor:hazard`,
             );
+            cy.get("#theme-appearance-variables").should("exist");
             cy.get<HTMLLabelElement>("label[data-size]")
                 .should("have.length", 72)
+                .filter('[data-appearance-color="neutral"]')
+                .should("have.length", 9)
                 .each(($label) => {
                     const label = $label[0];
                     const caption = label.lastElementChild!;
@@ -177,6 +182,8 @@ describe("Form labels", () => {
                 .should("have.attr", "data-disabled", "true");
             cy.get<HTMLLabelElement>("label[data-size]")
                 .should("have.length", 72)
+                .filter('[data-appearance-color="neutral"]')
+                .should("have.length", 9)
                 .each(($label) => {
                     const label = $label[0];
                     const caption = label.lastElementChild!;

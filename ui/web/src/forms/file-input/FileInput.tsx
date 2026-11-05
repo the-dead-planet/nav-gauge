@@ -7,8 +7,6 @@ import {
     DEFAULT_SURFACE_VARIANT,
     FileInputProps,
     Icons,
-    ThemeContext,
-    useTheme,
 } from "@ui";
 import { Button } from "../../gizmos/button";
 import { Dialog } from "../../rigs/dialog";
@@ -24,7 +22,6 @@ interface Props extends FileInputProps<File> {
 export const FileInput: FC<
     Props & Omit<ComponentProps<"div">, keyof Props>
 > = ({
-    themeMode,
     fileIcon = Icons.NounProject.Upload,
     fileName,
     fileNameProps,
@@ -56,7 +53,6 @@ export const FileInput: FC<
     className,
     ...props
 }) => {
-    const theme = useTheme().forMode(themeMode);
     const {
         inputRef,
         disabled,
@@ -73,7 +69,6 @@ export const FileInput: FC<
         onIsLoadingChange,
     });
     const buttonAppearance: Partial<ButtonProps> = {
-        themeMode,
         color,
         variant,
         size,
@@ -85,7 +80,6 @@ export const FileInput: FC<
     };
 
     return (
-        <ThemeContext.Provider value={theme}>
             <div
                 className={classNames(styles.container, className)}
                 data-size={size}
@@ -113,7 +107,6 @@ export const FileInput: FC<
                     onClick={() => inputRef.current?.click()}
                 />
                 <Label
-                    themeMode={themeMode}
                     color={color}
                     highlightColor={highlightColor}
                     shade={glyphsShade}
@@ -160,6 +153,5 @@ export const FileInput: FC<
                     </Dialog>
                 ) : null}
             </div>
-        </ThemeContext.Provider>
     );
 };

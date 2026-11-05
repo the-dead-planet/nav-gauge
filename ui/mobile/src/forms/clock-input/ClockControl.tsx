@@ -9,7 +9,6 @@ import {
     DEFAULT_SIZE,
     getClockDrawing,
     STEP_DEG,
-    ThemeContext,
     useTheme,
 } from "@ui";
 import { ClockControlRow } from "./ClockControlRow";
@@ -36,7 +35,6 @@ export const ClockControl = forwardRef<
         {
             mode,
             id,
-            themeMode,
             color = DEFAULT_COLOR,
             highlightColor = color,
             glyphsShade,
@@ -64,7 +62,7 @@ export const ClockControl = forwardRef<
         },
         ref,
     ) => {
-        const theme = useTheme().forMode(themeMode);
+        const theme = useTheme();
         const duration = mode === "duration";
         const drawing = getClockDrawing(
             theme.sizes.control[size].height,
@@ -114,7 +112,6 @@ export const ClockControl = forwardRef<
         };
 
         return (
-            <ThemeContext.Provider value={theme}>
                 <View
                     ref={ref}
                     style={[
@@ -172,7 +169,6 @@ export const ClockControl = forwardRef<
                         />
                     </ClockControlRow>
                 </View>
-            </ThemeContext.Provider>
         );
     },
 );

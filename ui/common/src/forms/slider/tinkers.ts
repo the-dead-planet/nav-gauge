@@ -8,7 +8,6 @@ import {
     DEFAULT_SIZE,
     fillVariantOptions,
     sizeOptions,
-    typographyStoryControls,
 } from "../../design-system";
 import { StoryControls } from "../../storybook";
 import { stepControlsPropsStoryControl } from "../step-controls";
@@ -54,7 +53,6 @@ export const sliderStoryArgs: SliderProps = {
 };
 
 export const sliderStoryControls: StoryControls<SliderProps> = {
-    themeMode: typographyStoryControls.themeMode,
     color: {
         control: "select",
         options: appearanceColorOptions,

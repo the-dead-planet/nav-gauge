@@ -76,15 +76,14 @@ describe("Form choice appearance ownership", () => {
     );
 
     test.each(modes)(
-        "overrides the form choice and nested label without changing its %s parent",
+        "inherits the form choice and nested label theme without changing its %s sibling",
         async (mode) => {
             const theme = new Theme(
                 themeSpecifications[ThemeName.Default][mode],
                 media,
                 false,
             );
-            const overrides: (ThemeMode | undefined)[] = [
-                undefined,
+            const overrides: ThemeMode[] = [
                 "light",
                 "dark",
             ];
@@ -92,10 +91,10 @@ describe("Form choice appearance ownership", () => {
                 [Checkbox, "checkbox"],
                 [Radio, "radio"],
             ] as const) {
-                const content = (themeMode?: ThemeMode, disabled = false) => (
+                const content = (mode: ThemeMode, disabled = false) => (
                     <ThemeContext.Provider value={theme}>
+                        <ThemeContext.Provider value={theme.forMode(mode)}>
                         <Control
-                            themeMode={themeMode}
                             checked
                             color="glitch"
                             highlightColor="intel"
@@ -105,10 +104,11 @@ describe("Form choice appearance ownership", () => {
                         >
                             <Text color="glitch">Nested label</Text>
                         </Control>
+                        </ThemeContext.Provider>
                         <Text color="glitch">Sibling</Text>
                     </ThemeContext.Provider>
                 );
-                const screen = await render(content());
+                const screen = await render(content(mode));
                 for (const themeMode of overrides) {
                     const resolvedTheme = theme.forMode(themeMode);
                     await screen.rerender(content(themeMode));

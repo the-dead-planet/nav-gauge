@@ -10,7 +10,6 @@ import {
     getClockDrawing,
     millisecondsToDurationParts,
     STEP_DEG,
-    ThemeContext,
     useTheme,
 } from "@ui";
 import { ClockA11yInput } from "./ClockA11yInput";
@@ -25,7 +24,6 @@ export const ClockControl: FC<
 > = ({
     mode,
     id,
-    themeMode,
     color = DEFAULT_COLOR,
     highlightColor = color,
     glyphsShade,
@@ -53,7 +51,7 @@ export const ClockControl: FC<
     style,
     ...props
 }) => {
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
     const generatedId = useId();
     const inputId = id ?? generatedId;
     const duration = mode === "duration";
@@ -88,7 +86,6 @@ export const ClockControl: FC<
     };
 
     return (
-        <ThemeContext.Provider value={theme}>
             <div
                 {...props}
                 data-appearance-mode={theme.mode}
@@ -180,6 +177,5 @@ export const ClockControl: FC<
                     />
                 </ClockControlRow>
             </div>
-        </ThemeContext.Provider>
     );
 };

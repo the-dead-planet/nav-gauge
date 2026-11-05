@@ -5,8 +5,6 @@ import {
     DEFAULT_FILL_VARIANT,
     DEFAULT_SIZE,
     SliderProps,
-    ThemeContext,
-    useTheme,
 } from "@ui";
 import { Label } from "../../design-system/typography";
 import { SliderControlRow } from "./SliderControlRow";
@@ -24,7 +22,6 @@ export const Slider = forwardRef<
 >(
     (
         {
-            themeMode,
             color = DEFAULT_COLOR,
             glyphsShade,
             highlightColor = color,
@@ -48,7 +45,6 @@ export const Slider = forwardRef<
         },
         ref,
     ) => {
-        const theme = useTheme().forMode(themeMode);
         const accessibleLabel =
             ariaLabel ?? (typeof label === "string" ? label : "Slider");
         const appearanceProps = {
@@ -63,7 +59,6 @@ export const Slider = forwardRef<
         };
 
         return (
-            <ThemeContext.Provider value={theme}>
                 <View ref={ref} style={[styles.container, style]}>
                     {typeof label === "string" ? (
                         <Label
@@ -108,7 +103,6 @@ export const Slider = forwardRef<
                         />
                     </SliderControlRow>
                 </View>
-            </ThemeContext.Provider>
         );
     },
 );

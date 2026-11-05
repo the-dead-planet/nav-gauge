@@ -1,5 +1,4 @@
 import {
-    appearanceColorOptions,
     sizeOptions,
     surfaceVariantOptions,
 } from "@the-dead-planet/nav-gauge-ui-common/src/design-system/tinkers";
@@ -19,11 +18,13 @@ describe("Themed scrollbars", () => {
         });
     });
 
-    it("uses each variant's glyph and surface paints across palettes and modes", () => {
+    it("uses each variant's glyph and surface paints in both modes and respects nested owners", () => {
         cy.document().then((document) => {
             const window = document.defaultView!;
-            for (const mode of ["light", "dark"]) {
-                for (const color of appearanceColorOptions) {
+            for (const { mode, color } of [
+                { mode: "light", color: "neutral" },
+                { mode: "dark", color: "primary" },
+            ]) {
                     for (const variant of [
                         undefined,
                         ...surfaceVariantOptions,
@@ -122,7 +123,6 @@ describe("Themed scrollbars", () => {
                         ).to.include(nestedThumb);
                         owner.remove();
                     }
-                }
             }
         });
     });

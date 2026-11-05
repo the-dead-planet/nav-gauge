@@ -6,7 +6,6 @@ import {
     DEFAULT_SIZE,
     DropdownProps,
     Icons,
-    ThemeContext,
     useTheme,
 } from "@ui";
 import { Icon } from "../../design-system/icons";
@@ -22,7 +21,6 @@ interface Props {
 }
 
 export function Dropdown<T = string>({
-    themeMode,
     color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor,
@@ -42,7 +40,7 @@ export function Dropdown<T = string>({
     style,
     ...props
 }: DropdownProps<T> & Props & Omit<ComponentProps<"div">, "onChange">) {
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
     const {
         isOpen,
         listId,
@@ -79,7 +77,6 @@ export function Dropdown<T = string>({
     } as CSSProperties;
 
     return (
-        <ThemeContext.Provider value={theme}>
             <div
                 {...props}
                 className={classNames(styles["dropdown-select"], className)}
@@ -148,6 +145,5 @@ export function Dropdown<T = string>({
                     />
                 ) : null}
             </div>
-        </ThemeContext.Provider>
     );
 }

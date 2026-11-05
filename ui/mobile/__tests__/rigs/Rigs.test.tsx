@@ -75,13 +75,12 @@ describe('Mobile rig content', () => {
     afterEach(() => jest.restoreAllMocks());
 
     it('matches a ghost filename to its icons in the map theme and preserves default filenames', async () => {
-        const theme = new Theme(themeSpecifications[ThemeName.Default].dark, media);
+        const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
         const content = (ghost = true) => (
             <ThemeContext.Provider value={theme}>
                 <FileInput
                     type={['public.item']}
                     color="primary"
-                    themeMode="light"
                     fileName="route.gpx"
                     fileNameProps={ghost ? { variant: 'ghost' } : undefined}
                     fileLabel="Upload"
@@ -115,7 +114,6 @@ describe('Mobile rig content', () => {
             <ThemeContext.Provider value={theme}>
                 <FileInput
                     type={['public.item']}
-                    themeMode="light"
                     color="hazard"
                     highlightColor="intel"
                     variant="outline"
@@ -123,7 +121,6 @@ describe('Mobile rig content', () => {
                     purgeButtonProps={{ variant: 'ghost', color: 'intel', disabled: false }}
                     purgeConfirmationDialogProps={{
                         color: 'secured',
-                        themeMode: 'dark',
                         variant: 'fill-translucent',
                     }}
                     fileName={fileName}
@@ -148,11 +145,11 @@ describe('Mobile rig content', () => {
         await fireEvent(screen.getByRole('button', { name: 'Upload' }), 'pressIn');
         expect(screen.getByText('route.gpx')).toHaveStyle({ color: theme.color('hazard', 900) });
         await fireEvent.press(screen.getByRole('button', { name: 'Purge' }));
-        expect(screen.getByText('Remove this file?')).toHaveStyle({ color: theme.color('secured', 100) });
-        expect(screen.getByRole('header')).toHaveStyle({ color: theme.color('secured', 100) });
+        expect(screen.getByText('Remove this file?')).toHaveStyle({ color: theme.color('secured', 900) });
+        expect(screen.getByRole('header')).toHaveStyle({ color: theme.color('secured', 900) });
         const confirmationPanel = screen.getAllByLabelText('Purge').find((element) => element.props.accessibilityViewIsModal);
         expect(confirmationPanel).toHaveStyle({
-            backgroundColor: theme.forMode('dark').resolveAppearance('fill-translucent', 'secured').surface,
+            backgroundColor: theme.resolveAppearance('fill-translucent', 'secured').surface,
         });
         expect(onPurge).not.toHaveBeenCalled();
         jest.mocked(Animated.timing).mockReturnValue({
@@ -228,14 +225,13 @@ describe('Mobile rig content', () => {
         'matches ghost typography to icon glyphs in %s mode with explicit overrides',
         async (mode) => {
             const theme = new Theme(
-                themeSpecifications[ThemeName.Default][mode === 'light' ? 'dark' : 'light'],
+                themeSpecifications[ThemeName.Default][mode],
                 media,
             );
             const content = (highlighted = false, disabled = false, shade?: ColorShade) => (
                 <ThemeContext.Provider value={theme}>
                     <Text
                         variant="ghost"
-                        themeMode={mode}
                         color="primary"
                         highlighted={highlighted}
                         disabled={disabled}
@@ -266,11 +262,11 @@ describe('Mobile rig content', () => {
         },
     );
 
-    it('lets typography override the app theme mode for interaction and disabled colors', async () => {
+    it('inherits the nearest provider for typography interaction and disabled colors', async () => {
         const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
         const content = (disabled = false) => (
-            <ThemeContext.Provider value={theme}>
-                <Text themeMode="dark" color="primary" highlighted disabled={disabled}>
+            <ThemeContext.Provider value={theme.forMode('dark')}>
+                <Text color="primary" highlighted disabled={disabled}>
                     Dark text
                 </Text>
             </ThemeContext.Provider>
@@ -477,7 +473,7 @@ describe('Mobile rig content', () => {
     );
 
     it.each<ThemeMode>(['light', 'dark'])(
-        'overrides the dialog frame and content with explicit %s mode',
+        'inherits %s mode in the dialog frame and content',
         async (mode) => {
             const theme = new Theme(
                 themeSpecifications[ThemeName.Default][mode === 'light' ? 'dark' : 'light'],
@@ -487,9 +483,8 @@ describe('Mobile rig content', () => {
             const dialogTheme = theme.forMode(mode);
             for (const variant of fillVariantOptions) {
                 const screen = await render(
-                    <ThemeContext.Provider value={theme}>
+                    <ThemeContext.Provider value={dialogTheme}>
                         <Dialog
-                            themeMode={mode}
                             variant={variant}
                             color="intel"
                             header="Themed dialog"
@@ -525,9 +520,8 @@ describe('Mobile rig content', () => {
             );
             const interpolate = jest.spyOn(Animated.Value.prototype, 'interpolate');
             const content = (backdrop?: boolean) => (
-                <ThemeContext.Provider value={theme}>
+                <ThemeContext.Provider value={theme.forMode(mode)}>
                     <Dialog
-                        themeMode={mode}
                         backdrop={backdrop}
                         variant="fill-translucent"
                         header="Themed backdrop"

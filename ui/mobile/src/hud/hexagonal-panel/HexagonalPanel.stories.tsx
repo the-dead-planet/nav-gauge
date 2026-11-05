@@ -20,7 +20,6 @@ const story: MobileStoryDefinition<ComponentProps<typeof HexagonalPanel>> = {
     controls: hexagonalPanelStoryControls,
     galleryEditableControls: [
         "children",
-        "themeMode",
         "highlightColor",
         "highlighted",
         "disabled",

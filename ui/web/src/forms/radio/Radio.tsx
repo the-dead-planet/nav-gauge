@@ -7,7 +7,6 @@ import {
     DEFAULT_GLYPH_CORNERS,
     hexagonGeometry,
     RadioProps,
-    ThemeContext,
     useTheme,
 } from "@ui";
 import { HexagonSurface } from "../../hud/hexagon/HexagonSurface";
@@ -21,7 +20,6 @@ interface Props {
 export const Radio: FC<
     Omit<ComponentProps<"label">, "onChange"> & RadioProps & Props
 > = ({
-    themeMode,
     id,
     labelledBy,
     color = DEFAULT_COLOR,
@@ -45,7 +43,7 @@ export const Radio: FC<
 }) => {
     const generatedId = useId();
     const effectiveId = id || generatedId;
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         onChange(e.target.checked);
@@ -60,7 +58,6 @@ export const Radio: FC<
     };
 
     return (
-        <ThemeContext.Provider value={theme}>
             <Label
                 color={color}
                 highlightColor={highlightColor}
@@ -125,6 +122,5 @@ export const Radio: FC<
                     <span className={styles["label"]}>{children}</span>
                 ) : null}
             </Label>
-        </ThemeContext.Provider>
     );
 };
