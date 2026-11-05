@@ -510,8 +510,8 @@ describe('Composed appearance rendering', () => {
                     expect(markup).not.to.include('checked=""');
                     expect(markup).not.to.include('<svg');
                     expect(markup).not.to.include('class="marker"');
-                    expect(markup).to.include(`--appearance-default-glyphs-override:${renderingTheme.color(color, 500)}`);
-                    expect(markup).to.include(`--appearance-active-pressed-glyphs-override:${renderingTheme.color('intel', 200)}`);
+                    expect(markup).to.include(`--appearance-default-glyphs-override:var(--color-${color}-500)`);
+                    expect(markup).to.include('--appearance-active-pressed-glyphs-override:var(--color-intel-200)');
                 }
             }
         }

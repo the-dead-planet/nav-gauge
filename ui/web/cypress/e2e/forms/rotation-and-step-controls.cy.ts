@@ -16,8 +16,8 @@ describe("Rotation and step controls", () => {
                 .should("have.attr", "data-size", size);
             cy.get('[class*="visual-container"]')
                 .should("have.length", 48)
-                .each(($dial) => {
-                    const dial = $dial[0];
+                .should(($dials) => {
+                    for (const dial of $dials.toArray()) {
                     const window = dial.ownerDocument.defaultView!;
                     const metrics = window.getComputedStyle(dial);
                     const diameter =
@@ -40,6 +40,7 @@ describe("Rotation and step controls", () => {
                             ),
                         ),
                     );
+                    }
                 });
         });
     }
@@ -60,17 +61,19 @@ describe("Rotation and step controls", () => {
             owner.append(reference);
             owner.setAttribute("data-appearance-highlight", "hazard");
             for (const mode of ["light", "dark"]) {
+                cy.then(() => {
                 owner.setAttribute("data-appearance-mode", mode);
                 reference.style.color = "var(--appearance-default-glyphs)";
                 expect(window.getComputedStyle(dial).color).to.equal(
                     window.getComputedStyle(reference).color,
                 );
                 const labelColor = window.getComputedStyle(label).color;
-                input.focus();
+                return labelColor;
+                }).as("labelColor");
+                cy.wrap(input).focus();
+                cy.wrap(dial).should("have.css", "outline-width", "2px");
+                cy.get<string>("@labelColor").then((labelColor) => {
                 expect(input.matches(":focus-visible")).to.equal(true);
-                expect(window.getComputedStyle(dial).outlineWidth).to.equal(
-                    "2px",
-                );
                 reference.style.color = "var(--appearance-hover-focus-glyphs)";
                 expect(window.getComputedStyle(dial).color).to.equal(
                     window.getComputedStyle(reference).color,
@@ -94,9 +97,10 @@ describe("Rotation and step controls", () => {
                 );
                 owner.removeAttribute("data-highlighted");
                 owner.removeAttribute("data-disabled");
-                input.blur();
+                });
+                cy.wrap(input).blur();
             }
-            reference.remove();
+            cy.then(() => reference.remove());
         });
     });
 
