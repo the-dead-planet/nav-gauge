@@ -4,6 +4,13 @@ import { cornerOptions } from "@the-dead-planet/nav-gauge-ui-common/src/design-s
 describe("Form choice row sizing", () => {
     for (const control of ["checkbox", "radio"]) {
         it(`keeps ${control} and its row stable when the selection mark appears`, () => {
+            cy.readFile<string>("src/design-system/typography/typography.module.css").then((css) => {
+                cy.document().then((document) => {
+                    const stylesheet = document.createElement("style");
+                    stylesheet.textContent = css;
+                    document.head.appendChild(stylesheet);
+                });
+            });
             cy.readFile<string>(
                 `src/forms/${control}/${control}.module.css`,
             ).then((css) => {
@@ -32,7 +39,7 @@ describe("Form choice row sizing", () => {
                             for (const corners of cornerOptions) {
                                 const row = document.createElement("div");
                                 row.innerHTML = `
-                                <label class="${control}" data-size="${size}">
+                                <label class="${control} label font-default" data-size="${size}">
                                     <input class="input" type="${control}" />
                                     <span class="box corners-${corners}"></span>
                                     ${labelled ? '<span class="label">Choice</span>' : ""}

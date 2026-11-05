@@ -11,6 +11,10 @@
     transition: color 0.15s ease;
 }
 
+.companion {
+    flex-shrink: 0;
+}
+
 .label {
     display: block;
 }
@@ -40,7 +44,7 @@
 }
 
 .input {
-    padding-inline: var(--size-control-padding-inline);
+    padding-inline: var(--spacing-xs);
     flex: 1;
     min-width: 0;
     border: none;

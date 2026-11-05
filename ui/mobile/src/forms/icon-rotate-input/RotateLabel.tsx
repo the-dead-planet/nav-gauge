@@ -1,39 +1,34 @@
-import { ComponentType, FC } from "react";
-import { View } from "react-native";
-import { SvgProps } from "react-native-svg";
-import { useTheme } from "@ui";
-import { Icon } from "../../design-system/icons";
-import { Text } from "../../design-system/typography";
+import { FC } from "react";
+import { IconRotateInputProps } from "@ui";
+import { Label } from "../../design-system/typography";
 
-interface Props {
-    label?: string;
+interface Props extends Omit<IconRotateInputProps, "value"> {
     displayWrapped: number;
-    icon?: ComponentType<SvgProps>;
-    showValue?: boolean;
+    showValue: boolean;
 }
 
 export const RotateLabel: FC<Props> = ({
     label,
     displayWrapped,
-    icon,
-    showValue = true,
-}) => {
-    const theme = useTheme();
-    const appearance = theme.resolveAppearance();
-
-    return label ? (
-        <View style={{ flexDirection: 'row', gap: 6, marginTop: 4 }}>
-            {icon ? (
-                <Icon
-                    icon={icon}
-                    width={10}
-                    height={10}
-                    color={appearance.glyphs}
-                />
-            ) : null}
-            <Text style={{ fontSize: 11, color: appearance.glyphs }}>
-                {label} {showValue ? `${displayWrapped}°` : null}
-            </Text>
-        </View>
+    showValue,
+    themeMode,
+    color,
+    highlightColor,
+    glyphsShade,
+    highlightGlyphsShade,
+    highlighted,
+    disabled,
+}) =>
+    label ? (
+        <Label
+            themeMode={themeMode}
+            color={color}
+            highlightColor={highlightColor}
+            shade={glyphsShade}
+            highlightShade={highlightGlyphsShade}
+            highlighted={highlighted}
+            disabled={disabled}
+        >
+            {label} {showValue ? `${displayWrapped}°` : null}
+        </Label>
     ) : null;
-};

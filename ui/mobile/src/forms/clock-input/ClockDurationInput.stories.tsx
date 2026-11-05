@@ -30,6 +30,7 @@ const story: MobileStoryDefinition<ClockDurationInputProps> = {
         "disabled",
         "showNumberInput",
         "showStepControls",
+        "stepControlsProps",
         "numberInputPlacement",
         "ariaLabel",
     ],

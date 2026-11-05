@@ -1,5 +1,5 @@
 import { ComponentType } from "react";
-import { BehaviorSubject, Subscription } from "rxjs";
+import { BehaviorSubject, map as rxjsMap, Observable, Subscription } from "rxjs";
 import turfDistance from "@turf/distance";
 import { point as turfPoint } from "@turf/helpers";
 import { FeatureProperties, GeoJson, LngLat } from "@tinker-chest";
@@ -18,7 +18,7 @@ import { CartomancerTranslationKey, GaugeControlsType, MapLayout, OverlayCompone
 import { ToolsStation } from "../tools-station";
 import { TranslationTable, Translatron } from "../translatron";
 import * as Translations from "./translations";
-import { ColorVariant } from "@ui";
+import { ColorVariant, ThemeMode } from "@ui";
 
 interface SelectedStyle {
     id: keyof typeof Cartomancer.styles;
@@ -79,6 +79,7 @@ export class Cartomancer<TMap> {
     private selectedStyleStorageId = 'cartomancer:map-style';
     private selectedStyleStorageSubscription: Subscription | null = null;
     public selectedStyle$: BehaviorSubject<SelectedStyle>;
+    public selectedStyleThemeMode$: Observable<ThemeMode>;
 
     private gaugeControlsStorageId = 'cartomancer:gauge-controls';
     private gaugeControlsStorageSubscription: Subscription | null = null;
@@ -92,6 +93,7 @@ export class Cartomancer<TMap> {
     public constructor() {
         this.defaultStyleId = 'open-free-map-dark';
         this.selectedStyle$ = new BehaviorSubject<SelectedStyle>({ id: this.defaultStyleId });
+        this.selectedStyleThemeMode$ = this.selectedStyle$.pipe(rxjsMap(({ id }) => Cartomancer.styles[id].mode));
         this.gaugeControls$ = new BehaviorSubject(Cartomancer.defaultGaugeControls);
         this.mapLayout$ = new BehaviorSubject(Cartomancer.defaultMapLayout);
     }

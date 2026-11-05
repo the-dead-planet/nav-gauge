@@ -2,7 +2,7 @@ import { FC, useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import { BehaviorSubject } from "rxjs";
 import { CameraRef, MapRef } from "@maplibre/maplibre-react-native";
-import { useMapSection } from "@apparatus";
+import { useMapSection, useSelectedStyleTheme } from "@apparatus";
 import { useMobileMachineWard } from "@mobile-apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { MobileMap } from "@mobile-apparatus";
@@ -18,7 +18,7 @@ import {
     onPanResponderMoveHandlers$,
     onPanResponderEndHandlers$
 } from "./map-canvas/MapCanvas";
-import { ErrorBoundary } from "@ui";
+import { ErrorBoundary, ThemeContext } from "@ui";
 
 const styles = StyleSheet.create({
     container: {
@@ -46,6 +46,7 @@ const map: MobileMap = {
 
 export const MapSection: FC = () => {
     const { cartomancer } = useMobileMachineWard();
+    const selectedStyleTheme = useSelectedStyleTheme(cartomancer);
     const [overlays] = useSubjectState(cartomancer.overlays$);
     const { handleError } = useMapSection();
 
@@ -60,17 +61,21 @@ export const MapSection: FC = () => {
     return (
         <View style={styles.container}>
             <ErrorBoundary onError={handleError}>
-                <MapCanvas map={map}>
-                    {[...overlays.entries()].map(([id, OverlayComponent]) => (
-                        <ErrorBoundary key={id} onError={handleError}>
-                            <OverlayComponent key={id} map={map} />
-                        </ErrorBoundary>
-                    ))}
-                </MapCanvas>
+                <ThemeContext.Provider value={selectedStyleTheme}>
+                    <MapCanvas map={map}>
+                        {[...overlays.entries()].map(([id, OverlayComponent]) => (
+                            <ErrorBoundary key={id} onError={handleError}>
+                                <OverlayComponent key={id} map={map} />
+                            </ErrorBoundary>
+                        ))}
+                    </MapCanvas>
+                    <ErrorBoundary onError={handleError}>
+                        <Popups map={map} />
+                    </ErrorBoundary>
+                </ThemeContext.Provider>
             </ErrorBoundary>
             <GearsTopToolbar />
-            <MapToolsGridAreas map={map} />
-            <Popups map={map} />
+            <MapToolsGridAreas map={map} selectedStyleTheme={selectedStyleTheme} />
         </View>
     );
 };

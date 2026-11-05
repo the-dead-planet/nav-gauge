@@ -21,11 +21,12 @@
 
 .with-duration-inputs {
     width: 100%;
+    min-width: 0;
 }
 
 .container:not([data-disabled="true"]):not([data-highlighted="true"]):not(
         [data-dragging="true"]
-    ):is(:has(.drawing:hover), :has(.label:hover), :has(.a11y-slider:focus)) {
+    ):is(:has(.drawing:hover), :has(.a11y-slider:focus)) {
     color: var(
         --appearance-hover-focus-glyphs-override,
         var(--appearance-hover-focus-glyphs)
@@ -36,14 +37,6 @@
         fill: var(--appearance-hover-focus-surface);
         stroke: var(--appearance-hover-focus-border);
         stroke-width: var(--appearance-hover-focus-border-width);
-    }
-
-    & .label {
-        color: var(
-            --appearance-hover-focus-glyphs-override,
-            var(--appearance-hover-focus-glyphs)
-        );
-        font-weight: var(--appearance-hover-focus-font-weight);
     }
 }
 
@@ -62,14 +55,6 @@
         stroke: var(--appearance-active-pressed-border);
         stroke-width: var(--appearance-active-pressed-border-width);
     }
-
-    & .label {
-        color: var(
-            --appearance-active-pressed-glyphs-override,
-            var(--appearance-active-pressed-glyphs)
-        );
-        font-weight: var(--appearance-active-pressed-font-weight);
-    }
 }
 
 .container[data-disabled="true"] {
@@ -85,11 +70,6 @@
 
     & .svg {
         cursor: not-allowed;
-    }
-
-    & .label {
-        color: var(--appearance-disabled-glyphs);
-        font-weight: var(--appearance-disabled-font-weight);
     }
 }
 
@@ -163,18 +143,8 @@
     flex-direction: column;
 }
 
-.control-row
-    > :where(:last-child:not(:first-child)):not(.duration-number-inputs) {
-    flex-shrink: 0;
-}
-
-.number-input {
-    field-sizing: content;
-    min-width: calc(3ch + 2em);
-}
-
-.number-input-above > :last-child:not(:first-child),
-.number-input-below > :last-child:not(:first-child) {
+.number-input-above > .duration-number-inputs,
+.number-input-below > .duration-number-inputs {
     width: 100%;
 }
 
@@ -182,7 +152,7 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     min-width: max-content;
-    flex: 1 0 auto;
+    flex: 0 0 auto;
     gap: 8px;
 }
 
@@ -206,11 +176,6 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    color: var(
-        --appearance-default-glyphs-override,
-        var(--appearance-default-glyphs)
-    );
-    font-weight: var(--appearance-default-font-weight);
 }
 
 .label > span {

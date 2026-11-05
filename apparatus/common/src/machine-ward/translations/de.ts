@@ -8,6 +8,7 @@ const de: TranslationTable<MachineTranslationKey>['de'] = {
     legal: 'Rechtliches',
     privacy: 'Datenschutz',
     close: 'Schließen',
+    cancel: 'Abbrechen',
     save: 'Speichern',
     on: 'Ein',
     off: 'Aus',

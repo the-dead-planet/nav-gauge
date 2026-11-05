@@ -1,7 +1,16 @@
 import { ComponentType, FC } from "react";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { SvgProps } from "react-native-svg";
 import { Icon } from "../../design-system/icons";
+
+const styles = StyleSheet.create({
+    wrapper: {
+        position: "absolute",
+        inset: 0,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+});
 
 interface Props {
     icon?: ComponentType<SvgProps>;
@@ -19,16 +28,15 @@ export const RotateIconWrapper: FC<Props> = ({
     iconColor,
 }) => (
     <View
-        style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: svgSize,
-            height: svgSize,
-            alignItems: 'center',
-            justifyContent: 'center',
-            transform: [{ rotate: `${displayAngle}deg` }],
-        }}
+        pointerEvents="none"
+        style={[
+            styles.wrapper,
+            {
+                width: svgSize,
+                height: svgSize,
+                transform: [{ rotate: `${displayAngle}deg` }],
+            },
+        ]}
     >
         {icon ? (
             <Icon

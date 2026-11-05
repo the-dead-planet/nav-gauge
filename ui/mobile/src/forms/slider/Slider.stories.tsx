@@ -37,6 +37,7 @@ const story: MobileStoryDefinition<ComponentProps<typeof Slider>> = {
         "disabled",
         "showNumberInput",
         "showStepControls",
+        "stepControlsProps",
     ],
     renderPlayground: (args) => <StorySlider {...args} />,
     renderGallery: (args) => (

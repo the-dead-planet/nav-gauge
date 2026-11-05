@@ -1,8 +1,8 @@
 import { FC } from "react";
 import classNames from "classnames";
-import { ClockControlRowProps } from "@ui";
+import { ClockControlRowProps, getClockNumberInputProps } from "@ui";
 import { ClockDurationNumberInputs } from "./ClockDurationNumberInputs";
-import { NumberInput } from "../number-input";
+import { CompanionNumberInput } from "../number-input/CompanionNumberInput";
 import { StepControls } from "../step-controls";
 import styles from "./clock-input.module.css";
 
@@ -16,12 +16,25 @@ export const ClockControlRow: FC<ClockControlRowProps> = ({
     label,
     ariaLabel,
     showNumberInput = false,
+    numberInputScale,
+    numberInputUnit,
     showStepControls = false,
+    stepControlsProps,
+    variant,
     numberInputPlacement = "end",
     children,
     ...appearanceProps
 }) => {
     const duration = mode === "duration";
+    const numberInput = getClockNumberInputProps({
+        value,
+        min,
+        max,
+        step,
+        onChange,
+        numberInputScale,
+        numberInputUnit,
+    });
     return (
         <div
             className={classNames(
@@ -32,15 +45,16 @@ export const ClockControlRow: FC<ClockControlRowProps> = ({
         >
             {showStepControls ? (
                 <StepControls
-                    color={appearanceProps.color}
-                    size={appearanceProps.size}
-                    variant={appearanceProps.variant}
+                    {...appearanceProps}
+                    {...stepControlsProps}
                     value={value}
                     min={min}
                     max={duration ? undefined : max}
                     step={step}
                     onChange={onChange}
-                    disabled={appearanceProps.disabled}
+                    disabled={
+                        appearanceProps.disabled || stepControlsProps?.disabled
+                    }
                     ariaLabel={ariaLabel ?? label}
                 >
                     {children}
@@ -52,20 +66,19 @@ export const ClockControlRow: FC<ClockControlRowProps> = ({
                 duration ? (
                     <ClockDurationNumberInputs
                         {...appearanceProps}
+                        variant={variant}
                         value={value}
                         min={min}
                         onChange={onChange}
                         ariaLabel={ariaLabel}
+                        numberInputPlacement={numberInputPlacement}
                     />
                 ) : (
-                    <NumberInput
+                    <CompanionNumberInput
+                        placement={numberInputPlacement}
                         {...appearanceProps}
-                        value={value}
-                        className={styles["number-input"]}
-                        onChange={(next) => onChange?.(next)}
-                        min={min}
-                        max={max}
-                        step={step}
+                        variant={variant}
+                        {...numberInput}
                         disabled={appearanceProps.disabled || !onChange}
                         showStepControls
                         ariaLabel={`${ariaLabel ?? label ?? "Angle"} (#)`}

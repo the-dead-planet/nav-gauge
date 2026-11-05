@@ -1,12 +1,12 @@
 import type * as maplibregl from "maplibre-gl";
 import { FC } from "react";
-import { Cartomancer, parsers, TopToolsProps, useMultipleTranslations } from "@apparatus";
+import { parsers, TopToolsProps, useMultipleTranslations } from "@apparatus";
 import { HexagonalPanel, Button, FileInput } from "@web-ui";
-import { useSubjectState } from "@tinker-chest";
-import { Icons } from "@ui";
+import { useObservableState, useSubjectState } from "@tinker-chest";
+import { Icons, useTheme } from "@ui";
+import { useWebMachineWard } from "@web-apparatus";
 import { WebRouteStoryProps } from "../model";
 import styles from './file-input.module.css';
-import { useWebMachineWard } from "@web-apparatus";
 
 export const RouteName: FC<TopToolsProps<maplibregl.Map> & WebRouteStoryProps> = ({
     gearId,
@@ -17,8 +17,8 @@ export const RouteName: FC<TopToolsProps<maplibregl.Map> & WebRouteStoryProps> =
     fitBoundsHandler,
 }) => {
     const { cartomancer } = useWebMachineWard();
-    const [selectedStyle] = useSubjectState(cartomancer.selectedStyle$);
-    const mapThemeMode = Cartomancer.styles[selectedStyle.id].mode;
+    const theme = useTheme();
+    const mapThemeMode = useObservableState(cartomancer.selectedStyleThemeMode$, theme.mode);
     const [{ routeName, geojson }] = useSubjectState(data$);
 
     const [
@@ -51,13 +51,22 @@ export const RouteName: FC<TopToolsProps<maplibregl.Map> & WebRouteStoryProps> =
                 fileIcon={routeName ? Icons.NounProject.ReplaceFile : Icons.NounProject.Upload}
                 fileName={routeName}
                 fileNameProps={{ variant: 'ghost' }}
+                fileUploadButtonProps={{
+                    variant: 'fill',
+                    corners: 'circle',
+                }}
+                purgeButtonProps={{ corners: 'circle' }}
+                purgeConfirmationDialogProps={{
+                    variant: 'fill-translucent',
+                }}
                 fileLabel={fileLabel}
-                fileTooltipPlacement="bottom"
+                fileTooltipPlacement="top"
                 purgeLabel={purgeLabel}
-                purgeTooltipPlacement="bottom"
+                purgeTooltipPlacement="top"
                 cancelLabel={cancelLabel}
                 noNameLabel={noNameLabel}
                 color="primary"
+                variant="ghost"
                 accept={[...parsers.keys(), "image/png", "image/jpeg", "image/jpg"].join(', ')}
                 onUpload={(files) => fileOperator.uploadFile(files, map)}
                 onPurge={() => fileOperator.resetStory()}
@@ -75,7 +84,7 @@ export const RouteName: FC<TopToolsProps<maplibregl.Map> & WebRouteStoryProps> =
                                 onClick={() => fitBoundsHandler(map, data$.value.boundingBox)}
                                 aria-label={fitBoundsLabel}
                                 tooltip={fitBoundsLabel}
-                                tooltipPlacement="bottom"
+                                tooltipPlacement="top"
                                 showTooltipConnection
                                 disabled={!geojson}
                             />

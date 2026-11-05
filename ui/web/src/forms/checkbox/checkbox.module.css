@@ -1,6 +1,5 @@
 .checkbox {
     min-height: var(--size-control-height);
-    font-size: var(--size-control-font-size);
     gap: var(--size-control-gap);
     position: relative;
     box-sizing: border-box;
@@ -9,8 +8,6 @@
     align-items: center;
     cursor: pointer;
     user-select: none;
-    line-height: 1.1;
-    font-family: var(--font-default);
 }
 
 .input {
@@ -54,8 +51,7 @@
     stroke-width: var(--appearance-default-border-width);
 }
 
-.box,
-.label {
+.box {
     color: var(
         --appearance-default-glyphs-override,
         var(--appearance-default-glyphs)
@@ -78,7 +74,7 @@
         stroke-width: var(--appearance-hover-focus-border-width);
     }
 
-    & :is(.box, .label) {
+    & .box {
         color: var(
             --appearance-hover-focus-glyphs-override,
             var(--appearance-hover-focus-glyphs)
@@ -100,7 +96,7 @@
         stroke-width: var(--appearance-active-pressed-border-width);
     }
 
-    & :is(.box, .label) {
+    & .box {
         color: var(
             --appearance-active-pressed-glyphs-override,
             var(--appearance-active-pressed-glyphs)
@@ -124,7 +120,7 @@
         stroke-width: var(--appearance-disabled-border-width);
     }
 
-    & :is(.box, .label) {
+    & .box {
         color: var(--appearance-disabled-glyphs);
         font-weight: var(--appearance-disabled-font-weight);
     }

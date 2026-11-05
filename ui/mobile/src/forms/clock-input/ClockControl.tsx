@@ -55,7 +55,10 @@ export const ClockControl = forwardRef<
             ariaLabel,
             thumbIcon,
             showNumberInput = false,
+            numberInputScale,
+            numberInputUnit,
             showStepControls = false,
+            stepControlsProps,
             numberInputPlacement = "end",
             style,
         },
@@ -129,7 +132,8 @@ export const ClockControl = forwardRef<
                         highlightColor={highlightColor}
                         glyphsShade={glyphsShade}
                         highlightGlyphsShade={highlightGlyphsShade}
-                        state={state}
+                        highlighted={highlighted}
+                        disabled={disabled}
                     />
                     <ClockControlRow
                         {...appearanceProps}
@@ -142,7 +146,10 @@ export const ClockControl = forwardRef<
                         label={label}
                         ariaLabel={ariaLabel}
                         showNumberInput={showNumberInput}
+                        numberInputScale={numberInputScale}
+                        numberInputUnit={numberInputUnit}
                         showStepControls={showStepControls}
+                        stepControlsProps={stepControlsProps}
                         numberInputPlacement={numberInputPlacement}
                     >
                         <ClockDial

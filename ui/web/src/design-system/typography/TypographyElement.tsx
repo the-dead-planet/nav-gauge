@@ -1,6 +1,6 @@
 import { ComponentPropsWithoutRef, createElement, CSSProperties, ElementType, ReactElement } from "react";
 import classNames from "classnames";
-import { FontType, resolveTypographyFontWeight, resolveTypographySpacing, useTheme, TypographyProps } from "@ui";
+import { FontType, resolveTypographyFontWeight, resolveTypographySpacing, useTheme, TypographyProps, DEFAULT_COLOR } from "@ui";
 import styles from './typography.module.css';
 
 type TypographyElementProps<Element extends ElementType> = TypographyProps & {
@@ -13,7 +13,7 @@ export const TypographyElement = <Element extends ElementType>({
     baseClassName,
     variant,
     themeMode,
-    color,
+    color = DEFAULT_COLOR,
     highlightColor = color,
     highlighted,
     shade,

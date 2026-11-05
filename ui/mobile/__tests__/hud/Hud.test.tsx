@@ -1,5 +1,4 @@
 import { ComponentType } from "react";
-import { test } from "@jest/globals";
 import { render, fireEvent } from "@testing-library/react-native";
 import {
     AppearancePropsBase,

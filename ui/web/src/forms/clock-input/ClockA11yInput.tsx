@@ -1,7 +1,16 @@
 import { FC, RefObject } from "react";
+import { ClockInputProps } from "@ui";
+import { Label } from "../../design-system/typography";
 import styles from "./clock-input.module.css";
 
-interface Props {
+interface Props extends Pick<
+    ClockInputProps,
+    | "color"
+    | "highlightColor"
+    | "glyphsShade"
+    | "highlightGlyphsShade"
+    | "highlighted"
+> {
     inputRef: RefObject<HTMLInputElement | null>;
     id: string;
     min: number;
@@ -29,6 +38,11 @@ export const ClockA11yInput: FC<Props> = ({
     label,
     showValue,
     ariaLabel,
+    color,
+    highlightColor,
+    glyphsShade,
+    highlightGlyphsShade,
+    highlighted,
 }) => (
     <>
         <input
@@ -63,16 +77,21 @@ export const ClockA11yInput: FC<Props> = ({
             aria-valuetext={formatValue?.(value)}
         />
         {label ? (
-            <label
+            <Label
                 htmlFor={id}
                 className={styles.label}
-                data-appearance-variant="default"
+                color={color}
+                highlightColor={highlightColor}
+                shade={glyphsShade}
+                highlightShade={highlightGlyphsShade}
+                highlighted={highlighted}
+                disabled={disabled}
             >
                 {label}
                 {showValue ? (
                     <span>{formatValue?.(value) ?? `${value}°`}</span>
                 ) : null}
-            </label>
+            </Label>
         ) : null}
     </>
 );

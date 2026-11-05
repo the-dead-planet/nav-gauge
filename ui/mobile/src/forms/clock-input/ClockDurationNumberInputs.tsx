@@ -1,11 +1,7 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import {
-    ClockDurationNumberInputsProps,
-    NumberInputPlacement,
-    useClockDurationInput,
-} from "@ui";
-import { NumberInput } from "../number-input";
+import { ClockDurationNumberInputsProps, useClockDurationInput } from "@ui";
+import { CompanionNumberInput } from "../number-input/CompanionNumberInput";
 
 const styles = StyleSheet.create({
     container: {
@@ -16,20 +12,13 @@ const styles = StyleSheet.create({
     vertical: {
         width: "100%",
     },
-    horizontal: {
-        flex: 1,
-    },
     input: {
         flex: 1,
         minWidth: 0,
     },
 });
 
-interface Props extends ClockDurationNumberInputsProps {
-    numberInputPlacement?: NumberInputPlacement;
-}
-
-export const ClockDurationNumberInputs: FC<Props> = ({
+export const ClockDurationNumberInputs: FC<ClockDurationNumberInputsProps> = ({
     value,
     min,
     onChange,
@@ -44,14 +33,10 @@ export const ClockDurationNumberInputs: FC<Props> = ({
         numberInputPlacement === "above" || numberInputPlacement === "below";
 
     return (
-        <View
-            style={[
-                styles.container,
-                vertical ? styles.vertical : styles.horizontal,
-            ]}
-        >
-            <View style={styles.input}>
-                <NumberInput
+        <View style={[styles.container, vertical && styles.vertical]}>
+            <View style={vertical && styles.input}>
+                <CompanionNumberInput
+                    placement={numberInputPlacement}
                     {...appearanceProps}
                     value={minutes}
                     onChange={onMinutesChange}
@@ -63,8 +48,9 @@ export const ClockDurationNumberInputs: FC<Props> = ({
                     unit="min"
                 />
             </View>
-            <View style={styles.input}>
-                <NumberInput
+            <View style={vertical && styles.input}>
+                <CompanionNumberInput
+                    placement={numberInputPlacement}
                     {...appearanceProps}
                     value={seconds}
                     onChange={onSecondsChange}

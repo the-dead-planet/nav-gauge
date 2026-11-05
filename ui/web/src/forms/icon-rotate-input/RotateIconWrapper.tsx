@@ -1,22 +1,20 @@
 import { FC } from "react";
 import { Icon } from "../../design-system/icons";
-import styles from './icon-rotate-input.module.css';
+import styles from "./icon-rotate-input.module.css";
 
 interface Props {
     icon?: string;
     iconSize: number;
     displayAngle: number;
-    iconColor: string;
 }
 
 export const RotateIconWrapper: FC<Props> = ({
     icon,
     iconSize,
     displayAngle,
-    iconColor,
 }) => (
     <div
-        className={styles['icon-wrapper']}
+        className={styles["icon-wrapper"]}
         style={{ transform: `rotate(${displayAngle}deg)` }}
     >
         {icon ? (
@@ -24,7 +22,7 @@ export const RotateIconWrapper: FC<Props> = ({
                 src={icon}
                 width={iconSize}
                 height={iconSize}
-                color={iconColor}
+                data-appearance-glyph
             />
         ) : null}
     </div>
