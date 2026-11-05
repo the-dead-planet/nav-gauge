@@ -22,7 +22,6 @@ const story: MobileStoryDefinition<ClockDurationInputProps> = {
         "value",
         "min",
         "step",
-        "themeMode",
         "glyphsShade",
         "highlightColor",
         "highlightGlyphsShade",

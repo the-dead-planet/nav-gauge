@@ -7,7 +7,6 @@ import {
     DEFAULT_COLOR,
     DEFAULT_FILL_VARIANT,
     DEFAULT_SIZE,
-    ThemeContext,
     useTheme,
 } from "@ui";
 import { Label } from "../../design-system/typography";
@@ -27,7 +26,6 @@ const styles = StyleSheet.create({
 });
 
 export const Checkbox: FC<CheckboxProps> = ({
-    themeMode,
     color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
@@ -41,7 +39,7 @@ export const Checkbox: FC<CheckboxProps> = ({
     highlighted = false,
     children,
 }) => {
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
     const { state, interaction, focused } = useHudInteraction({
         disabled,
         highlighted,
@@ -62,79 +60,71 @@ export const Checkbox: FC<CheckboxProps> = ({
     const boxSize = controlSize.height - controlSize.gap;
 
     return (
-        <ThemeContext.Provider value={theme}>
-            <Pressable
-                accessibilityRole="checkbox"
-                accessibilityState={{ checked, disabled }}
-                disabled={disabled}
-                onPress={() => onChange(!checked)}
+        <Pressable
+            accessibilityRole="checkbox"
+            accessibilityState={{ checked, disabled }}
+            disabled={disabled}
+            onPress={() => onChange(!checked)}
+            style={[
+                styles.container,
+                { minHeight: controlSize.height, gap: controlSize.gap },
+            ]}
+            {...interaction}
+        >
+            <View
                 style={[
-                    styles.container,
-                    { minHeight: controlSize.height, gap: controlSize.gap },
+                    styles.box,
+                    {
+                        width: boxSize,
+                        height: boxSize,
+                        borderRadius: corners === "circle" ? boxSize / 2 : 0,
+                        backgroundColor:
+                            corners === "hexagon"
+                                ? "transparent"
+                                : appearance.surface,
+                        borderColor: appearance.border.color,
+                        borderWidth:
+                            corners === "hexagon" ? 0 : appearance.border.width,
+                        outlineStyle: "solid",
+                        outlineWidth: focused ? 2 : 0,
+                        outlineOffset: 2,
+                        outlineColor: appearance.effects.glowColor,
+                    },
                 ]}
-                {...interaction}
             >
-                <View
-                    style={[
-                        styles.box,
-                        {
-                            width: boxSize,
-                            height: boxSize,
-                            borderRadius:
-                                corners === "circle" ? boxSize / 2 : 0,
-                            backgroundColor:
-                                corners === "hexagon"
-                                    ? "transparent"
-                                    : appearance.surface,
-                            borderColor: appearance.border.color,
-                            borderWidth:
-                                corners === "hexagon"
-                                    ? 0
-                                    : appearance.border.width,
-                            outlineStyle: "solid",
-                            outlineWidth: focused ? 2 : 0,
-                            outlineOffset: 2,
-                            outlineColor: appearance.effects.glowColor,
-                        },
-                    ]}
-                >
-                    {corners === "hexagon" ? (
-                        <HexagonSurface
-                            appearance={appearance}
-                            showGlow={false}
-                        />
-                    ) : null}
-                    {checked ? (
-                        <Svg
-                            accessible={false}
-                            width={controlSize.iconSize}
-                            height={controlSize.iconSize}
-                            viewBox="0 0 12 12"
-                        >
-                            <Path
-                                d="M2 6l3 3 5-5"
-                                fill="none"
-                                stroke={glyphs}
-                                strokeWidth={2}
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            />
-                        </Svg>
-                    ) : null}
-                </View>
-                {children ? (
-                    <Label
-                        color={color}
-                        highlightColor={highlightColor}
-                        shade={glyphsShade}
-                        highlightShade={highlightGlyphsShade}
-                        highlighted={highlighted}
-                        disabled={disabled}
-                    >
-                        {children}
-                    </Label>
+                {corners === "hexagon" ? (
+                    <HexagonSurface appearance={appearance} showGlow={false} />
                 ) : null}
-            </Pressable>
-        </ThemeContext.Provider>
+                {checked ? (
+                    <Svg
+                        accessible={false}
+                        width={controlSize.iconSize}
+                        height={controlSize.iconSize}
+                        viewBox="0 0 12 12"
+                    >
+                        <Path
+                            d="M2 6l3 3 5-5"
+                            fill="none"
+                            stroke={glyphs}
+                            strokeWidth={2}
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        />
+                    </Svg>
+                ) : null}
+            </View>
+            {children ? (
+                <Label
+                    color={color}
+                    highlightColor={highlightColor}
+                    shade={glyphsShade}
+                    highlightShade={highlightGlyphsShade}
+                    highlighted={highlighted}
+                    disabled={disabled}
+                >
+                    {children}
+                </Label>
+            ) : null}
+        </Pressable>
     );
 };

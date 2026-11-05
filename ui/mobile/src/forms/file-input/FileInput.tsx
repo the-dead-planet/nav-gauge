@@ -15,7 +15,6 @@ import {
     DEFAULT_SURFACE_VARIANT,
     FileInputProps,
     Icons,
-    ThemeContext,
     useTheme,
 } from "@ui";
 import { useFileInput } from "./useFileInput";
@@ -44,7 +43,6 @@ interface Props extends Omit<
 }
 
 export const FileInput: FC<Props & ViewProps> = ({
-    themeMode,
     color = DEFAULT_COLOR,
     variant = DEFAULT_SURFACE_VARIANT,
     size = DEFAULT_SIZE,
@@ -76,7 +74,7 @@ export const FileInput: FC<Props & ViewProps> = ({
     style,
     ...props
 }) => {
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
     const {
         disabled,
         handleUpload,
@@ -110,7 +108,7 @@ export const FileInput: FC<Props & ViewProps> = ({
     };
 
     return (
-        <ThemeContext.Provider value={theme}>
+        <>
             <View
                 style={[
                     styles.container,
@@ -176,6 +174,6 @@ export const FileInput: FC<Props & ViewProps> = ({
                     </Text>
                 </Dialog>
             ) : null}
-        </ThemeContext.Provider>
+        </>
     );
 };

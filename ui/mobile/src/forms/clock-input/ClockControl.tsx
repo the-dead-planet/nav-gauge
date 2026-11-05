@@ -9,7 +9,6 @@ import {
     DEFAULT_SIZE,
     getClockDrawing,
     STEP_DEG,
-    ThemeContext,
     useTheme,
 } from "@ui";
 import { ClockControlRow } from "./ClockControlRow";
@@ -36,7 +35,6 @@ export const ClockControl = forwardRef<
         {
             mode,
             id,
-            themeMode,
             color = DEFAULT_COLOR,
             highlightColor = color,
             glyphsShade,
@@ -64,7 +62,7 @@ export const ClockControl = forwardRef<
         },
         ref,
     ) => {
-        const theme = useTheme().forMode(themeMode);
+        const theme = useTheme();
         const duration = mode === "duration";
         const drawing = getClockDrawing(
             theme.sizes.control[size].height,
@@ -114,65 +112,63 @@ export const ClockControl = forwardRef<
         };
 
         return (
-            <ThemeContext.Provider value={theme}>
-                <View
-                    ref={ref}
-                    style={[
-                        styles.container,
-                        duration && showNumberInput && styles.fullWidth,
-                        style,
-                    ]}
+            <View
+                ref={ref}
+                style={[
+                    styles.container,
+                    duration && showNumberInput && styles.fullWidth,
+                    style,
+                ]}
+            >
+                <ClockLabel
+                    label={label}
+                    value={value}
+                    formatValue={formatValue}
+                    showValue={!showNumberInput}
+                    color={color}
+                    highlightColor={highlightColor}
+                    glyphsShade={glyphsShade}
+                    highlightGlyphsShade={highlightGlyphsShade}
+                    highlighted={highlighted}
+                    disabled={disabled}
+                />
+                <ClockControlRow
+                    {...appearanceProps}
+                    mode={mode}
+                    value={value}
+                    min={min}
+                    max={max}
+                    step={step}
+                    onChange={onChange}
+                    label={label}
+                    ariaLabel={ariaLabel}
+                    showNumberInput={showNumberInput}
+                    numberInputScale={numberInputScale}
+                    numberInputUnit={numberInputUnit}
+                    showStepControls={showStepControls}
+                    stepControlsProps={stepControlsProps}
+                    numberInputPlacement={numberInputPlacement}
                 >
-                    <ClockLabel
-                        label={label}
+                    <ClockDial
+                        id={id}
                         value={value}
                         formatValue={formatValue}
-                        showValue={!showNumberInput}
-                        color={color}
-                        highlightColor={highlightColor}
-                        glyphsShade={glyphsShade}
-                        highlightGlyphsShade={highlightGlyphsShade}
-                        highlighted={highlighted}
-                        disabled={disabled}
-                    />
-                    <ClockControlRow
-                        {...appearanceProps}
-                        mode={mode}
-                        value={value}
-                        min={min}
-                        max={max}
-                        step={step}
-                        onChange={onChange}
                         label={label}
                         ariaLabel={ariaLabel}
-                        showNumberInput={showNumberInput}
-                        numberInputScale={numberInputScale}
-                        numberInputUnit={numberInputUnit}
-                        showStepControls={showStepControls}
-                        stepControlsProps={stepControlsProps}
-                        numberInputPlacement={numberInputPlacement}
-                    >
-                        <ClockDial
-                            id={id}
-                            value={value}
-                            formatValue={formatValue}
-                            label={label}
-                            ariaLabel={ariaLabel}
-                            disabled={disabled}
-                            thumbIcon={thumbIcon}
-                            mode={mode}
-                            min={min}
-                            max={max}
-                            drawing={drawing}
-                            gesture={gesture}
-                            interaction={interaction}
-                            focused={focused}
-                            appearance={appearance}
-                            glyphs={glyphs}
-                        />
-                    </ClockControlRow>
-                </View>
-            </ThemeContext.Provider>
+                        disabled={disabled}
+                        thumbIcon={thumbIcon}
+                        mode={mode}
+                        min={min}
+                        max={max}
+                        drawing={drawing}
+                        gesture={gesture}
+                        interaction={interaction}
+                        focused={focused}
+                        appearance={appearance}
+                        glyphs={glyphs}
+                    />
+                </ClockControlRow>
+            </View>
         );
     },
 );

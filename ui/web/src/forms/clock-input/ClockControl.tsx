@@ -10,7 +10,6 @@ import {
     getClockDrawing,
     millisecondsToDurationParts,
     STEP_DEG,
-    ThemeContext,
     useTheme,
 } from "@ui";
 import { ClockA11yInput } from "./ClockA11yInput";
@@ -25,7 +24,6 @@ export const ClockControl: FC<
 > = ({
     mode,
     id,
-    themeMode,
     color = DEFAULT_COLOR,
     highlightColor = color,
     glyphsShade,
@@ -53,7 +51,7 @@ export const ClockControl: FC<
     style,
     ...props
 }) => {
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
     const generatedId = useId();
     const inputId = id ?? generatedId;
     const duration = mode === "duration";
@@ -65,7 +63,7 @@ export const ClockControl: FC<
         max,
     );
     const { minutes, seconds } = millisecondsToDurationParts(value);
-    const { dragging, inputRef, pointerEvents } = useClockDrag({
+    const { dragging, pointerEvents } = useClockDrag({
         mode,
         value,
         min,
@@ -88,98 +86,85 @@ export const ClockControl: FC<
     };
 
     return (
-        <ThemeContext.Provider value={theme}>
-            <div
-                {...props}
-                data-appearance-mode={theme.mode}
-                data-appearance-variant={variant}
-                data-appearance-color={color}
-                data-appearance-highlight={highlightColor}
-                data-highlighted={highlighted}
-                data-disabled={disabled}
-                data-dragging={dragging}
-                data-size={size}
-                className={classNames(
-                    styles.container,
-                    duration &&
-                        showNumberInput &&
-                        styles["with-duration-inputs"],
-                    className,
-                )}
-                style={
-                    {
-                        ...style,
-                        "--appearance-default-glyphs-override":
-                            glyphsShade === undefined
-                                ? undefined
-                                : theme.color(color, glyphsShade),
-                        "--appearance-hover-focus-glyphs-override":
-                            highlightGlyphsShade === undefined
-                                ? undefined
-                                : theme.color(
-                                      highlightColor,
-                                      highlightGlyphsShade,
-                                  ),
-                        "--appearance-active-pressed-glyphs-override":
-                            highlightGlyphsShade === undefined
-                                ? undefined
-                                : theme.color(
-                                      highlightColor,
-                                      highlightGlyphsShade,
-                                  ),
-                    } as CSSProperties
+        <div
+            {...props}
+            data-appearance-mode={theme.mode}
+            data-appearance-variant={variant}
+            data-appearance-color={color}
+            data-appearance-highlight={highlightColor}
+            data-highlighted={highlighted}
+            data-disabled={disabled}
+            data-dragging={dragging}
+            data-size={size}
+            className={classNames(
+                styles.container,
+                duration && showNumberInput && styles["with-duration-inputs"],
+                className,
+            )}
+            style={
+                {
+                    ...style,
+                    "--appearance-default-glyphs-override":
+                        glyphsShade === undefined
+                            ? undefined
+                            : theme.color(color, glyphsShade),
+                    "--appearance-hover-focus-glyphs-override":
+                        highlightGlyphsShade === undefined
+                            ? undefined
+                            : theme.color(highlightColor, highlightGlyphsShade),
+                    "--appearance-active-pressed-glyphs-override":
+                        highlightGlyphsShade === undefined
+                            ? undefined
+                            : theme.color(highlightColor, highlightGlyphsShade),
+                } as CSSProperties
+            }
+        >
+            <ClockA11yInput
+                color={color}
+                highlightColor={highlightColor}
+                glyphsShade={glyphsShade}
+                highlightGlyphsShade={highlightGlyphsShade}
+                highlighted={highlighted}
+                id={inputId}
+                min={min}
+                max={duration ? undefined : max}
+                step={step}
+                value={value}
+                formatValue={
+                    duration ? () => `${minutes} min ${seconds} s` : formatValue
                 }
+                onChange={onChange}
+                disabled={disabled}
+                label={label}
+                showValue={!showNumberInput}
+                ariaLabel={
+                    ariaLabel ??
+                    (duration ? "Duration (milliseconds)" : undefined)
+                }
+            />
+            <ClockControlRow
+                {...appearanceProps}
+                mode={mode}
+                value={value}
+                min={min}
+                max={max}
+                step={step}
+                onChange={onChange}
+                label={label}
+                ariaLabel={ariaLabel}
+                showNumberInput={showNumberInput}
+                numberInputScale={numberInputScale}
+                numberInputUnit={numberInputUnit}
+                showStepControls={showStepControls}
+                stepControlsProps={stepControlsProps}
+                numberInputPlacement={numberInputPlacement}
             >
-                <ClockA11yInput
-                    color={color}
-                    highlightColor={highlightColor}
-                    glyphsShade={glyphsShade}
-                    highlightGlyphsShade={highlightGlyphsShade}
-                    highlighted={highlighted}
-                    inputRef={inputRef}
-                    id={inputId}
-                    min={min}
-                    max={duration ? undefined : max}
-                    step={step}
-                    value={value}
-                    formatValue={
-                        duration
-                            ? () => `${minutes} min ${seconds} s`
-                            : formatValue
-                    }
-                    onChange={onChange}
-                    disabled={disabled}
-                    label={label}
-                    showValue={!showNumberInput}
-                    ariaLabel={
-                        ariaLabel ??
-                        (duration ? "Duration (milliseconds)" : undefined)
-                    }
+                <ClockDial
+                    drawing={drawing}
+                    pointerEvents={pointerEvents}
+                    thumbIcon={thumbIcon}
                 />
-                <ClockControlRow
-                    {...appearanceProps}
-                    mode={mode}
-                    value={value}
-                    min={min}
-                    max={max}
-                    step={step}
-                    onChange={onChange}
-                    label={label}
-                    ariaLabel={ariaLabel}
-                    showNumberInput={showNumberInput}
-                    numberInputScale={numberInputScale}
-                    numberInputUnit={numberInputUnit}
-                    showStepControls={showStepControls}
-                    stepControlsProps={stepControlsProps}
-                    numberInputPlacement={numberInputPlacement}
-                >
-                    <ClockDial
-                        drawing={drawing}
-                        pointerEvents={pointerEvents}
-                        thumbIcon={thumbIcon}
-                    />
-                </ClockControlRow>
-            </div>
-        </ThemeContext.Provider>
+            </ClockControlRow>
+        </div>
     );
 };

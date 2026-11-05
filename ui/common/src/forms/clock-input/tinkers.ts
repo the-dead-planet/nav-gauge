@@ -6,7 +6,6 @@ import {
     DEFAULT_SIZE,
     fillVariantOptions,
     sizeOptions,
-    typographyStoryControls,
 } from "../../design-system";
 import { StoryControls } from "../../storybook";
 import { stepControlsPropsStoryControl } from "../step-controls";
@@ -112,7 +111,6 @@ export const clockStoryArgs: Omit<ClockInputProps, "onChange"> = {
     color: DEFAULT_COLOR,
     variant: DEFAULT_FILL_VARIANT,
     size: DEFAULT_SIZE,
-    themeMode: undefined,
     glyphsShade: undefined,
     highlightColor: undefined,
     highlightGlyphsShade: undefined,
@@ -142,7 +140,6 @@ export const clockDurationStoryArgs: Omit<ClockDurationInputProps, "onChange"> =
         color: DEFAULT_COLOR,
         variant: DEFAULT_FILL_VARIANT,
         size: DEFAULT_SIZE,
-        themeMode: undefined,
         glyphsShade: undefined,
         highlightColor: undefined,
         highlightGlyphsShade: undefined,
@@ -160,7 +157,6 @@ export const clockDurationStoryControls: StoryControls<ClockDurationInputProps> 
         value: { control: { type: "number" } },
         min: { control: { type: "number" } },
         step: { control: { type: "number" } },
-        themeMode: typographyStoryControls.themeMode,
         color: {
             control: "select",
             options: appearanceColorOptions,

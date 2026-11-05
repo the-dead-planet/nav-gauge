@@ -30,7 +30,6 @@ const story: MobileStoryDefinition<ComponentProps<typeof StepControls>> = {
         ...stepControlsStoryControls,
     },
     galleryEditableControls: [
-        "themeMode",
         "value",
         "min",
         "max",

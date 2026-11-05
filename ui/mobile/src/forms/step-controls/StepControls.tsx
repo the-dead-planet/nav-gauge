@@ -25,7 +25,6 @@ const styles = StyleSheet.create({
 
 export const StepControls: FC<StepControlsProps> = ({
     children,
-    themeMode,
     highlightColor,
     glyphsShade,
     highlightGlyphsShade,
@@ -65,7 +64,6 @@ export const StepControls: FC<StepControlsProps> = ({
             <Button
                 icon={minusIcon}
                 color={color}
-                themeMode={themeMode}
                 variant={variant}
                 highlightColor={highlightColor}
                 glyphsShade={glyphsShade}
@@ -85,7 +83,6 @@ export const StepControls: FC<StepControlsProps> = ({
             <Button
                 icon={plusIcon}
                 color={color}
-                themeMode={themeMode}
                 variant={variant}
                 highlightColor={highlightColor}
                 glyphsShade={glyphsShade}

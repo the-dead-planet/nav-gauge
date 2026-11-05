@@ -50,11 +50,10 @@ describe("HUD appearance ownership", () => {
             false,
         );
         const content = (disabled = false) => (
-            <ThemeContext.Provider value={theme}>
+            <ThemeContext.Provider value={theme.forMode("dark")}>
                 <OctagonalPanel
                     color="glitch"
                     highlightColor="intel"
-                    themeMode="dark"
                     highlighted
                     disabled={disabled}
                 >

@@ -25,7 +25,6 @@ const story: MobileStoryDefinition<RadioProps> = {
     },
     controls: radioStoryControls,
     galleryEditableControls: [
-        "themeMode",
         "checked",
         "glyphsShade",
         "highlightColor",

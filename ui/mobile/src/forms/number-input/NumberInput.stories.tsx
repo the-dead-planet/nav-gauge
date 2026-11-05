@@ -24,7 +24,6 @@ const story: MobileStoryDefinition<NumberInputProps> = {
     },
     controls: numberInputStoryControls,
     galleryEditableControls: [
-        "themeMode",
         "glyphsShade",
         "highlightColor",
         "highlightGlyphsShade",

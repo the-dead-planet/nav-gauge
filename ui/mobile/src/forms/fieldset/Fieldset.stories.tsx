@@ -16,7 +16,6 @@ const StoryFieldset = (args: FieldsetProps) => (
             variant={args.variant}
             color={args.color}
             highlightColor={args.highlightColor}
-            themeMode={args.themeMode}
             highlighted={args.highlighted}
             disabled={args.disabled}
         >
@@ -31,7 +30,6 @@ const story: MobileStoryDefinition<FieldsetProps> = {
     galleryEditableControls: [
         "label",
         "children",
-        "themeMode",
         "highlightColor",
         "highlighted",
         "disabled",

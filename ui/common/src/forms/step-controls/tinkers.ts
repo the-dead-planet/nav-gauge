@@ -21,7 +21,6 @@ export const stepControlsStoryArgs: Omit<
     color: DEFAULT_COLOR,
     variant: DEFAULT_SURFACE_VARIANT,
     size: DEFAULT_SIZE,
-    themeMode: undefined,
     highlightColor: undefined,
     glyphsShade: undefined,
     highlightGlyphsShade: undefined,
@@ -31,7 +30,6 @@ export const stepControlsStoryArgs: Omit<
 };
 
 export const stepControlsStoryControls: StoryControls<StepControlsProps> = {
-    themeMode: numberInputStoryControls.themeMode,
     variant: {
         control: "select",
         options: surfaceVariantOptions,

@@ -45,7 +45,6 @@ const surfaceVariantControl: StoryControl = {
 };
 
 export const fileInputStoryControls: StoryControls<FileInputProps<unknown>> = {
-    themeMode: buttonStoryControls.themeMode,
     color: buttonStoryControls.color,
     highlightColor: buttonStoryControls.highlightColor,
     glyphsShade: buttonStoryControls.glyphsShade,

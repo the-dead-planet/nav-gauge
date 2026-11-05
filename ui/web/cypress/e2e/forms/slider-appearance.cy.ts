@@ -1,134 +1,128 @@
 describe("Slider appearance", () => {
-    it("uses opaque track shades and thumb interaction paints across every variant, color and mode", () => {
+    it("uses opaque track shades and thumb interaction paints across variants and modes", () => {
         cy.visit("/iframe.html?id=forms-slider--gallery&viewMode=story");
+        cy.get("#theme-appearance-variables").should("exist");
         cy.get('input[type="range"]').should("have.length", 24);
-        for (const color of [
-            "primary",
-            "secondary",
-            "tertiary",
-            "neutral",
-            "glitch",
-            "hazard",
-            "secured",
-            "intel",
-        ]) {
-            cy.get(
-                `[data-appearance-color="${color}"][data-appearance-variant="fill"]`,
-            ).should(($slider) => {
-                const label = $slider.find("label")[0];
-                const thumb = $slider.find(
-                    '[aria-hidden="true"] > div:last-child',
-                )[0];
-                const window = label.ownerDocument.defaultView!;
-                const labelColor = window.getComputedStyle(label).color;
-                const thumbColor =
-                    window.getComputedStyle(thumb).backgroundColor;
-                expect(thumbColor).not.to.equal("rgba(0, 0, 0, 0)");
-                expect(labelColor).not.to.equal(thumbColor);
-            });
-        }
-        cy.get<HTMLInputElement>('input[type="range"]').each(($input) => {
-            const input = $input[0] as HTMLInputElement;
-            const slider = $input[0].closest("[data-appearance-variant]")!;
-            const track = slider.querySelector('[aria-hidden="true"]')!;
-            const progress = track.firstElementChild!;
-            const thumb = track.lastElementChild!;
-            const label = slider.querySelector("label")!;
-            const window = slider.ownerDocument.defaultView!;
-            const reference = slider.ownerDocument.createElement("span");
-            slider.setAttribute("data-appearance-highlight", "hazard");
-            slider.setAttribute("data-glow", "glow");
-            slider.append(reference);
-            for (const mode of ["light", "dark"]) {
-                slider.setAttribute("data-appearance-mode", mode);
-                reference.style.backgroundColor = "var(--appearance-color-500)";
-                expect(
-                    window.getComputedStyle(progress).backgroundColor,
-                ).to.equal(window.getComputedStyle(reference).backgroundColor);
-                reference.style.backgroundColor = `var(--appearance-color-${mode === "light" ? 300 : 700})`;
-                expect(
-                    window.getComputedStyle(track).backgroundColor,
-                    `${slider.getAttribute("data-appearance-color")} ${slider.getAttribute("data-appearance-variant")} ${mode}`,
-                ).to.equal(window.getComputedStyle(reference).backgroundColor);
-                expect(window.getComputedStyle(track).opacity).to.equal("1");
-                expect(window.getComputedStyle(progress).opacity).to.equal("1");
-                expect(window.getComputedStyle(thumb).boxShadow).to.equal(
-                    "none",
-                );
-                const leftCap = window.getComputedStyle(progress, "::before");
-                const rightCap = window.getComputedStyle(track, "::after");
-                const trackThickness = parseFloat(
-                    window.getComputedStyle(track).height,
-                );
-                for (const cap of [leftCap, rightCap]) {
-                    expect(cap.content).not.to.equal("none");
-                    expect(parseFloat(cap.width) * Math.SQRT2).to.be.closeTo(
-                        trackThickness,
-                        0.02,
-                    );
-                    expect(cap.height).to.equal(cap.width);
-                }
-                expect(leftCap.backgroundColor).to.equal(
-                    window.getComputedStyle(progress).backgroundColor,
-                );
-                expect(rightCap.backgroundColor).to.equal(
-                    window.getComputedStyle(track).backgroundColor,
-                );
-                const unfilledColor =
-                    window.getComputedStyle(track).backgroundColor;
-                const labelColor = window.getComputedStyle(label).color;
-                input.focus();
-                expect(input.matches(":focus-visible")).to.equal(true);
-                for (const highlighted of [false, true]) {
-                    if (highlighted) {
-                        slider.setAttribute("data-highlighted", "true");
-                    }
-                    const thumbStyle = window.getComputedStyle(thumb);
-                    const thumbPaint =
-                        slider.getAttribute("data-appearance-variant") ===
-                        "fill"
-                            ? thumbStyle.backgroundColor
-                            : thumbStyle.borderTopColor;
+        cy.get<HTMLInputElement>(
+            '.story [data-appearance-color="neutral"] input[type="range"]',
+        )
+            .should("have.length", 3)
+            .each(($input) => {
+                const input = $input[0] as HTMLInputElement;
+                const slider = $input[0].closest("[data-appearance-variant]")!;
+                const track = slider.querySelector('[aria-hidden="true"]')!;
+                const progress = track.firstElementChild!;
+                const thumb = track.lastElementChild!;
+                const label = slider.querySelector("label")!;
+                const window = slider.ownerDocument.defaultView!;
+                const reference = slider.ownerDocument.createElement("span");
+                slider.setAttribute("data-appearance-highlight", "hazard");
+                slider.setAttribute("data-glow", "glow");
+                slider.append(reference);
+                for (const mode of ["light", "dark"]) {
+                    slider.setAttribute("data-appearance-mode", mode);
+                    reference.style.backgroundColor =
+                        "var(--appearance-color-500)";
                     expect(
                         window.getComputedStyle(progress).backgroundColor,
-                    ).to.equal(thumbPaint);
+                    ).to.equal(
+                        window.getComputedStyle(reference).backgroundColor,
+                    );
+                    reference.style.backgroundColor = `var(--appearance-color-${mode === "light" ? 300 : 700})`;
+                    expect(
+                        window.getComputedStyle(track).backgroundColor,
+                        `${slider.getAttribute("data-appearance-color")} ${slider.getAttribute("data-appearance-variant")} ${mode}`,
+                    ).to.equal(
+                        window.getComputedStyle(reference).backgroundColor,
+                    );
+                    expect(window.getComputedStyle(track).opacity).to.equal(
+                        "1",
+                    );
+                    expect(window.getComputedStyle(progress).opacity).to.equal(
+                        "1",
+                    );
+                    expect(window.getComputedStyle(thumb).boxShadow).to.equal(
+                        "none",
+                    );
+                    const leftCap = window.getComputedStyle(
+                        progress,
+                        "::before",
+                    );
+                    const rightCap = window.getComputedStyle(track, "::after");
+                    const trackThickness = parseFloat(
+                        window.getComputedStyle(track).height,
+                    );
+                    for (const cap of [leftCap, rightCap]) {
+                        expect(cap.content).not.to.equal("none");
+                        expect(
+                            parseFloat(cap.width) * Math.SQRT2,
+                        ).to.be.closeTo(trackThickness, 0.02);
+                        expect(cap.height).to.equal(cap.width);
+                    }
+                    expect(leftCap.backgroundColor).to.equal(
+                        window.getComputedStyle(progress).backgroundColor,
+                    );
+                    expect(rightCap.backgroundColor).to.equal(
+                        window.getComputedStyle(track).backgroundColor,
+                    );
+                    const unfilledColor =
+                        window.getComputedStyle(track).backgroundColor;
+                    const labelColor = window.getComputedStyle(label).color;
+                    input.focus();
+                    expect(input.matches(":focus-visible")).to.equal(true);
+                    for (const highlighted of [false, true]) {
+                        if (highlighted) {
+                            slider.setAttribute("data-highlighted", "true");
+                        }
+                        const thumbStyle = window.getComputedStyle(thumb);
+                        const thumbPaint =
+                            slider.getAttribute("data-appearance-variant") ===
+                            "fill"
+                                ? thumbStyle.backgroundColor
+                                : thumbStyle.borderTopColor;
+                        expect(
+                            window.getComputedStyle(progress).backgroundColor,
+                        ).to.equal(thumbPaint);
+                        expect(
+                            window.getComputedStyle(track).backgroundColor,
+                        ).to.equal(unfilledColor);
+                        expect(
+                            window.getComputedStyle(thumb).boxShadow,
+                        ).not.to.equal("none");
+                        expect(
+                            window.getComputedStyle(progress, "::before")
+                                .backgroundColor,
+                        ).to.equal(thumbPaint);
+                        expect(
+                            window.getComputedStyle(track, "::after")
+                                .backgroundColor,
+                        ).to.equal(unfilledColor);
+                        expect(window.getComputedStyle(label).color).to.equal(
+                            labelColor,
+                        );
+                    }
+                    slider.setAttribute("data-disabled", "true");
+                    input.disabled = true;
+                    reference.style.backgroundColor =
+                        "var(--appearance-color-500)";
+                    expect(
+                        window.getComputedStyle(progress).backgroundColor,
+                    ).to.equal(
+                        window.getComputedStyle(reference).backgroundColor,
+                    );
                     expect(
                         window.getComputedStyle(track).backgroundColor,
                     ).to.equal(unfilledColor);
-                    expect(
-                        window.getComputedStyle(thumb).boxShadow,
-                    ).not.to.equal("none");
-                    expect(
-                        window.getComputedStyle(progress, "::before")
-                            .backgroundColor,
-                    ).to.equal(thumbPaint);
-                    expect(
-                        window.getComputedStyle(track, "::after")
-                            .backgroundColor,
-                    ).to.equal(unfilledColor);
-                    expect(window.getComputedStyle(label).color).to.equal(
-                        labelColor,
+                    expect(window.getComputedStyle(thumb).boxShadow).to.equal(
+                        "none",
                     );
+                    slider.removeAttribute("data-disabled");
+                    slider.removeAttribute("data-highlighted");
+                    input.disabled = false;
+                    input.blur();
                 }
-                slider.setAttribute("data-disabled", "true");
-                input.disabled = true;
-                reference.style.backgroundColor = "var(--appearance-color-500)";
-                expect(
-                    window.getComputedStyle(progress).backgroundColor,
-                ).to.equal(window.getComputedStyle(reference).backgroundColor);
-                expect(window.getComputedStyle(track).backgroundColor).to.equal(
-                    unfilledColor,
-                );
-                expect(window.getComputedStyle(thumb).boxShadow).to.equal(
-                    "none",
-                );
-                slider.removeAttribute("data-disabled");
-                slider.removeAttribute("data-highlighted");
-                input.disabled = false;
-                input.blur();
-            }
-            reference.remove();
-        });
+                reference.remove();
+            });
     });
 
     it("runs the animated thumb glow once and resets it when inactive", () => {

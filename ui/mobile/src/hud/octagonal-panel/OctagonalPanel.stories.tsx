@@ -19,7 +19,6 @@ const story: MobileStoryDefinition<ComponentProps<typeof OctagonalPanel>> = {
     controls: octagonalPanelStoryControls,
     galleryEditableControls: [
         "children",
-        "themeMode",
         "highlightColor",
         "highlighted",
         "disabled",

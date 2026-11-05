@@ -117,7 +117,7 @@ describe("Gizmo interaction ownership", () => {
     );
 
     test.each(cases)(
-        "$corners in $mode respects theme overrides, focus, press, highlight and disabled",
+        "$corners in $mode respects the provider, focus, press, highlight and disabled",
         async ({ corners, mode }) => {
             const theme = new Theme(
                 themeSpecifications[ThemeName.Default][mode],
@@ -131,9 +131,8 @@ describe("Gizmo interaction ownership", () => {
                 overrideGlyphs = true,
                 overrideTheme = true,
             ) => (
-                <ThemeContext.Provider value={theme}>
+                <ThemeContext.Provider value={overrideTheme ? theme.forMode(resolvedMode) : theme}>
                     <Button
-                        themeMode={overrideTheme ? resolvedMode : undefined}
                         corners={corners}
                         color="glitch"
                         highlightColor="intel"

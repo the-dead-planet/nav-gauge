@@ -32,7 +32,6 @@ export const useClockDrag = ({
 }: Options) => {
     const [dragging, setDragging] = useState(false);
     const pointer = useRef<{ id: number; hand: ClockHand } | null>(null);
-    const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         if (disabled) {
@@ -69,7 +68,6 @@ export const useClockDrag = ({
                       : "minutes";
             pointer.current = { id: event.pointerId, hand };
             event.currentTarget.setPointerCapture(event.pointerId);
-            inputRef.current?.focus();
             setDragging(true);
         }
         if (distance < 4 || !pointer.current) {
@@ -95,7 +93,6 @@ export const useClockDrag = ({
 
     return {
         dragging: dragging && !disabled,
-        inputRef,
         pointerEvents: {
             onPointerDown: (event: PointerEvent<SVGSVGElement>) => {
                 if (event.button === 0 && !pointer.current) {

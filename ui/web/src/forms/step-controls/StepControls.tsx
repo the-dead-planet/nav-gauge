@@ -13,7 +13,6 @@ import styles from "./step-controls.module.css";
 
 export const StepControls: FC<StepControlsProps> = ({
     children,
-    themeMode,
     highlightColor,
     glyphsShade,
     highlightGlyphsShade,
@@ -54,7 +53,6 @@ export const StepControls: FC<StepControlsProps> = ({
                 {...getStepButtonProps(-1)}
                 icon={minusIcon}
                 color={color}
-                themeMode={themeMode}
                 variant={variant}
                 highlightColor={highlightColor}
                 glyphsShade={glyphsShade}
@@ -73,7 +71,6 @@ export const StepControls: FC<StepControlsProps> = ({
                 {...getStepButtonProps(1)}
                 icon={plusIcon}
                 color={color}
-                themeMode={themeMode}
                 variant={variant}
                 highlightColor={highlightColor}
                 glyphsShade={glyphsShade}

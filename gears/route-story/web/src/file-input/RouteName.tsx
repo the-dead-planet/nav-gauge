@@ -2,9 +2,8 @@ import type * as maplibregl from "maplibre-gl";
 import { FC } from "react";
 import { parsers, TopToolsProps, useMultipleTranslations } from "@apparatus";
 import { HexagonalPanel, Button, FileInput } from "@web-ui";
-import { useObservableState, useSubjectState } from "@tinker-chest";
-import { Icons, useTheme } from "@ui";
-import { useWebMachineWard } from "@web-apparatus";
+import { useSubjectState } from "@tinker-chest";
+import { Icons } from "@ui";
 import { WebRouteStoryProps } from "../model";
 import styles from './file-input.module.css';
 
@@ -16,9 +15,6 @@ export const RouteName: FC<TopToolsProps<maplibregl.Map> & WebRouteStoryProps> =
     fileOperator,
     fitBoundsHandler,
 }) => {
-    const { cartomancer } = useWebMachineWard();
-    const theme = useTheme();
-    const mapThemeMode = useObservableState(cartomancer.selectedStyleThemeMode$, theme.mode);
     const [{ routeName, geojson }] = useSubjectState(data$);
 
     const [
@@ -46,7 +42,6 @@ export const RouteName: FC<TopToolsProps<maplibregl.Map> & WebRouteStoryProps> =
             contentClassName={styles['content']}
         >
             <FileInput
-                themeMode={mapThemeMode}
                 mutiple
                 fileIcon={routeName ? Icons.NounProject.ReplaceFile : Icons.NounProject.Upload}
                 fileName={routeName}
@@ -76,7 +71,6 @@ export const RouteName: FC<TopToolsProps<maplibregl.Map> & WebRouteStoryProps> =
                         id: 'fit-bounds',
                         element: (
                             <Button
-                                themeMode={mapThemeMode}
                                 variant="ghost"
                                 color="primary"
                                 corners="circle"

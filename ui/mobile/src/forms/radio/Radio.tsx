@@ -8,7 +8,6 @@ import {
     DEFAULT_GLYPH_CORNERS,
     hexagonGeometry,
     RadioProps,
-    ThemeContext,
     useTheme,
 } from "@ui";
 import { Label } from "../../design-system/typography";
@@ -28,7 +27,6 @@ const styles = StyleSheet.create({
 });
 
 export const Radio: FC<RadioProps> = ({
-    themeMode,
     color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
@@ -42,7 +40,7 @@ export const Radio: FC<RadioProps> = ({
     highlighted = false,
     children,
 }) => {
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
     const { state, interaction, focused } = useHudInteraction({
         disabled,
         highlighted,
@@ -64,94 +62,80 @@ export const Radio: FC<RadioProps> = ({
     const markerSize = controlSize.iconSize / 2;
 
     return (
-        <ThemeContext.Provider value={theme}>
-            <Pressable
-                accessibilityRole="radio"
-                accessibilityState={{ checked, disabled }}
-                disabled={disabled}
-                onPress={() => onChange(true)}
+        <Pressable
+            accessibilityRole="radio"
+            accessibilityState={{ checked, disabled }}
+            disabled={disabled}
+            onPress={() => onChange(true)}
+            style={[
+                styles.container,
+                { minHeight: controlSize.height, gap: controlSize.gap },
+            ]}
+            {...interaction}
+        >
+            <View
                 style={[
-                    styles.container,
-                    { minHeight: controlSize.height, gap: controlSize.gap },
+                    styles.box,
+                    {
+                        width: boxSize,
+                        height: boxSize,
+                        borderRadius: corners === "circle" ? boxSize / 2 : 0,
+                        backgroundColor:
+                            corners === "hexagon"
+                                ? "transparent"
+                                : appearance.surface,
+                        borderColor: appearance.border.color,
+                        borderWidth:
+                            corners === "hexagon" ? 0 : appearance.border.width,
+                        outlineStyle: "solid",
+                        outlineWidth: focused ? 2 : 0,
+                        outlineOffset: 2,
+                        outlineColor: appearance.effects.glowColor,
+                    },
                 ]}
-                {...interaction}
             >
-                <View
-                    style={[
-                        styles.box,
-                        {
-                            width: boxSize,
-                            height: boxSize,
-                            borderRadius:
-                                corners === "circle" ? boxSize / 2 : 0,
-                            backgroundColor:
-                                corners === "hexagon"
-                                    ? "transparent"
-                                    : appearance.surface,
-                            borderColor: appearance.border.color,
-                            borderWidth:
-                                corners === "hexagon"
-                                    ? 0
-                                    : appearance.border.width,
-                            outlineStyle: "solid",
-                            outlineWidth: focused ? 2 : 0,
-                            outlineOffset: 2,
-                            outlineColor: appearance.effects.glowColor,
-                        },
-                    ]}
-                >
-                    {corners === "hexagon" ? (
-                        <HexagonSurface
-                            appearance={appearance}
-                            showGlow={false}
-                        />
-                    ) : null}
-                    {checked ? (
-                        <View
-                            style={{
-                                width: markerSize,
-                                height: markerSize,
-                                borderRadius:
-                                    corners === "circle" ? markerSize / 2 : 0,
-                                backgroundColor:
-                                    corners === "hexagon"
-                                        ? "transparent"
-                                        : glyphs,
-                            }}
-                        >
-                            {corners === "hexagon" ? (
-                                <Svg
-                                    width="100%"
-                                    height="100%"
-                                    viewBox={
-                                        hexagonGeometry["flat-top"].viewBox
-                                    }
-                                    accessible={false}
-                                >
-                                    <Polygon
-                                        points={
-                                            hexagonGeometry["flat-top"].points
-                                        }
-                                        fill={glyphs}
-                                    />
-                                </Svg>
-                            ) : null}
-                        </View>
-                    ) : null}
-                </View>
-                {children ? (
-                    <Label
-                        color={color}
-                        highlightColor={highlightColor}
-                        shade={glyphsShade}
-                        highlightShade={highlightGlyphsShade}
-                        highlighted={highlighted}
-                        disabled={disabled}
-                    >
-                        {children}
-                    </Label>
+                {corners === "hexagon" ? (
+                    <HexagonSurface appearance={appearance} showGlow={false} />
                 ) : null}
-            </Pressable>
-        </ThemeContext.Provider>
+                {checked ? (
+                    <View
+                        style={{
+                            width: markerSize,
+                            height: markerSize,
+                            borderRadius:
+                                corners === "circle" ? markerSize / 2 : 0,
+                            backgroundColor:
+                                corners === "hexagon" ? "transparent" : glyphs,
+                        }}
+                    >
+                        {corners === "hexagon" ? (
+                            <Svg
+                                width="100%"
+                                height="100%"
+                                viewBox={hexagonGeometry["flat-top"].viewBox}
+                                accessible={false}
+                            >
+                                <Polygon
+                                    points={hexagonGeometry["flat-top"].points}
+                                    fill={glyphs}
+                                />
+                            </Svg>
+                        ) : null}
+                    </View>
+                ) : null}
+            </View>
+            {children ? (
+                <Label
+                    color={color}
+                    highlightColor={highlightColor}
+                    shade={glyphsShade}
+                    highlightShade={highlightGlyphsShade}
+                    highlighted={highlighted}
+                    disabled={disabled}
+                >
+                    {children}
+                </Label>
+            ) : null}
+        </Pressable>
     );
 };

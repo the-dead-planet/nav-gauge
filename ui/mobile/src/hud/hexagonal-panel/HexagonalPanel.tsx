@@ -16,7 +16,6 @@ import {
     DEFAULT_SIZE,
     DEFAULT_HEXAGONAL_PANEL_SHAPE,
     getHexagonalPanelGeometry,
-    ThemeContext,
     useTheme,
 } from "@ui";
 import { HudContent } from "../HudContent";
@@ -40,7 +39,6 @@ interface Props extends Omit<PressableProps, "children" | "style"> {
 }
 
 export const HexagonalPanel: FC<HexagonalPanelProps & Props> = ({
-    themeMode,
     forwardRef,
     color = DEFAULT_COLOR,
     highlightColor,
@@ -65,7 +63,7 @@ export const HexagonalPanel: FC<HexagonalPanelProps & Props> = ({
     children,
     ...props
 }) => {
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
     const { state, interaction, focused } = useHudInteraction({
         disabled,
         highlighted,
@@ -164,5 +162,5 @@ export const HexagonalPanel: FC<HexagonalPanelProps & Props> = ({
                 {content}
             </View>
         );
-    return <ThemeContext.Provider value={theme}>{panel}</ThemeContext.Provider>;
+    return panel;
 };

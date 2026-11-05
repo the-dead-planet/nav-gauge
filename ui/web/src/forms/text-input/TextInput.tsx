@@ -12,7 +12,6 @@ import styles from "./text-input.module.css";
 
 export const TextInput: FC<Omit<ComponentProps<"input">, "onChange" | "value" | "type" | "size"> & TextInputProps> = ({
     id,
-    themeMode,
     color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
@@ -32,7 +31,7 @@ export const TextInput: FC<Omit<ComponentProps<"input">, "onChange" | "value" | 
 }) => {
     const generatedId = useId();
     const inputId = id || generatedId;
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         onChange(event.target.value);
@@ -70,7 +69,6 @@ export const TextInput: FC<Omit<ComponentProps<"input">, "onChange" | "value" | 
             {label ? (
                 <Label
                     htmlFor={inputId}
-                    themeMode={themeMode}
                     color={color}
                     highlightColor={highlightColor}
                     shade={glyphsShade}

@@ -5,7 +5,6 @@ import {
     DEFAULT_SURFACE_VARIANT,
     sizeOptions,
     surfaceVariantOptions,
-    typographyStoryControls,
 } from "../../design-system";
 import { StoryControls } from "../../storybook";
 import { FieldsetProps } from "./model";
@@ -13,7 +12,6 @@ import { FieldsetProps } from "./model";
 export const fieldsetStoryArgs: FieldsetProps = {
     label: "Fieldset",
     children: "Fieldset content",
-    themeMode: undefined,
     color: DEFAULT_COLOR,
     highlightColor: undefined,
     variant: DEFAULT_SURFACE_VARIANT,
@@ -25,7 +23,6 @@ export const fieldsetStoryArgs: FieldsetProps = {
 };
 
 export const fieldsetStoryControls: StoryControls<FieldsetProps> = {
-    themeMode: typographyStoryControls.themeMode,
     label: {
         control: "text",
     },

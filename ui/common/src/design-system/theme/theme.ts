@@ -143,10 +143,10 @@ export class Theme {
             ? {
                 base: 500,
                 brightest: 50,
-                surface: 100,
+                surface: 50,
                 border: 200,
                 glyphs: 900,
-                inverseSurface: 200,
+                inverseSurface: 100,
                 insetSurface: 100,
                 hoverFocus: 600,
                 activePressed: 700,

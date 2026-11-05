@@ -41,30 +41,28 @@ const renderToStaticMarkup = (children: ReactElement): string => renderMarkup(
 describe('Typography', () => {
     after(() => theme.destroy());
 
-    it('selects an optional glyph variant while retaining mode and shade overrides', () => {
+    it('selects an optional glyph variant while inheriting mode and retaining shade overrides', () => {
         const markup = renderToStaticMarkup(createElement(Text, {
             variant: 'ghost',
-            themeMode: 'dark',
             color: 'primary',
             shade: 500,
             highlightShade: 200,
             children: 'Route name',
         }));
         expect(markup).to.include('data-appearance-variant="ghost"');
-        expect(markup).to.include('data-appearance-mode="dark"');
+        expect(markup).to.include('data-appearance-mode="light"');
         expect(markup).to.include('--appearance-default-glyphs-override:var(--color-primary-500)');
         expect(markup).to.include('--appearance-active-pressed-glyphs-override:var(--color-primary-200)');
         expect(markup).not.to.include(' variant=');
         expect(markup).not.to.include('background-color');
     });
 
-    it('lets themeMode override the surrounding theme without leaking a DOM prop', () => {
-        const markup = renderToStaticMarkup(createElement(Text, {
-            themeMode: 'dark',
-            children: 'Dark text',
+    it('inherits the nearest provider mode', () => {
+        const markup = renderToStaticMarkup(createElement(ThemeContext.Provider, {
+            value: theme.forMode('dark'),
+            children: createElement(Text, { children: 'Dark text' }),
         }));
         expect(markup).to.include('data-appearance-mode="dark"');
-        expect(markup).not.to.include('themeMode=');
     });
 
     it('defaults to neutral appearance when no palette is supplied', () => {

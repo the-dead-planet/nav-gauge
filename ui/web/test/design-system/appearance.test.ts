@@ -134,7 +134,6 @@ describe('Composed appearance rendering', () => {
                     activeGlow: 'glow',
                     glyphsShade: 700,
                     highlightGlyphsShade: 200,
-                    themeMode: 'dark',
                     highlighted: true,
                     disabled: true,
                 }));
@@ -142,7 +141,7 @@ describe('Composed appearance rendering', () => {
                 expect(markup).to.include(`data-appearance-variant="${variant}"`);
                 expect(markup).to.include('data-appearance-highlight="hazard"');
                 expect(markup).to.include('data-glow="glow"');
-                expect(markup).to.include('data-appearance-mode="dark"');
+                expect(markup).to.include('data-appearance-mode="light"');
                 expect(markup).to.include('data-disabled="true"');
                 expect(markup).to.include('data-highlighted="true"');
                 expect(markup).to.match(/<label[^>]*data-appearance-variant="default"/);
@@ -242,7 +241,6 @@ describe('Composed appearance rendering', () => {
                     options: [{ value: 'selected', label: 'Selected option' }],
                     color,
                     variant,
-                    themeMode: 'dark',
                     highlightColor: 'hazard',
                     glyphsShade: 700,
                     highlightGlyphsShade: 200,
@@ -251,10 +249,10 @@ describe('Composed appearance rendering', () => {
                     size: 'lg',
                     ariaLabel: 'Material',
                 }));
-                const theme = renderingTheme.forMode('dark');
+                const theme = renderingTheme;
                 expect(markup).to.include(`data-appearance-color="${color}"`);
                 expect(markup).to.include(`data-appearance-variant="${variant}"`);
-                expect(markup).to.include('data-appearance-mode="dark"');
+                expect(markup).to.include('data-appearance-mode="light"');
                 expect(markup).to.include('data-appearance-highlight="hazard"');
                 expect(markup).to.include('data-disabled="true"');
                 expect(markup).to.include('data-highlighted="true"');
@@ -266,7 +264,6 @@ describe('Composed appearance rendering', () => {
                 expect(markup).to.include(`--appearance-hover-focus-glyphs-override:${theme.color('hazard', 200)}`);
                 expect(markup).to.include(`--appearance-active-pressed-glyphs-override:${theme.color('hazard', 200)}`);
                 expect([...markup.matchAll(/data-disabled=/g)]).to.have.length(1);
-                expect(markup).not.to.include('themeMode=');
             }
         }
     });
@@ -279,7 +276,6 @@ describe('Composed appearance rendering', () => {
                         value: 30,
                         color,
                         variant,
-                        themeMode: 'dark',
                         highlightColor: 'intel',
                         glyphsShade: 700,
                         highlightGlyphsShade: 200,
@@ -288,7 +284,7 @@ describe('Composed appearance rendering', () => {
                     }));
                     expect(markup).to.include(`data-appearance-color="${color}"`);
                     expect(markup).to.include(`data-appearance-variant="${variant}"`);
-                    expect(markup).to.include('data-appearance-mode="dark"');
+                    expect(markup).to.include('data-appearance-mode="light"');
                     expect(markup).to.include('data-appearance-highlight="intel"');
                     expect(markup).to.include('data-highlighted="true"');
                     expect(markup).to.include('data-disabled="true"');
@@ -358,13 +354,15 @@ describe('Composed appearance rendering', () => {
         expect(markup).to.include('--appearance-border-width-scale:2');
     });
 
-    it('keeps OctagonalPanel passive and passes a theme override through its content', () => {
-        const markup = renderToStaticMarkup(createElement(OctagonalPanel, {
-            themeMode: 'dark',
-            color: 'hazard',
-            highlighted: true,
-            disabled: true,
-            children: createElement(Text, { children: 'Preview' }),
+    it('keeps OctagonalPanel passive and inherits the provider theme through its content', () => {
+        const markup = renderToStaticMarkup(createElement(ThemeContext.Provider, {
+            value: renderingTheme.forMode('dark'),
+            children: createElement(OctagonalPanel, {
+                color: 'hazard',
+                highlighted: true,
+                disabled: true,
+                children: createElement(Text, { children: 'Preview' }),
+            }),
         }));
         expect([...markup.matchAll(/data-appearance-mode="dark"/g)]).to.have.length(2);
         expect(markup).to.include('data-appearance-variant="ghost"');
@@ -384,7 +382,6 @@ describe('Composed appearance rendering', () => {
                     highlighted: true,
                     disabled: true,
                     expanded: false,
-                    themeMode: 'dark',
                     children: createElement('input', { 'aria-label': 'Reading' }),
                 }));
                 expect(markup).to.include('<fieldset');
@@ -465,20 +462,20 @@ describe('Composed appearance rendering', () => {
         }
     });
 
-    it('applies a local form choice theme mode to its appearance and nested typography', () => {
-        const modes: (ThemeMode | undefined)[] = [undefined, 'light', 'dark'];
+    it('inherits the provider mode in form choices and nested typography', () => {
+        const modes: ThemeMode[] = ['light', 'dark'];
         for (const Control of [Checkbox, Radio]) {
-            for (const themeMode of modes) {
-                const markup = renderToStaticMarkup(createElement(Control, {
-                    themeMode,
-                    checked: true,
-                    onChange: () => undefined,
-                    children: createElement(Text, { children: 'Nested label' }),
+            for (const mode of modes) {
+                const markup = renderToStaticMarkup(createElement(ThemeContext.Provider, {
+                    value: renderingTheme.forMode(mode),
+                    children: createElement(Control, {
+                        checked: true,
+                        onChange: () => undefined,
+                        children: createElement(Text, { children: 'Nested label' }),
+                    }),
                 }));
-                const mode = themeMode ?? renderingTheme.mode;
                 expect([...markup.matchAll(/data-appearance-mode="([^"]+)"/g)].map((match) => match[1]))
                     .to.deep.equal([mode, mode]);
-                expect(markup).not.to.include('themeMode=');
             }
         }
     });
@@ -521,7 +518,6 @@ describe('Composed appearance rendering', () => {
         const props: ComponentProps<typeof FileInput> = {
             accept: '*',
             color: 'primary',
-            themeMode: 'light',
             fileName: 'route.gpx',
             fileLabel: 'Upload',
             purgeLabel: 'Purge',
@@ -831,14 +827,13 @@ describe('Composed appearance rendering', () => {
         theme.destroy();
     });
 
-    it('gives every button shape one overridden theme owner and resolves status glyph overrides', () => {
-        const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
+    it('gives every button shape one inherited theme owner and resolves status glyph overrides', () => {
+        const theme = new Theme(themeSpecifications[ThemeName.Default].dark, media);
         for (const color of appearanceColorOptions) {
             for (const corners of ['square', 'circle', 'hexagon'] as const) {
                 const markup = renderToStaticMarkup(createElement(ThemeContext.Provider, {
                     value: theme,
                     children: createElement(Button, {
-                        themeMode: 'dark',
                         color,
                         highlightColor: 'intel',
                         glyphsShade: 500,
@@ -855,7 +850,6 @@ describe('Composed appearance rendering', () => {
                 expect(markup).to.include('disabled=""');
                 expect(markup).to.include('data-appearance-mode="dark"');
                 expect(markup).not.to.include('data-appearance-mode="light"');
-                expect(markup).not.to.include('themeMode=');
                 expect(markup).to.include(`--appearance-default-glyphs-override:${theme.color(color, 500)}`);
                 expect(markup).to.include(`--appearance-active-pressed-glyphs-override:${theme.color('intel', 200)}`);
             }

@@ -44,7 +44,7 @@ export const IconRotateControlRow: FC<IconRotateControlRowProps> = ({
     children,
     ...appearanceProps
 }) => {
-    const theme = useTheme().forMode(appearanceProps.themeMode);
+    const theme = useTheme();
     const controlHeight =
         theme.sizes.control[appearanceProps.size ?? DEFAULT_SIZE].height;
     const { svgSize } = getClockGeometry(controlHeight, "angle");

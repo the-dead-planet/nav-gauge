@@ -8,7 +8,6 @@ const story: MobileStoryDefinition<ComponentProps<typeof Dialog>> = {
     args: { ...dialogStoryArgs, onClose: () => undefined },
     controls: dialogStoryControls,
     galleryEditableControls: [
-        'themeMode',
         'backdrop',
         'header',
         'closeText',

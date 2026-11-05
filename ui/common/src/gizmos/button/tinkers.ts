@@ -1,5 +1,13 @@
 import { ButtonProps } from './model';
-import { activeGlowOptions, allColorShades, appearanceColorOptions, DEFAULT_COLOR, sizeOptions, surfaceVariantOptions, typographyStoryControls } from '../../design-system';
+import {
+    activeGlowOptions,
+    allColorShades,
+    appearanceColorOptions,
+    DEFAULT_COLOR,
+    sizeOptions,
+    surfaceVariantOptions,
+    typographyStoryControls,
+} from '../../design-system';
 import { StoryControls } from '../../storybook';
 
 export const buttonCorners = ['square', 'circle', 'hexagon'] as const;
@@ -22,7 +30,6 @@ export const buttonStoryArgs = {
 } satisfies ButtonProps;
 
 export const buttonStoryControls: StoryControls<ButtonProps> = {
-    themeMode: typographyStoryControls.themeMode,
     fontType: typographyStoryControls.fontType,
     children: {
         control: 'text',

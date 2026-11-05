@@ -13,7 +13,6 @@ import {
     DEFAULT_SIZE,
     DEFAULT_SURFACE_VARIANT,
     OctagonProps,
-    ThemeContext,
     useTheme,
 } from "@ui";
 import { useHudInteraction } from "../useHudInteraction";
@@ -40,7 +39,6 @@ export const Octagon = forwardRef<
 >(
     (
         {
-            themeMode,
             color = DEFAULT_COLOR,
             highlightColor = color,
             variant = DEFAULT_SURFACE_VARIANT,
@@ -65,7 +63,7 @@ export const Octagon = forwardRef<
         },
         ref,
     ) => {
-        const theme = useTheme().forMode(themeMode);
+        const theme = useTheme();
         const { state, interaction, focused } = useHudInteraction({
             disabled,
             highlighted,
@@ -145,10 +143,6 @@ export const Octagon = forwardRef<
                     {content}
                 </View>
             );
-        return (
-            <ThemeContext.Provider value={theme}>
-                {octagon}
-            </ThemeContext.Provider>
-        );
+        return octagon;
     },
 );

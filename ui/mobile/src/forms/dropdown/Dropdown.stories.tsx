@@ -34,7 +34,6 @@ const story: MobileStoryDefinition<Props> = {
     },
     controls: dropdownStoryControls,
     galleryEditableControls: [
-        "themeMode",
         "highlightColor",
         "glyphsShade",
         "highlightGlyphsShade",

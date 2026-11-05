@@ -25,7 +25,6 @@ const story: MobileStoryDefinition<CheckboxProps> = {
     },
     controls: checkboxStoryControls,
     galleryEditableControls: [
-        "themeMode",
         "checked",
         "glyphsShade",
         "highlightColor",

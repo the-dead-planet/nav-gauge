@@ -1,4 +1,4 @@
-import { FC, RefObject } from "react";
+import { FC } from "react";
 import { ClockInputProps } from "@ui";
 import { Label } from "../../design-system/typography";
 import styles from "./clock-input.module.css";
@@ -11,7 +11,6 @@ interface Props extends Pick<
     | "highlightGlyphsShade"
     | "highlighted"
 > {
-    inputRef: RefObject<HTMLInputElement | null>;
     id: string;
     min: number;
     max?: number;
@@ -26,7 +25,6 @@ interface Props extends Pick<
 }
 
 export const ClockA11yInput: FC<Props> = ({
-    inputRef,
     id,
     min,
     max,
@@ -46,7 +44,6 @@ export const ClockA11yInput: FC<Props> = ({
 }) => (
     <>
         <input
-            ref={inputRef}
             type={max === undefined ? "number" : "range"}
             id={id}
             min={min}

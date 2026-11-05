@@ -4,7 +4,6 @@ import {
     DEFAULT_FILL_VARIANT,
     DEFAULT_SIZE,
     SliderProps,
-    ThemeContext,
     useTheme,
 } from "@ui";
 import { Label, Span } from "../../design-system/typography";
@@ -15,7 +14,6 @@ import styles from "./slider.module.css";
 export const Slider: FC<
     SliderProps & Omit<ComponentProps<"input">, "onChange" | "size">
 > = ({
-    themeMode,
     color = DEFAULT_COLOR,
     glyphsShade,
     highlightColor = color,
@@ -38,7 +36,7 @@ export const Slider: FC<
     ariaLabel,
     ...props
 }) => {
-    const theme = useTheme().forMode(themeMode);
+    const theme = useTheme();
     const generatedId = useId();
     const inputId = id ?? generatedId;
     const accessibleLabel =
@@ -57,60 +55,58 @@ export const Slider: FC<
     };
 
     return (
-        <ThemeContext.Provider value={theme}>
-            <div
-                className={styles.container}
-                data-size={size}
-                data-appearance-mode={theme.mode}
-                data-appearance-variant={variant}
-                data-appearance-color={color}
-                data-appearance-highlight={highlightColor}
-                data-highlighted={highlighted || undefined}
-                data-disabled={disabled || undefined}
-                data-glow={activeGlow}
+        <div
+            className={styles.container}
+            data-size={size}
+            data-appearance-mode={theme.mode}
+            data-appearance-variant={variant}
+            data-appearance-color={color}
+            data-appearance-highlight={highlightColor}
+            data-highlighted={highlighted || undefined}
+            data-disabled={disabled || undefined}
+            data-glow={activeGlow}
+        >
+            {typeof label === "string" ? (
+                <Label
+                    htmlFor={inputId}
+                    color={color}
+                    shade={glyphsShade}
+                    highlightColor={highlightColor}
+                    highlightShade={highlightGlyphsShade}
+                    highlighted={highlighted}
+                    disabled={disabled}
+                    className={styles.label}
+                >
+                    {label}{" "}
+                    {!showNumberInput ? <Span tabular>{value}</Span> : null}
+                </Label>
+            ) : (
+                label
+            )}
+            <SliderControlRow
+                {...appearanceProps}
+                value={value}
+                onChange={onChange}
+                min={min}
+                max={max}
+                step={step}
+                ariaLabel={accessibleLabel}
+                showNumberInput={showNumberInput}
+                showStepControls={showStepControls}
+                stepControlsProps={stepControlsProps}
             >
-                {typeof label === "string" ? (
-                    <Label
-                        htmlFor={inputId}
-                        color={color}
-                        shade={glyphsShade}
-                        highlightColor={highlightColor}
-                        highlightShade={highlightGlyphsShade}
-                        highlighted={highlighted}
-                        disabled={disabled}
-                        className={styles.label}
-                    >
-                        {label}{" "}
-                        {!showNumberInput ? <Span tabular>{value}</Span> : null}
-                    </Label>
-                ) : (
-                    label
-                )}
-                <SliderControlRow
-                    {...appearanceProps}
+                <SliderTrack
+                    {...props}
+                    id={inputId}
                     value={value}
                     onChange={onChange}
                     min={min}
                     max={max}
                     step={step}
+                    disabled={disabled}
                     ariaLabel={accessibleLabel}
-                    showNumberInput={showNumberInput}
-                    showStepControls={showStepControls}
-                    stepControlsProps={stepControlsProps}
-                >
-                    <SliderTrack
-                        {...props}
-                        id={inputId}
-                        value={value}
-                        onChange={onChange}
-                        min={min}
-                        max={max}
-                        step={step}
-                        disabled={disabled}
-                        ariaLabel={accessibleLabel}
-                    />
-                </SliderControlRow>
-            </div>
-        </ThemeContext.Provider>
+                />
+            </SliderControlRow>
+        </div>
     );
 };
