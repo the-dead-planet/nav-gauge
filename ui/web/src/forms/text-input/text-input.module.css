@@ -32,7 +32,7 @@
 }
 
 .input {
-    padding-inline: var(--size-control-padding-inline);
+    padding-inline: var(--spacing-xs);
     flex: 1;
     min-width: 0;
     width: 100%;

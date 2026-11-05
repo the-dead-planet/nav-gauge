@@ -44,7 +44,10 @@ export const ClockControl: FC<
     ariaLabel,
     thumbIcon,
     showNumberInput = false,
+    numberInputScale,
+    numberInputUnit,
     showStepControls = false,
+    stepControlsProps,
     numberInputPlacement = "end",
     className,
     style,
@@ -128,6 +131,11 @@ export const ClockControl: FC<
                 }
             >
                 <ClockA11yInput
+                    color={color}
+                    highlightColor={highlightColor}
+                    glyphsShade={glyphsShade}
+                    highlightGlyphsShade={highlightGlyphsShade}
+                    highlighted={highlighted}
                     inputRef={inputRef}
                     id={inputId}
                     min={min}
@@ -159,7 +167,10 @@ export const ClockControl: FC<
                     label={label}
                     ariaLabel={ariaLabel}
                     showNumberInput={showNumberInput}
+                    numberInputScale={numberInputScale}
+                    numberInputUnit={numberInputUnit}
                     showStepControls={showStepControls}
+                    stepControlsProps={stepControlsProps}
                     numberInputPlacement={numberInputPlacement}
                 >
                     <ClockDial

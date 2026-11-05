@@ -22,11 +22,6 @@
     min-height: var(--size-control-height);
 }
 
-.number-input {
-    width: 80px;
-    flex: none;
-}
-
 .slider-wrapper {
     position: relative;
     flex: 1;

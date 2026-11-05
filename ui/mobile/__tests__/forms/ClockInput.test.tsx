@@ -2,6 +2,7 @@ import { fireEvent, render } from "@testing-library/react-native";
 import { PanResponder, StyleSheet } from "react-native";
 import {
     Orientation,
+    getCompanionNumberInputWidth,
     Theme,
     ThemeContext,
     ThemeName,
@@ -11,12 +12,9 @@ import { ClockInput } from "../../src/forms/clock-input/ClockInput";
 import { ClockSliceInput } from "../../src/forms/clock-input/ClockSliceInput";
 import { ClockDurationInput } from "../../src/forms/clock-input/ClockDurationInput";
 
-jest.mock(
-    "../../src/design-system/icons",
-    () => ({
-        Icon: () => null,
-    }),
-);
+jest.mock("../../src/design-system/icons", () => ({
+    Icon: () => null,
+}));
 
 const media = {
     initial: () => ({
@@ -26,6 +24,91 @@ const media = {
     }),
     subscribe: () => ({ unsubscribe: () => undefined }),
 };
+
+test("all clock labels ignore transient dial state and honor explicit highlighted and disabled appearance", async () => {
+    for (const mode of ["light", "dark"] as const) {
+        const theme = new Theme(
+            themeSpecifications[ThemeName.Default][mode],
+            media,
+            false,
+        );
+        try {
+            for (const Clock of [
+                ClockInput,
+                ClockSliceInput,
+                ClockDurationInput,
+            ]) {
+                const content = (highlighted = false, disabled = false) => (
+                    <ThemeContext.Provider value={theme}>
+                        <Clock
+                            value={45}
+                            onChange={() => {}}
+                            label="Clock"
+                            formatValue={() => "Value"}
+                            color="intel"
+                            highlightColor="hazard"
+                            glyphsShade={600}
+                            highlightGlyphsShade={300}
+                            highlighted={highlighted}
+                            disabled={disabled}
+                        />
+                    </ThemeContext.Provider>
+                );
+                const screen = await render(content());
+                const defaultColor = theme.resolveAppearance(
+                    undefined,
+                    "intel",
+                    "hazard",
+                    "default",
+                    600,
+                    300,
+                ).glyphs;
+                for (const event of ["hoverIn", "focus"]) {
+                    await fireEvent(screen.getByRole("adjustable"), event);
+                    expect(screen.getByText(/^Clock/)).toHaveStyle({
+                        color: defaultColor,
+                    });
+                    expect(screen.getByText("Value")).toHaveStyle({
+                        color: defaultColor,
+                    });
+                }
+                await screen.rerender(content(true));
+                const highlightedColor = theme.resolveAppearance(
+                    undefined,
+                    "intel",
+                    "hazard",
+                    "active-pressed",
+                    600,
+                    300,
+                ).glyphs;
+                expect(screen.getByText(/^Clock/)).toHaveStyle({
+                    color: highlightedColor,
+                });
+                expect(screen.getByText("Value")).toHaveStyle({
+                    color: highlightedColor,
+                });
+                await screen.rerender(content(true, true));
+                const disabledColor = theme.resolveAppearance(
+                    undefined,
+                    "intel",
+                    "hazard",
+                    "disabled",
+                    600,
+                    300,
+                ).glyphs;
+                expect(screen.getByText(/^Clock/)).toHaveStyle({
+                    color: disabledColor,
+                });
+                expect(screen.getByText("Value")).toHaveStyle({
+                    color: disabledColor,
+                });
+                await screen.unmount();
+            }
+        } finally {
+            theme.destroy();
+        }
+    }
+});
 
 test("native clocks retain their drag responder through controlled updates and disabling", async () => {
     const theme = new Theme(
@@ -83,7 +166,7 @@ test("native clocks retain their drag responder through controlled updates and d
 });
 
 test.each(["start", "end", "above", "below"] as const)(
-    "%s duration fields only flex into remaining space beside the dial",
+    "%s duration fields share companion sizing and only stretch in vertical layouts",
     async (numberInputPlacement) => {
         const theme = new Theme(
             themeSpecifications[ThemeName.Default].light,
@@ -104,17 +187,65 @@ test.each(["start", "end", "above", "below"] as const)(
         );
         const fields =
             screen.getByLabelText("Duration (minutes)").parent?.parent?.parent
-                ?.parent;
+                ?.parent?.parent;
         expect(fields).toHaveStyle({ flexDirection: "row", gap: 8 });
         const flex = StyleSheet.flatten(fields?.props.style).flex ?? 0;
         const vertical =
             numberInputPlacement === "above" ||
             numberInputPlacement === "below";
-        expect(flex).toBe(vertical ? 0 : 1);
+        expect(flex).toBe(0);
+        expect(
+            screen.getByLabelText("Duration (minutes)").parent?.parent?.parent,
+        ).toHaveStyle({
+            width: getCompanionNumberInputWidth(numberInputPlacement),
+        });
+        expect(
+            screen.getByLabelText("Duration (seconds)").parent?.parent?.parent,
+        ).toHaveStyle({
+            width: getCompanionNumberInputWidth(numberInputPlacement),
+        });
+        expect(StyleSheet.flatten(fields?.props.style).width).toBe(
+            vertical ? "100%" : undefined,
+        );
         await screen.unmount();
         theme.destroy();
     },
 );
+
+test("angle and slice numeric fields display and edit their configured units", async () => {
+    const theme = new Theme(
+        themeSpecifications[ThemeName.Default].light,
+        media,
+        false,
+    );
+    try {
+        for (const Clock of [ClockInput, ClockSliceInput]) {
+            const onChange = jest.fn();
+            const screen = await render(
+                <ThemeContext.Provider value={theme}>
+                    <Clock
+                        value={30}
+                        min={0}
+                        max={60}
+                        step={6}
+                        onChange={onChange}
+                        showNumberInput
+                        numberInputScale={6}
+                        numberInputUnit="s"
+                        ariaLabel="Pause"
+                    />
+                </ThemeContext.Provider>,
+            );
+            expect(screen.getByLabelText("Pause (#)").props.value).toBe("5");
+            expect(screen.getByText("s")).toBeTruthy();
+            await fireEvent.changeText(screen.getByLabelText("Pause (#)"), "7");
+            expect(onChange).toHaveBeenLastCalledWith(42);
+            await screen.unmount();
+        }
+    } finally {
+        theme.destroy();
+    }
+});
 
 test("duration number fields update their own unit and preserve the minimum duration", async () => {
     const theme = new Theme(

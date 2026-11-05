@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
         gap: 8,
-        alignItems: 'center',
+        alignItems: 'flex-start',
     },
     cell: {
         flex: 1,

@@ -6,6 +6,7 @@ import {
     DEFAULT_SIZE,
     FontType,
     TextAreaProps,
+    Theme,
     ThemeAppearanceState,
     useTheme,
 } from "@ui";
@@ -22,6 +23,7 @@ const styles = StyleSheet.create({
         overflow: "hidden",
     },
     textarea: {
+        paddingHorizontal: Number.parseInt(Theme.spacing.xs, 10),
         boxSizing: "border-box",
         borderWidth: 0,
         borderRadius: 0,
@@ -31,8 +33,11 @@ const styles = StyleSheet.create({
 });
 
 export const TextArea: FC<
-    TextAreaProps
-        & Omit<ComponentProps<typeof RNTextInput>, "value" | "onChange" | "onChangeText" | "multiline">
+    TextAreaProps &
+        Omit<
+            ComponentProps<typeof RNTextInput>,
+            "value" | "onChange" | "onChangeText" | "multiline"
+        >
 > = ({
     themeMode,
     color = DEFAULT_COLOR,
@@ -58,10 +63,10 @@ export const TextArea: FC<
     const state: ThemeAppearanceState = isDisabled
         ? "disabled"
         : highlighted
-            ? "active-pressed"
-            : focused
-                ? "hover-focus"
-                : "default";
+          ? "active-pressed"
+          : focused
+            ? "hover-focus"
+            : "default";
     const appearance = theme.resolveAppearance(
         variant,
         color,
@@ -109,7 +114,6 @@ export const TextArea: FC<
                             color: appearance.glyphs,
                             fontSize: controlSize.fontSize,
                             minHeight: controlSize.height,
-                            paddingHorizontal: controlSize.paddingInline,
                             paddingVertical: controlSize.paddingBlock,
                         },
                         style,

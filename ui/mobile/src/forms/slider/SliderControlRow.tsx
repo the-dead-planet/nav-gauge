@@ -1,17 +1,13 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
 import { DEFAULT_SIZE, SliderControlRowProps, useTheme } from "@ui";
-import { NumberInput } from "../number-input";
+import { CompanionNumberInput } from "../number-input/CompanionNumberInput";
 import { StepControls } from "../step-controls";
 
 const styles = StyleSheet.create({
     row: {
         flexDirection: "row",
         alignItems: "center",
-    },
-    numberInput: {
-        width: 80,
-        flexShrink: 0,
     },
 });
 
@@ -24,6 +20,8 @@ export const SliderControlRow: FC<SliderControlRowProps> = ({
     ariaLabel,
     showNumberInput = false,
     showStepControls = false,
+    stepControlsProps,
+    variant,
     children,
     ...appearanceProps
 }) => {
@@ -39,15 +37,16 @@ export const SliderControlRow: FC<SliderControlRowProps> = ({
         >
             {showStepControls ? (
                 <StepControls
-                    color={appearanceProps.color}
-                    variant={appearanceProps.variant}
-                    size={appearanceProps.size}
+                    {...appearanceProps}
+                    {...stepControlsProps}
                     value={value}
                     onChange={onChange}
                     min={min}
                     max={max}
                     step={step}
-                    disabled={appearanceProps.disabled}
+                    disabled={
+                        appearanceProps.disabled || stepControlsProps?.disabled
+                    }
                     ariaLabel={ariaLabel}
                 >
                     {children}
@@ -56,19 +55,18 @@ export const SliderControlRow: FC<SliderControlRowProps> = ({
                 children
             )}
             {showNumberInput ? (
-                <View style={styles.numberInput}>
-                    <NumberInput
-                        {...appearanceProps}
-                        value={value}
-                        onChange={(nextValue) => onChange?.(nextValue)}
-                        min={min}
-                        max={max}
-                        step={step}
-                        disabled={appearanceProps.disabled || !onChange}
-                        showStepControls
-                        ariaLabel={`${ariaLabel ?? "Slider"} (#)`}
-                    />
-                </View>
+                <CompanionNumberInput
+                    {...appearanceProps}
+                    variant={variant}
+                    value={value}
+                    onChange={(nextValue) => onChange?.(nextValue)}
+                    min={min}
+                    max={max}
+                    step={step}
+                    disabled={appearanceProps.disabled || !onChange}
+                    showStepControls
+                    ariaLabel={`${ariaLabel ?? "Slider"} (#)`}
+                />
             ) : null}
         </View>
     );

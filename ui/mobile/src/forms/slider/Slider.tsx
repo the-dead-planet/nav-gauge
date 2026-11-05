@@ -42,6 +42,7 @@ export const Slider = forwardRef<
             label,
             showNumberInput = false,
             showStepControls = false,
+            stepControlsProps,
             ariaLabel,
             style,
         },
@@ -88,6 +89,7 @@ export const Slider = forwardRef<
                         ariaLabel={accessibleLabel}
                         showNumberInput={showNumberInput}
                         showStepControls={showStepControls}
+                        stepControlsProps={stepControlsProps}
                     >
                         <SliderTrack
                             color={color}

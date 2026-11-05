@@ -109,25 +109,25 @@ describe('Appearance state priority', () => {
                 root: '#checkbox',
                 surface: '#checkbox .box',
                 surfaceProperty: 'background-color',
-                glyphs: '#checkbox .label',
+                glyphs: '#checkbox .box',
             },
             {
                 root: '#radio',
                 surface: '#radio .box',
                 surfaceProperty: 'background-color',
-                glyphs: '#radio .label',
+                glyphs: '#radio .box',
             },
             {
                 root: '#checkbox-hexagon',
                 surface: '#checkbox-hexagon .paint',
                 surfaceProperty: 'fill',
-                glyphs: '#checkbox-hexagon .label',
+                glyphs: '#checkbox-hexagon .box',
             },
             {
                 root: '#radio-hexagon',
                 surface: '#radio-hexagon .paint',
                 surfaceProperty: 'fill',
-                glyphs: '#radio-hexagon .label',
+                glyphs: '#radio-hexagon .box',
             },
         ]) {
             cy.get(control.surface).should('have.css', control.surfaceProperty, 'rgb(10, 0, 0)');

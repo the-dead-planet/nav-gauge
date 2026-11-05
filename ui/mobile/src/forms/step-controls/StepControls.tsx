@@ -1,12 +1,20 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import { addDecimalStep, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, Icons, StepControlsProps, useStepRepeat } from "@ui";
+import {
+    addDecimalStep,
+    DEFAULT_COLOR,
+    DEFAULT_SURFACE_VARIANT,
+    DEFAULT_SIZE,
+    Icons,
+    StepControlsProps,
+    useStepRepeat,
+} from "@ui";
 import { Button } from "../../gizmos/button";
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row',
-        alignItems: 'center',
+        flexDirection: "row",
+        alignItems: "center",
         gap: 4,
     },
     control: {
@@ -15,12 +23,15 @@ const styles = StyleSheet.create({
     },
 });
 
-const controlHeights = { xs: 18, sm: 24, md: 32, lg: 40 } as const;
-
 export const StepControls: FC<StepControlsProps> = ({
     children,
+    themeMode,
+    highlightColor,
+    glyphsShade,
+    highlightGlyphsShade,
+    highlighted,
     color = DEFAULT_COLOR,
-    variant = DEFAULT_FILL_VARIANT,
+    variant = DEFAULT_SURFACE_VARIANT,
     size = DEFAULT_SIZE,
     value,
     onChange,
@@ -32,36 +43,63 @@ export const StepControls: FC<StepControlsProps> = ({
 }) => {
     const decrement = addDecimalStep(value, -step);
     const increment = addDecimalStep(value, step);
-    const stepRepeat = useStepRepeat({ value, onChange, step, min, max, disabled: disabled || !onChange });
-    const minusIcon = variant === 'fill-translucent'
-        ? Icons.NounProject.MinusOutlined
-        : Icons.NounProject.Minus;
-    const plusIcon = variant === 'fill-translucent'
-        ? Icons.NounProject.PlusOutlined
-        : Icons.NounProject.Plus;
+    const stepRepeat = useStepRepeat({
+        value,
+        onChange,
+        step,
+        min,
+        max,
+        disabled: disabled || !onChange,
+    });
+    const minusIcon =
+        variant === "fill-translucent"
+            ? Icons.NounProject.MinusOutlined
+            : Icons.NounProject.Minus;
+    const plusIcon =
+        variant === "fill-translucent"
+            ? Icons.NounProject.PlusOutlined
+            : Icons.NounProject.Plus;
 
     return (
         <View style={styles.container}>
             <Button
                 icon={minusIcon}
                 color={color}
+                themeMode={themeMode}
+                variant={variant}
+                highlightColor={highlightColor}
+                glyphsShade={glyphsShade}
+                highlightGlyphsShade={highlightGlyphsShade}
+                highlighted={highlighted}
                 size={size}
-                disabled={disabled || !onChange || (min !== undefined && decrement < min)}
+                disabled={
+                    disabled ||
+                    !onChange ||
+                    (min !== undefined && decrement < min)
+                }
                 onPressIn={() => stepRepeat.start(-1)}
                 onPressOut={stepRepeat.stop}
-                accessibilityLabel={ariaLabel ? `${ariaLabel} (−)` : '−'}
-                style={{ height: controlHeights[size] }}
+                accessibilityLabel={ariaLabel ? `${ariaLabel} (−)` : "−"}
             />
             <View style={styles.control}>{children}</View>
             <Button
                 icon={plusIcon}
                 color={color}
+                themeMode={themeMode}
+                variant={variant}
+                highlightColor={highlightColor}
+                glyphsShade={glyphsShade}
+                highlightGlyphsShade={highlightGlyphsShade}
+                highlighted={highlighted}
                 size={size}
-                disabled={disabled || !onChange || (max !== undefined && increment > max)}
+                disabled={
+                    disabled ||
+                    !onChange ||
+                    (max !== undefined && increment > max)
+                }
                 onPressIn={() => stepRepeat.start(1)}
                 onPressOut={stepRepeat.stop}
-                accessibilityLabel={ariaLabel ? `${ariaLabel} (+)` : '+'}
-                style={{ height: controlHeights[size] }}
+                accessibilityLabel={ariaLabel ? `${ariaLabel} (+)` : "+"}
             />
         </View>
     );

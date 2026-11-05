@@ -1,13 +1,25 @@
 import { FC } from "react";
-import { addDecimalStep, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, Icons, StepControlsProps } from "@ui";
+import {
+    addDecimalStep,
+    DEFAULT_COLOR,
+    DEFAULT_SURFACE_VARIANT,
+    DEFAULT_SIZE,
+    Icons,
+    StepControlsProps,
+} from "@ui";
 import { Button } from "../../gizmos/button";
-import { useStepRepeatButton } from './useStepRepeatButton';
-import styles from './step-controls.module.css';
+import { useStepRepeatButton } from "./useStepRepeatButton";
+import styles from "./step-controls.module.css";
 
 export const StepControls: FC<StepControlsProps> = ({
     children,
+    themeMode,
+    highlightColor,
+    glyphsShade,
+    highlightGlyphsShade,
+    highlighted,
     color = DEFAULT_COLOR,
-    variant = DEFAULT_FILL_VARIANT,
+    variant = DEFAULT_SURFACE_VARIANT,
     size = DEFAULT_SIZE,
     value,
     onChange,
@@ -19,13 +31,22 @@ export const StepControls: FC<StepControlsProps> = ({
 }) => {
     const decrement = addDecimalStep(value, -step);
     const increment = addDecimalStep(value, step);
-    const getStepButtonProps = useStepRepeatButton({ value, onChange, step, min, max, disabled: disabled || !onChange });
-    const minusIcon = variant === 'fill-translucent'
-        ? Icons.NounProject.MinusOutlined
-        : Icons.NounProject.Minus;
-    const plusIcon = variant === 'fill-translucent'
-        ? Icons.NounProject.PlusOutlined
-        : Icons.NounProject.Plus;
+    const getStepButtonProps = useStepRepeatButton({
+        value,
+        onChange,
+        step,
+        min,
+        max,
+        disabled: disabled || !onChange,
+    });
+    const minusIcon =
+        variant === "fill-translucent"
+            ? Icons.NounProject.MinusOutlined
+            : Icons.NounProject.Minus;
+    const plusIcon =
+        variant === "fill-translucent"
+            ? Icons.NounProject.PlusOutlined
+            : Icons.NounProject.Plus;
 
     return (
         <div className={styles.container}>
@@ -33,18 +54,38 @@ export const StepControls: FC<StepControlsProps> = ({
                 {...getStepButtonProps(-1)}
                 icon={minusIcon}
                 color={color}
+                themeMode={themeMode}
+                variant={variant}
+                highlightColor={highlightColor}
+                glyphsShade={glyphsShade}
+                highlightGlyphsShade={highlightGlyphsShade}
+                highlighted={highlighted}
                 size={size}
-                disabled={disabled || !onChange || (min !== undefined && decrement < min)}
-                aria-label={ariaLabel ? `${ariaLabel} (−)` : '−'}
+                disabled={
+                    disabled ||
+                    !onChange ||
+                    (min !== undefined && decrement < min)
+                }
+                aria-label={ariaLabel ? `${ariaLabel} (−)` : "−"}
             />
             <div className={styles.control}>{children}</div>
             <Button
                 {...getStepButtonProps(1)}
                 icon={plusIcon}
                 color={color}
+                themeMode={themeMode}
+                variant={variant}
+                highlightColor={highlightColor}
+                glyphsShade={glyphsShade}
+                highlightGlyphsShade={highlightGlyphsShade}
+                highlighted={highlighted}
                 size={size}
-                disabled={disabled || !onChange || (max !== undefined && increment > max)}
-                aria-label={ariaLabel ? `${ariaLabel} (+)` : '+'}
+                disabled={
+                    disabled ||
+                    !onChange ||
+                    (max !== undefined && increment > max)
+                }
+                aria-label={ariaLabel ? `${ariaLabel} (+)` : "+"}
             />
         </div>
     );

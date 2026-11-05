@@ -16,6 +16,8 @@ export interface SliderProps extends AppearanceProps<FillVariant> {
     label?: ReactNode;
     showNumberInput?: boolean;
     showStepControls?: boolean;
+    /** Appearance overrides for the optional step buttons. */
+    stepControlsProps?: AppearanceProps;
     ariaLabel?: string;
 }
 

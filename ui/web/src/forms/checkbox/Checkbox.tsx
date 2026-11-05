@@ -1,4 +1,4 @@
-import { ChangeEvent, ComponentProps, CSSProperties, FC, useId } from "react";
+import { ChangeEvent, ComponentProps, FC, useId } from "react";
 import classNames from "classnames";
 import {
     CheckboxProps,
@@ -9,8 +9,9 @@ import {
     ThemeContext,
     useTheme,
 } from "@ui";
-import styles from "./checkbox.module.css";
 import { HexagonSurface } from "../../hud/hexagon/HexagonSurface";
+import { Label } from "../../design-system/typography";
+import styles from "./checkbox.module.css";
 
 interface Props {
     labelledBy?: string;
@@ -41,107 +42,86 @@ export const Checkbox: FC<
     "aria-labelledby": ariaLabelledBy,
     ...props
 }) => {
-        const generatedId = useId();
-        const effectiveId = id || generatedId;
-        const theme = useTheme().forMode(themeMode);
+    const generatedId = useId();
+    const effectiveId = id || generatedId;
+    const theme = useTheme().forMode(themeMode);
 
-        const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-            onChange(e.target.checked);
-        };
-
-        const handleKeyDown = (e: React.KeyboardEvent<HTMLLabelElement>) => {
-            onKeyDown?.(e);
-            if (!e.defaultPrevented && e.key === "Enter" && !disabled) {
-                e.preventDefault();
-                onChange(!checked);
-            }
-        };
-
-        return (
-            <ThemeContext.Provider value={theme}>
-                <label
-                    onKeyDown={handleKeyDown}
-                    htmlFor={effectiveId}
-                    data-appearance-mode={theme.mode}
-                    data-appearance-variant="default"
-                    data-appearance-color={color}
-                    data-appearance-highlight={highlightColor}
-                    data-highlighted={highlighted}
-                    data-disabled={disabled}
-                    data-size={size}
-                    className={classNames(
-                        styles["checkbox"],
-                        className,
-                    )}
-                    style={
-                        {
-                            ...style,
-                            "--appearance-default-glyphs-override":
-                                glyphsShade === undefined
-                                    ? undefined
-                                    : theme.color(color, glyphsShade),
-                            "--appearance-hover-focus-glyphs-override":
-                                highlightGlyphsShade === undefined
-                                    ? undefined
-                                    : theme.color(
-                                        highlightColor,
-                                        highlightGlyphsShade,
-                                    ),
-                            "--appearance-active-pressed-glyphs-override":
-                                highlightGlyphsShade === undefined
-                                    ? undefined
-                                    : theme.color(
-                                        highlightColor,
-                                        highlightGlyphsShade,
-                                    ),
-                        } as CSSProperties
-                    }
-                    {...props}
-                >
-                    <input
-                        id={effectiveId}
-                        type="checkbox"
-                        className={styles["input"]}
-                        checked={checked}
-                        onChange={handleChange}
-                        disabled={disabled}
-                        aria-label={ariaLabel}
-                        aria-labelledby={labelledBy ?? ariaLabelledBy}
-                    />
-                    <span
-                        className={classNames(
-                            styles.box,
-                            styles[`corners-${corners}`],
-                        )}
-                        data-appearance-variant={variant}
-                        aria-hidden="true"
-                    >
-                        {corners === "hexagon" ? (
-                            <HexagonSurface effects={theme.appearancePolicies[variant].effects} paintClassName={styles.paint} />
-                        ) : null}
-                        {checked ? (
-                            <svg
-                                className={styles["checkmark"]}
-                                viewBox="0 0 12 12"
-                                width="12"
-                                height="12"
-                                aria-hidden
-                            >
-                                <path
-                                    d="M2 6l3 3 5-5"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                />
-                            </svg>
-                        ) : null}
-                    </span>
-                    {children ? (
-                        <span className={styles["label"]}>{children}</span>
-                    ) : null}
-                </label>
-            </ThemeContext.Provider>
-        );
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        onChange(e.target.checked);
     };
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLLabelElement>) => {
+        onKeyDown?.(e);
+        if (!e.defaultPrevented && e.key === "Enter" && !disabled) {
+            e.preventDefault();
+            onChange(!checked);
+        }
+    };
+
+    return (
+        <ThemeContext.Provider value={theme}>
+            <Label
+                color={color}
+                highlightColor={highlightColor}
+                shade={glyphsShade}
+                highlightShade={highlightGlyphsShade}
+                highlighted={highlighted}
+                disabled={disabled}
+                onKeyDown={handleKeyDown}
+                htmlFor={effectiveId}
+                data-disabled={disabled}
+                data-size={size}
+                className={classNames(styles["checkbox"], className)}
+                style={style}
+                {...props}
+            >
+                <input
+                    id={effectiveId}
+                    type="checkbox"
+                    className={styles["input"]}
+                    checked={checked}
+                    onChange={handleChange}
+                    disabled={disabled}
+                    aria-label={ariaLabel}
+                    aria-labelledby={labelledBy ?? ariaLabelledBy}
+                />
+                <span
+                    className={classNames(
+                        styles.box,
+                        styles[`corners-${corners}`],
+                    )}
+                    data-appearance-variant={variant}
+                    aria-hidden="true"
+                >
+                    {corners === "hexagon" ? (
+                        <HexagonSurface
+                            effects={theme.appearancePolicies[variant].effects}
+                            paintClassName={styles.paint}
+                        />
+                    ) : null}
+                    {checked ? (
+                        <svg
+                            className={styles["checkmark"]}
+                            viewBox="0 0 12 12"
+                            width="12"
+                            height="12"
+                            aria-hidden
+                        >
+                            <path
+                                d="M2 6l3 3 5-5"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            />
+                        </svg>
+                    ) : null}
+                </span>
+                {children ? (
+                    <span className={styles["label"]}>{children}</span>
+                ) : null}
+            </Label>
+        </ThemeContext.Provider>
+    );
+};

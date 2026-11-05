@@ -34,6 +34,7 @@ export const Slider: FC<
     label,
     showNumberInput = false,
     showStepControls = false,
+    stepControlsProps,
     ariaLabel,
     ...props
 }) => {
@@ -95,6 +96,7 @@ export const Slider: FC<
                     ariaLabel={accessibleLabel}
                     showNumberInput={showNumberInput}
                     showStepControls={showStepControls}
+                    stepControlsProps={stepControlsProps}
                 >
                     <SliderTrack
                         {...props}

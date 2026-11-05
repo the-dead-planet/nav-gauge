@@ -67,20 +67,20 @@ describe('Typography', () => {
         expect(markup).not.to.include('themeMode=');
     });
 
-    it('inherits the owning appearance when no palette is supplied', () => {
+    it('defaults to neutral appearance when no palette is supplied', () => {
         const markup = renderToStaticMarkup(createElement(Text, {
             children: 'Inherited label',
         }));
-        expect(markup).not.to.include('data-appearance-variant=');
-        expect(markup).not.to.include('data-appearance-color=');
-        expect(markup).not.to.include('data-appearance-highlight=');
+        expect(markup).to.include('data-appearance-variant="default"');
+        expect(markup).to.include('data-appearance-color="neutral"');
+        expect(markup).to.include('data-appearance-highlight="neutral"');
 
         const shadedMarkup = renderToStaticMarkup(createElement(Text, {
             shade: 100,
             highlightShade: 200,
         }));
-        expect(shadedMarkup).to.include('--appearance-default-glyphs-override:var(--appearance-color-100)');
-        expect(shadedMarkup).to.include('--appearance-active-pressed-glyphs-override:var(--appearance-highlight-200)');
+        expect(shadedMarkup).to.include('--appearance-default-glyphs-override:var(--color-neutral-100)');
+        expect(shadedMarkup).to.include('--appearance-active-pressed-glyphs-override:var(--color-neutral-200)');
     });
 
     it('renders every color through default appearance regardless of text hierarchy', () => {

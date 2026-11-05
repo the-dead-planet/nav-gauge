@@ -3,9 +3,37 @@ import { describe, it } from "mocha";
 import {
     clockValueFromAngle,
     getClockGeometry,
+    getClockNumberInputProps,
     radialLineCoords,
 } from "../../src/forms/clock-input";
 import { SizeVariant, sizeOptions, themeSizes } from "../../src/design-system";
+
+describe("clock number input units", () => {
+    it("converts values, bounds, steps, and edits between dial degrees and displayed units", () => {
+        let angle: number | undefined;
+        const input = getClockNumberInputProps({
+            value: 30,
+            min: 0,
+            max: 60,
+            step: 6,
+            numberInputScale: 6,
+            numberInputUnit: "s",
+            onChange: (value) => {
+                angle = value;
+            },
+        });
+        expect(input).to.include({
+            value: 5,
+            min: 0,
+            max: 10,
+            step: 1,
+            unit: "s",
+        });
+        input.onChange(7);
+        expect(angle).to.equal(42);
+        expect(getClockNumberInputProps({ value: 57 }).value).to.equal(57);
+    });
+});
 
 describe("radialLineCoords", () => {
     it("returns line endpoints for a clock angle", () => {

@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
     panel: {
         flexShrink: 1,
         minWidth: 0,
+        maxWidth: "100%",
         marginTop: 6,
         height: 40,
         paddingHorizontal: 16,

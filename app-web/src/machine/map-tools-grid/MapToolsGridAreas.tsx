@@ -9,12 +9,17 @@ import { TopToolsGridArea } from "./TopToolsGridArea";
 import { PlaceholderToolPanel } from "../tool-panels/PlaceholderToolPanel";
 import { SecondaryBottomToolPanel } from "../tool-panels/bottom-panels/secondary-bottom-panel/SecondaryBottomToolPanel";
 import { BottomToolPanel } from "../tool-panels/bottom-panels/primary-bottom-panel/BottomToolPanel";
+import { Theme, ThemeContext } from "@ui";
 
 interface Props {
     map?: maplibregl.Map;
+    selectedStyleTheme: Theme;
 }
 
-export const MapToolsGridAreas: FC<Props> = ({ map }) => {
+export const MapToolsGridAreas: FC<Props> = ({
+    map,
+    selectedStyleTheme,
+}) => {
     const { toolsStation } = useWebMachineWard();
     const [activeLeftPanelToolId, setActiveLeftPanelToolId] = useSubjectState(toolsStation.activeLeftPanelToolId$);
     const [activeRightPanelToolId, setActiveRightPanelToolId] = useSubjectState(toolsStation.activeRightPanelToolId$);
@@ -34,9 +39,11 @@ export const MapToolsGridAreas: FC<Props> = ({ map }) => {
                         onActiveIdChange={setActiveLeftPanelToolId}
                     />
                 )}
-            <ToolIcons placement="left" map={map} />
-            <TopToolsGridArea map={map} />
-            <ToolIcons placement="right" map={map} />
+            <ThemeContext.Provider value={selectedStyleTheme}>
+                <ToolIcons placement="left" map={map} />
+                <TopToolsGridArea map={map} />
+                <ToolIcons placement="right" map={map} />
+            </ThemeContext.Provider>
             {groupSidePanelsInBottomSecondaryToolbar
                 ? <PlaceholderToolPanel placement="right" />
                 : (

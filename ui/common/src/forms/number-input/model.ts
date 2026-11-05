@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { AppearanceProps, FillVariant } from "../../design-system/model";
 
-export type NumberInputPlacement = 'start' | 'end' | 'above' | 'below';
+export type NumberInputPlacement = "start" | "end" | "above" | "below";
 
 export interface NumberInputProps extends AppearanceProps<FillVariant> {
     label?: ReactNode;
@@ -14,4 +14,8 @@ export interface NumberInputProps extends AppearanceProps<FillVariant> {
     ariaLabel?: string;
     unit?: string;
     showStepControls?: boolean;
+}
+
+export interface CompanionNumberInputProps extends NumberInputProps {
+    placement?: NumberInputPlacement;
 }

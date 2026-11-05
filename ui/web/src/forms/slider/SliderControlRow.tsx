@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { SliderControlRowProps } from "@ui";
-import { NumberInput } from "../number-input";
+import { CompanionNumberInput } from "../number-input/CompanionNumberInput";
 import { StepControls } from "../step-controls";
 import styles from "./slider.module.css";
 
@@ -13,21 +13,24 @@ export const SliderControlRow: FC<SliderControlRowProps> = ({
     ariaLabel,
     showNumberInput = false,
     showStepControls = false,
+    stepControlsProps,
+    variant,
     children,
     ...appearanceProps
 }) => (
     <div className={styles["control-row"]}>
         {showStepControls ? (
             <StepControls
-                color={appearanceProps.color}
-                variant={appearanceProps.variant}
-                size={appearanceProps.size}
+                {...appearanceProps}
+                {...stepControlsProps}
                 value={value}
                 onChange={onChange}
                 min={min}
                 max={max}
                 step={step}
-                disabled={appearanceProps.disabled}
+                disabled={
+                    appearanceProps.disabled || stepControlsProps?.disabled
+                }
                 ariaLabel={ariaLabel}
             >
                 {children}
@@ -36,19 +39,18 @@ export const SliderControlRow: FC<SliderControlRowProps> = ({
             children
         )}
         {showNumberInput ? (
-            <div className={styles["number-input"]}>
-                <NumberInput
-                    {...appearanceProps}
-                    value={value}
-                    onChange={(nextValue) => onChange?.(nextValue)}
-                    min={min}
-                    max={max}
-                    step={step}
-                    disabled={appearanceProps.disabled || !onChange}
-                    showStepControls
-                    ariaLabel={`${ariaLabel ?? "Slider"} (#)`}
-                />
-            </div>
+            <CompanionNumberInput
+                {...appearanceProps}
+                variant={variant}
+                value={value}
+                onChange={(nextValue) => onChange?.(nextValue)}
+                min={min}
+                max={max}
+                step={step}
+                disabled={appearanceProps.disabled || !onChange}
+                showStepControls
+                ariaLabel={`${ariaLabel ?? "Slider"} (#)`}
+            />
         ) : null}
     </div>
 );

@@ -10,6 +10,7 @@ import { SecondaryBottomToolPanel } from "../tool-panels/bottom-panels/secondary
 import { BottomToolPanel } from "../tool-panels/bottom-panels/primary-bottom-panel/BottomToolPanel";
 import { MobileMap } from "@mobile-apparatus";
 import { Attributions } from "../../attributions/Attributions";
+import { Theme, ThemeContext } from "@ui";
 
 const styles = StyleSheet.create({
     mainArea: {
@@ -20,9 +21,13 @@ const styles = StyleSheet.create({
 
 interface Props {
     map?: MobileMap;
+    selectedStyleTheme: Theme;
 }
 
-export const MapToolsGridAreas: FC<Props> = ({ map }) => {
+export const MapToolsGridAreas: FC<Props> = ({
+    map,
+    selectedStyleTheme,
+}) => {
     const { toolsStation } = useMobileMachineWard();
     const [activeLeftPanelToolId, setActiveLeftPanelToolId] = useSubjectState(toolsStation.activeLeftPanelToolId$);
     const [activeRightPanelToolId, setActiveRightPanelToolId] = useSubjectState(toolsStation.activeRightPanelToolId$);
@@ -43,10 +48,12 @@ export const MapToolsGridAreas: FC<Props> = ({ map }) => {
                             onActiveIdChange={setActiveLeftPanelToolId}
                         />
                     )}
-                <ToolIcons placement="left" map={map} />
-                <TopToolsGridArea map={map} />
-                <Attributions />
-                <ToolIcons placement="right" map={map} />
+                <ThemeContext.Provider value={selectedStyleTheme}>
+                    <ToolIcons placement="left" map={map} />
+                    <TopToolsGridArea map={map} />
+                    <Attributions />
+                    <ToolIcons placement="right" map={map} />
+                </ThemeContext.Provider>
                 {groupSidePanelsInBottomSecondaryToolbar
                     ? null
                     : (

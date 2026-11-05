@@ -1,16 +1,12 @@
 import { ReactNode } from "react";
-import { ColorVariant, FillVariant, SizeVariant } from "../../design-system/model";
+import { AppearanceProps } from "../../design-system/model";
 
-export interface StepControlsProps {
+export interface StepControlsProps extends AppearanceProps {
     children: ReactNode;
-    color?: ColorVariant;
-    variant?: FillVariant;
-    size?: SizeVariant;
     value: number;
     onChange?: (value: number) => void;
     min?: number;
     max?: number;
     step?: number;
-    disabled?: boolean;
     ariaLabel?: string;
 }

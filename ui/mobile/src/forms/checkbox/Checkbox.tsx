@@ -4,14 +4,13 @@ import Svg, { Path } from "react-native-svg";
 import {
     CheckboxProps,
     DEFAULT_CORNERS,
-    controlTextSpecifications,
     DEFAULT_COLOR,
     DEFAULT_FILL_VARIANT,
     DEFAULT_SIZE,
     ThemeContext,
     useTheme,
 } from "@ui";
-import { Text } from "../../design-system/typography";
+import { Label } from "../../design-system/typography";
 import { useHudInteraction } from "../../hud/useHudInteraction";
 import { HexagonSurface } from "../../hud/hexagon/HexagonSurface";
 
@@ -124,16 +123,16 @@ export const Checkbox: FC<CheckboxProps> = ({
                     ) : null}
                 </View>
                 {children ? (
-                    <Text
+                    <Label
                         color={color}
                         highlightColor={highlightColor}
                         shade={glyphsShade}
                         highlightShade={highlightGlyphsShade}
-                        appearanceState={state}
-                        style={controlTextSpecifications[size]}
+                        highlighted={highlighted}
+                        disabled={disabled}
                     >
                         {children}
-                    </Text>
+                    </Label>
                 ) : null}
             </Pressable>
         </ThemeContext.Provider>

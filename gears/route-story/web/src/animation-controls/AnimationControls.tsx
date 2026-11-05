@@ -6,7 +6,7 @@ import { useWebMachineWard } from "@web-apparatus";
 import { clamp, useSubjectState } from "@tinker-chest";
 import { ClockInput, Checkbox, Dropdown, Fieldset, ClockSliceInput, ClockDurationInput, IconRotateInput, Slider, ToggleSwitch, Label, Span, Icon } from "@web-ui";
 import { AnimationControlsType, Animatrix } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { Icons, millisecondsToDurationParts } from "@ui";
+import { Icons, millisecondsToDurationParts, STEP_DEG } from "@ui";
 import { WebRouteStoryProps } from "../model";
 import styles from './animation-controls.module.css';
 
@@ -121,7 +121,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                     contentClassName={styles['fieldset']}
                     variant="outline"
                 >
-                    <Label htmlFor="animation-controls-image-pause-duration" align="right">
+                    <Label htmlFor="animation-controls-image-pause-duration">
                         {imagePauseDurationLabel}
                     </Label>
                     <div>
@@ -129,16 +129,19 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                             id="animation-controls-image-pause-duration"
                             showNumberInput
                             showStepControls
-                            value={displayImageDuration / 1000 * 6}
-                            formatValue={(angle) => `${Math.round(angle / 6)}s`}
-                            min={Animatrix.displayImageDurationRange[0] / 1000 * 6}
-                            max={Animatrix.displayImageDurationRange[1] / 1000 * 6}
+                            value={displayImageDuration / 1000 * STEP_DEG}
+                            formatValue={(angle) => `${Math.round(angle / STEP_DEG)}s`}
+                            min={Animatrix.displayImageDurationRange[0] / 1000 * STEP_DEG}
+                            max={Animatrix.displayImageDurationRange[1] / 1000 * STEP_DEG}
+                            step={STEP_DEG}
+                            numberInputScale={STEP_DEG}
+                            numberInputUnit="s"
                             onChange={(value) => setAnimationControls((prev) => ({
-                                ...prev, displayImageDuration: clamp(value * 1000 / 6, Animatrix.displayImageDurationRange)
+                                ...prev, displayImageDuration: clamp(value * 1000 / STEP_DEG, Animatrix.displayImageDurationRange)
                             }))}
                         />
                     </div>
-                    <Label htmlFor="animation-controls-route-playback-duration" align="right">
+                    <Label htmlFor="animation-controls-route-playback-duration">
                         {routePlaybackDurationLabel}
                     </Label>
                     <div>
@@ -153,7 +156,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                             }))}
                         />
                     </div>
-                    <Label htmlFor="animation-controls-playback-pacing" align="right">
+                    <Label htmlFor="animation-controls-playback-pacing">
                         {playbackPacingLabel}
                     </Label>
                     <Dropdown
@@ -163,15 +166,15 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                         options={Animatrix.playbackPacingOptions.map(({ value }, index) => ({ value, label: playbackPacingOptionLabels[index] }))}
                         onChange={(value) => setAnimationControls((previous) => ({ ...previous, playbackPacing: value }))}
                     />
-                    <Label htmlFor="animation-controls-total-recording-duration" align="right">
+                    <Label htmlFor="animation-controls-total-recording-duration">
                         {totalRecordingDurationLabel}
                     </Label>
                     <div className={styles['recording-formula']}>
                         <Span tabular>{formatDuration(routePlaybackDuration)}</Span>
-                        <span className={styles['recording-formula-operator']}>+</span>
+                        <Span className={styles['recording-formula-operator']}>+</Span>
                         <Icon src={Icons.NounProject.ImageMarker} width={13} height={13} />
                         <Span tabular>{`${displayedImageCount} × ${formatDuration(displayImageDuration)}`}</Span>
-                        <span className={styles['recording-formula-equals']}>= {formatDuration(totalRecordingDuration)}</span>
+                        <Span className={styles['recording-formula-equals']}>= {formatDuration(totalRecordingDuration)}</Span>
                     </div>
                     <span />
                     <Checkbox
@@ -200,7 +203,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                 >
                     {matchesSearch(zoomLabel) && (
                         <>
-                            <Label htmlFor="animation-controls-zoom" align="right">
+                            <Label htmlFor="animation-controls-zoom">
                                 {zoomLabel}
                             </Label>
                             <Slider
@@ -225,11 +228,13 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                     )}
                     {matchesSearch(easeDurationLabel) && (
                         <>
-                            <Label htmlFor="animation-controls-ease-duration" align="right">
+                            <Label htmlFor="animation-controls-ease-duration">
                                 {easeDurationLabel}
                             </Label>
                             <Slider
                                 id="animation-controls-ease-duration"
+                                showNumberInput
+                                showStepControls
                                 value={easeDuration}
                                 min={Animatrix.easeDurationRange[0]}
                                 max={Animatrix.easeDurationRange[1]}
@@ -257,11 +262,13 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                     )}
                     {matchesSearch(cameraAngleLabel) && (
                         <>
-                            <Label htmlFor="animation-controls-camera-angle" align="right">
+                            <Label htmlFor="animation-controls-camera-angle">
                                 {cameraAngleLabel}
                             </Label>
                             <IconRotateInput
                                 id="animation-controls-camera-angle"
+                                showNumberInput
+                                showStepControls
                                 valueAdjustment={-90}
                                 icon={Icons.NounProject.CameraVideoSide}
                                 value={cameraAngle}
@@ -277,7 +284,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                     )}
                     {matchesSearch(pitchLabel) && (
                         <>
-                            <Label htmlFor="animation-controls-pitch" align="right">
+                            <Label htmlFor="animation-controls-pitch">
                                 {pitchLabel}
                             </Label>
                             <ClockSliceInput
@@ -303,7 +310,7 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                     )}
                     {matchesSearch(cameraRollLabel) && (
                         <>
-                            <Label htmlFor="animation-controls-camera-roll" align="right">
+                            <Label htmlFor="animation-controls-camera-roll">
                                 {cameraRollLabel}
                             </Label>
                             <IconRotateInput

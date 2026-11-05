@@ -1,4 +1,11 @@
-import { ChangeEvent, ComponentProps, CSSProperties, FC, MouseEvent, useId } from "react";
+import {
+    ChangeEvent,
+    ComponentProps,
+    CSSProperties,
+    FC,
+    MouseEvent,
+    useId,
+} from "react";
 import classNames from "classnames";
 import {
     DEFAULT_COLOR,
@@ -13,7 +20,10 @@ import { Label } from "../../design-system/typography";
 import { useStepRepeatButton } from "../step-controls/useStepRepeatButton";
 import styles from "./number-input.module.css";
 
-export const NumberInput: FC<Omit<ComponentProps<"input">, "onChange" | "value" | "type" | "size"> & NumberInputProps> = ({
+export const NumberInput: FC<
+    Omit<ComponentProps<"input">, "onChange" | "value" | "type" | "size"> &
+        NumberInputProps
+> = ({
     id,
     themeMode,
     color = DEFAULT_COLOR,
@@ -41,7 +51,14 @@ export const NumberInput: FC<Omit<ComponentProps<"input">, "onChange" | "value" 
     const generatedId = useId();
     const inputId = id || generatedId;
     const theme = useTheme().forMode(themeMode);
-    const getStepButtonProps = useStepRepeatButton({ value, onChange, step, min, max, disabled });
+    const getStepButtonProps = useStepRepeatButton({
+        value,
+        onChange,
+        step,
+        min,
+        max,
+        disabled,
+    });
     const incrementDisabled = disabled || (max !== undefined && value >= max);
     const decrementDisabled = disabled || (min !== undefined && value <= min);
 
@@ -69,17 +86,22 @@ export const NumberInput: FC<Omit<ComponentProps<"input">, "onChange" | "value" 
             data-disabled={disabled || undefined}
             className={styles.container}
             data-size={size}
-            style={{
-                "--appearance-default-glyphs-override": glyphsShade === undefined
-                    ? undefined
-                    : theme.color(color, glyphsShade),
-                "--appearance-hover-focus-glyphs-override": highlightGlyphsShade === undefined
-                    ? undefined
-                    : theme.color(highlightColor, highlightGlyphsShade),
-                "--appearance-active-pressed-glyphs-override": highlightGlyphsShade === undefined
-                    ? undefined
-                    : theme.color(highlightColor, highlightGlyphsShade),
-            } as CSSProperties}
+            style={
+                {
+                    "--appearance-default-glyphs-override":
+                        glyphsShade === undefined
+                            ? undefined
+                            : theme.color(color, glyphsShade),
+                    "--appearance-hover-focus-glyphs-override":
+                        highlightGlyphsShade === undefined
+                            ? undefined
+                            : theme.color(highlightColor, highlightGlyphsShade),
+                    "--appearance-active-pressed-glyphs-override":
+                        highlightGlyphsShade === undefined
+                            ? undefined
+                            : theme.color(highlightColor, highlightGlyphsShade),
+                } as CSSProperties
+            }
         >
             {label ? (
                 <Label
@@ -109,7 +131,10 @@ export const NumberInput: FC<Omit<ComponentProps<"input">, "onChange" | "value" 
                         max={max}
                         step={step}
                         disabled={disabled}
-                        aria-label={ariaLabel || (typeof label === "string" ? label : undefined)}
+                        aria-label={
+                            ariaLabel ||
+                            (typeof label === "string" ? label : undefined)
+                        }
                         className={classNames(styles.input, className)}
                     />
                     {unit ? <span className={styles.unit}>{unit}</span> : null}

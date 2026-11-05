@@ -1,35 +1,52 @@
-import { ComponentType, FC, useEffect, useMemo, useRef, useState } from "react";
+import { ComponentType, FC } from "react";
+import { Pressable, StyleSheet, View, ViewStyle } from "react-native";
 import {
-    LayoutChangeEvent,
-    PanResponder,
-    View,
-    ViewStyle,
-    type ViewInstance,
-} from "react-native";
-import { DEFAULT_COLOR, DEFAULT_SIZE, IconRotateInputProps, useTheme } from "@ui";
+    DEFAULT_COLOR,
+    DEFAULT_SIZE,
+    DEFAULT_SURFACE_VARIANT,
+    IconRotateInputProps,
+    getClockGeometry,
+    snapRotation,
+    useTheme,
+} from "@ui";
 import { SvgProps } from "react-native-svg";
 import { RotationArrows } from "./RotationArrows";
 import { RotateIconWrapper } from "./RotateIconWrapper";
 import { RotateLabel } from "./RotateLabel";
-import { NumberInput } from "../number-input";
-import { StepControls } from "../step-controls";
+import { useRotationGesture } from "./useRotationGesture";
+import { useHudInteraction } from "../../hud/useHudInteraction";
+import { IconRotateControlRow } from "./IconRotateControlRow";
 
-interface Props extends Omit<IconRotateInputProps, 'icon'> {
+const styles = StyleSheet.create({
+    container: {
+        alignItems: "center",
+        gap: 4,
+    },
+    dial: {
+        flexShrink: 0,
+        borderRadius: "50%",
+        outlineStyle: "solid",
+        outlineOffset: 2,
+    },
+});
+
+interface Props extends Omit<IconRotateInputProps, "icon"> {
     icon?: ComponentType<SvgProps>;
     style?: ViewStyle;
 }
-
-const sizeMap: Record<string, number> = { xs: 36, sm: 48, md: 60, lg: 72 };
-const iconSizes: Record<string, number> = { xs: 12, sm: 20, md: 32, lg: 40 };
-const controlHeights = { xs: 18, sm: 24, md: 32, lg: 40 } as const;
 
 export const IconRotateInput: FC<Props> = ({
     icon,
     value = 0,
     onChange,
     valueAdjustment = 0,
+    themeMode,
     color = DEFAULT_COLOR,
-    highlightColor,
+    highlightColor = color,
+    glyphsShade,
+    highlightGlyphsShade,
+    highlighted = false,
+    variant = DEFAULT_SURFACE_VARIANT,
     size = DEFAULT_SIZE,
     min = 0,
     max = 360,
@@ -38,218 +55,136 @@ export const IconRotateInput: FC<Props> = ({
     label,
     showNumberInput = false,
     showStepControls = false,
-    numberInputPlacement = 'end',
+    stepControlsProps,
+    numberInputPlacement = "end",
     ariaLabel,
     style,
 }) => {
-    const theme = useTheme();
-    const activeHighlight = highlightColor || color;
-    const svgSize = sizeMap[size];
-    const center = svgSize / 2;
-    const outerRadius = center - 4;
-    const iconSize = iconSizes[size];
-    const stepControlsWidth = svgSize + controlHeights[size] * 2 + 8;
-
-    const [isDragging, setIsDragging] = useState(false);
-    const [displayAngle, setDisplayAngle] = useState(value);
-    const [displayWrapped, setDisplayWrapped] = useState(value);
-    const svgRef = useRef<ViewInstance>(null);
-    const svgPageCenterRef = useRef({ x: 0, y: 0 });
-    const svgLayoutRef = useRef({ x: 0, y: 0, width: 0, height: 0 });
-    const angleRef = useRef(value);
-    angleRef.current = value;
-    const onAngleChangeRef = useRef(onChange);
-    onAngleChangeRef.current = onChange;
-    const disabledRef = useRef(disabled);
-    disabledRef.current = disabled;
-    const prevMouseAngleRef = useRef(0);
-    const displayAngleRef = useRef(value);
-    displayAngleRef.current = displayAngle;
-
-    useEffect(() => {
-        if (!isDragging) {
-            displayAngleRef.current = value;
-            setDisplayAngle(value);
-            setDisplayWrapped(value);
-        }
-    }, [isDragging, value]);
-
-    const snapAngle = (raw: number): number => {
-        if (max - min >= 360) {
-            const stepped = Math.round(raw / step) * step;
-            return ((stepped % 360) + 360) % 360;
-        }
-        const stepped = Math.round((raw - min) / step) * step + min;
-        return Math.min(max, Math.max(min, stepped));
+    const theme = useTheme().forMode(themeMode);
+    const controlSize = theme.sizes.control[size];
+    const { svgSize, center, outerRadius } = getClockGeometry(
+        controlSize.height,
+        "angle",
+    );
+    const rotation = useRotationGesture({
+        value,
+        onChange,
+        min,
+        max,
+        step,
+        disabled,
+    });
+    const { state, interaction, focused } = useHudInteraction({
+        disabled: rotation.disabled,
+        highlighted: highlighted || rotation.dragging,
+    });
+    const appearance = theme.resolveAppearance(
+        variant,
+        color,
+        highlightColor,
+        state,
+        glyphsShade,
+        highlightGlyphsShade,
+    );
+    const appearanceProps = {
+        themeMode,
+        color,
+        highlightColor,
+        glyphsShade,
+        highlightGlyphsShade,
+        highlighted,
+        size,
+        disabled: rotation.disabled,
     };
+    const visualControl = (
+        <Pressable
+            {...interaction}
+            {...rotation.panHandlers}
+            ref={rotation.target}
+            collapsable={false}
+            disabled={rotation.disabled}
+            accessibilityRole="adjustable"
+            accessibilityLabel={ariaLabel ?? label ?? "Angle"}
+            accessibilityState={{ disabled: rotation.disabled }}
+            accessibilityValue={{ min, max, now: value, text: `${value}°` }}
+            accessibilityActions={[
+                { name: "increment" },
+                { name: "decrement" },
+            ]}
+            onAccessibilityAction={(event) => {
+                const action = event.nativeEvent.actionName;
+                if (
+                    !rotation.disabled &&
+                    (action === "increment" || action === "decrement")
+                ) {
+                    onChange?.(
+                        snapRotation(
+                            value + (action === "increment" ? step : -step),
+                            min,
+                            max,
+                            step,
+                        ),
+                    );
+                }
+            }}
+            style={[
+                styles.dial,
+                {
+                    width: svgSize,
+                    height: svgSize,
+                    backgroundColor: appearance.surface,
+                    borderColor: appearance.border.color,
+                    borderWidth: appearance.border.width,
+                    boxShadow:
+                        appearance.effects.depth === "inset"
+                            ? `3px 3px 4px ${appearance.effects.inset.shadow} inset, -2px -2px 4px ${appearance.effects.inset.highlight} inset`
+                            : undefined,
+                    outlineWidth: focused ? 2 : 0,
+                    outlineColor: appearance.effects.glowColor,
+                },
+            ]}
+        >
+            <RotationArrows
+                svgSize={svgSize}
+                center={center}
+                outerRadius={outerRadius}
+                ringStroke={appearance.glyphs}
+                arrowStroke={appearance.glyphs}
+            />
+            <RotateIconWrapper
+                icon={icon}
+                iconSize={controlSize.iconSize}
+                svgSize={svgSize}
+                displayAngle={rotation.displayAngle + valueAdjustment}
+                iconColor={appearance.glyphs}
+            />
+        </Pressable>
+    );
 
-    const handleLayout = (e: LayoutChangeEvent) => {
-        const { x, y, width, height } = e.nativeEvent.layout;
-        svgLayoutRef.current = { x, y, width, height };
-        svgPageCenterRef.current = {
-            x: x + width / 2,
-            y: y + height / 2,
-        };
-    };
-
-    const handleInteraction = (pageX: number, pageY: number) => {
-        if (disabledRef.current) {
-            return;
-        }
-        const { x: cx, y: cy } = svgPageCenterRef.current;
-        const dx = pageX - cx;
-        const dy = pageY - cy;
-        const svgDeg = Math.atan2(dy, dx) * (180 / Math.PI);
-        const currentMouseAngle = ((svgDeg + 90) % 360 + 360) % 360;
-        const prevAngle = prevMouseAngleRef.current;
-        let delta = currentMouseAngle - prevAngle;
-        if (delta > 180) {
-            delta -= 360;
-        }
-        if (delta < -180) {
-            delta += 360;
-        }
-        prevMouseAngleRef.current = currentMouseAngle;
-        const newDisplay = displayAngleRef.current + delta;
-        const wrapped = snapAngle(newDisplay);
-        displayAngleRef.current = newDisplay;
-        setDisplayAngle(newDisplay);
-        if (wrapped !== angleRef.current) {
-            angleRef.current = wrapped;
-            setDisplayWrapped(wrapped);
-            onAngleChangeRef.current?.(wrapped);
-        }
-    };
-
-    const contextRef = useRef({ handleInteraction });
-    contextRef.current = { handleInteraction };
-
-    const panResponder = useMemo(() => PanResponder.create({
-        onStartShouldSetPanResponder: () => !disabledRef.current,
-        onMoveShouldSetPanResponder: () => !disabledRef.current,
-        onPanResponderGrant: (evt) => {
-            if (disabledRef.current) {
-                return;
-            }
-            setIsDragging(true);
-            const { pageX, pageY } = evt.nativeEvent;
-            const { x: cx, y: cy } = svgPageCenterRef.current;
-            const dx = pageX - cx;
-            const dy = pageY - cy;
-            const svgDeg = Math.atan2(dy, dx) * (180 / Math.PI);
-            prevMouseAngleRef.current = ((svgDeg + 90) % 360 + 360) % 360;
-        },
-        onPanResponderMove: (evt) => {
-            if (disabledRef.current) {
-                return;
-            }
-            contextRef.current.handleInteraction(evt.nativeEvent.pageX, evt.nativeEvent.pageY);
-        },
-        onPanResponderRelease: () => {
-            setIsDragging(false);
-        },
-        onPanResponderTerminate: () => {
-            setIsDragging(false);
-        },
-    }), []);
-
-    const isLight = theme.isLight;
-
-    const colorBase = theme.color(color, 500);
-    const hlLight = theme.color(activeHighlight, 300);
-
-    const ringStroke = isDragging ? hlLight : theme.color(color, 500, isLight ? 0.3 : 0.4);
-    const arrowStroke = isDragging ? hlLight : colorBase;
-
-    const iconColor = colorBase;
-
-    const visualControl = <View
-        ref={svgRef}
-        onLayout={handleLayout}
-        collapsable={false}
-        style={{ width: svgSize, height: svgSize }}
-        {...panResponder.panHandlers}
-    >
-        <RotationArrows
-            svgSize={svgSize}
-            center={center}
-            outerRadius={outerRadius}
-            ringStroke={ringStroke}
-            arrowStroke={arrowStroke}
-        />
-
-        <RotateIconWrapper
-            icon={icon}
-            iconSize={iconSize}
-            svgSize={svgSize}
-            displayAngle={displayAngle + valueAdjustment}
-            iconColor={iconColor}
-        />
-    </View>;
-    const steppedRotateControl = showStepControls ? (
-        <View style={{ width: stepControlsWidth }}>
-            <StepControls
-                color={color}
-                size={size}
+    return (
+        <View style={[styles.container, style]}>
+            <RotateLabel
+                {...appearanceProps}
+                label={label}
+                displayWrapped={value}
+                showValue={!showNumberInput}
+            />
+            <IconRotateControlRow
+                {...appearanceProps}
                 value={value}
                 onChange={onChange}
                 min={min}
                 max={max}
                 step={step}
-                disabled={disabled}
-                ariaLabel={ariaLabel ?? label}
+                label={label}
+                ariaLabel={ariaLabel}
+                showNumberInput={showNumberInput}
+                showStepControls={showStepControls}
+                stepControlsProps={stepControlsProps}
+                numberInputPlacement={numberInputPlacement}
             >
                 {visualControl}
-            </StepControls>
-        </View>
-    ) : visualControl;
-    const isVerticalNumberInput = numberInputPlacement === 'above' || numberInputPlacement === 'below';
-    const control = <View style={{
-        flexDirection: !showNumberInput
-            ? 'row'
-            : numberInputPlacement === 'start'
-            ? 'row-reverse'
-            : numberInputPlacement === 'above'
-                ? 'column-reverse'
-                : numberInputPlacement === 'below'
-                    ? 'column'
-                    : 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexWrap: 'wrap',
-        width: '100%',
-        gap: 8,
-    }}>
-        {steppedRotateControl}
-        {showNumberInput ? (
-            <View style={{ width: isVerticalNumberInput ? '100%' : 80 }}>
-                <NumberInput
-                    value={value}
-                    onChange={(newValue) => onChange?.(newValue)}
-                    min={min}
-                    max={max}
-                    step={step}
-                    color={color}
-                    highlightColor={highlightColor}
-                    size={size}
-                    disabled={disabled || !onChange}
-                    showStepControls={true}
-                    ariaLabel={`${ariaLabel ?? label ?? 'Angle'} (#)`}
-                />
-            </View>
-        ) : null}
-    </View>;
-
-    return (
-        <View style={[{ alignItems: 'center', width: '100%', opacity: disabled ? 0.4 : 1 }, style]}>
-            {control}
-
-            <RotateLabel
-                label={label}
-                displayWrapped={displayWrapped}
-                icon={icon}
-                showValue={!showNumberInput}
-            />
+            </IconRotateControlRow>
         </View>
     );
 };
