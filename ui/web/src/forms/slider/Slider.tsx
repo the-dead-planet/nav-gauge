@@ -55,58 +55,58 @@ export const Slider: FC<
     };
 
     return (
-            <div
-                className={styles.container}
-                data-size={size}
-                data-appearance-mode={theme.mode}
-                data-appearance-variant={variant}
-                data-appearance-color={color}
-                data-appearance-highlight={highlightColor}
-                data-highlighted={highlighted || undefined}
-                data-disabled={disabled || undefined}
-                data-glow={activeGlow}
+        <div
+            className={styles.container}
+            data-size={size}
+            data-appearance-mode={theme.mode}
+            data-appearance-variant={variant}
+            data-appearance-color={color}
+            data-appearance-highlight={highlightColor}
+            data-highlighted={highlighted || undefined}
+            data-disabled={disabled || undefined}
+            data-glow={activeGlow}
+        >
+            {typeof label === "string" ? (
+                <Label
+                    htmlFor={inputId}
+                    color={color}
+                    shade={glyphsShade}
+                    highlightColor={highlightColor}
+                    highlightShade={highlightGlyphsShade}
+                    highlighted={highlighted}
+                    disabled={disabled}
+                    className={styles.label}
+                >
+                    {label}{" "}
+                    {!showNumberInput ? <Span tabular>{value}</Span> : null}
+                </Label>
+            ) : (
+                label
+            )}
+            <SliderControlRow
+                {...appearanceProps}
+                value={value}
+                onChange={onChange}
+                min={min}
+                max={max}
+                step={step}
+                ariaLabel={accessibleLabel}
+                showNumberInput={showNumberInput}
+                showStepControls={showStepControls}
+                stepControlsProps={stepControlsProps}
             >
-                {typeof label === "string" ? (
-                    <Label
-                        htmlFor={inputId}
-                        color={color}
-                        shade={glyphsShade}
-                        highlightColor={highlightColor}
-                        highlightShade={highlightGlyphsShade}
-                        highlighted={highlighted}
-                        disabled={disabled}
-                        className={styles.label}
-                    >
-                        {label}{" "}
-                        {!showNumberInput ? <Span tabular>{value}</Span> : null}
-                    </Label>
-                ) : (
-                    label
-                )}
-                <SliderControlRow
-                    {...appearanceProps}
+                <SliderTrack
+                    {...props}
+                    id={inputId}
                     value={value}
                     onChange={onChange}
                     min={min}
                     max={max}
                     step={step}
+                    disabled={disabled}
                     ariaLabel={accessibleLabel}
-                    showNumberInput={showNumberInput}
-                    showStepControls={showStepControls}
-                    stepControlsProps={stepControlsProps}
-                >
-                    <SliderTrack
-                        {...props}
-                        id={inputId}
-                        value={value}
-                        onChange={onChange}
-                        min={min}
-                        max={max}
-                        step={step}
-                        disabled={disabled}
-                        ariaLabel={accessibleLabel}
-                    />
-                </SliderControlRow>
-            </div>
+                />
+            </SliderControlRow>
+        </div>
     );
 };

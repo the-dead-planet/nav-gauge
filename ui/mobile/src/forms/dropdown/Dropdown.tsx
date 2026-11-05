@@ -60,63 +60,63 @@ export function Dropdown<T>({
     };
 
     return (
-            <View>
-                <View
-                    ref={triggerRef}
-                    collapsable={false}
-                    onLayout={onTriggerLayout}
-                >
-                    <DropdownControl
-                        {...controlProps}
-                        trigger
-                        expanded={isOpen}
-                        disabled={disabled}
-                        highlighted={highlighted || isOpen}
-                        label={selectedOption?.label ?? placeholder}
-                        icon={selectedOption?.icon}
-                        prepend={
-                            selectedOption?.selectedPrepend ??
-                            selectedOption?.prepend
-                        }
-                        onPress={toggle}
-                    />
-                </View>
-                <Modal
-                    visible={isOpen}
-                    transparent
-                    animationType="fade"
-                    onRequestClose={close}
-                >
-                    <Pressable
-                        ref={overlayRef}
-                        accessible={false}
-                        style={styles.backdrop}
-                        onPress={close}
-                    >
-                        <MenuList
-                            color={color}
-                            size={size}
-                            accessibilityViewIsModal
-                            onLayout={onLayout}
-                            style={menuPosition}
-                        >
-                            {options.map((option) => (
-                                <DropdownControl
-                                    {...controlProps}
-                                    key={String(option.value)}
-                                    highlighted={option.value === value}
-                                    label={option.label}
-                                    icon={option.icon}
-                                    prepend={option.prepend}
-                                    onPress={() => {
-                                        onChange?.(option.value);
-                                        close();
-                                    }}
-                                />
-                            ))}
-                        </MenuList>
-                    </Pressable>
-                </Modal>
+        <View>
+            <View
+                ref={triggerRef}
+                collapsable={false}
+                onLayout={onTriggerLayout}
+            >
+                <DropdownControl
+                    {...controlProps}
+                    trigger
+                    expanded={isOpen}
+                    disabled={disabled}
+                    highlighted={highlighted || isOpen}
+                    label={selectedOption?.label ?? placeholder}
+                    icon={selectedOption?.icon}
+                    prepend={
+                        selectedOption?.selectedPrepend ??
+                        selectedOption?.prepend
+                    }
+                    onPress={toggle}
+                />
             </View>
+            <Modal
+                visible={isOpen}
+                transparent
+                animationType="fade"
+                onRequestClose={close}
+            >
+                <Pressable
+                    ref={overlayRef}
+                    accessible={false}
+                    style={styles.backdrop}
+                    onPress={close}
+                >
+                    <MenuList
+                        color={color}
+                        size={size}
+                        accessibilityViewIsModal
+                        onLayout={onLayout}
+                        style={menuPosition}
+                    >
+                        {options.map((option) => (
+                            <DropdownControl
+                                {...controlProps}
+                                key={String(option.value)}
+                                highlighted={option.value === value}
+                                label={option.label}
+                                icon={option.icon}
+                                prepend={option.prepend}
+                                onPress={() => {
+                                    onChange?.(option.value);
+                                    close();
+                                }}
+                            />
+                        ))}
+                    </MenuList>
+                </Pressable>
+            </Modal>
+        </View>
     );
 }

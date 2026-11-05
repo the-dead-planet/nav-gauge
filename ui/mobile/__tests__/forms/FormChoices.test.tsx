@@ -17,12 +17,9 @@ import { Radio } from "../../src/forms/radio";
 import { Text } from "../../src/design-system/typography";
 import { HexagonSurface } from "../../src/hud/hexagon/HexagonSurface";
 
-jest.mock(
-    "../../src/hud/hexagon/HexagonSurface",
-    () => ({
-        HexagonSurface: jest.fn(() => null),
-    }),
-);
+jest.mock("../../src/hud/hexagon/HexagonSurface", () => ({
+    HexagonSurface: jest.fn(() => null),
+}));
 
 const media = {
     initial: () => ({
@@ -83,10 +80,7 @@ describe("Form choice appearance ownership", () => {
                 media,
                 false,
             );
-            const overrides: ThemeMode[] = [
-                "light",
-                "dark",
-            ];
+            const overrides: ThemeMode[] = ["light", "dark"];
             for (const [Control, role] of [
                 [Checkbox, "checkbox"],
                 [Radio, "radio"],
@@ -94,16 +88,16 @@ describe("Form choice appearance ownership", () => {
                 const content = (mode: ThemeMode, disabled = false) => (
                     <ThemeContext.Provider value={theme}>
                         <ThemeContext.Provider value={theme.forMode(mode)}>
-                        <Control
-                            checked
-                            color="glitch"
-                            highlightColor="intel"
-                            highlighted
-                            disabled={disabled}
-                            onChange={() => {}}
-                        >
-                            <Text color="glitch">Nested label</Text>
-                        </Control>
+                            <Control
+                                checked
+                                color="glitch"
+                                highlightColor="intel"
+                                highlighted
+                                disabled={disabled}
+                                onChange={() => {}}
+                            >
+                                <Text color="glitch">Nested label</Text>
+                            </Control>
                         </ThemeContext.Provider>
                         <Text color="glitch">Sibling</Text>
                     </ThemeContext.Provider>

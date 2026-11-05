@@ -59,50 +59,50 @@ export const Slider = forwardRef<
         };
 
         return (
-                <View ref={ref} style={[styles.container, style]}>
-                    {typeof label === "string" ? (
-                        <Label
-                            color={color}
-                            shade={glyphsShade}
-                            highlightColor={highlightColor}
-                            highlightShade={highlightGlyphsShade}
-                            highlighted={highlighted}
-                            disabled={disabled}
-                        >
-                            {label} {!showNumberInput ? value : null}
-                        </Label>
-                    ) : (
-                        label
-                    )}
-                    <SliderControlRow
-                        {...appearanceProps}
+            <View ref={ref} style={[styles.container, style]}>
+                {typeof label === "string" ? (
+                    <Label
+                        color={color}
+                        shade={glyphsShade}
+                        highlightColor={highlightColor}
+                        highlightShade={highlightGlyphsShade}
+                        highlighted={highlighted}
+                        disabled={disabled}
+                    >
+                        {label} {!showNumberInput ? value : null}
+                    </Label>
+                ) : (
+                    label
+                )}
+                <SliderControlRow
+                    {...appearanceProps}
+                    value={value}
+                    onChange={onChange}
+                    min={min}
+                    max={max}
+                    step={step}
+                    ariaLabel={accessibleLabel}
+                    showNumberInput={showNumberInput}
+                    showStepControls={showStepControls}
+                    stepControlsProps={stepControlsProps}
+                >
+                    <SliderTrack
+                        color={color}
+                        highlightColor={highlightColor}
+                        size={size}
+                        variant={variant}
+                        activeGlow={activeGlow}
+                        highlighted={highlighted}
+                        disabled={disabled}
                         value={value}
                         onChange={onChange}
                         min={min}
                         max={max}
                         step={step}
                         ariaLabel={accessibleLabel}
-                        showNumberInput={showNumberInput}
-                        showStepControls={showStepControls}
-                        stepControlsProps={stepControlsProps}
-                    >
-                        <SliderTrack
-                            color={color}
-                            highlightColor={highlightColor}
-                            size={size}
-                            variant={variant}
-                            activeGlow={activeGlow}
-                            highlighted={highlighted}
-                            disabled={disabled}
-                            value={value}
-                            onChange={onChange}
-                            min={min}
-                            max={max}
-                            step={step}
-                            ariaLabel={accessibleLabel}
-                        />
-                    </SliderControlRow>
-                </View>
+                    />
+                </SliderControlRow>
+            </View>
         );
     },
 );

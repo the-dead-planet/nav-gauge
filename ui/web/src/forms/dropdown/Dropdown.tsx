@@ -77,73 +77,73 @@ export function Dropdown<T = string>({
     } as CSSProperties;
 
     return (
-            <div
-                {...props}
-                className={classNames(styles["dropdown-select"], className)}
-                style={style}
+        <div
+            {...props}
+            className={classNames(styles["dropdown-select"], className)}
+            style={style}
+        >
+            <HudSurface
+                as="button"
+                id={`${listId}-trigger`}
+                ref={triggerRef}
+                type="button"
+                className={styles.trigger}
+                size={size}
+                variant={variant}
+                color={color}
+                highlightColor={highlightColor}
+                highlighted={highlighted || isOpen}
+                disabled={disabled}
+                interactive
+                rectangle
+                style={appearanceOverrides}
+                aria-haspopup="listbox"
+                aria-expanded={isOpen}
+                aria-controls={isOpen ? listId : undefined}
+                aria-label={ariaLabel}
+                aria-labelledby={labelledBy}
+                onClick={toggle}
+                onKeyDown={onTriggerKeyDown}
             >
-                <HudSurface
-                    as="button"
-                    id={`${listId}-trigger`}
-                    ref={triggerRef}
-                    type="button"
-                    className={styles.trigger}
-                    size={size}
-                    variant={variant}
-                    color={color}
-                    highlightColor={highlightColor}
-                    highlighted={highlighted || isOpen}
-                    disabled={disabled}
-                    interactive
-                    rectangle
-                    style={appearanceOverrides}
-                    aria-haspopup="listbox"
-                    aria-expanded={isOpen}
-                    aria-controls={isOpen ? listId : undefined}
-                    aria-label={ariaLabel}
-                    aria-labelledby={labelledBy}
-                    onClick={toggle}
-                    onKeyDown={onTriggerKeyDown}
-                >
-                    {selectedOption?.selectedPrepend ?? selectedOption?.prepend}
-                    {selectedOption?.icon ? (
-                        <Icon
-                            src={selectedOption.icon}
-                            width={iconSize}
-                            height={iconSize}
-                            className={styles.icon}
-                        />
-                    ) : null}
-                    <span className={styles.label}>
-                        {selectedOption?.label ?? placeholder}
-                    </span>
+                {selectedOption?.selectedPrepend ?? selectedOption?.prepend}
+                {selectedOption?.icon ? (
                     <Icon
-                        src={Icons.NounProject.ChevronDownDoubleSquareFill}
+                        src={selectedOption.icon}
                         width={iconSize}
                         height={iconSize}
-                        className={classNames(styles.icon, styles.arrow, {
-                            [styles["arrow-open"]]: isOpen,
-                        })}
-                    />
-                </HudSurface>
-                {isOpen ? (
-                    <DropdownList
-                        id={listId}
-                        triggerRef={triggerRef}
-                        listRef={listRef}
-                        positionStyle={positionStyle}
-                        onClose={close}
-                        className={popoverClassName}
-                        iconSize={iconSize}
-                        color={color}
-                        highlightColor={highlightColor}
-                        appearanceOverrides={appearanceOverrides}
-                        size={size}
-                        value={value}
-                        options={options}
-                        onChange={onChange}
+                        className={styles.icon}
                     />
                 ) : null}
-            </div>
+                <span className={styles.label}>
+                    {selectedOption?.label ?? placeholder}
+                </span>
+                <Icon
+                    src={Icons.NounProject.ChevronDownDoubleSquareFill}
+                    width={iconSize}
+                    height={iconSize}
+                    className={classNames(styles.icon, styles.arrow, {
+                        [styles["arrow-open"]]: isOpen,
+                    })}
+                />
+            </HudSurface>
+            {isOpen ? (
+                <DropdownList
+                    id={listId}
+                    triggerRef={triggerRef}
+                    listRef={listRef}
+                    positionStyle={positionStyle}
+                    onClose={close}
+                    className={popoverClassName}
+                    iconSize={iconSize}
+                    color={color}
+                    highlightColor={highlightColor}
+                    appearanceOverrides={appearanceOverrides}
+                    size={size}
+                    value={value}
+                    options={options}
+                    onChange={onChange}
+                />
+            ) : null}
+        </div>
     );
 }

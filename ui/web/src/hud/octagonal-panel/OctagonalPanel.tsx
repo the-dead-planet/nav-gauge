@@ -51,44 +51,43 @@ export const OctagonalPanel: FC<
     );
     const ready = width > 0 && height > 0;
     return (
-            <HudSurface
-                as="div"
-                {...props}
-                ref={containerRef}
-                variant={variant}
-                color={color}
-                highlightColor={highlightColor}
-                highlighted={highlighted}
-                disabled={disabled}
-                className={classNames(
-                    {
-                        [surface.raised]:
-                            variant !== "ghost" && variant !== "inset",
-                    },
-                    className,
-                )}
+        <HudSurface
+            as="div"
+            {...props}
+            ref={containerRef}
+            variant={variant}
+            color={color}
+            highlightColor={highlightColor}
+            highlighted={highlighted}
+            disabled={disabled}
+            className={classNames(
+                {
+                    [surface.raised]:
+                        variant !== "ghost" && variant !== "inset",
+                },
+                className,
+            )}
+        >
+            {ready ? (
+                <OctagonalSurface
+                    width={width}
+                    height={height}
+                    size={size}
+                    appearance={appearance}
+                />
+            ) : null}
+            <div
+                className={classNames(styles.content, contentClassName)}
+                style={{
+                    ...contentStyle,
+                    clipPath:
+                        clipContent && ready
+                            ? getOctagonalGeometry(width, height, size).clipPath
+                            : undefined,
+                }}
             >
-                {ready ? (
-                    <OctagonalSurface
-                        width={width}
-                        height={height}
-                        size={size}
-                        appearance={appearance}
-                    />
-                ) : null}
-                <div
-                    className={classNames(styles.content, contentClassName)}
-                    style={{
-                        ...contentStyle,
-                        clipPath:
-                            clipContent && ready
-                                ? getOctagonalGeometry(width, height, size)
-                                      .clipPath
-                                : undefined,
-                    }}
-                >
-                    {children}
-                </div>
-            </HudSurface>
+                {children}
+            </div>
+        </HudSurface>
     );
 };

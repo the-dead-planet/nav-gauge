@@ -69,59 +69,60 @@ export const Dialog: FC<DialogProps & ComponentProps<'div'>> = ({
                     )}
                     {...props}
                 >
-                        <HudSurface
-                            as="div"
-                            rectangle
-                            variant={variant}
+                    <HudSurface
+                        as="div"
+                        rectangle
+                        variant={variant}
+                        color={color}
+                        className={classNames(
+                            surface['layer-dialog'],
+                            styles['dialog'],
+                        )}
+                    >
+                        <H3
+                            id={headerId}
+                            fontType={FontType.NeonText}
+                            uppercase
+                            fontWeight={500}
                             color={color}
-                            className={classNames(
-                                surface['layer-dialog'],
-                                styles['dialog'],
-                            )}
+                            shadow={
+                                variant === 'fill-translucent' &&
+                                theme.mode === 'dark'
+                            }
+                            className={styles['header']}
                         >
-                            <H3
-                                id={headerId}
-                                fontType={FontType.NeonText}
-                                uppercase
-                                fontWeight={500}
+                            {header}
+                        </H3>
+                        <div
+                            className={styles['content']}
+                            data-appearance-mode={theme.mode}
+                        >
+                            {children}
+                        </div>
+                        <div className={styles['footer']}>
+                            <Button
+                                variant={actionButtonVariants[variant].inactive}
                                 color={color}
-                                shadow={variant === 'fill-translucent' && theme.mode === "dark"}
-                                className={styles['header']}
+                                onClick={close}
                             >
-                                {header}
-                            </H3>
-                            <div
-                                className={styles['content']}
-                                data-appearance-mode={theme.mode}
-                            >
-                                {children}
-                            </div>
-                            <div className={styles['footer']}>
+                                {closeText}
+                            </Button>
+                            {save ? (
                                 <Button
                                     variant={
-                                        actionButtonVariants[variant].inactive
+                                        actionButtonVariants[variant].active
                                     }
                                     color={color}
-                                    onClick={close}
+                                    onClick={() => {
+                                        save.onSave();
+                                        close();
+                                    }}
                                 >
-                                    {closeText}
+                                    {save.saveText}
                                 </Button>
-                                {save ? (
-                                    <Button
-                                        variant={
-                                            actionButtonVariants[variant].active
-                                        }
-                                        color={color}
-                                        onClick={() => {
-                                            save.onSave();
-                                            close();
-                                        }}
-                                    >
-                                        {save.saveText}
-                                    </Button>
-                                ) : null}
-                            </div>
-                        </HudSurface>
+                            ) : null}
+                        </div>
+                    </HudSurface>
                 </div>
             </Transition>
         </div>,

@@ -58,69 +58,62 @@ export const Radio: FC<
     };
 
     return (
-            <Label
-                color={color}
-                highlightColor={highlightColor}
-                shade={glyphsShade}
-                highlightShade={highlightGlyphsShade}
-                highlighted={highlighted}
+        <Label
+            color={color}
+            highlightColor={highlightColor}
+            shade={glyphsShade}
+            highlightShade={highlightGlyphsShade}
+            highlighted={highlighted}
+            disabled={disabled}
+            onKeyDown={handleKeyDown}
+            htmlFor={effectiveId}
+            data-disabled={disabled}
+            data-size={size}
+            className={classNames(styles["radio"], className)}
+            style={style}
+            {...props}
+        >
+            <input
+                id={effectiveId}
+                type="radio"
+                className={styles["input"]}
+                checked={checked}
+                onChange={handleChange}
                 disabled={disabled}
-                onKeyDown={handleKeyDown}
-                htmlFor={effectiveId}
-                data-disabled={disabled}
-                data-size={size}
-                className={classNames(styles["radio"], className)}
-                style={style}
-                {...props}
+                aria-label={ariaLabel}
+                aria-labelledby={labelledBy ?? ariaLabelledBy}
+            />
+            <span
+                className={classNames(styles.box, styles[`corners-${corners}`])}
+                data-appearance-variant={variant}
+                aria-hidden="true"
             >
-                <input
-                    id={effectiveId}
-                    type="radio"
-                    className={styles["input"]}
-                    checked={checked}
-                    onChange={handleChange}
-                    disabled={disabled}
-                    aria-label={ariaLabel}
-                    aria-labelledby={labelledBy ?? ariaLabelledBy}
-                />
-                <span
-                    className={classNames(
-                        styles.box,
-                        styles[`corners-${corners}`],
-                    )}
-                    data-appearance-variant={variant}
-                    aria-hidden="true"
-                >
-                    {corners === "hexagon" ? (
-                        <HexagonSurface
-                            effects={theme.appearancePolicies[variant].effects}
-                            paintClassName={styles.paint}
-                        />
-                    ) : null}
-                    {checked ? (
-                        <span className={styles.marker}>
-                            {corners === "hexagon" ? (
-                                <svg
-                                    viewBox={
-                                        hexagonGeometry["flat-top"].viewBox
-                                    }
-                                    width="100%"
-                                    height="100%"
-                                    aria-hidden="true"
-                                >
-                                    <polygon
-                                        points={
-                                            hexagonGeometry["flat-top"].points
-                                        }
-                                    />
-                                </svg>
-                            ) : null}
-                        </span>
-                    ) : null}
-                </span>
-                {children ? (
-                    <span className={styles["label"]}>{children}</span>
+                {corners === "hexagon" ? (
+                    <HexagonSurface
+                        effects={theme.appearancePolicies[variant].effects}
+                        paintClassName={styles.paint}
+                    />
                 ) : null}
-            </Label>
+                {checked ? (
+                    <span className={styles.marker}>
+                        {corners === "hexagon" ? (
+                            <svg
+                                viewBox={hexagonGeometry["flat-top"].viewBox}
+                                width="100%"
+                                height="100%"
+                                aria-hidden="true"
+                            >
+                                <polygon
+                                    points={hexagonGeometry["flat-top"].points}
+                                />
+                            </svg>
+                        ) : null}
+                    </span>
+                ) : null}
+            </span>
+            {children ? (
+                <span className={styles["label"]}>{children}</span>
+            ) : null}
+        </Label>
     );
 };

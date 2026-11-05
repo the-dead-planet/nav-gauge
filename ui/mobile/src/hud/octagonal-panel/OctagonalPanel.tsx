@@ -48,37 +48,37 @@ export const OctagonalPanel: FC<OctagonalPanelProps & Props> = ({
         disabled ? "disabled" : highlighted ? "active-pressed" : "default",
     );
     return (
-            <View
-                {...props}
-                ref={forwardRef}
-                accessibilityState={{ ...accessibilityState, disabled }}
-                style={[
-                    styles.panel,
-                    resolveElevationStyle(
-                        theme,
-                        variant === "ghost" || variant === "inset"
-                            ? "none"
-                            : "raised",
-                        "down",
-                    ),
-                    style,
-                ]}
-                onLayout={(event) => {
-                    dimensions.onLayout(event);
-                    onLayout?.(event);
-                }}
-            >
-                {dimensions.width > 0 && dimensions.height > 0 ? (
-                    <OctagonalSurface
-                        width={dimensions.width}
-                        height={dimensions.height}
-                        size={size}
-                        appearance={appearance}
-                    />
-                ) : null}
-                <View style={styles.content}>
-                    <HudContent appearance={appearance}>{children}</HudContent>
-                </View>
+        <View
+            {...props}
+            ref={forwardRef}
+            accessibilityState={{ ...accessibilityState, disabled }}
+            style={[
+                styles.panel,
+                resolveElevationStyle(
+                    theme,
+                    variant === "ghost" || variant === "inset"
+                        ? "none"
+                        : "raised",
+                    "down",
+                ),
+                style,
+            ]}
+            onLayout={(event) => {
+                dimensions.onLayout(event);
+                onLayout?.(event);
+            }}
+        >
+            {dimensions.width > 0 && dimensions.height > 0 ? (
+                <OctagonalSurface
+                    width={dimensions.width}
+                    height={dimensions.height}
+                    size={size}
+                    appearance={appearance}
+                />
+            ) : null}
+            <View style={styles.content}>
+                <HudContent appearance={appearance}>{children}</HudContent>
             </View>
+        </View>
     );
 };

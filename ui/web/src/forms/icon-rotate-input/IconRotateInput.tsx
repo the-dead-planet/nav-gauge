@@ -73,107 +73,102 @@ export const IconRotateInput: FC<
     };
 
     return (
-            <div
-                data-size={size}
-                className={classNames(styles.container, className)}
-                style={style}
-            >
-                {label ? (
-                    <Label
-                        htmlFor={inputId}
-                        color={color}
-                        highlightColor={highlightColor}
-                        shade={glyphsShade}
-                        highlightShade={highlightGlyphsShade}
-                        highlighted={highlighted}
-                        disabled={rotation.disabled}
-                        className={styles.label}
-                    >
-                        {label}{" "}
-                        {!showNumberInput ? <span>{value}°</span> : null}
-                    </Label>
-                ) : null}
-                <IconRotateControlRow
-                    {...appearanceProps}
-                    value={value}
-                    onChange={onChange}
-                    min={min}
-                    max={max}
-                    step={step}
-                    label={label}
-                    ariaLabel={ariaLabel}
-                    showNumberInput={showNumberInput}
-                    showStepControls={showStepControls}
-                    stepControlsProps={stepControlsProps}
-                    numberInputPlacement={numberInputPlacement}
+        <div
+            data-size={size}
+            className={classNames(styles.container, className)}
+            style={style}
+        >
+            {label ? (
+                <Label
+                    htmlFor={inputId}
+                    color={color}
+                    highlightColor={highlightColor}
+                    shade={glyphsShade}
+                    highlightShade={highlightGlyphsShade}
+                    highlighted={highlighted}
+                    disabled={rotation.disabled}
+                    className={styles.label}
                 >
-                    <HudSurface
-                        {...props}
-                        {...rotation.pointerHandlers}
-                        as="div"
-                        variant={variant}
-                        color={color}
-                        highlightColor={highlightColor}
-                        highlighted={highlighted || rotation.dragging}
+                    {label} {!showNumberInput ? <span>{value}°</span> : null}
+                </Label>
+            ) : null}
+            <IconRotateControlRow
+                {...appearanceProps}
+                value={value}
+                onChange={onChange}
+                min={min}
+                max={max}
+                step={step}
+                label={label}
+                ariaLabel={ariaLabel}
+                showNumberInput={showNumberInput}
+                showStepControls={showStepControls}
+                stepControlsProps={stepControlsProps}
+                numberInputPlacement={numberInputPlacement}
+            >
+                <HudSurface
+                    {...props}
+                    {...rotation.pointerHandlers}
+                    as="div"
+                    variant={variant}
+                    color={color}
+                    highlightColor={highlightColor}
+                    highlighted={highlighted || rotation.dragging}
+                    disabled={rotation.disabled}
+                    size={size}
+                    data-dragging={rotation.dragging || undefined}
+                    data-depth={theme.appearancePolicies[variant].effects.depth}
+                    interactive
+                    rectangle
+                    className={styles["visual-container"]}
+                    style={
+                        {
+                            width: svgSize,
+                            height: svgSize,
+                            "--appearance-default-glyphs-override":
+                                glyphsShade === undefined
+                                    ? undefined
+                                    : theme.color(color, glyphsShade),
+                            "--appearance-hover-focus-glyphs-override":
+                                highlightGlyphsShade === undefined
+                                    ? undefined
+                                    : theme.color(
+                                          highlightColor,
+                                          highlightGlyphsShade,
+                                      ),
+                            "--appearance-active-pressed-glyphs-override":
+                                highlightGlyphsShade === undefined
+                                    ? undefined
+                                    : theme.color(
+                                          highlightColor,
+                                          highlightGlyphsShade,
+                                      ),
+                        } as CSSProperties
+                    }
+                >
+                    <RotateA11yInput
+                        id={inputId}
+                        min={min}
+                        max={max}
+                        step={step}
+                        value={value}
+                        onChange={onChange}
                         disabled={rotation.disabled}
-                        size={size}
-                        data-dragging={rotation.dragging || undefined}
-                        data-depth={
-                            theme.appearancePolicies[variant].effects.depth
-                        }
-                        interactive
-                        rectangle
-                        className={styles["visual-container"]}
-                        style={
-                            {
-                                width: svgSize,
-                                height: svgSize,
-                                "--appearance-default-glyphs-override":
-                                    glyphsShade === undefined
-                                        ? undefined
-                                        : theme.color(color, glyphsShade),
-                                "--appearance-hover-focus-glyphs-override":
-                                    highlightGlyphsShade === undefined
-                                        ? undefined
-                                        : theme.color(
-                                              highlightColor,
-                                              highlightGlyphsShade,
-                                          ),
-                                "--appearance-active-pressed-glyphs-override":
-                                    highlightGlyphsShade === undefined
-                                        ? undefined
-                                        : theme.color(
-                                              highlightColor,
-                                              highlightGlyphsShade,
-                                          ),
-                            } as CSSProperties
-                        }
-                    >
-                        <RotateA11yInput
-                            id={inputId}
-                            min={min}
-                            max={max}
-                            step={step}
-                            value={value}
-                            onChange={onChange}
-                            disabled={rotation.disabled}
-                            label={label}
-                            ariaLabel={ariaLabel}
-                        />
-                        <RotationArrows
-                            svgSize={svgSize}
-                            center={center}
-                            outerRadius={outerRadius}
-                        />
-                        <RotateIconWrapper
-                            icon={icon}
-                            iconSize={controlSize.iconSize}
-                            displayAngle={
-                                rotation.displayAngle + valueAdjustment
-                            }
-                        />
-                    </HudSurface>
-                </IconRotateControlRow>
-            </div>
+                        label={label}
+                        ariaLabel={ariaLabel}
+                    />
+                    <RotationArrows
+                        svgSize={svgSize}
+                        center={center}
+                        outerRadius={outerRadius}
+                    />
+                    <RotateIconWrapper
+                        icon={icon}
+                        iconSize={controlSize.iconSize}
+                        displayAngle={rotation.displayAngle + valueAdjustment}
+                    />
+                </HudSurface>
+            </IconRotateControlRow>
+        </div>
     );
 };

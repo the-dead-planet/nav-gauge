@@ -52,48 +52,44 @@ export const Octagon: FC<OctagonProps & ComponentProps<"div">> = ({
     );
     const dimension = theme.sizes.control[size].height;
     return (
-            <HudSurface
-                as="div"
-                {...props}
-                {...interaction}
-                variant={variant}
+        <HudSurface
+            as="div"
+            {...props}
+            {...interaction}
+            variant={variant}
+            size={size}
+            color={color}
+            highlightColor={highlightColor}
+            interactive={interactive || !!onClick}
+            highlighted={highlighted}
+            disabled={disabled}
+            activeGlow={activeGlow}
+            data-glyphs-glow={appearance.effects.glyphsGlow || undefined}
+            className={classNames(styles.octagon, octagonal.root, className)}
+            style={
+                {
+                    ...style,
+                    ...(strokeWidth === undefined
+                        ? undefined
+                        : {
+                              "--appearance-border-width-scale": Math.max(
+                                  0,
+                                  strokeWidth,
+                              ),
+                          }),
+                } as CSSProperties
+            }
+        >
+            <OctagonalSurface
+                width={dimension}
+                height={dimension}
                 size={size}
-                color={color}
-                highlightColor={highlightColor}
-                interactive={interactive || !!onClick}
-                highlighted={highlighted}
-                disabled={disabled}
-                activeGlow={activeGlow}
-                data-glyphs-glow={appearance.effects.glyphsGlow || undefined}
-                className={classNames(
-                    styles.octagon,
-                    octagonal.root,
-                    className,
-                )}
-                style={
-                    {
-                        ...style,
-                        ...(strokeWidth === undefined
-                            ? undefined
-                            : {
-                                  "--appearance-border-width-scale": Math.max(
-                                      0,
-                                      strokeWidth,
-                                  ),
-                              }),
-                    } as CSSProperties
-                }
-            >
-                <OctagonalSurface
-                    width={dimension}
-                    height={dimension}
-                    size={size}
-                    appearance={appearance}
-                    strokeWidth={strokeWidth}
-                    regular
-                    showGlow={activeGlow !== "none"}
-                />
-                <div className={styles.content}>{children}</div>
-            </HudSurface>
+                appearance={appearance}
+                strokeWidth={strokeWidth}
+                regular
+                showGlow={activeGlow !== "none"}
+            />
+            <div className={styles.content}>{children}</div>
+        </HudSurface>
     );
 };

@@ -161,20 +161,20 @@ export const Button: FC<ComponentProps<"button"> & Props & ButtonProps> = ({
         button
     );
     return corners === "hexagon" ? (
-                <Hexagon
-                    size={size}
-                    variant={variant}
-                    activeGlow={activeGlow}
-                    color={color}
-                    highlightColor={highlightColor}
-                    highlighted={highlighted}
-                    disabled={disabled}
-                    interactive
-                    style={{ ...style, ...appearanceOverrides }}
-                    className={className}
-                >
-                    {buttonWithTooltip}
-                </Hexagon>
+        <Hexagon
+            size={size}
+            variant={variant}
+            activeGlow={activeGlow}
+            color={color}
+            highlightColor={highlightColor}
+            highlighted={highlighted}
+            disabled={disabled}
+            interactive
+            style={{ ...style, ...appearanceOverrides }}
+            className={className}
+        >
+            {buttonWithTooltip}
+        </Hexagon>
     ) : (
         buttonWithTooltip
     );

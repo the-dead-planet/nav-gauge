@@ -80,78 +80,76 @@ export const FileInput: FC<
     };
 
     return (
-            <div
-                className={classNames(styles.container, className)}
-                data-size={size}
-                {...props}
+        <div
+            className={classNames(styles.container, className)}
+            data-size={size}
+            {...props}
+        >
+            <input
+                aria-label={fileLabel}
+                type="file"
+                multiple={!!mutiple}
+                accept={accept}
+                disabled={disabled || fileUploadButtonProps?.disabled}
+                onChange={handleInput}
+                ref={inputRef}
+                className={styles["file-input"]}
+            />
+            <Button
+                aria-label={fileLabel}
+                {...buttonAppearance}
+                icon={fileIcon}
+                tooltip={fileLabel}
+                tooltipPlacement={fileTooltipPlacement}
+                showTooltipConnection
+                {...fileUploadButtonProps}
+                disabled={disabled || fileUploadButtonProps?.disabled}
+                onClick={() => inputRef.current?.click()}
+            />
+            <Label
+                color={color}
+                highlightColor={highlightColor}
+                shade={glyphsShade}
+                highlightShade={highlightGlyphsShade}
+                highlighted={highlighted}
+                {...fileNameProps}
+                disabled={disabled || fileNameProps?.disabled}
+                title={fileName ?? undefined}
+                className={styles["file-name"]}
             >
-                <input
-                    aria-label={fileLabel}
-                    type="file"
-                    multiple={!!mutiple}
-                    accept={accept}
-                    disabled={disabled || fileUploadButtonProps?.disabled}
-                    onChange={handleInput}
-                    ref={inputRef}
-                    className={styles["file-input"]}
-                />
-                <Button
-                    aria-label={fileLabel}
-                    {...buttonAppearance}
-                    icon={fileIcon}
-                    tooltip={fileLabel}
-                    tooltipPlacement={fileTooltipPlacement}
-                    showTooltipConnection
-                    {...fileUploadButtonProps}
-                    disabled={disabled || fileUploadButtonProps?.disabled}
-                    onClick={() => inputRef.current?.click()}
-                />
-                <Label
+                {fileName || noNameLabel}
+            </Label>
+            {actionButtons?.map(({ id, element }) => (
+                <Fragment key={id}>{element}</Fragment>
+            ))}
+            <Button
+                {...buttonAppearance}
+                icon={Icons.NounProject.Clear}
+                onClick={() => setShowPurgeDialog(true)}
+                aria-label={purgeLabel}
+                tooltip={fileName ? purgeLabel : undefined}
+                tooltipPlacement={purgeTooltipPlacement}
+                showTooltipConnection
+                {...purgeButtonProps}
+                disabled={disabled || !fileName || purgeButtonProps?.disabled}
+            />
+            {showPurgeDialog && !disabled ? (
+                <Dialog
                     color={color}
-                    highlightColor={highlightColor}
-                    shade={glyphsShade}
-                    highlightShade={highlightGlyphsShade}
-                    highlighted={highlighted}
-                    {...fileNameProps}
-                    disabled={disabled || fileNameProps?.disabled}
-                    title={fileName ?? undefined}
-                    className={styles["file-name"]}
+                    header={purgeLabel}
+                    closeText={cancelLabel}
+                    {...purgeConfirmationDialogProps}
+                    onClose={() => setShowPurgeDialog(false)}
+                    save={{
+                        saveText: purgeLabel,
+                        onSave: confirmPurge,
+                    }}
                 >
-                    {fileName || noNameLabel}
-                </Label>
-                {actionButtons?.map(({ id, element }) => (
-                    <Fragment key={id}>{element}</Fragment>
-                ))}
-                <Button
-                    {...buttonAppearance}
-                    icon={Icons.NounProject.Clear}
-                    onClick={() => setShowPurgeDialog(true)}
-                    aria-label={purgeLabel}
-                    tooltip={fileName ? purgeLabel : undefined}
-                    tooltipPlacement={purgeTooltipPlacement}
-                    showTooltipConnection
-                    {...purgeButtonProps}
-                    disabled={
-                        disabled || !fileName || purgeButtonProps?.disabled
-                    }
-                />
-                {showPurgeDialog && !disabled ? (
-                    <Dialog
-                        color={color}
-                        header={purgeLabel}
-                        closeText={cancelLabel}
-                        {...purgeConfirmationDialogProps}
-                        onClose={() => setShowPurgeDialog(false)}
-                        save={{
-                            saveText: purgeLabel,
-                            onSave: confirmPurge,
-                        }}
-                    >
-                        <P color={purgeConfirmationDialogProps?.color ?? color}>
-                            {purgeText}
-                        </P>
-                    </Dialog>
-                ) : null}
-            </div>
+                    <P color={purgeConfirmationDialogProps?.color ?? color}>
+                        {purgeText}
+                    </P>
+                </Dialog>
+            ) : null}
+        </div>
     );
 };
