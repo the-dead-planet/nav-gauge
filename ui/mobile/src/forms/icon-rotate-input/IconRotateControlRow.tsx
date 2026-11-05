@@ -3,6 +3,7 @@ import { StyleSheet, View } from "react-native";
 import {
     DEFAULT_SIZE,
     getClockGeometry,
+    getCompanionNumberInputWidth,
     IconRotateControlRowProps,
     useTheme,
 } from "@ui";
@@ -26,12 +27,6 @@ const styles = StyleSheet.create({
     },
     end: {
         flexDirection: "row",
-    },
-    numberInput: {
-        width: 80,
-    },
-    verticalNumberInput: {
-        alignSelf: "stretch",
     },
 });
 
@@ -58,8 +53,6 @@ export const IconRotateControlRow: FC<IconRotateControlRowProps> = ({
         theme.sizes.control[
             stepControlsProps?.size ?? appearanceProps.size ?? DEFAULT_SIZE
         ].height;
-    const vertical =
-        numberInputPlacement === "above" || numberInputPlacement === "below";
 
     return (
         <View
@@ -91,25 +84,18 @@ export const IconRotateControlRow: FC<IconRotateControlRowProps> = ({
                 children
             )}
             {showNumberInput ? (
-                <View
-                    style={
-                        vertical
-                            ? styles.verticalNumberInput
-                            : styles.numberInput
-                    }
-                >
-                    <NumberInput
-                        {...appearanceProps}
-                        value={value}
-                        onChange={(next) => onChange?.(next)}
-                        min={min}
-                        max={max}
-                        step={step}
-                        disabled={appearanceProps.disabled || !onChange}
-                        showStepControls
-                        ariaLabel={`${ariaLabel ?? label ?? "Angle"} (#)`}
-                    />
-                </View>
+                <NumberInput
+                    width={getCompanionNumberInputWidth(numberInputPlacement)}
+                    {...appearanceProps}
+                    value={value}
+                    onChange={(next) => onChange?.(next)}
+                    min={min}
+                    max={max}
+                    step={step}
+                    disabled={appearanceProps.disabled || !onChange}
+                    showStepControls
+                    ariaLabel={`${ariaLabel ?? label ?? "Angle"} (#)`}
+                />
             ) : null}
         </View>
     );

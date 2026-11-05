@@ -156,6 +156,24 @@ describe("Rotation and step controls", () => {
                         "ghost",
                     );
                 });
+            if (component !== "clockdurationinput") {
+                cy.window()
+                    .its("__STORYBOOK_PREVIEW__.channel")
+                    .invoke("emit", "updateStoryArgs", {
+                        storyId,
+                        updatedArgs: { showNumberInput: true },
+                    });
+                cy.get<HTMLInputElement>('.story input[aria-label="Value (#)"]')
+                    .should("have.length", count)
+                    .each(($input) => {
+                        const field = $input[0].closest(
+                            "[data-appearance-variant]",
+                        )!;
+                        expect(field.getBoundingClientRect().width).to.equal(
+                            80,
+                        );
+                    });
+            }
             for (const variant of ["outline", "inset"]) {
                 cy.window()
                     .its("__STORYBOOK_PREVIEW__.channel")

@@ -10,6 +10,7 @@ import {
 } from "../../design-system";
 import { StoryControls } from "../../storybook";
 import { stepControlsPropsStoryControl } from "../step-controls";
+import { NumberInputProps } from "../number-input";
 import { ClockInputProps, ClockDurationInputProps, ClockMode } from "./model";
 import {
     arcViewBox,
@@ -23,6 +24,35 @@ import {
 export const MINUTES_HAND_FRACTION = 0.55;
 
 export const CLOCK_SIZE_MULTIPLIER = 2;
+
+export const getClockNumberInputProps = ({
+    value,
+    min,
+    max,
+    step,
+    onChange,
+    numberInputScale = 1,
+    numberInputUnit,
+}: Pick<
+    ClockInputProps,
+    | "value"
+    | "min"
+    | "max"
+    | "step"
+    | "onChange"
+    | "numberInputScale"
+    | "numberInputUnit"
+>): Pick<
+    NumberInputProps,
+    "value" | "min" | "max" | "step" | "onChange" | "unit"
+> => ({
+    value: value / numberInputScale,
+    min: min === undefined ? undefined : min / numberInputScale,
+    max: max === undefined ? undefined : max / numberInputScale,
+    step: step === undefined ? undefined : step / numberInputScale,
+    onChange: (next) => onChange?.(next * numberInputScale),
+    unit: numberInputUnit,
+});
 
 export function getClockGeometry(controlHeight: number, mode: ClockMode) {
     const svgSize = controlHeight * CLOCK_SIZE_MULTIPLIER;
@@ -89,6 +119,8 @@ export const clockStoryArgs: Omit<ClockInputProps, "onChange"> = {
     highlighted: false,
     disabled: false,
     showNumberInput: false,
+    numberInputScale: 1,
+    numberInputUnit: undefined,
     showStepControls: false,
     stepControlsProps: undefined,
     numberInputPlacement: "end",
@@ -172,4 +204,6 @@ export const clockStoryControls: StoryControls<ClockInputProps> = {
     ...clockDurationStoryControls,
     max: { control: { type: "number" } },
     label: { control: "text" },
+    numberInputScale: { control: { type: "number", min: 0.001 } },
+    numberInputUnit: { control: "text" },
 };

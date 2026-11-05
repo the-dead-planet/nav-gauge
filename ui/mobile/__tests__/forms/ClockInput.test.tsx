@@ -2,6 +2,7 @@ import { fireEvent, render } from "@testing-library/react-native";
 import { PanResponder, StyleSheet } from "react-native";
 import {
     Orientation,
+    getCompanionNumberInputWidth,
     Theme,
     ThemeContext,
     ThemeName,
@@ -165,7 +166,7 @@ test("native clocks retain their drag responder through controlled updates and d
 });
 
 test.each(["start", "end", "above", "below"] as const)(
-    "%s duration fields only flex into remaining space beside the dial",
+    "%s duration fields share companion sizing and only stretch in vertical layouts",
     async (numberInputPlacement) => {
         const theme = new Theme(
             themeSpecifications[ThemeName.Default].light,
@@ -192,11 +193,59 @@ test.each(["start", "end", "above", "below"] as const)(
         const vertical =
             numberInputPlacement === "above" ||
             numberInputPlacement === "below";
-        expect(flex).toBe(vertical ? 0 : 1);
+        expect(flex).toBe(0);
+        expect(
+            screen.getByLabelText("Duration (minutes)").parent?.parent,
+        ).toHaveStyle({
+            width: getCompanionNumberInputWidth(numberInputPlacement),
+        });
+        expect(
+            screen.getByLabelText("Duration (seconds)").parent?.parent,
+        ).toHaveStyle({
+            width: getCompanionNumberInputWidth(numberInputPlacement),
+        });
+        expect(StyleSheet.flatten(fields?.props.style).width).toBe(
+            vertical ? "100%" : undefined,
+        );
         await screen.unmount();
         theme.destroy();
     },
 );
+
+test("angle and slice numeric fields display and edit their configured units", async () => {
+    const theme = new Theme(
+        themeSpecifications[ThemeName.Default].light,
+        media,
+        false,
+    );
+    try {
+        for (const Clock of [ClockInput, ClockSliceInput]) {
+            const onChange = jest.fn();
+            const screen = await render(
+                <ThemeContext.Provider value={theme}>
+                    <Clock
+                        value={30}
+                        min={0}
+                        max={60}
+                        step={6}
+                        onChange={onChange}
+                        showNumberInput
+                        numberInputScale={6}
+                        numberInputUnit="s"
+                        ariaLabel="Pause"
+                    />
+                </ThemeContext.Provider>,
+            );
+            expect(screen.getByLabelText("Pause (#)").props.value).toBe("5");
+            expect(screen.getByText("s")).toBeTruthy();
+            await fireEvent.changeText(screen.getByLabelText("Pause (#)"), "7");
+            expect(onChange).toHaveBeenLastCalledWith(42);
+            await screen.unmount();
+        }
+    } finally {
+        theme.destroy();
+    }
+});
 
 test("duration number fields update their own unit and preserve the minimum duration", async () => {
     const theme = new Theme(

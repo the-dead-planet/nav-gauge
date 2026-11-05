@@ -1,6 +1,10 @@
 import { FC } from "react";
 import classNames from "classnames";
-import { ClockControlRowProps } from "@ui";
+import {
+    ClockControlRowProps,
+    getClockNumberInputProps,
+    getCompanionNumberInputWidth,
+} from "@ui";
 import { ClockDurationNumberInputs } from "./ClockDurationNumberInputs";
 import { NumberInput } from "../number-input";
 import { StepControls } from "../step-controls";
@@ -16,6 +20,8 @@ export const ClockControlRow: FC<ClockControlRowProps> = ({
     label,
     ariaLabel,
     showNumberInput = false,
+    numberInputScale,
+    numberInputUnit,
     showStepControls = false,
     stepControlsProps,
     variant,
@@ -24,6 +30,15 @@ export const ClockControlRow: FC<ClockControlRowProps> = ({
     ...appearanceProps
 }) => {
     const duration = mode === "duration";
+    const numberInput = getClockNumberInputProps({
+        value,
+        min,
+        max,
+        step,
+        onChange,
+        numberInputScale,
+        numberInputUnit,
+    });
     return (
         <div
             className={classNames(
@@ -60,17 +75,16 @@ export const ClockControlRow: FC<ClockControlRowProps> = ({
                         min={min}
                         onChange={onChange}
                         ariaLabel={ariaLabel}
+                        numberInputPlacement={numberInputPlacement}
                     />
                 ) : (
                     <NumberInput
+                        width={getCompanionNumberInputWidth(
+                            numberInputPlacement,
+                        )}
                         {...appearanceProps}
                         variant={variant}
-                        value={value}
-                        className={styles["number-input"]}
-                        onChange={(next) => onChange?.(next)}
-                        min={min}
-                        max={max}
-                        step={step}
+                        {...numberInput}
                         disabled={appearanceProps.disabled || !onChange}
                         showStepControls
                         ariaLabel={`${ariaLabel ?? label ?? "Angle"} (#)`}

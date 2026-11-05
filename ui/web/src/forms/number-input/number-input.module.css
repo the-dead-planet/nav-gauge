@@ -11,6 +11,10 @@
     transition: color 0.15s ease;
 }
 
+.companion {
+    flex-shrink: 0;
+}
+
 .label {
     display: block;
 }

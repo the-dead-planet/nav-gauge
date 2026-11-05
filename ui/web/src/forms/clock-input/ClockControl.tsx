@@ -44,6 +44,8 @@ export const ClockControl: FC<
     ariaLabel,
     thumbIcon,
     showNumberInput = false,
+    numberInputScale,
+    numberInputUnit,
     showStepControls = false,
     stepControlsProps,
     numberInputPlacement = "end",
@@ -165,6 +167,8 @@ export const ClockControl: FC<
                     label={label}
                     ariaLabel={ariaLabel}
                     showNumberInput={showNumberInput}
+                    numberInputScale={numberInputScale}
+                    numberInputUnit={numberInputUnit}
                     showStepControls={showStepControls}
                     stepControlsProps={stepControlsProps}
                     numberInputPlacement={numberInputPlacement}

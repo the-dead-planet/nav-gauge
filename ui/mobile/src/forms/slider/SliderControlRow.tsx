@@ -1,6 +1,11 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import { DEFAULT_SIZE, SliderControlRowProps, useTheme } from "@ui";
+import {
+    DEFAULT_SIZE,
+    getCompanionNumberInputWidth,
+    SliderControlRowProps,
+    useTheme,
+} from "@ui";
 import { NumberInput } from "../number-input";
 import { StepControls } from "../step-controls";
 
@@ -8,10 +13,6 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: "row",
         alignItems: "center",
-    },
-    numberInput: {
-        width: 80,
-        flexShrink: 0,
     },
 });
 
@@ -59,20 +60,19 @@ export const SliderControlRow: FC<SliderControlRowProps> = ({
                 children
             )}
             {showNumberInput ? (
-                <View style={styles.numberInput}>
-                    <NumberInput
-                        {...appearanceProps}
-                        variant={variant}
-                        value={value}
-                        onChange={(nextValue) => onChange?.(nextValue)}
-                        min={min}
-                        max={max}
-                        step={step}
-                        disabled={appearanceProps.disabled || !onChange}
-                        showStepControls
-                        ariaLabel={`${ariaLabel ?? "Slider"} (#)`}
-                    />
-                </View>
+                <NumberInput
+                    width={getCompanionNumberInputWidth()}
+                    {...appearanceProps}
+                    variant={variant}
+                    value={value}
+                    onChange={(nextValue) => onChange?.(nextValue)}
+                    min={min}
+                    max={max}
+                    step={step}
+                    disabled={appearanceProps.disabled || !onChange}
+                    showStepControls
+                    ariaLabel={`${ariaLabel ?? "Slider"} (#)`}
+                />
             ) : null}
         </View>
     );

@@ -10,6 +10,7 @@ import {
     surfaceVariantOptions,
     SurfaceVariant,
     getClockGeometry,
+    getCompanionNumberInputWidth,
     Orientation,
     Theme,
     ThemeContext,
@@ -46,6 +47,44 @@ const media = {
     }),
     subscribe: () => ({ unsubscribe: () => undefined }),
 };
+
+test.each(sizeOptions)(
+    "all %s companion number fields share one fixed width",
+    async (size) => {
+        const theme = new Theme(
+            themeSpecifications[ThemeName.Default].light,
+            media,
+            false,
+        );
+        try {
+            for (const Control of [
+                Slider,
+                ClockInput,
+                ClockSliceInput,
+                IconRotateInput,
+            ]) {
+                const screen = await render(
+                    <ThemeContext.Provider value={theme}>
+                        <Control
+                            value={50}
+                            onChange={() => {}}
+                            size={size}
+                            ariaLabel="Value"
+                            showNumberInput
+                        />
+                    </ThemeContext.Provider>,
+                );
+                const field = screen.getByLabelText("Value (#)").parent?.parent;
+                expect(field).toHaveStyle({
+                    width: getCompanionNumberInputWidth(),
+                });
+                await screen.unmount();
+            }
+        } finally {
+            theme.destroy();
+        }
+    },
+);
 
 test("rotation uses clock dial geometry and responds to every theme control size", async () => {
     const theme = new Theme(

@@ -22,7 +22,7 @@
 
 .fieldset {
     display: grid;
-    grid-template-columns: 2fr 5fr;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 5fr);
     column-gap: 10px;
     row-gap: 5px;
     align-items: center;

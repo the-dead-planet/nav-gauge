@@ -30,6 +30,8 @@ const story: MobileStoryDefinition<ClockInputProps> = {
         "highlighted",
         "disabled",
         "showNumberInput",
+        "numberInputScale",
+        "numberInputUnit",
         "showStepControls",
         "stepControlsProps",
         "numberInputPlacement",

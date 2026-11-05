@@ -6,7 +6,7 @@ import { useWebMachineWard } from "@web-apparatus";
 import { clamp, useSubjectState } from "@tinker-chest";
 import { ClockInput, Checkbox, Dropdown, Fieldset, ClockSliceInput, ClockDurationInput, IconRotateInput, Slider, ToggleSwitch, Label, Span, Icon } from "@web-ui";
 import { AnimationControlsType, Animatrix } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { Icons, millisecondsToDurationParts } from "@ui";
+import { Icons, millisecondsToDurationParts, STEP_DEG } from "@ui";
 import { WebRouteStoryProps } from "../model";
 import styles from './animation-controls.module.css';
 
@@ -129,13 +129,15 @@ export const AnimationControls: FC<ToolPanelProps<maplibregl.Map> & WebRouteStor
                             id="animation-controls-image-pause-duration"
                             showNumberInput
                             showStepControls
-                            value={displayImageDuration / 1000 * 6}
-                            formatValue={(angle) => `${Math.round(angle / 6)}s`}
-                            min={Animatrix.displayImageDurationRange[0] / 1000 * 6}
-                            max={Animatrix.displayImageDurationRange[1] / 1000 * 6}
-                            step={1}
+                            value={displayImageDuration / 1000 * STEP_DEG}
+                            formatValue={(angle) => `${Math.round(angle / STEP_DEG)}s`}
+                            min={Animatrix.displayImageDurationRange[0] / 1000 * STEP_DEG}
+                            max={Animatrix.displayImageDurationRange[1] / 1000 * STEP_DEG}
+                            step={STEP_DEG}
+                            numberInputScale={STEP_DEG}
+                            numberInputUnit="s"
                             onChange={(value) => setAnimationControls((prev) => ({
-                                ...prev, displayImageDuration: clamp(value * 1000 / 6, Animatrix.displayImageDurationRange)
+                                ...prev, displayImageDuration: clamp(value * 1000 / STEP_DEG, Animatrix.displayImageDurationRange)
                             }))}
                         />
                     </div>

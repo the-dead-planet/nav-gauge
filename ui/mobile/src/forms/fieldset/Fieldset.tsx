@@ -11,11 +11,20 @@ import {
 } from "@ui";
 import { OctagonalPanel } from "../../hud/octagonal-panel";
 import { FieldsetHeader } from "./FieldsetHeader";
-import { useFieldsetHeight } from "./useFieldsetHeight";
+import { useFieldsetTransition } from "./useFieldsetTransition";
 
 const styles = StyleSheet.create({
+    container: {
+        alignSelf: "stretch",
+    },
     clip: {
         overflow: "hidden",
+    },
+    panel: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
     },
     content: {
         flexShrink: 0,
@@ -47,11 +56,11 @@ export const Fieldset: FC<FieldsetProps> = ({
         disabled,
     });
 
-    const content = useFieldsetHeight(isExpanded);
+    const transition = useFieldsetTransition(isExpanded);
 
     return (
         <ThemeContext.Provider value={theme}>
-            <View>
+            <View style={styles.container}>
                 <FieldsetHeader
                     label={label}
                     prepend={prepend}
@@ -65,31 +74,35 @@ export const Fieldset: FC<FieldsetProps> = ({
                     highlighted={highlighted}
                     disabled={disabled}
                 />
-                <OctagonalPanel
-                    themeMode={themeMode}
-                    color={color}
-                    highlightColor={highlightColor}
-                    variant={variant}
-                    size={size}
-                    highlighted={highlighted}
-                    disabled={disabled}
-                    style={{
-                        marginTop:
-                            -(controlSize.height - controlSize.iconSize) / 2,
-                    }}
+                <Animated.View
+                    collapsable={false}
+                    pointerEvents={disabled || !isExpanded ? "none" : "auto"}
+                    accessibilityElementsHidden={!isExpanded}
+                    importantForAccessibility={
+                        isExpanded ? "auto" : "no-hide-descendants"
+                    }
+                    style={[
+                        styles.clip,
+                        {
+                            height: transition.height,
+                            marginTop:
+                                -(controlSize.height - controlSize.iconSize) /
+                                2,
+                        },
+                    ]}
                 >
-                    <Animated.View
-                        pointerEvents={
-                            disabled || !isExpanded ? "none" : "auto"
-                        }
-                        accessibilityElementsHidden={!isExpanded}
-                        importantForAccessibility={
-                            isExpanded ? "auto" : "no-hide-descendants"
-                        }
-                        style={[styles.clip, { height: content.height }]}
+                    <OctagonalPanel
+                        themeMode={themeMode}
+                        color={color}
+                        highlightColor={highlightColor}
+                        variant={variant}
+                        size={size}
+                        highlighted={highlighted}
+                        disabled={disabled}
+                        onLayout={transition.onLayout}
+                        style={styles.panel}
                     >
                         <View
-                            onLayout={content.onLayout}
                             style={[
                                 styles.content,
                                 {
@@ -100,8 +113,8 @@ export const Fieldset: FC<FieldsetProps> = ({
                         >
                             {children}
                         </View>
-                    </Animated.View>
-                </OctagonalPanel>
+                    </OctagonalPanel>
+                </Animated.View>
             </View>
         </ThemeContext.Provider>
     );

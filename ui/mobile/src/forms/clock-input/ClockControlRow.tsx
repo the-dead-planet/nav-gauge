@@ -4,6 +4,8 @@ import {
     ClockControlRowProps,
     DEFAULT_SIZE,
     getClockGeometry,
+    getClockNumberInputProps,
+    getCompanionNumberInputWidth,
     useTheme,
 } from "@ui";
 import { ClockDurationNumberInputs } from "./ClockDurationNumberInputs";
@@ -17,6 +19,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         gap: 8,
+        flexWrap: "wrap",
     },
     fullWidth: {
         width: "100%",
@@ -25,10 +28,6 @@ const styles = StyleSheet.create({
     above: { flexDirection: "column-reverse" },
     below: { flexDirection: "column" },
     end: { flexDirection: "row" },
-    numberInput: {
-        width: 120,
-        minWidth: 120,
-    },
 });
 
 export const ClockControlRow: FC<ClockControlRowProps> = ({
@@ -41,6 +40,8 @@ export const ClockControlRow: FC<ClockControlRowProps> = ({
     label,
     ariaLabel,
     showNumberInput = false,
+    numberInputScale,
+    numberInputUnit,
     showStepControls = false,
     stepControlsProps,
     variant,
@@ -50,8 +51,15 @@ export const ClockControlRow: FC<ClockControlRowProps> = ({
 }) => {
     const theme = useTheme();
     const duration = mode === "duration";
-    const vertical =
-        numberInputPlacement === "above" || numberInputPlacement === "below";
+    const numberInput = getClockNumberInputProps({
+        value,
+        min,
+        max,
+        step,
+        onChange,
+        numberInputScale,
+        numberInputUnit,
+    });
     const controlHeight =
         theme.sizes.control[appearanceProps.size ?? DEFAULT_SIZE].height;
     const { svgSize } = getClockGeometry(controlHeight, mode);
@@ -102,25 +110,17 @@ export const ClockControlRow: FC<ClockControlRowProps> = ({
                         numberInputPlacement={numberInputPlacement}
                     />
                 ) : (
-                    <View
-                        style={[
-                            styles.numberInput,
-                            vertical && styles.fullWidth,
-                        ]}
-                    >
-                        <NumberInput
-                            {...appearanceProps}
-                            variant={variant}
-                            value={value}
-                            onChange={(next) => onChange?.(next)}
-                            min={min}
-                            max={max}
-                            step={step}
-                            disabled={appearanceProps.disabled || !onChange}
-                            showStepControls
-                            ariaLabel={`${ariaLabel ?? label ?? "Angle"} (#)`}
-                        />
-                    </View>
+                    <NumberInput
+                        width={getCompanionNumberInputWidth(
+                            numberInputPlacement,
+                        )}
+                        {...appearanceProps}
+                        variant={variant}
+                        {...numberInput}
+                        disabled={appearanceProps.disabled || !onChange}
+                        showStepControls
+                        ariaLabel={`${ariaLabel ?? label ?? "Angle"} (#)`}
+                    />
                 )
             ) : null}
         </View>

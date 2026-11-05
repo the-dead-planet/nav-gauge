@@ -21,6 +21,7 @@
 
 .with-duration-inputs {
     width: 100%;
+    min-width: 0;
 }
 
 .container:not([data-disabled="true"]):not([data-highlighted="true"]):not(
@@ -142,18 +143,8 @@
     flex-direction: column;
 }
 
-.control-row
-    > :where(:last-child:not(:first-child)):not(.duration-number-inputs) {
-    flex-shrink: 0;
-}
-
-.number-input {
-    field-sizing: content;
-    min-width: calc(3ch + 2em);
-}
-
-.number-input-above > :last-child:not(:first-child),
-.number-input-below > :last-child:not(:first-child) {
+.number-input-above > .duration-number-inputs,
+.number-input-below > .duration-number-inputs {
     width: 100%;
 }
 
@@ -161,7 +152,7 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     min-width: max-content;
-    flex: 1 0 auto;
+    flex: 0 0 auto;
     gap: 8px;
 }
 

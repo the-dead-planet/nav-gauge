@@ -15,12 +15,3 @@
 .below {
     flex-direction: column;
 }
-
-.row > :last-child:not(:first-child) {
-    width: 80px;
-}
-
-.above > :last-child:not(:first-child),
-.below > :last-child:not(:first-child) {
-    width: 100%;
-}

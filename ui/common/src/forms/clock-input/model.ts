@@ -21,6 +21,9 @@ export interface ClockInputProps extends AppearanceProps<FillVariant> {
     id?: string;
     label?: string;
     showNumberInput?: boolean;
+    /** Dial degrees per numeric input unit. Defaults to 1. */
+    numberInputScale?: number;
+    numberInputUnit?: string;
     showStepControls?: boolean;
     /** Appearance overrides for the optional step buttons. */
     stepControlsProps?: AppearanceProps;
@@ -56,7 +59,6 @@ export type ClockDurationNumberInputsProps = Omit<
     | "showStepControls"
     | "stepControlsProps"
     | "themeMode"
-    | "numberInputPlacement"
 >;
 
 export interface ClockControlRowProps extends Omit<

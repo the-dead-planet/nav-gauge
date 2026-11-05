@@ -9,7 +9,12 @@ import {
     typographyStoryControls,
 } from "../../design-system";
 import { StoryControls } from "../../storybook";
-import { NumberInputProps } from "./model";
+import { NumberInputPlacement, NumberInputProps } from "./model";
+
+export const getCompanionNumberInputWidth = (
+    placement: NumberInputPlacement = "end",
+): number | "100%" =>
+    placement === "above" || placement === "below" ? "100%" : 80;
 
 export const numberInputStoryArgs: Omit<NumberInputProps, "onChange"> = {
     themeMode: undefined,

@@ -1,5 +1,9 @@
 import { FC } from "react";
-import { ClockDurationNumberInputsProps, useClockDurationInput } from "@ui";
+import {
+    ClockDurationNumberInputsProps,
+    getCompanionNumberInputWidth,
+    useClockDurationInput,
+} from "@ui";
 import { NumberInput } from "../number-input";
 import styles from "./clock-input.module.css";
 
@@ -8,6 +12,7 @@ export const ClockDurationNumberInputs: FC<ClockDurationNumberInputsProps> = ({
     min,
     onChange,
     ariaLabel = "Duration",
+    numberInputPlacement = "end",
     ...appearanceProps
 }) => {
     const { minutes, seconds, onMinutesChange, onSecondsChange } =
@@ -17,9 +22,9 @@ export const ClockDurationNumberInputs: FC<ClockDurationNumberInputsProps> = ({
     return (
         <div className={styles["duration-number-inputs"]}>
             <NumberInput
+                width={getCompanionNumberInputWidth(numberInputPlacement)}
                 {...appearanceProps}
                 value={minutes}
-                className={styles["number-input"]}
                 onChange={onMinutesChange}
                 min={0}
                 step={1}
@@ -29,9 +34,9 @@ export const ClockDurationNumberInputs: FC<ClockDurationNumberInputsProps> = ({
                 unit="min"
             />
             <NumberInput
+                width={getCompanionNumberInputWidth(numberInputPlacement)}
                 {...appearanceProps}
                 value={seconds}
-                className={styles["number-input"]}
                 onChange={onSecondsChange}
                 min={0}
                 max={59}

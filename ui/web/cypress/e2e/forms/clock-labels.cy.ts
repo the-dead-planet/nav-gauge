@@ -1,4 +1,93 @@
 describe("Form labels", () => {
+    it("keeps duration fields beside the dial when space permits and wraps them without overflow", () => {
+        const storyId = "forms-clockdurationinput--gallery";
+        cy.visit(`/iframe.html?id=${storyId}&viewMode=story`);
+        cy.get(".story table").should("exist");
+        cy.window()
+            .its("__STORYBOOK_PREVIEW__.channel")
+            .invoke("emit", "updateStoryArgs", {
+                storyId,
+                updatedArgs: {
+                    showNumberInput: true,
+                    showStepControls: true,
+                    ariaLabel: "Duration",
+                },
+            });
+        cy.get('input[aria-label="Duration (minutes)"]').should(
+            "have.length",
+            24,
+        );
+        cy.get('input[aria-label="Duration"]')
+            .first()
+            .closest("[data-size]")
+            .as("duration");
+        cy.get("@duration")
+            .invoke("css", "width", "320px")
+            .should(($owner) => {
+                const owner = $owner[0];
+                const row = owner.querySelector('[class*="control-row"]')!;
+                const dial = row.firstElementChild!.getBoundingClientRect();
+                const fields = row.lastElementChild!;
+                const rectangle = fields.getBoundingClientRect();
+                expect(rectangle.left).to.be.greaterThan(dial.right);
+                expect(rectangle.top + rectangle.height / 2).to.be.closeTo(
+                    dial.top + dial.height / 2,
+                    1,
+                );
+                expect(rectangle.right).to.be.at.most(
+                    owner.getBoundingClientRect().right,
+                );
+                for (const input of fields.querySelectorAll("input")) {
+                    expect(
+                        input
+                            .closest("[data-appearance-variant]")!
+                            .getBoundingClientRect().width,
+                    ).to.equal(80);
+                }
+            });
+        cy.get("@duration")
+            .invoke("css", "width", "240px")
+            .should(($owner) => {
+                const row = $owner[0].querySelector('[class*="control-row"]')!;
+                expect(
+                    row.lastElementChild!.getBoundingClientRect().top,
+                ).to.be.at.least(
+                    row.firstElementChild!.getBoundingClientRect().bottom,
+                );
+                expect($owner[0].scrollWidth).to.be.at.most(240);
+            });
+    });
+
+    it("converts the editable clock number field into its configured time unit", () => {
+        const storyId = "forms-clockinput--gallery";
+        cy.visit(`/iframe.html?id=${storyId}&viewMode=story`);
+        cy.get(".story table").should("exist");
+        cy.window()
+            .its("__STORYBOOK_PREVIEW__.channel")
+            .invoke("emit", "updateStoryArgs", {
+                storyId,
+                updatedArgs: {
+                    value: 30,
+                    min: 0,
+                    max: 60,
+                    step: 6,
+                    showNumberInput: true,
+                    numberInputScale: 6,
+                    numberInputUnit: "s",
+                    ariaLabel: "Pause",
+                },
+            });
+        cy.get('input[aria-label="Pause (#)"]')
+            .first()
+            .should("have.value", "5")
+            .and("have.attr", "max", "10")
+            .and("have.attr", "step", "1");
+        cy.get('input[aria-label="Pause (#)"]').first().type("{selectall}7");
+        cy.get('input[type="range"]').first().should("have.value", "42");
+        cy.get('input[aria-label="Pause (#)"]')
+            .first()
+            .should("have.value", "7");
+    });
     for (const component of [
         "clockinput",
         "clocksliceinput",
