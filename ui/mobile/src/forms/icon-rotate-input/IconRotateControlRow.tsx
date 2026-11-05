@@ -3,11 +3,10 @@ import { StyleSheet, View } from "react-native";
 import {
     DEFAULT_SIZE,
     getClockGeometry,
-    getCompanionNumberInputWidth,
     IconRotateControlRowProps,
     useTheme,
 } from "@ui";
-import { NumberInput } from "../number-input";
+import { CompanionNumberInput } from "../number-input/CompanionNumberInput";
 import { StepControls } from "../step-controls";
 
 const styles = StyleSheet.create({
@@ -84,8 +83,8 @@ export const IconRotateControlRow: FC<IconRotateControlRowProps> = ({
                 children
             )}
             {showNumberInput ? (
-                <NumberInput
-                    width={getCompanionNumberInputWidth(numberInputPlacement)}
+                <CompanionNumberInput
+                    placement={numberInputPlacement}
                     {...appearanceProps}
                     value={value}
                     onChange={(next) => onChange?.(next)}

@@ -9,8 +9,16 @@ const styles = StyleSheet.create({
     },
 });
 
-export const CompanionNumberInput: FC<CompanionNumberInputProps> = ({ placement, ...props }) => (
-    <View style={[styles.container, { width: getCompanionNumberInputWidth(placement) }]}>
+export const CompanionNumberInput: FC<CompanionNumberInputProps> = ({
+    placement,
+    ...props
+}) => (
+    <View
+        style={[
+            styles.container,
+            { width: getCompanionNumberInputWidth(placement) },
+        ]}
+    >
         <NumberInput {...props} />
     </View>
 );

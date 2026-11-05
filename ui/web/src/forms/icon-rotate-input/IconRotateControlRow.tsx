@@ -1,7 +1,7 @@
 import { FC } from "react";
 import classNames from "classnames";
-import { getCompanionNumberInputWidth, IconRotateControlRowProps } from "@ui";
-import { NumberInput } from "../number-input";
+import { IconRotateControlRowProps } from "@ui";
+import { CompanionNumberInput } from "../number-input/CompanionNumberInput";
 import { StepControls } from "../step-controls";
 import styles from "./icon-rotate-control-row.module.css";
 
@@ -46,8 +46,8 @@ export const IconRotateControlRow: FC<IconRotateControlRowProps> = ({
             children
         )}
         {showNumberInput ? (
-            <NumberInput
-                width={getCompanionNumberInputWidth(numberInputPlacement)}
+            <CompanionNumberInput
+                placement={numberInputPlacement}
                 {...appearanceProps}
                 value={value}
                 onChange={(next) => onChange?.(next)}

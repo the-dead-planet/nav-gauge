@@ -1,12 +1,7 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import {
-    DEFAULT_SIZE,
-    getCompanionNumberInputWidth,
-    SliderControlRowProps,
-    useTheme,
-} from "@ui";
-import { NumberInput } from "../number-input";
+import { DEFAULT_SIZE, SliderControlRowProps, useTheme } from "@ui";
+import { CompanionNumberInput } from "../number-input/CompanionNumberInput";
 import { StepControls } from "../step-controls";
 
 const styles = StyleSheet.create({
@@ -60,8 +55,7 @@ export const SliderControlRow: FC<SliderControlRowProps> = ({
                 children
             )}
             {showNumberInput ? (
-                <NumberInput
-                    width={getCompanionNumberInputWidth()}
+                <CompanionNumberInput
                     {...appearanceProps}
                     variant={variant}
                     value={value}

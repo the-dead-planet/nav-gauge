@@ -1,11 +1,7 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import {
-    ClockDurationNumberInputsProps,
-    getCompanionNumberInputWidth,
-    useClockDurationInput,
-} from "@ui";
-import { NumberInput } from "../number-input";
+import { ClockDurationNumberInputsProps, useClockDurationInput } from "@ui";
+import { CompanionNumberInput } from "../number-input/CompanionNumberInput";
 
 const styles = StyleSheet.create({
     container: {
@@ -39,8 +35,8 @@ export const ClockDurationNumberInputs: FC<ClockDurationNumberInputsProps> = ({
     return (
         <View style={[styles.container, vertical && styles.vertical]}>
             <View style={vertical && styles.input}>
-                <NumberInput
-                    width={getCompanionNumberInputWidth(numberInputPlacement)}
+                <CompanionNumberInput
+                    placement={numberInputPlacement}
                     {...appearanceProps}
                     value={minutes}
                     onChange={onMinutesChange}
@@ -53,8 +49,8 @@ export const ClockDurationNumberInputs: FC<ClockDurationNumberInputsProps> = ({
                 />
             </View>
             <View style={vertical && styles.input}>
-                <NumberInput
-                    width={getCompanionNumberInputWidth(numberInputPlacement)}
+                <CompanionNumberInput
+                    placement={numberInputPlacement}
                     {...appearanceProps}
                     value={seconds}
                     onChange={onSecondsChange}

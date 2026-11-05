@@ -1,12 +1,8 @@
 import { FC } from "react";
 import classNames from "classnames";
-import {
-    ClockControlRowProps,
-    getClockNumberInputProps,
-    getCompanionNumberInputWidth,
-} from "@ui";
+import { ClockControlRowProps, getClockNumberInputProps } from "@ui";
 import { ClockDurationNumberInputs } from "./ClockDurationNumberInputs";
-import { NumberInput } from "../number-input";
+import { CompanionNumberInput } from "../number-input/CompanionNumberInput";
 import { StepControls } from "../step-controls";
 import styles from "./clock-input.module.css";
 
@@ -78,10 +74,8 @@ export const ClockControlRow: FC<ClockControlRowProps> = ({
                         numberInputPlacement={numberInputPlacement}
                     />
                 ) : (
-                    <NumberInput
-                        width={getCompanionNumberInputWidth(
-                            numberInputPlacement,
-                        )}
+                    <CompanionNumberInput
+                        placement={numberInputPlacement}
                         {...appearanceProps}
                         variant={variant}
                         {...numberInput}

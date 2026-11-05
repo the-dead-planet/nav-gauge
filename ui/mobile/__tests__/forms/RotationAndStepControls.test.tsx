@@ -74,7 +74,8 @@ test.each(sizeOptions)(
                         />
                     </ThemeContext.Provider>,
                 );
-                const field = screen.getByLabelText("Value (#)").parent?.parent;
+                const field =
+                    screen.getByLabelText("Value (#)").parent?.parent?.parent;
                 expect(field).toHaveStyle({
                     width: getCompanionNumberInputWidth(),
                 });

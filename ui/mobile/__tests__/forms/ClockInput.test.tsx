@@ -187,7 +187,7 @@ test.each(["start", "end", "above", "below"] as const)(
         );
         const fields =
             screen.getByLabelText("Duration (minutes)").parent?.parent?.parent
-                ?.parent;
+                ?.parent?.parent;
         expect(fields).toHaveStyle({ flexDirection: "row", gap: 8 });
         const flex = StyleSheet.flatten(fields?.props.style).flex ?? 0;
         const vertical =
@@ -195,12 +195,12 @@ test.each(["start", "end", "above", "below"] as const)(
             numberInputPlacement === "below";
         expect(flex).toBe(0);
         expect(
-            screen.getByLabelText("Duration (minutes)").parent?.parent,
+            screen.getByLabelText("Duration (minutes)").parent?.parent?.parent,
         ).toHaveStyle({
             width: getCompanionNumberInputWidth(numberInputPlacement),
         });
         expect(
-            screen.getByLabelText("Duration (seconds)").parent?.parent,
+            screen.getByLabelText("Duration (seconds)").parent?.parent?.parent,
         ).toHaveStyle({
             width: getCompanionNumberInputWidth(numberInputPlacement),
         });

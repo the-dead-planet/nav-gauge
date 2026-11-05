@@ -5,11 +5,10 @@ import {
     DEFAULT_SIZE,
     getClockGeometry,
     getClockNumberInputProps,
-    getCompanionNumberInputWidth,
     useTheme,
 } from "@ui";
 import { ClockDurationNumberInputs } from "./ClockDurationNumberInputs";
-import { NumberInput } from "../number-input";
+import { CompanionNumberInput } from "../number-input/CompanionNumberInput";
 import { StepControls } from "../step-controls";
 
 const styles = StyleSheet.create({
@@ -110,10 +109,8 @@ export const ClockControlRow: FC<ClockControlRowProps> = ({
                         numberInputPlacement={numberInputPlacement}
                     />
                 ) : (
-                    <NumberInput
-                        width={getCompanionNumberInputWidth(
-                            numberInputPlacement,
-                        )}
+                    <CompanionNumberInput
+                        placement={numberInputPlacement}
                         {...appearanceProps}
                         variant={variant}
                         {...numberInput}

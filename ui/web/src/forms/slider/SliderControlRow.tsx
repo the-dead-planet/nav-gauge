@@ -1,6 +1,6 @@
 import { FC } from "react";
-import { getCompanionNumberInputWidth, SliderControlRowProps } from "@ui";
-import { NumberInput } from "../number-input";
+import { SliderControlRowProps } from "@ui";
+import { CompanionNumberInput } from "../number-input/CompanionNumberInput";
 import { StepControls } from "../step-controls";
 import styles from "./slider.module.css";
 
@@ -39,8 +39,7 @@ export const SliderControlRow: FC<SliderControlRowProps> = ({
             children
         )}
         {showNumberInput ? (
-            <NumberInput
-                width={getCompanionNumberInputWidth()}
+            <CompanionNumberInput
                 {...appearanceProps}
                 variant={variant}
                 value={value}
