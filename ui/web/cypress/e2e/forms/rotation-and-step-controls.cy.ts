@@ -48,6 +48,7 @@ describe("Rotation and step controls", () => {
         cy.visit(
             "/iframe.html?id=forms-iconrotateinput--gallery&viewMode=story",
         );
+        cy.get("#theme-appearance-variables").should("exist");
         cy.get('input[type="range"]').should("have.length", 48);
         cy.get<HTMLInputElement>('input[type="range"]').each(($input) => {
             const input = $input[0];
