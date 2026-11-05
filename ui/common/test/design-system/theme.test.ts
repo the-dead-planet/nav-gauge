@@ -209,10 +209,12 @@ describe("Theme", () => {
         const darkAppearance = darkTheme.resolveAppearance();
 
         expect(lightAppearance).to.include({
-            surface: theme.color('neutral', 100),
+            surface: theme.color('neutral', 50),
             glyphs: theme.color('neutral', 900),
         });
         expect(lightAppearance.border.color).to.equal(theme.color('neutral', 200));
+        expect(theme.resolveAppearance('fill-inverse').surface).to.equal(theme.color('neutral', 100));
+        expect(theme.resolveAppearance('fill-inverse', 'neutral', undefined, 'disabled').surface).to.equal(theme.color('neutral', 200));
         expect(darkAppearance).to.include({
             surface: darkTheme.color('neutral', 900),
             glyphs: darkTheme.color('neutral', 100),

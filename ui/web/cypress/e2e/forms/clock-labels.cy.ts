@@ -1,4 +1,31 @@
 describe("Form labels", () => {
+    it("shows clock outlines for keyboard navigation without focusing the hidden input during pointer dragging", () => {
+        for (const component of [
+            "clockinput",
+            "clocksliceinput",
+            "clockdurationinput",
+        ]) {
+            cy.visit(
+                `/iframe.html?id=forms-${component}--gallery&viewMode=story`,
+            );
+            cy.get("#theme-appearance-variables").should("exist");
+            cy.get(".story [data-dragging]").first().as("clock");
+            cy.get("@clock").find('span[class*="drawing"]').as("drawing");
+            cy.get("@clock")
+                .find('svg[class*="svg"]')
+                .then(($svg) => {
+                    cy.stub($svg[0], "setPointerCapture");
+                })
+                .click("right");
+            cy.get("@drawing").should("have.css", "outline-style", "none");
+            cy.get("@clock").find("input").should("not.be.focused");
+            cy.get(".story").invoke("attr", "tabindex", "-1").focus();
+            cy.press(Cypress.Keyboard.Keys.TAB);
+            cy.get("@clock").find("input").should("be.focused");
+            cy.get("@drawing").should("have.css", "outline-width", "2px");
+        }
+    });
+
     it("keeps duration fields beside the dial when space permits and wraps them without overflow", () => {
         const storyId = "forms-clockdurationinput--gallery";
         cy.visit(`/iframe.html?id=${storyId}&viewMode=story`);

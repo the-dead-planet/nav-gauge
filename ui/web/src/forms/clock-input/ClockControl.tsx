@@ -63,7 +63,7 @@ export const ClockControl: FC<
         max,
     );
     const { minutes, seconds } = millisecondsToDurationParts(value);
-    const { dragging, inputRef, pointerEvents } = useClockDrag({
+    const { dragging, pointerEvents } = useClockDrag({
         mode,
         value,
         min,
@@ -125,7 +125,6 @@ export const ClockControl: FC<
                 glyphsShade={glyphsShade}
                 highlightGlyphsShade={highlightGlyphsShade}
                 highlighted={highlighted}
-                inputRef={inputRef}
                 id={inputId}
                 min={min}
                 max={duration ? undefined : max}
