@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { makeLiveEditStory } from 'storybook-addon-code-editor';
+import { useArgs } from 'storybook/preview-api';
 import {
     appearanceColorOptions,
     fillVariantOptions,
@@ -13,6 +14,19 @@ import { ToggleSwitch } from './ToggleSwitch';
 const meta = {
     title: 'Forms/ToggleSwitch',
     component: ToggleSwitch,
+    decorators: [
+        (Story, context) => {
+            const [, updateArgs] = useArgs();
+            return (
+                <Story
+                    args={{
+                        ...context.args,
+                        onChange: (checked: boolean) => updateArgs({ checked }),
+                    }}
+                />
+            );
+        },
+    ],
     args: {
         ...toggleSwitchStoryArgs,
         onChange: () => {},
