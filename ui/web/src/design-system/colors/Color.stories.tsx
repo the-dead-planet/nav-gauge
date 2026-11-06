@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { Color } from './Color';
-import { Icons, Theme, useTheme } from '@ui';
+import { DEFAULT_VARIANT, Icons, Theme, useTheme } from '@ui';
 import type { CornerVariant, SurfaceVariant, ThemeColor } from '@ui';
 import { Text } from '../typography';
 import { Fragment, useEffect, useState } from 'react';
@@ -130,7 +130,7 @@ export const DefaultAppearance = {
     render: () => (
         <section
             className={styles['default-appearance']}
-            data-appearance-variant="default"
+            data-appearance-variant={DEFAULT_VARIANT}
             data-appearance-color="neutral"
             data-appearance-highlight="neutral"
         >

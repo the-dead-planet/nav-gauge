@@ -1,5 +1,5 @@
 import { FC, RefObject } from "react";
-import { DEFAULT_COLOR, getHudConnectorGeometry, HudConnectorProps } from "@ui";
+import { DEFAULT_COLOR, DEFAULT_VARIANT, getHudConnectorGeometry, HudConnectorProps } from "@ui";
 import styles from "./hud-connector.module.css";
 import { useConnectorPoints } from "./useConnectorPoints";
 
@@ -30,7 +30,7 @@ export const HudConnector: FC<Props> = ({
             {geometry ? (
                 <svg
                     className={styles.connector}
-                    data-appearance-variant="default"
+                    data-appearance-variant={DEFAULT_VARIANT}
                     data-appearance-color={color}
                     data-appearance-highlight={color}
                     data-glow={activeGlow}

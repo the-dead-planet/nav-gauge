@@ -6,6 +6,7 @@ import {
     hudDecorationPaths,
     hudDecorationSizes,
     HudDecorationProps,
+    DEFAULT_VARIANT,
 } from "@ui";
 import styles from "./hud-decoration.module.css";
 
@@ -28,7 +29,7 @@ export const HudDecoration: FC<HudDecorationProps> = ({
                 }
                 strokeWidth={strokeWidth}
                 data-size={size}
-                data-appearance-variant="default"
+                data-appearance-variant={DEFAULT_VARIANT}
                 data-appearance-color={color}
                 data-appearance-highlight={color}
                 data-glow={activeGlow}

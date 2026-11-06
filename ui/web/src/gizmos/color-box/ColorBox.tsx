@@ -3,6 +3,7 @@ import {
     allColorShades,
     ColorBoxProps,
     DEFAULT_SIZE,
+    DEFAULT_VARIANT,
     toCssColor,
     useTheme,
 } from "@ui";
@@ -24,7 +25,7 @@ export const ColorBox: FC<ColorBoxProps> = ({
             role="img"
             aria-label={`${name}, shade ${shade}`}
             tabIndex={showPaletteOnHover ? 0 : undefined}
-            data-appearance-variant="default"
+            data-appearance-variant={DEFAULT_VARIANT}
             data-appearance-color="neutral"
             style={
                 {

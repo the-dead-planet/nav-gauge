@@ -9,6 +9,7 @@ import {
     ColorButtonProps,
     DEFAULT_COLOR,
     DEFAULT_SIZE,
+    DEFAULT_VARIANT,
     formatColorDescription,
     useTheme,
 } from "@ui";
@@ -62,7 +63,7 @@ export const ColorButton = forwardRef<
             onBlur,
         });
         const appearance = theme.resolveAppearance(
-            "default",
+            DEFAULT_VARIANT,
             DEFAULT_COLOR,
             DEFAULT_COLOR,
             state,

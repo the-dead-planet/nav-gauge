@@ -29,7 +29,7 @@ import {
     ThemeLayerPolicy,
 } from "./model";
 import { ColorShade, ColorVariant, DesignSystemColor, SpacingVariant, StatusColor, SurfaceVariant } from '../model';
-import { DEFAULT_COLOR, translucentSurfaceOpacity } from '../tinkers';
+import { DEFAULT_COLOR, DEFAULT_VARIANT, translucentSurfaceOpacity } from '../tinkers';
 import { palette, resolveContrastShade } from './palette';
 import {
     elevationSpecifications,
@@ -795,7 +795,7 @@ export class Theme {
         glyphsShade?: ColorShade,
         highlightGlyphsShade?: ColorShade,
     ): ResolvedThemeAppearance => {
-        const policy = this.appearancePolicies[variant ?? 'default'];
+        const policy = this.appearancePolicies[variant ?? DEFAULT_VARIANT];
         const resolved = policy.states[state];
         const resolve = (paint: ThemeAppearancePaint): string => {
             if (paint.type === 'transparent') {

@@ -1,4 +1,4 @@
-import type { ColorShade, DesignSystemColor, SizeVariant, StatusColor, SurfaceVariant } from '../model';
+import type { ColorShade, DefaultVariant, DesignSystemColor, SizeVariant, StatusColor, SurfaceVariant } from '../model';
 import type { FontWeight } from '../typography/model';
 
 export enum ThemeName {
@@ -78,7 +78,7 @@ export type ThemeStatusColors = {
 
 export type ThemeAppearanceState = 'default' | 'hover-focus' | 'active-pressed' | 'disabled';
 
-export type ThemeAppearanceVariant = SurfaceVariant | 'default' | 'menu-item';
+export type ThemeAppearanceVariant = DefaultVariant | SurfaceVariant | 'menu-item';
 
 export interface ThemeAppearancePaintTransparent {
     type: 'transparent';

@@ -11,6 +11,7 @@ export type ColorShade = 50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 90
 
 export type FillVariant = 'fill' | 'fill-inverse' | 'fill-translucent';
 
+export type DefaultVariant = 'default';
 export type SurfaceVariant = FillVariant | 'ghost' | 'outline' | 'inset';
 
 export interface ActionButtonVariants {

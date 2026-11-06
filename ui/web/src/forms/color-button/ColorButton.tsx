@@ -4,6 +4,7 @@ import {
     ColorButtonProps,
     DEFAULT_COLOR,
     DEFAULT_SIZE,
+    DEFAULT_VARIANT,
     formatColorDescription,
     useTheme,
 } from "@ui";
@@ -39,7 +40,7 @@ export const ColorButton = forwardRef<
                 className={classNames(styles.button, className)}
                 data-size={size}
                 data-appearance-mode={theme.mode}
-                data-appearance-variant="default"
+                data-appearance-variant={DEFAULT_VARIANT}
                 data-appearance-color={DEFAULT_COLOR}
                 data-appearance-highlight={DEFAULT_COLOR}
                 data-highlighted={selected || undefined}
