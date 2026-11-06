@@ -7,11 +7,11 @@ import { ColorPicker } from "../color-picker";
 
 const styles = StyleSheet.create({
     overlay: {
-        backgroundColor: 'rgba(0, 0, 0, 0.4)',
+        backgroundColor: "rgba(0, 0, 0, 0.4)",
     },
     popup: {
         width: 320,
-        maxWidth: '90%',
+        maxWidth: "90%",
         padding: 8,
         borderRadius: 0,
     },
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 
 export const ColorSelectField: FC<ColorSelectFieldProps> = ({
     disabled = false,
-    label = 'Color',
+    label = "Color",
     value,
     opacityLabel,
     size = DEFAULT_SIZE,
@@ -38,11 +38,13 @@ export const ColorSelectField: FC<ColorSelectFieldProps> = ({
                 size={size}
                 selected={open}
                 disabled={disabled}
+                accessibilityState={{ expanded: open && !disabled }}
                 onPress={() => setOpen((current) => !current)}
             />
             <Popup
-                visible={open}
+                visible={open && !disabled}
                 anchor={anchorRef as unknown as RefObject<HTMLElement | null>}
+                variant="fill-inverse"
                 triggerAnchor="bottom-left"
                 popupAnchor="top-left"
                 onClose={() => setOpen(false)}

@@ -1,56 +1,60 @@
-import { FC, useState } from "react";
-import { StyleSheet, Switch, TextInput, View } from "react-native";
-import { Button } from "../../gizmos/button";
-import { Text } from "../../design-system/typography";
+import { ComponentProps, useEffect, useState } from "react";
+import {
+    DEFAULT_COLOR,
+    saturationValueRampStoryArgs,
+    saturationValueRampStoryControls,
+} from "@ui";
 import { SaturationValueRamp } from "./SaturationValueRamp";
-import { DEFAULT_SIZE, sizeOptions, SizeVariant } from "@ui";
+import { VariantGallery } from "../../storybook/VariantGallery";
+import { MobileStoryDefinition } from "../../storybook/model";
 
-const styles = StyleSheet.create({
-    container: { gap: 16, padding: 24 },
-    row: { alignItems: "center", flexDirection: "row", gap: 8 },
-    input: { borderColor: "#888", borderWidth: 1, color: "#fff", padding: 8 },
-});
-
-export const Playground: FC = () => {
-    const [hue, setHue] = useState(210);
-    const [saturation, setSaturation] = useState(0.7);
-    const [brightness, setBrightness] = useState(0.8);
-    const [label, setLabel] = useState("Color");
-    const [size, setSize] = useState<SizeVariant>(DEFAULT_SIZE);
-    const [disabled, setDisabled] = useState(false);
-
+const InteractiveSaturationValueRamp = (
+    args: ComponentProps<typeof SaturationValueRamp>,
+) => {
+    const [saturation, setSaturation] = useState(args.saturation);
+    const [brightness, setBrightness] = useState(args.brightness);
+    useEffect(() => setSaturation(args.saturation), [args.saturation]);
+    useEffect(() => setBrightness(args.brightness), [args.brightness]);
     return (
-        <View style={styles.container}>
-            <SaturationValueRamp
-                hue={hue}
-                saturation={saturation}
-                brightness={brightness}
-                label={label}
-                size={size}
-                disabled={disabled}
-                onChange={(nextSaturation, nextBrightness) => {
-                    setSaturation(nextSaturation);
-                    setBrightness(nextBrightness);
-                }}
-            />
-            <Text>{saturation.toFixed(2)}, {brightness.toFixed(2)}</Text>
-            <TextInput style={styles.input} value={String(hue)} keyboardType="numeric" onChangeText={(value) => setHue(Number(value) || 0)} />
-            <TextInput style={styles.input} value={label} onChangeText={setLabel} />
-            <View style={styles.row}>
-                {sizeOptions.map((item) => (
-                    <Button key={item} size="xs" onPress={() => setSize(item)}>{item}</Button>
-                ))}
-                <Switch value={disabled} onValueChange={setDisabled} />
-            </View>
-        </View>
+        <SaturationValueRamp
+            {...args}
+            saturation={saturation}
+            brightness={brightness}
+            onChange={(nextSaturation, nextBrightness) => {
+                setSaturation(nextSaturation);
+                setBrightness(nextBrightness);
+            }}
+        />
     );
 };
 
-export const Gallery: FC = () => (
-    <View style={styles.container}>
-        {sizeOptions.map((size) => (
-            <SaturationValueRamp key={size} hue={210} saturation={0.7} brightness={0.8} size={size} onChange={() => {}} />
-        ))}
-        <SaturationValueRamp hue={210} saturation={0.7} brightness={0.8} disabled onChange={() => {}} />
-    </View>
-);
+const story: MobileStoryDefinition<ComponentProps<typeof SaturationValueRamp>> =
+    {
+        args: {
+            ...saturationValueRampStoryArgs,
+            onChange: () => {},
+        },
+        controls: saturationValueRampStoryControls,
+        galleryEditableControls: [
+            "label",
+            "hue",
+            "saturation",
+            "brightness",
+            "disabled",
+        ],
+        renderPlayground: (args) => (
+            <InteractiveSaturationValueRamp {...args} />
+        ),
+        renderGallery: (args) => (
+            <VariantGallery
+                size={args.size}
+                colors={[DEFAULT_COLOR]}
+                variants={["default"]}
+                render={({ size }) => (
+                    <InteractiveSaturationValueRamp {...args} size={size} />
+                )}
+            />
+        ),
+    };
+
+export default story;

@@ -68,6 +68,9 @@ const { TextInput } = require('../../src/forms/text-input/TextInput') as typeof 
 const { TextArea } = require('../../src/forms/text-area/TextArea') as typeof import('../../src/forms/text-area/TextArea');
 const { Radio } = require('../../src/forms/radio/Radio') as typeof import('../../src/forms/radio/Radio');
 const { Slider } = require('../../src/forms/slider/Slider') as typeof import('../../src/forms/slider/Slider');
+const { ColorInput } = require('../../src/forms/color-input/ColorInput') as typeof import('../../src/forms/color-input/ColorInput');
+const { ColorButton } = require('../../src/forms/color-button/ColorButton') as typeof import('../../src/forms/color-button/ColorButton');
+const { ColorRamp } = require('../../src/forms/color-ramp/ColorRamp') as typeof import('../../src/forms/color-ramp/ColorRamp');
 const { Fieldset } = require('../../src/forms/fieldset/Fieldset') as typeof import('../../src/forms/fieldset/Fieldset');
 const { ClockInput, ClockSliceInput, ClockDurationInput } = require('../../src/forms/clock-input') as typeof import('../../src/forms/clock-input');
 const { Text } = require('../../src/design-system/typography') as typeof import('../../src/design-system/typography');
@@ -98,6 +101,58 @@ const renderToStaticMarkup = (children: ReactElement): string => renderMarkup(
 
 describe('Composed appearance rendering', () => {
     after(() => renderingTheme.destroy());
+
+    it('gives color controls palette-aware overrides and associated disabled field labels', () => {
+        for (const color of appearanceColorOptions) {
+            for (const variant of fillVariantOptions) {
+                const markup = renderToStaticMarkup(createElement(ColorInput, {
+                    label: 'Color',
+                    value: '#336699',
+                    color,
+                    variant,
+                    highlightColor: 'hazard',
+                    glyphsShade: 600,
+                    highlightGlyphsShade: 200,
+                    highlighted: true,
+                    disabled: true,
+                    onChange: () => {},
+                }));
+                const inputId = markup.match(/<input[^>]*\sid="([^"]+)"/)?.[1];
+                expect(inputId).to.be.a('string');
+                expect(markup).to.include(`for="${inputId}"`);
+                expect(markup).to.include(`data-appearance-color="${color}"`);
+                expect(markup).to.include(`data-appearance-variant="${variant}"`);
+                expect(markup).to.include('--appearance-default-glyphs-override:' + renderingTheme.color(color, 600));
+                expect(markup).to.include('--appearance-active-pressed-glyphs-override:' + renderingTheme.color('hazard', 200));
+                expect(markup).to.include('data-disabled="true"');
+                expect(markup).to.include('data-highlighted="true"');
+                expect(markup).to.match(/<input[^>]*disabled=""/);
+                expect(markup).to.match(/<label[^>]*aria-disabled="true"/);
+            }
+        }
+    });
+
+    it('keeps color controls readable as swatches and keyboard-accessible ramp values', () => {
+        const swatch = renderToStaticMarkup(createElement(ColorButton, {
+            value: '#336699',
+            label: 'Route',
+            selected: true,
+            disabled: true,
+        }));
+        expect(swatch).to.include('aria-pressed="true"');
+        expect(swatch).to.include('--color-button-value:#336699');
+        expect(swatch).to.include('aria-label="Route:');
+        const ramp = renderToStaticMarkup(createElement(ColorRamp, {
+            value: '#336699',
+            disabled: true,
+            onChange: () => {},
+        }));
+        expect(ramp).to.include('aria-valuenow=');
+        expect(ramp).to.include('aria-valuetext=');
+        expect(ramp).to.include('aria-disabled="true"');
+        expect(ramp).to.include('tabindex="-1"');
+        expect(ramp.match(/type="range"[^>]*disabled=""/g)).to.have.length(2);
+    });
 
     it('omits empty Button labels while preserving numeric zero', () => {
         for (const corners of buttonCorners) {

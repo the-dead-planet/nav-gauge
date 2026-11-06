@@ -1,4 +1,4 @@
-import { useTheme } from "@ui";
+import { DEFAULT_COLOR, useTheme } from "@ui";
 import { FC } from "react";
 import { StyleSheet } from "react-native";
 import Svg, { Defs, Path, Pattern, Rect } from "react-native-svg";
@@ -13,7 +13,12 @@ const styles = StyleSheet.create({
 export const DisabledRampPattern: FC = () => {
     const theme = useTheme();
 
-    const color = theme.color("neutral", theme.isDark ? 300 : 700);
+    const color = theme.resolveAppearance(
+        "default",
+        DEFAULT_COLOR,
+        DEFAULT_COLOR,
+        "disabled",
+    ).glyphs;
 
     return (
         <Svg

@@ -1,49 +1,47 @@
-import { FC, useState } from "react";
-import { StyleSheet, Switch, TextInput, View } from "react-native";
-import { Button } from "../../gizmos/button";
-import { Text } from "../../design-system/typography";
+import { ComponentProps, useEffect, useState } from "react";
+import {
+    appearanceColorOptions,
+    colorRampStoryArgs,
+    colorRampStoryControls,
+    useTheme,
+} from "@ui";
 import { ColorRamp } from "./ColorRamp";
-import { DEFAULT_SIZE, sizeOptions, SizeVariant } from "@ui";
+import { VariantGallery } from "../../storybook/VariantGallery";
+import { MobileStoryDefinition } from "../../storybook/model";
 
-const styles = StyleSheet.create({
-    container: { gap: 16, padding: 24 },
-    row: { alignItems: "center", flexDirection: "row", flexWrap: "wrap", gap: 8 },
-    input: { borderColor: "#888", borderWidth: 1, color: "#fff", padding: 8 },
-});
+const InteractiveColorRamp = (args: ComponentProps<typeof ColorRamp>) => {
+    const [value, setValue] = useState(args.value);
+    useEffect(() => setValue(args.value), [args.value]);
+    return <ColorRamp {...args} value={value} onChange={setValue} />;
+};
 
-export const Playground: FC = () => {
-    const [value, setValue] = useState("rgb(67, 105, 255)");
-    const [label, setLabel] = useState("Color");
-    const [opacityLabel, setOpacityLabel] = useState("Opacity");
-    const [size, setSize] = useState<SizeVariant>(DEFAULT_SIZE);
-    const [disabled, setDisabled] = useState(false);
-
+const Gallery = (args: ComponentProps<typeof ColorRamp>) => {
+    const theme = useTheme();
     return (
-        <View style={styles.container}>
-            <ColorRamp
-                value={value}
-                label={label}
-                opacityLabel={opacityLabel}
-                size={size}
-                disabled={disabled}
-                onChange={setValue}
-            />
-            <Text>{value}</Text>
-            <TextInput style={styles.input} value={label} onChangeText={setLabel} />
-            <TextInput style={styles.input} value={opacityLabel} onChangeText={setOpacityLabel} />
-            <View style={styles.row}>
-                {sizeOptions.map((nextSize) => (
-                    <Button key={nextSize} size="xs" onPress={() => setSize(nextSize)}>{nextSize}</Button>
-                ))}
-                <Text>Disabled</Text>
-                <Switch value={disabled} onValueChange={setDisabled} />
-            </View>
-        </View>
+        <VariantGallery
+            size={args.size}
+            colors={appearanceColorOptions}
+            variants={["default"]}
+            render={({ color, size }) => (
+                <InteractiveColorRamp
+                    {...args}
+                    value={theme.color(color)}
+                    size={size}
+                />
+            )}
+        />
     );
 };
 
-export const Gallery: FC = () => (
-    <View style={styles.container}>
-        {sizeOptions.map((size) => <ColorRamp key={size} value="#4369ff" size={size} onChange={() => {}} />)}
-    </View>
-);
+const story: MobileStoryDefinition<ComponentProps<typeof ColorRamp>> = {
+    args: {
+        ...colorRampStoryArgs,
+        onChange: () => {},
+    },
+    controls: colorRampStoryControls,
+    galleryEditableControls: ["label", "opacityLabel", "disabled"],
+    renderPlayground: (args) => <InteractiveColorRamp {...args} />,
+    renderGallery: (args) => <Gallery {...args} />,
+};
+
+export default story;

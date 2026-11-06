@@ -1,32 +1,54 @@
-import { FC, useState } from 'react';
-import { VariantGallery } from '../../storybook/VariantGallery';
-import { ColorInput } from './ColorInput';
+import { ComponentProps, useEffect, useState } from "react";
+import {
+    appearanceColorOptions,
+    colorInputStoryArgs,
+    colorInputStoryControls,
+    fillVariantOptions,
+} from "@ui";
+import { ColorInput } from "./ColorInput";
+import { VariantGallery } from "../../storybook/VariantGallery";
+import { MobileStoryDefinition } from "../../storybook/model";
 
-export const Playground: FC = () => {
-    const [value, setValue] = useState('#ff6600');
-
-    return (
-        <ColorInput
-            label="Border color"
-            value={value}
-            glyphsShade={700}
-            highlightGlyphsShade={200}
-            onChange={setValue}
-        />
-    );
+const InteractiveColorInput = (args: ComponentProps<typeof ColorInput>) => {
+    const [value, setValue] = useState(args.value);
+    useEffect(() => setValue(args.value), [args.value]);
+    return <ColorInput {...args} value={value} onChange={setValue} />;
 };
 
-export const Gallery: FC = () => (
-    <VariantGallery
-        render={({ color, size, variant }) => (
-            <ColorInput
-                label={color}
-                value="#ff6600"
-                color={color}
-                size={size}
-                variant={variant}
-                onChange={() => {}}
-            />
-        )}
-    />
-);
+const story: MobileStoryDefinition<ComponentProps<typeof ColorInput>> = {
+    args: {
+        ...colorInputStoryArgs,
+        onChange: () => {},
+    },
+    controls: colorInputStoryControls,
+    galleryEditableControls: [
+        "label",
+        "value",
+        "highlightColor",
+        "glyphsShade",
+        "highlightGlyphsShade",
+        "highlighted",
+        "disabled",
+        "showColorButton",
+        "showValueInput",
+        "showFormatSelect",
+    ],
+    renderPlayground: (args) => <InteractiveColorInput {...args} />,
+    renderGallery: (args) => (
+        <VariantGallery
+            size={args.size}
+            colors={appearanceColorOptions}
+            variants={fillVariantOptions}
+            render={({ color, size, variant }) => (
+                <InteractiveColorInput
+                    {...args}
+                    color={color}
+                    size={size}
+                    variant={variant}
+                />
+            )}
+        />
+    ),
+};
+
+export default story;

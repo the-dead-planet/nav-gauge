@@ -1,24 +1,20 @@
-import { useState } from 'react';
-import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { ColorButton } from './ColorButton';
-import { Span } from '../../design-system/typography';
-import { sizeControl, sizeOptions } from '../../storybook/controls';
+import type { Meta, StoryObj } from "storybook-react-rsbuild";
+import { makeLiveEditStory } from "storybook-addon-code-editor";
+import {
+    appearanceColorOptions,
+    colorButtonStoryArgs,
+    colorButtonStoryControls,
+    useTheme,
+} from "@ui";
+import { ColorButton } from "./ColorButton";
+import { VariantGallery } from "../../storybook/VariantGallery";
 
 const meta = {
-    title: 'Forms/ColorButton',
+    title: "Forms/ColorButton",
     component: ColorButton,
-    args: {
-        value: '#336699',
-        label: 'Color',
-        size: 'sm',
-        selected: false,
-        disabled: false,
-    },
+    args: colorButtonStoryArgs,
     argTypes: {
-        value: { control: 'color' },
-        label: { control: 'text' },
-        size: sizeControl,
-        selected: { control: 'boolean' },
+        ...colorButtonStoryControls,
         onClick: { control: false },
     },
 } satisfies Meta<typeof ColorButton>;
@@ -26,27 +22,36 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Playground: Story = {};
+export const Playground: Story = {
+    name: "Playground with Live code editor",
+};
+
+makeLiveEditStory(Playground, {
+    availableImports: { "@web-ui": { ColorButton } },
+    code: `import { ColorButton } from '@web-ui';
+
+export default ColorButton;`,
+});
 
 export const Gallery: Story = {
-    render: () => {
-        const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-
+    argTypes: {
+        value: { table: { disable: true } },
+    },
+    render: (args) => {
+        const theme = useTheme();
         return (
-            <div style={{ display: 'grid', gap: 12, padding: 24 }}>
-                {sizeOptions.map((size, i) => (
-                    <div key={size} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <ColorButton
-                            label={size}
-                            size={size}
-                            value='rgb(255, 102, 0)'
-                            selected={selectedIndex === i}
-                            onClick={() => setSelectedIndex(i)}
-                        />
-                        <Span>{size}</Span>
-                    </div>
-                ))}
-            </div>
+            <VariantGallery
+                size={args.size}
+                colors={appearanceColorOptions}
+                variants={["default"]}
+                render={({ color, size }) => (
+                    <ColorButton
+                        {...args}
+                        size={size}
+                        value={theme.color(color)}
+                    />
+                )}
+            />
         );
     },
 };

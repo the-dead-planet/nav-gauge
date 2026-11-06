@@ -1,10 +1,13 @@
-import { colorRampThumbSizes, DEFAULT_SIZE, SaturationValueRampProps, SizeVariant } from "@ui";
-import { FC } from "react";
 import {
-    AccessibilityActionEvent,
-    StyleSheet,
-    View,
-} from "react-native";
+    colorRampThumbSizes,
+    DEFAULT_COLOR,
+    DEFAULT_SIZE,
+    saturationValueRampHeights,
+    SaturationValueRampProps,
+    useTheme,
+} from "@ui";
+import { FC } from "react";
+import { AccessibilityActionEvent, StyleSheet, View } from "react-native";
 import Svg, { Defs, LinearGradient, Rect, Stop } from "react-native-svg";
 import { DisabledRampPattern } from "./DisabledRampPattern";
 import { useRampResponder } from "./useRampResponder";
@@ -15,7 +18,6 @@ const styles = StyleSheet.create({
         position: "relative",
         width: "100%",
         overflow: "hidden",
-        borderWidth: 1,
         borderRadius: 0,
     },
     thumb: {
@@ -23,13 +25,13 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: "#fff",
         backgroundColor: "transparent",
-        boxShadow: "0 0 0 1px #000",
+        outlineStyle: "solid",
+        outlineWidth: 1,
+        outlineColor: "#000",
         transform: [{ rotate: "45deg" }],
         pointerEvents: "none",
     },
 });
-
-const heights: { [key in SizeVariant]: number } = { xs: 100, sm: 140, md: 180, lg: 220 };
 
 export const SaturationValueRamp: FC<SaturationValueRampProps> = ({
     hue,
@@ -40,13 +42,23 @@ export const SaturationValueRamp: FC<SaturationValueRampProps> = ({
     disabled = false,
     onChange,
 }) => {
-    const height = heights[size];
+    const height = saturationValueRampHeights[size];
     const thumbSize = colorRampThumbSizes[size];
-    const { width, onLayout, panHandlers } = useRampResponder(
+    const theme = useTheme();
+    const { width, onLayout, panHandlers, state, focused } = useRampResponder(
         disabled,
         (horizontalPosition, verticalPosition) => {
-            onChange(horizontalPosition, clampZeroOne(1 - verticalPosition / height));
+            onChange(
+                horizontalPosition,
+                clampZeroOne(1 - verticalPosition / height),
+            );
         },
+    );
+    const appearance = theme.resolveAppearance(
+        "default",
+        DEFAULT_COLOR,
+        DEFAULT_COLOR,
+        state,
     );
     const handleAccessibility = (event: AccessibilityActionEvent) => {
         if (disabled) {
@@ -59,7 +71,19 @@ export const SaturationValueRamp: FC<SaturationValueRampProps> = ({
 
     return (
         <View
-            style={[styles.ramp, { height }]}
+            style={[
+                styles.ramp,
+                {
+                    height,
+                    borderColor: appearance.border.color,
+                    borderWidth: appearance.border.width,
+                    outlineStyle: "solid",
+                    outlineWidth: focused ? 2 : 0,
+                    outlineOffset: 3,
+                    outlineColor: appearance.effects.glowColor,
+                },
+            ]}
+            focusable={!disabled}
             onLayout={onLayout}
             accessibilityRole="adjustable"
             accessibilityLabel={`${label} saturation and brightness`}

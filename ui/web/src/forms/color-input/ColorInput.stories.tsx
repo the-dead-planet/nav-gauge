@@ -1,37 +1,30 @@
-import { useEffect, useState } from 'react';
-import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { DEFAULT_COLOR } from '@ui';
-import { ColorInput } from './ColorInput';
-import { colorControl, colorOptions, fillVariantControl, fillVariantOptions, optionalShadeControl, sizeControl } from '../../storybook/controls';
-import { VariantGallery } from '../../storybook/VariantGallery';
+import { ComponentProps, useEffect, useState } from "react";
+import type { Meta, StoryObj } from "storybook-react-rsbuild";
+import { makeLiveEditStory } from "storybook-addon-code-editor";
+import {
+    appearanceColorOptions,
+    colorInputStoryArgs,
+    colorInputStoryControls,
+    fillVariantOptions,
+} from "@ui";
+import { ColorInput } from "./ColorInput";
+import { VariantGallery } from "../../storybook/VariantGallery";
+
+const InteractiveColorInput = (args: ComponentProps<typeof ColorInput>) => {
+    const [value, setValue] = useState(args.value);
+    useEffect(() => setValue(args.value), [args.value]);
+    return <ColorInput {...args} value={value} onChange={setValue} />;
+};
 
 const meta = {
-    title: 'Forms/ColorInput',
+    title: "Forms/ColorInput",
     component: ColorInput,
     args: {
-        id: 'color-input-playground',
-        label: 'Border color',
-        value: '#ff6600',
-        color: DEFAULT_COLOR,
-        highlightColor: DEFAULT_COLOR,
-        glyphsShade: 700,
-        highlightGlyphsShade: 200,
-        size: 'sm',
-        variant: 'fill-inverse',
-        disabled: false,
-        showColorButton: true,
-        showValueInput: true,
-        showFormatSelect: false,
+        ...colorInputStoryArgs,
         onChange: () => {},
     },
     argTypes: {
-        value: { control: 'color' },
-        color: colorControl,
-        highlightColor: colorControl,
-        glyphsShade: optionalShadeControl,
-        highlightGlyphsShade: optionalShadeControl,
-        size: sizeControl,
-        variant: fillVariantControl,
+        ...colorInputStoryControls,
         onChange: { control: false },
     },
 } satisfies Meta<typeof ColorInput>;
@@ -40,23 +33,39 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {
-    render: (args) => {
-        const [value, setValue] = useState(args.value);
-
-        useEffect(() => setValue(args.value), [args.value]);
-
-        return <ColorInput {...args} value={value} onChange={setValue} />;
-    },
+    name: "Playground with Live code editor",
+    render: (args) => <InteractiveColorInput {...args} />,
 };
 
+makeLiveEditStory(Playground, {
+    availableImports: { "@web-ui": { ColorInput } },
+    code: `import { useEffect, useState } from 'react';
+import { ColorInput } from '@web-ui';
+
+export default function Example(args) {
+    const [value, setValue] = useState(args.value);
+    useEffect(() => setValue(args.value), [args.value]);
+    return <ColorInput {...args} value={value} onChange={setValue} />;
+}`,
+});
+
 export const Gallery: Story = {
+    argTypes: {
+        color: { table: { disable: true } },
+        variant: { table: { disable: true } },
+    },
     render: (args) => (
         <VariantGallery
             size={args.size}
-            colors={colorOptions}
+            colors={appearanceColorOptions}
             variants={fillVariantOptions}
             render={({ color, size, variant }) => (
-                <ColorInput {...args} id={`${color}-${size}-${variant}`} color={color} size={size} variant={variant} onChange={() => {}} />
+                <InteractiveColorInput
+                    {...args}
+                    color={color}
+                    size={size}
+                    variant={variant}
+                />
             )}
         />
     ),

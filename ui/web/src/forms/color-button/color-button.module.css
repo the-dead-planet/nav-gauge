@@ -1,57 +1,45 @@
 .button {
     box-sizing: border-box;
-    width: 24px;
-    height: 24px;
+    width: var(--size-control-height);
+    height: var(--size-control-height);
     flex-shrink: 0;
     padding: 0;
-    border: 1px solid var(--color-neutral-500);
+    border: var(--appearance-default-border-width) solid
+        var(--appearance-default-border);
     border-radius: 0;
     background-color: var(--color-button-value);
     cursor: pointer;
 }
 
-.button:focus-visible {
-    outline: 2px solid var(--color-primary);
+.button:not(:disabled):not([data-highlighted="true"]):not(:active):is(
+        :hover,
+        :focus-visible
+    ) {
+    border-color: var(--appearance-hover-focus-border);
+    border-width: var(--appearance-hover-focus-border-width);
+}
+
+.button:not(:disabled):is([data-highlighted="true"], :active) {
+    border-color: var(--appearance-active-pressed-border);
+    border-width: var(--appearance-active-pressed-border-width);
+    outline: 2px solid var(--appearance-active-pressed-glyphs);
     outline-offset: 1px;
+}
+
+.button:not(:disabled):focus-visible {
+    outline: 2px solid var(--appearance-glow-color);
+    outline-offset: 3px;
 }
 
 .button:disabled {
     cursor: not-allowed;
-    border-color: var(--color-neutral-500);
+    border-color: var(--appearance-disabled-border);
+    border-width: var(--appearance-disabled-border-width);
     background-image: repeating-linear-gradient(
         -45deg,
         transparent 0,
         transparent 4px,
-        rgb(from var(--color-neutral-500) r g b / .7) 4px,
-        rgb(from var(--color-neutral-500) r g b / .7) 6px
+        var(--appearance-disabled-glyphs) 4px,
+        var(--appearance-disabled-glyphs) 6px
     );
-}
-
-.selected {
-    border-width: 2px;
-    border-color: var(--color-neutral-700);
-}
-
-.mode-dark.selected {
-    border-color: var(--color-neutral-300);
-}
-
-.size-xs {
-    width: 18px;
-    height: 18px;
-}
-
-.size-sm {
-    width: 24px;
-    height: 24px;
-}
-
-.size-md {
-    width: 32px;
-    height: 32px;
-}
-
-.size-lg {
-    width: 40px;
-    height: 40px;
 }

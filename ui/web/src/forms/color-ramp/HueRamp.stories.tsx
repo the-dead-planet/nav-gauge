@@ -1,16 +1,25 @@
-import { useEffect, useState } from 'react';
-import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { HueRamp } from './HueRamp';
-import { sizeControl, sizeOptions } from '../../storybook/controls';
+import { ComponentProps, useEffect, useState } from "react";
+import type { Meta, StoryObj } from "storybook-react-rsbuild";
+import { HueRamp } from "./HueRamp";
+import { makeLiveEditStory } from "storybook-addon-code-editor";
+import { DEFAULT_COLOR, hueRampStoryArgs, hueRampStoryControls } from "@ui";
+import { VariantGallery } from "../../storybook/VariantGallery";
+
+const InteractiveHueRamp = (args: ComponentProps<typeof HueRamp>) => {
+    const [value, setValue] = useState(args.value);
+    useEffect(() => setValue(args.value), [args.value]);
+    return <HueRamp {...args} value={value} onChange={setValue} />;
+};
 
 const meta = {
-    title: 'Forms/ColorRampHue',
+    title: "Forms/ColorRampHue",
     component: HueRamp,
-    args: { value: 210, label: 'Color', size: 'sm', disabled: false, onChange: () => {} },
+    args: {
+        ...hueRampStoryArgs,
+        onChange: () => {},
+    },
     argTypes: {
-        value: { control: { type: 'range', min: 0, max: 360, step: 1 } },
-        label: { control: 'text' },
-        size: sizeControl,
+        ...hueRampStoryControls,
         onChange: { control: false },
     },
 } satisfies Meta<typeof HueRamp>;
@@ -19,20 +28,29 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {
-    render: (args) => {
-        const [value, setValue] = useState(args.value);
-        useEffect(() => setValue(args.value), [args.value]);
-        return <HueRamp {...args} value={value} onChange={setValue} />;
-    },
+    name: "Playground with Live code editor",
+    render: (args) => <InteractiveHueRamp {...args} />,
 };
+
+makeLiveEditStory(Playground, {
+    availableImports: { "@web-ui": { HueRamp } },
+    code: `import { useEffect, useState } from 'react';
+import { HueRamp } from '@web-ui';
+
+export default function Example(args) {
+    const [value, setValue] = useState(args.value);
+    useEffect(() => setValue(args.value), [args.value]);
+    return <HueRamp {...args} value={value} onChange={setValue} />;
+}`,
+});
 
 export const Gallery: Story = {
     render: (args) => (
-        <div style={{ display: 'grid', gap: 16, padding: 24 }}>
-            {sizeOptions.map((size) => (
-                <HueRamp key={size} {...args} size={size} onChange={() => {}} />
-            ))}
-            <HueRamp {...args} disabled onChange={() => {}} />
-        </div>
+        <VariantGallery
+            size={args.size}
+            colors={[DEFAULT_COLOR]}
+            variants={["default"]}
+            render={({ size }) => <InteractiveHueRamp {...args} size={size} />}
+        />
     ),
 };

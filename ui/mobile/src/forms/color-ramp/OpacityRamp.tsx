@@ -1,10 +1,13 @@
-import { colorRampThumbSizes, DEFAULT_SIZE, OpacityRampProps, sliderRampHeights } from "@ui";
-import { FC } from "react";
 import {
-    AccessibilityActionEvent,
-    StyleSheet,
-    View,
-} from "react-native";
+    colorRampThumbSizes,
+    DEFAULT_COLOR,
+    DEFAULT_SIZE,
+    OpacityRampProps,
+    sliderRampHeights,
+    useTheme,
+} from "@ui";
+import { FC } from "react";
+import { AccessibilityActionEvent, StyleSheet, View } from "react-native";
 import Svg, {
     Defs,
     LinearGradient,
@@ -21,7 +24,6 @@ const styles = StyleSheet.create({
         position: "relative",
         width: "100%",
         overflow: "visible",
-        borderWidth: 1,
         borderRadius: 0,
     },
     thumb: {
@@ -29,7 +31,9 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: "#fff",
         backgroundColor: "transparent",
-        boxShadow: "0 0 0 1px #000",
+        outlineStyle: "solid",
+        outlineWidth: 1,
+        outlineColor: "#000",
         transform: [{ rotate: "45deg" }],
         pointerEvents: "none",
     },
@@ -45,9 +49,16 @@ export const OpacityRamp: FC<OpacityRampProps> = ({
 }) => {
     const height = sliderRampHeights[size];
     const thumbSize = colorRampThumbSizes[size];
-    const { width, onLayout, panHandlers } = useRampResponder(
+    const theme = useTheme();
+    const { width, onLayout, panHandlers, state, focused } = useRampResponder(
         disabled,
         (horizontalPosition) => onChange(horizontalPosition),
+    );
+    const appearance = theme.resolveAppearance(
+        "default",
+        DEFAULT_COLOR,
+        DEFAULT_COLOR,
+        state,
     );
     const handleAccessibility = (event: AccessibilityActionEvent) => {
         if (disabled) {
@@ -60,7 +71,19 @@ export const OpacityRamp: FC<OpacityRampProps> = ({
 
     return (
         <View
-            style={[styles.ramp, { height }]}
+            style={[
+                styles.ramp,
+                {
+                    height,
+                    borderColor: appearance.border.color,
+                    borderWidth: appearance.border.width,
+                    outlineStyle: "solid",
+                    outlineWidth: focused ? 2 : 0,
+                    outlineOffset: 3,
+                    outlineColor: appearance.effects.glowColor,
+                },
+            ]}
+            focusable={!disabled}
             hitSlop={8}
             onLayout={onLayout}
             accessibilityRole="adjustable"
