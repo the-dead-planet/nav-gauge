@@ -51,8 +51,13 @@ jobs:
 
   test-e2e-ui:
     runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chrome, firefox]
     concurrency:
-      group: ${{ github.workflow }}-test-e2e-ui-${{ github.event.pull_request.number || github.run_id }}
+      group: ${{ github.workflow }}-test-e2e-ui-${{ matrix.browser }}-${{ github.event.pull_request.number || github.run_id }}
       cancel-in-progress: true
     permissions:
       contents: read
@@ -67,11 +72,8 @@ jobs:
           build: yarn build-storybook
           start: yarn preview
           base-url: http://localhost:6006
-          command: >-
-            yarn --cwd ../.. concurrently --names chrome,firefox
-            "yarn workspace @the-dead-planet/nav-gauge-ui-web exec cypress run --browser chrome --config baseUrl=http://localhost:6006,screenshotsFolder=cypress/screenshots/chrome"
-            "yarn workspace @the-dead-planet/nav-gauge-ui-web exec cypress run --browser firefox --config baseUrl=http://localhost:6006,screenshotsFolder=cypress/screenshots/firefox"
-          artifact-name: cypress-ui
+          browser: ${{ matrix.browser }}
+          artifact-name: cypress-ui-${{ matrix.browser }}
 
   build-and-push:
     runs-on: ubuntu-latest
