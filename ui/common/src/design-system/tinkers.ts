@@ -47,8 +47,8 @@ export const DEFAULT_HEXAGON_SHAPE: HexagonShape = 'flat-top';
 
 export const actionButtonVariants: Record<FillVariant, ActionButtonVariants> = {
     fill: {
-        active: 'fill',
-        inactive: 'fill-inverse',
+        active: 'fill-inverse',
+        inactive: 'fill',
     },
     'fill-inverse': {
         active: 'fill',

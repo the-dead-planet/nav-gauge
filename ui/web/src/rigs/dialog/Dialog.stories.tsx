@@ -39,6 +39,13 @@ export default function Example(args) {
 });
 
 export const Gallery: Story = {
+    args: {
+        closeText: 'Close',
+        save: {
+            saveText: 'Apply',
+            onSave: () => undefined,
+        },
+    },
     argTypes: {
         color: { table: { disable: true } },
         variant: { table: { disable: true } },
