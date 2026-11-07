@@ -3,10 +3,13 @@ describe("Resize handle touch targets", () => {
         it(`keeps a 24px target around the ${direction} grip on a narrow viewport`, () => {
             cy.viewport(390, 844);
             cy.visit(
-                `/iframe.html?id=gizmos-resize-handle--playground&viewMode=story&args=direction:${direction}`,
+                "/iframe.html?id=gizmos-resize-handle--gallery&viewMode=story",
             );
-            cy.get('[role="separator"]')
+            cy.get(
+                `[role="separator"][aria-orientation="${direction === "horizontal" ? "vertical" : "horizontal"}"]`,
+            )
                 .first()
+                .scrollIntoView()
                 .should((handle) => {
                     const separator = handle[0];
                     const grip = separator.querySelector(
