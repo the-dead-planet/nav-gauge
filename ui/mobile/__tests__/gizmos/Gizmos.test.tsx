@@ -5,6 +5,7 @@ import {
     CornerVariant,
     fillVariantOptions,
     Orientation,
+    RESIZE_HANDLE_TOUCH_SIZE,
     Theme,
     ThemeAppearanceState,
     ThemeContext,
@@ -36,7 +37,7 @@ const cases: { corners: CornerVariant; mode: ThemeMode }[] = modes.flatMap(
 
 describe("Gizmo interaction ownership", () => {
     test.each(["horizontal", "vertical"] as const)(
-        "%s resize handle reserves a 48-point touch target around each grip",
+        "%s resize handle reserves the configured touch target around each grip",
         async (direction) => {
             const theme = new Theme(
                 themeSpecifications[ThemeName.Default].light,
@@ -52,11 +53,16 @@ describe("Gizmo interaction ownership", () => {
                 </ThemeContext.Provider>,
             );
             expect(screen.getByRole("adjustable")).toHaveStyle(
-                direction === "horizontal" ? { width: 48 } : { height: 48 },
+                direction === "horizontal"
+                    ? { width: RESIZE_HANDLE_TOUCH_SIZE }
+                    : { height: RESIZE_HANDLE_TOUCH_SIZE },
             );
             const targets = screen.container.queryAll((element) => {
                 const style = StyleSheet.flatten(element.props.style);
-                return style?.width === 48 && style?.height === 48;
+                return (
+                    style?.width === RESIZE_HANDLE_TOUCH_SIZE &&
+                    style?.height === RESIZE_HANDLE_TOUCH_SIZE
+                );
             });
             expect(targets).toHaveLength(1);
             expect(targets[0].props.collapsable).toBe(false);

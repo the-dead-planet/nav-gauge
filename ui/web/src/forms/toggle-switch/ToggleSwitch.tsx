@@ -11,6 +11,7 @@ interface Props extends ToggleSwitchProps {
 export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & Props> = ({
     id,
     label,
+    ariaLabel,
     labelledBy,
     color = DEFAULT_COLOR,
     glyphsShade,
@@ -77,6 +78,7 @@ export const ToggleSwitch: FC<Omit<ComponentProps<'label'>, 'onChange'> & Props>
             <input
                 id={effectiveId}
                 type="checkbox"
+                aria-label={ariaLabel}
                 className={styles['input']}
                 checked={checked}
                 onChange={handleChange}
