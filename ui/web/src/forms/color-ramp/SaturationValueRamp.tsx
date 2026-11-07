@@ -1,8 +1,8 @@
 import { CSSProperties, FC } from "react";
 import {
-    colorRampThumbSizes,
     DEFAULT_COLOR,
     DEFAULT_SIZE,
+    DEFAULT_VARIANT,
     saturationValueRampHeights,
     SaturationValueRampProps,
     useTheme,
@@ -40,7 +40,8 @@ export const SaturationValueRamp: FC<SaturationValueRampProps> = ({
             aria-valuetext={`${Math.round(saturation * 100)}% saturation, ${Math.round(brightness * 100)}% brightness`}
             aria-disabled={disabled}
             data-appearance-mode={theme.mode}
-            data-appearance-variant="default"
+            data-size={size}
+            data-appearance-variant={DEFAULT_VARIANT}
             data-appearance-color={DEFAULT_COLOR}
             data-appearance-highlight={DEFAULT_COLOR}
             className={`${styles.control} ${styles.ramp}`}
@@ -48,7 +49,6 @@ export const SaturationValueRamp: FC<SaturationValueRampProps> = ({
                 {
                     "--ramp-hue": `hsl(${hue}, 100%, 50%)`,
                     "--ramp-height": `${saturationValueRampHeights[size]}px`,
-                    "--thumb-size": `${colorRampThumbSizes[size]}px`,
                 } as CSSProperties
             }
         >

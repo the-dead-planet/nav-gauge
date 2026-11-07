@@ -1,27 +1,31 @@
-import { ComponentProps, useEffect, useState } from "react";
 import type { Meta, StoryObj } from "storybook-react-rsbuild";
 import { makeLiveEditStory } from "storybook-addon-code-editor";
+import { useArgs } from "storybook/preview-api";
 import {
-    appearanceColorOptions,
+    DEFAULT_COLOR,
     colorSelectFieldStoryArgs,
     colorSelectFieldStoryControls,
     fillVariantOptions,
-    useTheme,
 } from "@ui";
 import { ColorSelectField } from "./ColorSelectField";
 import { VariantGallery } from "../../storybook/VariantGallery";
 
-const InteractiveColorSelectField = (
-    args: ComponentProps<typeof ColorSelectField>,
-) => {
-    const [value, setValue] = useState(args.value);
-    useEffect(() => setValue(args.value), [args.value]);
-    return <ColorSelectField {...args} value={value} onChange={setValue} />;
-};
-
 const meta = {
     title: "Forms/ColorSelectField",
     component: ColorSelectField,
+    decorators: [
+        (Story, context) => {
+            const [, updateArgs] = useArgs();
+            return (
+                <Story
+                    args={{
+                        ...context.args,
+                        onChange: (value: string) => updateArgs({ value }),
+                    }}
+                />
+            );
+        },
+    ],
     args: {
         ...colorSelectFieldStoryArgs,
         onChange: () => {},
@@ -37,42 +41,27 @@ type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {
     name: "Playground with Live code editor",
-    render: (args) => <InteractiveColorSelectField {...args} />,
 };
 
 makeLiveEditStory(Playground, {
     availableImports: { "@web-ui": { ColorSelectField } },
-    code: `import { useEffect, useState } from 'react';
-import { ColorSelectField } from '@web-ui';
+    code: `import { ColorSelectField } from '@web-ui';
 
-export default function Example(args) {
-    const [value, setValue] = useState(args.value);
-    useEffect(() => setValue(args.value), [args.value]);
-    return <ColorSelectField {...args} value={value} onChange={setValue} />;
-}`,
+export default ColorSelectField;`,
 });
 
 export const Gallery: Story = {
     argTypes: {
-        value: { table: { disable: true } },
         variant: { table: { disable: true } },
     },
-    render: (args) => {
-        const theme = useTheme();
-        return (
-            <VariantGallery
-                size={args.size}
-                colors={appearanceColorOptions}
-                variants={fillVariantOptions}
-                render={({ color, size, variant }) => (
-                    <InteractiveColorSelectField
-                        {...args}
-                        value={theme.color(color)}
-                        size={size}
-                        variant={variant}
-                    />
-                )}
-            />
-        );
-    },
+    render: (args) => (
+        <VariantGallery
+            size={args.size}
+            colors={[DEFAULT_COLOR]}
+            variants={fillVariantOptions}
+            render={({ size, variant }) => (
+                <ColorSelectField {...args} size={size} variant={variant} />
+            )}
+        />
+    ),
 };

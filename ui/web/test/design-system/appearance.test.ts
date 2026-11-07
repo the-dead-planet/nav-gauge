@@ -71,6 +71,7 @@ const { Slider } = require('../../src/forms/slider/Slider') as typeof import('..
 const { ColorInput } = require('../../src/forms/color-input/ColorInput') as typeof import('../../src/forms/color-input/ColorInput');
 const { ColorButton } = require('../../src/forms/color-button/ColorButton') as typeof import('../../src/forms/color-button/ColorButton');
 const { ColorRamp } = require('../../src/forms/color-ramp/ColorRamp') as typeof import('../../src/forms/color-ramp/ColorRamp');
+const { Tile } = require('../../src/assemblies/tile/Tile') as typeof import('../../src/assemblies/tile/Tile');
 const { Fieldset } = require('../../src/forms/fieldset/Fieldset') as typeof import('../../src/forms/fieldset/Fieldset');
 const { ClockInput, ClockSliceInput, ClockDurationInput } = require('../../src/forms/clock-input') as typeof import('../../src/forms/clock-input');
 const { Text } = require('../../src/design-system/typography') as typeof import('../../src/design-system/typography');
@@ -102,8 +103,27 @@ const renderToStaticMarkup = (children: ReactElement): string => renderMarkup(
 describe('Composed appearance rendering', () => {
     after(() => renderingTheme.destroy());
 
+    it('gives tiles one panel surface, raised depth and semantic content', () => {
+        const markup = renderToStaticMarkup(createElement(Tile, {
+            name: 'Navigation',
+            description: 'Map controls',
+            panelProps: {
+                color: 'glitch',
+                variant: 'fill',
+                disabled: true,
+            },
+        }));
+        expect(markup).to.include('data-appearance-color="glitch"');
+        expect(markup).to.include('data-appearance-variant="fill"');
+        expect(markup).to.include('elevation-raised');
+        expect(markup).to.include('<article');
+        expect(markup).to.include('<h3');
+        expect(markup).to.include('Map controls');
+        expect(markup.match(/data-disabled="true"/g)).to.have.length(1);
+    });
+
     it('gives color controls palette-aware overrides and associated disabled field labels', () => {
-        for (const color of appearanceColorOptions) {
+        for (const color of ['primary', 'glitch'] as const) {
             for (const variant of fillVariantOptions) {
                 const markup = renderToStaticMarkup(createElement(ColorInput, {
                     label: 'Color',

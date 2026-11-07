@@ -1,11 +1,11 @@
 .button {
+    display: block;
     box-sizing: border-box;
     width: var(--size-control-height);
     height: var(--size-control-height);
     flex-shrink: 0;
     padding: 0;
-    border: var(--appearance-default-border-width) solid
-        var(--appearance-default-border);
+    border: 1px solid var(--appearance-default-border);
     border-radius: 0;
     background-color: var(--color-button-value);
     cursor: pointer;
@@ -15,13 +15,11 @@
         :hover,
         :focus-visible
     ) {
-    border-color: var(--appearance-hover-focus-border);
-    border-width: var(--appearance-hover-focus-border-width);
+    outline: 1px solid var(--appearance-hover-focus-glyphs);
+    outline-offset: 1px;
 }
 
 .button:not(:disabled):is([data-highlighted="true"], :active) {
-    border-color: var(--appearance-active-pressed-border);
-    border-width: var(--appearance-active-pressed-border-width);
     outline: 2px solid var(--appearance-active-pressed-glyphs);
     outline-offset: 1px;
 }
@@ -34,7 +32,6 @@
 .button:disabled {
     cursor: not-allowed;
     border-color: var(--appearance-disabled-border);
-    border-width: var(--appearance-disabled-border-width);
     background-image: repeating-linear-gradient(
         -45deg,
         transparent 0,

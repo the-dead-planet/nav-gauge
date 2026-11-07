@@ -1,32 +1,13 @@
-import { ComponentProps, useEffect, useState } from "react";
+import { ComponentProps } from "react";
 import {
     DEFAULT_COLOR,
+    DEFAULT_VARIANT,
     saturationValueRampStoryArgs,
     saturationValueRampStoryControls,
 } from "@ui";
 import { SaturationValueRamp } from "./SaturationValueRamp";
 import { VariantGallery } from "../../storybook/VariantGallery";
 import { MobileStoryDefinition } from "../../storybook/model";
-
-const InteractiveSaturationValueRamp = (
-    args: ComponentProps<typeof SaturationValueRamp>,
-) => {
-    const [saturation, setSaturation] = useState(args.saturation);
-    const [brightness, setBrightness] = useState(args.brightness);
-    useEffect(() => setSaturation(args.saturation), [args.saturation]);
-    useEffect(() => setBrightness(args.brightness), [args.brightness]);
-    return (
-        <SaturationValueRamp
-            {...args}
-            saturation={saturation}
-            brightness={brightness}
-            onChange={(nextSaturation, nextBrightness) => {
-                setSaturation(nextSaturation);
-                setBrightness(nextBrightness);
-            }}
-        />
-    );
-};
 
 const story: MobileStoryDefinition<ComponentProps<typeof SaturationValueRamp>> =
     {
@@ -42,16 +23,26 @@ const story: MobileStoryDefinition<ComponentProps<typeof SaturationValueRamp>> =
             "brightness",
             "disabled",
         ],
-        renderPlayground: (args) => (
-            <InteractiveSaturationValueRamp {...args} />
+        renderPlayground: (args, updateArgs) => (
+            <SaturationValueRamp
+                {...args}
+                onChange={(saturation, brightness) =>
+                    updateArgs({ saturation, brightness })
+                }
+            />
         ),
-        renderGallery: (args) => (
+        renderGallery: (args, updateArgs) => (
             <VariantGallery
-                size={args.size}
                 colors={[DEFAULT_COLOR]}
-                variants={["default"]}
+                variants={[DEFAULT_VARIANT]}
                 render={({ size }) => (
-                    <InteractiveSaturationValueRamp {...args} size={size} />
+                    <SaturationValueRamp
+                        {...args}
+                        size={size}
+                        onChange={(saturation, brightness) =>
+                            updateArgs({ saturation, brightness })
+                        }
+                    />
                 )}
             />
         ),

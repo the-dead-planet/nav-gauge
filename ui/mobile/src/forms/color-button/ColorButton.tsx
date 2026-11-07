@@ -69,6 +69,12 @@ export const ColorButton = forwardRef<
             state,
         );
         const description = formatColorDescription(label, value);
+        const frame = theme.resolveAppearance(
+            DEFAULT_VARIANT,
+            DEFAULT_COLOR,
+            DEFAULT_COLOR,
+            disabled ? "disabled" : "default",
+        );
 
         return (
             <Pressable
@@ -80,12 +86,16 @@ export const ColorButton = forwardRef<
                     {
                         width: buttonSize,
                         height: buttonSize,
-                        borderWidth: appearance.border.width,
+                        borderWidth: 1,
                         backgroundColor: value,
-                        borderColor: appearance.border.color,
+                        borderColor: frame.border.color,
                         outlineStyle: "solid",
                         outlineWidth:
-                            focused || state === "active-pressed" ? 2 : 0,
+                            focused || state === "active-pressed"
+                                ? 2
+                                : state === "hover-focus"
+                                  ? 1
+                                  : 0,
                         outlineOffset: focused ? 3 : 1,
                         outlineColor: focused
                             ? appearance.effects.glowColor

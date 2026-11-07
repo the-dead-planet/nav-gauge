@@ -1,14 +1,13 @@
-import { ComponentProps, useEffect, useState } from "react";
-import { DEFAULT_COLOR, hueRampStoryArgs, hueRampStoryControls } from "@ui";
+import { ComponentProps } from "react";
+import {
+    DEFAULT_COLOR,
+    DEFAULT_VARIANT,
+    hueRampStoryArgs,
+    hueRampStoryControls,
+} from "@ui";
 import { HueRamp } from "./HueRamp";
 import { VariantGallery } from "../../storybook/VariantGallery";
 import { MobileStoryDefinition } from "../../storybook/model";
-
-const InteractiveHueRamp = (args: ComponentProps<typeof HueRamp>) => {
-    const [value, setValue] = useState(args.value);
-    useEffect(() => setValue(args.value), [args.value]);
-    return <HueRamp {...args} value={value} onChange={setValue} />;
-};
 
 const story: MobileStoryDefinition<ComponentProps<typeof HueRamp>> = {
     args: {
@@ -16,14 +15,21 @@ const story: MobileStoryDefinition<ComponentProps<typeof HueRamp>> = {
         onChange: () => {},
     },
     controls: hueRampStoryControls,
-    galleryEditableControls: ["label", "value", "disabled"],
-    renderPlayground: (args) => <InteractiveHueRamp {...args} />,
-    renderGallery: (args) => (
+    galleryEditableControls: ["value", "label", "disabled"],
+    renderPlayground: (args, updateArgs) => (
+        <HueRamp {...args} onChange={(value) => updateArgs({ value })} />
+    ),
+    renderGallery: (args, updateArgs) => (
         <VariantGallery
-            size={args.size}
             colors={[DEFAULT_COLOR]}
-            variants={["default"]}
-            render={({ size }) => <InteractiveHueRamp {...args} size={size} />}
+            variants={[DEFAULT_VARIANT]}
+            render={({ size }) => (
+                <HueRamp
+                    {...args}
+                    size={size}
+                    onChange={(value) => updateArgs({ value })}
+                />
+            )}
         />
     ),
 };

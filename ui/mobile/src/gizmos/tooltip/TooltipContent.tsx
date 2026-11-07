@@ -4,6 +4,7 @@ import {
     DEFAULT_COLOR,
     DEFAULT_FILL_VARIANT,
     DEFAULT_SIZE,
+    Theme,
     TooltipProps,
     useTheme,
 } from "@ui";
@@ -14,7 +15,10 @@ import { useTooltip } from "./useTooltip";
 
 const styles = StyleSheet.create({
     overlay: { flex: 1 },
-    tooltip: { position: "absolute" },
+    tooltip: {
+        position: "absolute",
+        paddingHorizontal: Number.parseInt(Theme.spacing.xs, 10),
+    },
     connector: { position: "absolute" },
 });
 
@@ -74,7 +78,6 @@ export const TooltipContent: FC<TooltipProps> = (props) => {
                                     top: position.top,
                                     left: position.left,
                                     maxWidth,
-                                    paddingHorizontal: metrics.paddingInline,
                                     paddingVertical: metrics.paddingBlock,
                                 },
                             ]}

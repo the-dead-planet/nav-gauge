@@ -10,7 +10,6 @@ import {
     PanResponder,
 } from "react-native";
 import {
-    appearanceColorOptions,
     fillVariantOptions,
     Orientation,
     Theme,
@@ -18,10 +17,15 @@ import {
     ThemeContext,
     ThemeName,
     themeSpecifications,
+    parseColor,
+    toHexColor,
+    useColorRampState,
 } from "@ui";
 import { ColorInput } from "../../src/forms/color-input/ColorInput";
 import { ColorButton } from "../../src/forms/color-button/ColorButton";
 import { useRampResponder } from "../../src/forms/color-ramp/useRampResponder";
+import { HueRamp } from "../../src/forms/color-ramp/HueRamp";
+import { OpacityRamp } from "../../src/forms/color-ramp/OpacityRamp";
 
 jest.mock("../../src/rigs/popup", () => ({ Popup: () => null }));
 jest.mock("../../src/design-system/icons", () => ({ Icon: () => null }));
@@ -35,7 +39,25 @@ const media = {
     subscribe: () => ({ unsubscribe: () => undefined }),
 };
 
-test("color fields resolve every palette and variant with disabled above highlight above focus", async () => {
+test("color ramp hue survives RGB quantization, hex echoes and achromatic edits", async () => {
+    const onChange = jest.fn();
+    const hook = await renderHook(
+        (value: string) => useColorRampState(value, onChange),
+        { initialProps: "#2467ab" },
+    );
+    const hue = hook.result.current.hue;
+    await act(() => hook.result.current.changeSaturationValue(0.41, 0.67));
+    await hook.rerender(toHexColor(parseColor(onChange.mock.calls[0][0])));
+    expect(hook.result.current.hue).toBe(hue);
+    await hook.rerender("#000000");
+    await act(() => hook.result.current.changeHue(280));
+    expect(hook.result.current.hue).toBe(280);
+    await hook.rerender("#00ff00");
+    expect(hook.result.current.hue).toBe(120);
+    await hook.unmount();
+});
+
+test("color fields follow shared policy with disabled above highlight above focus", async () => {
     for (const mode of ["light", "dark"] as const) {
         const theme = new Theme(
             themeSpecifications[ThemeName.Default][mode],
@@ -43,75 +65,121 @@ test("color fields resolve every palette and variant with disabled above highlig
             false,
         );
         try {
-            for (const color of appearanceColorOptions) {
-                for (const variant of fillVariantOptions) {
-                    const content = (highlighted = false, disabled = false) => (
-                        <ThemeContext.Provider value={theme}>
-                            <ColorInput
-                                label="Color"
-                                value="#336699"
-                                color={color}
-                                highlightColor="hazard"
-                                glyphsShade={600}
-                                highlightGlyphsShade={200}
-                                variant={variant}
-                                highlighted={highlighted}
-                                disabled={disabled}
-                                showColorButton={false}
-                                onChange={() => {}}
-                            />
-                        </ThemeContext.Provider>
+            const color = mode === "light" ? "primary" : "glitch";
+            for (const variant of fillVariantOptions) {
+                const content = (highlighted = false, disabled = false) => (
+                    <ThemeContext.Provider value={theme}>
+                        <ColorInput
+                            label="Color"
+                            value="#336699"
+                            color={color}
+                            highlightColor="hazard"
+                            glyphsShade={600}
+                            highlightGlyphsShade={200}
+                            variant={variant}
+                            highlighted={highlighted}
+                            disabled={disabled}
+                            showColorButton={false}
+                            onChange={() => {}}
+                        />
+                    </ThemeContext.Provider>
+                );
+                const screen = await render(content());
+                const check = (state: ThemeAppearanceState) => {
+                    const appearance = theme.resolveAppearance(
+                        variant,
+                        color,
+                        "hazard",
+                        state,
+                        600,
+                        200,
                     );
-                    const screen = await render(content());
-                    const check = (state: ThemeAppearanceState) => {
-                        const appearance = theme.resolveAppearance(
-                            variant,
-                            color,
-                            "hazard",
-                            state,
-                            600,
-                            200,
-                        );
-                        const input = screen.getByLabelText("Color");
-                        expect(input).toHaveStyle({ color: appearance.glyphs });
-                        expect(input.parent).toHaveStyle({
-                            backgroundColor: appearance.surface,
-                            borderColor: appearance.border.color,
-                            borderWidth: appearance.border.width,
-                        });
-                    };
-                    check("default");
-                    await fireEvent(
-                        screen.getByLabelText("Color"),
-                        "pointerEnter",
-                    );
-                    check("hover-focus");
-                    await fireEvent(
-                        screen.getByLabelText("Color"),
-                        "pointerLeave",
-                    );
-                    check("default");
-                    const label = screen.getByText("Color");
-                    const labelStyle = label.props.style;
-                    await fireEvent(screen.getByLabelText("Color"), "focus");
-                    check("hover-focus");
-                    expect(screen.getByText("Color").props.style).toEqual(
-                        labelStyle,
-                    );
-                    await fireEvent(screen.getByLabelText("Color"), "pressIn");
-                    check("active-pressed");
-                    await fireEvent(screen.getByLabelText("Color"), "pressOut");
-                    await screen.rerender(content(true));
-                    check("active-pressed");
-                    await screen.rerender(content(true, true));
-                    check("disabled");
-                    expect(screen.getByLabelText("Color")).toBeDisabled();
-                    await screen.unmount();
-                }
+                    const input = screen.getByLabelText("Color");
+                    expect(input).toHaveStyle({ color: appearance.glyphs });
+                    expect(input.parent).toHaveStyle({
+                        backgroundColor: appearance.surface,
+                        borderColor: appearance.border.color,
+                        borderWidth: appearance.border.width,
+                    });
+                };
+                check("default");
+                await fireEvent(screen.getByLabelText("Color"), "pointerEnter");
+                check("hover-focus");
+                await fireEvent(screen.getByLabelText("Color"), "pointerLeave");
+                check("default");
+                const label = screen.getByText("Color");
+                const labelStyle = label.props.style;
+                await fireEvent(screen.getByLabelText("Color"), "focus");
+                check("hover-focus");
+                expect(screen.getByText("Color").props.style).toEqual(
+                    labelStyle,
+                );
+                await fireEvent(screen.getByLabelText("Color"), "pressIn");
+                check("active-pressed");
+                await fireEvent(screen.getByLabelText("Color"), "pressOut");
+                await screen.rerender(content(true));
+                check("active-pressed");
+                await screen.rerender(content(true, true));
+                check("disabled");
+                expect(screen.getByLabelText("Color")).toBeDisabled();
+                await screen.unmount();
             }
         } finally {
             theme.destroy();
         }
+    }
+});
+
+test("linear color ramps share themed sizing, clamp adjustments and ignore disabled actions", async () => {
+    const theme = new Theme(
+        themeSpecifications[ThemeName.Default].light,
+        media,
+        false,
+    );
+    try {
+        for (const kind of ["hue", "opacity"] as const) {
+            const onChange = jest.fn();
+            const content = (disabled = false) => (
+                <ThemeContext.Provider value={theme}>
+                    {kind === "hue" ? (
+                        <HueRamp
+                            value={358}
+                            size="lg"
+                            disabled={disabled}
+                            onChange={onChange}
+                        />
+                    ) : (
+                        <OpacityRamp
+                            color="#336699"
+                            value={0.98}
+                            size="lg"
+                            disabled={disabled}
+                            onChange={onChange}
+                        />
+                    )}
+                </ThemeContext.Provider>
+            );
+            const screen = await render(content());
+            expect(screen.getByRole("adjustable")).toHaveStyle({
+                height: theme.sizes.control.lg.height / 2,
+            });
+            await fireEvent(
+                screen.getByRole("adjustable"),
+                "accessibilityAction",
+                { nativeEvent: { actionName: "increment" } },
+            );
+            expect(onChange).toHaveBeenLastCalledWith(kind === "hue" ? 360 : 1);
+            await screen.rerender(content(true));
+            await fireEvent(
+                screen.getByRole("adjustable"),
+                "accessibilityAction",
+                { nativeEvent: { actionName: "decrement" } },
+            );
+            expect(onChange).toHaveBeenCalledTimes(1);
+            await screen.unmount();
+        }
+    } finally {
+        theme.destroy();
     }
 });
 

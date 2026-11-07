@@ -39,8 +39,8 @@ const story = {
         'highlighted',
         'disabled',
     ],
-    renderPlayground: (args) => <ToggleSwitch {...args} />,
-    renderGallery: (args) => (
+    renderPlayground: (args, updateArgs) => <ToggleSwitch {...args} onChange={(checked) => updateArgs({ checked })} />,
+    renderGallery: (args, updateArgs) => (
         <ScrollView contentContainerStyle={styles.container}>
             {toggleSwitchOrientations.map((orientation) => (
                 <View key={orientation} style={styles.section}>
@@ -51,6 +51,7 @@ const story = {
                         render={({ color, size, variant }) => (
                             <ToggleSwitch
                                 {...args}
+                                onChange={(checked) => updateArgs({ checked })}
                                 color={color}
                                 orientation={orientation}
                                 size={size}

@@ -98,7 +98,8 @@
 
 .format-select {
     align-self: stretch;
-    width: 84px;
+    width: 128px;
+    flex-shrink: 0;
 }
 
 .popup > div {

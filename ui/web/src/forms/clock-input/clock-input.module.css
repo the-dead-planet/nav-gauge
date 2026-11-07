@@ -84,6 +84,10 @@
     flex-shrink: 0;
 }
 
+.drawing[data-full-circle="true"] {
+    border-radius: 50%;
+}
+
 .backdrop {
     position: absolute;
     inset: 0;

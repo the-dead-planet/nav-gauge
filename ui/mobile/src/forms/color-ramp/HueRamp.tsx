@@ -1,120 +1,29 @@
-import {
-    colorRampThumbSizes,
-    DEFAULT_COLOR,
-    DEFAULT_SIZE,
-    HueRampProps,
-    sliderRampHeights,
-    useTheme,
-} from "@ui";
 import { FC } from "react";
-import { AccessibilityActionEvent, StyleSheet, View } from "react-native";
+import { HueRampProps } from "@ui";
 import Svg, { Defs, LinearGradient, Rect, Stop } from "react-native-svg";
-import { DisabledRampPattern } from "./DisabledRampPattern";
-import { useRampResponder } from "./useRampResponder";
+import { ColorRampSlider } from "./ColorRampSlider";
 
-const styles = StyleSheet.create({
-    ramp: {
-        position: "relative",
-        width: "100%",
-        overflow: "visible",
-        borderRadius: 0,
-    },
-    thumb: {
-        position: "absolute",
-        borderWidth: 2,
-        borderColor: "#fff",
-        backgroundColor: "transparent",
-        outlineStyle: "solid",
-        outlineWidth: 1,
-        outlineColor: "#000",
-        transform: [{ rotate: "45deg" }],
-        pointerEvents: "none",
-    },
-});
-
-export const HueRamp: FC<HueRampProps> = ({
-    value,
-    label = "Color",
-    size = DEFAULT_SIZE,
-    disabled = false,
-    onChange,
-}) => {
-    const height = sliderRampHeights[size];
-    const thumbSize = colorRampThumbSizes[size];
-    const theme = useTheme();
-    const { width, onLayout, panHandlers, state, focused } = useRampResponder(
-        disabled,
-        (horizontalPosition) => onChange(horizontalPosition * 360),
-    );
-    const appearance = theme.resolveAppearance(
-        "default",
-        DEFAULT_COLOR,
-        DEFAULT_COLOR,
-        state,
-    );
-    const handleAccessibility = (event: AccessibilityActionEvent) => {
-        if (disabled) {
-            return;
-        }
-        const change = event.nativeEvent.actionName === "increment" ? 5 : -5;
-        onChange(Math.max(0, Math.min(360, value + change)));
-    };
-
-    return (
-        <View
-            style={[
-                styles.ramp,
-                {
-                    height,
-                    borderColor: appearance.border.color,
-                    borderWidth: appearance.border.width,
-                    outlineStyle: "solid",
-                    outlineWidth: focused ? 2 : 0,
-                    outlineOffset: 3,
-                    outlineColor: appearance.effects.glowColor,
-                },
-            ]}
-            focusable={!disabled}
-            hitSlop={8}
-            onLayout={onLayout}
-            accessibilityRole="adjustable"
-            accessibilityLabel={`${label} hue`}
-            accessibilityValue={{ min: 0, max: 360, now: Math.round(value) }}
-            accessibilityState={{ disabled }}
-            accessibilityActions={[
-                { name: "increment" },
-                { name: "decrement" },
-            ]}
-            onAccessibilityAction={handleAccessibility}
-            {...panHandlers}
-        >
-            <Svg width="100%" height="100%">
-                <Defs>
-                    <LinearGradient id="hue" x1="0" y1="0" x2="1" y2="0">
-                        <Stop offset="0" stopColor="#f00" />
-                        <Stop offset="0.167" stopColor="#ff0" />
-                        <Stop offset="0.333" stopColor="#0f0" />
-                        <Stop offset="0.5" stopColor="#0ff" />
-                        <Stop offset="0.667" stopColor="#00f" />
-                        <Stop offset="0.833" stopColor="#f0f" />
-                        <Stop offset="1" stopColor="#f00" />
-                    </LinearGradient>
-                </Defs>
-                <Rect width="100%" height="100%" fill="url(#hue)" />
-            </Svg>
-            <View
-                style={[
-                    styles.thumb,
-                    {
-                        top: -2,
-                        width: thumbSize,
-                        height: thumbSize,
-                        marginLeft: -thumbSize / 2,
-                        left: (value / 360) * width,
-                    },
-                ]}
-            />
-            {disabled ? <DisabledRampPattern /> : null}
-        </View>
-    );
-};
+export const HueRamp: FC<HueRampProps> = ({ label = "Color", ...props }) => (
+    <ColorRampSlider
+        {...props}
+        label={`${label} hue`}
+        max={360}
+        step={1}
+        accessibilityStep={5}
+    >
+        <Svg width="100%" height="100%" pointerEvents="none">
+            <Defs>
+                <LinearGradient id="hue" x1="0" y1="0" x2="1" y2="0">
+                    <Stop offset="0" stopColor="#f00" />
+                    <Stop offset="0.167" stopColor="#ff0" />
+                    <Stop offset="0.333" stopColor="#0f0" />
+                    <Stop offset="0.5" stopColor="#0ff" />
+                    <Stop offset="0.667" stopColor="#00f" />
+                    <Stop offset="0.833" stopColor="#f0f" />
+                    <Stop offset="1" stopColor="#f00" />
+                </LinearGradient>
+            </Defs>
+            <Rect width="100%" height="100%" fill="url(#hue)" />
+        </Svg>
+    </ColorRampSlider>
+);

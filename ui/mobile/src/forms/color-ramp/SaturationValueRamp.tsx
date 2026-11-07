@@ -1,7 +1,7 @@
 import {
-    colorRampThumbSizes,
     DEFAULT_COLOR,
     DEFAULT_SIZE,
+    DEFAULT_VARIANT,
     saturationValueRampHeights,
     SaturationValueRampProps,
     useTheme,
@@ -43,8 +43,8 @@ export const SaturationValueRamp: FC<SaturationValueRampProps> = ({
     onChange,
 }) => {
     const height = saturationValueRampHeights[size];
-    const thumbSize = colorRampThumbSizes[size];
     const theme = useTheme();
+    const { thumbSize } = theme.sizes.control[size];
     const { width, onLayout, panHandlers, state, focused } = useRampResponder(
         disabled,
         (horizontalPosition, verticalPosition) => {
@@ -55,10 +55,10 @@ export const SaturationValueRamp: FC<SaturationValueRampProps> = ({
         },
     );
     const appearance = theme.resolveAppearance(
-        "default",
+        DEFAULT_VARIANT,
         DEFAULT_COLOR,
         DEFAULT_COLOR,
-        state,
+        disabled ? "disabled" : "default",
     );
     const handleAccessibility = (event: AccessibilityActionEvent) => {
         if (disabled) {
@@ -71,16 +71,13 @@ export const SaturationValueRamp: FC<SaturationValueRampProps> = ({
 
     return (
         <View
+            accessible
             style={[
                 styles.ramp,
                 {
                     height,
                     borderColor: appearance.border.color,
-                    borderWidth: appearance.border.width,
-                    outlineStyle: "solid",
-                    outlineWidth: focused ? 2 : 0,
-                    outlineOffset: 3,
-                    outlineColor: appearance.effects.glowColor,
+                    borderWidth: 1,
                 },
             ]}
             focusable={!disabled}
@@ -123,6 +120,11 @@ export const SaturationValueRamp: FC<SaturationValueRampProps> = ({
                     {
                         width: thumbSize,
                         height: thumbSize,
+                        outlineWidth:
+                            state === "default" || state === "disabled" ? 1 : 2,
+                        outlineColor: focused
+                            ? appearance.effects.glowColor
+                            : "#000",
                         marginLeft: -thumbSize / 2,
                         marginTop: -thumbSize / 2,
                         borderRadius: 0,

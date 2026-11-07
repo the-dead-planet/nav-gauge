@@ -9,10 +9,10 @@ import {
 } from "./model";
 
 export const saturationValueRampHeights: Record<SizeVariant, number> = {
-    xs: 100,
-    sm: 140,
-    md: 180,
-    lg: 220,
+    xs: 80,
+    sm: 100,
+    md: 120,
+    lg: 140,
 };
 
 export const colorRampStoryArgs: Omit<ColorRampProps, "onChange"> = {
@@ -151,17 +151,3 @@ export const saturationValueRampStoryControls: StoryControls<SaturationValueRamp
             control: "boolean",
         },
     };
-
-export const colorRampThumbSizes: Record<SizeVariant, number> = {
-    xs: 12,
-    sm: 16,
-    md: 18,
-    lg: 24,
-};
-
-export const sliderRampHeights: { [key in SizeVariant]: number } = {
-    xs: 12,
-    sm: 16,
-    md: 20,
-    lg: 24,
-};

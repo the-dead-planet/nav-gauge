@@ -1,39 +1,13 @@
-import { ComponentProps, useEffect, useState } from "react";
+import { ComponentProps } from "react";
 import {
-    appearanceColorOptions,
+    DEFAULT_COLOR,
     colorPickerStoryArgs,
     colorPickerStoryControls,
     fillVariantOptions,
-    useTheme,
 } from "@ui";
 import { ColorPicker } from "./ColorPicker";
 import { VariantGallery } from "../../storybook/VariantGallery";
 import { MobileStoryDefinition } from "../../storybook/model";
-
-const InteractiveColorPicker = (args: ComponentProps<typeof ColorPicker>) => {
-    const [value, setValue] = useState(args.value);
-    useEffect(() => setValue(args.value), [args.value]);
-    return <ColorPicker {...args} value={value} onChange={setValue} />;
-};
-
-const Gallery = (args: ComponentProps<typeof ColorPicker>) => {
-    const theme = useTheme();
-    return (
-        <VariantGallery
-            size={args.size}
-            colors={appearanceColorOptions}
-            variants={fillVariantOptions}
-            render={({ color, size, variant }) => (
-                <InteractiveColorPicker
-                    {...args}
-                    value={theme.color(color)}
-                    size={size}
-                    variant={variant}
-                />
-            )}
-        />
-    );
-};
 
 const story: MobileStoryDefinition<ComponentProps<typeof ColorPicker>> = {
     args: {
@@ -41,9 +15,24 @@ const story: MobileStoryDefinition<ComponentProps<typeof ColorPicker>> = {
         onChange: () => {},
     },
     controls: colorPickerStoryControls,
-    galleryEditableControls: ["label", "opacityLabel", "disabled"],
-    renderPlayground: (args) => <InteractiveColorPicker {...args} />,
-    renderGallery: (args) => <Gallery {...args} />,
+    galleryEditableControls: ["value", "label", "opacityLabel", "disabled"],
+    renderPlayground: (args, updateArgs) => (
+        <ColorPicker {...args} onChange={(value) => updateArgs({ value })} />
+    ),
+    renderGallery: (args, updateArgs) => (
+        <VariantGallery
+            colors={[DEFAULT_COLOR]}
+            variants={fillVariantOptions}
+            render={({ size, variant }) => (
+                <ColorPicker
+                    {...args}
+                    size={size}
+                    variant={variant}
+                    onChange={(value) => updateArgs({ value })}
+                />
+            )}
+        />
+    ),
 };
 
 export default story;

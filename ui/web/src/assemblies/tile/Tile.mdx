@@ -1,0 +1,12 @@
+import { Meta, Stories, Title } from '@storybook/addon-docs/blocks';
+import * as TileStories from './Tile.stories';
+
+<Meta of={TileStories} name="Docs" />
+
+<Title />
+
+- `panelProps` selects the surface appearance and interaction. Persistent tiles default to raised elevation.
+- `size` controls body padding and action sizing. Body padding excludes the footer.
+- `actions(size, variants)` receives the shared primary/active and secondary/inactive button variants. Follow the <a href="./?path=/docs/design-system-appearance--docs#actions-on-surfaces" target="_top" style={{ textDecoration: 'underline' }}>action variant policy</a> and <a href="./?path=/docs/design-system-appearance--docs#action-footers" target="_top" style={{ textDecoration: 'underline' }}>footer alignment and spacing</a> shared with Dialog. Return sibling buttons as an array or fragment.
+
+<Stories />

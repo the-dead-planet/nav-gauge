@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import {
     Pressable,
     PressableProps,
@@ -12,6 +12,7 @@ import {
     DEFAULT_ELEVATION,
     DEFAULT_FILL_VARIANT,
     PanelProps,
+    ResolvedThemeAppearance,
     useTheme,
 } from "@ui";
 import {
@@ -29,6 +30,7 @@ const styles = StyleSheet.create({
 
 interface Props extends Omit<PressableProps, "children" | "style"> {
     style?: StyleProp<ViewStyle>;
+    renderContent?: (appearance: ResolvedThemeAppearance) => ReactNode;
 }
 
 export const Panel: FC<PanelProps & Props> = ({
@@ -53,6 +55,7 @@ export const Panel: FC<PanelProps & Props> = ({
     accessibilityRole,
     style,
     children,
+    renderContent,
     ...props
 }) => {
     const theme = useTheme();
@@ -97,7 +100,11 @@ export const Panel: FC<PanelProps & Props> = ({
         },
         style,
     ];
-    const content = <HudContent appearance={appearance}>{children}</HudContent>;
+    const content = (
+        <HudContent appearance={appearance}>
+            {renderContent ? renderContent(appearance) : children}
+        </HudContent>
+    );
 
     return interactive || onPress ? (
         <Pressable

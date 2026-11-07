@@ -8,29 +8,11 @@
     --ramp-disabled-pattern: linear-gradient(transparent, transparent);
     width: 100%;
     box-sizing: border-box;
-    height: var(--ramp-height);
-    border: var(--appearance-default-border-width) solid
-        var(--appearance-default-border);
+    height: calc(var(--size-control-height) / 2);
+    border: 1px solid var(--appearance-default-border);
     border-radius: 0;
+    outline: none;
     touch-action: none;
-}
-
-.control:not(:disabled, [aria-disabled="true"]):not(:active):is(
-        :hover,
-        :focus-visible
-    ) {
-    border-color: var(--appearance-hover-focus-border);
-    border-width: var(--appearance-hover-focus-border-width);
-}
-
-.control:not(:disabled, [aria-disabled="true"]):active {
-    border-color: var(--appearance-active-pressed-border);
-    border-width: var(--appearance-active-pressed-border-width);
-}
-
-.control:not(:disabled, [aria-disabled="true"]):focus-visible {
-    outline: 2px solid var(--appearance-glow-color);
-    outline-offset: 3px;
 }
 
 .control:is(:disabled, [aria-disabled="true"]) {
@@ -42,13 +24,13 @@
         var(--appearance-disabled-glyphs) 6px
     );
     border-color: var(--appearance-disabled-border);
-    border-width: var(--appearance-disabled-border-width);
     opacity: 1;
     cursor: not-allowed;
 }
 
 .ramp {
     position: relative;
+    height: var(--ramp-height);
     overflow: hidden;
     background:
         var(--ramp-disabled-pattern),
@@ -60,13 +42,30 @@
 .thumb {
     position: absolute;
     box-sizing: border-box;
-    width: var(--thumb-size);
-    height: var(--thumb-size);
+    width: var(--size-control-thumb-size);
+    height: var(--size-control-thumb-size);
     border: 2px solid #fff;
     border-radius: 0;
     outline: 1px solid #000;
     transform: translate(-50%, -50%) rotate(45deg);
-    pointer-events: none;
+    cursor: grab;
+}
+
+.ramp:not([aria-disabled="true"]):is(:hover, :active, :focus-visible) .thumb {
+    outline-width: 2px;
+}
+
+.ramp:not([aria-disabled="true"]):focus-visible .thumb {
+    outline-color: var(--appearance-glow-color);
+}
+
+.ramp:not([aria-disabled="true"]):active,
+.ramp:not([aria-disabled="true"]):active .thumb {
+    cursor: grabbing;
+}
+
+.ramp[aria-disabled="true"] .thumb {
+    cursor: not-allowed;
 }
 
 .linear-ramp {
@@ -95,23 +94,66 @@
 
 .linear-ramp::-webkit-slider-thumb {
     box-sizing: border-box;
-    width: var(--thumb-size);
-    height: var(--thumb-size);
+    width: var(--size-control-thumb-size);
+    height: var(--size-control-thumb-size);
     appearance: none;
     border: 2px solid #fff;
     border-radius: 0;
     background: transparent;
     outline: 1px solid #000;
     transform: rotate(45deg);
+    cursor: grab;
 }
 
 .linear-ramp::-moz-range-thumb {
     box-sizing: border-box;
-    width: var(--thumb-size);
-    height: var(--thumb-size);
+    width: var(--size-control-thumb-size);
+    height: var(--size-control-thumb-size);
     border: 2px solid #fff;
     border-radius: 0;
     background: transparent;
     outline: 1px solid #000;
     transform: rotate(45deg);
+    cursor: grab;
+}
+
+.linear-ramp:not(:disabled):is(
+        :hover,
+        :active,
+        :focus-visible
+    )::-webkit-slider-thumb {
+    outline-width: 2px;
+}
+
+.linear-ramp:not(:disabled):is(
+        :hover,
+        :active,
+        :focus-visible
+    )::-moz-range-thumb {
+    outline-width: 2px;
+}
+
+.linear-ramp:not(:disabled):focus-visible::-webkit-slider-thumb {
+    outline-color: var(--appearance-glow-color);
+}
+
+.linear-ramp:not(:disabled):focus-visible::-moz-range-thumb {
+    outline-color: var(--appearance-glow-color);
+}
+
+.linear-ramp:not(:disabled):active,
+.linear-ramp:not(:disabled):active::-webkit-slider-thumb {
+    cursor: grabbing;
+}
+
+.linear-ramp:not(:disabled):active::-moz-range-thumb {
+    cursor: grabbing;
+}
+
+.linear-ramp:disabled::-webkit-slider-thumb {
+    cursor: not-allowed;
+}
+
+.linear-ramp:disabled::-moz-range-thumb {
+    cursor: not-allowed;
 }

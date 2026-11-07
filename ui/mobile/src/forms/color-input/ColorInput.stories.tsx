@@ -1,4 +1,4 @@
-import { ComponentProps, useEffect, useState } from "react";
+import { ComponentProps } from "react";
 import {
     appearanceColorOptions,
     colorInputStoryArgs,
@@ -8,12 +8,6 @@ import {
 import { ColorInput } from "./ColorInput";
 import { VariantGallery } from "../../storybook/VariantGallery";
 import { MobileStoryDefinition } from "../../storybook/model";
-
-const InteractiveColorInput = (args: ComponentProps<typeof ColorInput>) => {
-    const [value, setValue] = useState(args.value);
-    useEffect(() => setValue(args.value), [args.value]);
-    return <ColorInput {...args} value={value} onChange={setValue} />;
-};
 
 const story: MobileStoryDefinition<ComponentProps<typeof ColorInput>> = {
     args: {
@@ -33,18 +27,20 @@ const story: MobileStoryDefinition<ComponentProps<typeof ColorInput>> = {
         "showValueInput",
         "showFormatSelect",
     ],
-    renderPlayground: (args) => <InteractiveColorInput {...args} />,
-    renderGallery: (args) => (
+    renderPlayground: (args, updateArgs) => (
+        <ColorInput {...args} onChange={(value) => updateArgs({ value })} />
+    ),
+    renderGallery: (args, updateArgs) => (
         <VariantGallery
-            size={args.size}
             colors={appearanceColorOptions}
             variants={fillVariantOptions}
             render={({ color, size, variant }) => (
-                <InteractiveColorInput
+                <ColorInput
                     {...args}
                     color={color}
                     size={size}
                     variant={variant}
+                    onChange={(value) => updateArgs({ value })}
                 />
             )}
         />

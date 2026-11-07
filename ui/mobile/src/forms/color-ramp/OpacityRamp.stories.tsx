@@ -1,6 +1,7 @@
-import { ComponentProps, useEffect, useState } from "react";
+import { ComponentProps } from "react";
 import {
     appearanceColorOptions,
+    DEFAULT_VARIANT,
     opacityRampStoryArgs,
     opacityRampStoryControls,
     useTheme,
@@ -9,25 +10,14 @@ import { OpacityRamp } from "./OpacityRamp";
 import { VariantGallery } from "../../storybook/VariantGallery";
 import { MobileStoryDefinition } from "../../storybook/model";
 
-const InteractiveOpacityRamp = (args: ComponentProps<typeof OpacityRamp>) => {
-    const [value, setValue] = useState(args.value);
-    useEffect(() => setValue(args.value), [args.value]);
-    return <OpacityRamp {...args} value={value} onChange={setValue} />;
-};
-
 const Gallery = (args: ComponentProps<typeof OpacityRamp>) => {
     const theme = useTheme();
     return (
         <VariantGallery
-            size={args.size}
             colors={appearanceColorOptions}
-            variants={["default"]}
+            variants={[DEFAULT_VARIANT]}
             render={({ color, size }) => (
-                <InteractiveOpacityRamp
-                    {...args}
-                    color={theme.color(color)}
-                    size={size}
-                />
+                <OpacityRamp {...args} color={theme.color(color)} size={size} />
             )}
         />
     );
@@ -39,9 +29,13 @@ const story: MobileStoryDefinition<ComponentProps<typeof OpacityRamp>> = {
         onChange: () => {},
     },
     controls: opacityRampStoryControls,
-    galleryEditableControls: ["label", "value", "disabled"],
-    renderPlayground: (args) => <InteractiveOpacityRamp {...args} />,
-    renderGallery: (args) => <Gallery {...args} />,
+    galleryEditableControls: ["value", "label", "disabled"],
+    renderPlayground: (args, updateArgs) => (
+        <OpacityRamp {...args} onChange={(value) => updateArgs({ value })} />
+    ),
+    renderGallery: (args, updateArgs) => (
+        <Gallery {...args} onChange={(value) => updateArgs({ value })} />
+    ),
 };
 
 export default story;

@@ -262,6 +262,22 @@ Use the shared `actionButtonVariants[surfaceVariant]` policy for primary/seconda
     </tbody>
 </table>
 
+<h3 id="action-footers">Action footers</h3>
+
+<a href="./?path=/docs/rigs-dialog--docs" target="_top" style={{ textDecoration: 'underline' }}>Dialog</a> and <a href="./?path=/docs/assemblies-tile--docs" target="_top" style={{ textDecoration: 'underline' }}>Tile</a> use the same footer layout:
+
+- Keep the footer outside body-content padding. Its side and bottom padding and margins are **0**; buttons meet the inside edge of the surface border.
+- Place secondary/inactive actions before the primary/active action. Use the variant policy above, including for translucent surfaces.
+- Keep adjacent action buttons together, with **0 gap**. Any vertical separation from the body must not introduce side or bottom insets.
+
+<table>
+    <thead><tr><th>Platform</th><th>Alignment</th></tr></thead>
+    <tbody>
+        <tr><td>Web</td><td>Content-width buttons aligned to the trailing edge; the primary action is last.</td></tr>
+        <tr><td>Mobile</td><td>Equal-width action cells fill the footer row; a single action fills the row.</td></tr>
+    </tbody>
+</table>
+
 ## Active glow
 
 `activeGlow` is an optional enhancement to the existing color, border, and content state cues. It uses `highlightColor`, never replaces the required state treatment, and is removed when a component is disabled.

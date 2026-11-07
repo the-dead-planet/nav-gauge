@@ -1,37 +1,13 @@
-import { ComponentProps, useEffect, useState } from "react";
+import { ComponentProps } from "react";
 import {
-    appearanceColorOptions,
+    DEFAULT_COLOR,
+    DEFAULT_VARIANT,
     colorRampStoryArgs,
     colorRampStoryControls,
-    useTheme,
 } from "@ui";
 import { ColorRamp } from "./ColorRamp";
 import { VariantGallery } from "../../storybook/VariantGallery";
 import { MobileStoryDefinition } from "../../storybook/model";
-
-const InteractiveColorRamp = (args: ComponentProps<typeof ColorRamp>) => {
-    const [value, setValue] = useState(args.value);
-    useEffect(() => setValue(args.value), [args.value]);
-    return <ColorRamp {...args} value={value} onChange={setValue} />;
-};
-
-const Gallery = (args: ComponentProps<typeof ColorRamp>) => {
-    const theme = useTheme();
-    return (
-        <VariantGallery
-            size={args.size}
-            colors={appearanceColorOptions}
-            variants={["default"]}
-            render={({ color, size }) => (
-                <InteractiveColorRamp
-                    {...args}
-                    value={theme.color(color)}
-                    size={size}
-                />
-            )}
-        />
-    );
-};
 
 const story: MobileStoryDefinition<ComponentProps<typeof ColorRamp>> = {
     args: {
@@ -39,9 +15,23 @@ const story: MobileStoryDefinition<ComponentProps<typeof ColorRamp>> = {
         onChange: () => {},
     },
     controls: colorRampStoryControls,
-    galleryEditableControls: ["label", "opacityLabel", "disabled"],
-    renderPlayground: (args) => <InteractiveColorRamp {...args} />,
-    renderGallery: (args) => <Gallery {...args} />,
+    galleryEditableControls: ["value", "label", "opacityLabel", "disabled"],
+    renderPlayground: (args, updateArgs) => (
+        <ColorRamp {...args} onChange={(value) => updateArgs({ value })} />
+    ),
+    renderGallery: (args, updateArgs) => (
+        <VariantGallery
+            colors={[DEFAULT_COLOR]}
+            variants={[DEFAULT_VARIANT]}
+            render={({ size }) => (
+                <ColorRamp
+                    {...args}
+                    size={size}
+                    onChange={(value) => updateArgs({ value })}
+                />
+            )}
+        />
+    ),
 };
 
 export default story;

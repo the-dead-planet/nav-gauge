@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
         fontVariant: ["tabular-nums"],
     },
     formatSelect: {
-        width: 84,
+        width: 128,
         alignSelf: "stretch",
     },
     overlay: {

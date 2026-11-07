@@ -1,5 +1,10 @@
-import { useEffect, useRef } from "react";
-import { hsvToRgb, parseColor, rgbToHsv, toCssColor } from "../../design-system/colors";
+import { useEffect, useRef, useState } from "react";
+import {
+    hsvToRgb,
+    parseColor,
+    rgbToHsv,
+    toCssColor,
+} from "../../design-system/colors";
 
 interface ColorRampState {
     hue: number;
@@ -18,17 +23,37 @@ export const useColorRampState = (
 ): ColorRampState => {
     const color = parseColor(value);
     const hsvColor = rgbToHsv(color);
-    const hueReference = useRef(hsvColor.h);
+    const [hueIntent, setHueIntent] = useState(hsvColor.h);
+    const emittedColorReference = useRef<string | null>(null);
+    const serializedColor = toCssColor(color);
+    const isEmittedColor = serializedColor === emittedColorReference.current;
 
     useEffect(() => {
-        if (hsvColor.s > 0) {
-            hueReference.current = hsvColor.h;
+        if (!isEmittedColor) {
+            if (hsvColor.s > 0) {
+                setHueIntent(hsvColor.h);
+            }
+            emittedColorReference.current = null;
         }
-    }, [hsvColor.h, hsvColor.s]);
+    }, [hsvColor.h, hsvColor.s, isEmittedColor]);
 
-    const hue = hsvColor.s > 0 ? hsvColor.h : hueReference.current;
-    const emitColor = (nextHue: number, saturation: number, brightness: number) => {
-        onChange(toCssColor({ ...hsvToRgb({ h: nextHue, s: saturation, v: brightness }), a: color.a }));
+    const hue = isEmittedColor || hsvColor.s === 0 ? hueIntent : hsvColor.h;
+    const emitValue = (value: string) => {
+        emittedColorReference.current = value;
+        onChange(value);
+    };
+    const emitColor = (
+        nextHue: number,
+        saturation: number,
+        brightness: number,
+    ) => {
+        setHueIntent(nextHue);
+        emitValue(
+            toCssColor({
+                ...hsvToRgb({ h: nextHue, s: saturation, v: brightness }),
+                a: color.a,
+            }),
+        );
     };
 
     return {
@@ -41,11 +66,10 @@ export const useColorRampState = (
             emitColor(hue, saturation, brightness);
         },
         changeHue: (nextHue) => {
-            hueReference.current = nextHue;
             emitColor(nextHue, hsvColor.s, hsvColor.v);
         },
         changeOpacity: (opacity) => {
-            onChange(toCssColor({ ...color, a: opacity }));
+            emitValue(toCssColor({ ...color, a: opacity }));
         },
     };
 };
