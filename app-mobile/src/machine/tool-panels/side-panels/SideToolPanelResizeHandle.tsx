@@ -2,20 +2,21 @@ import { FC } from "react";
 import { StyleSheet, View } from "react-native";
 import { useSideToolPanelResizeHandle } from "@apparatus";
 import { MachineResizeHandle } from "../MachineResizeHandle";
+import { RESIZE_HANDLE_TOUCH_SIZE } from "@ui";
 
 const styles = StyleSheet.create({
     resizeHandleContainer: {
         position: 'absolute',
-        width: 24,
+        width: RESIZE_HANDLE_TOUCH_SIZE,
         zIndex: 100,
     },
     resizeHandleLeft: {
-        right: -12,
+        right: -RESIZE_HANDLE_TOUCH_SIZE / 2,
         top: 0,
         bottom: 0,
     },
     resizeHandleRight: {
-        left: -12,
+        left: -RESIZE_HANDLE_TOUCH_SIZE / 2,
         top: 0,
         bottom: 0,
     },

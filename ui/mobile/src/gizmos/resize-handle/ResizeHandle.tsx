@@ -1,6 +1,6 @@
 import { FC, useRef, useState } from "react";
 import { GestureResponderEvent, LayoutChangeEvent, PanResponder, StyleSheet, View } from "react-native";
-import { DEFAULT_COLOR, DEFAULT_FILL_VARIANT, ResizeHandleProps, useTheme } from "@ui";
+import { DEFAULT_COLOR, DEFAULT_FILL_VARIANT, RESIZE_HANDLE_TOUCH_SIZE, ResizeHandleProps, useTheme } from "@ui";
 import { ResizeHandleGrip } from "./ResizeHandleGrip";
 import { Tooltip } from "../tooltip";
 import { useHudInteraction } from '../../hud/useHudInteraction';
@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         bottom: 0,
-        width: 24,
+        width: RESIZE_HANDLE_TOUCH_SIZE,
         alignItems: 'center',
         justifyContent: 'center',
         zIndex: 1,
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         left: 0,
         right: 0,
-        height: 24,
+        height: RESIZE_HANDLE_TOUCH_SIZE,
         justifyContent: 'center',
         alignItems: 'center',
         zIndex: 1,
@@ -31,6 +31,25 @@ const styles = StyleSheet.create({
     verticalBorder: {
         height: 2,
         width: '100%',
+    },
+    horizontalEdgeTarget: {
+        width: 24,
+        height: '100%',
+        alignItems: 'center',
+    },
+    verticalEdgeTarget: {
+        height: 24,
+        width: '100%',
+        justifyContent: 'center',
+    },
+    gripTarget: {
+        position: 'absolute',
+        width: RESIZE_HANDLE_TOUCH_SIZE,
+        height: RESIZE_HANDLE_TOUCH_SIZE,
+        transform: [
+            { translateX: -RESIZE_HANDLE_TOUCH_SIZE / 2 },
+            { translateY: -RESIZE_HANDLE_TOUCH_SIZE / 2 },
+        ],
     },
 });
 
@@ -100,6 +119,7 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
 
     const handle = (
         <View
+            pointerEvents="box-none"
             {...panResponder.panHandlers}
             {...interaction}
             onLayout={handleLayout}
@@ -126,19 +146,34 @@ export const ResizeHandle: FC<ResizeHandleProps> = ({
             }}
         >
             <View
-                style={[
-                    isHorizontal ? styles.horizontalBorder : styles.verticalBorder,
-                    { backgroundColor: borderAppearance.border.color },
-                ]}
-            />
-            {(handleLength >= 500 ? [25, 75] : [50]).map((position) => (
-                <ResizeHandleGrip
-                    key={position}
-                    position={position}
-                    appearance={gripAppearance}
-                    direction={direction}
-                    side={side}
+                collapsable={false}
+                style={isHorizontal ? styles.horizontalEdgeTarget : styles.verticalEdgeTarget}
+            >
+                <View
+                    style={[
+                        isHorizontal ? styles.horizontalBorder : styles.verticalBorder,
+                        { backgroundColor: borderAppearance.border.color },
+                    ]}
                 />
+            </View>
+            {(handleLength >= 500 ? [25, 75] : [50]).map((position) => (
+                <View
+                    key={position}
+                    collapsable={false}
+                    style={[
+                        styles.gripTarget,
+                        isHorizontal
+                            ? { top: `${position}%`, left: '50%' }
+                            : { left: `${position}%`, top: '50%' },
+                    ]}
+                >
+                    <ResizeHandleGrip
+                        position={50}
+                        appearance={gripAppearance}
+                        direction={direction}
+                        side={side}
+                    />
+                </View>
             ))}
         </View>
     );

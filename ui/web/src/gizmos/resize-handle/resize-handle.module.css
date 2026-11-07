@@ -24,6 +24,33 @@
     width: unset;
 }
 
+.handle::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc((100% - 24px) / 2);
+    width: 24px;
+}
+
+.handle-vertical::before {
+    top: calc((100% - 24px) / 2);
+    bottom: auto;
+    left: 0;
+    right: 0;
+    width: auto;
+    height: 24px;
+}
+
+.grip::before {
+    content: "";
+    position: absolute;
+    top: calc((100% - 24px) / 2);
+    left: calc((100% - 24px) / 2);
+    width: 24px;
+    height: 24px;
+}
+
 .border {
     width: 2px;
     height: 100%;
@@ -35,11 +62,11 @@
 .grip {
     position: absolute;
     top: 50%;
-    width: 8px;
-    height: 24px;
+    width: 18px;
+    height: 36px;
     overflow: visible;
     transform: translateY(-50%);
-    pointer-events: none;
+    pointer-events: auto;
 }
 
 .grip-drawing,
@@ -79,8 +106,8 @@
 .handle-vertical .grip {
     top: auto;
     left: 50%;
-    width: 24px;
-    height: 8px;
+    width: 36px;
+    height: 18px;
     transform: translateX(-50%);
 }
 

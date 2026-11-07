@@ -80,17 +80,6 @@ export const SideToolPanel: FC<Props> = ({
         <View
             ref={assignSideToolPanelRef(placement, toolsStation)}
             style={[
-                {
-                    backgroundColor: withColorOpacity(
-                        theme.resolveAppearance().surface,
-                        0.87,
-                    ),
-                    ...resolveElevationStyle(
-                        theme,
-                        "raised",
-                        placement === "right" ? "left" : "right",
-                    ),
-                },
                 placement === "right"
                     ? {
                           borderLeftWidth: 1,
@@ -102,6 +91,23 @@ export const SideToolPanel: FC<Props> = ({
                       },
             ]}
         >
+            <View
+                pointerEvents="none"
+                style={[
+                    StyleSheet.absoluteFill,
+                    {
+                        backgroundColor: withColorOpacity(
+                            theme.resolveAppearance().surface,
+                            0.87,
+                        ),
+                        ...resolveElevationStyle(
+                            theme,
+                            "raised",
+                            placement === "right" ? "left" : "right",
+                        ),
+                    },
+                ]}
+            />
             <Animated.View
                 style={{ flex: 1, width: animatedWidth, overflow: "hidden" }}
             >
