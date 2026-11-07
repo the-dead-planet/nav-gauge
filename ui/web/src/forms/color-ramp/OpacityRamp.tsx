@@ -1,28 +1,20 @@
 import { CSSProperties, FC } from "react";
-import { colorRampThumbSizes, DEFAULT_SIZE, OpacityRampProps } from "@ui";
-import styles from './color-ramp.module.css';
+import { OpacityRampProps } from "@ui";
+import { ColorRampSlider } from "./ColorRampSlider";
+import styles from "./color-ramp.module.css";
 
 export const OpacityRamp: FC<OpacityRampProps> = ({
     color,
-    value,
-    label = 'Opacity',
-    size = DEFAULT_SIZE,
-    disabled = false,
-    onChange,
+    label = "Opacity",
+    ...props
 }) => (
-    <input
-        type="range"
-        min={0}
+    <ColorRampSlider
+        {...props}
+        label={label}
         max={1}
         step={0.01}
-        value={value}
-        disabled={disabled}
-        aria-label={label}
-        className={`${styles['linear-ramp']} ${styles.opacity} ${styles[`linear-size-${size}`]}`}
-        style={{
-            '--opacity-color': color,
-            '--thumb-size': `${colorRampThumbSizes[size]}px`,
-        } as CSSProperties}
-        onChange={(event) => onChange(Number(event.target.value))}
+        valueText={`${Math.round(props.value * 100)}%`}
+        className={styles.opacity}
+        style={{ "--opacity-color": color } as CSSProperties}
     />
 );

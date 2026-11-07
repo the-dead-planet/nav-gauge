@@ -1,6 +1,6 @@
 import { ComponentProps, FC } from "react";
 import classNames from "classnames";
-import { DEFAULT_COLOR, DividerProps, resolveTypographySpacing } from "@ui";
+import { DEFAULT_COLOR, DEFAULT_VARIANT, DividerProps, resolveTypographySpacing } from "@ui";
 import styles from "./divider.module.css";
 
 export const Divider: FC<DividerProps & ComponentProps<"hr">> = ({
@@ -21,7 +21,7 @@ export const Divider: FC<DividerProps & ComponentProps<"hr">> = ({
     return (
         <hr
             aria-orientation={orientation}
-            data-appearance-variant="default"
+            data-appearance-variant={DEFAULT_VARIANT}
             data-appearance-color={color}
             className={classNames(
                 styles["divider"],

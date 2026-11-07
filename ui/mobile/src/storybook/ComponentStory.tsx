@@ -84,6 +84,8 @@ export const ComponentStory: FC<{ entry: StoryEntry }> = ({ entry }) => {
     const definition = entry.definition;
     const [tab, setTab] = useState('playground');
     const [args, setArgs] = useState<MobileStoryArgs>(() => ({ ...definition?.args }));
+    const updateArgs = (updates: MobileStoryArgs) =>
+        setArgs((current) => ({ ...current, ...updates }));
     const [storedDrawerSize, setStoredDrawerSize] = useState(landscape ? 300 : 240);
 
     if (!definition) {
@@ -145,8 +147,8 @@ export const ComponentStory: FC<{ entry: StoryEntry }> = ({ entry }) => {
                         }
                     >
                         {tab === 'gallery'
-                            ? definition.renderGallery(args)
-                            : definition.renderPlayground(args)}
+                            ? definition.renderGallery(args, updateArgs)
+                            : definition.renderPlayground(args, updateArgs)}
                     </GallerySizeContext.Provider>
                 </View>
             </View>

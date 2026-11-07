@@ -3,11 +3,11 @@ import { ColorSelectFieldProps, DEFAULT_FILL_VARIANT, DEFAULT_SIZE } from "@ui";
 import { Popup } from "../../rigs/popup";
 import { ColorButton } from "../color-button";
 import { ColorPicker } from "../color-picker";
-import styles from './color-select-field.module.css';
+import styles from "./color-select-field.module.css";
 
 export const ColorSelectField: FC<ColorSelectFieldProps> = ({
     disabled = false,
-    label = 'Color',
+    label = "Color",
     value,
     opacityLabel,
     size = DEFAULT_SIZE,
@@ -27,11 +27,11 @@ export const ColorSelectField: FC<ColorSelectFieldProps> = ({
                 selected={open}
                 disabled={disabled}
                 aria-haspopup="dialog"
-                aria-expanded={open}
+                aria-expanded={open && !disabled}
                 onClick={() => setOpen((current) => !current)}
             />
             <Popup
-                visible={open}
+                visible={open && !disabled}
                 anchor={anchorRef}
                 variant="fill-inverse"
                 triggerAnchor="bottom-left"

@@ -1,32 +1,50 @@
-import { FC, useState } from 'react';
-import { VariantGallery } from '../../storybook/VariantGallery';
-import { ColorInput } from './ColorInput';
+import { ComponentProps } from "react";
+import {
+    appearanceColorOptions,
+    colorInputStoryArgs,
+    colorInputStoryControls,
+    fillVariantOptions,
+} from "@ui";
+import { ColorInput } from "./ColorInput";
+import { VariantGallery } from "../../storybook/VariantGallery";
+import { MobileStoryDefinition } from "../../storybook/model";
 
-export const Playground: FC = () => {
-    const [value, setValue] = useState('#ff6600');
-
-    return (
-        <ColorInput
-            label="Border color"
-            value={value}
-            glyphsShade={700}
-            highlightGlyphsShade={200}
-            onChange={setValue}
+const story: MobileStoryDefinition<ComponentProps<typeof ColorInput>> = {
+    args: {
+        ...colorInputStoryArgs,
+        onChange: () => {},
+    },
+    controls: colorInputStoryControls,
+    galleryEditableControls: [
+        "label",
+        "value",
+        "highlightColor",
+        "glyphsShade",
+        "highlightGlyphsShade",
+        "highlighted",
+        "disabled",
+        "showColorButton",
+        "showValueInput",
+        "showFormatSelect",
+    ],
+    renderPlayground: (args, updateArgs) => (
+        <ColorInput {...args} onChange={(value) => updateArgs({ value })} />
+    ),
+    renderGallery: (args, updateArgs) => (
+        <VariantGallery
+            colors={appearanceColorOptions}
+            variants={fillVariantOptions}
+            render={({ color, size, variant }) => (
+                <ColorInput
+                    {...args}
+                    color={color}
+                    size={size}
+                    variant={variant}
+                    onChange={(value) => updateArgs({ value })}
+                />
+            )}
         />
-    );
+    ),
 };
 
-export const Gallery: FC = () => (
-    <VariantGallery
-        render={({ color, size, variant }) => (
-            <ColorInput
-                label={color}
-                value="#ff6600"
-                color={color}
-                size={size}
-                variant={variant}
-                onChange={() => {}}
-            />
-        )}
-    />
-);
+export default story;

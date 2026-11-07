@@ -8,6 +8,7 @@ import {
     DEFAULT_COLOR,
     Icons,
     resolveIconState,
+    DEFAULT_VARIANT,
 } from "@ui";
 import styles from "./icon.module.css";
 
@@ -78,7 +79,7 @@ export const Icon: FC<Props & IconProps> = ({
             aria-hidden={ariaHidden}
             role={ariaHidden ? undefined : "img"}
             aria-disabled={state === "disabled" || undefined}
-            data-appearance-variant={ownsAppearance ? "default" : undefined}
+            data-appearance-variant={ownsAppearance ? DEFAULT_VARIANT : undefined}
             data-appearance-color={ownsAppearance ? selectedColor : undefined}
             data-appearance-highlight={
                 ownsAppearance ? selectedHighlight : undefined

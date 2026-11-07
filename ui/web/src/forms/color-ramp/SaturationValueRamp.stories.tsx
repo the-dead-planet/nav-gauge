@@ -1,18 +1,38 @@
-import { useEffect, useState } from 'react';
-import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { SaturationValueRamp } from './SaturationValueRamp';
-import { sizeControl, sizeOptions } from '../../storybook/controls';
+import type { Meta, StoryObj } from "storybook-react-rsbuild";
+import { makeLiveEditStory } from "storybook-addon-code-editor";
+import { useArgs } from "storybook/preview-api";
+import {
+    DEFAULT_COLOR,
+    DEFAULT_VARIANT,
+    saturationValueRampStoryArgs,
+    saturationValueRampStoryControls,
+} from "@ui";
+import { SaturationValueRamp } from "./SaturationValueRamp";
+import { VariantGallery } from "../../storybook/VariantGallery";
 
 const meta = {
-    title: 'Forms/ColorRampSaturation',
+    title: "Forms/ColorRampSaturation",
     component: SaturationValueRamp,
-    args: { hue: 210, saturation: 0.7, brightness: 0.8, label: 'Color', size: 'sm', disabled: false, onChange: () => {} },
+    decorators: [
+        (Story, context) => {
+            const [, updateArgs] = useArgs();
+            return (
+                <Story
+                    args={{
+                        ...context.args,
+                        onChange: (saturation: number, brightness: number) =>
+                            updateArgs({ saturation, brightness }),
+                    }}
+                />
+            );
+        },
+    ],
+    args: {
+        ...saturationValueRampStoryArgs,
+        onChange: () => {},
+    },
     argTypes: {
-        hue: { control: { type: 'range', min: 0, max: 360, step: 1 } },
-        saturation: { control: { type: 'range', min: 0, max: 1, step: 0.01 } },
-        brightness: { control: { type: 'range', min: 0, max: 1, step: 0.01 } },
-        label: { control: 'text' },
-        size: sizeControl,
+        ...saturationValueRampStoryControls,
         onChange: { control: false },
     },
 } satisfies Meta<typeof SaturationValueRamp>;
@@ -21,32 +41,23 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {
-    render: (args) => {
-        const [saturation, setSaturation] = useState(args.saturation);
-        const [brightness, setBrightness] = useState(args.brightness);
-        useEffect(() => setSaturation(args.saturation), [args.saturation]);
-        useEffect(() => setBrightness(args.brightness), [args.brightness]);
-        return (
-            <SaturationValueRamp
-                {...args}
-                saturation={saturation}
-                brightness={brightness}
-                onChange={(nextSaturation, nextBrightness) => {
-                    setSaturation(nextSaturation);
-                    setBrightness(nextBrightness);
-                }}
-            />
-        );
-    },
+    name: "Playground with Live code editor",
 };
+
+makeLiveEditStory(Playground, {
+    availableImports: { "@web-ui": { SaturationValueRamp } },
+    code: `import { SaturationValueRamp } from '@web-ui';
+
+export default SaturationValueRamp;`,
+});
 
 export const Gallery: Story = {
     render: (args) => (
-        <div style={{ display: 'grid', gap: 16, padding: 24 }}>
-            {sizeOptions.map((size) => (
-                <SaturationValueRamp key={size} {...args} size={size} onChange={() => {}} />
-            ))}
-            <SaturationValueRamp {...args} disabled onChange={() => {}} />
-        </div>
+        <VariantGallery
+            size={args.size}
+            colors={[DEFAULT_COLOR]}
+            variants={[DEFAULT_VARIANT]}
+            render={({ size }) => <SaturationValueRamp {...args} size={size} />}
+        />
     ),
 };

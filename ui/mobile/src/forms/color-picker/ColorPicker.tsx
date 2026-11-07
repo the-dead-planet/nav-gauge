@@ -1,12 +1,29 @@
 import { FC } from "react";
 import { StyleSheet, View } from "react-native";
-import { ColorPickerProps, getThemeColorSwatches, toCssColor, parseColor, useTheme, DEFAULT_FILL_VARIANT, DEFAULT_SIZE } from "@ui";
+import {
+    ColorPickerProps,
+    getColorPickerSwatches,
+    useTheme,
+    DEFAULT_FILL_VARIANT,
+    DEFAULT_SIZE,
+} from "@ui";
 import { ColorButton } from "../color-button";
 import { ColorInput } from "../color-input";
 import { ColorRamp } from "../color-ramp";
 
+const styles = StyleSheet.create({
+    container: {
+        gap: 8,
+    },
+    "swatch-grid": {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        gap: 5,
+    },
+});
+
 export const ColorPicker: FC<ColorPickerProps> = ({
-    label = 'Color',
+    label = "Color",
     value,
     onChange,
     opacityLabel,
@@ -15,12 +32,7 @@ export const ColorPicker: FC<ColorPickerProps> = ({
     disabled = false,
 }) => {
     const theme = useTheme();
-    const parsed = parseColor(value);
-    const swatches = getThemeColorSwatches(theme);
-
-    const handleSwatch = (swatchColor: string) => {
-        onChange(toCssColor({ ...parseColor(swatchColor), a: parsed.a }));
-    };
+    const swatches = getColorPickerSwatches(theme, value);
 
     return (
         <View style={styles.container}>
@@ -43,31 +55,19 @@ export const ColorPicker: FC<ColorPickerProps> = ({
                 showFormatSelect
             />
 
-            <View style={styles['swatch-grid']}>
+            <View style={styles["swatch-grid"]}>
                 {swatches.map((swatch) => (
                     <ColorButton
                         key={swatch.label}
                         value={swatch.color}
                         label={swatch.label}
                         size={size}
-                        selected={value === swatch.color}
+                        selected={swatch.selected}
                         disabled={disabled}
-                        onPress={() => handleSwatch(swatch.color)}
+                        onPress={() => onChange(swatch.value)}
                     />
                 ))}
             </View>
-
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        gap: 8,
-    },
-    'swatch-grid': {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        gap: 5,
-    },
-});

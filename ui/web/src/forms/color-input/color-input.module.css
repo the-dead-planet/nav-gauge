@@ -5,27 +5,74 @@
 
 .label {
     display: block;
+    font-size: var(--size-control-font-size);
 }
 
 .input-wrapper {
+    --appearance-default-glyphs-override: initial;
+    --appearance-hover-focus-glyphs-override: initial;
+    --appearance-active-pressed-glyphs-override: initial;
     display: flex;
     align-items: center;
-    border-width: 1px;
-    border-style: solid;
-    border-radius: 0;
-    overflow: hidden;
-    transition: border-color .15s ease, background-color .15s ease;
-    gap: 0;
     box-sizing: border-box;
+    height: var(--size-control-height);
+    border: var(--appearance-default-border-width) solid
+        var(--appearance-default-border);
+    border-radius: 0;
+    background: var(--appearance-default-surface);
+    backdrop-filter: var(--appearance-backdrop-filter);
+    color: var(
+        --appearance-default-glyphs-override,
+        var(--appearance-default-glyphs)
+    );
 }
 
-.input-wrapper:focus-within {
-    border-color: var(--ni-highlight-color);
-    box-shadow: 0 0 0 1px var(--ni-highlight-color);
+.input-wrapper:not([data-disabled="true"]):not([data-highlighted="true"]):not(
+        :has(> .value-input:active)
+    ):has(> .value-input:is(:hover, :focus)) {
+    background: var(--appearance-hover-focus-surface);
+    border-color: var(--appearance-hover-focus-border);
+    border-width: var(--appearance-hover-focus-border-width);
+    color: var(
+        --appearance-hover-focus-glyphs-override,
+        var(--appearance-hover-focus-glyphs)
+    );
 }
 
-.swatch {
+.input-wrapper:not([data-disabled="true"]):is(
+        [data-highlighted="true"],
+        :has(> .value-input:active)
+    ) {
+    background: var(--appearance-active-pressed-surface);
+    border-color: var(--appearance-active-pressed-border);
+    border-width: var(--appearance-active-pressed-border-width);
+    color: var(
+        --appearance-active-pressed-glyphs-override,
+        var(--appearance-active-pressed-glyphs)
+    );
+}
+
+.input-wrapper[data-disabled="true"] {
+    background: var(--appearance-disabled-surface);
+    border-color: var(--appearance-disabled-border);
+    border-width: var(--appearance-disabled-border-width);
+    color: var(--appearance-disabled-glyphs);
+}
+
+.input-wrapper:not([data-disabled="true"]):has(> .value-input:focus-visible) {
+    outline: 2px solid var(--appearance-glow-color);
+    outline-offset: 2px;
+}
+
+.input-wrapper:not([data-disabled="true"])[data-invalid="true"] {
+    outline: 2px solid var(--color-glitch-500);
+    outline-offset: 2px;
+}
+
+.input-wrapper .swatch {
     margin: 0;
+    align-self: stretch;
+    height: auto;
 }
 
 .value-input {
@@ -33,239 +80,30 @@
     flex: 1;
     align-self: stretch;
     box-sizing: border-box;
-    padding: 0 8px;
+    padding: 0 var(--spacing-xs);
     border: 0;
     outline: 0;
+    border-radius: 0;
     background: transparent;
     color: inherit;
-    font-family: monospace;
-    font-size: 12px;
-    line-height: 1;
+    font-family: var(--font-numeric);
+    font-size: var(--size-control-font-size);
 }
 
 .value-input:disabled {
-    color: inherit;
     -webkit-text-fill-color: currentColor;
-    opacity: .4;
+    opacity: 1;
     cursor: not-allowed;
 }
 
 .format-select {
     align-self: stretch;
-    width: 84px;
-    border-right: 1px solid var(--ni-color);
-}
-
-.invalid {
-    border-color: var(--color-glitch);
-    box-shadow: 0 0 0 1px var(--color-glitch);
-}
-
-.native-picker {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
+    width: 128px;
+    flex-shrink: 0;
 }
 
 .popup > div {
     width: min(280px, calc(100dvw - 16px));
     box-sizing: border-box;
     padding: 8px;
-    border-radius: 0;
-}
-
-.color-neutral {
-    --ni-color: var(--color-neutral);
-    --ni-color-dark: var(--color-neutral-800);
-    --ni-color-light: var(--color-neutral-100);
-    --ni-highlight-color: var(--color-neutral);
-    --ni-color-900: var(--color-neutral-900);
-    --ni-color-100: var(--color-neutral-100);
-}
-
-.color-primary {
-    --ni-color: var(--color-primary);
-    --ni-color-dark: var(--color-primary-900);
-    --ni-color-light: var(--color-primary-100);
-    --ni-highlight-color: var(--color-primary);
-    --ni-color-900: var(--color-primary-900);
-    --ni-color-100: var(--color-primary-100);
-}
-
-.color-secondary {
-    --ni-color: var(--color-secondary);
-    --ni-color-dark: var(--color-secondary-900);
-    --ni-color-light: var(--color-secondary-100);
-    --ni-highlight-color: var(--color-secondary);
-    --ni-color-900: var(--color-secondary-900);
-    --ni-color-100: var(--color-secondary-100);
-}
-
-.color-tertiary {
-    --ni-color: var(--color-tertiary);
-    --ni-color-dark: var(--color-tertiary-900);
-    --ni-color-light: var(--color-tertiary-100);
-    --ni-highlight-color: var(--color-tertiary);
-    --ni-color-900: var(--color-tertiary-900);
-    --ni-color-100: var(--color-tertiary-100);
-}
-
-.highlight-neutral .input-wrapper:focus-within {
-    --ni-highlight-color: var(--color-neutral);
-}
-
-.highlight-primary .input-wrapper:focus-within {
-    --ni-highlight-color: var(--color-primary);
-}
-
-.highlight-secondary .input-wrapper:focus-within {
-    --ni-highlight-color: var(--color-secondary);
-}
-
-.highlight-tertiary .input-wrapper:focus-within {
-    --ni-highlight-color: var(--color-tertiary);
-}
-
-.size-xs .value-input {
-    font-size: 10px;
-}
-
-.size-xs .label {
-    font-size: 11px;
-}
-
-.size-xs .input-wrapper {
-    height: 18px;
-}
-
-.size-xs .swatch {
-    width: 16px;
-    height: 16px;
-}
-
-.size-sm .value-input {
-    font-size: 11px;
-}
-
-.size-sm .label {
-    font-size: 12px;
-}
-
-.size-sm .input-wrapper {
-    height: 24px;
-}
-
-.size-sm .swatch {
-    width: 22px;
-    height: 22px;
-}
-
-.size-md .value-input {
-    font-size: 12px;
-}
-
-.size-md .label {
-    font-size: 13px;
-}
-
-.size-md .input-wrapper {
-    height: 32px;
-}
-
-.size-md .swatch {
-    width: 30px;
-    height: 30px;
-}
-
-.size-lg .value-input {
-    font-size: 16px;
-}
-
-.size-lg .label {
-    font-size: 16px;
-}
-
-.size-lg .input-wrapper {
-    height: 40px;
-}
-
-.size-lg .swatch {
-    width: 38px;
-    height: 38px;
-}
-
-.mode-light .label {
-    color: var(--ni-color-dark);
-}
-
-.mode-light .input-wrapper {
-    background-color: var(--ni-color-light);
-    color: var(--ni-color-dark);
-    border-color: var(--ni-color);
-}
-
-.mode-dark .label {
-    color: var(--ni-color-light);
-}
-
-.mode-dark .input-wrapper {
-    background-color: var(--ni-color-dark);
-    color: var(--ni-color-light);
-    border-color: var(--ni-color);
-}
-
-.variant-fill .input-wrapper {
-    background-color: var(--ni-color);
-}
-
-.mode-light.variant-fill .input-wrapper {
-    color: var(--ni-color-100);
-}
-
-.mode-dark.variant-fill .input-wrapper {
-    color: var(--ni-color-900);
-}
-
-.mode-light.variant-fill-inverse .input-wrapper {
-    color: var(--ni-color-900);
-}
-
-.mode-dark.variant-fill-inverse .input-wrapper {
-    color: var(--ni-color-100);
-}
-
-.variant-fill-translucent .input-wrapper {
-    background-color: transparent;
-    border-color: rgb(from var(--ni-color) r g b / .3);
-}
-
-.variant-fill-translucent .value-input {
-    background-color: rgb(from var(--ni-color) r g b / .24);
-}
-
-.mode-light.variant-fill-translucent .input-wrapper {
-    color: var(--ni-color-900);
-}
-
-.mode-dark.variant-fill-translucent .input-wrapper {
-    color: var(--ni-color-100);
-}
-
-.highlight-neutral .input-wrapper:focus-within {
-    --ni-highlight-color: var(--color-neutral);
-}
-
-.highlight-primary .input-wrapper:focus-within {
-    --ni-highlight-color: var(--color-primary);
-}
-
-.highlight-secondary .input-wrapper:focus-within {
-    --ni-highlight-color: var(--color-secondary);
-}
-
-.highlight-tertiary .input-wrapper:focus-within {
-    --ni-highlight-color: var(--color-tertiary);
 }

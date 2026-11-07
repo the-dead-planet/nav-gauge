@@ -82,6 +82,7 @@ export const ClockDial: FC<Props> = ({
             onFocus={interaction.onFocus}
             onBlur={interaction.onBlur}
             style={{
+                borderRadius: drawing.fullCircle ? drawing.svgSize / 2 : 0,
                 outlineStyle: "solid",
                 outlineWidth: focused ? 2 : 0,
                 outlineColor: appearance.effects.glowColor,

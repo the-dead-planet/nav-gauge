@@ -54,7 +54,7 @@ The shared component size scale is `xs`, `sm`, `md`, and `lg`. Components that e
 
 These values come directly from the shared control size policy used by both platforms. Controls and their accompanying surfaces use its font, icon, gap, and padding metrics directly. Distinct shape geometry may derive measurements from this scale in the common component package; do not introduce separate component size tables in the theme. `size` must not add external margin or layout spacing around arbitrary child content.
 
-Track-based controls, including sliders and color ramps, share `thumbSize` and `trackThickness`. `thumbSize` is the square side length before rotation; diamond thumbs rotate that square 45°. Diamond endpoint caps use a side length of `trackThickness / √2`, so their diagonal matches the track thickness.
+Track-based controls, including sliders and color ramps, share `thumbSize`: the square side length before rotation; diamond thumbs rotate that square 45°. Standard Slider tracks use `trackThickness`, while hue and opacity ramp tracks use half the shared control `height`. Diamond endpoint caps use a side length of `trackThickness / √2`, so their diagonal matches the standard track thickness.
 
 ## Layout Boundary
 

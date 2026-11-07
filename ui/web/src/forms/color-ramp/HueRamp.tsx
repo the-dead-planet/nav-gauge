@@ -1,24 +1,14 @@
-import { CSSProperties, FC } from "react";
-import { colorRampThumbSizes, DEFAULT_SIZE, HueRampProps } from "@ui";
-import styles from './color-ramp.module.css';
+import { FC } from "react";
+import { HueRampProps } from "@ui";
+import { ColorRampSlider } from "./ColorRampSlider";
+import styles from "./color-ramp.module.css";
 
-export const HueRamp: FC<HueRampProps> = ({
-    value,
-    label = 'Color',
-    size = DEFAULT_SIZE,
-    disabled = false,
-    onChange,
-}) => (
-    <input
-        type="range"
-        min={0}
+export const HueRamp: FC<HueRampProps> = ({ label = "Color", ...props }) => (
+    <ColorRampSlider
+        {...props}
+        label={`${label} hue`}
         max={360}
         step={1}
-        value={value}
-        disabled={disabled}
-        aria-label={`${label} hue`}
-        className={`${styles['linear-ramp']} ${styles.hue} ${styles[`linear-size-${size}`]}`}
-        style={{ '--thumb-size': `${colorRampThumbSizes[size]}px` } as CSSProperties}
-        onChange={(event) => onChange(Number(event.target.value))}
+        className={styles.hue}
     />
 );

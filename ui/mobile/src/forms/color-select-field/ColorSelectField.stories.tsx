@@ -1,24 +1,41 @@
-import { FC, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { ComponentProps } from "react";
+import {
+    DEFAULT_COLOR,
+    colorSelectFieldStoryArgs,
+    colorSelectFieldStoryControls,
+    fillVariantOptions,
+} from "@ui";
 import { ColorSelectField } from "./ColorSelectField";
+import { VariantGallery } from "../../storybook/VariantGallery";
+import { MobileStoryDefinition } from "../../storybook/model";
 
-const styles = StyleSheet.create({
-    container: {
-        padding: 48,
+const story: MobileStoryDefinition<ComponentProps<typeof ColorSelectField>> = {
+    args: {
+        ...colorSelectFieldStoryArgs,
+        onChange: () => {},
     },
-});
-
-export const Interactive: FC = () => {
-    const [value, setValue] = useState('rgba(67, 105, 255, 0.75)');
-
-    return (
-        <View style={styles.container}>
-            <ColorSelectField
-                label="Color"
-                opacityLabel="Opacity"
-                value={value}
-                onChange={setValue}
-            />
-        </View>
-    );
+    controls: colorSelectFieldStoryControls,
+    galleryEditableControls: ["value", "label", "opacityLabel", "disabled"],
+    renderPlayground: (args, updateArgs) => (
+        <ColorSelectField
+            {...args}
+            onChange={(value) => updateArgs({ value })}
+        />
+    ),
+    renderGallery: (args, updateArgs) => (
+        <VariantGallery
+            colors={[DEFAULT_COLOR]}
+            variants={fillVariantOptions}
+            render={({ size, variant }) => (
+                <ColorSelectField
+                    {...args}
+                    size={size}
+                    variant={variant}
+                    onChange={(value) => updateArgs({ value })}
+                />
+            )}
+        />
+    ),
 };
+
+export default story;

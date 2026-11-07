@@ -1,16 +1,37 @@
-import { useEffect, useState } from 'react';
-import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { HueRamp } from './HueRamp';
-import { sizeControl, sizeOptions } from '../../storybook/controls';
+import type { Meta, StoryObj } from "storybook-react-rsbuild";
+import { makeLiveEditStory } from "storybook-addon-code-editor";
+import { useArgs } from "storybook/preview-api";
+import {
+    DEFAULT_COLOR,
+    DEFAULT_VARIANT,
+    hueRampStoryArgs,
+    hueRampStoryControls,
+} from "@ui";
+import { HueRamp } from "./HueRamp";
+import { VariantGallery } from "../../storybook/VariantGallery";
 
 const meta = {
-    title: 'Forms/ColorRampHue',
+    title: "Forms/ColorRampHue",
     component: HueRamp,
-    args: { value: 210, label: 'Color', size: 'sm', disabled: false, onChange: () => {} },
+    decorators: [
+        (Story, context) => {
+            const [, updateArgs] = useArgs();
+            return (
+                <Story
+                    args={{
+                        ...context.args,
+                        onChange: (value: number) => updateArgs({ value }),
+                    }}
+                />
+            );
+        },
+    ],
+    args: {
+        ...hueRampStoryArgs,
+        onChange: () => {},
+    },
     argTypes: {
-        value: { control: { type: 'range', min: 0, max: 360, step: 1 } },
-        label: { control: 'text' },
-        size: sizeControl,
+        ...hueRampStoryControls,
         onChange: { control: false },
     },
 } satisfies Meta<typeof HueRamp>;
@@ -19,20 +40,23 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {
-    render: (args) => {
-        const [value, setValue] = useState(args.value);
-        useEffect(() => setValue(args.value), [args.value]);
-        return <HueRamp {...args} value={value} onChange={setValue} />;
-    },
+    name: "Playground with Live code editor",
 };
+
+makeLiveEditStory(Playground, {
+    availableImports: { "@web-ui": { HueRamp } },
+    code: `import { HueRamp } from '@web-ui';
+
+export default HueRamp;`,
+});
 
 export const Gallery: Story = {
     render: (args) => (
-        <div style={{ display: 'grid', gap: 16, padding: 24 }}>
-            {sizeOptions.map((size) => (
-                <HueRamp key={size} {...args} size={size} onChange={() => {}} />
-            ))}
-            <HueRamp {...args} disabled onChange={() => {}} />
-        </div>
+        <VariantGallery
+            size={args.size}
+            colors={[DEFAULT_COLOR]}
+            variants={[DEFAULT_VARIANT]}
+            render={({ size }) => <HueRamp {...args} size={size} />}
+        />
     ),
 };

@@ -1,56 +1,38 @@
-import { FC, useState } from "react";
-import { ScrollView, StyleSheet, Switch, TextInput, View } from "react-native";
-import { Button } from "../../gizmos/button";
-import { Text } from "../../design-system/typography";
+import { ComponentProps } from "react";
+import {
+    DEFAULT_COLOR,
+    colorPickerStoryArgs,
+    colorPickerStoryControls,
+    fillVariantOptions,
+} from "@ui";
 import { ColorPicker } from "./ColorPicker";
-import { DEFAULT_FILL_VARIANT, DEFAULT_SIZE, FillVariant, fillVariantOptions, sizeOptions, SizeVariant } from "@ui";
+import { VariantGallery } from "../../storybook/VariantGallery";
+import { MobileStoryDefinition } from "../../storybook/model";
 
-const styles = StyleSheet.create({
-    container: { padding: 16, gap: 16 },
-    section: { paddingVertical: 12, gap: 8 },
-    label: { fontSize: 14, fontWeight: '600' },
-    row: { alignItems: "center", flexDirection: "row", flexWrap: "wrap", gap: 8 },
-    input: { borderColor: "#888", borderWidth: 1, color: "#fff", padding: 8 },
-});
-
-export const Playground: FC = () => {
-    const [value, setValue] = useState('rgba(255, 102, 0, 0.8)');
-    const [label, setLabel] = useState("Color");
-    const [opacityLabel, setOpacityLabel] = useState("Opacity");
-    const [size, setSize] = useState<SizeVariant>(DEFAULT_SIZE);
-    const [variant, setVariant] = useState<FillVariant>(DEFAULT_FILL_VARIANT);
-    const [disabled, setDisabled] = useState(false);
-
-    return (
-        <ScrollView contentContainerStyle={styles.container}>
-            <ColorPicker
-                label={label}
-                opacityLabel={opacityLabel}
-                value={value}
-                size={size}
-                variant={variant}
-                disabled={disabled}
-                onChange={setValue}
-            />
-            <Text style={styles.label}>Current value: {value}</Text>
-            <TextInput style={styles.input} value={label} onChangeText={setLabel} />
-            <TextInput style={styles.input} value={opacityLabel} onChangeText={setOpacityLabel} />
-            <View style={styles.row}>
-                {sizeOptions.map((item) => (
-                    <Button key={item} size="xs" onPress={() => setSize(item)}>{item}</Button>
-                ))}
-                {fillVariantOptions.map((item) => (
-                    <Button key={item} size="xs" onPress={() => setVariant(item)}>{item}</Button>
-                ))}
-                <Text>Disabled</Text>
-                <Switch value={disabled} onValueChange={setDisabled} />
-            </View>
-        </ScrollView>
-    );
+const story: MobileStoryDefinition<ComponentProps<typeof ColorPicker>> = {
+    args: {
+        ...colorPickerStoryArgs,
+        onChange: () => {},
+    },
+    controls: colorPickerStoryControls,
+    galleryEditableControls: ["value", "label", "opacityLabel", "disabled"],
+    renderPlayground: (args, updateArgs) => (
+        <ColorPicker {...args} onChange={(value) => updateArgs({ value })} />
+    ),
+    renderGallery: (args, updateArgs) => (
+        <VariantGallery
+            colors={[DEFAULT_COLOR]}
+            variants={fillVariantOptions}
+            render={({ size, variant }) => (
+                <ColorPicker
+                    {...args}
+                    size={size}
+                    variant={variant}
+                    onChange={(value) => updateArgs({ value })}
+                />
+            )}
+        />
+    ),
 };
 
-export const Gallery: FC = () => (
-    <View style={styles.container}>
-        {sizeOptions.map((size) => <ColorPicker key={size} value="#ff6600" size={size} onChange={() => {}} />)}
-    </View>
-);
+export default story;

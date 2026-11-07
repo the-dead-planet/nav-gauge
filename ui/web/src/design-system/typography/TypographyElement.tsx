@@ -1,6 +1,6 @@
 import { ComponentPropsWithoutRef, createElement, CSSProperties, ElementType, ReactElement } from "react";
 import classNames from "classnames";
-import { FontType, resolveTypographyFontWeight, resolveTypographySpacing, useTheme, TypographyProps, DEFAULT_COLOR } from "@ui";
+import { FontType, resolveTypographyFontWeight, resolveTypographySpacing, useTheme, TypographyProps, DEFAULT_COLOR, DEFAULT_VARIANT } from "@ui";
 import styles from './typography.module.css';
 
 type TypographyElementProps<Element extends ElementType> = TypographyProps & {
@@ -51,7 +51,7 @@ export const TypographyElement = <Element extends ElementType>({
 
     return createElement(Component, {
         ...props,
-        'data-appearance-variant': variant ?? (color === undefined ? undefined : 'default'),
+        'data-appearance-variant': variant ?? (color === undefined ? undefined : DEFAULT_VARIANT),
         'data-appearance-mode': theme.mode,
         'data-appearance-color': color,
         'data-appearance-highlight': highlightColor,

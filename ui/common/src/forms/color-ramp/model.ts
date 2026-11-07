@@ -27,6 +27,12 @@ export interface HueRampProps {
     onChange: (value: number) => void;
 }
 
+export interface ColorRampSliderProps extends HueRampProps {
+    max: number;
+    step: number;
+    valueText?: string;
+}
+
 export interface OpacityRampProps {
     color: string;
     value: number;

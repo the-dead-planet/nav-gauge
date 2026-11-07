@@ -1,63 +1,119 @@
-import { ComponentProps } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
 import {
+    TileStoryProps,
+    appearanceColorOptions,
     fillVariantOptions,
     tileStoryArgs,
     tileStoryControls,
-} from '@ui';
-import { Button } from '../../gizmos/button';
-import { MobileStoryDefinition } from '../../storybook/model';
-import { VariantGallery } from '../../storybook/VariantGallery';
-import { Tile } from './Tile';
+} from "@ui";
+import { Button } from "../../gizmos/button";
+import { MobileStoryDefinition } from "../../storybook/model";
+import { VariantGallery } from "../../storybook/VariantGallery";
+import { Tile } from "./Tile";
 
-const styles = StyleSheet.create({
-    gallery: {
-        gap: 16,
-        padding: 16,
-    },
-    content: {
-        minHeight: 64,
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
-    },
-});
+type StoryProps = TileStoryProps & {
+    onAction: () => void;
+    onReset: () => void;
+};
 
-const story = {
-    args: {
-        ...tileStoryArgs,
-        panelProps: { variant: 'fill-inverse' },
-    },
-    controls: tileStoryControls,
-    renderPlayground: (args) => (
-        <Tile
-            {...args}
-            append={<Button size="xs">Info</Button>}
-            actions={(size, variants) => <Button size={size} variant={variants.active}>Open</Button>}
-        >
-            <View style={styles.content} />
-        </Tile>
-    ),
-    renderGallery: (args) => (
-        <ScrollView contentContainerStyle={styles.gallery}>
-            <VariantGallery
+const TileExample = ({
+    color,
+    highlightColor,
+    variant,
+    highlighted,
+    disabled,
+    interactive,
+    activeGlow,
+    elevation,
+    onAction,
+    onReset,
+    ...args
+}: StoryProps) => (
+    <Tile
+        {...args}
+        panelProps={{
+            color,
+            highlightColor,
+            variant,
+            highlighted,
+            disabled,
+            interactive,
+            activeGlow,
+            elevation,
+        }}
+        append={
+            <Button
                 size={args.size}
-                variants={fillVariantOptions}
-                scrollEnabled={false}
-                render={({ color, size, variant }) => (
-                    <Tile
-                        {...args}
-                        size={size}
-                        panelProps={{ ...args.panelProps, color, variant }}
-                        actions={(actionSize, variants) => (
-                            <Button size={actionSize} variant={variants.active}>
-                                Open
-                            </Button>
-                        )}
-                    />
-                )}
-            />
-        </ScrollView>
+                color={color}
+                disabled={disabled}
+                onPress={onAction}
+            >
+                Info
+            </Button>
+        }
+        actions={(size, variants) => [
+            <Button
+                key="reset"
+                size={size}
+                color={color}
+                variant={variants.inactive}
+                disabled={disabled}
+                onPress={onReset}
+            >
+                Reset
+            </Button>,
+            <Button
+                key="highlight"
+                size={size}
+                color={color}
+                variant={variants.active}
+                disabled={disabled}
+                onPress={onAction}
+            >
+                Highlight
+            </Button>,
+        ]}
+    />
+);
+
+const story: MobileStoryDefinition<TileStoryProps> = {
+    args: tileStoryArgs,
+    controls: tileStoryControls,
+    galleryEditableControls: [
+        "name",
+        "description",
+        "children",
+        "highlightColor",
+        "highlighted",
+        "disabled",
+        "interactive",
+        "activeGlow",
+        "elevation",
+    ],
+    renderPlayground: (args, updateArgs) => (
+        <TileExample
+            {...args}
+            onAction={() => updateArgs({ highlighted: !args.highlighted })}
+            onReset={() => updateArgs({ highlighted: false })}
+        />
     ),
-} satisfies MobileStoryDefinition<ComponentProps<typeof Tile>>;
+    renderGallery: (args, updateArgs) => (
+        <VariantGallery
+            colors={appearanceColorOptions}
+            variants={fillVariantOptions}
+            render={({ color, size, variant }) => (
+                <TileExample
+                    {...args}
+                    color={color}
+                    size={size}
+                    variant={variant}
+                    onAction={() =>
+                        updateArgs({ highlighted: !args.highlighted })
+                    }
+                    onReset={() => updateArgs({ highlighted: false })}
+                />
+            )}
+        />
+    ),
+};
 
 export default story;

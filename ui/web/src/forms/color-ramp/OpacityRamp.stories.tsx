@@ -1,17 +1,38 @@
-import { useEffect, useState } from 'react';
-import type { Meta, StoryObj } from 'storybook-react-rsbuild';
-import { OpacityRamp } from './OpacityRamp';
-import { sizeControl, sizeOptions } from '../../storybook/controls';
+import type { Meta, StoryObj } from "storybook-react-rsbuild";
+import { makeLiveEditStory } from "storybook-addon-code-editor";
+import { useArgs } from "storybook/preview-api";
+import {
+    appearanceColorOptions,
+    DEFAULT_VARIANT,
+    opacityRampStoryArgs,
+    opacityRampStoryControls,
+    useTheme,
+} from "@ui";
+import { OpacityRamp } from "./OpacityRamp";
+import { VariantGallery } from "../../storybook/VariantGallery";
 
 const meta = {
-    title: 'Forms/ColorRampOpacity',
+    title: "Forms/ColorRampOpacity",
     component: OpacityRamp,
-    args: { color: 'rgb(67, 105, 255)', value: 0.6, label: 'Opacity', size: 'sm', disabled: false, onChange: () => {} },
+    decorators: [
+        (Story, context) => {
+            const [, updateArgs] = useArgs();
+            return (
+                <Story
+                    args={{
+                        ...context.args,
+                        onChange: (value: number) => updateArgs({ value }),
+                    }}
+                />
+            );
+        },
+    ],
+    args: {
+        ...opacityRampStoryArgs,
+        onChange: () => {},
+    },
     argTypes: {
-        color: { control: 'color' },
-        value: { control: { type: 'range', min: 0, max: 1, step: 0.01 } },
-        label: { control: 'text' },
-        size: sizeControl,
+        ...opacityRampStoryControls,
         onChange: { control: false },
     },
 } satisfies Meta<typeof OpacityRamp>;
@@ -20,20 +41,35 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {
-    render: (args) => {
-        const [value, setValue] = useState(args.value);
-        useEffect(() => setValue(args.value), [args.value]);
-        return <OpacityRamp {...args} value={value} onChange={setValue} />;
-    },
+    name: "Playground with Live code editor",
 };
 
+makeLiveEditStory(Playground, {
+    availableImports: { "@web-ui": { OpacityRamp } },
+    code: `import { OpacityRamp } from '@web-ui';
+
+export default OpacityRamp;`,
+});
+
 export const Gallery: Story = {
-    render: (args) => (
-        <div style={{ display: 'grid', gap: 16, padding: 24 }}>
-            {sizeOptions.map((size) => (
-                <OpacityRamp key={size} {...args} size={size} onChange={() => {}} />
-            ))}
-            <OpacityRamp {...args} disabled onChange={() => {}} />
-        </div>
-    ),
+    argTypes: {
+        color: { table: { disable: true } },
+    },
+    render: (args) => {
+        const theme = useTheme();
+        return (
+            <VariantGallery
+                size={args.size}
+                colors={appearanceColorOptions}
+                variants={[DEFAULT_VARIANT]}
+                render={({ color, size }) => (
+                    <OpacityRamp
+                        {...args}
+                        color={theme.color(color)}
+                        size={size}
+                    />
+                )}
+            />
+        );
+    },
 };

@@ -1,5 +1,6 @@
 import { Theme } from "../theme/theme";
-import { ColorShade, DesignSystemColor } from "../model";
+import { ColorShade } from "../model";
+import { appearanceColorOptions } from "../tinkers";
 
 export interface RgbaColor {
     r: number;
@@ -226,13 +227,12 @@ export const formatColor = (color: RgbaColor, format: ColorFormat): string => {
         : `hsla(${h}, ${s}%, ${l}%, ${color.a})`;
 };
 
-const swatchDesignSystemColors: DesignSystemColor[] = ['primary', 'secondary', 'tertiary', 'neutral'];
 const swatchShades: ColorShade[] = [300, 500, 700];
 
 export const getThemeColorSwatches = (theme: Theme): { label: string; color: string }[] =>
-    swatchDesignSystemColors.flatMap((name) =>
+    appearanceColorOptions.flatMap((name) =>
         swatchShades.map((shade) => ({
             label: `${name} ${shade}`,
-            color: toCssColor({ ...theme.colors[name][shade], a: 1 }),
+            color: theme.color(name, shade),
         })),
     );

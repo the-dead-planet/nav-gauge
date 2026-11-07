@@ -1,23 +1,38 @@
-import { ComponentProps, FC } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { actionButtonVariants, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, SizeVariant, TileProps } from '@ui';
-import { Text } from '../../design-system/typography';
-import { Panel } from '../../hud/panel';
+import {
+    Children,
+    ComponentProps,
+    FC,
+    Fragment,
+    isValidElement,
+    ReactNode,
+} from "react";
+import { StyleSheet, View } from "react-native";
+import {
+    actionButtonVariants,
+    DEFAULT_FILL_VARIANT,
+    DEFAULT_SIZE,
+    Theme,
+    TileProps,
+} from "@ui";
+import { Text } from "../../design-system/typography";
+import { Panel } from "../../hud/panel";
+import { HudContent } from "../../hud/HudContent";
 
 const styles = StyleSheet.create({
     tile: {
         minWidth: 0,
     },
-    body: {
+    layout: {
         flexGrow: 1,
     },
-    header: {
-        gap: 8,
+    body: {
+        flexGrow: 1,
+        gap: Number.parseInt(Theme.spacing.xs, 10),
     },
-    titleRow: {
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        gap: 8,
+    header: {
+        flexDirection: "row",
+        alignItems: "flex-start",
+        gap: Number.parseInt(Theme.spacing.xs, 10),
     },
     title: {
         flex: 1,
@@ -30,24 +45,30 @@ const styles = StyleSheet.create({
     },
     content: {
         flexGrow: 1,
-        gap: 8,
         minWidth: 0,
+        gap: Number.parseInt(Theme.spacing.xs, 10),
     },
     actions: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        gap: 8,
-        paddingTop: 12,
-        paddingLeft: 12,
+        flexDirection: "row",
+        flexShrink: 0,
+    },
+    actionCell: {
+        flex: 1,
     },
 });
 
-const paddingBySize: Record<SizeVariant, number> = {
-    xs: 6,
-    sm: 12,
-    md: 16,
-    lg: 24,
-};
+const renderActionCells = (actions: ReactNode): ReactNode =>
+    Children.map(actions, (action) => {
+        if (
+            isValidElement<{ children?: ReactNode }>(action) &&
+            action.type === Fragment
+        ) {
+            return renderActionCells(action.props.children);
+        }
+        return action === null ? null : (
+            <View style={styles.actionCell}>{action}</View>
+        );
+    });
 
 interface Props extends TileProps {
     panelProps?: ComponentProps<typeof Panel>;
@@ -62,40 +83,71 @@ export const Tile: FC<Props> = ({
     children,
     panelProps = {},
 }) => {
-    const { style, ...restPanelProps } = panelProps;
-    const actionVariants = actionButtonVariants[panelProps.variant ?? DEFAULT_FILL_VARIANT];
+    const {
+        style,
+        elevation = "raised",
+        elevationLayer,
+        ...surfaceProps
+    } = panelProps;
+    const depth = elevationLayer ? { elevationLayer } : { elevation };
+    const actionVariants =
+        actionButtonVariants[panelProps.variant ?? DEFAULT_FILL_VARIANT];
 
     return (
-        <Panel {...restPanelProps} style={[styles.tile, style]}>
-            <View style={styles.body}>
-                <View
-                    style={[
-                        styles.header,
-                        {
-                            paddingTop: paddingBySize[size],
-                            paddingHorizontal: paddingBySize[size],
-                        },
-                    ]}
-                >
-                    <View style={styles.titleRow}>
-                        <Text bold style={styles.title}>
-                            {name}
-                        </Text>
-                        {append}
-                    </View>
-                </View>
-                {description || children ? (
-                    <View style={[styles.content, { padding: paddingBySize[size] }]}>
-                        {description ? (
-                            <Text style={styles.description}>
-                                {description}
+        <Panel
+            {...surfaceProps}
+            {...depth}
+            style={[styles.tile, style]}
+            renderContent={(appearance) => (
+                <View style={styles.layout}>
+                    <View
+                        style={[
+                            styles.body,
+                            {
+                                padding: Number.parseInt(
+                                    Theme.spacing[size],
+                                    10,
+                                ),
+                            },
+                        ]}
+                    >
+                        <View style={styles.header}>
+                            <Text
+                                usage="header"
+                                style={[
+                                    styles.title,
+                                    { color: appearance.glyphs },
+                                ]}
+                            >
+                                {name}
                             </Text>
+                            {append}
+                        </View>
+                        {description || children ? (
+                            <View style={styles.content}>
+                                {description ? (
+                                    <Text
+                                        style={[
+                                            styles.description,
+                                            { color: appearance.glyphs },
+                                        ]}
+                                    >
+                                        {description}
+                                    </Text>
+                                ) : null}
+                                <HudContent appearance={appearance}>
+                                    {children}
+                                </HudContent>
+                            </View>
                         ) : null}
-                        {children}
                     </View>
-                ) : null}
-            </View>
-            {actions ? <View style={styles.actions}>{actions(size, actionVariants)}</View> : null}
-        </Panel>
+                    {actions ? (
+                        <View style={styles.actions}>
+                            {renderActionCells(actions(size, actionVariants))}
+                        </View>
+                    ) : null}
+                </View>
+            )}
+        />
     );
 };

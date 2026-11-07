@@ -4,141 +4,156 @@
     width: 100%;
 }
 
-.ramp {
-    position: relative;
+.control {
+    --ramp-disabled-pattern: linear-gradient(transparent, transparent);
     width: 100%;
     box-sizing: border-box;
-    height: var(--ramp-height);
-    overflow: hidden;
-    border: 1px solid var(--color-neutral-500);
+    height: calc(var(--size-control-height) / 2);
+    border: 1px solid var(--appearance-default-border);
     border-radius: 0;
-    background:
-        linear-gradient(to bottom, transparent, #000),
-        linear-gradient(to right, #fff, transparent),
-        var(--ramp-hue);
-    cursor: crosshair;
+    outline: none;
     touch-action: none;
 }
 
-.ramp.disabled {
-    background:
-        repeating-linear-gradient(-45deg, transparent 0, transparent 4px, rgb(from var(--color-neutral-500) r g b / .7) 4px, rgb(from var(--color-neutral-500) r g b / .7) 6px),
-        linear-gradient(to bottom, transparent, #000),
-        linear-gradient(to right, #fff, transparent),
-        var(--ramp-hue);
+.control:is(:disabled, [aria-disabled="true"]) {
+    --ramp-disabled-pattern: repeating-linear-gradient(
+        -45deg,
+        transparent 0,
+        transparent 4px,
+        var(--appearance-disabled-glyphs) 4px,
+        var(--appearance-disabled-glyphs) 6px
+    );
+    border-color: var(--appearance-disabled-border);
+    opacity: 1;
     cursor: not-allowed;
 }
 
-.ramp:focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
+.ramp {
+    position: relative;
+    height: var(--ramp-height);
+    overflow: hidden;
+    background:
+        var(--ramp-disabled-pattern),
+        linear-gradient(to bottom, transparent, #000),
+        linear-gradient(to right, #fff, transparent), var(--ramp-hue);
+    cursor: crosshair;
 }
 
 .thumb {
     position: absolute;
     box-sizing: border-box;
-    width: var(--thumb-size);
-    height: var(--thumb-size);
+    width: var(--size-control-thumb-size);
+    height: var(--size-control-thumb-size);
     border: 2px solid #fff;
     border-radius: 0;
-    box-shadow: 0 0 0 1px #000;
+    outline: 1px solid #000;
     transform: translate(-50%, -50%) rotate(45deg);
-    pointer-events: none;
+    cursor: grab;
+}
+
+.ramp:not([aria-disabled="true"]):is(:hover, :active, :focus-visible) .thumb {
+    outline-width: 2px;
+}
+
+.ramp:not([aria-disabled="true"]):focus-visible .thumb {
+    outline-color: var(--appearance-glow-color);
+}
+
+.ramp:not([aria-disabled="true"]):active,
+.ramp:not([aria-disabled="true"]):active .thumb {
+    cursor: grabbing;
+}
+
+.ramp[aria-disabled="true"] .thumb {
+    cursor: not-allowed;
 }
 
 .linear-ramp {
-    width: 100%;
-    box-sizing: border-box;
-    height: 14px;
     margin: 0;
     appearance: none;
-    border: 1px solid var(--color-neutral-500);
-    border-radius: 0;
     cursor: pointer;
 }
 
 .hue {
-    background: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
-}
-
-.hue:disabled {
-    background:
-        repeating-linear-gradient(-45deg, transparent 0, transparent 4px, rgb(from var(--color-neutral-500) r g b / .7) 4px, rgb(from var(--color-neutral-500) r g b / .7) 6px),
+    background-image:
+        var(--ramp-disabled-pattern),
         linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
 }
 
 .opacity {
     background-color: #fff;
     background-image:
+        var(--ramp-disabled-pattern),
         linear-gradient(to right, transparent, var(--opacity-color)),
         conic-gradient(from 45deg, #bbb 25%, #fff 0 50%, #bbb 0 75%, #fff 0);
-    background-size: 100% 100%, 8px 8px;
-}
-
-.opacity:disabled {
-    background-image:
-        repeating-linear-gradient(-45deg, transparent 0, transparent 4px, rgb(from var(--color-neutral-500) r g b / .7) 4px, rgb(from var(--color-neutral-500) r g b / .7) 6px),
-        linear-gradient(to right, transparent, var(--opacity-color)),
-        conic-gradient(from 45deg, #bbb 25%, #fff 0 50%, #bbb 0 75%, #fff 0);
-    background-size: auto, 100% 100%, 8px 8px;
+    background-size:
+        auto,
+        100% 100%,
+        8px 8px;
 }
 
 .linear-ramp::-webkit-slider-thumb {
     box-sizing: border-box;
-    width: var(--thumb-size);
-    height: var(--thumb-size);
+    width: var(--size-control-thumb-size);
+    height: var(--size-control-thumb-size);
     appearance: none;
     border: 2px solid #fff;
     border-radius: 0;
     background: transparent;
-    box-shadow: 0 0 0 1px #000;
+    outline: 1px solid #000;
     transform: rotate(45deg);
+    cursor: grab;
 }
 
 .linear-ramp::-moz-range-thumb {
     box-sizing: border-box;
-    width: var(--thumb-size);
-    height: var(--thumb-size);
+    width: var(--size-control-thumb-size);
+    height: var(--size-control-thumb-size);
     border: 2px solid #fff;
     border-radius: 0;
     background: transparent;
-    box-shadow: 0 0 0 1px #000;
+    outline: 1px solid #000;
     transform: rotate(45deg);
+    cursor: grab;
 }
 
-.size-xs {
-    --ramp-height: 100px;
+.linear-ramp:not(:disabled):is(
+        :hover,
+        :active,
+        :focus-visible
+    )::-webkit-slider-thumb {
+    outline-width: 2px;
 }
 
-.size-sm {
-    --ramp-height: 140px;
+.linear-ramp:not(:disabled):is(
+        :hover,
+        :active,
+        :focus-visible
+    )::-moz-range-thumb {
+    outline-width: 2px;
 }
 
-.size-md {
-    --ramp-height: 180px;
+.linear-ramp:not(:disabled):focus-visible::-webkit-slider-thumb {
+    outline-color: var(--appearance-glow-color);
 }
 
-.size-lg {
-    --ramp-height: 220px;
+.linear-ramp:not(:disabled):focus-visible::-moz-range-thumb {
+    outline-color: var(--appearance-glow-color);
 }
 
-.linear-size-xs {
-    height: 12px;
+.linear-ramp:not(:disabled):active,
+.linear-ramp:not(:disabled):active::-webkit-slider-thumb {
+    cursor: grabbing;
 }
 
-.linear-size-sm {
-    height: 16px;
+.linear-ramp:not(:disabled):active::-moz-range-thumb {
+    cursor: grabbing;
 }
 
-.linear-size-md {
-    height: 20px;
+.linear-ramp:disabled::-webkit-slider-thumb {
+    cursor: not-allowed;
 }
 
-.linear-size-lg {
-    height: 24px;
-}
-
-.linear-ramp:disabled {
-    opacity: 1;
+.linear-ramp:disabled::-moz-range-thumb {
     cursor: not-allowed;
 }

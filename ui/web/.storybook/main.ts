@@ -10,12 +10,27 @@ const __dirname = path.dirname(filename);
 const config: StorybookConfig = {
     framework: 'storybook-react-rsbuild',
     stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
-    staticDirs: [path.resolve(__dirname, '../../common/public'), ...getCodeEditorStaticDirs(filename)],
+    staticDirs: [
+        path.resolve(__dirname, '../../common/public'),
+        ...getCodeEditorStaticDirs(filename),
+    ],
     addons: ['@storybook/addon-docs', 'storybook-addon-code-editor'],
     managerHead: (head) =>
         `${head}<style>div:has(> #preview-loader) { display: none; }</style>`,
     async rsbuildFinal(config) {
         return mergeRsbuildConfig(config, {
+            output: {
+                // Emit before HTML generation so the dev server can serve the builder's runtime import.
+                copy: [
+                    {
+                        from: fileURLToPath(
+                            import.meta
+                                .resolve('storybook/internal/mocking-utils/mocker-runtime'),
+                        ),
+                        to: 'mocker-runtime-injected.js',
+                    },
+                ],
+            },
             resolve: {
                 alias: {
                     '@ui': path.resolve(__dirname, '../../common/src'),
@@ -28,8 +43,8 @@ const config: StorybookConfig = {
                     },
                     modules: {
                         auto: /\.module\.css$/,
-                        mode: "local",
-                        localIdentName: "[name]---[local]---[hash:base64:5]",
+                        mode: 'local',
+                        localIdentName: '[name]---[local]---[hash:base64:5]',
                     },
                 },
             },

@@ -1,38 +1,45 @@
-import { FC, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { ComponentProps } from "react";
+import {
+    appearanceColorOptions,
+    colorButtonStoryArgs,
+    colorButtonStoryControls,
+    DEFAULT_VARIANT,
+    useTheme,
+} from "@ui";
 import { ColorButton } from "./ColorButton";
-import { sizeOptions } from "@ui";
-import { Text } from "../../design-system/typography";
+import { VariantGallery } from "../../storybook/VariantGallery";
+import { MobileStoryDefinition } from "../../storybook/model";
 
-const styles = StyleSheet.create({
-    container: {
-        gap: 8,
-        padding: 24,
-    },
-    row: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 8,
-    },
-});
-
-export const Gallery: FC = () => {
-    const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-
+const Gallery = (args: ComponentProps<typeof ColorButton>) => {
+    const theme = useTheme();
     return (
-        <View style={styles.container}>
-            {sizeOptions.map((size, i) => (
-                <View key={size} style={styles.row}>
-                    <ColorButton label={size} size={size} value='rgb(255, 102, 0)' selected={selectedIndex === i} onPress={() => setSelectedIndex(i)} />
-                    <Text>{size}</Text>
-                </View>
-            ))}
-        </View>
+        <VariantGallery
+            size={args.size}
+            colors={appearanceColorOptions}
+            variants={[DEFAULT_VARIANT]}
+            render={({ color, size }) => (
+                <ColorButton {...args} value={theme.color(color)} size={size} />
+            )}
+        />
     );
 };
 
-export const Playground: FC = () => {
-    const [selected, setSelected] = useState(false);
-
-    return <ColorButton label="Color" value="rgb(255, 102, 0)" selected={selected} onPress={() => setSelected(!selected)} />;
+const story: MobileStoryDefinition<ComponentProps<typeof ColorButton>> = {
+    args: colorButtonStoryArgs,
+    controls: colorButtonStoryControls,
+    galleryEditableControls: ["label", "selected", "disabled"],
+    renderPlayground: (args, updateArgs) => (
+        <ColorButton
+            {...args}
+            onPress={() => updateArgs({ selected: !args.selected })}
+        />
+    ),
+    renderGallery: (args, updateArgs) => (
+        <Gallery
+            {...args}
+            onPress={() => updateArgs({ selected: !args.selected })}
+        />
+    ),
 };
+
+export default story;

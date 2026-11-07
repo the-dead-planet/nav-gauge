@@ -78,5 +78,19 @@ export const useHudInteraction = ({
             onBlur?.(event);
         },
     };
-    return { state, interaction, focused: focused && !disabled };
+    return {
+        state,
+        interaction,
+        pointerInteraction: {
+            onPointerEnter: () => {
+                if (!disabled) {
+                    setHovered(true);
+                }
+            },
+            onPointerLeave: () => {
+                setHovered(false);
+            },
+        },
+        focused: focused && !disabled,
+    };
 };

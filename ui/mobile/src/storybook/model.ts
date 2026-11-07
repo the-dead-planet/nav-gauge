@@ -1,5 +1,5 @@
-import { ComponentType, ReactNode } from 'react';
-import { StoryControls } from '@ui';
+import { ComponentType, ReactNode } from "react";
+import { StoryControls } from "@ui";
 
 export type MobileStoryArgs = Record<string, unknown>;
 
@@ -7,8 +7,14 @@ export interface MobileStoryDefinition<Props extends object = MobileStoryArgs> {
     args: Props;
     controls: StoryControls<Props>;
     galleryEditableControls?: readonly Extract<keyof Props, string>[];
-    renderPlayground: (args: Props) => ReactNode;
-    renderGallery: (args: Props) => ReactNode;
+    renderPlayground: (
+        args: Props,
+        updateArgs: (updates: Partial<Props>) => void,
+    ) => ReactNode;
+    renderGallery: (
+        args: Props,
+        updateArgs: (updates: Partial<Props>) => void,
+    ) => ReactNode;
 }
 
 export interface StoryEntry {

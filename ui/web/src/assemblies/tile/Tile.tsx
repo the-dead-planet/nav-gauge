@@ -1,8 +1,13 @@
-import { ComponentProps, FC } from 'react';
-import { actionButtonVariants, DEFAULT_FILL_VARIANT, DEFAULT_SIZE, TileProps } from '@ui';
-import classNames from 'classnames';
-import { Panel } from '../../hud/panel';
-import styles from './tile.module.css';
+import { ComponentProps, FC } from "react";
+import {
+    actionButtonVariants,
+    DEFAULT_FILL_VARIANT,
+    DEFAULT_SIZE,
+    TileProps,
+} from "@ui";
+import classNames from "classnames";
+import { Panel } from "../../hud/panel";
+import styles from "./tile.module.css";
 
 interface Props extends TileProps {
     panelProps?: ComponentProps<typeof Panel>;
@@ -17,35 +22,48 @@ export const Tile: FC<Props> = ({
     children,
     panelProps = {},
 }) => {
-    const { className, ...restPanelProps } = panelProps;
-    const actionVariants = actionButtonVariants[panelProps.variant ?? DEFAULT_FILL_VARIANT];
+    const {
+        className,
+        elevation = "raised",
+        elevationLayer,
+        ...surfaceProps
+    } = panelProps;
+    const depth = elevationLayer ? { elevationLayer } : { elevation };
+    const actionVariants =
+        actionButtonVariants[panelProps.variant ?? DEFAULT_FILL_VARIANT];
 
     return (
         <Panel
-            {...restPanelProps}
+            {...surfaceProps}
+            {...depth}
             className={classNames(styles.tile, className)}
         >
             <article className={styles.article} aria-label={name}>
-                <div className={styles.body}>
-                    <header className={classNames(styles.header, styles[`padding-${size}`])}>
-                        <div className={styles['title-row']}>
-                            <span className={styles.title}>{name}</span>
-                            {append}
-                        </div>
+                <div
+                    className={classNames(
+                        styles.body,
+                        styles[`padding-${size}`],
+                    )}
+                >
+                    <header className={styles.header}>
+                        <h3 className={styles.title}>{name}</h3>
+                        {append}
                     </header>
                     {description || children ? (
-                        <div className={classNames(styles.content, styles[`padding-${size}`])}>
+                        <div className={styles.content}>
                             {description ? (
-                                <span className={styles.description}>
+                                <p className={styles.description}>
                                     {description}
-                                </span>
+                                </p>
                             ) : null}
                             {children}
                         </div>
                     ) : null}
                 </div>
                 {actions ? (
-                    <footer className={styles.actions}>{actions(size, actionVariants)}</footer>
+                    <footer className={styles.actions}>
+                        {actions(size, actionVariants)}
+                    </footer>
                 ) : null}
             </article>
         </Panel>

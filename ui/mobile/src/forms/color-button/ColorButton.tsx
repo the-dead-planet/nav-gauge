@@ -1,61 +1,122 @@
 import { forwardRef } from "react";
-import { HostInstance, Pressable, PressableProps, StyleSheet } from "react-native";
-import { ColorButtonProps, DEFAULT_SIZE, formatColorDescription, useTheme } from "@ui";
+import {
+    HostInstance,
+    Pressable,
+    PressableProps,
+    StyleSheet,
+} from "react-native";
+import {
+    ColorButtonProps,
+    DEFAULT_COLOR,
+    DEFAULT_SIZE,
+    DEFAULT_VARIANT,
+    formatColorDescription,
+    useTheme,
+} from "@ui";
 import { DisabledRampPattern } from "../color-ramp/DisabledRampPattern";
+import { useHudInteraction } from "../../hud/useHudInteraction";
 
 const styles = StyleSheet.create({
     button: {
         flexShrink: 0,
         padding: 0,
-        borderWidth: 1,
         borderRadius: 0,
     },
     disabled: {
-        overflow: 'hidden',
+        overflow: "hidden",
     },
 });
 
-export const ColorButton = forwardRef<HostInstance, ColorButtonProps & Omit<PressableProps, 'children' | 'style'>>(({
-    value,
-    label = 'Color',
-    size = DEFAULT_SIZE,
-    selected = false,
-    disabled = false,
-    onPress,
-    ...props
-}, ref) => {
-    const theme = useTheme();
-    const buttonSize = { xs: 18, sm: 24, md: 32, lg: 40 }[size];
-    const description = formatColorDescription(label, value);
+export const ColorButton = forwardRef<
+    HostInstance,
+    ColorButtonProps & Omit<PressableProps, "children" | "style">
+>(
+    (
+        {
+            value,
+            label = "Color",
+            size = DEFAULT_SIZE,
+            selected = false,
+            disabled = false,
+            onPress,
+            onPressIn,
+            onPressOut,
+            onHoverIn,
+            onHoverOut,
+            onFocus,
+            onBlur,
+            accessibilityState,
+            ...props
+        },
+        ref,
+    ) => {
+        const theme = useTheme();
+        const buttonSize = theme.sizes.control[size].height;
+        const { state, interaction, focused } = useHudInteraction({
+            disabled,
+            highlighted: selected,
+            onPressIn,
+            onPressOut,
+            onHoverIn,
+            onHoverOut,
+            onFocus,
+            onBlur,
+        });
+        const appearance = theme.resolveAppearance(
+            DEFAULT_VARIANT,
+            DEFAULT_COLOR,
+            DEFAULT_COLOR,
+            state,
+        );
+        const description = formatColorDescription(label, value);
+        const frame = theme.resolveAppearance(
+            DEFAULT_VARIANT,
+            DEFAULT_COLOR,
+            DEFAULT_COLOR,
+            disabled ? "disabled" : "default",
+        );
 
-    return (
-        <Pressable
-            ref={ref}
-            style={[
-                styles.button,
-                {
-                    width: buttonSize,
-                    height: buttonSize,
-                    borderWidth: selected ? 2 : 1,
-                    backgroundColor: value,
-                    borderColor: disabled
-                        ? theme.color('neutral', 500)
-                        : selected
-                            ? theme.color('neutral', theme.isDark ? 300 : 700)
-                            : theme.color('neutral', 500),
-                },
-                disabled && styles.disabled,
-            ]}
-            accessibilityRole="button"
-            accessibilityLabel={description}
-            accessibilityState={{ disabled, selected }}
-            disabled={disabled}
-            onPress={onPress}
-            {...props}
-        >
-            {disabled ? <DisabledRampPattern /> : null}
-        </Pressable>
-    );
-});
+        return (
+            <Pressable
+                {...props}
+                {...interaction}
+                ref={ref}
+                style={[
+                    styles.button,
+                    {
+                        width: buttonSize,
+                        height: buttonSize,
+                        borderWidth: 1,
+                        backgroundColor: value,
+                        borderColor: frame.border.color,
+                        outlineStyle: "solid",
+                        outlineWidth:
+                            focused || state === "active-pressed"
+                                ? 2
+                                : state === "hover-focus"
+                                  ? 1
+                                  : 0,
+                        outlineOffset: focused ? 3 : 1,
+                        outlineColor: focused
+                            ? appearance.effects.glowColor
+                            : appearance.glyphs,
+                    },
+                    disabled && styles.disabled,
+                ]}
+                accessibilityRole="button"
+                accessibilityLabel={props.accessibilityLabel ?? description}
+                accessibilityState={{
+                    ...accessibilityState,
+                    disabled,
+                    selected,
+                }}
+                disabled={disabled}
+                onPress={onPress}
+            >
+                {disabled ? <DisabledRampPattern /> : null}
+            </Pressable>
+        );
+    },
+);
 
-ColorButton.displayName = 'ColorButton';
+ColorButton.displayName = "ColorButton";

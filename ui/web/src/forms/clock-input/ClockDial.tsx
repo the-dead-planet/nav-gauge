@@ -15,7 +15,10 @@ export const ClockDial: FC<Props> = ({ drawing, pointerEvents, thumbIcon }) => {
     const backdropMask = `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBoxValue}" preserveAspectRatio="none">${fullCircle ? `<circle cx="${center}" cy="${center}" r="${outerRadius}" fill="white"/>` : `<path d="${wedge}" fill="white"/>`}</svg>`)}")`;
 
     return (
-        <span className={styles.drawing}>
+        <span
+            className={styles.drawing}
+            data-full-circle={fullCircle || undefined}
+        >
             <span
                 className={styles.backdrop}
                 style={{
