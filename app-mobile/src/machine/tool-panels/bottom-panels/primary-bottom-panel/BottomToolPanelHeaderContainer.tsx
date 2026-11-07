@@ -63,10 +63,10 @@ export const BottomToolPanelHeaderContainer: FC<Props> = ({
                 </>
             ) : null}
             <CurveSpacer
-                style={joinHeaderButtons || bothSidePanels
+                style={bothSidePanels || (!onlyLeftPanel && (joinHeaderButtons || onlyRightPanel))
                     ? { flex: 1 }
                     : {
-                        width: onlyRightPanel
+                        width: onlyLeftPanel
                             ? PANEL_HEADER_CURVE_SIZES.onlyLeftPanelRightSpacer
                             : PANEL_HEADER_CURVE_SIZES.bothOrNoPanelsRightSpacer
                     }}

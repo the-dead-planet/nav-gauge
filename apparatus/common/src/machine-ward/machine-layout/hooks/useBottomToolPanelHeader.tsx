@@ -7,32 +7,51 @@ import { useTranslate } from "../../translatron";
 export const useBottomToolPanelHeader = (
     activeId: string | null,
     onActiveIdChange: (activeId: string | null) => void,
-    { joinHeaderButtons = false }: { joinHeaderButtons?: boolean } = {}
+    { joinHeaderButtons = false }: { joinHeaderButtons?: boolean } = {},
 ) => {
     const { toolsStation, namespace, translationKey } = useMachineWard();
     const translate = useTranslate();
-    const [activeLeftPanelToolId] = useSubjectState(toolsStation.activeLeftPanelToolId$);
-    const [activeRightPanelToolId] = useSubjectState(toolsStation.activeRightPanelToolId$);
-    const bothSidePanels = activeLeftPanelToolId !== null && activeRightPanelToolId !== null;
-    const toolPanels = useObservableState(toolsStation.toolPanelsByPlacement$, []);
-    const toolPanelsByPlacement = toolsStation.getToolPanelsByPlacement(toolPanels);
+    const [activeLeftPanelToolId] = useSubjectState(
+        toolsStation.activeLeftPanelToolId$,
+    );
+    const [activeRightPanelToolId] = useSubjectState(
+        toolsStation.activeRightPanelToolId$,
+    );
+    const leftPanelOpen = !joinHeaderButtons && activeLeftPanelToolId !== null;
+    const rightPanelOpen =
+        !joinHeaderButtons && activeRightPanelToolId !== null;
+    const bothSidePanels = leftPanelOpen && rightPanelOpen;
+    const toolPanels = useObservableState(
+        toolsStation.toolPanelsByPlacement$,
+        [],
+    );
+    const toolPanelsByPlacement =
+        toolsStation.getToolPanelsByPlacement(toolPanels);
     const effectivePanels = toolPanelsByPlacement["bottom"];
     const tooltipPlacement: TooltipPlacement = "top";
-    const color: ColorVariant = 'primary';
-    const size: ButtonProps['size'] = 'sm';
+    const color: ColorVariant = "primary";
+    const size: ButtonProps["size"] = "sm";
     const buttonProps: Partial<ButtonProps> = {
         size,
-        variant: 'ghost',
+        variant: "ghost",
         color,
         tooltipPlacement,
         showTooltipConnection: true,
     };
-    const collapseExpandLabel = translate({ n: namespace, t: activeId === null ? translationKey.Expand : translationKey.Collapse });
-    const collapseExpandButtonProps: Partial<ButtonProps & { icon: typeof Icons.NounProject.ChevronDownDouble; accessibilityLabel: string; }> = {
+    const collapseExpandLabel = translate({
+        n: namespace,
+        t: activeId === null ? translationKey.Expand : translationKey.Collapse,
+    });
+    const collapseExpandButtonProps: Partial<
+        ButtonProps & {
+            icon: typeof Icons.NounProject.ChevronDownDouble;
+            accessibilityLabel: string;
+        }
+    > = {
         icon: Icons.NounProject.ChevronDownDouble,
         iconRotateZ: activeId === null ? 180 : 0,
         size,
-        variant: 'ghost',
+        variant: "ghost",
         color,
         tooltipPlacement,
         accessibilityLabel: collapseExpandLabel,
@@ -40,14 +59,14 @@ export const useBottomToolPanelHeader = (
     };
 
     const onSelect = ({ id }: ObservedToolPanel<unknown>) => {
-        return () => onActiveIdChange(activeId === id ? null : id)
+        return () => onActiveIdChange(activeId === id ? null : id);
     };
 
     const onCollapseExpand = () => {
         if (activeId !== null) {
             onActiveIdChange(null);
         } else {
-            onActiveIdChange(effectivePanels[0]?.id)
+            onActiveIdChange(effectivePanels[0]?.id);
         }
     };
 
@@ -59,9 +78,9 @@ export const useBottomToolPanelHeader = (
         onCollapseExpand,
         header: {
             bothSidePanels,
-            onlyLeftPanel: !bothSidePanels && activeLeftPanelToolId !== null,
-            onlyRightPanel: !bothSidePanels && activeRightPanelToolId !== null,
-            joined: joinHeaderButtons || !(activeLeftPanelToolId === null && activeRightPanelToolId === null),
-        }
+            onlyLeftPanel: leftPanelOpen && !rightPanelOpen,
+            onlyRightPanel: rightPanelOpen && !leftPanelOpen,
+            joined: joinHeaderButtons || leftPanelOpen || rightPanelOpen,
+        },
     };
 };

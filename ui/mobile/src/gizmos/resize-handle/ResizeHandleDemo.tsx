@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { ResizeHandleProps } from "@ui";
+import { ResizeHandleProps, RESIZE_HANDLE_TOUCH_SIZE } from "@ui";
 import { ResizeHandle } from "./ResizeHandle";
 import { Text } from "../../design-system/typography";
 
@@ -12,15 +12,15 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 0,
         bottom: 0,
-        right: -12,
-        width: 24,
+        right: -RESIZE_HANDLE_TOUCH_SIZE / 2,
+        width: RESIZE_HANDLE_TOUCH_SIZE,
     },
     handleTop: {
         position: "absolute",
         left: 0,
         right: 0,
-        top: -12,
-        height: 24,
+        top: -RESIZE_HANDLE_TOUCH_SIZE / 2,
+        height: RESIZE_HANDLE_TOUCH_SIZE,
     },
 });
 

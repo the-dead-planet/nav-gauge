@@ -2,6 +2,8 @@ import { ResizeHandleProps } from './model';
 import { appearanceColorOptions, DEFAULT_COLOR, DEFAULT_FILL_VARIANT, fillVariantOptions } from '../../design-system';
 import { StoryControls } from '../../storybook';
 
+export const RESIZE_HANDLE_TOUCH_SIZE = 24;
+
 export const resizeHandleDirections: ResizeHandleProps['direction'][] = ['horizontal', 'vertical'];
 export const resizeHandleStoryArgs: Omit<ResizeHandleProps, 'onDrag' | 'onDragStart' | 'onDragEnd'> = {
     direction: 'horizontal',

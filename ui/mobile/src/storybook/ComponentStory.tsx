@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
-import { DEFAULT_SIZE, sizeOptions, useTheme } from '@ui';
+import { DEFAULT_SIZE, RESIZE_HANDLE_TOUCH_SIZE, sizeOptions, useTheme } from '@ui';
 import { Text } from '../design-system/typography';
 import { ResizeHandle } from '../gizmos/resize-handle';
 import { Tabstrip } from '../rigs/tabstrip';
@@ -61,15 +61,15 @@ const styles = StyleSheet.create({
         position: 'absolute',
         left: 0,
         right: 0,
-        top: -12,
-        height: 24,
+        top: -RESIZE_HANDLE_TOUCH_SIZE / 2,
+        height: RESIZE_HANDLE_TOUCH_SIZE,
     },
     landscapeHandle: {
         position: 'absolute',
         top: 0,
         bottom: 0,
-        left: -12,
-        width: 24,
+        left: -RESIZE_HANDLE_TOUCH_SIZE / 2,
+        width: RESIZE_HANDLE_TOUCH_SIZE,
     },
     controls: {
         gap: 10,

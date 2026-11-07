@@ -1,9 +1,11 @@
 import { fireEvent, render } from "@testing-library/react-native";
+import { StyleSheet } from "react-native";
 import {
     buttonCorners,
     CornerVariant,
     fillVariantOptions,
     Orientation,
+    RESIZE_HANDLE_TOUCH_SIZE,
     Theme,
     ThemeAppearanceState,
     ThemeContext,
@@ -16,12 +18,9 @@ import { Chip } from "../../src/gizmos/chip";
 import { ResizeHandle } from "../../src/gizmos/resize-handle";
 import { ResizeHandleGrip } from "../../src/gizmos/resize-handle/ResizeHandleGrip";
 
-jest.mock(
-    "../../src/gizmos/resize-handle/ResizeHandleGrip",
-    () => ({
-        ResizeHandleGrip: jest.fn(() => null),
-    }),
-);
+jest.mock("../../src/gizmos/resize-handle/ResizeHandleGrip", () => ({
+    ResizeHandleGrip: jest.fn(() => null),
+}));
 
 const media = {
     initial: () => ({
@@ -37,13 +36,55 @@ const cases: { corners: CornerVariant; mode: ThemeMode }[] = modes.flatMap(
 );
 
 describe("Gizmo interaction ownership", () => {
+    test.each(["horizontal", "vertical"] as const)(
+        "%s resize handle reserves the configured touch target around each grip",
+        async (direction) => {
+            const theme = new Theme(
+                themeSpecifications[ThemeName.Default].light,
+                media,
+            );
+            const screen = await render(
+                <ThemeContext.Provider value={theme}>
+                    <ResizeHandle
+                        direction={direction}
+                        onDrag={jest.fn()}
+                        tooltip="Resize panel"
+                    />
+                </ThemeContext.Provider>,
+            );
+            expect(screen.getByRole("adjustable")).toHaveStyle(
+                direction === "horizontal"
+                    ? { width: RESIZE_HANDLE_TOUCH_SIZE }
+                    : { height: RESIZE_HANDLE_TOUCH_SIZE },
+            );
+            const targets = screen.container.queryAll((element) => {
+                const style = StyleSheet.flatten(element.props.style);
+                return (
+                    style?.width === RESIZE_HANDLE_TOUCH_SIZE &&
+                    style?.height === RESIZE_HANDLE_TOUCH_SIZE
+                );
+            });
+            expect(targets).toHaveLength(1);
+            expect(targets[0].props.collapsable).toBe(false);
+            await screen.unmount();
+            theme.destroy();
+        },
+    );
+
     test.each(fillVariantOptions)(
-        '%s button and chip labels do not add automatic shadows',
+        "%s button and chip labels do not add automatic shadows",
         async (variant) => {
-            const theme = new Theme(themeSpecifications[ThemeName.Default].light, media);
+            const theme = new Theme(
+                themeSpecifications[ThemeName.Default].light,
+                media,
+            );
             const content = (disabled = false) => (
                 <ThemeContext.Provider value={theme}>
-                    <Button variant={variant} color="primary" disabled={disabled}>
+                    <Button
+                        variant={variant}
+                        color="primary"
+                        disabled={disabled}
+                    >
                         Button label
                     </Button>
                     <Chip variant={variant} color="primary">
@@ -52,14 +93,14 @@ describe("Gizmo interaction ownership", () => {
                 </ThemeContext.Provider>
             );
             const screen = await render(content());
-            for (const label of ['Button label', 'Chip label']) {
+            for (const label of ["Button label", "Chip label"]) {
                 expect(screen.getByText(label)).not.toHaveStyle({
-                    textShadowColor: theme.color('primary', 800),
+                    textShadowColor: theme.color("primary", 800),
                 });
             }
             await screen.rerender(content(true));
-            expect(screen.getByText('Button label')).not.toHaveStyle({
-                textShadowColor: theme.color('primary', 800),
+            expect(screen.getByText("Button label")).not.toHaveStyle({
+                textShadowColor: theme.color("primary", 800),
             });
             await screen.unmount();
             theme.destroy();
@@ -124,14 +165,16 @@ describe("Gizmo interaction ownership", () => {
                 media,
             );
             const onPress = jest.fn();
-            const resolvedMode = mode === 'light' ? 'dark' : 'light';
+            const resolvedMode = mode === "light" ? "dark" : "light";
             const content = (
                 highlighted = false,
                 disabled = false,
                 overrideGlyphs = true,
                 overrideTheme = true,
             ) => (
-                <ThemeContext.Provider value={overrideTheme ? theme.forMode(resolvedMode) : theme}>
+                <ThemeContext.Provider
+                    value={overrideTheme ? theme.forMode(resolvedMode) : theme}
+                >
                     <Button
                         corners={corners}
                         color="glitch"
@@ -165,21 +208,30 @@ describe("Gizmo interaction ownership", () => {
             await fireEvent(screen.getByRole("button"), "pressOut");
             await fireEvent(screen.getByRole("button"), "focus");
             expect(screen.getByText("Telemetry")).toHaveStyle({
-                color: theme.color("intel", resolvedMode === "light" ? 700 : 200),
+                color: theme.color(
+                    "intel",
+                    resolvedMode === "light" ? 700 : 200,
+                ),
             });
             await fireEvent(screen.getByRole("button"), "blur");
             expect(screen.getByText("Telemetry")).toHaveStyle({
-                color: theme.color("intel", resolvedMode === "light" ? 700 : 200),
+                color: theme.color(
+                    "intel",
+                    resolvedMode === "light" ? 700 : 200,
+                ),
             });
             await screen.rerender(content(true, true));
             expect(screen.getByText("Telemetry")).toHaveStyle({
-                color: theme.color("glitch", resolvedMode === "light" ? 300 : 700),
+                color: theme.color(
+                    "glitch",
+                    resolvedMode === "light" ? 300 : 700,
+                ),
             });
             await fireEvent.press(screen.getByRole("button"));
             expect(onPress).not.toHaveBeenCalled();
             await screen.rerender(content(true, false, false, false));
-            expect(screen.getByText('Telemetry')).toHaveStyle({
-                color: theme.color('intel', mode === 'light' ? 700 : 200),
+            expect(screen.getByText("Telemetry")).toHaveStyle({
+                color: theme.color("intel", mode === "light" ? 700 : 200),
             });
             await screen.unmount();
             theme.destroy();

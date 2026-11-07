@@ -98,6 +98,7 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
     disabled = false,
     highlighted = false,
     label,
+    ariaLabel,
     children,
 }) => {
     const theme = useTheme();
@@ -238,6 +239,7 @@ export const ToggleSwitch: FC<ToggleSwitchProps> = ({
     return (
         <Pressable
             accessibilityRole="switch"
+            accessibilityLabel={ariaLabel ?? (typeof content === 'string' ? content : undefined)}
             accessibilityState={{ checked, disabled }}
             disabled={disabled}
             onPress={() => onChange(!checked)}

@@ -16,6 +16,9 @@ inputs:
   browser:
     description: Browser used to run Cypress tests.
     default: chrome
+  command:
+    description: Optional custom Cypress command, such as concurrent browser runs.
+    required: false
   artifact-name:
     description: Name of the uploaded Cypress screenshots artifact.
     default: cypress-screenshots
@@ -46,7 +49,7 @@ runs:
         build: ${{ inputs.build }}
         start: ${{ inputs.start }}
         wait-on: ${{ inputs.base-url }}
-        command: yarn test:e2e --browser ${{ inputs.browser }} --config baseUrl=${{ inputs.base-url }}
+        command: ${{ inputs.command || format('yarn test:e2e --browser {0} --config baseUrl={1}', inputs.browser, inputs.base-url) }}
 
     - name: Upload Cypress screenshots
       if: always()

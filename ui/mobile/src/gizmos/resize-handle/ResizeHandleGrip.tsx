@@ -8,12 +8,12 @@ const styles = StyleSheet.create({
         position: 'absolute',
     },
     horizontalGrip: {
-        left: 6,
-        transform: [{ translateY: -12 }],
+        left: '50%',
+        transform: [{ translateX: -9 }, { translateY: -18 }],
     },
     verticalGrip: {
-        top: 6,
-        transform: [{ translateX: -12 }],
+        top: '50%',
+        transform: [{ translateX: -18 }, { translateY: -9 }],
     },
 });
 
@@ -35,8 +35,8 @@ export const ResizeHandleGrip: FC<ResizeHandleGripProps & { appearance: Resolved
                 isHorizontal ? styles.horizontalGrip : styles.verticalGrip,
                 isHorizontal ? { top: `${position}%` } : { left: `${position}%` },
             ]}
-            width={isHorizontal ? 12 : 24}
-            height={isHorizontal ? 24 : 12}
+            width={isHorizontal ? 18 : 36}
+            height={isHorizontal ? 36 : 18}
             viewBox={isHorizontal ? '0 0 8 24' : '0 0 24 8'}
             pointerEvents="none"
             accessibilityElementsHidden

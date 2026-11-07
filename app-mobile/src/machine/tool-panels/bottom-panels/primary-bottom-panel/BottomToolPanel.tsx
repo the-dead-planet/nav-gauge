@@ -47,11 +47,17 @@ export const BottomToolPanel: FC<Props> = ({
 
     return (
         <View ref={assignBottomToolPanelRef(toolsStation)}>
-            <View style={[{
-                backgroundColor: withColorOpacity(theme.resolveAppearance().surface, 0.87),
-                borderTopColor: theme.color('primary'),
-                ...resolveElevationStyle(theme, 'raised', 'up'),
-            }]}>
+            <View>
+                <View
+                    pointerEvents="none"
+                    style={[
+                        StyleSheet.absoluteFill,
+                        {
+                            backgroundColor: withColorOpacity(theme.resolveAppearance().surface, 0.87),
+                            ...resolveElevationStyle(theme, 'raised', 'up'),
+                        },
+                    ]}
+                />
                 <BottomToolPanelHeader
                     activeId={activeId}
                     onActiveIdChange={onActiveIdChange}
