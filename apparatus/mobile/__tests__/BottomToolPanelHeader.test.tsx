@@ -1,21 +1,27 @@
 import { act, renderHook } from "@testing-library/react-native";
 import { BehaviorSubject } from "rxjs";
-import { useBottomToolPanelHeader } from "../../apparatus/common/src/machine-ward/machine-layout/hooks/useBottomToolPanelHeader";
+import { useBottomToolPanelHeader } from "@the-dead-planet/nav-gauge-apparatus-common/src/machine-ward/machine-layout/hooks/useBottomToolPanelHeader";
 
-jest.mock("../../apparatus/common/src/machine-ward/useMachineWard", () => ({
-    useMachineWard: () => ({
-        toolsStation: mockToolsStation,
-        namespace: "apparatus",
-        translationKey: { Expand: "expand", Collapse: "collapse" },
+jest.mock(
+    "@the-dead-planet/nav-gauge-apparatus-common/src/machine-ward/useMachineWard",
+    () => ({
+        useMachineWard: () => ({
+            toolsStation: mockToolsStation,
+            namespace: "apparatus",
+            translationKey: { Expand: "expand", Collapse: "collapse" },
+        }),
     }),
-}));
+);
 
-jest.mock("../../apparatus/common/src/machine-ward/translatron", () => ({
-    useTranslate:
-        () =>
-        ({ t }: { t: string }) =>
-            t,
-}));
+jest.mock(
+    "@the-dead-planet/nav-gauge-apparatus-common/src/machine-ward/translatron",
+    () => ({
+        useTranslate:
+            () =>
+            ({ t }: { t: string }) =>
+                t,
+    }),
+);
 
 const mockToolsStation = {
     activeLeftPanelToolId$: new BehaviorSubject<string | null>(null),

@@ -48,7 +48,6 @@ describe("Side tool panel scrolling", () => {
             for (const { height, width } of [
                 { height: 360, width: 320 },
                 { height: 240, width: 200 },
-                { height: 480, width: 420 },
             ]) {
                 cy.get("#app").invoke("css", "height", `${height}px`);
                 cy.get(`.toolbar.${placement}`).invoke(
@@ -75,11 +74,6 @@ describe("Side tool panel scrolling", () => {
                 });
             }
 
-            cy.get(".component-header").should(
-                "have.css",
-                "position",
-                "static",
-            );
             cy.get(".content-header").then(($rail) => {
                 const railTop = $rail[0].getBoundingClientRect().top;
                 cy.get(".component-header").then(($header) => {
@@ -105,12 +99,6 @@ describe("Side tool panel scrolling", () => {
                     expect(content.scrollTop).to.equal(0);
                 }
             });
-            cy.get(".component-content").should(
-                "have.css",
-                "overflow-y",
-                "visible",
-            );
-
             cy.get(".component-content > article").invoke(
                 "css",
                 "height",

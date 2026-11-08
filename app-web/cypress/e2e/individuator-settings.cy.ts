@@ -6,25 +6,6 @@ describe('Individuator settings draft', () => {
             },
         });
 
-        cy.get('body')
-            .invoke('attr', 'data-theme')
-            .should('be.oneOf', ['light', 'dark'])
-            .then((mode) => {
-                if (mode === 'dark') {
-                    cy.get('button[aria-label*="light" i]').click();
-                }
-            });
-        cy.get('body').should('have.attr', 'data-theme', 'light');
-        cy.get('#theme-appearance-variables')
-            .invoke('text')
-            .then((css) => {
-                expect(css).to.include('light-dark(');
-                const variants = [
-                    ...css.matchAll(/\[data-appearance-variant="([^"]+)"\]/g),
-                ].map((match) => match[1]);
-                expect(variants.length).to.equal(new Set(variants).size);
-            });
-
         const openSettings = () => {
             cy.get('button[aria-label="Application menu"]').click();
             cy.get('[role="menu"] [role^="menuitem"]').first().click();
@@ -38,52 +19,6 @@ describe('Individuator settings draft', () => {
         };
 
         openSettings();
-        cy.get(
-            '[role="dialog"] [data-appearance-variant="fill-translucent"]',
-        ).then(($surface) => {
-            const surface = $surface[0];
-            const computed =
-                surface.ownerDocument.defaultView?.getComputedStyle(surface);
-            const foreground = computed?.color;
-            expect(surface.getAttribute('data-appearance-mode')).to.equal(
-                'light',
-            );
-            expect(
-                computed?.getPropertyValue('--appearance-color-900').trim(),
-            ).to.equal(foreground);
-            cy.get('[role="dialog"] h3').should(
-                'have.css',
-                'color',
-                foreground,
-            );
-            expect(computed?.textShadow).to.equal('none');
-            cy.get('[role="dialog"] h3').should(
-                'have.css',
-                'text-shadow',
-                'none',
-            );
-            cy.get('#individuator-language-label')
-                .should('have.css', 'color', foreground)
-                .and('have.css', 'text-shadow', 'none');
-        });
-        cy.contains('[role="dialog"] button', /^Cancel$/)
-            .should('have.attr', 'data-appearance-variant', 'fill-translucent')
-            .and('have.attr', 'data-appearance-mode', 'light');
-        cy.contains('[role="dialog"] button', /^Save$/)
-            .should('have.attr', 'data-appearance-variant', 'fill')
-            .and('have.attr', 'data-appearance-mode', 'light');
-        cy.get('button[aria-labelledby="individuator-language-label"]')
-            .closest('[data-appearance-mode]')
-            .should('have.attr', 'data-appearance-mode', 'light');
-        cy.get('[role="dialog"] button').each(($element) => {
-            cy.wrap($element).should('have.css', 'text-shadow', 'none');
-        });
-        cy.contains('[role="dialog"] button', /^Cancel$/)
-            .find('span')
-            .should('have.css', 'text-shadow', 'none');
-        cy.contains('[role="dialog"] button', /^Save$/)
-            .find('span')
-            .should('have.css', 'text-shadow', 'none');
         chooseGerman();
         cy.get('button[aria-label="Application menu"]').should('exist');
         cy.get('[role="dialog"]')

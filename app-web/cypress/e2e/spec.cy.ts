@@ -1,6 +1,6 @@
-describe('example test', () => {
-    it('passes', () => {
+describe('Application shell', () => {
+    it('loads the application', () => {
         cy.visit('/');
-        cy.wait(2000).contains('nav gauge');
+        cy.contains('nav gauge').should('be.visible');
     });
 });

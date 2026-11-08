@@ -123,8 +123,10 @@ Add unit, component and end-to-end tests for more complex logic but do not overc
 
 - Unit tests in `/**/test/*.test.ts` using [Mocha](https://mochajs.org) and [Chai](https://www.chaijs.com).
 - Application browser tests in [`/app-web/cypress/e2e/*.cy.ts`](/app-web/cypress/e2e) using [Cypress](https://docs.cypress.io).
+- Gear browser tests live in `/gears/*/web/cypress/e2e/*.cy.ts` with their own Cypress configuration and TypeScript project. Run the route-story suite with `yarn test:e2e:route-story:web`.
 - Shared UI browser tests in [`/ui/web/cypress/e2e/*.cy.ts`](/ui/web/cypress/e2e), using Storybook as their test target. UI tests must not depend on application routes or elements.
 - Mobile UI component tests in [`/ui/mobile/__tests__/*.test.tsx`](/ui/mobile/__tests__) and app-level tests in [`/app-mobile/__tests__/*.test.tsx`](/app-mobile/__tests__) use [Jest](https://jestjs.io/docs/tutorial-react-native) with the React Native preset.
+- Gear and apparatus native tests live in their owning mobile workspace's `__tests__/` directory. Each workspace's `test:native` runs only its own tests, using shared configuration from `scripts/testing/jest.native.config.cjs`; `test` includes those checks alongside any Mocha tests.
 - Backend tests in [TBD](/api/)
 
 `yarn test:ui:mobile` runs the UI workspace's Mocha unit tests and native Jest component tests. For a focused native suite, use `yarn workspace @the-dead-planet/nav-gauge-ui-mobile test:native --runTestsByPath __tests__/Fieldset.test.tsx`. Both `yarn typecheck:mobile` (watch) and `yarn typecheck:mobile:once` cover the app and UI workspace, including native tests.
@@ -135,14 +137,15 @@ Run commands from the workspace root. With the application on port 3000 and Stor
 
 | Check | Local and CI command | Target |
 |-------|----------------------|--------|
-| Sources and both Cypress suites | `yarn typecheck:web` | Separate application/UI Cypress TypeScript projects |
+| Sources and Cypress suites | `yarn typecheck:web` | Separate app, UI, and gear Cypress TypeScript projects |
 | Web unit tests | `yarn test:web` | Common, apparatus, gears, app, and UI |
 | Application browser tests | `yarn test:e2e:web:dev --browser chrome` | `http://localhost:3000` |
+| Route-story browser tests | `yarn test:e2e:route-story:web --browser chrome` | Route-story workspace |
 | UI browser tests | `yarn test:e2e:ui:web --browser chrome` and `--browser firefox` | `http://localhost:6006` |
 
 For fast development, start `yarn dev:web` and `yarn dev:ui:web` in separate terminals. To reproduce CI's production targets, run `yarn build:web` and `yarn build:ui:web`, then serve them with `yarn preview:web` and `yarn preview:ui:web` in separate terminals before running `yarn check:web`.
 
-Both Cypress run scripts typecheck their complete suite before execution. Keep Cypress globals isolated in each workspace's `cypress/tsconfig.json`; do not add them to application or UI source TypeScript configs. CI runs every discovered spec, so use `yarn check:web` rather than a focused `--spec` run for the complete pre-PR check.
+Each Cypress runner typechecks its own suite before execution. Keep Cypress globals isolated in each workspace's `cypress/tsconfig.json`; do not add them to application or UI source TypeScript configs. CI runs every discovered spec, so use `yarn check:web` rather than a focused `--spec` run for the complete pre-PR check.
 
 Storybook tests that inspect theme paints must wait for a non-empty resolved appearance variable. A mounted control can appear before theme effects initialize; comparing two unresolved colors can otherwise produce a false pass.
 

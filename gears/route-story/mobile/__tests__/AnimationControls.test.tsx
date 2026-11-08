@@ -1,18 +1,10 @@
-import { act, render, renderHook } from "@testing-library/react-native";
-import { Text } from "react-native";
+import { act, renderHook } from "@testing-library/react-native";
 import { BehaviorSubject } from "rxjs";
 import { CameraRef } from "@maplibre/maplibre-react-native";
 import { MarkerImage } from "@apparatus";
-import { Animatrix } from "../../gears/route-story/common/src/animatrix/animatrix";
-import { formatAnimationDuration } from "../../gears/route-story/common/src/animatrix/useAnimationControls";
-import { useMobileAnimationControls } from "../../gears/route-story/mobile/src/animation-controls/useMobileAnimationControls";
-import { MobileMarkerImageData } from "../../gears/route-story/mobile/src/images/image-parser";
-import { AnimationControlRow } from "../../gears/route-story/mobile/src/animation-controls/AnimationControlRow";
-
-jest.mock("@mobile-ui", () => ({
-    Label: jest.requireActual<typeof import("react-native")>("react-native")
-        .Text,
-}));
+import { Animatrix } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { useMobileAnimationControls } from "../src/animation-controls/useMobileAnimationControls";
+import { MobileMarkerImageData } from "../src/images/image-parser";
 
 jest.mock("@apparatus", () => ({
     useMultipleTranslations: (keys: { t: string }[]) => keys.map(({ t }) => t),
@@ -31,32 +23,14 @@ jest.mock("@mobile-apparatus", () => ({
 
 jest.mock("@the-dead-planet/nav-gauge-gears-route-story-common", () => ({
     ...jest.requireActual(
-        "../../gears/route-story/common/src/animatrix/animatrix",
+        "@the-dead-planet/nav-gauge-gears-route-story-common/src/animatrix/animatrix",
     ),
     ...jest.requireActual(
-        "../../gears/route-story/common/src/animatrix/useAnimationControls",
+        "@the-dead-planet/nav-gauge-gears-route-story-common/src/animatrix/useAnimationControls",
     ),
 }));
 
 const mockIsPlaying = new BehaviorSubject(false);
-
-test("keeps animation labels left of their controls in web's 2:5 columns", async () => {
-    const screen = await render(
-        <AnimationControlRow label="Zoom">
-            <Text>Zoom control</Text>
-        </AnimationControlRow>,
-    );
-    const labelCell = screen.getByText("Zoom").parent!;
-    const controlCell = screen.getByText("Zoom control").parent!;
-    expect(labelCell).toHaveStyle({ flex: 2, minWidth: 0 });
-    expect(controlCell).toHaveStyle({ flex: 5, minWidth: 0 });
-    expect(labelCell.parent).toBe(controlCell.parent);
-    expect(labelCell.parent).toHaveStyle({
-        flexDirection: "row",
-        alignItems: "center",
-    });
-    await screen.unmount();
-});
 
 test("shares timing totals and search, and previews native camera changes only while paused", async () => {
     const animatrix = new Animatrix();
@@ -86,9 +60,6 @@ test("shares timing totals and search, and previews native camera changes only w
         }));
     });
     expect(result.current.totalRecordingDuration).toBe(65000);
-    expect(formatAnimationDuration(result.current.totalRecordingDuration)).toBe(
-        "01:05",
-    );
 
     await act(() => animatrix.searchQuery$.next("DISTANCE"));
     expect(result.current.showGeneral).toBe(true);

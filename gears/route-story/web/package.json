@@ -6,7 +6,9 @@
     "scripts": {
         "build": "tsc -b",
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings -1",
-        "test": "mocha"
+        "test": "mocha",
+        "typecheck:cypress": "tsc --noEmit -p cypress/tsconfig.json",
+        "test:e2e": "yarn typecheck:cypress && cypress run"
     },
     "dependencies": {
         "@the-dead-planet/nav-gauge-apparatus-common": "*",
@@ -18,6 +20,7 @@
     },
     "devDependencies": {
         "@types/exif-js": "^2.3.1",
+        "cypress": "^16.2.1",
         "maplibre-gl": "6.16.0",
         "react": "19.3.1",
         "react-dom": "19.3.1"
