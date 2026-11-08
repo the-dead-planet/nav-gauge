@@ -1,4 +1,43 @@
 describe("Compact player button alignment", () => {
+    it("centers each line of an overflowing Italian caption under its icon", () => {
+        cy.readFile<string>(
+            "../ui/web/src/gizmos/button/button.module.css",
+        ).then((css) => {
+            cy.document().then((document) => {
+                const stylesheet = document.createElement("style");
+                stylesheet.textContent = css;
+                document.head.appendChild(stylesheet);
+                document.body.innerHTML = `
+                    <button class="captioned-button" style="--caption-width:48px;--caption-gap:2px;margin-left:100px">
+                        <span class="icon" style="width:32px;height:32px"></span>
+                        <span class="caption" style="font-size:10px;line-height:12px">Fermare sorveglianza</span>
+                    </button>`;
+            });
+        });
+        cy.get(".caption").should(($caption) => {
+            const caption = $caption[0];
+            const icon =
+                caption.previousElementSibling!.getBoundingClientRect();
+            const text = caption.firstChild!;
+            let offset = 0;
+            for (const word of text.textContent!.split(" ")) {
+                const range = caption.ownerDocument.createRange();
+                range.setStart(text, offset);
+                range.setEnd(text, offset + word.length);
+                const bounds = range.getBoundingClientRect();
+                expect(
+                    Math.abs(
+                        bounds.left +
+                            bounds.width / 2 -
+                            icon.left -
+                            icon.width / 2,
+                    ),
+                ).to.be.lessThan(1);
+                offset += word.length + 1;
+            }
+        });
+    });
+
     it("aligns the wide-layout slider track with the Play/Pause icon center", () => {
         for (const file of [
             "../gears/route-story/web/src/player/player-slider/player-slider.module.css",
@@ -26,10 +65,14 @@ describe("Compact player button alignment", () => {
         });
         cy.get("#track").should(($track) => {
             const track = $track[0].getBoundingClientRect();
-            const play = $track[0].ownerDocument.querySelector("#play")!
+            const play = $track[0].ownerDocument
+                .querySelector("#play")!
                 .getBoundingClientRect();
-            expect(Math.abs(track.top + track.height / 2 - play.top - play.height / 2))
-                .to.be.lessThan(1);
+            expect(
+                Math.abs(
+                    track.top + track.height / 2 - play.top - play.height / 2,
+                ),
+            ).to.be.lessThan(1);
         });
     });
 
@@ -82,9 +125,11 @@ describe("Compact player button alignment", () => {
                 marker.getBoundingClientRect().height / 2,
             );
             expect(cap.content).to.equal("none");
-            expect(window.getComputedStyle(
-                marker.parentElement!.querySelector(".pan-to-icon")!,
-            ).opacity).to.equal("1");
+            expect(
+                window.getComputedStyle(
+                    marker.parentElement!.querySelector(".pan-to-icon")!,
+                ).opacity,
+            ).to.equal("1");
             const pan = marker
                 .parentElement!.querySelector(".pan-to-icon")!
                 .getBoundingClientRect();

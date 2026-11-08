@@ -174,7 +174,9 @@ export const Button: FC<ComponentProps<"button"> & Props & ButtonProps> = ({
                 nowrap={captionNowrap}
                 fontType={fontType}
                 fontWeight={typographyUsageSpecifications.caption.fontWeight}
-                className={styles.caption}
+                className={classNames(styles.caption, {
+                    [styles['caption-nowrap']]: captionNowrap,
+                })}
             >
                 {caption}
             </Caption>

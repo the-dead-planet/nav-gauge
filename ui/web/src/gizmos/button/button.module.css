@@ -73,10 +73,14 @@
 }
 
 .captioned-button > .caption {
-    max-width: 100%;
+    width: min-content;
     color: inherit;
     min-height: var(--caption-min-height);
     text-align: center;
     text-transform: uppercase;
     overflow-wrap: normal;
+}
+
+.captioned-button > .caption-nowrap {
+    max-width: 100%;
 }
