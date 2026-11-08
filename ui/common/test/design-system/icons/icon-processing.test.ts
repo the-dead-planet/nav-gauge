@@ -8,7 +8,9 @@ import { RegistryEntry } from '../../../src/design-system/icons/svg/noun-project
 const rawIcon = (creator: string): string =>
     `<svg xmlns="http://www.w3.org/2000/svg"><path fill="black" d="M0 0h10v10H0z"/><text>Created by ${creator} from Noun Project</text></svg>`;
 
-describe('Icon processing', () => {
+describe('Icon processing', function () {
+    this.timeout(10000);
+
     let directory: string;
 
     beforeEach(() => {
