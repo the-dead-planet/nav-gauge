@@ -8,10 +8,12 @@ import {
 } from "react-native";
 import {
     ButtonProps,
+    buttonCaptionLayout,
     DEFAULT_COLOR,
     DEFAULT_SIZE,
     DEFAULT_SURFACE_VARIANT,
     hexagonGeometry,
+    typographyUsageSpecifications,
     useTheme,
 } from "@ui";
 import { Icon } from "../../design-system/icons";
@@ -20,7 +22,7 @@ import { HexagonSurface } from "../../hud/hexagon/HexagonSurface";
 import { useHudInteraction } from "../../hud/useHudInteraction";
 import { Tooltip } from "../tooltip";
 import { MutableViewStyle } from "../../model";
-import { Text } from "../../design-system/typography";
+import { Caption, Text } from "../../design-system/typography";
 
 const styles = StyleSheet.create({
     container: {
@@ -28,6 +30,20 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         boxSizing: "border-box",
+    },
+    captionedContainer: {
+        alignItems: "center",
+        gap: buttonCaptionLayout.gap,
+        width: buttonCaptionLayout.width,
+        flexShrink: 0,
+    },
+    caption: {
+        minHeight: buttonCaptionLayout.minHeight,
+        textAlign: "center",
+    },
+    singleLineCaption: {
+        minHeight: typographyUsageSpecifications.caption.lineHeight,
+        maxWidth: "100%",
     },
 });
 
@@ -41,6 +57,8 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
     forwardRef,
     color = DEFAULT_COLOR,
     fontType,
+    caption,
+    captionNowrap = false,
     glyphsShade,
     highlightColor = color,
     highlightGlyphsShade,
@@ -215,6 +233,15 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
         </>
     );
 
+    const shapedContent =
+        corners === "hexagon" ? (
+            <HexagonSurface appearance={appearance} showGlow={showGlow}>
+                {content}
+            </HexagonSurface>
+        ) : (
+            content
+        );
+
     const buttonElement = (
         <Pressable
             ref={forwardRef}
@@ -224,7 +251,11 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
             accessibilityRole={accessibilityRole ?? "button"}
             accessibilityLabel={
                 accessibilityLabel ??
-                (!label && typeof tooltip === "string" ? tooltip : undefined)
+                (!label
+                    ? typeof tooltip === "string"
+                        ? tooltip
+                        : caption
+                    : undefined)
             }
             accessibilityState={{
                 ...accessibilityState,
@@ -234,17 +265,32 @@ export const Button: FC<PressableProps & ButtonProps & MobileButtonProps> = ({
             onPress={onPress ?? undefined}
             onLongPress={onLongPress ?? undefined}
             style={(state) => [
-                styles.container,
-                container,
+                caption ? styles.captionedContainer : styles.container,
+                caption ? undefined : container,
                 typeof style === "function" ? style(state) : style,
             ]}
         >
-            {corners === "hexagon" ? (
-                <HexagonSurface appearance={appearance} showGlow={showGlow}>
-                    {content}
-                </HexagonSurface>
+            {caption ? (
+                <>
+                    <View style={[styles.container, container]}>
+                        {shapedContent}
+                    </View>
+                    <Caption
+                        uppercase
+                        nowrap={captionNowrap}
+                        fontType={fontType}
+                        fontWeight={typographyUsageSpecifications.caption.fontWeight}
+                        style={[
+                            styles.caption,
+                            captionNowrap && styles.singleLineCaption,
+                            { color: textColor },
+                        ]}
+                    >
+                        {caption}
+                    </Caption>
+                </>
             ) : (
-                content
+                shapedContent
             )}
         </Pressable>
     );

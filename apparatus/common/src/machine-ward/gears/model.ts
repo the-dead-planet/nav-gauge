@@ -20,6 +20,7 @@ export interface GearApparatus<TMap, TChronoLens extends ChronoLens> {
 
 export enum GearTranslationKey {
     GearName = 'gear-name',
+    GearShortName = 'gear-short-name',
     GearDescription = 'gear-description',
 };
 

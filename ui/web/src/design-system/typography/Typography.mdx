@@ -1,5 +1,6 @@
 import { Canvas, Meta, Title } from "@storybook/addon-docs/blocks";
 import * as TypographyStories from "./Typography.stories";
+import { typographyUsages, typographyUsageSpecifications } from "@ui";
 
 <Meta title="Design System/Typography" />
 
@@ -49,6 +50,36 @@ Typography carries both hierarchy and product voice. Font choice must follow the
 Use the default font unless the content clearly matches another role. Special messaging and neon fonts lose their effect when used frequently and reduce readability in long text.
 
 Use tabular numerals for changing values when stable character widths prevent the surrounding layout from shifting.
+
+## Text sizing
+
+The `usage` hierarchy uses these shared defaults on web and mobile. Values are CSS pixels on web and logical units on mobile. Use `<Caption>` for short supporting text; it renders the `caption` hierarchy without specifying `usage` manually (a `<span>` on web, native text on mobile).
+
+<table>
+    <thead>
+        <tr>
+            <th>Usage</th>
+            <th>Font size</th>
+            <th>Line height</th>
+            <th>Default weight</th>
+        </tr>
+    </thead>
+    <tbody>
+        {typographyUsages.map((usage) => {
+            const specifications = typographyUsageSpecifications[usage];
+            return (
+                <tr key={usage}>
+                    <td><code>{usage}</code></td>
+                    <td>{specifications.fontSize}</td>
+                    <td>{specifications.lineHeight}</td>
+                    <td>{specifications.fontWeight}</td>
+                </tr>
+            );
+        })}
+    </tbody>
+</table>
+
+Control labels follow the <a href="./?path=/docs/design-system-sizing--docs" target="_top" style={{ textDecoration: 'underline' }}>control size scale</a> rather than the text hierarchy. Player and <a href="./?path=/docs/gizmos-button--docs" target="_top" style={{ textDecoration: 'underline' }}>button captions</a> share the `caption` typography above; only button captions are uppercase.
 
 <h2 id="font-weight">Font weight</h2>
 

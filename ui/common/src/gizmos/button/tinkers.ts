@@ -3,18 +3,29 @@ import {
     activeGlowOptions,
     allColorShades,
     appearanceColorOptions,
+    CornerVariant,
     DEFAULT_COLOR,
     sizeOptions,
     surfaceVariantOptions,
     typographyStoryControls,
+    typographyUsageSpecifications,
 } from '../../design-system';
 import { StoryControls } from '../../storybook';
+import { TooltipPlacement } from '../tooltip';
 
-export const buttonCorners = ['square', 'circle', 'hexagon'] as const;
-export const buttonTooltipPlacements = ['auto', 'top', 'right', 'bottom', 'left'] as const;
+export const buttonCorners: CornerVariant[] = ['square', 'circle', 'hexagon'];
+export const buttonTooltipPlacements: TooltipPlacement[] = ['auto', 'top', 'right', 'bottom', 'left'];
+
+export const buttonCaptionLayout = {
+    minHeight: typographyUsageSpecifications.caption.lineHeight * 2,
+    width: 48,
+    gap: 2,
+};
 
 export const buttonStoryArgs = {
     children: 'Button',
+    caption: '',
+    captionNowrap: false,
     fontType: undefined,
     color: DEFAULT_COLOR,
     variant: 'ghost',
@@ -33,6 +44,12 @@ export const buttonStoryControls: StoryControls<ButtonProps> = {
     fontType: typographyStoryControls.fontType,
     children: {
         control: 'text',
+    },
+    caption: {
+        control: 'text',
+    },
+    captionNowrap: {
+        control: 'boolean',
     },
     color: {
         control: 'select',

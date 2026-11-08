@@ -2,6 +2,7 @@ import { GearTranslationKey, TranslationTable } from "@apparatus";
 
 const en: TranslationTable<GearTranslationKey>['en'] = {
     "gear-name": 'Record Route',
+    "gear-short-name": 'Record',
     "gear-description": 'Record your traces'
 };
 

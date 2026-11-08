@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild';
 import { makeLiveEditStory } from 'storybook-addon-code-editor';
 import { appearanceColorOptions, buttonCorners, buttonStoryArgs, buttonStoryControls, Icons } from '@ui';
 import { Button } from './Button';
+import styles from './button-stories.module.css';
 import { VariantGallery } from '../../storybook/VariantGallery';
 import {
     surfaceVariantOptions,
@@ -34,6 +35,32 @@ type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {
     name: 'Playground with Live code editor',
+};
+
+export const Captions: Story = {
+    args: {
+        children: undefined,
+        corners: 'circle',
+        size: 'md',
+    },
+    render: (args) => (
+        <div className={styles['caption-row']}>
+            <Button {...args} icon={Icons.RecordCapture} caption="Record" aria-label="Start recording" />
+            <Button {...args} icon={Icons.NounProject.PauseRecording} caption="Pause recording" aria-label="Pause recording" />
+            <Button {...args} icon={Icons.Beaker} aria-label="Without caption" />
+        </div>
+    ),
+};
+
+export const HexagonCaption: Story = {
+    args: {
+        children: undefined,
+        corners: 'hexagon',
+        caption: 'Record',
+        tooltip: 'Record',
+        size: 'md',
+    },
+    render: (args) => <Button {...args} />,
 };
 
 makeLiveEditStory(Playground, {

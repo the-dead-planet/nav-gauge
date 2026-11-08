@@ -134,9 +134,9 @@ export const typographyUsageSpecifications: Record<TextUsage, {
         lineHeight: 24,
     },
     caption: {
-        fontSize: 12,
+        fontSize: 10,
         fontWeight: '400',
-        lineHeight: 16,
+        lineHeight: 12,
     },
 };
 

@@ -24,6 +24,9 @@ const styles = StyleSheet.create({
         lineHeight: 40,
         marginLeft: 8,
     },
+    captionedContainer: {
+        paddingTop: 1,
+    },
 });
 
 export const GearsTopToolbar: FC = () => {
@@ -42,13 +45,13 @@ export const GearsTopToolbar: FC = () => {
             ref={(instance) => {
                 toolsStation.topToolbarSizeRef.current = instance;
             }}
-            style={[styles.container, {
+            style={[styles.container, !media.isMoreThanSm && styles.captionedContainer, {
                 backgroundColor: withColorOpacity(appearance.surface, 0.87),
                 borderBottomColor: theme.color('secondary'),
             }]}
             direction="row"
             gap="md"
-            alignItems="center"
+            alignItems={media.isMoreThanSm ? "center" : "flex-start"}
         >
             <View style={[styles.heading, { borderRightColor: appearance.border.color }]}>
                 <Icon icon={Icons.NounProject.Gear} color={theme.color('secondary')} width={20} height={20} />
@@ -63,28 +66,33 @@ export const GearsTopToolbar: FC = () => {
                     </Text>
                 ) : null}
             </View>
-            {gears.map(({ gear, isEngaged }) => (
-                <Button
-                    key={gear.id}
-                    variant="ghost"
-                    highlightColor="secondary"
-                    highlighted={isEngaged}
-                    icon={gear.icon as never}
-                    onPress={() => {
-                        if (isEngaged) {
-                            engine.disengageGear(gear);
-                        } else {
-                            engine.engageGear(gear);
-                        }
-                    }}
-                    tooltip={translate({ n: gear.id, t: gear.translationKey.GearDescription })}
-                    tooltipPlacement="bottom"
-                >
-                    {media.isMoreThanSm
-                        ? translate({ n: gear.id, t: gear.translationKey.GearName })
-                        : null}
-                </Button>
-            ))}
+            {gears.map(({ gear, isEngaged }) => {
+                const gearName = translate({ n: gear.id, t: gear.translationKey.GearName });
+                const gearShortName = translate({ n: gear.id, t: gear.translationKey.GearShortName });
+                return (
+                    <Button
+                        key={gear.id}
+                        variant="ghost"
+                        highlightColor="secondary"
+                        highlighted={isEngaged}
+                        icon={gear.icon as never}
+                        accessibilityLabel={gearName}
+                        caption={media.isMoreThanSm ? undefined : gearShortName}
+                        captionNowrap
+                        onPress={() => {
+                            if (isEngaged) {
+                                engine.disengageGear(gear);
+                            } else {
+                                engine.engageGear(gear);
+                            }
+                        }}
+                        tooltip={gearName}
+                        tooltipPlacement="bottom"
+                    >
+                        {media.isMoreThanSm ? gearName : null}
+                    </Button>
+                );
+            })}
         </FlexBox>
     );
 };

@@ -3,6 +3,7 @@ import { RouteStoryTranslationKey } from "../model";
 
 const fr: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['fr'] = {
     "gear-name": "Histoire d'itinéraire",
+    "gear-short-name": 'Histoire',
     "gear-description": "Créer une histoire vidéo à partir de vos traces GPS et données d'image",
     "fit-bounds": 'Acquérir la cible',
     "player": 'Configuration du lecteur d\'itinéraire',
@@ -17,6 +18,10 @@ const fr: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['fr'] 
     "stop-recording": 'Arrêter la surveillance',
     "pause-recording": 'Mettre en pause la surveillance',
     "resume-recording": 'Reprendre la surveillance',
+    "record": 'Enregistrer',
+    "stop": 'Arrêter',
+    "resume": 'Reprendre',
+    "destroy": 'Détruire',
     "layer-aesthetic-options": 'Les options esthétiques des couches',
     "open-layer-aesthetic-options": 'Ouvrir les options esthétiques des couches',
     "lines": 'Lignes',
