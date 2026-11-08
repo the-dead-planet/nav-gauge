@@ -35,16 +35,16 @@ export const RecordingButtons: FC<Props> = ({
         // resumeCaption,
         // destroyCaption,
     ] = useMultipleTranslations([
-        { n: gearId, t: translationKey.DestroyRecording },
+        // { n: gearId, t: translationKey.DestroyRecording },
         { n: gearId, t: translationKey.StartRecording },
         { n: gearId, t: translationKey.StopRecording },
-        { n: gearId, t: translationKey.PauseRecording },
-        { n: gearId, t: translationKey.ResumeRecording },
+        // { n: gearId, t: translationKey.PauseRecording },
+        // { n: gearId, t: translationKey.ResumeRecording },
         { n: gearId, t: translationKey.Record },
         { n: gearId, t: translationKey.Stop },
-        { n: gearId, t: translationKey.Pause },
-        { n: gearId, t: translationKey.Resume },
-        { n: gearId, t: translationKey.Destroy },
+        // { n: gearId, t: translationKey.Pause },
+        // { n: gearId, t: translationKey.Resume },
+        // { n: gearId, t: translationKey.Destroy },
     ]);
 
     return (
