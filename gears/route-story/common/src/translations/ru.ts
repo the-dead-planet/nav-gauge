@@ -58,6 +58,7 @@ const ru: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['ru'] 
     "pan-to-image": 'Перейти к изображению',
     "show-image-markers": 'Показать маркеры изображений',
     "hide-image-markers": 'Скрыть маркеры изображений',
+    "markers": 'Маркеры',
 };
 
 export default ru;

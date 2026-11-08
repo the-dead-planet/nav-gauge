@@ -170,6 +170,7 @@ export enum RouteStoryTranslationKey {
     PanToImage = 'pan-to-image',
     ShowImageMarkers = 'show-image-markers',
     HideImageMarkers = 'hide-image-markers',
+    Markers = 'markers',
     PurgeStoryText = 'purge-story-text',
 }
 

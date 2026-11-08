@@ -22,9 +22,11 @@ export const MarkerButton: FC<Props> = ({
     const [
         showImageMarkerLabel,
         hideImageMarkerLabel,
+        markersCaption,
     ] = useMultipleTranslations([
         { n: gearId, t: translationKey.ShowImageMarkers },
         { n: gearId, t: translationKey.HideImageMarkers },
+        { n: gearId, t: translationKey.Markers },
     ]);
 
     const markersLabel = showImageMarkers ? hideImageMarkerLabel : showImageMarkerLabel;
@@ -38,6 +40,7 @@ export const MarkerButton: FC<Props> = ({
             color={showImageMarkers ? 'tertiary' : 'neutral'}
             highlightColor="tertiary"
             aria-label={markersLabel}
+            caption={markersCaption}
             tooltip={markersLabel}
             tooltipPlacement="top"
             onClick={() => setShowImageMarkers((prev) => !prev)}
