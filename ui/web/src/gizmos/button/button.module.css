@@ -79,6 +79,7 @@
     text-align: center;
     text-transform: uppercase;
     overflow-wrap: normal;
+    word-break: keep-all;
 }
 
 .captioned-button > .caption-nowrap {
