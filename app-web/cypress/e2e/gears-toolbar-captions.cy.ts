@@ -15,8 +15,9 @@ describe("Gear toolbar captions", () => {
             expect(bounds.bottom).to.be.at.most(toolbar.bottom);
         });
 
-        cy.get(selector).trigger("mouseover");
+        cy.get(selector).focus();
         cy.get('[role="tooltip"]').should("contain.text", "Route Story");
+        cy.get(selector).blur();
 
         cy.viewport(900, 640);
         cy.get(selector).should("contain.text", "Route Story");
