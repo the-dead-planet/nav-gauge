@@ -33,7 +33,7 @@ describe("Compact player button alignment", () => {
         });
     });
 
-    it("mirrors the marker spacing as well as the diamond, cap, and pan action", () => {
+    it("positions the lower diamond and upper pan action without a horizontal cap", () => {
         for (const file of [
             "../gears/route-story/web/src/player/player-slider/slider-markers.module.css",
             "../gears/route-story/web/src/player/player-slider/player-slider.module.css",
@@ -72,7 +72,7 @@ describe("Compact player button alignment", () => {
                 markerBounds.top +
                 Number.parseFloat(diamond.top) +
                 Number.parseFloat(diamond.height);
-            expect(Math.abs(diamondCenter - trackCenter - 17)).to.be.lessThan(
+            expect(Math.abs(diamondCenter - trackCenter - 21)).to.be.lessThan(
                 1,
             );
             expect(
@@ -81,11 +81,14 @@ describe("Compact player button alignment", () => {
             expect(Number.parseFloat(diamond.top)).to.be.greaterThan(
                 marker.getBoundingClientRect().height / 2,
             );
-            expect(Number.parseFloat(cap.top)).to.equal(0);
+            expect(cap.content).to.equal("none");
+            expect(window.getComputedStyle(
+                marker.parentElement!.querySelector(".pan-to-icon")!,
+            ).opacity).to.equal("1");
             const pan = marker
                 .parentElement!.querySelector(".pan-to-icon")!
                 .getBoundingClientRect();
-            expect(pan.bottom).to.be.lessThan(
+            expect(pan.bottom).to.be.at.most(
                 marker.getBoundingClientRect().top,
             );
         });

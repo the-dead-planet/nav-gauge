@@ -33,18 +33,19 @@ const styles = StyleSheet.create({
         width: "100%",
     },
     sliderDesktop: {
-        marginTop: -5,
+        marginTop: -15,
     },
     buttons: {
         flexDirection: "row",
-        alignItems: "center",
+        alignItems: "flex-start",
         columnGap: 10,
         paddingTop: 10,
     },
     buttonGroup: {
         flex: 1,
+        minWidth: 0,
         flexDirection: "row",
-        alignItems: "center",
+        alignItems: "flex-start",
         columnGap: 10,
     },
     buttonGroupEnd: {

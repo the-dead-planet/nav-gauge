@@ -2,7 +2,7 @@
     height: calc(100% - 2px);
     pointer-events: none;
     position: absolute;
-    top: 0;
+    top: 2px;
     left: 8px;
     right: 8px;
     margin: 0 auto;
@@ -24,7 +24,7 @@
 
     position: absolute;
     top: 0px;
-    height: 100%;
+    height: calc(100% + 4px);
     display: block;
     width: var(--marker-width);
     background-color: var(--marker-color);
@@ -40,11 +40,8 @@
     border-right: var(--marker-border-width) solid var(--marker-border-color);
 }
 
-.image-marker:hover::before,
 .image-marker:hover::after,
-.image-marker:focus::before,
 .image-marker:focus::after,
-.image-marker.highlight::before,
 .image-marker.highlight::after {
     border: var(--marker-border-width) solid var(--marker-border-color);
 }
@@ -55,26 +52,15 @@
     transform: translateX(calc(-1 * var(--marker-border-width)));
 }
 
-.image-marker::after,
-.image-marker::before {
+.image-marker::after {
     content: '';
     position: absolute;
     left: calc(var(--marker-width) / 2);
     background-color: var(--marker-color);
-}
-
-.image-marker::after {
-    top: calc(var(--marker-thumb-size) / 2);
-    transform: translate(-50%, -50%) rotate(45deg);
+    bottom: calc(var(--marker-thumb-size) / 2);
+    transform: translate(-50%, 50%) rotate(45deg);
     width: var(--marker-thumb-size);
     height: var(--marker-thumb-size);
-}
-
-.image-marker::before {
-    bottom: 0;
-    transform: translate(-50%, 50%);
-    width: 4px;
-    height: 2px;
 }
 
 .dragging {
@@ -87,20 +73,15 @@
 }
 
 .pan-to-icon {
-    opacity: 0.4;
     pointer-events: auto;
     position: absolute;
-    bottom: -14px;
+    top: -12px;
     left: -5px;
     z-index: 10;
     width: 12px;
     height: 12px;
     max-width: 12px;
     min-width: 12px;
-}
-
-.image-marker-container:hover .pan-to-icon {
-    opacity: 1;
 }
 
 .route-end-marker-container {
@@ -115,8 +96,4 @@
 
     cursor: default;
     pointer-events: none;
-}
-
-.route-end-marker-container:hover .pan-to-icon {
-    opacity: 1;
 }

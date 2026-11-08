@@ -25,16 +25,22 @@
 
 .buttons {
     display: grid;
-    grid-template-columns: 1fr max-content 1fr;
-    align-items: center;
+    grid-template-columns: minmax(0, 1fr) max-content minmax(0, 1fr);
+    align-items: start;
     column-gap: 10px;
     box-sizing: border-box;
 }
 
 .buttons>div {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     column-gap: 10px;
+    min-width: 0;
+}
+
+.buttons>div>button {
+    flex-shrink: 1;
+    min-width: 0;
 }
 
 .buttons>div:last-child {
@@ -42,5 +48,5 @@
 }
 
 .slider-desktop {
-    margin-top: -5px;
+    margin-top: 0;
 }

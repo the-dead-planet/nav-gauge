@@ -33,7 +33,8 @@ interface Props {
 }
 
 const GRAB_RADIUS_PX = 20;
-const MARKER_HEIGHT = 40;
+const MARKER_HEIGHT = 44;
+const MARKER_ACTION_HEIGHT = 14;
 
 const styles = StyleSheet.create({
     container: {
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
     },
     marker: {
         position: 'absolute',
-        top: 0,
+        top: MARKER_ACTION_HEIGHT,
         width: 16,
         height: MARKER_HEIGHT,
         marginLeft: -8,
@@ -54,25 +55,19 @@ const styles = StyleSheet.create({
     markerHead: {
         width: 8,
         height: 8,
-        marginBottom: -2,
+        marginTop: -2,
         transform: [{ rotate: '45deg' }],
     },
     markerLine: {
         width: 2,
         flex: 1,
     },
-    markerFoot: {
-        width: 5,
-        height: 2,
-        marginTop: -1,
-    },
     panToButton: {
         position: 'absolute',
-        bottom: -14,
+        top: -MARKER_ACTION_HEIGHT + 2,
         width: 12,
         height: 12,
         minWidth: 12,
-        opacity: 0.4,
     },
     dragMarker: {
         opacity: 0.5,
@@ -80,7 +75,7 @@ const styles = StyleSheet.create({
     routeEndMarker: {
         position: 'absolute',
         right: 0,
-        top: 0,
+        top: MARKER_ACTION_HEIGHT,
         width: 16,
         height: MARKER_HEIGHT,
         marginRight: -8,
@@ -164,7 +159,8 @@ export const SliderMarkers: FC<Props> = ({
 
     const tryBeginDragAt = useCallback((event: GestureResponderEvent): boolean => {
         const metrics = containerMetricsRef.current;
-        if (!geojson || !routeTimes || metrics.width <= 0 || event.nativeEvent.pageY - metrics.pageY > MARKER_HEIGHT) {
+        const offsetY = event.nativeEvent.pageY - metrics.pageY;
+        if (!geojson || !routeTimes || metrics.width <= 0 || offsetY < MARKER_ACTION_HEIGHT || offsetY > MARKER_ACTION_HEIGHT + MARKER_HEIGHT) {
             return false;
         }
         const offsetX = event.nativeEvent.pageX - metrics.pageX;
@@ -205,13 +201,12 @@ export const SliderMarkers: FC<Props> = ({
                             accessibilityLabel={`${imageLabel} ${image.id}`}
                             style={[
                                 styles.marker,
-                                isDragged ? styles.dragMarker : undefined,
                                 {
                                     left: `${getPosition(image.featureId, geojson, routeTimes, animationControls.playbackPacing, routeGeometryData).toFixed(0)}%`,
                                 },
                             ]}
                         >
-                            <Tooltip color="tertiary" content={panToImageLabel} placement="bottom" size="xs">
+                            <Tooltip color="tertiary" content={panToImageLabel} placement="top" size="xs">
                                 <Button
                                     icon={Icons.NounProject.Target}
                                     size="xs"
@@ -229,17 +224,15 @@ export const SliderMarkers: FC<Props> = ({
                                     style={styles.panToButton}
                                 />
                             </Tooltip>
-                            <View style={[styles.markerHead, { backgroundColor: color }]} />
-                            <View style={[styles.markerLine, { backgroundColor: color }]} />
-                            <View style={[styles.markerFoot, { backgroundColor: color }]} />
+                            <View style={[styles.markerLine, isDragged && styles.dragMarker, { backgroundColor: color }]} />
+                            <View style={[styles.markerHead, isDragged && styles.dragMarker, { backgroundColor: color }]} />
                         </View>
                     );
                 })}
             {animationControls.panToWholeRouteAtEnd && (
                 <View pointerEvents="none" style={styles.routeEndMarker}>
-                    <View style={[styles.markerHead, { backgroundColor: routeEndMarkerColor }]} />
                     <View style={[styles.markerLine, { backgroundColor: routeEndMarkerColor }]} />
-                    <View style={[styles.markerFoot, { backgroundColor: routeEndMarkerColor }]} />
+                    <View style={[styles.markerHead, { backgroundColor: routeEndMarkerColor }]} />
                 </View>
             )}
             {draggingImage?.interaction === 'player' ? (
@@ -251,9 +244,8 @@ export const SliderMarkers: FC<Props> = ({
                         }),
                     }]}
                 >
-                    <View style={[styles.markerHead, { backgroundColor: markerHighlightColor }]} />
                     <View style={[styles.markerLine, { backgroundColor: markerHighlightColor }]} />
-                    <View style={[styles.markerFoot, { backgroundColor: markerHighlightColor }]} />
+                    <View style={[styles.markerHead, { backgroundColor: markerHighlightColor }]} />
                 </Animated.View>
             ) : null}
         </View>

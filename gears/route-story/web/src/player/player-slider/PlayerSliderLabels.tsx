@@ -3,7 +3,7 @@ import { BehaviorSubject } from "rxjs";
 import { useWebMachineWard } from "@web-apparatus";
 import { formatDistance, formatTimeMsAsStandard, ParsingResultWithError, useSubjectState } from "@tinker-chest";
 import { Animatrix, getProgressPercentage, getRouteDistanceFraction, RouteTimes, RouteGeometryData } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { Text } from "@web-ui";
+import { Caption } from "@web-ui";
 import { FontType, useTheme } from "@ui";
 import styles from './player-slider-labels.module.css';
 
@@ -46,16 +46,37 @@ export const PlayerSliderLabels: FC<Props> = ({
     return (
         <div className={styles['container']}>
             <div className={styles.metrics}>
-                <Text usage="caption" fontType={FontType.Numeric} color="tertiary" tabular nowrap style={{ width: '4ch' }}>
+                <Caption
+                    fontType={FontType.Numeric}
+                    color="tertiary"
+                    tabular
+                    nowrap
+                    style={{ width: '4ch' }}
+                >
                     {progressPercentage.toFixed(0)}%
-                </Text>
+                </Caption>
                 {values.map(({ value, maximum }) => (
-                    <Text key={maximum} usage="caption" fontType={FontType.Numeric} color="tertiary" tabular nowrap style={{ width: `${maximum.length}ch` }}>{value}</Text>
+                    <Caption
+                        key={maximum}
+                        fontType={FontType.Numeric}
+                        color="tertiary"
+                        tabular
+                        nowrap
+                        style={{ width: `${maximum.length}ch` }}
+                    >
+                        {value}
+                    </Caption>
                 ))}
             </div>
-            <Text usage="caption" fontType={FontType.Numeric} color="tertiary" tabular nowrap className={styles['align-flex-right']}>
+            <Caption
+                fontType={FontType.Numeric}
+                color="tertiary"
+                tabular
+                nowrap
+                className={styles['align-flex-right']}
+            >
                 {!routeTimes ? "" : individuator.formatTimestamp(progressMs + routeTimes.startTimeEpoch, settings, { short: media.isLessThanMd })}
-            </Text>
+            </Caption>
         </div>
     );
 };

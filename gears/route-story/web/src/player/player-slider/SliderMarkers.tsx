@@ -123,7 +123,7 @@ export const SliderMarkers: FC<Props> = ({
                             left: `${getPosition(image.featureId, geojson, routeTimes, animationControls.playbackPacing, routeGeometryData).toFixed(0)}%`
                         }}
                     >
-                        <Tooltip color="tertiary" content={panToImageLabel} placement="bottom" size="xs">
+                        <Tooltip color="tertiary" content={panToImageLabel} placement="top" size="xs">
                             <Button
                                 icon={Icons.NounProject.Target}
                                 size="xs"
@@ -165,7 +165,7 @@ export const SliderMarkers: FC<Props> = ({
             {animationControls.panToWholeRouteAtEnd && (
                 <div className={styles['route-end-marker-container']}>
                     <span role="presentation" className={classNames(styles['image-marker'], styles['route-end-marker'])} />
-                    <Tooltip color="neutral" content={panToWholeRouteAtEndLabel} placement="bottom" size="xs">
+                    <Tooltip color="neutral" content={panToWholeRouteAtEndLabel} placement="top" size="xs">
                         <Button
                             icon={Icons.NounProject.Target}
                             size="xs"

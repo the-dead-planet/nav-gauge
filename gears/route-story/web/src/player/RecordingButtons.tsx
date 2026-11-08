@@ -29,12 +29,22 @@ export const RecordingButtons: FC<Props> = ({
         stopRecordingLabel,
         pauseRecordingLabel,
         resumeRecordingLabel,
+        recordCaption,
+        stopCaption,
+        pauseCaption,
+        resumeCaption,
+        destroyCaption,
     ] = useMultipleTranslations([
         { n: gearId, t: translationKey.DestroyRecording },
         { n: gearId, t: translationKey.StartRecording },
         { n: gearId, t: translationKey.StopRecording },
         { n: gearId, t: translationKey.PauseRecording },
         { n: gearId, t: translationKey.ResumeRecording },
+        { n: gearId, t: translationKey.Record },
+        { n: gearId, t: translationKey.Stop },
+        { n: gearId, t: translationKey.Pause },
+        { n: gearId, t: translationKey.Resume },
+        { n: gearId, t: translationKey.Destroy },
     ]);
 
     return (
@@ -46,6 +56,7 @@ export const RecordingButtons: FC<Props> = ({
                     variant="ghost"
                     corners="circle"
                     aria-label={startRecordingLabel}
+                    caption={recordCaption}
                     tooltip={startRecordingLabel}
                     tooltipPlacement="top"
                     onClick={() => playerOperator.onStart()}
@@ -58,13 +69,14 @@ export const RecordingButtons: FC<Props> = ({
                     color={surveillanceState === SurveillanceState.InProgress ? "secondary" : "neutral"}
                     corners="circle"
                     aria-label={stopRecordingLabel}
+                    caption={stopCaption}
                     tooltip={stopRecordingLabel}
                     tooltipPlacement="top"
                     onClick={() => playerOperator.onStop()}
                     className={styles['blinking']}
                 />
             )}
-            {surveillanceState === SurveillanceState.Paused ? (
+            {/* {surveillanceState === SurveillanceState.Paused ? (
                 <Button
                     icon={Icons.NounProject.ResumeRecording}
                     size="md"
@@ -72,6 +84,7 @@ export const RecordingButtons: FC<Props> = ({
                     color="secondary"
                     corners="circle"
                     aria-label={resumeRecordingLabel}
+                    caption={resumeCaption}
                     tooltip={resumeRecordingLabel}
                     tooltipPlacement="top"
                     onClick={() => playerOperator.onResume()}
@@ -83,6 +96,7 @@ export const RecordingButtons: FC<Props> = ({
                     variant="ghost"
                     corners="circle"
                     aria-label={pauseRecordingLabel}
+                    caption={pauseCaption}
                     tooltip={pauseRecordingLabel}
                     tooltipPlacement="top"
                     onClick={() => playerOperator.onPause()}
@@ -96,11 +110,12 @@ export const RecordingButtons: FC<Props> = ({
                 color={hasRecordingData ? "secondary" : "neutral"}
                 corners="circle"
                 aria-label={destroyLabel}
+                caption={destroyCaption}
                 tooltip={destroyLabel}
                 tooltipPlacement="top"
                 onClick={() => playerOperator.onDestroy()}
                 disabled={!hasRecordingData}
-            />
+            /> */}
         </>
     );
 };
