@@ -3,6 +3,7 @@ import { RouteStoryTranslationKey } from "../model";
 
 const ru: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['ru'] = {
     "gear-name": 'История маршрута',
+    "gear-short-name": 'История',
     "gear-description": 'Создайте видеоисторию из ваших GPS-треков и данных изображений',
     "fit-bounds": 'Захватить цель',
     "player": 'Конфигурация плеера маршрута',
@@ -17,6 +18,10 @@ const ru: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['ru'] 
     "stop-recording": 'Остановить наблюдение',
     "pause-recording": 'Приостановить наблюдение',
     "resume-recording": 'Возобновить наблюдение',
+    "record": 'Запись',
+    "stop": 'Стоп',
+    "resume": 'Продолжить',
+    "destroy": 'Уничтожить',
     "layer-aesthetic-options": 'Эстетические параметры слоёв',
     "open-layer-aesthetic-options": 'Открыть эстетические параметры слоёв',
     "lines": 'Линии',
@@ -53,6 +58,7 @@ const ru: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['ru'] 
     "pan-to-image": 'Перейти к изображению',
     "show-image-markers": 'Показать маркеры изображений',
     "hide-image-markers": 'Скрыть маркеры изображений',
+    "markers": 'Маркеры',
 };
 
 export default ru;

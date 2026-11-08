@@ -130,6 +130,10 @@ export enum RouteStoryTranslationKey {
     StopRecording = 'stop-recording',
     PauseRecording = 'pause-recording',
     ResumeRecording = 'resume-recording',
+    Record = 'record',
+    Stop = 'stop',
+    Resume = 'resume',
+    Destroy = 'destroy',
     LayerAestheticOptions = 'layer-aesthetic-options',
     OpenLayerAestheticOptions = 'open-layer-aesthetic-options',
     Lines = 'lines',
@@ -166,6 +170,7 @@ export enum RouteStoryTranslationKey {
     PanToImage = 'pan-to-image',
     ShowImageMarkers = 'show-image-markers',
     HideImageMarkers = 'hide-image-markers',
+    Markers = 'markers',
     PurgeStoryText = 'purge-story-text',
 }
 

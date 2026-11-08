@@ -3,6 +3,7 @@ import { RouteStoryTranslationKey } from "../model";
 
 const jp: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['jp'] = {
     "gear-name": 'ルートストーリー',
+    "gear-short-name": 'ストーリー',
     "gear-description": 'GPSトレースと画像データから動画ストーリーを作成する',
     "fit-bounds": 'ターゲットを捕捉',
     "player": 'ルートプレーヤー設定',
@@ -17,6 +18,10 @@ const jp: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['jp'] 
     "stop-recording": '監視を停止',
     "pause-recording": '監視を一時停止',
     "resume-recording": '監視を再開',
+    "record": '録画',
+    "stop": '停止',
+    "resume": '再開',
+    "destroy": '破棄',
     "layer-aesthetic-options": 'レイヤーの外観オプション',
     "open-layer-aesthetic-options": 'レイヤーの外観オプションを開く',
     "lines": '線',
@@ -53,6 +58,7 @@ const jp: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['jp'] 
     "pan-to-image": '画像に移動',
     "show-image-markers": '画像マーカーを表示',
     "hide-image-markers": '画像マーカーを非表示',
+    "markers": 'マーカー',
 };
 
 export default jp;

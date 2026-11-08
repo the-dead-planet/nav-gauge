@@ -2,14 +2,18 @@ import { Children, ComponentProps, CSSProperties, FC } from "react";
 import classNames from "classnames";
 import {
     ButtonProps,
+    buttonCaptionLayout,
     DEFAULT_COLOR,
+    DEFAULT_HEXAGON_SHAPE,
     DEFAULT_SIZE,
     DEFAULT_SURFACE_VARIANT,
+    typographyUsageSpecifications,
     useTheme,
 } from "@ui";
 import { Icon } from "../../design-system/icons";
-import { Span } from "../../design-system/typography";
-import { Hexagon } from "../../hud";
+import { Caption, Span } from "../../design-system/typography";
+import { HexagonSurface } from "../../hud/hexagon/HexagonSurface";
+import hexagonStyles from "../../hud/hexagon/hexagon.module.css";
 import { HudSurface } from "../../hud/HudSurface";
 import { Tooltip } from "../tooltip";
 import styles from "./button.module.css";
@@ -22,6 +26,8 @@ interface Props {
 export const Button: FC<ComponentProps<"button"> & Props & ButtonProps> = ({
     color = DEFAULT_COLOR,
     fontType,
+    caption,
+    captionNowrap = false,
     glyphsShade,
     highlightColor,
     highlightGlyphsShade,
@@ -99,49 +105,89 @@ export const Button: FC<ComponentProps<"button"> & Props & ButtonProps> = ({
             ) : null}
         </>
     );
+    const accessibleLabel =
+        ariaLabel ??
+        (!hasLabel && typeof tooltip === "string" ? tooltip : undefined);
     const nativeProps: ComponentProps<"button"> = {
         ...props,
         type,
         disabled,
-        "aria-label":
-            ariaLabel ??
-            (!hasLabel && typeof tooltip === "string" ? tooltip : undefined),
+        "aria-label": accessibleLabel,
         className: classNames(styles.button, styles[`corners-${corners}`], {
+            [hexagonStyles[DEFAULT_HEXAGON_SHAPE]]: corners === "hexagon",
+            [hexagonStyles["depth-inset"]]:
+                corners === "hexagon" && effects.depth === "inset",
             [styles["has-icon"]]: !!icon,
             [styles["only-icon"]]: !!icon && !hasLabel,
         }),
     };
-    const button =
-        corners === "hexagon" ? (
-            <button {...nativeProps} data-size={size}>
-                {content}
-            </button>
-        ) : (
-            <HudSurface
-                as="button"
-                {...nativeProps}
-                size={size}
-                variant={variant}
-                color={color}
-                highlightColor={highlightColor}
-                highlighted={highlighted}
-                activeGlow={activeGlow}
-                data-depth={effects.depth}
-                data-glyphs-glow={effects.glyphsGlow || undefined}
-                interactive
-                rectangle
-                className={classNames(nativeProps.className, className)}
-                style={{ ...style, ...appearanceOverrides }}
+    const shapeProps = caption
+        ? { className: nativeProps.className }
+        : nativeProps;
+    const shapedButton = (
+        <HudSurface
+            as={caption ? "span" : "button"}
+            {...shapeProps}
+            disabled={disabled}
+            size={size}
+            variant={variant}
+            color={color}
+            highlightColor={highlightColor}
+            highlighted={highlighted}
+            activeGlow={activeGlow}
+            data-depth={effects.depth}
+            data-glyphs-glow={effects.glyphsGlow || undefined}
+            interactive
+            rectangle={corners !== "hexagon"}
+            className={classNames(nativeProps.className, className)}
+            style={{ ...style, ...appearanceOverrides }}
+        >
+            {corners === "hexagon" ? (
+                <HexagonSurface effects={effects}>{content}</HexagonSurface>
+            ) : (
+                content
+            )}
+        </HudSurface>
+    );
+    const captionedButton = caption ? (
+        <HudSurface
+            as="button"
+            {...props}
+            type={type}
+            disabled={disabled}
+            aria-label={accessibleLabel}
+            variant={variant}
+            color={color}
+            highlightColor={highlightColor}
+            highlighted={highlighted}
+            interactive
+            className={styles['captioned-button']}
+            style={{
+                ...appearanceOverrides,
+                '--caption-min-height': `${captionNowrap ? typographyUsageSpecifications.caption.lineHeight : buttonCaptionLayout.minHeight}px`,
+                '--caption-width': `${buttonCaptionLayout.width}px`,
+                '--caption-gap': `${buttonCaptionLayout.gap}px`,
+            } as CSSProperties}
+        >
+            {shapedButton}
+            <Caption
+                nowrap={captionNowrap}
+                fontType={fontType}
+                fontWeight={typographyUsageSpecifications.caption.fontWeight}
+                className={classNames(styles.caption, {
+                    [styles['caption-nowrap']]: captionNowrap,
+                })}
             >
-                {content}
-            </HudSurface>
-        );
+                {caption}
+            </Caption>
+        </HudSurface>
+    ) : shapedButton;
     const hasTooltip =
         tooltip !== null &&
         tooltip !== undefined &&
         tooltip !== false &&
         tooltip !== "";
-    const buttonWithTooltip = hasTooltip ? (
+    return hasTooltip ? (
         <Tooltip
             placement={tooltipPlacement}
             content={tooltip}
@@ -155,27 +201,9 @@ export const Button: FC<ComponentProps<"button"> & Props & ButtonProps> = ({
             }
             showConnection={showTooltipConnection}
         >
-            {button}
+            {captionedButton}
         </Tooltip>
     ) : (
-        button
-    );
-    return corners === "hexagon" ? (
-        <Hexagon
-            size={size}
-            variant={variant}
-            activeGlow={activeGlow}
-            color={color}
-            highlightColor={highlightColor}
-            highlighted={highlighted}
-            disabled={disabled}
-            interactive
-            style={{ ...style, ...appearanceOverrides }}
-            className={className}
-        >
-            {buttonWithTooltip}
-        </Hexagon>
-    ) : (
-        buttonWithTooltip
+        captionedButton
     );
 };

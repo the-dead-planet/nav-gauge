@@ -113,6 +113,23 @@ export const SliderMarkers: FC<Props> = ({
 
     return (
         <div ref={containerRef} className={styles['slider-markers']}>
+            {animationControls.panToWholeRouteAtEnd && (
+                <div className={styles['route-end-marker-container']}>
+                    <span role="presentation" className={classNames(styles['image-marker'], styles['route-end-marker'])} />
+                    <Tooltip content={panToWholeRouteAtEndLabel} placement="top" size="xs">
+                        <Button
+                            icon={Icons.NounProject.Target}
+                            size="xs"
+                            aria-label={panToWholeRouteAtEndLabel}
+                            onClick={(event) => {
+                                event.stopPropagation();
+                                fitBoundsHandler(map, data$.value.boundingBox);
+                            }}
+                            className={styles['pan-to-icon']}
+                        />
+                    </Tooltip>
+                </div>
+            )}
             {images
                 .filter((image) => image.featureId !== undefined)
                 .map((image) => (
@@ -123,7 +140,7 @@ export const SliderMarkers: FC<Props> = ({
                             left: `${getPosition(image.featureId, geojson, routeTimes, animationControls.playbackPacing, routeGeometryData).toFixed(0)}%`
                         }}
                     >
-                        <Tooltip color="tertiary" content={panToImageLabel} placement="bottom" size="xs">
+                        <Tooltip color="tertiary" content={panToImageLabel} placement="top" size="xs">
                             <Button
                                 icon={Icons.NounProject.Target}
                                 size="xs"
@@ -139,46 +156,30 @@ export const SliderMarkers: FC<Props> = ({
                                 className={styles['pan-to-icon']}
                             />
                         </Tooltip>
-                        <span
-                            role="button"
-                            tabIndex={0}
-                            draggable={false}
-                            aria-label={`${imageLabel} ${image.id}`}
-                            title={`${imageLabel} ${image.id}`}
-                            onMouseEnter={() => {
-                                setHighlightIdsBySourceId(new Map([[imageSourceIds.thumbnails, new Set([image.id.toString()])]]));
-                            }}
-                            onMouseLeave={() => {
-                                setHighlightIdsBySourceId(new Map());
-                            }}
-                            onPointerDown={(e) => {
-                                e.preventDefault();
-                                setDraggingImage({ id: image.id, interaction: 'player' });
-                            }}
-                            className={classNames(styles['image-marker'], {
-                                [styles['dragging']]: draggingImage?.id === image.id,
-                                [styles['highlight']]: draggingImage?.id !== image.id && highlightIdsBySourceId.get(imageSourceIds.thumbnails)?.has(image.id.toString())
-                            })}
-                        />
+                        <Tooltip color="tertiary" content={`${imageLabel} ${image.id}`} placement="top" size="xs">
+                            <span
+                                role="button"
+                                tabIndex={0}
+                                draggable={false}
+                                aria-label={`${imageLabel} ${image.id}`}
+                                onMouseEnter={() => {
+                                    setHighlightIdsBySourceId(new Map([[imageSourceIds.thumbnails, new Set([image.id.toString()])]]));
+                                }}
+                                onMouseLeave={() => {
+                                    setHighlightIdsBySourceId(new Map());
+                                }}
+                                onPointerDown={(e) => {
+                                    e.preventDefault();
+                                    setDraggingImage({ id: image.id, interaction: 'player' });
+                                }}
+                                className={classNames(styles['image-marker'], {
+                                    [styles['dragging']]: draggingImage?.id === image.id,
+                                    [styles['highlight']]: draggingImage?.id !== image.id && highlightIdsBySourceId.get(imageSourceIds.thumbnails)?.has(image.id.toString())
+                                })}
+                            />
+                        </Tooltip>
                     </div>
                 ))}
-            {animationControls.panToWholeRouteAtEnd && (
-                <div className={styles['route-end-marker-container']}>
-                    <span role="presentation" className={classNames(styles['image-marker'], styles['route-end-marker'])} />
-                    <Tooltip color="neutral" content={panToWholeRouteAtEndLabel} placement="bottom" size="xs">
-                        <Button
-                            icon={Icons.NounProject.Target}
-                            size="xs"
-                            aria-label={panToWholeRouteAtEndLabel}
-                            onClick={(event) => {
-                                event.stopPropagation();
-                                fitBoundsHandler(map, data$.value.boundingBox);
-                            }}
-                            className={styles['pan-to-icon']}
-                        />
-                    </Tooltip>
-                </div>
-            )}
             {draggingFeaturePosition !== null && (
                 <span
                     className={classNames(styles['image-marker'], styles['drag-marker'], styles['highlight'])}

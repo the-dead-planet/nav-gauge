@@ -3,6 +3,7 @@ import { RouteStoryTranslationKey } from "../model";
 
 const es: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['es'] = {
     "gear-name": 'Historia de Ruta',
+    "gear-short-name": 'Historia',
     "gear-description": 'Crear un video a partir de tus trazas GPS y datos de imagen',
     "fit-bounds": 'Adquirir objetivo',
     "player": 'Configuración del reproductor de ruta',
@@ -17,6 +18,10 @@ const es: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['es'] 
     "stop-recording": 'Detener vigilancia',
     "pause-recording": 'Pausar vigilancia',
     "resume-recording": 'Reanudar vigilancia',
+    "record": 'Grabar',
+    "stop": 'Detener',
+    "resume": 'Reanudar',
+    "destroy": 'Destruir',
     "layer-aesthetic-options": 'Opciones estéticas de capas',
     "open-layer-aesthetic-options": 'Abrir opciones estéticas de capas',
     "lines": 'Líneas',
@@ -53,6 +58,7 @@ const es: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['es'] 
     "pan-to-image": 'Desplazar a la imagen',
     "show-image-markers": 'Mostrar marcadores de imagen',
     "hide-image-markers": 'Ocultar marcadores de imagen',
+    "markers": 'Marcadores',
 };
 
 export default es;

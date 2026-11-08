@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     sliderContainer: {
         flex: 1,
         gap: 23,
-        paddingTop: 11,
+        paddingTop: 19,
         marginTop: 10,
     },
 });

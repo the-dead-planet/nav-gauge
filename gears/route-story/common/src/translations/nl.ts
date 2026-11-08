@@ -3,6 +3,7 @@ import { RouteStoryTranslationKey } from "../model";
 
 const nl: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['nl'] = {
     "gear-name": 'Routeverhaal',
+    "gear-short-name": 'Verhaal',
     "gear-description": 'Maak een videoverhaal van je GPS-sporen en beeldgegevens',
     "fit-bounds": 'Doelwit vastleggen',
     "player": 'Routeplayerconfiguratie',
@@ -17,6 +18,10 @@ const nl: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['nl'] 
     "stop-recording": 'Surveillance stoppen',
     "pause-recording": 'Surveillance pauzeren',
     "resume-recording": 'Surveillance hervatten',
+    "record": 'Opnemen',
+    "stop": 'Stoppen',
+    "resume": 'Hervatten',
+    "destroy": 'Vernietigen',
     "layer-aesthetic-options": 'Esthetische laagopties',
     "open-layer-aesthetic-options": 'Open esthetische laagopties',
     "lines": 'Lijnen',
@@ -53,6 +58,7 @@ const nl: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['nl'] 
     "pan-to-image": 'Naar afbeelding verschuiven',
     "show-image-markers": 'Afbeeldingsmarkeringen tonen',
     "hide-image-markers": 'Afbeeldingsmarkeringen verbergen',
+    "markers": 'Markeringen',
 };
 
 export default nl;

@@ -100,6 +100,11 @@
     box-shadow: var(--elevation-raised-down-shadow);
 }
 
+.toolbar.top .content.has-captions {
+    align-items: flex-start;
+    padding-top: 1px;
+}
+
 .toolbar.left .content,
 .toolbar.right .content {
     display: grid;

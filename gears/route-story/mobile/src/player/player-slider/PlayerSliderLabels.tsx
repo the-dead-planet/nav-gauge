@@ -4,7 +4,7 @@ import { BehaviorSubject } from "rxjs";
 import { useMobileMachineWard } from "@mobile-apparatus";
 import { formatDistance, formatTimeMsAsStandard, ParsingResultWithError, useSubjectState } from "@tinker-chest";
 import { Animatrix, getProgressPercentage, getRouteDistanceFraction, RouteTimes, RouteGeometryData } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { Text } from "@mobile-ui";
+import { Caption } from "@mobile-ui";
 import { FontType, useTheme } from "@ui";
 
 interface Props {
@@ -63,15 +63,29 @@ export const PlayerSliderLabels: FC<Props> = ({
     return (
         <View style={styles.container}>
             <View style={styles.metrics}>
-                <Text usage="caption" fontType={FontType.Numeric} color="tertiary" tabular nowrap style={styles.percentage}>
+                <Caption
+                    fontType={FontType.Numeric}
+                    color="tertiary"
+                    tabular
+                    nowrap
+                    style={styles.percentage}
+                >
                     {progressPercentage.toFixed(0)}%
-                </Text>
+                </Caption>
                 {values.map(({ value, maximum }) => (
-                    <Text key={maximum} usage="caption" fontType={FontType.Numeric} color="tertiary" tabular nowrap style={{ width: maximum.length * 7 }}>{value}</Text>
+                    <Caption
+                        key={maximum}
+                        fontType={FontType.Numeric}
+                        color="tertiary"
+                        tabular
+                        nowrap
+                        style={{ width: maximum.length * 7 }}
+                    >
+                        {value}
+                    </Caption>
                 ))}
             </View>
-            <Text
-                usage="caption"
+            <Caption
                 fontType={FontType.Numeric}
                 color="tertiary"
                 tabular
@@ -79,7 +93,7 @@ export const PlayerSliderLabels: FC<Props> = ({
                 style={styles.end}
             >
                 {!routeTimes ? "" : individuator.formatTimestamp(progressMs + routeTimes.startTimeEpoch, settings, { short: media.isLessThanMd })}
-            </Text>
+            </Caption>
         </View>
     );
 };

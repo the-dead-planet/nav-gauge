@@ -129,7 +129,7 @@ export class Individuator {
         { short = false }: { short?: boolean; } = {}
     ): string => {
         return formatTimestamp(epochMs, {
-            locale: settings.locale,
+            locale: Translatron.languages[settings.language].locale,
             dateFormat: short ? settings.dateFormat.short : settings.dateFormat.value,
             timeFormat: settings.timeFormat,
         });

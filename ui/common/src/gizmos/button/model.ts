@@ -5,6 +5,10 @@ import { FontType } from "../../design-system/typography";
 
 export interface ButtonProps extends AppearanceProps<SurfaceVariant> {
     fontType?: FontType;
+    /** Always-visible action text below the button's shape. */
+    caption?: string;
+    /** Keeps the caption on one line instead of reserving two lines. */
+    captionNowrap?: boolean;
     activeGlow?: ActiveGlow;
     /**
      * Defaults to `square`; circle and hexagon are icon-only.

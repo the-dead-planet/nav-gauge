@@ -9,6 +9,12 @@ Square corners are the default for standard buttons, including buttons with text
 
 Circle and hexagon buttons are reserved for icon-only actions. Always provide an accessible label through the platform's accessibility API when the icon has no visible text.
 
+Use `caption` for an always-visible, short action label below the shape, especially for unfamiliar icons on touch screens. The caption is part of the clickable control; it uses uppercase, regular-weight 10px text and reserves two lines. Store translations in their natural case; the renderer applies uppercase. Keep the full accessible label and tooltip when a shorter caption needs more context.
+
+In mixed rows, use top alignment (`align-items: flex-start` on web, `alignItems: "flex-start"` on mobile) so captioned and uncaptioned icons stay on the same horizontal line.
+
+Use `captionNowrap` in fixed-height toolbars: it reserves one caption line and truncates text that does not fit. Gear toolbars use each gear's translated short name for this caption and its full name for the tooltip.
+
 See <a href="./?path=/docs/design-system-appearance--docs#corners-and-shapes" target="_top" style={{ textDecoration: 'underline' }}>Appearance</a> for shared shape geometry and visual intent.
 
 <Stories />
