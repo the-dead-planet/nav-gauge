@@ -21,19 +21,19 @@ export const RecordingButtons: FC<Props> = ({
 }) => {
     const { chronoLens } = useWebMachineWard();
     const [surveillanceState] = useSubjectState(chronoLens.surveillanceState$);
-    const [hasRecordingData] = useSubjectState(chronoLens.hasRecordingData$);
+    // const [hasRecordingData] = useSubjectState(chronoLens.hasRecordingData$);
 
     const [
-        destroyLabel,
+        // destroyLabel,
         startRecordingLabel,
         stopRecordingLabel,
-        pauseRecordingLabel,
-        resumeRecordingLabel,
+        // pauseRecordingLabel,
+        // resumeRecordingLabel,
         recordCaption,
         stopCaption,
-        pauseCaption,
-        resumeCaption,
-        destroyCaption,
+        // pauseCaption,
+        // resumeCaption,
+        // destroyCaption,
     ] = useMultipleTranslations([
         { n: gearId, t: translationKey.DestroyRecording },
         { n: gearId, t: translationKey.StartRecording },
