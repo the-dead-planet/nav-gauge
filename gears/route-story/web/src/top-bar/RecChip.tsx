@@ -11,21 +11,36 @@ export const RecChip: FC<WebRouteStoryProps> = ({
     translationKey,
     playerOperator
 }) => {
-    const { chronoLens} = useWebMachineWard();
+    const { chronoLens } = useWebMachineWard();
     const [surveillanceState] = useSubjectState(chronoLens.surveillanceState$);
     const [
         stopRecordingLabel,
     ] = useMultipleTranslations([
         { n: gearId, t: translationKey.StopRecording },
     ]);
-    
+
     return (
-        <Chip
-            color={playerOperator.getBlinkingColor(surveillanceState)}
-            tooltip={stopRecordingLabel}
-            className={styles["blinking"]}
+        <span
+            role="button"
+            tabIndex={0}
+            aria-label={stopRecordingLabel}
+            onClick={() => playerOperator.onStop()}
+            onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                    playerOperator.onStop();
+                }
+            }}
+            className={styles['clickable']}
         >
-            REC
-        </Chip>
+            <Chip
+                variant="fill"
+                size="md"
+                color={playerOperator.getBlinkingColor(surveillanceState)}
+                tooltip={stopRecordingLabel}
+                className={styles["blinking"]}
+            >
+                REC
+            </Chip>
+        </span>
     );
 };

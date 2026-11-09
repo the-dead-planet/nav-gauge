@@ -8,6 +8,7 @@ import {
     DEFAULT_SIZE,
     DEFAULT_FILL_VARIANT,
     useTheme,
+    Theme,
 } from "@ui";
 import { Icon } from "../../design-system/icons";
 import { Tooltip } from "../tooltip";
@@ -20,6 +21,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         alignSelf: "flex-start",
+        paddingHorizontal: Number.parseInt(Theme.spacing.xs, 10),
     },
 });
 
@@ -55,7 +57,6 @@ export const Chip: FC<ChipProps & Props> = ({
                 styles.chip,
                 {
                     paddingVertical: metrics.paddingBlock,
-                    paddingHorizontal: metrics.paddingInline,
                     gap: metrics.gap,
                 },
             ]}
