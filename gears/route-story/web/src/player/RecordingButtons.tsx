@@ -19,32 +19,33 @@ export const RecordingButtons: FC<Props> = ({
     translationKey,
     playerOperator,
 }) => {
-    const { chronoLens } = useWebMachineWard();
+    const { chronoLens, individuator } = useWebMachineWard();
+    const [settings] = useSubjectState(individuator.settings$);
     const [surveillanceState] = useSubjectState(chronoLens.surveillanceState$);
-    // const [hasRecordingData] = useSubjectState(chronoLens.hasRecordingData$);
+    const [hasRecordingData] = useSubjectState(chronoLens.hasRecordingData$);
 
     const [
-        // destroyLabel,
+        destroyLabel,
         startRecordingLabel,
         stopRecordingLabel,
-        // pauseRecordingLabel,
-        // resumeRecordingLabel,
+        pauseRecordingLabel,
+        resumeRecordingLabel,
         recordCaption,
         stopCaption,
-        // pauseCaption,
-        // resumeCaption,
-        // destroyCaption,
+        pauseCaption,
+        resumeCaption,
+        destroyCaption,
     ] = useMultipleTranslations([
-        // { n: gearId, t: translationKey.DestroyRecording },
+        { n: gearId, t: translationKey.DestroyRecording },
         { n: gearId, t: translationKey.StartRecording },
         { n: gearId, t: translationKey.StopRecording },
-        // { n: gearId, t: translationKey.PauseRecording },
-        // { n: gearId, t: translationKey.ResumeRecording },
+        { n: gearId, t: translationKey.PauseRecording },
+        { n: gearId, t: translationKey.ResumeRecording },
         { n: gearId, t: translationKey.Record },
         { n: gearId, t: translationKey.Stop },
-        // { n: gearId, t: translationKey.Pause },
-        // { n: gearId, t: translationKey.Resume },
-        // { n: gearId, t: translationKey.Destroy },
+        { n: gearId, t: translationKey.Pause },
+        { n: gearId, t: translationKey.Resume },
+        { n: gearId, t: translationKey.Destroy },
     ]);
 
     return (
@@ -76,46 +77,50 @@ export const RecordingButtons: FC<Props> = ({
                     className={styles['blinking']}
                 />
             )}
-            {/* {surveillanceState === SurveillanceState.Paused ? (
-                <Button
-                    icon={Icons.NounProject.ResumeRecording}
-                    size="md"
-                    variant="ghost"
-                    color="secondary"
-                    corners="circle"
-                    aria-label={resumeRecordingLabel}
-                    caption={resumeCaption}
-                    tooltip={resumeRecordingLabel}
-                    tooltipPlacement="top"
-                    onClick={() => playerOperator.onResume()}
-                />
-            ) : (
-                <Button
-                    icon={Icons.NounProject.PauseRecording}
-                    size="md"
-                    variant="ghost"
-                    corners="circle"
-                    aria-label={pauseRecordingLabel}
-                    caption={pauseCaption}
-                    tooltip={pauseRecordingLabel}
-                    tooltipPlacement="top"
-                    onClick={() => playerOperator.onPause()}
-                    disabled={surveillanceState === SurveillanceState.Stopped}
-                />
-            )}
-            <Button
-                icon={Icons.NounProject.Destroy}
-                size="md"
-                variant="ghost"
-                color={hasRecordingData ? "secondary" : "neutral"}
-                corners="circle"
-                aria-label={destroyLabel}
-                caption={destroyCaption}
-                tooltip={destroyLabel}
-                tooltipPlacement="top"
-                onClick={() => playerOperator.onDestroy()}
-                disabled={!hasRecordingData}
-            /> */}
+            {settings.debugMode ? (
+                <>
+                    {surveillanceState === SurveillanceState.Paused ? (
+                        <Button
+                            icon={Icons.NounProject.ResumeRecording}
+                            size="md"
+                            variant="ghost"
+                            color="secondary"
+                            corners="circle"
+                            aria-label={resumeRecordingLabel}
+                            caption={resumeCaption}
+                            tooltip={resumeRecordingLabel}
+                            tooltipPlacement="top"
+                            onClick={() => playerOperator.onResume()}
+                        />
+                    ) : (
+                        <Button
+                            icon={Icons.NounProject.PauseRecording}
+                            size="md"
+                            variant="ghost"
+                            corners="circle"
+                            aria-label={pauseRecordingLabel}
+                            caption={pauseCaption}
+                            tooltip={pauseRecordingLabel}
+                            tooltipPlacement="top"
+                            onClick={() => playerOperator.onPause()}
+                            disabled={surveillanceState === SurveillanceState.Stopped}
+                        />
+                    )}
+                    <Button
+                        icon={Icons.NounProject.Destroy}
+                        size="md"
+                        variant="ghost"
+                        color={hasRecordingData ? "secondary" : "neutral"}
+                        corners="circle"
+                        aria-label={destroyLabel}
+                        caption={destroyCaption}
+                        tooltip={destroyLabel}
+                        tooltipPlacement="top"
+                        onClick={() => playerOperator.onDestroy()}
+                        disabled={!hasRecordingData}
+                    />
+                </>
+            ) : null}
         </>
     );
 };
