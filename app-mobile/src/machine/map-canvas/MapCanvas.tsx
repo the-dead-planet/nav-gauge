@@ -1,11 +1,12 @@
 import { FC, ReactNode, useEffect, useRef } from "react";
 import { BehaviorSubject } from "rxjs";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Camera, Map as MaplibreMap, LogManager, StyleSpecification } from "@maplibre/maplibre-react-native";
 import { Cartomancer, updateCompassIcon, updateCurrentZoomIcon } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { MobileMap, useMobileMachineWard } from "@mobile-apparatus";
 import { useMapTools } from "./useMapTools";
+import { useMapPanResponder } from "./useMapPanResponder";
 import { MapCanvasContainer } from "./MapCanvasContainer";
 
 const styles = StyleSheet.create({
@@ -48,6 +49,7 @@ export const MapCanvas: FC<Props> = ({
     const [onPressHandlers] = useSubjectState(map.onPressHandlers$);
     const [onLongPressHandlers] = useSubjectState(map.onLongPressHandlers$);
     const clickedZoom = useRef<number>(null);
+    const panResponder = useMapPanResponder(map);
 
     useEffect(() => {
         const notificationId = 'maplibre-map';
@@ -74,46 +76,48 @@ export const MapCanvas: FC<Props> = ({
 
     return (
         <MapCanvasContainer map={map}>
-            <MaplibreMap
-                ref={(r) => map.map$.next(r)}
-                style={styles.mapView}
-                androidView="texture"
-                dragPan={dragPan}
-                mapStyle={Cartomancer.styles[selectedStyle.id]?.style as StyleSpecification}
-                onDidFinishRenderingMapFully={() => setIsInitialised(true)}
-                onDidFinishLoadingStyle={() => setIsStyleLoaded(true)}
-                logo={false}
-                scaleBar={false}
-                onDidFailLoadingMap={() => {
-                    signaliumBureau.addNotice({
-                        id: 'map-failed',
-                        type: 'glitch',
-                        error: new Error('Map loading failed'),
-                        text: 'Something went wrong'
-                    })
-                }}
-                onRegionDidChange={(event) => {
-                    const bearing = event.nativeEvent.bearing;
-                    const pitch = event.nativeEvent.pitch;
-                    cartomancer.zoom$.next(parseFloat(event.nativeEvent.zoom.toFixed(1)));
-                    cartomancer.bearing$.next(bearing);
-                    updateCompassIcon(toolsStation, { bearing, pitch });
-                    updateCurrentZoomIcon(toolsStation, clickedZoom, map.map$.value?.getZoom);
-                }}
-                onPress={(event) => {
-                    for (const [_handlerId, handler] of onPressHandlers) {
-                        handler(event.nativeEvent);
-                    }
-                }}
-                onLongPress={(event) => {
-                    for (const [_handlerId, handler] of onLongPressHandlers) {
-                        handler(event.nativeEvent);
-                    }
-                }}
-            >
-                <Camera ref={(r) => map.camera$.next(r)} />
-                {isInitialised && isStyleLoaded ? children : null}
-            </MaplibreMap>
+            <View style={styles.mapView} {...panResponder.panHandlers}>
+                <MaplibreMap
+                    ref={(r) => map.map$.next(r)}
+                    style={styles.mapView}
+                    androidView="texture"
+                    dragPan={dragPan}
+                    mapStyle={Cartomancer.styles[selectedStyle.id]?.style as StyleSpecification}
+                    onDidFinishRenderingMapFully={() => setIsInitialised(true)}
+                    onDidFinishLoadingStyle={() => setIsStyleLoaded(true)}
+                    logo={false}
+                    scaleBar={false}
+                    onDidFailLoadingMap={() => {
+                        signaliumBureau.addNotice({
+                            id: 'map-failed',
+                            type: 'glitch',
+                            error: new Error('Map loading failed'),
+                            text: 'Something went wrong'
+                        })
+                    }}
+                    onRegionDidChange={(event) => {
+                        const bearing = event.nativeEvent.bearing;
+                        const pitch = event.nativeEvent.pitch;
+                        cartomancer.zoom$.next(parseFloat(event.nativeEvent.zoom.toFixed(1)));
+                        cartomancer.bearing$.next(bearing);
+                        updateCompassIcon(toolsStation, { bearing, pitch });
+                        updateCurrentZoomIcon(toolsStation, clickedZoom, map.map$.value?.getZoom);
+                    }}
+                    onPress={(event) => {
+                        for (const [_handlerId, handler] of onPressHandlers) {
+                            handler(event.nativeEvent);
+                        }
+                    }}
+                    onLongPress={(event) => {
+                        for (const [_handlerId, handler] of onLongPressHandlers) {
+                            handler(event.nativeEvent);
+                        }
+                    }}
+                >
+                    <Camera ref={(r) => map.camera$.next(r)} />
+                    {isInitialised && isStyleLoaded ? children : null}
+                </MaplibreMap>
+            </View>
         </MapCanvasContainer>
     );
 };
