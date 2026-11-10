@@ -5,15 +5,16 @@ import { MarkerImage, useMultipleTranslations } from "@apparatus";
 import { ParsingResultWithError, useSubjectState } from "@tinker-chest";
 import {
     draggingImage$,
-    draggingClosestFeature$,
+    draggingPlacement$,
     highlightIdsBySourceId$,
     imageSourceIds,
     RouteStoryTranslationKey,
     RouteTimes,
     Animatrix,
-    updateImageFeatureId,
-    getPosition,
-    getClosestFeatureFromPosition,
+    updateImageDistanceFraction,
+    getDistanceFractionPercent,
+    getRouteLngLatAtDistanceFraction,
+    getRoutePlacementAtPercent,
     RouteGeometryData,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Icons, useTheme } from "@ui";
@@ -140,19 +141,19 @@ export const SliderMarkers: FC<Props> = ({
         }
         const positionPercent = ((pageX - metrics.pageX) / metrics.width) * 100;
         draggingPositionRef.current.setValue(positionPercent);
-        const closestFeature = getClosestFeatureFromPosition(positionPercent, geojson, routeTimes, animationControls.playbackPacing, routeGeometryData);
-        if (closestFeature !== null) {
-            draggingClosestFeature$.next(closestFeature);
+        const placement = getRoutePlacementAtPercent(positionPercent, geojson, routeTimes, routeGeometryData, animationControls.playbackPacing);
+        if (placement !== null) {
+            draggingPlacement$.next(placement);
         }
     };
 
     const endDrag = () => {
         const activeDragImage = draggingImage$.value;
-        const closestFeature = draggingClosestFeature$.value;
-        if (activeDragImage !== null && closestFeature !== null) {
-            updateImageFeatureId(images$, activeDragImage.id, closestFeature.properties.id);
+        const placement = draggingPlacement$.value;
+        if (activeDragImage !== null && placement !== null) {
+            updateImageDistanceFraction(images$, activeDragImage.id, placement.distanceFraction);
         }
-        draggingClosestFeature$.next(null);
+        draggingPlacement$.next(null);
         setHighlightIdsBySourceId(new Map());
         setDraggingImage(null);
     };
@@ -160,13 +161,20 @@ export const SliderMarkers: FC<Props> = ({
     const tryBeginDragAt = useCallback((event: GestureResponderEvent): boolean => {
         const metrics = containerMetricsRef.current;
         const offsetY = event.nativeEvent.pageY - metrics.pageY;
-        if (!geojson || !routeTimes || metrics.width <= 0 || offsetY < MARKER_ACTION_HEIGHT || offsetY > MARKER_ACTION_HEIGHT + MARKER_HEIGHT) {
+        if (!geojson || !routeTimes || !routeGeometryData || metrics.width <= 0 || offsetY < MARKER_ACTION_HEIGHT || offsetY > MARKER_ACTION_HEIGHT + MARKER_HEIGHT) {
             return false;
         }
         const offsetX = event.nativeEvent.pageX - metrics.pageX;
         const grabbed = images$.value.find((candidate) =>
-            candidate.featureId !== undefined &&
-            Math.abs((getPosition(candidate.featureId, geojson, routeTimes, animationControls.playbackPacing, routeGeometryData) / 100) * metrics.width - offsetX) <= GRAB_RADIUS_PX
+            candidate.distanceFraction !== undefined &&
+            Math.abs((getDistanceFractionPercent(
+                candidate.distanceFraction,
+                geojson,
+                routeGeometryData,
+                routeTimes.startTimeEpoch,
+                routeTimes.duration,
+                animationControls.playbackPacing,
+            ) / 100) * metrics.width - offsetX) <= GRAB_RADIUS_PX
         );
         if (grabbed === undefined) {
             return false;
@@ -188,7 +196,7 @@ export const SliderMarkers: FC<Props> = ({
     return (
         <View ref={containerRef} style={styles.container} {...containerPanResponder.panHandlers}>
             {images
-                .filter((image) => image.featureId !== undefined)
+                .filter((image) => image.distanceFraction !== undefined && geojson && routeGeometryData && routeTimes)
                 .map((image) => {
                     const isDragged = draggingImage?.id === image.id && draggingImage.interaction === 'player';
                     const highlighted = highlightIdsBySourceId.get(imageSourceIds.thumbnails)?.has(String(image.id)) ?? false;
@@ -202,7 +210,14 @@ export const SliderMarkers: FC<Props> = ({
                             style={[
                                 styles.marker,
                                 {
-                                    left: `${getPosition(image.featureId, geojson, routeTimes, animationControls.playbackPacing, routeGeometryData).toFixed(0)}%`,
+                                    left: `${getDistanceFractionPercent(
+                                        image.distanceFraction!,
+                                        geojson!,
+                                        routeGeometryData!,
+                                        routeTimes!.startTimeEpoch,
+                                        routeTimes!.duration,
+                                        animationControls.playbackPacing,
+                                    ).toFixed(0)}%`,
                                 },
                             ]}
                         >
@@ -213,10 +228,12 @@ export const SliderMarkers: FC<Props> = ({
                                     color="tertiary"
                                     accessibilityLabel={panToImageLabel}
                                     onPress={() => {
-                                        const feature = geojson?.features.find((candidate) => candidate.properties.id === image.featureId);
-                                        if (feature) {
+                                        const lngLat = geojson && routeGeometryData
+                                            ? getRouteLngLatAtDistanceFraction(geojson, routeGeometryData, image.distanceFraction!)
+                                            : undefined;
+                                        if (lngLat) {
                                             map.camera$.value?.easeTo({
-                                                center: [feature.geometry.coordinates[0], feature.geometry.coordinates[1]],
+                                                center: [lngLat.lng, lngLat.lat],
                                                 duration: 300,
                                             });
                                         }

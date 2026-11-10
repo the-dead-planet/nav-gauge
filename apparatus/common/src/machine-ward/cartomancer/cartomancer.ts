@@ -1,8 +1,5 @@
 import { ComponentType } from "react";
 import { BehaviorSubject, map as rxjsMap, Observable, Subscription } from "rxjs";
-import turfDistance from "@turf/distance";
-import { point as turfPoint } from "@turf/helpers";
-import { FeatureProperties, GeoJson, LngLat } from "@tinker-chest";
 import {
     backgroundMapStyle,
     customRoadsMapStyle,
@@ -150,40 +147,6 @@ export class Cartomancer<TMap> {
         const nextOverlays = new Map(this.overlays$.value);
         nextOverlays.delete(id);
         this.overlays$.next(nextOverlays);
-    };
-
-    /**
-     * Searches for the closest point to a given coordinate using the turf distance metric (Haversine formula).
-     * @param lngLat Coordinates for which to find the closest feature.
-     * @param geojson Route data to get feature id from.
-     * @returns A tuple where the first element is the ID of the closest feature from `geojson`, and second is the feature.
-     */
-    public static getClosestFeature = (
-        geojson: GeoJson,
-        lngLat?: LngLat,
-    ): [number, GeoJSON.Feature<GeoJSON.Point, FeatureProperties>] => {
-        if (!lngLat) {
-            return [0, geojson.features[0]];
-        }
-        const [feature] = geojson.features.reduce<[GeoJSON.Feature<GeoJSON.Point, FeatureProperties>, number]>((acc, val) => {
-            const from = turfPoint([lngLat.lng, lngLat.lat]);
-            const to = turfPoint(val.geometry.coordinates);
-            const distance = turfDistance(from, to, { units: 'meters' });
-
-            return distance < acc[1] ? [val, distance] : acc;
-        }, [{
-            type: 'Feature',
-            geometry: {
-                type: 'Point',
-                coordinates: [0, 0]
-            },
-            properties: {
-                id: -1,
-                time: new Date().toISOString()
-            }
-        }, Infinity]);
-
-        return [feature.properties.id, feature];
     };
 
     private static EARTH_RADIUS = 6378137;

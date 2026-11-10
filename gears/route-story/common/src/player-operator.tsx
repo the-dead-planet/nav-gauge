@@ -142,11 +142,15 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
 
         const { startTimeEpoch } = routeTimes;
         const routeDuration = routeTimes.duration;
-        const sortedImageFeatures = [...loadedImages].sort((a, b) => a.featureId - b.featureId);
-        const nextImageTimes = sortedImageFeatures.map((imageFeature) => {
-            const f = geojson.features.find((feature) => feature.properties.id === imageFeature.featureId);
-            return f ? new Date(f.properties.time).valueOf() : null;
-        });
+        const sortedImageFeatures = [...loadedImages].sort((a, b) => a.distanceFraction - b.distanceFraction);
+        const nextImageTimes = sortedImageFeatures.map((image) =>
+            getRouteTimelinePositionForDistanceFraction(
+                geojson,
+                routeGeometryData,
+                startTimeEpoch,
+                image.distanceFraction,
+            )
+        );
         let last = performance.now();
         let currentProgressMs = this.gear.progressMs$.value;
         const initialRouteDistanceFraction = getRouteSourceData(
@@ -159,7 +163,7 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
         let routePlaybackFraction = this.gear.animatrix.controls$.value.playbackPacing === 'distance'
             ? initialRouteDistanceFraction
             : currentProgressMs / routeDuration;
-        let nextImageIndex = nextImageTimes.findIndex((time) => time !== null && time >= startTimeEpoch + currentProgressMs);
+        let nextImageIndex = nextImageTimes.findIndex((time) => time >= currentProgressMs);
 
         const animate = () => {
             const {
@@ -192,7 +196,7 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
             currentPoint.properties = { ...currentPoint.properties, heading: this.heading };
             onUpdateLayer(currentPoint, line);
 
-            if (this.animation !== undefined && nextImage && nextImageTime !== null && nextImageTime <= startTimeEpoch + currentProgressMs) {
+            if (this.animation !== undefined && nextImage && nextImageTime !== null && nextImageTime <= currentProgressMs) {
                 nextImageIndex = nextImageIndex + 1;
                 cancelAnimationFrame(this.animation);
 

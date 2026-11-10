@@ -1,4 +1,3 @@
-import * as maplibregl from "maplibre-gl";
 import EXIF from 'exif-js';
 import { ExifData, glitchmitter } from '@apparatus';
 import { FULL_SIZE_IMAGE_SIZE, MAP_THUMBNAIL_SIZE   } from "@the-dead-planet/nav-gauge-gears-route-story-common";
@@ -7,10 +6,8 @@ import { getResizeDimensions } from "@the-dead-planet/nav-gauge-gears-route-stor
 
 export interface WebMarkerImageData {
     data?: string;
-    marker?: maplibregl.Marker;
     bitmap?: ImageBitmap;
     thumbnailBitmap?: ImageBitmap;
-    markerElement?: HTMLDivElement;
 }
 
 export const parseImage = async (
@@ -46,6 +43,7 @@ export const parseImage = async (
         data: e.target?.result?.toString(),
         bitmap,
         thumbnailBitmap,
+        exif: exif || undefined,
         lngLat: getExifLngLat(exif || undefined),
         error: getExifError(exif),
     };

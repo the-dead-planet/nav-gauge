@@ -1,11 +1,11 @@
 import { combineLatest, Subscription } from 'rxjs';
 import * as maplibregl from "maplibre-gl";
-import { RouteStoryGear } from '@the-dead-planet/nav-gauge-gears-route-story-common';
+import { getRoutePlacement, RouteStoryGear } from '@the-dead-planet/nav-gauge-gears-route-story-common';
 import { RouteLayer } from './layers/RouteLayer';
 import { ImagesLayer } from './images/ImagesLayer';
 import { Player } from './player/Player';
-import { GeoJson, ParsingResultWithError } from '@tinker-chest';
-import { Cartomancer, MarkerImage, GearApparatus, parsers } from '@apparatus';
+import { GeoJson, getExifTimeEpoch, ParsingResultWithError } from '@tinker-chest';
+import { MarkerImage, GearApparatus, parsers } from '@apparatus';
 import bbox from "@turf/bbox";
 import { parseImage, WebMarkerImageData } from './images/image-parser';
 import { AnimationControls } from './animation-controls/AnimationControls';
@@ -94,31 +94,22 @@ export class WebRouteStoryGear extends RouteStoryGear<maplibregl.Map, WebChronoL
       };
 
       reader.onload = async (e) => {
-         const { data, bitmap, thumbnailBitmap, lngLat, error } = await parseImage(e, file, { shape: 'circle' });
+         const { data, bitmap, thumbnailBitmap, lngLat, exif, error } = await parseImage(e, file, { shape: 'circle' });
 
          const nextImages = this.images$.value.slice();
          const index = this.images$.value.findIndex((el) => el.name === file.name);
-         const [featureId, feature] = geojson ? Cartomancer.getClosestFeature(geojson, lngLat) : [0, undefined];
+         const placement = lngLat
+            ? getRoutePlacement(lngLat, geojson, this.routeGeometryData$.value, getExifTimeEpoch(exif))
+            : null;
 
          nextImages[index] = {
             ...nextImages[index],
             progress: 100,
             lngLat,
+            distanceFraction: placement?.distanceFraction,
             data: { data, bitmap, thumbnailBitmap },
             error,
-            featureId,
          };
-
-         if (feature) {
-            const markerElement = document.createElement('div');
-            const featureLngLat = new maplibregl.LngLat(feature.geometry.coordinates[0], feature.geometry.coordinates[1]);
-
-            nextImages[index].data!.markerElement = markerElement;
-            nextImages[index].data!.marker = new maplibregl.Marker({
-               element: markerElement,
-               draggable: true,
-            }).setLngLat(featureLngLat);
-         }
 
          this.images$.next(nextImages);
       };

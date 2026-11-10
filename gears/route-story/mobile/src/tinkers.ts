@@ -1,7 +1,7 @@
 import distance from "@turf/distance";
 import { Cartomancer } from "@apparatus";
 import { LoadedMobileImageData } from "./images/useLoadedMobileImages";
-import { THUMBNAIL_IMAGE_SIZE } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { getRouteLngLatAtDistanceFraction, RouteGeometryData, THUMBNAIL_IMAGE_SIZE } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { FeatureProperties, GeoJson } from "@tinker-chest";
 
 /**
@@ -12,23 +12,30 @@ export const findThumbnailsWithinBuffer = (
     zoom: number,
     images: LoadedMobileImageData[],
     geojson: GeoJson | undefined,
+    routeGeometryData: RouteGeometryData | null,
     { devicePixelRatio }: { devicePixelRatio: number; }
 ): GeoJSON.Feature<GeoJSON.Point, FeatureProperties & { imageId: number; }>[] => {
-    if (!geojson) {
+    if (!geojson || !routeGeometryData) {
         return [];
     }
     const buffer = Cartomancer.getBufferInMeters(lat, zoom, THUMBNAIL_IMAGE_SIZE / 2 / devicePixelRatio);
 
     return images
-        .reduce<GeoJSON.Feature<GeoJSON.Point, FeatureProperties & { imageId: number; }>[]>((acc, image) => {
-            const f = geojson.features.find((f) => f.properties.id === image.featureId);
-            return f ? acc.concat([{
-                ...f,
+        .map((image) => {
+            const lngLat = getRouteLngLatAtDistanceFraction(geojson, routeGeometryData, image.distanceFraction);
+
+            return {
+                type: 'Feature' as const,
+                geometry: {
+                    type: 'Point' as const,
+                    coordinates: [lngLat.lng, lngLat.lat],
+                },
                 properties: {
-                    ...f.properties,
+                    id: image.id,
+                    time: '',
                     imageId: image.id,
-                }
-            }]) : acc;
-        }, [])
+                },
+            };
+        })
         .filter((f) => distance([lng, lat], f.geometry.coordinates, { units: 'meters' }) <= buffer);
 };

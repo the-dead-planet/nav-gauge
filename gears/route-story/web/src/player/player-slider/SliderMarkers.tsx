@@ -2,20 +2,20 @@ import type * as maplibregl from "maplibre-gl";
 import { FC, useEffect, useRef } from "react";
 import { BehaviorSubject } from "rxjs";
 import classNames from "classnames";
-import bbox from "@turf/bbox";
 import { MarkerImage, useMultipleTranslations } from "@apparatus";
 import { ParsingResultWithError, useSubjectState } from "@tinker-chest";
 import {
     draggingImage$,
-    draggingClosestFeature$,
+    draggingPlacement$,
     highlightIdsBySourceId$,
     imageSourceIds,
     RouteStoryTranslationKey,
     RouteTimes,
     Animatrix,
-    updateImageFeatureId,
-    getPosition,
-    getClosestFeatureFromPosition,
+    updateImageDistanceFraction,
+    getDistanceFractionPercent,
+    getRouteLngLatAtDistanceFraction,
+    getRoutePlacementAtPercent,
     RouteGeometryData,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { WebMarkerImageData } from "../../images/image-parser";
@@ -53,7 +53,7 @@ export const SliderMarkers: FC<Props> = ({
     const [animationControls] = useSubjectState(animatrix.controls$);
     const [highlightIdsBySourceId, setHighlightIdsBySourceId] = useSubjectState(highlightIdsBySourceId$);
     const [draggingImage, setDraggingImage] = useSubjectState(draggingImage$);
-    const [draggingClosestFeature] = useSubjectState(draggingClosestFeature$);
+    const [draggingPlacement] = useSubjectState(draggingPlacement$);
     const [
         imageLabel,
         panToImageLabel,
@@ -78,18 +78,18 @@ export const SliderMarkers: FC<Props> = ({
             }
             const rect = container.getBoundingClientRect();
             const positionPercent = ((clientX - rect.left) / rect.width) * 100;
-            const closestFeature = getClosestFeatureFromPosition(positionPercent, geojson, routeTimes, animationControls.playbackPacing, routeGeometryData);
-            if (closestFeature !== null) {
-                draggingClosestFeature$.next(closestFeature);
+            const placement = getRoutePlacementAtPercent(positionPercent, geojson, routeTimes, routeGeometryData, animationControls.playbackPacing);
+            if (placement !== null) {
+                draggingPlacement$.next(placement);
             }
         };
 
         const handleEnd = () => {
-            const closestFeature = draggingClosestFeature$.value;
-            if (draggingImage$.value !== null && closestFeature !== null) {
-                updateImageFeatureId(images$, draggingImage$.value.id, closestFeature.properties.id);
+            const placement = draggingPlacement$.value;
+            if (draggingImage$.value !== null && placement !== null) {
+                updateImageDistanceFraction(images$, draggingImage$.value.id, placement.distanceFraction);
             }
-            draggingClosestFeature$.next(null);
+            draggingPlacement$.next(null);
             setDraggingImage(null);
         };
 
@@ -107,8 +107,15 @@ export const SliderMarkers: FC<Props> = ({
         };
     }, [draggingImage, images$, geojson, routeTimes, animationControls.playbackPacing, routeGeometryData, setDraggingImage]);
 
-    const draggingFeaturePosition = draggingClosestFeature !== null
-        ? getPosition(draggingClosestFeature.properties.id, geojson, routeTimes, animationControls.playbackPacing, routeGeometryData)
+    const draggingPosition = draggingPlacement !== null && geojson && routeGeometryData && routeTimes
+        ? getDistanceFractionPercent(
+            draggingPlacement.distanceFraction,
+            geojson,
+            routeGeometryData,
+            routeTimes.startTimeEpoch,
+            routeTimes.duration,
+            animationControls.playbackPacing,
+        )
         : null;
 
     return (
@@ -131,13 +138,20 @@ export const SliderMarkers: FC<Props> = ({
                 </div>
             )}
             {images
-                .filter((image) => image.featureId !== undefined)
+                .filter((image) => image.distanceFraction !== undefined && geojson && routeGeometryData && routeTimes)
                 .map((image) => (
                     <div
                         key={image.id}
                         className={styles['image-marker-container']}
                         style={{
-                            left: `${getPosition(image.featureId, geojson, routeTimes, animationControls.playbackPacing, routeGeometryData).toFixed(0)}%`
+                            left: `${getDistanceFractionPercent(
+                                image.distanceFraction!,
+                                geojson!,
+                                routeGeometryData!,
+                                routeTimes!.startTimeEpoch,
+                                routeTimes!.duration,
+                                animationControls.playbackPacing,
+                            ).toFixed(0)}%`
                         }}
                     >
                         <Tooltip color="tertiary" content={panToImageLabel} placement="top" size="xs">
@@ -148,9 +162,11 @@ export const SliderMarkers: FC<Props> = ({
                                 aria-label={panToImageLabel}
                                 onClick={(event) => {
                                     event.stopPropagation();
-                                    const feature = geojson?.features.find((f) => f.id === image.featureId);
-                                    if (feature) {
-                                        fitBoundsHandler(map, bbox(feature));
+                                    const lngLat = geojson && routeGeometryData
+                                        ? getRouteLngLatAtDistanceFraction(geojson, routeGeometryData, image.distanceFraction!)
+                                        : undefined;
+                                    if (lngLat) {
+                                        fitBoundsHandler(map, [lngLat.lng, lngLat.lat, lngLat.lng, lngLat.lat]);
                                     }
                                 }}
                                 className={styles['pan-to-icon']}
@@ -180,11 +196,11 @@ export const SliderMarkers: FC<Props> = ({
                         </Tooltip>
                     </div>
                 ))}
-            {draggingFeaturePosition !== null && (
+            {draggingPosition !== null && (
                 <span
                     className={classNames(styles['image-marker'], styles['drag-marker'], styles['highlight'])}
                     style={{
-                        left: `${draggingFeaturePosition.toFixed(4)}%`
+                        left: `${draggingPosition.toFixed(4)}%`
                     }}
                 />
             )}

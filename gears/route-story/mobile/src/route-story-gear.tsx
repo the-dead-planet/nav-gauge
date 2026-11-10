@@ -1,12 +1,12 @@
 import RNFS from 'react-native-fs';
 import * as Exify from '@lodev09/react-native-exify';
-import { RouteStoryGear } from '@the-dead-planet/nav-gauge-gears-route-story-common';
+import { getRoutePlacement, RouteStoryGear } from '@the-dead-planet/nav-gauge-gears-route-story-common';
 import { RouteLayer } from './layers/RouteLayer';
 import { ImagesLayer } from './images/ImagesLayer';
 import { Player } from './player/Player';
 import { MobileChronoLens, MobileMap } from '@mobile-apparatus';
-import { GeoJson, getExifError, getExifLngLat, ParsingResultWithError } from '@tinker-chest';
-import { Cartomancer, MarkerImage, GearApparatus, parsers } from '@apparatus';
+import { GeoJson, getExifError, getExifLngLat, getExifTimeEpoch, ParsingResultWithError } from '@tinker-chest';
+import { MarkerImage, GearApparatus, parsers } from '@apparatus';
 import bbox from "@turf/bbox";
 import { cacheReducedImage, prependFilePrefix, MobileMarkerImageData, resetTempSubfolder } from './images/image-parser';
 import { DocumentPickerResponse } from '@react-native-documents/picker';
@@ -124,19 +124,21 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, MobileChrono
          const nextImages = this.images$.value.slice();
          const index = this.images$.value.findIndex((el) => el.name === file.name);
          const lngLat = exif ? getExifLngLat(exif) : undefined;
-         const [featureId, _feature] = geojson ? Cartomancer.getClosestFeature(geojson, lngLat) : [0, undefined];
+         const placement = lngLat
+            ? getRoutePlacement(lngLat, geojson, this.routeGeometryData$.value, getExifTimeEpoch(exif))
+            : null;
 
          nextImages[index] = {
             ...nextImages[index],
             progress: 100,
             lngLat,
+            distanceFraction: placement?.distanceFraction,
             data: {
                uri: file.uri,
                fullSize: fullSize ? prependFilePrefix(fullSize) : undefined,
                thumbnail: thumbnail ? prependFilePrefix(thumbnail) : undefined,
             },
             error: getExifError(exif),
-            featureId,
          };
          this.images$.next(nextImages);
       } catch (err) {

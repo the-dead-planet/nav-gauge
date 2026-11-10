@@ -5,9 +5,10 @@ import turfDistance from "@turf/distance";
 import { point as turfPoint, lineString as turfLine } from "@turf/helpers";
 import { bezierSpline } from "@turf/bezier-spline";
 import turfLength from "@turf/length";
+import nearestPointOnLine from "@turf/nearest-point-on-line";
 import { CurrentPointData, LoadedImageData } from "@apparatus";
-import { emptyCollection, FeatureProperties, GeoJson } from "@tinker-chest";
-import { RouteStoryState, RouteTimes } from "../model";
+import { clampZeroOne, emptyCollection, GeoJson, LngLat } from "@tinker-chest";
+import { RouteStoryState } from "../model";
 import { PlaybackPacing } from "../animatrix";
 
 export const getRouteSourceData = (
@@ -90,10 +91,7 @@ const getCurrentPoint = (
     const line = turfLine([currentLineStartPos, currentLineEndPos]);
     const totalDistanceMeters = turfLength(line, { units: 'meters' });
     const currentPoint = { ...currentLineEnd };
-
-    if (!('featureId' in currentPoint.properties)) {
-        currentPoint.geometry = turfAlong(line, totalDistanceMeters * fraction, { units: 'meters' }).geometry;
-    };
+    currentPoint.geometry = turfAlong(line, totalDistanceMeters * fraction, { units: 'meters' }).geometry;
 
     return {
         currentPoint,
@@ -221,45 +219,186 @@ export function getIconImageId<TImageData>(
     return `image-${imageData.id}${thumbnail ? '-thumbnail' : ''}`;
 }
 
-export const getPosition = (
-    featureId: number | undefined,
-    geojson: GeoJson | undefined,
-    routeTimes: RouteTimes | null,
-    playbackPacing: PlaybackPacing = 'timeline',
-    routeGeometryData?: RouteGeometryData | null,
-) => {
-    const featureIndex = geojson?.features.findIndex((feature) => feature.properties.id === featureId) ?? -1;
-    const feature = geojson?.features[featureIndex];
-    if (!feature || !routeTimes) {
-        return 0;
+export const getRouteLngLatAtDistanceFraction = (
+    geojson: GeoJson,
+    routeGeometryData: RouteGeometryData,
+    distanceFraction: number,
+): LngLat => {
+    const features = geojson.features;
+    const lookup = routeGeometryData.lookup;
+    const fraction = clampZeroOne(distanceFraction);
+    const first = features[0].geometry.coordinates;
+    if (features.length < 2 || lookup.length < 2) {
+        return { lng: first[0], lat: first[1] };
     }
-    if (playbackPacing === 'distance' && routeGeometryData) {
-        return routeGeometryData.lookup[featureIndex].lineProgress * 100;
+
+    const endIndex = lookup.findIndex(({ lineProgress }) => lineProgress >= fraction);
+    if (endIndex <= 0) {
+        return { lng: first[0], lat: first[1] };
     }
-    return (new Date(feature.properties.time).valueOf() - new Date(routeTimes.startTime).valueOf()) / routeTimes.duration * 100;
+    if (endIndex < 0) {
+        const last = features[features.length - 1].geometry.coordinates;
+        return { lng: last[0], lat: last[1] };
+    }
+
+    const start = lookup[endIndex - 1];
+    const end = lookup[endIndex];
+    const span = end.lineProgress - start.lineProgress;
+    const segmentFraction = span > 0 ? (fraction - start.lineProgress) / span : 0;
+    const startCoordinates = features[endIndex - 1].geometry.coordinates;
+    const endCoordinates = features[endIndex].geometry.coordinates;
+
+    return {
+        lng: startCoordinates[0] + (endCoordinates[0] - startCoordinates[0]) * segmentFraction,
+        lat: startCoordinates[1] + (endCoordinates[1] - startCoordinates[1]) * segmentFraction,
+    };
 };
 
-export const getClosestFeatureFromPosition = (
-    positionPercent: number,
+export interface RoutePlacement {
+    /**
+     * Position snapped onto the route, so an image can sit between recorded points.
+     */
+    lngLat: LngLat;
+    /**
+     * Pacing-neutral position along the whole route. Percentage of time or distance
+     * is derived from this, never stored.
+     */
+    distanceFraction: number;
+}
+
+interface RoutePlacementCandidate extends RoutePlacement {
+    segmentFraction: number;
+    pointDistanceMeters: number;
+    timeEpoch: number;
+}
+
+const DEFAULT_OVERLAP_TOLERANCE_METERS = 25;
+
+/**
+ * Snaps a coordinate onto the route. `timeHintEpoch` picks between overlapping
+ * passes (a return leg over the same road); without it the nearest pass wins.
+ */
+export const getRoutePlacement = (
+    lngLat: LngLat,
     geojson: GeoJson | undefined,
-    routeTimes: RouteTimes | null,
-    playbackPacing: PlaybackPacing = 'timeline',
-    routeGeometryData?: RouteGeometryData | null,
-): GeoJSON.Feature<GeoJSON.Point, FeatureProperties> | null => {
-    if (!geojson || !routeTimes) {
+    routeGeometryData: RouteGeometryData | null | undefined,
+    timeHintEpoch?: number,
+    overlapToleranceMeters = DEFAULT_OVERLAP_TOLERANCE_METERS,
+): RoutePlacement | null => {
+    const features = geojson?.features;
+    if (!features?.length || !routeGeometryData) {
         return null;
     }
-    let closestFeature: GeoJSON.Feature<GeoJSON.Point, FeatureProperties> | null = null;
-    let closestDistance = Infinity;
 
-    for (const feature of geojson.features) {
-        const featurePercent = getPosition(feature.properties.id, geojson, routeTimes, playbackPacing, routeGeometryData);
-        const distance = Math.abs(featurePercent - positionPercent);
-        if (distance < closestDistance) {
-            closestDistance = distance;
-            closestFeature = feature;
-        }
+    const firstCoordinates = features[0].geometry.coordinates;
+    if (features.length === 1) {
+        return {
+            lngLat: { lng: firstCoordinates[0], lat: firstCoordinates[1] },
+            distanceFraction: 0,
+        };
     }
 
-    return closestFeature;
+    const inputPoint = turfPoint([lngLat.lng, lngLat.lat]);
+    const candidates: RoutePlacementCandidate[] = [];
+
+    for (let index = 0; index < features.length - 1; index++) {
+        const start = features[index].geometry.coordinates;
+        const end = features[index + 1].geometry.coordinates;
+        const segment = turfLine([start, end]);
+        const snapped = nearestPointOnLine(segment, inputPoint, { units: 'meters' });
+        const segmentLength = turfDistance(start, end, { units: 'meters' });
+        const segmentFraction = segmentLength > 0
+            ? snapped.properties.totalDistance / segmentLength
+            : 0;
+        const startProgress = routeGeometryData.lookup[index]?.lineProgress ?? 0;
+        const endProgress = routeGeometryData.lookup[index + 1]?.lineProgress ?? 1;
+        const distanceFraction = clampZeroOne(
+            startProgress + (endProgress - startProgress) * segmentFraction
+        );
+        const startTimeEpoch = new Date(features[index].properties.time).valueOf();
+        const endTimeEpoch = new Date(features[index + 1].properties.time).valueOf();
+
+        candidates.push({
+            lngLat: {
+                lng: snapped.geometry.coordinates[0],
+                lat: snapped.geometry.coordinates[1],
+            },
+            distanceFraction,
+            segmentFraction,
+            pointDistanceMeters: snapped.properties.pointDistance,
+            timeEpoch: startTimeEpoch + (endTimeEpoch - startTimeEpoch) * segmentFraction,
+        });
+    }
+
+    const nearest = candidates.reduce((best, candidate) =>
+        candidate.pointDistanceMeters < best.pointDistanceMeters ? candidate : best
+    );
+
+    if (timeHintEpoch === undefined) {
+        return { lngLat: nearest.lngLat, distanceFraction: nearest.distanceFraction };
+    }
+
+    /**
+     * Only a projection strictly inside its segment is a local minimum along the
+     * route. Endpoint projections belong to the adjacent segment and must not be
+     * pulled to a vertex by the time hint.
+     */
+    const overlapping = candidates.filter((candidate) =>
+        candidate === nearest
+        || (
+            candidate.segmentFraction > 0
+            && candidate.segmentFraction < 1
+            && candidate.pointDistanceMeters <= nearest.pointDistanceMeters + overlapToleranceMeters
+        )
+    );
+    const best = overlapping.reduce((current, candidate) =>
+        Math.abs(candidate.timeEpoch - timeHintEpoch) < Math.abs(current.timeEpoch - timeHintEpoch)
+            ? candidate
+            : current
+    );
+
+    return { lngLat: best.lngLat, distanceFraction: best.distanceFraction };
 };
+
+/**
+ * Timeline pacing keeps the existing departure-time convention for stationary
+ * sections, where a distance fraction maps to the moment the route moves again.
+ */
+export const getDistanceFractionPercent = (
+    distanceFraction: number,
+    geojson: GeoJson,
+    routeGeometryData: RouteGeometryData,
+    startTimeEpoch: number,
+    duration: number,
+    playbackPacing: PlaybackPacing,
+): number => {
+    if (playbackPacing === 'distance') {
+        return distanceFraction * 100;
+    }
+    if (duration <= 0) {
+        return 0;
+    }
+
+    return getRouteTimelinePositionForDistanceFraction(
+        geojson,
+        routeGeometryData,
+        startTimeEpoch,
+        distanceFraction,
+    ) / duration * 100;
+};
+
+export const getRoutePlacementPercent = (
+    placement: RoutePlacement,
+    geojson: GeoJson,
+    routeGeometryData: RouteGeometryData,
+    startTimeEpoch: number,
+    duration: number,
+    playbackPacing: PlaybackPacing,
+): number => getDistanceFractionPercent(
+    placement.distanceFraction,
+    geojson,
+    routeGeometryData,
+    startTimeEpoch,
+    duration,
+    playbackPacing,
+);
