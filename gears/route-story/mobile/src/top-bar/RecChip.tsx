@@ -1,14 +1,18 @@
 import { FC } from "react";
-import { Animated } from "react-native";
+import { Animated, Pressable } from "react-native";
 import { MobileRouteStoryProps } from "../model";
-import { Button, useBlinkingPulse } from "@mobile-ui";
+import { Chip, useBlinkingPulse } from "@mobile-ui";
 import { useMultipleTranslations } from "@apparatus";
+import { useSubjectState } from "@tinker-chest";
+import { useMobileMachineWard } from "@mobile-apparatus";
 
 export const RecChip: FC<MobileRouteStoryProps> = ({
     gearId,
     translationKey,
     playerOperator,
 }) => {
+    const { chronoLens } = useMobileMachineWard();
+    const [surveillanceState] = useSubjectState(chronoLens.surveillanceState$);
     const opacity = useBlinkingPulse();
 
     const [
@@ -19,11 +23,20 @@ export const RecChip: FC<MobileRouteStoryProps> = ({
 
     return (
         <Animated.View style={{ opacity }}>
-            <Button
+            <Pressable
+                accessibilityRole="button"
+                accessibilityLabel={stopRecordingLabel}
                 onPress={() => playerOperator.onStop()}
-                tooltip={stopRecordingLabel}
-                title="REC"
-            />
+            >
+                <Chip
+                    variant="fill"
+                    size="md"
+                    color={playerOperator.getBlinkingColor(surveillanceState)}
+                    tooltip={stopRecordingLabel}
+                >
+                    REC
+                </Chip>
+            </Pressable>
         </Animated.View>
     );
 };

@@ -1,6 +1,6 @@
 import { FeatureStateProps, LoadedImageData } from "@apparatus";
 import { GeoJson } from "@tinker-chest";
-import { getIconImageId } from "../tinkers";
+import { getIconImageId, getRouteLngLatAtDistanceFraction, RouteGeometryData } from "../tinkers";
 
 export const IMAGE_ANIMATION_DURATION = 250;
 export const IMAGE_PROPERTY = 'iconImageId';
@@ -19,24 +19,33 @@ export interface ImageFeatureProperties {
 export function getImageSource<TImageData>(
     loadedImages: LoadedImageData<TImageData>[],
     geojson?: GeoJson,
+    routeGeometryData?: RouteGeometryData | null,
 ): GeoJSON.FeatureCollection<GeoJSON.Point, ImageFeatureProperties> {
+    if (!geojson || !routeGeometryData) {
+        return {
+            type: 'FeatureCollection',
+            features: [],
+        };
+    }
+
     return {
         type: 'FeatureCollection',
-        features: loadedImages.reduce<ImageFeature[]>((acc, image) => {
-            const feature = geojson?.features.find((f) => f.properties.id === image.featureId);
-            if (feature) {
-                acc.push({
-                    type: 'Feature',
-                    id: image.id,
-                    geometry: feature.geometry,
-                    properties: {
-                        imageId: image.id,
-                        [IMAGE_PROPERTY]: getIconImageId(image),
-                        [IMAGE_THUMBNAIL_PROPERTY]: getIconImageId(image, { thumbnail: true }),
-                    }
-                });
-            }
-            return acc;
-        }, [])
+        features: loadedImages.map((image) => {
+            const lngLat = getRouteLngLatAtDistanceFraction(geojson, routeGeometryData, image.distanceFraction);
+
+            return {
+                type: 'Feature',
+                id: image.id,
+                geometry: {
+                    type: 'Point',
+                    coordinates: [lngLat.lng, lngLat.lat],
+                },
+                properties: {
+                    imageId: image.id,
+                    [IMAGE_PROPERTY]: getIconImageId(image),
+                    [IMAGE_THUMBNAIL_PROPERTY]: getIconImageId(image, { thumbnail: true }),
+                }
+            };
+        })
     };
 }

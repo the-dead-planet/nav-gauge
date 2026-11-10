@@ -99,7 +99,7 @@ export const useAnimationControls = <TImageData>(
         autoRotateLabel,
     ].some(matchesSearch);
     const displayedImageCount = images.filter(
-        (image) => image.featureId !== undefined,
+        (image) => image.distanceFraction !== undefined,
     ).length;
     const totalRecordingDuration =
         animationControls.routePlaybackDuration +

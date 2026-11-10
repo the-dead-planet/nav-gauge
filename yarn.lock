@@ -7131,6 +7131,7 @@ __metadata:
     "@turf/distance": "npm:^7.4.0"
     "@turf/helpers": "npm:^7.4.0"
     "@turf/length": "npm:^7.4.0"
+    "@turf/nearest-point-on-line": "npm:^7.4.0"
     "@types/chai": "npm:^5.2.3"
     "@types/eslint": "npm:^9.6.1"
     "@types/luxon": "npm:^3.7.6"

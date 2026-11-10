@@ -1,14 +1,7 @@
 .chip {
     font-size: var(--size-control-font-size);
     line-height: 1.1;
-    padding: calc(
-            var(--size-control-padding-block) +
-                var(--appearance-default-border-width)
-        )
-        calc(
-            var(--size-control-padding-inline) +
-                var(--appearance-default-border-width)
-        );
+    padding: calc(var(--size-control-padding-block) + var(--appearance-default-border-width)) var(--spacing-xs);
     gap: var(--size-control-gap);
     position: relative;
     box-sizing: border-box;
@@ -23,7 +16,7 @@
     gap: inherit;
 }
 
-.content > .label {
+.content>.label {
     color: inherit;
     font-weight: inherit;
 }

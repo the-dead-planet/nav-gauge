@@ -1,10 +1,10 @@
 import { BehaviorSubject } from "rxjs";
 import { MarkerImage } from "@apparatus";
 
-export function updateImageFeatureId<TImageData>(
+export function updateImageDistanceFraction<TImageData>(
     images$: BehaviorSubject<MarkerImage<TImageData>[]>,
     imageId: number,
-    featureId: number
+    distanceFraction: number
 ) {
-    images$.next(images$.value.map((im) => im.id === imageId ? { ...im, featureId } : im))
+    images$.next(images$.value.map((im) => im.id === imageId ? { ...im, distanceFraction } : im))
 }

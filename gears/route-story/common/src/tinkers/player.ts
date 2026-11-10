@@ -1,6 +1,7 @@
-import { formatTimeMsAsStandard, GeoJson } from "@tinker-chest";
+import { clampZeroOne, formatTimeMsAsStandard, GeoJson } from "@tinker-chest";
+import { PlaybackPacing } from "../animatrix";
 import { RouteTimes } from "../model";
-import { RouteGeometryData } from "./source-layers";
+import { getRouteLngLatAtDistanceFraction, RouteGeometryData, RoutePlacement } from "./source-layers";
 
 /**
  * Current progress as percentage of total duration.
@@ -38,6 +39,27 @@ export const getRouteDistanceFraction = (
     const followingDistance = routeGeometryData.lookup[followingIndex].lineProgress;
 
     return previousDistance + (followingDistance - previousDistance) * fraction;
+};
+
+export const getRoutePlacementAtPercent = (
+    positionPercent: number,
+    geojson: GeoJson | undefined,
+    routeTimes: RouteTimes | null,
+    routeGeometryData: RouteGeometryData | null,
+    playbackPacing: PlaybackPacing,
+): RoutePlacement | null => {
+    if (!geojson || !routeTimes || !routeGeometryData) {
+        return null;
+    }
+    const percent = clampZeroOne(positionPercent / 100);
+    const distanceFraction = playbackPacing === 'distance'
+        ? percent
+        : getRouteDistanceFraction(percent * routeTimes.duration, geojson, routeTimes, routeGeometryData);
+
+    return {
+        distanceFraction,
+        lngLat: getRouteLngLatAtDistanceFraction(geojson, routeGeometryData, distanceFraction),
+    };
 };
 
 export const formatCurrentTimestamp = (progressMs: number, progressPercentage: number): string => {

@@ -35,7 +35,7 @@ const mockIsPlaying = new BehaviorSubject(false);
 test("shares timing totals and search, and previews native camera changes only while paused", async () => {
     const animatrix = new Animatrix();
     const images$ = new BehaviorSubject<MarkerImage<MobileMarkerImageData>[]>([
-        { id: 1, name: "Displayed", progress: 1, featureId: 0 },
+        { id: 1, name: "Displayed", progress: 1, distanceFraction: 0 },
         { id: 2, name: "Unassigned", progress: 1 },
     ]);
     const camera: CameraRef = {

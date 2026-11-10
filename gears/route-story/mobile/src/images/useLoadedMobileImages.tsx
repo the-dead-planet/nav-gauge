@@ -14,7 +14,7 @@ export type LoadedMobileImageData = Omit<LoadedImageData<MobileMarkerImageData>,
  */
 export const useLoadedMobileImages = (images: MarkerImage<MobileMarkerImageData>[]) => {
     const loadedImages: LoadedMobileImageData[] = useMemo(() => images.filter(({ progress, ...image }) =>
-        progress === 100 && !!image.data?.thumbnail && !!image.data.fullSize && image.featureId !== undefined
+        progress === 100 && !!image.data?.thumbnail && !!image.data.fullSize && image.distanceFraction !== undefined
     ) as LoadedMobileImageData[], [images]);
 
     return loadedImages;

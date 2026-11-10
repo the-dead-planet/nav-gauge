@@ -70,6 +70,25 @@ const getLngLatValue = ([deg, min, s]: [number, number, number], ref: string | '
     return (deg + min / 60 + s / 3600) * (ref === 'S' || ref === 'W' ? -1 : 1);
 };
 
+interface ExifDateTime {
+    DateTime?: string;
+    DateTimeOriginal?: string;
+    DateTimeDigitized?: string;
+}
+
+export const getExifTimeEpoch = (exif?: ExifDateTime | false | null): number | undefined => {
+    if (!exif) {
+        return;
+    }
+    const value = exif.DateTimeOriginal ?? exif.DateTimeDigitized ?? exif.DateTime;
+    if (!value) {
+        return;
+    }
+    const parsed = new Date(value.replace(/^(\d{4}):(\d{2}):(\d{2})[ T]/, '$1-$2-$3T'));
+
+    return isNaN(parsed.valueOf()) ? undefined : parsed.valueOf();
+};
+
 export const getExifError = (exif?: ExifLngLat | false | null): string => {
     if (!exif) {
         return 'Not valid EXIF data';

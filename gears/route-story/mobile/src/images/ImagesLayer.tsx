@@ -1,22 +1,23 @@
 import { FC, useEffect, useState } from "react";
 import { PixelRatio } from "react-native";
 import { Layer, Images, GeoJSONSource, ImageEntry } from "@maplibre/maplibre-react-native";
-import { Cartomancer, OverlayComponentProps, FeatureStateProps } from "@apparatus";
+import { OverlayComponentProps, FeatureStateProps } from "@apparatus";
 import { useMobileMachineWard } from "@mobile-apparatus";
 import { useSubjectState } from "@tinker-chest";
 import {
     getIconImageId,
     getImageSource,
+    getRoutePlacement,
     ImagesLayers,
     routeLayerIds,
     imageLayerIds,
     imageSourceIds,
     draggingImage$,
-    draggingClosestFeature$,
+    draggingPlacement$,
     DRAGGED_IMAGE_ID,
     IMAGE_PROPERTY,
     IMAGE_THUMBNAIL_PROPERTY,
-    updateImageFeatureId,
+    updateImageDistanceFraction,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMap } from "@mobile-apparatus";
 import { useLoadedMobileImages } from "./useLoadedMobileImages";
@@ -28,29 +29,31 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStory
     map,
     animatrix,
     data$,
+    routeGeometryData$,
     images$,
     playerOperator
 }) => {
     const { cartomancer } = useMobileMachineWard();
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
     const [{ geojson }] = useSubjectState(data$);
+    const [routeGeometryData] = useSubjectState(routeGeometryData$);
     const [images] = useSubjectState(images$);
-    const [draggingClosestFeature] = useSubjectState(draggingClosestFeature$);
+    const [draggingPlacement] = useSubjectState(draggingPlacement$);
     const loadedImages = useLoadedMobileImages(images);
 
-    const [sourceDataGeojson, setSourceDataGeojson] = useState(getImageSource(loadedImages, geojson));
+    const [sourceDataGeojson, setSourceDataGeojson] = useState(getImageSource(loadedImages, geojson, routeGeometryData));
 
     useEffect(() => {
-        setSourceDataGeojson(getImageSource(loadedImages, geojson));
-    }, [loadedImages, geojson]);
+        setSourceDataGeojson(getImageSource(loadedImages, geojson, routeGeometryData));
+    }, [loadedImages, geojson, routeGeometryData]);
 
     const draggingImage = draggingImage$.value;
     const draggedImage = draggingImage?.interaction === 'player'
         ? loadedImages.find((candidate) => candidate.id === draggingImage.id)
         : undefined;
     let renderedSourceDataGeojson = sourceDataGeojson;
-    if (draggedImage && draggingClosestFeature) {
-        renderedSourceDataGeojson = getImageSource(loadedImages, geojson);
+    if (draggedImage && draggingPlacement) {
+        renderedSourceDataGeojson = getImageSource(loadedImages, geojson, routeGeometryData);
         for (const feature of renderedSourceDataGeojson.features) {
             if (feature.id === draggedImage.id) {
                 feature.properties[FeatureStateProps.Dragging] = true;
@@ -59,7 +62,10 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStory
         renderedSourceDataGeojson.features.push({
             type: 'Feature',
             id: -1,
-            geometry: draggingClosestFeature.geometry,
+            geometry: {
+                type: 'Point',
+                coordinates: [draggingPlacement.lngLat.lng, draggingPlacement.lngLat.lat],
+            },
             properties: {
                 imageId: DRAGGED_IMAGE_ID,
                 [IMAGE_PROPERTY]: getIconImageId(draggedImage),
@@ -87,7 +93,7 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStory
         // Start
         const nextPanResponderStartHandlers = new Map(map.onPanResponderStartHandlers$.value);
         nextPanResponderStartHandlers.set(id, async (lngLat) => {
-            const imageFeature = findThumbnailsWithinBuffer(lngLat, cartomancer.zoom$.value, loadedImages, geojson, { devicePixelRatio: PixelRatio.get() })[0];
+            const imageFeature = findThumbnailsWithinBuffer(lngLat, cartomancer.zoom$.value, loadedImages, geojson, routeGeometryData, { devicePixelRatio: PixelRatio.get() })[0];
             if (imageFeature) {
                 map.dragPan$.next(false);
                 draggingImage$.next({ id: imageFeature.properties.imageId, interaction: 'map' });
@@ -102,12 +108,12 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStory
             if (!geojson || draggingImage === null) {
                 return;
             }
-            const [_id, feature] = Cartomancer.getClosestFeature(geojson, { lng: lngLat[0], lat: lngLat[1] });
+            const placement = getRoutePlacement({ lng: lngLat[0], lat: lngLat[1] }, geojson, routeGeometryData);
             const image = loadedImages.find((image) => image.id === draggingImage.id);
-            if (!image) {
+            if (!image || !placement) {
                 return;
             }
-            const updated: typeof sourceDataGeojson = getImageSource(loadedImages, geojson);
+            const updated: typeof sourceDataGeojson = getImageSource(loadedImages, geojson, routeGeometryData);
             for (const feature of updated.features) {
                 if (feature.id === draggingImage.id) {
                     feature.properties[FeatureStateProps.Dragging] = true;
@@ -116,7 +122,10 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStory
             updated.features.push({
                 type: 'Feature',
                 id: -1,
-                geometry: feature.geometry,
+                geometry: {
+                    type: 'Point',
+                    coordinates: [placement.lngLat.lng, placement.lngLat.lat],
+                },
                 properties: {
                     imageId: DRAGGED_IMAGE_ID,
                     [IMAGE_PROPERTY]: getIconImageId(image),
@@ -134,17 +143,17 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStory
 
             map.dragPan$.next(true);
             draggingImage$.next(null);
-            setSourceDataGeojson(getImageSource(loadedImages, geojson));
+            setSourceDataGeojson(getImageSource(loadedImages, geojson, routeGeometryData));
 
             if (!geojson) {
                 return;
             }
-            const [id, _feature] = Cartomancer.getClosestFeature(geojson, { lng: lngLat[0], lat: lngLat[1] });
+            const placement = getRoutePlacement({ lng: lngLat[0], lat: lngLat[1] }, geojson, routeGeometryData);
             const image = loadedImages.find((image) => image.id === draggingImage?.id);
-            if (!image) {
+            if (!image || !placement) {
                 return;
             }
-            updateImageFeatureId(images$, image.id, id);
+            updateImageDistanceFraction(images$, image.id, placement.distanceFraction);
         });
         map.onPanResponderEndHandlers$.next(nextPanResponderEndHandlers);
 
@@ -161,7 +170,7 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStory
             nextPanResponderEndHandlers.delete(id);
             map.onPanResponderEndHandlers$.next(nextPanResponderEndHandlers);
         };
-    }, [map, loadedImages, geojson]);
+    }, [map, loadedImages, geojson, routeGeometryData]);
 
     const imageInDisplayIconSize = useImageInDisplay(map, animatrix, playerOperator);
 

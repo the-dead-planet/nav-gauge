@@ -34,15 +34,14 @@ export interface MarkerImage<TImageData> {
     name: string;
     progress: number;
     lngLat?: LngLat;
+    distanceFraction?: number;
     data?: TImageData;
     exif?: ExifData;
     error?: string;
-    featureId?: number;
 }
 
-export interface LoadedImageData<TImageData> extends Omit<MarkerImage<TImageData>, 'progress' | 'error' | 'featureId' | 'data' | 'lngLat'> {
-    lngLat: LngLat;
-    featureId: number;
+export interface LoadedImageData<TImageData> extends Omit<MarkerImage<TImageData>, 'progress' | 'error' | 'data'> {
+    distanceFraction: number;
     data: TImageData;
 }
 

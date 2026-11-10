@@ -7,7 +7,7 @@ import { WebMarkerImageData } from "../images/image-parser";
  */
 export const useLoadedWebImages = (images: MarkerImage<WebMarkerImageData>[]) => {
     const loadedImages: LoadedImageData<WebMarkerImageData>[] = useMemo(() => images.filter(({ progress, ...image }) =>
-        progress === 100 && image.data?.bitmap && image.data.thumbnailBitmap && image.data.data && image.featureId !== undefined
+        progress === 100 && image.data?.bitmap && image.data.thumbnailBitmap && image.data.data && image.distanceFraction !== undefined
     ) as LoadedImageData<WebMarkerImageData>[], [images]);
 
     return loadedImages;
