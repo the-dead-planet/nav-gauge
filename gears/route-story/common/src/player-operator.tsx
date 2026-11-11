@@ -179,13 +179,7 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
             const now = performance.now();
             const dt = now - last;
             last = now;
-            routePlaybackFraction += dt / routePlaybackDuration;
-            if (routePlaybackFraction >= 1) {
-                this.gear.progressMs$.next(routeDuration);
-                this.handleRouteEnd();
-                
-                return;
-            }
+            routePlaybackFraction = Math.min(1, routePlaybackFraction + dt / routePlaybackDuration);
             currentProgressMs = playbackPacing === 'distance'
                 ? getRouteTimelinePositionForDistanceFraction(geojson, routeGeometryData, startTimeEpoch, routePlaybackFraction)
                 : routePlaybackFraction * routeDuration;
@@ -222,6 +216,13 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
                 } else {
                     showImage();
                 }
+
+                return;
+            }
+
+            if (routePlaybackFraction >= 1) {
+                this.gear.progressMs$.next(routeDuration);
+                this.handleRouteEnd();
 
                 return;
             }
