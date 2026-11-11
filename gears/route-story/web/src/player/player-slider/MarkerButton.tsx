@@ -40,6 +40,7 @@ export const MarkerButton: FC<Props> = ({
             color={showImageMarkers ? 'tertiary' : 'neutral'}
             highlightColor="tertiary"
             aria-label={markersLabel}
+            aria-pressed={showImageMarkers}
             caption={markersCaption}
             tooltip={markersLabel}
             tooltipPlacement="top"

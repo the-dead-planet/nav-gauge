@@ -136,6 +136,25 @@ describe("Route story gear", () => {
             expect(lngLat.lat).to.be.closeTo(1, 0.001);
         });
 
+        it("snaps route vertices to their matching distance fractions", () => {
+            const routeGeometryData = getRouteGeometryData(route);
+            for (const [index, feature] of route.features.entries()) {
+                const [lng, lat] = feature.geometry.coordinates;
+                const placement = getRoutePlacement({ lng, lat }, route, routeGeometryData)!;
+                expect(placement.lngLat).to.deep.equal({ lng, lat });
+                expect(placement.distanceFraction).to.be.closeTo(routeGeometryData.lookup[index].lineProgress, 1e-10);
+            }
+        });
+
+        it("uses the route end when the distance fraction exceeds the final lookup entry", () => {
+            const geometry = getRouteGeometryData(route);
+            const routeGeometryData = {
+                ...geometry,
+                lookup: geometry.lookup.map((entry) => ({ ...entry, lineProgress: entry.lineProgress * 0.99 })),
+            };
+            expect(getRouteLngLatAtDistanceFraction(route, routeGeometryData, 1)).to.deep.equal({ lng: 2, lat: 2 });
+        });
+
         it("derives timeline and distance percentages from the same placement", () => {
             const routeGeometryData = {
                 ...getRouteGeometryData(route),

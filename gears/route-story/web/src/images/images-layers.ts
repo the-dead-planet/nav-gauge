@@ -1,45 +1,65 @@
 import { LayerSpecification } from "maplibre-gl";
-import { imageLayerIds, ImagesLayers, imageSourceIds } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import {
+    imageLayerIds,
+    ImagesLayers,
+    imageSourceIds,
+} from "@the-dead-planet/nav-gauge-gears-route-story-common";
 
 export const getImagesLayers = (
     displayImageId: number | null,
+    highlightColor: string,
 ): LayerSpecification[] => {
     return [
         {
+            id: imageLayerIds.thumbnailsStackBack,
+            source: imageSourceIds.thumbnails,
+            type: "symbol",
+            ...ImagesLayers.thumbnailsStackBack,
+        },
+        {
+            id: imageLayerIds.thumbnailsStackFront,
+            source: imageSourceIds.thumbnails,
+            type: "symbol",
+            ...ImagesLayers.thumbnailsStackFront,
+        },
+        {
             id: imageLayerIds.thumbnailsOutline,
             source: imageSourceIds.thumbnails,
-            type: 'circle',
-            paint: ImagesLayers.thumbnailsOutline.paint,
+            type: "circle",
+            filter: ImagesLayers.thumbnailsOutline.filter,
+            paint: ImagesLayers.thumbnailsOutline.getPaint(highlightColor),
         },
         {
             id: imageLayerIds.thumbnails,
             source: imageSourceIds.thumbnails,
-            type: 'symbol',
+            type: "symbol",
             filter: ImagesLayers.thumbnails.filter,
             layout: ImagesLayers.thumbnails.layout,
-            paint: ImagesLayers.thumbnails.paint
+            paint: ImagesLayers.thumbnails.paint,
         },
         {
             id: imageLayerIds.thumbnailsHighlightOutline,
             source: imageSourceIds.thumbnails,
-            type: 'circle',
+            type: "circle",
             filter: ImagesLayers.thumbnailsHighlightOutline.filter,
-            paint: ImagesLayers.thumbnailsHighlightOutline.paint,
+            paint: ImagesLayers.thumbnailsHighlightOutline.getPaint(
+                highlightColor,
+            ),
         },
         {
             id: imageLayerIds.thumbnailsHighlight,
             source: imageSourceIds.thumbnails,
-            type: 'symbol',
+            type: "symbol",
             filter: ImagesLayers.thumbnailsHighlight.filter,
             layout: ImagesLayers.thumbnailsHighlight.layout,
             paint: ImagesLayers.thumbnailsHighlight.paint,
         },
         {
             id: imageLayerIds.imageInDisplay,
-            type: 'symbol',
+            type: "symbol",
             filter: ImagesLayers.imageInDisplay.getFilter(displayImageId),
             source: imageSourceIds.thumbnails,
-            layout: ImagesLayers.imageInDisplay.layout
-        }
+            layout: ImagesLayers.imageInDisplay.layout,
+        },
     ];
 };

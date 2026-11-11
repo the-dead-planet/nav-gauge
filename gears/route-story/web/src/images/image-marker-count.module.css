@@ -1,0 +1,9 @@
+.marker-count {
+    pointer-events: none;
+}
+
+.badge-number {
+    font-size: 11px;
+    line-height: inherit;
+    color: inherit;
+}

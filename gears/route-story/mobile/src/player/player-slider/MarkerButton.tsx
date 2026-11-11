@@ -40,6 +40,7 @@ export const MarkerButton: FC<Props> = ({
             color={showImageMarkers ? 'tertiary' : 'neutral'}
             highlightColor="tertiary"
             accessibilityLabel={markersLabel}
+            accessibilityState={{ selected: showImageMarkers }}
             caption={markersCaption}
             tooltip={markersLabel}
             tooltipPlacement="top"
