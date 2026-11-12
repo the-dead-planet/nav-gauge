@@ -1,5 +1,18 @@
-import type { SpacingVariant } from '../model';
+import type { ColorShade, ColorVariant, SpacingVariant } from '../model';
 import type { Breakpoint, ElevationLevel, ThemeElevation, ElevationLayer, ThemeLayerPolicy, ThemeMode, ThemeSizes } from './model';
+
+export const mapImageMarkerAppearance: {
+    color: ColorVariant;
+    outlineShade: Record<ThemeMode, ColorShade>;
+    highlightShade: ColorShade;
+} = {
+    color: 'tertiary',
+    outlineShade: {
+        light: 700,
+        dark: 100,
+    },
+    highlightShade: 500,
+};
 
 export const themeSizes: ThemeSizes = {
     control: {

@@ -1,6 +1,6 @@
 import { Canvas, Meta, Title } from "@storybook/addon-docs/blocks";
 import * as ColorStories from "./colors/Color.stories";
-import { translucentSurfaceOpacity } from '@ui';
+import { mapImageMarkerAppearance, translucentSurfaceOpacity } from '@ui';
 
 <Meta title="Design System/Appearance" />
 
@@ -96,6 +96,19 @@ Glyphs are a component's text and icons:
 - <a href="./?path=/docs/design-system-icons--docs" target="_top" style={{ textDecoration: 'underline' }}>Icons</a> defines icon meaning, sizing, and accessibility.
 
 Form-field labels use the platform typography `Label` component, which owns their typography and appearance. A field's transient hover, focus, or pressed state must not recolor its label; only explicit highlighted and disabled props affect the label's own appearance.
+
+## Map image markers
+
+On both platforms, image-marker outlines follow the **selected map style's theme mode**, not the application UI mode. Update them when the map style changes. The shared policy is `mapImageMarkerAppearance` in `ui/common/src/design-system/theme/tinkers.ts`; this map-specific treatment does not change the general glyph or component variant policies.
+
+<table>
+    <thead>
+        <tr><th>Element</th><th>Default</th><th>Hovered / highlighted</th><th>Selected / dragged</th></tr>
+    </thead>
+    <tbody>
+        <tr><th scope="row">Outline</th><td>Tertiary <code>{mapImageMarkerAppearance.outlineShade.light}</code> light / <code>{mapImageMarkerAppearance.outlineShade.dark}</code> dark</td><td>Tertiary <code>{mapImageMarkerAppearance.highlightShade}</code></td><td>Tertiary <code>{mapImageMarkerAppearance.highlightShade}</code></td></tr>
+    </tbody>
+</table>
 
 ## Variants
 

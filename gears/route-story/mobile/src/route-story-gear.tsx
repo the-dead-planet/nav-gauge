@@ -8,7 +8,8 @@ import { MobileChronoLens, MobileMap } from '@mobile-apparatus';
 import { GeoJson, getExifError, getExifLngLat, getExifTimeEpoch, ParsingResultWithError } from '@tinker-chest';
 import { MarkerImage, GearApparatus, parsers } from '@apparatus';
 import bbox from "@turf/bbox";
-import { cacheReducedImage, prependFilePrefix, MobileMarkerImageData, resetTempSubfolder } from './images/image-parser';
+import { cacheReducedImage, prependFilePrefix, MobileMarkerImageData, resetTempSubfolder, removeCachedImageFiles } from './images/image-parser';
+import { pairwise } from 'rxjs';
 import { DocumentPickerResponse } from '@react-native-documents/picker';
 import { RouteName } from './player/RouteName';
 import { AnimationControlsSearch } from './animation-controls/AnimationControlsSearch';
@@ -51,9 +52,16 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, MobileChrono
    public imagesLayerComponent = ImagesLayer;
    public topBarChipComponent = RecChip;
    public layerStylingComponent = LayerStylingPopup;
+   private imageProcessingGeneration = 0;
 
    public constructor(apparatus: GearApparatus<MobileMap, MobileChronoLens>) {
       super(apparatus);
+
+      this.images$.pipe(pairwise()).subscribe(([previous, current]) => {
+         const retained = new Set(current.flatMap((image) => [image.data?.fullSize, image.data?.thumbnail]));
+         void removeCachedImageFiles(previous.flatMap((image) => [image.data?.fullSize, image.data?.thumbnail])
+            .filter((path) => !retained.has(path)));
+      });
 
       this.loadSampleRoute()
          .catch(console.error)
@@ -109,10 +117,17 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, MobileChrono
          return;
       }
       this.fileOperator.pushInitialImage(fileName);
+      const pendingImage = this.images$.value.find((image) => image.name === fileName);
+      if (!pendingImage) {
+         return;
+      }
+      const generation = this.imageProcessingGeneration;
+      let cached: { fullSize?: string; thumbnail?: string } = {};
+      let adopted = false;
 
       try {
          const exif = await Exify.read(file.uri);
-         const { fullSize, thumbnail } = await cacheReducedImage(file, (error) => {
+         cached = await cacheReducedImage(file, (error) => {
             this.apparatus.signaliumBureau.addNotice({
                id: 'image-resize',
                type: 'glitch',
@@ -120,9 +135,17 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, MobileChrono
                text: 'Error processing images',
             });
          });
+         const { fullSize, thumbnail } = cached;
 
          const nextImages = this.images$.value.slice();
-         const index = this.images$.value.findIndex((el) => el.name === file.name);
+         const index = nextImages.indexOf(pendingImage);
+         if (generation !== this.imageProcessingGeneration || index < 0) {
+            return;
+         }
+         if (!fullSize || !thumbnail) {
+            this.fileOperator.updateImageError(fileName, 'Error processing image');
+            return;
+         }
          const lngLat = exif ? getExifLngLat(exif) : undefined;
          const placement = lngLat
             ? getRoutePlacement(lngLat, geojson, this.routeGeometryData$.value, getExifTimeEpoch(exif))
@@ -141,8 +164,15 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, MobileChrono
             error: getExifError(exif),
          };
          this.images$.next(nextImages);
+         adopted = true;
       } catch (err) {
-         this.fileOperator.updateImageError(file.name!, (err as Error)?.message);
+         if (generation === this.imageProcessingGeneration && this.images$.value.includes(pendingImage)) {
+            this.fileOperator.updateImageError(fileName, (err as Error)?.message);
+         }
+      } finally {
+         if (!adopted) {
+            await removeCachedImageFiles([cached.fullSize, cached.thumbnail]);
+         }
       }
    }
 
@@ -150,6 +180,7 @@ export class MobileRouteStoryGear extends RouteStoryGear<MobileMap, MobileChrono
       _data: ParsingResultWithError,
       _images: MarkerImage<MobileMarkerImageData>[]
    ): Promise<void> => {
-      resetTempSubfolder();
+      this.imageProcessingGeneration++;
+      await resetTempSubfolder();
    };
 }

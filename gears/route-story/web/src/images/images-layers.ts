@@ -9,6 +9,7 @@ export const getImagesLayers = (
     displayImageId: number | null,
     highlightColor: string,
     badgeTextColor: string,
+    outlineColor: string,
 ): LayerSpecification[] => {
     return [
         {
@@ -28,7 +29,7 @@ export const getImagesLayers = (
             source: imageSourceIds.thumbnails,
             type: "circle",
             filter: ImagesLayers.thumbnailsOutline.filter,
-            paint: ImagesLayers.thumbnailsOutline.getPaint(highlightColor),
+            paint: ImagesLayers.thumbnailsOutline.getPaint(highlightColor, outlineColor),
         },
         {
             id: imageLayerIds.thumbnails,

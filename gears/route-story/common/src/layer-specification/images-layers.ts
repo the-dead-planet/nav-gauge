@@ -130,6 +130,7 @@ const thumbnailsOutlineStrokeWidth: CaseFeatureStateOrPropertyCondition = [
 ];
 const thumbnailsOutlineStrokeColor = (
     highlightColor: string,
+    outlineColor: string,
 ): CaseFeatureStateOrPropertyCondition => [
     "case",
     [
@@ -138,7 +139,7 @@ const thumbnailsOutlineStrokeColor = (
         ["==", ["get", FeatureStateProps.Highlight], true],
     ],
     highlightColor,
-    "white",
+    outlineColor,
 ];
 
 const thumbnailsHighlightOutlineFilter: ComparisonProperty = [
@@ -191,10 +192,10 @@ export default {
     thumbnailsStackFront,
     thumbnailsOutline: {
         filter: thumbnailsFilter,
-        getPaint: (highlightColor: string) => ({
+        getPaint: (highlightColor: string, outlineColor: string) => ({
             "circle-radius": Math.round(THUMBNAIL_IMAGE_SIZE / 2),
             "circle-color": "transparent",
-            "circle-stroke-color": thumbnailsOutlineStrokeColor(highlightColor),
+            "circle-stroke-color": thumbnailsOutlineStrokeColor(highlightColor, outlineColor),
             "circle-stroke-width": thumbnailsOutlineStrokeWidth,
             "circle-stroke-opacity": thumbnailDraggingOpacity,
         }),

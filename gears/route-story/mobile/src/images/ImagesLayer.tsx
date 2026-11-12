@@ -5,7 +5,7 @@ import {
     GeoJSONSource,
     ImageEntry,
 } from "@maplibre/maplibre-react-native";
-import { useTheme } from "@ui";
+import { mapImageMarkerAppearance, useTheme } from "@ui";
 import { OverlayComponentProps } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import {
@@ -29,6 +29,7 @@ import { useImageMarkerSource } from "./useImageMarkerSource";
 import { useMapImageInteraction } from "./useMapImageInteraction";
 import { ImageDragPreview } from "./ImageDragPreview";
 import { MobileRouteStoryProps } from "../model";
+import { CircularMapThumbnail } from "./CircularMapThumbnail";
 
 export const ImagesLayer: FC<
     OverlayComponentProps<MobileMap> & MobileRouteStoryProps
@@ -42,7 +43,8 @@ export const ImagesLayer: FC<
     playerOperator,
 }) => {
     const theme = useTheme();
-    const imageHighlightColor = theme.color("tertiary", 500);
+    const imageHighlightColor = theme.color(mapImageMarkerAppearance.color, mapImageMarkerAppearance.highlightShade);
+    const imageOutlineColor = theme.color(mapImageMarkerAppearance.color, mapImageMarkerAppearance.outlineShade[theme.mode]);
     const badgeAppearance = theme.resolveAppearance("fill", "tertiary");
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
     const [{ geojson }] = useSubjectState(data$);
@@ -73,17 +75,13 @@ export const ImagesLayer: FC<
 
     const imageSources: Record<string, ImageEntry> = Object.fromEntries(
         loadedImages.flatMap((image) => {
-            const thumbnail: [string, ImageEntry] = [
-                getIconImageId(image, { thumbnail: true }),
-                { source: { uri: image.data.thumbnail } },
-            ];
             const fullSize: [string, ImageEntry] = [
                 getIconImageId(image),
                 { source: { uri: image.data.fullSize } },
             ];
             return displayImageId === image.id
-                ? [fullSize, thumbnail]
-                : [thumbnail];
+                ? [fullSize]
+                : [];
         }),
     );
     imageSources[IMAGE_COUNT_BADGE_ID] = {
@@ -99,6 +97,13 @@ export const ImagesLayer: FC<
     return (
         <>
             <Images images={imageSources} />
+            {loadedImages.map((image) => (
+                <CircularMapThumbnail
+                    key={`${image.id}:${image.data.thumbnail}`}
+                    imageId={getIconImageId(image, { thumbnail: true })}
+                    uri={image.data.thumbnail}
+                />
+            ))}
             <GeoJSONSource
                 id={imageSourceIds.connections}
                 data={getImageMarkerConnections(originalSource, visibleSource)}
@@ -130,6 +135,7 @@ export const ImagesLayer: FC<
                     filter={ImagesLayers.thumbnailsOutline.filter}
                     paint={ImagesLayers.thumbnailsOutline.getPaint(
                         imageHighlightColor,
+                        imageOutlineColor,
                     )}
                 />
                 <Layer

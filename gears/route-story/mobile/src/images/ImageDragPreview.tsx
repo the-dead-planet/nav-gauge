@@ -1,6 +1,6 @@
 import { GeoJSONSource, Layer } from "@maplibre/maplibre-react-native";
 import { useSubjectState } from "@tinker-chest";
-import { useTheme } from "@ui";
+import { mapImageMarkerAppearance, useTheme } from "@ui";
 import {
     draggingImage$,
     draggingPlacement$,
@@ -36,7 +36,7 @@ export const ImageDragPreview = ({
                 afterId={imageLayerIds.thumbnails}
                 filter={ImagesLayers.thumbnailsHighlightOutline.filter}
                 paint={ImagesLayers.thumbnailsHighlightOutline.getPaint(
-                    theme.color("tertiary", 500),
+                    theme.color(mapImageMarkerAppearance.color, mapImageMarkerAppearance.highlightShade),
                 )}
             />
             <Layer

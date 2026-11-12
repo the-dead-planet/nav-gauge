@@ -3,7 +3,7 @@ import * as maplibregl from "maplibre-gl";
 import { OverlayComponentProps, FeatureStateProps } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { MapLayerData, MapSourceAndLayers } from "@web-apparatus";
-import { useTheme } from "@ui";
+import { mapImageMarkerAppearance, useTheme } from "@ui";
 import { useLoadedWebImages } from "../hooks/useLoadedWebImages";
 import { useImageInDisplay } from "./useImageInDisplay";
 import { MapImageData, useRouteLayerImages } from "../hooks";
@@ -45,7 +45,8 @@ export const ImagesLayer: FC<
     playerOperator,
 }) => {
     const theme = useTheme();
-    const imageHighlightColor = theme.color("tertiary", 500);
+    const imageHighlightColor = theme.color(mapImageMarkerAppearance.color, mapImageMarkerAppearance.highlightShade);
+    const imageOutlineColor = theme.color(mapImageMarkerAppearance.color, mapImageMarkerAppearance.outlineShade[theme.mode]);
     const badgeTextColor = theme.resolveAppearance("fill", "tertiary").glyphs;
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
     const [{ geojson }] = useSubjectState(data$);
@@ -126,6 +127,7 @@ export const ImagesLayer: FC<
                 displayImageId,
                 imageHighlightColor,
                 badgeTextColor,
+                imageOutlineColor,
             ),
             handlers: {
                 options: {
@@ -210,7 +212,7 @@ export const ImagesLayer: FC<
                 },
             },
         }),
-        [sourceDataGeojson, imageHighlightColor, badgeTextColor],
+        [sourceDataGeojson, imageHighlightColor, badgeTextColor, imageOutlineColor],
     );
 
     useEffect(() => {
