@@ -146,19 +146,25 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
         fitBoundsHandler: this.fitBoundsHandler,
     });
 
-    private registerMarkerLayerTool = (visible: boolean): void => {
-        this.apparatus.toolsStation.addToolIcon(this.markerLayerToolIconId, {
+    private registerMarkerLayerTool = (): Subscription => {
+        const toolIcon = this.apparatus.toolsStation.addToolIcon(this.markerLayerToolIconId, {
             placement: 'left',
-            icon: (visible ? Icons.NounProject.ImageMarker : Icons.NounProject.ImageMarkerHidden) as unknown as string,
-            active: visible,
-            tooltip: {
+            tooltip: (value) => ({
                 n: this.id,
-                t: visible ? this.internalTranslationKey.HideImageLayer : this.internalTranslationKey.ShowImageLayer,
-            },
+                t: value === 'visible' ? this.internalTranslationKey.HideImageLayer : this.internalTranslationKey.ShowImageLayer,
+            }),
             onClick: () => this.state$.next({
                 ...this.state$.value,
                 markerLayerVisibility: !this.state$.value.markerLayerVisibility,
             }),
+        });
+        return this.state$.pipe(
+            map((state) => state.markerLayerVisibility),
+            distinctUntilChanged(),
+        ).subscribe((visible) => {
+            toolIcon.icon$.next((visible ? Icons.NounProject.ImageMarker : Icons.NounProject.ImageMarkerHidden) as unknown as string);
+            toolIcon.active$.next(visible);
+            toolIcon.value$.next(visible ? 'visible' : 'hidden');
         });
     };
 
@@ -170,10 +176,7 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
             .then((subscription) => {
                 stateSubscriptions.add(subscription);
             });
-        stateSubscriptions.add(this.state$.pipe(
-            map((state) => state.markerLayerVisibility),
-            distinctUntilChanged(),
-        ).subscribe(this.registerMarkerLayerTool));
+        stateSubscriptions.add(this.registerMarkerLayerTool());
         this.presetSubscription = this.subscribePreset();
         this.presetActiveSubscription = this.subscribePresetActive();
         this.engageRouteStory?.();
