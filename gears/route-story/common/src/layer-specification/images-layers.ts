@@ -24,6 +24,7 @@ import type {
 } from "@maplibre/maplibre-gl-style-spec";
 
 export const imageSourceIds = {
+    dragPreview: "route-story-image-drag-preview",
     connections: "route-story-image-connections",
     thumbnails: "route-story-thumbnails",
 };
@@ -39,6 +40,8 @@ export const imageLayerIds = {
     thumbnails: "route-story-thumbnails",
     thumbnailsHighlightOutline: "route-story-thumbnails-highlight-outline",
     thumbnailsHighlight: "route-story-thumbnails-highlight",
+    countBadge: "route-story-image-count-badge",
+    countLabel: "route-story-image-count-label",
     imageInDisplay: "route-story-image-in-display",
 };
 
@@ -53,6 +56,15 @@ export const draggingPlacement$ = new BehaviorSubject<RoutePlacement | null>(
     null,
 );
 export const selectedImageId$ = new BehaviorSubject<number | null>(null);
+export const IMAGE_COUNT_BADGE_ID = "route-story-image-count-octagon";
+const countOffset: [number, number] = [20, -20];
+const countTextOffset: [number, number] = [20 / 11, -20 / 11];
+const countText: ExpressionSpecification = [
+    "case",
+    [">", ["get", "markerCount"], 99],
+    "99+",
+    ["to-string", ["get", "markerCount"]],
+];
 export const expandedImageGroupId$ = new BehaviorSubject<number | null>(null);
 
 export const toggleImageMarkerGroup = (imageIds: number[]) => {
@@ -61,11 +73,19 @@ export const toggleImageMarkerGroup = (imageIds: number[]) => {
     }
     if (imageIds.some((id) => id === selectedImageId$.value)) {
         selectedImageId$.next(null);
+        expandedImageGroupId$.next(null);
         return;
     }
     const imageId = imageIds[0];
     selectedImageId$.next(imageId);
     expandedImageGroupId$.next(imageId);
+};
+
+export const selectMapImageMarker = (imageId: number, groupSize: number) => {
+    selectedImageId$.next(
+        groupSize > 1 || selectedImageId$.value !== imageId ? imageId : null,
+    );
+    expandedImageGroupId$.next(groupSize > 1 ? imageId : null);
 };
 
 const thumbnailsFilter: FilterSpecification = [
@@ -209,6 +229,27 @@ export default {
         paint: {
             "icon-opacity": 1,
         },
+    },
+    countBadge: {
+        filter: groupFilter,
+        layout: {
+            "icon-image": IMAGE_COUNT_BADGE_ID,
+            "icon-size": 1,
+            "icon-offset": countOffset,
+            "icon-allow-overlap": true,
+        },
+        getPaint: (color: string) => ({ "icon-color": color }),
+    },
+    countLabel: {
+        filter: groupFilter,
+        layout: {
+            "text-field": countText,
+            "text-font": ["Noto Sans Regular"],
+            "text-size": 11,
+            "text-offset": countTextOffset,
+            "text-allow-overlap": true,
+        },
+        getPaint: (color: string) => ({ "text-color": color }),
     },
     imageInDisplay: {
         getFilter: (displayImageId: number | null): ComparisonProperty => [

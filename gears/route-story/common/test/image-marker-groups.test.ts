@@ -9,31 +9,36 @@ import {
     getImageMarkerConnections,
 } from "../src/layer-specification/grouped-image-source";
 import {
-    getDraggingImageSource,
+    getImageDragPreviewSource,
+    getImageSourceWithDraggingState,
     ImageFeature,
 } from "../src/layer-specification/images-sources";
 import {
     expandedImageGroupId$,
     selectedImageId$,
     toggleImageMarkerGroup,
+    selectMapImageMarker,
 } from "../src/layer-specification/images-layers";
 
 describe("Image marker groups", () => {
-    it("toggles grouped and individual selection while keeping the map group expanded", () => {
+    it("uses map groups as persistent pickers and slider groups as open/close toggles", () => {
         selectedImageId$.next(null);
         toggleImageMarkerGroup([1, 2]);
         expect(selectedImageId$.value).to.equal(1);
         toggleImageMarkerGroup([1, 2]);
         expect(selectedImageId$.value).to.equal(null);
-        expect(expandedImageGroupId$.value).to.equal(1);
-        toggleImageMarkerGroup([2]);
+        expect(expandedImageGroupId$.value).to.equal(null);
+        selectMapImageMarker(2, 2);
+        expect(selectedImageId$.value).to.equal(2);
+        expect(expandedImageGroupId$.value).to.equal(2);
+        selectMapImageMarker(2, 2);
         expect(selectedImageId$.value).to.equal(2);
         expect(expandedImageGroupId$.value).to.equal(2);
         toggleImageMarkerGroup([1, 2]);
         expect(selectedImageId$.value).to.equal(null);
-        expect(expandedImageGroupId$.value).to.equal(2);
-        toggleImageMarkerGroup([2]);
-        toggleImageMarkerGroup([2]);
+        expect(expandedImageGroupId$.value).to.equal(null);
+        selectMapImageMarker(3, 1);
+        selectMapImageMarker(3, 1);
         expect(selectedImageId$.value).to.equal(null);
         selectedImageId$.next(null);
         expandedImageGroupId$.next(null);
@@ -172,12 +177,15 @@ describe("Image marker groups", () => {
             getImageMarkerConnections(source, grouped).features,
         ).to.have.length(0);
 
-        const dragging = getDraggingImageSource(grouped, 2, {
+        const dragging = getImageDragPreviewSource(grouped, 2, {
             lngLat: { lng: 1, lat: 1 },
             distanceFraction: 0.5,
         });
-        expect(dragging.features).to.have.length(3);
-        expect(dragging.features[2].geometry.coordinates).to.deep.equal([1, 1]);
+        expect(dragging.features).to.have.length(1);
+        expect(dragging.features[0].geometry.coordinates).to.deep.equal([1, 1]);
+        expect(
+            getImageSourceWithDraggingState(grouped, 2).features,
+        ).to.have.length(2);
         expect(grouped.features).to.have.length(2);
     });
 

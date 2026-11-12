@@ -72,6 +72,7 @@ export async function getGroupedImageSource(
                     markerVisible: expanded || position === lead,
                     markerCount:
                         expanded || position !== lead ? 1 : group.length,
+                    markerGroupSize: group.length,
                     markerOpacity:
                         selectedImageId === null || selected ? 1 : 0.45,
                     markerSelected: selected,

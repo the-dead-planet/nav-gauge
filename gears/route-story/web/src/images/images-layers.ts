@@ -8,6 +8,7 @@ import {
 export const getImagesLayers = (
     displayImageId: number | null,
     highlightColor: string,
+    badgeTextColor: string,
 ): LayerSpecification[] => {
     return [
         {
@@ -38,21 +39,20 @@ export const getImagesLayers = (
             paint: ImagesLayers.thumbnails.paint,
         },
         {
-            id: imageLayerIds.thumbnailsHighlightOutline,
-            source: imageSourceIds.thumbnails,
-            type: "circle",
-            filter: ImagesLayers.thumbnailsHighlightOutline.filter,
-            paint: ImagesLayers.thumbnailsHighlightOutline.getPaint(
-                highlightColor,
-            ),
-        },
-        {
-            id: imageLayerIds.thumbnailsHighlight,
+            id: imageLayerIds.countBadge,
             source: imageSourceIds.thumbnails,
             type: "symbol",
-            filter: ImagesLayers.thumbnailsHighlight.filter,
-            layout: ImagesLayers.thumbnailsHighlight.layout,
-            paint: ImagesLayers.thumbnailsHighlight.paint,
+            filter: ImagesLayers.countBadge.filter,
+            layout: ImagesLayers.countBadge.layout,
+            paint: ImagesLayers.countBadge.getPaint(highlightColor),
+        },
+        {
+            id: imageLayerIds.countLabel,
+            source: imageSourceIds.thumbnails,
+            type: "symbol",
+            filter: ImagesLayers.countLabel.filter,
+            layout: ImagesLayers.countLabel.layout,
+            paint: ImagesLayers.countLabel.getPaint(badgeTextColor),
         },
         {
             id: imageLayerIds.imageInDisplay,
@@ -63,3 +63,23 @@ export const getImagesLayers = (
         },
     ];
 };
+
+export const getImageDragPreviewLayers = (
+    highlightColor: string,
+): LayerSpecification[] => [
+    {
+        id: imageLayerIds.thumbnailsHighlightOutline,
+        source: imageSourceIds.dragPreview,
+        type: "circle",
+        filter: ImagesLayers.thumbnailsHighlightOutline.filter,
+        paint: ImagesLayers.thumbnailsHighlightOutline.getPaint(highlightColor),
+    },
+    {
+        id: imageLayerIds.thumbnailsHighlight,
+        source: imageSourceIds.dragPreview,
+        type: "symbol",
+        filter: ImagesLayers.thumbnailsHighlight.filter,
+        layout: ImagesLayers.thumbnailsHighlight.layout,
+        paint: ImagesLayers.thumbnailsHighlight.paint,
+    },
+];

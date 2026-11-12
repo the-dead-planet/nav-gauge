@@ -21,6 +21,7 @@ export interface ImageFeatureProperties {
     distanceFromStartMeters: number;
     markerVisible?: boolean;
     markerCount?: number;
+    markerGroupSize?: number;
     markerOpacity?: number;
     markerSelected?: boolean;
     [IMAGE_PROPERTY]: string;
@@ -75,7 +76,30 @@ export function getImageSource<TImageData>(
     };
 }
 
-export function getDraggingImageSource(
+export function getImageSourceWithDraggingState(
+    source: GeoJSON.FeatureCollection<GeoJSON.Point, ImageFeatureProperties>,
+    imageId: number | null,
+): typeof source {
+    if (imageId === null) {
+        return source;
+    }
+    return {
+        ...source,
+        features: source.features.map((feature) =>
+            feature.properties.imageId === imageId
+                ? {
+                      ...feature,
+                      properties: {
+                          ...feature.properties,
+                          [FeatureStateProps.Dragging]: true,
+                      },
+                  }
+                : feature,
+        ),
+    };
+}
+
+export function getImageDragPreviewSource(
     source: GeoJSON.FeatureCollection<GeoJSON.Point, ImageFeatureProperties>,
     imageId: number | null,
     placement: RoutePlacement | null,
@@ -84,39 +108,24 @@ export function getDraggingImageSource(
         (feature) => feature.properties.imageId === imageId,
     );
     if (!image || !placement) {
-        return source;
+        return { type: "FeatureCollection", features: [] };
     }
     return {
         ...source,
-        features: source.features
-            .map((feature) =>
-                feature === image
-                    ? {
-                          ...feature,
-                          properties: {
-                              ...feature.properties,
-                              [FeatureStateProps.Dragging]: true,
-                          },
-                      }
-                    : feature,
-            )
-            .concat([
-                {
-                    ...image,
-                    id: DRAGGED_IMAGE_ID,
-                    geometry: {
-                        type: "Point",
-                        coordinates: [
-                            placement.lngLat.lng,
-                            placement.lngLat.lat,
-                        ],
-                    },
-                    properties: {
-                        ...image.properties,
-                        imageId: DRAGGED_IMAGE_ID,
-                        markerVisible: false,
-                    },
+        features: [
+            {
+                ...image,
+                id: DRAGGED_IMAGE_ID,
+                geometry: {
+                    type: "Point",
+                    coordinates: [placement.lngLat.lng, placement.lngLat.lat],
                 },
-            ]),
+                properties: {
+                    ...image.properties,
+                    imageId: DRAGGED_IMAGE_ID,
+                    markerVisible: false,
+                },
+            },
+        ],
     };
 }

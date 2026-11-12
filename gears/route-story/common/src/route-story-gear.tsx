@@ -19,7 +19,7 @@ import { GeoJson, ParsingResultWithError } from "@tinker-chest";
 import { RouteStoryProps, RouteTimes, RouteStoryFile, RouteStoryTranslationKey, RouteStoryState, PresetOption, Preset, RouteStoryLayerStylingPopupProps } from "./model";
 import { FileOperator } from "./file-operator";
 import { PlayerOperator } from "./player-operator";
-import { getRouteGeometryData, RouteGeometryData } from "./tinkers";
+import { cleanUpImageMarkerVisibility, getRouteGeometryData, RouteGeometryData } from "./tinkers";
 import { Icons } from "@ui";
 import * as Translations from "./translations";
 import { AnimationControlsType, Animatrix } from "./animatrix";
@@ -36,6 +36,7 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
     public animatrix = new Animatrix();
     private dataSubscription: Subscription | null = null;
     private stateStorageSubscription: Subscription | null = null;
+    private markerVisibilityStorageSubscription: Subscription | null = null;
     public readonly data$ = new BehaviorSubject<ParsingResultWithError>({});
     public readonly routeGeometryData$ = new BehaviorSubject<RouteGeometryData | null>(null);
     public readonly state$ = new BehaviorSubject<RouteStoryState>(defaultRouteStoryState);
@@ -151,6 +152,10 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
             .then((subscription) => {
                 this.stateStorageSubscription = subscription;
             });
+        this.apparatus.storageKeeper.synchronizeSubjectWithStorage(this.playerOperator.markerVisibility$, 'route-story:marker-visibility', cleanUpImageMarkerVisibility)
+            .then((subscription) => {
+                this.markerVisibilityStorageSubscription = subscription;
+            });
         this.presetSubscription = this.subscribePreset();
         this.presetActiveSubscription = this.subscribePresetActive();
         this.engageRouteStory?.();
@@ -242,6 +247,7 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
         this.apparatus.toolsStation.removeToolPopup(this.layerStylingToolPopupId);
         this.dataSubscription?.unsubscribe();
         this.stateStorageSubscription?.unsubscribe();
+        this.markerVisibilityStorageSubscription?.unsubscribe();
         this.disengageRouteStory?.();
         this.presetActiveSubscription?.unsubscribe();
         this.presetSubscription?.unsubscribe();

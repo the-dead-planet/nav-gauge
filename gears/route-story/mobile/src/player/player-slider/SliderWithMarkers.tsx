@@ -53,7 +53,9 @@ export const SliderWithMarkers: FC<Props> = ({
     const [{ geojson }] = useSubjectState(data$);
     const [routeGeometryData] = useSubjectState(routeGeometryData$);
     const [animationControls] = useSubjectState(animatrix.controls$);
-    const [showImageMarkers] = useSubjectState(playerOperator.showImageMarkers$);
+    const [{ showImageMarkers }] = useSubjectState(
+        playerOperator.markerVisibility$,
+    );
 
     const handleProgressChange = (value: number) => {
         const nextProgressMs = animationControls.playbackPacing === 'distance' && geojson && routeGeometryData && routeTimes

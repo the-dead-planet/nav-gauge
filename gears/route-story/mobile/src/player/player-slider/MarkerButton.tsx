@@ -17,34 +17,45 @@ export const MarkerButton: FC<Props> = ({
     translationKey,
     playerOperator,
 }) => {
-    const [showImageMarkers, setShowImageMarkers] = useSubjectState(playerOperator.showImageMarkers$);
+    const [{ showImageMarkers }, setMarkerVisibility] = useSubjectState(
+        playerOperator.markerVisibility$,
+    );
 
-    const [
-        showImageMarkerLabel,
-        hideImageMarkerLabel,
-        markersCaption,
-    ] = useMultipleTranslations([
-        { n: gearId, t: translationKey.ShowImageMarkers },
-        { n: gearId, t: translationKey.HideImageMarkers },
-        { n: gearId, t: translationKey.Markers },
-    ]);
+    const [showImageMarkerLabel, hideImageMarkerLabel, markersCaption] =
+        useMultipleTranslations([
+            { n: gearId, t: translationKey.ShowImageMarkers },
+            { n: gearId, t: translationKey.HideImageMarkers },
+            { n: gearId, t: translationKey.Markers },
+        ]);
 
-    const markersLabel = showImageMarkers ? hideImageMarkerLabel : showImageMarkerLabel;
+    const markersLabel = showImageMarkers
+        ? hideImageMarkerLabel
+        : showImageMarkerLabel;
 
     return (
         <Button
-            icon={Icons.NounProject.ImageMarker}
+            icon={
+                showImageMarkers
+                    ? Icons.NounProject.ImageMarker
+                    : Icons.NounProject.ImageMarkerHidden
+            }
             size="md"
             variant="ghost"
             corners="circle"
-            color={showImageMarkers ? 'tertiary' : 'neutral'}
+            color={showImageMarkers ? "tertiary" : "neutral"}
             highlightColor="tertiary"
+            highlighted={showImageMarkers}
             accessibilityLabel={markersLabel}
             accessibilityState={{ selected: showImageMarkers }}
             caption={markersCaption}
             tooltip={markersLabel}
             tooltipPlacement="top"
-            onPress={() => setShowImageMarkers((prev) => !prev)}
+            onPress={() =>
+                setMarkerVisibility((previous) => ({
+                    ...previous,
+                    showImageMarkers: !previous.showImageMarkers,
+                }))
+            }
         />
     );
 };

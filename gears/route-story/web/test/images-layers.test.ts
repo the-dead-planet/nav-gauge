@@ -6,26 +6,43 @@ import {
     imageLayerIds,
     imageSourceIds,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
-import { getImagesLayers } from "../src/images/images-layers";
+import {
+    getImagesLayers,
+    getImageDragPreviewLayers,
+} from "../src/images/images-layers";
 
 describe("Image marker layers", () => {
-    it("accepts grouped marker styling without requiring a glyph service", () => {
+    it("accepts canvas badge and separate drag-preview layers", () => {
         expect(
             validateStyleMin({
                 version: 8,
+                glyphs: "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf",
                 sources: {
                     [imageSourceIds.thumbnails]: {
                         type: "geojson",
                         data: { type: "FeatureCollection", features: [] },
                     },
+                    [imageSourceIds.dragPreview]: {
+                        type: "geojson",
+                        data: { type: "FeatureCollection", features: [] },
+                    },
                 },
-                layers: getImagesLayers(null, "#123456"),
+                layers: [
+                    ...getImagesLayers(null, "#123456", "#ffffff"),
+                    ...getImageDragPreviewLayers("#123456"),
+                ],
             }),
         ).to.deep.equal([]);
     });
 
     it("does not display the drag preview as a full-size playback image", () => {
-        const layer = getImagesLayers(null, "#123456").find(
+        const layers = getImagesLayers(null, "#123456", "#ffffff");
+        expect(
+            layers.findIndex(({ id }) => id === imageLayerIds.countLabel),
+        ).to.be.lessThan(
+            layers.findIndex(({ id }) => id === imageLayerIds.imageInDisplay),
+        );
+        const layer = layers.find(
             ({ id }) => id === imageLayerIds.imageInDisplay,
         );
         expect(

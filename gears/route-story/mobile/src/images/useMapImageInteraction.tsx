@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { BehaviorSubject } from "rxjs";
 import { MarkerImage } from "@apparatus";
 import { MobileMap } from "@mobile-apparatus";
@@ -6,21 +6,20 @@ import { GeoJson } from "@tinker-chest";
 import {
     draggingImage$,
     expandedImageGroupId$,
-    getDraggingImageSource,
-    getImageSource,
+    draggingPlacement$,
     getRoutePlacement,
     imageLayerIds,
     RouteGeometryData,
-    RoutePlacement,
     selectedImageId$,
     updateImageDistanceFraction,
-    toggleImageMarkerGroup,
+    selectMapImageMarker,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMarkerImageData } from "./image-parser";
 
 interface MarkerGesture {
     imageId: number | null;
     groupCount: number;
+    groupSize: number;
     x: number;
     y: number;
     moved: boolean;
@@ -29,29 +28,24 @@ interface MarkerGesture {
 
 export const useMapImageInteraction = (
     map: MobileMap,
-    source: ReturnType<typeof getImageSource>,
     images$: BehaviorSubject<MarkerImage<MobileMarkerImageData>[]>,
     geojson: GeoJson | undefined,
     routeGeometryData: RouteGeometryData | null,
-    showImageMarkers$: BehaviorSubject<boolean>,
 ) => {
     const gestureRef = useRef<MarkerGesture | null>(null);
-    const [preview, setPreview] = useState<{
-        imageId: number;
-        placement: RoutePlacement;
-    } | null>(null);
 
     useEffect(() => {
         const id = "route-story-thumbnails-layer";
         const startHandlers = new Map(map.onPanResponderStartHandlers$.value);
         startHandlers.set(id, async (_coordinate, event) => {
             const mapRef = map.map$.value;
-            if (!showImageMarkers$.value || !mapRef) {
+            if (!mapRef) {
                 return;
             }
             const gesture: MarkerGesture = {
                 imageId: null,
                 groupCount: 0,
+                groupSize: 0,
                 x: event.nativeEvent.pageX,
                 y: event.nativeEvent.pageY,
                 moved: false,
@@ -66,7 +60,11 @@ export const useMapImageInteraction = (
                         [locationX + 12, locationY + 12],
                     ],
                     {
-                        layers: [imageLayerIds.thumbnails],
+                        layers: [
+                            imageLayerIds.thumbnails,
+                            imageLayerIds.countBadge,
+                            imageLayerIds.countLabel,
+                        ],
                     },
                 )
                 .then((features) => {
@@ -76,6 +74,7 @@ export const useMapImageInteraction = (
                     }
                     gesture.imageId = Number(properties.imageId);
                     gesture.groupCount = Number(properties.markerCount ?? 1);
+                    gesture.groupSize = Number(properties.markerGroupSize ?? 1);
                     if (gesture.groupCount === 1) {
                         map.dragPan$.next(false);
                         draggingImage$.next({
@@ -118,13 +117,13 @@ export const useMapImageInteraction = (
                 routeGeometryData,
             );
             if (placement) {
-                setPreview({ imageId: gesture.imageId, placement });
+                draggingPlacement$.next(placement);
             }
         });
         map.onPanResponderMoveHandlers$.next(moveHandlers);
 
         const endHandlers = new Map(map.onPanResponderEndHandlers$.value);
-        endHandlers.set(id, async (coordinate, event) => {
+        endHandlers.set(id, async (coordinate, event, cancelled) => {
             const gesture = gestureRef.current;
             if (!gesture) {
                 return;
@@ -141,13 +140,16 @@ export const useMapImageInteraction = (
             if (draggingImage$.value?.interaction === "map") {
                 draggingImage$.next(null);
             }
-            setPreview(null);
+            draggingPlacement$.next(null);
+            if (cancelled) {
+                return;
+            }
             if (!gesture.moved) {
                 if (gesture.imageId === null) {
                     selectedImageId$.next(null);
                     expandedImageGroupId$.next(null);
                 } else {
-                    toggleImageMarkerGroup([gesture.imageId]);
+                    selectMapImageMarker(gesture.imageId, gesture.groupSize);
                 }
             } else if (
                 geojson &&
@@ -186,11 +188,5 @@ export const useMapImageInteraction = (
                 handlers$.next(handlers);
             }
         };
-    }, [map, images$, geojson, routeGeometryData, showImageMarkers$]);
-
-    return getDraggingImageSource(
-        source,
-        preview?.imageId ?? null,
-        preview?.placement ?? null,
-    );
+    }, [map, images$, geojson, routeGeometryData]);
 };

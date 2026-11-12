@@ -20,15 +20,16 @@ import {
     selectedImageId$,
     expandedImageGroupId$,
     imageLayerIds,
-    getDraggingImageSource,
     getImageMarkerConnections,
     ImagesLayers,
     DRAGGED_IMAGE_ID,
-    toggleImageMarkerGroup,
+    selectMapImageMarker,
+    IMAGE_COUNT_BADGE_ID,
+    IMAGE_BADGE_SDF_URI,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { useImageMarkerSource } from "./useImageMarkerSource";
-import { ImageMarkerCount } from "./ImageMarkerCount";
 import { getImagesLayers } from "./images-layers";
+import { ImageDragPreview } from "./ImageDragPreview";
 import { WebRouteStoryProps } from "../model";
 
 export const ImagesLayer: FC<
@@ -43,6 +44,7 @@ export const ImagesLayer: FC<
 }) => {
     const theme = useTheme();
     const imageHighlightColor = theme.color("tertiary", 500);
+    const badgeTextColor = theme.resolveAppearance("fill", "tertiary").glyphs;
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
     const [{ geojson }] = useSubjectState(data$);
     const [routeGeometryData] = useSubjectState(routeGeometryData$);
@@ -51,30 +53,31 @@ export const ImagesLayer: FC<
     const [highlightIdsBySourceId, setHighlightIdsBySourceId] = useSubjectState(
         highlightIdsBySourceId$,
     );
-    const [draggingPlacement, setDraggingPlacement] =
-        useSubjectState(draggingPlacement$);
     const [draggingImage, setDraggingImage] = useSubjectState(draggingImage$);
-    const [showImageMarkers] = useSubjectState(
-        playerOperator.showImageMarkers$,
-    );
     const dragStartPoint = useRef<{ x: number; y: number } | null>(null);
     const didDrag = useRef(false);
 
-    useRouteLayerImages(
-        map,
-        loadedImages
-            .filter((image) => !!image.data.bitmap)
-            .map((image): MapImageData => ({
-                fullSize: {
+    const mapImages = useMemo(
+        (): MapImageData[] => [
+            {
+                iconImageName: IMAGE_COUNT_BADGE_ID,
+                data: { data: IMAGE_BADGE_SDF_URI, width: 64, height: 64 },
+                metadata: { sdf: true, pixelRatio: 2 },
+            },
+            ...loadedImages.flatMap((image): MapImageData[] => [
+                {
                     iconImageName: getIconImageId(image),
                     data: image.data.bitmap!,
                 },
-                thumbnail: {
+                {
                     iconImageName: getIconImageId(image, { thumbnail: true }),
                     data: image.data.thumbnailBitmap!,
                 },
-            })),
+            ]),
+        ],
+        [loadedImages],
     );
+    useRouteLayerImages(map, mapImages);
 
     const sourceDataGeojson = useMemo(
         () => getImageSource(loadedImages, geojson, routeGeometryData),
@@ -101,13 +104,10 @@ export const ImagesLayer: FC<
                     type: "line",
                     source: imageSourceIds.connections,
                     paint: ImagesLayers.connections.paint,
-                    layout: {
-                        visibility: showImageMarkers ? "visible" : "none",
-                    },
                 },
             ],
         }),
-        [sourceDataGeojson, groupedSource, showImageMarkers],
+        [sourceDataGeojson, groupedSource],
     );
 
     const mapLayerData = useMemo(
@@ -118,9 +118,17 @@ export const ImagesLayer: FC<
                 data: sourceDataGeojson,
                 promoteId: "imageId",
             },
-            layers: getImagesLayers(displayImageId, imageHighlightColor), // displayImageId is not a dependency, filter will be updated in effect of useImageInDisplay
+            layers: getImagesLayers(
+                displayImageId,
+                imageHighlightColor,
+                badgeTextColor,
+            ),
             handlers: {
-                options: { buffer: 12 },
+                options: {
+                    buffer: 12,
+                    isHoverEnabled: () =>
+                        draggingImage$.value?.interaction !== "map", // prevent lag when dragging
+                },
                 onMouseDown: ({ features, isTopRelated }, event) => {
                     const feature = features.find(
                         ({ properties }) =>
@@ -128,11 +136,7 @@ export const ImagesLayer: FC<
                     );
                     didDrag.current = false;
                     map.getCanvas().style.cursor = "grabbing";
-                    if (
-                        !playerOperator.showImageMarkers$.value ||
-                        !isTopRelated ||
-                        !feature
-                    ) {
+                    if (!isTopRelated || !feature) {
                         return;
                     }
                     dragStartPoint.current = event.point;
@@ -146,9 +150,6 @@ export const ImagesLayer: FC<
                     });
                 },
                 onMouseMove: ({ features, isTopRelated }) => {
-                    if (!playerOperator.showImageMarkers$.value) {
-                        return;
-                    }
                     if (
                         !isTopRelated ||
                         (draggingImage$.value !== null &&
@@ -189,10 +190,7 @@ export const ImagesLayer: FC<
                         ({ properties }) =>
                             properties.imageId !== DRAGGED_IMAGE_ID,
                     );
-                    if (
-                        !playerOperator.showImageMarkers$.value ||
-                        didDrag.current
-                    ) {
+                    if (didDrag.current) {
                         return;
                     }
                     if (!isTopRelated || !feature) {
@@ -201,11 +199,14 @@ export const ImagesLayer: FC<
                         return;
                     }
                     const imageId = Number(feature.properties.imageId);
-                    toggleImageMarkerGroup([imageId]);
+                    selectMapImageMarker(
+                        imageId,
+                        Number(feature.properties.markerGroupSize ?? 1),
+                    );
                 },
             },
         }),
-        [sourceDataGeojson, imageHighlightColor],
+        [sourceDataGeojson, imageHighlightColor, badgeTextColor],
     );
 
     useEffect(() => {
@@ -253,7 +254,7 @@ export const ImagesLayer: FC<
                 didDrag.current = true;
             }
             event.preventDefault?.();
-            setDraggingPlacement(
+            draggingPlacement$.next(
                 getRoutePlacement(event.lngLat, geojson, routeGeometryData),
             );
         };
@@ -262,7 +263,7 @@ export const ImagesLayer: FC<
             event: maplibregl.MapMouseEvent | maplibregl.MapTouchEvent,
         ) => {
             if (!geojson || !didDrag.current) {
-                setDraggingPlacement(null);
+                draggingPlacement$.next(null);
                 return;
             }
             event.preventDefault();
@@ -274,7 +275,7 @@ export const ImagesLayer: FC<
             const image = loadedImages.find(
                 (image) => image.id === draggingImage.id,
             );
-            setDraggingPlacement(null);
+            draggingPlacement$.next(null);
             if (!image || !placement) {
                 return;
             }
@@ -293,7 +294,7 @@ export const ImagesLayer: FC<
         map.on("touchend", handleDragEnd);
 
         return () => {
-            setDraggingPlacement(null);
+            draggingPlacement$.next(null);
             map.dragPan.enable();
             map.off("mousemove", handleDrag);
             map.off("mouseup", handleDragEnd);
@@ -305,28 +306,9 @@ export const ImagesLayer: FC<
     const updatedData = useMemo(() => {
         return {
             sourceId: imageSourceIds.thumbnails,
-            data: getDraggingImageSource(
-                groupedSource,
-                draggingImage?.id ?? null,
-                draggingPlacement,
-            ),
+            data: groupedSource,
         };
-    }, [groupedSource, draggingPlacement, draggingImage]);
-
-    useEffect(() => {
-        for (const layerId of Object.values(imageLayerIds)) {
-            if (
-                layerId !== imageLayerIds.imageInDisplay &&
-                map.getLayer(layerId)
-            ) {
-                map.setLayoutProperty(
-                    layerId,
-                    "visibility",
-                    showImageMarkers ? "visible" : "none",
-                );
-            }
-        }
-    }, [map, showImageMarkers, mapLayerData]);
+    }, [groupedSource]);
 
     useImageInDisplay(map, animatrix, playerOperator);
 
@@ -344,20 +326,7 @@ export const ImagesLayer: FC<
                 layerOrder={layerOrder}
                 updatedData={updatedData}
             />
-            {showImageMarkers &&
-                groupedSource.features
-                    .filter(
-                        ({ properties }) =>
-                            properties.markerVisible &&
-                            (properties.markerCount ?? 1) > 1,
-                    )
-                    .map((feature) => (
-                        <ImageMarkerCount
-                            key={feature.id}
-                            map={map}
-                            feature={feature}
-                        />
-                    ))}
+            <ImageDragPreview map={map} source={groupedSource} />
         </>
     );
 };
