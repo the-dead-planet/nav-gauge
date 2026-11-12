@@ -244,7 +244,7 @@ export default {
         filter: groupFilter,
         layout: {
             "text-field": countText,
-            "text-font": ["Noto Sans Regular"],
+            "text-font": ["Noto Sans Bold"],
             "text-size": 11,
             "text-offset": countTextOffset,
             "text-allow-overlap": true,

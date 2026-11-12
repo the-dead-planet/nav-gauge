@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { GestureResponderEvent } from "react-native";
 import { BehaviorSubject } from "rxjs";
 import { MarkerImage } from "@apparatus";
 import { MobileMap } from "@mobile-apparatus";
@@ -82,6 +83,9 @@ export const useMapImageInteraction = (
                             id: gesture.imageId,
                             interaction: "map",
                         });
+                        const handlers = new Map(map.onPanResponderMoveHandlers$.value);
+                        handlers.set(id, moveHandler);
+                        map.onPanResponderMoveHandlers$.next(handlers);
                     }
                 })
                 .catch(() => {
@@ -91,8 +95,7 @@ export const useMapImageInteraction = (
         });
         map.onPanResponderStartHandlers$.next(startHandlers);
 
-        const moveHandlers = new Map(map.onPanResponderMoveHandlers$.value);
-        moveHandlers.set(id, async (coordinate, event) => {
+        const moveHandler = async (coordinate: number[], event: GestureResponderEvent) => {
             const gesture = gestureRef.current;
             if (!gesture) {
                 return;
@@ -120,8 +123,7 @@ export const useMapImageInteraction = (
             if (placement) {
                 draggingPlacement$.next(placement);
             }
-        });
-        map.onPanResponderMoveHandlers$.next(moveHandlers);
+        };
 
         const endHandlers = new Map(map.onPanResponderEndHandlers$.value);
         endHandlers.set(id, async (coordinate, event, cancelled) => {
@@ -136,6 +138,9 @@ export const useMapImageInteraction = (
                 return;
             }
             gestureRef.current = null;
+            const handlers = new Map(map.onPanResponderMoveHandlers$.value);
+            handlers.delete(id);
+            map.onPanResponderMoveHandlers$.next(handlers);
             gesture.moved ||= Math.hypot(x - gesture.x, y - gesture.y) >= 4;
             map.dragPan$.next(true);
             if (draggingImage$.value?.interaction === "map") {
@@ -180,15 +185,14 @@ export const useMapImageInteraction = (
                 draggingPlacement$.next(null);
                 map.dragPan$.next(true);
             }
-            for (const handlers$ of [
-                map.onPanResponderStartHandlers$,
-                map.onPanResponderMoveHandlers$,
-                map.onPanResponderEndHandlers$,
-            ]) {
+            const removeHandler = <T,>(handlers$: BehaviorSubject<Map<string, T>>) => {
                 const handlers = new Map(handlers$.value);
                 handlers.delete(id);
                 handlers$.next(handlers);
-            }
+            };
+            removeHandler(map.onPanResponderStartHandlers$);
+            removeHandler(map.onPanResponderMoveHandlers$);
+            removeHandler(map.onPanResponderEndHandlers$);
         };
     }, [map, images$, geojson, routeGeometryData, markerLayerVisibility]);
 };
