@@ -1,7 +1,7 @@
 import { BehaviorSubject } from "rxjs";
 import { SurveillanceState, LoadedImageData, ChronoLens } from "@apparatus";
 import { getRouteSourceData, getRouteTimelinePositionForDistanceFraction } from "./tinkers";
-import { getImageIconSize, FULL_SIZE_IMAGE_SIZE, THUMBNAIL_IMAGE_SIZE } from "./images";
+import { getImageIconSize, FULL_SIZE_IMAGE_SIZE, THUMBNAIL_IMAGE_SIZE } from "./tinkers/images";
 import { RouteStoryGear } from "./route-story-gear";
 import { IMAGE_ANIMATION_DURATION } from "./layer-specification";
 import { RouteStoryFile, RouteStoryProps, RouteStoryState } from "./model";
@@ -13,7 +13,6 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
     private headingRouteGeometryData: object | undefined;
 
     public isLoading$ = new BehaviorSubject(false);
-    public showImageMarkers$ = new BehaviorSubject(true);
 
     public constructor(
         gear: RouteStoryGear<TMap, TChronoLens, TFile, TImageData>,
@@ -179,13 +178,7 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
             const now = performance.now();
             const dt = now - last;
             last = now;
-            routePlaybackFraction += dt / routePlaybackDuration;
-            if (routePlaybackFraction >= 1) {
-                this.gear.progressMs$.next(routeDuration);
-                this.handleRouteEnd();
-                
-                return;
-            }
+            routePlaybackFraction = Math.min(1, routePlaybackFraction + dt / routePlaybackDuration);
             currentProgressMs = playbackPacing === 'distance'
                 ? getRouteTimelinePositionForDistanceFraction(geojson, routeGeometryData, startTimeEpoch, routePlaybackFraction)
                 : routePlaybackFraction * routeDuration;
@@ -222,6 +215,13 @@ export class PlayerOperator<TMap, TChronoLens extends ChronoLens, TFile extends 
                 } else {
                     showImage();
                 }
+
+                return;
+            }
+
+            if (routePlaybackFraction >= 1) {
+                this.gear.progressMs$.next(routeDuration);
+                this.handleRouteEnd();
 
                 return;
             }

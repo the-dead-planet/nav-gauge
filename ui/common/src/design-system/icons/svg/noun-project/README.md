@@ -14,6 +14,8 @@ After adding new icons in the [raw folder](/ui/common/src/design-system/icons/sv
 
 Never manually edit `output/` or `icon-registry.json`. Edit `raw/` or `process-icons.ts`, then regenerate them.
 
+Mark a top-level decorative element with `data-icon-decoration="true"` to keep the base icon's framing when adding a slash or similar overlay. Decorations must fit within the base icon's existing padding.
+
 From the [root](/) folder run:
 
 ```bash

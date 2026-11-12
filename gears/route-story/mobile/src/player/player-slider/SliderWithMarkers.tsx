@@ -3,7 +3,7 @@ import { StyleSheet, View, ViewStyle } from "react-native";
 import { BehaviorSubject } from "rxjs";
 import { MarkerImage } from "@apparatus";
 import { ParsingResultWithError, useSubjectState } from "@tinker-chest";
-import { RouteStoryTranslationKey, RouteTimes, Animatrix, RouteGeometryData, getRouteDistanceFraction, getRouteTimelinePositionForDistanceFraction } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { RouteStoryState, RouteStoryTranslationKey, RouteTimes, Animatrix, RouteGeometryData, getRouteDistanceFraction, getRouteTimelinePositionForDistanceFraction } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Slider } from "@mobile-ui";
 import { currentPointRef$, linesRef$ } from "../../layers/RouteLayer";
 import { SliderMarkers } from "./SliderMarkers";
@@ -22,6 +22,7 @@ interface Props {
     images$: BehaviorSubject<MarkerImage<MobileMarkerImageData>[]>;
     progressMs$: BehaviorSubject<number>;
     playerOperator: MobilePlayerOperator;
+    state$: BehaviorSubject<RouteStoryState>;
     animatrix: Animatrix;
     style?: ViewStyle;
 }
@@ -45,6 +46,7 @@ export const SliderWithMarkers: FC<Props> = ({
     images$,
     progressMs$,
     playerOperator,
+    state$,
     animatrix,
     style,
 }) => {
@@ -53,7 +55,9 @@ export const SliderWithMarkers: FC<Props> = ({
     const [{ geojson }] = useSubjectState(data$);
     const [routeGeometryData] = useSubjectState(routeGeometryData$);
     const [animationControls] = useSubjectState(animatrix.controls$);
-    const [showImageMarkers] = useSubjectState(playerOperator.showImageMarkers$);
+    const [{ markerPlayerVisibility: showImageMarkers }] = useSubjectState(
+        state$,
+    );
 
     const handleProgressChange = (value: number) => {
         const nextProgressMs = animationControls.playbackPacing === 'distance' && geojson && routeGeometryData && routeTimes

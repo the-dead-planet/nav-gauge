@@ -4,7 +4,7 @@ import { BehaviorSubject } from "rxjs";
 import classNames from "classnames";
 import { MarkerImage, useMultipleTranslations } from "@apparatus";
 import { ParsingResultWithError, useSubjectState } from "@tinker-chest";
-import { RouteStoryTranslationKey, RouteTimes, Animatrix, RouteGeometryData, getRouteDistanceFraction, getRouteTimelinePositionForDistanceFraction } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { RouteStoryState, RouteStoryTranslationKey, RouteTimes, Animatrix, RouteGeometryData, getRouteDistanceFraction, getRouteTimelinePositionForDistanceFraction } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { updateRouteLayer } from "../../tinkers";
 import { Slider } from "@web-ui";
 import { WebMarkerImageData } from "../../images/image-parser";
@@ -23,6 +23,7 @@ interface Props {
     images$: BehaviorSubject<MarkerImage<WebMarkerImageData>[]>;
     progressMs$: BehaviorSubject<number>;
     playerOperator: WebPlayerOperator;
+    state$: BehaviorSubject<RouteStoryState>;
     fitBoundsHandler: (map: maplibregl.Map, boundingBox?: GeoJSON.BBox) => void;
     animatrix: Animatrix;
     className?: string;
@@ -38,6 +39,7 @@ export const SliderWithMarkers: FC<Props> = ({
     images$,
     progressMs$,
     playerOperator,
+    state$,
     fitBoundsHandler,
     animatrix,
     className,
@@ -47,7 +49,9 @@ export const SliderWithMarkers: FC<Props> = ({
     const [{ geojson }] = useSubjectState(data$);
     const [routeGeometryData] = useSubjectState(routeGeometryData$);
     const [animationControls] = useSubjectState(animatrix.controls$);
-    const [showImageMarkers] = useSubjectState(playerOperator.showImageMarkers$);
+    const [{ markerPlayerVisibility: showImageMarkers }] = useSubjectState(
+        state$,
+    );
     const [
         sliderLabel,
     ] = useMultipleTranslations([

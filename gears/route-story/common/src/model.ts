@@ -16,6 +16,8 @@ export interface RouteTimes {
 }
 
 export interface RouteStoryState {
+    markerPlayerVisibility: boolean;
+    markerLayerVisibility: boolean;
     /**
      * Applied to the route line part after current point.
      */
@@ -169,6 +171,8 @@ export enum RouteStoryTranslationKey {
     Image = 'image',
     PanToImage = 'pan-to-image',
     ShowImageMarkers = 'show-image-markers',
+    ShowImageLayer = 'show-image-layer',
+    HideImageLayer = 'hide-image-layer',
     HideImageMarkers = 'hide-image-markers',
     Markers = 'markers',
     PurgeStoryText = 'purge-story-text',

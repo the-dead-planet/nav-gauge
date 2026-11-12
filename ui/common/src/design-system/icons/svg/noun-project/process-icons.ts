@@ -142,8 +142,15 @@ export function processIcons(directory: string, iconName?: string): void {
         ast = stripText(ast);
         ast = stripColors(ast);
 
+        const sizingAst: INode = {
+            ...ast,
+            children: ast.children.filter((node) => node.attributes?.['data-icon-decoration'] !== 'true'),
+        };
+        const viewBox = computeViewBox(toSVG(sizingAst));
+        for (const node of ast.children) {
+            delete node.attributes?.['data-icon-decoration'];
+        }
         const baseSvg = toSVG(ast);
-        const viewBox = computeViewBox(baseSvg);
         const content = baseSvg.replace(/<svg[^>]*>|<\/svg>/g, '').trim();
         const finalSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}">\n${content}\n</svg>\n`;
 

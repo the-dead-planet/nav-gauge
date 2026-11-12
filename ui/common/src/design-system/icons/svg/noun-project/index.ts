@@ -33,6 +33,7 @@ export { default as EBikeSide01 } from './output/e-bike-side-01.svg';
 export { default as ElectricDevice } from './output/electric-device.svg';
 export { default as Gear } from './output/gear.svg';
 export { default as ImageMarker } from './output/image-marker.svg';
+export { default as ImageMarkerHidden } from './output/image-marker-hidden.svg';
 export { default as KebabMenu } from './output/kebab-menu.svg';
 export { default as LightBulbCogWheel } from './output/light-bulb-cog-wheel.svg';
 export { default as LightBulbHeart } from './output/light-bulb-heart.svg';

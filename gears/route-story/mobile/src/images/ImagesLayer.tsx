@@ -1,188 +1,136 @@
-import { FC, useEffect, useState } from "react";
-import { PixelRatio } from "react-native";
-import { Layer, Images, GeoJSONSource, ImageEntry } from "@maplibre/maplibre-react-native";
-import { OverlayComponentProps, FeatureStateProps } from "@apparatus";
-import { useMobileMachineWard } from "@mobile-apparatus";
+import { FC, useMemo } from "react";
+import {
+    Layer,
+    Images,
+    GeoJSONSource,
+    ImageEntry,
+} from "@maplibre/maplibre-react-native";
+import { useTheme } from "@ui";
+import { OverlayComponentProps } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import {
     getIconImageId,
     getImageSource,
-    getRoutePlacement,
+    getImageSourceWithDraggingState,
+    getImageSourceWithMarkerVisibility,
+    getImageMarkerConnections,
+    IMAGE_COUNT_BADGE_ID,
+    IMAGE_BADGE_SDF_URI,
     ImagesLayers,
     routeLayerIds,
     imageLayerIds,
     imageSourceIds,
     draggingImage$,
-    draggingPlacement$,
-    DRAGGED_IMAGE_ID,
-    IMAGE_PROPERTY,
-    IMAGE_THUMBNAIL_PROPERTY,
-    updateImageDistanceFraction,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMap } from "@mobile-apparatus";
 import { useLoadedMobileImages } from "./useLoadedMobileImages";
 import { useImageInDisplay } from "./useImageInDisplay";
-import { findThumbnailsWithinBuffer } from "../tinkers";
+import { useImageMarkerSource } from "./useImageMarkerSource";
+import { useMapImageInteraction } from "./useMapImageInteraction";
+import { ImageDragPreview } from "./ImageDragPreview";
 import { MobileRouteStoryProps } from "../model";
 
-export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryProps> = ({
+export const ImagesLayer: FC<
+    OverlayComponentProps<MobileMap> & MobileRouteStoryProps
+> = ({
     map,
     animatrix,
     data$,
+    state$,
     routeGeometryData$,
     images$,
-    playerOperator
+    playerOperator,
 }) => {
-    const { cartomancer } = useMobileMachineWard();
+    const theme = useTheme();
+    const imageHighlightColor = theme.color("tertiary", 500);
+    const badgeAppearance = theme.resolveAppearance("fill", "tertiary");
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
     const [{ geojson }] = useSubjectState(data$);
     const [routeGeometryData] = useSubjectState(routeGeometryData$);
     const [images] = useSubjectState(images$);
-    const [draggingPlacement] = useSubjectState(draggingPlacement$);
+    const [{ markerLayerVisibility }] = useSubjectState(state$);
+    const [draggingImage] = useSubjectState(draggingImage$);
     const loadedImages = useLoadedMobileImages(images);
-
-    const [sourceDataGeojson, setSourceDataGeojson] = useState(getImageSource(loadedImages, geojson, routeGeometryData));
-
-    useEffect(() => {
-        setSourceDataGeojson(getImageSource(loadedImages, geojson, routeGeometryData));
-    }, [loadedImages, geojson, routeGeometryData]);
-
-    const draggingImage = draggingImage$.value;
-    const draggedImage = draggingImage?.interaction === 'player'
-        ? loadedImages.find((candidate) => candidate.id === draggingImage.id)
-        : undefined;
-    let renderedSourceDataGeojson = sourceDataGeojson;
-    if (draggedImage && draggingPlacement) {
-        renderedSourceDataGeojson = getImageSource(loadedImages, geojson, routeGeometryData);
-        for (const feature of renderedSourceDataGeojson.features) {
-            if (feature.id === draggedImage.id) {
-                feature.properties[FeatureStateProps.Dragging] = true;
-            }
-        }
-        renderedSourceDataGeojson.features.push({
-            type: 'Feature',
-            id: -1,
-            geometry: {
-                type: 'Point',
-                coordinates: [draggingPlacement.lngLat.lng, draggingPlacement.lngLat.lat],
-            },
-            properties: {
-                imageId: DRAGGED_IMAGE_ID,
-                [IMAGE_PROPERTY]: getIconImageId(draggedImage),
-                [IMAGE_THUMBNAIL_PROPERTY]: getIconImageId(draggedImage, { thumbnail: true }),
-            },
-        });
-    }
-
-    const imageSources: { [key in string]: ImageEntry } = Object.fromEntries(
-        loadedImages.flatMap((loadedImage) => {
-            const thumbnail: [string, ImageEntry] = [getIconImageId(loadedImage, { thumbnail: true }), { source: { uri: loadedImage.data.thumbnail } }];
-            const fullSize: [string, ImageEntry] = [getIconImageId(loadedImage), { source: { uri: loadedImage.data.fullSize } }];
-
-            if (displayImageId === loadedImage.id) {
-                return [fullSize, thumbnail]
-            }
-
-            return [thumbnail];
-        })
+    const originalSource = useMemo(
+        () => getImageSource(loadedImages, geojson, routeGeometryData),
+        [loadedImages, geojson, routeGeometryData],
+    );
+    const groupedSource = useImageMarkerSource(
+        map,
+        originalSource,
+        displayImageId !== null,
+    );
+    const visibleSource = useMemo(() => getImageSourceWithMarkerVisibility(groupedSource, markerLayerVisibility), [groupedSource, markerLayerVisibility]);
+    useMapImageInteraction(map, images$, geojson, routeGeometryData, markerLayerVisibility);
+    const renderedSource = useMemo(
+        () =>
+            getImageSourceWithDraggingState(
+                visibleSource,
+                draggingImage?.id ?? null,
+            ),
+        [visibleSource, draggingImage],
     );
 
-    useEffect(() => {
-        const id = 'route-story-thumbnails-layer';
-
-        // Start
-        const nextPanResponderStartHandlers = new Map(map.onPanResponderStartHandlers$.value);
-        nextPanResponderStartHandlers.set(id, async (lngLat) => {
-            const imageFeature = findThumbnailsWithinBuffer(lngLat, cartomancer.zoom$.value, loadedImages, geojson, routeGeometryData, { devicePixelRatio: PixelRatio.get() })[0];
-            if (imageFeature) {
-                map.dragPan$.next(false);
-                draggingImage$.next({ id: imageFeature.properties.imageId, interaction: 'map' });
-            }
-        });
-        map.onPanResponderStartHandlers$.next(nextPanResponderStartHandlers);
-
-        // Move
-        const nextPanResponderMoveHandlers = new Map(map.onPanResponderMoveHandlers$.value);
-        nextPanResponderMoveHandlers.set(id, async (lngLat) => {
-            const draggingImage = draggingImage$.value;
-            if (!geojson || draggingImage === null) {
-                return;
-            }
-            const placement = getRoutePlacement({ lng: lngLat[0], lat: lngLat[1] }, geojson, routeGeometryData);
-            const image = loadedImages.find((image) => image.id === draggingImage.id);
-            if (!image || !placement) {
-                return;
-            }
-            const updated: typeof sourceDataGeojson = getImageSource(loadedImages, geojson, routeGeometryData);
-            for (const feature of updated.features) {
-                if (feature.id === draggingImage.id) {
-                    feature.properties[FeatureStateProps.Dragging] = true;
-                }
-            }
-            updated.features.push({
-                type: 'Feature',
-                id: -1,
-                geometry: {
-                    type: 'Point',
-                    coordinates: [placement.lngLat.lng, placement.lngLat.lat],
-                },
-                properties: {
-                    imageId: DRAGGED_IMAGE_ID,
-                    [IMAGE_PROPERTY]: getIconImageId(image),
-                    [IMAGE_THUMBNAIL_PROPERTY]: getIconImageId(image, { thumbnail: true }),
-                }
-            })
-            setSourceDataGeojson(updated);
-        });
-        map.onPanResponderMoveHandlers$.next(nextPanResponderMoveHandlers);
-
-        // End
-        const nextPanResponderEndHandlers = new Map(map.onPanResponderEndHandlers$.value);
-        nextPanResponderEndHandlers.set(id, async (lngLat) => {
-            const draggingImage = draggingImage$.value;
-
-            map.dragPan$.next(true);
-            draggingImage$.next(null);
-            setSourceDataGeojson(getImageSource(loadedImages, geojson, routeGeometryData));
-
-            if (!geojson) {
-                return;
-            }
-            const placement = getRoutePlacement({ lng: lngLat[0], lat: lngLat[1] }, geojson, routeGeometryData);
-            const image = loadedImages.find((image) => image.id === draggingImage?.id);
-            if (!image || !placement) {
-                return;
-            }
-            updateImageDistanceFraction(images$, image.id, placement.distanceFraction);
-        });
-        map.onPanResponderEndHandlers$.next(nextPanResponderEndHandlers);
-
-        return () => {
-            const nextPanResponderStartHandlers = new Map(map.onPanResponderStartHandlers$.value);
-            nextPanResponderStartHandlers.delete(id);
-            map.onPanResponderStartHandlers$.next(nextPanResponderStartHandlers);
-
-            const nextPanResponderMoveHandlers = new Map(map.onPanResponderMoveHandlers$.value);
-            nextPanResponderMoveHandlers.delete(id);
-            map.onPanResponderMoveHandlers$.next(nextPanResponderMoveHandlers);
-
-            const nextPanResponderEndHandlers = new Map(map.onPanResponderEndHandlers$.value);
-            nextPanResponderEndHandlers.delete(id);
-            map.onPanResponderEndHandlers$.next(nextPanResponderEndHandlers);
-        };
-    }, [map, loadedImages, geojson, routeGeometryData]);
-
-    const imageInDisplayIconSize = useImageInDisplay(map, animatrix, playerOperator);
+    const imageSources: Record<string, ImageEntry> = Object.fromEntries(
+        loadedImages.flatMap((image) => {
+            const thumbnail: [string, ImageEntry] = [
+                getIconImageId(image, { thumbnail: true }),
+                { source: { uri: image.data.thumbnail } },
+            ];
+            const fullSize: [string, ImageEntry] = [
+                getIconImageId(image),
+                { source: { uri: image.data.fullSize } },
+            ];
+            return displayImageId === image.id
+                ? [fullSize, thumbnail]
+                : [thumbnail];
+        }),
+    );
+    imageSources[IMAGE_COUNT_BADGE_ID] = {
+        source: { uri: IMAGE_BADGE_SDF_URI, scale: 2 },
+        sdf: true,
+    };
+    const imageInDisplayIconSize = useImageInDisplay(
+        map,
+        animatrix,
+        playerOperator,
+    );
 
     return (
         <>
             <Images images={imageSources} />
-            <GeoJSONSource id={imageSourceIds.thumbnails} data={renderedSourceDataGeojson}>
+            <GeoJSONSource
+                id={imageSourceIds.connections}
+                data={getImageMarkerConnections(originalSource, visibleSource)}
+            >
+                <Layer
+                    type="line"
+                    id={imageLayerIds.connections}
+                    afterId={routeLayerIds.currentPoint}
+                    paint={ImagesLayers.connections.paint}
+                />
+            </GeoJSONSource>
+            <GeoJSONSource id={imageSourceIds.thumbnails} data={renderedSource}>
+                <Layer
+                    type="symbol"
+                    id={imageLayerIds.thumbnailsStackBack}
+                    afterId={imageLayerIds.connections}
+                    {...ImagesLayers.thumbnailsStackBack}
+                    layout={ImagesLayers.thumbnailsStackBack.layout}
+                />
+                <Layer
+                    type="symbol"
+                    id={imageLayerIds.thumbnailsStackFront}
+                    {...ImagesLayers.thumbnailsStackFront}
+                    layout={ImagesLayers.thumbnailsStackFront.layout}
+                />
                 <Layer
                     type="circle"
                     id={imageLayerIds.thumbnailsOutline}
-                    afterId={routeLayerIds.currentPoint}
-                    paint={ImagesLayers.thumbnailsOutline.paint}
+                    filter={ImagesLayers.thumbnailsOutline.filter}
+                    paint={ImagesLayers.thumbnailsOutline.getPaint(
+                        imageHighlightColor,
+                    )}
                 />
                 <Layer
                     type="symbol"
@@ -192,28 +140,36 @@ export const ImagesLayer: FC<OverlayComponentProps<MobileMap> & MobileRouteStory
                     paint={ImagesLayers.thumbnails.paint}
                 />
                 <Layer
-                    type="circle"
-                    id={imageLayerIds.thumbnailsHighlightOutline}
-                    filter={ImagesLayers.thumbnailsHighlightOutline.filter}
-                    paint={ImagesLayers.thumbnailsHighlightOutline.paint}
+                    type="symbol"
+                    id={imageLayerIds.countBadge}
+                    filter={ImagesLayers.countBadge.filter}
+                    layout={ImagesLayers.countBadge.layout}
+                    paint={ImagesLayers.countBadge.getPaint(
+                        imageHighlightColor,
+                    )}
                 />
                 <Layer
                     type="symbol"
-                    id={imageLayerIds.thumbnailsHighlight}
-                    filter={ImagesLayers.thumbnailsHighlight.filter}
-                    layout={ImagesLayers.thumbnailsHighlight.layout}
-                    paint={ImagesLayers.thumbnailsHighlight.paint}
+                    id={imageLayerIds.countLabel}
+                    filter={ImagesLayers.countLabel.filter}
+                    layout={ImagesLayers.countLabel.layout}
+                    paint={ImagesLayers.countLabel.getPaint(
+                        badgeAppearance.glyphs,
+                    )}
                 />
                 <Layer
                     type="symbol"
                     id={imageLayerIds.imageInDisplay}
-                    filter={ImagesLayers.imageInDisplay.getFilter(displayImageId)}
+                    filter={ImagesLayers.imageInDisplay.getFilter(
+                        displayImageId,
+                    )}
                     layout={{
                         ...ImagesLayers.imageInDisplay.layout,
-                        'icon-size': imageInDisplayIconSize,
+                        "icon-size": imageInDisplayIconSize,
                     }}
                 />
             </GeoJSONSource>
+            <ImageDragPreview source={groupedSource} visible={markerLayerVisibility} />
         </>
     );
 };

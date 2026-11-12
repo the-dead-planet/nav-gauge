@@ -7,27 +7,19 @@ export interface ImageParams {
     height: number;
 }
 
-export interface MapImageDatum {
+export interface MapImageData {
     iconImageName: string;
     data: ImageBitmap | ImageParams;
-    metadata?: Partial<maplibregl.StyleImageMetadata>
+    metadata?: Partial<maplibregl.StyleImageMetadata>;
 }
 
-export interface MapImageData {
-    fullSize: MapImageDatum;
-    thumbnail: MapImageDatum;
-}
-
-/**
- * @param data Array of tuples [full size, thumbnail] 
- */
 export const useRouteLayerImages = (
     map: maplibregl.Map,
-    data: MapImageData[]
+    data: MapImageData[],
 ) => {
     useEffect(() => {
         const abortController = new AbortController();
-        const imagesData = data.flatMap((el): MapImageDatum[] => Object.values(el));
+        const imagesData = data;
 
         for (const { data, iconImageName, metadata } of imagesData) {
             if (abortController.signal.aborted) {
@@ -38,7 +30,7 @@ export const useRouteLayerImages = (
                 map.removeImage(iconImageName);
             }
 
-            if ('data' in data) {
+            if ("data" in data) {
                 const image = new Image(data.width, data.height);
 
                 image.onload = () => {

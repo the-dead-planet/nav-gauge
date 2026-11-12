@@ -257,7 +257,7 @@ export class ToolsStation<TMap> {
         const nextToolIcons = new Map(this.toolIcons$.value);
         const toolIcon: ToolIcon<TMap> = {
             tooltip,
-            icon,
+            icon$: new BehaviorSubject(icon),
             anchorRef$: new BehaviorSubject<ToolIconAnchorRef>({ current: null }),
             value$: new BehaviorSubject(value),
             placement$: new BehaviorSubject(placement),

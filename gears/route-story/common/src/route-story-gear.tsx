@@ -1,5 +1,5 @@
 import { ComponentType, FC } from "react";
-import { BehaviorSubject, combineLatest, Subscription } from "rxjs";
+import { BehaviorSubject, combineLatest, distinctUntilChanged, map, Subscription } from "rxjs";
 import {
     ToolPanelProps,
     MarkerImage,
@@ -102,6 +102,7 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
     public abstract routeUploadComponent: ComponentType<TopToolsProps<TMap> & RouteStoryProps<TMap, TChronoLens, TFile, TImageData>>;
 
     private layerStylingToolIconId = 'layer-styling';
+    private markerLayerToolIconId = 'route-story-image-layer';
     private layerStylingToolPopupId = 'layer-styling';
     public abstract layerStylingComponent: ComponentType<ToolPopupProps<TMap> & RouteStoryLayerStylingPopupProps<TMap> & RouteStoryProps<TMap, TChronoLens, TFile, TImageData>>;
 
@@ -145,12 +146,37 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
         fitBoundsHandler: this.fitBoundsHandler,
     });
 
+    private registerMarkerLayerTool = (): Subscription => {
+        const toolIcon = this.apparatus.toolsStation.addToolIcon(this.markerLayerToolIconId, {
+            placement: 'left',
+            tooltip: (value) => ({
+                n: this.id,
+                t: value === 'visible' ? this.internalTranslationKey.HideImageLayer : this.internalTranslationKey.ShowImageLayer,
+            }),
+            onClick: () => this.state$.next({
+                ...this.state$.value,
+                markerLayerVisibility: !this.state$.value.markerLayerVisibility,
+            }),
+        });
+        return this.state$.pipe(
+            map((state) => state.markerLayerVisibility),
+            distinctUntilChanged(),
+        ).subscribe((visible) => {
+            toolIcon.icon$.next((visible ? Icons.NounProject.ImageMarker : Icons.NounProject.ImageMarkerHidden) as unknown as string);
+            toolIcon.active$.next(visible);
+            toolIcon.value$.next(visible ? 'visible' : 'hidden');
+        });
+    };
+
     public engage = () => {
+        const stateSubscriptions = new Subscription();
+        this.stateStorageSubscription = stateSubscriptions;
         this.animatrix.initialize(this.apparatus.storageKeeper, this.apparatus.translatron);
         this.apparatus.storageKeeper.synchronizeSubjectWithStorage(this.state$, 'route-story:state', cleanUpRouteStoryState)
             .then((subscription) => {
-                this.stateStorageSubscription = subscription;
+                stateSubscriptions.add(subscription);
             });
+        stateSubscriptions.add(this.registerMarkerLayerTool());
         this.presetSubscription = this.subscribePreset();
         this.presetActiveSubscription = this.subscribePresetActive();
         this.engageRouteStory?.();
@@ -239,6 +265,7 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
         this.apparatus.toolsStation.removeToolPanel(this.playerToolId);
         this.apparatus.toolsStation.removeTopTool(this.routeNameToolId);
         this.apparatus.toolsStation.removeToolIcon(this.layerStylingToolIconId);
+        this.apparatus.toolsStation.removeToolIcon(this.markerLayerToolIconId);
         this.apparatus.toolsStation.removeToolPopup(this.layerStylingToolPopupId);
         this.dataSubscription?.unsubscribe();
         this.stateStorageSubscription?.unsubscribe();
