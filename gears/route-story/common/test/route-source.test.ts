@@ -13,6 +13,8 @@ const route: GeoJson = {
 };
 
 const state: RouteStoryState = {
+    markerPlayerVisibility: true,
+    markerLayerVisibility: true,
     routeStyleActive: {
         showRouteLine: true,
         showRoutePoints: false,

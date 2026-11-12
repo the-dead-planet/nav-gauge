@@ -76,6 +76,16 @@ export function getImageSource<TImageData>(
     };
 }
 
+export function getImageSourceWithMarkerVisibility(
+    source: GeoJSON.FeatureCollection<GeoJSON.Point, ImageFeatureProperties>,
+    visible: boolean,
+): typeof source {
+    return visible ? source : {
+        ...source,
+        features: source.features.map((feature) => ({ ...feature, properties: { ...feature.properties, markerVisible: false } })),
+    };
+}
+
 export function getImageSourceWithDraggingState(
     source: GeoJSON.FeatureCollection<GeoJSON.Point, ImageFeatureProperties>,
     imageId: number | null,

@@ -1,17 +1,16 @@
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { Resvg } from "@resvg/resvg-js";
 import { getOctagonalGeometry } from "../../ui/common/src/hud/octagonal-panel/geometry";
 
 const size = 64;
-const horizontalPadding = 8;
-const verticalPadding = 16;
+const horizontalPadding = 12;
+const verticalPadding = 18;
 const radius = 8;
 const vertices = getOctagonalGeometry(
     size - 2 * horizontalPadding,
     size - 2 * verticalPadding,
-    "sm",
+    "md",
 )
     .points.split(" ")
     .map((point) =>
@@ -66,9 +65,8 @@ for (let vertical = 0; vertical < size; vertical++) {
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" fill="black">${pixels.join("")}</svg>`;
 const png = new Resvg(svg).render().asPng();
-const directory = path.dirname(fileURLToPath(import.meta.url));
 const output = path.resolve(
-    directory,
+    __dirname,
     "../../gears/route-story/common/src/layer-specification/image-badge-sdf.ts",
 );
 fs.writeFileSync(

@@ -26,6 +26,7 @@ import {
     selectMapImageMarker,
     IMAGE_COUNT_BADGE_ID,
     IMAGE_BADGE_SDF_URI,
+    getImageSourceWithMarkerVisibility,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { useImageMarkerSource } from "./useImageMarkerSource";
 import { getImagesLayers } from "./images-layers";
@@ -38,6 +39,7 @@ export const ImagesLayer: FC<
     map,
     animatrix,
     data$,
+    state$,
     routeGeometryData$,
     images$,
     playerOperator,
@@ -49,6 +51,7 @@ export const ImagesLayer: FC<
     const [{ geojson }] = useSubjectState(data$);
     const [routeGeometryData] = useSubjectState(routeGeometryData$);
     const [images] = useSubjectState(images$);
+    const [{ markerLayerVisibility }] = useSubjectState(state$);
     const loadedImages = useLoadedWebImages(images);
     const [highlightIdsBySourceId, setHighlightIdsBySourceId] = useSubjectState(
         highlightIdsBySourceId$,
@@ -88,6 +91,7 @@ export const ImagesLayer: FC<
         sourceDataGeojson,
         displayImageId !== null,
     );
+    const visibleSource = useMemo(() => getImageSourceWithMarkerVisibility(groupedSource, markerLayerVisibility), [groupedSource, markerLayerVisibility]);
     const connectionsLayerData = useMemo(
         (): MapLayerData => ({
             sourceId: imageSourceIds.connections,
@@ -95,7 +99,7 @@ export const ImagesLayer: FC<
                 type: "geojson",
                 data: getImageMarkerConnections(
                     sourceDataGeojson,
-                    groupedSource,
+                    visibleSource,
                 ),
             },
             layers: [
@@ -107,7 +111,7 @@ export const ImagesLayer: FC<
                 },
             ],
         }),
-        [sourceDataGeojson, groupedSource],
+        [sourceDataGeojson, visibleSource],
     );
 
     const mapLayerData = useMemo(
@@ -127,7 +131,7 @@ export const ImagesLayer: FC<
                 options: {
                     buffer: 12,
                     isHoverEnabled: () =>
-                        draggingImage$.value?.interaction !== "map", // prevent lag when dragging
+                        state$.value.markerLayerVisibility && draggingImage$.value?.interaction !== "map", // prevent lag when dragging
                 },
                 onMouseDown: ({ features, isTopRelated }, event) => {
                     const feature = features.find(
@@ -136,7 +140,7 @@ export const ImagesLayer: FC<
                     );
                     didDrag.current = false;
                     map.getCanvas().style.cursor = "grabbing";
-                    if (!isTopRelated || !feature) {
+                    if (!state$.value.markerLayerVisibility || !isTopRelated || !feature) {
                         return;
                     }
                     dragStartPoint.current = event.point;
@@ -306,9 +310,9 @@ export const ImagesLayer: FC<
     const updatedData = useMemo(() => {
         return {
             sourceId: imageSourceIds.thumbnails,
-            data: groupedSource,
+            data: visibleSource,
         };
-    }, [groupedSource]);
+    }, [visibleSource]);
 
     useImageInDisplay(map, animatrix, playerOperator);
 
@@ -326,7 +330,7 @@ export const ImagesLayer: FC<
                 layerOrder={layerOrder}
                 updatedData={updatedData}
             />
-            <ImageDragPreview map={map} source={groupedSource} />
+            <ImageDragPreview map={map} source={groupedSource} visible={markerLayerVisibility} />
         </>
     );
 };

@@ -50,6 +50,7 @@ test("keeps the responder stable, coalesces stale moves, and marks cancellation"
         const responder = hook.result.current;
         const callbacks = create.mock.calls[0][0];
         await callbacks.onPanResponderGrant?.(event(0), gesture);
+        expect(unproject).not.toHaveBeenCalled();
         let releaseProjection: (coordinate: number[]) => void = () => {
             throw new Error("Projection was not started");
         };

@@ -9,7 +9,7 @@ export interface MobileMap {
     dragPan$: BehaviorSubject<boolean>
     onPressHandlers$: BehaviorSubject<Map<string, (event: PressEvent | PressEventWithFeatures) => Promise<void>>>
     onLongPressHandlers$: BehaviorSubject<Map<string, (event: PressEvent) => Promise<void>>>
-    onPanResponderStartHandlers$: BehaviorSubject<Map<string, (lngLat: number[], event: GestureResponderEvent) => Promise<void>>>
+    onPanResponderStartHandlers$: BehaviorSubject<Map<string, (event: GestureResponderEvent) => Promise<void>>>
     onPanResponderMoveHandlers$: BehaviorSubject<Map<string, (lngLat: number[], event: GestureResponderEvent) => Promise<void>>>
     onPanResponderEndHandlers$: BehaviorSubject<Map<string, (lngLat: number[], event: GestureResponderEvent, cancelled?: boolean) => Promise<void>>>
 }

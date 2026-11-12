@@ -16,9 +16,11 @@ import { getImageDragPreviewLayers } from "./images-layers";
 export const ImageDragPreview = ({
     map,
     source,
+    visible,
 }: {
     map: Map;
     source: ReturnType<typeof getImageSource>;
+    visible: boolean;
 }) => {
     const theme = useTheme();
     const color = theme.color("tertiary", 500);
@@ -41,10 +43,10 @@ export const ImageDragPreview = ({
             data: getImageDragPreviewSource(
                 source,
                 image?.id ?? null,
-                placement,
+                visible ? placement : null,
             ),
         }),
-        [source, image, placement],
+        [source, image, placement, visible],
     );
 
     return (

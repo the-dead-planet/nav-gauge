@@ -90,13 +90,9 @@ export const useMapPanResponder = (map: MobileMap) =>
                 gestureVersion++;
                 acceptingMoves = true;
                 latestMove = null;
-                startTask = endTask.then(() =>
-                    dispatch(
-                        map,
-                        map.onPanResponderStartHandlers$.value,
-                        event,
-                    ),
-                );
+                startTask = endTask.then(async () => {
+                    await Promise.all([...map.onPanResponderStartHandlers$.value.values()].map((handler) => handler(event)));
+                });
                 return startTask;
             },
             onPanResponderMove: (event) => {

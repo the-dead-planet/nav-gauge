@@ -1,5 +1,5 @@
 import { ComponentType, FC } from "react";
-import { BehaviorSubject, combineLatest, Subscription } from "rxjs";
+import { BehaviorSubject, combineLatest, distinctUntilChanged, map, Subscription } from "rxjs";
 import {
     ToolPanelProps,
     MarkerImage,
@@ -19,7 +19,7 @@ import { GeoJson, ParsingResultWithError } from "@tinker-chest";
 import { RouteStoryProps, RouteTimes, RouteStoryFile, RouteStoryTranslationKey, RouteStoryState, PresetOption, Preset, RouteStoryLayerStylingPopupProps } from "./model";
 import { FileOperator } from "./file-operator";
 import { PlayerOperator } from "./player-operator";
-import { cleanUpImageMarkerVisibility, getRouteGeometryData, RouteGeometryData } from "./tinkers";
+import { getRouteGeometryData, RouteGeometryData } from "./tinkers";
 import { Icons } from "@ui";
 import * as Translations from "./translations";
 import { AnimationControlsType, Animatrix } from "./animatrix";
@@ -36,7 +36,6 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
     public animatrix = new Animatrix();
     private dataSubscription: Subscription | null = null;
     private stateStorageSubscription: Subscription | null = null;
-    private markerVisibilityStorageSubscription: Subscription | null = null;
     public readonly data$ = new BehaviorSubject<ParsingResultWithError>({});
     public readonly routeGeometryData$ = new BehaviorSubject<RouteGeometryData | null>(null);
     public readonly state$ = new BehaviorSubject<RouteStoryState>(defaultRouteStoryState);
@@ -147,15 +146,22 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
     });
 
     public engage = () => {
+        const stateSubscriptions = new Subscription();
+        this.stateStorageSubscription = stateSubscriptions;
         this.animatrix.initialize(this.apparatus.storageKeeper, this.apparatus.translatron);
         this.apparatus.storageKeeper.synchronizeSubjectWithStorage(this.state$, 'route-story:state', cleanUpRouteStoryState)
             .then((subscription) => {
-                this.stateStorageSubscription = subscription;
+                stateSubscriptions.add(subscription);
             });
-        this.apparatus.storageKeeper.synchronizeSubjectWithStorage(this.playerOperator.markerVisibility$, 'route-story:marker-visibility', cleanUpImageMarkerVisibility)
-            .then((subscription) => {
-                this.markerVisibilityStorageSubscription = subscription;
+        stateSubscriptions.add(this.state$.pipe(map((state) => state.markerLayerVisibility), distinctUntilChanged()).subscribe((visible) => {
+            this.apparatus.toolsStation.addToolIcon('route-story-image-layer', {
+                placement: 'left',
+                icon: (visible ? Icons.NounProject.ImageMarker : Icons.NounProject.ImageMarkerHidden) as unknown as string,
+                active: visible,
+                tooltip: { n: this.id, t: visible ? this.internalTranslationKey.HideImageLayer : this.internalTranslationKey.ShowImageLayer },
+                onClick: () => this.state$.next({ ...this.state$.value, markerLayerVisibility: !this.state$.value.markerLayerVisibility }),
             });
+        }));
         this.presetSubscription = this.subscribePreset();
         this.presetActiveSubscription = this.subscribePresetActive();
         this.engageRouteStory?.();
@@ -244,10 +250,10 @@ export abstract class RouteStoryGear<TMap, TChronoLens extends ChronoLens, TFile
         this.apparatus.toolsStation.removeToolPanel(this.playerToolId);
         this.apparatus.toolsStation.removeTopTool(this.routeNameToolId);
         this.apparatus.toolsStation.removeToolIcon(this.layerStylingToolIconId);
+        this.apparatus.toolsStation.removeToolIcon('route-story-image-layer');
         this.apparatus.toolsStation.removeToolPopup(this.layerStylingToolPopupId);
         this.dataSubscription?.unsubscribe();
         this.stateStorageSubscription?.unsubscribe();
-        this.markerVisibilityStorageSubscription?.unsubscribe();
         this.disengageRouteStory?.();
         this.presetActiveSubscription?.unsubscribe();
         this.presetSubscription?.unsubscribe();

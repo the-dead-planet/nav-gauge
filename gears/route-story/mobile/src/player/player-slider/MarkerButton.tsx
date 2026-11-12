@@ -1,24 +1,24 @@
 import { FC } from "react";
+import { BehaviorSubject } from 'rxjs';
 import { useMultipleTranslations } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
-import { RouteStoryTranslationKey } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { RouteStoryState, RouteStoryTranslationKey } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Button } from "@mobile-ui";
 import { Icons } from "@ui";
-import { MobilePlayerOperator } from "../../model";
 
 interface Props {
     gearId: string;
     translationKey: typeof RouteStoryTranslationKey;
-    playerOperator: MobilePlayerOperator;
+    state$: BehaviorSubject<RouteStoryState>;
 }
 
 export const MarkerButton: FC<Props> = ({
     gearId,
     translationKey,
-    playerOperator,
+    state$,
 }) => {
-    const [{ showImageMarkers }, setMarkerVisibility] = useSubjectState(
-        playerOperator.markerVisibility$,
+    const [{ markerPlayerVisibility: showImageMarkers }, setState] = useSubjectState(
+        state$,
     );
 
     const [showImageMarkerLabel, hideImageMarkerLabel, markersCaption] =
@@ -51,9 +51,9 @@ export const MarkerButton: FC<Props> = ({
             tooltip={markersLabel}
             tooltipPlacement="top"
             onPress={() =>
-                setMarkerVisibility((previous) => ({
+                setState((previous) => ({
                     ...previous,
-                    showImageMarkers: !previous.showImageMarkers,
+                    markerPlayerVisibility: !previous.markerPlayerVisibility,
                 }))
             }
         />

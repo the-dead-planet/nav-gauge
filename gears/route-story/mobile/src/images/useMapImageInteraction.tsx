@@ -31,15 +31,16 @@ export const useMapImageInteraction = (
     images$: BehaviorSubject<MarkerImage<MobileMarkerImageData>[]>,
     geojson: GeoJson | undefined,
     routeGeometryData: RouteGeometryData | null,
+    markerLayerVisibility: boolean,
 ) => {
     const gestureRef = useRef<MarkerGesture | null>(null);
 
     useEffect(() => {
         const id = "route-story-thumbnails-layer";
         const startHandlers = new Map(map.onPanResponderStartHandlers$.value);
-        startHandlers.set(id, async (_coordinate, event) => {
+        startHandlers.set(id, async (event) => {
             const mapRef = map.map$.value;
-            if (!mapRef) {
+            if (!mapRef || !markerLayerVisibility) {
                 return;
             }
             const gesture: MarkerGesture = {
@@ -176,6 +177,7 @@ export const useMapImageInteraction = (
             gestureRef.current = null;
             if (draggingImage$.value?.interaction === "map") {
                 draggingImage$.next(null);
+                draggingPlacement$.next(null);
                 map.dragPan$.next(true);
             }
             for (const handlers$ of [
@@ -188,5 +190,5 @@ export const useMapImageInteraction = (
                 handlers$.next(handlers);
             }
         };
-    }, [map, images$, geojson, routeGeometryData]);
+    }, [map, images$, geojson, routeGeometryData, markerLayerVisibility]);
 };

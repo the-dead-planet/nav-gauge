@@ -13,8 +13,10 @@ import {
 
 export const ImageDragPreview = ({
     source,
+    visible,
 }: {
     source: ReturnType<typeof getImageSource>;
+    visible: boolean;
 }) => {
     const theme = useTheme();
     const [image] = useSubjectState(draggingImage$);
@@ -25,7 +27,7 @@ export const ImageDragPreview = ({
             data={getImageDragPreviewSource(
                 source,
                 image?.id ?? null,
-                placement,
+                visible ? placement : null,
             )}
         >
             <Layer

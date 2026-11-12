@@ -58,6 +58,8 @@ const nl: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['nl'] 
     "pan-to-image": 'Naar afbeelding verschuiven',
     "show-image-markers": 'Afbeeldingsmarkeringen tonen',
     "hide-image-markers": 'Afbeeldingsmarkeringen verbergen',
+    "show-image-layer": 'Afbeeldingslaag tonen',
+    "hide-image-layer": 'Afbeeldingslaag verbergen',
     "markers": 'Markeringen',
 };
 

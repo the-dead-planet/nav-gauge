@@ -58,6 +58,8 @@ const jp: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['jp'] 
     "pan-to-image": '画像に移動',
     "show-image-markers": '画像マーカーを表示',
     "hide-image-markers": '画像マーカーを非表示',
+    "show-image-layer": '画像レイヤーを表示',
+    "hide-image-layer": '画像レイヤーを非表示',
     "markers": 'マーカー',
 };
 

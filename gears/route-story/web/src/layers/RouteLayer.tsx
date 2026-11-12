@@ -76,7 +76,7 @@ export const RouteLayer: FC<OverlayComponentProps<maplibregl.Map> & WebRouteStor
         return () => {
             playerOperator.cleanupAnimateRoute();
         };
-    }, [isPlaying, loadedImages, easeDuration, cameraZoom, cameraTilt, cameraRoll, state]);
+    }, [isPlaying, loadedImages, easeDuration, cameraZoom, cameraTilt, cameraRoll, state.routeStyleActive, state.routeStyleInactive, state.currentPoint]);
 
     return (
         <>

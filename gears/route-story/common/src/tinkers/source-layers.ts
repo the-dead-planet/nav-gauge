@@ -10,6 +10,7 @@ import { CurrentPointData, LoadedImageData } from "@apparatus";
 import { clampZeroOne, emptyCollection, GeoJson, LngLat } from "@tinker-chest";
 import { RouteStoryState } from "../model";
 import { PlaybackPacing } from "../animatrix";
+import { getNearestRouteSegment } from './nearest-route-segment';
 
 export const getRouteSourceData = (
     { routeStyleActive, routeStyleInactive }: RouteStoryState,
@@ -300,12 +301,9 @@ export const getRoutePlacement = (
 
     const inputPoint = turfPoint([lngLat.lng, lngLat.lat]);
     if (timeHintEpoch === undefined) {
-        const snapped = nearestPointOnLine(turfLine(features.map((feature) => feature.geometry.coordinates)), inputPoint, { units: 'meters' });
-        const segmentIndex = Math.min(snapped.properties.segmentIndex, features.length - 2);
+        const { snapped, segmentIndex, segmentLength } = getNearestRouteSegment(features, inputPoint);
         const start = features[segmentIndex].geometry.coordinates;
-        const end = features[segmentIndex + 1].geometry.coordinates;
         const coordinates = snapped.geometry.coordinates;
-        const segmentLength = turfDistance(start, end, { units: 'meters' });
         const segmentFraction = segmentLength > 0 && (coordinates[0] !== start[0] || coordinates[1] !== start[1])
             ? snapped.properties.segmentDistance / segmentLength
             : 0;

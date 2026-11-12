@@ -17,6 +17,7 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & WebRouteStoryProps> = (
     translationKey,
     map,
     data$,
+    state$,
     routeGeometryData$,
     routeTimes$,
     images$,
@@ -42,6 +43,7 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & WebRouteStoryProps> = (
             translationKey={translationKey}
             map={map}
             data$={data$}
+            state$={state$}
             routeGeometryData$={routeGeometryData$}
             routeTimes$={routeTimes$}
             images$={images$}
@@ -52,7 +54,7 @@ export const Player: FC<ToolPanelProps<maplibregl.Map> & WebRouteStoryProps> = (
             className={!media.isLessThanMd ? styles['slider-desktop'] : undefined}
         />
     );
-    const markerButton = <MarkerButton gearId={gearId} translationKey={translationKey} playerOperator={playerOperator} />;
+    const markerButton = <MarkerButton gearId={gearId} translationKey={translationKey} state$={state$} />;
 
     if (media.isLessThanMd) {
         return (

@@ -5,6 +5,8 @@ import { EqualBooleanFeatureState, GetProperty, LineCap, LineGradientExpression 
 import { RouteStoryLineStyle, RouteStoryState } from "../model";
 
 export const defaultRouteStoryState: RouteStoryState = {
+    markerPlayerVisibility: true,
+    markerLayerVisibility: true,
     routeStyleActive: {
         showRouteLine: true,
         showRoutePoints: false,
@@ -50,6 +52,8 @@ export const getDefaultRouteStoryState = (theme: Theme): RouteStoryState => {
     const inactiveColor = toCssColor(theme.colors.tertiary[500]);
 
     return {
+        markerPlayerVisibility: defaultRouteStoryState.markerPlayerVisibility,
+        markerLayerVisibility: defaultRouteStoryState.markerLayerVisibility,
         routeStyleActive: {
             showRouteLine: true,
             showRoutePoints: false,

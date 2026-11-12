@@ -58,6 +58,7 @@ export const Player: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryProps
     translationKey,
     map,
     data$,
+    state$,
     routeGeometryData$,
     images$,
     routeTimes$,
@@ -83,6 +84,7 @@ export const Player: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryProps
             translationKey={translationKey}
             map={map}
             data$={data$}
+            state$={state$}
             routeGeometryData$={routeGeometryData$}
             routeTimes$={routeTimes$}
             images$={images$}
@@ -92,7 +94,7 @@ export const Player: FC<OverlayComponentProps<MobileMap> & MobileRouteStoryProps
             style={!media.isLessThanMd ? styles.sliderDesktop : undefined}
         />
     );
-    const markerButton = <MarkerButton gearId={gearId} translationKey={translationKey} playerOperator={playerOperator} />;
+    const markerButton = <MarkerButton gearId={gearId} translationKey={translationKey} state$={state$} />;
 
     if (media.isLessThanMd) {
         return (

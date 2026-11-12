@@ -58,6 +58,8 @@ const it: TranslationTable<GearTranslationKey | RouteStoryTranslationKey>['it'] 
     "pan-to-image": 'Sposta sull\'immagine',
     "show-image-markers": 'Mostra markeri immagine',
     "hide-image-markers": 'Nascondi markeri immagine',
+    "show-image-layer": 'Mostra livello immagini',
+    "hide-image-layer": 'Nascondi livello immagini',
     "markers": 'Marcatori',
 };
 

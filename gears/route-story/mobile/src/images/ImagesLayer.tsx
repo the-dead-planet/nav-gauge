@@ -12,6 +12,7 @@ import {
     getIconImageId,
     getImageSource,
     getImageSourceWithDraggingState,
+    getImageSourceWithMarkerVisibility,
     getImageMarkerConnections,
     IMAGE_COUNT_BADGE_ID,
     IMAGE_BADGE_SDF_URI,
@@ -35,6 +36,7 @@ export const ImagesLayer: FC<
     map,
     animatrix,
     data$,
+    state$,
     routeGeometryData$,
     images$,
     playerOperator,
@@ -46,6 +48,7 @@ export const ImagesLayer: FC<
     const [{ geojson }] = useSubjectState(data$);
     const [routeGeometryData] = useSubjectState(routeGeometryData$);
     const [images] = useSubjectState(images$);
+    const [{ markerLayerVisibility }] = useSubjectState(state$);
     const [draggingImage] = useSubjectState(draggingImage$);
     const loadedImages = useLoadedMobileImages(images);
     const originalSource = useMemo(
@@ -57,14 +60,15 @@ export const ImagesLayer: FC<
         originalSource,
         displayImageId !== null,
     );
-    useMapImageInteraction(map, images$, geojson, routeGeometryData);
+    const visibleSource = useMemo(() => getImageSourceWithMarkerVisibility(groupedSource, markerLayerVisibility), [groupedSource, markerLayerVisibility]);
+    useMapImageInteraction(map, images$, geojson, routeGeometryData, markerLayerVisibility);
     const renderedSource = useMemo(
         () =>
             getImageSourceWithDraggingState(
-                groupedSource,
+                visibleSource,
                 draggingImage?.id ?? null,
             ),
-        [groupedSource, draggingImage],
+        [visibleSource, draggingImage],
     );
 
     const imageSources: Record<string, ImageEntry> = Object.fromEntries(
@@ -97,7 +101,7 @@ export const ImagesLayer: FC<
             <Images images={imageSources} />
             <GeoJSONSource
                 id={imageSourceIds.connections}
-                data={getImageMarkerConnections(originalSource, groupedSource)}
+                data={getImageMarkerConnections(originalSource, visibleSource)}
             >
                 <Layer
                     type="line"
@@ -165,7 +169,7 @@ export const ImagesLayer: FC<
                     }}
                 />
             </GeoJSONSource>
-            <ImageDragPreview source={groupedSource} />
+            <ImageDragPreview source={groupedSource} visible={markerLayerVisibility} />
         </>
     );
 };

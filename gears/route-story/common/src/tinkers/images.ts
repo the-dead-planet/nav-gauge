@@ -13,20 +13,6 @@ export const MAP_IMAGE_GROUP_RADIUS = THUMBNAIL_IMAGE_SIZE;
 export const IMAGE_GROUP_MAX_ROUTE_DISTANCE_METERS = 50;
 export const SLIDER_IMAGE_GROUP_RADIUS = 12;
 
-export const DEFAULT_IMAGE_MARKER_VISIBILITY = { showImageMarkers: true };
-
-export const cleanUpImageMarkerVisibility = (
-    value: unknown,
-): typeof DEFAULT_IMAGE_MARKER_VISIBILITY => ({
-    showImageMarkers:
-        typeof value === "object" &&
-        value !== null &&
-        "showImageMarkers" in value &&
-        typeof value.showImageMarkers === "boolean"
-            ? value.showImageMarkers
-            : DEFAULT_IMAGE_MARKER_VISIBILITY.showImageMarkers,
-});
-
 export const formatImageMarkerCount = (count: number): string =>
     count > 99 ? "99+" : String(count);
 

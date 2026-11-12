@@ -11,6 +11,7 @@ import { PlayerSliderLabels } from "./PlayerSliderLabels";
 import { MobileMarkerImageData } from "../../images/image-parser";
 import { MobileMap } from "@mobile-apparatus";
 import { MobilePlayerOperator } from "../../model";
+import { RouteStoryState } from '@the-dead-planet/nav-gauge-gears-route-story-common';
 
 interface Props {
     gearId: string;
@@ -22,6 +23,7 @@ interface Props {
     images$: BehaviorSubject<MarkerImage<MobileMarkerImageData>[]>;
     progressMs$: BehaviorSubject<number>;
     playerOperator: MobilePlayerOperator;
+    state$: BehaviorSubject<RouteStoryState>;
     animatrix: Animatrix;
     style?: ViewStyle;
 }
@@ -45,6 +47,7 @@ export const SliderWithMarkers: FC<Props> = ({
     images$,
     progressMs$,
     playerOperator,
+    state$,
     animatrix,
     style,
 }) => {
@@ -53,8 +56,8 @@ export const SliderWithMarkers: FC<Props> = ({
     const [{ geojson }] = useSubjectState(data$);
     const [routeGeometryData] = useSubjectState(routeGeometryData$);
     const [animationControls] = useSubjectState(animatrix.controls$);
-    const [{ showImageMarkers }] = useSubjectState(
-        playerOperator.markerVisibility$,
+    const [{ markerPlayerVisibility: showImageMarkers }] = useSubjectState(
+        state$,
     );
 
     const handleProgressChange = (value: number) => {

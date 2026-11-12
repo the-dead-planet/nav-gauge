@@ -11,6 +11,7 @@ import { WebMarkerImageData } from "../../images/image-parser";
 import { SliderMarkers } from "./SliderMarkers";
 import { PlayerSliderLabels } from "./PlayerSliderLabels";
 import { WebPlayerOperator } from "../../model";
+import { RouteStoryState } from '@the-dead-planet/nav-gauge-gears-route-story-common';
 import styles from './player-slider.module.css';
 
 interface Props {
@@ -23,6 +24,7 @@ interface Props {
     images$: BehaviorSubject<MarkerImage<WebMarkerImageData>[]>;
     progressMs$: BehaviorSubject<number>;
     playerOperator: WebPlayerOperator;
+    state$: BehaviorSubject<RouteStoryState>;
     fitBoundsHandler: (map: maplibregl.Map, boundingBox?: GeoJSON.BBox) => void;
     animatrix: Animatrix;
     className?: string;
@@ -38,6 +40,7 @@ export const SliderWithMarkers: FC<Props> = ({
     images$,
     progressMs$,
     playerOperator,
+    state$,
     fitBoundsHandler,
     animatrix,
     className,
@@ -47,8 +50,8 @@ export const SliderWithMarkers: FC<Props> = ({
     const [{ geojson }] = useSubjectState(data$);
     const [routeGeometryData] = useSubjectState(routeGeometryData$);
     const [animationControls] = useSubjectState(animatrix.controls$);
-    const [{ showImageMarkers }] = useSubjectState(
-        playerOperator.markerVisibility$,
+    const [{ markerPlayerVisibility: showImageMarkers }] = useSubjectState(
+        state$,
     );
     const [
         sliderLabel,
