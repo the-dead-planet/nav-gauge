@@ -43,7 +43,7 @@ export interface ToolIcon<TMap> {
 export interface ObservedToolIcon<TMap> {
     id: string;
     anchorRef$: BehaviorSubject<ToolIconAnchorRef>;
-    icon$: BehaviorSubject<string | undefined>;
+    icon?: string;
     tooltip: TranslationId | ((value: string | null) => TranslationId);
     placement: ToolIconPlacement;
     value$: BehaviorSubject<string | null>;

@@ -14,7 +14,7 @@ interface Props {
 
 export const ToolIconLeft: FC<ObservedToolIcon<MobileMap> & Props> = ({
     map,
-    icon$,
+    icon,
     anchorRef$,
     value$,
     disabled$,
@@ -24,7 +24,6 @@ export const ToolIconLeft: FC<ObservedToolIcon<MobileMap> & Props> = ({
     style,
 }) => {
     const theme = useTheme();
-    const [icon] = useSubjectState(icon$);
     const translate = useTranslate();
     const [value] = useSubjectState(value$);
     const [disabled] = useSubjectState(disabled$);

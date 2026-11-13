@@ -106,7 +106,7 @@ export class ToolsStation<TMap> {
     public topBarTools$ = new BehaviorSubject<Map<string, ComponentType>>(new Map());
 
     /**
-     * Subscribe to changes of tool icon placements.
+     * Subscribe to changes of tool icon placements and images.
      */
     public toolIconsByPlacement$: Observable<ObservedToolIcon<TMap>[]> = this.toolIcons$.pipe(
         switchMap((toolsMap) => {
@@ -117,9 +117,9 @@ export class ToolsStation<TMap> {
             }
 
             return combineLatest(
-                toolIcons.map(([id, { placement$, ...toolIcon }]) =>
-                    combineLatest([placement$]).pipe(
-                        map(([placement]): ObservedToolIcon<TMap> => ({ id, placement, ...toolIcon }))
+                toolIcons.map(([id, { placement$, icon$, ...toolIcon }]) =>
+                    combineLatest([placement$, icon$]).pipe(
+                        map(([placement, icon]): ObservedToolIcon<TMap> => ({ id, placement, icon, ...toolIcon }))
                     )
                 )
             );
