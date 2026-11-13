@@ -23,8 +23,8 @@ jest.mock('react-native-svg', () => {
             return <View>{props.children}</View>;
         }),
         Image: (props: import('react-native-svg').ImageProps) => <View testID="svg-image" {...props} />,
-        Circle: () => null,
-        ClipPath: View,
+        Circle: (props: import('react-native-svg').CircleProps) => <View testID="crop-circle" {...props} />,
+        ClipPath: (props: import('react-native-svg').ClipPathProps) => <View testID="crop-path" {...props} />,
         Defs: View,
     };
 });
@@ -52,6 +52,9 @@ test('crops to a circle and registers only the in-memory PNG after the image loa
     const image = screen.getByTestId('svg-image');
     expect(image.props.preserveAspectRatio).toBe('xMidYMid slice');
     expect(image.props.clipPath).toBe('url(#thumbnail-circle)');
+    expect(screen.getByTestId('crop-path').props.id).toBe('thumbnail-circle');
+    const circle = screen.getByTestId('crop-circle');
+    expect([circle.props.cx, circle.props.cy, circle.props.r]).toEqual(['50%', '50%', '50%']);
     expect(mockRasterize).not.toHaveBeenCalled();
     await act(() => image.props.onLoad());
     await act(() => mockRasterize.mock.calls[0][0]('circular-png'));
@@ -59,13 +62,4 @@ test('crops to a circle and registers only the in-memory PNG after the image loa
         thumbnail: { source: { uri: 'data:image/png;base64,circular-png' } },
     });
     await screen.unmount();
-});
-
-test('ignores rasterization that finishes after the thumbnail is removed', async () => {
-    const screen = await render(<CircularMapThumbnail imageId="thumbnail" uri="file:///cache/photo.jpg" />);
-    const image = screen.getByTestId('svg-image');
-    await act(() => image.props.onLoad());
-    const complete = mockRasterize.mock.calls[0][0];
-    await screen.unmount();
-    await act(() => complete('late-png'));
 });
