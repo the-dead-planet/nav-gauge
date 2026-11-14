@@ -29,7 +29,7 @@ export interface ObservedToolPanel<TMap> {
 
 export interface ToolIcon<TMap> {
     anchorRef$: BehaviorSubject<ToolIconAnchorRef>;
-    icon?: string;
+    icon$: BehaviorSubject<string | undefined>;
     value$: BehaviorSubject<string | null>;
     placement$: BehaviorSubject<ToolIconPlacement>;
     disabled$: BehaviorSubject<boolean>;

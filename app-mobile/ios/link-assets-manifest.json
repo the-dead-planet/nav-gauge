@@ -1,0 +1,201 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "../apparatus/common/public/tiles/roads.pmtiles",
+      "sha1": "962b2a4c2006bcb6ad8973f1b8e335155eacfbba"
+    },
+    {
+      "path": "../gears/route-story/common/public/IMG20260403141115.jpg",
+      "sha1": "cfe60416185dbff9844b175ce4b7efeb456f31b5"
+    },
+    {
+      "path": "../gears/route-story/common/public/IMG20260403145737.jpg",
+      "sha1": "118cde5aa910348b2f28f343698984609f4d4baf"
+    },
+    {
+      "path": "../gears/route-story/common/public/IMG20260403151228.jpg",
+      "sha1": "f5af83a75a9dc4fc2853cf6e756580debb3b9998"
+    },
+    {
+      "path": "../gears/route-story/common/public/IMG20260403153210.jpg",
+      "sha1": "d2f2bc19727578c1f5bdb0fffd36abdacdd42ec5"
+    },
+    {
+      "path": "../gears/route-story/common/public/IMG20260403163310.jpg",
+      "sha1": "a2448046e051256af66760f7be7847b9b61a5cad"
+    },
+    {
+      "path": "../gears/route-story/common/public/IMG20260403171748.jpg",
+      "sha1": "063cb7e50c7f42167cf43372f821c763c1031626"
+    },
+    {
+      "path": "../gears/route-story/common/public/IMG20260403173904.jpg",
+      "sha1": "e2a363658199bf87d2783a9ba87f00b534c0a7fc"
+    },
+    {
+      "path": "../gears/route-story/common/public/Lisboa walk.kml",
+      "sha1": "733729cb42cee15a1c42b92223cb1865aca0a5a1"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/BitcountSingle-VariableFont_CRSV,ELSH,ELXP,slnt,wght.ttf",
+      "sha1": "612b7472820e485c44828a509603e2537c8260b9"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Cursive-Black.ttf",
+      "sha1": "0e6df0d8b5a0020067d40227c6171082e1ef66e2"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Cursive-Bold.ttf",
+      "sha1": "fd69c47b357d0f607bc58006655e646b752ad2bc"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Cursive-ExtraBold.ttf",
+      "sha1": "00aac804e2f1e9e4a86138bdf135e2ca936bb8ea"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Cursive-ExtraLight.ttf",
+      "sha1": "56b02c0aee470dac8c887e8a021d2ce35c3746c7"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Cursive-Light.ttf",
+      "sha1": "9c746fc671c6d0661bdd4c1c25e7f478235f0a79"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Cursive-Medium.ttf",
+      "sha1": "e9059e02f51c06bb7ce8845bc652eebb17e6f0cc"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Cursive-Regular.ttf",
+      "sha1": "91c6068665dce4633f25f4ac602e8c950483b747"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Cursive-SemiBold.ttf",
+      "sha1": "8ec56861d606538a4c1a40a4a83f1f776890599b"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Cursive-Thin.ttf",
+      "sha1": "35ffe782ae628127e12c1690c420aad171ef6e6c"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Roman-Black.ttf",
+      "sha1": "9a92b323733d815f96ab4772ac3bc0fbf4bad692"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Roman-Bold.ttf",
+      "sha1": "dbe876fad88a22e293130dd3d46d1d52bb899743"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Roman-ExtraBold.ttf",
+      "sha1": "5f359d4af1eb837cb4a7a58374ab2d3f6e97b57e"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Roman-ExtraLight.ttf",
+      "sha1": "24cff5eea286ace926c08528e41b868d02968dbc"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Roman-Light.ttf",
+      "sha1": "601f21e0df2017073ad0b64d2d57cdf4b71f832c"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Roman-Medium.ttf",
+      "sha1": "1706381b26332a74b7207c8c43e2d2aff2094267"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Roman-Regular.ttf",
+      "sha1": "70959b2825bf9eebf0116b84e4c370e5f135cf1c"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Roman-SemiBold.ttf",
+      "sha1": "848d52d10e1a2aff3a612a488100121fdf3ffae9"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle_Roman-Thin.ttf",
+      "sha1": "95c18f2c80066dfd7f6cb89d00f1ed8714de6dfa"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle-Black.ttf",
+      "sha1": "75792e851d98a9f60ec59912d768f1e27ea75cdf"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle-Bold.ttf",
+      "sha1": "eca8bb90aeca54e628bde6ef203f42c0199ed880"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle-ExtraBold.ttf",
+      "sha1": "61d96a50b9c845be2e04c2b0bdff9df357819fe2"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle-ExtraLight.ttf",
+      "sha1": "b06ba9c1f9748fbbc863fac757c1d2bc9a27fbb4"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle-Light.ttf",
+      "sha1": "ea93d78e8dfd17d9fd21eb34df5db246eaaea9d0"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle-Medium.ttf",
+      "sha1": "38779d65d3d1fdccabfe6a7fcff131d13d343626"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle-Regular.ttf",
+      "sha1": "5843c7f34abcc9418172f5bedeb24c9a744f22dc"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle-SemiBold.ttf",
+      "sha1": "0660a4862d6e9b97542eae9eff7c2e83c9a58405"
+    },
+    {
+      "path": "../ui/common/public/fonts/Bitcount_Single/static/BitcountSingle-Thin.ttf",
+      "sha1": "706895bc32f24f9fb6c0df47d0328c6f746421e9"
+    },
+    {
+      "path": "../ui/common/public/fonts/Sixtyfour/Sixtyfour-Regular-VariableFont_BLED,SCAN.ttf",
+      "sha1": "f9dfa4d6fb8daeda7819af02540ab7ac1de2d4e1"
+    },
+    {
+      "path": "../ui/common/public/fonts/Space_Grotesk/SpaceGrotesk-VariableFont_wght.ttf",
+      "sha1": "0e9348243185d6cb2e32014b3ee80959ef645b52"
+    },
+    {
+      "path": "../ui/common/public/fonts/Space_Grotesk/static/SpaceGrotesk-Bold.ttf",
+      "sha1": "14f3d7d974d0232f0fba31566783b2c262b4d2a2"
+    },
+    {
+      "path": "../ui/common/public/fonts/Space_Grotesk/static/SpaceGrotesk-Light.ttf",
+      "sha1": "d28b8bb3609a9c65c5ad097360a55b24094b0451"
+    },
+    {
+      "path": "../ui/common/public/fonts/Space_Grotesk/static/SpaceGrotesk-Medium.ttf",
+      "sha1": "7d2fe2b9e0c9e76ab5bebf7cd766acd1d5c4dcbb"
+    },
+    {
+      "path": "../ui/common/public/fonts/Space_Grotesk/static/SpaceGrotesk-Regular.ttf",
+      "sha1": "23aaf86d93b2c94ebf6fd588f0bc5f62194889f6"
+    },
+    {
+      "path": "../ui/common/public/fonts/Space_Grotesk/static/SpaceGrotesk-SemiBold.ttf",
+      "sha1": "e99da7dd55ac9ed7675a533c5a98cd7797613a67"
+    },
+    {
+      "path": "../ui/common/public/fonts/Syne_Mono/SyneMono-Regular.ttf",
+      "sha1": "a9d452041f133511750d57a6f86f3ae265e6f5d2"
+    },
+    {
+      "path": "../ui/common/public/fonts/Ubuntu_Mono/UbuntuMono-Bold.ttf",
+      "sha1": "590d3fa8514adf0169fa18224ccfaab9e7decc7d"
+    },
+    {
+      "path": "../ui/common/public/fonts/Ubuntu_Mono/UbuntuMono-BoldItalic.ttf",
+      "sha1": "591aaf567d5190de44a3bf98f65fe621c888929d"
+    },
+    {
+      "path": "../ui/common/public/fonts/Ubuntu_Mono/UbuntuMono-Italic.ttf",
+      "sha1": "7216443bd8f0dd34437f7735f491f42b2bbf58e8"
+    },
+    {
+      "path": "../ui/common/public/fonts/Ubuntu_Mono/UbuntuMono-Regular.ttf",
+      "sha1": "e17c11971f57bd8dfab74b9a0881c71a78bd7940"
+    }
+  ]
+}

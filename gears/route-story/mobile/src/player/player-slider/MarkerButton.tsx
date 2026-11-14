@@ -1,49 +1,61 @@
 import { FC } from "react";
+import { BehaviorSubject } from 'rxjs';
 import { useMultipleTranslations } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
-import { RouteStoryTranslationKey } from "@the-dead-planet/nav-gauge-gears-route-story-common";
+import { RouteStoryState, RouteStoryTranslationKey } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Button } from "@mobile-ui";
 import { Icons } from "@ui";
-import { MobilePlayerOperator } from "../../model";
 
 interface Props {
     gearId: string;
     translationKey: typeof RouteStoryTranslationKey;
-    playerOperator: MobilePlayerOperator;
+    state$: BehaviorSubject<RouteStoryState>;
 }
 
 export const MarkerButton: FC<Props> = ({
     gearId,
     translationKey,
-    playerOperator,
+    state$,
 }) => {
-    const [showImageMarkers, setShowImageMarkers] = useSubjectState(playerOperator.showImageMarkers$);
+    const [{ markerPlayerVisibility: showImageMarkers }, setState] = useSubjectState(
+        state$,
+    );
 
-    const [
-        showImageMarkerLabel,
-        hideImageMarkerLabel,
-        markersCaption,
-    ] = useMultipleTranslations([
-        { n: gearId, t: translationKey.ShowImageMarkers },
-        { n: gearId, t: translationKey.HideImageMarkers },
-        { n: gearId, t: translationKey.Markers },
-    ]);
+    const [showImageMarkerLabel, hideImageMarkerLabel, markersCaption] =
+        useMultipleTranslations([
+            { n: gearId, t: translationKey.ShowImageMarkers },
+            { n: gearId, t: translationKey.HideImageMarkers },
+            { n: gearId, t: translationKey.Markers },
+        ]);
 
-    const markersLabel = showImageMarkers ? hideImageMarkerLabel : showImageMarkerLabel;
+    const markersLabel = showImageMarkers
+        ? hideImageMarkerLabel
+        : showImageMarkerLabel;
 
     return (
         <Button
-            icon={Icons.NounProject.ImageMarker}
+            icon={
+                showImageMarkers
+                    ? Icons.NounProject.ImageMarker
+                    : Icons.NounProject.ImageMarkerHidden
+            }
             size="md"
             variant="ghost"
             corners="circle"
-            color={showImageMarkers ? 'tertiary' : 'neutral'}
+            color={showImageMarkers ? "tertiary" : "neutral"}
             highlightColor="tertiary"
+            highlighted={showImageMarkers}
             accessibilityLabel={markersLabel}
+            accessibilityState={{ selected: showImageMarkers }}
             caption={markersCaption}
             tooltip={markersLabel}
             tooltipPlacement="top"
-            onPress={() => setShowImageMarkers((prev) => !prev)}
+            onPress={() =>
+                setState((previous) => ({
+                    ...previous,
+                    markerPlayerVisibility: !previous.markerPlayerVisibility,
+                }))
+            }
         />
     );
 };

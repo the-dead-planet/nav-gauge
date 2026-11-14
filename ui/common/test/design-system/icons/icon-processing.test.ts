@@ -93,6 +93,32 @@ describe('Icon processing', function () {
         );
     });
 
+    it('keeps decorated variants at the base icon scale without removing the decoration', () => {
+        const base = rawIcon('Alice');
+        fs.writeFileSync(path.join(directory, 'raw/base.svg'), base);
+        fs.writeFileSync(
+            path.join(directory, 'raw/decorated.svg'),
+            base.replace(
+                '</svg>',
+                '<path data-icon-decoration="true" d="M-1 -1L11 11" fill="none" stroke="black" stroke-width="1"/></svg>',
+            ),
+        );
+        processIcons(directory);
+        const original = fs.readFileSync(
+            path.join(directory, 'output/base.svg'),
+            'utf8',
+        );
+        const decorated = fs.readFileSync(
+            path.join(directory, 'output/decorated.svg'),
+            'utf8',
+        );
+        expect(decorated.match(/viewBox="([^"]+)"/)?.[1]).to.equal(
+            original.match(/viewBox="([^"]+)"/)?.[1],
+        );
+        expect(decorated).to.include('d="M-1 -1L11 11"');
+        expect(decorated).not.to.include('data-icon-decoration');
+    });
+
     it('rejects invalid and missing names before writing outputs', () => {
         for (const name of ['', '../first', 'first.svg', 'first/second']) {
             expect(() => processIcons(directory, name)).to.throw(
