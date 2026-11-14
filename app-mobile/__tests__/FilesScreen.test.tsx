@@ -111,7 +111,12 @@ test("shows the storage breakdown and opens locations", async () => {
     ];
     const screen = await render(<FilesScreen />);
     expect(screen.getByText("6 files · 8 KB total")).toBeTruthy();
-    for (const label of ['Downloads', 'AsyncStorage', 'Image files', 'Remaining']) {
+    for (const label of [
+        "Downloads",
+        "AsyncStorage",
+        "Image files",
+        "Remaining",
+    ]) {
         expect(screen.getByText(new RegExp(`^• ${label}`))).toBeTruthy();
     }
     await fireEvent.press(screen.getByLabelText("Browse Image cache"));

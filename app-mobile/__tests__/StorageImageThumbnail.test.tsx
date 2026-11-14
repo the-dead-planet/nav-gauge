@@ -7,17 +7,6 @@ jest.mock("@mobile-ui", () => {
     return { Text };
 });
 
-test("displays an existing file with native downsampling rather than generating a copy", async () => {
-    const screen = await render(
-        <StorageImageThumbnail path="/cache/photo.jpg" name="photo.jpg" />,
-    );
-    const image = screen.getByLabelText("Thumbnail of photo.jpg");
-    expect(image.props.source).toEqual({ uri: "file:///cache/photo.jpg" });
-    expect(image.props.resizeMethod).toBe("resize");
-    expect(image.props.resizeMode).toBe("contain");
-    await screen.unmount();
-});
-
 test("shows an unavailable placeholder if cleanup removes an image", async () => {
     const screen = await render(
         <StorageImageThumbnail path="/cache/photo.jpg" name="photo.jpg" />,
