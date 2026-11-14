@@ -10,6 +10,7 @@ import { CurrentPointData, LoadedImageData } from "@apparatus";
 import { clampZeroOne, emptyCollection, GeoJson, LngLat } from "@tinker-chest";
 import { RouteStoryState } from "../model";
 import { PlaybackPacing } from "../animatrix";
+import { getNearestRouteSegment } from './nearest-route-segment';
 
 export const getRouteSourceData = (
     { routeStyleActive, routeStyleInactive }: RouteStoryState,
@@ -233,7 +234,7 @@ export const getRouteLngLatAtDistanceFraction = (
     }
 
     const endIndex = lookup.findIndex(({ lineProgress }) => lineProgress >= fraction);
-    if (endIndex <= 0) {
+    if (endIndex === 0) {
         return { lng: first[0], lat: first[1] };
     }
     if (endIndex < 0) {
@@ -299,6 +300,21 @@ export const getRoutePlacement = (
     }
 
     const inputPoint = turfPoint([lngLat.lng, lngLat.lat]);
+    if (timeHintEpoch === undefined) {
+        const { snapped, segmentIndex, segmentLength } = getNearestRouteSegment(features, inputPoint);
+        const start = features[segmentIndex].geometry.coordinates;
+        const coordinates = snapped.geometry.coordinates;
+        const segmentFraction = segmentLength > 0 && (coordinates[0] !== start[0] || coordinates[1] !== start[1])
+            ? snapped.properties.segmentDistance / segmentLength
+            : 0;
+        const startProgress = routeGeometryData.lookup[segmentIndex]?.lineProgress ?? 0;
+        const endProgress = routeGeometryData.lookup[segmentIndex + 1]?.lineProgress ?? 1;
+
+        return {
+            lngLat: { lng: coordinates[0], lat: coordinates[1] },
+            distanceFraction: clampZeroOne(startProgress + (endProgress - startProgress) * segmentFraction),
+        };
+    }
     const candidates: RoutePlacementCandidate[] = [];
 
     for (let index = 0; index < features.length - 1; index++) {
@@ -333,10 +349,6 @@ export const getRoutePlacement = (
     const nearest = candidates.reduce((best, candidate) =>
         candidate.pointDistanceMeters < best.pointDistanceMeters ? candidate : best
     );
-
-    if (timeHintEpoch === undefined) {
-        return { lngLat: nearest.lngLat, distanceFraction: nearest.distanceFraction };
-    }
 
     /**
      * Only a projection strictly inside its segment is a local minimum along the

@@ -15,7 +15,7 @@ export interface MobileMarkerImageData {
 export const filePrefix = 'file://';
 
 export const prependFilePrefix = (filePath: string): string => {
-    return `${filePrefix}${filePath}`;
+    return filePath.startsWith(filePrefix) ? filePath : `${filePrefix}${filePath}`;
 };
 
 export const extractFilePathFromData = (data: string): string => {
@@ -41,10 +41,20 @@ export const resetTempSubfolder = async () => {
 };
 
 export const removeIfExists = async (path: string): Promise<void> => {
-    const exists = await RNFS.exists(path);
+    const filePath = extractFilePathFromData(path);
+    const exists = await RNFS.exists(filePath);
     if (exists) {
-        await RNFS.unlink(path);
+        await RNFS.unlink(filePath);
     }
+};
+
+export const removeCachedImageFiles = async (paths: (string | undefined)[]): Promise<void> => {
+    const ownedPaths = new Set(paths.filter((path): path is string => !!path)
+        .map(extractFilePathFromData)
+        .filter((path) => path.startsWith(`${getTempSubfolder()}/`)));
+    await Promise.all([...ownedPaths].map((path) => removeIfExists(path).catch((error: unknown) => {
+        glitchmitter.transmit('Error removing cached image', error);
+    })));
 };
 
 /**
@@ -55,15 +65,18 @@ export const cacheReducedImage = async (
     file: DocumentPickerResponse,
     onError?: (error: Error) => void,
 ): Promise<{ fullSize?: string; thumbnail?: string; }> => {
-    return Promise.all([
+    const results = await Promise.allSettled([
         reduceSize(file.uri, FULL_SIZE_IMAGE_SIZE),
         reduceSize(file.uri, MAP_THUMBNAIL_SIZE  ),
-    ])
-        .then(([fullSize, thumbnail]) => ({ fullSize, thumbnail }))
-        .catch((err) => {
-            onError?.(err);
-            return {};
-        });
+    ]);
+    const failure = results.find((result) => result.status === 'rejected');
+    if (failure) {
+        await removeCachedImageFiles(results.flatMap((result) => result.status === 'fulfilled' ? [result.value] : []));
+        onError?.(failure.reason instanceof Error ? failure.reason : new Error(String(failure.reason)));
+        return {};
+    }
+    const [fullSize, thumbnail] = results.map((result) => result.status === 'fulfilled' ? result.value : undefined);
+    return { fullSize, thumbnail };
 };
 
 /**

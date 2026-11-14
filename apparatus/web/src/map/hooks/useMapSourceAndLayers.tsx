@@ -26,6 +26,7 @@ export interface MapDataHandlers {
          * Buffer around cursor in pixels for feature detection. Defaults to 4px.
          */
         buffer?: number;
+        isHoverEnabled?: () => boolean;
     };
 }
 
@@ -113,6 +114,9 @@ export const useMapSourceAndLayers = (
         };
 
         const mouseMoveHandler = (event: maplibregl.MapMouseEvent) => {
+            if (handlers?.options?.isHoverEnabled?.() === false) {
+                return;
+            }
             handlers?.onMouseMove?.(queryFeatures(event), event);
         };
 

@@ -354,7 +354,7 @@ describe('Mobile rig content', () => {
     });
 
     it.each(fillVariantOptions)(
-        'uses a filled selected tab on %s without forcing pressed styling',
+        'uses the shared selected-tab variant on %s without forcing pressed styling',
         async (variant) => {
             jest.spyOn(tabstripLayout, 'useTabstripLayout').mockReturnValue({
                 setContainerWidth: jest.fn(),
@@ -396,7 +396,7 @@ describe('Mobile rig content', () => {
                 </ThemeContext.Provider>
             );
             const screen = await render(content('route'));
-            const selectedFill = theme.resolveAppearance('fill', 'primary').surface;
+            const selectedFill = theme.resolveAppearance(actionButtonVariants[variant].active, 'primary').surface;
             const inactiveFill = theme.resolveAppearance(
                 actionButtonVariants[variant].inactive,
                 'primary',

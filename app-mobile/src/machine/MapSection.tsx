@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
 });
 
 const map: MobileMap = {
+    panResponderOffset: [0, 0],
     map$: new BehaviorSubject<MapRef | null>(null),
     camera$: new BehaviorSubject<CameraRef | null>(null),
     mapSize$: new BehaviorSubject<{ width: number; height: number; }>({ width: 100, height: 100 }),

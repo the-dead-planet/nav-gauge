@@ -1,5 +1,23 @@
-import type { SpacingVariant } from '../model';
-import type { Breakpoint, ElevationLevel, ThemeElevation, ElevationLayer, ThemeLayerPolicy, ThemeMode, ThemeSizes } from './model';
+import type { ColorVariant, SpacingVariant } from '../model';
+import type { Breakpoint, ElevationLevel, ThemeElevation, ElevationLayer, ThemeLayerPolicy, ThemeMode, ThemeSizes, ThemeAppearanceVariant } from './model';
+import type { Theme } from './theme';
+
+export const mapImageMarkerAppearance: {
+    color: ColorVariant;
+    variant: ThemeAppearanceVariant;
+} = {
+    color: 'tertiary',
+    variant: 'outline',
+};
+
+export const resolveMapImageMarkerColors = (theme: Theme) => {
+    const { variant, color } = mapImageMarkerAppearance;
+    return {
+        defaultColor: theme.resolveAppearance(variant, color).border.color,
+        hoverColor: theme.resolveAppearance(variant, color, color, 'hover-focus').border.color,
+        activeColor: theme.resolveAppearance(variant, color, color, 'active-pressed').border.color,
+    };
+};
 
 export const themeSizes: ThemeSizes = {
     control: {

@@ -53,7 +53,7 @@
 }
 
 .image-marker::after {
-    content: '';
+    content: "";
     position: absolute;
     left: calc(var(--marker-width) / 2);
     background-color: var(--marker-color);
@@ -65,11 +65,23 @@
 
 .dragging {
     opacity: 0.5;
-    pointer-events: none;
 }
 
 .drag-marker {
     pointer-events: none;
+}
+
+.marker-count {
+    position: absolute;
+    left: 5px;
+    bottom: -7px;
+    font-size: 8px;
+    line-height: 10px;
+    pointer-events: none;
+}
+
+.unselected {
+    opacity: 0.45;
 }
 
 .pan-to-icon {
@@ -82,6 +94,14 @@
     height: 12px;
     max-width: 12px;
     min-width: 12px;
+}
+
+.pan-to-icon-hidden {
+    visibility: hidden;
+}
+
+.drag-marker .pan-to-icon {
+    pointer-events: none;
 }
 
 .route-end-marker-container {
