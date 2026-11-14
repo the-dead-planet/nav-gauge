@@ -1,10 +1,10 @@
-import { FC, useState } from 'react';
-import { Linking } from 'react-native';
-import { Menu, MenuItem } from '@mobile-ui';
-import { getMachineMenuLinks, useTranslation } from '@apparatus';
-import { T, useMobileMachineWard } from '@mobile-apparatus';
-import { RootStackParamList } from '../../../navigation';
-import { SettingsDialog } from './settings/SettingsDialog';
+import { FC, useState } from "react";
+import { Linking } from "react-native";
+import { Menu, MenuItem } from "@mobile-ui";
+import { getMachineMenuLinks, useTranslation } from "@apparatus";
+import { T, useMobileMachineWard } from "@mobile-apparatus";
+import { RootStackParamList } from "../../../navigation";
+import { SettingsDialog } from "./settings/SettingsDialog";
 
 const openLink = (href: string) => {
     void Linking.openURL(href).catch(console.error);
@@ -41,13 +41,22 @@ export const LayoutMenu: FC<Props> = ({ onNavigate }) => {
                     />
                 </MenuItem>
                 {isDev ? (
-                    <MenuItem
-                        key="stories"
-                        linkType="internal"
-                        onPress={() => onNavigate('Stories')}
-                    >
-                        <T n={namespace} t={translationKey.Stories} />
-                    </MenuItem>
+                    <>
+                        <MenuItem
+                            key="stories"
+                            linkType="internal"
+                            onPress={() => onNavigate("Stories")}
+                        >
+                            <T n={namespace} t={translationKey.Stories} />
+                        </MenuItem>
+                        <MenuItem
+                            key="files"
+                            linkType="internal"
+                            onPress={() => onNavigate("Files")}
+                        >
+                            Files
+                        </MenuItem>
+                    </>
                 ) : null}
                 <MenuItem
                     key="component-library"
