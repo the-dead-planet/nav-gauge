@@ -1,172 +1,176 @@
 import { useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
-import { Button, Text } from "@mobile-ui";
-import { useTheme } from "@ui";
-import { StorageEntry, useStorageBrowser } from "@mobile-apparatus";
-import { FileImagePreview } from "./FileImagePreview";
+import {
+    Button,
+    StoryBackground,
+    StoryHeader,
+    Text,
+    TextInput,
+} from "@mobile-ui";
+import { useStorageBrowser } from "@mobile-apparatus";
+import { StorageLocations } from "./StorageLocations";
+import { StorageFileRow } from "./StorageFileRow";
+import { formatFileSize } from "./file-presentation";
+import { useFilesBackNavigation } from "./useFilesBackNavigation";
 
 const styles = StyleSheet.create({
-    screen: {
+    page: {
         flex: 1,
-    },
-    content: {
         padding: 16,
-        gap: 16,
+        gap: 12,
     },
-    section: {
+    header: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
         gap: 8,
+    },
+    heading: {
+        flex: 1,
+        gap: 4,
     },
     actions: {
         flexDirection: "row",
-        flexWrap: "wrap",
         gap: 8,
+    },
+    content: {
+        gap: 8,
+        paddingBottom: 16,
+    },
+    status: {
+        minHeight: 20,
     },
 });
 
 export const FilesScreen = () => {
-    const theme = useTheme();
     const browser = useStorageBrowser();
-    const [preview, setPreview] = useState<StorageEntry | null>(null);
+    const [query, setQuery] = useState("");
+    const [showPath, setShowPath] = useState(false);
     const entries = browser.listing?.entries ?? [];
+    const normalizedQuery = query.trim().toLowerCase();
+    const visibleEntries = entries.filter((entry) =>
+        entry.name.toLowerCase().includes(normalizedQuery),
+    );
     const files = entries.filter((entry) => !entry.isDirectory);
     const totalBytes = files.reduce((total, entry) => total + entry.size, 0);
+    const location = browser.location;
+
+    const goUp = () => {
+        setQuery("");
+        setShowPath(false);
+        browser.goUp();
+    };
+    useFilesBackNavigation(location ? goUp : undefined);
 
     return (
-        <View
-            style={[
-                styles.screen,
-                { backgroundColor: theme.resolveAppearance().surface },
-            ]}
-        >
-            <FlatList
-                key={browser.location?.path ?? "storage-roots"}
-                contentContainerStyle={styles.content}
-                data={entries}
-                keyExtractor={(entry) => entry.path}
-                ListHeaderComponent={
-                    <View style={styles.section}>
-                        <Text usage="header">Files · debug</Text>
-                        <Text>
-                            Read-only app storage. Refresh after importing files
-                            or clearing the workspace.
-                        </Text>
-                        <Text>
-                            Imported provider URIs and in-memory map images are
-                            not files here.
-                        </Text>
-                        {browser.location ? (
-                            <>
-                                <Text bold>{browser.location.root.label}</Text>
-                                <Text selectable>{browser.location.path}</Text>
-                                <View style={styles.actions}>
-                                    <Button
-                                        size="sm"
-                                        onPress={() => {
-                                            setPreview(null);
-                                            browser.goUp();
-                                        }}
-                                    >
-                                        Up
-                                    </Button>
-                                    <Button
-                                        size="sm"
-                                        onPress={() => {
-                                            setPreview(null);
-                                            browser.refresh();
-                                        }}
-                                    >
-                                        Refresh
-                                    </Button>
-                                </View>
-                                {browser.loading ? (
-                                    <Text accessibilityLiveRegion="polite">
-                                        Loading…
-                                    </Text>
-                                ) : null}
-                                {browser.error ? (
-                                    <Text
-                                        color="glitch"
-                                        accessibilityRole="alert"
-                                    >
-                                        {browser.error}
-                                    </Text>
-                                ) : null}
-                                {browser.listing ? (
-                                    <Text>
-                                        {browser.listing.exists
-                                            ? `${entries.length - files.length} folders · ${files.length} files · ${totalBytes.toLocaleString()} bytes (listed files only)`
-                                            : "Not created, or removed during cleanup."}
-                                    </Text>
-                                ) : null}
-                                {browser.listing?.exists &&
-                                entries.length === 0 ? (
-                                    <Text>Empty folder.</Text>
-                                ) : null}
-                            </>
-                        ) : (
-                            browser.folders.map((folder) => (
-                                <View key={folder.path} style={styles.section}>
-                                    <Button
-                                        size="sm"
-                                        onPress={() =>
-                                            browser.openFolder(folder)
-                                        }
-                                    >
-                                        {folder.label}
-                                    </Button>
-                                    <Text selectable>{folder.path}</Text>
-                                </View>
-                            ))
-                        )}
+        <StoryBackground>
+            {location ? (
+                <View style={styles.page}>
+                    <View style={styles.header}>
+                        <View style={styles.heading}>
+                            <StoryHeader
+                                title={
+                                    location.path === location.root.path
+                                        ? location.root.label
+                                        : (location.path.split("/").pop() ??
+                                          "Files")
+                                }
+                            />
+                            <Text usage="caption" numberOfLines={2}>
+                                {location.path === location.root.path
+                                    ? "App files"
+                                    : location.root.label}
+                                {location.path
+                                    .slice(location.root.path.length)
+                                    .replaceAll("/", " / ")}
+                            </Text>
+                        </View>
+                        <Button size="sm" onPress={browser.refresh}>
+                            Refresh
+                        </Button>
                     </View>
-                }
-                renderItem={({ item }) => (
-                    <View style={styles.section}>
-                        {item.isDirectory ? (
-                            <Button
-                                size="sm"
-                                onPress={() => {
-                                    setPreview(null);
-                                    if (browser.location) {
+                    <View style={styles.actions}>
+                        <Button size="sm" onPress={goUp}>
+                            Back
+                        </Button>
+                        <Button
+                            size="sm"
+                            onPress={() => setShowPath(!showPath)}
+                        >
+                            {showPath ? "Hide path" : "Show path"}
+                        </Button>
+                    </View>
+                    {showPath ? <Text selectable>{location.path}</Text> : null}
+                    <TextInput
+                        label="Search this folder"
+                        placeholder="File or folder name"
+                        value={query}
+                        onChange={setQuery}
+                    />
+                    <View style={styles.status}>
+                        <Text usage="caption" accessibilityLiveRegion="polite">
+                            {browser.loading
+                                ? "Refreshing…"
+                                : browser.listing?.exists
+                                  ? `${entries.length - files.length} folders · ${files.length} files · ${formatFileSize(totalBytes)} in listed files`
+                                  : ""}
+                        </Text>
+                    </View>
+                    {browser.error ? (
+                        <Text color="glitch" accessibilityRole="alert">
+                            Could not read this folder: {browser.error}
+                        </Text>
+                    ) : null}
+                    <FlatList
+                        key={location.path}
+                        data={visibleEntries}
+                        contentContainerStyle={styles.content}
+                        keyExtractor={(entry) => entry.path}
+                        refreshing={browser.loading}
+                        onRefresh={browser.refresh}
+                        keyboardShouldPersistTaps="handled"
+                        initialNumToRender={6}
+                        maxToRenderPerBatch={6}
+                        windowSize={5}
+                        ListEmptyComponent={
+                            browser.listing &&
+                            !browser.loading &&
+                            !browser.error ? (
+                                <Text>
+                                    {browser.listing?.exists === false
+                                        ? "This folder has not been created yet, or was cleaned up. Go back or refresh after using the workspace."
+                                        : normalizedQuery
+                                          ? "No matching files or folders. Try another name."
+                                          : "This folder is empty."}
+                                </Text>
+                            ) : undefined
+                        }
+                        renderItem={({ item }) => (
+                            <StorageFileRow
+                                entry={item}
+                                refreshVersion={browser.refreshVersion}
+                                onOpen={() => {
+                                    if (item.isDirectory) {
+                                        setQuery("");
+                                        setShowPath(false);
                                         browser.openFolder(
-                                            browser.location.root,
+                                            location.root,
                                             item.path,
                                         );
                                     }
                                 }}
-                            >
-                                {item.name}/
-                            </Button>
-                        ) : (
-                            <Text bold selectable>
-                                {item.name}
-                            </Text>
+                            />
                         )}
-                        <Text selectable>{item.path}</Text>
-                        <Text usage="caption">
-                            {item.isDirectory
-                                ? "Folder"
-                                : `${item.size.toLocaleString()} bytes`}
-                            {item.modified
-                                ? ` · ${item.modified.toLocaleString()}`
-                                : ""}
-                        </Text>
-                        {!item.isDirectory &&
-                        /\.(jpe?g|png|webp|gif|bmp)$/i.test(item.name) ? (
-                            <Button size="sm" onPress={() => setPreview(item)}>
-                                Preview image
-                            </Button>
-                        ) : null}
-                    </View>
-                )}
-            />
-            {preview ? (
-                <FileImagePreview
-                    key={preview.path}
-                    entry={preview}
-                    onClose={() => setPreview(null)}
+                    />
+                </View>
+            ) : (
+                <StorageLocations
+                    folders={browser.folders}
+                    onOpen={(folder) => browser.openFolder(folder)}
+                    onRefresh={browser.refresh}
+                    refreshVersion={browser.refreshVersion}
                 />
-            ) : null}
-        </View>
+            )}
+        </StoryBackground>
     );
 };

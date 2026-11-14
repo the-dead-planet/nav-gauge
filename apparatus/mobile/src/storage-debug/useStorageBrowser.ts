@@ -77,5 +77,6 @@ export const useStorageBrowser = () => {
         openFolder,
         goUp,
         refresh: () => setRevision((value) => value + 1),
+        refreshVersion: revision,
     };
 };

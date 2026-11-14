@@ -29,6 +29,7 @@ export const getStorageDebugFolders = (): StorageFolder[] => {
         },
         {
             label: "Recordings",
+            isDownload: true,
             path: RNFS.DownloadDirectoryPath
                 ? `${RNFS.DownloadDirectoryPath}/NavGauge`
                 : "",

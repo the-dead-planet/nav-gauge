@@ -54,7 +54,7 @@ export const LayoutMenu: FC<Props> = ({ onNavigate }) => {
                             linkType="internal"
                             onPress={() => onNavigate("Files")}
                         >
-                            Files
+                            <T n={namespace} t={translationKey.Files} />
                         </MenuItem>
                     </>
                 ) : null}
