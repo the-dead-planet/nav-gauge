@@ -12,9 +12,11 @@ import { Popups } from "./Popups";
 import {
     MapCanvas,
     dragPan$,
+    cameraMoving$,
     onPressHandlers$,
     onLongPressHandlers$,
     onPanResponderStartHandlers$,
+    onPanResponderShouldStartHandlers$,
     onPanResponderMoveHandlers$,
     onPanResponderEndHandlers$
 } from "./map-canvas/MapCanvas";
@@ -38,9 +40,11 @@ const map: MobileMap = {
     camera$: new BehaviorSubject<CameraRef | null>(null),
     mapSize$: new BehaviorSubject<{ width: number; height: number; }>({ width: 100, height: 100 }),
     dragPan$,
+    cameraMoving$,
     onPressHandlers$,
     onLongPressHandlers$,
     onPanResponderStartHandlers$,
+    onPanResponderShouldStartHandlers$,
     onPanResponderMoveHandlers$,
     onPanResponderEndHandlers$,
 };

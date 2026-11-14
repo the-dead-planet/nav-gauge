@@ -4,6 +4,7 @@ export const MAP_THUMBNAIL_SIZE = 3 * THUMBNAIL_IMAGE_SIZE;
 export const MAP_IMAGE_ANCHOR_SIDE = 4;
 export const MAP_IMAGE_ANCHOR_GAP = 4;
 export const MAP_IMAGE_MARKER_OFFSET_Y = -(THUMBNAIL_IMAGE_SIZE / 2 + 2 + MAP_IMAGE_ANCHOR_GAP + MAP_IMAGE_ANCHOR_SIDE);
+export const MAP_IMAGE_COUNT_BADGE_OFFSET: [number, number] = [20, MAP_IMAGE_MARKER_OFFSET_Y - 20];
 
 export const getImageIconSize = (
     imageSize: number,

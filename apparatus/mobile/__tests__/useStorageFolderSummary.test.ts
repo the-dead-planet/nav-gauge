@@ -1,5 +1,5 @@
 import { act, renderHook } from "@testing-library/react-native";
-import { StorageListing } from "../src/storage-debug/model";
+import { StorageFolderSummary, StorageListing } from "../src/storage-debug/model";
 import { readStorageDebugFolder } from "../src/storage-debug/storage-files";
 import { useStorageFolderSummary } from "../src/storage-debug/useStorageFolderSummary";
 
@@ -106,7 +106,7 @@ test("distinguishes missing and unreadable folders from empty folders", async ()
         .mockResolvedValueOnce({ exists: false, entries: [] })
         .mockRejectedValueOnce(new Error("Permission denied"))
         .mockResolvedValueOnce({ exists: true, entries: [] });
-    const { result, rerender, unmount } = await renderHook(
+    const { result, rerender, unmount } = await renderHook<StorageFolderSummary, { revision: number }>(
         ({ revision }) => useStorageFolderSummary("/app", revision),
         { initialProps: { revision: 0 } },
     );
@@ -137,7 +137,7 @@ test("keeps pending counts in loading state and ignores stale results after refr
                 }),
         )
         .mockResolvedValueOnce({ exists: true, entries: [] });
-    const { result, rerender, unmount } = await renderHook(
+    const { result, rerender, unmount } = await renderHook<StorageFolderSummary, { revision: number }>(
         ({ revision }) => useStorageFolderSummary("/app", revision),
         { initialProps: { revision: 0 } },
     );

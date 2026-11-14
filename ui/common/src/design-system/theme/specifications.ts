@@ -17,7 +17,7 @@ export const defaultStatusColors: { [key in ThemeMode]: ThemeSpecification['stat
             shade: 600
         },
         hazard: {
-            name: 'copper',
+            name: 'yellow',
             shade: 500
         },
         secured: {
@@ -74,7 +74,7 @@ export const themeSpecifications: { [key in ThemeName]: { [key in ThemeMode]: Th
         {
             primary: Theme.palette.teal,
             secondary: Theme.palette.copper,
-            tertiary: Theme.palette.magenta,
+            tertiary: Theme.palette.pink,
             neutral: Theme.palette['neutral-grey'],
         },
         {

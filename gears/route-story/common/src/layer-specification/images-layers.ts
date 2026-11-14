@@ -10,6 +10,7 @@ import {
     THUMBNAIL_IMAGE_SIZE,
     MAP_THUMBNAIL_SIZE,
     MAP_IMAGE_MARKER_OFFSET_Y,
+    MAP_IMAGE_COUNT_BADGE_OFFSET,
 } from "../tinkers/images";
 import {
     ComparisonProperty,
@@ -61,7 +62,6 @@ export const draggingPlacement$ = new BehaviorSubject<RoutePlacement | null>(
 );
 export const selectedImageId$ = new BehaviorSubject<number | null>(null);
 export const IMAGE_MARKER_ANCHOR_ID = 'route-story-image-anchor-hexagon';
-const countOffset: [number, number] = [20, MAP_IMAGE_MARKER_OFFSET_Y - 20];
 const thumbnailTranslate: [number, number] = [0, MAP_IMAGE_MARKER_OFFSET_Y];
 const dragThumbnailTranslate: [number, number] = [0, MAP_IMAGE_MARKER_OFFSET_Y - THUMBNAIL_IMAGE_SIZE * 0.1 / 2];
 const countText: ExpressionSpecification = [
@@ -272,7 +272,7 @@ export default {
         getLayout: (backgroundColor: string, textColor: string): NonNullable<SymbolLayerSpecification['layout']> => ({
             "icon-image": ['concat', getImageCountBadgeImageName('', backgroundColor, textColor), countText],
             "icon-size": 1,
-            "icon-offset": countOffset,
+            "icon-offset": MAP_IMAGE_COUNT_BADGE_OFFSET,
             "icon-allow-overlap": true,
         }),
     },

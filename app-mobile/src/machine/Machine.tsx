@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useIsFocused } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { MapSection } from "./MapSection";
 import { Stories } from "@mobile-ui";
@@ -10,6 +10,8 @@ import { useMobileMachineWard } from "@mobile-apparatus";
 import { FilesScreen } from "./debug/files/FilesScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
+
+const StoriesScreen = () => <Stories isFocused={useIsFocused()} />;
 
 export const Machine: FC<MachineWardMachineProps<keyof RootStackParamList>> = ({
     onNavigateBack,
@@ -30,7 +32,7 @@ export const Machine: FC<MachineWardMachineProps<keyof RootStackParamList>> = ({
                 <Stack.Screen name="Home" component={MapSection} />
                 {isDev ? (
                     <>
-                        <Stack.Screen name="Stories" component={Stories} />
+                        <Stack.Screen name="Stories" component={StoriesScreen} />
                         <Stack.Screen name="Files" component={FilesScreen} />
                     </>
                 ) : null}

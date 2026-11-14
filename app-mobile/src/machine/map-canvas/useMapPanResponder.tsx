@@ -71,24 +71,31 @@ export const useMapPanResponder = (map: MobileMap) =>
             const ready = startTask;
             const moving = moveTask;
             endTask = (async () => {
-                await ready;
-                await moving;
-                await dispatch(
-                    map,
-                    map.onPanResponderEndHandlers$.value,
-                    event,
-                    cancelled,
-                );
-                map.panResponderOffset = [0, 0];
+                try {
+                    await ready;
+                    await moving;
+                    await dispatch(
+                        map,
+                        map.onPanResponderEndHandlers$.value,
+                        event,
+                        cancelled,
+                    );
+                } finally {
+                    map.panResponderOffset = [0, 0];
+                    map.dragPan$.next(true);
+                }
             })();
             return endTask;
         };
 
         return PanResponder.create({
-            onStartShouldSetPanResponder: () => true,
-            onShouldBlockNativeResponder: () => false,
+            onStartShouldSetPanResponderCapture: (event) =>
+                [...map.onPanResponderShouldStartHandlers$.value.values()].some((handler) => handler(event)),
+            onShouldBlockNativeResponder: () => true,
+            onPanResponderTerminationRequest: () => false,
             onPanResponderGrant: (event) => {
                 event.persist();
+                map.dragPan$.next(false);
                 gestureVersion++;
                 acceptingMoves = true;
                 latestMove = null;
