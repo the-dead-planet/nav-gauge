@@ -10,3 +10,5 @@ export * from './model';
 export * from './tinkers';
 
 export * from './storybook/Stories';
+export * from './storybook/StoryBackground';
+export * from './storybook/StoryHeader';

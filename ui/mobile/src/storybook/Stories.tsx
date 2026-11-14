@@ -1,14 +1,13 @@
-import { FC, useEffect, useState } from 'react';
-import { BackHandler, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { FC, useState } from 'react';
+import { ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { TextInput } from '../forms/text-input';
 import { ComponentStory } from './ComponentStory';
 import { discoverStoryGroups } from './discoverStories';
 import { GroupTile } from './GroupTile';
-import { StoryEntry, StoryGroup } from './model';
 import { StoryBackground } from './StoryBackground';
 import { StoryGroupList } from './StoryGroupList';
 import { StoryHeader } from './StoryHeader';
-import { topBarBackAction$ } from '../tinkers';
+import { useStoryNavigation } from './useStoryNavigation';
 
 const styles = StyleSheet.create({
     page: {
@@ -31,46 +30,21 @@ const styles = StyleSheet.create({
 
 const storyGroups = discoverStoryGroups();
 
-export const Stories: FC = () => {
+export const Stories: FC<{ isFocused: boolean }> = ({ isFocused }) => {
     const { width, height } = useWindowDimensions();
     const [query, setQuery] = useState('');
-    const [selectedGroup, setSelectedGroup] = useState<StoryGroup | null>(null);
-    const [selectedEntry, setSelectedEntry] = useState<StoryEntry | null>(null);
+    const { selectedEntry, setSelectedEntry, selectedGroup, setSelectedGroup } = useStoryNavigation(isFocused);
     const normalizedQuery = query.trim().toLowerCase();
     const groups = storyGroups.filter((group) => !normalizedQuery
         || group.name.toLowerCase().includes(normalizedQuery)
         || group.entries.some((entry) => entry.name.toLowerCase().includes(normalizedQuery)));
 
-    useEffect(() => {
-        topBarBackAction$.next({
-            onBack: selectedEntry
-                ? () => setSelectedEntry(null)
-                : selectedGroup
-                  ? () => setSelectedGroup(null)
-                  : undefined,
-        });
-
-        return () => topBarBackAction$.next(null);
-    }, [selectedEntry, selectedGroup]);
-
-    useEffect(() => {
-        const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
-            if (selectedEntry) {
-                setSelectedEntry(null);
-                return true;
-            }
-            if (selectedGroup) {
-                setSelectedGroup(null);
-                return true;
-            }
-            return false;
-        });
-
-        return () => subscription.remove();
-    }, [selectedEntry, selectedGroup]);
-
     if (selectedEntry) {
-        return <StoryBackground><ComponentStory entry={selectedEntry} /></StoryBackground>;
+        return (
+            <StoryBackground>
+                <ComponentStory entry={selectedEntry} />
+            </StoryBackground>
+        );
     }
 
     if (selectedGroup) {

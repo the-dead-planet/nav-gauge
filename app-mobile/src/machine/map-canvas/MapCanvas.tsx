@@ -1,6 +1,6 @@
 import { FC, ReactNode, useEffect, useRef } from "react";
 import { BehaviorSubject } from "rxjs";
-import { StyleSheet, View } from "react-native";
+import { GestureResponderEvent, StyleSheet, View } from "react-native";
 import { Camera, Map as MaplibreMap, LogManager, StyleSpecification } from "@maplibre/maplibre-react-native";
 import { Cartomancer, updateCompassIcon, updateCurrentZoomIcon } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
@@ -23,9 +23,12 @@ const styles = StyleSheet.create({
 });
 
 export const dragPan$ = new BehaviorSubject(true);
+export const cameraMoving$ = new BehaviorSubject(false);
 export const onPressHandlers$ = new BehaviorSubject(new Map());
 export const onLongPressHandlers$ = new BehaviorSubject(new Map());
 export const onPanResponderStartHandlers$ = new BehaviorSubject(new Map());
+export const onPanResponderShouldStartHandlers$ =
+    new BehaviorSubject<Map<string, (event: GestureResponderEvent) => boolean>>(new Map());
 export const onPanResponderMoveHandlers$ = new BehaviorSubject(new Map());
 export const onPanResponderEndHandlers$ = new BehaviorSubject(new Map());
 
@@ -95,6 +98,7 @@ export const MapCanvas: FC<Props> = ({
                             text: 'Something went wrong'
                         })
                     }}
+                    onRegionWillChange={() => map.cameraMoving$.next(true)}
                     onRegionDidChange={(event) => {
                         const bearing = event.nativeEvent.bearing;
                         const pitch = event.nativeEvent.pitch;
@@ -102,6 +106,7 @@ export const MapCanvas: FC<Props> = ({
                         cartomancer.bearing$.next(bearing);
                         updateCompassIcon(toolsStation, { bearing, pitch });
                         updateCurrentZoomIcon(toolsStation, clickedZoom, map.map$.value?.getZoom);
+                        map.cameraMoving$.next(false);
                     }}
                     onPress={(event) => {
                         for (const [_handlerId, handler] of onPressHandlers) {

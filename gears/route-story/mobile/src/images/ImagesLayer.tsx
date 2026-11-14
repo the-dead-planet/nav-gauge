@@ -58,13 +58,13 @@ export const ImagesLayer: FC<
         () => getImageSource(loadedImages, geojson, routeGeometryData),
         [loadedImages, geojson, routeGeometryData],
     );
-    const groupedSource = useImageMarkerSource(
+    const { groupedSource, hitTargets } = useImageMarkerSource(
         map,
         originalSource,
         displayImageId !== null,
     );
     const visibleSource = useMemo(() => getImageSourceWithMarkerVisibility(groupedSource, markerLayerVisibility), [groupedSource, markerLayerVisibility]);
-    useMapImageInteraction(map, images$, geojson, routeGeometryData, markerLayerVisibility);
+    useMapImageInteraction(map, images$, geojson, routeGeometryData, markerLayerVisibility, hitTargets);
     const renderedSource = useMemo(
         () =>
             getImageSourceWithDraggingState(

@@ -37,6 +37,7 @@ export enum MachineTranslationKey {
     ComponentLibrary = 'component-library',
     IconCreators = 'icon-creators',
     Stories = 'stories',
+    Files = 'files',
     Legal = 'legal',
     Privacy = 'privacy',
     Close = 'close',

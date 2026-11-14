@@ -5,6 +5,7 @@ const it: TranslationTable<MachineTranslationKey>['it'] = {
     'component-library': 'Libreria dei componenti',
     'icon-creators': 'Autori delle icone',
     stories: 'Esempi',
+    files: 'File',
     legal: 'Note legali',
     privacy: 'Privacy',
     close: 'Chiudi',

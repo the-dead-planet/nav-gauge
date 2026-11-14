@@ -5,6 +5,7 @@ const jp: TranslationTable<MachineTranslationKey>['jp'] = {
     'component-library': 'コンポーネントライブラリ',
     'icon-creators': 'アイコンの制作者',
     stories: 'ストーリー',
+    files: 'ファイル',
     legal: '法的情報',
     privacy: 'プライバシー',
     close: '閉じる',

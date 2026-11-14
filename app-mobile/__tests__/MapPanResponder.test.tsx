@@ -20,8 +20,12 @@ test("keeps the responder stable, coalesces stale moves, and marks cancellation"
     );
     const unproject = jest.fn(async (point: number[]) => point);
     const map = {
+        dragPan$: new BehaviorSubject(true),
         panResponderOffset: [0, 0],
         map$: new BehaviorSubject({ unproject }),
+        onPanResponderShouldStartHandlers$: new BehaviorSubject(
+            new Map([["image", (touch: GestureResponderEvent) => touch.nativeEvent.locationX === 0]]),
+        ),
         onPanResponderStartHandlers$: new BehaviorSubject(
             new Map([["image", async () => {}]]),
         ),
@@ -50,7 +54,13 @@ test("keeps the responder stable, coalesces stale moves, and marks cancellation"
     try {
         const responder = hook.result.current;
         const callbacks = create.mock.calls[0][0];
-        await callbacks.onPanResponderGrant?.(event(0), gesture);
+        expect(callbacks.onStartShouldSetPanResponderCapture?.(event(100), gesture)).toBe(false);
+        expect(callbacks.onStartShouldSetPanResponderCapture?.(event(0), gesture)).toBe(true);
+        expect(callbacks.onShouldBlockNativeResponder?.(event(0), gesture)).toBe(true);
+        expect(callbacks.onPanResponderTerminationRequest?.(event(0), gesture)).toBe(false);
+        const starting = callbacks.onPanResponderGrant?.(event(0), gesture);
+        expect(map.dragPan$.value).toBe(false);
+        await starting;
         expect(unproject).not.toHaveBeenCalled();
         let releaseProjection: (coordinate: number[]) => void = () => {
             throw new Error("Projection was not started");
@@ -72,6 +82,7 @@ test("keeps the responder stable, coalesces stale moves, and marks cancellation"
         });
         expect(moves).toEqual([1, 4]);
         await callbacks.onPanResponderRelease?.(event(5), gesture);
+        expect(map.dragPan$.value).toBe(true);
         expect(ended.mock.calls[0][0]).toEqual([5, 0]);
 
         map.onPanResponderMoveHandlers$.next(new Map());
