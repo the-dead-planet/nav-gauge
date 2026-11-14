@@ -5,6 +5,7 @@ const nl: TranslationTable<MachineTranslationKey>['nl'] = {
     'component-library': 'Componentenbibliotheek',
     'icon-creators': 'Makers van pictogrammen',
     stories: 'Voorbeelden',
+    files: 'Bestanden',
     legal: 'Juridisch',
     privacy: 'Privacy',
     close: 'Sluiten',
