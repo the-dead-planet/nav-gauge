@@ -1,6 +1,9 @@
 export const THUMBNAIL_IMAGE_SIZE = 50;
 export const FULL_SIZE_IMAGE_SIZE = 800;
 export const MAP_THUMBNAIL_SIZE = 3 * THUMBNAIL_IMAGE_SIZE;
+export const MAP_IMAGE_ANCHOR_SIDE = 4;
+export const MAP_IMAGE_ANCHOR_GAP = 4;
+export const MAP_IMAGE_MARKER_OFFSET_Y = -(THUMBNAIL_IMAGE_SIZE / 2 + 2 + MAP_IMAGE_ANCHOR_GAP + MAP_IMAGE_ANCHOR_SIDE);
 
 export const getImageIconSize = (
     imageSize: number,
@@ -14,7 +17,7 @@ export const IMAGE_GROUP_MAX_ROUTE_DISTANCE_METERS = 50;
 export const SLIDER_IMAGE_GROUP_RADIUS = 12;
 
 export const formatImageMarkerCount = (count: number): string =>
-    count > 99 ? "99+" : String(count);
+    count > 9 ? "9+" : String(count);
 
 export const canGroupImageRouteDistances = (
     candidateDistanceMeters: number,

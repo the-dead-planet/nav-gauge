@@ -3,7 +3,7 @@ import * as maplibregl from "maplibre-gl";
 import { OverlayComponentProps, FeatureStateProps } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import { MapLayerData, MapSourceAndLayers } from "@web-apparatus";
-import { useTheme } from "@ui";
+import { resolveMapImageMarkerColors, useTheme } from "@ui";
 import { useLoadedWebImages } from "../hooks/useLoadedWebImages";
 import { useImageInDisplay } from "./useImageInDisplay";
 import { MapImageData, useRouteLayerImages } from "../hooks";
@@ -24,9 +24,16 @@ import {
     ImagesLayers,
     DRAGGED_IMAGE_ID,
     selectMapImageMarker,
-    IMAGE_COUNT_BADGE_ID,
-    IMAGE_BADGE_SDF_URI,
+    clearImageMarkerSelection,
+    getImageCountBadges,
+    IMAGE_COUNT_BADGE_SIZE,
+    IMAGE_COUNT_BADGE_PIXEL_RATIO,
     getImageSourceWithMarkerVisibility,
+    getImageSourceWithAnchors,
+    getImageMarkerAnchorId,
+    getImageMarkerFeatureId,
+    IMAGE_MARKER_ANCHOR_ID,
+    IMAGE_MARKER_ANCHOR_SDF_URI,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { useImageMarkerSource } from "./useImageMarkerSource";
 import { getImagesLayers } from "./images-layers";
@@ -45,7 +52,7 @@ export const ImagesLayer: FC<
     playerOperator,
 }) => {
     const theme = useTheme();
-    const imageHighlightColor = theme.color("tertiary", 500);
+    const { defaultColor: imageColor, hoverColor: imageHoverColor, activeColor: imageActiveColor } = resolveMapImageMarkerColors(theme);
     const badgeTextColor = theme.resolveAppearance("fill", "tertiary").glyphs;
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
     const [{ geojson }] = useSubjectState(data$);
@@ -57,15 +64,20 @@ export const ImagesLayer: FC<
         highlightIdsBySourceId$,
     );
     const [draggingImage, setDraggingImage] = useSubjectState(draggingImage$);
+    const markerHighlightIds = useMemo(() => new Map([...highlightIdsBySourceId].map(([sourceId, ids]): [string, Set<string>] => [
+        sourceId,
+        sourceId === imageSourceIds.thumbnails ? new Set([...ids].flatMap((id) => [String(getImageMarkerFeatureId(id)), String(getImageMarkerAnchorId(id))])) : ids,
+    ])), [highlightIdsBySourceId]);
     const dragStartPoint = useRef<{ x: number; y: number } | null>(null);
+    const dragAnchorOffset = useRef({ x: 0, y: 0 });
     const didDrag = useRef(false);
 
     const mapImages = useMemo(
         (): MapImageData[] => [
             {
-                iconImageName: IMAGE_COUNT_BADGE_ID,
-                data: { data: IMAGE_BADGE_SDF_URI, width: 64, height: 64 },
-                metadata: { sdf: true, pixelRatio: 2 },
+                iconImageName: IMAGE_MARKER_ANCHOR_ID,
+                data: { data: IMAGE_MARKER_ANCHOR_SDF_URI, width: 64, height: 64 },
+                metadata: { sdf: true, pixelRatio: 4 },
             },
             ...loadedImages.flatMap((image): MapImageData[] => [
                 {
@@ -81,6 +93,19 @@ export const ImagesLayer: FC<
         [loadedImages],
     );
     useRouteLayerImages(map, mapImages);
+    const badgeImages = useMemo((): MapImageData[] =>
+        getImageCountBadges(imageColor, badgeTextColor).map(({ id, svg }) => ({
+            iconImageName: id,
+            data: {
+                data: `data:image/svg+xml,${encodeURIComponent(svg)}`,
+                width: IMAGE_COUNT_BADGE_SIZE,
+                height: IMAGE_COUNT_BADGE_SIZE,
+            },
+            metadata: {
+                pixelRatio: IMAGE_COUNT_BADGE_PIXEL_RATIO,
+            },
+        })), [imageColor, badgeTextColor]);
+    useRouteLayerImages(map, badgeImages);
 
     const sourceDataGeojson = useMemo(
         () => getImageSource(loadedImages, geojson, routeGeometryData),
@@ -119,12 +144,13 @@ export const ImagesLayer: FC<
             sourceId: imageSourceIds.thumbnails,
             source: {
                 type: "geojson",
-                data: sourceDataGeojson,
-                promoteId: "imageId",
+                data: getImageSourceWithAnchors(sourceDataGeojson, sourceDataGeojson),
             },
             layers: getImagesLayers(
                 displayImageId,
-                imageHighlightColor,
+                imageColor,
+                imageHoverColor,
+                imageActiveColor,
                 badgeTextColor,
             ),
             handlers: {
@@ -146,6 +172,11 @@ export const ImagesLayer: FC<
                     dragStartPoint.current = event.point;
                     if (feature.properties.markerCount > 1) {
                         return;
+                    }
+                    const original = sourceDataGeojson.features.find(({ properties }) => properties.imageId === feature.properties.imageId);
+                    if (original) {
+                        const point = map.project([original.geometry.coordinates[0], original.geometry.coordinates[1]]);
+                        dragAnchorOffset.current = { x: point.x - event.point.x, y: point.y - event.point.y };
                     }
                     map.dragPan.disable();
                     setDraggingImage({
@@ -176,7 +207,7 @@ export const ImagesLayer: FC<
                                 ({ properties }) =>
                                     properties.imageId !== DRAGGED_IMAGE_ID,
                             )
-                            .map((feature) => feature.id?.toString() ?? ""),
+                            .map((feature) => String(feature.properties.imageId)),
                     );
                     setHighlightIdsBySourceId(
                         new Map([[imageSourceIds.thumbnails, ids]]),
@@ -210,7 +241,7 @@ export const ImagesLayer: FC<
                 },
             },
         }),
-        [sourceDataGeojson, imageHighlightColor, badgeTextColor],
+        [sourceDataGeojson, imageColor, imageHoverColor, imageActiveColor, badgeTextColor],
     );
 
     useEffect(() => {
@@ -219,10 +250,12 @@ export const ImagesLayer: FC<
         }
         const update = (value: boolean) => {
             if (map.getSource(imageSourceIds.thumbnails)) {
-                map.setFeatureState(
-                    { source: imageSourceIds.thumbnails, id: draggingImage.id },
-                    { [FeatureStateProps.Dragging]: value },
-                );
+                for (const id of [getImageMarkerFeatureId(draggingImage.id), getImageMarkerAnchorId(draggingImage.id)]) {
+                    map.setFeatureState(
+                        { source: imageSourceIds.thumbnails, id },
+                        { [FeatureStateProps.Dragging]: value },
+                    );
+                }
             }
         };
         update(true);
@@ -236,6 +269,12 @@ export const ImagesLayer: FC<
         if (draggingImage === null || draggingImage.interaction !== "map") {
             return;
         }
+
+        const getDragCoordinate = (event: { lngLat: maplibregl.LngLat; point?: { x: number; y: number } }) =>
+            event.point ? map.unproject([
+                event.point.x + dragAnchorOffset.current.x,
+                event.point.y + dragAnchorOffset.current.y,
+            ]) : event.lngLat;
 
         const handleDrag = (event: {
             lngLat: maplibregl.LngLat;
@@ -259,20 +298,23 @@ export const ImagesLayer: FC<
             }
             event.preventDefault?.();
             draggingPlacement$.next(
-                getRoutePlacement(event.lngLat, geojson, routeGeometryData),
+                getRoutePlacement(getDragCoordinate(event), geojson, routeGeometryData),
             );
         };
 
         const handleDragEnd = (
             event: maplibregl.MapMouseEvent | maplibregl.MapTouchEvent,
         ) => {
+            if (didDrag.current) {
+                clearImageMarkerSelection();
+            }
             if (!geojson || !didDrag.current) {
                 draggingPlacement$.next(null);
                 return;
             }
             event.preventDefault();
             const placement = getRoutePlacement(
-                event.lngLat,
+                getDragCoordinate(event),
                 geojson,
                 routeGeometryData,
             );
@@ -310,9 +352,9 @@ export const ImagesLayer: FC<
     const updatedData = useMemo(() => {
         return {
             sourceId: imageSourceIds.thumbnails,
-            data: visibleSource,
+            data: getImageSourceWithAnchors(sourceDataGeojson, visibleSource),
         };
-    }, [visibleSource]);
+    }, [sourceDataGeojson, visibleSource]);
 
     useImageInDisplay(map, animatrix, playerOperator);
 
@@ -326,7 +368,7 @@ export const ImagesLayer: FC<
             <MapSourceAndLayers
                 map={map}
                 mapLayerData={mapLayerData}
-                highlightIdsBySourceId={highlightIdsBySourceId}
+                highlightIdsBySourceId={markerHighlightIds}
                 layerOrder={layerOrder}
                 updatedData={updatedData}
             />

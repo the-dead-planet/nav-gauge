@@ -96,6 +96,14 @@
     min-width: 12px;
 }
 
+.pan-to-icon-hidden {
+    visibility: hidden;
+}
+
+.drag-marker .pan-to-icon {
+    pointer-events: none;
+}
+
 .route-end-marker-container {
     position: absolute;
     top: 0;

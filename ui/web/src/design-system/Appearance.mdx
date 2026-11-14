@@ -1,6 +1,6 @@
 import { Canvas, Meta, Title } from "@storybook/addon-docs/blocks";
 import * as ColorStories from "./colors/Color.stories";
-import { translucentSurfaceOpacity } from '@ui';
+import { mapImageMarkerAppearance, translucentSurfaceOpacity } from '@ui';
 
 <Meta title="Design System/Appearance" />
 
@@ -97,6 +97,19 @@ Glyphs are a component's text and icons:
 
 Form-field labels use the platform typography `Label` component, which owns their typography and appearance. A field's transient hover, focus, or pressed state must not recolor its label; only explicit highlighted and disabled props affect the label's own appearance.
 
+## Map image markers
+
+Map image-marker decoration follows the **selected map style's theme mode**, not the application UI mode, and uses the <a href="#outline" target="_self" style={{ textDecoration: 'underline' }}><code>{mapImageMarkerAppearance.variant}</code></a> variant's border treatment. Selected and dragged states take priority over hover or transient linked highlighting.
+
+<table>
+    <thead>
+        <tr><th>Element</th><th>Default</th><th>Hovered / highlighted</th><th>Selected / dragged</th></tr>
+    </thead>
+    <tbody>
+        <tr><th scope="row">Decoration</th><td>Tertiary <code>500</code></td><td>Tertiary <code>600</code> light / <code>300</code> dark</td><td>Tertiary <code>700</code> light / <code>200</code> dark</td></tr>
+    </tbody>
+</table>
+
 ## Variants
 
 <h3 id="appearance-defaults">Default (no appearance variant)</h3>
@@ -133,7 +146,7 @@ Components without an appearance variant use the default policy below. Use it fo
 
 <Canvas of={ColorStories.GhostStates} />
 
-### `outline`
+<h3 id="outline"><code>outline</code></h3>
 
 <table>
     <thead>

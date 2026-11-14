@@ -7,6 +7,8 @@ export interface MobileMap {
     camera$: BehaviorSubject<CameraRef | null>;
     mapSize$: BehaviorSubject<{ width: number; height: number; }>,
     dragPan$: BehaviorSubject<boolean>
+    /** Screen-space correction while dragging an offset map object. */
+    panResponderOffset: [number, number];
     onPressHandlers$: BehaviorSubject<Map<string, (event: PressEvent | PressEventWithFeatures) => Promise<void>>>
     onLongPressHandlers$: BehaviorSubject<Map<string, (event: PressEvent) => Promise<void>>>
     onPanResponderStartHandlers$: BehaviorSubject<Map<string, (event: GestureResponderEvent) => Promise<void>>>

@@ -20,6 +20,7 @@ test("keeps the responder stable, coalesces stale moves, and marks cancellation"
     );
     const unproject = jest.fn(async (point: number[]) => point);
     const map = {
+        panResponderOffset: [0, 0],
         map$: new BehaviorSubject({ unproject }),
         onPanResponderStartHandlers$: new BehaviorSubject(
             new Map([["image", async () => {}]]),
@@ -79,7 +80,10 @@ test("keeps the responder stable, coalesces stale moves, and marks cancellation"
         expect(create).toHaveBeenCalledTimes(1);
 
         await callbacks.onPanResponderGrant?.(event(6), gesture);
+        map.panResponderOffset = [0, 35];
         await callbacks.onPanResponderTerminate?.(event(7), gesture);
+        expect(ended.mock.calls[1][0]).toEqual([7, 35]);
+        expect(map.panResponderOffset).toEqual([0, 0]);
         callbacks.onPanResponderMove?.(event(8), gesture);
         expect(ended.mock.calls[1][2]).toBe(true);
         expect(moves).toEqual([1, 4]);

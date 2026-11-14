@@ -11,6 +11,7 @@ import {
 import {
     getImageDragPreviewSource,
     getImageSourceWithDraggingState,
+    getImageSourceWithAnchors,
     ImageFeature,
 } from "../src/layer-specification/images-sources";
 import {
@@ -18,6 +19,7 @@ import {
     selectedImageId$,
     toggleImageMarkerGroup,
     selectMapImageMarker,
+    clearImageMarkerSelection,
 } from "../src/layer-specification/images-layers";
 
 describe("Image marker groups", () => {
@@ -40,8 +42,10 @@ describe("Image marker groups", () => {
         selectMapImageMarker(3, 1);
         selectMapImageMarker(3, 1);
         expect(selectedImageId$.value).to.equal(null);
-        selectedImageId$.next(null);
-        expandedImageGroupId$.next(null);
+        selectMapImageMarker(2, 2);
+        clearImageMarkerSelection();
+        expect(selectedImageId$.value).to.equal(null);
+        expect(expandedImageGroupId$.value).to.equal(null);
     });
     it("groups by screen distance without chaining across the route", () => {
         const groups = groupImageMarkers(
@@ -181,8 +185,16 @@ describe("Image marker groups", () => {
             lngLat: { lng: 1, lat: 1 },
             distanceFraction: 0.5,
         });
-        expect(dragging.features).to.have.length(1);
+        expect(dragging.features).to.have.length(2);
         expect(dragging.features[0].geometry.coordinates).to.deep.equal([1, 1]);
+        expect(dragging.features[1].properties.markerAnchor).to.equal(true);
+        expect(dragging.features[1].geometry.coordinates).to.deep.equal([1, 1]);
+        const anchors = getImageSourceWithAnchors(source, expanded).features.filter(({ properties }) => properties.markerAnchor);
+        const combined = getImageSourceWithAnchors(source, expanded).features;
+        expect(new Set(combined.map(({ id }) => id)).size).to.equal(combined.length);
+        expect(combined.every(({ id }) => typeof id === 'number' && Number.isSafeInteger(id) && id > 0)).to.equal(true);
+        expect(anchors.map(({ geometry }) => geometry.coordinates)).to.deep.equal(source.features.map(({ geometry }) => geometry.coordinates));
+        expect(anchors[1].properties.markerSelected).to.equal(true);
         expect(
             getImageSourceWithDraggingState(grouped, 2).features,
         ).to.have.length(2);

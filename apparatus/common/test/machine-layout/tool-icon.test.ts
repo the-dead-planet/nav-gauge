@@ -17,9 +17,8 @@ describe('Tool icon updates', () => {
         let observedIcon: string | undefined;
         const registrySubscription = station.toolIcons$.subscribe(() => { registryEmissions++; });
         const placementSubscription = station.toolIconsByPlacement$.subscribe((tools) => {
-            expect(tools[0].icon$).to.equal(toolIcon.icon$);
+            observedIcon = tools[0].icon;
         });
-        const iconSubscription = toolIcon.icon$.subscribe((icon) => { observedIcon = icon; });
 
         expect(observedIcon).to.equal('visible-icon');
         toolIcon.icon$.next('hidden-icon');
@@ -29,7 +28,6 @@ describe('Tool icon updates', () => {
         expect(registryEmissions).to.equal(1);
         expect(station.toolIcons$.value.get('images')).to.equal(toolIcon);
 
-        iconSubscription.unsubscribe();
         placementSubscription.unsubscribe();
         registrySubscription.unsubscribe();
         station.cleanUp();
