@@ -20,6 +20,8 @@ import {
     getSliderImageMarkers,
     selectedImageId$,
     toggleImageMarkerGroup,
+    clearImageMarkerSelection,
+    formatImageMarkerCount,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { WebMarkerImageData } from "../../images/image-parser";
 import { Button, Span, Tooltip } from "@web-ui";
@@ -140,6 +142,9 @@ export const SliderMarkers: FC<Props> = ({
                 );
             }
             draggingPlacement$.next(null);
+            if (didDrag.current) {
+                clearImageMarkerSelection();
+            }
             setDraggingImage(null);
         };
 
@@ -261,7 +266,9 @@ export const SliderMarkers: FC<Props> = ({
                                         ]);
                                     }
                                 }}
-                                className={styles["pan-to-icon"]}
+                                className={classNames(styles["pan-to-icon"], {
+                                    [styles["pan-to-icon-hidden"]]: draggingImage?.id === image.id && draggingPosition !== null,
+                                })}
                             />
                         </Tooltip>
                         <Tooltip
@@ -333,7 +340,7 @@ export const SliderMarkers: FC<Props> = ({
                                         fontWeight={highlighted ? 600 : 300}
                                         className={styles["marker-count"]}
                                     >
-                                        {imageIds.length}
+                                        {formatImageMarkerCount(imageIds.length)}
                                     </Span>
                                 )}
                             </span>
@@ -342,16 +349,24 @@ export const SliderMarkers: FC<Props> = ({
                 );
             })}
             {draggingPosition !== null && (
-                <span
-                    className={classNames(
-                        styles["image-marker"],
-                        styles["drag-marker"],
-                        styles["highlight"],
-                    )}
+                <div
+                    aria-hidden="true"
+                    inert
+                    className={classNames(styles["image-marker-container"], styles["drag-marker"])}
                     style={{
                         left: `${draggingPosition.toFixed(4)}%`,
                     }}
-                />
+                >
+                    <Button
+                        icon={Icons.NounProject.Target}
+                        size="xs"
+                        color="tertiary"
+                        aria-label={panToImageLabel}
+                        tabIndex={-1}
+                        className={styles["pan-to-icon"]}
+                    />
+                    <span className={classNames(styles["image-marker"], styles["drag-marker"], styles["highlight"])} />
+                </div>
             )}
         </div>
     );

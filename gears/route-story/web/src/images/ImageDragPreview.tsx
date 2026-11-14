@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { Map } from "maplibre-gl";
 import { MapLayerData, MapSourceAndLayers } from "@web-apparatus";
 import { useSubjectState } from "@tinker-chest";
-import { mapImageMarkerAppearance, useTheme } from "@ui";
+import { resolveMapImageMarkerColors, useTheme } from "@ui";
 import {
     draggingImage$,
     draggingPlacement$,
@@ -23,7 +23,7 @@ export const ImageDragPreview = ({
     visible: boolean;
 }) => {
     const theme = useTheme();
-    const color = theme.color(mapImageMarkerAppearance.color, mapImageMarkerAppearance.highlightShade);
+    const { activeColor: color } = resolveMapImageMarkerColors(theme);
     const [image] = useSubjectState(draggingImage$);
     const [placement] = useSubjectState(draggingPlacement$);
     const mapLayerData = useMemo(

@@ -9,11 +9,13 @@ import {
     expandedImageGroupId$,
     draggingPlacement$,
     getRoutePlacement,
+    getRouteLngLatAtDistanceFraction,
     imageLayerIds,
     RouteGeometryData,
     selectedImageId$,
     updateImageDistanceFraction,
     selectMapImageMarker,
+    clearImageMarkerSelection,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { MobileMarkerImageData } from "./image-parser";
 
@@ -63,13 +65,13 @@ export const useMapImageInteraction = (
                     ],
                     {
                         layers: [
+                            imageLayerIds.anchors,
                             imageLayerIds.thumbnails,
                             imageLayerIds.countBadge,
-                            imageLayerIds.countLabel,
                         ],
                     },
                 )
-                .then((features) => {
+                .then(async (features) => {
                     const properties = features[0]?.properties;
                     if (gestureRef.current !== gesture || !properties) {
                         return;
@@ -78,6 +80,16 @@ export const useMapImageInteraction = (
                     gesture.groupCount = Number(properties.markerCount ?? 1);
                     gesture.groupSize = Number(properties.markerGroupSize ?? 1);
                     if (gesture.groupCount === 1) {
+                        const image = images$.value.find(({ id }) => id === gesture.imageId);
+                        if (!geojson || !routeGeometryData || image?.distanceFraction === undefined) {
+                            return;
+                        }
+                        const point = getRouteLngLatAtDistanceFraction(geojson, routeGeometryData, image.distanceFraction);
+                        const [routeX, routeY] = await mapRef.project([point.lng, point.lat]);
+                        if (gestureRef.current !== gesture) {
+                            return;
+                        }
+                        map.panResponderOffset = [routeX - locationX, routeY - locationY];
                         map.dragPan$.next(false);
                         draggingImage$.next({
                             id: gesture.imageId,
@@ -147,6 +159,9 @@ export const useMapImageInteraction = (
                 draggingImage$.next(null);
             }
             draggingPlacement$.next(null);
+            if (gesture.moved && gesture.imageId !== null && gesture.groupCount === 1) {
+                clearImageMarkerSelection();
+            }
             if (cancelled) {
                 return;
             }
@@ -180,6 +195,7 @@ export const useMapImageInteraction = (
 
         return () => {
             gestureRef.current = null;
+            map.panResponderOffset = [0, 0];
             if (draggingImage$.value?.interaction === "map") {
                 draggingImage$.next(null);
                 draggingPlacement$.next(null);

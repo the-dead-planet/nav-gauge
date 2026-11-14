@@ -99,14 +99,14 @@ Form-field labels use the platform typography `Label` component, which owns thei
 
 ## Map image markers
 
-On both platforms, image-marker outlines follow the **selected map style's theme mode**, not the application UI mode. Update them when the map style changes. The shared policy is `mapImageMarkerAppearance` in `ui/common/src/design-system/theme/tinkers.ts`; this map-specific treatment does not change the general glyph or component variant policies.
+Map image-marker decoration follows the **selected map style's theme mode**, not the application UI mode, and uses the <a href="#outline" target="_self" style={{ textDecoration: 'underline' }}><code>{mapImageMarkerAppearance.variant}</code></a> variant's border treatment. Selected and dragged states take priority over hover or transient linked highlighting.
 
 <table>
     <thead>
         <tr><th>Element</th><th>Default</th><th>Hovered / highlighted</th><th>Selected / dragged</th></tr>
     </thead>
     <tbody>
-        <tr><th scope="row">Outline</th><td>Tertiary <code>{mapImageMarkerAppearance.outlineShade.light}</code> light / <code>{mapImageMarkerAppearance.outlineShade.dark}</code> dark</td><td>Tertiary <code>{mapImageMarkerAppearance.highlightShade}</code></td><td>Tertiary <code>{mapImageMarkerAppearance.highlightShade}</code></td></tr>
+        <tr><th scope="row">Decoration</th><td>Tertiary <code>500</code></td><td>Tertiary <code>600</code> light / <code>300</code> dark</td><td>Tertiary <code>700</code> light / <code>200</code> dark</td></tr>
     </tbody>
 </table>
 
@@ -146,7 +146,7 @@ Components without an appearance variant use the default policy below. Use it fo
 
 <Canvas of={ColorStories.GhostStates} />
 
-### `outline`
+<h3 id="outline"><code>outline</code></h3>
 
 <table>
     <thead>

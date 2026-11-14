@@ -5,7 +5,7 @@ import {
     GeoJSONSource,
     ImageEntry,
 } from "@maplibre/maplibre-react-native";
-import { mapImageMarkerAppearance, useTheme } from "@ui";
+import { resolveMapImageMarkerColors, useTheme } from "@ui";
 import { OverlayComponentProps } from "@apparatus";
 import { useSubjectState } from "@tinker-chest";
 import {
@@ -13,9 +13,10 @@ import {
     getImageSource,
     getImageSourceWithDraggingState,
     getImageSourceWithMarkerVisibility,
+    getImageSourceWithAnchors,
+    IMAGE_MARKER_ANCHOR_ID,
+    IMAGE_MARKER_ANCHOR_SDF_URI,
     getImageMarkerConnections,
-    IMAGE_COUNT_BADGE_ID,
-    IMAGE_BADGE_SDF_URI,
     ImagesLayers,
     routeLayerIds,
     imageLayerIds,
@@ -30,6 +31,7 @@ import { useMapImageInteraction } from "./useMapImageInteraction";
 import { ImageDragPreview } from "./ImageDragPreview";
 import { MobileRouteStoryProps } from "../model";
 import { CircularMapThumbnail } from "./CircularMapThumbnail";
+import { ImageCountBadges } from './ImageCountBadges';
 
 export const ImagesLayer: FC<
     OverlayComponentProps<MobileMap> & MobileRouteStoryProps
@@ -43,8 +45,7 @@ export const ImagesLayer: FC<
     playerOperator,
 }) => {
     const theme = useTheme();
-    const imageHighlightColor = theme.color(mapImageMarkerAppearance.color, mapImageMarkerAppearance.highlightShade);
-    const imageOutlineColor = theme.color(mapImageMarkerAppearance.color, mapImageMarkerAppearance.outlineShade[theme.mode]);
+    const { defaultColor: imageColor, hoverColor: imageHoverColor, activeColor: imageActiveColor } = resolveMapImageMarkerColors(theme);
     const badgeAppearance = theme.resolveAppearance("fill", "tertiary");
     const [displayImageId] = useSubjectState(animatrix.displayImageId$);
     const [{ geojson }] = useSubjectState(data$);
@@ -67,10 +68,10 @@ export const ImagesLayer: FC<
     const renderedSource = useMemo(
         () =>
             getImageSourceWithDraggingState(
-                visibleSource,
+                getImageSourceWithAnchors(originalSource, visibleSource),
                 draggingImage?.id ?? null,
             ),
-        [visibleSource, draggingImage],
+        [originalSource, visibleSource, draggingImage],
     );
 
     const imageSources: Record<string, ImageEntry> = Object.fromEntries(
@@ -84,8 +85,8 @@ export const ImagesLayer: FC<
                 : [];
         }),
     );
-    imageSources[IMAGE_COUNT_BADGE_ID] = {
-        source: { uri: IMAGE_BADGE_SDF_URI, scale: 2 },
+    imageSources[IMAGE_MARKER_ANCHOR_ID] = {
+        source: { uri: IMAGE_MARKER_ANCHOR_SDF_URI, scale: 4 },
         sdf: true,
     };
     const imageInDisplayIconSize = useImageInDisplay(
@@ -97,6 +98,7 @@ export const ImagesLayer: FC<
     return (
         <>
             <Images images={imageSources} />
+            <ImageCountBadges backgroundColor={imageColor} textColor={badgeAppearance.glyphs} />
             {loadedImages.map((image) => (
                 <CircularMapThumbnail
                     key={`${image.id}:${image.data.thumbnail}`}
@@ -118,8 +120,16 @@ export const ImagesLayer: FC<
             <GeoJSONSource id={imageSourceIds.thumbnails} data={renderedSource}>
                 <Layer
                     type="symbol"
-                    id={imageLayerIds.thumbnailsStackBack}
+                    id={imageLayerIds.anchors}
                     afterId={imageLayerIds.connections}
+                    filter={ImagesLayers.anchors.filter}
+                    layout={ImagesLayers.anchors.layout}
+                    paint={ImagesLayers.anchors.getPaint(imageColor, imageHoverColor, imageActiveColor)}
+                />
+                <Layer
+                    type="symbol"
+                    id={imageLayerIds.thumbnailsStackBack}
+                    afterId={imageLayerIds.anchors}
                     {...ImagesLayers.thumbnailsStackBack}
                     layout={ImagesLayers.thumbnailsStackBack.layout}
                 />
@@ -134,8 +144,9 @@ export const ImagesLayer: FC<
                     id={imageLayerIds.thumbnailsOutline}
                     filter={ImagesLayers.thumbnailsOutline.filter}
                     paint={ImagesLayers.thumbnailsOutline.getPaint(
-                        imageHighlightColor,
-                        imageOutlineColor,
+                        imageColor,
+                        imageHoverColor,
+                        imageActiveColor,
                     )}
                 />
                 <Layer
@@ -149,17 +160,8 @@ export const ImagesLayer: FC<
                     type="symbol"
                     id={imageLayerIds.countBadge}
                     filter={ImagesLayers.countBadge.filter}
-                    layout={ImagesLayers.countBadge.layout}
-                    paint={ImagesLayers.countBadge.getPaint(
-                        imageHighlightColor,
-                    )}
-                />
-                <Layer
-                    type="symbol"
-                    id={imageLayerIds.countLabel}
-                    filter={ImagesLayers.countLabel.filter}
-                    layout={ImagesLayers.countLabel.layout}
-                    paint={ImagesLayers.countLabel.getPaint(
+                    layout={ImagesLayers.countBadge.getLayout(
+                        imageColor,
                         badgeAppearance.glyphs,
                     )}
                 />

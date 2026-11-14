@@ -24,6 +24,7 @@ export interface ImageFeatureProperties {
     markerGroupSize?: number;
     markerOpacity?: number;
     markerSelected?: boolean;
+    markerAnchor?: boolean;
     [IMAGE_PROPERTY]: string;
     [IMAGE_THUMBNAIL_PROPERTY]: string;
     [FeatureStateProps.Highlight]?: boolean;
@@ -109,6 +110,25 @@ export function getImageSourceWithDraggingState(
     };
 }
 
+export const getImageMarkerFeatureId = (imageId: number | string): number => Math.abs(Number(imageId)) * 2 + 1;
+export const getImageMarkerAnchorId = (imageId: number | string): number => getImageMarkerFeatureId(imageId) + 1;
+
+export function getImageSourceWithAnchors(original: ReturnType<typeof getImageSource>, grouped: ReturnType<typeof getImageSource>): typeof grouped {
+    const coordinates = new Map(original.features.map((feature) => [feature.properties.imageId, feature.geometry]));
+    return {
+        ...grouped,
+        features: grouped.features.flatMap((feature) => [{ ...feature, id: getImageMarkerFeatureId(feature.properties.imageId) }, {
+            ...feature,
+            id: getImageMarkerAnchorId(feature.properties.imageId),
+            geometry: coordinates.get(feature.properties.imageId) ?? feature.geometry,
+            properties: {
+                ...feature.properties,
+                markerAnchor: true,
+            },
+        }]),
+    };
+}
+
 export function getImageDragPreviewSource(
     source: GeoJSON.FeatureCollection<GeoJSON.Point, ImageFeatureProperties>,
     imageId: number | null,
@@ -120,7 +140,7 @@ export function getImageDragPreviewSource(
     if (!image || !placement) {
         return { type: "FeatureCollection", features: [] };
     }
-    return {
+    const preview: typeof source = {
         ...source,
         features: [
             {
@@ -134,8 +154,11 @@ export function getImageDragPreviewSource(
                     ...image.properties,
                     imageId: DRAGGED_IMAGE_ID,
                     markerVisible: false,
+                    markerSelected: true,
+                    [FeatureStateProps.Highlight]: true,
                 },
             },
         ],
     };
+    return getImageSourceWithAnchors(preview, preview);
 }

@@ -32,6 +32,7 @@ Reserve final layout dimensions before optional or asynchronous content appears;
 Buttons use square corners by default. Circle and hexagon buttons are icon-only and require an accessible label.
 
 ### Web
+- Web recording captures only the MapLibre canvas. Visuals intended for recordings must render inside it; DOM overlays and separate canvases are not captured unless explicitly composited.
 - Apps and gears must use components from `@web-ui` when an appropriate component exists.
 - Inside `@web-ui`, use native semantic elements (`<hr>`, `<button>`, `<nav>`, `<label>`, etc.) instead of generic `<div>` elements.
 - Interactive elements must support keyboard use and include ARIA attributes when needed.

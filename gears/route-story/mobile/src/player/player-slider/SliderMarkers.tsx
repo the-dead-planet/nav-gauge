@@ -26,6 +26,8 @@ import {
     getSliderImageMarkers,
     selectedImageId$,
     toggleImageMarkerGroup,
+    clearImageMarkerSelection,
+    formatImageMarkerCount,
 } from "@the-dead-planet/nav-gauge-gears-route-story-common";
 import { Icons, useTheme } from "@ui";
 import { Button, Text, Tooltip } from "@mobile-ui";
@@ -82,6 +84,9 @@ const styles = StyleSheet.create({
     },
     dragMarker: {
         opacity: 0.5,
+    },
+    hiddenPanToButton: {
+        display: 'none',
     },
     markerCount: {
         position: "absolute",
@@ -227,6 +232,9 @@ export const SliderMarkers: FC<Props> = ({
             );
         }
         draggingPlacement$.next(null);
+        if (gesture?.moved) {
+            clearImageMarkerSelection();
+        }
         setHighlightIdsBySourceId(new Map());
         setDraggingImage(null);
         if (!cancelled && gesture && !gesture.moved) {
@@ -400,7 +408,7 @@ export const SliderMarkers: FC<Props> = ({
                                         });
                                     }
                                 }}
-                                style={styles.panToButton}
+                                style={[styles.panToButton, isDragged && styles.hiddenPanToButton]}
                             />
                         </Tooltip>
                         <View
@@ -423,7 +431,7 @@ export const SliderMarkers: FC<Props> = ({
                                 fontWeight={isHighlighted ? 600 : 300}
                                 style={styles.markerCount}
                             >
-                                {imageIds.length}
+                                {formatImageMarkerCount(imageIds.length)}
                             </Text>
                         )}
                     </View>
@@ -447,6 +455,9 @@ export const SliderMarkers: FC<Props> = ({
             )}
             {draggingImage?.interaction === "player" ? (
                 <Animated.View
+                    pointerEvents="none"
+                    accessibilityElementsHidden
+                    importantForAccessibility="no-hide-descendants"
                     style={[
                         styles.marker,
                         styles.dragMarker,
@@ -458,6 +469,13 @@ export const SliderMarkers: FC<Props> = ({
                         },
                     ]}
                 >
+                    <Button
+                        icon={Icons.NounProject.Target}
+                        size="xs"
+                        color="tertiary"
+                        accessibilityLabel={panToImageLabel}
+                        style={styles.panToButton}
+                    />
                     <View
                         style={[
                             styles.markerLine,

@@ -1,17 +1,22 @@
-import type { ColorShade, ColorVariant, SpacingVariant } from '../model';
-import type { Breakpoint, ElevationLevel, ThemeElevation, ElevationLayer, ThemeLayerPolicy, ThemeMode, ThemeSizes } from './model';
+import type { ColorVariant, SpacingVariant } from '../model';
+import type { Breakpoint, ElevationLevel, ThemeElevation, ElevationLayer, ThemeLayerPolicy, ThemeMode, ThemeSizes, ThemeAppearanceVariant } from './model';
+import type { Theme } from './theme';
 
 export const mapImageMarkerAppearance: {
     color: ColorVariant;
-    outlineShade: Record<ThemeMode, ColorShade>;
-    highlightShade: ColorShade;
+    variant: ThemeAppearanceVariant;
 } = {
     color: 'tertiary',
-    outlineShade: {
-        light: 700,
-        dark: 100,
-    },
-    highlightShade: 500,
+    variant: 'outline',
+};
+
+export const resolveMapImageMarkerColors = (theme: Theme) => {
+    const { variant, color } = mapImageMarkerAppearance;
+    return {
+        defaultColor: theme.resolveAppearance(variant, color).border.color,
+        hoverColor: theme.resolveAppearance(variant, color, color, 'hover-focus').border.color,
+        activeColor: theme.resolveAppearance(variant, color, color, 'active-pressed').border.color,
+    };
 };
 
 export const themeSizes: ThemeSizes = {

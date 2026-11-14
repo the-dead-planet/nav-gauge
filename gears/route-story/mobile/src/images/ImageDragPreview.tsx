@@ -1,6 +1,6 @@
 import { GeoJSONSource, Layer } from "@maplibre/maplibre-react-native";
 import { useSubjectState } from "@tinker-chest";
-import { mapImageMarkerAppearance, useTheme } from "@ui";
+import { resolveMapImageMarkerColors, useTheme } from "@ui";
 import {
     draggingImage$,
     draggingPlacement$,
@@ -19,6 +19,7 @@ export const ImageDragPreview = ({
     visible: boolean;
 }) => {
     const theme = useTheme();
+    const { activeColor } = resolveMapImageMarkerColors(theme);
     const [image] = useSubjectState(draggingImage$);
     const [placement] = useSubjectState(draggingPlacement$);
     return (
@@ -31,12 +32,24 @@ export const ImageDragPreview = ({
             )}
         >
             <Layer
+                type="symbol"
+                id={imageLayerIds.dragAnchor}
+                afterId={imageLayerIds.thumbnails}
+                filter={ImagesLayers.anchors.filter}
+                layout={ImagesLayers.anchors.layout}
+                paint={ImagesLayers.anchors.getPaint(
+                    activeColor,
+                    activeColor,
+                    activeColor,
+                )}
+            />
+            <Layer
                 type="circle"
                 id={imageLayerIds.thumbnailsHighlightOutline}
-                afterId={imageLayerIds.thumbnails}
+                afterId={imageLayerIds.dragAnchor}
                 filter={ImagesLayers.thumbnailsHighlightOutline.filter}
                 paint={ImagesLayers.thumbnailsHighlightOutline.getPaint(
-                    theme.color(mapImageMarkerAppearance.color, mapImageMarkerAppearance.highlightShade),
+                    activeColor,
                 )}
             />
             <Layer

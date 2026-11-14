@@ -19,7 +19,8 @@ const dispatch = async (
         return;
     }
     const { locationX, locationY } = event.nativeEvent;
-    const lngLat = await mapRef.unproject([locationX, locationY]);
+    const [offsetX, offsetY] = map.panResponderOffset;
+    const lngLat = await mapRef.unproject([locationX + offsetX, locationY + offsetY]);
     await Promise.all(
         [...handlers.values()].map((handler) =>
             handler(lngLat, event, cancelled),
@@ -78,6 +79,7 @@ export const useMapPanResponder = (map: MobileMap) =>
                     event,
                     cancelled,
                 );
+                map.panResponderOffset = [0, 0];
             })();
             return endTask;
         };
@@ -91,6 +93,7 @@ export const useMapPanResponder = (map: MobileMap) =>
                 acceptingMoves = true;
                 latestMove = null;
                 startTask = endTask.then(async () => {
+                    map.panResponderOffset = [0, 0];
                     await Promise.all([...map.onPanResponderStartHandlers$.value.values()].map((handler) => handler(event)));
                 });
                 return startTask;

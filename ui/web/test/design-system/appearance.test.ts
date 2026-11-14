@@ -21,6 +21,7 @@ import {
     ThemeName,
     sizeOptions,
     themeSpecifications,
+    resolveMapImageMarkerColors,
 } from '@ui';
 import { createAppearanceRules } from '../../src/design-system/theme/useThemeVariables';
 
@@ -101,6 +102,17 @@ const renderToStaticMarkup = (children: ReactElement): string => renderMarkup(
 );
 
 describe('Composed appearance rendering', () => {
+    it('uses outline border shades for map markers in both map modes', () => {
+        const modes: ThemeMode[] = ['light', 'dark'];
+        for (const mode of modes) {
+            const theme = new Theme(themeSpecifications[ThemeName.Default][mode], media);
+            expect(resolveMapImageMarkerColors(theme)).to.deep.equal({
+                defaultColor: theme.color('tertiary', 500),
+                hoverColor: theme.color('tertiary', mode === 'light' ? 600 : 300),
+                activeColor: theme.color('tertiary', mode === 'light' ? 700 : 200),
+            });
+        }
+    });
     after(() => renderingTheme.destroy());
 
     it('gives tiles one panel surface, raised depth and semantic content', () => {

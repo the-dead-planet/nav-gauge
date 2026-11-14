@@ -7,11 +7,20 @@ import {
 
 export const getImagesLayers = (
     displayImageId: number | null,
-    highlightColor: string,
+    defaultColor: string,
+    hoverColor: string,
+    activeColor: string,
     badgeTextColor: string,
-    outlineColor: string,
 ): LayerSpecification[] => {
     return [
+        {
+            id: imageLayerIds.anchors,
+            source: imageSourceIds.thumbnails,
+            type: 'symbol',
+            filter: ImagesLayers.anchors.filter,
+            layout: ImagesLayers.anchors.layout,
+            paint: ImagesLayers.anchors.getPaint(defaultColor, hoverColor, activeColor),
+        },
         {
             id: imageLayerIds.thumbnailsStackBack,
             source: imageSourceIds.thumbnails,
@@ -29,7 +38,7 @@ export const getImagesLayers = (
             source: imageSourceIds.thumbnails,
             type: "circle",
             filter: ImagesLayers.thumbnailsOutline.filter,
-            paint: ImagesLayers.thumbnailsOutline.getPaint(highlightColor, outlineColor),
+            paint: ImagesLayers.thumbnailsOutline.getPaint(defaultColor, hoverColor, activeColor),
         },
         {
             id: imageLayerIds.thumbnails,
@@ -44,16 +53,7 @@ export const getImagesLayers = (
             source: imageSourceIds.thumbnails,
             type: "symbol",
             filter: ImagesLayers.countBadge.filter,
-            layout: ImagesLayers.countBadge.layout,
-            paint: ImagesLayers.countBadge.getPaint(highlightColor),
-        },
-        {
-            id: imageLayerIds.countLabel,
-            source: imageSourceIds.thumbnails,
-            type: "symbol",
-            filter: ImagesLayers.countLabel.filter,
-            layout: ImagesLayers.countLabel.layout,
-            paint: ImagesLayers.countLabel.getPaint(badgeTextColor),
+            layout: ImagesLayers.countBadge.getLayout(defaultColor, badgeTextColor),
         },
         {
             id: imageLayerIds.imageInDisplay,
@@ -68,6 +68,14 @@ export const getImagesLayers = (
 export const getImageDragPreviewLayers = (
     highlightColor: string,
 ): LayerSpecification[] => [
+    {
+        id: imageLayerIds.dragAnchor,
+        source: imageSourceIds.dragPreview,
+        type: 'symbol',
+        filter: ImagesLayers.anchors.filter,
+        layout: ImagesLayers.anchors.layout,
+        paint: ImagesLayers.anchors.getPaint(highlightColor, highlightColor, highlightColor),
+    },
     {
         id: imageLayerIds.thumbnailsHighlightOutline,
         source: imageSourceIds.dragPreview,
